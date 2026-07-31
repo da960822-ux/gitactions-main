@@ -1,0 +1,25 @@
+spring:
+  application:
+    name: mood-backend
+  jpa:
+    hibernate:
+      ddl-auto: update
+    open-in-view: false
+    properties:
+      hibernate:
+        format_sql: true
+        dialect: org.hibernate.dialect.MySQLDialect
+  datasource:
+    url: jdbc:mysql://${DB_HOST:mysql}:${DB_PORT:3306}/${DB_NAME:mooddb}?useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=UTC&characterEncoding=UTF-8
+    username: ${DB_USER:mooduser}
+    password: ${DB_PASSWORD:moodpass}
+    driver-class-name: com.mysql.cj.jdbc.Driver
+
+mood:
+  model:
+    base-url: ${MODEL_BASE_URL:http://mood-model:8000}
+  cors:
+    allowed-origin: ${CORS_ALLOWED_ORIGIN:http://localhost:5173}
+
+server:
+  port: 8080

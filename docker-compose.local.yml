@@ -1,0 +1,81 @@
+# ---------------------------------------------------------------
+# LOCAL (운영과 동일하게) 실행용 Compose
+#  - 각 서비스를 "빌드된 이미지"로 실행 (멀티스테이지 Dockerfile 사용)
+#  - 소스 코드 변경이 즉시 반영되지 않음 (반영하려면 다시 build 필요)
+#  - 실습 시: docker compose -f docker-compose.local.yml up --build
+# ---------------------------------------------------------------
+services:
+  mysql:
+    image: mysql:8.0
+    container_name: mood-mysql
+    restart: unless-stopped
+    environment:
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD:-rootpass}
+      MYSQL_DATABASE: ${MYSQL_DATABASE:-mooddb}
+      MYSQL_USER: ${MYSQL_USER:-mooduser}
+      MYSQL_PASSWORD: ${MYSQL_PASSWORD:-moodpass}
+    ports:
+      - "3306:3306"
+    volumes:
+      - mysql-data:/var/lib/mysql
+      - ./mysql-init:/docker-entrypoint-initdb.d
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+    networks:
+      - mood-net
+
+  mood-model:
+    build:
+      context: ./model
+      dockerfile: Dockerfile
+    container_name: mood-model
+    restart: unless-stopped
+    networks:
+      - mood-net
+
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    container_name: mood-backend
+    restart: unless-stopped
+    environment:
+      DB_HOST: mysql
+      DB_PORT: 3306
+      DB_NAME: ${MYSQL_DATABASE:-mooddb}
+      DB_USER: ${MYSQL_USER:-mooduser}
+      DB_PASSWORD: ${MYSQL_PASSWORD:-moodpass}
+      MODEL_BASE_URL: http://mood-model:8000
+      CORS_ALLOWED_ORIGIN: http://localhost:3000
+    depends_on:
+      mysql:
+        condition: service_healthy
+      mood-model:
+        condition: service_started
+    ports:
+      - "8080:8080"
+    networks:
+      - mood-net
+
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    container_name: mood-frontend
+    restart: unless-stopped
+    depends_on:
+      - backend
+    ports:
+      - "3000:80"
+    networks:
+      - mood-net
+
+networks:
+  mood-net:
+    driver: bridge
+
+volumes:
+  mysql-data:

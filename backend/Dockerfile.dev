@@ -1,0 +1,8 @@
+# 개발용: 소스코드를 bind mount로 연결하고 Gradle bootRun으로 즉시 반영
+FROM gradle:8.10-jdk17
+WORKDIR /app
+COPY build.gradle settings.gradle ./
+RUN gradle dependencies --no-daemon || true
+
+EXPOSE 8080
+CMD ["gradle", "bootRun", "--no-daemon"]
