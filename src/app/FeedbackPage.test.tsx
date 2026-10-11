@@ -52,6 +52,8 @@ describe('Mami ideas page copy', () => {
       assert.match(html, /<textarea[^>]+disabled/);
       assert.match(html, /class="feedback-submit" disabled/);
       assert.doesNotMatch(html, /Todavía no hay ideas/);
+      if (state.loading) assert.match(html, /<form aria-busy="true">/);
+      else assert.match(html, /feedback-compose[\s\S]+role="alert">Connection failed/);
     }
   });
 

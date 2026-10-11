@@ -92,9 +92,7 @@ export function FeedbackPage({ language, mode, entries, loading, error, canCreat
             <span className="feedback-count">{entries.length.toLocaleString(language === 'ko' ? 'ko-KR' : 'es-DO')} <small>{copy(language, '개', 'total')}</small></span>
           </div>
 
-          {error && <p className="feedback-error" role="alert">{error}</p>}
-          {actionError && <p className="feedback-error" role="alert">{actionError}</p>}
-          {saved && <p className="feedback-saved" role="status">{copy(language, '아이디어를 저장했어요.', 'Tu idea quedó guardada.')}</p>}
+          {!canCreate && (error || actionError) && <p className="feedback-error" role="alert">{error || actionError}</p>}
           {loading ? <div className="feedback-empty" role="status"><span className="feedback-loader" aria-hidden="true" />{copy(language, '아이디어를 불러오는 중…', 'Cargando las ideas…')}</div>
             : entries.length === 0 && !error ? <div className="feedback-empty"><b>{copy(language, '아직 아이디어가 없어요.', 'Todavía no hay ideas.')}</b><small>{copy(language, 'Mami, 생각난 걸 언제든 남겨줘.', 'Mami, cuéntame tu idea cuando quieras.')}</small></div>
               : <div className="feedback-list">{entries.map(entry => <article className="feedback-entry" key={entry.id}>
@@ -111,10 +109,12 @@ export function FeedbackPage({ language, mode, entries, loading, error, canCreat
 
         {canCreate && <aside className="feedback-compose" aria-labelledby="feedback-compose-title">
           <div className="feedback-compose-head"><h2 id="feedback-compose-title">{copy(language, 'Mami, 편하게 적어줘', 'Mami, escríbeme con confianza')}</h2><p>{copy(language, 'Papi가 읽어볼게.', 'Papi va a leerlo con cariño.')}</p></div>
-          <form onSubmit={submit}>
+          <form onSubmit={submit} aria-busy={saving || loading}>
             <fieldset className="feedback-categories" disabled={saving || loading || Boolean(error)}><legend>{copy(language, '종류', 'Tipo')}</legend>{(['game', 'complaint', 'other'] as const).map(value => <button type="button" key={value} className={category === value ? 'active' : ''} aria-pressed={category === value} onClick={() => { setCategory(value); setSaved(false); }}>{categoryText(value, language)}</button>)}</fieldset>
             <label className="feedback-field-label" htmlFor="feedback-body">{copy(language, '내용', 'Mensaje')}</label>
             <textarea id="feedback-body" className="feedback-input feedback-textarea" required maxLength={4000} rows={5} disabled={saving || loading || Boolean(error)} value={body} onChange={event => { setBody(event.target.value); setSaved(false); }} placeholder={copy(language, 'Baby, 여기 적어줘 ♡', 'Baby, escríbelo aquí ♡')} />
+            {(error || actionError) && <p className="feedback-error" role="alert">{error || actionError}</p>}
+            {saved && <p className="feedback-saved" role="status">{copy(language, '아이디어를 저장했어요.', 'Tu idea quedó guardada.')}</p>}
             <div className="feedback-compose-bottom"><small>{mode === 'online' ? copy(language, '우리 둘의 비공개 공간에 저장돼요.', 'Se guarda en nuestro espacio privado.') : copy(language, '이 브라우저에만 저장돼요.', 'Solo en este navegador.')}</small><button className="feedback-submit" disabled={saving || loading || Boolean(error) || !body.trim()}>{saving ? copy(language, '보내는 중…', 'Enviando…') : copy(language, 'Papi한테 보내기', 'Enviar a Papi')}</button></div>
           </form>
         </aside>}

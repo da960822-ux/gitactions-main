@@ -5,6 +5,7 @@
 ## 구현 계약
 
 - 건의사항은 기존 작은 화면·터치 화면 접근과 `feedback.css` 반응형 배치를 보존한다. 게임용 데스크톱 차단을 건의사항에 적용하지 않는다. 새 모바일 디자인은 추가하지 않았다.
+- 최신 스타일은 `home-integration-20261011`의 `39cc33ac3f85c87b183db1545aecc3203f835b3f`에 있는 `src/preview/preview.css`를 기준으로 바탕 `#0c080e`, 로즈골드 `#d3a491`, 본문 `#efdfd6`, 종이 `#efe1cd`→`#dcc4a7`를 사용한다. Lusion은 시각적 참고 방향이며 원본 소스·자산은 가져오지 않았다. 페이지 내부에 얇은 정적 궤도선, 접힌 종이 모서리, 미세한 종이 질감과 기존 펼침 모션을 사용한다. WebGL/파티클/지속적인 배경 애니메이션은 없다.
 - `dos-language`와 KO / ES · RD 버튼을 사용한다. 문서 locale은 `ko` / `es-DO`다.
 - 새 입력은 게임 제안(`game`), 불편한 점(`complaint`), 기타(`other`)와 내용(1–4000자)뿐이다. 기존 title 컬럼은 내용 앞부분으로 채운다. 기존 게시물의 독립 제목·message/feature 분류를 보존한다.
 - 상태는 접수(`new`), 진행(`planned`), 완료(`done`)다. 진행 배지에는 원래 친밀한 문구 `해볼게요 / Lo anoto`를 작은 보조문구로 보존한다. 이전 `read`는 접수로 표시하며 DB 값을 강제로 바꾸지 않는다.
@@ -31,8 +32,11 @@
 
 ## 실제 검증
 
-- 후속 커밋 최종 검증: 전체 Vitest **442/442**, 빌드 통과, Chromium **39/39**, uncaught page errors **0**. KO/ES 800px·390px 터치 화면에서 기존 접근·가로 넘침 없음, 390px 작성 후 SQL-backed reload를 확인했다. 기존 종이 펼침 `feedback-paper-unfold / 0.68s`와 reduced-motion 시 `none`, 진행 배지의 `해볼게요 / Lo anoto`도 실제 브라우저에서 검사했다.
-- 후속 변경은 게임용 데스크톱 차단 제거와 진행 배지의 원래 보조문구 복원뿐이다. `feedback.css`의 종이 배경/펼침/호버/반응형 규칙과 기존 Mami/Papi KO/ES 제목·설명·placeholder·제출 문구, 랜딩/편지 파일은 변경하지 않았다. RPC·RLS·7일 보관·중복 제출/응답 유실 보호를 그대로 유지했다.
+- 최신 스타일 검증: `npm run build`와 전체 Vitest **442/442** 통과(관련 Vitest **15/15**도 별도 확인), Chromium **45/45**, uncaught page errors **0**. KO/ES 1440×900, 800×900, 768×1024, 390×844에서 실제 화면과 작은 화면 접근을 검사했다. 1440×900의 전체 폼이 첫 화면에 들어가며 모든 검사 크기에서 가로 넘침이 없다. 키보드로 내용 입력란에 진입하는 포커스, 현재 랜딩의 바탕/로즈골드, 렌더러 canvas 없음, 기존 종이 펼침/모션 축소도 확인했다.
+- 성공·실패 안내를 작성란 안의 내용 입력 바로 아래로 배치했다. 제출 중 버튼과 `aria-busy`가 상태를 알리며, 실패 안내가 입력 옆에 표시된 상태에서 초안을 보존하고 동일 request ID로 재시도해 SQL 행을 중복 생성하지 않는 것을 KO/ES로 검증했다. 상태만 변경하는 p1의 오류는 상태 목록 가까이에 표시한다.
+- `output/playwright/feedback/`에 KO/ES setup·empty·submitting·saved·failed·목록 및 768/390 화면 캡처가 있다. 캡처는 로컬 검수용이며 Git에 업로드하지 않는다. 최신 변경 파일은 `src/styles/feedback.css`, `FeedbackPage.tsx` 및 해당 테스트, `scripts/verify-feedback.mjs`, 이 인계 문서뿐이다. 랜딩에 새 건의 섹션을 만들지 않았으며 최상단 `/feedback` 메뉴 연결은 통합 세션이 담당한다.
+- 접근 복구 커밋 `0e27e94`의 검증: 전체 Vitest **442/442**, 빌드 통과, Chromium **39/39**, uncaught page errors **0**. KO/ES 800px·390px 터치 화면에서 기존 접근·가로 넘침 없음, 390px 작성 후 SQL-backed reload를 확인했다. 기존 종이 펼침 `feedback-paper-unfold / 0.68s`와 reduced-motion 시 `none`, 진행 배지의 `해볼게요 / Lo anoto`도 실제 브라우저에서 검사했다.
+- 접근 복구 당시 게임용 데스크톱 차단 제거와 진행 배지의 원래 보조문구만 변경했다. 이후 사용자 요청에 따라 현재 랜딩과 스타일을 조화시켰다. 기존 Mami/Papi KO/ES 제목·설명·placeholder·제출 문구, 랜딩/편지 파일은 계속 변경하지 않았다. RPC·RLS·7일 보관·중복 제출/응답 유실 보호를 그대로 유지했다.
 - 첫 커밋의 전체 Vitest 441/441와 `npm run build`가 통과했고, 아래 후속 변경의 최종 검증을 추가 기록한다.
 - 새 SQL/RLS 테스트는 **실제 PostgreSQL 역할을 실행하는 PGlite**로 최신 migration chain을 적용해 두 구성원, 제3자, 미인증 사용자, 직접 insert 차단, status-only 권한, 유효성, 요청 재사용/충돌, 7일 만료를 확인한다.
 - 첫 커밋의 Chromium KO/ES 1440×900 폼 검수는 29/29, uncaught page errors 0이었다. 당시 작은 화면 차단을 검사했으나 이것은 기존 접근의 퇴행이므로 후속 커밋에서 제거했다. 기존 독립 두 브라우저의 SQL-backed reload, 상태 공유(수동 조회), 연속 submit 한 요청, 저장 후 응답 유실/재시도 한 행, 오류 시 초안 보존, 빈 상태, 언어 변경, 세 번째 브라우저 거부 검사는 유지한다.
