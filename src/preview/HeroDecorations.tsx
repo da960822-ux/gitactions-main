@@ -12,7 +12,7 @@ export function HeroDecorations(){return <div className="rd-hero-decorations" ar
 export function attachHeroSparks(hero:HTMLElement,paused:boolean){
  const host=hero.querySelector<HTMLElement>('.rd-hero-sparks')!,fine=matchMedia('(hover:hover) and (pointer:fine)'),particles=new Map<HTMLElement,Animation>();let last=0,lastX=-1000,lastY=-1000,visible=true,meteorCount=0;const meteor=hero.querySelector<HTMLElement>('.rd-meteor')!;let meteorAnimation:Animation|undefined;
  const emit=(event:PointerEvent)=>{
-  const now=performance.now();if(paused||!fine.matches||document.hidden||now-last<750||Math.hypot(event.clientX-lastX,event.clientY-lastY)<80||particles.size>=8)return;
+  const now=performance.now();if(paused||!visible||!fine.matches||document.hidden||now-last<750||Math.hypot(event.clientX-lastX,event.clientY-lastY)<80||particles.size+4>8)return;
   if((event.target as Element).closest('button,a'))return;
   for(const node of hero.querySelectorAll('.rd-couple,.rd-baby-plane,.rd-message-plane,.rd-actions')){const r=node.getBoundingClientRect();if(event.clientX>=r.left-18&&event.clientX<=r.right+18&&event.clientY>=r.top-18&&event.clientY<=r.bottom+18)return;}
   const box=hero.getBoundingClientRect();last=now;lastX=event.clientX;lastY=event.clientY;
@@ -21,6 +21,7 @@ export function attachHeroSparks(hero:HTMLElement,paused:boolean){
   }host.dataset.particleCount=String(particles.size);
  };
  const passMeteor=()=>{if(!visible||document.hidden||meteorAnimation)return;const right=meteorCount++%2===0;meteor.style.left=right?'88%':'14%';meteor.style.top=right?'13%':'20%';meteor.style.rotate=right?'146deg':'34deg';meteorAnimation=meteor.animate([{opacity:0,transform:'translate3d(0,0,0)'},{opacity:.7,offset:.22,transform:`translate3d(${right?-28:28}px,18px,0)`},{opacity:0,transform:`translate3d(${right?-110:110}px,70px,0)`}],{duration:1100,easing:'linear'});meteorAnimation.finished.catch(()=>{}).finally(()=>{meteorAnimation=undefined;});};
- const observer=new IntersectionObserver(([entry])=>{visible=entry.isIntersecting;if(!visible)meteorAnimation?.cancel();});let first:number|undefined,repeat:number|undefined;if(!paused){hero.addEventListener('pointermove',emit);observer.observe(hero);first=window.setTimeout(passMeteor,4500);repeat=window.setInterval(passMeteor,15000);}
- return()=>{observer.disconnect();clearTimeout(first);clearInterval(repeat);meteorAnimation?.cancel();hero.removeEventListener('pointermove',emit);particles.forEach((animation,node)=>{animation.cancel();node.remove();});particles.clear();host.dataset.particleCount='0';};
+ const updateVisibility=()=>{hero.dataset.decorVisible=String(visible&&!document.hidden);if(!visible||document.hidden)meteorAnimation?.cancel();};
+ const observer=new IntersectionObserver(([entry])=>{visible=entry.isIntersecting;updateVisibility();});let first:number|undefined,repeat:number|undefined;if(!paused){hero.addEventListener('pointermove',emit);observer.observe(hero);document.addEventListener('visibilitychange',updateVisibility);first=window.setTimeout(passMeteor,4500);repeat=window.setInterval(passMeteor,15000);}
+ return()=>{observer.disconnect();document.removeEventListener('visibilitychange',updateVisibility);clearTimeout(first);clearInterval(repeat);meteorAnimation?.cancel();hero.removeEventListener('pointermove',emit);particles.forEach((animation,node)=>{animation.cancel();node.remove();});particles.clear();host.dataset.particleCount='0';};
 }

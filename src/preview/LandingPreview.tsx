@@ -1,6 +1,7 @@
 import {lazy,Suspense,useEffect,useRef,useState} from 'react';
 import {gameCatalog} from '../games/catalog';
 import {previewCopy} from './copy';
+import {landingCopy} from '../copy/home';
 import {attachHeroMotion} from './heroMotion';
 import {RasterHearts} from './RasterHearts';
 import {HeroDecorations,attachHeroSparks} from './HeroDecorations';
@@ -26,7 +27,7 @@ export function LandingPreview({connected=false}:{connected?:boolean}){
  const openLetter=()=>{document.getElementById('gift-letter')?.scrollIntoView({behavior:'instant',block:'start'});setOpen(true);};
  const closeLetter=()=>setOpen(false);
  return <main className={`rd-page ${reduced||paused?'rd-still':''}`}>
-  <header className="rd-nav"><a href="#gift-top" className="rd-brand">Y <i>♡</i> L</a><nav aria-label={language==='ko'?'선물 메뉴':'Menú del regalo'}><button onClick={()=>go('gift-games')}>{copy.games}</button><button onClick={openLetter}>{copy.letter}</button>{connected&&<Link href="/feedback">{language==='ko'?'너의 아이디어':'Tus ideas'}</Link>}<div className="rd-languages"><button aria-pressed={language==='ko'} onClick={()=>setLanguage('ko')}>KO</button><button aria-pressed={language==='es'} onClick={()=>setLanguage('es')}>ES</button></div></nav></header>
+  <header className="rd-nav"><a href="#gift-top" className="rd-brand">Y <i>♡</i> L</a><nav aria-label={language==='ko'?'선물 메뉴':'Menú del regalo'}><button onClick={()=>go('gift-games')}>{copy.games}</button><button onClick={openLetter}>{copy.letter}</button>{connected&&<Link href="/feedback">{landingCopy[language].navFeedback}</Link>}<div className="rd-languages"><button aria-pressed={language==='ko'} onClick={()=>setLanguage('ko')}>KO</button><button aria-pressed={language==='es'} onClick={()=>setLanguage('es')}>ES</button></div></nav></header>
   <section ref={hero} className="rd-hero" id="gift-top">
    <HeroDecorations/><div className="rd-scene-space" aria-hidden="true"><div className="rd-scene-light"><div/></div><div className="rd-scene-fill"/><div className="rd-scene-shadow"/><div className="rd-scene-floor-light"/></div>
    <div className="rd-hero-stage"><img className="rd-heart-fallback" src="/images/landing-preview/hero/hearts-neutral.png" width="1440" height="816" loading="eager" decoding="sync" alt="" aria-hidden="true"/>{heroArtReady&&(raster&&desktop?<RasterHearts/>:<Suspense fallback={<div className="rd-render-fallback" role="status">PREPARING YOUR GIFT</div>}><StudioScene mode="hearts" onUnavailable={()=>setRaster(true)} paused={paused||reduced} impulse={impulse}/></Suspense>)}</div>
