@@ -1,0 +1,270 @@
+{
+  "schema_version": 1,
+  "art_direction_brief": "public/images/splendor-gems/ART-DIRECTION.md",
+  "assets": [
+    {
+      "id": "splendor-gem-white",
+      "path": "public/images/splendor-gems/white.svg",
+      "role": "white token / bonus / flight",
+      "status": "native-reviewed",
+      "sha256": "e0339169c32232cac1ab6ec6e17477fbd519ed4eee4cc378bf330f2d1a12cf66",
+      "technical": {
+        "dimensions": "64x64 vector viewBox",
+        "alpha": true,
+        "anchor": "center",
+        "frames": 1,
+        "filtering": "browser vector antialiasing",
+        "native_sizes": [
+          13,
+          16,
+          17,
+          18,
+          22,
+          30
+        ]
+      },
+      "visual_locks": [
+        "upper-left light",
+        "1.8px lower bevel",
+        "64px canvas",
+        "5px safe edge",
+        "distinct gem outline"
+      ],
+      "source": {
+        "kind": "authored",
+        "url_or_tool": "Codex Sol vector authoring",
+        "creator": "Codex Sol",
+        "created_at": "2026-10-11",
+        "license": "Project-authored; follows repository ownership",
+        "reference": "Existing gem identities and original card palette; original 90+10 images unchanged"
+      },
+      "verification": {
+        "native_scale_reviewed": true,
+        "in_engine_reviewed": true,
+        "technical_checks_passed": true,
+        "approved_by": "Codex Sol; KO/ES Chromium 1440x900 2026-10-11",
+        "evidence": "output/playwright/splendor-sol/ko-selected.png; es-selected.png"
+      }
+    },
+    {
+      "id": "splendor-gem-blue",
+      "path": "public/images/splendor-gems/blue.svg",
+      "role": "blue token / bonus / flight",
+      "status": "native-reviewed",
+      "sha256": "68afce58d39f1acb38675d8be4f0e631e173a0097f9602390403ec85120e5c1b",
+      "technical": {
+        "dimensions": "64x64 vector viewBox",
+        "alpha": true,
+        "anchor": "center",
+        "frames": 1,
+        "filtering": "browser vector antialiasing",
+        "native_sizes": [
+          13,
+          16,
+          17,
+          18,
+          22,
+          30
+        ]
+      },
+      "visual_locks": [
+        "upper-left light",
+        "1.8px lower bevel",
+        "64px canvas",
+        "5px safe edge",
+        "distinct gem outline"
+      ],
+      "source": {
+        "kind": "authored",
+        "url_or_tool": "Codex Sol vector authoring",
+        "creator": "Codex Sol",
+        "created_at": "2026-10-11",
+        "license": "Project-authored; follows repository ownership",
+        "reference": "Existing gem identities and original card palette; original 90+10 images unchanged"
+      },
+      "verification": {
+        "native_scale_reviewed": true,
+        "in_engine_reviewed": true,
+        "technical_checks_passed": true,
+        "approved_by": "Codex Sol; KO/ES Chromium 1440x900 2026-10-11",
+        "evidence": "output/playwright/splendor-sol/ko-selected.png; es-selected.png"
+      }
+    },
+    {
+      "id": "splendor-gem-green",
+      "path": "public/images/splendor-gems/green.svg",
+      "role": "green token / bonus / flight",
+      "status": "native-reviewed",
+      "sha256": "f1d606e5a0d5d204477f33d2de74539f06dd4713b6f97e46dd41aac7fff4be17",
+      "technical": {
+        "dimensions": "64x64 vector viewBox",
+        "alpha": true,
+        "anchor": "center",
+        "frames": 1,
+        "filtering": "browser vector antialiasing",
+        "native_sizes": [
+          13,
+          16,
+          17,
+          18,
+          22,
+          30
+        ]
+      },
+      "visual_locks": [
+        "upper-left light",
+        "1.8px lower bevel",
+        "64px canvas",
+        "5px safe edge",
+        "distinct gem outline"
+      ],
+      "source": {
+        "kind": "authored",
+        "url_or_tool": "Codex Sol vector authoring",
+        "creator": "Codex Sol",
+        "created_at": "2026-10-11",
+        "license": "Project-authored; follows repository ownership",
+        "reference": "Existing gem identities and original card palette; original 90+10 images unchanged"
+      },
+      "verification": {
+        "native_scale_reviewed": true,
+        "in_engine_reviewed": true,
+        "technical_checks_passed": true,
+        "approved_by": "Codex Sol; KO/ES Chromium 1440x900 2026-10-11",
+        "evidence": "output/playwright/splendor-sol/ko-selected.png; es-selected.png"
+      }
+    },
+    {
+      "id": "splendor-gem-red",
+      "path": "public/images/splendor-gems/red.svg",
+      "role": "red token / bonus / flight",
+      "status": "native-reviewed",
+      "sha256": "c3712235349c58155a21fba9ecdd9c93785a3247727fa5b96d0a31acfd44aa27",
+      "technical": {
+        "dimensions": "64x64 vector viewBox",
+        "alpha": true,
+        "anchor": "center",
+        "frames": 1,
+        "filtering": "browser vector antialiasing",
+        "native_sizes": [
+          13,
+          16,
+          17,
+          18,
+          22,
+          30
+        ]
+      },
+      "visual_locks": [
+        "upper-left light",
+        "1.8px lower bevel",
+        "64px canvas",
+        "5px safe edge",
+        "distinct gem outline"
+      ],
+      "source": {
+        "kind": "authored",
+        "url_or_tool": "Codex Sol vector authoring",
+        "creator": "Codex Sol",
+        "created_at": "2026-10-11",
+        "license": "Project-authored; follows repository ownership",
+        "reference": "Existing gem identities and original card palette; original 90+10 images unchanged"
+      },
+      "verification": {
+        "native_scale_reviewed": true,
+        "in_engine_reviewed": true,
+        "technical_checks_passed": true,
+        "approved_by": "Codex Sol; KO/ES Chromium 1440x900 2026-10-11",
+        "evidence": "output/playwright/splendor-sol/ko-selected.png; es-selected.png"
+      }
+    },
+    {
+      "id": "splendor-gem-black",
+      "path": "public/images/splendor-gems/black.svg",
+      "role": "black token / bonus / flight",
+      "status": "native-reviewed",
+      "sha256": "c467af8b8368c7714e7fd311924469823289dfc06c81305c84ee8c6fcfd1602a",
+      "technical": {
+        "dimensions": "64x64 vector viewBox",
+        "alpha": true,
+        "anchor": "center",
+        "frames": 1,
+        "filtering": "browser vector antialiasing",
+        "native_sizes": [
+          13,
+          16,
+          17,
+          18,
+          22,
+          30
+        ]
+      },
+      "visual_locks": [
+        "upper-left light",
+        "1.8px lower bevel",
+        "64px canvas",
+        "5px safe edge",
+        "distinct gem outline"
+      ],
+      "source": {
+        "kind": "authored",
+        "url_or_tool": "Codex Sol vector authoring",
+        "creator": "Codex Sol",
+        "created_at": "2026-10-11",
+        "license": "Project-authored; follows repository ownership",
+        "reference": "Existing gem identities and original card palette; original 90+10 images unchanged"
+      },
+      "verification": {
+        "native_scale_reviewed": true,
+        "in_engine_reviewed": true,
+        "technical_checks_passed": true,
+        "approved_by": "Codex Sol; KO/ES Chromium 1440x900 2026-10-11",
+        "evidence": "output/playwright/splendor-sol/ko-selected.png; es-selected.png"
+      }
+    },
+    {
+      "id": "splendor-gem-gold",
+      "path": "public/images/splendor-gems/gold.svg",
+      "role": "gold token / bonus / flight",
+      "status": "native-reviewed",
+      "sha256": "05b870510a049e0e770fe3cd8e5754a140078591026e251101f0175a1430a315",
+      "technical": {
+        "dimensions": "64x64 vector viewBox",
+        "alpha": true,
+        "anchor": "center",
+        "frames": 1,
+        "filtering": "browser vector antialiasing",
+        "native_sizes": [
+          13,
+          16,
+          17,
+          18,
+          22,
+          30
+        ]
+      },
+      "visual_locks": [
+        "upper-left light",
+        "1.8px lower bevel",
+        "64px canvas",
+        "5px safe edge",
+        "distinct gem outline"
+      ],
+      "source": {
+        "kind": "authored",
+        "url_or_tool": "Codex Sol vector authoring",
+        "creator": "Codex Sol",
+        "created_at": "2026-10-11",
+        "license": "Project-authored; follows repository ownership",
+        "reference": "Existing gem identities and original card palette; original 90+10 images unchanged"
+      },
+      "verification": {
+        "native_scale_reviewed": true,
+        "in_engine_reviewed": true,
+        "technical_checks_passed": true,
+        "approved_by": "Codex Sol; KO/ES Chromium 1440x900 2026-10-11",
+        "evidence": "output/playwright/splendor-sol/ko-selected.png; es-selected.png"
+      }
+    }
+  ]
+}

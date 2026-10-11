@@ -3,7 +3,8 @@ import { renderToStaticMarkup } from 'react-dom/server';
 import { describe, expect, it, vi } from 'vitest';
 import type { GameAction } from '../core/types';
 import { dominoEngine } from '../games/domino';
-import DominoBoard, { dominoOpeningChoice, dominoPlacementsFor, freshDominoTileSequences } from './DominoBoard';
+import { dominoTileKeys, previewDominoPlacement } from './domino-chain';
+import DominoBoard, { dominoChoiceForTile, dominoOpeningChoice, dominoPlacementsFor, dominoUnavailableEndReason } from './DominoBoard';
 
 const play = (index: number, side: 'left' | 'right'): GameAction => ({ type: 'play', payload: { index, side } });
 const fixture = (overrides: Record<string, any> = {}) => ({
@@ -52,8 +53,13 @@ describe('DominoBoard', () => {
     expect(dominoOpeningChoice([{ action: play(1, 'right') }])).toBeNull();
     const view = fixture({ board: { ...fixture().board, tiles: [], ends: null }, hand: [{ a: 2, b: 6 }, { a: 6, b: 6 }], actions: [opening] });
     const html = render(view);
-    expect(html).toContain('시작 타일 6|6 놓기');
-    expect(html).toContain('첫 타일 6|6 놓기');
+    expect(html).toContain('시작 타일을 손패에서 선택해 주세요.');
+    expect(html).not.toContain('시작 타일 6|6 놓기');
+  });
+
+  it('localizes the reason a selected tile cannot use the opposite end', () => {
+    expect(dominoUnavailableEndReason('ko', 3)).toBe('선택한 타일은 3에 맞지 않아요');
+    expect(dominoUnavailableEndReason('es', 3)).toBe('La ficha seleccionada no coincide con 3');
   });
 
   it('renders the real seeded engine opening action for the active seat', () => {
@@ -64,13 +70,32 @@ describe('DominoBoard', () => {
     expect(dominoOpeningChoice(view.actions)?.action).toEqual(legalOpening);
     const html = renderToStaticMarkup(createElement(DominoBoard, { view, language: 'es', playerId: activeSeat, runAction: vi.fn() }));
     const tile = view.hand[Number(legalOpening.payload?.index)];
-    expect(html).toContain(`Jugar ficha inicial ${tile.a}|${tile.b}`);
+    expect(html).toContain('Elige la ficha inicial en tu mano.');
+    expect(html).not.toContain(`Jugar ficha inicial ${tile.a}|${tile.b}`);
   });
 
-  it('animates only newly committed placement sequences, not the initial board snapshot', () => {
-    expect(freshDominoTileSequences([10, 11], [{ sequence: 10 }, { sequence: 11 }, { sequence: 12 }, { sequence: 13 }])).toEqual([12, 13]);
-    expect(freshDominoTileSequences([], [{ a: 1, b: 2 }, { a: 3, b: 4 }])).toEqual([]);
-    expect(render(fixture())).not.toContain('is-arriving');
+  it('keeps a selected physical tile stable through index changes and previews both orientations accurately', () => {
+    const hand = [{ a: 2, b: 6 }, { a: 2, b: 6 }, { a: 4, b: 1 }];
+    const keys = dominoTileKeys(hand);
+    expect(dominoTileKeys([hand[2], hand[0], hand[1]])).toEqual([keys[2], keys[0], keys[1]]);
+    expect(dominoTileKeys([hand[1], hand[2]])).toContain(keys[0]);
+    const choices = [{ action: play(0, 'left') }, { action: play(1, 'right') }];
+    expect(dominoChoiceForTile([hand[2], hand[0], hand[1]], choices, keys[0], 'right')?.action).toEqual(play(1, 'right'));
+    expect(dominoChoiceForTile([hand[2], hand[0], hand[1]], choices, keys[0], 'left')).toBeNull();
+    expect(dominoChoiceForTile([hand[2]], choices, keys[0], 'right')).toBeNull();
+    expect(previewDominoPlacement({ a: 2, b: 6 }, 'left', { left: 6, right: 4 })).toEqual({ a: 2, b: 6, left: 2, right: 4 });
+    expect(previewDominoPlacement({ a: 2, b: 6 }, 'right', { left: 4, right: 6 })).toEqual({ a: 6, b: 2, left: 4, right: 2 });
+    expect(previewDominoPlacement({ a: 6, b: 6 }, 'left', { left: 6, right: 4 })).toEqual({ a: 6, b: 6, left: 6, right: 4 });
+  });
+
+  it('keeps both end controls outside the horizontally scrolling chain', () => {
+    const html = render(fixture());
+    expect(html).toContain('class="dp-end-docks"');
+    expect(html).toContain('data-domino-side="left"');
+    expect(html).toContain('data-domino-side="right"');
+    expect(html.indexOf('class="dp-end-docks"')).toBeGreaterThan(html.indexOf('class="dp-chain-scroll"'));
+    expect(html).toContain('data-domino-tile-key="2:6:0"');
+    expect(html).toContain('class="dp-chain-scroll" tabindex="-1"');
   });
 
   it('shows all four seats and team roles in partner mode without revealing bot pip faces', () => {
@@ -99,12 +124,12 @@ describe('DominoBoard', () => {
   it('supports one legal configure action and legacy mode actions without fabricating other setup choices', () => {
     const config = { type: 'configure', payload: { mode: '1v1', difficulty: 'normal', targetScore: 0, capicuaBonus: 0, pasoCorridoBonus: 0, tranqueRule: 'team' } };
     const configured = render(fixture({ board: { ...fixture().board, tiles: [], ends: null }, actions: [{ action: config }] }));
-    expect(configured).toContain('봇 난이도');
-    expect(configured).toContain('카피쿠아 보너스');
-    expect(configured).toContain('막힌 판 규칙');
-    expect(configured).toContain('설정 적용');
+    expect(configured).toContain('class="dp-settings-launcher"');
+    expect(configured).toContain('aria-haspopup="dialog"');
+    expect(configured).not.toContain('봇 난이도');
+    expect(configured).not.toContain('카피쿠아 보너스');
     const legacy = render(fixture({ board: { ...fixture().board, tiles: [], ends: null }, actions: [{ action: { type: 'set-mode', payload: { mode: 'partners' } } }] }));
-    expect(legacy).toContain('사람-봇 팀전');
+    expect(legacy).toContain('class="dp-settings-launcher"');
     expect(legacy).not.toContain('매치 목표 점수');
   });
 
@@ -123,14 +148,28 @@ describe('DominoBoard', () => {
       roundResult: { winner: 'p1', pips: { p1: 3, p2: 12 }, award: 12, scoreDelta: { p1: 12, p2: 0 }, bonuses: { p1: 0, p2: 0 }, round: 1, reason: 'blocked' }, matchScores: { p1: 12, p2: 0 },
     } });
     const html = render(ended);
+    expect(html).toContain('라운드 정산이 끝났어요 · 결과를 확인하세요');
     expect(html).toContain('내 팀 승리');
     expect(html).toContain('다음 라운드');
     expect(html).toContain('12');
     expect(html).toContain('정산 점수: 내 팀 +12');
     expect(html).toContain('6 | 6');
+    expect(html).toContain('data-domino-revealed-seat');
+    expect(render(ended, 'es')).toContain('Ronda contabilizada · revisa el resultado');
     const activeHtml = render(fixture());
     expect(activeHtml).not.toContain('6 | 6');
     expect(activeHtml).not.toContain('이번 점수');
+  });
+
+  it('renders every tile in all four publicly revealed result hands', () => {
+    const hand = Array.from({ length: 7 }, (_, index) => ({ a: index % 7, b: 6 }));
+    const html = render(fixture({
+      phase: 'finished', turn: 'p1', result: { winner: 'p1', reason: 'blocked' },
+      board: { ...fixture().board, seats: ['p1', 'b1', 'p2', 'b2'], teams: { p1: ['p1', 'b1'], p2: ['p2', 'b2'] }, revealedHands: { p1: hand, b1: hand, p2: hand, b2: hand } },
+      actions: [],
+    }));
+    expect(html.match(/class="dp-tile is-mini"/g)).toHaveLength(28);
+    expect(html.match(/data-domino-revealed-seat=/g)).toHaveLength(4);
   });
 
   it('localizes legacy blocked-hand results and resolves human-team wins for either human seat', () => {

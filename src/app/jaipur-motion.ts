@@ -40,6 +40,16 @@ export function jaipurCuesForEvent(event: JaipurEvent): AudioCue[] {
 }
 
 export type JaipurFlight = { id: string; good: string; mark?: string; cardId?: string; from: string; to: string; delay: number; kind: 'card' | 'token' | 'bonus' };
+export const JAIPUR_FLIGHT_MS = 220;
+
+export function jaipurLandingFeedback(event: JaipurEvent, flights: readonly JaipurFlight[]): { cue: AudioCue; delay: number } | null {
+  const cardCue = event.type === 'take-single' ? 'place' : event.type === 'exchange' ? 'exchange' : event.type === 'take-camels' ? 'camel' : null;
+  const kind = cardCue ? 'card' : event.type === 'sale' ? 'token' : event.type === 'bonus' ? 'bonus' : null;
+  if (!kind) return null;
+  const arrivals = flights.filter(flight => flight.kind === kind).map(flight => flight.delay + JAIPUR_FLIGHT_MS);
+  if (!arrivals.length) return null;
+  return { cue: cardCue ?? (kind === 'token' ? 'coin' : 'bonus'), delay: cardCue ? Math.max(...arrivals) : Math.min(...arrivals) };
+}
 
 export function jaipurFlights(event: JaipurEvent, playerId: string): JaipurFlight[] {
   const actor = event.actor ?? playerId;
@@ -49,7 +59,7 @@ export function jaipurFlights(event: JaipurEvent, playerId: string): JaipurFligh
       if (!card.good) return;
       const cardKey = card.id || `slot-${card.slot ?? index}`;
       const cardTarget = card.id && (to === 'market' || to === 'hand');
-      flights.push({ id: `${event.sequence}:${prefix}:${cardKey}`, good: card.good, cardId: card.id, from: `${from}:${cardKey}`, to: cardTarget ? `${to}:${cardKey}` : to, delay: Math.min(index, 4) * 55, kind: 'card' });
+      flights.push({ id: `${event.sequence}:${prefix}:${cardKey}`, good: card.good, cardId: card.id, from: `${from}:${cardKey}`, to: cardTarget ? `${to}:${cardKey}` : to, delay: Math.min(index, 6) * 35, kind: 'card' });
     });
   };
 
@@ -61,7 +71,8 @@ export function jaipurFlights(event: JaipurEvent, playerId: string): JaipurFligh
   if (event.type === 'take-camels') addCards(event.cards, 'market', `herd-${actor}`, 'camel');
   if (event.type === 'sale') {
     addCards(event.cards, actor === playerId ? 'hand' : 'opponent-hand', 'sale', 'sale');
-    (event.tokenValues ?? []).forEach((value, index) => flights.push({ id: `${event.sequence}:token:${index}`, good: String(value), mark: event.cards?.[0]?.good, from: 'sale', to: `tokens-${actor}`, delay: 130 + 55 * Math.min(index, 4), kind: 'token' }));
+    const cardsArrived = JAIPUR_FLIGHT_MS + Math.min(Math.max(0, (event.cards?.length ?? 1) - 1), 6) * 35;
+    (event.tokenValues ?? []).forEach((value, index) => flights.push({ id: `${event.sequence}:token:${index}`, good: String(value), mark: event.cards?.[0]?.good, from: 'sale', to: `tokens-${actor}`, delay: cardsArrived + 30 * Math.min(index, 6), kind: 'token' }));
   }
   if (event.type === 'market-refill') addCards(event.cards, 'deck', 'market', 'refill');
   if (event.type === 'bonus' && event.bonus) flights.push({ id: `${event.sequence}:bonus`, good: String(event.bonus.value), from: 'bonus', to: `tokens-${actor}`, delay: 0, kind: 'bonus' });

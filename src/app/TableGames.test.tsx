@@ -4,14 +4,72 @@ import { existsSync } from 'node:fs';
 import { resolve } from 'node:path';
 import { describe, expect, it } from 'vitest';
 import splendorArt from '../../public/images/splendor/card-map.json';
-import { deriveSplendorVisualEvent, splendorCardArtSrc, splendorNobleArtSrc, splendorTotalAfterTake, TableGames } from './TableGames';
+import { deriveSplendorVisualEvent, splendorCardAction, splendorCardArtSrc, splendorCardCostPlan, splendorCardPaymentRows, splendorNobleArtSrc, splendorRequiredReturns, splendorReserveChoices, splendorTakeAction, splendorTotalAfterTake, TableGames } from './TableGames';
 import { jaipurSalePreview } from './JaipurBoard';
+import { splendorEngine } from '../games/splendor';
 
 const render = (game: 'jaipur' | 'splendor' | 'davinci', view: any, language: 'ko' | 'es' = 'ko', playerId: 'p1' | 'p2' = 'p1') => renderToStaticMarkup(createElement(TableGames, { game, view, language, playerId, runAction: () => {} }));
 
 describe('TableGames public-state interaction guidance', () => {
   it('counts a gold token once in the visible post-take total', () => {
     expect(splendorTotalAfterTake({ white: 0, blue: 0, green: 0, red: 0, black: 0, gold: 1 }, 3, {})).toBe(4);
+  });
+
+  it('only requires a return tray when a take exceeds the ten-token cap', () => {
+    expect(splendorRequiredReturns({ white: 8 }, 2)).toBe(0);
+    expect(splendorRequiredReturns({ white: 9 }, 2)).toBe(1);
+    expect(splendorRequiredReturns({ white: 10 }, 3)).toBe(3);
+  });
+
+  it('rebinds selected cards by stable ID and only uses exact legal take return plans', () => {
+    const action = { label: { ko: '구매', es: 'Comprar' }, action: { type: 'buy', payload: { source: 'market', tier: 1, index: 1 } } };
+    expect(splendorCardAction([action], 'market', 'selected', [{ id: 'other' }, { id: 'selected' }], 1)).toBe(action);
+    expect(splendorCardAction([action], 'market', 'selected', [{ id: 'selected' }, { id: 'other' }], 1)).toBeUndefined();
+    expect(splendorCardAction([action], 'market', 'gone', [{ id: 'other' }, { id: 'selected' }], 1)).toBeUndefined();
+
+    const takeActions = [
+      { label: { ko: '가져오기', es: 'Tomar' }, action: { type: 'take', payload: { gems: ['white', 'blue', 'green'], returnTokens: { white: 2 } } } },
+      { label: { ko: '가져오기', es: 'Tomar' }, action: { type: 'take', payload: { gems: ['white', 'blue', 'green'], returnTokens: { blue: 2 } } } },
+    ];
+    expect(splendorTakeAction(takeActions, ['green', 'white', 'blue'], { blue: 2 })).toBe(takeActions[1]);
+    expect(splendorTakeAction(takeActions, ['green', 'white', 'blue'], { red: 2 })).toBeUndefined();
+  });
+
+  it('previews each color discount and allocates gold in the engine payment order', () => {
+    expect(splendorCardCostPlan({ cost: { white: 3, blue: 2 } }, { white: 1, blue: 0, gold: 2 }, { white: 1 })).toMatchObject({
+      due: { white: 2, blue: 2 }, colored: { white: 1, blue: 0 }, gold: 3, goldByGem: { white: 1, blue: 1 }, deficit: 1,
+    });
+    expect(splendorCardPaymentRows({ cost: { white: 3, red: 2, blue: 0 } }, { white: 1, gold: 2 }, { white: 1 })).toEqual([
+      { gem: 'white', cost: 3, discount: 1, paid: 1, gold: 1, short: 0 },
+      { gem: 'red', cost: 2, discount: 0, paid: 0, gold: 1, short: 1 },
+    ]);
+  });
+
+  it('keeps 10-token take plans, empty gold-bank reservations, slot limits, and rival turns on current legal actions', () => {
+    const base = splendorEngine.createInitialState(91);
+    const atTen = { ...base, hands: { ...base.hands, p1: { ...base.hands.p1, white: 10 } } };
+    const tenActions = splendorEngine.getPlayerView(atTen, 'p1').actions;
+    const take = tenActions.find((choice: any) => choice.action.type === 'take' && choice.action.payload.gems.length === 3);
+    expect(take).toBeDefined();
+    expect(splendorTakeAction(tenActions, take.action.payload.gems, { white: 3 })).toBeDefined();
+    expect(splendorTakeAction(tenActions, take.action.payload.gems, { white: 2 })).toBeUndefined();
+
+    const noGold = { ...base, bank: { ...base.bank, gold: 0 }, hands: { ...base.hands, p1: { ...base.hands.p1, white: 10 } } };
+    const noGoldReservations = splendorEngine.getPlayerView(noGold, 'p1').actions.filter((choice: any) => choice.action.type === 'reserve');
+    expect(noGoldReservations.length).toBeGreaterThan(0);
+    expect(noGoldReservations.every((choice: any) => !choice.action.payload.returnTokens)).toBe(true);
+
+    const goldReserveAtTen = { ...base, hands: { ...base.hands, p1: { ...base.hands.p1, white: 10 } } };
+    const goldReserveActions = splendorEngine.getPlayerView(goldReserveAtTen, 'p1').actions.filter((choice: any) => choice.action.type === 'reserve');
+    expect(goldReserveActions.length).toBeGreaterThan(0);
+    expect(goldReserveActions.every((choice: any) => Object.values(choice.action.payload.returnTokens ?? {}).reduce((sum: number, count: any) => sum + Number(count), 0) === 1)).toBe(true);
+
+    const fullReserve = { ...base, reserved: { ...base.reserved, p1: [...base.market[1].slice(0, 3)] } };
+    const fullSlotActions = splendorEngine.getPlayerView(fullReserve, 'p1').actions;
+    expect(fullSlotActions.some((choice: any) => choice.action.type === 'reserve')).toBe(false);
+    expect(splendorReserveChoices(fullSlotActions, 3)).toEqual([]);
+    expect(splendorTakeAction(splendorEngine.getPlayerView(base, 'p2').actions, ['white', 'blue', 'green'], {})).toBeUndefined();
+    expect(splendorReserveChoices(splendorEngine.getPlayerView(base, 'p2').actions, 0)).toEqual([]);
   });
 
   it('keeps the classic table regions and every legal bank action in the rendered view', () => {
@@ -35,8 +93,26 @@ describe('TableGames public-state interaction guidance', () => {
     expect(html).toContain('class="sp-gem-pile sp-color-gold"');
     expect(html).toContain('aria-label="Tomar 2 gemas del mismo color: Azul"');
     expect(html).toContain('data-card-id="m0"');
+    expect(html).toContain('data-source-zone="market"');
+    expect(html).toContain('data-viewer="p1"');
+    expect(html).toContain('data-version="0"');
+    expect(html).not.toContain('sp-card-actions');
+    expect(html).not.toContain('sp-button-buy');
     expect(html).toContain('class="sp-treasury"');
     expect(html).toContain('class="sp-reserved"');
+  });
+
+  it('labels private reserved faces, exposes only the rival public token total, and explains an empty bank', () => {
+    const html = render('splendor', {
+      turn: 'p1', ownHand: { tokens: {}, bonuses: {}, reserved: [{ id: 't1-01', tier: 1, bonus: 'white', points: 1, cost: { green: 4 } }], points: 0, nobles: 0 },
+      board: { bank: { white: 0, blue: 0, green: 0, red: 0, black: 0, gold: 0 }, score: { p1: 0, p2: 0 }, market: { 1: [], 2: [], 3: [] }, nobles: {}, reservedOpponentCount: 2 },
+      opponentCount: 7, actions: [],
+    }, 'es');
+
+    expect(html).toContain('aria-label="Carta reservada de nivel 1');
+    expect(html).toContain('class="sp-reserved-art" aria-hidden="true"');
+    expect(html).toContain('Fichas rivales: 7');
+    expect(html).toContain('No hay colores disponibles para elegir');
   });
 
   it('maps all 90 engine cards and 10 nobles to distinct original faces and renders by engine ID', () => {
@@ -93,7 +169,7 @@ describe('TableGames public-state interaction guidance', () => {
     }, 'es');
 
     expect(html).toContain('Se alcanzaron 15 puntos. La otra persona tiene su último turno.');
-    expect(html).toContain('Faltan 1');
+    expect(html).toContain('costo 2 Azul');
     expect(html).toContain('Elige 3 colores distintos');
     expect(html).toContain('class="sp-card-art sp-color-red"');
     expect(html).toContain('>1</b> / 10');
@@ -135,6 +211,14 @@ describe('TableGames public-state interaction guidance', () => {
 
     const tookGems = { ...initial, ownHand: { ...initial.ownHand, tokens: { ...initial.ownHand.tokens, gold: 1, blue: 2 } } };
     expect(deriveSplendorVisualEvent(previous, tookGems, 'p1')).toMatchObject({ kind: 'tokens', incomingTokens: ['blue', 'gold'], incomingCounts: { blue: 2, gold: 1 } });
+
+    const tenWithGold = { ...initial, board: { ...initial.board, bank: { gold: 4 } }, ownHand: { ...initial.ownHand, tokens: { ...initial.ownHand.tokens, white: 9, gold: 1 } } };
+    const goldReserved = { ...tenWithGold, ownHand: { ...tenWithGold.ownHand, reserved: [{ id: 'r1' }] } };
+    expect(deriveSplendorVisualEvent({ viewer: 'p1', view: tenWithGold }, goldReserved, 'p1')).toMatchObject({
+      kind: 'reserve', reserveGoldCount: 1, incomingCounts: { gold: 0 }, outgoingCounts: { gold: 1 },
+    });
+    const noGoldReserved = { ...goldReserved, board: { ...goldReserved.board, bank: { gold: 0 } } };
+    expect(deriveSplendorVisualEvent({ viewer: 'p1', view: { ...tenWithGold, board: { ...tenWithGold.board, bank: { gold: 0 } } } }, noGoldReserved, 'p1')).not.toHaveProperty('reserveGoldCount');
 
     const nobleVisited = {
       ...initial,

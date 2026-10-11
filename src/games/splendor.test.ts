@@ -51,6 +51,14 @@ describe('Splendor engine',()=>{
   final=splendorEngine.applyAction(final,'p2',{type:'take',payload:{gems:['white','blue','green']}});
   expect(final.result?.winner).toBe('p1');
  });
+ it('does not expose a reserve action after all three private slots are occupied',()=>{
+  const base=splendorEngine.createInitialState(42),reserved=base.market[1].slice(0,3).map((card,i)=>({...card,id:`reserved-${i}`}));
+  const full:SplendorState={...base,reserved:{...base.reserved,p1:reserved}};
+  expect(splendorEngine.getPlayerView(full,'p1').actions.some((item:any)=>item.action.type==='reserve')).toBe(false);
+  expect(splendorEngine.validateAction(full,'p1',{type:'reserve',payload:{tier:1,index:0}})).toBe('Reserve limit reached');
+  expect(splendorEngine.getPlayerView(full,'p2').board.reservedOpponentCount).toBe(3);
+  expect(splendorEngine.getPlayerView(full,'p2').ownHand.reserved).toHaveLength(0);
+ });
  it.each([1,2])('preserves earlier snapshots when claiming one of %i qualifying nobles',(count)=>{
   const base=splendorEngine.createInitialState(21),target=base.market[1][0];
   const s:SplendorState={...base,

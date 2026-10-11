@@ -48,6 +48,12 @@ export class ActionFlightGuard {
   finish(action: GameAction): void { this.actions.delete(JSON.stringify(action)); }
 }
 
+export function jaipurImmediateCues(event: JaipurEvent): AudioCue[] {
+  // Physical transfers and rewards sound on landing in JaipurMotion.
+  if (['bonus', 'take-single', 'exchange', 'take-camels'].includes(event.type)) return [];
+  return jaipurCuesForEvent(event).filter(cue => event.type !== 'sale' || cue !== 'coin');
+}
+
 function resultSignature(result: any): string {
   if (!result) return '';
   return `${String(result.winner ?? '')}:${String(result.reason ?? '')}`;
@@ -210,19 +216,20 @@ export function announcementForContext(value: ContextAnnouncement | null, gameId
   return value?.gameId === gameId && value.playerId === playerId ? value.message : '';
 }
 
-export function GameFeedback({ language, gameId, playerId, view, pending = false }: {
+export function GameFeedback({ language, gameId, playerId, view, pending = false, identity = '' }: {
   language: Language;
   gameId: GameId;
   playerId: PlayerId;
   view: any;
   pending?: boolean;
+  identity?: string;
 }) {
   const [preferenceState, setPreferenceState] = useState<{ gameId: GameId; value: AudioPreferences }>(() => ({ gameId, value: readPreferences(gameId) }));
   const preferences = preferenceState.gameId === gameId ? preferenceState.value : readPreferences(gameId);
   const [settingsOpen, setSettingsOpen] = useState(false);
   const [announcementState, setAnnouncementState] = useState<ContextAnnouncement | null>(null);
   const announcement = announcementForContext(announcementState, gameId, playerId);
-  const prior = useRef<{ gameId: GameId; playerId: PlayerId; view: any } | null>(null);
+  const prior = useRef<{ gameId: GameId; playerId: PlayerId; view: any; identity: string } | null>(null);
   const clearTimer = useRef<number | null>(null);
   const cueTimers = useRef<number[]>([]);
 
@@ -275,9 +282,23 @@ export function GameFeedback({ language, gameId, playerId, view, pending = false
   }, []);
 
   useEffect(() => {
+    const hush = () => {
+      if (document.visibilityState !== 'hidden') return;
+      if (clearTimer.current !== null) window.clearTimeout(clearTimer.current);
+      clearTimer.current = null;
+      cueTimers.current.forEach(window.clearTimeout);
+      cueTimers.current = [];
+      cancelMinhwatuAudio();
+      setAnnouncementState(null);
+    };
+    document.addEventListener('visibilitychange', hush);
+    return () => document.removeEventListener('visibilitychange', hush);
+  }, []);
+
+  useEffect(() => {
     if (!view) {
       const previous = prior.current;
-      if (previous && (previous.gameId !== gameId || previous.playerId !== playerId)) {
+      if (previous && (previous.gameId !== gameId || previous.playerId !== playerId || previous.identity !== identity)) {
         prior.current = null;
         if (clearTimer.current !== null) window.clearTimeout(clearTimer.current);
         clearTimer.current = null;
@@ -287,10 +308,11 @@ export function GameFeedback({ language, gameId, playerId, view, pending = false
       }
       return;
     }
-    const next = { gameId, playerId, view };
+    const next = { gameId, playerId, view, identity };
     const previous = prior.current;
     prior.current = next;
-    if (!previous || previous.gameId !== gameId || previous.playerId !== playerId) {
+    if (document.visibilityState === 'hidden') return;
+    if (!previous || previous.gameId !== gameId || previous.playerId !== playerId || previous.identity !== identity) {
       if (clearTimer.current !== null) window.clearTimeout(clearTimer.current);
       clearTimer.current = null;
       cueTimers.current.forEach(window.clearTimeout);
@@ -335,7 +357,7 @@ export function GameFeedback({ language, gameId, playerId, view, pending = false
       }
       const before = jaipurEvents(previous.view);
       const sequence = before.reduce((max, event) => Math.max(max, jaipurSequence(event)), 0);
-      const cues = jaipurEventWindow(jaipurEvents(view), sequence).fresh.flatMap(jaipurCuesForEvent);
+      const cues = jaipurEventWindow(jaipurEvents(view), sequence).fresh.flatMap(jaipurImmediateCues);
       cues.forEach((cue, index) => {
         if (index === 0) playCue(gameId, cue);
         else cueTimers.current.push(window.setTimeout(() => playCue(gameId, cue), index * 115));
@@ -353,15 +375,16 @@ export function GameFeedback({ language, gameId, playerId, view, pending = false
       }
       const before = dominoEvents(previous.view);
       const beforeSequence = before.reduce((max, event) => Math.max(max, dominoSequence(event)), 0);
-      const cues = dominoWindow(dominoEvents(view), beforeSequence).fresh.map(dominoCueForEvent).filter((cue): cue is AudioCue => cue !== null);
+      // Placement audio belongs to DominoEventStage's confirmed landing.
+      const cues = dominoWindow(dominoEvents(view), beforeSequence).fresh.filter(event => event.type !== 'play').map(dominoCueForEvent).filter((cue): cue is AudioCue => cue !== null);
       cues.forEach((cue, index) => {
         if (index === 0) playCue(gameId, cue);
         else cueTimers.current.push(window.setTimeout(() => playCue(gameId, cue), index * 150));
       });
       return;
     }
-    if (transition) playCue(gameId, transition.cue);
-  }, [gameId, language, playerId, view]);
+    if (transition && !(gameId === 'splendor' && transition.cue === 'noble')) playCue(gameId, transition.cue);
+  }, [gameId, language, playerId, view, identity]);
 
   const updatePreference = (change: Partial<AudioPreferences>) => {
     const next = setPreferences(gameId, change);

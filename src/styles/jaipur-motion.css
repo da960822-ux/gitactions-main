@@ -1,18 +1,18 @@
 .jaipur-board { position: relative; isolation: isolate; }
 .jaipur-motion-layer { position: absolute; z-index: 12; inset: 0; overflow: hidden; pointer-events: none; }
-.jaipur-flight { position: absolute; display: grid; place-items: center; padding: 4px; border: 1px solid #e4dbc9; border-radius: 12px; background: #fffcf4; box-shadow: 0 8px 18px #4938212e; transform-origin: center; animation: jaipur-flight 260ms cubic-bezier(.23, 1, .32, 1) var(--flight-delay, 0ms) both; }
+.jaipur-flight { position: absolute; display: grid; place-items: center; padding: 4px; border: 1px solid #e4dbc9; border-radius: 12px; background: #fffcf4; box-shadow: 0 8px 18px #4938212e; transform-origin: center; animation: jaipur-flight 220ms cubic-bezier(.23, 1, .32, 1) var(--flight-delay, 0ms) both; }
 .jaipur-flight--card { overflow: visible; }
 .jaipur-flight-card { display: grid; grid-template-rows: minmax(0, 1fr) auto; justify-items: center; width: 100%; height: 100%; min-height: 0; }
 .jaipur-flight .jaipur-flight-good { width: 100%; height: 100%; min-height: 0; object-fit: contain; }
 .jaipur-flight-card small { max-width: 100%; color: #645448; font-size: 8px; font-weight: 700; line-height: 1; white-space: nowrap; }
-.jaipur-flight--card.is-luxury::after { position: absolute; inset: 0; border-radius: inherit; background: linear-gradient(115deg, transparent 30%, #fff9d9d9 48%, transparent 63%); content: ''; pointer-events: none; animation: jaipur-luxury-glint 260ms ease-out var(--flight-delay, 0ms) both; }
+.jaipur-flight--card.is-luxury::after { position: absolute; inset: 0; border-radius: inherit; background: linear-gradient(115deg, transparent 30%, #fff9d9d9 48%, transparent 63%); content: ''; pointer-events: none; animation: jaipur-luxury-glint 220ms ease-out var(--flight-delay, 0ms) both; }
 .jaipur-flight--token { width: 42px !important; height: 42px !important; border-radius: 50%; border-color: #c59d53; background: radial-gradient(circle at 35% 28%, #fff2bf, #d9ad58 72%, #a6752e); }
 .jaipur-flight--token .jaipur-coin { width: 100%; height: 100%; }
 .jaipur-flight--bonus { width: 56px !important; height: 74px !important; border: 0; padding: 0; border-radius: 8px; background: transparent; box-shadow: none; perspective: 300px; }
 .jaipur-flight--bonus .jaipur-bonus-back, .jaipur-flight--bonus .jaipur-bonus-face { position: absolute; inset: 0; display: grid; place-items: center; font-style: normal; backface-visibility: hidden; }
 .jaipur-flight--bonus .jaipur-bonus-back .jaipur-bonus-art, .jaipur-flight--bonus .jaipur-bonus-face .jaipur-bonus-art { width: 56px; height: 74px; }
-.jaipur-flight--bonus .jaipur-bonus-back { animation: jaipur-bonus-back 260ms ease-out var(--flight-delay, 0ms) both; }
-.jaipur-flight--bonus .jaipur-bonus-face { opacity: 0; animation: jaipur-bonus-face 260ms ease-out var(--flight-delay, 0ms) both; }
+.jaipur-flight--bonus .jaipur-bonus-back { animation: jaipur-bonus-back 220ms ease-out var(--flight-delay, 0ms) both; }
+.jaipur-flight--bonus .jaipur-bonus-face { opacity: 0; animation: jaipur-bonus-face 220ms ease-out var(--flight-delay, 0ms) both; }
 .jaipur-event-note { position: absolute; top: 12px; right: 12px; display: grid; gap: 3px; max-width: min(45%, 280px); padding: 9px 12px; border: 1px solid #d8c48f; border-radius: 12px; background: #fff8df; box-shadow: 0 8px 22px #3d33251a; color: #564528; }
 .jaipur-event-note.is-fresh { animation: jaipur-note-in 220ms cubic-bezier(.23, 1, .32, 1) both; }
 .jaipur-event-note strong { font-size: 12px; }

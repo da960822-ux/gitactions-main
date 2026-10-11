@@ -24,7 +24,8 @@ export function dominoSequence(event: DominoActionEvent | null | undefined) {
 export function dominoWindow(events: readonly DominoActionEvent[], sequence: number) {
   const latest = events.reduce((max, event) => Math.max(max, dominoSequence(event)), 0);
   const reset = sequence > 0 && latest < sequence;
-  return { latest, reset, fresh: events.filter(event => dominoSequence(event) > (reset ? 0 : sequence)).sort((a, b) => dominoSequence(a) - dominoSequence(b)) };
+  const fresh = events.filter(event => dominoSequence(event) > (reset ? 0 : sequence)).sort((a, b) => dominoSequence(a) - dominoSequence(b));
+  return { latest, reset, fresh: fresh.filter((event, index) => !index || dominoSequence(event) !== dominoSequence(fresh[index - 1])) };
 }
 
 export function dominoCueForEvent(event: DominoActionEvent): AudioCue | null {

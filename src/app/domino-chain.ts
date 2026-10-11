@@ -26,3 +26,29 @@ export function orderDominoChain(history: RecordValue[], targetEnds: RecordValue
   return (match ?? candidates[0]).tiles;
 }
 
+export function dominoTileKey(tile: RecordValue, occurrence = 0) {
+  return `${number(tile.a)}:${number(tile.b)}:${occurrence}`;
+}
+
+export function dominoTileKeys(hand: RecordValue[]) {
+  const seen = new Map<string, number>();
+  return hand.map(tile => {
+    const face = `${number(tile.a)}:${number(tile.b)}`;
+    const occurrence = seen.get(face) ?? 0;
+    seen.set(face, occurrence + 1);
+    return dominoTileKey(tile, occurrence);
+  });
+}
+
+export function previewDominoPlacement(tile: RecordValue, side: 'left' | 'right', ends: RecordValue | null) {
+  if (!ends) return { a: number(tile.a), b: number(tile.b), left: number(tile.a), right: number(tile.b) };
+  const placed = side === 'left'
+    ? number(tile.b) === number(ends.left) ? tile : { a: tile.b, b: tile.a }
+    : number(tile.a) === number(ends.right) ? tile : { a: tile.b, b: tile.a };
+  return {
+    a: number(placed.a), b: number(placed.b),
+    left: side === 'left' ? number(placed.a) : number(ends.left),
+    right: side === 'right' ? number(placed.b) : number(ends.right),
+  };
+}
+

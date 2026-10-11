@@ -13,10 +13,8 @@
 }
 .domino-event-mark { display: grid; flex: 0 0 2.2rem; width: 2.2rem; height: 2.2rem; place-items: center; }
 .domino-event-art { width: 2rem; height: 2rem; fill: none; stroke: currentColor; stroke-width: 1.7; stroke-linecap: round; stroke-linejoin: round; color: #426b58; }
-.domino-event-tile-art { width: 1.8rem; height: 2.2rem; padding: 2px; border-radius: 5px; background: linear-gradient(145deg, #fffef8, #e8ddc8); color: #332922; filter: drop-shadow(0 2px 2px #202a2040); }
-.domino-event-tile-art rect { fill: #fffaf0; stroke: #a99172; stroke-width: 1.3; }
-.domino-event-tile-art path { stroke: #ad9a80; stroke-width: 1; }
-.domino-event-tile-art circle { fill: #3c302b; stroke: none; }
+.domino-event-tile-art { display:block; width:22px; height:40px; }
+.domino-event-tile-art .domino-tile.domino-tile--premium { width:22px; height:40px; }
 .domino-event-copy { display: flex; min-width: 0; flex: 1; align-items: baseline; flex-wrap: wrap; gap: 0.28rem 0.55rem; }
 .domino-event-heading { display: flex; align-items: baseline; gap: 0.45rem; }
 .domino-event-heading strong { font-size: 0.9rem; line-height: 1.25; }
@@ -66,3 +64,14 @@
   .domino-event-stage.is-animating, .domino-event-stage.is-animating *, .domino-event-stage.is-animating::before, .domino-event-stage.is-animating::after { animation: none !important; transition: none !important; }
   .domino-premium:has(.domino-event-stage--tranque.is-animating) .dp-felt { animation: none; }
 }
+
+.domino-premium .domino-event-stage { min-height:44px; padding:7px 10px; gap:9px; border-radius:10px; }
+.domino-premium .domino-event-mark { width:28px; height:32px; flex-basis:28px; }
+.domino-premium .domino-event-heading strong { font-size:12px; }
+.domino-premium .domino-event-detail { font-size:11px; }
+.domino-event-stage.is-animating.domino-event-stage--play .domino-event-tile-art { animation:none; }
+.domino-flight { position:fixed; z-index:80; pointer-events:none; transform-origin:center; animation:domino-flight-settle 340ms cubic-bezier(.2,.74,.25,1) both; filter:drop-shadow(0 5px 4px #10251e70); }
+.domino-flight .domino-tile.domino-tile--premium { width:100%; height:100%; }
+@keyframes domino-flight-settle { from { transform:translate(var(--flight-x),var(--flight-y)) rotate(var(--flight-rotation)) scale(var(--flight-scale)); } 84% { transform:translate(0,-2px) rotate(0) scale(1); } to { transform:translate(0,0) rotate(0) scale(1); } }
+@media (prefers-reduced-motion:reduce) { .domino-flight { display:none; } }
+@media (max-width:700px) { .domino-event-ribbon { flex-shrink:1; } .domino-event-heading { flex-wrap:wrap; } }
