@@ -8,6 +8,16 @@ const normalize = (word: string) => word.normalize('NFC').toLowerCase().trim();
 afterEach(() => vi.useRealTimers());
 
 describe('catchmindEngine', () => {
+  it('keeps spaces visible in both private hint masks without exposing letters', () => {
+    const state = configure(catchmindEngine.createInitialState(4));
+    state.phase = 'drawing';
+    state.answer = { ko: '뜨거운 커피', es: 'café caliente' };
+    state.settings.hints = 2;
+    const view = catchmindEngine.getPlayerView(state, 'p2');
+    expect(view.board.hintWord).toEqual({ ko: '□□□ □□', es: '???? ????????' });
+    expect(view.board.answer).toBeNull();
+    expect(view.hand).toBeNull();
+  });
   it('keeps three choices private, draws normalized strokes, and scores a correct bilingual guess', () => {
     let s: any = configure(catchmindEngine.createInitialState(19));
     const guesserView = catchmindEngine.getPlayerView(s, 'p2');

@@ -12,3 +12,4 @@ __pycache__/
 supabase/.temp/
 
 dist-preview/
+public/private-assets/

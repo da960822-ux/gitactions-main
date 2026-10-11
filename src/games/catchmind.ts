@@ -74,7 +74,7 @@ function guessPoints(s: CatchmindState) {
   return Math.max(1, Math.ceil(3 * remaining / getCatchmindDrawDurationMs(s)));
 }
 function maskedHint(word: string, locale: 'ko' | 'es') {
-  return [...word].map(char => locale === 'ko' ? '□' : /\p{L}/u.test(char) ? '?' : char).join('');
+  return [...word].map(char => /\s/u.test(char) ? char : locale === 'ko' ? '□' : /\p{L}/u.test(char) ? '?' : char).join('');
 }
 export function isCorrectGuess(s: CatchmindState, text: string): boolean {
   return s.phase === 'drawing' && s.answer !== null && typeof text === 'string' && answers(s.answer).includes(norm(text));

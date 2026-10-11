@@ -3915,7 +3915,7 @@ function guessPoints(s) {
   return Math.max(1, Math.ceil(3 * remaining / getCatchmindDrawDurationMs(s)));
 }
 function maskedHint(word, locale) {
-  return [...word].map((char) => locale === "ko" ? "\u25A1" : /\p{L}/u.test(char) ? "?" : char).join("");
+  return [...word].map((char) => /\s/u.test(char) ? char : locale === "ko" ? "\u25A1" : /\p{L}/u.test(char) ? "?" : char).join("");
 }
 function isCorrectGuess(s, text) {
   return s.phase === "drawing" && s.answer !== null && typeof text === "string" && answers(s.answer).includes(norm(text));

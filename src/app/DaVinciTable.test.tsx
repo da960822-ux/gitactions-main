@@ -1,6 +1,6 @@
 import { createElement } from 'react';
 import { renderToStaticMarkup } from 'react-dom/server';
-import { describe, expect, it, vi } from 'vitest';
+import { afterEach, describe, expect, it, vi } from 'vitest';
 import type { GameAction } from '../core/types';
 import { davinciEngine } from '../games/davinci';
 import DaVinciTable, { daVinciGuessButtonLabel, davinciSnapshotKey, deriveDaVinciVisualEvent, findDaVinciGuess, findDaVinciJokerPlacement } from './DaVinciTable';
@@ -13,6 +13,7 @@ function render(view: any, playerId: 'p1' | 'p2' = 'p1', language: 'ko' | 'es' =
 }
 
 describe('DaVinciTable', () => {
+  afterEach(() => vi.unstubAllEnvs());
   it('keeps rival hidden numbers out of content and attributes while showing public color and order', () => {
     const state = davinciEngine.createInitialState(23);
     const view = davinciEngine.getPlayerView(state, 'p1') as any;
@@ -140,26 +141,31 @@ describe('DaVinciTable', () => {
     expect(loss).not.toContain('모든 상대 타일을 공개했어요.');
   });
 
-  it('renders the existing portrait on an own joker and preserves its accessible value', () => {
+  it('keeps a neutral own joker without private assets and rejects remote image sources', () => {
     const view = { game: 'davinci', turn: 'p1', phase: 'draw', hand: [{ color: 'black', value: 'joker', revealed: false }], board: { opponentTiles: [{ color: 'white', value: null, revealed: false }], deckCount: 12, turnNumber: 1, tileCount: 26, actionLog: [], lastEvent: null }, actions: [] };
     const html = render(view);
     expect(html).toContain('class="dv-joker-portrait"');
-    expect(html).toContain('/images/yeonseok-lisbeth-cutout.webp');
+    expect(html).not.toContain('/images/yeonseok-lisbeth-cutout.webp');
+    expect(html).not.toContain('<img');
+    vi.stubEnv('VITE_DAVINCI_BLACK_JOKER_IMAGE', 'https://example.com/private-photo.png');
+    expect(render(view)).not.toContain('example.com');
     expect(html).toContain('숫자 －');
     expect(html).not.toContain('NaN');
   });
 
-  it('uses one face per visible joker and never exposes a hidden rival joker portrait', () => {
+  it('uses separate injected couple portraits only on revealed rival jokers', () => {
+    vi.stubEnv('VITE_DAVINCI_BLACK_JOKER_IMAGE', '/private-assets/davinci/black-joker.webp');
+    vi.stubEnv('VITE_DAVINCI_WHITE_JOKER_IMAGE', '/private-assets/davinci/white-joker.png');
     const view = { game: 'davinci', turn: 'p1', phase: 'waiting', hand: [], board: { opponentTiles: [{ color: 'black', value: 'joker', revealed: false }, { color: 'white', value: 'joker', revealed: false }], deckCount: 12, tileCount: 26 }, actions: [] };
     for (const language of ['ko', 'es'] as const) {
       const hidden = render(view, 'p1', language);
       expect(hidden).not.toContain('dv-joker-portrait');
       expect(hidden).not.toContain('yeonseok-lisbeth-cutout');
-      expect(hidden).not.toContain('635 70');
+      expect(hidden).not.toContain('/private-assets/davinci/');
       const visible = render({ ...view, board: { ...view.board, opponentTiles: view.board.opponentTiles.map(tile => ({ ...tile, revealed: true })) } }, 'p1', language);
       expect(visible.match(/class="dv-joker-portrait"/g)).toHaveLength(2);
-      expect(visible).toContain('viewBox="635 70 355 455"');
-      expect(visible).toContain('viewBox="295 145 340 430"');
+      expect(visible).toContain('src="/private-assets/davinci/black-joker.webp"');
+      expect(visible).toContain('src="/private-assets/davinci/white-joker.png"');
     }
   });
 

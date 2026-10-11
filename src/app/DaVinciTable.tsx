@@ -17,7 +17,12 @@ const list = (value: unknown): any[] => Array.isArray(value) ? value : [];
 const colorLabel = (color: string, language: Language) => color === 'white' ? copy(language, '흰색', 'Blanca') : copy(language, '검정', 'Negra');
 const tileValueLabel = (value: TileValue | null | undefined) => value === 'joker' ? '－' : value == null ? '· ·' : String(value);
 function JokerPortrait({ color }: { color: Tile['color'] }) {
-  return <svg className="dv-joker-portrait" viewBox={color === 'black' ? '635 70 355 455' : '295 145 340 430'} aria-hidden="true" focusable="false"><image href="/images/yeonseok-lisbeth-cutout.webp" width="1254" height="1254"/></svg>;
+  const source = color === 'black' ? import.meta.env.VITE_DAVINCI_BLACK_JOKER_IMAGE : import.meta.env.VITE_DAVINCI_WHITE_JOKER_IMAGE;
+  const [failedSource, setFailedSource] = useState('');
+  // Private image bytes are supplied outside Git; absent assets keep the neutral joker mark.
+  return typeof source === 'string' && source !== failedSource && /^\/private-assets\/davinci\/[a-zA-Z0-9_-]+\.(?:webp|png|jpe?g)$/.test(source)
+    ? <img className="dv-joker-portrait" src={source} alt="" aria-hidden="true" onError={() => setFailedSource(source)}/>
+    : <span className="dv-joker-portrait" aria-hidden="true">－</span>;
 }
 const resultKey = (result: any) => result ? `${result.winner ?? ''}:${result.reason ?? ''}:${JSON.stringify(result.scores ?? {})}` : '';
 export function findDaVinciGuess(choices: unknown[], index: number, value: TileValue): Choice | undefined {

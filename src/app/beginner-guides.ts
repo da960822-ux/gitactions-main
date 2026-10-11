@@ -28,7 +28,7 @@ const guides: Record<BeginnerGameId, Record<Language, GuideCopy>> = {
     ko: {
       goal: '상대의 숨은 숫자 타일과 조커를 모두 맞히면 이겨요.',
       steps: [
-        { title: '준비하기', body: '각자 숫자 타일 네 장을 정렬해요. 시작 전에 조커가 있으면 원하는 자리에 놓고 둘 다 ‘배치 완료’를 눌러요.' },
+        { title: '준비하기', body: '각자 숫자 타일 네 장을 정렬해요. 시작 전에 조커가 있으면 원하는 자리에 놓고 둘 다 ‘초기 패 준비 완료’를 눌러요.' },
         { title: '뽑고 추리하기', body: '차례마다 타일 한 장을 뽑아요. 상대 타일을 고르고 숫자 0~11 또는 조커를 선택해 추리해요.' },
         { title: '오답과 승리', body: '맞히면 타일이 공개되니 계속 추리하거나 ‘차례 마치기’를 눌러요. 틀리면 뽑은 내 타일이 공개되고 차례가 끝나요; 더미가 비면 공개할 타일은 없어요.' },
       ],
@@ -37,7 +37,7 @@ const guides: Record<BeginnerGameId, Record<Language, GuideCopy>> = {
     es: {
       goal: 'Gana quien descubra todos los números y comodines de la otra persona.',
       steps: [
-        { title: 'Preparación', body: 'Cada persona ordena cuatro fichas. Si recibes un comodín, elige dónde ponerlo; luego ambos pulsen «Listo para jugar».' },
+        { title: 'Preparación', body: 'Cada persona ordena cuatro fichas. Si recibes un comodín, elige dónde ponerlo; luego ambos pulsen «Terminé de preparar mi mano».' },
         { title: 'Roba y adivina', body: 'En tu turno roba una ficha. Elige una ficha rival y prueba un número del 0 al 11 o el comodín.' },
         { title: 'Acierto y victoria', body: 'Si aciertas, la ficha queda visible y puedes seguir adivinando o pulsar «Terminar turno». Si fallas, se revela tu ficha recién robada y termina tu turno; con el mazo vacío, no se revela otra.' },
       ],
