@@ -1,10 +1,10 @@
 # 데스크톱 홈페이지 연결 — 검증용 부분 인계
 
-**전체 고도화 완료본이 아니다. main merge·배포·운영 DB 변경은 하지 않았다.** 기존 실제 체크아웃의 work/51a9ee3는 유지하고 별도 `home-integration-20261011` 브랜치에 저장했다. 도시 그림 재제작/승인, 귀족 원본 전달과 공개 승인, 건의사항 원문 비교, 운영 두 기기 연결이 남아 있다.
+**전체 고도화 완료본이 아니다. main merge·배포·운영 DB 변경은 하지 않았다.** 기존 실제 체크아웃의 work/51a9ee3는 유지하고 별도 `home-integration-20261011` 브랜치에 저장했다. 도시 그림 재제작/승인, 귀족 원본 전달과 공개 승인, 건의사항 최종 톤 조정, 운영 두 기기 연결이 남아 있다.
 
 ## 변경과 보존
 
-승인된 pass4 성능 히어로(ee50a228)를 실제 데스크톱 `/`에 연결했다. 기존 1024px/fine-pointer 경계를 재사용하고 작은 화면에서는 원래 Landing을 쓴다. `dos-language`, KO/ES 편지와 실제 `/play?game=<id>` 링크, `/feedback` 링크 및 이전 `#games`/`#papi-letter` 주소를 연결했다. preview CSS의 전역 reset을 `.rd-page`로 제한해 게임/건의사항 화면에 영향을 주지 않는다.
+승인된 pass4 성능 히어로(ee50a228)를 실제 데스크톱 `/`에 연결했다. 기존 1024px/fine-pointer 경계를 재사용하고 작은 화면에서는 원래 Landing을 쓴다. `dos-language`, KO/ES 편지와 실제 `/play?game=<id>` 링크, `/feedback` 최상단 메뉴 링크만 추가했고 본문 대형 건의사항 섹션은 넣지 않았다. 기존 건의사항 내부 Mami/Papi 멘트와 작은 화면 접근은 유지한다. 이전 `#games`/`#papi-letter` 주소를 연결했다. preview CSS의 전역 reset을 `.rd-page`로 제한해 게임/건의사항 화면에 영향을 주지 않는다.
 
 중앙 커플·문구·구도·어두운 배경·로즈골드 곡선을 유지한다. 기존 3D 하트를 로즈골드/핑크/펄로 재질 변경하고 같은 지오메트리의 PNG를 내보냈다. 작은 하트4/별16/주변부 투명 성운 PNG/가끔 유성/짧은 커서 입자를 추가했다. 런타임 성운 필터나 새 3D 배경 엔진은 없다. 입자는 750ms 간격·650ms 수명·최대8개이고 인물/문구/버튼에서 발생하지 않는다. 사용자 일시정지·축소 모션·화면 밖/숨김 정지를 지원한다. WebGL 실패 시 히어로와 게임 전시에 실제 승인된 장면의 PNG를 쓴다.
 
@@ -26,13 +26,13 @@
 
 ## 실제 검수
 
-통합 중 누락된 React import/CSS 괄호를 발견·수정했다. 수정 전 Luna의 Marble crash 증거와 수정 후 결과를 구분해 보존했다. 통합 후 Vitest **52파일/461테스트**, TypeScript/Vite/Edge 빌드 통과. 기존 Three chunk580.6KB 경고는 남는다.
+통합 중 누락된 React import/CSS 괄호를 발견·수정했다. 수정 전 Luna의 Marble crash 증거와 수정 후 결과를 구분해 보존했다. 게임 통합 단계 Vitest52파일/461테스트 통과 후 건의사항0e27e947까지 합쳐 **53파일/470테스트**, TypeScript/Vite/Edge 빌드 통과. 기존 Three chunk580.6KB 경고는 남는다.
 
 Chromium 1440×900 production root에서 KO/ES 저장·reload·편지 열기/닫기·전시 Jaipur 선택→실제 lobby의 Jaipur·뒤로가기·/feedback 진입을 확인했다. 축소 모션/입자 수명·cap·중앙 보호/일시정지/화면 밖 정지/8개 게임의 WebGL 없는 PNG 전시와 실제 링크/SPA deep route도 assert로 확인했다. 재현: `PLAYWRIGHT_MODULE=<installed playwright index.mjs> PLAYWRIGHT_EXECUTABLE_PATH=<chromium> HOME_UI_URL=http://127.0.0.1:5233 node scripts/verify-home-integration.mjs`. 검수 출력은 기본 `output/home-integration`이고 Git에 넣지 않는다.
 
 승인 ee50a228와 장식 추가 production root를 같은 SwiftShader Chromium 프로세스/1440×900/DPR1/6.5초/50ms 동일 포인터 입력/ABBA 순서로 비교했다. 측정 중 screencast/trace 없음. 전:27.97/29.37 unique rAF/sec, 후:25.22/25.19. 두 경우 median33.3~33.4ms/p9550.1ms, 히어로 GL color-clear0. 새 입자 최대4개가 실제 관측됐다. 평균 cadence 약12.1% 감소. **GPU 표시 FPS나 실기기 성능 수치가 아니다.** 투명 PNG와 네 개 별 twinkle/커서 입자의 비용이 있으므로 실제 PC 확인이 필요하다.
 
-Luna(gpt-6-luna)는 독립 KO/ES Chromium contexts에서 UI로 방 생성·초대·선택·행동·peer reload를 검수한다. 최신 우선 재검수에서 Marble은 다른 pawn 선택→roll→Madrid 도착, Da Vinci는 양쪽 초기 준비→뽑기4→5·상대 숨김 타일5 확인, page/console errors0. 다빈치 조커가 없는 표본이라 별도 조커 배치 검수가 남아 있다. 로컬 SQL/RLS/authority fixture에는 Supabase Auth/PostgREST/Realtime가 없다. 수동 갱신 성공을 운영 실시간 성공으로 부르지 않는다. 원본 Rhythm은 single-player SWF이고 두 좌석 행동 동기화를 추가/검증하지 않는다.
+Luna(gpt-6-luna)는 독립 KO/ES Chromium contexts에서 UI로 방 생성·초대·선택·행동·peer reload를 검수한다. 최신 우선 재검수에서 Marble은 다른 pawn 선택→roll→Madrid 도착, Da Vinci는 양쪽 초기 준비→뽑기4→5·상대 숨김 타일5 확인, page/console errors0. 나머지 Catchmind/Domino/Jaipur/Splendor/Minhwatu도 유효 행동·peer refresh/reload·errors0을 확인했다. 부루마블1440×900/1280×800에서 하단 스크롤 가능, 가로 overflow0px. 조커 배치/Rhythm 포커스 추가 검수는 진행 중이다. 로컬 SQL/RLS/authority fixture에는 Supabase Auth/PostgREST/Realtime가 없다. 수동 갱신 성공을 운영 실시간 성공으로 부르지 않는다. 원본 Rhythm은 single-player SWF이고 두 좌석 행동 동기화를 추가/검증하지 않는다.
 
 ## 전체 체크리스트의 남은 항목
 
@@ -41,9 +41,11 @@ Luna(gpt-6-luna)는 독립 KO/ES Chromium contexts에서 UI로 방 생성·초�
 | 승인 히어로·게임 전시·KO/ES 편지의 실제 홈 연결 | 구현/production UI 검증, 별도 브랜치 보존 |
 | 7개 게임 고도화·자산·연출·번역 | 임시 코드 병합; 새 도시 그림 승인·추가 게임 SHA·전수 완수표 대기 |
 | 귀족2장 | 승인된 원본 bytes/공개 승인 대기; 임의 그림 대체 금지 |
-| Luna 두 세션 | 우선2게임 재검수 통과; 남은6/조커/낮은 데스크톱 높이 검수 진행 |
-| 건의사항 | /feedback 연결됨;47df2c4b fetch 완료, 이전 문구/디자인 비교 결과 후 안전한 기능 통합 |
+| Luna 두 세션 | 7개 게임 실제행동·분리contexts 재검수 통과, 짧은 높이 스크롤 확인; 조커/Rhythm 추가 검수 진행 |
+| 건의사항 | 최상단 /feedback 링크만.47df2c4b+0e27e947 원문/기존 접근 보존해 임시 통합; 추가 톤 SHA 대기 |
 | 실제 둘만의 연결/운영 권한 | 로컬 fixture 검증만; 지정 Supabase 설정·운영 migration·Auth/RLS·Realtime·실제2기기 검증 미실행 |
+
+건의사항 로컬 HTTP/PGlite SQL-backed Chromium 검수 **39/39**, uncaught errors0. 독립 p1/p2 계정·reload 저장·p1 상태 변경·p2 작성·제3자 거부·동시 중복제출·응답 유실 후 같은 UUID 재시도·원문 멘트·기존 작은 화면 접근까지 확인했다. Supabase Auth/PostgREST/Realtime/운영 cron 자체 검증은 아니다.
 
 새 건의사항 migration0005는 직접 insert를 회수하고 submit RPC를 사용하므로 신규 프런트와 같이 적용해야 한다. 운영 Auth/DB/cron 변경은 이 브랜치 작업에서 실행하지 않는다. 기존 초대 링크는 실명 allowlist가 아니며 비어 있는 두 번째 좌석을 링크 소지 첫 인증 사용자가 차지할 수 있다는 한계가 있다.
 
