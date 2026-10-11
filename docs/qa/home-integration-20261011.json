@@ -132,7 +132,7 @@
   },
   "remaining": [
     "New game local1feaca317 unavailable; its blocked push must not be repeated through another route",
-    "Approved32 original Marble PNGs received and hash-verified; runtime optimization/linking and airline assets remain",
+    "Approved32 Marble images optimized and production files prepared; game component linking and airline assets remain",
     "New personal joker/noble assets must remain private; Library delivery and private injection pending",
     "Production Auth/PostgREST/Realtime/cron/migrations and two real devices untested",
     "Final Luna full-game testing deferred until implementation and asset integration closes",
@@ -242,6 +242,13 @@
     "totalOriginalBytes": 52604560,
     "verifiedSha256AndBlobHashAndBytes": 32,
     "runtimeConnected": false,
-    "note": "Explicit later public approval superseded the earlier asset-transfer block. Fetched exact approved asset branch and inspected representative source PNGs; game code integration is still pending."
+    "note": "Explicit later public approval superseded the earlier asset-transfer block. Fetched exact approved asset branch and inspected representative source PNGs; game code integration is still pending.",
+    "runtimeWebPFilesPrepared": 32,
+    "runtimeWebPBytes": 2206982,
+    "publicRuntimeDirectory": "public/images/marble/premium",
+    "allRuntimeFilesDecodedRGBA": true,
+    "allProductionCopiesVerified": true,
+    "sourceAndRuntimePixelsInspected": true,
+    "componentEditingOwner": "Separate game implementation task; no duplicate editing of MarblePropertyArt, MarblePawn or game economy here"
   }
 }

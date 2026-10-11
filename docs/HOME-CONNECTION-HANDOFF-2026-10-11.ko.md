@@ -1,6 +1,6 @@
 # 데스크톱 홈페이지 연결 — 검증용 부분 인계
 
-**전체 고도화 완료본이 아니다. main merge·배포·운영 DB 변경은 하지 않았다.** 기존 실제 체크아웃의 work/51a9ee3는 유지하고 별도 `home-integration-20261011` 브랜치에 저장했다. 도시 그림 재제작/승인, 개인 자산의 비공개 전달/주입, 운영 두 기기 연결이 남아 있다. 건의사항 최신 디자인1a288c215까지 통합했다.
+**전체 고도화 완료본이 아니다. main merge·배포·운영 DB 변경은 하지 않았다.** 기존 실제 체크아웃의 work/51a9ee3는 유지하고 별도 `home-integration-20261011` 브랜치에 저장했다. 도시·말·건물의 게임 연결, 개인 자산의 비공개 전달/주입, 운영 두 기기 연결이 남아 있다. 건의사항 최신 디자인1a288c215까지 통합했다.
 
 ## 변경과 보존
 
@@ -108,3 +108,9 @@ Luna(gpt-6-luna)는 독립 KO/ES Chromium contexts에서 UI로 방 생성·초�
 ### 후속 공개 승인 후32PNG 수령
 
 위 공개 승인 대기 상태는 이후 명시적 승인으로 해소됐다. `assets/premium-marble-20261011`의 정확한 원격 SHA `ccec83d87fac6ad1a65dd2b900dec8870ef1c71b`를 fetch했다. 도시24/건물2/캐릭터6 원본 PNG32개, 총52,604,560bytes의 SHA256·Git blob SHA·바이트 크기가 manifest와 전부 일치한다. 원본은 `/workspace/premium-marble-assets-ccec83d`에서 분리 보존했다. 래그돌/아파트/광주 원본 픽셀을 실제로 봤다. 이는 개인 사진·조커·귀족 전달 승인이 아니고, 아직 게임 runtime 연결이나 최종 인게임 확인의 증거도 아니다. 최신 게임 코드의 별도 push 차단은 해소됐다고 전달받지 않았다. 살리·술리 추가 캐릭터는 이32개에 없다.
+
+### 런타임 자산 준비 완료·게임 컴포넌트 연결은 별도
+
+32개 원본에서 `public/images/marble/premium/{cities,buildings,pawns}/*.webp`를 준비했다. 도시·건물 최대512px, 말 최대256px, WebP quality92/alpha 유지, 유효 알파 경계의2.5% 여백 crop이다. 원본 PNG는 건드리지 않았다.52,604,560→2,206,982bytes로95.8% 줄었다. source/derived SHA·crop·치수·크기는 같은 폴더 manifest에 있다.32개 RGBA decode·빌드 복사 bytes·별도 브라우저 URL decode를 확인하며 source 및 runtime contact sheet 실제 픽셀도 봤다.
+
+재현: `python3 scripts/optimize-marble-assets.py <수령한-source-root> public/images/marble/premium`. Pillow가 필요하며 새 런타임 의존성은 없다. 현재 `MarblePropertyArt.tsx`/`MarblePawn.tsx`/도시·말 엔진은 별도 게임 구현 담당 소유여서 중복 편집하지 않았다. 새 게임코드 통합 때 `/images/marble/premium/cities/<source-name>.webp`, `buildings/stage1-house.webp`, `stage2-apartment.webp`, `pawns/<source-name>.webp`로 연결하면 된다. 현재 게임 화면이 이 파일을 사용한다고 주장하지 않는다. 도시군/칸 인덱스/저장 ID 매핑·3단계 크기·말2개 겹침·6캐릭터 선택과 추가 반려견은 게임 담당 구현 및 최종 Luna 검수에 남아 있다.

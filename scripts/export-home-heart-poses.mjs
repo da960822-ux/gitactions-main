@@ -1,4 +1,5 @@
 import fs from 'node:fs/promises';
+import assert from 'node:assert/strict';
 import { launchChromium } from './playwright-browser.mjs';
 
 const base = process.env.HOME_ASSET_URL || 'http://127.0.0.1:5230';
@@ -45,6 +46,10 @@ const result = await page.evaluate(async () => {
   }
   renderer.dispose(); return { neutral, assets, boxes, fixedKey: key.position.toArray() };
 });
+assert.deepEqual(result.fixedKey, [-4, 6, 8]);
+assert.equal(new Set(result.assets.map(asset => asset.name)).size, 9);
+assert.ok(result.boxes.every(([left, top, width, height]) => left >= 0 && top >= 0 && width > 0 && height > 0 && left + width <= 1440 && top + height <= 816));
+for (const asset of [{ name: 'hearts-neutral.png', data: result.neutral }, ...result.assets]) assert.equal(Buffer.from(asset.data, 'base64').subarray(0, 8).toString('hex'), '89504e470d0a1a0a');
 await fs.writeFile(`${folder}/hearts-neutral.png`, Buffer.from(result.neutral, 'base64'));
 for (const asset of result.assets) await fs.writeFile(`${folder}/${asset.name}`, Buffer.from(asset.data, 'base64'));
 const layoutPath = 'src/preview/heroRasterLayout.json', layout = JSON.parse(await fs.readFile(layoutPath, 'utf8'));
