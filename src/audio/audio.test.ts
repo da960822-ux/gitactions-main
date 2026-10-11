@@ -334,6 +334,20 @@ describe('game-specific sound effects', () => {
     audio.dispose();
   });
 
+  it('lands Minhwatu placement and capture impacts at the 255ms flight arrival', async () => {
+    const { sources } = installAudioMocks();
+    const audio = await import('./audio');
+    audio.setPreferences('minhwatu', { sfxEnabled: true });
+    audio.setScene('minhwatu');
+    await audio.unlock();
+    audio.playCue('minhwatu', 'place');
+    expect(sources[0].start).toHaveBeenCalledWith(0.255);
+    audio.playCue('minhwatu', 'capture');
+    expect(sources[2].start).toHaveBeenCalledWith(0.255);
+    expect(sources[3].start).toHaveBeenCalledWith(0.31);
+    audio.dispose();
+  });
+
   it('plays a compact shuffle only for a confirmed Minhwatu deal cue', async () => {
     const { context, oscillators } = installAudioMocks();
     const audio = await import('./audio');

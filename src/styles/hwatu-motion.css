@@ -32,3 +32,14 @@
   .hwatu-motion-note--win .hwatu-win-burst svg { opacity: 1; }
   .hwatu-flight { display: none; }
 }
+
+.hwatu-score-flight { position:fixed; z-index:10001; pointer-events:none; color:#f5dfa3; padding:3px 8px; border:1px solid #bda16a; border-radius:5px; background:#153a32; box-shadow:0 4px 10px #10272360; font:800 20px/1.2 "DM Sans",sans-serif; font-variant-numeric:tabular-nums; }
+.hwatu-score-flight.is-negative { color:#f3c4b6; border-color:#bb8a7a; background:#4e3031; }
+.hwatu-combination-reveal { position:fixed; z-index:10000; display:grid; justify-items:center; gap:9px; padding:14px 20px; border:1px solid #c8af75; border-radius:10px; color:#f4dfab; background:#102c2cf5; box-shadow:0 12px 24px #081a2180; pointer-events:none; }
+.hwatu-combination-faces { display:flex; gap:6px; }
+.hwatu-combination-faces img { width:46px; height:75px; object-fit:contain; border-radius:3px; box-shadow:0 4px 7px #061d2380; }
+.hwatu-combination-reveal b { font-size:17px; line-height:1.2; }
+@media (prefers-reduced-motion:reduce) { .hwatu-score-flight,.hwatu-combination-reveal { display:none; } }
+.minhwatu-table .hwatu-motion-stage { min-height:0; margin:0; }
+.minhwatu-table .hwatu-motion-note { min-height:28px; padding:4px 9px; box-shadow:0 3px 8px #081d1655; }
+.minhwatu-table .hwatu-motion-stage:not(.is-animating) { visibility:hidden; }

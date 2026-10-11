@@ -1,0 +1,13 @@
+/* Keep room controls available without pushing the Hwatu hand below the table. */
+.minhwatu-room .app-header.compact { height:44px; }
+.minhwatu-room .room-main { padding-top:6px; }
+.minhwatu-room .room-topline { margin-bottom:3px; min-height:22px; }
+.minhwatu-room .room-heading { min-height:34px; padding-bottom:3px; }
+.minhwatu-room .room-heading h1 { font-size:20px; margin:0; }
+.minhwatu-room .player-pill { padding:3px 8px; min-width:120px; }
+.minhwatu-room .player-avatar { width:25px; height:25px; }
+.minhwatu-room .room-layout { margin-top:5px; }
+.minhwatu-room .board-header { min-height:46px; padding:6px 12px; }
+.minhwatu-room .board-game small,.minhwatu-room .board-header .turn-tag { display:none; }
+.minhwatu-room .demo-banner { min-height:25px; margin-top:3px; padding:3px 9px; }
+.minhwatu-room .reaction-chat-panel { padding:7px 12px; }

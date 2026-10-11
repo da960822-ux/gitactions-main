@@ -316,8 +316,8 @@ export function playCue(gameId: GameId, cue: AudioCue): void {
     return;
   }
   if (gameId === 'minhwatu' && cue === 'place') {
-    playTexture(0.047, 0.18, 1050);
-    playTone(sfxGain, gameId, -12, 0.075, 0.13, 0.012);
+    playTexture(0.047, 0.18, 1050, 0.255);
+    playTone(sfxGain, gameId, -12, 0.075, 0.13, 0.267);
     return;
   }
   if (gameId === 'minhwatu' && cue === 'deal') {
@@ -334,9 +334,9 @@ export function playCue(gameId: GameId, cue: AudioCue): void {
     return;
   }
   if (gameId === 'minhwatu' && cue === 'capture') {
-    playTexture(0.052, 0.11, 1750);
-    playTexture(0.045, 0.08, 1150, 0.055);
-    playTone(sfxGain, gameId, 4, 0.1, 0.075, 0.025);
+    playTexture(0.052, 0.11, 1750, 0.255);
+    playTexture(0.045, 0.08, 1150, 0.31);
+    playTone(sfxGain, gameId, 4, 0.1, 0.075, 0.28);
     return;
   }
   if (gameId === 'minhwatu' && cue === 'special') {
