@@ -153,17 +153,70 @@ describe('dominoEngine', () => {
   it('chooses a bot move from only its hand and the supplied public board', () => {
     const hand = [{ a: 1, b: 6 }, { a: 1, b: 2 }, { a: 2, b: 3 }, { a: 2, b: 4 }];
     const board = [{ a: 1, b: 5, by: 'p1' }];
-    const ends = { left: 1, right: 5 }, context = { passes: 0, counts: { p1: 6, p2: 7 } };
+    const ends = { left: 1, right: 5 }, context = { actor: 'p1' as const, mode: '1v1' as const, passes: 0, counts: { p1: 6, p2: 7 }, log: [] };
     const before = JSON.stringify({ hand, board });
     const normal = chooseDominoBotAction(hand, board as any, ends, 'normal', context);
-    const hardWithHiddenA = chooseDominoBotAction(hand, board as any, ends, 'hard', context);
-    const hypotheticalHiddenHand = [{ a: 6, b: 6 }, { a: 0, b: 5 }];
-    const hardWithHiddenB = chooseDominoBotAction(hand, board as any, ends, 'hard', context);
-    expect(normal.payload?.index).toBe(0);
-    expect(hardWithHiddenA.payload?.index).toBe(1);
-    expect(hardWithHiddenA).toEqual(hardWithHiddenB);
+    const hard = chooseDominoBotAction(hand, board as any, ends, 'hard', context);
+    expect([normal, hard].every(action => action.type === 'play' && hand[action.payload!.index as number] && (action.payload!.side === 'left' || action.payload!.side === 'right'))).toBe(true);
+    expect(chooseDominoBotAction(hand, board as any, ends, 'hard', context)).toEqual(hard);
     expect(JSON.stringify({ hand, board })).toBe(before);
-    expect(JSON.stringify(hardWithHiddenA)).not.toContain(JSON.stringify(hypotheticalHiddenHand));
+  });
+
+  it('takes an immediate hand-out in every difficulty and passes only when no end matches', () => {
+    for (const difficulty of ['easy', 'normal', 'hard'] as const) {
+      expect(chooseDominoBotAction([{ a: 2, b: 6 }], [], { left: 2, right: 4 }, difficulty, { actor: 'p1', mode: '1v1', counts: { p1: 1, p2: 1 } })).toMatchObject({ type: 'play', payload: { index: 0 } });
+      expect(chooseDominoBotAction([{ a: 2, b: 6 }], [], { left: 1, right: 4 }, difficulty, { actor: 'p1', mode: '1v1', counts: { p1: 1, p2: 1 } })).toEqual({ type: 'pass' });
+    }
+  });
+
+  it('predicts left and right exposed pips with the same orientation as the engine', () => {
+    for (const [tile, side, expected] of [
+      [{ a: 1, b: 6 }, 'left', { left: 6, right: 5 }],
+      [{ a: 6, b: 1 }, 'left', { left: 6, right: 5 }],
+      [{ a: 5, b: 2 }, 'right', { left: 1, right: 2 }],
+      [{ a: 2, b: 5 }, 'right', { left: 1, right: 2 }],
+    ] as const) {
+      const state: any = dominoEngine.createInitialState(54);
+      state.turn = 'p1'; state.hands.p1 = [tile]; state.hands.p2 = [{ a: 0, b: 0 }];
+      state.board = [{ a: 1, b: 5, by: 'p2', sequence: 1 }]; state.ends = { left: 1, right: 5 };
+      const action = chooseDominoBotAction([tile], state.board, state.ends, 'normal');
+      expect(action).toMatchObject({ type: 'play', payload: { index: 0, side } });
+      const next = dominoEngine.applyAction(state, 'p1', action);
+      expect(next.ends).toEqual(expected);
+    }
+  });
+
+  it('scores orientation from the exposed face when comparing supported ends', () => {
+    const hand = [{ a: 1, b: 1 }, { a: 2, b: 2 }, { a: 1, b: 3 }, { a: 0, b: 6 }];
+    const board: any[] = [{ a: 1, b: 5, by: 'p2', sequence: 1 }];
+    expect(chooseDominoBotAction(hand, board, { left: 1, right: 5 }, 'normal')).toMatchObject({ type: 'play', payload: { index: 0, side: 'left' } });
+  });
+
+  it('uses only public chooser context fields and supports both public team maps', () => {
+    const forbidden = () => { throw new Error('private game state must not be read by the chooser'); };
+    const context: any = { actor: 'b1', mode: 'partners', passes: 0, counts: { p1: 7, b1: 5, p2: 6, b2: 7 }, log: [] };
+    for (const key of ['seed', 'stock', 'hands', 'rng', 'random']) Object.defineProperty(context, key, { get: forbidden });
+    const hand = [{ a: 1, b: 4 }, { a: 4, b: 6 }, { a: 2, b: 6 }];
+    const board: any[] = [{ a: 1, b: 5, by: 'p2', sequence: 1 }];
+    const partners = chooseDominoBotAction(hand, board, { left: 1, right: 5 }, 'hard', context);
+    context.mode = 'humans-vs-bots';
+    const versus = chooseDominoBotAction(hand, board, { left: 1, right: 5 }, 'hard', context);
+    for (const action of [partners, versus]) expect(action.type).toBe('play');
+  });
+
+  it('uses current-round public passes for hard defense and ignores retained passes from an older round', () => {
+    const hand = [{ a: 1, b: 2 }, { a: 3, b: 3 }, { a: 0, b: 3 }, { a: 1, b: 1 }, { a: 0, b: 0 }, { a: 2, b: 3 }];
+    const board: any[] = [{ a: 1, b: 4, by: 'p2', sequence: 1 }, { a: 4, b: 5, by: 'b2', sequence: 3 }];
+    const ends = { left: 1, right: 5 }, common = { actor: 'p1' as const, mode: '1v1' as const, counts: { p1: 6, p2: 1 } };
+    const withoutPass = chooseDominoBotAction(hand, board, ends, 'hard', { ...common, log: [] });
+    const withPass = chooseDominoBotAction(hand, board, ends, 'hard', { ...common, log: [{ sequence: 4, type: 'pass', actor: 'p2', ends, title: { ko: '패스', es: 'Paso' } } as any] });
+    expect(withPass).not.toEqual(withoutPass);
+
+    const currentBoard: any[] = [{ a: 1, b: 4, by: 'p1', sequence: 9 }];
+    const currentEnds = { left: 1, right: 4 };
+    const noRetainedLog = chooseDominoBotAction(hand, currentBoard, currentEnds, 'hard', { ...common, log: [] });
+    const oldPassOnly = chooseDominoBotAction(hand, currentBoard, currentEnds, 'hard', { ...common, log: [{ sequence: 7, type: 'pass', actor: 'p2', ends: { left: 2, right: 3 }, title: { ko: '패스', es: 'Paso' } }, { sequence: 8, type: 'round-start', title: { ko: '시작', es: 'Inicio' }, round: 2 }] as any });
+    expect(oldPassOnly).toEqual(noRetainedLog);
   });
 
   it('awards capicua only for a non-double matching both prior ends', () => {

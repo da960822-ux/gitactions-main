@@ -1,0 +1,893 @@
+{
+  "game": "jaipur",
+  "baseUrl": "http://127.0.0.1:5192",
+  "viewport": {
+    "width": 1440,
+    "height": 900
+  },
+  "independentContexts": 2,
+  "strategy": "Own hand and public market/token tops only; collect matching groups, improve the hand through favorable exchanges, sell precious goods in pairs and ordinary goods in bonus groups, make room before the seven-card limit.",
+  "attempts": [
+    {
+      "attempt": 1,
+      "roomCreatedAndJoinedThroughUI": true,
+      "bothConsentedThroughUI": true,
+      "played": {
+        "p1": 0,
+        "p2": 0
+      },
+      "passes": {
+        "p1": 0,
+        "p2": 0
+      },
+      "moves": [
+        {
+          "player": "p1",
+          "type": "camels",
+          "version": 3,
+          "round": 1,
+          "scores": {
+            "p1": 0,
+            "p2": 0
+          },
+          "deckCount": 35
+        },
+        {
+          "player": "p2",
+          "type": "exchange",
+          "count": 3,
+          "version": 4,
+          "round": 1,
+          "scores": {
+            "p1": 0,
+            "p2": 0
+          },
+          "deckCount": 35
+        },
+        {
+          "player": "p1",
+          "type": "exchange",
+          "count": 3,
+          "version": 5,
+          "round": 1,
+          "scores": {
+            "p1": 0,
+            "p2": 0
+          },
+          "deckCount": 35
+        }
+      ],
+      "actions": {
+        "p1": 2,
+        "p2": 1
+      },
+      "sales": {
+        "p1": 0,
+        "p2": 0
+      },
+      "exchanges": {
+        "p1": 1,
+        "p2": 1
+      }
+    }
+  ],
+  "errors": [
+    "AssertionError [ERR_ASSERTION]: Coin and token value must fit in their own cell.\n\nfalse !== true\n\n    at checkJaipurPiles (file:///workspace/gitactions-main/scripts/play-two-player-captures.mjs:83:12)\n    at async checkJaipurSale (file:///workspace/gitactions-main/scripts/play-two-player-captures.mjs:111:3)\n    at async playJaipur (file:///workspace/gitactions-main/scripts/play-two-player-captures.mjs:302:9)\n    at async file:///workspace/gitactions-main/scripts/play-two-player-captures.mjs:463:26"
+  ],
+  "screenshots": [
+    {
+      "language": "es",
+      "state": "sale",
+      "path": "/workspace/gitactions-main/docs/screenshots/live-play-2026-10-11/after-fixes/diagnosis-es-piles-20261011/jaipur-es-sale.png",
+      "element": "#game-board"
+    },
+    {
+      "language": "es",
+      "state": "mobile-pile-diagnostic",
+      "path": "/workspace/gitactions-main/docs/screenshots/live-play-2026-10-11/after-fixes/diagnosis-es-piles-20261011/jaipur-es-mobile-pile-diagnostic.png",
+      "element": "#game-board"
+    }
+  ],
+  "limits": [
+    "Local PGlite SQL/RLS/authority fixture, not deployed Supabase or physical devices.",
+    "The fixture has no Realtime; reconnectRoom explicitly refreshes read snapshots after UI actions.",
+    "Screenshots intentionally show the requesting player’s own hand; no opponent private hand is used to choose moves."
+  ],
+  "uiChecks": [
+    {
+      "type": "sale-tray",
+      "language": "es",
+      "trayInsideOwnHand": true,
+      "gapBelowHand": 8,
+      "horizontalOverflow": false
+    },
+    {
+      "type": "token-cell-content",
+      "language": "es",
+      "state": "mobile",
+      "rows": [
+        {
+          "good": "Diamantes",
+          "label": "Siguiente:",
+          "value": "7 pts",
+          "cellRect": {
+            "left": 39.59375,
+            "right": 139.46875,
+            "top": 1695.21875,
+            "bottom": 1771.265625,
+            "width": 99.875,
+            "height": 76.046875
+          },
+          "labelRect": {
+            "left": 47.3125,
+            "right": 98.921875,
+            "top": 1745.640625,
+            "bottom": 1760.640625,
+            "width": 51.609375,
+            "height": 15
+          },
+          "valueRect": {
+            "left": 102.4375,
+            "right": 154.59375,
+            "top": 1742.75,
+            "bottom": 1763.546875,
+            "width": 52.15625,
+            "height": 20.796875
+          },
+          "coinRect": {
+            "left": 102.4375,
+            "right": 123.234375,
+            "top": 1742.75,
+            "bottom": 1763.546875,
+            "width": 20.796875,
+            "height": 20.796875
+          },
+          "amountRect": {
+            "left": 126.109375,
+            "right": 154.59375,
+            "top": 1745.140625,
+            "bottom": 1761.140625,
+            "width": 28.484375,
+            "height": 16
+          },
+          "labelFont": "11.52px",
+          "labelVisible": true,
+          "valueVisible": true,
+          "labelInsideCell": true,
+          "labelTextInsideCell": true,
+          "valueInsideCell": false,
+          "coinValueGap": 2.875
+        },
+        {
+          "good": "Oro",
+          "label": "Siguiente:",
+          "value": "6 pts",
+          "cellRect": {
+            "left": 145.0625,
+            "right": 244.9375,
+            "top": 1695.21875,
+            "bottom": 1771.265625,
+            "width": 99.875,
+            "height": 76.046875
+          },
+          "labelRect": {
+            "left": 152.78125,
+            "right": 204.390625,
+            "top": 1745.640625,
+            "bottom": 1760.640625,
+            "width": 51.609375,
+            "height": 15
+          },
+          "valueRect": {
+            "left": 207.90625,
+            "right": 261.21875,
+            "top": 1742.75,
+            "bottom": 1763.546875,
+            "width": 53.3125,
+            "height": 20.796875
+          },
+          "coinRect": {
+            "left": 207.90625,
+            "right": 228.703125,
+            "top": 1742.75,
+            "bottom": 1763.546875,
+            "width": 20.796875,
+            "height": 20.796875
+          },
+          "amountRect": {
+            "left": 231.578125,
+            "right": 261.21875,
+            "top": 1745.140625,
+            "bottom": 1761.140625,
+            "width": 29.640625,
+            "height": 16
+          },
+          "labelFont": "11.52px",
+          "labelVisible": true,
+          "valueVisible": true,
+          "labelInsideCell": true,
+          "labelTextInsideCell": true,
+          "valueInsideCell": false,
+          "coinValueGap": 2.875
+        },
+        {
+          "good": "Plata",
+          "label": "Siguiente:",
+          "value": "5 pts",
+          "cellRect": {
+            "left": 250.53125,
+            "right": 350.40625,
+            "top": 1695.21875,
+            "bottom": 1771.265625,
+            "width": 99.875,
+            "height": 76.046875
+          },
+          "labelRect": {
+            "left": 258.25,
+            "right": 309.859375,
+            "top": 1745.640625,
+            "bottom": 1760.640625,
+            "width": 51.609375,
+            "height": 15
+          },
+          "valueRect": {
+            "left": 313.375,
+            "right": 366.546875,
+            "top": 1742.75,
+            "bottom": 1763.546875,
+            "width": 53.171875,
+            "height": 20.796875
+          },
+          "coinRect": {
+            "left": 313.375,
+            "right": 334.171875,
+            "top": 1742.75,
+            "bottom": 1763.546875,
+            "width": 20.796875,
+            "height": 20.796875
+          },
+          "amountRect": {
+            "left": 337.046875,
+            "right": 366.546875,
+            "top": 1745.140625,
+            "bottom": 1761.140625,
+            "width": 29.5,
+            "height": 16
+          },
+          "labelFont": "11.52px",
+          "labelVisible": true,
+          "valueVisible": true,
+          "labelInsideCell": true,
+          "labelTextInsideCell": true,
+          "valueInsideCell": false,
+          "coinValueGap": 2.875
+        },
+        {
+          "good": "Tela",
+          "label": "Siguiente:",
+          "value": "5 pts",
+          "cellRect": {
+            "left": 39.59375,
+            "right": 139.46875,
+            "top": 1776.859375,
+            "bottom": 1852.90625,
+            "width": 99.875,
+            "height": 76.046875
+          },
+          "labelRect": {
+            "left": 47.3125,
+            "right": 98.921875,
+            "top": 1827.28125,
+            "bottom": 1842.28125,
+            "width": 51.609375,
+            "height": 15
+          },
+          "valueRect": {
+            "left": 102.4375,
+            "right": 155.609375,
+            "top": 1824.390625,
+            "bottom": 1845.1875,
+            "width": 53.171875,
+            "height": 20.796875
+          },
+          "coinRect": {
+            "left": 102.4375,
+            "right": 123.234375,
+            "top": 1824.390625,
+            "bottom": 1845.1875,
+            "width": 20.796875,
+            "height": 20.796875
+          },
+          "amountRect": {
+            "left": 126.109375,
+            "right": 155.609375,
+            "top": 1826.78125,
+            "bottom": 1842.78125,
+            "width": 29.5,
+            "height": 16
+          },
+          "labelFont": "11.52px",
+          "labelVisible": true,
+          "valueVisible": true,
+          "labelInsideCell": true,
+          "labelTextInsideCell": true,
+          "valueInsideCell": false,
+          "coinValueGap": 2.875
+        },
+        {
+          "good": "Especias",
+          "label": "Siguiente:",
+          "value": "5 pts",
+          "cellRect": {
+            "left": 145.0625,
+            "right": 244.9375,
+            "top": 1776.859375,
+            "bottom": 1852.90625,
+            "width": 99.875,
+            "height": 76.046875
+          },
+          "labelRect": {
+            "left": 152.78125,
+            "right": 204.390625,
+            "top": 1827.28125,
+            "bottom": 1842.28125,
+            "width": 51.609375,
+            "height": 15
+          },
+          "valueRect": {
+            "left": 207.90625,
+            "right": 261.078125,
+            "top": 1824.390625,
+            "bottom": 1845.1875,
+            "width": 53.171875,
+            "height": 20.796875
+          },
+          "coinRect": {
+            "left": 207.90625,
+            "right": 228.703125,
+            "top": 1824.390625,
+            "bottom": 1845.1875,
+            "width": 20.796875,
+            "height": 20.796875
+          },
+          "amountRect": {
+            "left": 231.578125,
+            "right": 261.078125,
+            "top": 1826.78125,
+            "bottom": 1842.78125,
+            "width": 29.5,
+            "height": 16
+          },
+          "labelFont": "11.52px",
+          "labelVisible": true,
+          "valueVisible": true,
+          "labelInsideCell": true,
+          "labelTextInsideCell": true,
+          "valueInsideCell": false,
+          "coinValueGap": 2.875
+        },
+        {
+          "good": "Cuero",
+          "label": "Siguiente:",
+          "value": "4 pts",
+          "cellRect": {
+            "left": 250.53125,
+            "right": 350.40625,
+            "top": 1776.859375,
+            "bottom": 1852.90625,
+            "width": 99.875,
+            "height": 76.046875
+          },
+          "labelRect": {
+            "left": 258.25,
+            "right": 309.859375,
+            "top": 1827.28125,
+            "bottom": 1842.28125,
+            "width": 51.609375,
+            "height": 15
+          },
+          "valueRect": {
+            "left": 313.375,
+            "right": 366.890625,
+            "top": 1824.390625,
+            "bottom": 1845.1875,
+            "width": 53.515625,
+            "height": 20.796875
+          },
+          "coinRect": {
+            "left": 313.375,
+            "right": 334.171875,
+            "top": 1824.390625,
+            "bottom": 1845.1875,
+            "width": 20.796875,
+            "height": 20.796875
+          },
+          "amountRect": {
+            "left": 337.046875,
+            "right": 366.890625,
+            "top": 1826.78125,
+            "bottom": 1842.78125,
+            "width": 29.84375,
+            "height": 16
+          },
+          "labelFont": "11.52px",
+          "labelVisible": true,
+          "valueVisible": true,
+          "labelInsideCell": true,
+          "labelTextInsideCell": true,
+          "valueInsideCell": false,
+          "coinValueGap": 2.875
+        }
+      ]
+    }
+  ],
+  "trace": [
+    {
+      "page": 1,
+      "endpoint": "/rest/v1/rpc/room_snapshot",
+      "status": 200,
+      "version": 0,
+      "seat": "p1",
+      "game": null,
+      "pending": null,
+      "members": [
+        "p1"
+      ],
+      "empty": false
+    },
+    {
+      "page": 1,
+      "endpoint": "/rest/v1/rpc/room_snapshot",
+      "status": 200,
+      "version": 0,
+      "seat": "p1",
+      "game": null,
+      "pending": null,
+      "members": [
+        "p1"
+      ],
+      "empty": false
+    },
+    {
+      "page": 2,
+      "endpoint": "/rest/v1/rpc/room_snapshot",
+      "status": 200,
+      "version": 0,
+      "seat": "p2",
+      "game": null,
+      "pending": null,
+      "members": [
+        "p1",
+        "p2"
+      ],
+      "empty": false
+    },
+    {
+      "page": 2,
+      "endpoint": "/rest/v1/rpc/room_snapshot",
+      "status": 200,
+      "version": 0,
+      "seat": "p2",
+      "game": null,
+      "pending": null,
+      "members": [
+        "p1",
+        "p2"
+      ],
+      "empty": false
+    },
+    {
+      "page": 1,
+      "endpoint": "/rest/v1/rpc/room_snapshot",
+      "status": 200,
+      "version": 0,
+      "seat": "p1",
+      "game": null,
+      "pending": null,
+      "members": [
+        "p1",
+        "p2"
+      ],
+      "empty": false
+    },
+    {
+      "page": 1,
+      "endpoint": "/functions/v1/action",
+      "status": 200,
+      "version": 1,
+      "empty": false
+    },
+    {
+      "page": 1,
+      "endpoint": "/rest/v1/rpc/room_snapshot",
+      "status": 200,
+      "version": 1,
+      "seat": "p1",
+      "game": null,
+      "pending": "jaipur",
+      "members": [
+        "p1",
+        "p2"
+      ],
+      "empty": false
+    },
+    {
+      "page": 2,
+      "endpoint": "/rest/v1/rpc/room_snapshot",
+      "status": 200,
+      "version": 1,
+      "seat": "p2",
+      "game": null,
+      "pending": "jaipur",
+      "members": [
+        "p1",
+        "p2"
+      ],
+      "empty": false
+    },
+    {
+      "page": 2,
+      "endpoint": "/functions/v1/action",
+      "status": 200,
+      "version": 2,
+      "empty": false
+    },
+    {
+      "page": 2,
+      "endpoint": "/rest/v1/rpc/room_snapshot",
+      "status": 200,
+      "version": 2,
+      "seat": "p2",
+      "game": "jaipur",
+      "pending": null,
+      "members": [
+        "p1",
+        "p2"
+      ],
+      "empty": false
+    },
+    {
+      "page": 1,
+      "endpoint": "/rest/v1/rpc/room_snapshot",
+      "status": 200,
+      "version": 2,
+      "seat": "p1",
+      "game": "jaipur",
+      "pending": null,
+      "members": [
+        "p1",
+        "p2"
+      ],
+      "empty": false
+    },
+    {
+      "page": 1,
+      "endpoint": "/functions/v1/action",
+      "status": 200,
+      "version": 3,
+      "empty": false
+    },
+    {
+      "page": 1,
+      "endpoint": "/rest/v1/rpc/room_snapshot",
+      "status": 200,
+      "version": 3,
+      "seat": "p1",
+      "game": "jaipur",
+      "pending": null,
+      "members": [
+        "p1",
+        "p2"
+      ],
+      "empty": false
+    },
+    {
+      "page": 2,
+      "endpoint": "/rest/v1/rpc/room_snapshot",
+      "status": 200,
+      "version": 3,
+      "seat": "p2",
+      "game": "jaipur",
+      "pending": null,
+      "members": [
+        "p1",
+        "p2"
+      ],
+      "empty": false
+    },
+    {
+      "page": 2,
+      "endpoint": "/functions/v1/action",
+      "status": 200,
+      "version": 4,
+      "empty": false
+    },
+    {
+      "page": 2,
+      "endpoint": "/rest/v1/rpc/room_snapshot",
+      "status": 200,
+      "version": 4,
+      "seat": "p2",
+      "game": "jaipur",
+      "pending": null,
+      "members": [
+        "p1",
+        "p2"
+      ],
+      "empty": false
+    },
+    {
+      "page": 1,
+      "endpoint": "/rest/v1/rpc/room_snapshot",
+      "status": 200,
+      "version": 4,
+      "seat": "p1",
+      "game": "jaipur",
+      "pending": null,
+      "members": [
+        "p1",
+        "p2"
+      ],
+      "empty": false
+    },
+    {
+      "page": 1,
+      "endpoint": "/functions/v1/action",
+      "status": 200,
+      "version": 5,
+      "empty": false
+    },
+    {
+      "page": 1,
+      "endpoint": "/rest/v1/rpc/room_snapshot",
+      "status": 200,
+      "version": 5,
+      "seat": "p1",
+      "game": "jaipur",
+      "pending": null,
+      "members": [
+        "p1",
+        "p2"
+      ],
+      "empty": false
+    },
+    {
+      "page": 2,
+      "endpoint": "/rest/v1/rpc/room_snapshot",
+      "status": 200,
+      "version": 5,
+      "seat": "p2",
+      "game": "jaipur",
+      "pending": null,
+      "members": [
+        "p1",
+        "p2"
+      ],
+      "empty": false
+    }
+  ],
+  "diagnostics": [
+    {
+      "public": {
+        "room": "5e09ebe4-f032-45e7-9927-5ae108f83891",
+        "error": null,
+        "pending": null,
+        "version": 5,
+        "player": "p1",
+        "mode": "online",
+        "game": "jaipur",
+        "phase": "waiting",
+        "turn": "p2",
+        "publicJaipur": {
+          "market": [
+            {
+              "id": "r1-p2-h4",
+              "good": "gold"
+            },
+            {
+              "id": "r1-p2-h1",
+              "good": "silver"
+            },
+            {
+              "id": "r1-p1-h4",
+              "good": "diamond"
+            },
+            {
+              "id": "r1-p1-h2",
+              "good": "leather"
+            },
+            {
+              "id": "r1-p1-h1",
+              "good": "silver"
+            }
+          ],
+          "deckCount": 35,
+          "round": 1,
+          "tokens": {
+            "p1": 0,
+            "p2": 0
+          },
+          "piles": {
+            "gold": [
+              6,
+              null,
+              null,
+              null,
+              null
+            ],
+            "cloth": [
+              5,
+              null,
+              null,
+              null,
+              null,
+              null,
+              null
+            ],
+            "spice": [
+              5,
+              null,
+              null,
+              null,
+              null,
+              null,
+              null
+            ],
+            "silver": [
+              5,
+              null,
+              null,
+              null,
+              null
+            ],
+            "diamond": [
+              7,
+              null,
+              null,
+              null,
+              null
+            ],
+            "leather": [
+              4,
+              null,
+              null,
+              null,
+              null,
+              null,
+              null,
+              null,
+              null
+            ]
+          },
+          "herds": {
+            "p1": 5,
+            "p2": 0
+          },
+          "wins": {
+            "p1": 0,
+            "p2": 0
+          },
+          "bonusCounts": {
+            "3": 7,
+            "4": 6,
+            "5": 5
+          }
+        },
+        "language": "ko",
+        "leakedPrivateMap": false
+      },
+      "notices": []
+    },
+    {
+      "public": {
+        "room": "5e09ebe4-f032-45e7-9927-5ae108f83891",
+        "error": null,
+        "pending": null,
+        "version": 5,
+        "player": "p2",
+        "mode": "online",
+        "game": "jaipur",
+        "phase": "choose",
+        "turn": "p2",
+        "publicJaipur": {
+          "market": [
+            {
+              "id": "r1-p2-h4",
+              "good": "gold"
+            },
+            {
+              "id": "r1-p2-h1",
+              "good": "silver"
+            },
+            {
+              "id": "r1-p1-h4",
+              "good": "diamond"
+            },
+            {
+              "id": "r1-p1-h2",
+              "good": "leather"
+            },
+            {
+              "id": "r1-p1-h1",
+              "good": "silver"
+            }
+          ],
+          "deckCount": 35,
+          "round": 1,
+          "tokens": {
+            "p1": 0,
+            "p2": 0
+          },
+          "piles": {
+            "gold": [
+              6,
+              null,
+              null,
+              null,
+              null
+            ],
+            "cloth": [
+              5,
+              null,
+              null,
+              null,
+              null,
+              null,
+              null
+            ],
+            "spice": [
+              5,
+              null,
+              null,
+              null,
+              null,
+              null,
+              null
+            ],
+            "silver": [
+              5,
+              null,
+              null,
+              null,
+              null
+            ],
+            "diamond": [
+              7,
+              null,
+              null,
+              null,
+              null
+            ],
+            "leather": [
+              4,
+              null,
+              null,
+              null,
+              null,
+              null,
+              null,
+              null,
+              null
+            ]
+          },
+          "herds": {
+            "p1": 5,
+            "p2": 0
+          },
+          "wins": {
+            "p1": 0,
+            "p2": 0
+          },
+          "bonusCounts": {
+            "3": 7,
+            "4": 6,
+            "5": 5
+          }
+        },
+        "language": "es-DO",
+        "leakedPrivateMap": false
+      },
+      "notices": []
+    }
+  ]
+}

@@ -1,0 +1,1890 @@
+{
+  "game": "splendor",
+  "baseUrl": "http://127.0.0.1:5192",
+  "method": "Two independent contexts; UI-only room/create/join/consent/play; explicit read-only refresh; no Realtime",
+  "roomId": "3807bc6a-30cf-4e16-92c3-eaa8d1c83953",
+  "final": [
+    {
+      "roomId": "3807bc6a-30cf-4e16-92c3-eaa8d1c83953",
+      "playerId": "p1",
+      "version": 63,
+      "gameId": "splendor",
+      "players": 2,
+      "phase": "finished",
+      "turn": "p1",
+      "result": {
+        "reason": "final score 13-15",
+        "scores": {
+          "p1": 13,
+          "p2": 15
+        },
+        "winner": "p2"
+      },
+      "score": {
+        "p1": 13,
+        "p2": 15
+      },
+      "turns": {
+        "p1": 30,
+        "p2": 30
+      },
+      "cardCounts": {
+        "p1": 16,
+        "p2": 18
+      }
+    },
+    {
+      "roomId": "3807bc6a-30cf-4e16-92c3-eaa8d1c83953",
+      "playerId": "p2",
+      "version": 63,
+      "gameId": "splendor",
+      "players": 2,
+      "phase": "finished",
+      "turn": "p1",
+      "result": {
+        "reason": "final score 13-15",
+        "scores": {
+          "p1": 13,
+          "p2": 15
+        },
+        "winner": "p2"
+      },
+      "score": {
+        "p1": 13,
+        "p2": 15
+      },
+      "turns": {
+        "p1": 30,
+        "p2": 30
+      },
+      "cardCounts": {
+        "p1": 16,
+        "p2": 18
+      }
+    }
+  ],
+  "observations": [
+    {
+      "payment": {
+        "player": "p2",
+        "version": 7,
+        "id": "t1-38",
+        "source": "market",
+        "text": "Pago previsto\nCoste\nBono\nFichas\nOro\nFalta\n1\n0\n1\n0\n0\n1\n0\n1\n0\n0\n1\n0\n1\n0\n0\n1\n0\n1\n0\n0\nOro: 0 necesarios · 0 disponibles",
+        "expectedGold": 0,
+        "costs": {
+          "red": 1,
+          "blue": 1,
+          "black": 1,
+          "green": 0,
+          "white": 1
+        },
+        "discounts": {
+          "red": 0,
+          "blue": 0,
+          "black": 0,
+          "green": 0,
+          "white": 0
+        },
+        "ownTokens": {
+          "red": 1,
+          "blue": 1,
+          "gold": 0,
+          "black": 1,
+          "green": 1,
+          "white": 2
+        }
+      }
+    },
+    {
+      "payment": {
+        "player": "p1",
+        "version": 10,
+        "id": "t1-32",
+        "source": "market",
+        "text": "예상 지불\n비용\n할인\n낼 토큰\n금\n부족\n1\n0\n1\n0\n0\n2\n0\n1\n1\n0\n금 필요 1 · 보유 1",
+        "expectedGold": 1,
+        "costs": {
+          "red": 0,
+          "blue": 0,
+          "black": 2,
+          "green": 0,
+          "white": 1
+        },
+        "discounts": {
+          "red": 0,
+          "blue": 0,
+          "black": 0,
+          "green": 0,
+          "white": 0
+        },
+        "ownTokens": {
+          "red": 1,
+          "blue": 2,
+          "gold": 1,
+          "black": 1,
+          "green": 3,
+          "white": 1
+        }
+      }
+    },
+    {
+      "payment": {
+        "player": "p2",
+        "version": 13,
+        "id": "t1-22",
+        "source": "market",
+        "text": "Pago previsto\nCoste\nBono\nFichas\nOro\nFalta\n2\n1\n1\n0\n0\n2\n0\n1\n1\n0\nOro: 1 necesarios · 1 disponibles",
+        "expectedGold": 1,
+        "costs": {
+          "red": 0,
+          "blue": 0,
+          "black": 2,
+          "green": 2,
+          "white": 0
+        },
+        "discounts": {
+          "red": 0,
+          "blue": 0,
+          "black": 0,
+          "green": 1,
+          "white": 0
+        },
+        "ownTokens": {
+          "red": 1,
+          "blue": 0,
+          "gold": 1,
+          "black": 1,
+          "green": 1,
+          "white": 2
+        }
+      }
+    },
+    {
+      "returnPlan": {
+        "player": "p1",
+        "before": 9,
+        "picked": 3,
+        "returns": {
+          "white": 1,
+          "blue": 1
+        },
+        "text": "서로 다른 색 3/3 선택 · 반환 2개 · 현재 9 + 획득 3 − 반환 2 = 10/10\n\n흰색 1\n+\n−\n파랑 1\n+\n−\n초록 0\n+\n−\n빨강 0\n+\n−\n검정 0\n+\n−\n황금 0\n+\n−\n보석 가져오기"
+      }
+    },
+    {
+      "payment": {
+        "player": "p1",
+        "version": 16,
+        "id": "t2-20",
+        "source": "market",
+        "text": "예상 지불\n비용\n할인\n낼 토큰\n금\n부족\n1\n1\n0\n0\n0\n4\n0\n4\n0\n0\n2\n0\n2\n0\n0\n금 필요 0 · 보유 0",
+        "expectedGold": 0,
+        "costs": {
+          "red": 2,
+          "blue": 1,
+          "black": 0,
+          "green": 4,
+          "white": 0
+        },
+        "discounts": {
+          "red": 0,
+          "blue": 1,
+          "black": 0,
+          "green": 0,
+          "white": 0
+        },
+        "ownTokens": {
+          "red": 2,
+          "blue": 1,
+          "gold": 0,
+          "black": 2,
+          "green": 4,
+          "white": 1
+        }
+      }
+    },
+    {
+      "payment": {
+        "player": "p2",
+        "version": 17,
+        "id": "t1-29",
+        "source": "market",
+        "text": "Pago previsto\nCoste\nBono\nFichas\nOro\nFalta\n2\n0\n2\n0\n0\n1\n1\n0\n0\n0\n1\n1\n0\n0\n0\n1\n0\n1\n0\n0\nOro: 0 necesarios · 0 disponibles",
+        "expectedGold": 0,
+        "costs": {
+          "red": 0,
+          "blue": 1,
+          "black": 1,
+          "green": 1,
+          "white": 2
+        },
+        "discounts": {
+          "red": 0,
+          "blue": 1,
+          "black": 0,
+          "green": 1,
+          "white": 0
+        },
+        "ownTokens": {
+          "red": 2,
+          "blue": 0,
+          "gold": 0,
+          "black": 1,
+          "green": 0,
+          "white": 3
+        }
+      }
+    },
+    {
+      "payment": {
+        "player": "p1",
+        "version": 22,
+        "id": "t1-09",
+        "source": "market",
+        "text": "예상 지불\n비용\n할인\n낼 토큰\n금\n부족\n1\n0\n1\n0\n0\n1\n0\n1\n0\n0\n3\n1\n2\n0\n0\n금 필요 0 · 보유 0",
+        "expectedGold": 0,
+        "costs": {
+          "red": 1,
+          "blue": 0,
+          "black": 3,
+          "green": 0,
+          "white": 1
+        },
+        "discounts": {
+          "red": 0,
+          "blue": 1,
+          "black": 1,
+          "green": 0,
+          "white": 0
+        },
+        "ownTokens": {
+          "red": 1,
+          "blue": 1,
+          "gold": 0,
+          "black": 2,
+          "green": 3,
+          "white": 2
+        }
+      }
+    },
+    {
+      "payment": {
+        "player": "p2",
+        "version": 23,
+        "id": "t2-02",
+        "source": "market",
+        "text": "Pago previsto\nCoste\nBono\nFichas\nOro\nFalta\n2\n1\n1\n0\n0\n2\n1\n1\n0\n0\n3\n1\n2\n0\n0\nOro: 0 necesarios · 0 disponibles",
+        "expectedGold": 0,
+        "costs": {
+          "red": 3,
+          "blue": 2,
+          "black": 0,
+          "green": 2,
+          "white": 0
+        },
+        "discounts": {
+          "red": 1,
+          "blue": 1,
+          "black": 0,
+          "green": 1,
+          "white": 0
+        },
+        "ownTokens": {
+          "red": 3,
+          "blue": 1,
+          "gold": 0,
+          "black": 2,
+          "green": 1,
+          "white": 2
+        }
+      }
+    },
+    {
+      "payment": {
+        "player": "p2",
+        "version": 25,
+        "id": "t1-23",
+        "source": "market",
+        "text": "Pago previsto\nCoste\nBono\nFichas\nOro\nFalta\n2\n2\n0\n0\n0\n2\n1\n1\n0\n0\nOro: 0 necesarios · 0 disponibles",
+        "expectedGold": 0,
+        "costs": {
+          "red": 2,
+          "blue": 2,
+          "black": 0,
+          "green": 0,
+          "white": 0
+        },
+        "discounts": {
+          "red": 1,
+          "blue": 2,
+          "black": 0,
+          "green": 1,
+          "white": 0
+        },
+        "ownTokens": {
+          "red": 1,
+          "blue": 0,
+          "gold": 0,
+          "black": 2,
+          "green": 0,
+          "white": 2
+        }
+      }
+    },
+    {
+      "payment": {
+        "player": "p1",
+        "version": 26,
+        "id": "t1-39",
+        "source": "market",
+        "text": "예상 지불\n비용\n할인\n낼 토큰\n금\n부족\n1\n0\n1\n0\n0\n1\n1\n0\n0\n0\n1\n0\n1\n0\n0\n1\n1\n0\n0\n0\n금 필요 0 · 보유 0",
+        "expectedGold": 0,
+        "costs": {
+          "red": 0,
+          "blue": 1,
+          "black": 1,
+          "green": 1,
+          "white": 1
+        },
+        "discounts": {
+          "red": 1,
+          "blue": 1,
+          "black": 1,
+          "green": 0,
+          "white": 0
+        },
+        "ownTokens": {
+          "red": 0,
+          "blue": 2,
+          "gold": 0,
+          "black": 0,
+          "green": 4,
+          "white": 2
+        }
+      }
+    },
+    {
+      "payment": {
+        "player": "p2",
+        "version": 27,
+        "id": "t1-20",
+        "source": "market",
+        "text": "Pago previsto\nCoste\nBono\nFichas\nOro\nFalta\n2\n0\n2\n0\n0\n2\n2\n0\n0\n0\n1\n1\n0\n0\n0\nOro: 0 necesarios · 0 disponibles",
+        "expectedGold": 0,
+        "costs": {
+          "red": 1,
+          "blue": 2,
+          "black": 0,
+          "green": 0,
+          "white": 2
+        },
+        "discounts": {
+          "red": 1,
+          "blue": 2,
+          "black": 0,
+          "green": 2,
+          "white": 0
+        },
+        "ownTokens": {
+          "red": 0,
+          "blue": 0,
+          "gold": 0,
+          "black": 2,
+          "green": 0,
+          "white": 2
+        }
+      }
+    },
+    {
+      "payment": {
+        "player": "p1",
+        "version": 28,
+        "id": "t1-35",
+        "source": "market",
+        "text": "예상 지불\n비용\n할인\n낼 토큰\n금\n부족\n2\n0\n2\n0\n0\n1\n2\n0\n0\n0\n금 필요 0 · 보유 0",
+        "expectedGold": 0,
+        "costs": {
+          "red": 1,
+          "blue": 0,
+          "black": 0,
+          "green": 2,
+          "white": 0
+        },
+        "discounts": {
+          "red": 2,
+          "blue": 1,
+          "black": 1,
+          "green": 0,
+          "white": 0
+        },
+        "ownTokens": {
+          "red": 0,
+          "blue": 2,
+          "gold": 0,
+          "black": 0,
+          "green": 3,
+          "white": 1
+        }
+      }
+    },
+    {
+      "payment": {
+        "player": "p1",
+        "version": 30,
+        "id": "t1-18",
+        "source": "market",
+        "text": "예상 지불\n비용\n할인\n낼 토큰\n금\n부족\n1\n1\n0\n0\n0\n2\n2\n0\n0\n0\n2\n2\n0\n0\n0\n금 필요 0 · 보유 0",
+        "expectedGold": 0,
+        "costs": {
+          "red": 2,
+          "blue": 1,
+          "black": 2,
+          "green": 0,
+          "white": 0
+        },
+        "discounts": {
+          "red": 2,
+          "blue": 1,
+          "black": 2,
+          "green": 0,
+          "white": 0
+        },
+        "ownTokens": {
+          "red": 0,
+          "blue": 2,
+          "gold": 0,
+          "black": 0,
+          "green": 1,
+          "white": 1
+        }
+      }
+    },
+    {
+      "payment": {
+        "player": "p2",
+        "version": 31,
+        "id": "t1-15",
+        "source": "market",
+        "text": "Pago previsto\nCoste\nBono\nFichas\nOro\nFalta\n3\n2\n1\n0\n0\nOro: 0 necesarios · 0 disponibles",
+        "expectedGold": 0,
+        "costs": {
+          "red": 0,
+          "blue": 0,
+          "black": 0,
+          "green": 3,
+          "white": 0
+        },
+        "discounts": {
+          "red": 1,
+          "blue": 2,
+          "black": 1,
+          "green": 2,
+          "white": 0
+        },
+        "ownTokens": {
+          "red": 1,
+          "blue": 0,
+          "gold": 0,
+          "black": 2,
+          "green": 1,
+          "white": 1
+        }
+      }
+    },
+    {
+      "payment": {
+        "player": "p1",
+        "version": 32,
+        "id": "t1-08",
+        "source": "market",
+        "text": "예상 지불\n비용\n할인\n낼 토큰\n금\n부족\n1\n0\n1\n0\n0\n3\n1\n2\n0\n0\n1\n1\n0\n0\n0\n금 필요 0 · 보유 0",
+        "expectedGold": 0,
+        "costs": {
+          "red": 0,
+          "blue": 3,
+          "black": 0,
+          "green": 1,
+          "white": 1
+        },
+        "discounts": {
+          "red": 2,
+          "blue": 1,
+          "black": 2,
+          "green": 1,
+          "white": 0
+        },
+        "ownTokens": {
+          "red": 0,
+          "blue": 2,
+          "gold": 0,
+          "black": 0,
+          "green": 1,
+          "white": 1
+        }
+      }
+    },
+    {
+      "payment": {
+        "player": "p2",
+        "version": 35,
+        "id": "t1-13",
+        "source": "market",
+        "text": "Pago previsto\nCoste\nBono\nFichas\nOro\nFalta\n3\n1\n2\n0\n0\nOro: 0 necesarios · 0 disponibles",
+        "expectedGold": 0,
+        "costs": {
+          "red": 3,
+          "blue": 0,
+          "black": 0,
+          "green": 0,
+          "white": 0
+        },
+        "discounts": {
+          "red": 1,
+          "blue": 2,
+          "black": 2,
+          "green": 2,
+          "white": 0
+        },
+        "ownTokens": {
+          "red": 2,
+          "blue": 0,
+          "gold": 0,
+          "black": 3,
+          "green": 0,
+          "white": 2
+        }
+      }
+    },
+    {
+      "payment": {
+        "player": "p1",
+        "version": 36,
+        "id": "t1-07",
+        "source": "market",
+        "text": "예상 지불\n비용\n할인\n낼 토큰\n금\n부족\n1\n1\n0\n0\n0\n3\n2\n1\n0\n0\n1\n2\n0\n0\n0\n금 필요 0 · 보유 0",
+        "expectedGold": 0,
+        "costs": {
+          "red": 1,
+          "blue": 1,
+          "black": 0,
+          "green": 3,
+          "white": 0
+        },
+        "discounts": {
+          "red": 2,
+          "blue": 1,
+          "black": 2,
+          "green": 2,
+          "white": 0
+        },
+        "ownTokens": {
+          "red": 0,
+          "blue": 1,
+          "gold": 0,
+          "black": 0,
+          "green": 2,
+          "white": 1
+        }
+      }
+    },
+    {
+      "payment": {
+        "player": "p2",
+        "version": 37,
+        "id": "t1-33",
+        "source": "market",
+        "text": "Pago previsto\nCoste\nBono\nFichas\nOro\nFalta\n2\n0\n2\n0\n0\n1\n2\n0\n0\n0\nOro: 0 necesarios · 0 disponibles",
+        "expectedGold": 0,
+        "costs": {
+          "red": 0,
+          "blue": 1,
+          "black": 0,
+          "green": 0,
+          "white": 2
+        },
+        "discounts": {
+          "red": 1,
+          "blue": 2,
+          "black": 2,
+          "green": 3,
+          "white": 0
+        },
+        "ownTokens": {
+          "red": 0,
+          "blue": 0,
+          "gold": 0,
+          "black": 3,
+          "green": 0,
+          "white": 2
+        }
+      }
+    },
+    {
+      "payment": {
+        "player": "p1",
+        "version": 42,
+        "id": "t2-23",
+        "source": "reserved",
+        "text": "예상 지불\n비용\n할인\n낼 토큰\n금\n부족\n5\n2\n3\n0\n0\n금 필요 0 · 보유 0",
+        "expectedGold": 0,
+        "costs": {
+          "red": 0,
+          "blue": 0,
+          "black": 0,
+          "green": 5,
+          "white": 0
+        },
+        "discounts": {
+          "red": 2,
+          "blue": 2,
+          "black": 2,
+          "green": 2,
+          "white": 0
+        },
+        "ownTokens": {
+          "red": 1,
+          "blue": 2,
+          "gold": 0,
+          "black": 0,
+          "green": 3,
+          "white": 3
+        }
+      }
+    },
+    {
+      "payment": {
+        "player": "p2",
+        "version": 43,
+        "id": "t2-09",
+        "source": "market",
+        "text": "Pago previsto\nCoste\nBono\nFichas\nOro\nFalta\n3\n2\n1\n0\n0\n2\n1\n1\n0\n0\n3\n2\n1\n0\n0\nOro: 0 necesarios · 0 disponibles",
+        "expectedGold": 0,
+        "costs": {
+          "red": 2,
+          "blue": 3,
+          "black": 3,
+          "green": 0,
+          "white": 0
+        },
+        "discounts": {
+          "red": 1,
+          "blue": 2,
+          "black": 2,
+          "green": 4,
+          "white": 0
+        },
+        "ownTokens": {
+          "red": 2,
+          "blue": 1,
+          "gold": 0,
+          "black": 4,
+          "green": 1,
+          "white": 1
+        }
+      }
+    },
+    {
+      "payment": {
+        "player": "p1",
+        "version": 44,
+        "id": "t1-05",
+        "source": "market",
+        "text": "예상 지불\n비용\n할인\n낼 토큰\n금\n부족\n4\n2\n2\n0\n0\n금 필요 0 · 보유 0",
+        "expectedGold": 0,
+        "costs": {
+          "red": 0,
+          "blue": 4,
+          "black": 0,
+          "green": 0,
+          "white": 0
+        },
+        "discounts": {
+          "red": 2,
+          "blue": 2,
+          "black": 2,
+          "green": 3,
+          "white": 0
+        },
+        "ownTokens": {
+          "red": 1,
+          "blue": 2,
+          "gold": 0,
+          "black": 0,
+          "green": 0,
+          "white": 3
+        }
+      }
+    },
+    {
+      "payment": {
+        "player": "p2",
+        "version": 45,
+        "id": "t1-12",
+        "source": "market",
+        "text": "Pago previsto\nCoste\nBono\nFichas\nOro\nFalta\n3\n2\n1\n0\n0\nOro: 0 necesarios · 0 disponibles",
+        "expectedGold": 0,
+        "costs": {
+          "red": 0,
+          "blue": 0,
+          "black": 3,
+          "green": 0,
+          "white": 0
+        },
+        "discounts": {
+          "red": 2,
+          "blue": 2,
+          "black": 2,
+          "green": 4,
+          "white": 0
+        },
+        "ownTokens": {
+          "red": 1,
+          "blue": 0,
+          "gold": 0,
+          "black": 3,
+          "green": 1,
+          "white": 1
+        }
+      }
+    },
+    {
+      "payment": {
+        "player": "p1",
+        "version": 46,
+        "id": "t2-08",
+        "source": "market",
+        "text": "예상 지불\n비용\n할인\n낼 토큰\n금\n부족\n3\n0\n3\n0\n0\n2\n3\n0\n0\n0\n3\n2\n1\n0\n0\n금 필요 0 · 보유 0",
+        "expectedGold": 0,
+        "costs": {
+          "red": 3,
+          "blue": 0,
+          "black": 0,
+          "green": 2,
+          "white": 3
+        },
+        "discounts": {
+          "red": 2,
+          "blue": 2,
+          "black": 3,
+          "green": 3,
+          "white": 0
+        },
+        "ownTokens": {
+          "red": 1,
+          "blue": 0,
+          "gold": 0,
+          "black": 0,
+          "green": 0,
+          "white": 3
+        }
+      }
+    },
+    {
+      "payment": {
+        "player": "p2",
+        "version": 49,
+        "id": "t2-16",
+        "source": "market",
+        "text": "Pago previsto\nCoste\nBono\nFichas\nOro\nFalta\n1\n4\n0\n0\n0\n4\n2\n2\n0\n0\n2\n2\n0\n0\n0\nOro: 0 necesarios · 0 disponibles",
+        "expectedGold": 0,
+        "costs": {
+          "red": 4,
+          "blue": 0,
+          "black": 2,
+          "green": 1,
+          "white": 0
+        },
+        "discounts": {
+          "red": 2,
+          "blue": 3,
+          "black": 2,
+          "green": 4,
+          "white": 0
+        },
+        "ownTokens": {
+          "red": 2,
+          "blue": 0,
+          "gold": 0,
+          "black": 3,
+          "green": 1,
+          "white": 2
+        }
+      }
+    },
+    {
+      "payment": {
+        "player": "p1",
+        "version": 50,
+        "id": "t2-07",
+        "source": "market",
+        "text": "예상 지불\n비용\n할인\n낼 토큰\n금\n부족\n2\n2\n0\n0\n0\n3\n4\n0\n0\n0\n3\n3\n0\n0\n0\n금 필요 0 · 보유 0",
+        "expectedGold": 0,
+        "costs": {
+          "red": 0,
+          "blue": 2,
+          "black": 3,
+          "green": 3,
+          "white": 0
+        },
+        "discounts": {
+          "red": 2,
+          "blue": 2,
+          "black": 3,
+          "green": 4,
+          "white": 0
+        },
+        "ownTokens": {
+          "red": 0,
+          "blue": 1,
+          "gold": 0,
+          "black": 0,
+          "green": 1,
+          "white": 1
+        }
+      }
+    },
+    {
+      "payment": {
+        "player": "p2",
+        "version": 51,
+        "id": "t2-01",
+        "source": "market",
+        "text": "Pago previsto\nCoste\nBono\nFichas\nOro\nFalta\n3\n4\n0\n0\n0\n2\n2\n0\n0\n0\n2\n2\n0\n0\n0\nOro: 0 necesarios · 0 disponibles",
+        "expectedGold": 0,
+        "costs": {
+          "red": 2,
+          "blue": 0,
+          "black": 2,
+          "green": 3,
+          "white": 0
+        },
+        "discounts": {
+          "red": 2,
+          "blue": 3,
+          "black": 2,
+          "green": 4,
+          "white": 1
+        },
+        "ownTokens": {
+          "red": 0,
+          "blue": 0,
+          "gold": 0,
+          "black": 3,
+          "green": 1,
+          "white": 2
+        }
+      }
+    },
+    {
+      "payment": {
+        "player": "p2",
+        "version": 53,
+        "id": "t2-10",
+        "source": "market",
+        "text": "Pago previsto\nCoste\nBono\nFichas\nOro\nFalta\n3\n2\n1\n0\n0\n3\n4\n0\n0\n0\n2\n2\n0\n0\n0\nOro: 0 necesarios · 0 disponibles",
+        "expectedGold": 0,
+        "costs": {
+          "red": 0,
+          "blue": 0,
+          "black": 2,
+          "green": 3,
+          "white": 3
+        },
+        "discounts": {
+          "red": 2,
+          "blue": 3,
+          "black": 2,
+          "green": 4,
+          "white": 2
+        },
+        "ownTokens": {
+          "red": 0,
+          "blue": 0,
+          "gold": 0,
+          "black": 3,
+          "green": 1,
+          "white": 2
+        }
+      }
+    },
+    {
+      "payment": {
+        "player": "p1",
+        "version": 54,
+        "id": "t2-13",
+        "source": "market",
+        "text": "예상 지불\n비용\n할인\n낼 토큰\n금\n부족\n6\n4\n2\n0\n0\n금 필요 0 · 보유 0",
+        "expectedGold": 0,
+        "costs": {
+          "red": 0,
+          "blue": 0,
+          "black": 0,
+          "green": 6,
+          "white": 0
+        },
+        "discounts": {
+          "red": 2,
+          "blue": 3,
+          "black": 3,
+          "green": 4,
+          "white": 0
+        },
+        "ownTokens": {
+          "red": 1,
+          "blue": 1,
+          "gold": 0,
+          "black": 0,
+          "green": 2,
+          "white": 2
+        }
+      }
+    },
+    {
+      "payment": {
+        "player": "p2",
+        "version": 55,
+        "id": "t2-17",
+        "source": "market",
+        "text": "Pago previsto\nCoste\nBono\nFichas\nOro\nFalta\n2\n2\n0\n0\n0\n1\n2\n0\n0\n0\n4\n3\n1\n0\n0\nOro: 0 necesarios · 0 disponibles",
+        "expectedGold": 0,
+        "costs": {
+          "red": 1,
+          "blue": 0,
+          "black": 4,
+          "green": 0,
+          "white": 2
+        },
+        "discounts": {
+          "red": 2,
+          "blue": 3,
+          "black": 3,
+          "green": 4,
+          "white": 2
+        },
+        "ownTokens": {
+          "red": 0,
+          "blue": 0,
+          "gold": 0,
+          "black": 3,
+          "green": 1,
+          "white": 1
+        }
+      }
+    },
+    {
+      "payment": {
+        "player": "p1",
+        "version": 56,
+        "id": "t2-19",
+        "source": "market",
+        "text": "예상 지불\n비용\n할인\n낼 토큰\n금\n부족\n1\n0\n1\n0\n0\n4\n3\n1\n0\n0\n2\n5\n0\n0\n0\n금 필요 0 · 보유 0",
+        "expectedGold": 0,
+        "costs": {
+          "red": 0,
+          "blue": 4,
+          "black": 0,
+          "green": 2,
+          "white": 1
+        },
+        "discounts": {
+          "red": 2,
+          "blue": 3,
+          "black": 3,
+          "green": 5,
+          "white": 0
+        },
+        "ownTokens": {
+          "red": 1,
+          "blue": 1,
+          "gold": 0,
+          "black": 0,
+          "green": 0,
+          "white": 2
+        }
+      }
+    },
+    {
+      "payment": {
+        "player": "p2",
+        "version": 57,
+        "id": "t1-19",
+        "source": "market",
+        "text": "Pago previsto\nCoste\nBono\nFichas\nOro\nFalta\n2\n2\n0\n0\n0\n1\n4\n0\n0\n0\n2\n3\n0\n0\n0\nOro: 0 necesarios · 0 disponibles",
+        "expectedGold": 0,
+        "costs": {
+          "red": 0,
+          "blue": 0,
+          "black": 2,
+          "green": 1,
+          "white": 2
+        },
+        "discounts": {
+          "red": 2,
+          "blue": 4,
+          "black": 3,
+          "green": 4,
+          "white": 2
+        },
+        "ownTokens": {
+          "red": 0,
+          "blue": 0,
+          "gold": 0,
+          "black": 2,
+          "green": 1,
+          "white": 1
+        }
+      }
+    },
+    {
+      "payment": {
+        "player": "p1",
+        "version": 58,
+        "id": "t1-02",
+        "source": "market",
+        "text": "예상 지불\n비용\n할인\n낼 토큰\n금\n부족\n4\n3\n1\n0\n0\n금 필요 0 · 보유 0",
+        "expectedGold": 0,
+        "costs": {
+          "red": 4,
+          "blue": 0,
+          "black": 0,
+          "green": 0,
+          "white": 0
+        },
+        "discounts": {
+          "red": 3,
+          "blue": 3,
+          "black": 3,
+          "green": 5,
+          "white": 0
+        },
+        "ownTokens": {
+          "red": 1,
+          "blue": 0,
+          "gold": 0,
+          "black": 0,
+          "green": 0,
+          "white": 1
+        }
+      }
+    },
+    {
+      "payment": {
+        "player": "p2",
+        "version": 59,
+        "id": "t3-02",
+        "source": "market",
+        "text": "Pago previsto\nCoste\nBono\nFichas\nOro\nFalta\n3\n2\n1\n0\n0\n3\n4\n0\n0\n0\n3\n3\n0\n0\n0\n5\n3\n2\n0\n0\nOro: 0 necesarios · 0 disponibles",
+        "expectedGold": 0,
+        "costs": {
+          "red": 3,
+          "blue": 0,
+          "black": 5,
+          "green": 3,
+          "white": 3
+        },
+        "discounts": {
+          "red": 3,
+          "blue": 4,
+          "black": 3,
+          "green": 4,
+          "white": 2
+        },
+        "ownTokens": {
+          "red": 0,
+          "blue": 0,
+          "gold": 0,
+          "black": 2,
+          "green": 1,
+          "white": 1
+        }
+      }
+    },
+    {
+      "payment": {
+        "player": "p1",
+        "version": 60,
+        "id": "t1-21",
+        "source": "market",
+        "text": "예상 지불\n비용\n할인\n낼 토큰\n금\n부족\n2\n4\n0\n0\n0\n2\n3\n0\n0\n0\n금 필요 0 · 보유 0",
+        "expectedGold": 0,
+        "costs": {
+          "red": 0,
+          "blue": 2,
+          "black": 2,
+          "green": 0,
+          "white": 0
+        },
+        "discounts": {
+          "red": 3,
+          "blue": 4,
+          "black": 3,
+          "green": 5,
+          "white": 0
+        },
+        "ownTokens": {
+          "red": 0,
+          "blue": 0,
+          "gold": 0,
+          "black": 0,
+          "green": 0,
+          "white": 1
+        }
+      }
+    },
+    {
+      "payment": {
+        "player": "p2",
+        "version": 61,
+        "id": "t1-01",
+        "source": "market",
+        "text": "Pago previsto\nCoste\nBono\nFichas\nOro\nFalta\n4\n4\n0\n0\n0\nOro: 0 necesarios · 0 disponibles",
+        "expectedGold": 0,
+        "costs": {
+          "red": 0,
+          "blue": 0,
+          "black": 0,
+          "green": 4,
+          "white": 0
+        },
+        "discounts": {
+          "red": 3,
+          "blue": 5,
+          "black": 3,
+          "green": 4,
+          "white": 2
+        },
+        "ownTokens": {
+          "red": 0,
+          "blue": 0,
+          "gold": 0,
+          "black": 0,
+          "green": 1,
+          "white": 0
+        }
+      }
+    },
+    {
+      "reached": {
+        "duplicate": true,
+        "cancel": true,
+        "focus": true,
+        "reserve": true,
+        "gold": true,
+        "discount": true,
+        "returns": true,
+        "reserveLimit": false,
+        "nobleChoice": true,
+        "nobleVisit": true,
+        "finalTurn": false
+      },
+      "boundedActions": 100,
+      "sameGameSwitcher": 0,
+      "ownCollectionKO": "영구 보너스\n1\n4\n5\n3\n3",
+      "ownCollectionES": "Bonificaciones permanentes\n3\n5\n4\n3\n3"
+    },
+    {
+      "resultKO": "상대가 이겼어요\n최종 점수 13 대 15",
+      "resultES": "Ganaste\nPuntuación final: 13 a 15"
+    }
+  ],
+  "errors": [],
+  "checks": {
+    "count": 689,
+    "passed": 689
+  },
+  "actions": 61,
+  "actionTypes": {
+    "takeTwo": 2,
+    "take": 22,
+    "reserve": 2,
+    "buy": 34,
+    "noble": 1
+  },
+  "moves": [
+    {
+      "step": 1,
+      "player": "p1",
+      "type": "takeTwo",
+      "gems": [
+        "green",
+        "green"
+      ],
+      "target": "t2-23",
+      "reason": "Gather toward visible target t2-23; outstanding colored needs {\"white\":0,\"blue\":0,\"green\":5,\"red\":0,\"black\":0}",
+      "versionBefore": 2
+    },
+    {
+      "step": 2,
+      "player": "p2",
+      "type": "take",
+      "gems": [
+        "green",
+        "white",
+        "blue"
+      ],
+      "target": "t2-23",
+      "reason": "Gather toward visible target t2-23; outstanding colored needs {\"white\":0,\"blue\":0,\"green\":5,\"red\":0,\"black\":0}",
+      "versionBefore": 3
+    },
+    {
+      "step": 3,
+      "player": "p1",
+      "type": "reserve",
+      "id": "t2-23",
+      "source": "market",
+      "points": 2,
+      "reason": "Secure near-term development/prestige target and gain gold against 3 missing tokens",
+      "versionBefore": 4
+    },
+    {
+      "step": 4,
+      "player": "p2",
+      "type": "take",
+      "gems": [
+        "white",
+        "red",
+        "black"
+      ],
+      "target": "t2-25",
+      "reason": "Gather toward visible target t2-25; outstanding colored needs {\"white\":4,\"blue\":0,\"green\":0,\"red\":0,\"black\":0}",
+      "versionBefore": 5
+    },
+    {
+      "step": 5,
+      "player": "p1",
+      "type": "take",
+      "gems": [
+        "green",
+        "blue",
+        "red"
+      ],
+      "target": "t2-13",
+      "reason": "Gather toward visible target t2-13; outstanding colored needs {\"white\":0,\"blue\":0,\"green\":4,\"red\":0,\"black\":0}",
+      "versionBefore": 6
+    },
+    {
+      "step": 6,
+      "player": "p2",
+      "type": "buy",
+      "id": "t1-38",
+      "source": "market",
+      "points": 0,
+      "reason": "Buy public/own card: prestige 0, discounted total 4, gold substitution 0",
+      "versionBefore": 7
+    },
+    {
+      "step": 7,
+      "player": "p1",
+      "type": "take",
+      "gems": [
+        "white",
+        "black",
+        "blue"
+      ],
+      "target": "t2-25",
+      "reason": "Gather toward visible target t2-25; outstanding colored needs {\"white\":5,\"blue\":0,\"green\":0,\"red\":0,\"black\":0}",
+      "versionBefore": 8
+    },
+    {
+      "step": 8,
+      "player": "p2",
+      "type": "take",
+      "gems": [
+        "white",
+        "red",
+        "black"
+      ],
+      "target": "t2-25",
+      "reason": "Gather toward visible target t2-25; outstanding colored needs {\"white\":4,\"blue\":0,\"green\":0,\"red\":0,\"black\":0}",
+      "versionBefore": 9
+    },
+    {
+      "step": 9,
+      "player": "p1",
+      "type": "buy",
+      "id": "t1-32",
+      "source": "market",
+      "points": 0,
+      "reason": "Buy public/own card: prestige 0, discounted total 3, gold substitution 1",
+      "versionBefore": 10
+    },
+    {
+      "step": 10,
+      "player": "p2",
+      "type": "reserve",
+      "id": "t2-25",
+      "source": "market",
+      "points": 2,
+      "reason": "Secure near-term development/prestige target and gain gold against 3 missing tokens",
+      "versionBefore": 11
+    },
+    {
+      "step": 11,
+      "player": "p1",
+      "type": "take",
+      "gems": [
+        "red",
+        "black",
+        "white"
+      ],
+      "target": "t2-02",
+      "reason": "Gather toward visible target t2-02; outstanding colored needs {\"white\":0,\"blue\":0,\"green\":0,\"red\":2,\"black\":0}",
+      "versionBefore": 12
+    },
+    {
+      "step": 12,
+      "player": "p2",
+      "type": "buy",
+      "id": "t1-22",
+      "source": "market",
+      "points": 0,
+      "reason": "Buy public/own card: prestige 0, discounted total 3, gold substitution 1",
+      "versionBefore": 13
+    },
+    {
+      "step": 13,
+      "player": "p1",
+      "type": "take",
+      "gems": [
+        "green",
+        "black",
+        "white"
+      ],
+      "target": "t2-23",
+      "reason": "Gather toward visible target t2-23; outstanding colored needs {\"white\":0,\"blue\":0,\"green\":2,\"red\":0,\"black\":0}",
+      "returns": {
+        "white": 1,
+        "blue": 1
+      },
+      "versionBefore": 14
+    },
+    {
+      "step": 14,
+      "player": "p2",
+      "type": "take",
+      "gems": [
+        "white",
+        "black",
+        "red"
+      ],
+      "target": "t2-25",
+      "reason": "Gather toward visible target t2-25; outstanding colored needs {\"white\":3,\"blue\":0,\"green\":0,\"red\":0,\"black\":0}",
+      "versionBefore": 15
+    },
+    {
+      "step": 15,
+      "player": "p1",
+      "type": "buy",
+      "id": "t2-20",
+      "source": "market",
+      "points": 2,
+      "reason": "Buy public/own card: prestige 2, discounted total 6, gold substitution 0",
+      "versionBefore": 16
+    },
+    {
+      "step": 16,
+      "player": "p2",
+      "type": "buy",
+      "id": "t1-29",
+      "source": "market",
+      "points": 0,
+      "reason": "Buy public/own card: prestige 0, discounted total 3, gold substitution 0",
+      "versionBefore": 17
+    },
+    {
+      "step": 17,
+      "player": "p1",
+      "type": "takeTwo",
+      "gems": [
+        "green",
+        "green"
+      ],
+      "target": "t2-23",
+      "reason": "Gather toward visible target t2-23; outstanding colored needs {\"white\":0,\"blue\":0,\"green\":5,\"red\":0,\"black\":0}",
+      "versionBefore": 18
+    },
+    {
+      "step": 18,
+      "player": "p2",
+      "type": "take",
+      "gems": [
+        "green",
+        "white",
+        "black"
+      ],
+      "target": "t2-13",
+      "reason": "Gather toward visible target t2-13; outstanding colored needs {\"white\":0,\"blue\":0,\"green\":5,\"red\":0,\"black\":0}",
+      "versionBefore": 19
+    },
+    {
+      "step": 19,
+      "player": "p1",
+      "type": "take",
+      "gems": [
+        "green",
+        "red",
+        "white"
+      ],
+      "target": "t2-23",
+      "reason": "Gather toward visible target t2-23; outstanding colored needs {\"white\":0,\"blue\":0,\"green\":3,\"red\":0,\"black\":0}",
+      "versionBefore": 20
+    },
+    {
+      "step": 20,
+      "player": "p2",
+      "type": "take",
+      "gems": [
+        "blue",
+        "black",
+        "red"
+      ],
+      "target": "t2-02",
+      "reason": "Gather toward visible target t2-02; outstanding colored needs {\"white\":0,\"blue\":1,\"green\":0,\"red\":0,\"black\":0}",
+      "versionBefore": 21
+    },
+    {
+      "step": 21,
+      "player": "p1",
+      "type": "buy",
+      "id": "t1-09",
+      "source": "market",
+      "points": 0,
+      "reason": "Buy public/own card: prestige 0, discounted total 4, gold substitution 0",
+      "versionBefore": 22
+    },
+    {
+      "step": 22,
+      "player": "p2",
+      "type": "buy",
+      "id": "t2-02",
+      "source": "market",
+      "points": 1,
+      "reason": "Buy public/own card: prestige 1, discounted total 4, gold substitution 0",
+      "versionBefore": 23
+    },
+    {
+      "step": 23,
+      "player": "p1",
+      "type": "take",
+      "gems": [
+        "green",
+        "white",
+        "blue"
+      ],
+      "target": "t2-23",
+      "reason": "Gather toward visible target t2-23; outstanding colored needs {\"white\":0,\"blue\":0,\"green\":2,\"red\":0,\"black\":0}",
+      "versionBefore": 24
+    },
+    {
+      "step": 24,
+      "player": "p2",
+      "type": "buy",
+      "id": "t1-23",
+      "source": "market",
+      "points": 0,
+      "reason": "Buy public/own card: prestige 0, discounted total 1, gold substitution 0",
+      "versionBefore": 25
+    },
+    {
+      "step": 25,
+      "player": "p1",
+      "type": "buy",
+      "id": "t1-39",
+      "source": "market",
+      "points": 0,
+      "reason": "Buy public/own card: prestige 0, discounted total 2, gold substitution 0",
+      "versionBefore": 26
+    },
+    {
+      "step": 26,
+      "player": "p2",
+      "type": "buy",
+      "id": "t1-20",
+      "source": "market",
+      "points": 0,
+      "reason": "Buy public/own card: prestige 0, discounted total 2, gold substitution 0",
+      "versionBefore": 27
+    },
+    {
+      "step": 27,
+      "player": "p1",
+      "type": "buy",
+      "id": "t1-35",
+      "source": "market",
+      "points": 0,
+      "reason": "Buy public/own card: prestige 0, discounted total 2, gold substitution 0",
+      "versionBefore": 28
+    },
+    {
+      "step": 28,
+      "player": "p2",
+      "type": "take",
+      "gems": [
+        "green",
+        "white",
+        "red"
+      ],
+      "target": "t2-13",
+      "reason": "Gather toward visible target t2-13; outstanding colored needs {\"white\":0,\"blue\":0,\"green\":4,\"red\":0,\"black\":0}",
+      "versionBefore": 29
+    },
+    {
+      "step": 29,
+      "player": "p1",
+      "type": "buy",
+      "id": "t1-18",
+      "source": "market",
+      "points": 0,
+      "reason": "Buy public/own card: prestige 0, discounted total 0, gold substitution 0",
+      "versionBefore": 30
+    },
+    {
+      "step": 30,
+      "player": "p2",
+      "type": "buy",
+      "id": "t1-15",
+      "source": "market",
+      "points": 0,
+      "reason": "Buy public/own card: prestige 0, discounted total 1, gold substitution 0",
+      "versionBefore": 31
+    },
+    {
+      "step": 31,
+      "player": "p1",
+      "type": "buy",
+      "id": "t1-08",
+      "source": "market",
+      "points": 0,
+      "reason": "Buy public/own card: prestige 0, discounted total 3, gold substitution 0",
+      "versionBefore": 32
+    },
+    {
+      "step": 32,
+      "player": "p2",
+      "type": "take",
+      "gems": [
+        "black",
+        "white",
+        "red"
+      ],
+      "target": "t3-06",
+      "reason": "Gather toward visible target t3-06; outstanding colored needs {\"white\":0,\"blue\":0,\"green\":0,\"red\":0,\"black\":3}",
+      "versionBefore": 33
+    },
+    {
+      "step": 33,
+      "player": "p1",
+      "type": "take",
+      "gems": [
+        "green",
+        "white",
+        "blue"
+      ],
+      "target": "t2-13",
+      "reason": "Gather toward visible target t2-13; outstanding colored needs {\"white\":0,\"blue\":0,\"green\":3,\"red\":0,\"black\":0}",
+      "versionBefore": 34
+    },
+    {
+      "step": 34,
+      "player": "p2",
+      "type": "buy",
+      "id": "t1-13",
+      "source": "market",
+      "points": 0,
+      "reason": "Buy public/own card: prestige 0, discounted total 2, gold substitution 0",
+      "versionBefore": 35
+    },
+    {
+      "step": 35,
+      "player": "p1",
+      "type": "buy",
+      "id": "t1-07",
+      "source": "market",
+      "points": 0,
+      "reason": "Buy public/own card: prestige 0, discounted total 1, gold substitution 0",
+      "versionBefore": 36
+    },
+    {
+      "step": 36,
+      "player": "p2",
+      "type": "buy",
+      "id": "t1-33",
+      "source": "market",
+      "points": 0,
+      "reason": "Buy public/own card: prestige 0, discounted total 2, gold substitution 0",
+      "versionBefore": 37
+    },
+    {
+      "step": 37,
+      "player": "p1",
+      "type": "take",
+      "gems": [
+        "green",
+        "white",
+        "red"
+      ],
+      "target": "t2-13",
+      "reason": "Gather toward visible target t2-13; outstanding colored needs {\"white\":0,\"blue\":0,\"green\":3,\"red\":0,\"black\":0}",
+      "versionBefore": 38
+    },
+    {
+      "step": 38,
+      "player": "p2",
+      "type": "take",
+      "gems": [
+        "black",
+        "white",
+        "red"
+      ],
+      "target": "t3-06",
+      "reason": "Gather toward visible target t3-06; outstanding colored needs {\"white\":0,\"blue\":0,\"green\":0,\"red\":0,\"black\":2}",
+      "versionBefore": 39
+    },
+    {
+      "step": 39,
+      "player": "p1",
+      "type": "take",
+      "gems": [
+        "green",
+        "white",
+        "blue"
+      ],
+      "target": "t2-13",
+      "reason": "Gather toward visible target t2-13; outstanding colored needs {\"white\":0,\"blue\":0,\"green\":2,\"red\":0,\"black\":0}",
+      "versionBefore": 40
+    },
+    {
+      "step": 40,
+      "player": "p2",
+      "type": "take",
+      "gems": [
+        "green",
+        "red",
+        "blue"
+      ],
+      "target": "t2-13",
+      "reason": "Gather toward visible target t2-13; outstanding colored needs {\"white\":0,\"blue\":0,\"green\":2,\"red\":0,\"black\":0}",
+      "versionBefore": 41
+    },
+    {
+      "step": 41,
+      "player": "p1",
+      "type": "buy",
+      "id": "t2-23",
+      "source": "reserved",
+      "points": 2,
+      "reason": "Buy public/own card: prestige 2, discounted total 3, gold substitution 0",
+      "versionBefore": 42
+    },
+    {
+      "step": 42,
+      "player": "p2",
+      "type": "buy",
+      "id": "t2-09",
+      "source": "market",
+      "points": 1,
+      "reason": "Buy public/own card: prestige 1, discounted total 3, gold substitution 0",
+      "versionBefore": 43
+    },
+    {
+      "step": 43,
+      "player": "p1",
+      "type": "buy",
+      "id": "t1-05",
+      "source": "market",
+      "points": 1,
+      "reason": "Buy public/own card: prestige 1, discounted total 2, gold substitution 0",
+      "versionBefore": 44
+    },
+    {
+      "step": 44,
+      "player": "p2",
+      "type": "buy",
+      "id": "t1-12",
+      "source": "market",
+      "points": 0,
+      "reason": "Buy public/own card: prestige 0, discounted total 1, gold substitution 0",
+      "versionBefore": 45
+    },
+    {
+      "step": 45,
+      "player": "p1",
+      "type": "buy",
+      "id": "t2-08",
+      "source": "market",
+      "points": 1,
+      "reason": "Buy public/own card: prestige 1, discounted total 4, gold substitution 0",
+      "versionBefore": 46
+    },
+    {
+      "step": 46,
+      "player": "p2",
+      "type": "take",
+      "gems": [
+        "black",
+        "white",
+        "red"
+      ],
+      "target": "t3-06",
+      "reason": "Gather toward visible target t3-06; outstanding colored needs {\"white\":0,\"blue\":0,\"green\":0,\"red\":0,\"black\":3}",
+      "versionBefore": 47
+    },
+    {
+      "step": 47,
+      "player": "p1",
+      "type": "take",
+      "gems": [
+        "green",
+        "white",
+        "blue"
+      ],
+      "target": "t2-13",
+      "reason": "Gather toward visible target t2-13; outstanding colored needs {\"white\":0,\"blue\":0,\"green\":2,\"red\":0,\"black\":0}",
+      "versionBefore": 48
+    },
+    {
+      "step": 48,
+      "player": "p2",
+      "type": "buy",
+      "id": "t2-16",
+      "source": "market",
+      "points": 2,
+      "reason": "Buy public/own card: prestige 2, discounted total 2, gold substitution 0",
+      "versionBefore": 49
+    },
+    {
+      "step": 49,
+      "player": "p1",
+      "type": "buy",
+      "id": "t2-07",
+      "source": "market",
+      "points": 1,
+      "reason": "Buy public/own card: prestige 1, discounted total 0, gold substitution 0",
+      "versionBefore": 50
+    },
+    {
+      "step": 50,
+      "player": "p2",
+      "type": "buy",
+      "id": "t2-01",
+      "source": "market",
+      "points": 1,
+      "reason": "Buy public/own card: prestige 1, discounted total 0, gold substitution 0",
+      "versionBefore": 51
+    },
+    {
+      "step": 51,
+      "player": "p1",
+      "type": "take",
+      "gems": [
+        "green",
+        "white",
+        "red"
+      ],
+      "target": "t2-13",
+      "reason": "Gather toward visible target t2-13; outstanding colored needs {\"white\":0,\"blue\":0,\"green\":1,\"red\":0,\"black\":0}",
+      "versionBefore": 52
+    },
+    {
+      "step": 52,
+      "player": "p2",
+      "type": "buy",
+      "id": "t2-10",
+      "source": "market",
+      "points": 1,
+      "reason": "Buy public/own card: prestige 1, discounted total 1, gold substitution 0",
+      "versionBefore": 53
+    },
+    {
+      "step": 53,
+      "player": "p1",
+      "type": "buy",
+      "id": "t2-13",
+      "source": "market",
+      "points": 3,
+      "reason": "Buy public/own card: prestige 3, discounted total 2, gold substitution 0",
+      "versionBefore": 54
+    },
+    {
+      "step": 54,
+      "player": "p2",
+      "type": "buy",
+      "id": "t2-17",
+      "source": "market",
+      "points": 2,
+      "reason": "Buy public/own card: prestige 2, discounted total 1, gold substitution 0",
+      "versionBefore": 55
+    },
+    {
+      "step": 55,
+      "player": "p1",
+      "type": "buy",
+      "id": "t2-19",
+      "source": "market",
+      "points": 2,
+      "reason": "Buy public/own card: prestige 2, discounted total 2, gold substitution 0",
+      "versionBefore": 56
+    },
+    {
+      "step": 56,
+      "player": "p2",
+      "type": "buy",
+      "id": "t1-19",
+      "source": "market",
+      "points": 0,
+      "reason": "Buy public/own card: prestige 0, discounted total 0, gold substitution 0",
+      "versionBefore": 57
+    },
+    {
+      "step": 57,
+      "player": "p1",
+      "type": "buy",
+      "id": "t1-02",
+      "source": "market",
+      "points": 1,
+      "reason": "Buy public/own card: prestige 1, discounted total 1, gold substitution 0",
+      "versionBefore": 58
+    },
+    {
+      "step": 58,
+      "player": "p2",
+      "type": "buy",
+      "id": "t3-02",
+      "source": "market",
+      "points": 3,
+      "reason": "Buy public/own card: prestige 3, discounted total 3, gold substitution 0",
+      "versionBefore": 59
+    },
+    {
+      "step": 59,
+      "player": "p1",
+      "type": "buy",
+      "id": "t1-21",
+      "source": "market",
+      "points": 0,
+      "reason": "Buy public/own card: prestige 0, discounted total 0, gold substitution 0",
+      "versionBefore": 60
+    },
+    {
+      "step": 60,
+      "player": "p2",
+      "type": "buy",
+      "id": "t1-01",
+      "source": "market",
+      "points": 1,
+      "reason": "Buy public/own card: prestige 1, discounted total 0, gold substitution 0",
+      "versionBefore": 61
+    },
+    {
+      "step": 61,
+      "player": "p2",
+      "type": "noble",
+      "id": "n6",
+      "reason": "Choose a currently qualifying public noble with greatest prestige",
+      "versionBefore": 62
+    }
+  ],
+  "sourceRun": "output/playwright/live-two-player-qa/splendor/run-1791715252117",
+  "privatePlanningScope": "Only active ownHand tokens/bonuses/reserved and public market/bank/nobles; no opponent ownHand queried for planning."
+}

@@ -619,32 +619,200 @@ function play(state, seat, action) {
   next.log = event(next, { type: "turn", actor: next.turn, title: { ko: "\uB2E4\uC74C \uCC28\uB840", es: "Siguiente turno" } });
   return next;
 }
-function chooseDominoBotAction(hand, board, ends, difficulty = "normal", publicContext = {}) {
-  const playable = hand.flatMap((tile, index) => ["left", "right"].filter((side) => legalOrient(tile, side, ends)).map((side) => ({ tile, index, side })));
-  if (!playable.length) return { type: "pass" };
-  if (difficulty !== "easy") {
-    const rank = (item) => {
-      const { tile, index, side } = item;
-      const pips = tile.a + tile.b;
-      if (difficulty === "normal" || !ends) return pips;
-      const outer = side === "left" ? tile.a === ends.left ? tile.b : tile.a : tile.a === ends.right ? tile.b : tile.a;
-      const after = side === "left" ? [outer, ends.right] : [ends.left, outer];
-      const remaining = hand.filter((_, i) => i !== index);
-      const support = after.reduce((total, pip) => total + remaining.filter((t) => t.a === pip || t.b === pip).length, 0);
-      const seen = board.filter((t) => t.a === outer || t.b === outer).length + hand.filter((t) => t.a === outer || t.b === outer).length;
-      const unsupported = after.filter((pip) => !remaining.some((t) => t.a === pip || t.b === pip)).length;
-      return pips + support * 6 - unsupported * 5 + Math.min(seen, 7) * (publicContext.passes ? 2 : 1);
-    };
-    playable.sort((x, y) => rank(y) - rank(x) || Number(y.tile.a === y.tile.b) - Number(x.tile.a === x.tile.b) || x.index - y.index);
+var allTiles = Array.from({ length: 7 }, (_, a) => Array.from({ length: 7 - a }, (_2, i) => ({ a, b: a + i }))).flat();
+var tileId = (tile) => `${Math.min(tile.a, tile.b)}-${Math.max(tile.a, tile.b)}`;
+var matches = (tile, pip) => tile.a === pip || tile.b === pip;
+function placedEnds(tile, side, current) {
+  if (!current) return { left: tile.a, right: tile.b };
+  const oriented = side === "left" ? tile.b === current.left ? tile : { a: tile.b, b: tile.a } : tile.a === current.right ? tile : { a: tile.b, b: tile.a };
+  return side === "left" ? { left: oriented.a, right: current.right } : { left: current.left, right: oriented.b };
+}
+function legalMoves(hand, ends) {
+  return hand.flatMap((tile, index) => ["left", "right"].filter((side) => legalOrient(tile, side, ends)).map((side) => ({ tile, index, side, ends: placedEnds(tile, side, ends) })));
+}
+function teamOf(mode, seat) {
+  return mode === "partners" ? seat === "p1" || seat === "b1" ? "p1" : "p2" : mode === "humans-vs-bots" ? seat === "p1" || seat === "p2" ? "p1" : "p2" : seat === "p1" ? "p1" : "p2";
+}
+function following(mode, seat, offset) {
+  const order = seats(mode), i = order.indexOf(seat);
+  return order[(i + offset) % order.length];
+}
+function currentRoundEvents(context, board) {
+  const log = context.log ?? [], roundStart = log.map((event2) => event2.type).lastIndexOf("round-start");
+  const firstBoardSequence = Math.min(...board.map((tile) => tile.sequence ?? Infinity));
+  const startSequence = roundStart >= 0 ? log[roundStart].sequence : Number.isFinite(firstBoardSequence) ? firstBoardSequence : Infinity;
+  return log.filter((event2) => event2.sequence > startSequence);
+}
+function passVoids(context, board) {
+  const voids = /* @__PURE__ */ new Map();
+  for (const event2 of currentRoundEvents(context, board)) if (event2.type === "pass" && event2.actor && event2.ends) {
+    const values = voids.get(event2.actor) ?? /* @__PURE__ */ new Set();
+    values.add(event2.ends.left);
+    values.add(event2.ends.right);
+    voids.set(event2.actor, values);
   }
-  return { type: "play", payload: { index: playable[0].index, side: playable[0].side } };
+  return voids;
+}
+function unseenTiles(hand, board) {
+  const known = new Set([...hand, ...board].map(tileId));
+  return allTiles.filter((tile) => !known.has(tileId(tile)));
+}
+function probabilityCanPlay(seat, ends, unseen, voids, counts) {
+  const forbidden = voids.get(seat) ?? /* @__PURE__ */ new Set();
+  const eligible = unseen.filter((tile) => !forbidden.has(tile.a) && !forbidden.has(tile.b));
+  const count2 = Math.max(0, Math.min(eligible.length, counts[seat] ?? 0));
+  const matching = eligible.filter((tile) => matches(tile, ends.left) || matches(tile, ends.right)).length;
+  let none = 1;
+  for (let i = 0; i < count2; i++) none *= Math.max(0, eligible.length - matching - i) / Math.max(1, eligible.length - i);
+  return 1 - none;
+}
+function allySignal(ally, ends, context, board, voids) {
+  const last = currentRoundEvents(context, board).slice().reverse().find((event2) => event2.type === "play" && event2.actor === ally && event2.tile);
+  if (!last?.tile) return 0;
+  const allyVoids = voids.get(ally) ?? /* @__PURE__ */ new Set();
+  const faces = [last.tile.a, last.tile.b].filter((value, index, values) => values.indexOf(value) === index);
+  return faces.some((pip) => (pip === ends.left || pip === ends.right) && !allyVoids.has(pip)) ? 2.2 : 0;
+}
+function handSupport(hand, ends) {
+  return hand.reduce((sum2, tile) => sum2 + Number(matches(tile, ends.left)) + Number(matches(tile, ends.right)), 0);
+}
+function futureReach(hand, ends) {
+  let best = 0;
+  for (const first of legalMoves(hand, ends)) {
+    const afterFirst = hand.filter((_, index) => index !== first.index);
+    const firstSupport = handSupport(afterFirst, first.ends);
+    for (const second of legalMoves(afterFirst, first.ends)) {
+      const afterSecond = afterFirst.filter((_, index) => index !== second.index);
+      const score2 = first.tile.a + first.tile.b + handSupport(afterSecond, second.ends) * 0.65 + firstSupport * 0.2;
+      best = Math.max(best, score2);
+    }
+    best = Math.max(best, first.tile.a + first.tile.b + firstSupport * 0.45);
+  }
+  return best;
+}
+function rngFrom(publicText) {
+  let state = 2166136261;
+  for (let i = 0; i < publicText.length; i++) state = Math.imul(state ^ publicText.charCodeAt(i), 16777619) >>> 0;
+  return () => {
+    state = Math.imul(state, 1664525) + 1013904223 >>> 0;
+    return state / 4294967296;
+  };
+}
+function sampleUnknownHands(unseen, actor, mode, counts, voids, random) {
+  const originalSeats = seats(mode).filter((seat) => seat !== actor), needed = new Map(originalSeats.map((seat) => [seat, Math.max(0, counts[seat] ?? 7)]));
+  let workBudget = 64;
+  const pick = (remaining, pending, result) => {
+    if (!pending.length) return result;
+    const options = pending.map((seat2) => ({ seat: seat2, eligible: remaining.filter((tile) => {
+      const blocked = voids.get(seat2) ?? /* @__PURE__ */ new Set();
+      return !blocked.has(tile.a) && !blocked.has(tile.b);
+    }) }));
+    options.sort((a, b) => a.eligible.length - b.eligible.length);
+    const { seat, eligible } = options[0], count2 = needed.get(seat) ?? 0;
+    if (eligible.length < count2) return null;
+    const restSeats = pending.filter((value) => value !== seat);
+    for (let attempt = 0; attempt < 48 && workBudget > 0; attempt++, workBudget--) {
+      const shuffled = eligible.slice();
+      for (let i = shuffled.length - 1; i > 0; i--) {
+        const j = Math.floor(random() * (i + 1));
+        [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
+      }
+      const picked = shuffled.slice(0, count2), pickedIds = new Set(picked.map(tileId)), nextRemaining = remaining.filter((tile) => !pickedIds.has(tileId(tile)));
+      if (restSeats.some((other) => nextRemaining.filter((tile) => {
+        const blocked = voids.get(other) ?? /* @__PURE__ */ new Set();
+        return !blocked.has(tile.a) && !blocked.has(tile.b);
+      }).length < (needed.get(other) ?? 0))) continue;
+      const next = new Map(result);
+      next.set(seat, picked);
+      const complete = pick(nextRemaining, restSeats, next);
+      if (complete) return complete;
+    }
+    return null;
+  };
+  return pick(unseen, originalSeats, /* @__PURE__ */ new Map());
+}
+function sampledRollout(move, hand, actor, mode, board, ends, context, sampled) {
+  const hands = { p1: [], p2: [], b1: [], b2: [] };
+  hands[actor] = hand.slice();
+  for (const [seat, tiles] of sampled) hands[seat] = tiles.slice();
+  const known = new Set([...hand, ...board, ...Array.from(sampled.values()).flat()].map(tileId));
+  let state = { seed: 0, turn: actor, mode, hands, stock: allTiles.filter((tile) => !known.has(tileId(tile))), board: board.map((tile) => ({ ...tile })), ends: ends ? { ...ends } : null, passes: context.passes ?? 0, opening: { player: actor, tile: move.tile }, result: null, rulesVersion: 1, settings: { ...DEFAULT_SETTINGS, tranqueRule: context.tranqueRule ?? "team" }, matchScores: { p1: 0, p2: 0 }, round: 1, roundResult: null, log: (context.log ?? []).slice(), lastPlacer: board.at(-1)?.by ?? null, pasoAwarded: currentRoundEvents(context, board).some((event2) => event2.type === "paso-corrido"), roundBonuses: { p1: 0, p2: 0 } };
+  state = play(state, actor, { type: "play", payload: { index: move.index, side: move.side } });
+  for (let step2 = 0; step2 < 60 && !state.roundResult && !state.result; step2++) {
+    const seat = state.turn, seatHand = state.hands[seat], moves = legalMoves(seatHand, state.ends);
+    let chosen, chosenScore = -Infinity;
+    for (const candidate of moves) {
+      const rank = utility(candidate, seatHand, state.board, state.ends, {}, "normal", [], /* @__PURE__ */ new Map());
+      if (rank > chosenScore) {
+        chosen = candidate;
+        chosenScore = rank;
+      }
+    }
+    const action = chosen ? { type: "play", payload: { index: chosen.index, side: chosen.side } } : { type: "pass" };
+    state = play(state, seat, action);
+  }
+  const result = state.roundResult;
+  if (!result) return 0;
+  if (result.winner === "draw") return 0;
+  const ownTeam = teamOf(mode, actor), other = ownTeam === "p1" ? "p2" : "p1", margin = (result.pips[other] - result.pips[ownTeam]) * 1e-3;
+  return result.winner === ownTeam ? 1 + margin : -1 - margin;
+}
+function hardRolloutWorlds(hand, actor, mode, board, context, unseen, voids) {
+  const text = JSON.stringify({ actor, mode, hand: hand.map(tileId).sort(), board: board.map((tile) => [tile.a, tile.b, tile.by, tile.sequence]), counts: context.counts, passes: context.passes, log: currentRoundEvents(context, board).map((event2) => [event2.sequence, event2.type, event2.actor, event2.ends]) });
+  const random = rngFrom(text), worlds = [];
+  for (let i = 0; i < 16; i++) {
+    const world = sampleUnknownHands(unseen, actor, mode, context.counts ?? {}, voids, random);
+    if (world) worlds.push(world);
+  }
+  return worlds;
+}
+function hardRolloutScore(move, hand, actor, mode, board, ends, context, worlds) {
+  if (!worlds.length) return 0;
+  return worlds.reduce((total, world) => total + sampledRollout(move, hand, actor, mode, board, ends, context, world), 0) / worlds.length;
+}
+function utility(move, hand, board, ends, context, difficulty, unseen, voids) {
+  const rest = hand.filter((_, index) => index !== move.index), pips = move.tile.a + move.tile.b;
+  if (!rest.length) return 1e6 + pips + (move.tile.a === move.tile.b ? move.tile.a : 0);
+  const support = handSupport(rest, move.ends), leftSupport = rest.filter((tile) => matches(tile, move.ends.left)).length, rightSupport = rest.filter((tile) => matches(tile, move.ends.right)).length;
+  let score2 = pips * (difficulty === "easy" ? 0.72 : 1.05) + (move.tile.a === move.tile.b ? 0.8 + move.tile.a * 0.12 : 0) + support * (difficulty === "easy" ? 0.55 : difficulty === "normal" ? 1.05 : 2.25);
+  score2 -= Number(leftSupport === 0) * 0.7 + Number(rightSupport === 0) * 0.7;
+  if (difficulty !== "hard") return score2;
+  const actor = context.actor, mode = context.mode ?? "1v1", counts = context.counts ?? {};
+  if (!actor) return score2 + futureReach(rest, move.ends) * 0.55;
+  const ownTeam = teamOf(mode, actor), near = Math.min(2, seats(mode).length - 1);
+  for (let offset = 1; offset <= near; offset++) {
+    const next = following(mode, actor, offset), sameTeam = teamOf(mode, next) === ownTeam;
+    const canPlay = probabilityCanPlay(next, move.ends, unseen, voids, counts);
+    const count2 = counts[next] ?? 7;
+    const weight = count2 <= 1 ? 11 : count2 <= 2 ? 8 : count2 <= 3 ? 5 : 3;
+    score2 += sameTeam ? canPlay * (offset === 1 ? 3.2 : 1.1) : -canPlay * weight * (offset === 1 ? 1 : 0.52);
+    if (sameTeam && offset === 1) score2 += allySignal(next, move.ends, context, board, voids);
+  }
+  score2 += futureReach(rest, move.ends) * 0.2;
+  return score2;
+}
+function chooseDominoBotAction(hand, board, ends, difficulty = "normal", publicContext = {}) {
+  const moves = legalMoves(hand, ends);
+  if (!moves.length) return { type: "pass" };
+  if (moves.length === 1) return { type: "play", payload: { index: moves[0].index, side: moves[0].side } };
+  const handOut = moves.find((move) => hand.length === 1);
+  if (handOut) return { type: "play", payload: { index: handOut.index, side: handOut.side } };
+  const unseen = difficulty === "hard" ? unseenTiles(hand, board) : [], voids = difficulty === "hard" ? passVoids(publicContext, board) : /* @__PURE__ */ new Map();
+  const worlds = difficulty === "hard" && publicContext.actor ? hardRolloutWorlds(hand, publicContext.actor, publicContext.mode ?? "1v1", board, publicContext, unseen, voids) : [];
+  const ranked = moves.map((move, index) => ({ move, index, score: utility(move, hand, board, ends, publicContext, difficulty, unseen, voids) }));
+  if (difficulty === "hard" && publicContext.actor && worlds.length) {
+    const candidates = ranked.slice().sort((a, b) => b.score - a.score || a.index - b.index).slice(0, Math.min(3, ranked.length));
+    for (const candidate of candidates) candidate.score += hardRolloutScore(candidate.move, hand, publicContext.actor, publicContext.mode ?? "1v1", board, ends, publicContext, worlds) * 30;
+  }
+  const best = ranked.reduce((chosen, item) => item.score > chosen.score ? item : chosen, ranked[0]).move;
+  return { type: "play", payload: { index: best.index, side: best.side } };
 }
 function botAction(s, seat) {
   if (!s.board.length && seat === s.opening.player) {
     const index = s.hands[seat].findIndex((t) => t.a === s.opening.tile.a && t.b === s.opening.tile.b);
     return { type: "play", payload: { index, side: "left" } };
   }
-  return chooseDominoBotAction(s.hands[seat], s.board, s.ends, s.settings?.difficulty ?? "normal", { passes: s.passes, counts: Object.fromEntries(seats(s.mode).map((x) => [x, s.hands[x].length])) });
+  return chooseDominoBotAction(s.hands[seat], s.board, s.ends, s.settings?.difficulty ?? "normal", { actor: seat, mode: s.mode, passes: s.passes, counts: Object.fromEntries(seats(s.mode).map((x) => [x, s.hands[x].length])), log: s.log, tranqueRule: s.settings?.tranqueRule });
 }
 function runBots(s) {
   let next = s;
@@ -2149,11 +2317,11 @@ function scoreResult(captures) {
   if (scores.p1 === scores.p2) return { winner: "draw", reason: "Equal Minhwatu scores / empate", scores };
   return { winner: scores.p1 > scores.p2 ? "p1" : "p2", reason: "Higher Minhwatu score / mayor puntuaci\xF3n", scores };
 }
-function matches(table, card2) {
+function matches2(table, card2) {
   return table.flatMap((c, index) => c.month === card2.month ? [index] : []);
 }
 function resolveCaptured(table, captures, card2, targetIndex) {
-  const indices = matches(table, card2);
+  const indices = matches2(table, card2);
   if (!indices.length) {
     table.push(card2);
     return false;
@@ -2172,7 +2340,7 @@ function finishTurn(s, player, deck, table, captures, hands = s.hands) {
 }
 function finishAfterPlay(s, player, table, captures, hands) {
   if (!s.deck.length) return finishTurn(s, player, [], table, captures, hands);
-  const [drawn, ...deck] = s.deck, indices = matches(table, drawn);
+  const [drawn, ...deck] = s.deck, indices = matches2(table, drawn);
   appendEvent2(s, { type: "draw", actor: player, title: { ko: `\uB354\uBBF8\uC5D0\uC11C ${drawn.month}\uC6D4 \uACF5\uAC1C`, es: `Sale una carta del mes ${drawn.month}` }, cards: [cloneCard(drawn)] });
   if (indices.length === 2) return { ...s, turn: player, hands, deck, table, captures, pending: { card: drawn }, phase: "capture-draw", result: null };
   captureWithEvent(s, player, table, captures, drawn, "draw");
@@ -2187,14 +2355,14 @@ function validate2(s, p, a) {
     if (s.phase !== "play") return "Resolve the current capture first";
     const index = a.payload?.index, target = a.payload?.targetIndex;
     if (!Number.isInteger(index) || Number(index) < 0 || Number(index) >= s.hands[p].length) return "Invalid hand index";
-    const matchesForCard = matches(s.table, s.hands[p][Number(index)]);
+    const matchesForCard = matches2(s.table, s.hands[p][Number(index)]);
     if (matchesForCard.length === 2 && (!Number.isInteger(target) || !matchesForCard.includes(Number(target)))) return "Choose one matching table card";
     if (matchesForCard.length !== 2 && target !== void 0) return "A target is only needed for a duplicate month";
     return null;
   }
   if (a.type === "capture") {
     if (s.phase !== "capture-draw" || !s.pending) return "No pending capture";
-    const target = a.payload?.targetIndex, found = matches(s.table, s.pending.card);
+    const target = a.payload?.targetIndex, found = matches2(s.table, s.pending.card);
     return found.length === 2 && Number.isInteger(target) && found.includes(Number(target)) ? null : "Choose one matching table card";
   }
   return "Unknown action";
@@ -2210,7 +2378,7 @@ function apply3(s, p, a) {
     captureWithEvent(s, p, table, captures, pending.card, "draw", index);
     return finishTurn(s, p, deck, table, captures, hands);
   }
-  const handIndex = Number(a.payload.index), card2 = hands[p].splice(handIndex, 1)[0], indices = matches(table, card2);
+  const handIndex = Number(a.payload.index), card2 = hands[p].splice(handIndex, 1)[0], indices = matches2(table, card2);
   appendEvent2(s, { type: "play", actor: p, title: { ko: `${card2.month}\uC6D4 ${card2.badge.ko} \uB0B4\uAE30`, es: `Jugada: mes ${card2.month}, ${card2.badge.es}` }, cards: [cloneCard(card2)] });
   captureWithEvent(s, p, table, captures, card2, "table", indices.length === 2 ? Number(a.payload.targetIndex) : void 0);
   return finishAfterPlay(s, p, table, captures, hands);
@@ -2227,11 +2395,11 @@ var minhwatuEngine = {
   getPlayerView(s, p) {
     const actions = [];
     if (!s.result && s.turn === p && s.phase === "play") s.hands[p].forEach((card2, index) => {
-      const targetIndices = matches(s.table, card2);
+      const targetIndices = matches2(s.table, card2);
       if (targetIndices.length === 2) targetIndices.forEach((targetIndex) => actions.push(actionLabel(`${card2.month}\uC6D4 ${card2.badge.ko} \u2192 \uBC14\uB2E5 ${targetIndex + 1}\uBC88`, `Mes ${card2.month} ${card2.badge.es} \u2192 mesa ${targetIndex + 1}`, { type: "play", payload: { index, targetIndex } })));
       else actions.push(actionLabel(`${card2.month}\uC6D4 ${card2.badge.ko} \uB0B4\uAE30`, `Jugar mes ${card2.month} ${card2.badge.es}`, { type: "play", payload: { index } }));
     });
-    if (!s.result && s.turn === p && s.phase === "capture-draw" && s.pending) matches(s.table, s.pending.card).forEach((targetIndex) => actions.push(actionLabel(`${s.pending.card.month}\uC6D4 \uCE74\uB4DC\uC640 \uBC14\uB2E5 ${targetIndex + 1}\uBC88 \uAC00\uC838\uC624\uAE30`, `Capturar mes ${s.pending.card.month} con mesa ${targetIndex + 1}`, { type: "capture", payload: { targetIndex } })));
+    if (!s.result && s.turn === p && s.phase === "capture-draw" && s.pending) matches2(s.table, s.pending.card).forEach((targetIndex) => actions.push(actionLabel(`${s.pending.card.month}\uC6D4 \uCE74\uB4DC\uC640 \uBC14\uB2E5 ${targetIndex + 1}\uBC88 \uAC00\uC838\uC624\uAE30`, `Capturar mes ${s.pending.card.month} con mesa ${targetIndex + 1}`, { type: "capture", payload: { targetIndex } })));
     const godoriBonus = s.result && s.rulesVersion !== 2 ? 0 : MINHWATU_GODORI_BONUS;
     const scores = scoreMinhwatuMatch(s.captures, godoriBonus);
     const hand = s.hands[p].map(cloneCard);

@@ -1,0 +1,237 @@
+{
+  "game": "jaipur",
+  "baseUrl": "http://127.0.0.1:5192",
+  "method": "Two independent contexts; UI-only room/create/join/consent/play; explicit read-only refresh; no Realtime",
+  "roomId": "8ce5d4d4-dedf-45f9-977a-8965d2a0ec7a",
+  "checks": [
+    {
+      "name": "Both public boards and versions agree",
+      "pass": true,
+      "details": {
+        "version": 0
+      }
+    },
+    {
+      "name": "Different contexts own separate seats",
+      "pass": true,
+      "details": [
+        {
+          "playerId": "p1",
+          "players": 2,
+          "gameId": null,
+          "roomId": "8ce5d4d4-dedf-45f9-977a-8965d2a0ec7a"
+        },
+        {
+          "playerId": "p2",
+          "players": 2,
+          "gameId": null,
+          "roomId": "8ce5d4d4-dedf-45f9-977a-8965d2a0ec7a"
+        }
+      ]
+    },
+    {
+      "name": "Both public boards and versions agree",
+      "pass": true,
+      "details": {
+        "version": 2
+      }
+    },
+    {
+      "name": "p1 1440px next-token values visible inside each cell",
+      "pass": true,
+      "details": {
+        "width": 1440,
+        "columns": "1024.25px 326.969px",
+        "piles": [
+          {
+            "text": "77점",
+            "valueVisible": true,
+            "labelVisible": false,
+            "inside": true
+          },
+          {
+            "text": "66점",
+            "valueVisible": true,
+            "labelVisible": false,
+            "inside": true
+          },
+          {
+            "text": "55점",
+            "valueVisible": true,
+            "labelVisible": false,
+            "inside": true
+          },
+          {
+            "text": "55점",
+            "valueVisible": true,
+            "labelVisible": false,
+            "inside": true
+          },
+          {
+            "text": "55점",
+            "valueVisible": true,
+            "labelVisible": false,
+            "inside": true
+          },
+          {
+            "text": "44점",
+            "valueVisible": true,
+            "labelVisible": false,
+            "inside": true
+          }
+        ]
+      }
+    },
+    {
+      "name": "p1 390px next-token values visible inside each cell",
+      "pass": true,
+      "details": {
+        "width": 390,
+        "columns": "338.406px",
+        "piles": [
+          {
+            "text": "77점",
+            "valueVisible": true,
+            "labelVisible": true,
+            "inside": true
+          },
+          {
+            "text": "66점",
+            "valueVisible": true,
+            "labelVisible": true,
+            "inside": true
+          },
+          {
+            "text": "55점",
+            "valueVisible": true,
+            "labelVisible": true,
+            "inside": true
+          },
+          {
+            "text": "55점",
+            "valueVisible": true,
+            "labelVisible": true,
+            "inside": true
+          },
+          {
+            "text": "55점",
+            "valueVisible": true,
+            "labelVisible": true,
+            "inside": true
+          },
+          {
+            "text": "44점",
+            "valueVisible": true,
+            "labelVisible": true,
+            "inside": true
+          }
+        ]
+      }
+    },
+    {
+      "name": "p1 mobile board remains a single column",
+      "pass": true,
+      "details": "338.406px"
+    },
+    {
+      "name": "p2 1440px next-token values visible inside each cell",
+      "pass": true,
+      "details": {
+        "width": 1440,
+        "columns": "1024.25px 326.969px",
+        "piles": [
+          {
+            "text": "77 pts",
+            "valueVisible": true,
+            "labelVisible": false,
+            "inside": true
+          },
+          {
+            "text": "66 pts",
+            "valueVisible": true,
+            "labelVisible": false,
+            "inside": true
+          },
+          {
+            "text": "55 pts",
+            "valueVisible": true,
+            "labelVisible": false,
+            "inside": true
+          },
+          {
+            "text": "55 pts",
+            "valueVisible": true,
+            "labelVisible": false,
+            "inside": true
+          },
+          {
+            "text": "55 pts",
+            "valueVisible": true,
+            "labelVisible": false,
+            "inside": true
+          },
+          {
+            "text": "44 pts",
+            "valueVisible": true,
+            "labelVisible": false,
+            "inside": true
+          }
+        ]
+      }
+    },
+    {
+      "name": "p2 390px next-token values visible inside each cell",
+      "pass": false,
+      "details": {
+        "width": 390,
+        "columns": "338.406px",
+        "piles": [
+          {
+            "text": "77 pts",
+            "valueVisible": true,
+            "labelVisible": true,
+            "inside": false
+          },
+          {
+            "text": "66 pts",
+            "valueVisible": true,
+            "labelVisible": true,
+            "inside": false
+          },
+          {
+            "text": "55 pts",
+            "valueVisible": true,
+            "labelVisible": true,
+            "inside": false
+          },
+          {
+            "text": "55 pts",
+            "valueVisible": true,
+            "labelVisible": true,
+            "inside": false
+          },
+          {
+            "text": "55 pts",
+            "valueVisible": true,
+            "labelVisible": true,
+            "inside": false
+          },
+          {
+            "text": "44 pts",
+            "valueVisible": true,
+            "labelVisible": true,
+            "inside": false
+          }
+        ]
+      }
+    }
+  ],
+  "moves": [],
+  "errors": [],
+  "failure": {
+    "message": "p2 390px next-token values visible inside each cell",
+    "stack": "AssertionError [ERR_ASSERTION]: p2 390px next-token values visible inside each cell\n    at check (file:///workspace/gitactions-main/scripts/play-two-player-qa.mjs:18:102)\n    at checkLayout (file:///workspace/gitactions-main/scripts/play-two-player-qa.mjs:82:5)\n    at async playJaipur (file:///workspace/gitactions-main/scripts/play-two-player-qa.mjs:88:5)\n    at async file:///workspace/gitactions-main/scripts/play-two-player-qa.mjs:554:35"
+  },
+  "scope": "Read-only layout after UI room create/join/game agreement;0 gameplay actions. ES390 next-token value/label escapes cell; no exact overflow pixel measurement in this attempt.",
+  "artifact": "qa-jaipur-token-cell-failure-es.png"
+}

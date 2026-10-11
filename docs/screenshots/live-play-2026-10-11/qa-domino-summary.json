@@ -1,0 +1,269 @@
+{
+  "game": "domino",
+  "baseUrl": "http://127.0.0.1:5192",
+  "method": "Two independent contexts; UI-only room/create/join/consent/play; explicit read-only refresh; no Realtime",
+  "roomId": "bf92ecc1-755f-4c0d-8e08-963d88294dee",
+  "final": [
+    {
+      "roomId": "bf92ecc1-755f-4c0d-8e08-963d88294dee",
+      "playerId": "p1",
+      "version": 15,
+      "gameId": "domino",
+      "players": 2,
+      "phase": "finished",
+      "turn": "p2",
+      "round": 1,
+      "result": {
+        "reason": "Blocked game; lower team pip total wins",
+        "scores": {
+          "p1": 3,
+          "p2": 19
+        },
+        "winner": "p1"
+      },
+      "tileCount": 10,
+      "counts": {
+        "p1": 1,
+        "p2": 3
+      }
+    },
+    {
+      "roomId": "bf92ecc1-755f-4c0d-8e08-963d88294dee",
+      "playerId": "p2",
+      "version": 15,
+      "gameId": "domino",
+      "players": 2,
+      "phase": "finished",
+      "turn": "p2",
+      "round": 1,
+      "result": {
+        "reason": "Blocked game; lower team pip total wins",
+        "scores": {
+          "p1": 3,
+          "p2": 19
+        },
+        "winner": "p1"
+      },
+      "tileCount": 10,
+      "counts": {
+        "p1": 1,
+        "p2": 3
+      }
+    }
+  ],
+  "observations": [
+    {
+      "resultKO": "매치 결과\n내 팀 승리\n\n남은 점수 3 대 19 · 이번 점수 19\n\n정산 점수: 내 팀 +19 · 상대 +0\n\n판이 막혔어요. 남은 타일 점수가 낮은 팀이 이겨요.",
+      "resultES": "Resultado del partido\nGanó el otro equipo\n\nPuntos restantes 3 a 19 · premio 19\n\nPuntos liquidados: Rival +19 · Tu equipo +0\n\nEl juego quedó bloqueado. Gana el equipo con menos puntos restantes.",
+      "restartControls": [
+        "⧉",
+        "방 닫기",
+        "상태 다시 확인",
+        "♫게임 효과음",
+        "↻",
+        "왼쪽 · 4",
+        "오른쪽 · 2",
+        "",
+        "⌃",
+        "",
+        "",
+        "",
+        "",
+        "",
+        "",
+        "",
+        "",
+        "",
+        "",
+        "",
+        ""
+      ],
+      "sameGameSwitcher": 0,
+      "wrongEndDone": true,
+      "duplicateDone": true
+    },
+    {
+      "narrowReadOnly": "Yeonseok ♡ Lisbeth\n게임은 컴퓨터에서 같이 하자 ♡\n\n휴대폰에서는 우리 페이지와 편지를 볼 수 있어. 게임은 컴퓨터의 넓은 화면에서 열어줘, baby.\n\n우리 페이지로 돌아가기\n↗",
+      "documentWidth": 390
+    },
+    {
+      "narrowReadOnly": "Yeonseok ♡ Lisbeth\nJuguemos juntos en la computadora ♡\n\nDesde tu celular puedes ver nuestra página y leer la carta. Para jugar, abre la página en una computadora, baby.\n\nVolver a nuestra página\n↗",
+      "documentWidth": 390
+    }
+  ],
+  "errors": [],
+  "checks": {
+    "count": 101,
+    "passed": 101
+  },
+  "actions": 13,
+  "actionTypes": {
+    "play": 10,
+    "pass": 3
+  },
+  "moves": [
+    {
+      "step": 1,
+      "player": "p1",
+      "type": "play",
+      "tile": [
+        4,
+        4
+      ],
+      "side": "left",
+      "reason": "shed 8 pips; keep 1 tiles connected to outer 4",
+      "versionBefore": 2,
+      "keyboard": true
+    },
+    {
+      "step": 2,
+      "player": "p2",
+      "type": "play",
+      "tile": [
+        4,
+        6
+      ],
+      "side": "left",
+      "reason": "shed 10 pips; keep 3 tiles connected to outer 6",
+      "versionBefore": 3,
+      "keyboard": false
+    },
+    {
+      "step": 3,
+      "player": "p1",
+      "type": "play",
+      "tile": [
+        2,
+        6
+      ],
+      "side": "left",
+      "reason": "shed 8 pips; keep 2 tiles connected to outer 2",
+      "versionBefore": 4,
+      "keyboard": true
+    },
+    {
+      "step": 4,
+      "player": "p2",
+      "type": "play",
+      "tile": [
+        1,
+        4
+      ],
+      "side": "right",
+      "reason": "shed 5 pips; keep 2 tiles connected to outer 1",
+      "versionBefore": 5,
+      "keyboard": true
+    },
+    {
+      "step": 5,
+      "player": "p1",
+      "type": "play",
+      "tile": [
+        2,
+        3
+      ],
+      "side": "left",
+      "reason": "shed 5 pips; keep 1 tiles connected to outer 3",
+      "versionBefore": 6,
+      "keyboard": true
+    },
+    {
+      "step": 6,
+      "player": "p2",
+      "type": "play",
+      "tile": [
+        3,
+        6
+      ],
+      "side": "left",
+      "reason": "shed 9 pips; keep 2 tiles connected to outer 6",
+      "versionBefore": 7,
+      "keyboard": true
+    },
+    {
+      "step": 7,
+      "player": "p1",
+      "type": "play",
+      "tile": [
+        1,
+        2
+      ],
+      "side": "right",
+      "reason": "shed 3 pips; keep 0 tiles connected to outer 2",
+      "versionBefore": 8,
+      "keyboard": true
+    },
+    {
+      "step": 8,
+      "player": "p2",
+      "type": "play",
+      "tile": [
+        5,
+        6
+      ],
+      "side": "left",
+      "reason": "shed 11 pips; keep 1 tiles connected to outer 5",
+      "versionBefore": 9,
+      "keyboard": true
+    },
+    {
+      "step": 9,
+      "player": "p1",
+      "type": "play",
+      "tile": [
+        0,
+        5
+      ],
+      "side": "left",
+      "reason": "shed 5 pips; keep 2 tiles connected to outer 0",
+      "versionBefore": 10,
+      "keyboard": true
+    },
+    {
+      "step": 10,
+      "player": "p2",
+      "type": "pass",
+      "reason": "No enabled matching tile in this player’s hand",
+      "versionBefore": 11
+    },
+    {
+      "step": 11,
+      "player": "p1",
+      "type": "play",
+      "tile": [
+        0,
+        4
+      ],
+      "side": "left",
+      "reason": "shed 4 pips; keep 0 tiles connected to outer 4",
+      "versionBefore": 12,
+      "keyboard": true
+    },
+    {
+      "step": 12,
+      "player": "p2",
+      "type": "pass",
+      "reason": "No enabled matching tile in this player’s hand",
+      "versionBefore": 13
+    },
+    {
+      "step": 13,
+      "player": "p1",
+      "type": "pass",
+      "reason": "No enabled matching tile in this player’s hand",
+      "versionBefore": 14
+    }
+  ],
+  "boundaryChecks": [
+    {
+      "name": "Escape cancels selection and restores tile focus",
+      "pass": true
+    },
+    {
+      "name": "Wrong endpoint is disabled and cannot advance version",
+      "pass": true,
+      "details": "오른쪽 끝 4 · 선택한 타일은 4에 맞지 않아요"
+    }
+  ],
+  "sourceRun": "output/playwright/live-two-player-qa/domino/run-1791714556960"
+}

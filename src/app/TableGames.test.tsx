@@ -4,7 +4,7 @@ import { existsSync } from 'node:fs';
 import { resolve } from 'node:path';
 import { describe, expect, it } from 'vitest';
 import splendorArt from '../../public/images/splendor/card-map.json';
-import { deriveSplendorVisualEvent, splendorActionPanelMessages, splendorCardAction, splendorCardArtSrc, splendorCardCostPlan, splendorCardPaymentRows, splendorGuidance, splendorNobleArtSrc, splendorRequiredReturns, splendorReserveChoices, splendorTakeAction, splendorTotalAfterTake, TableGames } from './TableGames';
+import { deriveSplendorVisualEvent, splendorActionPanelMessages, splendorCardAction, splendorCardArtSrc, splendorCardCostPlan, splendorCardPaymentRows, splendorGuidance, splendorNobleArtSrc, splendorRequiredReturns, splendorReserveChoices, splendorSelectedTier, splendorSelectedTierText, splendorTakeAction, splendorTotalAfterTake, TableGames } from './TableGames';
 import { jaipurSalePreview } from './JaipurBoard';
 import { splendorEngine } from '../games/splendor';
 
@@ -33,6 +33,16 @@ describe('TableGames public-state interaction guidance', () => {
     ];
     expect(splendorTakeAction(takeActions, ['green', 'white', 'blue'], { blue: 2 })).toBe(takeActions[1]);
     expect(splendorTakeAction(takeActions, ['green', 'white', 'blue'], { red: 2 })).toBeUndefined();
+  });
+
+  it('uses the reserved card tier for selected-panel headings in Korean and Spanish', () => {
+    for (const tier of [2, 3]) {
+      const selectedTier = splendorSelectedTier(undefined, tier);
+      expect(selectedTier).toBe(tier);
+      expect(splendorSelectedTierText('ko', selectedTier, 3)).toBe(`단계 ${tier} · 3점`);
+      expect(splendorSelectedTierText('es', selectedTier, 3)).toBe(`Nivel ${tier} · 3 pts`);
+    }
+    expect(splendorSelectedTier(1, 3)).toBe(1);
   });
 
   it('previews each color discount and allocates gold in the engine payment order', () => {

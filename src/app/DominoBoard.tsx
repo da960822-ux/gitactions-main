@@ -5,7 +5,6 @@ import { dominoTileKeys, orderDominoChain, previewDominoPlacement } from './domi
 import { DominoEventStage } from './DominoEventStage';
 import { DominoTile } from './DominoTile';
 import '../styles/domino-premium.css';
-import '../styles/table-playability.css';
 
 type AnyRecord = Record<string, any>;
 type Choice = { label?: Record<Language, string>; action: GameAction };
@@ -59,6 +58,7 @@ function Tile({ tile, className = '', label, sequence, previewSide }: { tile: An
 export default function DominoBoard({ view: rawView, language, playerId, runAction }: Props) {
   const view = record(rawView), board = record(view.board), settings = { ...DEFAULT_CONFIG, ...record(view.settings) } as Configuration;
   const mode = (MODES.includes(view.mode) ? view.mode : settings.mode) as Mode;
+  settings.mode = mode;
   const ownTeam: PlayerId = mode === 'humans-vs-bots' ? 'p1' : playerId;
   const actions: Choice[] = list(view.actions), hand: AnyRecord[] = list(view.hand), tiles: AnyRecord[] = list(board.tiles);
   const seats: Seat[] = list(board.seats).filter((seat): seat is Seat => ['p1', 'p2', 'b1', 'b2'].includes(seat));

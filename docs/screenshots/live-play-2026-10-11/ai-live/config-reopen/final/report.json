@@ -1,0 +1,1082 @@
+{
+  "game": "domino",
+  "baseUrl": "http://127.0.0.1:5192",
+  "modes": [
+    "humans-vs-bots",
+    "partners"
+  ],
+  "configurationOnly": true,
+  "configurationAttemptLimits": [
+    1,
+    4
+  ],
+  "method": "Two isolated KO / ES-DO browser contexts; UI-only room, consent, configuration and actions; exact-client read-only refresh; no game-state injection or sendAction calls.",
+  "checks": [
+    {
+      "name": "humans-vs-bots: two contexts joined distinct seats in one room",
+      "pass": true,
+      "details": [
+        {
+          "playerId": "p1",
+          "roomId": "de5c282e-be1f-4599-b92f-3d4bac15a75d",
+          "mode": "online"
+        },
+        {
+          "playerId": "p2",
+          "roomId": "de5c282e-be1f-4599-b92f-3d4bac15a75d",
+          "mode": "online"
+        }
+      ]
+    },
+    {
+      "name": "humans-vs-bots: language contexts remain KO and Dominican Spanish",
+      "pass": true,
+      "details": [
+        "ko",
+        "es-DO"
+      ]
+    },
+    {
+      "name": "Both independent viewers see the same latest public Domino board",
+      "pass": true,
+      "details": [
+        {
+          "playerId": "p1",
+          "version": 2,
+          "phase": "play",
+          "turn": "p2",
+          "round": 1
+        },
+        {
+          "playerId": "p2",
+          "version": 2,
+          "phase": "play",
+          "turn": "p2",
+          "round": 1
+        }
+      ]
+    },
+    {
+      "name": "Snapshot contains only the Domino player view, not raw engine secrets",
+      "pass": true,
+      "details": [
+        [
+          "ends",
+          "round",
+          "seats",
+          "teams",
+          "tiles",
+          "counts",
+          "scores",
+          "settings",
+          "actionLog",
+          "matchScores",
+          "roundResult",
+          "roundBonuses",
+          "rulesVersion"
+        ],
+        [
+          "ends",
+          "round",
+          "seats",
+          "teams",
+          "tiles",
+          "counts",
+          "scores",
+          "settings",
+          "actionLog",
+          "matchScores",
+          "roundResult",
+          "roundBonuses",
+          "rulesVersion"
+        ]
+      ]
+    },
+    {
+      "name": "humans-vs-bots: both players consented to Domino through the room UI",
+      "pass": true
+    },
+    {
+      "name": "Both independent viewers see the same latest public Domino board",
+      "pass": true,
+      "details": [
+        {
+          "playerId": "p1",
+          "version": 3,
+          "phase": "play",
+          "turn": "p2",
+          "round": 1
+        },
+        {
+          "playerId": "p2",
+          "version": 3,
+          "phase": "play",
+          "turn": "p2",
+          "round": 1
+        }
+      ]
+    },
+    {
+      "name": "Snapshot contains only the Domino player view, not raw engine secrets",
+      "pass": true,
+      "details": [
+        [
+          "ends",
+          "round",
+          "seats",
+          "teams",
+          "tiles",
+          "counts",
+          "scores",
+          "settings",
+          "actionLog",
+          "matchScores",
+          "roundResult",
+          "roundBonuses",
+          "rulesVersion"
+        ],
+        [
+          "ends",
+          "round",
+          "seats",
+          "teams",
+          "tiles",
+          "counts",
+          "scores",
+          "settings",
+          "actionLog",
+          "matchScores",
+          "roundResult",
+          "roundBonuses",
+          "rulesVersion"
+        ]
+      ]
+    },
+    {
+      "name": "humans-vs-bots: UI configuration persisted exact mode and hard bot difficulty",
+      "pass": true,
+      "details": [
+        {
+          "settings": {
+            "difficulty": "hard",
+            "targetScore": 0,
+            "tranqueRule": "team",
+            "capicuaBonus": 0,
+            "pasoCorridoBonus": 0
+          },
+          "boardSettings": {
+            "difficulty": "hard",
+            "targetScore": 0,
+            "tranqueRule": "team",
+            "capicuaBonus": 0,
+            "pasoCorridoBonus": 0
+          },
+          "seats": [
+            "p1",
+            "b1",
+            "p2",
+            "b2"
+          ],
+          "turn": "p2",
+          "tiles": 1
+        },
+        {
+          "settings": {
+            "difficulty": "hard",
+            "targetScore": 0,
+            "tranqueRule": "team",
+            "capicuaBonus": 0,
+            "pasoCorridoBonus": 0
+          },
+          "boardSettings": {
+            "difficulty": "hard",
+            "targetScore": 0,
+            "tranqueRule": "team",
+            "capicuaBonus": 0,
+            "pasoCorridoBonus": 0
+          },
+          "seats": [
+            "p1",
+            "b1",
+            "p2",
+            "b2"
+          ],
+          "turn": "p2",
+          "tiles": 1
+        }
+      ]
+    },
+    {
+      "name": "humans-vs-bots: hard difficulty remains visible after the opening tile",
+      "pass": true,
+      "details": "플레이 설정 보기\n사람 2명 대 봇 2명\n봇: 도전\n매치 목표: 한 라운드"
+    },
+    {
+      "name": "partners: two contexts joined distinct seats in one room",
+      "pass": true,
+      "details": [
+        {
+          "playerId": "p1",
+          "roomId": "d4019f80-b16e-4a4a-b0ab-9f7eeb929196",
+          "mode": "online"
+        },
+        {
+          "playerId": "p2",
+          "roomId": "d4019f80-b16e-4a4a-b0ab-9f7eeb929196",
+          "mode": "online"
+        }
+      ]
+    },
+    {
+      "name": "partners: language contexts remain KO and Dominican Spanish",
+      "pass": true,
+      "details": [
+        "ko",
+        "es-DO"
+      ]
+    },
+    {
+      "name": "Both independent viewers see the same latest public Domino board",
+      "pass": true,
+      "details": [
+        {
+          "playerId": "p1",
+          "version": 2,
+          "phase": "play",
+          "turn": "p2",
+          "round": 1
+        },
+        {
+          "playerId": "p2",
+          "version": 2,
+          "phase": "play",
+          "turn": "p2",
+          "round": 1
+        }
+      ]
+    },
+    {
+      "name": "Snapshot contains only the Domino player view, not raw engine secrets",
+      "pass": true,
+      "details": [
+        [
+          "ends",
+          "round",
+          "seats",
+          "teams",
+          "tiles",
+          "counts",
+          "scores",
+          "settings",
+          "actionLog",
+          "matchScores",
+          "roundResult",
+          "roundBonuses",
+          "rulesVersion"
+        ],
+        [
+          "ends",
+          "round",
+          "seats",
+          "teams",
+          "tiles",
+          "counts",
+          "scores",
+          "settings",
+          "actionLog",
+          "matchScores",
+          "roundResult",
+          "roundBonuses",
+          "rulesVersion"
+        ]
+      ]
+    },
+    {
+      "name": "partners: both players consented to Domino through the room UI",
+      "pass": true
+    },
+    {
+      "name": "Both independent viewers see the same latest public Domino board",
+      "pass": true,
+      "details": [
+        {
+          "playerId": "p1",
+          "version": 3,
+          "phase": "play",
+          "turn": "p2",
+          "round": 1
+        },
+        {
+          "playerId": "p2",
+          "version": 3,
+          "phase": "play",
+          "turn": "p2",
+          "round": 1
+        }
+      ]
+    },
+    {
+      "name": "Snapshot contains only the Domino player view, not raw engine secrets",
+      "pass": true,
+      "details": [
+        [
+          "ends",
+          "round",
+          "seats",
+          "teams",
+          "tiles",
+          "counts",
+          "scores",
+          "settings",
+          "actionLog",
+          "matchScores",
+          "roundResult",
+          "roundBonuses",
+          "rulesVersion"
+        ],
+        [
+          "ends",
+          "round",
+          "seats",
+          "teams",
+          "tiles",
+          "counts",
+          "scores",
+          "settings",
+          "actionLog",
+          "matchScores",
+          "roundResult",
+          "roundBonuses",
+          "rulesVersion"
+        ]
+      ]
+    },
+    {
+      "name": "partners: UI configuration persisted exact mode and hard bot difficulty",
+      "pass": true,
+      "details": [
+        {
+          "settings": {
+            "difficulty": "hard",
+            "targetScore": 0,
+            "tranqueRule": "team",
+            "capicuaBonus": 0,
+            "pasoCorridoBonus": 0
+          },
+          "boardSettings": {
+            "difficulty": "hard",
+            "targetScore": 0,
+            "tranqueRule": "team",
+            "capicuaBonus": 0,
+            "pasoCorridoBonus": 0
+          },
+          "seats": [
+            "p1",
+            "b1",
+            "p2",
+            "b2"
+          ],
+          "turn": "p2",
+          "tiles": 1
+        },
+        {
+          "settings": {
+            "difficulty": "hard",
+            "targetScore": 0,
+            "tranqueRule": "team",
+            "capicuaBonus": 0,
+            "pasoCorridoBonus": 0
+          },
+          "boardSettings": {
+            "difficulty": "hard",
+            "targetScore": 0,
+            "tranqueRule": "team",
+            "capicuaBonus": 0,
+            "pasoCorridoBonus": 0
+          },
+          "seats": [
+            "p1",
+            "b1",
+            "p2",
+            "b2"
+          ],
+          "turn": "p2",
+          "tiles": 1
+        }
+      ]
+    },
+    {
+      "name": "partners: hard difficulty remains visible after the opening tile",
+      "pass": true,
+      "details": "플레이 설정 보기\n사람-봇 팀전\n봇: 도전\n매치 목표: 한 라운드"
+    },
+    {
+      "name": "partners: two contexts joined distinct seats in one room",
+      "pass": true,
+      "details": [
+        {
+          "playerId": "p1",
+          "roomId": "69dbc0c3-831b-4f82-bb52-3ff7c993cb3e",
+          "mode": "online"
+        },
+        {
+          "playerId": "p2",
+          "roomId": "69dbc0c3-831b-4f82-bb52-3ff7c993cb3e",
+          "mode": "online"
+        }
+      ]
+    },
+    {
+      "name": "partners: language contexts remain KO and Dominican Spanish",
+      "pass": true,
+      "details": [
+        "ko",
+        "es-DO"
+      ]
+    },
+    {
+      "name": "Both independent viewers see the same latest public Domino board",
+      "pass": true,
+      "details": [
+        {
+          "playerId": "p1",
+          "version": 2,
+          "phase": "play",
+          "turn": "p2",
+          "round": 1
+        },
+        {
+          "playerId": "p2",
+          "version": 2,
+          "phase": "play",
+          "turn": "p2",
+          "round": 1
+        }
+      ]
+    },
+    {
+      "name": "Snapshot contains only the Domino player view, not raw engine secrets",
+      "pass": true,
+      "details": [
+        [
+          "ends",
+          "round",
+          "seats",
+          "teams",
+          "tiles",
+          "counts",
+          "scores",
+          "settings",
+          "actionLog",
+          "matchScores",
+          "roundResult",
+          "roundBonuses",
+          "rulesVersion"
+        ],
+        [
+          "ends",
+          "round",
+          "seats",
+          "teams",
+          "tiles",
+          "counts",
+          "scores",
+          "settings",
+          "actionLog",
+          "matchScores",
+          "roundResult",
+          "roundBonuses",
+          "rulesVersion"
+        ]
+      ]
+    },
+    {
+      "name": "partners: both players consented to Domino through the room UI",
+      "pass": true
+    },
+    {
+      "name": "Both independent viewers see the same latest public Domino board",
+      "pass": true,
+      "details": [
+        {
+          "playerId": "p1",
+          "version": 3,
+          "phase": "play",
+          "turn": "p2",
+          "round": 1
+        },
+        {
+          "playerId": "p2",
+          "version": 3,
+          "phase": "play",
+          "turn": "p2",
+          "round": 1
+        }
+      ]
+    },
+    {
+      "name": "Snapshot contains only the Domino player view, not raw engine secrets",
+      "pass": true,
+      "details": [
+        [
+          "ends",
+          "round",
+          "seats",
+          "teams",
+          "tiles",
+          "counts",
+          "scores",
+          "settings",
+          "actionLog",
+          "matchScores",
+          "roundResult",
+          "roundBonuses",
+          "rulesVersion"
+        ],
+        [
+          "ends",
+          "round",
+          "seats",
+          "teams",
+          "tiles",
+          "counts",
+          "scores",
+          "settings",
+          "actionLog",
+          "matchScores",
+          "roundResult",
+          "roundBonuses",
+          "rulesVersion"
+        ]
+      ]
+    },
+    {
+      "name": "partners: UI configuration persisted exact mode and hard bot difficulty",
+      "pass": true,
+      "details": [
+        {
+          "settings": {
+            "difficulty": "hard",
+            "targetScore": 0,
+            "tranqueRule": "team",
+            "capicuaBonus": 0,
+            "pasoCorridoBonus": 0
+          },
+          "boardSettings": {
+            "difficulty": "hard",
+            "targetScore": 0,
+            "tranqueRule": "team",
+            "capicuaBonus": 0,
+            "pasoCorridoBonus": 0
+          },
+          "seats": [
+            "p1",
+            "b1",
+            "p2",
+            "b2"
+          ],
+          "turn": "p2",
+          "tiles": 1
+        },
+        {
+          "settings": {
+            "difficulty": "hard",
+            "targetScore": 0,
+            "tranqueRule": "team",
+            "capicuaBonus": 0,
+            "pasoCorridoBonus": 0
+          },
+          "boardSettings": {
+            "difficulty": "hard",
+            "targetScore": 0,
+            "tranqueRule": "team",
+            "capicuaBonus": 0,
+            "pasoCorridoBonus": 0
+          },
+          "seats": [
+            "p1",
+            "b1",
+            "p2",
+            "b2"
+          ],
+          "turn": "p2",
+          "tiles": 1
+        }
+      ]
+    },
+    {
+      "name": "partners: hard difficulty remains visible after the opening tile",
+      "pass": true,
+      "details": "플레이 설정 보기\n사람-봇 팀전\n봇: 도전\n매치 목표: 한 라운드"
+    },
+    {
+      "name": "partners: two contexts joined distinct seats in one room",
+      "pass": true,
+      "details": [
+        {
+          "playerId": "p1",
+          "roomId": "86355d4b-10d0-45ec-8631-3447ea1138ea",
+          "mode": "online"
+        },
+        {
+          "playerId": "p2",
+          "roomId": "86355d4b-10d0-45ec-8631-3447ea1138ea",
+          "mode": "online"
+        }
+      ]
+    },
+    {
+      "name": "partners: language contexts remain KO and Dominican Spanish",
+      "pass": true,
+      "details": [
+        "ko",
+        "es-DO"
+      ]
+    },
+    {
+      "name": "Both independent viewers see the same latest public Domino board",
+      "pass": true,
+      "details": [
+        {
+          "playerId": "p1",
+          "version": 2,
+          "phase": "play",
+          "turn": "p1",
+          "round": 1
+        },
+        {
+          "playerId": "p2",
+          "version": 2,
+          "phase": "play",
+          "turn": "p1",
+          "round": 1
+        }
+      ]
+    },
+    {
+      "name": "Snapshot contains only the Domino player view, not raw engine secrets",
+      "pass": true,
+      "details": [
+        [
+          "ends",
+          "round",
+          "seats",
+          "teams",
+          "tiles",
+          "counts",
+          "scores",
+          "settings",
+          "actionLog",
+          "matchScores",
+          "roundResult",
+          "roundBonuses",
+          "rulesVersion"
+        ],
+        [
+          "ends",
+          "round",
+          "seats",
+          "teams",
+          "tiles",
+          "counts",
+          "scores",
+          "settings",
+          "actionLog",
+          "matchScores",
+          "roundResult",
+          "roundBonuses",
+          "rulesVersion"
+        ]
+      ]
+    },
+    {
+      "name": "partners: both players consented to Domino through the room UI",
+      "pass": true
+    },
+    {
+      "name": "Both independent viewers see the same latest public Domino board",
+      "pass": true,
+      "details": [
+        {
+          "playerId": "p1",
+          "version": 3,
+          "phase": "play",
+          "turn": "p2",
+          "round": 1
+        },
+        {
+          "playerId": "p2",
+          "version": 3,
+          "phase": "play",
+          "turn": "p2",
+          "round": 1
+        }
+      ]
+    },
+    {
+      "name": "Snapshot contains only the Domino player view, not raw engine secrets",
+      "pass": true,
+      "details": [
+        [
+          "ends",
+          "round",
+          "seats",
+          "teams",
+          "tiles",
+          "counts",
+          "scores",
+          "settings",
+          "actionLog",
+          "matchScores",
+          "roundResult",
+          "roundBonuses",
+          "rulesVersion"
+        ],
+        [
+          "ends",
+          "round",
+          "seats",
+          "teams",
+          "tiles",
+          "counts",
+          "scores",
+          "settings",
+          "actionLog",
+          "matchScores",
+          "roundResult",
+          "roundBonuses",
+          "rulesVersion"
+        ]
+      ]
+    },
+    {
+      "name": "partners: UI configuration persisted exact mode and hard bot difficulty",
+      "pass": true,
+      "details": [
+        {
+          "settings": {
+            "difficulty": "hard",
+            "targetScore": 0,
+            "tranqueRule": "team",
+            "capicuaBonus": 0,
+            "pasoCorridoBonus": 0
+          },
+          "boardSettings": {
+            "difficulty": "hard",
+            "targetScore": 0,
+            "tranqueRule": "team",
+            "capicuaBonus": 0,
+            "pasoCorridoBonus": 0
+          },
+          "seats": [
+            "p1",
+            "b1",
+            "p2",
+            "b2"
+          ],
+          "turn": "p2",
+          "tiles": 1
+        },
+        {
+          "settings": {
+            "difficulty": "hard",
+            "targetScore": 0,
+            "tranqueRule": "team",
+            "capicuaBonus": 0,
+            "pasoCorridoBonus": 0
+          },
+          "boardSettings": {
+            "difficulty": "hard",
+            "targetScore": 0,
+            "tranqueRule": "team",
+            "capicuaBonus": 0,
+            "pasoCorridoBonus": 0
+          },
+          "seats": [
+            "p1",
+            "b1",
+            "p2",
+            "b2"
+          ],
+          "turn": "p2",
+          "tiles": 1
+        }
+      ]
+    },
+    {
+      "name": "partners: hard difficulty remains visible after the opening tile",
+      "pass": true,
+      "details": "플레이 설정 보기\n사람-봇 팀전\n봇: 도전\n매치 목표: 한 라운드"
+    },
+    {
+      "name": "partners: two contexts joined distinct seats in one room",
+      "pass": true,
+      "details": [
+        {
+          "playerId": "p1",
+          "roomId": "a86d27ac-c16e-47dd-a415-645be98f8fad",
+          "mode": "online"
+        },
+        {
+          "playerId": "p2",
+          "roomId": "a86d27ac-c16e-47dd-a415-645be98f8fad",
+          "mode": "online"
+        }
+      ]
+    },
+    {
+      "name": "partners: language contexts remain KO and Dominican Spanish",
+      "pass": true,
+      "details": [
+        "ko",
+        "es-DO"
+      ]
+    },
+    {
+      "name": "Both independent viewers see the same latest public Domino board",
+      "pass": true,
+      "details": [
+        {
+          "playerId": "p1",
+          "version": 2,
+          "phase": "play",
+          "turn": "p2",
+          "round": 1
+        },
+        {
+          "playerId": "p2",
+          "version": 2,
+          "phase": "play",
+          "turn": "p2",
+          "round": 1
+        }
+      ]
+    },
+    {
+      "name": "Snapshot contains only the Domino player view, not raw engine secrets",
+      "pass": true,
+      "details": [
+        [
+          "ends",
+          "round",
+          "seats",
+          "teams",
+          "tiles",
+          "counts",
+          "scores",
+          "settings",
+          "actionLog",
+          "matchScores",
+          "roundResult",
+          "roundBonuses",
+          "rulesVersion"
+        ],
+        [
+          "ends",
+          "round",
+          "seats",
+          "teams",
+          "tiles",
+          "counts",
+          "scores",
+          "settings",
+          "actionLog",
+          "matchScores",
+          "roundResult",
+          "roundBonuses",
+          "rulesVersion"
+        ]
+      ]
+    },
+    {
+      "name": "partners: both players consented to Domino through the room UI",
+      "pass": true
+    },
+    {
+      "name": "Both independent viewers see the same latest public Domino board",
+      "pass": true,
+      "details": [
+        {
+          "playerId": "p1",
+          "version": 3,
+          "phase": "play",
+          "turn": "p2",
+          "round": 1
+        },
+        {
+          "playerId": "p2",
+          "version": 3,
+          "phase": "play",
+          "turn": "p2",
+          "round": 1
+        }
+      ]
+    },
+    {
+      "name": "Snapshot contains only the Domino player view, not raw engine secrets",
+      "pass": true,
+      "details": [
+        [
+          "ends",
+          "round",
+          "seats",
+          "teams",
+          "tiles",
+          "counts",
+          "scores",
+          "settings",
+          "actionLog",
+          "matchScores",
+          "roundResult",
+          "roundBonuses",
+          "rulesVersion"
+        ],
+        [
+          "ends",
+          "round",
+          "seats",
+          "teams",
+          "tiles",
+          "counts",
+          "scores",
+          "settings",
+          "actionLog",
+          "matchScores",
+          "roundResult",
+          "roundBonuses",
+          "rulesVersion"
+        ]
+      ]
+    },
+    {
+      "name": "partners: UI configuration persisted exact mode and hard bot difficulty",
+      "pass": true,
+      "details": [
+        {
+          "settings": {
+            "difficulty": "hard",
+            "targetScore": 0,
+            "tranqueRule": "team",
+            "capicuaBonus": 0,
+            "pasoCorridoBonus": 0
+          },
+          "boardSettings": {
+            "difficulty": "hard",
+            "targetScore": 0,
+            "tranqueRule": "team",
+            "capicuaBonus": 0,
+            "pasoCorridoBonus": 0
+          },
+          "seats": [
+            "p1",
+            "b1",
+            "p2",
+            "b2"
+          ],
+          "turn": "p2",
+          "tiles": 0
+        },
+        {
+          "settings": {
+            "difficulty": "hard",
+            "targetScore": 0,
+            "tranqueRule": "team",
+            "capicuaBonus": 0,
+            "pasoCorridoBonus": 0
+          },
+          "boardSettings": {
+            "difficulty": "hard",
+            "targetScore": 0,
+            "tranqueRule": "team",
+            "capicuaBonus": 0,
+            "pasoCorridoBonus": 0
+          },
+          "seats": [
+            "p1",
+            "b1",
+            "p2",
+            "b2"
+          ],
+          "turn": "p2",
+          "tiles": 0
+        }
+      ]
+    },
+    {
+      "name": "partners: reopened settings UI retains selected mode, hard difficulty and one-round target",
+      "pass": true,
+      "details": {
+        "mode": "partners",
+        "difficulty": "hard",
+        "target": "0"
+      }
+    }
+  ],
+  "moves": [],
+  "errors": [],
+  "scenarios": [
+    {
+      "mode": "humans-vs-bots",
+      "configurationOnly": true,
+      "attempts": [
+        {
+          "attempt": 1,
+          "roomId": "de5c282e-be1f-4599-b92f-3d4bac15a75d",
+          "turn": "p2",
+          "phase": "play",
+          "tiles": 1,
+          "openingPlacedBy": "b1",
+          "reopened": false,
+          "reason": "A bot naturally placed the opening tile; only the saved readout remains.",
+          "closedViaUI": true
+        }
+      ],
+      "reopened": false,
+      "outcome": "not-reached-in-1-natural-deals"
+    },
+    {
+      "mode": "partners",
+      "configurationOnly": true,
+      "attempts": [
+        {
+          "attempt": 1,
+          "roomId": "d4019f80-b16e-4a4a-b0ab-9f7eeb929196",
+          "turn": "p2",
+          "phase": "play",
+          "tiles": 1,
+          "openingPlacedBy": "b1",
+          "reopened": false,
+          "reason": "A bot naturally placed the opening tile; only the saved readout remains.",
+          "closedViaUI": true
+        },
+        {
+          "attempt": 2,
+          "roomId": "69dbc0c3-831b-4f82-bb52-3ff7c993cb3e",
+          "turn": "p2",
+          "phase": "play",
+          "tiles": 1,
+          "openingPlacedBy": "b1",
+          "reopened": false,
+          "reason": "A bot naturally placed the opening tile; only the saved readout remains.",
+          "closedViaUI": true
+        },
+        {
+          "attempt": 3,
+          "roomId": "86355d4b-10d0-45ec-8631-3447ea1138ea",
+          "turn": "p2",
+          "phase": "play",
+          "tiles": 1,
+          "openingPlacedBy": "b1",
+          "reopened": false,
+          "reason": "A bot naturally placed the opening tile; only the saved readout remains.",
+          "closedViaUI": true
+        }
+      ],
+      "reopened": false
+    }
+  ],
+  "failure": {
+    "message": "locator.click: Timeout 10000ms exceeded.\nCall log:\n\u001b[2m  - waiting for locator('.dp-setup-dialog .dp-modal-close')\u001b[22m\n",
+    "stack": "locator.click: Timeout 10000ms exceeded.\nCall log:\n\u001b[2m  - waiting for locator('.dp-setup-dialog .dp-modal-close')\u001b[22m\n\n    at applyHardConfiguration (/workspace/gitactions-main/scripts/play-domino-ai.mjs:145:64)\n    at async checkConfigurationReopen (/workspace/gitactions-main/scripts/play-domino-ai.mjs:255:20)\n    at async file:///workspace/gitactions-main/scripts/play-domino-ai.mjs:275:28"
+  }
+}

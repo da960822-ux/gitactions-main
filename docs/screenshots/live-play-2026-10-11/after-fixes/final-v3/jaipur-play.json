@@ -1,0 +1,3622 @@
+{
+  "game": "jaipur",
+  "baseUrl": "http://127.0.0.1:5192",
+  "viewport": {
+    "width": 1440,
+    "height": 900
+  },
+  "independentContexts": 2,
+  "strategy": "Own hand and public market/token tops only; collect matching groups, improve the hand through favorable exchanges, sell precious goods in pairs and ordinary goods in bonus groups, make room before the seven-card limit.",
+  "attempts": [
+    {
+      "attempt": 1,
+      "roomCreatedAndJoinedThroughUI": true,
+      "bothConsentedThroughUI": true,
+      "played": {
+        "p1": 0,
+        "p2": 0
+      },
+      "passes": {
+        "p1": 0,
+        "p2": 0
+      },
+      "moves": [
+        {
+          "player": "p1",
+          "type": "sell",
+          "count": 2,
+          "version": 3,
+          "round": 1,
+          "scores": {
+            "p1": 12,
+            "p2": 0
+          },
+          "deckCount": 40
+        },
+        {
+          "player": "p2",
+          "type": "sell",
+          "count": 3,
+          "version": 4,
+          "round": 1,
+          "scores": {
+            "p1": 12,
+            "p2": 18
+          },
+          "deckCount": 40
+        },
+        {
+          "player": "p1",
+          "type": "camels",
+          "version": 5,
+          "round": 1,
+          "scores": {
+            "p1": 12,
+            "p2": 18
+          },
+          "deckCount": 37
+        },
+        {
+          "player": "p2",
+          "type": "exchange",
+          "count": 2,
+          "version": 6,
+          "round": 1,
+          "scores": {
+            "p1": 12,
+            "p2": 18
+          },
+          "deckCount": 37
+        },
+        {
+          "player": "p1",
+          "type": "single",
+          "version": 7,
+          "round": 1,
+          "scores": {
+            "p1": 12,
+            "p2": 18
+          },
+          "deckCount": 36
+        },
+        {
+          "player": "p2",
+          "type": "single",
+          "version": 8,
+          "round": 1,
+          "scores": {
+            "p1": 12,
+            "p2": 18
+          },
+          "deckCount": 35
+        },
+        {
+          "player": "p1",
+          "type": "sell",
+          "count": 2,
+          "version": 9,
+          "round": 1,
+          "scores": {
+            "p1": 21,
+            "p2": 18
+          },
+          "deckCount": 35
+        },
+        {
+          "player": "p2",
+          "type": "single",
+          "version": 10,
+          "round": 1,
+          "scores": {
+            "p1": 21,
+            "p2": 18
+          },
+          "deckCount": 34
+        },
+        {
+          "player": "p1",
+          "type": "single",
+          "version": 11,
+          "round": 1,
+          "scores": {
+            "p1": 21,
+            "p2": 18
+          },
+          "deckCount": 33
+        },
+        {
+          "player": "p2",
+          "type": "sell",
+          "count": 4,
+          "version": 12,
+          "round": 1,
+          "scores": {
+            "p1": 21,
+            "p2": 34
+          },
+          "deckCount": 33
+        },
+        {
+          "player": "p1",
+          "type": "single",
+          "version": 13,
+          "round": 1,
+          "scores": {
+            "p1": 21,
+            "p2": 34
+          },
+          "deckCount": 32
+        },
+        {
+          "player": "p2",
+          "type": "camels",
+          "version": 14,
+          "round": 1,
+          "scores": {
+            "p1": 21,
+            "p2": 34
+          },
+          "deckCount": 30
+        },
+        {
+          "player": "p1",
+          "type": "sell",
+          "count": 3,
+          "version": 15,
+          "round": 1,
+          "scores": {
+            "p1": 35,
+            "p2": 34
+          },
+          "deckCount": 30
+        },
+        {
+          "player": "p2",
+          "type": "camels",
+          "version": 16,
+          "round": 1,
+          "scores": {
+            "p1": 35,
+            "p2": 34
+          },
+          "deckCount": 29
+        },
+        {
+          "player": "p1",
+          "type": "single",
+          "version": 17,
+          "round": 1,
+          "scores": {
+            "p1": 35,
+            "p2": 34
+          },
+          "deckCount": 28
+        },
+        {
+          "player": "p2",
+          "type": "single",
+          "version": 18,
+          "round": 1,
+          "scores": {
+            "p1": 35,
+            "p2": 34
+          },
+          "deckCount": 27
+        },
+        {
+          "player": "p1",
+          "type": "exchange",
+          "count": 2,
+          "version": 19,
+          "round": 1,
+          "scores": {
+            "p1": 35,
+            "p2": 34
+          },
+          "deckCount": 27
+        },
+        {
+          "player": "p2",
+          "type": "single",
+          "version": 20,
+          "round": 1,
+          "scores": {
+            "p1": 35,
+            "p2": 34
+          },
+          "deckCount": 26
+        },
+        {
+          "player": "p1",
+          "type": "sell",
+          "count": 2,
+          "version": 21,
+          "round": 1,
+          "scores": {
+            "p1": 45,
+            "p2": 34
+          },
+          "deckCount": 26
+        },
+        {
+          "player": "p2",
+          "type": "sell",
+          "count": 2,
+          "version": 22,
+          "round": 1,
+          "scores": {
+            "p1": 45,
+            "p2": 39
+          },
+          "deckCount": 26
+        },
+        {
+          "player": "p1",
+          "type": "camels",
+          "version": 23,
+          "round": 1,
+          "scores": {
+            "p1": 45,
+            "p2": 39
+          },
+          "deckCount": 25
+        },
+        {
+          "player": "p2",
+          "type": "single",
+          "version": 24,
+          "round": 1,
+          "scores": {
+            "p1": 45,
+            "p2": 39
+          },
+          "deckCount": 24
+        },
+        {
+          "player": "p1",
+          "type": "single",
+          "version": 25,
+          "round": 1,
+          "scores": {
+            "p1": 45,
+            "p2": 39
+          },
+          "deckCount": 23
+        },
+        {
+          "player": "p2",
+          "type": "single",
+          "version": 26,
+          "round": 1,
+          "scores": {
+            "p1": 45,
+            "p2": 39
+          },
+          "deckCount": 22
+        },
+        {
+          "player": "p1",
+          "type": "single",
+          "version": 27,
+          "round": 1,
+          "scores": {
+            "p1": 45,
+            "p2": 39
+          },
+          "deckCount": 21
+        }
+      ],
+      "actions": {
+        "p1": 13,
+        "p2": 12
+      },
+      "sales": {
+        "p1": 4,
+        "p2": 3
+      },
+      "exchanges": {
+        "p1": 1,
+        "p2": 1
+      }
+    }
+  ],
+  "errors": [],
+  "screenshots": [
+    {
+      "language": "ko",
+      "state": "sale",
+      "path": "/workspace/gitactions-main/docs/screenshots/live-play-2026-10-11/after-fixes/final-v3/jaipur-ko-sale.png",
+      "element": "#game-board"
+    },
+    {
+      "language": "ko",
+      "state": "mobile-sale",
+      "path": "/workspace/gitactions-main/docs/screenshots/live-play-2026-10-11/after-fixes/final-v3/jaipur-mobile-ko.png",
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "element": "#game-board"
+    },
+    {
+      "language": "es",
+      "state": "sale",
+      "path": "/workspace/gitactions-main/docs/screenshots/live-play-2026-10-11/after-fixes/final-v3/jaipur-es-sale.png",
+      "element": "#game-board"
+    },
+    {
+      "language": "es",
+      "state": "mobile-sale",
+      "path": "/workspace/gitactions-main/docs/screenshots/live-play-2026-10-11/after-fixes/final-v3/jaipur-mobile-es.png",
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "element": "#game-board"
+    },
+    {
+      "language": "es",
+      "state": "bonus",
+      "path": "/workspace/gitactions-main/docs/screenshots/live-play-2026-10-11/after-fixes/final-v3/jaipur-es-bonus.png",
+      "element": "#game-board"
+    },
+    {
+      "language": "es",
+      "state": "mobile-bonus",
+      "path": "/workspace/gitactions-main/docs/screenshots/live-play-2026-10-11/after-fixes/final-v3/jaipur-es-mobile-bonus.png",
+      "element": "#game-board"
+    },
+    {
+      "language": "ko",
+      "state": "bonus",
+      "path": "/workspace/gitactions-main/docs/screenshots/live-play-2026-10-11/after-fixes/final-v3/jaipur-ko-bonus.png",
+      "element": "#game-board"
+    },
+    {
+      "language": "ko",
+      "state": "mobile-bonus",
+      "path": "/workspace/gitactions-main/docs/screenshots/live-play-2026-10-11/after-fixes/final-v3/jaipur-ko-mobile-bonus.png",
+      "element": "#game-board"
+    },
+    {
+      "language": "ko",
+      "path": "/workspace/gitactions-main/docs/screenshots/live-play-2026-10-11/after-fixes/final-v3/jaipur-ko.png",
+      "element": "#game-board",
+      "bounds": {
+        "x": 28,
+        "y": 24.03125,
+        "width": 1384,
+        "height": 758.75
+      }
+    },
+    {
+      "language": "ko",
+      "state": "mobile-final",
+      "path": "/workspace/gitactions-main/docs/screenshots/live-play-2026-10-11/after-fixes/final-v3/jaipur-ko-mobile-final.png",
+      "element": "#game-board"
+    },
+    {
+      "language": "es",
+      "path": "/workspace/gitactions-main/docs/screenshots/live-play-2026-10-11/after-fixes/final-v3/jaipur-es.png",
+      "element": "#game-board",
+      "bounds": {
+        "x": 28,
+        "y": 24.03125,
+        "width": 1384,
+        "height": 768.3125
+      }
+    },
+    {
+      "language": "es",
+      "state": "mobile-final",
+      "path": "/workspace/gitactions-main/docs/screenshots/live-play-2026-10-11/after-fixes/final-v3/jaipur-es-mobile-final.png",
+      "element": "#game-board"
+    }
+  ],
+  "limits": [
+    "Local PGlite SQL/RLS/authority fixture, not deployed Supabase or physical devices.",
+    "The fixture has no Realtime; reconnectRoom explicitly refreshes read snapshots after UI actions.",
+    "Screenshots intentionally show the requesting player’s own hand; no opponent private hand is used to choose moves."
+  ],
+  "uiChecks": [
+    {
+      "type": "sale-tray",
+      "language": "ko",
+      "trayInsideOwnHand": true,
+      "gapBelowHand": 8,
+      "horizontalOverflow": false
+    },
+    {
+      "type": "token-cell-content",
+      "language": "ko",
+      "state": "mobile",
+      "rows": [
+        {
+          "good": "다이아몬드",
+          "label": "다음",
+          "value": "7점",
+          "cellRect": {
+            "left": 39.59375,
+            "right": 139.46875,
+            "top": 1571.765625,
+            "bottom": 1665.078125,
+            "width": 99.875,
+            "height": 93.3125
+          },
+          "labelRect": {
+            "left": 47.3125,
+            "right": 66.734375,
+            "top": 1625.296875,
+            "bottom": 1636.90625,
+            "width": 19.421875,
+            "height": 11.609375
+          },
+          "valueRect": {
+            "left": 47.3125,
+            "right": 87.0625,
+            "top": 1638.171875,
+            "bottom": 1657.359375,
+            "width": 39.75,
+            "height": 19.1875
+          },
+          "coinRect": {
+            "left": 47.3125,
+            "right": 66.5,
+            "top": 1638.171875,
+            "bottom": 1657.359375,
+            "width": 19.1875,
+            "height": 19.1875
+          },
+          "amountRect": {
+            "left": 68.40625,
+            "right": 87.0625,
+            "top": 1638.265625,
+            "bottom": 1657.265625,
+            "width": 18.65625,
+            "height": 19
+          },
+          "labelFont": "10.56px",
+          "labelVisible": true,
+          "valueVisible": true,
+          "labelInsideCell": true,
+          "labelTextInsideCell": true,
+          "valueInsideCell": true,
+          "coinValueGap": 1.90625
+        },
+        {
+          "good": "금",
+          "label": "다음",
+          "value": "6점",
+          "cellRect": {
+            "left": 145.0625,
+            "right": 244.9375,
+            "top": 1571.765625,
+            "bottom": 1665.078125,
+            "width": 99.875,
+            "height": 93.3125
+          },
+          "labelRect": {
+            "left": 152.78125,
+            "right": 172.203125,
+            "top": 1625.296875,
+            "bottom": 1636.90625,
+            "width": 19.421875,
+            "height": 11.609375
+          },
+          "valueRect": {
+            "left": 152.78125,
+            "right": 193.78125,
+            "top": 1638.171875,
+            "bottom": 1657.359375,
+            "width": 41,
+            "height": 19.1875
+          },
+          "coinRect": {
+            "left": 152.78125,
+            "right": 171.96875,
+            "top": 1638.171875,
+            "bottom": 1657.359375,
+            "width": 19.1875,
+            "height": 19.1875
+          },
+          "amountRect": {
+            "left": 173.875,
+            "right": 193.78125,
+            "top": 1638.265625,
+            "bottom": 1657.265625,
+            "width": 19.90625,
+            "height": 19
+          },
+          "labelFont": "10.56px",
+          "labelVisible": true,
+          "valueVisible": true,
+          "labelInsideCell": true,
+          "labelTextInsideCell": true,
+          "valueInsideCell": true,
+          "coinValueGap": 1.90625
+        },
+        {
+          "good": "은",
+          "label": "다음",
+          "value": "5점",
+          "cellRect": {
+            "left": 250.53125,
+            "right": 350.40625,
+            "top": 1571.765625,
+            "bottom": 1665.078125,
+            "width": 99.875,
+            "height": 93.3125
+          },
+          "labelRect": {
+            "left": 258.25,
+            "right": 277.671875,
+            "top": 1625.296875,
+            "bottom": 1636.90625,
+            "width": 19.421875,
+            "height": 11.609375
+          },
+          "valueRect": {
+            "left": 258.25,
+            "right": 299.09375,
+            "top": 1638.171875,
+            "bottom": 1657.359375,
+            "width": 40.84375,
+            "height": 19.1875
+          },
+          "coinRect": {
+            "left": 258.25,
+            "right": 277.4375,
+            "top": 1638.171875,
+            "bottom": 1657.359375,
+            "width": 19.1875,
+            "height": 19.1875
+          },
+          "amountRect": {
+            "left": 279.34375,
+            "right": 299.09375,
+            "top": 1638.265625,
+            "bottom": 1657.265625,
+            "width": 19.75,
+            "height": 19
+          },
+          "labelFont": "10.56px",
+          "labelVisible": true,
+          "valueVisible": true,
+          "labelInsideCell": true,
+          "labelTextInsideCell": true,
+          "valueInsideCell": true,
+          "coinValueGap": 1.90625
+        },
+        {
+          "good": "옷감",
+          "label": "다음",
+          "value": "5점",
+          "cellRect": {
+            "left": 39.59375,
+            "right": 139.46875,
+            "top": 1670.671875,
+            "bottom": 1763.984375,
+            "width": 99.875,
+            "height": 93.3125
+          },
+          "labelRect": {
+            "left": 47.3125,
+            "right": 66.734375,
+            "top": 1724.203125,
+            "bottom": 1735.8125,
+            "width": 19.421875,
+            "height": 11.609375
+          },
+          "valueRect": {
+            "left": 47.3125,
+            "right": 88.15625,
+            "top": 1737.078125,
+            "bottom": 1756.265625,
+            "width": 40.84375,
+            "height": 19.1875
+          },
+          "coinRect": {
+            "left": 47.3125,
+            "right": 66.5,
+            "top": 1737.078125,
+            "bottom": 1756.265625,
+            "width": 19.1875,
+            "height": 19.1875
+          },
+          "amountRect": {
+            "left": 68.40625,
+            "right": 88.15625,
+            "top": 1737.171875,
+            "bottom": 1756.171875,
+            "width": 19.75,
+            "height": 19
+          },
+          "labelFont": "10.56px",
+          "labelVisible": true,
+          "valueVisible": true,
+          "labelInsideCell": true,
+          "labelTextInsideCell": true,
+          "valueInsideCell": true,
+          "coinValueGap": 1.90625
+        },
+        {
+          "good": "향신료",
+          "label": "다음",
+          "value": "5점",
+          "cellRect": {
+            "left": 145.0625,
+            "right": 244.9375,
+            "top": 1670.671875,
+            "bottom": 1763.984375,
+            "width": 99.875,
+            "height": 93.3125
+          },
+          "labelRect": {
+            "left": 152.78125,
+            "right": 172.203125,
+            "top": 1724.203125,
+            "bottom": 1735.8125,
+            "width": 19.421875,
+            "height": 11.609375
+          },
+          "valueRect": {
+            "left": 152.78125,
+            "right": 193.625,
+            "top": 1737.078125,
+            "bottom": 1756.265625,
+            "width": 40.84375,
+            "height": 19.1875
+          },
+          "coinRect": {
+            "left": 152.78125,
+            "right": 171.96875,
+            "top": 1737.078125,
+            "bottom": 1756.265625,
+            "width": 19.1875,
+            "height": 19.1875
+          },
+          "amountRect": {
+            "left": 173.875,
+            "right": 193.625,
+            "top": 1737.171875,
+            "bottom": 1756.171875,
+            "width": 19.75,
+            "height": 19
+          },
+          "labelFont": "10.56px",
+          "labelVisible": true,
+          "valueVisible": true,
+          "labelInsideCell": true,
+          "labelTextInsideCell": true,
+          "valueInsideCell": true,
+          "coinValueGap": 1.90625
+        },
+        {
+          "good": "가죽",
+          "label": "다음",
+          "value": "4점",
+          "cellRect": {
+            "left": 250.53125,
+            "right": 350.40625,
+            "top": 1670.671875,
+            "bottom": 1763.984375,
+            "width": 99.875,
+            "height": 93.3125
+          },
+          "labelRect": {
+            "left": 258.25,
+            "right": 277.671875,
+            "top": 1724.203125,
+            "bottom": 1735.8125,
+            "width": 19.421875,
+            "height": 11.609375
+          },
+          "valueRect": {
+            "left": 258.25,
+            "right": 299.453125,
+            "top": 1737.078125,
+            "bottom": 1756.265625,
+            "width": 41.203125,
+            "height": 19.1875
+          },
+          "coinRect": {
+            "left": 258.25,
+            "right": 277.4375,
+            "top": 1737.078125,
+            "bottom": 1756.265625,
+            "width": 19.1875,
+            "height": 19.1875
+          },
+          "amountRect": {
+            "left": 279.34375,
+            "right": 299.453125,
+            "top": 1737.171875,
+            "bottom": 1756.171875,
+            "width": 20.109375,
+            "height": 19
+          },
+          "labelFont": "10.56px",
+          "labelVisible": true,
+          "valueVisible": true,
+          "labelInsideCell": true,
+          "labelTextInsideCell": true,
+          "valueInsideCell": true,
+          "coinValueGap": 1.90625
+        }
+      ]
+    },
+    {
+      "type": "bonus-group-labels",
+      "language": "ko",
+      "state": "mobile-sale",
+      "rows": [
+        {
+          "text": "3",
+          "display": "block",
+          "visibility": "visible",
+          "width": 35.1875,
+          "height": 27,
+          "visible": true
+        },
+        {
+          "text": "4",
+          "display": "block",
+          "visibility": "visible",
+          "width": 35.1875,
+          "height": 27,
+          "visible": true
+        },
+        {
+          "text": "5+",
+          "display": "block",
+          "visibility": "visible",
+          "width": 35.1875,
+          "height": 27,
+          "visible": true
+        }
+      ]
+    },
+    {
+      "type": "mobile-sale",
+      "language": "ko",
+      "horizontalOverflow": false,
+      "selectedSaleCount": "2",
+      "saleTrayInsideOwnHand": true,
+      "versionUnchanged": true
+    },
+    {
+      "type": "sale-tray",
+      "language": "es",
+      "trayInsideOwnHand": true,
+      "gapBelowHand": 8,
+      "horizontalOverflow": false
+    },
+    {
+      "type": "token-cell-content",
+      "language": "es",
+      "state": "mobile",
+      "rows": [
+        {
+          "good": "Diamantes",
+          "label": "Siguiente:",
+          "value": "7 pts",
+          "cellRect": {
+            "left": 39.59375,
+            "right": 139.46875,
+            "top": 1659.71875,
+            "bottom": 1747.03125,
+            "width": 99.875,
+            "height": 87.3125
+          },
+          "labelRect": {
+            "left": 47.3125,
+            "right": 94.578125,
+            "top": 1707.25,
+            "bottom": 1718.859375,
+            "width": 47.265625,
+            "height": 11.609375
+          },
+          "valueRect": {
+            "left": 47.3125,
+            "right": 98.765625,
+            "top": 1720.125,
+            "bottom": 1739.3125,
+            "width": 51.453125,
+            "height": 19.1875
+          },
+          "coinRect": {
+            "left": 47.3125,
+            "right": 66.5,
+            "top": 1720.125,
+            "bottom": 1739.3125,
+            "width": 19.1875,
+            "height": 19.1875
+          },
+          "amountRect": {
+            "left": 68.40625,
+            "right": 98.765625,
+            "top": 1721.21875,
+            "bottom": 1738.21875,
+            "width": 30.359375,
+            "height": 17
+          },
+          "labelFont": "10.56px",
+          "labelVisible": true,
+          "valueVisible": true,
+          "labelInsideCell": true,
+          "labelTextInsideCell": true,
+          "valueInsideCell": true,
+          "coinValueGap": 1.90625
+        },
+        {
+          "good": "Oro",
+          "label": "Siguiente:",
+          "value": "5 pts",
+          "cellRect": {
+            "left": 145.0625,
+            "right": 244.9375,
+            "top": 1659.71875,
+            "bottom": 1747.03125,
+            "width": 99.875,
+            "height": 87.3125
+          },
+          "labelRect": {
+            "left": 152.78125,
+            "right": 200.046875,
+            "top": 1707.25,
+            "bottom": 1718.859375,
+            "width": 47.265625,
+            "height": 11.609375
+          },
+          "valueRect": {
+            "left": 152.78125,
+            "right": 205.328125,
+            "top": 1720.125,
+            "bottom": 1739.3125,
+            "width": 52.546875,
+            "height": 19.1875
+          },
+          "coinRect": {
+            "left": 152.78125,
+            "right": 171.96875,
+            "top": 1720.125,
+            "bottom": 1739.3125,
+            "width": 19.1875,
+            "height": 19.1875
+          },
+          "amountRect": {
+            "left": 173.875,
+            "right": 205.328125,
+            "top": 1721.21875,
+            "bottom": 1738.21875,
+            "width": 31.453125,
+            "height": 17
+          },
+          "labelFont": "10.56px",
+          "labelVisible": true,
+          "valueVisible": true,
+          "labelInsideCell": true,
+          "labelTextInsideCell": true,
+          "valueInsideCell": true,
+          "coinValueGap": 1.90625
+        },
+        {
+          "good": "Plata",
+          "label": "Siguiente:",
+          "value": "5 pts",
+          "cellRect": {
+            "left": 250.53125,
+            "right": 350.40625,
+            "top": 1659.71875,
+            "bottom": 1747.03125,
+            "width": 99.875,
+            "height": 87.3125
+          },
+          "labelRect": {
+            "left": 258.25,
+            "right": 305.515625,
+            "top": 1707.25,
+            "bottom": 1718.859375,
+            "width": 47.265625,
+            "height": 11.609375
+          },
+          "valueRect": {
+            "left": 258.25,
+            "right": 310.796875,
+            "top": 1720.125,
+            "bottom": 1739.3125,
+            "width": 52.546875,
+            "height": 19.1875
+          },
+          "coinRect": {
+            "left": 258.25,
+            "right": 277.4375,
+            "top": 1720.125,
+            "bottom": 1739.3125,
+            "width": 19.1875,
+            "height": 19.1875
+          },
+          "amountRect": {
+            "left": 279.34375,
+            "right": 310.796875,
+            "top": 1721.21875,
+            "bottom": 1738.21875,
+            "width": 31.453125,
+            "height": 17
+          },
+          "labelFont": "10.56px",
+          "labelVisible": true,
+          "valueVisible": true,
+          "labelInsideCell": true,
+          "labelTextInsideCell": true,
+          "valueInsideCell": true,
+          "coinValueGap": 1.90625
+        },
+        {
+          "good": "Tela",
+          "label": "Siguiente:",
+          "value": "5 pts",
+          "cellRect": {
+            "left": 39.59375,
+            "right": 139.46875,
+            "top": 1752.625,
+            "bottom": 1839.9375,
+            "width": 99.875,
+            "height": 87.3125
+          },
+          "labelRect": {
+            "left": 47.3125,
+            "right": 94.578125,
+            "top": 1800.15625,
+            "bottom": 1811.765625,
+            "width": 47.265625,
+            "height": 11.609375
+          },
+          "valueRect": {
+            "left": 47.3125,
+            "right": 99.859375,
+            "top": 1813.03125,
+            "bottom": 1832.21875,
+            "width": 52.546875,
+            "height": 19.1875
+          },
+          "coinRect": {
+            "left": 47.3125,
+            "right": 66.5,
+            "top": 1813.03125,
+            "bottom": 1832.21875,
+            "width": 19.1875,
+            "height": 19.1875
+          },
+          "amountRect": {
+            "left": 68.40625,
+            "right": 99.859375,
+            "top": 1814.125,
+            "bottom": 1831.125,
+            "width": 31.453125,
+            "height": 17
+          },
+          "labelFont": "10.56px",
+          "labelVisible": true,
+          "valueVisible": true,
+          "labelInsideCell": true,
+          "labelTextInsideCell": true,
+          "valueInsideCell": true,
+          "coinValueGap": 1.90625
+        },
+        {
+          "good": "Especias",
+          "label": "Siguiente:",
+          "value": "5 pts",
+          "cellRect": {
+            "left": 145.0625,
+            "right": 244.9375,
+            "top": 1752.625,
+            "bottom": 1839.9375,
+            "width": 99.875,
+            "height": 87.3125
+          },
+          "labelRect": {
+            "left": 152.78125,
+            "right": 200.046875,
+            "top": 1800.15625,
+            "bottom": 1811.765625,
+            "width": 47.265625,
+            "height": 11.609375
+          },
+          "valueRect": {
+            "left": 152.78125,
+            "right": 205.328125,
+            "top": 1813.03125,
+            "bottom": 1832.21875,
+            "width": 52.546875,
+            "height": 19.1875
+          },
+          "coinRect": {
+            "left": 152.78125,
+            "right": 171.96875,
+            "top": 1813.03125,
+            "bottom": 1832.21875,
+            "width": 19.1875,
+            "height": 19.1875
+          },
+          "amountRect": {
+            "left": 173.875,
+            "right": 205.328125,
+            "top": 1814.125,
+            "bottom": 1831.125,
+            "width": 31.453125,
+            "height": 17
+          },
+          "labelFont": "10.56px",
+          "labelVisible": true,
+          "valueVisible": true,
+          "labelInsideCell": true,
+          "labelTextInsideCell": true,
+          "valueInsideCell": true,
+          "coinValueGap": 1.90625
+        },
+        {
+          "good": "Cuero",
+          "label": "Siguiente:",
+          "value": "4 pts",
+          "cellRect": {
+            "left": 250.53125,
+            "right": 350.40625,
+            "top": 1752.625,
+            "bottom": 1839.9375,
+            "width": 99.875,
+            "height": 87.3125
+          },
+          "labelRect": {
+            "left": 258.25,
+            "right": 305.515625,
+            "top": 1800.15625,
+            "bottom": 1811.765625,
+            "width": 47.265625,
+            "height": 11.609375
+          },
+          "valueRect": {
+            "left": 258.25,
+            "right": 311.15625,
+            "top": 1813.03125,
+            "bottom": 1832.21875,
+            "width": 52.90625,
+            "height": 19.1875
+          },
+          "coinRect": {
+            "left": 258.25,
+            "right": 277.4375,
+            "top": 1813.03125,
+            "bottom": 1832.21875,
+            "width": 19.1875,
+            "height": 19.1875
+          },
+          "amountRect": {
+            "left": 279.34375,
+            "right": 311.15625,
+            "top": 1814.125,
+            "bottom": 1831.125,
+            "width": 31.8125,
+            "height": 17
+          },
+          "labelFont": "10.56px",
+          "labelVisible": true,
+          "valueVisible": true,
+          "labelInsideCell": true,
+          "labelTextInsideCell": true,
+          "valueInsideCell": true,
+          "coinValueGap": 1.90625
+        }
+      ]
+    },
+    {
+      "type": "bonus-group-labels",
+      "language": "es",
+      "state": "mobile-sale",
+      "rows": [
+        {
+          "text": "3",
+          "display": "block",
+          "visibility": "visible",
+          "width": 35.1875,
+          "height": 22,
+          "visible": true
+        },
+        {
+          "text": "4",
+          "display": "block",
+          "visibility": "visible",
+          "width": 35.1875,
+          "height": 22,
+          "visible": true
+        },
+        {
+          "text": "5+",
+          "display": "block",
+          "visibility": "visible",
+          "width": 35.1875,
+          "height": 22,
+          "visible": true
+        }
+      ]
+    },
+    {
+      "type": "mobile-sale",
+      "language": "es",
+      "horizontalOverflow": false,
+      "selectedSaleCount": "3",
+      "saleTrayInsideOwnHand": true,
+      "versionUnchanged": true
+    },
+    {
+      "type": "fresh-mobile-bonus",
+      "language": "es",
+      "viewportWidth": 390,
+      "columns": "338.406px",
+      "freshBonusVisible": true,
+      "noticeInsideBoard": true,
+      "roundOverlapped": false,
+      "horizontalOverflow": false
+    },
+    {
+      "type": "old-bonus-refresh",
+      "language": "es",
+      "freshBonusWasVisible": true,
+      "oldNoticesAfterRefresh": 0,
+      "flightsAfterRefresh": 0
+    },
+    {
+      "type": "fresh-mobile-bonus",
+      "language": "ko",
+      "viewportWidth": 390,
+      "columns": "338.406px",
+      "freshBonusVisible": true,
+      "noticeInsideBoard": true,
+      "roundOverlapped": false,
+      "horizontalOverflow": false
+    },
+    {
+      "type": "old-bonus-refresh",
+      "language": "ko",
+      "freshBonusWasVisible": true,
+      "oldNoticesAfterRefresh": 0,
+      "flightsAfterRefresh": 0
+    },
+    {
+      "type": "token-cell-content",
+      "language": "ko",
+      "state": "desktop",
+      "rows": [
+        {
+          "good": "다이아몬드",
+          "label": "다음",
+          "value": "7점",
+          "cellRect": {
+            "left": 1084.828125,
+            "right": 1234.921875,
+            "top": 147.203125,
+            "bottom": 228.390625,
+            "width": 150.09375,
+            "height": 81.1875
+          },
+          "labelRect": {
+            "left": 0,
+            "right": 0,
+            "top": 0,
+            "bottom": 0,
+            "width": 0,
+            "height": 0
+          },
+          "valueRect": {
+            "left": 1093.015625,
+            "right": 1137.390625,
+            "top": 196.203125,
+            "bottom": 220.203125,
+            "width": 44.375,
+            "height": 24
+          },
+          "coinRect": {
+            "left": 1093.015625,
+            "right": 1117.015625,
+            "top": 196.203125,
+            "bottom": 220.203125,
+            "width": 24,
+            "height": 24
+          },
+          "amountRect": {
+            "left": 1119.890625,
+            "right": 1137.390625,
+            "top": 199.203125,
+            "bottom": 217.203125,
+            "width": 17.5,
+            "height": 18
+          },
+          "labelFont": "12px",
+          "labelVisible": false,
+          "valueVisible": true,
+          "labelInsideCell": false,
+          "labelTextInsideCell": false,
+          "valueInsideCell": true,
+          "coinValueGap": 2.875
+        },
+        {
+          "good": "금",
+          "label": "—",
+          "cellRect": {
+            "left": 1240.515625,
+            "right": 1390.609375,
+            "top": 147.203125,
+            "bottom": 228.390625,
+            "width": 150.09375,
+            "height": 81.1875
+          },
+          "labelRect": {
+            "left": 0,
+            "right": 0,
+            "top": 0,
+            "bottom": 0,
+            "width": 0,
+            "height": 0
+          },
+          "valueRect": null,
+          "coinRect": null,
+          "amountRect": null,
+          "labelFont": "12px",
+          "labelVisible": false,
+          "valueVisible": false,
+          "labelInsideCell": false,
+          "labelTextInsideCell": false,
+          "valueInsideCell": null,
+          "coinValueGap": null
+        },
+        {
+          "good": "은",
+          "label": "다음",
+          "value": "5점",
+          "cellRect": {
+            "left": 1084.828125,
+            "right": 1234.921875,
+            "top": 233.984375,
+            "bottom": 315.171875,
+            "width": 150.09375,
+            "height": 81.1875
+          },
+          "labelRect": {
+            "left": 0,
+            "right": 0,
+            "top": 0,
+            "bottom": 0,
+            "width": 0,
+            "height": 0
+          },
+          "valueRect": {
+            "left": 1093.015625,
+            "right": 1138.40625,
+            "top": 282.984375,
+            "bottom": 306.984375,
+            "width": 45.390625,
+            "height": 24
+          },
+          "coinRect": {
+            "left": 1093.015625,
+            "right": 1117.015625,
+            "top": 282.984375,
+            "bottom": 306.984375,
+            "width": 24,
+            "height": 24
+          },
+          "amountRect": {
+            "left": 1119.890625,
+            "right": 1138.40625,
+            "top": 285.984375,
+            "bottom": 303.984375,
+            "width": 18.515625,
+            "height": 18
+          },
+          "labelFont": "12px",
+          "labelVisible": false,
+          "valueVisible": true,
+          "labelInsideCell": false,
+          "labelTextInsideCell": false,
+          "valueInsideCell": true,
+          "coinValueGap": 2.875
+        },
+        {
+          "good": "옷감",
+          "label": "다음",
+          "value": "3점",
+          "cellRect": {
+            "left": 1240.515625,
+            "right": 1390.609375,
+            "top": 233.984375,
+            "bottom": 315.171875,
+            "width": 150.09375,
+            "height": 81.1875
+          },
+          "labelRect": {
+            "left": 0,
+            "right": 0,
+            "top": 0,
+            "bottom": 0,
+            "width": 0,
+            "height": 0
+          },
+          "valueRect": {
+            "left": 1248.703125,
+            "right": 1293.875,
+            "top": 282.984375,
+            "bottom": 306.984375,
+            "width": 45.171875,
+            "height": 24
+          },
+          "coinRect": {
+            "left": 1248.703125,
+            "right": 1272.703125,
+            "top": 282.984375,
+            "bottom": 306.984375,
+            "width": 24,
+            "height": 24
+          },
+          "amountRect": {
+            "left": 1275.578125,
+            "right": 1293.875,
+            "top": 285.984375,
+            "bottom": 303.984375,
+            "width": 18.296875,
+            "height": 18
+          },
+          "labelFont": "12px",
+          "labelVisible": false,
+          "valueVisible": true,
+          "labelInsideCell": false,
+          "labelTextInsideCell": false,
+          "valueInsideCell": true,
+          "coinValueGap": 2.875
+        },
+        {
+          "good": "향신료",
+          "label": "다음",
+          "value": "3점",
+          "cellRect": {
+            "left": 1084.828125,
+            "right": 1234.921875,
+            "top": 320.765625,
+            "bottom": 401.953125,
+            "width": 150.09375,
+            "height": 81.1875
+          },
+          "labelRect": {
+            "left": 0,
+            "right": 0,
+            "top": 0,
+            "bottom": 0,
+            "width": 0,
+            "height": 0
+          },
+          "valueRect": {
+            "left": 1093.015625,
+            "right": 1138.1875,
+            "top": 369.765625,
+            "bottom": 393.765625,
+            "width": 45.171875,
+            "height": 24
+          },
+          "coinRect": {
+            "left": 1093.015625,
+            "right": 1117.015625,
+            "top": 369.765625,
+            "bottom": 393.765625,
+            "width": 24,
+            "height": 24
+          },
+          "amountRect": {
+            "left": 1119.890625,
+            "right": 1138.1875,
+            "top": 372.765625,
+            "bottom": 390.765625,
+            "width": 18.296875,
+            "height": 18
+          },
+          "labelFont": "12px",
+          "labelVisible": false,
+          "valueVisible": true,
+          "labelInsideCell": false,
+          "labelTextInsideCell": false,
+          "valueInsideCell": true,
+          "coinValueGap": 2.875
+        },
+        {
+          "good": "가죽",
+          "label": "다음",
+          "value": "1점",
+          "cellRect": {
+            "left": 1240.515625,
+            "right": 1390.609375,
+            "top": 320.765625,
+            "bottom": 401.953125,
+            "width": 150.09375,
+            "height": 81.1875
+          },
+          "labelRect": {
+            "left": 0,
+            "right": 0,
+            "top": 0,
+            "bottom": 0,
+            "width": 0,
+            "height": 0
+          },
+          "valueRect": {
+            "left": 1248.703125,
+            "right": 1291,
+            "top": 369.765625,
+            "bottom": 393.765625,
+            "width": 42.296875,
+            "height": 24
+          },
+          "coinRect": {
+            "left": 1248.703125,
+            "right": 1272.703125,
+            "top": 369.765625,
+            "bottom": 393.765625,
+            "width": 24,
+            "height": 24
+          },
+          "amountRect": {
+            "left": 1275.578125,
+            "right": 1291,
+            "top": 372.765625,
+            "bottom": 390.765625,
+            "width": 15.421875,
+            "height": 18
+          },
+          "labelFont": "12px",
+          "labelVisible": false,
+          "valueVisible": true,
+          "labelInsideCell": false,
+          "labelTextInsideCell": false,
+          "valueInsideCell": true,
+          "coinValueGap": 2.875
+        }
+      ]
+    },
+    {
+      "type": "bonus-group-labels",
+      "language": "ko",
+      "state": "desktop-final",
+      "rows": [
+        {
+          "text": "3",
+          "display": "block",
+          "visibility": "visible",
+          "width": 10.4375,
+          "height": 25,
+          "visible": true
+        },
+        {
+          "text": "4",
+          "display": "block",
+          "visibility": "visible",
+          "width": 10.4375,
+          "height": 25,
+          "visible": true
+        },
+        {
+          "text": "5+",
+          "display": "block",
+          "visibility": "visible",
+          "width": 21.0625,
+          "height": 25,
+          "visible": true
+        }
+      ]
+    },
+    {
+      "type": "final-board",
+      "language": "ko",
+      "horizontalOverflow": false,
+      "roundPillVisible": true,
+      "roundLabel": "라운드1/ 3",
+      "overlappedByNotice": false,
+      "oldBonusNotices": 0
+    },
+    {
+      "type": "token-cell-content",
+      "language": "ko",
+      "state": "mobile",
+      "rows": [
+        {
+          "good": "다이아몬드",
+          "label": "다음",
+          "value": "7점",
+          "cellRect": {
+            "left": 39.59375,
+            "right": 139.46875,
+            "top": 1408.515625,
+            "bottom": 1501.828125,
+            "width": 99.875,
+            "height": 93.3125
+          },
+          "labelRect": {
+            "left": 47.3125,
+            "right": 66.734375,
+            "top": 1462.046875,
+            "bottom": 1473.65625,
+            "width": 19.421875,
+            "height": 11.609375
+          },
+          "valueRect": {
+            "left": 47.3125,
+            "right": 87.0625,
+            "top": 1474.921875,
+            "bottom": 1494.109375,
+            "width": 39.75,
+            "height": 19.1875
+          },
+          "coinRect": {
+            "left": 47.3125,
+            "right": 66.5,
+            "top": 1474.921875,
+            "bottom": 1494.109375,
+            "width": 19.1875,
+            "height": 19.1875
+          },
+          "amountRect": {
+            "left": 68.40625,
+            "right": 87.0625,
+            "top": 1475.015625,
+            "bottom": 1494.015625,
+            "width": 18.65625,
+            "height": 19
+          },
+          "labelFont": "10.56px",
+          "labelVisible": true,
+          "valueVisible": true,
+          "labelInsideCell": true,
+          "labelTextInsideCell": true,
+          "valueInsideCell": true,
+          "coinValueGap": 1.90625
+        },
+        {
+          "good": "금",
+          "label": "—",
+          "cellRect": {
+            "left": 145.0625,
+            "right": 244.9375,
+            "top": 1408.515625,
+            "bottom": 1501.828125,
+            "width": 99.875,
+            "height": 93.3125
+          },
+          "labelRect": {
+            "left": 152.78125,
+            "right": 162,
+            "top": 1479.078125,
+            "bottom": 1490.6875,
+            "width": 9.21875,
+            "height": 11.609375
+          },
+          "valueRect": null,
+          "coinRect": null,
+          "amountRect": null,
+          "labelFont": "10.56px",
+          "labelVisible": true,
+          "valueVisible": false,
+          "labelInsideCell": true,
+          "labelTextInsideCell": true,
+          "valueInsideCell": null,
+          "coinValueGap": null
+        },
+        {
+          "good": "은",
+          "label": "다음",
+          "value": "5점",
+          "cellRect": {
+            "left": 250.53125,
+            "right": 350.40625,
+            "top": 1408.515625,
+            "bottom": 1501.828125,
+            "width": 99.875,
+            "height": 93.3125
+          },
+          "labelRect": {
+            "left": 258.25,
+            "right": 277.671875,
+            "top": 1462.046875,
+            "bottom": 1473.65625,
+            "width": 19.421875,
+            "height": 11.609375
+          },
+          "valueRect": {
+            "left": 258.25,
+            "right": 299.09375,
+            "top": 1474.921875,
+            "bottom": 1494.109375,
+            "width": 40.84375,
+            "height": 19.1875
+          },
+          "coinRect": {
+            "left": 258.25,
+            "right": 277.4375,
+            "top": 1474.921875,
+            "bottom": 1494.109375,
+            "width": 19.1875,
+            "height": 19.1875
+          },
+          "amountRect": {
+            "left": 279.34375,
+            "right": 299.09375,
+            "top": 1475.015625,
+            "bottom": 1494.015625,
+            "width": 19.75,
+            "height": 19
+          },
+          "labelFont": "10.56px",
+          "labelVisible": true,
+          "valueVisible": true,
+          "labelInsideCell": true,
+          "labelTextInsideCell": true,
+          "valueInsideCell": true,
+          "coinValueGap": 1.90625
+        },
+        {
+          "good": "옷감",
+          "label": "다음",
+          "value": "3점",
+          "cellRect": {
+            "left": 39.59375,
+            "right": 139.46875,
+            "top": 1507.421875,
+            "bottom": 1600.734375,
+            "width": 99.875,
+            "height": 93.3125
+          },
+          "labelRect": {
+            "left": 47.3125,
+            "right": 66.734375,
+            "top": 1560.953125,
+            "bottom": 1572.5625,
+            "width": 19.421875,
+            "height": 11.609375
+          },
+          "valueRect": {
+            "left": 47.3125,
+            "right": 87.90625,
+            "top": 1573.828125,
+            "bottom": 1593.015625,
+            "width": 40.59375,
+            "height": 19.1875
+          },
+          "coinRect": {
+            "left": 47.3125,
+            "right": 66.5,
+            "top": 1573.828125,
+            "bottom": 1593.015625,
+            "width": 19.1875,
+            "height": 19.1875
+          },
+          "amountRect": {
+            "left": 68.40625,
+            "right": 87.90625,
+            "top": 1573.921875,
+            "bottom": 1592.921875,
+            "width": 19.5,
+            "height": 19
+          },
+          "labelFont": "10.56px",
+          "labelVisible": true,
+          "valueVisible": true,
+          "labelInsideCell": true,
+          "labelTextInsideCell": true,
+          "valueInsideCell": true,
+          "coinValueGap": 1.90625
+        },
+        {
+          "good": "향신료",
+          "label": "다음",
+          "value": "3점",
+          "cellRect": {
+            "left": 145.0625,
+            "right": 244.9375,
+            "top": 1507.421875,
+            "bottom": 1600.734375,
+            "width": 99.875,
+            "height": 93.3125
+          },
+          "labelRect": {
+            "left": 152.78125,
+            "right": 172.203125,
+            "top": 1560.953125,
+            "bottom": 1572.5625,
+            "width": 19.421875,
+            "height": 11.609375
+          },
+          "valueRect": {
+            "left": 152.78125,
+            "right": 193.375,
+            "top": 1573.828125,
+            "bottom": 1593.015625,
+            "width": 40.59375,
+            "height": 19.1875
+          },
+          "coinRect": {
+            "left": 152.78125,
+            "right": 171.96875,
+            "top": 1573.828125,
+            "bottom": 1593.015625,
+            "width": 19.1875,
+            "height": 19.1875
+          },
+          "amountRect": {
+            "left": 173.875,
+            "right": 193.375,
+            "top": 1573.921875,
+            "bottom": 1592.921875,
+            "width": 19.5,
+            "height": 19
+          },
+          "labelFont": "10.56px",
+          "labelVisible": true,
+          "valueVisible": true,
+          "labelInsideCell": true,
+          "labelTextInsideCell": true,
+          "valueInsideCell": true,
+          "coinValueGap": 1.90625
+        },
+        {
+          "good": "가죽",
+          "label": "다음",
+          "value": "1점",
+          "cellRect": {
+            "left": 250.53125,
+            "right": 350.40625,
+            "top": 1507.421875,
+            "bottom": 1600.734375,
+            "width": 99.875,
+            "height": 93.3125
+          },
+          "labelRect": {
+            "left": 258.25,
+            "right": 277.671875,
+            "top": 1560.953125,
+            "bottom": 1572.5625,
+            "width": 19.421875,
+            "height": 11.609375
+          },
+          "valueRect": {
+            "left": 258.25,
+            "right": 295.796875,
+            "top": 1573.828125,
+            "bottom": 1593.015625,
+            "width": 37.546875,
+            "height": 19.1875
+          },
+          "coinRect": {
+            "left": 258.25,
+            "right": 277.4375,
+            "top": 1573.828125,
+            "bottom": 1593.015625,
+            "width": 19.1875,
+            "height": 19.1875
+          },
+          "amountRect": {
+            "left": 279.34375,
+            "right": 295.796875,
+            "top": 1573.921875,
+            "bottom": 1592.921875,
+            "width": 16.453125,
+            "height": 19
+          },
+          "labelFont": "10.56px",
+          "labelVisible": true,
+          "valueVisible": true,
+          "labelInsideCell": true,
+          "labelTextInsideCell": true,
+          "valueInsideCell": true,
+          "coinValueGap": 1.90625
+        }
+      ]
+    },
+    {
+      "type": "bonus-group-labels",
+      "language": "ko",
+      "state": "mobile-final",
+      "rows": [
+        {
+          "text": "3",
+          "display": "block",
+          "visibility": "visible",
+          "width": 35.1875,
+          "height": 27,
+          "visible": true
+        },
+        {
+          "text": "4",
+          "display": "block",
+          "visibility": "visible",
+          "width": 35.1875,
+          "height": 27,
+          "visible": true
+        },
+        {
+          "text": "5+",
+          "display": "block",
+          "visibility": "visible",
+          "width": 35.1875,
+          "height": 27,
+          "visible": true
+        }
+      ]
+    },
+    {
+      "type": "token-cell-content",
+      "language": "es",
+      "state": "desktop",
+      "rows": [
+        {
+          "good": "Diamantes",
+          "label": "Siguiente:",
+          "value": "7 pts",
+          "cellRect": {
+            "left": 1084.828125,
+            "right": 1234.921875,
+            "top": 181.03125,
+            "bottom": 258.8125,
+            "width": 150.09375,
+            "height": 77.78125
+          },
+          "labelRect": {
+            "left": 0,
+            "right": 0,
+            "top": 0,
+            "bottom": 0,
+            "width": 0,
+            "height": 0
+          },
+          "valueRect": {
+            "left": 1093.015625,
+            "right": 1148.375,
+            "top": 226.625,
+            "bottom": 250.625,
+            "width": 55.359375,
+            "height": 24
+          },
+          "coinRect": {
+            "left": 1093.015625,
+            "right": 1117.015625,
+            "top": 226.625,
+            "bottom": 250.625,
+            "width": 24,
+            "height": 24
+          },
+          "amountRect": {
+            "left": 1119.890625,
+            "right": 1148.375,
+            "top": 230.625,
+            "bottom": 246.625,
+            "width": 28.484375,
+            "height": 16
+          },
+          "labelFont": "12px",
+          "labelVisible": false,
+          "valueVisible": true,
+          "labelInsideCell": false,
+          "labelTextInsideCell": false,
+          "valueInsideCell": true,
+          "coinValueGap": 2.875
+        },
+        {
+          "good": "Oro",
+          "label": "—",
+          "cellRect": {
+            "left": 1240.515625,
+            "right": 1390.609375,
+            "top": 181.03125,
+            "bottom": 258.8125,
+            "width": 150.09375,
+            "height": 77.78125
+          },
+          "labelRect": {
+            "left": 0,
+            "right": 0,
+            "top": 0,
+            "bottom": 0,
+            "width": 0,
+            "height": 0
+          },
+          "valueRect": null,
+          "coinRect": null,
+          "amountRect": null,
+          "labelFont": "12px",
+          "labelVisible": false,
+          "valueVisible": false,
+          "labelInsideCell": false,
+          "labelTextInsideCell": false,
+          "valueInsideCell": null,
+          "coinValueGap": null
+        },
+        {
+          "good": "Plata",
+          "label": "Siguiente:",
+          "value": "5 pts",
+          "cellRect": {
+            "left": 1084.828125,
+            "right": 1234.921875,
+            "top": 264.40625,
+            "bottom": 342.1875,
+            "width": 150.09375,
+            "height": 77.78125
+          },
+          "labelRect": {
+            "left": 0,
+            "right": 0,
+            "top": 0,
+            "bottom": 0,
+            "width": 0,
+            "height": 0
+          },
+          "valueRect": {
+            "left": 1093.015625,
+            "right": 1149.390625,
+            "top": 310,
+            "bottom": 334,
+            "width": 56.375,
+            "height": 24
+          },
+          "coinRect": {
+            "left": 1093.015625,
+            "right": 1117.015625,
+            "top": 310,
+            "bottom": 334,
+            "width": 24,
+            "height": 24
+          },
+          "amountRect": {
+            "left": 1119.890625,
+            "right": 1149.390625,
+            "top": 314,
+            "bottom": 330,
+            "width": 29.5,
+            "height": 16
+          },
+          "labelFont": "12px",
+          "labelVisible": false,
+          "valueVisible": true,
+          "labelInsideCell": false,
+          "labelTextInsideCell": false,
+          "valueInsideCell": true,
+          "coinValueGap": 2.875
+        },
+        {
+          "good": "Tela",
+          "label": "Siguiente:",
+          "value": "3 pts",
+          "cellRect": {
+            "left": 1240.515625,
+            "right": 1390.609375,
+            "top": 264.40625,
+            "bottom": 342.1875,
+            "width": 150.09375,
+            "height": 77.78125
+          },
+          "labelRect": {
+            "left": 0,
+            "right": 0,
+            "top": 0,
+            "bottom": 0,
+            "width": 0,
+            "height": 0
+          },
+          "valueRect": {
+            "left": 1248.703125,
+            "right": 1304.859375,
+            "top": 310,
+            "bottom": 334,
+            "width": 56.15625,
+            "height": 24
+          },
+          "coinRect": {
+            "left": 1248.703125,
+            "right": 1272.703125,
+            "top": 310,
+            "bottom": 334,
+            "width": 24,
+            "height": 24
+          },
+          "amountRect": {
+            "left": 1275.578125,
+            "right": 1304.859375,
+            "top": 314,
+            "bottom": 330,
+            "width": 29.28125,
+            "height": 16
+          },
+          "labelFont": "12px",
+          "labelVisible": false,
+          "valueVisible": true,
+          "labelInsideCell": false,
+          "labelTextInsideCell": false,
+          "valueInsideCell": true,
+          "coinValueGap": 2.875
+        },
+        {
+          "good": "Especias",
+          "label": "Siguiente:",
+          "value": "3 pts",
+          "cellRect": {
+            "left": 1084.828125,
+            "right": 1234.921875,
+            "top": 347.78125,
+            "bottom": 425.5625,
+            "width": 150.09375,
+            "height": 77.78125
+          },
+          "labelRect": {
+            "left": 0,
+            "right": 0,
+            "top": 0,
+            "bottom": 0,
+            "width": 0,
+            "height": 0
+          },
+          "valueRect": {
+            "left": 1093.015625,
+            "right": 1149.171875,
+            "top": 393.375,
+            "bottom": 417.375,
+            "width": 56.15625,
+            "height": 24
+          },
+          "coinRect": {
+            "left": 1093.015625,
+            "right": 1117.015625,
+            "top": 393.375,
+            "bottom": 417.375,
+            "width": 24,
+            "height": 24
+          },
+          "amountRect": {
+            "left": 1119.890625,
+            "right": 1149.171875,
+            "top": 397.375,
+            "bottom": 413.375,
+            "width": 29.28125,
+            "height": 16
+          },
+          "labelFont": "12px",
+          "labelVisible": false,
+          "valueVisible": true,
+          "labelInsideCell": false,
+          "labelTextInsideCell": false,
+          "valueInsideCell": true,
+          "coinValueGap": 2.875
+        },
+        {
+          "good": "Cuero",
+          "label": "Siguiente:",
+          "value": "1 pts",
+          "cellRect": {
+            "left": 1240.515625,
+            "right": 1390.609375,
+            "top": 347.78125,
+            "bottom": 425.5625,
+            "width": 150.09375,
+            "height": 77.78125
+          },
+          "labelRect": {
+            "left": 0,
+            "right": 0,
+            "top": 0,
+            "bottom": 0,
+            "width": 0,
+            "height": 0
+          },
+          "valueRect": {
+            "left": 1248.703125,
+            "right": 1301.984375,
+            "top": 393.375,
+            "bottom": 417.375,
+            "width": 53.28125,
+            "height": 24
+          },
+          "coinRect": {
+            "left": 1248.703125,
+            "right": 1272.703125,
+            "top": 393.375,
+            "bottom": 417.375,
+            "width": 24,
+            "height": 24
+          },
+          "amountRect": {
+            "left": 1275.578125,
+            "right": 1301.984375,
+            "top": 397.375,
+            "bottom": 413.375,
+            "width": 26.40625,
+            "height": 16
+          },
+          "labelFont": "12px",
+          "labelVisible": false,
+          "valueVisible": true,
+          "labelInsideCell": false,
+          "labelTextInsideCell": false,
+          "valueInsideCell": true,
+          "coinValueGap": 2.875
+        }
+      ]
+    },
+    {
+      "type": "bonus-group-labels",
+      "language": "es",
+      "state": "desktop-final",
+      "rows": [
+        {
+          "text": "3",
+          "display": "block",
+          "visibility": "visible",
+          "width": 8.796875,
+          "height": 21,
+          "visible": true
+        },
+        {
+          "text": "4",
+          "display": "block",
+          "visibility": "visible",
+          "width": 8.796875,
+          "height": 21,
+          "visible": true
+        },
+        {
+          "text": "5+",
+          "display": "block",
+          "visibility": "visible",
+          "width": 18.828125,
+          "height": 21,
+          "visible": true
+        }
+      ]
+    },
+    {
+      "type": "final-board",
+      "language": "es",
+      "horizontalOverflow": false,
+      "roundPillVisible": true,
+      "roundLabel": "Ronda1/ 3",
+      "overlappedByNotice": false,
+      "oldBonusNotices": 0
+    },
+    {
+      "type": "token-cell-content",
+      "language": "es",
+      "state": "mobile",
+      "rows": [
+        {
+          "good": "Diamantes",
+          "label": "Siguiente:",
+          "value": "7 pts",
+          "cellRect": {
+            "left": 39.59375,
+            "right": 139.46875,
+            "top": 1428.09375,
+            "bottom": 1515.40625,
+            "width": 99.875,
+            "height": 87.3125
+          },
+          "labelRect": {
+            "left": 47.3125,
+            "right": 94.578125,
+            "top": 1475.625,
+            "bottom": 1487.234375,
+            "width": 47.265625,
+            "height": 11.609375
+          },
+          "valueRect": {
+            "left": 47.3125,
+            "right": 98.765625,
+            "top": 1488.5,
+            "bottom": 1507.6875,
+            "width": 51.453125,
+            "height": 19.1875
+          },
+          "coinRect": {
+            "left": 47.3125,
+            "right": 66.5,
+            "top": 1488.5,
+            "bottom": 1507.6875,
+            "width": 19.1875,
+            "height": 19.1875
+          },
+          "amountRect": {
+            "left": 68.40625,
+            "right": 98.765625,
+            "top": 1489.59375,
+            "bottom": 1506.59375,
+            "width": 30.359375,
+            "height": 17
+          },
+          "labelFont": "10.56px",
+          "labelVisible": true,
+          "valueVisible": true,
+          "labelInsideCell": true,
+          "labelTextInsideCell": true,
+          "valueInsideCell": true,
+          "coinValueGap": 1.90625
+        },
+        {
+          "good": "Oro",
+          "label": "—",
+          "cellRect": {
+            "left": 145.0625,
+            "right": 244.9375,
+            "top": 1428.09375,
+            "bottom": 1515.40625,
+            "width": 99.875,
+            "height": 87.3125
+          },
+          "labelRect": {
+            "left": 152.78125,
+            "right": 162,
+            "top": 1492.65625,
+            "bottom": 1504.265625,
+            "width": 9.21875,
+            "height": 11.609375
+          },
+          "valueRect": null,
+          "coinRect": null,
+          "amountRect": null,
+          "labelFont": "10.56px",
+          "labelVisible": true,
+          "valueVisible": false,
+          "labelInsideCell": true,
+          "labelTextInsideCell": true,
+          "valueInsideCell": null,
+          "coinValueGap": null
+        },
+        {
+          "good": "Plata",
+          "label": "Siguiente:",
+          "value": "5 pts",
+          "cellRect": {
+            "left": 250.53125,
+            "right": 350.40625,
+            "top": 1428.09375,
+            "bottom": 1515.40625,
+            "width": 99.875,
+            "height": 87.3125
+          },
+          "labelRect": {
+            "left": 258.25,
+            "right": 305.515625,
+            "top": 1475.625,
+            "bottom": 1487.234375,
+            "width": 47.265625,
+            "height": 11.609375
+          },
+          "valueRect": {
+            "left": 258.25,
+            "right": 310.796875,
+            "top": 1488.5,
+            "bottom": 1507.6875,
+            "width": 52.546875,
+            "height": 19.1875
+          },
+          "coinRect": {
+            "left": 258.25,
+            "right": 277.4375,
+            "top": 1488.5,
+            "bottom": 1507.6875,
+            "width": 19.1875,
+            "height": 19.1875
+          },
+          "amountRect": {
+            "left": 279.34375,
+            "right": 310.796875,
+            "top": 1489.59375,
+            "bottom": 1506.59375,
+            "width": 31.453125,
+            "height": 17
+          },
+          "labelFont": "10.56px",
+          "labelVisible": true,
+          "valueVisible": true,
+          "labelInsideCell": true,
+          "labelTextInsideCell": true,
+          "valueInsideCell": true,
+          "coinValueGap": 1.90625
+        },
+        {
+          "good": "Tela",
+          "label": "Siguiente:",
+          "value": "3 pts",
+          "cellRect": {
+            "left": 39.59375,
+            "right": 139.46875,
+            "top": 1521,
+            "bottom": 1608.3125,
+            "width": 99.875,
+            "height": 87.3125
+          },
+          "labelRect": {
+            "left": 47.3125,
+            "right": 94.578125,
+            "top": 1568.53125,
+            "bottom": 1580.140625,
+            "width": 47.265625,
+            "height": 11.609375
+          },
+          "valueRect": {
+            "left": 47.3125,
+            "right": 99.609375,
+            "top": 1581.40625,
+            "bottom": 1600.59375,
+            "width": 52.296875,
+            "height": 19.1875
+          },
+          "coinRect": {
+            "left": 47.3125,
+            "right": 66.5,
+            "top": 1581.40625,
+            "bottom": 1600.59375,
+            "width": 19.1875,
+            "height": 19.1875
+          },
+          "amountRect": {
+            "left": 68.40625,
+            "right": 99.609375,
+            "top": 1582.5,
+            "bottom": 1599.5,
+            "width": 31.203125,
+            "height": 17
+          },
+          "labelFont": "10.56px",
+          "labelVisible": true,
+          "valueVisible": true,
+          "labelInsideCell": true,
+          "labelTextInsideCell": true,
+          "valueInsideCell": true,
+          "coinValueGap": 1.90625
+        },
+        {
+          "good": "Especias",
+          "label": "Siguiente:",
+          "value": "3 pts",
+          "cellRect": {
+            "left": 145.0625,
+            "right": 244.9375,
+            "top": 1521,
+            "bottom": 1608.3125,
+            "width": 99.875,
+            "height": 87.3125
+          },
+          "labelRect": {
+            "left": 152.78125,
+            "right": 200.046875,
+            "top": 1568.53125,
+            "bottom": 1580.140625,
+            "width": 47.265625,
+            "height": 11.609375
+          },
+          "valueRect": {
+            "left": 152.78125,
+            "right": 205.078125,
+            "top": 1581.40625,
+            "bottom": 1600.59375,
+            "width": 52.296875,
+            "height": 19.1875
+          },
+          "coinRect": {
+            "left": 152.78125,
+            "right": 171.96875,
+            "top": 1581.40625,
+            "bottom": 1600.59375,
+            "width": 19.1875,
+            "height": 19.1875
+          },
+          "amountRect": {
+            "left": 173.875,
+            "right": 205.078125,
+            "top": 1582.5,
+            "bottom": 1599.5,
+            "width": 31.203125,
+            "height": 17
+          },
+          "labelFont": "10.56px",
+          "labelVisible": true,
+          "valueVisible": true,
+          "labelInsideCell": true,
+          "labelTextInsideCell": true,
+          "valueInsideCell": true,
+          "coinValueGap": 1.90625
+        },
+        {
+          "good": "Cuero",
+          "label": "Siguiente:",
+          "value": "1 pts",
+          "cellRect": {
+            "left": 250.53125,
+            "right": 350.40625,
+            "top": 1521,
+            "bottom": 1608.3125,
+            "width": 99.875,
+            "height": 87.3125
+          },
+          "labelRect": {
+            "left": 258.25,
+            "right": 305.515625,
+            "top": 1568.53125,
+            "bottom": 1580.140625,
+            "width": 47.265625,
+            "height": 11.609375
+          },
+          "valueRect": {
+            "left": 258.25,
+            "right": 307.5,
+            "top": 1581.40625,
+            "bottom": 1600.59375,
+            "width": 49.25,
+            "height": 19.1875
+          },
+          "coinRect": {
+            "left": 258.25,
+            "right": 277.4375,
+            "top": 1581.40625,
+            "bottom": 1600.59375,
+            "width": 19.1875,
+            "height": 19.1875
+          },
+          "amountRect": {
+            "left": 279.34375,
+            "right": 307.5,
+            "top": 1582.5,
+            "bottom": 1599.5,
+            "width": 28.15625,
+            "height": 17
+          },
+          "labelFont": "10.56px",
+          "labelVisible": true,
+          "valueVisible": true,
+          "labelInsideCell": true,
+          "labelTextInsideCell": true,
+          "valueInsideCell": true,
+          "coinValueGap": 1.90625
+        }
+      ]
+    },
+    {
+      "type": "bonus-group-labels",
+      "language": "es",
+      "state": "mobile-final",
+      "rows": [
+        {
+          "text": "3",
+          "display": "block",
+          "visibility": "visible",
+          "width": 35.1875,
+          "height": 22,
+          "visible": true
+        },
+        {
+          "text": "4",
+          "display": "block",
+          "visibility": "visible",
+          "width": 35.1875,
+          "height": 22,
+          "visible": true
+        },
+        {
+          "text": "5+",
+          "display": "block",
+          "visibility": "visible",
+          "width": 35.1875,
+          "height": 22,
+          "visible": true
+        }
+      ]
+    }
+  ],
+  "trace": [
+    {
+      "page": 1,
+      "endpoint": "/rest/v1/rpc/room_snapshot",
+      "status": 200,
+      "version": 0,
+      "seat": "p1",
+      "game": null,
+      "pending": null,
+      "members": [
+        "p1"
+      ],
+      "empty": false
+    },
+    {
+      "page": 1,
+      "endpoint": "/rest/v1/rpc/room_snapshot",
+      "status": 200,
+      "version": 0,
+      "seat": "p1",
+      "game": null,
+      "pending": null,
+      "members": [
+        "p1"
+      ],
+      "empty": false
+    },
+    {
+      "page": 2,
+      "endpoint": "/rest/v1/rpc/room_snapshot",
+      "status": 200,
+      "version": 0,
+      "seat": "p2",
+      "game": null,
+      "pending": null,
+      "members": [
+        "p1",
+        "p2"
+      ],
+      "empty": false
+    },
+    {
+      "page": 2,
+      "endpoint": "/rest/v1/rpc/room_snapshot",
+      "status": 200,
+      "version": 0,
+      "seat": "p2",
+      "game": null,
+      "pending": null,
+      "members": [
+        "p1",
+        "p2"
+      ],
+      "empty": false
+    },
+    {
+      "page": 1,
+      "endpoint": "/rest/v1/rpc/room_snapshot",
+      "status": 200,
+      "version": 0,
+      "seat": "p1",
+      "game": null,
+      "pending": null,
+      "members": [
+        "p1",
+        "p2"
+      ],
+      "empty": false
+    },
+    {
+      "page": 1,
+      "endpoint": "/functions/v1/action",
+      "status": 200,
+      "version": 1,
+      "empty": false
+    },
+    {
+      "page": 1,
+      "endpoint": "/rest/v1/rpc/room_snapshot",
+      "status": 200,
+      "version": 1,
+      "seat": "p1",
+      "game": null,
+      "pending": "jaipur",
+      "members": [
+        "p1",
+        "p2"
+      ],
+      "empty": false
+    },
+    {
+      "page": 2,
+      "endpoint": "/rest/v1/rpc/room_snapshot",
+      "status": 200,
+      "version": 1,
+      "seat": "p2",
+      "game": null,
+      "pending": "jaipur",
+      "members": [
+        "p1",
+        "p2"
+      ],
+      "empty": false
+    },
+    {
+      "page": 2,
+      "endpoint": "/functions/v1/action",
+      "status": 200,
+      "version": 2,
+      "empty": false
+    },
+    {
+      "page": 2,
+      "endpoint": "/rest/v1/rpc/room_snapshot",
+      "status": 200,
+      "version": 2,
+      "seat": "p2",
+      "game": "jaipur",
+      "pending": null,
+      "members": [
+        "p1",
+        "p2"
+      ],
+      "empty": false
+    },
+    {
+      "page": 1,
+      "endpoint": "/rest/v1/rpc/room_snapshot",
+      "status": 200,
+      "version": 2,
+      "seat": "p1",
+      "game": "jaipur",
+      "pending": null,
+      "members": [
+        "p1",
+        "p2"
+      ],
+      "empty": false
+    },
+    {
+      "page": 1,
+      "endpoint": "/functions/v1/action",
+      "status": 200,
+      "version": 3,
+      "empty": false
+    },
+    {
+      "page": 1,
+      "endpoint": "/rest/v1/rpc/room_snapshot",
+      "status": 200,
+      "version": 3,
+      "seat": "p1",
+      "game": "jaipur",
+      "pending": null,
+      "members": [
+        "p1",
+        "p2"
+      ],
+      "empty": false
+    },
+    {
+      "page": 2,
+      "endpoint": "/rest/v1/rpc/room_snapshot",
+      "status": 200,
+      "version": 3,
+      "seat": "p2",
+      "game": "jaipur",
+      "pending": null,
+      "members": [
+        "p1",
+        "p2"
+      ],
+      "empty": false
+    },
+    {
+      "page": 2,
+      "endpoint": "/functions/v1/action",
+      "status": 200,
+      "version": 4,
+      "empty": false
+    },
+    {
+      "page": 2,
+      "endpoint": "/rest/v1/rpc/room_snapshot",
+      "status": 200,
+      "version": 4,
+      "seat": "p2",
+      "game": "jaipur",
+      "pending": null,
+      "members": [
+        "p1",
+        "p2"
+      ],
+      "empty": false
+    },
+    {
+      "page": 2,
+      "endpoint": "/rest/v1/rpc/room_snapshot",
+      "status": 200,
+      "version": 4,
+      "seat": "p2",
+      "game": "jaipur",
+      "pending": null,
+      "members": [
+        "p1",
+        "p2"
+      ],
+      "empty": false
+    },
+    {
+      "page": 1,
+      "endpoint": "/rest/v1/rpc/room_snapshot",
+      "status": 200,
+      "version": 4,
+      "seat": "p1",
+      "game": "jaipur",
+      "pending": null,
+      "members": [
+        "p1",
+        "p2"
+      ],
+      "empty": false
+    },
+    {
+      "page": 1,
+      "endpoint": "/functions/v1/action",
+      "status": 200,
+      "version": 5,
+      "empty": false
+    },
+    {
+      "page": 1,
+      "endpoint": "/rest/v1/rpc/room_snapshot",
+      "status": 200,
+      "version": 5,
+      "seat": "p1",
+      "game": "jaipur",
+      "pending": null,
+      "members": [
+        "p1",
+        "p2"
+      ],
+      "empty": false
+    },
+    {
+      "page": 2,
+      "endpoint": "/rest/v1/rpc/room_snapshot",
+      "status": 200,
+      "version": 5,
+      "seat": "p2",
+      "game": "jaipur",
+      "pending": null,
+      "members": [
+        "p1",
+        "p2"
+      ],
+      "empty": false
+    },
+    {
+      "page": 2,
+      "endpoint": "/functions/v1/action",
+      "status": 200,
+      "version": 6,
+      "empty": false
+    },
+    {
+      "page": 2,
+      "endpoint": "/rest/v1/rpc/room_snapshot",
+      "status": 200,
+      "version": 6,
+      "seat": "p2",
+      "game": "jaipur",
+      "pending": null,
+      "members": [
+        "p1",
+        "p2"
+      ],
+      "empty": false
+    },
+    {
+      "page": 1,
+      "endpoint": "/rest/v1/rpc/room_snapshot",
+      "status": 200,
+      "version": 6,
+      "seat": "p1",
+      "game": "jaipur",
+      "pending": null,
+      "members": [
+        "p1",
+        "p2"
+      ],
+      "empty": false
+    },
+    {
+      "page": 1,
+      "endpoint": "/functions/v1/action",
+      "status": 200,
+      "version": 7,
+      "empty": false
+    },
+    {
+      "page": 1,
+      "endpoint": "/rest/v1/rpc/room_snapshot",
+      "status": 200,
+      "version": 7,
+      "seat": "p1",
+      "game": "jaipur",
+      "pending": null,
+      "members": [
+        "p1",
+        "p2"
+      ],
+      "empty": false
+    },
+    {
+      "page": 2,
+      "endpoint": "/rest/v1/rpc/room_snapshot",
+      "status": 200,
+      "version": 7,
+      "seat": "p2",
+      "game": "jaipur",
+      "pending": null,
+      "members": [
+        "p1",
+        "p2"
+      ],
+      "empty": false
+    },
+    {
+      "page": 2,
+      "endpoint": "/functions/v1/action",
+      "status": 200,
+      "version": 8,
+      "empty": false
+    },
+    {
+      "page": 2,
+      "endpoint": "/rest/v1/rpc/room_snapshot",
+      "status": 200,
+      "version": 8,
+      "seat": "p2",
+      "game": "jaipur",
+      "pending": null,
+      "members": [
+        "p1",
+        "p2"
+      ],
+      "empty": false
+    },
+    {
+      "page": 1,
+      "endpoint": "/rest/v1/rpc/room_snapshot",
+      "status": 200,
+      "version": 8,
+      "seat": "p1",
+      "game": "jaipur",
+      "pending": null,
+      "members": [
+        "p1",
+        "p2"
+      ],
+      "empty": false
+    },
+    {
+      "page": 1,
+      "endpoint": "/functions/v1/action",
+      "status": 200,
+      "version": 9,
+      "empty": false
+    },
+    {
+      "page": 1,
+      "endpoint": "/rest/v1/rpc/room_snapshot",
+      "status": 200,
+      "version": 9,
+      "seat": "p1",
+      "game": "jaipur",
+      "pending": null,
+      "members": [
+        "p1",
+        "p2"
+      ],
+      "empty": false
+    },
+    {
+      "page": 2,
+      "endpoint": "/rest/v1/rpc/room_snapshot",
+      "status": 200,
+      "version": 9,
+      "seat": "p2",
+      "game": "jaipur",
+      "pending": null,
+      "members": [
+        "p1",
+        "p2"
+      ],
+      "empty": false
+    },
+    {
+      "page": 2,
+      "endpoint": "/functions/v1/action",
+      "status": 200,
+      "version": 10,
+      "empty": false
+    },
+    {
+      "page": 2,
+      "endpoint": "/rest/v1/rpc/room_snapshot",
+      "status": 200,
+      "version": 10,
+      "seat": "p2",
+      "game": "jaipur",
+      "pending": null,
+      "members": [
+        "p1",
+        "p2"
+      ],
+      "empty": false
+    },
+    {
+      "page": 1,
+      "endpoint": "/rest/v1/rpc/room_snapshot",
+      "status": 200,
+      "version": 10,
+      "seat": "p1",
+      "game": "jaipur",
+      "pending": null,
+      "members": [
+        "p1",
+        "p2"
+      ],
+      "empty": false
+    },
+    {
+      "page": 1,
+      "endpoint": "/functions/v1/action",
+      "status": 200,
+      "version": 11,
+      "empty": false
+    },
+    {
+      "page": 1,
+      "endpoint": "/rest/v1/rpc/room_snapshot",
+      "status": 200,
+      "version": 11,
+      "seat": "p1",
+      "game": "jaipur",
+      "pending": null,
+      "members": [
+        "p1",
+        "p2"
+      ],
+      "empty": false
+    },
+    {
+      "page": 2,
+      "endpoint": "/rest/v1/rpc/room_snapshot",
+      "status": 200,
+      "version": 11,
+      "seat": "p2",
+      "game": "jaipur",
+      "pending": null,
+      "members": [
+        "p1",
+        "p2"
+      ],
+      "empty": false
+    },
+    {
+      "page": 2,
+      "endpoint": "/functions/v1/action",
+      "status": 200,
+      "version": 12,
+      "empty": false
+    },
+    {
+      "page": 2,
+      "endpoint": "/rest/v1/rpc/room_snapshot",
+      "status": 200,
+      "version": 12,
+      "seat": "p2",
+      "game": "jaipur",
+      "pending": null,
+      "members": [
+        "p1",
+        "p2"
+      ],
+      "empty": false
+    },
+    {
+      "page": 1,
+      "endpoint": "/rest/v1/rpc/room_snapshot",
+      "status": 200,
+      "version": 12,
+      "seat": "p1",
+      "game": "jaipur",
+      "pending": null,
+      "members": [
+        "p1",
+        "p2"
+      ],
+      "empty": false
+    },
+    {
+      "page": 1,
+      "endpoint": "/functions/v1/action",
+      "status": 200,
+      "version": 13,
+      "empty": false
+    },
+    {
+      "page": 1,
+      "endpoint": "/rest/v1/rpc/room_snapshot",
+      "status": 200,
+      "version": 13,
+      "seat": "p1",
+      "game": "jaipur",
+      "pending": null,
+      "members": [
+        "p1",
+        "p2"
+      ],
+      "empty": false
+    },
+    {
+      "page": 2,
+      "endpoint": "/rest/v1/rpc/room_snapshot",
+      "status": 200,
+      "version": 13,
+      "seat": "p2",
+      "game": "jaipur",
+      "pending": null,
+      "members": [
+        "p1",
+        "p2"
+      ],
+      "empty": false
+    },
+    {
+      "page": 2,
+      "endpoint": "/functions/v1/action",
+      "status": 200,
+      "version": 14,
+      "empty": false
+    },
+    {
+      "page": 2,
+      "endpoint": "/rest/v1/rpc/room_snapshot",
+      "status": 200,
+      "version": 14,
+      "seat": "p2",
+      "game": "jaipur",
+      "pending": null,
+      "members": [
+        "p1",
+        "p2"
+      ],
+      "empty": false
+    },
+    {
+      "page": 1,
+      "endpoint": "/rest/v1/rpc/room_snapshot",
+      "status": 200,
+      "version": 14,
+      "seat": "p1",
+      "game": "jaipur",
+      "pending": null,
+      "members": [
+        "p1",
+        "p2"
+      ],
+      "empty": false
+    },
+    {
+      "page": 1,
+      "endpoint": "/functions/v1/action",
+      "status": 200,
+      "version": 15,
+      "empty": false
+    },
+    {
+      "page": 1,
+      "endpoint": "/rest/v1/rpc/room_snapshot",
+      "status": 200,
+      "version": 15,
+      "seat": "p1",
+      "game": "jaipur",
+      "pending": null,
+      "members": [
+        "p1",
+        "p2"
+      ],
+      "empty": false
+    },
+    {
+      "page": 1,
+      "endpoint": "/rest/v1/rpc/room_snapshot",
+      "status": 200,
+      "version": 15,
+      "seat": "p1",
+      "game": "jaipur",
+      "pending": null,
+      "members": [
+        "p1",
+        "p2"
+      ],
+      "empty": false
+    },
+    {
+      "page": 2,
+      "endpoint": "/rest/v1/rpc/room_snapshot",
+      "status": 200,
+      "version": 15,
+      "seat": "p2",
+      "game": "jaipur",
+      "pending": null,
+      "members": [
+        "p1",
+        "p2"
+      ],
+      "empty": false
+    },
+    {
+      "page": 2,
+      "endpoint": "/functions/v1/action",
+      "status": 200,
+      "version": 16,
+      "empty": false
+    },
+    {
+      "page": 2,
+      "endpoint": "/rest/v1/rpc/room_snapshot",
+      "status": 200,
+      "version": 16,
+      "seat": "p2",
+      "game": "jaipur",
+      "pending": null,
+      "members": [
+        "p1",
+        "p2"
+      ],
+      "empty": false
+    },
+    {
+      "page": 1,
+      "endpoint": "/rest/v1/rpc/room_snapshot",
+      "status": 200,
+      "version": 16,
+      "seat": "p1",
+      "game": "jaipur",
+      "pending": null,
+      "members": [
+        "p1",
+        "p2"
+      ],
+      "empty": false
+    },
+    {
+      "page": 1,
+      "endpoint": "/functions/v1/action",
+      "status": 200,
+      "version": 17,
+      "empty": false
+    },
+    {
+      "page": 1,
+      "endpoint": "/rest/v1/rpc/room_snapshot",
+      "status": 200,
+      "version": 17,
+      "seat": "p1",
+      "game": "jaipur",
+      "pending": null,
+      "members": [
+        "p1",
+        "p2"
+      ],
+      "empty": false
+    },
+    {
+      "page": 2,
+      "endpoint": "/rest/v1/rpc/room_snapshot",
+      "status": 200,
+      "version": 17,
+      "seat": "p2",
+      "game": "jaipur",
+      "pending": null,
+      "members": [
+        "p1",
+        "p2"
+      ],
+      "empty": false
+    },
+    {
+      "page": 2,
+      "endpoint": "/functions/v1/action",
+      "status": 200,
+      "version": 18,
+      "empty": false
+    },
+    {
+      "page": 2,
+      "endpoint": "/rest/v1/rpc/room_snapshot",
+      "status": 200,
+      "version": 18,
+      "seat": "p2",
+      "game": "jaipur",
+      "pending": null,
+      "members": [
+        "p1",
+        "p2"
+      ],
+      "empty": false
+    },
+    {
+      "page": 1,
+      "endpoint": "/rest/v1/rpc/room_snapshot",
+      "status": 200,
+      "version": 18,
+      "seat": "p1",
+      "game": "jaipur",
+      "pending": null,
+      "members": [
+        "p1",
+        "p2"
+      ],
+      "empty": false
+    },
+    {
+      "page": 1,
+      "endpoint": "/functions/v1/action",
+      "status": 200,
+      "version": 19,
+      "empty": false
+    },
+    {
+      "page": 1,
+      "endpoint": "/rest/v1/rpc/room_snapshot",
+      "status": 200,
+      "version": 19,
+      "seat": "p1",
+      "game": "jaipur",
+      "pending": null,
+      "members": [
+        "p1",
+        "p2"
+      ],
+      "empty": false
+    },
+    {
+      "page": 2,
+      "endpoint": "/rest/v1/rpc/room_snapshot",
+      "status": 200,
+      "version": 19,
+      "seat": "p2",
+      "game": "jaipur",
+      "pending": null,
+      "members": [
+        "p1",
+        "p2"
+      ],
+      "empty": false
+    },
+    {
+      "page": 2,
+      "endpoint": "/functions/v1/action",
+      "status": 200,
+      "version": 20,
+      "empty": false
+    },
+    {
+      "page": 2,
+      "endpoint": "/rest/v1/rpc/room_snapshot",
+      "status": 200,
+      "version": 20,
+      "seat": "p2",
+      "game": "jaipur",
+      "pending": null,
+      "members": [
+        "p1",
+        "p2"
+      ],
+      "empty": false
+    },
+    {
+      "page": 1,
+      "endpoint": "/rest/v1/rpc/room_snapshot",
+      "status": 200,
+      "version": 20,
+      "seat": "p1",
+      "game": "jaipur",
+      "pending": null,
+      "members": [
+        "p1",
+        "p2"
+      ],
+      "empty": false
+    },
+    {
+      "page": 1,
+      "endpoint": "/functions/v1/action",
+      "status": 200,
+      "version": 21,
+      "empty": false
+    },
+    {
+      "page": 1,
+      "endpoint": "/rest/v1/rpc/room_snapshot",
+      "status": 200,
+      "version": 21,
+      "seat": "p1",
+      "game": "jaipur",
+      "pending": null,
+      "members": [
+        "p1",
+        "p2"
+      ],
+      "empty": false
+    },
+    {
+      "page": 2,
+      "endpoint": "/rest/v1/rpc/room_snapshot",
+      "status": 200,
+      "version": 21,
+      "seat": "p2",
+      "game": "jaipur",
+      "pending": null,
+      "members": [
+        "p1",
+        "p2"
+      ],
+      "empty": false
+    },
+    {
+      "page": 2,
+      "endpoint": "/functions/v1/action",
+      "status": 200,
+      "version": 22,
+      "empty": false
+    },
+    {
+      "page": 2,
+      "endpoint": "/rest/v1/rpc/room_snapshot",
+      "status": 200,
+      "version": 22,
+      "seat": "p2",
+      "game": "jaipur",
+      "pending": null,
+      "members": [
+        "p1",
+        "p2"
+      ],
+      "empty": false
+    },
+    {
+      "page": 1,
+      "endpoint": "/rest/v1/rpc/room_snapshot",
+      "status": 200,
+      "version": 22,
+      "seat": "p1",
+      "game": "jaipur",
+      "pending": null,
+      "members": [
+        "p1",
+        "p2"
+      ],
+      "empty": false
+    },
+    {
+      "page": 1,
+      "endpoint": "/functions/v1/action",
+      "status": 200,
+      "version": 23,
+      "empty": false
+    },
+    {
+      "page": 1,
+      "endpoint": "/rest/v1/rpc/room_snapshot",
+      "status": 200,
+      "version": 23,
+      "seat": "p1",
+      "game": "jaipur",
+      "pending": null,
+      "members": [
+        "p1",
+        "p2"
+      ],
+      "empty": false
+    },
+    {
+      "page": 2,
+      "endpoint": "/rest/v1/rpc/room_snapshot",
+      "status": 200,
+      "version": 23,
+      "seat": "p2",
+      "game": "jaipur",
+      "pending": null,
+      "members": [
+        "p1",
+        "p2"
+      ],
+      "empty": false
+    },
+    {
+      "page": 2,
+      "endpoint": "/functions/v1/action",
+      "status": 200,
+      "version": 24,
+      "empty": false
+    },
+    {
+      "page": 2,
+      "endpoint": "/rest/v1/rpc/room_snapshot",
+      "status": 200,
+      "version": 24,
+      "seat": "p2",
+      "game": "jaipur",
+      "pending": null,
+      "members": [
+        "p1",
+        "p2"
+      ],
+      "empty": false
+    },
+    {
+      "page": 1,
+      "endpoint": "/rest/v1/rpc/room_snapshot",
+      "status": 200,
+      "version": 24,
+      "seat": "p1",
+      "game": "jaipur",
+      "pending": null,
+      "members": [
+        "p1",
+        "p2"
+      ],
+      "empty": false
+    },
+    {
+      "page": 1,
+      "endpoint": "/functions/v1/action",
+      "status": 200,
+      "version": 25,
+      "empty": false
+    },
+    {
+      "page": 1,
+      "endpoint": "/rest/v1/rpc/room_snapshot",
+      "status": 200,
+      "version": 25,
+      "seat": "p1",
+      "game": "jaipur",
+      "pending": null,
+      "members": [
+        "p1",
+        "p2"
+      ],
+      "empty": false
+    },
+    {
+      "page": 2,
+      "endpoint": "/rest/v1/rpc/room_snapshot",
+      "status": 200,
+      "version": 25,
+      "seat": "p2",
+      "game": "jaipur",
+      "pending": null,
+      "members": [
+        "p1",
+        "p2"
+      ],
+      "empty": false
+    },
+    {
+      "page": 2,
+      "endpoint": "/functions/v1/action",
+      "status": 200,
+      "version": 26,
+      "empty": false
+    },
+    {
+      "page": 2,
+      "endpoint": "/rest/v1/rpc/room_snapshot",
+      "status": 200,
+      "version": 26,
+      "seat": "p2",
+      "game": "jaipur",
+      "pending": null,
+      "members": [
+        "p1",
+        "p2"
+      ],
+      "empty": false
+    },
+    {
+      "page": 1,
+      "endpoint": "/rest/v1/rpc/room_snapshot",
+      "status": 200,
+      "version": 26,
+      "seat": "p1",
+      "game": "jaipur",
+      "pending": null,
+      "members": [
+        "p1",
+        "p2"
+      ],
+      "empty": false
+    },
+    {
+      "page": 1,
+      "endpoint": "/functions/v1/action",
+      "status": 200,
+      "version": 27,
+      "empty": false
+    },
+    {
+      "page": 1,
+      "endpoint": "/rest/v1/rpc/room_snapshot",
+      "status": 200,
+      "version": 27,
+      "seat": "p1",
+      "game": "jaipur",
+      "pending": null,
+      "members": [
+        "p1",
+        "p2"
+      ],
+      "empty": false
+    },
+    {
+      "page": 2,
+      "endpoint": "/rest/v1/rpc/room_snapshot",
+      "status": 200,
+      "version": 27,
+      "seat": "p2",
+      "game": "jaipur",
+      "pending": null,
+      "members": [
+        "p1",
+        "p2"
+      ],
+      "empty": false
+    },
+    {
+      "page": 2,
+      "endpoint": "/rest/v1/rpc/room_snapshot",
+      "status": 200,
+      "version": 27,
+      "seat": "p2",
+      "game": "jaipur",
+      "pending": null,
+      "members": [
+        "p1",
+        "p2"
+      ],
+      "empty": false
+    },
+    {
+      "page": 1,
+      "endpoint": "/rest/v1/rpc/room_snapshot",
+      "status": 200,
+      "version": 27,
+      "seat": "p1",
+      "game": "jaipur",
+      "pending": null,
+      "members": [
+        "p1",
+        "p2"
+      ],
+      "empty": false
+    }
+  ],
+  "final": {
+    "version": 27,
+    "phase": "in-progress",
+    "round": 1,
+    "turn": "p2",
+    "deckCount": 21,
+    "scores": {
+      "p1": 45,
+      "p2": 39
+    },
+    "herdCounts": {
+      "p1": 4,
+      "p2": 3
+    },
+    "handCounts": {
+      "p1": 2,
+      "p2": 2
+    },
+    "actions": {
+      "p1": 13,
+      "p2": 12
+    },
+    "sales": {
+      "p1": 4,
+      "p2": 3
+    },
+    "exchanges": {
+      "p1": 1,
+      "p2": 1
+    },
+    "bothVersionsAndPublicBoardsMatch": true,
+    "privateMapAbsent": true,
+    "distinctOwnHands": true
+  }
+}

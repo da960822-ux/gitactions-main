@@ -9,7 +9,6 @@ import splendorArt from '../../public/images/splendor/card-map.json';
 import '../styles/game-design-system.css';
 import '../styles/table-games.css';
 import '../styles/splendor-premium.css';
-import '../styles/table-playability.css';
 
 type TableGameId = 'jaipur' | 'splendor' | 'davinci';
 type Choice = { label: Record<Language, string>; action: GameAction };
@@ -40,6 +39,11 @@ export function splendorCardAction(actions: Choice[], source: 'market' | 'reserv
   if (index < 0) return undefined;
   return actions.find(({ action }) => action.type === 'buy' && action.payload?.source === source && action.payload?.index === index && (source === 'reserved' || action.payload?.tier === tier));
 }
+
+export const splendorSelectedTier = (selectedTier: unknown, cardTier?: unknown) => Number(selectedTier ?? cardTier ?? 0);
+export const splendorSelectedTierText = (language: Language, tier: number, points?: number) => copy(language,
+  `단계 ${tier}${points === undefined ? '' : ` · ${points}점`}`,
+  `Nivel ${tier}${points === undefined ? '' : ` · ${points} pts`}`);
 
 const equalReturns = (left: unknown, right: unknown) => gems.every(gem => Number(record(left)[gem] ?? 0) === Number(record(right)[gem] ?? 0));
 export function splendorTakeAction(actions: Choice[], selectedGems: string[], returnTokens: unknown, doubleGem?: string) {
@@ -349,12 +353,13 @@ function SplendorTable({ view, language, playerId, roomId = null, version = 0, r
     setSelectedDoubleGem(null);
     setPicked(current => current.includes(gem) ? current.filter(value => value !== gem) : current.length < needed ? [...current, gem] : current);
   };
-  const selectedTier = Number(selectedCard?.tier ?? 0);
+  const selectedReservedIndex = selectedCard?.source === 'reserved' ? reserved.findIndex(card => String(card?.id) === selectedCard.id) : -1;
+  const selectedReservedCard = selectedReservedIndex >= 0 ? reserved[selectedReservedIndex] : null;
+  const selectedTier = splendorSelectedTier(selectedCard?.tier, selectedReservedCard?.tier);
   const selectedMarket = selectedCard?.source === 'market' ? array(record(board.market)[selectedTier]).find(card => String(card?.id) === selectedCard.id) : null;
   const selectedMarketIndex = selectedCard?.source === 'market' ? array(record(board.market)[selectedTier]).findIndex(card => String(card?.id) === selectedCard.id) : -1;
-  const selectedReservedIndex = selectedCard?.source === 'reserved' ? reserved.findIndex(card => String(card?.id) === selectedCard.id) : -1;
   const selectedDeckTier = selectedCard?.source === 'deck' ? selectedTier : null;
-  const selectedRaw = selectedMarket ?? (selectedReservedIndex >= 0 ? reserved[selectedReservedIndex] : null);
+  const selectedRaw = selectedMarket ?? selectedReservedCard;
   const selectedCardData: RecordValue | null = selectedRaw ? { ...record(selectedRaw), id: selectedCard?.id, tier: selectedCard?.tier ?? selectedRaw.tier } : null;
   const selectedBuy = selectedCardData && selectedCard && selectedCard.source !== 'deck' ? splendorCardAction(choices, selectedCard.source, selectedCard.id, selectedCard.source === 'market' ? array(record(board.market)[selectedTier]) : reserved, selectedTier) : undefined;
   const selectedReserveOptions = selectedCard?.source === 'market' && selectedMarketIndex >= 0 ? splendorReserveChoices(reserveMarket(selectedTier, selectedMarketIndex), reserved.length) : selectedDeckTier ? splendorReserveChoices(reserveDeck(selectedDeckTier), reserved.length) : [];
@@ -406,7 +411,7 @@ function SplendorTable({ view, language, playerId, roomId = null, version = 0, r
     </section>
     <aside className="sp-sidebar">
       {(selectedCardData||selectedDeckTier)&&<section ref={actionPanelRef} tabIndex={-1} className="sp-action-panel" data-selected-card-id={selectedCardData?.id??selectedCard?.id} data-source-zone={selectedCard?.source} data-viewer={playerId} data-room-id={roomId??''} data-version={version} aria-label={copy(language,'선택한 카드 행동','Acciones de la carta seleccionada')}>
-          <header className="sp-section-heading"><div><h2>{copy(language,selectedCard?.source==='deck'?'덱 카드 예약':selectedCard?.source==='reserved'?'예약 카드 행동':'선택한 카드',selectedCard?.source==='deck'?'Reservar del mazo':selectedCard?.source==='reserved'?'Acciones de reserva':'Carta seleccionada')}</h2><p>{copy(language,`단계 ${selectedTier}${selectedCardData?` · ${Number(selectedCardData.points??0)}점`:''}`,`Nivel ${selectedTier}${selectedCardData?` · ${Number(selectedCardData.points??0)} pts`:''}`)}</p></div><button type="button" className="sp-action-cancel" aria-label={copy(language,'선택 취소','Cancelar selección')} onClick={()=>{returnCardFocusRef.current=true;setSelectedCard(null);}}>×</button></header>
+          <header className="sp-section-heading"><div><h2>{copy(language,selectedCard?.source==='deck'?'덱 카드 예약':selectedCard?.source==='reserved'?'예약 카드 행동':'선택한 카드',selectedCard?.source==='deck'?'Reservar del mazo':selectedCard?.source==='reserved'?'Acciones de reserva':'Carta seleccionada')}</h2><p>{splendorSelectedTierText(language,selectedTier,selectedCardData?Number(selectedCardData.points??0):undefined)}</p></div><button type="button" className="sp-action-cancel" aria-label={copy(language,'선택 취소','Cancelar selección')} onClick={()=>{returnCardFocusRef.current=true;setSelectedCard(null);}}>×</button></header>
           {selectedCardData?<div className="sp-action-card"><span className="sp-action-art" aria-hidden="true">{splendorCardArtSrc(selectedCardData.id)&&<img src={splendorCardArtSrc(selectedCardData.id)!} alt=""/>}</span><div><b>{copy(language,`영구 보너스 +1 ${gemName(String(selectedCardData.bonus),language)}`,`Bono permanente +1 ${gemName(String(selectedCardData.bonus),language)}`)}</b></div></div>:<div className="sp-action-card sp-deck-preview"><span className={`sp-card-back sp-card-back-${selectedDeckTier}`} aria-hidden="true"/><b>{copy(language,'덱 맨 위 카드 한 장을 예약해요. 카드 내용은 예약 전까지 비공개예요.','Reservas la carta superior sin ver su contenido hasta confirmar.')}</b></div>}
           {selectedCardData&&(()=>{const plan=splendorCardCostPlan(selectedCardData,tokens,owned);const projected={...owned,[String(selectedCardData.bonus)]:Number(owned[String(selectedCardData.bonus)]??0)+1};const visitors=Object.entries(nobles).filter(([,noble])=>colors.every(gem=>Number(projected[gem]??0)>=Number(record(noble?.requirement)[gem]??0)));return <>
             <div className="sp-payment-preview" aria-label={copy(language,'구매 예상 지불','Pago previsto')}>

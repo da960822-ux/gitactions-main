@@ -1,0 +1,380 @@
+[
+  {
+    "language": "ko",
+    "state": "reserve-gold-return",
+    "viewport": [
+      1440,
+      900
+    ],
+    "board": {
+      "top": 206.171875,
+      "bottom": 882.3125,
+      "height": 676.140625,
+      "width": 1382
+    },
+    "zones": {
+      ".sp-market": {
+        "top": 361.671875,
+        "bottom": 792.671875,
+        "height": 431,
+        "width": 862
+      },
+      ".sp-nobles": {
+        "top": 289.671875,
+        "bottom": 360.671875,
+        "height": 71,
+        "width": 1376
+      },
+      ".sp-bank": {
+        "top": 361.671875,
+        "bottom": 688.65625,
+        "height": 326.984375,
+        "width": 211
+      },
+      ".sp-treasury": {
+        "top": 769.3125,
+        "bottom": 878.3125,
+        "height": 109,
+        "width": 340
+      },
+      ".sp-reserved": {
+        "top": 769.3125,
+        "bottom": 869.3125,
+        "height": 100,
+        "width": 168
+      },
+      ".sp-action-panel": {
+        "top": 361.671875,
+        "bottom": 765.3125,
+        "height": 403.640625,
+        "width": 297
+      }
+    },
+    "cards": 12,
+    "nobles": 3,
+    "returnSteppers": 0,
+    "actionArtDisplay": "grid",
+    "reservedCardName": null,
+    "reservedArtHidden": false,
+    "pressedBank": 0,
+    "paymentFonts": [
+      12,
+      12,
+      12,
+      12,
+      12,
+      12,
+      12,
+      12,
+      12,
+      12,
+      12,
+      12,
+      12,
+      12,
+      12,
+      12,
+      12,
+      12,
+      12,
+      12
+    ],
+    "returnTargets": [],
+    "gemsLoaded": true,
+    "artContains": true,
+    "domNodes": 643,
+    "horizontalOverflow": false,
+    "file": "/workspace/gitactions-main/output/playwright/splendor-cost-guidance/ko-reserve-gold-return.png"
+  },
+  {
+    "language": "ko",
+    "state": "targeted-readiness",
+    "keyboardEnteredPanel": true,
+    "keyboardReturnedToCard": true,
+    "preview": {
+      "viewport": [
+        1440,
+        900
+      ],
+      "board": {
+        "top": 206.171875,
+        "bottom": 882.3125,
+        "height": 676.140625,
+        "width": 1382
+      },
+      "zones": {
+        ".sp-market": {
+          "top": 361.671875,
+          "bottom": 792.671875,
+          "height": 431,
+          "width": 862
+        },
+        ".sp-nobles": {
+          "top": 289.671875,
+          "bottom": 360.671875,
+          "height": 71,
+          "width": 1376
+        },
+        ".sp-bank": {
+          "top": 361.671875,
+          "bottom": 688.65625,
+          "height": 326.984375,
+          "width": 211
+        },
+        ".sp-treasury": {
+          "top": 769.3125,
+          "bottom": 878.3125,
+          "height": 109,
+          "width": 340
+        },
+        ".sp-reserved": {
+          "top": 769.3125,
+          "bottom": 869.3125,
+          "height": 100,
+          "width": 168
+        },
+        ".sp-action-panel": {
+          "top": 361.671875,
+          "bottom": 765.3125,
+          "height": 403.640625,
+          "width": 297
+        }
+      },
+      "cards": 12,
+      "nobles": 3,
+      "returnSteppers": 0,
+      "actionArtDisplay": "grid",
+      "reservedCardName": null,
+      "reservedArtHidden": false,
+      "pressedBank": 0,
+      "paymentFonts": [
+        12,
+        12,
+        12,
+        12,
+        12,
+        12,
+        12,
+        12,
+        12,
+        12,
+        12,
+        12,
+        12,
+        12,
+        12,
+        12,
+        12,
+        12,
+        12,
+        12
+      ],
+      "returnTargets": [],
+      "gemsLoaded": true,
+      "artContains": true,
+      "domNodes": 643,
+      "horizontalOverflow": false
+    },
+    "returnOptionCount": 6,
+    "beforeGold": 1,
+    "event": {
+      "gainFlights": [
+        "×1"
+      ],
+      "payments": [
+        "×1"
+      ]
+    },
+    "reservedCardName": "예약 3단계 카드 · 보너스 검정 +1 · 3점 · 비용 3 흰색, 3 파랑, 5 초록, 3 빨강",
+    "reservedArtHidden": true
+  },
+  {
+    "language": "es",
+    "state": "reserve-gold-return",
+    "viewport": [
+      1440,
+      900
+    ],
+    "board": {
+      "top": 206.171875,
+      "bottom": 881.8125,
+      "height": 675.640625,
+      "width": 1382
+    },
+    "zones": {
+      ".sp-market": {
+        "top": 358.171875,
+        "bottom": 789.171875,
+        "height": 431,
+        "width": 862
+      },
+      ".sp-nobles": {
+        "top": 289.671875,
+        "bottom": 357.171875,
+        "height": 67.5,
+        "width": 1376
+      },
+      ".sp-bank": {
+        "top": 358.171875,
+        "bottom": 685.15625,
+        "height": 326.984375,
+        "width": 211
+      },
+      ".sp-treasury": {
+        "top": 765.8125,
+        "bottom": 874.8125,
+        "height": 109,
+        "width": 340
+      },
+      ".sp-reserved": {
+        "top": 765.8125,
+        "bottom": 877.8125,
+        "height": 112,
+        "width": 168
+      },
+      ".sp-action-panel": {
+        "top": 358.171875,
+        "bottom": 761.8125,
+        "height": 403.640625,
+        "width": 297
+      }
+    },
+    "cards": 12,
+    "nobles": 3,
+    "returnSteppers": 0,
+    "actionArtDisplay": "grid",
+    "reservedCardName": null,
+    "reservedArtHidden": false,
+    "pressedBank": 0,
+    "paymentFonts": [
+      12,
+      12,
+      12,
+      12,
+      12,
+      12,
+      12,
+      12,
+      12,
+      12,
+      12,
+      12,
+      12,
+      12,
+      12,
+      12,
+      12,
+      12,
+      12,
+      12
+    ],
+    "returnTargets": [],
+    "gemsLoaded": true,
+    "artContains": true,
+    "domNodes": 652,
+    "horizontalOverflow": false,
+    "file": "/workspace/gitactions-main/output/playwright/splendor-cost-guidance/es-reserve-gold-return.png"
+  },
+  {
+    "language": "es",
+    "state": "targeted-readiness",
+    "keyboardEnteredPanel": true,
+    "keyboardReturnedToCard": true,
+    "preview": {
+      "viewport": [
+        1440,
+        900
+      ],
+      "board": {
+        "top": 206.171875,
+        "bottom": 881.8125,
+        "height": 675.640625,
+        "width": 1382
+      },
+      "zones": {
+        ".sp-market": {
+          "top": 358.171875,
+          "bottom": 789.171875,
+          "height": 431,
+          "width": 862
+        },
+        ".sp-nobles": {
+          "top": 289.671875,
+          "bottom": 357.171875,
+          "height": 67.5,
+          "width": 1376
+        },
+        ".sp-bank": {
+          "top": 358.171875,
+          "bottom": 685.15625,
+          "height": 326.984375,
+          "width": 211
+        },
+        ".sp-treasury": {
+          "top": 765.8125,
+          "bottom": 874.8125,
+          "height": 109,
+          "width": 340
+        },
+        ".sp-reserved": {
+          "top": 765.8125,
+          "bottom": 877.8125,
+          "height": 112,
+          "width": 168
+        },
+        ".sp-action-panel": {
+          "top": 358.171875,
+          "bottom": 761.8125,
+          "height": 403.640625,
+          "width": 297
+        }
+      },
+      "cards": 12,
+      "nobles": 3,
+      "returnSteppers": 0,
+      "actionArtDisplay": "grid",
+      "reservedCardName": null,
+      "reservedArtHidden": false,
+      "pressedBank": 0,
+      "paymentFonts": [
+        12,
+        12,
+        12,
+        12,
+        12,
+        12,
+        12,
+        12,
+        12,
+        12,
+        12,
+        12,
+        12,
+        12,
+        12,
+        12,
+        12,
+        12,
+        12,
+        12
+      ],
+      "returnTargets": [],
+      "gemsLoaded": true,
+      "artContains": true,
+      "domNodes": 652,
+      "horizontalOverflow": false
+    },
+    "returnOptionCount": 6,
+    "beforeGold": 1,
+    "event": {
+      "gainFlights": [
+        "×1"
+      ],
+      "payments": [
+        "×1"
+      ]
+    },
+    "reservedCardName": "Carta reservada de nivel 3 · bonificación Verde +1 · 3 pts · coste 5 Blanca, 3 Azul, 3 Roja, 3 Negra",
+    "reservedArtHidden": true
+  }
+]

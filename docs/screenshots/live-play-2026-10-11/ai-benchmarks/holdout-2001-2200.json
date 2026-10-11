@@ -1,0 +1,255 @@
+{
+  "purpose": "paired Domino chooser benchmark; results are descriptive and do not establish a production-strength claim by themselves",
+  "candidate": "src/games/domino.ts chooseDominoBotAction",
+  "baseline": "frozen pre-upgrade normal and hard chooser logic in this script",
+  "comparison": "same deal seed, candidate/baseline seats swapped; engine owns state, validates and resolves actions",
+  "decisionBoundary": "chooser receives only its own hand, public board/ends, difficulty, and public actor/mode/pass/count/log context",
+  "seedStart": 2001,
+  "seedEnd": 2200,
+  "seeds": 200,
+  "comparisons": {
+    "normal": {
+      "pairedGames": 400,
+      "candidateWins": 208,
+      "baselineWins": 179,
+      "draws": 13,
+      "candidateWinRate": 0.52,
+      "decisiveWinRate": 0.537467700258398,
+      "candidate": {
+        "chooserCalls": 2588,
+        "meanChooserMs": 0.00411,
+        "maxChooserMs": 1.54205
+      },
+      "frozenBaseline": {
+        "chooserCalls": 2574,
+        "meanChooserMs": 0.00174,
+        "maxChooserMs": 0.12196
+      },
+      "elapsedMs": 53.02,
+      "seedStart": 2001,
+      "seedEnd": 2200,
+      "seedPairs": 200
+    },
+    "hard": {
+      "pairedGames": 400,
+      "candidateWins": 198,
+      "baselineWins": 186,
+      "draws": 16,
+      "candidateWinRate": 0.495,
+      "decisiveWinRate": 0.515625,
+      "candidate": {
+        "chooserCalls": 2616,
+        "meanChooserMs": 0.40196,
+        "maxChooserMs": 4.56299
+      },
+      "frozenBaseline": {
+        "chooserCalls": 2616,
+        "meanChooserMs": 0.00404,
+        "maxChooserMs": 0.1493
+      },
+      "elapsedMs": 1081.27,
+      "seedStart": 2001,
+      "seedEnd": 2200,
+      "seedPairs": 200
+    },
+    "hard-vs-old-normal": {
+      "pairedGames": 400,
+      "candidateWins": 204,
+      "baselineWins": 180,
+      "draws": 16,
+      "candidateWinRate": 0.51,
+      "decisiveWinRate": 0.53125,
+      "candidate": {
+        "chooserCalls": 2605,
+        "meanChooserMs": 0.42662,
+        "maxChooserMs": 3.31773
+      },
+      "frozenBaseline": {
+        "chooserCalls": 2588,
+        "meanChooserMs": 0.00166,
+        "maxChooserMs": 0.14042
+      },
+      "elapsedMs": 1134.18,
+      "seedStart": 2001,
+      "seedEnd": 2200,
+      "seedPairs": 200
+    },
+    "candidate-hard-vs-normal": {
+      "pairedGames": 400,
+      "candidateWins": 199,
+      "baselineWins": 188,
+      "draws": 13,
+      "candidateWinRate": 0.4975,
+      "decisiveWinRate": 0.5142118863049095,
+      "candidate": {
+        "chooserCalls": 2639,
+        "meanChooserMs": 0.44408,
+        "maxChooserMs": 4.15162
+      },
+      "baseline": {
+        "chooserCalls": 2615,
+        "meanChooserMs": 0.00177,
+        "maxChooserMs": 0.14569
+      },
+      "elapsedMs": 1194.78,
+      "seedStart": 2001,
+      "seedEnd": 2200,
+      "seedPairs": 200
+    }
+  },
+  "fourSeatPolicyComparison": "synthetic paired team match: the benchmark exposes the engine pure play transition in-memory, selects all four seats through the same chooser boundary, and checks every selected action against engine player-view legal actions. No production export or source file is changed.",
+  "fourSeatPaired": {
+    "humans-vs-bots": {
+      "pairedGames": 400,
+      "candidateWins": 227,
+      "baselineWins": 160,
+      "draws": 13,
+      "candidateWinRate": 0.5675,
+      "decisiveWinRate": 0.58656330749354,
+      "candidate": {
+        "chooserCalls": 5356,
+        "meanChooserMs": 0.92081,
+        "maxChooserMs": 9.91782
+      },
+      "frozenBaseline": {
+        "chooserCalls": 5328,
+        "meanChooserMs": 0.00393,
+        "maxChooserMs": 0.37822
+      },
+      "seedStart": 2001,
+      "seedEnd": 2200,
+      "seedPairs": 200
+    },
+    "partners": {
+      "pairedGames": 400,
+      "candidateWins": 230,
+      "baselineWins": 159,
+      "draws": 11,
+      "candidateWinRate": 0.575,
+      "decisiveWinRate": 0.5912596401028277,
+      "candidate": {
+        "chooserCalls": 5393,
+        "meanChooserMs": 0.91019,
+        "maxChooserMs": 6.10686
+      },
+      "frozenBaseline": {
+        "chooserCalls": 5348,
+        "meanChooserMs": 0.00462,
+        "maxChooserMs": 2.53857
+      },
+      "seedStart": 2001,
+      "seedEnd": 2200,
+      "seedPairs": 200
+    }
+  },
+  "fourSeatDifficultyComparison": {
+    "humans-vs-bots": {
+      "pairedGames": 400,
+      "candidateWins": 236,
+      "baselineWins": 154,
+      "draws": 10,
+      "candidateWinRate": 0.59,
+      "decisiveWinRate": 0.6051282051282051,
+      "hard": {
+        "chooserCalls": 5404,
+        "meanChooserMs": 0.92305,
+        "maxChooserMs": 5.86743
+      },
+      "normal": {
+        "chooserCalls": 5354,
+        "meanChooserMs": 0.00186,
+        "maxChooserMs": 0.08585
+      },
+      "seedStart": 2001,
+      "seedEnd": 2200,
+      "seedPairs": 200
+    },
+    "partners": {
+      "pairedGames": 400,
+      "candidateWins": 255,
+      "baselineWins": 139,
+      "draws": 6,
+      "candidateWinRate": 0.6375,
+      "decisiveWinRate": 0.6472081218274112,
+      "hard": {
+        "chooserCalls": 5351,
+        "meanChooserMs": 0.94684,
+        "maxChooserMs": 32.3087
+      },
+      "normal": {
+        "chooserCalls": 5257,
+        "meanChooserMs": 0.0018,
+        "maxChooserMs": 0.36478
+      },
+      "seedStart": 2001,
+      "seedEnd": 2200,
+      "seedPairs": 200
+    }
+  },
+  "teamSelfPlay": {
+    "seedCountPerModeDifficulty": 200,
+    "elapsedMs": 10109.64,
+    "seedStart": 2001,
+    "seedEnd": 2200,
+    "humans-vs-bots:easy": {
+      "terminalGames": 200,
+      "meanHumanActions": 13.46,
+      "measuredHumanChooser": {
+        "chooserCalls": 2692,
+        "meanChooserMs": 0.00141,
+        "maxChooserMs": 0.0597
+      },
+      "elapsedMs": 22.67
+    },
+    "humans-vs-bots:normal": {
+      "terminalGames": 200,
+      "meanHumanActions": 13.45,
+      "measuredHumanChooser": {
+        "chooserCalls": 2689,
+        "meanChooserMs": 0.00137,
+        "maxChooserMs": 0.24655
+      },
+      "elapsedMs": 19.64
+    },
+    "humans-vs-bots:hard": {
+      "terminalGames": 200,
+      "meanHumanActions": 13.44,
+      "measuredHumanChooser": {
+        "chooserCalls": 2687,
+        "meanChooserMs": 0.92409,
+        "maxChooserMs": 9.79537
+      },
+      "elapsedMs": 5047.07
+    },
+    "partners:easy": {
+      "terminalGames": 200,
+      "meanHumanActions": 13.46,
+      "measuredHumanChooser": {
+        "chooserCalls": 2692,
+        "meanChooserMs": 0.00131,
+        "maxChooserMs": 0.08552
+      },
+      "elapsedMs": 21.26
+    },
+    "partners:normal": {
+      "terminalGames": 200,
+      "meanHumanActions": 13.45,
+      "measuredHumanChooser": {
+        "chooserCalls": 2689,
+        "meanChooserMs": 0.00119,
+        "maxChooserMs": 0.05378
+      },
+      "elapsedMs": 18.01
+    },
+    "partners:hard": {
+      "terminalGames": 200,
+      "meanHumanActions": 13.27,
+      "measuredHumanChooser": {
+        "chooserCalls": 2653,
+        "meanChooserMs": 0.92446,
+        "maxChooserMs": 11.29982
+      },
+      "elapsedMs": 4980.81
+    }
+  }
+}
