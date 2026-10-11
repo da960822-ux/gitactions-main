@@ -52,6 +52,9 @@ describe('Korean Hwatu face assets', () => {
     expect(ko).toContain('>12월</span>');
     expect(es).toContain('aria-label="Mes 12 · lluvia · hombre bajo la lluvia · 20 pts"');
     expect(es).toContain('>Mes 12</span>');
+    const compactEs = renderToStaticMarkup(<HwatuCard card={card} language="es" compactMonth/>);
+    expect(compactEs).toContain('>12</span>');
+    expect(compactEs).toContain('aria-label="Mes 12 · lluvia · hombre bajo la lluvia · 20 pts"');
     expect(ko).toContain('alt="" aria-hidden="true"');
   });
 });

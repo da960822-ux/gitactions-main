@@ -48,6 +48,7 @@ export function MinhwatuTable({ view, language, playerId, playerNames, runAction
   const actionLock = useRef(false);
   const resultRef = useRef<HTMLElement>(null);
   const handButtons = useRef(new Map<string, HTMLButtonElement>()), tableButtons = useRef(new Map<number, HTMLButtonElement>());
+  const handActions = useRef<HTMLDivElement>(null);
   const focusAfterTurn = useRef(false), focusTarget = useRef(false), replayLock = useRef(false);
   const publicEvents = array<MinhwatuEvent>(shownView?.log ?? board.actionLog);
   const handIds = hand.map(card => card.id).join('|');
@@ -69,7 +70,9 @@ export function MinhwatuTable({ view, language, playerId, playerNames, runAction
   const actionForTarget = (index: number) => minhwatuTargetAction(choices, index, selectedIndex, capturePhase);
   const scoreBreakdown = record(board.breakdown), stockCount = Number(board.deckCount ?? board.remainingDeck ?? 0);
   const activeLabel = shownView?.turn === playerId ? text(language, '내 차례', 'Tu turno') : text(language, '상대 차례', 'Turno rival');
-  const publicLog = publicEvents.slice(-6).reverse();
+  const publicLog = publicEvents.filter(event => event.type !== 'turn').slice(-48).reverse();
+  const lastCapture = publicEvents.filter(event => event.type === 'capture').at(-1);
+  const recentCaptureIds = (seat: PlayerId) => array<MinhwatuCard>(publicEvents.filter(event => event.type === 'capture' && event.actor === seat).at(-1)?.cards).map(card => card.id);
   const selectedMonthCount = selectedCard ? table.filter(card => card.month === selectedCard.month).length : 0;
   useEffect(() => {
     if (focusAfterTurn.current && shownView?.result && !busy) {
@@ -80,7 +83,7 @@ export function MinhwatuTable({ view, language, playerId, playerNames, runAction
     if (focusAfterTurn.current && active && !busy) {
       focusAfterTurn.current = false;
       const first = hand.find(card => choices.some(choice => choice.action.type === 'play' && Number(choice.action.payload?.index) === hand.indexOf(card)));
-      if (first) handButtons.current.get(first.id)?.focus();
+      if (first) handButtons.current.get(first.id)?.focus({ preventScroll: true });
     }
   }, [active, busy, handIds, choices]);
   useEffect(() => {
@@ -90,6 +93,11 @@ export function MinhwatuTable({ view, language, playerId, playerNames, runAction
       if (firstTarget >= 0) tableButtons.current.get(firstTarget)?.focus();
     }
   }, [selected, active, capturePhase, selectedMonthCount, busy, table, choices]);
+  useEffect(() => {
+    if (!active || busy || capturePhase || !selectedCard || plays.length !== 1 || plays[0].action.payload?.targetIndex !== undefined) return;
+    const bounds = handActions.current?.getBoundingClientRect();
+    if (bounds && (bounds.bottom > window.innerHeight || bounds.top < 0)) handActions.current?.scrollIntoView({ block: 'nearest' });
+  }, [selected, active, busy, capturePhase, plays.length]);
   const motionEvent = presentation.step?.events[0];
   const landingEvent = motionEvent?.type === 'capture' && motionEvent.actor ? motionEvent : undefined;
   const captureLandingCards = (seat: PlayerId) => landingEvent?.actor === seat
@@ -144,8 +152,15 @@ export function MinhwatuTable({ view, language, playerId, playerNames, runAction
   const finalOwnScore = Number(resultScores[playerId] ?? ownBreakdown.finalScore ?? board.scores?.[playerId] ?? 0);
   const finalRivalScore = Number(resultScores[otherId] ?? rivalBreakdown.finalScore ?? board.scores?.[otherId] ?? 0);
   const ownName = playerNames?.[playerId] ?? text(language, '나', 'Tú'), rivalName = playerNames?.[otherId] ?? text(language, '상대', 'Rival');
+  const cancelSelection = () => {
+    const selectedId = selected;
+    setSelected(null); setError('');
+    if (selectedId) requestAnimationFrame(() => handButtons.current.get(selectedId)?.focus({ preventScroll: true }));
+  };
 
-  return <section className={`minhwatu-table ${shownView?.result ? 'is-finished' : ''}`} aria-label={text(language, '민화투 게임판', 'Mesa de Minhwatu')}>
+  return <section className={`minhwatu-table ${shownView?.result ? 'is-finished' : ''}`} aria-label={text(language, '민화투 게임판', 'Mesa de Minhwatu')} onKeyDown={event => {
+    if (event.key === 'Escape' && selected && !busy) { event.preventDefault(); cancelSelection(); }
+  }}>
     <header className="hwatu-header">
       <div className="hwatu-title"><h2>{text(language, '민화투', 'Minhwatu')}</h2><p>{text(language, '48장으로 한 판 겨뤄요.', 'Jueguen una mano con 48 cartas.')}</p></div>
       <div className="hwatu-seat-strip" aria-label={text(language, '현재 점수와 차례', 'Puntos y turno')}>
@@ -167,7 +182,7 @@ export function MinhwatuTable({ view, language, playerId, playerNames, runAction
     </section>}
 
     <div className="hwatu-tabletop-stage">
-      <CaptureRack cards={captures[otherId]} landingCards={captureLandingCards(otherId)} seat={otherId} viewer={playerId} language={language} name={playerNames?.[otherId]} breakdown={record(scoreBreakdown[otherId])}/>
+      <CaptureRack cards={captures[otherId]} landingCards={captureLandingCards(otherId)} recentIds={recentCaptureIds(otherId)} seat={otherId} viewer={playerId} language={language} name={playerNames?.[otherId]} breakdown={record(scoreBreakdown[otherId])}/>
       <div className="hwatu-play-center">
         <div className="hwatu-opponent-bar" aria-label={text(language, '상대 손패', 'Mano rival')}>
           <div className="hwatu-opponent-summary"><b>{text(language, '상대 손패', 'Mano rival')}</b><span className="hwatu-opponent-count">{Number(shownView?.opponentCount ?? 0)}{text(language, '장', ' cartas')}</span></div>
@@ -203,11 +218,18 @@ export function MinhwatuTable({ view, language, playerId, playerNames, runAction
           {error && <b className="hwatu-error" role="alert">{error}</b>}
         </div>
 
-        <CaptureRack cards={captures[playerId]} landingCards={captureLandingCards(playerId)} seat={playerId} viewer={playerId} language={language} name={playerNames?.[playerId]} breakdown={record(scoreBreakdown[playerId])}/>
+        <CaptureRack cards={captures[playerId]} landingCards={captureLandingCards(playerId)} recentIds={recentCaptureIds(playerId)} seat={playerId} viewer={playerId} language={language} name={playerNames?.[playerId]} breakdown={record(scoreBreakdown[playerId])}/>
 
-        <section className={`hwatu-hand-section ${shownView?.result && !hand.length ? 'is-empty-finished' : ''}`} aria-label={text(language, '내 손패', 'Tu mano')}>
-          <header className="hwatu-hand-heading"><div><h3>{text(language, '내 손패', 'Tu mano')}</h3><span>{hand.length}</span></div><small>{text(language, '표시된 패로 바닥 패를 가져올 수 있어요.', 'Las cartas marcadas pueden capturar.')}</small></header>
-          <div className={`hwatu-choice-hand ${shownView?.result && !hand.length ? 'is-empty-finished' : ''}`} data-hwatu-zone="hand">{hand.map((card, index) => {
+        <section className={`hwatu-hand-section ${active && !busy ? 'is-active' : ''} ${shownView?.result && !hand.length ? 'is-empty-finished' : ''}`} aria-label={text(language, '내 손패', 'Tu mano')}>
+          <header className="hwatu-hand-heading"><div><h3>{text(language, '내 손패', 'Tu mano')}</h3><span>{hand.length}</span>{active && !busy && <b>{text(language, '내 차례', 'Tu turno')}</b>}</div><small>{text(language, '금색 테두리 패는 바닥패를 가져올 수 있어요.', 'Las cartas con borde dorado pueden capturar.')}</small></header>
+          <div className={`hwatu-choice-hand ${shownView?.result && !hand.length ? 'is-empty-finished' : ''}`} data-hwatu-zone="hand" onKeyDown={event => {
+            if (!active || busy || capturePhase || !['ArrowLeft', 'ArrowRight', 'Home', 'End'].includes(event.key)) return;
+            const index = hand.findIndex(card => handButtons.current.get(card.id) === document.activeElement);
+            if (index < 0) return;
+            event.preventDefault();
+            const next = event.key === 'Home' ? 0 : event.key === 'End' ? hand.length - 1 : (index + (event.key === 'ArrowRight' ? 1 : -1) + hand.length) % hand.length;
+            handButtons.current.get(hand[next].id)?.focus({ preventScroll: true });
+          }}>{hand.map((card, index) => {
             const legalChoices = choices.filter(choice => choice.action.type === 'play' && Number(choice.action.payload?.index) === index);
             const isSelected = selected === card.id, canPlay = legalChoices.length > 0 && active && !capturePhase;
             const matches = table.filter(item => item.month === card.month).length;
@@ -216,9 +238,9 @@ export function MinhwatuTable({ view, language, playerId, playerNames, runAction
               <HwatuCard card={card} language={language}/>
             </button>;
           })}</div>
-          <div className="hwatu-hand-actions">{active && !capturePhase && selectedCard && <div className="hwatu-confirm-row">
+          <div className="hwatu-hand-actions" ref={handActions}>{active && !capturePhase && selectedCard && <div className="hwatu-confirm-row">
             {plays.length === 1 && plays[0].action.payload?.targetIndex === undefined ? <button className="hwatu-confirm" type="button" disabled={busy} onClick={() => void run(plays[0])}>{text(language, `${selectedCard.month}월 패 내기`, `Jugar la carta del mes ${selectedCard.month}`)}</button> : <span>{text(language, '바닥에서 가져올 패를 선택하세요.', 'Elige en la mesa la carta que vas a capturar.')}</span>}
-            <button className="hwatu-cancel" type="button" disabled={busy} onClick={() => { const selectedId = selected; setSelected(null); setError(''); if (selectedId) requestAnimationFrame(() => handButtons.current.get(selectedId)?.focus()); }}>{text(language, '선택 취소', 'Cancelar')}</button>
+            <button className="hwatu-cancel" type="button" disabled={busy} onClick={cancelSelection}>{text(language, '선택 취소', 'Cancelar')}</button>
           </div>}
           {capturePhase && active && <p className="hwatu-confirm-row" role="status">{text(language, '바닥에서 같은 달 패를 선택하세요.', 'Elige en la mesa una carta del mismo mes.')}</p>}</div>
         </section>
@@ -227,7 +249,7 @@ export function MinhwatuTable({ view, language, playerId, playerNames, runAction
     </div>
 
     <details className="hwatu-action-log">
-      <summary>{text(language, '최근 행동', 'Actividad reciente')} · {publicLog.length}</summary>
+      <summary>{text(language, '최근 행동', 'Actividad reciente')} · {publicLog.length}{lastCapture && <span className="hwatu-last-capture"> · {lastCapture.actor === playerId ? text(language, '내 획득', 'Tu captura') : text(language, '상대 획득', 'Captura rival')}: {String(record(lastCapture.title)[language] ?? '')}</span>}</summary>
       {publicLog.length ? <ol>{publicLog.map((event, index) => {
         const actor = event.actor === playerId ? text(language, '나', 'Tú') : event.actor ? text(language, '상대', 'Contrincante') : '';
         const deltas = record(event.scoreChanges);
@@ -235,7 +257,7 @@ export function MinhwatuTable({ view, language, playerId, playerNames, runAction
           const delta = Number(deltas[seat]);
           return `${seat === playerId ? text(language, '나', 'Tú') : text(language, '상대', 'Contrincante')} ${delta > 0 ? '+' : ''}${delta}`;
         });
-        return <li key={`${Number(event.sequence ?? index)}:${index}`}><span>{actor && <b>{actor}</b>} {String(record(event.title)[language] ?? '')}</span>{changes.length > 0 && <small>{changes.join(' · ')}</small>}</li>;
+        return <li key={`${Number(event.sequence ?? index)}:${index}`}><span>{actor && <b>{actor}</b>} {String(record(event.title)[language] ?? '')}</span>{changes.length > 0 && <small>{changes.join(' · ')}</small>}{event.cards?.length && <div className="hwatu-log-cards" aria-label={text(language, '이 행동의 공개 패', 'Cartas visibles de esta acción')}>{event.cards.map(card => <HwatuCard key={card.id} card={card} language={language}/>)}</div>}</li>;
       })}</ol> : <p>{text(language, '아직 기록된 행동이 없어요.', 'Todavía no hay acciones registradas.')}</p>}
     </details>
 
@@ -267,23 +289,42 @@ export function MinhwatuTable({ view, language, playerId, playerNames, runAction
   </section>;
 }
 
-function CaptureRack({ cards, landingCards = [], seat, viewer, language, name, breakdown }: { cards: MinhwatuCard[]; landingCards?: MinhwatuCard[]; seat: PlayerId; viewer: PlayerId; language: Language; name?: string; breakdown: AnyRecord }) {
+function CaptureRack({ cards, landingCards = [], recentIds = [], seat, viewer, language, name, breakdown }: { cards: MinhwatuCard[]; landingCards?: MinhwatuCard[]; recentIds?: string[]; seat: PlayerId; viewer: PlayerId; language: Language; name?: string; breakdown: AnyRecord }) {
   const isViewer = seat === viewer, counts = captureCounts(cards), yakus = array<AnyRecord>(breakdown.yakus);
+  const [preview, setPreview] = useState<{ card: MinhwatuCard; left: number; top: number } | null>(null);
+  const inspect = (card: MinhwatuCard, button: HTMLButtonElement) => {
+    const bounds = button.getBoundingClientRect();
+    setPreview({ card, left: Math.max(8, Math.min(window.innerWidth - 160, bounds.right + 8)), top: Math.max(8, Math.min(window.innerHeight - 290, bounds.top)) });
+  };
+  useEffect(() => { setPreview(null); }, [cards.map(card => card.id).join('|'), language]);
+  const layoutCards = [...new Map([...cards, ...landingCards].map(card => [card.id, card])).values()];
+  const columns = categories.map(kind => {
+    const count = layoutCards.filter(card => card.kind === kind).length;
+    const stacked = count > (kind === 'plain' ? 10 : 5);
+    const rowCount = kind === 'plain' ? Math.min(count, 10) : count;
+    return `minmax(110px, ${Math.max(1, stacked ? 1 + (rowCount - 1) * .55 : rowCount)}fr)`;
+  }).join(' ');
   return <aside className={`hwatu-capture-rack ${isViewer ? 'is-own' : ''} ${cards.length ? '' : 'is-empty'}`} data-seat={seat} aria-label={`${isViewer ? text(language, '내가 모은 패', 'Mis capturas') : text(language, '상대가 모은 패', 'Capturas rivales')}: ${cards.length}`}>
-    <header className="hwatu-capture-rack-heading"><div>{name && <span className="hwatu-player-name">{name}</span>}<b>{isViewer ? text(language, '내가 모은 패', 'Mis capturas') : text(language, '상대가 모은 패', 'Capturas rivales')}</b><span>{cards.length} {text(language, '장', 'cartas')}</span></div></header>
-    <div className="hwatu-capture-categories">{categories.map(kind => {
-      const pile = cards.filter(card => card.kind === kind).sort((a, b) => a.month - b.month || a.id.localeCompare(b.id));
+    <header className="hwatu-capture-rack-heading"><div>{name && <span className="hwatu-player-name">{name}</span>}<b>{isViewer ? text(language, '내가 모은 패', 'Mis capturas') : text(language, '상대가 모은 패', 'Capturas rivales')}</b><span>{cards.length} {text(language, '장', 'cartas')}</span>{recentIds.length > 0 && <small>{text(language, `최근 ${recentIds.length}장 · 금색 테두리`, `Últimas ${recentIds.length} · borde dorado`)}</small>}</div></header>
+    <div className="hwatu-capture-categories" style={{ '--hw-capture-columns': columns } as CSSProperties}>{categories.map(kind => {
       const incoming = landingCards.filter(card => card.kind === kind);
       const incomingIds = new Set(incoming.map(card => card.id));
-      const ordered = [...pile, ...incoming].sort((a, b) => a.month - b.month || a.id.localeCompare(b.id));
-      return <section className={`hwatu-category-pile kind-${kind}`} key={kind} data-hwatu-zone={`captures-${seat}-${kind}`}>
+      const ordered = layoutCards.filter(card => card.kind === kind).sort((a, b) => a.month - b.month || a.id.localeCompare(b.id));
+      const stacked = kind !== 'bright' && ordered.length > (kind === 'plain' ? 10 : 5);
+      const rows = kind === 'plain' ? Array.from({ length: Math.ceil(ordered.length / 10) }, (_, index) => ordered.slice(index * 10, index * 10 + 10)) : [ordered];
+      return <section className={`hwatu-category-pile kind-${kind} ${stacked ? 'is-stacked' : ''}`} key={kind} data-hwatu-zone={`captures-${seat}-${kind}`}>
         <header className="hwatu-category-heading">
             <img src={`/images/hwatu-support/category-${kind}.svg`} alt="" aria-hidden="true"/>
             <span className="hwatu-category-label"><span>{categoryName[kind][language]}</span><b>{counts[kind]}</b></span>
         </header>
-        <div className="hwatu-captured-cards">{ordered.map(card => incomingIds.has(card.id)
+        <div className="hwatu-captured-cards">{rows.map((row, rowIndex) => <div className="hwatu-capture-row" key={rowIndex}>{row.map(card => incomingIds.has(card.id)
           ? <span className="hwatu-capture-landing" key={`landing:${card.id}`} data-hwatu-landing-anchor data-hwatu-landing-card-id={card.id} aria-hidden="true"/>
-          : <div className="hwatu-captured-card" key={card.id} data-hwatu-card-id={card.id}><HwatuCard card={card} language={language}/></div>)}
+          : <button type="button" className={`hwatu-captured-card ${recentIds.includes(card.id) ? 'is-recent' : ''}`} key={card.id} data-hwatu-card-id={card.id}
+            aria-label={`${text(language, `${card.month}월 ${card.flower.ko} ${card.badge.ko}`, `Mes ${card.month}, ${card.flower.es}, ${card.badge.es}`)} · ${card.points} ${text(language, '점', 'pts')}${recentIds.includes(card.id) ? ` · ${text(language, '최근 획득', 'Captura reciente')}` : ''} · ${text(language, '크게 보기', 'Ver más grande')}`}
+            onPointerEnter={event => inspect(card, event.currentTarget)} onFocus={event => inspect(card, event.currentTarget)} onClick={event => inspect(card, event.currentTarget)}
+            onPointerLeave={() => setPreview(null)} onBlur={() => setPreview(null)} onKeyDown={event => { if (event.key === 'Escape' && preview) { event.preventDefault(); event.stopPropagation(); setPreview(null); } }}>
+            <HwatuCard card={card} language={language} compactMonth/>
+          </button>)}</div>)}
         </div>
       </section>;
     })}</div>
@@ -293,5 +334,9 @@ function CaptureRack({ cards, landingCards = [], seat, viewer, language, name, b
         <span>{record(yaku.label)[language] ?? yaku.id}</span><b>{yaku.complete && Number(yaku.bonus) > 0 ? `+${yaku.bonus}` : `${Number(yaku.have ?? 0)}/${Number(yaku.need ?? 0)}`}</b>
       </li>)}</ul>
     </section>
+    {preview && <span className="hwatu-capture-preview" role="tooltip" style={{ left: preview.left, top: preview.top }}>
+      <img src={`/images/hwatu/${preview.card.id.split('-').map(part => part.padStart(2, '0')).join('-')}.svg`} alt=""/>
+      <span>{text(language, `${preview.card.month}월 · ${preview.card.flower.ko} · ${preview.card.badge.ko} · ${preview.card.points}점`, `Mes ${preview.card.month} · ${preview.card.flower.es} · ${preview.card.badge.es} · ${preview.card.points} pts`)}</span>
+    </span>}
   </aside>;
 }
