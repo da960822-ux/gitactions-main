@@ -11,7 +11,7 @@ export interface MarbleTile {
 export type MarbleEventId = 'festival' | 'lottery' | 'rent-rebate' | 'travel-cost' | 'maintenance' | 'visit-santo-domingo' | 'advance-start' | 'retreat' | 'go-to-island' | 'escape-pass' | 'train-ticket' | 'city-dividend' | 'monopoly-warning' | 'city-festival' | 'blackout' | 'rent-pass';
 export const marblePawnIds = ['fox', 'cat', 'penguin', 'astronaut', 'robot', 'dragon'] as const;
 export type MarblePawnId = typeof marblePawnIds[number];
-const pawnNames: Record<MarblePawnId, { ko: string; es: string }> = { fox: { ko: '여우', es: 'Zorro' }, cat: { ko: '고양이', es: 'Gata' }, penguin: { ko: '펭귄', es: 'Pingüino' }, astronaut: { ko: '우주비행사', es: 'Astronauta' }, robot: { ko: '로봇', es: 'Robot' }, dragon: { ko: '용', es: 'Dragón' } };
+const pawnNames: Record<MarblePawnId, { ko: string; es: string }> = { fox: { ko: '말티푸', es: 'Maltipoo' }, cat: { ko: '고양이', es: 'Gata' }, penguin: { ko: '판다', es: 'Panda' }, astronaut: { ko: '우주비행사', es: 'Astronauta' }, robot: { ko: '로봇', es: 'Robot' }, dragon: { ko: '친칠라', es: 'Chinchilla' } };
 export interface MarbleActionEvent {
   sequence: number; type: 'roll' | 'move' | 'arrival' | 'buy' | 'build' | 'rent' | 'tax' | 'bonus' | 'event-card' | 'loan' | 'repay' | 'crisis' | 'bankruptcy' | 'monopoly-warning' | 'island' | 'escape' | 'train' | 'rest' | 'turn' | 'win' | 'pawn';
   actor: PlayerId; title: { ko: string; es: string }; text: { ko: string; es: string };
@@ -31,7 +31,7 @@ export interface MarbleState {
   properties: Record<string, { owner: PlayerId; houses: number }>;
   phase: 'roll' | 'decision' | 'main' | 'island' | 'train-decision' | 'event-decision' | 'rent-decision' | 'debt' | 'finished'; pendingTile: number | null; lastRoll: number[]; turns: number; result: GameResult | null;
   eventRng?: number; eventDeck?: MarbleEventId[]; eventSequence?: number; lastEvent?: MarblePublicEvent | null;
-  boardVersion?: 2; islandTurns?: Record<PlayerId, number>; escapePasses?: Record<PlayerId, number>; trainReady?: Record<PlayerId, boolean>;
+  boardVersion?: 2; cityRouteVersion?: 2; islandTurns?: Record<PlayerId, number>; escapePasses?: Record<PlayerId, number>; trainReady?: Record<PlayerId, boolean>;
   pendingTrainFare?: number | null; pendingTrainSource?: 'station' | 'card' | null;
   lastMove?: { sequence: number; playerId: PlayerId; from: number; to: number; steps: number | null; source: 'dice' | 'card' | 'train' | 'island' } | null;
   moveSequence?: number; fundPool?: number; diceSequence?: number;
@@ -106,7 +106,11 @@ const modernBoard: MarbleTile[] = [
   { kind: 'property', name: { ko: '밴쿠버', es: 'Vancouver' }, price: 560, rent: 112, group: 'silver' },
   { kind: 'rest', name: { ko: '휴식 광장', es: 'Plaza de descanso' } },
 ];
-const boardFor = (s: MarbleState) => s.boardVersion === 2 ? modernBoard : legacyBoard;
+// Saved version-2 rooms keep their original indexed properties and destinations.
+const journeyBoard = modernBoard.map((tile, index) => index === 3 ? modernBoard[15] : index === 15 ? modernBoard[3]
+  : index === 31 ? { ...tile, name: { ko: '뉴어크', es: 'Newark' } }
+    : index === 38 ? { ...tile, name: { ko: '서울', es: 'Seúl' } } : tile);
+const boardFor = (s: MarbleState) => s.boardVersion === 2 ? s.cityRouteVersion === 2 ? journeyBoard : modernBoard : legacyBoard;
 const legacyIds: MarbleEventId[] = ['festival', 'lottery', 'rent-rebate', 'travel-cost', 'maintenance', 'visit-santo-domingo', 'advance-start', 'retreat'];
 const modernIds: MarbleEventId[] = [...legacyIds, 'go-to-island', 'escape-pass', 'train-ticket', 'city-dividend'];
 const expandedIds: MarbleEventId[] = [...modernIds, 'monopoly-warning', 'city-festival', 'blackout', 'rent-pass'];
@@ -211,6 +215,7 @@ function view(s: MarbleState, p: PlayerId) {
     turn: s.active, phase: s.result ? 'finished' : s.phase,
     board: {
       version: s.boardVersion ?? 1,
+      cityRouteVersion: s.cityRouteVersion ?? 1,
       tiles: board.map((tile, index) => {
         const houses = s.properties[String(index)]?.houses ?? 0;
         const maxLevels = s.boardVersion === 2 ? 3 : 2;
@@ -400,7 +405,7 @@ function resolveEvent(s: MarbleState, p: PlayerId): MarbleState {
     const houses = Object.values(s.properties).filter(property => property.owner === p).reduce((count, property) => count + property.houses, 0);
     s = pay(s, p, houses * 40, 'bank', card.title);
   } else if (id === 'visit-santo-domingo') {
-    const destination = isModern ? 3 : 2; movement = 'visit'; steps = (destination - from + board.length) % board.length;
+    const destination = board.findIndex(tile => tile.name.ko === '산토도밍고'); movement = 'visit'; steps = (destination - from + board.length) % board.length;
     moveForward(s, p, destination, board); noteMove(s, p, from, destination, steps, 'card'); s = resolveLanding(s, p, destination, false);
   } else if (id === 'advance-start') {
     movement = 'move'; steps = (board.length - from) % board.length; s.positions[p] = 0; noteMove(s, p, from, 0, steps, 'card'); bonus(s, p, 200, card.title.ko, card.title.es); s.pendingTile = 0;
@@ -568,7 +573,7 @@ export const marbleEngine: GameEngine<MarbleState> = {
   id: 'marble',
   createInitialState(seed) {
     const rng = seed >>> 0, eventRng = (rng ^ 0xa5a5a5a5) >>> 0;
-    return { rng, active: 'p1', positions: { p1: 0, p2: 0 }, money: { p1: 1500, p2: 1500 }, properties: {}, boardVersion: 2,
+    return { rng, active: 'p1', positions: { p1: 0, p2: 0 }, money: { p1: 1500, p2: 1500 }, properties: {}, boardVersion: 2, cityRouteVersion: 2,
       phase: 'roll', pendingTile: null, lastRoll: [], turns: 0, result: null, eventRng: (eventRng + (expandedIds.length - 1) * 0x6d2b79f5) >>> 0,
       eventDeck: shuffle(expandedIds, seededRandom(eventRng)), eventSequence: 0, lastEvent: null, fundPool: 0,
       eventVersion: 3, pendingEvent: null, pendingRent: null, rentPasses: { p1: 0, p2: 0 }, rentModifiers: {}, economicVersion: 2, debt: { p1: 0, p2: 0 }, pendingPayment: null, actionLog: [], actionSequence: 0, pawns: { p1: 'fox', p2: 'cat' }, pawnLocked: { p1: false, p2: false },

@@ -140,12 +140,27 @@ describe('DaVinciTable', () => {
     expect(loss).not.toContain('모든 상대 타일을 공개했어요.');
   });
 
-  it('renders a visible own joker as a dash in the tile and accessible label, never as NaN', () => {
+  it('renders the existing portrait on an own joker and preserves its accessible value', () => {
     const view = { game: 'davinci', turn: 'p1', phase: 'draw', hand: [{ color: 'black', value: 'joker', revealed: false }], board: { opponentTiles: [{ color: 'white', value: null, revealed: false }], deckCount: 12, turnNumber: 1, tileCount: 26, actionLog: [], lastEvent: null }, actions: [] };
     const html = render(view);
-    expect(html).toContain('<b>－</b>');
+    expect(html).toContain('class="dv-joker-portrait"');
+    expect(html).toContain('/images/yeonseok-lisbeth-cutout.webp');
     expect(html).toContain('숫자 －');
     expect(html).not.toContain('NaN');
+  });
+
+  it('uses one face per visible joker and never exposes a hidden rival joker portrait', () => {
+    const view = { game: 'davinci', turn: 'p1', phase: 'waiting', hand: [], board: { opponentTiles: [{ color: 'black', value: 'joker', revealed: false }, { color: 'white', value: 'joker', revealed: false }], deckCount: 12, tileCount: 26 }, actions: [] };
+    for (const language of ['ko', 'es'] as const) {
+      const hidden = render(view, 'p1', language);
+      expect(hidden).not.toContain('dv-joker-portrait');
+      expect(hidden).not.toContain('yeonseok-lisbeth-cutout');
+      expect(hidden).not.toContain('635 70');
+      const visible = render({ ...view, board: { ...view.board, opponentTiles: view.board.opponentTiles.map(tile => ({ ...tile, revealed: true })) } }, 'p1', language);
+      expect(visible.match(/class="dv-joker-portrait"/g)).toHaveLength(2);
+      expect(visible).toContain('viewBox="635 70 355 455"');
+      expect(visible).toContain('viewBox="295 145 340 430"');
+    }
   });
 
   it('offers only server-provided gaps for the private joker and a finish-ready action after placement', () => {

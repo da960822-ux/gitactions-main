@@ -1,0 +1,22 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 128">
+  <symbol id="villa" viewBox="0 0 128 128">
+    <g stroke="#344c59" stroke-width="2.5" stroke-linejoin="round">
+      <path d="M18 99l43-21 49 23-44 23z" fill="#c5cabb"/><path d="M18 99v5l48 22v-2z" fill="#98ad9f"/>
+      <path d="M30 72l38 18v25l-38-18zM68 90l28-14v25l-28 14z" fill="currentColor"/>
+      <path d="M68 90l28-14v25l-28 14z" fill="#182d3d" fill-opacity=".2"/>
+      <path d="M23 74l27-30 31 17-13 29z" fill="#f1e5c9"/><path d="M50 44l26-13 28 44-23-14z" fill="#b8ad97"/>
+      <path d="M84 63V36l9 4v27z" fill="#d6bc9b"/><path d="M38 82l8 4v13l-8-4zM77 87l10-5v10l-10 5z" fill="#c8e5e4" stroke-width="1.5"/>
+      <path d="M54 91l9 4v17l-9-4z" fill="#59747b"/>
+    </g>
+  </symbol>
+  <symbol id="building" viewBox="0 0 128 128">
+    <g stroke="#344c59" stroke-width="2.5" stroke-linejoin="round">
+      <path d="M18 99l43-21 49 23-44 23z" fill="#c5cabb"/><path d="M18 99v5l48 22v-2z" fill="#98ad9f"/>
+      <path d="M34 30l38 17v67l-38-17zM72 47l25-13v67l-25 13z" fill="currentColor"/>
+      <path d="M72 47l25-13v67l-25 13z" fill="#182d3d" fill-opacity=".2"/>
+      <path d="M34 30l25-13 38 17-25 13z" fill="#e8e4d0"/>
+      <path d="M42 45l23 10v12L42 57zM42 66l23 10v12L42 78zM79 48l11-6v12l-11 6zM79 69l11-6v12l-11 6zM79 90l11-6v12l-11 6z" fill="#c8e5e4" stroke-width="1.5"/>
+      <path d="M52 95l12 5v12l-12-5z" fill="#59747b"/>
+    </g>
+  </symbol>
+</svg>

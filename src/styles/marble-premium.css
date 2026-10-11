@@ -331,3 +331,24 @@
 .mp-held-rent-pass svg { width:22px; height:22px; flex:none; }
 .mp-city-effect { position:absolute; z-index:4; right:1px; top:18px; display:flex; align-items:center; padding:1px; background:#fff6dbed; border:1px solid #ba9453; border-radius:5px; font-size:8px; font-weight:900; pointer-events:none; }
 .mp-city-effect svg { width:19px; height:19px; }
+@media (min-width: 1100px) {
+  .mp-board-grid:not(.mp-board-grid--18) { width:min(100%,680px,calc(100dvh - 220px)); }
+  .mp-tile--horizontal .mp-property-tile-art { width:38px; height:25px; }
+  .mp-tile--horizontal .mp-property-tile-copy .mp-tile-name { font-size:10px; line-height:1.1; }
+  .mp-tile--west .mp-property-tile-art,.mp-tile--east .mp-property-tile-art { width:30px; height:32px; }
+  .mp-tile--west .mp-tile-content,.mp-tile--east .mp-tile-content { position:relative; top:auto; left:auto; width:100%; height:100%; transform:none; }
+  .mp-tile--west .mp-property-tile-view,.mp-tile--east .mp-property-tile-view { grid-template-columns:28px minmax(0,1fr); gap:2px; height:auto; margin:0; }
+  .mp-tile--west .mp-tile-top,.mp-tile--east .mp-tile-top { min-height:8px; line-height:1; font-size:7px; }
+  .mp-tile--west .mp-property-tile-copy,.mp-tile--east .mp-property-tile-copy { gap:1px; }
+  .mp-tile--west .mp-property-tile-copy .mp-tile-name,.mp-tile--east .mp-property-tile-copy .mp-tile-name { font-size:10px; line-height:1.1; white-space:normal; -webkit-line-clamp:2; }
+  .mp-building-badge { display:grid; place-items:center; font-size:11px; font-weight:900; color:#334a50; }
+  .mp-tile--west .mp-building-badge,.mp-tile--east .mp-building-badge { width:16px; height:16px; }
+  .mp-property-card-art > svg { width:100%; height:100%; }
+  .mp-center-route { width:min(95%,380px); height:auto; min-height:36px; padding:6px 10px; line-height:1.4; }
+  .mp-flight { position:absolute; z-index:3; top:35%; left:15%; width:70%; display:grid; justify-items:center; padding:8px; border:1px solid #b6b59d; border-radius:12px; background:#fff9e9e8; box-shadow:0 5px 15px #344c5926; font-size:11px; }
+  .mp-flight > svg { width:112px; height:70px; }
+  .mp-flight.is-flying > svg { animation:mp-flight-cross 1200ms ease-in-out both; }
+  .mp-flight small { color:#344c59; font-weight:800; }
+}
+@keyframes mp-flight-cross { from { transform:translate(-70px,25px) scale(.75); } to { transform:translate(70px,-25px) scale(1); } }
+@media (prefers-reduced-motion: reduce) { .mp-flight.is-flying > svg { animation:none; } }

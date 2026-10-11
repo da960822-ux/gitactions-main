@@ -13,7 +13,8 @@ function seedForDice(test: (a: number, b: number) => boolean) {
 const seedForSum = (sum: number) => seedForDice((a, b) => a + b === sum);
 const seedForDoubles = () => seedForDice((a, b) => a === b);
 const seedForMiss = () => seedForDice((a, b) => a !== b);
-const initial = (seed = 15) => marbleEngine.createInitialState(seed);
+// Regression fixtures for saved forty-space rooms before the personalized route.
+const initial = (seed = 15): MarbleState => ({ ...marbleEngine.createInitialState(seed), cityRouteVersion: undefined });
 function eventState(id: MarbleEventId, target = 2): MarbleState {
   const seed = seedForSum(target);
   return { ...initial(seed), eventDeck: [id], positions: { p1: 0, p2: 0 } };
@@ -21,6 +22,36 @@ function eventState(id: MarbleEventId, target = 2): MarbleState {
 const act = (s: MarbleState, type: string, payload?: Record<string, unknown>) => marbleEngine.applyAction(s, 'p1', { type, payload });
 
 describe('Marble 40-space house-rule engine', () => {
+  it('keeps 24 cities and all economics while ordering the new journey and preserving saved boards', () => {
+    const fresh = marbleEngine.createInitialState(15);
+    const tiles = marbleEngine.getPlayerView(fresh, 'p1').board.tiles;
+    const saved = marbleEngine.getPlayerView(initial(15), 'p1').board.tiles;
+    expect(fresh.boardVersion).toBe(2);
+    expect(fresh.cityRouteVersion).toBe(2);
+    expect(tiles).toHaveLength(40);
+    expect(tiles.filter((tile: any) => tile.kind === 'property')).toHaveLength(24);
+    expect([1, 3, 15, 31, 38].map(i => tiles[i].name.ko)).toEqual(['광주', '뉴욕', '산토도밍고', '뉴어크', '서울']);
+    const economy = (board: any[]) => board.map(tile => `${tile.kind}:${tile.price}:${tile.rent}:${tile.group}`).sort();
+    expect(economy(tiles)).toEqual(economy(saved));
+    expect(tiles[3]).toMatchObject({ price: saved[15].price, rent: saved[15].rent, group: saved[15].group });
+    expect(tiles[15]).toMatchObject({ price: saved[3].price, rent: saved[3].rent, group: saved[3].group });
+    expect(saved[3].name.ko).toBe('산토도밍고');
+    expect(saved[15].name.ko).toBe('뉴욕');
+    expect(saved[31].name.ko).toBe('마이애미');
+    expect(saved[38].name.ko).toBe('밴쿠버');
+    for (const index of [0, 2, 6, 7, 10, 12, 14, 18, 20, 23, 26, 27, 30, 34, 37, 39]) expect(tiles[index]).toEqual(saved[index]);
+  });
+
+  it('resolves the Santo Domingo card at the correct city in new, saved forty-space and legacy rooms', () => {
+    const fresh = { ...marbleEngine.createInitialState(seedForSum(2)), eventDeck: ['visit-santo-domingo'] as MarbleEventId[] };
+    for (const [state, destination] of [[fresh, 15], [{ ...fresh, cityRouteVersion: undefined }, 3], [{ ...fresh, boardVersion: undefined }, 2]] as const) {
+      const moved = act(state, 'roll');
+      expect(moved.positions.p1).toBe(destination);
+      expect(moved.phase).toBe('decision');
+      expect(moved.money.p1).toBe(1500);
+      expect(marbleEngine.getPlayerView(moved, 'p1').board.tiles[destination]).toMatchObject({ name: { ko: '산토도밍고' }, price: 120, rent: 15 });
+    }
+  });
   it('creates the classic-size adapted map and hides deck/RNG state from both views', () => {
     const a = initial(15), b = initial(15);
     expect(a.eventDeck).toEqual(b.eventDeck);

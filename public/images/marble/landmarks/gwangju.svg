@@ -1,0 +1,16 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="192" height="192" viewBox="0 0 192 192">
+  <title>Sajik observation tower, Gwangju</title>
+  <g stroke="#344c59" stroke-width="2" stroke-linejoin="round">
+    <path d="M20 137l74-39 77 38v10l-74 39-77-39z" fill="#a5b9af"/><path d="M20 137l74-39 77 38-74 39z" fill="#e7e5cc"/>
+    <path d="M35 132l22-24 22 24 25-29 31 32" fill="#9bb5a4" stroke="none"/>
+    <path d="M78 46l24 11v91l-24-12z" fill="#e4e8e2"/><path d="M102 57l17-9v91l-17 9z" fill="#9cacb0"/>
+    <path d="M54 53l47-24 43 21-47 25z" fill="#d4dace"/><path d="M54 53v10l43 21v-9z" fill="#e9eee6"/><path d="M97 75l47-25v10L97 84z" fill="#8b9f9e"/>
+    <path d="M64 65v24l33 16V81z" fill="#a9ced1"/><path d="M97 81l35-18v24l-35 18z" fill="#5d8793"/>
+    <path d="M67 90l33 16 33-18v8l-33 19-33-17z" fill="#d8ddd5"/>
+    <path d="M68 43l30-15 35 17-30 16z" fill="#ebeee4"/>
+    <path d="M80 49v21m13-15v21m16-6V49m14-7v21" fill="none" stroke="#dfe6df" stroke-width="3"/>
+    <path d="M76 112l35-18v9l-35 18v9l35-18v9l-35 18v9l35-18" fill="none" stroke="#829895" stroke-width="4"/>
+    <path d="M70 141l26 13 30-16v8l-30 16-26-13z" fill="#c4cebe"/>
+    <path d="M43 130v19m-9-15 9-15 10 15zM148 131v19m-9-15 9-15 10 15z" fill="#82a589"/>
+  </g>
+</svg>

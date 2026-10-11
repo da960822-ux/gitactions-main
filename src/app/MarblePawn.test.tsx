@@ -16,10 +16,10 @@ describe('Marble pawn selection', () => {
     expect(marblePawnCatalog).toHaveLength(6);
     expect((html.match(/<button/g) ?? []).length).toBe(6);
     expect(html).toContain('aria-pressed="true"');
-    expect(html).toContain('펭귄');
+    expect(html).toContain('판다');
     expect(html).toContain('disabled=""');
-    expect(html).toContain('aria-label="여우"');
-    expect(html).toContain('aria-label="용"');
+    expect(html).toContain('aria-label="말티푸"');
+    expect(html).toContain('aria-label="친칠라"');
     expect(html).toContain('상대 말');
     expect(html).toContain('선택</span>');
     expect(html).not.toContain('ACTION ID');
@@ -36,7 +36,7 @@ describe('Marble pawn selection', () => {
       view: { board: { pawns: { p1: 'fox', p2: 'cat' } }, actions: [{ action: { type: 'choose-pawn', payload: { pawn: 'penguin' } } }] },
       playerId: 'p1', language: 'es', runAction: vi.fn(),
     }));
-    expect(html).toContain('Pingüino');
+    expect(html).toContain('Panda');
     expect(html).toContain('De tu pareja');
     expect(html).toContain('Elegir');
   });

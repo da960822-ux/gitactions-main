@@ -2453,7 +2453,7 @@ var marbleExpandedRules = {
 
 // src/games/marble.ts
 var marblePawnIds = ["fox", "cat", "penguin", "astronaut", "robot", "dragon"];
-var pawnNames = { fox: { ko: "\uC5EC\uC6B0", es: "Zorro" }, cat: { ko: "\uACE0\uC591\uC774", es: "Gata" }, penguin: { ko: "\uD3AD\uADC4", es: "Ping\xFCino" }, astronaut: { ko: "\uC6B0\uC8FC\uBE44\uD589\uC0AC", es: "Astronauta" }, robot: { ko: "\uB85C\uBD07", es: "Robot" }, dragon: { ko: "\uC6A9", es: "Drag\xF3n" } };
+var pawnNames = { fox: { ko: "\uB9D0\uD2F0\uD478", es: "Maltipoo" }, cat: { ko: "\uACE0\uC591\uC774", es: "Gata" }, penguin: { ko: "\uD310\uB2E4", es: "Panda" }, astronaut: { ko: "\uC6B0\uC8FC\uBE44\uD589\uC0AC", es: "Astronauta" }, robot: { ko: "\uB85C\uBD07", es: "Robot" }, dragon: { ko: "\uCE5C\uCE60\uB77C", es: "Chinchilla" } };
 var legacyBoard = [
   { kind: "start", name: { ko: "\uCD9C\uBC1C", es: "Salida" } },
   { kind: "property", name: { ko: "\uAD11\uC8FC", es: "Gwangju" }, price: 100, rent: 12, group: "green" },
@@ -2516,7 +2516,8 @@ var modernBoard = [
   { kind: "property", name: { ko: "\uBC34\uCFE0\uBC84", es: "Vancouver" }, price: 560, rent: 112, group: "silver" },
   { kind: "rest", name: { ko: "\uD734\uC2DD \uAD11\uC7A5", es: "Plaza de descanso" } }
 ];
-var boardFor = (s) => s.boardVersion === 2 ? modernBoard : legacyBoard;
+var journeyBoard = modernBoard.map((tile, index) => index === 3 ? modernBoard[15] : index === 15 ? modernBoard[3] : index === 31 ? { ...tile, name: { ko: "\uB274\uC5B4\uD06C", es: "Newark" } } : index === 38 ? { ...tile, name: { ko: "\uC11C\uC6B8", es: "Se\xFAl" } } : tile);
+var boardFor = (s) => s.boardVersion === 2 ? s.cityRouteVersion === 2 ? journeyBoard : modernBoard : legacyBoard;
 var legacyIds = ["festival", "lottery", "rent-rebate", "travel-cost", "maintenance", "visit-santo-domingo", "advance-start", "retreat"];
 var modernIds = [...legacyIds, "go-to-island", "escape-pass", "train-ticket", "city-dividend"];
 var expandedIds = [...modernIds, "monopoly-warning", "city-festival", "blackout", "rent-pass"];
@@ -2623,6 +2624,7 @@ function view2(s, p) {
     phase: s.result ? "finished" : s.phase,
     board: {
       version: s.boardVersion ?? 1,
+      cityRouteVersion: s.cityRouteVersion ?? 1,
       tiles: board.map((tile, index) => {
         const houses = s.properties[String(index)]?.houses ?? 0;
         const maxLevels = s.boardVersion === 2 ? 3 : 2;
@@ -2849,7 +2851,7 @@ function resolveEvent(s, p) {
     const houses = Object.values(s.properties).filter((property) => property.owner === p).reduce((count2, property) => count2 + property.houses, 0);
     s = pay(s, p, houses * 40, "bank", card2.title);
   } else if (id === "visit-santo-domingo") {
-    const destination = isModern ? 3 : 2;
+    const destination = board.findIndex((tile) => tile.name.ko === "\uC0B0\uD1A0\uB3C4\uBC0D\uACE0");
     movement = "visit";
     steps = (destination - from + board.length) % board.length;
     moveForward(s, p, destination, board);
@@ -3122,6 +3124,7 @@ var marbleEngine = {
       money: { p1: 1500, p2: 1500 },
       properties: {},
       boardVersion: 2,
+      cityRouteVersion: 2,
       phase: "roll",
       pendingTile: null,
       lastRoll: [],

@@ -8,6 +8,19 @@ const render = (view: any, language: 'ko' | 'es' = 'ko', playerId: 'p1' | 'p2' =
   renderToStaticMarkup(createElement(MarbleBoard, { view, language, playerId, runAction: vi.fn() }));
 
 describe('MarbleBoard', () => {
+  it('shows only a confirmed world-travel arrival as an imagined airline trip', () => {
+    const view = marbleEngine.getPlayerView(marbleEngine.createInitialState(12), 'p1');
+    expect(render(view)).not.toContain('mp-flight');
+    view.board.lastMove = { sequence: 1, from: 30, to: 15, steps: 25, source: 'train', playerId: 'p1' };
+    expect(render(view)).toContain('Asiana');
+    expect(render(view)).toContain('둘의 상상 여행');
+    expect(render(view)).not.toContain('mp-flight is-flying');
+    view.board.lastMove.playerId = 'p2';
+    expect(render(view, 'es')).toContain('JetBlue');
+    expect(render(view, 'es')).toContain('Nuestro viaje imaginado');
+    view.board.lastMove.from = 14;
+    expect(render(view)).not.toContain('mp-flight');
+  });
   it('renders the current forty-space route with Gwangju and Santo Domingo in both languages', () => {
     const state = marbleEngine.createInitialState(733);
     const view = marbleEngine.getPlayerView(state, 'p1');
@@ -109,7 +122,7 @@ describe('MarbleBoard', () => {
     const state = marbleEngine.createInitialState(5);
     const view = marbleEngine.getPlayerView(state, 'p1');
     view.phase = 'decision';
-    view.board.positions.p1 = 3;
+    view.board.positions.p1 = 15;
     view.actions = [
       { label: { ko: '구매', es: 'Comprar' }, action: { type: 'buy' } },
       { label: { ko: '거절', es: 'Pasar' }, action: { type: 'decline' } },
@@ -144,7 +157,7 @@ describe('MarbleBoard', () => {
     expect(html).toContain('비용 40');
     expect(html).toContain('/images/marble/cities/gwangju.svg');
     expect(html).toContain('/images/marble/ownership-card-frame.svg');
-    expect(html).toContain('/images/marble/buildings/villa.svg');
+    expect(html).toContain('/images/marble/building-stages.svg#villa');
     expect(html).toContain('건설 단계별 통행료');
     expect(html.indexOf('mp-build-shortcut')).toBeLessThan(html.indexOf('mp-city-detail'));
     expect((html.match(/>별장: 광주 \(40\)/g) ?? []).length).toBe(1);

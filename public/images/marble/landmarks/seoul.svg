@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="192" height="192" viewBox="0 0 192 192">
+  <title>N Seoul Tower, Seoul</title>
+  <g stroke="#344c59" stroke-width="2" stroke-linejoin="round">
+    <path d="M20 137l74-39 77 38v10l-74 39-77-39z" fill="#a5b9af"/><path d="M20 137l74-39 77 38-74 39z" fill="#e7e5cc"/>
+    <path d="M34 136l59-63 61 59-56 29z" fill="#a4bb9c"/><path d="M47 139l45-54 21 69-16 7z" fill="#c0ccb0" stroke="none"/>
+    <path d="M89 67l13 6v72l-13-6z" fill="#e1e4dc"/><path d="M102 73l7-4v72l-7 4z" fill="#96a9af"/>
+    <path d="M73 56l20-11 28 13v13l-20 11-28-13z" fill="#527b8c"/><path d="M73 56l20-11 28 13-20 11z" fill="#d7ddd3"/>
+    <path d="M73 72l28 13 20-11v7l-20 11-28-13z" fill="#d3dad0"/>
+    <path d="M88 50V33l13 6v17z" fill="#e8e6d7"/><path d="M101 39l7-4v17l-7 4z" fill="#9aacae"/>
+    <path d="M98 33V8" fill="none" stroke="#647e87" stroke-width="4"/><path d="M94 19h8M94 25h8" fill="none" stroke="#a5b5b4"/>
+    <path d="M80 62v11m9-7v11m11-6v11m10-16v11" fill="none" stroke="#c2dee0"/>
+    <path d="M37 133v15m-7-12 7-17 8 17zM147 136v17m-8-12 8-19 9 19z" fill="#789c7d"/>
+  </g>
+</svg>
