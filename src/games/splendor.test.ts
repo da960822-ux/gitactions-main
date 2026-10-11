@@ -13,6 +13,15 @@ describe('Splendor engine',()=>{
   expect(pairs.map(n=>Object.keys(n.requirement))).toEqual([['white','blue'],['blue','green'],['green','red'],['red','black'],['white','black']]);
   expect(triples.map(n=>Object.keys(n.requirement))).toEqual([['white','blue','black'],['white','blue','green'],['blue','green','red'],['green','red','black'],['white','red','black']]);
  });
+ it('keeps each public bonus display separate from the canonical player state',()=>{
+  const s=splendorEngine.createInitialState(10),before=structuredClone(s);
+  const view=splendorEngine.getPlayerView(s,'p1');
+  view.board.ownedBonuses.p1.white=99;
+  view.board.ownedBonuses.p2.blue=99;
+  expect(s).toEqual(before);
+  expect(view.ownHand.bonuses).toEqual(before.bonuses.p1);
+  expect(splendorEngine.getPlayerView(s,'p2').board.ownedBonuses).toEqual(before.bonuses);
+ });
  it('takes legal tokens immutably and rejects bank or hand limit violations',()=>{
   const s=splendorEngine.createInitialState(3);const action={type:'take',payload:{gems:['white','blue','green']}};
   expect(splendorEngine.validateAction(s,'p1',action)).toBeNull();const n=splendorEngine.applyAction(s,'p1',action);
@@ -41,5 +50,25 @@ describe('Splendor engine',()=>{
   expect(final.result).toBeNull();expect(final.active).toBe('p2');
   final=splendorEngine.applyAction(final,'p2',{type:'take',payload:{gems:['white','blue','green']}});
   expect(final.result?.winner).toBe('p1');
+ });
+ it.each([1,2])('preserves earlier snapshots when claiming one of %i qualifying nobles',(count)=>{
+  const base=splendorEngine.createInitialState(21),target=base.market[1][0];
+  const s:SplendorState={...base,
+   bonuses:{...base.bonuses,p1:{white:3,blue:3,green:3,red:3,black:0}},
+   availableNobles:Object.fromEntries(Array.from({length:count},(_,i)=>[`n${i}`,{points:3,requirement:{white:3,blue:3,green:3}}])),
+   market:{...base.market,1:[{...target,cost:{white:0,blue:0,green:0,red:0,black:0}},...base.market[1].slice(1)]},
+  };
+  const before=structuredClone(s);
+  const bought=splendorEngine.applyAction(s,'p1',{type:'buy',payload:{source:'market',tier:1,index:0}});
+  expect(s).toEqual(before);
+  if(count===1){expect(bought.availableNobles).toEqual({});expect(bought.nobles.p1).toBe(3);}
+  else{
+   const beforeChoice=structuredClone(bought);
+   const chosen=splendorEngine.applyAction(bought,'p1',{type:'chooseNoble',payload:{id:'n0'}});
+   expect(bought).toEqual(beforeChoice);
+   expect(Object.keys(chosen.availableNobles)).toEqual(['n1']);
+   expect(chosen.nobles.p1).toBe(3);
+   expect(splendorEngine.getPlayerView(bought,'p1').actions).toHaveLength(2);
+  }
  });
 });

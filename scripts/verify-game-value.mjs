@@ -1,13 +1,13 @@
-import { chromium } from 'file:///opt/codex/cua_node/lib/node_modules/playwright/index.mjs';
 import fs from 'node:fs/promises';
+import { launchChromium } from './playwright-browser.mjs';
 
-const browser = await chromium.launch({ executablePath: '/usr/bin/chromium', args: ['--no-sandbox'] });
+const browser = await launchChromium();
 const page = await browser.newPage();
 const errors = [];
 page.on('pageerror', error => errors.push(error.message));
 const checks = [];
 try {
-  await page.goto('http://127.0.0.1:5191/');
+  await page.goto(process.env.LANDING_URL || 'http://127.0.0.1:5191/');
   await page.evaluate(async () => {
     const { GameValue } = await import('/src/app/GameValue.tsx');
     const { createElement } = (await import('/node_modules/.vite/deps/react.js')).default;

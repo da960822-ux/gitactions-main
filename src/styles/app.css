@@ -160,30 +160,6 @@
 .action-notice { margin: 10px 16px 0; display: flex; justify-content: space-between; }
 .action-notice button { border: none; background: none; cursor: pointer; color: inherit; }
 .game-board { min-height: 420px; padding: 18px 22px 24px; }
-.game-board-minhwatu .own-hand { padding: 14px; border: 1px solid #27563f; background: linear-gradient(150deg,#164532,#103a2d); box-shadow: inset 0 1px #ffffff18; }
-.game-board-minhwatu .hand-title { color: #efe6cd; }
-.game-board-minhwatu .hand-title span { background: #d8c48d; color: #274b39; }
-.game-board-minhwatu .gb-hand-hwatu { justify-content: center; gap: 6px; }
-.game-board-minhwatu .gb-hand-hwatu > div { flex: 0 0 98px; min-width: 98px; max-width: 98px; }
-.game-board-minhwatu .gb-hand-hwatu .gb-hwatu-card-meta { font-size: 8px; }
-.game-board-minhwatu .gb-hand-hwatu .gb-direct-actions button { min-height: 29px; border-color: #c8b16e; background: #f2e5be; color: #354d3d; font-weight: 700; }
-.game-board-minhwatu .gb-hand-hwatu .gb-direct-actions { display:grid; grid-template-columns:repeat(auto-fit,minmax(0,1fr)); gap:2px; }
-.game-board-minhwatu .gb-hand-hwatu .gb-direct-actions button { min-height:26px; padding:3px 0; font-size:8px; line-height:1; white-space:nowrap; }
-.game-board-minhwatu .gb-hand-hwatu .gb-direct-actions button:hover { background: #fff3ce; }
-.room-main:has(.game-board-minhwatu) { padding-top: 8px; }
-.room-shell:has(.game-board-minhwatu) .app-header.compact { height: 50px; }
-.room-shell:has(.game-board-minhwatu) .demo-banner { min-height: 32px; margin-top: 6px; padding: 4px 10px; }
-.room-main:has(.game-board-minhwatu) .room-topline { margin: 0 0 4px; }
-.room-main:has(.game-board-minhwatu) .room-heading { padding-bottom: 5px; }
-.room-main:has(.game-board-minhwatu) .room-heading h1 { margin: 0; font-size: 23px; }
-.room-main:has(.game-board-minhwatu) .player-pill { min-width: 150px; padding: 3px 9px 3px 6px; }
-.room-main:has(.game-board-minhwatu) .player-avatar { width: 24px; height: 24px; font-size: 13px; }
-.game-board-minhwatu { min-height: 0; padding: 12px 14px; }
-.game-board-minhwatu .opponent-status { padding: 7px 10px; }
-.game-board-minhwatu .public-board { margin: 9px 0; }
-.game-board-minhwatu .own-hand { margin: 8px 0; padding: 8px; }
-.game-board-minhwatu .board-footer { padding: 7px 14px; }
-.room-main:has(.game-board-minhwatu) .board-header { min-height: 52px; padding: 7px 14px; }
 @media (min-width: 1200px) and (max-height: 950px) {
   .room-shell:has(.board-card):not(:has(.game-board-minhwatu)) .app-header.compact { height: 48px; }
   .room-main:has(.board-card):not(:has(.game-board-minhwatu)) { padding-top: 6px; }
@@ -196,25 +172,6 @@
   .room-main:has(.board-card):not(:has(.game-board-minhwatu)) .room-layout { margin-top: 6px; }
   .room-main:has(.board-card):not(:has(.game-board-minhwatu)) .board-header { min-height: 48px; padding: 6px 14px; }
   .room-main:has(.board-card):not(:has(.game-board-minhwatu)) .chat-panel:not(.reaction-chat-panel) { min-height: min(540px,80vh); height: min(calc(100vh - 100px),80vh); max-height: min(760px,80vh); }
-}
-@media (min-width: 1200px) and (max-height: 950px) {
-  .room-shell:has(.game-board-minhwatu) .app-header.compact { height: 42px; }
-  .room-main:has(.game-board-minhwatu) { padding-top: 3px; }
-  .room-shell:has(.game-board-minhwatu) .demo-banner { min-height: 26px; margin-top: 4px; padding: 2px 10px; }
-  .room-main:has(.game-board-minhwatu) .room-topline { min-height: 22px; margin-bottom: 2px; }
-  .room-main:has(.game-board-minhwatu) .room-heading { min-height: 36px; padding-bottom: 2px; }
-  .room-main:has(.game-board-minhwatu) .room-layout { margin-top: 6px; }
-  .room-main:has(.game-board-minhwatu) .board-header { min-height: 42px; padding: 5px 12px; }
-  .game-board-minhwatu { gap: 4px; padding: 8px 10px; }
-  .game-board-minhwatu .opponent-status { min-height: 34px; padding: 4px 9px; }
-  .game-board-minhwatu .public-board { margin: 6px 0; }
-  .game-board-minhwatu .own-hand { margin: 0; padding: 0 2px; }
-  .game-board-minhwatu .hand-title { margin-bottom: 3px; }
-  .gb-hwatu-board { gap: 6px; padding: 9px; }
-  .gb-hwatu-play { padding: 8px; }
-  .gb-hwatu-center-head { min-height: 32px; margin-bottom: 4px; }
-  .gb-hwatu-table { min-height: 160px; gap: 4px; padding: 6px 4px; }
-  .gb-hwatu-table-card .gb-hwatu-card { width: clamp(68px,5.2vw,74px); }
 }
 .opponent-status { display: flex; align-items: center; gap: 9px; padding: 10px 12px; border-radius: 10px; background: #f5f3ec; }
 .opponent-avatar { display: grid; place-items: center; width: 29px; height: 29px; border-radius: 50%; background: var(--coral-pale); color: #b45b49; }
@@ -567,7 +524,7 @@
 .app-shell .game-switcher p { color:#586a62; font-size:11px; }
 .app-shell .game-switcher .switch-game-list button { color:#2f655b; border-color:#cbd8cf; background:#fffefa; }
 .app-shell .game-switcher .switch-game-list button:hover,.app-shell .game-switcher .switch-game-list button.pending { color:#214b43; border-color:#2f655b; background:#e2ece6; }
-.room-main:has(.board-card):not(:has(.game-board-minhwatu)) .chat-panel:not(.reaction-chat-panel),.room-main:has(.game-board-minhwatu) .chat-panel { min-height:min(500px,68vh); height:min(calc(100vh - 240px),68vh); max-height:min(680px,68vh); }
+.room-main:has(.board-card):not(:has(.game-board-minhwatu)) .chat-panel:not(.reaction-chat-panel) { min-height:min(500px,68vh); height:min(calc(100vh - 240px),68vh); max-height:min(680px,68vh); }
 .room-layout:has(.reaction-chat-panel) { grid-template-columns:minmax(0,1fr); }
 .room-main .chat-panel.reaction-chat-panel { min-height:0; height:auto; max-height:none; margin:12px 0 0; overflow:visible; }
 .reaction-chat-panel > header { min-height:44px; padding:6px 13px; }

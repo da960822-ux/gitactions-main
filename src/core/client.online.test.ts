@@ -93,6 +93,31 @@ describe('online room client refreshes', () => {
     stop();
   });
 
+  it('does not send a queued old-room action to a newly opened invite', async () => {
+    supabase.setRpcHandler(async (_name, args) => ({ data: room(String(args.p_room), {}), error: null }));
+    const client = await loadClient();
+    const stopOld = client.subscribeRoom('old-room', () => {});
+    await vi.waitFor(() => expect(client.getSnapshot().version).toBe(1));
+    let finish!: (value: { error: null }) => void;
+    supabase.db.functions.invoke.mockImplementationOnce(() => new Promise(resolve => { finish = resolve; }));
+    const first = client.sendAction({ type: 'draw', payload: { color: 'black' } });
+    await vi.waitFor(() => expect(finish).toBeTypeOf('function'));
+    const queued = client.sendAction({ type: 'guess', payload: { number: 1 } });
+    const rejected = expect(queued).rejects.toThrow('room_expired');
+    const stopNew = client.subscribeRoom('new-room', () => {});
+    await vi.waitFor(() => expect(client.getSnapshot().roomId).toBe('new-room'));
+    finish({ error: null });
+    await first;
+    await rejected;
+    expect(supabase.db.functions.invoke).toHaveBeenCalledTimes(1);
+    expect(supabase.db.functions.invoke.mock.calls[0][1].body.roomId).toBe('old-room');
+    supabase.db.functions.invoke.mockResolvedValueOnce({ error: null });
+    await client.sendReaction('applause');
+    expect(supabase.db.functions.invoke.mock.calls[1][1].body.roomId).toBe('new-room');
+    stopOld();
+    stopNew();
+  });
+
   it('clears the previous private hand immediately when subscribing to a new invite', async () => {
     supabase.setRpcHandler(async (_name, args) => ({ data: room(String(args.p_room), { hand: ['private card'] }), error: null }));
     const client = await loadClient();

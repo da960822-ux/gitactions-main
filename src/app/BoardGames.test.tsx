@@ -1,6 +1,8 @@
 import { describe, expect, it, vi } from 'vitest';
 import { renderToStaticMarkup } from 'react-dom/server';
-import { DominoBoard, MarbleBoard, orderDominoChain } from './BoardGames';
+import DominoBoard from './DominoBoard';
+import MarbleBoard from './MarbleBoard';
+import { orderDominoChain } from './domino-chain';
 import { dominoPlacementsFor } from './DominoBoard';
 import { marbleEngine } from '../games/marble';
 import { dominoEngine } from '../games/domino';

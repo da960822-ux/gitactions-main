@@ -10,3 +10,5 @@ This pass changes presentation in `BoardGames.tsx` and `board-games.css`; both g
 The Domino variation remains the documented two-player double-six block game, with optional bot modes. A blocked game is won by the lower remaining pip total; this pass adds no positive-points reward. Marble remains the project's own house-rule game. Its classic-size adaptation and event behavior are unchanged.
 
 These focused render checks do not replace the planned bilingual browser QA or verify sound-controller behavior. Sound cues are centralized in the room audio controller and are not duplicated by these board components.
+
+Historical note (2026-10-11): the obsolete forwarding `BoardGames.tsx` and unused `board-games.css` were removed by the Ponytail cleanup. Active implementations are `DominoBoard.tsx` and `MarbleBoard.tsx` with their game-specific styles; historical checks were migrated to those components.

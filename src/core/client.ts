@@ -95,13 +95,15 @@ class RoomClient {
     }
   }
   private invoke(operation:Record<string,unknown>) {
-    const request=this.requestQueue.then(()=>this.invokeNow(operation));
+    const roomId=this.snapshot.roomId;
+    const request=this.requestQueue.then(()=>this.invokeNow(operation,roomId));
     this.requestQueue=request.catch(()=>{});return request;
   }
-  private async invokeNow(operation:Record<string,unknown>) {
+  private async invokeNow(operation:Record<string,unknown>,roomId:string|null) {
     const requestId=crypto.randomUUID();
     for(let attempt=0;attempt<2;attempt++){
-      const {error}=await this.db!.functions.invoke('action',{body:{roomId:this.snapshot.roomId,version:this.snapshot.version,requestId,...operation}});
+      if(!roomId || roomId!==this.snapshot.roomId)throw new Error('room_expired');
+      const {error}=await this.db!.functions.invoke('action',{body:{roomId,version:this.snapshot.version,requestId,...operation}});
       if(!error){await this.refresh();return;}
       let code=error.message;try{const body=await error.context?.json();code=body?.error||code;}catch{/* Transport errors have no JSON response. */}
       if(code==='stale_state'&&attempt===0){await this.refresh();continue;}throw new Error(code);

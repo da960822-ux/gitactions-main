@@ -343,11 +343,7 @@ function uniqueConcepts(concepts) {
 }
 function dealWords(seed, settings) {
   const source = settings.customOnly ? settings.customWords : [...settings.customWords, ...catchmindDictionary];
-  const random = seededRandom(seed), concepts = uniqueConcepts(source);
-  for (let i = concepts.length - 1; i > 0; i--) {
-    const j = Math.floor(random() * (i + 1));
-    [concepts[i], concepts[j]] = [concepts[j], concepts[i]];
-  }
+  const concepts = shuffle(uniqueConcepts(source), seededRandom(seed));
   return Array.from({ length: settings.rounds }, (_, i) => concepts.slice(i * settings.choices, (i + 1) * settings.choices));
 }
 function validSettings(value) {
@@ -1905,7 +1901,7 @@ function apply2(s, p, a) {
   const e = valid(s, p, a);
   if (e) throw new Error(e);
   const x = a.payload ?? {};
-  let n = { ...s, bank: { ...s.bank }, market: { 1: [...s.market[1]], 2: [...s.market[2]], 3: [...s.market[3]] }, decks: { 1: [...s.decks[1]], 2: [...s.decks[2]], 3: [...s.decks[3]] }, hands: { ...s.hands, [p]: { ...s.hands[p] } }, bonuses: { ...s.bonuses, [p]: { ...s.bonuses[p] } }, reserved: { ...s.reserved, [p]: [...s.reserved[p]] }, nobles: { ...s.nobles }, turns: { ...s.turns, [p]: s.turns[p] + 1 }, active: otherPlayer(p) };
+  let n = { ...s, bank: { ...s.bank }, market: { 1: [...s.market[1]], 2: [...s.market[2]], 3: [...s.market[3]] }, decks: { 1: [...s.decks[1]], 2: [...s.decks[2]], 3: [...s.decks[3]] }, hands: { ...s.hands, [p]: { ...s.hands[p] } }, bonuses: { ...s.bonuses, [p]: { ...s.bonuses[p] } }, reserved: { ...s.reserved, [p]: [...s.reserved[p]] }, nobles: { ...s.nobles }, availableNobles: { ...s.availableNobles }, turns: { ...s.turns, [p]: s.turns[p] + 1 }, active: otherPlayer(p) };
   if (a.type === "take") {
     for (const g of x.gems) {
       n.bank[g]--;
@@ -2020,7 +2016,7 @@ function view(s, p) {
     }
   }
   const points = (q) => s.cardPoints[q] + s.nobles[q];
-  return { turn: s.active, phase: s.result ? "finished" : s.pendingNobles.length ? "chooseNoble" : s.active === p ? "action" : "waiting", board: { bank: { ...s.bank }, market: { 1: s.market[1].map((c) => ({ ...c, cost: { ...c.cost } })), 2: s.market[2].map((c) => ({ ...c, cost: { ...c.cost } })), 3: s.market[3].map((c) => ({ ...c, cost: { ...c.cost } })) }, reservedOpponentCount: s.reserved[otherPlayer(p)].length, nobles: Object.fromEntries(Object.entries(s.availableNobles).map(([id, n]) => [id, { points: n.points, requirement: { ...n.requirement } }])), score: { p1: points("p1"), p2: points("p2") }, ownedBonuses: { ...s.bonuses }, ownedNobles: { ...s.nobles }, turns: { ...s.turns } }, ownHand: { tokens: { ...s.hands[p] }, bonuses: { ...s.bonuses[p] }, reserved: s.reserved[p].map((c) => ({ ...c, cost: { ...c.cost } })), points: s.cardPoints[p], nobles: s.nobles[p] }, opponentCount: sum(s.hands[otherPlayer(p)]) + s.hands[otherPlayer(p)].gold, status: s.result ? "finished" : s.active === p ? "Your turn" : "Opponent turn", result: s.result, actions };
+  return { turn: s.active, phase: s.result ? "finished" : s.pendingNobles.length ? "chooseNoble" : s.active === p ? "action" : "waiting", board: { bank: { ...s.bank }, market: { 1: s.market[1].map((c) => ({ ...c, cost: { ...c.cost } })), 2: s.market[2].map((c) => ({ ...c, cost: { ...c.cost } })), 3: s.market[3].map((c) => ({ ...c, cost: { ...c.cost } })) }, reservedOpponentCount: s.reserved[otherPlayer(p)].length, nobles: Object.fromEntries(Object.entries(s.availableNobles).map(([id, n]) => [id, { points: n.points, requirement: { ...n.requirement } }])), score: { p1: points("p1"), p2: points("p2") }, ownedBonuses: { p1: { ...s.bonuses.p1 }, p2: { ...s.bonuses.p2 } }, ownedNobles: { ...s.nobles }, turns: { ...s.turns } }, ownHand: { tokens: { ...s.hands[p] }, bonuses: { ...s.bonuses[p] }, reserved: s.reserved[p].map((c) => ({ ...c, cost: { ...c.cost } })), points: s.cardPoints[p], nobles: s.nobles[p] }, opponentCount: sum(s.hands[otherPlayer(p)]) + s.hands[otherPlayer(p)].gold, status: s.result ? "finished" : s.active === p ? "Your turn" : "Opponent turn", result: s.result, actions };
 }
 var splendorEngine = { id: "splendor", createInitialState: creates, validateAction: valid, applyAction: apply2, getPlayerView: view, getResult: (s) => s.result };
 

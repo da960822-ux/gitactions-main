@@ -1,13 +1,13 @@
-import { chromium } from 'file:///opt/codex/cua_node/lib/node_modules/playwright/index.mjs';
 import fs from 'node:fs/promises';
 import path from 'node:path';
+import { launchChromium } from './playwright-browser.mjs';
 
 const url = process.env.LANDING_URL || 'http://127.0.0.1:5191/';
 const out = path.resolve('output/playwright/landing-motion-upgrade');
-const externalOut = '/mnt/data';
+const externalOut = path.resolve(process.env.PLAYWRIGHT_ARTIFACT_DIR || path.join(out, 'captures'));
 await fs.mkdir(out, { recursive: true });
 await fs.mkdir(externalOut, { recursive: true });
-const browser = await chromium.launch({ executablePath: '/usr/bin/chromium', headless: true, args: ['--no-sandbox'] });
+const browser = await launchChromium();
 const report = { url, task: 'Mami/Papi landing copy and navigation audit', captures: [], checks: [], errors: [] };
 const check = (name, pass, detail = '') => {
   report.checks.push({ name, pass: Boolean(pass), detail });

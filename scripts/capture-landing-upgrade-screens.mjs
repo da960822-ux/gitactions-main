@@ -1,11 +1,11 @@
-import { chromium } from 'file:///opt/codex/cua_node/lib/node_modules/playwright/index.mjs';
 import fs from 'node:fs/promises';
 import path from 'node:path';
+import { launchChromium } from './playwright-browser.mjs';
 
 const url = process.env.LANDING_URL || 'http://127.0.0.1:5191/';
-const out = '/mnt/data';
+const out = path.resolve(process.env.PLAYWRIGHT_ARTIFACT_DIR || 'output/playwright/landing-upgrade-screens');
 await fs.mkdir(out, { recursive: true });
-const browser = await chromium.launch({ executablePath: '/usr/bin/chromium', headless: true, args: ['--no-sandbox'] });
+const browser = await launchChromium();
 const results = [];
 try {
   for (const language of ['ko', 'es']) {

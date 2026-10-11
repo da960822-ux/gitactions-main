@@ -4,13 +4,12 @@ import { gameCatalog, getGame } from '../games/catalog';
 import { gameRules, marbleLegacyRules, marbleCreditRules, dominoPremiumRules } from '../games/rules';
 import { BrandHeader } from './App';
 import { Link, navigate } from './Router';
-import { PublicGameBoard, GameHand } from './GameBoards';
-import { DominoBoard, MarbleBoard } from './BoardGames';
+import DominoBoard from './DominoBoard';
+import MarbleBoard from './MarbleBoard';
 import CatchmindTable from './CatchmindTable';
 import { TableGames } from './TableGames';
 import { DaVinciMatchSummary } from './DaVinciMatchSummary';
 import { RhythmBoard } from './RhythmBoard';
-import { DominoTile } from './DominoTile';
 import { ReactionPanel } from './ReactionPanel';
 import { reactionForText, type ReactionId } from '../core/reactions';
 import { ActionFlightGuard, cueForAction, GameFeedback } from './GameFeedback';
@@ -19,7 +18,6 @@ import { MinhwatuGuide } from './MinhwatuGuide';
 import { playCue } from '../audio/audio';
 import { canPlayGameOnDisplay, canViewRoomOnDisplay } from '../core/display';
 import { DesktopGameNotice } from './DesktopGameNotice';
-import '../styles/game-boards.css';
 import '../styles/rules-dialog.css';
 import '../styles/game-design-system.css';
 import '../styles/jaipur-mobile-shell.css';
@@ -257,7 +255,7 @@ export function Room({ api, roomId, desktopDisplay = true }: { api: Api; roomId:
         {!game ? <section className="game-select-card"><div className="select-intro"><span className="eyebrow">{text(language, '함께 고르기', 'ELIJAN JUNTOS')}</span><h2>{text(language, '무슨 게임을 할까요?', '¿Qué jugamos?')}</h2><p>{text(language, '두 사람 모두 같은 게임을 고르면 시작돼요.', 'La partida comienza cuando los dos eligen el mismo juego.')}</p></div>{snapshot.pendingGame && <div className="pending-choice"><span>◷</span><span>{text(language, '상대의 선택을 기다려요:', 'Esperando la elección de la otra persona:')} <b>{getGame(snapshot.pendingGame)?.title[language]}</b></span></div>}<div className="room-game-grid">{gameCatalog.map(item => { const allowed = canPlayGameOnDisplay(desktopDisplay, item.id); return <button key={item.id} className={`room-game-card game-${item.color}`} onClick={() => void chooseGame(item.id)} aria-disabled={!allowed} disabled={!allowed} title={!allowed ? text(language, '이 게임은 데스크톱에서 이용할 수 있어요.', 'Este juego requiere una computadora de escritorio.') : undefined}><span className="room-game-icon"><span className={`game-thumbnail art-${item.id}`} aria-hidden="true"/></span><span><b>{item.title[language]}</b><small>{item.subtitle[language]}</small></span><span className="room-game-arrow">↗</span></button>; })}</div>{!desktopDisplay && <p className="pick-hint">{text(language, '모바일에서는 자이푸르만 선택할 수 있어요.', 'En móvil solo puedes elegir Jaipur.')}</p>}<div className="rhythm-note"><b>♫</b><p><strong>MUSIC TALK TALK</strong> — {text(language, '이 방의 내장 플레이어에서 실행됩니다.', 'Se juega en el reproductor integrado de esta sala.')}</p><a href="https://vidkidz.tistory.com/431" target="_blank" rel="noreferrer">{text(language, '원작 제공처 열기', 'Abrir página original')} ↗</a></div></section>
         : <section className="board-card" id="game-board" aria-busy={pendingActionCount > 0}><header className="board-header"><div className="board-game"><span className={`board-game-icon game-${game.color}`}><span className={`game-thumbnail art-${game.id}`} aria-hidden="true"/></span><span><b>{game.title[language]}</b><small>{game.subtitle[language]}</small></span></div><div className="board-header-right"><span className="turn-tag">{statusLabel(view, snapshot.playerId, language)}</span><a className="plain-button" href="#game-guide">{rulesButtonLabel(language)}</a><GameFeedback language={language} gameId={game.id} playerId={snapshot.playerId} view={view} pending={pendingActionCount > 0}/><button className="icon-button" aria-label={text(language, '다른 게임으로 바꾸기', 'Cambiar de juego')} onClick={() => setActionError(text(language, '게임 바꾸기를 요청합니다. 아래 게임 목록에서 새 게임을 골라 주세요.', 'Pide cambiar de juego seleccionando otro juego abajo.'))}>↻</button></div></header>
           {actionError && <div className="action-notice" role="status">{actionError}<button onClick={() => setActionError('')}>×</button></div>}
-          {snapshot.gameId === 'rhythm' ? <RhythmBoard language={language}/> : isCatchmind ? <CatchmindTable view={view} playerId={snapshot.playerId} language={language} now={now} palette={palette} setPalette={setPalette} strokeWidth={strokeWidth} setStrokeWidth={setStrokeWidth} runAction={runAction} /> : snapshot.gameId === 'domino' ? <DominoBoard view={view} playerId={snapshot.playerId} language={language} runAction={runAction}/> : snapshot.gameId === 'marble' ? <MarbleBoard view={view} playerId={snapshot.playerId} language={language} runAction={runAction}/> : snapshot.gameId === 'minhwatu' ? <MinhwatuTable view={view} playerId={snapshot.playerId} language={language} runAction={runAction}/> : snapshot.gameId === 'jaipur' || snapshot.gameId === 'splendor' || snapshot.gameId === 'davinci' ? <TableGames game={snapshot.gameId} view={view} playerId={snapshot.playerId} language={language} runAction={runAction}/> : <GenericBoard view={view} gameId={snapshot.gameId} playerId={snapshot.playerId} language={language} runAction={runAction} />}
+          {snapshot.gameId === 'rhythm' ? <RhythmBoard language={language}/> : isCatchmind ? <CatchmindTable view={view} playerId={snapshot.playerId} language={language} now={now} palette={palette} setPalette={setPalette} strokeWidth={strokeWidth} setStrokeWidth={setStrokeWidth} runAction={runAction} /> : snapshot.gameId === 'domino' ? <DominoBoard view={view} playerId={snapshot.playerId} language={language} runAction={runAction}/> : snapshot.gameId === 'marble' ? <MarbleBoard view={view} playerId={snapshot.playerId} language={language} runAction={runAction}/> : snapshot.gameId === 'minhwatu' ? <MinhwatuTable view={view} playerId={snapshot.playerId} language={language} runAction={runAction}/> : snapshot.gameId === 'jaipur' || snapshot.gameId === 'splendor' || snapshot.gameId === 'davinci' ? <TableGames game={snapshot.gameId} view={view} playerId={snapshot.playerId} language={language} runAction={runAction}/> : null}
           {snapshot.gameId === 'davinci' && <DaVinciMatchSummary roomId={roomId} playerId={snapshot.playerId} language={language} view={view} pendingGame={snapshot.pendingGame} onReplay={() => chooseGame('davinci')}/>}
           {!!game && <footer className="board-footer"><span>{snapshot.mode === 'online' ? text(language, '이 방의 게임은 두 사람만 볼 수 있어요.', 'Solo ustedes dos pueden ver la partida.') : text(language, '데모 게임은 이 브라우저에서만 보여요.', 'La demo solo se ve en este navegador.')}</span><a href="#game-guide">{text(language, '전체 규칙 읽기 ↓', 'Leer reglas completas ↓')}</a></footer>}
         </section>}
@@ -373,51 +371,6 @@ function ConfirmClose({ language, closing, onCancel, onConfirm }: { language: La
   return <div className="dialog-scrim" role="presentation" onMouseDown={event => { if (event.target === event.currentTarget && !closing) onCancel(); }}><section ref={dialogRef} tabIndex={-1} className="rules-dialog close-dialog" role="alertdialog" aria-modal="true" aria-labelledby="close-title"><button className="dialog-close" aria-label={text(language, '닫기', 'Cerrar')} onClick={onCancel} disabled={closing}>×</button><span className="eyebrow">{text(language, '비공개 방', 'SALA PRIVADA')}</span><div className="rules-icon game-coral">×</div><h2 id="close-title">{text(language, '이 방을 닫을까요?', '¿Cerrar esta sala?')}</h2><p>{text(language, '방을 닫으면 초대 링크가 더 이상 열리지 않고 대화와 게임도 끝나요.', 'Al cerrar la sala, el enlace dejará de funcionar y terminarán el chat y la partida.')}</p><div className="close-actions"><button className="button button-outline" onClick={onCancel} disabled={closing}>{text(language, '계속하기', 'Seguir jugando')}</button><button className="button button-danger" onClick={onConfirm} disabled={closing}>{closing ? text(language, '닫는 중…', 'Cerrando…') : text(language, '방 닫기', 'Cerrar sala')}</button></div></section></div>;
 }
 
-function GenericBoard({ view, gameId, playerId, language, runAction }: { view: any; gameId: GameId | null; playerId: PlayerId; language: Language; runAction: (action: GameAction) => void }) {
-  const [selectedAction, setSelectedAction] = useState(0);
-  const [target, setTarget] = useState(0), [value, setValue] = useState(0);
-  const actionCount = Array.isArray(view?.actions) ? view.actions.filter((action: any) => action.action?.type !== 'guess').length : 0;
-  useEffect(() => setSelectedAction(0), [gameId, view?.game, view?.turn, view?.phase, actionCount]);
-  if (!view) return <div className="board-loading"><span className="loader"/><p>{text(language, '게임 상태를 불러오는 중이에요.', 'Cargando la partida.')}</p></div>;
-  const gameKey = view.game ?? gameId;
-  const rawHand = view.hand ?? view.ownHand;
-  const hand = Array.isArray(rawHand) ? rawHand : Array.isArray(rawHand?.tiles) ? rawHand.tiles : Array.isArray(rawHand?.cards) ? rawHand.cards : [];
-  const board = view.board;
-  const actions: any[] = Array.isArray(view.actions) ? view.actions : [];
-  const normal = actions.filter(action => !['guess'].includes(action.action?.type));
-  const actionIndex = Math.min(selectedAction, Math.max(0, normal.length - 1));
-  const guesses = actions.filter(action => action.action?.type === 'guess');
-  const filteredGuess = guesses.find(option => option.action.payload?.index === target && option.action.payload?.value === value);
-  return <div className={`game-board game-board-${gameKey || 'generic'}`}>
-    <div className="opponent-status"><span className="opponent-avatar">{view.status === 'your-turn' ? '✦' : '◷'}</span><div><b>{statusLabel(view, playerId, language)}</b><small>{view.result ? resultLabel(view.result, playerId, language) : opponentText(view, playerId, language)}</small></div>{typeof view.opponentCount === 'number' && <span className="opponent-count">{text(language, '가려진 패', 'Ocultas')} <b>{view.opponentCount}</b></span>}</div>
-    {board && <div className="public-board">{gameKey === 'domino' ? renderBoard(board, language) : <PublicGameBoard game={gameKey || 'davinci'} board={board} language={language} playerId={playerId} choices={actions} runAction={runAction}/>}</div>}
-    {gameKey === 'davinci' && Array.isArray(board?.opponentTiles) && <><div className="tile-row rival-tiles" aria-label={text(language, '상대 타일', 'Fichas rivales')}>{board.opponentTiles.map((tile: any, i: number) => <div className={`number-tile ${tile.revealed ? `tile-${tile.color}` : `tile-hidden tile-${tile.color}-back`}`} key={i}><span>{tile.revealed ? tile.value : '?'}</span><small>{i + 1}</small></div>)}</div><div className="guess-controls"><b>{text(language, '숨은 타일을 추측해 보세요', 'Adivina una ficha oculta')}</b><div className="guess-row"><label>{text(language, '순서', 'Posición')}<select value={target} onChange={event => setTarget(Number(event.target.value))}>{board.opponentTiles.map((_: unknown, i: number) => <option value={i} key={i}>{i + 1}</option>)}</select></label><label>{text(language, '숫자', 'Número')}<select value={value} onChange={event => setValue(Number(event.target.value))}>{Array.from({ length: 12 }, (_, i) => <option value={i} key={i}>{i}</option>)}</select></label><button className="button button-dark" disabled={!filteredGuess} onClick={() => filteredGuess && runAction(filteredGuess.action)}>{text(language, '맞혀 보기', 'Adivinar')} ↗</button></div></div></>}
-    {!!rawHand && <div className="own-hand"><div className="hand-title"><b>{text(language, '내 손패', 'Tu mano')}</b><span>{hand.length || Object.values(rawHand.tokens || {}).reduce((sum: number, count: any) => sum + Number(count || 0), 0)}</span></div>{gameKey === 'domino' ? <div className="tile-row">{hand.map((item: any, index: number) => <HandItem key={item.id ?? index} item={item} game={gameKey} language={language}/>)}</div> : <GameHand game={gameKey || 'davinci'} hand={rawHand} language={language} choices={actions} runAction={runAction}/>}</div>}
-    {view.result && <div className="result-card"><span>✧</span><b>{resultLabel(view.result, playerId, language)}</b></div>}
-    {gameKey !== 'minhwatu' && normal.length > 0 && <div className="legal-actions"><span className="eyebrow">{text(language, '가능한 행동', 'ACCIONES')}</span>{normal.length > 8 ? <div className="action-picker"><label className="sr-only" htmlFor="game-action">{text(language, '행동 선택', 'Elige una acción')}</label><select id="game-action" value={actionIndex} onChange={event => setSelectedAction(Number(event.target.value))}>{normal.map((option, index) => <option key={index} value={index}>{option.label?.[language] ?? option.label?.ko ?? text(language, '선택', 'Elegir')}</option>)}</select><button className="button button-dark" onClick={() => runAction(normal[actionIndex].action)}>{text(language, '선택하기', 'Jugar')} →</button></div> : <div className="legal-action-list">{normal.map((option, index) => <button key={index} className={option.action?.type === 'stop' || option.action?.type === 'pass' ? 'button button-outline' : 'button button-dark'} onClick={() => runAction(option.action)}>{option.label?.[language] ?? option.label?.ko ?? text(language, '선택', 'Elegir')} <span>→</span></button>)}</div>}</div>}
-    {!view.result && !actions.length && <div className="waiting-turn"><span>◷</span><p>{text(language, '상대의 차례예요. 잠시만 기다려 주세요.', 'Es el turno de la otra persona. Espera un momento.')}</p></div>}
-  </div>;
-}
-
-function HandItem({ item, game, language }: { item: any; game: string; language: Language }) {
-  if (game === 'davinci') return <div className={`number-tile tile-${item.color} own-number-tile`}><span>{item.value}</span>{item.revealed && <small>✓</small>}</div>;
-  if (item.left !== undefined && item.right !== undefined || item.a !== undefined && item.b !== undefined) return <DominoTile left={item.left ?? item.a} right={item.right ?? item.b}/>;
-  if (item.month !== undefined) return <div className="generic-card-item hwatu-card"><small>{item.month} {text(language, '월', 'MES')}</small><span>{String(item.flower || '✿').split(' / ')[language === 'ko' ? 0 : 1] || item.month}</span></div>;
-  const title = item.name ?? item.title ?? item.value ?? item.month ?? item.id;
-  return <div className="generic-card-item"><span>{String(title ?? '✦')}</span>{item.points !== undefined && <small>{item.points} pts</small>}</div>;
-}
-
-function renderBoard(board: any, language: Language) {
-  if (Array.isArray(board.chain)) return <div className="domino-chain">{board.chain.map((tile: any, i: number) => <DominoTile left={tile.left} right={tile.right} key={i}/>)}</div>;
-  if (Array.isArray(board.tiles)) return <div className="domino-chain">{board.tiles.map((tile: any, i: number) => <DominoTile left={tile.a} right={tile.b} key={i}/>)}</div>;
-  if (Array.isArray(board.table)) return <div className="hwatu-table">{board.table.map((card: any, i: number) => <div className="generic-card-item hwatu-card" key={i}><small>{card.month} {text(language, '월', 'MES')}</small><span>{String(card.flower || '✿').split(' / ')[language === 'ko' ? 0 : 1] || card.month}</span></div>)}</div>;
-  if (Array.isArray(board.grid)) return <div className="card-grid">{board.grid.map((cell: any, i: number) => <div key={i} className="board-cell">{typeof cell === 'string' ? cell : cell?.label ?? cell?.value ?? ''}</div>)}</div>;
-  if (Array.isArray(board.opponentTiles)) return <div className="board-caption">{text(language, '상대의 타일은 가려져 있어요.', 'Las fichas rivales están ocultas.')}</div>;
-  const recognized = Object.entries(board).filter(([key, value]) => !['answer', 'secret', 'seed', 'strokes', 'guesses', 'opponentTiles'].includes(key) && ['string', 'number', 'boolean'].includes(typeof value));
-  if (!recognized.length) return null;
-  return <div className="board-stats">{recognized.slice(0, 5).map(([key, value]) => <span key={key}><small>{humanKey(key, language)}</small><b>{String(value)}</b></span>)}</div>;
-}
-
 function MessageBubble({ message, mine, players, language }: { message: Message; mine: boolean; players: Player[]; language: Language }) {
   const sender = players.find(player => player.id === message.playerId);
   const translated = !!message.translation && message.targetLanguage === language;
@@ -429,11 +382,8 @@ function statusLabel(view: any, player: PlayerId, language: Language) {
   if (view?.result) return text(language, '한 판이 끝났어요', 'Partida terminada');
   return view?.turn === player ? text(language, '내 차례예요', 'Tu turno') : text(language, '상대 차례예요', 'Turno rival');
 }
-function opponentText(view: any, player: PlayerId, language: Language) { return view?.turn === player ? text(language, '천천히 생각해 보세요.', 'Tómate tu tiempo.') : text(language, '상대가 수를 고르고 있어요.', 'La otra persona está pensando.'); }
-function resultLabel(result: any, player: PlayerId, language: Language) { return result?.winner === 'draw' ? text(language, '무승부예요.', 'Empate.') : result?.winner === player ? text(language, '내가 이겼어요!', '¡Ganaste!') : text(language, '상대가 이겼어요.', 'Ganó la otra persona.'); }
 function languageLabel(language: Language) { return language === 'ko' ? '한국어' : 'Español · RD'; }
 function initial(name: string) { return [...name][0] || '?'; }
-function humanKey(key: string, language: Language) { const known: Record<string, [string,string]> = { turn: ['차례','Turno'], phase: ['단계','Fase'], round: ['라운드','Ronda'], score: ['점수','Puntos'], points: ['점수','Puntos'], coins: ['코인','Fichas'], tokens: ['토큰','Fichas'], status: ['상태','Estado'] }; return known[key]?.[language === 'ko' ? 0 : 1] || key; }
 function formatTime(value: string) { const date = new Date(value); return Number.isNaN(date.valueOf()) ? '' : date.toLocaleTimeString(undefined, { hour: '2-digit', minute: '2-digit' }); }
 function roomIdentifier(input: string) {
   const value = input.trim();

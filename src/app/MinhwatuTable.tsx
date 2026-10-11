@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState, type CSSProperties } from 'react';
 import type { GameAction, Language, PlayerId } from '../core/types';
 import type { MinhwatuCard, MinhwatuKind } from '../games/minhwatu';
-import { HwatuCard } from './GameBoards';
+import { HwatuCard } from './HwatuCard';
 import { GameValue } from './GameValue';
 import { HwatuMotion } from './HwatuMotion';
 import '../styles/minhwatu-table.css';

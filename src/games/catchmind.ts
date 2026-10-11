@@ -1,4 +1,4 @@
-import { otherPlayer, seededRandom, type GameAction, type GameEngine, type GameResult, type PlayerId } from '../core/types';
+import { otherPlayer, seededRandom, shuffle, type GameAction, type GameEngine, type GameResult, type PlayerId } from '../core/types';
 import { catchmindDictionary, type Concept } from './catchmindWords';
 export { catchmindDictionary } from './catchmindWords';
 export type { Concept } from './catchmindWords';
@@ -28,8 +28,7 @@ function uniqueConcepts(concepts: Concept[]) {
 }
 function dealWords(seed: number, settings: CatchmindSettings) {
   const source = settings.customOnly ? settings.customWords : [...settings.customWords, ...catchmindDictionary];
-  const random = seededRandom(seed), concepts = uniqueConcepts(source);
-  for (let i = concepts.length - 1; i > 0; i--) { const j = Math.floor(random() * (i + 1)); [concepts[i], concepts[j]] = [concepts[j], concepts[i]]; }
+  const concepts = shuffle(uniqueConcepts(source), seededRandom(seed));
   return Array.from({ length: settings.rounds }, (_, i) => concepts.slice(i * settings.choices, (i + 1) * settings.choices));
 }
 function validSettings(value: unknown): value is Omit<CatchmindSettings, 'customWords'> & { customWords: unknown[] } {

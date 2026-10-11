@@ -1,3 +1,6 @@
+.gb-hwatu-card { position:relative; display:flex; flex-direction:column; flex:0 0 auto; width:clamp(72px, 7vw, 84px); padding:0; gap:4px; color:#40533f; text-align:center; }
+.gb-hwatu-face { display:block; width:100%; height:auto; aspect-ratio:103.2/168.2; object-fit:contain; border-radius:5px; box-shadow:0 4px 7px #24392140; }
+
 .gb-hwatu-card.gb-hwatu-card-premium {
   box-sizing: border-box;
   gap: 5px;
@@ -34,4 +37,8 @@
   line-height: 1.15;
   white-space: nowrap;
   text-shadow: none;
+}
+
+@media (max-width: 460px) {
+  .gb-hwatu-card { width: clamp(66px, 12vw, 88px); }
 }

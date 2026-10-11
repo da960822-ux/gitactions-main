@@ -5,7 +5,7 @@ import { describe, expect, it } from 'vitest';
 import { renderToStaticMarkup } from 'react-dom/server';
 import { minhwatuEngine } from '../games/minhwatu';
 import type { MinhwatuCard } from '../games/minhwatu';
-import { HwatuCard } from './GameBoards';
+import { HwatuCard } from './HwatuCard';
 
 const assetId = (id: string) => id.split('-').map(part => part.padStart(2, '0')).join('-');
 
