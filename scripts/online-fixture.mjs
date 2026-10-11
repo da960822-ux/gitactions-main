@@ -40,6 +40,7 @@ await db.exec(await migration('202610100001_rooms.sql'));
 await db.exec(await migration('202610100002_feedback.sql'));
 await db.exec(await migration('202610100003_feedback_spaces.sql'));
 await db.exec(await migration('202610100004_catchmind_translation.sql'));
+await db.exec(await migration('202610110005_feedback_submission.sql'));
 
 async function transaction(role, userId, work) {
   await db.exec('begin');
@@ -79,6 +80,7 @@ async function rpc(name, args, userId) {
     set_language: ['select public.set_language($1,$2) as value', [args.p_room, args.p_language]],
     create_feedback_space: ['select public.create_feedback_space() as value', []],
     join_feedback_space: ['select public.join_feedback_space($1) as value', [args.p_space]],
+    submit_feedback: ['select public.submit_feedback($1,$2,$3,$4,$5) as value', [args.p_space, args.p_request, args.p_category, args.p_title, args.p_body]],
   };
   const call = roomCalls[name];
   if (!call) throw new Error('unknown_function');

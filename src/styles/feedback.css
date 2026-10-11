@@ -59,6 +59,9 @@
 .feedback-status.status-done { color: #c2e1d4; background: #5b9f832d; }
 .feedback-entry h3 { margin: 14px 0 7px; color: #fff8f4; font: 600 19px/1.35 var(--serif, Georgia, serif); }
 .feedback-entry-body { margin: 0; color: #eadcdf; font-size: 14px; line-height: 1.7; overflow-wrap: anywhere; white-space: pre-wrap; }
+.feedback-entry-top + .feedback-entry-body { margin-top: 14px; }
+.feedback-saved { color: #c2e1d4; font-size: 13px; }
+.feedback-categories button:disabled { opacity: .65; cursor: wait; }
 .feedback-entry-foot { display: flex; justify-content: space-between; align-items: center; gap: 12px; min-height: 34px; margin-top: 15px; padding-top: 10px; border-top: 1px solid #ffffff20; color: #d2bdc4; font-size: 12px; }
 .feedback-status-control select { min-height: 38px; max-width: 150px; padding: 6px 30px 6px 11px; border: 1px solid #b59aa9; border-radius: 999px; background: #382430; color: #fff0e7; font-size: 12px; cursor: pointer; }
 .feedback-status-control select:disabled { opacity: .55; cursor: progress; }

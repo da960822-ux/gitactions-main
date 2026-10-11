@@ -16,6 +16,33 @@ const render = (language: 'ko' | 'es') => renderToStaticMarkup(createElement(Fee
 }));
 
 describe('Mami ideas page copy', () => {
+  it('keeps legacy game titles and maps the legacy read status to received', () => {
+    const html = renderToStaticMarkup(createElement(FeedbackPage, {
+      language: 'ko', mode: 'online', loading: false, canCreate: false, canAcknowledge: true,
+      entries: [{ id: 'legacy', category: 'game', title: '기존 제목', body: '<script>unsafe</script>', status: 'read', createdAt: '2026-10-11T12:00:00Z' }],
+      onCreate: async () => undefined, onSetStatus: async () => undefined,
+    }));
+    assert.match(html, /기존 제목/);
+    assert.match(html, /&lt;script&gt;unsafe&lt;\/script&gt;/);
+    assert.match(html, /접수/);
+    assert.match(html, /진행/);
+    assert.match(html, /완료/);
+    assert.doesNotMatch(html, /읽음|<script>/);
+    assert.equal((html.match(/<option /g) || []).length, 3);
+  });
+
+  it('blocks composing while loading or failing and does not show a false empty state on error', () => {
+    for (const state of [{ loading: true }, { loading: false, error: 'Connection failed' }]) {
+      const html = renderToStaticMarkup(createElement(FeedbackPage, {
+        language: 'es', mode: 'online', entries: [], canCreate: true, canAcknowledge: false,
+        onCreate: async () => undefined, onSetStatus: async () => undefined, ...state,
+      }));
+      assert.match(html, /<textarea[^>]+disabled/);
+      assert.match(html, /class="feedback-submit" disabled/);
+      assert.doesNotMatch(html, /Todavía no hay ideas/);
+    }
+  });
+
   it('shows the requested Korean Mami and Papi copy', () => {
     const html = render('ko');
     assert.match(html, /Mami, 다음엔 뭐 만들까\?/);
@@ -31,7 +58,7 @@ describe('Mami ideas page copy', () => {
     assert.match(html, /Mami, ¿qué hacemos después\?/);
     assert.match(html, /Si hay algún juego que quieras probar o algo que te gustaría añadir, escríbelo aquí\./);
     assert.match(html, /Dime también si algo te incomoda o no te gusta\. Papi lo revisa y lo arregla\./);
-    assert.match(html, /Sugerencia para la página/);
+    assert.match(html, /Algo que molesta/);
     assert.match(html, /Mami, cuéntame tu idea cuando quieras\./);
     assert.match(html, /Papi va a leerlo con cariño\./);
     assert.match(html, /placeholder="Baby, escríbelo aquí ♡"/);

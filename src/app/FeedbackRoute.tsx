@@ -3,10 +3,23 @@ import { feedback, isFeedbackOnline, type FeedbackEntry } from '../core/feedback
 import type { Language } from '../core/types';
 import { FeedbackPage } from './FeedbackPage';
 import { Link } from './Router';
+import { DESKTOP_GAME_QUERY } from '../core/display';
+import { DesktopGameNotice } from './DesktopGameNotice';
 
 const copy = (language: Language, ko: string, es: string) => language === 'ko' ? ko : es;
 
 export function FeedbackRoute() {
+  const [desktop, setDesktop] = useState(() => window.matchMedia(DESKTOP_GAME_QUERY).matches);
+  useEffect(() => {
+    const display = window.matchMedia(DESKTOP_GAME_QUERY);
+    const update = () => setDesktop(display.matches);
+    display.addEventListener('change', update);
+    return () => display.removeEventListener('change', update);
+  }, []);
+  return desktop ? <FeedbackContent /> : <DesktopGameNotice language={localStorage.getItem('dos-language') === 'es' ? 'es' : 'ko'} />;
+}
+
+function FeedbackContent() {
   const [language, setLanguage] = useState<Language>(() => localStorage.getItem('dos-language') === 'es' ? 'es' : 'ko');
   const [spaceId, setSpaceId] = useState(() => new URLSearchParams(location.search).get('space') || localStorage.getItem('dos-feedback-space') || '');
   const [joinCode, setJoinCode] = useState('');
@@ -16,6 +29,7 @@ export function FeedbackRoute() {
   const [working, setWorking] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const refreshGeneration = useRef(0);
+  const setupPending = useRef(false);
   const es = language === 'es';
 
   const useSpace = useCallback((id: string) => {
@@ -23,6 +37,7 @@ export function FeedbackRoute() {
     localStorage.setItem('dos-feedback-space', id);
     history.replaceState(null, '', `/feedback?space=${encodeURIComponent(id)}`);
     setSpaceId(id);
+    setEntries([]); setRole(null); setError(null);
     setLoading(true);
   }, []);
 
@@ -57,18 +72,22 @@ export function FeedbackRoute() {
   }, [refresh, language, es]);
 
   const createSpace = async () => {
+    if (setupPending.current) return;
+    setupPending.current = true;
     setWorking(true); setError(null);
     try { useSpace(await feedback.createSpace()); }
     catch { setError(copy(language, '비공개 공간을 만들지 못했어요. 잠시 뒤 다시 시도해 주세요.', 'No se pudo crear el espacio. Inténtalo de nuevo.')); }
-    finally { setWorking(false); }
+    finally { setupPending.current = false; setWorking(false); }
   };
 
   const joinSpace = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault(); const id = joinCode.trim(); if (!id) return;
+    if (setupPending.current) return;
+    setupPending.current = true;
     setWorking(true); setError(null);
     try { await feedback.joinSpace(id); useSpace(id); }
     catch { setError(copy(language, '이 초대 공간에 참여하지 못했어요. 코드를 확인하거나 새 초대를 요청해 주세요.', 'No se pudo entrar. Revisa el código o pide que te envíen una invitación nueva.')); }
-    finally { setWorking(false); }
+    finally { setupPending.current = false; setWorking(false); }
   };
 
   const copyInvite = async () => {
@@ -98,7 +117,7 @@ export function FeedbackRoute() {
       {!isFeedbackOnline && <p className="feedback-demo-note">{copy(language, '데모 공간은 이 브라우저에서만 쓸 수 있어요. 초대를 다른 기기와 공유해도 연결되지는 않아요.', 'El demo solo funciona en este navegador; el enlace no conecta otros dispositivos.')}</p>}
     </main> : <>
       <div className="wrap feedback-access-note"><div><b>{copy(language, '둘만의 비공개 아이디어 공간', 'Espacio privado de ideas para los dos')}</b><p>{copy(language, '각 아이디어는 작성한 지 7일이 지나면 삭제돼요.', 'Cada idea se elimina automáticamente siete días después de publicarse.')}</p></div><div className="feedback-space-actions"><button className="secondary-action" onClick={() => void refresh()}>{copy(language, '새로고침', 'Actualizar')}</button><button className="secondary-action" onClick={() => void copyInvite()}>{copy(language, '초대 링크 복사', 'Copiar enlace de invitación')}</button></div></div>
-      <FeedbackPage language={language} mode={isFeedbackOnline ? 'online' : 'demo'} entries={entries} loading={loading} error={error} canCreate={!isFeedbackOnline || role === 'p2'} canAcknowledge={!isFeedbackOnline || role === 'p1'} onCreate={async input => { await feedback.create(spaceId,input); await refresh(); }} onSetStatus={async (id,status) => { await feedback.updateStatus(spaceId,id,status); await refresh(); }}/>
+      <FeedbackPage language={language} mode={isFeedbackOnline ? 'online' : 'demo'} entries={entries} loading={loading} error={error} canCreate={!isFeedbackOnline || role === 'p2'} canAcknowledge={!isFeedbackOnline || role === 'p1'} onCreate={async (input,requestId) => { const entry = await feedback.create(spaceId,input,requestId); refreshGeneration.current += 1; setEntries(items => [entry, ...items.filter(item => item.id !== entry.id)]); }} onSetStatus={async (id,status) => { await feedback.updateStatus(spaceId,id,status); refreshGeneration.current += 1; setEntries(items => items.map(item => item.id === id ? { ...item, status } : item)); }}/>
     </>}
   </div>;
 }
