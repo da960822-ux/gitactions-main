@@ -6,7 +6,7 @@ import {gameCatalog} from '../games/catalog';
 
 type Props={mode:'hearts'|'games';selected?:string;paused:boolean;impulse?:number;onSelect?:(id:string)=>void};
 const heartLayout=[[1.2,.25,1.1,1.82,-.25],[3.55,-1.55,.2,1.2,.3],[3.45,2.18,-1.8,1.12,.35],[-.1,2.3,-1,.68,-.5],[5.1,.55,-1,.7,.1],[.15,-2.4,-1.8,.67,.3]];
-const heroLayout=[[-.65,-1.7,1.1,.83,-.2],[5.35,2.08,-.8,.62,.15],[5.1,-2.4,.3,.54,.25]];
+const heroLayout=[[-3.15,.65,.55,.65,-.25],[3.5,1.45,-1.1,.5,.16],[3.15,-1.7,.65,.62,.28]];
 export default function StudioScene(props:Props){
  const host=useRef<HTMLDivElement>(null),controls=useRef(props),redraw=useRef<()=>void>(()=>{}),[ready,setReady]=useState(false),[mounted,setMounted]=useState(props.mode==='hearts');
  controls.current=props;
@@ -30,11 +30,13 @@ export default function StudioScene(props:Props){
   if(props.mode==='hearts')heartLayout.forEach((_,i)=>{const g=new T.Group();g.add(new T.Mesh(createHeartGeometry(),i===1||i===3?materials.gold:materials.chrome));scene.add(g);objects.push(g);});
   else gameCatalog.forEach(game=>{const g=normalizeSculpture(createGameObject(game.id,materials,()=>redraw.current()));g.userData.game=game.id;g.traverse(o=>{if(o instanceof T.Mesh){const originals=Array.isArray(o.material)?o.material:[o.material];const copies=originals.map(original=>{const material=original.clone() as T.MeshStandardMaterial;material.userData.baseColor=material.color.clone();material.userData.baseEnvironment=material.envMapIntensity;return material;});o.material=Array.isArray(o.material)?copies:copies[0];}});scene.add(g);objects.push(g);});
   const canvas=renderer.domElement;node.appendChild(canvas);canvas.setAttribute('aria-hidden','true');
-  let width=0,height=0,mobile=false,time=0,last=0,visible=true,disposed=false,loaded=false,impulse=props.impulse??0,energy=0,hovered=-1;const cursor=document.createElement('span');cursor.className='rd-scene-cursor';cursor.setAttribute('aria-hidden','true');if(props.mode==='hearts')node.appendChild(cursor);
-  const pointer=new T.Vector2(),hoverPoint=new T.Vector2(),ray=new T.Raycaster();
+  let width=0,height=0,mobile=false,time=0,last=0,visible=true,disposed=false,loaded=false,impulse=props.impulse??0,energy=0,hovered=-1;
+  const pointer=new T.Vector2(),hoverPoint=new T.Vector2(),ray=new T.Raycaster(),finePointer=matchMedia('(hover:hover) and (pointer:fine)');
+  const inputNode=props.mode==='hearts'?node.closest<HTMLElement>('.rd-hero')!:canvas;
   const resize=()=>{const box=node.getBoundingClientRect();width=box.width;height=box.height;mobile=width<700;renderer.setSize(width,height);camera.aspect=width/height;camera.position.set(0,0,props.mode==='hearts'?(mobile?10.5:11.8):(mobile?10.2:9.6));camera.fov=props.mode==='hearts'&&mobile?43:38;camera.updateProjectionMatrix();render(true);};
   const render=(snap=false,dt=1/60)=>{
    if(!width||!height||disposed)return;const active=!controls.current.paused&&!document.hidden;
+   if(props.mode==='hearts'&&!mobile){const factor=snap||!active?1:1-Math.exp(-dt*8);key.position.lerp(new T.Vector3(-4+(active?pointer.x*3:0),6+(active?pointer.y*1.5:0),8),factor);}
    objects.forEach((g,i)=>{
     let x=0,y=0,z=0,size=1,rx=.13,ry=-.2,rz=0;
     if(props.mode==='hearts'){
@@ -61,14 +63,14 @@ export default function StudioScene(props:Props){
   };
   renderer.setAnimationLoop(frame);
   const sync=()=>{if(impulse!==(controls.current.impulse??0)){impulse=controls.current.impulse??0;energy=.85;}render(controls.current.paused);};redraw.current=sync;
-  const move=(event:PointerEvent)=>{const box=canvas.getBoundingClientRect();pointer.set((event.clientX-box.left)/box.width*2-1,-(event.clientY-box.top)/box.height*2+1);if(props.mode==='hearts'&&!mobile&&!controls.current.paused){ray.setFromCamera(pointer,camera);const hit=ray.intersectObjects(objects.filter(g=>g.visible),true)[0];hovered=hit?objects.findIndex(g=>g===hit.object.parent):-1;if(hit){const point=hit.object.worldToLocal(hit.point.clone());hoverPoint.set(T.MathUtils.clamp(point.x,-1,1),T.MathUtils.clamp(point.y,-1,1));}cursor.style.transform=`translate3d(${event.clientX-box.left-12}px,${event.clientY-box.top-12}px,0)`;cursor.dataset.active=String(hovered!==-1);cursor.style.opacity='1';}if(!controls.current.paused)render();};
+  const move=(event:PointerEvent)=>{const box=canvas.getBoundingClientRect();pointer.set((event.clientX-box.left)/box.width*2-1,-(event.clientY-box.top)/box.height*2+1);if(props.mode==='hearts'&&!mobile&&finePointer.matches&&!controls.current.paused){ray.setFromCamera(pointer,camera);const hit=ray.intersectObjects(objects.filter(g=>g.visible),true)[0];hovered=hit?objects.findIndex(g=>g===hit.object.parent):-1;if(hit){const point=hit.object.worldToLocal(hit.point.clone());hoverPoint.set(T.MathUtils.clamp(point.x,-1,1),T.MathUtils.clamp(point.y,-1,1));}}if(!controls.current.paused)render();};
   const click=(event:PointerEvent)=>{if(controls.current.paused)return;move(event);if(props.mode==='hearts'){energy=.6;return;}ray.setFromCamera(pointer,camera);const hit=ray.intersectObjects(objects,true)[0];if(hit){let obj:T.Object3D=hit.object;while(obj.parent&& !obj.userData.game)obj=obj.parent;if(obj.userData.game)controls.current.onSelect?.(obj.userData.game);}};
-  const leave=()=>{pointer.set(0,0);hovered=-1;cursor.style.opacity='0';};
+  const leave=()=>{pointer.set(0,0);hovered=-1;};
   const lost=(event:Event)=>{event.preventDefault();renderer.setAnimationLoop(null);setReady(false);};
   const observer=new ResizeObserver(resize);observer.observe(node);const intersection=new IntersectionObserver(([entry])=>{visible=entry.isIntersecting;if(visible)render(true);});intersection.observe(node);
-  canvas.addEventListener('pointermove',move);canvas.addEventListener('pointerdown',click);canvas.addEventListener('pointerleave',leave);canvas.addEventListener('webglcontextlost',lost);
+  inputNode.addEventListener('pointermove',move);canvas.addEventListener('pointerdown',click);inputNode.addEventListener('pointerleave',leave);canvas.addEventListener('webglcontextlost',lost);
   resize();
-  return()=>{disposed=true;redraw.current=()=>{};renderer.setAnimationLoop(null);observer.disconnect();intersection.disconnect();canvas.removeEventListener('pointermove',move);canvas.removeEventListener('pointerdown',click);canvas.removeEventListener('pointerleave',leave);canvas.removeEventListener('webglcontextlost',lost);canvas.remove();cursor.remove();
+  return()=>{disposed=true;redraw.current=()=>{};renderer.setAnimationLoop(null);observer.disconnect();intersection.disconnect();inputNode.removeEventListener('pointermove',move);canvas.removeEventListener('pointerdown',click);inputNode.removeEventListener('pointerleave',leave);canvas.removeEventListener('webglcontextlost',lost);canvas.remove();
    const geometries=new Set<T.BufferGeometry>(),mats=new Set<T.Material>();scene.traverse(o=>{if(o instanceof T.Mesh){geometries.add(o.geometry);(Array.isArray(o.material)?o.material:[o.material]).forEach(m=>mats.add(m));}});geometries.forEach(g=>g.dispose());mats.forEach(m=>{const map=(m as T.MeshStandardMaterial).map;map?.dispose();m.dispose();});if(!mats.has(heroChrome))heroChrome.dispose();if(!mats.has(heroGold))heroGold.dispose();environment.dispose();environmentScene.traverse(o=>{if(o instanceof T.Mesh){o.geometry.dispose();o.material.dispose();}});renderer.dispose();renderer.forceContextLoss();};
  },[props.mode,mounted]);
  return <div ref={host} className={`rd-studio rd-studio-${props.mode}`} data-ready={ready}>{!ready&&<span className="rd-render-fallback" role="status">PREPARING YOUR GIFT</span>}</div>;
