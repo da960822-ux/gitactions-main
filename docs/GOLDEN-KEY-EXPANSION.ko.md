@@ -39,13 +39,13 @@
 
 ## 통합 파일 명세
 
-작업은 `/workspace/onboarding/golden-key-expansion`에서만 진행합니다. 운영 QA 체크아웃을 수정하지 않습니다.
+독립 작업 공간에서 구현한 뒤 메인 체크아웃에 통합했습니다.
 
 1. `src/games/marble.ts`: 16종 엔진, 선택 단계, 통행료 효과, 면제권·지급 재개, 공개 메타데이터.
 2. `src/games/marble.test.ts`: 기존 초기 덱 기대값 16 및 전략 카드 6개 시나리오 테스트.
 3. `src/games/rules.ts`: 구형 규칙을 유지한 새 16종 한국어·스페인어 설명.
 4. `docs/GOLDEN-KEY-EXPANSION.ko.md`: 이 문서.
 
-루트 소유: `PlayApp.tsx`, `PlayApp.test.ts`. UX 담당: `MarbleBoard.tsx`, 공개 UI 테스트. 아트 담당: `MarbleEventStage.tsx`, 이벤트 CSS·테스트, 16종 카드 아트. 최종 통합 후 루트가 `npm run build`로 `supabase/functions/_shared/engines.js`를 다시 생성합니다.
+통합 범위: `PlayApp.tsx`·테스트, `MarbleBoard.tsx`·공개 UI 테스트, `MarbleEventStage.tsx`·이벤트 CSS·테스트·16종 카드 아트. 최종 통합 후 `npm run build`로 `supabase/functions/_shared/engines.js`를 다시 생성했습니다.
 
-검증: Marble 엔진 30개 테스트 통과, 타입 검사 통과. 전체 브라우저 QA·최종 아트 통합·최종 프로덕션 빌드는 루트 담당입니다. 새 의존성·서버·재산 탈취·건물 철거·추가 현금 카드가 없습니다.
+검증: Marble 엔진 30개 테스트, 전체 415개 테스트, 타입 검사와 프로덕션 빌드 통과. 브라우저 검증 범위는 [최종 검증 기록](UX-FIX-VALIDATION.ko.md)을 참고합니다. 새 의존성·서버·재산 탈취·건물 철거·추가 현금 카드는 없습니다.

@@ -199,20 +199,7 @@
   .hwatu-hand-choice { gap: 3px; padding: 3px; }
   .hwatu-hand-choice .gb-hwatu-card { width: clamp(62px, 4.8vw, 76px); }
   .hwatu-confirm-row { min-height: 44px; margin-top: 2px; font-size: 11px; }
-  .minhwatu-table .hwatu-tabletop-stage {
-    grid-template-columns: minmax(230px, 20vw) minmax(0, 1fr) minmax(230px, 20vw);
-    grid-template-areas: "rival opponent own" "rival felt own" "rival phase own" "rival hand own";
-    align-items: start;
-    gap: 4px 8px;
-  }
-  .minhwatu-table .hwatu-play-center { display: contents; }
-  .minhwatu-table .hwatu-tabletop-stage > .hwatu-capture-rack:not(.is-own) { grid-area: rival; align-self: start; }
-  .minhwatu-table .hwatu-play-center > .hwatu-opponent-bar { grid-area: opponent; min-width: 0; }
-  .minhwatu-table .hwatu-play-center > .hwatu-felt { grid-area: felt; }
-  .minhwatu-table .hwatu-play-center > .hwatu-phase-note { grid-area: phase; }
-  .minhwatu-table .hwatu-play-center > .hwatu-capture-rack.is-own { grid-area: own; align-self: start; }
-  .minhwatu-table .hwatu-play-center > .hwatu-hand-section { grid-area: hand; }
-  .minhwatu-table { --hw-capture-width: 26px; }
+
 }
 
 @media (min-width: 1200px) and (max-height: 950px) and (max-width: 1399px) {
@@ -220,16 +207,5 @@
 }
 
 @media (min-width: 1200px) and (max-height: 950px) {
-  .minhwatu-table .hwatu-capture-rack { min-width: 0; }
-  .minhwatu-table .hwatu-capture-categories { grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 3px; min-width: 0; }
-  .minhwatu-table .hwatu-category-heading { width: auto; min-width: 0; gap: 2px; font-size: 9px; white-space: normal; overflow-wrap: anywhere; }
-  .minhwatu-table .hwatu-category-pile { grid-template-columns: minmax(0, 1fr); min-width: 0; }
-}
-  .minhwatu-table .hwatu-capture-rack { max-height: 280px; overflow: auto; }
   .minhwatu-table .hwatu-confirm, .minhwatu-table .hwatu-cancel { min-height: 44px; }
-  .minhwatu-table .hwatu-capture-rack { grid-template-columns: minmax(0, 1fr); gap: 3px; }
-  .minhwatu-table .hwatu-capture-rack-heading { grid-column: 1; }
-  .minhwatu-table .hwatu-capture-categories { grid-column: 1; }
-  .minhwatu-table .hwatu-category-heading { display: grid; justify-items: center; text-align: center; line-height: 1.1; }
-  .minhwatu-table .hwatu-category-heading img { width: 14px; height: 14px; }
-  .minhwatu-table .hwatu-category-label { display: grid; justify-items: center; }
+}
