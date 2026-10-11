@@ -2214,7 +2214,7 @@ var minhwatuEngine = {
 
 // src/games/marble.ts
 var marblePawnIds = ["fox", "cat", "penguin", "astronaut", "robot", "dragon"];
-var pawnNames = { fox: { ko: "\uC5EC\uC6B0", es: "Zorro" }, cat: { ko: "\uACE0\uC591\uC774", es: "Gata" }, penguin: { ko: "\uD3AD\uADC4", es: "Ping\xFCino" }, astronaut: { ko: "\uC6B0\uC8FC\uBE44\uD589\uC0AC", es: "Astronauta" }, robot: { ko: "\uB85C\uBD07", es: "Robot" }, dragon: { ko: "\uC6A9", es: "Drag\xF3n" } };
+var pawnNames = { fox: { ko: "\uB9D0\uD2F0\uD478", es: "Maltipoo" }, cat: { ko: "\uACE0\uC591\uC774", es: "Gata" }, penguin: { ko: "\uD310\uB2E4", es: "Panda" }, astronaut: { ko: "\uC6B0\uC8FC\uBE44\uD589\uC0AC", es: "Astronauta" }, robot: { ko: "\uB85C\uBD07", es: "Robot" }, dragon: { ko: "\uCE5C\uCE60\uB77C", es: "Chinchilla" } };
 var legacyBoard = [
   { kind: "start", name: { ko: "\uCD9C\uBC1C", es: "Salida" } },
   { kind: "property", name: { ko: "\uAD11\uC8FC", es: "Gwangju" }, price: 100, rent: 12, group: "green" },

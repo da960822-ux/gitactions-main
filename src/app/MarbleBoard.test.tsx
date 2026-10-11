@@ -8,6 +8,16 @@ const render = (view: any, language: 'ko' | 'es' = 'ko', playerId: 'p1' | 'p2' =
   renderToStaticMarkup(createElement(MarbleBoard, { view, language, playerId, runAction: vi.fn() }));
 
 describe('MarbleBoard', () => {
+  it('uses the updated Korean and Spanish figure names for old saved pawn IDs', () => {
+    const state = marbleEngine.createInitialState(71);
+    state.pawns = { p1: 'fox', p2: 'penguin' };
+    const view = marbleEngine.getPlayerView(state, 'p1');
+    expect(render(view)).toContain('말티푸');
+    expect(render(view)).toContain('판다');
+    expect(render(view, 'es')).toContain('Maltipoo');
+    expect(render(view, 'es')).toContain('Panda');
+    expect(view.actions.some((choice: any) => choice.label.ko.includes('친칠라') && choice.label.es.includes('Chinchilla'))).toBe(true);
+  });
   it('renders the current forty-space route with Gwangju and Santo Domingo in both languages', () => {
     const state = marbleEngine.createInitialState(733);
     const view = marbleEngine.getPlayerView(state, 'p1');
