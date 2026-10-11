@@ -59,3 +59,7 @@ Root: 룰/개인 패 보호/공통 방 헤더/아트 방향/최종 캡처 승인
 
 
 최종 Chromium 검수는 80/80, 브라우저 오류 0. 한국어/스페인어 3개 해상도, 손패·드로우 0/1/2/3 매칭, 실제 출발/도착 좌표, 미공개 패 보안, 조작 및 초기화, 축소 모션, 고도리 실제 3패와 점수 착지 순서, 재경기 요청/수락 UI 확인. 실제 Room KO/ES1440 캡처와 고도리 fixture 캡처는 `docs/screenshots/minhwatu/`에 저장. 임시 native JSON과 스크린샷은 output 아래이므로 Git 제외. 루나 스크립트는 `scripts/verify-minhwatu-table.mjs`; 로컬 fixture 검수이며 운영 2기기 동기화 검수로 간주하지 않는다. 최종 UI 마감은 inspector 닫기 버튼에 기존 스타일을 적용한 한 줄 수정이며, 이후 빌드도 통과했다.
+
+## 2026-10-11 획득패 요약 방식 폐기
+
+최신 사용자 요구: 모은 패는 요약하지 말고 모두 정리해서 보여준다. `MinhwatuTable`은 상대 위/내 손패 위 가로 획득패 은행,4종류 전면 상시 노출, 월/ID 정렬과 카드별 정확한 비행 슬롯으로 변경. inspector 삭제. Impeccable 독립A/B critique 재수행(수정전21/40), 한게임 실제PC및스토어 스크린샷 공간분석. `docs/reviews/MINHWATU-CAPTURE-UX-2026-10-11.md`가 최신 판단이다. 설명은3단계/0–3짝 실제카드예시/한개점수상세로 짧게 재작성 KO/ES. 이전 대표패/inspector 권고는 재사용하지 않는다. 테스트338/338,buildpass; 최신 브라우저검수는 GAME-POLISH 마지막 항목 참조.

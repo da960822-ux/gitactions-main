@@ -66,11 +66,17 @@ async function open(language, width, height, reduced = false) {
     };
     const denseState = () => {
       const p1Captures = allIds.filter(id => cardMap.get(id).kind === 'ribbon').slice(0, 9).concat(allIds.filter(id => cardMap.get(id).kind === 'plain').slice(0, 23));
-      const used = new Set(p1Captures), p1Hand = allIds.filter(id => !used.has(id)).slice(0,10); p1Hand.forEach(id => used.add(id));
-      const p2Hand = allIds.filter(id => !used.has(id)).slice(0,10); p2Hand.forEach(id => used.add(id));
-      const table = allIds.filter(id => !used.has(id)).slice(0,8); table.forEach(id => used.add(id));
-      const deck = allIds.filter(id => !used.has(id));
+      const used = new Set(p1Captures), rest = allIds.filter(id => !used.has(id));
+      const p1Hand = rest.slice(0,4), p2Hand = rest.slice(4,8), table = rest.slice(8,16), deck = rest.slice(16);
       return arrange({ p1Hand, p2Hand, table, deck, p1Captures });
+    };
+    const allCapturedState = () => {
+      const state = arrange({ p1Hand: [], p2Hand: [], table: [], deck: [], p1Captures: allIds.slice(0,24), p2Captures: allIds.slice(24) });
+      state.phase = 'finished';
+      const scores = minhwatuEngine.getPlayerView(state, 'p1').board.scores;
+      state.result = { winner: scores.p1 === scores.p2 ? 'draw' : scores.p1 > scores.p2 ? 'p1' : 'p2', reason: 'deterministic QA fixture', scores };
+      state.events = [...state.events, { sequence: 2, type: 'win', winner: state.result.winner, title: { ko: '정산 완료', es: 'Partida terminada' } }];
+      return state;
     };
     window.__minhwatuProof = {
       engine: minhwatuEngine,
@@ -82,6 +88,7 @@ async function open(language, width, height, reduced = false) {
       hiddenIds(seat) { return state.hands[seat].map(card => card.id); },
       replayCalls() { return replayCalls; },
       normalState, godoriState: godori, denseState, stateWithMatches,
+      allCapturedState,
       renderAgain() { render(); },
       backlog() { const max=Math.max(...state.events.map(event=>event.sequence)); state.events=[...state.events,...Array.from({length:14},(_,index)=>({sequence:max+index+1,type:'turn',actor:'p1',title:{ko:'새 차례',es:'Nuevo turno'}}))]; render(); },
       remount() { root.unmount(); root = createRoot(host); render(); },
@@ -94,7 +101,29 @@ async function open(language, width, height, reduced = false) {
 
 const idle = page => page.waitForFunction(() => !document.querySelector('.hwatu-motion-stage.is-animating') && !document.querySelector('.hwatu-flight'), null, { timeout: 7000 });
 const cardRects = async (page, selector) => page.locator(selector).evaluateAll(nodes => nodes.map(node => { const r = node.getBoundingClientRect(); return { x:r.x,y:r.y,right:r.right,bottom:r.bottom,width:r.width,height:r.height,id:node.getAttribute('data-hwatu-card-id') }; }));
-async function screenshot(page, name) { const file = path.join(outputDir, `${name}.png`); await page.screenshot({ path: file, fullPage: false }); report.screenshots.push(file); return file; }
+async function screenshot(page, name, fullPage = false) { const file = path.join(outputDir, `${name}.png`); await page.screenshot({ path: file, fullPage }); report.screenshots.push(file); return file; }
+
+async function auditCaptureBanks(page) {
+  return page.evaluate(() => {
+    const state=window.__minhwatuProof.state(), kinds=['bright','animal','ribbon','plain'], allNodes=[...document.querySelectorAll('.hwatu-capture-rack .hwatu-captured-card[data-hwatu-card-id]')];
+    const visible=node=>{const style=getComputedStyle(node),r=node.getBoundingClientRect();return style.display!=='none'&&style.visibility!=='hidden'&&Number(style.opacity)>0&&r.width>0&&r.height>0};
+    const banks=['p1','p2'].map(seat=>{
+      const rack=document.querySelector(`.hwatu-capture-rack[data-seat="${seat}"]`), categories=kinds.map(kind=>{
+        const section=rack?.querySelector(`[data-hwatu-zone="captures-${seat}-${kind}"]`), label=section?.querySelector('.hwatu-category-label'), cards=[...(section?.querySelectorAll('.hwatu-captured-card[data-hwatu-card-id]')??[])], rect=section?.getBoundingClientRect(), boxes=cards.map(card=>{const r=card.getBoundingClientRect(),img=card.querySelector('img.gb-hwatu-face');return {id:card.getAttribute('data-hwatu-card-id'),x:r.x,y:r.y,right:r.right,bottom:r.bottom,width:r.width,height:r.height,visible:visible(card)&&visible(img),loaded:!!img?.complete&&img.naturalWidth>0};}), overlaps=[];
+        for(let i=0;i<boxes.length;i++)for(let j=i+1;j<boxes.length;j++)if(Math.min(boxes[i].right,boxes[j].right)-Math.max(boxes[i].x,boxes[j].x)>1&&Math.min(boxes[i].bottom,boxes[j].bottom)-Math.max(boxes[i].y,boxes[j].y)>1)overlaps.push([boxes[i].id,boxes[j].id]);
+        const clipped=rect?boxes.filter(box=>box.x<rect.left-1||box.y<rect.top-1||box.right>rect.right+1||box.bottom>rect.bottom+1).map(box=>box.id):boxes.map(box=>box.id), style=section?getComputedStyle(section):null, labelRect=label?.getBoundingClientRect(),labelOverlaps=labelRect?boxes.filter(box=>Math.min(box.right,labelRect.right)-Math.max(box.x,labelRect.left)>1&&Math.min(box.bottom,labelRect.bottom)-Math.max(box.y,labelRect.top)>1).map(box=>box.id):boxes.map(box=>box.id),rackRect=rack?.getBoundingClientRect(),bankClipped=rackRect?boxes.filter(box=>box.x<rackRect.left-1||box.y<rackRect.top-1||box.right>rackRect.right+1||box.bottom>rackRect.bottom+1).map(box=>box.id):boxes.map(box=>box.id);
+        return {kind,label:label?.textContent?.replace(/\s+/g,' ').trim()??'',labelVisible:!!label&&visible(label),labelFont:label?parseFloat(getComputedStyle(label).fontSize):0,ids:boxes.map(box=>box.id),cards:boxes,overlaps,clipped,labelOverlaps,bankClipped,scroll:{width:section?.scrollWidth??0,clientWidth:section?.clientWidth??0,height:section?.scrollHeight??0,clientHeight:section?.clientHeight??0,overflowX:style?.overflowX??'',overflowY:style?.overflowY??''}};
+      });
+      const allCards=categories.flatMap(category=>category.cards.map(card=>({...card,kind:category.kind}))),crossCategoryOverlaps=[];
+      for(let i=0;i<allCards.length;i++)for(let j=i+1;j<allCards.length;j++)if(Math.min(allCards[i].right,allCards[j].right)-Math.max(allCards[i].x,allCards[j].x)>1&&Math.min(allCards[i].bottom,allCards[j].bottom)-Math.max(allCards[i].y,allCards[j].y)>1)crossCategoryOverlaps.push([allCards[i].id,allCards[j].id]);
+      return {seat,expected:state.captures[seat].map(card=>card.id),total:categories.reduce((n,item)=>n+item.ids.length,0),allCards,crossCategoryOverlaps,categories};
+    });
+    const shown=allNodes.map(node=>node.getAttribute('data-hwatu-card-id')),expected=[...state.captures.p1,...state.captures.p2].map(card=>card.id),buttons=document.querySelectorAll('.hwatu-category-summary,.hwatu-capture-inspection');
+    const allCards=banks.flatMap(bank=>bank.allCards),allBankOverlaps=[];
+    for(let i=0;i<allCards.length;i++)for(let j=i+1;j<allCards.length;j++)if(Math.min(allCards[i].right,allCards[j].right)-Math.max(allCards[i].x,allCards[j].x)>1&&Math.min(allCards[i].bottom,allCards[j].bottom)-Math.max(allCards[i].y,allCards[j].y)>1)allBankOverlaps.push([allCards[i].id,allCards[j].id]);
+    return {phase:state.phase,conserved:state.hands.p1.length+state.hands.p2.length+state.table.length+state.deck.length+state.captures.p1.length+state.captures.p2.length===48,expectedCount:expected.length,shownCount:shown.length,shownUnique:new Set(shown).size,expectedIds:expected.sort(),shownIds:shown.sort(),duplicateIds:shown.filter((id,index)=>shown.indexOf(id)!==index),unexpected:shown.filter(id=>!expected.includes(id)),banks,allBankOverlaps,inspectionControls:buttons.length,allVisible:shown.every(id=>allNodes.filter(node=>node.getAttribute('data-hwatu-card-id')===id).every(visible))};
+  });
+}
 
 async function initialMatrix(language, width, height) {
   const { context, page } = await open(language, width, height);
@@ -165,12 +194,19 @@ async function denseResultAndReplay(language) {
   const { context, page } = await open(language,1440,900);
   try {
     await page.evaluate(lang=>window.__minhwatuProof.mount(window.__minhwatuProof.denseState(),lang),language); await idle(page);
-    await page.locator('[data-hwatu-zone="captures-p1-ribbon"] .hwatu-category-summary').click();
-    const cards=page.locator('.hwatu-inspection-card'); await cards.first().waitFor({state:'visible',timeout:3000});
-    const detail=await page.evaluate(()=>({count:document.querySelectorAll('.hwatu-inspection-card').length,width:Math.min(...[...document.querySelectorAll('.hwatu-inspection-card')].map(e=>e.getBoundingClientRect().width)),monthFont:[...document.querySelectorAll('.hwatu-inspection-card .gb-hwatu-month-tag')].map(e=>parseFloat(getComputedStyle(e).fontSize)),ids:[...document.querySelectorAll('.hwatu-inspection-card')].map(e=>e.getAttribute('data-hwatu-card-id'))}));
-    check(`${language}: nine captured ribbons open as a readable complete inspection`,detail.count===9&&detail.width>=54&&detail.monthFont.length===9&&detail.monthFont.every(size=>size>=12)&&new Set(detail.ids).size===9,JSON.stringify(detail));
-    await page.locator('.hwatu-capture-inspection').scrollIntoViewIfNeeded(); await screenshot(page,`${language}-capture-inspection`);
-    await page.getByRole('button',{name:/접기|Cerrar/i}).click();
+    await page.waitForFunction(()=>[...document.querySelectorAll('.hwatu-capture-rack .hwatu-captured-card img.gb-hwatu-face')].every(image=>image.complete&&image.naturalWidth>0),null,{timeout:8000});
+    const dense=await auditCaptureBanks(page), own=dense.banks.find(bank=>bank.seat==='p1');
+    const denseExpected={bright:0,animal:0,ribbon:9,plain:23};
+    const denseKinds=Object.fromEntries(own.categories.map(category=>[category.kind,category.ids.length]));
+    const denseStructure=own.categories.every(category=>category.labelVisible&&category.label.trim().length>0&&category.labelFont>=12&&category.labelOverlaps.length===0&&category.overlaps.length===0&&category.clipped.length===0&&category.bankClipped.length===0&&category.scroll.width<=category.scroll.clientWidth+1&&category.scroll.height<=category.scroll.clientHeight+1)&&dense.allBankOverlaps.length===0&&dense.duplicateIds.length===0&&dense.unexpected.length===0;
+    check(`${language}: conserved dense fixture keeps 9 ribbons and 23 plains visible in the capture bank`,dense.conserved&&dense.expectedCount===32&&dense.shownCount===32&&dense.shownUnique===32&&JSON.stringify(denseKinds)===JSON.stringify(denseExpected)&&dense.allVisible&&denseStructure&&dense.inspectionControls===0,JSON.stringify({conserved:dense.conserved,expectedCount:dense.expectedCount,shownCount:dense.shownCount,shownUnique:dense.shownUnique,kinds:denseKinds,allVisible:dense.allVisible,structure:denseStructure,inspectionControls:dense.inspectionControls,categories:own.categories.map(({kind,label,labelFont,overlaps,clipped,labelOverlaps,bankClipped,scroll})=>({kind,label,labelFont,overlaps,clipped,labelOverlaps,bankClipped,scroll}))}));
+    await screenshot(page,`${language}-dense-capture-bank`,true);
+    await page.evaluate(lang=>window.__minhwatuProof.mount(window.__minhwatuProof.allCapturedState(),lang),language); await idle(page);
+    await page.waitForFunction(()=>[...document.querySelectorAll('.hwatu-capture-rack .hwatu-captured-card img.gb-hwatu-face')].length===48&&[...document.querySelectorAll('.hwatu-capture-rack .hwatu-captured-card img.gb-hwatu-face')].every(image=>image.complete&&image.naturalWidth>0),null,{timeout:8000});
+    const allCaptured=await auditCaptureBanks(page), totalKinds=Object.fromEntries(['bright','animal','ribbon','plain'].map(kind=>[kind,allCaptured.banks.reduce((sum,bank)=>sum+bank.categories.find(category=>category.kind===kind).ids.length,0)])), expectedKinds={bright:5,animal:9,ribbon:10,plain:24};
+    const everyFace=allCaptured.expectedCount===48&&allCaptured.shownCount===48&&allCaptured.shownUnique===48&&allCaptured.expectedIds.every((id,index)=>id===allCaptured.shownIds[index])&&allCaptured.duplicateIds.length===0&&allCaptured.unexpected.length===0&&allCaptured.banks.every(bank=>bank.total===24&&JSON.stringify([...bank.expected].sort())===JSON.stringify(bank.categories.flatMap(category=>category.ids).sort())&&bank.crossCategoryOverlaps.length===0&&bank.categories.every(category=>category.labelVisible&&category.label.trim().length>0&&category.labelFont>=12&&category.labelOverlaps.length===0&&category.overlaps.length===0&&category.clipped.length===0&&category.bankClipped.length===0&&category.scroll.width<=category.scroll.clientWidth+1&&category.scroll.height<=category.scroll.clientHeight+1))&&JSON.stringify(totalKinds)===JSON.stringify(expectedKinds)&&allCaptured.allBankOverlaps.length===0;
+    check(`${language}: finished two-seat banks show each of all 48 captured faces exactly once without clipping or overlap`,allCaptured.conserved&&allCaptured.phase==='finished'&&everyFace&&allCaptured.allVisible&&allCaptured.inspectionControls===0,JSON.stringify({conserved:allCaptured.conserved,phase:allCaptured.phase,expectedCount:allCaptured.expectedCount,shownCount:allCaptured.shownCount,shownUnique:allCaptured.shownUnique,duplicateIds:allCaptured.duplicateIds,unexpected:allCaptured.unexpected,totalKinds,allBankOverlaps:allCaptured.allBankOverlaps,allVisible:allCaptured.allVisible,inspectionControls:allCaptured.inspectionControls,banks:allCaptured.banks.map(bank=>({seat:bank.seat,total:bank.total,crossCategoryOverlaps:bank.crossCategoryOverlaps,categories:bank.categories.map(({kind,label,labelFont,ids,overlaps,clipped,labelOverlaps,bankClipped,scroll})=>({kind,label,labelFont,count:ids.length,overlaps,clipped,labelOverlaps,bankClipped,scroll}))}))}));
+    await screenshot(page,`${language}-all-capture-banks`,true);
     await page.evaluate(lang=>window.__minhwatuProof.mount(window.__minhwatuProof.godoriState(),lang),language); await idle(page);
     const oldScore=await page.evaluate(()=>window.__minhwatuProof.view('p1').board.scores.p1);
     await page.evaluate(()=>{window.__minhwatuScoreSamples=[];window.addEventListener('minhwatu-presentation-cue',function sampleCapture(event){if(event.detail?.event?.type!=='capture')return;window.removeEventListener('minhwatu-presentation-cue',sampleCapture);const offsets=event.detail.impactOffsets??[];for(const [label,offset] of [['first',offsets[0]+4],['last',offsets.at(-1)+10]])setTimeout(()=>window.__minhwatuScoreSamples.push({label,shown:Number(document.querySelector('[data-hwatu-zone="score-p1"] strong')?.textContent?.match(/-?\d+/)?.[0]),turn:document.querySelector('.hwatu-seat-score.is-turn')?.getAttribute('data-player')??null}),Math.max(0,offset));});});
@@ -239,20 +275,23 @@ async function privacyAndMotion(language) {
     await page.locator('.hwatu-hand-choice[data-hwatu-card-id="1-1"]').click(); const target=page.locator('.hwatu-table-card.is-target').first(); await target.waitFor();
     const sourceRect=await page.locator('.hwatu-hand-choice[data-hwatu-card-id="1-1"]').boundingBox(), targetRect=await target.boundingBox();
     const captureStart=await page.locator('[data-hwatu-zone="table"] [data-hwatu-card-id="1-2"]').boundingBox();
-    const captureEnd=await page.locator('[data-hwatu-zone="captures-p1-ribbon"] [data-hwatu-landing-anchor]').boundingBox();
     await target.click(); await page.waitForFunction(()=>document.querySelector('.hwatu-motion-note--play.is-fresh'),null,{timeout:3000});
     const flight=await page.evaluate(({id,source,target})=>{const el=document.querySelector(`.hwatu-flight[data-hwatu-flight-card="${id}"]`),a=el?.getAnimations()[0],frame=a?.effect?.getKeyframes().at(-1),m=frame?.transform?.match(/translate3d\(([-\d.]+)px,\s*([-\d.]+)px/),left=parseFloat(el?.style.left||'0'),top=parseFloat(el?.style.top||'0'),w=parseFloat(el?.style.width||'0'),h=parseFloat(el?.style.height||'0');return {present:!!el,hiddenSource:!document.querySelector(`.hwatu-hand-choice[data-hwatu-card-id="${id}"]`),duplicates:document.querySelectorAll(`.hwatu-hand-choice[data-hwatu-card-id="${id}"],[data-hwatu-zone="table"] [data-hwatu-card-id="${id}"]`).length,end:m?{x:left+Number(m[1])+w/2,y:top+Number(m[2])+h/2}:null,expected:target?{x:target.x+target.width/2,y:target.y+target.height/2}:null,source:source?{x:source.x+source.width/2,y:source.y+source.height/2}:null};},{id:'1-1',source:sourceRect,target:targetRect});
     const near=(a,b,t=18)=>Number.isFinite(a)&&Number.isFinite(b)&&Math.abs(a-b)<=t;
     check(`${language}: selected card is shown once in flight and targets its matched table card`,flight.present&&flight.hiddenSource&&flight.duplicates===0&&near(flight.end?.x,flight.expected?.x)&&near(flight.end?.y,flight.expected?.y),JSON.stringify(flight));
     await page.waitForFunction(()=>document.querySelector('.hwatu-motion-note--capture.is-fresh'),null,{timeout:3000});
     await page.waitForFunction(()=>document.querySelector('.hwatu-flight[data-hwatu-flight-card="1-2"]'),null,{timeout:3000});
+    const landingSlot=page.locator('.hwatu-capture-landing[data-hwatu-landing-card-id="1-2"]'); await landingSlot.waitFor({state:'visible',timeout:2000});
+    const captureEnd=await landingSlot.boundingBox();
     const captureFlight=await page.evaluate(({target})=>{const el=document.querySelector('.hwatu-flight[data-hwatu-flight-card="1-2"]'),a=el?.getAnimations()[0],frame=a?.effect?.getKeyframes().at(-1),m=frame?.transform?.match(/translate3d\(([-\d.]+)px,\s*([-\d.]+)px/),left=parseFloat(el?.style.left||'0'),top=parseFloat(el?.style.top||'0'),w=parseFloat(el?.style.width||'0'),h=parseFloat(el?.style.height||'0');return {present:!!el,start:el?{x:left+w/2,y:top+h/2}:null,end:m?{x:left+Number(m[1])+w/2,y:top+Number(m[2])+h/2}:null,expected:target?{x:target.x+target.width/2,y:target.y+target.height/2}:null};},{target:captureEnd});
     check(`${language}: captured table card clone starts at its exact source and lands in its category rack`,captureFlight.present&&near(captureFlight.start?.x,captureStart?.x+(captureStart?.width??0)/2,4)&&near(captureFlight.start?.y,captureStart?.y+(captureStart?.height??0)/2,12)&&near(captureFlight.end?.x,captureFlight.expected?.x,24)&&near(captureFlight.end?.y,captureFlight.expected?.y,24),JSON.stringify({...captureFlight,source:captureStart}));
+    const activeFlights=await page.locator('.hwatu-flight').count(); await page.emulateMedia({reducedMotion:'reduce'}); await page.waitForFunction(()=>!document.querySelector('.hwatu-flight')&&!document.querySelector('.hwatu-score-flight'),null,{timeout:2500});
+    check(`${language}: enabling reduced motion clears active transient clones`,activeFlights>0&&await page.evaluate(()=>window.__minhwatuProof.view('p1').log.some(event=>event.type==='capture'))&&!(await page.locator('.hwatu-flight,.hwatu-score-flight,.hwatu-earned-faces').count()),`active flights before toggle: ${activeFlights}; public state remains committed`);
+    await idle(page); await page.waitForFunction(()=>document.querySelector('.hwatu-captured-card[data-hwatu-card-id="1-2"]'),null,{timeout:3000});
+    const arrived=await page.locator('.hwatu-captured-card[data-hwatu-card-id="1-2"]').boundingBox();
+    check(`${language}: captured face replaces its per-card landing ghost without a layout jump`,!!captureEnd&&!!arrived&&near(arrived.x,captureEnd.x,1)&&near(arrived.y,captureEnd.y,1)&&near(arrived.width,captureEnd.width,1)&&near(arrived.height,captureEnd.height,1),JSON.stringify({ghost:captureEnd,arrived}));
     const cue=await page.evaluate(()=>window.__minhwatuCues.map(({event,impactOffsets,transfer})=>({type:event.type,impactOffsets,transfer:!!transfer})));
     check(`${language}: committed hand-play and capture cues follow the public event order`,cue.findIndex(item=>item.type==='play')>=0&&cue.findIndex(item=>item.type==='capture')>cue.findIndex(item=>item.type==='play')&&cue.find(item=>item.type==='capture')?.impactOffsets.join(',')==='260,285',JSON.stringify(cue));
-    const activeFlights=await page.locator('.hwatu-flight').count();
-    await page.emulateMedia({reducedMotion:'reduce'}); await page.waitForFunction(()=>!document.querySelector('.hwatu-flight')&&!document.querySelector('.hwatu-score-flight'),null,{timeout:2500});
-    check(`${language}: enabling reduced motion clears active transient clones`,activeFlights>0&&!(await page.locator('.hwatu-flight,.hwatu-score-flight,.hwatu-earned-faces').count()),`active flights before toggle: ${activeFlights}; public state remains committed`);
   } finally { await context.close(); }
 }
 

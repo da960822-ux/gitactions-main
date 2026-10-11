@@ -38,8 +38,14 @@ describe('inline game guide', () => {
       expect(ko).toContain('id="game-guide"');
       expect(ko).toContain(game.title.ko);
       expect(es).toContain(game.title.es);
-      expect((ko.match(/<li>/g) ?? []).length).toBeGreaterThanOrEqual(5);
-      expect((es.match(/<li>/g) ?? []).length).toBeGreaterThanOrEqual(5);
+      for (const markup of [ko, es]) {
+        if (game.id === 'minhwatu') {
+          expect((markup.match(/<li>/g) ?? []).length).toBe(3);
+          expect(markup).toContain('minhwatu-match-grid');
+          expect(markup).toContain('/images/hwatu/01-01.svg');
+          expect(markup).toContain('minhwatu-guide-details');
+        } else expect((markup.match(/<li>/g) ?? []).length).toBeGreaterThanOrEqual(5);
+      }
     }
   });
 

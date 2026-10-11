@@ -3,7 +3,7 @@
   "source": "Original code-native SVG geometry and deterministic periodic raster weave, authored 2026-10-11; no external source or generation service.",
   "license": "Project-original support artwork; original 48 Commons face attribution retained separately.",
   "filtering": "Browser vector and smooth raster sampling; repeat only felt/rack; no mipmap/atlas required.",
-  "approval": "Native 6 desktop Room layouts reviewed; 14 field + 10 hand + selected confirm/cancel fixture, all contained. Original 48 face hashes match HEAD.",
+  "approval": "24 actual desktop Room layouts reviewed: initial, 14 field, dense32, all48 visual stress states, KO/ES at1366/1440/1920. All captured faces stay visible and nonoverlapping; original48 face hashes unchanged.",
   "assets": [
     {
       "file": "capture.svg",
@@ -301,6 +301,6 @@
     "12-04.svg": "4d5b82d918b27cef147b7c945d3610e517660f7fd580be45a1e0fa03af66411f"
   },
   "totalAssetBytes": 4774,
-  "layoutEvidence": "output/playwright/minhwatu-art/layout.json",
+  "layoutEvidence": "output/playwright/minhwatu-art/bank-layout.json",
   "limits": "No original face redesign; mobile and full motion/audio sensory validation outside art ownership. Zoom/DPR checked separately by integration QA."
 }

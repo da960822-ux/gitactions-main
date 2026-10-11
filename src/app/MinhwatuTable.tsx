@@ -41,7 +41,7 @@ export function MinhwatuTable({ view, language, playerId, playerNames, runAction
   const otherId: PlayerId = playerId === 'p1' ? 'p2' : 'p1', active = view?.turn === playerId && !view?.result;
   const pending: MinhwatuCard | null = board.pendingCard ?? null, capturePhase = view?.phase === 'capture-draw';
   const [selected, setSelected] = useState<string | null>(null), [actionBusy, setActionBusy] = useState(false), [replayBusy, setReplayBusy] = useState(false), [error, setError] = useState('');
-  const [localReplayIdentity, setLocalReplayIdentity] = useState<string | null>(null), [inspection, setInspection] = useState<string | null>(null);
+  const [localReplayIdentity, setLocalReplayIdentity] = useState<string | null>(null);
   const replayIdentity = `${playerId}:${sceneKey}`, localReplayPending = localReplayIdentity === replayIdentity;
   const busy = actionBusy || displayBusy;
   const actionLock = useRef(false);
@@ -90,6 +90,10 @@ export function MinhwatuTable({ view, language, playerId, playerNames, runAction
     }
   }, [selected, active, capturePhase, selectedMonthCount, busy, table, choices]);
   const motionEvent = presentation.step?.events[0];
+  const landingEvent = motionEvent?.type === 'capture' && motionEvent.actor ? motionEvent : undefined;
+  const captureLandingCards = (seat: PlayerId) => landingEvent?.actor === seat
+    ? array<MinhwatuCard>(landingEvent.cards).filter(card => !captures[seat].some(captured => captured.id === card.id))
+    : [];
   const movingCardId = motionEvent?.cards?.[0]?.id;
   const needsTableLanding = Boolean(movingCardId && !table.some(card => card.id === movingCardId)
     && (motionEvent?.type === 'play' && !presentation.step?.targetId || motionEvent?.type === 'draw' && presentation.step?.transfer && !presentation.step.targetId));
@@ -162,7 +166,7 @@ export function MinhwatuTable({ view, language, playerId, playerNames, runAction
     </section>}
 
     <div className="hwatu-tabletop-stage">
-      <CaptureRack cards={captures[playerId]} seat={playerId} viewer={playerId} language={language} name={playerNames?.[playerId]} breakdown={record(scoreBreakdown[playerId])} inspection={inspection} setInspection={setInspection}/>
+      <CaptureRack cards={captures[otherId]} landingCards={captureLandingCards(otherId)} seat={otherId} viewer={playerId} language={language} name={playerNames?.[otherId]} breakdown={record(scoreBreakdown[otherId])}/>
       <div className="hwatu-play-center">
         <div className="hwatu-opponent-bar" aria-label={text(language, '상대 손패', 'Mano rival')}>
           <div className="hwatu-opponent-summary"><b>{text(language, '상대 손패', 'Mano rival')}</b><span className="hwatu-opponent-count">{Number(shownView?.opponentCount ?? 0)}{text(language, '장', ' cartas')}</span></div>
@@ -175,7 +179,7 @@ export function MinhwatuTable({ view, language, playerId, playerNames, runAction
           <header className="hwatu-felt-heading"><div><h3>{text(language, '바닥 패', 'Mesa')}</h3><span>{text(language, `공개된 패 ${table.length}장`, `${table.length} cartas visibles`)}</span></div>
             <span className="hwatu-stock-count" data-hwatu-zone="deck"><span className="hwatu-deck-back" aria-hidden="true"><i/><i/><i/></span><span>{text(language, '남은 더미', 'Mazo')}</span><b>{stockCount}</b></span>
           </header>
-          <div className={`hwatu-table-cards ${shownView?.result && !table.length ? 'is-empty-finished' : ''}`} data-hwatu-zone="table">
+          <div className={`hwatu-table-cards ${shownView?.result && !table.length ? 'is-empty-finished' : ''} ${!table.length && !needsTableLanding && !pending ? 'is-empty' : ''}`} data-hwatu-zone="table">
             {table.map((card, index) => {
               const choice = actionForTarget(index), legal = Boolean(choice && active && (selectedCard || capturePhase));
               const target = legal && (capturePhase || selectedMonthCount === 2);
@@ -198,6 +202,8 @@ export function MinhwatuTable({ view, language, playerId, playerNames, runAction
           {error && <b className="hwatu-error" role="alert">{error}</b>}
         </div>
 
+        <CaptureRack cards={captures[playerId]} landingCards={captureLandingCards(playerId)} seat={playerId} viewer={playerId} language={language} name={playerNames?.[playerId]} breakdown={record(scoreBreakdown[playerId])}/>
+
         <section className={`hwatu-hand-section ${shownView?.result && !hand.length ? 'is-empty-finished' : ''}`} aria-label={text(language, '내 손패', 'Tu mano')}>
           <header className="hwatu-hand-heading"><div><h3>{text(language, '내 손패', 'Tu mano')}</h3><span>{hand.length}</span></div><small>{text(language, '표시된 패로 바닥 패를 가져올 수 있어요.', 'Las cartas marcadas pueden capturar.')}</small></header>
           <div className={`hwatu-choice-hand ${shownView?.result && !hand.length ? 'is-empty-finished' : ''}`} data-hwatu-zone="hand">{hand.map((card, index) => {
@@ -217,17 +223,7 @@ export function MinhwatuTable({ view, language, playerId, playerNames, runAction
         </section>
 
       </div>
-      <CaptureRack cards={captures[otherId]} seat={otherId} viewer={playerId} language={language} name={playerNames?.[otherId]} breakdown={record(scoreBreakdown[otherId])} inspection={inspection} setInspection={setInspection}/>
     </div>
-
-    {inspection && (() => {
-      const [seat, kind] = inspection.split(':') as [PlayerId, MinhwatuKind], pile = captures[seat].filter(card => card.kind === kind).sort((a, b) => a.month - b.month || a.id.localeCompare(b.id));
-      return <section className="hwatu-capture-inspection" id="hwatu-capture-inspection" aria-label={text(language, `${categoryName[kind].ko} 획득 패 상세`, `Capturas: ${categoryName[kind].es}`)}>
-        <header><h3>{text(language, `${seat === playerId ? '내가 모은' : '상대가 모은'} ${categoryName[kind].ko} 패 ${pile.length}장`, `${seat === playerId ? 'Tus capturas' : 'Capturas rivales'} · ${categoryName[kind].es} · ${pile.length}`)}</h3>
-          <button className="hwatu-cancel" type="button" onClick={() => setInspection(null)}>{text(language, '접기', 'Cerrar')}</button></header>
-        <div className="hwatu-inspection-grid">{pile.map(card => <div className="hwatu-inspection-card" key={card.id} data-hwatu-card-id={card.id}><HwatuCard card={card} language={language}/></div>)}</div>
-      </section>;
-    })()}
 
     <details className="hwatu-action-log">
       <summary>{text(language, '최근 행동', 'Actividad reciente')} · {publicLog.length}</summary>
@@ -270,19 +266,24 @@ export function MinhwatuTable({ view, language, playerId, playerNames, runAction
   </section>;
 }
 
-function CaptureRack({ cards, seat, viewer, language, name, breakdown, inspection, setInspection }: { cards: MinhwatuCard[]; seat: PlayerId; viewer: PlayerId; language: Language; name?: string; breakdown: AnyRecord; inspection: string | null; setInspection: (value: string | null) => void }) {
+function CaptureRack({ cards, landingCards = [], seat, viewer, language, name, breakdown }: { cards: MinhwatuCard[]; landingCards?: MinhwatuCard[]; seat: PlayerId; viewer: PlayerId; language: Language; name?: string; breakdown: AnyRecord }) {
   const isViewer = seat === viewer, counts = captureCounts(cards), yakus = array<AnyRecord>(breakdown.yakus);
-  return <aside className={`hwatu-capture-rack ${isViewer ? 'is-own' : ''}`} data-seat={seat} aria-label={`${isViewer ? text(language, '내가 모은 패', 'Mis capturas') : text(language, '상대가 모은 패', 'Capturas rivales')}: ${cards.length}`}>
+  return <aside className={`hwatu-capture-rack ${isViewer ? 'is-own' : ''} ${cards.length ? '' : 'is-empty'}`} data-seat={seat} aria-label={`${isViewer ? text(language, '내가 모은 패', 'Mis capturas') : text(language, '상대가 모은 패', 'Capturas rivales')}: ${cards.length}`}>
     <header className="hwatu-capture-rack-heading"><div>{name && <span className="hwatu-player-name">{name}</span>}<b>{isViewer ? text(language, '내가 모은 패', 'Mis capturas') : text(language, '상대가 모은 패', 'Capturas rivales')}</b><span>{cards.length} {text(language, '장', 'cartas')}</span></div></header>
     <div className="hwatu-capture-categories">{categories.map(kind => {
-      const pile = cards.filter(card => card.kind === kind);
-      const representative = pile.at(-1);
+      const pile = cards.filter(card => card.kind === kind).sort((a, b) => a.month - b.month || a.id.localeCompare(b.id));
+      const incoming = landingCards.filter(card => card.kind === kind);
+      const incomingIds = new Set(incoming.map(card => card.id));
+      const ordered = [...pile, ...incoming].sort((a, b) => a.month - b.month || a.id.localeCompare(b.id));
       return <section className={`hwatu-category-pile kind-${kind}`} key={kind} data-hwatu-zone={`captures-${seat}-${kind}`}>
-        <button className="hwatu-category-summary" type="button" aria-expanded={inspection === `${seat}:${kind}`} aria-controls="hwatu-capture-inspection" aria-label={text(language, `${categoryName[kind].ko} ${counts[kind]}장, 전체 보기`, `${categoryName[kind].es}: ${counts[kind]}, ver todas`)} onClick={() => setInspection(inspection === `${seat}:${kind}` ? null : `${seat}:${kind}`)}>
+        <header className="hwatu-category-heading">
             <img src={`/images/hwatu-support/category-${kind}.svg`} alt="" aria-hidden="true"/>
             <span className="hwatu-category-label"><span>{categoryName[kind][language]}</span><b>{counts[kind]}</b></span>
-            <span className="hwatu-capture-preview" data-hwatu-landing-anchor aria-hidden="true" style={{ display: 'block', width: 32, height: 52 }}>{representative && <HwatuCard card={representative} language={language}/>}</span>
-        </button>
+        </header>
+        <div className="hwatu-captured-cards">{ordered.map(card => incomingIds.has(card.id)
+          ? <span className="hwatu-capture-landing" key={`landing:${card.id}`} data-hwatu-landing-anchor data-hwatu-landing-card-id={card.id} aria-hidden="true"/>
+          : <div className="hwatu-captured-card" key={card.id} data-hwatu-card-id={card.id}><HwatuCard card={card} language={language}/></div>)}
+        </div>
       </section>;
     })}</div>
     <section className="hwatu-rail-progress" aria-label={text(language, '족보 진행', 'Progreso de combinaciones')}>

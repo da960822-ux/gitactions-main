@@ -1,9 +1,9 @@
 /* Shared shell :has rules need equivalent specificity to keep the hand in view. */
-.room-shell.minhwatu-room:has(.board-card) .app-header.compact { height:38px; }
+.room-shell.minhwatu-room:has(.board-card) .app-header.compact { height:32px; }
 .app-shell.minhwatu-room .room-main { width:min(1460px,calc(100% - 36px)); padding-top:3px; }
 .minhwatu-room .room-main:has(.board-card) .room-topline { margin:1px 0; min-height:20px; }
 .minhwatu-room .room-main:has(.board-card) .room-heading { justify-content:flex-end; min-height:28px; border:0; padding:0; }
-.minhwatu-room .room-heading > div:first-child { display:none; }
+.minhwatu-room .room-heading { display:none; }
 .minhwatu-room .room-main:has(.board-card) .room-layout { margin-top:3px; }
 .minhwatu-room .room-main:has(.board-card) .board-header { min-height:36px; padding:3px 10px; }
 .minhwatu-room .board-game small,.minhwatu-room .board-header .turn-tag,.minhwatu-room .player-pill small { display:none; }

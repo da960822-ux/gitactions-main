@@ -39,9 +39,10 @@ function fly(root: HTMLElement, card: MinhwatuCard, fromName: string, toName: st
   const sourceCard = cardInZone(card.id, sourceZone);
   const src = previous?.get(`${fromName}:${card.id}`) ?? previous?.get(`${fromName}:@zone`) ?? point(sourceCard, point(sourceZone));
   const destZone = zone(root, toName);
+  const reservation = destZone ? [...destZone.querySelectorAll<HTMLElement>('[data-hwatu-landing-card-id]')].find(slot => slot.dataset.hwatuLandingCardId === card.id) ?? null : null;
   const destinationCard = cardInZone(card.id, destZone);
   const anchor = destZone?.querySelector<HTMLElement>('[data-hwatu-landing-anchor]');
-  const dest = target ?? point(destinationCard, point(anchor ?? null, point(destZone, previous?.get(`${toName}:@zone`) ?? null)));
+  const dest = target ?? point(reservation, point(destinationCard, point(anchor ?? null, point(destZone, previous?.get(`${toName}:@zone`) ?? null))));
   const face = safeFace(card.id);
   if (!src || !dest || !face) return;
   const width = Math.max(36, Math.min(74, src.width || 54));
@@ -69,7 +70,7 @@ function fly(root: HTMLElement, card: MinhwatuCard, fromName: string, toName: st
   inner.append(image);
   element.append(inner);
   document.body.append(element);
-  const targetScale = destinationCard || anchor || target ? Math.min(dest.width / width, dest.height / height) : 1;
+  const targetScale = reservation || destinationCard || anchor || target ? Math.min(dest.width / width, dest.height / height) : 1;
   const targetLeft = dest.left + (dest.width - width) / 2;
   const targetTop = dest.top + (dest.height - height) / 2;
   const dx = targetLeft - (src.left + (src.width - width) / 2);

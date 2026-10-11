@@ -201,11 +201,11 @@ describe('MinhwatuTable public view', () => {
     expect(html).toContain('hwatu-category-pile kind-animal');
     expect(html).toContain('hwatu-category-pile kind-ribbon');
     expect(html).toContain('hwatu-category-pile kind-plain');
-    expect(html).toContain('hwatu-category-summary');
-    expect(html).toContain('hwatu-capture-preview');
-    expect(html.match(/data-hwatu-landing-anchor/g)).toHaveLength(9);
-    expect(html).toContain('aria-expanded="false"');
-    expect(html).not.toContain('hwatu-captured-grid');
+    expect(html).toContain('hwatu-captured-card');
+    expect(html).not.toContain('hwatu-capture-landing');
+    expect(html).not.toContain('hwatu-category-summary');
+    expect(html).not.toContain('hwatu-capture-inspection');
+    for (const card of state.captures.p1) expect(html.match(new RegExp(`data-hwatu-card-id="${card.id}"`, 'g'))).toHaveLength(1);
     expect(html).not.toContain('tabindex="0"');
     expect(html).toContain('class="hwatu-deck-back"');
     expect(html).not.toContain(`/images/hwatu/${state.deck[0].id.split('-').map(part => part.padStart(2, '0')).join('-')}.svg`);
@@ -278,7 +278,7 @@ describe('MinhwatuTable public view', () => {
     expect(html).toContain('Aceptar y jugar otra');
     expect(html).toContain('La otra persona pidió otra partida.');
   });
-  it('keeps both real capture rails and all engine combination counters inside the tabletop for either viewer and language', () => {
+  it('keeps every captured face visible in its category bank with all combination counters for either viewer and language', () => {
     const state = minhwatuEngine.createInitialState(174);
     state.captures = { p1: state.deck.slice(0, 5), p2: state.deck.slice(5, 10) };
     state.deck = state.deck.slice(10);
@@ -295,7 +295,38 @@ describe('MinhwatuTable public view', () => {
       for (const seat of ['p1', 'p2'] as const) {
         for (const yaku of view.board.breakdown[seat].yakus) expect(stage).toContain(yaku.label[language]);
       }
-      expect(stage.match(/class="hwatu-category-summary"/g)).toHaveLength(8);
+      expect(stage.match(/class="hwatu-category-heading"/g)).toHaveLength(8);
+      expect(stage).not.toContain('hwatu-capture-landing');
+      expect(stage).not.toContain('hwatu-category-summary');
+      expect(stage).not.toContain('hwatu-capture-inspection');
+      for (const seat of ['p1', 'p2'] as const) {
+        const rackStart = stage.indexOf(`data-seat="${seat}"`);
+        const rackEnd = stage.indexOf('</aside>', rackStart);
+        const rack = stage.slice(rackStart, rackEnd);
+        for (const card of state.captures[seat]) {
+          expect(rack.match(new RegExp(`data-hwatu-card-id="${card.id}"`, 'g'))).toHaveLength(1);
+          expect(rack).toContain(`/images/hwatu/${card.id.split('-').map(part => part.padStart(2, '0')).join('-')}.svg`);
+          const categoryStart = stage.indexOf(`data-hwatu-zone="captures-${seat}-${card.kind}"`);
+          const categoryEnd = stage.indexOf('</section>', categoryStart);
+          const category = stage.slice(categoryStart, categoryEnd);
+          expect(category.match(new RegExp(`data-hwatu-card-id="${card.id}"`, 'g'))).toHaveLength(1);
+        }
+        for (const kind of ['bright', 'animal', 'ribbon', 'plain'] as const) {
+          const categoryStart = stage.indexOf(`data-hwatu-zone="captures-${seat}-${kind}"`);
+          const categoryEnd = stage.indexOf('</section>', categoryStart);
+          const category = stage.slice(categoryStart, categoryEnd);
+          const ids = [...category.matchAll(/data-hwatu-card-id="([^"]+)"/g)].map(match => match[1]);
+          const expected = state.captures[seat].filter(card => card.kind === kind).sort((a, b) => a.month - b.month || a.id.localeCompare(b.id)).map(card => card.id);
+          expect(ids).toEqual(expected);
+        }
+      }
+      const rivalRack = stage.indexOf(`data-seat="${playerId === 'p1' ? 'p2' : 'p1'}"`);
+      const center = stage.indexOf('class="hwatu-play-center"');
+      const ownRack = stage.indexOf(`data-seat="${playerId}"`, center);
+      const handPosition = stage.indexOf('class="hwatu-hand-section');
+      expect(rivalRack).toBeLessThan(center);
+      expect(center).toBeLessThan(ownRack);
+      expect(ownRack).toBeLessThan(handPosition);
       const hand = stage.slice(stage.indexOf('data-hwatu-zone="hand"'), stage.indexOf('class="hwatu-hand-actions"'));
       const ids = [...hand.matchAll(/data-hwatu-card-id="([^"]+)"/g)].map(match => match[1]);
       expect(ids).toEqual(state.hands[playerId].map(card => card.id));
