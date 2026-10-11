@@ -1,0 +1,11 @@
+# Spanish copy review
+
+I reviewed the landing copy and game catalog for meaning, conversational tone, and broadly Dominican/Caribbean word choice. The copy uses familiar `tú`, `Mami`, `Papi`, and `baby`; it avoids `vosotros`, `os`, `vale`, `ordenador`, and `móvil`. `computadora` and `celular` are used in the desktop note.
+
+Examples of the edits are `quería crear algo ... cuando hablamos` → `quería hacer algo para que pudiéramos jugar mientras hablamos`, `Empareja meses y captura cartas` → `Busca coincidencias por mes y captura cartas`, and `mercancías` → `productos`. The desktop message says the page and letter can be viewed on a phone, while games should be opened on a computer.
+
+For regional vocabulary, the [ASALE *Diccionario de americanismos* entry for *computadora*](https://www.asale.org/damer/computadora) includes `RD` among its country codes. Its [entry for *celular*](https://www.asale.org/damer/celular) also includes `RD` and defines the noun as a portable telephone. Dominican government usage is consistent: [INDOTEL uses *computadoras*](https://indotel.gob.do/indotel-entrega-10-computadoras-al-conani/) and [*celulares*](https://indotel.gob.do/indotel-inicia-consulta-sobre-norma-de-celulares-robados-extraviados-y-alterados/) in public notices, while the [Santo Domingo Este municipal government announces a “Torneo de Dominó”](https://ayuntamientosde.gob.do/con-la-participacion-de-300-jugadores-ayuntamiento-de-santo-domingo-este-realiza-primer-torneo-de-domino-playero/). These sources support the device terms and Dominican use of *dominó*; they do not certify every phrase as uniquely Dominican.
+
+This is an editorial review, not a native-speaker certification. I checked ASALE and Dominican public-site usage for the device terms above, but did not use a broader Dominican speech corpus or a native-speaker reviewer. `es-DO` labels the regional locale and selects date/number formatting; it does not by itself validate every phrase. The Spanish remains intentionally readable across the Caribbean and wider Latin America instead of using exaggerated local slang.
+
+The suggested Spanish wording updates in `FeedbackPage` and `FeedbackRoute` were applied by the implementation owner and included in the final application build. This remains an editorial review rather than a native-speaker certification.

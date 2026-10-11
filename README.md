@@ -1,177 +1,36 @@
-# 오늘의 기분 다이어리 (Mood Diary)
+# Yeonseok & Lisbeth · 우리 둘의 게임 홈
 
-React, Spring Boot, FastAPI, MySQL 및 클라우드 가상 네트워크(VPC) 인프라 기반의 **AI 감정 분석 일기 서비스**입니다.
+연석과 리스벳을 위한 한국어·스페인어 개인 게임 선물입니다. 데스크톱 홈의 중심은 한 줄로 놓인 여덟 가지 게임입니다. 400px 비프레임 커플 컷아웃은 개인적인 인사를 돕는 이미지이고, 게임 아래에는 실제 대화가 아닌 번역 예시와 둘을 위한 편지가 있습니다. 사진 갤러리는 제공하지 않습니다.
 
----
+다른 세션에서 이어서 작업하려면 먼저 [작업 인계 기록](docs/SESSION-HANDOFF.md)을 읽으세요. 현재 시각 품질은 사용자 승인을 받지 못했으며, 테스트 통과를 디자인 완료로 간주하지 않습니다.
 
-## 1. 프로젝트 개요 (Project Overview)
+## 실행
 
-"오늘의 기분 다이어리"는 사용자가 작성한 일기 내용을 AI 감정 분석 모델(FastAPI)이 실시간 분석하여 감정 상태(기쁨, 슬픔, 분노 등)와 이모지, 맞춤 코멘트를 생성하고, 백엔드(Spring Boot) 및 데이터베이스(MySQL)에 저장하여 관리하는 풀스택 웹 애플리케이션입니다.
-
-### 기술 스택 (Tech Stack)
-
-| 구분 | 기술 스택 | 설명 |
-|---|---|---|
-| **Frontend** | React (Vite), Nginx | 사용자 일기 작성 UI 및 Nginx Reverse Proxy |
-| **Backend** | Spring Boot 3, Java 17, Gradle | REST API 서비스, MySQL ORM, AI 모델 서비스 연동 |
-| **AI Model** | FastAPI, Python 3.11 | 텍스트 기분 분석 서비스 (감정 분석 엔진 API) |
-| **Database** | MySQL 8.0 | 일기 데이터 지속성 저장 및 관리 |
-| **Infrastructure** | Docker, Docker Compose, VPC Infrastructure | 멀티 컨테이너 가상화 및 클라우드 가상 네트워크 |
-
----
-
-## 2. 프로젝트 디렉터리 구조 (Directory Structure)
-
-```text
-cloudpj/
-├── frontend/                   # React 프론트엔드 애플리케이션
-│   ├── src/                    # UI 컴포넌트 및 클라이언트 로직
-│   ├── index.html              # HTML 템플릿
-│   ├── nginx.conf              # Nginx 리버스 프록시 설정 (Production Web)
-│   ├── Dockerfile              # 운영용 Multi-stage Dockerfile
-│   ├── Dockerfile.dev          # 개발용 Vite Dev Server Dockerfile
-│   └── vite.config.js          # Vite 빌드 및 API 프록시 설정
-├── backend/                    # Spring Boot 백엔드 API 서버
-│   ├── src/                    # Controller, Domain, Repository, DTO
-│   ├── build.gradle            # Gradle 의존성 및 빌드 설정
-│   ├── Dockerfile              # 운영용 Multi-stage Dockerfile (Jar 빌드)
-│   └── Dockerfile.dev          # 개발용 Gradle bootRun Dockerfile
-├── model/                      # FastAPI AI 감정 분석 모델 서버
-│   ├── main.py                 # 감정 분석 처리 API 알고리즘
-│   ├── requirements.txt        # Python 패키지 의존성
-│   ├── Dockerfile              # 운영용 Python Dockerfile
-│   └── Dockerfile.dev          # 개발용 Uvicorn reload Dockerfile
-├── mysql-init/                 # 데이터베이스 초기화 스크립트
-│   └── 01-schema.sql           # DDL 스크립트 및 초기 테이블 데이터
-├── docker-compose.local.yml    # 운영(Prod) 환경 Docker Compose
-├── docker-compose.dev.yml      # 개발(Dev Hot-Reload) 환경 Docker Compose
-├── .env.example                # 환경변수 템플릿 파일
-└── README.md                   # 프로젝트 통합 문서
+```sh
+npm ci
+npm run dev
 ```
 
----
+Supabase 환경변수가 없으면 **같은 브라우저 연습 모드**입니다. 좌석 1/2를 바꾸어 양쪽 행동을 확인할 수 있습니다. 다른 기기의 온라인 접속이나 실제 자동번역이 동작하는 것처럼 표시하지 않습니다.
 
-## 3. 클라우드 아키텍처 (Cloud Architecture)
-
-```text
-[ 사용자 (User Client) ]
-       │ (HTTP:80)
-       ▼
-┌────────────────────────────────────────────────────────────────────────┐
-│  VPC: mood-vpc (10.10.0.0/16)                                           │
-│                                                                        │
-│  ┌──────────────────────────────────────────────────────────────────┐  │
-│  │ Public Subnet (10.10.10.0/24)                                    │  │
-│  │                                                                  │  │
-│  │   [ Web Server ]                                                 │  │
-│  │   - Server Name: mood-web-srv                                    │  │
-│  │   - Services: React Web App, Nginx Reverse Proxy                 │  │
-│  │   - Public IP 바인딩 / ACG: mood-web-acg                          │  │
-│  └───────────────────┬──────────────────────────────────────────────┘  │
-│                      │ (Internal API Forwarding: 8080)                 │
-│                      ▼                                                 │
-│  ┌──────────────────────────────────────────────────────────────────┐  │
-│  │ Private Subnet (10.10.20.0/24)                                    │  │
-│  │                                                                  │  │
-│  │   [ App / Model / DB Server ] (한 서버 안에서 컨테이너 3개 실행)      │  │
-│  │   - Server Name: mood-app-srv                                    │  │
-│  │   - Spring Boot API (Port: 8080)                                 │  │
-│  │   - FastAPI Model API (Port: 8000, 내부 전용)                     │  │
-│  │   - MySQL DB (Port: 3306, 내부 전용)                              │  │
-│  │   - ACG: mood-app-acg                                            │  │
-│  └──────────────────────────────────────────────────────────────────┘  │
-│                                                                        │
-│  ※ NAT Gateway 전용 Subnet: 10.10.30.0/24 (서버 없음, NAT GW 전용)        │
-└────────────────────────────────────────────────────────────────────────┘
+```sh
+npm test
+npm run build
 ```
 
----
+## 온라인 연결
 
-## 4. 클라우드 네트워크 및 ACG 보안 그룹 설정 (Network & Security)
+[배포 안내](docs/DEPLOYMENT.md)에 따라 Supabase 익명 인증·DB 마이그레이션·`action` Edge Function을 준비하고 `.env.example`의 공개 연결값을 설정합니다. 서비스 역할 키와 번역 키는 서버에만 설정합니다. 웹 배포 대상은 Cloudflare Pages의 `dist`입니다. 실제 계정의 배포는 아직 수행하지 않았습니다.
 
-### 4-1. VPC 및 서브넷 구획 정의
-- **VPC**: `10.10.0.0/16`
-- **Public Subnet**: `10.10.10.0/24` — 외부 인터넷 트래픽을 수신하며 Nginx 기반 Web Server 배치
-- **Private Subnet**: `10.10.20.0/24` — 외부에서 직접 접근할 수 없는 비공개 망으로 Backend + AI Model + Database 배치
-- **NAT Gateway 전용 Subnet**: `10.10.30.0/24` — Private Subnet의 아웃바운드 인터넷 통로 (서버 없음)
+## 실제 기능
 
-### 4-2. 서버 사양 및 배치 명세 (Server List)
+- 다빈치 코드, 캐치마인드, 도미노, 자이푸르, 스플렌더, 민화투, 독립 보드게임 부루마블 버전, 뮤직톡톡.
+- 초대 링크로 접속하는 비공개 2인 게임방, 캐치마인드에서만 한국어·스페인어 채팅 번역, 원문 보존, 7일 만료.
+- 별도 비공개 초대 공간인 남편에게 / Para mi esposo 메모함. p2가 메시지·게임·기능 제안을 쓰고 p1이 상태를 바꿉니다. 게시물은 각각 작성 7일 뒤 삭제되며 공간은 유지됩니다. Supabase 없이 쓰는 경우 같은 브라우저의 로컬 저장만 가능하며 공유되지 않습니다.
+- 뮤직톡톡은 원본 SWF와 Ruffle 실행 화면을 제공합니다. 게임 파일은 수정하지 않았고 브라우저 호환성과 재배포 권리는 확인이 필요합니다.
 
-| 서버 이름 (Server Name) | 배치 서브넷 (Subnet) | 역할 (Role) | 탑재 서비스 (Service) | IP 바인딩 (IP Assignment) |
-|---|---|---|---|---|
-| **`mood-web-srv`** | Public Subnet (10.10.10.0/24) | Web Frontend / Nginx Proxy | React, Nginx | Public IP + Private IP (10.10.10.x) |
-| **`mood-app-srv`** | Private Subnet (10.10.20.0/24) | Backend API + AI Model + Database | Spring Boot (8080), FastAPI (8000), MySQL (3306) | Private IP (10.10.20.x) |
+홈의 번역 예시는 정적인 설명용 그림이며, 실제 대화처럼 보이거나 입력할 수 있는 UI가 아닙니다. 홈과 자이푸르·스플렌더 보드에는 생성한 장식 그림을 사용합니다. 스플렌더 카드 이미지는 엔진 카드의 비용·점수·보석 조합에 맞춰 연결했고, 민화투는 엔진 덱 48장과 일대일로 연결한 출처 표기된 CC BY-SA 4.0 화투 그림을 씁니다. 원작보다 그림이 낫거나 동등하다고 주장하지 않습니다. 음성 채팅, 공개 매칭, 장기 전적, 결제·베팅, 미구현 게임 기능은 제공하지 않습니다.
 
----
+## 자산과 배포 한계
 
-### 4-3. ACG (Access Control Group) 규칙 명세
-
-#### 1) Web Server ACG (`mood-web-acg`)
-- **대상 서버**: `mood-web-srv` (Public Subnet)
-
-| 구분 | 프로토콜 | 포트 범위 | 접근 대상 (Source / Destination) | 설명 |
-|---|---|---|---|---|
-| **Inbound** | TCP | 80 | `0.0.0.0/0` | 사용자 웹 HTTP 접근 허용 |
-| **Inbound** | TCP | 22 | `관리자 허용 IP` | SSH 관리자 접근 허용 |
-| **Outbound**| ALL | ALL | `0.0.0.0/0` | 패키지 다운로드 및 Private 서버로의 API 프록시 요청 |
-
-#### 2) Application Server ACG (`mood-app-acg`)
-- **대상 서버**: `mood-app-srv` (Private Subnet)
-
-| 구분 | 프로토콜 | 포트 범위 | 접근 대상 (Source / Destination) | 설명 |
-|---|---|---|---|---|
-| **Inbound** | TCP | 8080 | `mood-web-srv`의 사설 IP (10.10.10.x/32) | Web 서버로부터의 REST API 호출만 허용 |
-| **Inbound** | TCP | 22 | `mood-web-srv`의 사설 IP (10.10.10.x/32) | Web 서버를 경유한 Bastion SSH 접속 |
-| **Outbound**| ALL | ALL | `0.0.0.0/0` | NAT Gateway 경유 패키지 다운로드 |
-
-> MySQL(3306)과 FastAPI(8000)는 `mood-app-srv` **내부**의 Docker 컨테이너 간 통신이라 별도 ACG 규칙이 필요 없습니다 (같은 서버 안 Docker 네트워크는 ACG 적용 대상이 아님).
-
----
-
-## 5. 서비스 실행 방법 (Execution)
-
-### 5-1. 환경 변수 구성
-`.env.example` 파일을 복사하여 환경 변수 파일 생성:
-```bash
-cp .env.example .env
-```
-
-### 5-2. Private 서버 (mood-app-srv): 백엔드 + 모델 + DB 실행
-```bash
-docker compose -f docker-compose.local.yml up -d --build mysql mood-model backend
-```
-- **Backend Health Check**: `http://localhost:8080/api/health`
-
-### 5-3. Public 서버 (mood-web-srv): 프론트엔드 실행
-`frontend/nginx.conf`의 `proxy_pass` 주소를 Private 서버 사설 IP로 수정한 뒤:
-```bash
-docker build -t mood-frontend ./frontend
-docker run -d -p 80:80 --restart unless-stopped --name mood-frontend mood-frontend
-```
-- **Frontend Web**: `http://<Public 서버 공인 IP>`
-
-### 5-4. 개발 모드 실행 (Development / Hot-Reload, 로컬 1대에서 전체 실행 시)
-소스 코드 수정이 실시간 반영되는 개발 환경입니다.
-```bash
-docker compose -f docker-compose.dev.yml up --build
-```
-- **Frontend Dev Server**: `http://localhost:5173`
-- **Backend API**: `http://localhost:8080/api/health`
-
----
-
-## 6. API 명세 (API Reference)
-
-### 백엔드 REST API (`Spring Boot`)
-| Method | Endpoint | Description |
-|---|---|---|
-| `GET` | `/api/health` | 백엔드 서비스 상태 점검 |
-| `GET` | `/api/diary` | 등록된 전체 일기 목록 조회 |
-| `POST` | `/api/diary` | 신규 일기 작성 (AI 모델 기분 분석 및 저장) |
-| `DELETE` | `/api/diary/{id}` | 일기 데이터 삭제 |
-
-### AI 모델 서비스 API (`FastAPI`, Internal)
-| Method | Endpoint | Description |
-|---|---|---|
-| `GET` | `/health` | 모델 서비스 상태 점검 |
-| `POST` | `/analyze` | 텍스트 기분 분석 및 라벨/이모지/코멘트 반환 |
+[프로젝트 규칙](AGENTS.md)의 Ponytail은 모든 에이전트에게 적용합니다. [디자인 설명](DESIGN.md), [자산 출처](docs/ASSETS.md), [리듬게임 출처·호환성](docs/RHYTHM.md)을 확인할 수 있습니다. Supabase 방 데이터는 RLS로 보호하지만, Cloudflare Pages의 `public/` 이미지는 URL에 접근할 수 있는 사용자에게 공개됩니다. 사진을 공개하고 싶지 않다면 호스팅 단계에서 사이트 접근을 제한하세요.

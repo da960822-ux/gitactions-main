@@ -1,0 +1,5 @@
+@media (max-width: 1023px) {
+  .room-shell.jaipur-mobile .room-topline { align-items: flex-start; flex-wrap: wrap; gap: 8px 12px; }
+  .room-shell.jaipur-mobile .room-id-label { min-width: 0; max-width: 100%; flex-wrap: wrap; gap: 5px; }
+  .room-shell.jaipur-mobile .room-id-label b { display: inline-block; max-width: 8ch; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+}

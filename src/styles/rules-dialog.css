@@ -1,0 +1,51 @@
+.rules-dialog {
+  width: min(680px, 100%);
+  max-height: min(86vh, 820px);
+  padding: 32px 38px 30px;
+  scrollbar-gutter: stable;
+}
+
+.rules-dialog .dialog-close {
+  position: sticky;
+  display: grid;
+  margin: -16px -20px -32px auto;
+  top: 0;
+  z-index: 2;
+}
+
+.rules-dialog h2 { font-size: 34px; }
+.rules-dialog .rules-subtitle { font-size: 14px; line-height: 1.6; }
+.rules-dialog ol { margin-top: 18px; }
+.rules-dialog li { grid-template-columns: 36px 1fr; gap: 13px; padding: 14px 0; }
+.rules-dialog li > span { font-size: 17px; }
+.rules-dialog li p { font-size: 14px; line-height: 1.75; }
+.rules-dialog .variant-note { font-size: 13px; line-height: 1.7; }
+
+@media (max-width: 600px) {
+  .rules-dialog { padding: 25px 22px 22px; }
+  .rules-dialog h2 { font-size: 28px; }
+  .rules-dialog li p { font-size: 13px; }
+}
+
+.game-guide {
+  margin-top: 16px;
+  padding: 25px 28px 22px;
+  scroll-margin-top: 22px;
+  border: 1px solid var(--line);
+  border-radius: var(--round);
+  background: var(--white);
+  box-shadow: 0 8px 24px rgba(57, 52, 41, .035);
+}
+.game-guide h2 { margin: 6px 0 2px; font: 28px var(--serif); }
+.game-guide-subtitle { margin: 0; color: var(--ink-faint); font-size: 13px; line-height: 1.6; }
+.game-guide ol { list-style: none; padding: 0; margin: 18px 0 0; }
+.game-guide li { display: grid; grid-template-columns: 36px minmax(0, 1fr); gap: 13px; padding: 13px 0; border-top: 1px solid #efebe3; }
+.game-guide li > span { color: #9aac9f; font: 17px var(--serif); }
+.game-guide li p { margin: 0; color: #56615a; font-size: 14px; line-height: 1.75; }
+.game-guide .variant-note { margin: 13px 0 0; color: #786b56; font-size: 13px; line-height: 1.7; }
+@media (max-width: 600px) {
+  .game-guide { padding: 22px 18px 18px; }
+  .game-guide h2 { font-size: 24px; }
+  .game-guide li { grid-template-columns: 29px minmax(0, 1fr); gap: 9px; }
+  .game-guide li p { font-size: 13px; }
+}

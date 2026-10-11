@@ -1,0 +1,120 @@
+import { createClient, type SupabaseClient, type RealtimeChannel } from '@supabase/supabase-js';
+import { engines } from './registry';
+import { executeAction, RETENTION_MS, chatMessageForGame, reactionMessageForId } from './authority';
+import type { ReactionId } from './reactions';
+import type { GameId, GameAction, Language, PlayerId } from './types';
+import { isCorrectGuess, getCatchmindDrawDurationMs, getCatchmindHintStage } from '../games/catchmind';
+
+export interface RoomPlayer { id: PlayerId; nickname: string; language: Language; ready: boolean }
+export interface ChatMessage { id: string; playerId: PlayerId; text: string; translation?: string; targetLanguage?: Language; status: 'original'|'translated'|'limit'|'unavailable'|'correct'; createdAt:string }
+export interface RoomSnapshot { roomId:string|null; mode:'demo'|'online'; playerId:PlayerId; players:RoomPlayer[]; gameId:GameId|null; version:number; view:any|null; messages:ChatMessage[]; pendingGame:GameId|null; error:string|null }
+const supabaseUrl = import.meta.env.VITE_SUPABASE_URL;
+const anonKey = import.meta.env.VITE_SUPABASE_ANON_KEY;
+export const isOnlineConfigured = Boolean(supabaseUrl && anonKey);
+const emptySnapshot = (): RoomSnapshot => ({roomId:null,mode:isOnlineConfigured?'online':'demo',playerId:'p1',players:[],gameId:null,version:0,view:null,messages:[],pendingGame:null,error:null});
+class RoomClient {
+  private db:SupabaseClient|null = isOnlineConfigured ? createClient(supabaseUrl,anonKey) : null;
+  private snapshot = emptySnapshot();
+  private state:any=null;
+  private listeners=new Set<(snapshot:RoomSnapshot)=>void>();
+  private channels:RealtimeChannel[]=[];
+  private pendingBy:PlayerId|null=null;
+  private expiresAt=0;
+  private refreshId=0;
+  private requestQueue:Promise<void>=Promise.resolve();
+  getSnapshot = () => this.snapshot;
+  private emit() { this.snapshot={...this.snapshot}; for(const cb of this.listeners) cb(this.snapshot); }
+  private localView() { const engine=this.snapshot.gameId?engines[this.snapshot.gameId]:null; this.snapshot.view=engine&&this.state?{...engine.getPlayerView(this.state,this.snapshot.playerId),deadlineAt:this.state.deadlineAt??null}:null; }
+  private async session() { if(!this.db)return; const {data}=await this.db.auth.getSession(); if(!data.session){const {error}=await this.db.auth.signInAnonymously();if(error)throw error;} }
+  private name(value:string) { const name=value.trim(); if(!name || name.length>24)throw new Error('nickname_required'); return name; }
+  async createRoom(nickname:string,language:Language):Promise<string> {
+    nickname=this.name(nickname);
+    if(!this.db){this.snapshot={...emptySnapshot(),roomId:crypto.randomUUID(),players:[{id:'p1',nickname,language,ready:true},{id:'p2',nickname:language==='ko'?'로컬 플레이어 2':'Jugador local 2',language:language==='ko'?'es':'ko',ready:true}]};this.state=null;this.expiresAt=Date.now()+RETENTION_MS;this.emit();return this.snapshot.roomId!;}
+    await this.session();const {data,error}=await this.db.rpc('create_room',{p_nickname:nickname,p_language:language});if(error)throw error;this.snapshot.roomId=data;await this.refresh();return data;
+  }
+  async joinRoom(roomId:string,nickname:string,language:Language):Promise<void> {
+    nickname=this.name(nickname);
+    if(!this.db){if(this.snapshot.roomId!==roomId || this.expiresAt<Date.now())throw new Error('demo_same_browser_only');this.localSeat('p2');return;}
+    await this.session();const {error}=await this.db.rpc('join_room',{p_room:roomId,p_nickname:nickname,p_language:language});if(error)throw error;this.snapshot.roomId=roomId;await this.refresh();
+  }
+  subscribeRoom(roomId:string,onChange:(snapshot:RoomSnapshot)=>void) {
+    if(this.db && this.snapshot.roomId!==roomId){this.refreshId++;this.snapshot={...emptySnapshot(),roomId};}
+    this.listeners.add(onChange);onChange(this.snapshot);
+    if(this.db){this.snapshot.roomId=roomId;void this.session().then(()=>this.refresh()).catch(e=>{this.snapshot.error=e.message;this.emit();});
+      const refresh=()=>void this.refresh().catch(e=>{this.snapshot.error=e.message;this.emit();});
+      const ch=this.db.channel(`room:${roomId}`).on('postgres_changes',{event:'*',schema:'public',table:'rooms',filter:`id=eq.${roomId}`},refresh).on('postgres_changes',{event:'*',schema:'public',table:'room_views',filter:`room_id=eq.${roomId}`},refresh).on('postgres_changes',{event:'*',schema:'public',table:'chat_messages',filter:`room_id=eq.${roomId}`},refresh).on('postgres_changes',{event:'*',schema:'public',table:'room_members',filter:`room_id=eq.${roomId}`},refresh).subscribe(status=>{if(status==='SUBSCRIBED')refresh();});this.channels.push(ch);
+      return ()=>{this.listeners.delete(onChange);void this.db?.removeChannel(ch);this.channels=this.channels.filter(x=>x!==ch);};
+    }return ()=>{this.listeners.delete(onChange);};
+  }
+  private async refresh() {
+    if(!this.db || !this.snapshot.roomId)return;
+    const roomId=this.snapshot.roomId;
+    const refreshId=++this.refreshId;
+    const {data,error}=await this.db.rpc('room_snapshot',{p_room:roomId});if(refreshId!==this.refreshId || roomId!==this.snapshot.roomId)return;if(error)throw error;
+    if(!data){this.snapshot={...emptySnapshot(),roomId,error:'room_expired'};this.emit();return;}
+    if(data.room.version<this.snapshot.version)return;
+    this.snapshot={roomId:this.snapshot.roomId,mode:'online',playerId:data.seat,players:data.members.map((x:any)=>({id:x.seat,nickname:x.nickname,language:x.language,ready:true})),gameId:data.room.game_id,version:data.room.version,view:data.view,pendingGame:data.room.pending_game,error:null,messages:data.messages.map((x:any)=>({id:x.id,playerId:x.seat,text:x.text,translation:x.translation||undefined,targetLanguage:x.target_language||undefined,status:x.status==='pending'||x.status==='processing'?'original':x.status,createdAt:x.created_at}))};this.emit();
+  }
+  async sendAction(action:GameAction) {
+    if(this.db){await this.invoke({action});return;}
+    this.checkLocal();const engine=this.snapshot.gameId?engines[this.snapshot.gameId]:null;if(!engine)throw new Error('no_game');
+    if(action.type==='timeout')throw new Error('server_clock_only');
+    await this.tick();this.state=executeAction(engine,this.state,this.snapshot.playerId,action).state;
+    if(this.snapshot.gameId==='catchmind'){if(action.type==='choose')this.state.deadlineAt=new Date(Date.now()+getCatchmindDrawDurationMs(this.state)).toISOString();else if(this.state.phase!=='drawing')this.state.deadlineAt=null;}
+    this.snapshot.version++;this.localView();this.emit();
+  }
+  private checkLocal() {if(!this.snapshot.roomId || this.expiresAt<Date.now())throw new Error('room_expired');}
+  async selectGame(gameId:GameId) {
+    if(this.db){await this.invoke({selectGame:gameId});return;}
+    this.checkLocal();if(!(this.snapshot.pendingGame===gameId && this.pendingBy!==this.snapshot.playerId)){this.snapshot.pendingGame=gameId;this.pendingBy=this.snapshot.playerId;this.emit();return;}
+    this.snapshot.gameId=gameId;this.snapshot.pendingGame=null;this.pendingBy=null;this.state=engines[gameId]?.createInitialState(crypto.getRandomValues(new Uint32Array(1))[0])||null;this.snapshot.version++;this.localView();this.emit();
+  }
+  async sendChat(text:string) {
+    const message=chatMessageForGame(this.snapshot.gameId,text);text=message.text;
+    if(this.db){await this.invoke({chat:text});return;}
+    this.checkLocal();await this.tick();let correct=false;
+    if(message.status==='pending' && this.snapshot.gameId==='catchmind' && this.state?.phase==='drawing' && this.state?.drawer!==this.snapshot.playerId){correct=isCorrectGuess(this.state,text);try{await this.sendAction({type:'guess',payload:{text}});}catch{/* Human chat remains available when guess not accepted. */}}
+    const saved:ChatMessage={id:crypto.randomUUID(),playerId:this.snapshot.playerId,text:correct?'':text,status:correct?'correct':message.status==='pending'?'unavailable':'original',createdAt:new Date().toISOString()};
+    this.snapshot.messages=[...this.snapshot.messages,saved].filter(x=>Date.now()-Date.parse(x.createdAt)<RETENTION_MS);this.emit();
+  }
+  async sendReaction(reactionId:ReactionId) {
+    const message=reactionMessageForId(reactionId);
+    if(this.db){await this.invoke({reaction:reactionId});return;}
+    this.checkLocal();
+    this.snapshot.messages=[...this.snapshot.messages,{id:crypto.randomUUID(),playerId:this.snapshot.playerId,text:message.text,status:message.status,createdAt:new Date().toISOString()}].filter(x=>Date.now()-Date.parse(x.createdAt)<RETENTION_MS);this.emit();
+  }
+  async tick() {
+    if(this.snapshot.gameId!=='catchmind'||!this.snapshot.view?.deadlineAt)return;
+    const now=Date.now(), expired=Date.parse(this.snapshot.view.deadlineAt)<=now;
+    if(this.db){if(expired||this.snapshot.view.phase==='drawing'&&this.snapshot.view.board?.hintStage<getCatchmindHintStage({settings:this.snapshot.view.board.settings,deadlineAt:this.snapshot.view.deadlineAt},now))await this.invoke({tick:true});return;}
+    if(this.state?.phase==='drawing'){
+      let changed=false;
+      if(expired){this.state=executeAction(engines.catchmind!,this.state,this.state.drawer,{type:'timeout'}).state;this.state.deadlineAt=null;changed=true;}
+      else while(this.state.hintStage<getCatchmindHintStage(this.state,now)){this.state=executeAction(engines.catchmind!,this.state,this.state.drawer,{type:'reveal-hint'}).state;changed=true;}
+      if(changed){this.snapshot.version++;this.localView();this.emit();}
+    }
+  }
+  private invoke(operation:Record<string,unknown>) {
+    const request=this.requestQueue.then(()=>this.invokeNow(operation));
+    this.requestQueue=request.catch(()=>{});return request;
+  }
+  private async invokeNow(operation:Record<string,unknown>) {
+    const requestId=crypto.randomUUID();
+    for(let attempt=0;attempt<2;attempt++){
+      const {error}=await this.db!.functions.invoke('action',{body:{roomId:this.snapshot.roomId,version:this.snapshot.version,requestId,...operation}});
+      if(!error){await this.refresh();return;}
+      let code=error.message;try{const body=await error.context?.json();code=body?.error||code;}catch{/* Transport errors have no JSON response. */}
+      if(code==='stale_state'&&attempt===0){await this.refresh();continue;}throw new Error(code);
+    }
+  }
+  async closeRoom() {
+    if(this.db){const {error}=await this.db.rpc('close_room',{p_room:this.snapshot.roomId});if(error)throw error;}
+    if(typeof localStorage !== 'undefined' && this.snapshot.roomId){
+      if(localStorage.getItem('dos-last-room')===this.snapshot.roomId)localStorage.removeItem('dos-last-room');
+    }
+    this.snapshot=emptySnapshot();this.state=null;this.expiresAt=0;this.emit();
+  }
+  async setLanguage(language:Language) {if(!['ko','es'].includes(language))throw new Error('invalid_language');if(this.db){const {error}=await this.db.rpc('set_language',{p_room:this.snapshot.roomId,p_language:language});if(error)throw error;await this.refresh();}else{this.snapshot.players=this.snapshot.players.map(p=>p.id===this.snapshot.playerId?{...p,language}:p);this.emit();}}
+  localSeat(player:PlayerId) {if(this.db)throw new Error('online_seat_fixed');this.snapshot.playerId=player;this.localView();this.emit();}
+}
+export const client = new RoomClient();

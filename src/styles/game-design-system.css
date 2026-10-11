@@ -1,0 +1,41 @@
+/* The room uses these semantics; individual games retain their own materials. */
+.room-shell {
+  --app-surface: #211a25;
+  --app-foreground: #f6ebe8;
+  --app-muted: #d3bfcb;
+  --board-surface: #fffaf0;
+  --board-ink: #302b29;
+  --board-muted: #655950;
+  --board-line: #d8c8b6;
+  --feedback-active: #993d55;
+  --feedback-success: #28624e;
+  --feedback-warning: #80520b;
+  --feedback-danger: #a23638;
+  --game-space-1: 4px;
+  --game-space-2: 8px;
+  --game-space-3: 12px;
+  --game-space-4: 16px;
+  --game-space-5: 24px;
+  --game-space-6: 32px;
+  --game-motion-fast: 120ms;
+  --game-motion-enter: 240ms;
+  --game-motion-event: 420ms;
+  --game-ease: cubic-bezier(.16,1,.3,1);
+}
+.room-shell .board-card { color: var(--board-ink); }
+.room-shell :is(button,a,input,select):focus-visible { outline: 3px solid #b64865; outline-offset: 3px; }
+.room-shell :is(button,a) { touch-action: manipulation; }
+.room-shell button:not(:disabled):active { transform: translateY(1px); }
+.room-shell button:disabled { cursor: not-allowed; }
+.room-shell :is(.board-header,.tg-section-head,.gb-board-heading,.bg-domino-head) { gap: var(--game-space-4); }
+.room-shell :is(.table-game,.game-surface,.gb-board) { font-variant-numeric: tabular-nums; }
+.game-value { display: inline-flex; align-items: baseline; gap: 6px; position: relative; font-variant-numeric: tabular-nums; }
+.game-value-number { font: inherit; }
+.game-value-delta { font-size: 12px; font-weight: 700; color: var(--feedback-success,#28624e); animation: game-value-in var(--game-motion-event,420ms) var(--game-ease,ease-out) both; }
+.game-value-delta.is-negative { color: var(--feedback-danger,#a23638); }
+@keyframes game-value-in { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: translateY(0); } }
+@media (prefers-reduced-motion: reduce) {
+  .room-shell { --game-motion-fast: 0ms; --game-motion-enter: 0ms; --game-motion-event: 0ms; }
+  .game-value-delta { animation: none; }
+  .room-shell button:not(:disabled):active { transform: none; }
+}

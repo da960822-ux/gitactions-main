@@ -1,0 +1,34 @@
+.hwatu-motion-stage { position: relative; display: grid; min-height: 44px; place-items: center; margin: 6px 0; pointer-events: none; }
+.hwatu-motion-note { position: relative; display: flex; align-items: center; gap: 8px; max-width: min(360px,calc(100vw - 36px)); min-height: 38px; padding: 6px 12px; border: 1px solid #dcc77e; border-radius: 999px; color: #fff3cf; background: #183a29ed; box-shadow: 0 4px 12px #081d1655; opacity: .92; }
+.hwatu-motion-note svg { flex: 0 0 25px; width: 25px; fill: none; stroke: #f1d990; stroke-width: 1.7; stroke-linecap: round; stroke-linejoin: round; }
+.hwatu-motion-note span { display: flex; min-width: 0; flex-direction: column; gap: 1px; }
+.hwatu-motion-note b { overflow: hidden; font-size: 12px; line-height: 1.2; text-overflow: ellipsis; white-space: nowrap; }
+.hwatu-motion-note small { color: #f2d991; font-size: 11px; }
+.hwatu-motion-note.is-fresh { animation: hwatu-note-arrive 220ms cubic-bezier(.22,1,.36,1) both; }
+.hwatu-motion-note--capture svg { stroke: #bfe0a7; }
+.hwatu-motion-note--special { border-color: #f3d36f; box-shadow: 0 0 0 2px #d9ad3a35,0 7px 18px #081d1685; }
+.hwatu-motion-note--special.is-fresh > i { position: absolute; inset: -4px; border: 1px solid #f3d36f88; border-radius: inherit; animation: hwatu-yaku-ring 520ms ease-out both; }
+.hwatu-motion-note--win { color: #3f2c16; background: #f6dc91; }
+.hwatu-motion-note--win svg { stroke: #805c22; }
+.hwatu-win-burst { display: grid; width: 48px; height: 24px; place-items: center; margin-left: 1px; }
+.hwatu-win-burst svg { flex: 0 0 44px; width: 44px; fill: #d79c38; stroke: #9b6820; stroke-width: 1; opacity: 0; }
+.hwatu-motion-note--win.is-fresh .hwatu-win-burst svg { animation: hwatu-win-flower 360ms cubic-bezier(.22,1,.36,1) both; }
+
+.hwatu-flight { position: fixed; z-index: 10000; display: grid; place-items: stretch; overflow: visible; pointer-events: none; perspective: 500px; filter: drop-shadow(0 4px 7px #10271e88); }
+.hwatu-flight-inner { position: relative; display: block; width: 100%; height: 100%; transform-style: preserve-3d; }
+.hwatu-flight img { display: block; width: 100%; height: 100%; border: 1px solid #e8d49a; border-radius: 4px; object-fit: cover; backface-visibility: hidden; }
+.hwatu-flight-back { position: absolute; inset: 0; border: 2px solid #e3cb82; border-radius: 4px; background: repeating-linear-gradient(45deg,#e7d6a7 0 2px,#315842 2px 4px,#315842 4px 6px); box-shadow: inset 0 0 0 3px #294b37; backface-visibility: hidden; transform: rotateY(0deg); }
+.hwatu-flight.is-flip img { transform: rotateY(180deg); }
+
+@keyframes hwatu-note-arrive { from { opacity: 0; translate: 0 5px; } to { opacity: .98; translate: 0 0; } }
+@keyframes hwatu-yaku-ring { from { opacity: .8; transform: scale(.96); } to { opacity: 0; transform: scale(1.06); } }
+@keyframes hwatu-win-flower { 0% { opacity: 0; transform: rotate(-15deg) scale(.7); } 60% { opacity: 1; transform: rotate(5deg) scale(1.06); } 100% { opacity: .8; transform: none; } }
+@media (max-width: 760px) {
+  .hwatu-motion-note { max-width: calc(100vw - 28px); }
+  .hwatu-flight { z-index: 10000; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .hwatu-motion-note.is-fresh,.hwatu-motion-note--special > i,.hwatu-motion-note--win.is-fresh .hwatu-win-burst svg { animation: none; }
+  .hwatu-motion-note--win .hwatu-win-burst svg { opacity: 1; }
+  .hwatu-flight { display: none; }
+}

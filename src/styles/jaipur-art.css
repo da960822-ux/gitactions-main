@@ -1,0 +1,50 @@
+.jaipur-art,
+.jaipur-coin,
+.jaipur-bonus-art,
+.jaipur-camel-award {
+  display: block;
+  flex: 0 0 auto;
+  overflow: visible;
+  shape-rendering: geometricPrecision;
+}
+
+.jaipur-art {
+  width: 100%;
+  height: 100%;
+  filter: drop-shadow(0 2px 2px rgba(42, 23, 31, .24));
+}
+
+.jaipur-art__ground {
+  transform-box: fill-box;
+}
+
+.jaipur-coin {
+  width: 32px;
+  height: 32px;
+  filter: drop-shadow(0 2px 2px rgba(33, 20, 25, .32));
+}
+
+.jaipur-coin__value {
+  fill: #38252b;
+  font: 800 12px/1 system-ui, sans-serif;
+  font-variant-numeric: tabular-nums;
+}
+
+
+.jaipur-bonus-art {
+  width: 48px;
+  height: 63px;
+  filter: drop-shadow(0 3px 3px rgba(29, 19, 27, .3));
+}
+
+.jaipur-bonus-art__value {
+  fill: #39252e;
+  font: 800 16px/1 system-ui, sans-serif;
+  font-variant-numeric: tabular-nums;
+}
+
+.jaipur-camel-award {
+  width: 42px;
+  height: 42px;
+  filter: drop-shadow(0 2px 3px rgba(37, 22, 27, .32));
+}

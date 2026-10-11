@@ -1,0 +1,30 @@
+.game-feedback { position: relative; display: inline-flex; align-items: center; gap: 8px; color: var(--board-ink, #302b29); font-size: 12px; }
+.game-feedback-status { display: inline-flex; align-items: center; gap: 6px; min-width: 0; }
+.game-feedback-pending,.game-feedback-event { display: inline-flex; align-items: center; gap: 6px; white-space: nowrap; font-size: 12px; line-height: 1.35; font-weight: 650; }
+.game-feedback-pending { color: var(--feedback-warning, #80520b); }
+.game-feedback-pending i { width: 7px; height: 7px; border-radius: 50%; background: currentColor; animation: game-feedback-pulse 900ms ease-in-out infinite alternate; }
+.game-feedback-event { max-width: 26ch; white-space: normal; overflow-wrap: anywhere; color: var(--feedback-success, #28624e); animation: game-feedback-enter var(--game-motion-enter, 240ms) var(--game-ease, ease-out) both; }
+.game-sound-trigger { min-height: 32px; padding: 0 9px; border: 1px solid var(--board-line, #d8c8b6); border-radius: 999px; background: transparent; color: var(--board-ink, #302b29); display: inline-flex; align-items: center; gap: 5px; font: inherit; font-size: 12px; font-weight: 650; cursor: pointer; }
+.game-sound-trigger:hover,.game-sound-trigger[aria-expanded="true"] { border-color: var(--feedback-active, #993d55); background: color-mix(in srgb, var(--feedback-active, #993d55) 8%, white); }
+.game-sound-trigger > span { font-size: 15px; line-height: 1; }
+.game-sound-settings { position: absolute; z-index: 20; top: calc(100% + 9px); right: 0; width: min(310px, calc(100vw - 36px)); padding: 14px; border: 1px solid var(--board-line, #d8c8b6); border-radius: 13px; background: var(--board-surface, #fffaf0); color: var(--board-ink, #302b29); box-shadow: 0 16px 38px #211a2530; display: grid; gap: 11px; }
+.game-sound-settings[hidden] { display: none; }
+.game-sound-toggle { display: flex; align-items: center; gap: 9px; min-height: 28px; font-size: 13px; font-weight: 700; cursor: pointer; }
+.game-sound-toggle input { width: 17px; height: 17px; accent-color: var(--feedback-active, #993d55); }
+.game-sound-range { display: grid; gap: 5px; padding-left: 26px; color: var(--board-muted, #655950); font-size: 12px; }
+.game-sound-range > span { display: flex; justify-content: space-between; gap: 8px; }
+.game-sound-range output { color: var(--board-ink, #302b29); font-variant-numeric: tabular-nums; }
+.game-sound-range input { width: 100%; accent-color: var(--feedback-active, #993d55); }
+.game-sound-range input:disabled { opacity: .48; }
+.game-sound-note { margin: 0; color: var(--board-muted, #655950); font-size: 12px; line-height: 1.5; }
+@keyframes game-feedback-enter { from { opacity: 0; transform: translateY(5px); } to { opacity: 1; transform: translateY(0); } }
+@keyframes game-feedback-pulse { from { opacity: .55; transform: scale(.85); } to { opacity: 1; transform: scale(1.08); } }
+@media (prefers-reduced-motion: reduce) {
+  .game-feedback-pending i { animation: none; }
+  .game-feedback-event { animation: none; }
+}
+@media (max-width: 760px) {
+  .game-feedback-status { max-width: 36vw; }
+  .game-feedback-pending,.game-feedback-event { white-space: normal; }
+  .game-sound-trigger { min-height: 30px; padding-inline: 7px; }
+}

@@ -1,0 +1,10 @@
+# Shared game-room polish shipped
+
+This note records the shared room layer, not a claim that every game-specific item in `GAME-POLISH.md` is complete.
+
+1. **Visual system.** `game-design-system.css` is scoped to the room and is imported by `PlayApp`. The shell uses its semantic status colors, spacing and motion tokens; shared room labels and action notices have readable sizing and contrast. Individual board materials stay with each game.
+2. **Action feedback.** The room tracks distinct requests, blocks a duplicate identical request while it is in flight, exposes pending state with `aria-busy` and a live status, and reports errors from the server. Success cues are played only after `sendAction` resolves; rejected actions use the error cue. Minhwatu plays and captures use a soft placement cue.
+3. **Public events.** Turn changes and results produce a brief localized live announcement and cue for each seat. Catchmind's public score transition identifies a correct answer. Da Vinci's public exposed-tile changes distinguish a correct guess, a revealed tile and a penalty reveal. No generic score observer or private information is used.
+4. **Per-game sound controls.** The room exposes an effect toggle and volume slider for the current game. Preferences are stored per game in this browser and default to off; effects unlock only from that game's sound control. No app-generated background music is used. Rhythm explains that it uses its original player and suppresses app effects.
+5. **Motion and lifecycle.** Announcements and pending indicators are short and restrained, with reduced-motion overrides. The audio scene follows the selected game and is disposed when the room unmounts; hidden-tab muting and audio-node cleanup live in the shared audio controller.
+6. **Verification.** Focused PlayApp tests cover duplicate-action guarding, game-specific cue mappings, public success/error outcomes, localized settings controls and the existing room guides. `npm run build` passed with the shared room changes.

@@ -1,0 +1,263 @@
+import { describe, expect, it, vi } from 'vitest';
+import { createElement } from 'react';
+import { renderToStaticMarkup } from 'react-dom/server';
+import type { GameAction, GameResult, PlayerId } from '../core/types';
+import { minhwatuEngine, scoreMinhwatuMatch, type MinhwatuCard } from '../games/minhwatu';
+import { MinhwatuTable, minhwatuTargetAction, runWithActionLock } from './MinhwatuTable';
+
+type PublicView = {
+  ownHand: MinhwatuCard[];
+  opponentCount: number;
+  board: { table: MinhwatuCard[]; captures: Record<PlayerId, MinhwatuCard[]>; scores: Record<PlayerId, number>; deckCount: number; pendingCard: MinhwatuCard | null };
+  result: GameResult | null;
+  actions: Array<{ action: GameAction; label?: Record<'ko' | 'es', string> }>;
+};
+
+function markup(state: ReturnType<typeof minhwatuEngine.createInitialState>, playerId: 'p1' | 'p2' = 'p1') {
+  const view = minhwatuEngine.getPlayerView(state, playerId) as PublicView;
+  return { view, html: renderToStaticMarkup(createElement(MinhwatuTable, { view, playerId, language: 'ko', runAction: vi.fn() })) };
+}
+
+describe('MinhwatuTable public view', () => {
+  it('blocks a second distinct click while an action is pending and releases the lock for retry', async () => {
+    const lock = { current: false };
+    const calls: string[] = [];
+    let finishFirst!: (accepted: boolean) => void;
+    const first = runWithActionLock(lock, () => {
+      calls.push('play');
+      return new Promise<boolean>(resolve => { finishFirst = resolve; });
+    });
+    const overlappingDifferentAction = runWithActionLock(lock, () => {
+      calls.push('capture');
+      return true;
+    });
+
+    expect(first).toBeDefined();
+    expect(overlappingDifferentAction).toBeUndefined();
+    expect(lock.current).toBe(true);
+    await Promise.resolve();
+    expect(calls).toEqual(['play']);
+
+    finishFirst(false);
+    await expect(first).resolves.toBe(false);
+    expect(lock.current).toBe(false);
+
+    const retry = runWithActionLock(lock, () => {
+      calls.push('retry');
+      return true;
+    });
+    expect(retry).toBeDefined();
+    await expect(retry).resolves.toBe(true);
+    expect(calls).toEqual(['play', 'retry']);
+    expect(lock.current).toBe(false);
+  });
+
+  it('releases the action lock after synchronous throws and rejected promises', async () => {
+    const lock = { current: false };
+    const syncFailure = runWithActionLock(lock, () => { throw new Error('sync failure'); });
+    expect(syncFailure).toBeDefined();
+    await expect(syncFailure).rejects.toThrow('sync failure');
+    expect(lock.current).toBe(false);
+
+    const asyncFailure = runWithActionLock(lock, () => Promise.reject(new Error('async failure')));
+    expect(asyncFailure).toBeDefined();
+    await expect(asyncFailure).rejects.toThrow('async failure');
+    expect(lock.current).toBe(false);
+
+    const retry = runWithActionLock(lock, () => 'retried');
+    expect(retry).toBeDefined();
+    await expect(retry).resolves.toBe('retried');
+    expect(lock.current).toBe(false);
+  });
+
+  it('shows the caller hand, auto-highlights capturable cards, and keeps opponent values private', () => {
+    const state = minhwatuEngine.createInitialState(76);
+    const opponentCard = state.hands.p2[0];
+    const { view, html } = markup(state);
+    const ownCard = state.hands.p1[0];
+    const matches = state.table.filter(card => card.month === ownCard.month).length;
+
+    expect(view.ownHand.map(card => card.id)).toContain(ownCard.id);
+    expect(view.ownHand.map(card => card.id)).not.toContain(opponentCard.id);
+    expect(view.opponentCount).toBe(state.hands.p2.length);
+    expect(html).toContain('내 손패');
+    expect(html).toContain('hwatu-opponent-fan');
+    expect(html).toContain('data-hwatu-zone="opponent-hand"');
+    expect(html).toContain('data-hwatu-zone="table"');
+    expect(html).toContain('data-hwatu-zone="deck"');
+    expect(html).toContain('hwatu-deck-back');
+    expect(html.match(/class="game-value-number"/g)).toHaveLength(6);
+    expect(html).toContain(`data-hwatu-card-id="${ownCard.id}"`);
+    const capturableIds = state.hands.p1.filter(card => state.table.some(tableCard => tableCard.month === card.month)).map(card => card.id);
+    for (const id of capturableIds) {
+      const button = html.match(new RegExp(`<button[^>]*data-hwatu-card-id="${id}"[^>]*>`))?.[0];
+      expect(button).toContain('is-capturable');
+    }
+    expect(html).not.toContain('hwatu-hand-choice is-match');
+    expect(html).not.toContain('바닥 짝');
+    expect(html).not.toContain('짝 선택');
+    expect(html).not.toContain('class="gb-hwatu-table"');
+    expect(html).not.toContain(`/images/hwatu/${opponentCard.id.split('-').map(part => part.padStart(2, '0')).join('-')}.svg`);
+  });
+
+  it('shows the real yaku score breakdown and public final result scores', () => {
+    const state = minhwatuEngine.createInitialState(21);
+    const november = [...state.hands.p1, ...state.hands.p2, ...state.table, ...state.deck].filter(card => card.month === 11);
+    state.captures = { p1: november, p2: [] };
+    state.phase = 'finished';
+    state.result = { winner: 'p1', reason: 'test', scores: scoreMinhwatuMatch(state.captures) };
+    const { view, html } = markup(state);
+
+    expect(view.board.scores).toEqual({ p1: 100, p2: -40 });
+    expect(view.result?.scores).toEqual({ p1: 100, p2: -40 });
+    expect(html).toContain('기본 20 + 내 족보 40 × 2 − 상대 족보 0 = 100');
+    expect(html).toContain('고도리');
+    expect(html).toContain('<details class="hwatu-scoring"');
+    expect(html).toContain('<span>고도리</span><b>0/3장</b>');
+    expect(html).toContain('홍단');
+    expect(html).toContain('최종 점수 100 : -40');
+    expect(html).toContain('이겼어요!');
+  });
+
+  it('places the completed result beside the scoreboard and removes empty-play hints', () => {
+    const state = minhwatuEngine.createInitialState(91);
+    const cards = [...state.hands.p1, ...state.hands.p2, ...state.table, ...state.deck];
+    state.hands = { p1: [], p2: [] };
+    state.table = [];
+    state.deck = [];
+    state.captures = { p1: cards.slice(0, 24), p2: cards.slice(24) };
+    state.phase = 'finished';
+    state.result = { winner: 'draw', reason: 'test', scores: scoreMinhwatuMatch(state.captures) };
+    const { html } = markup(state);
+
+    expect(html).toContain('정산 완료');
+    expect(html).toContain('data-outcome="draw"');
+    expect(html.indexOf('class="hwatu-seat-strip"')).toBeLessThan(html.indexOf('class="hwatu-result"'));
+    expect(html.indexOf('class="hwatu-result"')).toBeLessThan(html.indexOf('class="hwatu-opponent-bar"'));
+    expect(html).not.toContain('바닥이 비었어요. 손에서 한 장 내면 새 짝이 놓여요.');
+    expect(html).not.toContain('차례가 끝나면 더미에서 한 장을 공개해요.');
+    expect(html).not.toContain('data-hwatu-zone="draw"');
+  });
+
+  it('shows only the six latest public action titles with their public score changes', () => {
+    const state = minhwatuEngine.createInitialState(93);
+    state.events = Array.from({ length: 8 }, (_, index) => ({
+      sequence: index + 1,
+      type: 'capture' as const,
+      actor: index % 2 === 0 ? 'p1' as const : 'p2' as const,
+      title: { ko: `공개 행동 ${index + 1}`, es: `Acción pública ${index + 1}` },
+      scoreChanges: { p1: index === 7 ? 5 : 0, p2: index === 7 ? -5 : 0 },
+    }));
+    const { html } = markup(state);
+
+    expect(html).toContain('최근 행동 · 6');
+    expect(html).toContain('공개 행동 8');
+    expect(html).toContain('공개 행동 3');
+    expect(html).not.toContain('공개 행동 2');
+    expect(html).toContain('상대 -5');
+  });
+
+  it('offers pending-draw captures only to the active player and does not leak their legal actions', () => {
+    const state = minhwatuEngine.createInitialState(101);
+    const month = 6;
+    const cards = [...state.deck, ...state.table, ...state.hands.p1, ...state.hands.p2].filter(card => card.month === month);
+    state.pending = { card: cards[0] };
+    state.table = cards.slice(1, 3);
+    state.phase = 'capture-draw';
+    state.turn = 'p1';
+
+    const active = markup(state, 'p1');
+    const waiting = markup(state, 'p2');
+    expect(active.view.actions.map(option => option.action)).toEqual([
+      { type: 'capture', payload: { targetIndex: 0 } },
+      { type: 'capture', payload: { targetIndex: 1 } },
+    ]);
+    expect(active.html).toContain('hwatu-table-card is-legal is-target');
+    expect(active.html.match(/class="hwatu-table-card is-legal is-target"/g)).toHaveLength(2);
+    expect(active.html).not.toContain('is-match');
+    expect(waiting.view.actions).toEqual([]);
+    expect(waiting.html).toContain('상대 차례');
+    expect(waiting.html).not.toContain('hwatu-table-card is-legal');
+    expect(waiting.html).toContain('disabled=""');
+    expect(minhwatuTargetAction(active.view.actions, 0, -1, true)?.action).toEqual({ type: 'capture', payload: { targetIndex: 0 } });
+    expect(minhwatuTargetAction(waiting.view.actions, 0, -1, true)).toBeUndefined();
+  });
+
+  it('keeps table cards in engine order without month groups, shows capture counts, and hides the stock face', () => {
+    const state = minhwatuEngine.createInitialState(302);
+    state.captures.p1 = state.deck.slice(0, 3);
+    state.deck = state.deck.slice(3);
+    const { html } = markup(state);
+
+    expect(html).toContain('바닥 패');
+    const tableMarkup = html.slice(html.indexOf('data-hwatu-zone="table"'), html.indexOf('data-hwatu-zone="draw"'));
+    const tableIds = [...tableMarkup.matchAll(/data-hwatu-card-id="([^"]+)"/g)].map(match => match[1]);
+    expect(tableIds).toEqual(state.table.map(card => card.id));
+    expect(html).not.toContain('hwatu-month-group');
+    expect(html).not.toContain('hwatu-month-tab');
+    expect(html).toContain('data-hwatu-zone="captures-p1-bright"');
+    expect(html).toContain('data-hwatu-zone="captures-p2-plain"');
+    expect(html).toContain('hwatu-category-pile kind-bright');
+    expect(html).toContain('hwatu-category-pile kind-animal');
+    expect(html).toContain('hwatu-category-pile kind-ribbon');
+    expect(html).toContain('hwatu-category-pile kind-plain');
+    expect(html).toContain('hwatu-captured-grid');
+    expect(html).not.toContain('hwatu-captured-fan');
+    expect(html).toContain('class="hwatu-deck-back"');
+    expect(html).not.toContain(`/images/hwatu/${state.deck[0].id.split('-').map(part => part.padStart(2, '0')).join('-')}.svg`);
+  });
+
+  it('binds duplicate-month table targets to the engine-provided play action', () => {
+    let found: { view: PublicView; action: GameAction } | undefined;
+    for (let seed = 1; seed <= 80 && !found; seed++) {
+      const state = minhwatuEngine.createInitialState(seed);
+      const view = minhwatuEngine.getPlayerView(state, 'p1') as PublicView;
+      const action = view.actions.find(option => option.action.type === 'play' && option.action.payload?.targetIndex !== undefined)?.action;
+      if (action) found = { view, action };
+    }
+    expect(found).toBeTruthy();
+    const payload = found!.action.payload!;
+    const mapped = minhwatuTargetAction(found!.view.actions, Number(payload.targetIndex), Number(payload.index), false);
+    expect(mapped?.action).toEqual(found!.action);
+    expect(minhwatuTargetAction(found!.view.actions, Number(payload.targetIndex) + 20, Number(payload.index), false)).toBeUndefined();
+  });
+
+  it('renders the authoritative public event stage and both yaku breakdowns', () => {
+    let state = minhwatuEngine.createInitialState(83);
+    const initial = minhwatuEngine.getPlayerView(state, 'p1');
+    const action = initial.actions[0].action;
+    state = minhwatuEngine.applyAction(state, 'p1', action);
+    const view = minhwatuEngine.getPlayerView(state, 'p1');
+    const html = renderToStaticMarkup(createElement(MinhwatuTable, { view, playerId: 'p1', language: 'es', runAction: vi.fn() }));
+    expect(view.board.actionLog.length).toBeGreaterThan(0);
+    expect(html).toContain('data-hwatu-motion');
+    expect(html).toContain(view.log.at(-1).title.es);
+    expect(html).toContain('data-hwatu-zone="score-p1"');
+    expect(html).toContain('data-hwatu-zone="score-p2"');
+    expect(html).toContain('× 2');
+    expect(html).toContain('Godori');
+  });
+
+  it('shows Godori progress and the 50-point completion bonus', () => {
+    const state = minhwatuEngine.createInitialState(87);
+    const all = [...state.hands.p1, ...state.hands.p2, ...state.table, ...state.deck];
+    const birds = ['2-1', '4-1', '8-2'].map(id => all.find(card => card.id === id)!);
+    state.captures = { p1: birds.slice(0, 2), p2: [] };
+    const partial = markup(state).html;
+    expect(partial).toContain('<span>고도리</span><b>2/3장</b>');
+    expect(partial).not.toContain('3장 완성 · 추가 점수 없음');
+    state.captures.p1 = birds;
+    const complete = markup(state).html;
+    expect(complete).toContain('<span>고도리</span><b>+50 점</b>');
+    expect(complete).toContain('고도리 3장을 모으면 50점 보너스예요.');
+  });
+
+  it('describes the rival score formula from the viewer’s perspective in Spanish', () => {
+    const state = minhwatuEngine.createInitialState(89);
+    const all = [...state.hands.p1, ...state.hands.p2, ...state.table, ...state.deck];
+    state.captures = { p1: ['1-2', '2-2', '3-2'].map(id => all.find(card => card.id === id)!), p2: [] };
+    const view = minhwatuEngine.getPlayerView(state, 'p1');
+    const html = renderToStaticMarkup(createElement(MinhwatuTable, { view, playerId: 'p1', language: 'es', runAction: vi.fn() }));
+    expect(html).toContain('Base rival 0 + yakus del rival 0 × 2 − tus yakus 30 = -30');
+  });
+});

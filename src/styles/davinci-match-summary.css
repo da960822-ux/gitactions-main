@@ -1,0 +1,43 @@
+.davinci-session-summary {
+  display: grid;
+  grid-template-columns: minmax(0, 1.4fr) minmax(230px, .8fr);
+  align-items: center;
+  gap: 18px;
+  margin-top: 12px;
+  padding: 13px 15px;
+  border: 1px solid #79694f;
+  border-radius: 12px;
+  color: #f3eedf;
+  background: linear-gradient(120deg, #302b36, #27352e);
+}
+.davinci-session-record h3 { margin: 0 0 8px; color: #f1d99a; font-size: 14px; }
+.davinci-session-scores { display: flex; flex-wrap: wrap; gap: 8px 18px; }
+.davinci-session-scores > span { display: flex; align-items: baseline; gap: 5px; min-width: 78px; }
+.davinci-session-scores b { color: #e6e1d2; font-size: 12px; }
+.davinci-session-scores strong { color: #fff3c6; font-size: 17px; font-variant-numeric: tabular-nums; }
+.davinci-session-scores small { color: #d3c9ac; font-size: 12px; }
+.davinci-session-scope { display: block; margin-top: 7px; color: #d0d3c8; font-size: 12px; }
+.davinci-replay { display: grid; justify-items: start; gap: 5px; }
+.davinci-replay p { margin: 0 0 2px; color: #f5dda0; font-size: 12px; line-height: 1.45; }
+.davinci-replay button { min-height: 42px; padding: 9px 14px; border: 1px solid #d3b66a; border-radius: 7px; color: #29251d; background: #edcf80; font: inherit; font-size: 13px; font-weight: 750; cursor: pointer; }
+.davinci-replay button:hover { background: #f6dda0; }
+.davinci-replay button:focus-visible { outline: 3px solid #fff2c6; outline-offset: 3px; }
+.davinci-replay small { color: #d0d3c8; font-size: 12px; line-height: 1.4; }
+.davinci-replay button:disabled { opacity: .72; cursor: wait; }
+.davinci-start-brief {
+  display: grid;
+  grid-column: 1 / -1;
+  gap: 7px;
+  margin: 12px 0 0;
+  padding: 14px 17px;
+  border: 1px solid #76694f;
+  border-radius: 10px;
+  color: #eee8d8;
+  background: #302b36;
+}
+.davinci-start-brief h3 { margin: 0; color: #f1d99a; font-size: 14px; }
+.davinci-start-brief p { max-width: 78ch; margin: 0; color: #eee8d8; font-size: 13px; line-height: 1.55; }
+.davinci-start-brief small { color: #d0d3c8; font-size: 12px; line-height: 1.4; }
+@media (max-width: 680px) {
+  .davinci-session-summary { grid-template-columns: 1fr; gap: 12px; }
+}

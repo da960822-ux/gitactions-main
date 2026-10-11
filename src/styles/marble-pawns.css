@@ -1,0 +1,165 @@
+.marble-pawn-picker {
+  --pawn-ink: #322a2e;
+  --pawn-paper: #fffaf1;
+  margin: 14px 0;
+  padding: 16px 18px 18px;
+  border: 1px solid rgba(125, 93, 76, .22);
+  border-radius: 20px;
+  color: var(--pawn-ink);
+  background: linear-gradient(135deg, #fffdf8 0%, #f7eadb 100%);
+  box-shadow: 0 10px 28px rgba(62, 39, 42, .1), inset 0 1px 0 #fff;
+  container-type: inline-size;
+}
+
+.marble-pawn-picker__head {
+  display: flex;
+  align-items: end;
+  justify-content: space-between;
+  gap: 16px;
+  margin-bottom: 10px;
+}
+
+.marble-pawn-picker__head h3 {
+  margin: 0;
+  color: #30272c;
+  font-family: var(--font-display, inherit);
+  font-size: clamp(17px, 2vw, 21px);
+  font-weight: 760;
+  line-height: 1.2;
+}
+
+.marble-pawn-picker__hint {
+  max-width: 245px;
+  color: #68595b;
+  font-size: 12px;
+  line-height: 1.45;
+  text-align: right;
+}
+
+.marble-pawn-picker__grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(100px, 1fr));
+  gap: 10px;
+}
+
+.marble-pawn-choice {
+  --pawn-color: #b8846f;
+  position: relative;
+  display: flex;
+  min-width: 0;
+  min-height: 144px;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  padding: 7px 6px 10px;
+  overflow: hidden;
+  border: 1px solid rgba(113, 86, 70, .18);
+  border-radius: 15px;
+  color: #382d30;
+  background: linear-gradient(155deg, #fff 0%, #f7efe5 72%, #efe2d2 100%);
+  box-shadow: 0 4px 10px rgba(62, 43, 43, .08), inset 0 1px 0 #fff;
+  cursor: pointer;
+  transition: border-color .18s ease, box-shadow .18s ease, transform .18s ease, opacity .18s ease;
+}
+
+.marble-pawn-choice::before {
+  position: absolute;
+  z-index: 0;
+  inset: auto 0 0;
+  height: 4px;
+  background: var(--pawn-color);
+  content: '';
+  opacity: .8;
+}
+
+.marble-pawn-choice:hover:not(:disabled),
+.marble-pawn-choice:focus-visible {
+  transform: translateY(-3px);
+  border-color: color-mix(in srgb, var(--pawn-color), #805c4f 35%);
+  box-shadow: 0 9px 20px rgba(62, 43, 43, .15), 0 0 0 3px color-mix(in srgb, var(--pawn-color), transparent 82%), inset 0 1px 0 #fff;
+}
+
+.marble-pawn-choice:focus-visible {
+  outline: 3px solid #594079;
+  outline-offset: 3px;
+}
+
+.marble-pawn-choice.is-selected {
+  border-color: var(--pawn-color);
+  box-shadow: 0 0 0 2px color-mix(in srgb, var(--pawn-color), transparent 58%), 0 8px 18px rgba(62, 43, 43, .13), inset 0 1px 0 #fff;
+}
+
+.marble-pawn-choice:disabled:not(.is-selected) {
+  cursor: not-allowed;
+  opacity: .68;
+}
+
+.marble-pawn-choice.is-pending {
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--pawn-color), transparent 70%), 0 0 22px color-mix(in srgb, var(--pawn-color), transparent 65%);
+}
+
+.marble-pawn-choice__art {
+  display: grid;
+  width: 100%;
+  height: 90px;
+  place-items: center;
+  filter: drop-shadow(0 5px 3px rgba(48, 39, 41, .12));
+}
+
+.marble-pawn {
+  display: block;
+  width: min(100%, 76px);
+  height: 90px;
+  overflow: visible;
+}
+
+.marble-pawn-choice__name {
+  z-index: 1;
+  margin-top: -1px;
+  color: #30272c;
+  font-size: 14px;
+  font-weight: 760;
+  line-height: 1.3;
+}
+
+.marble-pawn-choice__state {
+  z-index: 1;
+  min-height: 17px;
+  margin-top: 3px;
+  color: #735c57;
+  font-size: 12px;
+  font-weight: 650;
+  line-height: 1.35;
+}
+
+.marble-pawn-choice.is-selected .marble-pawn-choice__state {
+  color: #7b3f35;
+}
+
+.marble-pawn-picker__error {
+  margin: 10px 0 0;
+  color: #963f40;
+  font-size: 13px;
+  font-weight: 650;
+}
+
+@media (max-width: 760px) {
+  .marble-pawn-picker { padding: 14px 10px; }
+  .marble-pawn-picker__head { align-items: start; flex-direction: column; gap: 5px; }
+  .marble-pawn-picker__hint { max-width: none; text-align: left; }
+  .marble-pawn-picker__grid { grid-template-columns: repeat(3, minmax(100px, 1fr)); gap: 8px; }
+}
+
+@media (max-width: 360px) {
+  .marble-pawn-picker__grid { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+}
+
+@container (min-width: 680px) {
+  .marble-pawn-picker__grid { grid-template-columns: repeat(6, minmax(0, 1fr)); }
+  .marble-pawn-choice { min-height: 144px; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .marble-pawn-choice { transition: none; }
+  .marble-pawn-choice:hover:not(:disabled), .marble-pawn-choice:focus-visible { transform: none; }
+}

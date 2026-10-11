@@ -1,0 +1,1352 @@
+{
+  "sourceCommit": "d1797acf5d43c6bc512b57ef3c1d990006a49a5c",
+  "cards": [
+    {
+      "engineId": "t1-01",
+      "sourceCardId": "01",
+      "src": "cards/01.jpg",
+      "signature": {
+        "tier": 1,
+        "bonus": "white",
+        "points": 1,
+        "cost": {
+          "green": 4
+        }
+      }
+    },
+    {
+      "engineId": "t1-02",
+      "sourceCardId": "02",
+      "src": "cards/02.jpg",
+      "signature": {
+        "tier": 1,
+        "bonus": "blue",
+        "points": 1,
+        "cost": {
+          "red": 4
+        }
+      }
+    },
+    {
+      "engineId": "t1-03",
+      "sourceCardId": "03",
+      "src": "cards/03.jpg",
+      "signature": {
+        "tier": 1,
+        "bonus": "green",
+        "points": 1,
+        "cost": {
+          "black": 4
+        }
+      }
+    },
+    {
+      "engineId": "t1-04",
+      "sourceCardId": "04",
+      "src": "cards/04.jpg",
+      "signature": {
+        "tier": 1,
+        "bonus": "red",
+        "points": 1,
+        "cost": {
+          "white": 4
+        }
+      }
+    },
+    {
+      "engineId": "t1-05",
+      "sourceCardId": "05",
+      "src": "cards/05.jpg",
+      "signature": {
+        "tier": 1,
+        "bonus": "black",
+        "points": 1,
+        "cost": {
+          "blue": 4
+        }
+      }
+    },
+    {
+      "engineId": "t1-06",
+      "sourceCardId": "06",
+      "src": "cards/06.jpg",
+      "signature": {
+        "tier": 1,
+        "bonus": "white",
+        "points": 0,
+        "cost": {
+          "white": 3,
+          "blue": 1,
+          "black": 1
+        }
+      }
+    },
+    {
+      "engineId": "t1-07",
+      "sourceCardId": "07",
+      "src": "cards/07.jpg",
+      "signature": {
+        "tier": 1,
+        "bonus": "blue",
+        "points": 0,
+        "cost": {
+          "blue": 1,
+          "green": 3,
+          "red": 1
+        }
+      }
+    },
+    {
+      "engineId": "t1-08",
+      "sourceCardId": "08",
+      "src": "cards/08.jpg",
+      "signature": {
+        "tier": 1,
+        "bonus": "green",
+        "points": 0,
+        "cost": {
+          "white": 1,
+          "blue": 3,
+          "green": 1
+        }
+      }
+    },
+    {
+      "engineId": "t1-09",
+      "sourceCardId": "09",
+      "src": "cards/09.jpg",
+      "signature": {
+        "tier": 1,
+        "bonus": "red",
+        "points": 0,
+        "cost": {
+          "white": 1,
+          "red": 1,
+          "black": 3
+        }
+      }
+    },
+    {
+      "engineId": "t1-10",
+      "sourceCardId": "010",
+      "src": "cards/10.jpg",
+      "signature": {
+        "tier": 1,
+        "bonus": "black",
+        "points": 0,
+        "cost": {
+          "green": 1,
+          "red": 3,
+          "black": 1
+        }
+      }
+    },
+    {
+      "engineId": "t1-11",
+      "sourceCardId": "011",
+      "src": "cards/11.jpg",
+      "signature": {
+        "tier": 1,
+        "bonus": "white",
+        "points": 0,
+        "cost": {
+          "blue": 3
+        }
+      }
+    },
+    {
+      "engineId": "t1-12",
+      "sourceCardId": "012",
+      "src": "cards/12.jpg",
+      "signature": {
+        "tier": 1,
+        "bonus": "blue",
+        "points": 0,
+        "cost": {
+          "black": 3
+        }
+      }
+    },
+    {
+      "engineId": "t1-13",
+      "sourceCardId": "013",
+      "src": "cards/13.jpg",
+      "signature": {
+        "tier": 1,
+        "bonus": "green",
+        "points": 0,
+        "cost": {
+          "red": 3
+        }
+      }
+    },
+    {
+      "engineId": "t1-14",
+      "sourceCardId": "014",
+      "src": "cards/14.jpg",
+      "signature": {
+        "tier": 1,
+        "bonus": "red",
+        "points": 0,
+        "cost": {
+          "white": 3
+        }
+      }
+    },
+    {
+      "engineId": "t1-15",
+      "sourceCardId": "015",
+      "src": "cards/15.jpg",
+      "signature": {
+        "tier": 1,
+        "bonus": "black",
+        "points": 0,
+        "cost": {
+          "green": 3
+        }
+      }
+    },
+    {
+      "engineId": "t1-16",
+      "sourceCardId": "016",
+      "src": "cards/16.jpg",
+      "signature": {
+        "tier": 1,
+        "bonus": "white",
+        "points": 0,
+        "cost": {
+          "blue": 2,
+          "green": 2,
+          "black": 1
+        }
+      }
+    },
+    {
+      "engineId": "t1-17",
+      "sourceCardId": "017",
+      "src": "cards/17.jpg",
+      "signature": {
+        "tier": 1,
+        "bonus": "blue",
+        "points": 0,
+        "cost": {
+          "white": 1,
+          "green": 2,
+          "red": 2
+        }
+      }
+    },
+    {
+      "engineId": "t1-18",
+      "sourceCardId": "018",
+      "src": "cards/18.jpg",
+      "signature": {
+        "tier": 1,
+        "bonus": "green",
+        "points": 0,
+        "cost": {
+          "blue": 1,
+          "red": 2,
+          "black": 2
+        }
+      }
+    },
+    {
+      "engineId": "t1-19",
+      "sourceCardId": "019",
+      "src": "cards/19.jpg",
+      "signature": {
+        "tier": 1,
+        "bonus": "red",
+        "points": 0,
+        "cost": {
+          "white": 2,
+          "green": 1,
+          "black": 2
+        }
+      }
+    },
+    {
+      "engineId": "t1-20",
+      "sourceCardId": "020",
+      "src": "cards/20.jpg",
+      "signature": {
+        "tier": 1,
+        "bonus": "black",
+        "points": 0,
+        "cost": {
+          "white": 2,
+          "blue": 2,
+          "red": 1
+        }
+      }
+    },
+    {
+      "engineId": "t1-21",
+      "sourceCardId": "021",
+      "src": "cards/21.jpg",
+      "signature": {
+        "tier": 1,
+        "bonus": "white",
+        "points": 0,
+        "cost": {
+          "blue": 2,
+          "black": 2
+        }
+      }
+    },
+    {
+      "engineId": "t1-22",
+      "sourceCardId": "022",
+      "src": "cards/22.jpg",
+      "signature": {
+        "tier": 1,
+        "bonus": "blue",
+        "points": 0,
+        "cost": {
+          "green": 2,
+          "black": 2
+        }
+      }
+    },
+    {
+      "engineId": "t1-23",
+      "sourceCardId": "023",
+      "src": "cards/23.jpg",
+      "signature": {
+        "tier": 1,
+        "bonus": "green",
+        "points": 0,
+        "cost": {
+          "blue": 2,
+          "red": 2
+        }
+      }
+    },
+    {
+      "engineId": "t1-24",
+      "sourceCardId": "024",
+      "src": "cards/24.jpg",
+      "signature": {
+        "tier": 1,
+        "bonus": "red",
+        "points": 0,
+        "cost": {
+          "white": 2,
+          "red": 2
+        }
+      }
+    },
+    {
+      "engineId": "t1-25",
+      "sourceCardId": "025",
+      "src": "cards/25.jpg",
+      "signature": {
+        "tier": 1,
+        "bonus": "black",
+        "points": 0,
+        "cost": {
+          "white": 2,
+          "green": 2
+        }
+      }
+    },
+    {
+      "engineId": "t1-26",
+      "sourceCardId": "026",
+      "src": "cards/26.jpg",
+      "signature": {
+        "tier": 1,
+        "bonus": "white",
+        "points": 0,
+        "cost": {
+          "blue": 1,
+          "green": 2,
+          "red": 1,
+          "black": 1
+        }
+      }
+    },
+    {
+      "engineId": "t1-27",
+      "sourceCardId": "027",
+      "src": "cards/27.jpg",
+      "signature": {
+        "tier": 1,
+        "bonus": "blue",
+        "points": 0,
+        "cost": {
+          "white": 1,
+          "green": 1,
+          "red": 2,
+          "black": 1
+        }
+      }
+    },
+    {
+      "engineId": "t1-28",
+      "sourceCardId": "028",
+      "src": "cards/28.jpg",
+      "signature": {
+        "tier": 1,
+        "bonus": "green",
+        "points": 0,
+        "cost": {
+          "white": 1,
+          "blue": 1,
+          "red": 1,
+          "black": 2
+        }
+      }
+    },
+    {
+      "engineId": "t1-29",
+      "sourceCardId": "029",
+      "src": "cards/29.jpg",
+      "signature": {
+        "tier": 1,
+        "bonus": "red",
+        "points": 0,
+        "cost": {
+          "white": 2,
+          "blue": 1,
+          "green": 1,
+          "black": 1
+        }
+      }
+    },
+    {
+      "engineId": "t1-30",
+      "sourceCardId": "030",
+      "src": "cards/30.jpg",
+      "signature": {
+        "tier": 1,
+        "bonus": "black",
+        "points": 0,
+        "cost": {
+          "white": 1,
+          "blue": 2,
+          "green": 1,
+          "red": 1
+        }
+      }
+    },
+    {
+      "engineId": "t1-31",
+      "sourceCardId": "031",
+      "src": "cards/31.jpg",
+      "signature": {
+        "tier": 1,
+        "bonus": "white",
+        "points": 0,
+        "cost": {
+          "red": 2,
+          "black": 1
+        }
+      }
+    },
+    {
+      "engineId": "t1-32",
+      "sourceCardId": "032",
+      "src": "cards/32.jpg",
+      "signature": {
+        "tier": 1,
+        "bonus": "blue",
+        "points": 0,
+        "cost": {
+          "white": 1,
+          "black": 2
+        }
+      }
+    },
+    {
+      "engineId": "t1-33",
+      "sourceCardId": "033",
+      "src": "cards/33.jpg",
+      "signature": {
+        "tier": 1,
+        "bonus": "green",
+        "points": 0,
+        "cost": {
+          "white": 2,
+          "blue": 1
+        }
+      }
+    },
+    {
+      "engineId": "t1-34",
+      "sourceCardId": "034",
+      "src": "cards/34.jpg",
+      "signature": {
+        "tier": 1,
+        "bonus": "red",
+        "points": 0,
+        "cost": {
+          "blue": 2,
+          "green": 1
+        }
+      }
+    },
+    {
+      "engineId": "t1-35",
+      "sourceCardId": "035",
+      "src": "cards/35.jpg",
+      "signature": {
+        "tier": 1,
+        "bonus": "black",
+        "points": 0,
+        "cost": {
+          "green": 2,
+          "red": 1
+        }
+      }
+    },
+    {
+      "engineId": "t1-36",
+      "sourceCardId": "036",
+      "src": "cards/36.jpg",
+      "signature": {
+        "tier": 1,
+        "bonus": "white",
+        "points": 0,
+        "cost": {
+          "blue": 1,
+          "green": 1,
+          "red": 1,
+          "black": 1
+        }
+      }
+    },
+    {
+      "engineId": "t1-37",
+      "sourceCardId": "037",
+      "src": "cards/37.jpg",
+      "signature": {
+        "tier": 1,
+        "bonus": "blue",
+        "points": 0,
+        "cost": {
+          "white": 1,
+          "green": 1,
+          "red": 1,
+          "black": 1
+        }
+      }
+    },
+    {
+      "engineId": "t1-38",
+      "sourceCardId": "038",
+      "src": "cards/38.jpg",
+      "signature": {
+        "tier": 1,
+        "bonus": "green",
+        "points": 0,
+        "cost": {
+          "white": 1,
+          "blue": 1,
+          "red": 1,
+          "black": 1
+        }
+      }
+    },
+    {
+      "engineId": "t1-39",
+      "sourceCardId": "039",
+      "src": "cards/39.jpg",
+      "signature": {
+        "tier": 1,
+        "bonus": "red",
+        "points": 0,
+        "cost": {
+          "white": 1,
+          "blue": 1,
+          "green": 1,
+          "black": 1
+        }
+      }
+    },
+    {
+      "engineId": "t1-40",
+      "sourceCardId": "040",
+      "src": "cards/40.jpg",
+      "signature": {
+        "tier": 1,
+        "bonus": "black",
+        "points": 0,
+        "cost": {
+          "white": 1,
+          "blue": 1,
+          "green": 1,
+          "red": 1
+        }
+      }
+    },
+    {
+      "engineId": "t2-01",
+      "sourceCardId": "041",
+      "src": "cards/41.jpg",
+      "signature": {
+        "tier": 2,
+        "bonus": "white",
+        "points": 1,
+        "cost": {
+          "green": 3,
+          "red": 2,
+          "black": 2
+        }
+      }
+    },
+    {
+      "engineId": "t2-02",
+      "sourceCardId": "042",
+      "src": "cards/42.jpg",
+      "signature": {
+        "tier": 2,
+        "bonus": "blue",
+        "points": 1,
+        "cost": {
+          "blue": 2,
+          "green": 2,
+          "red": 3
+        }
+      }
+    },
+    {
+      "engineId": "t2-03",
+      "sourceCardId": "043",
+      "src": "cards/43.jpg",
+      "signature": {
+        "tier": 2,
+        "bonus": "green",
+        "points": 1,
+        "cost": {
+          "white": 2,
+          "blue": 3,
+          "black": 2
+        }
+      }
+    },
+    {
+      "engineId": "t2-04",
+      "sourceCardId": "044",
+      "src": "cards/44.jpg",
+      "signature": {
+        "tier": 2,
+        "bonus": "red",
+        "points": 1,
+        "cost": {
+          "white": 2,
+          "red": 2,
+          "black": 3
+        }
+      }
+    },
+    {
+      "engineId": "t2-05",
+      "sourceCardId": "045",
+      "src": "cards/45.jpg",
+      "signature": {
+        "tier": 2,
+        "bonus": "black",
+        "points": 1,
+        "cost": {
+          "white": 3,
+          "blue": 2,
+          "green": 2
+        }
+      }
+    },
+    {
+      "engineId": "t2-06",
+      "sourceCardId": "046",
+      "src": "cards/46.jpg",
+      "signature": {
+        "tier": 2,
+        "bonus": "white",
+        "points": 1,
+        "cost": {
+          "white": 2,
+          "blue": 3,
+          "red": 3
+        }
+      }
+    },
+    {
+      "engineId": "t2-07",
+      "sourceCardId": "047",
+      "src": "cards/47.jpg",
+      "signature": {
+        "tier": 2,
+        "bonus": "blue",
+        "points": 1,
+        "cost": {
+          "blue": 2,
+          "green": 3,
+          "black": 3
+        }
+      }
+    },
+    {
+      "engineId": "t2-08",
+      "sourceCardId": "048",
+      "src": "cards/48.jpg",
+      "signature": {
+        "tier": 2,
+        "bonus": "green",
+        "points": 1,
+        "cost": {
+          "white": 3,
+          "green": 2,
+          "red": 3
+        }
+      }
+    },
+    {
+      "engineId": "t2-09",
+      "sourceCardId": "049",
+      "src": "cards/49.jpg",
+      "signature": {
+        "tier": 2,
+        "bonus": "red",
+        "points": 1,
+        "cost": {
+          "blue": 3,
+          "red": 2,
+          "black": 3
+        }
+      }
+    },
+    {
+      "engineId": "t2-10",
+      "sourceCardId": "050",
+      "src": "cards/50.jpg",
+      "signature": {
+        "tier": 2,
+        "bonus": "black",
+        "points": 1,
+        "cost": {
+          "white": 3,
+          "green": 3,
+          "black": 2
+        }
+      }
+    },
+    {
+      "engineId": "t2-11",
+      "sourceCardId": "051",
+      "src": "cards/51.jpg",
+      "signature": {
+        "tier": 2,
+        "bonus": "white",
+        "points": 3,
+        "cost": {
+          "white": 6
+        }
+      }
+    },
+    {
+      "engineId": "t2-12",
+      "sourceCardId": "052",
+      "src": "cards/52.jpg",
+      "signature": {
+        "tier": 2,
+        "bonus": "blue",
+        "points": 3,
+        "cost": {
+          "blue": 6
+        }
+      }
+    },
+    {
+      "engineId": "t2-13",
+      "sourceCardId": "053",
+      "src": "cards/53.jpg",
+      "signature": {
+        "tier": 2,
+        "bonus": "green",
+        "points": 3,
+        "cost": {
+          "green": 6
+        }
+      }
+    },
+    {
+      "engineId": "t2-14",
+      "sourceCardId": "054",
+      "src": "cards/54.jpg",
+      "signature": {
+        "tier": 2,
+        "bonus": "red",
+        "points": 3,
+        "cost": {
+          "red": 6
+        }
+      }
+    },
+    {
+      "engineId": "t2-15",
+      "sourceCardId": "055",
+      "src": "cards/55.jpg",
+      "signature": {
+        "tier": 2,
+        "bonus": "black",
+        "points": 3,
+        "cost": {
+          "black": 6
+        }
+      }
+    },
+    {
+      "engineId": "t2-16",
+      "sourceCardId": "056",
+      "src": "cards/56.jpg",
+      "signature": {
+        "tier": 2,
+        "bonus": "white",
+        "points": 2,
+        "cost": {
+          "green": 1,
+          "red": 4,
+          "black": 2
+        }
+      }
+    },
+    {
+      "engineId": "t2-17",
+      "sourceCardId": "057",
+      "src": "cards/57.jpg",
+      "signature": {
+        "tier": 2,
+        "bonus": "blue",
+        "points": 2,
+        "cost": {
+          "white": 2,
+          "red": 1,
+          "black": 4
+        }
+      }
+    },
+    {
+      "engineId": "t2-18",
+      "sourceCardId": "058",
+      "src": "cards/58.jpg",
+      "signature": {
+        "tier": 2,
+        "bonus": "green",
+        "points": 2,
+        "cost": {
+          "white": 4,
+          "blue": 2,
+          "black": 1
+        }
+      }
+    },
+    {
+      "engineId": "t2-19",
+      "sourceCardId": "059",
+      "src": "cards/59.jpg",
+      "signature": {
+        "tier": 2,
+        "bonus": "red",
+        "points": 2,
+        "cost": {
+          "white": 1,
+          "blue": 4,
+          "green": 2
+        }
+      }
+    },
+    {
+      "engineId": "t2-20",
+      "sourceCardId": "060",
+      "src": "cards/60.jpg",
+      "signature": {
+        "tier": 2,
+        "bonus": "black",
+        "points": 2,
+        "cost": {
+          "blue": 1,
+          "green": 4,
+          "red": 2
+        }
+      }
+    },
+    {
+      "engineId": "t2-21",
+      "sourceCardId": "061",
+      "src": "cards/61.jpg",
+      "signature": {
+        "tier": 2,
+        "bonus": "white",
+        "points": 2,
+        "cost": {
+          "red": 5
+        }
+      }
+    },
+    {
+      "engineId": "t2-22",
+      "sourceCardId": "062",
+      "src": "cards/62.jpg",
+      "signature": {
+        "tier": 2,
+        "bonus": "blue",
+        "points": 2,
+        "cost": {
+          "blue": 5
+        }
+      }
+    },
+    {
+      "engineId": "t2-23",
+      "sourceCardId": "063",
+      "src": "cards/63.jpg",
+      "signature": {
+        "tier": 2,
+        "bonus": "green",
+        "points": 2,
+        "cost": {
+          "green": 5
+        }
+      }
+    },
+    {
+      "engineId": "t2-24",
+      "sourceCardId": "064",
+      "src": "cards/64.jpg",
+      "signature": {
+        "tier": 2,
+        "bonus": "red",
+        "points": 2,
+        "cost": {
+          "black": 5
+        }
+      }
+    },
+    {
+      "engineId": "t2-25",
+      "sourceCardId": "065",
+      "src": "cards/65.jpg",
+      "signature": {
+        "tier": 2,
+        "bonus": "black",
+        "points": 2,
+        "cost": {
+          "white": 5
+        }
+      }
+    },
+    {
+      "engineId": "t2-26",
+      "sourceCardId": "066",
+      "src": "cards/66.jpg",
+      "signature": {
+        "tier": 2,
+        "bonus": "white",
+        "points": 2,
+        "cost": {
+          "red": 5,
+          "black": 3
+        }
+      }
+    },
+    {
+      "engineId": "t2-27",
+      "sourceCardId": "067",
+      "src": "cards/67.jpg",
+      "signature": {
+        "tier": 2,
+        "bonus": "blue",
+        "points": 2,
+        "cost": {
+          "white": 5,
+          "blue": 3
+        }
+      }
+    },
+    {
+      "engineId": "t2-28",
+      "sourceCardId": "068",
+      "src": "cards/68.jpg",
+      "signature": {
+        "tier": 2,
+        "bonus": "green",
+        "points": 2,
+        "cost": {
+          "blue": 5,
+          "green": 3
+        }
+      }
+    },
+    {
+      "engineId": "t2-29",
+      "sourceCardId": "069",
+      "src": "cards/69.jpg",
+      "signature": {
+        "tier": 2,
+        "bonus": "red",
+        "points": 2,
+        "cost": {
+          "white": 3,
+          "black": 5
+        }
+      }
+    },
+    {
+      "engineId": "t2-30",
+      "sourceCardId": "070",
+      "src": "cards/70.jpg",
+      "signature": {
+        "tier": 2,
+        "bonus": "black",
+        "points": 2,
+        "cost": {
+          "green": 5,
+          "red": 3
+        }
+      }
+    },
+    {
+      "engineId": "t3-01",
+      "sourceCardId": "071",
+      "src": "cards/71.jpg",
+      "signature": {
+        "tier": 3,
+        "bonus": "white",
+        "points": 3,
+        "cost": {
+          "blue": 3,
+          "green": 3,
+          "red": 5,
+          "black": 3
+        }
+      }
+    },
+    {
+      "engineId": "t3-02",
+      "sourceCardId": "072",
+      "src": "cards/72.jpg",
+      "signature": {
+        "tier": 3,
+        "bonus": "blue",
+        "points": 3,
+        "cost": {
+          "white": 3,
+          "green": 3,
+          "red": 3,
+          "black": 5
+        }
+      }
+    },
+    {
+      "engineId": "t3-03",
+      "sourceCardId": "073",
+      "src": "cards/73.jpg",
+      "signature": {
+        "tier": 3,
+        "bonus": "green",
+        "points": 3,
+        "cost": {
+          "white": 5,
+          "blue": 3,
+          "red": 3,
+          "black": 3
+        }
+      }
+    },
+    {
+      "engineId": "t3-04",
+      "sourceCardId": "074",
+      "src": "cards/74.jpg",
+      "signature": {
+        "tier": 3,
+        "bonus": "red",
+        "points": 3,
+        "cost": {
+          "white": 3,
+          "blue": 5,
+          "green": 3,
+          "black": 3
+        }
+      }
+    },
+    {
+      "engineId": "t3-05",
+      "sourceCardId": "075",
+      "src": "cards/75.jpg",
+      "signature": {
+        "tier": 3,
+        "bonus": "black",
+        "points": 3,
+        "cost": {
+          "white": 3,
+          "blue": 3,
+          "green": 5,
+          "red": 3
+        }
+      }
+    },
+    {
+      "engineId": "t3-06",
+      "sourceCardId": "076",
+      "src": "cards/76.jpg",
+      "signature": {
+        "tier": 3,
+        "bonus": "white",
+        "points": 4,
+        "cost": {
+          "black": 7
+        }
+      }
+    },
+    {
+      "engineId": "t3-07",
+      "sourceCardId": "077",
+      "src": "cards/77.jpg",
+      "signature": {
+        "tier": 3,
+        "bonus": "blue",
+        "points": 4,
+        "cost": {
+          "white": 7
+        }
+      }
+    },
+    {
+      "engineId": "t3-08",
+      "sourceCardId": "078",
+      "src": "cards/78.jpg",
+      "signature": {
+        "tier": 3,
+        "bonus": "green",
+        "points": 4,
+        "cost": {
+          "blue": 7
+        }
+      }
+    },
+    {
+      "engineId": "t3-09",
+      "sourceCardId": "079",
+      "src": "cards/79.jpg",
+      "signature": {
+        "tier": 3,
+        "bonus": "red",
+        "points": 4,
+        "cost": {
+          "green": 7
+        }
+      }
+    },
+    {
+      "engineId": "t3-10",
+      "sourceCardId": "080",
+      "src": "cards/80.jpg",
+      "signature": {
+        "tier": 3,
+        "bonus": "black",
+        "points": 4,
+        "cost": {
+          "red": 7
+        }
+      }
+    },
+    {
+      "engineId": "t3-11",
+      "sourceCardId": "081",
+      "src": "cards/81.jpg",
+      "signature": {
+        "tier": 3,
+        "bonus": "white",
+        "points": 4,
+        "cost": {
+          "white": 3,
+          "red": 3,
+          "black": 6
+        }
+      }
+    },
+    {
+      "engineId": "t3-12",
+      "sourceCardId": "082",
+      "src": "cards/82.jpg",
+      "signature": {
+        "tier": 3,
+        "bonus": "blue",
+        "points": 4,
+        "cost": {
+          "white": 6,
+          "blue": 3,
+          "black": 3
+        }
+      }
+    },
+    {
+      "engineId": "t3-13",
+      "sourceCardId": "083",
+      "src": "cards/83.jpg",
+      "signature": {
+        "tier": 3,
+        "bonus": "green",
+        "points": 4,
+        "cost": {
+          "white": 3,
+          "blue": 6,
+          "green": 3
+        }
+      }
+    },
+    {
+      "engineId": "t3-14",
+      "sourceCardId": "084",
+      "src": "cards/84.jpg",
+      "signature": {
+        "tier": 3,
+        "bonus": "red",
+        "points": 4,
+        "cost": {
+          "blue": 3,
+          "green": 6,
+          "red": 3
+        }
+      }
+    },
+    {
+      "engineId": "t3-15",
+      "sourceCardId": "085",
+      "src": "cards/85.jpg",
+      "signature": {
+        "tier": 3,
+        "bonus": "black",
+        "points": 4,
+        "cost": {
+          "green": 3,
+          "red": 6,
+          "black": 3
+        }
+      }
+    },
+    {
+      "engineId": "t3-16",
+      "sourceCardId": "086",
+      "src": "cards/86.jpg",
+      "signature": {
+        "tier": 3,
+        "bonus": "white",
+        "points": 5,
+        "cost": {
+          "white": 3,
+          "black": 7
+        }
+      }
+    },
+    {
+      "engineId": "t3-17",
+      "sourceCardId": "087",
+      "src": "cards/87.jpg",
+      "signature": {
+        "tier": 3,
+        "bonus": "blue",
+        "points": 5,
+        "cost": {
+          "white": 7,
+          "blue": 3
+        }
+      }
+    },
+    {
+      "engineId": "t3-18",
+      "sourceCardId": "088",
+      "src": "cards/88.jpg",
+      "signature": {
+        "tier": 3,
+        "bonus": "green",
+        "points": 5,
+        "cost": {
+          "blue": 7,
+          "green": 3
+        }
+      }
+    },
+    {
+      "engineId": "t3-19",
+      "sourceCardId": "089",
+      "src": "cards/89.jpg",
+      "signature": {
+        "tier": 3,
+        "bonus": "red",
+        "points": 5,
+        "cost": {
+          "green": 7,
+          "red": 3
+        }
+      }
+    },
+    {
+      "engineId": "t3-20",
+      "sourceCardId": "090",
+      "src": "cards/90.jpg",
+      "signature": {
+        "tier": 3,
+        "bonus": "black",
+        "points": 5,
+        "cost": {
+          "red": 7,
+          "black": 3
+        }
+      }
+    }
+  ],
+  "nobles": [
+    {
+      "engineId": "n0",
+      "sourceId": "20001",
+      "src": "nobles/20001.jpg"
+    },
+    {
+      "engineId": "n1",
+      "sourceId": "20002",
+      "src": "nobles/20002.jpg"
+    },
+    {
+      "engineId": "n2",
+      "sourceId": "20003",
+      "src": "nobles/20003.jpg"
+    },
+    {
+      "engineId": "n3",
+      "sourceId": "20004",
+      "src": "nobles/20004.jpg"
+    },
+    {
+      "engineId": "n4",
+      "sourceId": "20005",
+      "src": "nobles/20005.jpg"
+    },
+    {
+      "engineId": "n5",
+      "sourceId": "20006",
+      "src": "nobles/20006.jpg"
+    },
+    {
+      "engineId": "n6",
+      "sourceId": "20007",
+      "src": "nobles/20007.jpg"
+    },
+    {
+      "engineId": "n7",
+      "sourceId": "20008",
+      "src": "nobles/20008.jpg"
+    },
+    {
+      "engineId": "n8",
+      "sourceId": "20009",
+      "src": "nobles/20009.jpg"
+    },
+    {
+      "engineId": "n9",
+      "sourceId": "20010",
+      "src": "nobles/20010.jpg"
+    }
+  ]
+}

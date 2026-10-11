@@ -1,0 +1,97 @@
+.marble-event-stage {
+  display: flex;
+  align-items: center;
+  gap: 0.7rem;
+  min-height: 3.25rem;
+  padding: 0.7rem 0.85rem;
+  border: 1px solid color-mix(in srgb, var(--line, #ded7ce) 75%, transparent);
+  border-radius: 14px;
+  background: color-mix(in srgb, var(--paper, #fffdf9) 92%, #e5d8ff);
+  color: var(--ink, #342d29);
+  transform-origin: 50% 100%;
+}
+
+.marble-event-mark {
+  position: relative;
+  isolation: isolate;
+  display: grid;
+  flex: 0 0 2rem;
+  width: 2rem;
+  height: 2rem;
+  place-items: center;
+  border-radius: 10px;
+  background: #efe8ff;
+  color: #674a9b;
+}
+
+.marble-event-mark svg { position: relative; z-index: 1; width: 1.45rem; height: 1.45rem; overflow: visible; fill: none; stroke: currentColor; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
+.marble-event-stage--event-card .marble-event-mark { background: #fff2d6; color: #986d23; perspective: 180px; }
+.marble-event-stage--buy .marble-event-mark { background: #f8e9d4; color: #8c5e2f; }
+.marble-event-stage--build .marble-event-mark { background: #e6f1e6; color: #477c58; }
+.marble-event-stage--rent .marble-event-mark, .marble-event-stage--tax .marble-event-mark { background: #f7ead3; color: #966825; }
+.marble-event-stage--loan .marble-event-mark, .marble-event-stage--repay .marble-event-mark { background: #e7edf8; color: #4e668a; }
+.marble-event-stage--monopoly-warning .marble-event-mark, .marble-event-stage--crisis .marble-event-mark, .marble-event-stage--bankruptcy .marble-event-mark { background: #f9e6e3; color: #a84e4f; }
+.marble-event-stage--island .marble-event-mark, .marble-event-stage--escape .marble-event-mark { background: #e2f1ed; color: #357b70; }
+.marble-event-stage--win .marble-event-mark { background: #f8e8ba; color: #997328; }
+.marble-event-stage.is-animating.marble-event-stage--win .marble-event-mark::before, .marble-event-stage.is-animating.marble-event-stage--win .marble-event-mark::after { position: absolute; z-index: 0; width: 2px; height: 4px; border-radius: 1px; background: #d49b43; content: ''; opacity: 0; }
+.marble-event-stage.is-animating.marble-event-stage--win .marble-event-mark::before { box-shadow: 11px -6px #789b75, -10px -8px #d77d78; animation: marble-win-confetti 680ms ease-out both; }
+.marble-event-stage.is-animating.marble-event-stage--win .marble-event-mark::after { box-shadow: -11px 6px #8a77aa, 10px 8px #d49b43; animation: marble-win-confetti 680ms 55ms ease-out both; }
+.marble-event-stage.is-animating.marble-event-stage--event-card .marble-event-card-face, .marble-event-stage.is-animating.marble-event-stage--monopoly-warning .marble-event-card-face { transform-origin: center; animation: marble-card-flip 720ms cubic-bezier(.2,.75,.25,1) both; }
+.marble-event-stage.is-animating.marble-event-stage--monopoly-warning .marble-event-alert { stroke: #b34d48; stroke-width: 2.3; animation: marble-warning-pop 500ms ease-out both; }
+.marble-event-stage.is-animating.marble-event-stage--buy .marble-event-mark::before, .marble-event-stage.is-animating.marble-event-stage--buy .marble-event-mark::after { position: absolute; z-index: 0; width: 3px; height: 3px; border-radius: 50%; background: #c4933b; content: ''; opacity: 0; }
+.marble-event-stage.is-animating.marble-event-stage--buy .marble-event-mark::before { box-shadow: 10px -12px #c4933b, -10px -9px #e7ad54; animation: marble-buy-spark 580ms ease-out both; }
+.marble-event-stage.is-animating.marble-event-stage--buy .marble-event-mark::after { box-shadow: -11px 8px #c4933b, 11px 7px #e7ad54; animation: marble-buy-spark 580ms 60ms ease-out both; }
+.marble-event-stage.is-animating.marble-event-stage--build .marble-event-build-symbol rect { transform-box: fill-box; transform-origin: bottom; animation: marble-build-rise 420ms cubic-bezier(.2,.8,.2,1) both; }
+.marble-event-stage.is-animating.marble-event-stage--build .marble-event-build-symbol rect:nth-of-type(2) { animation-delay: 70ms; }
+.marble-event-stage.is-animating.marble-event-stage--build .marble-event-build-symbol rect:nth-of-type(3) { animation-delay: 140ms; }
+.marble-event-stage.is-animating.marble-event-stage--rent .marble-event-symbol circle { animation: marble-rent-transfer 550ms ease-in-out both; }
+.marble-event-stage.is-animating.marble-event-stage--rent .marble-event-symbol circle:nth-of-type(2) { animation-delay: 70ms; }
+.marble-event-stage.is-animating.marble-event-stage--loan .marble-contract-stamp, .marble-event-stage.is-animating.marble-event-stage--repay .marble-contract-stamp { stroke: #4d8269; stroke-width: 2.4; stroke-dasharray: 12; stroke-dashoffset: 12; animation: marble-contract-stamp 440ms 180ms ease-out forwards; }
+.marble-event-stage.is-animating.marble-event-stage--crisis .marble-event-mark, .marble-event-stage.is-animating.marble-event-stage--bankruptcy .marble-event-mark { animation: marble-crisis-pulse 580ms ease-out both; }
+.marble-event-stage.is-animating.marble-event-stage--island .marble-event-island-symbol circle { stroke-dasharray: 76; stroke-dashoffset: 76; animation: marble-island-ring 750ms ease-out forwards; }
+.marble-event-stage.is-animating.marble-event-stage--train .marble-event-route-symbol path { stroke-dasharray: 55; stroke-dashoffset: 55; animation: marble-route-draw 650ms ease-out forwards; }
+.marble-event-stage.is-animating.marble-event-stage--win .marble-event-win-symbol { animation: marble-win-spark 720ms cubic-bezier(.15,.75,.2,1) both; }
+.marble-event-copy { min-width: 0; flex: 1; }
+.marble-event-heading { display: flex; align-items: baseline; gap: 0.45rem; }
+.marble-event-heading strong { font-size: 0.9rem; line-height: 1.25; }
+.marble-event-heading span { color: var(--muted, #71685f); font-size: 0.75rem; }
+.marble-event-copy p { margin: 0.18rem 0 0; color: var(--muted, #71685f); font-size: 0.8rem; line-height: 1.35; }
+.marble-event-transfer { display: inline-flex; flex: 0 0 auto; align-items: center; gap: 0.3rem; color: var(--muted, #71685f); font-size: 0.72rem; white-space: nowrap; }
+.marble-event-transfer i { color: #9c7940; font-style: normal; }
+.marble-event-amount { flex: 0 0 auto; color: #357b61; font-variant-numeric: tabular-nums; font-size: 0.95rem; }
+.marble-event-amount.is-negative { color: #a84e4f; }
+.marble-event-amount.is-assessment { display: flex; flex-direction: column; align-items: flex-end; color: #a84e4f; font-size: 0.82rem; }
+.marble-event-amount.is-assessment span { color: var(--muted, #71685f); font-size: 0.64rem; font-weight: 500; }
+.marble-event-stage.is-animating { animation: marble-event-arrive 620ms cubic-bezier(.2,.75,.25,1) both; }
+
+@keyframes marble-event-arrive {
+  0% { opacity: 0.3; transform: translateY(8px) scale(0.985); }
+  65% { opacity: 1; transform: translateY(-2px) scale(1.006); }
+  100% { opacity: 1; transform: translateY(0) scale(1); }
+}
+@keyframes marble-card-flip { 0% { opacity: 0.2; transform: rotateY(-78deg) translateY(3px); } 65% { opacity: 1; transform: rotateY(10deg); } 100% { opacity: 1; transform: rotateY(0); } }
+@keyframes marble-warning-pop { 0% { opacity: 0; transform: scale(.4); } 60% { opacity: 1; transform: scale(1.25); } 100% { opacity: 1; transform: scale(1); } }
+@keyframes marble-buy-spark { 0% { opacity: 0; transform: scale(.4); } 18% { opacity: 1; } 100% { opacity: 0; transform: scale(1.4) translateY(-3px); } }
+@keyframes marble-build-rise { 0% { transform: scaleY(.1); opacity: .35; } 75% { transform: scaleY(1.08); opacity: 1; } 100% { transform: scaleY(1); opacity: 1; } }
+@keyframes marble-rent-transfer { 0% { opacity: .5; transform: translateX(2px) scale(.75); } 65% { opacity: 1; } 100% { transform: translateX(0) scale(1); } }
+@keyframes marble-contract-stamp { to { stroke-dashoffset: 0; } }
+@keyframes marble-crisis-pulse { 0% { box-shadow: 0 0 0 0 #bd625033; } 55% { box-shadow: 0 0 0 7px #bd62501c; } 100% { box-shadow: 0 0 0 9px transparent; } }
+@keyframes marble-island-ring { to { stroke-dashoffset: 0; } }
+@keyframes marble-route-draw { to { stroke-dashoffset: 0; } }
+@keyframes marble-win-spark { 0% { opacity: .4; transform: rotate(-16deg) scale(.62); } 60% { opacity: 1; transform: rotate(8deg) scale(1.13); } 100% { opacity: 1; transform: rotate(0) scale(1); } }
+@keyframes marble-win-confetti { 0% { opacity: 0; transform: translateY(1px) scale(.4) rotate(0); } 20% { opacity: 1; } 100% { opacity: 0; transform: translateY(-13px) scale(1) rotate(38deg); } }
+
+.marble-event-stage:not(.is-animating) *,
+.marble-event-stage:not(.is-animating) *::before,
+.marble-event-stage:not(.is-animating) *::after { animation: none; }
+
+@media (prefers-reduced-motion: reduce) {
+  .marble-event-stage.is-animating,
+  .marble-event-stage.is-animating *,
+  .marble-event-stage.is-animating *::before,
+  .marble-event-stage.is-animating *::after { animation: none !important; transition: none !important; }
+  .marble-event-stage--island .marble-event-island-symbol circle,
+  .marble-event-stage--train .marble-event-route-symbol path,
+  .marble-event-stage--loan .marble-contract-stamp,
+  .marble-event-stage--repay .marble-contract-stamp { stroke-dashoffset: 0; }
+}

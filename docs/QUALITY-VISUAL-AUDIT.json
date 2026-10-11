@@ -1,0 +1,471 @@
+{
+  "auditDate": "2026-10-11T08:11:00Z",
+  "scope": "Read-only visual/UX inspection of7 current native game screens; no production code changes.",
+  "fixture": "Local Vite5191 / PGlite54322 native SQL fixture rooms; separate KO and ES contexts; manual refresh because fixture has noRealtime. Not a live commercial-service test.",
+  "captures": [
+    {
+      "game": "davinci",
+      "date": "2026-10-11T08:10:41.936Z",
+      "screenshots": {
+        "ko": "output/playwright/sol-visual-audit/davinci-ko-1440x900.png",
+        "koBoard": "output/playwright/sol-visual-audit/davinci-ko-board.png",
+        "es": "output/playwright/sol-visual-audit/davinci-es-1920x1080.png",
+        "esBoard": "output/playwright/sol-visual-audit/davinci-es-board.png"
+      },
+      "measurements": {
+        "ko": {
+          "viewport": {
+            "width": 1440,
+            "height": 900
+          },
+          "documentWidth": 1440,
+          "documentHeight": 1890,
+          "board": {
+            "x": 112,
+            "y": 194,
+            "width": 1216,
+            "height": 742,
+            "bottom": 936
+          },
+          "brokenImages": []
+        },
+        "es": {
+          "viewport": {
+            "width": 1920,
+            "height": 1080
+          },
+          "documentWidth": 1920,
+          "documentHeight": 2083,
+          "board": {
+            "x": 352,
+            "y": 296,
+            "width": 1216,
+            "height": 758,
+            "bottom": 1054
+          },
+          "brokenImages": []
+        }
+      },
+      "findings": {
+        "quality": "Readable tile material and numerals; oversized panel hierarchy makes this feel like a dashboard rather than a compact deduction table.",
+        "state": "Initial hand preparation; current setup phase own rack is visible at KO 1440×900. Previous active-phase screenshot had rack below the fold and is not used as current-state proof.",
+        "issues": [
+          "Board begins y194 KO / y296 ES. Two nearly full-width racks hold only four left-aligned tiles, leaving most of their panel area empty.",
+          "Large header, phasebar and standalone setup message compete with the tiles. Board ends y936 KO, beyond viewport."
+        ],
+        "direction": "Charcoal deduction desk: opposing centered tile rails around one compact central guess tray; compact score/phase ribbon, contextual controls beside selected tile.",
+        "sourcePaths": [
+          "src/app/DaVinciTable.tsx",
+          "src/styles/davinci-premium.css"
+        ]
+      }
+    },
+    {
+      "game": "catchmind",
+      "date": "2026-10-11T08:10:47.600Z",
+      "screenshots": {
+        "ko": "output/playwright/sol-visual-audit/catchmind-ko-1440x900.png",
+        "koBoard": "output/playwright/sol-visual-audit/catchmind-ko-board.png",
+        "es": "output/playwright/sol-visual-audit/catchmind-es-1920x1080.png",
+        "esBoard": "output/playwright/sol-visual-audit/catchmind-es-board.png"
+      },
+      "measurements": {
+        "ko": {
+          "viewport": {
+            "width": 1440,
+            "height": 900
+          },
+          "documentWidth": 1440,
+          "documentHeight": 1635,
+          "board": {
+            "x": 29,
+            "y": 194,
+            "width": 1084,
+            "height": 580,
+            "bottom": 774
+          },
+          "brokenImages": []
+        },
+        "es": {
+          "viewport": {
+            "width": 1920,
+            "height": 1080
+          },
+          "documentWidth": 1920,
+          "documentHeight": 1759,
+          "board": {
+            "x": 251,
+            "y": 296,
+            "width": 1120,
+            "height": 577,
+            "bottom": 873
+          },
+          "brokenImages": []
+        }
+      },
+      "findings": {
+        "quality": "Strongest usable initial composition: main task and chat are both visible, but word selection reads as a generic white form.",
+        "state": "Word-selection phase only; drawing, guesses and reward transition not captured.",
+        "issues": [
+          "Three word cards are plain outlined text rectangles with minimal illustration or personality.",
+          "The same two scores appear in top score strip and side round status. Blank space dominates preparation panel.",
+          "Tiny instruction/status labels lack a clear second-level type hierarchy."
+        ],
+        "direction": "Warm artist studio: large paper canvas, one compact palette/tool rail, playful hand-drawn word cards, chat as a narrow shared notebook.",
+        "sourcePaths": [
+          "src/app/CatchmindTable.tsx",
+          "src/app/catchmind-table.css"
+        ]
+      }
+    },
+    {
+      "game": "domino",
+      "date": "2026-10-11T08:10:52.122Z",
+      "screenshots": {
+        "ko": "output/playwright/sol-visual-audit/domino-ko-1440x900.png",
+        "koBoard": "output/playwright/sol-visual-audit/domino-ko-board.png",
+        "es": "output/playwright/sol-visual-audit/domino-es-1920x1080.png",
+        "esBoard": "output/playwright/sol-visual-audit/domino-es-board.png"
+      },
+      "measurements": {
+        "ko": {
+          "viewport": {
+            "width": 1440,
+            "height": 900
+          },
+          "documentWidth": 1440,
+          "documentHeight": 2676,
+          "board": {
+            "x": 29,
+            "y": 194,
+            "width": 1382,
+            "height": 1172,
+            "bottom": 1366
+          },
+          "brokenImages": []
+        },
+        "es": {
+          "viewport": {
+            "width": 1920,
+            "height": 1080
+          },
+          "documentWidth": 1920,
+          "documentHeight": 2650,
+          "board": {
+            "x": 251,
+            "y": 296,
+            "width": 1418,
+            "height": 918,
+            "bottom": 1214
+          },
+          "brokenImages": []
+        }
+      },
+      "findings": {
+        "quality": "Tile material and felt are plausible; oversized informational cards and owner setup panel dominate the playable area.",
+        "state": "Initial round; KO owner configuration shown, ES guest configuration collapsed.",
+        "issues": [
+          "KO initial board height1172; own playable hand is below viewport while 6 setup selects fill its bottom.",
+          "Duplicated full-width team summary and seat panels consume about175px before the felt.",
+          "ES own tiles look washed out while waiting; distinction between disabled and readable physical tiles needs improvement."
+        ],
+        "direction": "Dominican club table: center continuous felt with compact opponent/team badges around perimeter; own ivory tiles docked at bottom; configuration collapsed in one control after room setup.",
+        "sourcePaths": [
+          "src/app/DominoBoard.tsx",
+          "src/styles/domino-premium.css",
+          "src/app/DominoTile.tsx"
+        ]
+      }
+    },
+    {
+      "game": "jaipur",
+      "date": "2026-10-11T08:10:57.687Z",
+      "screenshots": {
+        "ko": "output/playwright/sol-visual-audit/jaipur-ko-1440x900.png",
+        "koBoard": "output/playwright/sol-visual-audit/jaipur-ko-board.png",
+        "es": "output/playwright/sol-visual-audit/jaipur-es-1920x1080.png",
+        "esBoard": "output/playwright/sol-visual-audit/jaipur-es-board.png"
+      },
+      "measurements": {
+        "ko": {
+          "viewport": {
+            "width": 1440,
+            "height": 900
+          },
+          "documentWidth": 1440,
+          "documentHeight": 2448,
+          "board": {
+            "x": 29,
+            "y": 194,
+            "width": 1382,
+            "height": 1224,
+            "bottom": 1419
+          },
+          "brokenImages": []
+        },
+        "es": {
+          "viewport": {
+            "width": 1920,
+            "height": 1080
+          },
+          "documentWidth": 1920,
+          "documentHeight": 2651,
+          "board": {
+            "x": 251,
+            "y": 296,
+            "width": 1418,
+            "height": 1225,
+            "bottom": 1522
+          },
+          "brokenImages": []
+        }
+      },
+      "findings": {
+        "quality": "Consistent warm palette and goods silhouettes; card faces resemble oversized icon dashboard panels and delay access to the actual hand and token supply.",
+        "state": "Initial market, hand and supply.",
+        "issues": [
+          "Market faces are hard-coded230px high; own hand starts aroundy863 KO and y951 ES.",
+          "Supply/token collection is below the visible screen in both viewports.",
+          "Repeated rounded ivory shells (scores, market, opponent, hand, herd, supply) flatten hierarchy and lose the tabletop focus.",
+          "Camel/goods art is internally coherent but simple isolated SVG icons leave large blank card areas; a more authored card face system needs artwork and card framing, not only CSS shades."
+        ],
+        "direction": "Illustrated desert bazaar: compact portrait goods cards with full card composition, market and hand in neighboring rows, six tangible token stacks on a lateral supply rail.",
+        "sourcePaths": [
+          "src/app/JaipurBoard.tsx",
+          "src/app/JaipurArt.tsx",
+          "src/styles/jaipur-premium.css"
+        ]
+      }
+    },
+    {
+      "game": "splendor",
+      "date": "2026-10-11T08:11:03.528Z",
+      "screenshots": {
+        "ko": "output/playwright/sol-visual-audit/splendor-ko-1440x900.png",
+        "koBoard": "output/playwright/sol-visual-audit/splendor-ko-board.png",
+        "es": "output/playwright/sol-visual-audit/splendor-es-1920x1080.png",
+        "esBoard": "output/playwright/sol-visual-audit/splendor-es-board.png"
+      },
+      "measurements": {
+        "ko": {
+          "viewport": {
+            "width": 1440,
+            "height": 900
+          },
+          "documentWidth": 1440,
+          "documentHeight": 2770,
+          "board": {
+            "x": 112,
+            "y": 194,
+            "width": 1216,
+            "height": 1546,
+            "bottom": 1741
+          },
+          "brokenImages": []
+        },
+        "es": {
+          "viewport": {
+            "width": 1920,
+            "height": 1080
+          },
+          "documentWidth": 1920,
+          "documentHeight": 2800,
+          "board": {
+            "x": 352,
+            "y": 296,
+            "width": 1216,
+            "height": 1399,
+            "bottom": 1696
+          },
+          "brokenImages": []
+        }
+      },
+      "findings": {
+        "quality": "Actual illustrated card faces materially improve quality, but the interaction shells prevent the complete market from being scanned in one view.",
+        "state": "Initial market, nobles and bank; no purchase/reward capture.",
+        "issues": [
+          "Board height1546 KO /1399 ES; only top tier fully fits KO1440×900, bottom tier and treasury are not visible in either viewport.",
+          "Each market tier is about260–300px high because every card carries a bonus label and action tray underneath.",
+          "Noble portraits repeat their printed requirements using adjacent HTML gem chips; development card costs are printed only and are NOT duplicated in HTML.",
+          "Bank token drawings are thin outlined circular controls beside richer photographic card art; materials do not match within this game."
+        ],
+        "direction": "Renaissance jeweler tabletop: all three4-card tier rows simultaneously visible, portrait noble tiles across top, tactile gem stacks on right, acquisition/reservation tray below; card actions reveal on selection.",
+        "sourcePaths": [
+          "src/app/TableGames.tsx",
+          "src/styles/splendor-premium.css",
+          "public/images/splendor/card-map.json"
+        ]
+      }
+    },
+    {
+      "game": "marble",
+      "date": "2026-10-11T08:11:11.326Z",
+      "screenshots": {
+        "ko": "output/playwright/sol-visual-audit/marble-ko-1440x900.png",
+        "koBoard": "output/playwright/sol-visual-audit/marble-ko-board.png",
+        "es": "output/playwright/sol-visual-audit/marble-es-1920x1080.png",
+        "esBoard": "output/playwright/sol-visual-audit/marble-es-board.png"
+      },
+      "measurements": {
+        "ko": {
+          "viewport": {
+            "width": 1440,
+            "height": 900
+          },
+          "documentWidth": 1440,
+          "documentHeight": 2520,
+          "board": {
+            "x": 29,
+            "y": 194,
+            "width": 1382,
+            "height": 1075,
+            "bottom": 1270
+          },
+          "brokenImages": []
+        },
+        "es": {
+          "viewport": {
+            "width": 1920,
+            "height": 1080
+          },
+          "documentWidth": 1920,
+          "documentHeight": 2836,
+          "board": {
+            "x": 251,
+            "y": 296,
+            "width": 1418,
+            "height": 1113,
+            "bottom": 1409
+          },
+          "brokenImages": []
+        }
+      },
+      "findings": {
+        "quality": "Distinct pawns and40-space layout are recognizable, but small repeated city thumbnails and dense microtext compete with navigation around a partially clipped board.",
+        "state": "Initial pawn selection/roll panel; no movement/reward capture.",
+        "issues": [
+          "Board height1075 KO /1113 ES; lower perimeter spaces fall below visible viewport.",
+          "A six-option pawn selection panel occupies the board center while center/table itself extends beyond the screen.",
+          "City thumbnails are small with no strong city or region identity; price/rent/name/flag/art all compete in a narrow tile.",
+          "Owner action column is readable but needs a clear purchase/rent/balance hierarchy when the board is fit to screen."
+        ],
+        "direction": "Bright illustrated travel board: square viewport-fit perimeter, flat legible tile faces with one city motif each, large animated pawn movement, one contextual action drawer at side; pawn chooser closes after selection.",
+        "sourcePaths": [
+          "src/app/MarbleBoard.tsx",
+          "src/styles/marble-premium.css",
+          "src/app/MarblePawn.tsx"
+        ]
+      }
+    },
+    {
+      "game": "minhwatu",
+      "date": "2026-10-11T08:11:20.889Z",
+      "screenshots": {
+        "ko": "output/playwright/sol-visual-audit/minhwatu-ko-1440x900.png",
+        "koBoard": "output/playwright/sol-visual-audit/minhwatu-ko-board.png",
+        "es": "output/playwright/sol-visual-audit/minhwatu-es-1920x1080.png",
+        "esBoard": "output/playwright/sol-visual-audit/minhwatu-es-board.png"
+      },
+      "measurements": {
+        "ko": {
+          "viewport": {
+            "width": 1440,
+            "height": 900
+          },
+          "documentWidth": 1440,
+          "documentHeight": 3428,
+          "board": {
+            "x": 29,
+            "y": 194,
+            "width": 1382,
+            "height": 1006,
+            "bottom": 1200
+          },
+          "brokenImages": []
+        },
+        "es": {
+          "viewport": {
+            "width": 1920,
+            "height": 1080
+          },
+          "documentWidth": 1920,
+          "documentHeight": 3589,
+          "board": {
+            "x": 251,
+            "y": 296,
+            "width": 1418,
+            "height": 1014,
+            "bottom": 1311
+          },
+          "brokenImages": []
+        }
+      },
+      "findings": {
+        "quality": "Consistent48-card art and flattened individual field cards are a meaningful improvement; the stacked board composition still hides the hand actions and collection.",
+        "state": "Current native initial deal after Luna flattening and capturable hand highlights; scoring/Godori changes were in progress around capture time.",
+        "issues": [
+          "Board starts y194 KO and ends y1200; hand starts abouty730, while both capture racks are lower than viewport.",
+          "Field rows, reveal help, centered dealt-event pill, phase message, hand area, event history, capture racks and scoring disclosure are vertically serialized.",
+          "Thick wooden/brown surrounds consume more space than a compact game table needs. Capture categories are only visible after scrolling away from the actual playable hand.",
+          "Hand month labels are embedded in card art; some card identities would benefit from clear accessible categorization without expanding per-card chrome."
+        ],
+        "direction": "Classic Korean hwatu table: large central green field with ten-card hand docked below; compact opposing score rails; capture categories on two side rails; reveal/reward temporarily presented on the table where capture occurs.",
+        "sourcePaths": [
+          "src/app/MinhwatuTable.tsx",
+          "src/styles/minhwatu-table.css",
+          "src/app/BoardGames.tsx"
+        ]
+      }
+    }
+  ],
+  "sharedFindings": [
+    "All boards start at y194 in KO1440×900 and y296 in ES1920×1080. ES wider viewport preserves more top spacing rather than gaining proportional play space.",
+    "No initial captures show horizontal page overflow or broken images; these are implementation checks, not evidence of commercial visual quality.",
+    "Five games except Catchmind and initial-setup DaVinci hide major game areas below the screen. Finishing gradients or borders cannot solve this composition gap.",
+    "Visual identity may differ between games; consistency is required within each game between art, tokens, card faces, control materials and state presentation."
+  ],
+  "acceptanceChecks": [
+    {
+      "name": "Desktop composition",
+      "criteria": "At KO1440×900 and ES1920×1080, viewport includes player hand, central public board, primary action and both score/turn states without page scroll. Optional rules/logs/settings may scroll or collapse."
+    },
+    {
+      "name": "Playable focus",
+      "criteria": "Global and room/game chrome together use no more than150px at both target viewports; no repeated full-size game title or duplicate score panels."
+    },
+    {
+      "name": "Full market and collections",
+      "criteria": "Splendor shows all12 development cards and3 nobles plus bank/treasury; Jaipur shows5 market cards, up to7 hand cards and6 supply stacks; Minhwatu shows current field, hand and both capture category summaries; Marble shows all40 perimeter spaces."
+    },
+    {
+      "name": "Readable materials",
+      "criteria": "Core card identifiers/resources/amounts remain readable at screenshot100%; essential labels at least12px, important numbers at least16px; card art keeps natural aspect ratio and decoded images."
+    },
+    {
+      "name": "Control legibility",
+      "criteria": "Primary turn control has44px target; unavailable actions remain readable but visually secondary. Keyboard focus/selected target differs visibly from merely playable state."
+    },
+    {
+      "name": "Art coherence",
+      "criteria": "Each game has one approved direction for faces, backs, tokens, board and controls. Review actual full screen at100% and object close-up; no emoji placeholder main game pieces or unexplained generic icon card fronts."
+    },
+    {
+      "name": "Reward presentation",
+      "criteria": "Capture, sale, purchase, correct guess, domino score and marble rent each visibly identify the affected object and confirmed amount, then settle into persistent board/collection state; verify both actor and partner/reduced-motion paths using actual confirmed actions."
+    }
+  ],
+  "limitations": [
+    "Initial native states only for all7; no bounded capture of current active DaVinci guesses, Catchmind drawing, or any reward/terminal state in this audit. Reward checks are proposed criteria, not passing results.",
+    "No mobile, accessibility contrast calculation, live Supabase/Realtimes, full game playtest, or new artwork review. Existing passing unit/integration tests do not validate commercial visual quality.",
+    "Minhwatu source was changing during the session; final consolidated composition implementation is deliberately deferred to next session per request to push repository."
+  ],
+  "nextImplementationOrder": [
+    "Shared desktop room chrome and clear target play-area dimensions.",
+    "Minhwatu consolidated central field/hand + side capture rails after frozen source review; preserve48-card mapping, selected/legal distinction, capture confirm and scoring.",
+    "Splendor complete-market composition and coherent token materials.",
+    "Jaipur market+hand+token-supply composition and authored card-art direction.",
+    "Domino table-first hand/settings composition.",
+    "Marble viewport-fit board and simpler tile information hierarchy.",
+    "DaVinci tighter tile rails/control tray; Catchmind authored studio/word-card visuals."
+  ]
+}

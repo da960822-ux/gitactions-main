@@ -1,0 +1,1 @@
+Country flag SVGs downloaded from https://flagcdn.com/{country-code}.svg. Country codes: kr, do, es, pr, us, fr, jp, cu, mx, pt, gb, it, cl, ph, ca, nz. Public national-flag graphics; these are static country identifiers, not emoji.
