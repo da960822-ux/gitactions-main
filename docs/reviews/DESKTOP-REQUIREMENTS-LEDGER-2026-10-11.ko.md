@@ -49,3 +49,5 @@
 대체 자산 전송 상태(부모 전달):32개 PNG blob은 있으나 공개 승인 검토가 정확한 증거 재전달 한 번 뒤에도 거절. 사유는 공개 repo와 비공개 의도, 개인적 리스연 인형 자산. assets/premium-marble-20261011은4ac2808 원본에 머물고 자산 tree/commit 없음. 이 실행기는 branch/blob을 가져오지 않았으며 local bytes0·미적용. 이는 공식 Library 전달 실패(25개 시도 각2회)와 **별도 공개 게시 승인 대기**다. 사용자 답변 대기, 같은 경로 반복/직접 blob 다운로드/다른 공개 브랜치 우회 금지. 인물 사진·새 조커·귀족은 공개 전달에서 제외하고 별도 비공개 경로 대기.
 
 위 공개 게시 승인 대기는 후속 사용자 답변으로 **건물·게임말32개 한정 해결**됐다. 공개repo와 개인사진/새조커/귀족 제외를 명시한 질문에 승인했고 부모가 같은 pending tree 재개 중. 아직 확정 SHA/소비자bytes 없음. 후속 게임 코드 push 승인과는 별개다.
+
+최신 실제 자산 연결: 승인 원격 ccec83d를 fetch해32파일52,604,560bytes 원본/alpha/pixels/SHA256/Gitblob 확인. WebP32파일6,390,196bytes, 원본비율/전체canvas 유지와 lossless resizedRGBA decode검증, 실제경로 연결. 공통1/2단계는 같은raster shape를 도시 palette로 roof/neutral masonry tint한다. 새이미지가 적용된 코드 상태이나 인게임 검수 미실행. 추가 살리·술리7번째 말과 새 개인조커2시안은 아직 적용안함. fetch로 f0/5f/1c 원본 객체가 모두 확보돼 이제 통합 진행 예정.

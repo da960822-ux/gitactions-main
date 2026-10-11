@@ -22,14 +22,16 @@ describe('Marble property shapes', () => {
       expect(render(asset.slug, 2)).toContain('building-stages.svg#building');
     }
   });
-  it('keeps the approved route inventory complete without requesting missing generated files', () => {
+  it('connects the complete approved route inventory to local verified WebP assets', () => {
     const tiles = marbleEngine.getPlayerView(marbleEngine.createInitialState(1), 'p1').board.tiles;
     expect(dioramas.assets).toHaveLength(24);
     for (const asset of dioramas.assets) {
       expect(tiles[asset.tileIndex].name.es).toBe(asset.city);
       const html = renderToStaticMarkup(createElement(MarblePropertyArt, { city: asset.slug, level: 3, routeVersion: 3, language: 'es' }));
-      if (asset.path) expect(existsSync(`public${asset.path}`)).toBe(true);
-      else { expect(html).toContain('Imagen pendiente'); expect(html).not.toContain('<img'); }
+      expect(asset.path).toBe(`/images/marble/dioramas/${asset.slug}.webp`);
+      expect(existsSync(`public${asset.path}`)).toBe(true);
+      expect(html).toContain(asset.path!);
+      expect(html).not.toContain('Imagen pendiente');
     }
   });
   it('gives all 24 cities the same first and second building shapes and individual colors', () => {
@@ -43,6 +45,20 @@ describe('Marble property shapes', () => {
       expect(render(slug, 3)).not.toContain('building-stages.svg');
     }
     expect(render('gwangju', 1)).not.toBe(render('santo-domingo', 1));
+  });
+  it('uses the same verified common raster shapes with city tinting and preserves unbuilt land', () => {
+    for (const { slug } of dioramas.assets) {
+      for (const level of [1, 2]) {
+        const html = renderToStaticMarkup(createElement(MarblePropertyArt, { city: slug, level, routeVersion: 3 }));
+        expect(html).toContain(level === 1 ? dioramas.commonStages.house.path! : dioramas.commonStages.apartment.path!);
+        expect(html).toContain('data-city-color="#');
+        expect(html).toContain('mode="multiply"');
+        expect(html).not.toContain('building-stages.svg');
+      }
+      const unbuilt = renderToStaticMarkup(createElement(MarblePropertyArt, { city: slug, level: 0, routeVersion: 3 }));
+      expect(unbuilt).toContain('building-stages.svg#land');
+      expect(unbuilt).not.toContain('.webp');
+    }
   });
   it('keeps every unbuilt city as land, separate from its final landmark', () => {
     for (const asset of journeyManifest.assets) {

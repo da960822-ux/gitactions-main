@@ -1,6 +1,6 @@
-# 새 부루마블 자산 전달의 두 차단 항목
+# 새 부루마블 자산 전달 기록
 
-현재 새 raster 이미지의 소비자 로컬 파일·pixels·최적화·실제 적용은 모두 미완료다. 생성 준비, Library 승인 버전, 공개 게시 승인, 소비자 다운로드 성공은 서로 다른 상태다.
+최신 상태: 승인 asset commit ccec83d의32개 원본을 실제 fetch/로컬 읽기/해시/pixels 확인했고, 최적화 WebP32개를 연결했다. 아래 두 차단 기록은 전달 성공 전 이력이다. 최종 인게임 품질 검수·새 개인 이미지 전달·후속 코드 push는 아직 별도 대기다. 생성 준비, Library 승인 버전, 공개 게시 승인, 소비자 다운로드 성공은 서로 다른 상태다.
 
 1. **지원되는 Library 전달 실패**: 이 실행기에 ID가 전달된25개는 prepare resolve 성공. 공식 helper 다운로드와 별도 소비자 로컬 목적지 한 번 재시도 모두 `library file transfer failed: download failed`, bytes0. 더 반복하지 않는다. 파일별 ID/버전/선언크기는 `assets/library-materialization-status-2026-10-11.json`이며 선언크기를 실제 로컬 bytes로 세지 않는다.
 2. **대체 공개 전달 SHA 대기**: 부모가 보고한32개 PNG blob에는24도시·공통 건물2·게임말6 준비물이 있다. 그러나 공개 게시 자동 검토는 정확한 사용자 증거 재전달 한 번 뒤에도 거절됐다. 사유는 공개 repo/비공개 의도/리스연 개인 인형 자산이다. 거절 후 부모가 공개 저장소와 인물 사진·귀족·커플초상 제외를 명시해 질문했고, 사용자가 건물·게임말32개 공개 업로드를 승인했다. 부모 자산 담당이 같은 pending tree를 재개 중이며 완료 SHA를 기다린다. 이 게임 후속 코드 push 승인은 별개로 대기다. 소비자 실행기는 이 공개 경로를 성공했다고 보고하지 않는다.
@@ -14,3 +14,5 @@
 환경 연결/로컬 코드 커밋/복원 bundle은 정상이다. 공개 push·인게임 반복 검수는 보류하며, 최종 전체 통합본 QA는 Luna 분리 두 세션으로 진행한다. 전체 게임 완료 판정은 없다.
 
 최신 승인 적용: 공개32자산 게시 승인만 해결됐다. 전달 commit/SHA·실제 bytes는 아직 미완료이므로 위 Library 실패 기록·미적용 상태를 성공으로 바꾸지 않는다.
+
+전달 완료 근거: `assets/marble-raster-verification-ccec83d.json`. 원본32개 총52,604,560bytes와 각각 SHA256/Gitblob/bytes 일치. Lossless WebP는 max512도시/건물,max384말,비율과전체alpha캔버스 보존이며 resizedRGBA와 decodebytes 일치. 출력총6,390,196bytes. 실제 원본은 output 추출본과 ccec83d 원격 원본으로 보존. 원본 PNG 그림/palette는 바꾸지 않았다. 공통 건물은 renderer가 따뜻한 지붕/중립 벽체 영역을 도시 palette로 multiply해 shape/lighting을 유지한다. 이 tint와 전체 화면은 아직 final in-game 검수하지 않았다.

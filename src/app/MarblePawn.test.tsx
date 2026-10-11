@@ -18,8 +18,8 @@ describe('Marble pawn selection', () => {
     expect(html).toContain('aria-pressed="true"');
     expect(html).toContain('판다');
     expect(html).toContain('disabled=""');
-    expect(html).toContain('aria-label="말티푸"');
-    expect(html).toContain('aria-label="친칠라"');
+    expect(html).toContain('alt="말티푸"');
+    expect(html).toContain('alt="친칠라"');
     expect(html).toContain('상대 말');
     expect(html).toContain('선택</span>');
     expect(html).not.toContain('ACTION ID');

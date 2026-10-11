@@ -54,3 +54,5 @@
 최신 전달 도시12도 동일 materialization 초기+retry 실패. 현재 부루마블25개 bytes0. 다빈치 최종 아트 요구는 새 사진2장 캐리커처·비공개 사용으로 변경; 기존 크롭 기본 경로 제거, private runtime injection 구조 준비. 새 조커 파일은 아직 부모 사진 확보/제작 대기.
 
 후속 private joker 주입/리스연 관련18 회귀 통과. TypeScript/Vite/Edge 빌드는 타입 오류1건 수정 후 통과. 새 이미지 bytes0 및 후속 CSS 화면 검수 미실행 상태는 유지한다.
+
+최신 전송은 해결됨: ccec83d 원본32 해시/bytes/pixels 확인 뒤 WebP32 경로 연결.32원본52.6MB→6.39MB, lossless resizedRGBA 확인. 공통 단계는동일형태/도시색 tint renderer. 인게임 검수는아직미실행. f0/5f/1c 객체확보 후 승인소스 통합 진행 예정. 조커 새시안 사용자승인과 별개로 개인bytes없음/비공개적용대기. 추가두반려견 말은아직32범위 밖.

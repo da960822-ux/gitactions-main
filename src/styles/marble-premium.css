@@ -390,8 +390,8 @@
   .is-modern :is(.mp-tile--west,.mp-tile--east):not(.mp-kind-property) .mp-tile-kind { grid-column:2; justify-content:flex-start; font-size:8px; }
   .is-modern .mp-city-preview { position:absolute; left:12px; bottom:43px; z-index:2; display:grid; justify-items:center; width:158px; margin:0; padding:6px; border:1px solid #cbb98b; border-radius:12px; background:#fffaf0f2; box-shadow:0 4px 12px #344c5926; pointer-events:none; }
   .mp-city-preview > :is(img,svg,span) { width:132px; height:132px; object-fit:contain; }
-  .marble-premium img[data-building-level] { object-fit:contain; object-position:center bottom; box-sizing:border-box; padding:3px 2px 0; }
-  .mp-city-preview > img[data-building-level] { padding:8px 5px 0; }
+  .marble-premium :is(img,svg)[data-building-level] { object-fit:contain; object-position:center bottom; box-sizing:border-box; padding:3px 2px 0; }
+  .mp-city-preview > :is(img,svg)[data-building-level] { padding:8px 5px 0; }
   .mp-city-preview figcaption { display:grid; gap:3px; text-align:center; font-size:11px; line-height:1.25; }
   .mp-city-preview figcaption span { font-size:10px; color:#526a61; }
 }

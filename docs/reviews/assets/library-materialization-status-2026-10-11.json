@@ -259,12 +259,13 @@
     "branch": "assets/premium-marble-20261011",
     "branchBase": "4ac2808",
     "pngBlobsReported": 32,
-    "treeCreated": false,
-    "commitCreated": false,
-    "status": "user explicitly approved 32 buildings/game pawns after rejection; parent resumes pending tree; commit SHA pending",
-    "localFiles": 0,
-    "applied": false,
+    "treeCreated": true,
+    "commitCreated": true,
+    "status": "approved asset commit fetched, bytes/hash verified and connected locally; final in-game review pending",
+    "localFiles": 32,
+    "applied": true,
     "excluded": "real people photos, new joker caricatures, noble portraits",
-    "codePushApproval": "separate and still pending"
+    "codePushApproval": "separate and still pending",
+    "commit": "ccec83d87fac6ad1a65dd2b900dec8870ef1c71b"
   }
 }

@@ -12,7 +12,7 @@ describe('MarbleBoard', () => {
     const view = marbleEngine.getPlayerView(marbleEngine.createInitialState(12), 'p1');
     expect(render(view)).not.toContain('mp-flight');
     view.board.lastMove = { sequence: 1, from: 30, to: 15, steps: 25, source: 'train', playerId: 'p1' };
-    expect(render(view)).toContain('Asiana');
+    expect(render(view)).toContain('아시아나');
     expect(render(view)).toContain('둘의 상상 여행');
     expect(render(view)).not.toContain('mp-flight is-flying');
     view.board.lastMove.playerId = 'p2';
@@ -83,11 +83,11 @@ describe('MarbleBoard', () => {
     expect(html).not.toContain('aria-label="랜드마크"');
   });
 
-  it('shows approved route-v3 landmark attribution and a clear pending image', () => {
+  it('shows connected route-v3 landmark attribution and its verified image', () => {
     const view = marbleEngine.getPlayerView(marbleEngine.createInitialState(11), 'p1');
     view.board.positions.p1 = 13;
     expect(render(view, 'es')).toContain('situado en Miami Beach');
-    expect(render(view, 'es')).toContain('Imagen pendiente');
+    expect(render(view, 'es')).toContain('/images/marble/dioramas/miami.webp');
     view.board.positions.p1 = 15;
     expect(render(view)).toContain('디에고 콜론의 거주지');
   });
@@ -191,7 +191,7 @@ describe('MarbleBoard', () => {
     expect(html).toContain('비용 40');
     expect(html).not.toContain('/images/marble/cities/gwangju.svg');
     expect(html).toContain('/images/marble/ownership-card-frame.svg');
-    expect(html).toContain('data-art-pending="gwangju"');
+    expect(html).toContain('/images/marble/dioramas/house.webp');
     expect(html).toContain('건설 단계별 통행료');
     expect(html.indexOf('mp-build-shortcut')).toBeLessThan(html.indexOf('mp-city-detail'));
     expect((html.match(/>별장: 광주 \(40\)/g) ?? []).length).toBe(1);

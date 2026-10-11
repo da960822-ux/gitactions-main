@@ -1,0 +1,589 @@
+{
+  "sourceCommit": "ccec83d87fac6ad1a65dd2b900dec8870ef1c71b",
+  "sourceBranch": "assets/premium-marble-20261011",
+  "originalCount": 32,
+  "originalBytes": 52604560,
+  "sourceHashVerification": "bytes, SHA256 and git blob hashes all match remote source manifest",
+  "optimization": "Preserve aspect ratio/full transparent source canvas; city/building max512 and pawn max384; WebP lossless against resized RGBA. No original crop/shape edits.",
+  "outputs": [
+    {
+      "path": "/images/marble/dioramas/gwangju.webp",
+      "sourcePath": "asset-handoff/marble-premium/cities/gwangju-chosun-university.png",
+      "sourceSha256": "750333c5593f0f284589251514b762ddcf4f3556ff693ad31434e4b7028faaab",
+      "sourceGitBlob": "1b6ab5bc97c646aa5db54291f22abb4c8648910d",
+      "sourceBytes": 1108772,
+      "bytes": 141402,
+      "sha256": "3224160fad81006bc450330e2daabb2ad8403a0d1dec617035de383ac5c7cb4b",
+      "width": 512,
+      "height": 512,
+      "alphaBounds": [
+        0,
+        73,
+        512,
+        381
+      ],
+      "losslessResizedPixelsVerified": true
+    },
+    {
+      "path": "/images/marble/dioramas/new-york.webp",
+      "sourcePath": "asset-handoff/marble-premium/cities/new-york-empire-state.png",
+      "sourceSha256": "5cc22a91dc4471d32def13bcfdd53befa6e948e401f9f46be6ce4d7a9a747d42",
+      "sourceGitBlob": "6d651dddcecec1cc79158d51212482a4320188da",
+      "sourceBytes": 832343,
+      "bytes": 108610,
+      "sha256": "623b71cfb7875e38e5049f60667323f793e13cdd9f84d61e0bc7d4da4fa1203b",
+      "width": 512,
+      "height": 512,
+      "alphaBounds": [
+        37,
+        2,
+        378,
+        509
+      ],
+      "losslessResizedPixelsVerified": true
+    },
+    {
+      "path": "/images/marble/dioramas/madrid.webp",
+      "sourcePath": "asset-handoff/marble-premium/cities/madrid-royal-palace.png",
+      "sourceSha256": "986b52cce7282e1d9e3208724089f6e8d36891dac18c6efeee8248b29a574342",
+      "sourceGitBlob": "e66020983d43202f30950bfdb9f35a7a5001683f",
+      "sourceBytes": 2034409,
+      "bytes": 261944,
+      "sha256": "713c6d5bd3ad048f4e3c70b6492fe6fdc4f281e0a8f2634c156fae92e35e155e",
+      "width": 512,
+      "height": 512,
+      "alphaBounds": [
+        0,
+        13,
+        512,
+        449
+      ],
+      "losslessResizedPixelsVerified": true
+    },
+    {
+      "path": "/images/marble/dioramas/santiago.webp",
+      "sourcePath": "asset-handoff/marble-premium/cities/santiago-restoration-monument.png",
+      "sourceSha256": "ba56754eb8cc722c7eeb698ee27de99c16134cc6f4c7dd71a2230267a1f06301",
+      "sourceGitBlob": "7c727cb2b506ef7b57c9538674844414dc3858c5",
+      "sourceBytes": 1380040,
+      "bytes": 144760,
+      "sha256": "fa5bbcb9942afb886a82736f22208708e2536e4cbee988795e989ebf03a63c75",
+      "width": 427,
+      "height": 512,
+      "alphaBounds": [
+        24,
+        0,
+        423,
+        506
+      ],
+      "losslessResizedPixelsVerified": true
+    },
+    {
+      "path": "/images/marble/dioramas/puerto-plata.webp",
+      "sourcePath": "asset-handoff/marble-premium/cities/puerto-plata-fortaleza-san-felipe.png",
+      "sourceSha256": "840470f9bf925cefc08415f92d868c59b6df85a2a96dce57ed0a868e074ae8b3",
+      "sourceGitBlob": "f037336b33fea40f8df057dcc783c44dbb9d230b",
+      "sourceBytes": 2434260,
+      "bytes": 304546,
+      "sha256": "b6a3adbc2ce5046218f45ad1346bcafb53d2786bc6074a54ed6e39ea43eef210",
+      "width": 512,
+      "height": 512,
+      "alphaBounds": [
+        0,
+        10,
+        512,
+        442
+      ],
+      "losslessResizedPixelsVerified": true
+    },
+    {
+      "path": "/images/marble/dioramas/san-juan.webp",
+      "sourcePath": "asset-handoff/marble-premium/cities/san-juan-el-morro.png",
+      "sourceSha256": "5dcd9214de5299f1f4410922320cf5c913714bc88c8f8d0e17c6eed2204a9d17",
+      "sourceGitBlob": "931b42bb2e70b0a1f989b7ee7629a4961c6cccdf",
+      "sourceBytes": 1944042,
+      "bytes": 254778,
+      "sha256": "5325018a7714605d2063e41304c41ec871a45790919592437e670ae686e626dc",
+      "width": 512,
+      "height": 512,
+      "alphaBounds": [
+        6,
+        17,
+        512,
+        504
+      ],
+      "losslessResizedPixelsVerified": true
+    },
+    {
+      "path": "/images/marble/dioramas/berlin.webp",
+      "sourcePath": "asset-handoff/marble-premium/cities/berlin.png",
+      "sourceSha256": "d973febb8d3c18cc686cc0a47983b090dc0c4eade947a3f5ce74e00d76658a78",
+      "sourceGitBlob": "2c84b8f1b5810946bab64729c83fec0930e83174",
+      "sourceBytes": 2479339,
+      "bytes": 340086,
+      "sha256": "d1d7a77caca40159947369034a48d0fa1acbfc2b4a4112c0df752bf66891d028",
+      "width": 512,
+      "height": 512,
+      "alphaBounds": [
+        0,
+        33,
+        512,
+        502
+      ],
+      "losslessResizedPixelsVerified": true
+    },
+    {
+      "path": "/images/marble/dioramas/miami.webp",
+      "sourcePath": "asset-handoff/marble-premium/cities/miami-colony-hotel.png",
+      "sourceSha256": "4b4d2913ccfa500a377b71b85dff2dbeb0f7803df38d5a599995a766162b31a1",
+      "sourceGitBlob": "2d0b974bd4d2938cfa42540438dbc8ff78fdee12",
+      "sourceBytes": 1855067,
+      "bytes": 260320,
+      "sha256": "f44fe4608240c2df83f1f7b747209ef9d9a13c33c56fb1a52c625c8cf42b486f",
+      "width": 512,
+      "height": 512,
+      "alphaBounds": [
+        0,
+        42,
+        512,
+        504
+      ],
+      "losslessResizedPixelsVerified": true
+    },
+    {
+      "path": "/images/marble/dioramas/santo-domingo.webp",
+      "sourcePath": "asset-handoff/marble-premium/cities/santo-domingo-alcazar.png",
+      "sourceSha256": "7c76a2fa76e6a8974a102acdb99f01d189e4b2aec6a01bebc69a4f2934ab994e",
+      "sourceGitBlob": "138aff182769cfe12205f8598bb8cab9e945a4bf",
+      "sourceBytes": 2158574,
+      "bytes": 281004,
+      "sha256": "7012cc1d685a90ad2d7953c518c4bc13c63cf8aa48f85ac8259c1cb789720af3",
+      "width": 512,
+      "height": 512,
+      "alphaBounds": [
+        0,
+        45,
+        512,
+        490
+      ],
+      "losslessResizedPixelsVerified": true
+    },
+    {
+      "path": "/images/marble/dioramas/paris.webp",
+      "sourcePath": "asset-handoff/marble-premium/cities/paris-eiffel-tower.png",
+      "sourceSha256": "a298b929e7207e42ceeb668849bfea4a2b3f35cbf6dc67e5d581422b12c4656e",
+      "sourceGitBlob": "20c50ca92c1be61e3cbde1f667fe858aaf8660a2",
+      "sourceBytes": 1080236,
+      "bytes": 139498,
+      "sha256": "d3f6d36816758b39030aec34b9445c44bda7608b2fc22a5d99fbe9ee9bf4365b",
+      "width": 512,
+      "height": 512,
+      "alphaBounds": [
+        0,
+        2,
+        501,
+        508
+      ],
+      "losslessResizedPixelsVerified": true
+    },
+    {
+      "path": "/images/marble/dioramas/tokyo.webp",
+      "sourcePath": "asset-handoff/marble-premium/cities/tokyo-kaminarimon.png",
+      "sourceSha256": "fb202f4e753dd66297aae7ef1ff45436f05dcc26fd5608dbc4973cb97ed69409",
+      "sourceGitBlob": "e008d50799c5c922320eb434d47a3b1cfb0da9b9",
+      "sourceBytes": 1963374,
+      "bytes": 272846,
+      "sha256": "5978731552d473d71ca06250ea851f61aa748080b2122ad508432def06f44ece",
+      "width": 512,
+      "height": 512,
+      "alphaBounds": [
+        0,
+        31,
+        512,
+        502
+      ],
+      "losslessResizedPixelsVerified": true
+    },
+    {
+      "path": "/images/marble/dioramas/barcelona.webp",
+      "sourcePath": "asset-handoff/marble-premium/cities/barcelona-sagrada-familia.png",
+      "sourceSha256": "7cf50e9a0760c2ab691aa18d86c65e12887d6ac6c2889dfde99b265bf6d4cfcf",
+      "sourceGitBlob": "03ff417fb61d9c35e57dd89c41d4b29337d6dd75",
+      "sourceBytes": 1691173,
+      "bytes": 239766,
+      "sha256": "5a211f7bafe05145ec199fbad78f119c2eef7912019d25f4c72a5a04544bc3f9",
+      "width": 512,
+      "height": 512,
+      "alphaBounds": [
+        49,
+        8,
+        484,
+        492
+      ],
+      "losslessResizedPixelsVerified": true
+    },
+    {
+      "path": "/images/marble/dioramas/istanbul.webp",
+      "sourcePath": "asset-handoff/marble-premium/cities/istanbul-hagia-sophia.png",
+      "sourceSha256": "61a62773e010af9461c9e28863967774cec02f51df26dc6e9beaf575b69d0f15",
+      "sourceGitBlob": "193413e0e5dd83e22203515aa5e692b2df69464a",
+      "sourceBytes": 2405980,
+      "bytes": 279418,
+      "sha256": "da3b3d48a0580ecf886a4bfb694adb02684a84f56eb85a85f70aca04ee844cd3",
+      "width": 512,
+      "height": 512,
+      "alphaBounds": [
+        7,
+        7,
+        505,
+        500
+      ],
+      "losslessResizedPixelsVerified": true
+    },
+    {
+      "path": "/images/marble/dioramas/havana.webp",
+      "sourcePath": "asset-handoff/marble-premium/cities/havana-el-capitolio.png",
+      "sourceSha256": "278088cd82255afc40b404b60414aae279d0e85aea77cd569e7ea70e6bb0f344",
+      "sourceGitBlob": "1f4406dd0b728879bc0baaa759b6fffbc699a2dd",
+      "sourceBytes": 1871643,
+      "bytes": 233566,
+      "sha256": "6cea4ff767d4409ca82e3c611804051d6db09fb0180e4e8c402668123ee9afc4",
+      "width": 512,
+      "height": 512,
+      "alphaBounds": [
+        0,
+        11,
+        512,
+        501
+      ],
+      "losslessResizedPixelsVerified": true
+    },
+    {
+      "path": "/images/marble/dioramas/mexico-city.webp",
+      "sourcePath": "asset-handoff/marble-premium/cities/mexico-city-bellas-artes.png",
+      "sourceSha256": "4503008a2a3aad55f3b3f7f93b66bacc0ade4f49b734aa11b632c15449169de8",
+      "sourceGitBlob": "5a2c90003ba3e0edb5ee3213337411912012d0ac",
+      "sourceBytes": 2105898,
+      "bytes": 275388,
+      "sha256": "e35864adc393a86f769fe6dedb7e274326a2aa38d6677dbc3a6559ce7797333b",
+      "width": 512,
+      "height": 512,
+      "alphaBounds": [
+        0,
+        28,
+        509,
+        492
+      ],
+      "losslessResizedPixelsVerified": true
+    },
+    {
+      "path": "/images/marble/dioramas/lisbon.webp",
+      "sourcePath": "asset-handoff/marble-premium/cities/lisbon-belem-tower.png",
+      "sourceSha256": "365be29fb5178676851173ab6ce77e6bb44241955fa472855c2cdd4481ea675d",
+      "sourceGitBlob": "27d3db6a9ea0217edbc6c2162d0c8ff5e50f69d2",
+      "sourceBytes": 2153287,
+      "bytes": 280644,
+      "sha256": "32496e1b97af456fb7ad1a868a74059c948fe2a0c16e8aae446f87c9cad4df98",
+      "width": 512,
+      "height": 512,
+      "alphaBounds": [
+        22,
+        5,
+        497,
+        503
+      ],
+      "losslessResizedPixelsVerified": true
+    },
+    {
+      "path": "/images/marble/dioramas/london.webp",
+      "sourcePath": "asset-handoff/marble-premium/cities/london-elizabeth-tower.png",
+      "sourceSha256": "5dd6afd48ed039a8239389d4396958ad432d9f73dee1548177814467007f6612",
+      "sourceGitBlob": "1d49f23f14aff05fcf90237460147f2bba06eef1",
+      "sourceBytes": 811761,
+      "bytes": 101966,
+      "sha256": "bdd52dbcd9a0b1084947139103b8300aed07455bb0a864fe5c291566b5219201",
+      "width": 512,
+      "height": 512,
+      "alphaBounds": [
+        33,
+        5,
+        477,
+        507
+      ],
+      "losslessResizedPixelsVerified": true
+    },
+    {
+      "path": "/images/marble/dioramas/rome.webp",
+      "sourcePath": "asset-handoff/marble-premium/cities/rome-colosseum.png",
+      "sourceSha256": "ae7d8fa55cf63774fd1efcdd79fcfb924bd7213413b37bf71c07815cbd68f502",
+      "sourceGitBlob": "fce7166260be183194d3ba3ed0ea401aac9b4262",
+      "sourceBytes": 2857621,
+      "bytes": 338908,
+      "sha256": "d4a97d23b9d092b998ce2cc9fe9087c4358c44ddc771196438de41188ad92c4c",
+      "width": 512,
+      "height": 512,
+      "alphaBounds": [
+        0,
+        42,
+        512,
+        490
+      ],
+      "losslessResizedPixelsVerified": true
+    },
+    {
+      "path": "/images/marble/dioramas/newark.webp",
+      "sourcePath": "asset-handoff/marble-premium/cities/newark-sacred-heart.png",
+      "sourceSha256": "49550a769d52f44a2c7e37e5e9588d9bd746e18f58cdfe8b1e55845435fb334c",
+      "sourceGitBlob": "992bbc84ce9d717ad471ab85a705de23142d4d35",
+      "sourceBytes": 2351587,
+      "bytes": 291300,
+      "sha256": "d9099ef33f9627d1d51a29ad3537f94ad531426895d0db5795338478682c140c",
+      "width": 512,
+      "height": 512,
+      "alphaBounds": [
+        0,
+        8,
+        506,
+        505
+      ],
+      "losslessResizedPixelsVerified": true
+    },
+    {
+      "path": "/images/marble/dioramas/agra.webp",
+      "sourcePath": "asset-handoff/marble-premium/cities/agra-taj-mahal.png",
+      "sourceSha256": "b309e2f5240d3ae9921f899acc1c644ad4294ea24bb6791902d74a55c3efd584",
+      "sourceGitBlob": "b6dabf2fb9c748b6c6f4687c72472744b98ff733",
+      "sourceBytes": 2046184,
+      "bytes": 269686,
+      "sha256": "4105264c62bc3bfdb320cd3f2798044612f5061cbc3e167218f3e7df2b3eac43",
+      "width": 512,
+      "height": 512,
+      "alphaBounds": [
+        6,
+        13,
+        505,
+        492
+      ],
+      "losslessResizedPixelsVerified": true
+    },
+    {
+      "path": "/images/marble/dioramas/athens.webp",
+      "sourcePath": "asset-handoff/marble-premium/cities/athens-parthenon.png",
+      "sourceSha256": "4d5c9cacb1e32bf359ba2fec49f73382fdebfbb82f8c7219c5bf5941b2241c7a",
+      "sourceGitBlob": "ca2f87ba10eff17adf0e38048c4d4127ef902598",
+      "sourceBytes": 1767103,
+      "bytes": 221324,
+      "sha256": "9ffc1fca5935d4b3e37de374c00188b1875d35bec090b195f49681919ecd7584",
+      "width": 512,
+      "height": 512,
+      "alphaBounds": [
+        8,
+        106,
+        506,
+        505
+      ],
+      "losslessResizedPixelsVerified": true
+    },
+    {
+      "path": "/images/marble/dioramas/toronto.webp",
+      "sourcePath": "asset-handoff/marble-premium/cities/toronto-cn-tower.png",
+      "sourceSha256": "28f75f2d39cda554d45d85bc5aa70d4ddad7f6ce2d9b7452fafdef77a61c34f1",
+      "sourceGitBlob": "5c14a2bff5ed815eefbbcb5afde40bedecd1bb46",
+      "sourceBytes": 356011,
+      "bytes": 38590,
+      "sha256": "094f1cba864049a1a1a7af839d87cc539807d7dcc21e23bbef368ee82c4b6bbd",
+      "width": 512,
+      "height": 512,
+      "alphaBounds": [
+        40,
+        6,
+        415,
+        505
+      ],
+      "losslessResizedPixelsVerified": true
+    },
+    {
+      "path": "/images/marble/dioramas/sydney.webp",
+      "sourcePath": "asset-handoff/marble-premium/cities/sydney-opera-house.png",
+      "sourceSha256": "e0f75923caeb3864b334f95570f2b30eb95c0a801f6bc226f496e0efba330dcb",
+      "sourceGitBlob": "cce8f6a37e13f84a4bba5df25c9bb140a1e0bfe7",
+      "sourceBytes": 1851103,
+      "bytes": 233076,
+      "sha256": "393c8c2ab9dd8649ed9531522c16211a4c381641e8ff0d4f5a1c10103e6f06fb",
+      "width": 512,
+      "height": 512,
+      "alphaBounds": [
+        0,
+        27,
+        512,
+        485
+      ],
+      "losslessResizedPixelsVerified": true
+    },
+    {
+      "path": "/images/marble/dioramas/seoul.webp",
+      "sourcePath": "asset-handoff/marble-premium/cities/seoul-n-seoul-tower.png",
+      "sourceSha256": "4ce8c33536c37add031179e8c6e0d28b893ca212045ada06a2e5b1148df69e95",
+      "sourceGitBlob": "a4934dea163587c76254d9821307561d12978542",
+      "sourceBytes": 498017,
+      "bytes": 66220,
+      "sha256": "8da28c77f13981eeac81e102c89efdbf58d32281d95d9bd0f3fafe1a86f550a4",
+      "width": 512,
+      "height": 512,
+      "alphaBounds": [
+        162,
+        4,
+        481,
+        505
+      ],
+      "losslessResizedPixelsVerified": true
+    },
+    {
+      "path": "/images/marble/dioramas/house.webp",
+      "sourcePath": "asset-handoff/marble-premium/buildings/stage1-house.png",
+      "sourceSha256": "763b2a0ea15e97b28ece1978d3830d9484360a25b369aafdbbebb52a10cfe6e6",
+      "sourceGitBlob": "5a925a374e9ce50e42bc9e26a9c7562a9f5090a8",
+      "sourceBytes": 2576817,
+      "bytes": 347666,
+      "sha256": "f07a9689d69bf865ddc96364061a44db2ad3d86a98c7fd1613d05f0bed059984",
+      "width": 512,
+      "height": 512,
+      "alphaBounds": [
+        0,
+        22,
+        504,
+        487
+      ],
+      "losslessResizedPixelsVerified": true
+    },
+    {
+      "path": "/images/marble/dioramas/apartment.webp",
+      "sourcePath": "asset-handoff/marble-premium/buildings/stage2-apartment.png",
+      "sourceSha256": "f94eb92d5546d9e660b58b8c8dbdbd86fc6335fac2eeee0e3922a035344815fc",
+      "sourceGitBlob": "58ac5e77b50197d9b156d26b7e0ec53b1b60f106",
+      "sourceBytes": 1859140,
+      "bytes": 228750,
+      "sha256": "d88e6b8b9288f2988458bb3df5cf16a923a1ce86ba0b75f3e2f84dd953a40795",
+      "width": 512,
+      "height": 512,
+      "alphaBounds": [
+        0,
+        0,
+        485,
+        505
+      ],
+      "losslessResizedPixelsVerified": true
+    },
+    {
+      "path": "/images/marble/pawns/maltipoo.webp",
+      "sourcePath": "asset-handoff/marble-premium/pawns/maltipoo.png",
+      "sourceSha256": "346c52db7c7b582dab183fc127f803391d384f1fb4a968a086e7a45e1d474225",
+      "sourceGitBlob": "b25143a98e064bf6aa4695e4d0530d9b47fe2672",
+      "sourceBytes": 755645,
+      "bytes": 59696,
+      "sha256": "311d039a3bfd97d966684c0d2aed30ae37112f295cb24a0d10803f3c3bd8987a",
+      "width": 384,
+      "height": 384,
+      "alphaBounds": [
+        25,
+        56,
+        356,
+        377
+      ],
+      "losslessResizedPixelsVerified": true
+    },
+    {
+      "path": "/images/marble/pawns/cat.webp",
+      "sourcePath": "asset-handoff/marble-premium/pawns/ragdoll.png",
+      "sourceSha256": "9c815e1679f86eb692836a929edcda65d9d36eb05b7710b8e52db1734bb58c9d",
+      "sourceGitBlob": "f99818093c61b2d4a73f8fc5d354f39086199fef",
+      "sourceBytes": 1158976,
+      "bytes": 82508,
+      "sha256": "6696c1b5c6a7edf161d82e69c0c0ce8cd89e10cee8d43c35ce39bc19a2860e3e",
+      "width": 384,
+      "height": 384,
+      "alphaBounds": [
+        0,
+        25,
+        378,
+        357
+      ],
+      "losslessResizedPixelsVerified": true
+    },
+    {
+      "path": "/images/marble/pawns/panda.webp",
+      "sourcePath": "asset-handoff/marble-premium/pawns/panda.png",
+      "sourceSha256": "f30ea9f031c1e9b8edce4b4c2d63d3f632365b14db0c81243254cd51f9d92c96",
+      "sourceGitBlob": "626bb2425d40ba93ccb2a9b73e63144f6071a946",
+      "sourceBytes": 1081701,
+      "bytes": 75610,
+      "sha256": "d894f305cc9a222ab3c617f36ac56865bb6d3f22369c973de5f11c5bfe4f628f",
+      "width": 384,
+      "height": 384,
+      "alphaBounds": [
+        15,
+        15,
+        303,
+        355
+      ],
+      "losslessResizedPixelsVerified": true
+    },
+    {
+      "path": "/images/marble/pawns/astronaut.webp",
+      "sourcePath": "asset-handoff/marble-premium/pawns/astronaut-rose-heart.png",
+      "sourceSha256": "d84cb4ac9205fdf0ba7036f9cd12740ff8d0b9f6589c8b070e3aa925d05673f9",
+      "sourceGitBlob": "d9addcae1f40a7c98bdcf3a32f1363a7b755f984",
+      "sourceBytes": 848451,
+      "bytes": 70002,
+      "sha256": "04992c01a10040bec85d836de2d92ba81287727c3646920723eb86124c9017cd",
+      "width": 384,
+      "height": 384,
+      "alphaBounds": [
+        10,
+        37,
+        368,
+        374
+      ],
+      "losslessResizedPixelsVerified": true
+    },
+    {
+      "path": "/images/marble/pawns/lisyeon.webp",
+      "sourcePath": "asset-handoff/marble-premium/pawns/lisyeon.png",
+      "sourceSha256": "89a54ef25d4a1fa1eaca48d878abf911d1884897521cab00e04a04f2661d4794",
+      "sourceGitBlob": "3cf1553a7367ab6ab9ebcb8dd8e76b6538366751",
+      "sourceBytes": 1199035,
+      "bytes": 75432,
+      "sha256": "7a841d467d027048fa9e3ce5c16f35f7e3ee2eb3320ff965956e708ad4089adf",
+      "width": 384,
+      "height": 384,
+      "alphaBounds": [
+        27,
+        8,
+        376,
+        373
+      ],
+      "losslessResizedPixelsVerified": true
+    },
+    {
+      "path": "/images/marble/pawns/chinchilla.webp",
+      "sourcePath": "asset-handoff/marble-premium/pawns/chinchilla.png",
+      "sourceSha256": "99899758b74f6081cdaa7eb5795890e69effefaab2664cfca7df889e9de71b56",
+      "sourceGitBlob": "ca738eb989210df09f240ea309b38e0aab11fbef",
+      "sourceBytes": 1086971,
+      "bytes": 70886,
+      "sha256": "d70d8c1155238ef25b9a51ca72f781eb34e4d4bb8442942735d13655d9581e4f",
+      "width": 384,
+      "height": 384,
+      "alphaBounds": [
+        66,
+        55,
+        303,
+        357
+      ],
+      "losslessResizedPixelsVerified": true
+    }
+  ],
+  "optimizedBytes": 6390196,
+  "inGameReview": "not run; deferred until full implementation",
+  "personalPortraitsIncluded": false
+}
