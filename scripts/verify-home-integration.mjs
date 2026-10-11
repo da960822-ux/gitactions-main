@@ -44,6 +44,47 @@ await page.locator('#gift-games').scrollIntoViewIfNeeded();
 await page.waitForFunction(() => document.querySelector('.rd-hero').dataset.decorVisible === 'false');
 assert.equal(await page.locator('.rd-star-twinkle').first().evaluate(node => getComputedStyle(node).animationPlayState), 'paused');
 checks.push('Particle cap, user motion pause, and offscreen twinkle pause');
+await page.getByRole('button', { name: 'ES', exact: true }).click();
+assert.equal(await page.evaluate(() => localStorage.getItem('dos-language')), 'es');
+await page.reload();
+await page.locator('.rd-page').waitFor();
+assert.equal(await page.locator('html').getAttribute('lang'), 'es-DO');
+await page.getByRole('button', { name: 'Los juegos', exact: true }).click();
+await page.locator('.rd-games .rd-studio[data-ready="true"]').waitFor({ timeout: 90000 });
+await page.locator('.rd-game-choices button').nth(3).click();
+await page.locator('.rd-game-start').click();
+await page.locator('#nickname').waitFor();
+assert.equal(new URL(page.url()).pathname, '/play');
+assert.equal(new URL(page.url()).search, '?game=jaipur');
+assert.equal(await page.locator('.pick-item[aria-pressed="true"] .pick-name b').textContent(), 'Jaipur');
+assert.equal(await page.locator('html').getAttribute('lang'), 'es-DO');
+await page.goBack();
+await page.locator('.rd-page').waitFor();
+for (const language of ['es', 'ko']) {
+  await page.getByRole('button', { name: language.toUpperCase(), exact: true }).click();
+  await page.locator('.rd-nav nav>button').nth(1).click();
+  await page.waitForFunction(() => {
+    const paper = document.querySelector('.rd-paper');
+    const overlap = parseFloat(getComputedStyle(paper).getPropertyValue('--paper-overlap'));
+    return paper.getAttribute('aria-hidden') === 'false' && Math.abs(new DOMMatrix(getComputedStyle(paper).transform).m42 + paper.offsetHeight - overlap) < 1;
+  });
+  assert.equal(await page.locator('.rd-seal').evaluate(node => getComputedStyle(node).opacity), '0');
+  const bounds = await page.locator('.rd-paper').boundingBox();
+  assert.ok(bounds.y >= 0 && bounds.y + bounds.height <= 900);
+  await page.screenshot({ path: path.join(out, `letter-open-${language}.png`) });
+  await page.locator('.rd-letter-close').press('Escape');
+  assert.equal(await page.locator('.rd-seal').getAttribute('aria-expanded'), 'false');
+}
+await page.locator('.rd-nav a[href="/feedback"]').click();
+await page.locator('.feedback-route').waitFor();
+assert.equal(await page.locator('html').getAttribute('lang'), 'ko');
+await page.goBack();
+await page.locator('.rd-page').waitFor();
+assert.equal(new URL(page.url()).pathname, '/');
+await page.reload();
+await page.locator('.rd-page').waitFor();
+assert.equal(await page.locator('html').getAttribute('lang'), 'ko');
+checks.push('Language persists; selected exhibition enters the real Jaipur lobby; both letters visibly open, hide the seal and close with Escape; topnav ideas and browser Back preserve language');
 await context.close();
 
 const reduced = await browser.newContext({ viewport: { width: 1440, height: 900 }, reducedMotion: 'reduce' });

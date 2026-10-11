@@ -1,0 +1,127 @@
+{
+  "status": "interim verification branch, not final visual upgrade or production release",
+  "sourceGameMerge": "39cc33ac3f85c87b183db1545aecc3203f835b3f",
+  "sourceFeedback": "0e27e947680b6ec6e4b0f9f03ed125efe7e32e2c",
+  "tests": {
+    "files": 53,
+    "passed": 470,
+    "failed": 0,
+    "build": "TypeScript, Vite and generated Edge engines passed"
+  },
+  "homeEffects": {
+    "pass": true,
+    "base": "http://127.0.0.1:5233",
+    "viewport": [
+      1440,
+      900
+    ],
+    "maximumParticles": 4,
+    "checks": [
+      "Peripheral burst animates and expires; no particles over the central portrait",
+      "Particle cap, user motion pause, and offscreen twinkle pause",
+      "Language persists; selected exhibition enters the real Jaipur lobby; both letters visibly open, hide the seal and close with Escape; topnav ideas and browser Back preserve language",
+      "Reduced motion suppresses new particles and twinkles; all eight selected game links and PNG fallbacks work without WebGL",
+      "Production SPA direct play, feedback, and room routes resolve to nonempty UI"
+    ],
+    "errors": [],
+    "bad": [],
+    "note": "Chromium uses software rendering. These are UI compatibility and cleanup assertions, not hardware FPS or production connection evidence."
+  },
+  "feedback": {
+    "checks": 39,
+    "allPassed": true,
+    "errors": [],
+    "method": "Local HTTP/PGlite fixture; no production Auth/PostgREST/Realtime"
+  },
+  "luna": {
+    "model": "gpt-6-luna",
+    "method": "Playwright Chromium visible UI; independent Korean and Spanish browser contexts for each room; no app API calls for game actions.",
+    "fixture": "Local PGlite SQL/RLS/authority HTTP fixture; it does not provide Supabase Realtime. The second player saw peer state after manual refresh; page reload used for reconnection checks.",
+    "games": [
+      {
+        "game": "davinci",
+        "twoContexts": true,
+        "action": "draw tile; complete any required joker placement through the visible rack controls"
+      },
+      {
+        "game": "catchmind",
+        "twoContexts": true,
+        "action": "select a word and draw one mouse stroke on the canvas"
+      },
+      {
+        "game": "domino",
+        "twoContexts": true,
+        "action": "select and place opening tile (첫 타일 4|4 놓기)"
+      },
+      {
+        "game": "jaipur",
+        "twoContexts": true,
+        "action": "select and take a market good (시장 카드: 옷감)"
+      },
+      {
+        "game": "splendor",
+        "twoContexts": true,
+        "action": "take three distinct gems from the public bank"
+      },
+      {
+        "game": "minhwatu",
+        "twoContexts": true,
+        "action": "play a legal hand card (5월 창포 초단, 5 점) and complete the public match target if requested"
+      },
+      {
+        "game": "marble",
+        "twoContexts": true,
+        "action": "choose an available pawn, then roll the dice using the board action"
+      },
+      {
+        "game": "rhythm",
+        "twoContexts": true,
+        "action": "focus each embedded original Ruffle player and send ArrowUp and Space key input"
+      }
+    ],
+    "errors": [],
+    "limitations": [
+      "Local PGlite fixture has no production Supabase Realtime; peer propagation was observed after manually refreshing the second context.",
+      "Rhythm is the unchanged original standalone Ruffle SWF. Both seats received local focus/keyboard input, but SWF state, score, and completion are not synchronized with the room and full gameplay was not verified.",
+      "This is a functional playtest at desktop sizes, not full commercial QA or visual approval. The user rejected current simplified city/landmark art; visual quality work remains open.",
+      "No mobile viewport testing was performed."
+    ]
+  },
+  "performance": {
+    "method": "Production builds, same Chromium SwiftShader process, same viewport/DPR, 6.5-second requested 50ms sine-path events delivered to existing pointer handlers. No screencast or tracing. ABBA order. Recorded rAF timestamps and WebGL color-clear API calls; neither is GPU presentation FPS.",
+    "uniqueRafPerSecond": {
+      "approved": [
+        27.97,
+        29.37
+      ],
+      "decorated": [
+        25.22,
+        25.19
+      ]
+    },
+    "observedMaximumParticles": 4,
+    "heroWebGLColorClears": 0,
+    "medianMilliseconds": [
+      33.3,
+      33.4
+    ],
+    "p95Milliseconds": 50.1,
+    "averageCadenceReductionPercent": 12.1,
+    "warning": "rAF cadence and GL API counts do not measure GPU presentation FPS; software renderer only"
+  },
+  "remaining": [
+    "Rejected simplified city art: pending new assets and visual approval",
+    "Berlin/Miami city replacement and additional game SHA pending",
+    "Two approved noble portrait files and public-upload approval pending",
+    "Final feedback page tone SHA pending",
+    "Production Supabase Auth/PostgREST/Realtime/cron/migration and two actual devices untested",
+    "Lusion research delivered by parent, no speculative new whole-page sections added"
+  ],
+  "backup": {
+    "files": 772,
+    "allArchiveMembersVerified": true,
+    "allFilesMatchOriginalCommittedSource": true,
+    "originalRevision": "51a9ee3acf6a93cc899ab67e0911f6a6e91f996d",
+    "archiveSha256": "593047a7e6a0d963865385615db229603db0353dcb084493477cad402a62f26a"
+  }
+}

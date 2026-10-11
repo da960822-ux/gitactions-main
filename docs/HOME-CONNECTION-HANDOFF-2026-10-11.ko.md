@@ -20,6 +20,7 @@
 
 - archive bytes: 70,448,089
 - archive SHA256: `593047a7e6a0d963865385615db229603db0353dcb084493477cad402a62f26a`
+- 772개 파일의 SHA256이 원래51a9ee3 Git blob과도 전부 일치함을 확인했다. 따라서 별도 브랜치의 원격 조상에 연결 전 원본 소스 전체가 보존된다.
 - 연결 전 actual checkout: 51a9ee3acf6a93cc899ab67e0911f6a6e91f996d, clean
 
 백업/환경 설정은 공개 GitHub에 올리지 않는다. 원래 홈페이지로 복원할 때 별도 디렉터리에 archive를 풀거나 bundle에서 복제한다. 게임 개선 커밋을 reset/delete하는 복원 방식은 사용하지 않는다. 새 원격 브랜치 확인 전 환경을 종료하지 않는다.
@@ -32,7 +33,7 @@ Chromium 1440×900 production root에서 KO/ES 저장·reload·편지 열기/닫
 
 승인 ee50a228와 장식 추가 production root를 같은 SwiftShader Chromium 프로세스/1440×900/DPR1/6.5초/50ms 동일 포인터 입력/ABBA 순서로 비교했다. 측정 중 screencast/trace 없음. 전:27.97/29.37 unique rAF/sec, 후:25.22/25.19. 두 경우 median33.3~33.4ms/p9550.1ms, 히어로 GL color-clear0. 새 입자 최대4개가 실제 관측됐다. 평균 cadence 약12.1% 감소. **GPU 표시 FPS나 실기기 성능 수치가 아니다.** 투명 PNG와 네 개 별 twinkle/커서 입자의 비용이 있으므로 실제 PC 확인이 필요하다.
 
-Luna(gpt-6-luna)는 독립 KO/ES Chromium contexts에서 UI로 방 생성·초대·선택·행동·peer reload를 검수한다. 최신 우선 재검수에서 Marble은 다른 pawn 선택→roll→Madrid 도착, Da Vinci는 양쪽 초기 준비→뽑기4→5·상대 숨김 타일5 확인, page/console errors0. 나머지 Catchmind/Domino/Jaipur/Splendor/Minhwatu도 유효 행동·peer refresh/reload·errors0을 확인했다. 부루마블1440×900/1280×800에서 하단 스크롤 가능, 가로 overflow0px. 조커 배치/Rhythm 포커스 추가 검수는 진행 중이다. 로컬 SQL/RLS/authority fixture에는 Supabase Auth/PostgREST/Realtime가 없다. 수동 갱신 성공을 운영 실시간 성공으로 부르지 않는다. 원본 Rhythm은 single-player SWF이고 두 좌석 행동 동기화를 추가/검증하지 않는다.
+Luna(gpt-6-luna)는 독립 KO/ES Chromium contexts에서 UI로 방 생성·초대·선택·행동·peer reload를 검수한다. 최신 우선 재검수에서 Marble은 다른 pawn 선택→roll→Madrid 도착, Da Vinci는 양쪽 초기 준비→뽑기4→5·상대 숨김 타일5 확인, page/console errors0. 나머지 Catchmind/Domino/Jaipur/Splendor/Minhwatu도 유효 행동·peer refresh/reload·errors0을 확인했다. 부루마블1440×900/1280×800에서 하단 스크롤 가능, 가로 overflow0px. 최종8게임 batch page/console errors0. 추가 표본3에서 p2 초기 조커 빈 칸 선택/배치/준비 뒤 행동까지 실제 진행했다. Rhythm은 실제 플레이어 클릭/포커스 후 두 좌석 ArrowUp/Space wrapper 피드백을 확인했다. 로컬 SQL/RLS/authority fixture에는 Supabase Auth/PostgREST/Realtime가 없다. 수동 갱신 성공을 운영 실시간 성공으로 부르지 않는다. 원본 Rhythm은 single-player SWF이고 두 좌석 행동 동기화를 추가/검증하지 않는다.
 
 ## 전체 체크리스트의 남은 항목
 
@@ -41,7 +42,7 @@ Luna(gpt-6-luna)는 독립 KO/ES Chromium contexts에서 UI로 방 생성·초�
 | 승인 히어로·게임 전시·KO/ES 편지의 실제 홈 연결 | 구현/production UI 검증, 별도 브랜치 보존 |
 | 7개 게임 고도화·자산·연출·번역 | 임시 코드 병합; 새 도시 그림 승인·추가 게임 SHA·전수 완수표 대기 |
 | 귀족2장 | 승인된 원본 bytes/공개 승인 대기; 임의 그림 대체 금지 |
-| Luna 두 세션 | 7개 게임 실제행동·분리contexts 재검수 통과, 짧은 높이 스크롤 확인; 조커/Rhythm 추가 검수 진행 |
+| Luna 두 세션 | 8개 실제UI·분리contexts 재검수/초기 조커 배치/짧은 높이 스크롤 확인; 승리까지 전체 분기·Rhythm 전체 플레이 미실행 |
 | 건의사항 | 최상단 /feedback 링크만.47df2c4b+0e27e947 원문/기존 접근 보존해 임시 통합; 추가 톤 SHA 대기 |
 | 실제 둘만의 연결/운영 권한 | 로컬 fixture 검증만; 지정 Supabase 설정·운영 migration·Auth/RLS·Realtime·실제2기기 검증 미실행 |
 
@@ -61,3 +62,5 @@ Luna(gpt-6-luna)는 독립 KO/ES Chromium contexts에서 UI로 방 생성·초�
 - `.agents/skills/card-game/SKILL.md`: 카드 비용·영역·정보 노출 계약 참고. 새 카드 규칙으로 바꾸지 않음.
 - `.agents/skills/emil-animate/SKILL.md`, `threejs-scene-setup/SKILL.md`, `threejs-materials-lighting/SKILL.md`: 승인 히어로 보존, transform/opacity, 기존 재질/좌표/cleanup.
 - 기존 계획: `docs/GAME-QUALITY-PLAN.md`, `docs/GAME-UPGRADE-VALIDATION.ko.md`, `docs/MARBLE-VISUAL-PLAN.ko.md`, `docs/marble-world-art.md`, `docs/DESKTOP-GAMES-HANDOFF-2026-10-11.ko.md`. 계획과 타 브랜치 과거 통과 수치를 이번 통합 검증으로 바꾸어 쓰지 않는다.
+
+요약 증거는 `docs/qa/home-integration-20261011.json`. 실제 PNG/원시측정/상세 Luna 증거는 이 실행 환경의 `/workspace/home-integration-deliverables-20261011`에 보존하며 공개 Git에는 넣지 않았다. 홈/편지 캡처는 실제 production 렌더, 게임 캡처는 로컬 SQL fixture 렌더다. 최종 세션8게임 행동 성공은 전체승리·희귀분기·시각 승인·운영 연결 성공과 구분한다.
