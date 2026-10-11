@@ -32,3 +32,9 @@ Take the first option that fully works:
 Never cut: validation at trust boundaries, error handling that prevents data loss, security, accessibility, the calibration real hardware needs, anything the user asked for.
 
 (Yes, this file also applies to agents working on the ponytail repo itself. Especially to them.)
+
+## Game-development skills
+
+The user requested Awesome GameDev Agent Skills. The upstream collection (74 skills plus router) is installed under `.agents/skills/`, pinned in `.agents/gamedev-skills-manifest.json`; license, notice and provenance are in `.agents/gamedev-skills-source/`. Read `.agents/skills/router/SKILL.md` when selecting game-development guidance, then only the relevant skills and references. Preserve the upstream instructions verbatim.
+
+This project uses React/TypeScript, DOM/SVG/CSS and Web Audio. Apply engine-neutral UI, input, feel, audio, asset and profiling principles to that existing stack. The collection has no React-specific engine skill; an unknown engine fingerprint is not authorization to migrate to Godot, Unity, Phaser or another renderer. The three-game improvement plan is in `docs/GAME-QUALITY-PLAN.md`; its proposed gates are not completed validation. Preserve the eight games, current rule contracts, private views and free-tier requirements.

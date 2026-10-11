@@ -11,6 +11,16 @@
   margin: -16px -20px -32px auto;
   top: 0;
   z-index: 2;
+  width: 44px;
+  height: 44px;
+}
+
+.rules-dialog:has(.quick-guide) { width: min(900px, 100%); }
+.rules-dialog:has(.quick-guide) .dialog-close {
+  position: absolute;
+  margin: 0;
+  top: 16px;
+  right: 16px;
 }
 
 .rules-dialog h2 { font-size: 34px; }

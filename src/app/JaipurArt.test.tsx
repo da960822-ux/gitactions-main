@@ -5,6 +5,17 @@ import { JaipurBonusArt, JaipurCamelAward, JaipurCoin, JaipurGoodArt, jaipurCard
 const goods: JaipurGood[] = ['diamond', 'gold', 'silver', 'cloth', 'spice', 'leather', 'camel'];
 
 describe('Jaipur illustrated assets', () => {
+  it('maps each commodity to its own scene without baking labels into the atlas', () => {
+    goods.forEach((good, cell) => {
+      const html = renderToStaticMarkup(<JaipurGoodArt good={good} language="es"/>);
+      expect(html).toContain(`data-atlas-cell="${cell}"`);
+      expect(html).toContain('href="/images/jaipur/merchant-atlas.webp"');
+      expect(html).toContain(`x="${-(cell % 4) * 100}"`);
+      expect(html).toContain(`y="${-Math.floor(cell / 4) * 100}"`);
+      expect(html).not.toContain('<text');
+    });
+  });
+
   it('provides three distinct stable compositions for each of seven goods', () => {
     for (const good of goods) {
       const art = [0, 1, 2].map(variant => renderToStaticMarkup(<JaipurGoodArt good={good} variant={variant}/>));

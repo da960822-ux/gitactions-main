@@ -54,3 +54,13 @@ The 16 country flags in `public/images/marble/flags/` are self-hosted SVGs fetch
 The private “남편에게 / Para mi esposo” inbox has a standalone two-person invitation space, independent of game rooms. Both members can read entries; only p2 can create one, and only p1 can change its status. Row-level security enforces these rules. Each entry becomes inaccessible seven days after its own creation, and hourly scheduled cleanup physically deletes expired entries while retaining the private space. A forward migration preserves and detaches any existing room-linked entries. Without Supabase configuration, entries use this browser's local storage for the clearly labelled same-browser demo and are not shared.
 
 Rhythm's SWF and Ruffle provenance is documented in [`RHYTHM.md`](RHYTHM.md).
+
+## Three-game quality update (2026-10-11)
+
+Domino now uses an original generated forest felt texture in [`domino/`](../public/images/domino/manifest.json), with the existing 28 double-six SVG faces preserved. Jaipur uses an original seven-commodity plus card-back atlas in [`jaipur/`](../public/images/jaipur/manifest.json); the 648,888-byte WebP is the runtime asset, and the original PNG and SHA-256 are retained. Functional labels and scores remain in DOM/SVG. Splendor now uses six original source-authored faceted SVG gem icons in [`splendor-gems/`](../public/images/splendor-gems/manifest.json); the 90 development and 10 noble image files and their mapping remain unchanged. Previous generated atlas files are retained but no longer used by these new in-game components.
+
+The manifests record origin, dimensions or vector construction, transformations and native review. These changes do not establish independent commercial publisher clearance for the retained Splendor card artwork or for the game names.
+
+## Illustrated beginner instructions (2026-10-11)
+
+`DominoQuickGuide`, `JaipurQuickGuide` and `SplendorQuickGuide` compose the existing game assets into three instructional figures per game: matching domino ends, equal-count commodity exchange and sale rewards, and gems/card costs/noble requirements. They reuse `DominoTile`, the Jaipur commodity atlas and reward SVGs, the six gem SVGs, and the mapped Splendor `t1-01` and `n0` images. No external images or new image dependencies were added. Korean and Dominican Spanish explanations and image alternatives are rendered as text rather than baked into images. The original notices and commercial-rights limitations above still apply.

@@ -7,11 +7,11 @@ import { isCorrectGuess, getCatchmindDrawDurationMs, getCatchmindHintStage } fro
 
 export interface RoomPlayer { id: PlayerId; nickname: string; language: Language; ready: boolean }
 export interface ChatMessage { id: string; playerId: PlayerId; text: string; translation?: string; targetLanguage?: Language; status: 'original'|'translated'|'limit'|'unavailable'|'correct'; createdAt:string }
-export interface RoomSnapshot { roomId:string|null; mode:'demo'|'online'; playerId:PlayerId; players:RoomPlayer[]; gameId:GameId|null; version:number; view:any|null; messages:ChatMessage[]; pendingGame:GameId|null; error:string|null }
+export interface RoomSnapshot { roomId:string|null; mode:'demo'|'online'; playerId:PlayerId; players:RoomPlayer[]; gameId:GameId|null; version:number; view:any|null; messages:ChatMessage[]; pendingGame:GameId|null; error:string|null; connection?:'local'|'connecting'|'connected'|'reconnecting'; syncEpoch?:number }
 const supabaseUrl = import.meta.env.VITE_SUPABASE_URL;
 const anonKey = import.meta.env.VITE_SUPABASE_ANON_KEY;
 export const isOnlineConfigured = Boolean(supabaseUrl && anonKey);
-const emptySnapshot = (): RoomSnapshot => ({roomId:null,mode:isOnlineConfigured?'online':'demo',playerId:'p1',players:[],gameId:null,version:0,view:null,messages:[],pendingGame:null,error:null});
+const emptySnapshot = (): RoomSnapshot => ({roomId:null,mode:isOnlineConfigured?'online':'demo',playerId:'p1',players:[],gameId:null,version:0,view:null,messages:[],pendingGame:null,error:null,connection:isOnlineConfigured?'connecting':'local',syncEpoch:0});
 class RoomClient {
   private db:SupabaseClient|null = isOnlineConfigured ? createClient(supabaseUrl,anonKey) : null;
   private snapshot = emptySnapshot();
@@ -21,6 +21,7 @@ class RoomClient {
   private pendingBy:PlayerId|null=null;
   private expiresAt=0;
   private refreshId=0;
+  private resyncRequired=false;
   private requestQueue:Promise<void>=Promise.resolve();
   getSnapshot = () => this.snapshot;
   private emit() { this.snapshot={...this.snapshot}; for(const cb of this.listeners) cb(this.snapshot); }
@@ -38,22 +39,48 @@ class RoomClient {
     await this.session();const {error}=await this.db.rpc('join_room',{p_room:roomId,p_nickname:nickname,p_language:language});if(error)throw error;this.snapshot.roomId=roomId;await this.refresh();
   }
   subscribeRoom(roomId:string,onChange:(snapshot:RoomSnapshot)=>void) {
-    if(this.db && this.snapshot.roomId!==roomId){this.refreshId++;this.snapshot={...emptySnapshot(),roomId};}
+    if(this.db && this.snapshot.roomId!==roomId){this.refreshId++;this.resyncRequired=false;this.snapshot={...emptySnapshot(),roomId};}
     this.listeners.add(onChange);onChange(this.snapshot);
-    if(this.db){this.snapshot.roomId=roomId;void this.session().then(()=>this.refresh()).catch(e=>{this.snapshot.error=e.message;this.emit();});
-      const refresh=()=>void this.refresh().catch(e=>{this.snapshot.error=e.message;this.emit();});
-      const ch=this.db.channel(`room:${roomId}`).on('postgres_changes',{event:'*',schema:'public',table:'rooms',filter:`id=eq.${roomId}`},refresh).on('postgres_changes',{event:'*',schema:'public',table:'room_views',filter:`room_id=eq.${roomId}`},refresh).on('postgres_changes',{event:'*',schema:'public',table:'chat_messages',filter:`room_id=eq.${roomId}`},refresh).on('postgres_changes',{event:'*',schema:'public',table:'room_members',filter:`room_id=eq.${roomId}`},refresh).subscribe(status=>{if(status==='SUBSCRIBED')refresh();});this.channels.push(ch);
-      return ()=>{this.listeners.delete(onChange);void this.db?.removeChannel(ch);this.channels=this.channels.filter(x=>x!==ch);};
+    if(this.db){
+      let live=true;
+      const current=()=>live && this.snapshot.roomId===roomId;
+      const failed=(e:Error)=>{if(current()){this.resyncRequired=true;this.snapshot.error=e.message;this.snapshot.connection='reconnecting';this.emit();}};
+      this.snapshot.roomId=roomId;
+      void this.session().then(()=>{if(current())return this.refresh();}).catch(failed);
+      const refresh=()=>{if(current())void this.refresh().catch(failed);};
+      const ch=this.db.channel(`room:${roomId}`).on('postgres_changes',{event:'*',schema:'public',table:'rooms',filter:`id=eq.${roomId}`},refresh).on('postgres_changes',{event:'*',schema:'public',table:'room_views',filter:`room_id=eq.${roomId}`},refresh).on('postgres_changes',{event:'*',schema:'public',table:'chat_messages',filter:`room_id=eq.${roomId}`},refresh).on('postgres_changes',{event:'*',schema:'public',table:'room_members',filter:`room_id=eq.${roomId}`},refresh).subscribe(status=>{
+        if(!current())return;
+        if(status==='SUBSCRIBED'){
+          const recovering=this.snapshot.connection==='reconnecting';
+          this.snapshot.connection='connected';this.emit();
+          void this.refresh(recovering).catch(failed);
+        }else if(['CHANNEL_ERROR','TIMED_OUT','CLOSED'].includes(status)){
+          this.resyncRequired=true;this.snapshot.connection='reconnecting';this.emit();
+        }
+      });this.channels.push(ch);
+      const resume=()=>{if(current() && (typeof document==='undefined' || document.visibilityState!=='hidden'))void this.reconnectRoom().catch(failed);};
+      if(typeof window!=='undefined'){window.addEventListener('online',resume);window.addEventListener('focus',resume);document.addEventListener('visibilitychange',resume);}
+      return ()=>{live=false;if(this.snapshot.roomId===roomId)this.refreshId++;this.listeners.delete(onChange);if(typeof window!=='undefined'){window.removeEventListener('online',resume);window.removeEventListener('focus',resume);document.removeEventListener('visibilitychange',resume);}void this.db?.removeChannel(ch);this.channels=this.channels.filter(x=>x!==ch);};
     }return ()=>{this.listeners.delete(onChange);};
   }
-  private async refresh() {
+  async reconnectRoom() {
     if(!this.db || !this.snapshot.roomId)return;
+    const roomId=this.snapshot.roomId;
+    await this.session();
+    if(roomId!==this.snapshot.roomId)return;
+    await this.refresh(true);
+  }
+  private async refresh(resync=false) {
+    if(!this.db || !this.snapshot.roomId)return;
+    if(resync)this.resyncRequired=true;
     const roomId=this.snapshot.roomId;
     const refreshId=++this.refreshId;
     const {data,error}=await this.db.rpc('room_snapshot',{p_room:roomId});if(refreshId!==this.refreshId || roomId!==this.snapshot.roomId)return;if(error)throw error;
     if(!data){this.snapshot={...emptySnapshot(),roomId,error:'room_expired'};this.emit();return;}
     if(data.room.version<this.snapshot.version)return;
-    this.snapshot={roomId:this.snapshot.roomId,mode:'online',playerId:data.seat,players:data.members.map((x:any)=>({id:x.seat,nickname:x.nickname,language:x.language,ready:true})),gameId:data.room.game_id,version:data.room.version,view:data.view,pendingGame:data.room.pending_game,error:null,messages:data.messages.map((x:any)=>({id:x.id,playerId:x.seat,text:x.text,translation:x.translation||undefined,targetLanguage:x.target_language||undefined,status:x.status==='pending'||x.status==='processing'?'original':x.status,createdAt:x.created_at}))};this.emit();
+    const syncEpoch=(this.snapshot.syncEpoch??0)+(this.resyncRequired && this.snapshot.view!==null?1:0);
+    this.resyncRequired=false;
+    this.snapshot={roomId:this.snapshot.roomId,mode:'online',playerId:data.seat,players:data.members.map((x:any)=>({id:x.seat,nickname:x.nickname,language:x.language,ready:true})),gameId:data.room.game_id,version:data.room.version,view:data.view,pendingGame:data.room.pending_game,error:null,connection:this.snapshot.connection,syncEpoch,messages:data.messages.map((x:any)=>({id:x.id,playerId:x.seat,text:x.text,translation:x.translation||undefined,targetLanguage:x.target_language||undefined,status:x.status==='pending'||x.status==='processing'?'original':x.status,createdAt:x.created_at}))};this.emit();
   }
   async sendAction(action:GameAction) {
     if(this.db){await this.invoke({action});return;}
@@ -96,17 +123,26 @@ class RoomClient {
   }
   private invoke(operation:Record<string,unknown>) {
     const roomId=this.snapshot.roomId;
-    const request=this.requestQueue.then(()=>this.invokeNow(operation,roomId));
+    const selectionVersion=operation.action && ['domino','jaipur','splendor'].includes(this.snapshot.gameId??'') ? this.snapshot.version : null;
+    const request=this.requestQueue.then(()=>this.invokeNow(operation,roomId,selectionVersion));
     this.requestQueue=request.catch(()=>{});return request;
   }
-  private async invokeNow(operation:Record<string,unknown>,roomId:string|null) {
+  private async invokeNow(operation:Record<string,unknown>,roomId:string|null,selectionVersion:number|null) {
     const requestId=crypto.randomUUID();
     for(let attempt=0;attempt<2;attempt++){
       if(!roomId || roomId!==this.snapshot.roomId)throw new Error('room_expired');
+      if(selectionVersion!==null && selectionVersion!==this.snapshot.version)throw new Error('stale_state');
       const {error}=await this.db!.functions.invoke('action',{body:{roomId,version:this.snapshot.version,requestId,...operation}});
       if(!error){await this.refresh();return;}
+      if(selectionVersion!==null && ['FunctionsFetchError','FunctionsRelayError'].includes(error.name)){
+        if(roomId===this.snapshot.roomId){
+          this.resyncRequired=true;this.snapshot.connection='reconnecting';this.emit();
+          try{await this.refresh(true);}catch{/* Completion is unknown; preserve the table and offer an explicit snapshot retry. */}
+        }
+        throw new Error('action_confirmation_unknown');
+      }
       let code=error.message;try{const body=await error.context?.json();code=body?.error||code;}catch{/* Transport errors have no JSON response. */}
-      if(code==='stale_state'&&attempt===0){await this.refresh();continue;}throw new Error(code);
+      if(code==='stale_state'&&attempt===0){await this.refresh();if(selectionVersion!==null)throw new Error('stale_state');continue;}throw new Error(code);
     }
   }
   async closeRoom() {

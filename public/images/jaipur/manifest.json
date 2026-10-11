@@ -1,0 +1,65 @@
+{
+  "schemaVersion": 1,
+  "assetId": "jaipur-merchant-scenes-v1",
+  "path": "public/images/jaipur/merchant-atlas.webp",
+  "role": "Seven commodity card scenes and one common card back",
+  "generatedAt": "2026-10-11",
+  "source": {
+    "tool": "OpenAI image_gen.imagegen",
+    "sourceFile": "/workspace/generated_images/exec-032a1bb4-4e92-46d1-93bc-e3c4feda81e2.png",
+    "modelVersion": "Not exposed by the tool",
+    "externalReferences": [],
+    "generationNote": "Original commodity bazaar scenes; no existing game artwork or named artist supplied; functional text and values remain in React/SVG.",
+    "originalSha256": "b7628a2ef3599158fe2820a51210b229901c4c8eb4cd2f1391dfe6956af6bf5c",
+    "originalRepositoryPath": "public/images/jaipur/merchant-atlas.png"
+  },
+  "technical": {
+    "width": 1774,
+    "height": 887,
+    "mode": "RGB",
+    "bytes": 648888,
+    "grid": {
+      "columns": 4,
+      "rows": 2
+    },
+    "cells": [
+      "diamond",
+      "gold",
+      "silver",
+      "cloth",
+      "spice",
+      "leather",
+      "camel",
+      "card-back"
+    ],
+    "runtime": "One shared browser-cached WebP rendered through SVG windows; CSS window for card backs",
+    "filtering": "Browser smooth sampling for painterly art",
+    "edits": "Deployment compression only: Pillow WebP quality=90/method=6, original dimensions and composition retained; original PNG preserved with SHA-256",
+    "cardIdentity": "Existing FNV stable card ID to SVG fallback composition mapping preserved; generated scene is commodity-specific",
+    "sourceBytes": 3523234,
+    "format": "WebP"
+  },
+  "artDirection": {
+    "view": "Three-quarter commodity still lifes and standing camel",
+    "palette": "Teal diamonds, yellow gold, blue silver, plum cloth, terracotta spice, brown leather, sunlit camel",
+    "materials": "Textured metal, velvet, woven silk, powdered spices, rolled hide",
+    "lighting": "Warm upper-left bazaar daylight",
+    "silhouette": "Oversized subject, broad foreground masses; no baked labels, values or interface controls",
+    "displaySize": "Desktop <=950px tall: market154px/hand122px, market166px on larger desktop; mobile responsive grid"
+  },
+  "rights": {
+    "kind": "AI-generated original output",
+    "terms": "https://openai.com/policies/terms-of-use/",
+    "license": "Use governed by the generation service terms; no third-party license asserted",
+    "attribution": "No external source attribution identified",
+    "commercialReleaseReview": "Service terms and Jaipur name/publication rights require release-owner review; generation alone is not a rights clearance"
+  },
+  "validation": {
+    "gridAndCommodityReview": "Passed visual review of generated source: correct 4x2 ordering, distinct gold/silver/leather/camel, no functional text",
+    "nativeReview": "Chromium 1440x900 native engine fixture with full7-card hand at board y192: KO board660.55px and ES670.28px; market5, hand7, all6goods piles, all3bonus visible. Take/sale5 tray stable92px with unchanged hand coordinates. ES390x844 document scrollWidth390. Original PNG to WebP quality90 native-scale scene review passed; atlas clip prevents neighbour bleed; camel head kept by top alignment.",
+    "approval": "Approved for in-game commodity readability by Sol native screenshot review; physical-device and commercial rights review remain release-owner gates",
+    "motionReview": "Committed sale5: exactly1action, first5selectedcards removed,20points,10flights then0. Auto round: currentround2score0 distinguished from round1settlement11pts; rewardtargetsettlement. Resize cancelsflights/stale0. Reduced motion sale1score4/flights0. No browser pageerrors.",
+    "integratedRoomReview": "Luna actual demo Room shell: KO 1440x900 full7-card hand after3 legal trades, board y229.4..892.4; history open/closed keeps same bounds and opens255px scroll popover. Screenshot /tmp/jaipur-room-ko-seven-drawer.png reviewed by Sol."
+  },
+  "prompt": "Original premium desert commodity illustration atlas, exact edge-to-edge 4x2 square grid in 2:1 canvas. Top row diamond/gold/silver/cloth; bottom row spice/leather/camel/plum-teal geometric card back. Complete merchant scenes, warm upper-left light, large distinct silhouettes, jewel palette, consistent painterly storybook realism. No letters, numbers, labels, watermarks, existing commercial game artwork or named artist."
+}

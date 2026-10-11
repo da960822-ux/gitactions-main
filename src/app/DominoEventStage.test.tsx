@@ -11,6 +11,8 @@ describe('Domino event stage', () => {
     }));
     expect(html).toContain('Jugar 6|4');
     expect(html).toContain('domino-event-tile-art');
+    expect(html).toContain('domino-tile--premium');
+    expect(html.match(/class="domino-pip"/g)?.length).toBe(10);
     expect(html).toContain('aria-label="Jugar 6|4"');
     expect(html).not.toContain('is-animating');
   });
@@ -24,6 +26,7 @@ describe('Domino event stage', () => {
     expect(html).toContain('+25');
     expect(html).toContain('25');
     expect(html).toContain('domino-event-seal');
+    expect(html).toContain('aria-live="polite" aria-atomic="true"></span>');
     expect(html).not.toContain('is-animating');
   });
 
@@ -35,6 +38,13 @@ describe('Domino event stage', () => {
     expect(html).toContain('Ganó el equipo humano.');
     expect(html).toContain('Ganó tu equipo');
     expect(html).not.toContain('Tu pareja');
+  });
+
+  it('labels the other human as a teammate only in cooperative mode', () => {
+    const event = { sequence: 2, type: 'play', actor: 'p2', tile: { a: 0, b: 3 } };
+    const render = (mode: string) => renderToStaticMarkup(createElement(DominoEventStage, { events: [event], playerId: 'p1', language: 'es', mode }));
+    expect(render('1v1')).toContain('Rival');
+    expect(render('humans-vs-bots')).toContain('Compañero');
   });
 
   it('does not call Paso corrido a bonus when the event has no bonus points', () => {

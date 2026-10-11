@@ -1,7 +1,7 @@
 import { describe, expect, it, vi } from 'vitest';
 import { createElement } from 'react';
 import { renderToStaticMarkup } from 'react-dom/server';
-import { JaipurBoard, jaipurSalePreview } from './JaipurBoard';
+import { JaipurBoard, jaipurSalePreview, toggleJaipurTakeSelection } from './JaipurBoard';
 
 const view = (overrides: Record<string, any> = {}) => ({
   turn: 'p1', phase: 'choose', ownHand: ['gold', 'gold', 'cloth'], opponentCount: 2,
@@ -67,8 +67,41 @@ describe('JaipurBoard', () => {
     expect(html).not.toContain('999');
     expect(html).not.toContain('888');
     expect(html).toContain('뒤집힌 판매 보너스');
-    expect(jaipurSalePreview('ko', 3, 5, true)).toContain('첫 토큰 5점 · 나머지 2개 상품 토큰은 판매 때 공개 · 보너스 타일 가치는 비공개');
+    expect(jaipurSalePreview('ko', 3, 5, true)).toContain('첫 토큰 5점 · 나머지 2개 상품 토큰은 판매 때 공개');
+    expect(jaipurSalePreview('ko', 3, 5, true)).toContain('보너스 타일 가능 · 보너스 타일 가치는 비공개');
     expect(jaipurSalePreview('es', 3, 5, true)).toContain('Primera ficha: 5 pts');
+    expect(jaipurSalePreview('ko', 2, null, false)).toContain('첫 상품 토큰 점수는 판매 때 공개');
+    expect(jaipurSalePreview('es', 1, null, false)).toContain('se revela al vender');
+    const unrevealed = render(view({ board: { ...view().board, piles: { ...view().board.piles, gold: [null, 999] } } }));
+    expect(unrevealed).not.toContain('금 토큰 0점');
+    expect(unrevealed).not.toContain('999');
+  });
+
+  it('keeps 5+ sale previews honest for six- and seven-card groups', () => {
+    for (const count of [6, 7]) {
+      expect(jaipurSalePreview('ko', count, 4, true)).toContain(`나머지 ${count - 1}개 상품 토큰은 판매 때 공개`);
+      expect(jaipurSalePreview('es', count, 4, true)).toContain(`las otras ${count - 1} fichas`);
+      expect(jaipurSalePreview('ko', count, 4, true)).toContain('보너스 타일 가능');
+      expect(jaipurSalePreview('ko', count, 4, true)).toContain('보너스 타일 가치는 비공개');
+    }
+    expect(jaipurSalePreview('ko', 3, 4, false)).toContain('남은 보너스 타일 없음');
+  });
+
+  it('stages a market selection behind a separate confirm control', () => {
+    const html = render(view());
+    expect(html).toContain('data-jaipur-card-id="m-d1"');
+    expect(html).toContain('class="jp-action-tray jp-take-controls"');
+    expect(html).toContain('가져오기 선택');
+    expect(html).toContain('class="jp-primary-action" disabled=""');
+    expect(html).toContain('취소');
+    expect(html).toContain('class="jp-cancel-action" disabled=""');
+  });
+
+  it('toggles the same take selection off while replacing a different selection', () => {
+    expect(toggleJaipurTakeSelection([], ['market-good'])).toEqual(['market-good']);
+    expect(toggleJaipurTakeSelection(['market-good'], ['market-good'])).toEqual([]);
+    expect(toggleJaipurTakeSelection(['market-good'], ['market-camel-a', 'market-camel-b'])).toEqual(['market-camel-a', 'market-camel-b']);
+    expect(toggleJaipurTakeSelection(['market-camel-a', 'market-camel-b'], ['market-camel-a', 'market-camel-b'])).toEqual([]);
   });
 
   it('does not invent legal actions and localizes the board for Dominican Spanish', () => {
@@ -101,5 +134,9 @@ describe('JaipurBoard', () => {
     expect(html).toContain('합산 점수');
     expect(html).toContain('금 3장 · 12점 획득');
     expect(html).toContain('data-sequence="21"');
+    expect(html).toContain('<details class="jp-history-drawer">');
+    expect(html).toContain('data-jaipur-zone="settlement"');
+    expect(html).toContain('이전 라운드 정산 · 최근 거래');
+    expect(html).not.toContain('open=""');
   });
 });

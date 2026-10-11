@@ -9,6 +9,11 @@ describe('Domino committed-event window', () => {
     expect(dominoSequence({ seq: 4 })).toBe(4);
   });
 
+  it('presents a duplicated committed sequence once', () => {
+    const play = { sequence: 7, type: 'play', tile: { a: 6, b: 2 } };
+    expect(dominoWindow([play, { sequence: 8, type: 'turn' }, { ...play }], 6).fresh.map(event => event.sequence)).toEqual([7, 8]);
+  });
+
   it('clears on empty logs and plays the new sequence after a regression', () => {
     expect(dominoWindow([], 22)).toMatchObject({ reset: true, latest: 0, fresh: [] });
     expect(dominoWindow([{ sequence: 1, type: 'round-start' }, { sequence: 2, type: 'play' }], 22)).toMatchObject({ reset: true, latest: 2 });

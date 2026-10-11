@@ -23,6 +23,8 @@ const sceneNames: Record<JaipurGood, [string, string, string]> = {
   leather: ['rolled-hide', 'stitched-saddle', 'travel-pouch'], camel: ['walking-camel', 'resting-camel', 'caravan-camel'],
 };
 
+const atlasCells: Record<JaipurGood, number> = { diamond: 0, gold: 1, silver: 2, cloth: 3, spice: 4, leather: 5, camel: 6 };
+
 type GoodProps = { good: JaipurGood; variant?: number; language?: Language; decorative?: boolean; className?: string };
 
 function defs(id: string, colors: string[]) {
@@ -100,11 +102,14 @@ export function JaipurGoodArt({ good, variant = 0, language = 'ko', decorative =
     diamond: ['#d4f4ef', '#65b6c4', '#285e76'], gold: ['#ffebaa', '#dfa944', '#93602f'], silver: ['#f8fbf4', '#aebdc4', '#536671'],
     cloth: ['#f5d5b1', '#aa5262', '#513953'], spice: ['#ffd886', '#d17a3d', '#863d2e'], leather: ['#e3b681', '#985c3e', '#4c322d'], camel: ['#f1d095', '#bd8751', '#704630'],
   };
-  return <svg className={`jaipur-art jaipur-art--${good} ${className}`.trim()} viewBox="0 0 100 100" role={decorative ? undefined : 'img'} aria-hidden={decorative || undefined} aria-label={decorative ? undefined : goodsNames[good][language]} data-good={good} data-variant={scene} data-composition={sceneNames[good][scene]}>
+  const cell = atlasCells[good];
+  return <svg className={`jaipur-art jaipur-art--${good} ${className}`.trim()} viewBox="0 0 100 100" preserveAspectRatio={good === 'camel' ? 'xMidYMin slice' : 'xMidYMid slice'} role={decorative ? undefined : 'img'} aria-hidden={decorative || undefined} aria-label={decorative ? undefined : goodsNames[good][language]} data-good={good} data-variant={scene} data-composition={sceneNames[good][scene]} data-atlas-cell={cell}>
     {defs(id, colors[good])}
+    <defs><clipPath id={`${id}-scene`}><rect width="100" height="100"/></clipPath></defs>
     <ellipse className="jaipur-art__ground" cx="50" cy="83" rx="38" ry="8" fill="#482c34" opacity=".12" filter={`url(#${id}-drop)`}/>
     <GoodScene good={good} variant={scene} id={id}/>
-    <path d="M19 33c5-12 16-20 28-21" fill="none" stroke="#fff8e7" strokeWidth="2.2" strokeLinecap="round" opacity=".78"/>
+    <image href="/images/jaipur/merchant-atlas.webp" x={-(cell % 4) * 100} y={-Math.floor(cell / 4) * 100} width="400" height="200" preserveAspectRatio="none" clipPath={`url(#${id}-scene)`}/>
+    <path d="M3 20V3h17m60 0h17v17M3 80v17h17m60 0h17V80" fill="none" stroke="#f6d795" strokeWidth=".8" opacity=".9"/>
   </svg>;
 }
 
