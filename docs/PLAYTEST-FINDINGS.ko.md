@@ -129,3 +129,14 @@
 원본: `/workspace/onboarding/serious-play/minhwatu/audit/report.json`; 실제 중간 한국어/스페인어 화면은 같은 폴더 `final-p1-ko.png`, `final-p2-es.png`.
 
 이번 감사에서는 진행·점수·비공개 손패의 재현 가능한 규칙 오류를 발견하지 않았다. 더미 공개 후 두 후보 선택·3장 일괄 획득·족보 완성·최종20턴 정산은 이번 자연 대국에서 미검증이다. 실제 Supabase Auth/Realtime은 미검증이며 로컬 SQL fixture/수동 snapshot을 사용했다. 제품 코드는 수정하지 않았다.
+
+## 뮤직톡톡 — 읽기 전용 확인 완료
+
+- 별도 한국어/스페인어 컨텍스트에서 같은 방의 독립 원작 SWF 플레이어를 실제 실행했다. 공유 점수/동기화된 2인 대국은 아니다. 원작과 Ruffle을 수정하지 않았다.
+- 양쪽 모두 SWF 로드→headless 하드웨어 가속 경고 닫기→그림 안 '게임시작' 클릭→볼륨 OK→실제 LEVEL1 진입을 확인했다. 방향키/스페이스 총60회 입력 후 실제 노트가 나타나고 Game Over가 되었다. p1=0점, p2=50점으로 하나 이상의 판정이 발생했지만 리듬에 맞춘 숙련 플레이나 중간 레벨 도달은 아니다.
+- 포커스 버튼 뒤 document.activeElement=RUFFLE-PLAYER, 키 피드백은 키 해제 뒤 남지 않았다. 양측 페이지 새로고침 후 로드 성공 및 원작 제목 화면으로 초기화. JS pageerror=0. 한국어/스페인어 래퍼의 조작·포커스·전체 화면 버튼 및 복구 안내 번역을 확인했다.
+- 언어 제한: 스페인어 래퍼에서도 원작 SWF 내부의 게임시작·볼륨 안내·다시하기/처음으로는 한국어다. 스페인어 초보자가 메뉴를 스스로 이해하기 어렵다. 기존 원작을 보존하는 구조의 제약이며 이번 검증에서 제품 변경을 요청하거나 적용하지 않았다. 원작 처음으로 버튼 문제는 이미 래퍼에서 안내한다.
+
+증거: `/workspace/onboarding/serious-play/rhythm/audit/initial.json`, `p1-wrapper.png`/`p2-wrapper.png`, 실제 시작 `p1-after-start.png`/`p2-after-start.png`, 입력 후 LEVEL1 결과 `p1-played.png`/`p2-played.png`, 새로고침 `p1-reloaded.png`/`p2-reloaded.png`. 재현 스크립트는 같은 폴더 `initial.mjs`.
+
+headless 실제 음질/박자 판정 정확도·더 높은 레벨·원작 다시하기/처음으로·전체 화면 전환의 플레이 연속성은 미검증이다. 초반 Game Over를 중반 진도 성공으로 간주하지 않았다. 뮤직톡톡 수정 제외 지시를 유지했으며 코드 변경 없음.
