@@ -8,7 +8,15 @@
         "es": "Maltipoo"
       },
       "path": null,
-      "plannedPath": "/images/marble/pawns/maltipoo.webp"
+      "plannedPath": "/images/marble/pawns/maltipoo.webp",
+      "libraryFileId": "libfile_7263ed8d8b708191a8fde159d1dec058",
+      "sourceFileName": "maltipoo-final.png",
+      "materialization": "failed initial and one consumer-local retry; zero bytes",
+      "libraryVersion": 0,
+      "declaredBytes": 755645,
+      "localBytes": 0,
+      "pixelInspection": "not run",
+      "applied": false
     },
     {
       "id": "cat",
@@ -17,7 +25,15 @@
         "es": "Ragdoll"
       },
       "path": null,
-      "plannedPath": "/images/marble/pawns/cat.webp"
+      "plannedPath": "/images/marble/pawns/cat.webp",
+      "libraryFileId": "libfile_f79d989995b081918312f68644c01fab",
+      "sourceFileName": "ragdoll-final.png",
+      "libraryVersion": 0,
+      "declaredBytes": 1158976,
+      "materialization": "failed initial and one consumer-local retry; zero bytes",
+      "localBytes": 0,
+      "pixelInspection": "not run",
+      "applied": false
     },
     {
       "id": "penguin",
@@ -26,7 +42,15 @@
         "es": "Panda"
       },
       "path": null,
-      "plannedPath": "/images/marble/pawns/panda.webp"
+      "plannedPath": "/images/marble/pawns/panda.webp",
+      "libraryFileId": "libfile_e10a8fadc5708191ab77ea44f41e160d",
+      "sourceFileName": "panda-final.png",
+      "libraryVersion": 0,
+      "declaredBytes": 1081701,
+      "materialization": "failed initial and one consumer-local retry; zero bytes",
+      "localBytes": 0,
+      "pixelInspection": "not run",
+      "applied": false
     },
     {
       "id": "astronaut",
@@ -35,16 +59,35 @@
         "es": "Astronauta"
       },
       "path": null,
-      "plannedPath": "/images/marble/pawns/astronaut.webp"
+      "plannedPath": "/images/marble/pawns/astronaut.webp",
+      "libraryFileId": "libfile_10a0511c400481919b6dc6d878d0b285",
+      "requiredDesign": "Rose gold accents; fully opaque black visor with pink heart reflection. User approved Library version 1; bytes unavailable, not applied.",
+      "sourceFileName": "astronaut-final.png",
+      "libraryVersion": 1,
+      "declaredBytes": 848451,
+      "materialization": "failed initial and one consumer-local retry; zero bytes",
+      "localBytes": 0,
+      "pixelInspection": "not run",
+      "applied": false,
+      "userApproved": true
     },
     {
       "id": "robot",
       "name": {
-        "ko": "로봇",
-        "es": "Robot"
+        "ko": "리스연",
+        "es": "Lisyeon"
       },
       "path": null,
-      "plannedPath": "/images/marble/pawns/robot.webp"
+      "plannedPath": "/images/marble/pawns/lisyeon.webp",
+      "requiredDesign": "Lisyeon: the referenced light pink rabbit plush only. Exclude people and background; await reference-based approved image.",
+      "libraryFileId": "libfile_b196be3519848191819d2fd7c90dd977",
+      "sourceFileName": "lisyeon-pawn.png",
+      "libraryVersion": 0,
+      "declaredBytes": 1199035,
+      "materialization": "failed initial and one consumer-local retry; zero bytes",
+      "localBytes": 0,
+      "pixelInspection": "not run",
+      "applied": false
     },
     {
       "id": "dragon",
@@ -53,7 +96,15 @@
         "es": "Chinchilla"
       },
       "path": null,
-      "plannedPath": "/images/marble/pawns/chinchilla.webp"
+      "plannedPath": "/images/marble/pawns/chinchilla.webp",
+      "libraryFileId": "libfile_fd8b5109fbb08191b783c1ec91451fde",
+      "sourceFileName": "chinchilla-final.png",
+      "materialization": "failed initial and one consumer-local retry; zero bytes",
+      "libraryVersion": 0,
+      "declaredBytes": 1086971,
+      "localBytes": 0,
+      "pixelInspection": "not run",
+      "applied": false
     }
   ]
 }

@@ -2,6 +2,7 @@ import { useEffect, useRef, useState } from 'react';
 import type { GameAction, Language, PlayerId } from '../core/types';
 import { GameValue } from './GameValue';
 import { playCue } from '../audio/audio';
+import { getPrivateJokerPortraits, type JokerPortraits } from './private-game-art';
 import '../styles/davinci-premium.css';
 
 type Choice = { label: Record<Language, string>; action: GameAction };
@@ -9,15 +10,16 @@ type TileValue = number | 'joker';
 type Tile = { color: 'black' | 'white'; value: TileValue | null; revealed?: boolean };
 type EventType = 'result' | 'correct' | 'wrong' | 'draw' | 'rival-draw' | 'arrange' | 'skip-draw' | 'stop' | 'turn';
 type VisualEvent = { key: string; snapshot: string; viewer: PlayerId; type: EventType; index?: number; value?: TileValue; guess?: TileValue; actor?: PlayerId };
-export type DaVinciTableProps = { view: any; language: Language; playerId: PlayerId; runAction: (action: GameAction) => void | Promise<unknown> };
+export type DaVinciTableProps = { view: any; language: Language; playerId: PlayerId; runAction: (action: GameAction) => void | Promise<unknown>; jokerPortraits?: JokerPortraits };
 
 const copy = (language: Language, ko: string, es: string) => language === 'ko' ? ko : es;
 const record = (value: unknown): Record<string, any> => value && typeof value === 'object' && !Array.isArray(value) ? value as Record<string, any> : {};
 const list = (value: unknown): any[] => Array.isArray(value) ? value : [];
 const colorLabel = (color: string, language: Language) => color === 'white' ? copy(language, '흰색', 'Blanca') : copy(language, '검정', 'Negra');
 const tileValueLabel = (value: TileValue | null | undefined) => value === 'joker' ? '－' : value == null ? '· ·' : String(value);
-function JokerPortrait({ color }: { color: Tile['color'] }) {
-  return <svg className="dv-joker-portrait" viewBox={color === 'black' ? '635 70 355 455' : '295 145 340 430'} aria-hidden="true" focusable="false"><image href="/images/yeonseok-lisbeth-cutout.webp" width="1254" height="1254"/></svg>;
+function JokerPortrait({ src }: { src?: string }) {
+  const [failedSource, setFailedSource] = useState<string | undefined>();
+  return src && src !== failedSource ? <img className="dv-joker-portrait" src={src} alt="" aria-hidden="true" draggable={false} onError={() => setFailedSource(src)}/> : <>－</>;
 }
 const resultKey = (result: any) => result ? `${result.winner ?? ''}:${result.reason ?? ''}:${JSON.stringify(result.scores ?? {})}` : '';
 export function findDaVinciGuess(choices: unknown[], index: number, value: TileValue): Choice | undefined {
@@ -95,7 +97,7 @@ export function deriveDaVinciVisualEvent(previous: { viewer: PlayerId; view: any
   return { key: `${viewer}:${type}:${snapshot}:${Number(record(next?.board?.lastEvent).sequence ?? 0)}`, snapshot, viewer, type, ...(index === undefined ? {} : { index }), ...(value === undefined || (value !== 'joker' && !Number.isFinite(value)) ? {} : { value }), ...(guess === undefined ? {} : { guess }), ...(actor ? { actor } : {}) };
 }
 
-export default function DaVinciTable({ view, language, playerId, runAction }: DaVinciTableProps) {
+export default function DaVinciTable({ view, language, playerId, runAction, jokerPortraits = getPrivateJokerPortraits() }: DaVinciTableProps) {
   const board = record(view?.board), rival: Tile[] = list(board.opponentTiles), own: Tile[] = list(view?.hand);
   const choices: Choice[] = list(view?.actions), guessChoices = choices.filter(choice => choice.action.type === 'guess');
   const hidden = rival.map((tile, index) => ({ tile, index })).filter(item => !item.tile?.revealed);
@@ -191,7 +193,7 @@ export default function DaVinciTable({ view, language, playerId, runAction }: Da
     const flipsOwnTile = visibleEvent?.index === index && ((visibleEvent.type === 'wrong' && visibleEvent.actor === playerId) || (visibleEvent.type === 'correct' && visibleEvent.actor !== playerId));
     const arrivesOwnTile = visibleEvent?.type === 'draw' && visibleEvent.actor === playerId && visibleEvent.index === index
       || visibleEvent?.type === 'arrange' && visibleEvent.actor === playerId && !hasOwnJokerToPlace && tile.value === 'joker' && visibleEvent.index === index;
-    return <div role="img" className={`dv-tile dv-own-tile dv-tile-${tile?.color === 'white' ? 'white' : 'black'} ${tile?.revealed ? 'is-revealed' : ''} ${flipsOwnTile ? 'is-flipping' : ''} ${arrivesOwnTile ? 'is-arriving' : ''}`} key={`${tile?.color}-${tile?.value}`} aria-label={copy(language, `${index + 1}번째 ${colorLabel(tile?.color ?? 'black', language)} 타일, 숫자 ${tileValueLabel(tile?.value)}${tile?.revealed ? ', 공개됨' : ''}`, `Ficha propia ${index + 1} ${colorLabel(tile?.color ?? 'black', language)}, número ${tileValueLabel(tile?.value)}${tile?.revealed ? ', revelada' : ''}`)}><span className="dv-tile-order">{index + 1}</span><b>{tile.value === 'joker' ? <JokerPortrait color={tile.color}/> : tileValueLabel(tile?.value)}</b><span className="dv-tile-color">{colorLabel(tile?.color ?? 'black', language)}</span>{tile?.revealed && <small className="dv-tile-state"><svg aria-hidden="true"><use href="/images/davinci/state-icons.svg#revealed"/></svg>{copy(language, '공개', 'Visible')}</small>}</div>;
+    return <div role="img" className={`dv-tile dv-own-tile dv-tile-${tile?.color === 'white' ? 'white' : 'black'} ${tile?.revealed ? 'is-revealed' : ''} ${flipsOwnTile ? 'is-flipping' : ''} ${arrivesOwnTile ? 'is-arriving' : ''}`} key={`${tile?.color}-${tile?.value}`} aria-label={copy(language, `${index + 1}번째 ${colorLabel(tile?.color ?? 'black', language)} 타일, 숫자 ${tileValueLabel(tile?.value)}${tile?.revealed ? ', 공개됨' : ''}`, `Ficha propia ${index + 1} ${colorLabel(tile?.color ?? 'black', language)}, número ${tileValueLabel(tile?.value)}${tile?.revealed ? ', revelada' : ''}`)}><span className="dv-tile-order">{index + 1}</span><b>{tile.value === 'joker' ? <JokerPortrait src={jokerPortraits[tile.color]}/> : tileValueLabel(tile?.value)}</b><span className="dv-tile-color">{colorLabel(tile?.color ?? 'black', language)}</span>{tile?.revealed && <small className="dv-tile-state"><svg aria-hidden="true"><use href="/images/davinci/state-icons.svg#revealed"/></svg>{copy(language, '공개', 'Visible')}</small>}</div>;
   };
   const actionLog = list(board.actionLog).filter((event: any) => event?.type === 'correct-guess' || event?.type === 'wrong-guess').slice(-12);
   const streaks: Record<PlayerId, number> = { p1: 0, p2: 0 };
@@ -218,7 +220,7 @@ export default function DaVinciTable({ view, language, playerId, runAction }: Da
         const winningReveal = !!view?.result && resultOutcome === 'win' && visibleEvent?.type === 'correct' && visibleEvent.actor === playerId && visibleEvent.index === index;
         const arrivesRivalTile = visibleEvent?.type === 'rival-draw' && visibleEvent.actor !== playerId && visibleEvent.index === index;
         const tileClass = `dv-tile dv-tile-${tile?.color === 'white' ? 'white' : 'black'} ${tile?.revealed ? 'is-revealed' : ''} ${targetIndex === index && target ? 'is-target' : ''} ${flipsRivalTile && !winningReveal ? 'is-flipping' : ''} ${winningReveal ? 'is-winning-reveal' : ''} ${arrivesRivalTile ? 'is-arriving' : ''}`;
-        const contents = <><span className="dv-tile-order">{index + 1}</span><b>{tile?.revealed ? tile.value === 'joker' ? <JokerPortrait color={tile.color}/> : tileValueLabel(tile.value) : '· ·'}</b><span className="dv-tile-color">{colorLabel(tile?.color ?? 'black', language)}</span>{tile?.revealed && <small className="dv-tile-state"><svg aria-hidden="true"><use href="/images/davinci/state-icons.svg#revealed"/></svg>{copy(language, '공개', 'Revelada')}</small>}{selectable && targetIndex === index && <em><svg aria-hidden="true"><use href="/images/davinci/state-icons.svg#target"/></svg>{copy(language, '목표', 'Objetivo')}</em>}</>;
+        const contents = <><span className="dv-tile-order">{index + 1}</span><b>{tile?.revealed ? tile.value === 'joker' ? <JokerPortrait src={jokerPortraits[tile.color]}/> : tileValueLabel(tile.value) : '· ·'}</b><span className="dv-tile-color">{colorLabel(tile?.color ?? 'black', language)}</span>{tile?.revealed && <small className="dv-tile-state"><svg aria-hidden="true"><use href="/images/davinci/state-icons.svg#revealed"/></svg>{copy(language, '공개', 'Revelada')}</small>}{selectable && targetIndex === index && <em><svg aria-hidden="true"><use href="/images/davinci/state-icons.svg#target"/></svg>{copy(language, '목표', 'Objetivo')}</em>}</>;
         return selectable ? <button type="button" key={`rival-${index}`} className={tileClass} aria-pressed={targetIndex === index} aria-label={copy(language, `${index + 1}번째 ${colorLabel(tile.color, language)} 상대 타일${tile.revealed ? `, ${tileValueLabel(tile.value)}` : ', 숫자 숨김'}`, `Ficha rival ${index + 1} ${colorLabel(tile.color, language)}${tile.revealed ? `, ${tileValueLabel(tile.value)}` : ', número oculto'}`)} onClick={() => { setTargetIndex(index); setColorFilter(tile.color); setConfirming(null); playCue('davinci', 'select'); }}>{contents}</button>
           : <div key={`rival-${index}`} role="img" className={tileClass} aria-label={copy(language, `${index + 1}번째 ${colorLabel(tile?.color ?? 'black', language)} 상대 타일${tile?.revealed ? `, ${tileValueLabel(tile.value)}` : ', 숫자 숨김'}`, `Ficha rival ${index + 1} ${colorLabel(tile?.color ?? 'black', language)}${tile?.revealed ? `, ${tileValueLabel(tile.value)}` : ', número oculto'}`)}>{contents}</div>;
       })}{!rival.length && <p className="dv-empty">{copy(language, '상대 타일을 기다리고 있어요.', 'Esperando las fichas rivales.')}</p>}</div>
@@ -262,7 +264,7 @@ export default function DaVinciTable({ view, language, playerId, runAction }: Da
     <section className={`dv-rack dv-own-rack ${initialDeal ? 'is-initial-deal' : ''}`} aria-label={copy(language, '내 손패', 'Tu mano')}>
       <div className="dv-section-title"><div><h3>{copy(language, '내 타일', 'Tus fichas')}</h3></div><small>{copy(language, '내 숫자는 나에게 공개돼요', 'Tú puedes ver tus números')}</small></div>
       {hasOwnJokerToPlace ? <div className="dv-joker-placement">
-        <div className={`dv-joker-preview dv-tile dv-tile-${ownJokerToPlace.color} ${visibleEvent?.type === 'draw' && visibleEvent.actor === playerId && visibleEvent.value === 'joker' ? 'is-arriving' : ''}`} role="img" aria-label={copy(language, `${colorLabel(ownJokerToPlace.color, language)} 조커 타일, 원하는 위치에 배치`, `Comodín ${colorLabel(ownJokerToPlace.color, language)}, elige dónde colocarlo`)}><b><JokerPortrait color={ownJokerToPlace.color}/></b><span className="dv-tile-color">{colorLabel(ownJokerToPlace.color, language)}</span><small>{copy(language, '배치할 조커', 'Comodín por colocar')}</small></div>
+        <div className={`dv-joker-preview dv-tile dv-tile-${ownJokerToPlace.color} ${visibleEvent?.type === 'draw' && visibleEvent.actor === playerId && visibleEvent.value === 'joker' ? 'is-arriving' : ''}`} role="img" aria-label={copy(language, `${colorLabel(ownJokerToPlace.color, language)} 조커 타일, 원하는 위치에 배치`, `Comodín ${colorLabel(ownJokerToPlace.color, language)}, elige dónde colocarlo`)}><b><JokerPortrait src={jokerPortraits[ownJokerToPlace.color === 'white' ? 'white' : 'black']}/></b><span className="dv-tile-color">{colorLabel(ownJokerToPlace.color, language)}</span><small>{copy(language, '배치할 조커', 'Comodín por colocar')}</small></div>
         <div className="dv-tile-row dv-joker-gap-row" role="group" aria-label={copy(language, '조커를 손패에 놓을 위치', 'Posición del comodín en tu mano')}>
           {Array.from({ length: ownHandWithoutMovingJoker.length + 1 }, (_, gap) => {
             const placeChoice = findDaVinciJokerPlacement(placementChoices, gap);

@@ -390,6 +390,8 @@
   .is-modern :is(.mp-tile--west,.mp-tile--east):not(.mp-kind-property) .mp-tile-kind { grid-column:2; justify-content:flex-start; font-size:8px; }
   .is-modern .mp-city-preview { position:absolute; left:12px; bottom:43px; z-index:2; display:grid; justify-items:center; width:158px; margin:0; padding:6px; border:1px solid #cbb98b; border-radius:12px; background:#fffaf0f2; box-shadow:0 4px 12px #344c5926; pointer-events:none; }
   .mp-city-preview > :is(img,svg,span) { width:132px; height:132px; object-fit:contain; }
+  .marble-premium img[data-building-level] { object-fit:contain; object-position:center bottom; box-sizing:border-box; padding:3px 2px 0; }
+  .mp-city-preview > img[data-building-level] { padding:8px 5px 0; }
   .mp-city-preview figcaption { display:grid; gap:3px; text-align:center; font-size:11px; line-height:1.25; }
   .mp-city-preview figcaption span { font-size:10px; color:#526a61; }
 }
@@ -404,3 +406,22 @@
 .marble-premium .mp-art-pending { display:grid; place-items:center; padding:2px; border:1px dashed #b6a784; border-radius:6px; background:#f6f0e1; color:#526a61; font-size:9px; line-height:1.1; text-align:center; }
 .mp-property-card-art > .mp-art-pending { width:100%; height:100%; }
 .mp-landmark-note { margin:0; font-size:12px; line-height:1.4; color:#36575c; }
+
+/* A dedicated inside edge keeps both pawns clear of city names, prices and artwork. */
+@media (min-width:1100px) and (pointer:fine) {
+  .is-modern .mp-board-grid--40 .mp-tile.has-player { overflow:visible; z-index:5; }
+  .is-modern .mp-board-grid--40 .mp-pawns { gap:3px; pointer-events:none; }
+  .is-modern .mp-board-grid--40 .mp-pawn-marker { position:relative; width:24px; height:30px; margin-left:0; flex:none; }
+  .is-modern .mp-board-grid--40 .mp-pawn-marker::after { content:attr(data-seat-number); position:absolute; right:0; bottom:0; display:grid; place-items:center; width:10px; height:10px; border:1px solid #304c52; border-radius:50%; background:#fffaf0; color:#243f45; font:700 8px/1 sans-serif; }
+  .is-modern [data-mp-edge="bottom"] .mp-pawns { right:2px; bottom:calc(100% + 3px); }
+  .is-modern [data-mp-edge="top"] .mp-pawns { right:2px; top:calc(100% + 3px); bottom:auto; }
+  .is-modern [data-mp-edge="left"] .mp-pawns { left:calc(100% + 3px); right:auto; top:50%; bottom:auto; transform:translateY(-50%); }
+  .is-modern [data-mp-edge="right"] .mp-pawns { right:calc(100% + 3px); top:50%; bottom:auto; transform:translateY(-50%); }
+  .is-modern [data-mp-edge="lefttop"] .mp-pawns { left:calc(100% + 3px); right:auto; top:calc(100% + 3px); bottom:auto; }
+  .is-modern [data-mp-edge="righttop"] .mp-pawns { right:calc(100% + 3px); top:calc(100% + 3px); bottom:auto; }
+  .is-modern [data-mp-edge="leftbottom"] .mp-pawns { left:calc(100% + 3px); right:auto; bottom:calc(100% + 3px); }
+  .is-modern [data-mp-edge="rightbottom"] .mp-pawns { right:calc(100% + 3px); bottom:calc(100% + 3px); }
+  .is-modern .mp-center-route { top:38px; }
+  .is-modern .mp-map-hud { bottom:38px; }
+  .is-modern .mp-city-preview { left:62px; }
+}

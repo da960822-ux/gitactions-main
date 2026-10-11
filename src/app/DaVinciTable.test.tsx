@@ -8,8 +8,9 @@ import DaVinciTable, { daVinciGuessButtonLabel, davinciSnapshotKey, deriveDaVinc
 const guessActions = (index: number): { label: { ko: string; es: string }; action: GameAction }[] =>
   [...Array.from({ length: 12 }, (_, value) => ({ label: { ko: '추측', es: 'Adivinar' }, action: { type: 'guess', payload: { index, value } } as GameAction })), { label: { ko: '조커', es: 'Comodín' }, action: { type: 'guess', payload: { index, value: 'joker' } } }];
 
-function render(view: any, playerId: 'p1' | 'p2' = 'p1', language: 'ko' | 'es' = 'ko') {
-  return renderToStaticMarkup(createElement(DaVinciTable, { view, playerId, language, runAction: vi.fn() }));
+const privatePortraits = { black: '/private-game-art/black-joker.webp', white: '/private-game-art/white-joker.webp' };
+function render(view: any, playerId: 'p1' | 'p2' = 'p1', language: 'ko' | 'es' = 'ko', jokerPortraits = privatePortraits) {
+  return renderToStaticMarkup(createElement(DaVinciTable, { view, playerId, language, runAction: vi.fn(), jokerPortraits }));
 }
 
 describe('DaVinciTable', () => {
@@ -140,11 +141,15 @@ describe('DaVinciTable', () => {
     expect(loss).not.toContain('모든 상대 타일을 공개했어요.');
   });
 
-  it('renders the existing portrait on an own joker and preserves its accessible value', () => {
+  it('uses an injected private portrait on an own joker and falls back to the rule symbol without it', () => {
     const view = { game: 'davinci', turn: 'p1', phase: 'draw', hand: [{ color: 'black', value: 'joker', revealed: false }], board: { opponentTiles: [{ color: 'white', value: null, revealed: false }], deckCount: 12, turnNumber: 1, tileCount: 26, actionLog: [], lastEvent: null }, actions: [] };
     const html = render(view);
     expect(html).toContain('class="dv-joker-portrait"');
-    expect(html).toContain('/images/yeonseok-lisbeth-cutout.webp');
+    expect(html).toContain(privatePortraits.black);
+    expect(html).not.toContain('yeonseok-lisbeth-cutout');
+    const fallback = render(view, 'p1', 'ko', {} as typeof privatePortraits);
+    expect(fallback).not.toContain('dv-joker-portrait');
+    expect(fallback).toContain('>－</b>');
     expect(html).toContain('숫자 －');
     expect(html).not.toContain('NaN');
   });
@@ -155,11 +160,12 @@ describe('DaVinciTable', () => {
       const hidden = render(view, 'p1', language);
       expect(hidden).not.toContain('dv-joker-portrait');
       expect(hidden).not.toContain('yeonseok-lisbeth-cutout');
+      expect(hidden).not.toContain('private-game-art');
       expect(hidden).not.toContain('635 70');
       const visible = render({ ...view, board: { ...view.board, opponentTiles: view.board.opponentTiles.map(tile => ({ ...tile, revealed: true })) } }, 'p1', language);
       expect(visible.match(/class="dv-joker-portrait"/g)).toHaveLength(2);
-      expect(visible).toContain('viewBox="635 70 355 455"');
-      expect(visible).toContain('viewBox="295 145 340 430"');
+      expect(visible).toContain(privatePortraits.black);
+      expect(visible).toContain(privatePortraits.white);
     }
   });
 

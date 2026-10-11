@@ -208,6 +208,6 @@ button.dv-tile:disabled { opacity: .78; cursor: default; }
   .table-game.dv-table { gap: 8px; padding: 10px; grid-template-columns: minmax(0, 1fr) minmax(360px, 380px); }
 }
 @media (min-width: 901px) {
-  .dv-joker-portrait { display: block; width: 42px; height: 48px; border-radius: 6px; }
+  .dv-joker-portrait { display: block; width: 42px; height: 48px; object-fit: contain; border-radius: 6px; }
   .dv-joker-preview .dv-joker-portrait { width: 48px; height: 55px; }
 }

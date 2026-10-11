@@ -38,6 +38,7 @@ describe('Marble pawn selection', () => {
     }));
     expect(html).toContain('Panda');
     expect(html).toContain('Ragdoll');
+    expect(html).toContain('Lisyeon');
     expect(html).not.toContain('Gata');
     expect(html).toContain('De tu pareja');
     expect(html).toContain('Elegir');

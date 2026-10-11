@@ -1,0 +1,257 @@
+{
+  "scope": "25 Marble assets. Prepared Library records are not local files. Personal portraits tracked separately.",
+  "attemptsPerFile": 2,
+  "error": "library file transfer failed: download failed",
+  "assets": [
+    {
+      "libraryFileId": "libfile_5d468ddb88608191a7bf980985a82642",
+      "sourceFileName": "stage-1-detached-house.png",
+      "libraryVersion": 0,
+      "declaredBytes": 2576817,
+      "materialization": "failed initial and one consumer-local retry; zero bytes",
+      "localBytes": 0,
+      "pixelInspection": "not run",
+      "applied": false
+    },
+    {
+      "libraryFileId": "libfile_84b3a1d523fc8191aa56d3e24ebdcb7c",
+      "sourceFileName": "stage-2-apartment-ordinary-v2.png",
+      "libraryVersion": 1,
+      "declaredBytes": 1859140,
+      "materialization": "failed initial and one consumer-local retry; zero bytes",
+      "localBytes": 0,
+      "pixelInspection": "not run",
+      "applied": false
+    },
+    {
+      "libraryFileId": "libfile_7263ed8d8b708191a8fde159d1dec058",
+      "sourceFileName": "maltipoo-final.png",
+      "libraryVersion": 0,
+      "declaredBytes": 755645,
+      "materialization": "failed initial and one consumer-local retry; zero bytes",
+      "localBytes": 0,
+      "pixelInspection": "not run",
+      "applied": false
+    },
+    {
+      "libraryFileId": "libfile_fd8b5109fbb08191b783c1ec91451fde",
+      "sourceFileName": "chinchilla-final.png",
+      "libraryVersion": 0,
+      "declaredBytes": 1086971,
+      "materialization": "failed initial and one consumer-local retry; zero bytes",
+      "localBytes": 0,
+      "pixelInspection": "not run",
+      "applied": false
+    },
+    {
+      "libraryFileId": "libfile_f79d989995b081918312f68644c01fab",
+      "sourceFileName": "ragdoll-final.png",
+      "libraryVersion": 0,
+      "declaredBytes": 1158976,
+      "materialization": "failed initial and one consumer-local retry; zero bytes",
+      "localBytes": 0,
+      "pixelInspection": "not run",
+      "applied": false
+    },
+    {
+      "libraryFileId": "libfile_e10a8fadc5708191ab77ea44f41e160d",
+      "sourceFileName": "panda-final.png",
+      "libraryVersion": 0,
+      "declaredBytes": 1081701,
+      "materialization": "failed initial and one consumer-local retry; zero bytes",
+      "localBytes": 0,
+      "pixelInspection": "not run",
+      "applied": false
+    },
+    {
+      "libraryFileId": "libfile_10a0511c400481919b6dc6d878d0b285",
+      "sourceFileName": "astronaut-final.png",
+      "libraryVersion": 1,
+      "declaredBytes": 848451,
+      "materialization": "failed initial and one consumer-local retry; zero bytes",
+      "localBytes": 0,
+      "pixelInspection": "not run",
+      "applied": false
+    },
+    {
+      "libraryFileId": "libfile_b196be3519848191819d2fd7c90dd977",
+      "sourceFileName": "lisyeon-pawn.png",
+      "libraryVersion": 0,
+      "declaredBytes": 1199035,
+      "materialization": "failed initial and one consumer-local retry; zero bytes",
+      "localBytes": 0,
+      "pixelInspection": "not run",
+      "applied": false
+    },
+    {
+      "libraryFileId": "libfile_44b8295281888191bb6c8653a222396c",
+      "sourceFileName": "berlin-landmark.png",
+      "libraryVersion": 0,
+      "declaredBytes": 2479339,
+      "materialization": "failed initial and one consumer-local retry; zero bytes",
+      "localBytes": 0,
+      "pixelInspection": "not run",
+      "applied": false
+    },
+    {
+      "libraryFileId": "libfile_c06c01a3ec4881918d937bb17d54840b",
+      "sourceFileName": "gwangju-chosun-university.png",
+      "libraryVersion": 0,
+      "declaredBytes": 1108772,
+      "materialization": "failed initial and one consumer-local retry; zero bytes",
+      "localBytes": 0,
+      "pixelInspection": "not run",
+      "applied": false
+    },
+    {
+      "libraryFileId": "libfile_45c3b52f2abc8191a3b153bf326f57db",
+      "sourceFileName": "santo-domingo-alcazar.png",
+      "libraryVersion": 0,
+      "declaredBytes": 2158574,
+      "materialization": "failed initial and one consumer-local retry; zero bytes",
+      "localBytes": 0,
+      "pixelInspection": "not run",
+      "applied": false
+    },
+    {
+      "libraryFileId": "libfile_1f85384286b48191a89bda1452fd9229",
+      "sourceFileName": "newark-sacred-heart.png",
+      "libraryVersion": 0,
+      "declaredBytes": 2351587,
+      "materialization": "failed initial and one consumer-local retry; zero bytes",
+      "localBytes": 0,
+      "pixelInspection": "not run",
+      "applied": false
+    },
+    {
+      "libraryFileId": "libfile_ea495ac43afc81919ac41cec724ca25f",
+      "sourceFileName": "miami-colony-hotel.png",
+      "libraryVersion": 1,
+      "declaredBytes": 1855067,
+      "materialization": "failed initial and one consumer-local retry; zero bytes",
+      "localBytes": 0,
+      "pixelInspection": "not run",
+      "applied": false
+    },
+    {
+      "libraryFileId": "libfile_489aa03a40548191a6189d4f643c9f21",
+      "sourceFileName": "new-york-empire-state.png",
+      "libraryVersion": 0,
+      "declaredBytes": 832343,
+      "materialization": "failed initial and one consumer-local retry; zero bytes",
+      "localBytes": 0,
+      "pixelInspection": "not run",
+      "applied": false
+    },
+    {
+      "libraryFileId": "libfile_727025a648fc81918e98041b57e62a83",
+      "sourceFileName": "seoul-n-seoul-tower.png",
+      "libraryVersion": 0,
+      "declaredBytes": 498017,
+      "materialization": "failed initial and one consumer-local retry; zero bytes",
+      "localBytes": 0,
+      "pixelInspection": "not run",
+      "applied": false
+    },
+    {
+      "libraryFileId": "libfile_2ddd3b5563ac8191a8308774f2faaec5",
+      "sourceFileName": "paris-eiffel-tower.png",
+      "libraryVersion": 0,
+      "declaredBytes": 1080236,
+      "materialization": "failed initial and one consumer-local retry; zero bytes",
+      "localBytes": 0,
+      "pixelInspection": "not run",
+      "applied": false
+    },
+    {
+      "libraryFileId": "libfile_34232dd93ec88191a42d8248393b1c6f",
+      "sourceFileName": "tokyo-kaminarimon.png",
+      "libraryVersion": 0,
+      "declaredBytes": 2082606,
+      "materialization": "failed initial and one consumer-local retry; zero bytes",
+      "localBytes": 0,
+      "pixelInspection": "not run",
+      "applied": false
+    },
+    {
+      "libraryFileId": "libfile_f5f458802b488191bbbe3e6cf503bfd4",
+      "sourceFileName": "barcelona-sagrada-familia.png",
+      "libraryVersion": 0,
+      "declaredBytes": 1691173,
+      "materialization": "failed initial and one consumer-local retry; zero bytes",
+      "localBytes": 0,
+      "pixelInspection": "not run",
+      "applied": false
+    },
+    {
+      "libraryFileId": "libfile_6179df5d720c8191bba2c7662fb96c4f",
+      "sourceFileName": "sydney-opera-house.png",
+      "libraryVersion": 0,
+      "declaredBytes": 1851103,
+      "materialization": "failed initial and one consumer-local retry; zero bytes",
+      "localBytes": 0,
+      "pixelInspection": "not run",
+      "applied": false
+    },
+    {
+      "libraryFileId": "libfile_6df2a43839248191ba455b3476d43227",
+      "sourceFileName": "istanbul-hagia-sophia.png",
+      "libraryVersion": 0,
+      "declaredBytes": 2405980,
+      "materialization": "failed initial and one consumer-local retry; zero bytes",
+      "localBytes": 0,
+      "pixelInspection": "not run",
+      "applied": false
+    },
+    {
+      "libraryFileId": "libfile_3b9bcaf4cac88191ad1518e7c1ca16d8",
+      "sourceFileName": "agra-taj-mahal.png",
+      "libraryVersion": 0,
+      "declaredBytes": 2046184,
+      "materialization": "failed initial and one consumer-local retry; zero bytes",
+      "localBytes": 0,
+      "pixelInspection": "not run",
+      "applied": false
+    },
+    {
+      "libraryFileId": "libfile_91b41897e4288191b191c97b39f4f198",
+      "sourceFileName": "athens-parthenon.png",
+      "libraryVersion": 0,
+      "declaredBytes": 1767103,
+      "materialization": "failed initial and one consumer-local retry; zero bytes",
+      "localBytes": 0,
+      "pixelInspection": "not run",
+      "applied": false
+    },
+    {
+      "libraryFileId": "libfile_720256130a588191b59b77add08d605d",
+      "sourceFileName": "london-elizabeth-tower.png",
+      "libraryVersion": 0,
+      "declaredBytes": 811761,
+      "materialization": "failed initial and one consumer-local retry; zero bytes",
+      "localBytes": 0,
+      "pixelInspection": "not run",
+      "applied": false
+    },
+    {
+      "libraryFileId": "libfile_983985b4c5208191a96644b9cd01c840",
+      "sourceFileName": "rome-colosseum.png",
+      "libraryVersion": 0,
+      "declaredBytes": 2857621,
+      "materialization": "failed initial and one consumer-local retry; zero bytes",
+      "localBytes": 0,
+      "pixelInspection": "not run",
+      "applied": false
+    },
+    {
+      "libraryFileId": "libfile_3283d2644dac819194cc0febd90adba2",
+      "sourceFileName": "toronto-cn-tower.png",
+      "libraryVersion": 0,
+      "declaredBytes": 356011,
+      "materialization": "failed initial and one consumer-local retry; zero bytes",
+      "localBytes": 0,
+      "pixelInspection": "not run",
+      "applied": false
+    }
+  ]
+}

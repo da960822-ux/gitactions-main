@@ -10,3 +10,6 @@ output/
 __pycache__/
 *.pyc
 supabase/.temp/
+
+# Personal game artwork is supplied by the private host, never committed.
+public/private-game-art/
