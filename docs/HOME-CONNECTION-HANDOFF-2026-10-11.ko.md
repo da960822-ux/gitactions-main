@@ -104,3 +104,7 @@ Luna(gpt-6-luna)는 독립 KO/ES Chromium contexts에서 UI로 방 생성·초�
 두 파일 업로드 후 metadata를 다시 읽어 파일 크기와 공유 false·owner 권한 하나뿐임을 확인했다. 공개 공유를 추가하지 않았다. `scripts/record-home-motion.mjs`는 실제 CDP JPEG 간격을 보존하고 CFR30에서 프레임을 반복한다. 보간/공백 제거/속도 변경은 없다. 오류0이고 원시 캡처 타임스탬프·단계별 관측·실제 중간 프레임은 비공개 로컬 산출물로 남긴다.
 
 최신 코드 원본 커밋: `305255a3f17572beda972e997ebc407b29d8cfbe`.32개 게임 PNG의 정상 Library 전달 실패와 공개 승인 답변 대기는 별도 차단이며, 이 브랜치에는 그 bytes를 넣지 않았다. 부모가 전한 공개 asset 브랜치의 blob을 가져와 올리는 우회도 하지 않았다.
+
+### 후속 공개 승인 후32PNG 수령
+
+위 공개 승인 대기 상태는 이후 명시적 승인으로 해소됐다. `assets/premium-marble-20261011`의 정확한 원격 SHA `ccec83d87fac6ad1a65dd2b900dec8870ef1c71b`를 fetch했다. 도시24/건물2/캐릭터6 원본 PNG32개, 총52,604,560bytes의 SHA256·Git blob SHA·바이트 크기가 manifest와 전부 일치한다. 원본은 `/workspace/premium-marble-assets-ccec83d`에서 분리 보존했다. 래그돌/아파트/광주 원본 픽셀을 실제로 봤다. 이는 개인 사진·조커·귀족 전달 승인이 아니고, 아직 게임 runtime 연결이나 최종 인게임 확인의 증거도 아니다. 최신 게임 코드의 별도 push 차단은 해소됐다고 전달받지 않았다. 살리·술리 추가 캐릭터는 이32개에 없다.

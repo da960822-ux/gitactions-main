@@ -132,7 +132,7 @@
   },
   "remaining": [
     "New game local1feaca317 unavailable; its blocked push must not be repeated through another route",
-    "Final high-quality cities, six pawns, three building stages and airline assets not integrated",
+    "Approved32 original Marble PNGs received and hash-verified; runtime optimization/linking and airline assets remain",
     "New personal joker/noble assets must remain private; Library delivery and private injection pending",
     "Production Auth/PostgREST/Realtime/cron/migrations and two real devices untested",
     "Final Luna full-game testing deferred until implementation and asset integration closes",
@@ -235,7 +235,13 @@
     "treeOrAssetCommitReported": false,
     "localBytesIntegrated": 0,
     "supportedLibraryTransferFailedElsewhere": true,
-    "publicPermissionAnswerPending": true,
-    "alternatePublicUploadAttemptedHere": false
+    "publicPermissionAnswerPending": false,
+    "alternatePublicUploadAttemptedHere": false,
+    "sourceRevision": "ccec83d87fac6ad1a65dd2b900dec8870ef1c71b",
+    "pngFilesReceived": 32,
+    "totalOriginalBytes": 52604560,
+    "verifiedSha256AndBlobHashAndBytes": 32,
+    "runtimeConnected": false,
+    "note": "Explicit later public approval superseded the earlier asset-transfer block. Fetched exact approved asset branch and inspected representative source PNGs; game code integration is still pending."
   }
 }
