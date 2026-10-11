@@ -30,6 +30,12 @@ export default function StudioScene(props:Props){
   if(props.mode==='hearts')heartLayout.forEach((_,i)=>{const g=new T.Group();g.add(new T.Mesh(createHeartGeometry(),i===1||i===3?materials.gold:materials.chrome));scene.add(g);objects.push(g);});
   else gameCatalog.forEach(game=>{const g=normalizeSculpture(createGameObject(game.id,materials,()=>redraw.current()));g.userData.game=game.id;g.traverse(o=>{if(o instanceof T.Mesh){const originals=Array.isArray(o.material)?o.material:[o.material];const copies=originals.map(original=>{const material=original.clone() as T.MeshStandardMaterial;material.userData.baseColor=material.color.clone();material.userData.baseEnvironment=material.envMapIntensity;return material;});o.material=Array.isArray(o.material)?copies:copies[0];}});scene.add(g);objects.push(g);});
   const canvas=renderer.domElement;node.appendChild(canvas);canvas.setAttribute('aria-hidden','true');
+  let ribbon:T.Mesh<T.TubeGeometry,T.MeshStandardMaterial>|undefined;
+  if(props.mode==='hearts'){
+   const curve=new T.CatmullRomCurve3([new T.Vector3(-4.6,-.1,1.6),new T.Vector3(-3.5,1.45,.5),new T.Vector3(-2.5,1.8,-1.4),new T.Vector3(0,.8,-2.8),new T.Vector3(3.2,-.4,-1),new T.Vector3(4.1,-1.25,.8)]);
+   const material=heroGold.clone();material.color.set('#936b59');material.roughness=.4;material.envMapIntensity=1.2;
+   ribbon=new T.Mesh(new T.TubeGeometry(curve,128,.026,8,false),material);scene.add(ribbon);
+  }
   let width=0,height=0,mobile=false,time=0,last=0,visible=true,disposed=false,loaded=false,impulse=props.impulse??0,energy=0,hovered=-1;
   const pointer=new T.Vector2(),hoverPoint=new T.Vector2(),ray=new T.Raycaster(),finePointer=matchMedia('(hover:hover) and (pointer:fine)');
   const inputNode=props.mode==='hearts'?node.closest<HTMLElement>('.rd-hero')!:canvas;
@@ -37,6 +43,7 @@ export default function StudioScene(props:Props){
   const render=(snap=false,dt=1/60)=>{
    if(!width||!height||disposed)return;const active=!controls.current.paused&&!document.hidden;
    if(props.mode==='hearts'&&!mobile){const factor=snap||!active?1:1-Math.exp(-dt*8);key.position.lerp(new T.Vector3(-4+(active?pointer.x*3:0),6+(active?pointer.y*1.5:0),8),factor);}
+   if(ribbon){const reveal=controls.current.paused?1:1-Math.pow(1-Math.min(1,Math.max(0,time-.15)/1.1),3);ribbon.visible=!mobile;ribbon.geometry.setDrawRange(0,Math.floor(ribbon.geometry.index!.count*reveal/3)*3);const factor=snap||!active?1:1-Math.exp(-dt*6);ribbon.position.lerp(new T.Vector3(active?pointer.x*.21:0,active?pointer.y*.14:0,0),factor);ribbon.rotation.y+=( (active?pointer.x*.025:0)-ribbon.rotation.y)*factor;canvas.dataset.curveReveal=String(reveal);}
    objects.forEach((g,i)=>{
     let x=0,y=0,z=0,size=1,rx=.13,ry=-.2,rz=0;
     if(props.mode==='hearts'){
