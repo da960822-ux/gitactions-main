@@ -43,6 +43,25 @@
 .game-guide li > span { color: #9aac9f; font: 17px var(--serif); }
 .game-guide li p { margin: 0; color: #56615a; font-size: 14px; line-height: 1.75; }
 .game-guide .variant-note { margin: 13px 0 0; color: #786b56; font-size: 13px; line-height: 1.7; }
+.beginner-guide { margin-top: 18px; }
+.beginner-guide .guide-goal, .beginner-guide .guide-tip { margin: 12px 0; font-size: 14px; line-height: 1.6; }
+.guide-goal strong, .guide-tip strong { display: inline-block; margin-right: 8px; }
+.guide-example { margin: 14px 0; }
+.guide-example img { display: block; width: 100%; height: clamp(160px, 24vw, 240px); object-fit: contain; border: 1px solid #d9d5cb; border-radius: 12px; background: #f6f3eb; }
+.guide-example figcaption { margin-top: 6px; font-size: 12px; line-height: 1.5; opacity: .8; }
+.app-shell :is(.game-guide, .rules-dialog) .guide-quick-steps { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 12px; max-width: none; margin: 16px 0; }
+.app-shell :is(.game-guide, .rules-dialog) .guide-quick-steps li { display: block; min-width: 0; margin: 0; padding: 12px; border: 1px solid #756576; border-radius: 10px; }
+.app-shell :is(.game-guide, .rules-dialog) .guide-quick-steps li > span { display: block; margin-bottom: 6px; font-size: 16px; }
+.app-shell :is(.game-guide, .rules-dialog) .guide-quick-steps h3 { margin: 0 0 7px; font-size: 15px; line-height: 1.4; font-family: inherit; color: inherit; }
+.app-shell :is(.game-guide, .rules-dialog) .guide-quick-steps li p { font-size: 14px; line-height: 1.6; }
+.guide-details { margin-top: 16px; border-top: 1px solid #756576; }
+.guide-details > summary { display: list-item; min-height: 44px; padding: 12px 4px; font-size: 14px; font-weight: 700; cursor: pointer; }
+.guide-details > summary:focus-visible { outline: 2px solid currentColor; outline-offset: 2px; border-radius: 4px; }
+@media (max-width: 700px) {
+  .app-shell :is(.game-guide, .rules-dialog) .guide-quick-steps { grid-template-columns: 1fr; gap: 8px; }
+  .app-shell :is(.game-guide, .rules-dialog) .guide-quick-steps li { display: grid; grid-template-columns: 24px minmax(0, 1fr); gap: 10px; }
+  .guide-example img { max-height: 210px; }
+}
 @media (max-width: 600px) {
   .game-guide { padding: 22px 18px 18px; }
   .game-guide h2 { font-size: 24px; }

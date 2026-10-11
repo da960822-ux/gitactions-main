@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg">
+<symbol id="pen" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m4 20 1-5L16 4a2 2 0 0 1 4 4L9 19l-5 1Zm10-14 4 4M5 15l4 4"/></g></symbol>
+<symbol id="eraser" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m3 14 9-10a2 2 0 0 1 3 0l6 6-10 11H8l-5-5v-2Zm4-4 10 10M11 21h10"/></g></symbol>
+<symbol id="fill" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m5 12 7-7 8 8-8 8-7-7v-2Zm3-9 8 8M4 16c-3 4-1 6 1 6s3-2-1-6Z"/></g></symbol>
+<symbol id="undo" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M8 5 3 10l5 5M3 10h11a6 6 0 0 1 0 12"/></g></symbol>
+<symbol id="clear" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 6h16M9 6V3h6v3M6 6l1 15h10l1-15M10 10v7m4-7v7"/></g></symbol>
+<symbol id="swap" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 7h16l-4-4m4 4-4 4M21 17H5l4-4m-4 4 4 4"/></g></symbol>
+<symbol id="skip" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m4 5 10 7L4 19V5Zm15 0v14"/></g></symbol>
+<symbol id="round-end" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="m7 12 3 3 7-7M12 3v2"/></g></symbol>
+</svg>

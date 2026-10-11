@@ -2,7 +2,8 @@ import { afterEach, describe, expect, it } from 'vitest';
 import { vi } from 'vitest';
 import { createElement } from 'react';
 import { renderToStaticMarkup } from 'react-dom/server';
-import { bindApi, CatchmindChatComposer, GameGuide, Room, rulesButtonLabel } from './PlayApp';
+import { bindApi, catchmindEnterSubmits, CatchmindChatComposer, GameGuide, Room, RulesDialog, rulesButtonLabel } from './PlayApp';
+import { getBeginnerGuide } from './beginner-guides';
 import { ActionFlightGuard, announcementForContext, cueForAction, GameFeedback, publicViewAnnouncement, publicViewCue } from './GameFeedback';
 import { gameCatalog } from '../games/catalog';
 import { marbleLegacyRules } from '../games/rules';
@@ -31,6 +32,37 @@ describe('PlayApp client binding', () => {
 });
 
 describe('inline game guide', () => {
+  it('offers the same concise illustrated introduction before and during the three upgraded games', () => {
+    for (const gameId of ['davinci', 'catchmind', 'marble'] as const) for (const language of ['ko', 'es'] as const) {
+      const quick = getBeginnerGuide(gameId, language)!;
+      const inline = renderToStaticMarkup(createElement(GameGuide, { gameId, language, marbleVersion: 2, marbleEconomyVersion: 2 }));
+      const dialog = renderToStaticMarkup(createElement(RulesDialog, { gameId, language, onClose: () => {} }));
+      for (const html of [inline, dialog]) {
+        expect(html).toContain(quick.goal);
+        expect(html).toContain(`/images/guides/${gameId}-${language}.webp`);
+        expect(html).toContain(language === 'es' ? 'lang="es-DO"' : 'lang="ko"');
+        expect(html).toContain('<details class="guide-details">');
+        expect(html).not.toContain('<details open');
+      }
+    }
+  });
+
+  it('leaves the other five games on their existing instructions', () => {
+    for (const gameId of ['domino', 'jaipur', 'splendor', 'minhwatu', 'rhythm'] as const) {
+      expect(getBeginnerGuide(gameId, 'ko')).toBeNull();
+      const html = renderToStaticMarkup(createElement(GameGuide, { gameId, language: 'es' }));
+      expect(html).not.toContain('beginner-guide');
+      expect(html).not.toContain('/images/guides/');
+    }
+  });
+
+  it('keeps saved Marble cost and credit rules out of the current tutorial', () => {
+    expect(getBeginnerGuide('marble', 'ko', { marbleVersion: 1 })!.tip).toContain('18칸');
+    expect(getBeginnerGuide('marble', 'es', { marbleEconomyVersion: 0 })!.tip).toContain('no tiene préstamos');
+    expect(getBeginnerGuide('marble', 'ko', { marbleEconomyVersion: 1 })!.tip).toContain('100');
+    expect(getBeginnerGuide('marble', 'es', { marbleEconomyVersion: 2 })!.tip).toContain('40');
+  });
+
   it('renders complete localized instructions for all eight games', () => {
     for (const game of gameCatalog) {
       const ko = renderToStaticMarkup(createElement(GameGuide, { gameId: game.id, language: 'ko' }));
@@ -276,5 +308,17 @@ describe('room communication UI', () => {
     } finally {
       vi.stubGlobal('localStorage', previousStorage);
     }
+  });
+});
+
+
+describe('Catchmind composing Enter', () => {
+  it('submits only a deliberate Enter after composition and blocks repeated pending sends', () => {
+    const enter = { key: 'Enter', shiftKey: false, isComposing: false, keyCode: 13 };
+    expect(catchmindEnterSubmits(enter, false)).toBe(true);
+    expect(catchmindEnterSubmits({ ...enter, isComposing: true }, false)).toBe(false);
+    expect(catchmindEnterSubmits({ ...enter, keyCode: 229 }, false)).toBe(false);
+    expect(catchmindEnterSubmits({ ...enter, shiftKey: true }, false)).toBe(false);
+    expect(catchmindEnterSubmits(enter, true)).toBe(false);
   });
 });

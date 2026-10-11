@@ -417,14 +417,33 @@ var catchmindEngine = {
       if (s.phase !== "drawing" || p !== s.drawer) return "Only the drawer can draw during an active round";
       const strokes = payload.strokes;
       if (!Array.isArray(strokes) || strokes.length < 1 || strokes.length > 12) return "Send 1 to 12 strokes per batch";
-      if (s.strokes.length + strokes.length > 200) return "Round stroke limit reached";
-      if (s.strokes.reduce((sum2, stroke) => sum2 + stroke.points.length, 0) + strokes.reduce((sum2, stroke) => sum2 + (Array.isArray(stroke?.points) ? stroke.points.length : 0), 0) > 4e3) return "Round point limit reached";
+      let physicalStrokes = s.strokes.length;
+      const incomingStrokeIds = /* @__PURE__ */ new Set();
+      let totalPoints = s.strokes.reduce((sum2, stroke) => sum2 + stroke.points.length, 0);
+      let last = s.strokes.at(-1);
       for (const stroke of strokes) {
         if (!stroke || !Array.isArray(stroke.points) || stroke.points.length < 2 || stroke.points.length > 80) return "Each stroke needs 2 to 80 points";
         if (stroke.points.some((pt) => !pt || typeof pt.x !== "number" || typeof pt.y !== "number" || !Number.isFinite(pt.x) || !Number.isFinite(pt.y) || pt.x < 0 || pt.x > 1 || pt.y < 0 || pt.y > 1)) return "Points must be normalized between 0 and 1";
         if (stroke.color !== void 0 && (typeof stroke.color !== "string" || !/^#[0-9a-f]{6}$/i.test(stroke.color))) return "Invalid stroke color";
         if (stroke.width !== void 0 && (!Number.isFinite(stroke.width) || stroke.width < 1 || stroke.width > 24)) return "Stroke width must be between 1 and 24";
+        const hasId = stroke.strokeId !== void 0, hasSegment = stroke.segmentIndex !== void 0;
+        if (hasId !== hasSegment || hasId && (typeof stroke.strokeId !== "string" || !/^[a-zA-Z0-9_-]{1,64}$/.test(stroke.strokeId) || !Number.isInteger(stroke.segmentIndex) || stroke.segmentIndex < 0 || stroke.segmentIndex > 1e4)) return "Invalid stroke segment";
+        if (hasId && stroke.segmentIndex > 0) {
+          if (!last || last.strokeId !== stroke.strokeId || last.segmentIndex !== stroke.segmentIndex - 1 || last.color !== (stroke.color ?? "#172033") || last.width !== (stroke.width ?? 3)) return "Stroke segments must be consecutive and keep the same style";
+          const first = stroke.points[0], end = last.points.at(-1);
+          const overlap = end && Math.round(first.x * 1e3) === Math.round(end.x * 1e3) && Math.round(first.y * 1e3) === Math.round(end.y * 1e3);
+          totalPoints += stroke.points.length - (overlap ? 1 : 0);
+          last = { ...last, segmentIndex: stroke.segmentIndex, points: [...last.points, ...overlap ? stroke.points.slice(1) : stroke.points] };
+        } else {
+          if (hasId && (incomingStrokeIds.has(stroke.strokeId) || s.strokes.some((item) => item.strokeId === stroke.strokeId))) return "Stroke ID has already been used";
+          if (hasId) incomingStrokeIds.add(stroke.strokeId);
+          physicalStrokes++;
+          totalPoints += stroke.points.length;
+          last = hasId ? { strokeId: stroke.strokeId, segmentIndex: stroke.segmentIndex, color: stroke.color ?? "#172033", width: stroke.width ?? 3, points: stroke.points } : void 0;
+        }
       }
+      if (physicalStrokes > 200) return "Round stroke limit reached";
+      if (totalPoints > 4e3) return "Round point limit reached";
       return null;
     }
     if (a.type === "fill") return s.phase === "drawing" && p === s.drawer && Number.isFinite(payload.x) && Number.isFinite(payload.y) && payload.x >= 0 && payload.x <= 1 && payload.y >= 0 && payload.y <= 1 && typeof payload.color === "string" && /^#[0-9a-f]{6}$/i.test(payload.color) && s.fills.length < 60 ? null : "Invalid fill operation";
@@ -447,8 +466,20 @@ var catchmindEngine = {
     }
     if (a.type === "choose") return { ...s, answer: s.wordChoices[s.round][a.payload.wordId], strokes: [], fills: [], guesses: [], hintStage: 0, phase: "drawing" };
     if (a.type === "draw") {
-      const added = a.payload.strokes.map((st, i) => ({ by: p, points: st.points.map((pt) => ({ x: Math.round(pt.x * 1e3) / 1e3, y: Math.round(pt.y * 1e3) / 1e3 })), color: st.color ?? "#172033", width: st.width ?? 3, order: s.nextOrder + i }));
-      return { ...s, strokes: [...s.strokes, ...added], nextOrder: s.nextOrder + added.length };
+      let nextOrder = s.nextOrder;
+      const nextStrokes = [...s.strokes];
+      for (const st of a.payload.strokes) {
+        const points = st.points.map((pt) => ({ x: Math.round(pt.x * 1e3) / 1e3, y: Math.round(pt.y * 1e3) / 1e3 }));
+        const last = nextStrokes.at(-1);
+        if (last && st.strokeId && st.segmentIndex > 0 && last.strokeId === st.strokeId) {
+          const end = last.points.at(-1), first = points[0];
+          if (end && first.x === end.x && first.y === end.y) points.shift();
+          nextStrokes[nextStrokes.length - 1] = { ...last, points: [...last.points, ...points], segmentIndex: st.segmentIndex };
+        } else {
+          nextStrokes.push({ by: p, points, color: st.color ?? "#172033", width: st.width ?? 3, order: nextOrder++, ...st.strokeId ? { strokeId: st.strokeId, segmentIndex: st.segmentIndex } : {} });
+        }
+      }
+      return { ...s, strokes: nextStrokes, nextOrder };
     }
     if (a.type === "undo") {
       const lastStroke = s.strokes.at(-1), lastFill = s.fills.at(-1);
@@ -2210,6 +2241,34 @@ var minhwatuEngine = {
   getResult: (s) => s.result
 };
 
+// src/games/rules.ts
+var marbleCreditRules = {
+  ko: [
+    "\uBAA9\uD45C \u2014 \uC790\uCCB4 \uBD80\uB3D9\uC0B0 \uAC8C\uC784 \uADDC\uCE59\uC785\uB2C8\uB2E4. \uC0C1\uB300\uAC00 \uD30C\uC0B0\uD558\uBA74 \uC774\uAE30\uACE0, 120\uD134 \uB4A4\uC5D0\uB294 \uD604\uAE08+\uB3C4\uC2DC \uB9E4\uC785\uAC00+\uAC74\uC124 \uBE44\uC6A9\u2212\uBBF8\uC0C1\uD658 \uB300\uCD9C\uC744 \uD569\uCE5C \uC21C\uC790\uC0B0\uC744 \uBE44\uAD50\uD569\uB2C8\uB2E4.",
+    "\uB9D0\uACFC \uC774\uB3D9 \u2014 \uCCAB \uC8FC\uC0AC\uC704\uB97C \uAD74\uB9AC\uAE30 \uC804\uC5D0 \uC6D0\uD558\uB294 \uB9D0\uC744 \uACE0\uB985\uB2C8\uB2E4. \uC0C1\uB300\uC640 \uAC19\uC740 \uB9D0\uC740 \uC120\uD0DD\uD560 \uC218 \uC5C6\uACE0 \uCCAB \uC774\uB3D9 \uB4A4\uC5D0\uB294 \uACE0\uC815\uB429\uB2C8\uB2E4. \uB450 \uC8FC\uC0AC\uC704 \uD569\uB9CC\uD07C 40\uCE78 \uBCF4\uB4DC\uB97C \uC774\uB3D9\uD558\uBA70 \uCD9C\uBC1C\uC810\uC744 \uC9C0\uB098\uBA74 200\uC744 \uBC1B\uC2B5\uB2C8\uB2E4. \uAD11\uC8FC\uC640 \uC0B0\uD1A0\uB3C4\uBC0D\uACE0\uB97C \uD3EC\uD568\uD574 24\uAC1C \uB3C4\uC2DC\uAC00 \uC788\uC2B5\uB2C8\uB2E4.",
+    "\uB3C4\uC2DC\uC640 \uAC74\uC124 \u2014 \uBE48 \uB3C4\uC2DC\uB97C \uAD6C\uB9E4\uD558\uAC70\uB098 \uC9C0\uB098\uAC11\uB2C8\uB2E4. \uB0B4 \uB3C4\uC2DC\uC5D0\uB294 \uC0C9\uC0C1 \uB3C4\uC2DC\uAD70 \uC644\uC131 \uC5EC\uBD80\uC640 \uAD00\uACC4\uC5C6\uC774 \uBCC4\uC7A5\u2192\uBE4C\uB529\u2192\uB79C\uB4DC\uB9C8\uD06C\uB97C \uC21C\uC11C\uB300\uB85C \uC9C0\uC744 \uC218 \uC788\uC2B5\uB2C8\uB2E4. \uB2E8\uACC4\uB9C8\uB2E4 100, \uD1B5\uD589\uB8CC\uB294 \uAE30\uBCF8\uC758 2\uBC30\u21924\uBC30\u21928\uBC30\uC785\uB2C8\uB2E4. \uC0C1\uB300 \uB3C4\uC2DC\uC758 \uD1B5\uD589\uB8CC\uB294 \uC790\uB3D9 \uC9C0\uAE09\uB429\uB2C8\uB2E4.",
+    "\uB300\uCD9C \u2014 \uC790\uAE30 \uCC28\uB840\uC5D0 \uBBF8\uC0C1\uD658 \uB300\uCD9C\uC774 \uC5C6\uC73C\uBA74 300\uC744 \uBC1B\uC744 \uC218 \uC788\uACE0, \uC0C1\uD658\uC561\uC740 330\uC785\uB2C8\uB2E4. \uCD94\uAC00 \uC774\uC790\uB098 \uB9CC\uAE30\uB294 \uC5C6\uC2B5\uB2C8\uB2E4. \uC9C0\uAE09 \uC704\uAE30 \uC678\uC758 \uC790\uAE30 \uCC28\uB840\uC5D0 330 \uC804\uC561\uC744 \uC0C1\uD658\uD569\uB2C8\uB2E4. \uBBF8\uC0C1\uD658\uC561\uC740 \uC21C\uC790\uC0B0\uC5D0\uC11C \uBE7C\uBA70, \uC0C1\uD658 \uD6C4 \uB2E4\uC2DC \uBE4C\uB824\uB3C4 \uB9E4\uBC88 30\uC758 \uBE44\uC6A9\uC774 \uBC1C\uC0DD\uD569\uB2C8\uB2E4.",
+    "\uC9C0\uAE09 \uC704\uAE30 \u2014 \uD1B5\uD589\uB8CC\xB7\uC138\uAE08\xB7\uCE74\uB4DC \uBE44\uC6A9\uC744 \uB0BC \uD604\uAE08\uC774 \uBD80\uC871\uD558\uBA74 \uD589\uB3D9\uC774 \uBA48\uCDA5\uB2C8\uB2E4. \uD604\uC7AC \uD604\uAE08+300\uC73C\uB85C \uC9C0\uAE09\uC561\uC744 \uCDA9\uB2F9\uD560 \uC218 \uC788\uACE0 \uAE30\uC874 \uB300\uCD9C\uC774 \uC5C6\uC744 \uB54C\uB9CC \uB300\uCD9C\uB85C \uD574\uACB0\uD560 \uC218 \uC788\uC2B5\uB2C8\uB2E4. \uB300\uCD9C\uC744 \uC120\uD0DD\uD558\uBA74 \uD574\uB2F9 \uC9C0\uAE09\uC744 \uD55C \uBC88 \uCC98\uB9AC\uD558\uACE0 \uC6D0\uB798 \uCC28\uB840\uB85C \uB3CC\uC544\uAC11\uB2C8\uB2E4. \uD30C\uC0B0 \uC778\uC815\uC740 \uACBD\uAE30 \uC885\uB8CC\uB97C \uB73B\uD558\uBA70 \uB3C4\uC2DC \uC790\uB3D9 \uB9E4\uAC01\uC740 \uC5C6\uC2B5\uB2C8\uB2E4.",
+    "\uD669\uAE08\uC5F4\uC1E0 \u2014 13\uC885 \uCE74\uB4DC\uB294 \uC0C1\uAE08(150\xB7200\xB780), \uC5EC\uD589\uBE44 100, \uAC74\uC124 \uB2E8\uACC4\uB2F9 \uC218\uB9AC\uBE44 40, \uC0B0\uD1A0\uB3C4\uBC0D\uACE0 \uBC29\uBB38, \uCD9C\uBC1C \uC774\uB3D9(+200), \uC138 \uCE78 \uD6C4\uD1F4, \uBB34\uC778\uB3C4 \uC774\uB3D9, \uD0C8\uCD9C\uAD8C, \uBB34\uB8CC \uC5F4\uCC28\uD45C, \uB3C4\uC2DC\uB2F9 \uBC30\uB2F9 30, \uB3C5\uC810 \uACBD\uACE0\uC785\uB2C8\uB2E4. \uC774\uB3D9 \uCE74\uB4DC\uC758 \uB3C4\uCC29 \uD6A8\uACFC\uB3C4 \uC801\uC6A9\uB418\uBA70 \uC138 \uCE78 \uD6C4\uD1F4\uC5D0\uB294 \uCD9C\uBC1C \uBCF4\uB108\uC2A4\uAC00 \uC5C6\uC2B5\uB2C8\uB2E4.",
+    "\uB3C5\uC810 \uACBD\uACE0 \u2014 \uAC19\uC740 \uC0C9\uC758 \uB3C4\uC2DC\uB97C \uBAA8\uB450 \uAC00\uC9C4 \uB3C4\uC2DC\uAD70\uC774 \uAC00\uC7A5 \uB9CE\uC740 \uC0AC\uB78C\uC774 \uB3C4\uC2DC\uAD70\uB2F9 100, \uCD5C\uB300 300\uC744 \uC740\uD589\uC5D0 \uB0C5\uB2C8\uB2E4. \uB3D9\uB960\uC774\uBA74 \uCE74\uB4DC\uB97C \uBF51\uC740 \uC0AC\uB78C\uC5D0\uAC8C \uC801\uC6A9\uB429\uB2C8\uB2E4. \uB204\uAD6C\uB3C4 \uC644\uC131\uD55C \uB3C4\uC2DC\uAD70\uC774 \uC5C6\uC73C\uBA74 \uBE44\uC6A9\uC774 \uC5C6\uC2B5\uB2C8\uB2E4. \uB3C4\uC2DC\uAD70 \uC644\uC131 \uC790\uCCB4\uB294 \uC989\uC2DC \uC2B9\uB9AC\uB098 \uD1B5\uD589\uB8CC \uCD94\uAC00 \uBC30\uC218\uAC00 \uC544\uB2D9\uB2C8\uB2E4.",
+    "\uBB34\uC778\uB3C4\xB7\uC5F4\uCC28\xB7\uAE30\uAE08 \u2014 \uBB34\uC778\uB3C4\uB294 \uC790\uAE30 \uCC28\uB840 \uC138 \uBC88 \uC815\uC9C0\uC785\uB2C8\uB2E4. \uC30D\uC774\uBA74 \uD0C8\uCD9C\uD574 \uC774\uB3D9\uD558\uACE0, \uC544\uB2C8\uBA74 \uD55C \uCC28\uB840 \uC27D\uB2C8\uB2E4. 100\uC774\uB098 \uD0C8\uCD9C\uAD8C\uC73C\uB85C \uB098\uC640 \uC8FC\uC0AC\uC704\uB97C \uAD74\uB9B4 \uC218\uB3C4 \uC788\uC2B5\uB2C8\uB2E4. \uC5ED\uC5D0\uC11C\uB294 \uB2E4\uC74C \uCC28\uB840\uC5D0 \uC6B4\uC784 100\uC73C\uB85C \uB3C4\uC2DC\uB97C \uACE0\uB974\uAC70\uB098 \uAC74\uB108\uB701\uB2C8\uB2E4. \uBB34\uB8CC \uD45C\uB294 \uC6B4\uC784 0\uC785\uB2C8\uB2E4. \uAE30\uAE08 \uB0A9\uBD80 \uCE78\uC5D0 150\uC744 \uB0B4\uBA70 \uC0AC\uD68C\uBCF5\uC9C0\uAE30\uAE08 \uCE78\uC5D0\uC11C \uC313\uC778 \uAE30\uAE08\uC744 \uBC1B\uC2B5\uB2C8\uB2E4."
+  ],
+  es: [
+    "Objetivo \u2014 Usamos reglas propias de un juego de propiedades. Ganas si tu pareja quiebra; despu\xE9s de 120 turnos se compara el patrimonio neto: efectivo + precio de las ciudades + costo de construcci\xF3n \u2212 deuda pendiente.",
+    "Figura y movimiento \u2014 Elige una figura antes de lanzar tus primeros dados. No puede ser la misma de tu pareja y queda fija despu\xE9s. Avanza la suma de los dos dados por las 40 casillas. Al pasar por Salida recibes 200. Hay 24 ciudades, incluyendo Gwangju y Santo Domingo.",
+    "Ciudades y construcci\xF3n \u2014 Puedes comprar una ciudad libre o pasar. En cualquier ciudad tuya puedes construir villa, edificio y monumento, sin completar un color. Cada nivel cuesta 100 y el alquiler pasa a 2, 4 y 8 veces el valor base. El alquiler rival se paga autom\xE1ticamente.",
+    "Pr\xE9stamo \u2014 En tu turno, si no tienes deuda pendiente, puedes recibir 300 y debes devolver 330. No hay intereses adicionales ni fecha de vencimiento. Pagas los 330 completos en tu turno, fuera de una crisis de pago. La deuda se resta del patrimonio; pedir otro pr\xE9stamo despu\xE9s de pagarlo vuelve a costar 30.",
+    "Crisis de pago \u2014 Si no tienes efectivo para un alquiler, impuesto o gasto de carta, el juego espera tu decisi\xF3n. Solo puedes resolverlo con un pr\xE9stamo si no debes otro y tu efectivo + 300 cubre el pago. Al pedirlo, el pago se procesa una sola vez y contin\xFAa el turno original. Declarar quiebra termina la partida; las ciudades no se venden autom\xE1ticamente.",
+    "Llave dorada \u2014 Las 13 cartas incluyen premios (150, 200 y 80), gasto de viaje 100, mantenimiento 40 por nivel construido, visita a Santo Domingo, viaje a Salida (+200), retroceso de tres casillas, isla, pase de salida, boleto gratis, dividendo 30 por ciudad y advertencia de monopolio. Se aplica tambi\xE9n el efecto del destino; al retroceder no cobras Salida.",
+    "Monopolio \u2014 Quien tenga m\xE1s grupos de color completos paga 100 por grupo al banco, hasta 300. En empate paga quien sac\xF3 la carta. Si nadie complet\xF3 un grupo, no se cobra. Completar un color no da una victoria inmediata ni otro multiplicador de alquiler.",
+    "Isla, tren y fondo \u2014 La isla te detiene tres turnos propios. Si sacas dobles, sales y avanzas; si no, pierdes un turno. Tambi\xE9n puedes pagar 100 o usar un pase y luego lanzar. La estaci\xF3n permite viajar a una ciudad por 100 en tu pr\xF3ximo turno o pasar el tren. El boleto gratis cuesta 0. El aporte al fondo es 150 y en Fondo Social recibes lo acumulado."
+  ]
+};
+var marbleTieredRules = {
+  ko: marbleCreditRules.ko.map((rule, index) => index === 2 ? "\uB3C4\uC2DC\uC640 \uAC74\uC124 \u2014 \uBE48 \uB3C4\uC2DC\uB97C \uAD6C\uB9E4\uD558\uAC70\uB098 \uC9C0\uB098\uAC11\uB2C8\uB2E4. \uB0B4 \uB3C4\uC2DC\uC5D0\uB294 \uC0C9\uC0C1 \uB3C4\uC2DC\uAD70 \uC644\uC131 \uC5EC\uBD80\uC640 \uAD00\uACC4\uC5C6\uC774 \uBCC4\uC7A5\u2192\uBE4C\uB529\u2192\uB79C\uB4DC\uB9C8\uD06C\uB97C \uC21C\uC11C\uB300\uB85C \uC9C0\uC744 \uC218 \uC788\uC2B5\uB2C8\uB2E4. \uAC74\uC124\uBE44\uB294 \uD574\uB2F9 \uB3C4\uC2DC \uB9E4\uC785\uAC00\uC758 40%\u219260%\u219280%\uC774\uBA70, 10 \uB2E8\uC704\uB85C \uBC18\uC62C\uB9BC\uD558\uACE0 \uCD5C\uC18C 40\uC785\uB2C8\uB2E4. \uD1B5\uD589\uB8CC\uB294 \uAE30\uBCF8\uC758 2\uBC30\u21924\uBC30\u21928\uBC30\uAC00 \uB429\uB2C8\uB2E4. \uC0C1\uB300 \uB3C4\uC2DC\uC758 \uD1B5\uD589\uB8CC\uB294 \uC790\uB3D9 \uC9C0\uAE09\uB429\uB2C8\uB2E4." : rule),
+  es: marbleCreditRules.es.map((rule, index) => index === 2 ? "Ciudades y construcci\xF3n \u2014 Puedes comprar una ciudad libre o pasar. En cualquier ciudad tuya puedes construir villa, edificio y monumento, sin completar un color. Cada nivel cuesta el 40 %, 60 % y 80 % del precio de compra de la ciudad; se redondea a 10 y nunca baja de 40. El alquiler pasa a 2, 4 y 8 veces el valor base. El alquiler rival se paga autom\xE1ticamente." : rule)
+};
+
 // src/games/marble.ts
 var marblePawnIds = ["fox", "cat", "penguin", "astronaut", "robot", "dragon"];
 var pawnNames = { fox: { ko: "\uC5EC\uC6B0", es: "Zorro" }, cat: { ko: "\uACE0\uC591\uC774", es: "Gata" }, penguin: { ko: "\uD3AD\uADC4", es: "Ping\xFCino" }, astronaut: { ko: "\uC6B0\uC8FC\uBE44\uD589\uC0AC", es: "Astronauta" }, robot: { ko: "\uB85C\uBD07", es: "Robot" }, dragon: { ko: "\uC6A9", es: "Drag\xF3n" } };
@@ -2294,7 +2353,17 @@ var cards = {
   "monopoly-warning": { title: { ko: "\uB3C5\uC810 \uACBD\uACE0", es: "Advertencia de monopolio" }, text: { ko: "\uC644\uC131\uD55C \uC0C9\uC0C1 \uB3C4\uC2DC\uAD70\uC774 \uAC00\uC7A5 \uB9CE\uC740 \uC0AC\uB78C\uC5D0\uAC8C \uB3C4\uC2DC\uAD70\uB2F9 100, \uCD5C\uB300 300\uC758 \uB3C5\uC810 \uBD80\uB2F4\uAE08\uC744 \uBD80\uACFC\uD569\uB2C8\uB2E4. \uB3D9\uB960\uC774\uBA74 \uCE74\uB4DC\uB97C \uBF51\uC740 \uC0AC\uB78C, \uC644\uC131\uD55C \uB3C4\uC2DC\uAD70\uC774 \uC5C6\uC73C\uBA74 \uBD80\uB2F4\uAE08\uC774 \uC5C6\uC2B5\uB2C8\uB2E4.", es: "Quien tenga m\xE1s grupos de color completos paga 100 por grupo, hasta 300. En empate paga quien sac\xF3 la carta; si nadie complet\xF3 un grupo, no se cobra." }, effect: "cash" }
 };
 var propertyRent = (tile, record, modern) => (tile.rent ?? 0) * (modern ? [1, 2, 4, 8][record.houses] ?? 1 : record.houses + 1);
-var assetsFor = (s, p, board) => s.money[p] - (s.debt?.[p] ?? 0) + Object.entries(s.properties).reduce((sum2, [index, record]) => record.owner === p ? sum2 + (board[Number(index)]?.price ?? 0) + record.houses * 100 : sum2, 0);
+function marbleBuildCost(tile, level, economicVersion) {
+  if (economicVersion !== 2) return 100;
+  const factor = [0.4, 0.6, 0.8][Math.max(0, Math.min(2, Math.trunc(level)))] ?? 0.4;
+  return Math.max(40, Math.round(Math.max(0, tile.price ?? 0) * factor / 10) * 10);
+}
+var assetsFor = (s, p, board) => s.money[p] - (s.debt?.[p] ?? 0) + Object.entries(s.properties).reduce((sum2, [index, record]) => {
+  if (record.owner !== p) return sum2;
+  const tile = board[Number(index)];
+  const buildingCost = tile ? Array.from({ length: record.houses }, (_, level) => marbleBuildCost(tile, level, s.economicVersion)).reduce((total, cost) => total + cost, 0) : 0;
+  return sum2 + (tile?.price ?? 0) + buildingCost;
+}, 0);
 var completedGroups = (s, p) => {
   const board = boardFor(s);
   return [...new Set(board.filter((t) => t.kind === "property").map((t) => t.group))].filter((group) => board.every((t, index) => t.kind !== "property" || t.group !== group || s.properties[String(index)]?.owner === p));
@@ -2310,7 +2379,7 @@ function view2(s, p) {
   const actions = [];
   const add = (ko, es, action) => actions.push({ label: { ko, es }, action });
   if (!s.result && s.active === p) {
-    if (s.economicVersion === 1) {
+    if (s.economicVersion === 1 || s.economicVersion === 2) {
       const debt = s.debt?.[p] ?? 0;
       if (debt === 0 && (s.phase !== "debt" || s.money[p] + 300 >= (s.pendingPayment?.amount ?? Infinity))) add("\uB300\uCD9C \uBC1B\uAE30 \xB7 300 / \uC0C1\uD658 330", "Pedir pr\xE9stamo \xB7 300 / devolver 330", { type: "borrow" });
       if (debt > 0 && s.money[p] >= debt && s.phase !== "debt") add(`\uB300\uCD9C \uC0C1\uD658 \xB7 ${debt}`, `Pagar pr\xE9stamo \xB7 ${debt}`, { type: "repay" });
@@ -2346,9 +2415,11 @@ function view2(s, p) {
         const ownedCount = Object.entries(s.properties).filter(([ownedIndex, owned]) => owned.owner === p && board[Number(ownedIndex)]?.group === tile.group).length;
         const canBuild = s.boardVersion === 2 || ownedCount === groupSize;
         const levels = s.boardVersion === 2 ? 3 : 2;
-        if (canBuild && record.houses < levels && s.money[p] >= 100) {
-          const tier = s.boardVersion === 2 ? [["\uBCC4\uC7A5", "Villa"], ["\uBE4C\uB529", "Edificio"], s.economicVersion === 1 ? ["\uB79C\uB4DC\uB9C8\uD06C", "Monumento"] : ["\uD638\uD154", "Hotel"]][record.houses] : ["\uC9D1", "Casa"];
-          add(`${tier[0]}: ${tile.name.ko} (100)`, `${tier[1]}: ${tile.name.es} (100)`, { type: "build", payload: { tile: index } });
+        const cost = marbleBuildCost(tile, record.houses, s.economicVersion);
+        if (canBuild && record.houses < levels && s.money[p] >= cost) {
+          const tier = s.boardVersion === 2 ? [["\uBCC4\uC7A5", "Villa"], ["\uBE4C\uB529", "Edificio"], "landmark"][record.houses] : ["\uC9D1", "Casa"];
+          const name = Array.isArray(tier) ? tier : s.economicVersion === 1 || s.economicVersion === 2 ? ["\uB79C\uB4DC\uB9C8\uD06C", "Monumento"] : ["\uD638\uD154", "Hotel"];
+          add(`${name[0]}: ${tile.name.ko} (${cost})`, `${name[1]}: ${tile.name.es} (${cost})`, { type: "build", payload: { tile: index } });
         }
       }
       add("\uCC28\uB840 \uB9C8\uCE58\uAE30", "Terminar turno", { type: "endTurn" });
@@ -2359,7 +2430,20 @@ function view2(s, p) {
     phase: s.result ? "finished" : s.phase,
     board: {
       version: s.boardVersion ?? 1,
-      tiles: board.map((tile, index) => ({ ...tile, name: { ...tile.name }, index, owner: s.properties[String(index)]?.owner ?? null, houses: s.properties[String(index)]?.houses ?? 0 })),
+      tiles: board.map((tile, index) => {
+        const houses = s.properties[String(index)]?.houses ?? 0;
+        const maxLevels = s.boardVersion === 2 ? 3 : 2;
+        const canUpgrade = tile.kind === "property" && houses < maxLevels;
+        return {
+          ...tile,
+          name: { ...tile.name },
+          index,
+          owner: s.properties[String(index)]?.owner ?? null,
+          houses,
+          nextBuildCost: canUpgrade ? marbleBuildCost(tile, houses, s.economicVersion) : null,
+          nextRent: canUpgrade ? propertyRent(tile, { owner: s.properties[String(index)]?.owner ?? p, houses: houses + 1 }, s.boardVersion === 2) : null
+        };
+      }),
       positions: { ...s.positions },
       money: { ...s.money },
       assets: { p1: assetsFor(s, "p1", board), p2: assetsFor(s, "p2", board) },
@@ -2397,7 +2481,7 @@ function validation(s, p, a) {
   if (s.result) return "Game is finished";
   if (p !== s.active) return "Not your turn";
   if (["borrow", "repay", "declare-bankruptcy", "choose-pawn"].includes(a.type)) {
-    if (s.economicVersion !== 1) return "Credit and figure selection unavailable in this saved ruleset";
+    if (s.economicVersion !== 1 && s.economicVersion !== 2) return "Credit and figure selection unavailable in this saved ruleset";
     if (s.phase === "finished") return "Game is finished";
     if (a.type === "borrow") return (s.debt?.[p] ?? 0) !== 0 ? "Repay the existing loan first" : a.payload?.amount !== void 0 ? "Loan amount is fixed" : s.phase === "debt" && s.money[p] + 300 < (s.pendingPayment?.amount ?? Infinity) ? "Loan cannot cover this payment" : null;
     if (a.type === "repay") return a.payload?.amount !== void 0 ? "Repayment amount is fixed" : s.phase === "debt" || !s.debt?.[p] || s.money[p] < s.debt[p] ? "Cannot repay now" : null;
@@ -2432,7 +2516,7 @@ function validation(s, p, a) {
     const groupSize = board.filter((space) => space.kind === "property" && space.group === tile.group).length;
     const ownedCount = Object.entries(s.properties).filter(([ownedIndex, owned]) => owned.owner === p && board[Number(ownedIndex)]?.group === tile.group).length;
     const canBuild = s.boardVersion === 2 ? s.properties[String(index)].houses < 3 : ownedCount === groupSize && s.properties[String(index)].houses < 2;
-    if (!canBuild || s.money[p] < 100) return "Cannot build here";
+    if (!canBuild || s.money[p] < marbleBuildCost(tile, s.properties[String(index)].houses, s.economicVersion)) return "Cannot build here";
     return null;
   }
   if (a.type === "endTurn") return s.phase === "main" ? null : "Cannot end turn now";
@@ -2446,22 +2530,22 @@ function bankrupt(s, loser, winner) {
 }
 function pay(s, p, amount, creditor = "bank", reason = { ko: "\uBE44\uC6A9 \uC9C0\uAE09", es: "Pago de gastos" }, type = "tax") {
   if (s.money[p] < amount) {
-    if (s.economicVersion !== 1) return bankrupt(s, p, otherPlayer(p));
+    if (s.economicVersion !== 1 && s.economicVersion !== 2) return bankrupt(s, p, otherPlayer(p));
     s.pendingPayment = { amount, creditor, reason, type, tile: s.positions[p], resumePhase: "main", resumeActive: s.active };
     s.active = p;
     s.phase = "debt";
-    emit(s, "crisis", p, "\uD30C\uC0B0 \uC704\uAE30", "Riesgo de quiebra", `${reason.ko}: ${amount} \uC9C0\uAE09\uC5D0 ${amount - s.money[p]}\uC774 \uBD80\uC871\uD569\uB2C8\uB2E4. \uB300\uCD9C \uC870\uAC74\uC744 \uD655\uC778\uD558\uAC70\uB098 \uD30C\uC0B0\uC744 \uC778\uC815\uD558\uC138\uC694.`, `${reason.es}: te faltan ${amount - s.money[p]} para pagar ${amount}. Revisa el pr\xE9stamo o declara la quiebra.`, { amount, fromPlayer: p, ...creditor === "p1" || creditor === "p2" ? { toPlayer: creditor } : {} });
+    emit(s, "crisis", p, "\uD30C\uC0B0 \uC704\uAE30", "Riesgo de quiebra", `${reason.ko}: ${amount} \uC9C0\uAE09\uC5D0 ${amount - s.money[p]}\uC774 \uBD80\uC871\uD569\uB2C8\uB2E4. \uB300\uCD9C \uC870\uAC74\uC744 \uD655\uC778\uD558\uAC70\uB098 \uD30C\uC0B0\uC744 \uC778\uC815\uD558\uC138\uC694.`, `${reason.es}: te faltan ${amount - s.money[p]} para pagar ${amount}. Revisa el pr\xE9stamo o declara la quiebra.`, { amount, fromPlayer: p, fromAccount: p, toAccount: creditor, ...creditor === "p1" || creditor === "p2" ? { toPlayer: creditor } : {} });
     return s;
   }
   s.money[p] -= amount;
   if (creditor === "fund") s.fundPool = (s.fundPool ?? 0) + amount;
   else if (creditor === "p1" || creditor === "p2") s.money[creditor] += amount;
-  emit(s, type, p, reason.ko, reason.es, `${amount}\uC744 \uC9C0\uAE09\uD588\uC2B5\uB2C8\uB2E4.`, `Pagaste ${amount}.`, { amount, fromPlayer: p, ...creditor === "p1" || creditor === "p2" ? { toPlayer: creditor } : {}, moneyDelta: { [p]: -amount, ...creditor === "p1" || creditor === "p2" ? { [creditor]: amount } : {} }, tile: s.positions[p] });
+  emit(s, type, p, reason.ko, reason.es, `${amount}\uC744 \uC9C0\uAE09\uD588\uC2B5\uB2C8\uB2E4.`, `Pagaste ${amount}.`, { amount, fromPlayer: p, fromAccount: p, toAccount: creditor, ...creditor === "p1" || creditor === "p2" ? { toPlayer: creditor } : {}, moneyDelta: { [p]: -amount, ...creditor === "p1" || creditor === "p2" ? { [creditor]: amount } : {} }, tile: s.positions[p] });
   return s;
 }
-function bonus(s, p, amount, ko, es) {
+function bonus(s, p, amount, ko, es, source = "bank") {
   s.money[p] += amount;
-  emit(s, "bonus", p, ko, es, `${amount}\uC744 \uBC1B\uC558\uC2B5\uB2C8\uB2E4.`, `Recibiste ${amount}.`, { amount, toPlayer: p, moneyDelta: { [p]: amount } });
+  emit(s, "bonus", p, ko, es, `${amount}\uC744 \uBC1B\uC558\uC2B5\uB2C8\uB2E4.`, `Recibiste ${amount}.`, { amount, toPlayer: p, fromAccount: source, toAccount: p, moneyDelta: { [p]: amount } });
 }
 function moveForward(s, p, to, board) {
   const from = s.positions[p];
@@ -2484,7 +2568,7 @@ function resolveLanding(s, p, index, drawEvent) {
     }
   } else if (tile.kind === "tax") s = pay(s, p, tile.price ?? 0, "bank", tile.name);
   else if (tile.kind === "fund") {
-    bonus(s, p, s.fundPool ?? 0, "\uACF5\uB3D9 \uAE30\uAE08 \uC218\uB839", "Cobro del fondo com\xFAn");
+    bonus(s, p, s.fundPool ?? 0, "\uACF5\uB3D9 \uAE30\uAE08 \uC218\uB839", "Cobro del fondo com\xFAn", "fund");
     s.fundPool = 0;
   } else if (tile.kind === "fund-deposit") {
     const amount = tile.price ?? 150;
@@ -2509,7 +2593,7 @@ function noteMove(s, p, from, to, steps, source) {
   emit(s, "move", p, "\uB9D0 \uC774\uB3D9", "Movimiento", `${from + 1}\uBC88\uC5D0\uC11C ${to + 1}\uBC88 \uCE78\uC73C\uB85C \uC774\uB3D9\uD569\uB2C8\uB2E4.`, `Avanzas de la casilla ${from + 1} a la ${to + 1}.`, { from, to, steps: steps ?? void 0 });
 }
 function resolveEvent(s, p) {
-  const board = boardFor(s), isModern = s.boardVersion === 2, ids = isModern ? s.economicVersion === 1 ? [...modernIds, "monopoly-warning"] : modernIds : legacyIds;
+  const board = boardFor(s), isModern = s.boardVersion === 2, ids = isModern ? s.economicVersion === 1 || s.economicVersion === 2 ? [...modernIds, "monopoly-warning"] : modernIds : legacyIds;
   s.phase = "main";
   let deck = s.eventDeck ? [...s.eventDeck] : [];
   if (!deck.length) {
@@ -2579,7 +2663,7 @@ function resolveEvent(s, p) {
     const count2 = groups[target].length, amount = Math.min(300, count2 * 100);
     const text = { ko: count2 ? `${target === p ? "\uCE74\uB4DC\uB97C \uBF51\uC740 \uC0AC\uB78C" : "\uC0C1\uB300"}\uC758 \uC644\uC131 \uB3C4\uC2DC\uAD70 ${count2}\uAC1C: \uB3C5\uC810 \uBD80\uB2F4\uAE08 ${amount}\uC744 \uC740\uD589\uC5D0 \uB0C5\uB2C8\uB2E4.` : "\uC644\uC131\uD55C \uC0C9\uC0C1 \uB3C4\uC2DC\uAD70\uC774 \uC5C6\uC5B4 \uBD80\uB2F4\uAE08\uC774 \uC5C6\uC2B5\uB2C8\uB2E4.", es: count2 ? `${target === p ? "Quien sac\xF3 la carta" : "La otra persona"} tiene ${count2} grupos completos y paga ${amount} al banco.` : "Nadie tiene un grupo de color completo. No se cobra." };
     card2 = { ...card2, text };
-    emit(s, "monopoly-warning", target, card2.title.ko, card2.title.es, text.ko, text.es, { amount, cardId: id, group: groups[target].join(", ") });
+    emit(s, "monopoly-warning", target, card2.title.ko, card2.title.es, text.ko, text.es, { amount, fromAccount: target, toAccount: "bank", cardId: id, group: groups[target].join(", ") });
     if (amount) s = pay(s, target, amount, "bank", card2.title, "monopoly-warning");
   }
   const sequence = (s.eventSequence ?? 0) + 1;
@@ -2648,7 +2732,7 @@ function step(s, p, a) {
   if (a.type === "borrow") {
     n.money[p] += 300;
     n.debt[p] = 330;
-    emit(n, "loan", p, "\uB300\uCD9C \uC2E4\uD589", "Pr\xE9stamo recibido", "300\uC744 \uBC1B\uACE0 330\uC758 \uC0C1\uD658 \uC758\uBB34\uAC00 \uC0DD\uACBC\uC2B5\uB2C8\uB2E4. \uCD94\uAC00 \uC774\uC790\uB098 \uB9CC\uAE30 \uC5C6\uC774 \uC804\uC561 \uC0C1\uD658\uD558\uBA70, \uBBF8\uC0C1\uD658\uC561\uC740 \uCD5C\uC885 \uC790\uC0B0\uC5D0\uC11C \uBE8D\uB2C8\uB2E4.", "Recibes 300 y debes devolver 330. No hay intereses adicionales ni plazo; se paga completo y la deuda se resta del patrimonio final.", { amount: 300, debtAfter: 330, moneyDelta: { [p]: 300 } });
+    emit(n, "loan", p, "\uB300\uCD9C \uC2E4\uD589", "Pr\xE9stamo recibido", "300\uC744 \uBC1B\uACE0 330\uC758 \uC0C1\uD658 \uC758\uBB34\uAC00 \uC0DD\uACBC\uC2B5\uB2C8\uB2E4. \uCD94\uAC00 \uC774\uC790\uB098 \uB9CC\uAE30 \uC5C6\uC774 \uC804\uC561 \uC0C1\uD658\uD558\uBA70, \uBBF8\uC0C1\uD658\uC561\uC740 \uCD5C\uC885 \uC790\uC0B0\uC5D0\uC11C \uBE8D\uB2C8\uB2E4.", "Recibes 300 y debes devolver 330. No hay intereses adicionales ni plazo; se paga completo y la deuda se resta del patrimonio final.", { amount: 300, debtAfter: 330, fromAccount: "bank", toAccount: p, moneyDelta: { [p]: 300 } });
     if (n.phase === "debt" && n.pendingPayment) {
       const pending = n.pendingPayment;
       n = pay(n, p, pending.amount, pending.creditor, pending.reason, pending.type);
@@ -2664,7 +2748,7 @@ function step(s, p, a) {
     const amount = n.debt[p];
     n.money[p] -= amount;
     n.debt[p] = 0;
-    emit(n, "repay", p, "\uB300\uCD9C \uC0C1\uD658 \uC644\uB8CC", "Pr\xE9stamo pagado", `${amount}\uC744 \uC0C1\uD658\uD574 \uB0A8\uC740 \uB300\uCD9C\uC774 \uC5C6\uC2B5\uB2C8\uB2E4.`, `Pagaste ${amount}; ya no tienes deuda.`, { amount, debtAfter: 0, moneyDelta: { [p]: -amount } });
+    emit(n, "repay", p, "\uB300\uCD9C \uC0C1\uD658 \uC644\uB8CC", "Pr\xE9stamo pagado", `${amount}\uC744 \uC0C1\uD658\uD574 \uB0A8\uC740 \uB300\uCD9C\uC774 \uC5C6\uC2B5\uB2C8\uB2E4.`, `Pagaste ${amount}; ya no tienes deuda.`, { amount, debtAfter: 0, fromAccount: p, toAccount: "bank", moneyDelta: { [p]: -amount } });
     return n;
   }
   if (a.type === "declare-bankruptcy") return bankrupt(n, p, otherPlayer(p));
@@ -2721,7 +2805,7 @@ function step(s, p, a) {
     n.trainReady[p] = false;
     n.pendingTrainFare = null;
     n.pendingTrainSource = null;
-    emit(n, "train", p, "\uC5F4\uCC28 \uCD9C\uBC1C", "El tren sale", `${board[to].name.ko}\uD589 \xB7 \uC6B4\uC784 ${fare}`, `Destino: ${board[to].name.es} \xB7 pasaje ${fare}`, { amount: fare, moneyDelta: { [p]: -fare }, from, to });
+    emit(n, "train", p, "\uC5F4\uCC28 \uCD9C\uBC1C", "El tren sale", `${board[to].name.ko}\uD589 \xB7 \uC6B4\uC784 ${fare}`, `Destino: ${board[to].name.es} \xB7 pasaje ${fare}`, { amount: fare, fromAccount: p, toAccount: "bank", moneyDelta: { [p]: -fare }, from, to });
     const distance = (to - from + board.length) % board.length;
     moveForward(n, p, to, board);
     noteMove(n, p, from, to, distance, "train");
@@ -2743,16 +2827,16 @@ function step(s, p, a) {
     n.money[p] -= price;
     n.properties[String(index)] = { owner: p, houses: 0 };
     n.phase = "main";
-    emit(n, "buy", p, "\uB3C4\uC2DC \uAD6C\uB9E4 \uC644\uB8CC", "Ciudad comprada", `${board[index].name.ko}\uC744 \uC18C\uC720\uD588\uC2B5\uB2C8\uB2E4.`, `Compraste ${board[index].name.es}.`, { tile: index, amount: price, moneyDelta: { [p]: -price } });
+    emit(n, "buy", p, "\uB3C4\uC2DC \uAD6C\uB9E4 \uC644\uB8CC", "Ciudad comprada", `${board[index].name.ko}\uC744 \uC18C\uC720\uD588\uC2B5\uB2C8\uB2E4.`, `Compraste ${board[index].name.es}.`, { tile: index, amount: price, fromAccount: p, toAccount: "bank", moneyDelta: { [p]: -price } });
     const group = board[index].group;
     if (completedGroups(n, p).includes(group)) emit(n, "monopoly-warning", p, "\uC0C9\uC0C1 \uB3C4\uC2DC\uAD70 \uC644\uC131", "Grupo de color completo", "\uC774 \uB3C4\uC2DC\uAD70\uC744 \uBAA8\uB450 \uC18C\uC720\uD588\uC2B5\uB2C8\uB2E4. \uB3C5\uC810 \uACBD\uACE0 \uCE74\uB4DC\uAC00 \uB098\uC624\uBA74 \uBD80\uB2F4\uAE08 \uB300\uC0C1\uC774 \uB420 \uC218 \uC788\uC2B5\uB2C8\uB2E4.", "Ya tienes todas las ciudades de este color. Una carta de monopolio puede cobrarte un cargo.", { group, tile: index });
   } else if (a.type === "decline") n.phase = "main";
   else if (a.type === "build") {
-    const index = payload.tile;
-    n.money[p] -= 100;
+    const index = payload.tile, cost = marbleBuildCost(board[index], n.properties[String(index)].houses, n.economicVersion);
+    n.money[p] -= cost;
     n.properties[String(index)] = { ...n.properties[String(index)], houses: n.properties[String(index)].houses + 1 };
     const level = n.properties[String(index)].houses;
-    emit(n, "build", p, "\uAC74\uC124 \uC644\uB8CC", "Construcci\xF3n terminada", `${board[index].name.ko}: ${level === 3 ? "\uB79C\uB4DC\uB9C8\uD06C" : level === 2 ? "\uBE4C\uB529" : "\uBCC4\uC7A5"} \xB7 \uD1B5\uD589\uB8CC ${propertyRent(board[index], n.properties[String(index)], n.boardVersion === 2)}`, `${board[index].name.es}: ${level === 3 ? "monumento" : level === 2 ? "edificio" : "villa"} \xB7 alquiler ${propertyRent(board[index], n.properties[String(index)], n.boardVersion === 2)}`, { tile: index, amount: 100, moneyDelta: { [p]: -100 } });
+    emit(n, "build", p, "\uAC74\uC124 \uC644\uB8CC", "Construcci\xF3n terminada", `${board[index].name.ko}: ${level === 3 ? "\uB79C\uB4DC\uB9C8\uD06C" : level === 2 ? "\uBE4C\uB529" : "\uBCC4\uC7A5"} \xB7 \uD1B5\uD589\uB8CC ${propertyRent(board[index], n.properties[String(index)], n.boardVersion === 2)}`, `${board[index].name.es}: ${level === 3 ? "monumento" : level === 2 ? "edificio" : "villa"} \xB7 alquiler ${propertyRent(board[index], n.properties[String(index)], n.boardVersion === 2)}`, { tile: index, amount: cost, fromAccount: p, toAccount: "bank", moneyDelta: { [p]: -cost } });
   } else if (a.type === "endTurn") return finishTurn2(n, p);
   return n;
 }
@@ -2777,7 +2861,7 @@ var marbleEngine = {
       eventSequence: 0,
       lastEvent: null,
       fundPool: 0,
-      economicVersion: 1,
+      economicVersion: 2,
       debt: { p1: 0, p2: 0 },
       pendingPayment: null,
       actionLog: [],

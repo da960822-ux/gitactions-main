@@ -25,6 +25,15 @@ export const marbleCreditRules: LocalizedRules = {
   ],
 };
 
+export const marbleTieredRules: LocalizedRules = {
+  ko: marbleCreditRules.ko.map((rule, index) => index === 2
+    ? '도시와 건설 — 빈 도시를 구매하거나 지나갑니다. 내 도시에는 색상 도시군 완성 여부와 관계없이 별장→빌딩→랜드마크를 순서대로 지을 수 있습니다. 건설비는 해당 도시 매입가의 40%→60%→80%이며, 10 단위로 반올림하고 최소 40입니다. 통행료는 기본의 2배→4배→8배가 됩니다. 상대 도시의 통행료는 자동 지급됩니다.'
+    : rule),
+  es: marbleCreditRules.es.map((rule, index) => index === 2
+    ? 'Ciudades y construcción — Puedes comprar una ciudad libre o pasar. En cualquier ciudad tuya puedes construir villa, edificio y monumento, sin completar un color. Cada nivel cuesta el 40 %, 60 % y 80 % del precio de compra de la ciudad; se redondea a 10 y nunca baja de 40. El alquiler pasa a 2, 4 y 8 veces el valor base. El alquiler rival se paga automáticamente.'
+    : rule),
+};
+
 export const dominoPremiumRules: LocalizedRules = {
   ko: [
     '준비 — 더블 식스 28장(0|0~6|6)을 사용합니다. 각 자리에는 7장씩 배분하고, 1대1의 남은 14장은 뽑지 않습니다. 가장 높은 더블로 시작하며, 더블이 없으면 숫자 합이 가장 큰 타일로 시작합니다.',

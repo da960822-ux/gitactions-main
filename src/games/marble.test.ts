@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest';
-import { marbleEngine, MarbleEventId, MarbleState } from './marble';
+import { marbleBuildCost, marbleEngine, MarbleEventId, MarbleState } from './marble';
 import { seededRandom } from '../core/types';
 
 const increment = 0x6d2b79f5;
@@ -25,6 +25,7 @@ describe('Marble 40-space house-rule engine', () => {
     const a = initial(15), b = initial(15);
     expect(a.eventDeck).toEqual(b.eventDeck);
     expect(a.eventDeck).toHaveLength(13);
+    expect(a.economicVersion).toBe(2);
     const view = marbleEngine.getPlayerView(a, 'p1');
     expect(view.board.tiles).toHaveLength(40);
     expect(view.board.tiles[1]).toMatchObject({ name: { ko: '광주', es: 'Gwangju' } });
@@ -134,6 +135,7 @@ describe('Marble 40-space house-rule engine', () => {
     expect(marbleEngine.validateAction({ ...s, money: { p1: 50, p2: 1500 } }, 'p1', { type: 'choose-train', payload: { destination: 1 } })).toBe('Insufficient funds');
     const traveled = act(s, 'choose-train', { destination: 1 });
     expect(traveled.positions.p1).toBe(1); expect(traveled.money.p1).toBe(1600);
+    expect(traveled.actionLog?.find(event => event.type === 'train' && event.from === 14)).toMatchObject({ amount: 100, fromAccount: 'p1', toAccount: 'bank', moneyDelta: { p1: -100 } });
     expect(traveled.lastMove).toMatchObject({ source: 'train', from: 14, to: 1, steps: 27 });
     expect(traveled.lastRoll).toEqual(s.lastRoll);
     expect(traveled.diceSequence).toBe(s.diceSequence);
@@ -145,11 +147,14 @@ describe('Marble 40-space house-rule engine', () => {
     const depositSeed = seedForSum(7);
     const deposit = marbleEngine.applyAction({ ...initial(depositSeed), positions: { p1: 30, p2: 0 }, money: { p1: 200, p2: 1500 }, fundPool: 10 }, 'p1', { type: 'roll' });
     expect(deposit.positions.p1).toBe(37); expect(deposit.money.p1).toBe(50); expect(deposit.fundPool).toBe(160);
+    expect(deposit.actionLog?.at(-1)).toMatchObject({ fromAccount: 'p1', toAccount: 'fund', amount: 150 });
     const collectSeed = seedForSum(3);
     const collected = marbleEngine.applyAction({ ...initial(collectSeed), positions: { p1: 17, p2: 0 }, fundPool: 160 }, 'p1', { type: 'roll' });
     expect(collected.positions.p1).toBe(20); expect(collected.money.p1).toBe(1660); expect(collected.fundPool).toBe(0);
+    expect(collected.actionLog?.find(event => event.type === 'bonus')).toMatchObject({ fromAccount: 'fund', toAccount: 'p1', amount: 160 });
     const insolvent = marbleEngine.applyAction({ ...initial(depositSeed), positions: { p1: 30, p2: 0 }, money: { p1: 149, p2: 1500 } }, 'p1', { type: 'roll' });
     expect(insolvent).toMatchObject({ phase: 'debt', active: 'p1', pendingPayment: { amount: 150, creditor: 'fund' }, result: null });
+    expect(insolvent.actionLog?.at(-1)).toMatchObject({ type: 'crisis', fromAccount: 'p1', toAccount: 'fund' });
     const legacyInsolvent = marbleEngine.applyAction({ ...initial(depositSeed), economicVersion: undefined, positions: { p1: 30, p2: 0 }, money: { p1: 149, p2: 1500 } }, 'p1', { type: 'roll' });
     expect(legacyInsolvent.result?.winner).toBe('p2');
   });
@@ -161,6 +166,7 @@ describe('Marble 40-space house-rule engine', () => {
     expect(s.pendingTrainSource).toBe('card');
     s = act(s, 'choose-train', { destination: 3 });
     expect(s.money.p1).toBe(1500); expect(s.positions.p1).toBe(3); expect(s.phase).toBe('decision');
+    expect(s.actionLog?.find(event => event.type === 'train' && event.from === 2)).toMatchObject({ amount: 0, fromAccount: 'p1', toAccount: 'bank', moneyDelta: { p1: -0 } });
     expect(s.lastMove).toMatchObject({ source: 'train', steps: 1 });
     const skipped = act(act(eventState('train-ticket'), 'roll'), 'skip-train');
     expect(skipped.phase).toBe('main');
@@ -197,6 +203,27 @@ describe('Marble 40-space house-rule engine', () => {
     }
   });
 
+  it('prices new-room upgrades by city value, publishes projections, and preserves flat saved-room costs', () => {
+    expect(marbleBuildCost({ kind: 'property', name: { ko: '테스트', es: 'Prueba' }, price: 100 }, 0, 2)).toBe(40);
+    expect(marbleBuildCost({ kind: 'property', name: { ko: '테스트', es: 'Prueba' }, price: 100 }, 1, 2)).toBe(60);
+    expect(marbleBuildCost({ kind: 'property', name: { ko: '테스트', es: 'Prueba' }, price: 560 }, 2, 2)).toBe(450);
+    expect(marbleBuildCost({ kind: 'property', name: { ko: '테스트', es: 'Prueba' }, price: 100 }, 0, 1)).toBe(100);
+
+    const ready: MarbleState = { ...initial(), phase: 'main', properties: { '1': { owner: 'p1', houses: 0 } }, money: { p1: 1000, p2: 1500 } };
+    const view = marbleEngine.getPlayerView(ready, 'p1');
+    expect(view.board.tiles[1]).toMatchObject({ nextBuildCost: 40, nextRent: 24 });
+    expect(view.actions.find((item: any) => item.action.type === 'build')?.label.ko).toContain('(40)');
+    const built = act(ready, 'build', { tile: 1 });
+    expect(built.money.p1).toBe(960);
+    expect(built.actionLog?.at(-1)).toMatchObject({ type: 'build', amount: 40, fromAccount: 'p1', toAccount: 'bank', moneyDelta: { p1: -40 } });
+    expect(marbleEngine.getPlayerView(built, 'p1').board.assets.p1).toBe(1100);
+
+    const savedRules = { ...ready, economicVersion: 1 as const };
+    expect(marbleEngine.getPlayerView(savedRules, 'p1').board.tiles[1]).toMatchObject({ nextBuildCost: 100, nextRent: 24 });
+    expect(marbleEngine.getPlayerView(savedRules, 'p1').actions.find((item: any) => item.action.type === 'build')?.label.ko).toContain('(100)');
+    expect(act(savedRules, 'build', { tile: 1 }).money.p1).toBe(900);
+  });
+
   it('rejects wrong player, wrong phase, invalid target, and malformed actions', () => {
     const s = initial();
     expect(marbleEngine.validateAction(s, 'p2', { type: 'roll' })).toBe('Not your turn');
@@ -207,7 +234,7 @@ describe('Marble 40-space house-rule engine', () => {
   });
 
   it('uses total assets at 120 turns, including unspent building value, and preserves a draw', () => {
-    const s = initial(3);
+    const s = { ...initial(3), economicVersion: 1 as const };
     const winner = marbleEngine.applyAction({ ...s, phase: 'main', turns: 119, money: { p1: 100, p2: 250 }, properties: { '1': { owner: 'p1', houses: 1 } } }, 'p1', { type: 'endTurn' });
     expect(winner.result).toMatchObject({ winner: 'p1', scores: { p1: 300, p2: 250 }, reason: 'asset turn limit / límite por patrimonio' });
     const draw = marbleEngine.applyAction({ ...s, phase: 'main', turns: 119 }, 'p1', { type: 'endTurn' });
@@ -287,7 +314,10 @@ describe('Marble 40-space house-rule engine', () => {
     expect(warned.money.p2).toBe(1200);
     expect(warned.money.p1).toBe(1500);
     expect(warned.lastEvent).toMatchObject({ id: 'monopoly-warning', playerId: 'p1', sequence: 1 });
-    expect(warned.actionLog?.filter(event => event.type === 'monopoly-warning').at(-1)).toMatchObject({ actor: 'p2', amount: 300 });
+    const assessment = warned.actionLog?.find(event => event.type === 'monopoly-warning' && event.cardId === 'monopoly-warning');
+    expect(assessment).toMatchObject({ actor: 'p2', amount: 300, fromAccount: 'p2', toAccount: 'bank' });
+    expect(assessment?.moneyDelta).toBeUndefined();
+    expect(warned.actionLog?.filter(event => event.type === 'monopoly-warning').at(-1)).toMatchObject({ actor: 'p2', amount: 300, fromAccount: 'p2', toAccount: 'bank', moneyDelta: { p2: -300 } });
   });
 
   it('uses the drawer as the tie-breaker when completed-group counts match', () => {

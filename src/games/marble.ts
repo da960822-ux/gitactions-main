@@ -16,7 +16,7 @@ export interface MarbleActionEvent {
   sequence: number; type: 'roll' | 'move' | 'arrival' | 'buy' | 'build' | 'rent' | 'tax' | 'bonus' | 'event-card' | 'loan' | 'repay' | 'crisis' | 'bankruptcy' | 'monopoly-warning' | 'island' | 'escape' | 'train' | 'rest' | 'turn' | 'win' | 'pawn';
   actor: PlayerId; title: { ko: string; es: string }; text: { ko: string; es: string };
   tile?: number; from?: number; to?: number; steps?: number; amount?: number; moneyDelta?: Partial<Record<PlayerId, number>>;
-  fromPlayer?: PlayerId; toPlayer?: PlayerId; cardId?: MarbleEventId; group?: string; debtAfter?: number;
+  fromPlayer?: PlayerId; toPlayer?: PlayerId; fromAccount?: PlayerId | 'bank' | 'fund'; toAccount?: PlayerId | 'bank' | 'fund'; cardId?: MarbleEventId; group?: string; debtAfter?: number;
 }
 type PendingPayment = { amount: number; creditor: PlayerId | 'bank' | 'fund'; reason: { ko: string; es: string }; tile?: number; resumePhase: 'main'; resumeActive: PlayerId; type: 'rent' | 'tax' | 'monopoly-warning' };
 type CardData = Pick<MarblePublicEvent, 'title' | 'text' | 'effect'>;
@@ -33,7 +33,7 @@ export interface MarbleState {
   pendingTrainFare?: number | null; pendingTrainSource?: 'station' | 'card' | null;
   lastMove?: { sequence: number; playerId: PlayerId; from: number; to: number; steps: number | null; source: 'dice' | 'card' | 'train' | 'island' } | null;
   moveSequence?: number; fundPool?: number; diceSequence?: number;
-  economicVersion?: 1; debt?: Record<PlayerId, number>; pendingPayment?: PendingPayment | null;
+  economicVersion?: 1 | 2; debt?: Record<PlayerId, number>; pendingPayment?: PendingPayment | null;
   actionLog?: MarbleActionEvent[]; actionSequence?: number;
   pawns?: Record<PlayerId, MarblePawnId>; pawnLocked?: Record<PlayerId, boolean>;
 }
@@ -119,8 +119,17 @@ const cards: Record<MarbleEventId, CardData> = {
   'monopoly-warning': { title: { ko: '독점 경고', es: 'Advertencia de monopolio' }, text: { ko: '완성한 색상 도시군이 가장 많은 사람에게 도시군당 100, 최대 300의 독점 부담금을 부과합니다. 동률이면 카드를 뽑은 사람, 완성한 도시군이 없으면 부담금이 없습니다.', es: 'Quien tenga más grupos de color completos paga 100 por grupo, hasta 300. En empate paga quien sacó la carta; si nadie completó un grupo, no se cobra.' }, effect: 'cash' },
 };
 const propertyRent = (tile: MarbleTile, record: { owner: PlayerId; houses: number }, modern: boolean) => (tile.rent ?? 0) * (modern ? [1, 2, 4, 8][record.houses] ?? 1 : record.houses + 1);
-const assetsFor = (s: MarbleState, p: PlayerId, board: MarbleTile[]) => s.money[p] - (s.debt?.[p] ?? 0) + Object.entries(s.properties).reduce((sum, [index, record]) =>
-  record.owner === p ? sum + (board[Number(index)]?.price ?? 0) + record.houses * 100 : sum, 0);
+export function marbleBuildCost(tile: MarbleTile, level: number, economicVersion?: number) {
+  if (economicVersion !== 2) return 100;
+  const factor = [0.4, 0.6, 0.8][Math.max(0, Math.min(2, Math.trunc(level)))] ?? 0.4;
+  return Math.max(40, Math.round((Math.max(0, tile.price ?? 0) * factor) / 10) * 10);
+}
+const assetsFor = (s: MarbleState, p: PlayerId, board: MarbleTile[]) => s.money[p] - (s.debt?.[p] ?? 0) + Object.entries(s.properties).reduce((sum, [index, record]) => {
+  if (record.owner !== p) return sum;
+  const tile = board[Number(index)];
+  const buildingCost = tile ? Array.from({ length: record.houses }, (_, level) => marbleBuildCost(tile, level, s.economicVersion)).reduce((total, cost) => total + cost, 0) : 0;
+  return sum + (tile?.price ?? 0) + buildingCost;
+}, 0);
 const completedGroups = (s: MarbleState, p: PlayerId) => {
   const board = boardFor(s);
   return [...new Set(board.filter(t => t.kind === 'property').map(t => t.group!))].filter(group => board.every((t, index) => t.kind !== 'property' || t.group !== group || s.properties[String(index)]?.owner === p));
@@ -137,7 +146,7 @@ function view(s: MarbleState, p: PlayerId) {
   const actions: { label: { ko: string; es: string }; action: GameAction }[] = [];
   const add = (ko: string, es: string, action: GameAction) => actions.push({ label: { ko, es }, action });
   if (!s.result && s.active === p) {
-    if (s.economicVersion === 1) {
+    if (s.economicVersion === 1 || s.economicVersion === 2) {
       const debt = s.debt?.[p] ?? 0;
       if (debt === 0 && (s.phase !== 'debt' || s.money[p] + 300 >= (s.pendingPayment?.amount ?? Infinity))) add('대출 받기 · 300 / 상환 330', 'Pedir préstamo · 300 / devolver 330', { type: 'borrow' });
       if (debt > 0 && s.money[p] >= debt && s.phase !== 'debt') add(`대출 상환 · ${debt}`, `Pagar préstamo · ${debt}`, { type: 'repay' });
@@ -171,9 +180,11 @@ function view(s: MarbleState, p: PlayerId) {
         const ownedCount = Object.entries(s.properties).filter(([ownedIndex, owned]) => owned.owner === p && board[Number(ownedIndex)]?.group === tile.group).length;
         const canBuild = s.boardVersion === 2 || ownedCount === groupSize;
         const levels = s.boardVersion === 2 ? 3 : 2;
-        if (canBuild && record.houses < levels && s.money[p] >= 100) {
-          const tier = s.boardVersion === 2 ? [['별장', 'Villa'], ['빌딩', 'Edificio'], s.economicVersion === 1 ? ['랜드마크', 'Monumento'] : ['호텔', 'Hotel']][record.houses] : ['집', 'Casa'];
-          add(`${tier[0]}: ${tile.name.ko} (100)`, `${tier[1]}: ${tile.name.es} (100)`, { type: 'build', payload: { tile: index } });
+        const cost = marbleBuildCost(tile, record.houses, s.economicVersion);
+        if (canBuild && record.houses < levels && s.money[p] >= cost) {
+          const tier = s.boardVersion === 2 ? [['별장', 'Villa'], ['빌딩', 'Edificio'], 'landmark'][record.houses] : ['집', 'Casa'];
+          const name = Array.isArray(tier) ? tier : (s.economicVersion === 1 || s.economicVersion === 2 ? ['랜드마크', 'Monumento'] : ['호텔', 'Hotel']);
+          add(`${name[0]}: ${tile.name.ko} (${cost})`, `${name[1]}: ${tile.name.es} (${cost})`, { type: 'build', payload: { tile: index } });
         }
       }
       add('차례 마치기', 'Terminar turno', { type: 'endTurn' });
@@ -183,7 +194,14 @@ function view(s: MarbleState, p: PlayerId) {
     turn: s.active, phase: s.result ? 'finished' : s.phase,
     board: {
       version: s.boardVersion ?? 1,
-      tiles: board.map((tile, index) => ({ ...tile, name: { ...tile.name }, index, owner: s.properties[String(index)]?.owner ?? null, houses: s.properties[String(index)]?.houses ?? 0 })),
+      tiles: board.map((tile, index) => {
+        const houses = s.properties[String(index)]?.houses ?? 0;
+        const maxLevels = s.boardVersion === 2 ? 3 : 2;
+        const canUpgrade = tile.kind === 'property' && houses < maxLevels;
+        return { ...tile, name: { ...tile.name }, index, owner: s.properties[String(index)]?.owner ?? null, houses,
+          nextBuildCost: canUpgrade ? marbleBuildCost(tile, houses, s.economicVersion) : null,
+          nextRent: canUpgrade ? propertyRent(tile, { owner: s.properties[String(index)]?.owner ?? p, houses: houses + 1 }, s.boardVersion === 2) : null };
+      }),
       positions: { ...s.positions }, money: { ...s.money }, assets: { p1: assetsFor(s, 'p1', board), p2: assetsFor(s, 'p2', board) }, lastRoll: [...s.lastRoll], diceSequence: s.diceSequence ?? 0, turn: s.active, turns: s.turns,
       islandTurns: { p1: s.islandTurns?.p1 ?? 0, p2: s.islandTurns?.p2 ?? 0 }, escapePasses: { p1: s.escapePasses?.p1 ?? 0, p2: s.escapePasses?.p2 ?? 0 }, fundPool: s.fundPool ?? 0,
       trainReady: { p1: s.trainReady?.p1 ?? false, p2: s.trainReady?.p2 ?? false }, pendingTrainFare: s.phase === 'train-decision' ? s.pendingTrainFare ?? 100 : null,
@@ -207,7 +225,7 @@ function validation(s: MarbleState, p: PlayerId, a: GameAction): string | null {
   if (s.result) return 'Game is finished';
   if (p !== s.active) return 'Not your turn';
   if (['borrow', 'repay', 'declare-bankruptcy', 'choose-pawn'].includes(a.type)) {
-    if (s.economicVersion !== 1) return 'Credit and figure selection unavailable in this saved ruleset';
+    if (s.economicVersion !== 1 && s.economicVersion !== 2) return 'Credit and figure selection unavailable in this saved ruleset';
     if (s.phase === 'finished') return 'Game is finished';
     if (a.type === 'borrow') return (s.debt?.[p] ?? 0) !== 0 ? 'Repay the existing loan first' : a.payload?.amount !== undefined ? 'Loan amount is fixed' : s.phase === 'debt' && s.money[p] + 300 < (s.pendingPayment?.amount ?? Infinity) ? 'Loan cannot cover this payment' : null;
     if (a.type === 'repay') return a.payload?.amount !== undefined ? 'Repayment amount is fixed' : s.phase === 'debt' || !(s.debt?.[p]) || s.money[p] < s.debt[p] ? 'Cannot repay now' : null;
@@ -242,7 +260,7 @@ function validation(s: MarbleState, p: PlayerId, a: GameAction): string | null {
     const groupSize = board.filter(space => space.kind === 'property' && space.group === tile.group).length;
     const ownedCount = Object.entries(s.properties).filter(([ownedIndex, owned]) => owned.owner === p && board[Number(ownedIndex)]?.group === tile.group).length;
     const canBuild = s.boardVersion === 2 ? s.properties[String(index)].houses < 3 : ownedCount === groupSize && s.properties[String(index)].houses < 2;
-    if (!canBuild || s.money[p] < 100) return 'Cannot build here';
+    if (!canBuild || s.money[p] < marbleBuildCost(tile, s.properties[String(index)].houses, s.economicVersion)) return 'Cannot build here';
     return null;
   }
   if (a.type === 'endTurn') return s.phase === 'main' ? null : 'Cannot end turn now';
@@ -256,21 +274,21 @@ function bankrupt(s: MarbleState, loser: PlayerId, winner: PlayerId): MarbleStat
 }
 function pay(s: MarbleState, p: PlayerId, amount: number, creditor: PlayerId | 'bank' | 'fund' = 'bank', reason = { ko: '비용 지급', es: 'Pago de gastos' }, type: 'rent' | 'tax' | 'monopoly-warning' = 'tax'): MarbleState {
   if (s.money[p] < amount) {
-    if (s.economicVersion !== 1) return bankrupt(s, p, otherPlayer(p));
+    if (s.economicVersion !== 1 && s.economicVersion !== 2) return bankrupt(s, p, otherPlayer(p));
     s.pendingPayment = { amount, creditor, reason, type, tile: s.positions[p], resumePhase: 'main', resumeActive: s.active };
     s.active = p; s.phase = 'debt';
-    emit(s, 'crisis', p, '파산 위기', 'Riesgo de quiebra', `${reason.ko}: ${amount} 지급에 ${amount - s.money[p]}이 부족합니다. 대출 조건을 확인하거나 파산을 인정하세요.`, `${reason.es}: te faltan ${amount - s.money[p]} para pagar ${amount}. Revisa el préstamo o declara la quiebra.`, { amount, fromPlayer: p, ...(creditor === 'p1' || creditor === 'p2' ? { toPlayer: creditor } : {}) });
+    emit(s, 'crisis', p, '파산 위기', 'Riesgo de quiebra', `${reason.ko}: ${amount} 지급에 ${amount - s.money[p]}이 부족합니다. 대출 조건을 확인하거나 파산을 인정하세요.`, `${reason.es}: te faltan ${amount - s.money[p]} para pagar ${amount}. Revisa el préstamo o declara la quiebra.`, { amount, fromPlayer: p, fromAccount: p, toAccount: creditor, ...(creditor === 'p1' || creditor === 'p2' ? { toPlayer: creditor } : {}) });
     return s;
   }
   s.money[p] -= amount;
   if (creditor === 'fund') s.fundPool = (s.fundPool ?? 0) + amount;
   else if (creditor === 'p1' || creditor === 'p2') s.money[creditor] += amount;
-  emit(s, type, p, reason.ko, reason.es, `${amount}을 지급했습니다.`, `Pagaste ${amount}.`, { amount, fromPlayer: p, ...(creditor === 'p1' || creditor === 'p2' ? { toPlayer: creditor } : {}), moneyDelta: { [p]: -amount, ...(creditor === 'p1' || creditor === 'p2' ? { [creditor]: amount } : {}) }, tile: s.positions[p] });
+  emit(s, type, p, reason.ko, reason.es, `${amount}을 지급했습니다.`, `Pagaste ${amount}.`, { amount, fromPlayer: p, fromAccount: p, toAccount: creditor, ...(creditor === 'p1' || creditor === 'p2' ? { toPlayer: creditor } : {}), moneyDelta: { [p]: -amount, ...(creditor === 'p1' || creditor === 'p2' ? { [creditor]: amount } : {}) }, tile: s.positions[p] });
   return s;
 }
-function bonus(s: MarbleState, p: PlayerId, amount: number, ko: string, es: string) {
+function bonus(s: MarbleState, p: PlayerId, amount: number, ko: string, es: string, source: 'bank' | 'fund' = 'bank') {
   s.money[p] += amount;
-  emit(s, 'bonus', p, ko, es, `${amount}을 받았습니다.`, `Recibiste ${amount}.`, { amount, toPlayer: p, moneyDelta: { [p]: amount } });
+  emit(s, 'bonus', p, ko, es, `${amount}을 받았습니다.`, `Recibiste ${amount}.`, { amount, toPlayer: p, fromAccount: source, toAccount: p, moneyDelta: { [p]: amount } });
 }
 function moveForward(s: MarbleState, p: PlayerId, to: number, board: MarbleTile[]) {
   const from = s.positions[p];
@@ -289,7 +307,7 @@ function resolveLanding(s: MarbleState, p: PlayerId, index: number, drawEvent: b
       s = pay(s, p, rent, owner.owner, { ko: `${tile.name.ko} 통행료`, es: `Alquiler en ${tile.name.es}` }, 'rent');
     }
   } else if (tile.kind === 'tax') s = pay(s, p, tile.price ?? 0, 'bank', tile.name);
-  else if (tile.kind === 'fund') { bonus(s, p, s.fundPool ?? 0, '공동 기금 수령', 'Cobro del fondo común'); s.fundPool = 0; }
+  else if (tile.kind === 'fund') { bonus(s, p, s.fundPool ?? 0, '공동 기금 수령', 'Cobro del fondo común', 'fund'); s.fundPool = 0; }
   else if (tile.kind === 'fund-deposit') {
     const amount = tile.price ?? 150;
     s = pay(s, p, amount, 'fund', tile.name);
@@ -307,7 +325,7 @@ function noteMove(s: MarbleState, p: PlayerId, from: number, to: number, steps: 
   emit(s, 'move', p, '말 이동', 'Movimiento', `${from + 1}번에서 ${to + 1}번 칸으로 이동합니다.`, `Avanzas de la casilla ${from + 1} a la ${to + 1}.`, { from, to, steps: steps ?? undefined });
 }
 function resolveEvent(s: MarbleState, p: PlayerId): MarbleState {
-  const board = boardFor(s), isModern = s.boardVersion === 2, ids = isModern ? s.economicVersion === 1 ? [...modernIds, 'monopoly-warning' as const] : modernIds : legacyIds;
+  const board = boardFor(s), isModern = s.boardVersion === 2, ids = isModern ? s.economicVersion === 1 || s.economicVersion === 2 ? [...modernIds, 'monopoly-warning' as const] : modernIds : legacyIds;
   s.phase = 'main';
   let deck = s.eventDeck ? [...s.eventDeck] : [];
   if (!deck.length) {
@@ -355,7 +373,7 @@ function resolveEvent(s: MarbleState, p: PlayerId): MarbleState {
     const count = groups[target].length, amount = Math.min(300, count * 100);
     const text = { ko: count ? `${target === p ? '카드를 뽑은 사람' : '상대'}의 완성 도시군 ${count}개: 독점 부담금 ${amount}을 은행에 냅니다.` : '완성한 색상 도시군이 없어 부담금이 없습니다.', es: count ? `${target === p ? 'Quien sacó la carta' : 'La otra persona'} tiene ${count} grupos completos y paga ${amount} al banco.` : 'Nadie tiene un grupo de color completo. No se cobra.' };
     card = { ...card, text };
-    emit(s, 'monopoly-warning', target, card.title.ko, card.title.es, text.ko, text.es, { amount, cardId: id, group: groups[target].join(', ') });
+    emit(s, 'monopoly-warning', target, card.title.ko, card.title.es, text.ko, text.es, { amount, fromAccount: target, toAccount: 'bank', cardId: id, group: groups[target].join(', ') });
     if (amount) s = pay(s, target, amount, 'bank', card.title, 'monopoly-warning');
   }
   const sequence = (s.eventSequence ?? 0) + 1; s.eventSequence = sequence;
@@ -397,7 +415,7 @@ function step(s: MarbleState, p: PlayerId, a: GameAction): MarbleState {
   }
   if (a.type === 'borrow') {
     n.money[p] += 300; n.debt[p] = 330;
-    emit(n, 'loan', p, '대출 실행', 'Préstamo recibido', '300을 받고 330의 상환 의무가 생겼습니다. 추가 이자나 만기 없이 전액 상환하며, 미상환액은 최종 자산에서 뺍니다.', 'Recibes 300 y debes devolver 330. No hay intereses adicionales ni plazo; se paga completo y la deuda se resta del patrimonio final.', { amount: 300, debtAfter: 330, moneyDelta: { [p]: 300 } });
+    emit(n, 'loan', p, '대출 실행', 'Préstamo recibido', '300을 받고 330의 상환 의무가 생겼습니다. 추가 이자나 만기 없이 전액 상환하며, 미상환액은 최종 자산에서 뺍니다.', 'Recibes 300 y debes devolver 330. No hay intereses adicionales ni plazo; se paga completo y la deuda se resta del patrimonio final.', { amount: 300, debtAfter: 330, fromAccount: 'bank', toAccount: p, moneyDelta: { [p]: 300 } });
     if (n.phase === 'debt' && n.pendingPayment) {
       const pending = n.pendingPayment;
       n = pay(n, p, pending.amount, pending.creditor, pending.reason, pending.type);
@@ -407,7 +425,7 @@ function step(s: MarbleState, p: PlayerId, a: GameAction): MarbleState {
   }
   if (a.type === 'repay') {
     const amount = n.debt[p]; n.money[p] -= amount; n.debt[p] = 0;
-    emit(n, 'repay', p, '대출 상환 완료', 'Préstamo pagado', `${amount}을 상환해 남은 대출이 없습니다.`, `Pagaste ${amount}; ya no tienes deuda.`, { amount, debtAfter: 0, moneyDelta: { [p]: -amount } });
+    emit(n, 'repay', p, '대출 상환 완료', 'Préstamo pagado', `${amount}을 상환해 남은 대출이 없습니다.`, `Pagaste ${amount}; ya no tienes deuda.`, { amount, debtAfter: 0, fromAccount: p, toAccount: 'bank', moneyDelta: { [p]: -amount } });
     return n;
   }
   if (a.type === 'declare-bankruptcy') return bankrupt(n, p, otherPlayer(p));
@@ -437,7 +455,7 @@ function step(s: MarbleState, p: PlayerId, a: GameAction): MarbleState {
   if (a.type === 'choose-train') {
     const from = n.positions[p], to = payload.destination as number, fare = n.pendingTrainFare ?? 100;
     n.money[p] -= fare; n.trainReady ??= { p1: false, p2: false }; n.trainReady[p] = false; n.pendingTrainFare = null; n.pendingTrainSource = null;
-    emit(n, 'train', p, '열차 출발', 'El tren sale', `${board[to].name.ko}행 · 운임 ${fare}`, `Destino: ${board[to].name.es} · pasaje ${fare}`, { amount: fare, moneyDelta: { [p]: -fare }, from, to });
+    emit(n, 'train', p, '열차 출발', 'El tren sale', `${board[to].name.ko}행 · 운임 ${fare}`, `Destino: ${board[to].name.es} · pasaje ${fare}`, { amount: fare, fromAccount: p, toAccount: 'bank', moneyDelta: { [p]: -fare }, from, to });
     const distance = (to - from + board.length) % board.length;
     moveForward(n, p, to, board); noteMove(n, p, from, to, distance, 'train'); n = resolveLanding(n, p, to, false); return n;
   }
@@ -449,14 +467,14 @@ function step(s: MarbleState, p: PlayerId, a: GameAction): MarbleState {
   }
   if (a.type === 'buy') {
     const index = n.pendingTile!, price = board[index].price!; n.money[p] -= price; n.properties[String(index)] = { owner: p, houses: 0 }; n.phase = 'main';
-    emit(n, 'buy', p, '도시 구매 완료', 'Ciudad comprada', `${board[index].name.ko}을 소유했습니다.`, `Compraste ${board[index].name.es}.`, { tile: index, amount: price, moneyDelta: { [p]: -price } });
+    emit(n, 'buy', p, '도시 구매 완료', 'Ciudad comprada', `${board[index].name.ko}을 소유했습니다.`, `Compraste ${board[index].name.es}.`, { tile: index, amount: price, fromAccount: p, toAccount: 'bank', moneyDelta: { [p]: -price } });
     const group = board[index].group!;
     if (completedGroups(n, p).includes(group)) emit(n, 'monopoly-warning', p, '색상 도시군 완성', 'Grupo de color completo', '이 도시군을 모두 소유했습니다. 독점 경고 카드가 나오면 부담금 대상이 될 수 있습니다.', 'Ya tienes todas las ciudades de este color. Una carta de monopolio puede cobrarte un cargo.', { group, tile: index });
   } else if (a.type === 'decline') n.phase = 'main';
   else if (a.type === 'build') {
-    const index = payload.tile as number; n.money[p] -= 100; n.properties[String(index)] = { ...n.properties[String(index)], houses: n.properties[String(index)].houses + 1 };
+    const index = payload.tile as number, cost = marbleBuildCost(board[index], n.properties[String(index)].houses, n.economicVersion); n.money[p] -= cost; n.properties[String(index)] = { ...n.properties[String(index)], houses: n.properties[String(index)].houses + 1 };
     const level = n.properties[String(index)].houses;
-    emit(n, 'build', p, '건설 완료', 'Construcción terminada', `${board[index].name.ko}: ${level === 3 ? '랜드마크' : level === 2 ? '빌딩' : '별장'} · 통행료 ${propertyRent(board[index], n.properties[String(index)], n.boardVersion === 2)}`, `${board[index].name.es}: ${level === 3 ? 'monumento' : level === 2 ? 'edificio' : 'villa'} · alquiler ${propertyRent(board[index], n.properties[String(index)], n.boardVersion === 2)}`, { tile: index, amount: 100, moneyDelta: { [p]: -100 } });
+    emit(n, 'build', p, '건설 완료', 'Construcción terminada', `${board[index].name.ko}: ${level === 3 ? '랜드마크' : level === 2 ? '빌딩' : '별장'} · 통행료 ${propertyRent(board[index], n.properties[String(index)], n.boardVersion === 2)}`, `${board[index].name.es}: ${level === 3 ? 'monumento' : level === 2 ? 'edificio' : 'villa'} · alquiler ${propertyRent(board[index], n.properties[String(index)], n.boardVersion === 2)}`, { tile: index, amount: cost, fromAccount: p, toAccount: 'bank', moneyDelta: { [p]: -cost } });
   } else if (a.type === 'endTurn') return finishTurn(n, p);
   return n;
 }
@@ -468,7 +486,7 @@ export const marbleEngine: GameEngine<MarbleState> = {
     return { rng, active: 'p1', positions: { p1: 0, p2: 0 }, money: { p1: 1500, p2: 1500 }, properties: {}, boardVersion: 2,
       phase: 'roll', pendingTile: null, lastRoll: [], turns: 0, result: null, eventRng: (eventRng + modernIds.length * 0x6d2b79f5) >>> 0,
       eventDeck: shuffle([...modernIds, 'monopoly-warning' as const], seededRandom(eventRng)), eventSequence: 0, lastEvent: null, fundPool: 0,
-      economicVersion: 1, debt: { p1: 0, p2: 0 }, pendingPayment: null, actionLog: [], actionSequence: 0, pawns: { p1: 'fox', p2: 'cat' }, pawnLocked: { p1: false, p2: false },
+      economicVersion: 2, debt: { p1: 0, p2: 0 }, pendingPayment: null, actionLog: [], actionSequence: 0, pawns: { p1: 'fox', p2: 'cat' }, pawnLocked: { p1: false, p2: false },
       islandTurns: { p1: 0, p2: 0 }, escapePasses: { p1: 0, p2: 0 }, trainReady: { p1: false, p2: false }, pendingTrainFare: null, pendingTrainSource: null, lastMove: null, moveSequence: 0, diceSequence: 0 };
   },
   validateAction: validation, applyAction: step, getPlayerView: view, getResult: state => state.result,

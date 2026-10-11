@@ -18,10 +18,12 @@ describe('MarbleBoard', () => {
     expect(ko).toContain('산토도밍고');
     expect(ko).toContain('주사위 굴리기');
     expect(ko).toContain('어떤 말로 출발할까요?');
-    expect(ko).toMatch(/mp-board-center[^\"]*has-pawn-picker/);
-    expect(ko.indexOf('marble-pawn-picker')).toBeLessThan(ko.indexOf('mp-dashboard'));
-    expect((ko.match(/class="mp-group-dot /g) ?? []).length).toBe(12);
-    expect(ko).toContain('aria-valuemax="120"');
+    expect(ko).toContain('src="/images/marble/world-map-board.webp"');
+    expect(ko).toContain('mp-board-panel');
+    expect(ko).toContain('mp-pawn-picker-shell');
+    expect(ko.indexOf('mp-pawn-picker-shell')).toBeLessThan(ko.indexOf('mp-turn-panel'));
+    expect(ko.indexOf('mp-turn-panel')).toBeLessThan(ko.indexOf('mp-city-detail'));
+    expect(ko).toContain('/images/marble/cities/gwangju.svg');
     expect(es).toContain('Gwangju');
     expect(es).toContain('Santo Domingo');
     expect(es).toContain('<h2>Marble</h2>');
@@ -56,9 +58,33 @@ describe('MarbleBoard', () => {
     expect(html).toContain('산토도밍고');
     expect(html).toContain('도시 구매 · 120');
     expect(html).toContain('구매 120 · 기본 통행료 15');
+    expect(html).toContain('구매 후 현금 1,380');
+    expect(html).toContain('선택한 칸');
+    expect(html).toContain('aria-pressed="true"');
     expect(spanish).toContain('Compra 120 · renta 15');
     expect(html).toContain('구매하지 않고 지나가기');
     expect(html).not.toContain('탈출권 사용');
+  });
+
+  it('shows the server-priced build cost, cash after building, and next rent', () => {
+    const state = marbleEngine.createInitialState(27);
+    const view = marbleEngine.getPlayerView(state, 'p1');
+    view.phase = 'main';
+    view.board.positions.p1 = 1;
+    view.board.money.p1 = 60;
+    view.board.tiles[1].owner = 'p1';
+    view.board.tiles[1].houses = 1;
+    view.board.tiles[1].nextBuildCost = 40;
+    view.board.tiles[1].nextRent = 48;
+    view.actions = [{ label: { ko: '별장: 광주 (40)', es: 'Villa: Gwangju (40)' }, action: { type: 'build', payload: { tile: 1 } } }];
+    const html = render(view);
+    expect(html).toContain('건설 후 현금 20');
+    expect(html).toContain('통행료 24 → 48 (+24)');
+    expect(html).toContain('비용 40');
+    expect(html).toContain('/images/marble/cities/gwangju.svg');
+    expect(html).toContain('/images/marble/ownership-card-frame.svg');
+    expect(html).toContain('/images/marble/buildings/villa.svg');
+    expect(html).toContain('건설 단계별 통행료');
   });
 
   it('shows the public payment reason and only server-returned loan or bankruptcy actions', () => {

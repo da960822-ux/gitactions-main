@@ -596,3 +596,21 @@
   .room-shell .board-header { flex-wrap: wrap; }
   .room-shell .board-header-right { flex-wrap: wrap; }
 }
+
+
+@media (min-width: 1024px) and (pointer: fine) {
+  .app-shell.room-shell:is(.room-game-davinci, .room-game-catchmind, .room-game-marble) .app-header.compact { height: 42px; min-height: 42px; padding-top: 6px; padding-bottom: 6px; }
+  .app-shell.room-shell:is(.room-game-davinci, .room-game-catchmind, .room-game-marble) .room-main { padding-top: 4px; }
+  .app-shell.room-shell:is(.room-game-davinci, .room-game-catchmind, .room-game-marble) .demo-banner { margin-top: 2px; min-height: 24px; padding: 1px 9px; }
+  .app-shell.room-shell:is(.room-game-davinci, .room-game-catchmind, .room-game-marble) .room-topline { min-height: 22px; margin-bottom: 2px; }
+  .app-shell.room-shell:is(.room-game-davinci, .room-game-catchmind, .room-game-marble) .room-heading { min-height: 30px; padding: 0; border-bottom: 0; }
+  .app-shell.room-shell:is(.room-game-davinci, .room-game-catchmind, .room-game-marble) .room-heading > div:first-child { display: none; }
+  .app-shell.room-shell:is(.room-game-davinci, .room-game-catchmind, .room-game-marble) .player-pill { padding: 3px 9px; min-height: 28px; }
+  .app-shell.room-shell:is(.room-game-davinci, .room-game-catchmind, .room-game-marble) .player-avatar { width: 24px; height: 24px; }
+  .app-shell.room-shell:is(.room-game-davinci, .room-game-catchmind, .room-game-marble) .room-layout { margin-top: 6px; }
+  .app-shell.room-shell:is(.room-game-davinci, .room-game-catchmind, .room-game-marble) .board-header { min-height: 44px; padding: 6px 14px; }
+  .room-shell.room-game-catchmind .catchmind-chat-panel { min-height: 480px; height: min(580px, calc(100dvh - 180px)); max-height: none; }
+  .room-shell.room-game-catchmind .catchmind-chat-panel.is-collapsed { min-height: 0; height: auto; }
+  .room-shell.room-game-catchmind .chat-compose textarea { font-size: 15px; min-height: 52px; }
+  .room-shell.room-game-catchmind .chat-language-note p { font-size: 12px; line-height: 1.4; }
+}

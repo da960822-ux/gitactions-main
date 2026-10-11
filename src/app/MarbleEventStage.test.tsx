@@ -34,3 +34,37 @@ describe('Marble event stage server rendering', () => {
     expect(html).toContain('+300');
   });
 });
+
+describe('Marble public event meaning', () => {
+  const renderEvent = (event: Record<string, unknown>) => renderToStaticMarkup(createElement(MarbleEventStage, { language: 'ko', playerId: 'p1', events: [{ sequence: 10, ...event }] }));
+  it('distinguishes an exposed penalty card from a settled payment without inventing a debit', () => {
+    const card = renderEvent({ type: 'event-card', cardId: 'travel-cost', text: { ko: '100을 냅니다.' } });
+    expect(card).toContain('tile-symbols.svg#tax');
+    expect(card).toContain('카드 공개');
+    expect(card).toContain('100을 냅니다.');
+    expect(card).not.toContain('marble-event-amount');
+    const paid = renderEvent({ type: 'tax', actor: 'p1', fromAccount: 'p1', toAccount: 'fund', moneyDelta: { p1: -100 } });
+    expect(paid).toContain('나<i aria-hidden="true">→</i>공동 기금');
+    expect(paid).toContain('지급 완료');
+    expect(paid).toContain('−100');
+  });
+  it('shows an unpaid crisis and the actual creditor without a fabricated cash change', () => {
+    const crisis = renderEvent({ type: 'crisis', actor: 'p1', fromAccount: 'p1', toAccount: 'p2', amount: 200 });
+    expect(crisis).toContain('미지급 · 해결 필요');
+    expect(crisis).toContain('나<i aria-hidden="true">→</i>상대');
+    expect(crisis).not.toContain('지급 완료');
+    expect(crisis).not.toContain('is-negative');
+  });
+  it('labels a free train movement as no cash change', () => {
+    const free = renderEvent({ type: 'train', actor: 'p1', fromAccount: 'p1', toAccount: 'bank', from: 5, to: 15, moneyDelta: { p1: 0 } });
+    expect(free).toContain('현금 변동 없음');
+    expect(free).not.toContain('수령 완료');
+    expect(free).not.toContain('marble-event-transfer');
+  });
+  it('uses distinct reward/island/train symbols and the public movement endpoints', () => {
+    for (const [cardId, symbol] of [['festival', 'fund-pay'], ['go-to-island', 'island'], ['train-ticket', 'train']]) {
+      expect(renderEvent({ type: 'event-card', cardId })).toContain(`tile-symbols.svg#${symbol}`);
+    }
+    expect(renderEvent({ type: 'train', from: 5, to: 15 })).toContain('6번 → 16번 칸');
+  });
+});

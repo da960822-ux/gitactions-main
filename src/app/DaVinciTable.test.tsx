@@ -48,6 +48,22 @@ describe('DaVinciTable', () => {
     expect(es).toContain('Adivinar este número');
   });
 
+  it('keeps both larger racks, the selected target, and public reveals explicit', () => {
+    const view = {
+      game: 'davinci', turn: 'p1', phase: 'guess',
+      hand: [0, 2, 4, 6, 8, 10].map(value => ({ color: value % 2 ? 'black' : 'white', value, revealed: false })),
+      board: { opponentTiles: Array.from({ length: 9 }, (_, index) => ({ color: index % 2 ? 'black' : 'white', value: index === 8 ? 11 : null, revealed: index === 8 })), deckCount: 2, turnNumber: 8, tileCount: 26, actionLog: [], lastEvent: null },
+      opponentCount: 8, actions: [...guessActions(0), { label: { ko: '차례 마치기', es: 'Terminar turno' }, action: { type: 'stop' } }],
+    };
+    const html = render(view);
+    expect(html.match(/class="dv-tile dv-own-tile/g)).toHaveLength(6);
+    expect(html.match(/class="dv-tile dv-tile-(?:white|black)[^"]*" aria-pressed=/g)).toHaveLength(8);
+    expect(html).toContain('>목표</em>');
+    expect(html).toContain('state-icons.svg#revealed');
+    expect(html).toContain('>11</b>');
+    expect(html).toContain('숫자 숨김');
+  });
+
   it('matches a joker guess by its explicit engine value instead of coercing it to NaN', () => {
     const choices = guessActions(2);
     expect(findDaVinciGuess(choices, 2, 'joker')?.action).toEqual({ type: 'guess', payload: { index: 2, value: 'joker' } });

@@ -129,6 +129,55 @@ describe('catchmindEngine', () => {
     expect(JSON.stringify(catchmindEngine.getPlayerView(s, 'p1')).length).toBeLessThan(150_000);
   });
 
+  it('merges backward-compatible ordered segments as one physical stroke under unchanged caps', () => {
+    let s: any = catchmindEngine.createInitialState(76);
+    s = catchmindEngine.applyAction(s, 'p1', { type: 'choose', payload: { wordId: 0 } });
+    for (let segmentIndex = 0; segmentIndex < 201; segmentIndex++) {
+      const x = segmentIndex / 201, nextX = (segmentIndex + 1) / 201;
+      const segment = { strokeId: 'long-line', segmentIndex, color: '#222222', width: 5, points: [{ x, y: 0.5 }, { x: nextX, y: 0.5 }] };
+      expect(catchmindEngine.validateAction(s, 'p1', { type: 'draw', payload: { strokes: [segment] } })).toBeNull();
+      s = catchmindEngine.applyAction(s, 'p1', { type: 'draw', payload: { strokes: [segment] } });
+    }
+    expect(s.strokes).toHaveLength(1);
+    expect(s.strokes[0].points).toHaveLength(202);
+    expect(s.strokes[0]).toMatchObject({ strokeId: 'long-line', segmentIndex: 200, color: '#222222', width: 5 });
+    expect(catchmindEngine.validateAction(s, 'p1', { type: 'draw', payload: { strokes: [{ strokeId: 'long-line', segmentIndex: 201, color: '#333333', width: 5, points: [{ x: 1, y: 0.5 }, { x: 1, y: 0.6 }] }] } })).toContain('same style');
+    s = catchmindEngine.applyAction(s, 'p1', { type: 'undo' });
+    expect(s.strokes).toHaveLength(0);
+    expect(catchmindEngine.validateAction(s, 'p1', { type: 'draw', payload: { strokes: [{ strokeId: 'long-line', segmentIndex: 202, color: '#222222', width: 5, points: [{ x: 1 / 201, y: 0.5 }, { x: 2 / 201, y: 0.5 }] }] } })).toContain('consecutive');
+    const duplicateIds = [
+      { strokeId: 'repeat', segmentIndex: 0, points: [{ x: 0, y: 0 }, { x: 0.1, y: 0.1 }] },
+      { strokeId: 'other', segmentIndex: 0, points: [{ x: 0.2, y: 0.2 }, { x: 0.3, y: 0.3 }] },
+      { strokeId: 'repeat', segmentIndex: 0, points: [{ x: 0.4, y: 0.4 }, { x: 0.5, y: 0.5 }] },
+    ];
+    expect(catchmindEngine.validateAction(s, 'p1', { type: 'draw', payload: { strokes: duplicateIds } })).toContain('already been used');
+
+    let legacy: any = catchmindEngine.createInitialState(75);
+    legacy = catchmindEngine.applyAction(legacy, 'p1', { type: 'choose', payload: { wordId: 0 } });
+    const oldChunk = { points: [{ x: 0, y: 0 }, { x: 1, y: 1 }] };
+    legacy = catchmindEngine.applyAction(legacy, 'p1', { type: 'draw', payload: { strokes: [oldChunk] } });
+    expect(legacy.strokes[0]).not.toHaveProperty('strokeId');
+  });
+
+  it('retains the server round stroke and point caps', () => {
+    let s: any = catchmindEngine.createInitialState(77);
+    s = catchmindEngine.applyAction(s, 'p1', { type: 'choose', payload: { wordId: 0 } });
+    const stroke = { points: [{ x: 0, y: 0 }, { x: 1, y: 1 }] };
+    for (let i = 0; i < 200; i++) s = catchmindEngine.applyAction(s, 'p1', { type: 'draw', payload: { strokes: [stroke] } });
+    expect(s.strokes).toHaveLength(200);
+    expect(catchmindEngine.validateAction(s, 'p1', { type: 'draw', payload: { strokes: [stroke] } })).toBe('Round stroke limit reached');
+    expect(catchmindEngine.validateAction(s, 'p1', { type: 'draw', payload: { strokes: Array.from({ length: 13 }, () => stroke) } })).toBe('Send 1 to 12 strokes per batch');
+    let unique: any = catchmindEngine.createInitialState(79);
+    unique = catchmindEngine.applyAction(unique, 'p1', { type: 'choose', payload: { wordId: 0 } });
+    for (let i = 0; i < 200; i++) unique = catchmindEngine.applyAction(unique, 'p1', { type: 'draw', payload: { strokes: [{ ...stroke, strokeId: `line-${i}`, segmentIndex: 0 }] } });
+    expect(catchmindEngine.validateAction(unique, 'p1', { type: 'draw', payload: { strokes: [{ ...stroke, strokeId: 'line-200', segmentIndex: 0 }] } })).toBe('Round stroke limit reached');
+
+    s = catchmindEngine.applyAction(catchmindEngine.createInitialState(78), 'p1', { type: 'choose', payload: { wordId: 0 } });
+    const fullStroke = { points: Array.from({ length: 80 }, (_, i) => ({ x: i / 79, y: i / 79 })) };
+    for (let i = 0; i < 50; i++) s = catchmindEngine.applyAction(s, 'p1', { type: 'draw', payload: { strokes: [fullStroke] } });
+    expect(catchmindEngine.validateAction(s, 'p1', { type: 'draw', payload: { strokes: [stroke] } })).toBe('Round point limit reached');
+  });
+
   it('keeps fill, undo, clear, and private timed hints within server-owned game state', () => {
     let s: any = catchmindEngine.createInitialState(81);
     s = catchmindEngine.applyAction(s, 'p1', { type: 'settings', payload: { settings: {
