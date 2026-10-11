@@ -11,7 +11,7 @@ export interface MarbleTile {
 export type MarbleEventId = 'festival' | 'lottery' | 'rent-rebate' | 'travel-cost' | 'maintenance' | 'visit-santo-domingo' | 'advance-start' | 'retreat' | 'go-to-island' | 'escape-pass' | 'train-ticket' | 'city-dividend' | 'monopoly-warning' | 'city-festival' | 'blackout' | 'rent-pass';
 export const marblePawnIds = ['fox', 'cat', 'penguin', 'astronaut', 'robot', 'dragon'] as const;
 export type MarblePawnId = typeof marblePawnIds[number];
-const pawnNames: Record<MarblePawnId, { ko: string; es: string }> = { fox: { ko: '말티푸', es: 'Maltipoo' }, cat: { ko: '고양이', es: 'Gata' }, penguin: { ko: '판다', es: 'Panda' }, astronaut: { ko: '우주비행사', es: 'Astronauta' }, robot: { ko: '로봇', es: 'Robot' }, dragon: { ko: '친칠라', es: 'Chinchilla' } };
+const pawnNames: Record<MarblePawnId, { ko: string; es: string }> = { fox: { ko: '말티푸', es: 'Maltipoo' }, cat: { ko: '랙돌', es: 'Ragdoll' }, penguin: { ko: '판다', es: 'Panda' }, astronaut: { ko: '우주인', es: 'Astronauta' }, robot: { ko: '로봇', es: 'Robot' }, dragon: { ko: '친칠라', es: 'Chinchilla' } };
 export interface MarbleActionEvent {
   sequence: number; type: 'roll' | 'move' | 'arrival' | 'buy' | 'build' | 'rent' | 'tax' | 'bonus' | 'event-card' | 'loan' | 'repay' | 'crisis' | 'bankruptcy' | 'monopoly-warning' | 'island' | 'escape' | 'train' | 'rest' | 'turn' | 'win' | 'pawn';
   actor: PlayerId; title: { ko: string; es: string }; text: { ko: string; es: string };

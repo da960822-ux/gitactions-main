@@ -37,6 +37,8 @@ describe('Marble pawn selection', () => {
       playerId: 'p1', language: 'es', runAction: vi.fn(),
     }));
     expect(html).toContain('Panda');
+    expect(html).toContain('Ragdoll');
+    expect(html).not.toContain('Gata');
     expect(html).toContain('De tu pareja');
     expect(html).toContain('Elegir');
   });

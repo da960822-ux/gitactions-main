@@ -13,8 +13,8 @@
     {
       "id": "cat",
       "name": {
-        "ko": "고양이",
-        "es": "Gata"
+        "ko": "랙돌",
+        "es": "Ragdoll"
       },
       "path": null,
       "plannedPath": "/images/marble/pawns/cat.webp"
@@ -31,7 +31,7 @@
     {
       "id": "astronaut",
       "name": {
-        "ko": "우주비행사",
+        "ko": "우주인",
         "es": "Astronauta"
       },
       "path": null,

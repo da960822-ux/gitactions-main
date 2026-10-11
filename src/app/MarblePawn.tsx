@@ -9,9 +9,9 @@ type Copy = Record<Language, string>;
 
 export const marblePawnCatalog: { id: MarblePawnId; name: Copy; color: string }[] = [
   { id: 'fox', name: { ko: '말티푸', es: 'Maltipoo' }, color: '#d3aa79' },
-  { id: 'cat', name: { ko: '고양이', es: 'Gata' }, color: '#d88cbd' },
+  { id: 'cat', name: { ko: '랙돌', es: 'Ragdoll' }, color: '#d88cbd' },
   { id: 'penguin', name: { ko: '판다', es: 'Panda' }, color: '#465559' },
-  { id: 'astronaut', name: { ko: '우주비행사', es: 'Astronauta' }, color: '#55a99d' },
+  { id: 'astronaut', name: { ko: '우주인', es: 'Astronauta' }, color: '#55a99d' },
   { id: 'robot', name: { ko: '로봇', es: 'Robot' }, color: '#a58c70' },
   { id: 'dragon', name: { ko: '친칠라', es: 'Chinchilla' }, color: '#a7adb3' },
 ];
