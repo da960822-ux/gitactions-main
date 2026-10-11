@@ -1,0 +1,198 @@
+{
+  "format": "marble-premium-source-assets-v1",
+  "description": "Generated nonpersonal game source assets. Original PNG bytes; runtime optimization and in-game validation remain downstream.",
+  "assets": [
+    {
+      "path": "asset-handoff/marble-premium/cities/agra-taj-mahal.png",
+      "bytes": 2046184,
+      "sha256": "b309e2f5240d3ae9921f899acc1c644ad4294ea24bb6791902d74a55c3efd584",
+      "git_blob_sha": "b6dabf2fb9c748b6c6f4687c72472744b98ff733"
+    },
+    {
+      "path": "asset-handoff/marble-premium/cities/athens-parthenon.png",
+      "bytes": 1767103,
+      "sha256": "4d5c9cacb1e32bf359ba2fec49f73382fdebfbb82f8c7219c5bf5941b2241c7a",
+      "git_blob_sha": "ca2f87ba10eff17adf0e38048c4d4127ef902598"
+    },
+    {
+      "path": "asset-handoff/marble-premium/cities/barcelona-sagrada-familia.png",
+      "bytes": 1691173,
+      "sha256": "7cf50e9a0760c2ab691aa18d86c65e12887d6ac6c2889dfde99b265bf6d4cfcf",
+      "git_blob_sha": "03ff417fb61d9c35e57dd89c41d4b29337d6dd75"
+    },
+    {
+      "path": "asset-handoff/marble-premium/cities/gwangju-chosun-university.png",
+      "bytes": 1108772,
+      "sha256": "750333c5593f0f284589251514b762ddcf4f3556ff693ad31434e4b7028faaab",
+      "git_blob_sha": "1b6ab5bc97c646aa5db54291f22abb4c8648910d"
+    },
+    {
+      "path": "asset-handoff/marble-premium/cities/havana-el-capitolio.png",
+      "bytes": 1871643,
+      "sha256": "278088cd82255afc40b404b60414aae279d0e85aea77cd569e7ea70e6bb0f344",
+      "git_blob_sha": "1f4406dd0b728879bc0baaa759b6fffbc699a2dd"
+    },
+    {
+      "path": "asset-handoff/marble-premium/cities/istanbul-hagia-sophia.png",
+      "bytes": 2405980,
+      "sha256": "61a62773e010af9461c9e28863967774cec02f51df26dc6e9beaf575b69d0f15",
+      "git_blob_sha": "193413e0e5dd83e22203515aa5e692b2df69464a"
+    },
+    {
+      "path": "asset-handoff/marble-premium/cities/lisbon-belem-tower.png",
+      "bytes": 2153287,
+      "sha256": "365be29fb5178676851173ab6ce77e6bb44241955fa472855c2cdd4481ea675d",
+      "git_blob_sha": "27d3db6a9ea0217edbc6c2162d0c8ff5e50f69d2"
+    },
+    {
+      "path": "asset-handoff/marble-premium/cities/london-elizabeth-tower.png",
+      "bytes": 811761,
+      "sha256": "5dd6afd48ed039a8239389d4396958ad432d9f73dee1548177814467007f6612",
+      "git_blob_sha": "1d49f23f14aff05fcf90237460147f2bba06eef1"
+    },
+    {
+      "path": "asset-handoff/marble-premium/cities/madrid-royal-palace.png",
+      "bytes": 2034409,
+      "sha256": "986b52cce7282e1d9e3208724089f6e8d36891dac18c6efeee8248b29a574342",
+      "git_blob_sha": "e66020983d43202f30950bfdb9f35a7a5001683f"
+    },
+    {
+      "path": "asset-handoff/marble-premium/cities/mexico-city-bellas-artes.png",
+      "bytes": 2105898,
+      "sha256": "4503008a2a3aad55f3b3f7f93b66bacc0ade4f49b734aa11b632c15449169de8",
+      "git_blob_sha": "5a2c90003ba3e0edb5ee3213337411912012d0ac"
+    },
+    {
+      "path": "asset-handoff/marble-premium/cities/miami-colony-hotel.png",
+      "bytes": 1855067,
+      "sha256": "4b4d2913ccfa500a377b71b85dff2dbeb0f7803df38d5a599995a766162b31a1",
+      "git_blob_sha": "2d0b974bd4d2938cfa42540438dbc8ff78fdee12"
+    },
+    {
+      "path": "asset-handoff/marble-premium/cities/new-york-empire-state.png",
+      "bytes": 832343,
+      "sha256": "5cc22a91dc4471d32def13bcfdd53befa6e948e401f9f46be6ce4d7a9a747d42",
+      "git_blob_sha": "6d651dddcecec1cc79158d51212482a4320188da"
+    },
+    {
+      "path": "asset-handoff/marble-premium/cities/newark-sacred-heart.png",
+      "bytes": 2351587,
+      "sha256": "49550a769d52f44a2c7e37e5e9588d9bd746e18f58cdfe8b1e55845435fb334c",
+      "git_blob_sha": "992bbc84ce9d717ad471ab85a705de23142d4d35"
+    },
+    {
+      "path": "asset-handoff/marble-premium/cities/paris-eiffel-tower.png",
+      "bytes": 1080236,
+      "sha256": "a298b929e7207e42ceeb668849bfea4a2b3f35cbf6dc67e5d581422b12c4656e",
+      "git_blob_sha": "20c50ca92c1be61e3cbde1f667fe858aaf8660a2"
+    },
+    {
+      "path": "asset-handoff/marble-premium/cities/rome-colosseum.png",
+      "bytes": 2857621,
+      "sha256": "ae7d8fa55cf63774fd1efcdd79fcfb924bd7213413b37bf71c07815cbd68f502",
+      "git_blob_sha": "fce7166260be183194d3ba3ed0ea401aac9b4262"
+    },
+    {
+      "path": "asset-handoff/marble-premium/cities/san-juan-el-morro.png",
+      "bytes": 1944042,
+      "sha256": "5dcd9214de5299f1f4410922320cf5c913714bc88c8f8d0e17c6eed2204a9d17",
+      "git_blob_sha": "931b42bb2e70b0a1f989b7ee7629a4961c6cccdf"
+    },
+    {
+      "path": "asset-handoff/marble-premium/cities/santiago-restoration-monument.png",
+      "bytes": 1380040,
+      "sha256": "ba56754eb8cc722c7eeb698ee27de99c16134cc6f4c7dd71a2230267a1f06301",
+      "git_blob_sha": "7c727cb2b506ef7b57c9538674844414dc3858c5"
+    },
+    {
+      "path": "asset-handoff/marble-premium/cities/santo-domingo-alcazar.png",
+      "bytes": 2158574,
+      "sha256": "7c76a2fa76e6a8974a102acdb99f01d189e4b2aec6a01bebc69a4f2934ab994e",
+      "git_blob_sha": "138aff182769cfe12205f8598bb8cab9e945a4bf"
+    },
+    {
+      "path": "asset-handoff/marble-premium/cities/seoul-n-seoul-tower.png",
+      "bytes": 498017,
+      "sha256": "4ce8c33536c37add031179e8c6e0d28b893ca212045ada06a2e5b1148df69e95",
+      "git_blob_sha": "a4934dea163587c76254d9821307561d12978542"
+    },
+    {
+      "path": "asset-handoff/marble-premium/cities/sydney-opera-house.png",
+      "bytes": 1851103,
+      "sha256": "e0f75923caeb3864b334f95570f2b30eb95c0a801f6bc226f496e0efba330dcb",
+      "git_blob_sha": "cce8f6a37e13f84a4bba5df25c9bb140a1e0bfe7"
+    },
+    {
+      "path": "asset-handoff/marble-premium/cities/toronto-cn-tower.png",
+      "bytes": 356011,
+      "sha256": "28f75f2d39cda554d45d85bc5aa70d4ddad7f6ce2d9b7452fafdef77a61c34f1",
+      "git_blob_sha": "5c14a2bff5ed815eefbbcb5afde40bedecd1bb46"
+    },
+    {
+      "path": "asset-handoff/marble-premium/cities/berlin.png",
+      "bytes": 2479339,
+      "sha256": "d973febb8d3c18cc686cc0a47983b090dc0c4eade947a3f5ce74e00d76658a78",
+      "git_blob_sha": "2c84b8f1b5810946bab64729c83fec0930e83174"
+    },
+    {
+      "path": "asset-handoff/marble-premium/buildings/stage1-house.png",
+      "bytes": 2576817,
+      "sha256": "763b2a0ea15e97b28ece1978d3830d9484360a25b369aafdbbebb52a10cfe6e6",
+      "git_blob_sha": "5a925a374e9ce50e42bc9e26a9c7562a9f5090a8"
+    },
+    {
+      "path": "asset-handoff/marble-premium/buildings/stage2-apartment.png",
+      "bytes": 1859140,
+      "sha256": "f94eb92d5546d9e660b58b8c8dbdbd86fc6335fac2eeee0e3922a035344815fc",
+      "git_blob_sha": "58ac5e77b50197d9b156d26b7e0ec53b1b60f106"
+    },
+    {
+      "path": "asset-handoff/marble-premium/pawns/maltipoo.png",
+      "bytes": 755645,
+      "sha256": "346c52db7c7b582dab183fc127f803391d384f1fb4a968a086e7a45e1d474225",
+      "git_blob_sha": "b25143a98e064bf6aa4695e4d0530d9b47fe2672"
+    },
+    {
+      "path": "asset-handoff/marble-premium/pawns/ragdoll.png",
+      "bytes": 1158976,
+      "sha256": "9c815e1679f86eb692836a929edcda65d9d36eb05b7710b8e52db1734bb58c9d",
+      "git_blob_sha": "f99818093c61b2d4a73f8fc5d354f39086199fef"
+    },
+    {
+      "path": "asset-handoff/marble-premium/pawns/panda.png",
+      "bytes": 1081701,
+      "sha256": "f30ea9f031c1e9b8edce4b4c2d63d3f632365b14db0c81243254cd51f9d92c96",
+      "git_blob_sha": "626bb2425d40ba93ccb2a9b73e63144f6071a946"
+    },
+    {
+      "path": "asset-handoff/marble-premium/pawns/chinchilla.png",
+      "bytes": 1086971,
+      "sha256": "99899758b74f6081cdaa7eb5795890e69effefaab2664cfca7df889e9de71b56",
+      "git_blob_sha": "ca738eb989210df09f240ea309b38e0aab11fbef"
+    },
+    {
+      "path": "asset-handoff/marble-premium/pawns/astronaut-rose-heart.png",
+      "bytes": 848451,
+      "sha256": "d84cb4ac9205fdf0ba7036f9cd12740ff8d0b9f6589c8b070e3aa925d05673f9",
+      "git_blob_sha": "d9addcae1f40a7c98bdcf3a32f1363a7b755f984"
+    },
+    {
+      "path": "asset-handoff/marble-premium/pawns/lisyeon.png",
+      "bytes": 1199035,
+      "sha256": "89a54ef25d4a1fa1eaca48d878abf911d1884897521cab00e04a04f2661d4794",
+      "git_blob_sha": "3cf1553a7367ab6ab9ebcb8dd8e76b6538366751"
+    },
+    {
+      "path": "asset-handoff/marble-premium/cities/tokyo-kaminarimon.png",
+      "bytes": 1963374,
+      "sha256": "fb202f4e753dd66297aae7ef1ff45436f05dcc26fd5608dbc4973cb97ed69409",
+      "git_blob_sha": "e008d50799c5c922320eb434d47a3b1cfb0da9b9"
+    },
+    {
+      "path": "asset-handoff/marble-premium/cities/puerto-plata-fortaleza-san-felipe.png",
+      "bytes": 2434260,
+      "sha256": "840470f9bf925cefc08415f92d868c59b6df85a2a96dce57ed0a868e074ae8b3",
+      "git_blob_sha": "f037336b33fea40f8df057dcc783c44dbb9d230b"
+    }
+  ]
+}
