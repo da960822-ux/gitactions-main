@@ -6,6 +6,7 @@ import { launchChromium } from './playwright-browser.mjs';
 // Local demo fixtures use the Vite source module; never modify an online room.
 const base = process.env.SPLENDOR_URL || 'http://127.0.0.1:5191';
 const output = path.resolve(process.env.PLAYWRIGHT_ARTIFACT_DIR || 'output/playwright/splendor-sol');
+const targetedReadiness = process.env.SPLENDOR_TARGETED_READINESS === '1';
 await fs.mkdir(output, { recursive: true });
 const browser = await launchChromium();
 const report = [];
@@ -47,6 +48,9 @@ try {
           cards: document.querySelectorAll('.sp-card').length,
           nobles: document.querySelectorAll('.sp-noble').length,
           returnSteppers: document.querySelectorAll('.sp-return-stepper').length,
+          actionArtDisplay: getComputedStyle(document.querySelector('.sp-action-art') || document.body).display,
+          reservedCardName: document.querySelector('.sp-reserved-card')?.getAttribute('aria-label') ?? null,
+          reservedArtHidden: document.querySelector('.sp-reserved-card .sp-reserved-art')?.getAttribute('aria-hidden') === 'true',
           tokenEquation: document.querySelector('.sp-token-confirm > p')?.textContent,
           pressedBank: document.querySelectorAll('.sp-gem-pile[aria-pressed="true"]').length,
           paymentFonts: [...document.querySelectorAll('.sp-pay-cell')].map(node => Number.parseFloat(getComputedStyle(node).fontSize)),
@@ -73,7 +77,63 @@ try {
         assert.ok(details.returnTargets.every(target => target.width >= 44 && target.height >= 44));
         assert.equal(await page.locator('.sp-return-stepper').count(), 6);
       }
+      return details;
     };
+
+    if (targetedReadiness) {
+      const card = page.locator('.sp-card').first();
+      await card.focus(); await page.keyboard.press('Enter');
+      await page.waitForFunction(() => document.activeElement?.classList.contains('sp-action-panel'));
+      const keyboardEnteredPanel = true;
+      await page.keyboard.press('Escape');
+      await page.waitForFunction(() => document.activeElement?.matches('.sp-card'));
+      const keyboardReturnedToCard = await card.evaluate(node => node === document.activeElement);
+      assert.ok(keyboardReturnedToCard);
+
+      await page.evaluate(async () => {
+        const resources = performance.getEntriesByType('resource').filter(resource => resource.name.includes('/src/core/client.ts'));
+        const { client } = await import(resources.at(-1).name);
+        window.splendorQualityClient = client;
+        const state = client.getSnapshot().mode === 'demo' ? client.state : null;
+        if (!state) throw new Error('Fixtures require a local demo');
+        state.hands.p1 = { white: 2, blue: 2, green: 2, red: 2, black: 1, gold: 1 };
+        state.bank = { white: 2, blue: 2, green: 2, red: 2, black: 3, gold: 4 };
+        state.active = 'p1'; client.snapshot.version++; client.snapshot.syncEpoch = (client.snapshot.syncEpoch || 0) + 1;
+        client.localView(); client.emit();
+      });
+      await page.waitForTimeout(120);
+      const richestCostIndex = await page.locator('.sp-card').evaluateAll(cards => cards.reduce((best, card, index) => { const count = node => (node.querySelector('.sp-card-cost-summary')?.textContent || '').split(',').length; return count(card) > count(cards[best]) ? index : best; }, 0));
+      await page.locator('.sp-card').nth(richestCostIndex).click();
+      const returnPlan = page.locator('.sp-return-select select');
+      const returnOptionCount = await returnPlan.locator('option').count();
+      assert.ok(returnOptionCount > 0, `${language}: reserve should expose a legal gold return plan`);
+      await returnPlan.selectOption({ index: 0 });
+      const preview = await capture('reserve-gold-return');
+      assert.ok(preview.board.bottom <= 900, `${language}: reserve preview bottom ${preview.board.bottom}`);
+      assert.equal(preview.actionArtDisplay, 'grid');
+      assert.ok(preview.paymentFonts.every(size => size >= 11));
+
+      const beforeGold = (await page.evaluate(() => window.splendorQualityClient.getSnapshot().view.ownHand.tokens.gold));
+      await page.locator('.sp-action-buttons .sp-button-quiet').focus(); await page.keyboard.press('Enter');
+      await page.waitForFunction(() => document.querySelector('.sp-confirmed-gain[data-motion-kind="gain"]'));
+      await page.waitForFunction(() => document.querySelector('.sp-confirmed-payment[data-motion-kind="payment"]'));
+      const event = await page.evaluate(() => ({
+        gainFlights: [...document.querySelectorAll('.sp-confirmed-gain')].map(node => node.textContent),
+        payments: [...document.querySelectorAll('.sp-confirmed-payment')].map(node => node.textContent),
+        hand: window.splendorQualityClient.getSnapshot().view.ownHand,
+      }));
+      assert.equal(event.hand.tokens.gold, beforeGold, 'reserve gain and return should preserve net gold');
+      assert.equal(event.hand.reserved.length, 1);
+      assert.ok(event.gainFlights.some(text => /×1/.test(text)));
+      assert.ok(event.payments.some(text => /×1/.test(text)));
+      await page.locator('.sp-reserved-card').click();
+      const reservedCardName = await page.locator('.sp-reserved-card').getAttribute('aria-label');
+      assert.match(reservedCardName || '', language === 'ko' ? /예약 \d단계 카드/ : /Carta reservada de nivel \d/);
+      assert.equal(await page.locator('.sp-reserved-card .sp-reserved-art').getAttribute('aria-hidden'), 'true');
+      report.push({ language, state: 'targeted-readiness', keyboardEnteredPanel, keyboardReturnedToCard, preview, returnOptionCount, beforeGold, event: { gainFlights: event.gainFlights, payments: event.payments }, reservedCardName, reservedArtHidden: true });
+      await page.close();
+      continue;
+    }
 
     await capture('initial');
     const richestCostIndex = await page.locator('.sp-card').evaluateAll(cards => cards.reduce((best, card, index) => { const count = node => (node.querySelector('.sp-card-cost-summary')?.textContent || '').split(',').length; return count(card) > count(cards[best]) ? index : best; }, 0));

@@ -71,7 +71,7 @@ export function DominoEventStage({ events, language, playerId, ownTeam = playerI
   const root = () => stageRef.current?.closest<HTMLElement>('.domino-premium');
   // The shared feedback announces titles and wins; this region adds public detail only.
   const eventDetail = (event: DominoActionEvent) => {
-    if (event.type === 'pass') return [actorName(event.actor, playerId, language, mode), language === 'ko' ? `연속 패스 ${event.count ?? 0}회` : `${event.count ?? 0} pases seguidos`].filter(Boolean).join(' · ');
+    if (event.type === 'pass') return [actorName(event.actor, playerId, language, mode), language === 'ko' ? `연속 패스 ${event.count ?? 0}회` : `Pases seguidos: ${event.count ?? 0}`].filter(Boolean).join(' · ');
     if (!['tranque', 'capicua', 'paso-corrido', 'round-end', 'score'].includes(event.type ?? '')) return '';
     const score = Number(event.points) > 0 ? `${event.team ? event.team === ownTeam ? language === 'ko' ? '우리 팀' : 'Tu equipo' : language === 'ko' ? '상대 팀' : 'Equipo rival' : ''} +${event.points} ${language === 'ko' ? '점' : 'puntos'}`.trim() : '';
     return [event.text?.[language], score].filter(Boolean).join(' · ');

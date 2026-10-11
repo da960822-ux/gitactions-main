@@ -1,5 +1,7 @@
 # Jaipur — Assessment A, 2026-10-11
 
+최신 후속: 마지막 캡처의 P3 취소 문구 잘림은 root가 액션 행의 열 배분과 수량 버튼 전용 font selector를 수정해 해결했다. 좁힌 KO/ES390 검사에서 취소 버튼80×44px·글자 내부 표시·판매 수량/취소 tap·트레이139.97px·문서 폭390px·오류0을 확인했다. `JAIPUR_TARGETED_MOBILE=1 node scripts/verify-jaipur-quality.mjs`에 재현 검사를 보존했다. 아래 A/후속 캡처 당시 관찰과 최신 상태는 [통합 재검수](GAME-READINESS-RECHECK.md)를 함께 읽는다.
+
 Method: independent Assessment A (`/root/sol_jaipur`), source + fresh Chromium contexts + actual same-browser demo Room + separately labelled engine fixtures. Detector/B output was not read or run; findings were not shared with the other assessment or Luna before A completed. This is the design/usability half of the parent critique, not a standalone combined Impeccable critique.
 
 ## Verdict
@@ -137,3 +139,32 @@ fixture에서 5장 판매 `runAction=false`를 반환했다. 선택 5장/수량5
 새 기능보다 먼저 손볼 것은 무엇인가: (a) 가져오기 취소의 모드 일관성, (b) 모바일 손패 가까운 판매 트레이, (c) 라운드 toast 위치와 점수/소리 강조의 순서? 핵심 공개 정보를 줄이지 않고 선택/확정 사이 이동을 줄일 수 있는가? ‘착지음’ 대신 지금 동작을 ‘확정 응답음’으로 유지할 것인지도 소유자가 선택해야 한다. 이 질문들은 A의 독립 관찰을 parent가 합성할 때 사용할 재료이며, A가 사용자 승인을 요청하거나 구현을 멈추는 gate가 아니다.
 
 런타임 소스 변경·detector·B/Luna 결과 교환·운영 배포·커밋/푸시는 하지 않았다. 실제 Supabase/Re­altime, 물리 모바일/오디오, 실기기 profiler와 125% 화면은 미검증이다. Context command는 PRODUCT.md의 구형 schema를 보고했으나 이번 범위를 넓혀 문서를 재작성하지 않았다; 필요하면 별도 Impeccable init로 갱신할 수 있다.
+
+## A/B 합성 후 한 묶음 수정과 bounded 확인
+
+아래는 위 독립 A의 수정 전 결과를 보존한 후속 기록이다. parent가 A/B 합성을 마친 뒤 Luna는 Board/CSS, Sol은 Motion/helper/tests, root는 shared audio loop를 수정했다. 새 기능이나 검수 범위를 늘리지 않았다.
+
+- A1: 상품과 낙타 무리 재탭이 선택을 해제하고, 가져오기에도 명시적 취소가 있다. 실제 Room의 click/tap으로 확인했다.
+- A2: 모바일 판매 트레이를 줄였다. 확인 중 **취소 버튼이 + 수량 버튼의 탭을 가로채는 새 CSS 회귀**를 발견했다. root가 해당 회귀만 동결 예외로 승인했고, Luna가 범용 stepper grid 선택자에서 cancel을 제외했다. 중단된 모바일 흐름만 이어서 강제 클릭 없이 + 네 번→5장, 취소/재선택, 거절 시 5장 보존, 같은 선택 재확정을 확인했다. 손패와 위쪽 트레이 사이 이동 자체는 남는다.
+- A3: 이전 정산은 접힌 기록의 항상 보이는 summary에 남고, 그 summary가 `settlement` 도착점이다. 새 round2에서 old toast는 0개, 새 round pill은 보인다. 숨긴 정산 본문을 도착점으로 쓰지 않는다.
+- A4: take/exchange/camel cue는 `JaipurMotion`의 실제 배치된 카드 중 마지막 비행의 delay+220ms에 한 번 예약한다. 비행 배치가 없으면 cue가 없고, reduced-motion은 확정 때 한 번이다. sale coin/bonus의 첫 reward 착지 계약은 유지했다. root shared 실제 audio loop에서 세 transfer와 bonus를 제외해 중복을 막았으며, refill draw/sale sell/round score/win은 shared 계약을 유지한다. **확정된 authoritative 점수는 계속 즉시 갱신된다.** 35ms 표본에서도 점수20과 비행10개가 함께 보였다. 점수 지연 연출을 구현했다고 부르지 않는다.
+- A5: 실패 문구는 현재 게임판 확인 후 재시도를 안내한다. 선택5/수량5가 유지되고 재확정이 수락됐다. 실패 원인별 구분은 이 Board 문구에서 추가하지 않았다.
+
+| 후속 원값 | KO | ES |
+| --- | --- | --- |
+| 1440 판매 트레이 | 92px | 92px |
+| 1440 y229 fixture round2 board bottom | 886.375px | 895.9375px |
+| 390 손패7/판매5 fixture 트레이 | 166.75px | 139.96875px |
+| 390 접힌 settlement summary | 338.40625×44px | 338.40625×44px |
+| 390 판매 활성 컨트롤 | 모두 최소44×44px | 모두 최소44×44px |
+| 390 문서 가로폭 / reduced-motion 비행 | 390px / 0 | 390px / 0 |
+
+실제 same-browser Room 획득/2↔2 교환/판매/취소와 별도 source-module engine fixture의 7손패/판매5/거절/자동 round2 흐름을 유지했다. KO390 실제 Room 최소 판매까지 완료했지만 fixture의 + interception으로 중단될 때 그 context의 메모리 표본은 저장되지 않았다. 기존 Room PNG는 남고, KO390은 수정 후 **fixture 부분만** 이어서 확인했다. ES390은 같은 Room+fixture 흐름을 완료했다. 최초 중단의 시장 합법 행동 전제와 진입 대기 문제는 QA 코드에서 처리했으며 UI 소스 오류로 세지 않는다.
+
+Headless `AudioBufferSourceNode.start`/`OscillatorNode.start` 호출을 기록했다. KO1440 take에는 보존된 refill draw가 확정 기준106.9ms, 별도 place texture 두 개가339ms에 함께 호출됐다. ES1440은 refill71.7ms/place349.2–349.3ms, ES390은 refill190.8ms/place469.1ms였다. Exchange texture 두 개는 각각 KO1440 345.1–345.2ms, ES1440 460.2ms, ES390 369.9ms에 한 cue로 호출됐다. 이 수치는 입력 처리/queue 시간을 포함하므로 220ms 자체의 성능 측정이 아니다. 코드의 착지 예약과 실제 WebAudio 호출 근거이며 **물리 출력/귀로 듣는 동시성/브라우저의 실제 paint 완료 증거는 아니다.** KO390 오디오 표본은 앞서 중단 때 보존되지 않아 다시 측정하지 않았다. camel 마지막 착지 예약은 helper 단위 검사 근거이며 이번 실제 Room에서는 선택/재탭/취소를 확인했다.
+
+후속 report는 자동 assertion78개 중75개 통과, page error0이다. 나머지3개는 QA 판정 조건의 문제다: take 두 경우는 보존된 refill draw까지 transfer 소리로 세었고, KO1440은 의도적으로 접힌 details 본문의 빈 `innerText`를 실패로 셌다. 원래 실패 assertion을 지우지 않고 같은 기록의 texture pair/visible44px summary를 근거로 `adjudications`에 별도 판정을 보존했다. 이를 새로운 브라우저 재실행이나 78개 모두 자동 통과했다고 부르지 않는다. `output/playwright/jaipur-assessment-a-confirm/report.json`, `harness.mjs`와24개 PNG(ignored)에 근거가 있다. Motion/helper/PlayApp 관련27개 검사는 통과했다.
+
+**후속 디자인 건강 점수: 29/40** (원래27/40에서 사용자 제어2→3, 오류 복구2→3; 나머지는 유지). A1/A3의 지적은 해결, A4의 transfer 착지 cue는 구현으로 바뀌었으며 즉시 점수 계약은 명시했다. A2는 높이가 줄었지만 공간 왕복은 부분 개선이다. 남은 **P3 표시 문제**: ES390 `Cancelar`가44px 칸 밖으로 그려져 우측 일부가 잘리며, KO 취소는 세로 줄바꿈으로70.78125px 높이다. 실제 tap은 수락되고 +를 가로채지 않는다. 이번 한 묶음 확인에서 발견한 잔여 표시 문제를 숨기지 않고 기록하며 추가 광범위 수정/검수는 하지 않았다.
+
+임시 harness 정리 뒤에도 회귀를 재현하도록 `scripts/verify-jaipur-quality.mjs`에 KO/ES390 `hasTouch` source-module fixture의 실제 + tap/취소/44px/compact assertion만 추가했다. portable `launchChromium` helper는 유지했고 default localhost5191·Vite 모듈·demo/fixture 범위를 명시했다. 새 스크립트 전체 브라우저 배치는 실행하지 않았으며 `node --check`와 scoped `git diff --check`만 통과했다. 실제 Supabase/Realtime, 물리 터치/오디오, 실기기 profiler와 paid-release 승인은 계속 미검증이다.

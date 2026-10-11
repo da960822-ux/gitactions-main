@@ -4,7 +4,7 @@
 
 Method: dual-agent (A: sol_domino / sol_jaipur / sol_splendor · B: luna_domino / luna_jaipur / luna_splendor)
 
-Impeccable `critique`·`audit`, Ponytail Audit/Review와 설치된 GameDev의 game-feel·feedback-recipes·game-ui-ux를 적용했다. 게임마다 A는 디자인/조작을, B는 공식 detector와 별도 브라우저를 독립 검사했다. 세 A 평가가 끝난 뒤에만 root가 B 결과를 읽었다. 한 검사 배치에서 찾은 문제를 한 수정 배치로 처리하고 수정 부분을 한 확인 배치로 제한했다.
+Impeccable `critique`·`audit`, Ponytail Audit/Review와 설치된 GameDev의 game-feel·feedback-recipes·game-ui-ux를 적용했다. 게임마다 A는 디자인/조작을, B는 공식 detector와 별도 브라우저를 독립 검사했다. 세 A 평가가 끝난 뒤에만 root가 B 결과를 읽었다. 한 검사 배치와 한 수정·확인 배치 뒤, 스플렌더 높이와 자이푸르 모바일 버튼의 실패 assertion만 좁혀 수정·재확인했다. 넓은 디자인 검수를 다시 시작하지 않았다.
 
 ## 판정
 
@@ -29,6 +29,22 @@ Impeccable `critique`·`audit`, Ponytail Audit/Review와 설치된 GameDev의 ga
 
 최초 독립 A 점수는 도미노28/40·자이푸르27/40·스플렌더26/40이다. 통과 테스트 수와 별도로 실제 사용성 결함을 찾았다.
 
+수정 후 평가자는 각각30/40·29/40·29/40으로 기록했다. 스플렌더의 중간 잔여 P1은 이후 좁힌 확인에서 해결됐으며 점수를 추가로 올리지 않았다. 상업 출시 승인이 아닌 현재 UI 사용성 평가다.
+
+| Nielsen 항목 (각 /4) | 도미노 | 자이푸르 | 스플렌더 | 현재 근거/한계 |
+| --- | ---: | ---: | ---: | --- |
+| 시스템 상태 | 3 | 3 | 3 | 차례/정산과 확정 상태 구분 |
+| 현실과의 대응 | 3 | 3 | 3 | 타일/상품/보석 표현, 지역 규칙은 도움말 참고 |
+| 통제와 취소 | 3 | 3 | 3 | 선택 취소와 키보드 맥락 복귀 |
+| 일관성 | 3 | 3 | 3 | 선택→예고→확정 흐름 |
+| 오류 예방 | 3 | 3 | 3 | stable ID/버전/현재 legalActions·중복 입력 차단 |
+| 기억보다 인지 | 3 | 3 | 3 | 끝/수량/비용·할인·부족을 명시 |
+| 효율 | 3 | 2 | 3 | 자이푸르 모바일 손패↔판매 트레이 왕복은 잔존 |
+| 최소 구성 | 3 | 3 | 3 | 공개판 우선, 기록/세부 규칙 접힘 |
+| 오류 복구 | 3 | 3 | 2 | 선택 보존·최신 판 확인; 실제 서비스 실패 UX 미검증 |
+| 도움말 | 3 | 3 | 3 | 두 언어의 실제 자산 그림3장 안내 |
+| **합계 /40** | **30** | **29** | **29** | 기반 양호, 출시 검증 완료를 뜻하지 않음 |
+
 | 발견 | 수정 범위 |
 | --- | --- |
 | 도미노 확정 뒤 BODY 포커스, round-over 상단 상대 차례, 불가 끝 이유 없음 | 보드 맥락 복귀, 상단/보드 정산 상태, 숫자 불일치 이유 KO/ES |
@@ -50,7 +66,7 @@ Impeccable `critique`·`audit`, Ponytail Audit/Review와 설치된 GameDev의 ga
 
 ## 새 측정 근거
 
-운영 preview의 게임3×언어2×선택8 =48회. 클릭 capture부터 선택 `aria-pressed` DOM 변경까지 최대16.4ms, 관측 구간 longtask≥50ms는0개였다. 다음 rAF callback은 물리 화면 표시/paint 완료 시간이 아니다. 실제 인터넷·물리 기기·전체 경기의 응답 지연값으로 사용하지 않는다.
+운영 preview의 게임3×언어2×선택8 =48회. 이번 수정 배치 전 최대16.4ms, 구조 수정 후 같은 스크립트의 최대10.2ms였다. 두 관측 구간에서 longtask≥50ms는0개였다. 공유 클라우드의 헤드리스 실행이고 원격 공통 변경도 통합됐으므로 차이를 수정의 인과적 성능 향상으로 주장하지 않는다. 다음 rAF callback은 물리 화면 표시/paint 완료 시간이 아니다. 실제 인터넷·물리 기기·전체 경기의 응답 지연값으로 사용하지 않는다.
 
 로컬 PGlite SQL/RLS fixture의 두 독립 Chromium context에서 세 게임 각각6개 행동·버전8 일치·방 종료 뒤 view 제거·해당 private 필드 계약을 다시 통과했다. Realtime이 없는 fixture이며 매 단계 명시적 snapshot 조회를 사용했다.
 
@@ -64,4 +80,19 @@ Impeccable `critique`·`audit`, Ponytail Audit/Review와 설치된 GameDev의 ga
 
 ## 최종 확인 및 정리
 
-수정 후 게임별 확인, 원격 민화투 변경 통합, 전체 테스트/운영 빌드와 GitHub 푸시 결과는 이 절에 최종 기록한다. 재현 스크립트·검수 문서·런타임 자산/출처 원본은 보존하고 검사 중 만든 임시 프로필·로그·캡처는 정리한다. 게임별 A/B 문서의 ignored `output/`·`/tmp` 경로는 검사 당시 산출물 위치이며 정리 뒤 제공되는 영구 파일 링크가 아니다.
+원격 민화투 변경6커밋과 추가 플레이 검수2커밋을 보존해 병합했다. 후자의 도미노 큰 보드 지적은 병합 전 기존 UI의 기록이며 이 작업의 새 테이블 측정과 구분한다. 통합 전체 `npm test`는46파일373개, 최종 `npm run build`는 TypeScript·Vite·Edge bundle을 통과했다. 운영 UI-only 검사도 게임3×언어2의6경로에서 자산·그림3장·접힌 규칙 토글·가로 넘침 없음·pageerror0을 통과했다.
+
+- 도미노: 확정 뒤 보드 focus·Esc 손패 focus·KO/ES 불가 끝 이유·실패 선택 보존·정산 상태·공개 사건 aria-live를 확인했다. 물리 스크린리더 음성은 미검증이다.
+- 자이푸르: KO/ES 모바일 실제 합성 tap으로 수량5·취소·선택 보존·확정·새 라운드를 확인했다. 첫 확인에서 발견한 '+' 가로채기를 수정했다. 최종 좁힌 검사에서 Cancelar/취소는80×44px이고 글자도 버튼 안에 들어왔다. 판매 트레이 KO/ES139.97px, 문서 폭390px·오류0. 데스크톱 fixture 하단KO886.38/ES895.94px.
+- 스플렌더: 키보드 패널 진입/카드 복귀, resize/scroll 취소, 빠른 귀족 선택 중 카드+귀족 유지. 10토큰+금예약+4비용 반환 화면 하단KO882.31/ES881.81px, net0 금 gain/payment 각1개와 예약 카드 localized 이름을 확인했다. 관련17검사·TypeScript 통과.
+- 설치 스킬: manifest의75개 SKILL.md·168개 upstream 파일 SHA-256/참조 일치. 추가 LICENSE/NOTICE/SOURCE는 원문 변경과 구별했다.
+
+실패 합격 기준을 재현하는 모드는 `JAIPUR_TARGETED_MOBILE=1 node scripts/verify-jaipur-quality.mjs`, `SPLENDOR_TARGETED_READINESS=1 node scripts/verify-splendor-quality.mjs`이며 Playwright/Chromium 경로 환경 변수와5191 로컬 Vite가 필요하다. UI-only 운영 검사는5194 preview를 사용한다.
+
+재현 스크립트·검수 문서·런타임 자산/출처 원본은 보존하고 검사 중 만든 임시 프로필·로그·캡처는 정리한다. 게임별 A/B 문서의 ignored `output/`·`/tmp` 경로는 검사 당시 산출물 위치이며 정리 뒤 제공되는 영구 파일 링크가 아니다. 원격 push는 사용자가 추가로 명시했으며 정상 main 업데이트로 수행한다. 공개 배포/클라우드 설정 게시 완료를 뜻하지 않는다.
+
+작업 임시 경로140개(프로필/캡처 디렉터리 포함)를 정리했다. 실행 중 개발/SQL fixture의 로그, 설치 의존성·빌드와 원본 생성 아트는 보존했다. Impeccable snapshot은 세 게임 중 최저29/40을 보수적으로 기록한 첫 평가이며 비교 추세는 아직 없다. 영구 기록은 이 문서이며 `.impeccable` 캐시는 Git 대상이 아니다.
+
+남은 디자인 우선 항목은 P2 자이푸르 모바일 손패↔판매 트레이 이동이다(`/impeccable adapt`: 장기 개선 시 선택한 패 근처에 행동 트레이 배치). 선택형 P3 도미노 드래그도 아직 없다. 다음 확인은 실제 두 기기 환경에서 정상 경기·연결 실패를 검증하는 일이다.
+
+Questions skipped: 남은 디자인 우선 항목은3개 미만이며 사용자가 수정·정리·푸시 범위를 이미 지정했다.

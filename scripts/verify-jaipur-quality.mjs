@@ -5,6 +5,7 @@ import { launchChromium } from './playwright-browser.mjs';
 
 const baseUrl = process.env.JAIPUR_URL || 'http://127.0.0.1:5191';
 const output = path.resolve(process.env.PLAYWRIGHT_ARTIFACT_DIR || 'output/playwright/jaipur-quality');
+const targetedMobile = process.env.JAIPUR_TARGETED_MOBILE === '1';
 await fs.mkdir(output, { recursive: true });
 
 const browser = await launchChromium();
@@ -143,13 +144,91 @@ async function testSpanish(page) {
   report.screenshots.push(screenshot);
 }
 
+// Local source-module engine fixture, not Supabase/Realtime or a full match.
+// Requires the Vite dev server (default localhost:5191); JAIPUR_URL may override it.
+async function testMobileSale(language) {
+  const context = await browser.newContext({ viewport: { width: 390, height: 844 }, hasTouch: true, isMobile: true });
+  try {
+    const page = await context.newPage();
+    page.on('pageerror', error => report.errors.push(error.message));
+    await page.goto(baseUrl);
+    await page.evaluate(async lang => {
+      const { createElement: h, useState } = (await import('/node_modules/.vite/deps/react.js')).default;
+      const { createRoot } = (await import('/node_modules/.vite/deps/react-dom_client.js')).default;
+      const { JaipurBoard } = await import('/src/app/JaipurBoard.tsx');
+      const { jaipurEngine: engine } = await import('/src/games/jaipur.ts');
+      document.querySelector('#root').remove();
+      const host = document.createElement('div');
+      host.style.cssText = 'max-width:1240px;margin:229px auto 0;padding:0 16px';
+      document.body.append(host);
+      function Harness() {
+        const [state, setState] = useState(() => {
+          const initial = engine.createInitialState(36);
+          initial.hands.p1 = ['gold', 'gold', ...Array(5).fill('leather')];
+          initial.cardIds.hands.p1 = initial.hands.p1.map((_, index) => `mobile-sale-${index}`);
+          return initial;
+        });
+        return h(JaipurBoard, { view: engine.getPlayerView(state, 'p1'), language: lang, playerId: 'p1', runAction: async action => {
+          const error = engine.validateAction(state, 'p1', action);
+          if (error) throw Error(error);
+          setState(engine.applyAction(state, 'p1', action));
+          return true;
+        } });
+      }
+      createRoot(host).render(h(Harness));
+    }, language);
+    await page.locator('.jp-hand-card').first().waitFor();
+    await page.locator('.jp-mode-tabs button').nth(2).tap();
+    await page.locator('.jp-hand-card.is-leather').last().tap();
+    const increase = page.getByRole('button', { name: language === 'ko' ? '판매 수량 늘리기' : 'Aumentar cantidad', exact: true });
+    // No force: a cancel button intercepting this tap is the regression being checked.
+    await increase.tap();
+    assert.equal(await page.locator('.jp-sale-stepper output').innerText(), '2');
+    await page.locator('.jp-sale-stepper .jp-cancel-action').tap();
+    assert.equal(await page.locator('.jp-hand-card.is-selected').count(), 0);
+    await page.locator('.jp-mode-tabs button').nth(2).tap();
+    await page.locator('.jp-hand-card.is-leather').last().tap();
+    for (let count = 1; count < 5; count++) await increase.tap();
+    assert.equal(await page.locator('.jp-sale-stepper output').innerText(), '5');
+    const details = await page.locator('.jp-sale-stepper').evaluate(element => ({
+      trayHeight: element.closest('.jp-action-tray').getBoundingClientRect().height,
+      controls: [...element.querySelectorAll('button')].map(button => {
+        const rect = button.getBoundingClientRect();
+        return { name: button.getAttribute('aria-label') || button.innerText, width: rect.width, height: rect.height };
+      }),
+      documentWidth: document.documentElement.scrollWidth,
+      cancelLabelFits: (() => {
+        const cancel = element.querySelector('.jp-cancel-action'), rect = cancel.getBoundingClientRect();
+        const range = document.createRange();
+        range.selectNodeContents(cancel);
+        const label = range.getBoundingClientRect();
+        return label.left >= rect.left && label.right <= rect.right && label.top >= rect.top && label.bottom <= rect.bottom;
+      })(),
+    }));
+    assert(details.controls.every(control => control.width >= 44 && control.height >= 44), 'Sale controls must retain 44px targets');
+    assert(details.trayHeight < 200, `Compact mobile sale tray must stay below 200px (${details.trayHeight}px)`);
+    assert.equal(details.documentWidth, 390);
+    assert(details.cancelLabelFits, 'Localized cancel text must fit its visible button');
+    check(`${language} mobile sale + tap, cancel and 44px targets`, true, details);
+    const screenshot = path.join(output, `mobile-${language}-sale-five.png`);
+    await page.screenshot({ path: screenshot, fullPage: true });
+    report.screenshots.push(screenshot);
+  } finally {
+    await context.close();
+  }
+}
+
 const contexts = await Promise.all([browser.newContext({ viewport: { width: 1440, height: 900 }, reducedMotion: 'reduce', locale: 'ko-KR' }), browser.newContext({ viewport: { width: 1440, height: 900 }, reducedMotion: 'reduce', locale: 'es-DO' })]);
 const pages = await Promise.all(contexts.map(context => context.newPage()));
 for (const page of pages) page.on('pageerror', error => report.errors.push(error.message));
 
 try {
-  await testKo(pages[0]);
-  await testSpanish(pages[1]);
+  if (!targetedMobile) {
+    await testKo(pages[0]);
+    await testSpanish(pages[1]);
+  }
+  await testMobileSale('ko');
+  await testMobileSale('es');
   assert.deepEqual(report.errors, [], 'Browser should report no uncaught JavaScript errors');
   check('No uncaught browser errors', true);
   const reportPath = path.join(output, 'report.json');

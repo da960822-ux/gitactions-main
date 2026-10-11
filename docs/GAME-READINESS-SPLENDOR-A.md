@@ -104,3 +104,21 @@ These questions are inputs to root's synthesis, not a request to stop authorized
 ## Bounded follow-up
 
 Assessment A is complete. The authorized next step is one coordinated correction batch, followed by one confirmation of the existing representative cases. No additional independent inspection campaign or runtime edit occurred before this report.
+
+### Coordinated correction and first bounded confirmation
+
+After A/B synthesis, root authorized one correction batch. Luna changed table focus/names, empty-bank/public status and layout. Sol changed `SplendorMotion.tsx`: resize, ancestor scroll and hidden transitions cancel fixed-coordinate flights and pending landing sounds; the rendered targets remain visible. A new legal event appends its flights rather than replacing active flights, with independent cleanup. Gold reservation has a gross gained-gold field and gross returned-gold count; a separate gain object is used only when the existing net-positive incoming layer has no gold to display. Result cues continue to take precedence.
+
+Meaningful regression coverage: three Motion tests plus fourteen TableGames tests passed (**17 tests**); TypeScript and whitespace checks passed. One bounded KO/ES browser confirmation used the existing twelve representative scenarios. Artifacts: `output/playwright/splendor-readiness-confirm/confirmation.json` and adjacent PNGs. Ten scenario assertions passed; both reserve-preview assertions failed. There were no page errors.
+
+- Panel keyboard entry now focuses the panel; Escape and its close button return to the originating market card. Confirmed payment text remains 11–12 px and measured relevant controls remain 44 px high.
+- Resize cancels obsolete flights. Rapid legal noble choice now retains both card and noble flights. The multiple-noble board fits, at KO **857.921875** / ES **854.421875**. A dispatched ancestor-scroll event also clears the confirmed layer; this checks the listener, not a physical touch gesture.
+- Empty-bank text is corrected. Ten-token take and final equal-turn authority assertions still pass.
+- **Remaining P1:** selected-panel fit is unresolved. Fresh baseline selections reach KO **929.5625** / ES **903.8125**; the four-cost ten-token gold-return reservation preview also exceeds 900 px, visibly cutting treasury/reservation content. The screenshots retain uncropped original art but the restored 84 px selected image adds panel height.
+- The reserve-preview fit assertion stopped that scenario before confirming the reservation. Consequently gross gold flights and the new reserved-card accessible name were not browser-confirmed in this pass. Their source and regression assertions are present; they must not be described as actual browser passes.
+
+At this checkpoint, provisional Nielsen changes are control 2→3, recognition 2→3, efficiency 2→3; all other scores stay unchanged: **29 / 40**. The score improvement does not remove the remaining native-fit gate. No physical/Supabase/audio claims were added, and no extra browser run was started beyond this bounded confirmation.
+
+### Failed acceptance criteria completed afterward
+
+Luna then corrected only the failed selected/reserve layout and completed the interrupted assertions. The ten-token, gold-reservation, four-cost-row return state ends at KO882.31/ES881.81px, with the art visible and original faces contained. Gross net-zero gold gain/payment each render once; reserved cards have localized accessible names and hidden decorative art. Seventeen related tests and TypeScript pass. These narrow cases are preserved in `SPLENDOR_TARGETED_READINESS=1 node scripts/verify-splendor-quality.mjs`. This closes the above P1 and the two interrupted browser checks; no further design score increase is claimed. Temporary screenshots were cleaned after their measured results were recorded in [the synthesis](GAME-READINESS-RECHECK.md).

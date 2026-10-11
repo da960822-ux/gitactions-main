@@ -83,3 +83,7 @@ P0/P1로 확인된 플레이 불능은 없다. 실제 상업 운영의 확인 �
 수정은 위 네 가지 UI 문제를 한 묶음으로 처리한 뒤 그 부분만 한 확인 패스로 검증하는 것이 적절하다. 새 renderer·BGM·일괄 shake/hit-stop은 필요하지 않다. 기본 손패와 공개판은 지금 크기를 유지한다. PRODUCT.md의 Impeccable schema drift는 context loader가 보고했으나 이 UI 평가에서 고치지 않았다. 필요하면 root가 별도 `init`으로 정리할 수 있다.
 
 Questions delegated to parent synthesis: 실제 두기기 출시 관문과 위 P2 UI수정의 우선순위는 Assessment B까지 종합한 뒤 root가 사용자에게 제시한다. 이 A 작업 자체에서는 UI편집·배포·commit/push를 수행하지 않았다.
+
+## 수정 후 확인
+
+A/B 합성 이후 Luna의 조작/문구와 Sol의 공개 사건 aria-live·11px 보조 글자 수정을 확인했다. 확정 뒤 보드 맥락 focus, Esc 뒤 손패 focus, KO/ES 불가 끝 이유, false 응답에서 선택 보존, round-over 정산 문구, 긴 체인/가이드 가로 넘침 없음이 통과했다. 관련24검사·TypeScript 통과, 브라우저 오류0. Sol 최종 점수는 효율2→3·복구2→3으로30/40이다. 실제 음성 출력·두 기기 Realtime·드래그는 완료로 표시하지 않는다. 임시 캡처 정리 후의 근거와 영구 재현 경로는 [통합 재검수](GAME-READINESS-RECHECK.md)에 있다.
