@@ -139,22 +139,73 @@ describe('MinhwatuTable public view', () => {
     expect(html).not.toContain('data-hwatu-zone="draw"');
   });
 
-  it('shows only the six latest public action titles with their public score changes', () => {
+  it('keeps available public actions and card art in history while filtering generic turn entries', () => {
     const state = minhwatuEngine.createInitialState(93);
     state.events = Array.from({ length: 8 }, (_, index) => ({
       sequence: index + 1,
       type: 'capture' as const,
       actor: index % 2 === 0 ? 'p1' as const : 'p2' as const,
       title: { ko: `공개 행동 ${index + 1}`, es: `Acción pública ${index + 1}` },
+      cards: [state.table[index]],
       scoreChanges: { p1: index === 7 ? 5 : 0, p2: index === 7 ? -5 : 0 },
     }));
+    state.events.push({ sequence: 9, type: 'turn', actor: 'p1', title: { ko: '다음 차례', es: 'Siguiente turno' } });
     const { html } = markup(state);
 
-    expect(html).toContain('최근 행동 · 6');
+    expect(html).toContain('최근 행동 · 8');
     expect(html).toContain('공개 행동 8');
     expect(html).toContain('공개 행동 3');
-    expect(html).not.toContain('공개 행동 2');
+    expect(html).toContain('공개 행동 2');
+    const log = html.slice(html.indexOf('<details class="hwatu-action-log"'), html.indexOf('<details class="hwatu-scoring"'));
+    expect(log).not.toContain('다음 차례');
+    expect(log).toContain('hwatu-log-cards');
+    expect(log).toContain('상대 획득: 공개 행동 8');
+    for (const card of state.table) expect(log).toContain(`/images/hwatu/${card.id.split('-').map(part => part.padStart(2, '0')).join('-')}.svg`);
+    for (const card of state.hands.p2) expect(log).not.toContain(`/images/hwatu/${card.id.split('-').map(part => part.padStart(2, '0')).join('-')}.svg`);
     expect(html).toContain('상대 -5');
+  });
+
+  it('marks the last capture of each seat and offers focusable inspection without exposing private hands', () => {
+    const state = minhwatuEngine.createInitialState(98);
+    const own = state.table.splice(0, 2), rival = state.table.splice(0, 2);
+    state.captures = { p1: own, p2: rival };
+    state.events = [
+      { sequence: 1, type: 'capture', actor: 'p1', cards: own, title: { ko: '내 획득', es: 'Tu captura' } },
+      { sequence: 2, type: 'capture', actor: 'p2', cards: rival, title: { ko: '상대 획득', es: 'Captura rival' } },
+    ];
+    for (const playerId of ['p1', 'p2'] as const) for (const language of ['ko', 'es'] as const) {
+      const html = renderToStaticMarkup(createElement(MinhwatuTable, { view: minhwatuEngine.getPlayerView(state, playerId), playerId, language, runAction: vi.fn() }));
+      const stage = html.slice(html.indexOf('class="hwatu-tabletop-stage"'), html.indexOf('<details class="hwatu-action-log"'));
+      for (const card of [...own, ...rival]) {
+        const button = stage.match(new RegExp(`<button[^>]*data-hwatu-card-id="${card.id}"[^>]*>`))?.[0];
+        expect(button).toContain('hwatu-captured-card is-recent');
+        expect(button).toContain(language === 'ko' ? '최근 획득' : 'Captura reciente');
+        expect(button).toContain(language === 'ko' ? '크게 보기' : 'Ver más grande');
+      }
+      const other = playerId === 'p1' ? 'p2' : 'p1';
+      for (const card of state.hands[other]) expect(html).not.toContain(`/images/hwatu/${card.id.split('-').map(part => part.padStart(2, '0')).join('-')}.svg`);
+    }
+  });
+
+  it('keeps plain captures in ten-card rows at the 10, 11, 20, 21 and 24 boundaries', () => {
+    for (const count of [10, 11, 20, 21, 24]) {
+      const state = minhwatuEngine.createInitialState(104);
+      const all = [...state.hands.p1, ...state.hands.p2, ...state.table, ...state.deck];
+      const captured = all.filter(card => card.kind === 'plain').slice(0, count);
+      const rest = all.filter(card => !captured.some(item => item.id === card.id));
+      state.captures = { p1: captured, p2: [] };
+      state.hands = { p1: rest.slice(0, 10), p2: rest.slice(10, 20) };
+      state.table = rest.slice(20, 24); state.deck = rest.slice(24);
+      for (const language of ['ko', 'es'] as const) {
+        const html = renderToStaticMarkup(createElement(MinhwatuTable, { view: minhwatuEngine.getPlayerView(state, 'p1'), playerId: 'p1', language, runAction: vi.fn() }));
+        const start = html.indexOf('data-hwatu-zone="captures-p1-plain"');
+        const section = html.slice(start, html.indexOf('</section>', start));
+        const rows = section.split('<div class="hwatu-capture-row">').slice(1).map(row => [...row.matchAll(/data-hwatu-card-id="([^"]+)"/g)].map(match => match[1]));
+        expect(rows.map(row => row.length)).toEqual(Array.from({ length: Math.ceil(count / 10) }, (_, index) => Math.min(10, count - index * 10)));
+        expect(rows.flat()).toEqual(captured.sort((a, b) => a.month - b.month || a.id.localeCompare(b.id)).map(card => card.id));
+        expect(new Set(rows.flat()).size).toBe(count);
+      }
+    }
   });
 
   it('offers pending-draw captures only to the active player and does not leak their legal actions', () => {

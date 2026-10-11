@@ -9,6 +9,22 @@ const browser = await launchChromium();
 const report = { baseUrl, fixture: 'Vite browser harness using real Minhwatu engine, view projection, React table and presentation hook; deterministic local state only (no Supabase/Realtime)', checks: [], screenshots: [], errors: [], limits: ['No deployed Supabase, WebSocket/Realtime, physical audio playback or hardware latency was tested.', 'Replay consent UI is exercised through deterministic pending/request props; two-player consent persistence is not tested here.'] };
 const check = (name, pass, detail = '') => report.checks.push({ name, pass: Boolean(pass), detail });
 const nearby = (actual, expected, tolerance = 18) => actual && expected && Math.abs(actual.x - expected.x) <= tolerance && Math.abs(actual.y - expected.y) <= tolerance;
+const mayStack = (kind, count) => ((kind === 'animal' || kind === 'ribbon') && count > 5) || (kind === 'plain' && count > 10);
+const captureCategoryPass = category => {
+  const stack = mayStack(category.kind, category.ids.length), boxes = category.cards;
+  const facesVisible = boxes.every(card => card.visible && card.loaded && card.x >= -1 && card.right <= category.rackRight + 1);
+  const ordered = category.rows.every(row => row.cards.every((card, index) => index === 0 || card.x >= row.cards[index - 1].x - 1));
+  const rowsOrdered = category.rows.every((row, index) => index === 0 || row.y > category.rows[index - 1].y + 1);
+  const expectedRows = category.kind === 'plain' && boxes.length > 10
+    ? Array.from({ length: Math.ceil(boxes.length / 10) }, (_, index) => Math.min(10, boxes.length - index * 10))
+    : boxes.length ? [boxes.length] : [];
+  return category.labelVisible && category.labelFont >= 12 && Number(category.countText) === category.ids.length &&
+    category.labelOverlaps.length === 0 && category.clipped.length === 0 && category.bankClipped.length === 0 &&
+    category.scroll.width <= category.scroll.clientWidth + 1 && category.scroll.height <= category.scroll.clientHeight + 1 &&
+    facesVisible && ordered && rowsOrdered && category.firstFullyVisible && category.lastFullyVisible && category.crossRowOverlaps.length === 0 &&
+    JSON.stringify(category.rows.map(row => row.cards.length)) === JSON.stringify(expectedRows) &&
+    (stack || category.overlaps.length === 0);
+};
 
 async function open(language, width, height, reduced = false) {
   const context = await browser.newContext({ viewport: { width, height }, reducedMotion: reduced ? 'reduce' : 'no-preference' });
@@ -70,6 +86,43 @@ async function open(language, width, height, reduced = false) {
       const p1Hand = rest.slice(0,4), p2Hand = rest.slice(4,8), table = rest.slice(8,16), deck = rest.slice(16);
       return arrange({ p1Hand, p2Hand, table, deck, p1Captures });
     };
+    const idsOf = kind => allIds.filter(id => cardMap.get(id).kind === kind);
+    const worstHandState = () => {
+      const p1Captures = [...idsOf('animal').filter(id => id !== '2-1').slice(0,6), ...idsOf('ribbon').filter(id => id !== '2-2').slice(0,6), ...idsOf('plain').slice(0,3)];
+      const p2Captures = idsOf('plain').slice(3,18), captured = new Set([...p1Captures, ...p2Captures]);
+      const rest = allIds.filter(id => !captured.has(id)), p1Hand = ['2-1', ...rest.filter(id => id !== '2-1' && id !== '2-2').slice(0,4)];
+      const hand1 = new Set(p1Hand), p2Hand = rest.filter(id => !hand1.has(id) && id !== '2-2').slice(0,5);
+      const used = new Set([...p1Hand, ...p2Hand]), table = ['2-2', ...rest.filter(id => !used.has(id) && id !== '2-2').slice(0,3)];
+      const placed = new Set([...used, ...table]), deck = rest.filter(id => !placed.has(id));
+      if (p1Captures.length !== 15 || p2Captures.length !== 15 || p1Hand.length !== 5 || p2Hand.length !== 5 || table.length !== 4 || deck.length !== 4) throw new Error('bad worst-hand conservation fixture');
+      return arrange({ p1Hand, p2Hand, table, deck, p1Captures, p2Captures });
+    };
+    const field14State = () => {
+      const p1Captures = [...idsOf('animal').slice(0,4), ...idsOf('ribbon').slice(0,4)];
+      const p2Captures = idsOf('plain').slice(0,6), captured = new Set([...p1Captures, ...p2Captures]);
+      const rest = allIds.filter(id => !captured.has(id)), p1Hand = ['1-1', ...rest.filter(id => id !== '1-1').slice(0,9)];
+      const hand1 = new Set(p1Hand), p2Hand = [...rest.filter(id => !hand1.has(id) && id.startsWith('1-')).slice(0,2), ...rest.filter(id => !hand1.has(id) && !id.startsWith('1-')).slice(0,8)];
+      const used = new Set([...p1Hand, ...p2Hand]), table = rest.filter(id => !used.has(id)).slice(0,14), deck = rest.filter(id => !used.has(id) && !table.includes(id));
+      if (p1Captures.length + p2Captures.length !== 14 || p1Hand.length !== 10 || p2Hand.length !== 10 || table.length !== 14 || deck.length !== 0 || table.some(id => id.startsWith('1-'))) throw new Error('bad field-14 conservation fixture');
+      return arrange({ p1Hand, p2Hand, table, deck, p1Captures, p2Captures });
+    };
+    const emptyFieldState = () => {
+      const p1Captures = idsOf('plain').slice(0,10), p2Captures = [...idsOf('plain').slice(10,20)];
+      const captured = new Set([...p1Captures, ...p2Captures]), rest = allIds.filter(id => !captured.has(id));
+      const p1Hand = ['1-1', ...rest.filter(id => id !== '1-1').slice(0,9)], hand1 = new Set(p1Hand);
+      const p2Hand = rest.filter(id => !hand1.has(id)).slice(0,10), used = new Set([...p1Hand, ...p2Hand]);
+      const deck = rest.filter(id => !used.has(id));
+      if (p1Hand.length !== 10 || p2Hand.length !== 10 || p1Captures.length !== 10 || p2Captures.length !== 10 || deck.length !== 8) throw new Error('bad empty-field conservation fixture');
+      return arrange({ p1Hand, p2Hand, table: [], deck, p1Captures, p2Captures });
+    };
+    const piCountState = count => {
+      const p1Captures = idsOf('plain').slice(0, count), captured = new Set(p1Captures), rest = allIds.filter(id => !captured.has(id));
+      const p1Hand = rest.slice(0,10), p2Hand = rest.slice(10,20), remaining = rest.slice(20);
+      const fieldCount = Math.min(8, remaining.length), table = remaining.slice(0,fieldCount), deck = remaining.slice(fieldCount);
+      const state = arrange({ p1Hand, p2Hand, table, deck, p1Captures });
+      if (state.hands.p1.length !== 10 || state.hands.p2.length !== 10 || state.captures.p1.length !== count || state.table.length !== fieldCount || state.deck.length !== 48-count-20-fieldCount) throw new Error(`bad ${count}-plain conservation fixture`);
+      return state;
+    };
     const allCapturedState = () => {
       const state = arrange({ p1Hand: [], p2Hand: [], table: [], deck: [], p1Captures: allIds.slice(0,24), p2Captures: allIds.slice(24) });
       state.phase = 'finished';
@@ -87,7 +140,7 @@ async function open(language, width, height, reduced = false) {
       state() { return structuredClone(state); },
       hiddenIds(seat) { return state.hands[seat].map(card => card.id); },
       replayCalls() { return replayCalls; },
-      normalState, godoriState: godori, denseState, stateWithMatches,
+      normalState, godoriState: godori, denseState, worstHandState, field14State, emptyFieldState, piCountState, stateWithMatches,
       allCapturedState,
       renderAgain() { render(); },
       backlog() { const max=Math.max(...state.events.map(event=>event.sequence)); state.events=[...state.events,...Array.from({length:14},(_,index)=>({sequence:max+index+1,type:'turn',actor:'p1',title:{ko:'새 차례',es:'Nuevo turno'}}))]; render(); },
@@ -110,17 +163,22 @@ async function auditCaptureBanks(page) {
     const banks=['p1','p2'].map(seat=>{
       const rack=document.querySelector(`.hwatu-capture-rack[data-seat="${seat}"]`), categories=kinds.map(kind=>{
         const section=rack?.querySelector(`[data-hwatu-zone="captures-${seat}-${kind}"]`), label=section?.querySelector('.hwatu-category-label'), cards=[...(section?.querySelectorAll('.hwatu-captured-card[data-hwatu-card-id]')??[])], rect=section?.getBoundingClientRect(), boxes=cards.map(card=>{const r=card.getBoundingClientRect(),img=card.querySelector('img.gb-hwatu-face');return {id:card.getAttribute('data-hwatu-card-id'),x:r.x,y:r.y,right:r.right,bottom:r.bottom,width:r.width,height:r.height,visible:visible(card)&&visible(img),loaded:!!img?.complete&&img.naturalWidth>0};}), overlaps=[];
-        for(let i=0;i<boxes.length;i++)for(let j=i+1;j<boxes.length;j++)if(Math.min(boxes[i].right,boxes[j].right)-Math.max(boxes[i].x,boxes[j].x)>1&&Math.min(boxes[i].bottom,boxes[j].bottom)-Math.max(boxes[i].y,boxes[j].y)>1)overlaps.push([boxes[i].id,boxes[j].id]);
-        const clipped=rect?boxes.filter(box=>box.x<rect.left-1||box.y<rect.top-1||box.right>rect.right+1||box.bottom>rect.bottom+1).map(box=>box.id):boxes.map(box=>box.id), style=section?getComputedStyle(section):null, labelRect=label?.getBoundingClientRect(),labelOverlaps=labelRect?boxes.filter(box=>Math.min(box.right,labelRect.right)-Math.max(box.x,labelRect.left)>1&&Math.min(box.bottom,labelRect.bottom)-Math.max(box.y,labelRect.top)>1).map(box=>box.id):boxes.map(box=>box.id),rackRect=rack?.getBoundingClientRect(),bankClipped=rackRect?boxes.filter(box=>box.x<rackRect.left-1||box.y<rackRect.top-1||box.right>rackRect.right+1||box.bottom>rackRect.bottom+1).map(box=>box.id):boxes.map(box=>box.id);
-        return {kind,label:label?.textContent?.replace(/\s+/g,' ').trim()??'',labelVisible:!!label&&visible(label),labelFont:label?parseFloat(getComputedStyle(label).fontSize):0,ids:boxes.map(box=>box.id),cards:boxes,overlaps,clipped,labelOverlaps,bankClipped,scroll:{width:section?.scrollWidth??0,clientWidth:section?.clientWidth??0,height:section?.scrollHeight??0,clientHeight:section?.clientHeight??0,overflowX:style?.overflowX??'',overflowY:style?.overflowY??''}};
+        const rows=[]; for(const box of boxes){const row=rows.at(-1);if(row&&Math.abs(row.y-box.y)<=2)row.cards.push(box);else rows.push({y:box.y,cards:[box]});}
+        const crossRowOverlaps=[]; for(let r=0;r<rows.length;r++)for(let s=r+1;s<rows.length;s++)for(const a of rows[r].cards)for(const b of rows[s].cards)if(Math.min(a.right,b.right)-Math.max(a.x,b.x)>1&&Math.min(a.bottom,b.bottom)-Math.max(a.y,b.y)>1)crossRowOverlaps.push([a.id,b.id]);
+        for(const row of rows)for(let i=0;i<row.cards.length;i++)for(let j=i+1;j<row.cards.length;j++)if(Math.min(row.cards[i].right,row.cards[j].right)-Math.max(row.cards[i].x,row.cards[j].x)>1&&Math.min(row.cards[i].bottom,row.cards[j].bottom)-Math.max(row.cards[i].y,row.cards[j].y)>1)overlaps.push([row.cards[i].id,row.cards[j].id]);
+        const clipped=rect?boxes.filter(box=>box.x<rect.left-1||box.y<rect.top-1||box.right>rect.right+1||box.bottom>rect.bottom+1).map(box=>box.id):boxes.map(box=>box.id), style=section?getComputedStyle(section):null, labelRect=label?.getBoundingClientRect(),labelOverlaps=labelRect?boxes.filter(box=>Math.min(box.right,labelRect.right)-Math.max(box.x,labelRect.left)>1&&Math.min(box.bottom,labelRect.bottom)-Math.max(box.y,labelRect.top)>1).map(box=>box.id):boxes.map(box=>box.id),rackRect=rack?.getBoundingClientRect(),bankClipped=rackRect?boxes.filter(box=>box.x<rackRect.left-1||box.y<rackRect.top-1||box.right>rackRect.right+1||box.bottom>rackRect.bottom+1).map(box=>box.id):boxes.map(box=>box.id),cardsRect=section?.querySelector('.hwatu-captured-cards')?.getBoundingClientRect(),first=boxes[0],last=boxes.at(-1),countText=section?.querySelector('.hwatu-category-label b')?.textContent??'';
+        return {kind,label:label?.textContent?.replace(/\s+/g,' ').trim()??'',labelVisible:!!label&&visible(label),labelFont:label?parseFloat(getComputedStyle(label).fontSize):0,countText,ids:boxes.map(box=>box.id),cards:boxes,rows,crossRowOverlaps,overlaps,clipped,labelOverlaps,bankClipped,firstFullyVisible:!first||!!cardsRect&&first.x>=cardsRect.left-1&&first.right<=cardsRect.right+1,lastFullyVisible:!last||!!cardsRect&&last.x>=cardsRect.left-1&&last.right<=cardsRect.right+1,rackRight:rackRect?.right??0,scroll:{width:section?.scrollWidth??0,clientWidth:section?.clientWidth??0,height:section?.scrollHeight??0,clientHeight:section?.clientHeight??0,overflowX:style?.overflowX??'',overflowY:style?.overflowY??''}};
       });
       const allCards=categories.flatMap(category=>category.cards.map(card=>({...card,kind:category.kind}))),crossCategoryOverlaps=[];
-      for(let i=0;i<allCards.length;i++)for(let j=i+1;j<allCards.length;j++)if(Math.min(allCards[i].right,allCards[j].right)-Math.max(allCards[i].x,allCards[j].x)>1&&Math.min(allCards[i].bottom,allCards[j].bottom)-Math.max(allCards[i].y,allCards[j].y)>1)crossCategoryOverlaps.push([allCards[i].id,allCards[j].id]);
+      for(let i=0;i<allCards.length;i++)for(let j=i+1;j<allCards.length;j++)if(allCards[i].kind!==allCards[j].kind&&Math.min(allCards[i].right,allCards[j].right)-Math.max(allCards[i].x,allCards[j].x)>1&&Math.min(allCards[i].bottom,allCards[j].bottom)-Math.max(allCards[i].y,allCards[j].y)>1)crossCategoryOverlaps.push([allCards[i].id,allCards[j].id]);
       return {seat,expected:state.captures[seat].map(card=>card.id),total:categories.reduce((n,item)=>n+item.ids.length,0),allCards,crossCategoryOverlaps,categories};
     });
     const shown=allNodes.map(node=>node.getAttribute('data-hwatu-card-id')),expected=[...state.captures.p1,...state.captures.p2].map(card=>card.id),buttons=document.querySelectorAll('.hwatu-category-summary,.hwatu-capture-inspection');
-    const allCards=banks.flatMap(bank=>bank.allCards),allBankOverlaps=[];
-    for(let i=0;i<allCards.length;i++)for(let j=i+1;j<allCards.length;j++)if(Math.min(allCards[i].right,allCards[j].right)-Math.max(allCards[i].x,allCards[j].x)>1&&Math.min(allCards[i].bottom,allCards[j].bottom)-Math.max(allCards[i].y,allCards[j].y)>1)allBankOverlaps.push([allCards[i].id,allCards[j].id]);
+    const allCards=banks.flatMap(bank=>bank.categories.flatMap(category=>category.rows.flatMap((row,rowIndex)=>row.cards.map(card=>({...card,seat:bank.seat,kind:category.kind,rowIndex}))))),allBankOverlaps=[];
+    for(let i=0;i<allCards.length;i++)for(let j=i+1;j<allCards.length;j++){
+      const a=allCards[i],b=allCards[j],intentionalStack=a.seat===b.seat&&a.kind===b.kind&&a.rowIndex===b.rowIndex;
+      if(!intentionalStack&&Math.min(a.right,b.right)-Math.max(a.x,b.x)>1&&Math.min(a.bottom,b.bottom)-Math.max(a.y,b.y)>1)allBankOverlaps.push([a.id,b.id]);
+    }
     return {phase:state.phase,conserved:state.hands.p1.length+state.hands.p2.length+state.table.length+state.deck.length+state.captures.p1.length+state.captures.p2.length===48,expectedCount:expected.length,shownCount:shown.length,shownUnique:new Set(shown).size,expectedIds:expected.sort(),shownIds:shown.sort(),duplicateIds:shown.filter((id,index)=>shown.indexOf(id)!==index),unexpected:shown.filter(id=>!expected.includes(id)),banks,allBankOverlaps,inspectionControls:buttons.length,allVisible:shown.every(id=>allNodes.filter(node=>node.getAttribute('data-hwatu-card-id')===id).every(visible))};
   });
 }
@@ -139,6 +197,144 @@ async function initialMatrix(language, width, height) {
     check(`${language} ${width}×${height}: no horizontal overflow`, m.documentWidth<=width, JSON.stringify({documentWidth:m.documentWidth,width}));
     if (width===1366) check(`${language} ${width}×${height}: hand and table remain in viewport`, [m.hand,m.table,...m.rails].every(box=>box&&box.y>=0&&box.bottom<=height), JSON.stringify(m));
     await screenshot(page, `${language}-${width}x${height}-initial`);
+  } finally { await context.close(); }
+}
+
+async function handAndCaptureMatrix(language, width, height) {
+  const { context, page } = await open(language, width, height);
+  try {
+    const auditVisibleCards = async () => page.evaluate(() => {
+      const read = (selector, parentSelector) => {
+        const parent = document.querySelector(parentSelector), parentRect = parent?.getBoundingClientRect();
+        const cards = [...document.querySelectorAll(selector)].map(node => {
+          const rect = node.getBoundingClientRect(), image = node.querySelector('img.gb-hwatu-face');
+          return { id: node.getAttribute('data-hwatu-card-id'), x: rect.x, y: rect.y, right: rect.right, bottom: rect.bottom,
+            width: rect.width, height: rect.height, visible: rect.width > 0 && rect.height > 0 && getComputedStyle(node).visibility !== 'hidden',
+            loaded: !!image?.complete && image.naturalWidth > 0,
+            clipped: !!parentRect && (rect.left < parentRect.left - 1 || rect.top < parentRect.top - 1 || rect.right > parentRect.right + 1 || rect.bottom > parentRect.bottom + 1) };
+        });
+        return { count: cards.length, ids: cards.map(card => card.id), cards, parent: parentRect && { x: parentRect.x, y: parentRect.y, right: parentRect.right, bottom: parentRect.bottom } };
+      };
+      return { viewport: { width: innerWidth, height: innerHeight }, documentWidth: document.documentElement.scrollWidth,
+        hand: read('.hwatu-hand-choice[data-hwatu-card-id]', '.hwatu-hand-section'),
+        field: read('.hwatu-table-card[data-hwatu-card-id]', '.hwatu-felt'),
+        state: { phase: window.__minhwatuProof.state().phase, hands: { p1: window.__minhwatuProof.state().hands.p1.length, p2: window.__minhwatuProof.state().hands.p2.length },
+          table: window.__minhwatuProof.state().table.length, deck: window.__minhwatuProof.state().deck.length,
+          captures: { p1: window.__minhwatuProof.state().captures.p1.length, p2: window.__minhwatuProof.state().captures.p2.length } } };
+    });
+    const waitFaces = () => page.waitForFunction(() => [...document.querySelectorAll('.gb-hwatu-face')].every(image => image.complete && image.naturalWidth > 0), null, { timeout: 8000 });
+    const safeLayout = detail => detail.documentWidth <= width && [detail.hand, detail.field].every(group => group.cards.every(card => card.visible && card.loaded && !card.clipped && card.x >= -1 && card.right <= width + 1));
+    const bankPass = bank => bank.conserved && bank.shownCount === bank.expectedCount && bank.shownUnique === bank.expectedCount &&
+      bank.duplicateIds.length === 0 && bank.unexpected.length === 0 && bank.allVisible && bank.allBankOverlaps.length === 0 &&
+      bank.banks.every(seat => seat.crossCategoryOverlaps.length === 0 && seat.categories.every(category => captureCategoryPass(category) &&
+        category.cards.every(card => card.x >= -1 && card.right <= width + 1)));
+
+    for (const count of [10, 11, 20, 21, 24]) {
+      await page.evaluate(({ lang, count }) => window.__minhwatuProof.mount(window.__minhwatuProof.piCountState(count), lang), { lang: language, count });
+      await waitFaces(); await idle(page);
+      const bank = await auditCaptureBanks(page), plain = bank.banks.find(seat => seat.seat === 'p1')?.categories.find(category => category.kind === 'plain');
+      const expectedRows = count > 10 ? Array.from({ length: Math.ceil(count / 10) }, (_, index) => Math.min(10, count - index * 10)) : [count];
+      const rowSizes = plain?.rows.map(row => row.cards.length) ?? [];
+      const rowLimits = !!plain && plain.rows.every(row => row.cards.length >= 1 && row.cards.length <= 10) &&
+        plain.rows.every((row, index) => index === 0 || row.y > plain.rows[index - 1].y + 1);
+      check(`${language} ${width}×${height}: ${count} captured Pi cards render as ${expectedRows.join('+')} per-card rows`,
+        bank.conserved && bank.expectedCount === count && bank.shownCount === count && bank.shownUnique === count &&
+        bank.duplicateIds.length === 0 && bank.unexpected.length === 0 && bank.allVisible && !!plain && plain.ids.length === count &&
+        JSON.stringify(rowSizes) === JSON.stringify(expectedRows) && rowLimits && captureCategoryPass(plain) &&
+        plain.lastFullyVisible && plain.crossRowOverlaps.length === 0 && plain.cards.at(-1)?.visible && plain.cards.at(-1)?.loaded,
+        JSON.stringify({ count, expectedRows, rowSizes, rowLimits, shown: plain?.ids.length, last: plain?.cards.at(-1), crossRowOverlaps: plain?.crossRowOverlaps,
+          categoryPass: plain ? captureCategoryPass(plain) : false, conserved: bank.conserved, viewport: { width, height } }));
+    }
+
+    await page.evaluate(lang => window.__minhwatuProof.mount(window.__minhwatuProof.worstHandState(), lang), language);
+    await waitFaces(); await idle(page);
+    const worstView = await auditVisibleCards(), worstBank = await auditCaptureBanks(page);
+    const seatKindCounts = Object.fromEntries(worstBank.banks.map(seat => [seat.seat, Object.fromEntries(seat.categories.map(category => [category.kind, category.ids.length]))]));
+    const expectedWorstKinds = { p1: { bright: 0, animal: 6, ribbon: 6, plain: 3 }, p2: { bright: 0, animal: 0, ribbon: 0, plain: 15 } };
+    check(`${language} ${width}×${height}: valid dense 30-capture fixture keeps both 5-card hands and 4 field cards visible`,
+      worstView.state.hands.p1 === 5 && worstView.state.hands.p2 === 5 && worstView.state.table === 4 && worstView.state.deck === 4 &&
+      worstBank.expectedCount === 30 && worstBank.conserved && safeLayout(worstView) && bankPass(worstBank) &&
+      JSON.stringify(seatKindCounts) === JSON.stringify(expectedWorstKinds),
+      JSON.stringify({ ...worstView, expectedBankCount: 30, shownBankCount: worstBank.shownCount, seatKindCounts, expectedWorstKinds,
+        banks: worstBank.banks.map(seat => ({ seat: seat.seat, total: seat.total, overlaps: seat.crossCategoryOverlaps,
+          categories: seat.categories.map(({ kind, ids, clipped, bankClipped, overlaps, labelFont, scroll }) => ({ kind, count: ids.length, clipped, bankClipped, overlaps, labelFont, scroll })) })) }));
+    await screenshot(page, `worst-hand-${language}-${width}x${height}`, true);
+
+    // Select a hand card with no month match so both action buttons are visible at once.
+    await page.evaluate(lang => window.__minhwatuProof.mount(window.__minhwatuProof.field14State(), lang), language);
+    await waitFaces(); await idle(page);
+    const field14 = await auditVisibleCards(), field14Bank = await auditCaptureBanks(page);
+    check(`${language} ${width}×${height}: valid field-14 opening has two 10-card hands, 14 field cards, 14 captures and no deck`,
+      field14.state.hands.p1 === 10 && field14.state.hands.p2 === 10 && field14.state.table === 14 && field14.state.deck === 0 &&
+      field14Bank.expectedCount === 14 && field14Bank.conserved && safeLayout(field14) && bankPass(field14Bank),
+      JSON.stringify({ ...field14, bankCount: field14Bank.shownCount, bankPass: bankPass(field14Bank), bankOverlap: field14Bank.allBankOverlaps }));
+    await page.locator('.hwatu-hand-choice[data-hwatu-card-id="1-1"]').click();
+    const confirm = page.locator('.hwatu-confirm'), cancel = page.locator('.hwatu-cancel');
+    await confirm.waitFor({ state: 'visible', timeout: 3000 }); await cancel.waitFor({ state: 'visible', timeout: 3000 });
+    const controls = await page.evaluate(() => Object.fromEntries(['.hwatu-confirm', '.hwatu-cancel'].map(selector => {
+      const element = document.querySelector(selector), rect = element?.getBoundingClientRect();
+      return [selector, rect && { x: rect.x, y: rect.y, right: rect.right, bottom: rect.bottom, visible: rect.width > 0 && rect.height > 0 && getComputedStyle(element).visibility !== 'hidden' }];
+    })));
+    check(`${language} ${width}×${height}: selected-card confirm and cancel controls are both inside the viewport`,
+      [controls['.hwatu-confirm'], controls['.hwatu-cancel']].every(rect => rect?.visible && rect.x >= -1 && rect.right <= width + 1 && rect.y >= -1 && rect.bottom <= height + 1), JSON.stringify(controls));
+    await cancel.click();
+    await page.waitForFunction(() => !document.querySelector('.hwatu-confirm') && window.__minhwatuProof.state().hands.p1.length === 10, null, { timeout: 2000 });
+    check(`${language} ${width}×${height}: cancel restores an unselected hand without changing game state`,
+      await page.locator('.hwatu-hand-choice').count() === 10 && await page.locator('.hwatu-confirm').count() === 0 &&
+      await page.evaluate(() => window.__minhwatuProof.state().table.length === 14 && window.__minhwatuProof.state().captures.p1.length === 8));
+    await screenshot(page, `field14-${language}-${width}x${height}`, true);
+
+    // Play a real match from the deterministic engine fixture and compare the sorted per-card ghost to its settled face.
+    await page.evaluate(lang => window.__minhwatuProof.mount(window.__minhwatuProof.worstHandState(), lang), language);
+    await idle(page);
+    const beforeIds = await page.evaluate(() => window.__minhwatuProof.state().captures.p1.map(card => card.id));
+    await page.locator('.hwatu-hand-choice[data-hwatu-card-id="2-1"]').click();
+    const playConfirm = page.locator('.hwatu-confirm'); await playConfirm.waitFor({ state: 'visible', timeout: 3000 });
+    await playConfirm.click();
+    await page.waitForFunction(() => window.__minhwatuCues.some(item => item.event.type === 'capture' && item.event.actor === 'p1'), null, { timeout: 5000 });
+    const gained = await page.evaluate(before => window.__minhwatuProof.state().captures.p1.map(card => card.id).filter(id => !before.includes(id)), beforeIds);
+    await page.waitForFunction(ids => ids.some(id => document.querySelector(`.hwatu-capture-landing[data-hwatu-landing-card-id="${id}"]`)), gained, { timeout: 2500 });
+    const ghost = await page.evaluate(ids => ids.map(id => {
+      const element = document.querySelector(`.hwatu-capture-landing[data-hwatu-landing-card-id="${id}"]`), rect = element?.getBoundingClientRect();
+      const image = element?.querySelector('img.gb-hwatu-face');
+      return { id, present: !!element, parentSeat: element?.closest('.hwatu-capture-rack')?.getAttribute('data-seat') ?? null,
+        x: rect?.x, y: rect?.y, right: rect?.right, bottom: rect?.bottom, width: rect?.width, height: rect?.height,
+        imageLoaded: !image || (image.complete && image.naturalWidth > 0) };
+    }), gained);
+    check(`${language} ${width}×${height}: an in-flight capture has one sorted per-card landing ghost in the owner's visible rack`,
+      gained.includes('2-1') && ghost.some(item => item.id === '2-1' && item.present && item.parentSeat === 'p1' && item.imageLoaded &&
+        item.x >= -1 && item.right <= width + 1 && item.y >= -1 && item.bottom <= height + 1), JSON.stringify({ gained, ghost }));
+    await idle(page);
+    const landed = await page.evaluate(ids => ids.map(id => ({ id,
+      face: document.querySelectorAll(`.hwatu-captured-card[data-hwatu-card-id="${id}"]`).length,
+      ghost: document.querySelectorAll(`.hwatu-capture-landing[data-hwatu-landing-card-id="${id}"]`).length })), gained);
+    check(`${language} ${width}×${height}: capture settles to exactly one face and removes each landing ghost`,
+      gained.includes('2-1') && landed.every(item => item.face === 1 && item.ghost === 0), JSON.stringify({ gained, landed }));
+
+    await page.evaluate(lang => window.__minhwatuProof.mount(window.__minhwatuProof.emptyFieldState(), lang), language);
+    await idle(page);
+    const emptyState = await auditVisibleCards();
+    check(`${language} ${width}×${height}: empty field fixture conserves 48 cards with 10-card hands and 8-card deck`,
+      emptyState.state.table === 0 && emptyState.state.hands.p1 === 10 && emptyState.state.hands.p2 === 10 && emptyState.state.deck === 8 && safeLayout(emptyState), JSON.stringify(emptyState));
+    await page.locator('.hwatu-hand-choice[data-hwatu-card-id="1-1"]').click();
+    await page.locator('.hwatu-confirm').click();
+    await page.waitForFunction(() => document.querySelector('.hwatu-flight[data-hwatu-flight-card="1-1"]') &&
+      document.querySelector('[data-hwatu-zone="table"] [data-hwatu-landing-anchor]'), null, { timeout: 3000 });
+    const emptyLanding = await page.evaluate(() => {
+      const card = document.querySelector('.hwatu-flight[data-hwatu-flight-card="1-1"]'), animation = card?.getAnimations()[0];
+      const endFrame = animation?.effect?.getKeyframes().at(-1), match = endFrame?.transform?.match(/translate3d\(([-\d.]+)px,\s*([-\d.]+)px/);
+      const left = parseFloat(card?.style.left ?? '0'), top = parseFloat(card?.style.top ?? '0'), width = parseFloat(card?.style.width ?? '0'), height = parseFloat(card?.style.height ?? '0');
+      const anchor = document.querySelector('[data-hwatu-zone="table"] [data-hwatu-landing-anchor]'), rect = anchor?.getBoundingClientRect();
+      return { flight: !!card, anchor: !!anchor, end: match ? { x: left + Number(match[1]) + width / 2, y: top + Number(match[2]) + height / 2 } : null,
+        target: rect ? { x: rect.x + rect.width / 2, y: rect.y + rect.height / 2 } : null };
+    });
+    check(`${language} ${width}×${height}: empty-field hand card targets an explicit in-field landing anchor`,
+      emptyLanding.flight && emptyLanding.anchor && nearby(emptyLanding.end, emptyLanding.target, 20), JSON.stringify(emptyLanding));
+    await idle(page);
+    check(`${language} ${width}×${height}: empty-field landing completes without a stale ghost`,
+      await page.locator('.hwatu-flight[data-hwatu-flight-card="1-1"]').count() === 0 &&
+      await page.locator('[data-hwatu-zone="table"] [data-hwatu-card-id="1-1"]').count() === 1 &&
+      await page.locator('[data-hwatu-zone="table"] [data-hwatu-landing-anchor]').count() === 0);
   } finally { await context.close(); }
 }
 
@@ -198,14 +394,14 @@ async function denseResultAndReplay(language) {
     const dense=await auditCaptureBanks(page), own=dense.banks.find(bank=>bank.seat==='p1');
     const denseExpected={bright:0,animal:0,ribbon:9,plain:23};
     const denseKinds=Object.fromEntries(own.categories.map(category=>[category.kind,category.ids.length]));
-    const denseStructure=own.categories.every(category=>category.labelVisible&&category.label.trim().length>0&&category.labelFont>=12&&category.labelOverlaps.length===0&&category.overlaps.length===0&&category.clipped.length===0&&category.bankClipped.length===0&&category.scroll.width<=category.scroll.clientWidth+1&&category.scroll.height<=category.scroll.clientHeight+1)&&dense.allBankOverlaps.length===0&&dense.duplicateIds.length===0&&dense.unexpected.length===0;
-    check(`${language}: conserved dense fixture keeps 9 ribbons and 23 plains visible in the capture bank`,dense.conserved&&dense.expectedCount===32&&dense.shownCount===32&&dense.shownUnique===32&&JSON.stringify(denseKinds)===JSON.stringify(denseExpected)&&dense.allVisible&&denseStructure&&dense.inspectionControls===0,JSON.stringify({conserved:dense.conserved,expectedCount:dense.expectedCount,shownCount:dense.shownCount,shownUnique:dense.shownUnique,kinds:denseKinds,allVisible:dense.allVisible,structure:denseStructure,inspectionControls:dense.inspectionControls,categories:own.categories.map(({kind,label,labelFont,overlaps,clipped,labelOverlaps,bankClipped,scroll})=>({kind,label,labelFont,overlaps,clipped,labelOverlaps,bankClipped,scroll}))}));
+    const denseStructure=own.categories.every(category=>category.label.trim().length>0&&captureCategoryPass(category))&&dense.allBankOverlaps.length===0&&dense.duplicateIds.length===0&&dense.unexpected.length===0;
+    check(`${language}: conserved dense fixture keeps every 9 ribbon and 23 plain face visible; only high-count same-category stacks may overlap`,dense.conserved&&dense.expectedCount===32&&dense.shownCount===32&&dense.shownUnique===32&&JSON.stringify(denseKinds)===JSON.stringify(denseExpected)&&dense.allVisible&&denseStructure&&dense.inspectionControls===0,JSON.stringify({conserved:dense.conserved,expectedCount:dense.expectedCount,shownCount:dense.shownCount,shownUnique:dense.shownUnique,kinds:denseKinds,allVisible:dense.allVisible,structure:denseStructure,inspectionControls:dense.inspectionControls,categories:own.categories.map(({kind,label,labelFont,overlaps,clipped,labelOverlaps,bankClipped,firstFullyVisible,lastFullyVisible,scroll})=>({kind,label,labelFont,overlaps,clipped,labelOverlaps,bankClipped,firstFullyVisible,lastFullyVisible,scroll}))}));
     await screenshot(page,`${language}-dense-capture-bank`,true);
     await page.evaluate(lang=>window.__minhwatuProof.mount(window.__minhwatuProof.allCapturedState(),lang),language); await idle(page);
     await page.waitForFunction(()=>[...document.querySelectorAll('.hwatu-capture-rack .hwatu-captured-card img.gb-hwatu-face')].length===48&&[...document.querySelectorAll('.hwatu-capture-rack .hwatu-captured-card img.gb-hwatu-face')].every(image=>image.complete&&image.naturalWidth>0),null,{timeout:8000});
     const allCaptured=await auditCaptureBanks(page), totalKinds=Object.fromEntries(['bright','animal','ribbon','plain'].map(kind=>[kind,allCaptured.banks.reduce((sum,bank)=>sum+bank.categories.find(category=>category.kind===kind).ids.length,0)])), expectedKinds={bright:5,animal:9,ribbon:10,plain:24};
-    const everyFace=allCaptured.expectedCount===48&&allCaptured.shownCount===48&&allCaptured.shownUnique===48&&allCaptured.expectedIds.every((id,index)=>id===allCaptured.shownIds[index])&&allCaptured.duplicateIds.length===0&&allCaptured.unexpected.length===0&&allCaptured.banks.every(bank=>bank.total===24&&JSON.stringify([...bank.expected].sort())===JSON.stringify(bank.categories.flatMap(category=>category.ids).sort())&&bank.crossCategoryOverlaps.length===0&&bank.categories.every(category=>category.labelVisible&&category.label.trim().length>0&&category.labelFont>=12&&category.labelOverlaps.length===0&&category.overlaps.length===0&&category.clipped.length===0&&category.bankClipped.length===0&&category.scroll.width<=category.scroll.clientWidth+1&&category.scroll.height<=category.scroll.clientHeight+1))&&JSON.stringify(totalKinds)===JSON.stringify(expectedKinds)&&allCaptured.allBankOverlaps.length===0;
-    check(`${language}: finished two-seat banks show each of all 48 captured faces exactly once without clipping or overlap`,allCaptured.conserved&&allCaptured.phase==='finished'&&everyFace&&allCaptured.allVisible&&allCaptured.inspectionControls===0,JSON.stringify({conserved:allCaptured.conserved,phase:allCaptured.phase,expectedCount:allCaptured.expectedCount,shownCount:allCaptured.shownCount,shownUnique:allCaptured.shownUnique,duplicateIds:allCaptured.duplicateIds,unexpected:allCaptured.unexpected,totalKinds,allBankOverlaps:allCaptured.allBankOverlaps,allVisible:allCaptured.allVisible,inspectionControls:allCaptured.inspectionControls,banks:allCaptured.banks.map(bank=>({seat:bank.seat,total:bank.total,crossCategoryOverlaps:bank.crossCategoryOverlaps,categories:bank.categories.map(({kind,label,labelFont,ids,overlaps,clipped,labelOverlaps,bankClipped,scroll})=>({kind,label,labelFont,count:ids.length,overlaps,clipped,labelOverlaps,bankClipped,scroll}))}))}));
+    const everyFace=allCaptured.expectedCount===48&&allCaptured.shownCount===48&&allCaptured.shownUnique===48&&allCaptured.expectedIds.every((id,index)=>id===allCaptured.shownIds[index])&&allCaptured.duplicateIds.length===0&&allCaptured.unexpected.length===0&&allCaptured.banks.every(bank=>bank.total===24&&JSON.stringify([...bank.expected].sort())===JSON.stringify(bank.categories.flatMap(category=>category.ids).sort())&&bank.crossCategoryOverlaps.length===0&&bank.categories.every(category=>category.label.trim().length>0&&captureCategoryPass(category)))&&JSON.stringify(totalKinds)===JSON.stringify(expectedKinds)&&allCaptured.allBankOverlaps.length===0;
+    check(`${language}: finished two-seat banks show each of all 48 faces, with overlap limited to high-count same-category stacks`,allCaptured.conserved&&allCaptured.phase==='finished'&&everyFace&&allCaptured.allVisible&&allCaptured.inspectionControls===0,JSON.stringify({conserved:allCaptured.conserved,phase:allCaptured.phase,expectedCount:allCaptured.expectedCount,shownCount:allCaptured.shownCount,shownUnique:allCaptured.shownUnique,duplicateIds:allCaptured.duplicateIds,unexpected:allCaptured.unexpected,totalKinds,allBankOverlaps:allCaptured.allBankOverlaps,allVisible:allCaptured.allVisible,inspectionControls:allCaptured.inspectionControls,banks:allCaptured.banks.map(bank=>({seat:bank.seat,total:bank.total,crossCategoryOverlaps:bank.crossCategoryOverlaps,categories:bank.categories.map(({kind,label,labelFont,ids,overlaps,clipped,labelOverlaps,bankClipped,firstFullyVisible,lastFullyVisible,scroll})=>({kind,label,labelFont,count:ids.length,overlaps,clipped,labelOverlaps,bankClipped,firstFullyVisible,lastFullyVisible,scroll}))}))}));
     await screenshot(page,`${language}-all-capture-banks`,true);
     await page.evaluate(lang=>window.__minhwatuProof.mount(window.__minhwatuProof.godoriState(),lang),language); await idle(page);
     const oldScore=await page.evaluate(()=>window.__minhwatuProof.view('p1').board.scores.p1);
@@ -297,6 +493,7 @@ async function privacyAndMotion(language) {
 
 try {
   for(const [language,width,height] of [['ko',1366,768],['ko',1440,900],['ko',1920,1080],['es',1366,768],['es',1440,900],['es',1920,1080]]) await initialMatrix(language,width,height);
+  for(const [language,width,height] of [['ko',1366,768],['ko',1440,900],['es',1366,768],['es',1440,900]]) await handAndCaptureMatrix(language,width,height);
   await targetCases('ko',1366,768); await targetCases('es',1366,768);
   await privacyAndMotion('ko'); await privacyAndMotion('es');
   await lifecycle('ko'); await lifecycle('es');
