@@ -3942,14 +3942,33 @@ var catchmindEngine = {
       if (s.phase !== "drawing" || p !== s.drawer) return "Only the drawer can draw during an active round";
       const strokes = payload.strokes;
       if (!Array.isArray(strokes) || strokes.length < 1 || strokes.length > 12) return "Send 1 to 12 strokes per batch";
-      if (s.strokes.length + strokes.length > 200) return "Round stroke limit reached";
-      if (s.strokes.reduce((sum2, stroke) => sum2 + stroke.points.length, 0) + strokes.reduce((sum2, stroke) => sum2 + (Array.isArray(stroke?.points) ? stroke.points.length : 0), 0) > 4e3) return "Round point limit reached";
+      let physicalStrokes = s.strokes.length;
+      const incomingStrokeIds = /* @__PURE__ */ new Set();
+      let totalPoints = s.strokes.reduce((sum2, stroke) => sum2 + stroke.points.length, 0);
+      let last = s.strokes.at(-1);
       for (const stroke of strokes) {
         if (!stroke || !Array.isArray(stroke.points) || stroke.points.length < 2 || stroke.points.length > 80) return "Each stroke needs 2 to 80 points";
         if (stroke.points.some((pt) => !pt || typeof pt.x !== "number" || typeof pt.y !== "number" || !Number.isFinite(pt.x) || !Number.isFinite(pt.y) || pt.x < 0 || pt.x > 1 || pt.y < 0 || pt.y > 1)) return "Points must be normalized between 0 and 1";
         if (stroke.color !== void 0 && (typeof stroke.color !== "string" || !/^#[0-9a-f]{6}$/i.test(stroke.color))) return "Invalid stroke color";
         if (stroke.width !== void 0 && (!Number.isFinite(stroke.width) || stroke.width < 1 || stroke.width > 24)) return "Stroke width must be between 1 and 24";
+        const hasId = stroke.strokeId !== void 0, hasSegment = stroke.segmentIndex !== void 0;
+        if (hasId !== hasSegment || hasId && (typeof stroke.strokeId !== "string" || !/^[a-zA-Z0-9_-]{1,64}$/.test(stroke.strokeId) || !Number.isInteger(stroke.segmentIndex) || stroke.segmentIndex < 0 || stroke.segmentIndex > 1e4)) return "Invalid stroke segment";
+        if (hasId && stroke.segmentIndex > 0) {
+          if (!last || last.strokeId !== stroke.strokeId || last.segmentIndex !== stroke.segmentIndex - 1 || last.color !== (stroke.color ?? "#172033") || last.width !== (stroke.width ?? 3)) return "Stroke segments must be consecutive and keep the same style";
+          const first = stroke.points[0], end = last.points.at(-1);
+          const overlap = end && Math.round(first.x * 1e3) === Math.round(end.x * 1e3) && Math.round(first.y * 1e3) === Math.round(end.y * 1e3);
+          totalPoints += stroke.points.length - (overlap ? 1 : 0);
+          last = { ...last, segmentIndex: stroke.segmentIndex, points: [...last.points, ...overlap ? stroke.points.slice(1) : stroke.points] };
+        } else {
+          if (hasId && (incomingStrokeIds.has(stroke.strokeId) || s.strokes.some((item) => item.strokeId === stroke.strokeId))) return "Stroke ID has already been used";
+          if (hasId) incomingStrokeIds.add(stroke.strokeId);
+          physicalStrokes++;
+          totalPoints += stroke.points.length;
+          last = hasId ? { strokeId: stroke.strokeId, segmentIndex: stroke.segmentIndex, color: stroke.color ?? "#172033", width: stroke.width ?? 3, points: stroke.points } : void 0;
+        }
       }
+      if (physicalStrokes > 200) return "Round stroke limit reached";
+      if (totalPoints > 4e3) return "Round point limit reached";
       return null;
     }
     if (a.type === "fill") return s.phase === "drawing" && p === s.drawer && Number.isFinite(payload.x) && Number.isFinite(payload.y) && payload.x >= 0 && payload.x <= 1 && payload.y >= 0 && payload.y <= 1 && typeof payload.color === "string" && /^#[0-9a-f]{6}$/i.test(payload.color) && s.fills.length < 60 ? null : "Invalid fill operation";
@@ -3973,8 +3992,20 @@ var catchmindEngine = {
     }
     if (a.type === "choose") return { ...s, answer: s.wordChoices[s.round][a.payload.wordId], strokes: [], fills: [], guesses: [], hintStage: 0, phase: "drawing" };
     if (a.type === "draw") {
-      const added = a.payload.strokes.map((st, i) => ({ by: p, points: st.points.map((pt) => ({ x: Math.round(pt.x * 1e3) / 1e3, y: Math.round(pt.y * 1e3) / 1e3 })), color: st.color ?? "#172033", width: st.width ?? 3, order: s.nextOrder + i }));
-      return { ...s, strokes: [...s.strokes, ...added], nextOrder: s.nextOrder + added.length };
+      let nextOrder = s.nextOrder;
+      const nextStrokes = [...s.strokes];
+      for (const st of a.payload.strokes) {
+        const points = st.points.map((pt) => ({ x: Math.round(pt.x * 1e3) / 1e3, y: Math.round(pt.y * 1e3) / 1e3 }));
+        const last = nextStrokes.at(-1);
+        if (last && st.strokeId && st.segmentIndex > 0 && last.strokeId === st.strokeId) {
+          const end = last.points.at(-1), first = points[0];
+          if (end && first.x === end.x && first.y === end.y) points.shift();
+          nextStrokes[nextStrokes.length - 1] = { ...last, points: [...last.points, ...points], segmentIndex: st.segmentIndex };
+        } else {
+          nextStrokes.push({ by: p, points, color: st.color ?? "#172033", width: st.width ?? 3, order: nextOrder++, ...st.strokeId ? { strokeId: st.strokeId, segmentIndex: st.segmentIndex } : {} });
+        }
+      }
+      return { ...s, strokes: nextStrokes, nextOrder };
     }
     if (a.type === "undo") {
       const lastStroke = s.strokes.at(-1), lastFill = s.fills.at(-1);
@@ -4114,32 +4145,200 @@ function play(state, seat, action) {
   next.log = event(next, { type: "turn", actor: next.turn, title: { ko: "\uB2E4\uC74C \uCC28\uB840", es: "Siguiente turno" } });
   return next;
 }
-function chooseDominoBotAction(hand, board, ends, difficulty = "normal", publicContext = {}) {
-  const playable = hand.flatMap((tile, index) => ["left", "right"].filter((side) => legalOrient(tile, side, ends)).map((side) => ({ tile, index, side })));
-  if (!playable.length) return { type: "pass" };
-  if (difficulty !== "easy") {
-    const rank = (item) => {
-      const { tile, index, side } = item;
-      const pips = tile.a + tile.b;
-      if (difficulty === "normal" || !ends) return pips;
-      const outer = side === "left" ? tile.a === ends.left ? tile.b : tile.a : tile.a === ends.right ? tile.b : tile.a;
-      const after = side === "left" ? [outer, ends.right] : [ends.left, outer];
-      const remaining = hand.filter((_, i) => i !== index);
-      const support = after.reduce((total, pip) => total + remaining.filter((t) => t.a === pip || t.b === pip).length, 0);
-      const seen = board.filter((t) => t.a === outer || t.b === outer).length + hand.filter((t) => t.a === outer || t.b === outer).length;
-      const unsupported = after.filter((pip) => !remaining.some((t) => t.a === pip || t.b === pip)).length;
-      return pips + support * 6 - unsupported * 5 + Math.min(seen, 7) * (publicContext.passes ? 2 : 1);
-    };
-    playable.sort((x, y) => rank(y) - rank(x) || Number(y.tile.a === y.tile.b) - Number(x.tile.a === x.tile.b) || x.index - y.index);
+var allTiles = Array.from({ length: 7 }, (_, a) => Array.from({ length: 7 - a }, (_2, i) => ({ a, b: a + i }))).flat();
+var tileId = (tile) => `${Math.min(tile.a, tile.b)}-${Math.max(tile.a, tile.b)}`;
+var matches = (tile, pip) => tile.a === pip || tile.b === pip;
+function placedEnds(tile, side, current) {
+  if (!current) return { left: tile.a, right: tile.b };
+  const oriented = side === "left" ? tile.b === current.left ? tile : { a: tile.b, b: tile.a } : tile.a === current.right ? tile : { a: tile.b, b: tile.a };
+  return side === "left" ? { left: oriented.a, right: current.right } : { left: current.left, right: oriented.b };
+}
+function legalMoves(hand, ends) {
+  return hand.flatMap((tile, index) => ["left", "right"].filter((side) => legalOrient(tile, side, ends)).map((side) => ({ tile, index, side, ends: placedEnds(tile, side, ends) })));
+}
+function teamOf(mode, seat) {
+  return mode === "partners" ? seat === "p1" || seat === "b1" ? "p1" : "p2" : mode === "humans-vs-bots" ? seat === "p1" || seat === "p2" ? "p1" : "p2" : seat === "p1" ? "p1" : "p2";
+}
+function following(mode, seat, offset) {
+  const order = seats(mode), i = order.indexOf(seat);
+  return order[(i + offset) % order.length];
+}
+function currentRoundEvents(context, board) {
+  const log = context.log ?? [], roundStart = log.map((event2) => event2.type).lastIndexOf("round-start");
+  const firstBoardSequence = Math.min(...board.map((tile) => tile.sequence ?? Infinity));
+  const startSequence = roundStart >= 0 ? log[roundStart].sequence : Number.isFinite(firstBoardSequence) ? firstBoardSequence : Infinity;
+  return log.filter((event2) => event2.sequence > startSequence);
+}
+function passVoids(context, board) {
+  const voids = /* @__PURE__ */ new Map();
+  for (const event2 of currentRoundEvents(context, board)) if (event2.type === "pass" && event2.actor && event2.ends) {
+    const values = voids.get(event2.actor) ?? /* @__PURE__ */ new Set();
+    values.add(event2.ends.left);
+    values.add(event2.ends.right);
+    voids.set(event2.actor, values);
   }
-  return { type: "play", payload: { index: playable[0].index, side: playable[0].side } };
+  return voids;
+}
+function unseenTiles(hand, board) {
+  const known = new Set([...hand, ...board].map(tileId));
+  return allTiles.filter((tile) => !known.has(tileId(tile)));
+}
+function probabilityCanPlay(seat, ends, unseen, voids, counts) {
+  const forbidden = voids.get(seat) ?? /* @__PURE__ */ new Set();
+  const eligible = unseen.filter((tile) => !forbidden.has(tile.a) && !forbidden.has(tile.b));
+  const count2 = Math.max(0, Math.min(eligible.length, counts[seat] ?? 0));
+  const matching = eligible.filter((tile) => matches(tile, ends.left) || matches(tile, ends.right)).length;
+  let none = 1;
+  for (let i = 0; i < count2; i++) none *= Math.max(0, eligible.length - matching - i) / Math.max(1, eligible.length - i);
+  return 1 - none;
+}
+function allySignal(ally, ends, context, board, voids) {
+  const last = currentRoundEvents(context, board).slice().reverse().find((event2) => event2.type === "play" && event2.actor === ally && event2.tile);
+  if (!last?.tile) return 0;
+  const allyVoids = voids.get(ally) ?? /* @__PURE__ */ new Set();
+  const faces = [last.tile.a, last.tile.b].filter((value, index, values) => values.indexOf(value) === index);
+  return faces.some((pip) => (pip === ends.left || pip === ends.right) && !allyVoids.has(pip)) ? 2.2 : 0;
+}
+function handSupport(hand, ends) {
+  return hand.reduce((sum2, tile) => sum2 + Number(matches(tile, ends.left)) + Number(matches(tile, ends.right)), 0);
+}
+function futureReach(hand, ends) {
+  let best = 0;
+  for (const first of legalMoves(hand, ends)) {
+    const afterFirst = hand.filter((_, index) => index !== first.index);
+    const firstSupport = handSupport(afterFirst, first.ends);
+    for (const second of legalMoves(afterFirst, first.ends)) {
+      const afterSecond = afterFirst.filter((_, index) => index !== second.index);
+      const score2 = first.tile.a + first.tile.b + handSupport(afterSecond, second.ends) * 0.65 + firstSupport * 0.2;
+      best = Math.max(best, score2);
+    }
+    best = Math.max(best, first.tile.a + first.tile.b + firstSupport * 0.45);
+  }
+  return best;
+}
+function rngFrom(publicText) {
+  let state = 2166136261;
+  for (let i = 0; i < publicText.length; i++) state = Math.imul(state ^ publicText.charCodeAt(i), 16777619) >>> 0;
+  return () => {
+    state = Math.imul(state, 1664525) + 1013904223 >>> 0;
+    return state / 4294967296;
+  };
+}
+function sampleUnknownHands(unseen, actor, mode, counts, voids, random) {
+  const originalSeats = seats(mode).filter((seat) => seat !== actor), needed = new Map(originalSeats.map((seat) => [seat, Math.max(0, counts[seat] ?? 7)]));
+  let workBudget = 64;
+  const pick = (remaining, pending, result) => {
+    if (!pending.length) return result;
+    const options = pending.map((seat2) => ({ seat: seat2, eligible: remaining.filter((tile) => {
+      const blocked = voids.get(seat2) ?? /* @__PURE__ */ new Set();
+      return !blocked.has(tile.a) && !blocked.has(tile.b);
+    }) }));
+    options.sort((a, b) => a.eligible.length - b.eligible.length);
+    const { seat, eligible } = options[0], count2 = needed.get(seat) ?? 0;
+    if (eligible.length < count2) return null;
+    const restSeats = pending.filter((value) => value !== seat);
+    for (let attempt = 0; attempt < 48 && workBudget > 0; attempt++, workBudget--) {
+      const shuffled = eligible.slice();
+      for (let i = shuffled.length - 1; i > 0; i--) {
+        const j = Math.floor(random() * (i + 1));
+        [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
+      }
+      const picked = shuffled.slice(0, count2), pickedIds = new Set(picked.map(tileId)), nextRemaining = remaining.filter((tile) => !pickedIds.has(tileId(tile)));
+      if (restSeats.some((other) => nextRemaining.filter((tile) => {
+        const blocked = voids.get(other) ?? /* @__PURE__ */ new Set();
+        return !blocked.has(tile.a) && !blocked.has(tile.b);
+      }).length < (needed.get(other) ?? 0))) continue;
+      const next = new Map(result);
+      next.set(seat, picked);
+      const complete = pick(nextRemaining, restSeats, next);
+      if (complete) return complete;
+    }
+    return null;
+  };
+  return pick(unseen, originalSeats, /* @__PURE__ */ new Map());
+}
+function sampledRollout(move, hand, actor, mode, board, ends, context, sampled) {
+  const hands = { p1: [], p2: [], b1: [], b2: [] };
+  hands[actor] = hand.slice();
+  for (const [seat, tiles] of sampled) hands[seat] = tiles.slice();
+  const known = new Set([...hand, ...board, ...Array.from(sampled.values()).flat()].map(tileId));
+  let state = { seed: 0, turn: actor, mode, hands, stock: allTiles.filter((tile) => !known.has(tileId(tile))), board: board.map((tile) => ({ ...tile })), ends: ends ? { ...ends } : null, passes: context.passes ?? 0, opening: { player: actor, tile: move.tile }, result: null, rulesVersion: 1, settings: { ...DEFAULT_SETTINGS, tranqueRule: context.tranqueRule ?? "team" }, matchScores: { p1: 0, p2: 0 }, round: 1, roundResult: null, log: (context.log ?? []).slice(), lastPlacer: board.at(-1)?.by ?? null, pasoAwarded: currentRoundEvents(context, board).some((event2) => event2.type === "paso-corrido"), roundBonuses: { p1: 0, p2: 0 } };
+  state = play(state, actor, { type: "play", payload: { index: move.index, side: move.side } });
+  for (let step2 = 0; step2 < 60 && !state.roundResult && !state.result; step2++) {
+    const seat = state.turn, seatHand = state.hands[seat], moves = legalMoves(seatHand, state.ends);
+    let chosen, chosenScore = -Infinity;
+    for (const candidate of moves) {
+      const rank = utility(candidate, seatHand, state.board, state.ends, {}, "normal", [], /* @__PURE__ */ new Map());
+      if (rank > chosenScore) {
+        chosen = candidate;
+        chosenScore = rank;
+      }
+    }
+    const action = chosen ? { type: "play", payload: { index: chosen.index, side: chosen.side } } : { type: "pass" };
+    state = play(state, seat, action);
+  }
+  const result = state.roundResult;
+  if (!result) return 0;
+  if (result.winner === "draw") return 0;
+  const ownTeam = teamOf(mode, actor), other = ownTeam === "p1" ? "p2" : "p1", margin = (result.pips[other] - result.pips[ownTeam]) * 1e-3;
+  return result.winner === ownTeam ? 1 + margin : -1 - margin;
+}
+function hardRolloutWorlds(hand, actor, mode, board, context, unseen, voids) {
+  const text = JSON.stringify({ actor, mode, hand: hand.map(tileId).sort(), board: board.map((tile) => [tile.a, tile.b, tile.by, tile.sequence]), counts: context.counts, passes: context.passes, log: currentRoundEvents(context, board).map((event2) => [event2.sequence, event2.type, event2.actor, event2.ends]) });
+  const random = rngFrom(text), worlds = [];
+  for (let i = 0; i < 16; i++) {
+    const world = sampleUnknownHands(unseen, actor, mode, context.counts ?? {}, voids, random);
+    if (world) worlds.push(world);
+  }
+  return worlds;
+}
+function hardRolloutScore(move, hand, actor, mode, board, ends, context, worlds) {
+  if (!worlds.length) return 0;
+  return worlds.reduce((total, world) => total + sampledRollout(move, hand, actor, mode, board, ends, context, world), 0) / worlds.length;
+}
+function utility(move, hand, board, ends, context, difficulty, unseen, voids) {
+  const rest = hand.filter((_, index) => index !== move.index), pips = move.tile.a + move.tile.b;
+  if (!rest.length) return 1e6 + pips + (move.tile.a === move.tile.b ? move.tile.a : 0);
+  const support = handSupport(rest, move.ends), leftSupport = rest.filter((tile) => matches(tile, move.ends.left)).length, rightSupport = rest.filter((tile) => matches(tile, move.ends.right)).length;
+  let score2 = pips * (difficulty === "easy" ? 0.72 : 1.05) + (move.tile.a === move.tile.b ? 0.8 + move.tile.a * 0.12 : 0) + support * (difficulty === "easy" ? 0.55 : difficulty === "normal" ? 1.05 : 2.25);
+  score2 -= Number(leftSupport === 0) * 0.7 + Number(rightSupport === 0) * 0.7;
+  if (difficulty !== "hard") return score2;
+  const actor = context.actor, mode = context.mode ?? "1v1", counts = context.counts ?? {};
+  if (!actor) return score2 + futureReach(rest, move.ends) * 0.55;
+  const ownTeam = teamOf(mode, actor), near = Math.min(2, seats(mode).length - 1);
+  for (let offset = 1; offset <= near; offset++) {
+    const next = following(mode, actor, offset), sameTeam = teamOf(mode, next) === ownTeam;
+    const canPlay = probabilityCanPlay(next, move.ends, unseen, voids, counts);
+    const count2 = counts[next] ?? 7;
+    const weight = count2 <= 1 ? 11 : count2 <= 2 ? 8 : count2 <= 3 ? 5 : 3;
+    score2 += sameTeam ? canPlay * (offset === 1 ? 3.2 : 1.1) : -canPlay * weight * (offset === 1 ? 1 : 0.52);
+    if (sameTeam && offset === 1) score2 += allySignal(next, move.ends, context, board, voids);
+  }
+  score2 += futureReach(rest, move.ends) * 0.2;
+  return score2;
+}
+function chooseDominoBotAction(hand, board, ends, difficulty = "normal", publicContext = {}) {
+  const moves = legalMoves(hand, ends);
+  if (!moves.length) return { type: "pass" };
+  if (moves.length === 1) return { type: "play", payload: { index: moves[0].index, side: moves[0].side } };
+  const handOut = moves.find((move) => hand.length === 1);
+  if (handOut) return { type: "play", payload: { index: handOut.index, side: handOut.side } };
+  const unseen = difficulty === "hard" ? unseenTiles(hand, board) : [], voids = difficulty === "hard" ? passVoids(publicContext, board) : /* @__PURE__ */ new Map();
+  const worlds = difficulty === "hard" && publicContext.actor ? hardRolloutWorlds(hand, publicContext.actor, publicContext.mode ?? "1v1", board, publicContext, unseen, voids) : [];
+  const ranked = moves.map((move, index) => ({ move, index, score: utility(move, hand, board, ends, publicContext, difficulty, unseen, voids) }));
+  if (difficulty === "hard" && publicContext.actor && worlds.length) {
+    const candidates = ranked.slice().sort((a, b) => b.score - a.score || a.index - b.index).slice(0, Math.min(3, ranked.length));
+    for (const candidate of candidates) candidate.score += hardRolloutScore(candidate.move, hand, publicContext.actor, publicContext.mode ?? "1v1", board, ends, publicContext, worlds) * 30;
+  }
+  const best = ranked.reduce((chosen, item) => item.score > chosen.score ? item : chosen, ranked[0]).move;
+  return { type: "play", payload: { index: best.index, side: best.side } };
 }
 function botAction(s, seat) {
   if (!s.board.length && seat === s.opening.player) {
     const index = s.hands[seat].findIndex((t) => t.a === s.opening.tile.a && t.b === s.opening.tile.b);
     return { type: "play", payload: { index, side: "left" } };
   }
-  return chooseDominoBotAction(s.hands[seat], s.board, s.ends, s.settings?.difficulty ?? "normal", { passes: s.passes, counts: Object.fromEntries(seats(s.mode).map((x) => [x, s.hands[x].length])) });
+  return chooseDominoBotAction(s.hands[seat], s.board, s.ends, s.settings?.difficulty ?? "normal", { actor: seat, mode: s.mode, passes: s.passes, counts: Object.fromEntries(seats(s.mode).map((x) => [x, s.hands[x].length])), log: s.log, tranqueRule: s.settings?.tranqueRule });
 }
 function runBots(s) {
   let next = s;
@@ -4433,7 +4632,7 @@ function apply(s, p, a) {
     n.tokens[p] += points;
     n.ledger[p].goods += goodsPoints;
     n.ledger[p].bonus += bonus2?.value ?? 0;
-    n = appendEvent(n, { type: "sale", actor, cards: cards2, tokenValues: tokenValues2, goodsPoints, bonus: bonus2, points, title: { ko: `${label4[g].ko} ${count2}\uC7A5 \uD310\uB9E4`, es: `Venta de ${count2} cartas de ${label4[g].es}` } });
+    n = appendEvent(n, { type: "sale", actor, cards: cards2, tokenValues: tokenValues2, goodsPoints, bonus: bonus2, points, title: { ko: `${label4[g].ko} ${count2}\uC7A5 \uD310\uB9E4`, es: `Venta de ${count2} ${count2 === 1 ? "carta" : "cartas"} de ${label4[g].es}` } });
     if (bonus2) n = appendEvent(n, { type: "bonus", actor, bonus: bonus2, points: bonus2.value, title: { ko: `${bonus2.size}\uC7A5 \uD310\uB9E4 \uBCF4\uB108\uC2A4 \uACF5\uAC1C`, es: `Bono por vender ${bonus2.size === 5 ? "5 o m\xE1s" : bonus2.size} cartas` } });
   }
   if (isRoundOver(n)) return endRound(n);
@@ -5644,11 +5843,11 @@ function scoreResult(captures) {
   if (scores.p1 === scores.p2) return { winner: "draw", reason: "Equal Minhwatu scores / empate", scores };
   return { winner: scores.p1 > scores.p2 ? "p1" : "p2", reason: "Higher Minhwatu score / mayor puntuaci\xF3n", scores };
 }
-function matches(table, card2) {
+function matches2(table, card2) {
   return table.flatMap((c, index) => c.month === card2.month ? [index] : []);
 }
 function resolveCaptured(table, captures, card2, targetIndex) {
-  const indices = matches(table, card2);
+  const indices = matches2(table, card2);
   if (!indices.length) {
     table.push(card2);
     return false;
@@ -5667,7 +5866,7 @@ function finishTurn(s, player, deck, table, captures, hands = s.hands) {
 }
 function finishAfterPlay(s, player, table, captures, hands) {
   if (!s.deck.length) return finishTurn(s, player, [], table, captures, hands);
-  const [drawn, ...deck] = s.deck, indices = matches(table, drawn);
+  const [drawn, ...deck] = s.deck, indices = matches2(table, drawn);
   appendEvent2(s, { type: "draw", actor: player, title: { ko: `\uB354\uBBF8\uC5D0\uC11C ${drawn.month}\uC6D4 \uACF5\uAC1C`, es: `Sale una carta del mes ${drawn.month}` }, cards: [cloneCard(drawn)] });
   if (indices.length === 2) return { ...s, turn: player, hands, deck, table, captures, pending: { card: drawn }, phase: "capture-draw", result: null };
   captureWithEvent(s, player, table, captures, drawn, "draw");
@@ -5682,14 +5881,14 @@ function validate2(s, p, a) {
     if (s.phase !== "play") return "Resolve the current capture first";
     const index = a.payload?.index, target = a.payload?.targetIndex;
     if (!Number.isInteger(index) || Number(index) < 0 || Number(index) >= s.hands[p].length) return "Invalid hand index";
-    const matchesForCard = matches(s.table, s.hands[p][Number(index)]);
+    const matchesForCard = matches2(s.table, s.hands[p][Number(index)]);
     if (matchesForCard.length === 2 && (!Number.isInteger(target) || !matchesForCard.includes(Number(target)))) return "Choose one matching table card";
     if (matchesForCard.length !== 2 && target !== void 0) return "A target is only needed for a duplicate month";
     return null;
   }
   if (a.type === "capture") {
     if (s.phase !== "capture-draw" || !s.pending) return "No pending capture";
-    const target = a.payload?.targetIndex, found = matches(s.table, s.pending.card);
+    const target = a.payload?.targetIndex, found = matches2(s.table, s.pending.card);
     return found.length === 2 && Number.isInteger(target) && found.includes(Number(target)) ? null : "Choose one matching table card";
   }
   return "Unknown action";
@@ -5705,7 +5904,7 @@ function apply3(s, p, a) {
     captureWithEvent(s, p, table, captures, pending.card, "draw", index);
     return finishTurn(s, p, deck, table, captures, hands);
   }
-  const handIndex = Number(a.payload.index), card2 = hands[p].splice(handIndex, 1)[0], indices = matches(table, card2);
+  const handIndex = Number(a.payload.index), card2 = hands[p].splice(handIndex, 1)[0], indices = matches2(table, card2);
   appendEvent2(s, { type: "play", actor: p, title: { ko: `${card2.month}\uC6D4 ${card2.badge.ko} \uB0B4\uAE30`, es: `Jugada: mes ${card2.month}, ${card2.badge.es}` }, cards: [cloneCard(card2)] });
   captureWithEvent(s, p, table, captures, card2, "table", indices.length === 2 ? Number(a.payload.targetIndex) : void 0);
   return finishAfterPlay(s, p, table, captures, hands);
@@ -5722,11 +5921,11 @@ var minhwatuEngine = {
   getPlayerView(s, p) {
     const actions = [];
     if (!s.result && s.turn === p && s.phase === "play") s.hands[p].forEach((card2, index) => {
-      const targetIndices = matches(s.table, card2);
+      const targetIndices = matches2(s.table, card2);
       if (targetIndices.length === 2) targetIndices.forEach((targetIndex) => actions.push(actionLabel(`${card2.month}\uC6D4 ${card2.badge.ko} \u2192 \uBC14\uB2E5 ${targetIndex + 1}\uBC88`, `Mes ${card2.month} ${card2.badge.es} \u2192 mesa ${targetIndex + 1}`, { type: "play", payload: { index, targetIndex } })));
       else actions.push(actionLabel(`${card2.month}\uC6D4 ${card2.badge.ko} \uB0B4\uAE30`, `Jugar mes ${card2.month} ${card2.badge.es}`, { type: "play", payload: { index } }));
     });
-    if (!s.result && s.turn === p && s.phase === "capture-draw" && s.pending) matches(s.table, s.pending.card).forEach((targetIndex) => actions.push(actionLabel(`${s.pending.card.month}\uC6D4 \uCE74\uB4DC\uC640 \uBC14\uB2E5 ${targetIndex + 1}\uBC88 \uAC00\uC838\uC624\uAE30`, `Capturar mes ${s.pending.card.month} con mesa ${targetIndex + 1}`, { type: "capture", payload: { targetIndex } })));
+    if (!s.result && s.turn === p && s.phase === "capture-draw" && s.pending) matches2(s.table, s.pending.card).forEach((targetIndex) => actions.push(actionLabel(`${s.pending.card.month}\uC6D4 \uCE74\uB4DC\uC640 \uBC14\uB2E5 ${targetIndex + 1}\uBC88 \uAC00\uC838\uC624\uAE30`, `Capturar mes ${s.pending.card.month} con mesa ${targetIndex + 1}`, { type: "capture", payload: { targetIndex } })));
     const godoriBonus = s.result && s.rulesVersion !== 2 ? 0 : MINHWATU_GODORI_BONUS;
     const scores = scoreMinhwatuMatch(s.captures, godoriBonus);
     const hand = s.hands[p].map(cloneCard);
@@ -5736,6 +5935,46 @@ var minhwatuEngine = {
     return { game: "minhwatu", turn: s.turn, phase: s.phase, ownHand: hand, hand, opponentCount: s.hands[otherPlayer(p)].length, board: { table, captures, pendingCard: pending, deckCount: s.deck.length, remainingDeck: s.deck.length, scores, breakdown: minhwatuScoreBreakdown(s.captures, godoriBonus), rulesVersion: godoriBonus ? 2 : 1, actionLog: structuredClone(s.events ?? []) }, log: structuredClone(s.events ?? []), status: s.result ? "finished" : s.turn === p ? "your-turn" : "opponent-turn", result: s.result, actions };
   },
   getResult: (s) => s.result
+};
+
+// src/games/rules.ts
+var marbleCreditRules = {
+  ko: [
+    "\uBAA9\uD45C \u2014 \uC790\uCCB4 \uBD80\uB3D9\uC0B0 \uAC8C\uC784 \uADDC\uCE59\uC785\uB2C8\uB2E4. \uC0C1\uB300\uAC00 \uD30C\uC0B0\uD558\uBA74 \uC774\uAE30\uACE0, 120\uD134 \uB4A4\uC5D0\uB294 \uD604\uAE08+\uB3C4\uC2DC \uB9E4\uC785\uAC00+\uAC74\uC124 \uBE44\uC6A9\u2212\uBBF8\uC0C1\uD658 \uB300\uCD9C\uC744 \uD569\uCE5C \uC21C\uC790\uC0B0\uC744 \uBE44\uAD50\uD569\uB2C8\uB2E4.",
+    "\uB9D0\uACFC \uC774\uB3D9 \u2014 \uCCAB \uC8FC\uC0AC\uC704\uB97C \uAD74\uB9AC\uAE30 \uC804\uC5D0 \uC6D0\uD558\uB294 \uB9D0\uC744 \uACE0\uB985\uB2C8\uB2E4. \uC0C1\uB300\uC640 \uAC19\uC740 \uB9D0\uC740 \uC120\uD0DD\uD560 \uC218 \uC5C6\uACE0 \uCCAB \uC774\uB3D9 \uB4A4\uC5D0\uB294 \uACE0\uC815\uB429\uB2C8\uB2E4. \uB450 \uC8FC\uC0AC\uC704 \uD569\uB9CC\uD07C 40\uCE78 \uBCF4\uB4DC\uB97C \uC774\uB3D9\uD558\uBA70 \uCD9C\uBC1C\uC810\uC744 \uC9C0\uB098\uBA74 200\uC744 \uBC1B\uC2B5\uB2C8\uB2E4. \uAD11\uC8FC\uC640 \uC0B0\uD1A0\uB3C4\uBC0D\uACE0\uB97C \uD3EC\uD568\uD574 24\uAC1C \uB3C4\uC2DC\uAC00 \uC788\uC2B5\uB2C8\uB2E4.",
+    "\uB3C4\uC2DC\uC640 \uAC74\uC124 \u2014 \uBE48 \uB3C4\uC2DC\uB97C \uAD6C\uB9E4\uD558\uAC70\uB098 \uC9C0\uB098\uAC11\uB2C8\uB2E4. \uB0B4 \uB3C4\uC2DC\uC5D0\uB294 \uC0C9\uC0C1 \uB3C4\uC2DC\uAD70 \uC644\uC131 \uC5EC\uBD80\uC640 \uAD00\uACC4\uC5C6\uC774 \uBCC4\uC7A5\u2192\uBE4C\uB529\u2192\uB79C\uB4DC\uB9C8\uD06C\uB97C \uC21C\uC11C\uB300\uB85C \uC9C0\uC744 \uC218 \uC788\uC2B5\uB2C8\uB2E4. \uB2E8\uACC4\uB9C8\uB2E4 100, \uD1B5\uD589\uB8CC\uB294 \uAE30\uBCF8\uC758 2\uBC30\u21924\uBC30\u21928\uBC30\uC785\uB2C8\uB2E4. \uC0C1\uB300 \uB3C4\uC2DC\uC758 \uD1B5\uD589\uB8CC\uB294 \uC790\uB3D9 \uC9C0\uAE09\uB429\uB2C8\uB2E4.",
+    "\uB300\uCD9C \u2014 \uC790\uAE30 \uCC28\uB840\uC5D0 \uBBF8\uC0C1\uD658 \uB300\uCD9C\uC774 \uC5C6\uC73C\uBA74 300\uC744 \uBC1B\uC744 \uC218 \uC788\uACE0, \uC0C1\uD658\uC561\uC740 330\uC785\uB2C8\uB2E4. \uCD94\uAC00 \uC774\uC790\uB098 \uB9CC\uAE30\uB294 \uC5C6\uC2B5\uB2C8\uB2E4. \uC9C0\uAE09 \uC704\uAE30 \uC678\uC758 \uC790\uAE30 \uCC28\uB840\uC5D0 330 \uC804\uC561\uC744 \uC0C1\uD658\uD569\uB2C8\uB2E4. \uBBF8\uC0C1\uD658\uC561\uC740 \uC21C\uC790\uC0B0\uC5D0\uC11C \uBE7C\uBA70, \uC0C1\uD658 \uD6C4 \uB2E4\uC2DC \uBE4C\uB824\uB3C4 \uB9E4\uBC88 30\uC758 \uBE44\uC6A9\uC774 \uBC1C\uC0DD\uD569\uB2C8\uB2E4.",
+    "\uC9C0\uAE09 \uC704\uAE30 \u2014 \uD1B5\uD589\uB8CC\xB7\uC138\uAE08\xB7\uCE74\uB4DC \uBE44\uC6A9\uC744 \uB0BC \uD604\uAE08\uC774 \uBD80\uC871\uD558\uBA74 \uD589\uB3D9\uC774 \uBA48\uCDA5\uB2C8\uB2E4. \uD604\uC7AC \uD604\uAE08+300\uC73C\uB85C \uC9C0\uAE09\uC561\uC744 \uCDA9\uB2F9\uD560 \uC218 \uC788\uACE0 \uAE30\uC874 \uB300\uCD9C\uC774 \uC5C6\uC744 \uB54C\uB9CC \uB300\uCD9C\uB85C \uD574\uACB0\uD560 \uC218 \uC788\uC2B5\uB2C8\uB2E4. \uB300\uCD9C\uC744 \uC120\uD0DD\uD558\uBA74 \uD574\uB2F9 \uC9C0\uAE09\uC744 \uD55C \uBC88 \uCC98\uB9AC\uD558\uACE0 \uC6D0\uB798 \uCC28\uB840\uB85C \uB3CC\uC544\uAC11\uB2C8\uB2E4. \uD30C\uC0B0 \uC778\uC815\uC740 \uACBD\uAE30 \uC885\uB8CC\uB97C \uB73B\uD558\uBA70 \uB3C4\uC2DC \uC790\uB3D9 \uB9E4\uAC01\uC740 \uC5C6\uC2B5\uB2C8\uB2E4.",
+    "\uD669\uAE08\uC5F4\uC1E0 \u2014 13\uC885 \uCE74\uB4DC\uB294 \uC0C1\uAE08(150\xB7200\xB780), \uC5EC\uD589\uBE44 100, \uAC74\uC124 \uB2E8\uACC4\uB2F9 \uC218\uB9AC\uBE44 40, \uC0B0\uD1A0\uB3C4\uBC0D\uACE0 \uBC29\uBB38, \uCD9C\uBC1C \uC774\uB3D9(+200), \uC138 \uCE78 \uD6C4\uD1F4, \uBB34\uC778\uB3C4 \uC774\uB3D9, \uD0C8\uCD9C\uAD8C, \uBB34\uB8CC \uC5F4\uCC28\uD45C, \uB3C4\uC2DC\uB2F9 \uBC30\uB2F9 30, \uB3C5\uC810 \uACBD\uACE0\uC785\uB2C8\uB2E4. \uC774\uB3D9 \uCE74\uB4DC\uC758 \uB3C4\uCC29 \uD6A8\uACFC\uB3C4 \uC801\uC6A9\uB418\uBA70 \uC138 \uCE78 \uD6C4\uD1F4\uC5D0\uB294 \uCD9C\uBC1C \uBCF4\uB108\uC2A4\uAC00 \uC5C6\uC2B5\uB2C8\uB2E4.",
+    "\uB3C5\uC810 \uACBD\uACE0 \u2014 \uAC19\uC740 \uC0C9\uC758 \uB3C4\uC2DC\uB97C \uBAA8\uB450 \uAC00\uC9C4 \uB3C4\uC2DC\uAD70\uC774 \uAC00\uC7A5 \uB9CE\uC740 \uC0AC\uB78C\uC774 \uB3C4\uC2DC\uAD70\uB2F9 100, \uCD5C\uB300 300\uC744 \uC740\uD589\uC5D0 \uB0C5\uB2C8\uB2E4. \uB3D9\uB960\uC774\uBA74 \uCE74\uB4DC\uB97C \uBF51\uC740 \uC0AC\uB78C\uC5D0\uAC8C \uC801\uC6A9\uB429\uB2C8\uB2E4. \uB204\uAD6C\uB3C4 \uC644\uC131\uD55C \uB3C4\uC2DC\uAD70\uC774 \uC5C6\uC73C\uBA74 \uBE44\uC6A9\uC774 \uC5C6\uC2B5\uB2C8\uB2E4. \uB3C4\uC2DC\uAD70 \uC644\uC131 \uC790\uCCB4\uB294 \uC989\uC2DC \uC2B9\uB9AC\uB098 \uD1B5\uD589\uB8CC \uCD94\uAC00 \uBC30\uC218\uAC00 \uC544\uB2D9\uB2C8\uB2E4.",
+    "\uBB34\uC778\uB3C4\xB7\uC5F4\uCC28\xB7\uAE30\uAE08 \u2014 \uBB34\uC778\uB3C4\uB294 \uC790\uAE30 \uCC28\uB840 \uC138 \uBC88 \uC815\uC9C0\uC785\uB2C8\uB2E4. \uC30D\uC774\uBA74 \uD0C8\uCD9C\uD574 \uC774\uB3D9\uD558\uACE0, \uC544\uB2C8\uBA74 \uD55C \uCC28\uB840 \uC27D\uB2C8\uB2E4. 100\uC774\uB098 \uD0C8\uCD9C\uAD8C\uC73C\uB85C \uB098\uC640 \uC8FC\uC0AC\uC704\uB97C \uAD74\uB9B4 \uC218\uB3C4 \uC788\uC2B5\uB2C8\uB2E4. \uC5ED\uC5D0\uC11C\uB294 \uB2E4\uC74C \uCC28\uB840\uC5D0 \uC6B4\uC784 100\uC73C\uB85C \uB3C4\uC2DC\uB97C \uACE0\uB974\uAC70\uB098 \uAC74\uB108\uB701\uB2C8\uB2E4. \uBB34\uB8CC \uD45C\uB294 \uC6B4\uC784 0\uC785\uB2C8\uB2E4. \uAE30\uAE08 \uB0A9\uBD80 \uCE78\uC5D0 150\uC744 \uB0B4\uBA70 \uC0AC\uD68C\uBCF5\uC9C0\uAE30\uAE08 \uCE78\uC5D0\uC11C \uC313\uC778 \uAE30\uAE08\uC744 \uBC1B\uC2B5\uB2C8\uB2E4."
+  ],
+  es: [
+    "Objetivo \u2014 Usamos reglas propias de un juego de propiedades. Ganas si tu pareja quiebra; despu\xE9s de 120 turnos se compara el patrimonio neto: efectivo + precio de las ciudades + costo de construcci\xF3n \u2212 deuda pendiente.",
+    "Figura y movimiento \u2014 Elige una figura antes de lanzar tus primeros dados. No puede ser la misma de tu pareja y queda fija despu\xE9s. Avanza la suma de los dos dados por las 40 casillas. Al pasar por Salida recibes 200. Hay 24 ciudades, incluyendo Gwangju y Santo Domingo.",
+    "Ciudades y construcci\xF3n \u2014 Puedes comprar una ciudad libre o pasar. En cualquier ciudad tuya puedes construir villa, edificio y monumento, sin completar un color. Cada nivel cuesta 100 y el alquiler pasa a 2, 4 y 8 veces el valor base. El alquiler rival se paga autom\xE1ticamente.",
+    "Pr\xE9stamo \u2014 En tu turno, si no tienes deuda pendiente, puedes recibir 300 y debes devolver 330. No hay intereses adicionales ni fecha de vencimiento. Pagas los 330 completos en tu turno, fuera de una crisis de pago. La deuda se resta del patrimonio; pedir otro pr\xE9stamo despu\xE9s de pagarlo vuelve a costar 30.",
+    "Crisis de pago \u2014 Si no tienes efectivo para un alquiler, impuesto o gasto de carta, el juego espera tu decisi\xF3n. Solo puedes resolverlo con un pr\xE9stamo si no debes otro y tu efectivo + 300 cubre el pago. Al pedirlo, el pago se procesa una sola vez y contin\xFAa el turno original. Declarar quiebra termina la partida; las ciudades no se venden autom\xE1ticamente.",
+    "Llave dorada \u2014 Las 13 cartas incluyen premios (150, 200 y 80), gasto de viaje 100, mantenimiento 40 por nivel construido, visita a Santo Domingo, viaje a Salida (+200), retroceso de tres casillas, isla, pase de salida, boleto gratis, dividendo 30 por ciudad y advertencia de monopolio. Se aplica tambi\xE9n el efecto del destino; al retroceder no cobras Salida.",
+    "Monopolio \u2014 Quien tenga m\xE1s grupos de color completos paga 100 por grupo al banco, hasta 300. En empate paga quien sac\xF3 la carta. Si nadie complet\xF3 un grupo, no se cobra. Completar un color no da una victoria inmediata ni otro multiplicador de alquiler.",
+    "Isla, tren y fondo \u2014 La isla te detiene tres turnos propios. Si sacas dobles, sales y avanzas; si no, pierdes un turno. Tambi\xE9n puedes pagar 100 o usar un pase y luego lanzar. La estaci\xF3n permite viajar a una ciudad por 100 en tu pr\xF3ximo turno o pasar el tren. El boleto gratis cuesta 0. El aporte al fondo es 150 y en Fondo Social recibes lo acumulado."
+  ]
+};
+var marbleTieredRules = {
+  ko: marbleCreditRules.ko.map((rule, index) => index === 2 ? "\uB3C4\uC2DC\uC640 \uAC74\uC124 \u2014 \uBE48 \uB3C4\uC2DC\uB97C \uAD6C\uB9E4\uD558\uAC70\uB098 \uC9C0\uB098\uAC11\uB2C8\uB2E4. \uB0B4 \uB3C4\uC2DC\uC5D0\uB294 \uC0C9\uC0C1 \uB3C4\uC2DC\uAD70 \uC644\uC131 \uC5EC\uBD80\uC640 \uAD00\uACC4\uC5C6\uC774 \uBCC4\uC7A5\u2192\uBE4C\uB529\u2192\uB79C\uB4DC\uB9C8\uD06C\uB97C \uC21C\uC11C\uB300\uB85C \uC9C0\uC744 \uC218 \uC788\uC2B5\uB2C8\uB2E4. \uAC74\uC124\uBE44\uB294 \uD574\uB2F9 \uB3C4\uC2DC \uB9E4\uC785\uAC00\uC758 40%\u219260%\u219280%\uC774\uBA70, 10 \uB2E8\uC704\uB85C \uBC18\uC62C\uB9BC\uD558\uACE0 \uCD5C\uC18C 40\uC785\uB2C8\uB2E4. \uD1B5\uD589\uB8CC\uB294 \uAE30\uBCF8\uC758 2\uBC30\u21924\uBC30\u21928\uBC30\uAC00 \uB429\uB2C8\uB2E4. \uC0C1\uB300 \uB3C4\uC2DC\uC758 \uD1B5\uD589\uB8CC\uB294 \uC790\uB3D9 \uC9C0\uAE09\uB429\uB2C8\uB2E4." : rule),
+  es: marbleCreditRules.es.map((rule, index) => index === 2 ? "Ciudades y construcci\xF3n \u2014 Puedes comprar una ciudad libre o pasar. En cualquier ciudad tuya puedes construir villa, edificio y monumento, sin completar un color. Cada nivel cuesta el 40 %, 60 % y 80 % del precio de compra de la ciudad; se redondea a 10 y nunca baja de 40. El alquiler pasa a 2, 4 y 8 veces el valor base. El alquiler rival se paga autom\xE1ticamente." : rule)
+};
+var marbleExpandedRules = {
+  ko: [
+    ...marbleTieredRules.ko.map((rule, index) => index === 5 ? rule.replace("\uD669\uAE08\uC5F4\uC1E0 \u2014 13\uC885 \uCE74\uB4DC\uB294", "\uD669\uAE08\uC5F4\uC1E0 \u2014 \uC0C8 \uBC29\uC740 16\uC885\uC774\uBA70 \uC774\uC804 \uC800\uC7A5 \uBC29\uC740 \uAE30\uC874 \uB371\uC744 \uC720\uC9C0\uD569\uB2C8\uB2E4. \uAE30\uBCF8 13\uC885 \uCE74\uB4DC\uB294") : rule),
+    "\uB3C4\uC2DC \uCD95\uC81C\xB7\uC815\uC804 \u2014 \uCD95\uC81C\uB294 \uB0B4 \uB3C4\uC2DC \uD558\uB098\uB97C \uC120\uD0DD\uD574 \uB2E4\uC74C \uC0C1\uB300 \uCC29\uC9C0 1\uD68C \uD1B5\uD589\uB8CC\uB97C 2\uBC30\uB85C \uB9CC\uB4ED\uB2C8\uB2E4. \uC815\uC804\uC740 \uC0C1\uB300 \uB3C4\uC2DC \uD558\uB098\uB97C \uC120\uD0DD\uD574 \uB2E4\uC74C \uB0B4 \uCC29\uC9C0 1\uD68C \uD1B5\uD589\uB8CC\uB97C \uC808\uBC18\uC73C\uB85C \uB9CC\uB4ED\uB2C8\uB2E4(\uB0B4\uB9BC, \uCD5C\uC18C 1). \uB300\uC0C1 \uCC29\uC9C0\uAE4C\uC9C0 \uC720\uC9C0\uB418\uBA70 \uB2E4\uB978 \uB3C4\uC2DC\uB294 \uBC14\uB00C\uC9C0 \uC54A\uC2B5\uB2C8\uB2E4. \uB458 \uB2E4 \uAC78\uB9B0 \uB3C4\uC2DC\uB294 2\uBC30\xD7\uC808\uBC18\uC73C\uB85C \uAE30\uBCF8 \uD1B5\uD589\uB8CC\uAC00 \uB429\uB2C8\uB2E4. \uAC19\uC740 \uD6A8\uACFC\uB97C \uB2E4\uC2DC \uC120\uD0DD\uD558\uBA74 \uC911\uBCF5 \uBC30\uC218\uAC00 \uC544\uB2CC \uD574\uB2F9 \uD6A8\uACFC \uAC31\uC2E0\uC785\uB2C8\uB2E4. \uC120\uD0DD \uAC00\uB2A5\uD55C \uB3C4\uC2DC\uAC00 \uC5C6\uC73C\uBA74 \uD6A8\uACFC\uAC00 \uC5C6\uC2B5\uB2C8\uB2E4.",
+    "\uD1B5\uD589\uB8CC \uBA74\uC81C\uAD8C \u2014 \uD55C \uC7A5\uC744 \uBCF4\uAD00\uD558\uACE0 \uC55E\uC73C\uB85C \uD1B5\uD589\uB8CC\uAC00 \uBC1C\uC0DD\uD558\uBA74 \uC9C0\uAE09 \uC804\uC5D0 \uC9C1\uC811 \uC0AC\uC6A9\uD558\uAC70\uB098 \uC9C0\uAE09\uC744 \uC120\uD0DD\uD569\uB2C8\uB2E4. \uC790\uB3D9 \uC0AC\uC6A9\uB418\uC9C0 \uC54A\uC73C\uBA70 \uC138\uAE08\uC5D0\uB294 \uC4F8 \uC218 \uC5C6\uC2B5\uB2C8\uB2E4. \uC0AC\uC6A9\uD558\uBA74 \uD1B5\uD589\uB8CC 1\uD68C\uB9CC \uBA74\uC81C\uD558\uACE0 \uCE74\uB4DC\uB294 \uB371\uC73C\uB85C \uB3CC\uC544\uAC11\uB2C8\uB2E4. \uB300\uC0C1 \uB3C4\uC2DC \uCD95\uC81C\xB7\uC815\uC804\uC740 \uCC29\uC9C0 \uC21C\uAC04 \uC18C\uBAA8\uB418\uBBC0\uB85C \uBA74\uC81C\uAD8C\uC744 \uC368\uB3C4 \uB3C4\uC2DC \uD6A8\uACFC\uB294 \uC18C\uBAA8\uB429\uB2C8\uB2E4. \uC9C0\uAE09\uC744 \uC120\uD0DD\uD55C \uB4A4 \uD604\uAE08\uC774 \uBD80\uC871\uD558\uBA74 \uC77C\uBC18 \uC9C0\uAE09 \uC704\uAE30\uB85C \uB118\uC5B4\uAC11\uB2C8\uB2E4."
+  ],
+  es: [
+    ...marbleTieredRules.es.map((rule, index) => index === 5 ? rule.replace("Llave dorada \u2014 Las 13 cartas incluyen", "Llave dorada \u2014 Las salas nuevas usan 16 cartas; las guardadas conservan su mazo. Las 13 cartas b\xE1sicas incluyen") : rule),
+    "Festival y apag\xF3n \u2014 Festival elige una ciudad propia y duplica el alquiler en la pr\xF3xima llegada rival, una vez. Apag\xF3n elige una ciudad rival y reduce a la mitad el alquiler en tu pr\xF3xima llegada, una vez (redondeo hacia abajo, m\xEDnimo 1). Persisten hasta esa llegada y no cambian otras ciudades. Juntos dan el alquiler base: doble por mitad. Repetir el mismo efecto lo renueva, sin acumular multiplicadores. Sin ciudad elegible, no tienen efecto.",
+    "Pase de alquiler \u2014 Guarda un pase y elige usarlo o pagar antes de un futuro alquiler. No se usa autom\xE1ticamente ni sirve para impuestos. Exime un solo alquiler y vuelve al mazo. Festival y apag\xF3n se consumen al llegar, incluso si usas el pase. Si eliges pagar sin efectivo suficiente, se aplica la crisis de pago normal."
+  ]
 };
 
 // src/games/marble.ts
@@ -5803,9 +6042,11 @@ var modernBoard = [
   { kind: "property", name: { ko: "\uBC34\uCFE0\uBC84", es: "Vancouver" }, price: 560, rent: 112, group: "silver" },
   { kind: "rest", name: { ko: "\uD734\uC2DD \uAD11\uC7A5", es: "Plaza de descanso" } }
 ];
-var boardFor = (s) => s.boardVersion === 2 ? modernBoard : legacyBoard;
+var journeyBoard = modernBoard.map((tile, index) => index === 3 ? modernBoard[15] : index === 15 ? modernBoard[3] : index === 31 ? { ...tile, name: { ko: "\uB274\uC5B4\uD06C", es: "Newark" } } : index === 38 ? { ...tile, name: { ko: "\uC11C\uC6B8", es: "Se\xFAl" } } : tile);
+var boardFor = (s) => s.boardVersion === 2 ? s.cityRouteVersion === 2 ? journeyBoard : modernBoard : legacyBoard;
 var legacyIds = ["festival", "lottery", "rent-rebate", "travel-cost", "maintenance", "visit-santo-domingo", "advance-start", "retreat"];
 var modernIds = [...legacyIds, "go-to-island", "escape-pass", "train-ticket", "city-dividend"];
+var expandedIds = [...modernIds, "monopoly-warning", "city-festival", "blackout", "rent-pass"];
 var cards = {
   festival: { title: { ko: "\uB3D9\uB124 \uCD95\uC81C", es: "Fiesta del barrio" }, text: { ko: "\uCD95\uC81C \uC900\uBE44\uB97C \uB3C4\uC640 150\uC744 \uBC1B\uC2B5\uB2C8\uB2E4.", es: "Ayudas con la fiesta del barrio y recibes 150." }, effect: "cash" },
   lottery: { title: { ko: "\uC791\uC740 \uBCF5\uAD8C \uB2F9\uCCA8", es: "Premio de loter\xEDa" }, text: { ko: "\uBCF5\uAD8C\uC5D0 \uB2F9\uCCA8\uB418\uC5B4 200\uC744 \uBC1B\uC2B5\uB2C8\uB2E4.", es: "Te ganas un premio de loter\xEDa y recibes 200." }, effect: "cash" },
@@ -5819,10 +6060,23 @@ var cards = {
   "escape-pass": { title: { ko: "\uD0C8\uCD9C\uAD8C", es: "Pase de salida" }, text: { ko: "\uBB34\uC778\uB3C4\uC5D0\uC11C \uB098\uC62C \uB54C \uC4F8 \uD0C8\uCD9C\uAD8C\uC744 \uBC1B\uC2B5\uB2C8\uB2E4.", es: "Recibes un pase para salir de la isla." }, effect: "pass" },
   "train-ticket": { title: { ko: "\uBB34\uB8CC \uC5F4\uCC28\uD45C", es: "Boleto de tren gratis" }, text: { ko: "\uC6B4\uC784 \uC5C6\uC774 \uBD80\uB3D9\uC0B0 \uD55C \uACF3\uC73C\uB85C \uC774\uB3D9\uD560 \uC218 \uC788\uC2B5\uB2C8\uB2E4.", es: "Puedes viajar a una propiedad sin pagar el pasaje." }, effect: "train" },
   "city-dividend": { title: { ko: "\uB3C4\uC2DC \uBC30\uB2F9\uAE08", es: "Dividendo de la ciudad" }, text: { ko: "\uC18C\uC720\uD55C \uBD80\uB3D9\uC0B0\uB9C8\uB2E4 30\uC744 \uBC1B\uC2B5\uB2C8\uB2E4.", es: "Recibes 30 por cada propiedad que tengas." }, effect: "cash" },
-  "monopoly-warning": { title: { ko: "\uB3C5\uC810 \uACBD\uACE0", es: "Advertencia de monopolio" }, text: { ko: "\uC644\uC131\uD55C \uC0C9\uC0C1 \uB3C4\uC2DC\uAD70\uC774 \uAC00\uC7A5 \uB9CE\uC740 \uC0AC\uB78C\uC5D0\uAC8C \uB3C4\uC2DC\uAD70\uB2F9 100, \uCD5C\uB300 300\uC758 \uB3C5\uC810 \uBD80\uB2F4\uAE08\uC744 \uBD80\uACFC\uD569\uB2C8\uB2E4. \uB3D9\uB960\uC774\uBA74 \uCE74\uB4DC\uB97C \uBF51\uC740 \uC0AC\uB78C, \uC644\uC131\uD55C \uB3C4\uC2DC\uAD70\uC774 \uC5C6\uC73C\uBA74 \uBD80\uB2F4\uAE08\uC774 \uC5C6\uC2B5\uB2C8\uB2E4.", es: "Quien tenga m\xE1s grupos de color completos paga 100 por grupo, hasta 300. En empate paga quien sac\xF3 la carta; si nadie complet\xF3 un grupo, no se cobra." }, effect: "cash" }
+  "monopoly-warning": { title: { ko: "\uB3C5\uC810 \uACBD\uACE0", es: "Advertencia de monopolio" }, text: { ko: "\uC644\uC131\uD55C \uC0C9\uC0C1 \uB3C4\uC2DC\uAD70\uC774 \uAC00\uC7A5 \uB9CE\uC740 \uC0AC\uB78C\uC5D0\uAC8C \uB3C4\uC2DC\uAD70\uB2F9 100, \uCD5C\uB300 300\uC758 \uB3C5\uC810 \uBD80\uB2F4\uAE08\uC744 \uBD80\uACFC\uD569\uB2C8\uB2E4. \uB3D9\uB960\uC774\uBA74 \uCE74\uB4DC\uB97C \uBF51\uC740 \uC0AC\uB78C, \uC644\uC131\uD55C \uB3C4\uC2DC\uAD70\uC774 \uC5C6\uC73C\uBA74 \uBD80\uB2F4\uAE08\uC774 \uC5C6\uC2B5\uB2C8\uB2E4.", es: "Quien tenga m\xE1s grupos de color completos paga 100 por grupo, hasta 300. En empate paga quien sac\xF3 la carta; si nadie complet\xF3 un grupo, no se cobra." }, effect: "cash" },
+  "city-festival": { title: { ko: "\uB3C4\uC2DC \uCD95\uC81C", es: "Festival de ciudad" }, text: { ko: "\uB0B4 \uB3C4\uC2DC \uD558\uB098\uB97C \uC120\uD0DD\uD569\uB2C8\uB2E4. \uADF8 \uB3C4\uC2DC\uC758 \uB2E4\uC74C \uC0C1\uB300 \uCC29\uC9C0 1\uD68C \uD1B5\uD589\uB8CC\uAC00 2\uBC30\uAC00 \uB429\uB2C8\uB2E4. \uB300\uC0C1 \uCC29\uC9C0\uAE4C\uC9C0 \uC720\uC9C0\uB429\uB2C8\uB2E4.", es: "Elige una ciudad propia. Su alquiler se duplica una vez, en la pr\xF3xima llegada rival. Permanece hasta esa llegada." }, effect: "cash" },
+  blackout: { title: { ko: "\uC815\uC804", es: "Apag\xF3n" }, text: { ko: "\uC0C1\uB300 \uB3C4\uC2DC \uD558\uB098\uB97C \uC120\uD0DD\uD569\uB2C8\uB2E4. \uADF8 \uB3C4\uC2DC\uC758 \uB2E4\uC74C \uB0B4 \uCC29\uC9C0 1\uD68C \uD1B5\uD589\uB8CC\uAC00 \uC808\uBC18\uC774 \uB429\uB2C8\uB2E4(\uB0B4\uB9BC, \uCD5C\uC18C 1). \uB300\uC0C1 \uCC29\uC9C0\uAE4C\uC9C0 \uC720\uC9C0\uB429\uB2C8\uB2E4.", es: "Elige una ciudad rival. En tu pr\xF3xima llegada a ella pagas la mitad una vez (redondeo hacia abajo, m\xEDnimo 1). Permanece hasta esa llegada." }, effect: "cash" },
+  "rent-pass": { title: { ko: "\uD1B5\uD589\uB8CC \uBA74\uC81C\uAD8C", es: "Pase de alquiler" }, text: { ko: "\uD1B5\uD589\uB8CC \uBA74\uC81C\uAD8C \uD55C \uC7A5\uC744 \uBCF4\uAD00\uD569\uB2C8\uB2E4. \uC55E\uC73C\uB85C \uD1B5\uD589\uB8CC\uB97C \uB0B4\uAE30 \uC804\uC5D0 \uC9C1\uC811 \uC120\uD0DD\uD574 1\uD68C \uBA74\uC81C\uD560 \uC218 \uC788\uC2B5\uB2C8\uB2E4. \uC790\uB3D9 \uC0AC\uC6A9\uB418\uC9C0 \uC54A\uC73C\uBA70 \uC138\uAE08\uC5D0\uB294 \uC4F8 \uC218 \uC5C6\uC2B5\uB2C8\uB2E4.", es: "Guarda un pase. Antes de un futuro alquiler puedes elegir usarlo para eximir un solo pago. No se usa autom\xE1ticamente ni sirve para impuestos." }, effect: "pass" }
 };
 var propertyRent = (tile, record, modern) => (tile.rent ?? 0) * (modern ? [1, 2, 4, 8][record.houses] ?? 1 : record.houses + 1);
-var assetsFor = (s, p, board) => s.money[p] - (s.debt?.[p] ?? 0) + Object.entries(s.properties).reduce((sum2, [index, record]) => record.owner === p ? sum2 + (board[Number(index)]?.price ?? 0) + record.houses * 100 : sum2, 0);
+function marbleBuildCost(tile, level, economicVersion) {
+  if (economicVersion !== 2) return 100;
+  const factor = [0.4, 0.6, 0.8][Math.max(0, Math.min(2, Math.trunc(level)))] ?? 0.4;
+  return Math.max(40, Math.round(Math.max(0, tile.price ?? 0) * factor / 10) * 10);
+}
+var assetsFor = (s, p, board) => s.money[p] - (s.debt?.[p] ?? 0) + Object.entries(s.properties).reduce((sum2, [index, record]) => {
+  if (record.owner !== p) return sum2;
+  const tile = board[Number(index)];
+  const buildingCost = tile ? Array.from({ length: record.houses }, (_, level) => marbleBuildCost(tile, level, s.economicVersion)).reduce((total, cost) => total + cost, 0) : 0;
+  return sum2 + (tile?.price ?? 0) + buildingCost;
+}, 0);
 var completedGroups = (s, p) => {
   const board = boardFor(s);
   return [...new Set(board.filter((t) => t.kind === "property").map((t) => t.group))].filter((group) => board.every((t, index) => t.kind !== "property" || t.group !== group || s.properties[String(index)]?.owner === p));
@@ -5838,7 +6092,14 @@ function view2(s, p) {
   const actions = [];
   const add = (ko, es, action) => actions.push({ label: { ko, es }, action });
   if (!s.result && s.active === p) {
-    if (s.economicVersion === 1) {
+    if (s.phase === "event-decision" && s.pendingEvent) {
+      const owner = s.pendingEvent.id === "city-festival" ? p : otherPlayer(p);
+      for (const index of propIndices(board)) if (s.properties[String(index)]?.owner === owner) add(`${board[index].name.ko} \uC120\uD0DD`, `Elegir ${board[index].name.es}`, { type: "choose-event-city", payload: { tile: index } });
+    } else if (s.phase === "rent-decision" && s.pendingRent) {
+      add(`\uD1B5\uD589\uB8CC \uC9C0\uAE09 \xB7 ${s.pendingRent.amount}`, `Pagar alquiler \xB7 ${s.pendingRent.amount}`, { type: "pay-rent" });
+      if ((s.rentPasses?.[p] ?? 0) > 0) add("\uBA74\uC81C\uAD8C \uC0AC\uC6A9 \xB7 \uC774\uBC88 \uD1B5\uD589\uB8CC 1\uD68C", "Usar pase \xB7 este alquiler", { type: "use-rent-pass" });
+    }
+    if ((s.economicVersion === 1 || s.economicVersion === 2) && s.phase !== "event-decision" && s.phase !== "rent-decision") {
       const debt = s.debt?.[p] ?? 0;
       if (debt === 0 && (s.phase !== "debt" || s.money[p] + 300 >= (s.pendingPayment?.amount ?? Infinity))) add("\uB300\uCD9C \uBC1B\uAE30 \xB7 300 / \uC0C1\uD658 330", "Pedir pr\xE9stamo \xB7 300 / devolver 330", { type: "borrow" });
       if (debt > 0 && s.money[p] >= debt && s.phase !== "debt") add(`\uB300\uCD9C \uC0C1\uD658 \xB7 ${debt}`, `Pagar pr\xE9stamo \xB7 ${debt}`, { type: "repay" });
@@ -5874,9 +6135,11 @@ function view2(s, p) {
         const ownedCount = Object.entries(s.properties).filter(([ownedIndex, owned]) => owned.owner === p && board[Number(ownedIndex)]?.group === tile.group).length;
         const canBuild = s.boardVersion === 2 || ownedCount === groupSize;
         const levels = s.boardVersion === 2 ? 3 : 2;
-        if (canBuild && record.houses < levels && s.money[p] >= 100) {
-          const tier = s.boardVersion === 2 ? [["\uBCC4\uC7A5", "Villa"], ["\uBE4C\uB529", "Edificio"], s.economicVersion === 1 ? ["\uB79C\uB4DC\uB9C8\uD06C", "Monumento"] : ["\uD638\uD154", "Hotel"]][record.houses] : ["\uC9D1", "Casa"];
-          add(`${tier[0]}: ${tile.name.ko} (100)`, `${tier[1]}: ${tile.name.es} (100)`, { type: "build", payload: { tile: index } });
+        const cost = marbleBuildCost(tile, record.houses, s.economicVersion);
+        if (canBuild && record.houses < levels && s.money[p] >= cost) {
+          const tier = s.boardVersion === 2 ? [["\uBCC4\uC7A5", "Villa"], ["\uBE4C\uB529", "Edificio"], "landmark"][record.houses] : ["\uC9D1", "Casa"];
+          const name = Array.isArray(tier) ? tier : s.economicVersion === 1 || s.economicVersion === 2 ? ["\uB79C\uB4DC\uB9C8\uD06C", "Monumento"] : ["\uD638\uD154", "Hotel"];
+          add(`${name[0]}: ${tile.name.ko} (${cost})`, `${name[1]}: ${tile.name.es} (${cost})`, { type: "build", payload: { tile: index } });
         }
       }
       add("\uCC28\uB840 \uB9C8\uCE58\uAE30", "Terminar turno", { type: "endTurn" });
@@ -5887,7 +6150,22 @@ function view2(s, p) {
     phase: s.result ? "finished" : s.phase,
     board: {
       version: s.boardVersion ?? 1,
-      tiles: board.map((tile, index) => ({ ...tile, name: { ...tile.name }, index, owner: s.properties[String(index)]?.owner ?? null, houses: s.properties[String(index)]?.houses ?? 0 })),
+      cityRouteVersion: s.cityRouteVersion ?? 1,
+      tiles: board.map((tile, index) => {
+        const houses = s.properties[String(index)]?.houses ?? 0;
+        const maxLevels = s.boardVersion === 2 ? 3 : 2;
+        const canUpgrade = tile.kind === "property" && houses < maxLevels;
+        return {
+          ...tile,
+          name: { ...tile.name },
+          index,
+          owner: s.properties[String(index)]?.owner ?? null,
+          houses,
+          rentModifiers: s.rentModifiers?.[String(index)] ? { ...s.rentModifiers[String(index)].festival ? { festival: { ...s.rentModifiers[String(index)].festival } } : {}, ...s.rentModifiers[String(index)].blackout ? { blackout: { ...s.rentModifiers[String(index)].blackout } } : {} } : null,
+          nextBuildCost: canUpgrade ? marbleBuildCost(tile, houses, s.economicVersion) : null,
+          nextRent: canUpgrade ? propertyRent(tile, { owner: s.properties[String(index)]?.owner ?? p, houses: houses + 1 }, s.boardVersion === 2) : null
+        };
+      }),
       positions: { ...s.positions },
       money: { ...s.money },
       assets: { p1: assetsFor(s, "p1", board), p2: assetsFor(s, "p2", board) },
@@ -5902,6 +6180,12 @@ function view2(s, p) {
       pendingTrainFare: s.phase === "train-decision" ? s.pendingTrainFare ?? 100 : null,
       lastEvent: s.lastEvent ? { ...s.lastEvent, title: { ...s.lastEvent.title }, text: { ...s.lastEvent.text } } : null,
       lastMove: s.lastMove ? { ...s.lastMove } : null,
+      pendingEvent: s.pendingEvent ? { ...s.pendingEvent } : null,
+      pendingRent: s.pendingRent ? { ...s.pendingRent, reason: { ...s.pendingRent.reason } } : null,
+      rentPasses: { p1: s.rentPasses?.p1 ?? 0, p2: s.rentPasses?.p2 ?? 0 },
+      rentModifiers: Object.fromEntries(Object.entries(s.rentModifiers ?? {}).map(([tile, effects]) => [tile, { ...effects.festival ? { festival: { ...effects.festival } } : {}, ...effects.blackout ? { blackout: { ...effects.blackout } } : {} }])),
+      eventVersion: s.eventVersion ?? 0,
+      eventCardCount: s.boardVersion !== 2 ? 8 : s.eventVersion === 3 ? 16 : s.economicVersion ? 13 : 12,
       economicVersion: s.economicVersion ?? 0,
       debt: { p1: s.debt?.p1 ?? 0, p2: s.debt?.p2 ?? 0 },
       pendingPayment: s.pendingPayment ? { ...s.pendingPayment, reason: { ...s.pendingPayment.reason } } : null,
@@ -5924,8 +6208,21 @@ function validation(s, p, a) {
   if (!a || typeof a.type !== "string") return "Invalid action";
   if (s.result) return "Game is finished";
   if (p !== s.active) return "Not your turn";
+  if (s.phase === "event-decision") {
+    const index = a.payload?.tile, pending = s.pendingEvent;
+    if (a.type !== "choose-event-city" || !pending || pending.playerId !== p) return "Choose an event city first";
+    const owner = pending.id === "city-festival" ? p : otherPlayer(p);
+    return !Number.isInteger(index) || board[index]?.kind !== "property" || s.properties[String(index)]?.owner !== owner ? "Invalid event city" : null;
+  }
+  if (s.phase === "rent-decision") {
+    if (!s.pendingRent || s.pendingRent.playerId !== p) return "No rent decision";
+    if (a.type === "pay-rent") return null;
+    if (a.type === "use-rent-pass") return (s.rentPasses?.[p] ?? 0) > 0 ? null : "No rent pass";
+    return "Resolve the rent decision first";
+  }
+  if (["choose-event-city", "pay-rent", "use-rent-pass"].includes(a.type)) return "No matching decision";
   if (["borrow", "repay", "declare-bankruptcy", "choose-pawn"].includes(a.type)) {
-    if (s.economicVersion !== 1) return "Credit and figure selection unavailable in this saved ruleset";
+    if (s.economicVersion !== 1 && s.economicVersion !== 2) return "Credit and figure selection unavailable in this saved ruleset";
     if (s.phase === "finished") return "Game is finished";
     if (a.type === "borrow") return (s.debt?.[p] ?? 0) !== 0 ? "Repay the existing loan first" : a.payload?.amount !== void 0 ? "Loan amount is fixed" : s.phase === "debt" && s.money[p] + 300 < (s.pendingPayment?.amount ?? Infinity) ? "Loan cannot cover this payment" : null;
     if (a.type === "repay") return a.payload?.amount !== void 0 ? "Repayment amount is fixed" : s.phase === "debt" || !s.debt?.[p] || s.money[p] < s.debt[p] ? "Cannot repay now" : null;
@@ -5960,7 +6257,7 @@ function validation(s, p, a) {
     const groupSize = board.filter((space) => space.kind === "property" && space.group === tile.group).length;
     const ownedCount = Object.entries(s.properties).filter(([ownedIndex, owned]) => owned.owner === p && board[Number(ownedIndex)]?.group === tile.group).length;
     const canBuild = s.boardVersion === 2 ? s.properties[String(index)].houses < 3 : ownedCount === groupSize && s.properties[String(index)].houses < 2;
-    if (!canBuild || s.money[p] < 100) return "Cannot build here";
+    if (!canBuild || s.money[p] < marbleBuildCost(tile, s.properties[String(index)].houses, s.economicVersion)) return "Cannot build here";
     return null;
   }
   if (a.type === "endTurn") return s.phase === "main" ? null : "Cannot end turn now";
@@ -5974,22 +6271,22 @@ function bankrupt(s, loser, winner) {
 }
 function pay(s, p, amount, creditor = "bank", reason = { ko: "\uBE44\uC6A9 \uC9C0\uAE09", es: "Pago de gastos" }, type = "tax") {
   if (s.money[p] < amount) {
-    if (s.economicVersion !== 1) return bankrupt(s, p, otherPlayer(p));
+    if (s.economicVersion !== 1 && s.economicVersion !== 2) return bankrupt(s, p, otherPlayer(p));
     s.pendingPayment = { amount, creditor, reason, type, tile: s.positions[p], resumePhase: "main", resumeActive: s.active };
     s.active = p;
     s.phase = "debt";
-    emit(s, "crisis", p, "\uD30C\uC0B0 \uC704\uAE30", "Riesgo de quiebra", `${reason.ko}: ${amount} \uC9C0\uAE09\uC5D0 ${amount - s.money[p]}\uC774 \uBD80\uC871\uD569\uB2C8\uB2E4. \uB300\uCD9C \uC870\uAC74\uC744 \uD655\uC778\uD558\uAC70\uB098 \uD30C\uC0B0\uC744 \uC778\uC815\uD558\uC138\uC694.`, `${reason.es}: te faltan ${amount - s.money[p]} para pagar ${amount}. Revisa el pr\xE9stamo o declara la quiebra.`, { amount, fromPlayer: p, ...creditor === "p1" || creditor === "p2" ? { toPlayer: creditor } : {} });
+    emit(s, "crisis", p, "\uD30C\uC0B0 \uC704\uAE30", "Riesgo de quiebra", `${reason.ko}: ${amount} \uC9C0\uAE09\uC5D0 ${amount - s.money[p]}\uC774 \uBD80\uC871\uD569\uB2C8\uB2E4. \uB300\uCD9C \uC870\uAC74\uC744 \uD655\uC778\uD558\uAC70\uB098 \uD30C\uC0B0\uC744 \uC778\uC815\uD558\uC138\uC694.`, `${reason.es}: te faltan ${amount - s.money[p]} para pagar ${amount}. Revisa el pr\xE9stamo o declara la quiebra.`, { amount, fromPlayer: p, fromAccount: p, toAccount: creditor, ...creditor === "p1" || creditor === "p2" ? { toPlayer: creditor } : {} });
     return s;
   }
   s.money[p] -= amount;
   if (creditor === "fund") s.fundPool = (s.fundPool ?? 0) + amount;
   else if (creditor === "p1" || creditor === "p2") s.money[creditor] += amount;
-  emit(s, type, p, reason.ko, reason.es, `${amount}\uC744 \uC9C0\uAE09\uD588\uC2B5\uB2C8\uB2E4.`, `Pagaste ${amount}.`, { amount, fromPlayer: p, ...creditor === "p1" || creditor === "p2" ? { toPlayer: creditor } : {}, moneyDelta: { [p]: -amount, ...creditor === "p1" || creditor === "p2" ? { [creditor]: amount } : {} }, tile: s.positions[p] });
+  emit(s, type, p, reason.ko, reason.es, `${amount}\uC744 \uC9C0\uAE09\uD588\uC2B5\uB2C8\uB2E4.`, `Pagaste ${amount}.`, { amount, fromPlayer: p, fromAccount: p, toAccount: creditor, ...creditor === "p1" || creditor === "p2" ? { toPlayer: creditor } : {}, moneyDelta: { [p]: -amount, ...creditor === "p1" || creditor === "p2" ? { [creditor]: amount } : {} }, tile: s.positions[p] });
   return s;
 }
-function bonus(s, p, amount, ko, es) {
+function bonus(s, p, amount, ko, es, source = "bank") {
   s.money[p] += amount;
-  emit(s, "bonus", p, ko, es, `${amount}\uC744 \uBC1B\uC558\uC2B5\uB2C8\uB2E4.`, `Recibiste ${amount}.`, { amount, toPlayer: p, moneyDelta: { [p]: amount } });
+  emit(s, "bonus", p, ko, es, `${amount}\uC744 \uBC1B\uC558\uC2B5\uB2C8\uB2E4.`, `Recibiste ${amount}.`, { amount, toPlayer: p, fromAccount: source, toAccount: p, moneyDelta: { [p]: amount } });
 }
 function moveForward(s, p, to, board) {
   const from = s.positions[p];
@@ -6007,12 +6304,32 @@ function resolveLanding(s, p, index, drawEvent) {
       return s;
     }
     if (owner.owner !== p) {
-      const rent = propertyRent(tile, owner, s.boardVersion === 2);
-      s = pay(s, p, rent, owner.owner, { ko: `${tile.name.ko} \uD1B5\uD589\uB8CC`, es: `Alquiler en ${tile.name.es}` }, "rent");
+      let rent = propertyRent(tile, owner, s.boardVersion === 2);
+      const effects = s.eventVersion === 3 ? s.rentModifiers?.[String(index)] : void 0;
+      const festival = effects?.festival?.owner === owner.owner && effects.festival.playerId === owner.owner;
+      const blackout = effects?.blackout?.owner === owner.owner && effects.blackout.playerId === p;
+      if (festival) rent *= 2;
+      if (blackout) rent = Math.max(1, Math.floor(rent / 2));
+      if (festival || blackout) {
+        const remaining = { ...effects };
+        if (festival) delete remaining.festival;
+        if (blackout) delete remaining.blackout;
+        s.rentModifiers ??= {};
+        s.rentModifiers[String(index)] = remaining;
+        if (!remaining.festival && !remaining.blackout) delete s.rentModifiers[String(index)];
+        emit(s, "event-card", p, "\uB3C4\uC2DC \uD6A8\uACFC \uC801\uC6A9", "Efecto de ciudad aplicado", "\uB300\uC0C1 \uB3C4\uC2DC \uCC29\uC9C0\uB85C \uD1B5\uD589\uB8CC \uD6A8\uACFC 1\uD68C\uB97C \uC18C\uBAA8\uD588\uC2B5\uB2C8\uB2E4. \uBA74\uC81C\uAD8C\uC744 \uC368\uB3C4 \uB3C4\uC2DC \uD6A8\uACFC\uB294 \uC18C\uBAA8\uB429\uB2C8\uB2E4.", "La llegada consume el efecto de alquiler de una vez, incluso si usas un pase.", { tile: index, amount: rent });
+      }
+      const reason = { ko: `${tile.name.ko} \uD1B5\uD589\uB8CC`, es: `Alquiler en ${tile.name.es}` };
+      if (s.eventVersion === 3 && (s.rentPasses?.[p] ?? 0) > 0) {
+        s.pendingRent = { amount: rent, creditor: owner.owner, playerId: p, tile: index, reason };
+        s.phase = "rent-decision";
+        return s;
+      }
+      s = pay(s, p, rent, owner.owner, reason, "rent");
     }
   } else if (tile.kind === "tax") s = pay(s, p, tile.price ?? 0, "bank", tile.name);
   else if (tile.kind === "fund") {
-    bonus(s, p, s.fundPool ?? 0, "\uACF5\uB3D9 \uAE30\uAE08 \uC218\uB839", "Cobro del fondo com\xFAn");
+    bonus(s, p, s.fundPool ?? 0, "\uACF5\uB3D9 \uAE30\uAE08 \uC218\uB839", "Cobro del fondo com\xFAn", "fund");
     s.fundPool = 0;
   } else if (tile.kind === "fund-deposit") {
     const amount = tile.price ?? 150;
@@ -6037,16 +6354,16 @@ function noteMove(s, p, from, to, steps, source) {
   emit(s, "move", p, "\uB9D0 \uC774\uB3D9", "Movimiento", `${from + 1}\uBC88\uC5D0\uC11C ${to + 1}\uBC88 \uCE78\uC73C\uB85C \uC774\uB3D9\uD569\uB2C8\uB2E4.`, `Avanzas de la casilla ${from + 1} a la ${to + 1}.`, { from, to, steps: steps ?? void 0 });
 }
 function resolveEvent(s, p) {
-  const board = boardFor(s), isModern = s.boardVersion === 2, ids = isModern ? s.economicVersion === 1 ? [...modernIds, "monopoly-warning"] : modernIds : legacyIds;
+  const board = boardFor(s), isModern = s.boardVersion === 2, ids = isModern ? s.eventVersion === 3 ? expandedIds : s.economicVersion === 1 || s.economicVersion === 2 ? [...modernIds, "monopoly-warning"] : modernIds : legacyIds;
   s.phase = "main";
   let deck = s.eventDeck ? [...s.eventDeck] : [];
   if (!deck.length) {
     const rng = s.eventRng ?? (s.rng ^ 2779096485) >>> 0;
-    deck = shuffle([...ids], seededRandom(rng));
-    s.eventRng = rng + (ids.length - 1) * 1831565813 >>> 0;
+    deck = shuffle(ids.filter((id2) => !(s.eventVersion === 3 && (id2 === "escape-pass" && (s.escapePasses?.p1 ?? 0) + (s.escapePasses?.p2 ?? 0) > 0 || id2 === "rent-pass" && (s.rentPasses?.p1 ?? 0) + (s.rentPasses?.p2 ?? 0) > 0))), seededRandom(rng));
+    s.eventRng = rng + (deck.length - 1) * 1831565813 >>> 0;
   }
   const id = deck.shift();
-  if (isModern && id !== "escape-pass") deck.push(id);
+  if (isModern && id !== "escape-pass" && id !== "rent-pass") deck.push(id);
   s.eventDeck = deck;
   let card2 = cards[id];
   const from = s.positions[p], beforeCash = s.money[p];
@@ -6060,7 +6377,7 @@ function resolveEvent(s, p) {
     const houses = Object.values(s.properties).filter((property) => property.owner === p).reduce((count2, property) => count2 + property.houses, 0);
     s = pay(s, p, houses * 40, "bank", card2.title);
   } else if (id === "visit-santo-domingo") {
-    const destination = isModern ? 3 : 2;
+    const destination = board.findIndex((tile) => tile.name.ko === "\uC0B0\uD1A0\uB3C4\uBC0D\uACE0");
     movement = "visit";
     steps = (destination - from + board.length) % board.length;
     moveForward(s, p, destination, board);
@@ -6101,13 +6418,26 @@ function resolveEvent(s, p) {
     emit(s, "train", p, card2.title.ko, card2.title.es, card2.text.ko, card2.text.es, { amount: 0, cardId: id });
   } else if (id === "city-dividend") {
     bonus(s, p, 30 * Object.values(s.properties).filter((property) => property.owner === p).length, card2.title.ko, card2.title.es);
+  } else if (id === "city-festival" || id === "blackout") {
+    const owner = id === "city-festival" ? p : otherPlayer(p);
+    if (propIndices(board).some((index) => s.properties[String(index)]?.owner === owner)) {
+      s.pendingEvent = { id, playerId: p };
+      s.phase = "event-decision";
+    } else {
+      card2 = { ...card2, text: { ko: "\uC120\uD0DD \uAC00\uB2A5\uD55C \uB3C4\uC2DC\uAC00 \uC5C6\uC5B4 \uD6A8\uACFC\uAC00 \uC5C6\uC2B5\uB2C8\uB2E4.", es: "No hay ninguna ciudad elegible; la carta no tiene efecto." } };
+      emit(s, "event-card", p, card2.title.ko, card2.title.es, card2.text.ko, card2.text.es, { cardId: id, moneyDelta: { [p]: 0 } });
+    }
+  } else if (id === "rent-pass") {
+    s.rentPasses ??= { p1: 0, p2: 0 };
+    s.rentPasses[p] = 1;
+    emit(s, "event-card", p, card2.title.ko, card2.title.es, card2.text.ko, card2.text.es, { cardId: id, moneyDelta: { [p]: 0 } });
   } else if (id === "monopoly-warning") {
     const groups = { p1: completedGroups(s, "p1"), p2: completedGroups(s, "p2") };
     const target = groups.p1.length === groups.p2.length ? p : groups.p1.length > groups.p2.length ? "p1" : "p2";
     const count2 = groups[target].length, amount = Math.min(300, count2 * 100);
     const text = { ko: count2 ? `${target === p ? "\uCE74\uB4DC\uB97C \uBF51\uC740 \uC0AC\uB78C" : "\uC0C1\uB300"}\uC758 \uC644\uC131 \uB3C4\uC2DC\uAD70 ${count2}\uAC1C: \uB3C5\uC810 \uBD80\uB2F4\uAE08 ${amount}\uC744 \uC740\uD589\uC5D0 \uB0C5\uB2C8\uB2E4.` : "\uC644\uC131\uD55C \uC0C9\uC0C1 \uB3C4\uC2DC\uAD70\uC774 \uC5C6\uC5B4 \uBD80\uB2F4\uAE08\uC774 \uC5C6\uC2B5\uB2C8\uB2E4.", es: count2 ? `${target === p ? "Quien sac\xF3 la carta" : "La otra persona"} tiene ${count2} grupos completos y paga ${amount} al banco.` : "Nadie tiene un grupo de color completo. No se cobra." };
     card2 = { ...card2, text };
-    emit(s, "monopoly-warning", target, card2.title.ko, card2.title.es, text.ko, text.es, { amount, cardId: id, group: groups[target].join(", ") });
+    emit(s, "monopoly-warning", target, card2.title.ko, card2.title.es, text.ko, text.es, { amount, fromAccount: target, toAccount: "bank", cardId: id, group: groups[target].join(", ") });
     if (amount) s = pay(s, target, amount, "bank", card2.title, "monopoly-warning");
   }
   const sequence = (s.eventSequence ?? 0) + 1;
@@ -6167,7 +6497,32 @@ function step(s, p, a) {
   n.pawns = { p1: s.pawns?.p1 ?? "fox", p2: s.pawns?.p2 ?? "cat" };
   n.pawnLocked = { p1: s.pawnLocked?.p1 ?? true, p2: s.pawnLocked?.p2 ?? true };
   n.pendingPayment = s.pendingPayment ? { ...s.pendingPayment, reason: { ...s.pendingPayment.reason } } : null;
+  n.pendingEvent = s.pendingEvent ? { ...s.pendingEvent } : null;
+  n.pendingRent = s.pendingRent ? { ...s.pendingRent, reason: { ...s.pendingRent.reason } } : null;
+  n.rentPasses = { p1: s.rentPasses?.p1 ?? 0, p2: s.rentPasses?.p2 ?? 0 };
+  n.rentModifiers = Object.fromEntries(Object.entries(s.rentModifiers ?? {}).map(([tile, effects]) => [tile, { ...effects.festival ? { festival: { ...effects.festival } } : {}, ...effects.blackout ? { blackout: { ...effects.blackout } } : {} }]));
   const board = boardFor(n), payload = a.payload ?? {};
+  if (a.type === "choose-event-city") {
+    const index = payload.tile, id = n.pendingEvent.id, key = id === "city-festival" ? "festival" : "blackout";
+    n.rentModifiers[String(index)] = { ...n.rentModifiers[String(index)], [key]: { source: id, playerId: p, owner: n.properties[String(index)].owner } };
+    n.pendingEvent = null;
+    n.phase = "main";
+    const text = { ko: `${board[index].name.ko}: ${id === "city-festival" ? "\uB2E4\uC74C \uC0C1\uB300 \uCC29\uC9C0 1\uD68C \uD1B5\uD589\uB8CC 2\uBC30" : "\uB2E4\uC74C \uB0B4 \uCC29\uC9C0 1\uD68C \uD1B5\uD589\uB8CC \uC808\uBC18"}. \uB300\uC0C1 \uCC29\uC9C0\uAE4C\uC9C0 \uC720\uC9C0\uB429\uB2C8\uB2E4.`, es: `${board[index].name.es}: ${id === "city-festival" ? "alquiler doble en la pr\xF3xima llegada rival, una vez" : "mitad del alquiler en tu pr\xF3xima llegada, una vez"}. Permanece hasta esa llegada.` };
+    if (n.lastEvent?.id === id) n.lastEvent = { ...n.lastEvent, text };
+    emit(n, "event-card", p, cards[id].title.ko, cards[id].title.es, text.ko, text.es, { cardId: id, tile: index, moneyDelta: { [p]: 0 } });
+    return n;
+  }
+  if (a.type === "pay-rent" || a.type === "use-rent-pass") {
+    const pending = n.pendingRent;
+    n.pendingRent = null;
+    n.phase = "main";
+    if (a.type === "pay-rent") return pay(n, p, pending.amount, pending.creditor, pending.reason, "rent");
+    n.rentPasses[p] = 0;
+    n.eventDeck ??= [];
+    if (!n.eventDeck.includes("rent-pass")) n.eventDeck.push("rent-pass");
+    emit(n, "rent", p, "\uD1B5\uD589\uB8CC \uBA74\uC81C\uAD8C \uC0AC\uC6A9", "Pase de alquiler usado", `${pending.reason.ko} ${pending.amount}\uC744 1\uD68C \uBA74\uC81C\uD588\uC2B5\uB2C8\uB2E4.`, `Eximiste una vez ${pending.amount} de ${pending.reason.es}.`, { cardId: "rent-pass", tile: pending.tile, amount: 0, fromAccount: p, toAccount: pending.creditor, moneyDelta: { [p]: 0, [pending.creditor]: 0 } });
+    return n;
+  }
   if (a.type === "choose-pawn") {
     n.pawns[p] = payload.pawn;
     emit(n, "pawn", p, "\uB9D0 \uC120\uD0DD", "Figura elegida", "\uC774 \uB9D0\uB85C \uB3C4\uC2DC\uB97C \uC5EC\uD589\uD569\uB2C8\uB2E4.", "Viajar\xE1s por las ciudades con esta figura.");
@@ -6176,7 +6531,7 @@ function step(s, p, a) {
   if (a.type === "borrow") {
     n.money[p] += 300;
     n.debt[p] = 330;
-    emit(n, "loan", p, "\uB300\uCD9C \uC2E4\uD589", "Pr\xE9stamo recibido", "300\uC744 \uBC1B\uACE0 330\uC758 \uC0C1\uD658 \uC758\uBB34\uAC00 \uC0DD\uACBC\uC2B5\uB2C8\uB2E4. \uCD94\uAC00 \uC774\uC790\uB098 \uB9CC\uAE30 \uC5C6\uC774 \uC804\uC561 \uC0C1\uD658\uD558\uBA70, \uBBF8\uC0C1\uD658\uC561\uC740 \uCD5C\uC885 \uC790\uC0B0\uC5D0\uC11C \uBE8D\uB2C8\uB2E4.", "Recibes 300 y debes devolver 330. No hay intereses adicionales ni plazo; se paga completo y la deuda se resta del patrimonio final.", { amount: 300, debtAfter: 330, moneyDelta: { [p]: 300 } });
+    emit(n, "loan", p, "\uB300\uCD9C \uC2E4\uD589", "Pr\xE9stamo recibido", "300\uC744 \uBC1B\uACE0 330\uC758 \uC0C1\uD658 \uC758\uBB34\uAC00 \uC0DD\uACBC\uC2B5\uB2C8\uB2E4. \uCD94\uAC00 \uC774\uC790\uB098 \uB9CC\uAE30 \uC5C6\uC774 \uC804\uC561 \uC0C1\uD658\uD558\uBA70, \uBBF8\uC0C1\uD658\uC561\uC740 \uCD5C\uC885 \uC790\uC0B0\uC5D0\uC11C \uBE8D\uB2C8\uB2E4.", "Recibes 300 y debes devolver 330. No hay intereses adicionales ni plazo; se paga completo y la deuda se resta del patrimonio final.", { amount: 300, debtAfter: 330, fromAccount: "bank", toAccount: p, moneyDelta: { [p]: 300 } });
     if (n.phase === "debt" && n.pendingPayment) {
       const pending = n.pendingPayment;
       n = pay(n, p, pending.amount, pending.creditor, pending.reason, pending.type);
@@ -6192,7 +6547,7 @@ function step(s, p, a) {
     const amount = n.debt[p];
     n.money[p] -= amount;
     n.debt[p] = 0;
-    emit(n, "repay", p, "\uB300\uCD9C \uC0C1\uD658 \uC644\uB8CC", "Pr\xE9stamo pagado", `${amount}\uC744 \uC0C1\uD658\uD574 \uB0A8\uC740 \uB300\uCD9C\uC774 \uC5C6\uC2B5\uB2C8\uB2E4.`, `Pagaste ${amount}; ya no tienes deuda.`, { amount, debtAfter: 0, moneyDelta: { [p]: -amount } });
+    emit(n, "repay", p, "\uB300\uCD9C \uC0C1\uD658 \uC644\uB8CC", "Pr\xE9stamo pagado", `${amount}\uC744 \uC0C1\uD658\uD574 \uB0A8\uC740 \uB300\uCD9C\uC774 \uC5C6\uC2B5\uB2C8\uB2E4.`, `Pagaste ${amount}; ya no tienes deuda.`, { amount, debtAfter: 0, fromAccount: p, toAccount: "bank", moneyDelta: { [p]: -amount } });
     return n;
   }
   if (a.type === "declare-bankruptcy") return bankrupt(n, p, otherPlayer(p));
@@ -6249,7 +6604,7 @@ function step(s, p, a) {
     n.trainReady[p] = false;
     n.pendingTrainFare = null;
     n.pendingTrainSource = null;
-    emit(n, "train", p, "\uC5F4\uCC28 \uCD9C\uBC1C", "El tren sale", `${board[to].name.ko}\uD589 \xB7 \uC6B4\uC784 ${fare}`, `Destino: ${board[to].name.es} \xB7 pasaje ${fare}`, { amount: fare, moneyDelta: { [p]: -fare }, from, to });
+    emit(n, "train", p, "\uC5F4\uCC28 \uCD9C\uBC1C", "El tren sale", `${board[to].name.ko}\uD589 \xB7 \uC6B4\uC784 ${fare}`, `Destino: ${board[to].name.es} \xB7 pasaje ${fare}`, { amount: fare, fromAccount: p, toAccount: "bank", moneyDelta: { [p]: -fare }, from, to });
     const distance = (to - from + board.length) % board.length;
     moveForward(n, p, to, board);
     noteMove(n, p, from, to, distance, "train");
@@ -6271,16 +6626,16 @@ function step(s, p, a) {
     n.money[p] -= price;
     n.properties[String(index)] = { owner: p, houses: 0 };
     n.phase = "main";
-    emit(n, "buy", p, "\uB3C4\uC2DC \uAD6C\uB9E4 \uC644\uB8CC", "Ciudad comprada", `${board[index].name.ko}\uC744 \uC18C\uC720\uD588\uC2B5\uB2C8\uB2E4.`, `Compraste ${board[index].name.es}.`, { tile: index, amount: price, moneyDelta: { [p]: -price } });
+    emit(n, "buy", p, "\uB3C4\uC2DC \uAD6C\uB9E4 \uC644\uB8CC", "Ciudad comprada", `${board[index].name.ko}\uC744 \uC18C\uC720\uD588\uC2B5\uB2C8\uB2E4.`, `Compraste ${board[index].name.es}.`, { tile: index, amount: price, fromAccount: p, toAccount: "bank", moneyDelta: { [p]: -price } });
     const group = board[index].group;
     if (completedGroups(n, p).includes(group)) emit(n, "monopoly-warning", p, "\uC0C9\uC0C1 \uB3C4\uC2DC\uAD70 \uC644\uC131", "Grupo de color completo", "\uC774 \uB3C4\uC2DC\uAD70\uC744 \uBAA8\uB450 \uC18C\uC720\uD588\uC2B5\uB2C8\uB2E4. \uB3C5\uC810 \uACBD\uACE0 \uCE74\uB4DC\uAC00 \uB098\uC624\uBA74 \uBD80\uB2F4\uAE08 \uB300\uC0C1\uC774 \uB420 \uC218 \uC788\uC2B5\uB2C8\uB2E4.", "Ya tienes todas las ciudades de este color. Una carta de monopolio puede cobrarte un cargo.", { group, tile: index });
   } else if (a.type === "decline") n.phase = "main";
   else if (a.type === "build") {
-    const index = payload.tile;
-    n.money[p] -= 100;
+    const index = payload.tile, cost = marbleBuildCost(board[index], n.properties[String(index)].houses, n.economicVersion);
+    n.money[p] -= cost;
     n.properties[String(index)] = { ...n.properties[String(index)], houses: n.properties[String(index)].houses + 1 };
     const level = n.properties[String(index)].houses;
-    emit(n, "build", p, "\uAC74\uC124 \uC644\uB8CC", "Construcci\xF3n terminada", `${board[index].name.ko}: ${level === 3 ? "\uB79C\uB4DC\uB9C8\uD06C" : level === 2 ? "\uBE4C\uB529" : "\uBCC4\uC7A5"} \xB7 \uD1B5\uD589\uB8CC ${propertyRent(board[index], n.properties[String(index)], n.boardVersion === 2)}`, `${board[index].name.es}: ${level === 3 ? "monumento" : level === 2 ? "edificio" : "villa"} \xB7 alquiler ${propertyRent(board[index], n.properties[String(index)], n.boardVersion === 2)}`, { tile: index, amount: 100, moneyDelta: { [p]: -100 } });
+    emit(n, "build", p, "\uAC74\uC124 \uC644\uB8CC", "Construcci\xF3n terminada", `${board[index].name.ko}: ${level === 3 ? "\uB79C\uB4DC\uB9C8\uD06C" : level === 2 ? "\uBE4C\uB529" : "\uBCC4\uC7A5"} \xB7 \uD1B5\uD589\uB8CC ${propertyRent(board[index], n.properties[String(index)], n.boardVersion === 2)}`, `${board[index].name.es}: ${level === 3 ? "monumento" : level === 2 ? "edificio" : "villa"} \xB7 alquiler ${propertyRent(board[index], n.properties[String(index)], n.boardVersion === 2)}`, { tile: index, amount: cost, fromAccount: p, toAccount: "bank", moneyDelta: { [p]: -cost } });
   } else if (a.type === "endTurn") return finishTurn2(n, p);
   return n;
 }
@@ -6295,17 +6650,23 @@ var marbleEngine = {
       money: { p1: 1500, p2: 1500 },
       properties: {},
       boardVersion: 2,
+      cityRouteVersion: 2,
       phase: "roll",
       pendingTile: null,
       lastRoll: [],
       turns: 0,
       result: null,
-      eventRng: eventRng + modernIds.length * 1831565813 >>> 0,
-      eventDeck: shuffle([...modernIds, "monopoly-warning"], seededRandom(eventRng)),
+      eventRng: eventRng + (expandedIds.length - 1) * 1831565813 >>> 0,
+      eventDeck: shuffle(expandedIds, seededRandom(eventRng)),
       eventSequence: 0,
       lastEvent: null,
       fundPool: 0,
-      economicVersion: 1,
+      eventVersion: 3,
+      pendingEvent: null,
+      pendingRent: null,
+      rentPasses: { p1: 0, p2: 0 },
+      rentModifiers: {},
+      economicVersion: 2,
       debt: { p1: 0, p2: 0 },
       pendingPayment: null,
       actionLog: [],

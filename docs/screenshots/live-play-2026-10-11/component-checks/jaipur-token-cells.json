@@ -1,0 +1,1249 @@
+{
+  "passed": true,
+  "checks": [
+    {
+      "language": "ko",
+      "width": 390,
+      "layout": {
+        "viewportWidth": 390,
+        "documentWidth": 390,
+        "boardWidth": 358,
+        "piles": [
+          {
+            "cell": {
+              "left": 39.59375,
+              "right": 139.46875,
+              "top": 1036.375,
+              "bottom": 1129.6875,
+              "width": 99.875,
+              "height": 93.3125
+            },
+            "label": {
+              "left": 47.3125,
+              "right": 66.734375,
+              "top": 1089.90625,
+              "bottom": 1101.515625,
+              "width": 19.421875,
+              "height": 11.609375
+            },
+            "value": {
+              "left": 47.3125,
+              "right": 87.0625,
+              "top": 1102.78125,
+              "bottom": 1121.96875,
+              "width": 39.75,
+              "height": 19.1875
+            },
+            "coin": {
+              "left": 47.3125,
+              "right": 66.5,
+              "top": 1102.78125,
+              "bottom": 1121.96875,
+              "width": 19.1875,
+              "height": 19.1875
+            },
+            "amount": {
+              "left": 68.40625,
+              "right": 87.0625,
+              "top": 1102.875,
+              "bottom": 1121.875,
+              "width": 18.65625,
+              "height": 19
+            },
+            "labelText": "다음",
+            "amountText": "7점",
+            "labelDisplay": "block",
+            "nextDisplay": "grid",
+            "nextGrid": "84.4375px",
+            "labelInside": true,
+            "valueInside": true,
+            "gap": 1.90625
+          },
+          {
+            "cell": {
+              "left": 145.0625,
+              "right": 244.9375,
+              "top": 1036.375,
+              "bottom": 1129.6875,
+              "width": 99.875,
+              "height": 93.3125
+            },
+            "label": {
+              "left": 152.78125,
+              "right": 172.203125,
+              "top": 1089.90625,
+              "bottom": 1101.515625,
+              "width": 19.421875,
+              "height": 11.609375
+            },
+            "value": {
+              "left": 152.78125,
+              "right": 193.78125,
+              "top": 1102.78125,
+              "bottom": 1121.96875,
+              "width": 41,
+              "height": 19.1875
+            },
+            "coin": {
+              "left": 152.78125,
+              "right": 171.96875,
+              "top": 1102.78125,
+              "bottom": 1121.96875,
+              "width": 19.1875,
+              "height": 19.1875
+            },
+            "amount": {
+              "left": 173.875,
+              "right": 193.78125,
+              "top": 1102.875,
+              "bottom": 1121.875,
+              "width": 19.90625,
+              "height": 19
+            },
+            "labelText": "다음",
+            "amountText": "6점",
+            "labelDisplay": "block",
+            "nextDisplay": "grid",
+            "nextGrid": "84.4375px",
+            "labelInside": true,
+            "valueInside": true,
+            "gap": 1.90625
+          },
+          {
+            "cell": {
+              "left": 250.53125,
+              "right": 350.40625,
+              "top": 1036.375,
+              "bottom": 1129.6875,
+              "width": 99.875,
+              "height": 93.3125
+            },
+            "label": {
+              "left": 258.25,
+              "right": 277.671875,
+              "top": 1089.90625,
+              "bottom": 1101.515625,
+              "width": 19.421875,
+              "height": 11.609375
+            },
+            "value": {
+              "left": 258.25,
+              "right": 299.09375,
+              "top": 1102.78125,
+              "bottom": 1121.96875,
+              "width": 40.84375,
+              "height": 19.1875
+            },
+            "coin": {
+              "left": 258.25,
+              "right": 277.4375,
+              "top": 1102.78125,
+              "bottom": 1121.96875,
+              "width": 19.1875,
+              "height": 19.1875
+            },
+            "amount": {
+              "left": 279.34375,
+              "right": 299.09375,
+              "top": 1102.875,
+              "bottom": 1121.875,
+              "width": 19.75,
+              "height": 19
+            },
+            "labelText": "다음",
+            "amountText": "5점",
+            "labelDisplay": "block",
+            "nextDisplay": "grid",
+            "nextGrid": "84.4375px",
+            "labelInside": true,
+            "valueInside": true,
+            "gap": 1.90625
+          },
+          {
+            "cell": {
+              "left": 39.59375,
+              "right": 139.46875,
+              "top": 1135.28125,
+              "bottom": 1228.59375,
+              "width": 99.875,
+              "height": 93.3125
+            },
+            "label": {
+              "left": 47.3125,
+              "right": 66.734375,
+              "top": 1188.8125,
+              "bottom": 1200.421875,
+              "width": 19.421875,
+              "height": 11.609375
+            },
+            "value": {
+              "left": 47.3125,
+              "right": 88.15625,
+              "top": 1201.6875,
+              "bottom": 1220.875,
+              "width": 40.84375,
+              "height": 19.1875
+            },
+            "coin": {
+              "left": 47.3125,
+              "right": 66.5,
+              "top": 1201.6875,
+              "bottom": 1220.875,
+              "width": 19.1875,
+              "height": 19.1875
+            },
+            "amount": {
+              "left": 68.40625,
+              "right": 88.15625,
+              "top": 1201.78125,
+              "bottom": 1220.78125,
+              "width": 19.75,
+              "height": 19
+            },
+            "labelText": "다음",
+            "amountText": "5점",
+            "labelDisplay": "block",
+            "nextDisplay": "grid",
+            "nextGrid": "84.4375px",
+            "labelInside": true,
+            "valueInside": true,
+            "gap": 1.90625
+          },
+          {
+            "cell": {
+              "left": 145.0625,
+              "right": 244.9375,
+              "top": 1135.28125,
+              "bottom": 1228.59375,
+              "width": 99.875,
+              "height": 93.3125
+            },
+            "label": {
+              "left": 152.78125,
+              "right": 172.203125,
+              "top": 1188.8125,
+              "bottom": 1200.421875,
+              "width": 19.421875,
+              "height": 11.609375
+            },
+            "value": {
+              "left": 152.78125,
+              "right": 193.625,
+              "top": 1201.6875,
+              "bottom": 1220.875,
+              "width": 40.84375,
+              "height": 19.1875
+            },
+            "coin": {
+              "left": 152.78125,
+              "right": 171.96875,
+              "top": 1201.6875,
+              "bottom": 1220.875,
+              "width": 19.1875,
+              "height": 19.1875
+            },
+            "amount": {
+              "left": 173.875,
+              "right": 193.625,
+              "top": 1201.78125,
+              "bottom": 1220.78125,
+              "width": 19.75,
+              "height": 19
+            },
+            "labelText": "다음",
+            "amountText": "5점",
+            "labelDisplay": "block",
+            "nextDisplay": "grid",
+            "nextGrid": "84.4375px",
+            "labelInside": true,
+            "valueInside": true,
+            "gap": 1.90625
+          },
+          {
+            "cell": {
+              "left": 250.53125,
+              "right": 350.40625,
+              "top": 1135.28125,
+              "bottom": 1228.59375,
+              "width": 99.875,
+              "height": 93.3125
+            },
+            "label": {
+              "left": 258.25,
+              "right": 277.671875,
+              "top": 1188.8125,
+              "bottom": 1200.421875,
+              "width": 19.421875,
+              "height": 11.609375
+            },
+            "value": {
+              "left": 258.25,
+              "right": 299.453125,
+              "top": 1201.6875,
+              "bottom": 1220.875,
+              "width": 41.203125,
+              "height": 19.1875
+            },
+            "coin": {
+              "left": 258.25,
+              "right": 277.4375,
+              "top": 1201.6875,
+              "bottom": 1220.875,
+              "width": 19.1875,
+              "height": 19.1875
+            },
+            "amount": {
+              "left": 279.34375,
+              "right": 299.453125,
+              "top": 1201.78125,
+              "bottom": 1220.78125,
+              "width": 20.109375,
+              "height": 19
+            },
+            "labelText": "다음",
+            "amountText": "4점",
+            "labelDisplay": "block",
+            "nextDisplay": "grid",
+            "nextGrid": "84.4375px",
+            "labelInside": true,
+            "valueInside": true,
+            "gap": 1.90625
+          }
+        ]
+      }
+    },
+    {
+      "language": "ko",
+      "width": 1440,
+      "layout": {
+        "viewportWidth": 1440,
+        "documentWidth": 1440,
+        "boardWidth": 1208,
+        "piles": [
+          {
+            "cell": {
+              "left": 1039.59375,
+              "right": 1168.796875,
+              "top": 192.78125,
+              "bottom": 273.96875,
+              "width": 129.203125,
+              "height": 81.1875
+            },
+            "label": {
+              "left": 0,
+              "right": 0,
+              "top": 0,
+              "bottom": 0,
+              "width": 0,
+              "height": 0
+            },
+            "value": {
+              "left": 1047.78125,
+              "right": 1092.15625,
+              "top": 241.78125,
+              "bottom": 265.78125,
+              "width": 44.375,
+              "height": 24
+            },
+            "coin": {
+              "left": 1047.78125,
+              "right": 1071.78125,
+              "top": 241.78125,
+              "bottom": 265.78125,
+              "width": 24,
+              "height": 24
+            },
+            "amount": {
+              "left": 1074.65625,
+              "right": 1092.15625,
+              "top": 244.78125,
+              "bottom": 262.78125,
+              "width": 17.5,
+              "height": 18
+            },
+            "labelText": "다음",
+            "amountText": "7점",
+            "labelDisplay": "none",
+            "nextDisplay": "flex",
+            "nextGrid": "none",
+            "labelInside": false,
+            "valueInside": true,
+            "gap": 2.875
+          },
+          {
+            "cell": {
+              "left": 1174.390625,
+              "right": 1303.609375,
+              "top": 192.78125,
+              "bottom": 273.96875,
+              "width": 129.21875,
+              "height": 81.1875
+            },
+            "label": {
+              "left": 0,
+              "right": 0,
+              "top": 0,
+              "bottom": 0,
+              "width": 0,
+              "height": 0
+            },
+            "value": {
+              "left": 1182.578125,
+              "right": 1228.109375,
+              "top": 241.78125,
+              "bottom": 265.78125,
+              "width": 45.53125,
+              "height": 24
+            },
+            "coin": {
+              "left": 1182.578125,
+              "right": 1206.578125,
+              "top": 241.78125,
+              "bottom": 265.78125,
+              "width": 24,
+              "height": 24
+            },
+            "amount": {
+              "left": 1209.453125,
+              "right": 1228.109375,
+              "top": 244.78125,
+              "bottom": 262.78125,
+              "width": 18.65625,
+              "height": 18
+            },
+            "labelText": "다음",
+            "amountText": "6점",
+            "labelDisplay": "none",
+            "nextDisplay": "flex",
+            "nextGrid": "none",
+            "labelInside": false,
+            "valueInside": true,
+            "gap": 2.875
+          },
+          {
+            "cell": {
+              "left": 1039.59375,
+              "right": 1168.796875,
+              "top": 279.5625,
+              "bottom": 360.75,
+              "width": 129.203125,
+              "height": 81.1875
+            },
+            "label": {
+              "left": 0,
+              "right": 0,
+              "top": 0,
+              "bottom": 0,
+              "width": 0,
+              "height": 0
+            },
+            "value": {
+              "left": 1047.78125,
+              "right": 1093.171875,
+              "top": 328.5625,
+              "bottom": 352.5625,
+              "width": 45.390625,
+              "height": 24
+            },
+            "coin": {
+              "left": 1047.78125,
+              "right": 1071.78125,
+              "top": 328.5625,
+              "bottom": 352.5625,
+              "width": 24,
+              "height": 24
+            },
+            "amount": {
+              "left": 1074.65625,
+              "right": 1093.171875,
+              "top": 331.5625,
+              "bottom": 349.5625,
+              "width": 18.515625,
+              "height": 18
+            },
+            "labelText": "다음",
+            "amountText": "5점",
+            "labelDisplay": "none",
+            "nextDisplay": "flex",
+            "nextGrid": "none",
+            "labelInside": false,
+            "valueInside": true,
+            "gap": 2.875
+          },
+          {
+            "cell": {
+              "left": 1174.390625,
+              "right": 1303.609375,
+              "top": 279.5625,
+              "bottom": 360.75,
+              "width": 129.21875,
+              "height": 81.1875
+            },
+            "label": {
+              "left": 0,
+              "right": 0,
+              "top": 0,
+              "bottom": 0,
+              "width": 0,
+              "height": 0
+            },
+            "value": {
+              "left": 1182.578125,
+              "right": 1227.96875,
+              "top": 328.5625,
+              "bottom": 352.5625,
+              "width": 45.390625,
+              "height": 24
+            },
+            "coin": {
+              "left": 1182.578125,
+              "right": 1206.578125,
+              "top": 328.5625,
+              "bottom": 352.5625,
+              "width": 24,
+              "height": 24
+            },
+            "amount": {
+              "left": 1209.453125,
+              "right": 1227.96875,
+              "top": 331.5625,
+              "bottom": 349.5625,
+              "width": 18.515625,
+              "height": 18
+            },
+            "labelText": "다음",
+            "amountText": "5점",
+            "labelDisplay": "none",
+            "nextDisplay": "flex",
+            "nextGrid": "none",
+            "labelInside": false,
+            "valueInside": true,
+            "gap": 2.875
+          },
+          {
+            "cell": {
+              "left": 1039.59375,
+              "right": 1168.796875,
+              "top": 366.34375,
+              "bottom": 447.53125,
+              "width": 129.203125,
+              "height": 81.1875
+            },
+            "label": {
+              "left": 0,
+              "right": 0,
+              "top": 0,
+              "bottom": 0,
+              "width": 0,
+              "height": 0
+            },
+            "value": {
+              "left": 1047.78125,
+              "right": 1093.171875,
+              "top": 415.34375,
+              "bottom": 439.34375,
+              "width": 45.390625,
+              "height": 24
+            },
+            "coin": {
+              "left": 1047.78125,
+              "right": 1071.78125,
+              "top": 415.34375,
+              "bottom": 439.34375,
+              "width": 24,
+              "height": 24
+            },
+            "amount": {
+              "left": 1074.65625,
+              "right": 1093.171875,
+              "top": 418.34375,
+              "bottom": 436.34375,
+              "width": 18.515625,
+              "height": 18
+            },
+            "labelText": "다음",
+            "amountText": "5점",
+            "labelDisplay": "none",
+            "nextDisplay": "flex",
+            "nextGrid": "none",
+            "labelInside": false,
+            "valueInside": true,
+            "gap": 2.875
+          },
+          {
+            "cell": {
+              "left": 1174.390625,
+              "right": 1303.609375,
+              "top": 366.34375,
+              "bottom": 447.53125,
+              "width": 129.21875,
+              "height": 81.1875
+            },
+            "label": {
+              "left": 0,
+              "right": 0,
+              "top": 0,
+              "bottom": 0,
+              "width": 0,
+              "height": 0
+            },
+            "value": {
+              "left": 1182.578125,
+              "right": 1228.3125,
+              "top": 415.34375,
+              "bottom": 439.34375,
+              "width": 45.734375,
+              "height": 24
+            },
+            "coin": {
+              "left": 1182.578125,
+              "right": 1206.578125,
+              "top": 415.34375,
+              "bottom": 439.34375,
+              "width": 24,
+              "height": 24
+            },
+            "amount": {
+              "left": 1209.453125,
+              "right": 1228.3125,
+              "top": 418.34375,
+              "bottom": 436.34375,
+              "width": 18.859375,
+              "height": 18
+            },
+            "labelText": "다음",
+            "amountText": "4점",
+            "labelDisplay": "none",
+            "nextDisplay": "flex",
+            "nextGrid": "none",
+            "labelInside": false,
+            "valueInside": true,
+            "gap": 2.875
+          }
+        ]
+      }
+    },
+    {
+      "language": "es",
+      "width": 390,
+      "layout": {
+        "viewportWidth": 390,
+        "documentWidth": 390,
+        "boardWidth": 358,
+        "piles": [
+          {
+            "cell": {
+              "left": 39.59375,
+              "right": 139.46875,
+              "top": 1043.953125,
+              "bottom": 1135.265625,
+              "width": 99.875,
+              "height": 91.3125
+            },
+            "label": {
+              "left": 47.3125,
+              "right": 94.578125,
+              "top": 1095.484375,
+              "bottom": 1107.09375,
+              "width": 47.265625,
+              "height": 11.609375
+            },
+            "value": {
+              "left": 47.3125,
+              "right": 98.765625,
+              "top": 1108.359375,
+              "bottom": 1127.546875,
+              "width": 51.453125,
+              "height": 19.1875
+            },
+            "coin": {
+              "left": 47.3125,
+              "right": 66.5,
+              "top": 1108.359375,
+              "bottom": 1127.546875,
+              "width": 19.1875,
+              "height": 19.1875
+            },
+            "amount": {
+              "left": 68.40625,
+              "right": 98.765625,
+              "top": 1109.453125,
+              "bottom": 1126.453125,
+              "width": 30.359375,
+              "height": 17
+            },
+            "labelText": "Siguiente:",
+            "amountText": "7 pts",
+            "labelDisplay": "block",
+            "nextDisplay": "grid",
+            "nextGrid": "84.4375px",
+            "labelInside": true,
+            "valueInside": true,
+            "gap": 1.90625
+          },
+          {
+            "cell": {
+              "left": 145.0625,
+              "right": 244.9375,
+              "top": 1043.953125,
+              "bottom": 1135.265625,
+              "width": 99.875,
+              "height": 91.3125
+            },
+            "label": {
+              "left": 152.78125,
+              "right": 200.046875,
+              "top": 1095.484375,
+              "bottom": 1107.09375,
+              "width": 47.265625,
+              "height": 11.609375
+            },
+            "value": {
+              "left": 152.78125,
+              "right": 205.484375,
+              "top": 1108.359375,
+              "bottom": 1127.546875,
+              "width": 52.703125,
+              "height": 19.1875
+            },
+            "coin": {
+              "left": 152.78125,
+              "right": 171.96875,
+              "top": 1108.359375,
+              "bottom": 1127.546875,
+              "width": 19.1875,
+              "height": 19.1875
+            },
+            "amount": {
+              "left": 173.875,
+              "right": 205.484375,
+              "top": 1109.453125,
+              "bottom": 1126.453125,
+              "width": 31.609375,
+              "height": 17
+            },
+            "labelText": "Siguiente:",
+            "amountText": "6 pts",
+            "labelDisplay": "block",
+            "nextDisplay": "grid",
+            "nextGrid": "84.4375px",
+            "labelInside": true,
+            "valueInside": true,
+            "gap": 1.90625
+          },
+          {
+            "cell": {
+              "left": 250.53125,
+              "right": 350.40625,
+              "top": 1043.953125,
+              "bottom": 1135.265625,
+              "width": 99.875,
+              "height": 91.3125
+            },
+            "label": {
+              "left": 258.25,
+              "right": 305.515625,
+              "top": 1095.484375,
+              "bottom": 1107.09375,
+              "width": 47.265625,
+              "height": 11.609375
+            },
+            "value": {
+              "left": 258.25,
+              "right": 310.796875,
+              "top": 1108.359375,
+              "bottom": 1127.546875,
+              "width": 52.546875,
+              "height": 19.1875
+            },
+            "coin": {
+              "left": 258.25,
+              "right": 277.4375,
+              "top": 1108.359375,
+              "bottom": 1127.546875,
+              "width": 19.1875,
+              "height": 19.1875
+            },
+            "amount": {
+              "left": 279.34375,
+              "right": 310.796875,
+              "top": 1109.453125,
+              "bottom": 1126.453125,
+              "width": 31.453125,
+              "height": 17
+            },
+            "labelText": "Siguiente:",
+            "amountText": "5 pts",
+            "labelDisplay": "block",
+            "nextDisplay": "grid",
+            "nextGrid": "84.4375px",
+            "labelInside": true,
+            "valueInside": true,
+            "gap": 1.90625
+          },
+          {
+            "cell": {
+              "left": 39.59375,
+              "right": 139.46875,
+              "top": 1140.859375,
+              "bottom": 1232.171875,
+              "width": 99.875,
+              "height": 91.3125
+            },
+            "label": {
+              "left": 47.3125,
+              "right": 94.578125,
+              "top": 1192.390625,
+              "bottom": 1204,
+              "width": 47.265625,
+              "height": 11.609375
+            },
+            "value": {
+              "left": 47.3125,
+              "right": 99.859375,
+              "top": 1205.265625,
+              "bottom": 1224.453125,
+              "width": 52.546875,
+              "height": 19.1875
+            },
+            "coin": {
+              "left": 47.3125,
+              "right": 66.5,
+              "top": 1205.265625,
+              "bottom": 1224.453125,
+              "width": 19.1875,
+              "height": 19.1875
+            },
+            "amount": {
+              "left": 68.40625,
+              "right": 99.859375,
+              "top": 1206.359375,
+              "bottom": 1223.359375,
+              "width": 31.453125,
+              "height": 17
+            },
+            "labelText": "Siguiente:",
+            "amountText": "5 pts",
+            "labelDisplay": "block",
+            "nextDisplay": "grid",
+            "nextGrid": "84.4375px",
+            "labelInside": true,
+            "valueInside": true,
+            "gap": 1.90625
+          },
+          {
+            "cell": {
+              "left": 145.0625,
+              "right": 244.9375,
+              "top": 1140.859375,
+              "bottom": 1232.171875,
+              "width": 99.875,
+              "height": 91.3125
+            },
+            "label": {
+              "left": 152.78125,
+              "right": 200.046875,
+              "top": 1192.390625,
+              "bottom": 1204,
+              "width": 47.265625,
+              "height": 11.609375
+            },
+            "value": {
+              "left": 152.78125,
+              "right": 205.328125,
+              "top": 1205.265625,
+              "bottom": 1224.453125,
+              "width": 52.546875,
+              "height": 19.1875
+            },
+            "coin": {
+              "left": 152.78125,
+              "right": 171.96875,
+              "top": 1205.265625,
+              "bottom": 1224.453125,
+              "width": 19.1875,
+              "height": 19.1875
+            },
+            "amount": {
+              "left": 173.875,
+              "right": 205.328125,
+              "top": 1206.359375,
+              "bottom": 1223.359375,
+              "width": 31.453125,
+              "height": 17
+            },
+            "labelText": "Siguiente:",
+            "amountText": "5 pts",
+            "labelDisplay": "block",
+            "nextDisplay": "grid",
+            "nextGrid": "84.4375px",
+            "labelInside": true,
+            "valueInside": true,
+            "gap": 1.90625
+          },
+          {
+            "cell": {
+              "left": 250.53125,
+              "right": 350.40625,
+              "top": 1140.859375,
+              "bottom": 1232.171875,
+              "width": 99.875,
+              "height": 91.3125
+            },
+            "label": {
+              "left": 258.25,
+              "right": 305.515625,
+              "top": 1192.390625,
+              "bottom": 1204,
+              "width": 47.265625,
+              "height": 11.609375
+            },
+            "value": {
+              "left": 258.25,
+              "right": 311.15625,
+              "top": 1205.265625,
+              "bottom": 1224.453125,
+              "width": 52.90625,
+              "height": 19.1875
+            },
+            "coin": {
+              "left": 258.25,
+              "right": 277.4375,
+              "top": 1205.265625,
+              "bottom": 1224.453125,
+              "width": 19.1875,
+              "height": 19.1875
+            },
+            "amount": {
+              "left": 279.34375,
+              "right": 311.15625,
+              "top": 1206.359375,
+              "bottom": 1223.359375,
+              "width": 31.8125,
+              "height": 17
+            },
+            "labelText": "Siguiente:",
+            "amountText": "4 pts",
+            "labelDisplay": "block",
+            "nextDisplay": "grid",
+            "nextGrid": "84.4375px",
+            "labelInside": true,
+            "valueInside": true,
+            "gap": 1.90625
+          }
+        ]
+      }
+    },
+    {
+      "language": "es",
+      "width": 1440,
+      "layout": {
+        "viewportWidth": 1440,
+        "documentWidth": 1440,
+        "boardWidth": 1208,
+        "piles": [
+          {
+            "cell": {
+              "left": 1039.59375,
+              "right": 1168.796875,
+              "top": 192.78125,
+              "bottom": 271.96875,
+              "width": 129.203125,
+              "height": 79.1875
+            },
+            "label": {
+              "left": 0,
+              "right": 0,
+              "top": 0,
+              "bottom": 0,
+              "width": 0,
+              "height": 0
+            },
+            "value": {
+              "left": 1047.78125,
+              "right": 1103.140625,
+              "top": 239.78125,
+              "bottom": 263.78125,
+              "width": 55.359375,
+              "height": 24
+            },
+            "coin": {
+              "left": 1047.78125,
+              "right": 1071.78125,
+              "top": 239.78125,
+              "bottom": 263.78125,
+              "width": 24,
+              "height": 24
+            },
+            "amount": {
+              "left": 1074.65625,
+              "right": 1103.140625,
+              "top": 243.78125,
+              "bottom": 259.78125,
+              "width": 28.484375,
+              "height": 16
+            },
+            "labelText": "Siguiente:",
+            "amountText": "7 pts",
+            "labelDisplay": "none",
+            "nextDisplay": "flex",
+            "nextGrid": "none",
+            "labelInside": false,
+            "valueInside": true,
+            "gap": 2.875
+          },
+          {
+            "cell": {
+              "left": 1174.390625,
+              "right": 1303.609375,
+              "top": 192.78125,
+              "bottom": 271.96875,
+              "width": 129.21875,
+              "height": 79.1875
+            },
+            "label": {
+              "left": 0,
+              "right": 0,
+              "top": 0,
+              "bottom": 0,
+              "width": 0,
+              "height": 0
+            },
+            "value": {
+              "left": 1182.578125,
+              "right": 1239.09375,
+              "top": 239.78125,
+              "bottom": 263.78125,
+              "width": 56.515625,
+              "height": 24
+            },
+            "coin": {
+              "left": 1182.578125,
+              "right": 1206.578125,
+              "top": 239.78125,
+              "bottom": 263.78125,
+              "width": 24,
+              "height": 24
+            },
+            "amount": {
+              "left": 1209.453125,
+              "right": 1239.09375,
+              "top": 243.78125,
+              "bottom": 259.78125,
+              "width": 29.640625,
+              "height": 16
+            },
+            "labelText": "Siguiente:",
+            "amountText": "6 pts",
+            "labelDisplay": "none",
+            "nextDisplay": "flex",
+            "nextGrid": "none",
+            "labelInside": false,
+            "valueInside": true,
+            "gap": 2.875
+          },
+          {
+            "cell": {
+              "left": 1039.59375,
+              "right": 1168.796875,
+              "top": 277.5625,
+              "bottom": 356.75,
+              "width": 129.203125,
+              "height": 79.1875
+            },
+            "label": {
+              "left": 0,
+              "right": 0,
+              "top": 0,
+              "bottom": 0,
+              "width": 0,
+              "height": 0
+            },
+            "value": {
+              "left": 1047.78125,
+              "right": 1104.15625,
+              "top": 324.5625,
+              "bottom": 348.5625,
+              "width": 56.375,
+              "height": 24
+            },
+            "coin": {
+              "left": 1047.78125,
+              "right": 1071.78125,
+              "top": 324.5625,
+              "bottom": 348.5625,
+              "width": 24,
+              "height": 24
+            },
+            "amount": {
+              "left": 1074.65625,
+              "right": 1104.15625,
+              "top": 328.5625,
+              "bottom": 344.5625,
+              "width": 29.5,
+              "height": 16
+            },
+            "labelText": "Siguiente:",
+            "amountText": "5 pts",
+            "labelDisplay": "none",
+            "nextDisplay": "flex",
+            "nextGrid": "none",
+            "labelInside": false,
+            "valueInside": true,
+            "gap": 2.875
+          },
+          {
+            "cell": {
+              "left": 1174.390625,
+              "right": 1303.609375,
+              "top": 277.5625,
+              "bottom": 356.75,
+              "width": 129.21875,
+              "height": 79.1875
+            },
+            "label": {
+              "left": 0,
+              "right": 0,
+              "top": 0,
+              "bottom": 0,
+              "width": 0,
+              "height": 0
+            },
+            "value": {
+              "left": 1182.578125,
+              "right": 1238.953125,
+              "top": 324.5625,
+              "bottom": 348.5625,
+              "width": 56.375,
+              "height": 24
+            },
+            "coin": {
+              "left": 1182.578125,
+              "right": 1206.578125,
+              "top": 324.5625,
+              "bottom": 348.5625,
+              "width": 24,
+              "height": 24
+            },
+            "amount": {
+              "left": 1209.453125,
+              "right": 1238.953125,
+              "top": 328.5625,
+              "bottom": 344.5625,
+              "width": 29.5,
+              "height": 16
+            },
+            "labelText": "Siguiente:",
+            "amountText": "5 pts",
+            "labelDisplay": "none",
+            "nextDisplay": "flex",
+            "nextGrid": "none",
+            "labelInside": false,
+            "valueInside": true,
+            "gap": 2.875
+          },
+          {
+            "cell": {
+              "left": 1039.59375,
+              "right": 1168.796875,
+              "top": 362.34375,
+              "bottom": 441.53125,
+              "width": 129.203125,
+              "height": 79.1875
+            },
+            "label": {
+              "left": 0,
+              "right": 0,
+              "top": 0,
+              "bottom": 0,
+              "width": 0,
+              "height": 0
+            },
+            "value": {
+              "left": 1047.78125,
+              "right": 1104.15625,
+              "top": 409.34375,
+              "bottom": 433.34375,
+              "width": 56.375,
+              "height": 24
+            },
+            "coin": {
+              "left": 1047.78125,
+              "right": 1071.78125,
+              "top": 409.34375,
+              "bottom": 433.34375,
+              "width": 24,
+              "height": 24
+            },
+            "amount": {
+              "left": 1074.65625,
+              "right": 1104.15625,
+              "top": 413.34375,
+              "bottom": 429.34375,
+              "width": 29.5,
+              "height": 16
+            },
+            "labelText": "Siguiente:",
+            "amountText": "5 pts",
+            "labelDisplay": "none",
+            "nextDisplay": "flex",
+            "nextGrid": "none",
+            "labelInside": false,
+            "valueInside": true,
+            "gap": 2.875
+          },
+          {
+            "cell": {
+              "left": 1174.390625,
+              "right": 1303.609375,
+              "top": 362.34375,
+              "bottom": 441.53125,
+              "width": 129.21875,
+              "height": 79.1875
+            },
+            "label": {
+              "left": 0,
+              "right": 0,
+              "top": 0,
+              "bottom": 0,
+              "width": 0,
+              "height": 0
+            },
+            "value": {
+              "left": 1182.578125,
+              "right": 1239.296875,
+              "top": 409.34375,
+              "bottom": 433.34375,
+              "width": 56.71875,
+              "height": 24
+            },
+            "coin": {
+              "left": 1182.578125,
+              "right": 1206.578125,
+              "top": 409.34375,
+              "bottom": 433.34375,
+              "width": 24,
+              "height": 24
+            },
+            "amount": {
+              "left": 1209.453125,
+              "right": 1239.296875,
+              "top": 413.34375,
+              "bottom": 429.34375,
+              "width": 29.84375,
+              "height": 16
+            },
+            "labelText": "Siguiente:",
+            "amountText": "4 pts",
+            "labelDisplay": "none",
+            "nextDisplay": "flex",
+            "nextGrid": "none",
+            "labelInside": false,
+            "valueInside": true,
+            "gap": 2.875
+          }
+        ]
+      }
+    }
+  ]
+}

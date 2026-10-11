@@ -1,0 +1,38 @@
+{
+  "cases": [
+    {
+      "language": "ko",
+      "tier": 2,
+      "header": "단계 2 · 1점",
+      "source": "reserved",
+      "fixture": "mocked TableGames props; no live room or engine action",
+      "screenshot": "/workspace/gitactions-main/output/playwright/splendor-reserved-tier-mock/ko-tier-2-selected.png"
+    },
+    {
+      "language": "ko",
+      "tier": 3,
+      "header": "단계 3 · 3점",
+      "source": "reserved",
+      "fixture": "mocked TableGames props; no live room or engine action",
+      "screenshot": "/workspace/gitactions-main/output/playwright/splendor-reserved-tier-mock/ko-tier-3-selected.png"
+    },
+    {
+      "language": "es",
+      "tier": 2,
+      "header": "Nivel 2 · 1 pts",
+      "source": "reserved",
+      "fixture": "mocked TableGames props; no live room or engine action",
+      "screenshot": "/workspace/gitactions-main/output/playwright/splendor-reserved-tier-mock/es-tier-2-selected.png"
+    },
+    {
+      "language": "es",
+      "tier": 3,
+      "header": "Nivel 3 · 3 pts",
+      "source": "reserved",
+      "fixture": "mocked TableGames props; no live room or engine action",
+      "screenshot": "/workspace/gitactions-main/output/playwright/splendor-reserved-tier-mock/es-tier-3-selected.png"
+    }
+  ],
+  "errors": [],
+  "mockOnly": true
+}

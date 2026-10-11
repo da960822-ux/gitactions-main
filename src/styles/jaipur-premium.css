@@ -125,6 +125,7 @@
 .jp-pile-count { display: flex; align-items: baseline; gap: .2rem; color: var(--jp-muted); font-size: .7rem; }
 .jp-pile-count strong { color: var(--jp-plum); font: 700 1.1rem Georgia,serif; }
 .jp-pile-next { grid-column: 1 / -1; display: flex; align-items: center; gap: .22rem; color: var(--jp-muted); font-size: .72rem; white-space: nowrap; }
+.jp-pile-next-value { display: inline-flex; align-items: center; gap: .18rem; white-space: nowrap; }
 .jp-pile-next .jaipur-coin { width: 1.3rem; height: 1.3rem; }
 .jp-pile-next b { color: #725428; font-size: .75rem; font-variant-numeric: tabular-nums; }
 .jp-bonus-row { display: grid; gap: .4rem; }
@@ -224,9 +225,10 @@
 .jp-card-prompt { background: #fff7e7; }
 
 @media (min-width: 1024px) {
-  .jaipur-board { grid-template-columns: minmax(0,1fr) minmax(240px,24%); grid-template-areas: 'title title' 'scores scores' 'opponent rival' 'market supply' 'hand supply' 'history supply' 'round round' 'final final'; align-items: start; gap: .5rem .7rem; padding: .75rem; }
+  .jaipur-board { grid-template-columns: minmax(0,1fr) minmax(240px,24%); grid-template-areas: 'title title' 'scores scores' 'notice notice' 'opponent rival' 'market supply' 'hand supply' 'history supply' 'round round' 'final final'; align-items: start; gap: .5rem .7rem; padding: .75rem; }
   .jaipur-board > .jp-topline { grid-area: title; padding: 0; }
   .jaipur-board > .jp-scorebar { grid-area: scores; }
+  .jaipur-board > .jaipur-notice-rail { grid-area: notice; }
   .jaipur-board > .jp-opponent-row { grid-area: opponent; }
   .jaipur-board > .jp-market-section { grid-area: market; }
   .jaipur-board > .jp-player-area { grid-area: hand; }
@@ -277,9 +279,6 @@
   .jp-pile { padding: .45rem; }
   .jp-pile-name, .jp-pile-count, .jp-pile-next { font-size: .75rem; }
   .jp-pile-count strong { font-size: 1.1rem; }
-  .jp-pile-next { gap: .2rem; flex-wrap: wrap; }
-  .jp-pile-next .jaipur-coin { width: 1.7rem; height: 1.7rem; }
-  .jp-pile-next b { font-size: 1rem; }
   .jp-bonus-stack { min-height: 44px; gap: .4rem; }
   .jp-bonus-stack small { font-size: .75rem; }
   .jp-bonus-stack > span { grid-template-columns: 1.6rem minmax(0,1fr) auto; }
@@ -294,6 +293,11 @@
   .jp-sale-stepper { gap: .35rem; }
   .jp-sale-stepper > span { flex-basis: calc(100% - 130px); }
   .jp-sale-stepper > .jp-primary-action { flex-basis: 100%; order: 3; }
+  .jp-pile-next { display: grid; grid-template-columns: minmax(0,1fr); justify-items: start; gap: .08rem; white-space: normal; }
+  .jp-pile-next-label { font-size: .66rem; line-height: 1.1; }
+  .jp-pile-next-value { gap: .12rem; }
+  .jp-pile-next .jaipur-coin { width: 1.2rem; height: 1.2rem; }
+  .jp-pile-next b { font-size: .8rem; }
   .jp-card-name { font-size: .75rem; overflow-wrap: anywhere; }
   .jp-market-card .jp-good-illustration { min-height: 64px; }
 }
@@ -304,7 +308,7 @@
   .jp-sale-stepper { flex-basis: calc(100% - 100px); }
   .jp-sale-controls.jp-action-tray > .jp-cancel-action { align-self: flex-start; }
   .jp-pile-count strong { line-height: 1; }
-  .jp-pile-next > span { display: none; }
+  .jp-pile-next > .jp-pile-next-label { display: none; }
 }
 @media (min-width: 1024px) and (max-height: 950px) {
   .jp-market-card { height: 154px; }
@@ -337,6 +341,7 @@
 .jp-history-content { display: grid; gap: .35rem; min-width: 0; margin-top: .3rem; }
 .jp-history-content .jp-round-result { padding: .5rem .7rem; }
 .jp-history-content .jp-history { margin: 0; }
+.jp-player-hand > .jp-sale-controls { margin-top: .5rem; }
 @media (min-width: 1024px) {
   .jaipur-board > .jp-history-drawer { grid-area: title; align-self: center; justify-self: center; width: min(36%,380px); z-index: 6; }
   .jp-history-content { position: absolute; top: calc(100% + 2px); left: 0; right: 0; z-index: 7; max-height: 260px; overflow: auto; padding: .45rem; border: 1px solid #d9c8ad; border-radius: .65rem; background: #fffaf0; box-shadow: 0 10px 25px #49382130; }

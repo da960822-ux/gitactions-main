@@ -25,6 +25,30 @@ export const marbleCreditRules: LocalizedRules = {
   ],
 };
 
+export const marbleTieredRules: LocalizedRules = {
+  ko: marbleCreditRules.ko.map((rule, index) => index === 2
+    ? '도시와 건설 — 빈 도시를 구매하거나 지나갑니다. 내 도시에는 색상 도시군 완성 여부와 관계없이 별장→빌딩→랜드마크를 순서대로 지을 수 있습니다. 건설비는 해당 도시 매입가의 40%→60%→80%이며, 10 단위로 반올림하고 최소 40입니다. 통행료는 기본의 2배→4배→8배가 됩니다. 상대 도시의 통행료는 자동 지급됩니다.'
+    : rule),
+  es: marbleCreditRules.es.map((rule, index) => index === 2
+    ? 'Ciudades y construcción — Puedes comprar una ciudad libre o pasar. En cualquier ciudad tuya puedes construir villa, edificio y monumento, sin completar un color. Cada nivel cuesta el 40 %, 60 % y 80 % del precio de compra de la ciudad; se redondea a 10 y nunca baja de 40. El alquiler pasa a 2, 4 y 8 veces el valor base. El alquiler rival se paga automáticamente.'
+    : rule),
+};
+
+export const marbleExpandedRules: LocalizedRules = {
+  ko: [
+    ...marbleTieredRules.ko.map((rule, index) => index === 5
+      ? rule.replace('황금열쇠 — 13종 카드는', '황금열쇠 — 새 방은 16종이며 이전 저장 방은 기존 덱을 유지합니다. 기본 13종 카드는') : rule),
+    '도시 축제·정전 — 축제는 내 도시 하나를 선택해 다음 상대 착지 1회 통행료를 2배로 만듭니다. 정전은 상대 도시 하나를 선택해 다음 내 착지 1회 통행료를 절반으로 만듭니다(내림, 최소 1). 대상 착지까지 유지되며 다른 도시는 바뀌지 않습니다. 둘 다 걸린 도시는 2배×절반으로 기본 통행료가 됩니다. 같은 효과를 다시 선택하면 중복 배수가 아닌 해당 효과 갱신입니다. 선택 가능한 도시가 없으면 효과가 없습니다.',
+    '통행료 면제권 — 한 장을 보관하고 앞으로 통행료가 발생하면 지급 전에 직접 사용하거나 지급을 선택합니다. 자동 사용되지 않으며 세금에는 쓸 수 없습니다. 사용하면 통행료 1회만 면제하고 카드는 덱으로 돌아갑니다. 대상 도시 축제·정전은 착지 순간 소모되므로 면제권을 써도 도시 효과는 소모됩니다. 지급을 선택한 뒤 현금이 부족하면 일반 지급 위기로 넘어갑니다.',
+  ],
+  es: [
+    ...marbleTieredRules.es.map((rule, index) => index === 5
+      ? rule.replace('Llave dorada — Las 13 cartas incluyen', 'Llave dorada — Las salas nuevas usan 16 cartas; las guardadas conservan su mazo. Las 13 cartas básicas incluyen') : rule),
+    'Festival y apagón — Festival elige una ciudad propia y duplica el alquiler en la próxima llegada rival, una vez. Apagón elige una ciudad rival y reduce a la mitad el alquiler en tu próxima llegada, una vez (redondeo hacia abajo, mínimo 1). Persisten hasta esa llegada y no cambian otras ciudades. Juntos dan el alquiler base: doble por mitad. Repetir el mismo efecto lo renueva, sin acumular multiplicadores. Sin ciudad elegible, no tienen efecto.',
+    'Pase de alquiler — Guarda un pase y elige usarlo o pagar antes de un futuro alquiler. No se usa automáticamente ni sirve para impuestos. Exime un solo alquiler y vuelve al mazo. Festival y apagón se consumen al llegar, incluso si usas el pase. Si eliges pagar sin efectivo suficiente, se aplica la crisis de pago normal.',
+  ],
+};
+
 export const dominoPremiumRules: LocalizedRules = {
   ko: [
     '준비 — 더블 식스 28장(0|0~6|6)을 사용합니다. 각 자리에는 7장씩 배분하고, 1대1의 남은 14장은 뽑지 않습니다. 가장 높은 더블로 시작하며, 더블이 없으면 숫자 합이 가장 큰 타일로 시작합니다.',

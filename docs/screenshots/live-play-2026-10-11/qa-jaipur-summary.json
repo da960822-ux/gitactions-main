@@ -1,0 +1,808 @@
+{
+  "game": "jaipur",
+  "baseUrl": "http://127.0.0.1:5192",
+  "method": "Two independent contexts; UI-only room/create/join/consent/play; explicit read-only refresh; no Realtime",
+  "roomId": "1c2061d0-8f24-4b3b-9735-24fb129d4fd5",
+  "final": [
+    {
+      "roomId": "1c2061d0-8f24-4b3b-9735-24fb129d4fd5",
+      "playerId": "p1",
+      "version": 47,
+      "gameId": "jaipur",
+      "players": 2,
+      "phase": "waiting",
+      "turn": "p2",
+      "round": 2,
+      "result": null,
+      "deckCount": 39,
+      "roundSummary": {
+        "cause": "piles",
+        "round": 1,
+        "winner": "p1",
+        "breakdown": {
+          "p1": {
+            "sale": 67,
+            "bonus": 7,
+            "camel": 5,
+            "goods": 60,
+            "total": 72,
+            "detailed": true
+          },
+          "p2": {
+            "sale": 67,
+            "bonus": 8,
+            "camel": 0,
+            "goods": 59,
+            "total": 67,
+            "detailed": true
+          }
+        },
+        "roundsWon": {
+          "p1": 1,
+          "p2": 0
+        },
+        "camelCounts": {
+          "p1": 4,
+          "p2": 1
+        }
+      },
+      "roundsWon": {
+        "p1": 1,
+        "p2": 0
+      }
+    },
+    {
+      "roomId": "1c2061d0-8f24-4b3b-9735-24fb129d4fd5",
+      "playerId": "p2",
+      "version": 47,
+      "gameId": "jaipur",
+      "players": 2,
+      "phase": "choose",
+      "turn": "p2",
+      "round": 2,
+      "result": null,
+      "deckCount": 39,
+      "roundSummary": {
+        "cause": "piles",
+        "round": 1,
+        "winner": "p1",
+        "breakdown": {
+          "p1": {
+            "sale": 67,
+            "bonus": 7,
+            "camel": 5,
+            "goods": 60,
+            "total": 72,
+            "detailed": true
+          },
+          "p2": {
+            "sale": 67,
+            "bonus": 8,
+            "camel": 0,
+            "goods": 59,
+            "total": 67,
+            "detailed": true
+          }
+        },
+        "roundsWon": {
+          "p1": 1,
+          "p2": 0
+        },
+        "camelCounts": {
+          "p1": 4,
+          "p2": 1
+        }
+      },
+      "roundsWon": {
+        "p1": 1,
+        "p2": 0
+      }
+    }
+  ],
+  "observations": [
+    {
+      "mobileSale": "p1",
+      "documentWidth": 390,
+      "tray": {
+        "top": 998.671875,
+        "bottom": 1138.640625,
+        "width": 317.21875,
+        "height": 139.96875
+      },
+      "selected": {
+        "top": 1289.203125,
+        "bottom": 1412.703125,
+        "width": 75.703125,
+        "height": 123.5
+      },
+      "distanceHandToTray": 290.53125,
+      "selectedToConfirm": 200.359375,
+      "text": "금 · 3장 보유\n−\n3\n+\n첫 토큰 6점 · 나머지 2개 상품 토큰은 판매 때 공개 · 보너스 타일 가능 · 보너스 타일 가치는 비공개\n3장 판매 확정\n취소",
+      "controls": [
+        {
+          "name": "−",
+          "width": 44,
+          "height": 44
+        },
+        {
+          "name": "+",
+          "width": 44,
+          "height": 44
+        },
+        {
+          "name": "3장 판매 확정",
+          "width": 221.625,
+          "height": 44
+        },
+        {
+          "name": "취소",
+          "width": 80,
+          "height": 44
+        }
+      ]
+    },
+    {
+      "mobileSale": "p2",
+      "documentWidth": 390,
+      "tray": {
+        "top": 1031.171875,
+        "bottom": 1171.140625,
+        "width": 317.21875,
+        "height": 139.96875
+      },
+      "selected": {
+        "top": 1317.703125,
+        "bottom": 1437.203125,
+        "width": 75.703125,
+        "height": 119.5
+      },
+      "distanceHandToTray": 286.53125,
+      "selectedToConfirm": 196.359375,
+      "text": "Cuero · 3 en mano\n−\n3\n+\nPrimera ficha: 4 pts · las otras 2 fichas se revelan al vender · hay bono disponible · su valor es privado\nConfirmar venta de 3\nCancelar",
+      "controls": [
+        {
+          "name": "−",
+          "width": 44,
+          "height": 44
+        },
+        {
+          "name": "+",
+          "width": 44,
+          "height": 44
+        },
+        {
+          "name": "Confirmar venta de 3",
+          "width": 221.625,
+          "height": 44
+        },
+        {
+          "name": "Cancelar",
+          "width": 80,
+          "height": 44
+        }
+      ]
+    },
+    {
+      "reached": {
+        "exchange": true,
+        "saleCancel": true,
+        "duplicate": true,
+        "cap": true,
+        "metal": true,
+        "camel": true,
+        "bonusSale": true
+      },
+      "mobileSeats": [
+        0,
+        1
+      ],
+      "settlementKO": "이전 라운드 정산 · 최근 거래",
+      "settlementES": "Ronda anterior · actividad reciente"
+    }
+  ],
+  "errors": [],
+  "checks": {
+    "count": 479,
+    "passed": 479
+  },
+  "actions": 45,
+  "actionTypes": {
+    "camels": 1,
+    "take": 30,
+    "exchange": 1,
+    "sell": 13
+  },
+  "moves": [
+    {
+      "step": 1,
+      "player": "p1",
+      "round": 1,
+      "type": "camels",
+      "count": 3,
+      "reason": "Acquire a large herd for public camel-majority race and refresh the market",
+      "versionBefore": 2
+    },
+    {
+      "step": 2,
+      "player": "p2",
+      "round": 1,
+      "type": "take",
+      "card": {
+        "index": 2,
+        "id": "r1-draw40",
+        "good": "silver"
+      },
+      "reason": "Collect silver: own group 1, public top token 5",
+      "versionBefore": 3
+    },
+    {
+      "step": 3,
+      "player": "p1",
+      "round": 1,
+      "type": "exchange",
+      "received": [
+        {
+          "index": 3,
+          "id": "r1-draw38",
+          "good": "gold"
+        },
+        {
+          "index": 1,
+          "id": "r1-m4",
+          "good": "spice"
+        }
+      ],
+      "given": [
+        {
+          "index": 3,
+          "id": "r1-p1-h3",
+          "good": "cloth"
+        },
+        {
+          "index": 0,
+          "id": "r1-p1-h0",
+          "good": "spice"
+        }
+      ],
+      "gain": 4,
+      "reason": "Trade two lower-value holdings for concentrated goods, public utility gain 4",
+      "versionBefore": 4
+    },
+    {
+      "step": 4,
+      "player": "p2",
+      "round": 1,
+      "type": "take",
+      "card": {
+        "index": 0,
+        "id": "r1-m3",
+        "good": "cloth"
+      },
+      "reason": "Collect cloth: own group 0, public top token 5",
+      "versionBefore": 5
+    },
+    {
+      "step": 5,
+      "player": "p1",
+      "round": 1,
+      "type": "sell",
+      "good": "gold",
+      "count": 3,
+      "reason": "Cash a concentrated group with bonus eligibility, or free a full hand before acquiring again",
+      "versionBefore": 6
+    },
+    {
+      "step": 6,
+      "player": "p2",
+      "round": 1,
+      "type": "take",
+      "card": {
+        "index": 4,
+        "id": "r1-draw36",
+        "good": "leather"
+      },
+      "reason": "Collect leather: own group 2, public top token 4",
+      "versionBefore": 7
+    },
+    {
+      "step": 7,
+      "player": "p1",
+      "round": 1,
+      "type": "take",
+      "card": {
+        "index": 3,
+        "id": "r1-p1-h0",
+        "good": "spice"
+      },
+      "reason": "Collect spice: own group 1, public top token 5",
+      "versionBefore": 8
+    },
+    {
+      "step": 8,
+      "player": "p2",
+      "round": 1,
+      "type": "sell",
+      "good": "leather",
+      "count": 3,
+      "reason": "Cash a concentrated group with bonus eligibility, or free a full hand before acquiring again",
+      "versionBefore": 9
+    },
+    {
+      "step": 9,
+      "player": "p1",
+      "round": 1,
+      "type": "take",
+      "card": {
+        "index": 2,
+        "id": "r1-p1-h3",
+        "good": "cloth"
+      },
+      "reason": "Collect cloth: own group 0, public top token 5",
+      "versionBefore": 10
+    },
+    {
+      "step": 10,
+      "player": "p2",
+      "round": 1,
+      "type": "take",
+      "card": {
+        "index": 3,
+        "id": "r1-draw34",
+        "good": "silver"
+      },
+      "reason": "Collect silver: own group 2, public top token 5",
+      "versionBefore": 11
+    },
+    {
+      "step": 11,
+      "player": "p1",
+      "round": 1,
+      "type": "take",
+      "card": {
+        "index": 2,
+        "id": "r1-draw35",
+        "good": "cloth"
+      },
+      "reason": "Collect cloth: own group 1, public top token 5",
+      "versionBefore": 12
+    },
+    {
+      "step": 12,
+      "player": "p2",
+      "round": 1,
+      "type": "sell",
+      "good": "silver",
+      "count": 3,
+      "reason": "Cash a concentrated group with bonus eligibility, or free a full hand before acquiring again",
+      "versionBefore": 13
+    },
+    {
+      "step": 13,
+      "player": "p1",
+      "round": 1,
+      "type": "take",
+      "card": {
+        "index": 2,
+        "id": "r1-draw33",
+        "good": "cloth"
+      },
+      "reason": "Collect cloth: own group 2, public top token 5",
+      "versionBefore": 14
+    },
+    {
+      "step": 14,
+      "player": "p2",
+      "round": 1,
+      "type": "take",
+      "card": {
+        "index": 3,
+        "id": "r1-draw31",
+        "good": "spice"
+      },
+      "reason": "Collect spice: own group 0, public top token 5",
+      "versionBefore": 15
+    },
+    {
+      "step": 15,
+      "player": "p1",
+      "round": 1,
+      "type": "sell",
+      "good": "cloth",
+      "count": 3,
+      "reason": "Cash a concentrated group with bonus eligibility, or free a full hand before acquiring again",
+      "versionBefore": 16
+    },
+    {
+      "step": 16,
+      "player": "p2",
+      "round": 1,
+      "type": "take",
+      "card": {
+        "index": 2,
+        "id": "r1-draw32",
+        "good": "leather"
+      },
+      "reason": "Collect leather: own group 0, public top token 1",
+      "versionBefore": 17
+    },
+    {
+      "step": 17,
+      "player": "p1",
+      "round": 1,
+      "type": "take",
+      "card": {
+        "index": 4,
+        "id": "r1-draw28",
+        "good": "cloth"
+      },
+      "reason": "Collect cloth: own group 0, public top token 3",
+      "versionBefore": 18
+    },
+    {
+      "step": 18,
+      "player": "p2",
+      "round": 1,
+      "type": "take",
+      "card": {
+        "index": 4,
+        "id": "r1-draw27",
+        "good": "cloth"
+      },
+      "reason": "Collect cloth: own group 1, public top token 3",
+      "versionBefore": 19
+    },
+    {
+      "step": 19,
+      "player": "p1",
+      "round": 1,
+      "type": "take",
+      "card": {
+        "index": 4,
+        "id": "r1-draw26",
+        "good": "silver"
+      },
+      "reason": "Collect silver: own group 0, public top token 5",
+      "versionBefore": 20
+    },
+    {
+      "step": 20,
+      "player": "p2",
+      "round": 1,
+      "type": "take",
+      "card": {
+        "index": 4,
+        "id": "r1-draw25",
+        "good": "gold"
+      },
+      "reason": "Collect gold: own group 0, public top token 5",
+      "versionBefore": 21
+    },
+    {
+      "step": 21,
+      "player": "p1",
+      "round": 1,
+      "type": "take",
+      "card": {
+        "index": 4,
+        "id": "r1-draw24",
+        "good": "diamond"
+      },
+      "reason": "Collect diamond: own group 0, public top token 7",
+      "versionBefore": 22
+    },
+    {
+      "step": 22,
+      "player": "p2",
+      "round": 1,
+      "type": "take",
+      "card": {
+        "index": 4,
+        "id": "r1-draw23",
+        "good": "diamond"
+      },
+      "reason": "Collect diamond: own group 1, public top token 7",
+      "versionBefore": 23
+    },
+    {
+      "step": 23,
+      "player": "p1",
+      "round": 1,
+      "type": "take",
+      "card": {
+        "index": 4,
+        "id": "r1-draw22",
+        "good": "cloth"
+      },
+      "reason": "Collect cloth: own group 1, public top token 3",
+      "versionBefore": 24
+    },
+    {
+      "step": 24,
+      "player": "p2",
+      "round": 1,
+      "type": "sell",
+      "good": "diamond",
+      "count": 2,
+      "reason": "Cash a concentrated group with bonus eligibility, or free a full hand before acquiring again",
+      "versionBefore": 25
+    },
+    {
+      "step": 25,
+      "player": "p1",
+      "round": 1,
+      "type": "take",
+      "card": {
+        "index": 4,
+        "id": "r1-draw21",
+        "good": "spice"
+      },
+      "reason": "Collect spice: own group 2, public top token 5",
+      "versionBefore": 26
+    },
+    {
+      "step": 26,
+      "player": "p2",
+      "round": 1,
+      "type": "take",
+      "card": {
+        "index": 4,
+        "id": "r1-draw20",
+        "good": "gold"
+      },
+      "reason": "Collect gold: own group 1, public top token 5",
+      "versionBefore": 27
+    },
+    {
+      "step": 27,
+      "player": "p1",
+      "round": 1,
+      "type": "sell",
+      "good": "spice",
+      "count": 3,
+      "reason": "Cash a concentrated group with bonus eligibility, or free a full hand before acquiring again",
+      "versionBefore": 28
+    },
+    {
+      "step": 28,
+      "player": "p2",
+      "round": 1,
+      "type": "take",
+      "card": {
+        "index": 2,
+        "id": "r1-draw30",
+        "good": "leather"
+      },
+      "reason": "Collect leather: own group 1, public top token 1",
+      "versionBefore": 29
+    },
+    {
+      "step": 29,
+      "player": "p1",
+      "round": 1,
+      "type": "take",
+      "card": {
+        "index": 2,
+        "id": "r1-draw29",
+        "good": "leather"
+      },
+      "reason": "Collect leather: own group 0, public top token 1",
+      "versionBefore": 30
+    },
+    {
+      "step": 30,
+      "player": "p2",
+      "round": 1,
+      "type": "sell",
+      "good": "gold",
+      "count": 2,
+      "reason": "Cash a concentrated group with bonus eligibility, or free a full hand before acquiring again",
+      "versionBefore": 31
+    },
+    {
+      "step": 31,
+      "player": "p1",
+      "round": 1,
+      "type": "take",
+      "card": {
+        "index": 2,
+        "id": "r1-draw19",
+        "good": "leather"
+      },
+      "reason": "Collect leather: own group 1, public top token 1",
+      "versionBefore": 32
+    },
+    {
+      "step": 32,
+      "player": "p2",
+      "round": 1,
+      "type": "take",
+      "card": {
+        "index": 2,
+        "id": "r1-draw18",
+        "good": "leather"
+      },
+      "reason": "Collect leather: own group 2, public top token 1",
+      "versionBefore": 33
+    },
+    {
+      "step": 33,
+      "player": "p1",
+      "round": 1,
+      "type": "take",
+      "card": {
+        "index": 4,
+        "id": "r1-draw15",
+        "good": "cloth"
+      },
+      "reason": "Collect cloth: own group 2, public top token 3",
+      "versionBefore": 34
+    },
+    {
+      "step": 34,
+      "player": "p2",
+      "round": 1,
+      "type": "sell",
+      "good": "leather",
+      "count": 3,
+      "reason": "Cash a concentrated group with bonus eligibility, or free a full hand before acquiring again",
+      "versionBefore": 35
+    },
+    {
+      "step": 35,
+      "player": "p1",
+      "round": 1,
+      "type": "sell",
+      "good": "cloth",
+      "count": 3,
+      "reason": "Cash a concentrated group with bonus eligibility, or free a full hand before acquiring again",
+      "versionBefore": 36
+    },
+    {
+      "step": 36,
+      "player": "p2",
+      "round": 1,
+      "type": "take",
+      "card": {
+        "index": 3,
+        "id": "r1-draw16",
+        "good": "spice"
+      },
+      "reason": "Collect spice: own group 1, public top token 3",
+      "versionBefore": 37
+    },
+    {
+      "step": 37,
+      "player": "p1",
+      "round": 1,
+      "type": "take",
+      "card": {
+        "index": 4,
+        "id": "r1-draw13",
+        "good": "silver"
+      },
+      "reason": "Collect silver: own group 1, public top token 5",
+      "versionBefore": 38
+    },
+    {
+      "step": 38,
+      "player": "p2",
+      "round": 1,
+      "type": "take",
+      "card": {
+        "index": 2,
+        "id": "r1-draw17",
+        "good": "leather"
+      },
+      "reason": "Collect leather: own group 0, public top token 1",
+      "versionBefore": 39
+    },
+    {
+      "step": 39,
+      "player": "p1",
+      "round": 1,
+      "type": "take",
+      "card": {
+        "index": 2,
+        "id": "r1-draw14",
+        "good": "gold"
+      },
+      "reason": "Collect gold: own group 0, public top token undefined",
+      "versionBefore": 40
+    },
+    {
+      "step": 40,
+      "player": "p2",
+      "round": 1,
+      "type": "take",
+      "card": {
+        "index": 4,
+        "id": "r1-draw10",
+        "good": "spice"
+      },
+      "reason": "Collect spice: own group 2, public top token 3",
+      "versionBefore": 41
+    },
+    {
+      "step": 41,
+      "player": "p1",
+      "round": 1,
+      "type": "sell",
+      "good": "silver",
+      "count": 2,
+      "reason": "Cash a concentrated group with bonus eligibility, or free a full hand before acquiring again",
+      "versionBefore": 42
+    },
+    {
+      "step": 42,
+      "player": "p2",
+      "round": 1,
+      "type": "sell",
+      "good": "spice",
+      "count": 3,
+      "reason": "Cash a concentrated group with bonus eligibility, or free a full hand before acquiring again",
+      "versionBefore": 43
+    },
+    {
+      "step": 43,
+      "player": "p1",
+      "round": 1,
+      "type": "sell",
+      "good": "leather",
+      "count": 2,
+      "reason": "Cash a concentrated group with bonus eligibility, or free a full hand before acquiring again",
+      "versionBefore": 44
+    },
+    {
+      "step": 44,
+      "player": "p2",
+      "round": 1,
+      "type": "sell",
+      "good": "cloth",
+      "count": 2,
+      "reason": "Cash a concentrated group with bonus eligibility, or free a full hand before acquiring again",
+      "versionBefore": 45
+    },
+    {
+      "step": 45,
+      "player": "p1",
+      "round": 2,
+      "type": "take",
+      "card": {
+        "index": 4,
+        "id": "r2-m4",
+        "good": "gold"
+      },
+      "reason": "Collect gold: own group 1, public top token 6",
+      "versionBefore": 46
+    }
+  ],
+  "boundaryChecks": [
+    {
+      "name": "Single precious good cannot confirm sale",
+      "pass": true,
+      "details": "Diamantes · 1 en mano\n−\n1\n+\nSe necesitan al menos 2 cartas para vender.\nConfirmar venta de 1\nCancelar"
+    },
+    {
+      "name": "Exchange2↔1 explains mismatch and blocks confirm",
+      "pass": true
+    },
+    {
+      "name": "Exchange cancel clears both sides",
+      "pass": true
+    },
+    {
+      "name": "Sale quantity decrement changes count",
+      "pass": true
+    },
+    {
+      "name": "Sale cancel preserves hand and clears selected group",
+      "pass": true
+    },
+    {
+      "name": "Hand7 prevents further single-good acquisition",
+      "pass": true,
+      "details": "Tomarás una mercancía.\n\nLa mano está llena.\nConfirma la toma\nCancelar"
+    }
+  ],
+  "sourceRun": "output/playwright/live-two-player-qa/jaipur/run-1791714847681"
+}

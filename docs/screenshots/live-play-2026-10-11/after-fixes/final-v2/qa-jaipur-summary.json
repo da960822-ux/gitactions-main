@@ -1,0 +1,3707 @@
+{
+  "game": "jaipur",
+  "baseUrl": "http://127.0.0.1:5192",
+  "method": "Two independent contexts; UI-only room/create/join/consent/play; explicit read-only refresh; no Realtime",
+  "roomId": "f186e205-45eb-4911-bf9d-87011b335d5c",
+  "moves": [
+    {
+      "step": 1,
+      "player": "p1",
+      "round": 1,
+      "type": "camels",
+      "count": 4,
+      "reason": "Acquire a large herd for public camel-majority race and refresh the market",
+      "versionBefore": 2
+    },
+    {
+      "step": 2,
+      "player": "p2",
+      "round": 1,
+      "type": "take",
+      "card": {
+        "index": 0,
+        "id": "r1-m3",
+        "good": "gold"
+      },
+      "reason": "Collect gold: own group 1, public top token 6",
+      "versionBefore": 3
+    },
+    {
+      "step": 3,
+      "player": "p1",
+      "round": 1,
+      "type": "take",
+      "card": {
+        "index": 3,
+        "id": "r1-draw37",
+        "good": "cloth"
+      },
+      "reason": "Collect cloth: own group 2, public top token 5",
+      "versionBefore": 4
+    },
+    {
+      "step": 4,
+      "player": "p2",
+      "round": 1,
+      "type": "take",
+      "card": {
+        "index": 1,
+        "id": "r1-draw39",
+        "good": "leather"
+      },
+      "reason": "Collect leather: own group 1, public top token 4",
+      "versionBefore": 5
+    },
+    {
+      "step": 5,
+      "player": "p1",
+      "round": 1,
+      "type": "take",
+      "card": {
+        "index": 4,
+        "id": "r1-draw34",
+        "good": "spice"
+      },
+      "reason": "Collect spice: own group 1, public top token 5",
+      "versionBefore": 6
+    },
+    {
+      "step": 6,
+      "player": "p2",
+      "round": 1,
+      "type": "exchange",
+      "received": [
+        {
+          "index": 1,
+          "id": "r1-draw38",
+          "good": "leather"
+        },
+        {
+          "index": 2,
+          "id": "r1-draw36",
+          "good": "leather"
+        }
+      ],
+      "given": [
+        {
+          "index": 0,
+          "id": "r1-p2-h0",
+          "good": "cloth"
+        },
+        {
+          "index": 1,
+          "id": "r1-p2-h1",
+          "good": "diamond"
+        }
+      ],
+      "gain": 2,
+      "reason": "Trade two lower-value holdings for concentrated goods, public utility gain 2",
+      "versionBefore": 7
+    },
+    {
+      "step": 7,
+      "player": "p1",
+      "round": 1,
+      "type": "sell",
+      "good": "cloth",
+      "count": 3,
+      "reason": "Cash a concentrated group with bonus eligibility, or free a full hand before acquiring again",
+      "versionBefore": 8
+    },
+    {
+      "step": 8,
+      "player": "p2",
+      "round": 1,
+      "type": "sell",
+      "good": "leather",
+      "count": 4,
+      "reason": "Cash a concentrated group with bonus eligibility, or free a full hand before acquiring again",
+      "versionBefore": 9
+    },
+    {
+      "step": 9,
+      "player": "p1",
+      "round": 1,
+      "type": "take",
+      "card": {
+        "index": 3,
+        "id": "r1-p2-h1",
+        "good": "diamond"
+      },
+      "reason": "Collect diamond: own group 1, public top token 7",
+      "versionBefore": 10
+    },
+    {
+      "step": 10,
+      "player": "p2",
+      "round": 1,
+      "type": "take",
+      "card": {
+        "index": 0,
+        "id": "r1-draw40",
+        "good": "silver"
+      },
+      "reason": "Collect silver: own group 0, public top token 5",
+      "versionBefore": 11
+    },
+    {
+      "step": 11,
+      "player": "p1",
+      "round": 1,
+      "type": "take",
+      "card": {
+        "index": 0,
+        "id": "r1-draw35",
+        "good": "silver"
+      },
+      "reason": "Collect silver: own group 0, public top token 5",
+      "versionBefore": 12
+    },
+    {
+      "step": 12,
+      "player": "p2",
+      "round": 1,
+      "type": "take",
+      "card": {
+        "index": 0,
+        "id": "r1-draw33",
+        "good": "silver"
+      },
+      "reason": "Collect silver: own group 1, public top token 5",
+      "versionBefore": 13
+    },
+    {
+      "step": 13,
+      "player": "p1",
+      "round": 1,
+      "type": "take",
+      "card": {
+        "index": 1,
+        "id": "r1-draw32",
+        "good": "silver"
+      },
+      "reason": "Collect silver: own group 1, public top token 5",
+      "versionBefore": 14
+    },
+    {
+      "step": 14,
+      "player": "p2",
+      "round": 1,
+      "type": "take",
+      "card": {
+        "index": 4,
+        "id": "r1-draw28",
+        "good": "diamond"
+      },
+      "reason": "Collect diamond: own group 0, public top token 7",
+      "versionBefore": 15
+    },
+    {
+      "step": 15,
+      "player": "p1",
+      "round": 1,
+      "type": "sell",
+      "good": "diamond",
+      "count": 2,
+      "reason": "Cash a concentrated group with bonus eligibility, or free a full hand before acquiring again",
+      "versionBefore": 16
+    },
+    {
+      "step": 16,
+      "player": "p2",
+      "round": 1,
+      "type": "take",
+      "card": {
+        "index": 0,
+        "id": "r1-p2-h0",
+        "good": "cloth"
+      },
+      "reason": "Collect cloth: own group 0, public top token 3",
+      "versionBefore": 17
+    }
+  ],
+  "checks": [
+    {
+      "name": "Both public boards and versions agree",
+      "pass": true,
+      "details": {
+        "version": 0
+      }
+    },
+    {
+      "name": "Different contexts own separate seats",
+      "pass": true,
+      "details": [
+        {
+          "playerId": "p1",
+          "players": 2,
+          "gameId": null,
+          "roomId": "f186e205-45eb-4911-bf9d-87011b335d5c"
+        },
+        {
+          "playerId": "p2",
+          "players": 2,
+          "gameId": null,
+          "roomId": "f186e205-45eb-4911-bf9d-87011b335d5c"
+        }
+      ]
+    },
+    {
+      "name": "Both public boards and versions agree",
+      "pass": true,
+      "details": {
+        "version": 2
+      }
+    },
+    {
+      "name": "p1 1440px next-token values visible inside each cell",
+      "pass": true,
+      "details": {
+        "width": 1440,
+        "columns": "1024.25px 326.969px",
+        "pileNextDisplay": "flex",
+        "pileNextWhiteSpace": "nowrap",
+        "piles": [
+          {
+            "text": "77점",
+            "cell": {
+              "x": 1084.828125,
+              "y": 461.203125,
+              "width": 150.09375,
+              "height": 81.1875,
+              "top": 461.203125,
+              "right": 1234.921875,
+              "bottom": 542.390625,
+              "left": 1084.828125
+            },
+            "label": {
+              "x": 0,
+              "y": 0,
+              "width": 0,
+              "height": 0,
+              "top": 0,
+              "right": 0,
+              "bottom": 0,
+              "left": 0
+            },
+            "value": {
+              "x": 1093.015625,
+              "y": 510.203125,
+              "width": 44.375,
+              "height": 24,
+              "top": 510.203125,
+              "right": 1137.390625,
+              "bottom": 534.203125,
+              "left": 1093.015625
+            },
+            "children": [
+              {
+                "x": 1093.015625,
+                "y": 510.203125,
+                "width": 24,
+                "height": 24,
+                "top": 510.203125,
+                "right": 1117.015625,
+                "bottom": 534.203125,
+                "left": 1093.015625
+              },
+              {
+                "x": 1119.890625,
+                "y": 513.203125,
+                "width": 17.5,
+                "height": 18,
+                "top": 513.203125,
+                "right": 1137.390625,
+                "bottom": 531.203125,
+                "left": 1119.890625
+              }
+            ],
+            "valueVisible": true,
+            "labelVisible": false,
+            "inside": true
+          },
+          {
+            "text": "66점",
+            "cell": {
+              "x": 1240.515625,
+              "y": 461.203125,
+              "width": 150.09375,
+              "height": 81.1875,
+              "top": 461.203125,
+              "right": 1390.609375,
+              "bottom": 542.390625,
+              "left": 1240.515625
+            },
+            "label": {
+              "x": 0,
+              "y": 0,
+              "width": 0,
+              "height": 0,
+              "top": 0,
+              "right": 0,
+              "bottom": 0,
+              "left": 0
+            },
+            "value": {
+              "x": 1248.703125,
+              "y": 510.203125,
+              "width": 45.53125,
+              "height": 24,
+              "top": 510.203125,
+              "right": 1294.234375,
+              "bottom": 534.203125,
+              "left": 1248.703125
+            },
+            "children": [
+              {
+                "x": 1248.703125,
+                "y": 510.203125,
+                "width": 24,
+                "height": 24,
+                "top": 510.203125,
+                "right": 1272.703125,
+                "bottom": 534.203125,
+                "left": 1248.703125
+              },
+              {
+                "x": 1275.578125,
+                "y": 513.203125,
+                "width": 18.65625,
+                "height": 18,
+                "top": 513.203125,
+                "right": 1294.234375,
+                "bottom": 531.203125,
+                "left": 1275.578125
+              }
+            ],
+            "valueVisible": true,
+            "labelVisible": false,
+            "inside": true
+          },
+          {
+            "text": "55점",
+            "cell": {
+              "x": 1084.828125,
+              "y": 547.984375,
+              "width": 150.09375,
+              "height": 81.1875,
+              "top": 547.984375,
+              "right": 1234.921875,
+              "bottom": 629.171875,
+              "left": 1084.828125
+            },
+            "label": {
+              "x": 0,
+              "y": 0,
+              "width": 0,
+              "height": 0,
+              "top": 0,
+              "right": 0,
+              "bottom": 0,
+              "left": 0
+            },
+            "value": {
+              "x": 1093.015625,
+              "y": 596.984375,
+              "width": 45.390625,
+              "height": 24,
+              "top": 596.984375,
+              "right": 1138.40625,
+              "bottom": 620.984375,
+              "left": 1093.015625
+            },
+            "children": [
+              {
+                "x": 1093.015625,
+                "y": 596.984375,
+                "width": 24,
+                "height": 24,
+                "top": 596.984375,
+                "right": 1117.015625,
+                "bottom": 620.984375,
+                "left": 1093.015625
+              },
+              {
+                "x": 1119.890625,
+                "y": 599.984375,
+                "width": 18.515625,
+                "height": 18,
+                "top": 599.984375,
+                "right": 1138.40625,
+                "bottom": 617.984375,
+                "left": 1119.890625
+              }
+            ],
+            "valueVisible": true,
+            "labelVisible": false,
+            "inside": true
+          },
+          {
+            "text": "55점",
+            "cell": {
+              "x": 1240.515625,
+              "y": 547.984375,
+              "width": 150.09375,
+              "height": 81.1875,
+              "top": 547.984375,
+              "right": 1390.609375,
+              "bottom": 629.171875,
+              "left": 1240.515625
+            },
+            "label": {
+              "x": 0,
+              "y": 0,
+              "width": 0,
+              "height": 0,
+              "top": 0,
+              "right": 0,
+              "bottom": 0,
+              "left": 0
+            },
+            "value": {
+              "x": 1248.703125,
+              "y": 596.984375,
+              "width": 45.390625,
+              "height": 24,
+              "top": 596.984375,
+              "right": 1294.09375,
+              "bottom": 620.984375,
+              "left": 1248.703125
+            },
+            "children": [
+              {
+                "x": 1248.703125,
+                "y": 596.984375,
+                "width": 24,
+                "height": 24,
+                "top": 596.984375,
+                "right": 1272.703125,
+                "bottom": 620.984375,
+                "left": 1248.703125
+              },
+              {
+                "x": 1275.578125,
+                "y": 599.984375,
+                "width": 18.515625,
+                "height": 18,
+                "top": 599.984375,
+                "right": 1294.09375,
+                "bottom": 617.984375,
+                "left": 1275.578125
+              }
+            ],
+            "valueVisible": true,
+            "labelVisible": false,
+            "inside": true
+          },
+          {
+            "text": "55점",
+            "cell": {
+              "x": 1084.828125,
+              "y": 634.765625,
+              "width": 150.09375,
+              "height": 81.1875,
+              "top": 634.765625,
+              "right": 1234.921875,
+              "bottom": 715.953125,
+              "left": 1084.828125
+            },
+            "label": {
+              "x": 0,
+              "y": 0,
+              "width": 0,
+              "height": 0,
+              "top": 0,
+              "right": 0,
+              "bottom": 0,
+              "left": 0
+            },
+            "value": {
+              "x": 1093.015625,
+              "y": 683.765625,
+              "width": 45.390625,
+              "height": 24,
+              "top": 683.765625,
+              "right": 1138.40625,
+              "bottom": 707.765625,
+              "left": 1093.015625
+            },
+            "children": [
+              {
+                "x": 1093.015625,
+                "y": 683.765625,
+                "width": 24,
+                "height": 24,
+                "top": 683.765625,
+                "right": 1117.015625,
+                "bottom": 707.765625,
+                "left": 1093.015625
+              },
+              {
+                "x": 1119.890625,
+                "y": 686.765625,
+                "width": 18.515625,
+                "height": 18,
+                "top": 686.765625,
+                "right": 1138.40625,
+                "bottom": 704.765625,
+                "left": 1119.890625
+              }
+            ],
+            "valueVisible": true,
+            "labelVisible": false,
+            "inside": true
+          },
+          {
+            "text": "44점",
+            "cell": {
+              "x": 1240.515625,
+              "y": 634.765625,
+              "width": 150.09375,
+              "height": 81.1875,
+              "top": 634.765625,
+              "right": 1390.609375,
+              "bottom": 715.953125,
+              "left": 1240.515625
+            },
+            "label": {
+              "x": 0,
+              "y": 0,
+              "width": 0,
+              "height": 0,
+              "top": 0,
+              "right": 0,
+              "bottom": 0,
+              "left": 0
+            },
+            "value": {
+              "x": 1248.703125,
+              "y": 683.765625,
+              "width": 45.734375,
+              "height": 24,
+              "top": 683.765625,
+              "right": 1294.4375,
+              "bottom": 707.765625,
+              "left": 1248.703125
+            },
+            "children": [
+              {
+                "x": 1248.703125,
+                "y": 683.765625,
+                "width": 24,
+                "height": 24,
+                "top": 683.765625,
+                "right": 1272.703125,
+                "bottom": 707.765625,
+                "left": 1248.703125
+              },
+              {
+                "x": 1275.578125,
+                "y": 686.765625,
+                "width": 18.859375,
+                "height": 18,
+                "top": 686.765625,
+                "right": 1294.4375,
+                "bottom": 704.765625,
+                "left": 1275.578125
+              }
+            ],
+            "valueVisible": true,
+            "labelVisible": false,
+            "inside": true
+          }
+        ]
+      }
+    },
+    {
+      "name": "p1 390px next-token values visible inside each cell",
+      "pass": true,
+      "details": {
+        "width": 390,
+        "columns": "338.406px",
+        "pileNextDisplay": "grid",
+        "pileNextWhiteSpace": "normal",
+        "piles": [
+          {
+            "text": "77점",
+            "cell": {
+              "x": 39.59375,
+              "y": 1643.125,
+              "width": 99.875,
+              "height": 93.3125,
+              "top": 1643.125,
+              "right": 139.46875,
+              "bottom": 1736.4375,
+              "left": 39.59375
+            },
+            "label": {
+              "x": 47.3125,
+              "y": 1696.65625,
+              "width": 19.421875,
+              "height": 11.609375,
+              "top": 1696.65625,
+              "right": 66.734375,
+              "bottom": 1708.265625,
+              "left": 47.3125
+            },
+            "value": {
+              "x": 47.3125,
+              "y": 1709.53125,
+              "width": 39.75,
+              "height": 19.1875,
+              "top": 1709.53125,
+              "right": 87.0625,
+              "bottom": 1728.71875,
+              "left": 47.3125
+            },
+            "children": [
+              {
+                "x": 47.3125,
+                "y": 1709.53125,
+                "width": 19.1875,
+                "height": 19.1875,
+                "top": 1709.53125,
+                "right": 66.5,
+                "bottom": 1728.71875,
+                "left": 47.3125
+              },
+              {
+                "x": 68.40625,
+                "y": 1709.625,
+                "width": 18.65625,
+                "height": 19,
+                "top": 1709.625,
+                "right": 87.0625,
+                "bottom": 1728.625,
+                "left": 68.40625
+              }
+            ],
+            "valueVisible": true,
+            "labelVisible": true,
+            "inside": true
+          },
+          {
+            "text": "66점",
+            "cell": {
+              "x": 145.0625,
+              "y": 1643.125,
+              "width": 99.875,
+              "height": 93.3125,
+              "top": 1643.125,
+              "right": 244.9375,
+              "bottom": 1736.4375,
+              "left": 145.0625
+            },
+            "label": {
+              "x": 152.78125,
+              "y": 1696.65625,
+              "width": 19.421875,
+              "height": 11.609375,
+              "top": 1696.65625,
+              "right": 172.203125,
+              "bottom": 1708.265625,
+              "left": 152.78125
+            },
+            "value": {
+              "x": 152.78125,
+              "y": 1709.53125,
+              "width": 41,
+              "height": 19.1875,
+              "top": 1709.53125,
+              "right": 193.78125,
+              "bottom": 1728.71875,
+              "left": 152.78125
+            },
+            "children": [
+              {
+                "x": 152.78125,
+                "y": 1709.53125,
+                "width": 19.1875,
+                "height": 19.1875,
+                "top": 1709.53125,
+                "right": 171.96875,
+                "bottom": 1728.71875,
+                "left": 152.78125
+              },
+              {
+                "x": 173.875,
+                "y": 1709.625,
+                "width": 19.90625,
+                "height": 19,
+                "top": 1709.625,
+                "right": 193.78125,
+                "bottom": 1728.625,
+                "left": 173.875
+              }
+            ],
+            "valueVisible": true,
+            "labelVisible": true,
+            "inside": true
+          },
+          {
+            "text": "55점",
+            "cell": {
+              "x": 250.53125,
+              "y": 1643.125,
+              "width": 99.875,
+              "height": 93.3125,
+              "top": 1643.125,
+              "right": 350.40625,
+              "bottom": 1736.4375,
+              "left": 250.53125
+            },
+            "label": {
+              "x": 258.25,
+              "y": 1696.65625,
+              "width": 19.421875,
+              "height": 11.609375,
+              "top": 1696.65625,
+              "right": 277.671875,
+              "bottom": 1708.265625,
+              "left": 258.25
+            },
+            "value": {
+              "x": 258.25,
+              "y": 1709.53125,
+              "width": 40.84375,
+              "height": 19.1875,
+              "top": 1709.53125,
+              "right": 299.09375,
+              "bottom": 1728.71875,
+              "left": 258.25
+            },
+            "children": [
+              {
+                "x": 258.25,
+                "y": 1709.53125,
+                "width": 19.1875,
+                "height": 19.1875,
+                "top": 1709.53125,
+                "right": 277.4375,
+                "bottom": 1728.71875,
+                "left": 258.25
+              },
+              {
+                "x": 279.34375,
+                "y": 1709.625,
+                "width": 19.75,
+                "height": 19,
+                "top": 1709.625,
+                "right": 299.09375,
+                "bottom": 1728.625,
+                "left": 279.34375
+              }
+            ],
+            "valueVisible": true,
+            "labelVisible": true,
+            "inside": true
+          },
+          {
+            "text": "55점",
+            "cell": {
+              "x": 39.59375,
+              "y": 1742.03125,
+              "width": 99.875,
+              "height": 93.3125,
+              "top": 1742.03125,
+              "right": 139.46875,
+              "bottom": 1835.34375,
+              "left": 39.59375
+            },
+            "label": {
+              "x": 47.3125,
+              "y": 1795.5625,
+              "width": 19.421875,
+              "height": 11.609375,
+              "top": 1795.5625,
+              "right": 66.734375,
+              "bottom": 1807.171875,
+              "left": 47.3125
+            },
+            "value": {
+              "x": 47.3125,
+              "y": 1808.4375,
+              "width": 40.84375,
+              "height": 19.1875,
+              "top": 1808.4375,
+              "right": 88.15625,
+              "bottom": 1827.625,
+              "left": 47.3125
+            },
+            "children": [
+              {
+                "x": 47.3125,
+                "y": 1808.4375,
+                "width": 19.1875,
+                "height": 19.1875,
+                "top": 1808.4375,
+                "right": 66.5,
+                "bottom": 1827.625,
+                "left": 47.3125
+              },
+              {
+                "x": 68.40625,
+                "y": 1808.53125,
+                "width": 19.75,
+                "height": 19,
+                "top": 1808.53125,
+                "right": 88.15625,
+                "bottom": 1827.53125,
+                "left": 68.40625
+              }
+            ],
+            "valueVisible": true,
+            "labelVisible": true,
+            "inside": true
+          },
+          {
+            "text": "55점",
+            "cell": {
+              "x": 145.0625,
+              "y": 1742.03125,
+              "width": 99.875,
+              "height": 93.3125,
+              "top": 1742.03125,
+              "right": 244.9375,
+              "bottom": 1835.34375,
+              "left": 145.0625
+            },
+            "label": {
+              "x": 152.78125,
+              "y": 1795.5625,
+              "width": 19.421875,
+              "height": 11.609375,
+              "top": 1795.5625,
+              "right": 172.203125,
+              "bottom": 1807.171875,
+              "left": 152.78125
+            },
+            "value": {
+              "x": 152.78125,
+              "y": 1808.4375,
+              "width": 40.84375,
+              "height": 19.1875,
+              "top": 1808.4375,
+              "right": 193.625,
+              "bottom": 1827.625,
+              "left": 152.78125
+            },
+            "children": [
+              {
+                "x": 152.78125,
+                "y": 1808.4375,
+                "width": 19.1875,
+                "height": 19.1875,
+                "top": 1808.4375,
+                "right": 171.96875,
+                "bottom": 1827.625,
+                "left": 152.78125
+              },
+              {
+                "x": 173.875,
+                "y": 1808.53125,
+                "width": 19.75,
+                "height": 19,
+                "top": 1808.53125,
+                "right": 193.625,
+                "bottom": 1827.53125,
+                "left": 173.875
+              }
+            ],
+            "valueVisible": true,
+            "labelVisible": true,
+            "inside": true
+          },
+          {
+            "text": "44점",
+            "cell": {
+              "x": 250.53125,
+              "y": 1742.03125,
+              "width": 99.875,
+              "height": 93.3125,
+              "top": 1742.03125,
+              "right": 350.40625,
+              "bottom": 1835.34375,
+              "left": 250.53125
+            },
+            "label": {
+              "x": 258.25,
+              "y": 1795.5625,
+              "width": 19.421875,
+              "height": 11.609375,
+              "top": 1795.5625,
+              "right": 277.671875,
+              "bottom": 1807.171875,
+              "left": 258.25
+            },
+            "value": {
+              "x": 258.25,
+              "y": 1808.4375,
+              "width": 41.203125,
+              "height": 19.1875,
+              "top": 1808.4375,
+              "right": 299.453125,
+              "bottom": 1827.625,
+              "left": 258.25
+            },
+            "children": [
+              {
+                "x": 258.25,
+                "y": 1808.4375,
+                "width": 19.1875,
+                "height": 19.1875,
+                "top": 1808.4375,
+                "right": 277.4375,
+                "bottom": 1827.625,
+                "left": 258.25
+              },
+              {
+                "x": 279.34375,
+                "y": 1808.53125,
+                "width": 20.109375,
+                "height": 19,
+                "top": 1808.53125,
+                "right": 299.453125,
+                "bottom": 1827.53125,
+                "left": 279.34375
+              }
+            ],
+            "valueVisible": true,
+            "labelVisible": true,
+            "inside": true
+          }
+        ]
+      }
+    },
+    {
+      "name": "p1 mobile board remains a single column",
+      "pass": true,
+      "details": "338.406px"
+    },
+    {
+      "name": "p2 1440px next-token values visible inside each cell",
+      "pass": true,
+      "details": {
+        "width": 1440,
+        "columns": "1024.25px 326.969px",
+        "pileNextDisplay": "flex",
+        "pileNextWhiteSpace": "nowrap",
+        "piles": [
+          {
+            "text": "77 pts",
+            "cell": {
+              "x": 1084.828125,
+              "y": 461.03125,
+              "width": 150.09375,
+              "height": 77.78125,
+              "top": 461.03125,
+              "right": 1234.921875,
+              "bottom": 538.8125,
+              "left": 1084.828125
+            },
+            "label": {
+              "x": 0,
+              "y": 0,
+              "width": 0,
+              "height": 0,
+              "top": 0,
+              "right": 0,
+              "bottom": 0,
+              "left": 0
+            },
+            "value": {
+              "x": 1093.015625,
+              "y": 506.625,
+              "width": 55.359375,
+              "height": 24,
+              "top": 506.625,
+              "right": 1148.375,
+              "bottom": 530.625,
+              "left": 1093.015625
+            },
+            "children": [
+              {
+                "x": 1093.015625,
+                "y": 506.625,
+                "width": 24,
+                "height": 24,
+                "top": 506.625,
+                "right": 1117.015625,
+                "bottom": 530.625,
+                "left": 1093.015625
+              },
+              {
+                "x": 1119.890625,
+                "y": 510.625,
+                "width": 28.484375,
+                "height": 16,
+                "top": 510.625,
+                "right": 1148.375,
+                "bottom": 526.625,
+                "left": 1119.890625
+              }
+            ],
+            "valueVisible": true,
+            "labelVisible": false,
+            "inside": true
+          },
+          {
+            "text": "66 pts",
+            "cell": {
+              "x": 1240.515625,
+              "y": 461.03125,
+              "width": 150.09375,
+              "height": 77.78125,
+              "top": 461.03125,
+              "right": 1390.609375,
+              "bottom": 538.8125,
+              "left": 1240.515625
+            },
+            "label": {
+              "x": 0,
+              "y": 0,
+              "width": 0,
+              "height": 0,
+              "top": 0,
+              "right": 0,
+              "bottom": 0,
+              "left": 0
+            },
+            "value": {
+              "x": 1248.703125,
+              "y": 506.625,
+              "width": 56.515625,
+              "height": 24,
+              "top": 506.625,
+              "right": 1305.21875,
+              "bottom": 530.625,
+              "left": 1248.703125
+            },
+            "children": [
+              {
+                "x": 1248.703125,
+                "y": 506.625,
+                "width": 24,
+                "height": 24,
+                "top": 506.625,
+                "right": 1272.703125,
+                "bottom": 530.625,
+                "left": 1248.703125
+              },
+              {
+                "x": 1275.578125,
+                "y": 510.625,
+                "width": 29.640625,
+                "height": 16,
+                "top": 510.625,
+                "right": 1305.21875,
+                "bottom": 526.625,
+                "left": 1275.578125
+              }
+            ],
+            "valueVisible": true,
+            "labelVisible": false,
+            "inside": true
+          },
+          {
+            "text": "55 pts",
+            "cell": {
+              "x": 1084.828125,
+              "y": 544.40625,
+              "width": 150.09375,
+              "height": 77.78125,
+              "top": 544.40625,
+              "right": 1234.921875,
+              "bottom": 622.1875,
+              "left": 1084.828125
+            },
+            "label": {
+              "x": 0,
+              "y": 0,
+              "width": 0,
+              "height": 0,
+              "top": 0,
+              "right": 0,
+              "bottom": 0,
+              "left": 0
+            },
+            "value": {
+              "x": 1093.015625,
+              "y": 590,
+              "width": 56.375,
+              "height": 24,
+              "top": 590,
+              "right": 1149.390625,
+              "bottom": 614,
+              "left": 1093.015625
+            },
+            "children": [
+              {
+                "x": 1093.015625,
+                "y": 590,
+                "width": 24,
+                "height": 24,
+                "top": 590,
+                "right": 1117.015625,
+                "bottom": 614,
+                "left": 1093.015625
+              },
+              {
+                "x": 1119.890625,
+                "y": 594,
+                "width": 29.5,
+                "height": 16,
+                "top": 594,
+                "right": 1149.390625,
+                "bottom": 610,
+                "left": 1119.890625
+              }
+            ],
+            "valueVisible": true,
+            "labelVisible": false,
+            "inside": true
+          },
+          {
+            "text": "55 pts",
+            "cell": {
+              "x": 1240.515625,
+              "y": 544.40625,
+              "width": 150.09375,
+              "height": 77.78125,
+              "top": 544.40625,
+              "right": 1390.609375,
+              "bottom": 622.1875,
+              "left": 1240.515625
+            },
+            "label": {
+              "x": 0,
+              "y": 0,
+              "width": 0,
+              "height": 0,
+              "top": 0,
+              "right": 0,
+              "bottom": 0,
+              "left": 0
+            },
+            "value": {
+              "x": 1248.703125,
+              "y": 590,
+              "width": 56.375,
+              "height": 24,
+              "top": 590,
+              "right": 1305.078125,
+              "bottom": 614,
+              "left": 1248.703125
+            },
+            "children": [
+              {
+                "x": 1248.703125,
+                "y": 590,
+                "width": 24,
+                "height": 24,
+                "top": 590,
+                "right": 1272.703125,
+                "bottom": 614,
+                "left": 1248.703125
+              },
+              {
+                "x": 1275.578125,
+                "y": 594,
+                "width": 29.5,
+                "height": 16,
+                "top": 594,
+                "right": 1305.078125,
+                "bottom": 610,
+                "left": 1275.578125
+              }
+            ],
+            "valueVisible": true,
+            "labelVisible": false,
+            "inside": true
+          },
+          {
+            "text": "55 pts",
+            "cell": {
+              "x": 1084.828125,
+              "y": 627.78125,
+              "width": 150.09375,
+              "height": 77.78125,
+              "top": 627.78125,
+              "right": 1234.921875,
+              "bottom": 705.5625,
+              "left": 1084.828125
+            },
+            "label": {
+              "x": 0,
+              "y": 0,
+              "width": 0,
+              "height": 0,
+              "top": 0,
+              "right": 0,
+              "bottom": 0,
+              "left": 0
+            },
+            "value": {
+              "x": 1093.015625,
+              "y": 673.375,
+              "width": 56.375,
+              "height": 24,
+              "top": 673.375,
+              "right": 1149.390625,
+              "bottom": 697.375,
+              "left": 1093.015625
+            },
+            "children": [
+              {
+                "x": 1093.015625,
+                "y": 673.375,
+                "width": 24,
+                "height": 24,
+                "top": 673.375,
+                "right": 1117.015625,
+                "bottom": 697.375,
+                "left": 1093.015625
+              },
+              {
+                "x": 1119.890625,
+                "y": 677.375,
+                "width": 29.5,
+                "height": 16,
+                "top": 677.375,
+                "right": 1149.390625,
+                "bottom": 693.375,
+                "left": 1119.890625
+              }
+            ],
+            "valueVisible": true,
+            "labelVisible": false,
+            "inside": true
+          },
+          {
+            "text": "44 pts",
+            "cell": {
+              "x": 1240.515625,
+              "y": 627.78125,
+              "width": 150.09375,
+              "height": 77.78125,
+              "top": 627.78125,
+              "right": 1390.609375,
+              "bottom": 705.5625,
+              "left": 1240.515625
+            },
+            "label": {
+              "x": 0,
+              "y": 0,
+              "width": 0,
+              "height": 0,
+              "top": 0,
+              "right": 0,
+              "bottom": 0,
+              "left": 0
+            },
+            "value": {
+              "x": 1248.703125,
+              "y": 673.375,
+              "width": 56.71875,
+              "height": 24,
+              "top": 673.375,
+              "right": 1305.421875,
+              "bottom": 697.375,
+              "left": 1248.703125
+            },
+            "children": [
+              {
+                "x": 1248.703125,
+                "y": 673.375,
+                "width": 24,
+                "height": 24,
+                "top": 673.375,
+                "right": 1272.703125,
+                "bottom": 697.375,
+                "left": 1248.703125
+              },
+              {
+                "x": 1275.578125,
+                "y": 677.375,
+                "width": 29.84375,
+                "height": 16,
+                "top": 677.375,
+                "right": 1305.421875,
+                "bottom": 693.375,
+                "left": 1275.578125
+              }
+            ],
+            "valueVisible": true,
+            "labelVisible": false,
+            "inside": true
+          }
+        ]
+      }
+    },
+    {
+      "name": "p2 390px next-token values visible inside each cell",
+      "pass": true,
+      "details": {
+        "width": 390,
+        "columns": "338.406px",
+        "pileNextDisplay": "grid",
+        "pileNextWhiteSpace": "normal",
+        "piles": [
+          {
+            "text": "77 pts",
+            "cell": {
+              "x": 39.59375,
+              "y": 1562.296875,
+              "width": 99.875,
+              "height": 87.3125,
+              "top": 1562.296875,
+              "right": 139.46875,
+              "bottom": 1649.609375,
+              "left": 39.59375
+            },
+            "label": {
+              "x": 47.3125,
+              "y": 1609.828125,
+              "width": 47.265625,
+              "height": 11.609375,
+              "top": 1609.828125,
+              "right": 94.578125,
+              "bottom": 1621.4375,
+              "left": 47.3125
+            },
+            "value": {
+              "x": 47.3125,
+              "y": 1622.703125,
+              "width": 51.453125,
+              "height": 19.1875,
+              "top": 1622.703125,
+              "right": 98.765625,
+              "bottom": 1641.890625,
+              "left": 47.3125
+            },
+            "children": [
+              {
+                "x": 47.3125,
+                "y": 1622.703125,
+                "width": 19.1875,
+                "height": 19.1875,
+                "top": 1622.703125,
+                "right": 66.5,
+                "bottom": 1641.890625,
+                "left": 47.3125
+              },
+              {
+                "x": 68.40625,
+                "y": 1623.796875,
+                "width": 30.359375,
+                "height": 17,
+                "top": 1623.796875,
+                "right": 98.765625,
+                "bottom": 1640.796875,
+                "left": 68.40625
+              }
+            ],
+            "valueVisible": true,
+            "labelVisible": true,
+            "inside": true
+          },
+          {
+            "text": "66 pts",
+            "cell": {
+              "x": 145.0625,
+              "y": 1562.296875,
+              "width": 99.875,
+              "height": 87.3125,
+              "top": 1562.296875,
+              "right": 244.9375,
+              "bottom": 1649.609375,
+              "left": 145.0625
+            },
+            "label": {
+              "x": 152.78125,
+              "y": 1609.828125,
+              "width": 47.265625,
+              "height": 11.609375,
+              "top": 1609.828125,
+              "right": 200.046875,
+              "bottom": 1621.4375,
+              "left": 152.78125
+            },
+            "value": {
+              "x": 152.78125,
+              "y": 1622.703125,
+              "width": 52.703125,
+              "height": 19.1875,
+              "top": 1622.703125,
+              "right": 205.484375,
+              "bottom": 1641.890625,
+              "left": 152.78125
+            },
+            "children": [
+              {
+                "x": 152.78125,
+                "y": 1622.703125,
+                "width": 19.1875,
+                "height": 19.1875,
+                "top": 1622.703125,
+                "right": 171.96875,
+                "bottom": 1641.890625,
+                "left": 152.78125
+              },
+              {
+                "x": 173.875,
+                "y": 1623.796875,
+                "width": 31.609375,
+                "height": 17,
+                "top": 1623.796875,
+                "right": 205.484375,
+                "bottom": 1640.796875,
+                "left": 173.875
+              }
+            ],
+            "valueVisible": true,
+            "labelVisible": true,
+            "inside": true
+          },
+          {
+            "text": "55 pts",
+            "cell": {
+              "x": 250.53125,
+              "y": 1562.296875,
+              "width": 99.875,
+              "height": 87.3125,
+              "top": 1562.296875,
+              "right": 350.40625,
+              "bottom": 1649.609375,
+              "left": 250.53125
+            },
+            "label": {
+              "x": 258.25,
+              "y": 1609.828125,
+              "width": 47.265625,
+              "height": 11.609375,
+              "top": 1609.828125,
+              "right": 305.515625,
+              "bottom": 1621.4375,
+              "left": 258.25
+            },
+            "value": {
+              "x": 258.25,
+              "y": 1622.703125,
+              "width": 52.546875,
+              "height": 19.1875,
+              "top": 1622.703125,
+              "right": 310.796875,
+              "bottom": 1641.890625,
+              "left": 258.25
+            },
+            "children": [
+              {
+                "x": 258.25,
+                "y": 1622.703125,
+                "width": 19.1875,
+                "height": 19.1875,
+                "top": 1622.703125,
+                "right": 277.4375,
+                "bottom": 1641.890625,
+                "left": 258.25
+              },
+              {
+                "x": 279.34375,
+                "y": 1623.796875,
+                "width": 31.453125,
+                "height": 17,
+                "top": 1623.796875,
+                "right": 310.796875,
+                "bottom": 1640.796875,
+                "left": 279.34375
+              }
+            ],
+            "valueVisible": true,
+            "labelVisible": true,
+            "inside": true
+          },
+          {
+            "text": "55 pts",
+            "cell": {
+              "x": 39.59375,
+              "y": 1655.203125,
+              "width": 99.875,
+              "height": 87.3125,
+              "top": 1655.203125,
+              "right": 139.46875,
+              "bottom": 1742.515625,
+              "left": 39.59375
+            },
+            "label": {
+              "x": 47.3125,
+              "y": 1702.734375,
+              "width": 47.265625,
+              "height": 11.609375,
+              "top": 1702.734375,
+              "right": 94.578125,
+              "bottom": 1714.34375,
+              "left": 47.3125
+            },
+            "value": {
+              "x": 47.3125,
+              "y": 1715.609375,
+              "width": 52.546875,
+              "height": 19.1875,
+              "top": 1715.609375,
+              "right": 99.859375,
+              "bottom": 1734.796875,
+              "left": 47.3125
+            },
+            "children": [
+              {
+                "x": 47.3125,
+                "y": 1715.609375,
+                "width": 19.1875,
+                "height": 19.1875,
+                "top": 1715.609375,
+                "right": 66.5,
+                "bottom": 1734.796875,
+                "left": 47.3125
+              },
+              {
+                "x": 68.40625,
+                "y": 1716.703125,
+                "width": 31.453125,
+                "height": 17,
+                "top": 1716.703125,
+                "right": 99.859375,
+                "bottom": 1733.703125,
+                "left": 68.40625
+              }
+            ],
+            "valueVisible": true,
+            "labelVisible": true,
+            "inside": true
+          },
+          {
+            "text": "55 pts",
+            "cell": {
+              "x": 145.0625,
+              "y": 1655.203125,
+              "width": 99.875,
+              "height": 87.3125,
+              "top": 1655.203125,
+              "right": 244.9375,
+              "bottom": 1742.515625,
+              "left": 145.0625
+            },
+            "label": {
+              "x": 152.78125,
+              "y": 1702.734375,
+              "width": 47.265625,
+              "height": 11.609375,
+              "top": 1702.734375,
+              "right": 200.046875,
+              "bottom": 1714.34375,
+              "left": 152.78125
+            },
+            "value": {
+              "x": 152.78125,
+              "y": 1715.609375,
+              "width": 52.546875,
+              "height": 19.1875,
+              "top": 1715.609375,
+              "right": 205.328125,
+              "bottom": 1734.796875,
+              "left": 152.78125
+            },
+            "children": [
+              {
+                "x": 152.78125,
+                "y": 1715.609375,
+                "width": 19.1875,
+                "height": 19.1875,
+                "top": 1715.609375,
+                "right": 171.96875,
+                "bottom": 1734.796875,
+                "left": 152.78125
+              },
+              {
+                "x": 173.875,
+                "y": 1716.703125,
+                "width": 31.453125,
+                "height": 17,
+                "top": 1716.703125,
+                "right": 205.328125,
+                "bottom": 1733.703125,
+                "left": 173.875
+              }
+            ],
+            "valueVisible": true,
+            "labelVisible": true,
+            "inside": true
+          },
+          {
+            "text": "44 pts",
+            "cell": {
+              "x": 250.53125,
+              "y": 1655.203125,
+              "width": 99.875,
+              "height": 87.3125,
+              "top": 1655.203125,
+              "right": 350.40625,
+              "bottom": 1742.515625,
+              "left": 250.53125
+            },
+            "label": {
+              "x": 258.25,
+              "y": 1702.734375,
+              "width": 47.265625,
+              "height": 11.609375,
+              "top": 1702.734375,
+              "right": 305.515625,
+              "bottom": 1714.34375,
+              "left": 258.25
+            },
+            "value": {
+              "x": 258.25,
+              "y": 1715.609375,
+              "width": 52.90625,
+              "height": 19.1875,
+              "top": 1715.609375,
+              "right": 311.15625,
+              "bottom": 1734.796875,
+              "left": 258.25
+            },
+            "children": [
+              {
+                "x": 258.25,
+                "y": 1715.609375,
+                "width": 19.1875,
+                "height": 19.1875,
+                "top": 1715.609375,
+                "right": 277.4375,
+                "bottom": 1734.796875,
+                "left": 258.25
+              },
+              {
+                "x": 279.34375,
+                "y": 1716.703125,
+                "width": 31.8125,
+                "height": 17,
+                "top": 1716.703125,
+                "right": 311.15625,
+                "bottom": 1733.703125,
+                "left": 279.34375
+              }
+            ],
+            "valueVisible": true,
+            "labelVisible": true,
+            "inside": true
+          }
+        ]
+      }
+    },
+    {
+      "name": "p2 mobile board remains a single column",
+      "pass": true,
+      "details": "338.406px"
+    },
+    {
+      "name": "Both public boards and versions agree",
+      "pass": true,
+      "details": {
+        "version": 2
+      }
+    },
+    {
+      "name": "p1 only own hand zone and no opponent card IDs",
+      "pass": true,
+      "details": {
+        "count": 5,
+        "zones": [
+          "p1"
+        ],
+        "rivalGood": 0,
+        "visibleBonusValues": [
+          "3장 판매7 남음",
+          "4장 판매6 남음",
+          "5+장 판매5 남음"
+        ]
+      }
+    },
+    {
+      "name": "p1 hidden future bonus and lower goods token values absent",
+      "pass": true
+    },
+    {
+      "name": "p2 only own hand zone and no opponent card IDs",
+      "pass": true,
+      "details": {
+        "count": 4,
+        "zones": [
+          "p2"
+        ],
+        "rivalGood": 0,
+        "visibleBonusValues": [
+          "3cartas vendidas7 quedan",
+          "4cartas vendidas6 quedan",
+          "5+cartas vendidas5 quedan"
+        ]
+      }
+    },
+    {
+      "name": "p2 hidden future bonus and lower goods token values absent",
+      "pass": true
+    },
+    {
+      "name": "Single precious good cannot confirm sale",
+      "pass": true,
+      "details": "다이아몬드 · 1장 보유\n−\n1\n+\n이 상품은 최소 2장이 있어야 팔 수 있어요.\n1장 판매 확정\n취소"
+    },
+    {
+      "name": "Blocked invalid sale preserves selection and version",
+      "pass": true
+    },
+    {
+      "name": "Camel acquisition selects all market camels",
+      "pass": true
+    },
+    {
+      "name": "Take/exchange retains one market-local confirm tray",
+      "pass": true
+    },
+    {
+      "name": "Strategy action has enabled native confirmation",
+      "pass": true,
+      "details": {
+        "type": "camels",
+        "count": 4,
+        "reason": "Acquire a large herd for public camel-majority race and refresh the market"
+      }
+    },
+    {
+      "name": "Jaipur UI request commits",
+      "pass": true
+    },
+    {
+      "name": "Both public boards and versions agree",
+      "pass": true,
+      "details": {
+        "version": 3
+      }
+    },
+    {
+      "name": "One Jaipur commit per native confirmation including double click",
+      "pass": true
+    },
+    {
+      "name": "Jaipur turn changes or automatically enters the next round",
+      "pass": true
+    },
+    {
+      "name": "Both public boards and versions agree",
+      "pass": true,
+      "details": {
+        "version": 3
+      }
+    },
+    {
+      "name": "p1 only own hand zone and no opponent card IDs",
+      "pass": true,
+      "details": {
+        "count": 5,
+        "zones": [
+          "p1"
+        ],
+        "rivalGood": 0,
+        "visibleBonusValues": [
+          "3장 판매7 남음",
+          "4장 판매6 남음",
+          "5+장 판매5 남음"
+        ]
+      }
+    },
+    {
+      "name": "p1 hidden future bonus and lower goods token values absent",
+      "pass": true
+    },
+    {
+      "name": "p2 only own hand zone and no opponent card IDs",
+      "pass": true,
+      "details": {
+        "count": 4,
+        "zones": [
+          "p2"
+        ],
+        "rivalGood": 0,
+        "visibleBonusValues": [
+          "3cartas vendidas7 quedan",
+          "4cartas vendidas6 quedan",
+          "5+cartas vendidas5 quedan"
+        ]
+      }
+    },
+    {
+      "name": "p2 hidden future bonus and lower goods token values absent",
+      "pass": true
+    },
+    {
+      "name": "Take/exchange retains one market-local confirm tray",
+      "pass": true
+    },
+    {
+      "name": "Strategy action has enabled native confirmation",
+      "pass": true,
+      "details": {
+        "type": "take",
+        "card": {
+          "index": 0,
+          "id": "r1-m3",
+          "good": "gold"
+        },
+        "reason": "Collect gold: own group 1, public top token 6"
+      }
+    },
+    {
+      "name": "Jaipur UI request commits",
+      "pass": true
+    },
+    {
+      "name": "Both public boards and versions agree",
+      "pass": true,
+      "details": {
+        "version": 4
+      }
+    },
+    {
+      "name": "One Jaipur commit per native confirmation including double click",
+      "pass": true
+    },
+    {
+      "name": "Jaipur turn changes or automatically enters the next round",
+      "pass": true
+    },
+    {
+      "name": "Both public boards and versions agree",
+      "pass": true,
+      "details": {
+        "version": 4
+      }
+    },
+    {
+      "name": "p1 only own hand zone and no opponent card IDs",
+      "pass": true,
+      "details": {
+        "count": 5,
+        "zones": [
+          "p1"
+        ],
+        "rivalGood": 0,
+        "visibleBonusValues": [
+          "3장 판매7 남음",
+          "4장 판매6 남음",
+          "5+장 판매5 남음"
+        ]
+      }
+    },
+    {
+      "name": "p1 hidden future bonus and lower goods token values absent",
+      "pass": true
+    },
+    {
+      "name": "p2 only own hand zone and no opponent card IDs",
+      "pass": true,
+      "details": {
+        "count": 5,
+        "zones": [
+          "p2"
+        ],
+        "rivalGood": 0,
+        "visibleBonusValues": [
+          "3cartas vendidas7 quedan",
+          "4cartas vendidas6 quedan",
+          "5+cartas vendidas5 quedan"
+        ]
+      }
+    },
+    {
+      "name": "p2 hidden future bonus and lower goods token values absent",
+      "pass": true
+    },
+    {
+      "name": "Take/exchange retains one market-local confirm tray",
+      "pass": true
+    },
+    {
+      "name": "Strategy action has enabled native confirmation",
+      "pass": true,
+      "details": {
+        "type": "take",
+        "card": {
+          "index": 3,
+          "id": "r1-draw37",
+          "good": "cloth"
+        },
+        "reason": "Collect cloth: own group 2, public top token 5"
+      }
+    },
+    {
+      "name": "Jaipur UI request commits",
+      "pass": true
+    },
+    {
+      "name": "Both public boards and versions agree",
+      "pass": true,
+      "details": {
+        "version": 5
+      }
+    },
+    {
+      "name": "One Jaipur commit per native confirmation including double click",
+      "pass": true
+    },
+    {
+      "name": "Jaipur turn changes or automatically enters the next round",
+      "pass": true
+    },
+    {
+      "name": "Both public boards and versions agree",
+      "pass": true,
+      "details": {
+        "version": 5
+      }
+    },
+    {
+      "name": "p1 only own hand zone and no opponent card IDs",
+      "pass": true,
+      "details": {
+        "count": 6,
+        "zones": [
+          "p1"
+        ],
+        "rivalGood": 0,
+        "visibleBonusValues": [
+          "3장 판매7 남음",
+          "4장 판매6 남음",
+          "5+장 판매5 남음"
+        ]
+      }
+    },
+    {
+      "name": "p1 hidden future bonus and lower goods token values absent",
+      "pass": true
+    },
+    {
+      "name": "p2 only own hand zone and no opponent card IDs",
+      "pass": true,
+      "details": {
+        "count": 5,
+        "zones": [
+          "p2"
+        ],
+        "rivalGood": 0,
+        "visibleBonusValues": [
+          "3cartas vendidas7 quedan",
+          "4cartas vendidas6 quedan",
+          "5+cartas vendidas5 quedan"
+        ]
+      }
+    },
+    {
+      "name": "p2 hidden future bonus and lower goods token values absent",
+      "pass": true
+    },
+    {
+      "name": "Take/exchange retains one market-local confirm tray",
+      "pass": true
+    },
+    {
+      "name": "Strategy action has enabled native confirmation",
+      "pass": true,
+      "details": {
+        "type": "take",
+        "card": {
+          "index": 1,
+          "id": "r1-draw39",
+          "good": "leather"
+        },
+        "reason": "Collect leather: own group 1, public top token 4"
+      }
+    },
+    {
+      "name": "Jaipur UI request commits",
+      "pass": true
+    },
+    {
+      "name": "Both public boards and versions agree",
+      "pass": true,
+      "details": {
+        "version": 6
+      }
+    },
+    {
+      "name": "One Jaipur commit per native confirmation including double click",
+      "pass": true
+    },
+    {
+      "name": "Jaipur turn changes or automatically enters the next round",
+      "pass": true
+    },
+    {
+      "name": "Both public boards and versions agree",
+      "pass": true,
+      "details": {
+        "version": 6
+      }
+    },
+    {
+      "name": "p1 only own hand zone and no opponent card IDs",
+      "pass": true,
+      "details": {
+        "count": 6,
+        "zones": [
+          "p1"
+        ],
+        "rivalGood": 0,
+        "visibleBonusValues": [
+          "3장 판매7 남음",
+          "4장 판매6 남음",
+          "5+장 판매5 남음"
+        ]
+      }
+    },
+    {
+      "name": "p1 hidden future bonus and lower goods token values absent",
+      "pass": true
+    },
+    {
+      "name": "p2 only own hand zone and no opponent card IDs",
+      "pass": true,
+      "details": {
+        "count": 6,
+        "zones": [
+          "p2"
+        ],
+        "rivalGood": 0,
+        "visibleBonusValues": [
+          "3cartas vendidas7 quedan",
+          "4cartas vendidas6 quedan",
+          "5+cartas vendidas5 quedan"
+        ]
+      }
+    },
+    {
+      "name": "p2 hidden future bonus and lower goods token values absent",
+      "pass": true
+    },
+    {
+      "name": "Take/exchange retains one market-local confirm tray",
+      "pass": true
+    },
+    {
+      "name": "Strategy action has enabled native confirmation",
+      "pass": true,
+      "details": {
+        "type": "take",
+        "card": {
+          "index": 4,
+          "id": "r1-draw34",
+          "good": "spice"
+        },
+        "reason": "Collect spice: own group 1, public top token 5"
+      }
+    },
+    {
+      "name": "Jaipur UI request commits",
+      "pass": true
+    },
+    {
+      "name": "Both public boards and versions agree",
+      "pass": true,
+      "details": {
+        "version": 7
+      }
+    },
+    {
+      "name": "One Jaipur commit per native confirmation including double click",
+      "pass": true
+    },
+    {
+      "name": "Jaipur turn changes or automatically enters the next round",
+      "pass": true
+    },
+    {
+      "name": "Both public boards and versions agree",
+      "pass": true,
+      "details": {
+        "version": 7
+      }
+    },
+    {
+      "name": "p1 only own hand zone and no opponent card IDs",
+      "pass": true,
+      "details": {
+        "count": 7,
+        "zones": [
+          "p1"
+        ],
+        "rivalGood": 0,
+        "visibleBonusValues": [
+          "3장 판매7 남음",
+          "4장 판매6 남음",
+          "5+장 판매5 남음"
+        ]
+      }
+    },
+    {
+      "name": "p1 hidden future bonus and lower goods token values absent",
+      "pass": true
+    },
+    {
+      "name": "p2 only own hand zone and no opponent card IDs",
+      "pass": true,
+      "details": {
+        "count": 6,
+        "zones": [
+          "p2"
+        ],
+        "rivalGood": 0,
+        "visibleBonusValues": [
+          "3cartas vendidas7 quedan",
+          "4cartas vendidas6 quedan",
+          "5+cartas vendidas5 quedan"
+        ]
+      }
+    },
+    {
+      "name": "p2 hidden future bonus and lower goods token values absent",
+      "pass": true
+    },
+    {
+      "name": "Exchange2↔1 explains mismatch and blocks confirm",
+      "pass": true
+    },
+    {
+      "name": "Exchange cancel clears both sides",
+      "pass": true
+    },
+    {
+      "name": "Take/exchange retains one market-local confirm tray",
+      "pass": true
+    },
+    {
+      "name": "Strategy action has enabled native confirmation",
+      "pass": true,
+      "details": {
+        "type": "exchange",
+        "received": [
+          {
+            "index": 1,
+            "id": "r1-draw38",
+            "good": "leather"
+          },
+          {
+            "index": 2,
+            "id": "r1-draw36",
+            "good": "leather"
+          }
+        ],
+        "given": [
+          {
+            "index": 0,
+            "id": "r1-p2-h0",
+            "good": "cloth"
+          },
+          {
+            "index": 1,
+            "id": "r1-p2-h1",
+            "good": "diamond"
+          }
+        ],
+        "gain": 2,
+        "reason": "Trade two lower-value holdings for concentrated goods, public utility gain 2"
+      }
+    },
+    {
+      "name": "Jaipur UI request commits",
+      "pass": true
+    },
+    {
+      "name": "Both public boards and versions agree",
+      "pass": true,
+      "details": {
+        "version": 8
+      }
+    },
+    {
+      "name": "One Jaipur commit per native confirmation including double click",
+      "pass": true
+    },
+    {
+      "name": "Jaipur turn changes or automatically enters the next round",
+      "pass": true
+    },
+    {
+      "name": "Exchange preserves own hand count",
+      "pass": true
+    },
+    {
+      "name": "Both public boards and versions agree",
+      "pass": true,
+      "details": {
+        "version": 8
+      }
+    },
+    {
+      "name": "p1 only own hand zone and no opponent card IDs",
+      "pass": true,
+      "details": {
+        "count": 7,
+        "zones": [
+          "p1"
+        ],
+        "rivalGood": 0,
+        "visibleBonusValues": [
+          "3장 판매7 남음",
+          "4장 판매6 남음",
+          "5+장 판매5 남음"
+        ]
+      }
+    },
+    {
+      "name": "p1 hidden future bonus and lower goods token values absent",
+      "pass": true
+    },
+    {
+      "name": "p2 only own hand zone and no opponent card IDs",
+      "pass": true,
+      "details": {
+        "count": 6,
+        "zones": [
+          "p2"
+        ],
+        "rivalGood": 0,
+        "visibleBonusValues": [
+          "3cartas vendidas7 quedan",
+          "4cartas vendidas6 quedan",
+          "5+cartas vendidas5 quedan"
+        ]
+      }
+    },
+    {
+      "name": "p2 hidden future bonus and lower goods token values absent",
+      "pass": true
+    },
+    {
+      "name": "Hand7 prevents further single-good acquisition",
+      "pass": true,
+      "details": "선택한 상품 한 장을 가져옵니다.\n\n손패가 가득 차서 가져올 수 없어요.\n가져오기 선택\n취소"
+    },
+    {
+      "name": "Sale quantity decrement changes count",
+      "pass": true
+    },
+    {
+      "name": "Sale cancel preserves hand and clears selected group",
+      "pass": true
+    },
+    {
+      "name": "390px sale has no document horizontal overflow and 44px targets",
+      "pass": true,
+      "details": {
+        "documentWidth": 390,
+        "tray": {
+          "top": 1407.53125,
+          "bottom": 1547.5,
+          "width": 317.21875,
+          "height": 139.96875
+        },
+        "selected": {
+          "top": 1144.734375,
+          "bottom": 1268.234375,
+          "width": 75.703125,
+          "height": 123.5
+        },
+        "saleTrays": 1,
+        "saleInHand": true,
+        "distanceHandToTray": -262.796875,
+        "selectedToConfirm": -352.96875,
+        "text": "옷감 · 3장 보유\n−\n3\n+\n첫 토큰 5점 · 나머지 2개 상품 토큰은 판매 때 공개 · 보너스 타일 가능 · 보너스 타일 가치는 비공개\n3장 판매 확정\n취소",
+        "controls": [
+          {
+            "name": "−",
+            "width": 44,
+            "height": 44
+          },
+          {
+            "name": "+",
+            "width": 44,
+            "height": 44
+          },
+          {
+            "name": "3장 판매 확정",
+            "width": 221.625,
+            "height": 44
+          },
+          {
+            "name": "취소",
+            "width": 80,
+            "height": 44
+          }
+        ]
+      }
+    },
+    {
+      "name": "Only sale tray lives next to the selected own hand",
+      "pass": true,
+      "details": {
+        "documentWidth": 390,
+        "tray": {
+          "top": 1407.53125,
+          "bottom": 1547.5,
+          "width": 317.21875,
+          "height": 139.96875
+        },
+        "selected": {
+          "top": 1144.734375,
+          "bottom": 1268.234375,
+          "width": 75.703125,
+          "height": 123.5
+        },
+        "saleTrays": 1,
+        "saleInHand": true,
+        "distanceHandToTray": -262.796875,
+        "selectedToConfirm": -352.96875,
+        "text": "옷감 · 3장 보유\n−\n3\n+\n첫 토큰 5점 · 나머지 2개 상품 토큰은 판매 때 공개 · 보너스 타일 가능 · 보너스 타일 가치는 비공개\n3장 판매 확정\n취소",
+        "controls": [
+          {
+            "name": "−",
+            "width": 44,
+            "height": 44
+          },
+          {
+            "name": "+",
+            "width": 44,
+            "height": 44
+          },
+          {
+            "name": "3장 판매 확정",
+            "width": 221.625,
+            "height": 44
+          },
+          {
+            "name": "취소",
+            "width": 80,
+            "height": 44
+          }
+        ]
+      }
+    },
+    {
+      "name": "Strategy action has enabled native confirmation",
+      "pass": true,
+      "details": {
+        "type": "sell",
+        "good": "cloth",
+        "count": 3,
+        "reason": "Cash a concentrated group with bonus eligibility, or free a full hand before acquiring again"
+      }
+    },
+    {
+      "name": "Jaipur UI request commits",
+      "pass": true
+    },
+    {
+      "name": "p1 390px earned bonus notice does not cover round pill",
+      "pass": true,
+      "details": {
+        "pill": {
+          "x": 245.828125,
+          "y": -285.859375,
+          "width": 115.1875,
+          "height": 52.78125,
+          "top": -285.859375,
+          "right": 361.015625,
+          "bottom": -233.078125,
+          "left": 245.828125
+        },
+        "note": {
+          "x": 25.796875,
+          "y": -98.484375,
+          "width": 338.40625,
+          "height": 38,
+          "top": -98.484375,
+          "right": 364.203125,
+          "bottom": -60.484375,
+          "left": 25.796875
+        },
+        "overlap": 0,
+        "text": "3장 판매 보너스 공개"
+      }
+    },
+    {
+      "name": "p1 1440px earned bonus notice does not cover round pill",
+      "pass": true,
+      "details": {
+        "pill": {
+          "x": 1292.40625,
+          "y": -542.578125,
+          "width": 108.796875,
+          "height": 41.59375,
+          "top": -542.578125,
+          "right": 1401.203125,
+          "bottom": -500.984375,
+          "left": 1292.40625
+        },
+        "note": {
+          "x": 38.796875,
+          "y": -445.421875,
+          "width": 1362.40625,
+          "height": 38,
+          "top": -445.421875,
+          "right": 1401.203125,
+          "bottom": -407.421875,
+          "left": 38.796875
+        },
+        "overlap": 0,
+        "text": "3장 판매 보너스 공개"
+      }
+    },
+    {
+      "name": "p1 fresh bonus notice expires before any read refresh",
+      "pass": true
+    },
+    {
+      "name": "Both public boards and versions agree",
+      "pass": true,
+      "details": {
+        "version": 9
+      }
+    },
+    {
+      "name": "One Jaipur commit per native confirmation including double click",
+      "pass": true
+    },
+    {
+      "name": "Jaipur turn changes or automatically enters the next round",
+      "pass": true
+    },
+    {
+      "name": "Sale removes selected count only",
+      "pass": true
+    },
+    {
+      "name": "p1 read refresh of old bonus state does not replay notice",
+      "pass": true
+    },
+    {
+      "name": "p2 read refresh of old bonus state does not replay notice",
+      "pass": true
+    },
+    {
+      "name": "Both public boards and versions agree",
+      "pass": true,
+      "details": {
+        "version": 9
+      }
+    },
+    {
+      "name": "p1 only own hand zone and no opponent card IDs",
+      "pass": true,
+      "details": {
+        "count": 4,
+        "zones": [
+          "p1"
+        ],
+        "rivalGood": 0,
+        "visibleBonusValues": [
+          "3장 판매6 남음",
+          "4장 판매6 남음",
+          "5+장 판매5 남음"
+        ]
+      }
+    },
+    {
+      "name": "p1 hidden future bonus and lower goods token values absent",
+      "pass": true
+    },
+    {
+      "name": "p2 only own hand zone and no opponent card IDs",
+      "pass": true,
+      "details": {
+        "count": 6,
+        "zones": [
+          "p2"
+        ],
+        "rivalGood": 0,
+        "visibleBonusValues": [
+          "3cartas vendidas6 quedan",
+          "4cartas vendidas6 quedan",
+          "5+cartas vendidas5 quedan"
+        ]
+      }
+    },
+    {
+      "name": "p2 hidden future bonus and lower goods token values absent",
+      "pass": true
+    },
+    {
+      "name": "Sale quantity decrement changes count",
+      "pass": true
+    },
+    {
+      "name": "Sale cancel preserves hand and clears selected group",
+      "pass": true
+    },
+    {
+      "name": "390px sale has no document horizontal overflow and 44px targets",
+      "pass": true,
+      "details": {
+        "documentWidth": 390,
+        "tray": {
+          "top": 1424.53125,
+          "bottom": 1564.5,
+          "width": 317.21875,
+          "height": 139.96875
+        },
+        "selected": {
+          "top": 1169.734375,
+          "bottom": 1289.234375,
+          "width": 75.703125,
+          "height": 119.5
+        },
+        "saleTrays": 1,
+        "saleInHand": true,
+        "distanceHandToTray": -254.796875,
+        "selectedToConfirm": -344.96875,
+        "text": "Cuero · 4 en mano\n−\n4\n+\nPrimera ficha: 4 pts · las otras 3 fichas se revelan al vender · hay bono disponible · su valor es privado\nConfirmar venta de 4\nCancelar",
+        "controls": [
+          {
+            "name": "−",
+            "width": 44,
+            "height": 44
+          },
+          {
+            "name": "+",
+            "width": 44,
+            "height": 44
+          },
+          {
+            "name": "Confirmar venta de 4",
+            "width": 221.625,
+            "height": 44
+          },
+          {
+            "name": "Cancelar",
+            "width": 80,
+            "height": 44
+          }
+        ]
+      }
+    },
+    {
+      "name": "Only sale tray lives next to the selected own hand",
+      "pass": true,
+      "details": {
+        "documentWidth": 390,
+        "tray": {
+          "top": 1424.53125,
+          "bottom": 1564.5,
+          "width": 317.21875,
+          "height": 139.96875
+        },
+        "selected": {
+          "top": 1169.734375,
+          "bottom": 1289.234375,
+          "width": 75.703125,
+          "height": 119.5
+        },
+        "saleTrays": 1,
+        "saleInHand": true,
+        "distanceHandToTray": -254.796875,
+        "selectedToConfirm": -344.96875,
+        "text": "Cuero · 4 en mano\n−\n4\n+\nPrimera ficha: 4 pts · las otras 3 fichas se revelan al vender · hay bono disponible · su valor es privado\nConfirmar venta de 4\nCancelar",
+        "controls": [
+          {
+            "name": "−",
+            "width": 44,
+            "height": 44
+          },
+          {
+            "name": "+",
+            "width": 44,
+            "height": 44
+          },
+          {
+            "name": "Confirmar venta de 4",
+            "width": 221.625,
+            "height": 44
+          },
+          {
+            "name": "Cancelar",
+            "width": 80,
+            "height": 44
+          }
+        ]
+      }
+    },
+    {
+      "name": "Strategy action has enabled native confirmation",
+      "pass": true,
+      "details": {
+        "type": "sell",
+        "good": "leather",
+        "count": 4,
+        "reason": "Cash a concentrated group with bonus eligibility, or free a full hand before acquiring again"
+      }
+    },
+    {
+      "name": "Jaipur UI request commits",
+      "pass": true
+    },
+    {
+      "name": "p2 390px earned bonus notice does not cover round pill",
+      "pass": true,
+      "details": {
+        "pill": {
+          "x": 245.828125,
+          "y": -494.484375,
+          "width": 115.1875,
+          "height": 46.78125,
+          "top": -494.484375,
+          "right": 361.015625,
+          "bottom": -447.703125,
+          "left": 245.828125
+        },
+        "note": {
+          "x": 25.796875,
+          "y": -320.109375,
+          "width": 338.40625,
+          "height": 36,
+          "top": -320.109375,
+          "right": 364.203125,
+          "bottom": -284.109375,
+          "left": 25.796875
+        },
+        "overlap": 0,
+        "text": "Bono por vender 4 cartas"
+      }
+    },
+    {
+      "name": "p2 1440px earned bonus notice does not cover round pill",
+      "pass": true,
+      "details": {
+        "pill": {
+          "x": 1292.40625,
+          "y": -702.578125,
+          "width": 108.796875,
+          "height": 35.59375,
+          "top": -702.578125,
+          "right": 1401.203125,
+          "bottom": -666.984375,
+          "left": 1292.40625
+        },
+        "note": {
+          "x": 38.796875,
+          "y": -608.59375,
+          "width": 1362.40625,
+          "height": 36,
+          "top": -608.59375,
+          "right": 1401.203125,
+          "bottom": -572.59375,
+          "left": 38.796875
+        },
+        "overlap": 0,
+        "text": "Bono por vender 4 cartas"
+      }
+    },
+    {
+      "name": "p2 fresh bonus notice expires before any read refresh",
+      "pass": true
+    },
+    {
+      "name": "Both public boards and versions agree",
+      "pass": true,
+      "details": {
+        "version": 10
+      }
+    },
+    {
+      "name": "One Jaipur commit per native confirmation including double click",
+      "pass": true
+    },
+    {
+      "name": "Jaipur turn changes or automatically enters the next round",
+      "pass": true
+    },
+    {
+      "name": "Sale removes selected count only",
+      "pass": true
+    },
+    {
+      "name": "p1 read refresh of old bonus state does not replay notice",
+      "pass": true
+    },
+    {
+      "name": "p2 read refresh of old bonus state does not replay notice",
+      "pass": true
+    },
+    {
+      "name": "Both public boards and versions agree",
+      "pass": true,
+      "details": {
+        "version": 10
+      }
+    },
+    {
+      "name": "p1 only own hand zone and no opponent card IDs",
+      "pass": true,
+      "details": {
+        "count": 4,
+        "zones": [
+          "p1"
+        ],
+        "rivalGood": 0,
+        "visibleBonusValues": [
+          "3장 판매6 남음",
+          "4장 판매5 남음",
+          "5+장 판매5 남음"
+        ]
+      }
+    },
+    {
+      "name": "p1 hidden future bonus and lower goods token values absent",
+      "pass": true
+    },
+    {
+      "name": "p2 only own hand zone and no opponent card IDs",
+      "pass": true,
+      "details": {
+        "count": 2,
+        "zones": [
+          "p2"
+        ],
+        "rivalGood": 0,
+        "visibleBonusValues": [
+          "3cartas vendidas6 quedan",
+          "4cartas vendidas5 quedan",
+          "5+cartas vendidas5 quedan"
+        ]
+      }
+    },
+    {
+      "name": "p2 hidden future bonus and lower goods token values absent",
+      "pass": true
+    },
+    {
+      "name": "Take/exchange retains one market-local confirm tray",
+      "pass": true
+    },
+    {
+      "name": "Strategy action has enabled native confirmation",
+      "pass": true,
+      "details": {
+        "type": "take",
+        "card": {
+          "index": 3,
+          "id": "r1-p2-h1",
+          "good": "diamond"
+        },
+        "reason": "Collect diamond: own group 1, public top token 7"
+      }
+    },
+    {
+      "name": "Jaipur UI request commits",
+      "pass": true
+    },
+    {
+      "name": "Both public boards and versions agree",
+      "pass": true,
+      "details": {
+        "version": 11
+      }
+    },
+    {
+      "name": "One Jaipur commit per native confirmation including double click",
+      "pass": true
+    },
+    {
+      "name": "Jaipur turn changes or automatically enters the next round",
+      "pass": true
+    },
+    {
+      "name": "Both public boards and versions agree",
+      "pass": true,
+      "details": {
+        "version": 11
+      }
+    },
+    {
+      "name": "p1 only own hand zone and no opponent card IDs",
+      "pass": true,
+      "details": {
+        "count": 5,
+        "zones": [
+          "p1"
+        ],
+        "rivalGood": 0,
+        "visibleBonusValues": [
+          "3장 판매6 남음",
+          "4장 판매5 남음",
+          "5+장 판매5 남음"
+        ]
+      }
+    },
+    {
+      "name": "p1 hidden future bonus and lower goods token values absent",
+      "pass": true
+    },
+    {
+      "name": "p2 only own hand zone and no opponent card IDs",
+      "pass": true,
+      "details": {
+        "count": 2,
+        "zones": [
+          "p2"
+        ],
+        "rivalGood": 0,
+        "visibleBonusValues": [
+          "3cartas vendidas6 quedan",
+          "4cartas vendidas5 quedan",
+          "5+cartas vendidas5 quedan"
+        ]
+      }
+    },
+    {
+      "name": "p2 hidden future bonus and lower goods token values absent",
+      "pass": true
+    },
+    {
+      "name": "Take/exchange retains one market-local confirm tray",
+      "pass": true
+    },
+    {
+      "name": "Strategy action has enabled native confirmation",
+      "pass": true,
+      "details": {
+        "type": "take",
+        "card": {
+          "index": 0,
+          "id": "r1-draw40",
+          "good": "silver"
+        },
+        "reason": "Collect silver: own group 0, public top token 5"
+      }
+    },
+    {
+      "name": "Jaipur UI request commits",
+      "pass": true
+    },
+    {
+      "name": "Both public boards and versions agree",
+      "pass": true,
+      "details": {
+        "version": 12
+      }
+    },
+    {
+      "name": "One Jaipur commit per native confirmation including double click",
+      "pass": true
+    },
+    {
+      "name": "Jaipur turn changes or automatically enters the next round",
+      "pass": true
+    },
+    {
+      "name": "Both public boards and versions agree",
+      "pass": true,
+      "details": {
+        "version": 12
+      }
+    },
+    {
+      "name": "p1 only own hand zone and no opponent card IDs",
+      "pass": true,
+      "details": {
+        "count": 5,
+        "zones": [
+          "p1"
+        ],
+        "rivalGood": 0,
+        "visibleBonusValues": [
+          "3장 판매6 남음",
+          "4장 판매5 남음",
+          "5+장 판매5 남음"
+        ]
+      }
+    },
+    {
+      "name": "p1 hidden future bonus and lower goods token values absent",
+      "pass": true
+    },
+    {
+      "name": "p2 only own hand zone and no opponent card IDs",
+      "pass": true,
+      "details": {
+        "count": 3,
+        "zones": [
+          "p2"
+        ],
+        "rivalGood": 0,
+        "visibleBonusValues": [
+          "3cartas vendidas6 quedan",
+          "4cartas vendidas5 quedan",
+          "5+cartas vendidas5 quedan"
+        ]
+      }
+    },
+    {
+      "name": "p2 hidden future bonus and lower goods token values absent",
+      "pass": true
+    },
+    {
+      "name": "Take/exchange retains one market-local confirm tray",
+      "pass": true
+    },
+    {
+      "name": "Strategy action has enabled native confirmation",
+      "pass": true,
+      "details": {
+        "type": "take",
+        "card": {
+          "index": 0,
+          "id": "r1-draw35",
+          "good": "silver"
+        },
+        "reason": "Collect silver: own group 0, public top token 5"
+      }
+    },
+    {
+      "name": "Jaipur UI request commits",
+      "pass": true
+    },
+    {
+      "name": "Both public boards and versions agree",
+      "pass": true,
+      "details": {
+        "version": 13
+      }
+    },
+    {
+      "name": "One Jaipur commit per native confirmation including double click",
+      "pass": true
+    },
+    {
+      "name": "Jaipur turn changes or automatically enters the next round",
+      "pass": true
+    },
+    {
+      "name": "Both public boards and versions agree",
+      "pass": true,
+      "details": {
+        "version": 13
+      }
+    },
+    {
+      "name": "p1 only own hand zone and no opponent card IDs",
+      "pass": true,
+      "details": {
+        "count": 6,
+        "zones": [
+          "p1"
+        ],
+        "rivalGood": 0,
+        "visibleBonusValues": [
+          "3장 판매6 남음",
+          "4장 판매5 남음",
+          "5+장 판매5 남음"
+        ]
+      }
+    },
+    {
+      "name": "p1 hidden future bonus and lower goods token values absent",
+      "pass": true
+    },
+    {
+      "name": "p2 only own hand zone and no opponent card IDs",
+      "pass": true,
+      "details": {
+        "count": 3,
+        "zones": [
+          "p2"
+        ],
+        "rivalGood": 0,
+        "visibleBonusValues": [
+          "3cartas vendidas6 quedan",
+          "4cartas vendidas5 quedan",
+          "5+cartas vendidas5 quedan"
+        ]
+      }
+    },
+    {
+      "name": "p2 hidden future bonus and lower goods token values absent",
+      "pass": true
+    },
+    {
+      "name": "Take/exchange retains one market-local confirm tray",
+      "pass": true
+    },
+    {
+      "name": "Strategy action has enabled native confirmation",
+      "pass": true,
+      "details": {
+        "type": "take",
+        "card": {
+          "index": 0,
+          "id": "r1-draw33",
+          "good": "silver"
+        },
+        "reason": "Collect silver: own group 1, public top token 5"
+      }
+    },
+    {
+      "name": "Jaipur UI request commits",
+      "pass": true
+    },
+    {
+      "name": "Both public boards and versions agree",
+      "pass": true,
+      "details": {
+        "version": 14
+      }
+    },
+    {
+      "name": "One Jaipur commit per native confirmation including double click",
+      "pass": true
+    },
+    {
+      "name": "Jaipur turn changes or automatically enters the next round",
+      "pass": true
+    },
+    {
+      "name": "Both public boards and versions agree",
+      "pass": true,
+      "details": {
+        "version": 14
+      }
+    },
+    {
+      "name": "p1 only own hand zone and no opponent card IDs",
+      "pass": true,
+      "details": {
+        "count": 6,
+        "zones": [
+          "p1"
+        ],
+        "rivalGood": 0,
+        "visibleBonusValues": [
+          "3장 판매6 남음",
+          "4장 판매5 남음",
+          "5+장 판매5 남음"
+        ]
+      }
+    },
+    {
+      "name": "p1 hidden future bonus and lower goods token values absent",
+      "pass": true
+    },
+    {
+      "name": "p2 only own hand zone and no opponent card IDs",
+      "pass": true,
+      "details": {
+        "count": 4,
+        "zones": [
+          "p2"
+        ],
+        "rivalGood": 0,
+        "visibleBonusValues": [
+          "3cartas vendidas6 quedan",
+          "4cartas vendidas5 quedan",
+          "5+cartas vendidas5 quedan"
+        ]
+      }
+    },
+    {
+      "name": "p2 hidden future bonus and lower goods token values absent",
+      "pass": true
+    },
+    {
+      "name": "Take/exchange retains one market-local confirm tray",
+      "pass": true
+    },
+    {
+      "name": "Strategy action has enabled native confirmation",
+      "pass": true,
+      "details": {
+        "type": "take",
+        "card": {
+          "index": 1,
+          "id": "r1-draw32",
+          "good": "silver"
+        },
+        "reason": "Collect silver: own group 1, public top token 5"
+      }
+    },
+    {
+      "name": "Jaipur UI request commits",
+      "pass": true
+    },
+    {
+      "name": "Both public boards and versions agree",
+      "pass": true,
+      "details": {
+        "version": 15
+      }
+    },
+    {
+      "name": "One Jaipur commit per native confirmation including double click",
+      "pass": true
+    },
+    {
+      "name": "Jaipur turn changes or automatically enters the next round",
+      "pass": true
+    },
+    {
+      "name": "Both public boards and versions agree",
+      "pass": true,
+      "details": {
+        "version": 15
+      }
+    },
+    {
+      "name": "p1 only own hand zone and no opponent card IDs",
+      "pass": true,
+      "details": {
+        "count": 7,
+        "zones": [
+          "p1"
+        ],
+        "rivalGood": 0,
+        "visibleBonusValues": [
+          "3장 판매6 남음",
+          "4장 판매5 남음",
+          "5+장 판매5 남음"
+        ]
+      }
+    },
+    {
+      "name": "p1 hidden future bonus and lower goods token values absent",
+      "pass": true
+    },
+    {
+      "name": "p2 only own hand zone and no opponent card IDs",
+      "pass": true,
+      "details": {
+        "count": 4,
+        "zones": [
+          "p2"
+        ],
+        "rivalGood": 0,
+        "visibleBonusValues": [
+          "3cartas vendidas6 quedan",
+          "4cartas vendidas5 quedan",
+          "5+cartas vendidas5 quedan"
+        ]
+      }
+    },
+    {
+      "name": "p2 hidden future bonus and lower goods token values absent",
+      "pass": true
+    },
+    {
+      "name": "Take/exchange retains one market-local confirm tray",
+      "pass": true
+    },
+    {
+      "name": "Strategy action has enabled native confirmation",
+      "pass": true,
+      "details": {
+        "type": "take",
+        "card": {
+          "index": 4,
+          "id": "r1-draw28",
+          "good": "diamond"
+        },
+        "reason": "Collect diamond: own group 0, public top token 7"
+      }
+    },
+    {
+      "name": "Jaipur UI request commits",
+      "pass": true
+    },
+    {
+      "name": "Both public boards and versions agree",
+      "pass": true,
+      "details": {
+        "version": 16
+      }
+    },
+    {
+      "name": "One Jaipur commit per native confirmation including double click",
+      "pass": true
+    },
+    {
+      "name": "Jaipur turn changes or automatically enters the next round",
+      "pass": true
+    },
+    {
+      "name": "Both public boards and versions agree",
+      "pass": true,
+      "details": {
+        "version": 16
+      }
+    },
+    {
+      "name": "p1 only own hand zone and no opponent card IDs",
+      "pass": true,
+      "details": {
+        "count": 7,
+        "zones": [
+          "p1"
+        ],
+        "rivalGood": 0,
+        "visibleBonusValues": [
+          "3장 판매6 남음",
+          "4장 판매5 남음",
+          "5+장 판매5 남음"
+        ]
+      }
+    },
+    {
+      "name": "p1 hidden future bonus and lower goods token values absent",
+      "pass": true
+    },
+    {
+      "name": "p2 only own hand zone and no opponent card IDs",
+      "pass": true,
+      "details": {
+        "count": 5,
+        "zones": [
+          "p2"
+        ],
+        "rivalGood": 0,
+        "visibleBonusValues": [
+          "3cartas vendidas6 quedan",
+          "4cartas vendidas5 quedan",
+          "5+cartas vendidas5 quedan"
+        ]
+      }
+    },
+    {
+      "name": "p2 hidden future bonus and lower goods token values absent",
+      "pass": true
+    },
+    {
+      "name": "Strategy action has enabled native confirmation",
+      "pass": true,
+      "details": {
+        "type": "sell",
+        "good": "diamond",
+        "count": 2,
+        "reason": "Cash a concentrated group with bonus eligibility, or free a full hand before acquiring again"
+      }
+    },
+    {
+      "name": "Jaipur UI request commits",
+      "pass": true
+    },
+    {
+      "name": "Both public boards and versions agree",
+      "pass": true,
+      "details": {
+        "version": 17
+      }
+    },
+    {
+      "name": "One Jaipur commit per native confirmation including double click",
+      "pass": true
+    },
+    {
+      "name": "Jaipur turn changes or automatically enters the next round",
+      "pass": true
+    },
+    {
+      "name": "Sale removes selected count only",
+      "pass": true
+    },
+    {
+      "name": "Both public boards and versions agree",
+      "pass": true,
+      "details": {
+        "version": 17
+      }
+    },
+    {
+      "name": "p1 only own hand zone and no opponent card IDs",
+      "pass": true,
+      "details": {
+        "count": 5,
+        "zones": [
+          "p1"
+        ],
+        "rivalGood": 0,
+        "visibleBonusValues": [
+          "3장 판매6 남음",
+          "4장 판매5 남음",
+          "5+장 판매5 남음"
+        ]
+      }
+    },
+    {
+      "name": "p1 hidden future bonus and lower goods token values absent",
+      "pass": true
+    },
+    {
+      "name": "p2 only own hand zone and no opponent card IDs",
+      "pass": true,
+      "details": {
+        "count": 5,
+        "zones": [
+          "p2"
+        ],
+        "rivalGood": 0,
+        "visibleBonusValues": [
+          "3cartas vendidas6 quedan",
+          "4cartas vendidas5 quedan",
+          "5+cartas vendidas5 quedan"
+        ]
+      }
+    },
+    {
+      "name": "p2 hidden future bonus and lower goods token values absent",
+      "pass": true
+    },
+    {
+      "name": "Take/exchange retains one market-local confirm tray",
+      "pass": true
+    },
+    {
+      "name": "Strategy action has enabled native confirmation",
+      "pass": true,
+      "details": {
+        "type": "take",
+        "card": {
+          "index": 0,
+          "id": "r1-p2-h0",
+          "good": "cloth"
+        },
+        "reason": "Collect cloth: own group 0, public top token 3"
+      }
+    },
+    {
+      "name": "Jaipur UI request commits",
+      "pass": true
+    },
+    {
+      "name": "Both public boards and versions agree",
+      "pass": true,
+      "details": {
+        "version": 18
+      }
+    },
+    {
+      "name": "One Jaipur commit per native confirmation including double click",
+      "pass": true
+    },
+    {
+      "name": "Jaipur turn changes or automatically enters the next round",
+      "pass": true
+    },
+    {
+      "name": "Both public boards and versions agree",
+      "pass": true,
+      "details": {
+        "version": 18
+      }
+    },
+    {
+      "name": "Both public boards and versions agree",
+      "pass": true,
+      "details": {
+        "version": 18
+      }
+    },
+    {
+      "name": "No uncaught browser errors",
+      "pass": true,
+      "details": []
+    }
+  ],
+  "errors": [],
+  "observations": [
+    {
+      "mobileSale": "p1",
+      "documentWidth": 390,
+      "tray": {
+        "top": 1407.53125,
+        "bottom": 1547.5,
+        "width": 317.21875,
+        "height": 139.96875
+      },
+      "selected": {
+        "top": 1144.734375,
+        "bottom": 1268.234375,
+        "width": 75.703125,
+        "height": 123.5
+      },
+      "saleTrays": 1,
+      "saleInHand": true,
+      "distanceHandToTray": -262.796875,
+      "selectedToConfirm": -352.96875,
+      "text": "옷감 · 3장 보유\n−\n3\n+\n첫 토큰 5점 · 나머지 2개 상품 토큰은 판매 때 공개 · 보너스 타일 가능 · 보너스 타일 가치는 비공개\n3장 판매 확정\n취소",
+      "controls": [
+        {
+          "name": "−",
+          "width": 44,
+          "height": 44
+        },
+        {
+          "name": "+",
+          "width": 44,
+          "height": 44
+        },
+        {
+          "name": "3장 판매 확정",
+          "width": 221.625,
+          "height": 44
+        },
+        {
+          "name": "취소",
+          "width": 80,
+          "height": 44
+        }
+      ]
+    },
+    {
+      "bonusNoticeLayout": "p1-390",
+      "pill": {
+        "x": 245.828125,
+        "y": -285.859375,
+        "width": 115.1875,
+        "height": 52.78125,
+        "top": -285.859375,
+        "right": 361.015625,
+        "bottom": -233.078125,
+        "left": 245.828125
+      },
+      "note": {
+        "x": 25.796875,
+        "y": -98.484375,
+        "width": 338.40625,
+        "height": 38,
+        "top": -98.484375,
+        "right": 364.203125,
+        "bottom": -60.484375,
+        "left": 25.796875
+      },
+      "overlap": 0,
+      "text": "3장 판매 보너스 공개"
+    },
+    {
+      "bonusNoticeLayout": "p1-1440",
+      "pill": {
+        "x": 1292.40625,
+        "y": -542.578125,
+        "width": 108.796875,
+        "height": 41.59375,
+        "top": -542.578125,
+        "right": 1401.203125,
+        "bottom": -500.984375,
+        "left": 1292.40625
+      },
+      "note": {
+        "x": 38.796875,
+        "y": -445.421875,
+        "width": 1362.40625,
+        "height": 38,
+        "top": -445.421875,
+        "right": 1401.203125,
+        "bottom": -407.421875,
+        "left": 38.796875
+      },
+      "overlap": 0,
+      "text": "3장 판매 보너스 공개"
+    },
+    {
+      "mobileSale": "p2",
+      "documentWidth": 390,
+      "tray": {
+        "top": 1424.53125,
+        "bottom": 1564.5,
+        "width": 317.21875,
+        "height": 139.96875
+      },
+      "selected": {
+        "top": 1169.734375,
+        "bottom": 1289.234375,
+        "width": 75.703125,
+        "height": 119.5
+      },
+      "saleTrays": 1,
+      "saleInHand": true,
+      "distanceHandToTray": -254.796875,
+      "selectedToConfirm": -344.96875,
+      "text": "Cuero · 4 en mano\n−\n4\n+\nPrimera ficha: 4 pts · las otras 3 fichas se revelan al vender · hay bono disponible · su valor es privado\nConfirmar venta de 4\nCancelar",
+      "controls": [
+        {
+          "name": "−",
+          "width": 44,
+          "height": 44
+        },
+        {
+          "name": "+",
+          "width": 44,
+          "height": 44
+        },
+        {
+          "name": "Confirmar venta de 4",
+          "width": 221.625,
+          "height": 44
+        },
+        {
+          "name": "Cancelar",
+          "width": 80,
+          "height": 44
+        }
+      ]
+    },
+    {
+      "bonusNoticeLayout": "p2-390",
+      "pill": {
+        "x": 245.828125,
+        "y": -494.484375,
+        "width": 115.1875,
+        "height": 46.78125,
+        "top": -494.484375,
+        "right": 361.015625,
+        "bottom": -447.703125,
+        "left": 245.828125
+      },
+      "note": {
+        "x": 25.796875,
+        "y": -320.109375,
+        "width": 338.40625,
+        "height": 36,
+        "top": -320.109375,
+        "right": 364.203125,
+        "bottom": -284.109375,
+        "left": 25.796875
+      },
+      "overlap": 0,
+      "text": "Bono por vender 4 cartas"
+    },
+    {
+      "bonusNoticeLayout": "p2-1440",
+      "pill": {
+        "x": 1292.40625,
+        "y": -702.578125,
+        "width": 108.796875,
+        "height": 35.59375,
+        "top": -702.578125,
+        "right": 1401.203125,
+        "bottom": -666.984375,
+        "left": 1292.40625
+      },
+      "note": {
+        "x": 38.796875,
+        "y": -608.59375,
+        "width": 1362.40625,
+        "height": 36,
+        "top": -608.59375,
+        "right": 1401.203125,
+        "bottom": -572.59375,
+        "left": 38.796875
+      },
+      "overlap": 0,
+      "text": "Bono por vender 4 cartas"
+    },
+    {
+      "reached": {
+        "exchange": true,
+        "saleCancel": true,
+        "duplicate": true,
+        "cap": true,
+        "metal": true,
+        "camel": true,
+        "bonusSale": true
+      },
+      "mobileSeats": [
+        0,
+        1
+      ],
+      "settlementKO": "최근 거래",
+      "settlementES": "Actividad reciente"
+    },
+    {
+      "fixScope": "At least16 strategy actions, stop once both mobile sale flows and fresh notices plus exchange reached; bounded36 actions; no full match requirement",
+      "mobileSaleSeats": [
+        0,
+        1
+      ],
+      "mobileCancelSeats": [
+        0,
+        1
+      ],
+      "freshNoticeSeats": [
+        0,
+        1
+      ],
+      "exchangeReached": true
+    }
+  ],
+  "final": [
+    {
+      "roomId": "f186e205-45eb-4911-bf9d-87011b335d5c",
+      "playerId": "p1",
+      "version": 18,
+      "syncEpoch": 34,
+      "gameId": "jaipur",
+      "pendingGame": null,
+      "players": 2,
+      "phase": "choose",
+      "turn": "p1",
+      "round": 1,
+      "result": null,
+      "deckCount": 25,
+      "roundSummary": null,
+      "roundsWon": {
+        "p1": 0,
+        "p2": 0
+      }
+    },
+    {
+      "roomId": "f186e205-45eb-4911-bf9d-87011b335d5c",
+      "playerId": "p2",
+      "version": 18,
+      "syncEpoch": 35,
+      "gameId": "jaipur",
+      "pendingGame": null,
+      "players": 2,
+      "phase": "waiting",
+      "turn": "p1",
+      "round": 1,
+      "result": null,
+      "deckCount": 25,
+      "roundSummary": null,
+      "roundsWon": {
+        "p1": 0,
+        "p2": 0
+      }
+    }
+  ],
+  "sourceRevision": "d459ea8",
+  "scope": "16 actual UI strategy actions in fresh KO/ES contexts; local SQL fixture without Realtime; no injected state/action APIs. Mobile sales, market-local take/exchange, token-cell containment, fresh bonus before read refresh and historical-notice absence after refresh.",
+  "unverified": [
+    "Authoritative server rejection selection preservation (disabled invalid selection was tested)",
+    "Full match loser win/confetti branch",
+    "Full round settlement in this narrowed follow-up",
+    "Physical touch/audio and production Realtime",
+    "Maximum5-card exchange and6/7-card sale"
+  ],
+  "measurementNote": "Selected first hand card to confirm is down352.97px KO/down344.97px ES with two-row full hand. Same-hand placement was verified; reduced travel distance is not claimed. Notice/pill DOM rectangles share the current scroll offset; overlap0 holds in page layout and is shown by full-page screenshots.",
+  "artifacts": [
+    "qa-jaipur-mobile-sale-ko.png",
+    "qa-jaipur-mobile-sale-es.png",
+    "qa-jaipur-mobile-bonus-ko.png",
+    "qa-jaipur-mobile-bonus-es.png",
+    "qa-jaipur-table-bonus-ko.png",
+    "qa-jaipur-table-bonus-es.png"
+  ]
+}

@@ -84,27 +84,172 @@ function play(state: DominoState, seat: Seat, action: GameAction): DominoState {
   return next;
 }
 
-export function chooseDominoBotAction(hand: Domino[], board: Placed[], ends: DominoState['ends'], difficulty: Difficulty='normal', publicContext: { passes?: number; counts?: Partial<Record<Seat,number>> }={}): GameAction {
-  const playable = hand.flatMap((tile, index) => (['left', 'right'] as const).filter(side => legalOrient(tile, side, ends)).map(side => ({ tile, index, side })));
-  if (!playable.length) return { type: 'pass' };
-  if (difficulty !== 'easy') {
-    const rank = (item: typeof playable[number]) => {
-      const { tile, index, side } = item;
-      const pips = tile.a + tile.b;
-      if (difficulty === 'normal' || !ends) return pips;
-      const outer = side === 'left' ? tile.a === ends.left ? tile.b : tile.a : tile.a === ends.right ? tile.b : tile.a;
-      const after = side === 'left' ? [outer, ends.right] : [ends.left, outer];
-      const remaining = hand.filter((_, i) => i !== index);
-      const support = after.reduce((total, pip) => total + remaining.filter(t => t.a === pip || t.b === pip).length, 0);
-      const seen = board.filter(t => t.a === outer || t.b === outer).length + hand.filter(t => t.a === outer || t.b === outer).length;
-      const unsupported = after.filter(pip => !remaining.some(t => t.a === pip || t.b === pip)).length;
-      return pips + support * 6 - unsupported * 5 + Math.min(seen, 7) * (publicContext.passes ? 2 : 1);
-    };
-    playable.sort((x, y) => rank(y) - rank(x) || Number(y.tile.a === y.tile.b) - Number(x.tile.a === x.tile.b) || x.index - y.index);
-  }
-  return { type: 'play', payload: { index: playable[0].index, side: playable[0].side } };
+type PublicBotContext = { actor?: Seat; mode?: Mode; passes?: number; counts?: Partial<Record<Seat,number>>; log?: Event[]; tranqueRule?: Settings['tranqueRule'] };
+type BotMove = { tile: Domino; index: number; side: 'left'|'right'; ends: { left: number; right: number } };
+const allTiles = Array.from({length:7},(_,a)=>Array.from({length:7-a},(_,i)=>({a,b:a+i}))).flat();
+const tileId = (tile: Domino) => `${Math.min(tile.a,tile.b)}-${Math.max(tile.a,tile.b)}`;
+const matches = (tile: Domino,pip: number) => tile.a===pip||tile.b===pip;
+function placedEnds(tile: Domino, side: 'left'|'right', current: DominoState['ends']) {
+  if (!current) return {left:tile.a,right:tile.b};
+  // The left end is the tile's b face; the right end is its a face.
+  const oriented = side==='left' ? tile.b===current.left ? tile : {a:tile.b,b:tile.a} : tile.a===current.right ? tile : {a:tile.b,b:tile.a};
+  return side==='left' ? {left:oriented.a,right:current.right} : {left:current.left,right:oriented.b};
 }
-function botAction(s:DominoState,seat:Seat):GameAction { if(!s.board.length&&seat===s.opening.player) { const index=s.hands[seat].findIndex(t=>t.a===s.opening.tile.a&&t.b===s.opening.tile.b); return {type:'play',payload:{index,side:'left'}}; } return chooseDominoBotAction(s.hands[seat],s.board,s.ends,s.settings?.difficulty??'normal',{passes:s.passes,counts:Object.fromEntries(seats(s.mode).map(x=>[x,s.hands[x].length]))}); }
+function legalMoves(hand: Domino[], ends: DominoState['ends']): BotMove[] {
+  return hand.flatMap((tile,index)=>(['left','right'] as const).filter(side=>legalOrient(tile,side,ends)).map(side=>({tile,index,side,ends:placedEnds(tile,side,ends)})));
+}
+function teamOf(mode: Mode, seat: Seat) { return mode==='partners' ? seat==='p1'||seat==='b1'?'p1':'p2' : mode==='humans-vs-bots' ? seat==='p1'||seat==='p2'?'p1':'p2' : seat==='p1'?'p1':'p2'; }
+function following(mode: Mode, seat: Seat, offset: number): Seat { const order=seats(mode),i=order.indexOf(seat); return order[(i+offset)%order.length]; }
+function currentRoundEvents(context: PublicBotContext, board: Placed[]) {
+  const log=context.log??[],roundStart=log.map(event=>event.type).lastIndexOf('round-start');
+  // Logs are capped at 40 entries. If round-start has fallen out, the first
+  // tile on the current board is a safe lower bound for current-round events.
+  const firstBoardSequence=Math.min(...board.map(tile=>tile.sequence??Infinity));
+  const startSequence=roundStart>=0 ? log[roundStart].sequence : Number.isFinite(firstBoardSequence) ? firstBoardSequence : Infinity;
+  return log.filter(event=>event.sequence>startSequence);
+}
+function passVoids(context: PublicBotContext, board: Placed[]) {
+  const voids=new Map<Seat,Set<number>>();
+  for(const event of currentRoundEvents(context,board)) if(event.type==='pass'&&event.actor&&event.ends) {
+    const values=voids.get(event.actor)??new Set<number>();
+    values.add(event.ends.left); values.add(event.ends.right); voids.set(event.actor,values);
+  }
+  return voids;
+}
+function unseenTiles(hand: Domino[],board: Placed[]) {
+  const known=new Set([...hand,...board].map(tileId));
+  return allTiles.filter(tile=>!known.has(tileId(tile)));
+}
+function probabilityCanPlay(seat: Seat, ends: {left:number;right:number}, unseen: Domino[], voids: Map<Seat,Set<number>>, counts: Partial<Record<Seat,number>>) {
+  const forbidden=voids.get(seat)??new Set<number>();
+  const eligible=unseen.filter(tile=>!forbidden.has(tile.a)&&!forbidden.has(tile.b));
+  const count=Math.max(0,Math.min(eligible.length,counts[seat]??0));
+  const matching=eligible.filter(tile=>matches(tile,ends.left)||matches(tile,ends.right)).length;
+  let none=1;
+  for(let i=0;i<count;i++) none*=Math.max(0,eligible.length-matching-i)/Math.max(1,eligible.length-i);
+  return 1-none;
+}
+function allySignal(ally: Seat, ends: {left:number;right:number}, context: PublicBotContext, board: Placed[], voids: Map<Seat,Set<number>>) {
+  const last=currentRoundEvents(context,board).slice().reverse().find(event=>event.type==='play'&&event.actor===ally&&event.tile);
+  if(!last?.tile) return 0;
+  const allyVoids=voids.get(ally)??new Set<number>();
+  const faces=[last.tile.a,last.tile.b].filter((value,index,values)=>values.indexOf(value)===index);
+  return faces.some(pip=>(pip===ends.left||pip===ends.right)&&!allyVoids.has(pip)) ? 2.2 : 0;
+}
+function handSupport(hand: Domino[], ends: {left:number;right:number}) {
+  return hand.reduce((sum,tile)=>sum+Number(matches(tile,ends.left))+Number(matches(tile,ends.right)),0);
+}
+function futureReach(hand: Domino[], ends: {left:number;right:number}) {
+  let best=0;
+  for(const first of legalMoves(hand,ends)) {
+    const afterFirst=hand.filter((_,index)=>index!==first.index);
+    const firstSupport=handSupport(afterFirst,first.ends);
+    for(const second of legalMoves(afterFirst,first.ends)) {
+      const afterSecond=afterFirst.filter((_,index)=>index!==second.index);
+      const score=first.tile.a+first.tile.b+handSupport(afterSecond,second.ends)*0.65+firstSupport*0.2;
+      best=Math.max(best,score);
+    }
+    best=Math.max(best,first.tile.a+first.tile.b+firstSupport*0.45);
+  }
+  return best;
+}
+function rngFrom(publicText: string) {
+  let state=2166136261;
+  for(let i=0;i<publicText.length;i++) state=Math.imul(state^publicText.charCodeAt(i),16777619)>>>0;
+  return () => { state=(Math.imul(state,1664525)+1013904223)>>>0; return state/0x1_0000_0000; };
+}
+function sampleUnknownHands(unseen: Domino[], actor: Seat, mode: Mode, counts: Partial<Record<Seat,number>>, voids: Map<Seat,Set<number>>, random: () => number) {
+  const originalSeats=seats(mode).filter(seat=>seat!==actor),needed=new Map(originalSeats.map(seat=>[seat,Math.max(0,counts[seat]??7)]));
+  let workBudget=64;
+  const pick=(remaining:Domino[], pending:Seat[], result:Map<Seat,Domino[]>):Map<Seat,Domino[]>|null=>{
+    if(!pending.length) return result;
+    const options=pending.map(seat=>({seat,eligible:remaining.filter(tile=>{const blocked=voids.get(seat)??new Set<number>();return !blocked.has(tile.a)&&!blocked.has(tile.b);})}));
+    options.sort((a,b)=>a.eligible.length-b.eligible.length);
+    const {seat,eligible}=options[0],count=needed.get(seat)??0;
+    if(eligible.length<count) return null;
+    const restSeats=pending.filter(value=>value!==seat);
+    for(let attempt=0;attempt<48&&workBudget>0;attempt++,workBudget--) {
+      const shuffled=eligible.slice();
+      for(let i=shuffled.length-1;i>0;i--) {const j=Math.floor(random()*(i+1));[shuffled[i],shuffled[j]]=[shuffled[j],shuffled[i]];}
+      const picked=shuffled.slice(0,count),pickedIds=new Set(picked.map(tileId)),nextRemaining=remaining.filter(tile=>!pickedIds.has(tileId(tile)));
+      if(restSeats.some(other=>nextRemaining.filter(tile=>{const blocked=voids.get(other)??new Set<number>();return !blocked.has(tile.a)&&!blocked.has(tile.b);}).length<(needed.get(other)??0))) continue;
+      const next=new Map(result);next.set(seat,picked);
+      const complete=pick(nextRemaining,restSeats,next);if(complete)return complete;
+    }
+    return null;
+  };
+  return pick(unseen,originalSeats,new Map());
+}
+function sampledRollout(move: BotMove, hand: Domino[], actor: Seat, mode: Mode, board: Placed[], ends: DominoState['ends'], context: PublicBotContext, sampled: Map<Seat,Domino[]>) {
+  const hands:DominoState['hands']={p1:[],p2:[],b1:[],b2:[]};
+  hands[actor]=hand.slice();
+  for(const [seat,tiles] of sampled) hands[seat]=tiles.slice();
+  const known=new Set([...hand,...board,...Array.from(sampled.values()).flat()].map(tileId));
+  let state:DominoState={seed:0,turn:actor,mode,hands,stock:allTiles.filter(tile=>!known.has(tileId(tile))),board:board.map(tile=>({...tile})),ends:ends?{...ends}:null,passes:context.passes??0,opening:{player:actor,tile:move.tile},result:null,rulesVersion:1,settings:{...DEFAULT_SETTINGS,tranqueRule:context.tranqueRule??'team'},matchScores:{p1:0,p2:0},round:1,roundResult:null,log:(context.log??[]).slice(),lastPlacer:board.at(-1)?.by??null,pasoAwarded:currentRoundEvents(context,board).some(event=>event.type==='paso-corrido'),roundBonuses:{p1:0,p2:0}};
+  state=play(state,actor,{type:'play',payload:{index:move.index,side:move.side}});
+  for(let step=0;step<60&&!state.roundResult&&!state.result;step++) {
+    const seat=state.turn,seatHand=state.hands[seat],moves=legalMoves(seatHand,state.ends);
+    let chosen:BotMove|undefined,chosenScore=-Infinity;
+    for(const candidate of moves) {const rank=utility(candidate,seatHand,state.board,state.ends,{},'normal',[],new Map());if(rank>chosenScore){chosen=candidate;chosenScore=rank;}}
+    const action:GameAction=chosen?{type:'play',payload:{index:chosen.index,side:chosen.side}}:{type:'pass'};
+    state=play(state,seat,action);
+  }
+  const result=state.roundResult;
+  if(!result) return 0;
+  if(result.winner==='draw') return 0;
+  const ownTeam=teamOf(mode,actor),other=ownTeam==='p1'?'p2':'p1',margin=(result.pips[other]-result.pips[ownTeam])*0.001;
+  return result.winner===ownTeam?1+margin:-1-margin;
+}
+function hardRolloutWorlds(hand: Domino[], actor: Seat, mode: Mode, board: Placed[], context: PublicBotContext, unseen: Domino[], voids: Map<Seat,Set<number>>) {
+  const text=JSON.stringify({actor,mode,hand:hand.map(tileId).sort(),board:board.map(tile=>[tile.a,tile.b,tile.by,tile.sequence]),counts:context.counts,passes:context.passes,log:currentRoundEvents(context,board).map(event=>[event.sequence,event.type,event.actor,event.ends])});
+  const random=rngFrom(text),worlds:Map<Seat,Domino[]>[]=[];
+  for(let i=0;i<16;i++) {const world=sampleUnknownHands(unseen,actor,mode,context.counts??{},voids,random);if(world)worlds.push(world);}
+  return worlds;
+}
+function hardRolloutScore(move: BotMove, hand: Domino[], actor: Seat, mode: Mode, board: Placed[], ends: DominoState['ends'], context: PublicBotContext, worlds: Map<Seat,Domino[]>[]) {
+  if(!worlds.length) return 0;
+  return worlds.reduce((total,world)=>total+sampledRollout(move,hand,actor,mode,board,ends,context,world),0)/worlds.length;
+}
+function utility(move: BotMove, hand: Domino[], board: Placed[], ends: DominoState['ends'], context: PublicBotContext, difficulty: Difficulty, unseen: Domino[], voids: Map<Seat,Set<number>>) {
+  const rest=hand.filter((_,index)=>index!==move.index),pips=move.tile.a+move.tile.b;
+  if(!rest.length) return 1_000_000+pips+(move.tile.a===move.tile.b?move.tile.a:0);
+  const support=handSupport(rest,move.ends),leftSupport=rest.filter(tile=>matches(tile,move.ends.left)).length,rightSupport=rest.filter(tile=>matches(tile,move.ends.right)).length;
+  let score=pips*(difficulty==='easy'?0.72:1.05)+(move.tile.a===move.tile.b?0.8+move.tile.a*0.12:0)+support*(difficulty==='easy'?0.55:difficulty==='normal'?1.05:2.25);
+  score-=Number(leftSupport===0)*0.7+Number(rightSupport===0)*0.7;
+  if(difficulty!=='hard') return score;
+
+  const actor=context.actor,mode=context.mode??'1v1',counts=context.counts??{};
+  if(!actor) return score+futureReach(rest,move.ends)*0.55;
+  const ownTeam=teamOf(mode,actor),near= Math.min(2,seats(mode).length-1);
+  for(let offset=1;offset<=near;offset++) {
+    const next=following(mode,actor,offset),sameTeam=teamOf(mode,next)===ownTeam;
+    const canPlay=probabilityCanPlay(next,move.ends,unseen,voids,counts);
+    const count=counts[next]??7;
+    const weight=count<=1?11:count<=2?8:count<=3?5:3;
+    score+=sameTeam ? canPlay*(offset===1?3.2:1.1) : -canPlay*weight*(offset===1?1:0.52);
+    if(sameTeam&&offset===1) score+=allySignal(next,move.ends,context,board,voids);
+  }
+  score+=futureReach(rest,move.ends)*0.2;
+  return score;
+}
+
+export function chooseDominoBotAction(hand: Domino[], board: Placed[], ends: DominoState['ends'], difficulty: Difficulty='normal', publicContext: PublicBotContext={}): GameAction {
+  const moves=legalMoves(hand,ends);
+  if(!moves.length) return {type:'pass'};
+  if(moves.length===1) return {type:'play',payload:{index:moves[0].index,side:moves[0].side}};
+  const handOut=moves.find(move=>hand.length===1);
+  if(handOut) return {type:'play',payload:{index:handOut.index,side:handOut.side}};
+  const unseen=difficulty==='hard'?unseenTiles(hand,board):[],voids=difficulty==='hard'?passVoids(publicContext,board):new Map<Seat,Set<number>>();
+  const worlds=difficulty==='hard'&&publicContext.actor ? hardRolloutWorlds(hand,publicContext.actor,publicContext.mode??'1v1',board,publicContext,unseen,voids) : [];
+  const ranked=moves.map((move,index)=>({move,index,score:utility(move,hand,board,ends,publicContext,difficulty,unseen,voids)}));
+  if(difficulty==='hard'&&publicContext.actor&&worlds.length) {
+    const candidates=ranked.slice().sort((a,b)=>b.score-a.score||a.index-b.index).slice(0,Math.min(3,ranked.length));
+    for(const candidate of candidates) candidate.score+=hardRolloutScore(candidate.move,hand,publicContext.actor,publicContext.mode??'1v1',board,ends,publicContext,worlds)*30;
+  }
+  const best=ranked.reduce((chosen,item)=>item.score>chosen.score?item:chosen,ranked[0]).move;
+  return {type:'play',payload:{index:best.index,side:best.side}};
+}
+function botAction(s:DominoState,seat:Seat):GameAction { if(!s.board.length&&seat===s.opening.player) { const index=s.hands[seat].findIndex(t=>t.a===s.opening.tile.a&&t.b===s.opening.tile.b); return {type:'play',payload:{index,side:'left'}}; } return chooseDominoBotAction(s.hands[seat],s.board,s.ends,s.settings?.difficulty??'normal',{actor:seat,mode:s.mode,passes:s.passes,counts:Object.fromEntries(seats(s.mode).map(x=>[x,s.hands[x].length])),log:s.log,tranqueRule:s.settings?.tranqueRule}); }
 function runBots(s:DominoState):DominoState { let next=s; while(!next.result&& !next.roundResult&&isBot(next.turn)) next=play(next,next.turn,botAction(next,next.turn)); return next; }
 function pack() { return Array.from({length:7},(_,a)=>Array.from({length:7-a},(_,j)=>({a,b:a+j}))).flat(); }
 function deal(seed:number,mode:Mode,round:number) { const deck=shuffle(pack(),seededRandom(seed+(round-1)*7919)), hands:DominoState['hands']={p1:deck.slice(0,7),p2:deck.slice(7,14),b1:[],b2:[]}; if(mode!=='1v1'){hands.b1=deck.slice(14,21);hands.b2=deck.slice(21,28);} const opening=(Object.entries(hands) as [Seat,Domino[]][]).filter(([x])=>seats(mode).includes(x)).flatMap(([player,h])=>h.map(tile=>({player,tile,rank:openingRank(tile)}))).sort((x,y)=>y.rank-x.rank)[0]; return {hands,opening,stock:deck.slice(14,mode==='1v1'?28:14)}; }

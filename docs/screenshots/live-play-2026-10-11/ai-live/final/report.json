@@ -1,0 +1,7534 @@
+{
+  "game": "domino",
+  "baseUrl": "http://127.0.0.1:5192",
+  "modes": [
+    "humans-vs-bots",
+    "partners"
+  ],
+  "method": "Two isolated KO / ES-DO browser contexts; UI-only room, consent, configuration and actions; exact-client read-only refresh; no game-state injection or sendAction calls.",
+  "checks": [
+    {
+      "name": "humans-vs-bots: two contexts joined distinct seats in one room",
+      "pass": true,
+      "details": [
+        {
+          "playerId": "p1",
+          "roomId": "72ee5b00-4d29-4478-aade-e89569770321",
+          "mode": "online"
+        },
+        {
+          "playerId": "p2",
+          "roomId": "72ee5b00-4d29-4478-aade-e89569770321",
+          "mode": "online"
+        }
+      ]
+    },
+    {
+      "name": "humans-vs-bots: language contexts remain KO and Dominican Spanish",
+      "pass": true,
+      "details": [
+        "ko",
+        "es-DO"
+      ]
+    },
+    {
+      "name": "Both independent viewers see the same latest public Domino board",
+      "pass": true,
+      "details": [
+        {
+          "playerId": "p1",
+          "version": 2,
+          "phase": "play",
+          "turn": "p2",
+          "round": 1
+        },
+        {
+          "playerId": "p2",
+          "version": 2,
+          "phase": "play",
+          "turn": "p2",
+          "round": 1
+        }
+      ]
+    },
+    {
+      "name": "Snapshot contains only the Domino player view, not raw engine secrets",
+      "pass": true,
+      "details": [
+        [
+          "ends",
+          "round",
+          "seats",
+          "teams",
+          "tiles",
+          "counts",
+          "scores",
+          "settings",
+          "actionLog",
+          "matchScores",
+          "roundResult",
+          "roundBonuses",
+          "rulesVersion"
+        ],
+        [
+          "ends",
+          "round",
+          "seats",
+          "teams",
+          "tiles",
+          "counts",
+          "scores",
+          "settings",
+          "actionLog",
+          "matchScores",
+          "roundResult",
+          "roundBonuses",
+          "rulesVersion"
+        ]
+      ]
+    },
+    {
+      "name": "humans-vs-bots: both players consented to Domino through the room UI",
+      "pass": true
+    },
+    {
+      "name": "Both independent viewers see the same latest public Domino board",
+      "pass": true,
+      "details": [
+        {
+          "playerId": "p1",
+          "version": 3,
+          "phase": "play",
+          "turn": "p2",
+          "round": 1
+        },
+        {
+          "playerId": "p2",
+          "version": 3,
+          "phase": "play",
+          "turn": "p2",
+          "round": 1
+        }
+      ]
+    },
+    {
+      "name": "Snapshot contains only the Domino player view, not raw engine secrets",
+      "pass": true,
+      "details": [
+        [
+          "ends",
+          "round",
+          "seats",
+          "teams",
+          "tiles",
+          "counts",
+          "scores",
+          "settings",
+          "actionLog",
+          "matchScores",
+          "roundResult",
+          "roundBonuses",
+          "rulesVersion"
+        ],
+        [
+          "ends",
+          "round",
+          "seats",
+          "teams",
+          "tiles",
+          "counts",
+          "scores",
+          "settings",
+          "actionLog",
+          "matchScores",
+          "roundResult",
+          "roundBonuses",
+          "rulesVersion"
+        ]
+      ]
+    },
+    {
+      "name": "humans-vs-bots: UI configuration persisted exact mode and hard bot difficulty",
+      "pass": true,
+      "details": [
+        {
+          "settings": {
+            "difficulty": "hard",
+            "targetScore": 0,
+            "tranqueRule": "team",
+            "capicuaBonus": 0,
+            "pasoCorridoBonus": 0
+          },
+          "boardSettings": {
+            "difficulty": "hard",
+            "targetScore": 0,
+            "tranqueRule": "team",
+            "capicuaBonus": 0,
+            "pasoCorridoBonus": 0
+          },
+          "seats": [
+            "p1",
+            "b1",
+            "p2",
+            "b2"
+          ],
+          "turn": "p2",
+          "tiles": 1
+        },
+        {
+          "settings": {
+            "difficulty": "hard",
+            "targetScore": 0,
+            "tranqueRule": "team",
+            "capicuaBonus": 0,
+            "pasoCorridoBonus": 0
+          },
+          "boardSettings": {
+            "difficulty": "hard",
+            "targetScore": 0,
+            "tranqueRule": "team",
+            "capicuaBonus": 0,
+            "pasoCorridoBonus": 0
+          },
+          "seats": [
+            "p1",
+            "b1",
+            "p2",
+            "b2"
+          ],
+          "turn": "p2",
+          "tiles": 1
+        }
+      ]
+    },
+    {
+      "name": "humans-vs-bots: hard difficulty remains visible after the opening tile",
+      "pass": true,
+      "details": "플레이 설정 보기\n사람 2명 대 봇 2명\n봇: 도전\n매치 목표: 한 라운드"
+    },
+    {
+      "name": "Both independent viewers see the same latest public Domino board",
+      "pass": true,
+      "details": [
+        {
+          "playerId": "p1",
+          "version": 3,
+          "phase": "play",
+          "turn": "p2",
+          "round": 1
+        },
+        {
+          "playerId": "p2",
+          "version": 3,
+          "phase": "play",
+          "turn": "p2",
+          "round": 1
+        }
+      ]
+    },
+    {
+      "name": "Snapshot contains only the Domino player view, not raw engine secrets",
+      "pass": true,
+      "details": [
+        [
+          "ends",
+          "round",
+          "seats",
+          "teams",
+          "tiles",
+          "counts",
+          "scores",
+          "settings",
+          "actionLog",
+          "matchScores",
+          "roundResult",
+          "roundBonuses",
+          "rulesVersion"
+        ],
+        [
+          "ends",
+          "round",
+          "seats",
+          "teams",
+          "tiles",
+          "counts",
+          "scores",
+          "settings",
+          "actionLog",
+          "matchScores",
+          "roundResult",
+          "roundBonuses",
+          "rulesVersion"
+        ]
+      ]
+    },
+    {
+      "name": "humans-vs-bots step 0: viewer 1 sees only their hand during active play",
+      "pass": true,
+      "details": {
+        "ownFaces": 7,
+        "opponentSeatFaces": 0,
+        "revealedHands": 0,
+        "renderedOwnCount": 7,
+        "documentLanguage": "ko",
+        "privateHandCount": 7,
+        "phase": "play"
+      }
+    },
+    {
+      "name": "humans-vs-bots step 0: viewer 1 hand DOM matches their private view",
+      "pass": true,
+      "details": {
+        "ownFaces": 7,
+        "opponentSeatFaces": 0,
+        "revealedHands": 0,
+        "renderedOwnCount": 7,
+        "documentLanguage": "ko"
+      }
+    },
+    {
+      "name": "humans-vs-bots step 0: viewer 2 sees only their hand during active play",
+      "pass": true,
+      "details": {
+        "ownFaces": 7,
+        "opponentSeatFaces": 0,
+        "revealedHands": 0,
+        "renderedOwnCount": 7,
+        "documentLanguage": "es-DO",
+        "privateHandCount": 7,
+        "phase": "play"
+      }
+    },
+    {
+      "name": "humans-vs-bots step 0: viewer 2 hand DOM matches their private view",
+      "pass": true,
+      "details": {
+        "ownFaces": 7,
+        "opponentSeatFaces": 0,
+        "revealedHands": 0,
+        "renderedOwnCount": 7,
+        "documentLanguage": "es-DO"
+      }
+    },
+    {
+      "name": "humans-vs-bots: expected public play phase",
+      "pass": true,
+      "details": {
+        "phase": "play",
+        "status": "opponent-turn"
+      }
+    },
+    {
+      "name": "humans-vs-bots: own-hand/public-ends strategy targets an enabled visible endpoint",
+      "pass": true,
+      "details": {
+        "tile": [
+          4,
+          6
+        ],
+        "side": "left",
+        "ends": {
+          "left": 6,
+          "right": 6
+        }
+      }
+    },
+    {
+      "name": "Both independent viewers see the same latest public Domino board",
+      "pass": true,
+      "details": [
+        {
+          "playerId": "p1",
+          "version": 4,
+          "phase": "play",
+          "turn": "p1",
+          "round": 1
+        },
+        {
+          "playerId": "p2",
+          "version": 4,
+          "phase": "play",
+          "turn": "p1",
+          "round": 1
+        }
+      ]
+    },
+    {
+      "name": "Snapshot contains only the Domino player view, not raw engine secrets",
+      "pass": true,
+      "details": [
+        [
+          "ends",
+          "round",
+          "seats",
+          "teams",
+          "tiles",
+          "counts",
+          "scores",
+          "settings",
+          "actionLog",
+          "matchScores",
+          "roundResult",
+          "roundBonuses",
+          "rulesVersion"
+        ],
+        [
+          "ends",
+          "round",
+          "seats",
+          "teams",
+          "tiles",
+          "counts",
+          "scores",
+          "settings",
+          "actionLog",
+          "matchScores",
+          "roundResult",
+          "roundBonuses",
+          "rulesVersion"
+        ]
+      ]
+    },
+    {
+      "name": "humans-vs-bots: each human UI action commits exactly one authority version",
+      "pass": true,
+      "details": {
+        "before": 3,
+        "after": 4
+      }
+    },
+    {
+      "name": "humans-vs-bots: bot automation resolves to a human turn or round end",
+      "pass": true,
+      "details": {
+        "turn": "p1",
+        "phase": "play",
+        "status": "your-turn",
+        "publicTiles": 3
+      }
+    },
+    {
+      "name": "humans-vs-bots: board/counts agree with visible public board",
+      "pass": true,
+      "details": [
+        {
+          "version": 4,
+          "tiles": 3,
+          "counts": {
+            "b1": 6,
+            "b2": 6,
+            "p1": 7,
+            "p2": 6
+          }
+        },
+        {
+          "version": 4,
+          "tiles": 3,
+          "counts": {
+            "b1": 6,
+            "b2": 6,
+            "p1": 7,
+            "p2": 6
+          }
+        }
+      ]
+    },
+    {
+      "name": "Both independent viewers see the same latest public Domino board",
+      "pass": true,
+      "details": [
+        {
+          "playerId": "p1",
+          "version": 4,
+          "phase": "play",
+          "turn": "p1",
+          "round": 1
+        },
+        {
+          "playerId": "p2",
+          "version": 4,
+          "phase": "play",
+          "turn": "p1",
+          "round": 1
+        }
+      ]
+    },
+    {
+      "name": "Snapshot contains only the Domino player view, not raw engine secrets",
+      "pass": true,
+      "details": [
+        [
+          "ends",
+          "round",
+          "seats",
+          "teams",
+          "tiles",
+          "counts",
+          "scores",
+          "settings",
+          "actionLog",
+          "matchScores",
+          "roundResult",
+          "roundBonuses",
+          "rulesVersion"
+        ],
+        [
+          "ends",
+          "round",
+          "seats",
+          "teams",
+          "tiles",
+          "counts",
+          "scores",
+          "settings",
+          "actionLog",
+          "matchScores",
+          "roundResult",
+          "roundBonuses",
+          "rulesVersion"
+        ]
+      ]
+    },
+    {
+      "name": "humans-vs-bots step 1: viewer 1 sees only their hand during active play",
+      "pass": true,
+      "details": {
+        "ownFaces": 7,
+        "opponentSeatFaces": 0,
+        "revealedHands": 0,
+        "renderedOwnCount": 7,
+        "documentLanguage": "ko",
+        "privateHandCount": 7,
+        "phase": "play"
+      }
+    },
+    {
+      "name": "humans-vs-bots step 1: viewer 1 hand DOM matches their private view",
+      "pass": true,
+      "details": {
+        "ownFaces": 7,
+        "opponentSeatFaces": 0,
+        "revealedHands": 0,
+        "renderedOwnCount": 7,
+        "documentLanguage": "ko"
+      }
+    },
+    {
+      "name": "humans-vs-bots step 1: viewer 2 sees only their hand during active play",
+      "pass": true,
+      "details": {
+        "ownFaces": 6,
+        "opponentSeatFaces": 0,
+        "revealedHands": 0,
+        "renderedOwnCount": 6,
+        "documentLanguage": "es-DO",
+        "privateHandCount": 6,
+        "phase": "play"
+      }
+    },
+    {
+      "name": "humans-vs-bots step 1: viewer 2 hand DOM matches their private view",
+      "pass": true,
+      "details": {
+        "ownFaces": 6,
+        "opponentSeatFaces": 0,
+        "revealedHands": 0,
+        "renderedOwnCount": 6,
+        "documentLanguage": "es-DO"
+      }
+    },
+    {
+      "name": "humans-vs-bots: expected public play phase",
+      "pass": true,
+      "details": {
+        "phase": "play",
+        "status": "your-turn"
+      }
+    },
+    {
+      "name": "humans-vs-bots: own-hand/public-ends strategy targets an enabled visible endpoint",
+      "pass": true,
+      "details": {
+        "tile": [
+          4,
+          4
+        ],
+        "side": "left",
+        "ends": {
+          "left": 4,
+          "right": 3
+        }
+      }
+    },
+    {
+      "name": "Both independent viewers see the same latest public Domino board",
+      "pass": true,
+      "details": [
+        {
+          "playerId": "p1",
+          "version": 5,
+          "phase": "play",
+          "turn": "p2",
+          "round": 1
+        },
+        {
+          "playerId": "p2",
+          "version": 5,
+          "phase": "play",
+          "turn": "p2",
+          "round": 1
+        }
+      ]
+    },
+    {
+      "name": "Snapshot contains only the Domino player view, not raw engine secrets",
+      "pass": true,
+      "details": [
+        [
+          "ends",
+          "round",
+          "seats",
+          "teams",
+          "tiles",
+          "counts",
+          "scores",
+          "settings",
+          "actionLog",
+          "matchScores",
+          "roundResult",
+          "roundBonuses",
+          "rulesVersion"
+        ],
+        [
+          "ends",
+          "round",
+          "seats",
+          "teams",
+          "tiles",
+          "counts",
+          "scores",
+          "settings",
+          "actionLog",
+          "matchScores",
+          "roundResult",
+          "roundBonuses",
+          "rulesVersion"
+        ]
+      ]
+    },
+    {
+      "name": "humans-vs-bots: each human UI action commits exactly one authority version",
+      "pass": true,
+      "details": {
+        "before": 4,
+        "after": 5
+      }
+    },
+    {
+      "name": "humans-vs-bots: bot automation resolves to a human turn or round end",
+      "pass": true,
+      "details": {
+        "turn": "p2",
+        "phase": "play",
+        "status": "opponent-turn",
+        "publicTiles": 5
+      }
+    },
+    {
+      "name": "humans-vs-bots: board/counts agree with visible public board",
+      "pass": true,
+      "details": [
+        {
+          "version": 5,
+          "tiles": 5,
+          "counts": {
+            "b1": 5,
+            "b2": 6,
+            "p1": 6,
+            "p2": 6
+          }
+        },
+        {
+          "version": 5,
+          "tiles": 5,
+          "counts": {
+            "b1": 5,
+            "b2": 6,
+            "p1": 6,
+            "p2": 6
+          }
+        }
+      ]
+    },
+    {
+      "name": "Both independent viewers see the same latest public Domino board",
+      "pass": true,
+      "details": [
+        {
+          "playerId": "p1",
+          "version": 5,
+          "phase": "play",
+          "turn": "p2",
+          "round": 1
+        },
+        {
+          "playerId": "p2",
+          "version": 5,
+          "phase": "play",
+          "turn": "p2",
+          "round": 1
+        }
+      ]
+    },
+    {
+      "name": "Snapshot contains only the Domino player view, not raw engine secrets",
+      "pass": true,
+      "details": [
+        [
+          "ends",
+          "round",
+          "seats",
+          "teams",
+          "tiles",
+          "counts",
+          "scores",
+          "settings",
+          "actionLog",
+          "matchScores",
+          "roundResult",
+          "roundBonuses",
+          "rulesVersion"
+        ],
+        [
+          "ends",
+          "round",
+          "seats",
+          "teams",
+          "tiles",
+          "counts",
+          "scores",
+          "settings",
+          "actionLog",
+          "matchScores",
+          "roundResult",
+          "roundBonuses",
+          "rulesVersion"
+        ]
+      ]
+    },
+    {
+      "name": "humans-vs-bots step 2: viewer 1 sees only their hand during active play",
+      "pass": true,
+      "details": {
+        "ownFaces": 6,
+        "opponentSeatFaces": 0,
+        "revealedHands": 0,
+        "renderedOwnCount": 6,
+        "documentLanguage": "ko",
+        "privateHandCount": 6,
+        "phase": "play"
+      }
+    },
+    {
+      "name": "humans-vs-bots step 2: viewer 1 hand DOM matches their private view",
+      "pass": true,
+      "details": {
+        "ownFaces": 6,
+        "opponentSeatFaces": 0,
+        "revealedHands": 0,
+        "renderedOwnCount": 6,
+        "documentLanguage": "ko"
+      }
+    },
+    {
+      "name": "humans-vs-bots step 2: viewer 2 sees only their hand during active play",
+      "pass": true,
+      "details": {
+        "ownFaces": 6,
+        "opponentSeatFaces": 0,
+        "revealedHands": 0,
+        "renderedOwnCount": 6,
+        "documentLanguage": "es-DO",
+        "privateHandCount": 6,
+        "phase": "play"
+      }
+    },
+    {
+      "name": "humans-vs-bots step 2: viewer 2 hand DOM matches their private view",
+      "pass": true,
+      "details": {
+        "ownFaces": 6,
+        "opponentSeatFaces": 0,
+        "revealedHands": 0,
+        "renderedOwnCount": 6,
+        "documentLanguage": "es-DO"
+      }
+    },
+    {
+      "name": "humans-vs-bots: expected public play phase",
+      "pass": true,
+      "details": {
+        "phase": "play",
+        "status": "opponent-turn"
+      }
+    },
+    {
+      "name": "humans-vs-bots: no playable own tile is represented by the visible pass control",
+      "pass": true,
+      "details": {
+        "player": "p2",
+        "ends": {
+          "left": 4,
+          "right": 4
+        }
+      }
+    },
+    {
+      "name": "Both independent viewers see the same latest public Domino board",
+      "pass": true,
+      "details": [
+        {
+          "playerId": "p1",
+          "version": 6,
+          "phase": "play",
+          "turn": "p1",
+          "round": 1
+        },
+        {
+          "playerId": "p2",
+          "version": 6,
+          "phase": "play",
+          "turn": "p1",
+          "round": 1
+        }
+      ]
+    },
+    {
+      "name": "Snapshot contains only the Domino player view, not raw engine secrets",
+      "pass": true,
+      "details": [
+        [
+          "ends",
+          "round",
+          "seats",
+          "teams",
+          "tiles",
+          "counts",
+          "scores",
+          "settings",
+          "actionLog",
+          "matchScores",
+          "roundResult",
+          "roundBonuses",
+          "rulesVersion"
+        ],
+        [
+          "ends",
+          "round",
+          "seats",
+          "teams",
+          "tiles",
+          "counts",
+          "scores",
+          "settings",
+          "actionLog",
+          "matchScores",
+          "roundResult",
+          "roundBonuses",
+          "rulesVersion"
+        ]
+      ]
+    },
+    {
+      "name": "humans-vs-bots: each human UI action commits exactly one authority version",
+      "pass": true,
+      "details": {
+        "before": 5,
+        "after": 6
+      }
+    },
+    {
+      "name": "humans-vs-bots: bot automation resolves to a human turn or round end",
+      "pass": true,
+      "details": {
+        "turn": "p1",
+        "phase": "play",
+        "status": "your-turn",
+        "publicTiles": 5
+      }
+    },
+    {
+      "name": "humans-vs-bots: board/counts agree with visible public board",
+      "pass": true,
+      "details": [
+        {
+          "version": 6,
+          "tiles": 5,
+          "counts": {
+            "b1": 5,
+            "b2": 6,
+            "p1": 6,
+            "p2": 6
+          }
+        },
+        {
+          "version": 6,
+          "tiles": 5,
+          "counts": {
+            "b1": 5,
+            "b2": 6,
+            "p1": 6,
+            "p2": 6
+          }
+        }
+      ]
+    },
+    {
+      "name": "Both independent viewers see the same latest public Domino board",
+      "pass": true,
+      "details": [
+        {
+          "playerId": "p1",
+          "version": 6,
+          "phase": "play",
+          "turn": "p1",
+          "round": 1
+        },
+        {
+          "playerId": "p2",
+          "version": 6,
+          "phase": "play",
+          "turn": "p1",
+          "round": 1
+        }
+      ]
+    },
+    {
+      "name": "Snapshot contains only the Domino player view, not raw engine secrets",
+      "pass": true,
+      "details": [
+        [
+          "ends",
+          "round",
+          "seats",
+          "teams",
+          "tiles",
+          "counts",
+          "scores",
+          "settings",
+          "actionLog",
+          "matchScores",
+          "roundResult",
+          "roundBonuses",
+          "rulesVersion"
+        ],
+        [
+          "ends",
+          "round",
+          "seats",
+          "teams",
+          "tiles",
+          "counts",
+          "scores",
+          "settings",
+          "actionLog",
+          "matchScores",
+          "roundResult",
+          "roundBonuses",
+          "rulesVersion"
+        ]
+      ]
+    },
+    {
+      "name": "humans-vs-bots step 3: viewer 1 sees only their hand during active play",
+      "pass": true,
+      "details": {
+        "ownFaces": 6,
+        "opponentSeatFaces": 0,
+        "revealedHands": 0,
+        "renderedOwnCount": 6,
+        "documentLanguage": "ko",
+        "privateHandCount": 6,
+        "phase": "play"
+      }
+    },
+    {
+      "name": "humans-vs-bots step 3: viewer 1 hand DOM matches their private view",
+      "pass": true,
+      "details": {
+        "ownFaces": 6,
+        "opponentSeatFaces": 0,
+        "revealedHands": 0,
+        "renderedOwnCount": 6,
+        "documentLanguage": "ko"
+      }
+    },
+    {
+      "name": "humans-vs-bots step 3: viewer 2 sees only their hand during active play",
+      "pass": true,
+      "details": {
+        "ownFaces": 6,
+        "opponentSeatFaces": 0,
+        "revealedHands": 0,
+        "renderedOwnCount": 6,
+        "documentLanguage": "es-DO",
+        "privateHandCount": 6,
+        "phase": "play"
+      }
+    },
+    {
+      "name": "humans-vs-bots step 3: viewer 2 hand DOM matches their private view",
+      "pass": true,
+      "details": {
+        "ownFaces": 6,
+        "opponentSeatFaces": 0,
+        "revealedHands": 0,
+        "renderedOwnCount": 6,
+        "documentLanguage": "es-DO"
+      }
+    },
+    {
+      "name": "humans-vs-bots: expected public play phase",
+      "pass": true,
+      "details": {
+        "phase": "play",
+        "status": "your-turn"
+      }
+    },
+    {
+      "name": "humans-vs-bots: own-hand/public-ends strategy targets an enabled visible endpoint",
+      "pass": true,
+      "details": {
+        "tile": [
+          4,
+          5
+        ],
+        "side": "left",
+        "ends": {
+          "left": 4,
+          "right": 4
+        }
+      }
+    },
+    {
+      "name": "Both independent viewers see the same latest public Domino board",
+      "pass": true,
+      "details": [
+        {
+          "playerId": "p1",
+          "version": 7,
+          "phase": "play",
+          "turn": "p2",
+          "round": 1
+        },
+        {
+          "playerId": "p2",
+          "version": 7,
+          "phase": "play",
+          "turn": "p2",
+          "round": 1
+        }
+      ]
+    },
+    {
+      "name": "Snapshot contains only the Domino player view, not raw engine secrets",
+      "pass": true,
+      "details": [
+        [
+          "ends",
+          "round",
+          "seats",
+          "teams",
+          "tiles",
+          "counts",
+          "scores",
+          "settings",
+          "actionLog",
+          "matchScores",
+          "roundResult",
+          "roundBonuses",
+          "rulesVersion"
+        ],
+        [
+          "ends",
+          "round",
+          "seats",
+          "teams",
+          "tiles",
+          "counts",
+          "scores",
+          "settings",
+          "actionLog",
+          "matchScores",
+          "roundResult",
+          "roundBonuses",
+          "rulesVersion"
+        ]
+      ]
+    },
+    {
+      "name": "humans-vs-bots: each human UI action commits exactly one authority version",
+      "pass": true,
+      "details": {
+        "before": 6,
+        "after": 7
+      }
+    },
+    {
+      "name": "humans-vs-bots: bot automation resolves to a human turn or round end",
+      "pass": true,
+      "details": {
+        "turn": "p2",
+        "phase": "play",
+        "status": "opponent-turn",
+        "publicTiles": 7
+      }
+    },
+    {
+      "name": "humans-vs-bots: board/counts agree with visible public board",
+      "pass": true,
+      "details": [
+        {
+          "version": 7,
+          "tiles": 7,
+          "counts": {
+            "b1": 4,
+            "b2": 6,
+            "p1": 5,
+            "p2": 6
+          }
+        },
+        {
+          "version": 7,
+          "tiles": 7,
+          "counts": {
+            "b1": 4,
+            "b2": 6,
+            "p1": 5,
+            "p2": 6
+          }
+        }
+      ]
+    },
+    {
+      "name": "Both independent viewers see the same latest public Domino board",
+      "pass": true,
+      "details": [
+        {
+          "playerId": "p1",
+          "version": 7,
+          "phase": "play",
+          "turn": "p2",
+          "round": 1
+        },
+        {
+          "playerId": "p2",
+          "version": 7,
+          "phase": "play",
+          "turn": "p2",
+          "round": 1
+        }
+      ]
+    },
+    {
+      "name": "Snapshot contains only the Domino player view, not raw engine secrets",
+      "pass": true,
+      "details": [
+        [
+          "ends",
+          "round",
+          "seats",
+          "teams",
+          "tiles",
+          "counts",
+          "scores",
+          "settings",
+          "actionLog",
+          "matchScores",
+          "roundResult",
+          "roundBonuses",
+          "rulesVersion"
+        ],
+        [
+          "ends",
+          "round",
+          "seats",
+          "teams",
+          "tiles",
+          "counts",
+          "scores",
+          "settings",
+          "actionLog",
+          "matchScores",
+          "roundResult",
+          "roundBonuses",
+          "rulesVersion"
+        ]
+      ]
+    },
+    {
+      "name": "humans-vs-bots step 4: viewer 1 sees only their hand during active play",
+      "pass": true,
+      "details": {
+        "ownFaces": 5,
+        "opponentSeatFaces": 0,
+        "revealedHands": 0,
+        "renderedOwnCount": 5,
+        "documentLanguage": "ko",
+        "privateHandCount": 5,
+        "phase": "play"
+      }
+    },
+    {
+      "name": "humans-vs-bots step 4: viewer 1 hand DOM matches their private view",
+      "pass": true,
+      "details": {
+        "ownFaces": 5,
+        "opponentSeatFaces": 0,
+        "revealedHands": 0,
+        "renderedOwnCount": 5,
+        "documentLanguage": "ko"
+      }
+    },
+    {
+      "name": "humans-vs-bots step 4: viewer 2 sees only their hand during active play",
+      "pass": true,
+      "details": {
+        "ownFaces": 6,
+        "opponentSeatFaces": 0,
+        "revealedHands": 0,
+        "renderedOwnCount": 6,
+        "documentLanguage": "es-DO",
+        "privateHandCount": 6,
+        "phase": "play"
+      }
+    },
+    {
+      "name": "humans-vs-bots step 4: viewer 2 hand DOM matches their private view",
+      "pass": true,
+      "details": {
+        "ownFaces": 6,
+        "opponentSeatFaces": 0,
+        "revealedHands": 0,
+        "renderedOwnCount": 6,
+        "documentLanguage": "es-DO"
+      }
+    },
+    {
+      "name": "humans-vs-bots: expected public play phase",
+      "pass": true,
+      "details": {
+        "phase": "play",
+        "status": "opponent-turn"
+      }
+    },
+    {
+      "name": "humans-vs-bots: own-hand/public-ends strategy targets an enabled visible endpoint",
+      "pass": true,
+      "details": {
+        "tile": [
+          5,
+          5
+        ],
+        "side": "left",
+        "ends": {
+          "left": 5,
+          "right": 2
+        }
+      }
+    },
+    {
+      "name": "Both independent viewers see the same latest public Domino board",
+      "pass": true,
+      "details": [
+        {
+          "playerId": "p1",
+          "version": 8,
+          "phase": "play",
+          "turn": "p1",
+          "round": 1
+        },
+        {
+          "playerId": "p2",
+          "version": 8,
+          "phase": "play",
+          "turn": "p1",
+          "round": 1
+        }
+      ]
+    },
+    {
+      "name": "Snapshot contains only the Domino player view, not raw engine secrets",
+      "pass": true,
+      "details": [
+        [
+          "ends",
+          "round",
+          "seats",
+          "teams",
+          "tiles",
+          "counts",
+          "scores",
+          "settings",
+          "actionLog",
+          "matchScores",
+          "roundResult",
+          "roundBonuses",
+          "rulesVersion"
+        ],
+        [
+          "ends",
+          "round",
+          "seats",
+          "teams",
+          "tiles",
+          "counts",
+          "scores",
+          "settings",
+          "actionLog",
+          "matchScores",
+          "roundResult",
+          "roundBonuses",
+          "rulesVersion"
+        ]
+      ]
+    },
+    {
+      "name": "humans-vs-bots: each human UI action commits exactly one authority version",
+      "pass": true,
+      "details": {
+        "before": 7,
+        "after": 8
+      }
+    },
+    {
+      "name": "humans-vs-bots: bot automation resolves to a human turn or round end",
+      "pass": true,
+      "details": {
+        "turn": "p1",
+        "phase": "play",
+        "status": "your-turn",
+        "publicTiles": 9
+      }
+    },
+    {
+      "name": "humans-vs-bots: board/counts agree with visible public board",
+      "pass": true,
+      "details": [
+        {
+          "version": 8,
+          "tiles": 9,
+          "counts": {
+            "b1": 4,
+            "b2": 5,
+            "p1": 5,
+            "p2": 5
+          }
+        },
+        {
+          "version": 8,
+          "tiles": 9,
+          "counts": {
+            "b1": 4,
+            "b2": 5,
+            "p1": 5,
+            "p2": 5
+          }
+        }
+      ]
+    },
+    {
+      "name": "Both independent viewers see the same latest public Domino board",
+      "pass": true,
+      "details": [
+        {
+          "playerId": "p1",
+          "version": 8,
+          "phase": "play",
+          "turn": "p1",
+          "round": 1
+        },
+        {
+          "playerId": "p2",
+          "version": 8,
+          "phase": "play",
+          "turn": "p1",
+          "round": 1
+        }
+      ]
+    },
+    {
+      "name": "Snapshot contains only the Domino player view, not raw engine secrets",
+      "pass": true,
+      "details": [
+        [
+          "ends",
+          "round",
+          "seats",
+          "teams",
+          "tiles",
+          "counts",
+          "scores",
+          "settings",
+          "actionLog",
+          "matchScores",
+          "roundResult",
+          "roundBonuses",
+          "rulesVersion"
+        ],
+        [
+          "ends",
+          "round",
+          "seats",
+          "teams",
+          "tiles",
+          "counts",
+          "scores",
+          "settings",
+          "actionLog",
+          "matchScores",
+          "roundResult",
+          "roundBonuses",
+          "rulesVersion"
+        ]
+      ]
+    },
+    {
+      "name": "humans-vs-bots step 5: viewer 1 sees only their hand during active play",
+      "pass": true,
+      "details": {
+        "ownFaces": 5,
+        "opponentSeatFaces": 0,
+        "revealedHands": 0,
+        "renderedOwnCount": 5,
+        "documentLanguage": "ko",
+        "privateHandCount": 5,
+        "phase": "play"
+      }
+    },
+    {
+      "name": "humans-vs-bots step 5: viewer 1 hand DOM matches their private view",
+      "pass": true,
+      "details": {
+        "ownFaces": 5,
+        "opponentSeatFaces": 0,
+        "revealedHands": 0,
+        "renderedOwnCount": 5,
+        "documentLanguage": "ko"
+      }
+    },
+    {
+      "name": "humans-vs-bots step 5: viewer 2 sees only their hand during active play",
+      "pass": true,
+      "details": {
+        "ownFaces": 5,
+        "opponentSeatFaces": 0,
+        "revealedHands": 0,
+        "renderedOwnCount": 5,
+        "documentLanguage": "es-DO",
+        "privateHandCount": 5,
+        "phase": "play"
+      }
+    },
+    {
+      "name": "humans-vs-bots step 5: viewer 2 hand DOM matches their private view",
+      "pass": true,
+      "details": {
+        "ownFaces": 5,
+        "opponentSeatFaces": 0,
+        "revealedHands": 0,
+        "renderedOwnCount": 5,
+        "documentLanguage": "es-DO"
+      }
+    },
+    {
+      "name": "humans-vs-bots: expected public play phase",
+      "pass": true,
+      "details": {
+        "phase": "play",
+        "status": "your-turn"
+      }
+    },
+    {
+      "name": "humans-vs-bots: own-hand/public-ends strategy targets an enabled visible endpoint",
+      "pass": true,
+      "details": {
+        "tile": [
+          0,
+          4
+        ],
+        "side": "left",
+        "ends": {
+          "left": 0,
+          "right": 2
+        }
+      }
+    },
+    {
+      "name": "Both independent viewers see the same latest public Domino board",
+      "pass": true,
+      "details": [
+        {
+          "playerId": "p1",
+          "version": 9,
+          "phase": "play",
+          "turn": "p2",
+          "round": 1
+        },
+        {
+          "playerId": "p2",
+          "version": 9,
+          "phase": "play",
+          "turn": "p2",
+          "round": 1
+        }
+      ]
+    },
+    {
+      "name": "Snapshot contains only the Domino player view, not raw engine secrets",
+      "pass": true,
+      "details": [
+        [
+          "ends",
+          "round",
+          "seats",
+          "teams",
+          "tiles",
+          "counts",
+          "scores",
+          "settings",
+          "actionLog",
+          "matchScores",
+          "roundResult",
+          "roundBonuses",
+          "rulesVersion"
+        ],
+        [
+          "ends",
+          "round",
+          "seats",
+          "teams",
+          "tiles",
+          "counts",
+          "scores",
+          "settings",
+          "actionLog",
+          "matchScores",
+          "roundResult",
+          "roundBonuses",
+          "rulesVersion"
+        ]
+      ]
+    },
+    {
+      "name": "humans-vs-bots: each human UI action commits exactly one authority version",
+      "pass": true,
+      "details": {
+        "before": 8,
+        "after": 9
+      }
+    },
+    {
+      "name": "humans-vs-bots: bot automation resolves to a human turn or round end",
+      "pass": true,
+      "details": {
+        "turn": "p2",
+        "phase": "play",
+        "status": "opponent-turn",
+        "publicTiles": 11
+      }
+    },
+    {
+      "name": "humans-vs-bots: board/counts agree with visible public board",
+      "pass": true,
+      "details": [
+        {
+          "version": 9,
+          "tiles": 11,
+          "counts": {
+            "b1": 3,
+            "b2": 5,
+            "p1": 4,
+            "p2": 5
+          }
+        },
+        {
+          "version": 9,
+          "tiles": 11,
+          "counts": {
+            "b1": 3,
+            "b2": 5,
+            "p1": 4,
+            "p2": 5
+          }
+        }
+      ]
+    },
+    {
+      "name": "Both independent viewers see the same latest public Domino board",
+      "pass": true,
+      "details": [
+        {
+          "playerId": "p1",
+          "version": 9,
+          "phase": "play",
+          "turn": "p2",
+          "round": 1
+        },
+        {
+          "playerId": "p2",
+          "version": 9,
+          "phase": "play",
+          "turn": "p2",
+          "round": 1
+        }
+      ]
+    },
+    {
+      "name": "Snapshot contains only the Domino player view, not raw engine secrets",
+      "pass": true,
+      "details": [
+        [
+          "ends",
+          "round",
+          "seats",
+          "teams",
+          "tiles",
+          "counts",
+          "scores",
+          "settings",
+          "actionLog",
+          "matchScores",
+          "roundResult",
+          "roundBonuses",
+          "rulesVersion"
+        ],
+        [
+          "ends",
+          "round",
+          "seats",
+          "teams",
+          "tiles",
+          "counts",
+          "scores",
+          "settings",
+          "actionLog",
+          "matchScores",
+          "roundResult",
+          "roundBonuses",
+          "rulesVersion"
+        ]
+      ]
+    },
+    {
+      "name": "humans-vs-bots step 6: viewer 1 sees only their hand during active play",
+      "pass": true,
+      "details": {
+        "ownFaces": 4,
+        "opponentSeatFaces": 0,
+        "revealedHands": 0,
+        "renderedOwnCount": 4,
+        "documentLanguage": "ko",
+        "privateHandCount": 4,
+        "phase": "play"
+      }
+    },
+    {
+      "name": "humans-vs-bots step 6: viewer 1 hand DOM matches their private view",
+      "pass": true,
+      "details": {
+        "ownFaces": 4,
+        "opponentSeatFaces": 0,
+        "revealedHands": 0,
+        "renderedOwnCount": 4,
+        "documentLanguage": "ko"
+      }
+    },
+    {
+      "name": "humans-vs-bots step 6: viewer 2 sees only their hand during active play",
+      "pass": true,
+      "details": {
+        "ownFaces": 5,
+        "opponentSeatFaces": 0,
+        "revealedHands": 0,
+        "renderedOwnCount": 5,
+        "documentLanguage": "es-DO",
+        "privateHandCount": 5,
+        "phase": "play"
+      }
+    },
+    {
+      "name": "humans-vs-bots step 6: viewer 2 hand DOM matches their private view",
+      "pass": true,
+      "details": {
+        "ownFaces": 5,
+        "opponentSeatFaces": 0,
+        "revealedHands": 0,
+        "renderedOwnCount": 5,
+        "documentLanguage": "es-DO"
+      }
+    },
+    {
+      "name": "humans-vs-bots: expected public play phase",
+      "pass": true,
+      "details": {
+        "phase": "play",
+        "status": "opponent-turn"
+      }
+    },
+    {
+      "name": "humans-vs-bots: no playable own tile is represented by the visible pass control",
+      "pass": true,
+      "details": {
+        "player": "p2",
+        "ends": {
+          "left": 4,
+          "right": 6
+        }
+      }
+    },
+    {
+      "name": "Both independent viewers see the same latest public Domino board",
+      "pass": true,
+      "details": [
+        {
+          "playerId": "p1",
+          "version": 10,
+          "phase": "play",
+          "turn": "p1",
+          "round": 1
+        },
+        {
+          "playerId": "p2",
+          "version": 10,
+          "phase": "play",
+          "turn": "p1",
+          "round": 1
+        }
+      ]
+    },
+    {
+      "name": "Snapshot contains only the Domino player view, not raw engine secrets",
+      "pass": true,
+      "details": [
+        [
+          "ends",
+          "round",
+          "seats",
+          "teams",
+          "tiles",
+          "counts",
+          "scores",
+          "settings",
+          "actionLog",
+          "matchScores",
+          "roundResult",
+          "roundBonuses",
+          "rulesVersion"
+        ],
+        [
+          "ends",
+          "round",
+          "seats",
+          "teams",
+          "tiles",
+          "counts",
+          "scores",
+          "settings",
+          "actionLog",
+          "matchScores",
+          "roundResult",
+          "roundBonuses",
+          "rulesVersion"
+        ]
+      ]
+    },
+    {
+      "name": "humans-vs-bots: each human UI action commits exactly one authority version",
+      "pass": true,
+      "details": {
+        "before": 9,
+        "after": 10
+      }
+    },
+    {
+      "name": "humans-vs-bots: bot automation resolves to a human turn or round end",
+      "pass": true,
+      "details": {
+        "turn": "p1",
+        "phase": "play",
+        "status": "your-turn",
+        "publicTiles": 11
+      }
+    },
+    {
+      "name": "humans-vs-bots: board/counts agree with visible public board",
+      "pass": true,
+      "details": [
+        {
+          "version": 10,
+          "tiles": 11,
+          "counts": {
+            "b1": 3,
+            "b2": 5,
+            "p1": 4,
+            "p2": 5
+          }
+        },
+        {
+          "version": 10,
+          "tiles": 11,
+          "counts": {
+            "b1": 3,
+            "b2": 5,
+            "p1": 4,
+            "p2": 5
+          }
+        }
+      ]
+    },
+    {
+      "name": "Both independent viewers see the same latest public Domino board",
+      "pass": true,
+      "details": [
+        {
+          "playerId": "p1",
+          "version": 10,
+          "phase": "play",
+          "turn": "p1",
+          "round": 1
+        },
+        {
+          "playerId": "p2",
+          "version": 10,
+          "phase": "play",
+          "turn": "p1",
+          "round": 1
+        }
+      ]
+    },
+    {
+      "name": "Snapshot contains only the Domino player view, not raw engine secrets",
+      "pass": true,
+      "details": [
+        [
+          "ends",
+          "round",
+          "seats",
+          "teams",
+          "tiles",
+          "counts",
+          "scores",
+          "settings",
+          "actionLog",
+          "matchScores",
+          "roundResult",
+          "roundBonuses",
+          "rulesVersion"
+        ],
+        [
+          "ends",
+          "round",
+          "seats",
+          "teams",
+          "tiles",
+          "counts",
+          "scores",
+          "settings",
+          "actionLog",
+          "matchScores",
+          "roundResult",
+          "roundBonuses",
+          "rulesVersion"
+        ]
+      ]
+    },
+    {
+      "name": "humans-vs-bots step 7: viewer 1 sees only their hand during active play",
+      "pass": true,
+      "details": {
+        "ownFaces": 4,
+        "opponentSeatFaces": 0,
+        "revealedHands": 0,
+        "renderedOwnCount": 4,
+        "documentLanguage": "ko",
+        "privateHandCount": 4,
+        "phase": "play"
+      }
+    },
+    {
+      "name": "humans-vs-bots step 7: viewer 1 hand DOM matches their private view",
+      "pass": true,
+      "details": {
+        "ownFaces": 4,
+        "opponentSeatFaces": 0,
+        "revealedHands": 0,
+        "renderedOwnCount": 4,
+        "documentLanguage": "ko"
+      }
+    },
+    {
+      "name": "humans-vs-bots step 7: viewer 2 sees only their hand during active play",
+      "pass": true,
+      "details": {
+        "ownFaces": 5,
+        "opponentSeatFaces": 0,
+        "revealedHands": 0,
+        "renderedOwnCount": 5,
+        "documentLanguage": "es-DO",
+        "privateHandCount": 5,
+        "phase": "play"
+      }
+    },
+    {
+      "name": "humans-vs-bots step 7: viewer 2 hand DOM matches their private view",
+      "pass": true,
+      "details": {
+        "ownFaces": 5,
+        "opponentSeatFaces": 0,
+        "revealedHands": 0,
+        "renderedOwnCount": 5,
+        "documentLanguage": "es-DO"
+      }
+    },
+    {
+      "name": "humans-vs-bots: expected public play phase",
+      "pass": true,
+      "details": {
+        "phase": "play",
+        "status": "your-turn"
+      }
+    },
+    {
+      "name": "humans-vs-bots: own-hand/public-ends strategy targets an enabled visible endpoint",
+      "pass": true,
+      "details": {
+        "tile": [
+          5,
+          6
+        ],
+        "side": "right",
+        "ends": {
+          "left": 4,
+          "right": 6
+        }
+      }
+    },
+    {
+      "name": "Both independent viewers see the same latest public Domino board",
+      "pass": true,
+      "details": [
+        {
+          "playerId": "p1",
+          "version": 11,
+          "phase": "play",
+          "turn": "p2",
+          "round": 1
+        },
+        {
+          "playerId": "p2",
+          "version": 11,
+          "phase": "play",
+          "turn": "p2",
+          "round": 1
+        }
+      ]
+    },
+    {
+      "name": "Snapshot contains only the Domino player view, not raw engine secrets",
+      "pass": true,
+      "details": [
+        [
+          "ends",
+          "round",
+          "seats",
+          "teams",
+          "tiles",
+          "counts",
+          "scores",
+          "settings",
+          "actionLog",
+          "matchScores",
+          "roundResult",
+          "roundBonuses",
+          "rulesVersion"
+        ],
+        [
+          "ends",
+          "round",
+          "seats",
+          "teams",
+          "tiles",
+          "counts",
+          "scores",
+          "settings",
+          "actionLog",
+          "matchScores",
+          "roundResult",
+          "roundBonuses",
+          "rulesVersion"
+        ]
+      ]
+    },
+    {
+      "name": "humans-vs-bots: each human UI action commits exactly one authority version",
+      "pass": true,
+      "details": {
+        "before": 10,
+        "after": 11
+      }
+    },
+    {
+      "name": "humans-vs-bots: bot automation resolves to a human turn or round end",
+      "pass": true,
+      "details": {
+        "turn": "p2",
+        "phase": "play",
+        "status": "opponent-turn",
+        "publicTiles": 13
+      }
+    },
+    {
+      "name": "humans-vs-bots: board/counts agree with visible public board",
+      "pass": true,
+      "details": [
+        {
+          "version": 11,
+          "tiles": 13,
+          "counts": {
+            "b1": 2,
+            "b2": 5,
+            "p1": 3,
+            "p2": 5
+          }
+        },
+        {
+          "version": 11,
+          "tiles": 13,
+          "counts": {
+            "b1": 2,
+            "b2": 5,
+            "p1": 3,
+            "p2": 5
+          }
+        }
+      ]
+    },
+    {
+      "name": "Both independent viewers see the same latest public Domino board",
+      "pass": true,
+      "details": [
+        {
+          "playerId": "p1",
+          "version": 11,
+          "phase": "play",
+          "turn": "p2",
+          "round": 1
+        },
+        {
+          "playerId": "p2",
+          "version": 11,
+          "phase": "play",
+          "turn": "p2",
+          "round": 1
+        }
+      ]
+    },
+    {
+      "name": "Snapshot contains only the Domino player view, not raw engine secrets",
+      "pass": true,
+      "details": [
+        [
+          "ends",
+          "round",
+          "seats",
+          "teams",
+          "tiles",
+          "counts",
+          "scores",
+          "settings",
+          "actionLog",
+          "matchScores",
+          "roundResult",
+          "roundBonuses",
+          "rulesVersion"
+        ],
+        [
+          "ends",
+          "round",
+          "seats",
+          "teams",
+          "tiles",
+          "counts",
+          "scores",
+          "settings",
+          "actionLog",
+          "matchScores",
+          "roundResult",
+          "roundBonuses",
+          "rulesVersion"
+        ]
+      ]
+    },
+    {
+      "name": "humans-vs-bots step 8: viewer 1 sees only their hand during active play",
+      "pass": true,
+      "details": {
+        "ownFaces": 3,
+        "opponentSeatFaces": 0,
+        "revealedHands": 0,
+        "renderedOwnCount": 3,
+        "documentLanguage": "ko",
+        "privateHandCount": 3,
+        "phase": "play"
+      }
+    },
+    {
+      "name": "humans-vs-bots step 8: viewer 1 hand DOM matches their private view",
+      "pass": true,
+      "details": {
+        "ownFaces": 3,
+        "opponentSeatFaces": 0,
+        "revealedHands": 0,
+        "renderedOwnCount": 3,
+        "documentLanguage": "ko"
+      }
+    },
+    {
+      "name": "humans-vs-bots step 8: viewer 2 sees only their hand during active play",
+      "pass": true,
+      "details": {
+        "ownFaces": 5,
+        "opponentSeatFaces": 0,
+        "revealedHands": 0,
+        "renderedOwnCount": 5,
+        "documentLanguage": "es-DO",
+        "privateHandCount": 5,
+        "phase": "play"
+      }
+    },
+    {
+      "name": "humans-vs-bots step 8: viewer 2 hand DOM matches their private view",
+      "pass": true,
+      "details": {
+        "ownFaces": 5,
+        "opponentSeatFaces": 0,
+        "revealedHands": 0,
+        "renderedOwnCount": 5,
+        "documentLanguage": "es-DO"
+      }
+    },
+    {
+      "name": "humans-vs-bots: expected public play phase",
+      "pass": true,
+      "details": {
+        "phase": "play",
+        "status": "opponent-turn"
+      }
+    },
+    {
+      "name": "humans-vs-bots: own-hand/public-ends strategy targets an enabled visible endpoint",
+      "pass": true,
+      "details": {
+        "tile": [
+          2,
+          2
+        ],
+        "side": "right",
+        "ends": {
+          "left": 4,
+          "right": 2
+        }
+      }
+    },
+    {
+      "name": "Both independent viewers see the same latest public Domino board",
+      "pass": true,
+      "details": [
+        {
+          "playerId": "p1",
+          "version": 12,
+          "phase": "play",
+          "turn": "p1",
+          "round": 1
+        },
+        {
+          "playerId": "p2",
+          "version": 12,
+          "phase": "play",
+          "turn": "p1",
+          "round": 1
+        }
+      ]
+    },
+    {
+      "name": "Snapshot contains only the Domino player view, not raw engine secrets",
+      "pass": true,
+      "details": [
+        [
+          "ends",
+          "round",
+          "seats",
+          "teams",
+          "tiles",
+          "counts",
+          "scores",
+          "settings",
+          "actionLog",
+          "matchScores",
+          "roundResult",
+          "roundBonuses",
+          "rulesVersion"
+        ],
+        [
+          "ends",
+          "round",
+          "seats",
+          "teams",
+          "tiles",
+          "counts",
+          "scores",
+          "settings",
+          "actionLog",
+          "matchScores",
+          "roundResult",
+          "roundBonuses",
+          "rulesVersion"
+        ]
+      ]
+    },
+    {
+      "name": "humans-vs-bots: each human UI action commits exactly one authority version",
+      "pass": true,
+      "details": {
+        "before": 11,
+        "after": 12
+      }
+    },
+    {
+      "name": "humans-vs-bots: bot automation resolves to a human turn or round end",
+      "pass": true,
+      "details": {
+        "turn": "p1",
+        "phase": "play",
+        "status": "your-turn",
+        "publicTiles": 15
+      }
+    },
+    {
+      "name": "humans-vs-bots: board/counts agree with visible public board",
+      "pass": true,
+      "details": [
+        {
+          "version": 12,
+          "tiles": 15,
+          "counts": {
+            "b1": 2,
+            "b2": 4,
+            "p1": 3,
+            "p2": 4
+          }
+        },
+        {
+          "version": 12,
+          "tiles": 15,
+          "counts": {
+            "b1": 2,
+            "b2": 4,
+            "p1": 3,
+            "p2": 4
+          }
+        }
+      ]
+    },
+    {
+      "name": "Both independent viewers see the same latest public Domino board",
+      "pass": true,
+      "details": [
+        {
+          "playerId": "p1",
+          "version": 12,
+          "phase": "play",
+          "turn": "p1",
+          "round": 1
+        },
+        {
+          "playerId": "p2",
+          "version": 12,
+          "phase": "play",
+          "turn": "p1",
+          "round": 1
+        }
+      ]
+    },
+    {
+      "name": "Snapshot contains only the Domino player view, not raw engine secrets",
+      "pass": true,
+      "details": [
+        [
+          "ends",
+          "round",
+          "seats",
+          "teams",
+          "tiles",
+          "counts",
+          "scores",
+          "settings",
+          "actionLog",
+          "matchScores",
+          "roundResult",
+          "roundBonuses",
+          "rulesVersion"
+        ],
+        [
+          "ends",
+          "round",
+          "seats",
+          "teams",
+          "tiles",
+          "counts",
+          "scores",
+          "settings",
+          "actionLog",
+          "matchScores",
+          "roundResult",
+          "roundBonuses",
+          "rulesVersion"
+        ]
+      ]
+    },
+    {
+      "name": "humans-vs-bots step 9: viewer 1 sees only their hand during active play",
+      "pass": true,
+      "details": {
+        "ownFaces": 3,
+        "opponentSeatFaces": 0,
+        "revealedHands": 0,
+        "renderedOwnCount": 3,
+        "documentLanguage": "ko",
+        "privateHandCount": 3,
+        "phase": "play"
+      }
+    },
+    {
+      "name": "humans-vs-bots step 9: viewer 1 hand DOM matches their private view",
+      "pass": true,
+      "details": {
+        "ownFaces": 3,
+        "opponentSeatFaces": 0,
+        "revealedHands": 0,
+        "renderedOwnCount": 3,
+        "documentLanguage": "ko"
+      }
+    },
+    {
+      "name": "humans-vs-bots step 9: viewer 2 sees only their hand during active play",
+      "pass": true,
+      "details": {
+        "ownFaces": 4,
+        "opponentSeatFaces": 0,
+        "revealedHands": 0,
+        "renderedOwnCount": 4,
+        "documentLanguage": "es-DO",
+        "privateHandCount": 4,
+        "phase": "play"
+      }
+    },
+    {
+      "name": "humans-vs-bots step 9: viewer 2 hand DOM matches their private view",
+      "pass": true,
+      "details": {
+        "ownFaces": 4,
+        "opponentSeatFaces": 0,
+        "revealedHands": 0,
+        "renderedOwnCount": 4,
+        "documentLanguage": "es-DO"
+      }
+    },
+    {
+      "name": "humans-vs-bots: expected public play phase",
+      "pass": true,
+      "details": {
+        "phase": "play",
+        "status": "your-turn"
+      }
+    },
+    {
+      "name": "humans-vs-bots: own-hand/public-ends strategy targets an enabled visible endpoint",
+      "pass": true,
+      "details": {
+        "tile": [
+          3,
+          5
+        ],
+        "side": "right",
+        "ends": {
+          "left": 4,
+          "right": 3
+        }
+      }
+    },
+    {
+      "name": "Both independent viewers see the same latest public Domino board",
+      "pass": true,
+      "details": [
+        {
+          "playerId": "p1",
+          "version": 13,
+          "phase": "play",
+          "turn": "p2",
+          "round": 1
+        },
+        {
+          "playerId": "p2",
+          "version": 13,
+          "phase": "play",
+          "turn": "p2",
+          "round": 1
+        }
+      ]
+    },
+    {
+      "name": "Snapshot contains only the Domino player view, not raw engine secrets",
+      "pass": true,
+      "details": [
+        [
+          "ends",
+          "round",
+          "seats",
+          "teams",
+          "tiles",
+          "counts",
+          "scores",
+          "settings",
+          "actionLog",
+          "matchScores",
+          "roundResult",
+          "roundBonuses",
+          "rulesVersion"
+        ],
+        [
+          "ends",
+          "round",
+          "seats",
+          "teams",
+          "tiles",
+          "counts",
+          "scores",
+          "settings",
+          "actionLog",
+          "matchScores",
+          "roundResult",
+          "roundBonuses",
+          "rulesVersion"
+        ]
+      ]
+    },
+    {
+      "name": "humans-vs-bots: each human UI action commits exactly one authority version",
+      "pass": true,
+      "details": {
+        "before": 12,
+        "after": 13
+      }
+    },
+    {
+      "name": "humans-vs-bots: bot automation resolves to a human turn or round end",
+      "pass": true,
+      "details": {
+        "turn": "p2",
+        "phase": "play",
+        "status": "opponent-turn",
+        "publicTiles": 16
+      }
+    },
+    {
+      "name": "humans-vs-bots: board/counts agree with visible public board",
+      "pass": true,
+      "details": [
+        {
+          "version": 13,
+          "tiles": 16,
+          "counts": {
+            "b1": 2,
+            "b2": 4,
+            "p1": 2,
+            "p2": 4
+          }
+        },
+        {
+          "version": 13,
+          "tiles": 16,
+          "counts": {
+            "b1": 2,
+            "b2": 4,
+            "p1": 2,
+            "p2": 4
+          }
+        }
+      ]
+    },
+    {
+      "name": "Both independent viewers see the same latest public Domino board",
+      "pass": true,
+      "details": [
+        {
+          "playerId": "p1",
+          "version": 13,
+          "phase": "play",
+          "turn": "p2",
+          "round": 1
+        },
+        {
+          "playerId": "p2",
+          "version": 13,
+          "phase": "play",
+          "turn": "p2",
+          "round": 1
+        }
+      ]
+    },
+    {
+      "name": "Snapshot contains only the Domino player view, not raw engine secrets",
+      "pass": true,
+      "details": [
+        [
+          "ends",
+          "round",
+          "seats",
+          "teams",
+          "tiles",
+          "counts",
+          "scores",
+          "settings",
+          "actionLog",
+          "matchScores",
+          "roundResult",
+          "roundBonuses",
+          "rulesVersion"
+        ],
+        [
+          "ends",
+          "round",
+          "seats",
+          "teams",
+          "tiles",
+          "counts",
+          "scores",
+          "settings",
+          "actionLog",
+          "matchScores",
+          "roundResult",
+          "roundBonuses",
+          "rulesVersion"
+        ]
+      ]
+    },
+    {
+      "name": "humans-vs-bots step 10: viewer 1 sees only their hand during active play",
+      "pass": true,
+      "details": {
+        "ownFaces": 2,
+        "opponentSeatFaces": 0,
+        "revealedHands": 0,
+        "renderedOwnCount": 2,
+        "documentLanguage": "ko",
+        "privateHandCount": 2,
+        "phase": "play"
+      }
+    },
+    {
+      "name": "humans-vs-bots step 10: viewer 1 hand DOM matches their private view",
+      "pass": true,
+      "details": {
+        "ownFaces": 2,
+        "opponentSeatFaces": 0,
+        "revealedHands": 0,
+        "renderedOwnCount": 2,
+        "documentLanguage": "ko"
+      }
+    },
+    {
+      "name": "humans-vs-bots step 10: viewer 2 sees only their hand during active play",
+      "pass": true,
+      "details": {
+        "ownFaces": 4,
+        "opponentSeatFaces": 0,
+        "revealedHands": 0,
+        "renderedOwnCount": 4,
+        "documentLanguage": "es-DO",
+        "privateHandCount": 4,
+        "phase": "play"
+      }
+    },
+    {
+      "name": "humans-vs-bots step 10: viewer 2 hand DOM matches their private view",
+      "pass": true,
+      "details": {
+        "ownFaces": 4,
+        "opponentSeatFaces": 0,
+        "revealedHands": 0,
+        "renderedOwnCount": 4,
+        "documentLanguage": "es-DO"
+      }
+    },
+    {
+      "name": "humans-vs-bots: expected public play phase",
+      "pass": true,
+      "details": {
+        "phase": "play",
+        "status": "opponent-turn"
+      }
+    },
+    {
+      "name": "humans-vs-bots: own-hand/public-ends strategy targets an enabled visible endpoint",
+      "pass": true,
+      "details": {
+        "tile": [
+          1,
+          5
+        ],
+        "side": "right",
+        "ends": {
+          "left": 4,
+          "right": 5
+        }
+      }
+    },
+    {
+      "name": "Both independent viewers see the same latest public Domino board",
+      "pass": true,
+      "details": [
+        {
+          "playerId": "p1",
+          "version": 14,
+          "phase": "play",
+          "turn": "p1",
+          "round": 1
+        },
+        {
+          "playerId": "p2",
+          "version": 14,
+          "phase": "play",
+          "turn": "p1",
+          "round": 1
+        }
+      ]
+    },
+    {
+      "name": "Snapshot contains only the Domino player view, not raw engine secrets",
+      "pass": true,
+      "details": [
+        [
+          "ends",
+          "round",
+          "seats",
+          "teams",
+          "tiles",
+          "counts",
+          "scores",
+          "settings",
+          "actionLog",
+          "matchScores",
+          "roundResult",
+          "roundBonuses",
+          "rulesVersion"
+        ],
+        [
+          "ends",
+          "round",
+          "seats",
+          "teams",
+          "tiles",
+          "counts",
+          "scores",
+          "settings",
+          "actionLog",
+          "matchScores",
+          "roundResult",
+          "roundBonuses",
+          "rulesVersion"
+        ]
+      ]
+    },
+    {
+      "name": "humans-vs-bots: each human UI action commits exactly one authority version",
+      "pass": true,
+      "details": {
+        "before": 13,
+        "after": 14
+      }
+    },
+    {
+      "name": "humans-vs-bots: bot automation resolves to a human turn or round end",
+      "pass": true,
+      "details": {
+        "turn": "p1",
+        "phase": "play",
+        "status": "your-turn",
+        "publicTiles": 18
+      }
+    },
+    {
+      "name": "humans-vs-bots: board/counts agree with visible public board",
+      "pass": true,
+      "details": [
+        {
+          "version": 14,
+          "tiles": 18,
+          "counts": {
+            "b1": 2,
+            "b2": 3,
+            "p1": 2,
+            "p2": 3
+          }
+        },
+        {
+          "version": 14,
+          "tiles": 18,
+          "counts": {
+            "b1": 2,
+            "b2": 3,
+            "p1": 2,
+            "p2": 3
+          }
+        }
+      ]
+    },
+    {
+      "name": "Both independent viewers see the same latest public Domino board",
+      "pass": true,
+      "details": [
+        {
+          "playerId": "p1",
+          "version": 14,
+          "phase": "play",
+          "turn": "p1",
+          "round": 1
+        },
+        {
+          "playerId": "p2",
+          "version": 14,
+          "phase": "play",
+          "turn": "p1",
+          "round": 1
+        }
+      ]
+    },
+    {
+      "name": "Snapshot contains only the Domino player view, not raw engine secrets",
+      "pass": true,
+      "details": [
+        [
+          "ends",
+          "round",
+          "seats",
+          "teams",
+          "tiles",
+          "counts",
+          "scores",
+          "settings",
+          "actionLog",
+          "matchScores",
+          "roundResult",
+          "roundBonuses",
+          "rulesVersion"
+        ],
+        [
+          "ends",
+          "round",
+          "seats",
+          "teams",
+          "tiles",
+          "counts",
+          "scores",
+          "settings",
+          "actionLog",
+          "matchScores",
+          "roundResult",
+          "roundBonuses",
+          "rulesVersion"
+        ]
+      ]
+    },
+    {
+      "name": "humans-vs-bots step 11: viewer 1 sees only their hand during active play",
+      "pass": true,
+      "details": {
+        "ownFaces": 2,
+        "opponentSeatFaces": 0,
+        "revealedHands": 0,
+        "renderedOwnCount": 2,
+        "documentLanguage": "ko",
+        "privateHandCount": 2,
+        "phase": "play"
+      }
+    },
+    {
+      "name": "humans-vs-bots step 11: viewer 1 hand DOM matches their private view",
+      "pass": true,
+      "details": {
+        "ownFaces": 2,
+        "opponentSeatFaces": 0,
+        "revealedHands": 0,
+        "renderedOwnCount": 2,
+        "documentLanguage": "ko"
+      }
+    },
+    {
+      "name": "humans-vs-bots step 11: viewer 2 sees only their hand during active play",
+      "pass": true,
+      "details": {
+        "ownFaces": 3,
+        "opponentSeatFaces": 0,
+        "revealedHands": 0,
+        "renderedOwnCount": 3,
+        "documentLanguage": "es-DO",
+        "privateHandCount": 3,
+        "phase": "play"
+      }
+    },
+    {
+      "name": "humans-vs-bots step 11: viewer 2 hand DOM matches their private view",
+      "pass": true,
+      "details": {
+        "ownFaces": 3,
+        "opponentSeatFaces": 0,
+        "revealedHands": 0,
+        "renderedOwnCount": 3,
+        "documentLanguage": "es-DO"
+      }
+    },
+    {
+      "name": "humans-vs-bots: expected public play phase",
+      "pass": true,
+      "details": {
+        "phase": "play",
+        "status": "your-turn"
+      }
+    },
+    {
+      "name": "humans-vs-bots: own-hand/public-ends strategy targets an enabled visible endpoint",
+      "pass": true,
+      "details": {
+        "tile": [
+          1,
+          4
+        ],
+        "side": "left",
+        "ends": {
+          "left": 4,
+          "right": 0
+        }
+      }
+    },
+    {
+      "name": "Both independent viewers see the same latest public Domino board",
+      "pass": true,
+      "details": [
+        {
+          "playerId": "p1",
+          "version": 15,
+          "phase": "play",
+          "turn": "p2",
+          "round": 1
+        },
+        {
+          "playerId": "p2",
+          "version": 15,
+          "phase": "play",
+          "turn": "p2",
+          "round": 1
+        }
+      ]
+    },
+    {
+      "name": "Snapshot contains only the Domino player view, not raw engine secrets",
+      "pass": true,
+      "details": [
+        [
+          "ends",
+          "round",
+          "seats",
+          "teams",
+          "tiles",
+          "counts",
+          "scores",
+          "settings",
+          "actionLog",
+          "matchScores",
+          "roundResult",
+          "roundBonuses",
+          "rulesVersion"
+        ],
+        [
+          "ends",
+          "round",
+          "seats",
+          "teams",
+          "tiles",
+          "counts",
+          "scores",
+          "settings",
+          "actionLog",
+          "matchScores",
+          "roundResult",
+          "roundBonuses",
+          "rulesVersion"
+        ]
+      ]
+    },
+    {
+      "name": "humans-vs-bots: each human UI action commits exactly one authority version",
+      "pass": true,
+      "details": {
+        "before": 14,
+        "after": 15
+      }
+    },
+    {
+      "name": "humans-vs-bots: bot automation resolves to a human turn or round end",
+      "pass": true,
+      "details": {
+        "turn": "p2",
+        "phase": "play",
+        "status": "opponent-turn",
+        "publicTiles": 20
+      }
+    },
+    {
+      "name": "humans-vs-bots: board/counts agree with visible public board",
+      "pass": true,
+      "details": [
+        {
+          "version": 15,
+          "tiles": 20,
+          "counts": {
+            "b1": 1,
+            "b2": 3,
+            "p1": 1,
+            "p2": 3
+          }
+        },
+        {
+          "version": 15,
+          "tiles": 20,
+          "counts": {
+            "b1": 1,
+            "b2": 3,
+            "p1": 1,
+            "p2": 3
+          }
+        }
+      ]
+    },
+    {
+      "name": "Both independent viewers see the same latest public Domino board",
+      "pass": true,
+      "details": [
+        {
+          "playerId": "p1",
+          "version": 15,
+          "phase": "play",
+          "turn": "p2",
+          "round": 1
+        },
+        {
+          "playerId": "p2",
+          "version": 15,
+          "phase": "play",
+          "turn": "p2",
+          "round": 1
+        }
+      ]
+    },
+    {
+      "name": "Snapshot contains only the Domino player view, not raw engine secrets",
+      "pass": true,
+      "details": [
+        [
+          "ends",
+          "round",
+          "seats",
+          "teams",
+          "tiles",
+          "counts",
+          "scores",
+          "settings",
+          "actionLog",
+          "matchScores",
+          "roundResult",
+          "roundBonuses",
+          "rulesVersion"
+        ],
+        [
+          "ends",
+          "round",
+          "seats",
+          "teams",
+          "tiles",
+          "counts",
+          "scores",
+          "settings",
+          "actionLog",
+          "matchScores",
+          "roundResult",
+          "roundBonuses",
+          "rulesVersion"
+        ]
+      ]
+    },
+    {
+      "name": "humans-vs-bots step 12: viewer 1 sees only their hand during active play",
+      "pass": true,
+      "details": {
+        "ownFaces": 1,
+        "opponentSeatFaces": 0,
+        "revealedHands": 0,
+        "renderedOwnCount": 1,
+        "documentLanguage": "ko",
+        "privateHandCount": 1,
+        "phase": "play"
+      }
+    },
+    {
+      "name": "humans-vs-bots step 12: viewer 1 hand DOM matches their private view",
+      "pass": true,
+      "details": {
+        "ownFaces": 1,
+        "opponentSeatFaces": 0,
+        "revealedHands": 0,
+        "renderedOwnCount": 1,
+        "documentLanguage": "ko"
+      }
+    },
+    {
+      "name": "humans-vs-bots step 12: viewer 2 sees only their hand during active play",
+      "pass": true,
+      "details": {
+        "ownFaces": 3,
+        "opponentSeatFaces": 0,
+        "revealedHands": 0,
+        "renderedOwnCount": 3,
+        "documentLanguage": "es-DO",
+        "privateHandCount": 3,
+        "phase": "play"
+      }
+    },
+    {
+      "name": "humans-vs-bots step 12: viewer 2 hand DOM matches their private view",
+      "pass": true,
+      "details": {
+        "ownFaces": 3,
+        "opponentSeatFaces": 0,
+        "revealedHands": 0,
+        "renderedOwnCount": 3,
+        "documentLanguage": "es-DO"
+      }
+    },
+    {
+      "name": "humans-vs-bots: expected public play phase",
+      "pass": true,
+      "details": {
+        "phase": "play",
+        "status": "opponent-turn"
+      }
+    },
+    {
+      "name": "humans-vs-bots: own-hand/public-ends strategy targets an enabled visible endpoint",
+      "pass": true,
+      "details": {
+        "tile": [
+          0,
+          2
+        ],
+        "side": "right",
+        "ends": {
+          "left": 6,
+          "right": 0
+        }
+      }
+    },
+    {
+      "name": "Both independent viewers see the same latest public Domino board",
+      "pass": true,
+      "details": [
+        {
+          "playerId": "p1",
+          "version": 16,
+          "phase": "play",
+          "turn": "p1",
+          "round": 1
+        },
+        {
+          "playerId": "p2",
+          "version": 16,
+          "phase": "play",
+          "turn": "p1",
+          "round": 1
+        }
+      ]
+    },
+    {
+      "name": "Snapshot contains only the Domino player view, not raw engine secrets",
+      "pass": true,
+      "details": [
+        [
+          "ends",
+          "round",
+          "seats",
+          "teams",
+          "tiles",
+          "counts",
+          "scores",
+          "settings",
+          "actionLog",
+          "matchScores",
+          "roundResult",
+          "roundBonuses",
+          "rulesVersion"
+        ],
+        [
+          "ends",
+          "round",
+          "seats",
+          "teams",
+          "tiles",
+          "counts",
+          "scores",
+          "settings",
+          "actionLog",
+          "matchScores",
+          "roundResult",
+          "roundBonuses",
+          "rulesVersion"
+        ]
+      ]
+    },
+    {
+      "name": "humans-vs-bots: each human UI action commits exactly one authority version",
+      "pass": true,
+      "details": {
+        "before": 15,
+        "after": 16
+      }
+    },
+    {
+      "name": "humans-vs-bots: bot automation resolves to a human turn or round end",
+      "pass": true,
+      "details": {
+        "turn": "p1",
+        "phase": "play",
+        "status": "your-turn",
+        "publicTiles": 21
+      }
+    },
+    {
+      "name": "humans-vs-bots: board/counts agree with visible public board",
+      "pass": true,
+      "details": [
+        {
+          "version": 16,
+          "tiles": 21,
+          "counts": {
+            "b1": 1,
+            "b2": 3,
+            "p1": 1,
+            "p2": 2
+          }
+        },
+        {
+          "version": 16,
+          "tiles": 21,
+          "counts": {
+            "b1": 1,
+            "b2": 3,
+            "p1": 1,
+            "p2": 2
+          }
+        }
+      ]
+    },
+    {
+      "name": "Both independent viewers see the same latest public Domino board",
+      "pass": true,
+      "details": [
+        {
+          "playerId": "p1",
+          "version": 16,
+          "phase": "play",
+          "turn": "p1",
+          "round": 1
+        },
+        {
+          "playerId": "p2",
+          "version": 16,
+          "phase": "play",
+          "turn": "p1",
+          "round": 1
+        }
+      ]
+    },
+    {
+      "name": "Snapshot contains only the Domino player view, not raw engine secrets",
+      "pass": true,
+      "details": [
+        [
+          "ends",
+          "round",
+          "seats",
+          "teams",
+          "tiles",
+          "counts",
+          "scores",
+          "settings",
+          "actionLog",
+          "matchScores",
+          "roundResult",
+          "roundBonuses",
+          "rulesVersion"
+        ],
+        [
+          "ends",
+          "round",
+          "seats",
+          "teams",
+          "tiles",
+          "counts",
+          "scores",
+          "settings",
+          "actionLog",
+          "matchScores",
+          "roundResult",
+          "roundBonuses",
+          "rulesVersion"
+        ]
+      ]
+    },
+    {
+      "name": "humans-vs-bots step 13: viewer 1 sees only their hand during active play",
+      "pass": true,
+      "details": {
+        "ownFaces": 1,
+        "opponentSeatFaces": 0,
+        "revealedHands": 0,
+        "renderedOwnCount": 1,
+        "documentLanguage": "ko",
+        "privateHandCount": 1,
+        "phase": "play"
+      }
+    },
+    {
+      "name": "humans-vs-bots step 13: viewer 1 hand DOM matches their private view",
+      "pass": true,
+      "details": {
+        "ownFaces": 1,
+        "opponentSeatFaces": 0,
+        "revealedHands": 0,
+        "renderedOwnCount": 1,
+        "documentLanguage": "ko"
+      }
+    },
+    {
+      "name": "humans-vs-bots step 13: viewer 2 sees only their hand during active play",
+      "pass": true,
+      "details": {
+        "ownFaces": 2,
+        "opponentSeatFaces": 0,
+        "revealedHands": 0,
+        "renderedOwnCount": 2,
+        "documentLanguage": "es-DO",
+        "privateHandCount": 2,
+        "phase": "play"
+      }
+    },
+    {
+      "name": "humans-vs-bots step 13: viewer 2 hand DOM matches their private view",
+      "pass": true,
+      "details": {
+        "ownFaces": 2,
+        "opponentSeatFaces": 0,
+        "revealedHands": 0,
+        "renderedOwnCount": 2,
+        "documentLanguage": "es-DO"
+      }
+    },
+    {
+      "name": "humans-vs-bots: expected public play phase",
+      "pass": true,
+      "details": {
+        "phase": "play",
+        "status": "your-turn"
+      }
+    },
+    {
+      "name": "humans-vs-bots: own-hand/public-ends strategy targets an enabled visible endpoint",
+      "pass": true,
+      "details": {
+        "tile": [
+          1,
+          2
+        ],
+        "side": "right",
+        "ends": {
+          "left": 6,
+          "right": 2
+        }
+      }
+    },
+    {
+      "name": "Both independent viewers see the same latest public Domino board",
+      "pass": true,
+      "details": [
+        {
+          "playerId": "p1",
+          "version": 17,
+          "phase": "finished",
+          "turn": "b1",
+          "round": 1
+        },
+        {
+          "playerId": "p2",
+          "version": 17,
+          "phase": "finished",
+          "turn": "b1",
+          "round": 1
+        }
+      ]
+    },
+    {
+      "name": "Snapshot contains only the Domino player view, not raw engine secrets",
+      "pass": true,
+      "details": [
+        [
+          "ends",
+          "round",
+          "seats",
+          "teams",
+          "tiles",
+          "counts",
+          "scores",
+          "settings",
+          "actionLog",
+          "matchScores",
+          "roundResult",
+          "roundBonuses",
+          "rulesVersion",
+          "revealedHands"
+        ],
+        [
+          "ends",
+          "round",
+          "seats",
+          "teams",
+          "tiles",
+          "counts",
+          "scores",
+          "settings",
+          "actionLog",
+          "matchScores",
+          "roundResult",
+          "roundBonuses",
+          "rulesVersion",
+          "revealedHands"
+        ]
+      ]
+    },
+    {
+      "name": "humans-vs-bots: each human UI action commits exactly one authority version",
+      "pass": true,
+      "details": {
+        "before": 16,
+        "after": 17
+      }
+    },
+    {
+      "name": "humans-vs-bots: bot automation resolves to a human turn or round end",
+      "pass": true,
+      "details": {
+        "turn": "b1",
+        "phase": "finished",
+        "status": "finished",
+        "publicTiles": 22
+      }
+    },
+    {
+      "name": "humans-vs-bots: board/counts agree with visible public board",
+      "pass": true,
+      "details": [
+        {
+          "version": 17,
+          "tiles": 22,
+          "counts": {
+            "b1": 1,
+            "b2": 3,
+            "p1": 0,
+            "p2": 2
+          }
+        },
+        {
+          "version": 17,
+          "tiles": 22,
+          "counts": {
+            "b1": 1,
+            "b2": 3,
+            "p1": 0,
+            "p2": 2
+          }
+        }
+      ]
+    },
+    {
+      "name": "Both independent viewers see the same latest public Domino board",
+      "pass": true,
+      "details": [
+        {
+          "playerId": "p1",
+          "version": 17,
+          "phase": "finished",
+          "turn": "b1",
+          "round": 1
+        },
+        {
+          "playerId": "p2",
+          "version": 17,
+          "phase": "finished",
+          "turn": "b1",
+          "round": 1
+        }
+      ]
+    },
+    {
+      "name": "Snapshot contains only the Domino player view, not raw engine secrets",
+      "pass": true,
+      "details": [
+        [
+          "ends",
+          "round",
+          "seats",
+          "teams",
+          "tiles",
+          "counts",
+          "scores",
+          "settings",
+          "actionLog",
+          "matchScores",
+          "roundResult",
+          "roundBonuses",
+          "rulesVersion",
+          "revealedHands"
+        ],
+        [
+          "ends",
+          "round",
+          "seats",
+          "teams",
+          "tiles",
+          "counts",
+          "scores",
+          "settings",
+          "actionLog",
+          "matchScores",
+          "roundResult",
+          "roundBonuses",
+          "rulesVersion",
+          "revealedHands"
+        ]
+      ]
+    },
+    {
+      "name": "humans-vs-bots step 14: viewer 1 sees only their hand during active play",
+      "pass": true,
+      "details": {
+        "ownFaces": 0,
+        "opponentSeatFaces": 6,
+        "revealedHands": 6,
+        "renderedOwnCount": 0,
+        "documentLanguage": "ko",
+        "privateHandCount": 0,
+        "phase": "finished"
+      }
+    },
+    {
+      "name": "humans-vs-bots step 14: viewer 2 sees only their hand during active play",
+      "pass": true,
+      "details": {
+        "ownFaces": 2,
+        "opponentSeatFaces": 4,
+        "revealedHands": 6,
+        "renderedOwnCount": 2,
+        "documentLanguage": "es-DO",
+        "privateHandCount": 2,
+        "phase": "finished"
+      }
+    },
+    {
+      "name": "Both independent viewers see the same latest public Domino board",
+      "pass": true,
+      "details": [
+        {
+          "playerId": "p1",
+          "version": 17,
+          "phase": "finished",
+          "turn": "b1",
+          "round": 1
+        },
+        {
+          "playerId": "p2",
+          "version": 17,
+          "phase": "finished",
+          "turn": "b1",
+          "round": 1
+        }
+      ]
+    },
+    {
+      "name": "Snapshot contains only the Domino player view, not raw engine secrets",
+      "pass": true,
+      "details": [
+        [
+          "ends",
+          "round",
+          "seats",
+          "teams",
+          "tiles",
+          "counts",
+          "scores",
+          "settings",
+          "actionLog",
+          "matchScores",
+          "roundResult",
+          "roundBonuses",
+          "rulesVersion",
+          "revealedHands"
+        ],
+        [
+          "ends",
+          "round",
+          "seats",
+          "teams",
+          "tiles",
+          "counts",
+          "scores",
+          "settings",
+          "actionLog",
+          "matchScores",
+          "roundResult",
+          "roundBonuses",
+          "rulesVersion",
+          "revealedHands"
+        ]
+      ]
+    },
+    {
+      "name": "humans-vs-bots: reached ten human moves or a natural finished game with bot progress",
+      "pass": true,
+      "details": {
+        "humanMoves": 14,
+        "botActionsObserved": 13,
+        "phase": "finished",
+        "roundPhase": "round-over"
+      }
+    },
+    {
+      "name": "humans-vs-bots: hard bots made visible automatic public actions",
+      "pass": true,
+      "details": {
+        "botActionsObserved": 13,
+        "humanMoves": 14
+      }
+    },
+    {
+      "name": "humans-vs-bots: hard difficulty remains visible in the final public view",
+      "pass": true,
+      "details": [
+        {
+          "difficulty": "hard",
+          "targetScore": 0,
+          "tranqueRule": "team",
+          "capicuaBonus": 0,
+          "pasoCorridoBonus": 0
+        },
+        {
+          "difficulty": "hard",
+          "targetScore": 0,
+          "tranqueRule": "team",
+          "capicuaBonus": 0,
+          "pasoCorridoBonus": 0
+        }
+      ]
+    },
+    {
+      "name": "humans-vs-bots: no browser page errors",
+      "pass": true,
+      "details": []
+    },
+    {
+      "name": "partners: two contexts joined distinct seats in one room",
+      "pass": true,
+      "details": [
+        {
+          "playerId": "p1",
+          "roomId": "55ac2368-dab4-4ee2-8aea-74fd1708555a",
+          "mode": "online"
+        },
+        {
+          "playerId": "p2",
+          "roomId": "55ac2368-dab4-4ee2-8aea-74fd1708555a",
+          "mode": "online"
+        }
+      ]
+    },
+    {
+      "name": "partners: language contexts remain KO and Dominican Spanish",
+      "pass": true,
+      "details": [
+        "ko",
+        "es-DO"
+      ]
+    },
+    {
+      "name": "Both independent viewers see the same latest public Domino board",
+      "pass": true,
+      "details": [
+        {
+          "playerId": "p1",
+          "version": 2,
+          "phase": "play",
+          "turn": "p1",
+          "round": 1
+        },
+        {
+          "playerId": "p2",
+          "version": 2,
+          "phase": "play",
+          "turn": "p1",
+          "round": 1
+        }
+      ]
+    },
+    {
+      "name": "Snapshot contains only the Domino player view, not raw engine secrets",
+      "pass": true,
+      "details": [
+        [
+          "ends",
+          "round",
+          "seats",
+          "teams",
+          "tiles",
+          "counts",
+          "scores",
+          "settings",
+          "actionLog",
+          "matchScores",
+          "roundResult",
+          "roundBonuses",
+          "rulesVersion"
+        ],
+        [
+          "ends",
+          "round",
+          "seats",
+          "teams",
+          "tiles",
+          "counts",
+          "scores",
+          "settings",
+          "actionLog",
+          "matchScores",
+          "roundResult",
+          "roundBonuses",
+          "rulesVersion"
+        ]
+      ]
+    },
+    {
+      "name": "partners: both players consented to Domino through the room UI",
+      "pass": true
+    },
+    {
+      "name": "Both independent viewers see the same latest public Domino board",
+      "pass": true,
+      "details": [
+        {
+          "playerId": "p1",
+          "version": 3,
+          "phase": "play",
+          "turn": "p1",
+          "round": 1
+        },
+        {
+          "playerId": "p2",
+          "version": 3,
+          "phase": "play",
+          "turn": "p1",
+          "round": 1
+        }
+      ]
+    },
+    {
+      "name": "Snapshot contains only the Domino player view, not raw engine secrets",
+      "pass": true,
+      "details": [
+        [
+          "ends",
+          "round",
+          "seats",
+          "teams",
+          "tiles",
+          "counts",
+          "scores",
+          "settings",
+          "actionLog",
+          "matchScores",
+          "roundResult",
+          "roundBonuses",
+          "rulesVersion"
+        ],
+        [
+          "ends",
+          "round",
+          "seats",
+          "teams",
+          "tiles",
+          "counts",
+          "scores",
+          "settings",
+          "actionLog",
+          "matchScores",
+          "roundResult",
+          "roundBonuses",
+          "rulesVersion"
+        ]
+      ]
+    },
+    {
+      "name": "partners: UI configuration persisted exact mode and hard bot difficulty",
+      "pass": true,
+      "details": [
+        {
+          "settings": {
+            "difficulty": "hard",
+            "targetScore": 0,
+            "tranqueRule": "team",
+            "capicuaBonus": 0,
+            "pasoCorridoBonus": 0
+          },
+          "boardSettings": {
+            "difficulty": "hard",
+            "targetScore": 0,
+            "tranqueRule": "team",
+            "capicuaBonus": 0,
+            "pasoCorridoBonus": 0
+          },
+          "seats": [
+            "p1",
+            "b1",
+            "p2",
+            "b2"
+          ],
+          "turn": "p1",
+          "tiles": 1
+        },
+        {
+          "settings": {
+            "difficulty": "hard",
+            "targetScore": 0,
+            "tranqueRule": "team",
+            "capicuaBonus": 0,
+            "pasoCorridoBonus": 0
+          },
+          "boardSettings": {
+            "difficulty": "hard",
+            "targetScore": 0,
+            "tranqueRule": "team",
+            "capicuaBonus": 0,
+            "pasoCorridoBonus": 0
+          },
+          "seats": [
+            "p1",
+            "b1",
+            "p2",
+            "b2"
+          ],
+          "turn": "p1",
+          "tiles": 1
+        }
+      ]
+    },
+    {
+      "name": "partners: hard difficulty remains visible after the opening tile",
+      "pass": true,
+      "details": "플레이 설정 보기\n사람-봇 팀전\n봇: 도전\n매치 목표: 한 라운드"
+    },
+    {
+      "name": "Both independent viewers see the same latest public Domino board",
+      "pass": true,
+      "details": [
+        {
+          "playerId": "p1",
+          "version": 3,
+          "phase": "play",
+          "turn": "p1",
+          "round": 1
+        },
+        {
+          "playerId": "p2",
+          "version": 3,
+          "phase": "play",
+          "turn": "p1",
+          "round": 1
+        }
+      ]
+    },
+    {
+      "name": "Snapshot contains only the Domino player view, not raw engine secrets",
+      "pass": true,
+      "details": [
+        [
+          "ends",
+          "round",
+          "seats",
+          "teams",
+          "tiles",
+          "counts",
+          "scores",
+          "settings",
+          "actionLog",
+          "matchScores",
+          "roundResult",
+          "roundBonuses",
+          "rulesVersion"
+        ],
+        [
+          "ends",
+          "round",
+          "seats",
+          "teams",
+          "tiles",
+          "counts",
+          "scores",
+          "settings",
+          "actionLog",
+          "matchScores",
+          "roundResult",
+          "roundBonuses",
+          "rulesVersion"
+        ]
+      ]
+    },
+    {
+      "name": "partners step 0: viewer 1 sees only their hand during active play",
+      "pass": true,
+      "details": {
+        "ownFaces": 7,
+        "opponentSeatFaces": 0,
+        "revealedHands": 0,
+        "renderedOwnCount": 7,
+        "documentLanguage": "ko",
+        "privateHandCount": 7,
+        "phase": "play"
+      }
+    },
+    {
+      "name": "partners step 0: viewer 1 hand DOM matches their private view",
+      "pass": true,
+      "details": {
+        "ownFaces": 7,
+        "opponentSeatFaces": 0,
+        "revealedHands": 0,
+        "renderedOwnCount": 7,
+        "documentLanguage": "ko"
+      }
+    },
+    {
+      "name": "partners step 0: viewer 2 sees only their hand during active play",
+      "pass": true,
+      "details": {
+        "ownFaces": 7,
+        "opponentSeatFaces": 0,
+        "revealedHands": 0,
+        "renderedOwnCount": 7,
+        "documentLanguage": "es-DO",
+        "privateHandCount": 7,
+        "phase": "play"
+      }
+    },
+    {
+      "name": "partners step 0: viewer 2 hand DOM matches their private view",
+      "pass": true,
+      "details": {
+        "ownFaces": 7,
+        "opponentSeatFaces": 0,
+        "revealedHands": 0,
+        "renderedOwnCount": 7,
+        "documentLanguage": "es-DO"
+      }
+    },
+    {
+      "name": "partners: expected public play phase",
+      "pass": true,
+      "details": {
+        "phase": "play",
+        "status": "your-turn"
+      }
+    },
+    {
+      "name": "partners: own-hand/public-ends strategy targets an enabled visible endpoint",
+      "pass": true,
+      "details": {
+        "tile": [
+          1,
+          6
+        ],
+        "side": "left",
+        "ends": {
+          "left": 6,
+          "right": 6
+        }
+      }
+    },
+    {
+      "name": "Both independent viewers see the same latest public Domino board",
+      "pass": true,
+      "details": [
+        {
+          "playerId": "p1",
+          "version": 4,
+          "phase": "play",
+          "turn": "p2",
+          "round": 1
+        },
+        {
+          "playerId": "p2",
+          "version": 4,
+          "phase": "play",
+          "turn": "p2",
+          "round": 1
+        }
+      ]
+    },
+    {
+      "name": "Snapshot contains only the Domino player view, not raw engine secrets",
+      "pass": true,
+      "details": [
+        [
+          "ends",
+          "round",
+          "seats",
+          "teams",
+          "tiles",
+          "counts",
+          "scores",
+          "settings",
+          "actionLog",
+          "matchScores",
+          "roundResult",
+          "roundBonuses",
+          "rulesVersion"
+        ],
+        [
+          "ends",
+          "round",
+          "seats",
+          "teams",
+          "tiles",
+          "counts",
+          "scores",
+          "settings",
+          "actionLog",
+          "matchScores",
+          "roundResult",
+          "roundBonuses",
+          "rulesVersion"
+        ]
+      ]
+    },
+    {
+      "name": "partners: each human UI action commits exactly one authority version",
+      "pass": true,
+      "details": {
+        "before": 3,
+        "after": 4
+      }
+    },
+    {
+      "name": "partners: bot automation resolves to a human turn or round end",
+      "pass": true,
+      "details": {
+        "turn": "p2",
+        "phase": "play",
+        "status": "opponent-turn",
+        "publicTiles": 3
+      }
+    },
+    {
+      "name": "partners: board/counts agree with visible public board",
+      "pass": true,
+      "details": [
+        {
+          "version": 4,
+          "tiles": 3,
+          "counts": {
+            "b1": 6,
+            "b2": 6,
+            "p1": 6,
+            "p2": 7
+          }
+        },
+        {
+          "version": 4,
+          "tiles": 3,
+          "counts": {
+            "b1": 6,
+            "b2": 6,
+            "p1": 6,
+            "p2": 7
+          }
+        }
+      ]
+    },
+    {
+      "name": "Both independent viewers see the same latest public Domino board",
+      "pass": true,
+      "details": [
+        {
+          "playerId": "p1",
+          "version": 4,
+          "phase": "play",
+          "turn": "p2",
+          "round": 1
+        },
+        {
+          "playerId": "p2",
+          "version": 4,
+          "phase": "play",
+          "turn": "p2",
+          "round": 1
+        }
+      ]
+    },
+    {
+      "name": "Snapshot contains only the Domino player view, not raw engine secrets",
+      "pass": true,
+      "details": [
+        [
+          "ends",
+          "round",
+          "seats",
+          "teams",
+          "tiles",
+          "counts",
+          "scores",
+          "settings",
+          "actionLog",
+          "matchScores",
+          "roundResult",
+          "roundBonuses",
+          "rulesVersion"
+        ],
+        [
+          "ends",
+          "round",
+          "seats",
+          "teams",
+          "tiles",
+          "counts",
+          "scores",
+          "settings",
+          "actionLog",
+          "matchScores",
+          "roundResult",
+          "roundBonuses",
+          "rulesVersion"
+        ]
+      ]
+    },
+    {
+      "name": "partners step 1: viewer 1 sees only their hand during active play",
+      "pass": true,
+      "details": {
+        "ownFaces": 6,
+        "opponentSeatFaces": 0,
+        "revealedHands": 0,
+        "renderedOwnCount": 6,
+        "documentLanguage": "ko",
+        "privateHandCount": 6,
+        "phase": "play"
+      }
+    },
+    {
+      "name": "partners step 1: viewer 1 hand DOM matches their private view",
+      "pass": true,
+      "details": {
+        "ownFaces": 6,
+        "opponentSeatFaces": 0,
+        "revealedHands": 0,
+        "renderedOwnCount": 6,
+        "documentLanguage": "ko"
+      }
+    },
+    {
+      "name": "partners step 1: viewer 2 sees only their hand during active play",
+      "pass": true,
+      "details": {
+        "ownFaces": 7,
+        "opponentSeatFaces": 0,
+        "revealedHands": 0,
+        "renderedOwnCount": 7,
+        "documentLanguage": "es-DO",
+        "privateHandCount": 7,
+        "phase": "play"
+      }
+    },
+    {
+      "name": "partners step 1: viewer 2 hand DOM matches their private view",
+      "pass": true,
+      "details": {
+        "ownFaces": 7,
+        "opponentSeatFaces": 0,
+        "revealedHands": 0,
+        "renderedOwnCount": 7,
+        "documentLanguage": "es-DO"
+      }
+    },
+    {
+      "name": "partners: expected public play phase",
+      "pass": true,
+      "details": {
+        "phase": "play",
+        "status": "opponent-turn"
+      }
+    },
+    {
+      "name": "partners: own-hand/public-ends strategy targets an enabled visible endpoint",
+      "pass": true,
+      "details": {
+        "tile": [
+          1,
+          5
+        ],
+        "side": "left",
+        "ends": {
+          "left": 1,
+          "right": 0
+        }
+      }
+    },
+    {
+      "name": "Both independent viewers see the same latest public Domino board",
+      "pass": true,
+      "details": [
+        {
+          "playerId": "p1",
+          "version": 5,
+          "phase": "play",
+          "turn": "p1",
+          "round": 1
+        },
+        {
+          "playerId": "p2",
+          "version": 5,
+          "phase": "play",
+          "turn": "p1",
+          "round": 1
+        }
+      ]
+    },
+    {
+      "name": "Snapshot contains only the Domino player view, not raw engine secrets",
+      "pass": true,
+      "details": [
+        [
+          "ends",
+          "round",
+          "seats",
+          "teams",
+          "tiles",
+          "counts",
+          "scores",
+          "settings",
+          "actionLog",
+          "matchScores",
+          "roundResult",
+          "roundBonuses",
+          "rulesVersion"
+        ],
+        [
+          "ends",
+          "round",
+          "seats",
+          "teams",
+          "tiles",
+          "counts",
+          "scores",
+          "settings",
+          "actionLog",
+          "matchScores",
+          "roundResult",
+          "roundBonuses",
+          "rulesVersion"
+        ]
+      ]
+    },
+    {
+      "name": "partners: each human UI action commits exactly one authority version",
+      "pass": true,
+      "details": {
+        "before": 4,
+        "after": 5
+      }
+    },
+    {
+      "name": "partners: bot automation resolves to a human turn or round end",
+      "pass": true,
+      "details": {
+        "turn": "p1",
+        "phase": "play",
+        "status": "your-turn",
+        "publicTiles": 5
+      }
+    },
+    {
+      "name": "partners: board/counts agree with visible public board",
+      "pass": true,
+      "details": [
+        {
+          "version": 5,
+          "tiles": 5,
+          "counts": {
+            "b1": 6,
+            "b2": 5,
+            "p1": 6,
+            "p2": 6
+          }
+        },
+        {
+          "version": 5,
+          "tiles": 5,
+          "counts": {
+            "b1": 6,
+            "b2": 5,
+            "p1": 6,
+            "p2": 6
+          }
+        }
+      ]
+    },
+    {
+      "name": "Both independent viewers see the same latest public Domino board",
+      "pass": true,
+      "details": [
+        {
+          "playerId": "p1",
+          "version": 5,
+          "phase": "play",
+          "turn": "p1",
+          "round": 1
+        },
+        {
+          "playerId": "p2",
+          "version": 5,
+          "phase": "play",
+          "turn": "p1",
+          "round": 1
+        }
+      ]
+    },
+    {
+      "name": "Snapshot contains only the Domino player view, not raw engine secrets",
+      "pass": true,
+      "details": [
+        [
+          "ends",
+          "round",
+          "seats",
+          "teams",
+          "tiles",
+          "counts",
+          "scores",
+          "settings",
+          "actionLog",
+          "matchScores",
+          "roundResult",
+          "roundBonuses",
+          "rulesVersion"
+        ],
+        [
+          "ends",
+          "round",
+          "seats",
+          "teams",
+          "tiles",
+          "counts",
+          "scores",
+          "settings",
+          "actionLog",
+          "matchScores",
+          "roundResult",
+          "roundBonuses",
+          "rulesVersion"
+        ]
+      ]
+    },
+    {
+      "name": "partners step 2: viewer 1 sees only their hand during active play",
+      "pass": true,
+      "details": {
+        "ownFaces": 6,
+        "opponentSeatFaces": 0,
+        "revealedHands": 0,
+        "renderedOwnCount": 6,
+        "documentLanguage": "ko",
+        "privateHandCount": 6,
+        "phase": "play"
+      }
+    },
+    {
+      "name": "partners step 2: viewer 1 hand DOM matches their private view",
+      "pass": true,
+      "details": {
+        "ownFaces": 6,
+        "opponentSeatFaces": 0,
+        "revealedHands": 0,
+        "renderedOwnCount": 6,
+        "documentLanguage": "ko"
+      }
+    },
+    {
+      "name": "partners step 2: viewer 2 sees only their hand during active play",
+      "pass": true,
+      "details": {
+        "ownFaces": 6,
+        "opponentSeatFaces": 0,
+        "revealedHands": 0,
+        "renderedOwnCount": 6,
+        "documentLanguage": "es-DO",
+        "privateHandCount": 6,
+        "phase": "play"
+      }
+    },
+    {
+      "name": "partners step 2: viewer 2 hand DOM matches their private view",
+      "pass": true,
+      "details": {
+        "ownFaces": 6,
+        "opponentSeatFaces": 0,
+        "revealedHands": 0,
+        "renderedOwnCount": 6,
+        "documentLanguage": "es-DO"
+      }
+    },
+    {
+      "name": "partners: expected public play phase",
+      "pass": true,
+      "details": {
+        "phase": "play",
+        "status": "your-turn"
+      }
+    },
+    {
+      "name": "partners: own-hand/public-ends strategy targets an enabled visible endpoint",
+      "pass": true,
+      "details": {
+        "tile": [
+          2,
+          3
+        ],
+        "side": "left",
+        "ends": {
+          "left": 3,
+          "right": 0
+        }
+      }
+    },
+    {
+      "name": "Both independent viewers see the same latest public Domino board",
+      "pass": true,
+      "details": [
+        {
+          "playerId": "p1",
+          "version": 6,
+          "phase": "play",
+          "turn": "p2",
+          "round": 1
+        },
+        {
+          "playerId": "p2",
+          "version": 6,
+          "phase": "play",
+          "turn": "p2",
+          "round": 1
+        }
+      ]
+    },
+    {
+      "name": "Snapshot contains only the Domino player view, not raw engine secrets",
+      "pass": true,
+      "details": [
+        [
+          "ends",
+          "round",
+          "seats",
+          "teams",
+          "tiles",
+          "counts",
+          "scores",
+          "settings",
+          "actionLog",
+          "matchScores",
+          "roundResult",
+          "roundBonuses",
+          "rulesVersion"
+        ],
+        [
+          "ends",
+          "round",
+          "seats",
+          "teams",
+          "tiles",
+          "counts",
+          "scores",
+          "settings",
+          "actionLog",
+          "matchScores",
+          "roundResult",
+          "roundBonuses",
+          "rulesVersion"
+        ]
+      ]
+    },
+    {
+      "name": "partners: each human UI action commits exactly one authority version",
+      "pass": true,
+      "details": {
+        "before": 5,
+        "after": 6
+      }
+    },
+    {
+      "name": "partners: bot automation resolves to a human turn or round end",
+      "pass": true,
+      "details": {
+        "turn": "p2",
+        "phase": "play",
+        "status": "opponent-turn",
+        "publicTiles": 7
+      }
+    },
+    {
+      "name": "partners: board/counts agree with visible public board",
+      "pass": true,
+      "details": [
+        {
+          "version": 6,
+          "tiles": 7,
+          "counts": {
+            "b1": 5,
+            "b2": 5,
+            "p1": 5,
+            "p2": 6
+          }
+        },
+        {
+          "version": 6,
+          "tiles": 7,
+          "counts": {
+            "b1": 5,
+            "b2": 5,
+            "p1": 5,
+            "p2": 6
+          }
+        }
+      ]
+    },
+    {
+      "name": "Both independent viewers see the same latest public Domino board",
+      "pass": true,
+      "details": [
+        {
+          "playerId": "p1",
+          "version": 6,
+          "phase": "play",
+          "turn": "p2",
+          "round": 1
+        },
+        {
+          "playerId": "p2",
+          "version": 6,
+          "phase": "play",
+          "turn": "p2",
+          "round": 1
+        }
+      ]
+    },
+    {
+      "name": "Snapshot contains only the Domino player view, not raw engine secrets",
+      "pass": true,
+      "details": [
+        [
+          "ends",
+          "round",
+          "seats",
+          "teams",
+          "tiles",
+          "counts",
+          "scores",
+          "settings",
+          "actionLog",
+          "matchScores",
+          "roundResult",
+          "roundBonuses",
+          "rulesVersion"
+        ],
+        [
+          "ends",
+          "round",
+          "seats",
+          "teams",
+          "tiles",
+          "counts",
+          "scores",
+          "settings",
+          "actionLog",
+          "matchScores",
+          "roundResult",
+          "roundBonuses",
+          "rulesVersion"
+        ]
+      ]
+    },
+    {
+      "name": "partners step 3: viewer 1 sees only their hand during active play",
+      "pass": true,
+      "details": {
+        "ownFaces": 5,
+        "opponentSeatFaces": 0,
+        "revealedHands": 0,
+        "renderedOwnCount": 5,
+        "documentLanguage": "ko",
+        "privateHandCount": 5,
+        "phase": "play"
+      }
+    },
+    {
+      "name": "partners step 3: viewer 1 hand DOM matches their private view",
+      "pass": true,
+      "details": {
+        "ownFaces": 5,
+        "opponentSeatFaces": 0,
+        "revealedHands": 0,
+        "renderedOwnCount": 5,
+        "documentLanguage": "ko"
+      }
+    },
+    {
+      "name": "partners step 3: viewer 2 sees only their hand during active play",
+      "pass": true,
+      "details": {
+        "ownFaces": 6,
+        "opponentSeatFaces": 0,
+        "revealedHands": 0,
+        "renderedOwnCount": 6,
+        "documentLanguage": "es-DO",
+        "privateHandCount": 6,
+        "phase": "play"
+      }
+    },
+    {
+      "name": "partners step 3: viewer 2 hand DOM matches their private view",
+      "pass": true,
+      "details": {
+        "ownFaces": 6,
+        "opponentSeatFaces": 0,
+        "revealedHands": 0,
+        "renderedOwnCount": 6,
+        "documentLanguage": "es-DO"
+      }
+    },
+    {
+      "name": "partners: expected public play phase",
+      "pass": true,
+      "details": {
+        "phase": "play",
+        "status": "opponent-turn"
+      }
+    },
+    {
+      "name": "partners: own-hand/public-ends strategy targets an enabled visible endpoint",
+      "pass": true,
+      "details": {
+        "tile": [
+          5,
+          6
+        ],
+        "side": "left",
+        "ends": {
+          "left": 5,
+          "right": 0
+        }
+      }
+    },
+    {
+      "name": "Both independent viewers see the same latest public Domino board",
+      "pass": true,
+      "details": [
+        {
+          "playerId": "p1",
+          "version": 7,
+          "phase": "play",
+          "turn": "p1",
+          "round": 1
+        },
+        {
+          "playerId": "p2",
+          "version": 7,
+          "phase": "play",
+          "turn": "p1",
+          "round": 1
+        }
+      ]
+    },
+    {
+      "name": "Snapshot contains only the Domino player view, not raw engine secrets",
+      "pass": true,
+      "details": [
+        [
+          "ends",
+          "round",
+          "seats",
+          "teams",
+          "tiles",
+          "counts",
+          "scores",
+          "settings",
+          "actionLog",
+          "matchScores",
+          "roundResult",
+          "roundBonuses",
+          "rulesVersion"
+        ],
+        [
+          "ends",
+          "round",
+          "seats",
+          "teams",
+          "tiles",
+          "counts",
+          "scores",
+          "settings",
+          "actionLog",
+          "matchScores",
+          "roundResult",
+          "roundBonuses",
+          "rulesVersion"
+        ]
+      ]
+    },
+    {
+      "name": "partners: each human UI action commits exactly one authority version",
+      "pass": true,
+      "details": {
+        "before": 6,
+        "after": 7
+      }
+    },
+    {
+      "name": "partners: bot automation resolves to a human turn or round end",
+      "pass": true,
+      "details": {
+        "turn": "p1",
+        "phase": "play",
+        "status": "your-turn",
+        "publicTiles": 9
+      }
+    },
+    {
+      "name": "partners: board/counts agree with visible public board",
+      "pass": true,
+      "details": [
+        {
+          "version": 7,
+          "tiles": 9,
+          "counts": {
+            "b1": 5,
+            "b2": 4,
+            "p1": 5,
+            "p2": 5
+          }
+        },
+        {
+          "version": 7,
+          "tiles": 9,
+          "counts": {
+            "b1": 5,
+            "b2": 4,
+            "p1": 5,
+            "p2": 5
+          }
+        }
+      ]
+    },
+    {
+      "name": "Both independent viewers see the same latest public Domino board",
+      "pass": true,
+      "details": [
+        {
+          "playerId": "p1",
+          "version": 7,
+          "phase": "play",
+          "turn": "p1",
+          "round": 1
+        },
+        {
+          "playerId": "p2",
+          "version": 7,
+          "phase": "play",
+          "turn": "p1",
+          "round": 1
+        }
+      ]
+    },
+    {
+      "name": "Snapshot contains only the Domino player view, not raw engine secrets",
+      "pass": true,
+      "details": [
+        [
+          "ends",
+          "round",
+          "seats",
+          "teams",
+          "tiles",
+          "counts",
+          "scores",
+          "settings",
+          "actionLog",
+          "matchScores",
+          "roundResult",
+          "roundBonuses",
+          "rulesVersion"
+        ],
+        [
+          "ends",
+          "round",
+          "seats",
+          "teams",
+          "tiles",
+          "counts",
+          "scores",
+          "settings",
+          "actionLog",
+          "matchScores",
+          "roundResult",
+          "roundBonuses",
+          "rulesVersion"
+        ]
+      ]
+    },
+    {
+      "name": "partners step 4: viewer 1 sees only their hand during active play",
+      "pass": true,
+      "details": {
+        "ownFaces": 5,
+        "opponentSeatFaces": 0,
+        "revealedHands": 0,
+        "renderedOwnCount": 5,
+        "documentLanguage": "ko",
+        "privateHandCount": 5,
+        "phase": "play"
+      }
+    },
+    {
+      "name": "partners step 4: viewer 1 hand DOM matches their private view",
+      "pass": true,
+      "details": {
+        "ownFaces": 5,
+        "opponentSeatFaces": 0,
+        "revealedHands": 0,
+        "renderedOwnCount": 5,
+        "documentLanguage": "ko"
+      }
+    },
+    {
+      "name": "partners step 4: viewer 2 sees only their hand during active play",
+      "pass": true,
+      "details": {
+        "ownFaces": 5,
+        "opponentSeatFaces": 0,
+        "revealedHands": 0,
+        "renderedOwnCount": 5,
+        "documentLanguage": "es-DO",
+        "privateHandCount": 5,
+        "phase": "play"
+      }
+    },
+    {
+      "name": "partners step 4: viewer 2 hand DOM matches their private view",
+      "pass": true,
+      "details": {
+        "ownFaces": 5,
+        "opponentSeatFaces": 0,
+        "revealedHands": 0,
+        "renderedOwnCount": 5,
+        "documentLanguage": "es-DO"
+      }
+    },
+    {
+      "name": "partners: expected public play phase",
+      "pass": true,
+      "details": {
+        "phase": "play",
+        "status": "your-turn"
+      }
+    },
+    {
+      "name": "partners: own-hand/public-ends strategy targets an enabled visible endpoint",
+      "pass": true,
+      "details": {
+        "tile": [
+          0,
+          2
+        ],
+        "side": "right",
+        "ends": {
+          "left": 3,
+          "right": 0
+        }
+      }
+    },
+    {
+      "name": "Both independent viewers see the same latest public Domino board",
+      "pass": true,
+      "details": [
+        {
+          "playerId": "p1",
+          "version": 8,
+          "phase": "play",
+          "turn": "p2",
+          "round": 1
+        },
+        {
+          "playerId": "p2",
+          "version": 8,
+          "phase": "play",
+          "turn": "p2",
+          "round": 1
+        }
+      ]
+    },
+    {
+      "name": "Snapshot contains only the Domino player view, not raw engine secrets",
+      "pass": true,
+      "details": [
+        [
+          "ends",
+          "round",
+          "seats",
+          "teams",
+          "tiles",
+          "counts",
+          "scores",
+          "settings",
+          "actionLog",
+          "matchScores",
+          "roundResult",
+          "roundBonuses",
+          "rulesVersion"
+        ],
+        [
+          "ends",
+          "round",
+          "seats",
+          "teams",
+          "tiles",
+          "counts",
+          "scores",
+          "settings",
+          "actionLog",
+          "matchScores",
+          "roundResult",
+          "roundBonuses",
+          "rulesVersion"
+        ]
+      ]
+    },
+    {
+      "name": "partners: each human UI action commits exactly one authority version",
+      "pass": true,
+      "details": {
+        "before": 7,
+        "after": 8
+      }
+    },
+    {
+      "name": "partners: bot automation resolves to a human turn or round end",
+      "pass": true,
+      "details": {
+        "turn": "p2",
+        "phase": "play",
+        "status": "opponent-turn",
+        "publicTiles": 11
+      }
+    },
+    {
+      "name": "partners: board/counts agree with visible public board",
+      "pass": true,
+      "details": [
+        {
+          "version": 8,
+          "tiles": 11,
+          "counts": {
+            "b1": 4,
+            "b2": 4,
+            "p1": 4,
+            "p2": 5
+          }
+        },
+        {
+          "version": 8,
+          "tiles": 11,
+          "counts": {
+            "b1": 4,
+            "b2": 4,
+            "p1": 4,
+            "p2": 5
+          }
+        }
+      ]
+    },
+    {
+      "name": "Both independent viewers see the same latest public Domino board",
+      "pass": true,
+      "details": [
+        {
+          "playerId": "p1",
+          "version": 8,
+          "phase": "play",
+          "turn": "p2",
+          "round": 1
+        },
+        {
+          "playerId": "p2",
+          "version": 8,
+          "phase": "play",
+          "turn": "p2",
+          "round": 1
+        }
+      ]
+    },
+    {
+      "name": "Snapshot contains only the Domino player view, not raw engine secrets",
+      "pass": true,
+      "details": [
+        [
+          "ends",
+          "round",
+          "seats",
+          "teams",
+          "tiles",
+          "counts",
+          "scores",
+          "settings",
+          "actionLog",
+          "matchScores",
+          "roundResult",
+          "roundBonuses",
+          "rulesVersion"
+        ],
+        [
+          "ends",
+          "round",
+          "seats",
+          "teams",
+          "tiles",
+          "counts",
+          "scores",
+          "settings",
+          "actionLog",
+          "matchScores",
+          "roundResult",
+          "roundBonuses",
+          "rulesVersion"
+        ]
+      ]
+    },
+    {
+      "name": "partners step 5: viewer 1 sees only their hand during active play",
+      "pass": true,
+      "details": {
+        "ownFaces": 4,
+        "opponentSeatFaces": 0,
+        "revealedHands": 0,
+        "renderedOwnCount": 4,
+        "documentLanguage": "ko",
+        "privateHandCount": 4,
+        "phase": "play"
+      }
+    },
+    {
+      "name": "partners step 5: viewer 1 hand DOM matches their private view",
+      "pass": true,
+      "details": {
+        "ownFaces": 4,
+        "opponentSeatFaces": 0,
+        "revealedHands": 0,
+        "renderedOwnCount": 4,
+        "documentLanguage": "ko"
+      }
+    },
+    {
+      "name": "partners step 5: viewer 2 sees only their hand during active play",
+      "pass": true,
+      "details": {
+        "ownFaces": 5,
+        "opponentSeatFaces": 0,
+        "revealedHands": 0,
+        "renderedOwnCount": 5,
+        "documentLanguage": "es-DO",
+        "privateHandCount": 5,
+        "phase": "play"
+      }
+    },
+    {
+      "name": "partners step 5: viewer 2 hand DOM matches their private view",
+      "pass": true,
+      "details": {
+        "ownFaces": 5,
+        "opponentSeatFaces": 0,
+        "revealedHands": 0,
+        "renderedOwnCount": 5,
+        "documentLanguage": "es-DO"
+      }
+    },
+    {
+      "name": "partners: expected public play phase",
+      "pass": true,
+      "details": {
+        "phase": "play",
+        "status": "opponent-turn"
+      }
+    },
+    {
+      "name": "partners: own-hand/public-ends strategy targets an enabled visible endpoint",
+      "pass": true,
+      "details": {
+        "tile": [
+          2,
+          6
+        ],
+        "side": "right",
+        "ends": {
+          "left": 1,
+          "right": 2
+        }
+      }
+    },
+    {
+      "name": "Both independent viewers see the same latest public Domino board",
+      "pass": true,
+      "details": [
+        {
+          "playerId": "p1",
+          "version": 9,
+          "phase": "play",
+          "turn": "p1",
+          "round": 1
+        },
+        {
+          "playerId": "p2",
+          "version": 9,
+          "phase": "play",
+          "turn": "p1",
+          "round": 1
+        }
+      ]
+    },
+    {
+      "name": "Snapshot contains only the Domino player view, not raw engine secrets",
+      "pass": true,
+      "details": [
+        [
+          "ends",
+          "round",
+          "seats",
+          "teams",
+          "tiles",
+          "counts",
+          "scores",
+          "settings",
+          "actionLog",
+          "matchScores",
+          "roundResult",
+          "roundBonuses",
+          "rulesVersion"
+        ],
+        [
+          "ends",
+          "round",
+          "seats",
+          "teams",
+          "tiles",
+          "counts",
+          "scores",
+          "settings",
+          "actionLog",
+          "matchScores",
+          "roundResult",
+          "roundBonuses",
+          "rulesVersion"
+        ]
+      ]
+    },
+    {
+      "name": "partners: each human UI action commits exactly one authority version",
+      "pass": true,
+      "details": {
+        "before": 8,
+        "after": 9
+      }
+    },
+    {
+      "name": "partners: bot automation resolves to a human turn or round end",
+      "pass": true,
+      "details": {
+        "turn": "p1",
+        "phase": "play",
+        "status": "your-turn",
+        "publicTiles": 13
+      }
+    },
+    {
+      "name": "partners: board/counts agree with visible public board",
+      "pass": true,
+      "details": [
+        {
+          "version": 9,
+          "tiles": 13,
+          "counts": {
+            "b1": 4,
+            "b2": 3,
+            "p1": 4,
+            "p2": 4
+          }
+        },
+        {
+          "version": 9,
+          "tiles": 13,
+          "counts": {
+            "b1": 4,
+            "b2": 3,
+            "p1": 4,
+            "p2": 4
+          }
+        }
+      ]
+    },
+    {
+      "name": "Both independent viewers see the same latest public Domino board",
+      "pass": true,
+      "details": [
+        {
+          "playerId": "p1",
+          "version": 9,
+          "phase": "play",
+          "turn": "p1",
+          "round": 1
+        },
+        {
+          "playerId": "p2",
+          "version": 9,
+          "phase": "play",
+          "turn": "p1",
+          "round": 1
+        }
+      ]
+    },
+    {
+      "name": "Snapshot contains only the Domino player view, not raw engine secrets",
+      "pass": true,
+      "details": [
+        [
+          "ends",
+          "round",
+          "seats",
+          "teams",
+          "tiles",
+          "counts",
+          "scores",
+          "settings",
+          "actionLog",
+          "matchScores",
+          "roundResult",
+          "roundBonuses",
+          "rulesVersion"
+        ],
+        [
+          "ends",
+          "round",
+          "seats",
+          "teams",
+          "tiles",
+          "counts",
+          "scores",
+          "settings",
+          "actionLog",
+          "matchScores",
+          "roundResult",
+          "roundBonuses",
+          "rulesVersion"
+        ]
+      ]
+    },
+    {
+      "name": "partners step 6: viewer 1 sees only their hand during active play",
+      "pass": true,
+      "details": {
+        "ownFaces": 4,
+        "opponentSeatFaces": 0,
+        "revealedHands": 0,
+        "renderedOwnCount": 4,
+        "documentLanguage": "ko",
+        "privateHandCount": 4,
+        "phase": "play"
+      }
+    },
+    {
+      "name": "partners step 6: viewer 1 hand DOM matches their private view",
+      "pass": true,
+      "details": {
+        "ownFaces": 4,
+        "opponentSeatFaces": 0,
+        "revealedHands": 0,
+        "renderedOwnCount": 4,
+        "documentLanguage": "ko"
+      }
+    },
+    {
+      "name": "partners step 6: viewer 2 sees only their hand during active play",
+      "pass": true,
+      "details": {
+        "ownFaces": 4,
+        "opponentSeatFaces": 0,
+        "revealedHands": 0,
+        "renderedOwnCount": 4,
+        "documentLanguage": "es-DO",
+        "privateHandCount": 4,
+        "phase": "play"
+      }
+    },
+    {
+      "name": "partners step 6: viewer 2 hand DOM matches their private view",
+      "pass": true,
+      "details": {
+        "ownFaces": 4,
+        "opponentSeatFaces": 0,
+        "revealedHands": 0,
+        "renderedOwnCount": 4,
+        "documentLanguage": "es-DO"
+      }
+    },
+    {
+      "name": "partners: expected public play phase",
+      "pass": true,
+      "details": {
+        "phase": "play",
+        "status": "your-turn"
+      }
+    },
+    {
+      "name": "partners: own-hand/public-ends strategy targets an enabled visible endpoint",
+      "pass": true,
+      "details": {
+        "tile": [
+          4,
+          4
+        ],
+        "side": "right",
+        "ends": {
+          "left": 1,
+          "right": 4
+        }
+      }
+    },
+    {
+      "name": "Both independent viewers see the same latest public Domino board",
+      "pass": true,
+      "details": [
+        {
+          "playerId": "p1",
+          "version": 10,
+          "phase": "play",
+          "turn": "p2",
+          "round": 1
+        },
+        {
+          "playerId": "p2",
+          "version": 10,
+          "phase": "play",
+          "turn": "p2",
+          "round": 1
+        }
+      ]
+    },
+    {
+      "name": "Snapshot contains only the Domino player view, not raw engine secrets",
+      "pass": true,
+      "details": [
+        [
+          "ends",
+          "round",
+          "seats",
+          "teams",
+          "tiles",
+          "counts",
+          "scores",
+          "settings",
+          "actionLog",
+          "matchScores",
+          "roundResult",
+          "roundBonuses",
+          "rulesVersion"
+        ],
+        [
+          "ends",
+          "round",
+          "seats",
+          "teams",
+          "tiles",
+          "counts",
+          "scores",
+          "settings",
+          "actionLog",
+          "matchScores",
+          "roundResult",
+          "roundBonuses",
+          "rulesVersion"
+        ]
+      ]
+    },
+    {
+      "name": "partners: each human UI action commits exactly one authority version",
+      "pass": true,
+      "details": {
+        "before": 9,
+        "after": 10
+      }
+    },
+    {
+      "name": "partners: bot automation resolves to a human turn or round end",
+      "pass": true,
+      "details": {
+        "turn": "p2",
+        "phase": "play",
+        "status": "opponent-turn",
+        "publicTiles": 15
+      }
+    },
+    {
+      "name": "partners: board/counts agree with visible public board",
+      "pass": true,
+      "details": [
+        {
+          "version": 10,
+          "tiles": 15,
+          "counts": {
+            "b1": 3,
+            "b2": 3,
+            "p1": 3,
+            "p2": 4
+          }
+        },
+        {
+          "version": 10,
+          "tiles": 15,
+          "counts": {
+            "b1": 3,
+            "b2": 3,
+            "p1": 3,
+            "p2": 4
+          }
+        }
+      ]
+    },
+    {
+      "name": "Both independent viewers see the same latest public Domino board",
+      "pass": true,
+      "details": [
+        {
+          "playerId": "p1",
+          "version": 10,
+          "phase": "play",
+          "turn": "p2",
+          "round": 1
+        },
+        {
+          "playerId": "p2",
+          "version": 10,
+          "phase": "play",
+          "turn": "p2",
+          "round": 1
+        }
+      ]
+    },
+    {
+      "name": "Snapshot contains only the Domino player view, not raw engine secrets",
+      "pass": true,
+      "details": [
+        [
+          "ends",
+          "round",
+          "seats",
+          "teams",
+          "tiles",
+          "counts",
+          "scores",
+          "settings",
+          "actionLog",
+          "matchScores",
+          "roundResult",
+          "roundBonuses",
+          "rulesVersion"
+        ],
+        [
+          "ends",
+          "round",
+          "seats",
+          "teams",
+          "tiles",
+          "counts",
+          "scores",
+          "settings",
+          "actionLog",
+          "matchScores",
+          "roundResult",
+          "roundBonuses",
+          "rulesVersion"
+        ]
+      ]
+    },
+    {
+      "name": "partners step 7: viewer 1 sees only their hand during active play",
+      "pass": true,
+      "details": {
+        "ownFaces": 3,
+        "opponentSeatFaces": 0,
+        "revealedHands": 0,
+        "renderedOwnCount": 3,
+        "documentLanguage": "ko",
+        "privateHandCount": 3,
+        "phase": "play"
+      }
+    },
+    {
+      "name": "partners step 7: viewer 1 hand DOM matches their private view",
+      "pass": true,
+      "details": {
+        "ownFaces": 3,
+        "opponentSeatFaces": 0,
+        "revealedHands": 0,
+        "renderedOwnCount": 3,
+        "documentLanguage": "ko"
+      }
+    },
+    {
+      "name": "partners step 7: viewer 2 sees only their hand during active play",
+      "pass": true,
+      "details": {
+        "ownFaces": 4,
+        "opponentSeatFaces": 0,
+        "revealedHands": 0,
+        "renderedOwnCount": 4,
+        "documentLanguage": "es-DO",
+        "privateHandCount": 4,
+        "phase": "play"
+      }
+    },
+    {
+      "name": "partners step 7: viewer 2 hand DOM matches their private view",
+      "pass": true,
+      "details": {
+        "ownFaces": 4,
+        "opponentSeatFaces": 0,
+        "revealedHands": 0,
+        "renderedOwnCount": 4,
+        "documentLanguage": "es-DO"
+      }
+    },
+    {
+      "name": "partners: expected public play phase",
+      "pass": true,
+      "details": {
+        "phase": "play",
+        "status": "opponent-turn"
+      }
+    },
+    {
+      "name": "partners: own-hand/public-ends strategy targets an enabled visible endpoint",
+      "pass": true,
+      "details": {
+        "tile": [
+          1,
+          4
+        ],
+        "side": "left",
+        "ends": {
+          "left": 1,
+          "right": 0
+        }
+      }
+    },
+    {
+      "name": "Both independent viewers see the same latest public Domino board",
+      "pass": true,
+      "details": [
+        {
+          "playerId": "p1",
+          "version": 11,
+          "phase": "play",
+          "turn": "p1",
+          "round": 1
+        },
+        {
+          "playerId": "p2",
+          "version": 11,
+          "phase": "play",
+          "turn": "p1",
+          "round": 1
+        }
+      ]
+    },
+    {
+      "name": "Snapshot contains only the Domino player view, not raw engine secrets",
+      "pass": true,
+      "details": [
+        [
+          "ends",
+          "round",
+          "seats",
+          "teams",
+          "tiles",
+          "counts",
+          "scores",
+          "settings",
+          "actionLog",
+          "matchScores",
+          "roundResult",
+          "roundBonuses",
+          "rulesVersion"
+        ],
+        [
+          "ends",
+          "round",
+          "seats",
+          "teams",
+          "tiles",
+          "counts",
+          "scores",
+          "settings",
+          "actionLog",
+          "matchScores",
+          "roundResult",
+          "roundBonuses",
+          "rulesVersion"
+        ]
+      ]
+    },
+    {
+      "name": "partners: each human UI action commits exactly one authority version",
+      "pass": true,
+      "details": {
+        "before": 10,
+        "after": 11
+      }
+    },
+    {
+      "name": "partners: bot automation resolves to a human turn or round end",
+      "pass": true,
+      "details": {
+        "turn": "p1",
+        "phase": "play",
+        "status": "your-turn",
+        "publicTiles": 17
+      }
+    },
+    {
+      "name": "partners: board/counts agree with visible public board",
+      "pass": true,
+      "details": [
+        {
+          "version": 11,
+          "tiles": 17,
+          "counts": {
+            "b1": 3,
+            "b2": 2,
+            "p1": 3,
+            "p2": 3
+          }
+        },
+        {
+          "version": 11,
+          "tiles": 17,
+          "counts": {
+            "b1": 3,
+            "b2": 2,
+            "p1": 3,
+            "p2": 3
+          }
+        }
+      ]
+    },
+    {
+      "name": "Both independent viewers see the same latest public Domino board",
+      "pass": true,
+      "details": [
+        {
+          "playerId": "p1",
+          "version": 11,
+          "phase": "play",
+          "turn": "p1",
+          "round": 1
+        },
+        {
+          "playerId": "p2",
+          "version": 11,
+          "phase": "play",
+          "turn": "p1",
+          "round": 1
+        }
+      ]
+    },
+    {
+      "name": "Snapshot contains only the Domino player view, not raw engine secrets",
+      "pass": true,
+      "details": [
+        [
+          "ends",
+          "round",
+          "seats",
+          "teams",
+          "tiles",
+          "counts",
+          "scores",
+          "settings",
+          "actionLog",
+          "matchScores",
+          "roundResult",
+          "roundBonuses",
+          "rulesVersion"
+        ],
+        [
+          "ends",
+          "round",
+          "seats",
+          "teams",
+          "tiles",
+          "counts",
+          "scores",
+          "settings",
+          "actionLog",
+          "matchScores",
+          "roundResult",
+          "roundBonuses",
+          "rulesVersion"
+        ]
+      ]
+    },
+    {
+      "name": "partners step 8: viewer 1 sees only their hand during active play",
+      "pass": true,
+      "details": {
+        "ownFaces": 3,
+        "opponentSeatFaces": 0,
+        "revealedHands": 0,
+        "renderedOwnCount": 3,
+        "documentLanguage": "ko",
+        "privateHandCount": 3,
+        "phase": "play"
+      }
+    },
+    {
+      "name": "partners step 8: viewer 1 hand DOM matches their private view",
+      "pass": true,
+      "details": {
+        "ownFaces": 3,
+        "opponentSeatFaces": 0,
+        "revealedHands": 0,
+        "renderedOwnCount": 3,
+        "documentLanguage": "ko"
+      }
+    },
+    {
+      "name": "partners step 8: viewer 2 sees only their hand during active play",
+      "pass": true,
+      "details": {
+        "ownFaces": 3,
+        "opponentSeatFaces": 0,
+        "revealedHands": 0,
+        "renderedOwnCount": 3,
+        "documentLanguage": "es-DO",
+        "privateHandCount": 3,
+        "phase": "play"
+      }
+    },
+    {
+      "name": "partners step 8: viewer 2 hand DOM matches their private view",
+      "pass": true,
+      "details": {
+        "ownFaces": 3,
+        "opponentSeatFaces": 0,
+        "revealedHands": 0,
+        "renderedOwnCount": 3,
+        "documentLanguage": "es-DO"
+      }
+    },
+    {
+      "name": "partners: expected public play phase",
+      "pass": true,
+      "details": {
+        "phase": "play",
+        "status": "your-turn"
+      }
+    },
+    {
+      "name": "partners: own-hand/public-ends strategy targets an enabled visible endpoint",
+      "pass": true,
+      "details": {
+        "tile": [
+          4,
+          5
+        ],
+        "side": "left",
+        "ends": {
+          "left": 4,
+          "right": 1
+        }
+      }
+    },
+    {
+      "name": "Both independent viewers see the same latest public Domino board",
+      "pass": true,
+      "details": [
+        {
+          "playerId": "p1",
+          "version": 12,
+          "phase": "play",
+          "turn": "p2",
+          "round": 1
+        },
+        {
+          "playerId": "p2",
+          "version": 12,
+          "phase": "play",
+          "turn": "p2",
+          "round": 1
+        }
+      ]
+    },
+    {
+      "name": "Snapshot contains only the Domino player view, not raw engine secrets",
+      "pass": true,
+      "details": [
+        [
+          "ends",
+          "round",
+          "seats",
+          "teams",
+          "tiles",
+          "counts",
+          "scores",
+          "settings",
+          "actionLog",
+          "matchScores",
+          "roundResult",
+          "roundBonuses",
+          "rulesVersion"
+        ],
+        [
+          "ends",
+          "round",
+          "seats",
+          "teams",
+          "tiles",
+          "counts",
+          "scores",
+          "settings",
+          "actionLog",
+          "matchScores",
+          "roundResult",
+          "roundBonuses",
+          "rulesVersion"
+        ]
+      ]
+    },
+    {
+      "name": "partners: each human UI action commits exactly one authority version",
+      "pass": true,
+      "details": {
+        "before": 11,
+        "after": 12
+      }
+    },
+    {
+      "name": "partners: bot automation resolves to a human turn or round end",
+      "pass": true,
+      "details": {
+        "turn": "p2",
+        "phase": "play",
+        "status": "opponent-turn",
+        "publicTiles": 19
+      }
+    },
+    {
+      "name": "partners: board/counts agree with visible public board",
+      "pass": true,
+      "details": [
+        {
+          "version": 12,
+          "tiles": 19,
+          "counts": {
+            "b1": 2,
+            "b2": 2,
+            "p1": 2,
+            "p2": 3
+          }
+        },
+        {
+          "version": 12,
+          "tiles": 19,
+          "counts": {
+            "b1": 2,
+            "b2": 2,
+            "p1": 2,
+            "p2": 3
+          }
+        }
+      ]
+    },
+    {
+      "name": "Both independent viewers see the same latest public Domino board",
+      "pass": true,
+      "details": [
+        {
+          "playerId": "p1",
+          "version": 12,
+          "phase": "play",
+          "turn": "p2",
+          "round": 1
+        },
+        {
+          "playerId": "p2",
+          "version": 12,
+          "phase": "play",
+          "turn": "p2",
+          "round": 1
+        }
+      ]
+    },
+    {
+      "name": "Snapshot contains only the Domino player view, not raw engine secrets",
+      "pass": true,
+      "details": [
+        [
+          "ends",
+          "round",
+          "seats",
+          "teams",
+          "tiles",
+          "counts",
+          "scores",
+          "settings",
+          "actionLog",
+          "matchScores",
+          "roundResult",
+          "roundBonuses",
+          "rulesVersion"
+        ],
+        [
+          "ends",
+          "round",
+          "seats",
+          "teams",
+          "tiles",
+          "counts",
+          "scores",
+          "settings",
+          "actionLog",
+          "matchScores",
+          "roundResult",
+          "roundBonuses",
+          "rulesVersion"
+        ]
+      ]
+    },
+    {
+      "name": "partners step 9: viewer 1 sees only their hand during active play",
+      "pass": true,
+      "details": {
+        "ownFaces": 2,
+        "opponentSeatFaces": 0,
+        "revealedHands": 0,
+        "renderedOwnCount": 2,
+        "documentLanguage": "ko",
+        "privateHandCount": 2,
+        "phase": "play"
+      }
+    },
+    {
+      "name": "partners step 9: viewer 1 hand DOM matches their private view",
+      "pass": true,
+      "details": {
+        "ownFaces": 2,
+        "opponentSeatFaces": 0,
+        "revealedHands": 0,
+        "renderedOwnCount": 2,
+        "documentLanguage": "ko"
+      }
+    },
+    {
+      "name": "partners step 9: viewer 2 sees only their hand during active play",
+      "pass": true,
+      "details": {
+        "ownFaces": 3,
+        "opponentSeatFaces": 0,
+        "revealedHands": 0,
+        "renderedOwnCount": 3,
+        "documentLanguage": "es-DO",
+        "privateHandCount": 3,
+        "phase": "play"
+      }
+    },
+    {
+      "name": "partners step 9: viewer 2 hand DOM matches their private view",
+      "pass": true,
+      "details": {
+        "ownFaces": 3,
+        "opponentSeatFaces": 0,
+        "revealedHands": 0,
+        "renderedOwnCount": 3,
+        "documentLanguage": "es-DO"
+      }
+    },
+    {
+      "name": "partners: expected public play phase",
+      "pass": true,
+      "details": {
+        "phase": "play",
+        "status": "opponent-turn"
+      }
+    },
+    {
+      "name": "partners: own-hand/public-ends strategy targets an enabled visible endpoint",
+      "pass": true,
+      "details": {
+        "tile": [
+          0,
+          5
+        ],
+        "side": "left",
+        "ends": {
+          "left": 5,
+          "right": 1
+        }
+      }
+    },
+    {
+      "name": "Both independent viewers see the same latest public Domino board",
+      "pass": true,
+      "details": [
+        {
+          "playerId": "p1",
+          "version": 13,
+          "phase": "play",
+          "turn": "p1",
+          "round": 1
+        },
+        {
+          "playerId": "p2",
+          "version": 13,
+          "phase": "play",
+          "turn": "p1",
+          "round": 1
+        }
+      ]
+    },
+    {
+      "name": "Snapshot contains only the Domino player view, not raw engine secrets",
+      "pass": true,
+      "details": [
+        [
+          "ends",
+          "round",
+          "seats",
+          "teams",
+          "tiles",
+          "counts",
+          "scores",
+          "settings",
+          "actionLog",
+          "matchScores",
+          "roundResult",
+          "roundBonuses",
+          "rulesVersion"
+        ],
+        [
+          "ends",
+          "round",
+          "seats",
+          "teams",
+          "tiles",
+          "counts",
+          "scores",
+          "settings",
+          "actionLog",
+          "matchScores",
+          "roundResult",
+          "roundBonuses",
+          "rulesVersion"
+        ]
+      ]
+    },
+    {
+      "name": "partners: each human UI action commits exactly one authority version",
+      "pass": true,
+      "details": {
+        "before": 12,
+        "after": 13
+      }
+    },
+    {
+      "name": "partners: bot automation resolves to a human turn or round end",
+      "pass": true,
+      "details": {
+        "turn": "p1",
+        "phase": "play",
+        "status": "your-turn",
+        "publicTiles": 20
+      }
+    },
+    {
+      "name": "partners: board/counts agree with visible public board",
+      "pass": true,
+      "details": [
+        {
+          "version": 13,
+          "tiles": 20,
+          "counts": {
+            "b1": 2,
+            "b2": 2,
+            "p1": 2,
+            "p2": 2
+          }
+        },
+        {
+          "version": 13,
+          "tiles": 20,
+          "counts": {
+            "b1": 2,
+            "b2": 2,
+            "p1": 2,
+            "p2": 2
+          }
+        }
+      ]
+    },
+    {
+      "name": "Both independent viewers see the same latest public Domino board",
+      "pass": true,
+      "details": [
+        {
+          "playerId": "p1",
+          "version": 13,
+          "phase": "play",
+          "turn": "p1",
+          "round": 1
+        },
+        {
+          "playerId": "p2",
+          "version": 13,
+          "phase": "play",
+          "turn": "p1",
+          "round": 1
+        }
+      ]
+    },
+    {
+      "name": "Snapshot contains only the Domino player view, not raw engine secrets",
+      "pass": true,
+      "details": [
+        [
+          "ends",
+          "round",
+          "seats",
+          "teams",
+          "tiles",
+          "counts",
+          "scores",
+          "settings",
+          "actionLog",
+          "matchScores",
+          "roundResult",
+          "roundBonuses",
+          "rulesVersion"
+        ],
+        [
+          "ends",
+          "round",
+          "seats",
+          "teams",
+          "tiles",
+          "counts",
+          "scores",
+          "settings",
+          "actionLog",
+          "matchScores",
+          "roundResult",
+          "roundBonuses",
+          "rulesVersion"
+        ]
+      ]
+    },
+    {
+      "name": "partners step 10: viewer 1 sees only their hand during active play",
+      "pass": true,
+      "details": {
+        "ownFaces": 2,
+        "opponentSeatFaces": 0,
+        "revealedHands": 0,
+        "renderedOwnCount": 2,
+        "documentLanguage": "ko",
+        "privateHandCount": 2,
+        "phase": "play"
+      }
+    },
+    {
+      "name": "partners step 10: viewer 1 hand DOM matches their private view",
+      "pass": true,
+      "details": {
+        "ownFaces": 2,
+        "opponentSeatFaces": 0,
+        "revealedHands": 0,
+        "renderedOwnCount": 2,
+        "documentLanguage": "ko"
+      }
+    },
+    {
+      "name": "partners step 10: viewer 2 sees only their hand during active play",
+      "pass": true,
+      "details": {
+        "ownFaces": 2,
+        "opponentSeatFaces": 0,
+        "revealedHands": 0,
+        "renderedOwnCount": 2,
+        "documentLanguage": "es-DO",
+        "privateHandCount": 2,
+        "phase": "play"
+      }
+    },
+    {
+      "name": "partners step 10: viewer 2 hand DOM matches their private view",
+      "pass": true,
+      "details": {
+        "ownFaces": 2,
+        "opponentSeatFaces": 0,
+        "revealedHands": 0,
+        "renderedOwnCount": 2,
+        "documentLanguage": "es-DO"
+      }
+    },
+    {
+      "name": "partners: expected public play phase",
+      "pass": true,
+      "details": {
+        "phase": "play",
+        "status": "your-turn"
+      }
+    },
+    {
+      "name": "partners: own-hand/public-ends strategy targets an enabled visible endpoint",
+      "pass": true,
+      "details": {
+        "tile": [
+          1,
+          2
+        ],
+        "side": "right",
+        "ends": {
+          "left": 0,
+          "right": 1
+        }
+      }
+    },
+    {
+      "name": "Both independent viewers see the same latest public Domino board",
+      "pass": true,
+      "details": [
+        {
+          "playerId": "p1",
+          "version": 14,
+          "phase": "play",
+          "turn": "p2",
+          "round": 1
+        },
+        {
+          "playerId": "p2",
+          "version": 14,
+          "phase": "play",
+          "turn": "p2",
+          "round": 1
+        }
+      ]
+    },
+    {
+      "name": "Snapshot contains only the Domino player view, not raw engine secrets",
+      "pass": true,
+      "details": [
+        [
+          "ends",
+          "round",
+          "seats",
+          "teams",
+          "tiles",
+          "counts",
+          "scores",
+          "settings",
+          "actionLog",
+          "matchScores",
+          "roundResult",
+          "roundBonuses",
+          "rulesVersion"
+        ],
+        [
+          "ends",
+          "round",
+          "seats",
+          "teams",
+          "tiles",
+          "counts",
+          "scores",
+          "settings",
+          "actionLog",
+          "matchScores",
+          "roundResult",
+          "roundBonuses",
+          "rulesVersion"
+        ]
+      ]
+    },
+    {
+      "name": "partners: each human UI action commits exactly one authority version",
+      "pass": true,
+      "details": {
+        "before": 13,
+        "after": 14
+      }
+    },
+    {
+      "name": "partners: bot automation resolves to a human turn or round end",
+      "pass": true,
+      "details": {
+        "turn": "p2",
+        "phase": "play",
+        "status": "opponent-turn",
+        "publicTiles": 22
+      }
+    },
+    {
+      "name": "partners: board/counts agree with visible public board",
+      "pass": true,
+      "details": [
+        {
+          "version": 14,
+          "tiles": 22,
+          "counts": {
+            "b1": 1,
+            "b2": 2,
+            "p1": 1,
+            "p2": 2
+          }
+        },
+        {
+          "version": 14,
+          "tiles": 22,
+          "counts": {
+            "b1": 1,
+            "b2": 2,
+            "p1": 1,
+            "p2": 2
+          }
+        }
+      ]
+    },
+    {
+      "name": "Both independent viewers see the same latest public Domino board",
+      "pass": true,
+      "details": [
+        {
+          "playerId": "p1",
+          "version": 14,
+          "phase": "play",
+          "turn": "p2",
+          "round": 1
+        },
+        {
+          "playerId": "p2",
+          "version": 14,
+          "phase": "play",
+          "turn": "p2",
+          "round": 1
+        }
+      ]
+    },
+    {
+      "name": "Snapshot contains only the Domino player view, not raw engine secrets",
+      "pass": true,
+      "details": [
+        [
+          "ends",
+          "round",
+          "seats",
+          "teams",
+          "tiles",
+          "counts",
+          "scores",
+          "settings",
+          "actionLog",
+          "matchScores",
+          "roundResult",
+          "roundBonuses",
+          "rulesVersion"
+        ],
+        [
+          "ends",
+          "round",
+          "seats",
+          "teams",
+          "tiles",
+          "counts",
+          "scores",
+          "settings",
+          "actionLog",
+          "matchScores",
+          "roundResult",
+          "roundBonuses",
+          "rulesVersion"
+        ]
+      ]
+    },
+    {
+      "name": "partners step 11: viewer 1 sees only their hand during active play",
+      "pass": true,
+      "details": {
+        "ownFaces": 1,
+        "opponentSeatFaces": 0,
+        "revealedHands": 0,
+        "renderedOwnCount": 1,
+        "documentLanguage": "ko",
+        "privateHandCount": 1,
+        "phase": "play"
+      }
+    },
+    {
+      "name": "partners step 11: viewer 1 hand DOM matches their private view",
+      "pass": true,
+      "details": {
+        "ownFaces": 1,
+        "opponentSeatFaces": 0,
+        "revealedHands": 0,
+        "renderedOwnCount": 1,
+        "documentLanguage": "ko"
+      }
+    },
+    {
+      "name": "partners step 11: viewer 2 sees only their hand during active play",
+      "pass": true,
+      "details": {
+        "ownFaces": 2,
+        "opponentSeatFaces": 0,
+        "revealedHands": 0,
+        "renderedOwnCount": 2,
+        "documentLanguage": "es-DO",
+        "privateHandCount": 2,
+        "phase": "play"
+      }
+    },
+    {
+      "name": "partners step 11: viewer 2 hand DOM matches their private view",
+      "pass": true,
+      "details": {
+        "ownFaces": 2,
+        "opponentSeatFaces": 0,
+        "revealedHands": 0,
+        "renderedOwnCount": 2,
+        "documentLanguage": "es-DO"
+      }
+    },
+    {
+      "name": "partners: expected public play phase",
+      "pass": true,
+      "details": {
+        "phase": "play",
+        "status": "opponent-turn"
+      }
+    },
+    {
+      "name": "partners: own-hand/public-ends strategy targets an enabled visible endpoint",
+      "pass": true,
+      "details": {
+        "tile": [
+          2,
+          2
+        ],
+        "side": "right",
+        "ends": {
+          "left": 0,
+          "right": 2
+        }
+      }
+    },
+    {
+      "name": "Both independent viewers see the same latest public Domino board",
+      "pass": true,
+      "details": [
+        {
+          "playerId": "p1",
+          "version": 15,
+          "phase": "play",
+          "turn": "p1",
+          "round": 1
+        },
+        {
+          "playerId": "p2",
+          "version": 15,
+          "phase": "play",
+          "turn": "p1",
+          "round": 1
+        }
+      ]
+    },
+    {
+      "name": "Snapshot contains only the Domino player view, not raw engine secrets",
+      "pass": true,
+      "details": [
+        [
+          "ends",
+          "round",
+          "seats",
+          "teams",
+          "tiles",
+          "counts",
+          "scores",
+          "settings",
+          "actionLog",
+          "matchScores",
+          "roundResult",
+          "roundBonuses",
+          "rulesVersion"
+        ],
+        [
+          "ends",
+          "round",
+          "seats",
+          "teams",
+          "tiles",
+          "counts",
+          "scores",
+          "settings",
+          "actionLog",
+          "matchScores",
+          "roundResult",
+          "roundBonuses",
+          "rulesVersion"
+        ]
+      ]
+    },
+    {
+      "name": "partners: each human UI action commits exactly one authority version",
+      "pass": true,
+      "details": {
+        "before": 14,
+        "after": 15
+      }
+    },
+    {
+      "name": "partners: bot automation resolves to a human turn or round end",
+      "pass": true,
+      "details": {
+        "turn": "p1",
+        "phase": "play",
+        "status": "your-turn",
+        "publicTiles": 23
+      }
+    },
+    {
+      "name": "partners: board/counts agree with visible public board",
+      "pass": true,
+      "details": [
+        {
+          "version": 15,
+          "tiles": 23,
+          "counts": {
+            "b1": 1,
+            "b2": 2,
+            "p1": 1,
+            "p2": 1
+          }
+        },
+        {
+          "version": 15,
+          "tiles": 23,
+          "counts": {
+            "b1": 1,
+            "b2": 2,
+            "p1": 1,
+            "p2": 1
+          }
+        }
+      ]
+    },
+    {
+      "name": "Both independent viewers see the same latest public Domino board",
+      "pass": true,
+      "details": [
+        {
+          "playerId": "p1",
+          "version": 15,
+          "phase": "play",
+          "turn": "p1",
+          "round": 1
+        },
+        {
+          "playerId": "p2",
+          "version": 15,
+          "phase": "play",
+          "turn": "p1",
+          "round": 1
+        }
+      ]
+    },
+    {
+      "name": "Snapshot contains only the Domino player view, not raw engine secrets",
+      "pass": true,
+      "details": [
+        [
+          "ends",
+          "round",
+          "seats",
+          "teams",
+          "tiles",
+          "counts",
+          "scores",
+          "settings",
+          "actionLog",
+          "matchScores",
+          "roundResult",
+          "roundBonuses",
+          "rulesVersion"
+        ],
+        [
+          "ends",
+          "round",
+          "seats",
+          "teams",
+          "tiles",
+          "counts",
+          "scores",
+          "settings",
+          "actionLog",
+          "matchScores",
+          "roundResult",
+          "roundBonuses",
+          "rulesVersion"
+        ]
+      ]
+    },
+    {
+      "name": "partners step 12: viewer 1 sees only their hand during active play",
+      "pass": true,
+      "details": {
+        "ownFaces": 1,
+        "opponentSeatFaces": 0,
+        "revealedHands": 0,
+        "renderedOwnCount": 1,
+        "documentLanguage": "ko",
+        "privateHandCount": 1,
+        "phase": "play"
+      }
+    },
+    {
+      "name": "partners step 12: viewer 1 hand DOM matches their private view",
+      "pass": true,
+      "details": {
+        "ownFaces": 1,
+        "opponentSeatFaces": 0,
+        "revealedHands": 0,
+        "renderedOwnCount": 1,
+        "documentLanguage": "ko"
+      }
+    },
+    {
+      "name": "partners step 12: viewer 2 sees only their hand during active play",
+      "pass": true,
+      "details": {
+        "ownFaces": 1,
+        "opponentSeatFaces": 0,
+        "revealedHands": 0,
+        "renderedOwnCount": 1,
+        "documentLanguage": "es-DO",
+        "privateHandCount": 1,
+        "phase": "play"
+      }
+    },
+    {
+      "name": "partners step 12: viewer 2 hand DOM matches their private view",
+      "pass": true,
+      "details": {
+        "ownFaces": 1,
+        "opponentSeatFaces": 0,
+        "revealedHands": 0,
+        "renderedOwnCount": 1,
+        "documentLanguage": "es-DO"
+      }
+    },
+    {
+      "name": "partners: expected public play phase",
+      "pass": true,
+      "details": {
+        "phase": "play",
+        "status": "your-turn"
+      }
+    },
+    {
+      "name": "partners: own-hand/public-ends strategy targets an enabled visible endpoint",
+      "pass": true,
+      "details": {
+        "tile": [
+          2,
+          4
+        ],
+        "side": "right",
+        "ends": {
+          "left": 0,
+          "right": 2
+        }
+      }
+    },
+    {
+      "name": "Both independent viewers see the same latest public Domino board",
+      "pass": true,
+      "details": [
+        {
+          "playerId": "p1",
+          "version": 16,
+          "phase": "finished",
+          "turn": "b1",
+          "round": 1
+        },
+        {
+          "playerId": "p2",
+          "version": 16,
+          "phase": "finished",
+          "turn": "b1",
+          "round": 1
+        }
+      ]
+    },
+    {
+      "name": "Snapshot contains only the Domino player view, not raw engine secrets",
+      "pass": true,
+      "details": [
+        [
+          "ends",
+          "round",
+          "seats",
+          "teams",
+          "tiles",
+          "counts",
+          "scores",
+          "settings",
+          "actionLog",
+          "matchScores",
+          "roundResult",
+          "roundBonuses",
+          "rulesVersion",
+          "revealedHands"
+        ],
+        [
+          "ends",
+          "round",
+          "seats",
+          "teams",
+          "tiles",
+          "counts",
+          "scores",
+          "settings",
+          "actionLog",
+          "matchScores",
+          "roundResult",
+          "roundBonuses",
+          "rulesVersion",
+          "revealedHands"
+        ]
+      ]
+    },
+    {
+      "name": "partners: each human UI action commits exactly one authority version",
+      "pass": true,
+      "details": {
+        "before": 15,
+        "after": 16
+      }
+    },
+    {
+      "name": "partners: bot automation resolves to a human turn or round end",
+      "pass": true,
+      "details": {
+        "turn": "b1",
+        "phase": "finished",
+        "status": "finished",
+        "publicTiles": 24
+      }
+    },
+    {
+      "name": "partners: board/counts agree with visible public board",
+      "pass": true,
+      "details": [
+        {
+          "version": 16,
+          "tiles": 24,
+          "counts": {
+            "b1": 1,
+            "b2": 2,
+            "p1": 0,
+            "p2": 1
+          }
+        },
+        {
+          "version": 16,
+          "tiles": 24,
+          "counts": {
+            "b1": 1,
+            "b2": 2,
+            "p1": 0,
+            "p2": 1
+          }
+        }
+      ]
+    },
+    {
+      "name": "Both independent viewers see the same latest public Domino board",
+      "pass": true,
+      "details": [
+        {
+          "playerId": "p1",
+          "version": 16,
+          "phase": "finished",
+          "turn": "b1",
+          "round": 1
+        },
+        {
+          "playerId": "p2",
+          "version": 16,
+          "phase": "finished",
+          "turn": "b1",
+          "round": 1
+        }
+      ]
+    },
+    {
+      "name": "Snapshot contains only the Domino player view, not raw engine secrets",
+      "pass": true,
+      "details": [
+        [
+          "ends",
+          "round",
+          "seats",
+          "teams",
+          "tiles",
+          "counts",
+          "scores",
+          "settings",
+          "actionLog",
+          "matchScores",
+          "roundResult",
+          "roundBonuses",
+          "rulesVersion",
+          "revealedHands"
+        ],
+        [
+          "ends",
+          "round",
+          "seats",
+          "teams",
+          "tiles",
+          "counts",
+          "scores",
+          "settings",
+          "actionLog",
+          "matchScores",
+          "roundResult",
+          "roundBonuses",
+          "rulesVersion",
+          "revealedHands"
+        ]
+      ]
+    },
+    {
+      "name": "partners step 13: viewer 1 sees only their hand during active play",
+      "pass": true,
+      "details": {
+        "ownFaces": 0,
+        "opponentSeatFaces": 4,
+        "revealedHands": 4,
+        "renderedOwnCount": 0,
+        "documentLanguage": "ko",
+        "privateHandCount": 0,
+        "phase": "finished"
+      }
+    },
+    {
+      "name": "partners step 13: viewer 2 sees only their hand during active play",
+      "pass": true,
+      "details": {
+        "ownFaces": 1,
+        "opponentSeatFaces": 3,
+        "revealedHands": 4,
+        "renderedOwnCount": 1,
+        "documentLanguage": "es-DO",
+        "privateHandCount": 1,
+        "phase": "finished"
+      }
+    },
+    {
+      "name": "Both independent viewers see the same latest public Domino board",
+      "pass": true,
+      "details": [
+        {
+          "playerId": "p1",
+          "version": 16,
+          "phase": "finished",
+          "turn": "b1",
+          "round": 1
+        },
+        {
+          "playerId": "p2",
+          "version": 16,
+          "phase": "finished",
+          "turn": "b1",
+          "round": 1
+        }
+      ]
+    },
+    {
+      "name": "Snapshot contains only the Domino player view, not raw engine secrets",
+      "pass": true,
+      "details": [
+        [
+          "ends",
+          "round",
+          "seats",
+          "teams",
+          "tiles",
+          "counts",
+          "scores",
+          "settings",
+          "actionLog",
+          "matchScores",
+          "roundResult",
+          "roundBonuses",
+          "rulesVersion",
+          "revealedHands"
+        ],
+        [
+          "ends",
+          "round",
+          "seats",
+          "teams",
+          "tiles",
+          "counts",
+          "scores",
+          "settings",
+          "actionLog",
+          "matchScores",
+          "roundResult",
+          "roundBonuses",
+          "rulesVersion",
+          "revealedHands"
+        ]
+      ]
+    },
+    {
+      "name": "partners: reached ten human moves or a natural finished game with bot progress",
+      "pass": true,
+      "details": {
+        "humanMoves": 13,
+        "botActionsObserved": 12,
+        "phase": "finished",
+        "roundPhase": "round-over"
+      }
+    },
+    {
+      "name": "partners: hard bots made visible automatic public actions",
+      "pass": true,
+      "details": {
+        "botActionsObserved": 12,
+        "humanMoves": 13
+      }
+    },
+    {
+      "name": "partners: hard difficulty remains visible in the final public view",
+      "pass": true,
+      "details": [
+        {
+          "difficulty": "hard",
+          "targetScore": 0,
+          "tranqueRule": "team",
+          "capicuaBonus": 0,
+          "pasoCorridoBonus": 0
+        },
+        {
+          "difficulty": "hard",
+          "targetScore": 0,
+          "tranqueRule": "team",
+          "capicuaBonus": 0,
+          "pasoCorridoBonus": 0
+        }
+      ]
+    },
+    {
+      "name": "partners: no browser page errors",
+      "pass": true,
+      "details": []
+    },
+    {
+      "name": "Both requested Domino bot modes were exercised",
+      "pass": true,
+      "details": [
+        "humans-vs-bots",
+        "partners"
+      ]
+    },
+    {
+      "name": "No uncaught browser errors across both modes",
+      "pass": true,
+      "details": []
+    }
+  ],
+  "moves": [
+    {
+      "mode": "humans-vs-bots",
+      "round": 1,
+      "step": 1,
+      "player": "p2",
+      "type": "play",
+      "tile": [
+        4,
+        6
+      ],
+      "side": "left",
+      "ownHandSupport": 0,
+      "versionBefore": 3
+    },
+    {
+      "mode": "humans-vs-bots",
+      "round": 1,
+      "step": 2,
+      "player": "p1",
+      "type": "play",
+      "tile": [
+        4,
+        4
+      ],
+      "side": "left",
+      "ownHandSupport": 3,
+      "versionBefore": 4
+    },
+    {
+      "mode": "humans-vs-bots",
+      "round": 1,
+      "step": 3,
+      "player": "p2",
+      "type": "pass",
+      "versionBefore": 5
+    },
+    {
+      "mode": "humans-vs-bots",
+      "round": 1,
+      "step": 4,
+      "player": "p1",
+      "type": "play",
+      "tile": [
+        4,
+        5
+      ],
+      "side": "left",
+      "ownHandSupport": 2,
+      "versionBefore": 6
+    },
+    {
+      "mode": "humans-vs-bots",
+      "round": 1,
+      "step": 5,
+      "player": "p2",
+      "type": "play",
+      "tile": [
+        5,
+        5
+      ],
+      "side": "left",
+      "ownHandSupport": 1,
+      "versionBefore": 7
+    },
+    {
+      "mode": "humans-vs-bots",
+      "round": 1,
+      "step": 6,
+      "player": "p1",
+      "type": "play",
+      "tile": [
+        0,
+        4
+      ],
+      "side": "left",
+      "ownHandSupport": 1,
+      "versionBefore": 8
+    },
+    {
+      "mode": "humans-vs-bots",
+      "round": 1,
+      "step": 7,
+      "player": "p2",
+      "type": "pass",
+      "versionBefore": 9
+    },
+    {
+      "mode": "humans-vs-bots",
+      "round": 1,
+      "step": 8,
+      "player": "p1",
+      "type": "play",
+      "tile": [
+        5,
+        6
+      ],
+      "side": "right",
+      "ownHandSupport": 1,
+      "versionBefore": 10
+    },
+    {
+      "mode": "humans-vs-bots",
+      "round": 1,
+      "step": 9,
+      "player": "p2",
+      "type": "play",
+      "tile": [
+        2,
+        2
+      ],
+      "side": "right",
+      "ownHandSupport": 1,
+      "versionBefore": 11
+    },
+    {
+      "mode": "humans-vs-bots",
+      "round": 1,
+      "step": 10,
+      "player": "p1",
+      "type": "play",
+      "tile": [
+        3,
+        5
+      ],
+      "side": "right",
+      "ownHandSupport": 0,
+      "versionBefore": 12
+    },
+    {
+      "mode": "humans-vs-bots",
+      "round": 1,
+      "step": 11,
+      "player": "p2",
+      "type": "play",
+      "tile": [
+        1,
+        5
+      ],
+      "side": "right",
+      "ownHandSupport": 1,
+      "versionBefore": 13
+    },
+    {
+      "mode": "humans-vs-bots",
+      "round": 1,
+      "step": 12,
+      "player": "p1",
+      "type": "play",
+      "tile": [
+        1,
+        4
+      ],
+      "side": "left",
+      "ownHandSupport": 1,
+      "versionBefore": 14
+    },
+    {
+      "mode": "humans-vs-bots",
+      "round": 1,
+      "step": 13,
+      "player": "p2",
+      "type": "play",
+      "tile": [
+        0,
+        2
+      ],
+      "side": "right",
+      "ownHandSupport": 0,
+      "versionBefore": 15
+    },
+    {
+      "mode": "humans-vs-bots",
+      "round": 1,
+      "step": 14,
+      "player": "p1",
+      "type": "play",
+      "tile": [
+        1,
+        2
+      ],
+      "side": "right",
+      "ownHandSupport": 0,
+      "versionBefore": 16
+    },
+    {
+      "mode": "partners",
+      "round": 1,
+      "step": 1,
+      "player": "p1",
+      "type": "play",
+      "tile": [
+        1,
+        6
+      ],
+      "side": "left",
+      "ownHandSupport": 1,
+      "versionBefore": 3
+    },
+    {
+      "mode": "partners",
+      "round": 1,
+      "step": 2,
+      "player": "p2",
+      "type": "play",
+      "tile": [
+        1,
+        5
+      ],
+      "side": "left",
+      "ownHandSupport": 2,
+      "versionBefore": 4
+    },
+    {
+      "mode": "partners",
+      "round": 1,
+      "step": 3,
+      "player": "p1",
+      "type": "play",
+      "tile": [
+        2,
+        3
+      ],
+      "side": "left",
+      "ownHandSupport": 3,
+      "versionBefore": 5
+    },
+    {
+      "mode": "partners",
+      "round": 1,
+      "step": 4,
+      "player": "p2",
+      "type": "play",
+      "tile": [
+        5,
+        6
+      ],
+      "side": "left",
+      "ownHandSupport": 1,
+      "versionBefore": 6
+    },
+    {
+      "mode": "partners",
+      "round": 1,
+      "step": 5,
+      "player": "p1",
+      "type": "play",
+      "tile": [
+        0,
+        2
+      ],
+      "side": "right",
+      "ownHandSupport": 2,
+      "versionBefore": 7
+    },
+    {
+      "mode": "partners",
+      "round": 1,
+      "step": 6,
+      "player": "p2",
+      "type": "play",
+      "tile": [
+        2,
+        6
+      ],
+      "side": "right",
+      "ownHandSupport": 0,
+      "versionBefore": 8
+    },
+    {
+      "mode": "partners",
+      "round": 1,
+      "step": 7,
+      "player": "p1",
+      "type": "play",
+      "tile": [
+        4,
+        4
+      ],
+      "side": "right",
+      "ownHandSupport": 2,
+      "versionBefore": 9
+    },
+    {
+      "mode": "partners",
+      "round": 1,
+      "step": 8,
+      "player": "p2",
+      "type": "play",
+      "tile": [
+        1,
+        4
+      ],
+      "side": "left",
+      "ownHandSupport": 0,
+      "versionBefore": 10
+    },
+    {
+      "mode": "partners",
+      "round": 1,
+      "step": 9,
+      "player": "p1",
+      "type": "play",
+      "tile": [
+        4,
+        5
+      ],
+      "side": "left",
+      "ownHandSupport": 0,
+      "versionBefore": 11
+    },
+    {
+      "mode": "partners",
+      "round": 1,
+      "step": 10,
+      "player": "p2",
+      "type": "play",
+      "tile": [
+        0,
+        5
+      ],
+      "side": "left",
+      "ownHandSupport": 1,
+      "versionBefore": 12
+    },
+    {
+      "mode": "partners",
+      "round": 1,
+      "step": 11,
+      "player": "p1",
+      "type": "play",
+      "tile": [
+        1,
+        2
+      ],
+      "side": "right",
+      "ownHandSupport": 1,
+      "versionBefore": 13
+    },
+    {
+      "mode": "partners",
+      "round": 1,
+      "step": 12,
+      "player": "p2",
+      "type": "play",
+      "tile": [
+        2,
+        2
+      ],
+      "side": "right",
+      "ownHandSupport": 0,
+      "versionBefore": 14
+    },
+    {
+      "mode": "partners",
+      "round": 1,
+      "step": 13,
+      "player": "p1",
+      "type": "play",
+      "tile": [
+        2,
+        4
+      ],
+      "side": "right",
+      "ownHandSupport": 0,
+      "versionBefore": 15
+    }
+  ],
+  "errors": [],
+  "scenarios": [
+    {
+      "mode": "humans-vs-bots",
+      "roomId": "72ee5b00-4d29-4478-aade-e89569770321",
+      "humanMoves": 14,
+      "botActionsObserved": 13,
+      "rounds": [
+        {
+          "round": 1,
+          "phase": "finished",
+          "tiles": 22,
+          "result": {
+            "reason": "A player played all dominoes",
+            "scores": {
+              "p1": 10,
+              "p2": 11
+            },
+            "winner": "p1"
+          },
+          "roundResult": {
+            "pips": {
+              "p1": 10,
+              "p2": 11
+            },
+            "award": 11,
+            "round": 1,
+            "reason": "A player played all dominoes",
+            "winner": "p1",
+            "bonuses": {
+              "p1": 0,
+              "p2": 0
+            },
+            "capicua": false,
+            "scoreDelta": {
+              "p1": 11,
+              "p2": 0
+            },
+            "pasoCorrido": 0
+          }
+        }
+      ],
+      "checks": [
+        {
+          "type": "midgame-screenshot",
+          "language": "ko",
+          "path": "/workspace/gitactions-main/docs/screenshots/live-play-2026-10-11/ai-live/final/humans-vs-bots-ko-midgame.png"
+        },
+        {
+          "type": "midgame-screenshot",
+          "language": "es-DO",
+          "path": "/workspace/gitactions-main/docs/screenshots/live-play-2026-10-11/ai-live/final/humans-vs-bots-es-midgame.png"
+        },
+        {
+          "type": "final-screenshot",
+          "language": "ko",
+          "path": "/workspace/gitactions-main/docs/screenshots/live-play-2026-10-11/ai-live/final/humans-vs-bots-ko-final.png"
+        },
+        {
+          "type": "final-screenshot",
+          "language": "es-DO",
+          "path": "/workspace/gitactions-main/docs/screenshots/live-play-2026-10-11/ai-live/final/humans-vs-bots-es-final.png"
+        }
+      ],
+      "final": [
+        {
+          "playerId": "p1",
+          "version": 17,
+          "phase": "finished",
+          "turn": "b1",
+          "round": 1,
+          "settings": {
+            "difficulty": "hard",
+            "targetScore": 0,
+            "tranqueRule": "team",
+            "capicuaBonus": 0,
+            "pasoCorridoBonus": 0
+          },
+          "tileCount": 22,
+          "counts": {
+            "b1": 1,
+            "b2": 3,
+            "p1": 0,
+            "p2": 2
+          },
+          "result": {
+            "reason": "A player played all dominoes",
+            "scores": {
+              "p1": 10,
+              "p2": 11
+            },
+            "winner": "p1"
+          }
+        },
+        {
+          "playerId": "p2",
+          "version": 17,
+          "phase": "finished",
+          "turn": "b1",
+          "round": 1,
+          "settings": {
+            "difficulty": "hard",
+            "targetScore": 0,
+            "tranqueRule": "team",
+            "capicuaBonus": 0,
+            "pasoCorridoBonus": 0
+          },
+          "tileCount": 22,
+          "counts": {
+            "b1": 1,
+            "b2": 3,
+            "p1": 0,
+            "p2": 2
+          },
+          "result": {
+            "reason": "A player played all dominoes",
+            "scores": {
+              "p1": 10,
+              "p2": 11
+            },
+            "winner": "p1"
+          }
+        }
+      ]
+    },
+    {
+      "mode": "partners",
+      "roomId": "55ac2368-dab4-4ee2-8aea-74fd1708555a",
+      "humanMoves": 13,
+      "botActionsObserved": 12,
+      "rounds": [
+        {
+          "round": 1,
+          "phase": "finished",
+          "tiles": 24,
+          "result": {
+            "reason": "A player played all dominoes",
+            "scores": {
+              "p1": 7,
+              "p2": 19
+            },
+            "winner": "p1"
+          },
+          "roundResult": {
+            "pips": {
+              "p1": 7,
+              "p2": 19
+            },
+            "award": 19,
+            "round": 1,
+            "reason": "A player played all dominoes",
+            "winner": "p1",
+            "bonuses": {
+              "p1": 0,
+              "p2": 0
+            },
+            "capicua": false,
+            "scoreDelta": {
+              "p1": 19,
+              "p2": 0
+            },
+            "pasoCorrido": 0
+          }
+        }
+      ],
+      "checks": [
+        {
+          "type": "midgame-screenshot",
+          "language": "ko",
+          "path": "/workspace/gitactions-main/docs/screenshots/live-play-2026-10-11/ai-live/final/partners-ko-midgame.png"
+        },
+        {
+          "type": "midgame-screenshot",
+          "language": "es-DO",
+          "path": "/workspace/gitactions-main/docs/screenshots/live-play-2026-10-11/ai-live/final/partners-es-midgame.png"
+        },
+        {
+          "type": "final-screenshot",
+          "language": "ko",
+          "path": "/workspace/gitactions-main/docs/screenshots/live-play-2026-10-11/ai-live/final/partners-ko-final.png"
+        },
+        {
+          "type": "final-screenshot",
+          "language": "es-DO",
+          "path": "/workspace/gitactions-main/docs/screenshots/live-play-2026-10-11/ai-live/final/partners-es-final.png"
+        }
+      ],
+      "final": [
+        {
+          "playerId": "p1",
+          "version": 16,
+          "phase": "finished",
+          "turn": "b1",
+          "round": 1,
+          "settings": {
+            "difficulty": "hard",
+            "targetScore": 0,
+            "tranqueRule": "team",
+            "capicuaBonus": 0,
+            "pasoCorridoBonus": 0
+          },
+          "tileCount": 24,
+          "counts": {
+            "b1": 1,
+            "b2": 2,
+            "p1": 0,
+            "p2": 1
+          },
+          "result": {
+            "reason": "A player played all dominoes",
+            "scores": {
+              "p1": 7,
+              "p2": 19
+            },
+            "winner": "p1"
+          }
+        },
+        {
+          "playerId": "p2",
+          "version": 16,
+          "phase": "finished",
+          "turn": "b1",
+          "round": 1,
+          "settings": {
+            "difficulty": "hard",
+            "targetScore": 0,
+            "tranqueRule": "team",
+            "capicuaBonus": 0,
+            "pasoCorridoBonus": 0
+          },
+          "tileCount": 24,
+          "counts": {
+            "b1": 1,
+            "b2": 2,
+            "p1": 0,
+            "p2": 1
+          },
+          "result": {
+            "reason": "A player played all dominoes",
+            "scores": {
+              "p1": 7,
+              "p2": 19
+            },
+            "winner": "p1"
+          }
+        }
+      ]
+    }
+  ]
+}

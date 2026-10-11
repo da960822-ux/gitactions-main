@@ -1,0 +1,661 @@
+{
+  "game": "jaipur",
+  "baseUrl": "http://127.0.0.1:5192",
+  "viewport": {
+    "width": 1440,
+    "height": 900
+  },
+  "independentContexts": 2,
+  "strategy": "Own hand and public market/token tops only; collect matching groups, improve the hand through favorable exchanges, sell precious goods in pairs and ordinary goods in bonus groups, make room before the seven-card limit.",
+  "attempts": [
+    {
+      "attempt": 1,
+      "roomCreatedAndJoinedThroughUI": true,
+      "bothConsentedThroughUI": true,
+      "played": {
+        "p1": 0,
+        "p2": 0
+      },
+      "passes": {
+        "p1": 0,
+        "p2": 0
+      },
+      "moves": [
+        {
+          "player": "p1",
+          "type": "sell",
+          "count": 2,
+          "version": 3,
+          "round": 1,
+          "scores": {
+            "p1": 10,
+            "p2": 0
+          },
+          "deckCount": 40
+        },
+        {
+          "player": "p2",
+          "type": "single",
+          "version": 4,
+          "round": 1,
+          "scores": {
+            "p1": 10,
+            "p2": 0
+          },
+          "deckCount": 39
+        },
+        {
+          "player": "p1",
+          "type": "single",
+          "version": 5,
+          "round": 1,
+          "scores": {
+            "p1": 10,
+            "p2": 0
+          },
+          "deckCount": 38
+        }
+      ],
+      "actions": {
+        "p1": 2,
+        "p2": 1
+      },
+      "sales": {
+        "p1": 1,
+        "p2": 0
+      },
+      "exchanges": {
+        "p1": 0,
+        "p2": 0
+      }
+    }
+  ],
+  "errors": [
+    "AssertionError [ERR_ASSERTION]: Coin and token value must fit in their own cell.\n\nfalse !== true\n\n    at checkJaipurPiles (file:///workspace/gitactions-main/scripts/play-two-player-captures.mjs:78:12)\n    at async checkJaipurSale (file:///workspace/gitactions-main/scripts/play-two-player-captures.mjs:106:3)\n    at async playJaipur (file:///workspace/gitactions-main/scripts/play-two-player-captures.mjs:296:9)\n    at async file:///workspace/gitactions-main/scripts/play-two-player-captures.mjs:457:26"
+  ],
+  "screenshots": [
+    {
+      "language": "ko",
+      "state": "sale",
+      "path": "/workspace/gitactions-main/docs/screenshots/live-play-2026-10-11/after-fixes/final/jaipur-ko-sale.png",
+      "element": "#game-board"
+    },
+    {
+      "language": "ko",
+      "state": "mobile-sale",
+      "path": "/workspace/gitactions-main/docs/screenshots/live-play-2026-10-11/after-fixes/final/jaipur-mobile-ko.png",
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "element": "#game-board"
+    },
+    {
+      "language": "es",
+      "state": "sale",
+      "path": "/workspace/gitactions-main/docs/screenshots/live-play-2026-10-11/after-fixes/final/jaipur-es-sale.png",
+      "element": "#game-board"
+    }
+  ],
+  "limits": [
+    "Local PGlite SQL/RLS/authority fixture, not deployed Supabase or physical devices.",
+    "The fixture has no Realtime; reconnectRoom explicitly refreshes read snapshots after UI actions.",
+    "Screenshots intentionally show the requesting player’s own hand; no opponent private hand is used to choose moves."
+  ],
+  "uiChecks": [
+    {
+      "type": "sale-tray",
+      "language": "ko",
+      "trayInsideOwnHand": true,
+      "gapBelowHand": 8,
+      "horizontalOverflow": false
+    },
+    {
+      "type": "token-cell-content",
+      "language": "ko",
+      "state": "mobile",
+      "rows": [
+        {
+          "label": "다음",
+          "value": "7점",
+          "labelVisible": true,
+          "valueVisible": true,
+          "labelInsideCell": true,
+          "labelTextInsideCell": true,
+          "valueInsideCell": true,
+          "coinValueGap": 2.875
+        },
+        {
+          "label": "다음",
+          "value": "6점",
+          "labelVisible": true,
+          "valueVisible": true,
+          "labelInsideCell": true,
+          "labelTextInsideCell": true,
+          "valueInsideCell": true,
+          "coinValueGap": 2.875
+        },
+        {
+          "label": "다음",
+          "value": "5점",
+          "labelVisible": true,
+          "valueVisible": true,
+          "labelInsideCell": true,
+          "labelTextInsideCell": true,
+          "valueInsideCell": true,
+          "coinValueGap": 2.875
+        },
+        {
+          "label": "다음",
+          "value": "5점",
+          "labelVisible": true,
+          "valueVisible": true,
+          "labelInsideCell": true,
+          "labelTextInsideCell": true,
+          "valueInsideCell": true,
+          "coinValueGap": 2.875
+        },
+        {
+          "label": "다음",
+          "value": "5점",
+          "labelVisible": true,
+          "valueVisible": true,
+          "labelInsideCell": true,
+          "labelTextInsideCell": true,
+          "valueInsideCell": true,
+          "coinValueGap": 2.875
+        },
+        {
+          "label": "다음",
+          "value": "4점",
+          "labelVisible": true,
+          "valueVisible": true,
+          "labelInsideCell": true,
+          "labelTextInsideCell": true,
+          "valueInsideCell": true,
+          "coinValueGap": 2.875
+        }
+      ]
+    },
+    {
+      "type": "mobile-sale",
+      "language": "ko",
+      "horizontalOverflow": false,
+      "selectedSaleCount": "2",
+      "saleTrayInsideOwnHand": true,
+      "versionUnchanged": true
+    },
+    {
+      "type": "sale-tray",
+      "language": "es",
+      "trayInsideOwnHand": true,
+      "gapBelowHand": 8,
+      "horizontalOverflow": false
+    }
+  ],
+  "trace": [
+    {
+      "page": 1,
+      "endpoint": "/rest/v1/rpc/room_snapshot",
+      "status": 200,
+      "version": 0,
+      "seat": "p1",
+      "game": null,
+      "pending": null,
+      "members": [
+        "p1"
+      ],
+      "empty": false
+    },
+    {
+      "page": 1,
+      "endpoint": "/rest/v1/rpc/room_snapshot",
+      "status": 200,
+      "version": 0,
+      "seat": "p1",
+      "game": null,
+      "pending": null,
+      "members": [
+        "p1"
+      ],
+      "empty": false
+    },
+    {
+      "page": 2,
+      "endpoint": "/rest/v1/rpc/room_snapshot",
+      "status": 200,
+      "version": 0,
+      "seat": "p2",
+      "game": null,
+      "pending": null,
+      "members": [
+        "p1",
+        "p2"
+      ],
+      "empty": false
+    },
+    {
+      "page": 2,
+      "endpoint": "/rest/v1/rpc/room_snapshot",
+      "status": 200,
+      "version": 0,
+      "seat": "p2",
+      "game": null,
+      "pending": null,
+      "members": [
+        "p1",
+        "p2"
+      ],
+      "empty": false
+    },
+    {
+      "page": 1,
+      "endpoint": "/rest/v1/rpc/room_snapshot",
+      "status": 200,
+      "version": 0,
+      "seat": "p1",
+      "game": null,
+      "pending": null,
+      "members": [
+        "p1",
+        "p2"
+      ],
+      "empty": false
+    },
+    {
+      "page": 1,
+      "endpoint": "/functions/v1/action",
+      "status": 200,
+      "version": 1,
+      "empty": false
+    },
+    {
+      "page": 2,
+      "endpoint": "/rest/v1/rpc/room_snapshot",
+      "status": 200,
+      "version": 1,
+      "seat": "p2",
+      "game": null,
+      "pending": "jaipur",
+      "members": [
+        "p1",
+        "p2"
+      ],
+      "empty": false
+    },
+    {
+      "page": 1,
+      "endpoint": "/rest/v1/rpc/room_snapshot",
+      "status": 200,
+      "version": 1,
+      "seat": "p1",
+      "game": null,
+      "pending": "jaipur",
+      "members": [
+        "p1",
+        "p2"
+      ],
+      "empty": false
+    },
+    {
+      "page": 2,
+      "endpoint": "/functions/v1/action",
+      "status": 200,
+      "version": 2,
+      "empty": false
+    },
+    {
+      "page": 2,
+      "endpoint": "/rest/v1/rpc/room_snapshot",
+      "status": 200,
+      "version": 2,
+      "seat": "p2",
+      "game": "jaipur",
+      "pending": null,
+      "members": [
+        "p1",
+        "p2"
+      ],
+      "empty": false
+    },
+    {
+      "page": 1,
+      "endpoint": "/rest/v1/rpc/room_snapshot",
+      "status": 200,
+      "version": 2,
+      "seat": "p1",
+      "game": "jaipur",
+      "pending": null,
+      "members": [
+        "p1",
+        "p2"
+      ],
+      "empty": false
+    },
+    {
+      "page": 1,
+      "endpoint": "/functions/v1/action",
+      "status": 200,
+      "version": 3,
+      "empty": false
+    },
+    {
+      "page": 1,
+      "endpoint": "/rest/v1/rpc/room_snapshot",
+      "status": 200,
+      "version": 3,
+      "seat": "p1",
+      "game": "jaipur",
+      "pending": null,
+      "members": [
+        "p1",
+        "p2"
+      ],
+      "empty": false
+    },
+    {
+      "page": 2,
+      "endpoint": "/rest/v1/rpc/room_snapshot",
+      "status": 200,
+      "version": 3,
+      "seat": "p2",
+      "game": "jaipur",
+      "pending": null,
+      "members": [
+        "p1",
+        "p2"
+      ],
+      "empty": false
+    },
+    {
+      "page": 2,
+      "endpoint": "/functions/v1/action",
+      "status": 200,
+      "version": 4,
+      "empty": false
+    },
+    {
+      "page": 2,
+      "endpoint": "/rest/v1/rpc/room_snapshot",
+      "status": 200,
+      "version": 4,
+      "seat": "p2",
+      "game": "jaipur",
+      "pending": null,
+      "members": [
+        "p1",
+        "p2"
+      ],
+      "empty": false
+    },
+    {
+      "page": 1,
+      "endpoint": "/rest/v1/rpc/room_snapshot",
+      "status": 200,
+      "version": 4,
+      "seat": "p1",
+      "game": "jaipur",
+      "pending": null,
+      "members": [
+        "p1",
+        "p2"
+      ],
+      "empty": false
+    },
+    {
+      "page": 1,
+      "endpoint": "/functions/v1/action",
+      "status": 200,
+      "version": 5,
+      "empty": false
+    },
+    {
+      "page": 1,
+      "endpoint": "/rest/v1/rpc/room_snapshot",
+      "status": 200,
+      "version": 5,
+      "seat": "p1",
+      "game": "jaipur",
+      "pending": null,
+      "members": [
+        "p1",
+        "p2"
+      ],
+      "empty": false
+    },
+    {
+      "page": 2,
+      "endpoint": "/rest/v1/rpc/room_snapshot",
+      "status": 200,
+      "version": 5,
+      "seat": "p2",
+      "game": "jaipur",
+      "pending": null,
+      "members": [
+        "p1",
+        "p2"
+      ],
+      "empty": false
+    }
+  ],
+  "diagnostics": [
+    {
+      "public": {
+        "room": "2bc763ac-6662-4fc1-8d3f-cc4a9db89cd6",
+        "error": null,
+        "pending": null,
+        "version": 5,
+        "player": "p1",
+        "mode": "online",
+        "game": "jaipur",
+        "phase": "waiting",
+        "turn": "p2",
+        "publicJaipur": {
+          "market": [
+            {
+              "id": "r1-m0",
+              "good": "camel"
+            },
+            {
+              "id": "r1-m1",
+              "good": "camel"
+            },
+            {
+              "id": "r1-m2",
+              "good": "camel"
+            },
+            {
+              "id": "r1-m4",
+              "good": "gold"
+            },
+            {
+              "id": "r1-draw39",
+              "good": "spice"
+            }
+          ],
+          "deckCount": 38,
+          "round": 1,
+          "tokens": {
+            "p1": 10,
+            "p2": 0
+          },
+          "piles": {
+            "gold": [
+              6,
+              null,
+              null,
+              null,
+              null
+            ],
+            "cloth": [
+              5,
+              null,
+              null,
+              null,
+              null,
+              null,
+              null
+            ],
+            "spice": [
+              5,
+              null,
+              null,
+              null,
+              null,
+              null,
+              null
+            ],
+            "silver": [
+              5,
+              null,
+              null
+            ],
+            "diamond": [
+              7,
+              null,
+              null,
+              null,
+              null
+            ],
+            "leather": [
+              4,
+              null,
+              null,
+              null,
+              null,
+              null,
+              null,
+              null,
+              null
+            ]
+          },
+          "herds": {
+            "p1": 0,
+            "p2": 1
+          },
+          "wins": {
+            "p1": 0,
+            "p2": 0
+          },
+          "bonusCounts": {
+            "3": 7,
+            "4": 6,
+            "5": 5
+          }
+        },
+        "language": "ko",
+        "leakedPrivateMap": false
+      },
+      "notices": []
+    },
+    {
+      "public": {
+        "room": "2bc763ac-6662-4fc1-8d3f-cc4a9db89cd6",
+        "error": null,
+        "pending": null,
+        "version": 5,
+        "player": "p2",
+        "mode": "online",
+        "game": "jaipur",
+        "phase": "choose",
+        "turn": "p2",
+        "publicJaipur": {
+          "market": [
+            {
+              "id": "r1-m0",
+              "good": "camel"
+            },
+            {
+              "id": "r1-m1",
+              "good": "camel"
+            },
+            {
+              "id": "r1-m2",
+              "good": "camel"
+            },
+            {
+              "id": "r1-m4",
+              "good": "gold"
+            },
+            {
+              "id": "r1-draw39",
+              "good": "spice"
+            }
+          ],
+          "deckCount": 38,
+          "round": 1,
+          "tokens": {
+            "p1": 10,
+            "p2": 0
+          },
+          "piles": {
+            "gold": [
+              6,
+              null,
+              null,
+              null,
+              null
+            ],
+            "cloth": [
+              5,
+              null,
+              null,
+              null,
+              null,
+              null,
+              null
+            ],
+            "spice": [
+              5,
+              null,
+              null,
+              null,
+              null,
+              null,
+              null
+            ],
+            "silver": [
+              5,
+              null,
+              null
+            ],
+            "diamond": [
+              7,
+              null,
+              null,
+              null,
+              null
+            ],
+            "leather": [
+              4,
+              null,
+              null,
+              null,
+              null,
+              null,
+              null,
+              null,
+              null
+            ]
+          },
+          "herds": {
+            "p1": 0,
+            "p2": 1
+          },
+          "wins": {
+            "p1": 0,
+            "p2": 0
+          },
+          "bonusCounts": {
+            "3": 7,
+            "4": 6,
+            "5": 5
+          }
+        },
+        "language": "es-DO",
+        "leakedPrivateMap": false
+      },
+      "notices": []
+    }
+  ]
+}

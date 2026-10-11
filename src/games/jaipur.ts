@@ -123,7 +123,7 @@ function apply(s:JaipurState,p:PlayerId,a:GameAction):JaipurState{
   const goodsPoints=tokenValues.reduce((total,v)=>total+v,0);let bonus:JaipurEvent['bonus'];
   if(count>=3){const size=count>=5?5:count as 3|4;if(n.bonusTiles[size].length)bonus={size,value:n.bonusTiles[size].shift()!};}
   const points=goodsPoints+(bonus?.value??0);n.tokens[p]+=points;n.ledger![p].goods+=goodsPoints;n.ledger![p].bonus+=bonus?.value??0;
-  n=appendEvent(n,{type:'sale',actor,cards,tokenValues,goodsPoints,bonus,points,title:{ko:`${label[g].ko} ${count}장 판매`,es:`Venta de ${count} cartas de ${label[g].es}`}});
+  n=appendEvent(n,{type:'sale',actor,cards,tokenValues,goodsPoints,bonus,points,title:{ko:`${label[g].ko} ${count}장 판매`,es:`Venta de ${count} ${count===1?'carta':'cartas'} de ${label[g].es}`}});
   if(bonus)n=appendEvent(n,{type:'bonus',actor,bonus,points:bonus.value,title:{ko:`${bonus.size}장 판매 보너스 공개`,es:`Bono por vender ${bonus.size===5?'5 o más':bonus.size} cartas`}});
  }
  if(isRoundOver(n))return endRound(n);

@@ -43,6 +43,12 @@ describe('JaipurBoard', () => {
     expect(html).not.toContain('class="jp-sale-options" data-jaipur-zone="sale"');
   });
 
+  it('places the motion layer after scores so transient notices have a flow position', () => {
+    const html = render(view());
+    expect(html.indexOf('class="jp-scorebar"')).toBeGreaterThanOrEqual(0);
+    expect(html.indexOf('class="jaipur-motion-layer"')).toBeGreaterThan(html.indexOf('class="jp-scorebar"'));
+  });
+
   it('labels each active seat relative to the viewer', () => {
     expect(render(view({ turn: 'p1' }), 'ko', 'p1')).toContain('내 차례');
     expect(render(view({ turn: 'p1' }), 'ko', 'p2')).toContain('상대 차례');
@@ -54,10 +60,14 @@ describe('JaipurBoard', () => {
     const ko = render(view());
     expect(ko).toContain('aria-label="남음 1개"');
     expect(ko).toContain('다음');
+    expect(ko).toContain('class="jp-pile-next-label">다음</span>');
+    expect(ko).toContain('class="jp-pile-next-value"');
     expect(ko).toContain('5점');
     const es = render(view(), 'es');
     expect(es).toContain('aria-label="Quedan 1"');
     expect(es).toContain('Siguiente:');
+    expect(es).toContain('class="jp-pile-next-label">Siguiente:</span>');
+    expect(es).toContain('class="jp-pile-next-value"');
     expect(es).toContain('5 pts');
   });
 

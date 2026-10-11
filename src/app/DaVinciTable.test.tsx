@@ -48,6 +48,22 @@ describe('DaVinciTable', () => {
     expect(es).toContain('Adivinar este número');
   });
 
+  it('keeps both larger racks, the selected target, and public reveals explicit', () => {
+    const view = {
+      game: 'davinci', turn: 'p1', phase: 'guess',
+      hand: [0, 2, 4, 6, 8, 10].map(value => ({ color: value % 2 ? 'black' : 'white', value, revealed: false })),
+      board: { opponentTiles: Array.from({ length: 9 }, (_, index) => ({ color: index % 2 ? 'black' : 'white', value: index === 8 ? 11 : null, revealed: index === 8 })), deckCount: 2, turnNumber: 8, tileCount: 26, actionLog: [], lastEvent: null },
+      opponentCount: 8, actions: [...guessActions(0), { label: { ko: '차례 마치기', es: 'Terminar turno' }, action: { type: 'stop' } }],
+    };
+    const html = render(view);
+    expect(html.match(/class="dv-tile dv-own-tile/g)).toHaveLength(6);
+    expect(html.match(/class="dv-tile dv-tile-(?:white|black)[^"]*" aria-pressed=/g)).toHaveLength(8);
+    expect(html).toContain('>목표</em>');
+    expect(html).toContain('state-icons.svg#revealed');
+    expect(html).toContain('>11</b>');
+    expect(html).toContain('숫자 숨김');
+  });
+
   it('matches a joker guess by its explicit engine value instead of coercing it to NaN', () => {
     const choices = guessActions(2);
     expect(findDaVinciGuess(choices, 2, 'joker')?.action).toEqual({ type: 'guess', payload: { index: 2, value: 'joker' } });
@@ -124,12 +140,27 @@ describe('DaVinciTable', () => {
     expect(loss).not.toContain('모든 상대 타일을 공개했어요.');
   });
 
-  it('renders a visible own joker as a dash in the tile and accessible label, never as NaN', () => {
+  it('renders the existing portrait on an own joker and preserves its accessible value', () => {
     const view = { game: 'davinci', turn: 'p1', phase: 'draw', hand: [{ color: 'black', value: 'joker', revealed: false }], board: { opponentTiles: [{ color: 'white', value: null, revealed: false }], deckCount: 12, turnNumber: 1, tileCount: 26, actionLog: [], lastEvent: null }, actions: [] };
     const html = render(view);
-    expect(html).toContain('<b>－</b>');
+    expect(html).toContain('class="dv-joker-portrait"');
+    expect(html).toContain('/images/yeonseok-lisbeth-cutout.webp');
     expect(html).toContain('숫자 －');
     expect(html).not.toContain('NaN');
+  });
+
+  it('uses one face per visible joker and never exposes a hidden rival joker portrait', () => {
+    const view = { game: 'davinci', turn: 'p1', phase: 'waiting', hand: [], board: { opponentTiles: [{ color: 'black', value: 'joker', revealed: false }, { color: 'white', value: 'joker', revealed: false }], deckCount: 12, tileCount: 26 }, actions: [] };
+    for (const language of ['ko', 'es'] as const) {
+      const hidden = render(view, 'p1', language);
+      expect(hidden).not.toContain('dv-joker-portrait');
+      expect(hidden).not.toContain('yeonseok-lisbeth-cutout');
+      expect(hidden).not.toContain('635 70');
+      const visible = render({ ...view, board: { ...view.board, opponentTiles: view.board.opponentTiles.map(tile => ({ ...tile, revealed: true })) } }, 'p1', language);
+      expect(visible.match(/class="dv-joker-portrait"/g)).toHaveLength(2);
+      expect(visible).toContain('viewBox="635 70 355 455"');
+      expect(visible).toContain('viewBox="295 145 340 430"');
+    }
   });
 
   it('offers only server-provided gaps for the private joker and a finish-ready action after placement', () => {

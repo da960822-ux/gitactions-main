@@ -1,0 +1,1291 @@
+{
+  "game": "jaipur",
+  "baseUrl": "http://127.0.0.1:5192",
+  "viewport": {
+    "width": 1440,
+    "height": 900
+  },
+  "independentContexts": 2,
+  "strategy": "Own hand and public market/token tops only; collect matching groups, improve the hand through favorable exchanges, sell precious goods in pairs and ordinary goods in bonus groups, make room before the seven-card limit.",
+  "attempts": [
+    {
+      "attempt": 1,
+      "roomCreatedAndJoinedThroughUI": true,
+      "bothConsentedThroughUI": true,
+      "played": {
+        "p1": 0,
+        "p2": 0
+      },
+      "passes": {
+        "p1": 0,
+        "p2": 0
+      },
+      "moves": [
+        {
+          "player": "p1",
+          "type": "camels",
+          "version": 3,
+          "round": 1,
+          "scores": {
+            "p1": 0,
+            "p2": 0
+          },
+          "deckCount": 36
+        },
+        {
+          "player": "p2",
+          "type": "exchange",
+          "count": 2,
+          "version": 4,
+          "round": 1,
+          "scores": {
+            "p1": 0,
+            "p2": 0
+          },
+          "deckCount": 36
+        },
+        {
+          "player": "p1",
+          "type": "exchange",
+          "count": 2,
+          "version": 5,
+          "round": 1,
+          "scores": {
+            "p1": 0,
+            "p2": 0
+          },
+          "deckCount": 36
+        },
+        {
+          "player": "p2",
+          "type": "single",
+          "version": 6,
+          "round": 1,
+          "scores": {
+            "p1": 0,
+            "p2": 0
+          },
+          "deckCount": 35
+        },
+        {
+          "player": "p1",
+          "type": "sell",
+          "count": 2,
+          "version": 7,
+          "round": 1,
+          "scores": {
+            "p1": 12,
+            "p2": 0
+          },
+          "deckCount": 35
+        },
+        {
+          "player": "p2",
+          "type": "sell",
+          "count": 4,
+          "version": 8,
+          "round": 1,
+          "scores": {
+            "p1": 12,
+            "p2": 16
+          },
+          "deckCount": 35
+        },
+        {
+          "player": "p1",
+          "type": "sell",
+          "count": 3,
+          "version": 9,
+          "round": 1,
+          "scores": {
+            "p1": 27,
+            "p2": 16
+          },
+          "deckCount": 35
+        },
+        {
+          "player": "p2",
+          "type": "single",
+          "version": 10,
+          "round": 1,
+          "scores": {
+            "p1": 27,
+            "p2": 16
+          },
+          "deckCount": 34
+        },
+        {
+          "player": "p1",
+          "type": "single",
+          "version": 11,
+          "round": 1,
+          "scores": {
+            "p1": 27,
+            "p2": 16
+          },
+          "deckCount": 33
+        },
+        {
+          "player": "p2",
+          "type": "single",
+          "version": 12,
+          "round": 1,
+          "scores": {
+            "p1": 27,
+            "p2": 16
+          },
+          "deckCount": 32
+        },
+        {
+          "player": "p1",
+          "type": "single",
+          "version": 13,
+          "round": 1,
+          "scores": {
+            "p1": 27,
+            "p2": 16
+          },
+          "deckCount": 31
+        },
+        {
+          "player": "p2",
+          "type": "sell",
+          "count": 2,
+          "version": 14,
+          "round": 1,
+          "scores": {
+            "p1": 27,
+            "p2": 30
+          },
+          "deckCount": 31
+        },
+        {
+          "player": "p1",
+          "type": "single",
+          "version": 15,
+          "round": 1,
+          "scores": {
+            "p1": 27,
+            "p2": 30
+          },
+          "deckCount": 30
+        },
+        {
+          "player": "p2",
+          "type": "camels",
+          "version": 16,
+          "round": 1,
+          "scores": {
+            "p1": 27,
+            "p2": 30
+          },
+          "deckCount": 28
+        },
+        {
+          "player": "p1",
+          "type": "sell",
+          "count": 3,
+          "version": 17,
+          "round": 1,
+          "scores": {
+            "p1": 40,
+            "p2": 30
+          },
+          "deckCount": 28
+        },
+        {
+          "player": "p2",
+          "type": "single",
+          "version": 18,
+          "round": 1,
+          "scores": {
+            "p1": 40,
+            "p2": 30
+          },
+          "deckCount": 27
+        },
+        {
+          "player": "p1",
+          "type": "camels",
+          "version": 19,
+          "round": 1,
+          "scores": {
+            "p1": 40,
+            "p2": 30
+          },
+          "deckCount": 26
+        },
+        {
+          "player": "p2",
+          "type": "sell",
+          "count": 2,
+          "version": 20,
+          "round": 1,
+          "scores": {
+            "p1": 40,
+            "p2": 35
+          },
+          "deckCount": 26
+        },
+        {
+          "player": "p1",
+          "type": "single",
+          "version": 21,
+          "round": 1,
+          "scores": {
+            "p1": 40,
+            "p2": 35
+          },
+          "deckCount": 25
+        },
+        {
+          "player": "p2",
+          "type": "single",
+          "version": 22,
+          "round": 1,
+          "scores": {
+            "p1": 40,
+            "p2": 35
+          },
+          "deckCount": 24
+        },
+        {
+          "player": "p1",
+          "type": "single",
+          "version": 23,
+          "round": 1,
+          "scores": {
+            "p1": 40,
+            "p2": 35
+          },
+          "deckCount": 23
+        },
+        {
+          "player": "p2",
+          "type": "single",
+          "version": 24,
+          "round": 1,
+          "scores": {
+            "p1": 40,
+            "p2": 35
+          },
+          "deckCount": 22
+        }
+      ],
+      "actions": {
+        "p1": 11,
+        "p2": 11
+      },
+      "sales": {
+        "p1": 3,
+        "p2": 3
+      },
+      "exchanges": {
+        "p1": 1,
+        "p2": 1
+      }
+    }
+  ],
+  "errors": [],
+  "screenshots": [
+    {
+      "language": "ko",
+      "path": "/workspace/gitactions-main/docs/screenshots/live-play-2026-10-11/jaipur-ko.png",
+      "element": "#game-board",
+      "bounds": {
+        "x": 28,
+        "y": 143.03125,
+        "width": 1384,
+        "height": 757.15625
+      }
+    },
+    {
+      "language": "es",
+      "path": "/workspace/gitactions-main/docs/screenshots/live-play-2026-10-11/jaipur-es.png",
+      "element": "#game-board",
+      "bounds": {
+        "x": 28,
+        "y": 133.03125,
+        "width": 1384,
+        "height": 766.71875
+      }
+    }
+  ],
+  "limits": [
+    "Local PGlite SQL/RLS/authority fixture, not deployed Supabase or physical devices.",
+    "The fixture has no Realtime; reconnectRoom explicitly refreshes read snapshots after UI actions.",
+    "Screenshots intentionally show the requesting player’s own hand; no opponent private hand is used to choose moves."
+  ],
+  "trace": [
+    {
+      "page": 1,
+      "endpoint": "/rest/v1/rpc/room_snapshot",
+      "status": 200,
+      "version": 0,
+      "seat": "p1",
+      "game": null,
+      "pending": null,
+      "members": [
+        "p1"
+      ],
+      "empty": false
+    },
+    {
+      "page": 1,
+      "endpoint": "/rest/v1/rpc/room_snapshot",
+      "status": 200,
+      "version": 0,
+      "seat": "p1",
+      "game": null,
+      "pending": null,
+      "members": [
+        "p1"
+      ],
+      "empty": false
+    },
+    {
+      "page": 2,
+      "endpoint": "/rest/v1/rpc/room_snapshot",
+      "status": 200,
+      "version": 0,
+      "seat": "p2",
+      "game": null,
+      "pending": null,
+      "members": [
+        "p1",
+        "p2"
+      ],
+      "empty": false
+    },
+    {
+      "page": 2,
+      "endpoint": "/rest/v1/rpc/room_snapshot",
+      "status": 200,
+      "version": 0,
+      "seat": "p2",
+      "game": null,
+      "pending": null,
+      "members": [
+        "p1",
+        "p2"
+      ],
+      "empty": false
+    },
+    {
+      "page": 1,
+      "endpoint": "/rest/v1/rpc/room_snapshot",
+      "status": 200,
+      "version": 0,
+      "seat": "p1",
+      "game": null,
+      "pending": null,
+      "members": [
+        "p1",
+        "p2"
+      ],
+      "empty": false
+    },
+    {
+      "page": 1,
+      "endpoint": "/functions/v1/action",
+      "status": 200,
+      "version": 1,
+      "empty": false
+    },
+    {
+      "page": 1,
+      "endpoint": "/rest/v1/rpc/room_snapshot",
+      "status": 200,
+      "version": 1,
+      "seat": "p1",
+      "game": null,
+      "pending": "jaipur",
+      "members": [
+        "p1",
+        "p2"
+      ],
+      "empty": false
+    },
+    {
+      "page": 2,
+      "endpoint": "/rest/v1/rpc/room_snapshot",
+      "status": 200,
+      "version": 1,
+      "seat": "p2",
+      "game": null,
+      "pending": "jaipur",
+      "members": [
+        "p1",
+        "p2"
+      ],
+      "empty": false
+    },
+    {
+      "page": 2,
+      "endpoint": "/functions/v1/action",
+      "status": 200,
+      "version": 2,
+      "empty": false
+    },
+    {
+      "page": 2,
+      "endpoint": "/rest/v1/rpc/room_snapshot",
+      "status": 200,
+      "version": 2,
+      "seat": "p2",
+      "game": "jaipur",
+      "pending": null,
+      "members": [
+        "p1",
+        "p2"
+      ],
+      "empty": false
+    },
+    {
+      "page": 1,
+      "endpoint": "/rest/v1/rpc/room_snapshot",
+      "status": 200,
+      "version": 2,
+      "seat": "p1",
+      "game": "jaipur",
+      "pending": null,
+      "members": [
+        "p1",
+        "p2"
+      ],
+      "empty": false
+    },
+    {
+      "page": 1,
+      "endpoint": "/functions/v1/action",
+      "status": 200,
+      "version": 3,
+      "empty": false
+    },
+    {
+      "page": 1,
+      "endpoint": "/rest/v1/rpc/room_snapshot",
+      "status": 200,
+      "version": 3,
+      "seat": "p1",
+      "game": "jaipur",
+      "pending": null,
+      "members": [
+        "p1",
+        "p2"
+      ],
+      "empty": false
+    },
+    {
+      "page": 2,
+      "endpoint": "/rest/v1/rpc/room_snapshot",
+      "status": 200,
+      "version": 3,
+      "seat": "p2",
+      "game": "jaipur",
+      "pending": null,
+      "members": [
+        "p1",
+        "p2"
+      ],
+      "empty": false
+    },
+    {
+      "page": 2,
+      "endpoint": "/functions/v1/action",
+      "status": 200,
+      "version": 4,
+      "empty": false
+    },
+    {
+      "page": 2,
+      "endpoint": "/rest/v1/rpc/room_snapshot",
+      "status": 200,
+      "version": 4,
+      "seat": "p2",
+      "game": "jaipur",
+      "pending": null,
+      "members": [
+        "p1",
+        "p2"
+      ],
+      "empty": false
+    },
+    {
+      "page": 1,
+      "endpoint": "/rest/v1/rpc/room_snapshot",
+      "status": 200,
+      "version": 4,
+      "seat": "p1",
+      "game": "jaipur",
+      "pending": null,
+      "members": [
+        "p1",
+        "p2"
+      ],
+      "empty": false
+    },
+    {
+      "page": 1,
+      "endpoint": "/functions/v1/action",
+      "status": 200,
+      "version": 5,
+      "empty": false
+    },
+    {
+      "page": 1,
+      "endpoint": "/rest/v1/rpc/room_snapshot",
+      "status": 200,
+      "version": 5,
+      "seat": "p1",
+      "game": "jaipur",
+      "pending": null,
+      "members": [
+        "p1",
+        "p2"
+      ],
+      "empty": false
+    },
+    {
+      "page": 2,
+      "endpoint": "/rest/v1/rpc/room_snapshot",
+      "status": 200,
+      "version": 5,
+      "seat": "p2",
+      "game": "jaipur",
+      "pending": null,
+      "members": [
+        "p1",
+        "p2"
+      ],
+      "empty": false
+    },
+    {
+      "page": 2,
+      "endpoint": "/functions/v1/action",
+      "status": 200,
+      "version": 6,
+      "empty": false
+    },
+    {
+      "page": 2,
+      "endpoint": "/rest/v1/rpc/room_snapshot",
+      "status": 200,
+      "version": 6,
+      "seat": "p2",
+      "game": "jaipur",
+      "pending": null,
+      "members": [
+        "p1",
+        "p2"
+      ],
+      "empty": false
+    },
+    {
+      "page": 1,
+      "endpoint": "/rest/v1/rpc/room_snapshot",
+      "status": 200,
+      "version": 6,
+      "seat": "p1",
+      "game": "jaipur",
+      "pending": null,
+      "members": [
+        "p1",
+        "p2"
+      ],
+      "empty": false
+    },
+    {
+      "page": 1,
+      "endpoint": "/functions/v1/action",
+      "status": 200,
+      "version": 7,
+      "empty": false
+    },
+    {
+      "page": 1,
+      "endpoint": "/rest/v1/rpc/room_snapshot",
+      "status": 200,
+      "version": 7,
+      "seat": "p1",
+      "game": "jaipur",
+      "pending": null,
+      "members": [
+        "p1",
+        "p2"
+      ],
+      "empty": false
+    },
+    {
+      "page": 2,
+      "endpoint": "/rest/v1/rpc/room_snapshot",
+      "status": 200,
+      "version": 7,
+      "seat": "p2",
+      "game": "jaipur",
+      "pending": null,
+      "members": [
+        "p1",
+        "p2"
+      ],
+      "empty": false
+    },
+    {
+      "page": 2,
+      "endpoint": "/functions/v1/action",
+      "status": 200,
+      "version": 8,
+      "empty": false
+    },
+    {
+      "page": 2,
+      "endpoint": "/rest/v1/rpc/room_snapshot",
+      "status": 200,
+      "version": 8,
+      "seat": "p2",
+      "game": "jaipur",
+      "pending": null,
+      "members": [
+        "p1",
+        "p2"
+      ],
+      "empty": false
+    },
+    {
+      "page": 1,
+      "endpoint": "/rest/v1/rpc/room_snapshot",
+      "status": 200,
+      "version": 8,
+      "seat": "p1",
+      "game": "jaipur",
+      "pending": null,
+      "members": [
+        "p1",
+        "p2"
+      ],
+      "empty": false
+    },
+    {
+      "page": 1,
+      "endpoint": "/functions/v1/action",
+      "status": 200,
+      "version": 9,
+      "empty": false
+    },
+    {
+      "page": 1,
+      "endpoint": "/rest/v1/rpc/room_snapshot",
+      "status": 200,
+      "version": 9,
+      "seat": "p1",
+      "game": "jaipur",
+      "pending": null,
+      "members": [
+        "p1",
+        "p2"
+      ],
+      "empty": false
+    },
+    {
+      "page": 2,
+      "endpoint": "/rest/v1/rpc/room_snapshot",
+      "status": 200,
+      "version": 9,
+      "seat": "p2",
+      "game": "jaipur",
+      "pending": null,
+      "members": [
+        "p1",
+        "p2"
+      ],
+      "empty": false
+    },
+    {
+      "page": 2,
+      "endpoint": "/functions/v1/action",
+      "status": 200,
+      "version": 10,
+      "empty": false
+    },
+    {
+      "page": 2,
+      "endpoint": "/rest/v1/rpc/room_snapshot",
+      "status": 200,
+      "version": 10,
+      "seat": "p2",
+      "game": "jaipur",
+      "pending": null,
+      "members": [
+        "p1",
+        "p2"
+      ],
+      "empty": false
+    },
+    {
+      "page": 1,
+      "endpoint": "/rest/v1/rpc/room_snapshot",
+      "status": 200,
+      "version": 10,
+      "seat": "p1",
+      "game": "jaipur",
+      "pending": null,
+      "members": [
+        "p1",
+        "p2"
+      ],
+      "empty": false
+    },
+    {
+      "page": 1,
+      "endpoint": "/functions/v1/action",
+      "status": 200,
+      "version": 11,
+      "empty": false
+    },
+    {
+      "page": 1,
+      "endpoint": "/rest/v1/rpc/room_snapshot",
+      "status": 200,
+      "version": 11,
+      "seat": "p1",
+      "game": "jaipur",
+      "pending": null,
+      "members": [
+        "p1",
+        "p2"
+      ],
+      "empty": false
+    },
+    {
+      "page": 2,
+      "endpoint": "/rest/v1/rpc/room_snapshot",
+      "status": 200,
+      "version": 11,
+      "seat": "p2",
+      "game": "jaipur",
+      "pending": null,
+      "members": [
+        "p1",
+        "p2"
+      ],
+      "empty": false
+    },
+    {
+      "page": 2,
+      "endpoint": "/functions/v1/action",
+      "status": 200,
+      "version": 12,
+      "empty": false
+    },
+    {
+      "page": 2,
+      "endpoint": "/rest/v1/rpc/room_snapshot",
+      "status": 200,
+      "version": 12,
+      "seat": "p2",
+      "game": "jaipur",
+      "pending": null,
+      "members": [
+        "p1",
+        "p2"
+      ],
+      "empty": false
+    },
+    {
+      "page": 1,
+      "endpoint": "/rest/v1/rpc/room_snapshot",
+      "status": 200,
+      "version": 12,
+      "seat": "p1",
+      "game": "jaipur",
+      "pending": null,
+      "members": [
+        "p1",
+        "p2"
+      ],
+      "empty": false
+    },
+    {
+      "page": 1,
+      "endpoint": "/functions/v1/action",
+      "status": 200,
+      "version": 13,
+      "empty": false
+    },
+    {
+      "page": 1,
+      "endpoint": "/rest/v1/rpc/room_snapshot",
+      "status": 200,
+      "version": 13,
+      "seat": "p1",
+      "game": "jaipur",
+      "pending": null,
+      "members": [
+        "p1",
+        "p2"
+      ],
+      "empty": false
+    },
+    {
+      "page": 2,
+      "endpoint": "/rest/v1/rpc/room_snapshot",
+      "status": 200,
+      "version": 13,
+      "seat": "p2",
+      "game": "jaipur",
+      "pending": null,
+      "members": [
+        "p1",
+        "p2"
+      ],
+      "empty": false
+    },
+    {
+      "page": 2,
+      "endpoint": "/functions/v1/action",
+      "status": 200,
+      "version": 14,
+      "empty": false
+    },
+    {
+      "page": 2,
+      "endpoint": "/rest/v1/rpc/room_snapshot",
+      "status": 200,
+      "version": 14,
+      "seat": "p2",
+      "game": "jaipur",
+      "pending": null,
+      "members": [
+        "p1",
+        "p2"
+      ],
+      "empty": false
+    },
+    {
+      "page": 1,
+      "endpoint": "/rest/v1/rpc/room_snapshot",
+      "status": 200,
+      "version": 14,
+      "seat": "p1",
+      "game": "jaipur",
+      "pending": null,
+      "members": [
+        "p1",
+        "p2"
+      ],
+      "empty": false
+    },
+    {
+      "page": 1,
+      "endpoint": "/functions/v1/action",
+      "status": 200,
+      "version": 15,
+      "empty": false
+    },
+    {
+      "page": 1,
+      "endpoint": "/rest/v1/rpc/room_snapshot",
+      "status": 200,
+      "version": 15,
+      "seat": "p1",
+      "game": "jaipur",
+      "pending": null,
+      "members": [
+        "p1",
+        "p2"
+      ],
+      "empty": false
+    },
+    {
+      "page": 2,
+      "endpoint": "/rest/v1/rpc/room_snapshot",
+      "status": 200,
+      "version": 15,
+      "seat": "p2",
+      "game": "jaipur",
+      "pending": null,
+      "members": [
+        "p1",
+        "p2"
+      ],
+      "empty": false
+    },
+    {
+      "page": 2,
+      "endpoint": "/functions/v1/action",
+      "status": 200,
+      "version": 16,
+      "empty": false
+    },
+    {
+      "page": 2,
+      "endpoint": "/rest/v1/rpc/room_snapshot",
+      "status": 200,
+      "version": 16,
+      "seat": "p2",
+      "game": "jaipur",
+      "pending": null,
+      "members": [
+        "p1",
+        "p2"
+      ],
+      "empty": false
+    },
+    {
+      "page": 1,
+      "endpoint": "/rest/v1/rpc/room_snapshot",
+      "status": 200,
+      "version": 16,
+      "seat": "p1",
+      "game": "jaipur",
+      "pending": null,
+      "members": [
+        "p1",
+        "p2"
+      ],
+      "empty": false
+    },
+    {
+      "page": 1,
+      "endpoint": "/functions/v1/action",
+      "status": 200,
+      "version": 17,
+      "empty": false
+    },
+    {
+      "page": 1,
+      "endpoint": "/rest/v1/rpc/room_snapshot",
+      "status": 200,
+      "version": 17,
+      "seat": "p1",
+      "game": "jaipur",
+      "pending": null,
+      "members": [
+        "p1",
+        "p2"
+      ],
+      "empty": false
+    },
+    {
+      "page": 2,
+      "endpoint": "/rest/v1/rpc/room_snapshot",
+      "status": 200,
+      "version": 17,
+      "seat": "p2",
+      "game": "jaipur",
+      "pending": null,
+      "members": [
+        "p1",
+        "p2"
+      ],
+      "empty": false
+    },
+    {
+      "page": 2,
+      "endpoint": "/functions/v1/action",
+      "status": 200,
+      "version": 18,
+      "empty": false
+    },
+    {
+      "page": 2,
+      "endpoint": "/rest/v1/rpc/room_snapshot",
+      "status": 200,
+      "version": 18,
+      "seat": "p2",
+      "game": "jaipur",
+      "pending": null,
+      "members": [
+        "p1",
+        "p2"
+      ],
+      "empty": false
+    },
+    {
+      "page": 1,
+      "endpoint": "/rest/v1/rpc/room_snapshot",
+      "status": 200,
+      "version": 18,
+      "seat": "p1",
+      "game": "jaipur",
+      "pending": null,
+      "members": [
+        "p1",
+        "p2"
+      ],
+      "empty": false
+    },
+    {
+      "page": 1,
+      "endpoint": "/functions/v1/action",
+      "status": 200,
+      "version": 19,
+      "empty": false
+    },
+    {
+      "page": 1,
+      "endpoint": "/rest/v1/rpc/room_snapshot",
+      "status": 200,
+      "version": 19,
+      "seat": "p1",
+      "game": "jaipur",
+      "pending": null,
+      "members": [
+        "p1",
+        "p2"
+      ],
+      "empty": false
+    },
+    {
+      "page": 2,
+      "endpoint": "/rest/v1/rpc/room_snapshot",
+      "status": 200,
+      "version": 19,
+      "seat": "p2",
+      "game": "jaipur",
+      "pending": null,
+      "members": [
+        "p1",
+        "p2"
+      ],
+      "empty": false
+    },
+    {
+      "page": 2,
+      "endpoint": "/functions/v1/action",
+      "status": 200,
+      "version": 20,
+      "empty": false
+    },
+    {
+      "page": 2,
+      "endpoint": "/rest/v1/rpc/room_snapshot",
+      "status": 200,
+      "version": 20,
+      "seat": "p2",
+      "game": "jaipur",
+      "pending": null,
+      "members": [
+        "p1",
+        "p2"
+      ],
+      "empty": false
+    },
+    {
+      "page": 1,
+      "endpoint": "/rest/v1/rpc/room_snapshot",
+      "status": 200,
+      "version": 20,
+      "seat": "p1",
+      "game": "jaipur",
+      "pending": null,
+      "members": [
+        "p1",
+        "p2"
+      ],
+      "empty": false
+    },
+    {
+      "page": 1,
+      "endpoint": "/functions/v1/action",
+      "status": 200,
+      "version": 21,
+      "empty": false
+    },
+    {
+      "page": 1,
+      "endpoint": "/rest/v1/rpc/room_snapshot",
+      "status": 200,
+      "version": 21,
+      "seat": "p1",
+      "game": "jaipur",
+      "pending": null,
+      "members": [
+        "p1",
+        "p2"
+      ],
+      "empty": false
+    },
+    {
+      "page": 2,
+      "endpoint": "/rest/v1/rpc/room_snapshot",
+      "status": 200,
+      "version": 21,
+      "seat": "p2",
+      "game": "jaipur",
+      "pending": null,
+      "members": [
+        "p1",
+        "p2"
+      ],
+      "empty": false
+    },
+    {
+      "page": 2,
+      "endpoint": "/functions/v1/action",
+      "status": 200,
+      "version": 22,
+      "empty": false
+    },
+    {
+      "page": 2,
+      "endpoint": "/rest/v1/rpc/room_snapshot",
+      "status": 200,
+      "version": 22,
+      "seat": "p2",
+      "game": "jaipur",
+      "pending": null,
+      "members": [
+        "p1",
+        "p2"
+      ],
+      "empty": false
+    },
+    {
+      "page": 1,
+      "endpoint": "/rest/v1/rpc/room_snapshot",
+      "status": 200,
+      "version": 22,
+      "seat": "p1",
+      "game": "jaipur",
+      "pending": null,
+      "members": [
+        "p1",
+        "p2"
+      ],
+      "empty": false
+    },
+    {
+      "page": 1,
+      "endpoint": "/functions/v1/action",
+      "status": 200,
+      "version": 23,
+      "empty": false
+    },
+    {
+      "page": 1,
+      "endpoint": "/rest/v1/rpc/room_snapshot",
+      "status": 200,
+      "version": 23,
+      "seat": "p1",
+      "game": "jaipur",
+      "pending": null,
+      "members": [
+        "p1",
+        "p2"
+      ],
+      "empty": false
+    },
+    {
+      "page": 2,
+      "endpoint": "/rest/v1/rpc/room_snapshot",
+      "status": 200,
+      "version": 23,
+      "seat": "p2",
+      "game": "jaipur",
+      "pending": null,
+      "members": [
+        "p1",
+        "p2"
+      ],
+      "empty": false
+    },
+    {
+      "page": 2,
+      "endpoint": "/functions/v1/action",
+      "status": 200,
+      "version": 24,
+      "empty": false
+    },
+    {
+      "page": 2,
+      "endpoint": "/rest/v1/rpc/room_snapshot",
+      "status": 200,
+      "version": 24,
+      "seat": "p2",
+      "game": "jaipur",
+      "pending": null,
+      "members": [
+        "p1",
+        "p2"
+      ],
+      "empty": false
+    },
+    {
+      "page": 1,
+      "endpoint": "/rest/v1/rpc/room_snapshot",
+      "status": 200,
+      "version": 24,
+      "seat": "p1",
+      "game": "jaipur",
+      "pending": null,
+      "members": [
+        "p1",
+        "p2"
+      ],
+      "empty": false
+    },
+    {
+      "page": 1,
+      "endpoint": "/rest/v1/rpc/room_snapshot",
+      "status": 200,
+      "version": 24,
+      "seat": "p1",
+      "game": "jaipur",
+      "pending": null,
+      "members": [
+        "p1",
+        "p2"
+      ],
+      "empty": false
+    },
+    {
+      "page": 2,
+      "endpoint": "/rest/v1/rpc/room_snapshot",
+      "status": 200,
+      "version": 24,
+      "seat": "p2",
+      "game": "jaipur",
+      "pending": null,
+      "members": [
+        "p1",
+        "p2"
+      ],
+      "empty": false
+    }
+  ],
+  "final": {
+    "version": 24,
+    "phase": "in-progress",
+    "round": 1,
+    "turn": "p1",
+    "deckCount": 22,
+    "scores": {
+      "p1": 40,
+      "p2": 35
+    },
+    "herdCounts": {
+      "p1": 5,
+      "p2": 3
+    },
+    "handCounts": {
+      "p1": 2,
+      "p2": 2
+    },
+    "actions": {
+      "p1": 11,
+      "p2": 11
+    },
+    "sales": {
+      "p1": 3,
+      "p2": 3
+    },
+    "exchanges": {
+      "p1": 1,
+      "p2": 1
+    },
+    "bothVersionsAndPublicBoardsMatch": true,
+    "privateMapAbsent": true,
+    "distinctOwnHands": true
+  }
+}

@@ -1,0 +1,41 @@
+/* The three premium boards use their dedicated stylesheets. */
+@media (min-width: 1200px) and (max-height: 950px) {
+  .minhwatu-table { gap: 6px; padding: 8px; border-radius: 12px; }
+  .hwatu-header { gap: 8px; }
+  .hwatu-title h2 { font-size: 22px; }
+  .hwatu-title p { margin-top: 1px; font-size: 10px; }
+  .hwatu-seat-strip { gap: 5px; }
+  .hwatu-seat-score { min-width: 140px; padding: 5px 8px; }
+  .hwatu-seat-label { font-size: 11px; }
+  .hwatu-seat-score > strong { font-size: 1rem; }
+  .hwatu-opponent-bar { min-height: 38px; gap: 8px; padding: 3px 9px; }
+  .hwatu-opponent-summary b, .hwatu-opponent-count { font-size: 10px; }
+  .hwatu-opponent-fan { height: 34px; }
+  .hwatu-opponent-fan i { height: 31px; }
+  .hwatu-turn-chip { padding: 6px 9px; font-size: 10px; }
+  .hwatu-felt { padding: 5px 9px; border-width: 3px; }
+  .hwatu-felt-heading { padding-bottom: 3px; }
+  .hwatu-felt-heading h3 { font-size: 15px; }
+  .hwatu-felt-heading div > span, .hwatu-stock-count { font-size: 10px; }
+  .hwatu-stock-count b { min-width: 23px; height: 23px; }
+  .hwatu-deck-back { width: 22px; height: 30px; }
+  .hwatu-table-cards { min-height: 104px; gap: 4px 6px; padding: 4px 2px 3px; }
+  .hwatu-table-card { flex-basis: 64px; }
+  .hwatu-table-card .gb-hwatu-card, .hwatu-table-card .gb-hwatu-face { width: 64px; }
+  .hwatu-draw-area { min-height: 47px; gap: 8px; padding-block: 3px; }
+  .hwatu-draw-label > span { font-size: 11px; }
+  .hwatu-drawn-card .gb-hwatu-card, .hwatu-drawn-card .gb-hwatu-face { width: 52px; }
+  .hwatu-phase-note { min-height: 32px; padding: 4px 8px; font-size: 11px; }
+  .hwatu-hand-section { padding: 7px 9px 6px; }
+  .hwatu-hand-heading h3 { font-size: 14px; }
+  .hwatu-hand-heading > small { font-size: 10px; }
+  .hwatu-choice-hand { min-height: 106px; padding-block: 3px; gap: 3px; }
+  .hwatu-hand-choice { gap: 3px; padding: 3px; }
+  .hwatu-hand-choice .gb-hwatu-card { width: clamp(62px, 4.8vw, 76px); }
+  .hwatu-confirm-row { min-height: 44px; margin-top: 2px; font-size: 11px; }
+
+}
+
+@media (min-width: 1200px) and (max-height: 950px) {
+  .minhwatu-table .hwatu-confirm, .minhwatu-table .hwatu-cancel { min-height: 44px; }
+}

@@ -1,0 +1,213 @@
+{
+  "date": "2026-10-11",
+  "scope": [
+    "davinci",
+    "catchmind",
+    "marble"
+  ],
+  "direction": "review-art-assets.ko.md; selected delegated clean-vector direction",
+  "preview": [
+    "/workspace/onboarding/review/art-assets-native.png",
+    "/workspace/onboarding/review/marble-pawns-native.png",
+    "/workspace/onboarding/review/marble-city-native.png",
+    "/workspace/onboarding/review/art-assets-16px.png",
+    "/workspace/onboarding/review/art-assets-native-2x.png"
+  ],
+  "assets": [
+    {
+      "path": "public/images/davinci/state-icons.svg",
+      "ids": [
+        "target",
+        "revealed",
+        "locked",
+        "draw",
+        "correct",
+        "incorrect"
+      ],
+      "viewBox": "0 0 24 24",
+      "bytes": 1464,
+      "source": "Original SVG geometry authored for this project by Codex; no downloaded icons or competitor references",
+      "terms": "Project-authored work; no third-party license or attribution claimed. Existing repository distribution policy applies.",
+      "native_scale_reviewed": true,
+      "in_game_reviewed": false
+    },
+    {
+      "path": "public/images/catchmind/round-end.svg",
+      "ids": [],
+      "viewBox": "0 0 160 120",
+      "bytes": 428,
+      "source": "Original SVG geometry authored for this project by Codex; no downloaded icons or competitor references",
+      "terms": "Project-authored work; no third-party license or attribution claimed. Existing repository distribution policy applies.",
+      "native_scale_reviewed": true,
+      "in_game_reviewed": false
+    },
+    {
+      "path": "public/images/catchmind/match-end.svg",
+      "ids": [],
+      "viewBox": "0 0 160 120",
+      "bytes": 516,
+      "source": "Original SVG geometry authored for this project by Codex; no downloaded icons or competitor references",
+      "terms": "Project-authored work; no third-party license or attribution claimed. Existing repository distribution policy applies.",
+      "native_scale_reviewed": true,
+      "in_game_reviewed": false
+    },
+    {
+      "path": "public/images/catchmind/tool-icons.svg",
+      "ids": [
+        "pen",
+        "eraser",
+        "fill",
+        "undo",
+        "clear",
+        "swap",
+        "skip",
+        "round-end"
+      ],
+      "viewBox": "0 0 24 24",
+      "bytes": 1758,
+      "source": "Original SVG geometry authored for this project by Codex; no downloaded icons or competitor references",
+      "terms": "Project-authored work; no third-party license or attribution claimed. Existing repository distribution policy applies.",
+      "native_scale_reviewed": true,
+      "in_game_reviewed": false
+    },
+    {
+      "path": "public/images/catchmind/waiting.svg",
+      "ids": [],
+      "viewBox": "0 0 160 120",
+      "bytes": 581,
+      "source": "Original SVG geometry authored for this project by Codex; no downloaded icons or competitor references",
+      "terms": "Project-authored work; no third-party license or attribution claimed. Existing repository distribution policy applies.",
+      "native_scale_reviewed": true,
+      "in_game_reviewed": false
+    },
+    {
+      "path": "public/images/marble/tile-symbols.svg",
+      "ids": [
+        "start",
+        "key",
+        "island",
+        "train",
+        "rest",
+        "fund",
+        "fund-pay",
+        "tax"
+      ],
+      "viewBox": "0 0 32 32",
+      "bytes": 2317,
+      "source": "Original SVG geometry authored for this project by Codex; no downloaded icons or competitor references",
+      "terms": "Project-authored work; no third-party license or attribution claimed. Existing repository distribution policy applies.",
+      "native_scale_reviewed": true,
+      "in_game_reviewed": false
+    },
+    {
+      "path": "public/images/marble/building-levels.svg",
+      "ids": [
+        "villa",
+        "building",
+        "landmark"
+      ],
+      "viewBox": "0 0 32 32",
+      "bytes": 882,
+      "source": "Original SVG geometry authored for this project by Codex; no downloaded icons or competitor references",
+      "terms": "Project-authored work; no third-party license or attribution claimed. Existing repository distribution policy applies.",
+      "native_scale_reviewed": true,
+      "in_game_reviewed": false
+    },
+    {
+      "path": "public/images/marble/city-santo-detail.webp",
+      "dimensions": [
+        320,
+        320
+      ],
+      "native_display": [
+        160,
+        160
+      ],
+      "bytes": 28652,
+      "source": "OpenAI image_gen source-based edit of public/images/marble/collector-atlas.png, 2026-10-11",
+      "source_output": "/workspace/generated_images/exec-fd934ad8-f613-43f0-afe7-77969b82c3d1.png",
+      "derivative": "Two 887px square tiles sliced, Lanczos resized, WebP quality85 method6; original edit retained outside public tree",
+      "terms": "Generated original edit; prior source documented in docs/ASSETS.md. No third-party license claimed; commercial/platform terms require project owner review.",
+      "native_scale_reviewed": true,
+      "in_game_reviewed": false,
+      "quality_selection": "Compared q75/85/90 at 160px native browser size; q85 retained fine architecture edges without visible q90 benefit, total60908B under200KB detail budget.",
+      "runtime_usage": "Unused reference pilot; runtime uses24city SVG family in public/images/marble/cities/"
+    },
+    {
+      "path": "public/images/marble/city-gwangju-detail.webp",
+      "dimensions": [
+        320,
+        320
+      ],
+      "native_display": [
+        160,
+        160
+      ],
+      "bytes": 32256,
+      "source": "OpenAI image_gen source-based edit of public/images/marble/collector-atlas.png, 2026-10-11",
+      "source_output": "/workspace/generated_images/exec-fd934ad8-f613-43f0-afe7-77969b82c3d1.png",
+      "derivative": "Two 887px square tiles sliced, Lanczos resized, WebP quality85 method6; original edit retained outside public tree",
+      "terms": "Generated original edit; prior source documented in docs/ASSETS.md. No third-party license claimed; commercial/platform terms require project owner review.",
+      "native_scale_reviewed": true,
+      "in_game_reviewed": false,
+      "quality_selection": "Compared q75/85/90 at 160px native browser size; q85 retained fine architecture edges without visible q90 benefit, total60908B under200KB detail budget.",
+      "runtime_usage": "Unused reference pilot; runtime uses24city SVG family in public/images/marble/cities/"
+    },
+    {
+      "path": "src/app/MarblePawn.tsx",
+      "ids": [
+        "fox",
+        "cat",
+        "penguin",
+        "astronaut",
+        "robot",
+        "dragon"
+      ],
+      "viewBox": "0 0 120 150",
+      "pivot": [
+        60,
+        137
+      ],
+      "source": "Original project vectors edited directly by Codex into broad silhouettes: fox pointed tail, cat curled tail, penguin flippers, astronaut round visor, robot rectangular head, dragon wings",
+      "terms": "Project-authored vectors; existing repository distribution policy applies",
+      "native_scale_reviewed": true,
+      "in_game_reviewed": false
+    }
+  ],
+  "checks": "All SVGs XML parsed, exact viewBoxes and unique symbol IDs checked, no text/script. Native browser sprite use rendered and visually inspected. Pawn selection tests pass. Integration inspection owned by table agents. Sprite preview repeated at16px and DPR2, silhouettes remain distinct. Imagegen edit prompt: remove all but first two collector cities; preserve recognizable architecture/view/light, simplify tiny noise to three value bands, horizontal pair square tiles on ivory, no labels/flags/numbers.",
+  "qa_status": {
+    "native": "Recorded per asset or linked family contract",
+    "in_game": "Pending root final gameplay-context verification; no in-game approval asserted"
+  },
+  "related_family_contracts": [
+    {
+      "family": "Marble runtime24city SVG family",
+      "contract": "public/images/marble/cities/manifest.json",
+      "runtime_usage": "Runtime city art; two city WebP pilots are unused references",
+      "qa": "Consult family contract for native QA; final in-game QA pending"
+    },
+    {
+      "family": "Marble world map and backing board",
+      "contract": "docs/marble-world-art.md",
+      "paths": [
+        "public/images/marble/world-map-board.webp",
+        "public/images/marble/backing-board.svg"
+      ],
+      "native_scale_reviewed": true,
+      "in_game_reviewed": false
+    },
+    {
+      "family": "Marble physical ownership card and building pieces",
+      "contract": "docs/marble-physical-assets.json",
+      "paths": [
+        "public/images/marble/ownership-card-frame.svg",
+        "public/images/marble/buildings/villa.svg",
+        "public/images/marble/buildings/building.svg",
+        "public/images/marble/buildings/landmark.svg"
+      ],
+      "native_scale_reviewed": "Recorded by family author in linked contract",
+      "in_game_reviewed": false
+    }
+  ],
+  "generated_source_retention": "Original generated images remain at source_output workspace paths under /workspace/generated_images, outside the repository. These paths are source records, not deployed URLs or a claim of committed source preservation."
+}

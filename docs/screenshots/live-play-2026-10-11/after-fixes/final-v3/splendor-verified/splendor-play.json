@@ -1,0 +1,1843 @@
+{
+  "game": "splendor",
+  "baseUrl": "http://127.0.0.1:5192",
+  "viewport": {
+    "width": 1440,
+    "height": 900
+  },
+  "independentContexts": 2,
+  "strategy": "Own tokens, discounts and own reservations plus public face-up cards and nobles only; develop affordable permanent discounts, then target prestige cards, choose useful gem combinations, return surplus above ten, reserve a near-affordable public prestige card when gold helps complete it.",
+  "attempts": [
+    {
+      "attempt": 1,
+      "roomCreatedAndJoinedThroughUI": true,
+      "bothConsentedThroughUI": true,
+      "played": {
+        "p1": 0,
+        "p2": 0
+      },
+      "passes": {
+        "p1": 0,
+        "p2": 0
+      },
+      "moves": [
+        {
+          "player": "p1",
+          "type": "takeTwo",
+          "returned": 0
+        },
+        {
+          "player": "p2",
+          "type": "take",
+          "returned": 0
+        },
+        {
+          "player": "p1",
+          "type": "take",
+          "returned": 0
+        },
+        {
+          "player": "p2",
+          "type": "take",
+          "returned": 0
+        },
+        {
+          "player": "p1",
+          "type": "reserve",
+          "returned": 0
+        },
+        {
+          "player": "p2",
+          "type": "take",
+          "returned": 0
+        },
+        {
+          "player": "p1",
+          "type": "buy",
+          "points": 0,
+          "returned": 0
+        },
+        {
+          "player": "p2",
+          "type": "reserve",
+          "returned": 0
+        },
+        {
+          "player": "p1",
+          "type": "take",
+          "returned": 0
+        },
+        {
+          "player": "p2",
+          "type": "buy",
+          "points": 0,
+          "returned": 0
+        },
+        {
+          "player": "p1",
+          "type": "take",
+          "returned": 0
+        },
+        {
+          "player": "p2",
+          "type": "buy",
+          "points": 0,
+          "returned": 0
+        },
+        {
+          "player": "p1",
+          "type": "buy",
+          "points": 0,
+          "returned": 0
+        },
+        {
+          "player": "p2",
+          "type": "buy",
+          "points": 0,
+          "returned": 0
+        },
+        {
+          "player": "p1",
+          "type": "take",
+          "returned": 0
+        },
+        {
+          "player": "p2",
+          "type": "takeTwo",
+          "returned": 0
+        },
+        {
+          "player": "p1",
+          "type": "take",
+          "returned": 1
+        },
+        {
+          "player": "p2",
+          "type": "take",
+          "returned": 0
+        },
+        {
+          "player": "p1",
+          "type": "take",
+          "returned": 3
+        },
+        {
+          "player": "p2",
+          "type": "buy",
+          "points": 0,
+          "returned": 0
+        },
+        {
+          "player": "p1",
+          "type": "buy",
+          "points": 0,
+          "returned": 0
+        },
+        {
+          "player": "p2",
+          "type": "buy",
+          "points": 0,
+          "returned": 0
+        },
+        {
+          "player": "p1",
+          "type": "buy",
+          "points": 0,
+          "returned": 0
+        },
+        {
+          "player": "p2",
+          "type": "buy",
+          "points": 0,
+          "returned": 0
+        },
+        {
+          "player": "p1",
+          "type": "buy",
+          "points": 0,
+          "returned": 0
+        },
+        {
+          "player": "p2",
+          "type": "take",
+          "returned": 0
+        },
+        {
+          "player": "p1",
+          "type": "take",
+          "returned": 0
+        },
+        {
+          "player": "p2",
+          "type": "buy",
+          "points": 1,
+          "returned": 0
+        },
+        {
+          "player": "p1",
+          "type": "take",
+          "returned": 1
+        },
+        {
+          "player": "p2",
+          "type": "buy",
+          "points": 0,
+          "returned": 0
+        },
+        {
+          "player": "p1",
+          "type": "buy",
+          "points": 2,
+          "returned": 0
+        }
+      ],
+      "actions": {
+        "p1": 16,
+        "p2": 15
+      },
+      "purchases": {
+        "p1": 6,
+        "p2": 8
+      },
+      "reservations": {
+        "p1": 1,
+        "p2": 1
+      },
+      "returnedTokens": {
+        "p1": 5,
+        "p2": 0
+      },
+      "returnStepperClicks": {
+        "p1": 2,
+        "p2": 0
+      },
+      "goldSpent": {
+        "p1": 1,
+        "p2": 1
+      }
+    }
+  ],
+  "errors": [],
+  "screenshots": [
+    {
+      "language": "ko",
+      "state": "reserved-purchase",
+      "path": "/workspace/gitactions-main/docs/screenshots/live-play-2026-10-11/after-fixes/final-v3/splendor-verified/splendor-ko-reserved-purchase.png",
+      "element": "#game-board"
+    },
+    {
+      "language": "ko",
+      "path": "/workspace/gitactions-main/docs/screenshots/live-play-2026-10-11/after-fixes/final-v3/splendor-verified/splendor-ko.png",
+      "element": "#game-board",
+      "bounds": {
+        "x": 28,
+        "y": 171.78125,
+        "width": 1384,
+        "height": 696.78125
+      }
+    },
+    {
+      "language": "es",
+      "path": "/workspace/gitactions-main/docs/screenshots/live-play-2026-10-11/after-fixes/final-v3/splendor-verified/splendor-es.png",
+      "element": "#game-board",
+      "bounds": {
+        "x": 28,
+        "y": 194.78125,
+        "width": 1384,
+        "height": 693.28125
+      }
+    }
+  ],
+  "limits": [
+    "Local PGlite SQL/RLS/authority fixture, not deployed Supabase or physical devices.",
+    "The fixture has no Realtime; reconnectRoom explicitly refreshes read snapshots after UI actions.",
+    "Screenshots intentionally show the requesting player’s own hand; no opponent private hand is used to choose moves."
+  ],
+  "uiChecks": [
+    {
+      "type": "rival-bank-guidance",
+      "language": "es",
+      "text": "Podrás tomar gemas en tu turno.",
+      "phase": "other-turn"
+    },
+    {
+      "type": "rival-bank-guidance",
+      "language": "ko",
+      "text": "내 차례에 보석을 가져올 수 있어요.",
+      "phase": "other-turn"
+    },
+    {
+      "type": "buyable-market-card",
+      "language": "ko",
+      "stateLabel": "1단계 카드 · 보너스 흰색 +1 · 0점 · 비용 2 파랑, 2 검정 · 구매 가능",
+      "visualHighlight": true
+    },
+    {
+      "type": "gold-substitution",
+      "language": "ko",
+      "goldSpent": 1,
+      "requiredAfterDiscountsAndColors": 1
+    },
+    {
+      "type": "buyable-market-card",
+      "language": "es",
+      "stateLabel": "Carta de nivel 1 · bonificación Verde +1 · 0 pts · costo 2 Azul, 2 Roja · Disponible para compra",
+      "visualHighlight": true
+    },
+    {
+      "type": "gold-substitution",
+      "language": "es",
+      "goldSpent": 1,
+      "requiredAfterDiscountsAndColors": 1
+    },
+    {
+      "type": "own-reservation-purchase",
+      "language": "ko",
+      "preview": "이미 예약한 카드 · 구매",
+      "actionCount": 1,
+      "paymentVisible": true
+    },
+    {
+      "type": "final-board",
+      "language": "ko",
+      "horizontalOverflow": false,
+      "publicCardCount": 12,
+      "visiblePublicCards": 12,
+      "visibleCostChips": 29,
+      "costChipMinimumFont": 13,
+      "costIconMinimumWidth": 15,
+      "costIconMinimumHeight": 15,
+      "bankPhase": "other-turn",
+      "bankGuidance": "내 차례에 보석을 가져올 수 있어요.",
+      "buyableCards": 0
+    },
+    {
+      "type": "final-board",
+      "language": "es",
+      "horizontalOverflow": false,
+      "publicCardCount": 12,
+      "visiblePublicCards": 12,
+      "visibleCostChips": 29,
+      "costChipMinimumFont": 13,
+      "costIconMinimumWidth": 15,
+      "costIconMinimumHeight": 15,
+      "bankPhase": "own-turn",
+      "bankGuidance": "Toma: 3 gemas de colores distintos, o 2 del mismo color si quedan al menos 4 en el banco.",
+      "buyableCards": 1
+    }
+  ],
+  "trace": [
+    {
+      "page": 1,
+      "endpoint": "/rest/v1/rpc/room_snapshot",
+      "status": 200,
+      "version": 0,
+      "seat": "p1",
+      "game": null,
+      "pending": null,
+      "members": [
+        "p1"
+      ],
+      "empty": false
+    },
+    {
+      "page": 1,
+      "endpoint": "/rest/v1/rpc/room_snapshot",
+      "status": 200,
+      "version": 0,
+      "seat": "p1",
+      "game": null,
+      "pending": null,
+      "members": [
+        "p1"
+      ],
+      "empty": false
+    },
+    {
+      "page": 2,
+      "endpoint": "/rest/v1/rpc/room_snapshot",
+      "status": 200,
+      "version": 0,
+      "seat": "p2",
+      "game": null,
+      "pending": null,
+      "members": [
+        "p1",
+        "p2"
+      ],
+      "empty": false
+    },
+    {
+      "page": 2,
+      "endpoint": "/rest/v1/rpc/room_snapshot",
+      "status": 200,
+      "version": 0,
+      "seat": "p2",
+      "game": null,
+      "pending": null,
+      "members": [
+        "p1",
+        "p2"
+      ],
+      "empty": false
+    },
+    {
+      "page": 1,
+      "endpoint": "/rest/v1/rpc/room_snapshot",
+      "status": 200,
+      "version": 0,
+      "seat": "p1",
+      "game": null,
+      "pending": null,
+      "members": [
+        "p1",
+        "p2"
+      ],
+      "empty": false
+    },
+    {
+      "page": 1,
+      "endpoint": "/functions/v1/action",
+      "status": 200,
+      "version": 1,
+      "empty": false
+    },
+    {
+      "page": 2,
+      "endpoint": "/rest/v1/rpc/room_snapshot",
+      "status": 200,
+      "version": 1,
+      "seat": "p2",
+      "game": null,
+      "pending": "splendor",
+      "members": [
+        "p1",
+        "p2"
+      ],
+      "empty": false
+    },
+    {
+      "page": 1,
+      "endpoint": "/rest/v1/rpc/room_snapshot",
+      "status": 200,
+      "version": 1,
+      "seat": "p1",
+      "game": null,
+      "pending": "splendor",
+      "members": [
+        "p1",
+        "p2"
+      ],
+      "empty": false
+    },
+    {
+      "page": 2,
+      "endpoint": "/functions/v1/action",
+      "status": 200,
+      "version": 2,
+      "empty": false
+    },
+    {
+      "page": 2,
+      "endpoint": "/rest/v1/rpc/room_snapshot",
+      "status": 200,
+      "version": 2,
+      "seat": "p2",
+      "game": "splendor",
+      "pending": null,
+      "members": [
+        "p1",
+        "p2"
+      ],
+      "empty": false
+    },
+    {
+      "page": 1,
+      "endpoint": "/rest/v1/rpc/room_snapshot",
+      "status": 200,
+      "version": 2,
+      "seat": "p1",
+      "game": "splendor",
+      "pending": null,
+      "members": [
+        "p1",
+        "p2"
+      ],
+      "empty": false
+    },
+    {
+      "page": 1,
+      "endpoint": "/functions/v1/action",
+      "status": 200,
+      "version": 3,
+      "empty": false
+    },
+    {
+      "page": 1,
+      "endpoint": "/rest/v1/rpc/room_snapshot",
+      "status": 200,
+      "version": 3,
+      "seat": "p1",
+      "game": "splendor",
+      "pending": null,
+      "members": [
+        "p1",
+        "p2"
+      ],
+      "empty": false
+    },
+    {
+      "page": 2,
+      "endpoint": "/rest/v1/rpc/room_snapshot",
+      "status": 200,
+      "version": 3,
+      "seat": "p2",
+      "game": "splendor",
+      "pending": null,
+      "members": [
+        "p1",
+        "p2"
+      ],
+      "empty": false
+    },
+    {
+      "page": 2,
+      "endpoint": "/functions/v1/action",
+      "status": 200,
+      "version": 4,
+      "empty": false
+    },
+    {
+      "page": 2,
+      "endpoint": "/rest/v1/rpc/room_snapshot",
+      "status": 200,
+      "version": 4,
+      "seat": "p2",
+      "game": "splendor",
+      "pending": null,
+      "members": [
+        "p1",
+        "p2"
+      ],
+      "empty": false
+    },
+    {
+      "page": 1,
+      "endpoint": "/rest/v1/rpc/room_snapshot",
+      "status": 200,
+      "version": 4,
+      "seat": "p1",
+      "game": "splendor",
+      "pending": null,
+      "members": [
+        "p1",
+        "p2"
+      ],
+      "empty": false
+    },
+    {
+      "page": 1,
+      "endpoint": "/functions/v1/action",
+      "status": 200,
+      "version": 5,
+      "empty": false
+    },
+    {
+      "page": 1,
+      "endpoint": "/rest/v1/rpc/room_snapshot",
+      "status": 200,
+      "version": 5,
+      "seat": "p1",
+      "game": "splendor",
+      "pending": null,
+      "members": [
+        "p1",
+        "p2"
+      ],
+      "empty": false
+    },
+    {
+      "page": 2,
+      "endpoint": "/rest/v1/rpc/room_snapshot",
+      "status": 200,
+      "version": 5,
+      "seat": "p2",
+      "game": "splendor",
+      "pending": null,
+      "members": [
+        "p1",
+        "p2"
+      ],
+      "empty": false
+    },
+    {
+      "page": 2,
+      "endpoint": "/functions/v1/action",
+      "status": 200,
+      "version": 6,
+      "empty": false
+    },
+    {
+      "page": 2,
+      "endpoint": "/rest/v1/rpc/room_snapshot",
+      "status": 200,
+      "version": 6,
+      "seat": "p2",
+      "game": "splendor",
+      "pending": null,
+      "members": [
+        "p1",
+        "p2"
+      ],
+      "empty": false
+    },
+    {
+      "page": 1,
+      "endpoint": "/rest/v1/rpc/room_snapshot",
+      "status": 200,
+      "version": 6,
+      "seat": "p1",
+      "game": "splendor",
+      "pending": null,
+      "members": [
+        "p1",
+        "p2"
+      ],
+      "empty": false
+    },
+    {
+      "page": 1,
+      "endpoint": "/functions/v1/action",
+      "status": 200,
+      "version": 7,
+      "empty": false
+    },
+    {
+      "page": 1,
+      "endpoint": "/rest/v1/rpc/room_snapshot",
+      "status": 200,
+      "version": 7,
+      "seat": "p1",
+      "game": "splendor",
+      "pending": null,
+      "members": [
+        "p1",
+        "p2"
+      ],
+      "empty": false
+    },
+    {
+      "page": 2,
+      "endpoint": "/rest/v1/rpc/room_snapshot",
+      "status": 200,
+      "version": 7,
+      "seat": "p2",
+      "game": "splendor",
+      "pending": null,
+      "members": [
+        "p1",
+        "p2"
+      ],
+      "empty": false
+    },
+    {
+      "page": 2,
+      "endpoint": "/functions/v1/action",
+      "status": 200,
+      "version": 8,
+      "empty": false
+    },
+    {
+      "page": 2,
+      "endpoint": "/rest/v1/rpc/room_snapshot",
+      "status": 200,
+      "version": 8,
+      "seat": "p2",
+      "game": "splendor",
+      "pending": null,
+      "members": [
+        "p1",
+        "p2"
+      ],
+      "empty": false
+    },
+    {
+      "page": 1,
+      "endpoint": "/rest/v1/rpc/room_snapshot",
+      "status": 200,
+      "version": 8,
+      "seat": "p1",
+      "game": "splendor",
+      "pending": null,
+      "members": [
+        "p1",
+        "p2"
+      ],
+      "empty": false
+    },
+    {
+      "page": 1,
+      "endpoint": "/functions/v1/action",
+      "status": 200,
+      "version": 9,
+      "empty": false
+    },
+    {
+      "page": 1,
+      "endpoint": "/rest/v1/rpc/room_snapshot",
+      "status": 200,
+      "version": 9,
+      "seat": "p1",
+      "game": "splendor",
+      "pending": null,
+      "members": [
+        "p1",
+        "p2"
+      ],
+      "empty": false
+    },
+    {
+      "page": 1,
+      "endpoint": "/rest/v1/rpc/room_snapshot",
+      "status": 200,
+      "version": 9,
+      "seat": "p1",
+      "game": "splendor",
+      "pending": null,
+      "members": [
+        "p1",
+        "p2"
+      ],
+      "empty": false
+    },
+    {
+      "page": 2,
+      "endpoint": "/rest/v1/rpc/room_snapshot",
+      "status": 200,
+      "version": 9,
+      "seat": "p2",
+      "game": "splendor",
+      "pending": null,
+      "members": [
+        "p1",
+        "p2"
+      ],
+      "empty": false
+    },
+    {
+      "page": 2,
+      "endpoint": "/functions/v1/action",
+      "status": 200,
+      "version": 10,
+      "empty": false
+    },
+    {
+      "page": 2,
+      "endpoint": "/rest/v1/rpc/room_snapshot",
+      "status": 200,
+      "version": 10,
+      "seat": "p2",
+      "game": "splendor",
+      "pending": null,
+      "members": [
+        "p1",
+        "p2"
+      ],
+      "empty": false
+    },
+    {
+      "page": 1,
+      "endpoint": "/rest/v1/rpc/room_snapshot",
+      "status": 200,
+      "version": 10,
+      "seat": "p1",
+      "game": "splendor",
+      "pending": null,
+      "members": [
+        "p1",
+        "p2"
+      ],
+      "empty": false
+    },
+    {
+      "page": 1,
+      "endpoint": "/functions/v1/action",
+      "status": 200,
+      "version": 11,
+      "empty": false
+    },
+    {
+      "page": 1,
+      "endpoint": "/rest/v1/rpc/room_snapshot",
+      "status": 200,
+      "version": 11,
+      "seat": "p1",
+      "game": "splendor",
+      "pending": null,
+      "members": [
+        "p1",
+        "p2"
+      ],
+      "empty": false
+    },
+    {
+      "page": 2,
+      "endpoint": "/rest/v1/rpc/room_snapshot",
+      "status": 200,
+      "version": 11,
+      "seat": "p2",
+      "game": "splendor",
+      "pending": null,
+      "members": [
+        "p1",
+        "p2"
+      ],
+      "empty": false
+    },
+    {
+      "page": 2,
+      "endpoint": "/functions/v1/action",
+      "status": 200,
+      "version": 12,
+      "empty": false
+    },
+    {
+      "page": 2,
+      "endpoint": "/rest/v1/rpc/room_snapshot",
+      "status": 200,
+      "version": 12,
+      "seat": "p2",
+      "game": "splendor",
+      "pending": null,
+      "members": [
+        "p1",
+        "p2"
+      ],
+      "empty": false
+    },
+    {
+      "page": 2,
+      "endpoint": "/rest/v1/rpc/room_snapshot",
+      "status": 200,
+      "version": 12,
+      "seat": "p2",
+      "game": "splendor",
+      "pending": null,
+      "members": [
+        "p1",
+        "p2"
+      ],
+      "empty": false
+    },
+    {
+      "page": 1,
+      "endpoint": "/rest/v1/rpc/room_snapshot",
+      "status": 200,
+      "version": 12,
+      "seat": "p1",
+      "game": "splendor",
+      "pending": null,
+      "members": [
+        "p1",
+        "p2"
+      ],
+      "empty": false
+    },
+    {
+      "page": 1,
+      "endpoint": "/functions/v1/action",
+      "status": 200,
+      "version": 13,
+      "empty": false
+    },
+    {
+      "page": 1,
+      "endpoint": "/rest/v1/rpc/room_snapshot",
+      "status": 200,
+      "version": 13,
+      "seat": "p1",
+      "game": "splendor",
+      "pending": null,
+      "members": [
+        "p1",
+        "p2"
+      ],
+      "empty": false
+    },
+    {
+      "page": 2,
+      "endpoint": "/rest/v1/rpc/room_snapshot",
+      "status": 200,
+      "version": 13,
+      "seat": "p2",
+      "game": "splendor",
+      "pending": null,
+      "members": [
+        "p1",
+        "p2"
+      ],
+      "empty": false
+    },
+    {
+      "page": 2,
+      "endpoint": "/functions/v1/action",
+      "status": 200,
+      "version": 14,
+      "empty": false
+    },
+    {
+      "page": 2,
+      "endpoint": "/rest/v1/rpc/room_snapshot",
+      "status": 200,
+      "version": 14,
+      "seat": "p2",
+      "game": "splendor",
+      "pending": null,
+      "members": [
+        "p1",
+        "p2"
+      ],
+      "empty": false
+    },
+    {
+      "page": 2,
+      "endpoint": "/rest/v1/rpc/room_snapshot",
+      "status": 200,
+      "version": 14,
+      "seat": "p2",
+      "game": "splendor",
+      "pending": null,
+      "members": [
+        "p1",
+        "p2"
+      ],
+      "empty": false
+    },
+    {
+      "page": 1,
+      "endpoint": "/rest/v1/rpc/room_snapshot",
+      "status": 200,
+      "version": 14,
+      "seat": "p1",
+      "game": "splendor",
+      "pending": null,
+      "members": [
+        "p1",
+        "p2"
+      ],
+      "empty": false
+    },
+    {
+      "page": 1,
+      "endpoint": "/functions/v1/action",
+      "status": 200,
+      "version": 15,
+      "empty": false
+    },
+    {
+      "page": 1,
+      "endpoint": "/rest/v1/rpc/room_snapshot",
+      "status": 200,
+      "version": 15,
+      "seat": "p1",
+      "game": "splendor",
+      "pending": null,
+      "members": [
+        "p1",
+        "p2"
+      ],
+      "empty": false
+    },
+    {
+      "page": 1,
+      "endpoint": "/rest/v1/rpc/room_snapshot",
+      "status": 200,
+      "version": 15,
+      "seat": "p1",
+      "game": "splendor",
+      "pending": null,
+      "members": [
+        "p1",
+        "p2"
+      ],
+      "empty": false
+    },
+    {
+      "page": 2,
+      "endpoint": "/rest/v1/rpc/room_snapshot",
+      "status": 200,
+      "version": 15,
+      "seat": "p2",
+      "game": "splendor",
+      "pending": null,
+      "members": [
+        "p1",
+        "p2"
+      ],
+      "empty": false
+    },
+    {
+      "page": 2,
+      "endpoint": "/functions/v1/action",
+      "status": 200,
+      "version": 16,
+      "empty": false
+    },
+    {
+      "page": 2,
+      "endpoint": "/rest/v1/rpc/room_snapshot",
+      "status": 200,
+      "version": 16,
+      "seat": "p2",
+      "game": "splendor",
+      "pending": null,
+      "members": [
+        "p1",
+        "p2"
+      ],
+      "empty": false
+    },
+    {
+      "page": 2,
+      "endpoint": "/rest/v1/rpc/room_snapshot",
+      "status": 200,
+      "version": 16,
+      "seat": "p2",
+      "game": "splendor",
+      "pending": null,
+      "members": [
+        "p1",
+        "p2"
+      ],
+      "empty": false
+    },
+    {
+      "page": 1,
+      "endpoint": "/rest/v1/rpc/room_snapshot",
+      "status": 200,
+      "version": 16,
+      "seat": "p1",
+      "game": "splendor",
+      "pending": null,
+      "members": [
+        "p1",
+        "p2"
+      ],
+      "empty": false
+    },
+    {
+      "page": 1,
+      "endpoint": "/functions/v1/action",
+      "status": 200,
+      "version": 17,
+      "empty": false
+    },
+    {
+      "page": 1,
+      "endpoint": "/rest/v1/rpc/room_snapshot",
+      "status": 200,
+      "version": 17,
+      "seat": "p1",
+      "game": "splendor",
+      "pending": null,
+      "members": [
+        "p1",
+        "p2"
+      ],
+      "empty": false
+    },
+    {
+      "page": 2,
+      "endpoint": "/rest/v1/rpc/room_snapshot",
+      "status": 200,
+      "version": 17,
+      "seat": "p2",
+      "game": "splendor",
+      "pending": null,
+      "members": [
+        "p1",
+        "p2"
+      ],
+      "empty": false
+    },
+    {
+      "page": 2,
+      "endpoint": "/functions/v1/action",
+      "status": 200,
+      "version": 18,
+      "empty": false
+    },
+    {
+      "page": 2,
+      "endpoint": "/rest/v1/rpc/room_snapshot",
+      "status": 200,
+      "version": 18,
+      "seat": "p2",
+      "game": "splendor",
+      "pending": null,
+      "members": [
+        "p1",
+        "p2"
+      ],
+      "empty": false
+    },
+    {
+      "page": 1,
+      "endpoint": "/rest/v1/rpc/room_snapshot",
+      "status": 200,
+      "version": 18,
+      "seat": "p1",
+      "game": "splendor",
+      "pending": null,
+      "members": [
+        "p1",
+        "p2"
+      ],
+      "empty": false
+    },
+    {
+      "page": 1,
+      "endpoint": "/functions/v1/action",
+      "status": 200,
+      "version": 19,
+      "empty": false
+    },
+    {
+      "page": 1,
+      "endpoint": "/rest/v1/rpc/room_snapshot",
+      "status": 200,
+      "version": 19,
+      "seat": "p1",
+      "game": "splendor",
+      "pending": null,
+      "members": [
+        "p1",
+        "p2"
+      ],
+      "empty": false
+    },
+    {
+      "page": 2,
+      "endpoint": "/rest/v1/rpc/room_snapshot",
+      "status": 200,
+      "version": 19,
+      "seat": "p2",
+      "game": "splendor",
+      "pending": null,
+      "members": [
+        "p1",
+        "p2"
+      ],
+      "empty": false
+    },
+    {
+      "page": 2,
+      "endpoint": "/functions/v1/action",
+      "status": 200,
+      "version": 20,
+      "empty": false
+    },
+    {
+      "page": 2,
+      "endpoint": "/rest/v1/rpc/room_snapshot",
+      "status": 200,
+      "version": 20,
+      "seat": "p2",
+      "game": "splendor",
+      "pending": null,
+      "members": [
+        "p1",
+        "p2"
+      ],
+      "empty": false
+    },
+    {
+      "page": 1,
+      "endpoint": "/rest/v1/rpc/room_snapshot",
+      "status": 200,
+      "version": 20,
+      "seat": "p1",
+      "game": "splendor",
+      "pending": null,
+      "members": [
+        "p1",
+        "p2"
+      ],
+      "empty": false
+    },
+    {
+      "page": 1,
+      "endpoint": "/functions/v1/action",
+      "status": 200,
+      "version": 21,
+      "empty": false
+    },
+    {
+      "page": 1,
+      "endpoint": "/rest/v1/rpc/room_snapshot",
+      "status": 200,
+      "version": 21,
+      "seat": "p1",
+      "game": "splendor",
+      "pending": null,
+      "members": [
+        "p1",
+        "p2"
+      ],
+      "empty": false
+    },
+    {
+      "page": 2,
+      "endpoint": "/rest/v1/rpc/room_snapshot",
+      "status": 200,
+      "version": 21,
+      "seat": "p2",
+      "game": "splendor",
+      "pending": null,
+      "members": [
+        "p1",
+        "p2"
+      ],
+      "empty": false
+    },
+    {
+      "page": 2,
+      "endpoint": "/functions/v1/action",
+      "status": 200,
+      "version": 22,
+      "empty": false
+    },
+    {
+      "page": 2,
+      "endpoint": "/rest/v1/rpc/room_snapshot",
+      "status": 200,
+      "version": 22,
+      "seat": "p2",
+      "game": "splendor",
+      "pending": null,
+      "members": [
+        "p1",
+        "p2"
+      ],
+      "empty": false
+    },
+    {
+      "page": 2,
+      "endpoint": "/rest/v1/rpc/room_snapshot",
+      "status": 200,
+      "version": 22,
+      "seat": "p2",
+      "game": "splendor",
+      "pending": null,
+      "members": [
+        "p1",
+        "p2"
+      ],
+      "empty": false
+    },
+    {
+      "page": 1,
+      "endpoint": "/rest/v1/rpc/room_snapshot",
+      "status": 200,
+      "version": 22,
+      "seat": "p1",
+      "game": "splendor",
+      "pending": null,
+      "members": [
+        "p1",
+        "p2"
+      ],
+      "empty": false
+    },
+    {
+      "page": 1,
+      "endpoint": "/functions/v1/action",
+      "status": 200,
+      "version": 23,
+      "empty": false
+    },
+    {
+      "page": 1,
+      "endpoint": "/rest/v1/rpc/room_snapshot",
+      "status": 200,
+      "version": 23,
+      "seat": "p1",
+      "game": "splendor",
+      "pending": null,
+      "members": [
+        "p1",
+        "p2"
+      ],
+      "empty": false
+    },
+    {
+      "page": 1,
+      "endpoint": "/rest/v1/rpc/room_snapshot",
+      "status": 200,
+      "version": 23,
+      "seat": "p1",
+      "game": "splendor",
+      "pending": null,
+      "members": [
+        "p1",
+        "p2"
+      ],
+      "empty": false
+    },
+    {
+      "page": 2,
+      "endpoint": "/rest/v1/rpc/room_snapshot",
+      "status": 200,
+      "version": 23,
+      "seat": "p2",
+      "game": "splendor",
+      "pending": null,
+      "members": [
+        "p1",
+        "p2"
+      ],
+      "empty": false
+    },
+    {
+      "page": 2,
+      "endpoint": "/functions/v1/action",
+      "status": 200,
+      "version": 24,
+      "empty": false
+    },
+    {
+      "page": 2,
+      "endpoint": "/rest/v1/rpc/room_snapshot",
+      "status": 200,
+      "version": 24,
+      "seat": "p2",
+      "game": "splendor",
+      "pending": null,
+      "members": [
+        "p1",
+        "p2"
+      ],
+      "empty": false
+    },
+    {
+      "page": 2,
+      "endpoint": "/rest/v1/rpc/room_snapshot",
+      "status": 200,
+      "version": 24,
+      "seat": "p2",
+      "game": "splendor",
+      "pending": null,
+      "members": [
+        "p1",
+        "p2"
+      ],
+      "empty": false
+    },
+    {
+      "page": 1,
+      "endpoint": "/rest/v1/rpc/room_snapshot",
+      "status": 200,
+      "version": 24,
+      "seat": "p1",
+      "game": "splendor",
+      "pending": null,
+      "members": [
+        "p1",
+        "p2"
+      ],
+      "empty": false
+    },
+    {
+      "page": 1,
+      "endpoint": "/functions/v1/action",
+      "status": 200,
+      "version": 25,
+      "empty": false
+    },
+    {
+      "page": 1,
+      "endpoint": "/rest/v1/rpc/room_snapshot",
+      "status": 200,
+      "version": 25,
+      "seat": "p1",
+      "game": "splendor",
+      "pending": null,
+      "members": [
+        "p1",
+        "p2"
+      ],
+      "empty": false
+    },
+    {
+      "page": 1,
+      "endpoint": "/rest/v1/rpc/room_snapshot",
+      "status": 200,
+      "version": 25,
+      "seat": "p1",
+      "game": "splendor",
+      "pending": null,
+      "members": [
+        "p1",
+        "p2"
+      ],
+      "empty": false
+    },
+    {
+      "page": 2,
+      "endpoint": "/rest/v1/rpc/room_snapshot",
+      "status": 200,
+      "version": 25,
+      "seat": "p2",
+      "game": "splendor",
+      "pending": null,
+      "members": [
+        "p1",
+        "p2"
+      ],
+      "empty": false
+    },
+    {
+      "page": 2,
+      "endpoint": "/functions/v1/action",
+      "status": 200,
+      "version": 26,
+      "empty": false
+    },
+    {
+      "page": 2,
+      "endpoint": "/rest/v1/rpc/room_snapshot",
+      "status": 200,
+      "version": 26,
+      "seat": "p2",
+      "game": "splendor",
+      "pending": null,
+      "members": [
+        "p1",
+        "p2"
+      ],
+      "empty": false
+    },
+    {
+      "page": 2,
+      "endpoint": "/rest/v1/rpc/room_snapshot",
+      "status": 200,
+      "version": 26,
+      "seat": "p2",
+      "game": "splendor",
+      "pending": null,
+      "members": [
+        "p1",
+        "p2"
+      ],
+      "empty": false
+    },
+    {
+      "page": 1,
+      "endpoint": "/rest/v1/rpc/room_snapshot",
+      "status": 200,
+      "version": 26,
+      "seat": "p1",
+      "game": "splendor",
+      "pending": null,
+      "members": [
+        "p1",
+        "p2"
+      ],
+      "empty": false
+    },
+    {
+      "page": 1,
+      "endpoint": "/functions/v1/action",
+      "status": 200,
+      "version": 27,
+      "empty": false
+    },
+    {
+      "page": 1,
+      "endpoint": "/rest/v1/rpc/room_snapshot",
+      "status": 200,
+      "version": 27,
+      "seat": "p1",
+      "game": "splendor",
+      "pending": null,
+      "members": [
+        "p1",
+        "p2"
+      ],
+      "empty": false
+    },
+    {
+      "page": 1,
+      "endpoint": "/rest/v1/rpc/room_snapshot",
+      "status": 200,
+      "version": 27,
+      "seat": "p1",
+      "game": "splendor",
+      "pending": null,
+      "members": [
+        "p1",
+        "p2"
+      ],
+      "empty": false
+    },
+    {
+      "page": 2,
+      "endpoint": "/rest/v1/rpc/room_snapshot",
+      "status": 200,
+      "version": 27,
+      "seat": "p2",
+      "game": "splendor",
+      "pending": null,
+      "members": [
+        "p1",
+        "p2"
+      ],
+      "empty": false
+    },
+    {
+      "page": 2,
+      "endpoint": "/functions/v1/action",
+      "status": 200,
+      "version": 28,
+      "empty": false
+    },
+    {
+      "page": 2,
+      "endpoint": "/rest/v1/rpc/room_snapshot",
+      "status": 200,
+      "version": 28,
+      "seat": "p2",
+      "game": "splendor",
+      "pending": null,
+      "members": [
+        "p1",
+        "p2"
+      ],
+      "empty": false
+    },
+    {
+      "page": 1,
+      "endpoint": "/rest/v1/rpc/room_snapshot",
+      "status": 200,
+      "version": 28,
+      "seat": "p1",
+      "game": "splendor",
+      "pending": null,
+      "members": [
+        "p1",
+        "p2"
+      ],
+      "empty": false
+    },
+    {
+      "page": 1,
+      "endpoint": "/functions/v1/action",
+      "status": 200,
+      "version": 29,
+      "empty": false
+    },
+    {
+      "page": 1,
+      "endpoint": "/rest/v1/rpc/room_snapshot",
+      "status": 200,
+      "version": 29,
+      "seat": "p1",
+      "game": "splendor",
+      "pending": null,
+      "members": [
+        "p1",
+        "p2"
+      ],
+      "empty": false
+    },
+    {
+      "page": 2,
+      "endpoint": "/rest/v1/rpc/room_snapshot",
+      "status": 200,
+      "version": 29,
+      "seat": "p2",
+      "game": "splendor",
+      "pending": null,
+      "members": [
+        "p1",
+        "p2"
+      ],
+      "empty": false
+    },
+    {
+      "page": 2,
+      "endpoint": "/functions/v1/action",
+      "status": 200,
+      "version": 30,
+      "empty": false
+    },
+    {
+      "page": 2,
+      "endpoint": "/rest/v1/rpc/room_snapshot",
+      "status": 200,
+      "version": 30,
+      "seat": "p2",
+      "game": "splendor",
+      "pending": null,
+      "members": [
+        "p1",
+        "p2"
+      ],
+      "empty": false
+    },
+    {
+      "page": 2,
+      "endpoint": "/rest/v1/rpc/room_snapshot",
+      "status": 200,
+      "version": 30,
+      "seat": "p2",
+      "game": "splendor",
+      "pending": null,
+      "members": [
+        "p1",
+        "p2"
+      ],
+      "empty": false
+    },
+    {
+      "page": 1,
+      "endpoint": "/rest/v1/rpc/room_snapshot",
+      "status": 200,
+      "version": 30,
+      "seat": "p1",
+      "game": "splendor",
+      "pending": null,
+      "members": [
+        "p1",
+        "p2"
+      ],
+      "empty": false
+    },
+    {
+      "page": 1,
+      "endpoint": "/functions/v1/action",
+      "status": 200,
+      "version": 31,
+      "empty": false
+    },
+    {
+      "page": 1,
+      "endpoint": "/rest/v1/rpc/room_snapshot",
+      "status": 200,
+      "version": 31,
+      "seat": "p1",
+      "game": "splendor",
+      "pending": null,
+      "members": [
+        "p1",
+        "p2"
+      ],
+      "empty": false
+    },
+    {
+      "page": 2,
+      "endpoint": "/rest/v1/rpc/room_snapshot",
+      "status": 200,
+      "version": 31,
+      "seat": "p2",
+      "game": "splendor",
+      "pending": null,
+      "members": [
+        "p1",
+        "p2"
+      ],
+      "empty": false
+    },
+    {
+      "page": 2,
+      "endpoint": "/functions/v1/action",
+      "status": 200,
+      "version": 32,
+      "empty": false
+    },
+    {
+      "page": 2,
+      "endpoint": "/rest/v1/rpc/room_snapshot",
+      "status": 200,
+      "version": 32,
+      "seat": "p2",
+      "game": "splendor",
+      "pending": null,
+      "members": [
+        "p1",
+        "p2"
+      ],
+      "empty": false
+    },
+    {
+      "page": 2,
+      "endpoint": "/rest/v1/rpc/room_snapshot",
+      "status": 200,
+      "version": 32,
+      "seat": "p2",
+      "game": "splendor",
+      "pending": null,
+      "members": [
+        "p1",
+        "p2"
+      ],
+      "empty": false
+    },
+    {
+      "page": 1,
+      "endpoint": "/rest/v1/rpc/room_snapshot",
+      "status": 200,
+      "version": 32,
+      "seat": "p1",
+      "game": "splendor",
+      "pending": null,
+      "members": [
+        "p1",
+        "p2"
+      ],
+      "empty": false
+    },
+    {
+      "page": 1,
+      "endpoint": "/functions/v1/action",
+      "status": 200,
+      "version": 33,
+      "empty": false
+    },
+    {
+      "page": 1,
+      "endpoint": "/rest/v1/rpc/room_snapshot",
+      "status": 200,
+      "version": 33,
+      "seat": "p1",
+      "game": "splendor",
+      "pending": null,
+      "members": [
+        "p1",
+        "p2"
+      ],
+      "empty": false
+    },
+    {
+      "page": 1,
+      "endpoint": "/rest/v1/rpc/room_snapshot",
+      "status": 200,
+      "version": 33,
+      "seat": "p1",
+      "game": "splendor",
+      "pending": null,
+      "members": [
+        "p1",
+        "p2"
+      ],
+      "empty": false
+    },
+    {
+      "page": 2,
+      "endpoint": "/rest/v1/rpc/room_snapshot",
+      "status": 200,
+      "version": 33,
+      "seat": "p2",
+      "game": "splendor",
+      "pending": null,
+      "members": [
+        "p1",
+        "p2"
+      ],
+      "empty": false
+    },
+    {
+      "page": 1,
+      "endpoint": "/rest/v1/rpc/room_snapshot",
+      "status": 200,
+      "version": 33,
+      "seat": "p1",
+      "game": "splendor",
+      "pending": null,
+      "members": [
+        "p1",
+        "p2"
+      ],
+      "empty": false
+    },
+    {
+      "page": 2,
+      "endpoint": "/rest/v1/rpc/room_snapshot",
+      "status": 200,
+      "version": 33,
+      "seat": "p2",
+      "game": "splendor",
+      "pending": null,
+      "members": [
+        "p1",
+        "p2"
+      ],
+      "empty": false
+    }
+  ],
+  "final": {
+    "version": 33,
+    "phase": "in-progress",
+    "turn": "p2",
+    "scores": {
+      "p1": 2,
+      "p2": 1
+    },
+    "cardCounts": {
+      "p1": 6,
+      "p2": 8
+    },
+    "discounts": {
+      "p1": {
+        "red": 0,
+        "blue": 2,
+        "black": 1,
+        "green": 1,
+        "white": 2
+      },
+      "p2": {
+        "red": 2,
+        "blue": 2,
+        "black": 1,
+        "green": 1,
+        "white": 2
+      }
+    },
+    "actions": {
+      "p1": 16,
+      "p2": 15
+    },
+    "purchases": {
+      "p1": 6,
+      "p2": 8
+    },
+    "reservations": {
+      "p1": 1,
+      "p2": 1
+    },
+    "returnedTokens": {
+      "p1": 5,
+      "p2": 0
+    },
+    "returnStepperClicks": {
+      "p1": 2,
+      "p2": 0
+    },
+    "goldSpent": {
+      "p1": 1,
+      "p2": 1
+    },
+    "ownCounts": {
+      "p1": {
+        "tokenCount": 6,
+        "reservedCount": 0
+      },
+      "p2": {
+        "tokenCount": 1,
+        "reservedCount": 1
+      }
+    },
+    "bothVersionsAndPublicBoardsMatch": true,
+    "privateMapAbsent": true
+  }
+}

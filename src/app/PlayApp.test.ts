@@ -2,7 +2,8 @@ import { afterEach, describe, expect, it } from 'vitest';
 import { vi } from 'vitest';
 import { createElement } from 'react';
 import { renderToStaticMarkup } from 'react-dom/server';
-import { bindApi, CatchmindChatComposer, GameGuide, Room, rulesButtonLabel, statusLabel } from './PlayApp';
+import { bindApi, catchmindEnterSubmits, CatchmindChatComposer, GameGuide, Room, RulesDialog, rulesButtonLabel, SameGameReplay, sameGameReplayAvailable, statusLabel } from './PlayApp';
+import { getBeginnerGuide } from './beginner-guides';
 import { ActionFlightGuard, announcementForContext, cueForAction, GameFeedback, jaipurImmediateCues, publicViewAnnouncement, publicViewCue } from './GameFeedback';
 import { gameCatalog } from '../games/catalog';
 import { marbleLegacyRules } from '../games/rules';
@@ -49,9 +50,113 @@ describe('PlayApp client binding', () => {
     expect(api.getSnapshot().gameId).toBe('davinci');
     expect(api.getSnapshot().view).toBeTruthy();
   });
+
+  it.skipIf(isOnlineConfigured)('keeps a terminal Domino result until both seats consent to a fresh game', async () => {
+    const api = bindApi({ client, isOnlineConfigured });
+    await api.createRoom('Replay consent test', 'ko');
+    api.localSeat('p2');
+    await api.selectGame('domino');
+    api.localSeat('p1');
+    await api.selectGame('domino');
+
+    let snapshot = api.getSnapshot();
+    for (let step = 0; step < 80 && !snapshot.view?.result; step += 1) {
+      const seat = snapshot.view?.turn as 'p1' | 'p2';
+      api.localSeat(seat);
+      snapshot = api.getSnapshot();
+      const action = snapshot.view?.actions?.find((item: any) => ['play', 'pass'].includes(item.action.type))?.action;
+      expect(action, `expected a legal Domino action at step ${step}`).toBeTruthy();
+      await api.sendAction(action);
+      snapshot = api.getSnapshot();
+    }
+
+    expect(snapshot.view?.phase).toBe('finished');
+    expect(snapshot.view?.result).toBeTruthy();
+    const finishedVersion = snapshot.version;
+    const previousStorage = globalThis.localStorage;
+    vi.stubGlobal('localStorage', { getItem: () => null, setItem: () => {}, removeItem: () => {} });
+    try {
+      const html = renderToStaticMarkup(createElement(Room, { api, roomId: snapshot.roomId! }));
+      expect(html.match(/class="button button-dark same-game-replay-button"/g)).toHaveLength(1);
+      expect(html).not.toContain('class="match-replay"');
+    } finally {
+      vi.stubGlobal('localStorage', previousStorage);
+    }
+    api.localSeat('p1');
+    await api.selectGame('domino');
+    snapshot = api.getSnapshot();
+    expect(snapshot.pendingGame).toBe('domino');
+    expect(snapshot.version).toBe(finishedVersion);
+    expect(snapshot.view?.result).toBeTruthy();
+
+    api.localSeat('p2');
+    await api.selectGame('domino');
+    snapshot = api.getSnapshot();
+    expect(snapshot.pendingGame).toBeNull();
+    expect(snapshot.version).toBe(finishedVersion + 1);
+    expect(snapshot.view?.phase).toBe('play');
+    expect(snapshot.view?.result).toBeNull();
+    expect(snapshot.view?.hand).toHaveLength(7);
+    expect(snapshot.view?.board?.revealedHands).toBeUndefined();
+  });
+});
+
+describe('same-game replay availability', () => {
+  it('appears only for finished Domino, Jaipur, and Splendor results', () => {
+    for (const gameId of ['domino', 'jaipur', 'splendor'] as const) {
+      expect(sameGameReplayAvailable(gameId, { phase: 'finished', status: 'finished', result: { winner: 'p1' } })).toBe(true);
+    }
+    expect(sameGameReplayAvailable('domino', { phase: 'round-over', status: 'round-over', result: null })).toBe(false);
+    expect(sameGameReplayAvailable('domino', { phase: 'finished', status: 'finished', result: null })).toBe(false);
+    expect(sameGameReplayAvailable('minhwatu', { phase: 'finished', status: 'finished', result: { winner: 'p1' } })).toBe(false);
+    expect(sameGameReplayAvailable('davinci', { phase: 'finished', status: 'finished', result: { winner: 'p1' } })).toBe(false);
+  });
+
+  it('keeps a pending replay button available to the consenting seat with localized accessible names', () => {
+    const props = { gameId: 'domino' as const, pendingGame: 'domino' as const, onReplay: async () => true };
+    const ko = renderToStaticMarkup(createElement(SameGameReplay, { ...props, language: 'ko' }));
+    const es = renderToStaticMarkup(createElement(SameGameReplay, { ...props, language: 'es' }));
+    expect(ko).toContain('class="button button-dark same-game-replay-button"');
+    expect(ko).toContain('aria-label="같은 게임 다시 하기"');
+    expect(ko).toContain('새 판 요청이 있어요. 두 사람 모두 동의하면 시작돼요.');
+    expect(ko).not.toContain('disabled=""');
+    expect(es).toContain('aria-label="Jugar otra vez"');
+    expect(es).toContain('Hay una solicitud de nueva partida. Empieza cuando ambas personas acepten.');
+  });
 });
 
 describe('inline game guide', () => {
+  it('offers the same concise illustrated introduction before and during the three upgraded games', () => {
+    for (const gameId of ['davinci', 'catchmind', 'marble'] as const) for (const language of ['ko', 'es'] as const) {
+      const quick = getBeginnerGuide(gameId, language)!;
+      const inline = renderToStaticMarkup(createElement(GameGuide, { gameId, language, marbleVersion: 2, marbleEconomyVersion: 2 }));
+      const dialog = renderToStaticMarkup(createElement(RulesDialog, { gameId, language, onClose: () => {} }));
+      for (const html of [inline, dialog]) {
+        expect(html).toContain(quick.goal);
+        expect(html).toContain(`/images/guides/${gameId}-${language}.webp`);
+        expect(html).toContain(language === 'es' ? 'lang="es-DO"' : 'lang="ko"');
+        expect(html).toContain('<details class="guide-details">');
+        expect(html).not.toContain('<details open');
+      }
+    }
+  });
+
+  it('leaves the other five games on their existing instructions', () => {
+    for (const gameId of ['domino', 'jaipur', 'splendor', 'minhwatu', 'rhythm'] as const) {
+      expect(getBeginnerGuide(gameId, 'ko')).toBeNull();
+      const html = renderToStaticMarkup(createElement(GameGuide, { gameId, language: 'es' }));
+      expect(html).not.toContain('beginner-guide');
+      expect(html).not.toContain('/images/guides/');
+    }
+  });
+
+  it('keeps saved Marble cost and credit rules out of the current tutorial', () => {
+    expect(getBeginnerGuide('marble', 'ko', { marbleVersion: 1 })!.tip).toContain('18칸');
+    expect(getBeginnerGuide('marble', 'es', { marbleEconomyVersion: 0 })!.tip).toContain('no tiene préstamos');
+    expect(getBeginnerGuide('marble', 'ko', { marbleEconomyVersion: 1 })!.tip).toContain('100');
+    expect(getBeginnerGuide('marble', 'es', { marbleEconomyVersion: 2 })!.tip).toContain('40');
+  });
+
   it('renders complete localized instructions for all eight games', () => {
     for (const game of gameCatalog) {
       const ko = renderToStaticMarkup(createElement(GameGuide, { gameId: game.id, language: 'ko' }));
@@ -315,4 +420,25 @@ describe('room communication UI', () => {
       vi.stubGlobal('localStorage', previousStorage);
     }
   });
+});
+
+
+describe('Catchmind composing Enter', () => {
+  it('submits only a deliberate Enter after composition and blocks repeated pending sends', () => {
+    const enter = { key: 'Enter', shiftKey: false, isComposing: false, keyCode: 13 };
+    expect(catchmindEnterSubmits(enter, false)).toBe(true);
+    expect(catchmindEnterSubmits({ ...enter, isComposing: true }, false)).toBe(false);
+    expect(catchmindEnterSubmits({ ...enter, keyCode: 229 }, false)).toBe(false);
+    expect(catchmindEnterSubmits({ ...enter, shiftKey: true }, false)).toBe(false);
+    expect(catchmindEnterSubmits(enter, true)).toBe(false);
+  });
+});
+
+it('shows 16 keys for new rooms and retains 13-key instructions for saved rooms', () => {
+  for (const language of ['ko', 'es'] as const) {
+    const render = (marbleEventVersion?: number) => renderToStaticMarkup(createElement(GameGuide, { gameId: 'marble', language, marbleVersion: 2, marbleEconomyVersion: 2, marbleEventVersion }));
+    expect(render(3)).toContain(language === 'ko' ? '16종' : '16 cartas');
+    expect(render()).toContain(language === 'ko' ? '13종' : '13 cartas');
+    expect(render()).not.toContain(language === 'ko' ? '도시 재생' : 'renovación');
+  }
 });

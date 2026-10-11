@@ -1,0 +1,113 @@
+{
+  "date": "2026-10-11",
+  "creator": "Codex original hand-authored SVG geometry",
+  "source": "No external images or icon library; geometric source embedded in shipped SVG",
+  "terms": "Project-authored work; existing repository distribution policy applies; no external attribution",
+  "family": "Marble physical pieces",
+  "lighting": "upper-left light; light roof/front, darker right face",
+  "projection": "orthographic three-quarter isometric",
+  "outline": "#344c59 rounded2.5px; inset1.5px",
+  "collisionRole": "none; decorative UI",
+  "approval": "Author inspected native128/64/32/24 building and180 card contact sheet; delegated art choice accepted. In-game integration review pending.",
+  "assets": [
+    {
+      "path": "public/images/marble/buildings/villa.svg",
+      "role": "villa",
+      "dimensions": [
+        128,
+        128
+      ],
+      "nativeSizes": [
+        24,
+        32,
+        64
+      ],
+      "pivot": [
+        64,
+        122
+      ],
+      "bytes": 736
+    },
+    {
+      "path": "public/images/marble/buildings/building.svg",
+      "role": "building",
+      "dimensions": [
+        128,
+        128
+      ],
+      "nativeSizes": [
+        24,
+        32,
+        64
+      ],
+      "pivot": [
+        64,
+        122
+      ],
+      "bytes": 1497
+    },
+    {
+      "path": "public/images/marble/buildings/landmark.svg",
+      "role": "landmark",
+      "dimensions": [
+        128,
+        128
+      ],
+      "nativeSizes": [
+        24,
+        32,
+        64
+      ],
+      "pivot": [
+        64,
+        122
+      ],
+      "bytes": 984
+    },
+    {
+      "path": "public/images/marble/ownership-card-frame.svg",
+      "role": "physical deed card border with art inset and empty DOM text zones",
+      "dimensions": [
+        240,
+        336
+      ],
+      "nativeSizes": [
+        180,
+        240
+      ],
+      "artInset": [
+        21,
+        55,
+        192,
+        120
+      ],
+      "textSafeZones": {
+        "title": [
+          40,
+          16,
+          156,
+          30
+        ],
+        "price": [
+          40,
+          196,
+          156,
+          45
+        ],
+        "rent": [
+          40,
+          259,
+          125,
+          42
+        ]
+      },
+      "bytes": 1175
+    }
+  ],
+  "validation": {
+    "XML": "4 valid SVG",
+    "embeddedTextOrScripts": false,
+    "nativeContactSheet": "/tmp/marble-physical-contact.png",
+    "totalBytes": 4392
+  }
+}

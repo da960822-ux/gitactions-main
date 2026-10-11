@@ -1,0 +1,230 @@
+{
+  "family": "Marble city miniatures",
+  "date": "2026-10-11",
+  "source": "Original hand-authored SVG geometry by Codex; no external artwork or runtime dependency",
+  "license": "Project-owned original artwork; no third-party attribution required",
+  "dimensions": [
+    192,
+    192
+  ],
+  "view": "three-quarter isometric diorama",
+  "nativeDisplaySizes": [
+    64,
+    96,
+    160
+  ],
+  "pivot": [
+    96,
+    175
+  ],
+  "collision": "none, decorative",
+  "visualLocks": {
+    "light": "upper left; lighter front planes, darker right planes",
+    "outline": "#344c59 1.5–2px rounded joins",
+    "base": "shared diamond at y137–185",
+    "palette": "muted sandstone, terracotta, blue glass, sage greenery, turquoise coast",
+    "density": "one landmark plus two supporting structures; no baked text, flags, prices or numbers"
+  },
+  "approval": "Native 64px and 192px SVG contact sheet inspected; distinct silhouettes accepted by author under delegated choice. In-game integration review belongs to Marble UI task.",
+  "assets": [
+    {
+      "tileIndex": 1,
+      "slug": "gwangju",
+      "name": "Gwangju",
+      "identity": "traditional pavilion and mountain ridge",
+      "path": "/images/marble/cities/gwangju.svg",
+      "bytes": 2418
+    },
+    {
+      "tileIndex": 3,
+      "slug": "santo-domingo",
+      "name": "Santo Domingo",
+      "identity": "colonial cathedral and Caribbean palms",
+      "path": "/images/marble/cities/santo-domingo.svg",
+      "bytes": 5302
+    },
+    {
+      "tileIndex": 4,
+      "slug": "madrid",
+      "name": "Madrid",
+      "identity": "royal palace and terracotta arcades",
+      "path": "/images/marble/cities/madrid.svg",
+      "bytes": 3730
+    },
+    {
+      "tileIndex": 5,
+      "slug": "santiago",
+      "name": "Santiago",
+      "identity": "Andean peaks and modern tower",
+      "path": "/images/marble/cities/santiago.svg",
+      "bytes": 2176
+    },
+    {
+      "tileIndex": 8,
+      "slug": "puerto-plata",
+      "name": "Puerto Plata",
+      "identity": "fortress and coastal cable car",
+      "path": "/images/marble/cities/puerto-plata.svg",
+      "bytes": 3419
+    },
+    {
+      "tileIndex": 9,
+      "slug": "san-juan",
+      "name": "San Juan",
+      "identity": "ocean fort and colorful old town",
+      "path": "/images/marble/cities/san-juan.svg",
+      "bytes": 4265
+    },
+    {
+      "tileIndex": 11,
+      "slug": "la-vega",
+      "name": "La Vega",
+      "identity": "green valley and twin church towers",
+      "path": "/images/marble/cities/la-vega.svg",
+      "bytes": 3686
+    },
+    {
+      "tileIndex": 13,
+      "slug": "punta-cana",
+      "name": "Punta Cana",
+      "identity": "thatch resort beach and palms",
+      "path": "/images/marble/cities/punta-cana.svg",
+      "bytes": 2976
+    },
+    {
+      "tileIndex": 15,
+      "slug": "new-york",
+      "name": "Nueva York",
+      "identity": "stepped skyscrapers and harbor skyline",
+      "path": "/images/marble/cities/new-york.svg",
+      "bytes": 3628
+    },
+    {
+      "tileIndex": 16,
+      "slug": "paris",
+      "name": "París",
+      "identity": "Eiffel tower and mansard rooftops",
+      "path": "/images/marble/cities/paris.svg",
+      "bytes": 3273
+    },
+    {
+      "tileIndex": 17,
+      "slug": "tokyo",
+      "name": "Tokio",
+      "identity": "red broadcast tower and pagoda roof",
+      "path": "/images/marble/cities/tokyo.svg",
+      "bytes": 3512
+    },
+    {
+      "tileIndex": 19,
+      "slug": "barcelona",
+      "name": "Barcelona",
+      "identity": "four spired basilica and ochre city",
+      "path": "/images/marble/cities/barcelona.svg",
+      "bytes": 6261
+    },
+    {
+      "tileIndex": 21,
+      "slug": "samana",
+      "name": "Samaná",
+      "identity": "turquoise bay and waterfront cottages",
+      "path": "/images/marble/cities/samana.svg",
+      "bytes": 2946
+    },
+    {
+      "tileIndex": 22,
+      "slug": "havana",
+      "name": "La Habana",
+      "identity": "domed capitol and pastel streets",
+      "path": "/images/marble/cities/havana.svg",
+      "bytes": 3412
+    },
+    {
+      "tileIndex": 24,
+      "slug": "mexico-city",
+      "name": "Ciudad de México",
+      "identity": "stepped temple and high plateau",
+      "path": "/images/marble/cities/mexico-city.svg",
+      "bytes": 2491
+    },
+    {
+      "tileIndex": 25,
+      "slug": "lisbon",
+      "name": "Lisboa",
+      "identity": "hilltop houses and yellow streetcar",
+      "path": "/images/marble/cities/lisbon.svg",
+      "bytes": 3402
+    },
+    {
+      "tileIndex": 28,
+      "slug": "london",
+      "name": "Londres",
+      "identity": "clock tower and riverside parliament",
+      "path": "/images/marble/cities/london.svg",
+      "bytes": 3928
+    },
+    {
+      "tileIndex": 29,
+      "slug": "rome",
+      "name": "Roma",
+      "identity": "elliptical colosseum and warm stone",
+      "path": "/images/marble/cities/rome.svg",
+      "bytes": 2862
+    },
+    {
+      "tileIndex": 31,
+      "slug": "miami",
+      "name": "Miami",
+      "identity": "art deco beachfront and palms",
+      "path": "/images/marble/cities/miami.svg",
+      "bytes": 3560
+    },
+    {
+      "tileIndex": 32,
+      "slug": "valparaiso",
+      "name": "Valparaíso",
+      "identity": "colorful hillside houses and funicular",
+      "path": "/images/marble/cities/valparaiso.svg",
+      "bytes": 3108
+    },
+    {
+      "tileIndex": 33,
+      "slug": "cebu",
+      "name": "Cebú",
+      "identity": "stone church and tropical harbor",
+      "path": "/images/marble/cities/cebu.svg",
+      "bytes": 3981
+    },
+    {
+      "tileIndex": 35,
+      "slug": "toronto",
+      "name": "Toronto",
+      "identity": "CN tower and lakefront highrises",
+      "path": "/images/marble/cities/toronto.svg",
+      "bytes": 3518
+    },
+    {
+      "tileIndex": 36,
+      "slug": "auckland",
+      "name": "Auckland",
+      "identity": "Sky Tower and sailing harbor",
+      "path": "/images/marble/cities/auckland.svg",
+      "bytes": 2597
+    },
+    {
+      "tileIndex": 38,
+      "slug": "vancouver",
+      "name": "Vancouver",
+      "identity": "mountains glass towers and harbor sails",
+      "path": "/images/marble/cities/vancouver.svg",
+      "bytes": 2297
+    }
+  ],
+  "validation": {
+    "svgXML": "24 parsed successfully",
+    "assetCount": 24,
+    "totalSVGBytes": 82748,
+    "nativePreview": "/tmp/marble-city-contact.png",
+    "runtimeDependencies": 0
+  }
+}

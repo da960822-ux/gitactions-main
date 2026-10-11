@@ -1,0 +1,770 @@
+[
+  {
+    "language": "es",
+    "reduced": false,
+    "width": 390,
+    "kind": "component fixture — not gameplay",
+    "pageErrors": [],
+    "layout": {
+      "note": {
+        "left": 21.796875,
+        "top": 203.5625,
+        "right": 368.203125,
+        "bottom": 239.5625
+      },
+      "targets": [
+        {
+          "selector": ".jp-round-pill",
+          "box": {
+            "left": 249.828125,
+            "top": 24.1875,
+            "right": 365.015625,
+            "bottom": 76.96875
+          },
+          "overlap": 0
+        },
+        {
+          "selector": ".jp-player-hand",
+          "box": {
+            "left": 21.796875,
+            "top": 751.015625,
+            "right": 368.203125,
+            "bottom": 930.203125
+          },
+          "overlap": 0
+        },
+        {
+          "selector": ".jp-action-tray",
+          "box": {
+            "left": 32.390625,
+            "top": 572.40625,
+            "right": 357.609375,
+            "bottom": 654.046875
+          },
+          "overlap": 0
+        },
+        {
+          "selector": ".jp-market-footer",
+          "box": {
+            "left": 32.390625,
+            "top": 511.0625,
+            "right": 357.609375,
+            "bottom": 654.046875
+          },
+          "overlap": 0
+        },
+        {
+          "selector": ".jp-scorebar",
+          "box": {
+            "left": 21.796875,
+            "top": 105.203125,
+            "right": 368.203125,
+            "bottom": 192.375
+          },
+          "overlap": 0
+        }
+      ],
+      "board": {
+        "left": 12,
+        "top": 12,
+        "right": 378,
+        "bottom": 1590.71875
+      },
+      "scrollWidth": 390,
+      "gridColumns": "346.406px",
+      "gridAreas": "none",
+      "round": "Ronda1/ 3",
+      "railGridArea": "auto"
+    },
+    "bonusMs": 2611.9000000003725,
+    "winner": {
+      "title": "¡Ganaste la partida!",
+      "winning": true,
+      "confetti": 1
+    },
+    "winMs": 4510.5,
+    "loser": {
+      "title": "Ganó tu pareja.",
+      "winning": false,
+      "confetti": 0
+    },
+    "draw": {
+      "title": "Partida empatada",
+      "winning": false,
+      "confetti": 0
+    },
+    "ok": true
+  },
+  {
+    "language": "ko",
+    "reduced": false,
+    "width": 1440,
+    "kind": "component fixture — not gameplay",
+    "pageErrors": [],
+    "layout": {
+      "note": {
+        "left": 21.796875,
+        "top": 120.15625,
+        "right": 1418.203125,
+        "bottom": 158.15625
+      },
+      "targets": [
+        {
+          "selector": ".jp-round-pill",
+          "box": {
+            "left": 1309.40625,
+            "top": 23,
+            "right": 1418.203125,
+            "bottom": 64.59375
+          },
+          "overlap": 0
+        },
+        {
+          "selector": ".jp-player-hand",
+          "box": {
+            "left": 21.796875,
+            "top": 523.75,
+            "right": 961.890625,
+            "bottom": 694.390625
+          },
+          "overlap": 0
+        },
+        {
+          "selector": ".jp-action-tray",
+          "box": {
+            "left": 275.953125,
+            "top": 419.5625,
+            "right": 1061.296875,
+            "bottom": 511.5625
+          },
+          "overlap": 0
+        },
+        {
+          "selector": ".jp-market-footer",
+          "box": {
+            "left": 32.390625,
+            "top": 419.5625,
+            "right": 1061.296875,
+            "bottom": 511.5625
+          },
+          "overlap": 0
+        },
+        {
+          "selector": ".jp-scorebar",
+          "box": {
+            "left": 21.796875,
+            "top": 67.390625,
+            "right": 1418.203125,
+            "bottom": 118.5625
+          },
+          "overlap": 0
+        }
+      ],
+      "board": {
+        "left": 12,
+        "top": 12,
+        "right": 1428,
+        "bottom": 708.96875
+      },
+      "scrollWidth": 1440,
+      "gridColumns": "1050.09px 335.125px",
+      "gridAreas": "\"title title\" \"scores scores\" \"notice notice\" \"opponent rival\" \"market supply\" \"hand supply\" \"history supply\" \"round round\" \"final final\"",
+      "round": "라운드1/ 3",
+      "railGridArea": "notice"
+    },
+    "bonusMs": 2608.699999999255,
+    "winner": {
+      "title": "경기에서 이겼어요!",
+      "winning": true,
+      "confetti": 1
+    },
+    "winMs": 4504.700000001118,
+    "loser": {
+      "title": "상대가 이겼어요.",
+      "winning": false,
+      "confetti": 0
+    },
+    "draw": {
+      "title": "경기 무승부",
+      "winning": false,
+      "confetti": 0
+    },
+    "ok": true
+  },
+  {
+    "language": "es",
+    "reduced": false,
+    "width": 1440,
+    "kind": "component fixture — not gameplay",
+    "pageErrors": [],
+    "layout": {
+      "note": {
+        "left": 21.796875,
+        "top": 120.15625,
+        "right": 1418.203125,
+        "bottom": 156.15625
+      },
+      "targets": [
+        {
+          "selector": ".jp-round-pill",
+          "box": {
+            "left": 1309.40625,
+            "top": 23,
+            "right": 1418.203125,
+            "bottom": 64.59375
+          },
+          "overlap": 0
+        },
+        {
+          "selector": ".jp-player-hand",
+          "box": {
+            "left": 21.796875,
+            "top": 519.75,
+            "right": 961.890625,
+            "bottom": 702.125
+          },
+          "overlap": 0
+        },
+        {
+          "selector": ".jp-action-tray",
+          "box": {
+            "left": 301.484375,
+            "top": 415.5625,
+            "right": 1061.296875,
+            "bottom": 507.5625
+          },
+          "overlap": 0
+        },
+        {
+          "selector": ".jp-market-footer",
+          "box": {
+            "left": 32.390625,
+            "top": 415.5625,
+            "right": 1061.296875,
+            "bottom": 507.5625
+          },
+          "overlap": 0
+        },
+        {
+          "selector": ".jp-scorebar",
+          "box": {
+            "left": 21.796875,
+            "top": 67.390625,
+            "right": 1418.203125,
+            "bottom": 118.5625
+          },
+          "overlap": 0
+        }
+      ],
+      "board": {
+        "left": 12,
+        "top": 12,
+        "right": 1428,
+        "bottom": 716.703125
+      },
+      "scrollWidth": 1440,
+      "gridColumns": "1050.09px 335.125px",
+      "gridAreas": "\"title title\" \"scores scores\" \"notice notice\" \"opponent rival\" \"market supply\" \"hand supply\" \"history supply\" \"round round\" \"final final\"",
+      "round": "Ronda1/ 3",
+      "railGridArea": "notice"
+    },
+    "bonusMs": 2605.5,
+    "winner": {
+      "title": "¡Ganaste la partida!",
+      "winning": true,
+      "confetti": 1
+    },
+    "winMs": 4507.699999999255,
+    "loser": {
+      "title": "Ganó tu pareja.",
+      "winning": false,
+      "confetti": 0
+    },
+    "draw": {
+      "title": "Partida empatada",
+      "winning": false,
+      "confetti": 0
+    },
+    "ok": true
+  },
+  {
+    "language": "es",
+    "reduced": true,
+    "width": 390,
+    "kind": "component fixture — not gameplay",
+    "pageErrors": [],
+    "layout": {
+      "note": {
+        "left": 21.796875,
+        "top": 203.5625,
+        "right": 368.203125,
+        "bottom": 239.5625
+      },
+      "targets": [
+        {
+          "selector": ".jp-round-pill",
+          "box": {
+            "left": 249.828125,
+            "top": 24.1875,
+            "right": 365.015625,
+            "bottom": 76.96875
+          },
+          "overlap": 0
+        },
+        {
+          "selector": ".jp-player-hand",
+          "box": {
+            "left": 21.796875,
+            "top": 751.015625,
+            "right": 368.203125,
+            "bottom": 930.203125
+          },
+          "overlap": 0
+        },
+        {
+          "selector": ".jp-action-tray",
+          "box": {
+            "left": 32.390625,
+            "top": 572.40625,
+            "right": 357.609375,
+            "bottom": 654.046875
+          },
+          "overlap": 0
+        },
+        {
+          "selector": ".jp-market-footer",
+          "box": {
+            "left": 32.390625,
+            "top": 511.0625,
+            "right": 357.609375,
+            "bottom": 654.046875
+          },
+          "overlap": 0
+        },
+        {
+          "selector": ".jp-scorebar",
+          "box": {
+            "left": 21.796875,
+            "top": 105.203125,
+            "right": 368.203125,
+            "bottom": 192.375
+          },
+          "overlap": 0
+        }
+      ],
+      "board": {
+        "left": 12,
+        "top": 12,
+        "right": 378,
+        "bottom": 1590.71875
+      },
+      "scrollWidth": 390,
+      "gridColumns": "346.406px",
+      "gridAreas": "none",
+      "round": "Ronda1/ 3",
+      "railGridArea": "auto"
+    },
+    "bonusMs": 2621.800000000745,
+    "winner": {
+      "title": "¡Ganaste la partida!",
+      "winning": true,
+      "confetti": 0
+    },
+    "winMs": 4505.300000000745,
+    "loser": {
+      "title": "Ganó tu pareja.",
+      "winning": false,
+      "confetti": 0
+    },
+    "draw": {
+      "title": "Partida empatada",
+      "winning": false,
+      "confetti": 0
+    },
+    "ok": true
+  },
+  {
+    "language": "ko",
+    "reduced": false,
+    "width": 390,
+    "kind": "component fixture — not gameplay",
+    "pageErrors": [],
+    "layout": {
+      "note": {
+        "left": 21.796875,
+        "top": 211.5625,
+        "right": 368.203125,
+        "bottom": 249.5625
+      },
+      "targets": [
+        {
+          "selector": ".jp-round-pill",
+          "box": {
+            "left": 249.828125,
+            "top": 24.1875,
+            "right": 365.015625,
+            "bottom": 76.96875
+          },
+          "overlap": 0
+        },
+        {
+          "selector": ".jp-player-hand",
+          "box": {
+            "left": 21.796875,
+            "top": 771.015625,
+            "right": 368.203125,
+            "bottom": 954.203125
+          },
+          "overlap": 0
+        },
+        {
+          "selector": ".jp-action-tray",
+          "box": {
+            "left": 32.390625,
+            "top": 592.40625,
+            "right": 357.609375,
+            "bottom": 674.046875
+          },
+          "overlap": 0
+        },
+        {
+          "selector": ".jp-market-footer",
+          "box": {
+            "left": 32.390625,
+            "top": 531.0625,
+            "right": 357.609375,
+            "bottom": 674.046875
+          },
+          "overlap": 0
+        },
+        {
+          "selector": ".jp-scorebar",
+          "box": {
+            "left": 21.796875,
+            "top": 111.203125,
+            "right": 368.203125,
+            "bottom": 200.375
+          },
+          "overlap": 0
+        }
+      ],
+      "board": {
+        "left": 12,
+        "top": 12,
+        "right": 378,
+        "bottom": 1607.140625
+      },
+      "scrollWidth": 390,
+      "gridColumns": "346.406px",
+      "gridAreas": "none",
+      "round": "라운드1/ 3",
+      "railGridArea": "auto"
+    },
+    "bonusMs": 2604.4000000003725,
+    "winner": {
+      "title": "경기에서 이겼어요!",
+      "winning": true,
+      "confetti": 1
+    },
+    "winMs": 4505.39999999851,
+    "loser": {
+      "title": "상대가 이겼어요.",
+      "winning": false,
+      "confetti": 0
+    },
+    "draw": {
+      "title": "경기 무승부",
+      "winning": false,
+      "confetti": 0
+    },
+    "ok": true
+  },
+  {
+    "language": "ko",
+    "reduced": true,
+    "width": 1440,
+    "kind": "component fixture — not gameplay",
+    "pageErrors": [],
+    "layout": {
+      "note": {
+        "left": 21.796875,
+        "top": 120.15625,
+        "right": 1418.203125,
+        "bottom": 158.15625
+      },
+      "targets": [
+        {
+          "selector": ".jp-round-pill",
+          "box": {
+            "left": 1309.40625,
+            "top": 23,
+            "right": 1418.203125,
+            "bottom": 64.59375
+          },
+          "overlap": 0
+        },
+        {
+          "selector": ".jp-player-hand",
+          "box": {
+            "left": 21.796875,
+            "top": 523.75,
+            "right": 961.890625,
+            "bottom": 694.390625
+          },
+          "overlap": 0
+        },
+        {
+          "selector": ".jp-action-tray",
+          "box": {
+            "left": 275.953125,
+            "top": 419.5625,
+            "right": 1061.296875,
+            "bottom": 511.5625
+          },
+          "overlap": 0
+        },
+        {
+          "selector": ".jp-market-footer",
+          "box": {
+            "left": 32.390625,
+            "top": 419.5625,
+            "right": 1061.296875,
+            "bottom": 511.5625
+          },
+          "overlap": 0
+        },
+        {
+          "selector": ".jp-scorebar",
+          "box": {
+            "left": 21.796875,
+            "top": 67.390625,
+            "right": 1418.203125,
+            "bottom": 118.5625
+          },
+          "overlap": 0
+        }
+      ],
+      "board": {
+        "left": 12,
+        "top": 12,
+        "right": 1428,
+        "bottom": 708.96875
+      },
+      "scrollWidth": 1440,
+      "gridColumns": "1050.09px 335.125px",
+      "gridAreas": "\"title title\" \"scores scores\" \"notice notice\" \"opponent rival\" \"market supply\" \"hand supply\" \"history supply\" \"round round\" \"final final\"",
+      "round": "라운드1/ 3",
+      "railGridArea": "notice"
+    },
+    "bonusMs": 2613.199999999255,
+    "winner": {
+      "title": "경기에서 이겼어요!",
+      "winning": true,
+      "confetti": 0
+    },
+    "winMs": 4501.300000000745,
+    "loser": {
+      "title": "상대가 이겼어요.",
+      "winning": false,
+      "confetti": 0
+    },
+    "draw": {
+      "title": "경기 무승부",
+      "winning": false,
+      "confetti": 0
+    },
+    "ok": true
+  },
+  {
+    "language": "ko",
+    "reduced": true,
+    "width": 390,
+    "kind": "component fixture — not gameplay",
+    "pageErrors": [],
+    "layout": {
+      "note": {
+        "left": 21.796875,
+        "top": 211.5625,
+        "right": 368.203125,
+        "bottom": 249.5625
+      },
+      "targets": [
+        {
+          "selector": ".jp-round-pill",
+          "box": {
+            "left": 249.828125,
+            "top": 24.1875,
+            "right": 365.015625,
+            "bottom": 76.96875
+          },
+          "overlap": 0
+        },
+        {
+          "selector": ".jp-player-hand",
+          "box": {
+            "left": 21.796875,
+            "top": 771.015625,
+            "right": 368.203125,
+            "bottom": 954.203125
+          },
+          "overlap": 0
+        },
+        {
+          "selector": ".jp-action-tray",
+          "box": {
+            "left": 32.390625,
+            "top": 592.40625,
+            "right": 357.609375,
+            "bottom": 674.046875
+          },
+          "overlap": 0
+        },
+        {
+          "selector": ".jp-market-footer",
+          "box": {
+            "left": 32.390625,
+            "top": 531.0625,
+            "right": 357.609375,
+            "bottom": 674.046875
+          },
+          "overlap": 0
+        },
+        {
+          "selector": ".jp-scorebar",
+          "box": {
+            "left": 21.796875,
+            "top": 111.203125,
+            "right": 368.203125,
+            "bottom": 200.375
+          },
+          "overlap": 0
+        }
+      ],
+      "board": {
+        "left": 12,
+        "top": 12,
+        "right": 378,
+        "bottom": 1607.140625
+      },
+      "scrollWidth": 390,
+      "gridColumns": "346.406px",
+      "gridAreas": "none",
+      "round": "라운드1/ 3",
+      "railGridArea": "auto"
+    },
+    "bonusMs": 2602.5,
+    "winner": {
+      "title": "경기에서 이겼어요!",
+      "winning": true,
+      "confetti": 0
+    },
+    "winMs": 4504.0999999996275,
+    "loser": {
+      "title": "상대가 이겼어요.",
+      "winning": false,
+      "confetti": 0
+    },
+    "draw": {
+      "title": "경기 무승부",
+      "winning": false,
+      "confetti": 0
+    },
+    "ok": true
+  },
+  {
+    "language": "es",
+    "reduced": true,
+    "width": 1440,
+    "kind": "component fixture — not gameplay",
+    "pageErrors": [],
+    "layout": {
+      "note": {
+        "left": 21.796875,
+        "top": 120.15625,
+        "right": 1418.203125,
+        "bottom": 156.15625
+      },
+      "targets": [
+        {
+          "selector": ".jp-round-pill",
+          "box": {
+            "left": 1309.40625,
+            "top": 23,
+            "right": 1418.203125,
+            "bottom": 64.59375
+          },
+          "overlap": 0
+        },
+        {
+          "selector": ".jp-player-hand",
+          "box": {
+            "left": 21.796875,
+            "top": 519.75,
+            "right": 961.890625,
+            "bottom": 702.125
+          },
+          "overlap": 0
+        },
+        {
+          "selector": ".jp-action-tray",
+          "box": {
+            "left": 301.484375,
+            "top": 415.5625,
+            "right": 1061.296875,
+            "bottom": 507.5625
+          },
+          "overlap": 0
+        },
+        {
+          "selector": ".jp-market-footer",
+          "box": {
+            "left": 32.390625,
+            "top": 415.5625,
+            "right": 1061.296875,
+            "bottom": 507.5625
+          },
+          "overlap": 0
+        },
+        {
+          "selector": ".jp-scorebar",
+          "box": {
+            "left": 21.796875,
+            "top": 67.390625,
+            "right": 1418.203125,
+            "bottom": 118.5625
+          },
+          "overlap": 0
+        }
+      ],
+      "board": {
+        "left": 12,
+        "top": 12,
+        "right": 1428,
+        "bottom": 716.703125
+      },
+      "scrollWidth": 1440,
+      "gridColumns": "1050.09px 335.125px",
+      "gridAreas": "\"title title\" \"scores scores\" \"notice notice\" \"opponent rival\" \"market supply\" \"hand supply\" \"history supply\" \"round round\" \"final final\"",
+      "round": "Ronda1/ 3",
+      "railGridArea": "notice"
+    },
+    "bonusMs": 2601.699999999255,
+    "winner": {
+      "title": "¡Ganaste la partida!",
+      "winning": true,
+      "confetti": 0
+    },
+    "winMs": 4504.5999999996275,
+    "loser": {
+      "title": "Ganó tu pareja.",
+      "winning": false,
+      "confetti": 0
+    },
+    "draw": {
+      "title": "Partida empatada",
+      "winning": false,
+      "confetti": 0
+    },
+    "ok": true
+  }
+]

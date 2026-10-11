@@ -6,7 +6,7 @@ export type { CatchmindCategoryId } from './catchmindTopics';
 export { catchmindDictionary } from './catchmindWords';
 export type { Concept } from './catchmindWords';
 type Point = { x: number; y: number };
-type Stroke = { by: PlayerId; points: Point[]; color: string; width: number; order: number };
+type Stroke = { by: PlayerId; points: Point[]; color: string; width: number; order: number; strokeId?: string; segmentIndex?: number };
 type Guess = { by: PlayerId; text: string; correct: boolean };
 type Fill = { x: number; y: number; color: string; order: number };
 export type CatchmindSettings = { category_id: CatchmindCategoryId | null; drawTimeSeconds: number; rounds: number; choices: number; hints: number; customWords: Concept[]; customOnly: boolean };
@@ -101,14 +101,33 @@ export const catchmindEngine: GameEngine<CatchmindState> = {
       if (s.phase !== 'drawing' || p !== s.drawer) return 'Only the drawer can draw during an active round';
       const strokes = payload.strokes;
       if (!Array.isArray(strokes) || strokes.length < 1 || strokes.length > 12) return 'Send 1 to 12 strokes per batch';
-      if (s.strokes.length + strokes.length > 200) return 'Round stroke limit reached';
-      if (s.strokes.reduce((sum, stroke) => sum + stroke.points.length, 0) + strokes.reduce((sum: number, stroke: any) => sum + (Array.isArray(stroke?.points) ? stroke.points.length : 0), 0) > 4000) return 'Round point limit reached';
+      let physicalStrokes = s.strokes.length;
+      const incomingStrokeIds = new Set<string>();
+      let totalPoints = s.strokes.reduce((sum, stroke) => sum + stroke.points.length, 0);
+      let last: { strokeId?: string; segmentIndex?: number; color?: string; width?: number; points: Point[] } | undefined = s.strokes.at(-1);
       for (const stroke of strokes) {
         if (!stroke || !Array.isArray(stroke.points) || stroke.points.length < 2 || stroke.points.length > 80) return 'Each stroke needs 2 to 80 points';
         if (stroke.points.some((pt: any) => !pt || typeof pt.x !== 'number' || typeof pt.y !== 'number' || !Number.isFinite(pt.x) || !Number.isFinite(pt.y) || pt.x < 0 || pt.x > 1 || pt.y < 0 || pt.y > 1)) return 'Points must be normalized between 0 and 1';
         if (stroke.color !== undefined && (typeof stroke.color !== 'string' || !/^#[0-9a-f]{6}$/i.test(stroke.color))) return 'Invalid stroke color';
         if (stroke.width !== undefined && (!Number.isFinite(stroke.width) || stroke.width < 1 || stroke.width > 24)) return 'Stroke width must be between 1 and 24';
+        const hasId = stroke.strokeId !== undefined, hasSegment = stroke.segmentIndex !== undefined;
+        if (hasId !== hasSegment || hasId && (typeof stroke.strokeId !== 'string' || !/^[a-zA-Z0-9_-]{1,64}$/.test(stroke.strokeId) || !Number.isInteger(stroke.segmentIndex) || stroke.segmentIndex < 0 || stroke.segmentIndex > 10000)) return 'Invalid stroke segment';
+        if (hasId && stroke.segmentIndex > 0) {
+          if (!last || last.strokeId !== stroke.strokeId || last.segmentIndex !== stroke.segmentIndex - 1 || last.color !== (stroke.color ?? '#172033') || last.width !== (stroke.width ?? 3)) return 'Stroke segments must be consecutive and keep the same style';
+          const first = stroke.points[0], end = last.points.at(-1);
+          const overlap = end && Math.round(first.x * 1000) === Math.round(end.x * 1000) && Math.round(first.y * 1000) === Math.round(end.y * 1000);
+          totalPoints += stroke.points.length - (overlap ? 1 : 0);
+          last = { ...last, segmentIndex: stroke.segmentIndex, points: [...last.points, ...(overlap ? stroke.points.slice(1) : stroke.points)] };
+        } else {
+          if (hasId && (incomingStrokeIds.has(stroke.strokeId) || s.strokes.some(item => item.strokeId === stroke.strokeId))) return 'Stroke ID has already been used';
+          if (hasId) incomingStrokeIds.add(stroke.strokeId);
+          physicalStrokes++;
+          totalPoints += stroke.points.length;
+          last = hasId ? { strokeId: stroke.strokeId, segmentIndex: stroke.segmentIndex, color: stroke.color ?? '#172033', width: stroke.width ?? 3, points: stroke.points } : undefined;
+        }
       }
+      if (physicalStrokes > 200) return 'Round stroke limit reached';
+      if (totalPoints > 4000) return 'Round point limit reached';
       return null;
     }
     if (a.type === 'fill') return s.phase === 'drawing' && p === s.drawer && Number.isFinite(payload.x) && Number.isFinite(payload.y) && (payload.x as number) >= 0 && (payload.x as number) <= 1 && (payload.y as number) >= 0 && (payload.y as number) <= 1 && typeof payload.color === 'string' && /^#[0-9a-f]{6}$/i.test(payload.color) && s.fills.length < 60 ? null : 'Invalid fill operation';
@@ -131,8 +150,20 @@ export const catchmindEngine: GameEngine<CatchmindState> = {
     }
     if (a.type === 'choose') return { ...s, answer: s.wordChoices[s.round][a.payload!.wordId as number], strokes: [], fills: [], guesses: [], hintStage: 0, phase: 'drawing' };
     if (a.type === 'draw') {
-      const added = (a.payload!.strokes as any[]).map((st, i) => ({ by: p, points: st.points.map((pt: Point) => ({ x: Math.round(pt.x * 1000) / 1000, y: Math.round(pt.y * 1000) / 1000 })), color: st.color ?? '#172033', width: st.width ?? 3, order: s.nextOrder + i }));
-      return { ...s, strokes: [...s.strokes, ...added], nextOrder: s.nextOrder + added.length };
+      let nextOrder = s.nextOrder;
+      const nextStrokes = [...s.strokes];
+      for (const st of a.payload!.strokes as any[]) {
+        const points = st.points.map((pt: Point) => ({ x: Math.round(pt.x * 1000) / 1000, y: Math.round(pt.y * 1000) / 1000 }));
+        const last = nextStrokes.at(-1);
+        if (last && st.strokeId && st.segmentIndex > 0 && last.strokeId === st.strokeId) {
+          const end = last.points.at(-1), first = points[0];
+          if (end && first.x === end.x && first.y === end.y) points.shift();
+          nextStrokes[nextStrokes.length - 1] = { ...last, points: [...last.points, ...points], segmentIndex: st.segmentIndex };
+        } else {
+          nextStrokes.push({ by: p, points, color: st.color ?? '#172033', width: st.width ?? 3, order: nextOrder++, ...(st.strokeId ? { strokeId: st.strokeId, segmentIndex: st.segmentIndex } : {}) });
+        }
+      }
+      return { ...s, strokes: nextStrokes, nextOrder };
     }
     if (a.type === 'undo') {
       const lastStroke = s.strokes.at(-1), lastFill = s.fills.at(-1);
