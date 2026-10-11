@@ -253,5 +253,18 @@
       "pixelInspection": "not run",
       "applied": false
     }
-  ]
+  ],
+  "alternatePublicTransfer": {
+    "source": "parent report; not fetched or independently verified here",
+    "branch": "assets/premium-marble-20261011",
+    "branchBase": "4ac2808",
+    "pngBlobsReported": 32,
+    "treeCreated": false,
+    "commitCreated": false,
+    "status": "user explicitly approved 32 buildings/game pawns after rejection; parent resumes pending tree; commit SHA pending",
+    "localFiles": 0,
+    "applied": false,
+    "excluded": "real people photos, new joker caricatures, noble portraits",
+    "codePushApproval": "separate and still pending"
+  }
 }

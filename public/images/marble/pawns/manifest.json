@@ -106,5 +106,17 @@
       "pixelInspection": "not run",
       "applied": false
     }
-  ]
+  ],
+  "delivery": {
+    "library": "supported transfer failed; one consumer-local retry per supplied file exhausted",
+    "consumerLocalBytes": 0,
+    "publicPosting": "user approved 32 buildings and game pawns; transfer commit SHA pending",
+    "parentReportedAssetBranch": "assets/premium-marble-20261011",
+    "parentReportedBranchBase": "4ac2808",
+    "parentReportedPngBlobs": 32,
+    "assetTreeOrCommitCreated": false,
+    "pixelInspection": "not run",
+    "applied": false,
+    "publicApprovalScope": "32 buildings/game pawns only; excludes real people photos, new jokers, noble portraits; excludes this code branch push"
+  }
 }

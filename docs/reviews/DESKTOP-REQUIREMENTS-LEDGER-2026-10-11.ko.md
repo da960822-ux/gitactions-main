@@ -45,3 +45,7 @@
 최신 빌드: 비공개 joker 주입 색상 인덱스 타입 오류1건 수정 후 TypeScript/Vite/Edge 모두 통과. 관련18 회귀 통과. 이 결과는 브라우저 화면/최종 멀티플레이 검수와 별개다. 원본 worktree git status clean 재확인.
 
 후속 소스 대조: `SEVEN-GAME-GUIDE-SOURCE-AUDIT-2026-10-11.ko.md`에 7게임의 실제 버튼/선택후확정/승리 조건을 대조했다. 다빈치 두 단계 확정, Domino/Splendor/Minhwatu 취소 안내, Jaipur 실제 확정명·덱 종료·3라운드 동점, legacy Marble ES 버튼명 보완. 30번 세계여행 아시아나/젯블루 상상 여행 연출의 KO 이름을 지역화했다. 엔진 경제/규칙 변경 없음. `CATCHMIND-INTEGRATION-DELTA-2026-10-11.ko.md`에 f0/5f 최신 소스 보존 경계 기록. PlayApp26 통과, MinhwatuGuide 처음 문구검사1 실패 후 source 표현 복원해3 통과. 최신 TypeScript/Vite/Edge build 통과. 인게임·전체 최신 통합 QA는 여전히 미실행.
+
+대체 자산 전송 상태(부모 전달):32개 PNG blob은 있으나 공개 승인 검토가 정확한 증거 재전달 한 번 뒤에도 거절. 사유는 공개 repo와 비공개 의도, 개인적 리스연 인형 자산. assets/premium-marble-20261011은4ac2808 원본에 머물고 자산 tree/commit 없음. 이 실행기는 branch/blob을 가져오지 않았으며 local bytes0·미적용. 이는 공식 Library 전달 실패(25개 시도 각2회)와 **별도 공개 게시 승인 대기**다. 사용자 답변 대기, 같은 경로 반복/직접 blob 다운로드/다른 공개 브랜치 우회 금지. 인물 사진·새 조커·귀족은 공개 전달에서 제외하고 별도 비공개 경로 대기.
+
+위 공개 게시 승인 대기는 후속 사용자 답변으로 **건물·게임말32개 한정 해결**됐다. 공개repo와 개인사진/새조커/귀족 제외를 명시한 질문에 승인했고 부모가 같은 pending tree 재개 중. 아직 확정 SHA/소비자bytes 없음. 후속 게임 코드 push 승인과는 별개다.
