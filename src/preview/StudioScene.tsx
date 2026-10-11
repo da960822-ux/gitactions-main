@@ -37,15 +37,15 @@ export default function StudioScene(props:Props){
    const material=materials.gold.clone();material.color.set('#936b59');material.roughness=.4;material.envMapIntensity=1.2;
    ribbon=new T.Mesh(new T.TubeGeometry(curve,128,.026,8,false),material);scene.add(ribbon);
   }
-  let width=0,height=0,viewWidth=0,viewHeight=0,viewLeft=0,viewTop=0,nodeLeft=0,nodeTop=0,mobile=false,time=0,curveTime=0,last=0,visible=true,disposed=false,loaded=false,impulse=props.impulse??0,energy=0,hovered=-1;
+  let width=0,height=0,viewWidth=0,viewHeight=0,viewLeft=0,viewTop=0,nodeLeft=0,nodeTop=0,mobile=false,time=0,curveTime=0,last=0,visible=true,disposed=false,contextLost=false,loaded=false,impulse=props.impulse??0,energy=0,hovered=-1;
   const pointer=new T.Vector2(),hoverPoint=new T.Vector2(),ray=new T.Raycaster(),finePointer=matchMedia('(hover:hover) and (pointer:fine)');
   const inputNode=props.mode==='hearts'?node.closest<HTMLElement>('.rd-hero')!:canvas;
   const resize=()=>{const box=node.getBoundingClientRect();width=box.width;height=box.height;nodeLeft=box.left+scrollX;nodeTop=box.top+scrollY;mobile=width<700;const cropped=props.mode==='hearts'&&!mobile;viewWidth=cropped?Math.min(width,height*1.44):width;viewHeight=cropped?height*.64:height;viewLeft=(width-viewWidth)/2;viewTop=cropped?height*.22:0;
    renderer.setPixelRatio(cropped?Math.min(devicePixelRatio,1.25):Math.min(devicePixelRatio,1.5));renderer.setSize(viewWidth,viewHeight);canvas.style.position=cropped?'absolute':'';canvas.style.left=`${viewLeft}px`;canvas.style.top=`${viewTop}px`;camera.aspect=width/height;camera.position.set(0,0,props.mode==='hearts'?(mobile?10.5:11.8):(mobile?10.2:9.6));camera.fov=props.mode==='hearts'&&mobile?43:38;
    // Render the existing desktop composition through a smaller window; the full-stage projection is unchanged.
-   if(cropped)camera.setViewOffset(width,height,viewLeft,viewTop,viewWidth,viewHeight);else camera.clearViewOffset();camera.updateProjectionMatrix();render(true);};
+   if(cropped)camera.setViewOffset(width,height,viewLeft,viewTop,viewWidth,viewHeight);else camera.clearViewOffset();camera.updateProjectionMatrix();if(visible&&!document.hidden)render(true);};
   const render=(snap=false,dt=1/60)=>{
-   if(!width||!height||disposed)return;const active=!controls.current.paused&&!document.hidden;
+   if(!width||!height||disposed||contextLost)return;const active=!controls.current.paused&&!document.hidden;
    if(props.mode==='hearts'&&!mobile){const factor=snap||!active?1:1-Math.exp(-dt*8);key.position.lerp(new T.Vector3(-4+(active?pointer.x*3:0),6+(active?pointer.y*1.5:0),8),factor);}
    if(ribbon){if(controls.current.paused)curveTime=1.5;const reveal=1-Math.pow(1-Math.min(1,Math.max(0,curveTime-.35)/1.1),3);ribbon.visible=!mobile;ribbon.geometry.setDrawRange(0,Math.floor(ribbon.geometry.index!.count*reveal/3)*3);const factor=snap||!active?1:1-Math.exp(-dt*6);ribbon.position.lerp(new T.Vector3(active?pointer.x*.21:0,active?pointer.y*.14:0,0),factor);ribbon.rotation.y+=( (active?pointer.x*.025:0)-ribbon.rotation.y)*factor;canvas.dataset.curveReveal=String(reveal);canvas.dataset.renderWindow=JSON.stringify({width,height,viewWidth,viewHeight,viewLeft,viewTop,pixelRatio:renderer.getPixelRatio()});}
    objects.forEach((g,i)=>{
@@ -72,16 +72,17 @@ export default function StudioScene(props:Props){
   const frame=(now:number)=>{const dt=last?Math.min((now-last)/1000,.25):0;last=now;if(!visible||document.hidden)return;
    if(!controls.current.paused){time+=dt;if(ribbon&&node.dataset.ready==='true')curveTime+=dt;energy*=Math.exp(-dt*2);render(false,dt);}
   };
-  renderer.setAnimationLoop(frame);
-  const sync=()=>{if(impulse!==(controls.current.impulse??0)){impulse=controls.current.impulse??0;energy=.85;}render(controls.current.paused);};redraw.current=sync;
+  const syncLoop=()=>{const running=visible&&!document.hidden&&!controls.current.paused&&!disposed&&!contextLost;renderer.setAnimationLoop(running?frame:null);canvas.dataset.renderLoop=running?'running':'stopped';canvas.dataset.motion=running?'running':'paused';if(!running)last=0;};
+  const sync=()=>{if(impulse!==(controls.current.impulse??0)){impulse=controls.current.impulse??0;energy=.85;}if(visible&&!document.hidden)render(controls.current.paused);syncLoop();};redraw.current=sync;
   const move=(event:PointerEvent)=>{if(props.mode==='hearts')pointer.set((event.clientX+scrollX-nodeLeft)/width*2-1,-(event.clientY+scrollY-nodeTop)/height*2+1);else{const box=canvas.getBoundingClientRect();pointer.set((event.clientX-box.left)/box.width*2-1,-(event.clientY-box.top)/box.height*2+1);}if(props.mode==='hearts'&&!mobile&&finePointer.matches&&!controls.current.paused){const local=new T.Vector2((event.clientX+scrollX-nodeLeft-viewLeft)/viewWidth*2-1,-(event.clientY+scrollY-nodeTop-viewTop)/viewHeight*2+1);ray.setFromCamera(local,camera);const hit=ray.intersectObjects(objects.filter(g=>g.visible),true)[0];hovered=hit?objects.findIndex(g=>g===hit.object.parent):-1;if(hit){const point=hit.object.worldToLocal(hit.point.clone());hoverPoint.set(T.MathUtils.clamp(point.x,-1,1),T.MathUtils.clamp(point.y,-1,1));}}if(!controls.current.paused&&props.mode==='games')render();};
   const click=(event:PointerEvent)=>{if(controls.current.paused)return;move(event);if(props.mode==='hearts'){energy=.6;return;}ray.setFromCamera(pointer,camera);const hit=ray.intersectObjects(objects,true)[0];if(hit){let obj:T.Object3D=hit.object;while(obj.parent&& !obj.userData.game)obj=obj.parent;if(obj.userData.game)controls.current.onSelect?.(obj.userData.game);}};
   const leave=()=>{pointer.set(0,0);hovered=-1;};
-  const lost=(event:Event)=>{event.preventDefault();renderer.setAnimationLoop(null);setReady(false);setFailed(true);controls.current.onUnavailable?.();};
-  const observer=new ResizeObserver(resize);observer.observe(node);const intersection=new IntersectionObserver(([entry])=>{visible=entry.isIntersecting;if(visible)render(true);});intersection.observe(node);
+  const lost=(event:Event)=>{event.preventDefault();contextLost=true;syncLoop();setReady(false);setFailed(true);controls.current.onUnavailable?.();};
+  const observer=new ResizeObserver(resize);observer.observe(node);const intersection=new IntersectionObserver(([entry])=>{visible=entry.isIntersecting;if(visible&&!document.hidden)render(true);syncLoop();});intersection.observe(node);
+  document.addEventListener('visibilitychange',syncLoop);
   inputNode.addEventListener('pointermove',move);canvas.addEventListener('pointerdown',click);inputNode.addEventListener('pointerleave',leave);canvas.addEventListener('webglcontextlost',lost);
-  resize();
-  return()=>{disposed=true;redraw.current=()=>{};renderer.setAnimationLoop(null);observer.disconnect();intersection.disconnect();inputNode.removeEventListener('pointermove',move);canvas.removeEventListener('pointerdown',click);inputNode.removeEventListener('pointerleave',leave);canvas.removeEventListener('webglcontextlost',lost);canvas.remove();
+  resize();syncLoop();
+  return()=>{disposed=true;redraw.current=()=>{};renderer.setAnimationLoop(null);observer.disconnect();intersection.disconnect();document.removeEventListener('visibilitychange',syncLoop);inputNode.removeEventListener('pointermove',move);canvas.removeEventListener('pointerdown',click);inputNode.removeEventListener('pointerleave',leave);canvas.removeEventListener('webglcontextlost',lost);canvas.remove();
    const geometries=new Set<T.BufferGeometry>(),mats=new Set<T.Material>();scene.traverse(o=>{if(o instanceof T.Mesh){geometries.add(o.geometry);(Array.isArray(o.material)?o.material:[o.material]).forEach(m=>mats.add(m));}});geometries.forEach(g=>g.dispose());mats.forEach(m=>{const map=(m as T.MeshStandardMaterial).map;map?.dispose();m.dispose();});heroMaterials.forEach(material=>{if(!mats.has(material))material.dispose();});environment.dispose();environmentScene.traverse(o=>{if(o instanceof T.Mesh){o.geometry.dispose();o.material.dispose();}});renderer.dispose();renderer.forceContextLoss();};
  },[props.mode,mounted]);
  return <div ref={host} className={`rd-studio rd-studio-${props.mode}`} data-ready={ready||failed}>{failed&&props.mode==='games'?<img className="rd-gallery-fallback" src={`/images/landing-preview/games/${props.selected||'domino'}.png`} alt="" aria-hidden="true"/>:!ready&&<span className="rd-render-fallback" role="status">PREPARING YOUR GIFT</span>}</div>;

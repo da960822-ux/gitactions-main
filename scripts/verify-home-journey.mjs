@@ -1,0 +1,112 @@
+import assert from 'node:assert/strict';
+import fs from 'node:fs/promises';
+import path from 'node:path';
+import { launchChromium } from './playwright-browser.mjs';
+
+const base = process.env.HOME_UI_URL || 'http://127.0.0.1:5233';
+const out = process.env.HOME_QA_OUTPUT || 'output/home-journey';
+await fs.mkdir(out, { recursive: true });
+const browser = await launchChromium(), checks = [], errors = [];
+for (const viewport of [{ width: 1440, height: 900 }, { width: 1280, height: 800 }]) {
+  const page = await browser.newPage({ viewport });
+  page.on('pageerror', error => errors.push(error.message));
+  await page.goto(base);
+  await page.locator('.rd-raster-scene[data-ready="true"]').waitFor({ timeout: 90000 });
+  await page.evaluate(() => document.fonts.ready);
+  await page.mouse.move(120, 400);
+  await page.waitForTimeout(650);
+  const layers = await page.evaluate(() => ['.rd-decor-far', '.rd-decor-near', '.rd-cosmic-veil'].map(selector => new DOMMatrix(getComputedStyle(document.querySelector(selector)).transform).m41));
+  assert.ok(layers[0] > 0 && layers[1] < 0 && layers[2] > 0);
+  const touchesControls = await page.evaluate(() => {
+    const svg = document.querySelector('.rd-journey-thread'), thread = svg.querySelector('path'), box = svg.getBoundingClientRect(), length = thread.getTotalLength(), controls = [...document.querySelectorAll('.rd-actions button,.rd-hero-floor button')].map(node => node.getBoundingClientRect());
+    return Array.from({ length: 201 }, (_, i) => thread.getPointAtLength(length * i / 200)).some(point => controls.some(r => point.x + box.left >= r.left - 4 && point.x + box.left <= r.right + 4 && point.y + box.top >= r.top - 4 && point.y + box.top <= r.bottom + 4));
+  });
+  assert.equal(touchesControls, false);
+  await page.screenshot({ path: path.join(out, `hero-depth-${viewport.width}.png`) });
+  await page.evaluate(() => scrollTo({ top: 450, behavior: 'instant' }));
+  await page.waitForTimeout(150);
+  const progress = Number(await page.locator('.rd-journey-thread').getAttribute('data-progress'));
+  assert.ok(progress > 0 && progress < 1);
+  assert.equal(await page.locator('.rd-journey-thread circle').evaluate(node => getComputedStyle(node).opacity), '0.85');
+  await page.screenshot({ path: path.join(out, `hero-to-games-${viewport.width}.png`) });
+  await page.evaluate(() => document.querySelector('#gift-games').scrollIntoView({ behavior: 'instant' }));
+  await page.waitForFunction(() => document.querySelector('.rd-hero').dataset.sceneLoop === 'stopped');
+  assert.equal(await page.locator('.rd-journey-thread').getAttribute('data-progress'), '1');
+  assert.equal(await page.locator('.rd-journey-thread circle').evaluate(node => getComputedStyle(node).opacity), '0');
+  assert.equal(await page.locator('.rd-game-choices button').count(), 8);
+  assert.equal(await page.locator('.rd-nav a[href="/feedback"]').count(), 1);
+  assert.equal(await page.locator('.rd-page a[href="/feedback"]').count(), 1);
+  await page.screenshot({ path: path.join(out, `games-arrival-${viewport.width}.png`) });
+  await page.evaluate(() => scrollTo({ top: document.querySelector('#gift-letter').getBoundingClientRect().top + scrollY - innerHeight * .3, behavior: 'instant' }));
+  await page.waitForTimeout(150);
+  assert.ok(Number(await page.locator('.rd-rose-gift').getAttribute('data-arrival')) > 0);
+  await page.screenshot({ path: path.join(out, `games-to-letter-${viewport.width}.png`) });
+  for (const language of ['ko', 'es']) {
+    await page.getByRole('button', { name: language.toUpperCase(), exact: true }).click();
+    await page.locator('.rd-nav nav>button').nth(1).click();
+    await page.waitForFunction(() => {
+      const paper = document.querySelector('.rd-paper'), overlap = parseFloat(getComputedStyle(paper).getPropertyValue('--paper-overlap'));
+      return Math.abs(new DOMMatrix(getComputedStyle(paper).transform).m42 + paper.offsetHeight - overlap) < 1;
+    });
+    assert.equal(await page.locator('.rd-rose-gift').getAttribute('data-arrival'), '1');
+    assert.equal(await page.locator('.rd-rose-gift img').count(), 1);
+    const bounds = await page.locator('.rd-paper').boundingBox();
+    assert.ok(bounds.y >= 0 && bounds.y + bounds.height <= viewport.height);
+    assert.ok(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth));
+    assert.equal(await page.locator('.rd-letter-section').evaluate(node => getComputedStyle(node).position), 'relative');
+    await page.screenshot({ path: path.join(out, `letter-arrival-${language}-${viewport.width}.png`) });
+    await page.mouse.wheel(0, 700);
+    await page.waitForTimeout(150);
+    assert.ok(await page.evaluate(() => document.querySelector('.rd-footer').getBoundingClientRect().top < innerHeight));
+    await page.locator('.rd-letter-close').press('Escape');
+  }
+  checks.push(`${viewport.width}×${viewport.height}: opposing peripheral depth; thread glint stops at games; existing eight choices; only topnav ideas; one rose; KO/ES open letter fits and wheel reaches footer`);
+  await page.close();
+}
+
+const page = await browser.newPage({ viewport: { width: 1440, height: 900 } });
+page.on('pageerror', error => errors.push(error.message));
+await page.addInitScript(() => {
+  const parameter = WebGL2RenderingContext.prototype.getParameter;
+  WebGL2RenderingContext.prototype.getParameter = function(value) { return value === 37446 ? 'Diagnostic hardware selector' : parameter.call(this, value); };
+  window.heroClears = 0;
+  const clear = WebGL2RenderingContext.prototype.clear;
+  WebGL2RenderingContext.prototype.clear = function(...args) { if (this.canvas.closest('.rd-studio-hearts')) window.heroClears++; return clear.apply(this, args); };
+});
+await page.goto(base);
+await page.locator('.rd-hero canvas[data-ready="true"]').waitFor({ timeout: 90000 });
+await page.waitForFunction(() => document.querySelector('.rd-hero canvas').dataset.renderLoop === 'running');
+await page.locator('.rd-hero-floor button[aria-pressed]').click();
+await page.waitForFunction(() => document.querySelector('.rd-hero canvas').dataset.renderLoop === 'stopped');
+const pausedClears = await page.evaluate(() => window.heroClears);
+await page.waitForTimeout(300);
+assert.equal(await page.evaluate(() => window.heroClears), pausedClears);
+await page.locator('.rd-hero-floor button[aria-pressed]').click();
+await page.waitForFunction(() => document.querySelector('.rd-hero canvas').dataset.renderLoop === 'running');
+await page.locator('#gift-games').scrollIntoViewIfNeeded();
+await page.waitForFunction(() => document.querySelector('.rd-hero canvas').dataset.renderLoop === 'stopped');
+const offscreenClears = await page.evaluate(() => window.heroClears);
+await page.waitForTimeout(300);
+assert.equal(await page.evaluate(() => window.heroClears), offscreenClears);
+await page.evaluate(() => scrollTo({ top: 0, behavior: 'instant' }));
+await page.waitForFunction(() => document.querySelector('.rd-hero canvas').dataset.renderLoop === 'running');
+await page.evaluate(() => document.querySelector('.rd-hero canvas').getContext('webgl2').getExtension('WEBGL_lose_context').loseContext());
+await page.locator('.rd-raster-scene[data-ready="true"]').waitFor();
+assert.equal(await page.locator('.rd-nav a[href="/feedback"]').count(), 1);
+checks.push('Retained WebGL: motion pause and offscreen setAnimationLoop stops, actual hero clear count freezes, resume works, context loss restores PNG and accessible menu');
+await page.close();
+
+const reduced = await browser.newPage({ viewport: { width: 1440, height: 900 }, reducedMotion: 'reduce' });
+reduced.on('pageerror', error => errors.push(error.message));
+await reduced.goto(base);
+await reduced.locator('.rd-raster-scene[data-ready="true"]').waitFor();
+await reduced.evaluate(() => scrollTo({ top: 450, behavior: 'instant' }));
+assert.equal(await reduced.locator('.rd-journey-thread circle').evaluate(node => getComputedStyle(node).opacity), '0');
+assert.equal(await reduced.locator('.rd-rose-gift').getAttribute('data-arrival'), '1');
+assert.equal(await reduced.locator('.rd-hero').getAttribute('data-scene-loop'), 'stopped');
+checks.push('Reduced motion uses complete static thread and rose; no glint or hero animation loop');
+await reduced.close();
+assert.deepEqual(errors, []);
+await fs.writeFile(path.join(out, 'home-journey-qa.json'), JSON.stringify({ pass: true, checks, errors, note: 'Actual local production desktop captures. Underlying GPU remains SwiftShader even in the forced WebGL compatibility branch; not hardware performance or a direct inspection of the current Lusion website.' }, null, 2));
+await browser.close();
+console.log(`PASS ${checks.length} home journey groups`);

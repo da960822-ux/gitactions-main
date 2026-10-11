@@ -3,6 +3,7 @@ import {gameCatalog} from '../games/catalog';
 import {previewCopy} from './copy';
 import {landingCopy} from '../copy/home';
 import {attachHeroMotion} from './heroMotion';
+import {attachJourneyMotion} from './journeyMotion';
 import {RasterHearts} from './RasterHearts';
 import {HeroDecorations,attachHeroSparks} from './HeroDecorations';
 import {Link} from '../app/Router';
@@ -12,7 +13,7 @@ export function LandingPreview({connected=false}:{connected?:boolean}){
  const [language,setLanguage]=useState<'ko'|'es'>(()=>localStorage.getItem('dos-language')==='es'?'es':'ko');
  const [selected,setSelected]=useState('domino'),[open,setOpen]=useState(false),[paused,setPaused]=useState(false),[impulse,setImpulse]=useState(0);
  const [reduced,setReduced]=useState(()=>matchMedia('(prefers-reduced-motion: reduce)').matches),[desktop,setDesktop]=useState(()=>matchMedia('(min-width:751px)').matches);
- const hero=useRef<HTMLElement>(null),coupleImage=useRef<HTMLImageElement>(null),[heroArtReady,setHeroArtReady]=useState(false),[raster,setRaster]=useState<boolean|null>(null),impulseValue=useRef(0);impulseValue.current=impulse;
+ const page=useRef<HTMLElement>(null),hero=useRef<HTMLElement>(null),coupleImage=useRef<HTMLImageElement>(null),[heroArtReady,setHeroArtReady]=useState(false),[raster,setRaster]=useState<boolean|null>(null),impulseValue=useRef(0);impulseValue.current=impulse;
  const envelope=useRef<HTMLButtonElement>(null),close=useRef<HTMLButtonElement>(null),wasOpen=useRef(false),stage=useRef<HTMLDivElement>(null),object=useRef<HTMLDivElement>(null),paper=useRef<HTMLElement>(null),letterText=useRef<HTMLDivElement>(null);const [scrollLetter,setScrollLetter]=useState(false);const copy=previewCopy[language],game=gameCatalog.find(g=>g.id===selected)!;
  useEffect(()=>{document.documentElement.lang=language==='es'?'es-DO':'ko';document.title='Yeonseok ♡ Lisbeth';localStorage.setItem('dos-language',language);},[language]);
  useEffect(()=>{if(!connected)return;const target=({'#games':'gift-games','#papi-letter':'gift-letter','#gift-games':'gift-games','#gift-letter':'gift-letter'} as Record<string,string>)[location.hash];if(!target)return;const frame=requestAnimationFrame(()=>document.getElementById(target)?.scrollIntoView({behavior:'instant',block:'start'}));return()=>cancelAnimationFrame(frame);},[connected]);
@@ -20,14 +21,16 @@ export function LandingPreview({connected=false}:{connected?:boolean}){
  useEffect(()=>{const query=matchMedia('(min-width:751px)'),update=()=>setDesktop(query.matches);query.addEventListener('change',update);return()=>query.removeEventListener('change',update);},[]);
  useEffect(()=>attachHeroSparks(hero.current!,paused||reduced),[paused,reduced]);
  useEffect(()=>attachHeroMotion(hero.current!,paused||reduced,()=>impulseValue.current),[paused,reduced,raster,desktop]);
+ useEffect(()=>attachJourneyMotion(page.current!,paused||reduced),[paused,reduced,language]);
  useEffect(()=>{let alive=true;coupleImage.current!.decode().catch(()=>{}).then(()=>requestAnimationFrame(()=>requestAnimationFrame(()=>{if(alive){const canvas=document.createElement('canvas'),gl=canvas.getContext('webgl2')||canvas.getContext('webgl');const info=gl?.getExtension('WEBGL_debug_renderer_info');const software=!gl||(info&&/swiftshader|llvmpipe|software/i.test(gl.getParameter(info.UNMASKED_RENDERER_WEBGL)));gl?.getExtension('WEBGL_lose_context')?.loseContext();setRaster(Boolean(software));setHeroArtReady(true);}})));return()=>{alive=false;};},[]);
  useEffect(()=>{if(open)close.current?.focus({preventScroll:true});else if(wasOpen.current)envelope.current?.focus({preventScroll:true});wasOpen.current=open;},[open]);
  useEffect(()=>{const measure=()=>{const area=stage.current,body=object.current,sheet=paper.current;if(!area||!body||!sheet||!letterText.current)return;const overlap=innerWidth<=750?42:innerWidth>1100?12:55;const scale=Math.min(1,(area.clientHeight-24)/(sheet.offsetHeight+body.offsetHeight-overlap));area.style.setProperty('--unit-scale',String(scale));area.style.setProperty('--open-y',`${12+(sheet.offsetHeight-overlap)*scale}px`);area.style.setProperty('--paper-overlap',`${overlap}px`);area.dataset.ready='true';setScrollLetter(letterText.current!.scrollHeight>letterText.current!.clientHeight+1);};const observer=new ResizeObserver(measure);observer.observe(stage.current!);observer.observe(paper.current!);observer.observe(letterText.current!);document.fonts.ready.then(measure);measure();return()=>observer.disconnect();},[language]);
  const go=(id:string)=>document.getElementById(id)?.scrollIntoView({behavior:paused||reduced?'instant':'smooth',block:'start'});
  const openLetter=()=>{document.getElementById('gift-letter')?.scrollIntoView({behavior:'instant',block:'start'});setOpen(true);};
  const closeLetter=()=>setOpen(false);
- return <main className={`rd-page ${reduced||paused?'rd-still':''}`}>
+ return <main ref={page} className={`rd-page ${reduced||paused?'rd-still':''}`}>
   <header className="rd-nav"><a href="#gift-top" className="rd-brand">Y <i>♡</i> L</a><nav aria-label={language==='ko'?'선물 메뉴':'Menú del regalo'}><button onClick={()=>go('gift-games')}>{copy.games}</button><button onClick={openLetter}>{copy.letter}</button>{connected&&<Link href="/feedback">{landingCopy[language].navFeedback}</Link>}<div className="rd-languages"><button aria-pressed={language==='ko'} onClick={()=>setLanguage('ko')}>KO</button><button aria-pressed={language==='es'} onClick={()=>setLanguage('es')}>ES</button></div></nav></header>
+  <div className="rd-journey"><svg className="rd-journey-thread" aria-hidden="true" focusable="false"><path fill="none" stroke="currentColor" strokeWidth="1.2"/><circle r="2.2" fill="currentColor"/></svg>
   <section ref={hero} className="rd-hero" id="gift-top">
    <HeroDecorations/><div className="rd-scene-space" aria-hidden="true"><div className="rd-scene-light"><div/></div><div className="rd-scene-fill"/><div className="rd-scene-shadow"/><div className="rd-scene-floor-light"/></div>
    <div className="rd-hero-stage"><img className="rd-heart-fallback" src="/images/landing-preview/hero/hearts-neutral.png" width="1440" height="816" loading="eager" decoding="sync" alt="" aria-hidden="true"/>{heroArtReady&&(raster&&desktop?<RasterHearts/>:<Suspense fallback={<div className="rd-render-fallback" role="status">PREPARING YOUR GIFT</div>}><StudioScene mode="hearts" onUnavailable={()=>setRaster(true)} paused={paused||reduced} impulse={impulse}/></Suspense>)}</div>
@@ -41,7 +44,7 @@ export function LandingPreview({connected=false}:{connected?:boolean}){
    <div className="rd-game-choices" role="group" aria-label={copy.games}>{gameCatalog.map((item,i)=><button key={item.id} aria-pressed={selected===item.id} onClick={()=>setSelected(item.id)}><small>{String(i+1).padStart(2,'0')}</small><span>{item.title[language]}</span><i>↗</i></button>)}</div>
    <p className="rd-preview-note">{connected?<Link className="rd-game-start rd-main-action" href={`/play?game=${selected}`}>{copy.start}<span>↗</span></Link>:copy.previewNote}</p>
   </section>
-  <section className={`rd-letter-section ${open?'is-open':''}`} id="gift-letter" aria-labelledby="gift-letter-heading" onKeyDown={e=>{if(e.key==='Escape'&&open){e.preventDefault();closeLetter();}}}>
+  </div><section className={`rd-letter-section ${open?'is-open':''}`} id="gift-letter" aria-labelledby="gift-letter-heading" onKeyDown={e=>{if(e.key==='Escape'&&open){e.preventDefault();closeLetter();}}}>
    <header><span className="rd-kicker">03 / SEALED WITH LOVE</span><h2 id="gift-letter-heading">{copy.letterTitle}</h2><p>{language==='ko'?'실링을 눌러, baby. 이 편지는 너한테만.':'Toca el sello, baby. Esta carta es solo para ti.'}</p></header>
    <div ref={stage} className="rd-envelope-stage"><div ref={object} className="rd-envelope-object">
     <div className="rd-envelope-back"/>
