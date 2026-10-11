@@ -59,10 +59,10 @@
 
 .rd-hero-decorations{display:none}
 @media(min-width:1024px) and (pointer:fine){.rd-hero-decorations{display:block;position:absolute;inset:0;z-index:1;pointer-events:none;overflow:hidden}.rd-star{position:absolute;background:linear-gradient(135deg,#fff2df,#d8aacd);clip-path:polygon(50% 0,61% 39%,100% 50%,61% 61%,50% 100%,39% 61%,0 50%,39% 39%)}.rd-star-twinkle{animation:rd-twinkle 8s ease-in-out infinite}.rd-tiny-heart{position:absolute;display:block;height:auto;opacity:.8}.rd-spark-star{width:12px;height:12px}.rd-spark-heart{position:absolute;width:19px;height:19px;background-size:contain;background-repeat:no-repeat}.rd-game-start{min-width:190px;text-align:left}.rd-nav nav>a{min-height:44px;display:inline-flex;align-items:center}.rd-still .rd-star{animation:none}}
-@keyframes rd-twinkle{0%,100%{opacity:.25}50%{opacity:.8}}
+@keyframes rd-twinkle{0%,100%{opacity:.42}50%{opacity:.95}}
 @media(prefers-reduced-motion:reduce){.rd-star{animation:none!important}}
 
-.rd-cosmic-veil{position:absolute;inset:0;width:100%;height:100%;opacity:.32}.rd-meteor{position:absolute;width:90px;height:2px;background:linear-gradient(90deg,#fff0da,transparent);opacity:0;transform-origin:0 50%;border-radius:50%}.rd-gallery-fallback{display:block;width:100%;height:100%;object-fit:contain}
+.rd-cosmic-veil{position:absolute;inset:0;width:100%;height:100%;opacity:.55}.rd-meteor{position:absolute;width:90px;height:2px;background:linear-gradient(90deg,#fff0da,transparent);opacity:0;transform-origin:0 50%;border-radius:50%}.rd-gallery-fallback{display:block;width:100%;height:100%;object-fit:contain}
 
 .rd-hero[data-decor-visible="false"] .rd-star-twinkle{animation-play-state:paused}
 .rd-decor-far,.rd-decor-near{position:absolute;inset:0;pointer-events:none}.rd-journey{position:relative}.rd-journey-thread{display:none}
@@ -71,3 +71,13 @@
 @media(min-width:1024px) and (pointer:fine){.rd-hero-stage{z-index:auto}.rd-heart-fallback,.rd-raster-curve,.rd-raster-heart{z-index:1}.rd-raster-heart:nth-child(3){z-index:3}.rd-studio-hearts canvas{z-index:3}.rd-couple{z-index:2}.rd-envelope-object{z-index:2}.rd-rose-gift{display:contents}.rd-rose-gift img{position:absolute;right:var(--rose-right,4%);bottom:26px;width:190px;height:auto;transform-origin:50% 25%}.rd-rose-gift .rd-rose-stem{z-index:1;clip-path:inset(52% 0 0)}.rd-rose-gift .rd-rose-bloom{z-index:8;clip-path:inset(0 0 48%)}.rd-rose-gift figcaption{position:absolute;right:var(--rose-right,4%);bottom:4px;width:190px;margin:0;z-index:8}.rd-paper{clip-path:polygon(0% 4%,12.5% 2.3%,25% 1%,37.5% .25%,50% 0%,62.5% .25%,75% 1%,87.5% 2.3%,100% 4%,100% 96%,87.5% 97.7%,75% 99%,62.5% 99.75%,50% 100%,37.5% 99.75%,25% 99%,12.5% 97.7%,0% 96%);transition:transform 1.1s cubic-bezier(.3,.6,.18,1),clip-path .9s cubic-bezier(.23,1,.32,1)}.is-open .rd-paper{clip-path:polygon(0% 0%,12.5% 0%,25% 0%,37.5% 0%,50% 0%,62.5% 0%,75% 0%,87.5% 0%,100% 0%,100% 100%,87.5% 100%,75% 100%,62.5% 100%,50% 100%,37.5% 100%,25% 100%,12.5% 100%,0% 100%)}}
 @media(min-width:1024px) and (max-width:1100px) and (pointer:fine){.rd-rose-gift img,.rd-rose-gift figcaption{width:155px}}
 .rd-raster-scene{z-index:1}.rd-raster-front{z-index:3!important;opacity:0;transition:opacity .35s}.rd-raster-front[data-ready=true]{opacity:1}
+.rd-envelope-back{border-color:#b38b72;background:linear-gradient(145deg,#9b725b,#654a4c 46%,#352630);box-shadow:0 3px 0 #8e6754,0 5px 0 #39272d,14px 22px 28px #0007,inset 0 1px 1px #ffe0bc88}
+.rd-envelope-pocket{border:1px solid #b18a7199;box-shadow:inset 0 -2px 0 #c69d7b55;filter:drop-shadow(0 -2px 3px #190d1555)}
+.rd-pocket-left{background-image:url('/images/landing-preview/envelope-paper-grain.svg'),linear-gradient(136deg,#bd997c,#986f5e 52%,#765455);background-size:128px 128px,100% 100%}
+.rd-pocket-right{background-image:url('/images/landing-preview/envelope-paper-grain.svg'),linear-gradient(225deg,#ab836c,#886353 50%,#5c424b);background-size:128px 128px,100% 100%}
+.rd-pocket-bottom{background-image:url('/images/landing-preview/envelope-paper-grain.svg'),linear-gradient(172deg,#b38b70,#886052 42%,#674851 78%,#4e3644);background-size:128px 128px,100% 100%;border-bottom:2px solid #c49b7e88}
+.rd-flap-front{background-image:url('/images/landing-preview/envelope-paper-grain.svg'),linear-gradient(155deg,#c09b7b,#9a7059 38%,#795253 70%,#513749);background-size:128px 128px,100% 100%}
+.rd-flap-back{background-image:url('/images/landing-preview/envelope-paper-grain.svg'),linear-gradient(145deg,#94694e,#634949 64%,#382936);background-size:128px 128px,100% 100%}
+.rd-envelope-seams{position:absolute;inset:0;width:100%;height:100%;opacity:.6;pointer-events:none}
+.rd-paper{box-shadow:0 2px 0 #b9937080,1px 4px 0 #80614a44,8px -4px 24px #0006,inset 0 0 25px #7b573611}
+.rd-envelope-engraving{text-shadow:0 1px 0 #27182188}

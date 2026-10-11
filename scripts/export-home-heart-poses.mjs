@@ -22,7 +22,7 @@ const result = await page.evaluate(async () => {
   const generator = new T.PMREMGenerator(renderer); scene.environment = generator.fromScene(environment, .06).texture;
   const key = new T.DirectionalLight('#ffe5d1', 3); key.position.set(-4, 6, 8); scene.add(key);
   const rim = new T.DirectionalLight('#c6caff', 1.7); rim.position.set(5, 2, -3); scene.add(rim); scene.add(new T.HemisphereLight('#d5cbd6', '#110d13', .55));
-  const materials = createHeroMaterials(), layout = [[-3.15,.65,.55,.65,-.25],[3.5,1.45,-1.1,.5,.16],[3.15,-1.7,.65,.62,.28]];
+  const materials = createHeroMaterials(), layout = [[-3.15,.65,.55,.60,-.25],[3.5,1.45,-1.1,.47,.16],[3.15,-1.7,.65,.56,.28]];
   const groups = layout.map(([x,y,z,size,angle], i) => {
     const group = new T.Group(); group.add(new T.Mesh(createHeartGeometry(), materials[i])); group.position.set(x,y,z); group.scale.setScalar(size); group.rotation.set(.13,-.2,angle); scene.add(group); return group;
   });

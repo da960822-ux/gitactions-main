@@ -3,7 +3,7 @@ const stars=[[8,13,10],[17,29,5],[28,21,12],[11,57,6],[24,62,8],[7,76,4],[19,45,
 const hearts=[[14,37,32,0,-18],[24,14,25,2,16],[87,13,30,1,20],[91,56,34,2,-14]];
 export function HeroDecorations(){return <div className="rd-hero-decorations" aria-hidden="true">
  <img className="rd-cosmic-veil" src="/images/landing-preview/hero/nebula-fringe.png" width="1440" height="816" alt=""/>
- <div className="rd-decor-far">{stars.map(([x,y,size],i)=><span key={i} className={`rd-star ${i%4===0?'rd-star-twinkle':''}`} style={{left:`${x}%`,top:`${y}%`,width:size,height:size,opacity:i%3===0?.8:.42,animationDelay:`${i*.7}s`}}/>)}</div>
+ <div className="rd-decor-far">{stars.map(([x,y,size],i)=><span key={i} className={`rd-star ${i%4===0?'rd-star-twinkle':''}`} style={{left:`${x}%`,top:`${y}%`,width:size+1,height:size+1,opacity:i%3===0?.9:.56,animationDelay:`${i*.7}s`}}/>)}</div>
  <div className="rd-decor-near">{hearts.map(([x,y,size,color,angle],i)=><img key={i} className="rd-tiny-heart" src={`/images/landing-preview/hero/heart-${color}-neutral.png`} width={size} height={size} alt="" style={{left:`${x}%`,top:`${y}%`,width:size,rotate:`${angle}deg`} as CSSProperties}/>)}</div>
  <span className="rd-meteor"/>
  <div className="rd-hero-sparks" data-particle-count="0"/>

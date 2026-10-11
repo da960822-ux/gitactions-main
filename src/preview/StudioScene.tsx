@@ -7,7 +7,7 @@ import {gameCatalog} from '../games/catalog';
 
 type Props={mode:'hearts'|'games';selected?:string;paused:boolean;impulse?:number;onSelect?:(id:string)=>void;onUnavailable?:()=>void};
 const heartLayout=[[1.2,.25,1.1,1.82,-.25],[3.55,-1.55,.2,1.2,.3],[3.45,2.18,-1.8,1.12,.35],[-.1,2.3,-1,.68,-.5],[5.1,.55,-1,.7,.1],[.15,-2.4,-1.8,.67,.3]];
-const heroLayout=[[-3.15,.65,.55,.65,-.25],[3.5,1.45,-1.1,.5,.16],[3.15,-1.7,.65,.62,.28]];
+const heroLayout=[[-3.15,.65,.55,.60,-.25],[3.5,1.45,-1.1,.47,.16],[3.15,-1.7,.65,.56,.28]];
 export default function StudioScene(props:Props){
  const host=useRef<HTMLDivElement>(null),controls=useRef(props),redraw=useRef<()=>void>(()=>{}),[ready,setReady]=useState(false),[failed,setFailed]=useState(false),[mounted,setMounted]=useState(props.mode==='hearts');
  controls.current=props;
@@ -59,7 +59,7 @@ export default function StudioScene(props:Props){
     let x=0,y=0,z=0,size=1,rx=.13,ry=-.2,rz=0;
     if(props.mode==='hearts'){
      g.visible=mobile||i<heroLayout.length;if(!g.visible)return;const base=mobile?heartLayout[i]:heroLayout[i];[x,y,z,size,rz]=base;const heart=g.children[0] as T.Mesh;heart.material=mobile?(i===1||i===3?materials.gold:materials.chrome):heroMaterials[i];if(mobile){x=(x-2.15)*.65;y*=.9;size*=1.05;}else{const entry=controls.current.paused?1:1-Math.pow(1-Math.min(1,time/.9),3);ry-=(1-entry)*.18;y-=(1-entry)*.14;size*=.95+.05*entry;}
-     if(active){if(mobile){y+=Math.sin(time*.6+i)*.13;ry+=Math.sin(time*.35+i)*.19;}else{rx+=Math.sin(time*[.23,.37,.19][i]+i)*.065;ry+=Math.sin(time*[.37,.23,.29][i]+i)*.14;rz+=Math.sin(time*[.29,.17,.41][i]+i)*.025;y+=Math.sin(time*[.31,.19,.43][i]+i)*.025;}}
+     if(active){if(mobile){y+=Math.sin(time*.6+i)*.13;ry+=Math.sin(time*.35+i)*.19;}else{rx+=Math.sin(time*[.23,.37,.19][i]+i)*.065+pointer.y*[.05,.035,-.075][i];ry+=Math.sin(time*[.37,.23,.29][i]+i)*.14+pointer.x*[.14,-.10,.2][i];rz+=Math.sin(time*[.29,.17,.41][i]+i)*.025;y+=Math.sin(time*[.31,.19,.43][i]+i)*.025;}}
      if(!mobile){const unit=2*Math.tan(T.MathUtils.degToRad(camera.fov/2))*(camera.position.z-z)/height;repulsions[i].lerp(controls.current.paused?new T.Vector2():repulseTargets[i],snap||!active?1:1-Math.exp(-dt*8));x+=(pointer.x*[8,2,10][i]*(i%2?1:-1)+repulsions[i].x)*unit;y+=(pointer.y*[5,1,6][i]+repulsions[i].y)*unit;}else{x+=pointer.x*.13*(i%2?1:-1);y+=pointer.y*.1;}size*=1+energy*.025;
     }else{
      const chosen=gameCatalog[i].id===controls.current.selected;

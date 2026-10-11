@@ -18,7 +18,8 @@ for (const viewport of [{ width: 1440, height: 900 }, { width: 1280, height: 800
   await page.waitForTimeout(650);
   const layers = await page.evaluate(() => ['.rd-star-twinkle', '.rd-tiny-heart'].map(selector => new DOMMatrix(getComputedStyle(document.querySelector(selector)).transform).m41));
   assert.ok(layers[0] > 0 && layers[1] < 0);
-  assert.ok(Number(await page.locator('.rd-cosmic-veil').evaluate(node => getComputedStyle(node).opacity)) < .32);
+  assert.ok(Number(await page.locator('.rd-cosmic-veil').evaluate(node => getComputedStyle(node).opacity)) < .55);
+  assert.ok(Number(await page.locator('.rd-raster-heart').first().locator('[data-light=left]').evaluate(node => getComputedStyle(node).opacity)) > .5, 'Wide pointer travel must visibly blend the bounded front poses');
   const touchesControls = await page.evaluate(() => {
     const svg = document.querySelector('.rd-journey-thread'), thread = svg.querySelector('path'), box = svg.getBoundingClientRect(), length = thread.getTotalLength(), controls = [...document.querySelectorAll('.rd-actions button,.rd-hero-floor button')].map(node => node.getBoundingClientRect());
     const view = svg.viewBox.baseVal;
@@ -72,13 +73,20 @@ for (const viewport of [{ width: 1440, height: 900 }, { width: 1280, height: 800
     assert.ok(bounds.y >= 0 && bounds.y + bounds.height <= viewport.height);
     assert.ok(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth));
     assert.equal(await page.locator('.rd-letter-section').evaluate(node => getComputedStyle(node).position), 'relative');
+    const readable = await page.evaluate(() => [...document.querySelectorAll('.rd-letter-text p,.rd-paper-signature')].every(node => {
+      const range = document.createRange(); range.selectNodeContents(node);
+      return [...range.getClientRects()].every(rect => [rect.left + 2, (rect.left + rect.right) / 2, rect.right - 2].every(x => [rect.top + 2, rect.bottom - 2].every(y => document.elementFromPoint(x, y)?.closest('.rd-paper') === document.querySelector('.rd-paper'))));
+    }));
+    assert.equal(readable, true, `${language}: final body and signature must be above every envelope face`);
+    assert.ok((await page.locator('.rd-letter-section>header>p').innerText()).includes(language === 'ko' ? '천천히 읽어줘' : 'Lee con calma'));
+
     await page.screenshot({ path: path.join(out, `letter-arrival-${language}-${viewport.width}.png`) });
     await page.mouse.wheel(0, 700);
     await page.waitForTimeout(150);
     assert.ok(await page.evaluate(() => document.querySelector('.rd-footer').getBoundingClientRect().top < innerHeight));
     await page.locator('.rd-letter-close').press('Escape');
   }
-  checks.push(`${viewport.width}×${viewport.height}: opposing peripheral depth; bounded heart repulsion returns within 700ms; stable title and slight portrait retreat; thread end stops at games; existing eight choices; only topnav ideas; same rose stem behind and bloom before paper; curved paper outline flattens; KO/ES open letter fits and wheel reaches footer`);
+  checks.push(`${viewport.width}×${viewport.height}: opposing peripheral depth; bounded heart repulsion returns within 700ms; stable title and slight portrait retreat; thread end stops at games; existing eight choices; only topnav ideas; same rose stem behind and bloom before paper; curved paper outline flattens; KO/ES final body/signature hit-tests are unobscured, open-state copy matches, letter fits and wheel reaches footer`);
   await page.close();
 }
 
@@ -102,6 +110,12 @@ await page.waitForTimeout(1200);
 const later = await page.locator('.rd-hero canvas').evaluate(node => JSON.parse(node.dataset.heartTransforms));
 assert.ok(later.every((pose, index) => Math.abs(pose.rx - poses[index].rx) + Math.abs(pose.ry - poses[index].ry) > .001));
 assert.deepEqual(await page.locator('.rd-hero canvas').evaluate(node => JSON.parse(node.dataset.fixedKeyLight)), [-4, 6, 8]);
+await page.mouse.move(160, 350); await page.waitForTimeout(900);
+const leftPose = await page.locator('.rd-hero canvas').evaluate(node => JSON.parse(node.dataset.heartTransforms));
+await page.mouse.move(1290, 560); await page.waitForTimeout(900);
+const rightPose = await page.locator('.rd-hero canvas').evaluate(node => JSON.parse(node.dataset.heartTransforms));
+assert.ok(rightPose.some((pose, index) => Math.abs(pose.ry - leftPose[index].ry) > .18), 'Pointer travel must visibly change real mesh orientation');
+await page.mouse.move(500, 35);
 await page.locator('.rd-hero-floor button[aria-pressed]').click();
 await page.waitForFunction(() => document.querySelector('.rd-hero canvas')?.dataset.renderLoop === 'stopped');
 const pausedClears = await page.evaluate(() => window.heroClears);
