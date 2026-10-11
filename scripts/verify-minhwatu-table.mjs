@@ -5,347 +5,266 @@ import { launchChromium } from './playwright-browser.mjs';
 const baseUrl = process.env.LANDING_URL || 'http://127.0.0.1:5192/';
 const outputDir = path.resolve(process.env.PLAYWRIGHT_ARTIFACT_DIR || 'output/playwright/game-polish/minhwatu-native');
 await fs.mkdir(outputDir, { recursive: true });
-
 const browser = await launchChromium();
-const report = {
-  baseUrl,
-  fixture: 'Vite-served real Minhwatu engine + MinhwatuTable component; deterministic local state, no Supabase/Realtime or translation API',
-  checks: [],
-  screenshots: [],
-  errors: [],
-};
+const report = { baseUrl, fixture: 'Vite browser harness using real Minhwatu engine, view projection, React table and presentation hook; deterministic local state only (no Supabase/Realtime)', checks: [], screenshots: [], errors: [], limits: ['No deployed Supabase, WebSocket/Realtime, physical audio playback or hardware latency was tested.', 'Replay consent UI is exercised through deterministic pending/request props; two-player consent persistence is not tested here.'] };
 const check = (name, pass, detail = '') => report.checks.push({ name, pass: Boolean(pass), detail });
+const nearby = (actual, expected, tolerance = 18) => actual && expected && Math.abs(actual.x - expected.x) <= tolerance && Math.abs(actual.y - expected.y) <= tolerance;
 
-async function openHarness(language, width, height, reducedMotion = false) {
-  const context = await browser.newContext({ viewport: { width, height }, reducedMotion: reducedMotion ? 'reduce' : 'no-preference' });
-  await context.addInitScript(value => localStorage.setItem('dos-language', value), language);
+async function open(language, width, height, reduced = false) {
+  const context = await browser.newContext({ viewport: { width, height }, reducedMotion: reduced ? 'reduce' : 'no-preference' });
+  await context.addInitScript(lang => localStorage.setItem('dos-language', lang), language);
   const page = await context.newPage();
-  page.on('pageerror', error => report.errors.push(`${language}-${width}:page:${error.message}`));
-  page.on('console', message => {
-    if (message.type() === 'error' && !/realtime\/v1\/websocket/.test(message.text())) report.errors.push(`${language}-${width}:console:${message.text()}`);
-  });
+  page.on('pageerror', error => report.errors.push(`${language}-${width}: ${error.message}`));
+  page.on('console', message => { if (message.type() === 'error' && !/realtime\/v1\/websocket/.test(message.text())) report.errors.push(`${language}-${width}: ${message.text()}`); });
   await page.goto(new URL('__minhwatu_native_check__', baseUrl).href, { waitUntil: 'domcontentloaded' });
   await page.evaluate(async () => {
-    const [{ minhwatuEngine }, { MinhwatuTable }, reactModule, domModule] = await Promise.all([
-      import('/src/games/minhwatu.ts'),
-      import('/src/app/MinhwatuTable.tsx'),
-      import('/node_modules/.vite/deps/react.js'),
-      import('/node_modules/.vite/deps/react-dom_client.js'),
+    const [{ minhwatuEngine }, { MinhwatuTable }, { GameFeedback }, reactModule, domModule] = await Promise.all([
+      import('/src/games/minhwatu.ts'), import('/src/app/MinhwatuTable.tsx'), import('/src/app/GameFeedback.tsx'),
+      import('/node_modules/.vite/deps/react.js'), import('/node_modules/.vite/deps/react-dom_client.js'),
     ]);
-    const React = reactModule.default;
-    const { createRoot } = domModule.default ?? domModule;
+    const React = reactModule.default, { createRoot } = domModule.default ?? domModule;
     document.querySelector('#root')?.setAttribute('hidden', '');
-    const host = document.createElement('main');
-    host.id = 'minhwatu-native-proof';
-    host.style.cssText = 'width:100%;padding:12px 18px 24px;box-sizing:border-box;background:#ded2b7;min-height:100vh';
-    document.body.append(host);
-    let root = createRoot(host), state, viewer = 'p1', language = 'ko';
-    const render = () => root.render(React.createElement(MinhwatuTable, {
-      view: minhwatuEngine.getPlayerView(state, viewer), language, playerId: viewer,
-      runAction: async action => { state = minhwatuEngine.applyAction(state, viewer, action); render(); return true; },
-    }));
-    const arrange = (seed, { p1Hand, p2Hand, table, deck, p1Captures = [], p2Captures = [] }) => {
-      const initial = minhwatuEngine.createInitialState(seed);
-      const all = [...initial.hands.p1, ...initial.hands.p2, ...initial.table, ...initial.deck];
-      const cards = new Map(all.map(card => [card.id, card]));
+    const host = document.createElement('main'); host.id = 'minhwatu-native-proof';
+    host.style.cssText = 'width:100%;padding:8px 12px 24px;box-sizing:border-box;min-height:100vh'; document.body.append(host);
+    let root = createRoot(host), state, language = 'ko', viewer = 'p1', scene = 0, revision = 0, replayPending = false, replayCalls = 0;
+    const render = () => root.render(React.createElement(NativeApp, { revision: ++revision }));
+    function NativeApp() {
+      const view = minhwatuEngine.getPlayerView(state, viewer);
+      window.__minhwatuView = view;
+      return React.createElement(React.Fragment, null,
+        React.createElement(MinhwatuTable, { view, language, playerId: viewer, playerNames: { p1: 'Yeonseok', p2: 'Lisbeth' }, runAction: async action => { state = minhwatuEngine.applyAction(state, viewer, action); render(); return true; }, sceneKey: String(scene), replayPending, onReplay: async () => { replayCalls++; replayPending = true; render(); } }),
+        React.createElement(GameFeedback, { gameId: 'minhwatu', language, playerId: viewer, view }));
+    }
+    const initial = minhwatuEngine.createInitialState(20261011);
+    const all = [...initial.hands.p1, ...initial.hands.p2, ...initial.table, ...initial.deck];
+    const cardMap = new Map(all.map(card => [card.id, card]));
+    const allIds = all.map(card => card.id);
+    const arrange = ({ p1Hand, p2Hand, table, deck, p1Captures = [], p2Captures = [] }) => {
       const used = new Set();
-      const take = ids => ids.map(id => {
-        if (used.has(id) || !cards.has(id)) throw new Error(`invalid_fixture_card:${id}`);
-        used.add(id);
-        return structuredClone(cards.get(id));
-      });
-      const hands = { p1: take(p1Hand), p2: take(p2Hand) };
-      const board = take(table);
-      const stock = take(deck);
-      const captures = { p1: take(p1Captures), p2: take(p2Captures) };
-      const allIds = [...hands.p1, ...hands.p2, ...board, ...stock, ...captures.p1, ...captures.p2].map(card => card.id);
-      if (allIds.length !== 48 || new Set(allIds).size !== 48) throw new Error(`fixture_card_conservation:${allIds.length}`);
-      return {
-        ...initial, turn: 'p1', hands, table: board, deck: stock, captures, pending: null, phase: 'play', result: null,
-        events: [{ sequence: 1, type: 'deal', title: { ko: '화투패를 나눴어요', es: 'Las cartas están repartidas' }, cards: board.map(card => structuredClone(card)) }],
-      };
+      const take = ids => ids.map(id => { if (used.has(id) || !cardMap.has(id)) throw new Error(`bad fixture card ${id}`); used.add(id); return structuredClone(cardMap.get(id)); });
+      const hands = { p1: take(p1Hand), p2: take(p2Hand) }, board = take(table), stock = take(deck), captures = { p1: take(p1Captures), p2: take(p2Captures) };
+      if (used.size !== 48) throw new Error(`fixture has ${used.size}/48 cards`);
+      return { ...initial, rulesVersion: 2, turn: 'p1', hands, table: board, deck: stock, captures, pending: null, phase: 'play', result: null, events: [{ sequence: 1, type: 'deal', title: { ko: '패를 나눴어요', es: 'Se repartieron las cartas' }, cards: board.map(card => structuredClone(card)) }] };
     };
-    const rest = (excluding, count) => {
-      const initial = minhwatuEngine.createInitialState(20261011);
-      const all = [...initial.hands.p1, ...initial.hands.p2, ...initial.table, ...initial.deck];
-      const skip = new Set(excluding);
-      const ids = all.map(card => card.id).filter(id => !skip.has(id));
-      if (ids.length !== count) throw new Error(`expected_${count}_remaining_cards_got_${ids.length}`);
-      return ids;
+    const stateWithMatches = (handMatches, drawMatches) => {
+      const p1Hand = ['1-1','2-1','2-2','2-3','2-4','3-1','3-2','3-3','3-4','4-1'];
+      const p2Hand = ['4-2','4-3','4-4','5-2','5-3','5-4','6-2','6-3','6-4','7-2'];
+      const table = [...[2,3,4].slice(0, handMatches).map(i => `1-${i}`), ...[2,3,4].slice(0, drawMatches).map(i => `12-${i}`)];
+      for (const id of allIds) if (table.length < 8 && !p1Hand.includes(id) && !p2Hand.includes(id) && !table.includes(id) && !id.startsWith('1-') && !id.startsWith('12-')) table.push(id);
+      if (table.length !== 8) throw new Error(`table fixture has ${table.length} cards`);
+      const reserved = new Set([...p1Hand, ...p2Hand, ...table, '12-1']);
+      const deck = ['12-1', ...allIds.filter(id => !reserved.has(id)).slice(0, 19)];
+      return arrange({ p1Hand, p2Hand, table, deck });
     };
-    const normalState = () => {
-      const p1Hand = ['1-1', '2-1', '2-2', '2-3', '2-4', '3-1', '3-2', '3-3', '3-4', '4-1'];
-      const p2Hand = ['4-2', '4-3', '4-4', '5-2', '5-3', '5-4', '6-2', '6-3', '6-4', '7-2'];
-      const table = ['1-2', '1-3', '5-1', '6-1', '7-1', '8-1', '9-1', '10-1'];
-      const deck = ['11-1', ...rest([...p1Hand, ...p2Hand, ...table, '11-1'], 19)];
-      return arrange(20261011, { p1Hand, p2Hand, table, deck });
+    const normalState = () => stateWithMatches(2, 0);
+    const godori = () => {
+      const p1Hand = ['8-1'], p2Hand = ['12-4'], table = ['8-2','1-1','3-1','5-1','6-1','7-1','9-1','10-1'], deck = ['12-3'];
+      const p1Captures = ['2-1','4-1'];
+      const used = new Set([...p1Hand, ...p2Hand, ...table, ...deck, ...p1Captures]);
+      p1Captures.push(...allIds.filter(id => !used.has(id)));
+      return arrange({ p1Hand, p2Hand, table, deck, p1Captures });
     };
-    const godoriState = () => {
-      const p1Hand = ['8-1'], p2Hand = ['12-4'];
-      const table = ['8-2', '1-1', '3-1', '5-1', '6-1', '7-1', '9-1', '10-1'];
-      const deck = ['12-3'];
-      const p1Captures = ['2-1', '4-1', ...rest([...p1Hand, ...p2Hand, ...table, ...deck, '2-1', '4-1'], 35)];
-      return arrange(20261012, { p1Hand, p2Hand, table, deck, p1Captures });
+    const denseState = () => {
+      const p1Captures = allIds.filter(id => cardMap.get(id).kind === 'ribbon').slice(0, 9).concat(allIds.filter(id => cardMap.get(id).kind === 'plain').slice(0, 23));
+      const used = new Set(p1Captures), p1Hand = allIds.filter(id => !used.has(id)).slice(0,10); p1Hand.forEach(id => used.add(id));
+      const p2Hand = allIds.filter(id => !used.has(id)).slice(0,10); p2Hand.forEach(id => used.add(id));
+      const table = allIds.filter(id => !used.has(id)).slice(0,8); table.forEach(id => used.add(id));
+      const deck = allIds.filter(id => !used.has(id));
+      return arrange({ p1Hand, p2Hand, table, deck, p1Captures });
     };
-    window.minhwatuProof = {
+    window.__minhwatuProof = {
       engine: minhwatuEngine,
-      normalState,
-      godoriState,
-      mount(nextState, nextLanguage, nextViewer = 'p1') { state = structuredClone(nextState); language = nextLanguage; viewer = nextViewer; render(); },
-      setViewer(nextViewer) { viewer = nextViewer; render(); },
+      mount(next, lang = language, seat = 'p1', nextScene = true) { state = structuredClone(next); language = lang; viewer = seat; replayPending = false; window.__minhwatuCues = []; if (nextScene) scene++; render(); },
+      setViewer(seat) { viewer = seat; scene++; render(); },
+      setReplayPending(value) { replayPending = value; render(); },
       view(seat = viewer) { return minhwatuEngine.getPlayerView(state, seat); },
       state() { return structuredClone(state); },
-      renderAgain() { render(); },
-      remount() { root.unmount(); root = createRoot(host); render(); },
-      async act(action, seat = viewer) { state = minhwatuEngine.applyAction(state, seat, action); render(); return minhwatuEngine.getPlayerView(state, seat); },
       hiddenIds(seat) { return state.hands[seat].map(card => card.id); },
+      replayCalls() { return replayCalls; },
+      normalState, godoriState: godori, denseState, stateWithMatches,
+      renderAgain() { render(); },
+      backlog() { const max=Math.max(...state.events.map(event=>event.sequence)); state.events=[...state.events,...Array.from({length:14},(_,index)=>({sequence:max+index+1,type:'turn',actor:'p1',title:{ko:'새 차례',es:'Nuevo turno'}}))]; render(); },
+      remount() { root.unmount(); root = createRoot(host); render(); },
     };
+    window.__minhwatuCues = [];
+    window.addEventListener('minhwatu-presentation-cue', event => window.__minhwatuCues.push({ at: performance.now(), ...event.detail }));
   });
   return { context, page };
 }
 
-async function waitForImages(page) {
-  await page.evaluate(() => document.fonts.ready);
-  await page.waitForFunction(() => [...document.querySelectorAll('.gb-hwatu-face')].every(image => image.complete && image.naturalWidth > 0), null, { timeout: 8000 });
-}
+const idle = page => page.waitForFunction(() => !document.querySelector('.hwatu-motion-stage.is-animating') && !document.querySelector('.hwatu-flight'), null, { timeout: 7000 });
+const cardRects = async (page, selector) => page.locator(selector).evaluateAll(nodes => nodes.map(node => { const r = node.getBoundingClientRect(); return { x:r.x,y:r.y,right:r.right,bottom:r.bottom,width:r.width,height:r.height,id:node.getAttribute('data-hwatu-card-id') }; }));
+async function screenshot(page, name) { const file = path.join(outputDir, `${name}.png`); await page.screenshot({ path: file, fullPage: false }); report.screenshots.push(file); return file; }
 
-async function measure(page) {
-  return page.evaluate(() => {
-    const rect = selector => {
-      const element = document.querySelector(selector);
-      if (!element) return null;
-      const box = element.getBoundingClientRect();
-      return { x: Math.round(box.x), y: Math.round(box.y), right: Math.round(box.right), bottom: Math.round(box.bottom), width: Math.round(box.width), height: Math.round(box.height) };
-    };
-    return {
-      viewport: { width: innerWidth, height: innerHeight },
-      documentWidth: document.documentElement.scrollWidth,
-      handCount: document.querySelectorAll('.hwatu-hand-choice').length,
-      tableCount: document.querySelectorAll('.hwatu-table-card').length,
-      captureRailCount: document.querySelectorAll('.hwatu-capture-rack').length,
-      brokenImages: [...document.querySelectorAll('.gb-hwatu-face')].filter(image => !image.complete || !image.naturalWidth).map(image => image.currentSrc),
-      board: rect('.minhwatu-table'), hand: rect('[data-hwatu-zone="hand"]'), table: rect('[data-hwatu-zone="table"]'),
-      captures: [...document.querySelectorAll('.hwatu-capture-rack')].map(element => {
-        const box = element.getBoundingClientRect();
-        return { x: Math.round(box.x), y: Math.round(box.y), right: Math.round(box.right), bottom: Math.round(box.bottom), width: Math.round(box.width), height: Math.round(box.height) };
-      }),
-    };
-  });
-}
-
-async function capture(page, name) {
-  const file = path.join(outputDir, `${name}.png`);
-  await page.screenshot({ path: file, fullPage: false });
-  report.screenshots.push(file);
-  return file;
-}
-
-async function testLocale(language, width, height) {
-  const reducedMotion = language === 'es';
-  const { context, page } = await openHarness(language, width, height, reducedMotion);
+async function initialMatrix(language, width, height) {
+  const { context, page } = await open(language, width, height);
   try {
-    await page.evaluate(({ language }) => window.minhwatuProof.mount(window.minhwatuProof.normalState(), language), { language });
-    await waitForImages(page);
-    await page.evaluate(() => window.scrollTo(0, 0));
-    await page.waitForTimeout(350);
-    await page.waitForFunction(() => !document.querySelector('.hwatu-motion-stage.is-animating') && !document.querySelector('.hwatu-flight'), null, { timeout: 6000 });
-    const initial = await measure(page);
-    const initialView = await page.evaluate(() => ({
-      p1: window.minhwatuProof.view('p1'), p2: window.minhwatuProof.view('p2'),
-      p1Hidden: window.minhwatuProof.hiddenIds('p1'), p2Hidden: window.minhwatuProof.hiddenIds('p2'),
-    }));
-    const visibleIds = await page.locator('[data-hwatu-card-id]').evaluateAll(nodes => nodes.map(node => node.getAttribute('data-hwatu-card-id')));
-    const p1LeaksP2 = initialView.p2Hidden.some(id => visibleIds.includes(id));
-    const p1Serialized = JSON.stringify(initialView.p1), p2Serialized = JSON.stringify(initialView.p2);
-    const viewPrivateSafe = initialView.p1.ownHand.map(card => card.id).join(',') === initialView.p1Hidden.join(',') && initialView.p2.ownHand.map(card => card.id).join(',') === initialView.p2Hidden.join(',')
-      && initialView.p1.opponentCount === 10 && initialView.p2.opponentCount === 10
-      && !p1LeaksP2
-      && !/("hands"|"deck"|"seed")/.test(p1Serialized + p2Serialized);
-    check(`${language} ${width}: initial deal shows 10 own cards, 8 table cards, two capture rails and loaded art`, initial.handCount === 10 && initial.tableCount === 8 && initial.captureRailCount === 2 && initial.brokenImages.length === 0, JSON.stringify(initial));
-    check(`${language} ${width}: caller views expose only that seat's own hand and no stock`, viewPrivateSafe, JSON.stringify({ p1Own: initialView.p1.ownHand.length, p2Own: initialView.p2.ownHand.length, p1Opponent: initialView.p1.opponentCount, p2Opponent: initialView.p2.opponentCount, visibleCards: visibleIds.length, p1LeaksP2, hasPrivateKeys: /("hands"|"deck"|"seed")/.test(p1Serialized + p2Serialized) }));
-    check(`${language} ${width}: page has no horizontal overflow`, initial.documentWidth <= width, JSON.stringify({ documentWidth: initial.documentWidth, width }));
-    check(`${language} ${width}: hand, table and both capture rails fit in the viewport`, [initial.hand, initial.table, ...initial.captures].every(box => box && box.y >= 0 && box.bottom <= height), JSON.stringify({ hand: initial.hand, table: initial.table, captures: initial.captures, height }));
-    await capture(page, `${language}-${width}-initial-play`);
-
-    await page.locator('.hwatu-hand-choice[data-hwatu-card-id="2-1"]').click();
-    await page.locator('.hwatu-confirm').waitFor({ state: 'visible', timeout: 4000 });
-    const confirmVisible = await page.locator('.hwatu-confirm').isVisible();
-    const confirmBox = await page.locator('.hwatu-confirm').boundingBox();
-    const confirmLayout = await measure(page);
-    check(`${language} ${width}: a no-match hand card offers a visible confirmed play`, confirmVisible && Boolean(confirmBox && confirmBox.y >= 0 && confirmBox.y + confirmBox.height <= height), JSON.stringify(confirmBox));
-    check(`${language} ${width}: confirmation retains both capture rails in view`, confirmLayout.captures.length === 2 && confirmLayout.captures.every(box => box.y >= 0 && box.bottom <= height), JSON.stringify(confirmLayout.captures));
-    await capture(page, `${language}-${width}-confirmed-play`);
-    await page.locator('.hwatu-cancel').click();
-
-    const playSource = await page.locator('.hwatu-hand-choice[data-hwatu-card-id="1-1"]').boundingBox();
-    const playDestination = await page.locator('[data-hwatu-zone="table"]').boundingBox();
-    const captureSource = await page.locator('.hwatu-table-card[data-hwatu-card-id="1-2"]').boundingBox();
-    await page.locator('.hwatu-hand-choice[data-hwatu-card-id="1-1"]').click();
-    const targets = page.locator('.hwatu-table-card.is-target');
-    await targets.first().waitFor({ state: 'visible', timeout: 4000 });
-    const targetCount = await targets.count();
-    const targetBoxes = await targets.evaluateAll(nodes => nodes.map(node => { const r = node.getBoundingClientRect(); return { x: Math.round(r.x), y: Math.round(r.y), right: Math.round(r.right), bottom: Math.round(r.bottom) }; }));
-    check(`${language} ${width}: selecting a duplicated month presents both legal targets`, targetCount === 2 && targetBoxes.every(box => box.y >= 0 && box.bottom <= height), JSON.stringify({ targetCount, targetBoxes, height }));
-    const targetLayout = await measure(page);
-    check(`${language} ${width}: two-target choice keeps both capture rails in view`, targetLayout.captures.length === 2 && targetLayout.captures.every(box => box.y >= 0 && box.bottom <= height), JSON.stringify(targetLayout.captures));
-    await capture(page, `${language}-${width}-two-targets`);
-    await targets.first().click();
-    await page.waitForFunction(() => window.minhwatuProof.view('p1').log.some(event => event.type === 'turn'), null, { timeout: 6000 });
-    const transition = await page.evaluate(() => {
-      const view = window.minhwatuProof.view('p1');
-      return { events: view.log.map(event => event.type), ownHand: view.ownHand.length, table: view.board.table.length, captures: view.board.captures.p1.length, turn: view.turn, drawCount: view.log.filter(event => event.type === 'draw').length };
+    await page.evaluate(lang => window.__minhwatuProof.mount(window.__minhwatuProof.normalState(), lang), language);
+    await page.waitForFunction(() => [...document.querySelectorAll('.gb-hwatu-face')].every(image => image.complete && image.naturalWidth > 0), null, { timeout: 8000 });
+    await idle(page);
+    const m = await page.evaluate(() => {
+      const box = selector => { const e=document.querySelector(selector); if(!e)return null; const r=e.getBoundingClientRect(); return {x:Math.round(r.x),y:Math.round(r.y),right:Math.round(r.right),bottom:Math.round(r.bottom),width:Math.round(r.width),height:Math.round(r.height)}; };
+      return { viewport:{width:innerWidth,height:innerHeight}, documentWidth:document.documentElement.scrollWidth, handCount:document.querySelectorAll('.hwatu-hand-choice').length, tableCount:document.querySelectorAll('.hwatu-table-card').length, rails:[...document.querySelectorAll('.hwatu-capture-rack')].map(e=>{const r=e.getBoundingClientRect();return {x:Math.round(r.x),y:Math.round(r.y),right:Math.round(r.right),bottom:Math.round(r.bottom)}}),hand:box('.hwatu-hand-section'),table:box('.hwatu-felt'),broken:[...document.querySelectorAll('.gb-hwatu-face')].filter(i=>!i.complete||!i.naturalWidth).length };
     });
-    check(`${language} ${width}: real legal play resolves capture, draw and turn exactly once`, ['play', 'capture', 'draw', 'turn'].every(type => transition.events.includes(type)) && transition.ownHand === 9 && transition.drawCount === 1 && transition.turn === 'p2', JSON.stringify(transition));
-    if (!reducedMotion) await page.waitForFunction(() => document.querySelector('.hwatu-flight'), null, { timeout: 4000 });
-    const flight = await page.evaluate(({ source, destination }) => {
-      const element = document.querySelector('.hwatu-flight');
-      const animation = element?.getAnimations()[0];
-      const keyframes = animation?.effect?.getKeyframes?.() ?? [];
-      const left = Number.parseFloat(element?.style.left || 'NaN');
-      const top = Number.parseFloat(element?.style.top || 'NaN');
-      const width = Number.parseFloat(element?.style.width || 'NaN');
-      const height = Number.parseFloat(element?.style.height || 'NaN');
-      const delta = keyframes.at(-1)?.transform?.match(/translate3d\(([-\d.]+)px,\s*([-\d.]+)px/)?.slice(1).map(Number);
-      const center = (box, dx = 0, dy = 0) => box ? { x: left + dx + width / 2, y: top + dy + height / 2 } : null;
-      const sourceCenter = source ? { x: source.x + source.width / 2, y: source.y + source.height / 2 } : null;
-      const targetCenter = delta?.length === 2 ? center(destination, delta[0], delta[1]) : null;
-      const expectedCenter = destination ? { x: destination.x + destination.width / 2, y: destination.y + destination.height / 2 } : null;
-      return { present: Boolean(element), source, destination, left, top, width, height, duration: animation?.effect?.getTiming().duration ?? null, finalTransform: keyframes.at(-1)?.transform ?? null, sourceCenter: center(source), expectedSourceCenter: sourceCenter, targetCenter, expectedTargetCenter: expectedCenter };
-    }, { source: playSource, destination: playDestination });
-    const close = (a, b, tolerance = 12) => Number.isFinite(a) && Number.isFinite(b) && Math.abs(a - b) <= tolerance;
-    const flightGeometry = close(flight.sourceCenter?.x, flight.expectedSourceCenter?.x, 4) && close(flight.sourceCenter?.y, flight.expectedSourceCenter?.y, 12)
-      && close(flight.targetCenter?.x, flight.expectedTargetCenter?.x, 16) && close(flight.targetCenter?.y, flight.expectedTargetCenter?.y, 16);
-    check(`${language} ${width}: ${reducedMotion ? 'reduced motion suppresses' : 'a committed play animates'} the card clone`, reducedMotion ? !flight.present : flight.present && Boolean(playSource) && Number(flight.duration) === 255 && Boolean(flight.finalTransform), JSON.stringify(flight));
-    if (!reducedMotion) check(`${language} ${width}: the played card clone travels from the selected hand card to the table`, flightGeometry, JSON.stringify(flight));
-    if (!reducedMotion) {
-      await page.waitForFunction(() => document.querySelector('.hwatu-motion-note--capture.is-fresh'), null, { timeout: 4000 });
-      const capturedCard = page.locator('[data-hwatu-zone^="captures-p1-"] [data-hwatu-card-id="1-2"]');
-      await capturedCard.waitFor({ state: 'visible', timeout: 4000 });
-      const captureDestination = await capturedCard.boundingBox();
-      await page.waitForFunction(() => document.querySelector('.hwatu-flight'), null, { timeout: 3000 });
-      const captureFlight = await page.evaluate(({ source, destination }) => {
-        const element = document.querySelector('.hwatu-flight');
-        const animation = element?.getAnimations()[0];
-        const frames = animation?.effect?.getKeyframes?.() ?? [];
-        const left = Number.parseFloat(element?.style.left || 'NaN'), top = Number.parseFloat(element?.style.top || 'NaN');
-        const cardWidth = Number.parseFloat(element?.style.width || 'NaN'), cardHeight = Number.parseFloat(element?.style.height || 'NaN');
-        const offset = frames.at(-1)?.transform?.match(/translate3d\(([-\d.]+)px,\s*([-\d.]+)px/)?.slice(1).map(Number);
-        return {
-          source, destination, duration: animation?.effect?.getTiming().duration ?? null,
-          start: { x: left + cardWidth / 2, y: top + cardHeight / 2 },
-          expectedStart: source ? { x: source.x + source.width / 2, y: source.y + source.height / 2 } : null,
-          end: offset?.length === 2 ? { x: left + offset[0] + cardWidth / 2, y: top + offset[1] + cardHeight / 2 } : null,
-          expectedEnd: destination ? { x: destination.x + destination.width / 2, y: destination.y + destination.height / 2 } : null,
-        };
-      }, { source: captureSource, destination: captureDestination });
-      const captureGeometry = close(captureFlight.start?.x, captureFlight.expectedStart?.x, 4) && close(captureFlight.start?.y, captureFlight.expectedStart?.y, 12)
-        && close(captureFlight.end?.x, captureFlight.expectedEnd?.x, 12) && close(captureFlight.end?.y, captureFlight.expectedEnd?.y, 12);
-      check(`${language} ${width}: a captured table card flies into its matching capture pile`, captureGeometry && captureFlight.duration === 255, JSON.stringify(captureFlight));
-      await page.evaluate(() => window.minhwatuProof.remount());
-      await page.waitForTimeout(40);
-      check(`${language} ${width}: unmounting during a card flight cancels its clone`, !(await page.locator('.hwatu-flight').count()) && !(await page.locator('.hwatu-score-flight').count()) && !(await page.locator('.hwatu-combination-reveal').count()), 'unmounted while the committed capture flight was active');
-    }
-    await page.waitForFunction(() => !document.querySelector('.hwatu-motion-stage.is-animating') && !document.querySelector('.hwatu-flight'), null, { timeout: 6000 });
-    await page.evaluate(() => window.minhwatuProof.renderAgain());
-    await page.waitForTimeout(360);
-    check(`${language} ${width}: replaying an unchanged public log does not repeat card flights`, !(await page.locator('.hwatu-flight').count()) && !(await page.locator('.hwatu-motion-stage.is-animating').count()), 'same committed event sequence rendered twice');
-    await page.evaluate(() => window.minhwatuProof.remount());
-    await page.waitForTimeout(360);
-    check(`${language} ${width}: remounting an existing event log stays quiet`, !(await page.locator('.hwatu-flight').count()) && !(await page.locator('.hwatu-motion-stage.is-animating').count()), 'remounted with the same state and event sequences');
+    check(`${language} ${width}×${height}: 10 hand, 8 table cards and both capture rails render with loaded art`, m.handCount===10 && m.tableCount===8 && m.rails.length===2 && m.broken===0, JSON.stringify(m));
+    check(`${language} ${width}×${height}: no horizontal overflow`, m.documentWidth<=width, JSON.stringify({documentWidth:m.documentWidth,width}));
+    if (width===1366) check(`${language} ${width}×${height}: hand and table remain in viewport`, [m.hand,m.table,...m.rails].every(box=>box&&box.y>=0&&box.bottom<=height), JSON.stringify(m));
+    await screenshot(page, `${language}-${width}x${height}-initial`);
+  } finally { await context.close(); }
+}
 
-    const godoriState = await page.evaluate(() => window.minhwatuProof.godoriState());
-    await page.evaluate(({ state, language }) => window.minhwatuProof.mount(state, language, 'p1'), { state: godoriState, language });
-    await page.waitForTimeout(350);
-    await page.waitForFunction(() => !document.querySelector('.hwatu-motion-stage.is-animating') && !document.querySelector('.hwatu-flight'), null, { timeout: 6000 });
-    await page.locator('.hwatu-hand-choice[data-hwatu-card-id="8-1"]').click();
-    await page.locator('.hwatu-confirm').click();
-    if (reducedMotion) await page.waitForFunction(() => window.minhwatuProof.view('p1').log.some(event => event.type === 'special' && event.yaku?.id === 'godori'), null, { timeout: 5000 });
-    else await page.waitForFunction(() => document.querySelector('.hwatu-motion-note--special.is-fresh'), null, { timeout: 5000 });
-    if (!reducedMotion) await page.waitForTimeout(180);
-    const special = await page.evaluate(() => {
-      const view = window.minhwatuProof.view('p1');
-      const yaku = view.board.breakdown.p1.yakus.find(item => item.id === 'godori');
-      const event = view.log.find(item => item.type === 'special' && item.yaku?.id === 'godori');
-      const capture = view.log.find(item => item.type === 'capture' && item.scoreChanges?.p1);
-      const stage = document.querySelector('.hwatu-motion-note--special');
-      const reveal = document.querySelector('.hwatu-combination-reveal[data-hwatu-celebration="godori"]');
-      const faces = reveal ? [...reveal.querySelectorAll('img')].map(image => ({ src: new URL(image.src).pathname, loaded: image.complete && image.naturalWidth > 0 })) : [];
-      const scoreFlights = [...document.querySelectorAll('.hwatu-score-flight')].map(element => ({ text: element.textContent, negative: element.classList.contains('is-negative') }));
-      return { bonus: yaku?.bonus, complete: yaku?.complete, eventBonus: event?.yaku?.bonus, title: event?.title, fresh: stage?.classList.contains('is-fresh'), ringAnimations: stage?.querySelector('i')?.getAnimations().length ?? 0, log: view.log.map(item => item.type), score: view.board.scores.p1, seat: view.turn, captureScoreChanges: capture?.scoreChanges, captureSequence: capture?.sequence, faces, revealTitle: reveal?.textContent?.trim(), scoreFlights };
-    });
-    check(`${language} ${width}: real Godori capture publishes its 50-point event and transfers turn`, special.complete && special.bonus === 50 && special.eventBonus === 50 && special.log.includes('turn') && special.seat === 'p2', JSON.stringify(special));
-    if (language === 'ko') {
-      check(`${language} ${width}: score events show exact positive and negative deltas`, special.captureScoreChanges?.p1 === 130 && special.captureScoreChanges?.p2 === -50 && special.scoreFlights.some(item => item.text === '+130') && special.scoreFlights.some(item => item.text === '−50' && item.negative), JSON.stringify({ scoreChanges: special.captureScoreChanges, flights: special.scoreFlights }));
-      check(`${language} ${width}: Godori reveal uses all three canonical loaded faces`, JSON.stringify(special.faces.map(item => item.src)) === JSON.stringify(['/images/hwatu/02-01.svg', '/images/hwatu/04-01.svg', '/images/hwatu/08-02.svg']) && special.faces.every(item => item.loaded) && special.revealTitle?.includes('+50'), JSON.stringify({ faces: special.faces, revealTitle: special.revealTitle }));
-      check(`${language} ${width}: fresh Godori event runs its special motion once`, special.fresh && special.ringAnimations > 0, JSON.stringify({ fresh: special.fresh, ringAnimations: special.ringAnimations }));
-    } else {
-      check(`${language} ${width}: reduced motion preserves score events and suppresses transient clones`, special.captureScoreChanges?.p1 === 130 && special.captureScoreChanges?.p2 === -50 && !special.scoreFlights.length && !special.faces.length && !(await page.locator('.hwatu-flight').count()) && !(await page.locator('.hwatu-combination-reveal').count()), JSON.stringify({ scoreChanges: special.captureScoreChanges, scoreFlights: special.scoreFlights, faces: special.faces }));
-    }
-    await capture(page, `${language}-${width}-godori-special`);
-    if (!reducedMotion) {
-      const activeEffects = await page.evaluate(() => ({ flights: document.querySelectorAll('.hwatu-flight').length, scoreFlights: document.querySelectorAll('.hwatu-score-flight').length, reveals: document.querySelectorAll('.hwatu-combination-reveal').length }));
-      await page.evaluate(({ state, language }) => window.minhwatuProof.mount(state, language, 'p1'), { state: await page.evaluate(() => window.minhwatuProof.normalState()), language });
-      await page.waitForTimeout(60);
-      const resetState = await page.evaluate(() => ({ view: window.minhwatuProof.view('p1'), effects: { flights: document.querySelectorAll('.hwatu-flight').length, scoreFlights: document.querySelectorAll('.hwatu-score-flight').length, reveals: document.querySelectorAll('.hwatu-combination-reveal').length }, freshDeal: Boolean(document.querySelector('.hwatu-motion-note--deal.is-fresh')), deltas: document.querySelectorAll('.game-value-delta').length, flightFaces: [...document.querySelectorAll('.hwatu-flight img')].map(image => new URL(image.src).pathname) }));
-      const freshDealFaces = resetState.view.board.table.map(card => { const [month, index] = card.id.split('-').map(Number); return `/images/hwatu/${String(month).padStart(2, '0')}-${String(index).padStart(2, '0')}.svg`; });
-      const freshDealOnly = resetState.effects.flights === 0 ? !resetState.freshDeal : resetState.effects.flights === 8 && resetState.freshDeal && resetState.flightFaces.every(src => freshDealFaces.includes(src));
-      check(`${language} ${width}: new-game reset clears old effects/deltas and only permits a fresh deal animation`, activeEffects.reveals > 0 && activeEffects.scoreFlights > 0 && resetState.view.log.length === 1 && resetState.view.log[0].type === 'deal' && resetState.view.board.scores.p1 === 0 && freshDealOnly && resetState.effects.scoreFlights === 0 && resetState.effects.reveals === 0 && resetState.deltas === 0, JSON.stringify({ activeEffects, log: resetState.view.log.map(event => event.type), scores: resetState.view.board.scores, effects: resetState.effects, freshDeal: resetState.freshDeal, flightFaces: resetState.flightFaces, deltas: resetState.deltas }));
-      await page.waitForFunction(() => !document.querySelector('.hwatu-motion-stage.is-animating') && !document.querySelector('.hwatu-flight'), null, { timeout: 4000 });
+async function targetCases(language, width, height) {
+  const { context, page } = await open(language,width,height);
+  try {
+    const runHand = async count => {
+      await page.evaluate(({language,count})=>window.__minhwatuProof.mount(window.__minhwatuProof.stateWithMatches(count,0),language),{language,count}); await idle(page);
+      await page.locator('.hwatu-hand-choice[data-hwatu-card-id="1-1"]').click();
+      if(count===2){
+        const targets=page.locator('.hwatu-table-card.is-target'); await targets.first().waitFor({state:'visible',timeout:4000});
+        check(`${language}: hand has ${count} matches and exposes both exact targets`,await targets.count()===2,`visible ${await targets.count()}`);
+        const layout=await page.evaluate(()=>({height:innerHeight,targets:[...document.querySelectorAll('.hwatu-table-card.is-target')].map(e=>{const r=e.getBoundingClientRect();return {y:r.y,bottom:r.bottom}}),confirm:document.querySelector('.hwatu-cancel')?.getBoundingClientRect().toJSON()??null}));
+        check(`${language}: 1366×768 two-target choices and cancel control are visible`,layout.targets.length===2&&layout.targets.every(r=>r.y>=0&&r.bottom<=layout.height)&&Boolean(layout.confirm&&layout.confirm.y>=0&&layout.confirm.bottom<=layout.height),JSON.stringify(layout));
+        const automaticFocus=await page.evaluate(()=>({id:document.activeElement?.getAttribute('data-hwatu-card-id')??null,target:document.activeElement?.classList.contains('is-target')??false}));
+        check(`${language}: selecting two-match hand card focuses the first legal target`,automaticFocus.target&&automaticFocus.id===await targets.first().getAttribute('data-hwatu-card-id'),JSON.stringify(automaticFocus));
+        await page.keyboard.press('Enter');
+      } else {
+        const source=count===0?await page.locator('.hwatu-hand-choice[data-hwatu-card-id="1-1"]').boundingBox():null;
+        await page.locator('.hwatu-confirm').click();
+        if(count===0){
+          await page.waitForFunction(()=>document.querySelector('.hwatu-motion-note--play.is-fresh'),null,{timeout:3000});
+          const landing=await page.locator('[data-hwatu-zone="table"] [data-hwatu-landing-anchor]').boundingBox();
+          const flight=await page.evaluate(({source,landing})=>{const e=document.querySelector('.hwatu-flight[data-hwatu-flight-card="1-1"]'),a=e?.getAnimations()[0],f=a?.effect?.getKeyframes().at(-1),m=f?.transform?.match(/translate3d\(([-\d.]+)px,\s*([-\d.]+)px/),x=parseFloat(e?.style.left||'0'),y=parseFloat(e?.style.top||'0'),w=parseFloat(e?.style.width||'0'),h=parseFloat(e?.style.height||'0');return {present:!!e,tableCount:document.querySelectorAll('[data-hwatu-zone="table"] [data-hwatu-card-id]').length,anchor:!!document.querySelector('.hwatu-table-landing-anchor'),end:m?{x:x+Number(m[1])+w/2,y:y+Number(m[2])+h/2}:null,expected:landing?{x:landing.x+landing.width/2,y:landing.y+landing.height/2}:null,source:source?{x:source.x+source.width/2,y:source.y+source.height/2}:null};},{source,landing});
+          check(`${language}: unmatched hand card lands in the reserved 8→9 table cell`,flight.present&&flight.tableCount===8&&flight.anchor&&nearby(flight.end,flight.expected,18),JSON.stringify(flight));
+        }
+      }
+      await page.waitForFunction(()=>window.__minhwatuProof.view('p1').log.some(event=>event.type==='turn'),null,{timeout:6000}); await idle(page);
+      const result=await page.evaluate(()=>{const v=window.__minhwatuProof.view('p1');return {play:v.log.filter(e=>e.type==='play').length,capture:v.log.filter(e=>e.type==='capture').length,draw:v.log.filter(e=>e.type==='draw').length,hand:v.ownHand.length,turn:v.turn,captured:v.board.captures.p1.length};});
+      check(`${language}: hand match count ${count} resolves once and advances`,result.play===1&&result.draw===1&&result.hand===9&&result.turn==='p2'&&result.captured===(count===0?0:count===3?4:2),JSON.stringify(result));
+    };
+    for(const count of [0,1,2,3]) await runHand(count);
+    const runDraw = async count => {
+      await page.evaluate(({language,count})=>window.__minhwatuProof.mount(window.__minhwatuProof.stateWithMatches(0,count),language),{language,count}); await idle(page);
+      await page.locator('.hwatu-hand-choice[data-hwatu-card-id="1-1"]').click(); await page.locator('.hwatu-confirm').click();
+      await page.waitForFunction(()=>window.__minhwatuProof.view('p1').log.some(event=>event.type==='draw'),null,{timeout:5000});
+      if(count===0){
+        await page.waitForFunction(()=>window.__minhwatuCues.some(item=>item.event.type==='draw'&&item.transfer),null,{timeout:5000});
+        const landing=await page.locator('[data-hwatu-zone="table"] [data-hwatu-landing-anchor]').boundingBox();
+        const transfer=await page.evaluate(({landing})=>{const el=document.querySelector('.hwatu-flight[data-hwatu-flight-card="12-1"]'),a=el?.getAnimations()[0],frame=a?.effect?.getKeyframes().at(-1),m=frame?.transform?.match(/translate3d\(([-\d.]+)px,\s*([-\d.]+)px/),x=parseFloat(el?.style.left||'0'),y=parseFloat(el?.style.top||'0'),w=parseFloat(el?.style.width||'0'),h=parseFloat(el?.style.height||'0');return {present:!!el,end:m?{x:x+Number(m[1])+w/2,y:y+Number(m[2])+h/2}:null,expected:landing?{x:landing.x+landing.width/2,y:landing.y+landing.height/2}:null,cue:window.__minhwatuCues.filter(item=>item.event.type==='draw').map(item=>({transfer:item.transfer,impactOffsets:item.impactOffsets}))};},{landing});
+        check(`${language}: unmatched draw reveals then lands in its reserved table cell`,transfer.present&&nearby(transfer.end,transfer.expected,20)&&transfer.cue.some(item=>item.transfer),JSON.stringify(transfer));
+      }
+      if(count===2){ await page.waitForFunction(()=>window.__minhwatuProof.view('p1').phase==='capture-draw',null,{timeout:4000}); const targets=page.locator('.hwatu-table-card.is-target'); await targets.first().waitFor({state:'visible',timeout:4000}); check(`${language}: draw with two matches waits for an explicit legal target`,await targets.count()===2,`visible ${await targets.count()}`); await page.waitForFunction(()=>document.activeElement?.classList.contains('is-target'),null,{timeout:2200}); const focus=await page.evaluate(()=>({id:document.activeElement?.getAttribute('data-hwatu-card-id')??null,target:document.activeElement?.classList.contains('is-target')??false})); check(`${language}: capture-draw focuses a legal table choice`,focus.target&&focus.id===await targets.first().getAttribute('data-hwatu-card-id'),JSON.stringify(focus)); const chosen=await targets.first().getAttribute('data-hwatu-card-id'),chosenRect=await targets.first().boundingBox(); await targets.first().click(); await page.waitForFunction(()=>window.__minhwatuProof.view('p1').log.some(event=>event.type==='capture'),null,{timeout:4000}); await page.waitForFunction(()=>window.__minhwatuCues.some(item=>item.transfer&&item.event.cards?.some(card=>card.id==='12-1')),null,{timeout:1800}).catch(()=>{}); const route=await page.evaluate(({expected})=>{const cues=window.__minhwatuCues.filter(item=>item.transfer&&item.event.cards?.some(card=>card.id==='12-1'));const el=document.querySelector('.hwatu-flight[data-hwatu-flight-card="12-1"]'),a=el?.getAnimations()[0],frame=a?.effect?.getKeyframes().at(-1),m=frame?.transform?.match(/translate3d\(([-\d.]+)px,\s*([-\d.]+)px/),x=parseFloat(el?.style.left||'0'),y=parseFloat(el?.style.top||'0'),w=parseFloat(el?.style.width||'0'),h=parseFloat(el?.style.height||'0');return {transfers:cues.map(item=>({type:item.event.type,targetId:item.targetId,impactOffsets:item.impactOffsets})),flight:!!el,end:m?{x:x+Number(m[1])+w/2,y:y+Number(m[2])+h/2}:null,expected:expected?{x:expected.x+expected.width/2,y:expected.y+expected.height/2}:null};},{expected:chosenRect}); check(`${language}: pending draw visibly transfers to the chosen table card before capture`,route.transfers.length>0&&route.flight&&nearby(route.end,route.expected,20),JSON.stringify({...route,chosen,chosenRect})); }
+      await page.waitForFunction(()=>window.__minhwatuProof.view('p1').log.some(event=>event.type==='turn'),null,{timeout:6000}); await idle(page);
+      const result=await page.evaluate(()=>{const v=window.__minhwatuProof.view('p1');return {draw:v.log.filter(e=>e.type==='draw').length,capture:v.log.filter(e=>e.type==='capture').length,hand:v.ownHand.length,turn:v.turn,captured:v.board.captures.p1.length,pending:v.board.pendingCard?.id??null};});
+      check(`${language}: draw match count ${count} resolves once with no pending leak`,result.draw===1&&result.hand===9&&result.turn==='p2'&&result.pending===null&&result.captured===(count===0?0:count===3?4:2),JSON.stringify(result));
+    };
+    for(const count of [0,1,2,3]) await runDraw(count);
+  } finally { await context.close(); }
+}
 
-      const resetGodori = await page.evaluate(() => window.minhwatuProof.godoriState());
-      await page.evaluate(({ state, language }) => window.minhwatuProof.mount(state, language, 'p1'), { state: resetGodori, language });
-      await page.waitForTimeout(40);
-      await page.locator('.hwatu-hand-choice[data-hwatu-card-id="8-1"]').click();
-      await page.locator('.hwatu-confirm').click();
-      await page.waitForFunction(() => document.querySelector('.hwatu-combination-reveal[data-hwatu-celebration="godori"]'), null, { timeout: 5000 });
-      const effectsBeforeReduced = await page.evaluate(() => ({ flights: document.querySelectorAll('.hwatu-flight').length, scoreFlights: document.querySelectorAll('.hwatu-score-flight').length, reveals: document.querySelectorAll('.hwatu-combination-reveal').length }));
-      await page.emulateMedia({ reducedMotion: 'reduce' });
-      await page.waitForFunction(() => !document.querySelector('.hwatu-flight') && !document.querySelector('.hwatu-score-flight') && !document.querySelector('.hwatu-combination-reveal'), null, { timeout: 3000 });
-      const reducedCleanup = await page.evaluate(() => ({ effects: { flights: document.querySelectorAll('.hwatu-flight').length, scoreFlights: document.querySelectorAll('.hwatu-score-flight').length, reveals: document.querySelectorAll('.hwatu-combination-reveal').length }, godori: window.minhwatuProof.view('p1').log.some(event => event.type === 'special' && event.yaku?.id === 'godori') }));
-      check(`${language} ${width}: enabling reduced motion clears active effects but keeps the committed Godori event`, effectsBeforeReduced.reveals > 0 && reducedCleanup.effects.flights === 0 && reducedCleanup.effects.scoreFlights === 0 && reducedCleanup.effects.reveals === 0 && reducedCleanup.godori, JSON.stringify({ effectsBeforeReduced, ...reducedCleanup }));
-      await page.emulateMedia({ reducedMotion: 'no-preference' });
-    }
-    await page.waitForFunction(() => !document.querySelector('.hwatu-motion-stage.is-animating'), null, { timeout: 6000 });
+async function denseResultAndReplay(language) {
+  const { context, page } = await open(language,1440,900);
+  try {
+    await page.evaluate(lang=>window.__minhwatuProof.mount(window.__minhwatuProof.denseState(),lang),language); await idle(page);
+    await page.locator('[data-hwatu-zone="captures-p1-ribbon"] .hwatu-category-summary').click();
+    const cards=page.locator('.hwatu-inspection-card'); await cards.first().waitFor({state:'visible',timeout:3000});
+    const detail=await page.evaluate(()=>({count:document.querySelectorAll('.hwatu-inspection-card').length,width:Math.min(...[...document.querySelectorAll('.hwatu-inspection-card')].map(e=>e.getBoundingClientRect().width)),monthFont:[...document.querySelectorAll('.hwatu-inspection-card .gb-hwatu-month-tag')].map(e=>parseFloat(getComputedStyle(e).fontSize)),ids:[...document.querySelectorAll('.hwatu-inspection-card')].map(e=>e.getAttribute('data-hwatu-card-id'))}));
+    check(`${language}: nine captured ribbons open as a readable complete inspection`,detail.count===9&&detail.width>=54&&detail.monthFont.length===9&&detail.monthFont.every(size=>size>=12)&&new Set(detail.ids).size===9,JSON.stringify(detail));
+    await page.locator('.hwatu-capture-inspection').scrollIntoViewIfNeeded(); await screenshot(page,`${language}-capture-inspection`);
+    await page.getByRole('button',{name:/접기|Cerrar/i}).click();
+    await page.evaluate(lang=>window.__minhwatuProof.mount(window.__minhwatuProof.godoriState(),lang),language); await idle(page);
+    const oldScore=await page.evaluate(()=>window.__minhwatuProof.view('p1').board.scores.p1);
+    await page.evaluate(()=>{window.__minhwatuScoreSamples=[];window.addEventListener('minhwatu-presentation-cue',function sampleCapture(event){if(event.detail?.event?.type!=='capture')return;window.removeEventListener('minhwatu-presentation-cue',sampleCapture);const offsets=event.detail.impactOffsets??[];for(const [label,offset] of [['first',offsets[0]+4],['last',offsets.at(-1)+10]])setTimeout(()=>window.__minhwatuScoreSamples.push({label,shown:Number(document.querySelector('[data-hwatu-zone="score-p1"] strong')?.textContent?.match(/-?\d+/)?.[0]),turn:document.querySelector('.hwatu-seat-score.is-turn')?.getAttribute('data-player')??null}),Math.max(0,offset));});});
+    await page.locator('.hwatu-hand-choice[data-hwatu-card-id="8-1"]').click(); await page.locator('.hwatu-confirm').click();
+    await page.waitForFunction(()=>window.__minhwatuCues.some(item=>item.event.type==='capture'),null,{timeout:5000});
+    const captureCue=await page.evaluate(()=>window.__minhwatuCues.filter(item=>item.event.type==='capture').at(-1));
+    await page.waitForFunction(()=>window.__minhwatuScoreSamples?.length===2,null,{timeout:3000});
+    const scoreSamples=await page.evaluate(()=>window.__minhwatuScoreSamples);
+    await page.waitForFunction(()=>document.querySelector('.hwatu-motion-note--special.is-fresh .hwatu-earned-faces img'),null,{timeout:3000});
+    const godoriHeader=await page.evaluate(()=>({text:document.querySelector('.hwatu-motion-note--special')?.textContent?.trim()??'',faces:[...document.querySelectorAll('.hwatu-motion-note--special .hwatu-earned-faces img')].map(image=>({src:image.getAttribute('src'),loaded:image.complete&&image.naturalWidth>0})),rect:document.querySelector('.hwatu-motion-note--special')?.getBoundingClientRect().toJSON()??null}));
+    check(`${language}: Godori reveal shows the three canonical faces in the live inline event header`,godoriHeader.faces.length===3&&godoriHeader.faces.every(face=>face.loaded)&&godoriHeader.faces.map(face=>face.src).every(src=>/02-01|04-01|08-02/.test(src??'')),JSON.stringify(godoriHeader));
+    await screenshot(page,`${language}-godori-inline`);
+    const scoreAfterLast=await page.evaluate(({cue})=>({shown:Number(document.querySelector('[data-hwatu-zone="score-p1"] strong')?.textContent?.match(/-?\d+/)?.[0]),authoritative:window.__minhwatuProof.view('p1').board.scores.p1,delta:cue.event.scoreChanges?.p1}),{cue:captureCue});
+    check(`${language}: public score waits for the last captured card to land`,scoreSamples[0]?.label==='first'&&scoreSamples[0].shown===oldScore&&scoreSamples[1]?.label==='last'&&scoreSamples[1].shown===scoreAfterLast.authoritative&&scoreAfterLast.delta>0,JSON.stringify({oldScore,scoreSamples,...scoreAfterLast,offsets:captureCue.impactOffsets}));
+    await page.waitForFunction(()=>window.__minhwatuProof.view('p1').log.some(e=>e.type==='special'&&e.yaku?.id==='godori'),null,{timeout:5000}); await idle(page);
+    await page.evaluate(()=>window.__minhwatuProof.setViewer('p2')); await idle(page);
+    await page.locator('.hwatu-hand-choice[data-hwatu-card-id="12-4"]').click(); await page.locator('.hwatu-confirm').click();
+    const immediateAnnouncement=await page.locator('.game-feedback-status').innerText();
+    check(`${language}: final result announcement waits for the public win event`,!(/민화투 최종 정산|Resultado de Minhwatu/.test(immediateAnnouncement))&&!(await page.evaluate(()=>window.__minhwatuCues.some(item=>item.event.type==='win'))),immediateAnnouncement);
+    await page.waitForFunction(()=>window.__minhwatuCues.some(item=>item.event.type==='win'),null,{timeout:6000});
+    await page.waitForFunction(lang=>document.querySelector('.game-feedback-status')?.textContent?.includes(lang==='ko'?'민화투 최종 정산':'Resultado de Minhwatu'),language,{timeout:4000});
+    await page.waitForFunction(()=>window.__minhwatuProof.view('p2').result?.winner!=null,null,{timeout:5000}); await idle(page);
+    const resultP2=await page.locator('.hwatu-result').innerText();
+    await page.evaluate(()=>window.__minhwatuProof.setViewer('p1'));
+    const result=await page.locator('.hwatu-result').innerText();
+    check(`${language}: both seats receive the same named result and score formula`,resultP2.includes('Yeonseok')&&resultP2.includes('Lisbeth')&&result.includes('Yeonseok')&&result.includes('Lisbeth')&&/× 2|\* 2/.test(result),JSON.stringify({p1:result,p2:resultP2}));
+    const replay=page.locator('.hwatu-replay > button'); await replay.click(); await page.getByText(/동의 대기 중|Esperando aceptación/i).waitFor({timeout:3000});
+    check(`${language}: replay request callback is called once and shows pending consent`,await page.evaluate(()=>window.__minhwatuProof.replayCalls())===1,await replay.innerText());
+    await page.evaluate(()=>window.__minhwatuProof.setReplayPending(false)); await page.waitForTimeout(50);
+    await page.evaluate(()=>{window.__minhwatuProof.setViewer('p2');window.__minhwatuProof.setReplayPending(true);});
+    check(`${language}: other seat sees incoming replay consent action`,await page.locator('.hwatu-replay > button').isVisible()&&/동의하고 한 판 더|Aceptar y jugar otra/i.test(await page.locator('.hwatu-replay > button').innerText()));
+    await screenshot(page,`${language}-named-result-replay`);
+  } finally { await context.close(); }
+}
 
-    const opponentView = await page.evaluate(() => window.minhwatuProof.view('p2'));
-    const ownerView = await page.evaluate(() => window.minhwatuProof.view('p1'));
-    const p1Hand = await page.evaluate(() => window.minhwatuProof.hiddenIds('p1'));
-    const p2Hand = await page.evaluate(() => window.minhwatuProof.hiddenIds('p2'));
-    const postGodoriVisibleIds = await page.locator('[data-hwatu-card-id]').evaluateAll(nodes => nodes.map(node => node.getAttribute('data-hwatu-card-id')));
-    const p1LeaksP2AfterGodori = p2Hand.some(id => postGodoriVisibleIds.includes(id));
-    const p2LeaksP1AfterGodori = p1Hand.some(id => postGodoriVisibleIds.includes(id));
-    check(`${language} ${width}: both seat views show only their own hand after Godori`, ownerView.ownHand.map(card => card.id).join(',') === p1Hand.join(',') && opponentView.ownHand.map(card => card.id).join(',') === p2Hand.join(',') && !p1LeaksP2AfterGodori && !p2LeaksP1AfterGodori, JSON.stringify({ p1OwnIds: ownerView.ownHand.map(card => card.id), p2OwnIds: opponentView.ownHand.map(card => card.id), p1Opponent: ownerView.opponentCount, p2Opponent: opponentView.opponentCount, p1LeaksP2AfterGodori, p2LeaksP1AfterGodori }));
-    await page.evaluate(() => window.minhwatuProof.setViewer('p2'));
-    await page.locator('.hwatu-hand-choice[data-hwatu-card-id="12-4"]').click();
-    await page.locator('.hwatu-confirm').click();
-    await page.waitForFunction(() => Boolean(window.minhwatuProof.view('p2').result?.winner), null, { timeout: 5000 });
-    const finished = await page.evaluate(() => {
-      const view = window.minhwatuProof.view('p2');
-      return { result: view.result, status: view.status, events: view.log.map(event => event.type), godoriVisible: view.log.some(event => event.type === 'special' && event.yaku?.id === 'godori' && event.yaku.bonus === 50), p1Godori: view.board.breakdown.p1.yakus.find(item => item.id === 'godori')?.complete };
-    });
-    check(`${language} ${width}: engine actions reach a caller-visible completed result`, Boolean(finished.result) && finished.status === 'finished' && finished.events.at(-1) === 'win' && finished.godoriVisible && finished.p1Godori, JSON.stringify(finished));
-    await page.locator('.hwatu-scoring > summary').click();
-    await page.waitForFunction(() => document.querySelector('.hwatu-scoring')?.open === true);
-    await page.waitForFunction(() => [...document.querySelectorAll('.hwatu-yaku-list li')].some(item => item.textContent?.includes('Godori') || item.textContent?.includes('고도리')));
-    await capture(page, `${language}-${width}-finished-godori`);
-    await page.evaluate(() => window.minhwatuProof.setViewer('p1'));
-    const finalP1 = await page.evaluate(() => window.minhwatuProof.view('p1'));
-    check(`${language} ${width}: the other caller receives the same final result without private hand fields`, finalP1.result?.winner === finished.result.winner && finalP1.status === 'finished' && !('hands' in finalP1) && !('deck' in finalP1), JSON.stringify({ result: finalP1.result, status: finalP1.status, hasHands: 'hands' in finalP1, hasDeck: 'deck' in finalP1 }));
-  } finally {
-    await context.close();
-  }
+async function lifecycle(language) {
+  const {context,page}=await open(language,1440,900);
+  try {
+    await page.evaluate(lang=>window.__minhwatuProof.mount(window.__minhwatuProof.normalState(),lang),language); await idle(page);
+    await page.locator('.hwatu-hand-choice[data-hwatu-card-id="2-1"]').click(); await page.locator('.hwatu-confirm').click();
+    await page.waitForFunction(()=>document.querySelector('.hwatu-flight[data-hwatu-flight-card="2-1"]'),null,{timeout:3000});
+    await page.evaluate(lang=>window.__minhwatuProof.mount(window.__minhwatuProof.normalState(),lang),language);
+    await page.waitForFunction(()=>!document.querySelector('.hwatu-flight')&&!document.querySelector('.hwatu-score-flight')&&!document.querySelector('.hwatu-earned-faces'),null,{timeout:2000});
+    check(`${language}: changing scene during flight clears previous transient effects`,!(await page.locator('.hwatu-motion-stage.is-animating').count())&&await page.evaluate(()=>window.__minhwatuProof.view('p1').log.length===1),'new scene begins from a quiet initial deal');
+    await idle(page); await page.evaluate(()=>window.__minhwatuProof.renderAgain()); await page.waitForTimeout(80);
+    check(`${language}: rerendering an unchanged event sequence does not replay it`,!(await page.locator('.hwatu-flight,.hwatu-score-flight').count()));
+    await page.evaluate(()=>window.__minhwatuProof.remount()); await page.waitForTimeout(80);
+    check(`${language}: remounting a current view does not replay historical events`,!(await page.locator('.hwatu-flight,.hwatu-score-flight,.hwatu-earned-faces').count()));
+    await page.evaluate(lang=>window.__minhwatuProof.mount(window.__minhwatuProof.normalState(),lang),language); await idle(page);
+    await page.evaluate(()=>window.__minhwatuProof.backlog()); await page.waitForTimeout(80);
+    const backlog=await page.evaluate(()=>({sequence:window.__minhwatuProof.view('p1').log.at(-1)?.sequence,latest:window.__minhwatuProof.view('p1').log.at(-1)?.title.ko,animating:!!document.querySelector('.hwatu-motion-stage.is-animating'),clones:document.querySelectorAll('.hwatu-flight,.hwatu-score-flight').length}));
+    check(`${language}: backlog over 12 events snaps to latest public state without replaying stale flights`,backlog.sequence===15&&!backlog.animating&&backlog.clones===0,JSON.stringify(backlog));
+  } finally { await context.close(); }
+}
+
+async function privacyAndMotion(language) {
+  const { context,page }=await open(language,1440,900);
+  try {
+    await page.evaluate(lang=>window.__minhwatuProof.mount(window.__minhwatuProof.stateWithMatches(2,0),lang),language); await idle(page);
+    const privacy=await page.evaluate(()=>{const own=window.__minhwatuProof.view('p1'),other=window.__minhwatuProof.view('p2'),hidden=window.__minhwatuProof.hiddenIds('p2'),serialized=JSON.stringify({own,other}),dom=[...document.querySelectorAll('[data-hwatu-card-id]')].map(e=>e.getAttribute('data-hwatu-card-id'));return {own:own.ownHand.length,other:other.ownHand.length,opponentCount:own.opponentCount,leaks:hidden.filter(id=>dom.includes(id)),privateKeys:/"(hands|deck|seed)"/.test(serialized)};});
+    check(`${language}: seat views and DOM hide the rival hand and stock`,privacy.own===10&&privacy.other===10&&privacy.opponentCount===10&&privacy.leaks.length===0&&!privacy.privateKeys,JSON.stringify(privacy));
+    await page.evaluate(()=>window.__minhwatuProof.setViewer('p2')); await idle(page);
+    const reversePrivacy=await page.evaluate(()=>{const own=window.__minhwatuProof.view('p2'),hidden=window.__minhwatuProof.hiddenIds('p1'),dom=[...document.querySelectorAll('[data-hwatu-card-id]')].map(e=>e.getAttribute('data-hwatu-card-id'));return {own:own.ownHand.map(c=>c.id),hidden:own.opponentCount,leaks:hidden.filter(id=>dom.includes(id))};});
+    check(`${language}: the opposite seat sees its own hand without exposing the first seat's cards`,reversePrivacy.own.length===10&&reversePrivacy.hidden===10&&reversePrivacy.leaks.length===0,JSON.stringify(reversePrivacy));
+    await page.evaluate(()=>window.__minhwatuProof.setViewer('p1')); await idle(page);
+    await page.locator('.hwatu-hand-choice[data-hwatu-card-id="1-1"]').click(); const target=page.locator('.hwatu-table-card.is-target').first(); await target.waitFor();
+    const sourceRect=await page.locator('.hwatu-hand-choice[data-hwatu-card-id="1-1"]').boundingBox(), targetRect=await target.boundingBox();
+    const captureStart=await page.locator('[data-hwatu-zone="table"] [data-hwatu-card-id="1-2"]').boundingBox();
+    const captureEnd=await page.locator('[data-hwatu-zone="captures-p1-ribbon"] [data-hwatu-landing-anchor]').boundingBox();
+    await target.click(); await page.waitForFunction(()=>document.querySelector('.hwatu-motion-note--play.is-fresh'),null,{timeout:3000});
+    const flight=await page.evaluate(({id,source,target})=>{const el=document.querySelector(`.hwatu-flight[data-hwatu-flight-card="${id}"]`),a=el?.getAnimations()[0],frame=a?.effect?.getKeyframes().at(-1),m=frame?.transform?.match(/translate3d\(([-\d.]+)px,\s*([-\d.]+)px/),left=parseFloat(el?.style.left||'0'),top=parseFloat(el?.style.top||'0'),w=parseFloat(el?.style.width||'0'),h=parseFloat(el?.style.height||'0');return {present:!!el,hiddenSource:!document.querySelector(`.hwatu-hand-choice[data-hwatu-card-id="${id}"]`),duplicates:document.querySelectorAll(`.hwatu-hand-choice[data-hwatu-card-id="${id}"],[data-hwatu-zone="table"] [data-hwatu-card-id="${id}"]`).length,end:m?{x:left+Number(m[1])+w/2,y:top+Number(m[2])+h/2}:null,expected:target?{x:target.x+target.width/2,y:target.y+target.height/2}:null,source:source?{x:source.x+source.width/2,y:source.y+source.height/2}:null};},{id:'1-1',source:sourceRect,target:targetRect});
+    const near=(a,b,t=18)=>Number.isFinite(a)&&Number.isFinite(b)&&Math.abs(a-b)<=t;
+    check(`${language}: selected card is shown once in flight and targets its matched table card`,flight.present&&flight.hiddenSource&&flight.duplicates===0&&near(flight.end?.x,flight.expected?.x)&&near(flight.end?.y,flight.expected?.y),JSON.stringify(flight));
+    await page.waitForFunction(()=>document.querySelector('.hwatu-motion-note--capture.is-fresh'),null,{timeout:3000});
+    await page.waitForFunction(()=>document.querySelector('.hwatu-flight[data-hwatu-flight-card="1-2"]'),null,{timeout:3000});
+    const captureFlight=await page.evaluate(({target})=>{const el=document.querySelector('.hwatu-flight[data-hwatu-flight-card="1-2"]'),a=el?.getAnimations()[0],frame=a?.effect?.getKeyframes().at(-1),m=frame?.transform?.match(/translate3d\(([-\d.]+)px,\s*([-\d.]+)px/),left=parseFloat(el?.style.left||'0'),top=parseFloat(el?.style.top||'0'),w=parseFloat(el?.style.width||'0'),h=parseFloat(el?.style.height||'0');return {present:!!el,start:el?{x:left+w/2,y:top+h/2}:null,end:m?{x:left+Number(m[1])+w/2,y:top+Number(m[2])+h/2}:null,expected:target?{x:target.x+target.width/2,y:target.y+target.height/2}:null};},{target:captureEnd});
+    check(`${language}: captured table card clone starts at its exact source and lands in its category rack`,captureFlight.present&&near(captureFlight.start?.x,captureStart?.x+(captureStart?.width??0)/2,4)&&near(captureFlight.start?.y,captureStart?.y+(captureStart?.height??0)/2,12)&&near(captureFlight.end?.x,captureFlight.expected?.x,24)&&near(captureFlight.end?.y,captureFlight.expected?.y,24),JSON.stringify({...captureFlight,source:captureStart}));
+    const cue=await page.evaluate(()=>window.__minhwatuCues.map(({event,impactOffsets,transfer})=>({type:event.type,impactOffsets,transfer:!!transfer})));
+    check(`${language}: committed hand-play and capture cues follow the public event order`,cue.findIndex(item=>item.type==='play')>=0&&cue.findIndex(item=>item.type==='capture')>cue.findIndex(item=>item.type==='play')&&cue.find(item=>item.type==='capture')?.impactOffsets.join(',')==='260,285',JSON.stringify(cue));
+    const activeFlights=await page.locator('.hwatu-flight').count();
+    await page.emulateMedia({reducedMotion:'reduce'}); await page.waitForFunction(()=>!document.querySelector('.hwatu-flight')&&!document.querySelector('.hwatu-score-flight'),null,{timeout:2500});
+    check(`${language}: enabling reduced motion clears active transient clones`,activeFlights>0&&!(await page.locator('.hwatu-flight,.hwatu-score-flight,.hwatu-earned-faces').count()),`active flights before toggle: ${activeFlights}; public state remains committed`);
+  } finally { await context.close(); }
 }
 
 try {
-  await testLocale('ko', 1440, 900);
-  await testLocale('es', 1920, 1080);
-} catch (error) {
-  report.errors.push(error instanceof Error ? error.stack || error.message : String(error));
-} finally {
-  await browser.close();
-}
-
-report.summary = { total: report.checks.length, passed: report.checks.filter(item => item.pass).length, failed: report.checks.filter(item => !item.pass).length };
-await fs.writeFile(path.join(outputDir, 'minhwatu-native.json'), JSON.stringify(report, null, 2) + '\n');
-console.log(JSON.stringify(report, null, 2));
-if (report.summary.failed || report.errors.length) process.exitCode = 1;
+  for(const [language,width,height] of [['ko',1366,768],['ko',1440,900],['ko',1920,1080],['es',1366,768],['es',1440,900],['es',1920,1080]]) await initialMatrix(language,width,height);
+  await targetCases('ko',1366,768); await targetCases('es',1366,768);
+  await privacyAndMotion('ko'); await privacyAndMotion('es');
+  await lifecycle('ko'); await lifecycle('es');
+  await denseResultAndReplay('ko'); await denseResultAndReplay('es');
+} catch(error) { report.errors.push(error instanceof Error ? error.stack||error.message : String(error)); }
+finally { await browser.close(); }
+report.summary={total:report.checks.length,passed:report.checks.filter(item=>item.pass).length,failed:report.checks.filter(item=>!item.pass).length};
+await fs.writeFile(path.join(outputDir,'minhwatu-native.json'),JSON.stringify(report,null,2)+'\n');
+console.log(JSON.stringify(report,null,2));
+if(report.summary.failed||report.errors.length) process.exitCode=1;

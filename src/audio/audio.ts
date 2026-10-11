@@ -27,6 +27,58 @@ let textureBuffer: AudioBuffer | undefined;
 let gestureUnlocked = false;
 const voices = new Set<AudioScheduledSourceNode>();
 let visibilityListener: (() => void) | undefined;
+let hwatuGeneration = 0;
+const hwatuBuffers = new Map<string, AudioBuffer>();
+const hwatuLast = new Map<string, number>();
+const hwatuFamilies: Record<string, number> = { select: 2, place: 4, draw: 3, capture: 3, stack: 3, deal: 2, turn: 1, win: 1, lose: 1, 'draw-result': 1 };
+
+async function preloadHwatu() {
+  const context = audioContext;
+  if (!context || activeScene !== 'minhwatu' || !getPreferences('minhwatu').sfxEnabled) return;
+  const generation = hwatuGeneration;
+  await Promise.all(Object.entries(hwatuFamilies).flatMap(([family, count]) => Array.from({ length: count }, async (_, i) => {
+    const file = `${family}-${i + 1}`;
+    if (hwatuBuffers.has(file)) return;
+    try {
+      const response = await fetch(`/audio/minhwatu/${file}.wav`);
+      if (!response.ok) return;
+      const buffer = await context.decodeAudioData(await response.arrayBuffer());
+      if (audioContext === context && generation === hwatuGeneration) hwatuBuffers.set(file, buffer);
+    } catch { /* Unavailable Foley stays silent; never replay after loading. */ }
+  })));
+}
+
+export function cancelMinhwatuAudio(): void {
+  if (activeScene === 'minhwatu') stopVoices();
+}
+
+export function playMinhwatuCue(cue: AudioCue | 'stack', impactOffsets: number[] = [0]): void {
+  const context = audioContext;
+  if (!gestureUnlocked || activeScene !== 'minhwatu' || !getPreferences('minhwatu').sfxEnabled || !context || context.state !== 'running' || document.hidden) return;
+  const family = cue === 'event' ? 'draw-result' : cue === 'special' ? 'win' : cue;
+  const count = hwatuFamilies[family];
+  if (!count) return;
+  const candidates = Array.from({ length: count }, (_, i) => i + 1).filter(i => count === 1 || i !== hwatuLast.get(family));
+  const selected = candidates[Math.floor(Math.random() * candidates.length)];
+  const buffer = hwatuBuffers.get(`${family}-${selected}`);
+  if (!buffer) return;
+  hwatuLast.set(family, selected);
+  const baseTime = context.currentTime;
+  for (const offset of impactOffsets.slice(0, 8)) {
+    if (!Number.isFinite(offset) || offset < 0 || offset > 2000 || voices.size >= 8) continue;
+    const source = context.createBufferSource();
+    const gain = context.createGain();
+    source.buffer = buffer;
+    source.playbackRate.setValueAtTime(0.97 + Math.random() * 0.06, baseTime);
+    // Eight voices at this ceiling leave at least 3dB headroom, even at volume 1.
+    const level = cue === 'select' || cue === 'turn' ? 0.02 : 0.075;
+    gain.gain.setValueAtTime(level * 10 ** ((Math.random() * 2 - 1) / 20), baseTime);
+    source.connect(gain); gain.connect(sfxGain!);
+    voices.add(source);
+    source.onended = () => { voices.delete(source); source.disconnect(); gain.disconnect(); };
+    source.start(baseTime + offset / 1000);
+  }
+}
 
 function readPreferences(): Partial<Record<GameId, AudioPreferences>> {
   try {
@@ -64,6 +116,7 @@ function ensureGraph(): AudioContext | undefined {
     visibilityListener = () => {
       if (!audioContext) return;
       if (document.hidden) {
+        cancelMinhwatuAudio();
         stopVoices();
         void audioContext.suspend().catch(() => {});
       } else if (gestureUnlocked) {
@@ -159,7 +212,7 @@ export function setPreferences(gameId: GameId, partial: Partial<AudioPreferences
     sfxVolume: partial.sfxVolume === undefined ? current.sfxVolume : volume(partial.sfxVolume, current.sfxVolume),
   };
   try { globalThis.localStorage?.setItem(STORAGE_KEY, JSON.stringify(preferences)); } catch { /* sound still works for this session */ }
-  if (activeScene === gameId) applyGain();
+  if (activeScene === gameId) { applyGain(); if (!getPreferences(gameId).sfxEnabled) stopVoices(); else if (gameId === 'minhwatu') void preloadHwatu(); }
   return getPreferences(gameId);
 }
 
@@ -169,19 +222,22 @@ export async function unlock(): Promise<void> {
   try {
     await context.resume();
     gestureUnlocked = context.state === 'running';
-    if (gestureUnlocked) applyGain();
+    if (gestureUnlocked) { applyGain(); await preloadHwatu(); }
   } catch { gestureUnlocked = false; }
 }
 
 export function setScene(gameId: GameId | null): void {
   if (activeScene === gameId) return;
+  hwatuGeneration++;
   activeScene = gameId;
   stopVoices();
   applyGain();
+  if (gameId === 'minhwatu') void preloadHwatu();
 }
 
 export function playCue(gameId: GameId, cue: AudioCue): void {
   if (!gestureUnlocked || activeScene !== gameId || gameId === 'rhythm' || !getPreferences(gameId).sfxEnabled || !audioContext || audioContext.state !== 'running') return;
+  if (gameId === 'minhwatu') { playMinhwatuCue(cue); return; }
   const steps = cueSteps[cue];
   if (!steps) return;
   if (gameId === 'jaipur' && cue === 'place') {
@@ -315,49 +371,6 @@ export function playCue(gameId: GameId, cue: AudioCue): void {
     [0, 7].forEach((step, index) => playTone(sfxGain, gameId, step, 0.16, 0.09, index * 0.065));
     return;
   }
-  if (gameId === 'minhwatu' && cue === 'place') {
-    playTexture(0.047, 0.18, 1050, 0.255);
-    playTone(sfxGain, gameId, -12, 0.075, 0.13, 0.267);
-    return;
-  }
-  if (gameId === 'minhwatu' && cue === 'deal') {
-    playTexture(0.065, 0.07, 2800);
-    playTexture(0.075, 0.075, 1900, 0.07);
-    playTexture(0.085, 0.08, 1250, 0.15);
-    [7, 12].forEach((step, index) => playTone(sfxGain, gameId, step, 0.12, 0.055, 0.11 + index * 0.07));
-    return;
-  }
-  if (gameId === 'minhwatu' && cue === 'draw') {
-    playTexture(0.035, 0.07, 2600);
-    playTexture(0.06, 0.1, 1850, 0.045);
-    playTone(sfxGain, gameId, 7, 0.12, 0.075, 0.08);
-    return;
-  }
-  if (gameId === 'minhwatu' && cue === 'capture') {
-    playTexture(0.052, 0.11, 1750, 0.255);
-    playTexture(0.045, 0.08, 1150, 0.31);
-    playTone(sfxGain, gameId, 4, 0.1, 0.075, 0.28);
-    return;
-  }
-  if (gameId === 'minhwatu' && cue === 'special') {
-    [7, 12, 19].forEach((step, index) => playTone(sfxGain, gameId, step, 0.18, 0.09, index * 0.052));
-    playTexture(0.05, 0.045, 3400, 0.04);
-    return;
-  }
-  if (gameId === 'minhwatu' && cue === 'turn') {
-    playTone(sfxGain, gameId, 12, 0.085, 0.075);
-    playTone(sfxGain, gameId, 19, 0.1, 0.065, 0.065);
-    return;
-  }
-  if (gameId === 'minhwatu' && cue === 'win') {
-    [0, 7, 12, 19].forEach((step, index) => playTone(sfxGain, gameId, step, 0.21, 0.105, index * 0.06));
-    return;
-  }
-  if (gameId === 'minhwatu' && cue === 'lose') {
-    playTexture(0.11, 0.075, 560);
-    [0, -5].forEach((step, index) => playTone(sfxGain, gameId, step, 0.18, 0.07, index * 0.09));
-    return;
-  }
   if (gameId === 'marble' && cue === 'dice') {
     playTexture(0.06, 0.12, 2600);
     playTexture(0.055, 0.11, 1900, 0.07);
@@ -408,6 +421,9 @@ export function playCue(gameId: GameId, cue: AudioCue): void {
 }
 
 export function dispose(): void {
+  hwatuGeneration++;
+  hwatuBuffers.clear();
+  hwatuLast.clear();
   stopVoices();
   if (visibilityListener && typeof document !== 'undefined') document.removeEventListener('visibilitychange', visibilityListener);
   visibilityListener = undefined;

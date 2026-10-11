@@ -1,13 +1,14 @@
-/* Keep room controls available without pushing the Hwatu hand below the table. */
-.minhwatu-room .app-header.compact { height:44px; }
-.minhwatu-room .room-main { padding-top:6px; }
-.minhwatu-room .room-topline { margin-bottom:3px; min-height:22px; }
-.minhwatu-room .room-heading { min-height:34px; padding-bottom:3px; }
-.minhwatu-room .room-heading h1 { font-size:20px; margin:0; }
-.minhwatu-room .player-pill { padding:3px 8px; min-width:120px; }
-.minhwatu-room .player-avatar { width:25px; height:25px; }
-.minhwatu-room .room-layout { margin-top:5px; }
-.minhwatu-room .board-header { min-height:46px; padding:6px 12px; }
-.minhwatu-room .board-game small,.minhwatu-room .board-header .turn-tag { display:none; }
-.minhwatu-room .demo-banner { min-height:25px; margin-top:3px; padding:3px 9px; }
+/* Shared shell :has rules need equivalent specificity to keep the hand in view. */
+.room-shell.minhwatu-room:has(.board-card) .app-header.compact { height:38px; }
+.app-shell.minhwatu-room .room-main { width:min(1460px,calc(100% - 36px)); padding-top:3px; }
+.minhwatu-room .room-main:has(.board-card) .room-topline { margin:1px 0; min-height:20px; }
+.minhwatu-room .room-main:has(.board-card) .room-heading { justify-content:flex-end; min-height:28px; border:0; padding:0; }
+.minhwatu-room .room-heading > div:first-child { display:none; }
+.minhwatu-room .room-main:has(.board-card) .room-layout { margin-top:3px; }
+.minhwatu-room .room-main:has(.board-card) .board-header { min-height:36px; padding:3px 10px; }
+.minhwatu-room .board-game small,.minhwatu-room .board-header .turn-tag,.minhwatu-room .player-pill small { display:none; }
+.minhwatu-room .board-game-icon { width:28px; height:28px; }
+.minhwatu-room .player-pill { min-width:120px; min-height:28px; padding:2px 8px; }
+.minhwatu-room .player-avatar { width:22px; height:22px; }
+.app-shell.minhwatu-room .demo-banner { min-height:24px; margin-top:2px; padding:2px 9px; }
 .minhwatu-room .reaction-chat-panel { padding:7px 12px; }

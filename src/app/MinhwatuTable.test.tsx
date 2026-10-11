@@ -86,7 +86,7 @@ describe('MinhwatuTable public view', () => {
     expect(html).toContain('data-hwatu-zone="table"');
     expect(html).toContain('data-hwatu-zone="deck"');
     expect(html).toContain('hwatu-deck-back');
-    expect(html.match(/class="game-value-number"/g)).toHaveLength(6);
+    expect(html).not.toContain('game-value-number');
     expect(html).toContain(`data-hwatu-card-id="${ownCard.id}"`);
     const capturableIds = state.hands.p1.filter(card => state.table.some(tableCard => tableCard.month === card.month)).map(card => card.id);
     for (const id of capturableIds) {
@@ -115,7 +115,7 @@ describe('MinhwatuTable public view', () => {
     expect(html).toContain('<details class="hwatu-scoring"');
     expect(html).toContain('<span>고도리</span><b>0/3장</b>');
     expect(html).toContain('홍단');
-    expect(html).toContain('최종 점수 100 : -40');
+    expect(html).toContain('나 100 : -40 상대');
     expect(html).toContain('이겼어요!');
   });
 
@@ -201,8 +201,12 @@ describe('MinhwatuTable public view', () => {
     expect(html).toContain('hwatu-category-pile kind-animal');
     expect(html).toContain('hwatu-category-pile kind-ribbon');
     expect(html).toContain('hwatu-category-pile kind-plain');
-    expect(html).toContain('hwatu-captured-grid');
-    expect(html).not.toContain('hwatu-captured-fan');
+    expect(html).toContain('hwatu-category-summary');
+    expect(html).toContain('hwatu-capture-preview');
+    expect(html.match(/data-hwatu-landing-anchor/g)).toHaveLength(9);
+    expect(html).toContain('aria-expanded="false"');
+    expect(html).not.toContain('hwatu-captured-grid');
+    expect(html).not.toContain('tabindex="0"');
     expect(html).toContain('class="hwatu-deck-back"');
     expect(html).not.toContain(`/images/hwatu/${state.deck[0].id.split('-').map(part => part.padStart(2, '0')).join('-')}.svg`);
   });
@@ -260,6 +264,20 @@ describe('MinhwatuTable public view', () => {
     const html = renderToStaticMarkup(createElement(MinhwatuTable, { view, playerId: 'p1', language: 'es', runAction: vi.fn() }));
     expect(html).toContain('Base rival 0 + yakus del rival 0 × 2 − tus yakus 30 = -30');
   });
+
+  it('shows the named final formula from p2 perspective and the two-person replay wait state', () => {
+    const state = minhwatuEngine.createInitialState(89);
+    const all = [...state.hands.p1, ...state.hands.p2, ...state.table, ...state.deck];
+    state.captures = { p1: ['1-2', '2-2', '3-2'].map(id => all.find(card => card.id === id)!), p2: [] };
+    state.phase = 'finished';
+    state.result = { winner: 'p1', reason: 'test', scores: scoreMinhwatuMatch(state.captures) };
+    const view = minhwatuEngine.getPlayerView(state, 'p2');
+    const html = renderToStaticMarkup(createElement(MinhwatuTable, { view, playerId: 'p2', language: 'es', playerNames: { p1: 'Luz', p2: 'Sol' }, runAction: vi.fn(), onReplay: vi.fn(), replayPending: true }));
+    expect(html).toContain('Sol -30 : 75 Luz');
+    expect(html).toContain('Tus puntos 0 + tus yakus 0 × 2 − yakus rivales 30 = -30');
+    expect(html).toContain('Aceptar y jugar otra');
+    expect(html).toContain('La otra persona pidió otra partida.');
+  });
   it('keeps both real capture rails and all engine combination counters inside the tabletop for either viewer and language', () => {
     const state = minhwatuEngine.createInitialState(174);
     state.captures = { p1: state.deck.slice(0, 5), p2: state.deck.slice(5, 10) };
@@ -276,8 +294,8 @@ describe('MinhwatuTable public view', () => {
       expect(stage).toContain('Lisbeth');
       for (const seat of ['p1', 'p2'] as const) {
         for (const yaku of view.board.breakdown[seat].yakus) expect(stage).toContain(yaku.label[language]);
-        for (const card of state.captures[seat]) expect(stage).toContain(`data-hwatu-card-id="${card.id}" tabindex="0"`);
       }
+      expect(stage.match(/class="hwatu-category-summary"/g)).toHaveLength(8);
       const hand = stage.slice(stage.indexOf('data-hwatu-zone="hand"'), stage.indexOf('class="hwatu-hand-actions"'));
       const ids = [...hand.matchAll(/data-hwatu-card-id="([^"]+)"/g)].map(match => match[1]);
       expect(ids).toEqual(state.hands[playerId].map(card => card.id));
