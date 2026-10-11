@@ -43,3 +43,5 @@
 추가 도시12: 뉴욕/서울/파리/도쿄/바르셀로나/시드니/이스탄불/아그라/아테네/런던/로마/토론토는 Library prepare 성공(모두 버전0), 공식 helper 초기+로컬 retry 모두 download failed. 합계25개 로컬 bytes0, 실제 픽셀/최적화/적용 불가. 공개 안전 메타데이터 `assets/library-materialization-status-2026-10-11.json`에 기록. 마지막7개 도시는 제작 중. CN타워는 contain과 상단 여백 유지, 가로 확대 왜곡 금지.
 
 최신 빌드: 비공개 joker 주입 색상 인덱스 타입 오류1건 수정 후 TypeScript/Vite/Edge 모두 통과. 관련18 회귀 통과. 이 결과는 브라우저 화면/최종 멀티플레이 검수와 별개다. 원본 worktree git status clean 재확인.
+
+후속 소스 대조: `SEVEN-GAME-GUIDE-SOURCE-AUDIT-2026-10-11.ko.md`에 7게임의 실제 버튼/선택후확정/승리 조건을 대조했다. 다빈치 두 단계 확정, Domino/Splendor/Minhwatu 취소 안내, Jaipur 실제 확정명·덱 종료·3라운드 동점, legacy Marble ES 버튼명 보완. 30번 세계여행 아시아나/젯블루 상상 여행 연출의 KO 이름을 지역화했다. 엔진 경제/규칙 변경 없음. `CATCHMIND-INTEGRATION-DELTA-2026-10-11.ko.md`에 f0/5f 최신 소스 보존 경계 기록. PlayApp26 통과, MinhwatuGuide 처음 문구검사1 실패 후 source 표현 복원해3 통과. 최신 TypeScript/Vite/Edge build 통과. 인게임·전체 최신 통합 QA는 여전히 미실행.

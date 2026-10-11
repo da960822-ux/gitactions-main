@@ -59,7 +59,7 @@ export function MinhwatuGuide({ language }: { language: Language }) {
     <p className="minhwatu-guide-month-rule">{ko ? '표시는 같은 달 패예요. 광·띠처럼 종류가 같을 필요는 없어요.' : 'Las cartas marcadas son del mismo mes; no tienen que ser de la misma categoría.'}</p>
 
     <ol className="minhwatu-guide-steps">
-      <li><b>{ko ? '손패 내기' : 'Juega una carta'}</b><span>{ko ? '아래는 내 손패, 중앙은 공개 바닥이에요. 내 차례에 손패 한 장을 눌러 선택해요. 강조된 패는 바닥에 같은 달 짝이 있어요.' : 'Abajo está tu mano; en el centro, la mesa pública. En tu turno pulsa una carta de tu mano; las resaltadas tienen pareja del mismo mes en la mesa.'}</span></li>
+      <li><b>{ko ? '손패 내기' : 'Juega una carta'}</b><span>{ko ? '아래는 내 손패, 중앙은 공개 바닥이에요. 내 차례에 손패 한 장을 눌러 선택해요. 강조된 패는 바닥에 같은 달 짝이 있어요. 확정 전에는 Esc로 취소해요.' : 'Abajo está tu mano; en el centro, la mesa pública. En tu turno pulsa una carta de tu mano; las resaltadas tienen pareja del mismo mes. Antes de confirmar, Esc cancela la selección.'}</span></li>
       <li><b>{ko ? '바닥 후보 고르기' : 'Elige una de la mesa'}</b><span>{ko ? '같은 달 후보가 두 장이면 하나를 눌러 확정해요. 아니면 선택 뒤 나타난 ‘N월 패 내기’를 눌러요. 예: 1월 손패와 1월 바닥은 그림 종류가 달라도 짝이에요.' : 'Si hay dos del mismo mes, pulsa una para confirmar. Si no, pulsa el botón «Jugar la carta del mes N» que aparece tras elegir tu carta. Ejemplo: dos cartas de enero hacen pareja aunque sus dibujos sean distintos.'}</span></li>
       <li><b>{ko ? '더미에서 공개' : 'Se revela una carta'}</b><span>{ko ? '더미 맨 위가 자동 공개돼요. 두 후보면 하나를 골라요.' : 'El juego revela la primera carta del mazo; si hay dos opciones, eliges una.'}</span></li>
     </ol>

@@ -33,7 +33,7 @@ export function DominoQuickGuide({ language }: { language: Language }) {
           <span className="quick-guide-confirm-mark" aria-hidden="true">✓</span>
         </figure>
         <h3>{copy(language, '놓기 확정하기', 'Confirma')}</h3>
-        <p>{copy(language, '타일을 고른 뒤 빛나는 왼쪽/오른쪽 끝을 누르면 확정돼요. 첫 수는 손패 선택 뒤 중앙에 나타나는 ‘시작 타일 X|Y 놓기’를 눌러요.', 'Tras elegir la ficha, pulsa el extremo izquierdo o derecho iluminado para confirmar. Al abrir, aparece en el centro «Jugar ficha inicial X|Y» después de seleccionar la ficha en tu mano.')}</p>
+        <p>{copy(language, '타일을 고른 뒤 빛나는 왼쪽/오른쪽 끝을 누르면 확정돼요. 첫 수는 손패 선택 뒤 중앙의 ‘시작 타일 X|Y 놓기’를 눌러요. 놓기 전에는 Esc로 선택을 취소할 수 있어요.', 'Tras elegir la ficha, pulsa el extremo izquierdo o derecho iluminado para confirmar. Al abrir, pulsa «Jugar ficha inicial X|Y» en el centro. Antes de jugar, Esc cancela la selección.')}</p>
       </li>
     </ol>
     <p className="quick-guide-tip">{copy(language, '패는 뽑지 않아요. 놓을 타일이 없으면 패스해요. 1대1은 2번, 4인 팀전은 4번 연속 패스하면 막혀요. 기본은 팀에 남은 숫자의 합이 낮은 편이 이겨요. 설정에 따라 판정이 달라질 수 있고, 동점은 무승부예요.', 'No se roban fichas: pasa si no puedes jugar. Hay tranque tras 2 pases seguidos en uno contra uno o 4 en equipos. Por defecto, gana el equipo con menor suma de puntos restantes; los ajustes pueden cambiarlo. Si empatan, quedan tablas.')}</p>

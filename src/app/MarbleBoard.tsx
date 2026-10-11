@@ -291,7 +291,7 @@ export default function MarbleBoard({ view: rawView, language, playerId, runActi
             </figure>}
             {lastMove.source === 'train' && lastMove.from === 30 && <div className={`mp-flight ${traveler?.seq === lastMoveSequence ? 'is-flying' : ''}`} style={{ color: lastMove.playerId === 'p1' ? '#a54e69' : '#356896' } as CSSProperties}>
               <svg viewBox="0 0 160 100" aria-hidden="true"><ellipse cx="80" cy="86" rx="47" ry="5" fill="#344c59" opacity=".12"/><g stroke="#344c59" strokeWidth="2" strokeLinejoin="round"><path d="m72 44 19-35 12 1-12 38 36 7 16 12-9 6-42-12-17 23-11-2 8-27-45-6-14-9 7-5z" fill="#fff8e7"/><path d="m27 43-15-22 11 1 19 21z" fill="currentColor"/><path d="m76 44 15-35 12 1-12 38zM89 61 75 84l-11-2 8-27z" fill="currentColor"/><path d="m114 55 13 2 8 8-15-1z" fill="#8db9c8"/></g></svg>
-              <span><b>{lastMove.playerId === 'p1' ? 'Asiana' : 'JetBlue'}</b> · {copy(language, '둘의 상상 여행', 'Nuestro viaje imaginado')}</span>
+              <span><b>{lastMove.playerId === 'p1' ? copy(language, '아시아나', 'Asiana') : copy(language, '젯블루', 'JetBlue')}</b> · {copy(language, '둘의 상상 여행', 'Nuestro viaje imaginado')}</span>
               <small>{String(record(tiles[num(lastMove.to)]?.name)[language] ?? '')}</small>
             </div>}
           </div>

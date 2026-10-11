@@ -40,6 +40,6 @@ export function SplendorQuickGuide({ language }: { language: Language }) {
         <p>{text('카드 보너스만으로 귀족 조건을 맞추면 3점을 얻고, 여러 명이면 하나를 골라요. 누군가 15점에 도달하면 서로 같은 수의 차례를 마치고, 점수가 높은 쪽이 이겨요. 동점이면 개발 카드가 적은 쪽, 그마저 같으면 무승부예요.','Los nobles cuentan solo bonificaciones de cartas: dan 3 puntos y, si calificas para varios, eliges uno. Al llegar a 15, ambos completan el mismo número de turnos; gana quien tenga más puntos. Si empatan, gana quien compró menos cartas; si también empatan en eso, quedan tablas.')}</p>
       </li>
     </ol>
-    <p className="quick-guide-tip">{text('금은 직접 가져올 수 없어요. 보너스는 토큰이 아니에요. 이후 살 카드에서 해당 색 비용을 1 줄여요.','No se toma oro directamente. Las bonificaciones no son fichas; cada una resta 1 del coste futuro de ese color.')}</p>
+    <p className="quick-guide-tip">{text('확정 전 카드 선택은 × 또는 Esc로 취소해요. 금은 직접 가져올 수 없어요. 보너스는 토큰이 아니며 이후 해당 색 비용을 1 줄여요.','Antes de confirmar, × o Esc cancela la selección de carta. No se toma oro directamente. Las bonificaciones no son fichas; cada una resta 1 del coste futuro de ese color.')}</p>
   </div>;
 }
