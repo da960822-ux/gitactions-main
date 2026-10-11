@@ -26,3 +26,8 @@ The Emil Kowalski web-animation skill and its recipe reference are vendored verb
 The Playwright skill is CLI-first. From the project root, run `./.agents/skills/playwright/scripts/playwright_cli.sh --help`; its wrapper uses `npx --yes --package @playwright/cli` and does not add a project dependency. To reuse the existing Chromium session on port 9222, attach with `./.agents/skills/playwright/scripts/playwright_cli.sh attach --cdp=http://localhost:9222`, then use `snapshot` before interacting and `detach` when done. This avoids downloading or launching another browser. Save any captured artifacts under `output/playwright/<label>/`.
 
 The dedicated Ponytail audit maps the repository and reports ranked concrete findings. The user separately authorized fixing verified issues and pushing them; report-only is the skill default, not a restriction on this requested cleanup. Ponytail Review is used to review the resulting changes.
+
+
+## GameDev 다관점 민화투 평가 (2026-10-11)
+
+사용자 지정 저장소 [Awesome GameDev Agent Skills](https://github.com/gamedev-skills/awesome-gamedev-agent-skills)의 commit `0a70cfc64672d512c5b5b6006b5dcb5cf90dbdbd`에서 router와 `game-ui-ux`, `create-game-assets`, `game-feel`, `audio-design`, `performance-optimization`만 원문·참조자료·Apache-2.0 LICENSE/NOTICE와 함께 설치했다. 각 `.agents/skills/<name>/SOURCE.md`에 원래 경로와 버전을 기록했다. router의 로컬 디렉터리는 `gamedev-router`이다. React/DOM/Web Animations 프로젝트에 적용 가능한 분야별 원칙으로 평가했으며, 엔진 전환·BGM·TCG 규칙은 도입하지 않았다. 4명의 독립 검토자와 root의 실제 Room 6개 뷰포트/언어 측정을 통합한 결과는 `docs/reviews/MINHWATU-CRITIQUE-2026-10-11.md`에 있다. 이번 작업은 평가 및 생산 명세이며 게임 기능 수정이나 신규 아트 납품이 아니다.
