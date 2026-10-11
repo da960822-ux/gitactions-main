@@ -6,7 +6,8 @@
     "files": 53,
     "passed": 471,
     "failed": 0,
-    "build": "TypeScript, Vite and generated Edge engines passed"
+    "build": "TypeScript, Vite and generated Edge engines passed",
+    "phase": "471 game/unit tests passed before this landing-only pass; no game source changed. Current TypeScript/Vite/Edge build and landing UI checks passed."
   },
   "homeEffects": {
     "pass": true,
@@ -96,39 +97,39 @@
   },
   "performance": {
     "method": "Production builds, same Chromium SwiftShader process, same viewport/DPR, 6.5-second requested 50ms sine-path events delivered to existing pointer handlers. No screencast or tracing. ABBA order. Recorded rAF timestamps and WebGL color-clear API calls; neither is GPU presentation FPS.",
-    "phase": "Latest fixed-light front-pose raster and bounded small-object depth, after final compositor grouping",
+    "phase": "Current refined landing, stronger front-pose response, smaller hearts and static fringe background gain",
     "runs": [
       {
         "run": 1,
         "kind": "before",
-        "uniqueRafPerSecond": 28.58,
+        "uniqueRafPerSecond": 29.98,
         "colorClears": 0,
         "errors": []
       },
       {
         "run": 1,
         "kind": "after",
-        "uniqueRafPerSecond": 22.14,
+        "uniqueRafPerSecond": 22.29,
         "colorClears": 0,
         "errors": []
       },
       {
         "run": 2,
         "kind": "after",
-        "uniqueRafPerSecond": 22.13,
+        "uniqueRafPerSecond": 22.58,
         "colorClears": 0,
         "errors": []
       },
       {
         "run": 2,
         "kind": "before",
-        "uniqueRafPerSecond": 28.28,
+        "uniqueRafPerSecond": 30.58,
         "colorClears": 0,
         "errors": []
       }
     ],
-    "averageCadenceReductionPercent": 22.1,
-    "warning": "Software rAF cadence only; GPU presentation and real hardware smoothness unverified"
+    "averageCadenceReductionPercent": 25.92,
+    "warning": "Matched against the old approved simple hero ee50a228; software rAF cadence, not GPU FPS. Earlier ac25936 measurement is a different run and does not establish a measured polish-only regression or improvement. Actual hardware smoothness remains unverified."
   },
   "remaining": [
     "New game local1feaca317 unavailable; its blocked push must not be repeated through another route",
@@ -150,8 +151,8 @@
   "homeJourney": {
     "pass": true,
     "checks": [
-      "1440×900: opposing peripheral depth; bounded heart repulsion returns within 700ms; stable title and slight portrait retreat; thread end stops at games; existing eight choices; only topnav ideas; same rose stem behind and bloom before paper; curved paper outline flattens; KO/ES open letter fits and wheel reaches footer",
-      "1280×800: opposing peripheral depth; bounded heart repulsion returns within 700ms; stable title and slight portrait retreat; thread end stops at games; existing eight choices; only topnav ideas; same rose stem behind and bloom before paper; curved paper outline flattens; KO/ES open letter fits and wheel reaches footer",
+      "1440×900: opposing peripheral depth; bounded heart repulsion returns within 700ms; stable title and slight portrait retreat; thread end stops at games; existing eight choices; only topnav ideas; same rose stem behind and bloom before paper; curved paper outline flattens; KO/ES final body/signature hit-tests are unobscured, open-state copy matches, letter fits and wheel reaches footer",
+      "1280×800: opposing peripheral depth; bounded heart repulsion returns within 700ms; stable title and slight portrait retreat; thread end stops at games; existing eight choices; only topnav ideas; same rose stem behind and bloom before paper; curved paper outline flattens; KO/ES final body/signature hit-tests are unobscured, open-state copy matches, letter fits and wheel reaches footer",
       "Retained WebGL: one canvas; original portrait alpha depth mask; independent rotations with fixed light; pause stops loop; offscreen releases canvas and hero clear count freezes; resume and context-loss PNG work",
       "Reduced motion uses complete static thread and rose; no glint or hero animation loop"
     ],
@@ -201,9 +202,9 @@
   "recordings": [
     {
       "mode": "software",
-      "url": "https://drive.google.com/file/d/1uHQdB5HoCLLt8vuF4nrWiFVpPTgyx68O/view?usp=drivesdk",
-      "durationSeconds": 18.466667,
-      "bytes": 2264145,
+      "url": "https://drive.google.com/file/d/1Fzt9CQezdIH5hVsxZ8uPRsjqMZJZOGSR/view?usp=drivesdk",
+      "durationSeconds": 29.766667,
+      "bytes": 4210762,
       "shared": false,
       "permissions": [
         "owner"
@@ -212,9 +213,9 @@
     },
     {
       "mode": "webgl-diagnostic",
-      "url": "https://drive.google.com/file/d/1FhiJ1JsTyhwkRf43QVF-b738UuIg-5dR/view?usp=drivesdk",
-      "durationSeconds": 14.7,
-      "bytes": 1878390,
+      "url": "https://drive.google.com/file/d/1BOFt2lqOijR6nX4uh_z3-snmnksE20qG/view?usp=drivesdk",
+      "durationSeconds": 35.233333,
+      "bytes": 5122293,
       "shared": false,
       "permissions": [
         "owner"
@@ -250,5 +251,40 @@
     "allProductionCopiesVerified": true,
     "sourceAndRuntimePixelsInspected": true,
     "componentEditingOwner": "Separate game implementation task; no duplicate editing of MarblePropertyArt, MarblePawn or game economy here"
-  }
+  },
+  "sourceLandingPolish": "f805a19f5e64346682687a14e7c611faa2bfe2f4",
+  "landingPolish": {
+    "scope": "Landing only; no game implementation files modified",
+    "letterFinalPositionChanged": false,
+    "finalBodyAndSignatureHitTests": "KO/ES,1440x900 and1280x800; glyph-range endpoints and centers must hit paper rather than envelope faces",
+    "openStateCopyUpdated": true,
+    "envelope": "128px static paper grain, edge thickness, differentiated face shading, matched SVG fold/contact seams",
+    "hero": "Same colors and original couple; heart sizes reduced6–10%, rose/pearl gloss reduced, stronger bounded pointer orientation/PNG front-pose feedback",
+    "background": "Nebula opacity52/55/58%; source central alpha region500,180–940,640 is entirely0; star count unchanged, sizes+1px and brightness raised",
+    "recording": "Each heart approached and left; slow actual cursor paths; both final letters visible. Original compositor intervals retained, final static hold included; encoded duration checked within80ms."
+  },
+  "earlierRecordings": [
+    {
+      "mode": "software",
+      "url": "https://drive.google.com/file/d/1uHQdB5HoCLLt8vuF4nrWiFVpPTgyx68O/view?usp=drivesdk",
+      "durationSeconds": 18.466667,
+      "bytes": 2264145,
+      "shared": false,
+      "permissions": [
+        "owner"
+      ],
+      "errors": []
+    },
+    {
+      "mode": "webgl-diagnostic",
+      "url": "https://drive.google.com/file/d/1FhiJ1JsTyhwkRf43QVF-b738UuIg-5dR/view?usp=drivesdk",
+      "durationSeconds": 14.7,
+      "bytes": 1878390,
+      "shared": false,
+      "permissions": [
+        "owner"
+      ],
+      "errors": []
+    }
+  ]
 }
