@@ -28,8 +28,8 @@ const guides: Record<BeginnerGameId, Record<Language, GuideCopy>> = {
     ko: {
       goal: '상대의 숨은 숫자 타일과 조커를 모두 맞히면 이겨요.',
       steps: [
-        { title: '준비하기', body: '각자 숫자 타일 네 장을 정렬해요. 시작 전에 조커가 있으면 원하는 자리에 놓고 둘 다 ‘배치 완료’를 눌러요.' },
-        { title: '뽑고 추리하기', body: '차례마다 타일 한 장을 뽑아요. 상대 타일을 고르고 숫자 0~11 또는 조커를 선택해 추리해요.' },
+        { title: '준비하기', body: '아래는 내 손패, 위는 상대의 숨은 패예요. 숫자는 자동 정렬돼요. 조커가 있으면 손패 사이의 +를 눌러 놓고, 둘 다 ‘초기 패 준비 완료’를 눌러요.' },
+        { title: '뽑고 추리하기', body: '‘타일 뽑기’를 누른 뒤 상대의 가려진 타일을 눌러요. 숫자 0~11 또는 －(조커)를 고르고 추리를 확정해요. 예: 검정 3 오른쪽의 숨은 숫자는 3 이상이에요(조커는 예외).' },
         { title: '오답과 승리', body: '맞히면 타일이 공개되니 계속 추리하거나 ‘차례 마치기’를 눌러요. 틀리면 뽑은 내 타일이 공개되고 차례가 끝나요; 더미가 비면 공개할 타일은 없어요.' },
       ],
       tip: '숫자 타일은 작은 수부터 놓고, 같은 수는 검정 타일이 먼저예요. 조커는 원하는 빈칸에 놓으면 옮길 수 없어요.',
@@ -37,8 +37,8 @@ const guides: Record<BeginnerGameId, Record<Language, GuideCopy>> = {
     es: {
       goal: 'Gana quien descubra todos los números y comodines de la otra persona.',
       steps: [
-        { title: 'Preparación', body: 'Cada persona ordena cuatro fichas. Si recibes un comodín, elige dónde ponerlo; luego ambos pulsen «Listo para jugar».' },
-        { title: 'Roba y adivina', body: 'En tu turno roba una ficha. Elige una ficha rival y prueba un número del 0 al 11 o el comodín.' },
+        { title: 'Preparación', body: 'Abajo está tu mano; arriba, las fichas rivales ocultas. Los números se ordenan solos. Si tienes un comodín, pulsa un + para colocarlo. Ambos pulsen «Terminé de preparar mi mano».' },
+        { title: 'Roba y adivina', body: 'Pulsa «Robar ficha», elige una ficha rival oculta, marca 0–11 o － (comodín) y confirma. Ejemplo: a la derecha de un 3 negro, un número oculto será 3 o mayor; el comodín es una excepción.' },
         { title: 'Acierto y victoria', body: 'Si aciertas, la ficha queda visible y puedes seguir adivinando o pulsar «Terminar turno». Si fallas, se revela tu ficha recién robada y termina tu turno; con el mazo vacío, no se revela otra.' },
       ],
       tip: 'Las fichas van de menor a mayor; si coinciden, la negra va primero. El comodín puede ir en cualquier hueco y luego no se mueve.',
@@ -68,8 +68,8 @@ const guides: Record<BeginnerGameId, Record<Language, GuideCopy>> = {
     ko: {
       goal: '도시를 사고 건설해 자산을 모으거나 상대를 파산시키세요.',
       steps: [
-        { title: '이동하고 구매하기', body: '‘주사위 굴리기’를 누르고 빈 도시에 도착하면 ‘도시 구매’를 선택하거나 지나가요. 출발점을 지나면 200을 받아요.' },
-        { title: '건설과 임대료', body: '내 도시를 선택해 별장→빌딩→랜드마크를 건설해요. 도시 카드에 매입가·건설비·임대료가 표시되고, 상대 임대료는 자동 지급돼요.' },
+        { title: '이동하고 구매하기', body: '보드의 말이 현재 위치이고 오른쪽은 현금·행동 버튼이에요. 첫 주사위 전에 말을 고른 뒤 ‘주사위 굴리기’를 눌러요. 빈 도시는 ‘도시 구매’ 또는 지나가기를 선택해요. 출발점을 지나면 200을 받아요.' },
+        { title: '건설과 임대료', body: '내 도시를 눌러 단독주택→아파트→랜드마크를 건설하고 ‘차례 마치기’를 눌러요. 예: 광주 100, 첫 건설 40, 통행료 12→24. 통행료는 자동 지급되지만 면제권 선택창이 나오면 지급/사용을 먼저 골라요.' },
         { title: '위기와 승리', body: '돈이 부족하면 빌릴 수 있는지 확인하고, 해결하지 못하면 파산해요. 현재판은 120턴 뒤 대출을 뺀 순자산으로 승자를 정해요.' },
       ],
       tip: '현재판 건설비는 매입가의 40%→60%→80%예요. 대출은 300을 받고 330을 갚으며, 기존 대출을 먼저 상환해야 다시 빌릴 수 있어요.',
@@ -77,8 +77,8 @@ const guides: Record<BeginnerGameId, Record<Language, GuideCopy>> = {
     es: {
       goal: 'Compra ciudades, construye y reúne patrimonio o lleva a la otra persona a la quiebra.',
       steps: [
-        { title: 'Avanza y compra', body: 'Pulsa «Lanzar los dados». Al llegar a una ciudad libre, pulsa «Comprar» o pasa; al cruzar Salida recibes 200.' },
-        { title: 'Construye y cobra', body: 'Elige una ciudad tuya para construir villa, edificio y monumento. La tarjeta muestra compra, construcción y alquiler; la renta rival se cobra automáticamente.' },
+        { title: 'Avanza y compra', body: 'La ficha marca tu posición; a la derecha están tu efectivo y las acciones. Antes del primer lanzamiento elige una ficha; pulsa «Lanzar los dados». En una ciudad libre, elige «Comprar ciudad» o pasa. Al cruzar Salida recibes 200.' },
+        { title: 'Construye y cobra', body: 'Pulsa una ciudad tuya para construir casa unifamiliar, apartamentos y monumento; luego «Terminar turno». Ejemplo: Gwangju cuesta 100, construir primero cuesta 40 y su renta pasa de 12 a 24. La renta es automática, salvo que aparezca la elección de pagar o usar un pase.' },
         { title: 'Deuda y victoria', body: 'Si te falta dinero, revisa si puedes pedir un préstamo; si no resuelves el pago, quiebras. En el tablero actual, tras 120 turnos gana el mayor patrimonio neto.' },
       ],
       tip: 'En el tablero actual construir cuesta 40 %, 60 % y 80 % del precio de compra. Recibes 300 y debes 330; paga la deuda antes de pedir otro préstamo.',
@@ -146,5 +146,8 @@ export function getBeginnerGuide(
     };
   }
   else guide = guides[gameId][language];
+  if (gameId === 'marble' && (options.marbleVersion ?? 2) !== 1 && (options.marbleEconomyVersion ?? 2) < 2) {
+    guide = { ...guide, steps: [guide.steps[0], { ...guide.steps[1], body: guide.steps[1].body.replace('첫 건설 40', '첫 건설 100').replace('construir primero cuesta 40', 'construir primero cuesta 100') }, guide.steps[2]] };
+  }
   return { ...guide, imageAlt: imageAlts[gameId][language] };
 }

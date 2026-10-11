@@ -2,6 +2,7 @@ import { useId, useState } from 'react';
 import type { CSSProperties } from 'react';
 import type { GameAction, Language, PlayerId } from '../core/types';
 import '../styles/marble-pawns.css';
+import pawnAssets from '../../public/images/marble/pawns/manifest.json';
 
 export type MarblePawnId = 'fox' | 'cat' | 'penguin' | 'astronaut' | 'robot' | 'dragon';
 type Copy = Record<Language, string>;
@@ -22,6 +23,9 @@ export function MarblePawn({ pawn, language, label }: { pawn: MarblePawnId; lang
   const name = marblePawnCatalog.find(item => item.id === pawn)?.name[language] ?? pawn;
   const title = label ?? name;
   const g = (name: string) => `${id}-${name}`;
+
+  const image = pawnAssets.assets.find(asset => asset.id === pawn)?.path;
+  if (image) return <img className={`marble-pawn marble-pawn--${pawn}`} src={image} alt={title} decoding="async"/>;
 
   return <svg className={`marble-pawn marble-pawn--${pawn}`} viewBox="0 0 120 150" role="img" aria-label={title} focusable="false">
     <defs>
@@ -88,8 +92,8 @@ function PawnFigure({ pawn, id }: { pawn: MarblePawnId; id: string }) {
   return <g stroke="#59656F" strokeWidth="3" strokeLinejoin="round">
     <path d="M82 109q30-16 15-35" fill="none" stroke="#A5ABB3" strokeWidth="14" strokeLinecap="round"/>
     <ellipse cx="60" cy="96" rx="28" ry="28" fill="#ABB3BD"/><ellipse cx="60" cy="98" rx="17" ry="23" fill="#E8EBED"/>
-    <ellipse cx="33" cy="29" rx="15" ry="24" transform="rotate(-18 33 29)" fill="#B7BEC5"/><ellipse cx="87" cy="29" rx="15" ry="24" transform="rotate(18 87 29)" fill="#B7BEC5"/>
-    <ellipse cx="33" cy="28" rx="8" ry="16" fill="#D9BABD" stroke="none"/><ellipse cx="87" cy="28" rx="8" ry="16" fill="#D9BABD" stroke="none"/>
+    <ellipse cx="31" cy="35" rx="17" ry="16" fill="#B7BEC5"/><ellipse cx="89" cy="35" rx="17" ry="16" fill="#B7BEC5"/>
+    <ellipse cx="31" cy="34" rx="10" ry="10" fill="#D9BABD" stroke="none"/><ellipse cx="89" cy="34" rx="10" ry="10" fill="#D9BABD" stroke="none"/>
     <ellipse cx="60" cy="57" rx="34" ry="28" fill="#C5CAD0"/>{eyes}<ellipse cx="60" cy="67" rx="16" ry="11" fill="#EEF0F2"/><path d="m55 63 5 5 5-5Z" fill="#A27F84" stroke="none"/>
     <path d="M23 64h18m-17 9 17-4m38-5h18m-18 5 17 4" stroke="#59656F" strokeWidth="2"/><ellipse cx="42" cy="118" rx="11" ry="6" fill="#B7BEC5"/><ellipse cx="78" cy="118" rx="11" ry="6" fill="#B7BEC5"/>
   </g>;

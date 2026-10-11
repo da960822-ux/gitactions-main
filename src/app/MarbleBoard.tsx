@@ -1,5 +1,6 @@
 import { MarblePropertyArt } from './MarblePropertyArt';
-import { useEffect, useRef, useState } from 'react';
+import dioramas from '../../public/images/marble/dioramas/manifest.json';
+import { useEffect, useLayoutEffect, useRef, useState } from 'react';
 import type { CSSProperties } from 'react';
 import type { GameAction, Language, PlayerId } from '../core/types';
 import { GameValue } from './GameValue';
@@ -28,11 +29,12 @@ const specialNames: Record<string, Record<Language, string>> = {
   island: { ko: '무인도', es: 'Isla desierta' }, train: { ko: '열차역', es: 'Estación de tren' }, fund: { ko: '사회복지기금', es: 'Fondo social' }, 'fund-deposit': { ko: '기금 납부', es: 'Aporte al fondo' },
 };
 const cityArtNames: Record<string, string> = {
+  베를린: 'berlin', 'Berlín': 'berlin', 마이애미: 'miami', Miami: 'miami', 이스탄불: 'istanbul', Estambul: 'istanbul', 아그라: 'agra', Agra: 'agra', 아테네: 'athens', Atenas: 'athens', 시드니: 'sydney', 'Sídney': 'sydney',
   광주: 'gwangju', Gwangju: 'gwangju', 산토도밍고: 'santo-domingo', 'Santo Domingo': 'santo-domingo', 마드리드: 'madrid', Madrid: 'madrid', 산티아고: 'santiago', Santiago: 'santiago',
   푸에르토플라타: 'puerto-plata', 'Puerto Plata': 'puerto-plata', 산후안: 'san-juan', 'San Juan': 'san-juan', 라베가: 'la-vega', 'La Vega': 'la-vega', 푼타카나: 'punta-cana', 'Punta Cana': 'punta-cana',
   뉴욕: 'new-york', 'Nueva York': 'new-york', 파리: 'paris', 'París': 'paris', 도쿄: 'tokyo', Tokio: 'tokyo', 바르셀로나: 'barcelona', Barcelona: 'barcelona', 사마나: 'samana', 'Samaná': 'samana',
   아바나: 'havana', 'La Habana': 'havana', 멕시코시티: 'mexico-city', 'Ciudad de México': 'mexico-city', 리스본: 'lisbon', Lisboa: 'lisbon', 런던: 'london', Londres: 'london', 로마: 'rome', Roma: 'rome',
-  뉴어크: 'newark', Newark: 'newark', 서울: 'seoul', 'Seúl': 'seoul', 마이애미: 'miami', Miami: 'miami', 발파라이소: 'valparaiso', 'Valparaíso': 'valparaiso', 세부: 'cebu', Cebú: 'cebu', 토론토: 'toronto', Toronto: 'toronto', 오클랜드: 'auckland', Auckland: 'auckland', 밴쿠버: 'vancouver', Vancouver: 'vancouver',
+  뉴어크: 'newark', Newark: 'newark', 서울: 'seoul', 'Seúl': 'seoul', 발파라이소: 'valparaiso', 'Valparaíso': 'valparaiso', 세부: 'cebu', Cebú: 'cebu', 토론토: 'toronto', Toronto: 'toronto', 오클랜드: 'auckland', Auckland: 'auckland', 밴쿠버: 'vancouver', Vancouver: 'vancouver',
 };
 
 function cityFlag(names: Record<string, unknown>): string | null {
@@ -51,7 +53,7 @@ function pawnId(value: unknown): MarblePawnId | null {
   return marblePawnCatalog.some(item => item.id === value) ? value as MarblePawnId : null;
 }
 function buildingName(level: number, language: Language, modern: boolean) {
-  if (modern) return level >= 3 ? copy(language, '랜드마크', 'Monumento') : level === 2 ? copy(language, '빌딩', 'Edificio') : level === 1 ? copy(language, '별장', 'Villa') : '';
+  if (modern) return level >= 3 ? copy(language, '랜드마크', 'Monumento') : level === 2 ? copy(language, '아파트', 'Apartamentos') : level === 1 ? copy(language, '단독주택', 'Casa unifamiliar') : '';
   return level ? copy(language, '집', 'Casa') : '';
 }
 function rentValue(tile: Record<string, any>, modern: boolean) {
@@ -100,6 +102,7 @@ export default function MarbleBoard({ view: rawView, language, playerId, runActi
   const selectedCity = tiles[selectedTile] ?? {};
   const selectedName = String(record(selectedCity.name)[language] ?? record(selectedCity.name).ko ?? '');
   const selectedCityArt = cityArtNames[selectedName] ?? null;
+  const landmarkNote = num(board.cityRouteVersion) >= 3 ? dioramas.assets.find(asset => asset.slug === selectedCityArt)?.note?.[language] : null;
   const selectedOwner = selectedCity.owner === 'p1' || selectedCity.owner === 'p2' ? selectedCity.owner as Seat : null;
   const selectedBuild = actionsOf('build').find(choice => num(choice.action.payload?.tile) === selectedTile);
   const selectedIsAction = selectedTile === pos;
@@ -143,6 +146,22 @@ export default function MarbleBoard({ view: rawView, language, playerId, runActi
   const receiptBoundary = stageEvents.map(event => event.type).map(type => type === 'turn' || type === 'roll').lastIndexOf(true);
   const latestMoneyReceipt = record(stageEvents.slice(Math.max(0, receiptBoundary)).filter(event => typeof event.moneyDelta?.[playerId] === 'number' && event.moneyDelta[playerId] !== 0).at(-1));
   const run = (choice?: Choice) => choice && void runAction(choice.action);
+  const layoutRef = useRef<HTMLDivElement>(null);
+
+  useLayoutEffect(() => {
+    const layout = layoutRef.current;
+    if (!layout || !modern) return;
+    const resize = () => {
+      const top = layout.getBoundingClientRect().top + window.scrollY;
+      layout.style.setProperty('--mp-available-height', `${Math.max(320, window.innerHeight - top - 18)}px`);
+    };
+    resize();
+    const observer = new ResizeObserver(resize);
+    const room = layout.closest('.room-main');
+    if (room) observer.observe(room);
+    window.addEventListener('resize', resize);
+    return () => { observer.disconnect(); window.removeEventListener('resize', resize); };
+  }, [modern, language]);
 
   useEffect(() => { setConfirmBankruptcy(false); }, [phase, playerId, actionSequence]);
 
@@ -226,7 +245,7 @@ export default function MarbleBoard({ view: rawView, language, playerId, runActi
   return <section className={`marble-premium ${isLegacy ? 'is-legacy' : 'is-modern'}`} aria-label={copy(language, '부루마블 경기판', 'Tablero de Marble')}>
     <header className="mp-header"><div className="mp-brand"><h2>{copy(language, '부루마블', 'Marble')}</h2><p>{copy(language, '도시를 사고, 임대료를 모아 세계를 여행해요.', 'Compra ciudades, cobra rentas y recorre el mundo.')}</p></div><div className={`mp-turn-badge ${active ? 'is-active' : ''}`}><span className="mp-turn-gem" aria-hidden="true"/><b>{statusCopy}</b><span>{phaseLabel}</span></div></header>
 
-    <div className="mp-layout">
+    <div className="mp-layout" ref={layoutRef}>
       <section className="mp-board-panel" aria-label={copy(language, `${tiles.length}칸 순환 보드`, `Tablero de ${tiles.length} casillas`)}>
         <div className={`mp-board-grid ${isLegacy ? 'mp-board-grid--18' : 'mp-board-grid--40'}`} role="list" aria-label={copy(language, `총 ${tiles.length}칸 보드`, `Recorrido de ${tiles.length} casillas`)}>
           {tiles.map((tile, index) => {
@@ -249,7 +268,7 @@ export default function MarbleBoard({ view: rawView, language, playerId, runActi
               <div className="mp-tile-content">
                 <div className="mp-tile-top"><span>{String(index + 1).padStart(2, '0')}</span>{flag && <img src={`/images/marble/flags/${flag}.svg`} alt="" aria-hidden="true" loading="lazy" decoding="async"/>}{tileOwner && <b className={`mp-owner mp-owner-${tileOwner}`}>{seatName(tileOwner, playerId, language)}</b>}</div>
                 {kind === 'property' ? <div className="mp-property-tile-view">
-                  {cityArtNames[name] && <MarblePropertyArt className="mp-property-tile-art" city={cityArtNames[name]} level={modern ? num(tile.houses) : 0}/>}
+                  {cityArtNames[name] && <MarblePropertyArt routeVersion={num(board.cityRouteVersion)} language={language} className="mp-property-tile-art" city={cityArtNames[name]} level={modern ? num(tile.houses) : 0}/>}
                   <div className="mp-property-tile-copy"><strong className="mp-tile-name">{name}</strong><small className="mp-tile-economy"><b>{moneyText(num(tile.price), language)}</b><span>{copy(language, `임대 ${moneyText(rentValue(tile, modern), language)}`, `Renta ${moneyText(rentValue(tile, modern), language)}`)}</span></small></div>
                   {num(tile.houses) > 0 && modern && <span className="mp-building-badge" aria-label={building}>{num(tile.houses) >= 3 ? '★' : num(tile.houses)}</span>}
                 </div> : <><strong className="mp-tile-name">{name}</strong>{['start', 'key', 'island', 'train', 'rest', 'fund', 'fund-pay', 'tax'].includes(tileSymbol) && <svg className="mp-tile-symbol" aria-hidden="true" viewBox="0 0 32 32"><use href={`/images/marble/tile-symbols.svg#${tileSymbol}`}/></svg>}<small className="mp-tile-kind">{specialNames[kind]?.[language] ?? ''}{['tax', 'fund-deposit'].includes(kind) && num(tile.price) ? ` · ${copy(language, `납부 ${moneyText(num(tile.price), language)}`, `Pago ${moneyText(num(tile.price), language)}`)}` : ''}</small></>}
@@ -264,8 +283,12 @@ export default function MarbleBoard({ view: rawView, language, playerId, runActi
           })}
           <div className={`mp-board-center ${isLegacy ? 'mp-board-center--18' : ''}`}>
             {tiles.length === 40 && <img className="mp-world-map" src="/images/marble/world-map-board.webp" alt="" aria-hidden="true" decoding="async"/>}
-            <div className="mp-center-route">{board.cityRouteVersion === 2 ? <span>{copy(language, '광주 → 뉴욕 → 산토도밍고 → 뉴어크 → 서울 → 광주', 'Gwangju → Nueva York → Santo Domingo → Newark → Seúl → Gwangju')}</span> : <><span>{copy(language, '광주 출발', 'Desde Gwangju')}</span><span className="mp-route-line" aria-hidden="true">↗</span><span>{copy(language, '세계 여행', 'Viaje mundial')}</span></>}</div>
+            <div className="mp-center-route">{num(board.cityRouteVersion) >= 2 ? <span>{copy(language, '광주 → 뉴욕 → 산토도밍고 → 뉴어크 → 서울 → 광주', 'Gwangju → Nueva York → Santo Domingo → Newark → Seúl → Gwangju')}</span> : <><span>{copy(language, '광주 출발', 'Desde Gwangju')}</span><span className="mp-route-line" aria-hidden="true">↗</span><span>{copy(language, '세계 여행', 'Viaje mundial')}</span></>}</div>
             <div className="mp-map-hud"><span>{copy(language, '턴', 'Turno')} <b>{currentTurn} / 120</b></span>{modern && <span>{copy(language, '공동 기금', 'Fondo común')} <b>{moneyText(fund, language)}</b></span>}</div>
+            {modern && selectedCityArt && <figure className="mp-city-preview" aria-label={copy(language, `${selectedName} 건물 미리보기`, `Vista del edificio de ${selectedName}`)}>
+              <MarblePropertyArt routeVersion={num(board.cityRouteVersion)} language={language} city={selectedCityArt} level={num(selectedCity.houses) || 3}/>
+              <figcaption><b>{selectedName}</b><span>{num(selectedCity.houses) ? buildingName(num(selectedCity.houses), language, true) : copy(language, '랜드마크 미리보기 · 미건설', 'Vista del monumento · sin construir')}</span></figcaption>
+            </figure>}
             {lastMove.source === 'train' && lastMove.from === 30 && <div className={`mp-flight ${traveler?.seq === lastMoveSequence ? 'is-flying' : ''}`} style={{ color: lastMove.playerId === 'p1' ? '#a54e69' : '#356896' } as CSSProperties}>
               <svg viewBox="0 0 160 100" aria-hidden="true"><ellipse cx="80" cy="86" rx="47" ry="5" fill="#344c59" opacity=".12"/><g stroke="#344c59" strokeWidth="2" strokeLinejoin="round"><path d="m72 44 19-35 12 1-12 38 36 7 16 12-9 6-42-12-17 23-11-2 8-27-45-6-14-9 7-5z" fill="#fff8e7"/><path d="m27 43-15-22 11 1 19 21z" fill="currentColor"/><path d="m76 44 15-35 12 1-12 38zM89 61 75 84l-11-2 8-27z" fill="currentColor"/><path d="m114 55 13 2 8 8-15-1z" fill="#8db9c8"/></g></svg>
               <span><b>{lastMove.playerId === 'p1' ? 'Asiana' : 'JetBlue'}</b> · {copy(language, '둘의 상상 여행', 'Nuestro viaje imaginado')}</span>
@@ -348,13 +371,14 @@ export default function MarbleBoard({ view: rawView, language, playerId, runActi
             <article className={`mp-property-card mp-group-${String(selectedCity.group ?? '')}`} aria-label={`${selectedName}, ${moneyText(num(selectedCity.price), language)}`}>
               <img className="mp-property-card-frame" src="/images/marble/ownership-card-frame.svg" alt="" aria-hidden="true"/>
               <h3 id="mp-city-detail-title">{selectedName}</h3>
-              <div className="mp-property-card-art">{selectedCityArt && <MarblePropertyArt city={selectedCityArt} level={modern ? num(selectedCity.houses) : 0}/>}</div>
+              <div className="mp-property-card-art">{selectedCityArt && <MarblePropertyArt routeVersion={num(board.cityRouteVersion)} language={language} city={selectedCityArt} level={modern ? num(selectedCity.houses) : 0}/>}</div>
               <div className="mp-property-card-owner"><b className={`mp-owner-mark ${selectedOwner ? `mp-owner-${selectedOwner}` : ''}`}>{selectedOwner && <MarblePawn pawn={pawnId(record(board.pawns)[selectedOwner]) ?? (selectedOwner === 'p1' ? 'fox' : 'cat')} language={language} label={seatName(selectedOwner, playerId, language)}/>} {selectedOwner ? seatName(selectedOwner, playerId, language) : copy(language, '미소유', 'Sin dueño')}</b><span className="mp-card-group">{groups[String(selectedCity.group ?? '')]?.[language] ?? String(selectedCity.group ?? '')}</span></div>
               <div className="mp-property-card-price"><small>{copy(language, '매입 가격', 'Precio')}</small><b>{moneyText(num(selectedCity.price), language)}</b></div>
               <div className="mp-property-card-rents" aria-label={copy(language, '건설 단계별 통행료', 'Renta por nivel')}>
                 {rentSteps.map((rent, level) => <span className={num(selectedCity.houses) === level ? 'is-active' : ''} key={level}><small>{level === 0 ? copy(language, '기본', 'Base') : level === 3 ? copy(language, '랜드마크', 'Monumento') : `${level}${copy(language, '단계', ' niv.')}`}</small><b>{moneyText(rent, language)}</b></span>)}
               </div>
             </article>
+            {landmarkNote && <p className="mp-landmark-note">{landmarkNote}</p>}
             {nextBuildCost !== null && !selectedBuild && <div className="mp-city-upgrade"><b>{copy(language, '다음 건설 단계', 'Siguiente nivel')}</b><span>{copy(language, `비용 ${moneyText(nextBuildCost, language)}`, `Costo ${moneyText(nextBuildCost, language)}`)}</span><span>{copy(language, `건설 후 통행료 ${moneyText(nextRent, language)}`, `Renta después ${moneyText(nextRent, language)}`)}</span><small>{copy(language, '차례와 규칙 조건을 충족할 때', 'Cuando sea tu turno y cumplas las condiciones')}</small></div>}
             {purchaseCost !== null && <div className="mp-city-projection"><b>{copy(language, '구매 예상', 'Compra')}</b><span>{copy(language, `비용 ${moneyText(purchaseCost, language)}`, `Costo ${moneyText(purchaseCost, language)}`)}</span><span>{copy(language, `구매 후 현금 ${moneyText(num(money[playerId]) - purchaseCost, language)}`, `Efectivo después ${moneyText(num(money[playerId]) - purchaseCost, language)}`)}</span></div>}
 
@@ -365,7 +389,7 @@ export default function MarbleBoard({ view: rawView, language, playerId, runActi
         {eventLog.length > 0 && <details className="mp-history"><summary>{copy(language, '최근 기록', 'Actividad reciente')} <span>{eventLog.length}</span></summary><ol>{eventLog.slice(-5).reverse().map((event: any) => <li key={num(event.sequence)}><span>{String(record(event.title)[language] ?? '')}</span><small>{String(record(event.text)[language] ?? '')}</small></li>)}</ol></details>}
 
         <details className="mp-portfolio"><summary>{copy(language, '보유 도시', 'Ciudades adquiridas')} <span>{ownedBy('p1').length + ownedBy('p2').length}</span></summary>
-          {players.map(seat => <div className="mp-portfolio-seat" key={seat}><h4>{seatName(seat, playerId, language)} · {ownedBy(seat).length}</h4>{ownedBy(seat).length ? <ul>{ownedBy(seat).map(({ tile, index }) => { const title = String(record(tile.name)[language] ?? ''); return <li key={index}><button className="mp-portfolio-city" type="button" aria-pressed={selectedTile === index} aria-label={copy(language, `${title} 도시 카드 열기`, `Abrir tarjeta de ${title}`)} onClick={() => setSelectedTile(index)}>{cityArtNames[title] && <img src={`/images/marble/cities/${cityArtNames[title]}.svg`} alt="" aria-hidden="true" loading="lazy" decoding="async"/>}<span><b>{title}</b><small>{groups[String(tile.group)]?.[language] ?? String(tile.group ?? '')}</small></span></button><span className="mp-portfolio-level">{buildingName(num(tile.houses), language, modern) || copy(language, `임대 ${rentValue(tile, modern)}`, `Renta ${rentValue(tile, modern)}`)}</span>{buildActions.some(choice => num(choice.action.payload?.tile) === index) && <button type="button" aria-label={copy(language, `${title} 건설 선택`, `Seleccionar mejora de ${title}`)} onClick={() => setSelectedTile(index)}>{copy(language, '개선', 'Mejorar')}</button>}</li>; })}</ul> : <p>{copy(language, '아직 보유한 도시가 없어요.', 'Todavía no hay ciudades.')}</p>}</div>)}
+          {players.map(seat => <div className="mp-portfolio-seat" key={seat}><h4>{seatName(seat, playerId, language)} · {ownedBy(seat).length}</h4>{ownedBy(seat).length ? <ul>{ownedBy(seat).map(({ tile, index }) => { const title = String(record(tile.name)[language] ?? ''); return <li key={index}><button className="mp-portfolio-city" type="button" aria-pressed={selectedTile === index} aria-label={copy(language, `${title} 도시 카드 열기`, `Abrir tarjeta de ${title}`)} onClick={() => setSelectedTile(index)}>{cityArtNames[title] && <MarblePropertyArt routeVersion={num(board.cityRouteVersion)} language={language} city={cityArtNames[title]} level={modern ? num(tile.houses) : 0}/>}<span><b>{title}</b><small>{groups[String(tile.group)]?.[language] ?? String(tile.group ?? '')}</small></span></button><span className="mp-portfolio-level">{buildingName(num(tile.houses), language, modern) || copy(language, `임대 ${rentValue(tile, modern)}`, `Renta ${rentValue(tile, modern)}`)}</span>{buildActions.some(choice => num(choice.action.payload?.tile) === index) && <button type="button" aria-label={copy(language, `${title} 건설 선택`, `Seleccionar mejora de ${title}`)} onClick={() => setSelectedTile(index)}>{copy(language, '개선', 'Mejorar')}</button>}</li>; })}</ul> : <p>{copy(language, '아직 보유한 도시가 없어요.', 'Todavía no hay ciudades.')}</p>}</div>)}
         </details>
       </aside>
     </div>

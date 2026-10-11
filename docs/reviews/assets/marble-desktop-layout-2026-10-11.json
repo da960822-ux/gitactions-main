@@ -1,0 +1,3598 @@
+{
+  "scope": "Luna, two isolated KO/ES contexts, local PGlite/RLS authority. Layout-only route-v2 fixture evidence; old SVG images not approved artwork. No production Realtime. New route-v3 image placeholders are not final pixel verification. Room identifiers omitted.",
+  "rows": [
+    {
+      "state": "roll",
+      "seat": "p1",
+      "language": "ko",
+      "viewport": {
+        "width": 1366,
+        "height": 768,
+        "scrollWidth": 1366,
+        "scrollHeight": 2163,
+        "scrollX": 0,
+        "scrollY": 0
+      },
+      "boardPanel": {
+        "x": 38,
+        "y": 220,
+        "right": 954,
+        "bottom": 750,
+        "width": 916,
+        "height": 530,
+        "visible": true
+      },
+      "boardGrid": {
+        "x": 86,
+        "y": 228,
+        "right": 906,
+        "bottom": 742,
+        "width": 820,
+        "height": 514,
+        "visible": true
+      },
+      "cityPreview": {
+        "box": {
+          "x": 236,
+          "y": 442,
+          "right": 394,
+          "bottom": 617,
+          "width": 158,
+          "height": 175,
+          "visible": true
+        },
+        "text": "광주 랜드마크 미리보기 · 미건설",
+        "art": {
+          "x": 249,
+          "y": 449,
+          "right": 381,
+          "bottom": 581,
+          "width": 132,
+          "height": 132,
+          "visible": true
+        },
+        "overlapsAction": false
+      },
+      "buttons": [
+        {
+          "text": "주사위 굴리기 ↗",
+          "disabled": false,
+          "box": {
+            "x": 979,
+            "y": 488,
+            "right": 1145,
+            "bottom": 526,
+            "width": 166,
+            "height": 38,
+            "visible": true
+          }
+        },
+        {
+          "text": "대출 받기 · 300 / 상환 330",
+          "disabled": false,
+          "box": {
+            "x": 979,
+            "y": 582,
+            "right": 1145,
+            "bottom": 644,
+            "width": 166,
+            "height": 62,
+            "visible": true
+          }
+        }
+      ],
+      "propertyCount": 24,
+      "propertyOverlapCount": 0,
+      "clippedNameCount": 0
+    },
+    {
+      "state": "roll",
+      "seat": "p2",
+      "language": "es",
+      "viewport": {
+        "width": 1366,
+        "height": 768,
+        "scrollWidth": 1366,
+        "scrollHeight": 1981,
+        "scrollX": 0,
+        "scrollY": 0
+      },
+      "boardPanel": {
+        "x": 38,
+        "y": 220,
+        "right": 954,
+        "bottom": 750,
+        "width": 916,
+        "height": 530,
+        "visible": true
+      },
+      "boardGrid": {
+        "x": 86,
+        "y": 228,
+        "right": 906,
+        "bottom": 742,
+        "width": 820,
+        "height": 514,
+        "visible": true
+      },
+      "cityPreview": {
+        "box": {
+          "x": 236,
+          "y": 429,
+          "right": 394,
+          "bottom": 617,
+          "width": 158,
+          "height": 188,
+          "visible": true
+        },
+        "text": "Gwangju Vista del monumento · sin construir",
+        "art": {
+          "x": 249,
+          "y": 436,
+          "right": 381,
+          "bottom": 568,
+          "width": 132,
+          "height": 132,
+          "visible": true
+        },
+        "overlapsAction": false
+      },
+      "buttons": [],
+      "propertyCount": 24,
+      "propertyOverlapCount": 0,
+      "clippedNameCount": 0
+    },
+    {
+      "state": "roll",
+      "seat": "p1",
+      "language": "ko",
+      "viewport": {
+        "width": 1440,
+        "height": 900,
+        "scrollWidth": 1440,
+        "scrollHeight": 2163,
+        "scrollX": 0,
+        "scrollY": 0
+      },
+      "boardPanel": {
+        "x": 38,
+        "y": 220,
+        "right": 1028,
+        "bottom": 882,
+        "width": 990,
+        "height": 662,
+        "visible": true
+      },
+      "boardGrid": {
+        "x": 123,
+        "y": 228,
+        "right": 943,
+        "bottom": 874,
+        "width": 820,
+        "height": 646,
+        "visible": true
+      },
+      "cityPreview": {
+        "box": {
+          "x": 273,
+          "y": 556,
+          "right": 431,
+          "bottom": 731,
+          "width": 158,
+          "height": 175,
+          "visible": true
+        },
+        "text": "광주 랜드마크 미리보기 · 미건설",
+        "art": {
+          "x": 286,
+          "y": 563,
+          "right": 418,
+          "bottom": 695,
+          "width": 132,
+          "height": 132,
+          "visible": true
+        },
+        "overlapsAction": false
+      },
+      "buttons": [
+        {
+          "text": "주사위 굴리기 ↗",
+          "disabled": false,
+          "box": {
+            "x": 1053,
+            "y": 488,
+            "right": 1219,
+            "bottom": 526,
+            "width": 166,
+            "height": 38,
+            "visible": true
+          }
+        },
+        {
+          "text": "대출 받기 · 300 / 상환 330",
+          "disabled": false,
+          "box": {
+            "x": 1053,
+            "y": 582,
+            "right": 1219,
+            "bottom": 644,
+            "width": 166,
+            "height": 62,
+            "visible": true
+          }
+        }
+      ],
+      "propertyCount": 24,
+      "propertyOverlapCount": 0,
+      "clippedNameCount": 0
+    },
+    {
+      "state": "roll",
+      "seat": "p2",
+      "language": "es",
+      "viewport": {
+        "width": 1440,
+        "height": 900,
+        "scrollWidth": 1440,
+        "scrollHeight": 2093,
+        "scrollX": 0,
+        "scrollY": 0
+      },
+      "boardPanel": {
+        "x": 38,
+        "y": 220,
+        "right": 1028,
+        "bottom": 882,
+        "width": 990,
+        "height": 662,
+        "visible": true
+      },
+      "boardGrid": {
+        "x": 123,
+        "y": 228,
+        "right": 943,
+        "bottom": 874,
+        "width": 820,
+        "height": 646,
+        "visible": true
+      },
+      "cityPreview": {
+        "box": {
+          "x": 273,
+          "y": 543,
+          "right": 431,
+          "bottom": 731,
+          "width": 158,
+          "height": 188,
+          "visible": true
+        },
+        "text": "Gwangju Vista del monumento · sin construir",
+        "art": {
+          "x": 286,
+          "y": 550,
+          "right": 418,
+          "bottom": 682,
+          "width": 132,
+          "height": 132,
+          "visible": true
+        },
+        "overlapsAction": false
+      },
+      "buttons": [],
+      "propertyCount": 24,
+      "propertyOverlapCount": 0,
+      "clippedNameCount": 0
+    },
+    {
+      "state": "roll",
+      "seat": "p1",
+      "language": "ko",
+      "viewport": {
+        "width": 1920,
+        "height": 1080,
+        "scrollWidth": 1920,
+        "scrollHeight": 2170,
+        "scrollX": 0,
+        "scrollY": 0
+      },
+      "boardPanel": {
+        "x": 260,
+        "y": 227,
+        "right": 1286,
+        "bottom": 1003,
+        "width": 1026,
+        "height": 776,
+        "visible": true
+      },
+      "boardGrid": {
+        "x": 363,
+        "y": 235,
+        "right": 1183,
+        "bottom": 995,
+        "width": 820,
+        "height": 760,
+        "visible": true
+      },
+      "cityPreview": {
+        "box": {
+          "x": 513,
+          "y": 677,
+          "right": 671,
+          "bottom": 852,
+          "width": 158,
+          "height": 175,
+          "visible": true
+        },
+        "text": "광주 랜드마크 미리보기 · 미건설",
+        "art": {
+          "x": 526,
+          "y": 684,
+          "right": 658,
+          "bottom": 816,
+          "width": 132,
+          "height": 132,
+          "visible": true
+        },
+        "overlapsAction": false
+      },
+      "buttons": [
+        {
+          "text": "주사위 굴리기 ↗",
+          "disabled": false,
+          "box": {
+            "x": 1311,
+            "y": 495,
+            "right": 1477,
+            "bottom": 533,
+            "width": 166,
+            "height": 38,
+            "visible": true
+          }
+        },
+        {
+          "text": "대출 받기 · 300 / 상환 330",
+          "disabled": false,
+          "box": {
+            "x": 1311,
+            "y": 589,
+            "right": 1477,
+            "bottom": 651,
+            "width": 166,
+            "height": 62,
+            "visible": true
+          }
+        }
+      ],
+      "propertyCount": 24,
+      "propertyOverlapCount": 0,
+      "clippedNameCount": 0
+    },
+    {
+      "state": "roll",
+      "seat": "p2",
+      "language": "es",
+      "viewport": {
+        "width": 1920,
+        "height": 1080,
+        "scrollWidth": 1920,
+        "scrollHeight": 2214,
+        "scrollX": 0,
+        "scrollY": 0
+      },
+      "boardPanel": {
+        "x": 260,
+        "y": 227,
+        "right": 1286,
+        "bottom": 1003,
+        "width": 1026,
+        "height": 776,
+        "visible": true
+      },
+      "boardGrid": {
+        "x": 363,
+        "y": 235,
+        "right": 1183,
+        "bottom": 995,
+        "width": 820,
+        "height": 760,
+        "visible": true
+      },
+      "cityPreview": {
+        "box": {
+          "x": 513,
+          "y": 664,
+          "right": 671,
+          "bottom": 852,
+          "width": 158,
+          "height": 188,
+          "visible": true
+        },
+        "text": "Gwangju Vista del monumento · sin construir",
+        "art": {
+          "x": 526,
+          "y": 671,
+          "right": 658,
+          "bottom": 803,
+          "width": 132,
+          "height": 132,
+          "visible": true
+        },
+        "overlapsAction": false
+      },
+      "buttons": [],
+      "propertyCount": 24,
+      "propertyOverlapCount": 0,
+      "clippedNameCount": 0
+    },
+    {
+      "state": "roll",
+      "seat": "p1",
+      "language": "ko",
+      "viewport": {
+        "width": 1280,
+        "height": 720,
+        "scrollWidth": 1280,
+        "scrollHeight": 2163,
+        "scrollX": 0,
+        "scrollY": 0
+      },
+      "boardPanel": {
+        "x": 38,
+        "y": 220,
+        "right": 868,
+        "bottom": 702,
+        "width": 830,
+        "height": 482,
+        "visible": true
+      },
+      "boardGrid": {
+        "x": 46,
+        "y": 228,
+        "right": 860,
+        "bottom": 694,
+        "width": 814,
+        "height": 466,
+        "visible": true
+      },
+      "cityPreview": {
+        "box": {
+          "x": 196,
+          "y": 394,
+          "right": 354,
+          "bottom": 569,
+          "width": 158,
+          "height": 175,
+          "visible": true
+        },
+        "text": "광주 랜드마크 미리보기 · 미건설",
+        "art": {
+          "x": 209,
+          "y": 401,
+          "right": 341,
+          "bottom": 533,
+          "width": 132,
+          "height": 132,
+          "visible": true
+        },
+        "overlapsAction": false
+      },
+      "buttons": [
+        {
+          "text": "주사위 굴리기 ↗",
+          "disabled": false,
+          "box": {
+            "x": 893,
+            "y": 488,
+            "right": 1059,
+            "bottom": 526,
+            "width": 166,
+            "height": 38,
+            "visible": true
+          }
+        },
+        {
+          "text": "대출 받기 · 300 / 상환 330",
+          "disabled": false,
+          "box": {
+            "x": 893,
+            "y": 582,
+            "right": 1059,
+            "bottom": 644,
+            "width": 166,
+            "height": 62,
+            "visible": true
+          }
+        }
+      ],
+      "propertyCount": 24,
+      "propertyOverlapCount": 0,
+      "clippedNameCount": 0
+    },
+    {
+      "state": "roll",
+      "seat": "p2",
+      "language": "es",
+      "viewport": {
+        "width": 1280,
+        "height": 720,
+        "scrollWidth": 1280,
+        "scrollHeight": 1981,
+        "scrollX": 0,
+        "scrollY": 0
+      },
+      "boardPanel": {
+        "x": 38,
+        "y": 220,
+        "right": 868,
+        "bottom": 702,
+        "width": 830,
+        "height": 482,
+        "visible": true
+      },
+      "boardGrid": {
+        "x": 46,
+        "y": 228,
+        "right": 860,
+        "bottom": 694,
+        "width": 814,
+        "height": 466,
+        "visible": true
+      },
+      "cityPreview": {
+        "box": {
+          "x": 196,
+          "y": 381,
+          "right": 354,
+          "bottom": 569,
+          "width": 158,
+          "height": 188,
+          "visible": true
+        },
+        "text": "Gwangju Vista del monumento · sin construir",
+        "art": {
+          "x": 209,
+          "y": 388,
+          "right": 341,
+          "bottom": 520,
+          "width": 132,
+          "height": 132,
+          "visible": true
+        },
+        "overlapsAction": false
+      },
+      "buttons": [],
+      "propertyCount": 24,
+      "propertyOverlapCount": 0,
+      "clippedNameCount": 0
+    },
+    {
+      "state": "buy",
+      "seat": "p1",
+      "language": "ko",
+      "viewport": {
+        "width": 1366,
+        "height": 768,
+        "scrollWidth": 1366,
+        "scrollHeight": 2194,
+        "scrollX": 0,
+        "scrollY": 0
+      },
+      "boardPanel": {
+        "x": 38,
+        "y": 220,
+        "right": 954,
+        "bottom": 750,
+        "width": 916,
+        "height": 530,
+        "visible": true
+      },
+      "boardGrid": {
+        "x": 86,
+        "y": 228,
+        "right": 906,
+        "bottom": 742,
+        "width": 820,
+        "height": 514,
+        "visible": true
+      },
+      "cityPreview": {
+        "box": {
+          "x": 236,
+          "y": 442,
+          "right": 394,
+          "bottom": 617,
+          "width": 158,
+          "height": 175,
+          "visible": true
+        },
+        "text": "광주 랜드마크 미리보기 · 미건설",
+        "art": {
+          "x": 249,
+          "y": 449,
+          "right": 381,
+          "bottom": 581,
+          "width": 132,
+          "height": 132,
+          "visible": true
+        },
+        "overlapsAction": false
+      },
+      "buttons": [
+        {
+          "text": "도시 구매 · 160 ↗",
+          "disabled": false,
+          "box": {
+            "x": 979,
+            "y": 582,
+            "right": 1145,
+            "bottom": 644,
+            "width": 166,
+            "height": 62,
+            "visible": true
+          }
+        },
+        {
+          "text": "구매하지 않고 지나가기",
+          "disabled": false,
+          "box": {
+            "x": 1152,
+            "y": 582,
+            "right": 1317,
+            "bottom": 644,
+            "width": 166,
+            "height": 62,
+            "visible": true
+          }
+        },
+        {
+          "text": "대출 받기 · 300 / 상환 330",
+          "disabled": false,
+          "box": {
+            "x": 979,
+            "y": 700,
+            "right": 1145,
+            "bottom": 762,
+            "width": 166,
+            "height": 62,
+            "visible": true
+          }
+        }
+      ],
+      "propertyCount": 24,
+      "propertyOverlapCount": 0,
+      "clippedNameCount": 0
+    },
+    {
+      "state": "buy",
+      "seat": "p2",
+      "language": "es",
+      "viewport": {
+        "width": 1366,
+        "height": 768,
+        "scrollWidth": 1366,
+        "scrollHeight": 2101,
+        "scrollX": 0,
+        "scrollY": 0
+      },
+      "boardPanel": {
+        "x": 38,
+        "y": 220,
+        "right": 954,
+        "bottom": 750,
+        "width": 916,
+        "height": 530,
+        "visible": true
+      },
+      "boardGrid": {
+        "x": 86,
+        "y": 228,
+        "right": 906,
+        "bottom": 742,
+        "width": 820,
+        "height": 514,
+        "visible": true
+      },
+      "cityPreview": {
+        "box": {
+          "x": 236,
+          "y": 429,
+          "right": 394,
+          "bottom": 617,
+          "width": 158,
+          "height": 188,
+          "visible": true
+        },
+        "text": "Gwangju Vista del monumento · sin construir",
+        "art": {
+          "x": 249,
+          "y": 436,
+          "right": 381,
+          "bottom": 568,
+          "width": 132,
+          "height": 132,
+          "visible": true
+        },
+        "overlapsAction": false
+      },
+      "buttons": [],
+      "propertyCount": 24,
+      "propertyOverlapCount": 0,
+      "clippedNameCount": 0
+    },
+    {
+      "state": "buy",
+      "seat": "p1",
+      "language": "ko",
+      "viewport": {
+        "width": 1440,
+        "height": 900,
+        "scrollWidth": 1440,
+        "scrollHeight": 2194,
+        "scrollX": 0,
+        "scrollY": 0
+      },
+      "boardPanel": {
+        "x": 38,
+        "y": 220,
+        "right": 1028,
+        "bottom": 882,
+        "width": 990,
+        "height": 662,
+        "visible": true
+      },
+      "boardGrid": {
+        "x": 123,
+        "y": 228,
+        "right": 943,
+        "bottom": 874,
+        "width": 820,
+        "height": 646,
+        "visible": true
+      },
+      "cityPreview": {
+        "box": {
+          "x": 273,
+          "y": 556,
+          "right": 431,
+          "bottom": 731,
+          "width": 158,
+          "height": 175,
+          "visible": true
+        },
+        "text": "광주 랜드마크 미리보기 · 미건설",
+        "art": {
+          "x": 286,
+          "y": 563,
+          "right": 418,
+          "bottom": 695,
+          "width": 132,
+          "height": 132,
+          "visible": true
+        },
+        "overlapsAction": false
+      },
+      "buttons": [
+        {
+          "text": "도시 구매 · 160 ↗",
+          "disabled": false,
+          "box": {
+            "x": 1053,
+            "y": 582,
+            "right": 1219,
+            "bottom": 644,
+            "width": 166,
+            "height": 62,
+            "visible": true
+          }
+        },
+        {
+          "text": "구매하지 않고 지나가기",
+          "disabled": false,
+          "box": {
+            "x": 1226,
+            "y": 582,
+            "right": 1391,
+            "bottom": 644,
+            "width": 166,
+            "height": 62,
+            "visible": true
+          }
+        },
+        {
+          "text": "대출 받기 · 300 / 상환 330",
+          "disabled": false,
+          "box": {
+            "x": 1053,
+            "y": 700,
+            "right": 1219,
+            "bottom": 762,
+            "width": 166,
+            "height": 62,
+            "visible": true
+          }
+        }
+      ],
+      "propertyCount": 24,
+      "propertyOverlapCount": 0,
+      "clippedNameCount": 0
+    },
+    {
+      "state": "buy",
+      "seat": "p2",
+      "language": "es",
+      "viewport": {
+        "width": 1440,
+        "height": 900,
+        "scrollWidth": 1440,
+        "scrollHeight": 2101,
+        "scrollX": 0,
+        "scrollY": 0
+      },
+      "boardPanel": {
+        "x": 38,
+        "y": 220,
+        "right": 1028,
+        "bottom": 882,
+        "width": 990,
+        "height": 662,
+        "visible": true
+      },
+      "boardGrid": {
+        "x": 123,
+        "y": 228,
+        "right": 943,
+        "bottom": 874,
+        "width": 820,
+        "height": 646,
+        "visible": true
+      },
+      "cityPreview": {
+        "box": {
+          "x": 273,
+          "y": 543,
+          "right": 431,
+          "bottom": 731,
+          "width": 158,
+          "height": 188,
+          "visible": true
+        },
+        "text": "Gwangju Vista del monumento · sin construir",
+        "art": {
+          "x": 286,
+          "y": 550,
+          "right": 418,
+          "bottom": 682,
+          "width": 132,
+          "height": 132,
+          "visible": true
+        },
+        "overlapsAction": false
+      },
+      "buttons": [],
+      "propertyCount": 24,
+      "propertyOverlapCount": 0,
+      "clippedNameCount": 0
+    },
+    {
+      "state": "buy",
+      "seat": "p1",
+      "language": "ko",
+      "viewport": {
+        "width": 1920,
+        "height": 1080,
+        "scrollWidth": 1920,
+        "scrollHeight": 2201,
+        "scrollX": 0,
+        "scrollY": 0
+      },
+      "boardPanel": {
+        "x": 260,
+        "y": 227,
+        "right": 1286,
+        "bottom": 1003,
+        "width": 1026,
+        "height": 776,
+        "visible": true
+      },
+      "boardGrid": {
+        "x": 363,
+        "y": 235,
+        "right": 1183,
+        "bottom": 995,
+        "width": 820,
+        "height": 760,
+        "visible": true
+      },
+      "cityPreview": {
+        "box": {
+          "x": 513,
+          "y": 677,
+          "right": 671,
+          "bottom": 852,
+          "width": 158,
+          "height": 175,
+          "visible": true
+        },
+        "text": "광주 랜드마크 미리보기 · 미건설",
+        "art": {
+          "x": 526,
+          "y": 684,
+          "right": 658,
+          "bottom": 816,
+          "width": 132,
+          "height": 132,
+          "visible": true
+        },
+        "overlapsAction": false
+      },
+      "buttons": [
+        {
+          "text": "도시 구매 · 160 ↗",
+          "disabled": false,
+          "box": {
+            "x": 1311,
+            "y": 589,
+            "right": 1477,
+            "bottom": 651,
+            "width": 166,
+            "height": 62,
+            "visible": true
+          }
+        },
+        {
+          "text": "구매하지 않고 지나가기",
+          "disabled": false,
+          "box": {
+            "x": 1484,
+            "y": 589,
+            "right": 1649,
+            "bottom": 651,
+            "width": 166,
+            "height": 62,
+            "visible": true
+          }
+        },
+        {
+          "text": "대출 받기 · 300 / 상환 330",
+          "disabled": false,
+          "box": {
+            "x": 1311,
+            "y": 707,
+            "right": 1477,
+            "bottom": 769,
+            "width": 166,
+            "height": 62,
+            "visible": true
+          }
+        }
+      ],
+      "propertyCount": 24,
+      "propertyOverlapCount": 0,
+      "clippedNameCount": 0
+    },
+    {
+      "state": "buy",
+      "seat": "p2",
+      "language": "es",
+      "viewport": {
+        "width": 1920,
+        "height": 1080,
+        "scrollWidth": 1920,
+        "scrollHeight": 2214,
+        "scrollX": 0,
+        "scrollY": 0
+      },
+      "boardPanel": {
+        "x": 260,
+        "y": 227,
+        "right": 1286,
+        "bottom": 1003,
+        "width": 1026,
+        "height": 776,
+        "visible": true
+      },
+      "boardGrid": {
+        "x": 363,
+        "y": 235,
+        "right": 1183,
+        "bottom": 995,
+        "width": 820,
+        "height": 760,
+        "visible": true
+      },
+      "cityPreview": {
+        "box": {
+          "x": 513,
+          "y": 664,
+          "right": 671,
+          "bottom": 852,
+          "width": 158,
+          "height": 188,
+          "visible": true
+        },
+        "text": "Gwangju Vista del monumento · sin construir",
+        "art": {
+          "x": 526,
+          "y": 671,
+          "right": 658,
+          "bottom": 803,
+          "width": 132,
+          "height": 132,
+          "visible": true
+        },
+        "overlapsAction": false
+      },
+      "buttons": [],
+      "propertyCount": 24,
+      "propertyOverlapCount": 0,
+      "clippedNameCount": 0
+    },
+    {
+      "state": "buy",
+      "seat": "p1",
+      "language": "ko",
+      "viewport": {
+        "width": 1280,
+        "height": 720,
+        "scrollWidth": 1280,
+        "scrollHeight": 2194,
+        "scrollX": 0,
+        "scrollY": 0
+      },
+      "boardPanel": {
+        "x": 38,
+        "y": 220,
+        "right": 868,
+        "bottom": 702,
+        "width": 830,
+        "height": 482,
+        "visible": true
+      },
+      "boardGrid": {
+        "x": 46,
+        "y": 228,
+        "right": 860,
+        "bottom": 694,
+        "width": 814,
+        "height": 466,
+        "visible": true
+      },
+      "cityPreview": {
+        "box": {
+          "x": 196,
+          "y": 394,
+          "right": 354,
+          "bottom": 569,
+          "width": 158,
+          "height": 175,
+          "visible": true
+        },
+        "text": "광주 랜드마크 미리보기 · 미건설",
+        "art": {
+          "x": 209,
+          "y": 401,
+          "right": 341,
+          "bottom": 533,
+          "width": 132,
+          "height": 132,
+          "visible": true
+        },
+        "overlapsAction": false
+      },
+      "buttons": [
+        {
+          "text": "도시 구매 · 160 ↗",
+          "disabled": false,
+          "box": {
+            "x": 893,
+            "y": 582,
+            "right": 1059,
+            "bottom": 644,
+            "width": 166,
+            "height": 62,
+            "visible": true
+          }
+        },
+        {
+          "text": "구매하지 않고 지나가기",
+          "disabled": false,
+          "box": {
+            "x": 1066,
+            "y": 582,
+            "right": 1231,
+            "bottom": 644,
+            "width": 166,
+            "height": 62,
+            "visible": true
+          }
+        },
+        {
+          "text": "대출 받기 · 300 / 상환 330",
+          "disabled": false,
+          "box": {
+            "x": 893,
+            "y": 700,
+            "right": 1059,
+            "bottom": 762,
+            "width": 166,
+            "height": 62,
+            "visible": true
+          }
+        }
+      ],
+      "propertyCount": 24,
+      "propertyOverlapCount": 0,
+      "clippedNameCount": 0
+    },
+    {
+      "state": "buy",
+      "seat": "p2",
+      "language": "es",
+      "viewport": {
+        "width": 1280,
+        "height": 720,
+        "scrollWidth": 1280,
+        "scrollHeight": 2101,
+        "scrollX": 0,
+        "scrollY": 0
+      },
+      "boardPanel": {
+        "x": 38,
+        "y": 220,
+        "right": 868,
+        "bottom": 702,
+        "width": 830,
+        "height": 482,
+        "visible": true
+      },
+      "boardGrid": {
+        "x": 46,
+        "y": 228,
+        "right": 860,
+        "bottom": 694,
+        "width": 814,
+        "height": 466,
+        "visible": true
+      },
+      "cityPreview": {
+        "box": {
+          "x": 196,
+          "y": 381,
+          "right": 354,
+          "bottom": 569,
+          "width": 158,
+          "height": 188,
+          "visible": true
+        },
+        "text": "Gwangju Vista del monumento · sin construir",
+        "art": {
+          "x": 209,
+          "y": 388,
+          "right": 341,
+          "bottom": 520,
+          "width": 132,
+          "height": 132,
+          "visible": true
+        },
+        "overlapsAction": false
+      },
+      "buttons": [],
+      "propertyCount": 24,
+      "propertyOverlapCount": 0,
+      "clippedNameCount": 0
+    },
+    {
+      "state": "build",
+      "seat": "p1",
+      "language": "ko",
+      "viewport": {
+        "width": 1366,
+        "height": 768,
+        "scrollWidth": 1366,
+        "scrollHeight": 2161,
+        "scrollX": 0,
+        "scrollY": 0
+      },
+      "boardPanel": {
+        "x": 38,
+        "y": 220,
+        "right": 954,
+        "bottom": 750,
+        "width": 916,
+        "height": 530,
+        "visible": true
+      },
+      "boardGrid": {
+        "x": 86,
+        "y": 228,
+        "right": 906,
+        "bottom": 742,
+        "width": 820,
+        "height": 514,
+        "visible": true
+      },
+      "cityPreview": {
+        "box": {
+          "x": 236,
+          "y": 442,
+          "right": 394,
+          "bottom": 617,
+          "width": 158,
+          "height": 175,
+          "visible": true
+        },
+        "text": "광주 랜드마크 미리보기 · 미건설",
+        "art": {
+          "x": 249,
+          "y": 449,
+          "right": 381,
+          "bottom": 581,
+          "width": 132,
+          "height": 132,
+          "visible": true
+        },
+        "overlapsAction": false
+      },
+      "buttons": [
+        {
+          "text": "단독주택: 광주 (40) ↗",
+          "disabled": false,
+          "box": {
+            "x": 989,
+            "y": 571,
+            "right": 1307,
+            "bottom": 609,
+            "width": 318,
+            "height": 38,
+            "visible": true
+          }
+        },
+        {
+          "text": "차례 마치기 →",
+          "disabled": false,
+          "box": {
+            "x": 979,
+            "y": 623,
+            "right": 1145,
+            "bottom": 661,
+            "width": 166,
+            "height": 38,
+            "visible": true
+          }
+        },
+        {
+          "text": "대출 받기 · 300 / 상환 330",
+          "disabled": false,
+          "box": {
+            "x": 979,
+            "y": 716,
+            "right": 1145,
+            "bottom": 778,
+            "width": 166,
+            "height": 62,
+            "visible": true
+          }
+        }
+      ],
+      "propertyCount": 24,
+      "propertyOverlapCount": 0,
+      "clippedNameCount": 0
+    },
+    {
+      "state": "build",
+      "seat": "p2",
+      "language": "es",
+      "viewport": {
+        "width": 1366,
+        "height": 768,
+        "scrollWidth": 1366,
+        "scrollHeight": 1998,
+        "scrollX": 0,
+        "scrollY": 0
+      },
+      "boardPanel": {
+        "x": 38,
+        "y": 220,
+        "right": 954,
+        "bottom": 750,
+        "width": 916,
+        "height": 530,
+        "visible": true
+      },
+      "boardGrid": {
+        "x": 86,
+        "y": 228,
+        "right": 906,
+        "bottom": 742,
+        "width": 820,
+        "height": 514,
+        "visible": true
+      },
+      "cityPreview": {
+        "box": {
+          "x": 236,
+          "y": 429,
+          "right": 394,
+          "bottom": 617,
+          "width": 158,
+          "height": 188,
+          "visible": true
+        },
+        "text": "Gwangju Vista del monumento · sin construir",
+        "art": {
+          "x": 249,
+          "y": 436,
+          "right": 381,
+          "bottom": 568,
+          "width": 132,
+          "height": 132,
+          "visible": true
+        },
+        "overlapsAction": false
+      },
+      "buttons": [],
+      "propertyCount": 24,
+      "propertyOverlapCount": 0,
+      "clippedNameCount": 0
+    },
+    {
+      "state": "build",
+      "seat": "p1",
+      "language": "ko",
+      "viewport": {
+        "width": 1440,
+        "height": 900,
+        "scrollWidth": 1440,
+        "scrollHeight": 2161,
+        "scrollX": 0,
+        "scrollY": 0
+      },
+      "boardPanel": {
+        "x": 38,
+        "y": 220,
+        "right": 1028,
+        "bottom": 882,
+        "width": 990,
+        "height": 662,
+        "visible": true
+      },
+      "boardGrid": {
+        "x": 123,
+        "y": 228,
+        "right": 943,
+        "bottom": 874,
+        "width": 820,
+        "height": 646,
+        "visible": true
+      },
+      "cityPreview": {
+        "box": {
+          "x": 273,
+          "y": 556,
+          "right": 431,
+          "bottom": 731,
+          "width": 158,
+          "height": 175,
+          "visible": true
+        },
+        "text": "광주 랜드마크 미리보기 · 미건설",
+        "art": {
+          "x": 286,
+          "y": 563,
+          "right": 418,
+          "bottom": 695,
+          "width": 132,
+          "height": 132,
+          "visible": true
+        },
+        "overlapsAction": false
+      },
+      "buttons": [
+        {
+          "text": "단독주택: 광주 (40) ↗",
+          "disabled": false,
+          "box": {
+            "x": 1063,
+            "y": 571,
+            "right": 1381,
+            "bottom": 609,
+            "width": 318,
+            "height": 38,
+            "visible": true
+          }
+        },
+        {
+          "text": "차례 마치기 →",
+          "disabled": false,
+          "box": {
+            "x": 1053,
+            "y": 623,
+            "right": 1219,
+            "bottom": 661,
+            "width": 166,
+            "height": 38,
+            "visible": true
+          }
+        },
+        {
+          "text": "대출 받기 · 300 / 상환 330",
+          "disabled": false,
+          "box": {
+            "x": 1053,
+            "y": 716,
+            "right": 1219,
+            "bottom": 778,
+            "width": 166,
+            "height": 62,
+            "visible": true
+          }
+        }
+      ],
+      "propertyCount": 24,
+      "propertyOverlapCount": 0,
+      "clippedNameCount": 0
+    },
+    {
+      "state": "build",
+      "seat": "p2",
+      "language": "es",
+      "viewport": {
+        "width": 1440,
+        "height": 900,
+        "scrollWidth": 1440,
+        "scrollHeight": 2093,
+        "scrollX": 0,
+        "scrollY": 0
+      },
+      "boardPanel": {
+        "x": 38,
+        "y": 220,
+        "right": 1028,
+        "bottom": 882,
+        "width": 990,
+        "height": 662,
+        "visible": true
+      },
+      "boardGrid": {
+        "x": 123,
+        "y": 228,
+        "right": 943,
+        "bottom": 874,
+        "width": 820,
+        "height": 646,
+        "visible": true
+      },
+      "cityPreview": {
+        "box": {
+          "x": 273,
+          "y": 543,
+          "right": 431,
+          "bottom": 731,
+          "width": 158,
+          "height": 188,
+          "visible": true
+        },
+        "text": "Gwangju Vista del monumento · sin construir",
+        "art": {
+          "x": 286,
+          "y": 550,
+          "right": 418,
+          "bottom": 682,
+          "width": 132,
+          "height": 132,
+          "visible": true
+        },
+        "overlapsAction": false
+      },
+      "buttons": [],
+      "propertyCount": 24,
+      "propertyOverlapCount": 0,
+      "clippedNameCount": 0
+    },
+    {
+      "state": "build",
+      "seat": "p1",
+      "language": "ko",
+      "viewport": {
+        "width": 1920,
+        "height": 1080,
+        "scrollWidth": 1920,
+        "scrollHeight": 2168,
+        "scrollX": 0,
+        "scrollY": 0
+      },
+      "boardPanel": {
+        "x": 260,
+        "y": 227,
+        "right": 1286,
+        "bottom": 1003,
+        "width": 1026,
+        "height": 776,
+        "visible": true
+      },
+      "boardGrid": {
+        "x": 363,
+        "y": 235,
+        "right": 1183,
+        "bottom": 995,
+        "width": 820,
+        "height": 760,
+        "visible": true
+      },
+      "cityPreview": {
+        "box": {
+          "x": 513,
+          "y": 677,
+          "right": 671,
+          "bottom": 852,
+          "width": 158,
+          "height": 175,
+          "visible": true
+        },
+        "text": "광주 랜드마크 미리보기 · 미건설",
+        "art": {
+          "x": 526,
+          "y": 684,
+          "right": 658,
+          "bottom": 816,
+          "width": 132,
+          "height": 132,
+          "visible": true
+        },
+        "overlapsAction": false
+      },
+      "buttons": [
+        {
+          "text": "단독주택: 광주 (40) ↗",
+          "disabled": false,
+          "box": {
+            "x": 1321,
+            "y": 578,
+            "right": 1639,
+            "bottom": 616,
+            "width": 318,
+            "height": 38,
+            "visible": true
+          }
+        },
+        {
+          "text": "차례 마치기 →",
+          "disabled": false,
+          "box": {
+            "x": 1311,
+            "y": 630,
+            "right": 1477,
+            "bottom": 668,
+            "width": 166,
+            "height": 38,
+            "visible": true
+          }
+        },
+        {
+          "text": "대출 받기 · 300 / 상환 330",
+          "disabled": false,
+          "box": {
+            "x": 1311,
+            "y": 723,
+            "right": 1477,
+            "bottom": 785,
+            "width": 166,
+            "height": 62,
+            "visible": true
+          }
+        }
+      ],
+      "propertyCount": 24,
+      "propertyOverlapCount": 0,
+      "clippedNameCount": 0
+    },
+    {
+      "state": "build",
+      "seat": "p2",
+      "language": "es",
+      "viewport": {
+        "width": 1920,
+        "height": 1080,
+        "scrollWidth": 1920,
+        "scrollHeight": 2214,
+        "scrollX": 0,
+        "scrollY": 0
+      },
+      "boardPanel": {
+        "x": 260,
+        "y": 227,
+        "right": 1286,
+        "bottom": 1003,
+        "width": 1026,
+        "height": 776,
+        "visible": true
+      },
+      "boardGrid": {
+        "x": 363,
+        "y": 235,
+        "right": 1183,
+        "bottom": 995,
+        "width": 820,
+        "height": 760,
+        "visible": true
+      },
+      "cityPreview": {
+        "box": {
+          "x": 513,
+          "y": 664,
+          "right": 671,
+          "bottom": 852,
+          "width": 158,
+          "height": 188,
+          "visible": true
+        },
+        "text": "Gwangju Vista del monumento · sin construir",
+        "art": {
+          "x": 526,
+          "y": 671,
+          "right": 658,
+          "bottom": 803,
+          "width": 132,
+          "height": 132,
+          "visible": true
+        },
+        "overlapsAction": false
+      },
+      "buttons": [],
+      "propertyCount": 24,
+      "propertyOverlapCount": 0,
+      "clippedNameCount": 0
+    },
+    {
+      "state": "build",
+      "seat": "p1",
+      "language": "ko",
+      "viewport": {
+        "width": 1280,
+        "height": 720,
+        "scrollWidth": 1280,
+        "scrollHeight": 2161,
+        "scrollX": 0,
+        "scrollY": 0
+      },
+      "boardPanel": {
+        "x": 38,
+        "y": 220,
+        "right": 868,
+        "bottom": 702,
+        "width": 830,
+        "height": 482,
+        "visible": true
+      },
+      "boardGrid": {
+        "x": 46,
+        "y": 228,
+        "right": 860,
+        "bottom": 694,
+        "width": 814,
+        "height": 466,
+        "visible": true
+      },
+      "cityPreview": {
+        "box": {
+          "x": 196,
+          "y": 394,
+          "right": 354,
+          "bottom": 569,
+          "width": 158,
+          "height": 175,
+          "visible": true
+        },
+        "text": "광주 랜드마크 미리보기 · 미건설",
+        "art": {
+          "x": 209,
+          "y": 401,
+          "right": 341,
+          "bottom": 533,
+          "width": 132,
+          "height": 132,
+          "visible": true
+        },
+        "overlapsAction": false
+      },
+      "buttons": [
+        {
+          "text": "단독주택: 광주 (40) ↗",
+          "disabled": false,
+          "box": {
+            "x": 903,
+            "y": 571,
+            "right": 1221,
+            "bottom": 609,
+            "width": 318,
+            "height": 38,
+            "visible": true
+          }
+        },
+        {
+          "text": "차례 마치기 →",
+          "disabled": false,
+          "box": {
+            "x": 893,
+            "y": 623,
+            "right": 1059,
+            "bottom": 661,
+            "width": 166,
+            "height": 38,
+            "visible": true
+          }
+        },
+        {
+          "text": "대출 받기 · 300 / 상환 330",
+          "disabled": false,
+          "box": {
+            "x": 893,
+            "y": 716,
+            "right": 1059,
+            "bottom": 778,
+            "width": 166,
+            "height": 62,
+            "visible": true
+          }
+        }
+      ],
+      "propertyCount": 24,
+      "propertyOverlapCount": 0,
+      "clippedNameCount": 0
+    },
+    {
+      "state": "build",
+      "seat": "p2",
+      "language": "es",
+      "viewport": {
+        "width": 1280,
+        "height": 720,
+        "scrollWidth": 1280,
+        "scrollHeight": 1998,
+        "scrollX": 0,
+        "scrollY": 0
+      },
+      "boardPanel": {
+        "x": 38,
+        "y": 220,
+        "right": 868,
+        "bottom": 702,
+        "width": 830,
+        "height": 482,
+        "visible": true
+      },
+      "boardGrid": {
+        "x": 46,
+        "y": 228,
+        "right": 860,
+        "bottom": 694,
+        "width": 814,
+        "height": 466,
+        "visible": true
+      },
+      "cityPreview": {
+        "box": {
+          "x": 196,
+          "y": 381,
+          "right": 354,
+          "bottom": 569,
+          "width": 158,
+          "height": 188,
+          "visible": true
+        },
+        "text": "Gwangju Vista del monumento · sin construir",
+        "art": {
+          "x": 209,
+          "y": 388,
+          "right": 341,
+          "bottom": 520,
+          "width": 132,
+          "height": 132,
+          "visible": true
+        },
+        "overlapsAction": false
+      },
+      "buttons": [],
+      "propertyCount": 24,
+      "propertyOverlapCount": 0,
+      "clippedNameCount": 0
+    },
+    {
+      "state": "roll-es",
+      "seat": "p1",
+      "language": "ko",
+      "viewport": {
+        "width": 1366,
+        "height": 768,
+        "scrollWidth": 1366,
+        "scrollHeight": 1906,
+        "scrollX": 0,
+        "scrollY": 0
+      },
+      "boardPanel": {
+        "x": 38,
+        "y": 220,
+        "right": 954,
+        "bottom": 750,
+        "width": 916,
+        "height": 530,
+        "visible": true
+      },
+      "boardGrid": {
+        "x": 86,
+        "y": 228,
+        "right": 906,
+        "bottom": 742,
+        "width": 820,
+        "height": 514,
+        "visible": true
+      },
+      "cityPreview": {
+        "box": {
+          "x": 236,
+          "y": 442,
+          "right": 394,
+          "bottom": 617,
+          "width": 158,
+          "height": 175,
+          "visible": true
+        },
+        "text": "광주 랜드마크 미리보기 · 미건설",
+        "art": {
+          "x": 249,
+          "y": 449,
+          "right": 381,
+          "bottom": 581,
+          "width": 132,
+          "height": 132,
+          "visible": true
+        },
+        "overlapsAction": false
+      },
+      "buttons": [],
+      "propertyCount": 24,
+      "propertyOverlapCount": 0,
+      "clippedNameCount": 0
+    },
+    {
+      "state": "roll-es",
+      "seat": "p2",
+      "language": "es",
+      "viewport": {
+        "width": 1366,
+        "height": 768,
+        "scrollWidth": 1366,
+        "scrollHeight": 2227,
+        "scrollX": 0,
+        "scrollY": 0
+      },
+      "boardPanel": {
+        "x": 38,
+        "y": 220,
+        "right": 954,
+        "bottom": 750,
+        "width": 916,
+        "height": 530,
+        "visible": true
+      },
+      "boardGrid": {
+        "x": 86,
+        "y": 228,
+        "right": 906,
+        "bottom": 742,
+        "width": 820,
+        "height": 514,
+        "visible": true
+      },
+      "cityPreview": {
+        "box": {
+          "x": 236,
+          "y": 429,
+          "right": 394,
+          "bottom": 617,
+          "width": 158,
+          "height": 188,
+          "visible": true
+        },
+        "text": "Gwangju Vista del monumento · sin construir",
+        "art": {
+          "x": 249,
+          "y": 436,
+          "right": 381,
+          "bottom": 568,
+          "width": 132,
+          "height": 132,
+          "visible": true
+        },
+        "overlapsAction": false
+      },
+      "buttons": [
+        {
+          "text": "Lanzar los dados ↗",
+          "disabled": false,
+          "box": {
+            "x": 979,
+            "y": 479,
+            "right": 1145,
+            "bottom": 517,
+            "width": 166,
+            "height": 38,
+            "visible": true
+          }
+        },
+        {
+          "text": "Pedir préstamo · 300 / devolver 330",
+          "disabled": false,
+          "box": {
+            "x": 979,
+            "y": 573,
+            "right": 1145,
+            "bottom": 629,
+            "width": 166,
+            "height": 56,
+            "visible": true
+          }
+        }
+      ],
+      "propertyCount": 24,
+      "propertyOverlapCount": 0,
+      "clippedNameCount": 0
+    },
+    {
+      "state": "roll-es",
+      "seat": "p1",
+      "language": "ko",
+      "viewport": {
+        "width": 1440,
+        "height": 900,
+        "scrollWidth": 1440,
+        "scrollHeight": 2026,
+        "scrollX": 0,
+        "scrollY": 0
+      },
+      "boardPanel": {
+        "x": 38,
+        "y": 220,
+        "right": 1028,
+        "bottom": 882,
+        "width": 990,
+        "height": 662,
+        "visible": true
+      },
+      "boardGrid": {
+        "x": 123,
+        "y": 228,
+        "right": 943,
+        "bottom": 874,
+        "width": 820,
+        "height": 646,
+        "visible": true
+      },
+      "cityPreview": {
+        "box": {
+          "x": 273,
+          "y": 556,
+          "right": 431,
+          "bottom": 731,
+          "width": 158,
+          "height": 175,
+          "visible": true
+        },
+        "text": "광주 랜드마크 미리보기 · 미건설",
+        "art": {
+          "x": 286,
+          "y": 563,
+          "right": 418,
+          "bottom": 695,
+          "width": 132,
+          "height": 132,
+          "visible": true
+        },
+        "overlapsAction": false
+      },
+      "buttons": [],
+      "propertyCount": 24,
+      "propertyOverlapCount": 0,
+      "clippedNameCount": 0
+    },
+    {
+      "state": "roll-es",
+      "seat": "p2",
+      "language": "es",
+      "viewport": {
+        "width": 1440,
+        "height": 900,
+        "scrollWidth": 1440,
+        "scrollHeight": 2227,
+        "scrollX": 0,
+        "scrollY": 0
+      },
+      "boardPanel": {
+        "x": 38,
+        "y": 220,
+        "right": 1028,
+        "bottom": 882,
+        "width": 990,
+        "height": 662,
+        "visible": true
+      },
+      "boardGrid": {
+        "x": 123,
+        "y": 228,
+        "right": 943,
+        "bottom": 874,
+        "width": 820,
+        "height": 646,
+        "visible": true
+      },
+      "cityPreview": {
+        "box": {
+          "x": 273,
+          "y": 543,
+          "right": 431,
+          "bottom": 731,
+          "width": 158,
+          "height": 188,
+          "visible": true
+        },
+        "text": "Gwangju Vista del monumento · sin construir",
+        "art": {
+          "x": 286,
+          "y": 550,
+          "right": 418,
+          "bottom": 682,
+          "width": 132,
+          "height": 132,
+          "visible": true
+        },
+        "overlapsAction": false
+      },
+      "buttons": [
+        {
+          "text": "Lanzar los dados ↗",
+          "disabled": false,
+          "box": {
+            "x": 1053,
+            "y": 479,
+            "right": 1219,
+            "bottom": 517,
+            "width": 166,
+            "height": 38,
+            "visible": true
+          }
+        },
+        {
+          "text": "Pedir préstamo · 300 / devolver 330",
+          "disabled": false,
+          "box": {
+            "x": 1053,
+            "y": 573,
+            "right": 1219,
+            "bottom": 629,
+            "width": 166,
+            "height": 56,
+            "visible": true
+          }
+        }
+      ],
+      "propertyCount": 24,
+      "propertyOverlapCount": 0,
+      "clippedNameCount": 0
+    },
+    {
+      "state": "roll-es",
+      "seat": "p1",
+      "language": "ko",
+      "viewport": {
+        "width": 1920,
+        "height": 1080,
+        "scrollWidth": 1920,
+        "scrollHeight": 2147,
+        "scrollX": 0,
+        "scrollY": 0
+      },
+      "boardPanel": {
+        "x": 260,
+        "y": 227,
+        "right": 1286,
+        "bottom": 1003,
+        "width": 1026,
+        "height": 776,
+        "visible": true
+      },
+      "boardGrid": {
+        "x": 363,
+        "y": 235,
+        "right": 1183,
+        "bottom": 995,
+        "width": 820,
+        "height": 760,
+        "visible": true
+      },
+      "cityPreview": {
+        "box": {
+          "x": 513,
+          "y": 677,
+          "right": 671,
+          "bottom": 852,
+          "width": 158,
+          "height": 175,
+          "visible": true
+        },
+        "text": "광주 랜드마크 미리보기 · 미건설",
+        "art": {
+          "x": 526,
+          "y": 684,
+          "right": 658,
+          "bottom": 816,
+          "width": 132,
+          "height": 132,
+          "visible": true
+        },
+        "overlapsAction": false
+      },
+      "buttons": [],
+      "propertyCount": 24,
+      "propertyOverlapCount": 0,
+      "clippedNameCount": 0
+    },
+    {
+      "state": "roll-es",
+      "seat": "p2",
+      "language": "es",
+      "viewport": {
+        "width": 1920,
+        "height": 1080,
+        "scrollWidth": 1920,
+        "scrollHeight": 2234,
+        "scrollX": 0,
+        "scrollY": 0
+      },
+      "boardPanel": {
+        "x": 260,
+        "y": 227,
+        "right": 1286,
+        "bottom": 1003,
+        "width": 1026,
+        "height": 776,
+        "visible": true
+      },
+      "boardGrid": {
+        "x": 363,
+        "y": 235,
+        "right": 1183,
+        "bottom": 995,
+        "width": 820,
+        "height": 760,
+        "visible": true
+      },
+      "cityPreview": {
+        "box": {
+          "x": 513,
+          "y": 664,
+          "right": 671,
+          "bottom": 852,
+          "width": 158,
+          "height": 188,
+          "visible": true
+        },
+        "text": "Gwangju Vista del monumento · sin construir",
+        "art": {
+          "x": 526,
+          "y": 671,
+          "right": 658,
+          "bottom": 803,
+          "width": 132,
+          "height": 132,
+          "visible": true
+        },
+        "overlapsAction": false
+      },
+      "buttons": [
+        {
+          "text": "Lanzar los dados ↗",
+          "disabled": false,
+          "box": {
+            "x": 1311,
+            "y": 486,
+            "right": 1477,
+            "bottom": 524,
+            "width": 166,
+            "height": 38,
+            "visible": true
+          }
+        },
+        {
+          "text": "Pedir préstamo · 300 / devolver 330",
+          "disabled": false,
+          "box": {
+            "x": 1311,
+            "y": 580,
+            "right": 1477,
+            "bottom": 636,
+            "width": 166,
+            "height": 56,
+            "visible": true
+          }
+        }
+      ],
+      "propertyCount": 24,
+      "propertyOverlapCount": 0,
+      "clippedNameCount": 0
+    },
+    {
+      "state": "roll-es",
+      "seat": "p1",
+      "language": "ko",
+      "viewport": {
+        "width": 1280,
+        "height": 720,
+        "scrollWidth": 1280,
+        "scrollHeight": 1906,
+        "scrollX": 0,
+        "scrollY": 0
+      },
+      "boardPanel": {
+        "x": 38,
+        "y": 220,
+        "right": 868,
+        "bottom": 702,
+        "width": 830,
+        "height": 482,
+        "visible": true
+      },
+      "boardGrid": {
+        "x": 46,
+        "y": 228,
+        "right": 860,
+        "bottom": 694,
+        "width": 814,
+        "height": 466,
+        "visible": true
+      },
+      "cityPreview": {
+        "box": {
+          "x": 196,
+          "y": 394,
+          "right": 354,
+          "bottom": 569,
+          "width": 158,
+          "height": 175,
+          "visible": true
+        },
+        "text": "광주 랜드마크 미리보기 · 미건설",
+        "art": {
+          "x": 209,
+          "y": 401,
+          "right": 341,
+          "bottom": 533,
+          "width": 132,
+          "height": 132,
+          "visible": true
+        },
+        "overlapsAction": false
+      },
+      "buttons": [],
+      "propertyCount": 24,
+      "propertyOverlapCount": 0,
+      "clippedNameCount": 0
+    },
+    {
+      "state": "roll-es",
+      "seat": "p2",
+      "language": "es",
+      "viewport": {
+        "width": 1280,
+        "height": 720,
+        "scrollWidth": 1280,
+        "scrollHeight": 2227,
+        "scrollX": 0,
+        "scrollY": 0
+      },
+      "boardPanel": {
+        "x": 38,
+        "y": 220,
+        "right": 868,
+        "bottom": 702,
+        "width": 830,
+        "height": 482,
+        "visible": true
+      },
+      "boardGrid": {
+        "x": 46,
+        "y": 228,
+        "right": 860,
+        "bottom": 694,
+        "width": 814,
+        "height": 466,
+        "visible": true
+      },
+      "cityPreview": {
+        "box": {
+          "x": 196,
+          "y": 381,
+          "right": 354,
+          "bottom": 569,
+          "width": 158,
+          "height": 188,
+          "visible": true
+        },
+        "text": "Gwangju Vista del monumento · sin construir",
+        "art": {
+          "x": 209,
+          "y": 388,
+          "right": 341,
+          "bottom": 520,
+          "width": 132,
+          "height": 132,
+          "visible": true
+        },
+        "overlapsAction": false
+      },
+      "buttons": [
+        {
+          "text": "Lanzar los dados ↗",
+          "disabled": false,
+          "box": {
+            "x": 893,
+            "y": 479,
+            "right": 1059,
+            "bottom": 517,
+            "width": 166,
+            "height": 38,
+            "visible": true
+          }
+        },
+        {
+          "text": "Pedir préstamo · 300 / devolver 330",
+          "disabled": false,
+          "box": {
+            "x": 893,
+            "y": 573,
+            "right": 1059,
+            "bottom": 629,
+            "width": 166,
+            "height": 56,
+            "visible": true
+          }
+        }
+      ],
+      "propertyCount": 24,
+      "propertyOverlapCount": 0,
+      "clippedNameCount": 0
+    },
+    {
+      "state": "buy-es",
+      "seat": "p1",
+      "language": "ko",
+      "viewport": {
+        "width": 1366,
+        "height": 768,
+        "scrollWidth": 1366,
+        "scrollHeight": 2026,
+        "scrollX": 0,
+        "scrollY": 0
+      },
+      "boardPanel": {
+        "x": 38,
+        "y": 220,
+        "right": 954,
+        "bottom": 750,
+        "width": 916,
+        "height": 530,
+        "visible": true
+      },
+      "boardGrid": {
+        "x": 86,
+        "y": 228,
+        "right": 906,
+        "bottom": 742,
+        "width": 820,
+        "height": 514,
+        "visible": true
+      },
+      "cityPreview": {
+        "box": {
+          "x": 236,
+          "y": 442,
+          "right": 394,
+          "bottom": 617,
+          "width": 158,
+          "height": 175,
+          "visible": true
+        },
+        "text": "광주 랜드마크 미리보기 · 미건설",
+        "art": {
+          "x": 249,
+          "y": 449,
+          "right": 381,
+          "bottom": 581,
+          "width": 132,
+          "height": 132,
+          "visible": true
+        },
+        "overlapsAction": false
+      },
+      "buttons": [],
+      "propertyCount": 24,
+      "propertyOverlapCount": 0,
+      "clippedNameCount": 0
+    },
+    {
+      "state": "buy-es",
+      "seat": "p2",
+      "language": "es",
+      "viewport": {
+        "width": 1366,
+        "height": 768,
+        "scrollWidth": 1366,
+        "scrollHeight": 2236,
+        "scrollX": 0,
+        "scrollY": 0
+      },
+      "boardPanel": {
+        "x": 38,
+        "y": 220,
+        "right": 954,
+        "bottom": 750,
+        "width": 916,
+        "height": 530,
+        "visible": true
+      },
+      "boardGrid": {
+        "x": 86,
+        "y": 228,
+        "right": 906,
+        "bottom": 742,
+        "width": 820,
+        "height": 514,
+        "visible": true
+      },
+      "cityPreview": {
+        "box": {
+          "x": 236,
+          "y": 429,
+          "right": 394,
+          "bottom": 617,
+          "width": 158,
+          "height": 188,
+          "visible": true
+        },
+        "text": "Gwangju Vista del monumento · sin construir",
+        "art": {
+          "x": 249,
+          "y": 436,
+          "right": 381,
+          "bottom": 568,
+          "width": 132,
+          "height": 132,
+          "visible": true
+        },
+        "overlapsAction": false
+      },
+      "buttons": [
+        {
+          "text": "Comprar ciudad · 160 ↗",
+          "disabled": false,
+          "box": {
+            "x": 979,
+            "y": 573,
+            "right": 1145,
+            "bottom": 629,
+            "width": 166,
+            "height": 56,
+            "visible": true
+          }
+        },
+        {
+          "text": "Continuar sin comprar",
+          "disabled": false,
+          "box": {
+            "x": 1152,
+            "y": 573,
+            "right": 1317,
+            "bottom": 629,
+            "width": 166,
+            "height": 56,
+            "visible": true
+          }
+        },
+        {
+          "text": "Pedir préstamo · 300 / devolver 330",
+          "disabled": false,
+          "box": {
+            "x": 979,
+            "y": 685,
+            "right": 1145,
+            "bottom": 741,
+            "width": 166,
+            "height": 56,
+            "visible": true
+          }
+        }
+      ],
+      "propertyCount": 24,
+      "propertyOverlapCount": 0,
+      "clippedNameCount": 0
+    },
+    {
+      "state": "buy-es",
+      "seat": "p1",
+      "language": "ko",
+      "viewport": {
+        "width": 1440,
+        "height": 900,
+        "scrollWidth": 1440,
+        "scrollHeight": 2026,
+        "scrollX": 0,
+        "scrollY": 0
+      },
+      "boardPanel": {
+        "x": 38,
+        "y": 220,
+        "right": 1028,
+        "bottom": 882,
+        "width": 990,
+        "height": 662,
+        "visible": true
+      },
+      "boardGrid": {
+        "x": 123,
+        "y": 228,
+        "right": 943,
+        "bottom": 874,
+        "width": 820,
+        "height": 646,
+        "visible": true
+      },
+      "cityPreview": {
+        "box": {
+          "x": 273,
+          "y": 556,
+          "right": 431,
+          "bottom": 731,
+          "width": 158,
+          "height": 175,
+          "visible": true
+        },
+        "text": "광주 랜드마크 미리보기 · 미건설",
+        "art": {
+          "x": 286,
+          "y": 563,
+          "right": 418,
+          "bottom": 695,
+          "width": 132,
+          "height": 132,
+          "visible": true
+        },
+        "overlapsAction": false
+      },
+      "buttons": [],
+      "propertyCount": 24,
+      "propertyOverlapCount": 0,
+      "clippedNameCount": 0
+    },
+    {
+      "state": "buy-es",
+      "seat": "p2",
+      "language": "es",
+      "viewport": {
+        "width": 1440,
+        "height": 900,
+        "scrollWidth": 1440,
+        "scrollHeight": 2236,
+        "scrollX": 0,
+        "scrollY": 0
+      },
+      "boardPanel": {
+        "x": 38,
+        "y": 220,
+        "right": 1028,
+        "bottom": 882,
+        "width": 990,
+        "height": 662,
+        "visible": true
+      },
+      "boardGrid": {
+        "x": 123,
+        "y": 228,
+        "right": 943,
+        "bottom": 874,
+        "width": 820,
+        "height": 646,
+        "visible": true
+      },
+      "cityPreview": {
+        "box": {
+          "x": 273,
+          "y": 543,
+          "right": 431,
+          "bottom": 731,
+          "width": 158,
+          "height": 188,
+          "visible": true
+        },
+        "text": "Gwangju Vista del monumento · sin construir",
+        "art": {
+          "x": 286,
+          "y": 550,
+          "right": 418,
+          "bottom": 682,
+          "width": 132,
+          "height": 132,
+          "visible": true
+        },
+        "overlapsAction": false
+      },
+      "buttons": [
+        {
+          "text": "Comprar ciudad · 160 ↗",
+          "disabled": false,
+          "box": {
+            "x": 1053,
+            "y": 573,
+            "right": 1219,
+            "bottom": 629,
+            "width": 166,
+            "height": 56,
+            "visible": true
+          }
+        },
+        {
+          "text": "Continuar sin comprar",
+          "disabled": false,
+          "box": {
+            "x": 1226,
+            "y": 573,
+            "right": 1391,
+            "bottom": 629,
+            "width": 166,
+            "height": 56,
+            "visible": true
+          }
+        },
+        {
+          "text": "Pedir préstamo · 300 / devolver 330",
+          "disabled": false,
+          "box": {
+            "x": 1053,
+            "y": 685,
+            "right": 1219,
+            "bottom": 741,
+            "width": 166,
+            "height": 56,
+            "visible": true
+          }
+        }
+      ],
+      "propertyCount": 24,
+      "propertyOverlapCount": 0,
+      "clippedNameCount": 0
+    },
+    {
+      "state": "buy-es",
+      "seat": "p1",
+      "language": "ko",
+      "viewport": {
+        "width": 1920,
+        "height": 1080,
+        "scrollWidth": 1920,
+        "scrollHeight": 2147,
+        "scrollX": 0,
+        "scrollY": 0
+      },
+      "boardPanel": {
+        "x": 260,
+        "y": 227,
+        "right": 1286,
+        "bottom": 1003,
+        "width": 1026,
+        "height": 776,
+        "visible": true
+      },
+      "boardGrid": {
+        "x": 363,
+        "y": 235,
+        "right": 1183,
+        "bottom": 995,
+        "width": 820,
+        "height": 760,
+        "visible": true
+      },
+      "cityPreview": {
+        "box": {
+          "x": 513,
+          "y": 677,
+          "right": 671,
+          "bottom": 852,
+          "width": 158,
+          "height": 175,
+          "visible": true
+        },
+        "text": "광주 랜드마크 미리보기 · 미건설",
+        "art": {
+          "x": 526,
+          "y": 684,
+          "right": 658,
+          "bottom": 816,
+          "width": 132,
+          "height": 132,
+          "visible": true
+        },
+        "overlapsAction": false
+      },
+      "buttons": [],
+      "propertyCount": 24,
+      "propertyOverlapCount": 0,
+      "clippedNameCount": 0
+    },
+    {
+      "state": "buy-es",
+      "seat": "p2",
+      "language": "es",
+      "viewport": {
+        "width": 1920,
+        "height": 1080,
+        "scrollWidth": 1920,
+        "scrollHeight": 2243,
+        "scrollX": 0,
+        "scrollY": 0
+      },
+      "boardPanel": {
+        "x": 260,
+        "y": 227,
+        "right": 1286,
+        "bottom": 1003,
+        "width": 1026,
+        "height": 776,
+        "visible": true
+      },
+      "boardGrid": {
+        "x": 363,
+        "y": 235,
+        "right": 1183,
+        "bottom": 995,
+        "width": 820,
+        "height": 760,
+        "visible": true
+      },
+      "cityPreview": {
+        "box": {
+          "x": 513,
+          "y": 664,
+          "right": 671,
+          "bottom": 852,
+          "width": 158,
+          "height": 188,
+          "visible": true
+        },
+        "text": "Gwangju Vista del monumento · sin construir",
+        "art": {
+          "x": 526,
+          "y": 671,
+          "right": 658,
+          "bottom": 803,
+          "width": 132,
+          "height": 132,
+          "visible": true
+        },
+        "overlapsAction": false
+      },
+      "buttons": [
+        {
+          "text": "Comprar ciudad · 160 ↗",
+          "disabled": false,
+          "box": {
+            "x": 1311,
+            "y": 580,
+            "right": 1477,
+            "bottom": 636,
+            "width": 166,
+            "height": 56,
+            "visible": true
+          }
+        },
+        {
+          "text": "Continuar sin comprar",
+          "disabled": false,
+          "box": {
+            "x": 1484,
+            "y": 580,
+            "right": 1649,
+            "bottom": 636,
+            "width": 166,
+            "height": 56,
+            "visible": true
+          }
+        },
+        {
+          "text": "Pedir préstamo · 300 / devolver 330",
+          "disabled": false,
+          "box": {
+            "x": 1311,
+            "y": 692,
+            "right": 1477,
+            "bottom": 748,
+            "width": 166,
+            "height": 56,
+            "visible": true
+          }
+        }
+      ],
+      "propertyCount": 24,
+      "propertyOverlapCount": 0,
+      "clippedNameCount": 0
+    },
+    {
+      "state": "buy-es",
+      "seat": "p1",
+      "language": "ko",
+      "viewport": {
+        "width": 1280,
+        "height": 720,
+        "scrollWidth": 1280,
+        "scrollHeight": 2026,
+        "scrollX": 0,
+        "scrollY": 0
+      },
+      "boardPanel": {
+        "x": 38,
+        "y": 220,
+        "right": 868,
+        "bottom": 702,
+        "width": 830,
+        "height": 482,
+        "visible": true
+      },
+      "boardGrid": {
+        "x": 46,
+        "y": 228,
+        "right": 860,
+        "bottom": 694,
+        "width": 814,
+        "height": 466,
+        "visible": true
+      },
+      "cityPreview": {
+        "box": {
+          "x": 196,
+          "y": 394,
+          "right": 354,
+          "bottom": 569,
+          "width": 158,
+          "height": 175,
+          "visible": true
+        },
+        "text": "광주 랜드마크 미리보기 · 미건설",
+        "art": {
+          "x": 209,
+          "y": 401,
+          "right": 341,
+          "bottom": 533,
+          "width": 132,
+          "height": 132,
+          "visible": true
+        },
+        "overlapsAction": false
+      },
+      "buttons": [],
+      "propertyCount": 24,
+      "propertyOverlapCount": 0,
+      "clippedNameCount": 0
+    },
+    {
+      "state": "buy-es",
+      "seat": "p2",
+      "language": "es",
+      "viewport": {
+        "width": 1280,
+        "height": 720,
+        "scrollWidth": 1280,
+        "scrollHeight": 2236,
+        "scrollX": 0,
+        "scrollY": 0
+      },
+      "boardPanel": {
+        "x": 38,
+        "y": 220,
+        "right": 868,
+        "bottom": 702,
+        "width": 830,
+        "height": 482,
+        "visible": true
+      },
+      "boardGrid": {
+        "x": 46,
+        "y": 228,
+        "right": 860,
+        "bottom": 694,
+        "width": 814,
+        "height": 466,
+        "visible": true
+      },
+      "cityPreview": {
+        "box": {
+          "x": 196,
+          "y": 381,
+          "right": 354,
+          "bottom": 569,
+          "width": 158,
+          "height": 188,
+          "visible": true
+        },
+        "text": "Gwangju Vista del monumento · sin construir",
+        "art": {
+          "x": 209,
+          "y": 388,
+          "right": 341,
+          "bottom": 520,
+          "width": 132,
+          "height": 132,
+          "visible": true
+        },
+        "overlapsAction": false
+      },
+      "buttons": [
+        {
+          "text": "Comprar ciudad · 160 ↗",
+          "disabled": false,
+          "box": {
+            "x": 893,
+            "y": 573,
+            "right": 1059,
+            "bottom": 629,
+            "width": 166,
+            "height": 56,
+            "visible": true
+          }
+        },
+        {
+          "text": "Continuar sin comprar",
+          "disabled": false,
+          "box": {
+            "x": 1066,
+            "y": 573,
+            "right": 1231,
+            "bottom": 629,
+            "width": 166,
+            "height": 56,
+            "visible": true
+          }
+        },
+        {
+          "text": "Pedir préstamo · 300 / devolver 330",
+          "disabled": false,
+          "box": {
+            "x": 893,
+            "y": 685,
+            "right": 1059,
+            "bottom": 741,
+            "width": 166,
+            "height": 56,
+            "visible": true
+          }
+        }
+      ],
+      "propertyCount": 24,
+      "propertyOverlapCount": 0,
+      "clippedNameCount": 0
+    },
+    {
+      "state": "build-es",
+      "seat": "p1",
+      "language": "ko",
+      "viewport": {
+        "width": 1366,
+        "height": 768,
+        "scrollWidth": 1366,
+        "scrollHeight": 1924,
+        "scrollX": 0,
+        "scrollY": 0
+      },
+      "boardPanel": {
+        "x": 38,
+        "y": 220,
+        "right": 954,
+        "bottom": 750,
+        "width": 916,
+        "height": 530,
+        "visible": true
+      },
+      "boardGrid": {
+        "x": 86,
+        "y": 228,
+        "right": 906,
+        "bottom": 742,
+        "width": 820,
+        "height": 514,
+        "visible": true
+      },
+      "cityPreview": {
+        "box": {
+          "x": 236,
+          "y": 442,
+          "right": 394,
+          "bottom": 617,
+          "width": 158,
+          "height": 175,
+          "visible": true
+        },
+        "text": "광주 랜드마크 미리보기 · 미건설",
+        "art": {
+          "x": 249,
+          "y": 449,
+          "right": 381,
+          "bottom": 581,
+          "width": 132,
+          "height": 132,
+          "visible": true
+        },
+        "overlapsAction": false
+      },
+      "buttons": [],
+      "propertyCount": 24,
+      "propertyOverlapCount": 0,
+      "clippedNameCount": 0
+    },
+    {
+      "state": "build-es",
+      "seat": "p2",
+      "language": "es",
+      "viewport": {
+        "width": 1366,
+        "height": 768,
+        "scrollWidth": 1366,
+        "scrollHeight": 2209,
+        "scrollX": 0,
+        "scrollY": 0
+      },
+      "boardPanel": {
+        "x": 38,
+        "y": 220,
+        "right": 954,
+        "bottom": 750,
+        "width": 916,
+        "height": 530,
+        "visible": true
+      },
+      "boardGrid": {
+        "x": 86,
+        "y": 228,
+        "right": 906,
+        "bottom": 742,
+        "width": 820,
+        "height": 514,
+        "visible": true
+      },
+      "cityPreview": {
+        "box": {
+          "x": 236,
+          "y": 429,
+          "right": 394,
+          "bottom": 617,
+          "width": 158,
+          "height": 188,
+          "visible": true
+        },
+        "text": "Gwangju Vista del monumento · sin construir",
+        "art": {
+          "x": 249,
+          "y": 436,
+          "right": 381,
+          "bottom": 568,
+          "width": 132,
+          "height": 132,
+          "visible": true
+        },
+        "overlapsAction": false
+      },
+      "buttons": [
+        {
+          "text": "Casa unifamiliar: Gwangju (40) ↗",
+          "disabled": false,
+          "box": {
+            "x": 989,
+            "y": 561,
+            "right": 1307,
+            "bottom": 599,
+            "width": 318,
+            "height": 38,
+            "visible": true
+          }
+        },
+        {
+          "text": "Terminar turno →",
+          "disabled": false,
+          "box": {
+            "x": 979,
+            "y": 613,
+            "right": 1145,
+            "bottom": 651,
+            "width": 166,
+            "height": 38,
+            "visible": true
+          }
+        },
+        {
+          "text": "Pedir préstamo · 300 / devolver 330",
+          "disabled": false,
+          "box": {
+            "x": 979,
+            "y": 706,
+            "right": 1145,
+            "bottom": 762,
+            "width": 166,
+            "height": 56,
+            "visible": true
+          }
+        }
+      ],
+      "propertyCount": 24,
+      "propertyOverlapCount": 0,
+      "clippedNameCount": 0
+    },
+    {
+      "state": "build-es",
+      "seat": "p1",
+      "language": "ko",
+      "viewport": {
+        "width": 1440,
+        "height": 900,
+        "scrollWidth": 1440,
+        "scrollHeight": 2026,
+        "scrollX": 0,
+        "scrollY": 0
+      },
+      "boardPanel": {
+        "x": 38,
+        "y": 220,
+        "right": 1028,
+        "bottom": 882,
+        "width": 990,
+        "height": 662,
+        "visible": true
+      },
+      "boardGrid": {
+        "x": 123,
+        "y": 228,
+        "right": 943,
+        "bottom": 874,
+        "width": 820,
+        "height": 646,
+        "visible": true
+      },
+      "cityPreview": {
+        "box": {
+          "x": 273,
+          "y": 556,
+          "right": 431,
+          "bottom": 731,
+          "width": 158,
+          "height": 175,
+          "visible": true
+        },
+        "text": "광주 랜드마크 미리보기 · 미건설",
+        "art": {
+          "x": 286,
+          "y": 563,
+          "right": 418,
+          "bottom": 695,
+          "width": 132,
+          "height": 132,
+          "visible": true
+        },
+        "overlapsAction": false
+      },
+      "buttons": [],
+      "propertyCount": 24,
+      "propertyOverlapCount": 0,
+      "clippedNameCount": 0
+    },
+    {
+      "state": "build-es",
+      "seat": "p2",
+      "language": "es",
+      "viewport": {
+        "width": 1440,
+        "height": 900,
+        "scrollWidth": 1440,
+        "scrollHeight": 2209,
+        "scrollX": 0,
+        "scrollY": 0
+      },
+      "boardPanel": {
+        "x": 38,
+        "y": 220,
+        "right": 1028,
+        "bottom": 882,
+        "width": 990,
+        "height": 662,
+        "visible": true
+      },
+      "boardGrid": {
+        "x": 123,
+        "y": 228,
+        "right": 943,
+        "bottom": 874,
+        "width": 820,
+        "height": 646,
+        "visible": true
+      },
+      "cityPreview": {
+        "box": {
+          "x": 273,
+          "y": 543,
+          "right": 431,
+          "bottom": 731,
+          "width": 158,
+          "height": 188,
+          "visible": true
+        },
+        "text": "Gwangju Vista del monumento · sin construir",
+        "art": {
+          "x": 286,
+          "y": 550,
+          "right": 418,
+          "bottom": 682,
+          "width": 132,
+          "height": 132,
+          "visible": true
+        },
+        "overlapsAction": false
+      },
+      "buttons": [
+        {
+          "text": "Casa unifamiliar: Gwangju (40) ↗",
+          "disabled": false,
+          "box": {
+            "x": 1063,
+            "y": 561,
+            "right": 1381,
+            "bottom": 599,
+            "width": 318,
+            "height": 38,
+            "visible": true
+          }
+        },
+        {
+          "text": "Terminar turno →",
+          "disabled": false,
+          "box": {
+            "x": 1053,
+            "y": 613,
+            "right": 1219,
+            "bottom": 651,
+            "width": 166,
+            "height": 38,
+            "visible": true
+          }
+        },
+        {
+          "text": "Pedir préstamo · 300 / devolver 330",
+          "disabled": false,
+          "box": {
+            "x": 1053,
+            "y": 706,
+            "right": 1219,
+            "bottom": 762,
+            "width": 166,
+            "height": 56,
+            "visible": true
+          }
+        }
+      ],
+      "propertyCount": 24,
+      "propertyOverlapCount": 0,
+      "clippedNameCount": 0
+    },
+    {
+      "state": "build-es",
+      "seat": "p1",
+      "language": "ko",
+      "viewport": {
+        "width": 1920,
+        "height": 1080,
+        "scrollWidth": 1920,
+        "scrollHeight": 2147,
+        "scrollX": 0,
+        "scrollY": 0
+      },
+      "boardPanel": {
+        "x": 260,
+        "y": 227,
+        "right": 1286,
+        "bottom": 1003,
+        "width": 1026,
+        "height": 776,
+        "visible": true
+      },
+      "boardGrid": {
+        "x": 363,
+        "y": 235,
+        "right": 1183,
+        "bottom": 995,
+        "width": 820,
+        "height": 760,
+        "visible": true
+      },
+      "cityPreview": {
+        "box": {
+          "x": 513,
+          "y": 677,
+          "right": 671,
+          "bottom": 852,
+          "width": 158,
+          "height": 175,
+          "visible": true
+        },
+        "text": "광주 랜드마크 미리보기 · 미건설",
+        "art": {
+          "x": 526,
+          "y": 684,
+          "right": 658,
+          "bottom": 816,
+          "width": 132,
+          "height": 132,
+          "visible": true
+        },
+        "overlapsAction": false
+      },
+      "buttons": [],
+      "propertyCount": 24,
+      "propertyOverlapCount": 0,
+      "clippedNameCount": 0
+    },
+    {
+      "state": "build-es",
+      "seat": "p2",
+      "language": "es",
+      "viewport": {
+        "width": 1920,
+        "height": 1080,
+        "scrollWidth": 1920,
+        "scrollHeight": 2216,
+        "scrollX": 0,
+        "scrollY": 0
+      },
+      "boardPanel": {
+        "x": 260,
+        "y": 227,
+        "right": 1286,
+        "bottom": 1003,
+        "width": 1026,
+        "height": 776,
+        "visible": true
+      },
+      "boardGrid": {
+        "x": 363,
+        "y": 235,
+        "right": 1183,
+        "bottom": 995,
+        "width": 820,
+        "height": 760,
+        "visible": true
+      },
+      "cityPreview": {
+        "box": {
+          "x": 513,
+          "y": 664,
+          "right": 671,
+          "bottom": 852,
+          "width": 158,
+          "height": 188,
+          "visible": true
+        },
+        "text": "Gwangju Vista del monumento · sin construir",
+        "art": {
+          "x": 526,
+          "y": 671,
+          "right": 658,
+          "bottom": 803,
+          "width": 132,
+          "height": 132,
+          "visible": true
+        },
+        "overlapsAction": false
+      },
+      "buttons": [
+        {
+          "text": "Casa unifamiliar: Gwangju (40) ↗",
+          "disabled": false,
+          "box": {
+            "x": 1321,
+            "y": 568,
+            "right": 1639,
+            "bottom": 606,
+            "width": 318,
+            "height": 38,
+            "visible": true
+          }
+        },
+        {
+          "text": "Terminar turno →",
+          "disabled": false,
+          "box": {
+            "x": 1311,
+            "y": 620,
+            "right": 1477,
+            "bottom": 658,
+            "width": 166,
+            "height": 38,
+            "visible": true
+          }
+        },
+        {
+          "text": "Pedir préstamo · 300 / devolver 330",
+          "disabled": false,
+          "box": {
+            "x": 1311,
+            "y": 713,
+            "right": 1477,
+            "bottom": 769,
+            "width": 166,
+            "height": 56,
+            "visible": true
+          }
+        }
+      ],
+      "propertyCount": 24,
+      "propertyOverlapCount": 0,
+      "clippedNameCount": 0
+    },
+    {
+      "state": "build-es",
+      "seat": "p1",
+      "language": "ko",
+      "viewport": {
+        "width": 1280,
+        "height": 720,
+        "scrollWidth": 1280,
+        "scrollHeight": 1924,
+        "scrollX": 0,
+        "scrollY": 0
+      },
+      "boardPanel": {
+        "x": 38,
+        "y": 220,
+        "right": 868,
+        "bottom": 702,
+        "width": 830,
+        "height": 482,
+        "visible": true
+      },
+      "boardGrid": {
+        "x": 46,
+        "y": 228,
+        "right": 860,
+        "bottom": 694,
+        "width": 814,
+        "height": 466,
+        "visible": true
+      },
+      "cityPreview": {
+        "box": {
+          "x": 196,
+          "y": 394,
+          "right": 354,
+          "bottom": 569,
+          "width": 158,
+          "height": 175,
+          "visible": true
+        },
+        "text": "광주 랜드마크 미리보기 · 미건설",
+        "art": {
+          "x": 209,
+          "y": 401,
+          "right": 341,
+          "bottom": 533,
+          "width": 132,
+          "height": 132,
+          "visible": true
+        },
+        "overlapsAction": false
+      },
+      "buttons": [],
+      "propertyCount": 24,
+      "propertyOverlapCount": 0,
+      "clippedNameCount": 0
+    },
+    {
+      "state": "build-es",
+      "seat": "p2",
+      "language": "es",
+      "viewport": {
+        "width": 1280,
+        "height": 720,
+        "scrollWidth": 1280,
+        "scrollHeight": 2209,
+        "scrollX": 0,
+        "scrollY": 0
+      },
+      "boardPanel": {
+        "x": 38,
+        "y": 220,
+        "right": 868,
+        "bottom": 702,
+        "width": 830,
+        "height": 482,
+        "visible": true
+      },
+      "boardGrid": {
+        "x": 46,
+        "y": 228,
+        "right": 860,
+        "bottom": 694,
+        "width": 814,
+        "height": 466,
+        "visible": true
+      },
+      "cityPreview": {
+        "box": {
+          "x": 196,
+          "y": 381,
+          "right": 354,
+          "bottom": 569,
+          "width": 158,
+          "height": 188,
+          "visible": true
+        },
+        "text": "Gwangju Vista del monumento · sin construir",
+        "art": {
+          "x": 209,
+          "y": 388,
+          "right": 341,
+          "bottom": 520,
+          "width": 132,
+          "height": 132,
+          "visible": true
+        },
+        "overlapsAction": false
+      },
+      "buttons": [
+        {
+          "text": "Casa unifamiliar: Gwangju (40) ↗",
+          "disabled": false,
+          "box": {
+            "x": 903,
+            "y": 561,
+            "right": 1221,
+            "bottom": 599,
+            "width": 318,
+            "height": 38,
+            "visible": true
+          }
+        },
+        {
+          "text": "Terminar turno →",
+          "disabled": false,
+          "box": {
+            "x": 893,
+            "y": 613,
+            "right": 1059,
+            "bottom": 651,
+            "width": 166,
+            "height": 38,
+            "visible": true
+          }
+        },
+        {
+          "text": "Pedir préstamo · 300 / devolver 330",
+          "disabled": false,
+          "box": {
+            "x": 893,
+            "y": 706,
+            "right": 1059,
+            "bottom": 762,
+            "width": 166,
+            "height": 56,
+            "visible": true
+          }
+        }
+      ],
+      "propertyCount": 24,
+      "propertyOverlapCount": 0,
+      "clippedNameCount": 0
+    }
+  ],
+  "errors": []
+}

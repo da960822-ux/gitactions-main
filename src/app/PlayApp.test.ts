@@ -149,6 +149,8 @@ describe('inline game guide', () => {
     expect(getBeginnerGuide('marble', 'ko', { marbleVersion: 1 })!.tip).toContain('18칸');
     expect(getBeginnerGuide('marble', 'es', { marbleEconomyVersion: 0 })!.tip).toContain('no tiene préstamos');
     expect(getBeginnerGuide('marble', 'ko', { marbleEconomyVersion: 1 })!.tip).toContain('100');
+    expect(getBeginnerGuide('marble', 'ko', { marbleEconomyVersion: 1 })!.steps[1].body).toContain('첫 건설 100');
+    expect(getBeginnerGuide('marble', 'es', { marbleEconomyVersion: 0 })!.steps[1].body).toContain('construir primero cuesta 100');
     expect(getBeginnerGuide('marble', 'es', { marbleEconomyVersion: 2 })!.tip).toContain('40');
   });
 

@@ -1,4 +1,13 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 128">
+  <symbol id="land" viewBox="0 0 128 128">
+    <g stroke="#344c59" stroke-width="2.5" stroke-linejoin="round">
+      <path d="M18 85l43-21 49 23-44 23z" fill="currentColor"/>
+      <path d="M18 85v9l48 24v-8z" fill="#98ad9f"/><path d="M66 110l44-23v9l-44 22z" fill="#718c7b"/>
+      <path d="M43 80l25 13m-11-21 25 13" stroke="#f7f0dc" stroke-dasharray="4 4"/>
+      <path d="M64 31c-12 0-20 8-20 18 0 14 20 30 20 30s20-16 20-30c0-10-8-18-20-18z" fill="#fff9ea"/>
+      <circle cx="64" cy="49" r="7" fill="currentColor"/>
+    </g>
+  </symbol>
   <symbol id="villa" viewBox="0 0 128 128">
     <g stroke="#344c59" stroke-width="2.5" stroke-linejoin="round">
       <path d="M18 99l43-21 49 23-44 23z" fill="#c5cabb"/><path d="M18 99v5l48 22v-2z" fill="#98ad9f"/>

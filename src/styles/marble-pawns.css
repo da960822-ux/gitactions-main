@@ -163,3 +163,6 @@
   .marble-pawn-choice { transition: none; }
   .marble-pawn-choice:hover:not(:disabled), .marble-pawn-choice:focus-visible { transform: none; }
 }
+
+/* Future approved raster figures share the existing pawn placement and animation. */
+img.marble-pawn { object-fit: contain; object-position: center bottom; }

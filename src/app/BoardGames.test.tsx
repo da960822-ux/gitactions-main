@@ -95,11 +95,11 @@ describe('MarbleBoard presentation', () => {
     expect((ko.match(/role="listitem" aria-label=/g) ?? []).length).toBe(40);
     expect(ko).toContain('소유자 나');
     expect(ko).toContain('임대');
-    expect(ko).toContain('빌딩');
+    expect(ko).toContain('아파트');
     expect(ko).toContain('marble-event-amount is-negative">−100');
     expect(ko).toContain('광주');
     expect(es).toContain('Dueño Tú');
-    expect(es).toContain('Edificio');
+    expect(es).toContain('Apartamentos');
     expect(es).toContain('marble-event-amount is-negative">−100');
     expect(es).toContain('Santo Domingo');
     expect(es).toContain('Gwangju');

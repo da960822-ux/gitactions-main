@@ -1,0 +1,59 @@
+{
+  "approval": "Pending redesign. Existing vector figures are functional fallbacks, not approved final artwork. No replacement image bytes have arrived. Preserve saved pawn IDs.",
+  "assets": [
+    {
+      "id": "fox",
+      "name": {
+        "ko": "말티푸",
+        "es": "Maltipoo"
+      },
+      "path": null,
+      "plannedPath": "/images/marble/pawns/maltipoo.webp"
+    },
+    {
+      "id": "cat",
+      "name": {
+        "ko": "고양이",
+        "es": "Gata"
+      },
+      "path": null,
+      "plannedPath": "/images/marble/pawns/cat.webp"
+    },
+    {
+      "id": "penguin",
+      "name": {
+        "ko": "판다",
+        "es": "Panda"
+      },
+      "path": null,
+      "plannedPath": "/images/marble/pawns/panda.webp"
+    },
+    {
+      "id": "astronaut",
+      "name": {
+        "ko": "우주비행사",
+        "es": "Astronauta"
+      },
+      "path": null,
+      "plannedPath": "/images/marble/pawns/astronaut.webp"
+    },
+    {
+      "id": "robot",
+      "name": {
+        "ko": "로봇",
+        "es": "Robot"
+      },
+      "path": null,
+      "plannedPath": "/images/marble/pawns/robot.webp"
+    },
+    {
+      "id": "dragon",
+      "name": {
+        "ko": "친칠라",
+        "es": "Chinchilla"
+      },
+      "path": null,
+      "plannedPath": "/images/marble/pawns/chinchilla.webp"
+    }
+  ]
+}

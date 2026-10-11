@@ -1,0 +1,277 @@
+{
+  "cityRouteVersion": 3,
+  "boardVersion": 2,
+  "count": 24,
+  "reference": "/images/marble/collector-atlas.webp",
+  "approval": "Pending. Parent coordinates generated diorama assets; rejected SVG finals and the first apartment proposal are not route-v3 artwork. No generated image bytes have been received here.",
+  "commonStages": {
+    "house": {
+      "path": null,
+      "plannedPath": "/images/marble/dioramas/house.webp",
+      "scale": 0.54
+    },
+    "apartment": {
+      "path": null,
+      "plannedPath": "/images/marble/dioramas/apartment.webp",
+      "scale": 0.73
+    }
+  },
+  "assets": [
+    {
+      "tileIndex": 1,
+      "city": "Gwangju",
+      "slug": "gwangju",
+      "landmark": "Chosun University main building",
+      "path": null,
+      "plannedPath": "/images/marble/dioramas/gwangju.webp",
+      "status": "awaiting-approved-bytes",
+      "note": {
+        "ko": "조선대학교 본관",
+        "es": "Edificio principal de la Universidad Chosun"
+      }
+    },
+    {
+      "tileIndex": 3,
+      "city": "Nueva York",
+      "slug": "new-york",
+      "landmark": "Empire State Building skyline",
+      "path": null,
+      "plannedPath": "/images/marble/dioramas/new-york.webp",
+      "status": "awaiting-approved-bytes"
+    },
+    {
+      "tileIndex": 4,
+      "city": "Madrid",
+      "slug": "madrid",
+      "landmark": "Royal Palace of Madrid",
+      "path": null,
+      "plannedPath": "/images/marble/dioramas/madrid.webp",
+      "status": "awaiting-approved-bytes"
+    },
+    {
+      "tileIndex": 5,
+      "city": "Santiago",
+      "slug": "santiago",
+      "landmark": "Monumento a los Héroes de la Restauración",
+      "path": null,
+      "plannedPath": "/images/marble/dioramas/santiago.webp",
+      "status": "awaiting-approved-bytes"
+    },
+    {
+      "tileIndex": 8,
+      "city": "Puerto Plata",
+      "slug": "puerto-plata",
+      "landmark": "Fortaleza San Felipe",
+      "path": null,
+      "plannedPath": "/images/marble/dioramas/puerto-plata.webp",
+      "status": "awaiting-approved-bytes"
+    },
+    {
+      "tileIndex": 9,
+      "city": "San Juan",
+      "slug": "san-juan",
+      "landmark": "Castillo San Felipe del Morro",
+      "path": null,
+      "plannedPath": "/images/marble/dioramas/san-juan.webp",
+      "status": "awaiting-approved-bytes"
+    },
+    {
+      "tileIndex": 11,
+      "city": "Berlín",
+      "slug": "berlin",
+      "landmark": "Brandenburg Gate",
+      "path": null,
+      "plannedPath": "/images/marble/dioramas/berlin.webp",
+      "status": "awaiting-approved-bytes",
+      "note": {
+        "ko": "브란덴부르크 문",
+        "es": "Puerta de Brandeburgo"
+      }
+    },
+    {
+      "tileIndex": 13,
+      "city": "Miami",
+      "slug": "miami",
+      "landmark": "Colony Hotel",
+      "path": null,
+      "plannedPath": "/images/marble/dioramas/miami.webp",
+      "status": "awaiting-approved-bytes",
+      "note": {
+        "ko": "콜로니 호텔 · 마이애미비치 소재",
+        "es": "Colony Hotel · situado en Miami Beach"
+      }
+    },
+    {
+      "tileIndex": 15,
+      "city": "Santo Domingo",
+      "slug": "santo-domingo",
+      "landmark": "Alcázar de Colón",
+      "path": null,
+      "plannedPath": "/images/marble/dioramas/santo-domingo.webp",
+      "status": "awaiting-approved-bytes",
+      "note": {
+        "ko": "알카사르 데 콜론 · 디에고 콜론의 거주지",
+        "es": "Alcázar de Colón · residencia de Diego Colón"
+      }
+    },
+    {
+      "tileIndex": 16,
+      "city": "París",
+      "slug": "paris",
+      "landmark": "Eiffel Tower",
+      "path": null,
+      "plannedPath": "/images/marble/dioramas/paris.webp",
+      "status": "awaiting-approved-bytes"
+    },
+    {
+      "tileIndex": 17,
+      "city": "Tokio",
+      "slug": "tokyo",
+      "landmark": "Sensō-ji Kaminarimon",
+      "path": null,
+      "plannedPath": "/images/marble/dioramas/tokyo.webp",
+      "status": "awaiting-approved-bytes",
+      "note": {
+        "ko": "센소지 가미나리몬",
+        "es": "Kaminarimon de Sensō-ji"
+      }
+    },
+    {
+      "tileIndex": 19,
+      "city": "Barcelona",
+      "slug": "barcelona",
+      "landmark": "Sagrada Família",
+      "path": null,
+      "plannedPath": "/images/marble/dioramas/barcelona.webp",
+      "status": "awaiting-approved-bytes"
+    },
+    {
+      "tileIndex": 21,
+      "city": "Estambul",
+      "slug": "istanbul",
+      "landmark": "Hagia Sophia",
+      "path": null,
+      "plannedPath": "/images/marble/dioramas/istanbul.webp",
+      "status": "awaiting-approved-bytes",
+      "note": {
+        "ko": "하기아 소피아",
+        "es": "Santa Sofía"
+      }
+    },
+    {
+      "tileIndex": 22,
+      "city": "La Habana",
+      "slug": "havana",
+      "landmark": "El Capitolio",
+      "path": null,
+      "plannedPath": "/images/marble/dioramas/havana.webp",
+      "status": "awaiting-approved-bytes"
+    },
+    {
+      "tileIndex": 24,
+      "city": "Ciudad de México",
+      "slug": "mexico-city",
+      "landmark": "Palacio de Bellas Artes",
+      "path": null,
+      "plannedPath": "/images/marble/dioramas/mexico-city.webp",
+      "status": "awaiting-approved-bytes"
+    },
+    {
+      "tileIndex": 25,
+      "city": "Lisboa",
+      "slug": "lisbon",
+      "landmark": "Belém Tower",
+      "path": null,
+      "plannedPath": "/images/marble/dioramas/lisbon.webp",
+      "status": "awaiting-approved-bytes"
+    },
+    {
+      "tileIndex": 28,
+      "city": "Londres",
+      "slug": "london",
+      "landmark": "Elizabeth Tower and Parliament",
+      "path": null,
+      "plannedPath": "/images/marble/dioramas/london.webp",
+      "status": "awaiting-approved-bytes"
+    },
+    {
+      "tileIndex": 29,
+      "city": "Roma",
+      "slug": "rome",
+      "landmark": "Colosseum",
+      "path": null,
+      "plannedPath": "/images/marble/dioramas/rome.webp",
+      "status": "awaiting-approved-bytes"
+    },
+    {
+      "tileIndex": 31,
+      "city": "Newark",
+      "slug": "newark",
+      "landmark": "Cathedral Basilica of the Sacred Heart",
+      "path": null,
+      "plannedPath": "/images/marble/dioramas/newark.webp",
+      "status": "awaiting-approved-bytes",
+      "note": {
+        "ko": "뉴어크 성심대성당",
+        "es": "Catedral Basílica del Sagrado Corazón, Newark"
+      }
+    },
+    {
+      "tileIndex": 32,
+      "city": "Agra",
+      "slug": "agra",
+      "landmark": "Taj Mahal",
+      "path": null,
+      "plannedPath": "/images/marble/dioramas/agra.webp",
+      "status": "awaiting-approved-bytes",
+      "note": {
+        "ko": "타지마할",
+        "es": "Taj Mahal"
+      }
+    },
+    {
+      "tileIndex": 33,
+      "city": "Atenas",
+      "slug": "athens",
+      "landmark": "Parthenon",
+      "path": null,
+      "plannedPath": "/images/marble/dioramas/athens.webp",
+      "status": "awaiting-approved-bytes",
+      "note": {
+        "ko": "파르테논 신전",
+        "es": "Partenón"
+      }
+    },
+    {
+      "tileIndex": 35,
+      "city": "Toronto",
+      "slug": "toronto",
+      "landmark": "CN Tower",
+      "path": null,
+      "plannedPath": "/images/marble/dioramas/toronto.webp",
+      "status": "awaiting-approved-bytes"
+    },
+    {
+      "tileIndex": 36,
+      "city": "Sídney",
+      "slug": "sydney",
+      "landmark": "Sydney Opera House",
+      "path": null,
+      "plannedPath": "/images/marble/dioramas/sydney.webp",
+      "status": "awaiting-approved-bytes",
+      "note": {
+        "ko": "시드니 오페라 하우스",
+        "es": "Ópera de Sídney"
+      }
+    },
+    {
+      "tileIndex": 38,
+      "city": "Seúl",
+      "slug": "seoul",
+      "landmark": "N Seoul Tower",
+      "path": null,
+      "plannedPath": "/images/marble/dioramas/seoul.webp",
+      "status": "awaiting-approved-bytes"
+    }
+  ]
+}

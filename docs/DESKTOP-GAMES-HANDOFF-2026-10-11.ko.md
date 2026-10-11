@@ -5,7 +5,7 @@
 작업 공간 `/workspace/gitactions-games`, 브랜치 `games/desktop-approved-portraits`.
 베이스 **b37c10b5a93d44236a7d5ed5834b817531e8ea39**.
 원본 `/workspace/gitactions-main`의 work 브랜치와 기존 파일은 수정하지 않았다.
-push/PR/배포하지 않는다. 랜딩/히어로/모바일/리듬타파 SWF/건의사항 페이지는 수정 범위에서 제외했다.
+최초 작업은 push/PR/배포 금지였다. 이후 사용자가 정확한 원격 저장소에 정상 작업 브랜치 push를 명시 승인했다. 승인된 `games/desktop-improvements-20261011-8c90594-379a58`만 업데이트하며 main/force push/PR/배포는 하지 않는다. 랜딩/히어로/모바일/리듬타파 SWF/건의사항 페이지는 수정 범위에서 제외했다.
 
 다음 Git 객체는 조사 시 모두 없었다. 이 변경을 최신 작업 완료본이라고 간주하지 말고 부모 세션에서 기존 커밋/파일과 통합한 뒤 다시 검증해야 한다.
 
