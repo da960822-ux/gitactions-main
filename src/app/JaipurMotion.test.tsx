@@ -21,4 +21,16 @@ describe('Jaipur event presentation', () => {
     expect(html).not.toContain('jaipur-flight');
     expect(html).not.toContain('jaipur-event-note is-fresh');
   });
+
+  it('leaves the previous-round ledger to the board when the next round has already started', () => {
+    const html = renderToStaticMarkup(createElement(JaipurMotion, {
+      events: [
+        { sequence: 12, round: 1, type: 'round-end', title: { ko: '1라운드 정산', es: 'Cuenta de la ronda 1' } },
+        { sequence: 13, round: 2, type: 'round-start', title: { ko: '2라운드 시작', es: 'Empieza la ronda 2' } },
+      ],
+      language: 'es', playerId: 'p1',
+    }));
+    expect(html).not.toContain('jaipur-event-note');
+    expect(html).not.toContain('Cuenta de la ronda 1');
+  });
 });

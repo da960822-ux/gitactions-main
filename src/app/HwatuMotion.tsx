@@ -1,9 +1,10 @@
-import { useEffect, useLayoutEffect, useRef, useState } from 'react';
+import { useEffect, useLayoutEffect, useRef } from 'react';
 import type { Language, PlayerId } from '../core/types';
 import type { HwatuEvent } from './hwatu-motion';
-import type { MinhwatuCard } from '../games/minhwatu';
-import { claimInitialHwatuDeal, HWATU_EVENT_INTERVAL, hwatuDestination, hwatuEventWindow, hwatuSequence } from './hwatu-motion';
+import { minhwatuYakuProgress, type MinhwatuCard } from '../games/minhwatu';
+import { hwatuDestination, hwatuSequence } from './hwatu-motion';
 import '../styles/hwatu-motion.css';
+import type { MinhwatuPresentationStep } from './useMinhwatuPresentation';
 
 function latestEvent(events: readonly HwatuEvent[]) {
   return events.slice().sort((a, b) => hwatuSequence(a) - hwatuSequence(b)).at(-1) ?? null;
@@ -18,7 +19,7 @@ function zone(root: HTMLElement, name: string) {
   return [...root.querySelectorAll<HTMLElement>('[data-hwatu-zone]')].find(element => element.dataset.hwatuZone === name) ?? null;
 }
 
-function cardInZone(root: HTMLElement, id: string, area: HTMLElement | null) {
+function cardInZone(id: string, area: HTMLElement | null) {
   return area ? [...area.querySelectorAll<HTMLElement>('[data-hwatu-card-id]')].find(element => element.dataset.hwatuCardId === id) ?? null : null;
 }
 
@@ -26,12 +27,22 @@ function point(element: Element | null, fallback: DOMRect | null = null): DOMRec
   return element?.getBoundingClientRect() ?? fallback;
 }
 
-function fly(root: HTMLElement, card: MinhwatuCard, fromName: string, toName: string, index: number, flip = false, previous: Map<string, DOMRect> | null = null) {
+function clearHwatuEffects() {
+  document.querySelectorAll('.hwatu-flight,.hwatu-score-flight').forEach(element => {
+    element.getAnimations().forEach(animation => animation.cancel());
+    element.remove();
+  });
+}
+
+function fly(root: HTMLElement, card: MinhwatuCard, fromName: string, toName: string, flip = false, previous: Map<string, DOMRect> | null = null, target?: DOMRect, duration = 220, delay = 0, retain = false) {
   const sourceZone = zone(root, fromName);
-  const sourceCard = cardInZone(root, card.id, sourceZone);
+  const sourceCard = cardInZone(card.id, sourceZone);
   const src = previous?.get(`${fromName}:${card.id}`) ?? previous?.get(`${fromName}:@zone`) ?? point(sourceCard, point(sourceZone));
   const destZone = zone(root, toName);
-  const dest = point(cardInZone(root, card.id, destZone), point(destZone, previous?.get(`${toName}:@zone`) ?? null));
+  const reservation = destZone ? [...destZone.querySelectorAll<HTMLElement>('[data-hwatu-landing-card-id]')].find(slot => slot.dataset.hwatuLandingCardId === card.id) ?? null : null;
+  const destinationCard = cardInZone(card.id, destZone);
+  const anchor = destZone?.querySelector<HTMLElement>('[data-hwatu-landing-anchor]');
+  const dest = target ?? point(reservation, point(destinationCard, point(anchor ?? null, point(destZone, previous?.get(`${toName}:@zone`) ?? null))));
   const face = safeFace(card.id);
   if (!src || !dest || !face) return;
   const width = Math.max(36, Math.min(74, src.width || 54));
@@ -39,6 +50,7 @@ function fly(root: HTMLElement, card: MinhwatuCard, fromName: string, toName: st
   const element = document.createElement('div');
   element.className = `hwatu-flight${flip ? ' is-flip' : ''}`;
   element.setAttribute('aria-hidden', 'true');
+  element.dataset.hwatuFlightCard = card.id;
   element.style.left = `${src.left + (src.width - width) / 2}px`;
   element.style.top = `${src.top + (src.height - height) / 2}px`;
   element.style.width = `${width}px`;
@@ -58,164 +70,89 @@ function fly(root: HTMLElement, card: MinhwatuCard, fromName: string, toName: st
   inner.append(image);
   element.append(inner);
   document.body.append(element);
-  const targetLeft = dest.left + (dest.width - width) / 2 + (toName.startsWith('captures-') ? (index % 4) * 8 : 0);
-  const targetTop = dest.top + (dest.height - height) / 2 - (toName.startsWith('captures-') ? (index % 3) * 5 : 0);
+  const targetScale = reservation || destinationCard || anchor || target ? Math.min(dest.width / width, dest.height / height) : 1;
+  const targetLeft = dest.left + (dest.width - width) / 2;
+  const targetTop = dest.top + (dest.height - height) / 2;
   const dx = targetLeft - (src.left + (src.width - width) / 2);
   const dy = targetTop - (src.top + (src.height - height) / 2);
   const travel = element.animate([
     { transform: 'translate3d(0,0,0) rotate(-3deg) scale(.94)', opacity: 0.9 },
     { transform: `translate3d(${dx * .62}px,${dy * .62 - 20}px,0) rotate(4deg) scale(1.05)`, opacity: 1, offset: 0.68 },
-    { transform: `translate3d(${dx}px,${dy}px,0) rotate(0deg) scale(1)`, opacity: 1 },
-  ], { duration: 255, delay: Math.min(index, 4) * 45, easing: 'cubic-bezier(.22,1,.36,1)', fill: 'both' });
-  if (flip) inner.animate([{ transform: 'rotateY(0deg)' }, { transform: 'rotateY(180deg)' }], { duration: 220, delay: Math.min(index, 4) * 45, easing: 'ease-out', fill: 'both' });
-  void travel.finished.then(() => element.remove()).catch(() => element.remove());
+    { transform: `translate3d(${dx}px,${dy}px,0) rotate(0deg) scale(${targetScale})`, opacity: 1 },
+  ], { duration, delay, easing: 'cubic-bezier(.22,1,.36,1)', fill: 'both' });
+  if (flip) inner.animate([{ transform: 'rotateY(0deg)' }, { transform: 'rotateY(180deg)' }], { duration: Math.min(duration, 200), delay, easing: 'ease-out', fill: 'both' });
+  void travel.finished.then(() => { if (!retain) element.remove(); }).catch(() => element.remove());
+  return dest;
 }
 
-function playMotion(root: HTMLElement, event: HwatuEvent, previous: Map<string, DOMRect> | null, playerId: PlayerId) {
-  if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
-  const board = root.closest<HTMLElement>('.minhwatu-table') ?? root.parentElement;
-  if (!board) return;
-  if (event.type === 'deal') event.cards?.forEach((card, index) => fly(board, card, 'deck', 'table', index, false, previous));
-  if (event.type === 'play' && event.cards?.[0]) fly(board, event.cards[0], event.actor && event.actor !== playerId ? 'opponent-hand' : 'hand', 'table', 0, false, previous);
-  if (event.type === 'draw' && event.cards?.[0]) fly(board, event.cards[0], 'deck', 'draw', 0, true, previous);
-  if (event.type === 'capture' && event.actor) event.cards?.forEach((card, index) => fly(board, card, event.origins?.[card.id] ?? 'table', hwatuDestination(card, event.actor!), index, false, previous));
-}
-
-export function HwatuMotion({ events, language, playerId }: { events: readonly HwatuEvent[]; language: Language; playerId: PlayerId }) {
+export function HwatuMotion({ events, language, playerId, step }: { events: readonly HwatuEvent[]; language: Language; playerId: PlayerId; step?: MinhwatuPresentationStep | null }) {
   const rootRef = useRef<HTMLDivElement>(null);
-  const sequence = useRef<number | null>(null);
-  const owner = useRef(playerId);
-  const timer = useRef<number | null>(null);
-  const latestSequence = useRef<number | null>(null);
-  const liveRects = useRef(new Map<string, DOMRect>());
-  const departureRects = useRef(new Map<number, Map<string, DOMRect>>());
-  const [queue, setQueue] = useState<HwatuEvent[]>([]);
-  const activeEvent = queue[0] ?? null;
-  const [presented, setPresented] = useState<HwatuEvent | null>(() => latestEvent(events));
-  const [reduced, setReduced] = useState(false);
-
+  const rects = useRef(new Map<string, DOMRect>());
+  const landings = useRef(new Map<string, DOMRect>());
+  const last = useRef<MinhwatuPresentationStep | null>(null);
   useLayoutEffect(() => {
     const board = rootRef.current?.closest<HTMLElement>('.minhwatu-table');
     if (!board) return;
-    const latest = events.reduce((max, event) => Math.max(max, hwatuSequence(event)), 0);
-    if (latestSequence.current !== null && latest !== latestSequence.current) {
-      const reset = latest < latestSequence.current;
-      if (reset) departureRects.current.clear();
-      events.filter(event => hwatuSequence(event) > 0 && (reset || hwatuSequence(event) > latestSequence.current!))
-        .forEach(event => departureRects.current.set(hwatuSequence(event), liveRects.current));
+    if (step && step !== last.current && !window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+      const event = step.events[0], previous = new Map([...rects.current, ...landings.current]);
+      if (event.type === 'play' || event.type === 'draw') {
+        const card = event.cards?.[0];
+        if (card) {
+          const from = step.transfer ? 'draw' : event.type === 'draw' ? 'deck' : event.actor === playerId ? 'hand' : 'opponent-hand';
+          const to = event.type === 'draw' && !step.transfer ? 'draw' : 'table';
+          const target = step.targetId && (event.type === 'play' || step.transfer) ? previous.get(`table:${step.targetId}`) : undefined;
+          const dest = fly(board, card, from, to, event.type === 'draw' && !step.transfer, previous, target, step.impactOffsets[0], 0, Boolean(target));
+          if (dest) { landings.current.set(`${to}:${card.id}`, dest); if (step.transfer) landings.current.set(`draw:${card.id}`, dest); }
+        }
+      }
+      if (event.type === 'capture') document.querySelectorAll<HTMLElement>('.hwatu-flight').forEach(flight => { if (event.cards?.some(card => card.id === flight.dataset.hwatuFlightCard)) { flight.getAnimations().forEach(animation => animation.cancel()); flight.remove(); } });
+      if (event.type === 'capture' && event.actor) event.cards?.forEach((card, index) => fly(board, card, event.origins?.[card.id] ?? 'table', hwatuDestination(card, event.actor!), false, previous, undefined, 200, 60 + index * 25));
     }
-    latestSequence.current = latest;
+    last.current = step ?? null;
     const positions = new Map<string, DOMRect>();
-    [...board.querySelectorAll<HTMLElement>('[data-hwatu-zone]')].forEach(area => {
-      const name = area.dataset.hwatuZone;
-      if (!name) return;
-      positions.set(`${name}:@zone`, area.getBoundingClientRect());
-      [...area.querySelectorAll<HTMLElement>('[data-hwatu-card-id]')].forEach(card => {
-        const id = card.dataset.hwatuCardId;
-        if (id) positions.set(`${name}:${id}`, card.getBoundingClientRect());
-      });
+    board.querySelectorAll<HTMLElement>('[data-hwatu-zone]').forEach(area => {
+      const name = area.dataset.hwatuZone!; positions.set(`${name}:@zone`, area.getBoundingClientRect());
+      area.querySelectorAll<HTMLElement>('[data-hwatu-card-id]').forEach(card => positions.set(`${name}:${card.dataset.hwatuCardId}`, card.getBoundingClientRect()));
     });
-    liveRects.current = positions;
+    rects.current = positions;
+    if (!step) landings.current.clear();
   });
-
   useEffect(() => {
+    const cancel = () => { clearHwatuEffects(); landings.current.clear(); };
+    window.addEventListener('minhwatu-presentation-cancel', cancel);
     const query = window.matchMedia('(prefers-reduced-motion: reduce)');
-    const update = () => setReduced(query.matches);
-    update();
-    query.addEventListener?.('change', update);
-    return () => query.removeEventListener?.('change', update);
-  }, []);
-
+    query.addEventListener?.('change', cancel);
+    return () => { cancel(); window.removeEventListener('minhwatu-presentation-cancel', cancel); query.removeEventListener?.('change', cancel); };
+  }, [playerId]);
   useEffect(() => {
-    if (reduced) document.querySelectorAll('.hwatu-flight').forEach(element => {
-      element.getAnimations().forEach(animation => animation.cancel());
-      element.remove();
-    });
-  }, [reduced]);
-
-  useEffect(() => {
-    const ordered = events.filter(event => hwatuSequence(event) > 0).slice().sort((a, b) => hwatuSequence(a) - hwatuSequence(b));
-    const latest = ordered.at(-1) ?? null;
-    if (owner.current !== playerId) {
-      owner.current = playerId;
-      sequence.current = latest ? hwatuSequence(latest) : 0;
-      latestSequence.current = sequence.current;
-      departureRects.current.clear();
-      setQueue([]);
-      setPresented(latest);
-      return;
-    }
-    if (sequence.current === null) {
-      sequence.current = latest ? hwatuSequence(latest) : 0;
-      setPresented(latest);
-      if (ordered.length === 1 && latest?.type === 'deal' && claimInitialHwatuDeal(latest, 'motion')) {
-        if (reduced) return;
-        setQueue([latest]);
+    const event = step?.events[0];
+    if (!event || event.type !== 'capture' || !step) return;
+    const timer = window.setTimeout(() => {
+      const board = rootRef.current?.closest<HTMLElement>('.minhwatu-table');
+      if (!board || window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+      for (const seat of ['p1', 'p2'] as PlayerId[]) {
+        const delta = event.scoreChanges?.[seat] ?? 0, rect = point(zone(board, `score-${seat}`));
+        if (!delta || !rect) continue;
+        const popup = document.createElement('span'); popup.className = `hwatu-score-flight${delta < 0 ? ' is-negative' : ''}`;
+        popup.dataset.hwatuScoreSequence = String(event.sequence); popup.setAttribute('aria-hidden', 'true');
+        popup.textContent = `${delta > 0 ? '+' : '−'}${Math.abs(delta)}`; popup.style.left = `${rect.right - 42}px`; popup.style.top = `${rect.bottom}px`;
+        document.body.append(popup);
+        const animation = popup.animate([{ opacity: 1, transform: 'translateY(0)' }, { opacity: 0, transform: 'translateY(-24px)' }], { duration: 560, easing: 'ease-out' });
+        void animation.finished.then(() => popup.remove()).catch(() => popup.remove());
       }
-      return;
-    }
-    const windowed = hwatuEventWindow(ordered, sequence.current);
-    if (windowed.reset) {
-      sequence.current = windowed.latestSequence;
-      setQueue([]);
-      setPresented(latest);
-      if (ordered.length === 1 && latest?.type === 'deal' && claimInitialHwatuDeal(latest, 'motion') && !reduced) {
-        setQueue([latest]);
-      }
-      return;
-    }
-    if (!windowed.fresh.length) return;
-    sequence.current = windowed.latestSequence;
-    if (reduced) {
-      departureRects.current.clear();
-      setPresented(windowed.fresh.at(-1) ?? latest);
-      setQueue([]);
-    } else setQueue(current => [...current, ...windowed.fresh]);
-  }, [events, playerId, reduced]);
-
-  useEffect(() => {
-    if (reduced || !activeEvent) {
-      if (!activeEvent) departureRects.current.clear();
-      return;
-    }
-    const event = activeEvent;
-    setPresented(event);
-    const previous = departureRects.current.get(hwatuSequence(event)) ?? null;
-    departureRects.current.delete(hwatuSequence(event));
-    if (rootRef.current) playMotion(rootRef.current, event, previous, playerId);
-    timer.current = window.setTimeout(() => {
-      timer.current = null;
-      setQueue(current => current.slice(1));
-    }, HWATU_EVENT_INTERVAL);
-    return () => {
-      if (timer.current !== null) window.clearTimeout(timer.current);
-      timer.current = null;
-    };
-  }, [activeEvent, reduced]);
-
-  useEffect(() => {
-    if (reduced && queue.length) {
-      setPresented(queue.at(-1) ?? null);
-      setQueue([]);
-    }
-  }, [reduced, queue]);
-
-  useEffect(() => () => {
-    if (timer.current !== null) window.clearTimeout(timer.current);
-    document.querySelectorAll('.hwatu-flight').forEach(element => element.remove());
-  }, []);
-
-  if (!presented) return <div ref={rootRef} className="hwatu-motion-stage" data-hwatu-motion aria-hidden="true"/>;
-  const title = presented.title?.[language] ?? '';
-  const detail = presented.type === 'special' && presented.yaku?.bonus
-    ? presented.yaku.label?.[language]
-    : '';
-  return <div ref={rootRef} className={`hwatu-motion-stage${queue.length && !reduced ? ' is-animating' : ''}`} data-hwatu-motion aria-hidden="true">
-    <div className={`hwatu-motion-note hwatu-motion-note--${presented.type}${presented.type === 'win' ? ' is-win' : ''}${queue.length && !reduced ? ' is-fresh' : ''}`} data-hwatu-event-sequence={hwatuSequence(presented)} key={`${playerId}:${hwatuSequence(presented)}`}>
-      <svg viewBox="0 0 28 28" aria-hidden="true"><path d="M4 20c5-1 6-11 10-11s5 10 10 11M6 22h16M11 16l3-3 3 3"/></svg>
-      <span><b>{title}</b>{detail && <small>{detail}</small>}</span>
-      {presented.type === 'special' && <i aria-hidden="true"/>}
-      {presented.type === 'win' && <span className="hwatu-win-burst" aria-hidden="true"><svg viewBox="0 0 44 24"><path d="M7 12c3-6 7-6 10 0-3 6-7 6-10 0Zm10 0c3-6 7-6 10 0-3 6-7 6-10 0Zm10 0c3-6 7-6 10 0-3 6-7 6-10 0Z"/><path d="M3 3v4m0-2h4m30 12v4m0-2h4"/></svg></span>}
-    </div>
+    }, step.impactOffsets.at(-1) ?? 0);
+    return () => window.clearTimeout(timer);
+  }, [step]);
+  const presented = step?.events[0] ?? latestEvent(events);
+  const strongest = step?.events.filter(event => event.type === 'special' && Number(event.yaku?.bonus) > 0).sort((a, b) => Number(b.yaku?.bonus) - Number(a.yaku?.bonus))[0];
+  const faces = strongest ? minhwatuYakuProgress([]).find(yaku => yaku.id === strongest.yaku?.id)?.cardIds.slice(0, 4) ?? [] : [];
+  return <div ref={rootRef} className={`hwatu-motion-stage${step ? ' is-animating' : ''}`} data-hwatu-motion aria-hidden="true">
+    {presented && <div className={`hwatu-motion-note hwatu-motion-note--${presented.type}${step ? ' is-fresh' : ''}`} data-hwatu-event-sequence={presented.sequence}>
+      <img className="hwatu-event-icon" src="/images/hwatu-support/capture.svg" alt=""/>
+      {faces.length > 0 && <span className="hwatu-earned-faces" data-hwatu-celebration={strongest?.yaku?.id}>{faces.map(id => <img key={id} src={safeFace(id)!} alt="" data-hwatu-earned-card={id}/>)}</span>}
+      <span><b>{step?.events.map(event => event.title[language]).join(' · ') ?? presented.title[language]}</b>
+        {step?.events[0].type === 'special' && <small>{step.events.map(event => `${event.yaku?.label[language]} +${event.yaku?.bonus}`).join(' · ')}</small>}
+      </span>
+    </div>}
   </div>;
 }

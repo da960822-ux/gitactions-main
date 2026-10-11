@@ -1,10 +1,10 @@
 import { useEffect, useRef, useState } from 'react';
 import type { GameAction, GameId, Language, PlayerId } from '../core/types';
-import { dispose, getPreferences, playCue, setPreferences, setScene, unlock, type AudioCue, type AudioPreferences } from '../audio/audio';
+import { cancelMinhwatuAudio, playMinhwatuCue, dispose, getPreferences, playCue, setPreferences, setScene, unlock, type AudioCue, type AudioPreferences } from '../audio/audio';
 import { marbleCueForEvent, marbleEventSequence, marbleEventsAfter, type MarbleActionEvent } from './marble-motion';
 import { dominoCueForEvent, dominoSequence, dominoWindow, type DominoActionEvent } from './domino-motion';
 import { jaipurCueForEvent, jaipurCuesForEvent, jaipurEventWindow, jaipurSequence, type JaipurEvent } from './jaipur-motion';
-import { claimInitialHwatuDeal, HWATU_EVENT_INTERVAL, hwatuCueForEvent, hwatuCueTimeline, hwatuEventWindow, hwatuEvents, hwatuSequence } from './hwatu-motion';
+import { hwatuCueForEvent, hwatuEventWindow, hwatuEvents, hwatuSequence } from './hwatu-motion';
 import './game-feedback.css';
 
 const copy = (language: Language, ko: string, es: string) => language === 'ko' ? ko : es;
@@ -46,6 +46,12 @@ export class ActionFlightGuard {
     return true;
   }
   finish(action: GameAction): void { this.actions.delete(JSON.stringify(action)); }
+}
+
+export function jaipurImmediateCues(event: JaipurEvent): AudioCue[] {
+  // Physical transfers and rewards sound on landing in JaipurMotion.
+  if (['bonus', 'take-single', 'exchange', 'take-camels'].includes(event.type)) return [];
+  return jaipurCuesForEvent(event).filter(cue => event.type !== 'sale' || cue !== 'coin');
 }
 
 function resultSignature(result: any): string {
@@ -210,22 +216,60 @@ export function announcementForContext(value: ContextAnnouncement | null, gameId
   return value?.gameId === gameId && value.playerId === playerId ? value.message : '';
 }
 
-export function GameFeedback({ language, gameId, playerId, view, pending = false }: {
+export function GameFeedback({ language, gameId, playerId, view, pending = false, identity = '' }: {
   language: Language;
   gameId: GameId;
   playerId: PlayerId;
   view: any;
   pending?: boolean;
+  identity?: string;
 }) {
   const [preferenceState, setPreferenceState] = useState<{ gameId: GameId; value: AudioPreferences }>(() => ({ gameId, value: readPreferences(gameId) }));
   const preferences = preferenceState.gameId === gameId ? preferenceState.value : readPreferences(gameId);
   const [settingsOpen, setSettingsOpen] = useState(false);
   const [announcementState, setAnnouncementState] = useState<ContextAnnouncement | null>(null);
   const announcement = announcementForContext(announcementState, gameId, playerId);
-  const prior = useRef<{ gameId: GameId; playerId: PlayerId; view: any } | null>(null);
+  const prior = useRef<{ gameId: GameId; playerId: PlayerId; view: any; identity: string } | null>(null);
   const clearTimer = useRef<number | null>(null);
   const cueTimers = useRef<number[]>([]);
-  const hwatuCueDueAt = useRef(0);
+
+  useEffect(() => {
+    if (gameId !== 'minhwatu') return;
+    const receive = (signal: Event) => {
+      const detail = (signal as CustomEvent).detail;
+      if (!detail || detail.playerId !== playerId || !Array.isArray(detail.impactOffsets)) return;
+      if (!detail.transfer) {
+        const events = Array.isArray(detail.events) ? detail.events : [detail.event];
+        const message = events.map((event: any) => event?.title?.[language]).filter((title: unknown): title is string => typeof title === 'string' && !!title).join(' · ');
+        if (message) {
+          if (clearTimer.current !== null) window.clearTimeout(clearTimer.current);
+          const landing = Math.max(0, ...detail.impactOffsets.filter((offset: unknown): offset is number => typeof offset === 'number' && Number.isFinite(offset) && offset >= 0 && offset <= 2000));
+          clearTimer.current = window.setTimeout(() => {
+            setAnnouncementState({ gameId, playerId, message });
+            clearTimer.current = window.setTimeout(() => { clearTimer.current = null; setAnnouncementState(null); }, 2600);
+          }, landing);
+        }
+      }
+      const cue = detail.transfer ? 'place' : hwatuCueForEvent(detail.event, playerId);
+      if (cue === 'capture') {
+        playMinhwatuCue(cue, detail.impactOffsets.slice(0, 1));
+        playMinhwatuCue('stack', detail.impactOffsets.slice(1));
+      } else if (cue) playMinhwatuCue(cue, detail.impactOffsets);
+    };
+    const cancel = () => {
+      cancelMinhwatuAudio();
+      if (clearTimer.current !== null) window.clearTimeout(clearTimer.current);
+      clearTimer.current = null;
+      setAnnouncementState(null);
+    };
+    window.addEventListener('minhwatu-presentation-cue', receive);
+    window.addEventListener('minhwatu-presentation-cancel', cancel);
+    return () => {
+      window.removeEventListener('minhwatu-presentation-cue', receive);
+      window.removeEventListener('minhwatu-presentation-cancel', cancel);
+      cancel();
+    };
+  }, [gameId, language, playerId]);
 
   useEffect(() => { setScene(gameId); setPreferenceState({ gameId, value: readPreferences(gameId) }); }, [gameId]);
   useEffect(() => () => {
@@ -233,46 +277,51 @@ export function GameFeedback({ language, gameId, playerId, view, pending = false
     clearTimer.current = null;
     cueTimers.current.forEach(window.clearTimeout);
     cueTimers.current = [];
-    hwatuCueDueAt.current = 0;
     dispose();
     setScene(null);
   }, []);
 
   useEffect(() => {
+    const hush = () => {
+      if (document.visibilityState !== 'hidden') return;
+      if (clearTimer.current !== null) window.clearTimeout(clearTimer.current);
+      clearTimer.current = null;
+      cueTimers.current.forEach(window.clearTimeout);
+      cueTimers.current = [];
+      cancelMinhwatuAudio();
+      setAnnouncementState(null);
+    };
+    document.addEventListener('visibilitychange', hush);
+    return () => document.removeEventListener('visibilitychange', hush);
+  }, []);
+
+  useEffect(() => {
     if (!view) {
       const previous = prior.current;
-      if (previous && (previous.gameId !== gameId || previous.playerId !== playerId)) {
+      if (previous && (previous.gameId !== gameId || previous.playerId !== playerId || previous.identity !== identity)) {
         prior.current = null;
         if (clearTimer.current !== null) window.clearTimeout(clearTimer.current);
         clearTimer.current = null;
         cueTimers.current.forEach(window.clearTimeout);
         cueTimers.current = [];
-        hwatuCueDueAt.current = 0;
         setAnnouncementState(null);
       }
       return;
     }
-    const next = { gameId, playerId, view };
+    const next = { gameId, playerId, view, identity };
     const previous = prior.current;
     prior.current = next;
-    if (!previous || previous.gameId !== gameId || previous.playerId !== playerId) {
+    if (document.visibilityState === 'hidden') return;
+    if (!previous || previous.gameId !== gameId || previous.playerId !== playerId || previous.identity !== identity) {
       if (clearTimer.current !== null) window.clearTimeout(clearTimer.current);
       clearTimer.current = null;
       cueTimers.current.forEach(window.clearTimeout);
       cueTimers.current = [];
-      hwatuCueDueAt.current = 0;
       setAnnouncementState(null);
-      if (!previous && gameId === 'minhwatu') {
-        const initialEvents = hwatuEventWindow(hwatuEvents(view), 0).fresh;
-        const first = initialEvents.length === 1 ? initialEvents[0] : null;
-        if (first?.type === 'deal' && claimInitialHwatuDeal(first, 'sound')) {
-          playCue(gameId, 'deal');
-          hwatuCueDueAt.current = Date.now() + HWATU_EVENT_INTERVAL;
-        }
-      }
       return;
     }
 
+    if (gameId === 'minhwatu') return;
     const transition = publicViewAnnouncement(gameId, previous.view, view, playerId, language);
     if (transition) {
       setAnnouncementState({ gameId, playerId, message: transition.message });
@@ -290,36 +339,6 @@ export function GameFeedback({ language, gameId, playerId, view, pending = false
       }
       return;
     }
-    if (gameId === 'minhwatu') {
-      const previousResult = resultSignature(previous.view.result), nextResult = resultSignature(view.result);
-      const beforeEvents = hwatuEvents(previous.view);
-      const beforeSequence = beforeEvents.reduce((max, event) => Math.max(max, hwatuSequence(event)), 0);
-      const windowed = hwatuEventWindow(hwatuEvents(view), beforeSequence);
-      if (windowed.reset) {
-        cueTimers.current.forEach(window.clearTimeout);
-        cueTimers.current = [];
-        hwatuCueDueAt.current = 0;
-      }
-      const fresh = windowed.fresh;
-      const cues = fresh.flatMap(event => {
-        if (event.type === 'deal' && !claimInitialHwatuDeal(event, 'sound')) return [];
-        const cue = hwatuCueForEvent(event, playerId);
-        return cue ? [cue] : [];
-      });
-      if (!previousResult && nextResult && !fresh.some(event => event.type === 'win')) {
-        cues.push(transition?.cue ?? (resultForPlayer(gameId, view, playerId) === 'win' ? 'win' : 'lose'));
-      }
-      const timeline = hwatuCueTimeline(cues.length, Date.now(), hwatuCueDueAt.current);
-      hwatuCueDueAt.current = timeline.nextCueAt;
-      cues.forEach((cue, index) => {
-        const timer = window.setTimeout(() => {
-          cueTimers.current = cueTimers.current.filter(pending => pending !== timer);
-          playCue(gameId, cue);
-        }, Math.max(0, timeline.times[index] - Date.now()));
-        cueTimers.current.push(timer);
-      });
-      return;
-    }
     if (gameId === 'jaipur') {
       const previousResult = resultSignature(previous.view.result), nextResult = resultSignature(view.result);
       if (!previousResult && nextResult) {
@@ -331,7 +350,7 @@ export function GameFeedback({ language, gameId, playerId, view, pending = false
       }
       const before = jaipurEvents(previous.view);
       const sequence = before.reduce((max, event) => Math.max(max, jaipurSequence(event)), 0);
-      const cues = jaipurEventWindow(jaipurEvents(view), sequence).fresh.flatMap(jaipurCuesForEvent);
+      const cues = jaipurEventWindow(jaipurEvents(view), sequence).fresh.flatMap(jaipurImmediateCues);
       cues.forEach((cue, index) => {
         if (index === 0) playCue(gameId, cue);
         else cueTimers.current.push(window.setTimeout(() => playCue(gameId, cue), index * 115));
@@ -349,15 +368,16 @@ export function GameFeedback({ language, gameId, playerId, view, pending = false
       }
       const before = dominoEvents(previous.view);
       const beforeSequence = before.reduce((max, event) => Math.max(max, dominoSequence(event)), 0);
-      const cues = dominoWindow(dominoEvents(view), beforeSequence).fresh.map(dominoCueForEvent).filter((cue): cue is AudioCue => cue !== null);
+      // Placement audio belongs to DominoEventStage's confirmed landing.
+      const cues = dominoWindow(dominoEvents(view), beforeSequence).fresh.filter(event => event.type !== 'play').map(dominoCueForEvent).filter((cue): cue is AudioCue => cue !== null);
       cues.forEach((cue, index) => {
         if (index === 0) playCue(gameId, cue);
         else cueTimers.current.push(window.setTimeout(() => playCue(gameId, cue), index * 150));
       });
       return;
     }
-    if (transition) playCue(gameId, transition.cue);
-  }, [gameId, language, playerId, view]);
+    if (transition && !(gameId === 'splendor' && transition.cue === 'noble')) playCue(gameId, transition.cue);
+  }, [gameId, language, playerId, view, identity]);
 
   const updatePreference = (change: Partial<AudioPreferences>) => {
     const next = setPreferences(gameId, change);

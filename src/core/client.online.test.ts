@@ -58,6 +58,92 @@ beforeEach(() => {
 });
 
 describe('online room client refreshes', () => {
+  it('resyncs an uncertain game-action response without sending the card index twice', async () => {
+    let version = 3;
+    supabase.setRpcHandler(async () => ({ data: { ...room('uncertain', { publicSequence: version }), room: { version, game_id: 'domino', pending_game: null } }, error: null }));
+    const client = await loadClient();
+    const stop = client.subscribeRoom('uncertain', () => {});
+    await vi.waitFor(() => expect(client.getSnapshot().version).toBe(3));
+    supabase.db.functions.invoke.mockImplementationOnce(async () => { version = 4; return { error: { name: 'FunctionsFetchError', message: 'Response lost' } }; });
+    await expect(client.sendAction({ type: 'play', payload: { index: 0 } })).rejects.toThrow('action_confirmation_unknown');
+    expect(client.getSnapshot()).toMatchObject({ version: 4, connection: 'reconnecting', syncEpoch: 1, view: { publicSequence: 4 } });
+    expect(supabase.db.functions.invoke).toHaveBeenCalledTimes(1);
+    stop();
+  });
+
+  it('discards an in-flight snapshot after its subscription is removed', async () => {
+    let finish!: (value: { data: unknown; error: null }) => void;
+    supabase.setRpcHandler(() => new Promise(resolve => { finish = resolve; }));
+    const client = await loadClient();
+    const stop = client.subscribeRoom('closed', () => {});
+    await vi.waitFor(() => expect(finish).toBeTypeOf('function'));
+    stop();
+    finish({ data: room('closed', { hand: ['late private hand'] }), error: null });
+    await flush();
+    expect(client.getSnapshot().view).toBeNull();
+  });
+
+  it.each(['domino', 'jaipur', 'splendor'])('refreshes %s after a stale selection without replaying its old card index', async game => {
+    let version = 3;
+    supabase.setRpcHandler(async () => ({ data: { ...room('selected', { hand: ['current'] }), room: { version, game_id: game, pending_game: null } }, error: null }));
+    const client = await loadClient();
+    const stop = client.subscribeRoom('selected', () => {});
+    await vi.waitFor(() => expect(client.getSnapshot().version).toBe(3));
+    supabase.db.functions.invoke.mockImplementationOnce(async () => { version = 4; return { error: { message: 'stale_state' } }; });
+    await expect(client.sendAction({ type: 'play', payload: { index: 0 } })).rejects.toThrow('stale_state');
+    expect(client.getSnapshot().version).toBe(4);
+    expect(supabase.db.functions.invoke).toHaveBeenCalledTimes(1);
+    stop();
+  });
+
+  it('preserves the table while disconnected and marks a successful resync without replaying its history', async () => {
+    let version = 1;
+    supabase.setRpcHandler(async () => ({ data: { ...room('active', { log: [{ sequence: version }] }), room: { version, game_id: 'domino', pending_game: null } }, error: null }));
+    const client = await loadClient();
+    const stop = client.subscribeRoom('active', () => {});
+    await vi.waitFor(() => expect(client.getSnapshot().version).toBe(1));
+    supabase.handlers.at(-1)!('SUBSCRIBED');
+    await flush();
+    supabase.handlers.at(-1)!('CHANNEL_ERROR');
+    expect(client.getSnapshot()).toMatchObject({ connection: 'reconnecting', view: { log: [{ sequence: 1 }] }, syncEpoch: 0 });
+    version = 2;
+    supabase.handlers.at(-1)!('SUBSCRIBED');
+    await vi.waitFor(() => expect(client.getSnapshot()).toMatchObject({ connection: 'connected', version: 2, syncEpoch: 1 }));
+    stop();
+  });
+
+  it('manual retry fetches an authoritative snapshot and does not report an HTTP-only connection as Realtime connected', async () => {
+    supabase.setRpcHandler(async () => ({ data: room('active', { hand: ['before'] }), error: null }));
+    const client = await loadClient();
+    const stop = client.subscribeRoom('active', () => {});
+    await vi.waitFor(() => expect(client.getSnapshot().view).toEqual({ hand: ['before'] }));
+    supabase.handlers.at(-1)!('TIMED_OUT');
+    supabase.setRpcHandler(async () => ({ data: room('active', { hand: ['after'] }), error: null }));
+    const before = supabase.rpc.mock.calls.length;
+    await client.reconnectRoom();
+    expect(supabase.rpc.mock.calls.length).toBe(before + 1);
+    expect(client.getSnapshot()).toMatchObject({ view: { hand: ['after'] }, connection: 'reconnecting', syncEpoch: 1 });
+    stop();
+  });
+
+  it('ignores failed refreshes and channel errors from an old invite', async () => {
+    let rejectOld!: (error: Error) => void;
+    supabase.setRpcHandler((_name, args) => args.p_room === 'old'
+      ? new Promise((_resolve, reject) => { rejectOld = reject; })
+      : Promise.resolve({ data: room('new', { hand: ['new private hand'] }), error: null }));
+    const client = await loadClient();
+    const oldStop = client.subscribeRoom('old', () => {});
+    await vi.waitFor(() => expect(rejectOld).toBeTypeOf('function'));
+    const oldHandler = supabase.handlers.at(-1)!;
+    const newStop = client.subscribeRoom('new', () => {});
+    await vi.waitFor(() => expect(client.getSnapshot().view).toEqual({ hand: ['new private hand'] }));
+    oldHandler('CHANNEL_ERROR');
+    rejectOld(new Error('old transport failure'));
+    await flush();
+    expect(client.getSnapshot()).toMatchObject({ roomId: 'new', connection: 'connecting', error: null, view: { hand: ['new private hand'] } });
+    oldStop();newStop();
+  });
+
   it('keeps committed Minhwatu events when a reconnect snapshot has an older room version', async () => {
     const committed = { ...room('hwatu-room', { log: [{ sequence: 7, type: 'capture' }] }), room: { version: 3, game_id: 'minhwatu', pending_game: null } };
     supabase.setRpcHandler(async () => ({ data: committed, error: null }));

@@ -88,3 +88,57 @@ The full automated suite passes **317/317**. After the final terminal draw desti
 Current full suite: **322/322 passing** (19 Minhwatu engine tests). The native two-seat KO/ES pass checks **15/15**, including a natural 20-action full game, exact turn-aware matching-hand highlights, no month boxes, and 29 original SVG guide images per locale. The opponent waiting hand is not highlighted. The guide below the game illustrates 0/1/2/3 matching cases, capture flow, exact combinations and score calculation. Current scores use Godori 50; old completed results are preserved. Earlier counts above describe earlier passes, not the latest source.
 
 Quality is not approved as commercial-grade: current viewport review still finds capture collections below the fold. Next work is a compact complete tabletop and room-shell hierarchy, not another superficial CSS pass. Native fixture pages were manually refreshed; production Realtime and audible sound quality remain unverified.
+
+
+## 2026-10-11 — tabletop composition and confirmed-event feedback
+
+- Replaced the vertically stacked capture/puzzle presentation with own captures / central felt and hand / rival captures. Four category counts and all eight existing combination counters remain visible on each rail; actual captured faces lift on hover/focus.
+- Preserved the original 48 recognizable vector faces and existing canonical rule engine. No new Go/Stop, stealing-pi, score multiplier or alternative Godori rule. Hand highlights still mean a matching public month, not a separate match-puzzle objective.
+- Field capacity now adapts without reordering public cards or changing legal action indices. Fourteen cards fit two rows; larger synthetic fixture layouts are capacity checks, not new gameplay rules. Event text sits in the opponent header, outside the field.
+- Capture flights shrink to the actual destination face. Confirmed score changes generate signed popups for both seats. Earned combinations show their canonical card faces, including Godori's three birds. Turn emphasis and result comparison use the same public event stream.
+- Minhwatu placement/capture synthesis impacts are delayed to the 255ms landing. Existing per-game sound preferences and muted/reduced-motion behavior remain intact; no shared BGM or paid service was added.
+- Transient flights, score popups and combination reveals are canceled on reset, seat change, reduced-motion change and unmount. Existing event sequence deduplication, quiet historical remount and action lock remain in place. A new deal resets the score display baseline.
+- Full suite: 329/329 passing; production build passing. In the real Room shell at1440×900, primary stage bottoms were877.6px (KO) and865.6px (ES); selected action rows remained inside the viewport and neither locale had horizontal overflow.
+
+Verification uses local canonical engine fixtures and the real rendered component. It does not establish live two-device Supabase/Realtime performance or physical-speaker Foley quality. Original SVG card art was reused, not represented as newly commissioned illustrations.
+
+Native browser QA: `scripts/verify-minhwatu-table.mjs` passed41/41 checks with0page/console errors. KO1440×900 uses normal motion; ES1920×1080 verifies reduced motion. Deterministic real-engine fixtures cover confirmation, both legal capture targets, both flight endpoints, signed130/−50 score changes, the exact three Godori faces, completed result agreement, caller hand privacy, quiet duplicate/remount, new-deal baseline reset, active unmount cleanup and live reduced-motion cleanup. RealRoom normal-motion KO/ES layout was separately inspected by root. To rerun, start Vite on5192 and run `LANDING_URL=http://127.0.0.1:5192/ node scripts/verify-minhwatu-table.mjs`; optional installed-browser overrides are documented in `scripts/playwright-browser.mjs`. Browser artifacts are intentionally ignored by Git.
+
+
+## 2026-10-11 — GameDev critique implementation
+
+Implemented the accepted Minhwatu-only critique. Luna owned capture inspection, legal-action/focus/result/replay UI and native QA. Sol owned public-state presentation, original support artwork and actual Foley playback. Root reviewed privacy and callers, connected replay in the real Room, and added a completed-game two-seat consent regression. Ponytail and the installed GameDev UI/art/feel/audio/performance references guided the work; Impeccable detector found no issues in the changed UI/CSS. This is not a commercial-quality approval.
+
+### Actual changes
+
+- A single public presentation timeline drives the visible own hand, field, captures, score, turn, event sound and screenreader announcement. Legal actions still come from the authoritative view. Moving cards disappear from static zones before flight, captured cards enter per landing, and score changes occur after the last captured card lands. Plain score labels replace duplicate value-animation widgets.
+- Play stops on its actual matching card. Draw travels deck → reveal → matching field card → collection; the two-candidate pending-draw decision preserves that path even when selection arrives in a later request. An unmatched arrival reserves its future grid cell to avoid changing columns at landing.
+- Capture rails show category counts plus the latest representative face. Opening a category shows complete nonoverlapping faces below the game, not a covering modal. All eight combination counters and both score totals remain visible. Godori uses the actual three bird faces inline in the event header.
+- Named results show both totals and the existing formula. The replay button uses existing game-selection consent; one seat cannot restart alone. Same-room/seat changes clear stale pending UI. Keyboard entry into a pending capture chooses the first legal field target after movement settles.
+- Fifteen original support assets add lacquer backs, quiet felt/rack material, category/action/combination icons, rim and event frame (4,774 bytes total). All 48 canonical Hwatu face SVGs remain unchanged. No hidden hand or deck data is added.
+- Twenty-one local, preprocessed Kenney CC0 card-Foley WAVs replace Minhwatu synthetic impacts (400,284 runtime bytes; source/license/manifests retained). Sound is off by default with its own game preference. Scheduled impacts use the same timeline; screenreader turn/result announcements also wait for presentation. There is no new dependency, BGM, paid service or game-rule change.
+
+### Verification and explicit limits
+
+Full automated suite: **338/338 passing**, 44 files. TypeScript, Vite production build and edge output pass. Local client regression plays to an actual result, verifies repeated same-seat replay requests preserve that result/version, then verifies the other seat starts a fresh 10/10/8/20 deal with zero scores.
+
+The actual Room layout stress fixture (10 hand cards, 14 field cards and selected confirm/cancel) fits KO/ES1366×768,1440×900,1920×1080. At1366×768, stage bottom is760.6px KO /759px ES; primary actions bottom747px KO /745px ES. These actual Room measurements are distinct from the component-only native harness.
+
+Snapshots on initial mount/history/reset are quiet. More than twelve fresh events, or a new batch delivered during playback, cancels the old timeline and snaps to current state quietly; it does not replay every catch-up event. This bounded shortcut needs live-network evaluation before expanding the queue. First sounds can be silent before preload completes; missing sounds never play late. Native tests do not approve physical speaker quality, hardware latency, actual screenreader speech or production two-device Realtime. No video was recorded.
+
+
+Final Chromium harness: **80/80 passing, zero page/console errors**. The frozen source covers six KO/ES desktop layouts; 0/1/2/3 matching cases for both hand and deck draws; exact unmatched cell, matched-card and pending-choice endpoints; capture source/rack geometry; category inspection; both seat projections/DOM privacy; live reduced-motion cleanup; scene changes, duplicate snapshots, historical remount and >12-event quiet catch-up; actual three-face Godori header; named results and replay request/incoming-consent UI. Browser-clock samples for both locales recorded score375 at the first capture landing and505 at the last (+130), with turn stillp1; subsequent public turn/result and announcements followed the shared sequence. Root reviewed actual Room images and Godori feedback, and fixed the inspector close-button contrast by reusing the existing button style. Production build passed after that one-line finishing fix.
+
+Harness: `scripts/verify-minhwatu-table.mjs`. Temporary report: `output/playwright/game-polish/minhwatu-native/minhwatu-native.json` (ignored). Run Vite5192 then `LANDING_URL=http://127.0.0.1:5192/ node scripts/verify-minhwatu-table.mjs` with browser overrides from `scripts/playwright-browser.mjs`. The harness uses deterministic canonical engine/view/component state, not production Realtime. Replay button states are simulated props; actual same-game two-seat consent is separately verified by the local client regression above. Committed screenshots: `docs/screenshots/minhwatu/game-room-ko.png`, `game-room-es.png`, and `godori-test.png`. Godori scores/captures are explicitly a test scenario, not a personal game record.
+
+## 2026-10-11 획득패 정보 구조 재수정
+
+사용자가 대표패 요약을 거부한 것을 반영했다. 이전 종류별 대표패/클릭 inspector 제안은 폐기한 설계다. 상대 획득패는 위, 내 획득패는 손패 바로 위의 가로 은행에 두고 광·열끗·띠·피 전면을 모두 펼친다. 월/ID 순서, 비중첩,34–38px 실제 그림과 월표시를 유지한다. 숫자 수량은 보조다. 빈 바닥은 접히며 행동/손패는 아래에 고정된 흐름으로 유지한다. 이동 중 새 획득패는 정렬된 최종 위치의 빈 슬롯을 확보하고 도착 시 그 자리에서 실제 패로 바뀐다. 다른 패의 정렬 위치 변화도 같은 공개 표시 타임라인을 따른다.
+
+Impeccable critique는 독립 A/B 평가로 수행했으며 수정 전 fe12d96은21/40. 컴포넌트 검출0건을 디자인 통과로 판단하지 않았다. 구체적 결함, 공식/스토어 화면 참고 범위와 판단은 `reviews/MINHWATU-CAPTURE-UX-2026-10-11.md`에 보관했다. 원본 화투48장과 민화투 계산은 변경하지 않았다.
+
+초보자 설명은3단계+실제 패로 같은 달0/1/2/3장 사례, 마무리 조건을 먼저 보여준다. 종류/점수/띠/고도리/월완성 계산만 native details에 둔다. 기존 장문 설명 중복을 제거했고 방 아래 및 게임 시작 전 기존 안내창에서 같은 컴포넌트를 사용한다. KO/ES27그림 로딩, 월표시13px, 가로 넘침 없음, 상세 기본 닫힘, 안내창 Escape닫힘을 실제 Chromium에서 확인했다. 스페인어는 도미니카에서도 자연스러운 tuteo와 carta/mazo/mesa를 사용하며 스페인 vosotros형은 쓰지 않는다. 현지 화자 사용자 테스트를 수행했다는 뜻은 아니다.
+
+검수: 전체44파일338/338 테스트, 프로덕션 빌드 통과. 실제 Room24배치(initial/field14/dense32/all48 시각적 스트레스 ×KO/ES ×1366×768/1440×900/1920×1080)에서 전면 비중첩/영역내 배치 확인.1366×768의14바닥+10손패+확정/취소는 KO하단761px/ES755px. `output/playwright/minhwatu-art/bank-layout.json`은 임시 산출물이며 최종 새 화면은 `screenshots/minhwatu`에 저장한다. 기기2대 온라인 Realtime와 물리 스피커 타이밍은 여전히 별도 검수 필요.
+
+최종 네이티브 동작 검수84/84, 오류0.32획득+4/4손패+8바닥+0더미 보존 fixture 및 종료24/24 양좌석48고유패(광5/열끗9/띠10/피24), KO/ES전면/라벨/비중첩/비잘림 검사 통과. 카드별 비행 목적지와 도착 후 패의38×76.67px 사각형이 정확히 일치했다. 활성 비행2개 중 모션축소 전환시 복제본 정리와 확정상태 보존도 확인했다. `output/playwright/game-polish/minhwatu-native/minhwatu-native.json`에 임시 원시증거, 양측48장 새 캡처는 `screenshots/minhwatu/all-captures-{ko,es}.png`에 저장했다.

@@ -2033,13 +2033,15 @@ function view(s, p) {
         append(`\uAC19\uC740 \uBCF4\uC11D 2\uAC1C: ${titles[g].ko}`, `2 gemas ${titles[g].es}`, "takeTwo", { gem: g }, gains);
       }
       for (const tier of [1, 2, 3]) {
-        for (let i = 0; i < s.market[tier].length; i++) {
-          const gains = { ...blank(), gold: s.bank.gold ? 1 : 0 };
-          append(`\uC608\uC57D ${tier}\uB2E8\uACC4 \uCE74\uB4DC`, `Reservar carta nivel ${tier}`, "reserve", { tier, index: i }, gains);
-        }
-        if (s.decks[tier].length) {
-          const gains = { ...blank(), gold: s.bank.gold ? 1 : 0 };
-          append(`\uB371\uC5D0\uC11C ${tier}\uB2E8\uACC4 \uCE74\uB4DC \uC608\uC57D`, `Reservar del mazo nivel ${tier}`, "reserve", { tier }, gains);
+        if (s.reserved[p].length < 3) {
+          for (let i = 0; i < s.market[tier].length; i++) {
+            const gains = { ...blank(), gold: s.bank.gold ? 1 : 0 };
+            append(`\uC608\uC57D ${tier}\uB2E8\uACC4 \uCE74\uB4DC`, `Reservar carta nivel ${tier}`, "reserve", { tier, index: i }, gains);
+          }
+          if (s.decks[tier].length) {
+            const gains = { ...blank(), gold: s.bank.gold ? 1 : 0 };
+            append(`\uB371\uC5D0\uC11C ${tier}\uB2E8\uACC4 \uCE74\uB4DC \uC608\uC57D`, `Reservar del mazo nivel ${tier}`, "reserve", { tier }, gains);
+          }
         }
         for (let i = 0; i < s.market[tier].length; i++) if (affordable(s, p, s.market[tier][i])) add(`\uAD6C\uB9E4: ${s.market[tier][i].id}`, `Comprar: ${s.market[tier][i].id}`, { type: "buy", payload: { source: "market", tier, index: i } });
       }

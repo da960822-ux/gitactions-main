@@ -482,7 +482,7 @@
 .app-shell .waiting-card p { color:#d3bec8; }
 .app-shell .waiting-icon { background:#433247; color:#f0b5c0; }
 .app-shell .room-layout { margin-top:14px; }
-.app-shell .board-card { --paper:#f6f3ed; --paper-deep:#eee9df; --white:#fffefa; --ink:#293431; --ink-soft:#65726d; --ink-faint:#707c75; --line:#e4ded3; --teal:#2f655b; --teal-dark:#214b43; --teal-pale:#e2ece6; --coral:#e57f6a; --coral-pale:#f7e5dd; --gold:#dca84b; background:#fffefa; color:#293431; border-color:#e4ded3; box-shadow:0 12px 35px #09060d45; scroll-margin-top:20px; }
+.app-shell .board-card { --paper:#f6f3ed; --paper-deep:#eee9df; --white:#fffefa; --ink:#293431; --ink-soft:#65726d; --ink-faint:#617067; --line:#e4ded3; --teal:#2f655b; --teal-dark:#214b43; --teal-pale:#e2ece6; --coral:#e57f6a; --coral-pale:#f7e5dd; --gold:#dca84b; background:#fffefa; color:#293431; border-color:#e4ded3; box-shadow:0 12px 35px #09060d45; scroll-margin-top:20px; }
 .app-shell .board-header { border-color:#e4ded3; }
 .app-shell .board-header .plain-button { color:#2f655b; }
 .app-shell .chat-panel { min-height:min(500px,68vh); height:min(calc(100vh - 240px),68vh); max-height:min(680px,68vh); }
@@ -586,6 +586,7 @@
 .room-shell .board-header { gap: var(--game-space-4); }
 .room-shell .board-header-right { gap: var(--game-space-2); }
 .room-shell .action-notice { background: #f7e9e3; color: #7e332c; }
+.room-shell .room-id-label .room-close-link { color:#e8af9f; }
 .room-shell .room-layout { margin-top: var(--game-space-4); }
 .room-shell .game-guide li,
 .room-shell .game-guide p { line-height: 1.7; }
@@ -613,4 +614,16 @@
   .room-shell.room-game-catchmind .catchmind-chat-panel.is-collapsed { min-height: 0; height: auto; }
   .room-shell.room-game-catchmind .chat-compose textarea { font-size: 15px; min-height: 52px; }
   .room-shell.room-game-catchmind .chat-language-note p { font-size: 12px; line-height: 1.4; }
+}
+.connection-strip { display:flex; align-items:center; justify-content:space-between; gap:12px; margin:6px 0; padding:8px 12px; border:1px solid #ab9369; border-radius:9px; background:#f5ecd7; color:#574422; font-size:13px; line-height:1.45; }
+.connection-strip button,.error-strip button { min-width:44px; min-height:44px; cursor:pointer; }
+@media (min-width: 1000px) {
+  .quality-table-room .room-main { padding-top:6px; }
+  .quality-table-room .room-topline { margin:0 0 4px; }
+  .quality-table-room .room-heading { min-height:36px; padding-bottom:4px; gap:12px; }
+  .quality-table-room .room-heading h1 { margin:0; font-size:22px; }
+  .quality-table-room .player-pill { min-width:150px; padding:3px 9px 3px 6px; }
+  .quality-table-room .player-avatar { width:24px; height:24px; font-size:13px; }
+  .quality-table-room .room-layout { margin-top:6px; }
+  .quality-table-room .board-header { min-height:48px; padding:6px 14px; }
 }

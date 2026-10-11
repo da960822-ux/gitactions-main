@@ -1,0 +1,637 @@
+{
+  "date": "2026-10-11",
+  "scope": "Minhwatu actual Room shell, Vite development build, initial local practice state",
+  "method": "Chromium headless, viewport geometry at scrollY=0; no FPS/audio/live-network claim",
+  "measurements": [
+    {
+      "width": 1366,
+      "height": 768,
+      "language": "ko",
+      "stage": {
+        "x": 44,
+        "y": 291.625,
+        "width": 1278,
+        "height": 586,
+        "top": 291.625,
+        "right": 1322,
+        "bottom": 877.625,
+        "left": 44,
+        "font": "13px"
+      },
+      "hand": {
+        "x": 248,
+        "y": 655.625,
+        "width": 870,
+        "height": 194.515625,
+        "top": 655.625,
+        "right": 1118,
+        "bottom": 850.140625,
+        "left": 248,
+        "font": "13px"
+      },
+      "actions": {
+        "x": 256,
+        "y": 814.140625,
+        "width": 854,
+        "height": 33,
+        "top": 814.140625,
+        "right": 1110,
+        "bottom": 847.140625,
+        "left": 256,
+        "font": "13px"
+      },
+      "racks": [
+        {
+          "x": 44,
+          "y": 291.625,
+          "width": 190,
+          "height": 586,
+          "top": 291.625,
+          "right": 234,
+          "bottom": 877.625,
+          "left": 44
+        },
+        {
+          "x": 1132,
+          "y": 291.625,
+          "width": 190,
+          "height": 586,
+          "top": 291.625,
+          "right": 1322,
+          "bottom": 877.625,
+          "left": 1132
+        }
+      ],
+      "counter": {
+        "x": 55,
+        "y": 713.625,
+        "width": 168,
+        "height": 152,
+        "top": 713.625,
+        "right": 223,
+        "bottom": 865.625,
+        "left": 55,
+        "font": "13px"
+      },
+      "turn": {
+        "x": 1061.046875,
+        "y": 296.625,
+        "width": 52.953125,
+        "height": 30,
+        "top": 296.625,
+        "right": 1114,
+        "bottom": 326.625,
+        "left": 1061.046875,
+        "font": "11px"
+      },
+      "handCard": {
+        "x": 345,
+        "y": 693.625,
+        "width": 64,
+        "height": 115.515625,
+        "top": 693.625,
+        "right": 409,
+        "bottom": 809.140625,
+        "left": 345,
+        "font": "13px"
+      },
+      "fieldCard": {
+        "x": 505,
+        "y": 376.875,
+        "width": 58,
+        "height": 105.75,
+        "top": 376.875,
+        "right": 563,
+        "bottom": 482.625,
+        "left": 505,
+        "font": "13px"
+      },
+      "overflow": false
+    },
+    {
+      "width": 1366,
+      "height": 768,
+      "language": "es",
+      "stage": {
+        "x": 44,
+        "y": 287.625,
+        "width": 1278,
+        "height": 578,
+        "top": 287.625,
+        "right": 1322,
+        "bottom": 865.625,
+        "left": 44,
+        "font": "13px"
+      },
+      "hand": {
+        "x": 248,
+        "y": 651.625,
+        "width": 870,
+        "height": 192.515625,
+        "top": 651.625,
+        "right": 1118,
+        "bottom": 844.140625,
+        "left": 248,
+        "font": "13px"
+      },
+      "actions": {
+        "x": 256,
+        "y": 808.140625,
+        "width": 854,
+        "height": 33,
+        "top": 808.140625,
+        "right": 1110,
+        "bottom": 841.140625,
+        "left": 256,
+        "font": "13px"
+      },
+      "racks": [
+        {
+          "x": 44,
+          "y": 287.625,
+          "width": 190,
+          "height": 578,
+          "top": 287.625,
+          "right": 234,
+          "bottom": 865.625,
+          "left": 44
+        },
+        {
+          "x": 1132,
+          "y": 287.625,
+          "width": 190,
+          "height": 578,
+          "top": 287.625,
+          "right": 1322,
+          "bottom": 865.625,
+          "left": 1132
+        }
+      ],
+      "counter": {
+        "x": 55,
+        "y": 705.625,
+        "width": 168,
+        "height": 150,
+        "top": 705.625,
+        "right": 223,
+        "bottom": 855.625,
+        "left": 55,
+        "font": "13px"
+      },
+      "turn": {
+        "x": 1049.078125,
+        "y": 293.625,
+        "width": 64.921875,
+        "height": 28,
+        "top": 293.625,
+        "right": 1114,
+        "bottom": 321.625,
+        "left": 1049.078125,
+        "font": "11px"
+      },
+      "handCard": {
+        "x": 345,
+        "y": 687.625,
+        "width": 64,
+        "height": 115.515625,
+        "top": 687.625,
+        "right": 409,
+        "bottom": 803.140625,
+        "left": 345,
+        "font": "13px"
+      },
+      "fieldCard": {
+        "x": 505,
+        "y": 372.875,
+        "width": 58,
+        "height": 105.75,
+        "top": 372.875,
+        "right": 563,
+        "bottom": 478.625,
+        "left": 505,
+        "font": "13px"
+      },
+      "overflow": false
+    },
+    {
+      "width": 1440,
+      "height": 900,
+      "language": "ko",
+      "stage": {
+        "x": 44,
+        "y": 291.625,
+        "width": 1352,
+        "height": 586,
+        "top": 291.625,
+        "right": 1396,
+        "bottom": 877.625,
+        "left": 44,
+        "font": "13px"
+      },
+      "hand": {
+        "x": 248,
+        "y": 655.625,
+        "width": 944,
+        "height": 194.515625,
+        "top": 655.625,
+        "right": 1192,
+        "bottom": 850.140625,
+        "left": 248,
+        "font": "13px"
+      },
+      "actions": {
+        "x": 256,
+        "y": 814.140625,
+        "width": 928,
+        "height": 33,
+        "top": 814.140625,
+        "right": 1184,
+        "bottom": 847.140625,
+        "left": 256,
+        "font": "13px"
+      },
+      "racks": [
+        {
+          "x": 44,
+          "y": 291.625,
+          "width": 190,
+          "height": 586,
+          "top": 291.625,
+          "right": 234,
+          "bottom": 877.625,
+          "left": 44
+        },
+        {
+          "x": 1206,
+          "y": 291.625,
+          "width": 190,
+          "height": 586,
+          "top": 291.625,
+          "right": 1396,
+          "bottom": 877.625,
+          "left": 1206
+        }
+      ],
+      "counter": {
+        "x": 55,
+        "y": 713.625,
+        "width": 168,
+        "height": 152,
+        "top": 713.625,
+        "right": 223,
+        "bottom": 865.625,
+        "left": 55,
+        "font": "13px"
+      },
+      "turn": {
+        "x": 1135.046875,
+        "y": 296.625,
+        "width": 52.953125,
+        "height": 30,
+        "top": 296.625,
+        "right": 1188,
+        "bottom": 326.625,
+        "left": 1135.046875,
+        "font": "11px"
+      },
+      "handCard": {
+        "x": 382,
+        "y": 693.625,
+        "width": 64,
+        "height": 115.515625,
+        "top": 693.625,
+        "right": 446,
+        "bottom": 809.140625,
+        "left": 382,
+        "font": "13px"
+      },
+      "fieldCard": {
+        "x": 542,
+        "y": 376.875,
+        "width": 58,
+        "height": 105.75,
+        "top": 376.875,
+        "right": 600,
+        "bottom": 482.625,
+        "left": 542,
+        "font": "13px"
+      },
+      "overflow": false
+    },
+    {
+      "width": 1440,
+      "height": 900,
+      "language": "es",
+      "stage": {
+        "x": 44,
+        "y": 287.625,
+        "width": 1352,
+        "height": 578,
+        "top": 287.625,
+        "right": 1396,
+        "bottom": 865.625,
+        "left": 44,
+        "font": "13px"
+      },
+      "hand": {
+        "x": 248,
+        "y": 651.625,
+        "width": 944,
+        "height": 192.515625,
+        "top": 651.625,
+        "right": 1192,
+        "bottom": 844.140625,
+        "left": 248,
+        "font": "13px"
+      },
+      "actions": {
+        "x": 256,
+        "y": 808.140625,
+        "width": 928,
+        "height": 33,
+        "top": 808.140625,
+        "right": 1184,
+        "bottom": 841.140625,
+        "left": 256,
+        "font": "13px"
+      },
+      "racks": [
+        {
+          "x": 44,
+          "y": 287.625,
+          "width": 190,
+          "height": 578,
+          "top": 287.625,
+          "right": 234,
+          "bottom": 865.625,
+          "left": 44
+        },
+        {
+          "x": 1206,
+          "y": 287.625,
+          "width": 190,
+          "height": 578,
+          "top": 287.625,
+          "right": 1396,
+          "bottom": 865.625,
+          "left": 1206
+        }
+      ],
+      "counter": {
+        "x": 55,
+        "y": 705.625,
+        "width": 168,
+        "height": 150,
+        "top": 705.625,
+        "right": 223,
+        "bottom": 855.625,
+        "left": 55,
+        "font": "13px"
+      },
+      "turn": {
+        "x": 1123.078125,
+        "y": 293.625,
+        "width": 64.921875,
+        "height": 28,
+        "top": 293.625,
+        "right": 1188,
+        "bottom": 321.625,
+        "left": 1123.078125,
+        "font": "11px"
+      },
+      "handCard": {
+        "x": 382,
+        "y": 687.625,
+        "width": 64,
+        "height": 115.515625,
+        "top": 687.625,
+        "right": 446,
+        "bottom": 803.140625,
+        "left": 382,
+        "font": "13px"
+      },
+      "fieldCard": {
+        "x": 542,
+        "y": 372.875,
+        "width": 58,
+        "height": 105.75,
+        "top": 372.875,
+        "right": 600,
+        "bottom": 478.625,
+        "left": 542,
+        "font": "13px"
+      },
+      "overflow": false
+    },
+    {
+      "width": 1920,
+      "height": 1080,
+      "language": "ko",
+      "stage": {
+        "x": 266,
+        "y": 295.625,
+        "width": 1388,
+        "height": 618,
+        "top": 295.625,
+        "right": 1654,
+        "bottom": 913.625,
+        "left": 266,
+        "font": "13px"
+      },
+      "hand": {
+        "x": 502,
+        "y": 684.625,
+        "width": 916,
+        "height": 204.296875,
+        "top": 684.625,
+        "right": 1418,
+        "bottom": 888.921875,
+        "left": 502,
+        "font": "13px"
+      },
+      "actions": {
+        "x": 510,
+        "y": 852.921875,
+        "width": 900,
+        "height": 33,
+        "top": 852.921875,
+        "right": 1410,
+        "bottom": 885.921875,
+        "left": 510,
+        "font": "13px"
+      },
+      "racks": [
+        {
+          "x": 266,
+          "y": 295.625,
+          "width": 218,
+          "height": 618,
+          "top": 295.625,
+          "right": 484,
+          "bottom": 913.625,
+          "left": 266
+        },
+        {
+          "x": 1436,
+          "y": 295.625,
+          "width": 218,
+          "height": 618,
+          "top": 295.625,
+          "right": 1654,
+          "bottom": 913.625,
+          "left": 1436
+        }
+      ],
+      "counter": {
+        "x": 277,
+        "y": 749.625,
+        "width": 196,
+        "height": 152,
+        "top": 749.625,
+        "right": 473,
+        "bottom": 901.625,
+        "left": 277,
+        "font": "13px"
+      },
+      "turn": {
+        "x": 1361.046875,
+        "y": 300.625,
+        "width": 52.953125,
+        "height": 30,
+        "top": 300.625,
+        "right": 1414,
+        "bottom": 330.625,
+        "left": 1361.046875,
+        "font": "11px"
+      },
+      "handCard": {
+        "x": 592,
+        "y": 722.625,
+        "width": 70,
+        "height": 125.296875,
+        "top": 722.625,
+        "right": 662,
+        "bottom": 847.921875,
+        "left": 592,
+        "font": "13px"
+      },
+      "fieldCard": {
+        "x": 782,
+        "y": 393.875,
+        "width": 58,
+        "height": 105.75,
+        "top": 393.875,
+        "right": 840,
+        "bottom": 499.625,
+        "left": 782,
+        "font": "13px"
+      },
+      "overflow": false
+    },
+    {
+      "width": 1920,
+      "height": 1080,
+      "language": "es",
+      "stage": {
+        "x": 266,
+        "y": 291.625,
+        "width": 1388,
+        "height": 610,
+        "top": 291.625,
+        "right": 1654,
+        "bottom": 901.625,
+        "left": 266,
+        "font": "13px"
+      },
+      "hand": {
+        "x": 502,
+        "y": 680.625,
+        "width": 916,
+        "height": 202.296875,
+        "top": 680.625,
+        "right": 1418,
+        "bottom": 882.921875,
+        "left": 502,
+        "font": "13px"
+      },
+      "actions": {
+        "x": 510,
+        "y": 846.921875,
+        "width": 900,
+        "height": 33,
+        "top": 846.921875,
+        "right": 1410,
+        "bottom": 879.921875,
+        "left": 510,
+        "font": "13px"
+      },
+      "racks": [
+        {
+          "x": 266,
+          "y": 291.625,
+          "width": 218,
+          "height": 610,
+          "top": 291.625,
+          "right": 484,
+          "bottom": 901.625,
+          "left": 266
+        },
+        {
+          "x": 1436,
+          "y": 291.625,
+          "width": 218,
+          "height": 610,
+          "top": 291.625,
+          "right": 1654,
+          "bottom": 901.625,
+          "left": 1436
+        }
+      ],
+      "counter": {
+        "x": 277,
+        "y": 741.625,
+        "width": 196,
+        "height": 150,
+        "top": 741.625,
+        "right": 473,
+        "bottom": 891.625,
+        "left": 277,
+        "font": "13px"
+      },
+      "turn": {
+        "x": 1349.078125,
+        "y": 297.625,
+        "width": 64.921875,
+        "height": 28,
+        "top": 297.625,
+        "right": 1414,
+        "bottom": 325.625,
+        "left": 1349.078125,
+        "font": "11px"
+      },
+      "handCard": {
+        "x": 592,
+        "y": 716.625,
+        "width": 70,
+        "height": 125.296875,
+        "top": 716.625,
+        "right": 662,
+        "bottom": 841.921875,
+        "left": 592,
+        "font": "13px"
+      },
+      "fieldCard": {
+        "x": 782,
+        "y": 389.875,
+        "width": 58,
+        "height": 105.75,
+        "top": 389.875,
+        "right": 840,
+        "bottom": 495.625,
+        "left": 782,
+        "font": "13px"
+      },
+      "overflow": false
+    }
+  ]
+}

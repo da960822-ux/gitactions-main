@@ -1,0 +1,19 @@
+{
+  "direction": "Top-down ivory resin with brass pin, charcoal pips, forest green wool felt, warm wood rail. Soft upper-left light, low background contrast, restrained 340ms settle.",
+  "assets": [{
+    "id": "domino-club-felt",
+    "path": "/images/domino/club-felt.webp",
+    "source": "OpenAI image_gen, generated 2026-10-11",
+    "original": "/workspace/generated_images/exec-f0fe865f-5538-4ed0-9d34-544dbb2120b3.png",
+    "prompt": "Original square orthographic dark forest green billiard wool felt, fine grain, almost uniform light, no rim, tiles, logos or text.",
+    "sourceSize": [1254, 1254],
+    "display": "CSS cover inside a single table surface; no tiled repetition",
+    "normalization": "Pillow Lanczos resize 640x640, WebP quality 68; original retained",
+    "approval": "Native scale inspected in KO/ES 1440x900 and ES 390x844; screenshots output/playwright/game-quality/domino"
+  }],
+  "tileFamily": {
+    "source": "Existing DominoTile.tsx SVG; preserved 28 double-six faces and engraved number-free back",
+    "sizes": {"chain": "72px; 39px vertical doubles", "hand": "88px desktop, 69px mobile", "event": "22 x 40px", "reveal": "53px"},
+    "checks": "Pip count tests for all 28 faces pass; native contact sheet and table screenshots inspected at 100% in Chromium 2026-10-11"
+  }
+}

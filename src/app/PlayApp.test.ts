@@ -2,9 +2,9 @@ import { afterEach, describe, expect, it } from 'vitest';
 import { vi } from 'vitest';
 import { createElement } from 'react';
 import { renderToStaticMarkup } from 'react-dom/server';
-import { bindApi, catchmindEnterSubmits, CatchmindChatComposer, GameGuide, Room, RulesDialog, rulesButtonLabel } from './PlayApp';
+import { bindApi, catchmindEnterSubmits, CatchmindChatComposer, GameGuide, Room, RulesDialog, rulesButtonLabel, statusLabel } from './PlayApp';
 import { getBeginnerGuide } from './beginner-guides';
-import { ActionFlightGuard, announcementForContext, cueForAction, GameFeedback, publicViewAnnouncement, publicViewCue } from './GameFeedback';
+import { ActionFlightGuard, announcementForContext, cueForAction, GameFeedback, jaipurImmediateCues, publicViewAnnouncement, publicViewCue } from './GameFeedback';
 import { gameCatalog } from '../games/catalog';
 import { marbleLegacyRules } from '../games/rules';
 import { ReactionPanel } from './ReactionPanel';
@@ -13,6 +13,22 @@ import { client, isOnlineConfigured } from '../core/client';
 vi.mock('./App', () => ({ BrandHeader: () => null }));
 
 afterEach(async () => { if (!isOnlineConfigured) await client.closeRoom(); });
+
+it('announces a settled round instead of an inactive player turn', () => {
+  const settled = { phase: 'round-over', turn: 'p2', result: null };
+  expect(statusLabel(settled, 'p1', 'ko')).toBe('라운드 정산');
+  expect(statusLabel(settled, 'p1', 'es')).toBe('Fin de ronda');
+  expect(statusLabel({ ...settled, result: { winner: 'p1' } }, 'p1', 'es')).toBe('Partida terminada');
+  expect(statusLabel({ phase: 'play', turn: 'p1' }, 'p1', 'ko')).toBe('내 차례예요');
+});
+
+it('keeps Jaipur transfer and reward sounds out of the immediate snapshot channel', () => {
+  for (const type of ['take-single', 'exchange', 'take-camels', 'bonus'] as const) {
+    expect(jaipurImmediateCues({ sequence: 1, round: 1, type, title: { ko: '', es: '' } })).toEqual([]);
+  }
+  expect(jaipurImmediateCues({ sequence: 1, round: 1, type: 'sale', title: { ko: '', es: '' } })).toEqual(['sell']);
+  expect(jaipurImmediateCues({ sequence: 1, round: 1, type: 'market-refill', title: { ko: '', es: '' } })).toEqual(['draw']);
+});
 
 describe('PlayApp client binding', () => {
   it.skipIf(isOnlineConfigured)('keeps prototype methods callable through the loaded API and starts an agreed game', async () => {
@@ -70,14 +86,31 @@ describe('inline game guide', () => {
       expect(ko).toContain('id="game-guide"');
       expect(ko).toContain(game.title.ko);
       expect(es).toContain(game.title.es);
-      expect((ko.match(/<li>/g) ?? []).length).toBeGreaterThanOrEqual(5);
-      expect((es.match(/<li>/g) ?? []).length).toBeGreaterThanOrEqual(5);
+      for (const markup of [ko, es]) {
+        if (game.id === 'minhwatu') {
+          expect((markup.match(/<li>/g) ?? []).length).toBe(3);
+          expect(markup).toContain('minhwatu-match-grid');
+          expect(markup).toContain('/images/hwatu/01-01.svg');
+          expect(markup).toContain('minhwatu-guide-details');
+        } else expect((markup.match(/<li>/g) ?? []).length).toBeGreaterThanOrEqual(5);
+      }
     }
   });
 
   it('labels the manual anchor in Korean and Dominican Spanish', () => {
     expect(rulesButtonLabel('ko')).toBe('게임 방법 ↓');
     expect(rulesButtonLabel('es')).toBe('Cómo jugar ↓');
+  });
+
+  it('shows three illustrated steps first and keeps detailed rules collapsed in both languages', () => {
+    for (const gameId of ['domino', 'jaipur', 'splendor'] as const) {
+      for (const language of ['ko', 'es'] as const) {
+        const markup = renderToStaticMarkup(createElement(GameGuide, { gameId, language, dominoRulesVersion: 1 }));
+        expect((markup.match(/<figure class="quick-guide-image"/g) ?? []).length).toBe(3);
+        expect(markup).toContain('<details class="guide-details">');
+        expect(markup.indexOf('quick-guide-steps')).toBeLessThan(markup.indexOf('guide-details'));
+      }
+    }
   });
 
   it('uses the localized 18-space Marble guide only for legacy version 1', () => {

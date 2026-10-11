@@ -11,7 +11,8 @@
 .jaipur-art {
   width: 100%;
   height: 100%;
-  filter: drop-shadow(0 2px 2px rgba(42, 23, 31, .24));
+  overflow: hidden;
+  background: #eee0c8;
 }
 
 .jaipur-art__ground {

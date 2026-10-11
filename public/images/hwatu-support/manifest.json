@@ -1,0 +1,306 @@
+{
+  "direction": "Navy shell / jade woven felt / ivory line icons / lacquer red backs. Diffuse top-left light and lower-right contact shadow stay in CSS; material contrast stays under 3% luma. No face art altered.",
+  "source": "Original code-native SVG geometry and deterministic periodic raster weave, authored 2026-10-11; no external source or generation service.",
+  "license": "Project-original support artwork; original 48 Commons face attribution retained separately.",
+  "filtering": "Browser vector and smooth raster sampling; repeat only felt/rack; no mipmap/atlas required.",
+  "approval": "24 actual desktop Room layouts reviewed: initial, 14 field, dense32, all48 visual stress states, KO/ES at1366/1440/1920. All captured faces stay visible and nonoverlapping; original48 face hashes unchanged.",
+  "assets": [
+    {
+      "file": "capture.svg",
+      "bytes": 238,
+      "sha256": "bde5f05827fbe2f374a90c44f807c9fbc8f91662fc8ccd16891e340e3ae679db",
+      "role": "capture",
+      "source": "original procedural/vector authoring",
+      "pivot": "center",
+      "collision": "none",
+      "dimensions": [
+        24.0,
+        24.0
+      ],
+      "transparent": true,
+      "consumer": "src/app/HwatuMotion.tsx and src/styles/hwatu-motion.css",
+      "approval": "Applied in game; native asset/layout review 1366/1440/1920 KO/ES, 2026-10-11"
+    },
+    {
+      "file": "card-edge.svg",
+      "bytes": 277,
+      "sha256": "178ec20b8913cc9a30df0a136cd4e6488299667ebaefbfd09084c37cb87b62c0",
+      "role": "card-edge",
+      "source": "original procedural/vector authoring",
+      "pivot": "center",
+      "collision": "none",
+      "dimensions": [
+        103.2,
+        168.2
+      ],
+      "transparent": true,
+      "consumer": "src/styles/minhwatu-table.css",
+      "approval": "Applied in game; native asset/layout review 1366/1440/1920 KO/ES, 2026-10-11"
+    },
+    {
+      "file": "category-animal.svg",
+      "bytes": 315,
+      "sha256": "697f92dc153a811305992ba66aafd62c5eadc7f196d4b30bc3ef1d2278c5b0bd",
+      "role": "category-animal",
+      "source": "original procedural/vector authoring",
+      "pivot": "center",
+      "collision": "none",
+      "dimensions": [
+        24.0,
+        24.0
+      ],
+      "transparent": true,
+      "consumer": "src/app/MinhwatuTable.tsx",
+      "approval": "Applied in game; native asset/layout review 1366/1440/1920 KO/ES, 2026-10-11"
+    },
+    {
+      "file": "category-bright.svg",
+      "bytes": 299,
+      "sha256": "12d92c81085a03a269c7ae7c24da5073645ed3060eb06057859ae11c0e402923",
+      "role": "category-bright",
+      "source": "original procedural/vector authoring",
+      "pivot": "center",
+      "collision": "none",
+      "dimensions": [
+        24.0,
+        24.0
+      ],
+      "transparent": true,
+      "consumer": "src/app/MinhwatuTable.tsx",
+      "approval": "Applied in game; native asset/layout review 1366/1440/1920 KO/ES, 2026-10-11"
+    },
+    {
+      "file": "category-plain.svg",
+      "bytes": 271,
+      "sha256": "f83968fa51c31307169a84b6c8bd8c3192baa77fb15827a15ce12fee9dc1a640",
+      "role": "category-plain",
+      "source": "original procedural/vector authoring",
+      "pivot": "center",
+      "collision": "none",
+      "dimensions": [
+        24.0,
+        24.0
+      ],
+      "transparent": true,
+      "consumer": "src/app/MinhwatuTable.tsx",
+      "approval": "Applied in game; native asset/layout review 1366/1440/1920 KO/ES, 2026-10-11"
+    },
+    {
+      "file": "category-ribbon.svg",
+      "bytes": 229,
+      "sha256": "0176a7f0adedfb4134f06038d1983d3274d0a42ec1c1420af28b5d7e5c98ef24",
+      "role": "category-ribbon",
+      "source": "original procedural/vector authoring",
+      "pivot": "center",
+      "collision": "none",
+      "dimensions": [
+        24.0,
+        24.0
+      ],
+      "transparent": true,
+      "consumer": "src/app/MinhwatuTable.tsx",
+      "approval": "Applied in game; native asset/layout review 1366/1440/1920 KO/ES, 2026-10-11"
+    },
+    {
+      "file": "draw.svg",
+      "bytes": 285,
+      "sha256": "2665e68ce6155687a52b62323cadb94d3e2376df501112388f2c7be2aa4e39ad",
+      "role": "draw",
+      "source": "original procedural/vector authoring",
+      "pivot": "center",
+      "collision": "none",
+      "dimensions": [
+        24.0,
+        24.0
+      ],
+      "transparent": true,
+      "consumer": "src/app/MinhwatuTable.tsx",
+      "approval": "Applied in game; native asset/layout review 1366/1440/1920 KO/ES, 2026-10-11"
+    },
+    {
+      "file": "event-frame.svg",
+      "bytes": 380,
+      "sha256": "dc9fd1a189e75d7b1a293d0a1db82a6e1fef7986db6a2c20de67784420b92fee",
+      "role": "event-frame",
+      "source": "original procedural/vector authoring",
+      "pivot": "center",
+      "collision": "none",
+      "dimensions": [
+        480.0,
+        160.0
+      ],
+      "transparent": true,
+      "consumer": "src/app/HwatuMotion.tsx and src/styles/hwatu-motion.css",
+      "approval": "Applied in game; native asset/layout review 1366/1440/1920 KO/ES, 2026-10-11"
+    },
+    {
+      "file": "felt.webp",
+      "bytes": 192,
+      "sha256": "3ae13c128078d7fa1431441d3a671440595f91c827d18076c7ad0a35406820cc",
+      "role": "felt",
+      "source": "original procedural/vector authoring",
+      "pivot": "center",
+      "collision": "none",
+      "dimensions": [
+        256,
+        256
+      ],
+      "transparent": false,
+      "seamless": "Periodic integer-frequency texture; no baked lighting or borders",
+      "lumaRangePercent": 0.392,
+      "consumer": "src/styles/minhwatu-table.css",
+      "approval": "Applied in game; native asset/layout review 1366/1440/1920 KO/ES, 2026-10-11"
+    },
+    {
+      "file": "godori.svg",
+      "bytes": 268,
+      "sha256": "2e40236ea6873afc898969cf1e747c0d34475ba7896547c16e03488a98bdcb69",
+      "role": "godori",
+      "source": "original procedural/vector authoring",
+      "pivot": "center",
+      "collision": "none",
+      "dimensions": [
+        32.0,
+        32.0
+      ],
+      "transparent": true,
+      "consumer": "src/app/MinhwatuTable.tsx",
+      "approval": "Applied in game; native asset/layout review 1366/1440/1920 KO/ES, 2026-10-11"
+    },
+    {
+      "file": "lacquer-back.svg",
+      "bytes": 799,
+      "sha256": "922dfe17dae0d9fa6d6fee010d450f3bb074c4578b4b8df260810639db66fd83",
+      "role": "lacquer-back",
+      "source": "original procedural/vector authoring",
+      "pivot": "center",
+      "collision": "none",
+      "dimensions": [
+        103.2,
+        168.2
+      ],
+      "transparent": true,
+      "consumer": "src/styles/minhwatu-table.css",
+      "approval": "Applied in game; native asset/layout review 1366/1440/1920 KO/ES, 2026-10-11"
+    },
+    {
+      "file": "month.svg",
+      "bytes": 271,
+      "sha256": "4b5394457025e390bca2109c82dc2a48d54713eb13b227a91425ac1e2b24d0c9",
+      "role": "month",
+      "source": "original procedural/vector authoring",
+      "pivot": "center",
+      "collision": "none",
+      "dimensions": [
+        32.0,
+        32.0
+      ],
+      "transparent": true,
+      "consumer": "src/app/MinhwatuTable.tsx",
+      "approval": "Applied in game; native asset/layout review 1366/1440/1920 KO/ES, 2026-10-11"
+    },
+    {
+      "file": "rack.webp",
+      "bytes": 450,
+      "sha256": "1e45729579cd1a48bf6ef6dd563932a7f8ab4720166501641415810db203c0e5",
+      "role": "rack",
+      "source": "original procedural/vector authoring",
+      "pivot": "center",
+      "collision": "none",
+      "dimensions": [
+        256,
+        256
+      ],
+      "transparent": false,
+      "seamless": "Periodic integer-frequency texture; no baked lighting or borders",
+      "lumaRangePercent": 0.784,
+      "consumer": "src/styles/minhwatu-table.css",
+      "approval": "Applied in game; native asset/layout review 1366/1440/1920 KO/ES, 2026-10-11"
+    },
+    {
+      "file": "ribbon.svg",
+      "bytes": 270,
+      "sha256": "7c84783d3710e9b0a7559734355bf35be1e05a09da34976de65ce316fd88638b",
+      "role": "ribbon",
+      "source": "original procedural/vector authoring",
+      "pivot": "center",
+      "collision": "none",
+      "dimensions": [
+        32.0,
+        32.0
+      ],
+      "transparent": true,
+      "consumer": "src/app/MinhwatuTable.tsx",
+      "approval": "Applied in game; native asset/layout review 1366/1440/1920 KO/ES, 2026-10-11"
+    },
+    {
+      "file": "turn.svg",
+      "bytes": 230,
+      "sha256": "cb5d182f0fdfb036509033ef9fbb5a3aa2f1e3a2252f363eea29d86f839b33a9",
+      "role": "turn",
+      "source": "original procedural/vector authoring",
+      "pivot": "center",
+      "collision": "none",
+      "dimensions": [
+        24.0,
+        24.0
+      ],
+      "transparent": true,
+      "consumer": "src/app/MinhwatuTable.tsx",
+      "approval": "Applied in game; native asset/layout review 1366/1440/1920 KO/ES, 2026-10-11"
+    }
+  ],
+  "faceHashes": {
+    "01-01.svg": "9d65f503cff73db7b8591de7af4ddb5ba732f305a4367fd9567cb8a83a5493f2",
+    "01-02.svg": "e48641a2c973fe3c32b6c3c70fbd3e997114cc5d723c33b7fda1066e0012f02a",
+    "01-03.svg": "be9c44743d167f7da5b6becf8064e4664162cf2ef58b2642adb6a259235e8c15",
+    "01-04.svg": "17a1638a45be5335730903e88ca16cc0a4f1a133ee6e86edd68cbfcee18ebe10",
+    "02-01.svg": "3c354b77932ba1006dcebf530eba1542f6b031b0f32fc3a009a3ddefc2c3207f",
+    "02-02.svg": "2ffc43dcd01fbd12d1425d1028791d1a65707f5391eac013b2dda65e4b1c389b",
+    "02-03.svg": "9f319c9709b6e381bf9d3cf08e548699b4d4a7f12336658d5f443c563346f361",
+    "02-04.svg": "666bc529b79bfbd1f325e954921f98c7f44769c5e0d4fcd925b0b5e464466616",
+    "03-01.svg": "e39002639c4aa083f557c431b90c46a3cb937798b790cb4db4e3565119d47ac4",
+    "03-02.svg": "6aca2c4bdef68490ea12e21f590d7417cb7ce9fed87f3324e8f55072b268483a",
+    "03-03.svg": "97ddc6f0617684482954aa4510e351ec69ef3271372e4988bb7d62b3338c41d4",
+    "03-04.svg": "30d58438989c3e79e8b8be2331047f323c0a9cac4c3761bed40a30826616e719",
+    "04-01.svg": "9a3767d84b6d30356ad344e7a76e15416f5e50cf83e36d1adfbf23a6dc4dcf98",
+    "04-02.svg": "f15a7830573bc1cc4111e49af691f96f0a745093c56dca8945da544b9550b954",
+    "04-03.svg": "ae24dd23a1bb32d0e9df2a0a77eb6393448cea4a8146b675790a7ada3f68d1b7",
+    "04-04.svg": "e8e60e0a497e5d5a71770bc1b4745121b2f48e3a467fe703c5e48042d376b0dc",
+    "05-01.svg": "999b89958f4131bd411293e3dd1e57286a5ce8b7b6365a052962f996af211084",
+    "05-02.svg": "3ffa3fedb4b3d13155989321c33403b2ce390d766bff1bc4ea668e087155000a",
+    "05-03.svg": "9eb116874f8f06cc2713de1d95403e49a033c83a7a26a7839006e5b346792c93",
+    "05-04.svg": "8f33367a4cce35d1af8eb2151bbe53d51d4f67ed6333bcbf096b759d3fc76c55",
+    "06-01.svg": "031de817207f869268fcb2646dbd744fc871d39d6372aeeecae5a47a92d9cd4f",
+    "06-02.svg": "9dbcf6d84c6c50eafee14633a60666e1089a8b558e1bf528b627287824291d09",
+    "06-03.svg": "77a10bd41ef0e88b9338eec2deacf22b391ae97dfefc39a0b7bbe56672288257",
+    "06-04.svg": "b189d163bd16d51f7018a1609e1e89eb172de48a4e44a5599dc517c8b22153f8",
+    "07-01.svg": "73cbd74ead1400345b593b54a425e2b70b771b9eee697d19ae1bc64dcbeddbca",
+    "07-02.svg": "c48899368fd9daf8b6be30e921d138f01baf5ab29f8822b78acb050b7a2f88de",
+    "07-03.svg": "2908b4512cecd0c370d388847ea55ac2a3b43783583ae7d1ae390ed09a42fcaf",
+    "07-04.svg": "deda01917699368b0edfd729696b9554eac0d4e0ac6da3ca4f5755fb09cff5ce",
+    "08-01.svg": "a2e138e36504cb082b4b00ff72752a439dfcecb5230927c8b43df24cd2296bce",
+    "08-02.svg": "f6aa41b60c5a1ba6273c00714b6ad1287910e5c4ccfb64a1d513f240356131fe",
+    "08-03.svg": "572e1ac725850bfae82960bc59c03183ef71fa17548ed48846ea4cb34230f80a",
+    "08-04.svg": "c76dbba84c77fc35eeebc13c31a6126ed2d7c5647b2fb0d440e432062bff444e",
+    "09-01.svg": "e825e22e44420b1d080b0030de7142698f4934e77c60c863798f16ef32eb5e4d",
+    "09-02.svg": "8e885e7129faa08a7cc05e5b6e227790fcb6dfe484726e189cbc5d08763077cc",
+    "09-03.svg": "72a78a31c16870695fb9577301a1e8a949d3248b10e66a3ce76bfcece36a0c7c",
+    "09-04.svg": "0c3124ee023c0d7dd38afa97c0a7e459810b24531750914d44f615412bd43f34",
+    "10-01.svg": "6aa3849e8bdc33e505abc5104142af007e53368001d4de45267a01da39f7f69d",
+    "10-02.svg": "6e36c2791673cde665bcfd461487c19f4f38f517376c9f9689c409da5f117960",
+    "10-03.svg": "6b1bb1ab9569d13166b8f4587c43606fc1c1e63ba772291b649657837ab549f1",
+    "10-04.svg": "fe7bb1fbe63e19c4be6b0f354a75cd5e65f213c01c972216836c0fbbc751b831",
+    "11-01.svg": "45cedf381bb673eb29323f118a4abd7a21ce1a6b0831220bbf9d8fd6dbb7482e",
+    "11-02.svg": "cc12b7e53d63f77ff945bd4e225c83f75e79dec72ffe39e73655bdce48d17edc",
+    "11-03.svg": "17e69b2ed30e8b37206babe024355bd10657d67f49279b3bd6d78c9a3111c3ae",
+    "11-04.svg": "a9572ec5fc65f80f35a43edfdbb041484c7964f4b05db44b079b31fce1e0c9c3",
+    "12-01.svg": "00baca86842b53344776add4a2c7305faccb5ddb446963a507caffcfe04e2b85",
+    "12-02.svg": "1139349a210d127ea9c8c227681e67816760664725aa97b20b791db4b19fde01",
+    "12-03.svg": "b1b7f478bd69a045b27a8eff97377e6b77878c7fa2a1802083e8c807361c394d",
+    "12-04.svg": "4d5b82d918b27cef147b7c945d3610e517660f7fd580be45a1e0fa03af66411f"
+  },
+  "totalAssetBytes": 4774,
+  "layoutEvidence": "output/playwright/minhwatu-art/bank-layout.json",
+  "limits": "No original face redesign; mobile and full motion/audio sensory validation outside art ownership. Zoom/DPR checked separately by integration QA."
+}

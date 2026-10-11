@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { jaipurCueForEvent, jaipurCuesForEvent, jaipurEventWindow, jaipurFlights, type JaipurEvent } from './jaipur-motion';
+import { JAIPUR_FLIGHT_MS, jaipurCueForEvent, jaipurCuesForEvent, jaipurEventWindow, jaipurFlights, jaipurLandingFeedback, type JaipurEvent } from './jaipur-motion';
 
 const event = (sequence: number, type: string, extra: Record<string, unknown> = {}) => ({ sequence, round: 1, type, title: { ko: type, es: type }, ...extra }) as JaipurEvent;
 
@@ -38,9 +38,39 @@ describe('Jaipur committed motion events', () => {
     const sale = jaipurFlights(event(6, 'sale', { actor: 'p1', cards: [{ id: 'h-1', good: 'spice' }], tokenValues: [5, 4] }), 'p1');
     expect(sale.map(({ from, to, delay, kind }) => ({ from, to, delay, kind }))).toEqual([
       { from: 'hand:h-1', to: 'sale', delay: 0, kind: 'card' },
-      { from: 'sale', to: 'tokens-p1', delay: 130, kind: 'token' },
-      { from: 'sale', to: 'tokens-p1', delay: 185, kind: 'token' },
+      { from: 'sale', to: 'tokens-p1', delay: 220, kind: 'token' },
+      { from: 'sale', to: 'tokens-p1', delay: 250, kind: 'token' },
     ]);
     expect(jaipurFlights(event(7, 'bonus', { actor: 'p2', bonus: { size: 3, value: 3 } }), 'p1')[0]).toMatchObject({ good: '3', from: 'bonus', to: 'tokens-p2', kind: 'bonus' });
+  });
+
+  it('waits for all seven sold cards before moving rewards and finishes within one second', () => {
+    const flights = jaipurFlights(event(9, 'sale', { actor: 'p1', cards: Array.from({ length: 7 }, (_, i) => ({ id: `leather-${i}`, good: 'leather' })), tokenValues: [4, 3, 2, 1, 1, 1, 1] }), 'p1');
+    const cards = flights.filter(flight => flight.kind === 'card'), tokens = flights.filter(flight => flight.kind === 'token');
+    const arrival = Math.max(...cards.map(flight => flight.delay + JAIPUR_FLIGHT_MS));
+    expect(tokens[0].delay).toBeGreaterThanOrEqual(arrival);
+    expect(Math.max(...tokens.map(flight => flight.delay + JAIPUR_FLIGHT_MS))).toBeLessThan(1000);
+  });
+
+  it('plays one transfer cue at the last actual card landing, including a five-card exchange', () => {
+    const cards = Array.from({ length: 5 }, (_, i) => ({ id: `m-${i}`, good: 'cloth' as const }));
+    const exchange = event(10, 'exchange', { cards, given: cards.map(card => ({ ...card, id: `h-${card.id}` })) });
+    const flights = jaipurFlights(exchange, 'p1');
+    expect(jaipurLandingFeedback(exchange, flights)).toEqual({ cue: 'exchange', delay: 360 });
+    expect(jaipurLandingFeedback(exchange, flights.filter(flight => flight.delay === 0))).toEqual({ cue: 'exchange', delay: 220 });
+    const take = event(11, 'take-single', { cards: [cards[0]] });
+    expect(jaipurLandingFeedback(take, jaipurFlights(take, 'p1'))).toEqual({ cue: 'place', delay: 220 });
+    const camels = event(12, 'take-camels', { cards: cards.slice(0, 3).map(card => ({ ...card, good: 'camel' })) });
+    expect(jaipurLandingFeedback(camels, jaipurFlights(camels, 'p1'))).toEqual({ cue: 'camel', delay: 290 });
+    expect(jaipurLandingFeedback(exchange, [])).toBeNull();
+  });
+
+  it('keeps coin and bonus feedback on their first reward landing and leaves refill audio to the shared stage', () => {
+    const sale = event(13, 'sale', { cards: [{ id: 'h-1', good: 'leather' }], tokenValues: [4, 3] });
+    expect(jaipurLandingFeedback(sale, jaipurFlights(sale, 'p1'))).toEqual({ cue: 'coin', delay: 440 });
+    const bonus = event(14, 'bonus', { bonus: { size: 3, value: 2 } });
+    expect(jaipurLandingFeedback(bonus, jaipurFlights(bonus, 'p1'))).toEqual({ cue: 'bonus', delay: 220 });
+    const refill = event(15, 'market-refill', { cards: [{ id: 'm-1', good: 'gold' }] });
+    expect(jaipurLandingFeedback(refill, jaipurFlights(refill, 'p1'))).toBeNull();
   });
 });

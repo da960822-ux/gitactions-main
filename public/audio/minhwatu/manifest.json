@@ -1,0 +1,178 @@
+{
+  "sourceUrl": "https://kenney.nl/assets/casino-audio",
+  "archiveUrl": "https://kenney.nl/media/pages/assets/casino-audio/2472606a04-1721639069/kenney_casino-audio.zip",
+  "archiveSha256": "f36250766ac5bc378c13708ddf12a23a8e54a3251f8d482c7536e51b5dbafa18",
+  "license": "CC0",
+  "author": "Kenney Vleugels",
+  "processing": "Actual source card Foley; first >100 PCM onset trimmed; mono 48kHz PCM16 WAV; family crop/fade; peak -6dBFS. Results are spaced Foley composites, not separate recordings. No listening approval yet.",
+  "files": [
+    {
+      "file": "select-1.wav",
+      "source": "card-slide-1.ogg",
+      "sourceSha256": "006cf9822d15d7063f8899e56041f41646df30adb6fbd8b974ee5d5420012690",
+      "durationMs": 80,
+      "peakDbFS": -6.0,
+      "sha256": "c628c7547fa5a04667f1165b64f3b4c9ebb844236128db71fa153c28d201c832"
+    },
+    {
+      "file": "select-2.wav",
+      "source": "card-slide-2.ogg",
+      "sourceSha256": "e674a1679ec87b507047fe012d068ad2c412125f56186f0e732684705c2a6888",
+      "durationMs": 80,
+      "peakDbFS": -6.0,
+      "sha256": "8c6232108273d79190487b96cffc7ee92da5d302fddf943e177b8818646a44f8"
+    },
+    {
+      "file": "place-1.wav",
+      "source": "card-place-1.ogg",
+      "sourceSha256": "d8f26c33a665dcbdcc6f632f6050bc9dd548feb0d4942d4547615926d3926810",
+      "durationMs": 140,
+      "peakDbFS": -6.0,
+      "sha256": "f930d7b9599291ff266795ac0615dd59d92a17623102356f58ea720bd6b7c561"
+    },
+    {
+      "file": "place-2.wav",
+      "source": "card-place-2.ogg",
+      "sourceSha256": "903d5050718595e87864dd755643b476ab1a5533080dcc2dddc72570d33ba9f8",
+      "durationMs": 140,
+      "peakDbFS": -6.0,
+      "sha256": "b5f6fdce5f87e38579bef2e53c007431b1f92b3fbdf7b609a8b5a5c1e6b6d1ba"
+    },
+    {
+      "file": "place-3.wav",
+      "source": "card-place-3.ogg",
+      "sourceSha256": "1d988631a6e5201ed1bb0d728f2e43a3ec79401258426858793598044ac95841",
+      "durationMs": 140,
+      "peakDbFS": -6.0,
+      "sha256": "b39a3d0262d065a9f445a6f59b8386d015bc5a7c2c85bfa4cb7f9ffea35899ab"
+    },
+    {
+      "file": "place-4.wav",
+      "source": "card-place-4.ogg",
+      "sourceSha256": "18e3ba713b7259605fd27cdc048085ed56cf86b32403f070b6cb125019f77183",
+      "durationMs": 140,
+      "peakDbFS": -6.0,
+      "sha256": "0041812408a6eff7dbe2da332470fd11f8e60bd7e6c08395c651558ed2f98d55"
+    },
+    {
+      "file": "draw-1.wav",
+      "source": "card-slide-3.ogg",
+      "sourceSha256": "af2ab62656cb3df73316ce5771b8ee1111a840962b21607e3202151e7413c52c",
+      "durationMs": 180,
+      "peakDbFS": -6.0,
+      "sha256": "8f80065a6775ec387ed2eceaec028d7e476d89025d30c42f6d91da30b7b20b77"
+    },
+    {
+      "file": "draw-2.wav",
+      "source": "card-slide-4.ogg",
+      "sourceSha256": "b9c82bcdbe6b7d00a06e2546bd2683a9ab082ca5fd090a42882f33eddd925b7f",
+      "durationMs": 180,
+      "peakDbFS": -6.0,
+      "sha256": "24c4848e785744b199e6d7603ba0c8de69cbf11496af34305c219b3ab52644af"
+    },
+    {
+      "file": "draw-3.wav",
+      "source": "card-slide-5.ogg",
+      "sourceSha256": "8638ab0c17f029aded0e27a4f9b9bb9f8c621b19a6e9975e855cb40ea63e2201",
+      "durationMs": 180,
+      "peakDbFS": -6.0,
+      "sha256": "0f79acac4363522f17c4281670811598350b4c615a97c5b20c306eb2045a4b84"
+    },
+    {
+      "file": "capture-1.wav",
+      "source": "card-shove-1.ogg",
+      "sourceSha256": "1ea667aa6795d5f14239192116ebcbd8f3f47eb1c7faaf2ec56844b9067b8b06",
+      "durationMs": 210,
+      "peakDbFS": -6.0,
+      "sha256": "219bdfcd8979e4f8ef5d16fd51039ffa51b7e2862b713814dc09e3da3f0e4070"
+    },
+    {
+      "file": "capture-2.wav",
+      "source": "card-shove-2.ogg",
+      "sourceSha256": "8e95c1d3ae94b5b91bc663432ad7c3bf4e03a541c22ec10fa51c65fe0e29054b",
+      "durationMs": 210,
+      "peakDbFS": -28.83,
+      "sha256": "30edbfeb83393b87e10d636fbf5c1ada9a3740aed3db13f7fec0b98ab0d8aaac"
+    },
+    {
+      "file": "capture-3.wav",
+      "source": "card-shove-3.ogg",
+      "sourceSha256": "399520d483a1466fcaa850b9c407b4edbd5c7f0cbdf17e84dea12e9636326d0d",
+      "durationMs": 210,
+      "peakDbFS": -6.0,
+      "sha256": "d840a726fb1a1201cfaaafbda5efc171f316707f749fa0a47c0f71da9489add2"
+    },
+    {
+      "file": "stack-1.wav",
+      "source": "card-place-2.ogg",
+      "sourceSha256": "903d5050718595e87864dd755643b476ab1a5533080dcc2dddc72570d33ba9f8",
+      "durationMs": 120,
+      "peakDbFS": -6.0,
+      "sha256": "fa207ab57a2292731a1f08c3ae7d4f1ea0adf6da1ceac4387a9cd28280776510"
+    },
+    {
+      "file": "stack-2.wav",
+      "source": "card-place-3.ogg",
+      "sourceSha256": "1d988631a6e5201ed1bb0d728f2e43a3ec79401258426858793598044ac95841",
+      "durationMs": 120,
+      "peakDbFS": -6.0,
+      "sha256": "97fb88a4aaacd5e1c58be9ecc311744207f4a243a1827066b7fca63f3a0d7a8c"
+    },
+    {
+      "file": "stack-3.wav",
+      "source": "card-place-4.ogg",
+      "sourceSha256": "18e3ba713b7259605fd27cdc048085ed56cf86b32403f070b6cb125019f77183",
+      "durationMs": 120,
+      "peakDbFS": -6.0,
+      "sha256": "ac98c47122be78c160a6e39d372052663b9fdd0444d7bf998ef52d474a2e1dd6"
+    },
+    {
+      "file": "deal-1.wav",
+      "source": "card-fan-1.ogg",
+      "sourceSha256": "7a9758ccad8899baef1b9f60b4064e4baa724a548293832fdaea07e6e07e638d",
+      "durationMs": 350,
+      "peakDbFS": -6.0,
+      "sha256": "103239b10a49036835797948cce081e5800aee8c2e995ff7439a0900861c71a0"
+    },
+    {
+      "file": "deal-2.wav",
+      "source": "card-fan-2.ogg",
+      "sourceSha256": "5743373c9dde00c6eee949a2c8e65d75946522768999167e1f5632451630e848",
+      "durationMs": 350,
+      "peakDbFS": -6.0,
+      "sha256": "4011833962de0d26281d8d5632ac50a0f571b3154ec5a75371027e54f100649c"
+    },
+    {
+      "file": "turn-1.wav",
+      "source": "card-slide-6.ogg",
+      "sourceSha256": "be85da181ac879c20cb667d0f9f156dbdc236d3751737ad27359a15e946430a0",
+      "durationMs": 90,
+      "peakDbFS": -6.0,
+      "sha256": "74c99b9f0494a8da9ec9a0615009dc31074104edc9cbf52148fbbea75a74fea0"
+    },
+    {
+      "file": "win-1.wav",
+      "source": "card-place-1.ogg",
+      "sourceSha256": "d8f26c33a665dcbdcc6f632f6050bc9dd548feb0d4942d4547615926d3926810",
+      "durationMs": 480,
+      "peakDbFS": -6.0,
+      "sha256": "7681e81a196baadbb7e104f964a23205df259d71178f7f786ab6f852a2f073e8"
+    },
+    {
+      "file": "lose-1.wav",
+      "source": "card-shove-4.ogg",
+      "sourceSha256": "0a1ad3a2f16bd2ed73349e6342426ca7a59a6e26b7e26e36d51d51c2c2349d6f",
+      "durationMs": 320,
+      "peakDbFS": -6.0,
+      "sha256": "bc21f3e30414cd35ae76291e2144f1dad04bce60af8d92cf5ea0fe13df7d353c"
+    },
+    {
+      "file": "draw-result-1.wav",
+      "source": "card-slide-7.ogg",
+      "sourceSha256": "bda2040194f43484d03ee3c65ed6fff57251882ea7227abce4214bfa30bf2705",
+      "durationMs": 320,
+      "peakDbFS": -6.0,
+      "sha256": "607a183a62967350837a35f4483d7dce0e45ef61da6f3e4df10a0e1e73482df2"
+    }
+  ]
+}

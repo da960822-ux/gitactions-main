@@ -36,3 +36,7 @@ Catchmind’s current interaction and privacy implementation is documented in [G
 - **Catchmind:** [catchmind-browser.json](../output/playwright/game-polish/catchmind-browser.json) records 13/13 passing checks in two independent fixture contexts: KO drawer / Spanish guesser, synchronized drawing, no repaint on timer ticks, answer secrecy through wrong guesses, and public +3/+1 correct-answer scoring. No page errors occurred. The fixture has no Realtime, so the Spanish canvas was refreshed after committed drawing updates.
 
 These browser runs use a local SQL authority fixture, not deployed Supabase Auth/PostgREST/Realtime. They verify the browser interface and fixture action path, not production transport or automatic Realtime delivery.
+
+## Three-game quality revision — 2026-10-11
+
+The user requested commercial-quality interaction for Domino, Jaipur and Splendor, with one agent auditing each game, then requested installation and application of Awesome GameDev Agent Skills. The revised [GAME-QUALITY-PLAN.md](GAME-QUALITY-PLAN.md) connects each proposal to installed UI/input/feel/art/audio/card-resolution/profiling guidance and states implementation and acceptance gates. These are planned improvements; the older browser evidence above is retained as historical evidence and does not certify the new proposals. Eight-game scope, rule contracts, private data and free-tier constraints remain in force.
