@@ -170,3 +170,46 @@
 @media (prefers-reduced-motion: reduce) {
   .cm-phase-label, .cm-hint-word, .cm-bottom-note, .cm-guess-row, .cm-finish-card { animation: none; }
 }
+
+/* Keep the drawing and its controls in one viewport on desktop. */
+.cm-play-area { grid-template-columns: minmax(0, 1fr) 250px; min-height: 0; height: clamp(440px, calc(100dvh - 285px), 620px); }
+.cm-artboard-head { min-height: 56px; }
+.cm-canvas, .cm-canvas canvas { min-height: 0; }
+.cm-tool-modes button { min-height: 44px; }
+.cm-color { width: 44px; height: 44px; }
+.cm-color-grid { gap: 4px; }
+.cm-tool-actions button, .cm-eraser, .cm-swap-colors, .cm-settings-foot button { min-height: 44px; }
+.cm-tool-actions button { padding: 8px 6px; font-size: 12px; }
+.cm-tool-modes button span { font-size: 12px; }
+.cm-tools-head, .cm-width-control span, .cm-secondary-row { font-size: 11px; }
+.cm-player-row > span:nth-child(2) small { font-size: 11px; }
+.cm-guess-title, .cm-guess-row, .cm-guess-list > p { font-size: 12px; }
+.cm-draw-error { display: grid; gap: 7px; margin-bottom: 9px; padding: 9px; border-radius: 8px; background: #fff0e8; color: #8e3f31; font-size: 12px; line-height: 1.4; }
+.cm-draw-error button { min-height: 44px; border: 1px solid #d9a493; border-radius: 7px; background: white; color: inherit; font-weight: 700; cursor: pointer; }
+@media (max-width: 760px) {
+  .cm-play-area { height: auto; }
+  .cm-canvas, .cm-canvas canvas { min-height: min(66vw, 360px); }
+  .cm-color { width: 44px; height: 44px; }
+}
+.cm-icon { width: 20px; height: 20px; flex: 0 0 20px; fill: none; stroke: currentColor; vertical-align: middle; }
+.cm-tool-modes button { align-content: center; }
+.cm-text-action { display: inline-flex; align-items: center; gap: 6px; min-height: 44px; }
+.cm-choice-wait > img, .cm-finish-card > img { display: block; object-fit: contain; }
+.cm-finish-card { padding: 9px 10px; }
+.cm-color-grid { padding: 1px; }
+.cm-round-art { flex: 0 0 auto; width: 40px; height: 30px; object-fit: contain; }
+.cm-color-grid { padding: 1px; }
+.cm-stale-draw { margin: 0 0 8px; padding: 8px 11px; border-radius: 8px; background: #fff0e8; color: #8e3f31; font-size: 12px; line-height: 1.4; }
+.cm-tools { padding: 10px 8px; }
+.cm-color-grid { gap: 2px; }
+.cm-setting-grid label, .cm-custom-label, .cm-custom-only, .cm-settings-foot small, .cm-settings-error { font-size: 12px; }
+.cm-setting-grid input { height: 40px; font-size: 14px; }
+.cm-custom-label textarea { font-size: 12px; }
+.cm-settings-foot button { font-size: 12px; }
+.cm-guess-section { min-height: 48px; }
+.cm-guess-title { padding: 5px 1px 3px; }
+.cm-guess-list { max-height: 24px; padding-bottom: 2px; }
+.cm-tools { margin-top: 0; }
+.cm-tools-head { margin-bottom: 4px; }
+.cm-tool-modes { margin-bottom: 4px; }
+.cm-secondary-row, .cm-eraser, .cm-width-control, .cm-tool-actions { margin-top: 4px; }

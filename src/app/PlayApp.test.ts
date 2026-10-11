@@ -2,7 +2,8 @@ import { afterEach, describe, expect, it } from 'vitest';
 import { vi } from 'vitest';
 import { createElement } from 'react';
 import { renderToStaticMarkup } from 'react-dom/server';
-import { bindApi, CatchmindChatComposer, GameGuide, Room, rulesButtonLabel, SameGameReplay, sameGameReplayAvailable, statusLabel } from './PlayApp';
+import { bindApi, catchmindEnterSubmits, CatchmindChatComposer, GameGuide, Room, RulesDialog, rulesButtonLabel, SameGameReplay, sameGameReplayAvailable, statusLabel } from './PlayApp';
+import { getBeginnerGuide } from './beginner-guides';
 import { ActionFlightGuard, announcementForContext, cueForAction, GameFeedback, jaipurImmediateCues, publicViewAnnouncement, publicViewCue } from './GameFeedback';
 import { gameCatalog } from '../games/catalog';
 import { marbleLegacyRules } from '../games/rules';
@@ -67,6 +68,15 @@ describe('PlayApp client binding', () => {
     expect(snapshot.view?.phase).toBe('finished');
     expect(snapshot.view?.result).toBeTruthy();
     const finishedVersion = snapshot.version;
+    const previousStorage = globalThis.localStorage;
+    vi.stubGlobal('localStorage', { getItem: () => null, setItem: () => {}, removeItem: () => {} });
+    try {
+      const html = renderToStaticMarkup(createElement(Room, { api, roomId: snapshot.roomId! }));
+      expect(html.match(/class="button button-dark same-game-replay-button"/g)).toHaveLength(1);
+      expect(html).not.toContain('class="match-replay"');
+    } finally {
+      vi.stubGlobal('localStorage', previousStorage);
+    }
     api.localSeat('p1');
     await api.selectGame('domino');
     snapshot = api.getSnapshot();
@@ -111,6 +121,37 @@ describe('same-game replay availability', () => {
 });
 
 describe('inline game guide', () => {
+  it('offers the same concise illustrated introduction before and during the three upgraded games', () => {
+    for (const gameId of ['davinci', 'catchmind', 'marble'] as const) for (const language of ['ko', 'es'] as const) {
+      const quick = getBeginnerGuide(gameId, language)!;
+      const inline = renderToStaticMarkup(createElement(GameGuide, { gameId, language, marbleVersion: 2, marbleEconomyVersion: 2 }));
+      const dialog = renderToStaticMarkup(createElement(RulesDialog, { gameId, language, onClose: () => {} }));
+      for (const html of [inline, dialog]) {
+        expect(html).toContain(quick.goal);
+        expect(html).toContain(`/images/guides/${gameId}-${language}.webp`);
+        expect(html).toContain(language === 'es' ? 'lang="es-DO"' : 'lang="ko"');
+        expect(html).toContain('<details class="guide-details">');
+        expect(html).not.toContain('<details open');
+      }
+    }
+  });
+
+  it('leaves the other five games on their existing instructions', () => {
+    for (const gameId of ['domino', 'jaipur', 'splendor', 'minhwatu', 'rhythm'] as const) {
+      expect(getBeginnerGuide(gameId, 'ko')).toBeNull();
+      const html = renderToStaticMarkup(createElement(GameGuide, { gameId, language: 'es' }));
+      expect(html).not.toContain('beginner-guide');
+      expect(html).not.toContain('/images/guides/');
+    }
+  });
+
+  it('keeps saved Marble cost and credit rules out of the current tutorial', () => {
+    expect(getBeginnerGuide('marble', 'ko', { marbleVersion: 1 })!.tip).toContain('18칸');
+    expect(getBeginnerGuide('marble', 'es', { marbleEconomyVersion: 0 })!.tip).toContain('no tiene préstamos');
+    expect(getBeginnerGuide('marble', 'ko', { marbleEconomyVersion: 1 })!.tip).toContain('100');
+    expect(getBeginnerGuide('marble', 'es', { marbleEconomyVersion: 2 })!.tip).toContain('40');
+  });
+
   it('renders complete localized instructions for all eight games', () => {
     for (const game of gameCatalog) {
       const ko = renderToStaticMarkup(createElement(GameGuide, { gameId: game.id, language: 'ko' }));
@@ -374,4 +415,25 @@ describe('room communication UI', () => {
       vi.stubGlobal('localStorage', previousStorage);
     }
   });
+});
+
+
+describe('Catchmind composing Enter', () => {
+  it('submits only a deliberate Enter after composition and blocks repeated pending sends', () => {
+    const enter = { key: 'Enter', shiftKey: false, isComposing: false, keyCode: 13 };
+    expect(catchmindEnterSubmits(enter, false)).toBe(true);
+    expect(catchmindEnterSubmits({ ...enter, isComposing: true }, false)).toBe(false);
+    expect(catchmindEnterSubmits({ ...enter, keyCode: 229 }, false)).toBe(false);
+    expect(catchmindEnterSubmits({ ...enter, shiftKey: true }, false)).toBe(false);
+    expect(catchmindEnterSubmits(enter, true)).toBe(false);
+  });
+});
+
+it('shows 16 keys for new rooms and retains 13-key instructions for saved rooms', () => {
+  for (const language of ['ko', 'es'] as const) {
+    const render = (marbleEventVersion?: number) => renderToStaticMarkup(createElement(GameGuide, { gameId: 'marble', language, marbleVersion: 2, marbleEconomyVersion: 2, marbleEventVersion }));
+    expect(render(3)).toContain(language === 'ko' ? '16종' : '16 cartas');
+    expect(render()).toContain(language === 'ko' ? '13종' : '13 cartas');
+    expect(render()).not.toContain(language === 'ko' ? '도시 재생' : 'renovación');
+  }
 });

@@ -1,0 +1,5 @@
+<svg xmlns="http://www.w3.org/2000/svg">
+<symbol id="villa" viewBox="0 0 32 32"><g stroke="#20343A" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path fill="#F5F1E7" d="M6 15h20v13H6Z"/><path fill="#58C7B0" d="m3 15 13-11 13 11Z"/><path fill="#20343A" d="M14 20h5v8h-5Z"/></g></symbol>
+<symbol id="building" viewBox="0 0 32 32"><g stroke="#20343A" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path fill="#F5F1E7" d="M8 4h16v24H8Z"/><path fill="#58C7B0" d="M8 4h16v6H8Z"/><path d="M12 14h1m6 0h1m-8 5h1m6 0h1M5 28h22"/></g></symbol>
+<symbol id="landmark" viewBox="0 0 32 32"><g stroke="#20343A" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path fill="#F5F1E7" d="M4 19h8V9h8v10h8v9H4Z"/><path fill="#58C7B0" d="m9 9 7-7 7 7ZM2 19h10v3H2Zm18 0h10v3H20Z"/><path d="M16 13v11m-8-1v3m16-3v3M2 28h28"/></g></symbol>
+</svg>

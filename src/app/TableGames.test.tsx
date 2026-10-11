@@ -220,7 +220,7 @@ describe('TableGames public-state interaction guidance', () => {
       turn: 'p2', phase: 'action', ownHand: { tokens: { white: 0, blue: 0, green: 0, red: 0, black: 0, gold: 1 }, bonuses: {}, reserved: [], points: 0, nobles: 0 },
       board: {
         bank: { white: 4, blue: 4, green: 4, red: 4, black: 4, gold: 5 },
-        score: { p1: 15, p2: 8 }, turns: { p1: 9, p2: 8 }, opponentReserved: [{ id: 'opponent-secret-card-face' }],
+        score: { p1: 15, p2: 8 }, ownedBonuses: { p1: { red: 1, blue: 2 }, p2: { black: 2 } }, turns: { p1: 9, p2: 8 }, opponentReserved: [{ id: 'opponent-secret-card-face' }],
         market: { 1: [{ id: 'card-a', bonus: 'red', points: 1, cost: { blue: 2 }, tier: 1 }], 2: [], 3: [] }, nobles: {}, reservedOpponentCount: 2,
       },
       actions: [],
@@ -232,6 +232,8 @@ describe('TableGames public-state interaction guidance', () => {
     expect(html).toContain('Podrás tomar gemas en tu turno.');
     expect(html).not.toContain('Elige 3 colores distintos');
     expect(html).not.toContain('Toma: 3 gemas de colores distintos');
+    expect(html).toContain('3 cartas');
+    expect(html).toContain('2 cartas');
     expect(html).toContain('class="sp-card-art sp-color-red"');
     expect(html).toContain('>1</b> / 10');
     expect(html).toContain('>2 / 3</b>');

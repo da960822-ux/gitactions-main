@@ -12,7 +12,7 @@ const kinds: Record<string, { ko: string; es: string }> = {
   ribbon: { ko: '띠', es: 'cinta' }, tti: { ko: '띠', es: 'cinta' }, 띠: { ko: '띠', es: 'cinta' },
   junk: { ko: '피', es: 'simple' }, pi: { ko: '피', es: 'simple' }, 피: { ko: '피', es: 'simple' }, plain: { ko: '피', es: 'simple' }, special: { ko: '특수', es: 'especial' },
 };
-export function HwatuCard({ card, language }: { card: Value; language: Language }) {
+export function HwatuCard({ card, language, compactMonth = false }: { card: Value; language: Language; compactMonth?: boolean }) {
   const month = Math.max(1, Math.min(12, Number(card.month ?? 1)));
   const flowerValue = safeRecord(card.flower);
   const flower = typeof card.flower === 'string'
@@ -27,6 +27,6 @@ export function HwatuCard({ card, language }: { card: Value; language: Language 
   const description = `${copy(language, `${month}월`, `Mes ${month}`)} · ${flower} · ${badge || label} · ${Number(card.points ?? 0)} ${copy(language, '점', 'pts')}`;
   return <article className={`gb-hwatu-card gb-hwatu-card-premium gb-hwatu-month-${month}`} title={description} aria-label={description} role="img">
     {face && <img className="gb-hwatu-face gb-hwatu-face-premium" src={face} width="103" height="168" alt="" aria-hidden="true"/>}
-    <span className="gb-hwatu-month-tag" aria-hidden="true">{copy(language, `${month}월`, `Mes ${month}`)}</span>
+    <span className="gb-hwatu-month-tag" aria-hidden="true">{compactMonth ? `${month}` : copy(language, `${month}월`, `Mes ${month}`)}</span>
   </article>;
 }

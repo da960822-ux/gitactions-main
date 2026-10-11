@@ -9,6 +9,7 @@ import splendorArt from '../../public/images/splendor/card-map.json';
 import '../styles/game-design-system.css';
 import '../styles/table-games.css';
 import '../styles/splendor-premium.css';
+import '../styles/table-playability.css';
 
 type TableGameId = 'jaipur' | 'splendor' | 'davinci';
 type Choice = { label: Record<Language, string>; action: GameAction };
@@ -217,6 +218,7 @@ export function deriveSplendorVisualEvent(previous: any, next: any, viewer: Play
 function SplendorTable({ view, language, playerId, roomId = null, version = 0, runAction }: Props) {
   const board = record(view?.board), hand = record(view?.ownHand), choices: Choice[] = array(view?.actions);
   const bank = record(board.bank), market = record(board.market), nobles = record(board.nobles), scores = record(board.score);
+  const publicBonuses = record(board.ownedBonuses);
   const tokens = record(hand.tokens), owned = record(hand.bonuses), reserved = array(hand.reserved);
   const [picked, setPicked] = useState<string[]>([]), [returnDraft, setReturnDraft] = useState<Record<string, number>>({}), [selectedDoubleGem, setSelectedDoubleGem] = useState<string | null>(null), [reserveChoices, setReserveChoices] = useState<Record<string, number>>({}), [selectedCard, setSelectedCard] = useState<{ id: string; source: 'market' | 'reserved' | 'deck'; tier?: number; viewer: PlayerId; roomId: string | null; version: number } | null>(null);
   const actionPanelRef = useRef<HTMLElement | null>(null), cardFocusReturnRef = useRef<HTMLElement | null>(null);
@@ -381,7 +383,7 @@ function SplendorTable({ view, language, playerId, roomId = null, version = 0, r
     <header className="sp-scorebar">
       <div className="sp-title"><span>{title}</span><small>{copy(language, '보석을 모아 개발 카드를 얻고, 먼저 15점에 도달하세요.', 'Reúne gemas, compra desarrollos y alcanza 15 puntos.')}</small></div>
       {(['p1', 'p2'] as const).map((seat) => <div className={`sp-player-score ${seat === playerId ? 'is-you' : ''} ${view?.turn === seat ? 'is-active' : ''}`} data-sp-score-seat={seat} key={seat}>
-        <span>{seat === playerId ? copy(language, '나', 'Tú') : copy(language, '상대', 'Rival')}</span><b><GameValue value={Number(scores[seat] ?? 0)} resetKey={`${scoreKey}:${seat}`}/></b><small>{copy(language, '점', 'pts')}</small>{view?.turn === seat && !view?.result && <i>{copy(language, '차례', 'Turno')}</i>}<span className="sp-public-bonuses" aria-label={copy(language,'공개 영구 보너스','Bonificaciones permanentes públicas')}>{colors.map(gem=><span className={`sp-public-bonus sp-color-${gem}`} key={gem} title={gemName(gem,language)}><GemIcon gem={gem}/><b>{Number(record(record(board.ownedBonuses)[seat])[gem]??0)}</b></span>)}</span>
+        <span>{seat === playerId ? copy(language, '나', 'Tú') : copy(language, '상대', 'Rival')}</span><b><GameValue value={Number(scores[seat] ?? 0)} resetKey={`${scoreKey}:${seat}`}/></b><small>{copy(language, '점', 'pts')}</small><small className="sp-public-card-count">{colors.reduce((total, gem) => total + Number(record(publicBonuses[seat])[gem] ?? 0), 0)} {copy(language, '개발 카드', 'cartas')}</small>{view?.turn === seat && !view?.result && <i>{copy(language, '차례', 'Turno')}</i>}<span className="sp-public-bonuses" aria-label={copy(language,'공개 영구 보너스','Bonificaciones permanentes públicas')}>{colors.map(gem=><span className={`sp-public-bonus sp-color-${gem}`} key={gem} title={gemName(gem,language)}><GemIcon gem={gem}/><b>{Number(record(record(board.ownedBonuses)[seat])[gem]??0)}</b></span>)}</span>
       </div>)}
       {finalRound && <p className="sp-final-turn" role="status">{finalTurnSeat === playerId ? copy(language, '15점에 도달했어요. 이번 차례가 마지막이에요.', 'Se alcanzaron 15 puntos. Este es el último turno.') : copy(language, '15점에 도달했어요. 상대의 마지막 차례예요.', 'Se alcanzaron 15 puntos. La otra persona tiene su último turno.')}</p>}
     </header>

@@ -337,13 +337,6 @@ export function GameFeedback({ language, gameId, playerId, view, pending = false
         else playCue(gameId, resultForPlayer(gameId, view, playerId) === 'win' ? 'win' : 'lose');
         return;
       }
-      const oldEvents = marbleEvents(previous.view);
-      const oldSequence = oldEvents.reduce((max, event) => Math.max(max, marbleEventSequence(event)), 0);
-      const cues = marbleEventsAfter(marbleEvents(view), oldSequence).map(marbleCueForEvent).filter((cue): cue is AudioCue => cue !== null);
-      cues.forEach((cue, index) => {
-        if (index === 0) playCue(gameId, cue);
-        else cueTimers.current.push(window.setTimeout(() => playCue(gameId, cue), index * 230));
-      });
       return;
     }
     if (gameId === 'jaipur') {

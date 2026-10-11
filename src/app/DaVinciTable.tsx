@@ -117,6 +117,9 @@ export default function DaVinciTable({ view, language, playerId, runAction }: Da
   const [number, setNumber] = useState<TileValue>(0);
   const [confirming, setConfirming] = useState<Choice | null>(null);
   const [submitting, setSubmitting] = useState(false);
+  const tableRef = useRef<HTMLDivElement>(null);
+  const confirmButtonRef = useRef<HTMLButtonElement>(null);
+  const restoreTargetFocus = useRef(false);
   const snapshotKey = davinciSnapshotKey(view);
   const previous = useRef<{ viewer: PlayerId; view: any } | null>(null);
   const mounted = useRef(true);
@@ -141,9 +144,17 @@ export default function DaVinciTable({ view, language, playerId, runAction }: Da
   useEffect(() => {
     if (!hidden.some(item => item.index === targetIndex)) setTargetIndex(hidden[0]?.index ?? 0);
   }, [rival.map(tile => `${tile?.revealed ? 1 : 0}:${tile?.color}`).join('|'), targetIndex]);
+  useEffect(() => {
+    if (confirming) confirmButtonRef.current?.focus();
+    else if (restoreTargetFocus.current) {
+      restoreTargetFocus.current = false;
+      tableRef.current?.querySelector<HTMLButtonElement>('.dv-rival-rack button[aria-pressed="true"]')?.focus();
+    }
+  }, [confirming]);
 
   const filteredTargets = hidden.filter(item => colorFilter === 'all' || item.tile.color === colorFilter);
   const target = active && gameInteractionPhase ? hidden.find(item => item.index === targetIndex) : undefined;
+  const cancelGuess = () => { restoreTargetFocus.current = true; setConfirming(null); };
   const guess = findDaVinciGuess(guessChoices, targetIndex, number);
   const visibleEvent = visualEvent?.viewer === playerId && visualEvent.snapshot === snapshotKey ? visualEvent : null;
   const statusText = (event: VisualEvent) => {
@@ -177,7 +188,7 @@ export default function DaVinciTable({ view, language, playerId, runAction }: Da
     const flipsOwnTile = visibleEvent?.index === index && ((visibleEvent.type === 'wrong' && visibleEvent.actor === playerId) || (visibleEvent.type === 'correct' && visibleEvent.actor !== playerId));
     const arrivesOwnTile = visibleEvent?.type === 'draw' && visibleEvent.actor === playerId && visibleEvent.index === index
       || visibleEvent?.type === 'arrange' && visibleEvent.actor === playerId && !hasOwnJokerToPlace && tile.value === 'joker' && visibleEvent.index === index;
-    return <div role="img" className={`dv-tile dv-own-tile dv-tile-${tile?.color === 'white' ? 'white' : 'black'} ${tile?.revealed ? 'is-revealed' : ''} ${flipsOwnTile ? 'is-flipping' : ''} ${arrivesOwnTile ? 'is-arriving' : ''}`} key={`${tile?.color}-${tile?.value}`} aria-label={copy(language, `${index + 1}번째 ${colorLabel(tile?.color ?? 'black', language)} 타일, 숫자 ${tileValueLabel(tile?.value)}${tile?.revealed ? ', 공개됨' : ''}`, `Ficha propia ${index + 1} ${colorLabel(tile?.color ?? 'black', language)}, número ${tileValueLabel(tile?.value)}${tile?.revealed ? ', revelada' : ''}`)}><span className="dv-tile-order">{index + 1}</span><b>{tileValueLabel(tile?.value)}</b><span className="dv-tile-color">{colorLabel(tile?.color ?? 'black', language)}</span>{tile?.revealed && <small className="dv-tile-state">{copy(language, '공개', 'Visible')}</small>}</div>;
+    return <div role="img" className={`dv-tile dv-own-tile dv-tile-${tile?.color === 'white' ? 'white' : 'black'} ${tile?.revealed ? 'is-revealed' : ''} ${flipsOwnTile ? 'is-flipping' : ''} ${arrivesOwnTile ? 'is-arriving' : ''}`} key={`${tile?.color}-${tile?.value}`} aria-label={copy(language, `${index + 1}번째 ${colorLabel(tile?.color ?? 'black', language)} 타일, 숫자 ${tileValueLabel(tile?.value)}${tile?.revealed ? ', 공개됨' : ''}`, `Ficha propia ${index + 1} ${colorLabel(tile?.color ?? 'black', language)}, número ${tileValueLabel(tile?.value)}${tile?.revealed ? ', revelada' : ''}`)}><span className="dv-tile-order">{index + 1}</span><b>{tileValueLabel(tile?.value)}</b><span className="dv-tile-color">{colorLabel(tile?.color ?? 'black', language)}</span>{tile?.revealed && <small className="dv-tile-state"><svg aria-hidden="true"><use href="/images/davinci/state-icons.svg#revealed"/></svg>{copy(language, '공개', 'Visible')}</small>}</div>;
   };
   const actionLog = list(board.actionLog).filter((event: any) => event?.type === 'correct-guess' || event?.type === 'wrong-guess').slice(-12);
   const streaks: Record<PlayerId, number> = { p1: 0, p2: 0 };
@@ -189,7 +200,7 @@ export default function DaVinciTable({ view, language, playerId, runAction }: Da
     }
   }
 
-  return <div className="table-game dv-table" aria-label={copy(language, '다빈치 코드 게임판', 'Mesa de Código Da Vinci')}>
+  return <div ref={tableRef} className="table-game dv-table" aria-label={copy(language, '다빈치 코드 게임판', 'Mesa de Código Da Vinci')}>
     <header className="dv-header">
       <div><h2>{copy(language, '다빈치 코드', 'Código Da Vinci')}</h2><p>{copy(language, '색과 정렬 순서를 단서로 상대의 숨은 숫자를 추리하세요.', 'Usa el color y el orden como pistas para deducir los números ocultos.')}</p></div>
       <div className="dv-score-strip"><div className={view?.turn === playerId ? 'is-active' : ''}><span>{copy(language, '내 타일', 'Tus fichas')}</span><b>{own.length}</b>{streaks[playerId] > 0 && <small>{copy(language, `연속 정답 ${streaks[playerId]}`, `Aciertos seguidos: ${streaks[playerId]}`)}</small>}</div><div className="dv-hidden-stat"><span>{copy(language, '숫자 숨김', 'Números ocultos')}</span><GameValue value={Number(view?.opponentCount ?? hidden.length)} resetKey={`${playerId}:davinci:hidden`}/></div><div className={view?.turn !== playerId ? 'is-active' : ''}><span>{copy(language, '상대 타일', 'Fichas rivales')}</span><b>{rival.length}</b>{streaks[playerId === 'p1' ? 'p2' : 'p1'] > 0 && <small>{copy(language, `상대 연속 정답 ${streaks[playerId === 'p1' ? 'p2' : 'p1']}`, `Aciertos rivales seguidos: ${streaks[playerId === 'p1' ? 'p2' : 'p1']}`)}</small>}</div></div>
@@ -204,7 +215,7 @@ export default function DaVinciTable({ view, language, playerId, runAction }: Da
         const winningReveal = !!view?.result && resultOutcome === 'win' && visibleEvent?.type === 'correct' && visibleEvent.actor === playerId && visibleEvent.index === index;
         const arrivesRivalTile = visibleEvent?.type === 'rival-draw' && visibleEvent.actor !== playerId && visibleEvent.index === index;
         const tileClass = `dv-tile dv-tile-${tile?.color === 'white' ? 'white' : 'black'} ${tile?.revealed ? 'is-revealed' : ''} ${targetIndex === index && target ? 'is-target' : ''} ${flipsRivalTile && !winningReveal ? 'is-flipping' : ''} ${winningReveal ? 'is-winning-reveal' : ''} ${arrivesRivalTile ? 'is-arriving' : ''}`;
-        const contents = <><span className="dv-tile-order">{index + 1}</span><b>{tile?.revealed ? tileValueLabel(tile.value) : '· ·'}</b><span className="dv-tile-color">{colorLabel(tile?.color ?? 'black', language)}</span>{tile?.revealed && <small className="dv-tile-state">{copy(language, '공개', 'Revelada')}</small>}{selectable && targetIndex === index && <em>{copy(language, '목표', 'Objetivo')}</em>}</>;
+        const contents = <><span className="dv-tile-order">{index + 1}</span><b>{tile?.revealed ? tileValueLabel(tile.value) : '· ·'}</b><span className="dv-tile-color">{colorLabel(tile?.color ?? 'black', language)}</span>{tile?.revealed && <small className="dv-tile-state"><svg aria-hidden="true"><use href="/images/davinci/state-icons.svg#revealed"/></svg>{copy(language, '공개', 'Revelada')}</small>}{selectable && targetIndex === index && <em><svg aria-hidden="true"><use href="/images/davinci/state-icons.svg#target"/></svg>{copy(language, '목표', 'Objetivo')}</em>}</>;
         return selectable ? <button type="button" key={`rival-${index}`} className={tileClass} aria-pressed={targetIndex === index} aria-label={copy(language, `${index + 1}번째 ${colorLabel(tile.color, language)} 상대 타일${tile.revealed ? `, ${tileValueLabel(tile.value)}` : ', 숫자 숨김'}`, `Ficha rival ${index + 1} ${colorLabel(tile.color, language)}${tile.revealed ? `, ${tileValueLabel(tile.value)}` : ', número oculto'}`)} onClick={() => { setTargetIndex(index); setColorFilter(tile.color); setConfirming(null); playCue('davinci', 'select'); }}>{contents}</button>
           : <div key={`rival-${index}`} role="img" className={tileClass} aria-label={copy(language, `${index + 1}번째 ${colorLabel(tile?.color ?? 'black', language)} 상대 타일${tile?.revealed ? `, ${tileValueLabel(tile.value)}` : ', 숫자 숨김'}`, `Ficha rival ${index + 1} ${colorLabel(tile?.color ?? 'black', language)}${tile?.revealed ? `, ${tileValueLabel(tile.value)}` : ', número oculto'}`)}>{contents}</div>;
       })}{!rival.length && <p className="dv-empty">{copy(language, '상대 타일을 기다리고 있어요.', 'Esperando las fichas rivales.')}</p>}</div>
@@ -230,14 +241,14 @@ export default function DaVinciTable({ view, language, playerId, runAction }: Da
         </div>
         <div className="dv-guess-footer">
           {target && <p className="dv-guess-summary" role="status">{copy(language, `${targetIndex + 1}번째 ${colorLabel(target.tile.color, language)} 타일 · ${guessDescriptor} 추측`, `Ficha ${targetIndex + 1} ${colorLabel(target.tile.color, language)} · adivinar ${guessDescriptor}`)}</p>}
-        {confirming ? <div className="dv-confirm-row"><span>{copy(language, `상대 ${targetIndex + 1}번째 타일이 ${number === 'joker' ? '조커' : number}라고 추측할까요?`, `¿Adivinar que la ficha rival ${targetIndex + 1} es ${guessDescriptor}?`)}</span><button type="button" className="dv-action-primary" disabled={submitting} onClick={async () => {
+        {confirming ? <div className="dv-confirm-row" onKeyDown={event => { if (event.key === 'Escape' && !submitting) cancelGuess(); }}><span>{copy(language, `상대 ${targetIndex + 1}번째 타일이 ${number === 'joker' ? '조커' : number}라고 추측할까요?`, `¿Adivinar que la ficha rival ${targetIndex + 1} es ${guessDescriptor}?`)}</span><button ref={confirmButtonRef} type="button" className="dv-action-primary" disabled={submitting} onClick={async () => {
             if (submitting) return;
             setSubmitting(true);
             try {
               const accepted = await runAction(confirming.action);
               if (mounted.current) { setSubmitting(false); if (accepted !== false) setConfirming(null); }
             } catch { if (mounted.current) setSubmitting(false); }
-          }}>{submitting ? copy(language, '전송 중…', 'Enviando…') : copy(language, '추측 확정', 'Confirmar')}</button><button type="button" className="dv-cancel" disabled={submitting} onClick={() => setConfirming(null)}>{copy(language, '취소', 'Cancelar')}</button></div> : <button type="button" className="dv-guess-submit" disabled={!guess || !active || !target || !filteredTargets.some(item => item.index === targetIndex)} onClick={() => guess && setConfirming(guess)}>{daVinciGuessButtonLabel(language, number)}</button>}
+          }}>{submitting ? copy(language, '전송 중…', 'Enviando…') : copy(language, '추측 확정', 'Confirmar')}</button><button type="button" className="dv-cancel" disabled={submitting} onClick={cancelGuess}>{copy(language, '취소', 'Cancelar')}</button></div> : <button type="button" className="dv-guess-submit" disabled={!guess || !active || !target || !filteredTargets.some(item => item.index === targetIndex)} onClick={() => guess && setConfirming(guess)}>{daVinciGuessButtonLabel(language, number)}</button>}
           {active && guessChoices.length > 0 && stopChoice && Number(board.deckCount ?? 0) > 0 && <p className="dv-rule-note">{copy(language, '맞히면 계속 추측하거나 차례를 마칠 수 있어요. 틀리면 방금 뽑은 타일이 공개되고 차례가 끝나요.', 'Si aciertas, puedes seguir o terminar tu turno. Si fallas, se revela la ficha que acabas de robar y termina tu turno.')}</p>}
           {active && guessChoices.length > 0 && stopChoice && Number(board.deckCount ?? 0) <= 0 && <p className="dv-rule-note">{copy(language, '더미가 비었어요. 틀려도 새로 공개될 내 타일은 없고 차례가 끝나요.', 'El mazo está vacío. Si fallas, no se revela una ficha nueva y termina tu turno.')}</p>}
           {active && skipDrawChoice && <p className="dv-rule-note">{copy(language, '더미가 비었어요. 타일을 뽑지 않고 추측을 계속해요.', 'El mazo está vacío. Puedes seguir adivinando sin robar.')}</p>}

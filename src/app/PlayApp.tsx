@@ -1,13 +1,14 @@
 import { FormEvent, useCallback, useEffect, useRef, useState } from 'react';
 import type { Language, PlayerId, GameId, GameAction } from '../core/types';
 import { gameCatalog, getGame } from '../games/catalog';
-import { gameRules, marbleLegacyRules, marbleCreditRules, dominoPremiumRules } from '../games/rules';
+import { gameRules, marbleLegacyRules, marbleCreditRules, marbleTieredRules, marbleExpandedRules, dominoPremiumRules } from '../games/rules';
 import { BrandHeader } from './App';
 import { Link, navigate } from './Router';
 import DominoBoard from './DominoBoard';
 import MarbleBoard from './MarbleBoard';
 import CatchmindTable from './CatchmindTable';
 import { TableGames } from './TableGames';
+import { MatchReplay } from './MatchReplay';
 import { DaVinciMatchSummary } from './DaVinciMatchSummary';
 import { RhythmBoard } from './RhythmBoard';
 import { ReactionPanel } from './ReactionPanel';
@@ -15,6 +16,7 @@ import { reactionForText, type ReactionId } from '../core/reactions';
 import { ActionFlightGuard, cueForAction, GameFeedback } from './GameFeedback';
 import { MinhwatuTable } from './MinhwatuTable';
 import { MinhwatuGuide } from './MinhwatuGuide';
+import { GameInstructions as BeginnerGameInstructions } from './GameInstructions';
 import { DominoQuickGuide } from './DominoQuickGuide';
 import { JaipurQuickGuide } from './JaipurQuickGuide';
 import { SplendorQuickGuide } from './SplendorQuickGuide';
@@ -140,6 +142,7 @@ export function Room({ api, roomId, desktopDisplay = true }: { api: Api; roomId:
   const [palette, setPalette] = useState('#284f49');
   const [strokeWidth, setStrokeWidth] = useState(6);
   const [sending, setSending] = useState(false);
+  const messageSending = useRef(false);
   const [now, setNow] = useState(Date.now());
   const tickedDeadline = useRef('');
   const chatBottom = useRef<HTMLDivElement>(null);
@@ -202,11 +205,13 @@ export function Room({ api, roomId, desktopDisplay = true }: { api: Api; roomId:
     const frame = window.requestAnimationFrame(() => {
       const board = document.getElementById('game-board');
       if (!board) return;
-      const overflow = board.getBoundingClientRect().bottom + 8 - window.innerHeight;
-      if (overflow > 0) window.scrollBy({ top: overflow, behavior: window.matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth' });
+      const surface = board.querySelector('.mp-board-grid');
+      if (!surface) return;
+      const overflow = surface.getBoundingClientRect().bottom + 8 - window.innerHeight;
+      if (overflow > 0) window.scrollBy({ top: Math.min(overflow, Math.max(0, board.getBoundingClientRect().top - 8)), behavior: 'auto' });
     });
     return () => window.cancelAnimationFrame(frame);
-  }, [active, language, snapshot.gameId, view?.board?.tiles?.length]);
+  }, [active, snapshot.gameId, snapshot.playerId, view?.board?.tiles?.length]);
   const doJoin = async (event: FormEvent) => {
     event.preventDefault(); setJoinError(''); setBusy(true);
     try { await api.joinRoom(roomId, nickname.trim(), language); localStorage.setItem('dos-nickname', nickname.trim()); localStorage.setItem('dos-language', language); updateSnapshot(); }
@@ -233,7 +238,7 @@ export function Room({ api, roomId, desktopDisplay = true }: { api: Api; roomId:
       setPendingActionCount(pendingActionKeys.current.size);
     }
   };
-  const send = async (event: FormEvent, body = chat, clear = true) => { event.preventDefault(); const value = body.trim(); if (!value) return; setMessageError(''); setSending(true); try { await api.sendChat(value); if (clear) setChat(''); updateSnapshot(); } catch (cause) { setMessageError(errorMessage(cause, language)); } finally { setSending(false); } };
+  const send = async (event: FormEvent, body = chat, clear = true) => { event.preventDefault(); const value = body.trim(); if (!value || messageSending.current) return; messageSending.current = true; setMessageError(''); setSending(true); try { await api.sendChat(value); if (clear) setChat(''); updateSnapshot(); } catch (cause) { setMessageError(errorMessage(cause, language)); } finally { messageSending.current = false; setSending(false); } };
   const sendReaction = async (reaction: ReactionId) => { setMessageError(''); setSending(true); try { await api.sendReaction(reaction); updateSnapshot(); } catch (cause) { setMessageError(errorMessage(cause, language)); } finally { setSending(false); } };
   const setMyLanguage = async (value: Language) => { setLanguage(value); localStorage.setItem('dos-language', value); try { await api.setLanguage(value); updateSnapshot(); } catch (cause) { setJoinError(errorMessage(cause, value)); } };
   const chooseGame = async (gameId: GameId) => { if (!canPlayGameOnDisplay(desktopDisplay, gameId)) return false; try { await api.selectGame(gameId); updateSnapshot(); return true; } catch (cause) { setActionError(errorMessage(cause, language)); return false; } };
@@ -264,7 +269,7 @@ export function Room({ api, roomId, desktopDisplay = true }: { api: Api; roomId:
   const compactTable = ['domino', 'jaipur', 'splendor'].includes(snapshot.gameId ?? '');
   const myPlayer = snapshot.players.find(player => player.id === snapshot.playerId);
   const other = snapshot.players.find(player => player.id !== snapshot.playerId);
-  return <div className={`app-shell room-shell ${compactTable ? 'quality-table-room' : ''} ${snapshot.gameId === 'minhwatu' ? 'minhwatu-room' : ''} ${!desktopDisplay && canViewRoomOnDisplay(false, snapshot.gameId) ? 'jaipur-mobile' : ''}`}><BrandHeader compact/><main className="room-main">
+  return <div className={`app-shell room-shell ${['davinci', 'catchmind', 'marble'].includes(snapshot.gameId ?? '') ? `room-game-${snapshot.gameId}` : ''} ${compactTable ? 'quality-table-room' : ''} ${snapshot.gameId === 'minhwatu' ? 'minhwatu-room' : ''} ${!desktopDisplay && canViewRoomOnDisplay(false, snapshot.gameId) ? 'jaipur-mobile' : ''}`}><BrandHeader compact/><main className="room-main">
     {snapshot.mode === 'demo' && <div className="demo-banner"><span className="demo-pulse"/><span><b>{text(language, '같은 브라우저 데모', 'Demo en este navegador')}</b> · {text(language, '다른 기기에서는 입장할 수 없어요.', 'No se puede entrar desde otro dispositivo.')}</span><label>{text(language, '좌석', 'Asiento')} <select aria-label={text(language, '내 데모 좌석', 'Mi asiento de demo')} value={snapshot.playerId} onChange={event => { api.localSeat(event.target.value as PlayerId); updateSnapshot(); }}><option value="p1">1</option><option value="p2">2</option></select></label></div>}
     <div className="room-topline"><Link href="/play" className="back-link">← {text(language, '게임방 목록', 'Lista de salas')}</Link><div className="room-id-label"><Link href="/feedback">{text(language, 'Mami의 아이디어', 'Ideas de Mami')}</Link><span className="online-dot"/> {text(language, '초대 코드', 'Invitación')} <b>{roomId}</b><button title={text(language, '초대 링크 복사', 'Copiar enlace')} onClick={() => void copyInviteLink()}>⧉</button><button className="room-close-link" onClick={() => setConfirmClose(true)}>{text(language, '방 닫기', 'Cerrar sala')}</button></div></div>
     {snapshot.error && <div className="error-strip" role="alert">{errorMessage(new Error(snapshot.error), language)} <button disabled={reconnecting || !api.reconnectRoom} onClick={() => void retryConnection()}>{text(language, reconnecting ? '확인 중…' : '다시 시도', reconnecting ? 'Comprobando…' : 'Reintentar')}</button></div>}
@@ -276,7 +281,8 @@ export function Room({ api, roomId, desktopDisplay = true }: { api: Api; roomId:
         {!game ? <section className="game-select-card"><div className="select-intro"><span className="eyebrow">{text(language, '함께 고르기', 'ELIJAN JUNTOS')}</span><h2>{text(language, '무슨 게임을 할까요?', '¿Qué jugamos?')}</h2><p>{text(language, '두 사람 모두 같은 게임을 고르면 시작돼요.', 'La partida comienza cuando los dos eligen el mismo juego.')}</p></div>{snapshot.pendingGame && <div className="pending-choice"><span>◷</span><span>{text(language, '상대의 선택을 기다려요:', 'Esperando la elección de la otra persona:')} <b>{getGame(snapshot.pendingGame)?.title[language]}</b></span></div>}<div className="room-game-grid">{gameCatalog.map(item => { const allowed = canPlayGameOnDisplay(desktopDisplay, item.id); return <button key={item.id} className={`room-game-card game-${item.color}`} onClick={() => void chooseGame(item.id)} aria-disabled={!allowed} disabled={!allowed} title={!allowed ? text(language, '이 게임은 데스크톱에서 이용할 수 있어요.', 'Este juego requiere una computadora de escritorio.') : undefined}><span className="room-game-icon"><span className={`game-thumbnail art-${item.id}`} aria-hidden="true"/></span><span><b>{item.title[language]}</b><small>{item.subtitle[language]}</small></span><span className="room-game-arrow">↗</span></button>; })}</div>{!desktopDisplay && <p className="pick-hint">{text(language, '모바일에서는 자이푸르만 선택할 수 있어요.', 'En móvil solo puedes elegir Jaipur.')}</p>}<div className="rhythm-note"><b>♫</b><p><strong>MUSIC TALK TALK</strong> — {text(language, '이 방의 내장 플레이어에서 실행됩니다.', 'Se juega en el reproductor integrado de esta sala.')}</p><a href="https://vidkidz.tistory.com/431" target="_blank" rel="noreferrer">{text(language, '원작 제공처 열기', 'Abrir página original')} ↗</a></div></section>
         : <section className="board-card" id="game-board" aria-busy={pendingActionCount > 0}><header className="board-header"><div className="board-game"><span className={`board-game-icon game-${game.color}`}><span className={`game-thumbnail art-${game.id}`} aria-hidden="true"/></span><span><b>{game.title[language]}</b><small>{game.subtitle[language]}</small></span></div><div className="board-header-right"><span className="turn-tag">{statusLabel(view, snapshot.playerId, language)}</span><a className="plain-button" href="#game-guide">{rulesButtonLabel(language)}</a><GameFeedback identity={boardIdentity} language={language} gameId={game.id} playerId={snapshot.playerId} view={view} pending={pendingActionCount > 0}/><button className="icon-button" aria-label={text(language, '다른 게임으로 바꾸기', 'Cambiar de juego')} onClick={() => setActionError(text(language, '게임 바꾸기를 요청합니다. 아래 게임 목록에서 새 게임을 골라 주세요.', 'Pide cambiar de juego seleccionando otro juego abajo.'))}>↻</button></div></header>
           {actionError && <div className="action-notice" role="alert">{actionError}<button aria-label={text(language, '안내 닫기', 'Cerrar aviso')} onClick={() => setActionError('')}>×</button></div>}
-          {snapshot.gameId === 'rhythm' ? <RhythmBoard language={language}/> : isCatchmind ? <CatchmindTable view={view} playerId={snapshot.playerId} language={language} now={now} palette={palette} setPalette={setPalette} strokeWidth={strokeWidth} setStrokeWidth={setStrokeWidth} runAction={runAction} /> : snapshot.gameId === 'domino' ? <DominoBoard key={boardIdentity} view={view} playerId={snapshot.playerId} language={language} runAction={runAction}/> : snapshot.gameId === 'marble' ? <MarbleBoard view={view} playerId={snapshot.playerId} language={language} runAction={runAction}/> : snapshot.gameId === 'minhwatu' ? <MinhwatuTable view={view} playerId={snapshot.playerId} language={language} runAction={runAction} playerNames={Object.fromEntries(snapshot.players.map(player => [player.id, player.nickname]))} sceneKey={roomId} onReplay={() => chooseGame('minhwatu')} replayPending={snapshot.pendingGame === 'minhwatu'}/> : snapshot.gameId === 'jaipur' || snapshot.gameId === 'splendor' || snapshot.gameId === 'davinci' ? <TableGames key={boardIdentity} roomId={roomId} version={snapshot.version} game={snapshot.gameId} view={view} playerId={snapshot.playerId} language={language} runAction={runAction}/> : null}
+          {snapshot.gameId === 'rhythm' ? <RhythmBoard language={language}/> : isCatchmind ? <CatchmindTable roomId={roomId} view={view} playerId={snapshot.playerId} language={language} now={now} palette={palette} setPalette={setPalette} strokeWidth={strokeWidth} setStrokeWidth={setStrokeWidth} runAction={runAction} /> : snapshot.gameId === 'domino' ? <DominoBoard key={boardIdentity} view={view} playerId={snapshot.playerId} language={language} runAction={runAction}/> : snapshot.gameId === 'marble' ? <MarbleBoard view={view} playerId={snapshot.playerId} language={language} runAction={runAction}/> : snapshot.gameId === 'minhwatu' ? <MinhwatuTable view={view} playerId={snapshot.playerId} language={language} runAction={runAction} playerNames={Object.fromEntries(snapshot.players.map(player => [player.id, player.nickname]))} sceneKey={roomId} onReplay={() => chooseGame('minhwatu')} replayPending={snapshot.pendingGame === 'minhwatu'}/> : snapshot.gameId === 'jaipur' || snapshot.gameId === 'splendor' || snapshot.gameId === 'davinci' ? <TableGames key={boardIdentity} roomId={roomId} version={snapshot.version} game={snapshot.gameId} view={view} playerId={snapshot.playerId} language={language} runAction={runAction}/> : null}
+          {view?.result && !['davinci', 'minhwatu', 'rhythm', ...sameGameReplayIds].includes(snapshot.gameId ?? '') && <MatchReplay language={language} pending={snapshot.pendingGame === snapshot.gameId} onReplay={async () => { await chooseGame(snapshot.gameId!); }}/>}
           {snapshot.gameId === 'davinci' && <DaVinciMatchSummary roomId={roomId} playerId={snapshot.playerId} language={language} view={view} pendingGame={snapshot.pendingGame} onReplay={async () => { await chooseGame('davinci'); }}/>}
           {!!game && <footer className="board-footer"><span>{snapshot.mode === 'online' ? text(language, '이 방의 게임은 두 사람만 볼 수 있어요.', 'Solo ustedes dos pueden ver la partida.') : text(language, '데모 게임은 이 브라우저에서만 보여요.', 'La demo solo se ve en este navegador.')}</span><a href="#game-guide">{text(language, '게임 방법 보기 ↓', 'Ver cómo jugar ↓')}</a></footer>}
         </section>}
@@ -287,7 +293,7 @@ export function Room({ api, roomId, desktopDisplay = true }: { api: Api; roomId:
           <div className="chat-content" id="room-reactions" hidden={chatCollapsed}><ReactionPanel language={language} playerId={snapshot.playerId} players={snapshot.players} messages={snapshot.messages} sending={sending} error={messageError} onSend={reaction => void sendReaction(reaction)}/></div>
         </aside>}
         {snapshot.gameId === 'davinci' && view?.board?.tileCount === 24 && <p className="marble-legacy-notice">{text(language, '이 저장된 판은 조커 없는 24장 규칙이에요. 아래 설명의 조커 항목은 제외하고, 새 판부터 조커 포함 26장으로 시작해요.', 'Esta partida guardada usa 24 fichas sin comodines. Omite los puntos sobre comodines de las reglas de abajo; la próxima partida usará 26 fichas.')}</p>}
-        {game && <GameGuide gameId={game.id} language={language} dominoMode={view?.board?.mode ?? view?.mode} dominoRulesVersion={view?.board?.rulesVersion} marbleVersion={view?.board?.version} marbleEconomyVersion={view?.board?.economicVersion}/>}
+        {game && <GameGuide gameId={game.id} language={language} dominoMode={view?.board?.mode ?? view?.mode} dominoRulesVersion={view?.board?.rulesVersion} marbleVersion={view?.board?.version} marbleEconomyVersion={view?.board?.economicVersion} marbleEventVersion={view?.board?.eventVersion}/>}
         {game && (desktopDisplay || game.id !== 'jaipur') && <section className="game-switcher"><div><span className="eyebrow">{text(language, '다른 게임', 'OTROS JUEGOS')}</span><p>{text(language, '바꾸려면 두 사람 모두 같은 게임을 골라야 해요.', 'Para cambiar, los dos tienen que elegir el mismo juego.')}</p></div><div className="switch-game-list">{gameCatalog.filter(item => item.id !== game.id && canPlayGameOnDisplay(desktopDisplay, item.id)).map(item => <button key={item.id} onClick={() => void chooseGame(item.id)} aria-label={`${text(language, '게임 선택', 'Elegir juego')}: ${item.title[language]}`} className={snapshot.pendingGame === item.id ? 'pending' : ''}><span className={`game-thumbnail art-${item.id}`} aria-hidden="true"/></button>)}</div></section>}
       </div>
       {isCatchmind && <aside className={`chat-panel catchmind-chat-panel ${chatCollapsed ? 'is-collapsed' : ''}`}>
@@ -336,6 +342,10 @@ export function SameGameReplay({ gameId, language, pendingGame, onReplay }: { ga
   </section>;
 }
 
+export function catchmindEnterSubmits(event: Pick<KeyboardEvent, 'key' | 'shiftKey' | 'isComposing' | 'keyCode'>, sending: boolean) {
+  return event.key === 'Enter' && !event.shiftKey && !event.isComposing && event.keyCode !== 229 && !sending;
+}
+
 export function CatchmindChatComposer({ language, chat, setChat, sending, onSend, onLanguageChange }: {
   language: Language;
   chat: string;
@@ -346,7 +356,7 @@ export function CatchmindChatComposer({ language, chat, setChat, sending, onSend
 }) {
   return <>
     <div className="chat-language-note"><span>文</span><p>{text(language, '메시지는 상대가 고른 언어로 자동 번역돼요. 원문도 함께 보여요.', 'Los mensajes se traducen al idioma de la otra persona. También verás el original.')}</p></div>
-    <form className="chat-compose" onSubmit={onSend}><label className="sr-only" htmlFor="room-message">{text(language, '채팅 또는 정답 입력', 'Escribe un mensaje o respuesta')}</label><textarea id="room-message" rows={2} maxLength={60} value={chat} onChange={event => setChat(event.target.value)} placeholder={text(language, '정답을 맞히거나 이야기해요…', 'Adivina o escribe algo…')} onKeyDown={event => { if (event.key === 'Enter' && !event.shiftKey) { event.preventDefault(); onSend(event as unknown as FormEvent); } }}/><button aria-label={text(language, '보내기', 'Enviar')} disabled={sending || !chat.trim()}>↑</button><small>{languageLabel(language)} · <button type="button" className="inline-language" onClick={() => onLanguageChange(language === 'ko' ? 'es' : 'ko')}>{text(language, '언어 바꾸기', 'Cambiar idioma')}</button></small></form>
+    <form className="chat-compose" onSubmit={event => { event.preventDefault(); if (!sending && chat.trim()) onSend(event); }}><label className="sr-only" htmlFor="room-message">{text(language, '채팅 또는 정답 입력', 'Escribe un mensaje o respuesta')}</label><textarea id="room-message" rows={2} maxLength={60} value={chat} onChange={event => setChat(event.target.value)} placeholder={text(language, '정답을 맞히거나 이야기해요…', 'Adivina o escribe algo…')} onKeyDown={event => { if (catchmindEnterSubmits(event.nativeEvent, sending)) { event.preventDefault(); onSend(event as unknown as FormEvent); } }}/><button aria-label={text(language, '보내기', 'Enviar')} disabled={sending || !chat.trim()}>↑</button><small>{languageLabel(language)} · <button type="button" className="inline-language" onClick={() => onLanguageChange(language === 'ko' ? 'es' : 'ko')}>{text(language, '언어 바꾸기', 'Cambiar idioma')}</button></small></form>
   </>;
 }
 
@@ -375,16 +385,17 @@ function useModalFocus(onEscape: () => void) {
   return dialogRef;
 }
 
-function GameInstructions({ gameId, language, rules }: { gameId: GameId; language: Language; rules: string[] }) {
+function GameInstructions({ gameId, language, rules, options }: { gameId: GameId; language: Language; rules: string[]; options?: import('./beginner-guides').BeginnerGuideOptions }) {
+  if (['davinci', 'catchmind', 'marble'].includes(gameId)) return <BeginnerGameInstructions gameId={gameId} language={language} rules={rules} options={options}/>;
   if (gameId === 'minhwatu') return <MinhwatuGuide language={language}/>;
   const QuickGuide = gameId === 'domino' ? DominoQuickGuide : gameId === 'jaipur' ? JaipurQuickGuide : gameId === 'splendor' ? SplendorQuickGuide : null;
   const fullRules = <ol>{rules.map((rule, i) => <li key={i}><span aria-hidden="true">{String(i + 1).padStart(2, '0')}</span><p>{rule}</p></li>)}</ol>;
   return QuickGuide ? <><QuickGuide language={language}/><details className="guide-details"><summary>{text(language, '궁금할 때: 세부 규칙 보기', 'Ver reglas detalladas')}</summary>{fullRules}</details></> : fullRules;
 }
 
-export function GameGuide({ gameId, language, dominoMode, dominoRulesVersion, marbleVersion, marbleEconomyVersion }: { gameId: GameId; language: Language; dominoMode?: string; dominoRulesVersion?: number; marbleVersion?: number; marbleEconomyVersion?: number }) {
+export function GameGuide({ gameId, language, dominoMode, dominoRulesVersion, marbleVersion, marbleEconomyVersion, marbleEventVersion }: { gameId: GameId; language: Language; dominoMode?: string; dominoRulesVersion?: number; marbleVersion?: number; marbleEconomyVersion?: number; marbleEventVersion?: number }) {
   const game = getGame(gameId)!;
-  const rules = gameId === 'domino' && dominoRulesVersion === 1 ? dominoPremiumRules : gameId === 'marble' ? marbleVersion === 1 ? marbleLegacyRules : marbleEconomyVersion === 1 ? marbleCreditRules : gameRules.marble : gameRules[gameId];
+  const rules = gameId === 'domino' && dominoRulesVersion === 1 ? dominoPremiumRules : gameId === 'marble' ? marbleVersion === 1 ? marbleLegacyRules : marbleEventVersion === 3 ? marbleExpandedRules : marbleEconomyVersion === 2 ? marbleTieredRules : marbleEconomyVersion === 1 ? marbleCreditRules : gameRules.marble : gameRules[gameId];
   const dominoModeLabel = dominoMode === 'partners'
     ? text(language, '현재 모드: 사람-봇 혼합 팀전', 'Modo actual: equipos mixtos de persona y bot')
     : dominoMode === 'humans-vs-bots'
@@ -397,12 +408,12 @@ export function GameGuide({ gameId, language, dominoMode, dominoRulesVersion, ma
       <h2 id="game-guide-title">{game.title[language]} · {text(language, '게임 방법', 'Cómo jugar')}</h2>
       {gameId !== 'minhwatu' && <p className="game-guide-subtitle">{game.subtitle[language]}</p>}
     </div><a className="guide-return" href="#game-board">{text(language, '게임으로 돌아가기 ↑', 'Volver al juego ↑')}</a></header>
-    <GameInstructions gameId={gameId} language={language} rules={rules[language]}/>
+    <GameInstructions gameId={gameId} language={language} rules={rules[language]} options={{ marbleVersion, marbleEconomyVersion: marbleEconomyVersion ?? 0 }}/>
     {game.id === 'domino' && <p className="variant-note">{dominoModeLabel}{' · '}{dominoRulesVersion === 1 ? text(language, '목표점수·보너스·막힘 판정은 테이블 설정을 확인하세요.', 'Revisa la meta, los bonos y el tranque en los ajustes.') : text(language, '기존 단판 규칙입니다. 카피쿠아 보너스는 적용하지 않습니다.', 'Esta sala conserva las reglas de una sola mano, sin bono de capicúa.')}</p>}
   </section>;
 }
 
-function RulesDialog({ gameId, language, dominoMode, onClose }: { gameId: GameId; language: Language; dominoMode?: string; onClose: () => void }) {
+export function RulesDialog({ gameId, language, dominoMode, onClose }: { gameId: GameId; language: Language; dominoMode?: string; onClose: () => void }) {
   const dialogRef = useModalFocus(onClose);
   const game = getGame(gameId)!;
   const dominoModeLabel = dominoMode === 'partners'
@@ -412,7 +423,8 @@ function RulesDialog({ gameId, language, dominoMode, onClose }: { gameId: GameId
       : dominoMode === '1v1'
         ? text(language, '현재 모드: 1대1', 'Modo actual: 1 contra 1')
         : text(language, '첫 타일 전에 모드를 선택할 수 있어요.', 'Pueden elegir el modo antes de colocar la primera ficha.');
-  return <div className="dialog-scrim" role="presentation" onMouseDown={event => { if (event.target === event.currentTarget) onClose(); }}><section ref={dialogRef} tabIndex={-1} className="rules-dialog" role="dialog" aria-modal="true" aria-labelledby="rules-title"><button className="dialog-close" aria-label={text(language, '닫기', 'Cerrar')} onClick={onClose}>×</button><span className="eyebrow">{text(language, '게임 방법', 'CÓMO JUGAR')} · {languageLabel(language).toUpperCase()}</span><div className={`rules-icon game-${game.color}`}><span className={`game-thumbnail art-${game.id}`} aria-hidden="true"/></div><h2 id="rules-title">{game.title[language]}</h2>{gameId !== 'minhwatu' && <p className="rules-subtitle">{game.subtitle[language]}</p>}<GameInstructions gameId={gameId} language={language} rules={(gameId === 'domino' ? dominoPremiumRules : gameRules[gameId])[language]}/>{game.id === 'domino' && <p className="variant-note">{dominoModeLabel}{' · '}{text(language, '단판 또는 누적 경기를 선택하고, 보너스와 막힘 판정은 테이블 설정에서 함께 확인하세요.', 'Elijan una mano o un partido por puntos y revisen los bonos y el conteo del tranque en los ajustes de la mesa.')}</p>}<button className="button button-dark full-button" onClick={onClose}>{text(language, '확인했어요', 'Entendido')} <span>✓</span></button></section></div>;
+  const rules = gameId === 'domino' ? dominoPremiumRules : gameId === 'marble' ? marbleExpandedRules : gameRules[gameId];
+  return <div className="dialog-scrim" role="presentation" onMouseDown={event => { if (event.target === event.currentTarget) onClose(); }}><section ref={dialogRef} tabIndex={-1} className="rules-dialog" role="dialog" aria-modal="true" aria-labelledby="rules-title"><button className="dialog-close" aria-label={text(language, '닫기', 'Cerrar')} onClick={onClose}>×</button><span className="eyebrow">{text(language, '게임 방법', 'CÓMO JUGAR')} · {languageLabel(language).toUpperCase()}</span><div className={`rules-icon game-${game.color}`}><span className={`game-thumbnail art-${game.id}`} aria-hidden="true"/></div><h2 id="rules-title">{game.title[language]}</h2>{gameId !== 'minhwatu' && <p className="rules-subtitle">{game.subtitle[language]}</p>}<GameInstructions gameId={gameId} language={language} rules={rules[language]}/>{game.id === 'domino' && <p className="variant-note">{dominoModeLabel}{' · '}{text(language, '단판 또는 누적 경기를 선택하고, 보너스와 막힘 판정은 테이블 설정에서 함께 확인하세요.', 'Elijan una mano o un partido por puntos y revisen los bonos y el conteo del tranque en los ajustes de la mesa.')}</p>}<button className="button button-dark full-button" onClick={onClose}>{text(language, '확인했어요', 'Entendido')} <span>✓</span></button></section></div>;
 }
 
 function ConfirmClose({ language, closing, onCancel, onConfirm }: { language: Language; closing: boolean; onCancel: () => void; onConfirm: () => void }) {
@@ -452,6 +464,7 @@ function errorMessage(cause: unknown, language: Language) {
     action_confirmation_unknown: ['서버 응답을 확인하지 못했어요. 최신 판에서 해당 행동이 반영됐는지 확인해 주세요.', 'No recibimos la confirmación. Revisa en la mesa actual si la acción ya se realizó.'],
     room_expired: ['이 방은 만료됐어요. 새 방을 만들어 주세요.', 'La sala venció. Crea una nueva.'],
     server_clock_only: ['서버 시각을 확인할 수 없어요. 잠시 후 다시 시도해 주세요.', 'No se pudo consultar el reloj del servidor. Inténtalo de nuevo.'],
+    chat_rate_limit: ['너무 빠르게 보냈어요. 1초 뒤에 다시 보내 주세요. 입력한 내용은 남아 있어요.', 'Enviaste muy rápido. Espera un segundo e inténtalo de nuevo; tu texto sigue aquí.'],
     chat_max_500: ['메시지는 500자 이하로 적어 주세요.', 'El mensaje puede tener hasta 500 caracteres.'],
     not_room_member: ['이 초대 링크를 사용할 수 없어요. 방을 만든 사람에게 새 링크를 요청해 주세요.', 'No puedes usar esta invitación. Pide un enlace nuevo a quien creó la sala.'],
     'Not your turn': ['아직 내 차례가 아니에요.', 'Todavía no es tu turno.'],
