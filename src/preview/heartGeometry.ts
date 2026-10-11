@@ -1,8 +1,6 @@
 import { BufferGeometry, Float32BufferAttribute } from 'three';
 /** Original inflated heart surface; no reference-site model or texture is copied. */
-export function createHeartGeometry() {
-    const segments = 96;
-    const rings = 18;
+export function createHeartGeometry(segments = 96, rings = 18) {
     const vertices: number[] = [];
     const indices: number[] = [];
     const perimeter: number[] = [];
