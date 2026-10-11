@@ -1,10 +1,10 @@
 {
   "status": "interim verification branch, not final visual upgrade or production release",
   "sourceGameMerge": "39cc33ac3f85c87b183db1545aecc3203f835b3f",
-  "sourceFeedback": "0e27e947680b6ec6e4b0f9f03ed125efe7e32e2c",
+  "sourceFeedback": "1a288c215b6b598a2f8b02433979b87b2410e92b",
   "tests": {
     "files": 53,
-    "passed": 470,
+    "passed": 471,
     "failed": 0,
     "build": "TypeScript, Vite and generated Edge engines passed"
   },
@@ -28,10 +28,17 @@
     "note": "Chromium uses software rendering. These are UI compatibility and cleanup assertions, not hardware FPS or production connection evidence."
   },
   "feedback": {
-    "checks": 39,
+    "checks": 45,
     "allPassed": true,
     "errors": [],
-    "method": "Local HTTP/PGlite fixture; no production Auth/PostgREST/Realtime"
+    "method": "Local HTTP/PGlite fixture; no production Auth/PostgREST/Realtime",
+    "sourceCommit": "1a288c215b6b598a2f8b02433979b87b2410e92b",
+    "screens": [
+      "1440x900",
+      "800x900",
+      "768x1024",
+      "390x844"
+    ]
   },
   "luna": {
     "model": "gpt-6-luna",
@@ -89,33 +96,47 @@
   },
   "performance": {
     "method": "Production builds, same Chromium SwiftShader process, same viewport/DPR, 6.5-second requested 50ms sine-path events delivered to existing pointer handlers. No screencast or tracing. ABBA order. Recorded rAF timestamps and WebGL color-clear API calls; neither is GPU presentation FPS.",
-    "uniqueRafPerSecond": {
-      "approved": [
-        27.97,
-        29.37
-      ],
-      "decorated": [
-        25.22,
-        25.19
-      ]
-    },
-    "observedMaximumParticles": 4,
-    "heroWebGLColorClears": 0,
-    "medianMilliseconds": [
-      33.3,
-      33.4
+    "phase": "Latest fixed-light front-pose raster and bounded small-object depth, after final compositor grouping",
+    "runs": [
+      {
+        "run": 1,
+        "kind": "before",
+        "uniqueRafPerSecond": 28.58,
+        "colorClears": 0,
+        "errors": []
+      },
+      {
+        "run": 1,
+        "kind": "after",
+        "uniqueRafPerSecond": 22.14,
+        "colorClears": 0,
+        "errors": []
+      },
+      {
+        "run": 2,
+        "kind": "after",
+        "uniqueRafPerSecond": 22.13,
+        "colorClears": 0,
+        "errors": []
+      },
+      {
+        "run": 2,
+        "kind": "before",
+        "uniqueRafPerSecond": 28.28,
+        "colorClears": 0,
+        "errors": []
+      }
     ],
-    "p95Milliseconds": 50.1,
-    "averageCadenceReductionPercent": 12.1,
-    "warning": "rAF cadence and GL API counts do not measure GPU presentation FPS; software renderer only"
+    "averageCadenceReductionPercent": 22.1,
+    "warning": "Software rAF cadence only; GPU presentation and real hardware smoothness unverified"
   },
   "remaining": [
-    "Rejected simplified city art: pending new assets and visual approval",
-    "Berlin/Miami city replacement and additional game SHA pending",
-    "Two approved noble portrait files and public-upload approval pending",
-    "Final feedback page tone SHA pending",
-    "Production Supabase Auth/PostgREST/Realtime/cron/migration and two actual devices untested",
-    "Lusion research delivered by parent, no speculative new whole-page sections added"
+    "New game local1feaca317 unavailable; its blocked push must not be repeated through another route",
+    "Final high-quality cities, six pawns, three building stages and airline assets not integrated",
+    "New personal joker/noble assets must remain private; Library delivery and private injection pending",
+    "Production Auth/PostgREST/Realtime/cron/migrations and two real devices untested",
+    "Final Luna full-game testing deferred until implementation and asset integration closes",
+    "Real hardware motion performance and final user visual approval pending"
   ],
   "backup": {
     "files": 772,
@@ -123,5 +144,98 @@
     "allFilesMatchOriginalCommittedSource": true,
     "originalRevision": "51a9ee3acf6a93cc899ab67e0911f6a6e91f996d",
     "archiveSha256": "593047a7e6a0d963865385615db229603db0353dcb084493477cad402a62f26a"
+  },
+  "sourceHomeJourney": "305255a3f17572beda972e997ebc407b29d8cfbe",
+  "sourceFeedbackMerge": "f6b3b9c7db8f5740a51f4b5745f98e556d78d4a6",
+  "homeJourney": {
+    "pass": true,
+    "checks": [
+      "1440×900: opposing peripheral depth; bounded heart repulsion returns within 700ms; stable title and slight portrait retreat; thread end stops at games; existing eight choices; only topnav ideas; same rose stem behind and bloom before paper; curved paper outline flattens; KO/ES open letter fits and wheel reaches footer",
+      "1280×800: opposing peripheral depth; bounded heart repulsion returns within 700ms; stable title and slight portrait retreat; thread end stops at games; existing eight choices; only topnav ideas; same rose stem behind and bloom before paper; curved paper outline flattens; KO/ES open letter fits and wheel reaches footer",
+      "Retained WebGL: one canvas; original portrait alpha depth mask; independent rotations with fixed light; pause stops loop; offscreen releases canvas and hero clear count freezes; resume and context-loss PNG work",
+      "Reduced motion uses complete static thread and rose; no glint or hero animation loop"
+    ],
+    "errors": [],
+    "note": "Actual local production desktop captures. Underlying GPU remains SwiftShader even in the forced WebGL compatibility branch; not hardware performance or a direct inspection of the current Lusion website."
+  },
+  "lusionResearch": {
+    "provenance": "Parent supplied observations from public 2023 recording; not direct inspection in this integration executor and no original shader-source inspection",
+    "recording": "https://www.landing.love/sites/lusion/",
+    "homepageOnlySeconds": 108,
+    "observations": [
+      {
+        "time": "00:22.6–00:23.7",
+        "motion": "The same existing small image bends its outline and expands while its content changes; not a newly added video panel"
+      },
+      {
+        "time": "00:59.5–01:01",
+        "motion": "Small astronaut screen tilts and grows; its border leaves the field of view as entry continues into the internal space"
+      },
+      {
+        "time": "01:04–01:05",
+        "motion": "Typography grows toward and passes the viewer while the character shrinks in the opposite depth direction"
+      },
+      {
+        "time": "01:35–01:36.5",
+        "motion": "Monitor border reappears during exit; astronaut crosses the foreground and glass-like fragments separate"
+      }
+    ],
+    "status": "Specific safe applications implemented: independent fixed-light materials/axes, bounded repulsion, portrait retreat and curve continuity, original rose front/back masks, existing paper clip-path flattening. Original shader source and live current website not inspected."
+  },
+  "personalAssets": {
+    "publicUploads": false,
+    "newPhotoDescriptionsFromParent": [
+      "night beach drink photograph",
+      "indoor mural selfie"
+    ],
+    "sourcePathsAndIdsReceived": false,
+    "newPrivateBytesIntegrated": false,
+    "newJokerIdsReceived": true,
+    "materialization": "Each new joker output was attempted once through the current Library helper; both download failed. Local bytes0; no alternate downloader or repeat.",
+    "connection": "Color-specific optional local paths under /private-assets/davinci/ only. Neutral joker without bytes. Hidden rival tiles never emit image URLs. Git ignores supplied bytes."
+  },
+  "newRegression": {
+    "catchmindHintSpaces": "Both languages retain word spaces and private answers remain hidden",
+    "davinciHelp": "Both readiness labels match actual buttons"
+  },
+  "recordings": [
+    {
+      "mode": "software",
+      "url": "https://drive.google.com/file/d/1uHQdB5HoCLLt8vuF4nrWiFVpPTgyx68O/view?usp=drivesdk",
+      "durationSeconds": 18.466667,
+      "bytes": 2264145,
+      "shared": false,
+      "permissions": [
+        "owner"
+      ],
+      "errors": []
+    },
+    {
+      "mode": "webgl-diagnostic",
+      "url": "https://drive.google.com/file/d/1FhiJ1JsTyhwkRf43QVF-b738UuIg-5dR/view?usp=drivesdk",
+      "durationSeconds": 14.7,
+      "bytes": 1878390,
+      "shared": false,
+      "permissions": [
+        "owner"
+      ],
+      "errors": []
+    }
+  ],
+  "sourcePrivateJokerInjection": "305255a3f17572beda972e997ebc407b29d8cfbe",
+  "latestGameCodeFromParent": {
+    "commit": "1feaca317cd63aa2a4cc9da9aaec6c41cd497819",
+    "availableInThisCheckout": false,
+    "integrated": false,
+    "publicPushBlockedElsewhere": true,
+    "alternatePushAttemptedHere": false
+  },
+  "newMarbleAssetsFromParent": {
+    "pngBlobsReported": 32,
+    "treeOrAssetCommitReported": false,
+    "localBytesIntegrated": 0,
+    "supportedLibraryTransferFailedElsewhere": true,
+    "publicPermissionAnswerPending": true,
+    "alternatePublicUploadAttemptedHere": false
   }
 }
