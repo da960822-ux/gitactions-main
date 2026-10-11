@@ -22,6 +22,11 @@ it('announces a settled round instead of an inactive player turn', () => {
   expect(statusLabel({ phase: 'play', turn: 'p1' }, 'p1', 'ko')).toBe('내 차례예요');
 });
 
+it('does not invent an opponent turn for the independent rhythm player in either locale', () => {
+  expect(statusLabel(null, 'p1', 'ko', 'rhythm')).toBe('원작 플레이어');
+  expect(statusLabel(null, 'p2', 'es', 'rhythm')).toBe('Juego original');
+});
+
 it('keeps Jaipur transfer and reward sounds out of the immediate snapshot channel', () => {
   for (const type of ['take-single', 'exchange', 'take-camels', 'bonus'] as const) {
     expect(jaipurImmediateCues({ sequence: 1, round: 1, type, title: { ko: '', es: '' } })).toEqual([]);

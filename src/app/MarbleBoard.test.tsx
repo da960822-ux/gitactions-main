@@ -8,6 +8,16 @@ const render = (view: any, language: 'ko' | 'es' = 'ko', playerId: 'p1' | 'p2' =
   renderToStaticMarkup(createElement(MarbleBoard, { view, language, playerId, runAction: vi.fn() }));
 
 describe('MarbleBoard', () => {
+  it('uses the updated Korean and Spanish figure names for old saved pawn IDs', () => {
+    const state = marbleEngine.createInitialState(71);
+    state.pawns = { p1: 'fox', p2: 'penguin' };
+    const view = marbleEngine.getPlayerView(state, 'p1');
+    expect(render(view)).toContain('말티푸');
+    expect(render(view)).toContain('판다');
+    expect(render(view, 'es')).toContain('Maltipoo');
+    expect(render(view, 'es')).toContain('Panda');
+    expect(view.actions.some((choice: any) => choice.label.ko.includes('친칠라') && choice.label.es.includes('Chinchilla'))).toBe(true);
+  });
   it('shows only a confirmed world-travel arrival as an imagined airline trip', () => {
     const view = marbleEngine.getPlayerView(marbleEngine.createInitialState(12), 'p1');
     expect(render(view)).not.toContain('mp-flight');
@@ -87,7 +97,7 @@ describe('MarbleBoard', () => {
     const view = marbleEngine.getPlayerView(marbleEngine.createInitialState(11), 'p1');
     view.board.positions.p1 = 13;
     expect(render(view, 'es')).toContain('situado en Miami Beach');
-    expect(render(view, 'es')).toContain('/images/marble/dioramas/miami.webp');
+    expect(render(view, 'es')).toContain('/images/marble/premium/cities/miami-colony-hotel.webp');
     view.board.positions.p1 = 15;
     expect(render(view)).toContain('디에고 콜론의 거주지');
   });
@@ -191,7 +201,7 @@ describe('MarbleBoard', () => {
     expect(html).toContain('비용 40');
     expect(html).not.toContain('/images/marble/cities/gwangju.svg');
     expect(html).toContain('/images/marble/ownership-card-frame.svg');
-    expect(html).toContain('/images/marble/dioramas/house.webp');
+    expect(html).toContain('/images/marble/premium/buildings/stage1-house.webp');
     expect(html).toContain('건설 단계별 통행료');
     expect(html.indexOf('mp-build-shortcut')).toBeLessThan(html.indexOf('mp-city-detail'));
     expect((html.match(/>별장: 광주 \(40\)/g) ?? []).length).toBe(1);

@@ -60,9 +60,9 @@ function EventMark({ type, event }: { type: string; event: MarbleActionEvent }) 
   return <svg className="marble-event-symbol" viewBox="0 0 32 32" aria-hidden="true"><path d="M7 24 24 7M12 7h12v12"/></svg>;
 }
 
-export function MarbleEventStage({ events, language, playerId, result }: { events: readonly (MarbleActionEvent | null | undefined)[]; language: Language; playerId: PlayerId; result?: unknown }) {
+export function MarbleEventStage({ events, event, animating = false, language, playerId, result }: { event?: MarbleActionEvent | null; animating?: boolean; events: readonly (MarbleActionEvent | null | undefined)[]; language: Language; playerId: PlayerId; result?: unknown }) {
   const [presentation, setPresentation] = useState(() => ({ event: latestEvent(events), animate: false, audible: false }));
-  const presented = presentation.event;
+  const presented = event === undefined ? presentation.event : event;
   const sounded = useRef<typeof presentation | null>(null);
   const [reduced, setReduced] = useState(() => typeof window !== 'undefined' && window.matchMedia('(prefers-reduced-motion: reduce)').matches);
   const timeline = useRef<ReturnType<typeof marblePresentation> | null>(null);
@@ -79,15 +79,16 @@ export function MarbleEventStage({ events, language, playerId, result }: { event
   }, []);
 
   useEffect(() => {
+    if (event !== undefined) return;
     timeline.current!.update(events.filter((event): event is MarbleActionEvent => Boolean(event)), playerId, reduced, Boolean(result));
-  }, [events, playerId, reduced, result]);
+  }, [events, event, playerId, reduced, result]);
   useEffect(() => () => timeline.current!.dispose(), []);
   useEffect(() => {
-    if (sounded.current === presentation) return;
+    if (event !== undefined || sounded.current === presentation) return;
     sounded.current = presentation;
     const cue = presentation.event && marbleCueForEvent(presentation.event);
     if (presentation.audible && !result && cue && cue !== 'win') playCue('marble', cue);
-  }, [presentation, result]);
+  }, [presentation, event, result]);
 
   if (!presented) return null;
   const type = marbleEventType(presented);
@@ -117,7 +118,7 @@ export function MarbleEventStage({ events, language, playerId, result }: { event
       : assessed ? language === 'ko' ? '부담금 산정' : 'Cargo previsto'
         : amount === 0 ? language === 'ko' ? '현금 변동 없음' : 'Sin cambio de efectivo'
           : amount !== null ? language === 'ko' ? amount < 0 ? '지급 완료' : '수령 완료' : amount < 0 ? 'Pago realizado' : 'Cobro realizado' : '';
-  return <div className={`marble-event-stage marble-event-stage--${type.replace(/[^a-z-]/g, '')}${presentation.animate && !reduced && !result ? ' is-animating' : ''}`} key={marbleEventSequence(presented)}>
+  return <div className={`marble-event-stage marble-event-stage--${type.replace(/[^a-z-]/g, '')}${(event === undefined ? presentation.animate : animating) && !reduced && !result ? ' is-animating' : ''}`} role="status" key={marbleEventSequence(presented)}>
     <span className="marble-event-mark" aria-hidden="true"><EventMark type={type} event={presented}/><i/><b/><em/></span>
     <div className="marble-event-copy">
       <div className="marble-event-heading"><strong>{heading}</strong>{actor && <span>{actor}</span>}</div>

@@ -102,7 +102,7 @@ try {
         client.localView(); client.emit();
       });
       await page.waitForTimeout(120);
-      const richestCostIndex = await page.locator('.sp-card').evaluateAll(cards => cards.reduce((best, card, index) => { const count = node => (node.querySelector('.sp-card-cost-summary')?.textContent || '').split(',').length; return count(card) > count(cards[best]) ? index : best; }, 0));
+      const richestCostIndex = await page.locator('.sp-card').evaluateAll(cards => cards.reduce((best, card, index) => { const count = node => node.querySelectorAll('.sp-card-cost > .sp-cost').length; return count(card) > count(cards[best]) ? index : best; }, 0));
       await page.locator('.sp-card').nth(richestCostIndex).click();
       const returnPlan = page.locator('.sp-return-select select');
       const returnOptionCount = await returnPlan.locator('option').count();
@@ -136,7 +136,7 @@ try {
     }
 
     await capture('initial');
-    const richestCostIndex = await page.locator('.sp-card').evaluateAll(cards => cards.reduce((best, card, index) => { const count = node => (node.querySelector('.sp-card-cost-summary')?.textContent || '').split(',').length; return count(card) > count(cards[best]) ? index : best; }, 0));
+    const richestCostIndex = await page.locator('.sp-card').evaluateAll(cards => cards.reduce((best, card, index) => { const count = node => node.querySelectorAll('.sp-card-cost > .sp-cost').length; return count(card) > count(cards[best]) ? index : best; }, 0));
     await page.locator('.sp-card').nth(richestCostIndex).click();
     await page.locator('.sp-action-panel').waitFor();
     await capture('selected');

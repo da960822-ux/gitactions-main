@@ -300,10 +300,23 @@ describe('Marble 40-space house-rule engine', () => {
     expect(again.debt?.p1).toBe(330);
   });
 
-  it('offers six unique pawns, rejects occupied choices, and locks a pawn after the first roll', () => {
+  it('treats Sali and Suli as one additional skin with one position and the existing turn', () => {
+    const start = initial();
+    const chosen = marbleEngine.applyAction(start, 'p1', { type: 'choose-pawn', payload: { pawn: 'sali-suli' } });
+    expect(chosen.pawns?.p1).toBe('sali-suli');
+    expect(chosen.positions).toEqual(start.positions);
+    expect(chosen.money).toEqual(start.money);
+    expect(chosen.active).toBe(start.active);
+    expect(chosen.phase).toBe(start.phase);
+    expect(chosen.turns).toBe(start.turns);
+    expect(marbleEngine.getPlayerView(chosen, 'p1').board.pawns.p1).toBe('sali-suli');
+    expect(marbleEngine.validateAction({ ...chosen, active: 'p2' }, 'p2', { type: 'choose-pawn', payload: { pawn: 'sali-suli' } })).toBe('Invalid or occupied figure');
+  });
+
+  it('offers seven unique pawns, rejects occupied choices, and locks a pawn after the first roll', () => {
     const start = initial();
     const view = marbleEngine.getPlayerView(start, 'p1');
-    expect(view.actions.filter((item: any) => item.action.type === 'choose-pawn')).toHaveLength(5);
+    expect(view.actions.filter((item: any) => item.action.type === 'choose-pawn')).toHaveLength(6);
     expect(marbleEngine.validateAction(start, 'p1', { type: 'choose-pawn', payload: { pawn: 'cat' } })).toBe('Invalid or occupied figure');
     const chosen = marbleEngine.applyAction(start, 'p1', { type: 'choose-pawn', payload: { pawn: 'dragon' } });
     expect(chosen.pawns?.p1).toBe('dragon');

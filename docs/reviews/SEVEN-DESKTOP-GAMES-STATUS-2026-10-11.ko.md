@@ -1,5 +1,7 @@
 # 데스크톱 일곱 게임 — 구현·검증·남은 작업
 
+**최신 상태:** 부모승인게임source 통합+최신mask공백fix 보존,canonical premium32WebP 실제 연결,기존6종+일곱번째 살리·술리single-pawn 코드완료. 살리·술리·새조커2·귀족2이미지는private전달대기.50파일466회귀와최신빌드통과. 이전개발Luna/아래초기표는최종통합품질검수로전용하지않는다.
+
 비교 기준은 `8c90594`와 이 브랜치 후속 수정이다. 랜딩·모바일·리듬 SWF는 제외한다. 원래 통합 환경과 현재 실행기는 별도다. 기존 `f0c6d01`, `5f7e75d`, `1c20ea3` Git 객체는 현재 실행기에서 확보하지 못했으므로 통합 환경의 최신 기능/그림에 대한 완료 판단을 하지 않는다.
 
 ## 완료 판단표
@@ -56,3 +58,5 @@
 후속 private joker 주입/리스연 관련18 회귀 통과. TypeScript/Vite/Edge 빌드는 타입 오류1건 수정 후 통과. 새 이미지 bytes0 및 후속 CSS 화면 검수 미실행 상태는 유지한다.
 
 최신 전송은 해결됨: ccec83d 원본32 해시/bytes/pixels 확인 뒤 WebP32 경로 연결.32원본52.6MB→6.39MB, lossless resizedRGBA 확인. 공통 단계는동일형태/도시색 tint renderer. 인게임 검수는아직미실행. f0/5f/1c 객체확보 후 승인소스 통합 진행 예정. 조커 새시안 사용자승인과 별개로 개인bytes없음/비공개적용대기. 추가두반려견 말은아직32범위 밖.
+
+정적공통건물tint PNG캡처는처음Chromiumprofile생성오류,임시profile재시도후Widget IPC오류/완료없음으로중단(exit130).이는정적asset renderer 검수실패이며게임동작실패로판정하지않는다. 캡처없음/색효과실제화면미검수,계산구조와source/renderToMarkup만확인. self-contained local common-building-colors.html로필요시후속검토가능. 실제게임Playwright/멀티플레이검수는실행안함.

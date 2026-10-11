@@ -17,7 +17,7 @@ export function MarblePropertyArt({ city, level = 0, className = '', routeVersio
   const tintId = `mp-building-${useId().replace(/:/g, '')}`;
   if (routeVersion >= 3 && level > 0) {
     const asset = level === 1 ? dioramas.commonStages.house : level === 2 ? dioramas.commonStages.apartment : dioramas.assets.find(asset => asset.slug === city);
-    if (asset?.path && level < 3) return <svg className={className} data-building-level={level} data-city-color={cityColors[city] ?? '#a7b7aa'} viewBox={`0 0 ${asset.width} ${asset.height}`} aria-hidden="true" focusable="false">
+    if (asset?.path && level < 3) return <svg className={className} data-building-level={level} data-city-color={cityColors[city] ?? '#a7b7aa'} viewBox={`0 0 ${asset.width} ${asset.height}`} preserveAspectRatio="xMidYMax meet" aria-hidden="true" focusable="false">
       <defs><filter id={tintId} colorInterpolationFilters="sRGB">
         {/* Tint warm roofs or neutral masonry while preserving the source shading and plants. */}
         <feColorMatrix in="SourceGraphic" type="matrix" values={`0 0 0 0 1 0 0 0 0 1 0 0 0 0 1 ${level === 1 ? '3 -2 -1 0 -.05' : '-2 -2 4 0 .2'}`} result="color-area"/>

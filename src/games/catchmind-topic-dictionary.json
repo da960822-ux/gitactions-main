@@ -1,0 +1,3717 @@
+{
+  "schema_version": "1.0.0",
+  "source_revision": "875b7c9ae1dc97bdafce50a6939c7ef003b7a0b4",
+  "description": "Categorized bilingual Catchmind word deck. Legacy content pairs retain stable positional IDs; additions are supplemental.",
+  "selection_policy": {
+    "mode": "single_category_required",
+    "allow_multiple": false,
+    "allow_mixed_all_categories": false,
+    "lock_category_after_game_start": true
+  },
+  "counts": {
+    "total": 272,
+    "existing_legacy": 192,
+    "added": 80,
+    "categories": 6
+  },
+  "categories": [
+    {
+      "id": "animals",
+      "label": {
+        "ko": "동물",
+        "es": "Animales"
+      },
+      "target_count": 62,
+      "examples": [
+        {
+          "ko": "고양이",
+          "es": "gato"
+        },
+        {
+          "ko": "판다",
+          "es": "panda"
+        },
+        {
+          "ko": "해파리",
+          "es": "medusa"
+        }
+      ],
+      "word_count": 62,
+      "added_count": 8,
+      "legacy_count": 54,
+      "word_ids": [
+        "legacy-001",
+        "legacy-002",
+        "legacy-003",
+        "legacy-004",
+        "legacy-005",
+        "legacy-006",
+        "legacy-007",
+        "legacy-008",
+        "legacy-009",
+        "legacy-010",
+        "legacy-011",
+        "legacy-012",
+        "legacy-013",
+        "legacy-014",
+        "legacy-015",
+        "legacy-016",
+        "legacy-017",
+        "legacy-018",
+        "legacy-019",
+        "legacy-020",
+        "legacy-021",
+        "legacy-022",
+        "legacy-023",
+        "legacy-024",
+        "legacy-025",
+        "legacy-026",
+        "legacy-027",
+        "legacy-028",
+        "legacy-029",
+        "legacy-030",
+        "legacy-031",
+        "legacy-032",
+        "legacy-033",
+        "legacy-034",
+        "legacy-035",
+        "legacy-036",
+        "legacy-037",
+        "legacy-038",
+        "legacy-039",
+        "legacy-040",
+        "legacy-041",
+        "legacy-042",
+        "legacy-043",
+        "legacy-044",
+        "legacy-045",
+        "legacy-046",
+        "legacy-047",
+        "legacy-048",
+        "legacy-049",
+        "legacy-050",
+        "legacy-051",
+        "legacy-052",
+        "legacy-053",
+        "legacy-054",
+        "animals-extra-001",
+        "animals-extra-002",
+        "animals-extra-003",
+        "animals-extra-004",
+        "animals-extra-005",
+        "animals-extra-006",
+        "animals-extra-007",
+        "animals-extra-008"
+      ]
+    },
+    {
+      "id": "food",
+      "label": {
+        "ko": "음식",
+        "es": "Comida"
+      },
+      "target_count": 45,
+      "examples": [
+        {
+          "ko": "피자",
+          "es": "pizza"
+        },
+        {
+          "ko": "패션프루트",
+          "es": "chinola"
+        },
+        {
+          "ko": "망구",
+          "es": "mangú"
+        }
+      ],
+      "word_count": 45,
+      "added_count": 15,
+      "legacy_count": 30,
+      "word_ids": [
+        "legacy-148",
+        "legacy-149",
+        "legacy-150",
+        "legacy-151",
+        "legacy-152",
+        "legacy-153",
+        "legacy-154",
+        "legacy-155",
+        "legacy-156",
+        "legacy-157",
+        "legacy-158",
+        "legacy-159",
+        "legacy-160",
+        "legacy-161",
+        "legacy-162",
+        "legacy-163",
+        "legacy-164",
+        "legacy-165",
+        "legacy-166",
+        "legacy-167",
+        "legacy-168",
+        "legacy-169",
+        "legacy-170",
+        "legacy-171",
+        "legacy-172",
+        "legacy-173",
+        "legacy-174",
+        "legacy-175",
+        "legacy-176",
+        "legacy-177",
+        "food-extra-001",
+        "food-extra-002",
+        "food-extra-003",
+        "food-extra-004",
+        "food-extra-005",
+        "food-extra-006",
+        "food-extra-007",
+        "food-extra-008",
+        "food-extra-009",
+        "food-extra-010",
+        "food-extra-011",
+        "food-extra-012",
+        "food-extra-013",
+        "food-extra-014",
+        "food-extra-015"
+      ]
+    },
+    {
+      "id": "nature_space",
+      "label": {
+        "ko": "자연·우주",
+        "es": "Naturaleza y espacio"
+      },
+      "target_count": 40,
+      "examples": [
+        {
+          "ko": "장미",
+          "es": "rosa"
+        },
+        {
+          "ko": "화산",
+          "es": "volcán"
+        },
+        {
+          "ko": "토성",
+          "es": "Saturno"
+        }
+      ],
+      "word_count": 40,
+      "added_count": 16,
+      "legacy_count": 24,
+      "word_ids": [
+        "legacy-055",
+        "legacy-056",
+        "legacy-057",
+        "legacy-058",
+        "legacy-059",
+        "legacy-060",
+        "legacy-061",
+        "legacy-062",
+        "legacy-063",
+        "legacy-064",
+        "legacy-065",
+        "legacy-066",
+        "legacy-067",
+        "legacy-068",
+        "legacy-069",
+        "legacy-070",
+        "legacy-071",
+        "legacy-072",
+        "legacy-073",
+        "legacy-074",
+        "legacy-075",
+        "legacy-076",
+        "legacy-077",
+        "legacy-078",
+        "nature_space-extra-001",
+        "nature_space-extra-002",
+        "nature_space-extra-003",
+        "nature_space-extra-004",
+        "nature_space-extra-005",
+        "nature_space-extra-006",
+        "nature_space-extra-007",
+        "nature_space-extra-008",
+        "nature_space-extra-009",
+        "nature_space-extra-010",
+        "nature_space-extra-011",
+        "nature_space-extra-012",
+        "nature_space-extra-013",
+        "nature_space-extra-014",
+        "nature_space-extra-015",
+        "nature_space-extra-016"
+      ]
+    },
+    {
+      "id": "places",
+      "label": {
+        "ko": "장소·건물",
+        "es": "Lugares y edificios"
+      },
+      "target_count": 35,
+      "examples": [
+        {
+          "ko": "학교",
+          "es": "escuela"
+        },
+        {
+          "ko": "도서관",
+          "es": "biblioteca"
+        },
+        {
+          "ko": "동네 식료품점",
+          "es": "colmado"
+        }
+      ],
+      "word_count": 35,
+      "added_count": 14,
+      "legacy_count": 21,
+      "word_ids": [
+        "legacy-079",
+        "legacy-080",
+        "legacy-081",
+        "legacy-082",
+        "legacy-083",
+        "legacy-084",
+        "legacy-085",
+        "legacy-086",
+        "legacy-087",
+        "legacy-088",
+        "legacy-089",
+        "legacy-090",
+        "legacy-091",
+        "legacy-092",
+        "legacy-093",
+        "legacy-094",
+        "legacy-095",
+        "legacy-096",
+        "legacy-097",
+        "legacy-098",
+        "legacy-099",
+        "places-extra-001",
+        "places-extra-002",
+        "places-extra-003",
+        "places-extra-004",
+        "places-extra-005",
+        "places-extra-006",
+        "places-extra-007",
+        "places-extra-008",
+        "places-extra-009",
+        "places-extra-010",
+        "places-extra-011",
+        "places-extra-012",
+        "places-extra-013",
+        "places-extra-014"
+      ]
+    },
+    {
+      "id": "transport",
+      "label": {
+        "ko": "탈것",
+        "es": "Transporte"
+      },
+      "target_count": 30,
+      "examples": [
+        {
+          "ko": "자동차",
+          "es": "carro"
+        },
+        {
+          "ko": "구급차",
+          "es": "ambulancia"
+        },
+        {
+          "ko": "지하철",
+          "es": "metro"
+        }
+      ],
+      "word_count": 30,
+      "added_count": 15,
+      "legacy_count": 15,
+      "word_ids": [
+        "legacy-100",
+        "legacy-101",
+        "legacy-102",
+        "legacy-103",
+        "legacy-104",
+        "legacy-105",
+        "legacy-106",
+        "legacy-107",
+        "legacy-108",
+        "legacy-109",
+        "legacy-110",
+        "legacy-111",
+        "legacy-112",
+        "legacy-113",
+        "legacy-114",
+        "transport-extra-001",
+        "transport-extra-002",
+        "transport-extra-003",
+        "transport-extra-004",
+        "transport-extra-005",
+        "transport-extra-006",
+        "transport-extra-007",
+        "transport-extra-008",
+        "transport-extra-009",
+        "transport-extra-010",
+        "transport-extra-011",
+        "transport-extra-012",
+        "transport-extra-013",
+        "transport-extra-014",
+        "transport-extra-015"
+      ]
+    },
+    {
+      "id": "life_hobbies",
+      "label": {
+        "ko": "생활·취미",
+        "es": "Vida diaria y pasatiempos"
+      },
+      "target_count": 60,
+      "examples": [
+        {
+          "ko": "컴퓨터",
+          "es": "computadora"
+        },
+        {
+          "ko": "축구",
+          "es": "fútbol"
+        },
+        {
+          "ko": "주사위",
+          "es": "dado"
+        }
+      ],
+      "word_count": 60,
+      "added_count": 12,
+      "legacy_count": 48,
+      "word_ids": [
+        "legacy-115",
+        "legacy-116",
+        "legacy-117",
+        "legacy-118",
+        "legacy-119",
+        "legacy-120",
+        "legacy-121",
+        "legacy-122",
+        "legacy-123",
+        "legacy-124",
+        "legacy-125",
+        "legacy-126",
+        "legacy-127",
+        "legacy-128",
+        "legacy-129",
+        "legacy-130",
+        "legacy-131",
+        "legacy-132",
+        "legacy-133",
+        "legacy-134",
+        "legacy-135",
+        "legacy-136",
+        "legacy-137",
+        "legacy-138",
+        "legacy-139",
+        "legacy-140",
+        "legacy-141",
+        "legacy-142",
+        "legacy-143",
+        "legacy-144",
+        "legacy-145",
+        "legacy-146",
+        "legacy-147",
+        "legacy-178",
+        "legacy-179",
+        "legacy-180",
+        "legacy-181",
+        "legacy-182",
+        "legacy-183",
+        "legacy-184",
+        "legacy-185",
+        "legacy-186",
+        "legacy-187",
+        "legacy-188",
+        "legacy-189",
+        "legacy-190",
+        "legacy-191",
+        "legacy-192",
+        "life_hobbies-extra-001",
+        "life_hobbies-extra-002",
+        "life_hobbies-extra-003",
+        "life_hobbies-extra-004",
+        "life_hobbies-extra-005",
+        "life_hobbies-extra-006",
+        "life_hobbies-extra-007",
+        "life_hobbies-extra-008",
+        "life_hobbies-extra-009",
+        "life_hobbies-extra-010",
+        "life_hobbies-extra-011",
+        "life_hobbies-extra-012"
+      ]
+    }
+  ],
+  "words": [
+    {
+      "id": "legacy-001",
+      "source_index": 1,
+      "category_id": "animals",
+      "ko": "고양이",
+      "es": "gato",
+      "aliases": {
+        "ko": [],
+        "es": []
+      },
+      "provenance": "existing"
+    },
+    {
+      "id": "legacy-002",
+      "source_index": 2,
+      "category_id": "animals",
+      "ko": "개",
+      "es": "perro",
+      "aliases": {
+        "ko": [],
+        "es": []
+      },
+      "provenance": "existing"
+    },
+    {
+      "id": "legacy-003",
+      "source_index": 3,
+      "category_id": "animals",
+      "ko": "토끼",
+      "es": "conejo",
+      "aliases": {
+        "ko": [],
+        "es": []
+      },
+      "provenance": "existing"
+    },
+    {
+      "id": "legacy-004",
+      "source_index": 4,
+      "category_id": "animals",
+      "ko": "말",
+      "es": "caballo",
+      "aliases": {
+        "ko": [],
+        "es": []
+      },
+      "provenance": "existing"
+    },
+    {
+      "id": "legacy-005",
+      "source_index": 5,
+      "category_id": "animals",
+      "ko": "소",
+      "es": "vaca",
+      "aliases": {
+        "ko": [],
+        "es": []
+      },
+      "provenance": "existing"
+    },
+    {
+      "id": "legacy-006",
+      "source_index": 6,
+      "category_id": "animals",
+      "ko": "돼지",
+      "es": "cerdo",
+      "aliases": {
+        "ko": [],
+        "es": []
+      },
+      "provenance": "existing"
+    },
+    {
+      "id": "legacy-007",
+      "source_index": 7,
+      "category_id": "animals",
+      "ko": "양",
+      "es": "oveja",
+      "aliases": {
+        "ko": [],
+        "es": []
+      },
+      "provenance": "existing"
+    },
+    {
+      "id": "legacy-008",
+      "source_index": 8,
+      "category_id": "animals",
+      "ko": "염소",
+      "es": "cabra",
+      "aliases": {
+        "ko": [],
+        "es": []
+      },
+      "provenance": "existing"
+    },
+    {
+      "id": "legacy-009",
+      "source_index": 9,
+      "category_id": "animals",
+      "ko": "암탉",
+      "es": "gallina",
+      "aliases": {
+        "ko": [],
+        "es": []
+      },
+      "provenance": "existing"
+    },
+    {
+      "id": "legacy-010",
+      "source_index": 10,
+      "category_id": "animals",
+      "ko": "수탉",
+      "es": "gallo",
+      "aliases": {
+        "ko": [],
+        "es": []
+      },
+      "provenance": "existing"
+    },
+    {
+      "id": "legacy-011",
+      "source_index": 11,
+      "category_id": "animals",
+      "ko": "오리",
+      "es": "pato",
+      "aliases": {
+        "ko": [],
+        "es": []
+      },
+      "provenance": "existing"
+    },
+    {
+      "id": "legacy-012",
+      "source_index": 12,
+      "category_id": "animals",
+      "ko": "거위",
+      "es": "ganso",
+      "aliases": {
+        "ko": [],
+        "es": []
+      },
+      "provenance": "existing"
+    },
+    {
+      "id": "legacy-013",
+      "source_index": 13,
+      "category_id": "animals",
+      "ko": "칠면조",
+      "es": "pavo",
+      "aliases": {
+        "ko": [],
+        "es": []
+      },
+      "provenance": "existing"
+    },
+    {
+      "id": "legacy-014",
+      "source_index": 14,
+      "category_id": "animals",
+      "ko": "물고기",
+      "es": "pez",
+      "aliases": {
+        "ko": [],
+        "es": []
+      },
+      "provenance": "existing"
+    },
+    {
+      "id": "legacy-015",
+      "source_index": 15,
+      "category_id": "animals",
+      "ko": "상어",
+      "es": "tiburón",
+      "aliases": {
+        "ko": [],
+        "es": []
+      },
+      "provenance": "existing"
+    },
+    {
+      "id": "legacy-016",
+      "source_index": 16,
+      "category_id": "animals",
+      "ko": "고래",
+      "es": "ballena",
+      "aliases": {
+        "ko": [],
+        "es": []
+      },
+      "provenance": "existing"
+    },
+    {
+      "id": "legacy-017",
+      "source_index": 17,
+      "category_id": "animals",
+      "ko": "돌고래",
+      "es": "delfín",
+      "aliases": {
+        "ko": [],
+        "es": []
+      },
+      "provenance": "existing"
+    },
+    {
+      "id": "legacy-018",
+      "source_index": 18,
+      "category_id": "animals",
+      "ko": "문어",
+      "es": "pulpo",
+      "aliases": {
+        "ko": [],
+        "es": []
+      },
+      "provenance": "existing"
+    },
+    {
+      "id": "legacy-019",
+      "source_index": 19,
+      "category_id": "animals",
+      "ko": "게",
+      "es": "cangrejo",
+      "aliases": {
+        "ko": [],
+        "es": []
+      },
+      "provenance": "existing"
+    },
+    {
+      "id": "legacy-020",
+      "source_index": 20,
+      "category_id": "animals",
+      "ko": "거북이",
+      "es": "tortuga",
+      "aliases": {
+        "ko": [],
+        "es": []
+      },
+      "provenance": "existing"
+    },
+    {
+      "id": "legacy-021",
+      "source_index": 21,
+      "category_id": "animals",
+      "ko": "개구리",
+      "es": "rana",
+      "aliases": {
+        "ko": [],
+        "es": []
+      },
+      "provenance": "existing"
+    },
+    {
+      "id": "legacy-022",
+      "source_index": 22,
+      "category_id": "animals",
+      "ko": "뱀",
+      "es": "serpiente",
+      "aliases": {
+        "ko": [],
+        "es": []
+      },
+      "provenance": "existing"
+    },
+    {
+      "id": "legacy-023",
+      "source_index": 23,
+      "category_id": "animals",
+      "ko": "도마뱀",
+      "es": "lagarto",
+      "aliases": {
+        "ko": [],
+        "es": []
+      },
+      "provenance": "existing"
+    },
+    {
+      "id": "legacy-024",
+      "source_index": 24,
+      "category_id": "animals",
+      "ko": "악어",
+      "es": "cocodrilo",
+      "aliases": {
+        "ko": [],
+        "es": []
+      },
+      "provenance": "existing"
+    },
+    {
+      "id": "legacy-025",
+      "source_index": 25,
+      "category_id": "animals",
+      "ko": "코끼리",
+      "es": "elefante",
+      "aliases": {
+        "ko": [],
+        "es": []
+      },
+      "provenance": "existing"
+    },
+    {
+      "id": "legacy-026",
+      "source_index": 26,
+      "category_id": "animals",
+      "ko": "기린",
+      "es": "jirafa",
+      "aliases": {
+        "ko": [],
+        "es": []
+      },
+      "provenance": "existing"
+    },
+    {
+      "id": "legacy-027",
+      "source_index": 27,
+      "category_id": "animals",
+      "ko": "사자",
+      "es": "león",
+      "aliases": {
+        "ko": [],
+        "es": []
+      },
+      "provenance": "existing"
+    },
+    {
+      "id": "legacy-028",
+      "source_index": 28,
+      "category_id": "animals",
+      "ko": "호랑이",
+      "es": "tigre",
+      "aliases": {
+        "ko": [],
+        "es": []
+      },
+      "provenance": "existing"
+    },
+    {
+      "id": "legacy-029",
+      "source_index": 29,
+      "category_id": "animals",
+      "ko": "곰",
+      "es": "oso",
+      "aliases": {
+        "ko": [],
+        "es": []
+      },
+      "provenance": "existing"
+    },
+    {
+      "id": "legacy-030",
+      "source_index": 30,
+      "category_id": "animals",
+      "ko": "원숭이",
+      "es": "mono",
+      "aliases": {
+        "ko": [],
+        "es": []
+      },
+      "provenance": "existing"
+    },
+    {
+      "id": "legacy-031",
+      "source_index": 31,
+      "category_id": "animals",
+      "ko": "얼룩말",
+      "es": "cebra",
+      "aliases": {
+        "ko": [],
+        "es": []
+      },
+      "provenance": "existing"
+    },
+    {
+      "id": "legacy-032",
+      "source_index": 32,
+      "category_id": "animals",
+      "ko": "캥거루",
+      "es": "canguro",
+      "aliases": {
+        "ko": [],
+        "es": []
+      },
+      "provenance": "existing"
+    },
+    {
+      "id": "legacy-033",
+      "source_index": 33,
+      "category_id": "animals",
+      "ko": "판다",
+      "es": "panda",
+      "aliases": {
+        "ko": [],
+        "es": []
+      },
+      "provenance": "existing"
+    },
+    {
+      "id": "legacy-034",
+      "source_index": 34,
+      "category_id": "animals",
+      "ko": "펭귄",
+      "es": "pingüino",
+      "aliases": {
+        "ko": [],
+        "es": []
+      },
+      "provenance": "existing"
+    },
+    {
+      "id": "legacy-035",
+      "source_index": 35,
+      "category_id": "animals",
+      "ko": "부엉이",
+      "es": "búho",
+      "aliases": {
+        "ko": [],
+        "es": []
+      },
+      "provenance": "existing"
+    },
+    {
+      "id": "legacy-036",
+      "source_index": 36,
+      "category_id": "animals",
+      "ko": "앵무새",
+      "es": "loro",
+      "aliases": {
+        "ko": [],
+        "es": []
+      },
+      "provenance": "existing"
+    },
+    {
+      "id": "legacy-037",
+      "source_index": 37,
+      "category_id": "animals",
+      "ko": "나비",
+      "es": "mariposa",
+      "aliases": {
+        "ko": [],
+        "es": []
+      },
+      "provenance": "existing"
+    },
+    {
+      "id": "legacy-038",
+      "source_index": 38,
+      "category_id": "animals",
+      "ko": "벌",
+      "es": "abeja",
+      "aliases": {
+        "ko": [],
+        "es": []
+      },
+      "provenance": "existing"
+    },
+    {
+      "id": "legacy-039",
+      "source_index": 39,
+      "category_id": "animals",
+      "ko": "개미",
+      "es": "hormiga",
+      "aliases": {
+        "ko": [],
+        "es": []
+      },
+      "provenance": "existing"
+    },
+    {
+      "id": "legacy-040",
+      "source_index": 40,
+      "category_id": "animals",
+      "ko": "거미",
+      "es": "araña",
+      "aliases": {
+        "ko": [],
+        "es": []
+      },
+      "provenance": "existing"
+    },
+    {
+      "id": "legacy-041",
+      "source_index": 41,
+      "category_id": "animals",
+      "ko": "달팽이",
+      "es": "caracol",
+      "aliases": {
+        "ko": [],
+        "es": []
+      },
+      "provenance": "existing"
+    },
+    {
+      "id": "legacy-042",
+      "source_index": 42,
+      "category_id": "animals",
+      "ko": "고슴도치",
+      "es": "erizo",
+      "aliases": {
+        "ko": [],
+        "es": []
+      },
+      "provenance": "existing"
+    },
+    {
+      "id": "legacy-043",
+      "source_index": 43,
+      "category_id": "animals",
+      "ko": "사슴",
+      "es": "ciervo",
+      "aliases": {
+        "ko": [],
+        "es": []
+      },
+      "provenance": "existing"
+    },
+    {
+      "id": "legacy-044",
+      "source_index": 44,
+      "category_id": "animals",
+      "ko": "여우",
+      "es": "zorro",
+      "aliases": {
+        "ko": [],
+        "es": []
+      },
+      "provenance": "existing"
+    },
+    {
+      "id": "legacy-045",
+      "source_index": 45,
+      "category_id": "animals",
+      "ko": "늑대",
+      "es": "lobo",
+      "aliases": {
+        "ko": [],
+        "es": []
+      },
+      "provenance": "existing"
+    },
+    {
+      "id": "legacy-046",
+      "source_index": 46,
+      "category_id": "animals",
+      "ko": "독수리",
+      "es": "águila",
+      "aliases": {
+        "ko": [],
+        "es": []
+      },
+      "provenance": "existing"
+    },
+    {
+      "id": "legacy-047",
+      "source_index": 47,
+      "category_id": "animals",
+      "ko": "비둘기",
+      "es": "paloma",
+      "aliases": {
+        "ko": [],
+        "es": []
+      },
+      "provenance": "existing"
+    },
+    {
+      "id": "legacy-048",
+      "source_index": 48,
+      "category_id": "animals",
+      "ko": "벌새",
+      "es": "colibrí",
+      "aliases": {
+        "ko": [],
+        "es": []
+      },
+      "provenance": "existing"
+    },
+    {
+      "id": "legacy-049",
+      "source_index": 49,
+      "category_id": "animals",
+      "ko": "공작",
+      "es": "pavo real",
+      "aliases": {
+        "ko": [],
+        "es": []
+      },
+      "provenance": "existing"
+    },
+    {
+      "id": "legacy-050",
+      "source_index": 50,
+      "category_id": "animals",
+      "ko": "고래상어",
+      "es": "tiburón ballena",
+      "aliases": {
+        "ko": [],
+        "es": []
+      },
+      "provenance": "existing"
+    },
+    {
+      "id": "legacy-051",
+      "source_index": 51,
+      "category_id": "animals",
+      "ko": "해파리",
+      "es": "medusa",
+      "aliases": {
+        "ko": [],
+        "es": []
+      },
+      "provenance": "existing"
+    },
+    {
+      "id": "legacy-052",
+      "source_index": 52,
+      "category_id": "animals",
+      "ko": "불가사리",
+      "es": "estrella de mar",
+      "aliases": {
+        "ko": [],
+        "es": []
+      },
+      "provenance": "existing"
+    },
+    {
+      "id": "legacy-053",
+      "source_index": 53,
+      "category_id": "animals",
+      "ko": "새우",
+      "es": "camarón",
+      "aliases": {
+        "ko": [],
+        "es": []
+      },
+      "provenance": "existing"
+    },
+    {
+      "id": "legacy-054",
+      "source_index": 54,
+      "category_id": "animals",
+      "ko": "바닷가재",
+      "es": "langosta",
+      "aliases": {
+        "ko": [],
+        "es": []
+      },
+      "provenance": "existing"
+    },
+    {
+      "id": "legacy-055",
+      "source_index": 55,
+      "category_id": "nature_space",
+      "ko": "매화",
+      "es": "flor de ciruelo",
+      "aliases": {
+        "ko": [],
+        "es": []
+      },
+      "provenance": "existing"
+    },
+    {
+      "id": "legacy-056",
+      "source_index": 56,
+      "category_id": "nature_space",
+      "ko": "장미",
+      "es": "rosa",
+      "aliases": {
+        "ko": [],
+        "es": []
+      },
+      "provenance": "existing"
+    },
+    {
+      "id": "legacy-057",
+      "source_index": 57,
+      "category_id": "nature_space",
+      "ko": "해바라기",
+      "es": "girasol",
+      "aliases": {
+        "ko": [],
+        "es": []
+      },
+      "provenance": "existing"
+    },
+    {
+      "id": "legacy-058",
+      "source_index": 58,
+      "category_id": "nature_space",
+      "ko": "튤립",
+      "es": "tulipán",
+      "aliases": {
+        "ko": [],
+        "es": []
+      },
+      "provenance": "existing"
+    },
+    {
+      "id": "legacy-059",
+      "source_index": 59,
+      "category_id": "nature_space",
+      "ko": "선인장",
+      "es": "cactus",
+      "aliases": {
+        "ko": [],
+        "es": []
+      },
+      "provenance": "existing"
+    },
+    {
+      "id": "legacy-060",
+      "source_index": 60,
+      "category_id": "nature_space",
+      "ko": "버섯",
+      "es": "hongo",
+      "aliases": {
+        "ko": [],
+        "es": []
+      },
+      "provenance": "existing"
+    },
+    {
+      "id": "legacy-061",
+      "source_index": 61,
+      "category_id": "nature_space",
+      "ko": "나무",
+      "es": "árbol",
+      "aliases": {
+        "ko": [],
+        "es": []
+      },
+      "provenance": "existing"
+    },
+    {
+      "id": "legacy-062",
+      "source_index": 62,
+      "category_id": "nature_space",
+      "ko": "야자수",
+      "es": "palmera",
+      "aliases": {
+        "ko": [],
+        "es": []
+      },
+      "provenance": "existing"
+    },
+    {
+      "id": "legacy-063",
+      "source_index": 63,
+      "category_id": "nature_space",
+      "ko": "구름",
+      "es": "nube",
+      "aliases": {
+        "ko": [],
+        "es": []
+      },
+      "provenance": "existing"
+    },
+    {
+      "id": "legacy-064",
+      "source_index": 64,
+      "category_id": "nature_space",
+      "ko": "해",
+      "es": "sol",
+      "aliases": {
+        "ko": [],
+        "es": []
+      },
+      "provenance": "existing"
+    },
+    {
+      "id": "legacy-065",
+      "source_index": 65,
+      "category_id": "nature_space",
+      "ko": "달",
+      "es": "luna",
+      "aliases": {
+        "ko": [],
+        "es": []
+      },
+      "provenance": "existing"
+    },
+    {
+      "id": "legacy-066",
+      "source_index": 66,
+      "category_id": "nature_space",
+      "ko": "별",
+      "es": "estrella",
+      "aliases": {
+        "ko": [],
+        "es": []
+      },
+      "provenance": "existing"
+    },
+    {
+      "id": "legacy-067",
+      "source_index": 67,
+      "category_id": "nature_space",
+      "ko": "무지개",
+      "es": "arcoíris",
+      "aliases": {
+        "ko": [],
+        "es": []
+      },
+      "provenance": "existing"
+    },
+    {
+      "id": "legacy-068",
+      "source_index": 68,
+      "category_id": "nature_space",
+      "ko": "산",
+      "es": "montaña",
+      "aliases": {
+        "ko": [],
+        "es": []
+      },
+      "provenance": "existing"
+    },
+    {
+      "id": "legacy-069",
+      "source_index": 69,
+      "category_id": "nature_space",
+      "ko": "화산",
+      "es": "volcán",
+      "aliases": {
+        "ko": [],
+        "es": []
+      },
+      "provenance": "existing"
+    },
+    {
+      "id": "legacy-070",
+      "source_index": 70,
+      "category_id": "nature_space",
+      "ko": "강",
+      "es": "río",
+      "aliases": {
+        "ko": [],
+        "es": []
+      },
+      "provenance": "existing"
+    },
+    {
+      "id": "legacy-071",
+      "source_index": 71,
+      "category_id": "nature_space",
+      "ko": "폭포",
+      "es": "cascada",
+      "aliases": {
+        "ko": [],
+        "es": []
+      },
+      "provenance": "existing"
+    },
+    {
+      "id": "legacy-072",
+      "source_index": 72,
+      "category_id": "nature_space",
+      "ko": "바다",
+      "es": "océano",
+      "aliases": {
+        "ko": [],
+        "es": []
+      },
+      "provenance": "existing"
+    },
+    {
+      "id": "legacy-073",
+      "source_index": 73,
+      "category_id": "nature_space",
+      "ko": "섬",
+      "es": "isla",
+      "aliases": {
+        "ko": [],
+        "es": []
+      },
+      "provenance": "existing"
+    },
+    {
+      "id": "legacy-074",
+      "source_index": 74,
+      "category_id": "nature_space",
+      "ko": "해변",
+      "es": "playa",
+      "aliases": {
+        "ko": [],
+        "es": []
+      },
+      "provenance": "existing"
+    },
+    {
+      "id": "legacy-075",
+      "source_index": 75,
+      "category_id": "nature_space",
+      "ko": "눈사람",
+      "es": "muñeco de nieve",
+      "aliases": {
+        "ko": [],
+        "es": []
+      },
+      "provenance": "existing"
+    },
+    {
+      "id": "legacy-076",
+      "source_index": 76,
+      "category_id": "nature_space",
+      "ko": "번개",
+      "es": "rayo",
+      "aliases": {
+        "ko": [],
+        "es": []
+      },
+      "provenance": "existing"
+    },
+    {
+      "id": "legacy-077",
+      "source_index": 77,
+      "category_id": "nature_space",
+      "ko": "눈송이",
+      "es": "copo de nieve",
+      "aliases": {
+        "ko": [],
+        "es": []
+      },
+      "provenance": "existing"
+    },
+    {
+      "id": "legacy-078",
+      "source_index": 78,
+      "category_id": "nature_space",
+      "ko": "야자열매",
+      "es": "coco",
+      "aliases": {
+        "ko": [],
+        "es": []
+      },
+      "provenance": "existing"
+    },
+    {
+      "id": "legacy-079",
+      "source_index": 79,
+      "category_id": "places",
+      "ko": "집",
+      "es": "casa",
+      "aliases": {
+        "ko": [],
+        "es": []
+      },
+      "provenance": "existing"
+    },
+    {
+      "id": "legacy-080",
+      "source_index": 80,
+      "category_id": "places",
+      "ko": "아파트",
+      "es": "apartamento",
+      "aliases": {
+        "ko": [],
+        "es": []
+      },
+      "provenance": "existing"
+    },
+    {
+      "id": "legacy-081",
+      "source_index": 81,
+      "category_id": "places",
+      "ko": "학교",
+      "es": "escuela",
+      "aliases": {
+        "ko": [],
+        "es": []
+      },
+      "provenance": "existing"
+    },
+    {
+      "id": "legacy-082",
+      "source_index": 82,
+      "category_id": "places",
+      "ko": "병원",
+      "es": "hospital",
+      "aliases": {
+        "ko": [],
+        "es": []
+      },
+      "provenance": "existing"
+    },
+    {
+      "id": "legacy-083",
+      "source_index": 83,
+      "category_id": "places",
+      "ko": "교회",
+      "es": "iglesia",
+      "aliases": {
+        "ko": [],
+        "es": []
+      },
+      "provenance": "existing"
+    },
+    {
+      "id": "legacy-084",
+      "source_index": 84,
+      "category_id": "places",
+      "ko": "성",
+      "es": "castillo",
+      "aliases": {
+        "ko": [],
+        "es": []
+      },
+      "provenance": "existing"
+    },
+    {
+      "id": "legacy-085",
+      "source_index": 85,
+      "category_id": "places",
+      "ko": "다리",
+      "es": "puente",
+      "aliases": {
+        "ko": [],
+        "es": []
+      },
+      "provenance": "existing"
+    },
+    {
+      "id": "legacy-086",
+      "source_index": 86,
+      "category_id": "places",
+      "ko": "등대",
+      "es": "faro",
+      "aliases": {
+        "ko": [],
+        "es": []
+      },
+      "provenance": "existing"
+    },
+    {
+      "id": "legacy-087",
+      "source_index": 87,
+      "category_id": "places",
+      "ko": "텐트",
+      "es": "carpa",
+      "aliases": {
+        "ko": [],
+        "es": []
+      },
+      "provenance": "existing"
+    },
+    {
+      "id": "legacy-088",
+      "source_index": 88,
+      "category_id": "places",
+      "ko": "도서관",
+      "es": "biblioteca",
+      "aliases": {
+        "ko": [],
+        "es": []
+      },
+      "provenance": "existing"
+    },
+    {
+      "id": "legacy-089",
+      "source_index": 89,
+      "category_id": "places",
+      "ko": "소방서",
+      "es": "estación de bomberos",
+      "aliases": {
+        "ko": [],
+        "es": []
+      },
+      "provenance": "existing"
+    },
+    {
+      "id": "legacy-090",
+      "source_index": 90,
+      "category_id": "places",
+      "ko": "우체국",
+      "es": "oficina de correos",
+      "aliases": {
+        "ko": [],
+        "es": []
+      },
+      "provenance": "existing"
+    },
+    {
+      "id": "legacy-091",
+      "source_index": 91,
+      "category_id": "places",
+      "ko": "식당",
+      "es": "restaurante",
+      "aliases": {
+        "ko": [],
+        "es": []
+      },
+      "provenance": "existing"
+    },
+    {
+      "id": "legacy-092",
+      "source_index": 92,
+      "category_id": "places",
+      "ko": "시장",
+      "es": "mercado",
+      "aliases": {
+        "ko": [],
+        "es": []
+      },
+      "provenance": "existing"
+    },
+    {
+      "id": "legacy-093",
+      "source_index": 93,
+      "category_id": "places",
+      "ko": "공원",
+      "es": "parque",
+      "aliases": {
+        "ko": [],
+        "es": []
+      },
+      "provenance": "existing"
+    },
+    {
+      "id": "legacy-094",
+      "source_index": 94,
+      "category_id": "places",
+      "ko": "수영장",
+      "es": "piscina",
+      "aliases": {
+        "ko": [],
+        "es": []
+      },
+      "provenance": "existing"
+    },
+    {
+      "id": "legacy-095",
+      "source_index": 95,
+      "category_id": "places",
+      "ko": "놀이터",
+      "es": "parque infantil",
+      "aliases": {
+        "ko": [],
+        "es": []
+      },
+      "provenance": "existing"
+    },
+    {
+      "id": "legacy-096",
+      "source_index": 96,
+      "category_id": "places",
+      "ko": "기차역",
+      "es": "estación de tren",
+      "aliases": {
+        "ko": [],
+        "es": []
+      },
+      "provenance": "existing"
+    },
+    {
+      "id": "legacy-097",
+      "source_index": 97,
+      "category_id": "places",
+      "ko": "버스 정류장",
+      "es": "parada de autobús",
+      "aliases": {
+        "ko": [],
+        "es": []
+      },
+      "provenance": "existing"
+    },
+    {
+      "id": "legacy-098",
+      "source_index": 98,
+      "category_id": "places",
+      "ko": "공항",
+      "es": "aeropuerto",
+      "aliases": {
+        "ko": [],
+        "es": []
+      },
+      "provenance": "existing"
+    },
+    {
+      "id": "legacy-099",
+      "source_index": 99,
+      "category_id": "places",
+      "ko": "농장",
+      "es": "granja",
+      "aliases": {
+        "ko": [],
+        "es": []
+      },
+      "provenance": "existing"
+    },
+    {
+      "id": "legacy-100",
+      "source_index": 100,
+      "category_id": "transport",
+      "ko": "자동차",
+      "es": "carro",
+      "aliases": {
+        "ko": [],
+        "es": []
+      },
+      "provenance": "existing"
+    },
+    {
+      "id": "legacy-101",
+      "source_index": 101,
+      "category_id": "transport",
+      "ko": "버스",
+      "es": "guagua",
+      "aliases": {
+        "ko": [],
+        "es": [
+          "autobús",
+          "bus"
+        ]
+      },
+      "provenance": "existing"
+    },
+    {
+      "id": "legacy-102",
+      "source_index": 102,
+      "category_id": "transport",
+      "ko": "트럭",
+      "es": "camión",
+      "aliases": {
+        "ko": [],
+        "es": []
+      },
+      "provenance": "existing"
+    },
+    {
+      "id": "legacy-103",
+      "source_index": 103,
+      "category_id": "transport",
+      "ko": "택시",
+      "es": "taxi",
+      "aliases": {
+        "ko": [],
+        "es": []
+      },
+      "provenance": "existing"
+    },
+    {
+      "id": "legacy-104",
+      "source_index": 104,
+      "category_id": "transport",
+      "ko": "자전거",
+      "es": "bicicleta",
+      "aliases": {
+        "ko": [],
+        "es": []
+      },
+      "provenance": "existing"
+    },
+    {
+      "id": "legacy-105",
+      "source_index": 105,
+      "category_id": "transport",
+      "ko": "오토바이",
+      "es": "motocicleta",
+      "aliases": {
+        "ko": [],
+        "es": []
+      },
+      "provenance": "existing"
+    },
+    {
+      "id": "legacy-106",
+      "source_index": 106,
+      "category_id": "transport",
+      "ko": "비행기",
+      "es": "avión",
+      "aliases": {
+        "ko": [],
+        "es": []
+      },
+      "provenance": "existing"
+    },
+    {
+      "id": "legacy-107",
+      "source_index": 107,
+      "category_id": "transport",
+      "ko": "헬리콥터",
+      "es": "helicóptero",
+      "aliases": {
+        "ko": [],
+        "es": []
+      },
+      "provenance": "existing"
+    },
+    {
+      "id": "legacy-108",
+      "source_index": 108,
+      "category_id": "transport",
+      "ko": "보트",
+      "es": "bote",
+      "aliases": {
+        "ko": [],
+        "es": []
+      },
+      "provenance": "existing"
+    },
+    {
+      "id": "legacy-109",
+      "source_index": 109,
+      "category_id": "transport",
+      "ko": "배",
+      "es": "barco",
+      "aliases": {
+        "ko": [],
+        "es": []
+      },
+      "provenance": "existing"
+    },
+    {
+      "id": "legacy-110",
+      "source_index": 110,
+      "category_id": "transport",
+      "ko": "기차",
+      "es": "tren",
+      "aliases": {
+        "ko": [],
+        "es": []
+      },
+      "provenance": "existing"
+    },
+    {
+      "id": "legacy-111",
+      "source_index": 111,
+      "category_id": "transport",
+      "ko": "로켓",
+      "es": "cohete",
+      "aliases": {
+        "ko": [],
+        "es": []
+      },
+      "provenance": "existing"
+    },
+    {
+      "id": "legacy-112",
+      "source_index": 112,
+      "category_id": "transport",
+      "ko": "트랙터",
+      "es": "tractor",
+      "aliases": {
+        "ko": [],
+        "es": []
+      },
+      "provenance": "existing"
+    },
+    {
+      "id": "legacy-113",
+      "source_index": 113,
+      "category_id": "transport",
+      "ko": "스케이트보드",
+      "es": "patineta",
+      "aliases": {
+        "ko": [],
+        "es": []
+      },
+      "provenance": "existing"
+    },
+    {
+      "id": "legacy-114",
+      "source_index": 114,
+      "category_id": "transport",
+      "ko": "유모차",
+      "es": "cochecito",
+      "aliases": {
+        "ko": [],
+        "es": []
+      },
+      "provenance": "existing"
+    },
+    {
+      "id": "legacy-115",
+      "source_index": 115,
+      "category_id": "life_hobbies",
+      "ko": "컴퓨터",
+      "es": "computadora",
+      "aliases": {
+        "ko": [],
+        "es": []
+      },
+      "provenance": "existing"
+    },
+    {
+      "id": "legacy-116",
+      "source_index": 116,
+      "category_id": "life_hobbies",
+      "ko": "태블릿",
+      "es": "tableta",
+      "aliases": {
+        "ko": [],
+        "es": []
+      },
+      "provenance": "existing"
+    },
+    {
+      "id": "legacy-117",
+      "source_index": 117,
+      "category_id": "life_hobbies",
+      "ko": "전화기",
+      "es": "teléfono",
+      "aliases": {
+        "ko": [],
+        "es": []
+      },
+      "provenance": "existing"
+    },
+    {
+      "id": "legacy-118",
+      "source_index": 118,
+      "category_id": "life_hobbies",
+      "ko": "카메라",
+      "es": "cámara",
+      "aliases": {
+        "ko": [],
+        "es": []
+      },
+      "provenance": "existing"
+    },
+    {
+      "id": "legacy-119",
+      "source_index": 119,
+      "category_id": "life_hobbies",
+      "ko": "텔레비전",
+      "es": "televisor",
+      "aliases": {
+        "ko": [],
+        "es": []
+      },
+      "provenance": "existing"
+    },
+    {
+      "id": "legacy-120",
+      "source_index": 120,
+      "category_id": "life_hobbies",
+      "ko": "라디오",
+      "es": "radio",
+      "aliases": {
+        "ko": [],
+        "es": []
+      },
+      "provenance": "existing"
+    },
+    {
+      "id": "legacy-121",
+      "source_index": 121,
+      "category_id": "life_hobbies",
+      "ko": "헤드폰",
+      "es": "auriculares",
+      "aliases": {
+        "ko": [],
+        "es": []
+      },
+      "provenance": "existing"
+    },
+    {
+      "id": "legacy-122",
+      "source_index": 122,
+      "category_id": "life_hobbies",
+      "ko": "시계",
+      "es": "reloj",
+      "aliases": {
+        "ko": [],
+        "es": []
+      },
+      "provenance": "existing"
+    },
+    {
+      "id": "legacy-123",
+      "source_index": 123,
+      "category_id": "life_hobbies",
+      "ko": "안경",
+      "es": "lentes",
+      "aliases": {
+        "ko": [],
+        "es": [
+          "gafas",
+          "anteojos"
+        ]
+      },
+      "provenance": "existing"
+    },
+    {
+      "id": "legacy-124",
+      "source_index": 124,
+      "category_id": "life_hobbies",
+      "ko": "우산",
+      "es": "paraguas",
+      "aliases": {
+        "ko": [],
+        "es": []
+      },
+      "provenance": "existing"
+    },
+    {
+      "id": "legacy-125",
+      "source_index": 125,
+      "category_id": "life_hobbies",
+      "ko": "열쇠",
+      "es": "llave",
+      "aliases": {
+        "ko": [],
+        "es": []
+      },
+      "provenance": "existing"
+    },
+    {
+      "id": "legacy-126",
+      "source_index": 126,
+      "category_id": "life_hobbies",
+      "ko": "자물쇠",
+      "es": "candado",
+      "aliases": {
+        "ko": [],
+        "es": []
+      },
+      "provenance": "existing"
+    },
+    {
+      "id": "legacy-127",
+      "source_index": 127,
+      "category_id": "life_hobbies",
+      "ko": "문",
+      "es": "puerta",
+      "aliases": {
+        "ko": [],
+        "es": []
+      },
+      "provenance": "existing"
+    },
+    {
+      "id": "legacy-128",
+      "source_index": 128,
+      "category_id": "life_hobbies",
+      "ko": "창문",
+      "es": "ventana",
+      "aliases": {
+        "ko": [],
+        "es": []
+      },
+      "provenance": "existing"
+    },
+    {
+      "id": "legacy-129",
+      "source_index": 129,
+      "category_id": "life_hobbies",
+      "ko": "의자",
+      "es": "silla",
+      "aliases": {
+        "ko": [],
+        "es": []
+      },
+      "provenance": "existing"
+    },
+    {
+      "id": "legacy-130",
+      "source_index": 130,
+      "category_id": "life_hobbies",
+      "ko": "탁자",
+      "es": "mesa",
+      "aliases": {
+        "ko": [],
+        "es": []
+      },
+      "provenance": "existing"
+    },
+    {
+      "id": "legacy-131",
+      "source_index": 131,
+      "category_id": "life_hobbies",
+      "ko": "침대",
+      "es": "cama",
+      "aliases": {
+        "ko": [],
+        "es": []
+      },
+      "provenance": "existing"
+    },
+    {
+      "id": "legacy-132",
+      "source_index": 132,
+      "category_id": "life_hobbies",
+      "ko": "소파",
+      "es": "sofá",
+      "aliases": {
+        "ko": [],
+        "es": []
+      },
+      "provenance": "existing"
+    },
+    {
+      "id": "legacy-133",
+      "source_index": 133,
+      "category_id": "life_hobbies",
+      "ko": "램프",
+      "es": "lámpara",
+      "aliases": {
+        "ko": [],
+        "es": []
+      },
+      "provenance": "existing"
+    },
+    {
+      "id": "legacy-134",
+      "source_index": 134,
+      "category_id": "life_hobbies",
+      "ko": "거울",
+      "es": "espejo",
+      "aliases": {
+        "ko": [],
+        "es": []
+      },
+      "provenance": "existing"
+    },
+    {
+      "id": "legacy-135",
+      "source_index": 135,
+      "category_id": "life_hobbies",
+      "ko": "책",
+      "es": "libro",
+      "aliases": {
+        "ko": [],
+        "es": []
+      },
+      "provenance": "existing"
+    },
+    {
+      "id": "legacy-136",
+      "source_index": 136,
+      "category_id": "life_hobbies",
+      "ko": "연필",
+      "es": "lápiz",
+      "aliases": {
+        "ko": [],
+        "es": []
+      },
+      "provenance": "existing"
+    },
+    {
+      "id": "legacy-137",
+      "source_index": 137,
+      "category_id": "life_hobbies",
+      "ko": "붓",
+      "es": "pincel",
+      "aliases": {
+        "ko": [],
+        "es": []
+      },
+      "provenance": "existing"
+    },
+    {
+      "id": "legacy-138",
+      "source_index": 138,
+      "category_id": "life_hobbies",
+      "ko": "가위",
+      "es": "tijeras",
+      "aliases": {
+        "ko": [],
+        "es": []
+      },
+      "provenance": "existing"
+    },
+    {
+      "id": "legacy-139",
+      "source_index": 139,
+      "category_id": "life_hobbies",
+      "ko": "망치",
+      "es": "martillo",
+      "aliases": {
+        "ko": [],
+        "es": []
+      },
+      "provenance": "existing"
+    },
+    {
+      "id": "legacy-140",
+      "source_index": 140,
+      "category_id": "life_hobbies",
+      "ko": "톱",
+      "es": "sierra",
+      "aliases": {
+        "ko": [],
+        "es": []
+      },
+      "provenance": "existing"
+    },
+    {
+      "id": "legacy-141",
+      "source_index": 141,
+      "category_id": "life_hobbies",
+      "ko": "기타",
+      "es": "guitarra",
+      "aliases": {
+        "ko": [],
+        "es": []
+      },
+      "provenance": "existing"
+    },
+    {
+      "id": "legacy-142",
+      "source_index": 142,
+      "category_id": "life_hobbies",
+      "ko": "피아노",
+      "es": "piano",
+      "aliases": {
+        "ko": [],
+        "es": []
+      },
+      "provenance": "existing"
+    },
+    {
+      "id": "legacy-143",
+      "source_index": 143,
+      "category_id": "life_hobbies",
+      "ko": "드럼",
+      "es": "tambor",
+      "aliases": {
+        "ko": [],
+        "es": []
+      },
+      "provenance": "existing"
+    },
+    {
+      "id": "legacy-144",
+      "source_index": 144,
+      "category_id": "life_hobbies",
+      "ko": "트럼펫",
+      "es": "trompeta",
+      "aliases": {
+        "ko": [],
+        "es": []
+      },
+      "provenance": "existing"
+    },
+    {
+      "id": "legacy-145",
+      "source_index": 145,
+      "category_id": "life_hobbies",
+      "ko": "축구공",
+      "es": "balón de fútbol",
+      "aliases": {
+        "ko": [],
+        "es": []
+      },
+      "provenance": "existing"
+    },
+    {
+      "id": "legacy-146",
+      "source_index": 146,
+      "category_id": "life_hobbies",
+      "ko": "농구공",
+      "es": "balón de baloncesto",
+      "aliases": {
+        "ko": [],
+        "es": []
+      },
+      "provenance": "existing"
+    },
+    {
+      "id": "legacy-147",
+      "source_index": 147,
+      "category_id": "life_hobbies",
+      "ko": "야구 방망이",
+      "es": "bate de béisbol",
+      "aliases": {
+        "ko": [],
+        "es": []
+      },
+      "provenance": "existing"
+    },
+    {
+      "id": "legacy-148",
+      "source_index": 148,
+      "category_id": "food",
+      "ko": "피자",
+      "es": "pizza",
+      "aliases": {
+        "ko": [],
+        "es": []
+      },
+      "provenance": "existing"
+    },
+    {
+      "id": "legacy-149",
+      "source_index": 149,
+      "category_id": "food",
+      "ko": "햄버거",
+      "es": "hamburguesa",
+      "aliases": {
+        "ko": [],
+        "es": []
+      },
+      "provenance": "existing"
+    },
+    {
+      "id": "legacy-150",
+      "source_index": 150,
+      "category_id": "food",
+      "ko": "핫도그",
+      "es": "perro caliente",
+      "aliases": {
+        "ko": [],
+        "es": []
+      },
+      "provenance": "existing"
+    },
+    {
+      "id": "legacy-151",
+      "source_index": 151,
+      "category_id": "food",
+      "ko": "샌드위치",
+      "es": "sándwich",
+      "aliases": {
+        "ko": [],
+        "es": []
+      },
+      "provenance": "existing"
+    },
+    {
+      "id": "legacy-152",
+      "source_index": 152,
+      "category_id": "food",
+      "ko": "밥그릇",
+      "es": "tazón de arroz",
+      "aliases": {
+        "ko": [],
+        "es": []
+      },
+      "provenance": "existing"
+    },
+    {
+      "id": "legacy-153",
+      "source_index": 153,
+      "category_id": "food",
+      "ko": "달걀",
+      "es": "huevo",
+      "aliases": {
+        "ko": [],
+        "es": []
+      },
+      "provenance": "existing"
+    },
+    {
+      "id": "legacy-154",
+      "source_index": 154,
+      "category_id": "food",
+      "ko": "빵",
+      "es": "pan",
+      "aliases": {
+        "ko": [],
+        "es": []
+      },
+      "provenance": "existing"
+    },
+    {
+      "id": "legacy-155",
+      "source_index": 155,
+      "category_id": "food",
+      "ko": "치즈",
+      "es": "queso",
+      "aliases": {
+        "ko": [],
+        "es": []
+      },
+      "provenance": "existing"
+    },
+    {
+      "id": "legacy-156",
+      "source_index": 156,
+      "category_id": "food",
+      "ko": "우유",
+      "es": "leche",
+      "aliases": {
+        "ko": [],
+        "es": []
+      },
+      "provenance": "existing"
+    },
+    {
+      "id": "legacy-157",
+      "source_index": 157,
+      "category_id": "food",
+      "ko": "아이스크림",
+      "es": "helado",
+      "aliases": {
+        "ko": [],
+        "es": []
+      },
+      "provenance": "existing"
+    },
+    {
+      "id": "legacy-158",
+      "source_index": 158,
+      "category_id": "food",
+      "ko": "케이크",
+      "es": "pastel",
+      "aliases": {
+        "ko": [],
+        "es": []
+      },
+      "provenance": "existing"
+    },
+    {
+      "id": "legacy-159",
+      "source_index": 159,
+      "category_id": "food",
+      "ko": "쿠키",
+      "es": "galleta",
+      "aliases": {
+        "ko": [],
+        "es": []
+      },
+      "provenance": "existing"
+    },
+    {
+      "id": "legacy-160",
+      "source_index": 160,
+      "category_id": "food",
+      "ko": "사과",
+      "es": "manzana",
+      "aliases": {
+        "ko": [],
+        "es": []
+      },
+      "provenance": "existing"
+    },
+    {
+      "id": "legacy-161",
+      "source_index": 161,
+      "category_id": "food",
+      "ko": "오렌지",
+      "es": "naranja",
+      "aliases": {
+        "ko": [],
+        "es": []
+      },
+      "provenance": "existing"
+    },
+    {
+      "id": "legacy-162",
+      "source_index": 162,
+      "category_id": "food",
+      "ko": "망고",
+      "es": "mango",
+      "aliases": {
+        "ko": [],
+        "es": []
+      },
+      "provenance": "existing"
+    },
+    {
+      "id": "legacy-163",
+      "source_index": 163,
+      "category_id": "food",
+      "ko": "바나나",
+      "es": "guineo",
+      "aliases": {
+        "ko": [],
+        "es": [
+          "banana",
+          "banano"
+        ]
+      },
+      "provenance": "existing"
+    },
+    {
+      "id": "legacy-164",
+      "source_index": 164,
+      "category_id": "food",
+      "ko": "패션프루트",
+      "es": "chinola",
+      "aliases": {
+        "ko": [],
+        "es": [
+          "maracuyá"
+        ]
+      },
+      "provenance": "existing"
+    },
+    {
+      "id": "legacy-165",
+      "source_index": 165,
+      "category_id": "food",
+      "ko": "파인애플",
+      "es": "piña",
+      "aliases": {
+        "ko": [],
+        "es": []
+      },
+      "provenance": "existing"
+    },
+    {
+      "id": "legacy-166",
+      "source_index": 166,
+      "category_id": "food",
+      "ko": "아보카도",
+      "es": "aguacate",
+      "aliases": {
+        "ko": [],
+        "es": []
+      },
+      "provenance": "existing"
+    },
+    {
+      "id": "legacy-167",
+      "source_index": 167,
+      "category_id": "food",
+      "ko": "토마토",
+      "es": "tomate",
+      "aliases": {
+        "ko": [],
+        "es": []
+      },
+      "provenance": "existing"
+    },
+    {
+      "id": "legacy-168",
+      "source_index": 168,
+      "category_id": "food",
+      "ko": "옥수수",
+      "es": "maíz",
+      "aliases": {
+        "ko": [],
+        "es": []
+      },
+      "provenance": "existing"
+    },
+    {
+      "id": "legacy-169",
+      "source_index": 169,
+      "category_id": "food",
+      "ko": "당근",
+      "es": "zanahoria",
+      "aliases": {
+        "ko": [],
+        "es": []
+      },
+      "provenance": "existing"
+    },
+    {
+      "id": "legacy-170",
+      "source_index": 170,
+      "category_id": "food",
+      "ko": "감자",
+      "es": "papa",
+      "aliases": {
+        "ko": [],
+        "es": [
+          "patata"
+        ]
+      },
+      "provenance": "existing"
+    },
+    {
+      "id": "legacy-171",
+      "source_index": 171,
+      "category_id": "food",
+      "ko": "양파",
+      "es": "cebolla",
+      "aliases": {
+        "ko": [],
+        "es": []
+      },
+      "provenance": "existing"
+    },
+    {
+      "id": "legacy-172",
+      "source_index": 172,
+      "category_id": "food",
+      "ko": "고추",
+      "es": "ají",
+      "aliases": {
+        "ko": [],
+        "es": []
+      },
+      "provenance": "existing"
+    },
+    {
+      "id": "legacy-173",
+      "source_index": 173,
+      "category_id": "food",
+      "ko": "레몬",
+      "es": "limón",
+      "aliases": {
+        "ko": [],
+        "es": []
+      },
+      "provenance": "existing"
+    },
+    {
+      "id": "legacy-174",
+      "source_index": 174,
+      "category_id": "food",
+      "ko": "포도",
+      "es": "uva",
+      "aliases": {
+        "ko": [],
+        "es": []
+      },
+      "provenance": "existing"
+    },
+    {
+      "id": "legacy-175",
+      "source_index": 175,
+      "category_id": "food",
+      "ko": "딸기",
+      "es": "fresa",
+      "aliases": {
+        "ko": [],
+        "es": []
+      },
+      "provenance": "existing"
+    },
+    {
+      "id": "legacy-176",
+      "source_index": 176,
+      "category_id": "food",
+      "ko": "수박",
+      "es": "sandía",
+      "aliases": {
+        "ko": [],
+        "es": []
+      },
+      "provenance": "existing"
+    },
+    {
+      "id": "legacy-177",
+      "source_index": 177,
+      "category_id": "food",
+      "ko": "코코넛",
+      "es": "coco rallado",
+      "aliases": {
+        "ko": [],
+        "es": []
+      },
+      "provenance": "existing"
+    },
+    {
+      "id": "legacy-178",
+      "source_index": 178,
+      "category_id": "life_hobbies",
+      "ko": "축구",
+      "es": "fútbol",
+      "aliases": {
+        "ko": [],
+        "es": []
+      },
+      "provenance": "existing"
+    },
+    {
+      "id": "legacy-179",
+      "source_index": 179,
+      "category_id": "life_hobbies",
+      "ko": "농구",
+      "es": "baloncesto",
+      "aliases": {
+        "ko": [],
+        "es": []
+      },
+      "provenance": "existing"
+    },
+    {
+      "id": "legacy-180",
+      "source_index": 180,
+      "category_id": "life_hobbies",
+      "ko": "야구",
+      "es": "béisbol",
+      "aliases": {
+        "ko": [],
+        "es": []
+      },
+      "provenance": "existing"
+    },
+    {
+      "id": "legacy-181",
+      "source_index": 181,
+      "category_id": "life_hobbies",
+      "ko": "테니스",
+      "es": "tenis",
+      "aliases": {
+        "ko": [],
+        "es": []
+      },
+      "provenance": "existing"
+    },
+    {
+      "id": "legacy-182",
+      "source_index": 182,
+      "category_id": "life_hobbies",
+      "ko": "수영",
+      "es": "natación",
+      "aliases": {
+        "ko": [],
+        "es": []
+      },
+      "provenance": "existing"
+    },
+    {
+      "id": "legacy-183",
+      "source_index": 183,
+      "category_id": "life_hobbies",
+      "ko": "달리기",
+      "es": "carrera",
+      "aliases": {
+        "ko": [],
+        "es": []
+      },
+      "provenance": "existing"
+    },
+    {
+      "id": "legacy-184",
+      "source_index": 184,
+      "category_id": "life_hobbies",
+      "ko": "춤",
+      "es": "baile",
+      "aliases": {
+        "ko": [],
+        "es": []
+      },
+      "provenance": "existing"
+    },
+    {
+      "id": "legacy-185",
+      "source_index": 185,
+      "category_id": "life_hobbies",
+      "ko": "낚시",
+      "es": "pesca",
+      "aliases": {
+        "ko": [],
+        "es": []
+      },
+      "provenance": "existing"
+    },
+    {
+      "id": "legacy-186",
+      "source_index": 186,
+      "category_id": "life_hobbies",
+      "ko": "연",
+      "es": "chichigua",
+      "aliases": {
+        "ko": [],
+        "es": [
+          "cometa"
+        ]
+      },
+      "provenance": "existing"
+    },
+    {
+      "id": "legacy-187",
+      "source_index": 187,
+      "category_id": "life_hobbies",
+      "ko": "선물",
+      "es": "regalo",
+      "aliases": {
+        "ko": [],
+        "es": []
+      },
+      "provenance": "existing"
+    },
+    {
+      "id": "legacy-188",
+      "source_index": 188,
+      "category_id": "life_hobbies",
+      "ko": "생일 케이크",
+      "es": "pastel de cumpleaños",
+      "aliases": {
+        "ko": [],
+        "es": []
+      },
+      "provenance": "existing"
+    },
+    {
+      "id": "legacy-189",
+      "source_index": 189,
+      "category_id": "life_hobbies",
+      "ko": "양초",
+      "es": "vela",
+      "aliases": {
+        "ko": [],
+        "es": []
+      },
+      "provenance": "existing"
+    },
+    {
+      "id": "legacy-190",
+      "source_index": 190,
+      "category_id": "life_hobbies",
+      "ko": "왕관",
+      "es": "corona",
+      "aliases": {
+        "ko": [],
+        "es": []
+      },
+      "provenance": "existing"
+    },
+    {
+      "id": "legacy-191",
+      "source_index": 191,
+      "category_id": "life_hobbies",
+      "ko": "마스크",
+      "es": "máscara",
+      "aliases": {
+        "ko": [],
+        "es": []
+      },
+      "provenance": "existing"
+    },
+    {
+      "id": "legacy-192",
+      "source_index": 192,
+      "category_id": "life_hobbies",
+      "ko": "풍선",
+      "es": "globo",
+      "aliases": {
+        "ko": [],
+        "es": []
+      },
+      "provenance": "existing"
+    },
+    {
+      "id": "animals-extra-001",
+      "category_id": "animals",
+      "ko": "낙타",
+      "es": "camello",
+      "aliases": {
+        "ko": [],
+        "es": []
+      },
+      "provenance": "added"
+    },
+    {
+      "id": "animals-extra-002",
+      "category_id": "animals",
+      "ko": "코뿔소",
+      "es": "rinoceronte",
+      "aliases": {
+        "ko": [],
+        "es": []
+      },
+      "provenance": "added"
+    },
+    {
+      "id": "animals-extra-003",
+      "category_id": "animals",
+      "ko": "하마",
+      "es": "hipopótamo",
+      "aliases": {
+        "ko": [],
+        "es": []
+      },
+      "provenance": "added"
+    },
+    {
+      "id": "animals-extra-004",
+      "category_id": "animals",
+      "ko": "물개",
+      "es": "foca",
+      "aliases": {
+        "ko": [],
+        "es": []
+      },
+      "provenance": "added"
+    },
+    {
+      "id": "animals-extra-005",
+      "category_id": "animals",
+      "ko": "카멜레온",
+      "es": "camaleón",
+      "aliases": {
+        "ko": [],
+        "es": [
+          "lagarto camaleón"
+        ]
+      },
+      "provenance": "added"
+    },
+    {
+      "id": "animals-extra-006",
+      "category_id": "animals",
+      "ko": "박쥐",
+      "es": "murciélago",
+      "aliases": {
+        "ko": [],
+        "es": []
+      },
+      "provenance": "added"
+    },
+    {
+      "id": "animals-extra-007",
+      "category_id": "animals",
+      "ko": "홍학",
+      "es": "flamenco",
+      "aliases": {
+        "ko": [],
+        "es": []
+      },
+      "provenance": "added"
+    },
+    {
+      "id": "animals-extra-008",
+      "category_id": "animals",
+      "ko": "수달",
+      "es": "nutria",
+      "aliases": {
+        "ko": [],
+        "es": []
+      },
+      "provenance": "added"
+    },
+    {
+      "id": "food-extra-001",
+      "category_id": "food",
+      "ko": "도넛",
+      "es": "dona",
+      "aliases": {
+        "ko": [],
+        "es": [
+          "rosquilla",
+          "donut",
+          "dónut"
+        ]
+      },
+      "provenance": "added"
+    },
+    {
+      "id": "food-extra-002",
+      "category_id": "food",
+      "ko": "팬케이크",
+      "es": "panqueque",
+      "aliases": {
+        "ko": [],
+        "es": [
+          "pancake",
+          "hotcake"
+        ]
+      },
+      "provenance": "added"
+    },
+    {
+      "id": "food-extra-003",
+      "category_id": "food",
+      "ko": "팝콘",
+      "es": "palomitas",
+      "aliases": {
+        "ko": [],
+        "es": [
+          "rosetas de maíz",
+          "popcorn"
+        ]
+      },
+      "provenance": "added"
+    },
+    {
+      "id": "food-extra-004",
+      "category_id": "food",
+      "ko": "초콜릿",
+      "es": "chocolate",
+      "aliases": {
+        "ko": [],
+        "es": []
+      },
+      "provenance": "added"
+    },
+    {
+      "id": "food-extra-005",
+      "category_id": "food",
+      "ko": "파스타",
+      "es": "pasta",
+      "aliases": {
+        "ko": [],
+        "es": []
+      },
+      "provenance": "added"
+    },
+    {
+      "id": "food-extra-006",
+      "category_id": "food",
+      "ko": "타코",
+      "es": "taco",
+      "aliases": {
+        "ko": [],
+        "es": []
+      },
+      "provenance": "added"
+    },
+    {
+      "id": "food-extra-007",
+      "category_id": "food",
+      "ko": "엠파나다",
+      "es": "empanada",
+      "aliases": {
+        "ko": [],
+        "es": []
+      },
+      "provenance": "added"
+    },
+    {
+      "id": "food-extra-008",
+      "category_id": "food",
+      "ko": "수프",
+      "es": "sopa",
+      "aliases": {
+        "ko": [],
+        "es": []
+      },
+      "provenance": "added"
+    },
+    {
+      "id": "food-extra-009",
+      "category_id": "food",
+      "ko": "망구",
+      "es": "mangú",
+      "aliases": {
+        "ko": [],
+        "es": [
+          "mangu"
+        ]
+      },
+      "provenance": "added"
+    },
+    {
+      "id": "food-extra-010",
+      "category_id": "food",
+      "ko": "모퐁고",
+      "es": "mofongo",
+      "aliases": {
+        "ko": [],
+        "es": []
+      },
+      "provenance": "added"
+    },
+    {
+      "id": "food-extra-011",
+      "category_id": "food",
+      "ko": "산코초",
+      "es": "sancocho",
+      "aliases": {
+        "ko": [],
+        "es": []
+      },
+      "provenance": "added"
+    },
+    {
+      "id": "food-extra-012",
+      "category_id": "food",
+      "ko": "토스톤",
+      "es": "tostones",
+      "aliases": {
+        "ko": [],
+        "es": []
+      },
+      "provenance": "added"
+    },
+    {
+      "id": "food-extra-013",
+      "category_id": "food",
+      "ko": "유카튀김",
+      "es": "yuca frita",
+      "aliases": {
+        "ko": [],
+        "es": [
+          "fritura de yuca"
+        ]
+      },
+      "provenance": "added"
+    },
+    {
+      "id": "food-extra-014",
+      "category_id": "food",
+      "ko": "요구르트",
+      "es": "yogur",
+      "aliases": {
+        "ko": [],
+        "es": [
+          "yogurt"
+        ]
+      },
+      "provenance": "added"
+    },
+    {
+      "id": "food-extra-015",
+      "category_id": "food",
+      "ko": "커피",
+      "es": "café",
+      "aliases": {
+        "ko": [],
+        "es": [
+          "cafe"
+        ]
+      },
+      "provenance": "added"
+    },
+    {
+      "id": "nature_space-extra-001",
+      "category_id": "nature_space",
+      "ko": "지구",
+      "es": "planeta Tierra",
+      "aliases": {
+        "ko": [],
+        "es": []
+      },
+      "provenance": "added"
+    },
+    {
+      "id": "nature_space-extra-002",
+      "category_id": "nature_space",
+      "ko": "토성",
+      "es": "Saturno",
+      "aliases": {
+        "ko": [],
+        "es": []
+      },
+      "provenance": "added"
+    },
+    {
+      "id": "nature_space-extra-003",
+      "category_id": "nature_space",
+      "ko": "우주선",
+      "es": "nave espacial",
+      "aliases": {
+        "ko": [],
+        "es": [
+          "astronave"
+        ]
+      },
+      "provenance": "added"
+    },
+    {
+      "id": "nature_space-extra-004",
+      "category_id": "nature_space",
+      "ko": "우주비행사",
+      "es": "astronauta",
+      "aliases": {
+        "ko": [],
+        "es": [
+          "cosmonauta"
+        ]
+      },
+      "provenance": "added"
+    },
+    {
+      "id": "nature_space-extra-005",
+      "category_id": "nature_space",
+      "ko": "별똥별",
+      "es": "estrella fugaz",
+      "aliases": {
+        "ko": [],
+        "es": []
+      },
+      "provenance": "added"
+    },
+    {
+      "id": "nature_space-extra-006",
+      "category_id": "nature_space",
+      "ko": "달 기지",
+      "es": "base lunar",
+      "aliases": {
+        "ko": [],
+        "es": []
+      },
+      "provenance": "added"
+    },
+    {
+      "id": "nature_space-extra-007",
+      "category_id": "nature_space",
+      "ko": "산호초",
+      "es": "arrecife de coral",
+      "aliases": {
+        "ko": [],
+        "es": []
+      },
+      "provenance": "added"
+    },
+    {
+      "id": "nature_space-extra-008",
+      "category_id": "nature_space",
+      "ko": "눈사태",
+      "es": "avalancha",
+      "aliases": {
+        "ko": [],
+        "es": []
+      },
+      "provenance": "added"
+    },
+    {
+      "id": "nature_space-extra-009",
+      "category_id": "nature_space",
+      "ko": "도토리",
+      "es": "bellota",
+      "aliases": {
+        "ko": [],
+        "es": []
+      },
+      "provenance": "added"
+    },
+    {
+      "id": "nature_space-extra-010",
+      "category_id": "nature_space",
+      "ko": "이끼",
+      "es": "musgo",
+      "aliases": {
+        "ko": [],
+        "es": []
+      },
+      "provenance": "added"
+    },
+    {
+      "id": "nature_space-extra-011",
+      "category_id": "nature_space",
+      "ko": "파도",
+      "es": "ola",
+      "aliases": {
+        "ko": [],
+        "es": []
+      },
+      "provenance": "added"
+    },
+    {
+      "id": "nature_space-extra-012",
+      "category_id": "nature_space",
+      "ko": "빙산",
+      "es": "témpano de hielo",
+      "aliases": {
+        "ko": [],
+        "es": [
+          "témpano",
+          "iceberg"
+        ]
+      },
+      "provenance": "added"
+    },
+    {
+      "id": "nature_space-extra-013",
+      "category_id": "nature_space",
+      "ko": "성운",
+      "es": "nebulosa",
+      "aliases": {
+        "ko": [],
+        "es": []
+      },
+      "provenance": "added"
+    },
+    {
+      "id": "nature_space-extra-014",
+      "category_id": "nature_space",
+      "ko": "토양",
+      "es": "suelo",
+      "aliases": {
+        "ko": [],
+        "es": []
+      },
+      "provenance": "added"
+    },
+    {
+      "id": "nature_space-extra-015",
+      "category_id": "nature_space",
+      "ko": "선인장 꽃",
+      "es": "flor de cactus",
+      "aliases": {
+        "ko": [],
+        "es": []
+      },
+      "provenance": "added"
+    },
+    {
+      "id": "nature_space-extra-016",
+      "category_id": "nature_space",
+      "ko": "조개껍데기",
+      "es": "concha marina",
+      "aliases": {
+        "ko": [],
+        "es": []
+      },
+      "provenance": "added"
+    },
+    {
+      "id": "places-extra-001",
+      "category_id": "places",
+      "ko": "박물관",
+      "es": "museo",
+      "aliases": {
+        "ko": [],
+        "es": []
+      },
+      "provenance": "added"
+    },
+    {
+      "id": "places-extra-002",
+      "category_id": "places",
+      "ko": "호텔",
+      "es": "hotel",
+      "aliases": {
+        "ko": [],
+        "es": []
+      },
+      "provenance": "added"
+    },
+    {
+      "id": "places-extra-003",
+      "category_id": "places",
+      "ko": "경찰서",
+      "es": "comisaría",
+      "aliases": {
+        "ko": [],
+        "es": [
+          "cuartel de policía"
+        ]
+      },
+      "provenance": "added"
+    },
+    {
+      "id": "places-extra-004",
+      "category_id": "places",
+      "ko": "은행",
+      "es": "banco",
+      "aliases": {
+        "ko": [],
+        "es": []
+      },
+      "provenance": "added"
+    },
+    {
+      "id": "places-extra-005",
+      "category_id": "places",
+      "ko": "극장",
+      "es": "teatro",
+      "aliases": {
+        "ko": [],
+        "es": []
+      },
+      "provenance": "added"
+    },
+    {
+      "id": "places-extra-006",
+      "category_id": "places",
+      "ko": "궁전",
+      "es": "palacio",
+      "aliases": {
+        "ko": [],
+        "es": []
+      },
+      "provenance": "added"
+    },
+    {
+      "id": "places-extra-007",
+      "category_id": "places",
+      "ko": "분수",
+      "es": "fuente",
+      "aliases": {
+        "ko": [],
+        "es": []
+      },
+      "provenance": "added"
+    },
+    {
+      "id": "places-extra-008",
+      "category_id": "places",
+      "ko": "지하철역",
+      "es": "estación de metro",
+      "aliases": {
+        "ko": [],
+        "es": []
+      },
+      "provenance": "added"
+    },
+    {
+      "id": "places-extra-009",
+      "category_id": "places",
+      "ko": "동네 식료품점",
+      "es": "colmado",
+      "aliases": {
+        "ko": [],
+        "es": []
+      },
+      "provenance": "added"
+    },
+    {
+      "id": "places-extra-010",
+      "category_id": "places",
+      "ko": "야시장",
+      "es": "mercado nocturno",
+      "aliases": {
+        "ko": [],
+        "es": []
+      },
+      "provenance": "added"
+    },
+    {
+      "id": "places-extra-011",
+      "category_id": "places",
+      "ko": "기념비",
+      "es": "monumento",
+      "aliases": {
+        "ko": [],
+        "es": []
+      },
+      "provenance": "added"
+    },
+    {
+      "id": "places-extra-012",
+      "category_id": "places",
+      "ko": "경기장",
+      "es": "estadio",
+      "aliases": {
+        "ko": [],
+        "es": []
+      },
+      "provenance": "added"
+    },
+    {
+      "id": "places-extra-013",
+      "category_id": "places",
+      "ko": "터널",
+      "es": "túnel",
+      "aliases": {
+        "ko": [],
+        "es": []
+      },
+      "provenance": "added"
+    },
+    {
+      "id": "places-extra-014",
+      "category_id": "places",
+      "ko": "수도원",
+      "es": "monasterio",
+      "aliases": {
+        "ko": [],
+        "es": []
+      },
+      "provenance": "added"
+    },
+    {
+      "id": "transport-extra-001",
+      "category_id": "transport",
+      "ko": "구급차",
+      "es": "ambulancia",
+      "aliases": {
+        "ko": [],
+        "es": []
+      },
+      "provenance": "added"
+    },
+    {
+      "id": "transport-extra-002",
+      "category_id": "transport",
+      "ko": "경찰차",
+      "es": "coche patrulla",
+      "aliases": {
+        "ko": [],
+        "es": [
+          "patrulla",
+          "vehículo policial"
+        ]
+      },
+      "provenance": "added"
+    },
+    {
+      "id": "transport-extra-003",
+      "category_id": "transport",
+      "ko": "소방차",
+      "es": "camión de bomberos",
+      "aliases": {
+        "ko": [],
+        "es": []
+      },
+      "provenance": "added"
+    },
+    {
+      "id": "transport-extra-004",
+      "category_id": "transport",
+      "ko": "잠수함",
+      "es": "submarino",
+      "aliases": {
+        "ko": [],
+        "es": [
+          "sumergible"
+        ]
+      },
+      "provenance": "added"
+    },
+    {
+      "id": "transport-extra-005",
+      "category_id": "transport",
+      "ko": "요트",
+      "es": "yate",
+      "aliases": {
+        "ko": [],
+        "es": []
+      },
+      "provenance": "added"
+    },
+    {
+      "id": "transport-extra-006",
+      "category_id": "transport",
+      "ko": "카누",
+      "es": "canoa",
+      "aliases": {
+        "ko": [],
+        "es": []
+      },
+      "provenance": "added"
+    },
+    {
+      "id": "transport-extra-007",
+      "category_id": "transport",
+      "ko": "케이블카",
+      "es": "teleférico",
+      "aliases": {
+        "ko": [],
+        "es": []
+      },
+      "provenance": "added"
+    },
+    {
+      "id": "transport-extra-008",
+      "category_id": "transport",
+      "ko": "전동킥보드",
+      "es": "scooter eléctrico",
+      "aliases": {
+        "ko": [],
+        "es": [
+          "patinete eléctrico"
+        ]
+      },
+      "provenance": "added"
+    },
+    {
+      "id": "transport-extra-009",
+      "category_id": "transport",
+      "ko": "지하철",
+      "es": "metro",
+      "aliases": {
+        "ko": [],
+        "es": [
+          "tren del metro"
+        ]
+      },
+      "provenance": "added"
+    },
+    {
+      "id": "transport-extra-010",
+      "category_id": "transport",
+      "ko": "트램",
+      "es": "tranvía",
+      "aliases": {
+        "ko": [],
+        "es": []
+      },
+      "provenance": "added"
+    },
+    {
+      "id": "transport-extra-011",
+      "category_id": "transport",
+      "ko": "견인차",
+      "es": "grúa",
+      "aliases": {
+        "ko": [],
+        "es": [
+          "camión grúa"
+        ]
+      },
+      "provenance": "added"
+    },
+    {
+      "id": "transport-extra-012",
+      "category_id": "transport",
+      "ko": "화물선",
+      "es": "buque de carga",
+      "aliases": {
+        "ko": [],
+        "es": [
+          "barco de carga"
+        ]
+      },
+      "provenance": "added"
+    },
+    {
+      "id": "transport-extra-013",
+      "category_id": "transport",
+      "ko": "크루즈선",
+      "es": "crucero",
+      "aliases": {
+        "ko": [],
+        "es": [
+          "barco crucero"
+        ]
+      },
+      "provenance": "added"
+    },
+    {
+      "id": "transport-extra-014",
+      "category_id": "transport",
+      "ko": "드론",
+      "es": "dron",
+      "aliases": {
+        "ko": [],
+        "es": [
+          "drone"
+        ]
+      },
+      "provenance": "added"
+    },
+    {
+      "id": "transport-extra-015",
+      "category_id": "transport",
+      "ko": "지게차",
+      "es": "montacargas",
+      "aliases": {
+        "ko": [],
+        "es": []
+      },
+      "provenance": "added"
+    },
+    {
+      "id": "life_hobbies-extra-001",
+      "category_id": "life_hobbies",
+      "ko": "배낭",
+      "es": "mochila",
+      "aliases": {
+        "ko": [],
+        "es": [
+          "bulto"
+        ]
+      },
+      "provenance": "added"
+    },
+    {
+      "id": "life_hobbies-extra-002",
+      "category_id": "life_hobbies",
+      "ko": "칫솔",
+      "es": "cepillo de dientes",
+      "aliases": {
+        "ko": [],
+        "es": [
+          "cepillo dental"
+        ]
+      },
+      "provenance": "added"
+    },
+    {
+      "id": "life_hobbies-extra-003",
+      "category_id": "life_hobbies",
+      "ko": "야구 모자",
+      "es": "gorra de béisbol",
+      "aliases": {
+        "ko": [],
+        "es": [
+          "gorra"
+        ]
+      },
+      "provenance": "added"
+    },
+    {
+      "id": "life_hobbies-extra-004",
+      "category_id": "life_hobbies",
+      "ko": "신발",
+      "es": "zapato",
+      "aliases": {
+        "ko": [],
+        "es": [
+          "zapatos"
+        ]
+      },
+      "provenance": "added"
+    },
+    {
+      "id": "life_hobbies-extra-005",
+      "category_id": "life_hobbies",
+      "ko": "쌍안경",
+      "es": "binoculares",
+      "aliases": {
+        "ko": [],
+        "es": [
+          "prismáticos"
+        ]
+      },
+      "provenance": "added"
+    },
+    {
+      "id": "life_hobbies-extra-006",
+      "category_id": "life_hobbies",
+      "ko": "주사위",
+      "es": "dado",
+      "aliases": {
+        "ko": [],
+        "es": [
+          "dados"
+        ]
+      },
+      "provenance": "added"
+    },
+    {
+      "id": "life_hobbies-extra-007",
+      "category_id": "life_hobbies",
+      "ko": "퍼즐",
+      "es": "rompecabezas",
+      "aliases": {
+        "ko": [],
+        "es": []
+      },
+      "provenance": "added"
+    },
+    {
+      "id": "life_hobbies-extra-008",
+      "category_id": "life_hobbies",
+      "ko": "배구공",
+      "es": "balón de voleibol",
+      "aliases": {
+        "ko": [],
+        "es": [
+          "pelota de voleibol"
+        ]
+      },
+      "provenance": "added"
+    },
+    {
+      "id": "life_hobbies-extra-009",
+      "category_id": "life_hobbies",
+      "ko": "테니스 라켓",
+      "es": "raqueta de tenis",
+      "aliases": {
+        "ko": [],
+        "es": []
+      },
+      "provenance": "added"
+    },
+    {
+      "id": "life_hobbies-extra-010",
+      "category_id": "life_hobbies",
+      "ko": "스키",
+      "es": "esquí",
+      "aliases": {
+        "ko": [],
+        "es": [
+          "esquís",
+          "esquíes"
+        ]
+      },
+      "provenance": "added"
+    },
+    {
+      "id": "life_hobbies-extra-011",
+      "category_id": "life_hobbies",
+      "ko": "현미경",
+      "es": "microscopio",
+      "aliases": {
+        "ko": [],
+        "es": []
+      },
+      "provenance": "added"
+    },
+    {
+      "id": "life_hobbies-extra-012",
+      "category_id": "life_hobbies",
+      "ko": "베개",
+      "es": "almohada",
+      "aliases": {
+        "ko": [],
+        "es": []
+      },
+      "provenance": "added"
+    }
+  ]
+}

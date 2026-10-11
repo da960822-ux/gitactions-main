@@ -28,7 +28,7 @@ describe('Marble property shapes', () => {
     for (const asset of dioramas.assets) {
       expect(tiles[asset.tileIndex].name.es).toBe(asset.city);
       const html = renderToStaticMarkup(createElement(MarblePropertyArt, { city: asset.slug, level: 3, routeVersion: 3, language: 'es' }));
-      expect(asset.path).toBe(`/images/marble/dioramas/${asset.slug}.webp`);
+      expect(asset.path).toMatch(/^\/images\/marble\/premium\/cities\/.+\.webp$/);
       expect(existsSync(`public${asset.path}`)).toBe(true);
       expect(html).toContain(asset.path!);
       expect(html).not.toContain('Imagen pendiente');

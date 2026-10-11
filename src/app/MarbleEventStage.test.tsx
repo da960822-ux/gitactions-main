@@ -4,6 +4,16 @@ import { renderToStaticMarkup } from 'react-dom/server';
 import { MarbleEventStage } from './MarbleEventStage';
 
 describe('Marble event stage server rendering', () => {
+  it('keeps the confirmed board timeline event ahead of the newest receipt', () => {
+    const event = { sequence: 1, type: 'move', actor: 'p1', title: { ko: '이동 중', es: 'En camino' } };
+    const latest = { sequence: 2, type: 'arrival', actor: 'p1', title: { ko: '도착', es: 'Llegada' } };
+    const html = renderToStaticMarkup(createElement(MarbleEventStage, { events: [latest], event, animating: true, language: 'ko', playerId: 'p1' }));
+    expect(html).toContain('이동 중');
+    expect(html).not.toContain('도착');
+    expect(html).toContain('is-animating');
+    expect(renderToStaticMarkup(createElement(MarbleEventStage, { events: [latest], event: null, language: 'ko', playerId: 'p1' }))).toBe('');
+  });
+
   it('renders a current legacy card and signed cash delta without starting its motion', () => {
     const html = renderToStaticMarkup(createElement(MarbleEventStage, {
       language: 'es', playerId: 'p1',

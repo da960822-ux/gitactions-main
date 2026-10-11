@@ -362,3 +362,71 @@
   .jp-sale-controls > .jp-cancel-action { align-self: flex-start; }
   .jp-history-content .jp-round-result { align-items: flex-start; }
 }
+
+/* Market, hand and confirmation form one trading surface. */
+@media (min-width: 1024px) {
+  .jaipur-board .jp-topline { min-height: 34px; }
+  .jaipur-board .jp-market-card { height: 132px; }
+  .jaipur-board .jp-action-tray { min-height: 64px; }
+  .jaipur-board .jp-market-footer { gap: 6px; margin-top: 6px; }
+  .jaipur-board .jp-hand-card { min-height: 110px; }
+  .jaipur-board .jp-player-hand .jp-section-heading { margin-bottom: 6px; }
+}
+@media (max-width: 1023px) {
+  .jaipur-board { gap: 7px; padding: 8px; }
+  .jaipur-board > .jp-topline { order: 0; }
+  .jaipur-board > .jp-scorebar { order: 1; }
+  .jaipur-board > .jp-market-section { order: 2; display: contents; }
+  .jaipur-board > .jp-market-section > .jp-section-heading { order: 2; margin: 0; }
+  .jaipur-board .jp-market { order: 3; gap: 5px; }
+  .jaipur-board > .jp-player-area { order: 4; flex-wrap: wrap; gap: 6px; }
+  .jaipur-board .jp-market-footer { order: 5; margin: 0; gap: 5px; }
+  .jaipur-board > .jp-opponent-row, .jaipur-board > .jp-rival-herd { order: 6; }
+  .jaipur-board > .jp-supply-area { order: 7; }
+  .jaipur-board > .jp-history-drawer { order: 8; }
+  .jaipur-board > .jp-round-result, .jaipur-board > .jp-final-result { order: 9; }
+  .jaipur-board .jp-market-card { height: 117px; min-height: 117px; }
+  .jaipur-board .jp-market-card .jp-good-illustration { min-height: 60px; height: 60px; flex: 0 0 60px; }
+  .jaipur-board .jp-card-name { font-size: 12px; line-height: 1.2; padding: 3px 1px; }
+  .jaipur-board .jp-card-prompt { font-size: 11px; line-height: 1.2; padding: 0 2px 3px; }
+  .jaipur-board .jp-hand-cards { display: flex; gap: 5px; overflow-x: auto; padding: 3px; scroll-snap-type: x proximity; }
+  .jaipur-board .jp-hand-card { flex: 0 0 65px; min-height: 88px; scroll-snap-align: start; }
+  .jaipur-board .jp-hand-card .jp-good-illustration { height: 58px; min-height: 58px; }
+  .jaipur-board .jp-player-hand { width: 100%; padding: 6px; }
+  .jaipur-board .jp-player-hand .jp-section-heading { margin-bottom: 2px; }
+  .jaipur-board .jp-player-hand .jp-section-heading p { display: none; }
+  .jaipur-board .jp-herd { flex: 1; display: flex; align-items: center; justify-content: space-between; padding: 5px 9px; min-height: 44px; }
+  .jaipur-board .jp-herd p { display: none; }
+  .jaipur-board .jp-herd strong { font-size: 20px; }
+  .jaipur-board .jp-herd .jaipur-camel-award { width: 28px; height: 28px; }
+  .jaipur-board .jp-score-seat { padding: 5px; gap: 5px; }
+  .jaipur-board .jp-score-main { min-width: 0; }
+  .jaipur-board .jp-score-side { font-size: 11px; gap: 2px 5px; }
+  .jaipur-board .jp-seat-mark { display: none; }
+  .jaipur-board .jp-action-tray { min-height: 0; padding: 7px; gap: 5px; }
+  .jaipur-board .jp-action-tray p { flex-basis: 100%; font-size: 12px; }
+  .jaipur-board .jp-primary-action { flex: 1; min-width: 0; min-height: 44px; font-size: 12px; }
+}
+@media (max-width:1023px) {
+ .jaipur-board { grid-template-columns:minmax(0,1fr); min-width:0; }
+ .jaipur-board > *, .jaipur-board .jp-player-hand, .jaipur-board .jp-player-area { min-width:0; max-width:100%; }
+ .jaipur-board .jp-topline { gap:6px; }
+ .jaipur-board .jp-topline > div { min-width:0; }
+ .jaipur-board .jp-topline p { display:none; }
+ .jaipur-board .jp-hand-cards { min-width:0; min-height:0; max-width:100%; }
+ .jaipur-board .jp-hand-card { height:88px; }
+ .jaipur-board .jp-market-card { min-width:0; }
+ .jaipur-board .jp-card-name { overflow-wrap:anywhere; }
+ .jaipur-board .jp-round-pill { min-width:0; white-space:nowrap; padding:4px 8px; }
+}
+@media (max-width:1023px) {
+ .jaipur-board .jp-topline { min-height:32px; padding:0; }
+ .jaipur-board .jp-topline h2 { font-size:21px; }
+ .jaipur-board .jp-score-seat { min-height:0; padding:4px; gap:3px; }
+ .jaipur-board .jp-score-main small,.jaipur-board .jp-score-side { font-size:11px; line-height:1.2; }
+ .jaipur-board .jp-score-main strong { font-size:18px; }
+ .jaipur-board .jp-hand-card { min-height:76px; height:76px; }
+ .jaipur-board .jp-hand-card .jp-good-illustration { height:47px; min-height:47px; }
+ .jaipur-board .jp-action-tray p { margin:0; line-height:1.2; }
+ .jaipur-board .jp-herd { flex-direction:row; }
+}

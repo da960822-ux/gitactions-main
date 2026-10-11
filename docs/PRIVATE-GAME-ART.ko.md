@@ -16,3 +16,11 @@ window.__DOS_PRIVATE_GAME_ART__ = {
 별도 통합 화면에서는 `DaVinciTable`의 `jokerPortraits` prop으로 같은 값을 전달할 수 있다. 미주입/읽기 실패는 규칙 기호 `－`로 표시한다. 이미지는 자신의 조커와 공개된 상대 조커에만 렌더한다. 숨긴 상대 타일에는 이미지 URL, 얼굴, 조커 식별 DOM을 넣지 않는다. 이미지 경로를 게임 room 상태·행동·공개 로그에 저장하지 않는다.
 
 새 파일 생성·로컬 pixels 확인·실제 연결·최종 2인 검수는 아직 대기다. 개인 이미지 mapping은 부모의 확정 전달을 따른다.
+
+추가 승인 캐릭터 살리·술리는 기존 여섯 ID에 더한 `sali-suli` 하나의 pawn ID다. 두 마리가 한 받침대에 있는 단일 이미지를 다음 값으로 주입한다. 위치·주사위·차례가 추가되지는 않는다. 이 이미지는 기존32개 공개 승인에 포함되지 않아 기본 공개 경로를 저장하지 않는다. 미주입 상태는 ‘그림 준비 중’인 S·S 표식이며 실제 승인 그림 적용 완료가 아니다.
+
+```js
+window.__DOS_PRIVATE_GAME_ART__.marblePawns = {
+  'sali-suli': '<private authenticated image or local blob URL>',
+};
+```

@@ -1,8 +1,10 @@
 # 데스크톱 요구사항별 대조표
 
+**현재 상태:** 32개 일반 자산은 실제 수신·해시/pixels 확인 후 메인의 canonical `public/images/marble/premium/`(ac25936, 총2,206,982bytes)로 연결했다. 원래 f0/5f/1c 객체를 확보했고 승인 게임 소스를 범위별 통합했다. 살리·술리는 기존6종+일곱 번째 단일 pawn 코드 완료, 이미지 비공개 전달 대기다. 조커 새시안2 승인·귀족 원본2는 개인 이미지 bytes/전달 대기. 인게임·Luna 최종 두 세션 QA와 코드 공개push는 미완료다. 아래 과거 전달 숫자는 이력으로 구분한다.
+
 이 문서는 기능 수정·파일 준비·실제 적용·화면 검수·최종 2인 검수를 분리한다. **전체 요청 완료 판정은 아직 없음.** 근거는 현재 checkout의 코드/계획과 부모가 전달한 사용자 지시다. Personal Context 조회는 `Personal context is unavailable for this conversation`으로 실패했다. 부모 대화의 초기 사진 피드백 원문 전체를 직접 열람했다고 주장하지 않는다. 추가 전체 체크리스트 도착 뒤 누락 대조를 계속해야 한다.
 
-소스: baseline `b37c10b`, 후속 `8c90594`, `27d802e`, 랙돌 표시명 `53cf8be`. 최신 원래 통합 커밋 `f0c6d01`, `5f7e75d`, `1c20ea3`은 이 실행기에 없다. 아래 **기존 코드 있음**은 baseline에서 관찰했다는 뜻이며 이번 새 구현이나 통합 최신본 보존 완료를 의미하지 않는다. 모든 최종 2인 검수는 전체 반영된 통합본에서 다시 수행한다. 현재 Luna 결과는 개발 중 회귀 확인이다.
+소스: baseline `b37c10b`, 후속 `8c90594`, `27d802e`, 랙돌 표시명 `53cf8be`. 원래 `f0c6d01`, `5f7e75d`, `1c20ea3`은 ccec83d fetch 뒤 이 실행기에 확보됐다. `4ac2808` 승인 게임 소스와 ac25936의 최신 마스크 공백 보정까지 통합했다. 아래 **기존 코드 있음**은 baseline에서 관찰했다는 뜻이며 이번 새 구현이나 통합 최신본 보존 완료를 의미하지 않는다. 모든 최종 2인 검수는 전체 반영된 통합본에서 다시 수행한다. 현재 Luna 결과는 개발 중 회귀 확인이다.
 
 | 요구사항 | 실제 파일/현재 변경 | 상태와 미완료 사유 |
 | --- | --- | --- |
@@ -12,25 +14,25 @@
 | 도미노 원본28타일, 실제 끝/방향 미리보기·선택/취소/확정·팀/AI/막힘/누적 | 기존 `DominoBoard.tsx`, `DominoTile.tsx`, `DominoEventStage.tsx`, 관련 게임/스타일 | 기존 구현 보존. 선택 후 중앙 시작 X\|Y 확정 설명 27d802e. 새 드래그는 미구현(기존 선택형 계획 후보); 클릭/키보드 방식 유지. 최종 통합 재검수 대기. |
 | 도미노 체인/양끝·최신 수 접근, 공개 이동/착지/정산 | 기존 `DominoBoard.tsx`, `DominoEventStage.tsx`, `styles/domino-premium.css` | 가로 스크롤+양끝 방식 유지. 현재 두 context 첫 행동/턴/reload/controlled 재경기 확인; 자연 종료/전체 설정은 이번 실행 미실행. |
 | 자이푸르 시장5·손패7·상품 공급/토큰, 선택 판매·교환·취소·비공개 보너스 | 기존 `JaipurBoard.tsx`, `JaipurMotion.tsx`, `JaipurArt.tsx`, `games/jaipur.ts` | 기존 상품 그룹+수량의 앞 N stable ID 방식 유지. 낙타 첫 버튼/라운드 종료/2승 설명 27d802e. 개별 카드 묶음 토글은 기존 계획과 대체 구현의 차이로 기록, 새 규칙 추가 없음. |
-| **초기 f0c6d01: 자이푸르 금/은/향신료 시각 구분** | 현재 `JaipurArt.tsx`, `styles/jaipur-art.css`, 기존 atlas 경로 | f0 원본 diff 미확보. 현 자산은 기존 상품 계열, 새 통합에서 개선 자산/스타일이 유지됐다는 검증 불가. 임의 그림 대체 없음. |
+| **초기 f0c6d01: 자이푸르 금/은/향신료 시각 구분** | 승인 `styles/jaipur-premium.css` 통합, 기존 `JaipurArt.tsx`/atlas 유지 | f0/4ac source 대조 후 승인 스타일 보존. 최종 축소 화면의 식별성·실플레이는 미검수. |
 | 스플렌더 시장3×4·90카드/10귀족 ID, 비용/할인/금/부족, 반환·예약3·15점 동수 턴 | 기존 `TableGames.tsx`, `SplendorGem.tsx`, `SplendorMotion.tsx`, `styles/splendor-premium.css`, 카드 map | 기존 코드/규칙/비공개 예약 보호. 보석3색→확정/카드 구매·예약/금/동점 안내 27d802e. 기존 테스트와 이번 대표 행동으로 시각 전체 합격을 대신하지 않음. |
-| **초기 f0c6d01: 스플렌더 중복 snapshot 효과 취소·썸네일 CSS 충돌·비용 가독성** | 현재 `SplendorMotion.tsx`, `styles/splendor-premium.css`, `styles/app.css` | f0 원본 diff 미확보. effect key dedupe와 scoped 비용 스타일의 기존 코드 존재만 확인. 최신 수정 보존·중복 snapshot 실제 비행 지속/최종 축소 화면 확인 필요. |
+| **초기 f0c6d01: 스플렌더 중복 snapshot·썸네일 CSS·비용 가독성** | `SplendorMotion.tsx`, `TableGames.tsx`, `styles/app.css`, `styles/splendor-premium.css` 승인 source 통합 | Motion/Table source가 부모 승인4ac와 일치, 기존 회귀 통과. 실제 화면/비행 지속은 최종 Luna 검수 대기. |
 | 스플렌더 승인 의사가운/한복 귀족 두 그림만 교체 | 원본 Library libfile_e0b409da6f188191833c6b6fea49fe83 / libfile_11a21ea77bf481918844b881f860b455 | 공식 materialization+재시도 실패, bytes0·픽셀 미확인·미적용. **공개 업로드 승인도 별도 미해결 차단 항목.** 다른 이미지 생성 금지, 비용/점수/규칙 불변. |
 | 민화투 원본48 얼굴/달 매칭/획득 분류/점수·고도리/종료/비공개 패 | 기존 `HwatuCard.tsx`, `HwatuMotion.tsx`, `MinhwatuTable.tsx`, `games/minhwatu.ts`, `images/hwatu/source-verification.json` | 원본 해시/48장 mapping 회귀 통과. 실제 월 버튼·두 후보 선택 안내 27d802e. 초기에 승인한 original48와 획득 연출의 최신 통합 diff 대조는 f0 미확보로 보류. 새 아트나 Go/Stop 규칙 없음. |
 | 민화투 실제 card→deck reveal→capture·공개 조합/점수/음향 | 기존 `HwatuMotion.tsx`, `useMinhwatuPresentation.ts`, 음향 | 기존 소스 유지. 두 context 첫 행동/reload/controlled 재경기 확인. 최종 통합 자연승리 경기/실제 음향은 아직 미실행. |
 | 다빈치 추론 화면 배치·선택/공개/준비·포커스/확인/취소 | 기존 `DaVinciTable.tsx`, `DaVinciMatchSummary.tsx`, 해당 스타일 | 기존 코드 유지. 실제 준비 버튼·조커 + 빈칸·뽑기→대상→숫자→확정 안내 27d802e. 두 context 준비/추측/숨김/reload/controlled 재경기 확인은 개발 회귀. 개인 후보 메모는 초기 문서의 후보이며 미구현/안정 ID 설계 미완료. |
 | 다빈치 새 사진 두 장 각각 캐리커처, 비공개 주입 | `DaVinciTable.tsx`, `private-game-art.ts`, 후속 변경 | 최신 지시로 기존 커플 crop은 최종 사용 안 함. 기본 조커는 규칙 기호 －. 외부 private host 런타임 config/컴포넌트 prop으로 각각 주입; 공개 repo에 새 개인 원본/완성본/URL 저장 안 함. 부모 사진 확보·생성 대기. 상대 숨긴 카드에는 주입 이미지 DOM/경로도 렌더 안 함. |
-| 캐치마인드 입력·logical strokes/queue·undo/fill·IME·HUD/도구 | 기존 `CatchmindTable.tsx`, `PlayApp.tsx`, `games/catchmind.ts` | 정수 좌표·큐/조각·IME 차단 기존 소스 존재. 최신 완료본 source 미확보. 물리 IME/운영 지연은 미실행. |
-| **초기 f0c6d01: 빈 캔버스 42% 초과 채우기/무안내 실패 처리** | 현재 `CatchmindTable.tsx` bucketFill은 여전히 `.42`에서 false, fill 입력은 서버 동작으로 전송 | 이 실행기에서는 이전 코드가 남아 있음. 부모의 f0 개선본과 최신 단일 주제 소스를 받기 전 보존 완료 판정 금지. 현재 checkout 문제를 통합 환경의 미반영으로 단정하지 않음. |
-| 캐치마인드 승인 단일 주제·동시 정답·타이머·타임오버·재시작 | 부모 보유 5f7e75d / 이 실행기 현재 여러 라운드 소스 | 소스·통합 diff 차단. 새 기능을 구버전 위에 임의 재구현하거나 새 도움말로 덮어쓰지 않음. |
+| 캐치마인드 입력·채우기·IME·도구 | 부모 승인 `CatchmindTable.tsx`, `PlayApp.tsx`, `client.ts` 통합 | 현재 source는 부모 승인본과 일치. 기존 캔버스/정답/clock/CAS 회귀 통과. 실 IME·운영 지연은 미검수. |
+| **초기 f0c6d01: 빈 캔버스 42% 제한/무안내 실패** | 승인 `bucketFill`의 bounded queue·fill busy/no-op/result feedback source 통합 | `.42` 제한 제거된 부모 구현 보존. 관련 테스트 통과. 새 구현을 임의 중복 추가하지 않음. |
+| 캐치마인드 승인 단일 주제·양언어 정답·타이머·타임오버·재시작 | 승인272단어·주제6·고정 양언어 mask·alias/clock/server/client/2인동의 source 통합 | source/실제Edgehandler/CAS회귀 통과. 최신 KO마스크 공백 보정 보존. 도움말 주제 하나→설정 저장,고정mask,종료/다음라운드 갱신. 동시 요청·운영 재접속 actual play는 최종 Luna 검수 대기. |
 | 부루마블 읽히는 40칸/24도시·도시/가격/임대/단계·큰 상세/예상 잔액 | `MarbleBoard.tsx`, `styles/marble-premium.css`, 27d802e | 데스크톱 높이 실측 대응, 네 해상도 KO/ES 보드 전부 화면 안/이름 잘림0/주행동 겹침0 개발 회귀. 132px 미리보기, 720 높이 대출은 스크롤. 새 이미지 적용 후 픽셀 재검수 필요. |
-| 부루마블 고품질 공통 단독주택/아파트/24개 실제 랜드마크·크기/밑면/색 | `MarblePropertyArt.tsx`, `dioramas/manifest.json`, 27d802e | 새 이미지 path 전부 null, 준비 중. 54/73/100 CSS 연결 준비. 실제 alpha bounds·도시별 색변형·일관된 재질·식별성 미검증. 사용자 반려 SVG/최초 아파트는 최종 그림 아님. |
+| 부루마블 고품질 공통 건물2·24랜드마크·크기/밑면/색 | `MarblePropertyArt.tsx`, canonical premium32, 관련 manifest | 실제32파일 원본/최적화pixels·alpha·hash 확인. same house/apartment renderer city tint,54/73/100 CSS·상단여백/contain·132상세. tint와전체 인게임 품질 미검수. |
 | 부루마블 exact6 도시 변경, 고정 서사/경제·saved40/legacy18 보존 | `games/marble.ts`, 생성 Edge, 27d802e | fresh route3: Berlin11/Miami13/Istanbul21/Agra32/Athens33/Sydney36. 고정1→3→15→31→38. 칸별 이름 외 view/economy 같음 회귀. 이전 route2/원래40/legacy18 보존. |
-| 광주 본관/산토 Diego/뉴어크 성당/도쿄 Kaminarimon/Miami Beach 정확성 | `dioramas/manifest.json`, `MarbleBoard.tsx`, 27d802e | 명칭/노트 연결, 실제 raster 미적용. 이전 후보는 폐기. 실제 항공 노선 주장 없음, Asiana/JetBlue 상상 여행만 유지. |
-| **초기 f0c6d01: Marble fallback 경로 계산·주사위→이동→도착 순서** | 현재 `marble-motion.ts`, `MarbleBoard.tsx` | f0 diff 미확보. 현 fallback/58ms 이동은 이전 코드로 관찰, 최신 개선 보존을 판정할 수 없음. 최신 Luna 개발 진단에서 [4,1]→5칸/도착5·양쪽 snapshot 일치 확인. 최종 통합 순서 재검수 필요. |
-| 부루마블 6종 말·기존 저장 ID·선택/중복 선택·이동/턴 | `MarblePawn.tsx`, `pawns/manifest.json`, `games/marble.ts`, 8c90594/27d802e/53cf8be 및 후속 명칭 | ID fox/cat/penguin/astronaut/robot/dragon 유지. 새6종은 말티푸/랙돌/판다/우주인/리스연/친칠라. 기존 SVG 기능용 backupfallback, 시각 품질 반려. 새 단일 투명 이미지 경로 null. 걷기·몸회전·sprite/3D 범위 없음. |
-| 말티푸·친칠라/주택·수정 아파트 Library 실제 bytes | 원본 Library libfile_7263ed8d8b708191a8fde159d1dec058 / libfile_fd8b5109fbb08191b783c1ec91451fde / libfile_5d468ddb88608191a7bf980985a82642 / libfile_84b3a1d523fc8191aa56d3e24ebdcb7c | 파일명 resolve 성공. 소비자 로컬 original 목적지와 별도 retry 목적지 모두 공식 `download failed`; 네 파일 각각 초기+한 번 재시도 실패, 총 bytes0. 픽셀 검수/실제 적용 불가. 아파트 record명 stage-2-apartment-ordinary-v2.png, 버전 pin의 실제 bytes 미확보. |
-| 우주인 로즈골드/불투명 검정 바이저·리스연 연분홍 토끼 인형 | `pawns/manifest.json` 연결 예정; 우주인 Library libfile_10a0511c400481919b6dc6d878d0b285 승인 버전1 | 이전 민트/얼굴 버전 최종 적용 금지. 사용자 인물/배경 제외한 인형만 새 아트. 현재 최신 우주인 승인 버전1 및 리스연 파일 레코드는 전달됐지만 로컬 download실패·미적용·미검수. 일반 robot SVG를 리스연 최종 그림으로 승인하지 않음. |
+| 광주 본관/산토 Diego/뉴어크 성당/도쿄 Kaminarimon/Miami Beach | 실제 canonical raster와 `MarbleBoard.tsx` 노트 | 승인32원본+canonical contact sheet 확인·연결. 실제 항공 노선/브랜드제휴 주장 없음, 아시아나/젯블루 상상 여행만 표시. 인게임 미검수. |
+| **초기 f0c6d01: Marble fallback·주사위→이동→도착** | 승인 `marble-motion.ts`, `MarbleBoard.tsx`, `MarbleEventStage.tsx` source 통합 | 원본 source의 frame timeline·중복 snapshot 보존·reduced/hidden 처리 유지. 순서/fallback 회귀 통과. 통합본 actual play는 대기. |
+| 부루마블 기존6종과 일곱 번째 살리·술리 | `MarblePawn.tsx`, `games/marble.ts`, `private-game-art.ts` | 기존6 저장ID 유지+canonical 6raster 연결.1c 승인 SVGfallback 변경 보존하되 최종 이미지는 새 raster. sali-suli는한ID/한위치/기존턴이며이미지는private미전달. 걷기·회전·sprite/3D 추가 없음. |
+| 말티푸·친칠라/주택·수정 아파트 원본 | canonical premium manifest의 source hashes | 이전 Library실패는 이력. ccec83d PNG32→ac25936 WebP32를 실제읽고bytes/SHA256/alpha/dimensions 검증·연결. 별도 중복WebP는98df6a8에 기록보존후제거. |
+| 우주인 로즈골드/검정 바이저·리스연 인형 | canonical6pawn 실제pixels | 올바른 로즈골드·불투명바이저·하트와연분홍인형 확인·연결. 민트/얼굴 버전 미사용. 추가살리·술리시안승인은 별도이며공개32전송범위 밖. |
 | 말 동일 칸/코너/건물·가격 가림·칸별 이동/도착·KO/ES 선택 | Luna `/root/luna_playqa`, `marble-roll-diagnose.json`, 추가 pawn QA | 독립 두 contexts actual roll POST200, [4,1], tile02→06 5칸, 0→5/version일치 확인. 이전 hook/fixture setup 실패는 QA 오류로 분리. 같은 칸의 두 말/랜드마크/도시명 겹침 관찰 후 간격과 보드 안쪽 별도 말 공간 CSS를 추가했으나 사용자 지시로 재검수는 최종 통합 뒤로 보류. |
 | push/작업 분리/원본 보존 | isolated `/workspace/gitactions-games`, Git commits·bundle/patch | 최신 커밋은 로컬만. 정상 작업 branch push가 자동 검토 2회 거절(이 세션 최초 금지/이전 승인 전달 불인정). 동일 목적지 본인소유/admin확인은 성공. 현재 명시 승인 질문 대기. main·force·PR·배포 없음. |
 
@@ -51,3 +53,7 @@
 위 공개 게시 승인 대기는 후속 사용자 답변으로 **건물·게임말32개 한정 해결**됐다. 공개repo와 개인사진/새조커/귀족 제외를 명시한 질문에 승인했고 부모가 같은 pending tree 재개 중. 아직 확정 SHA/소비자bytes 없음. 후속 게임 코드 push 승인과는 별개다.
 
 최신 실제 자산 연결: 승인 원격 ccec83d를 fetch해32파일52,604,560bytes 원본/alpha/pixels/SHA256/Gitblob 확인. WebP32파일6,390,196bytes, 원본비율/전체canvas 유지와 lossless resizedRGBA decode검증, 실제경로 연결. 공통1/2단계는 같은raster shape를 도시 palette로 roof/neutral masonry tint한다. 새이미지가 적용된 코드 상태이나 인게임 검수 미실행. 추가 살리·술리7번째 말과 새 개인조커2시안은 아직 적용안함. fetch로 f0/5f/1c 원본 객체가 모두 확보돼 이제 통합 진행 예정.
+
+최신 source통합: 홈/건의사항/리듬SWF 변경없이승인게임부분만8c→4ac three-way 적용, 메인ac의mask공백fix 추가보존. 현재7번째말은정의/선택/서버/동일위치/턴및private주입코드만완료. 원본이미지부모경로이실행기부재확인. 개인Library ID·실제경로는repo밖인계에만기록.
+
+최종코드검증: 통합source50파일466회귀통과,최신TypeScript/Vite/Edgebuild통과. static tint스크린샷은profile/Widget IPC문제로실패후중단했고완료PNG없음. 이는in-gameQA미실행과별개다. canonical32PNG+WebP원본contactpixels는확인했으나renderer색효과·말공간·전체게임최종화면은Luna검수대기.

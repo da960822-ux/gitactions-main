@@ -4,9 +4,10 @@ import { useEffect, useLayoutEffect, useRef, useState } from 'react';
 import type { CSSProperties } from 'react';
 import type { GameAction, Language, PlayerId } from '../core/types';
 import { GameValue } from './GameValue';
+import { playCue } from '../audio/audio';
 import { MarbleEventStage } from './MarbleEventStage';
 import { MarblePawn, MarblePawnPicker, marblePawnCatalog, type MarblePawnId } from './MarblePawn';
-import { marbleGridPosition, marbleMovementPath, type MarbleMoveEvent } from './marble-motion';
+import { marbleGridPosition, marblePresentationFrames, marbleCueForEvent, type MarbleActionEvent } from './marble-motion';
 import '../styles/marble-premium.css';
 
 type Choice = { label: Record<Language, string>; action: GameAction };
@@ -128,6 +129,12 @@ export default function MarbleBoard({ view: rawView, language, playerId, runActi
   const diceSequence = num(board.diceSequence);
   const [traveler, setTraveler] = useState<{ seat: Seat; tile: number; seq: number } | null>(null);
   const [diceRolling, setDiceRolling] = useState(false);
+  const [displayPositions, setDisplayPositions] = useState({ p1: num(positions.p1), p2: num(positions.p2) });
+  const displayedTile = tiles[displayPositions[playerId]] ?? {};
+  const [presentedEvent, setPresentedEvent] = useState<MarbleActionEvent | null>(() => stageEvents.at(-1) ?? null);
+  const motionTimers = useRef<number[]>([]);
+  const motionBusy = useRef(false);
+  const [reduced, setReduced] = useState(false);
   const [confirmBankruptcy, setConfirmBankruptcy] = useState(false);
   const previous = useRef<{ positions: Record<Seat, number>; move: number; action: number; dice: number; phase: string } | null>(null);
   const previousProperties = useRef<string | null>(null);
@@ -180,49 +187,60 @@ export default function MarbleBoard({ view: rawView, language, playerId, runActi
   }, [propertySignature]);
 
   useEffect(() => {
-    let pulseTimer: number | null = null;
+    const query = window.matchMedia('(prefers-reduced-motion: reduce)');
+    const update = () => setReduced(query.matches);
+    update(); query.addEventListener('change', update);
+    return () => query.removeEventListener('change', update);
+  }, []);
+
+  useEffect(() => {
     const next = { positions: { p1: num(positions.p1), p2: num(positions.p2) }, move: lastMoveSequence, action: actionSequence, dice: diceSequence, phase };
     const before = previous.current;
     previous.current = next;
-    if (!before) return;
-    if (before.dice !== diceSequence && !window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
-      setDiceRolling(true);
-      pulseTimer = window.setTimeout(() => setDiceRolling(false), 620);
-      if (before.move === lastMoveSequence && before.positions.p1 === next.positions.p1 && before.positions.p2 === next.positions.p2) return () => { if (pulseTimer !== null) window.clearTimeout(pulseTimer); };
-    }
-    const freshEvents = eventLog.filter(event => num(event.sequence) > before.action).sort((a, b) => num(a.sequence) - num(b.sequence));
-    const moveEvents = freshEvents.filter(event => event.type === 'move' && (event.actor === 'p1' || event.actor === 'p2'));
-    const seat = moveEvents.length ? moveEvents[0].actor as Seat : players.find(player => before.positions[player] !== next.positions[player]);
-    if (!seat || window.matchMedia('(prefers-reduced-motion: reduce)').matches) { if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) setTraveler(null); return () => { if (pulseTimer !== null) window.clearTimeout(pulseTimer); }; }
-    const size = tiles.length || 18;
-    const diceSteps = rollValues.reduce((sum, value) => sum + value, 0);
-    const path: number[] = [];
-    let cursor = before.positions[seat];
-    for (const event of moveEvents.filter(item => item.actor === seat)) {
-      const from = Number.isInteger(event.from) ? num(event.from) : cursor;
-      const to = Number.isInteger(event.to) ? num(event.to) : next.positions[seat];
-      if (from !== cursor) {
-        const gap = (from - cursor + size) % size;
-        for (let step = 1; step <= gap; step += 1) path.push((cursor + step) % size);
+    // Repeated snapshots and locale changes keep the active timeline intact.
+    if (before && before.action === next.action && before.move === next.move && before.dice === next.dice && !reduced) return;
+    const interrupted = motionBusy.current;
+    motionBusy.current = false;
+    motionTimers.current.forEach(window.clearTimeout); motionTimers.current = [];
+    const freshEvents = eventLog.filter(event => num(event.sequence) > (before?.action ?? actionSequence)).sort((a, b) => num(a.sequence) - num(b.sequence));
+    const frames = before ? marblePresentationFrames(freshEvents, before.positions, next.positions, tiles.length || 18) : [];
+    if (!before || reduced || document.hidden || actionSequence < before.action || interrupted || freshEvents.length > 12 || !frames.length) {
+      setTraveler(null); setDiceRolling(false); setDisplayPositions(next.positions); setPresentedEvent(stageEvents.at(-1) ?? null);
+      // Static/reduced feedback keeps the latest sound; it never replays a queue.
+      if (before && freshEvents.length && !document.hidden && actionSequence >= before.action) {
+        const event = [...freshEvents].reverse().find((item: MarbleActionEvent) => marbleCueForEvent(item) && !['move', 'turn'].includes(String(item.type))) ?? freshEvents.at(-1)!;
+        const cue = event.type === 'win' && view.result?.winner === (playerId === 'p1' ? 'p2' : 'p1') ? 'lose' : marbleCueForEvent(event);
+        if (cue) playCue('marble', cue);
       }
-      const steps = Number.isFinite(Number(event.steps)) ? Number(event.steps) : (to - from + size) % size;
-      for (let step = 1; step <= Math.min(Math.abs(steps), size); step += 1) path.push(((from + Math.sign(steps) * step) % size + size) % size);
-      cursor = to;
+      return;
     }
-    if (!path.length && (lastMoveSequence > before.move || before.positions[seat] !== next.positions[seat])) {
-      const moveEvent: MarbleMoveEvent | null = lastMoveSequence > before.move ? { sequence: lastMoveSequence, playerId: String(lastMove.playerId), effect: String(lastMove.source ?? 'move'), from: Number.isInteger(lastMove.from) ? num(lastMove.from) : before.positions[seat], to: Number.isInteger(lastMove.to) ? num(lastMove.to) : next.positions[seat], steps: Number.isInteger(lastMove.steps) ? num(lastMove.steps) : null } : null;
-      path.push(...marbleMovementPath(before.positions[seat], next.positions[seat], diceSteps, moveEvent, Boolean(moveEvent), seat, size));
-    }
-    if (path.length && path.at(-1) !== next.positions[seat]) {
-      const gap = (next.positions[seat] - (path.at(-1) ?? before.positions[seat]) + size) % size;
-      for (let step = 1; step <= gap; step += 1) path.push(((path.at(-1) ?? before.positions[seat]) + step) % size);
-    }
-    if (!path.length) return;
-    const sequence = lastMoveSequence || diceSequence || turns;
-    setTraveler({ seat, tile: path[0], seq: sequence });
-    const timers = path.map((tile, index) => window.setTimeout(() => setTraveler(index === path.length - 1 ? null : { seat, tile: path[index + 1], seq: sequence }), 58 * (index + 1)));
-    return () => { timers.forEach(window.clearTimeout); if (pulseTimer !== null) window.clearTimeout(pulseTimer); };
-  }, [positions.p1, positions.p2, lastMoveSequence, lastMove.from, lastMove.to, lastMove.steps, lastMove.source, lastMove.playerId, diceSequence, actionSequence, phase, propertySignature]);
+    let cueSequence = 0;
+    motionBusy.current = true;
+    const apply = (frame: typeof frames[number]) => {
+      if (frame === frames.at(-1)) motionBusy.current = false;
+      const sequence = num(frame.event.sequence);
+      if (sequence > cueSequence && !document.hidden) {
+        cueSequence = sequence;
+        const cue = frame.event.type === 'win' && view.result?.winner === (playerId === 'p1' ? 'p2' : 'p1') ? 'lose' : marbleCueForEvent(frame.event);
+        if (cue) playCue('marble', cue);
+      }
+      setDiceRolling(frame.dice); setTraveler(frame.traveler); setDisplayPositions(frame.positions); setPresentedEvent(frame.event);
+    };
+    apply(frames[0]);
+    motionTimers.current = frames.slice(1).map(frame => window.setTimeout(() => apply(frame), frame.at));
+  }, [positions.p1, positions.p2, lastMoveSequence, diceSequence, actionSequence, reduced]);
+
+  useEffect(() => {
+    const snap = () => {
+      motionTimers.current.forEach(window.clearTimeout); motionTimers.current = [];
+      motionBusy.current = false; setTraveler(null); setDiceRolling(false);
+      const latest = previous.current;
+      if (latest) setDisplayPositions(latest.positions);
+    };
+    const hidden = () => { if (document.hidden) snap(); };
+    document.addEventListener('visibilitychange', hidden);
+    return () => { motionTimers.current.forEach(window.clearTimeout); document.removeEventListener('visibilitychange', hidden); };
+  }, []);
 
   const opponentPhase: Record<string, Record<Language, string>> = {
     roll: { ko: '상대가 주사위를 굴릴 차례예요', es: 'A tu pareja le toca lanzar los dados' },
@@ -251,7 +269,7 @@ export default function MarbleBoard({ view: rawView, language, playerId, runActi
           {tiles.map((tile, index) => {
             const kind = String(tile.kind ?? 'rest'), name = String(record(tile.name)[language] ?? record(tile.name).ko ?? ''), group = String(tile.group ?? '');
             const position = marbleGridPosition(index, tiles.length);
-            const atSeats = players.filter(seat => num(positions[seat]) === index);
+            const atSeats = players.filter(seat => num(displayPositions[seat]) === index);
             const movingSeat = traveler?.tile === index ? traveler.seat : null;
             const seats = atSeats.filter(seat => traveler?.seat !== seat);
             if (!position) return null;
@@ -324,7 +342,7 @@ export default function MarbleBoard({ view: rawView, language, playerId, runActi
             {[0, 1].map(index => <Die key={`${diceSequence}-${index}`} value={rollValues[index] ?? 0} language={language}/>)}
             {rollValues.length >= 2 && <b className="mp-dice-total">{rollValues[0] + rollValues[1]}</b>}
           </div>
-          <div className="mp-current-tile" aria-live="polite"><span className="mp-current-flag">{cityFlag(record(currentTile.name)) && <img src={`/images/marble/flags/${cityFlag(record(currentTile.name))}.svg`} alt="" loading="lazy" decoding="async"/>}</span><div><small>{copy(language, '도착 및 행동 위치', 'Ubicación de llegada y acción')}</small><ImpactText tile={currentTile} language={language}/></div>{ownerName && <b className="mp-current-owner">{ownerName}</b>}</div>
+          <div className="mp-current-tile" aria-live="polite"><span className="mp-current-flag">{cityFlag(record(displayedTile.name)) && <img src={`/images/marble/flags/${cityFlag(record(displayedTile.name))}.svg`} alt="" loading="lazy" decoding="async"/>}</span><div><small>{copy(language, '도착 및 행동 위치', 'Ubicación de llegada y acción')}</small><ImpactText tile={displayedTile} language={language}/></div>{ownerName && <b className="mp-current-owner">{ownerName}</b>}</div>
           {active && phase === 'decision' && <p className="mp-decision-help">{copy(language, '이 도시에 도착했어요. 구매하거나 지나갈 수 있어요.', 'Llegaste a esta ciudad. Puedes comprarla o continuar.')}</p>}
           {active && phase === 'island' && <p className="mp-island-help">{copy(language, `무인도에 있어요 · 남은 차례 ${islandRemaining}. 쌍이 나오면 나가고, 100을 내거나 탈출권을 쓸 수 있어요${escapePassCount ? ` (탈출권 ${escapePassCount}장 보유)` : ''}.`, `Estás en la isla · ${islandRemaining} turnos pendientes. Puedes intentar sacar dobles, pagar 100 o usar un pase${escapePassCount ? ` (tienes ${escapePassCount})` : ''}.`)}</p>}
           {active && phase === 'train-decision' && <p className="mp-train-help">{copy(language, `운임 ${num(board.pendingTrainFare ?? 100)}을 내고 소유 여부와 관계없이 부동산 칸으로 이동할 수 있어요. 목적지가 없으면 열차를 건너뛰세요.`, `El pasaje cuesta ${num(board.pendingTrainFare ?? 100)}. Puedes elegir cualquier ciudad, aunque tenga dueño. Si no hay destinos disponibles, puedes pasar el tren.`)}</p>}
@@ -362,7 +380,7 @@ export default function MarbleBoard({ view: rawView, language, playerId, runActi
 
         <section className="mp-event-theater" aria-label={copy(language, '방금 일어난 일', 'Lo que acaba de pasar')}>
           <h4>{copy(language, '방금 일어난 일', 'Lo que acaba de pasar')}</h4>
-          {stageEvents.length > 0 ? <MarbleEventStage events={stageEvents} language={language} playerId={playerId} result={view.result}/> : <p className="mp-event-empty">{copy(language, '첫 주사위를 굴리면 이곳에 도착과 카드 효과가 표시돼요.', 'Al lanzar los dados, aquí verás las llegadas y los efectos de las cartas.')}</p>}
+          {stageEvents.length > 0 ? <MarbleEventStage events={stageEvents} event={presentedEvent} animating={!reduced && (diceRolling || traveler !== null)} language={language} playerId={playerId} result={view.result}/> : <p className="mp-event-empty">{copy(language, '첫 주사위를 굴리면 이곳에 도착과 카드 효과가 표시돼요.', 'Al lanzar los dados, aquí verás las llegadas y los efectos de las cartas.')}</p>}
         </section>
 
         <details className="mp-city-detail" aria-label={selectedName}><summary>{copy(language, '도시 상세 · ', 'Detalles · ')}{selectedName}</summary>

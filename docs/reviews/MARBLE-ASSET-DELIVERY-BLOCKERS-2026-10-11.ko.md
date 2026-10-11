@@ -16,3 +16,5 @@
 최신 승인 적용: 공개32자산 게시 승인만 해결됐다. 전달 commit/SHA·실제 bytes는 아직 미완료이므로 위 Library 실패 기록·미적용 상태를 성공으로 바꾸지 않는다.
 
 전달 완료 근거: `assets/marble-raster-verification-ccec83d.json`. 원본32개 총52,604,560bytes와 각각 SHA256/Gitblob/bytes 일치. Lossless WebP는 max512도시/건물,max384말,비율과전체alpha캔버스 보존이며 resizedRGBA와 decodebytes 일치. 출력총6,390,196bytes. 실제 원본은 output 추출본과 ccec83d 원격 원본으로 보존. 원본 PNG 그림/palette는 바꾸지 않았다. 공통 건물은 renderer가 따뜻한 지붕/중립 벽체 영역을 도시 palette로 multiply해 shape/lighting을 유지한다. 이 tint와 전체 화면은 아직 final in-game 검수하지 않았다.
+
+최신canonical반영: 메인ac25936에서premium32WebP 총2,206,982bytes를fetch/sha256/sourcehash/dimensions/alpha decode검증후exactbytes사용. 기존98df6a8중복변환파일은삭제하고Git이력/원본output에보존. 게임renderer만mapping/tint한다. 추가sali-suli코드는한pawn으로준비됐고이미지는기존public32범위밖private미전달이다.

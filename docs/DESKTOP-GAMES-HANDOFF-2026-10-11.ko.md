@@ -1,5 +1,7 @@
 # 데스크톱 게임 독립 작업 인계 — 2026-10-11
 
+**현재 인계:** canonical 자산은 메인 ac25936의 `/images/marble/premium/`32WebP이며원본 ccec83d와runtime해시/bytes/pixels확인후컴포넌트연결했다. 자체98df6a8 WebP32는중복을제거하고Git이력만보존했다. f0/5f/1c원본객체확보후부모승인게임source를범위별통합했고ac의최신KO마스크공백fix도보존했다. 기존6종+raster6+추가살리·술리단일pawn정의/선택/private주입완료. 살리·술리이미지·새개인조커2·귀족2실제bytes는비공개전달대기. 전체최신source회귀50파일466및TypeScript/Vite/Edgebuild통과. 인게임최종Luna두세션QA·코드push는미완료. 아래이전상태/제작기록은현재차단상태와구분한다.
+
 ## 최신 인계 상태 — 아래 본문은 8c90594 제작 기록
 
 최신 요구사항과 완료/미완료 대조는 `reviews/DESKTOP-REQUIREMENTS-LEDGER-2026-10-11.ko.md`를 따른다. 27d802e는 초보자 설명·데스크톱 보드 높이·큰 도시 미리보기·fresh route3 exact6 변경과 기존 저장판 호환성, 53cf8be는 cat ID 유지한 랙돌 명칭을 담는다. 후속 변경은 robot ID 유지한 리스연 명칭, 말 간격/안쪽 별도 공간, 도시 이미지 contain/상단 여백, 비공개 조커 runtime 주입이다. **후속 화면 검수와 전체 최신 통합본 2인 QA는 사용자 지시에 따라 나중에 수행한다.**

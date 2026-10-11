@@ -17,7 +17,7 @@ const center = (box: Box) => ({ x: box.left + box.width / 2, y: box.top + box.he
 // explanations visible without delaying either authority transition.
 export function appendSplendorFlights<T extends { id: string }>(current: T[], incoming: T[]): T[] {
   const ids = new Set(current.map(flight => flight.id));
-  return [...current, ...incoming.filter(flight => !ids.has(flight.id))];
+  return [...current, ...incoming.filter(flight => !ids.has(flight.id))].slice(-24);
 }
 
 export function splendorReserveGoldFlight(event: Pick<MotionEvent, 'reserveGoldCount' | 'incomingCounts'>) {
@@ -62,11 +62,14 @@ export function SplendorMotion({ scope, version, viewer, event }: { scope: strin
       if (root) positions.current = { scope, before: new Map(), current: readPositions(root) };
     };
     const hidden = () => { if (document.hidden) clear(); else moved(); };
+    const motion = window.matchMedia('(prefers-reduced-motion: reduce)');
+    const reduce = () => { if (motion.matches) clear(); };
+    motion.addEventListener('change', reduce);
     document.addEventListener('visibilitychange', hidden);
     window.addEventListener('resize', moved);
     document.addEventListener('scroll', moved, true);
     return () => {
-      clear(); document.removeEventListener('visibilitychange', hidden);
+      clear(); motion.removeEventListener('change', reduce); document.removeEventListener('visibilitychange', hidden);
       window.removeEventListener('resize', moved); document.removeEventListener('scroll', moved, true);
     };
   }, [scope]);
@@ -107,6 +110,12 @@ export function SplendorMotion({ scope, version, viewer, event }: { scope: strin
       return { left: rect.left, top: rect.top, width: rect.width, height: rect.height };
     };
     const batch: Flight[] = [];
+    for (const gem of ['white', 'blue', 'green', 'red', 'black', 'gold']) {
+      const count = Number(event.incomingCounts?.[gem] ?? 0);
+      if (!Number.isInteger(count) || count <= 0) continue;
+      const from = box(`.sp-bank .sp-gem-pile.sp-color-${gem}`), to = box(`.sp-treasury-gem .sp-color-${gem}`);
+      if (from && to) batch.push({ id: `${event.key}:gain-${gem}`, kind: 'gain', from, to, delay: batch.length * 35, gem, count });
+    }
     const reserveGoldCount = splendorReserveGoldFlight(event);
     if (reserveGoldCount) {
       const from = box('.sp-bank .sp-gem-pile.sp-color-gold'), to = box('.sp-treasury-gem .sp-color-gold');
