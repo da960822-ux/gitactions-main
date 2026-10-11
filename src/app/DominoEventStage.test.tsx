@@ -40,6 +40,22 @@ describe('Domino event stage', () => {
     expect(html).not.toContain('Tu pareja');
   });
 
+  it('uses a neutral result title when the viewer loses and preserves draw titles', () => {
+    const losingEvent = { sequence: 9, type: 'win', team: 'p1', title: { ko: '경기 승리', es: '¡Partido ganado!' } };
+    const spanishLoss = renderToStaticMarkup(createElement(DominoEventStage, { events: [losingEvent], language: 'es', playerId: 'p2', ownTeam: 'p2' }));
+    const koreanLoss = renderToStaticMarkup(createElement(DominoEventStage, { events: [losingEvent], language: 'ko', playerId: 'p2', ownTeam: 'p2' }));
+    const draw = renderToStaticMarkup(createElement(DominoEventStage, { events: [{ sequence: 10, type: 'win', title: { ko: '무승부', es: 'Empate' } }], language: 'es', playerId: 'p2' }));
+    expect(spanishLoss).toContain('aria-label="Resultado del partido"');
+    expect(spanishLoss).toContain('<strong>Resultado del partido</strong>');
+    expect(spanishLoss).toContain('Ganó el equipo rival');
+    expect(spanishLoss).not.toContain('¡Partido ganado!');
+    expect(koreanLoss).toContain('aria-label="경기 결과"');
+    expect(koreanLoss).toContain('상대 팀 승리');
+    expect(koreanLoss).not.toContain('경기 승리');
+    expect(draw).toContain('aria-label="Empate"');
+    expect(draw).toContain('<strong>Empate</strong>');
+  });
+
   it('labels the other human as a teammate only in cooperative mode', () => {
     const event = { sequence: 2, type: 'play', actor: 'p2', tile: { a: 0, b: 3 } };
     const render = (mode: string) => renderToStaticMarkup(createElement(DominoEventStage, { events: [event], playerId: 'p1', language: 'es', mode }));

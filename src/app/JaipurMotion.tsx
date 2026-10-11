@@ -17,6 +17,18 @@ function latestNotice(events: readonly (JaipurEvent | null | undefined)[]) {
   return events.filter((event): event is JaipurEvent => event != null && ['round-end', 'win', 'bonus'].includes(event.type)).slice().sort((a, b) => jaipurSequence(a) - jaipurSequence(b)).at(-1) ?? null;
 }
 
+export function jaipurNoticeDuration(event: JaipurEvent | null) {
+  return event?.type === 'bonus' ? 2600 : event?.type === 'round-end' || event?.type === 'win' ? 4500 : 0;
+}
+
+export function jaipurNoticeTitle(event: JaipurEvent, language: Language, playerId: PlayerId) {
+  if (event.type !== 'win') return event.title[language];
+  if (event.winner === 'draw') return language === 'ko' ? '경기 무승부' : 'Partida empatada';
+  if (event.winner === playerId) return language === 'ko' ? '경기에서 이겼어요!' : '¡Ganaste la partida!';
+  if (event.winner) return language === 'ko' ? '상대가 이겼어요.' : 'Ganó tu pareja.';
+  return language === 'ko' ? '경기 결과' : 'Resultado del partido';
+}
+
 const goodNames = {
   ko: { diamond: '다이아몬드', gold: '금', silver: '은', cloth: '옷감', spice: '향신료', leather: '가죽', camel: '낙타' },
   es: { diamond: 'Diamantes', gold: 'Oro', silver: 'Plata', cloth: 'Tela', spice: 'Especias', leather: 'Cuero', camel: 'Camello' },
@@ -44,14 +56,14 @@ function formatSummary(event: JaipurEvent, language: Language, playerId: PlayerI
 export function JaipurMotion({ events, language, playerId }: { events: readonly (JaipurEvent | null | undefined)[]; language: Language; playerId: PlayerId }) {
   const sequence = useRef<number | null>(null);
   const player = useRef(playerId);
+  const queuedPlayer = useRef(playerId);
   const positions = useRef(new Map<string, Position>());
   const timer = useRef<number | null>(null);
-  const noticeTimer = useRef<number | null>(null);
   const arrivalTimers = useRef<number[]>([]);
   const [queue, setQueue] = useState<JaipurEvent[]>([]);
   const [flights, setFlights] = useState<FlightView[]>([]);
   const [presented, setPresented] = useState<JaipurEvent | null>(() => latestEvent(events));
-  const [notice, setNotice] = useState<JaipurEvent | null>(() => latestNotice(events));
+  const [notice, setNotice] = useState<JaipurEvent | null>(null);
   const [noticeMotionSequence, setNoticeMotionSequence] = useState<number | null>(null);
   const [reduced, setReduced] = useState(false);
   const currentRound = latestEvent(events)?.round ?? 1;
@@ -84,7 +96,7 @@ export function JaipurMotion({ events, language, playerId }: { events: readonly 
 
   useEffect(() => {
     const clear = () => { setQueue([]); setFlights([]); setNoticeMotionSequence(null); };
-    const onVisibility = () => { if (document.hidden) clear(); };
+    const onVisibility = () => { if (document.hidden) { clear(); setNotice(null); } };
     window.addEventListener('resize', clear);
     document.addEventListener('visibilitychange', onVisibility);
     return () => { window.removeEventListener('resize', clear); document.removeEventListener('visibilitychange', onVisibility); };
@@ -95,7 +107,7 @@ export function JaipurMotion({ events, language, playerId }: { events: readonly 
     if (player.current !== playerId) {
       player.current = playerId;
       sequence.current = ordered.reduce((max, event) => Math.max(max, jaipurSequence(event)), 0);
-      setQueue([]); setFlights([]); setPresented(ordered.at(-1) ?? null); setNotice(latestNotice(ordered)); setNoticeMotionSequence(null);
+      setQueue([]); setFlights([]); setPresented(ordered.at(-1) ?? null); setNotice(null); setNoticeMotionSequence(null);
       return;
     }
     if (sequence.current === null) {
@@ -105,12 +117,10 @@ export function JaipurMotion({ events, language, playerId }: { events: readonly 
     const update = jaipurEventWindow(ordered, sequence.current);
     if (update.reset) {
       sequence.current = update.latestSequence;
-      setQueue([]); setFlights([]);
-    }
-    if (!update.fresh.length) {
-      if (update.reset && !ordered.length) { setPresented(null); setNotice(null); setNoticeMotionSequence(null); }
+      setQueue([]); setFlights([]); setPresented(ordered.at(-1) ?? null); setNotice(null); setNoticeMotionSequence(null);
       return;
     }
+    if (!update.fresh.length) return;
     sequence.current = update.latestSequence;
     if (update.fresh.at(-1)?.type === 'round-start') {
       setNotice([...update.fresh].reverse().find(event => event.type === 'round-end') ?? null);
@@ -118,15 +128,23 @@ export function JaipurMotion({ events, language, playerId }: { events: readonly 
     }
     if (reduced || document.hidden) {
       const last = update.fresh.at(-1) ?? null;
-      setPresented(last); setNotice([...update.fresh].reverse().find(event => ['round-end', 'win', 'bonus'].includes(event.type)) ?? null); setNoticeMotionSequence(null); setQueue([]); setFlights([]);
+      setPresented(last);
+      const freshNotice = latestNotice(update.fresh);
+      if (document.hidden) setNotice(null);
+      else if (freshNotice) setNotice(freshNotice);
+      setNoticeMotionSequence(null); setQueue([]); setFlights([]);
       if (!document.hidden) update.fresh.forEach(event => {
         const landing = jaipurLandingFeedback(event, jaipurFlights(event, playerId));
         if (landing) playCue('jaipur', landing.cue);
       });
-    } else setQueue(current => [...current, ...update.fresh]);
+    } else {
+      queuedPlayer.current = playerId;
+      setQueue(current => [...current, ...update.fresh]);
+    }
   }, [events, playerId, reduced]);
 
   useEffect(() => {
+    if (queuedPlayer.current !== playerId) return;
     if (reduced && queue.length) {
       setPresented(queue.at(-1) ?? null);
       setNotice(latestNotice(queue) ?? notice);
@@ -139,8 +157,6 @@ export function JaipurMotion({ events, language, playerId }: { events: readonly 
     if (['round-end', 'win', 'bonus'].includes(event.type)) {
       setNotice(event);
       setNoticeMotionSequence(jaipurSequence(event));
-      if (noticeTimer.current !== null) window.clearTimeout(noticeTimer.current);
-      noticeTimer.current = window.setTimeout(() => { noticeTimer.current = null; setNotice(null); }, event.type === 'round-end' || event.type === 'win' ? 4500 : 2600);
     }
     const root = document.querySelector<HTMLElement>('.jaipur-board');
     if (!root) { setFlights([]); return; }
@@ -180,18 +196,31 @@ export function JaipurMotion({ events, language, playerId }: { events: readonly 
     return () => { if (timer.current !== null) window.clearTimeout(timer.current); timer.current = null; arrivalTimers.current.forEach(window.clearTimeout); arrivalTimers.current = []; };
   }, [queue[0], reduced, playerId]);
 
-  useEffect(() => () => { if (timer.current !== null) window.clearTimeout(timer.current); if (noticeTimer.current !== null) window.clearTimeout(noticeTimer.current); }, []);
+  const noticeSequence = jaipurSequence(notice);
+  useEffect(() => {
+    if (!noticeSequence) return;
+    // A later take or reduced-motion change must not extend the same notice.
+    const expiry = window.setTimeout(() => {
+      setNotice(current => jaipurSequence(current) === noticeSequence ? null : current);
+      setNoticeMotionSequence(null);
+    }, jaipurNoticeDuration(notice));
+    return () => window.clearTimeout(expiry);
+  }, [noticeSequence, notice?.type]);
+
+  useEffect(() => () => { if (timer.current !== null) window.clearTimeout(timer.current); }, []);
 
   const detail = presented?.text?.[language] ?? '';
-  return <div className="jaipur-motion-layer" aria-live="polite" aria-atomic="true">
+  const won = notice?.type === 'win' && notice.winner === playerId;
+  return <><div className="jaipur-motion-layer" aria-hidden="true">
     {flights.map(flight => <span key={flight.id} data-jaipur-flight-from={flight.from} data-jaipur-flight-to={flight.to} className={`jaipur-flight jaipur-flight--${flight.kind}${presented?.type === 'sale' && ['diamond', 'gold', 'silver'].includes(flight.good) ? ' is-luxury' : ''}`} style={{ left: flight.left, top: flight.top, width: flight.width, height: flight.height, '--flight-x': `${flight.dx}px`, '--flight-y': `${flight.dy}px`, '--flight-delay': `${flight.delay}ms` } as React.CSSProperties} aria-hidden="true">
       {flight.kind === 'card' ? <div className="jaipur-flight-card"><JaipurGoodArt className="jaipur-flight-good" good={flight.good as JaipurGood} variant={jaipurCardVariant(flight.cardId ?? flight.id)} decorative/><small>{goodNames[language][flight.good as JaipurGood]}</small></div>
         : flight.kind === 'bonus' ? <><i className="jaipur-bonus-back"><JaipurBonusArt/></i><b className="jaipur-bonus-face"><JaipurBonusArt revealed value={Number(flight.good)}/></b></>
           : <JaipurCoin value={Number(flight.good)} good={flight.mark as JaipurGood | undefined} language={language}/>}
     </span>)}
-    {notice?.round === currentRound && notice.title?.[language] && <div className={`jaipur-event-note${notice.type === 'win' ? ' is-win' : notice.type === 'bonus' ? ' is-bonus' : ''}${noticeMotionSequence === jaipurSequence(notice) ? ' is-fresh' : ''}`} key={`${jaipurSequence(notice)}:${notice.type}`}>
-      <strong>{notice.title[language]}</strong>{notice === presented && detail && <span>{detail}</span>}{notice.type === 'round-end' && formatSummary(notice, language, playerId) && <b>{formatSummary(notice, language, playerId)}</b>}
-      {notice.type === 'win' && noticeMotionSequence === jaipurSequence(notice) && <svg className="jaipur-win-confetti" viewBox="0 0 100 52" aria-hidden="true"><circle cx="13" cy="32" r="3"/><circle cx="31" cy="10" r="2.5"/><circle cx="68" cy="12" r="3"/><circle cx="88" cy="34" r="2.5"/><path d="M49 4c6 5 7 12 1 17-6-5-7-12-1-17Zm-28 26c6 0 11 4 11 10-6 1-11-3-11-10Zm48-6c6-2 12 1 14 7-6 3-12 0-14-7Z"/></svg>}
+  </div><div className="jaipur-notice-rail" role="status" aria-live="polite" aria-atomic="true">
+    {notice?.round === currentRound && notice.title?.[language] && <div className={`jaipur-event-note${won ? ' is-win' : notice.type === 'bonus' ? ' is-bonus' : ''}${noticeMotionSequence === jaipurSequence(notice) ? ' is-fresh' : ''}`} data-jaipur-notice-sequence={noticeSequence} key={`${jaipurSequence(notice)}:${notice.type}`}>
+      <strong>{jaipurNoticeTitle(notice, language, playerId)}</strong>{notice === presented && detail && <span>{detail}</span>}{notice.type === 'round-end' && formatSummary(notice, language, playerId) && <b>{formatSummary(notice, language, playerId)}</b>}
+      {won && noticeMotionSequence === jaipurSequence(notice) && <svg className="jaipur-win-confetti" viewBox="0 0 100 52" aria-hidden="true"><circle cx="13" cy="32" r="3"/><circle cx="31" cy="10" r="2.5"/><circle cx="68" cy="12" r="3"/><circle cx="88" cy="34" r="2.5"/><path d="M49 4c6 5 7 12 1 17-6-5-7-12-1-17Zm-28 26c6 0 11 4 11 10-6 1-11-3-11-10Zm48-6c6-2 12 1 14 7-6 3-12 0-14-7Z"/></svg>}
     </div>}
-  </div>;
+  </div></>;
 }

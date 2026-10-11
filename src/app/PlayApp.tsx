@@ -50,6 +50,10 @@ export function bindApi(module: { client: object; isOnlineConfigured: boolean })
   return Object.assign(module.client, { isOnlineConfigured: module.isOnlineConfigured }) as Api;
 }
 export const rulesButtonLabel = (language: Language) => text(language, '게임 방법 ↓', 'Cómo jugar ↓');
+const sameGameReplayIds: GameId[] = ['domino', 'jaipur', 'splendor'];
+export function sameGameReplayAvailable(gameId: GameId | null, view: any): gameId is 'domino' | 'jaipur' | 'splendor' {
+  return !!gameId && sameGameReplayIds.includes(gameId) && view?.phase === 'finished' && view?.status === 'finished' && !!view?.result;
+}
 const ko = (language: Language) => language === 'ko';
 const preference = (): Language => localStorage.getItem('dos-language') === 'es' ? 'es' : 'ko';
 const nickPreference = () => localStorage.getItem('dos-nickname') || '';
@@ -276,6 +280,7 @@ export function Room({ api, roomId, desktopDisplay = true }: { api: Api; roomId:
           {snapshot.gameId === 'davinci' && <DaVinciMatchSummary roomId={roomId} playerId={snapshot.playerId} language={language} view={view} pendingGame={snapshot.pendingGame} onReplay={async () => { await chooseGame('davinci'); }}/>}
           {!!game && <footer className="board-footer"><span>{snapshot.mode === 'online' ? text(language, '이 방의 게임은 두 사람만 볼 수 있어요.', 'Solo ustedes dos pueden ver la partida.') : text(language, '데모 게임은 이 브라우저에서만 보여요.', 'La demo solo se ve en este navegador.')}</span><a href="#game-guide">{text(language, '게임 방법 보기 ↓', 'Ver cómo jugar ↓')}</a></footer>}
         </section>}
+        {sameGameReplayAvailable(snapshot.gameId, view) && <SameGameReplay gameId={snapshot.gameId} language={language} pendingGame={snapshot.pendingGame} onReplay={() => chooseGame(snapshot.gameId!)}/>}
         {snapshot.gameId === 'marble' && view?.board?.version === 1 && <p className="marble-legacy-notice">{text(language, '이 저장된 게임은 이전 18칸 보드예요.', 'Esta partida guardada usa el tablero anterior de 18 casillas.')} <Link href="/play">{text(language, '40칸 보드로 하려면 새 게임방 만들기', 'Para jugar en el tablero de 40 casillas, crea una sala nueva')} ↗</Link></p>}
         {!isCatchmind && <aside className={`chat-panel reaction-chat-panel ${chatCollapsed ? 'is-collapsed' : ''}`}>
           <header><h2>{text(language, '표정 보내기', 'Reacciones')}</h2><span className="chat-count">{snapshot.messages.filter(message => reactionForText(message.text)).length}</span><button className="chat-toggle" type="button" aria-expanded={!chatCollapsed} aria-controls="room-reactions" aria-label={text(language, chatCollapsed ? '반응 열기' : '반응 접기', chatCollapsed ? 'Abrir reacciones' : 'Contraer reacciones')} onClick={() => setChatCollapsed(value => !value)}>{chatCollapsed ? '⌄' : '⌃'}</button></header>
@@ -308,6 +313,27 @@ export function Room({ api, roomId, desktopDisplay = true }: { api: Api; roomId:
 
 function LanguageSwitch({ language, onChange }: { language: Language; onChange: (language: Language) => void }) {
   return <div className="language-switch" role="group" aria-label="Idioma / 언어"><button type="button" className={language === 'ko' ? 'active' : ''} onClick={() => onChange('ko')} aria-pressed={language === 'ko'}>한국어</button><span/><button type="button" className={language === 'es' ? 'active' : ''} onClick={() => onChange('es')} aria-pressed={language === 'es'}>Español <small>· RD</small></button></div>;
+}
+
+export function SameGameReplay({ gameId, language, pendingGame, onReplay }: { gameId: 'domino' | 'jaipur' | 'splendor'; language: Language; pendingGame: GameId | null; onReplay: () => Promise<boolean> }) {
+  const [busy, setBusy] = useState(false);
+  const busyRef = useRef(false);
+  const pending = pendingGame === gameId;
+  const replay = async () => {
+    if (busyRef.current) return;
+    busyRef.current = true;
+    setBusy(true);
+    try {
+      await onReplay();
+    } finally {
+      busyRef.current = false;
+      setBusy(false);
+    }
+  };
+  return <section className="game-switcher same-game-replay" data-replay-game={gameId}>
+    <div><span className="eyebrow">{text(language, '다시 플레이', 'VOLVER A JUGAR')}</span><p>{pending ? text(language, '새 판 요청이 있어요. 두 사람 모두 동의하면 시작돼요.', 'Hay una solicitud de nueva partida. Empieza cuando ambas personas acepten.') : text(language, '두 사람의 선택이 맞으면 새 판을 시작해요.', 'La nueva partida comienza cuando ambas personas la acepten.')}</p></div>
+    <button type="button" className="button button-dark same-game-replay-button" data-game-id={gameId} data-replay-state={pending ? 'pending' : 'ready'} aria-label={text(language, '같은 게임 다시 하기', 'Jugar otra vez')} disabled={busy} onClick={() => void replay()}>{busy ? text(language, '잠시만요…', 'Un momento…') : text(language, '같은 게임 다시 하기', 'Jugar otra vez')}</button>
+  </section>;
 }
 
 export function CatchmindChatComposer({ language, chat, setChat, sending, onSend, onLanguageChange }: {

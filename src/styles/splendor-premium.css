@@ -291,7 +291,14 @@
 .sp-splendor { line-height: 1.25; }
 .sp-splendor .sp-section-heading h2 { font-size: 14px; line-height: 1.2; }
 .sp-splendor .sp-section-heading p { font-size: 11px; line-height: 1.2; }
-.sp-card-cost-summary,.sp-card-select-hint,.sp-card-details > .sp-card-prestige { display: none; }
+.sp-card-select-hint,.sp-card-details > .sp-card-prestige { display: none; }
+.sp-card-details { grid-template-columns: auto minmax(0,1fr); align-items: center; gap: 2px; }
+.sp-card-details > .sp-bonus-label { gap: 2px; min-height: 18px; font-size: 12px; }
+.sp-card-cost-summary { display: flex; align-items: center; justify-content: flex-end; flex-wrap: wrap; gap: 2px; min-width: 0; }
+.sp-card-cost-chip { display: inline-flex; align-items: center; justify-content: center; gap: 1px; min-width: 0; color: #243b3d; font-size: 13px; font-style: normal; font-variant-numeric: tabular-nums; line-height: 1; white-space: nowrap; }
+.sp-card-cost-chip .sp-gem-icon { width: 15px; height: 15px; flex: 0 0 15px; }
+.sp-card-cost-chip b { font-size: 13px; font-weight: 800; }
+.sp-card-no-cost { color: #596a64; font-size: 11px; }
 .sp-card .sp-bonus-label { font-size: 11px; }
 .sp-treasury-gem > span:not(.sp-gem-icon) { grid-column: 1 / -1; }
 .sp-treasury-gem > .sp-gem-icon { grid-column: 1; }
@@ -442,6 +449,10 @@
 .sp-pay-gold { display: flex; align-items: center; gap: 4px; font-size: 11px; line-height: 1.25; }
 .sp-pay-gold .sp-gem-icon { width: 17px; height: 17px; flex: 0 0 17px; }
 .sp-splendor .sp-return-stepper { font-size: 11px; }
+@media (min-width: 1400px) {
+  .sp-card-details { grid-template-columns: auto minmax(0,1fr); }
+  .sp-card-cost-summary { flex-wrap: nowrap; gap: 2px; }
+}
 @media (min-width: 1200px) {
   .sp-reserved-empty > span { display: none; }
 }

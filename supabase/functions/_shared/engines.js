@@ -907,7 +907,7 @@ function apply(s, p, a) {
     n.tokens[p] += points;
     n.ledger[p].goods += goodsPoints;
     n.ledger[p].bonus += bonus2?.value ?? 0;
-    n = appendEvent(n, { type: "sale", actor, cards: cards2, tokenValues: tokenValues2, goodsPoints, bonus: bonus2, points, title: { ko: `${label4[g].ko} ${count2}\uC7A5 \uD310\uB9E4`, es: `Venta de ${count2} cartas de ${label4[g].es}` } });
+    n = appendEvent(n, { type: "sale", actor, cards: cards2, tokenValues: tokenValues2, goodsPoints, bonus: bonus2, points, title: { ko: `${label4[g].ko} ${count2}\uC7A5 \uD310\uB9E4`, es: `Venta de ${count2} ${count2 === 1 ? "carta" : "cartas"} de ${label4[g].es}` } });
     if (bonus2) n = appendEvent(n, { type: "bonus", actor, bonus: bonus2, points: bonus2.value, title: { ko: `${bonus2.size}\uC7A5 \uD310\uB9E4 \uBCF4\uB108\uC2A4 \uACF5\uAC1C`, es: `Bono por vender ${bonus2.size === 5 ? "5 o m\xE1s" : bonus2.size} cartas` } });
   }
   if (isRoundOver(n)) return endRound(n);

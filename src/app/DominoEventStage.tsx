@@ -248,10 +248,13 @@ export function DominoEventStage({ events, language, playerId, ownTeam = playerI
       ? (language === 'ko' ? '우리 팀 승리' : 'Ganó tu equipo')
       : (language === 'ko' ? '상대 팀 승리' : 'Ganó el equipo rival')
     : '';
-  return <><span className="dp-sr-only" aria-live="polite" aria-atomic="true">{announcement}</span><div ref={stageRef} className={`domino-event-stage domino-event-stage--${type.replace(/[^a-z-]/g, '')}${queue.length && !reduced ? ' is-animating' : ''}`} key={`${round}:${dominoSequence(presented)}`} role="group" aria-label={presented.title?.[language] ?? (language === 'ko' ? '도미노 진행 상황' : 'Evento de dominó')}>
+  const resultTitle = type === 'win' && presented.team && presented.team !== ownTeam
+    ? (language === 'ko' ? '경기 결과' : 'Resultado del partido')
+    : presented.title?.[language] ?? '';
+  return <><span className="dp-sr-only" aria-live="polite" aria-atomic="true">{announcement}</span><div ref={stageRef} className={`domino-event-stage domino-event-stage--${type.replace(/[^a-z-]/g, '')}${queue.length && !reduced ? ' is-animating' : ''}`} key={`${round}:${dominoSequence(presented)}`} role="group" aria-label={resultTitle || (language === 'ko' ? '도미노 진행 상황' : 'Evento de dominó')}>
     <span className="domino-event-mark" aria-hidden="true">{type === 'play' ? <TileArt tile={presented.tile}/> : <EventArt type={type}/>}</span>
     <div className="domino-event-copy">
-      <div className="domino-event-heading"><strong>{presented.title?.[language] ?? ''}</strong>{actor && <span>{actor}</span>}</div>
+      <div className="domino-event-heading"><strong>{resultTitle}</strong>{actor && <span>{actor}</span>}</div>
       {presented.text?.[language] && <p className="domino-event-detail">{presented.text[language]}</p>}
       {presented.round !== undefined && (type === 'round-start' || type === 'round-end') && <small>{language === 'ko' ? `${presented.round}라운드` : `Ronda ${presented.round}`}</small>}
       {points !== null && <b className="domino-event-points">+{points}<small>{language === 'ko' ? '점' : 'puntos'}</small></b>}

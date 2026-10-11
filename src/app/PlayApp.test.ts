@@ -2,7 +2,7 @@ import { afterEach, describe, expect, it } from 'vitest';
 import { vi } from 'vitest';
 import { createElement } from 'react';
 import { renderToStaticMarkup } from 'react-dom/server';
-import { bindApi, CatchmindChatComposer, GameGuide, Room, rulesButtonLabel, statusLabel } from './PlayApp';
+import { bindApi, CatchmindChatComposer, GameGuide, Room, rulesButtonLabel, SameGameReplay, sameGameReplayAvailable, statusLabel } from './PlayApp';
 import { ActionFlightGuard, announcementForContext, cueForAction, GameFeedback, jaipurImmediateCues, publicViewAnnouncement, publicViewCue } from './GameFeedback';
 import { gameCatalog } from '../games/catalog';
 import { marbleLegacyRules } from '../games/rules';
@@ -43,6 +43,70 @@ describe('PlayApp client binding', () => {
 
     expect(api.getSnapshot().gameId).toBe('davinci');
     expect(api.getSnapshot().view).toBeTruthy();
+  });
+
+  it.skipIf(isOnlineConfigured)('keeps a terminal Domino result until both seats consent to a fresh game', async () => {
+    const api = bindApi({ client, isOnlineConfigured });
+    await api.createRoom('Replay consent test', 'ko');
+    api.localSeat('p2');
+    await api.selectGame('domino');
+    api.localSeat('p1');
+    await api.selectGame('domino');
+
+    let snapshot = api.getSnapshot();
+    for (let step = 0; step < 80 && !snapshot.view?.result; step += 1) {
+      const seat = snapshot.view?.turn as 'p1' | 'p2';
+      api.localSeat(seat);
+      snapshot = api.getSnapshot();
+      const action = snapshot.view?.actions?.find((item: any) => ['play', 'pass'].includes(item.action.type))?.action;
+      expect(action, `expected a legal Domino action at step ${step}`).toBeTruthy();
+      await api.sendAction(action);
+      snapshot = api.getSnapshot();
+    }
+
+    expect(snapshot.view?.phase).toBe('finished');
+    expect(snapshot.view?.result).toBeTruthy();
+    const finishedVersion = snapshot.version;
+    api.localSeat('p1');
+    await api.selectGame('domino');
+    snapshot = api.getSnapshot();
+    expect(snapshot.pendingGame).toBe('domino');
+    expect(snapshot.version).toBe(finishedVersion);
+    expect(snapshot.view?.result).toBeTruthy();
+
+    api.localSeat('p2');
+    await api.selectGame('domino');
+    snapshot = api.getSnapshot();
+    expect(snapshot.pendingGame).toBeNull();
+    expect(snapshot.version).toBe(finishedVersion + 1);
+    expect(snapshot.view?.phase).toBe('play');
+    expect(snapshot.view?.result).toBeNull();
+    expect(snapshot.view?.hand).toHaveLength(7);
+    expect(snapshot.view?.board?.revealedHands).toBeUndefined();
+  });
+});
+
+describe('same-game replay availability', () => {
+  it('appears only for finished Domino, Jaipur, and Splendor results', () => {
+    for (const gameId of ['domino', 'jaipur', 'splendor'] as const) {
+      expect(sameGameReplayAvailable(gameId, { phase: 'finished', status: 'finished', result: { winner: 'p1' } })).toBe(true);
+    }
+    expect(sameGameReplayAvailable('domino', { phase: 'round-over', status: 'round-over', result: null })).toBe(false);
+    expect(sameGameReplayAvailable('domino', { phase: 'finished', status: 'finished', result: null })).toBe(false);
+    expect(sameGameReplayAvailable('minhwatu', { phase: 'finished', status: 'finished', result: { winner: 'p1' } })).toBe(false);
+    expect(sameGameReplayAvailable('davinci', { phase: 'finished', status: 'finished', result: { winner: 'p1' } })).toBe(false);
+  });
+
+  it('keeps a pending replay button available to the consenting seat with localized accessible names', () => {
+    const props = { gameId: 'domino' as const, pendingGame: 'domino' as const, onReplay: async () => true };
+    const ko = renderToStaticMarkup(createElement(SameGameReplay, { ...props, language: 'ko' }));
+    const es = renderToStaticMarkup(createElement(SameGameReplay, { ...props, language: 'es' }));
+    expect(ko).toContain('class="button button-dark same-game-replay-button"');
+    expect(ko).toContain('aria-label="같은 게임 다시 하기"');
+    expect(ko).toContain('새 판 요청이 있어요. 두 사람 모두 동의하면 시작돼요.');
+    expect(ko).not.toContain('disabled=""');
+    expect(es).toContain('aria-label="Jugar otra vez"');
+    expect(es).toContain('Hay una solicitud de nueva partida. Empieza cuando ambas personas acepten.');
   });
 });
 

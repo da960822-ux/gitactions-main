@@ -4,7 +4,7 @@ import { existsSync } from 'node:fs';
 import { resolve } from 'node:path';
 import { describe, expect, it } from 'vitest';
 import splendorArt from '../../public/images/splendor/card-map.json';
-import { deriveSplendorVisualEvent, splendorCardAction, splendorCardArtSrc, splendorCardCostPlan, splendorCardPaymentRows, splendorNobleArtSrc, splendorRequiredReturns, splendorReserveChoices, splendorTakeAction, splendorTotalAfterTake, TableGames } from './TableGames';
+import { deriveSplendorVisualEvent, splendorActionPanelMessages, splendorCardAction, splendorCardArtSrc, splendorCardCostPlan, splendorCardPaymentRows, splendorGuidance, splendorNobleArtSrc, splendorRequiredReturns, splendorReserveChoices, splendorTakeAction, splendorTotalAfterTake, TableGames } from './TableGames';
 import { jaipurSalePreview } from './JaipurBoard';
 import { splendorEngine } from '../games/splendor';
 
@@ -43,6 +43,64 @@ describe('TableGames public-state interaction guidance', () => {
       { gem: 'white', cost: 3, discount: 1, paid: 1, gold: 1, short: 0 },
       { gem: 'red', cost: 2, discount: 0, paid: 0, gold: 1, short: 1 },
     ]);
+  });
+
+  it('shows readable gem-and-number prices and only marks cards purchasable from own legal actions', () => {
+    const short = render('splendor', {
+      turn: 'p1', ownHand: { tokens: { white: 1, gold: 1 }, bonuses: { white: 1 }, reserved: [], points: 0, nobles: 0 },
+      board: {
+        bank: {}, score: { p1: 0, p2: 0 }, market: { 1: [{ id: 'four-cost', tier: 1, bonus: 'blue', points: 1, cost: { white: 3, blue: 2, green: 1, red: 4 } }], 2: [], 3: [] },
+        nobles: {},
+      }, actions: [],
+    }, 'es');
+    expect(short).toContain('data-cost-deficit="7"');
+    expect(short).toContain('costo 3 Blanca, 2 Azul, 1 Verde, 4 Roja · Faltan 7 fichas');
+    expect(short).toContain('class="sp-card-cost-summary" aria-hidden="true"');
+    expect(short).toContain('class="sp-card-cost-chip sp-color-white" title="Blanca 3"');
+    expect(short).toContain('class="sp-card-cost-chip sp-color-red" title="Roja 4"');
+    expect((short.match(/class="sp-card-cost-chip sp-color-/g) ?? []).length).toBe(4);
+
+    const affordable = render('splendor', {
+      turn: 'p1', ownHand: { tokens: { blue: 1, gold: 1 }, bonuses: { blue: 1 }, reserved: [], points: 0, nobles: 0 },
+      board: {
+        bank: {}, score: { p1: 0, p2: 0 }, market: { 1: [{ id: 'discounted', tier: 1, bonus: 'white', points: 0, cost: { blue: 2 } }], 2: [], 3: [] },
+        nobles: {},
+      }, actions: [{ label: { ko: '구매', es: 'Comprar' }, action: { type: 'buy', payload: { source: 'market', tier: 1, index: 0 } } }],
+    }, 'es');
+    expect(affordable).toMatch(/class="sp-card[^\"]*is-buyable/);
+    expect(affordable).toContain('data-cost-deficit="0"');
+    expect(affordable).toContain('costo 2 Azul · Disponible para compra');
+  });
+
+  it('prioritizes localized terminal, noble, opponent, return and take guidance', () => {
+    expect(splendorGuidance('ko', 'finished', { winner: 'p2' }, 'p1', 3, true, true, 0).status).toBe('게임 종료 · 상대가 이겼어요.');
+    expect(splendorGuidance('es', 'finished', { winner: 'p1' }, 'p1', 3, true, true, 0).status).toBe('Partida terminada · ganaste.');
+    expect(splendorGuidance('ko', 'noble-choice', null, 'p1', 3, true, true, 0).bank).toBe('귀족을 선택하는 동안 보석 행동은 대기해요.');
+    expect(splendorGuidance('es', 'rival-noble-choice', null, 'p1', 3, true, true, 0).status).toBe('La otra persona está eligiendo un noble. Espera tu turno.');
+    expect(splendorGuidance('es', 'other-turn', null, 'p1', 3, true, true, 0).bank).toBe('Podrás tomar gemas en tu turno.');
+    expect(splendorGuidance('ko', 'return-required', null, 'p1', 3, true, true, 2).status).toContain('보석 2개를 반환하고 가져오기를 확인');
+    expect(splendorGuidance('es', 'take-confirm', null, 'p1', 3, true, true, 0).status).toBe('Elegiste las gemas. Confirma la toma.');
+    expect(splendorGuidance('es', 'own-turn', null, 'p1', 3, true, true, 0).bank).toContain('3 gemas de colores distintos');
+    expect(splendorGuidance('ko', 'own-turn', null, 'p1', 0, false, false, 0).bank).toBe('은행에 가져올 보석이 없어요.');
+
+    const finishedLoss = render('splendor', {
+      turn: 'p2', phase: 'finished', result: { winner: 'p2' },
+      ownHand: { tokens: {}, bonuses: {}, reserved: [], points: 0, nobles: 0 },
+      board: { bank: {}, market: { 1: [], 2: [], 3: [] }, score: { p1: 14, p2: 15 }, nobles: {} }, actions: [],
+    }, 'ko', 'p1');
+    expect(finishedLoss).toContain('data-phase="finished" role="status">게임 종료 · 상대가 이겼어요.');
+    expect(finishedLoss).not.toContain('상대 차례예요.');
+  });
+
+  it('keeps reserved-card purchase copy distinct from a new reservation and follows terminal waiting guidance', () => {
+    const rivalStatus = '상대 차례예요. 공개 카드와 은행을 살펴보세요.';
+    expect(splendorActionPanelMessages('ko', 'reserved', 'other-turn', rivalStatus, '예약 1/3 · 금 +1 · 반환 없음')).toEqual({
+      reserveLine: '이미 예약한 카드 · 구매', waitingHint: rivalStatus,
+    });
+    expect(splendorActionPanelMessages('es', 'reserved', 'finished', 'Partida terminada · ganó la otra persona.', 'Reserva 1/3 · +1 oro · devuelve Sin devolución')).toEqual({
+      reserveLine: 'Compra la carta que ya reservaste.', waitingHint: 'Partida terminada · ganó la otra persona.',
+    });
+    expect(splendorActionPanelMessages('es', 'market', 'own-turn', 'Turno', 'Reserva 0/3 · +1 oro · devuelve 1 Comodín').reserveLine).toBe('Reserva 0/3 · +1 oro · devuelve 1 Comodín');
   });
 
   it('keeps 10-token take plans, empty gold-bank reservations, slot limits, and rival turns on current legal actions', () => {
@@ -112,7 +170,7 @@ describe('TableGames public-state interaction guidance', () => {
     expect(html).toContain('aria-label="Carta reservada de nivel 1');
     expect(html).toContain('class="sp-reserved-art" aria-hidden="true"');
     expect(html).toContain('Fichas rivales: 7');
-    expect(html).toContain('No hay colores disponibles para elegir');
+    expect(html).toContain('No quedan gemas disponibles para tomar');
   });
 
   it('maps all 90 engine cards and 10 nobles to distinct original faces and renders by engine ID', () => {
@@ -170,7 +228,10 @@ describe('TableGames public-state interaction guidance', () => {
 
     expect(html).toContain('Se alcanzaron 15 puntos. La otra persona tiene su último turno.');
     expect(html).toContain('costo 2 Azul');
-    expect(html).toContain('Elige 3 colores distintos');
+    expect(html).toContain('data-phase="other-turn"');
+    expect(html).toContain('Podrás tomar gemas en tu turno.');
+    expect(html).not.toContain('Elige 3 colores distintos');
+    expect(html).not.toContain('Toma: 3 gemas de colores distintos');
     expect(html).toContain('class="sp-card-art sp-color-red"');
     expect(html).toContain('>1</b> / 10');
     expect(html).toContain('>2 / 3</b>');
@@ -184,6 +245,15 @@ describe('TableGames public-state interaction guidance', () => {
     });
     expect(choosingNoble).toContain('class="sp-nobles is-choosing ');
     expect(choosingNoble).toContain('귀족을 선택하세요');
+
+    const rivalChoosingNoble = render('splendor', {
+      turn: 'p2', phase: 'chooseNoble', ownHand: { tokens: {}, bonuses: {}, reserved: [], points: 0, nobles: 0 },
+      board: { bank: { white: 4 }, market: { 1: [], 2: [], 3: [] }, score: { p1: 0, p2: 0 }, nobles: { noble1: { points: 3, requirement: {} } } },
+      actions: [],
+    }, 'ko', 'p1');
+    expect(rivalChoosingNoble).toContain('data-phase="rival-noble-choice"');
+    expect(rivalChoosingNoble).toContain('상대가 귀족을 선택 중이에요. 차례를 기다려 주세요.');
+    expect(rivalChoosingNoble).not.toContain('귀족을 하나 선택하세요.');
   });
 
   it('derives purchase, token, noble, turn and result feedback only from confirmed public snapshots', () => {
