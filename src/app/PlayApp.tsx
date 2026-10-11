@@ -168,31 +168,21 @@ export function Room({ api, roomId, desktopDisplay = true }: { api: Api; roomId:
   useEffect(() => {
     if (!active || !isCatchmind || view?.phase !== 'drawing' || !view.deadlineAt) return;
     const deadline = String(view.deadlineAt);
-    const board = view.board ?? {};
-    const settings = board.settings ?? {};
-    const hints = Math.max(0, Number(settings.hints ?? 0));
-    const duration = Number.isInteger(settings.drawTimeSeconds) && settings.drawTimeSeconds > 0
-      ? settings.drawTimeSeconds * 1000
-      : 80_000;
-    const hintStage = Math.max(0, Number(board.hintStage ?? 0));
     const update = () => {
       const current = Date.now(); setNow(current);
       const expired = Date.parse(deadline) <= current;
-      const elapsed = Math.max(0, duration - Math.max(0, Date.parse(deadline) - current));
-      const dueStage = hints > 0 ? Math.min(hints, Math.floor(elapsed * (hints + 1) / duration)) : 0;
-      const due = expired || dueStage > hintStage;
-      const requestKey = `${deadline}:${expired ? 'timeout' : dueStage}`;
-      if (!due || tickedDeadline.current === requestKey) return;
+      const requestKey = `${deadline}:timeout`;
+      if (!expired || tickedDeadline.current === requestKey) return;
       tickedDeadline.current = requestKey;
       void api.tick().then(() => {
         updateSnapshot();
-        const latestStage = Number(api.getSnapshot().view?.board?.hintStage ?? hintStage);
-        if (!expired && latestStage <= hintStage) tickedDeadline.current = '';
+        const latest = api.getSnapshot().view;
+        if (latest?.phase === 'drawing' && latest.deadlineAt === deadline) tickedDeadline.current = '';
       }).catch(cause => { tickedDeadline.current = ''; setActionError(errorMessage(cause, language)); });
     };
     update(); const timer = window.setInterval(update, 1000);
     return () => window.clearInterval(timer);
-  }, [active, api, isCatchmind, language, updateSnapshot, view?.board?.hintStage, view?.board?.settings?.drawTimeSeconds, view?.board?.settings?.hints, view?.deadlineAt, view?.phase]);
+  }, [active, api, isCatchmind, language, updateSnapshot, view?.deadlineAt, view?.phase]);
   useEffect(() => {
     if (!active || snapshot.gameId !== 'marble' || view?.board?.tiles?.length !== 40) return;
     const frame = window.requestAnimationFrame(() => {
@@ -272,7 +262,7 @@ export function Room({ api, roomId, desktopDisplay = true }: { api: Api; roomId:
         {!game ? <section className="game-select-card"><div className="select-intro"><span className="eyebrow">{text(language, '함께 고르기', 'ELIJAN JUNTOS')}</span><h2>{text(language, '무슨 게임을 할까요?', '¿Qué jugamos?')}</h2><p>{text(language, '두 사람 모두 같은 게임을 고르면 시작돼요.', 'La partida comienza cuando los dos eligen el mismo juego.')}</p></div>{snapshot.pendingGame && <div className="pending-choice"><span>◷</span><span>{text(language, '상대의 선택을 기다려요:', 'Esperando la elección de la otra persona:')} <b>{getGame(snapshot.pendingGame)?.title[language]}</b></span></div>}<div className="room-game-grid">{gameCatalog.map(item => { const allowed = canPlayGameOnDisplay(desktopDisplay, item.id); return <button key={item.id} className={`room-game-card game-${item.color}`} onClick={() => void chooseGame(item.id)} aria-disabled={!allowed} disabled={!allowed} title={!allowed ? text(language, '이 게임은 데스크톱에서 이용할 수 있어요.', 'Este juego requiere una computadora de escritorio.') : undefined}><span className="room-game-icon"><span className={`game-thumbnail art-${item.id}`} aria-hidden="true"/></span><span><b>{item.title[language]}</b><small>{item.subtitle[language]}</small></span><span className="room-game-arrow">↗</span></button>; })}</div>{!desktopDisplay && <p className="pick-hint">{text(language, '모바일에서는 자이푸르만 선택할 수 있어요.', 'En móvil solo puedes elegir Jaipur.')}</p>}<div className="rhythm-note"><b>♫</b><p><strong>MUSIC TALK TALK</strong> — {text(language, '이 방의 내장 플레이어에서 실행됩니다.', 'Se juega en el reproductor integrado de esta sala.')}</p><a href="https://vidkidz.tistory.com/431" target="_blank" rel="noreferrer">{text(language, '원작 제공처 열기', 'Abrir página original')} ↗</a></div></section>
         : <section className="board-card" id="game-board" aria-busy={pendingActionCount > 0}><header className="board-header"><div className="board-game"><span className={`board-game-icon game-${game.color}`}><span className={`game-thumbnail art-${game.id}`} aria-hidden="true"/></span><span><b>{game.title[language]}</b><small>{game.subtitle[language]}</small></span></div><div className="board-header-right"><span className="turn-tag">{statusLabel(view, snapshot.playerId, language, snapshot.gameId)}</span><a className="plain-button" href="#game-guide">{rulesButtonLabel(language)}</a><GameFeedback identity={boardIdentity} language={language} gameId={game.id} playerId={snapshot.playerId} view={view} pending={pendingActionCount > 0}/><button className="icon-button" aria-label={text(language, '다른 게임으로 바꾸기', 'Cambiar de juego')} onClick={() => setActionError(text(language, '게임 바꾸기를 요청합니다. 아래 게임 목록에서 새 게임을 골라 주세요.', 'Pide cambiar de juego seleccionando otro juego abajo.'))}>↻</button></div></header>
           {actionError && <div className="action-notice" role="alert">{actionError}<button aria-label={text(language, '안내 닫기', 'Cerrar aviso')} onClick={() => setActionError('')}>×</button></div>}
-          {snapshot.gameId === 'rhythm' ? <RhythmBoard language={language}/> : isCatchmind ? <CatchmindTable view={view} playerId={snapshot.playerId} language={language} now={now} palette={palette} setPalette={setPalette} strokeWidth={strokeWidth} setStrokeWidth={setStrokeWidth} runAction={runAction} /> : snapshot.gameId === 'domino' ? <DominoBoard key={boardIdentity} view={view} playerId={snapshot.playerId} language={language} runAction={runAction}/> : snapshot.gameId === 'marble' ? <MarbleBoard key={boardIdentity} view={view} playerId={snapshot.playerId} language={language} runAction={runAction}/> : snapshot.gameId === 'minhwatu' ? <MinhwatuTable view={view} playerId={snapshot.playerId} language={language} runAction={runAction} playerNames={Object.fromEntries(snapshot.players.map(player => [player.id, player.nickname]))} sceneKey={roomId} onReplay={() => chooseGame('minhwatu')} replayPending={snapshot.pendingGame === 'minhwatu'}/> : snapshot.gameId === 'jaipur' || snapshot.gameId === 'splendor' || snapshot.gameId === 'davinci' ? <TableGames key={boardIdentity} roomId={roomId} version={snapshot.version} game={snapshot.gameId} view={view} playerId={snapshot.playerId} language={language} runAction={runAction}/> : null}
+          {snapshot.gameId === 'rhythm' ? <RhythmBoard language={language}/> : isCatchmind ? <CatchmindTable key={boardIdentity} onReplay={async () => { await chooseGame('catchmind'); }} replayPending={snapshot.pendingGame === 'catchmind'} view={view} playerId={snapshot.playerId} language={language} now={now} palette={palette} setPalette={setPalette} strokeWidth={strokeWidth} setStrokeWidth={setStrokeWidth} runAction={runAction} /> : snapshot.gameId === 'domino' ? <DominoBoard key={boardIdentity} view={view} playerId={snapshot.playerId} language={language} runAction={runAction}/> : snapshot.gameId === 'marble' ? <MarbleBoard key={boardIdentity} view={view} playerId={snapshot.playerId} language={language} runAction={runAction}/> : snapshot.gameId === 'minhwatu' ? <MinhwatuTable view={view} playerId={snapshot.playerId} language={language} runAction={runAction} playerNames={Object.fromEntries(snapshot.players.map(player => [player.id, player.nickname]))} sceneKey={roomId} onReplay={() => chooseGame('minhwatu')} replayPending={snapshot.pendingGame === 'minhwatu'}/> : snapshot.gameId === 'jaipur' || snapshot.gameId === 'splendor' || snapshot.gameId === 'davinci' ? <TableGames key={boardIdentity} roomId={roomId} version={snapshot.version} game={snapshot.gameId} view={view} playerId={snapshot.playerId} language={language} runAction={runAction}/> : null}
           {snapshot.gameId === 'davinci' && <DaVinciMatchSummary roomId={roomId} playerId={snapshot.playerId} language={language} view={view} pendingGame={snapshot.pendingGame} onReplay={async () => { await chooseGame('davinci'); }}/>}
           {!!game && <footer className="board-footer"><span>{snapshot.mode === 'online' ? text(language, '이 방의 게임은 두 사람만 볼 수 있어요.', 'Solo ustedes dos pueden ver la partida.') : text(language, '데모 게임은 이 브라우저에서만 보여요.', 'La demo solo se ve en este navegador.')}</span><a href="#game-guide">{text(language, '게임 방법 보기 ↓', 'Ver cómo jugar ↓')}</a></footer>}
         </section>}

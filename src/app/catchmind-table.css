@@ -60,6 +60,18 @@
 .cm-settings > summary::-webkit-details-marker { display: none; }
 .cm-settings[open] > summary { padding-bottom: 10px; border-bottom: 1px solid #eeeae1; }
 .cm-settings form { display: grid; gap: 9px; padding-top: 10px; }
+.cm-categories { display: grid; grid-template-columns: repeat(2,minmax(0,1fr)); gap: 7px; margin: 0; padding: 0; border: 0; }
+.cm-categories legend { padding: 0 0 8px; color: var(--ink-soft); font-size: 13px; }
+.cm-categories label { display: flex; align-items: center; gap: 7px; min-height: 44px; padding: 8px; border: 1px solid var(--line); border-radius: 8px; font-size: 13px; cursor: pointer; }
+.cm-categories label:has(:checked) { border-color: var(--teal); background: var(--teal-pale); }
+.cm-categories input { accent-color: var(--teal); }
+.cm-categories label:focus-within { outline: 2px solid var(--teal); outline-offset: 2px; }
+.cm-mask-setting input { width: 22px; accent-color: var(--teal); }
+.cm-hint-word { max-width: 65%; display: flex; flex-wrap: wrap; gap: 4px; font-size: 14px; }
+.cm-hint-word span { overflow-wrap: anywhere; white-space: pre-wrap; }
+.cm-hint-word i { font-style: normal; }
+.cm-word-choices button:disabled { opacity: .5; cursor: default; transform: none; box-shadow: none; }
+.cm-finish-card button { min-height: 44px; padding: 8px 15px; border: 0; border-radius: 8px; background: var(--teal); color: white; cursor: pointer; }
 .cm-setting-grid { display: grid; grid-template-columns: repeat(4,minmax(0,1fr)); gap: 7px; }
 .cm-setting-grid label, .cm-custom-label { display: grid; gap: 4px; color: var(--ink-soft); font-size: 8px; }
 .cm-setting-grid input { width: 100%; min-width: 0; height: 31px; border: 1px solid var(--line); border-radius: 7px; padding: 0 7px; color: var(--ink); font-size: 10px; }

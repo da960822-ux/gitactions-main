@@ -13,7 +13,7 @@ async function room(game){
 }
 try{
  const fill=await room('catchmind');
- await fill.evaluate(async()=>{const{catchmindEngine:e}=await import('/src/games/catchmind.ts');const c=window.reviewClient;c.state=e.applyAction(e.createInitialState(8),'p1',{type:'choose',payload:{wordId:0}});c.snapshot.version++;c.localView();c.emit()});
+ await fill.evaluate(async()=>{const{catchmindEngine:e}=await import('/src/games/catchmind.ts');const c=window.reviewClient;const fresh=e.createInitialState(8);const configured=e.applyAction(fresh,'p1',{type:'settings',payload:{settings:{...fresh.settings,category_id:'animals'}}});c.state=e.applyAction(configured,'p1',{type:'choose',payload:{wordId:0}});c.snapshot.version++;c.localView();c.emit()});
  await fill.getByRole('button',{name:'채우기',exact:true}).click();await fill.locator('canvas').click({position:{x:271.37,y:183.91}});
  await fill.waitForFunction(()=>window.reviewClient.state.fills.length===1);
  const filled=await fill.locator('canvas').evaluate(canvas=>{const d=canvas.getContext('2d').getImageData(0,0,1000,600).data;let count=0;for(let i=0;i<d.length;i+=4)if(d[i]===40&&d[i+1]===79&&d[i+2]===73)count++;return count});assert.equal(filled,600000);

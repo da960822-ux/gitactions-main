@@ -149,7 +149,7 @@ async function tableRequest(req, res, url, userId) {
 
 async function action(req, userId) {
   if (!userId) throw Object.assign(new Error('authentication_required'), { status: 401 });
-  const { engines, executeAction, chatMessageForGame, reactionMessageForId, isCorrectGuess, getCatchmindDrawDurationMs, getCatchmindHintStage } = await authority();
+  const { engines, executeAction, chatMessageForGame, reactionMessageForId, isCorrectGuess, getCatchmindDrawDurationMs } = await authority();
   const input = await body(req);
   if (!uuid(input.roomId) || !uuid(input.requestId) || !Number.isSafeInteger(input.version) || input.version < 0) throw new Error('invalid_request');
   return transaction('service_role', null, async () => {
@@ -167,14 +167,11 @@ async function action(req, userId) {
     let gameId = room.game_id, pending = room.pending_game, pendingBy = room.pending_by, chat = null;
     const opCount = [input.selectGame !== undefined, input.chat !== undefined, input.reaction !== undefined, input.action !== undefined, input.tick === true].filter(Boolean).length;
     if (opCount !== 1) throw new Error('invalid_operation');
-    const now = Date.now(); let timedOut = false, advancedHint = false;
+    const now = Date.now(); let timedOut = false;
     if (gameId === 'catchmind' && state?.phase === 'drawing' && state.deadlineAt && Date.parse(state.deadlineAt) <= now) {
       state = executeAction(engines.catchmind, state, state.drawer, { type: 'timeout' }).state;
       state.deadlineAt = null;
       timedOut = true;
-    } else if (gameId === 'catchmind' && state?.phase === 'drawing' && state.deadlineAt && input.tick === true) {
-      const target = getCatchmindHintStage(state, now);
-      while ((state.hintStage ?? 0) < target) { state = executeAction(engines.catchmind, state, state.drawer, { type: 'reveal-hint' }).state; advancedHint = true; }
     }
     if (input.selectGame !== undefined) {
       if (!['davinci', 'catchmind', 'domino', 'jaipur', 'splendor', 'minhwatu', 'marble', 'rhythm'].includes(input.selectGame)) throw new Error('invalid_game');
@@ -200,7 +197,7 @@ async function action(req, userId) {
         if (input.action.type === 'choose') state.deadlineAt = new Date(Date.now() + getCatchmindDrawDurationMs(state)).toISOString();
         else if (state.phase !== 'drawing') state.deadlineAt = null;
       }
-    } else if (input.tick === true && gameId === 'catchmind' && !timedOut && !advancedHint) return { version: room.version };
+    } else if (input.tick === true && gameId === 'catchmind' && !timedOut) return { version: room.version };
     const views = !gameId || !state ? { p1: null, p2: null } : Object.fromEntries(['p1', 'p2'].map(seat => [seat, { ...engines[gameId].getPlayerView(state, seat), deadlineAt: state.deadlineAt ?? null }]));
     const committed = await db.query('select public.commit_action($1,$2,$3,$4,$5::jsonb,$6::jsonb,$7,$8,$9,$10::jsonb) as version', [room.id, userId, input.version, input.requestId, JSON.stringify(state), JSON.stringify(views), gameId, pending, pendingBy, chat ? JSON.stringify(chat) : null]);
     return { version: committed.rows[0].version };

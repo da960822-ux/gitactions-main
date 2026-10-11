@@ -4,8 +4,13 @@ import { renderToStaticMarkup } from 'react-dom/server';
 import { catchmindEngine } from '../games/catchmind';
 import CatchmindTable, { bucketFill } from './CatchmindTable';
 
+function configured(seed: number) {
+  const state = catchmindEngine.createInitialState(seed);
+  return catchmindEngine.applyAction(state, 'p1', { type: 'settings', payload: { settings: { ...state.settings, category_id: 'animals' } } });
+}
+
 function markup(player: 'p1' | 'p2', revealHint = false) {
-  let state = catchmindEngine.createInitialState(8);
+  let state = configured(8);
   const answer = state.wordChoices[0][0];
   state = catchmindEngine.applyAction(state, 'p1', { type: 'choose', payload: { wordId: 0 } });
   if (revealHint) state = catchmindEngine.applyAction(state, 'p1', { type: 'reveal-hint' });
@@ -33,10 +38,20 @@ function stateMarkup(state: ReturnType<typeof catchmindEngine.createInitialState
     strokeWidth: 5,
     setStrokeWidth: vi.fn(),
     runAction: vi.fn(async () => true),
+    onReplay: vi.fn(), replayPending: true,
   }));
 }
 
 describe('CatchmindTable', () => {
+  it('offers exactly six single-choice topics to the host before a new match starts', () => {
+    const state = catchmindEngine.createInitialState(23);
+    const host = stateMarkup(state, 'p1'), guest = stateMarkup(state, 'p2');
+    expect(host.match(/type="radio"/g)).toHaveLength(6);
+    expect(host).toContain('하나만 선택');
+    expect(host).toContain('호스트가 주제를 선택하고 설정을 저장해 주세요.');
+    expect(guest).not.toContain('type="radio"');
+    expect(markup('p1').html).not.toContain('type="radio"');
+  });
   it('fills the entire blank canvas at a fractional pointer position, then treats the same color as a no-op', () => {
     const image = { width: 1000, height: 600, data: new Uint8ClampedArray(1000 * 600 * 4) } as ImageData;
     for (let at = 0; at < image.data.length; at += 4) image.data.set([255, 254, 250, 255], at);
@@ -69,7 +84,7 @@ describe('CatchmindTable', () => {
     const drawer = markup('p1'), guesser = markup('p2');
     expect(drawer.html).toContain('출제자 · 그리는 중');
     expect(guesser.html).toContain('맞히는 사람 · 맞혀 보세요');
-    expect(stateMarkup(catchmindEngine.applyAction(catchmindEngine.createInitialState(8), 'p1', { type: 'choose', payload: { wordId: 0 } }), 'p1', 'es')).toContain('Dibujas');
+    expect(stateMarkup(catchmindEngine.applyAction(configured(8), 'p1', { type: 'choose', payload: { wordId: 0 } }), 'p1', 'es')).toContain('Dibujas');
     expect(drawer.html.match(/class="game-value"/g)).toHaveLength(2);
     expect(drawer.html).toContain('cm-phase-label');
   });
@@ -87,6 +102,10 @@ describe('CatchmindTable', () => {
     expect(guesser.html).not.toContain(drawer.answer.es);
     expect(guesser.html).not.toContain('cm-tools');
     expect(guesser.html).toContain('첫 선을 기다리고 있어요');
+    expect(guesser.html).toContain('cm-hint-word');
+    expect(guesser.html).toContain(' / ');
+    expect(guesser.html).toContain('□');
+    expect(guesser.html).toContain('?');
     const hinted = markup('p2', true);
     expect(hinted.html).toContain('cm-hint-word');
     expect(hinted.html).toContain('class="cm-hint-word"');
@@ -95,7 +114,7 @@ describe('CatchmindTable', () => {
   });
 
   it('describes timeout rounds and finished games without claiming a correct answer', () => {
-    let timedOut = catchmindEngine.createInitialState(13);
+    let timedOut = configured(13);
     timedOut = catchmindEngine.applyAction(timedOut, 'p1', { type: 'choose', payload: { wordId: 0 } });
     timedOut = catchmindEngine.applyAction(timedOut, 'p1', { type: 'timeout' });
     const timeoutHtml = stateMarkup(timedOut, 'p1');
@@ -104,7 +123,7 @@ describe('CatchmindTable', () => {
     expect(timeoutHtml).not.toContain('정답을 맞혀서 두 사람 모두 점수를 얻었어요.');
     expect(timeoutHtml).not.toContain('정답은 출제자만 볼 수 있어요.');
 
-    let solved = catchmindEngine.createInitialState(17);
+    let solved = configured(17);
     solved = catchmindEngine.applyAction(solved, 'p1', { type: 'settings', payload: { settings: { ...solved.settings, rounds: 2 } } });
     const firstAnswer = solved.wordChoices[0][0];
     solved = catchmindEngine.applyAction(solved, 'p1', { type: 'choose', payload: { wordId: 0 } });
@@ -116,6 +135,8 @@ describe('CatchmindTable', () => {
     solved = catchmindEngine.applyAction(solved, 'p2', { type: 'end-round' });
     const finishedHtml = stateMarkup(solved, 'p1');
     expect(finishedHtml).toContain('게임 종료');
+    expect(finishedHtml).toContain('같이 다시 시작하기');
+    expect(finishedHtml).toContain('두 사람이 모두 수락하면 새 판을 시작해요.');
     expect(finishedHtml).not.toContain('내가 그리고 있어요');
     const finishedSpanishHtml = stateMarkup(solved, 'p1', 'es');
     expect(finishedSpanishHtml).toContain('Partida terminada');

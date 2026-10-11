@@ -1,5 +1,5 @@
 import {createClient} from 'npm:@supabase/supabase-js@2';
-import {engines as bundledEngines,executeAction,chatMessageForGame,reactionMessageForId,isCorrectGuess,getCatchmindDrawDurationMs,getCatchmindHintStage} from '../_shared/engines.js';
+import {engines as bundledEngines,executeAction,chatMessageForGame,reactionMessageForId,isCorrectGuess,getCatchmindDrawDurationMs} from '../_shared/engines.js';
 const engines:Record<string,any>=bundledEngines;
 
 const cors={'Access-Control-Allow-Origin':'*','Access-Control-Allow-Headers':'authorization, x-client-info, apikey, content-type','Access-Control-Allow-Methods':'POST, OPTIONS'};
@@ -25,15 +25,12 @@ Deno.serve(async req=>{
   let state=stateResult.data.state,gameId=room.game_id,pending=room.pending_game,pendingBy=room.pending_by,chat:any=null;
   const operations=[input.selectGame!==undefined,input.chat!==undefined,input.reaction!==undefined,input.action!==undefined,input.tick===true].filter(Boolean).length;
   if(operations!==1)return json({error:'invalid_operation'},400);
-  // Expiration and hint reveals are computed from the trusted server clock.
+  // Expiration is computed from the trusted server clock.
   const now=Date.now();
-  let timedOut=false,advancedHint=false;
+  let timedOut=false;
   if(gameId==='catchmind'&&state?.phase==='drawing'&&state.deadlineAt&&Date.parse(state.deadlineAt)<=now){
    state=executeAction(engines.catchmind,state,state.drawer,{type:'timeout'}).state;state.deadlineAt=null;
    timedOut=true;
-  }else if(gameId==='catchmind'&&state?.phase==='drawing'&&state.deadlineAt&&input.tick===true){
-   const target=getCatchmindHintStage(state,now);
-   while((state.hintStage||0)<target){state=executeAction(engines.catchmind,state,state.drawer,{type:'reveal-hint'}).state;advancedHint=true;}
   }
   if(input.selectGame!==undefined){
    if(!['davinci','catchmind','domino','jaipur','splendor','minhwatu','marble','rhythm'].includes(input.selectGame))return json({error:'invalid_game'},400);
@@ -50,7 +47,7 @@ Deno.serve(async req=>{
    if(input.action.type==='timeout'||gameId==='catchmind'&&(input.action.type==='guess'||input.action.type==='reveal-hint'))return json({error:'use_chat_or_server_clock'},400);
    state=executeAction(engine,state,member.seat,input.action).state;
    if(gameId==='catchmind'){if(input.action.type==='choose')state.deadlineAt=new Date(Date.now()+getCatchmindDrawDurationMs(state)).toISOString();else if(state.phase!=='drawing')state.deadlineAt=null;}
-  }else if(input.tick){if(gameId!=='catchmind'||(!timedOut&&!advancedHint))return json({version:room.version});}
+  }else if(input.tick){if(gameId!=='catchmind'||!timedOut)return json({version:room.version});}
   const {data:version,error}=await db.rpc('commit_action',{p_room:room.id,p_user:identity.user.id,p_version:input.version,p_request:input.requestId,p_state:state,p_views:playerViews(gameId,state),p_game:gameId,p_pending:pending,p_pending_by:pendingBy,p_chat:chat});
   if(error)return json({error:error.message},error.message.includes('stale_state')?409:400);
   if(chat?.status==='pending'&&gameId==='catchmind'){

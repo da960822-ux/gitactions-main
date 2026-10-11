@@ -1,5 +1,7 @@
 import { afterEach, describe, expect, it, vi } from 'vitest';
-import { catchmindDrawDurationMs, catchmindEngine, catchmindDictionary, getCatchmindHintStage, isCorrectGuess } from './catchmind';
+import { catchmindDrawDurationMs, catchmindEngine, catchmindDictionary, catchmindCategories, catchmindTopicWords, getCatchmindHintStage, isCorrectGuess } from './catchmind';
+
+const configure = (state: any, category_id = 'animals', overrides: Record<string, unknown> = {}) => catchmindEngine.applyAction(state, 'p1', { type: 'settings', payload: { settings: { ...state.settings, category_id, ...overrides } } });
 
 const normalize = (word: string) => word.normalize('NFC').toLowerCase().trim();
 
@@ -7,7 +9,7 @@ afterEach(() => vi.useRealTimers());
 
 describe('catchmindEngine', () => {
   it('keeps three choices private, draws normalized strokes, and scores a correct bilingual guess', () => {
-    let s: any = catchmindEngine.createInitialState(19);
+    let s: any = configure(catchmindEngine.createInitialState(19));
     const guesserView = catchmindEngine.getPlayerView(s, 'p2');
     expect(guesserView.hand).toBeNull();
     const drawerView = catchmindEngine.getPlayerView(s, 'p1');
@@ -42,7 +44,7 @@ describe('catchmindEngine', () => {
   });
 
   it('alternates drawers for six rounds and rejects non-normalized drawing points', () => {
-    let s: any = catchmindEngine.createInitialState(2);
+    let s: any = configure(catchmindEngine.createInitialState(2));
     for (let i = 0; i < 6; i++) {
       const drawer = s.drawer;
       s = catchmindEngine.applyAction(s, drawer, { type: 'choose', payload: { wordId: 1 } });
@@ -56,7 +58,7 @@ describe('catchmindEngine', () => {
   });
 
   it('accepts only canonical words with accents intact, case folding, and outer whitespace', () => {
-    const s = catchmindEngine.createInitialState(4);
+    const s = configure(catchmindEngine.createInitialState(4));
     s.phase = 'drawing';
     s.answer = catchmindDictionary.find(word => word.es === 'gato')!;
     expect(isCorrectGuess(s, '  GATO  ')).toBe(true);
@@ -79,7 +81,7 @@ describe('catchmindEngine', () => {
     vi.useFakeTimers();
     vi.setSystemTime(new Date('2026-01-01T00:00:00.000Z'));
     for (const [elapsed, expected] of [[0, 3], [27_000, 2], [54_000, 1], [79_000, 1]]) {
-      let s = catchmindEngine.createInitialState(100 + elapsed);
+      let s = configure(catchmindEngine.createInitialState(100 + elapsed));
       s = catchmindEngine.applyAction(s, 'p1', { type: 'choose', payload: { wordId: 0 } });
       const answer = s.answer!;
       s.deadlineAt = new Date(Date.now() + catchmindDrawDurationMs).toISOString();
@@ -92,7 +94,8 @@ describe('catchmindEngine', () => {
   });
 
   it('has a large unambiguous bilingual dictionary and selects only dictionary concepts', () => {
-    expect(catchmindDictionary.length).toBeGreaterThanOrEqual(120);
+    expect(catchmindTopicWords).toHaveLength(272);
+    expect(catchmindDictionary).toHaveLength(192);
     expect(catchmindDictionary).toContainEqual(expect.objectContaining({ ko: '바나나', es: 'guineo' }));
     expect(catchmindDictionary).toContainEqual(expect.objectContaining({ ko: '패션프루트', es: 'chinola' }));
     expect(catchmindDictionary).toContainEqual(expect.objectContaining({ ko: '안경', es: 'lentes' }));
@@ -109,16 +112,16 @@ describe('catchmindEngine', () => {
         owner.set(key, id);
       }
     });
-    const state = catchmindEngine.createInitialState(101);
+    const state = configure(catchmindEngine.createInitialState(101));
     const selected = state.wordChoices.flat();
     expect(selected).toHaveLength(18);
     expect(new Set(selected.map(word => normalize(word.ko))).size).toBe(18);
     expect(new Set(selected.map(word => normalize(word.es))).size).toBe(18);
-    expect(selected.every(word => catchmindDictionary.some(item => item.ko === word.ko && item.es === word.es))).toBe(true);
+    expect(selected.every(word => catchmindTopicWords.some(topic => topic.category_id === 'animals' && topic.ko === word.ko && topic.es === word.es))).toBe(true);
   });
 
   it('bounds persisted canvas data and rounds coordinates to the canvas resolution', () => {
-    let s: any = catchmindEngine.createInitialState(18);
+    let s: any = configure(catchmindEngine.createInitialState(18));
     s = catchmindEngine.applyAction(s, 'p1', { type: 'choose', payload: { wordId: 0 } });
     const points = Array.from({ length: 80 }, (_, i) => ({ x: i === 0 ? 0.123456 : 0.5, y: 0.654321 }));
     const batch = Array.from({ length: 10 }, () => ({ points }));
@@ -132,7 +135,7 @@ describe('catchmindEngine', () => {
   it('keeps fill, undo, clear, and private timed hints within server-owned game state', () => {
     let s: any = catchmindEngine.createInitialState(81);
     s = catchmindEngine.applyAction(s, 'p1', { type: 'settings', payload: { settings: {
-      drawTimeSeconds: 60, rounds: 2, choices: 3, hints: 2, customOnly: true,
+      category_id: 'nature_space', drawTimeSeconds: 60, rounds: 2, choices: 3, hints: 2, customOnly: true,
       customWords: [{ ko: '두루미', es: 'grulla' }, { ko: '소나무', es: 'pino' }, { ko: '지구본', es: 'globo terráqueo' }, { ko: '열기구', es: 'globo aerostático' }, { ko: '딸기우유', es: 'leche de fresa' }, { ko: '비눗방울', es: 'burbuja' }],
     } } });
     expect(s.wordChoices.flat()).toHaveLength(6);
@@ -154,5 +157,68 @@ describe('catchmindEngine', () => {
     s = catchmindEngine.applyAction(s, 'p1', { type: 'clear' });
     expect(s.strokes).toHaveLength(0); expect(s.fills).toHaveLength(0);
     expect(catchmindEngine.validateAction(s, 'p2', { type: 'fill', payload: { x: 0.5, y: 0.5, color: '#ff0000' } })).toBeTruthy();
+  });
+
+
+  it('requires one supported category, exposes its labels, and locks settings after drawing starts', () => {
+    let s: any = catchmindEngine.createInitialState(55);
+    expect(s.wordChoices).toEqual([]);
+    expect(catchmindEngine.validateAction(s, 'p1', { type: 'settings', payload: { settings: { ...s.settings, category_id: null } } })).toBeTruthy();
+    for (const category_id of [['animals', 'food'], 'all', 'mixed']) {
+      expect(catchmindEngine.validateAction(s, 'p1', { type: 'settings', payload: { settings: { ...s.settings, category_id } } })).toBeTruthy();
+    }
+    expect(catchmindEngine.validateAction(s, 'p2', { type: 'settings', payload: { settings: { ...s.settings, category_id: 'animals' } } })).toBeTruthy();
+    s = configure(s, 'transport', { rounds: 12, choices: 5 });
+    expect(s.wordChoices.flat().every((word: any) => catchmindTopicWords.some(topic => topic.category_id === 'transport' && topic.ko === word.ko && topic.es === word.es))).toBe(true);
+    expect(new Set(s.wordChoices[0].map((word: any) => `${word.ko}:${word.es}`)).size).toBe(5);
+    expect(s.wordChoices[0].map((word: any) => `${word.ko}:${word.es}`)).toEqual(s.wordChoices[6].map((word: any) => `${word.ko}:${word.es}`));
+    expect(catchmindEngine.getPlayerView(s, 'p1').board.settings).toMatchObject({ category_id: 'transport', categoryOptions: catchmindCategories });
+    s = catchmindEngine.applyAction(s, 'p1', { type: 'choose', payload: { wordId: 0 } });
+    expect(catchmindEngine.validateAction(s, 'p1', { type: 'settings', payload: { settings: { ...s.settings, category_id: 'food' } } })).toBeTruthy();
+  });
+
+  it('matches explicit aliases with exact NFC, case, and trim normalization only', () => {
+    const s: any = configure(catchmindEngine.createInitialState(9), 'food');
+    s.phase = 'drawing';
+    s.answer = catchmindTopicWords.find(word => word.id === 'food-extra-009');
+    expect(isCorrectGuess(s, ' MANGU ')).toBe(true);
+    expect(isCorrectGuess(s, 'mangú')).toBe(true);
+    expect(isCorrectGuess(s, 'mang u')).toBe(false);
+    expect(isCorrectGuess(s, 'mángu')).toBe(false);
+    s.answer = catchmindTopicWords.find(word => word.id === 'food-extra-015');
+    expect(isCorrectGuess(s, 'cafe')).toBe(true);
+  });
+
+  it('rejects custom words colliding with a selected category canonical or alias and preserves legacy deals', () => {
+    const fresh: any = catchmindEngine.createInitialState(19);
+    const invalid = { ...fresh.settings, category_id: 'animals', customWords: [{ ko: '새 고양이', es: 'gato' }] };
+    expect(catchmindEngine.validateAction(fresh, 'p1', { type: 'settings', payload: { settings: invalid } })).toBeTruthy();
+    const aliasConflict = { ...fresh.settings, category_id: 'food', customWords: [{ ko: '새 음식', es: 'mangu' }] };
+    expect(catchmindEngine.validateAction(fresh, 'p1', { type: 'settings', payload: { settings: aliasConflict } })).toBeTruthy();
+    const custom: any = configure(fresh, 'animals', { customWords: [{ ko: '  새단어  ', es: '  nueva palabra  ', aliases: { es: [123, 'injected'] } }] });
+    expect(custom.settings.customWords).toEqual([{ ko: '새단어', es: 'nueva palabra' }]);
+    const legacy: any = configure(fresh);
+    const savedChoices = structuredClone(legacy.wordChoices);
+    delete legacy.settings.category_id;
+    const savedAnswer = legacy.wordChoices[0][0];
+    legacy.answer = savedAnswer;
+    expect(legacy.wordChoices).toEqual(savedChoices);
+    expect(legacy.answer).toEqual(savedAnswer);
+    expect(catchmindEngine.validateAction(legacy, 'p1', { type: 'settings', payload: { settings: { ...legacy.settings, category_id: 'food' } } })).toBeTruthy();
+    expect(catchmindEngine.validateAction(legacy, 'p1', { type: 'choose', payload: { wordId: 0 } })).toBeNull();
+  });
+
+  it('uses static language masks and carries no answer text to the guesser', () => {
+    let s: any = configure(catchmindEngine.createInitialState(81), 'food');
+    s.phase = 'drawing'; s.answer = catchmindTopicWords.find(word => word.id === 'food-extra-015');
+    const guesser = catchmindEngine.getPlayerView(s, 'p2');
+    expect(guesser.board.hintWord).toEqual({ ko: '□□', es: '????' });
+    expect(JSON.stringify(guesser)).not.toContain('café');
+    expect(JSON.stringify(guesser)).not.toContain('커피');
+    s.answer = { ko: '불가사리', es: 'estrella de mar' };
+    const spaced = catchmindEngine.getPlayerView(s, 'p2').board.hintWord;
+    expect(spaced).toEqual({ ko: '□□□□', es: '???????? ?? ???' });
+    s = catchmindEngine.applyAction(s, 'p1', { type: 'reveal-hint' });
+    expect(catchmindEngine.getPlayerView(s, 'p2').board.hintWord).toEqual(spaced);
   });
 });
