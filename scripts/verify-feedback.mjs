@@ -12,8 +12,8 @@ function check(name, pass, detail = '') {
   report.checks.push({ name, pass: Boolean(pass), detail });
   if (!pass) throw new Error(`${name}: ${detail}`);
 }
-async function context(language, viewport = { width: 1440, height: 900 }) {
-  const ctx = await browser.newContext({ viewport });
+async function context(language, viewport = { width: 1440, height: 900 }, options = {}) {
+  const ctx = await browser.newContext({ viewport, ...options });
   await ctx.addInitScript(lang => localStorage.setItem('dos-language', lang), language);
   const page = await ctx.newPage();
   page.on('pageerror', error => report.errors.push(error.message));
@@ -45,6 +45,11 @@ try {
     check(`${language}: three categories, content-only form, whitespace disabled`, await page.locator('.feedback-categories button').count() === 3 && await page.locator('#feedback-title').count() === 0 && await page.locator('.feedback-submit').isDisabled());
     const layout = await fits(page);
     check(`${language}: complete form fits desktop 1440x900`, !layout.overflow && layout.formBottom <= layout.viewportHeight, JSON.stringify(layout));
+    const paperMotion = await page.locator('.feedback-compose').evaluate(el => ({ name: getComputedStyle(el).animationName, duration: getComputedStyle(el).animationDuration }));
+    check(`${language}: original paper unfold animation remains`, paperMotion.name === 'feedback-paper-unfold' && paperMotion.duration === '0.68s', JSON.stringify(paperMotion));
+    await page.emulateMedia({ reducedMotion: 'reduce' });
+    check(`${language}: original reduced-motion support remains`, await page.locator('.feedback-compose').evaluate(el => getComputedStyle(el).animationName) === 'none');
+    await page.emulateMedia({ reducedMotion: 'no-preference' });
     await page.locator('#feedback-body').fill('   ');
     check(`${language}: whitespace cannot be submitted`, await page.locator('.feedback-submit').isDisabled());
     await page.locator('.feedback-categories button').nth(1).click();
@@ -74,6 +79,7 @@ try {
     await refresh(page);
     await page.locator('.feedback-status.status-planned').waitFor();
     check(`${language}: partner reads owner status update`, await page.locator('.feedback-status.status-planned').count() === 1);
+    check(`${language}: original affectionate progress phrase is visible`, (await page.locator('.feedback-status.status-planned').innerText()).includes(language === 'ko' ? '해볼게요' : 'Lo anoto'));
 
     await page.locator('#feedback-body').fill(language === 'ko' ? '응답이 끊겨도 한 번만 저장해 주세요.' : 'Guarda una sola vez si se pierde la respuesta.');
     const ids = [];
@@ -101,12 +107,25 @@ try {
     await third.page.goto(invite);
     await third.page.locator('.feedback-error').waitFor();
     check(`${language}: third browser cannot join, read posts, or submit`, await third.page.locator('.feedback-entry').count() === 0 && await third.page.locator('.feedback-compose').count() === 0 && await third.page.locator('.feedback-empty b').count() === 0);
-    await third.ctx.close(); await partner.ctx.close(); await owner.ctx.close();
-    const narrow = await context(language, { width: 800, height: 900 });
-    await narrow.page.goto(invite);
-    await narrow.page.locator('.desktop-game-notice').waitFor();
-    check(`${language}: desktop guard blocks form on a narrow viewport`, await narrow.page.locator('.feedback-compose').count() === 0);
-    await narrow.ctx.close();
+    await third.ctx.close();
+    for (const width of [800, 390]) {
+      const narrow = await context(language, { width, height: 900 }, { hasTouch: true, isMobile: true, storageState: await partner.ctx.storageState() });
+      await narrow.page.goto(invite);
+      await narrow.page.locator('.feedback-compose').waitFor();
+      const narrowLayout = await fits(narrow.page);
+      check(`${language}: existing touch-screen access at ${width}px remains usable`, !narrowLayout.overflow && await narrow.page.locator('.desktop-game-notice').count() === 0 && await narrow.page.locator('.feedback-entry').count() === 2, JSON.stringify(narrowLayout));
+      if (width === 390) {
+        await narrow.page.locator('#feedback-body').fill(language === 'ko' ? '작은 화면 회귀 확인입니다.' : 'Prueba de acceso en pantalla pequeña.');
+        await narrow.page.locator('.feedback-submit').click();
+        await narrow.page.locator('.feedback-saved').waitFor();
+        await narrow.page.reload();
+        await narrow.page.locator('.feedback-entry').nth(2).waitFor();
+        check(`${language}: touch-screen submit is SQL-backed and survives reload`, await narrow.page.locator('.feedback-entry').count() === 3);
+        await narrow.page.screenshot({ path: resolve(out, `${language}-small-screen.png`), fullPage: true });
+      }
+      await narrow.ctx.close();
+    }
+    await partner.ctx.close(); await owner.ctx.close();
   }
   check('No uncaught browser errors', report.errors.length === 0, JSON.stringify(report.errors));
 } catch (error) {

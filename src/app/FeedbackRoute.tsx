@@ -3,23 +3,10 @@ import { feedback, isFeedbackOnline, type FeedbackEntry } from '../core/feedback
 import type { Language } from '../core/types';
 import { FeedbackPage } from './FeedbackPage';
 import { Link } from './Router';
-import { DESKTOP_GAME_QUERY } from '../core/display';
-import { DesktopGameNotice } from './DesktopGameNotice';
 
 const copy = (language: Language, ko: string, es: string) => language === 'ko' ? ko : es;
 
 export function FeedbackRoute() {
-  const [desktop, setDesktop] = useState(() => window.matchMedia(DESKTOP_GAME_QUERY).matches);
-  useEffect(() => {
-    const display = window.matchMedia(DESKTOP_GAME_QUERY);
-    const update = () => setDesktop(display.matches);
-    display.addEventListener('change', update);
-    return () => display.removeEventListener('change', update);
-  }, []);
-  return desktop ? <FeedbackContent /> : <DesktopGameNotice language={localStorage.getItem('dos-language') === 'es' ? 'es' : 'ko'} />;
-}
-
-function FeedbackContent() {
   const [language, setLanguage] = useState<Language>(() => localStorage.getItem('dos-language') === 'es' ? 'es' : 'ko');
   const [spaceId, setSpaceId] = useState(() => new URLSearchParams(location.search).get('space') || localStorage.getItem('dos-feedback-space') || '');
   const [joinCode, setJoinCode] = useState('');

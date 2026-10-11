@@ -98,7 +98,7 @@ export function FeedbackPage({ language, mode, entries, loading, error, canCreat
           {loading ? <div className="feedback-empty" role="status"><span className="feedback-loader" aria-hidden="true" />{copy(language, '아이디어를 불러오는 중…', 'Cargando las ideas…')}</div>
             : entries.length === 0 && !error ? <div className="feedback-empty"><b>{copy(language, '아직 아이디어가 없어요.', 'Todavía no hay ideas.')}</b><small>{copy(language, 'Mami, 생각난 걸 언제든 남겨줘.', 'Mami, cuéntame tu idea cuando quieras.')}</small></div>
               : <div className="feedback-list">{entries.map(entry => <article className="feedback-entry" key={entry.id}>
-                <div className="feedback-entry-top"><span className={`feedback-category category-${entry.category}`}>{categoryText(entry.category, language)}</span><span className={`feedback-status status-${entry.status}`}>{statusText(entry.status, language)}</span></div>
+                <div className="feedback-entry-top"><span className={`feedback-category category-${entry.category}`}>{categoryText(entry.category, language)}</span><span className={`feedback-status status-${entry.status}`}>{statusText(entry.status, language)}{entry.status === 'planned' && <small> · {copy(language, '해볼게요', 'Lo anoto')}</small>}</span></div>
                 {!entry.body.startsWith(entry.title) && <h3>{entry.title}</h3>}
                 <p className="feedback-entry-body">{entry.body}</p>
                 <footer className="feedback-entry-foot"><time dateTime={entry.createdAt}>{formatDate(entry.createdAt)}</time>

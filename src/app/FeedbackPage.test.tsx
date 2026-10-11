@@ -16,6 +16,18 @@ const render = (language: 'ko' | 'es') => renderToStaticMarkup(createElement(Fee
 }));
 
 describe('Mami ideas page copy', () => {
+  it('keeps the original affectionate phrase as a progress note without adding a fourth status', () => {
+    for (const language of ['ko', 'es'] as const) {
+      const html = renderToStaticMarkup(createElement(FeedbackPage, {
+        language, mode: 'online', loading: false, canCreate: false, canAcknowledge: true,
+        entries: [{ id: 'planned', category: 'game', title: 'Idea', body: 'An idea', status: 'planned', createdAt: '2026-10-11T12:00:00Z' }],
+        onCreate: async () => undefined, onSetStatus: async () => undefined,
+      }));
+      assert.match(html, language === 'ko' ? /진행<small> · 해볼게요<\/small>/ : /En curso<small> · Lo anoto<\/small>/);
+      assert.equal((html.match(/<option /g) || []).length, 3);
+    }
+  });
+
   it('keeps legacy game titles and maps the legacy read status to received', () => {
     const html = renderToStaticMarkup(createElement(FeedbackPage, {
       language: 'ko', mode: 'online', loading: false, canCreate: false, canAcknowledge: true,
@@ -48,6 +60,9 @@ describe('Mami ideas page copy', () => {
     assert.match(html, /Mami, 다음엔 뭐 만들까\?/);
     assert.match(html, /해보고 싶은 게임이나 추가했으면 하는 거 있으면 여기 적어줘\./);
     assert.match(html, /불편한 게 있거나 마음에 안 드는 것도 말해줘\. Papi가 보고 고쳐볼게\./);
+    assert.match(html, /Mami, 편하게 적어줘/);
+    assert.match(html, /Papi가 읽어볼게\./);
+    assert.match(html, /Mami, 생각난 걸 언제든 남겨줘\./);
     assert.match(html, /placeholder="Baby, 여기 적어줘 ♡"/);
     assert.match(html, />Papi한테 보내기</);
     assert.doesNotMatch(html, /남편에게|Para mi esposo/);
