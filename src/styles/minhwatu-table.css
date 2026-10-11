@@ -201,3 +201,9 @@
 @media (min-height:850px) { .minhwatu-table { --hw-hand-width:60px; --hw-capture-width:38px; } .hwatu-table-card { flex-basis:min(var(--hw-field-card-width),54px); width:min(var(--hw-field-card-width),54px); } }
 @media (max-width:1000px) { .hwatu-hand-section { display:block; } .hwatu-felt-heading { position:static; } .hwatu-table-cards { width:calc(100% - 94px); margin:4px 94px 4px 0; } .hwatu-capture-categories { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); } .hwatu-choice-hand { justify-content:flex-start; } .hwatu-hand-choice { flex:0 0 54px; } }
 @media (prefers-reduced-motion:reduce) { .hwatu-hand-choice { transition:none; } }
+
+@media (min-width:1024px) {
+ .minhwatu-table { gap:3px; }
+ .hwatu-phase-note { padding-block:3px; }
+ .hwatu-hand-section { padding-top:1px; }
+}

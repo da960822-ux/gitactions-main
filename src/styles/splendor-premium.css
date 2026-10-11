@@ -473,3 +473,7 @@
   .sp-action-panel:has(.sp-payment-preview) .sp-action-card > div { grid-column: 2; grid-row: 2; }
   .sp-action-panel:has(.sp-payment-preview) .sp-payment-preview { grid-column: 2; grid-row: 3; margin-top: 0; padding-top: 0; border-top: 0; }
 }
+
+.sp-card-details .sp-card-cost { min-height:20px; gap:2px; }
+.sp-card-details .sp-cost { min-height:20px; padding:0 3px; font-size:12px; }
+.sp-card-details .sp-cost .sp-gem-icon { width:14px; height:14px; }

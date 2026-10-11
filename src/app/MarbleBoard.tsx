@@ -2,9 +2,10 @@ import { useEffect, useRef, useState } from 'react';
 import type { CSSProperties } from 'react';
 import type { GameAction, Language, PlayerId } from '../core/types';
 import { GameValue } from './GameValue';
+import { playCue } from '../audio/audio';
 import { MarbleEventStage } from './MarbleEventStage';
 import { MarblePawn, MarblePawnPicker, marblePawnCatalog, type MarblePawnId } from './MarblePawn';
-import { marbleGridPosition, marbleMovementPath, type MarbleMoveEvent } from './marble-motion';
+import { marbleGridPosition, marblePresentationFrames, marbleCueForEvent, type MarbleActionEvent } from './marble-motion';
 import '../styles/marble-premium.css';
 
 type Choice = { label: Record<Language, string>; action: GameAction };
@@ -102,6 +103,12 @@ export default function MarbleBoard({ view: rawView, language, playerId, runActi
   const diceSequence = num(board.diceSequence);
   const [traveler, setTraveler] = useState<{ seat: Seat; tile: number; seq: number } | null>(null);
   const [diceRolling, setDiceRolling] = useState(false);
+  const [displayPositions, setDisplayPositions] = useState({ p1: num(positions.p1), p2: num(positions.p2) });
+  const displayedTile = tiles[displayPositions[playerId]] ?? {};
+  const [presentedEvent, setPresentedEvent] = useState<MarbleActionEvent | null>(() => stageEvents.at(-1) ?? null);
+  const motionTimers = useRef<number[]>([]);
+  const motionBusy = useRef(false);
+  const [reduced, setReduced] = useState(false);
   const [confirmBankruptcy, setConfirmBankruptcy] = useState(false);
   const previous = useRef<{ positions: Record<Seat, number>; move: number; action: number; dice: number; phase: string } | null>(null);
   const previousProperties = useRef<string | null>(null);
@@ -134,49 +141,60 @@ export default function MarbleBoard({ view: rawView, language, playerId, runActi
   }, [propertySignature]);
 
   useEffect(() => {
-    let pulseTimer: number | null = null;
+    const query = window.matchMedia('(prefers-reduced-motion: reduce)');
+    const update = () => setReduced(query.matches);
+    update(); query.addEventListener('change', update);
+    return () => query.removeEventListener('change', update);
+  }, []);
+
+  useEffect(() => {
     const next = { positions: { p1: num(positions.p1), p2: num(positions.p2) }, move: lastMoveSequence, action: actionSequence, dice: diceSequence, phase };
     const before = previous.current;
     previous.current = next;
-    if (!before) return;
-    if (before.dice !== diceSequence && !window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
-      setDiceRolling(true);
-      pulseTimer = window.setTimeout(() => setDiceRolling(false), 620);
-      if (before.move === lastMoveSequence && before.positions.p1 === next.positions.p1 && before.positions.p2 === next.positions.p2) return () => { if (pulseTimer !== null) window.clearTimeout(pulseTimer); };
-    }
-    const freshEvents = eventLog.filter(event => num(event.sequence) > before.action).sort((a, b) => num(a.sequence) - num(b.sequence));
-    const moveEvents = freshEvents.filter(event => event.type === 'move' && (event.actor === 'p1' || event.actor === 'p2'));
-    const seat = moveEvents.length ? moveEvents[0].actor as Seat : players.find(player => before.positions[player] !== next.positions[player]);
-    if (!seat || window.matchMedia('(prefers-reduced-motion: reduce)').matches) { if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) setTraveler(null); return () => { if (pulseTimer !== null) window.clearTimeout(pulseTimer); }; }
-    const size = tiles.length || 18;
-    const diceSteps = rollValues.reduce((sum, value) => sum + value, 0);
-    const path: number[] = [];
-    let cursor = before.positions[seat];
-    for (const event of moveEvents.filter(item => item.actor === seat)) {
-      const from = Number.isInteger(event.from) ? num(event.from) : cursor;
-      const to = Number.isInteger(event.to) ? num(event.to) : next.positions[seat];
-      if (from !== cursor) {
-        const gap = (from - cursor + size) % size;
-        for (let step = 1; step <= gap; step += 1) path.push((cursor + step) % size);
+    // Repeated snapshots and locale changes keep the active timeline intact.
+    if (before && before.action === next.action && before.move === next.move && before.dice === next.dice && !reduced) return;
+    const interrupted = motionBusy.current;
+    motionBusy.current = false;
+    motionTimers.current.forEach(window.clearTimeout); motionTimers.current = [];
+    const freshEvents = eventLog.filter(event => num(event.sequence) > (before?.action ?? actionSequence)).sort((a, b) => num(a.sequence) - num(b.sequence));
+    const frames = before ? marblePresentationFrames(freshEvents, before.positions, next.positions, tiles.length || 18) : [];
+    if (!before || reduced || document.hidden || actionSequence < before.action || interrupted || freshEvents.length > 12 || !frames.length) {
+      setTraveler(null); setDiceRolling(false); setDisplayPositions(next.positions); setPresentedEvent(stageEvents.at(-1) ?? null);
+      // Static/reduced feedback keeps the latest sound; it never replays a queue.
+      if (before && freshEvents.length && !document.hidden && actionSequence >= before.action) {
+        const event = [...freshEvents].reverse().find((item: MarbleActionEvent) => marbleCueForEvent(item) && !['move', 'turn'].includes(String(item.type))) ?? freshEvents.at(-1)!;
+        const cue = event.type === 'win' && view.result?.winner === (playerId === 'p1' ? 'p2' : 'p1') ? 'lose' : marbleCueForEvent(event);
+        if (cue) playCue('marble', cue);
       }
-      const steps = Number.isFinite(Number(event.steps)) ? Number(event.steps) : (to - from + size) % size;
-      for (let step = 1; step <= Math.min(Math.abs(steps), size); step += 1) path.push(((from + Math.sign(steps) * step) % size + size) % size);
-      cursor = to;
+      return;
     }
-    if (!path.length && (lastMoveSequence > before.move || before.positions[seat] !== next.positions[seat])) {
-      const moveEvent: MarbleMoveEvent | null = lastMoveSequence > before.move ? { sequence: lastMoveSequence, playerId: String(lastMove.playerId), effect: String(lastMove.source ?? 'move'), from: Number.isInteger(lastMove.from) ? num(lastMove.from) : before.positions[seat], to: Number.isInteger(lastMove.to) ? num(lastMove.to) : next.positions[seat], steps: Number.isInteger(lastMove.steps) ? num(lastMove.steps) : null } : null;
-      path.push(...marbleMovementPath(before.positions[seat], next.positions[seat], diceSteps, moveEvent, Boolean(moveEvent), seat, size));
-    }
-    if (path.length && path.at(-1) !== next.positions[seat]) {
-      const gap = (next.positions[seat] - (path.at(-1) ?? before.positions[seat]) + size) % size;
-      for (let step = 1; step <= gap; step += 1) path.push(((path.at(-1) ?? before.positions[seat]) + step) % size);
-    }
-    if (!path.length) return;
-    const sequence = lastMoveSequence || diceSequence || turns;
-    setTraveler({ seat, tile: path[0], seq: sequence });
-    const timers = path.map((tile, index) => window.setTimeout(() => setTraveler(index === path.length - 1 ? null : { seat, tile: path[index + 1], seq: sequence }), 58 * (index + 1)));
-    return () => { timers.forEach(window.clearTimeout); if (pulseTimer !== null) window.clearTimeout(pulseTimer); };
-  }, [positions.p1, positions.p2, lastMoveSequence, lastMove.from, lastMove.to, lastMove.steps, lastMove.source, lastMove.playerId, diceSequence, actionSequence, phase, propertySignature]);
+    let cueSequence = 0;
+    motionBusy.current = true;
+    const apply = (frame: typeof frames[number]) => {
+      if (frame === frames.at(-1)) motionBusy.current = false;
+      const sequence = num(frame.event.sequence);
+      if (sequence > cueSequence && !document.hidden) {
+        cueSequence = sequence;
+        const cue = frame.event.type === 'win' && view.result?.winner === (playerId === 'p1' ? 'p2' : 'p1') ? 'lose' : marbleCueForEvent(frame.event);
+        if (cue) playCue('marble', cue);
+      }
+      setDiceRolling(frame.dice); setTraveler(frame.traveler); setDisplayPositions(frame.positions); setPresentedEvent(frame.event);
+    };
+    apply(frames[0]);
+    motionTimers.current = frames.slice(1).map(frame => window.setTimeout(() => apply(frame), frame.at));
+  }, [positions.p1, positions.p2, lastMoveSequence, diceSequence, actionSequence, reduced]);
+
+  useEffect(() => {
+    const snap = () => {
+      motionTimers.current.forEach(window.clearTimeout); motionTimers.current = [];
+      motionBusy.current = false; setTraveler(null); setDiceRolling(false);
+      const latest = previous.current;
+      if (latest) setDisplayPositions(latest.positions);
+    };
+    const hidden = () => { if (document.hidden) snap(); };
+    document.addEventListener('visibilitychange', hidden);
+    return () => { motionTimers.current.forEach(window.clearTimeout); document.removeEventListener('visibilitychange', hidden); };
+  }, []);
 
   const opponentPhase: Record<string, Record<Language, string>> = {
     roll: { ko: '상대가 주사위를 굴릴 차례예요', es: 'A tu pareja le toca lanzar los dados' },
@@ -203,7 +221,7 @@ export default function MarbleBoard({ view: rawView, language, playerId, runActi
           {tiles.map((tile, index) => {
             const kind = String(tile.kind ?? 'rest'), name = String(record(tile.name)[language] ?? record(tile.name).ko ?? ''), group = String(tile.group ?? '');
             const position = marbleGridPosition(index, tiles.length);
-            const atSeats = players.filter(seat => num(positions[seat]) === index);
+            const atSeats = players.filter(seat => num(displayPositions[seat]) === index);
             const movingSeat = traveler?.tile === index ? traveler.seat : null;
             const seats = atSeats.filter(seat => traveler?.seat !== seat);
             if (!position) return null;
@@ -219,7 +237,7 @@ export default function MarbleBoard({ view: rawView, language, playerId, runActi
             return <article className={`mp-tile mp-kind-${kind} ${isKey ? 'is-key' : ''} ${group ? `mp-group-${group}` : ''} ${tileOwner ? `is-owned-${tileOwner}` : ''} ${atSeats.length || movingSeat ? 'has-player' : ''} ${movingSeat ? 'is-moving' : ''} ${changedProperties.includes(index) ? 'is-changed' : ''} ${pos === index && phase === 'decision' ? 'is-pending' : ''}`} style={{ gridColumn: position[0], gridRow: position[1] } as CSSProperties} role="listitem" aria-label={aria} key={tile.index ?? index}>
               <div className="mp-tile-top"><span>{String(index + 1).padStart(2, '0')}</span>{flag && <img src={`/images/marble/flags/${flag}.svg`} alt="" aria-hidden="true"/>}{tileOwner && <b className={`mp-owner mp-owner-${tileOwner}`}>{seatName(tileOwner, playerId, language)}</b>}</div>
               {imageArt && <span aria-hidden="true" className={`mp-tile-art mp-art-${imageArt}`}/>}
-              <strong className="mp-tile-name">{name}</strong>
+              <strong className="mp-tile-name" title={name}>{name}</strong>
               {kind === 'property' ? <div className="mp-tile-economy"><span>{num(tile.houses) ? building : copy(language, '매입', 'Compra')} {num(tile.houses) ? '' : num(tile.price)}</span><span>{copy(language, '임대', 'Renta')} {rentValue(tile, modern)}</span></div> : <small className="mp-tile-kind">{specialNames[kind]?.[language] ?? ''}{kind === 'fund-deposit' && tile.price ? ` · ${num(tile.price)}` : ''}</small>}
               {(seats.length > 0 || movingSeat) && <div className="mp-pawns" aria-label={copy(language, '이 칸의 말', 'Fichas en esta casilla')}>
                 {seats.map(seat => { const id = pawnId(record(board.pawns)[seat]) ?? (seat === 'p1' ? 'fox' : 'cat'); return <span className={`mp-pawn-marker ${seat === playerId ? 'is-you' : ''}`} key={seat} title={seatName(seat, playerId, language)}><MarblePawn pawn={id} language={language} label={seatName(seat, playerId, language)}/></span>; })}
@@ -234,40 +252,13 @@ export default function MarbleBoard({ view: rawView, language, playerId, runActi
             {pawnChoices.length > 0 && <MarblePawnPicker view={view} playerId={playerId} language={language} runAction={runAction}/>}
             <div className="mp-progress" role="progressbar" aria-label={copy(language, '턴 진행', 'Progreso de turnos')} aria-valuemin={0} aria-valuemax={120} aria-valuenow={turns}><span style={{ width: `${Math.min(100, turns / 120 * 100)}%` }}/></div>
             <div className="mp-center-counts"><span><small>{copy(language, '차례', 'Turno')}</small><b>{turns} / 120</b></span>{modern && <span className="mp-fund"><small>{copy(language, '공동 기금', 'Fondo común')}</small><b>{moneyText(fund, language)}</b></span>}</div>
-            <section className="mp-event-theater" aria-label={copy(language, '방금 일어난 일', 'Lo que acaba de pasar')}>
-              <h4>{copy(language, '방금 일어난 일', 'Lo que acaba de pasar')}</h4>
-              {!pawnChoices.length && (stageEvents.length > 0 ? <MarbleEventStage events={stageEvents} language={language} playerId={playerId}/> : <p className="mp-event-empty">{copy(language, '첫 주사위를 굴리면 이곳에 도착과 카드 효과가 표시돼요.', 'Al lanzar los dados, aquí verás las llegadas y los efectos de las cartas.')}</p>)}
-            </section>
-            <div className={`mp-group-legend ${modern ? 'is-complete' : ''}`} aria-label={copy(language, '도시 그룹 색상', 'Grupos de ciudades')}>
-              {Object.entries(groups).slice(0, modern ? 12 : 5).map(([id, label]) => <span key={id}><i className={`mp-group-dot mp-group-dot-${id}`}/>{label[language]}</span>)}
-            </div>
-          </div>
-        </div>
-      </section>
-
-      <aside className="mp-dashboard" aria-label={copy(language, '게임 현황과 행동', 'Estado y acciones')}>
-        <section className="mp-scoreboard" aria-label={copy(language, '현금과 총 자산', 'Efectivo y activos totales')}>
-          {players.map(seat => {
-            const own = ownedBy(seat), playerDebt = num(debt[seat]), playerAssets = num(assets[seat]);
-            const landmarkCount = modern ? own.filter(({ tile }) => num(tile.houses) >= 3).length : 0;
-            const groupsOwned = list(record(board.monopolies)[seat]);
-            const pawn = pawnId(record(board.pawns)[seat]) ?? (seat === 'p1' ? 'fox' : 'cat');
-            return <div className={`mp-player ${seat === playerId ? 'is-you' : ''} ${board.turn === seat ? 'is-turn' : ''}`} key={seat}>
-              <div className="mp-player-name"><MarblePawn pawn={pawn} language={language} label={seatName(seat, playerId, language)}/><b>{seatName(seat, playerId, language)}</b>{board.turn === seat && <span>{copy(language, '차례', 'Turno')}</span>}</div>
-              <div className="mp-player-value"><small>{copy(language, '현금', 'Efectivo')}</small><b><GameValue value={num(money[seat])} resetKey={`${playerId}:marble:cash:${seat}`} format={value => moneyText(value, language)}/></b></div>
-              <div className="mp-player-value"><small>{scoreLabel}</small><b><GameValue value={playerAssets} resetKey={`${playerId}:marble:assets:${seat}`} format={value => moneyText(value, language)}/></b></div>
-              {(playerDebt > 0 || own.length > 0 || groupsOwned.length > 0) && <div className="mp-player-meta">{playerDebt > 0 && <span className="has-debt">{copy(language, `대출 ${moneyText(playerDebt, language)}`, `Préstamo ${moneyText(playerDebt, language)}`)}</span>}{own.length > 0 && <span>{copy(language, `도시 ${own.length}`, `Ciudades ${own.length}`)}</span>}{landmarkCount > 0 && <span>{copy(language, `랜드마크 ${landmarkCount}`, `Monumentos ${landmarkCount}`)}</span>}{groupsOwned.length > 0 && <span>{copy(language, `완성 그룹 ${groupsOwned.length}`, `Grupos completos ${groupsOwned.length}`)}</span>}</div>}
-            </div>;
-          })}
-        </section>
-
         <section className="mp-turn-panel" aria-label={copy(language, '주사위와 행동', 'Dados y acciones')}>
           <div className="mp-phase-title"><h3>{phaseLabel}</h3><span>{copy(language, `턴 ${turns + (view.result ? 0 : 1)}`, `Turno ${turns + (view.result ? 0 : 1)}`)} / 120</span></div>
           <div className={`mp-dice-row ${diceRolling ? 'is-rolling' : ''}`} aria-label={copy(language, '최근 주사위 결과', 'Último resultado de los dados')}>
             {[0, 1].map(index => <Die key={`${diceSequence}-${index}`} value={rollValues[index] ?? 0} language={language}/>)}
             {rollValues.length >= 2 && <b className="mp-dice-total">{rollValues[0] + rollValues[1]}</b>}
           </div>
-          <div className="mp-current-tile" aria-live="polite"><span className="mp-current-flag">{cityFlag(record(currentTile.name)) && <img src={`/images/marble/flags/${cityFlag(record(currentTile.name))}.svg`} alt=""/>}</span><div><small>{copy(language, '현재 위치', 'Ubicación actual')}</small><ImpactText tile={currentTile} language={language}/></div>{ownerName && <b className="mp-current-owner">{ownerName}</b>}</div>
+          <div className="mp-current-tile" aria-live="polite"><span className="mp-current-flag">{cityFlag(record(displayedTile.name)) && <img src={`/images/marble/flags/${cityFlag(record(displayedTile.name))}.svg`} alt=""/>}</span><div><small>{copy(language, '현재 위치', 'Ubicación actual')}</small><ImpactText tile={displayedTile} language={language}/></div>{ownerName && <b className="mp-current-owner">{ownerName}</b>}</div>
           {active && phase === 'decision' && <p className="mp-decision-help">{copy(language, '이 도시에 도착했어요. 구매하거나 지나갈 수 있어요.', 'Llegaste a esta ciudad. Puedes comprarla o continuar.')}</p>}
           {active && phase === 'island' && <p className="mp-island-help">{copy(language, `무인도에 있어요 · 남은 차례 ${islandRemaining}. 쌍이 나오면 나가고, 100을 내거나 탈출권을 쓸 수 있어요${escapePassCount ? ` (탈출권 ${escapePassCount}장 보유)` : ''}.`, `Estás en la isla · ${islandRemaining} turnos pendientes. Puedes intentar sacar dobles, pagar 100 o usar un pase${escapePassCount ? ` (tienes ${escapePassCount})` : ''}.`)}</p>}
           {active && phase === 'train-decision' && <p className="mp-train-help">{copy(language, `운임 ${num(board.pendingTrainFare ?? 100)}을 내고 소유 여부와 관계없이 부동산 칸으로 이동할 수 있어요. 목적지가 없으면 열차를 건너뛰세요.`, `El pasaje cuesta ${num(board.pendingTrainFare ?? 100)}. Puedes elegir cualquier ciudad, aunque tenga dueño. Si no hay destinos disponibles, puedes pasar el tren.`)}</p>}
@@ -296,6 +287,34 @@ export default function MarbleBoard({ view: rawView, language, playerId, runActi
             {!active && !view.result && <p className="mp-waiting">{copy(language, '상대가 차례를 진행하고 있어요.', 'Tu pareja está jugando su turno.')}</p>}
           </div>
         </section>
+
+            <section className="mp-event-theater" aria-label={copy(language, '방금 일어난 일', 'Lo que acaba de pasar')}>
+              <h4>{copy(language, '방금 일어난 일', 'Lo que acaba de pasar')}</h4>
+              {!pawnChoices.length && (stageEvents.length > 0 ? <MarbleEventStage events={stageEvents} event={presentedEvent} animating={!reduced && (diceRolling || traveler !== null)} language={language} playerId={playerId}/> : <p className="mp-event-empty">{copy(language, '첫 주사위를 굴리면 이곳에 도착과 카드 효과가 표시돼요.', 'Al lanzar los dados, aquí verás las llegadas y los efectos de las cartas.')}</p>)}
+            </section>
+            <div className={`mp-group-legend ${modern ? 'is-complete' : ''}`} aria-label={copy(language, '도시 그룹 색상', 'Grupos de ciudades')}>
+              {Object.entries(groups).slice(0, modern ? 12 : 5).map(([id, label]) => <span key={id}><i className={`mp-group-dot mp-group-dot-${id}`}/>{label[language]}</span>)}
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <aside className="mp-dashboard" aria-label={copy(language, '게임 현황과 행동', 'Estado y acciones')}>
+        <section className="mp-scoreboard" aria-label={copy(language, '현금과 총 자산', 'Efectivo y activos totales')}>
+          {players.map(seat => {
+            const own = ownedBy(seat), playerDebt = num(debt[seat]), playerAssets = num(assets[seat]);
+            const landmarkCount = modern ? own.filter(({ tile }) => num(tile.houses) >= 3).length : 0;
+            const groupsOwned = list(record(board.monopolies)[seat]);
+            const pawn = pawnId(record(board.pawns)[seat]) ?? (seat === 'p1' ? 'fox' : 'cat');
+            return <div className={`mp-player ${seat === playerId ? 'is-you' : ''} ${board.turn === seat ? 'is-turn' : ''}`} key={seat}>
+              <div className="mp-player-name"><MarblePawn pawn={pawn} language={language} label={seatName(seat, playerId, language)}/><b>{seatName(seat, playerId, language)}</b>{board.turn === seat && <span>{copy(language, '차례', 'Turno')}</span>}</div>
+              <div className="mp-player-value"><small>{copy(language, '현금', 'Efectivo')}</small><b><GameValue value={num(money[seat])} resetKey={`${playerId}:marble:cash:${seat}`} format={value => moneyText(value, language)}/></b></div>
+              <div className="mp-player-value"><small>{scoreLabel}</small><b><GameValue value={playerAssets} resetKey={`${playerId}:marble:assets:${seat}`} format={value => moneyText(value, language)}/></b></div>
+              {(playerDebt > 0 || own.length > 0 || groupsOwned.length > 0) && <div className="mp-player-meta">{playerDebt > 0 && <span className="has-debt">{copy(language, `대출 ${moneyText(playerDebt, language)}`, `Préstamo ${moneyText(playerDebt, language)}`)}</span>}{own.length > 0 && <span>{copy(language, `도시 ${own.length}`, `Ciudades ${own.length}`)}</span>}{landmarkCount > 0 && <span>{copy(language, `랜드마크 ${landmarkCount}`, `Monumentos ${landmarkCount}`)}</span>}{groupsOwned.length > 0 && <span>{copy(language, `완성 그룹 ${groupsOwned.length}`, `Grupos completos ${groupsOwned.length}`)}</span>}</div>}
+            </div>;
+          })}
+        </section>
+
 
         {eventLog.length > 0 && <details className="mp-history"><summary>{copy(language, '최근 기록', 'Actividad reciente')} <span>{eventLog.length}</span></summary><ol>{eventLog.slice(-5).reverse().map((event: any) => <li key={num(event.sequence)}><span>{String(record(event.title)[language] ?? '')}</span><small>{String(record(event.text)[language] ?? '')}</small></li>)}</ol></details>}
 

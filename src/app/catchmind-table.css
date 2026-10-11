@@ -170,3 +170,26 @@
 @media (prefers-reduced-motion: reduce) {
   .cm-phase-label, .cm-hint-word, .cm-bottom-note, .cm-guess-row, .cm-finish-card { animation: none; }
 }
+
+.cm-tool-icon { width: 24px; height: 24px; }
+.cm-tool-notice { margin: 0 0 6px; color: #286b60; font-size: 12px; line-height: 1.4; }
+.cm-tool-notice:empty { display: none; }
+.cm-tool-modes button { min-height: 44px; }
+.cm-tool-modes button span { font-size: 11px; line-height: 1.25; }
+@media (min-width: 1024px) {
+  .cm-table { padding: 9px; }
+  .cm-table .cm-topbar { margin-bottom: 4px; }
+  .cm-table .cm-player-list { display: none; }
+  .cm-table .cm-side-heading { padding: 7px 12px; }
+  .cm-table .cm-side-heading > b { font-size: 14px; }
+  .cm-table .cm-artboard-head { min-height: 48px; padding: 6px 12px; }
+  .cm-table .cm-artboard-head p { display: none; }
+  .cm-table .cm-play-area { min-height: 0; }
+  .cm-table .cm-canvas { flex: 0 0 auto; min-height: 0; aspect-ratio: 5/3; }
+  .cm-table .cm-canvas canvas { min-height: 0; height: 100%; }
+  .cm-table .cm-guess-section { min-height: 44px; }
+  .cm-table .cm-guess-list { max-height: 64px; }
+  .cm-table .cm-tools { padding: 9px; }
+  .cm-table .cm-bottom-note { min-height: 36px; padding: 6px 10px; }
+  .cm-table .cm-choice-panel { min-height: 330px; }
+}

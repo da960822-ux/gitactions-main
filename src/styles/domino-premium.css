@@ -274,3 +274,13 @@ button.dp-settings-launcher { justify-content:center; min-height:44px; padding:7
   .dp-round-chip { min-height:38px; padding:5px 10px; }
   .dp-scoreboard { margin-top:38px; }
 }
+
+@media (min-width:1024px) {
+ .domino-premium { gap:7px; padding:12px 16px; }
+ .dp-header { gap:8px; }
+ .dp-header p { margin:3px 0; }
+ .dp-seat-row { padding-bottom:3px; }
+ .dp-felt { min-height:192px; }
+ .dp-ledger { padding:6px 10px; }
+ .dp-hand { padding-top:6px; }
+}

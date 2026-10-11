@@ -7,7 +7,7 @@
       "path": "public/images/splendor-gems/white.svg",
       "role": "white token / bonus / flight",
       "status": "native-reviewed",
-      "sha256": "e0339169c32232cac1ab6ec6e17477fbd519ed4eee4cc378bf330f2d1a12cf66",
+      "sha256": "c46950b534cdccd3288cd1c43632abbba55b64c0e8536fb7ed87bbcb78944e64",
       "technical": {
         "dimensions": "64x64 vector viewBox",
         "alpha": true,
@@ -42,8 +42,8 @@
         "native_scale_reviewed": true,
         "in_engine_reviewed": true,
         "technical_checks_passed": true,
-        "approved_by": "Codex Sol; KO/ES Chromium 1440x900 2026-10-11",
-        "evidence": "output/playwright/splendor-sol/ko-selected.png; es-selected.png"
+        "approved_by": "Codex review follow-up; Chromium KO/ES 1440x900 2026-10-11",
+        "evidence": "output/playwright/improvements/regressions/native-assets.png; output/playwright/improvements/after/fresh-splendor-progress.png"
       }
     },
     {
@@ -51,7 +51,7 @@
       "path": "public/images/splendor-gems/blue.svg",
       "role": "blue token / bonus / flight",
       "status": "native-reviewed",
-      "sha256": "68afce58d39f1acb38675d8be4f0e631e173a0097f9602390403ec85120e5c1b",
+      "sha256": "ec36d1d5c00ef5d551eff44f07e36400a06d3348c06a4a1665e464320583f234",
       "technical": {
         "dimensions": "64x64 vector viewBox",
         "alpha": true,
@@ -86,8 +86,8 @@
         "native_scale_reviewed": true,
         "in_engine_reviewed": true,
         "technical_checks_passed": true,
-        "approved_by": "Codex Sol; KO/ES Chromium 1440x900 2026-10-11",
-        "evidence": "output/playwright/splendor-sol/ko-selected.png; es-selected.png"
+        "approved_by": "Codex review follow-up; Chromium KO/ES 1440x900 2026-10-11",
+        "evidence": "output/playwright/improvements/regressions/native-assets.png; output/playwright/improvements/after/fresh-splendor-progress.png"
       }
     },
     {
@@ -95,7 +95,7 @@
       "path": "public/images/splendor-gems/green.svg",
       "role": "green token / bonus / flight",
       "status": "native-reviewed",
-      "sha256": "f1d606e5a0d5d204477f33d2de74539f06dd4713b6f97e46dd41aac7fff4be17",
+      "sha256": "4750eb67d4a41e80b15fc702f29c895ae1f511a838c7db75b31d3fcbe42bbb6e",
       "technical": {
         "dimensions": "64x64 vector viewBox",
         "alpha": true,
@@ -130,8 +130,8 @@
         "native_scale_reviewed": true,
         "in_engine_reviewed": true,
         "technical_checks_passed": true,
-        "approved_by": "Codex Sol; KO/ES Chromium 1440x900 2026-10-11",
-        "evidence": "output/playwright/splendor-sol/ko-selected.png; es-selected.png"
+        "approved_by": "Codex review follow-up; Chromium KO/ES 1440x900 2026-10-11",
+        "evidence": "output/playwright/improvements/regressions/native-assets.png; output/playwright/improvements/after/fresh-splendor-progress.png"
       }
     },
     {
@@ -139,7 +139,7 @@
       "path": "public/images/splendor-gems/red.svg",
       "role": "red token / bonus / flight",
       "status": "native-reviewed",
-      "sha256": "c3712235349c58155a21fba9ecdd9c93785a3247727fa5b96d0a31acfd44aa27",
+      "sha256": "478efe0989d6e958983b6cbf6602ce60a4721239190c5ff9bc4b6820b0311c7b",
       "technical": {
         "dimensions": "64x64 vector viewBox",
         "alpha": true,
@@ -174,8 +174,8 @@
         "native_scale_reviewed": true,
         "in_engine_reviewed": true,
         "technical_checks_passed": true,
-        "approved_by": "Codex Sol; KO/ES Chromium 1440x900 2026-10-11",
-        "evidence": "output/playwright/splendor-sol/ko-selected.png; es-selected.png"
+        "approved_by": "Codex review follow-up; Chromium KO/ES 1440x900 2026-10-11",
+        "evidence": "output/playwright/improvements/regressions/native-assets.png; output/playwright/improvements/after/fresh-splendor-progress.png"
       }
     },
     {
@@ -183,7 +183,7 @@
       "path": "public/images/splendor-gems/black.svg",
       "role": "black token / bonus / flight",
       "status": "native-reviewed",
-      "sha256": "c467af8b8368c7714e7fd311924469823289dfc06c81305c84ee8c6fcfd1602a",
+      "sha256": "0c37447d37043d9efa1b52d1b51c41f46f0762f55bcc6f101a87d140ae89f5c9",
       "technical": {
         "dimensions": "64x64 vector viewBox",
         "alpha": true,
@@ -218,8 +218,8 @@
         "native_scale_reviewed": true,
         "in_engine_reviewed": true,
         "technical_checks_passed": true,
-        "approved_by": "Codex Sol; KO/ES Chromium 1440x900 2026-10-11",
-        "evidence": "output/playwright/splendor-sol/ko-selected.png; es-selected.png"
+        "approved_by": "Codex review follow-up; Chromium KO/ES 1440x900 2026-10-11",
+        "evidence": "output/playwright/improvements/regressions/native-assets.png; output/playwright/improvements/after/fresh-splendor-progress.png"
       }
     },
     {
@@ -262,8 +262,8 @@
         "native_scale_reviewed": true,
         "in_engine_reviewed": true,
         "technical_checks_passed": true,
-        "approved_by": "Codex Sol; KO/ES Chromium 1440x900 2026-10-11",
-        "evidence": "output/playwright/splendor-sol/ko-selected.png; es-selected.png"
+        "approved_by": "Codex review follow-up; Chromium KO/ES 1440x900 2026-10-11",
+        "evidence": "output/playwright/improvements/regressions/native-assets.png; output/playwright/improvements/after/fresh-splendor-progress.png"
       }
     }
   ]

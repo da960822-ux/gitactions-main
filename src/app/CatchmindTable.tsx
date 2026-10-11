@@ -34,7 +34,7 @@ function paintStroke(ctx: CanvasRenderingContext2D, stroke: any) {
 
 export function bucketFill(ctx: CanvasRenderingContext2D, x: number, y: number, color: string) {
   const image = ctx.getImageData(0, 0, 1000, 600), { data, width, height } = image;
-  const start = (Math.max(0, Math.min(height - 1, y)) * width + Math.max(0, Math.min(width - 1, x))) * 4;
+  const start = (Math.max(0, Math.min(height - 1, Math.round(y))) * width + Math.max(0, Math.min(width - 1, Math.round(x)))) * 4;
   const target = [data[start], data[start + 1], data[start + 2], data[start + 3]];
   const fillColor = [parseInt(color.slice(1, 3), 16), parseInt(color.slice(3, 5), 16), parseInt(color.slice(5, 7), 16), 255];
   if (target.every((channel, i) => Math.abs(channel - fillColor[i]) < 8)) return false;
@@ -42,16 +42,15 @@ export function bucketFill(ctx: CanvasRenderingContext2D, x: number, y: number, 
   let read = 0, write = 0;
   const startPixel = start / 4;
   queue[write++] = startPixel; seen[startPixel] = 1;
-  const region: number[] = [];
+  // Every pixel enters this fixed-size queue at most once, including a blank canvas.
   const matches = (pixel: number) => { const at = pixel * 4; return Math.abs(data[at] - target[0]) + Math.abs(data[at + 1] - target[1]) + Math.abs(data[at + 2] - target[2]) < 48 && Math.abs(data[at + 3] - target[3]) < 32; };
   while (read < write) {
-    const pixel = queue[read++]; region.push(pixel);
-    if (region.length > width * height * .42) return false;
+    const pixel = queue[read++];
     const px = pixel % width, neighbors = [px > 0 ? pixel - 1 : -1, px + 1 < width ? pixel + 1 : -1, pixel >= width ? pixel - width : -1, pixel + width < width * height ? pixel + width : -1];
     for (const next of neighbors) if (next >= 0 && !seen[next] && matches(next)) { seen[next] = 1; queue[write++] = next; }
   }
-  for (const pixel of region) {
-    const at = pixel * 4;
+  for (let index = 0; index < write; index += 1) {
+    const at = queue[index] * 4;
     data[at] = fillColor[0]; data[at + 1] = fillColor[1]; data[at + 2] = fillColor[2]; data[at + 3] = 255;
   }
   ctx.putImageData(image, 0, 0);
@@ -66,6 +65,8 @@ export default function CatchmindTable({ view, playerId, language, now, palette,
   const [settingsDraft, setSettingsDraft] = useState({ drawTimeSeconds: 80, rounds: 6, choices: 3, hints: 2, customOnly: false });
   const [customWordsText, setCustomWordsText] = useState('');
   const [settingsNotice, setSettingsNotice] = useState('');
+  const [toolNotice, setToolNotice] = useState('');
+  const fillBusy = useRef(false);
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const drawingRef = useRef(false);
   const pointsRef = useRef<Point[]>([]);
@@ -180,7 +181,20 @@ export default function CatchmindTable({ view, playerId, language, now, palette,
       setTool('brush');
       return;
     }
-    if (tool === 'fill') { void runAction({ type: 'fill', payload: { x: point.x, y: point.y, color } }); return; }
+    if (tool === 'fill') {
+      if (fillBusy.current || !ctx) return;
+      const pixel = ctx.getImageData(Math.min(999, Math.round(x)), Math.min(599, Math.round(y)), 1, 1).data;
+      const channels = [1, 3, 5].map(offset => parseInt(color.slice(offset, offset + 2), 16));
+      if (channels.every((channel, index) => Math.abs(pixel[index] - channel) < 8) && pixel[3] === 255) {
+        setToolNotice(copy(language, '이미 같은 색이에요.', 'Ya tiene ese color.')); return;
+      }
+      fillBusy.current = true;
+      setToolNotice(copy(language, '색을 채우는 중…', 'Aplicando el color…'));
+      void runAction({ type: 'fill', payload: { x: point.x, y: point.y, color } }).then(ok => {
+        setToolNotice(ok ? copy(language, '색을 채웠어요.', 'Color aplicado.') : copy(language, '색을 채우지 못했어요. 다시 시도해 주세요.', 'No se pudo aplicar el color. Inténtalo otra vez.'));
+      }).finally(() => { fillBusy.current = false; });
+      return;
+    }
     pointerDown(event);
   };
   const saveSettings = async (event: FormEvent<HTMLFormElement>) => {
@@ -270,11 +284,11 @@ export default function CatchmindTable({ view, playerId, language, now, palette,
         <div className="cm-player-list">{scoresBySeat.map(({ seat, mine, score }) => <div key={seat} className={`cm-player-row ${mine ? 'is-you' : ''}`}><span className="cm-player-avatar">{mine ? '✦' : '♡'}</span><span><b>{mine ? copy(language, '나', 'Tú') : copy(language, '상대', 'Pareja')}</b><small>{mine === isDrawer ? copy(language, '출제자', 'Dibuja') : copy(language, '맞히는 사람', 'Adivina')}</small></span><strong>{score}<small> {copy(language, '점', 'pts')}</small></strong></div>)}</div>
         <div className="cm-guess-section"><div className="cm-guess-title"><span>{copy(language, '시도', 'INTENTOS')}</span><b>{(board.guesses ?? []).filter((guess: any) => !guess.correct).length}</b></div><div className="cm-guess-list" aria-live="polite">{(board.guesses ?? []).length ? board.guesses.map((guess: any, index: number) => <div className={`cm-guess-row ${guess.correct ? 'is-correct' : ''}`} key={`${guess.by}-${index}`}><span>{guess.correct ? '✓' : '·'}</span><b>{guess.correct ? copy(language, '정답을 맞혔어요!', '¡Respuesta correcta!') : copy(language, '다시 한번 생각해 보세요', 'Prueba otra vez')}</b></div>) : <p>{copy(language, '첫 답을 기다리고 있어요.', 'Esperando la primera respuesta.')}</p>}</div></div>
         {drawing && <div className="cm-tools">
-          <div className="cm-tools-head"><span className="cm-eyebrow">{copy(language, '그리기 도구', 'HERRAMIENTAS')}</span><span>{copy(language, tool === 'brush' ? '펜' : tool === 'fill' ? '채우기' : '색 선택', tool === 'brush' ? 'PINCEL' : tool === 'fill' ? 'RELLENAR' : 'COLOR')}</span></div>
+          <p className="cm-tool-notice" role="status">{toolNotice}</p><div className="cm-tools-head"><span className="cm-eyebrow">{copy(language, '그리기 도구', 'HERRAMIENTAS')}</span><span>{copy(language, tool === 'brush' ? '펜' : tool === 'fill' ? '채우기' : '색 선택', tool === 'brush' ? 'PINCEL' : tool === 'fill' ? 'RELLENAR' : 'COLOR')}</span></div>
           <div className="cm-tool-modes" role="group" aria-label={copy(language, '도구 선택', 'Herramientas')}>
-            <button type="button" className={tool === 'brush' ? 'active' : ''} aria-pressed={tool === 'brush'} onClick={() => setTool('brush')}>✎ <span>{copy(language, '펜', 'Pincel')}</span></button>
-            <button type="button" className={tool === 'fill' ? 'active' : ''} aria-pressed={tool === 'fill'} onClick={() => setTool('fill')}>◕ <span>{copy(language, '채우기', 'Rellenar')}</span></button>
-            <button type="button" className={tool === 'pick' ? 'active' : ''} aria-pressed={tool === 'pick'} onClick={() => setTool('pick')}>⌖ <span>{copy(language, '색 선택', 'Elegir color')}</span></button>
+            <button type="button" className={tool === 'brush' ? 'active' : ''} aria-pressed={tool === 'brush'} onClick={() => setTool('brush')}><ToolIcon tool="brush"/> <span>{copy(language, '펜', 'Pincel')}</span></button>
+            <button type="button" className={tool === 'fill' ? 'active' : ''} aria-pressed={tool === 'fill'} onClick={() => setTool('fill')}><ToolIcon tool="fill"/> <span>{copy(language, '채우기', 'Rellenar')}</span></button>
+            <button type="button" className={tool === 'pick' ? 'active' : ''} aria-pressed={tool === 'pick'} onClick={() => setTool('pick')}><ToolIcon tool="pick"/> <span>{copy(language, '색 선택', 'Elegir color')}</span></button>
           </div>
           <div className="cm-color-grid" role="group" aria-label={copy(language, '펜 색상 · 오른쪽 클릭은 보조 색', 'Color · clic derecho para color secundario')}>{colors.map(color => <button type="button" key={color} className={`cm-color ${palette === color ? 'active' : ''} ${secondaryColor === color ? 'secondary' : ''}`} style={{ '--cm-color': color } as CSSProperties} aria-label={`${copy(language, '색상', 'Color')} ${color}`} aria-pressed={palette === color} onClick={() => setPalette(color)} onContextMenu={event => { event.preventDefault(); setSecondaryColor(color); }} />)}</div>
           <div className="cm-secondary-row"><span><i style={{ backgroundColor: palette }} />{copy(language, '기본', 'Principal')}</span><button type="button" className="cm-swap-colors" aria-label={copy(language, '색 바꾸기', 'Intercambiar colores')} onClick={() => { setSecondaryColor(palette); setPalette(secondaryColor); }}>↔</button><span><i style={{ backgroundColor: secondaryColor }} />{copy(language, '보조 · 오른쪽 클릭', 'Secundario · clic derecho')}</span></div>
@@ -287,4 +301,10 @@ export default function CatchmindTable({ view, playerId, language, now, palette,
       </aside>
     </div>
   </section>;
+}
+
+function ToolIcon({ tool }: { tool: 'brush' | 'fill' | 'pick' }) {
+  return <svg className="cm-tool-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+    {tool === 'brush' ? <><path d="m14 4 6 6-9 9-6-6zM5 13l-2 8 8-2"/><path d="m12 6 6 6"/></> : tool === 'fill' ? <><path d="m10 3 9 9-7 7-9-9zM7 6l5 5M3 14h14"/><path d="M20 15s-2 3-2 4a2 2 0 0 0 4 0c0-1-2-4-2-4Z"/></> : <><path d="m15 3 6 6-3 3-6-6zM13 7l-9 9v4h4l9-9M9 15l-3-3"/></>}
+  </svg>;
 }

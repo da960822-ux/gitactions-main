@@ -1,6 +1,5 @@
-import { useEffect, useRef, useState } from 'react';
 import type { Language, PlayerId } from '../core/types';
-import { marbleEventSequence, marbleEventType, marbleEventWindow, marbleMoneyDelta, type MarbleActionEvent } from './marble-motion';
+import { marbleEventSequence, marbleEventType, marbleMoneyDelta, type MarbleActionEvent } from './marble-motion';
 import '../styles/marble-events.css';
 
 const labels: Record<string, Record<Language, string>> = {
@@ -42,79 +41,8 @@ function EventMark({ type }: { type: string }) {
   return <svg className="marble-event-symbol" viewBox="0 0 32 32" aria-hidden="true"><path d="M7 24 24 7M12 7h12v12"/></svg>;
 }
 
-export function MarbleEventStage({ events, language, playerId }: { events: readonly (MarbleActionEvent | null | undefined)[]; language: Language; playerId: PlayerId }) {
-  const sequence = useRef<number | null>(null);
-  const [queue, setQueue] = useState<MarbleActionEvent[]>([]);
-  const [presented, setPresented] = useState<MarbleActionEvent | null>(() => latestEvent(events));
-  const [reduced, setReduced] = useState(false);
-  const [round, setRound] = useState(0);
-  const timer = useRef<number | null>(null);
-  const currentPlayer = useRef(playerId);
-
-  useEffect(() => {
-    const query = window.matchMedia('(prefers-reduced-motion: reduce)');
-    const update = () => setReduced(query.matches);
-    update();
-    query.addEventListener?.('change', update);
-    return () => query.removeEventListener?.('change', update);
-  }, []);
-
-  useEffect(() => {
-    const ordered = events.filter((event): event is MarbleActionEvent => Boolean(event) && marbleEventSequence(event) > 0).slice().sort((a, b) => marbleEventSequence(a) - marbleEventSequence(b));
-    if (currentPlayer.current !== playerId) {
-      currentPlayer.current = playerId;
-      sequence.current = ordered.reduce((max, event) => Math.max(max, marbleEventSequence(event)), 0);
-      setRound(value => value + 1);
-      setQueue([]);
-      setPresented(ordered.at(-1) ?? null);
-      return;
-    }
-    if (sequence.current === null) {
-      sequence.current = ordered.reduce((max, event) => Math.max(max, marbleEventSequence(event)), 0);
-      setPresented(ordered.at(-1) ?? null);
-      return;
-    }
-    const window = marbleEventWindow(ordered, sequence.current);
-    if (window.reset) {
-      setRound(value => value + 1);
-      setQueue([]);
-      sequence.current = window.latestSequence;
-      if (!window.fresh.length) {
-        setPresented(null);
-        return;
-      }
-    }
-    const fresh = window.fresh;
-    if (!fresh.length) return;
-    sequence.current = window.latestSequence;
-    if (reduced) {
-      setPresented(fresh[fresh.length - 1]);
-      setQueue([]);
-    } else setQueue(current => [...current, ...fresh]);
-  }, [events, reduced]);
-
-  useEffect(() => {
-    if (reduced || !queue.length) return;
-    setPresented(queue[0]);
-    timer.current = window.setTimeout(() => {
-      timer.current = null;
-      setQueue(current => current.slice(1));
-    }, 640);
-    return () => {
-      if (timer.current !== null) window.clearTimeout(timer.current);
-      timer.current = null;
-    };
-  }, [queue, reduced]);
-
-  useEffect(() => {
-    if (reduced && queue.length) {
-      setPresented(queue[queue.length - 1]);
-      setQueue([]);
-    }
-  }, [reduced, queue]);
-
-  useEffect(() => () => { if (timer.current !== null) window.clearTimeout(timer.current); }, []);
-
+export function MarbleEventStage({ events, event, animating = false, language, playerId }: { events: readonly (MarbleActionEvent | null | undefined)[]; event?: MarbleActionEvent | null; animating?: boolean; language: Language; playerId: PlayerId }) {
+  const presented = event === undefined ? latestEvent(events) : event;
   if (!presented) return null;
   const type = marbleEventType(presented);
   const heading = presented.title?.[language] || labels[type]?.[language] || (language === 'ko' ? '게임 기록' : 'Movimiento');
@@ -131,7 +59,7 @@ export function MarbleEventStage({ events, language, playerId }: { events: reado
   const hasTransfer = ['rent', 'tax', 'buy', 'build', 'loan', 'repay', 'bonus', 'monopoly-warning'].includes(type) && (fromId !== undefined || toId !== undefined);
   const transferFrom = from || (toId !== undefined && fromId === undefined ? bank : actor);
   const transferTo = to || (fromId !== undefined && toId === undefined ? bank : '');
-  return <div className={`marble-event-stage marble-event-stage--${type.replace(/[^a-z-]/g, '')}${queue.length && !reduced ? ' is-animating' : ''}`} key={`${round}:${marbleEventSequence(presented)}`}>
+  return <div className={`marble-event-stage marble-event-stage--${type.replace(/[^a-z-]/g, '')}${animating ? ' is-animating' : ''}`} role="status" key={marbleEventSequence(presented)}>
     <span className="marble-event-mark" aria-hidden="true"><EventMark type={type}/><i/><b/><em/></span>
     <div className="marble-event-copy">
       <div className="marble-event-heading"><strong>{heading}</strong>{actor && <span>{actor}</span>}</div>

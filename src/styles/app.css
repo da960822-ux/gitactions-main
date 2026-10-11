@@ -437,7 +437,7 @@
 
 .app-shell .art-minhwatu{background:#26332c url('/images/hwatu/01-01.svg') center/auto 95% no-repeat}
 
-.art-splendor { background:#d9b636 url('/images/splendor/box-cover.jpg') center/cover no-repeat; }
+.art-splendor, .app-shell .art-splendor { background:#d9b636 url('/images/splendor/box-cover.jpg') center/cover no-repeat; }
 
 
 /* The app shell shares the homepage's midnight plum world; game tables keep their own readable surfaces. */
@@ -609,4 +609,36 @@
   .quality-table-room .player-avatar { width:24px; height:24px; font-size:13px; }
   .quality-table-room .room-layout { margin-top:6px; }
   .quality-table-room .board-header { min-height:48px; padding:6px 14px; }
+}
+
+/* Active games keep invitations available without repeating a full room header. */
+.room-invite-details { position: relative; }
+.room-invite-details summary { min-height: 32px; display: flex; align-items: center; gap: 6px; cursor: pointer; padding: 3px 8px; border: 1px solid #796573; border-radius: 8px; list-style: none; }
+.room-invite-content { position: absolute; top: 100%; right: 0; z-index: 20; display: flex; flex-wrap: wrap; gap: 8px; width: min(480px,calc(100vw - 40px)); padding: 12px; border: 1px solid #9c7f91; border-radius: 10px; background: #2e2230; box-shadow: 0 8px 24px #0005; }
+.room-invite-content b { overflow-wrap: anywhere; }
+.room-invite-content button { min-width: 44px; min-height: 44px; }
+.room-shell.quality-table-room .room-main .room-heading { min-height: 28px; margin: 0; padding: 0; border: 0; justify-content: flex-end; }
+.room-shell.quality-table-room .room-main .room-heading > .sr-only { position: absolute; width: 1px; height: 1px; clip-path: inset(50%); overflow: hidden; }
+.room-shell.quality-table-room .room-main .room-player-pills { gap: 8px; }
+.room-shell.quality-table-room .room-main .player-pill { min-width: 0; min-height: 28px; padding: 2px 7px; gap: 6px; }
+.room-shell.quality-table-room .room-main .player-pill small { display: none; }
+.room-shell.quality-table-room .room-main .player-avatar { width: 22px; height: 22px; }
+.room-shell.quality-table-room .room-main .board-game small { display: none; }
+.room-shell.quality-table-room .room-main .board-header { min-height: 44px; padding: 3px 10px; }
+.room-shell.quality-table-room .room-main .room-topline { margin-block: 0; }
+.room-shell.quality-table-room .room-main .room-layout { margin-top: 4px; }
+.room-shell.quality-table-room .board-footer { padding-block: 5px; min-height: 28px; }
+@media (min-width: 1024px) {
+  .app-shell.room-shell.quality-table-room:has(.board-card) .app-header.compact { height: 34px; }
+  .room-shell.quality-table-room .room-main { padding-top: 2px; }
+  .room-shell.quality-table-room .demo-banner { min-height: 24px; margin-top: 2px; padding: 2px 9px; }
+}
+@media (max-width:1023px) {
+ .app-shell.room-shell.jaipur-mobile .app-header.compact { height:44px; }
+ .app-shell.room-shell.jaipur-mobile .demo-banner { margin-top:3px; min-height:28px; padding:3px 7px; font-size:10px; }
+ .app-shell.room-shell.jaipur-mobile .board-header .board-game { position:absolute; width:1px; height:1px; overflow:hidden; clip-path:inset(50%); }
+ .app-shell.room-shell.jaipur-mobile .board-header { min-height:44px; padding:3px 7px; }
+ .app-shell.room-shell.jaipur-mobile .board-header-right { width:100%; justify-content:space-between; gap:3px; }
+ .app-shell.room-shell.jaipur-mobile .board-header-right .plain-button { font-size:11px; padding-inline:3px; }
+ .app-shell.room-shell.jaipur-mobile .board-header-right .turn-tag { font-size:11px; padding:5px; }
 }

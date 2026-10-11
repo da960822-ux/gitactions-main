@@ -1,0 +1,1 @@
+Project-authored vector icons, Codex, 2026-10-11. Original 64x64 transparent SVGs, upper-left lighting, muted teal / parchment / brass palette. Active board and route icons replace cropped atlas tiles; original atlases retained. No external licensed artwork.
