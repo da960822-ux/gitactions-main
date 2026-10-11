@@ -79,3 +79,14 @@ describe('Minhwatu public event motion contract', () => {
     expect(empty).not.toContain('hwatu-motion-note');
   });
 });
+
+it('shows canonical earned Godori faces inline and preserves grouped bonus labels', () => {
+  const godori = event(12, 'special', { yaku: { id: 'godori', label: { ko: '고도리', es: 'Godori' }, bonus: 50 } });
+  const ribbon = event(13, 'special', { yaku: { id: 'hongdan', label: { ko: '홍단', es: 'Hongdan' }, bonus: 30 } });
+  const html = renderToStaticMarkup(createElement(HwatuMotion, { events: [godori, ribbon], language: 'es', playerId: 'p1', step: { events: [godori, ribbon], sequence: 12, duration: 1050, impactOffsets: [0] } }));
+  expect(html).toContain('data-hwatu-earned-card="2-1"');
+  expect(html).toContain('data-hwatu-earned-card="4-1"');
+  expect(html).toContain('data-hwatu-earned-card="8-2"');
+  expect(html).toContain('Godori +50'); expect(html).toContain('Hongdan +30');
+  expect(html).not.toContain('hwatu-combination-reveal');
+});

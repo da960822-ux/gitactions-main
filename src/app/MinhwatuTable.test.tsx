@@ -86,7 +86,7 @@ describe('MinhwatuTable public view', () => {
     expect(html).toContain('data-hwatu-zone="table"');
     expect(html).toContain('data-hwatu-zone="deck"');
     expect(html).toContain('hwatu-deck-back');
-    expect(html.match(/class="game-value-number"/g)).toHaveLength(6);
+    expect(html).not.toContain('game-value-number');
     expect(html).toContain(`data-hwatu-card-id="${ownCard.id}"`);
     const capturableIds = state.hands.p1.filter(card => state.table.some(tableCard => tableCard.month === card.month)).map(card => card.id);
     for (const id of capturableIds) {
@@ -115,7 +115,7 @@ describe('MinhwatuTable public view', () => {
     expect(html).toContain('<details class="hwatu-scoring"');
     expect(html).toContain('<span>고도리</span><b>0/3장</b>');
     expect(html).toContain('홍단');
-    expect(html).toContain('최종 점수 100 : -40');
+    expect(html).toContain('나 100 : -40 상대');
     expect(html).toContain('이겼어요!');
   });
 
@@ -201,8 +201,12 @@ describe('MinhwatuTable public view', () => {
     expect(html).toContain('hwatu-category-pile kind-animal');
     expect(html).toContain('hwatu-category-pile kind-ribbon');
     expect(html).toContain('hwatu-category-pile kind-plain');
-    expect(html).toContain('hwatu-captured-grid');
-    expect(html).not.toContain('hwatu-captured-fan');
+    expect(html).toContain('hwatu-captured-card');
+    expect(html).not.toContain('hwatu-capture-landing');
+    expect(html).not.toContain('hwatu-category-summary');
+    expect(html).not.toContain('hwatu-capture-inspection');
+    for (const card of state.captures.p1) expect(html.match(new RegExp(`data-hwatu-card-id="${card.id}"`, 'g'))).toHaveLength(1);
+    expect(html).not.toContain('tabindex="0"');
     expect(html).toContain('class="hwatu-deck-back"');
     expect(html).not.toContain(`/images/hwatu/${state.deck[0].id.split('-').map(part => part.padStart(2, '0')).join('-')}.svg`);
   });
@@ -260,4 +264,93 @@ describe('MinhwatuTable public view', () => {
     const html = renderToStaticMarkup(createElement(MinhwatuTable, { view, playerId: 'p1', language: 'es', runAction: vi.fn() }));
     expect(html).toContain('Base rival 0 + yakus del rival 0 × 2 − tus yakus 30 = -30');
   });
+
+  it('shows the named final formula from p2 perspective and the two-person replay wait state', () => {
+    const state = minhwatuEngine.createInitialState(89);
+    const all = [...state.hands.p1, ...state.hands.p2, ...state.table, ...state.deck];
+    state.captures = { p1: ['1-2', '2-2', '3-2'].map(id => all.find(card => card.id === id)!), p2: [] };
+    state.phase = 'finished';
+    state.result = { winner: 'p1', reason: 'test', scores: scoreMinhwatuMatch(state.captures) };
+    const view = minhwatuEngine.getPlayerView(state, 'p2');
+    const html = renderToStaticMarkup(createElement(MinhwatuTable, { view, playerId: 'p2', language: 'es', playerNames: { p1: 'Luz', p2: 'Sol' }, runAction: vi.fn(), onReplay: vi.fn(), replayPending: true }));
+    expect(html).toContain('Sol -30 : 75 Luz');
+    expect(html).toContain('Tus puntos 0 + tus yakus 0 × 2 − yakus rivales 30 = -30');
+    expect(html).toContain('Aceptar y jugar otra');
+    expect(html).toContain('La otra persona pidió otra partida.');
+  });
+  it('keeps every captured face visible in its category bank with all combination counters for either viewer and language', () => {
+    const state = minhwatuEngine.createInitialState(174);
+    state.captures = { p1: state.deck.slice(0, 5), p2: state.deck.slice(5, 10) };
+    state.deck = state.deck.slice(10);
+    for (const playerId of ['p1', 'p2'] as const) for (const language of ['ko', 'es'] as const) {
+      const view = minhwatuEngine.getPlayerView(state, playerId);
+      const html = renderToStaticMarkup(createElement(MinhwatuTable, { view, playerId, language, playerNames: { p1: '연석', p2: 'Lisbeth' }, runAction: vi.fn() }));
+      const stage = html.slice(html.indexOf('class="hwatu-tabletop-stage"'), html.indexOf('<details class="hwatu-action-log"'));
+      expect(stage).toContain('data-seat="p1"');
+      expect(stage).toContain('data-seat="p2"');
+      expect(stage.match(/class="hwatu-rail-progress"/g)).toHaveLength(2);
+      expect(stage.match(/class="hwatu-player-name"/g)).toHaveLength(2);
+      expect(stage).toContain('연석');
+      expect(stage).toContain('Lisbeth');
+      for (const seat of ['p1', 'p2'] as const) {
+        for (const yaku of view.board.breakdown[seat].yakus) expect(stage).toContain(yaku.label[language]);
+      }
+      expect(stage.match(/class="hwatu-category-heading"/g)).toHaveLength(8);
+      expect(stage).not.toContain('hwatu-capture-landing');
+      expect(stage).not.toContain('hwatu-category-summary');
+      expect(stage).not.toContain('hwatu-capture-inspection');
+      for (const seat of ['p1', 'p2'] as const) {
+        const rackStart = stage.indexOf(`data-seat="${seat}"`);
+        const rackEnd = stage.indexOf('</aside>', rackStart);
+        const rack = stage.slice(rackStart, rackEnd);
+        for (const card of state.captures[seat]) {
+          expect(rack.match(new RegExp(`data-hwatu-card-id="${card.id}"`, 'g'))).toHaveLength(1);
+          expect(rack).toContain(`/images/hwatu/${card.id.split('-').map(part => part.padStart(2, '0')).join('-')}.svg`);
+          const categoryStart = stage.indexOf(`data-hwatu-zone="captures-${seat}-${card.kind}"`);
+          const categoryEnd = stage.indexOf('</section>', categoryStart);
+          const category = stage.slice(categoryStart, categoryEnd);
+          expect(category.match(new RegExp(`data-hwatu-card-id="${card.id}"`, 'g'))).toHaveLength(1);
+        }
+        for (const kind of ['bright', 'animal', 'ribbon', 'plain'] as const) {
+          const categoryStart = stage.indexOf(`data-hwatu-zone="captures-${seat}-${kind}"`);
+          const categoryEnd = stage.indexOf('</section>', categoryStart);
+          const category = stage.slice(categoryStart, categoryEnd);
+          const ids = [...category.matchAll(/data-hwatu-card-id="([^"]+)"/g)].map(match => match[1]);
+          const expected = state.captures[seat].filter(card => card.kind === kind).sort((a, b) => a.month - b.month || a.id.localeCompare(b.id)).map(card => card.id);
+          expect(ids).toEqual(expected);
+        }
+      }
+      const rivalRack = stage.indexOf(`data-seat="${playerId === 'p1' ? 'p2' : 'p1'}"`);
+      const center = stage.indexOf('class="hwatu-play-center"');
+      const ownRack = stage.indexOf(`data-seat="${playerId}"`, center);
+      const handPosition = stage.indexOf('class="hwatu-hand-section');
+      expect(rivalRack).toBeLessThan(center);
+      expect(center).toBeLessThan(ownRack);
+      expect(ownRack).toBeLessThan(handPosition);
+      const hand = stage.slice(stage.indexOf('data-hwatu-zone="hand"'), stage.indexOf('class="hwatu-hand-actions"'));
+      const ids = [...hand.matchAll(/data-hwatu-card-id="([^"]+)"/g)].map(match => match[1]);
+      expect(ids).toEqual(state.hands[playerId].map(card => card.id));
+      expect(stage).toContain('class="hwatu-event-overlay"');
+      expect(stage).toContain('class="hwatu-hand-actions"');
+    }
+  });
+
+  it('allocates compact two-row geometry for fourteen public cards and bounded geometry for a dense field without regrouping identities', () => {
+    const state = minhwatuEngine.createInitialState(94);
+    const all = [...state.hands.p1, ...state.hands.p2, ...state.table, ...state.deck];
+    for (const [count, columns, width] of [[8, 4, 58], [14, 7, 54], [18, 6, 36], [36, 12, 36], [48, 12, 25]]) {
+      // These larger public views stress layout; they do not introduce another game rule.
+      const view = { ...minhwatuEngine.getPlayerView(state, 'p1'), board: { ...minhwatuEngine.getPlayerView(state, 'p1').board, table: all.slice(0, count) } };
+      const html = renderToStaticMarkup(createElement(MinhwatuTable, { view, playerId: 'p1', language: 'es', runAction: vi.fn() }));
+      expect(html).toContain(`--hw-field-columns:${columns}`);
+      expect(html).toContain(`--hw-field-card-width:${width}px`);
+      const field = html.slice(html.indexOf('data-hwatu-zone="table"'), html.indexOf('data-hwatu-zone="draw"'));
+      const ids = [...field.matchAll(/data-hwatu-card-id="([^"]+)"/g)].map(match => match[1]);
+      expect(ids).toEqual(all.slice(0, count).map(card => card.id));
+      const opponent = html.slice(html.indexOf('class="hwatu-opponent-bar"'), html.indexOf('class="hwatu-felt"'));
+      expect(opponent).toContain('class="hwatu-event-overlay"');
+      expect(field).not.toContain('data-hwatu-motion');
+    }
+  });
+
 });

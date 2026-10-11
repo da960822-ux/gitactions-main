@@ -1,3 +1,4 @@
+import { readFileSync } from 'node:fs';
 import { afterEach, describe, expect, it, vi } from 'vitest';
 
 function installAudioMocks() {
@@ -16,6 +17,7 @@ function installAudioMocks() {
     state: 'suspended',
     destination: {},
     createGain: vi.fn(gain),
+    decodeAudioData: vi.fn(async () => ({ duration: 0.14 })),
     createOscillator: vi.fn(() => {
       const oscillator = { type: '', frequency: { setValueAtTime: vi.fn() }, connect: vi.fn(), disconnect: vi.fn(), start: vi.fn(), stop: vi.fn(), onended: null as null | (() => void) };
       oscillators.push(oscillator);
@@ -24,7 +26,7 @@ function installAudioMocks() {
     }),
     createBuffer: vi.fn((_channels: number, length: number) => ({ getChannelData: () => new Float32Array(length) })),
     createBufferSource: vi.fn(() => {
-      const source = { buffer: null, connect: vi.fn(), disconnect: vi.fn(), start: vi.fn(), stop: vi.fn(), onended: null as null | (() => void) };
+      const source = { buffer: null, playbackRate: { setValueAtTime: vi.fn() }, connect: vi.fn(), disconnect: vi.fn(), start: vi.fn(), stop: vi.fn(), onended: null as null | (() => void) };
       sources.push(source);
       return source;
     }),
@@ -35,6 +37,7 @@ function installAudioMocks() {
   };
   class FakeAudioContext { constructor() { return context as unknown as FakeAudioContext; } }
   const storage = new Map<string, string>();
+  vi.stubGlobal('fetch', vi.fn(async () => ({ ok: true, arrayBuffer: async () => new ArrayBuffer(2) })));
   vi.stubGlobal('window', { AudioContext: FakeAudioContext });
   vi.stubGlobal('document', {
     hidden: false,
@@ -300,50 +303,63 @@ describe('game-specific sound effects', () => {
     audio.dispose();
   });
 
-  it('gives Minhwatu physical card, draw-flip, capture, earned-special, turn, and result cues', async () => {
-    const { context, oscillators } = installAudioMocks();
+  it('uses loaded Foley on exact presentation offsets with variation and cancellation', async () => {
+    const { sources, oscillators } = installAudioMocks();
     const audio = await import('./audio');
     audio.setPreferences('minhwatu', { sfxEnabled: true });
     audio.setScene('minhwatu');
     await audio.unlock();
-    audio.playCue('minhwatu', 'place');
-    expect(context.createBufferSource).toHaveBeenCalledTimes(1);
-    expect(oscillators).toHaveLength(1);
-    audio.setScene(null); audio.setScene('minhwatu');
-    audio.playCue('minhwatu', 'draw');
-    expect(context.createBufferSource).toHaveBeenCalledTimes(3);
-    expect(oscillators).toHaveLength(2);
-    audio.setScene(null); audio.setScene('minhwatu');
-    audio.playCue('minhwatu', 'capture');
-    expect(context.createBufferSource).toHaveBeenCalledTimes(5);
-    expect(oscillators).toHaveLength(3);
-    audio.setScene(null); audio.setScene('minhwatu');
-    audio.playCue('minhwatu', 'special');
-    expect(oscillators).toHaveLength(6);
-    const special = oscillators.slice(3).map(node => node.frequency.setValueAtTime.mock.calls[0][0]);
-    audio.setScene(null); audio.setScene('minhwatu');
-    audio.playCue('minhwatu', 'turn');
-    expect(oscillators).toHaveLength(8);
-    audio.setScene(null); audio.setScene('minhwatu');
-    audio.playCue('minhwatu', 'win');
-    expect(oscillators).toHaveLength(12);
-    expect(new Set(special).size).toBe(3);
-    audio.setScene(null); audio.setScene('minhwatu');
-    audio.playCue('minhwatu', 'lose');
-    expect(context.createBufferSource).toHaveBeenCalledTimes(7);
+    audio.playMinhwatuCue('place', [220]);
+    audio.playMinhwatuCue('capture', [260, 285, 310, 335]);
+    expect(sources.map(source => source.start.mock.calls[0][0])).toEqual([0.22, 0.26, 0.285, 0.31, 0.335]);
+    expect(oscillators).toHaveLength(0);
+    audio.playMinhwatuCue('place', [0]);
+    expect(sources[5].buffer).not.toBe(sources[0].buffer);
+    audio.playMinhwatuCue('place', [-1, NaN, 2001]);
+    expect(sources).toHaveLength(6);
+    (document as unknown as { hidden: boolean }).hidden = true;
+    audio.playMinhwatuCue('place', [0]);
+    expect(sources).toHaveLength(6);
+    expect(sources[0].playbackRate.setValueAtTime.mock.calls[0][0]).toBeGreaterThanOrEqual(0.97);
+    expect(sources[0].playbackRate.setValueAtTime.mock.calls[0][0]).toBeLessThanOrEqual(1.03);
+    audio.cancelMinhwatuAudio();
+    expect(sources.every(source => source.stop.mock.calls.length === 1)).toBe(true);
     audio.dispose();
   });
 
-  it('plays a compact shuffle only for a confirmed Minhwatu deal cue', async () => {
-    const { context, oscillators } = installAudioMocks();
+  it('never replays a missed cue after load or across scenes', async () => {
+    const { context, sources } = installAudioMocks();
+    const pending: Array<(value: { duration: number }) => void> = [];
+    context.decodeAudioData.mockImplementation(() => new Promise(resolve => { pending.push(resolve); }));
     const audio = await import('./audio');
     audio.setPreferences('minhwatu', { sfxEnabled: true });
     audio.setScene('minhwatu');
-    await audio.unlock();
-    audio.playCue('minhwatu', 'deal');
-    expect(context.createBufferSource).toHaveBeenCalledTimes(3);
-    expect(oscillators).toHaveLength(2);
+    const unlock = audio.unlock();
+    await Promise.resolve(); await Promise.resolve(); await Promise.resolve();
+    audio.playMinhwatuCue('place', [220]);
+    audio.setScene('domino');
+    pending.forEach(finish => finish({ duration: .14 }));
+    await unlock;
+    expect(sources).toHaveLength(0);
     audio.dispose();
+
+  });
+
+  it('ships 21 real-source mono PCM Foley files with headroom and documented provenance', () => {
+    const manifest = JSON.parse(readFileSync('public/audio/minhwatu/manifest.json', 'utf8'));
+    expect(manifest.license).toBe('CC0');
+    expect(manifest.files).toHaveLength(21);
+    for (const entry of manifest.files) {
+      const file = readFileSync(`public/audio/minhwatu/${entry.file}`);
+      expect(file.toString('ascii', 0, 4)).toBe('RIFF');
+      expect(file.readUInt16LE(20)).toBe(1);
+      expect(file.readUInt16LE(22)).toBe(1);
+      expect(file.readUInt32LE(24)).toBe(48000);
+      expect(entry.peakDbFS).toBeLessThanOrEqual(-3);
+      expect(entry.durationMs).toBeGreaterThanOrEqual(35);
+      expect(entry.durationMs).toBeLessThanOrEqual(700);
+      expect(readFileSync(`public/audio/minhwatu/source/${entry.source}`).length).toBeGreaterThan(1000);
+    }
   });
 
   it('leaves Catchmind drawing silent while keeping correct-answer feedback', async () => {

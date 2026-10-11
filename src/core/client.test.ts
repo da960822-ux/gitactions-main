@@ -7,6 +7,21 @@ async function startDrawing(){
  await client.createRoom('구름','ko');await client.selectGame('catchmind');client.localSeat('p2');await client.selectGame('catchmind');client.localSeat('p1');await client.sendAction({type:'choose',payload:{wordId:0}});
 }
 describe('local practice client',()=>{
+ it('preserves a finished Minhwatu game until both seats accept a rematch',async()=>{
+  await client.createRoom('Yeonseok','ko');await client.selectGame('minhwatu');client.localSeat('p2');await client.selectGame('minhwatu');
+  for(let i=0;i<60&&!client.getSnapshot().view.result;i++){
+   client.localSeat(client.getSnapshot().view.turn);
+   await client.sendAction(client.getSnapshot().view.actions[0].action);
+  }
+  expect(client.getSnapshot().view.result).toBeTruthy();
+  client.localSeat('p1');const finished=structuredClone(client.getSnapshot().view),version=client.getSnapshot().version;
+  await client.selectGame('minhwatu');await client.selectGame('minhwatu');
+  expect(client.getSnapshot().version).toBe(version);expect(client.getSnapshot().view).toEqual(finished);
+  client.localSeat('p2');await client.selectGame('minhwatu');
+  expect(client.getSnapshot().version).toBe(version+1);expect(client.getSnapshot().pendingGame).toBeNull();
+  expect(client.getSnapshot().view).toMatchObject({result:null,opponentCount:10,board:{deckCount:20,scores:{p1:0,p2:0}}});
+  expect(client.getSnapshot().view.ownHand).toHaveLength(10);
+ });
  it('requires both players to agree on the initial game and later changes',async()=>{
   await client.createRoom('구름','ko');await client.selectGame('davinci');expect(client.getSnapshot().gameId).toBeNull();
   await client.selectGame('davinci');expect(client.getSnapshot().gameId).toBeNull();
