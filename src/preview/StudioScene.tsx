@@ -36,14 +36,14 @@ export default function StudioScene(props:Props){
    const material=heroGold.clone();material.color.set('#936b59');material.roughness=.4;material.envMapIntensity=1.2;
    ribbon=new T.Mesh(new T.TubeGeometry(curve,128,.026,8,false),material);scene.add(ribbon);
   }
-  let width=0,height=0,mobile=false,time=0,last=0,visible=true,disposed=false,loaded=false,impulse=props.impulse??0,energy=0,hovered=-1;
+  let width=0,height=0,mobile=false,time=0,curveTime=0,last=0,visible=true,disposed=false,loaded=false,impulse=props.impulse??0,energy=0,hovered=-1;
   const pointer=new T.Vector2(),hoverPoint=new T.Vector2(),ray=new T.Raycaster(),finePointer=matchMedia('(hover:hover) and (pointer:fine)');
   const inputNode=props.mode==='hearts'?node.closest<HTMLElement>('.rd-hero')!:canvas;
   const resize=()=>{const box=node.getBoundingClientRect();width=box.width;height=box.height;mobile=width<700;renderer.setSize(width,height);camera.aspect=width/height;camera.position.set(0,0,props.mode==='hearts'?(mobile?10.5:11.8):(mobile?10.2:9.6));camera.fov=props.mode==='hearts'&&mobile?43:38;camera.updateProjectionMatrix();render(true);};
   const render=(snap=false,dt=1/60)=>{
    if(!width||!height||disposed)return;const active=!controls.current.paused&&!document.hidden;
    if(props.mode==='hearts'&&!mobile){const factor=snap||!active?1:1-Math.exp(-dt*8);key.position.lerp(new T.Vector3(-4+(active?pointer.x*3:0),6+(active?pointer.y*1.5:0),8),factor);}
-   if(ribbon){const reveal=controls.current.paused?1:1-Math.pow(1-Math.min(1,Math.max(0,time-.15)/1.1),3);ribbon.visible=!mobile;ribbon.geometry.setDrawRange(0,Math.floor(ribbon.geometry.index!.count*reveal/3)*3);const factor=snap||!active?1:1-Math.exp(-dt*6);ribbon.position.lerp(new T.Vector3(active?pointer.x*.21:0,active?pointer.y*.14:0,0),factor);ribbon.rotation.y+=( (active?pointer.x*.025:0)-ribbon.rotation.y)*factor;canvas.dataset.curveReveal=String(reveal);}
+   if(ribbon){if(controls.current.paused)curveTime=1.5;const reveal=1-Math.pow(1-Math.min(1,Math.max(0,curveTime-.35)/1.1),3);ribbon.visible=!mobile;ribbon.geometry.setDrawRange(0,Math.floor(ribbon.geometry.index!.count*reveal/3)*3);const factor=snap||!active?1:1-Math.exp(-dt*6);ribbon.position.lerp(new T.Vector3(active?pointer.x*.21:0,active?pointer.y*.14:0,0),factor);ribbon.rotation.y+=( (active?pointer.x*.025:0)-ribbon.rotation.y)*factor;canvas.dataset.curveReveal=String(reveal);}
    objects.forEach((g,i)=>{
     let x=0,y=0,z=0,size=1,rx=.13,ry=-.2,rz=0;
     if(props.mode==='hearts'){
@@ -66,7 +66,7 @@ export default function StudioScene(props:Props){
    if(props.mode==='hearts'){canvas.dataset.hovered=String(hovered);canvas.dataset.hoverPoint=JSON.stringify([hoverPoint.x,hoverPoint.y]);canvas.dataset.heartCenters=JSON.stringify(objects.filter(g=>g.visible).map(g=>{const p=g.position.clone().project(camera);return{x:(p.x+1)*width/2,y:(1-p.y)*height/2};}));canvas.dataset.heartTransforms=JSON.stringify(objects.filter(g=>g.visible).map(g=>({x:g.position.x,y:g.position.y,z:g.position.z,rx:g.rotation.x,ry:g.rotation.y,scale:g.scale.x})));}if(props.mode==='games'){const chosen=objects.find(g=>g.userData.game===controls.current.selected)!;const box=new T.Box3().setFromObject(chosen),pixels=[];for(const x of [box.min.x,box.max.x])for(const y of [box.min.y,box.max.y])for(const z of [box.min.z,box.max.z]){const p=new T.Vector3(x,y,z).project(camera);pixels.push([(p.x+1)*width/2,(1-p.y)*height/2]);}canvas.dataset.selectedBounds=JSON.stringify({left:Math.min(...pixels.map(p=>p[0])),right:Math.max(...pixels.map(p=>p[0])),top:Math.min(...pixels.map(p=>p[1])),bottom:Math.max(...pixels.map(p=>p[1])),width,height});}canvas.dataset.motion=active&&visible?'running':'paused';
   };
   const frame=(now:number)=>{const dt=last?Math.min((now-last)/1000,.25):0;last=now;if(!visible||document.hidden)return;
-   if(!controls.current.paused){time+=dt;energy*=Math.exp(-dt*2);render(false,dt);}
+   if(!controls.current.paused){time+=dt;if(ribbon&&node.dataset.ready==='true')curveTime+=dt;energy*=Math.exp(-dt*2);render(false,dt);}
   };
   renderer.setAnimationLoop(frame);
   const sync=()=>{if(impulse!==(controls.current.impulse??0)){impulse=controls.current.impulse??0;energy=.85;}render(controls.current.paused);};redraw.current=sync;
