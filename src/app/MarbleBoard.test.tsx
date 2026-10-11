@@ -31,6 +31,67 @@ describe('MarbleBoard', () => {
     expect(es).toContain('Patrimonio neto');
   });
 
+  it('uses the same current turn in the map and actions, capped at 120 including final settlement', () => {
+    const view = marbleEngine.getPlayerView(marbleEngine.createInitialState(11), 'p1');
+    for (const turns of [0, 28, 119, 120]) {
+      view.board.turns = turns;
+      const html = render(view);
+      const current = Math.min(120, turns + 1);
+      expect(html).toContain(`<b>${current} / 120</b>`);
+      expect(html).toContain(`턴 ${current} / 120`);
+      expect(html).not.toContain('턴 121');
+    }
+    view.result = { winner: 'p1', scores: { p1: 1, p2: 0 } };
+    expect(render(view)).toContain('턴 120 / 120');
+  });
+
+  it('shows the latest receipt immediately beside actions before animated history', () => {
+    const view = marbleEngine.getPlayerView(marbleEngine.createInitialState(12), 'p1');
+    view.board.actionLog = [
+      { sequence: 1, title: { ko: '옛 탈출', es: 'Salida anterior' }, text: { ko: '100 납부', es: 'Pago 100' } },
+      { sequence: 2, title: { ko: '건설 완료', es: 'Construcción lista' }, text: { ko: '빌딩 건설', es: 'Edificio construido' }, moneyDelta: { p1: -60 } },
+    ];
+    const html = render(view);
+    expect(html.indexOf('mp-latest-receipt')).toBeGreaterThan(html.indexOf('mp-turn-panel'));
+    expect(html.indexOf('mp-latest-receipt')).toBeLessThan(html.indexOf('mp-event-theater'));
+    expect(html).toContain('내 현금 -60');
+    view.board.actionLog.push({ sequence: 3, type: 'monopoly-warning', title: { ko: '독점 경고', es: 'Aviso' } });
+    expect(render(view)).toContain('건설 완료 · 내 현금 -60');
+    view.board.actionLog.push({ sequence: 4, type: 'turn', title: { ko: '다음 차례', es: 'Siguiente turno' } });
+    expect(render(view).split('mp-latest-receipt')[1].split('mp-actions')[0]).not.toContain('내 현금 -60');
+    expect(html).toContain('<details class="mp-city-detail"');
+  });
+
+  it('offers only legal strategic city and rent choices and shows held passes and one-use effects', () => {
+    const view = marbleEngine.getPlayerView(marbleEngine.createInitialState(13), 'p1');
+    view.phase = 'event-decision';
+    view.board.pendingEvent = { id: 'city-festival', playerId: 'p1' };
+    view.board.rentPasses = { p1: 1, p2: 0 };
+    view.board.tiles[1].rentModifiers = { festival: { playerId: 'p1', owner: 'p1' } };
+    view.board.tiles[3].rentModifiers = { blackout: { playerId: 'p1', owner: 'p2' } };
+    view.actions = [{ label: { ko: '광주', es: 'Gwangju' }, action: { type: 'choose-event-city', payload: { tile: 1 } } }];
+    const html = render(view);
+    expect(html).toContain('내 도시 하나를 선택하세요');
+    expect(html).toContain('이 도시에 적용');
+    expect(html).toContain('통행료 면제권 1장');
+    expect(html).toContain('#city-festival-mark');
+    expect(html).toContain('#blackout-mark');
+    expect(html).toContain('다음 상대 방문 통행료 2배 · 1회');
+    expect(html).not.toContain('이곳으로 이동');
+    view.phase = 'rent-decision';
+    view.board.pendingRent = { amount: 176, reason: { ko: '상대 랜드마크 통행료', es: 'Renta del monumento rival' } };
+    view.actions = [
+      { label: { ko: '통행료 납부 · 176', es: 'Pagar renta · 176' }, action: { type: 'pay-rent' } },
+      { label: { ko: '면제권 사용', es: 'Usar pase' }, action: { type: 'use-rent-pass' } },
+    ];
+    const rent = render(view, 'es');
+    expect(rent).toContain('Renta del monumento rival');
+    expect((rent.match(/>Pagar renta · 176/g) ?? []).length).toBe(1);
+    expect((rent.match(/>Usar pase/g) ?? []).length).toBe(1);
+    view.actions = [];
+    expect(render(view, 'es')).not.toContain('>Usar pase');
+  });
+
   it('keeps eighteen-space saved boards renderable and does not invent a roll action', () => {
     const state = marbleEngine.createInitialState(41);
     const view = marbleEngine.getPlayerView(state, 'p1');
@@ -85,6 +146,8 @@ describe('MarbleBoard', () => {
     expect(html).toContain('/images/marble/ownership-card-frame.svg');
     expect(html).toContain('/images/marble/buildings/villa.svg');
     expect(html).toContain('건설 단계별 통행료');
+    expect(html.indexOf('mp-build-shortcut')).toBeLessThan(html.indexOf('mp-city-detail'));
+    expect((html.match(/>별장: 광주 \(40\)/g) ?? []).length).toBe(1);
   });
 
   it('shows the public payment reason and only server-returned loan or bankruptcy actions', () => {
@@ -161,6 +224,9 @@ describe('MarbleBoard', () => {
     expect(ko).toContain('탈출권 1장 보유');
     expect(es).toContain('Estás en la isla · 2 turnos pendientes');
     expect(es).toContain('tienes 1');
+    expect((ko.match(/>쌍이 나오는지 굴리기/g) ?? []).length).toBe(1);
+    expect((ko.match(/>100을 내고 탈출/g) ?? []).length).toBe(1);
+    expect((ko.match(/>탈출권 사용/g) ?? []).length).toBe(1);
   });
 
   it('uses engine-issued train destinations and shows the recent public action log', () => {

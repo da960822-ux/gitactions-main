@@ -39,7 +39,7 @@ describe('Marble public event meaning', () => {
   const renderEvent = (event: Record<string, unknown>) => renderToStaticMarkup(createElement(MarbleEventStage, { language: 'ko', playerId: 'p1', events: [{ sequence: 10, ...event }] }));
   it('distinguishes an exposed penalty card from a settled payment without inventing a debit', () => {
     const card = renderEvent({ type: 'event-card', cardId: 'travel-cost', text: { ko: '100을 냅니다.' } });
-    expect(card).toContain('tile-symbols.svg#tax');
+    expect(card).toContain('golden-key-cards.svg#tax');
     expect(card).toContain('카드 공개');
     expect(card).toContain('100을 냅니다.');
     expect(card).not.toContain('marble-event-amount');
@@ -47,6 +47,15 @@ describe('Marble public event meaning', () => {
     expect(paid).toContain('나<i aria-hidden="true">→</i>공동 기금');
     expect(paid).toContain('지급 완료');
     expect(paid).toContain('−100');
+  });
+  it.each([
+    ['city-festival', 'city-festival'], ['blackout', 'blackout'], ['rent-pass', 'rent-pass'],
+  ])('illustrates %s with its card family', (cardId, family) => {
+    const html = renderEvent({ type: 'event-card', cardId });
+    expect(html).toContain(`golden-key-cards.svg#${family}`);
+    expect(html).toContain('viewBox="0 0 128 160"');
+    expect(html).toContain('marble-event-card-face');
+    expect(html).not.toContain('tile-symbols.svg');
   });
   it('shows an unpaid crisis and the actual creditor without a fabricated cash change', () => {
     const crisis = renderEvent({ type: 'crisis', actor: 'p1', fromAccount: 'p1', toAccount: 'p2', amount: 200 });
@@ -62,8 +71,8 @@ describe('Marble public event meaning', () => {
     expect(free).not.toContain('marble-event-transfer');
   });
   it('uses distinct reward/island/train symbols and the public movement endpoints', () => {
-    for (const [cardId, symbol] of [['festival', 'fund-pay'], ['go-to-island', 'island'], ['train-ticket', 'train']]) {
-      expect(renderEvent({ type: 'event-card', cardId })).toContain(`tile-symbols.svg#${symbol}`);
+    for (const [cardId, symbol] of [['festival', 'festival'], ['go-to-island', 'island'], ['train-ticket', 'train']]) {
+      expect(renderEvent({ type: 'event-card', cardId })).toContain(`golden-key-cards.svg#${symbol}`);
     }
     expect(renderEvent({ type: 'train', from: 5, to: 15 })).toContain('6번 → 16번 칸');
   });

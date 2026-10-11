@@ -355,3 +355,12 @@ describe('Catchmind composing Enter', () => {
     expect(catchmindEnterSubmits(enter, true)).toBe(false);
   });
 });
+
+it('shows 16 keys for new rooms and retains 13-key instructions for saved rooms', () => {
+  for (const language of ['ko', 'es'] as const) {
+    const render = (marbleEventVersion?: number) => renderToStaticMarkup(createElement(GameGuide, { gameId: 'marble', language, marbleVersion: 2, marbleEconomyVersion: 2, marbleEventVersion }));
+    expect(render(3)).toContain(language === 'ko' ? '16종' : '16 cartas');
+    expect(render()).toContain(language === 'ko' ? '13종' : '13 cartas');
+    expect(render()).not.toContain(language === 'ko' ? '도시 재생' : 'renovación');
+  }
+});

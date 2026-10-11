@@ -301,3 +301,33 @@
 @media (max-width:980px) { .mp-layout { grid-template-columns:minmax(0,1fr); }.mp-board-panel { max-width:800px; width:100%; margin-inline:auto; }.mp-dashboard { grid-template-columns:1fr 1fr; align-items:start; }.mp-scoreboard,.mp-turn-panel,.mp-history,.mp-portfolio { min-width:0; }.mp-turn-panel { grid-row:span 2; }.mp-dashboard .marble-pawn-picker { grid-column:1/-1; }.mp-board-grid { width:min(100%,800px); margin:auto; } }
 @media (max-width:620px) { .marble-premium { gap:10px; padding:10px; border-radius:12px; }.mp-header { align-items:flex-start; flex-direction:column; gap:9px; }.mp-turn-badge { width:100%; min-height:44px; }.mp-layout { gap:10px; }.mp-board-panel { padding:5px; border-radius:10px; }.mp-board-grid { min-width:620px; }.mp-board-panel { overflow-x:auto; }.mp-board-grid--18 { min-width:560px; }.mp-dashboard { grid-template-columns:1fr; padding:10px; }.mp-turn-panel { grid-row:auto; }.mp-dashboard .marble-pawn-picker { grid-column:auto; }.mp-result { grid-template-columns:1fr; }.mp-result-scores { justify-content:flex-start; } }
 @media (prefers-reduced-motion: reduce) { .marble-premium *, .marble-premium *::before, .marble-premium *::after { animation-duration:0.01ms !important; animation-iteration-count:1 !important; scroll-behavior:auto !important; transition-duration:0.01ms !important; }.mp-tile.is-moving { transform:none; } }
+
+/* Keep the board, current actions and latest receipt together on desktop. */
+.mp-dashboard > .mp-event-theater { order:4; width:100%; margin:0; min-height:0; }
+.mp-dashboard > .mp-city-detail { order:5; }
+.mp-dashboard > .mp-history { order:6; }
+.mp-dashboard > .mp-portfolio { order:7; }
+.mp-latest-receipt,.mp-build-shortcut { display:grid; gap:3px; min-width:0; padding:7px 9px; border:1px solid #cfbb91; border-radius:9px; background:#fff6df; font-size:11px; line-height:1.35; overflow-wrap:anywhere; }
+.mp-latest-receipt small { color:#6e7360; font-size:10px; }
+.mp-latest-receipt strong { color:#176b71; }
+.mp-build-shortcut { background:#eaf3ed; }
+.mp-build-shortcut .mp-action { margin-top:3px; }
+.mp-city-detail > summary { cursor:pointer; color:#36575c; font-size:12px; font-weight:800; padding:6px 0; }
+@media (min-width:981px) {
+  .marble-premium { gap:10px; padding:12px; }
+  .mp-dashboard { gap:7px; padding:10px; }
+  .mp-turn-panel { gap:6px; padding:7px 0; }
+  .mp-dice-row { min-height:42px; }
+  .mp-die { width:40px; height:40px; }
+  .mp-current-tile { min-height:44px; padding:6px 8px; }
+  .mp-loan-note { padding:5px 8px; font-size:11px; }
+  .mp-action { min-height:38px; padding:6px 8px; font-size:12px; }
+  .mp-dashboard > .mp-event-theater { padding:7px; }
+  .mp-dashboard > .mp-event-theater .marble-event-stage { min-height:0; padding:6px 8px; }
+}
+
+.marble-premium { overflow-anchor:none; }
+.mp-held-rent-pass { display:flex; align-items:center; gap:4px; font-size:10px; color:#176b71; }
+.mp-held-rent-pass svg { width:22px; height:22px; flex:none; }
+.mp-city-effect { position:absolute; z-index:4; right:1px; top:18px; display:flex; align-items:center; padding:1px; background:#fff6dbed; border:1px solid #ba9453; border-radius:5px; font-size:8px; font-weight:900; pointer-events:none; }
+.mp-city-effect svg { width:19px; height:19px; }

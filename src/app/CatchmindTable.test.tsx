@@ -2,7 +2,7 @@ import { describe, expect, it, vi } from 'vitest';
 import { createElement } from 'react';
 import { renderToStaticMarkup } from 'react-dom/server';
 import { catchmindEngine } from '../games/catchmind';
-import CatchmindTable, { bucketFill, composeDisplayedStrokes, sendDrawQueue } from './CatchmindTable';
+import CatchmindTable, { bucketFill, catchmindPersistedSettingsKey, composeDisplayedStrokes, findCatchmindDuplicateWord, restoreCatchmindPenColor, sendDrawQueue } from './CatchmindTable';
 
 function markup(player: 'p1' | 'p2', revealHint = false) {
   let state = catchmindEngine.createInitialState(8);
@@ -37,6 +37,32 @@ function stateMarkup(state: ReturnType<typeof catchmindEngine.createInitialState
 }
 
 describe('CatchmindTable', () => {
+  it('keeps settings drafts across fresh snapshot objects and failed saves, while accepting persisted changes', () => {
+    const identity = 'room-a:p1';
+    const saved = { drawTimeSeconds: 80, rounds: 6, choices: 3, hints: 2, customOnly: false };
+    const words = [{ ko: '고래', es: 'ballena' }];
+    const originalKey = catchmindPersistedSettingsKey(identity, saved, words);
+    const freshSnapshotKey = catchmindPersistedSettingsKey(identity, { ...saved }, words.map(word => ({ ...word })));
+    expect(freshSnapshotKey).toBe(originalKey);
+    const draft = { drawTimeSeconds: 30, rounds: 2, choices: 3, hints: 1, customOnly: true };
+    // A failed request leaves persisted state unchanged, so its next snapshot must preserve the draft.
+    expect(catchmindPersistedSettingsKey(identity, saved, words)).toBe(originalKey);
+    expect(freshSnapshotKey === originalKey ? draft : saved).toEqual(draft);
+    expect(catchmindPersistedSettingsKey(identity, { ...saved, rounds: 4 }, words)).not.toBe(originalKey);
+    expect(catchmindPersistedSettingsKey('room-b:p1', saved, words)).not.toBe(originalKey);
+  });
+
+  it('identifies duplicate custom words in either language, including base dictionary conflicts', () => {
+    expect(findCatchmindDuplicateWord([{ ko: '산', es: 'montaña' }])).toContain('산|montaña');
+    expect(findCatchmindDuplicateWord([{ ko: '고양이', es: 'gato' }, { ko: '강아지', es: 'gato' }])).toContain('강아지|gato');
+    expect(findCatchmindDuplicateWord([{ ko: '달빛고래', es: 'ballena lunar' }])).toEqual([]);
+  });
+
+  it('restores a visible drawing color after using the paper-color eraser', () => {
+    expect(restoreCatchmindPenColor('#e57f6a')).toBe('#e57f6a');
+    expect(restoreCatchmindPenColor('#fffefa')).toBe('#284f49');
+  });
+
   it('shows the caller role and phase with public score values in both locales', () => {
     const drawer = markup('p1'), guesser = markup('p2');
     expect(drawer.html).toContain('출제자 · 그리는 중');

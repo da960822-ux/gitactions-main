@@ -133,6 +133,16 @@ describe('DominoBoard', () => {
     expect(legacy).not.toContain('매치 목표 점수');
   });
 
+  it('keeps setup read-only and puts the hand and legal play area before round history once play has started', () => {
+    const html = render(fixture());
+
+    expect(html).not.toContain('class="dp-setup"');
+    expect(html).toContain('<details class="dp-settings-readout">');
+    expect(html).toContain('열린 끝');
+    expect(html).toContain('내 도미노 타일');
+    expect(html.indexOf('class="dp-play-area"')).toBeLessThan(html.indexOf('class="dp-ledger-row"'));
+  });
+
   it('shows pending paso bonuses as unsettled and keeps live pip scores private', () => {
     const html = render(fixture({ board: { ...fixture().board, roundBonuses: { p1: 25, p2: 0 }, scores: null } }));
     expect(html).toContain('라운드 종료 때 정산');

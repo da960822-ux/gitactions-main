@@ -2270,6 +2270,18 @@ var marbleTieredRules = {
   ko: marbleCreditRules.ko.map((rule, index) => index === 2 ? "\uB3C4\uC2DC\uC640 \uAC74\uC124 \u2014 \uBE48 \uB3C4\uC2DC\uB97C \uAD6C\uB9E4\uD558\uAC70\uB098 \uC9C0\uB098\uAC11\uB2C8\uB2E4. \uB0B4 \uB3C4\uC2DC\uC5D0\uB294 \uC0C9\uC0C1 \uB3C4\uC2DC\uAD70 \uC644\uC131 \uC5EC\uBD80\uC640 \uAD00\uACC4\uC5C6\uC774 \uBCC4\uC7A5\u2192\uBE4C\uB529\u2192\uB79C\uB4DC\uB9C8\uD06C\uB97C \uC21C\uC11C\uB300\uB85C \uC9C0\uC744 \uC218 \uC788\uC2B5\uB2C8\uB2E4. \uAC74\uC124\uBE44\uB294 \uD574\uB2F9 \uB3C4\uC2DC \uB9E4\uC785\uAC00\uC758 40%\u219260%\u219280%\uC774\uBA70, 10 \uB2E8\uC704\uB85C \uBC18\uC62C\uB9BC\uD558\uACE0 \uCD5C\uC18C 40\uC785\uB2C8\uB2E4. \uD1B5\uD589\uB8CC\uB294 \uAE30\uBCF8\uC758 2\uBC30\u21924\uBC30\u21928\uBC30\uAC00 \uB429\uB2C8\uB2E4. \uC0C1\uB300 \uB3C4\uC2DC\uC758 \uD1B5\uD589\uB8CC\uB294 \uC790\uB3D9 \uC9C0\uAE09\uB429\uB2C8\uB2E4." : rule),
   es: marbleCreditRules.es.map((rule, index) => index === 2 ? "Ciudades y construcci\xF3n \u2014 Puedes comprar una ciudad libre o pasar. En cualquier ciudad tuya puedes construir villa, edificio y monumento, sin completar un color. Cada nivel cuesta el 40 %, 60 % y 80 % del precio de compra de la ciudad; se redondea a 10 y nunca baja de 40. El alquiler pasa a 2, 4 y 8 veces el valor base. El alquiler rival se paga autom\xE1ticamente." : rule)
 };
+var marbleExpandedRules = {
+  ko: [
+    ...marbleTieredRules.ko.map((rule, index) => index === 5 ? rule.replace("\uD669\uAE08\uC5F4\uC1E0 \u2014 13\uC885 \uCE74\uB4DC\uB294", "\uD669\uAE08\uC5F4\uC1E0 \u2014 \uC0C8 \uBC29\uC740 16\uC885\uC774\uBA70 \uC774\uC804 \uC800\uC7A5 \uBC29\uC740 \uAE30\uC874 \uB371\uC744 \uC720\uC9C0\uD569\uB2C8\uB2E4. \uAE30\uBCF8 13\uC885 \uCE74\uB4DC\uB294") : rule),
+    "\uB3C4\uC2DC \uCD95\uC81C\xB7\uC815\uC804 \u2014 \uCD95\uC81C\uB294 \uB0B4 \uB3C4\uC2DC \uD558\uB098\uB97C \uC120\uD0DD\uD574 \uB2E4\uC74C \uC0C1\uB300 \uCC29\uC9C0 1\uD68C \uD1B5\uD589\uB8CC\uB97C 2\uBC30\uB85C \uB9CC\uB4ED\uB2C8\uB2E4. \uC815\uC804\uC740 \uC0C1\uB300 \uB3C4\uC2DC \uD558\uB098\uB97C \uC120\uD0DD\uD574 \uB2E4\uC74C \uB0B4 \uCC29\uC9C0 1\uD68C \uD1B5\uD589\uB8CC\uB97C \uC808\uBC18\uC73C\uB85C \uB9CC\uB4ED\uB2C8\uB2E4(\uB0B4\uB9BC, \uCD5C\uC18C 1). \uB300\uC0C1 \uCC29\uC9C0\uAE4C\uC9C0 \uC720\uC9C0\uB418\uBA70 \uB2E4\uB978 \uB3C4\uC2DC\uB294 \uBC14\uB00C\uC9C0 \uC54A\uC2B5\uB2C8\uB2E4. \uB458 \uB2E4 \uAC78\uB9B0 \uB3C4\uC2DC\uB294 2\uBC30\xD7\uC808\uBC18\uC73C\uB85C \uAE30\uBCF8 \uD1B5\uD589\uB8CC\uAC00 \uB429\uB2C8\uB2E4. \uAC19\uC740 \uD6A8\uACFC\uB97C \uB2E4\uC2DC \uC120\uD0DD\uD558\uBA74 \uC911\uBCF5 \uBC30\uC218\uAC00 \uC544\uB2CC \uD574\uB2F9 \uD6A8\uACFC \uAC31\uC2E0\uC785\uB2C8\uB2E4. \uC120\uD0DD \uAC00\uB2A5\uD55C \uB3C4\uC2DC\uAC00 \uC5C6\uC73C\uBA74 \uD6A8\uACFC\uAC00 \uC5C6\uC2B5\uB2C8\uB2E4.",
+    "\uD1B5\uD589\uB8CC \uBA74\uC81C\uAD8C \u2014 \uD55C \uC7A5\uC744 \uBCF4\uAD00\uD558\uACE0 \uC55E\uC73C\uB85C \uD1B5\uD589\uB8CC\uAC00 \uBC1C\uC0DD\uD558\uBA74 \uC9C0\uAE09 \uC804\uC5D0 \uC9C1\uC811 \uC0AC\uC6A9\uD558\uAC70\uB098 \uC9C0\uAE09\uC744 \uC120\uD0DD\uD569\uB2C8\uB2E4. \uC790\uB3D9 \uC0AC\uC6A9\uB418\uC9C0 \uC54A\uC73C\uBA70 \uC138\uAE08\uC5D0\uB294 \uC4F8 \uC218 \uC5C6\uC2B5\uB2C8\uB2E4. \uC0AC\uC6A9\uD558\uBA74 \uD1B5\uD589\uB8CC 1\uD68C\uB9CC \uBA74\uC81C\uD558\uACE0 \uCE74\uB4DC\uB294 \uB371\uC73C\uB85C \uB3CC\uC544\uAC11\uB2C8\uB2E4. \uB300\uC0C1 \uB3C4\uC2DC \uCD95\uC81C\xB7\uC815\uC804\uC740 \uCC29\uC9C0 \uC21C\uAC04 \uC18C\uBAA8\uB418\uBBC0\uB85C \uBA74\uC81C\uAD8C\uC744 \uC368\uB3C4 \uB3C4\uC2DC \uD6A8\uACFC\uB294 \uC18C\uBAA8\uB429\uB2C8\uB2E4. \uC9C0\uAE09\uC744 \uC120\uD0DD\uD55C \uB4A4 \uD604\uAE08\uC774 \uBD80\uC871\uD558\uBA74 \uC77C\uBC18 \uC9C0\uAE09 \uC704\uAE30\uB85C \uB118\uC5B4\uAC11\uB2C8\uB2E4."
+  ],
+  es: [
+    ...marbleTieredRules.es.map((rule, index) => index === 5 ? rule.replace("Llave dorada \u2014 Las 13 cartas incluyen", "Llave dorada \u2014 Las salas nuevas usan 16 cartas; las guardadas conservan su mazo. Las 13 cartas b\xE1sicas incluyen") : rule),
+    "Festival y apag\xF3n \u2014 Festival elige una ciudad propia y duplica el alquiler en la pr\xF3xima llegada rival, una vez. Apag\xF3n elige una ciudad rival y reduce a la mitad el alquiler en tu pr\xF3xima llegada, una vez (redondeo hacia abajo, m\xEDnimo 1). Persisten hasta esa llegada y no cambian otras ciudades. Juntos dan el alquiler base: doble por mitad. Repetir el mismo efecto lo renueva, sin acumular multiplicadores. Sin ciudad elegible, no tienen efecto.",
+    "Pase de alquiler \u2014 Guarda un pase y elige usarlo o pagar antes de un futuro alquiler. No se usa autom\xE1ticamente ni sirve para impuestos. Exime un solo alquiler y vuelve al mazo. Festival y apag\xF3n se consumen al llegar, incluso si usas el pase. Si eliges pagar sin efectivo suficiente, se aplica la crisis de pago normal."
+  ]
+};
 
 // src/games/marble.ts
 var marblePawnIds = ["fox", "cat", "penguin", "astronaut", "robot", "dragon"];
@@ -2339,6 +2351,7 @@ var modernBoard = [
 var boardFor = (s) => s.boardVersion === 2 ? modernBoard : legacyBoard;
 var legacyIds = ["festival", "lottery", "rent-rebate", "travel-cost", "maintenance", "visit-santo-domingo", "advance-start", "retreat"];
 var modernIds = [...legacyIds, "go-to-island", "escape-pass", "train-ticket", "city-dividend"];
+var expandedIds = [...modernIds, "monopoly-warning", "city-festival", "blackout", "rent-pass"];
 var cards = {
   festival: { title: { ko: "\uB3D9\uB124 \uCD95\uC81C", es: "Fiesta del barrio" }, text: { ko: "\uCD95\uC81C \uC900\uBE44\uB97C \uB3C4\uC640 150\uC744 \uBC1B\uC2B5\uB2C8\uB2E4.", es: "Ayudas con la fiesta del barrio y recibes 150." }, effect: "cash" },
   lottery: { title: { ko: "\uC791\uC740 \uBCF5\uAD8C \uB2F9\uCCA8", es: "Premio de loter\xEDa" }, text: { ko: "\uBCF5\uAD8C\uC5D0 \uB2F9\uCCA8\uB418\uC5B4 200\uC744 \uBC1B\uC2B5\uB2C8\uB2E4.", es: "Te ganas un premio de loter\xEDa y recibes 200." }, effect: "cash" },
@@ -2352,7 +2365,10 @@ var cards = {
   "escape-pass": { title: { ko: "\uD0C8\uCD9C\uAD8C", es: "Pase de salida" }, text: { ko: "\uBB34\uC778\uB3C4\uC5D0\uC11C \uB098\uC62C \uB54C \uC4F8 \uD0C8\uCD9C\uAD8C\uC744 \uBC1B\uC2B5\uB2C8\uB2E4.", es: "Recibes un pase para salir de la isla." }, effect: "pass" },
   "train-ticket": { title: { ko: "\uBB34\uB8CC \uC5F4\uCC28\uD45C", es: "Boleto de tren gratis" }, text: { ko: "\uC6B4\uC784 \uC5C6\uC774 \uBD80\uB3D9\uC0B0 \uD55C \uACF3\uC73C\uB85C \uC774\uB3D9\uD560 \uC218 \uC788\uC2B5\uB2C8\uB2E4.", es: "Puedes viajar a una propiedad sin pagar el pasaje." }, effect: "train" },
   "city-dividend": { title: { ko: "\uB3C4\uC2DC \uBC30\uB2F9\uAE08", es: "Dividendo de la ciudad" }, text: { ko: "\uC18C\uC720\uD55C \uBD80\uB3D9\uC0B0\uB9C8\uB2E4 30\uC744 \uBC1B\uC2B5\uB2C8\uB2E4.", es: "Recibes 30 por cada propiedad que tengas." }, effect: "cash" },
-  "monopoly-warning": { title: { ko: "\uB3C5\uC810 \uACBD\uACE0", es: "Advertencia de monopolio" }, text: { ko: "\uC644\uC131\uD55C \uC0C9\uC0C1 \uB3C4\uC2DC\uAD70\uC774 \uAC00\uC7A5 \uB9CE\uC740 \uC0AC\uB78C\uC5D0\uAC8C \uB3C4\uC2DC\uAD70\uB2F9 100, \uCD5C\uB300 300\uC758 \uB3C5\uC810 \uBD80\uB2F4\uAE08\uC744 \uBD80\uACFC\uD569\uB2C8\uB2E4. \uB3D9\uB960\uC774\uBA74 \uCE74\uB4DC\uB97C \uBF51\uC740 \uC0AC\uB78C, \uC644\uC131\uD55C \uB3C4\uC2DC\uAD70\uC774 \uC5C6\uC73C\uBA74 \uBD80\uB2F4\uAE08\uC774 \uC5C6\uC2B5\uB2C8\uB2E4.", es: "Quien tenga m\xE1s grupos de color completos paga 100 por grupo, hasta 300. En empate paga quien sac\xF3 la carta; si nadie complet\xF3 un grupo, no se cobra." }, effect: "cash" }
+  "monopoly-warning": { title: { ko: "\uB3C5\uC810 \uACBD\uACE0", es: "Advertencia de monopolio" }, text: { ko: "\uC644\uC131\uD55C \uC0C9\uC0C1 \uB3C4\uC2DC\uAD70\uC774 \uAC00\uC7A5 \uB9CE\uC740 \uC0AC\uB78C\uC5D0\uAC8C \uB3C4\uC2DC\uAD70\uB2F9 100, \uCD5C\uB300 300\uC758 \uB3C5\uC810 \uBD80\uB2F4\uAE08\uC744 \uBD80\uACFC\uD569\uB2C8\uB2E4. \uB3D9\uB960\uC774\uBA74 \uCE74\uB4DC\uB97C \uBF51\uC740 \uC0AC\uB78C, \uC644\uC131\uD55C \uB3C4\uC2DC\uAD70\uC774 \uC5C6\uC73C\uBA74 \uBD80\uB2F4\uAE08\uC774 \uC5C6\uC2B5\uB2C8\uB2E4.", es: "Quien tenga m\xE1s grupos de color completos paga 100 por grupo, hasta 300. En empate paga quien sac\xF3 la carta; si nadie complet\xF3 un grupo, no se cobra." }, effect: "cash" },
+  "city-festival": { title: { ko: "\uB3C4\uC2DC \uCD95\uC81C", es: "Festival de ciudad" }, text: { ko: "\uB0B4 \uB3C4\uC2DC \uD558\uB098\uB97C \uC120\uD0DD\uD569\uB2C8\uB2E4. \uADF8 \uB3C4\uC2DC\uC758 \uB2E4\uC74C \uC0C1\uB300 \uCC29\uC9C0 1\uD68C \uD1B5\uD589\uB8CC\uAC00 2\uBC30\uAC00 \uB429\uB2C8\uB2E4. \uB300\uC0C1 \uCC29\uC9C0\uAE4C\uC9C0 \uC720\uC9C0\uB429\uB2C8\uB2E4.", es: "Elige una ciudad propia. Su alquiler se duplica una vez, en la pr\xF3xima llegada rival. Permanece hasta esa llegada." }, effect: "cash" },
+  blackout: { title: { ko: "\uC815\uC804", es: "Apag\xF3n" }, text: { ko: "\uC0C1\uB300 \uB3C4\uC2DC \uD558\uB098\uB97C \uC120\uD0DD\uD569\uB2C8\uB2E4. \uADF8 \uB3C4\uC2DC\uC758 \uB2E4\uC74C \uB0B4 \uCC29\uC9C0 1\uD68C \uD1B5\uD589\uB8CC\uAC00 \uC808\uBC18\uC774 \uB429\uB2C8\uB2E4(\uB0B4\uB9BC, \uCD5C\uC18C 1). \uB300\uC0C1 \uCC29\uC9C0\uAE4C\uC9C0 \uC720\uC9C0\uB429\uB2C8\uB2E4.", es: "Elige una ciudad rival. En tu pr\xF3xima llegada a ella pagas la mitad una vez (redondeo hacia abajo, m\xEDnimo 1). Permanece hasta esa llegada." }, effect: "cash" },
+  "rent-pass": { title: { ko: "\uD1B5\uD589\uB8CC \uBA74\uC81C\uAD8C", es: "Pase de alquiler" }, text: { ko: "\uD1B5\uD589\uB8CC \uBA74\uC81C\uAD8C \uD55C \uC7A5\uC744 \uBCF4\uAD00\uD569\uB2C8\uB2E4. \uC55E\uC73C\uB85C \uD1B5\uD589\uB8CC\uB97C \uB0B4\uAE30 \uC804\uC5D0 \uC9C1\uC811 \uC120\uD0DD\uD574 1\uD68C \uBA74\uC81C\uD560 \uC218 \uC788\uC2B5\uB2C8\uB2E4. \uC790\uB3D9 \uC0AC\uC6A9\uB418\uC9C0 \uC54A\uC73C\uBA70 \uC138\uAE08\uC5D0\uB294 \uC4F8 \uC218 \uC5C6\uC2B5\uB2C8\uB2E4.", es: "Guarda un pase. Antes de un futuro alquiler puedes elegir usarlo para eximir un solo pago. No se usa autom\xE1ticamente ni sirve para impuestos." }, effect: "pass" }
 };
 var propertyRent = (tile, record, modern) => (tile.rent ?? 0) * (modern ? [1, 2, 4, 8][record.houses] ?? 1 : record.houses + 1);
 function marbleBuildCost(tile, level, economicVersion) {
@@ -2381,7 +2397,14 @@ function view2(s, p) {
   const actions = [];
   const add = (ko, es, action) => actions.push({ label: { ko, es }, action });
   if (!s.result && s.active === p) {
-    if (s.economicVersion === 1 || s.economicVersion === 2) {
+    if (s.phase === "event-decision" && s.pendingEvent) {
+      const owner = s.pendingEvent.id === "city-festival" ? p : otherPlayer(p);
+      for (const index of propIndices(board)) if (s.properties[String(index)]?.owner === owner) add(`${board[index].name.ko} \uC120\uD0DD`, `Elegir ${board[index].name.es}`, { type: "choose-event-city", payload: { tile: index } });
+    } else if (s.phase === "rent-decision" && s.pendingRent) {
+      add(`\uD1B5\uD589\uB8CC \uC9C0\uAE09 \xB7 ${s.pendingRent.amount}`, `Pagar alquiler \xB7 ${s.pendingRent.amount}`, { type: "pay-rent" });
+      if ((s.rentPasses?.[p] ?? 0) > 0) add("\uBA74\uC81C\uAD8C \uC0AC\uC6A9 \xB7 \uC774\uBC88 \uD1B5\uD589\uB8CC 1\uD68C", "Usar pase \xB7 este alquiler", { type: "use-rent-pass" });
+    }
+    if ((s.economicVersion === 1 || s.economicVersion === 2) && s.phase !== "event-decision" && s.phase !== "rent-decision") {
       const debt = s.debt?.[p] ?? 0;
       if (debt === 0 && (s.phase !== "debt" || s.money[p] + 300 >= (s.pendingPayment?.amount ?? Infinity))) add("\uB300\uCD9C \uBC1B\uAE30 \xB7 300 / \uC0C1\uD658 330", "Pedir pr\xE9stamo \xB7 300 / devolver 330", { type: "borrow" });
       if (debt > 0 && s.money[p] >= debt && s.phase !== "debt") add(`\uB300\uCD9C \uC0C1\uD658 \xB7 ${debt}`, `Pagar pr\xE9stamo \xB7 ${debt}`, { type: "repay" });
@@ -2442,6 +2465,7 @@ function view2(s, p) {
           index,
           owner: s.properties[String(index)]?.owner ?? null,
           houses,
+          rentModifiers: s.rentModifiers?.[String(index)] ? { ...s.rentModifiers[String(index)].festival ? { festival: { ...s.rentModifiers[String(index)].festival } } : {}, ...s.rentModifiers[String(index)].blackout ? { blackout: { ...s.rentModifiers[String(index)].blackout } } : {} } : null,
           nextBuildCost: canUpgrade ? marbleBuildCost(tile, houses, s.economicVersion) : null,
           nextRent: canUpgrade ? propertyRent(tile, { owner: s.properties[String(index)]?.owner ?? p, houses: houses + 1 }, s.boardVersion === 2) : null
         };
@@ -2460,6 +2484,12 @@ function view2(s, p) {
       pendingTrainFare: s.phase === "train-decision" ? s.pendingTrainFare ?? 100 : null,
       lastEvent: s.lastEvent ? { ...s.lastEvent, title: { ...s.lastEvent.title }, text: { ...s.lastEvent.text } } : null,
       lastMove: s.lastMove ? { ...s.lastMove } : null,
+      pendingEvent: s.pendingEvent ? { ...s.pendingEvent } : null,
+      pendingRent: s.pendingRent ? { ...s.pendingRent, reason: { ...s.pendingRent.reason } } : null,
+      rentPasses: { p1: s.rentPasses?.p1 ?? 0, p2: s.rentPasses?.p2 ?? 0 },
+      rentModifiers: Object.fromEntries(Object.entries(s.rentModifiers ?? {}).map(([tile, effects]) => [tile, { ...effects.festival ? { festival: { ...effects.festival } } : {}, ...effects.blackout ? { blackout: { ...effects.blackout } } : {} }])),
+      eventVersion: s.eventVersion ?? 0,
+      eventCardCount: s.boardVersion !== 2 ? 8 : s.eventVersion === 3 ? 16 : s.economicVersion ? 13 : 12,
       economicVersion: s.economicVersion ?? 0,
       debt: { p1: s.debt?.p1 ?? 0, p2: s.debt?.p2 ?? 0 },
       pendingPayment: s.pendingPayment ? { ...s.pendingPayment, reason: { ...s.pendingPayment.reason } } : null,
@@ -2482,6 +2512,19 @@ function validation(s, p, a) {
   if (!a || typeof a.type !== "string") return "Invalid action";
   if (s.result) return "Game is finished";
   if (p !== s.active) return "Not your turn";
+  if (s.phase === "event-decision") {
+    const index = a.payload?.tile, pending = s.pendingEvent;
+    if (a.type !== "choose-event-city" || !pending || pending.playerId !== p) return "Choose an event city first";
+    const owner = pending.id === "city-festival" ? p : otherPlayer(p);
+    return !Number.isInteger(index) || board[index]?.kind !== "property" || s.properties[String(index)]?.owner !== owner ? "Invalid event city" : null;
+  }
+  if (s.phase === "rent-decision") {
+    if (!s.pendingRent || s.pendingRent.playerId !== p) return "No rent decision";
+    if (a.type === "pay-rent") return null;
+    if (a.type === "use-rent-pass") return (s.rentPasses?.[p] ?? 0) > 0 ? null : "No rent pass";
+    return "Resolve the rent decision first";
+  }
+  if (["choose-event-city", "pay-rent", "use-rent-pass"].includes(a.type)) return "No matching decision";
   if (["borrow", "repay", "declare-bankruptcy", "choose-pawn"].includes(a.type)) {
     if (s.economicVersion !== 1 && s.economicVersion !== 2) return "Credit and figure selection unavailable in this saved ruleset";
     if (s.phase === "finished") return "Game is finished";
@@ -2565,8 +2608,28 @@ function resolveLanding(s, p, index, drawEvent) {
       return s;
     }
     if (owner.owner !== p) {
-      const rent = propertyRent(tile, owner, s.boardVersion === 2);
-      s = pay(s, p, rent, owner.owner, { ko: `${tile.name.ko} \uD1B5\uD589\uB8CC`, es: `Alquiler en ${tile.name.es}` }, "rent");
+      let rent = propertyRent(tile, owner, s.boardVersion === 2);
+      const effects = s.eventVersion === 3 ? s.rentModifiers?.[String(index)] : void 0;
+      const festival = effects?.festival?.owner === owner.owner && effects.festival.playerId === owner.owner;
+      const blackout = effects?.blackout?.owner === owner.owner && effects.blackout.playerId === p;
+      if (festival) rent *= 2;
+      if (blackout) rent = Math.max(1, Math.floor(rent / 2));
+      if (festival || blackout) {
+        const remaining = { ...effects };
+        if (festival) delete remaining.festival;
+        if (blackout) delete remaining.blackout;
+        s.rentModifiers ??= {};
+        s.rentModifiers[String(index)] = remaining;
+        if (!remaining.festival && !remaining.blackout) delete s.rentModifiers[String(index)];
+        emit(s, "event-card", p, "\uB3C4\uC2DC \uD6A8\uACFC \uC801\uC6A9", "Efecto de ciudad aplicado", "\uB300\uC0C1 \uB3C4\uC2DC \uCC29\uC9C0\uB85C \uD1B5\uD589\uB8CC \uD6A8\uACFC 1\uD68C\uB97C \uC18C\uBAA8\uD588\uC2B5\uB2C8\uB2E4. \uBA74\uC81C\uAD8C\uC744 \uC368\uB3C4 \uB3C4\uC2DC \uD6A8\uACFC\uB294 \uC18C\uBAA8\uB429\uB2C8\uB2E4.", "La llegada consume el efecto de alquiler de una vez, incluso si usas un pase.", { tile: index, amount: rent });
+      }
+      const reason = { ko: `${tile.name.ko} \uD1B5\uD589\uB8CC`, es: `Alquiler en ${tile.name.es}` };
+      if (s.eventVersion === 3 && (s.rentPasses?.[p] ?? 0) > 0) {
+        s.pendingRent = { amount: rent, creditor: owner.owner, playerId: p, tile: index, reason };
+        s.phase = "rent-decision";
+        return s;
+      }
+      s = pay(s, p, rent, owner.owner, reason, "rent");
     }
   } else if (tile.kind === "tax") s = pay(s, p, tile.price ?? 0, "bank", tile.name);
   else if (tile.kind === "fund") {
@@ -2595,16 +2658,16 @@ function noteMove(s, p, from, to, steps, source) {
   emit(s, "move", p, "\uB9D0 \uC774\uB3D9", "Movimiento", `${from + 1}\uBC88\uC5D0\uC11C ${to + 1}\uBC88 \uCE78\uC73C\uB85C \uC774\uB3D9\uD569\uB2C8\uB2E4.`, `Avanzas de la casilla ${from + 1} a la ${to + 1}.`, { from, to, steps: steps ?? void 0 });
 }
 function resolveEvent(s, p) {
-  const board = boardFor(s), isModern = s.boardVersion === 2, ids = isModern ? s.economicVersion === 1 || s.economicVersion === 2 ? [...modernIds, "monopoly-warning"] : modernIds : legacyIds;
+  const board = boardFor(s), isModern = s.boardVersion === 2, ids = isModern ? s.eventVersion === 3 ? expandedIds : s.economicVersion === 1 || s.economicVersion === 2 ? [...modernIds, "monopoly-warning"] : modernIds : legacyIds;
   s.phase = "main";
   let deck = s.eventDeck ? [...s.eventDeck] : [];
   if (!deck.length) {
     const rng = s.eventRng ?? (s.rng ^ 2779096485) >>> 0;
-    deck = shuffle([...ids], seededRandom(rng));
-    s.eventRng = rng + (ids.length - 1) * 1831565813 >>> 0;
+    deck = shuffle(ids.filter((id2) => !(s.eventVersion === 3 && (id2 === "escape-pass" && (s.escapePasses?.p1 ?? 0) + (s.escapePasses?.p2 ?? 0) > 0 || id2 === "rent-pass" && (s.rentPasses?.p1 ?? 0) + (s.rentPasses?.p2 ?? 0) > 0))), seededRandom(rng));
+    s.eventRng = rng + (deck.length - 1) * 1831565813 >>> 0;
   }
   const id = deck.shift();
-  if (isModern && id !== "escape-pass") deck.push(id);
+  if (isModern && id !== "escape-pass" && id !== "rent-pass") deck.push(id);
   s.eventDeck = deck;
   let card2 = cards[id];
   const from = s.positions[p], beforeCash = s.money[p];
@@ -2659,6 +2722,19 @@ function resolveEvent(s, p) {
     emit(s, "train", p, card2.title.ko, card2.title.es, card2.text.ko, card2.text.es, { amount: 0, cardId: id });
   } else if (id === "city-dividend") {
     bonus(s, p, 30 * Object.values(s.properties).filter((property) => property.owner === p).length, card2.title.ko, card2.title.es);
+  } else if (id === "city-festival" || id === "blackout") {
+    const owner = id === "city-festival" ? p : otherPlayer(p);
+    if (propIndices(board).some((index) => s.properties[String(index)]?.owner === owner)) {
+      s.pendingEvent = { id, playerId: p };
+      s.phase = "event-decision";
+    } else {
+      card2 = { ...card2, text: { ko: "\uC120\uD0DD \uAC00\uB2A5\uD55C \uB3C4\uC2DC\uAC00 \uC5C6\uC5B4 \uD6A8\uACFC\uAC00 \uC5C6\uC2B5\uB2C8\uB2E4.", es: "No hay ninguna ciudad elegible; la carta no tiene efecto." } };
+      emit(s, "event-card", p, card2.title.ko, card2.title.es, card2.text.ko, card2.text.es, { cardId: id, moneyDelta: { [p]: 0 } });
+    }
+  } else if (id === "rent-pass") {
+    s.rentPasses ??= { p1: 0, p2: 0 };
+    s.rentPasses[p] = 1;
+    emit(s, "event-card", p, card2.title.ko, card2.title.es, card2.text.ko, card2.text.es, { cardId: id, moneyDelta: { [p]: 0 } });
   } else if (id === "monopoly-warning") {
     const groups = { p1: completedGroups(s, "p1"), p2: completedGroups(s, "p2") };
     const target = groups.p1.length === groups.p2.length ? p : groups.p1.length > groups.p2.length ? "p1" : "p2";
@@ -2725,7 +2801,32 @@ function step(s, p, a) {
   n.pawns = { p1: s.pawns?.p1 ?? "fox", p2: s.pawns?.p2 ?? "cat" };
   n.pawnLocked = { p1: s.pawnLocked?.p1 ?? true, p2: s.pawnLocked?.p2 ?? true };
   n.pendingPayment = s.pendingPayment ? { ...s.pendingPayment, reason: { ...s.pendingPayment.reason } } : null;
+  n.pendingEvent = s.pendingEvent ? { ...s.pendingEvent } : null;
+  n.pendingRent = s.pendingRent ? { ...s.pendingRent, reason: { ...s.pendingRent.reason } } : null;
+  n.rentPasses = { p1: s.rentPasses?.p1 ?? 0, p2: s.rentPasses?.p2 ?? 0 };
+  n.rentModifiers = Object.fromEntries(Object.entries(s.rentModifiers ?? {}).map(([tile, effects]) => [tile, { ...effects.festival ? { festival: { ...effects.festival } } : {}, ...effects.blackout ? { blackout: { ...effects.blackout } } : {} }]));
   const board = boardFor(n), payload = a.payload ?? {};
+  if (a.type === "choose-event-city") {
+    const index = payload.tile, id = n.pendingEvent.id, key = id === "city-festival" ? "festival" : "blackout";
+    n.rentModifiers[String(index)] = { ...n.rentModifiers[String(index)], [key]: { source: id, playerId: p, owner: n.properties[String(index)].owner } };
+    n.pendingEvent = null;
+    n.phase = "main";
+    const text = { ko: `${board[index].name.ko}: ${id === "city-festival" ? "\uB2E4\uC74C \uC0C1\uB300 \uCC29\uC9C0 1\uD68C \uD1B5\uD589\uB8CC 2\uBC30" : "\uB2E4\uC74C \uB0B4 \uCC29\uC9C0 1\uD68C \uD1B5\uD589\uB8CC \uC808\uBC18"}. \uB300\uC0C1 \uCC29\uC9C0\uAE4C\uC9C0 \uC720\uC9C0\uB429\uB2C8\uB2E4.`, es: `${board[index].name.es}: ${id === "city-festival" ? "alquiler doble en la pr\xF3xima llegada rival, una vez" : "mitad del alquiler en tu pr\xF3xima llegada, una vez"}. Permanece hasta esa llegada.` };
+    if (n.lastEvent?.id === id) n.lastEvent = { ...n.lastEvent, text };
+    emit(n, "event-card", p, cards[id].title.ko, cards[id].title.es, text.ko, text.es, { cardId: id, tile: index, moneyDelta: { [p]: 0 } });
+    return n;
+  }
+  if (a.type === "pay-rent" || a.type === "use-rent-pass") {
+    const pending = n.pendingRent;
+    n.pendingRent = null;
+    n.phase = "main";
+    if (a.type === "pay-rent") return pay(n, p, pending.amount, pending.creditor, pending.reason, "rent");
+    n.rentPasses[p] = 0;
+    n.eventDeck ??= [];
+    if (!n.eventDeck.includes("rent-pass")) n.eventDeck.push("rent-pass");
+    emit(n, "rent", p, "\uD1B5\uD589\uB8CC \uBA74\uC81C\uAD8C \uC0AC\uC6A9", "Pase de alquiler usado", `${pending.reason.ko} ${pending.amount}\uC744 1\uD68C \uBA74\uC81C\uD588\uC2B5\uB2C8\uB2E4.`, `Eximiste una vez ${pending.amount} de ${pending.reason.es}.`, { cardId: "rent-pass", tile: pending.tile, amount: 0, fromAccount: p, toAccount: pending.creditor, moneyDelta: { [p]: 0, [pending.creditor]: 0 } });
+    return n;
+  }
   if (a.type === "choose-pawn") {
     n.pawns[p] = payload.pawn;
     emit(n, "pawn", p, "\uB9D0 \uC120\uD0DD", "Figura elegida", "\uC774 \uB9D0\uB85C \uB3C4\uC2DC\uB97C \uC5EC\uD589\uD569\uB2C8\uB2E4.", "Viajar\xE1s por las ciudades con esta figura.");
@@ -2858,11 +2959,16 @@ var marbleEngine = {
       lastRoll: [],
       turns: 0,
       result: null,
-      eventRng: eventRng + modernIds.length * 1831565813 >>> 0,
-      eventDeck: shuffle([...modernIds, "monopoly-warning"], seededRandom(eventRng)),
+      eventRng: eventRng + (expandedIds.length - 1) * 1831565813 >>> 0,
+      eventDeck: shuffle(expandedIds, seededRandom(eventRng)),
       eventSequence: 0,
       lastEvent: null,
       fundPool: 0,
+      eventVersion: 3,
+      pendingEvent: null,
+      pendingRent: null,
+      rentPasses: { p1: 0, p2: 0 },
+      rentModifiers: {},
       economicVersion: 2,
       debt: { p1: 0, p2: 0 },
       pendingPayment: null,

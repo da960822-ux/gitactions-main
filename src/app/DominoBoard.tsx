@@ -5,6 +5,7 @@ import { dominoTileKeys, orderDominoChain, previewDominoPlacement } from './domi
 import { DominoEventStage } from './DominoEventStage';
 import { DominoTile } from './DominoTile';
 import '../styles/domino-premium.css';
+import '../styles/table-playability.css';
 
 type AnyRecord = Record<string, any>;
 type Choice = { label?: Record<Language, string>; action: GameAction };

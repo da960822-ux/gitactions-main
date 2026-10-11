@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from 'react';
 import type { Language, PlayerId } from '../core/types';
+import type { MarbleEventId } from '../games/marble';
 import { marbleCueForEvent, marbleEventSequence, marbleEventType, marbleMoneyDelta, type MarbleActionEvent } from './marble-motion';
 import { playCue } from '../audio/audio';
 import { marblePresentation } from './marble-presentation';
@@ -32,14 +33,20 @@ function latestEvent(events: readonly (MarbleActionEvent | null | undefined)[]) 
   return events.filter((event): event is MarbleActionEvent => Boolean(event) && marbleEventSequence(event) > 0).slice().sort((a, b) => marbleEventSequence(a) - marbleEventSequence(b)).at(-1) ?? null;
 }
 
+const goldenKeyArt: Record<MarbleEventId, string> = {
+  festival: 'festival', lottery: 'festival', 'rent-rebate': 'festival',
+  'travel-cost': 'tax', maintenance: 'tax', 'monopoly-warning': 'tax',
+  'visit-santo-domingo': 'cities', 'city-dividend': 'cities',
+  retreat: 'train', 'advance-start': 'train', 'train-ticket': 'train',
+  'go-to-island': 'island', 'escape-pass': 'island',
+  'city-festival': 'city-festival', blackout: 'blackout', 'rent-pass': 'rent-pass',
+};
+
 function EventMark({ type, event }: { type: string; event: MarbleActionEvent }) {
   const cardId = String(event.cardId ?? event.id ?? '');
-  const symbol = type === 'event-card'
-    ? ['travel-cost', 'maintenance', 'monopoly-warning'].includes(cardId) ? 'tax'
-      : ['festival', 'lottery', 'rent-rebate', 'city-dividend'].includes(cardId) ? 'fund-pay'
-        : ['go-to-island', 'escape-pass'].includes(cardId) ? 'island' : cardId === 'train-ticket' ? 'train' : cardId === 'advance-start' ? 'start' : 'key'
-    : type === 'bonus' ? 'fund-pay' : type === 'tax' ? 'tax' : type === 'island' || type === 'escape' ? 'island' : type === 'train' ? 'train' : type === 'rest' ? 'rest' : null;
-  if (symbol) return <svg className={`marble-event-symbol${type === 'event-card' ? ' marble-event-card-symbol' : ''}`} viewBox="0 0 32 32" aria-hidden="true"><g className={type === 'event-card' ? 'marble-event-card-face' : undefined}>{type === 'event-card' && <rect x="2" y="1" width="28" height="30" rx="4"/>}<use href={`/images/marble/tile-symbols.svg#${symbol}`} x={type === 'event-card' ? 5 : 0} y={type === 'event-card' ? 5 : 0} width={type === 'event-card' ? 22 : 32} height={type === 'event-card' ? 22 : 32}/></g></svg>;
+  if (type === 'event-card') return <svg className="marble-event-golden-key-art" viewBox="0 0 128 160" aria-hidden="true"><g className="marble-event-card-face"><use href={`/images/marble/golden-key-cards.svg#${goldenKeyArt[cardId as MarbleEventId] ?? 'festival'}`} width="128" height="160"/></g></svg>;
+  const symbol = type === 'bonus' ? 'fund-pay' : type === 'tax' ? 'tax' : type === 'island' || type === 'escape' ? 'island' : type === 'train' ? 'train' : type === 'rest' ? 'rest' : null;
+  if (symbol) return <svg className="marble-event-symbol" viewBox="0 0 32 32" aria-hidden="true"><use href={`/images/marble/tile-symbols.svg#${symbol}`} width="32" height="32"/></svg>;
 
   if (type === 'arrival' || type === 'monopoly-warning') return <svg className="marble-event-symbol marble-event-card-symbol" viewBox="0 0 32 32" aria-hidden="true"><g className="marble-event-card-face"><rect x="5" y="4" width="22" height="24" rx="3"/><path d="M10 10h12M10 15h9M10 21l4-3 4 3 4-3"/></g>{type === 'monopoly-warning' && <path className="marble-event-alert" d="M25 4v8m0 4v.1"/>}</svg>;
   if (type === 'buy') return <svg className="marble-event-symbol" viewBox="0 0 32 32" aria-hidden="true"><circle cx="16" cy="16" r="8"/><path d="M16 11v10m3-8c-1-2-6-2-6 1s6 1 6 4-5 3-7 1M16 3v3M16 26v3M3 16h3m20 0h3"/></svg>;

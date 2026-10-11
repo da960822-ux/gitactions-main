@@ -627,3 +627,8 @@
   .quality-table-room .room-layout { margin-top:6px; }
   .quality-table-room .board-header { min-height:48px; padding:6px 14px; }
 }
+
+.match-replay { display: flex; align-items: center; justify-content: space-between; gap: 1rem; padding: .75rem 1rem; border-top: 1px solid var(--line); }
+.match-replay p { margin: 0; font-size: .85rem; }
+.match-replay button { flex-shrink: 0; }
+@media (max-width: 600px) { .match-replay { align-items: stretch; flex-direction: column; } }

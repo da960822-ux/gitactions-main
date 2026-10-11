@@ -35,7 +35,19 @@ export function marblePresentation(present: (event: MarbleActionEvent | null, an
         return;
       }
       sequence = windowed.latestSequence;
-      pending.push(...windowed.fresh);
+      if (windowed.fresh.length) {
+        // shortcut: snapshots may contain a long catch-up; history retains every receipt.
+        const fresh = windowed.fresh;
+        const turn = fresh.map(event => event.type).lastIndexOf('turn');
+        const currentTurn = fresh.slice(Math.max(0, turn));
+        const money = currentTurn.filter(event => event.moneyDelta && Object.values(event.moneyDelta).some(delta => delta !== 0));
+        const compact = currentTurn.length > 3
+          ? [...new Map([...money.slice(-2), ...currentTurn.slice(-1)].map(event => [marbleEventSequence(event), event])).values()].sort((a, b) => marbleEventSequence(a) - marbleEventSequence(b))
+          : currentTurn;
+        // A newer action supersedes unfinished decoration from the previous snapshot.
+        cancel();
+        pending = compact;
+      }
       if (reduced) {
         const last = pending.at(-1);
         const playing = timer !== null;

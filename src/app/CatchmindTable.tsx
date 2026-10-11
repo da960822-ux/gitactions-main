@@ -1,10 +1,12 @@
 import { useEffect, useMemo, useRef, useState, type CSSProperties, type FormEvent, type PointerEvent } from 'react';
 import type { GameAction, Language, PlayerId } from '../core/types';
+import { catchmindDictionary } from '../games/catchmind';
 import { GameValue } from './GameValue';
 import './catchmind-table.css';
 
 type Point = { x: number; y: number };
 type Props = {
+  roomId?: string;
   view: any;
   playerId: PlayerId;
   language: Language;
@@ -19,6 +21,23 @@ type Props = {
 const colors = ['#202522', '#2f655b', '#67a968', '#dca84b', '#e57f6a', '#b94f42', '#ce6990', '#875a9d', '#5786a1', '#54a7a0'];
 const copy = (language: Language, ko: string, es: string) => language === 'ko' ? ko : es;
 const icon = (name: string) => <svg className="cm-icon" aria-hidden="true"><use href={`/images/catchmind/tool-icons.svg#${name}`}/></svg>;
+const normalizeWord = (word: string) => word.normalize('NFC').toLocaleLowerCase().trim();
+export function findCatchmindDuplicateWord(words: { ko: string; es: string }[]) {
+  const ko = new Set<string>(), es = new Set<string>();
+  const duplicates = new Set<string>();
+  for (const word of [...catchmindDictionary, ...words]) {
+    const normalizedKo = normalizeWord(word.ko), normalizedEs = normalizeWord(word.es);
+    if (ko.has(normalizedKo) || es.has(normalizedEs)) duplicates.add(`${word.ko}|${word.es}`);
+    ko.add(normalizedKo); es.add(normalizedEs);
+  }
+  return [...duplicates];
+}
+export function catchmindPersistedSettingsKey(identity: string, settings: unknown, words: unknown) {
+  return `${identity}:${JSON.stringify(settings ?? null)}:${JSON.stringify(words ?? null)}`;
+}
+export function restoreCatchmindPenColor(color: string) {
+  return color === '#fffefa' ? '#284f49' : color;
+}
 
 function paintStroke(ctx: CanvasRenderingContext2D, stroke: any) {
   const points = stroke.points as Point[];
@@ -81,14 +100,21 @@ export function bucketFill(ctx: CanvasRenderingContext2D, x: number, y: number, 
   return true;
 }
 
-export default function CatchmindTable({ view, playerId, language, now, palette, setPalette, strokeWidth, setStrokeWidth, runAction }: Props) {
+export default function CatchmindTable({ roomId, view, playerId, language, now, palette, setPalette, strokeWidth, setStrokeWidth, runAction }: Props) {
+  const board = view?.board ?? {};
   const [activePoints, setActivePoints] = useState<Point[]>([]);
   const [pendingVisual, setPendingVisual] = useState<DrawBatch[]>([]);
   const [activeColor, setActiveColor] = useState(palette);
   const [secondaryColor, setSecondaryColor] = useState('#fffefa');
+  const [eraser, setEraser] = useState(false);
+  const lastDrawingColor = useRef(palette === '#fffefa' ? '#284f49' : palette);
   const [tool, setTool] = useState<'brush' | 'fill' | 'pick'>('brush');
   const [settingsDraft, setSettingsDraft] = useState({ drawTimeSeconds: 80, rounds: 6, choices: 3, hints: 2, customOnly: false });
   const [customWordsText, setCustomWordsText] = useState('');
+  const persistedSettings = board.settings;
+  const persistedWords = view?.hand?.settingsCustomWords;
+  const persistedIdentity = `${roomId ?? view?.roomId ?? view?.room?.id ?? ''}:${playerId}`;
+  const appliedSettings = useRef('');
   const [settingsNotice, setSettingsNotice] = useState('');
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const drawingRef = useRef(false);
@@ -105,7 +131,6 @@ export default function CatchmindTable({ view, playerId, language, now, palette,
   const activeWidthRef = useRef(strokeWidth);
   const flushBusy = useRef(false);
   const flushWaiters = useRef<Array<() => void>>([]);
-  const board = view?.board ?? {};
   const strokes = Array.isArray(board.strokes) ? board.strokes : [];
   const fills = Array.isArray(board.fills) ? board.fills : [];
   currentRound.current = board.round ?? 1;
@@ -135,11 +160,13 @@ export default function CatchmindTable({ view, playerId, language, now, palette,
   const allowed = (type: string) => Array.isArray(view?.actions) && view.actions.some((option: any) => option.action?.type === type);
 
   useEffect(() => {
-    const settings = board.settings;
-    if (settings) setSettingsDraft({ drawTimeSeconds: settings.drawTimeSeconds, rounds: settings.rounds, choices: settings.choices, hints: settings.hints, customOnly: settings.customOnly });
-    const customWords = view?.hand?.settingsCustomWords;
-    if (Array.isArray(customWords)) setCustomWordsText(customWords.map((word: any) => `${word.ko}|${word.es}`).join('\n'));
-  }, [board.settings, view?.hand?.settingsCustomWords]);
+    const key = catchmindPersistedSettingsKey(persistedIdentity, persistedSettings, persistedWords);
+    if (appliedSettings.current === key) return;
+    appliedSettings.current = key;
+    if (persistedSettings) setSettingsDraft({ drawTimeSeconds: persistedSettings.drawTimeSeconds, rounds: persistedSettings.rounds, choices: persistedSettings.choices, hints: persistedSettings.hints, customOnly: persistedSettings.customOnly });
+    if (Array.isArray(persistedWords)) setCustomWordsText(persistedWords.map((word: any) => `${word.ko}|${word.es}`).join('\n'));
+    setSettingsNotice('');
+  }, [persistedIdentity, persistedSettings, persistedWords]);
 
   useEffect(() => {
     const round = board.round ?? 1;
@@ -264,7 +291,7 @@ export default function CatchmindTable({ view, playerId, language, now, palette,
     const ctx = event.currentTarget.getContext('2d');
     if (tool === 'pick') {
       const pixel = ctx?.getImageData(Math.min(999, Math.round(x)), Math.min(599, Math.round(y)), 1, 1).data;
-      if (pixel) setPalette(`#${[pixel[0], pixel[1], pixel[2]].map(value => value.toString(16).padStart(2, '0')).join('')}`);
+      if (pixel) { const color = `#${[pixel[0], pixel[1], pixel[2]].map(value => value.toString(16).padStart(2, '0')).join('')}`; lastDrawingColor.current = color; setEraser(false); setPalette(color); }
       setTool('brush');
       return;
     }
@@ -285,8 +312,22 @@ export default function CatchmindTable({ view, playerId, language, now, palette,
       setSettingsNotice(copy(language, settingsDraft.customOnly ? '단어 전용 모드는 라운드에 필요한 만큼 단어가 있어야 해요.' : '직접 추가할 수 있는 단어는 최대 30개예요.', settingsDraft.customOnly ? 'El modo solo palabras necesita suficientes términos para todas las rondas.' : 'Puedes añadir hasta 30 palabras.'));
       return;
     }
+    const duplicates = findCatchmindDuplicateWord(customWords);
+    if (duplicates.length) {
+      const names = duplicates.join(', ');
+      setSettingsNotice(copy(language, `기본 단어나 다른 입력 단어와 겹쳐요: ${names}`, `Se repiten palabras base o entradas: ${names}`));
+      return;
+    }
     const ok = await runAction({ type: 'settings', payload: { settings: { ...settingsDraft, customWords: customWords.map(({ ko, es }) => ({ ko, es })) } } });
     if (!ok) setSettingsNotice(copy(language, '설정을 저장하지 못했어요. 입력을 확인해 주세요.', 'No se pudieron guardar los ajustes. Revisa los datos.'));
+  };
+
+  const selectInkTool = (nextTool: 'brush' | 'fill') => {
+    const color = eraser ? restoreCatchmindPenColor(lastDrawingColor.current) : palette;
+    setEraser(false);
+    lastDrawingColor.current = color;
+    setPalette(color);
+    setTool(nextTool);
   };
 
   const scores = board.scores ?? {};
@@ -361,13 +402,14 @@ export default function CatchmindTable({ view, playerId, language, now, palette,
           {sendError && <div className="cm-draw-error" role="alert"><span>{copy(language, '그림 전송이 멈췄어요. 서버 제한 또는 연결을 확인하고 다시 시도해 주세요.', 'El envío del dibujo se detuvo. Comprueba el límite o la conexión e inténtalo de nuevo.')}</span><button type="button" onClick={retryDraws}>{copy(language, '다시 보내기', 'Reintentar')}</button></div>}
           <div className="cm-tools-head"><span className="cm-eyebrow">{copy(language, '그리기 도구', 'HERRAMIENTAS')}</span><span>{copy(language, tool === 'brush' ? '펜' : tool === 'fill' ? '채우기' : '색 선택', tool === 'brush' ? 'PINCEL' : tool === 'fill' ? 'RELLENAR' : 'COLOR')}</span></div>
           <div className="cm-tool-modes" role="group" aria-label={copy(language, '도구 선택', 'Herramientas')}>
-            <button type="button" className={tool === 'brush' ? 'active' : ''} aria-pressed={tool === 'brush'} onClick={() => setTool('brush')}>{icon('pen')} <span>{copy(language, '펜', 'Pincel')}</span></button>
-            <button type="button" className={tool === 'fill' ? 'active' : ''} aria-pressed={tool === 'fill'} onClick={() => setTool('fill')}>{icon('fill')} <span>{copy(language, '채우기', 'Rellenar')}</span></button>
+            <button type="button" className={!eraser && tool === 'brush' ? 'active' : ''} aria-pressed={!eraser && tool === 'brush'} onClick={() => selectInkTool('brush')}>{icon('pen')} <span>{copy(language, '펜', 'Pincel')}</span></button>
+            <button type="button" className={tool === 'fill' ? 'active' : ''} aria-pressed={tool === 'fill'} onClick={() => selectInkTool('fill')}>{icon('fill')} <span>{copy(language, '채우기', 'Rellenar')}</span></button>
             <button type="button" className={tool === 'pick' ? 'active' : ''} aria-pressed={tool === 'pick'} onClick={() => setTool('pick')}>⌖ <span>{copy(language, '색 선택', 'Elegir color')}</span></button>
           </div>
-          <div className="cm-color-grid" role="group" aria-label={copy(language, '펜 색상 · 오른쪽 클릭은 보조 색', 'Color · clic derecho para color secundario')}>{colors.map(color => <button type="button" key={color} className={`cm-color ${palette === color ? 'active' : ''} ${secondaryColor === color ? 'secondary' : ''}`} style={{ '--cm-color': color } as CSSProperties} aria-label={`${copy(language, '색상', 'Color')} ${color}`} aria-pressed={palette === color} onClick={() => setPalette(color)} onContextMenu={event => { event.preventDefault(); setSecondaryColor(color); }} />)}</div>
-          <div className="cm-secondary-row"><span><i style={{ backgroundColor: palette }} />{copy(language, '기본', 'Principal')}</span><button type="button" className="cm-swap-colors" aria-label={copy(language, '색 바꾸기', 'Intercambiar colores')} onClick={() => { setSecondaryColor(palette); setPalette(secondaryColor); }}>{icon('swap')}</button><span><i style={{ backgroundColor: secondaryColor }} />{copy(language, '보조 · 오른쪽 클릭', 'Secundario · clic derecho')}</span></div>
-          <button type="button" className={`cm-eraser ${palette === '#fffefa' ? 'active' : ''}`} aria-pressed={palette === '#fffefa'} onClick={() => { setPalette('#fffefa'); setTool('brush'); }}>{icon('eraser')}{copy(language, '지우개', 'Borrador')}</button>
+          <div className="cm-color-grid" role="group" aria-label={copy(language, '펜 색상 · 오른쪽 클릭은 보조 색', 'Color · clic derecho para color secundario')}>{colors.map(color => <button type="button" key={color} className={`cm-color ${palette === color ? 'active' : ''} ${secondaryColor === color ? 'secondary' : ''}`} style={{ '--cm-color': color } as CSSProperties} aria-label={`${copy(language, '색상', 'Color')} ${color}${palette === color ? copy(language, ' · 기본 색', ' · color principal') : ''}${secondaryColor === color ? copy(language, ' · 보조 색', ' · color secundario') : ''}`} aria-pressed={palette === color || secondaryColor === color} onClick={() => { lastDrawingColor.current = color; setEraser(false); setPalette(color); }} onContextMenu={event => { event.preventDefault(); setSecondaryColor(color); }} />)}</div>
+          <div className="cm-secondary-row"><span><i style={{ backgroundColor: palette }} />{copy(language, '기본', 'Principal')}</span><button type="button" className="cm-swap-colors" aria-label={copy(language, '색 바꾸기', 'Intercambiar colores')} onClick={() => { setSecondaryColor(palette); lastDrawingColor.current = restoreCatchmindPenColor(secondaryColor); setEraser(false); setPalette(restoreCatchmindPenColor(secondaryColor)); }}>{icon('swap')}</button><span><i style={{ backgroundColor: secondaryColor }} />{copy(language, '보조 · 오른쪽 클릭', 'Secundario · clic derecho')}</span></div>
+          <button type="button" className={`cm-eraser ${eraser ? 'active' : ''}`} aria-pressed={eraser} onClick={() => { if (!eraser && palette !== '#fffefa') lastDrawingColor.current = palette; setEraser(true); setPalette('#fffefa'); setTool('brush'); }}>{icon('eraser')}{copy(language, '지우개', 'Borrador')}</button>
+          <button type="button" className={`cm-eraser ${!eraser && tool === 'brush' ? 'active' : ''}`} aria-pressed={!eraser && tool === 'brush'} onClick={() => selectInkTool('brush')}>{icon('pen')}{copy(language, '펜', 'Pincel')}</button>
           <label className="cm-width-control"><span>{copy(language, '굵기', 'Grosor')} <b>{strokeWidth}</b></span><input type="range" min="2" max="18" value={strokeWidth} onChange={event => setStrokeWidth(Number(event.target.value))} aria-label={copy(language, '펜 굵기', 'Grosor del pincel')}/></label>
           <div className="cm-tool-actions">{allowed('undo') && <button type="button" onClick={() => void runAfterDraws({ type: 'undo' })}>{icon('undo')}{copy(language, '실행 취소', 'Deshacer')}</button>}{allowed('clear') && <button type="button" onClick={() => void clearDrawing()}>{icon('clear')}{copy(language, '모두 지우기', 'Borrar todo')}</button>}</div>
         </div>}

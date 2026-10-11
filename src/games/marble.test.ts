@@ -24,7 +24,7 @@ describe('Marble 40-space house-rule engine', () => {
   it('creates the classic-size adapted map and hides deck/RNG state from both views', () => {
     const a = initial(15), b = initial(15);
     expect(a.eventDeck).toEqual(b.eventDeck);
-    expect(a.eventDeck).toHaveLength(13);
+    expect(a.eventDeck).toHaveLength(16);
     expect(a.economicVersion).toBe(2);
     const view = marbleEngine.getPlayerView(a, 'p1');
     expect(view.board.tiles).toHaveLength(40);
@@ -381,5 +381,82 @@ describe('Marble 40-space house-rule engine', () => {
     expect(publicView.board.actionLog).toHaveLength(40);
     expect(publicView.board.actionLog.map((event: any) => event.sequence)).toEqual(Array.from({ length: 40 }, (_, i) => i + 6));
     expect(JSON.stringify(publicView)).not.toMatch(/"rng"|"eventDeck"|"eventRng"/);
+  });
+});
+
+
+describe('strategic golden keys', () => {
+  const properties: MarbleState['properties'] = { '1': { owner: 'p1', houses: 0 }, '3': { owner: 'p1', houses: 1 }, '4': { owner: 'p2', houses: 1 }, '5': { owner: 'p2', houses: 0 } };
+  const draw = (id: MarbleEventId, extra: Partial<MarbleState> = {}) => act({ ...eventState(id), properties, ...extra }, 'roll');
+  const choose = (s: MarbleState, tile: unknown) => act(s, 'choose-event-city', { tile });
+  const land = (s: MarbleState, p: 'p1' | 'p2', tile: number) => marbleEngine.applyAction({ ...s, active: p, phase: 'roll', positions: { ...s.positions, [p]: (tile - 2 + 40) % 40 }, rng: seedForSum(2) }, p, { type: 'roll' });
+  it('requires a legal owned target, rejects forged actions and reports empty selection clearly', () => {
+    for (const [id, good, bad] of [['city-festival', 1, 4], ['blackout', 4, 1]] as const) {
+      const state = draw(id); expect(state.phase).toBe('event-decision');
+      for (const tile of [bad, -1, 99, '1', 2, 1.5]) expect(marbleEngine.validateAction(state, 'p1', { type: 'choose-event-city', payload: { tile } })).toBe('Invalid event city');
+      expect(marbleEngine.validateAction(state, 'p2', { type: 'choose-event-city', payload: { tile: good } })).toBe('Not your turn');
+      expect(marbleEngine.validateAction(state, 'p1', { type: 'endTurn' })).toBe('Choose an event city first');
+      const after = choose(state, good); expect(after.phase).toBe('main'); expect(after.pendingEvent).toBeNull();
+      expect(state.rentModifiers).toEqual({}); expect(after.properties).toEqual(properties);
+      expect(after.money).toEqual(state.money);
+      expect(marbleEngine.getPlayerView(after, 'p1').board.assets).toEqual(marbleEngine.getPlayerView(state, 'p1').board.assets);
+      expect(after.lastEvent?.text.ko).toContain('착지 1회');
+    }
+    for (const id of ['city-festival', 'blackout'] as const) {
+      const after = draw(id, { properties: {} }); expect(after.phase).toBe('main'); expect(after.lastEvent?.text.ko).toContain('선택 가능한 도시가 없어');
+    }
+  });
+  it('affects only the selected city and consumes exactly one opposing landing', () => {
+    const festival = choose(draw('city-festival'), 3);
+    const elsewhere = land(festival, 'p2', 1); expect(elsewhere.money.p2).toBe(1688); expect(elsewhere.rentModifiers?.['3'].festival).toBeTruthy();
+    const arrived = land(elsewhere, 'p2', 3); expect(arrived.money.p2).toBe(1628); expect(arrived.rentModifiers?.['3']).toBeUndefined();
+    expect(land(arrived, 'p2', 3).money.p2).toBe(1598);
+    expect(festival.rentModifiers?.['3'].festival).toBeTruthy();
+    const blackout = choose(draw('blackout'), 4); expect(land(blackout, 'p1', 5).money.p1).toBe(1478);
+    const half = land(blackout, 'p1', 4); expect(half.money.p1).toBe(1482); expect(half.rentModifiers?.['4']).toBeUndefined();
+    expect(land(half, 'p1', 4).money.p1).toBe(1446);
+  });
+  it('combines different effects to base rent, replaces repeated effects and persists across turns', () => {
+    const first = choose(draw('city-festival'), 3);
+    const repeated = choose(draw('city-festival', { rentModifiers: first.rentModifiers }), 3);
+    expect(repeated.rentModifiers?.['3']).toEqual(first.rentModifiers?.['3']);
+    const both: MarbleState = { ...repeated, rentModifiers: { '3': { ...repeated.rentModifiers?.['3'], blackout: { source: 'blackout', playerId: 'p2', owner: 'p1' } } } };
+    const next = act(both, 'endTurn'); expect(next.rentModifiers).toEqual(both.rentModifiers);
+    const arrived = land(next, 'p2', 3); expect(arrived.money.p2).toBe(1470); expect(arrived.rentModifiers?.['3']).toBeUndefined();
+    expect(both.rentModifiers?.['3'].blackout).toBeTruthy();
+  });
+  it('holds a rent pass without automatically spending it and waives a single assessed rent', () => {
+    const held = draw('rent-pass'); expect(held.rentPasses?.p1).toBe(1); expect(held.eventDeck).not.toContain('rent-pass');
+    const pending = land(held, 'p1', 4); expect(pending.phase).toBe('rent-decision'); expect(pending.money.p1).toBe(1500); expect(pending.pendingRent?.amount).toBe(36);
+    expect(marbleEngine.validateAction(pending, 'p1', { type: 'borrow' })).toBe('Resolve the rent decision first');
+    expect(marbleEngine.validateAction(pending, 'p2', { type: 'use-rent-pass' })).toBe('Not your turn');
+    const paid = act(pending, 'pay-rent', { amount: 0, creditor: 'p1' }); expect(paid.money).toEqual({ p1: 1464, p2: 1536 }); expect(paid.rentPasses?.p1).toBe(1);
+    const waived = act(pending, 'use-rent-pass'); expect(waived.money).toEqual({ p1: 1500, p2: 1500 }); expect(waived.pendingRent).toBeNull(); expect(waived.rentPasses?.p1).toBe(0);
+    expect(waived.eventDeck!.filter(id => id === 'rent-pass')).toHaveLength(1);
+    expect(marbleEngine.validateAction(waived, 'p1', { type: 'use-rent-pass' })).toBe('No matching decision');
+    expect(land(waived, 'p1', 4).money.p1).toBe(1464);
+    const taxed = land(held, 'p1', 6); expect(taxed.money.p1).toBe(1400); expect(taxed.rentPasses?.p1).toBe(1); expect(taxed.phase).toBe('main');
+    const old = land({ ...held, eventVersion: undefined }, 'p1', 4); expect(old.phase).toBe('main'); expect(old.money.p1).toBe(1464);
+    expect(pending.rentPasses?.p1).toBe(1); expect(pending.pendingRent?.reason.ko).toContain('마드리드');
+  });
+  it('consumes city modifiers even when waived and settles low-cash pay exactly once after borrowing', () => {
+    const held = draw('rent-pass', { money: { p1: 0, p2: 1500 }, rentModifiers: { '4': { festival: { source: 'city-festival', playerId: 'p2', owner: 'p2' }, blackout: { source: 'blackout', playerId: 'p1', owner: 'p2' } } } });
+    const pending = land(held, 'p1', 4); expect(pending.pendingRent?.amount).toBe(36); expect(pending.rentModifiers?.['4']).toBeUndefined();
+    expect(act(pending, 'use-rent-pass').money.p1).toBe(0);
+    const debt = act(pending, 'pay-rent'); expect(debt.phase).toBe('debt'); expect(debt.pendingRent).toBeNull(); expect(debt.pendingPayment?.creditor).toBe('p2');
+    const paid = act(debt, 'borrow'); expect(paid.money).toEqual({ p1: 264, p2: 1536 }); expect(paid.phase).toBe('main'); expect(paid.rentPasses?.p1).toBe(1);
+    expect(paid.actionLog!.filter(event => event.type === 'rent')).toHaveLength(1);
+    expect(held.rentModifiers?.['4'].festival).toBeTruthy(); expect(pending.pendingRent?.reason).not.toBe(debt.pendingPayment?.reason);
+  });
+  it('refills 16 cards while held passes stay out, exposes copied effects but never deck order, and preserves old rooms', () => {
+    const after = draw('festival', { eventDeck: [], rentPasses: { p1: 1, p2: 0 } }); expect(after.eventDeck).not.toContain('rent-pass');
+    const publicState = choose(draw('city-festival'), 3); const publicView = marbleEngine.getPlayerView(publicState, 'p2');
+    expect(publicView.board.eventCardCount).toBe(16); expect(publicView.actions).toHaveLength(0); expect(JSON.stringify(publicView)).not.toMatch(/eventDeck|eventRng/);
+    publicView.board.tiles[3].rentModifiers.festival.owner = 'p2'; expect(publicState.rentModifiers?.['3'].festival?.owner).toBe('p1');
+    for (const [boardVersion, economicVersion, count] of [[undefined, undefined, 8], [2, undefined, 12], [2, 2, 13]] as const) {
+      const old = { ...eventState('festival'), boardVersion, economicVersion, eventVersion: undefined, eventDeck: [], positions: { p1: boardVersion === 2 ? 0 : 5, p2: 0 } } as MarbleState;
+      const moved = act(old, 'roll'); expect(moved.eventDeck!.length + (boardVersion === 2 && moved.lastEvent?.id !== 'escape-pass' ? 0 : 1)).toBe(count);
+      expect(moved.eventDeck!.some(id => ['city-festival', 'blackout', 'rent-pass'].includes(id))).toBe(false);
+    }
   });
 });

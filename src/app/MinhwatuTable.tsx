@@ -5,6 +5,7 @@ import { HwatuCard } from './HwatuCard';
 import { HwatuMotion } from './HwatuMotion';
 import { useMinhwatuPresentation } from './useMinhwatuPresentation';
 import '../styles/minhwatu-table.css';
+import '../styles/table-playability.css';
 
 type Choice = { label: Record<Language, string>; action: GameAction };
 type Props = { view: any; language: Language; playerId: PlayerId; playerNames?: Partial<Record<PlayerId, string>>; runAction: (action: GameAction) => void | Promise<unknown>; onReplay?: () => boolean | void | Promise<boolean | void>; replayPending?: boolean; sceneKey?: string };
