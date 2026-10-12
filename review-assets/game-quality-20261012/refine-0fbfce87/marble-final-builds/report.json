@@ -1,0 +1,994 @@
+{
+  "actions": [
+    {
+      "n": 0,
+      "player": "p1",
+      "kind": "roll",
+      "phase": "주사위 굴릴 차례\n턴 1 / 120",
+      "after": "도시 구매 결정\n턴 1 / 120"
+    },
+    {
+      "n": 1,
+      "player": "p1",
+      "kind": "decision",
+      "buttons": [
+        "도시 구매 · 220\n↗",
+        "구매하지 않고 지나가기",
+        "대출 받기 · 300 / 상환 330"
+      ],
+      "after": "차례 마무리\n턴 1 / 120",
+      "receipt": "최근 행동 · 즉시 반영\n도시 구매 완료\n베를린을 소유했습니다.\n내 현금 -220"
+    },
+    {
+      "n": 2,
+      "player": "p1",
+      "kind": "build",
+      "level": 1,
+      "receipt": "최근 행동 · 즉시 반영\n건설 완료\n베를린: 단독주택 · 통행료 68\n내 현금 -90",
+      "refreshOwned": [
+        {
+          "text": "12\nTu pareja\nBerlín\n220\n1",
+          "classes": "mp-tile mp-tile--west mp-kind-property  mp-group-orange is-owned-p1 has-player    is-selected",
+          "badge": "1"
+        }
+      ],
+      "selected": 11
+    },
+    {
+      "n": 3,
+      "player": "p1",
+      "kind": "build",
+      "level": 2,
+      "receipt": "최근 행동 · 즉시 반영\n건설 완료\n베를린: 아파트 · 통행료 136\n내 현금 -130",
+      "refreshOwned": [
+        {
+          "text": "12\nTu pareja\nBerlín\n220\n2",
+          "classes": "mp-tile mp-tile--west mp-kind-property  mp-group-orange is-owned-p1 has-player    is-selected",
+          "badge": "2"
+        }
+      ],
+      "selected": 11
+    },
+    {
+      "n": 4,
+      "player": "p1",
+      "kind": "build",
+      "level": 3,
+      "receipt": "최근 행동 · 즉시 반영\n건설 완료\n베를린: 랜드마크 · 통행료 272\n내 현금 -180",
+      "refreshOwned": [
+        {
+          "text": "12\nTu pareja\nBerlín\n220\n★",
+          "classes": "mp-tile mp-tile--west mp-kind-property  mp-group-orange is-owned-p1 has-player    is-selected",
+          "badge": "★"
+        }
+      ],
+      "selected": 11
+    }
+  ],
+  "captures": [
+    "/tmp/marble-final-stage-recapture-check-20261012/stage-1-1366-ko.png",
+    "/tmp/marble-final-stage-recapture-check-20261012/stage-1-1440-ko.png",
+    "/tmp/marble-final-stage-recapture-check-20261012/stage-1-1366-es.png",
+    "/tmp/marble-final-stage-recapture-check-20261012/stage-1-1440-es.png",
+    "/tmp/marble-final-stage-recapture-check-20261012/stage-2-1366-ko.png",
+    "/tmp/marble-final-stage-recapture-check-20261012/stage-2-1440-ko.png",
+    "/tmp/marble-final-stage-recapture-check-20261012/stage-2-1366-es.png",
+    "/tmp/marble-final-stage-recapture-check-20261012/stage-2-1440-es.png",
+    "/tmp/marble-final-stage-recapture-check-20261012/stage-3-1366-ko.png",
+    "/tmp/marble-final-stage-recapture-check-20261012/stage-3-1440-ko.png",
+    "/tmp/marble-final-stage-recapture-check-20261012/stage-3-1366-es.png",
+    "/tmp/marble-final-stage-recapture-check-20261012/stage-3-1440-es.png"
+  ],
+  "geometry": [
+    {
+      "capture": "/tmp/marble-final-stage-recapture-check-20261012/stage-1-1366-ko.png",
+      "metrics": {
+        "viewport": [
+          1366,
+          768
+        ],
+        "nav": {
+          "x": 203,
+          "y": 541,
+          "right": 789,
+          "bottom": 575,
+          "width": 586,
+          "height": 34
+        },
+        "selectedTile": {
+          "x": 51,
+          "y": 612,
+          "right": 180,
+          "bottom": 651,
+          "width": 129,
+          "height": 39
+        },
+        "pawns": [
+          {
+            "rect": {
+              "x": 774,
+              "y": 607,
+              "right": 810,
+              "bottom": 653,
+              "width": 36,
+              "height": 46
+            },
+            "tile": "출발, 출발"
+          },
+          {
+            "rect": {
+              "x": 182,
+              "y": 609,
+              "right": 218,
+              "bottom": 655,
+              "width": 36,
+              "height": 46
+            },
+            "tile": "베를린, 소유자 나, 매입 220, 임대 68, 단독주택"
+          }
+        ],
+        "overlap": [],
+        "cityNames": []
+      }
+    },
+    {
+      "capture": "/tmp/marble-final-stage-recapture-check-20261012/stage-1-1440-ko.png",
+      "metrics": {
+        "viewport": [
+          1440,
+          900
+        ],
+        "nav": {
+          "x": 214,
+          "y": 665,
+          "right": 852,
+          "bottom": 700,
+          "width": 638,
+          "height": 34
+        },
+        "selectedTile": {
+          "x": 51,
+          "y": 724,
+          "right": 191,
+          "bottom": 776,
+          "width": 140,
+          "height": 52
+        },
+        "pawns": [
+          {
+            "rect": {
+              "x": 837,
+              "y": 732,
+              "right": 873,
+              "bottom": 778,
+              "width": 36,
+              "height": 46
+            },
+            "tile": "출발, 출발"
+          },
+          {
+            "rect": {
+              "x": 193,
+              "y": 727,
+              "right": 229,
+              "bottom": 773,
+              "width": 36,
+              "height": 46
+            },
+            "tile": "베를린, 소유자 나, 매입 220, 임대 68, 단독주택"
+          }
+        ],
+        "overlap": [],
+        "cityNames": []
+      }
+    },
+    {
+      "capture": "/tmp/marble-final-stage-recapture-check-20261012/stage-1-1366-es.png",
+      "metrics": {
+        "viewport": [
+          1366,
+          768
+        ],
+        "nav": {
+          "x": 203,
+          "y": 546,
+          "right": 789,
+          "bottom": 575,
+          "width": 586,
+          "height": 29
+        },
+        "selectedTile": {
+          "x": 51,
+          "y": 612,
+          "right": 180,
+          "bottom": 651,
+          "width": 129,
+          "height": 39
+        },
+        "pawns": [
+          {
+            "rect": {
+              "x": 774,
+              "y": 607,
+              "right": 810,
+              "bottom": 653,
+              "width": 36,
+              "height": 46
+            },
+            "tile": "Salida, Salida"
+          },
+          {
+            "rect": {
+              "x": 182,
+              "y": 609,
+              "right": 218,
+              "bottom": 655,
+              "width": 36,
+              "height": 46
+            },
+            "tile": "Berlín, Dueño Tu pareja, compra 220, renta 68, Casa unifamiliar"
+          }
+        ],
+        "overlap": [],
+        "cityNames": [
+          {
+            "text": "Santo Domingo",
+            "title": "Santo Domingo",
+            "rect": {
+              "x": 99,
+              "y": 442,
+              "right": 177,
+              "bottom": 469,
+              "width": 78,
+              "height": 27
+            },
+            "font": "12px",
+            "whiteSpace": "normal",
+            "scrollHeight": 27,
+            "clientHeight": 27
+          },
+          {
+            "text": "Barcelona",
+            "title": "Barcelona",
+            "rect": {
+              "x": 99,
+              "y": 270,
+              "right": 177,
+              "bottom": 297,
+              "width": 78,
+              "height": 27
+            },
+            "font": "12px",
+            "whiteSpace": "normal",
+            "scrollHeight": 27,
+            "clientHeight": 27
+          },
+          {
+            "text": "Ciudad de México",
+            "title": "Ciudad de México",
+            "rect": {
+              "x": 390,
+              "y": 222,
+              "right": 456,
+              "bottom": 249,
+              "width": 66,
+              "height": 27
+            },
+            "font": "12px",
+            "whiteSpace": "normal",
+            "scrollHeight": 27,
+            "clientHeight": 27
+          }
+        ]
+      }
+    },
+    {
+      "capture": "/tmp/marble-final-stage-recapture-check-20261012/stage-1-1440-es.png",
+      "metrics": {
+        "viewport": [
+          1440,
+          900
+        ],
+        "nav": {
+          "x": 214,
+          "y": 671,
+          "right": 852,
+          "bottom": 700,
+          "width": 638,
+          "height": 29
+        },
+        "selectedTile": {
+          "x": 51,
+          "y": 724,
+          "right": 191,
+          "bottom": 776,
+          "width": 140,
+          "height": 52
+        },
+        "pawns": [
+          {
+            "rect": {
+              "x": 837,
+              "y": 732,
+              "right": 873,
+              "bottom": 778,
+              "width": 36,
+              "height": 46
+            },
+            "tile": "Salida, Salida"
+          },
+          {
+            "rect": {
+              "x": 193,
+              "y": 727,
+              "right": 229,
+              "bottom": 773,
+              "width": 36,
+              "height": 46
+            },
+            "tile": "Berlín, Dueño Tu pareja, compra 220, renta 68, Casa unifamiliar"
+          }
+        ],
+        "overlap": [],
+        "cityNames": [
+          {
+            "text": "Santo Domingo",
+            "title": "Santo Domingo",
+            "rect": {
+              "x": 105,
+              "y": 505,
+              "right": 188,
+              "bottom": 532,
+              "width": 83,
+              "height": 27
+            },
+            "font": "12px",
+            "whiteSpace": "normal",
+            "scrollHeight": 27,
+            "clientHeight": 27
+          },
+          {
+            "text": "Barcelona",
+            "title": "Barcelona",
+            "rect": {
+              "x": 105,
+              "y": 281,
+              "right": 188,
+              "bottom": 308,
+              "width": 83,
+              "height": 27
+            },
+            "font": "12px",
+            "whiteSpace": "normal",
+            "scrollHeight": 27,
+            "clientHeight": 27
+          },
+          {
+            "text": "Ciudad de México",
+            "title": "Ciudad de México",
+            "rect": {
+              "x": 419,
+              "y": 229,
+              "right": 490,
+              "bottom": 256,
+              "width": 72,
+              "height": 27
+            },
+            "font": "12px",
+            "whiteSpace": "normal",
+            "scrollHeight": 27,
+            "clientHeight": 27
+          }
+        ]
+      }
+    },
+    {
+      "capture": "/tmp/marble-final-stage-recapture-check-20261012/stage-2-1366-ko.png",
+      "metrics": {
+        "viewport": [
+          1366,
+          768
+        ],
+        "nav": {
+          "x": 203,
+          "y": 541,
+          "right": 789,
+          "bottom": 575,
+          "width": 586,
+          "height": 34
+        },
+        "selectedTile": {
+          "x": 51,
+          "y": 612,
+          "right": 180,
+          "bottom": 651,
+          "width": 129,
+          "height": 39
+        },
+        "pawns": [
+          {
+            "rect": {
+              "x": 774,
+              "y": 607,
+              "right": 810,
+              "bottom": 653,
+              "width": 36,
+              "height": 46
+            },
+            "tile": "출발, 출발"
+          },
+          {
+            "rect": {
+              "x": 182,
+              "y": 609,
+              "right": 218,
+              "bottom": 655,
+              "width": 36,
+              "height": 46
+            },
+            "tile": "베를린, 소유자 나, 매입 220, 임대 136, 아파트"
+          }
+        ],
+        "overlap": [],
+        "cityNames": []
+      }
+    },
+    {
+      "capture": "/tmp/marble-final-stage-recapture-check-20261012/stage-2-1440-ko.png",
+      "metrics": {
+        "viewport": [
+          1440,
+          900
+        ],
+        "nav": {
+          "x": 214,
+          "y": 665,
+          "right": 852,
+          "bottom": 700,
+          "width": 638,
+          "height": 34
+        },
+        "selectedTile": {
+          "x": 51,
+          "y": 724,
+          "right": 191,
+          "bottom": 776,
+          "width": 140,
+          "height": 52
+        },
+        "pawns": [
+          {
+            "rect": {
+              "x": 837,
+              "y": 732,
+              "right": 873,
+              "bottom": 778,
+              "width": 36,
+              "height": 46
+            },
+            "tile": "출발, 출발"
+          },
+          {
+            "rect": {
+              "x": 193,
+              "y": 727,
+              "right": 229,
+              "bottom": 773,
+              "width": 36,
+              "height": 46
+            },
+            "tile": "베를린, 소유자 나, 매입 220, 임대 136, 아파트"
+          }
+        ],
+        "overlap": [],
+        "cityNames": []
+      }
+    },
+    {
+      "capture": "/tmp/marble-final-stage-recapture-check-20261012/stage-2-1366-es.png",
+      "metrics": {
+        "viewport": [
+          1366,
+          768
+        ],
+        "nav": {
+          "x": 203,
+          "y": 546,
+          "right": 789,
+          "bottom": 575,
+          "width": 586,
+          "height": 29
+        },
+        "selectedTile": {
+          "x": 51,
+          "y": 612,
+          "right": 180,
+          "bottom": 651,
+          "width": 129,
+          "height": 39
+        },
+        "pawns": [
+          {
+            "rect": {
+              "x": 774,
+              "y": 607,
+              "right": 810,
+              "bottom": 653,
+              "width": 36,
+              "height": 46
+            },
+            "tile": "Salida, Salida"
+          },
+          {
+            "rect": {
+              "x": 182,
+              "y": 609,
+              "right": 218,
+              "bottom": 655,
+              "width": 36,
+              "height": 46
+            },
+            "tile": "Berlín, Dueño Tu pareja, compra 220, renta 136, Apartamentos"
+          }
+        ],
+        "overlap": [],
+        "cityNames": [
+          {
+            "text": "Santo Domingo",
+            "title": "Santo Domingo",
+            "rect": {
+              "x": 99,
+              "y": 442,
+              "right": 177,
+              "bottom": 469,
+              "width": 78,
+              "height": 27
+            },
+            "font": "12px",
+            "whiteSpace": "normal",
+            "scrollHeight": 27,
+            "clientHeight": 27
+          },
+          {
+            "text": "Barcelona",
+            "title": "Barcelona",
+            "rect": {
+              "x": 99,
+              "y": 270,
+              "right": 177,
+              "bottom": 297,
+              "width": 78,
+              "height": 27
+            },
+            "font": "12px",
+            "whiteSpace": "normal",
+            "scrollHeight": 27,
+            "clientHeight": 27
+          },
+          {
+            "text": "Ciudad de México",
+            "title": "Ciudad de México",
+            "rect": {
+              "x": 390,
+              "y": 222,
+              "right": 456,
+              "bottom": 249,
+              "width": 66,
+              "height": 27
+            },
+            "font": "12px",
+            "whiteSpace": "normal",
+            "scrollHeight": 27,
+            "clientHeight": 27
+          }
+        ]
+      }
+    },
+    {
+      "capture": "/tmp/marble-final-stage-recapture-check-20261012/stage-2-1440-es.png",
+      "metrics": {
+        "viewport": [
+          1440,
+          900
+        ],
+        "nav": {
+          "x": 214,
+          "y": 671,
+          "right": 852,
+          "bottom": 700,
+          "width": 638,
+          "height": 29
+        },
+        "selectedTile": {
+          "x": 51,
+          "y": 724,
+          "right": 191,
+          "bottom": 776,
+          "width": 140,
+          "height": 52
+        },
+        "pawns": [
+          {
+            "rect": {
+              "x": 837,
+              "y": 732,
+              "right": 873,
+              "bottom": 778,
+              "width": 36,
+              "height": 46
+            },
+            "tile": "Salida, Salida"
+          },
+          {
+            "rect": {
+              "x": 193,
+              "y": 727,
+              "right": 229,
+              "bottom": 773,
+              "width": 36,
+              "height": 46
+            },
+            "tile": "Berlín, Dueño Tu pareja, compra 220, renta 136, Apartamentos"
+          }
+        ],
+        "overlap": [],
+        "cityNames": [
+          {
+            "text": "Santo Domingo",
+            "title": "Santo Domingo",
+            "rect": {
+              "x": 105,
+              "y": 505,
+              "right": 188,
+              "bottom": 532,
+              "width": 83,
+              "height": 27
+            },
+            "font": "12px",
+            "whiteSpace": "normal",
+            "scrollHeight": 27,
+            "clientHeight": 27
+          },
+          {
+            "text": "Barcelona",
+            "title": "Barcelona",
+            "rect": {
+              "x": 105,
+              "y": 281,
+              "right": 188,
+              "bottom": 308,
+              "width": 83,
+              "height": 27
+            },
+            "font": "12px",
+            "whiteSpace": "normal",
+            "scrollHeight": 27,
+            "clientHeight": 27
+          },
+          {
+            "text": "Ciudad de México",
+            "title": "Ciudad de México",
+            "rect": {
+              "x": 419,
+              "y": 229,
+              "right": 490,
+              "bottom": 256,
+              "width": 72,
+              "height": 27
+            },
+            "font": "12px",
+            "whiteSpace": "normal",
+            "scrollHeight": 27,
+            "clientHeight": 27
+          }
+        ]
+      }
+    },
+    {
+      "capture": "/tmp/marble-final-stage-recapture-check-20261012/stage-3-1366-ko.png",
+      "metrics": {
+        "viewport": [
+          1366,
+          768
+        ],
+        "nav": {
+          "x": 203,
+          "y": 541,
+          "right": 789,
+          "bottom": 575,
+          "width": 586,
+          "height": 34
+        },
+        "selectedTile": {
+          "x": 51,
+          "y": 612,
+          "right": 180,
+          "bottom": 651,
+          "width": 129,
+          "height": 39
+        },
+        "pawns": [
+          {
+            "rect": {
+              "x": 774,
+              "y": 607,
+              "right": 810,
+              "bottom": 653,
+              "width": 36,
+              "height": 46
+            },
+            "tile": "출발, 출발"
+          },
+          {
+            "rect": {
+              "x": 182,
+              "y": 609,
+              "right": 218,
+              "bottom": 655,
+              "width": 36,
+              "height": 46
+            },
+            "tile": "베를린, 소유자 나, 매입 220, 임대 272, 랜드마크"
+          }
+        ],
+        "overlap": [],
+        "cityNames": []
+      }
+    },
+    {
+      "capture": "/tmp/marble-final-stage-recapture-check-20261012/stage-3-1440-ko.png",
+      "metrics": {
+        "viewport": [
+          1440,
+          900
+        ],
+        "nav": {
+          "x": 214,
+          "y": 665,
+          "right": 852,
+          "bottom": 700,
+          "width": 638,
+          "height": 34
+        },
+        "selectedTile": {
+          "x": 51,
+          "y": 724,
+          "right": 191,
+          "bottom": 776,
+          "width": 140,
+          "height": 52
+        },
+        "pawns": [
+          {
+            "rect": {
+              "x": 837,
+              "y": 732,
+              "right": 873,
+              "bottom": 778,
+              "width": 36,
+              "height": 46
+            },
+            "tile": "출발, 출발"
+          },
+          {
+            "rect": {
+              "x": 193,
+              "y": 727,
+              "right": 229,
+              "bottom": 773,
+              "width": 36,
+              "height": 46
+            },
+            "tile": "베를린, 소유자 나, 매입 220, 임대 272, 랜드마크"
+          }
+        ],
+        "overlap": [],
+        "cityNames": []
+      }
+    },
+    {
+      "capture": "/tmp/marble-final-stage-recapture-check-20261012/stage-3-1366-es.png",
+      "metrics": {
+        "viewport": [
+          1366,
+          768
+        ],
+        "nav": {
+          "x": 203,
+          "y": 541,
+          "right": 789,
+          "bottom": 575,
+          "width": 586,
+          "height": 34
+        },
+        "selectedTile": {
+          "x": 51,
+          "y": 612,
+          "right": 180,
+          "bottom": 651,
+          "width": 129,
+          "height": 39
+        },
+        "pawns": [
+          {
+            "rect": {
+              "x": 774,
+              "y": 607,
+              "right": 810,
+              "bottom": 653,
+              "width": 36,
+              "height": 46
+            },
+            "tile": "Salida, Salida"
+          },
+          {
+            "rect": {
+              "x": 182,
+              "y": 609,
+              "right": 218,
+              "bottom": 655,
+              "width": 36,
+              "height": 46
+            },
+            "tile": "Berlín, Dueño Tu pareja, compra 220, renta 272, Monumento"
+          }
+        ],
+        "overlap": [],
+        "cityNames": [
+          {
+            "text": "Santo Domingo",
+            "title": "Santo Domingo",
+            "rect": {
+              "x": 99,
+              "y": 442,
+              "right": 177,
+              "bottom": 469,
+              "width": 78,
+              "height": 27
+            },
+            "font": "12px",
+            "whiteSpace": "normal",
+            "scrollHeight": 27,
+            "clientHeight": 27
+          },
+          {
+            "text": "Barcelona",
+            "title": "Barcelona",
+            "rect": {
+              "x": 99,
+              "y": 270,
+              "right": 177,
+              "bottom": 297,
+              "width": 78,
+              "height": 27
+            },
+            "font": "12px",
+            "whiteSpace": "normal",
+            "scrollHeight": 27,
+            "clientHeight": 27
+          },
+          {
+            "text": "Ciudad de México",
+            "title": "Ciudad de México",
+            "rect": {
+              "x": 390,
+              "y": 222,
+              "right": 456,
+              "bottom": 249,
+              "width": 66,
+              "height": 27
+            },
+            "font": "12px",
+            "whiteSpace": "normal",
+            "scrollHeight": 27,
+            "clientHeight": 27
+          }
+        ]
+      }
+    },
+    {
+      "capture": "/tmp/marble-final-stage-recapture-check-20261012/stage-3-1440-es.png",
+      "metrics": {
+        "viewport": [
+          1440,
+          900
+        ],
+        "nav": {
+          "x": 214,
+          "y": 665,
+          "right": 852,
+          "bottom": 700,
+          "width": 638,
+          "height": 34
+        },
+        "selectedTile": {
+          "x": 51,
+          "y": 724,
+          "right": 191,
+          "bottom": 776,
+          "width": 140,
+          "height": 52
+        },
+        "pawns": [
+          {
+            "rect": {
+              "x": 837,
+              "y": 732,
+              "right": 873,
+              "bottom": 778,
+              "width": 36,
+              "height": 46
+            },
+            "tile": "Salida, Salida"
+          },
+          {
+            "rect": {
+              "x": 193,
+              "y": 727,
+              "right": 229,
+              "bottom": 773,
+              "width": 36,
+              "height": 46
+            },
+            "tile": "Berlín, Dueño Tu pareja, compra 220, renta 272, Monumento"
+          }
+        ],
+        "overlap": [],
+        "cityNames": [
+          {
+            "text": "Santo Domingo",
+            "title": "Santo Domingo",
+            "rect": {
+              "x": 105,
+              "y": 505,
+              "right": 188,
+              "bottom": 532,
+              "width": 83,
+              "height": 27
+            },
+            "font": "12px",
+            "whiteSpace": "normal",
+            "scrollHeight": 27,
+            "clientHeight": 27
+          },
+          {
+            "text": "Barcelona",
+            "title": "Barcelona",
+            "rect": {
+              "x": 105,
+              "y": 281,
+              "right": 188,
+              "bottom": 308,
+              "width": 83,
+              "height": 27
+            },
+            "font": "12px",
+            "whiteSpace": "normal",
+            "scrollHeight": 27,
+            "clientHeight": 27
+          },
+          {
+            "text": "Ciudad de México",
+            "title": "Ciudad de México",
+            "rect": {
+              "x": 419,
+              "y": 229,
+              "right": 490,
+              "bottom": 256,
+              "width": 72,
+              "height": 27
+            },
+            "font": "12px",
+            "whiteSpace": "normal",
+            "scrollHeight": 27,
+            "clientHeight": 27
+          }
+        ]
+      }
+    }
+  ],
+  "errors": [],
+  "source_base": "816eb067467c55fda71d68a5c2c917818b2e3309",
+  "source_state": "Phase-two working tree, final Marble code/CSS; source SHA to be bound after integration commit",
+  "quality_approval": "pending parent visual judgment"
+}

@@ -1,0 +1,2691 @@
+{
+  "source": "http://127.0.0.1:5212",
+  "authority": "local SQL/action fixture 54331, UI room/game selection only",
+  "games": [
+    {
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "roomId": "a4e18b40-7fb8-4357-a05f-eea035d13015",
+      "states": [
+        {
+          "playerId": "p1",
+          "version": 2,
+          "gameId": "minhwatu",
+          "phase": "play",
+          "turn": "p1",
+          "ownHand": 10,
+          "opponentCount": 10
+        },
+        {
+          "playerId": "p2",
+          "version": 2,
+          "gameId": "minhwatu",
+          "phase": "play",
+          "turn": "p1",
+          "ownHand": 10,
+          "opponentCount": 10
+        }
+      ],
+      "dom": [
+        {
+          "viewport": [
+            1440,
+            900
+          ],
+          "scrollWidth": 1440,
+          "scrollHeight": 2020,
+          "handFitsViewport": true,
+          "counts": {
+            "hand": 10,
+            "table": 8,
+            "opponent": "10장",
+            "opponentFan": 10,
+            "handImages": [
+              {
+                "loaded": true,
+                "src": "/images/hwatu/07-02.svg"
+              },
+              {
+                "loaded": true,
+                "src": "/images/hwatu/11-04.svg"
+              },
+              {
+                "loaded": true,
+                "src": "/images/hwatu/06-01.svg"
+              },
+              {
+                "loaded": true,
+                "src": "/images/hwatu/10-03.svg"
+              },
+              {
+                "loaded": true,
+                "src": "/images/hwatu/10-01.svg"
+              },
+              {
+                "loaded": true,
+                "src": "/images/hwatu/05-04.svg"
+              },
+              {
+                "loaded": true,
+                "src": "/images/hwatu/02-02.svg"
+              },
+              {
+                "loaded": true,
+                "src": "/images/hwatu/08-03.svg"
+              },
+              {
+                "loaded": true,
+                "src": "/images/hwatu/04-03.svg"
+              },
+              {
+                "loaded": true,
+                "src": "/images/hwatu/12-01.svg"
+              }
+            ],
+            "tableImages": [
+              {
+                "loaded": true,
+                "src": "/images/hwatu/06-02.svg"
+              },
+              {
+                "loaded": true,
+                "src": "/images/hwatu/09-02.svg"
+              },
+              {
+                "loaded": true,
+                "src": "/images/hwatu/12-03.svg"
+              },
+              {
+                "loaded": true,
+                "src": "/images/hwatu/04-01.svg"
+              },
+              {
+                "loaded": true,
+                "src": "/images/hwatu/10-04.svg"
+              },
+              {
+                "loaded": true,
+                "src": "/images/hwatu/02-03.svg"
+              },
+              {
+                "loaded": true,
+                "src": "/images/hwatu/01-04.svg"
+              },
+              {
+                "loaded": true,
+                "src": "/images/hwatu/03-01.svg"
+              }
+            ]
+          },
+          "targets": {
+            ".minhwatu-table": [
+              {
+                "x": 19,
+                "y": 184,
+                "right": 1421,
+                "bottom": 886.6,
+                "w": 1402,
+                "h": 702.6,
+                "display": "grid",
+                "padding": "8px",
+                "margin": "0px",
+                "gap": "6px",
+                "fontSize": "13px",
+                "lineHeight": "normal",
+                "gridTemplateColumns": "1384px",
+                "overflowY": "visible",
+                "text": "QA KO 나 · 내 차례 0점 QA ES 상대 0점 상대가 모은 패 0 장 광 0 열끗 0 띠 0 피 0 홍단 0/3 청단 0/3 초단 0/3 고도리 0/3 11월 완성 0/4 5월 완성 0/4 10월 완성 0/4 12월 완성 0/4 상대 손패 10장 내 차례 바닥 패 공개된 패 8장 남은 더미 20 6월 9월 12월 4월 10월 2월 1월 3월 이번 차례 공개 손패에서 이번 차례에 낼 패를 선택하세요. 내"
+              }
+            ],
+            ".hwatu-capture-rack.is-empty": [
+              {
+                "x": 28,
+                "y": 231,
+                "right": 1412,
+                "bottom": 324.2,
+                "w": 1384,
+                "h": 93.2,
+                "display": "grid",
+                "padding": "5px 7px",
+                "margin": "0px",
+                "gap": "0px 8px",
+                "fontSize": "13px",
+                "lineHeight": "normal",
+                "gridTemplateColumns": "118px 1242px",
+                "overflowY": "visible",
+                "text": "상대가 모은 패 0 장 광 0 열끗 0 띠 0 피 0 홍단 0/3 청단 0/3 초단 0/3 고도리 0/3 11월 완성 0/4 5월 완성 0/4 10월 완성 0/4 12월 완성 0/4"
+              },
+              {
+                "x": 28,
+                "y": 566,
+                "right": 1412,
+                "bottom": 659.2,
+                "w": 1384,
+                "h": 93.2,
+                "display": "grid",
+                "padding": "5px 7px",
+                "margin": "0px",
+                "gap": "0px 8px",
+                "fontSize": "13px",
+                "lineHeight": "normal",
+                "gridTemplateColumns": "118px 1242px",
+                "overflowY": "visible",
+                "text": "내가 모은 패 0 장 광 0 열끗 0 띠 0 피 0 홍단 0/3 청단 0/3 초단 0/3 고도리 0/3 11월 완성 0/4 5월 완성 0/4 10월 완성 0/4 12월 완성 0/4"
+              }
+            ],
+            ".hwatu-capture-categories": [
+              {
+                "x": 162,
+                "y": 239,
+                "right": 1404,
+                "bottom": 276.2,
+                "w": 1242,
+                "h": 37.2,
+                "display": "grid",
+                "padding": "0px",
+                "margin": "2px 0px 0px",
+                "gap": "12px",
+                "fontSize": "13px",
+                "lineHeight": "normal",
+                "gridTemplateColumns": "301.5px 301.5px 301.5px 301.5px",
+                "overflowY": "visible",
+                "text": "광 0 열끗 0 띠 0 피 0"
+              },
+              {
+                "x": 162,
+                "y": 574,
+                "right": 1404,
+                "bottom": 611.2,
+                "w": 1242,
+                "h": 37.2,
+                "display": "grid",
+                "padding": "0px",
+                "margin": "2px 0px 0px",
+                "gap": "12px",
+                "fontSize": "13px",
+                "lineHeight": "normal",
+                "gridTemplateColumns": "301.5px 301.5px 301.5px 301.5px",
+                "overflowY": "visible",
+                "text": "광 0 열끗 0 띠 0 피 0"
+              }
+            ],
+            ".hwatu-category-pile": [
+              {
+                "x": 162,
+                "y": 239,
+                "right": 463.5,
+                "bottom": 261,
+                "w": 301.5,
+                "h": 22,
+                "display": "block",
+                "padding": "0px",
+                "margin": "0px",
+                "gap": "normal",
+                "fontSize": "13px",
+                "lineHeight": "normal",
+                "gridTemplateColumns": "none",
+                "overflowY": "visible",
+                "text": "광 0"
+              },
+              {
+                "x": 475.5,
+                "y": 239,
+                "right": 777,
+                "bottom": 261,
+                "w": 301.5,
+                "h": 22,
+                "display": "block",
+                "padding": "0px",
+                "margin": "0px",
+                "gap": "normal",
+                "fontSize": "13px",
+                "lineHeight": "normal",
+                "gridTemplateColumns": "none",
+                "overflowY": "visible",
+                "text": "열끗 0"
+              },
+              {
+                "x": 789,
+                "y": 239,
+                "right": 1090.5,
+                "bottom": 261,
+                "w": 301.5,
+                "h": 22,
+                "display": "block",
+                "padding": "0px",
+                "margin": "0px",
+                "gap": "normal",
+                "fontSize": "13px",
+                "lineHeight": "normal",
+                "gridTemplateColumns": "none",
+                "overflowY": "visible",
+                "text": "띠 0"
+              },
+              {
+                "x": 1102.5,
+                "y": 239,
+                "right": 1404,
+                "bottom": 261,
+                "w": 301.5,
+                "h": 22,
+                "display": "block",
+                "padding": "0px",
+                "margin": "0px",
+                "gap": "normal",
+                "fontSize": "13px",
+                "lineHeight": "normal",
+                "gridTemplateColumns": "none",
+                "overflowY": "visible",
+                "text": "피 0"
+              }
+            ],
+            ".hwatu-category-heading": [
+              {
+                "x": 162,
+                "y": 239,
+                "right": 216.9,
+                "bottom": 261,
+                "w": 54.9,
+                "h": 22,
+                "display": "flex",
+                "padding": "0px",
+                "margin": "0px",
+                "gap": "6px",
+                "fontSize": "12px",
+                "lineHeight": "normal",
+                "gridTemplateColumns": "none",
+                "overflowY": "visible",
+                "text": "광 0"
+              },
+              {
+                "x": 475.5,
+                "y": 239,
+                "right": 541.5,
+                "bottom": 261,
+                "w": 66,
+                "h": 22,
+                "display": "flex",
+                "padding": "0px",
+                "margin": "0px",
+                "gap": "6px",
+                "fontSize": "12px",
+                "lineHeight": "normal",
+                "gridTemplateColumns": "none",
+                "overflowY": "visible",
+                "text": "열끗 0"
+              },
+              {
+                "x": 789,
+                "y": 239,
+                "right": 843.9,
+                "bottom": 261,
+                "w": 54.9,
+                "h": 22,
+                "display": "flex",
+                "padding": "0px",
+                "margin": "0px",
+                "gap": "6px",
+                "fontSize": "12px",
+                "lineHeight": "normal",
+                "gridTemplateColumns": "none",
+                "overflowY": "visible",
+                "text": "띠 0"
+              },
+              {
+                "x": 1102.5,
+                "y": 239,
+                "right": 1157.4,
+                "bottom": 261,
+                "w": 54.9,
+                "h": 22,
+                "display": "flex",
+                "padding": "0px",
+                "margin": "0px",
+                "gap": "6px",
+                "fontSize": "12px",
+                "lineHeight": "normal",
+                "gridTemplateColumns": "none",
+                "overflowY": "visible",
+                "text": "피 0"
+              }
+            ],
+            ".hwatu-captured-cards": [
+              {
+                "x": 162,
+                "y": 261,
+                "right": 463.5,
+                "bottom": 261,
+                "w": 301.5,
+                "h": 0,
+                "display": "grid",
+                "padding": "0px",
+                "margin": "0px",
+                "gap": "3px",
+                "fontSize": "13px",
+                "lineHeight": "normal",
+                "gridTemplateColumns": "301.5px",
+                "overflowY": "visible",
+                "text": ""
+              },
+              {
+                "x": 475.5,
+                "y": 261,
+                "right": 777,
+                "bottom": 261,
+                "w": 301.5,
+                "h": 0,
+                "display": "grid",
+                "padding": "0px",
+                "margin": "0px",
+                "gap": "3px",
+                "fontSize": "13px",
+                "lineHeight": "normal",
+                "gridTemplateColumns": "301.5px",
+                "overflowY": "visible",
+                "text": ""
+              },
+              {
+                "x": 789,
+                "y": 261,
+                "right": 1090.5,
+                "bottom": 261,
+                "w": 301.5,
+                "h": 0,
+                "display": "grid",
+                "padding": "0px",
+                "margin": "0px",
+                "gap": "3px",
+                "fontSize": "13px",
+                "lineHeight": "normal",
+                "gridTemplateColumns": "301.5px",
+                "overflowY": "visible",
+                "text": ""
+              },
+              {
+                "x": 1102.5,
+                "y": 261,
+                "right": 1404,
+                "bottom": 261,
+                "w": 301.5,
+                "h": 0,
+                "display": "grid",
+                "padding": "0px",
+                "margin": "0px",
+                "gap": "3px",
+                "fontSize": "13px",
+                "lineHeight": "normal",
+                "gridTemplateColumns": "none",
+                "overflowY": "visible",
+                "text": ""
+              }
+            ],
+            ".hwatu-rail-progress": [
+              {
+                "x": 36,
+                "y": 281.2,
+                "right": 1404,
+                "bottom": 318.2,
+                "w": 1368,
+                "h": 37,
+                "display": "block",
+                "padding": "6px 0px 2px",
+                "margin": "5px 0px 0px",
+                "gap": "normal",
+                "fontSize": "13px",
+                "lineHeight": "normal",
+                "gridTemplateColumns": "none",
+                "overflowY": "visible",
+                "text": "홍단 0/3 청단 0/3 초단 0/3 고도리 0/3 11월 완성 0/4 5월 완성 0/4 10월 완성 0/4 12월 완성 0/4"
+              },
+              {
+                "x": 36,
+                "y": 616.2,
+                "right": 1404,
+                "bottom": 653.2,
+                "w": 1368,
+                "h": 37,
+                "display": "block",
+                "padding": "6px 0px 2px",
+                "margin": "5px 0px 0px",
+                "gap": "normal",
+                "fontSize": "13px",
+                "lineHeight": "normal",
+                "gridTemplateColumns": "none",
+                "overflowY": "visible",
+                "text": "홍단 0/3 청단 0/3 초단 0/3 고도리 0/3 11월 완성 0/4 5월 완성 0/4 10월 완성 0/4 12월 완성 0/4"
+              }
+            ],
+            ".hwatu-rail-progress ul": [
+              {
+                "x": 36,
+                "y": 288.2,
+                "right": 1404,
+                "bottom": 316.2,
+                "w": 1368,
+                "h": 28,
+                "display": "flex",
+                "padding": "0px",
+                "margin": "0px",
+                "gap": "5px 7px",
+                "fontSize": "13px",
+                "lineHeight": "normal",
+                "gridTemplateColumns": "none",
+                "overflowY": "visible",
+                "text": "홍단 0/3 청단 0/3 초단 0/3 고도리 0/3 11월 완성 0/4 5월 완성 0/4 10월 완성 0/4 12월 완성 0/4"
+              },
+              {
+                "x": 36,
+                "y": 623.2,
+                "right": 1404,
+                "bottom": 651.2,
+                "w": 1368,
+                "h": 28,
+                "display": "flex",
+                "padding": "0px",
+                "margin": "0px",
+                "gap": "5px 7px",
+                "fontSize": "13px",
+                "lineHeight": "normal",
+                "gridTemplateColumns": "none",
+                "overflowY": "visible",
+                "text": "홍단 0/3 청단 0/3 초단 0/3 고도리 0/3 11월 완성 0/4 5월 완성 0/4 10월 완성 0/4 12월 완성 0/4"
+              }
+            ],
+            ".hwatu-rail-progress li": [
+              {
+                "x": 36,
+                "y": 288.2,
+                "right": 106.4,
+                "bottom": 316.2,
+                "w": 70.4,
+                "h": 28,
+                "display": "flex",
+                "padding": "4px 8px",
+                "margin": "0px",
+                "gap": "5px",
+                "fontSize": "12px",
+                "lineHeight": "15px",
+                "gridTemplateColumns": "none",
+                "overflowY": "visible",
+                "text": "홍단 0/3"
+              },
+              {
+                "x": 113.4,
+                "y": 288.2,
+                "right": 183.9,
+                "bottom": 316.2,
+                "w": 70.4,
+                "h": 28,
+                "display": "flex",
+                "padding": "4px 8px",
+                "margin": "0px",
+                "gap": "5px",
+                "fontSize": "12px",
+                "lineHeight": "15px",
+                "gridTemplateColumns": "none",
+                "overflowY": "visible",
+                "text": "청단 0/3"
+              },
+              {
+                "x": 190.9,
+                "y": 288.2,
+                "right": 261.3,
+                "bottom": 316.2,
+                "w": 70.4,
+                "h": 28,
+                "display": "flex",
+                "padding": "4px 8px",
+                "margin": "0px",
+                "gap": "5px",
+                "fontSize": "12px",
+                "lineHeight": "15px",
+                "gridTemplateColumns": "none",
+                "overflowY": "visible",
+                "text": "초단 0/3"
+              },
+              {
+                "x": 268.3,
+                "y": 288.2,
+                "right": 349.8,
+                "bottom": 316.2,
+                "w": 81.5,
+                "h": 28,
+                "display": "flex",
+                "padding": "4px 8px",
+                "margin": "0px",
+                "gap": "5px",
+                "fontSize": "12px",
+                "lineHeight": "15px",
+                "gridTemplateColumns": "none",
+                "overflowY": "visible",
+                "text": "고도리 0/3"
+              }
+            ],
+            ".hwatu-tabletop-stage": [
+              {
+                "x": 28,
+                "y": 231,
+                "right": 1412,
+                "bottom": 811.6,
+                "w": 1384,
+                "h": 580.6,
+                "display": "grid",
+                "padding": "0px",
+                "margin": "0px",
+                "gap": "4px",
+                "fontSize": "13px",
+                "lineHeight": "normal",
+                "gridTemplateColumns": "1384px",
+                "overflowY": "visible",
+                "text": "상대가 모은 패 0 장 광 0 열끗 0 띠 0 피 0 홍단 0/3 청단 0/3 초단 0/3 고도리 0/3 11월 완성 0/4 5월 완성 0/4 10월 완성 0/4 12월 완성 0/4 상대 손패 10장 내 차례 바닥 패 공개된 패 8장 남은 더미 20 6월 9월 12월 4월 10월 2월 1월 3월 이번 차례 공개 손패에서 이번 차례에 낼 패를 선택하세요. 내가 모은 패 0 장 광 0 열끗 0 띠 0 피 0 홍단"
+              }
+            ],
+            ".hwatu-felt": [
+              {
+                "x": 28,
+                "y": 372.2,
+                "right": 1412,
+                "bottom": 526,
+                "w": 1384,
+                "h": 153.8,
+                "display": "block",
+                "padding": "5px 9px",
+                "margin": "0px",
+                "gap": "normal",
+                "fontSize": "13px",
+                "lineHeight": "normal",
+                "gridTemplateColumns": "none",
+                "overflowY": "visible",
+                "text": "바닥 패 공개된 패 8장 남은 더미 20 6월 9월 12월 4월 10월 2월 1월 3월 이번 차례 공개"
+              }
+            ],
+            ".hwatu-phase-note": [
+              {
+                "x": 28,
+                "y": 530,
+                "right": 1412,
+                "bottom": 562,
+                "w": 1384,
+                "h": 32,
+                "display": "flex",
+                "padding": "4px 8px",
+                "margin": "0px",
+                "gap": "8px",
+                "fontSize": "11px",
+                "lineHeight": "15.4px",
+                "gridTemplateColumns": "none",
+                "overflowY": "visible",
+                "text": "손패에서 이번 차례에 낼 패를 선택하세요."
+              }
+            ],
+            ".hwatu-hand-section": [
+              {
+                "x": 28,
+                "y": 663.2,
+                "right": 1412,
+                "bottom": 811.6,
+                "w": 1384,
+                "h": 148.5,
+                "display": "grid",
+                "padding": "7px 9px 6px",
+                "margin": "0px",
+                "gap": "0px 12px",
+                "fontSize": "13px",
+                "lineHeight": "normal",
+                "gridTemplateColumns": "1124px 230px",
+                "overflowY": "visible",
+                "text": "내 손패 10 내 차례 금색 테두리 패는 바닥패를 가져올 수 있어요. 7월 11월 6월 10월 10월 5월 2월 8월 4월 12월"
+              }
+            ],
+            ".hwatu-hand-heading": [
+              {
+                "x": 37,
+                "y": 671.2,
+                "right": 1403,
+                "bottom": 691.2,
+                "w": 1366,
+                "h": 20,
+                "display": "flex",
+                "padding": "0px",
+                "margin": "0px",
+                "gap": "12px",
+                "fontSize": "13px",
+                "lineHeight": "normal",
+                "gridTemplateColumns": "none",
+                "overflowY": "visible",
+                "text": "내 손패 10 내 차례 금색 테두리 패는 바닥패를 가져올 수 있어요."
+              }
+            ],
+            ".hwatu-choice-hand": [
+              {
+                "x": 37,
+                "y": 691.2,
+                "right": 1161,
+                "bottom": 805.6,
+                "w": 1124,
+                "h": 114.5,
+                "display": "flex",
+                "padding": "3px 4px",
+                "margin": "0px",
+                "gap": "3px",
+                "fontSize": "13px",
+                "lineHeight": "normal",
+                "gridTemplateColumns": "none",
+                "overflowY": "auto",
+                "text": "7월 11월 6월 10월 10월 5월 2월 8월 4월 12월"
+              }
+            ]
+          }
+        },
+        {
+          "viewport": [
+            1440,
+            900
+          ],
+          "scrollWidth": 1440,
+          "scrollHeight": 2141,
+          "handFitsViewport": true,
+          "counts": {
+            "hand": 10,
+            "table": 8,
+            "opponent": "10 cartas",
+            "opponentFan": 10,
+            "handImages": [
+              {
+                "loaded": true,
+                "src": "/images/hwatu/07-01.svg"
+              },
+              {
+                "loaded": true,
+                "src": "/images/hwatu/07-03.svg"
+              },
+              {
+                "loaded": true,
+                "src": "/images/hwatu/05-03.svg"
+              },
+              {
+                "loaded": true,
+                "src": "/images/hwatu/03-04.svg"
+              },
+              {
+                "loaded": true,
+                "src": "/images/hwatu/02-04.svg"
+              },
+              {
+                "loaded": true,
+                "src": "/images/hwatu/05-02.svg"
+              },
+              {
+                "loaded": true,
+                "src": "/images/hwatu/08-02.svg"
+              },
+              {
+                "loaded": true,
+                "src": "/images/hwatu/12-04.svg"
+              },
+              {
+                "loaded": true,
+                "src": "/images/hwatu/05-01.svg"
+              },
+              {
+                "loaded": true,
+                "src": "/images/hwatu/10-02.svg"
+              }
+            ],
+            "tableImages": [
+              {
+                "loaded": true,
+                "src": "/images/hwatu/06-02.svg"
+              },
+              {
+                "loaded": true,
+                "src": "/images/hwatu/09-02.svg"
+              },
+              {
+                "loaded": true,
+                "src": "/images/hwatu/12-03.svg"
+              },
+              {
+                "loaded": true,
+                "src": "/images/hwatu/04-01.svg"
+              },
+              {
+                "loaded": true,
+                "src": "/images/hwatu/10-04.svg"
+              },
+              {
+                "loaded": true,
+                "src": "/images/hwatu/02-03.svg"
+              },
+              {
+                "loaded": true,
+                "src": "/images/hwatu/01-04.svg"
+              },
+              {
+                "loaded": true,
+                "src": "/images/hwatu/03-01.svg"
+              }
+            ]
+          },
+          "targets": {
+            ".minhwatu-table": [
+              {
+                "x": 19,
+                "y": 184,
+                "right": 1421,
+                "bottom": 876.6,
+                "w": 1402,
+                "h": 692.6,
+                "display": "grid",
+                "padding": "8px",
+                "margin": "0px",
+                "gap": "6px",
+                "fontSize": "13px",
+                "lineHeight": "normal",
+                "gridTemplateColumns": "1384px",
+                "overflowY": "visible",
+                "text": "QA KO Rival · Turno rival 0pts QA ES Tú 0pts Capturas rivales 0 cartas Brillantes 0 Animales 0 Cintas 0 Simples 0 Hongdan 0/3 Cheongdan 0/3 Chodan 0/3 Godori 0/3 Mes 11 completo 0/4 Mes 5 completo 0/4 Mes 10 completo 0/4 Mes 12 co"
+              }
+            ],
+            ".hwatu-capture-rack.is-empty": [
+              {
+                "x": 28,
+                "y": 231,
+                "right": 1412,
+                "bottom": 322.2,
+                "w": 1384,
+                "h": 91.2,
+                "display": "grid",
+                "padding": "5px 7px",
+                "margin": "0px",
+                "gap": "0px 8px",
+                "fontSize": "13px",
+                "lineHeight": "normal",
+                "gridTemplateColumns": "118px 1242px",
+                "overflowY": "visible",
+                "text": "Capturas rivales 0 cartas Brillantes 0 Animales 0 Cintas 0 Simples 0 Hongdan 0/3 Cheongdan 0/3 Chodan 0/3 Godori 0/3 Mes 11 completo 0/4 Mes 5 completo 0/4 Mes 10 completo 0/4 Mes 12 completo 0/4"
+              },
+              {
+                "x": 28,
+                "y": 564,
+                "right": 1412,
+                "bottom": 655.2,
+                "w": 1384,
+                "h": 91.2,
+                "display": "grid",
+                "padding": "5px 7px",
+                "margin": "0px",
+                "gap": "0px 8px",
+                "fontSize": "13px",
+                "lineHeight": "normal",
+                "gridTemplateColumns": "118px 1242px",
+                "overflowY": "visible",
+                "text": "Mis capturas 0 cartas Brillantes 0 Animales 0 Cintas 0 Simples 0 Hongdan 0/3 Cheongdan 0/3 Chodan 0/3 Godori 0/3 Mes 11 completo 0/4 Mes 5 completo 0/4 Mes 10 completo 0/4 Mes 12 completo 0/4"
+              }
+            ],
+            ".hwatu-capture-categories": [
+              {
+                "x": 162,
+                "y": 239,
+                "right": 1404,
+                "bottom": 274.2,
+                "w": 1242,
+                "h": 35.2,
+                "display": "grid",
+                "padding": "0px",
+                "margin": "2px 0px 0px",
+                "gap": "12px",
+                "fontSize": "13px",
+                "lineHeight": "normal",
+                "gridTemplateColumns": "301.5px 301.5px 301.5px 301.5px",
+                "overflowY": "visible",
+                "text": "Brillantes 0 Animales 0 Cintas 0 Simples 0"
+              },
+              {
+                "x": 162,
+                "y": 572,
+                "right": 1404,
+                "bottom": 607.2,
+                "w": 1242,
+                "h": 35.2,
+                "display": "grid",
+                "padding": "0px",
+                "margin": "2px 0px 0px",
+                "gap": "12px",
+                "fontSize": "13px",
+                "lineHeight": "normal",
+                "gridTemplateColumns": "301.5px 301.5px 301.5px 301.5px",
+                "overflowY": "visible",
+                "text": "Brillantes 0 Animales 0 Cintas 0 Simples 0"
+              }
+            ],
+            ".hwatu-category-pile": [
+              {
+                "x": 162,
+                "y": 239,
+                "right": 463.5,
+                "bottom": 261,
+                "w": 301.5,
+                "h": 22,
+                "display": "block",
+                "padding": "0px",
+                "margin": "0px",
+                "gap": "normal",
+                "fontSize": "13px",
+                "lineHeight": "normal",
+                "gridTemplateColumns": "none",
+                "overflowY": "visible",
+                "text": "Brillantes 0"
+              },
+              {
+                "x": 475.5,
+                "y": 239,
+                "right": 777,
+                "bottom": 261,
+                "w": 301.5,
+                "h": 22,
+                "display": "block",
+                "padding": "0px",
+                "margin": "0px",
+                "gap": "normal",
+                "fontSize": "13px",
+                "lineHeight": "normal",
+                "gridTemplateColumns": "none",
+                "overflowY": "visible",
+                "text": "Animales 0"
+              },
+              {
+                "x": 789,
+                "y": 239,
+                "right": 1090.5,
+                "bottom": 261,
+                "w": 301.5,
+                "h": 22,
+                "display": "block",
+                "padding": "0px",
+                "margin": "0px",
+                "gap": "normal",
+                "fontSize": "13px",
+                "lineHeight": "normal",
+                "gridTemplateColumns": "none",
+                "overflowY": "visible",
+                "text": "Cintas 0"
+              },
+              {
+                "x": 1102.5,
+                "y": 239,
+                "right": 1404,
+                "bottom": 261,
+                "w": 301.5,
+                "h": 22,
+                "display": "block",
+                "padding": "0px",
+                "margin": "0px",
+                "gap": "normal",
+                "fontSize": "13px",
+                "lineHeight": "normal",
+                "gridTemplateColumns": "none",
+                "overflowY": "visible",
+                "text": "Simples 0"
+              }
+            ],
+            ".hwatu-category-heading": [
+              {
+                "x": 162,
+                "y": 239,
+                "right": 256.6,
+                "bottom": 261,
+                "w": 94.6,
+                "h": 22,
+                "display": "flex",
+                "padding": "0px",
+                "margin": "0px",
+                "gap": "6px",
+                "fontSize": "12px",
+                "lineHeight": "normal",
+                "gridTemplateColumns": "none",
+                "overflowY": "visible",
+                "text": "Brillantes 0"
+              },
+              {
+                "x": 475.5,
+                "y": 239,
+                "right": 569.9,
+                "bottom": 261,
+                "w": 94.4,
+                "h": 22,
+                "display": "flex",
+                "padding": "0px",
+                "margin": "0px",
+                "gap": "6px",
+                "fontSize": "12px",
+                "lineHeight": "normal",
+                "gridTemplateColumns": "none",
+                "overflowY": "visible",
+                "text": "Animales 0"
+              },
+              {
+                "x": 789,
+                "y": 239,
+                "right": 868.5,
+                "bottom": 261,
+                "w": 79.5,
+                "h": 22,
+                "display": "flex",
+                "padding": "0px",
+                "margin": "0px",
+                "gap": "6px",
+                "fontSize": "12px",
+                "lineHeight": "normal",
+                "gridTemplateColumns": "none",
+                "overflowY": "visible",
+                "text": "Cintas 0"
+              },
+              {
+                "x": 1102.5,
+                "y": 239,
+                "right": 1190,
+                "bottom": 261,
+                "w": 87.5,
+                "h": 22,
+                "display": "flex",
+                "padding": "0px",
+                "margin": "0px",
+                "gap": "6px",
+                "fontSize": "12px",
+                "lineHeight": "normal",
+                "gridTemplateColumns": "none",
+                "overflowY": "visible",
+                "text": "Simples 0"
+              }
+            ],
+            ".hwatu-captured-cards": [
+              {
+                "x": 162,
+                "y": 261,
+                "right": 463.5,
+                "bottom": 261,
+                "w": 301.5,
+                "h": 0,
+                "display": "grid",
+                "padding": "0px",
+                "margin": "0px",
+                "gap": "3px",
+                "fontSize": "13px",
+                "lineHeight": "normal",
+                "gridTemplateColumns": "301.5px",
+                "overflowY": "visible",
+                "text": ""
+              },
+              {
+                "x": 475.5,
+                "y": 261,
+                "right": 777,
+                "bottom": 261,
+                "w": 301.5,
+                "h": 0,
+                "display": "grid",
+                "padding": "0px",
+                "margin": "0px",
+                "gap": "3px",
+                "fontSize": "13px",
+                "lineHeight": "normal",
+                "gridTemplateColumns": "301.5px",
+                "overflowY": "visible",
+                "text": ""
+              },
+              {
+                "x": 789,
+                "y": 261,
+                "right": 1090.5,
+                "bottom": 261,
+                "w": 301.5,
+                "h": 0,
+                "display": "grid",
+                "padding": "0px",
+                "margin": "0px",
+                "gap": "3px",
+                "fontSize": "13px",
+                "lineHeight": "normal",
+                "gridTemplateColumns": "301.5px",
+                "overflowY": "visible",
+                "text": ""
+              },
+              {
+                "x": 1102.5,
+                "y": 261,
+                "right": 1404,
+                "bottom": 261,
+                "w": 301.5,
+                "h": 0,
+                "display": "grid",
+                "padding": "0px",
+                "margin": "0px",
+                "gap": "3px",
+                "fontSize": "13px",
+                "lineHeight": "normal",
+                "gridTemplateColumns": "none",
+                "overflowY": "visible",
+                "text": ""
+              }
+            ],
+            ".hwatu-rail-progress": [
+              {
+                "x": 36,
+                "y": 279.2,
+                "right": 1404,
+                "bottom": 316.2,
+                "w": 1368,
+                "h": 37,
+                "display": "block",
+                "padding": "6px 0px 2px",
+                "margin": "5px 0px 0px",
+                "gap": "normal",
+                "fontSize": "13px",
+                "lineHeight": "normal",
+                "gridTemplateColumns": "none",
+                "overflowY": "visible",
+                "text": "Hongdan 0/3 Cheongdan 0/3 Chodan 0/3 Godori 0/3 Mes 11 completo 0/4 Mes 5 completo 0/4 Mes 10 completo 0/4 Mes 12 completo 0/4"
+              },
+              {
+                "x": 36,
+                "y": 612.2,
+                "right": 1404,
+                "bottom": 649.2,
+                "w": 1368,
+                "h": 37,
+                "display": "block",
+                "padding": "6px 0px 2px",
+                "margin": "5px 0px 0px",
+                "gap": "normal",
+                "fontSize": "13px",
+                "lineHeight": "normal",
+                "gridTemplateColumns": "none",
+                "overflowY": "visible",
+                "text": "Hongdan 0/3 Cheongdan 0/3 Chodan 0/3 Godori 0/3 Mes 11 completo 0/4 Mes 5 completo 0/4 Mes 10 completo 0/4 Mes 12 completo 0/4"
+              }
+            ],
+            ".hwatu-rail-progress ul": [
+              {
+                "x": 36,
+                "y": 286.2,
+                "right": 1404,
+                "bottom": 314.2,
+                "w": 1368,
+                "h": 28,
+                "display": "flex",
+                "padding": "0px",
+                "margin": "0px",
+                "gap": "5px 7px",
+                "fontSize": "13px",
+                "lineHeight": "normal",
+                "gridTemplateColumns": "none",
+                "overflowY": "visible",
+                "text": "Hongdan 0/3 Cheongdan 0/3 Chodan 0/3 Godori 0/3 Mes 11 completo 0/4 Mes 5 completo 0/4 Mes 10 completo 0/4 Mes 12 completo 0/4"
+              },
+              {
+                "x": 36,
+                "y": 619.2,
+                "right": 1404,
+                "bottom": 647.2,
+                "w": 1368,
+                "h": 28,
+                "display": "flex",
+                "padding": "0px",
+                "margin": "0px",
+                "gap": "5px 7px",
+                "fontSize": "13px",
+                "lineHeight": "normal",
+                "gridTemplateColumns": "none",
+                "overflowY": "visible",
+                "text": "Hongdan 0/3 Cheongdan 0/3 Chodan 0/3 Godori 0/3 Mes 11 completo 0/4 Mes 5 completo 0/4 Mes 10 completo 0/4 Mes 12 completo 0/4"
+              }
+            ],
+            ".hwatu-rail-progress li": [
+              {
+                "x": 36,
+                "y": 286.2,
+                "right": 133.9,
+                "bottom": 314.2,
+                "w": 97.9,
+                "h": 28,
+                "display": "flex",
+                "padding": "4px 8px",
+                "margin": "0px",
+                "gap": "5px",
+                "fontSize": "12px",
+                "lineHeight": "15px",
+                "gridTemplateColumns": "none",
+                "overflowY": "visible",
+                "text": "Hongdan 0/3"
+              },
+              {
+                "x": 140.9,
+                "y": 286.2,
+                "right": 253,
+                "bottom": 314.2,
+                "w": 112.1,
+                "h": 28,
+                "display": "flex",
+                "padding": "4px 8px",
+                "margin": "0px",
+                "gap": "5px",
+                "fontSize": "12px",
+                "lineHeight": "15px",
+                "gridTemplateColumns": "none",
+                "overflowY": "visible",
+                "text": "Cheongdan 0/3"
+              },
+              {
+                "x": 260,
+                "y": 286.2,
+                "right": 351.9,
+                "bottom": 314.2,
+                "w": 91.9,
+                "h": 28,
+                "display": "flex",
+                "padding": "4px 8px",
+                "margin": "0px",
+                "gap": "5px",
+                "fontSize": "12px",
+                "lineHeight": "15px",
+                "gridTemplateColumns": "none",
+                "overflowY": "visible",
+                "text": "Chodan 0/3"
+              },
+              {
+                "x": 358.9,
+                "y": 286.2,
+                "right": 445.4,
+                "bottom": 314.2,
+                "w": 86.5,
+                "h": 28,
+                "display": "flex",
+                "padding": "4px 8px",
+                "margin": "0px",
+                "gap": "5px",
+                "fontSize": "12px",
+                "lineHeight": "15px",
+                "gridTemplateColumns": "none",
+                "overflowY": "visible",
+                "text": "Godori 0/3"
+              }
+            ],
+            ".hwatu-tabletop-stage": [
+              {
+                "x": 28,
+                "y": 231,
+                "right": 1412,
+                "bottom": 805.6,
+                "w": 1384,
+                "h": 574.6,
+                "display": "grid",
+                "padding": "0px",
+                "margin": "0px",
+                "gap": "4px",
+                "fontSize": "13px",
+                "lineHeight": "normal",
+                "gridTemplateColumns": "1384px",
+                "overflowY": "visible",
+                "text": "Capturas rivales 0 cartas Brillantes 0 Animales 0 Cintas 0 Simples 0 Hongdan 0/3 Cheongdan 0/3 Chodan 0/3 Godori 0/3 Mes 11 completo 0/4 Mes 5 completo 0/4 Mes 10 completo 0/4 Mes 12 completo 0/4 Mano rival 10 cartas Turno rival M"
+              }
+            ],
+            ".hwatu-felt": [
+              {
+                "x": 28,
+                "y": 370.2,
+                "right": 1412,
+                "bottom": 524,
+                "w": 1384,
+                "h": 153.8,
+                "display": "block",
+                "padding": "5px 9px",
+                "margin": "0px",
+                "gap": "normal",
+                "fontSize": "13px",
+                "lineHeight": "normal",
+                "gridTemplateColumns": "none",
+                "overflowY": "visible",
+                "text": "Mesa 8 cartas visibles Mazo 20 Mes 6 Mes 9 Mes 12 Mes 4 Mes 10 Mes 2 Mes 1 Mes 3 Carta revelada"
+              }
+            ],
+            ".hwatu-phase-note": [
+              {
+                "x": 28,
+                "y": 528,
+                "right": 1412,
+                "bottom": 560,
+                "w": 1384,
+                "h": 32,
+                "display": "flex",
+                "padding": "4px 8px",
+                "margin": "0px",
+                "gap": "8px",
+                "fontSize": "11px",
+                "lineHeight": "15.4px",
+                "gridTemplateColumns": "none",
+                "overflowY": "visible",
+                "text": "Turno rival. Puedes revisar las cartas visibles y los puntos."
+              }
+            ],
+            ".hwatu-hand-section": [
+              {
+                "x": 28,
+                "y": 659.2,
+                "right": 1412,
+                "bottom": 805.6,
+                "w": 1384,
+                "h": 146.5,
+                "display": "grid",
+                "padding": "7px 9px 6px",
+                "margin": "0px",
+                "gap": "0px 12px",
+                "fontSize": "13px",
+                "lineHeight": "normal",
+                "gridTemplateColumns": "1124px 230px",
+                "overflowY": "visible",
+                "text": "Tu mano 10 Las cartas con borde dorado pueden capturar. Mes 7 Mes 7 Mes 5 Mes 3 Mes 2 Mes 5 Mes 8 Mes 12 Mes 5 Mes 10"
+              }
+            ],
+            ".hwatu-hand-heading": [
+              {
+                "x": 37,
+                "y": 667.2,
+                "right": 1403,
+                "bottom": 685.2,
+                "w": 1366,
+                "h": 18,
+                "display": "flex",
+                "padding": "0px",
+                "margin": "0px",
+                "gap": "12px",
+                "fontSize": "13px",
+                "lineHeight": "normal",
+                "gridTemplateColumns": "none",
+                "overflowY": "visible",
+                "text": "Tu mano 10 Las cartas con borde dorado pueden capturar."
+              }
+            ],
+            ".hwatu-choice-hand": [
+              {
+                "x": 37,
+                "y": 685.2,
+                "right": 1161,
+                "bottom": 799.6,
+                "w": 1124,
+                "h": 114.5,
+                "display": "flex",
+                "padding": "3px 4px",
+                "margin": "0px",
+                "gap": "3px",
+                "fontSize": "13px",
+                "lineHeight": "normal",
+                "gridTemplateColumns": "none",
+                "overflowY": "auto",
+                "text": "Mes 7 Mes 7 Mes 5 Mes 3 Mes 2 Mes 5 Mes 8 Mes 12 Mes 5 Mes 10"
+              }
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "viewport": {
+        "width": 1366,
+        "height": 768
+      },
+      "roomId": "5e3da7ff-bae5-4b58-b275-1542a0266593",
+      "states": [
+        {
+          "playerId": "p1",
+          "version": 2,
+          "gameId": "minhwatu",
+          "phase": "play",
+          "turn": "p1",
+          "ownHand": 10,
+          "opponentCount": 10
+        },
+        {
+          "playerId": "p2",
+          "version": 2,
+          "gameId": "minhwatu",
+          "phase": "play",
+          "turn": "p1",
+          "ownHand": 10,
+          "opponentCount": 10
+        }
+      ],
+      "dom": [
+        {
+          "viewport": [
+            1366,
+            768
+          ],
+          "scrollWidth": 1366,
+          "scrollHeight": 1972,
+          "handFitsViewport": true,
+          "counts": {
+            "hand": 10,
+            "table": 8,
+            "opponent": "10장",
+            "opponentFan": 10,
+            "handImages": [
+              {
+                "loaded": true,
+                "src": "/images/hwatu/07-03.svg"
+              },
+              {
+                "loaded": true,
+                "src": "/images/hwatu/11-04.svg"
+              },
+              {
+                "loaded": true,
+                "src": "/images/hwatu/09-04.svg"
+              },
+              {
+                "loaded": true,
+                "src": "/images/hwatu/12-01.svg"
+              },
+              {
+                "loaded": true,
+                "src": "/images/hwatu/04-03.svg"
+              },
+              {
+                "loaded": true,
+                "src": "/images/hwatu/12-04.svg"
+              },
+              {
+                "loaded": true,
+                "src": "/images/hwatu/08-01.svg"
+              },
+              {
+                "loaded": true,
+                "src": "/images/hwatu/12-02.svg"
+              },
+              {
+                "loaded": true,
+                "src": "/images/hwatu/08-04.svg"
+              },
+              {
+                "loaded": true,
+                "src": "/images/hwatu/12-03.svg"
+              }
+            ],
+            "tableImages": [
+              {
+                "loaded": true,
+                "src": "/images/hwatu/06-01.svg"
+              },
+              {
+                "loaded": true,
+                "src": "/images/hwatu/01-04.svg"
+              },
+              {
+                "loaded": true,
+                "src": "/images/hwatu/06-03.svg"
+              },
+              {
+                "loaded": true,
+                "src": "/images/hwatu/07-04.svg"
+              },
+              {
+                "loaded": true,
+                "src": "/images/hwatu/06-02.svg"
+              },
+              {
+                "loaded": true,
+                "src": "/images/hwatu/04-01.svg"
+              },
+              {
+                "loaded": true,
+                "src": "/images/hwatu/11-01.svg"
+              },
+              {
+                "loaded": true,
+                "src": "/images/hwatu/03-01.svg"
+              }
+            ]
+          },
+          "targets": {
+            ".minhwatu-table": [
+              {
+                "x": 19,
+                "y": 182,
+                "right": 1347,
+                "bottom": 836.2,
+                "w": 1328,
+                "h": 654.2,
+                "display": "grid",
+                "padding": "8px",
+                "margin": "0px",
+                "gap": "6px",
+                "fontSize": "13px",
+                "lineHeight": "normal",
+                "gridTemplateColumns": "1310px",
+                "overflowY": "visible",
+                "text": "QA KO 나 · 내 차례 0점 QA ES 상대 0점 상대가 모은 패 0 장 광 0 열끗 0 띠 0 피 0 홍단 0/3 청단 0/3 초단 0/3 고도리 0/3 11월 완성 0/4 5월 완성 0/4 10월 완성 0/4 12월 완성 0/4 상대 손패 10장 내 차례 바닥 패 공개된 패 8장 남은 더미 20 6월 1월 6월 7월 6월 4월 11월 3월 이번 차례 공개 손패에서 이번 차례에 낼 패를 선택하세요. 내가"
+              }
+            ],
+            ".hwatu-capture-rack.is-empty": [
+              {
+                "x": 28,
+                "y": 229,
+                "right": 1338,
+                "bottom": 302.2,
+                "w": 1310,
+                "h": 73.2,
+                "display": "grid",
+                "padding": "2px 7px",
+                "margin": "0px",
+                "gap": "0px 8px",
+                "fontSize": "13px",
+                "lineHeight": "normal",
+                "gridTemplateColumns": "118px 1168px",
+                "overflowY": "visible",
+                "text": "상대가 모은 패 0 장 광 0 열끗 0 띠 0 피 0 홍단 0/3 청단 0/3 초단 0/3 고도리 0/3 11월 완성 0/4 5월 완성 0/4 10월 완성 0/4 12월 완성 0/4"
+              },
+              {
+                "x": 28,
+                "y": 544,
+                "right": 1338,
+                "bottom": 617.2,
+                "w": 1310,
+                "h": 73.2,
+                "display": "grid",
+                "padding": "2px 7px",
+                "margin": "0px",
+                "gap": "0px 8px",
+                "fontSize": "13px",
+                "lineHeight": "normal",
+                "gridTemplateColumns": "118px 1168px",
+                "overflowY": "visible",
+                "text": "내가 모은 패 0 장 광 0 열끗 0 띠 0 피 0 홍단 0/3 청단 0/3 초단 0/3 고도리 0/3 11월 완성 0/4 5월 완성 0/4 10월 완성 0/4 12월 완성 0/4"
+              }
+            ],
+            ".hwatu-capture-categories": [
+              {
+                "x": 162,
+                "y": 232,
+                "right": 1330,
+                "bottom": 271.2,
+                "w": 1168,
+                "h": 39.2,
+                "display": "grid",
+                "padding": "0px",
+                "margin": "0px",
+                "gap": "12px",
+                "fontSize": "13px",
+                "lineHeight": "normal",
+                "gridTemplateColumns": "283px 283px 283px 283px",
+                "overflowY": "visible",
+                "text": "광 0 열끗 0 띠 0 피 0"
+              },
+              {
+                "x": 162,
+                "y": 547,
+                "right": 1330,
+                "bottom": 586.2,
+                "w": 1168,
+                "h": 39.2,
+                "display": "grid",
+                "padding": "0px",
+                "margin": "0px",
+                "gap": "12px",
+                "fontSize": "13px",
+                "lineHeight": "normal",
+                "gridTemplateColumns": "283px 283px 283px 283px",
+                "overflowY": "visible",
+                "text": "광 0 열끗 0 띠 0 피 0"
+              }
+            ],
+            ".hwatu-category-pile": [
+              {
+                "x": 162,
+                "y": 232,
+                "right": 445,
+                "bottom": 252,
+                "w": 283,
+                "h": 20,
+                "display": "block",
+                "padding": "0px",
+                "margin": "0px",
+                "gap": "normal",
+                "fontSize": "13px",
+                "lineHeight": "normal",
+                "gridTemplateColumns": "none",
+                "overflowY": "visible",
+                "text": "광 0"
+              },
+              {
+                "x": 457,
+                "y": 232,
+                "right": 740,
+                "bottom": 252,
+                "w": 283,
+                "h": 20,
+                "display": "block",
+                "padding": "0px",
+                "margin": "0px",
+                "gap": "normal",
+                "fontSize": "13px",
+                "lineHeight": "normal",
+                "gridTemplateColumns": "none",
+                "overflowY": "visible",
+                "text": "열끗 0"
+              },
+              {
+                "x": 752,
+                "y": 232,
+                "right": 1035,
+                "bottom": 252,
+                "w": 283,
+                "h": 20,
+                "display": "block",
+                "padding": "0px",
+                "margin": "0px",
+                "gap": "normal",
+                "fontSize": "13px",
+                "lineHeight": "normal",
+                "gridTemplateColumns": "none",
+                "overflowY": "visible",
+                "text": "띠 0"
+              },
+              {
+                "x": 1047,
+                "y": 232,
+                "right": 1330,
+                "bottom": 252,
+                "w": 283,
+                "h": 20,
+                "display": "block",
+                "padding": "0px",
+                "margin": "0px",
+                "gap": "normal",
+                "fontSize": "13px",
+                "lineHeight": "normal",
+                "gridTemplateColumns": "none",
+                "overflowY": "visible",
+                "text": "피 0"
+              }
+            ],
+            ".hwatu-category-heading": [
+              {
+                "x": 162,
+                "y": 232,
+                "right": 216.9,
+                "bottom": 252,
+                "w": 54.9,
+                "h": 20,
+                "display": "flex",
+                "padding": "0px",
+                "margin": "0px",
+                "gap": "6px",
+                "fontSize": "12px",
+                "lineHeight": "normal",
+                "gridTemplateColumns": "none",
+                "overflowY": "visible",
+                "text": "광 0"
+              },
+              {
+                "x": 457,
+                "y": 232,
+                "right": 523,
+                "bottom": 252,
+                "w": 66,
+                "h": 20,
+                "display": "flex",
+                "padding": "0px",
+                "margin": "0px",
+                "gap": "6px",
+                "fontSize": "12px",
+                "lineHeight": "normal",
+                "gridTemplateColumns": "none",
+                "overflowY": "visible",
+                "text": "열끗 0"
+              },
+              {
+                "x": 752,
+                "y": 232,
+                "right": 806.9,
+                "bottom": 252,
+                "w": 54.9,
+                "h": 20,
+                "display": "flex",
+                "padding": "0px",
+                "margin": "0px",
+                "gap": "6px",
+                "fontSize": "12px",
+                "lineHeight": "normal",
+                "gridTemplateColumns": "none",
+                "overflowY": "visible",
+                "text": "띠 0"
+              },
+              {
+                "x": 1047,
+                "y": 232,
+                "right": 1101.9,
+                "bottom": 252,
+                "w": 54.9,
+                "h": 20,
+                "display": "flex",
+                "padding": "0px",
+                "margin": "0px",
+                "gap": "6px",
+                "fontSize": "12px",
+                "lineHeight": "normal",
+                "gridTemplateColumns": "none",
+                "overflowY": "visible",
+                "text": "피 0"
+              }
+            ],
+            ".hwatu-captured-cards": [
+              {
+                "x": 162,
+                "y": 252,
+                "right": 445,
+                "bottom": 252,
+                "w": 283,
+                "h": 0,
+                "display": "grid",
+                "padding": "0px",
+                "margin": "0px",
+                "gap": "3px",
+                "fontSize": "13px",
+                "lineHeight": "normal",
+                "gridTemplateColumns": "283px",
+                "overflowY": "visible",
+                "text": ""
+              },
+              {
+                "x": 457,
+                "y": 252,
+                "right": 740,
+                "bottom": 252,
+                "w": 283,
+                "h": 0,
+                "display": "grid",
+                "padding": "0px",
+                "margin": "0px",
+                "gap": "3px",
+                "fontSize": "13px",
+                "lineHeight": "normal",
+                "gridTemplateColumns": "283px",
+                "overflowY": "visible",
+                "text": ""
+              },
+              {
+                "x": 752,
+                "y": 252,
+                "right": 1035,
+                "bottom": 252,
+                "w": 283,
+                "h": 0,
+                "display": "grid",
+                "padding": "0px",
+                "margin": "0px",
+                "gap": "3px",
+                "fontSize": "13px",
+                "lineHeight": "normal",
+                "gridTemplateColumns": "283px",
+                "overflowY": "visible",
+                "text": ""
+              },
+              {
+                "x": 1047,
+                "y": 252,
+                "right": 1330,
+                "bottom": 252,
+                "w": 283,
+                "h": 0,
+                "display": "grid",
+                "padding": "0px",
+                "margin": "0px",
+                "gap": "3px",
+                "fontSize": "13px",
+                "lineHeight": "normal",
+                "gridTemplateColumns": "none",
+                "overflowY": "visible",
+                "text": ""
+              }
+            ],
+            ".hwatu-rail-progress": [
+              {
+                "x": 36,
+                "y": 272.2,
+                "right": 1330,
+                "bottom": 299.2,
+                "w": 1294,
+                "h": 27,
+                "display": "block",
+                "padding": "2px 0px 0px",
+                "margin": "1px 0px 0px",
+                "gap": "normal",
+                "fontSize": "13px",
+                "lineHeight": "normal",
+                "gridTemplateColumns": "none",
+                "overflowY": "visible",
+                "text": "홍단 0/3 청단 0/3 초단 0/3 고도리 0/3 11월 완성 0/4 5월 완성 0/4 10월 완성 0/4 12월 완성 0/4"
+              },
+              {
+                "x": 36,
+                "y": 587.2,
+                "right": 1330,
+                "bottom": 614.2,
+                "w": 1294,
+                "h": 27,
+                "display": "block",
+                "padding": "2px 0px 0px",
+                "margin": "1px 0px 0px",
+                "gap": "normal",
+                "fontSize": "13px",
+                "lineHeight": "normal",
+                "gridTemplateColumns": "none",
+                "overflowY": "visible",
+                "text": "홍단 0/3 청단 0/3 초단 0/3 고도리 0/3 11월 완성 0/4 5월 완성 0/4 10월 완성 0/4 12월 완성 0/4"
+              }
+            ],
+            ".hwatu-rail-progress ul": [
+              {
+                "x": 36,
+                "y": 275.2,
+                "right": 1330,
+                "bottom": 299.2,
+                "w": 1294,
+                "h": 24,
+                "display": "flex",
+                "padding": "0px",
+                "margin": "0px",
+                "gap": "5px 7px",
+                "fontSize": "13px",
+                "lineHeight": "normal",
+                "gridTemplateColumns": "none",
+                "overflowY": "visible",
+                "text": "홍단 0/3 청단 0/3 초단 0/3 고도리 0/3 11월 완성 0/4 5월 완성 0/4 10월 완성 0/4 12월 완성 0/4"
+              },
+              {
+                "x": 36,
+                "y": 590.2,
+                "right": 1330,
+                "bottom": 614.2,
+                "w": 1294,
+                "h": 24,
+                "display": "flex",
+                "padding": "0px",
+                "margin": "0px",
+                "gap": "5px 7px",
+                "fontSize": "13px",
+                "lineHeight": "normal",
+                "gridTemplateColumns": "none",
+                "overflowY": "visible",
+                "text": "홍단 0/3 청단 0/3 초단 0/3 고도리 0/3 11월 완성 0/4 5월 완성 0/4 10월 완성 0/4 12월 완성 0/4"
+              }
+            ],
+            ".hwatu-rail-progress li": [
+              {
+                "x": 36,
+                "y": 275.2,
+                "right": 106.4,
+                "bottom": 299.2,
+                "w": 70.4,
+                "h": 24,
+                "display": "flex",
+                "padding": "2px 8px",
+                "margin": "0px",
+                "gap": "5px",
+                "fontSize": "12px",
+                "lineHeight": "15px",
+                "gridTemplateColumns": "none",
+                "overflowY": "visible",
+                "text": "홍단 0/3"
+              },
+              {
+                "x": 113.4,
+                "y": 275.2,
+                "right": 183.9,
+                "bottom": 299.2,
+                "w": 70.4,
+                "h": 24,
+                "display": "flex",
+                "padding": "2px 8px",
+                "margin": "0px",
+                "gap": "5px",
+                "fontSize": "12px",
+                "lineHeight": "15px",
+                "gridTemplateColumns": "none",
+                "overflowY": "visible",
+                "text": "청단 0/3"
+              },
+              {
+                "x": 190.9,
+                "y": 275.2,
+                "right": 261.3,
+                "bottom": 299.2,
+                "w": 70.4,
+                "h": 24,
+                "display": "flex",
+                "padding": "2px 8px",
+                "margin": "0px",
+                "gap": "5px",
+                "fontSize": "12px",
+                "lineHeight": "15px",
+                "gridTemplateColumns": "none",
+                "overflowY": "visible",
+                "text": "초단 0/3"
+              },
+              {
+                "x": 268.3,
+                "y": 275.2,
+                "right": 349.8,
+                "bottom": 299.2,
+                "w": 81.5,
+                "h": 24,
+                "display": "flex",
+                "padding": "2px 8px",
+                "margin": "0px",
+                "gap": "5px",
+                "fontSize": "12px",
+                "lineHeight": "15px",
+                "gridTemplateColumns": "none",
+                "overflowY": "visible",
+                "text": "고도리 0/3"
+              }
+            ],
+            ".hwatu-tabletop-stage": [
+              {
+                "x": 28,
+                "y": 229,
+                "right": 1338,
+                "bottom": 761.2,
+                "w": 1310,
+                "h": 532.2,
+                "display": "grid",
+                "padding": "0px",
+                "margin": "0px",
+                "gap": "4px",
+                "fontSize": "13px",
+                "lineHeight": "normal",
+                "gridTemplateColumns": "1310px",
+                "overflowY": "visible",
+                "text": "상대가 모은 패 0 장 광 0 열끗 0 띠 0 피 0 홍단 0/3 청단 0/3 초단 0/3 고도리 0/3 11월 완성 0/4 5월 완성 0/4 10월 완성 0/4 12월 완성 0/4 상대 손패 10장 내 차례 바닥 패 공개된 패 8장 남은 더미 20 6월 1월 6월 7월 6월 4월 11월 3월 이번 차례 공개 손패에서 이번 차례에 낼 패를 선택하세요. 내가 모은 패 0 장 광 0 열끗 0 띠 0 피 0 홍단 "
+              }
+            ],
+            ".hwatu-felt": [
+              {
+                "x": 28,
+                "y": 350.2,
+                "right": 1338,
+                "bottom": 504,
+                "w": 1310,
+                "h": 153.8,
+                "display": "block",
+                "padding": "5px 9px",
+                "margin": "0px",
+                "gap": "normal",
+                "fontSize": "13px",
+                "lineHeight": "normal",
+                "gridTemplateColumns": "none",
+                "overflowY": "visible",
+                "text": "바닥 패 공개된 패 8장 남은 더미 20 6월 1월 6월 7월 6월 4월 11월 3월 이번 차례 공개"
+              }
+            ],
+            ".hwatu-phase-note": [
+              {
+                "x": 28,
+                "y": 508,
+                "right": 1338,
+                "bottom": 540,
+                "w": 1310,
+                "h": 32,
+                "display": "flex",
+                "padding": "4px 8px",
+                "margin": "0px",
+                "gap": "8px",
+                "fontSize": "11px",
+                "lineHeight": "15.4px",
+                "gridTemplateColumns": "none",
+                "overflowY": "visible",
+                "text": "손패에서 이번 차례에 낼 패를 선택하세요."
+              }
+            ],
+            ".hwatu-hand-section": [
+              {
+                "x": 28,
+                "y": 621.2,
+                "right": 1338,
+                "bottom": 761.2,
+                "w": 1310,
+                "h": 140,
+                "display": "grid",
+                "padding": "7px 9px 6px",
+                "margin": "0px",
+                "gap": "0px 12px",
+                "fontSize": "13px",
+                "lineHeight": "normal",
+                "gridTemplateColumns": "1050px 230px",
+                "overflowY": "visible",
+                "text": "내 손패 10 내 차례 금색 테두리 패는 바닥패를 가져올 수 있어요. 7월 11월 9월 12월 4월 12월 8월 12월 8월 12월"
+              }
+            ],
+            ".hwatu-hand-heading": [
+              {
+                "x": 37,
+                "y": 629.2,
+                "right": 1329,
+                "bottom": 649.2,
+                "w": 1292,
+                "h": 20,
+                "display": "flex",
+                "padding": "0px",
+                "margin": "0px",
+                "gap": "12px",
+                "fontSize": "13px",
+                "lineHeight": "normal",
+                "gridTemplateColumns": "none",
+                "overflowY": "visible",
+                "text": "내 손패 10 내 차례 금색 테두리 패는 바닥패를 가져올 수 있어요."
+              }
+            ],
+            ".hwatu-choice-hand": [
+              {
+                "x": 37,
+                "y": 649.2,
+                "right": 1087,
+                "bottom": 755.2,
+                "w": 1050,
+                "h": 106,
+                "display": "flex",
+                "padding": "3px 4px",
+                "margin": "0px",
+                "gap": "3px",
+                "fontSize": "13px",
+                "lineHeight": "normal",
+                "gridTemplateColumns": "none",
+                "overflowY": "auto",
+                "text": "7월 11월 9월 12월 4월 12월 8월 12월 8월 12월"
+              }
+            ]
+          }
+        },
+        {
+          "viewport": [
+            1366,
+            768
+          ],
+          "scrollWidth": 1366,
+          "scrollHeight": 2092,
+          "handFitsViewport": true,
+          "counts": {
+            "hand": 10,
+            "table": 8,
+            "opponent": "10 cartas",
+            "opponentFan": 10,
+            "handImages": [
+              {
+                "loaded": true,
+                "src": "/images/hwatu/08-02.svg"
+              },
+              {
+                "loaded": true,
+                "src": "/images/hwatu/03-04.svg"
+              },
+              {
+                "loaded": true,
+                "src": "/images/hwatu/04-02.svg"
+              },
+              {
+                "loaded": true,
+                "src": "/images/hwatu/03-02.svg"
+              },
+              {
+                "loaded": true,
+                "src": "/images/hwatu/10-03.svg"
+              },
+              {
+                "loaded": true,
+                "src": "/images/hwatu/03-03.svg"
+              },
+              {
+                "loaded": true,
+                "src": "/images/hwatu/09-01.svg"
+              },
+              {
+                "loaded": true,
+                "src": "/images/hwatu/01-01.svg"
+              },
+              {
+                "loaded": true,
+                "src": "/images/hwatu/01-03.svg"
+              },
+              {
+                "loaded": true,
+                "src": "/images/hwatu/05-03.svg"
+              }
+            ],
+            "tableImages": [
+              {
+                "loaded": true,
+                "src": "/images/hwatu/06-01.svg"
+              },
+              {
+                "loaded": true,
+                "src": "/images/hwatu/01-04.svg"
+              },
+              {
+                "loaded": true,
+                "src": "/images/hwatu/06-03.svg"
+              },
+              {
+                "loaded": true,
+                "src": "/images/hwatu/07-04.svg"
+              },
+              {
+                "loaded": true,
+                "src": "/images/hwatu/06-02.svg"
+              },
+              {
+                "loaded": true,
+                "src": "/images/hwatu/04-01.svg"
+              },
+              {
+                "loaded": true,
+                "src": "/images/hwatu/11-01.svg"
+              },
+              {
+                "loaded": true,
+                "src": "/images/hwatu/03-01.svg"
+              }
+            ]
+          },
+          "targets": {
+            ".minhwatu-table": [
+              {
+                "x": 19,
+                "y": 184,
+                "right": 1347,
+                "bottom": 828.2,
+                "w": 1328,
+                "h": 644.2,
+                "display": "grid",
+                "padding": "8px",
+                "margin": "0px",
+                "gap": "6px",
+                "fontSize": "13px",
+                "lineHeight": "normal",
+                "gridTemplateColumns": "1310px",
+                "overflowY": "visible",
+                "text": "QA KO Rival · Turno rival 0pts QA ES Tú 0pts Capturas rivales 0 cartas Brillantes 0 Animales 0 Cintas 0 Simples 0 Hongdan 0/3 Cheongdan 0/3 Chodan 0/3 Godori 0/3 Mes 11 completo 0/4 Mes 5 completo 0/4 Mes 10 completo 0/4 Mes 12 co"
+              }
+            ],
+            ".hwatu-capture-rack.is-empty": [
+              {
+                "x": 28,
+                "y": 231,
+                "right": 1338,
+                "bottom": 302.2,
+                "w": 1310,
+                "h": 71.2,
+                "display": "grid",
+                "padding": "2px 7px",
+                "margin": "0px",
+                "gap": "0px 8px",
+                "fontSize": "13px",
+                "lineHeight": "normal",
+                "gridTemplateColumns": "118px 1168px",
+                "overflowY": "visible",
+                "text": "Capturas rivales 0 cartas Brillantes 0 Animales 0 Cintas 0 Simples 0 Hongdan 0/3 Cheongdan 0/3 Chodan 0/3 Godori 0/3 Mes 11 completo 0/4 Mes 5 completo 0/4 Mes 10 completo 0/4 Mes 12 completo 0/4"
+              },
+              {
+                "x": 28,
+                "y": 544,
+                "right": 1338,
+                "bottom": 615.2,
+                "w": 1310,
+                "h": 71.2,
+                "display": "grid",
+                "padding": "2px 7px",
+                "margin": "0px",
+                "gap": "0px 8px",
+                "fontSize": "13px",
+                "lineHeight": "normal",
+                "gridTemplateColumns": "118px 1168px",
+                "overflowY": "visible",
+                "text": "Mis capturas 0 cartas Brillantes 0 Animales 0 Cintas 0 Simples 0 Hongdan 0/3 Cheongdan 0/3 Chodan 0/3 Godori 0/3 Mes 11 completo 0/4 Mes 5 completo 0/4 Mes 10 completo 0/4 Mes 12 completo 0/4"
+              }
+            ],
+            ".hwatu-capture-categories": [
+              {
+                "x": 162,
+                "y": 234,
+                "right": 1330,
+                "bottom": 271.2,
+                "w": 1168,
+                "h": 37.2,
+                "display": "grid",
+                "padding": "0px",
+                "margin": "0px",
+                "gap": "12px",
+                "fontSize": "13px",
+                "lineHeight": "normal",
+                "gridTemplateColumns": "283px 283px 283px 283px",
+                "overflowY": "visible",
+                "text": "Brillantes 0 Animales 0 Cintas 0 Simples 0"
+              },
+              {
+                "x": 162,
+                "y": 547,
+                "right": 1330,
+                "bottom": 584.2,
+                "w": 1168,
+                "h": 37.2,
+                "display": "grid",
+                "padding": "0px",
+                "margin": "0px",
+                "gap": "12px",
+                "fontSize": "13px",
+                "lineHeight": "normal",
+                "gridTemplateColumns": "283px 283px 283px 283px",
+                "overflowY": "visible",
+                "text": "Brillantes 0 Animales 0 Cintas 0 Simples 0"
+              }
+            ],
+            ".hwatu-category-pile": [
+              {
+                "x": 162,
+                "y": 234,
+                "right": 445,
+                "bottom": 254,
+                "w": 283,
+                "h": 20,
+                "display": "block",
+                "padding": "0px",
+                "margin": "0px",
+                "gap": "normal",
+                "fontSize": "13px",
+                "lineHeight": "normal",
+                "gridTemplateColumns": "none",
+                "overflowY": "visible",
+                "text": "Brillantes 0"
+              },
+              {
+                "x": 457,
+                "y": 234,
+                "right": 740,
+                "bottom": 254,
+                "w": 283,
+                "h": 20,
+                "display": "block",
+                "padding": "0px",
+                "margin": "0px",
+                "gap": "normal",
+                "fontSize": "13px",
+                "lineHeight": "normal",
+                "gridTemplateColumns": "none",
+                "overflowY": "visible",
+                "text": "Animales 0"
+              },
+              {
+                "x": 752,
+                "y": 234,
+                "right": 1035,
+                "bottom": 254,
+                "w": 283,
+                "h": 20,
+                "display": "block",
+                "padding": "0px",
+                "margin": "0px",
+                "gap": "normal",
+                "fontSize": "13px",
+                "lineHeight": "normal",
+                "gridTemplateColumns": "none",
+                "overflowY": "visible",
+                "text": "Cintas 0"
+              },
+              {
+                "x": 1047,
+                "y": 234,
+                "right": 1330,
+                "bottom": 254,
+                "w": 283,
+                "h": 20,
+                "display": "block",
+                "padding": "0px",
+                "margin": "0px",
+                "gap": "normal",
+                "fontSize": "13px",
+                "lineHeight": "normal",
+                "gridTemplateColumns": "none",
+                "overflowY": "visible",
+                "text": "Simples 0"
+              }
+            ],
+            ".hwatu-category-heading": [
+              {
+                "x": 162,
+                "y": 234,
+                "right": 256.6,
+                "bottom": 254,
+                "w": 94.6,
+                "h": 20,
+                "display": "flex",
+                "padding": "0px",
+                "margin": "0px",
+                "gap": "6px",
+                "fontSize": "12px",
+                "lineHeight": "normal",
+                "gridTemplateColumns": "none",
+                "overflowY": "visible",
+                "text": "Brillantes 0"
+              },
+              {
+                "x": 457,
+                "y": 234,
+                "right": 551.4,
+                "bottom": 254,
+                "w": 94.4,
+                "h": 20,
+                "display": "flex",
+                "padding": "0px",
+                "margin": "0px",
+                "gap": "6px",
+                "fontSize": "12px",
+                "lineHeight": "normal",
+                "gridTemplateColumns": "none",
+                "overflowY": "visible",
+                "text": "Animales 0"
+              },
+              {
+                "x": 752,
+                "y": 234,
+                "right": 831.5,
+                "bottom": 254,
+                "w": 79.5,
+                "h": 20,
+                "display": "flex",
+                "padding": "0px",
+                "margin": "0px",
+                "gap": "6px",
+                "fontSize": "12px",
+                "lineHeight": "normal",
+                "gridTemplateColumns": "none",
+                "overflowY": "visible",
+                "text": "Cintas 0"
+              },
+              {
+                "x": 1047,
+                "y": 234,
+                "right": 1134.5,
+                "bottom": 254,
+                "w": 87.5,
+                "h": 20,
+                "display": "flex",
+                "padding": "0px",
+                "margin": "0px",
+                "gap": "6px",
+                "fontSize": "12px",
+                "lineHeight": "normal",
+                "gridTemplateColumns": "none",
+                "overflowY": "visible",
+                "text": "Simples 0"
+              }
+            ],
+            ".hwatu-captured-cards": [
+              {
+                "x": 162,
+                "y": 254,
+                "right": 445,
+                "bottom": 254,
+                "w": 283,
+                "h": 0,
+                "display": "grid",
+                "padding": "0px",
+                "margin": "0px",
+                "gap": "3px",
+                "fontSize": "13px",
+                "lineHeight": "normal",
+                "gridTemplateColumns": "283px",
+                "overflowY": "visible",
+                "text": ""
+              },
+              {
+                "x": 457,
+                "y": 254,
+                "right": 740,
+                "bottom": 254,
+                "w": 283,
+                "h": 0,
+                "display": "grid",
+                "padding": "0px",
+                "margin": "0px",
+                "gap": "3px",
+                "fontSize": "13px",
+                "lineHeight": "normal",
+                "gridTemplateColumns": "283px",
+                "overflowY": "visible",
+                "text": ""
+              },
+              {
+                "x": 752,
+                "y": 254,
+                "right": 1035,
+                "bottom": 254,
+                "w": 283,
+                "h": 0,
+                "display": "grid",
+                "padding": "0px",
+                "margin": "0px",
+                "gap": "3px",
+                "fontSize": "13px",
+                "lineHeight": "normal",
+                "gridTemplateColumns": "283px",
+                "overflowY": "visible",
+                "text": ""
+              },
+              {
+                "x": 1047,
+                "y": 254,
+                "right": 1330,
+                "bottom": 254,
+                "w": 283,
+                "h": 0,
+                "display": "grid",
+                "padding": "0px",
+                "margin": "0px",
+                "gap": "3px",
+                "fontSize": "13px",
+                "lineHeight": "normal",
+                "gridTemplateColumns": "none",
+                "overflowY": "visible",
+                "text": ""
+              }
+            ],
+            ".hwatu-rail-progress": [
+              {
+                "x": 36,
+                "y": 272.2,
+                "right": 1330,
+                "bottom": 299.2,
+                "w": 1294,
+                "h": 27,
+                "display": "block",
+                "padding": "2px 0px 0px",
+                "margin": "1px 0px 0px",
+                "gap": "normal",
+                "fontSize": "13px",
+                "lineHeight": "normal",
+                "gridTemplateColumns": "none",
+                "overflowY": "visible",
+                "text": "Hongdan 0/3 Cheongdan 0/3 Chodan 0/3 Godori 0/3 Mes 11 completo 0/4 Mes 5 completo 0/4 Mes 10 completo 0/4 Mes 12 completo 0/4"
+              },
+              {
+                "x": 36,
+                "y": 585.2,
+                "right": 1330,
+                "bottom": 612.2,
+                "w": 1294,
+                "h": 27,
+                "display": "block",
+                "padding": "2px 0px 0px",
+                "margin": "1px 0px 0px",
+                "gap": "normal",
+                "fontSize": "13px",
+                "lineHeight": "normal",
+                "gridTemplateColumns": "none",
+                "overflowY": "visible",
+                "text": "Hongdan 0/3 Cheongdan 0/3 Chodan 0/3 Godori 0/3 Mes 11 completo 0/4 Mes 5 completo 0/4 Mes 10 completo 0/4 Mes 12 completo 0/4"
+              }
+            ],
+            ".hwatu-rail-progress ul": [
+              {
+                "x": 36,
+                "y": 275.2,
+                "right": 1330,
+                "bottom": 299.2,
+                "w": 1294,
+                "h": 24,
+                "display": "flex",
+                "padding": "0px",
+                "margin": "0px",
+                "gap": "5px 7px",
+                "fontSize": "13px",
+                "lineHeight": "normal",
+                "gridTemplateColumns": "none",
+                "overflowY": "visible",
+                "text": "Hongdan 0/3 Cheongdan 0/3 Chodan 0/3 Godori 0/3 Mes 11 completo 0/4 Mes 5 completo 0/4 Mes 10 completo 0/4 Mes 12 completo 0/4"
+              },
+              {
+                "x": 36,
+                "y": 588.2,
+                "right": 1330,
+                "bottom": 612.2,
+                "w": 1294,
+                "h": 24,
+                "display": "flex",
+                "padding": "0px",
+                "margin": "0px",
+                "gap": "5px 7px",
+                "fontSize": "13px",
+                "lineHeight": "normal",
+                "gridTemplateColumns": "none",
+                "overflowY": "visible",
+                "text": "Hongdan 0/3 Cheongdan 0/3 Chodan 0/3 Godori 0/3 Mes 11 completo 0/4 Mes 5 completo 0/4 Mes 10 completo 0/4 Mes 12 completo 0/4"
+              }
+            ],
+            ".hwatu-rail-progress li": [
+              {
+                "x": 36,
+                "y": 275.2,
+                "right": 133.9,
+                "bottom": 299.2,
+                "w": 97.9,
+                "h": 24,
+                "display": "flex",
+                "padding": "2px 8px",
+                "margin": "0px",
+                "gap": "5px",
+                "fontSize": "12px",
+                "lineHeight": "15px",
+                "gridTemplateColumns": "none",
+                "overflowY": "visible",
+                "text": "Hongdan 0/3"
+              },
+              {
+                "x": 140.9,
+                "y": 275.2,
+                "right": 253,
+                "bottom": 299.2,
+                "w": 112.1,
+                "h": 24,
+                "display": "flex",
+                "padding": "2px 8px",
+                "margin": "0px",
+                "gap": "5px",
+                "fontSize": "12px",
+                "lineHeight": "15px",
+                "gridTemplateColumns": "none",
+                "overflowY": "visible",
+                "text": "Cheongdan 0/3"
+              },
+              {
+                "x": 260,
+                "y": 275.2,
+                "right": 351.9,
+                "bottom": 299.2,
+                "w": 91.9,
+                "h": 24,
+                "display": "flex",
+                "padding": "2px 8px",
+                "margin": "0px",
+                "gap": "5px",
+                "fontSize": "12px",
+                "lineHeight": "15px",
+                "gridTemplateColumns": "none",
+                "overflowY": "visible",
+                "text": "Chodan 0/3"
+              },
+              {
+                "x": 358.9,
+                "y": 275.2,
+                "right": 445.4,
+                "bottom": 299.2,
+                "w": 86.5,
+                "h": 24,
+                "display": "flex",
+                "padding": "2px 8px",
+                "margin": "0px",
+                "gap": "5px",
+                "fontSize": "12px",
+                "lineHeight": "15px",
+                "gridTemplateColumns": "none",
+                "overflowY": "visible",
+                "text": "Godori 0/3"
+              }
+            ],
+            ".hwatu-tabletop-stage": [
+              {
+                "x": 28,
+                "y": 231,
+                "right": 1338,
+                "bottom": 757.2,
+                "w": 1310,
+                "h": 526.2,
+                "display": "grid",
+                "padding": "0px",
+                "margin": "0px",
+                "gap": "4px",
+                "fontSize": "13px",
+                "lineHeight": "normal",
+                "gridTemplateColumns": "1310px",
+                "overflowY": "visible",
+                "text": "Capturas rivales 0 cartas Brillantes 0 Animales 0 Cintas 0 Simples 0 Hongdan 0/3 Cheongdan 0/3 Chodan 0/3 Godori 0/3 Mes 11 completo 0/4 Mes 5 completo 0/4 Mes 10 completo 0/4 Mes 12 completo 0/4 Mano rival 10 cartas Turno rival M"
+              }
+            ],
+            ".hwatu-felt": [
+              {
+                "x": 28,
+                "y": 350.2,
+                "right": 1338,
+                "bottom": 504,
+                "w": 1310,
+                "h": 153.8,
+                "display": "block",
+                "padding": "5px 9px",
+                "margin": "0px",
+                "gap": "normal",
+                "fontSize": "13px",
+                "lineHeight": "normal",
+                "gridTemplateColumns": "none",
+                "overflowY": "visible",
+                "text": "Mesa 8 cartas visibles Mazo 20 Mes 6 Mes 1 Mes 6 Mes 7 Mes 6 Mes 4 Mes 11 Mes 3 Carta revelada"
+              }
+            ],
+            ".hwatu-phase-note": [
+              {
+                "x": 28,
+                "y": 508,
+                "right": 1338,
+                "bottom": 540,
+                "w": 1310,
+                "h": 32,
+                "display": "flex",
+                "padding": "4px 8px",
+                "margin": "0px",
+                "gap": "8px",
+                "fontSize": "11px",
+                "lineHeight": "15.4px",
+                "gridTemplateColumns": "none",
+                "overflowY": "visible",
+                "text": "Turno rival. Puedes revisar las cartas visibles y los puntos."
+              }
+            ],
+            ".hwatu-hand-section": [
+              {
+                "x": 28,
+                "y": 619.2,
+                "right": 1338,
+                "bottom": 757.2,
+                "w": 1310,
+                "h": 138,
+                "display": "grid",
+                "padding": "7px 9px 6px",
+                "margin": "0px",
+                "gap": "0px 12px",
+                "fontSize": "13px",
+                "lineHeight": "normal",
+                "gridTemplateColumns": "1050px 230px",
+                "overflowY": "visible",
+                "text": "Tu mano 10 Las cartas con borde dorado pueden capturar. Mes 8 Mes 3 Mes 4 Mes 3 Mes 10 Mes 3 Mes 9 Mes 1 Mes 1 Mes 5"
+              }
+            ],
+            ".hwatu-hand-heading": [
+              {
+                "x": 37,
+                "y": 627.2,
+                "right": 1329,
+                "bottom": 645.2,
+                "w": 1292,
+                "h": 18,
+                "display": "flex",
+                "padding": "0px",
+                "margin": "0px",
+                "gap": "12px",
+                "fontSize": "13px",
+                "lineHeight": "normal",
+                "gridTemplateColumns": "none",
+                "overflowY": "visible",
+                "text": "Tu mano 10 Las cartas con borde dorado pueden capturar."
+              }
+            ],
+            ".hwatu-choice-hand": [
+              {
+                "x": 37,
+                "y": 645.2,
+                "right": 1087,
+                "bottom": 751.2,
+                "w": 1050,
+                "h": 106,
+                "display": "flex",
+                "padding": "3px 4px",
+                "margin": "0px",
+                "gap": "3px",
+                "fontSize": "13px",
+                "lineHeight": "normal",
+                "gridTemplateColumns": "none",
+                "overflowY": "auto",
+                "text": "Mes 8 Mes 3 Mes 4 Mes 3 Mes 10 Mes 3 Mes 9 Mes 1 Mes 1 Mes 5"
+              }
+            ]
+          }
+        }
+      ],
+      "controlledDomOnlyStress": {
+        "method": "DOM clones of rendered card faces only; no action, snapshot, engine, room or authority mutation",
+        "publicCardCount": 14,
+        "syntheticCaptureFaceCount": 24,
+        "publicBox": {
+          "x": 200,
+          "y": 364,
+          "right": 1216,
+          "bottom": 490,
+          "width": 1016,
+          "height": 126
+        },
+        "captureRackBox": {
+          "x": 28,
+          "y": 544,
+          "right": 1338,
+          "bottom": 912,
+          "width": 1310,
+          "height": 368
+        },
+        "captureGridWidth": 283,
+        "documentClientWidth": 1366,
+        "documentScrollWidth": 1366,
+        "publicFacesHaveLayout": true,
+        "captureFacesHaveLayout": true
+      }
+    }
+  ],
+  "errors": []
+}

@@ -1,0 +1,3799 @@
+{
+  "sizes": [
+    {
+      "viewport": [
+        1366,
+        768
+      ],
+      "locale": "ko",
+      "count": 24,
+      "issues": [],
+      "metrics": [
+        {
+          "index": 1,
+          "tile": {
+            "x": 742.2,
+            "y": 655,
+            "right": 808,
+            "bottom": 737,
+            "width": 65.8,
+            "height": 82
+          },
+          "name": "광주",
+          "title": "광주",
+          "nameRect": {
+            "x": 745.2,
+            "y": 695,
+            "right": 805,
+            "bottom": 722,
+            "width": 59.8,
+            "height": 27
+          },
+          "nameFont": "12px",
+          "nameLine": "12.6px",
+          "nameScroll": 27,
+          "nameClient": 27,
+          "price": "100",
+          "priceRect": {
+            "x": 762.3,
+            "y": 723,
+            "right": 787.8,
+            "bottom": 734.6,
+            "width": 25.5,
+            "height": 11.5
+          },
+          "priceFont": "11px",
+          "priceScroll": 26,
+          "priceClient": 26,
+          "priceHeight": 12,
+          "priceClientHeight": 12
+        },
+        {
+          "index": 3,
+          "tile": {
+            "x": 602.6,
+            "y": 655,
+            "right": 668.4,
+            "bottom": 737,
+            "width": 65.8,
+            "height": 82
+          },
+          "name": "뉴욕",
+          "title": "뉴욕",
+          "nameRect": {
+            "x": 605.6,
+            "y": 695,
+            "right": 665.4,
+            "bottom": 722,
+            "width": 59.8,
+            "height": 27
+          },
+          "nameFont": "12px",
+          "nameLine": "12.6px",
+          "nameScroll": 27,
+          "nameClient": 27,
+          "price": "260",
+          "priceRect": {
+            "x": 622,
+            "y": 723,
+            "right": 649.1,
+            "bottom": 734.6,
+            "width": 27.1,
+            "height": 11.5
+          },
+          "priceFont": "11px",
+          "priceScroll": 27,
+          "priceClient": 27,
+          "priceHeight": 12,
+          "priceClientHeight": 12
+        },
+        {
+          "index": 4,
+          "tile": {
+            "x": 532.9,
+            "y": 655,
+            "right": 598.6,
+            "bottom": 737,
+            "width": 65.8,
+            "height": 82
+          },
+          "name": "마드리드",
+          "title": "마드리드",
+          "nameRect": {
+            "x": 535.9,
+            "y": 695,
+            "right": 595.6,
+            "bottom": 722,
+            "width": 59.8,
+            "height": 27
+          },
+          "nameFont": "12px",
+          "nameLine": "12.6px",
+          "nameScroll": 27,
+          "nameClient": 27,
+          "price": "140",
+          "priceRect": {
+            "x": 553.3,
+            "y": 723,
+            "right": 578.2,
+            "bottom": 734.6,
+            "width": 24.9,
+            "height": 11.5
+          },
+          "priceFont": "11px",
+          "priceScroll": 25,
+          "priceClient": 25,
+          "priceHeight": 12,
+          "priceClientHeight": 12
+        },
+        {
+          "index": 5,
+          "tile": {
+            "x": 463.1,
+            "y": 655,
+            "right": 528.9,
+            "bottom": 737,
+            "width": 65.8,
+            "height": 82
+          },
+          "name": "산티아고",
+          "title": "산티아고",
+          "nameRect": {
+            "x": 466.1,
+            "y": 695,
+            "right": 525.9,
+            "bottom": 722,
+            "width": 59.8,
+            "height": 27
+          },
+          "nameFont": "12px",
+          "nameLine": "12.6px",
+          "nameScroll": 27,
+          "nameClient": 27,
+          "price": "160",
+          "priceRect": {
+            "x": 483.6,
+            "y": 723,
+            "right": 508.4,
+            "bottom": 734.6,
+            "width": 24.7,
+            "height": 11.5
+          },
+          "priceFont": "11px",
+          "priceScroll": 25,
+          "priceClient": 25,
+          "priceHeight": 12,
+          "priceClientHeight": 12
+        },
+        {
+          "index": 8,
+          "tile": {
+            "x": 253.8,
+            "y": 655,
+            "right": 319.6,
+            "bottom": 737,
+            "width": 65.8,
+            "height": 82
+          },
+          "name": "푸에르토플라타",
+          "title": "푸에르토플라타",
+          "nameRect": {
+            "x": 256.8,
+            "y": 695,
+            "right": 316.6,
+            "bottom": 722,
+            "width": 59.8,
+            "height": 27
+          },
+          "nameFont": "12px",
+          "nameLine": "12.6px",
+          "nameScroll": 27,
+          "nameClient": 27,
+          "price": "180",
+          "priceRect": {
+            "x": 274.3,
+            "y": 723,
+            "right": 299,
+            "bottom": 734.6,
+            "width": 24.7,
+            "height": 11.5
+          },
+          "priceFont": "11px",
+          "priceScroll": 25,
+          "priceClient": 25,
+          "priceHeight": 12,
+          "priceClientHeight": 12
+        },
+        {
+          "index": 9,
+          "tile": {
+            "x": 184,
+            "y": 655,
+            "right": 249.8,
+            "bottom": 737,
+            "width": 65.8,
+            "height": 82
+          },
+          "name": "산후안",
+          "title": "산후안",
+          "nameRect": {
+            "x": 187,
+            "y": 695,
+            "right": 246.8,
+            "bottom": 722,
+            "width": 59.8,
+            "height": 27
+          },
+          "nameFont": "12px",
+          "nameLine": "12.6px",
+          "nameScroll": 27,
+          "nameClient": 27,
+          "price": "200",
+          "priceRect": {
+            "x": 203,
+            "y": 723,
+            "right": 230.8,
+            "bottom": 734.6,
+            "width": 27.8,
+            "height": 11.5
+          },
+          "priceFont": "11px",
+          "priceScroll": 28,
+          "priceClient": 28,
+          "priceHeight": 12,
+          "priceClientHeight": 12
+        },
+        {
+          "index": 11,
+          "tile": {
+            "x": 51,
+            "y": 612,
+            "right": 180,
+            "bottom": 651,
+            "width": 129,
+            "height": 39
+          },
+          "name": "베를린",
+          "title": "베를린",
+          "nameRect": {
+            "x": 99,
+            "y": 618,
+            "right": 153.6,
+            "bottom": 645,
+            "width": 54.6,
+            "height": 27
+          },
+          "nameFont": "12px",
+          "nameLine": "12.6px",
+          "nameScroll": 27,
+          "nameClient": 27,
+          "price": "220",
+          "priceRect": {
+            "x": 154.6,
+            "y": 625,
+            "right": 177,
+            "bottom": 638,
+            "width": 22.4,
+            "height": 13
+          },
+          "priceFont": "11px",
+          "priceScroll": 22,
+          "priceClient": 22,
+          "priceHeight": 13,
+          "priceClientHeight": 13
+        },
+        {
+          "index": 13,
+          "tile": {
+            "x": 51,
+            "y": 526,
+            "right": 180,
+            "bottom": 565,
+            "width": 129,
+            "height": 39
+          },
+          "name": "마이애미",
+          "title": "마이애미",
+          "nameRect": {
+            "x": 99,
+            "y": 532,
+            "right": 152.9,
+            "bottom": 559,
+            "width": 53.9,
+            "height": 27
+          },
+          "nameFont": "12px",
+          "nameLine": "12.6px",
+          "nameScroll": 27,
+          "nameClient": 27,
+          "price": "240",
+          "priceRect": {
+            "x": 153.9,
+            "y": 539,
+            "right": 177,
+            "bottom": 552,
+            "width": 23.2,
+            "height": 13
+          },
+          "priceFont": "11px",
+          "priceScroll": 23,
+          "priceClient": 23,
+          "priceHeight": 13,
+          "priceClientHeight": 13
+        },
+        {
+          "index": 15,
+          "tile": {
+            "x": 51,
+            "y": 440,
+            "right": 180,
+            "bottom": 479,
+            "width": 129,
+            "height": 39
+          },
+          "name": "산토도밍고",
+          "title": "산토도밍고",
+          "nameRect": {
+            "x": 99,
+            "y": 446,
+            "right": 156,
+            "bottom": 473,
+            "width": 57,
+            "height": 27
+          },
+          "nameFont": "12px",
+          "nameLine": "12.6px",
+          "nameScroll": 27,
+          "nameClient": 27,
+          "price": "120",
+          "priceRect": {
+            "x": 157,
+            "y": 453,
+            "right": 177,
+            "bottom": 466,
+            "width": 20.1,
+            "height": 13
+          },
+          "priceFont": "11px",
+          "priceScroll": 20,
+          "priceClient": 20,
+          "priceHeight": 13,
+          "priceClientHeight": 13
+        },
+        {
+          "index": 16,
+          "tile": {
+            "x": 51,
+            "y": 397,
+            "right": 180,
+            "bottom": 436,
+            "width": 129,
+            "height": 39
+          },
+          "name": "파리",
+          "title": "파리",
+          "nameRect": {
+            "x": 99,
+            "y": 403,
+            "right": 153.1,
+            "bottom": 430,
+            "width": 54.1,
+            "height": 27
+          },
+          "nameFont": "12px",
+          "nameLine": "12.6px",
+          "nameScroll": 27,
+          "nameClient": 27,
+          "price": "280",
+          "priceRect": {
+            "x": 154.1,
+            "y": 410,
+            "right": 177,
+            "bottom": 423,
+            "width": 23,
+            "height": 13
+          },
+          "priceFont": "11px",
+          "priceScroll": 23,
+          "priceClient": 23,
+          "priceHeight": 13,
+          "priceClientHeight": 13
+        },
+        {
+          "index": 17,
+          "tile": {
+            "x": 51,
+            "y": 354,
+            "right": 180,
+            "bottom": 393,
+            "width": 129,
+            "height": 39
+          },
+          "name": "도쿄",
+          "title": "도쿄",
+          "nameRect": {
+            "x": 99,
+            "y": 360,
+            "right": 151.9,
+            "bottom": 387,
+            "width": 52.9,
+            "height": 27
+          },
+          "nameFont": "12px",
+          "nameLine": "12.6px",
+          "nameScroll": 27,
+          "nameClient": 27,
+          "price": "300",
+          "priceRect": {
+            "x": 152.9,
+            "y": 367,
+            "right": 177,
+            "bottom": 380,
+            "width": 24.1,
+            "height": 13
+          },
+          "priceFont": "11px",
+          "priceScroll": 24,
+          "priceClient": 24,
+          "priceHeight": 13,
+          "priceClientHeight": 13
+        },
+        {
+          "index": 19,
+          "tile": {
+            "x": 51,
+            "y": 268,
+            "right": 180,
+            "bottom": 307,
+            "width": 129,
+            "height": 39
+          },
+          "name": "바르셀로나",
+          "title": "바르셀로나",
+          "nameRect": {
+            "x": 99,
+            "y": 274,
+            "right": 153.4,
+            "bottom": 301,
+            "width": 54.4,
+            "height": 27
+          },
+          "nameFont": "12px",
+          "nameLine": "12.6px",
+          "nameScroll": 27,
+          "nameClient": 27,
+          "price": "320",
+          "priceRect": {
+            "x": 154.4,
+            "y": 281,
+            "right": 177,
+            "bottom": 294,
+            "width": 22.7,
+            "height": 13
+          },
+          "priceFont": "11px",
+          "priceScroll": 23,
+          "priceClient": 23,
+          "priceHeight": 13,
+          "priceClientHeight": 13
+        },
+        {
+          "index": 21,
+          "tile": {
+            "x": 184,
+            "y": 182,
+            "right": 249.8,
+            "bottom": 264,
+            "width": 65.8,
+            "height": 82
+          },
+          "name": "이스탄불",
+          "title": "이스탄불",
+          "nameRect": {
+            "x": 187,
+            "y": 222,
+            "right": 246.8,
+            "bottom": 249,
+            "width": 59.8,
+            "height": 27
+          },
+          "nameFont": "12px",
+          "nameLine": "12.6px",
+          "nameScroll": 27,
+          "nameClient": 27,
+          "price": "340",
+          "priceRect": {
+            "x": 203.2,
+            "y": 250,
+            "right": 230.7,
+            "bottom": 261.6,
+            "width": 27.5,
+            "height": 11.5
+          },
+          "priceFont": "11px",
+          "priceScroll": 28,
+          "priceClient": 28,
+          "priceHeight": 12,
+          "priceClientHeight": 12
+        },
+        {
+          "index": 22,
+          "tile": {
+            "x": 253.8,
+            "y": 182,
+            "right": 319.6,
+            "bottom": 264,
+            "width": 65.8,
+            "height": 82
+          },
+          "name": "아바나",
+          "title": "아바나",
+          "nameRect": {
+            "x": 256.8,
+            "y": 222,
+            "right": 316.6,
+            "bottom": 249,
+            "width": 59.8,
+            "height": 27
+          },
+          "nameFont": "12px",
+          "nameLine": "12.6px",
+          "nameScroll": 27,
+          "nameClient": 27,
+          "price": "360",
+          "priceRect": {
+            "x": 273,
+            "y": 250,
+            "right": 300.4,
+            "bottom": 261.6,
+            "width": 27.4,
+            "height": 11.5
+          },
+          "priceFont": "11px",
+          "priceScroll": 27,
+          "priceClient": 27,
+          "priceHeight": 12,
+          "priceClientHeight": 12
+        },
+        {
+          "index": 24,
+          "tile": {
+            "x": 393.3,
+            "y": 182,
+            "right": 459.1,
+            "bottom": 264,
+            "width": 65.8,
+            "height": 82
+          },
+          "name": "멕시코시티",
+          "title": "멕시코시티",
+          "nameRect": {
+            "x": 396.3,
+            "y": 222,
+            "right": 456.1,
+            "bottom": 249,
+            "width": 59.8,
+            "height": 27
+          },
+          "nameFont": "12px",
+          "nameLine": "12.6px",
+          "nameScroll": 27,
+          "nameClient": 27,
+          "price": "380",
+          "priceRect": {
+            "x": 412.5,
+            "y": 250,
+            "right": 439.9,
+            "bottom": 261.6,
+            "width": 27.3,
+            "height": 11.5
+          },
+          "priceFont": "11px",
+          "priceScroll": 27,
+          "priceClient": 27,
+          "priceHeight": 12,
+          "priceClientHeight": 12
+        },
+        {
+          "index": 25,
+          "tile": {
+            "x": 463.1,
+            "y": 182,
+            "right": 528.9,
+            "bottom": 264,
+            "width": 65.8,
+            "height": 82
+          },
+          "name": "리스본",
+          "title": "리스본",
+          "nameRect": {
+            "x": 466.1,
+            "y": 222,
+            "right": 525.9,
+            "bottom": 249,
+            "width": 59.8,
+            "height": 27
+          },
+          "nameFont": "12px",
+          "nameLine": "12.6px",
+          "nameScroll": 27,
+          "nameClient": 27,
+          "price": "400",
+          "priceRect": {
+            "x": 481.7,
+            "y": 250,
+            "right": 510.3,
+            "bottom": 261.6,
+            "width": 28.6,
+            "height": 11.5
+          },
+          "priceFont": "11px",
+          "priceScroll": 29,
+          "priceClient": 29,
+          "priceHeight": 12,
+          "priceClientHeight": 12
+        },
+        {
+          "index": 28,
+          "tile": {
+            "x": 672.4,
+            "y": 182,
+            "right": 738.2,
+            "bottom": 264,
+            "width": 65.8,
+            "height": 82
+          },
+          "name": "런던",
+          "title": "런던",
+          "nameRect": {
+            "x": 675.4,
+            "y": 222,
+            "right": 735.2,
+            "bottom": 249,
+            "width": 59.8,
+            "height": 27
+          },
+          "nameFont": "12px",
+          "nameLine": "12.6px",
+          "nameScroll": 27,
+          "nameClient": 27,
+          "price": "420",
+          "priceRect": {
+            "x": 691.7,
+            "y": 250,
+            "right": 718.9,
+            "bottom": 261.6,
+            "width": 27.2,
+            "height": 11.5
+          },
+          "priceFont": "11px",
+          "priceScroll": 27,
+          "priceClient": 27,
+          "priceHeight": 12,
+          "priceClientHeight": 12
+        },
+        {
+          "index": 29,
+          "tile": {
+            "x": 742.2,
+            "y": 182,
+            "right": 808,
+            "bottom": 264,
+            "width": 65.8,
+            "height": 82
+          },
+          "name": "로마",
+          "title": "로마",
+          "nameRect": {
+            "x": 745.2,
+            "y": 222,
+            "right": 805,
+            "bottom": 249,
+            "width": 59.8,
+            "height": 27
+          },
+          "nameFont": "12px",
+          "nameLine": "12.6px",
+          "nameScroll": 27,
+          "nameClient": 27,
+          "price": "440",
+          "priceRect": {
+            "x": 761,
+            "y": 250,
+            "right": 789.1,
+            "bottom": 261.6,
+            "width": 28,
+            "height": 11.5
+          },
+          "priceFont": "11px",
+          "priceScroll": 28,
+          "priceClient": 28,
+          "priceHeight": 12,
+          "priceClientHeight": 12
+        },
+        {
+          "index": 31,
+          "tile": {
+            "x": 812,
+            "y": 268,
+            "right": 941,
+            "bottom": 307,
+            "width": 129,
+            "height": 39
+          },
+          "name": "뉴어크",
+          "title": "뉴어크",
+          "nameRect": {
+            "x": 860,
+            "y": 274,
+            "right": 913.1,
+            "bottom": 301,
+            "width": 53.2,
+            "height": 27
+          },
+          "nameFont": "12px",
+          "nameLine": "12.6px",
+          "nameScroll": 27,
+          "nameClient": 27,
+          "price": "460",
+          "priceRect": {
+            "x": 914.1,
+            "y": 281,
+            "right": 938,
+            "bottom": 294,
+            "width": 23.9,
+            "height": 13
+          },
+          "priceFont": "11px",
+          "priceScroll": 24,
+          "priceClient": 24,
+          "priceHeight": 13,
+          "priceClientHeight": 13
+        },
+        {
+          "index": 32,
+          "tile": {
+            "x": 812,
+            "y": 311,
+            "right": 941,
+            "bottom": 350,
+            "width": 129,
+            "height": 39
+          },
+          "name": "아그라",
+          "title": "아그라",
+          "nameRect": {
+            "x": 860,
+            "y": 317,
+            "right": 913.1,
+            "bottom": 344,
+            "width": 53.2,
+            "height": 27
+          },
+          "nameFont": "12px",
+          "nameLine": "12.6px",
+          "nameScroll": 27,
+          "nameClient": 27,
+          "price": "480",
+          "priceRect": {
+            "x": 914.1,
+            "y": 324,
+            "right": 938,
+            "bottom": 337,
+            "width": 23.9,
+            "height": 13
+          },
+          "priceFont": "11px",
+          "priceScroll": 24,
+          "priceClient": 24,
+          "priceHeight": 13,
+          "priceClientHeight": 13
+        },
+        {
+          "index": 33,
+          "tile": {
+            "x": 812,
+            "y": 354,
+            "right": 941,
+            "bottom": 393,
+            "width": 129,
+            "height": 39
+          },
+          "name": "아테네",
+          "title": "아테네",
+          "nameRect": {
+            "x": 860,
+            "y": 360,
+            "right": 912.7,
+            "bottom": 387,
+            "width": 52.7,
+            "height": 27
+          },
+          "nameFont": "12px",
+          "nameLine": "12.6px",
+          "nameScroll": 27,
+          "nameClient": 27,
+          "price": "500",
+          "priceRect": {
+            "x": 913.7,
+            "y": 367,
+            "right": 938,
+            "bottom": 380,
+            "width": 24.3,
+            "height": 13
+          },
+          "priceFont": "11px",
+          "priceScroll": 24,
+          "priceClient": 24,
+          "priceHeight": 13,
+          "priceClientHeight": 13
+        },
+        {
+          "index": 35,
+          "tile": {
+            "x": 812,
+            "y": 440,
+            "right": 941,
+            "bottom": 479,
+            "width": 129,
+            "height": 39
+          },
+          "name": "토론토",
+          "title": "토론토",
+          "nameRect": {
+            "x": 860,
+            "y": 446,
+            "right": 914.2,
+            "bottom": 473,
+            "width": 54.2,
+            "height": 27
+          },
+          "nameFont": "12px",
+          "nameLine": "12.6px",
+          "nameScroll": 27,
+          "nameClient": 27,
+          "price": "520",
+          "priceRect": {
+            "x": 915.2,
+            "y": 453,
+            "right": 938,
+            "bottom": 466,
+            "width": 22.8,
+            "height": 13
+          },
+          "priceFont": "11px",
+          "priceScroll": 23,
+          "priceClient": 23,
+          "priceHeight": 13,
+          "priceClientHeight": 13
+        },
+        {
+          "index": 36,
+          "tile": {
+            "x": 812,
+            "y": 483,
+            "right": 941,
+            "bottom": 522,
+            "width": 129,
+            "height": 39
+          },
+          "name": "시드니",
+          "title": "시드니",
+          "nameRect": {
+            "x": 860,
+            "y": 489,
+            "right": 913.3,
+            "bottom": 516,
+            "width": 53.3,
+            "height": 27
+          },
+          "nameFont": "12px",
+          "nameLine": "12.6px",
+          "nameScroll": 27,
+          "nameClient": 27,
+          "price": "540",
+          "priceRect": {
+            "x": 914.3,
+            "y": 496,
+            "right": 938,
+            "bottom": 509,
+            "width": 23.8,
+            "height": 13
+          },
+          "priceFont": "11px",
+          "priceScroll": 24,
+          "priceClient": 24,
+          "priceHeight": 13,
+          "priceClientHeight": 13
+        },
+        {
+          "index": 38,
+          "tile": {
+            "x": 812,
+            "y": 569,
+            "right": 941,
+            "bottom": 608,
+            "width": 129,
+            "height": 39
+          },
+          "name": "서울",
+          "title": "서울",
+          "nameRect": {
+            "x": 860,
+            "y": 575,
+            "right": 913.4,
+            "bottom": 602,
+            "width": 53.5,
+            "height": 27
+          },
+          "nameFont": "12px",
+          "nameLine": "12.6px",
+          "nameScroll": 27,
+          "nameClient": 27,
+          "price": "560",
+          "priceRect": {
+            "x": 914.4,
+            "y": 582,
+            "right": 938,
+            "bottom": 595,
+            "width": 23.6,
+            "height": 13
+          },
+          "priceFont": "11px",
+          "priceScroll": 24,
+          "priceClient": 24,
+          "priceHeight": 13,
+          "priceClientHeight": 13
+        }
+      ],
+      "screenshot": "/tmp/marble-property-tile-measure-20261012/tiles-1366-ko.png"
+    },
+    {
+      "viewport": [
+        1440,
+        900
+      ],
+      "locale": "ko",
+      "count": 24,
+      "issues": [],
+      "metrics": [
+        {
+          "index": 1,
+          "tile": {
+            "x": 799.6,
+            "y": 779.7,
+            "right": 871.2,
+            "bottom": 869,
+            "width": 71.6,
+            "height": 89.3
+          },
+          "name": "광주",
+          "title": "광주",
+          "nameRect": {
+            "x": 802.6,
+            "y": 827.6,
+            "right": 868.2,
+            "bottom": 854.6,
+            "width": 65.6,
+            "height": 27
+          },
+          "nameFont": "12px",
+          "nameLine": "12.6px",
+          "nameScroll": 27,
+          "nameClient": 27,
+          "price": "100",
+          "priceRect": {
+            "x": 822.7,
+            "y": 855.6,
+            "right": 848.2,
+            "bottom": 867.1,
+            "width": 25.5,
+            "height": 11.5
+          },
+          "priceFont": "11px",
+          "priceScroll": 26,
+          "priceClient": 26,
+          "priceHeight": 12,
+          "priceClientHeight": 12
+        },
+        {
+          "index": 3,
+          "tile": {
+            "x": 648.4,
+            "y": 779.7,
+            "right": 720,
+            "bottom": 869,
+            "width": 71.6,
+            "height": 89.3
+          },
+          "name": "뉴욕",
+          "title": "뉴욕",
+          "nameRect": {
+            "x": 651.4,
+            "y": 827.6,
+            "right": 717,
+            "bottom": 854.6,
+            "width": 65.6,
+            "height": 27
+          },
+          "nameFont": "12px",
+          "nameLine": "12.6px",
+          "nameScroll": 27,
+          "nameClient": 27,
+          "price": "260",
+          "priceRect": {
+            "x": 670.7,
+            "y": 855.6,
+            "right": 697.8,
+            "bottom": 867.1,
+            "width": 27.1,
+            "height": 11.5
+          },
+          "priceFont": "11px",
+          "priceScroll": 27,
+          "priceClient": 27,
+          "priceHeight": 12,
+          "priceClientHeight": 12
+        },
+        {
+          "index": 4,
+          "tile": {
+            "x": 572.8,
+            "y": 779.7,
+            "right": 644.4,
+            "bottom": 869,
+            "width": 71.6,
+            "height": 89.3
+          },
+          "name": "마드리드",
+          "title": "마드리드",
+          "nameRect": {
+            "x": 575.8,
+            "y": 827.6,
+            "right": 641.4,
+            "bottom": 854.6,
+            "width": 65.6,
+            "height": 27
+          },
+          "nameFont": "12px",
+          "nameLine": "12.6px",
+          "nameScroll": 27,
+          "nameClient": 27,
+          "price": "140",
+          "priceRect": {
+            "x": 596.1,
+            "y": 855.6,
+            "right": 621,
+            "bottom": 867.1,
+            "width": 24.9,
+            "height": 11.5
+          },
+          "priceFont": "11px",
+          "priceScroll": 25,
+          "priceClient": 25,
+          "priceHeight": 12,
+          "priceClientHeight": 12
+        },
+        {
+          "index": 5,
+          "tile": {
+            "x": 497.2,
+            "y": 779.7,
+            "right": 568.8,
+            "bottom": 869,
+            "width": 71.6,
+            "height": 89.3
+          },
+          "name": "산티아고",
+          "title": "산티아고",
+          "nameRect": {
+            "x": 500.2,
+            "y": 827.6,
+            "right": 565.8,
+            "bottom": 854.6,
+            "width": 65.6,
+            "height": 27
+          },
+          "nameFont": "12px",
+          "nameLine": "12.6px",
+          "nameScroll": 27,
+          "nameClient": 27,
+          "price": "160",
+          "priceRect": {
+            "x": 520.6,
+            "y": 855.6,
+            "right": 545.4,
+            "bottom": 867.1,
+            "width": 24.7,
+            "height": 11.5
+          },
+          "priceFont": "11px",
+          "priceScroll": 25,
+          "priceClient": 25,
+          "priceHeight": 12,
+          "priceClientHeight": 12
+        },
+        {
+          "index": 8,
+          "tile": {
+            "x": 270.4,
+            "y": 779.7,
+            "right": 342,
+            "bottom": 869,
+            "width": 71.6,
+            "height": 89.3
+          },
+          "name": "푸에르토플라타",
+          "title": "푸에르토플라타",
+          "nameRect": {
+            "x": 273.4,
+            "y": 827.6,
+            "right": 339,
+            "bottom": 854.6,
+            "width": 65.6,
+            "height": 27
+          },
+          "nameFont": "12px",
+          "nameLine": "12.6px",
+          "nameScroll": 27,
+          "nameClient": 27,
+          "price": "180",
+          "priceRect": {
+            "x": 293.8,
+            "y": 855.6,
+            "right": 318.5,
+            "bottom": 867.1,
+            "width": 24.7,
+            "height": 11.5
+          },
+          "priceFont": "11px",
+          "priceScroll": 25,
+          "priceClient": 25,
+          "priceHeight": 12,
+          "priceClientHeight": 12
+        },
+        {
+          "index": 9,
+          "tile": {
+            "x": 194.8,
+            "y": 779.7,
+            "right": 266.4,
+            "bottom": 869,
+            "width": 71.6,
+            "height": 89.3
+          },
+          "name": "산후안",
+          "title": "산후안",
+          "nameRect": {
+            "x": 197.8,
+            "y": 827.6,
+            "right": 263.4,
+            "bottom": 854.6,
+            "width": 65.6,
+            "height": 27
+          },
+          "nameFont": "12px",
+          "nameLine": "12.6px",
+          "nameScroll": 27,
+          "nameClient": 27,
+          "price": "200",
+          "priceRect": {
+            "x": 216.7,
+            "y": 855.6,
+            "right": 244.5,
+            "bottom": 867.1,
+            "width": 27.8,
+            "height": 11.5
+          },
+          "priceFont": "11px",
+          "priceScroll": 28,
+          "priceClient": 28,
+          "priceHeight": 12,
+          "priceClientHeight": 12
+        },
+        {
+          "index": 11,
+          "tile": {
+            "x": 51,
+            "y": 723.7,
+            "right": 190.8,
+            "bottom": 775.7,
+            "width": 139.8,
+            "height": 52
+          },
+          "name": "베를린",
+          "title": "베를린",
+          "nameRect": {
+            "x": 105,
+            "y": 736.2,
+            "right": 164.4,
+            "bottom": 763.2,
+            "width": 59.4,
+            "height": 27
+          },
+          "nameFont": "12px",
+          "nameLine": "12.6px",
+          "nameScroll": 27,
+          "nameClient": 27,
+          "price": "220",
+          "priceRect": {
+            "x": 165.4,
+            "y": 743.2,
+            "right": 187.8,
+            "bottom": 756.2,
+            "width": 22.4,
+            "height": 13
+          },
+          "priceFont": "11px",
+          "priceScroll": 22,
+          "priceClient": 22,
+          "priceHeight": 13,
+          "priceClientHeight": 13
+        },
+        {
+          "index": 13,
+          "tile": {
+            "x": 51,
+            "y": 611.6,
+            "right": 190.8,
+            "bottom": 663.6,
+            "width": 139.8,
+            "height": 52
+          },
+          "name": "마이애미",
+          "title": "마이애미",
+          "nameRect": {
+            "x": 105,
+            "y": 624.1,
+            "right": 163.6,
+            "bottom": 651.1,
+            "width": 58.6,
+            "height": 27
+          },
+          "nameFont": "12px",
+          "nameLine": "12.6px",
+          "nameScroll": 27,
+          "nameClient": 27,
+          "price": "240",
+          "priceRect": {
+            "x": 164.6,
+            "y": 631.1,
+            "right": 187.8,
+            "bottom": 644.1,
+            "width": 23.2,
+            "height": 13
+          },
+          "priceFont": "11px",
+          "priceScroll": 23,
+          "priceClient": 23,
+          "priceHeight": 13,
+          "priceClientHeight": 13
+        },
+        {
+          "index": 15,
+          "tile": {
+            "x": 51,
+            "y": 499.5,
+            "right": 190.8,
+            "bottom": 551.5,
+            "width": 139.8,
+            "height": 52
+          },
+          "name": "산토도밍고",
+          "title": "산토도밍고",
+          "nameRect": {
+            "x": 105,
+            "y": 512,
+            "right": 166.7,
+            "bottom": 539,
+            "width": 61.7,
+            "height": 27
+          },
+          "nameFont": "12px",
+          "nameLine": "12.6px",
+          "nameScroll": 27,
+          "nameClient": 27,
+          "price": "120",
+          "priceRect": {
+            "x": 167.7,
+            "y": 519,
+            "right": 187.8,
+            "bottom": 532,
+            "width": 20.1,
+            "height": 13
+          },
+          "priceFont": "11px",
+          "priceScroll": 20,
+          "priceClient": 20,
+          "priceHeight": 13,
+          "priceClientHeight": 13
+        },
+        {
+          "index": 16,
+          "tile": {
+            "x": 51,
+            "y": 443.4,
+            "right": 190.8,
+            "bottom": 495.5,
+            "width": 139.8,
+            "height": 52
+          },
+          "name": "파리",
+          "title": "파리",
+          "nameRect": {
+            "x": 105,
+            "y": 455.9,
+            "right": 163.8,
+            "bottom": 482.9,
+            "width": 58.8,
+            "height": 27
+          },
+          "nameFont": "12px",
+          "nameLine": "12.6px",
+          "nameScroll": 27,
+          "nameClient": 27,
+          "price": "280",
+          "priceRect": {
+            "x": 164.8,
+            "y": 462.9,
+            "right": 187.8,
+            "bottom": 475.9,
+            "width": 23,
+            "height": 13
+          },
+          "priceFont": "11px",
+          "priceScroll": 23,
+          "priceClient": 23,
+          "priceHeight": 13,
+          "priceClientHeight": 13
+        },
+        {
+          "index": 17,
+          "tile": {
+            "x": 51,
+            "y": 387.4,
+            "right": 190.8,
+            "bottom": 439.4,
+            "width": 139.8,
+            "height": 52
+          },
+          "name": "도쿄",
+          "title": "도쿄",
+          "nameRect": {
+            "x": 105,
+            "y": 399.9,
+            "right": 162.6,
+            "bottom": 426.9,
+            "width": 57.6,
+            "height": 27
+          },
+          "nameFont": "12px",
+          "nameLine": "12.6px",
+          "nameScroll": 27,
+          "nameClient": 27,
+          "price": "300",
+          "priceRect": {
+            "x": 163.6,
+            "y": 406.9,
+            "right": 187.8,
+            "bottom": 419.9,
+            "width": 24.1,
+            "height": 13
+          },
+          "priceFont": "11px",
+          "priceScroll": 24,
+          "priceClient": 24,
+          "priceHeight": 13,
+          "priceClientHeight": 13
+        },
+        {
+          "index": 19,
+          "tile": {
+            "x": 51,
+            "y": 275.3,
+            "right": 190.8,
+            "bottom": 327.3,
+            "width": 139.8,
+            "height": 52
+          },
+          "name": "바르셀로나",
+          "title": "바르셀로나",
+          "nameRect": {
+            "x": 105,
+            "y": 287.8,
+            "right": 164.1,
+            "bottom": 314.8,
+            "width": 59.1,
+            "height": 27
+          },
+          "nameFont": "12px",
+          "nameLine": "12.6px",
+          "nameScroll": 27,
+          "nameClient": 27,
+          "price": "320",
+          "priceRect": {
+            "x": 165.1,
+            "y": 294.8,
+            "right": 187.8,
+            "bottom": 307.8,
+            "width": 22.7,
+            "height": 13
+          },
+          "priceFont": "11px",
+          "priceScroll": 23,
+          "priceClient": 23,
+          "priceHeight": 13,
+          "priceClientHeight": 13
+        },
+        {
+          "index": 21,
+          "tile": {
+            "x": 194.8,
+            "y": 182,
+            "right": 266.4,
+            "bottom": 271.3,
+            "width": 71.6,
+            "height": 89.3
+          },
+          "name": "이스탄불",
+          "title": "이스탄불",
+          "nameRect": {
+            "x": 197.8,
+            "y": 229.9,
+            "right": 263.4,
+            "bottom": 256.9,
+            "width": 65.6,
+            "height": 27
+          },
+          "nameFont": "12px",
+          "nameLine": "12.6px",
+          "nameScroll": 27,
+          "nameClient": 27,
+          "price": "340",
+          "priceRect": {
+            "x": 216.8,
+            "y": 257.9,
+            "right": 244.3,
+            "bottom": 269.4,
+            "width": 27.5,
+            "height": 11.5
+          },
+          "priceFont": "11px",
+          "priceScroll": 28,
+          "priceClient": 28,
+          "priceHeight": 12,
+          "priceClientHeight": 12
+        },
+        {
+          "index": 22,
+          "tile": {
+            "x": 270.4,
+            "y": 182,
+            "right": 342,
+            "bottom": 271.3,
+            "width": 71.6,
+            "height": 89.3
+          },
+          "name": "아바나",
+          "title": "아바나",
+          "nameRect": {
+            "x": 273.4,
+            "y": 229.9,
+            "right": 339,
+            "bottom": 256.9,
+            "width": 65.6,
+            "height": 27
+          },
+          "nameFont": "12px",
+          "nameLine": "12.6px",
+          "nameScroll": 27,
+          "nameClient": 27,
+          "price": "360",
+          "priceRect": {
+            "x": 292.5,
+            "y": 257.9,
+            "right": 319.8,
+            "bottom": 269.4,
+            "width": 27.4,
+            "height": 11.5
+          },
+          "priceFont": "11px",
+          "priceScroll": 27,
+          "priceClient": 27,
+          "priceHeight": 12,
+          "priceClientHeight": 12
+        },
+        {
+          "index": 24,
+          "tile": {
+            "x": 421.6,
+            "y": 182,
+            "right": 493.2,
+            "bottom": 271.3,
+            "width": 71.6,
+            "height": 89.3
+          },
+          "name": "멕시코시티",
+          "title": "멕시코시티",
+          "nameRect": {
+            "x": 424.6,
+            "y": 229.9,
+            "right": 490.2,
+            "bottom": 256.9,
+            "width": 65.6,
+            "height": 27
+          },
+          "nameFont": "12px",
+          "nameLine": "12.6px",
+          "nameScroll": 27,
+          "nameClient": 27,
+          "price": "380",
+          "priceRect": {
+            "x": 443.7,
+            "y": 257.9,
+            "right": 471,
+            "bottom": 269.4,
+            "width": 27.3,
+            "height": 11.5
+          },
+          "priceFont": "11px",
+          "priceScroll": 27,
+          "priceClient": 27,
+          "priceHeight": 12,
+          "priceClientHeight": 12
+        },
+        {
+          "index": 25,
+          "tile": {
+            "x": 497.2,
+            "y": 182,
+            "right": 568.8,
+            "bottom": 271.3,
+            "width": 71.6,
+            "height": 89.3
+          },
+          "name": "리스본",
+          "title": "리스본",
+          "nameRect": {
+            "x": 500.2,
+            "y": 229.9,
+            "right": 565.8,
+            "bottom": 256.9,
+            "width": 65.6,
+            "height": 27
+          },
+          "nameFont": "12px",
+          "nameLine": "12.6px",
+          "nameScroll": 27,
+          "nameClient": 27,
+          "price": "400",
+          "priceRect": {
+            "x": 518.7,
+            "y": 257.9,
+            "right": 547.3,
+            "bottom": 269.4,
+            "width": 28.6,
+            "height": 11.5
+          },
+          "priceFont": "11px",
+          "priceScroll": 29,
+          "priceClient": 29,
+          "priceHeight": 12,
+          "priceClientHeight": 12
+        },
+        {
+          "index": 28,
+          "tile": {
+            "x": 724,
+            "y": 182,
+            "right": 795.6,
+            "bottom": 271.3,
+            "width": 71.6,
+            "height": 89.3
+          },
+          "name": "런던",
+          "title": "런던",
+          "nameRect": {
+            "x": 727,
+            "y": 229.9,
+            "right": 792.6,
+            "bottom": 256.9,
+            "width": 65.6,
+            "height": 27
+          },
+          "nameFont": "12px",
+          "nameLine": "12.6px",
+          "nameScroll": 27,
+          "nameClient": 27,
+          "price": "420",
+          "priceRect": {
+            "x": 746.2,
+            "y": 257.9,
+            "right": 773.4,
+            "bottom": 269.4,
+            "width": 27.2,
+            "height": 11.5
+          },
+          "priceFont": "11px",
+          "priceScroll": 27,
+          "priceClient": 27,
+          "priceHeight": 12,
+          "priceClientHeight": 12
+        },
+        {
+          "index": 29,
+          "tile": {
+            "x": 799.6,
+            "y": 182,
+            "right": 871.2,
+            "bottom": 271.3,
+            "width": 71.6,
+            "height": 89.3
+          },
+          "name": "로마",
+          "title": "로마",
+          "nameRect": {
+            "x": 802.6,
+            "y": 229.9,
+            "right": 868.2,
+            "bottom": 256.9,
+            "width": 65.6,
+            "height": 27
+          },
+          "nameFont": "12px",
+          "nameLine": "12.6px",
+          "nameScroll": 27,
+          "nameClient": 27,
+          "price": "440",
+          "priceRect": {
+            "x": 821.4,
+            "y": 257.9,
+            "right": 849.4,
+            "bottom": 269.4,
+            "width": 28,
+            "height": 11.5
+          },
+          "priceFont": "11px",
+          "priceScroll": 28,
+          "priceClient": 28,
+          "priceHeight": 12,
+          "priceClientHeight": 12
+        },
+        {
+          "index": 31,
+          "tile": {
+            "x": 875.2,
+            "y": 275.3,
+            "right": 1015,
+            "bottom": 327.3,
+            "width": 139.8,
+            "height": 52
+          },
+          "name": "뉴어크",
+          "title": "뉴어크",
+          "nameRect": {
+            "x": 929.2,
+            "y": 287.8,
+            "right": 987.1,
+            "bottom": 314.8,
+            "width": 57.9,
+            "height": 27
+          },
+          "nameFont": "12px",
+          "nameLine": "12.6px",
+          "nameScroll": 27,
+          "nameClient": 27,
+          "price": "460",
+          "priceRect": {
+            "x": 988.1,
+            "y": 294.8,
+            "right": 1012,
+            "bottom": 307.8,
+            "width": 23.9,
+            "height": 13
+          },
+          "priceFont": "11px",
+          "priceScroll": 24,
+          "priceClient": 24,
+          "priceHeight": 13,
+          "priceClientHeight": 13
+        },
+        {
+          "index": 32,
+          "tile": {
+            "x": 875.2,
+            "y": 331.3,
+            "right": 1015,
+            "bottom": 383.4,
+            "width": 139.8,
+            "height": 52
+          },
+          "name": "아그라",
+          "title": "아그라",
+          "nameRect": {
+            "x": 929.2,
+            "y": 343.8,
+            "right": 987.1,
+            "bottom": 370.8,
+            "width": 57.9,
+            "height": 27
+          },
+          "nameFont": "12px",
+          "nameLine": "12.6px",
+          "nameScroll": 27,
+          "nameClient": 27,
+          "price": "480",
+          "priceRect": {
+            "x": 988.1,
+            "y": 350.8,
+            "right": 1012,
+            "bottom": 363.8,
+            "width": 23.9,
+            "height": 13
+          },
+          "priceFont": "11px",
+          "priceScroll": 24,
+          "priceClient": 24,
+          "priceHeight": 13,
+          "priceClientHeight": 13
+        },
+        {
+          "index": 33,
+          "tile": {
+            "x": 875.2,
+            "y": 387.4,
+            "right": 1015,
+            "bottom": 439.4,
+            "width": 139.8,
+            "height": 52
+          },
+          "name": "아테네",
+          "title": "아테네",
+          "nameRect": {
+            "x": 929.2,
+            "y": 399.9,
+            "right": 986.6,
+            "bottom": 426.9,
+            "width": 57.4,
+            "height": 27
+          },
+          "nameFont": "12px",
+          "nameLine": "12.6px",
+          "nameScroll": 27,
+          "nameClient": 27,
+          "price": "500",
+          "priceRect": {
+            "x": 987.6,
+            "y": 406.9,
+            "right": 1012,
+            "bottom": 419.9,
+            "width": 24.3,
+            "height": 13
+          },
+          "priceFont": "11px",
+          "priceScroll": 24,
+          "priceClient": 24,
+          "priceHeight": 13,
+          "priceClientHeight": 13
+        },
+        {
+          "index": 35,
+          "tile": {
+            "x": 875.2,
+            "y": 499.5,
+            "right": 1015,
+            "bottom": 551.5,
+            "width": 139.8,
+            "height": 52
+          },
+          "name": "토론토",
+          "title": "토론토",
+          "nameRect": {
+            "x": 929.2,
+            "y": 512,
+            "right": 988.2,
+            "bottom": 539,
+            "width": 59,
+            "height": 27
+          },
+          "nameFont": "12px",
+          "nameLine": "12.6px",
+          "nameScroll": 27,
+          "nameClient": 27,
+          "price": "520",
+          "priceRect": {
+            "x": 989.2,
+            "y": 519,
+            "right": 1012,
+            "bottom": 532,
+            "width": 22.8,
+            "height": 13
+          },
+          "priceFont": "11px",
+          "priceScroll": 23,
+          "priceClient": 23,
+          "priceHeight": 13,
+          "priceClientHeight": 13
+        },
+        {
+          "index": 36,
+          "tile": {
+            "x": 875.2,
+            "y": 555.5,
+            "right": 1015,
+            "bottom": 607.6,
+            "width": 139.8,
+            "height": 52
+          },
+          "name": "시드니",
+          "title": "시드니",
+          "nameRect": {
+            "x": 929.2,
+            "y": 568,
+            "right": 987.2,
+            "bottom": 595,
+            "width": 58,
+            "height": 27
+          },
+          "nameFont": "12px",
+          "nameLine": "12.6px",
+          "nameScroll": 27,
+          "nameClient": 27,
+          "price": "540",
+          "priceRect": {
+            "x": 988.2,
+            "y": 575,
+            "right": 1012,
+            "bottom": 588,
+            "width": 23.8,
+            "height": 13
+          },
+          "priceFont": "11px",
+          "priceScroll": 24,
+          "priceClient": 24,
+          "priceHeight": 13,
+          "priceClientHeight": 13
+        },
+        {
+          "index": 38,
+          "tile": {
+            "x": 875.2,
+            "y": 667.6,
+            "right": 1015,
+            "bottom": 719.7,
+            "width": 139.8,
+            "height": 52
+          },
+          "name": "서울",
+          "title": "서울",
+          "nameRect": {
+            "x": 929.2,
+            "y": 680.1,
+            "right": 987.4,
+            "bottom": 707.1,
+            "width": 58.2,
+            "height": 27
+          },
+          "nameFont": "12px",
+          "nameLine": "12.6px",
+          "nameScroll": 27,
+          "nameClient": 27,
+          "price": "560",
+          "priceRect": {
+            "x": 988.4,
+            "y": 687.1,
+            "right": 1012,
+            "bottom": 700.1,
+            "width": 23.6,
+            "height": 13
+          },
+          "priceFont": "11px",
+          "priceScroll": 24,
+          "priceClient": 24,
+          "priceHeight": 13,
+          "priceClientHeight": 13
+        }
+      ],
+      "screenshot": "/tmp/marble-property-tile-measure-20261012/tiles-1440-ko.png"
+    },
+    {
+      "viewport": [
+        1366,
+        768
+      ],
+      "locale": "es",
+      "count": 24,
+      "issues": [],
+      "metrics": [
+        {
+          "index": 1,
+          "tile": {
+            "x": 742.2,
+            "y": 655,
+            "right": 808,
+            "bottom": 737,
+            "width": 65.8,
+            "height": 82
+          },
+          "name": "Gwangju",
+          "title": "Gwangju",
+          "nameRect": {
+            "x": 745.2,
+            "y": 695,
+            "right": 805,
+            "bottom": 722,
+            "width": 59.8,
+            "height": 27
+          },
+          "nameFont": "12px",
+          "nameLine": "12.6px",
+          "nameScroll": 27,
+          "nameClient": 27,
+          "price": "100",
+          "priceRect": {
+            "x": 762.3,
+            "y": 723,
+            "right": 787.8,
+            "bottom": 734.6,
+            "width": 25.5,
+            "height": 11.5
+          },
+          "priceFont": "11px",
+          "priceScroll": 26,
+          "priceClient": 26,
+          "priceHeight": 12,
+          "priceClientHeight": 12
+        },
+        {
+          "index": 3,
+          "tile": {
+            "x": 602.6,
+            "y": 655,
+            "right": 668.4,
+            "bottom": 737,
+            "width": 65.8,
+            "height": 82
+          },
+          "name": "Nueva York",
+          "title": "Nueva York",
+          "nameRect": {
+            "x": 605.6,
+            "y": 695,
+            "right": 665.4,
+            "bottom": 722,
+            "width": 59.8,
+            "height": 27
+          },
+          "nameFont": "12px",
+          "nameLine": "12.6px",
+          "nameScroll": 27,
+          "nameClient": 27,
+          "price": "260",
+          "priceRect": {
+            "x": 622,
+            "y": 723,
+            "right": 649.1,
+            "bottom": 734.6,
+            "width": 27.1,
+            "height": 11.5
+          },
+          "priceFont": "11px",
+          "priceScroll": 27,
+          "priceClient": 27,
+          "priceHeight": 12,
+          "priceClientHeight": 12
+        },
+        {
+          "index": 4,
+          "tile": {
+            "x": 532.9,
+            "y": 655,
+            "right": 598.6,
+            "bottom": 737,
+            "width": 65.8,
+            "height": 82
+          },
+          "name": "Madrid",
+          "title": "Madrid",
+          "nameRect": {
+            "x": 535.9,
+            "y": 695,
+            "right": 595.6,
+            "bottom": 722,
+            "width": 59.8,
+            "height": 27
+          },
+          "nameFont": "12px",
+          "nameLine": "12.6px",
+          "nameScroll": 27,
+          "nameClient": 27,
+          "price": "140",
+          "priceRect": {
+            "x": 553.3,
+            "y": 723,
+            "right": 578.2,
+            "bottom": 734.6,
+            "width": 24.9,
+            "height": 11.5
+          },
+          "priceFont": "11px",
+          "priceScroll": 25,
+          "priceClient": 25,
+          "priceHeight": 12,
+          "priceClientHeight": 12
+        },
+        {
+          "index": 5,
+          "tile": {
+            "x": 463.1,
+            "y": 655,
+            "right": 528.9,
+            "bottom": 737,
+            "width": 65.8,
+            "height": 82
+          },
+          "name": "Santiago",
+          "title": "Santiago",
+          "nameRect": {
+            "x": 466.1,
+            "y": 695,
+            "right": 525.9,
+            "bottom": 722,
+            "width": 59.8,
+            "height": 27
+          },
+          "nameFont": "12px",
+          "nameLine": "12.6px",
+          "nameScroll": 27,
+          "nameClient": 27,
+          "price": "160",
+          "priceRect": {
+            "x": 483.6,
+            "y": 723,
+            "right": 508.4,
+            "bottom": 734.6,
+            "width": 24.7,
+            "height": 11.5
+          },
+          "priceFont": "11px",
+          "priceScroll": 25,
+          "priceClient": 25,
+          "priceHeight": 12,
+          "priceClientHeight": 12
+        },
+        {
+          "index": 8,
+          "tile": {
+            "x": 253.8,
+            "y": 655,
+            "right": 319.6,
+            "bottom": 737,
+            "width": 65.8,
+            "height": 82
+          },
+          "name": "Puerto Plata",
+          "title": "Puerto Plata",
+          "nameRect": {
+            "x": 256.8,
+            "y": 695,
+            "right": 316.6,
+            "bottom": 722,
+            "width": 59.8,
+            "height": 27
+          },
+          "nameFont": "12px",
+          "nameLine": "12.6px",
+          "nameScroll": 27,
+          "nameClient": 27,
+          "price": "180",
+          "priceRect": {
+            "x": 274.3,
+            "y": 723,
+            "right": 299,
+            "bottom": 734.6,
+            "width": 24.7,
+            "height": 11.5
+          },
+          "priceFont": "11px",
+          "priceScroll": 25,
+          "priceClient": 25,
+          "priceHeight": 12,
+          "priceClientHeight": 12
+        },
+        {
+          "index": 9,
+          "tile": {
+            "x": 184,
+            "y": 655,
+            "right": 249.8,
+            "bottom": 737,
+            "width": 65.8,
+            "height": 82
+          },
+          "name": "San Juan",
+          "title": "San Juan",
+          "nameRect": {
+            "x": 187,
+            "y": 695,
+            "right": 246.8,
+            "bottom": 722,
+            "width": 59.8,
+            "height": 27
+          },
+          "nameFont": "12px",
+          "nameLine": "12.6px",
+          "nameScroll": 27,
+          "nameClient": 27,
+          "price": "200",
+          "priceRect": {
+            "x": 203,
+            "y": 723,
+            "right": 230.8,
+            "bottom": 734.6,
+            "width": 27.8,
+            "height": 11.5
+          },
+          "priceFont": "11px",
+          "priceScroll": 28,
+          "priceClient": 28,
+          "priceHeight": 12,
+          "priceClientHeight": 12
+        },
+        {
+          "index": 11,
+          "tile": {
+            "x": 51,
+            "y": 612,
+            "right": 180,
+            "bottom": 651,
+            "width": 129,
+            "height": 39
+          },
+          "name": "Berlín",
+          "title": "Berlín",
+          "nameRect": {
+            "x": 99,
+            "y": 618,
+            "right": 153.6,
+            "bottom": 645,
+            "width": 54.6,
+            "height": 27
+          },
+          "nameFont": "12px",
+          "nameLine": "12.6px",
+          "nameScroll": 27,
+          "nameClient": 27,
+          "price": "220",
+          "priceRect": {
+            "x": 154.6,
+            "y": 625,
+            "right": 177,
+            "bottom": 638,
+            "width": 22.4,
+            "height": 13
+          },
+          "priceFont": "11px",
+          "priceScroll": 22,
+          "priceClient": 22,
+          "priceHeight": 13,
+          "priceClientHeight": 13
+        },
+        {
+          "index": 13,
+          "tile": {
+            "x": 51,
+            "y": 526,
+            "right": 180,
+            "bottom": 565,
+            "width": 129,
+            "height": 39
+          },
+          "name": "Miami",
+          "title": "Miami",
+          "nameRect": {
+            "x": 99,
+            "y": 532,
+            "right": 152.9,
+            "bottom": 559,
+            "width": 53.9,
+            "height": 27
+          },
+          "nameFont": "12px",
+          "nameLine": "12.6px",
+          "nameScroll": 27,
+          "nameClient": 27,
+          "price": "240",
+          "priceRect": {
+            "x": 153.9,
+            "y": 539,
+            "right": 177,
+            "bottom": 552,
+            "width": 23.2,
+            "height": 13
+          },
+          "priceFont": "11px",
+          "priceScroll": 23,
+          "priceClient": 23,
+          "priceHeight": 13,
+          "priceClientHeight": 13
+        },
+        {
+          "index": 15,
+          "tile": {
+            "x": 51,
+            "y": 440,
+            "right": 180,
+            "bottom": 479,
+            "width": 129,
+            "height": 39
+          },
+          "name": "Santo Domingo",
+          "title": "Santo Domingo",
+          "nameRect": {
+            "x": 99,
+            "y": 446,
+            "right": 156,
+            "bottom": 473,
+            "width": 57,
+            "height": 27
+          },
+          "nameFont": "12px",
+          "nameLine": "12.6px",
+          "nameScroll": 27,
+          "nameClient": 27,
+          "price": "120",
+          "priceRect": {
+            "x": 157,
+            "y": 453,
+            "right": 177,
+            "bottom": 466,
+            "width": 20.1,
+            "height": 13
+          },
+          "priceFont": "11px",
+          "priceScroll": 20,
+          "priceClient": 20,
+          "priceHeight": 13,
+          "priceClientHeight": 13
+        },
+        {
+          "index": 16,
+          "tile": {
+            "x": 51,
+            "y": 397,
+            "right": 180,
+            "bottom": 436,
+            "width": 129,
+            "height": 39
+          },
+          "name": "París",
+          "title": "París",
+          "nameRect": {
+            "x": 99,
+            "y": 403,
+            "right": 153.1,
+            "bottom": 430,
+            "width": 54.1,
+            "height": 27
+          },
+          "nameFont": "12px",
+          "nameLine": "12.6px",
+          "nameScroll": 27,
+          "nameClient": 27,
+          "price": "280",
+          "priceRect": {
+            "x": 154.1,
+            "y": 410,
+            "right": 177,
+            "bottom": 423,
+            "width": 23,
+            "height": 13
+          },
+          "priceFont": "11px",
+          "priceScroll": 23,
+          "priceClient": 23,
+          "priceHeight": 13,
+          "priceClientHeight": 13
+        },
+        {
+          "index": 17,
+          "tile": {
+            "x": 51,
+            "y": 354,
+            "right": 180,
+            "bottom": 393,
+            "width": 129,
+            "height": 39
+          },
+          "name": "Tokio",
+          "title": "Tokio",
+          "nameRect": {
+            "x": 99,
+            "y": 360,
+            "right": 151.9,
+            "bottom": 387,
+            "width": 52.9,
+            "height": 27
+          },
+          "nameFont": "12px",
+          "nameLine": "12.6px",
+          "nameScroll": 27,
+          "nameClient": 27,
+          "price": "300",
+          "priceRect": {
+            "x": 152.9,
+            "y": 367,
+            "right": 177,
+            "bottom": 380,
+            "width": 24.1,
+            "height": 13
+          },
+          "priceFont": "11px",
+          "priceScroll": 24,
+          "priceClient": 24,
+          "priceHeight": 13,
+          "priceClientHeight": 13
+        },
+        {
+          "index": 19,
+          "tile": {
+            "x": 51,
+            "y": 268,
+            "right": 180,
+            "bottom": 307,
+            "width": 129,
+            "height": 39
+          },
+          "name": "Barcelona",
+          "title": "Barcelona",
+          "nameRect": {
+            "x": 99,
+            "y": 274,
+            "right": 153.4,
+            "bottom": 301,
+            "width": 54.4,
+            "height": 27
+          },
+          "nameFont": "12px",
+          "nameLine": "12.6px",
+          "nameScroll": 27,
+          "nameClient": 27,
+          "price": "320",
+          "priceRect": {
+            "x": 154.4,
+            "y": 281,
+            "right": 177,
+            "bottom": 294,
+            "width": 22.7,
+            "height": 13
+          },
+          "priceFont": "11px",
+          "priceScroll": 23,
+          "priceClient": 23,
+          "priceHeight": 13,
+          "priceClientHeight": 13
+        },
+        {
+          "index": 21,
+          "tile": {
+            "x": 184,
+            "y": 182,
+            "right": 249.8,
+            "bottom": 264,
+            "width": 65.8,
+            "height": 82
+          },
+          "name": "Estambul",
+          "title": "Estambul",
+          "nameRect": {
+            "x": 187,
+            "y": 222,
+            "right": 246.8,
+            "bottom": 249,
+            "width": 59.8,
+            "height": 27
+          },
+          "nameFont": "12px",
+          "nameLine": "12.6px",
+          "nameScroll": 27,
+          "nameClient": 27,
+          "price": "340",
+          "priceRect": {
+            "x": 203.2,
+            "y": 250,
+            "right": 230.7,
+            "bottom": 261.6,
+            "width": 27.5,
+            "height": 11.5
+          },
+          "priceFont": "11px",
+          "priceScroll": 28,
+          "priceClient": 28,
+          "priceHeight": 12,
+          "priceClientHeight": 12
+        },
+        {
+          "index": 22,
+          "tile": {
+            "x": 253.8,
+            "y": 182,
+            "right": 319.6,
+            "bottom": 264,
+            "width": 65.8,
+            "height": 82
+          },
+          "name": "La Habana",
+          "title": "La Habana",
+          "nameRect": {
+            "x": 256.8,
+            "y": 222,
+            "right": 316.6,
+            "bottom": 249,
+            "width": 59.8,
+            "height": 27
+          },
+          "nameFont": "12px",
+          "nameLine": "12.6px",
+          "nameScroll": 27,
+          "nameClient": 27,
+          "price": "360",
+          "priceRect": {
+            "x": 273,
+            "y": 250,
+            "right": 300.4,
+            "bottom": 261.6,
+            "width": 27.4,
+            "height": 11.5
+          },
+          "priceFont": "11px",
+          "priceScroll": 27,
+          "priceClient": 27,
+          "priceHeight": 12,
+          "priceClientHeight": 12
+        },
+        {
+          "index": 24,
+          "tile": {
+            "x": 393.3,
+            "y": 182,
+            "right": 459.1,
+            "bottom": 264,
+            "width": 65.8,
+            "height": 82
+          },
+          "name": "Ciudad de México",
+          "title": "Ciudad de México",
+          "nameRect": {
+            "x": 396.3,
+            "y": 222,
+            "right": 456.1,
+            "bottom": 249,
+            "width": 59.8,
+            "height": 27
+          },
+          "nameFont": "12px",
+          "nameLine": "12.6px",
+          "nameScroll": 39,
+          "nameClient": 27,
+          "price": "380",
+          "priceRect": {
+            "x": 412.5,
+            "y": 250,
+            "right": 439.9,
+            "bottom": 261.6,
+            "width": 27.3,
+            "height": 11.5
+          },
+          "priceFont": "11px",
+          "priceScroll": 27,
+          "priceClient": 27,
+          "priceHeight": 12,
+          "priceClientHeight": 12
+        },
+        {
+          "index": 25,
+          "tile": {
+            "x": 463.1,
+            "y": 182,
+            "right": 528.9,
+            "bottom": 264,
+            "width": 65.8,
+            "height": 82
+          },
+          "name": "Lisboa",
+          "title": "Lisboa",
+          "nameRect": {
+            "x": 466.1,
+            "y": 222,
+            "right": 525.9,
+            "bottom": 249,
+            "width": 59.8,
+            "height": 27
+          },
+          "nameFont": "12px",
+          "nameLine": "12.6px",
+          "nameScroll": 27,
+          "nameClient": 27,
+          "price": "400",
+          "priceRect": {
+            "x": 481.7,
+            "y": 250,
+            "right": 510.3,
+            "bottom": 261.6,
+            "width": 28.6,
+            "height": 11.5
+          },
+          "priceFont": "11px",
+          "priceScroll": 29,
+          "priceClient": 29,
+          "priceHeight": 12,
+          "priceClientHeight": 12
+        },
+        {
+          "index": 28,
+          "tile": {
+            "x": 672.4,
+            "y": 182,
+            "right": 738.2,
+            "bottom": 264,
+            "width": 65.8,
+            "height": 82
+          },
+          "name": "Londres",
+          "title": "Londres",
+          "nameRect": {
+            "x": 675.4,
+            "y": 222,
+            "right": 735.2,
+            "bottom": 249,
+            "width": 59.8,
+            "height": 27
+          },
+          "nameFont": "12px",
+          "nameLine": "12.6px",
+          "nameScroll": 27,
+          "nameClient": 27,
+          "price": "420",
+          "priceRect": {
+            "x": 691.7,
+            "y": 250,
+            "right": 718.9,
+            "bottom": 261.6,
+            "width": 27.2,
+            "height": 11.5
+          },
+          "priceFont": "11px",
+          "priceScroll": 27,
+          "priceClient": 27,
+          "priceHeight": 12,
+          "priceClientHeight": 12
+        },
+        {
+          "index": 29,
+          "tile": {
+            "x": 742.2,
+            "y": 182,
+            "right": 808,
+            "bottom": 264,
+            "width": 65.8,
+            "height": 82
+          },
+          "name": "Roma",
+          "title": "Roma",
+          "nameRect": {
+            "x": 745.2,
+            "y": 222,
+            "right": 805,
+            "bottom": 249,
+            "width": 59.8,
+            "height": 27
+          },
+          "nameFont": "12px",
+          "nameLine": "12.6px",
+          "nameScroll": 27,
+          "nameClient": 27,
+          "price": "440",
+          "priceRect": {
+            "x": 761,
+            "y": 250,
+            "right": 789.1,
+            "bottom": 261.6,
+            "width": 28,
+            "height": 11.5
+          },
+          "priceFont": "11px",
+          "priceScroll": 28,
+          "priceClient": 28,
+          "priceHeight": 12,
+          "priceClientHeight": 12
+        },
+        {
+          "index": 31,
+          "tile": {
+            "x": 812,
+            "y": 268,
+            "right": 941,
+            "bottom": 307,
+            "width": 129,
+            "height": 39
+          },
+          "name": "Newark",
+          "title": "Newark",
+          "nameRect": {
+            "x": 860,
+            "y": 274,
+            "right": 913.1,
+            "bottom": 301,
+            "width": 53.2,
+            "height": 27
+          },
+          "nameFont": "12px",
+          "nameLine": "12.6px",
+          "nameScroll": 27,
+          "nameClient": 27,
+          "price": "460",
+          "priceRect": {
+            "x": 914.1,
+            "y": 281,
+            "right": 938,
+            "bottom": 294,
+            "width": 23.9,
+            "height": 13
+          },
+          "priceFont": "11px",
+          "priceScroll": 24,
+          "priceClient": 24,
+          "priceHeight": 13,
+          "priceClientHeight": 13
+        },
+        {
+          "index": 32,
+          "tile": {
+            "x": 812,
+            "y": 311,
+            "right": 941,
+            "bottom": 350,
+            "width": 129,
+            "height": 39
+          },
+          "name": "Agra",
+          "title": "Agra",
+          "nameRect": {
+            "x": 860,
+            "y": 317,
+            "right": 913.1,
+            "bottom": 344,
+            "width": 53.2,
+            "height": 27
+          },
+          "nameFont": "12px",
+          "nameLine": "12.6px",
+          "nameScroll": 27,
+          "nameClient": 27,
+          "price": "480",
+          "priceRect": {
+            "x": 914.1,
+            "y": 324,
+            "right": 938,
+            "bottom": 337,
+            "width": 23.9,
+            "height": 13
+          },
+          "priceFont": "11px",
+          "priceScroll": 24,
+          "priceClient": 24,
+          "priceHeight": 13,
+          "priceClientHeight": 13
+        },
+        {
+          "index": 33,
+          "tile": {
+            "x": 812,
+            "y": 354,
+            "right": 941,
+            "bottom": 393,
+            "width": 129,
+            "height": 39
+          },
+          "name": "Atenas",
+          "title": "Atenas",
+          "nameRect": {
+            "x": 860,
+            "y": 360,
+            "right": 912.7,
+            "bottom": 387,
+            "width": 52.7,
+            "height": 27
+          },
+          "nameFont": "12px",
+          "nameLine": "12.6px",
+          "nameScroll": 27,
+          "nameClient": 27,
+          "price": "500",
+          "priceRect": {
+            "x": 913.7,
+            "y": 367,
+            "right": 938,
+            "bottom": 380,
+            "width": 24.3,
+            "height": 13
+          },
+          "priceFont": "11px",
+          "priceScroll": 24,
+          "priceClient": 24,
+          "priceHeight": 13,
+          "priceClientHeight": 13
+        },
+        {
+          "index": 35,
+          "tile": {
+            "x": 812,
+            "y": 440,
+            "right": 941,
+            "bottom": 479,
+            "width": 129,
+            "height": 39
+          },
+          "name": "Toronto",
+          "title": "Toronto",
+          "nameRect": {
+            "x": 860,
+            "y": 446,
+            "right": 914.2,
+            "bottom": 473,
+            "width": 54.2,
+            "height": 27
+          },
+          "nameFont": "12px",
+          "nameLine": "12.6px",
+          "nameScroll": 27,
+          "nameClient": 27,
+          "price": "520",
+          "priceRect": {
+            "x": 915.2,
+            "y": 453,
+            "right": 938,
+            "bottom": 466,
+            "width": 22.8,
+            "height": 13
+          },
+          "priceFont": "11px",
+          "priceScroll": 23,
+          "priceClient": 23,
+          "priceHeight": 13,
+          "priceClientHeight": 13
+        },
+        {
+          "index": 36,
+          "tile": {
+            "x": 812,
+            "y": 483,
+            "right": 941,
+            "bottom": 522,
+            "width": 129,
+            "height": 39
+          },
+          "name": "Sídney",
+          "title": "Sídney",
+          "nameRect": {
+            "x": 860,
+            "y": 489,
+            "right": 913.3,
+            "bottom": 516,
+            "width": 53.3,
+            "height": 27
+          },
+          "nameFont": "12px",
+          "nameLine": "12.6px",
+          "nameScroll": 27,
+          "nameClient": 27,
+          "price": "540",
+          "priceRect": {
+            "x": 914.3,
+            "y": 496,
+            "right": 938,
+            "bottom": 509,
+            "width": 23.8,
+            "height": 13
+          },
+          "priceFont": "11px",
+          "priceScroll": 24,
+          "priceClient": 24,
+          "priceHeight": 13,
+          "priceClientHeight": 13
+        },
+        {
+          "index": 38,
+          "tile": {
+            "x": 812,
+            "y": 569,
+            "right": 941,
+            "bottom": 608,
+            "width": 129,
+            "height": 39
+          },
+          "name": "Seúl",
+          "title": "Seúl",
+          "nameRect": {
+            "x": 860,
+            "y": 575,
+            "right": 913.4,
+            "bottom": 602,
+            "width": 53.5,
+            "height": 27
+          },
+          "nameFont": "12px",
+          "nameLine": "12.6px",
+          "nameScroll": 27,
+          "nameClient": 27,
+          "price": "560",
+          "priceRect": {
+            "x": 914.4,
+            "y": 582,
+            "right": 938,
+            "bottom": 595,
+            "width": 23.6,
+            "height": 13
+          },
+          "priceFont": "11px",
+          "priceScroll": 24,
+          "priceClient": 24,
+          "priceHeight": 13,
+          "priceClientHeight": 13
+        }
+      ],
+      "screenshot": "/tmp/marble-property-tile-measure-20261012/tiles-1366-es.png"
+    },
+    {
+      "viewport": [
+        1440,
+        900
+      ],
+      "locale": "es",
+      "count": 24,
+      "issues": [],
+      "metrics": [
+        {
+          "index": 1,
+          "tile": {
+            "x": 799.6,
+            "y": 779.7,
+            "right": 871.2,
+            "bottom": 869,
+            "width": 71.6,
+            "height": 89.3
+          },
+          "name": "Gwangju",
+          "title": "Gwangju",
+          "nameRect": {
+            "x": 802.6,
+            "y": 827.6,
+            "right": 868.2,
+            "bottom": 854.6,
+            "width": 65.6,
+            "height": 27
+          },
+          "nameFont": "12px",
+          "nameLine": "12.6px",
+          "nameScroll": 27,
+          "nameClient": 27,
+          "price": "100",
+          "priceRect": {
+            "x": 822.7,
+            "y": 855.6,
+            "right": 848.2,
+            "bottom": 867.1,
+            "width": 25.5,
+            "height": 11.5
+          },
+          "priceFont": "11px",
+          "priceScroll": 26,
+          "priceClient": 26,
+          "priceHeight": 12,
+          "priceClientHeight": 12
+        },
+        {
+          "index": 3,
+          "tile": {
+            "x": 648.4,
+            "y": 779.7,
+            "right": 720,
+            "bottom": 869,
+            "width": 71.6,
+            "height": 89.3
+          },
+          "name": "Nueva York",
+          "title": "Nueva York",
+          "nameRect": {
+            "x": 651.4,
+            "y": 827.6,
+            "right": 717,
+            "bottom": 854.6,
+            "width": 65.6,
+            "height": 27
+          },
+          "nameFont": "12px",
+          "nameLine": "12.6px",
+          "nameScroll": 27,
+          "nameClient": 27,
+          "price": "260",
+          "priceRect": {
+            "x": 670.7,
+            "y": 855.6,
+            "right": 697.8,
+            "bottom": 867.1,
+            "width": 27.1,
+            "height": 11.5
+          },
+          "priceFont": "11px",
+          "priceScroll": 27,
+          "priceClient": 27,
+          "priceHeight": 12,
+          "priceClientHeight": 12
+        },
+        {
+          "index": 4,
+          "tile": {
+            "x": 572.8,
+            "y": 779.7,
+            "right": 644.4,
+            "bottom": 869,
+            "width": 71.6,
+            "height": 89.3
+          },
+          "name": "Madrid",
+          "title": "Madrid",
+          "nameRect": {
+            "x": 575.8,
+            "y": 827.6,
+            "right": 641.4,
+            "bottom": 854.6,
+            "width": 65.6,
+            "height": 27
+          },
+          "nameFont": "12px",
+          "nameLine": "12.6px",
+          "nameScroll": 27,
+          "nameClient": 27,
+          "price": "140",
+          "priceRect": {
+            "x": 596.1,
+            "y": 855.6,
+            "right": 621,
+            "bottom": 867.1,
+            "width": 24.9,
+            "height": 11.5
+          },
+          "priceFont": "11px",
+          "priceScroll": 25,
+          "priceClient": 25,
+          "priceHeight": 12,
+          "priceClientHeight": 12
+        },
+        {
+          "index": 5,
+          "tile": {
+            "x": 497.2,
+            "y": 779.7,
+            "right": 568.8,
+            "bottom": 869,
+            "width": 71.6,
+            "height": 89.3
+          },
+          "name": "Santiago",
+          "title": "Santiago",
+          "nameRect": {
+            "x": 500.2,
+            "y": 827.6,
+            "right": 565.8,
+            "bottom": 854.6,
+            "width": 65.6,
+            "height": 27
+          },
+          "nameFont": "12px",
+          "nameLine": "12.6px",
+          "nameScroll": 27,
+          "nameClient": 27,
+          "price": "160",
+          "priceRect": {
+            "x": 520.6,
+            "y": 855.6,
+            "right": 545.4,
+            "bottom": 867.1,
+            "width": 24.7,
+            "height": 11.5
+          },
+          "priceFont": "11px",
+          "priceScroll": 25,
+          "priceClient": 25,
+          "priceHeight": 12,
+          "priceClientHeight": 12
+        },
+        {
+          "index": 8,
+          "tile": {
+            "x": 270.4,
+            "y": 779.7,
+            "right": 342,
+            "bottom": 869,
+            "width": 71.6,
+            "height": 89.3
+          },
+          "name": "Puerto Plata",
+          "title": "Puerto Plata",
+          "nameRect": {
+            "x": 273.4,
+            "y": 827.6,
+            "right": 339,
+            "bottom": 854.6,
+            "width": 65.6,
+            "height": 27
+          },
+          "nameFont": "12px",
+          "nameLine": "12.6px",
+          "nameScroll": 27,
+          "nameClient": 27,
+          "price": "180",
+          "priceRect": {
+            "x": 293.8,
+            "y": 855.6,
+            "right": 318.5,
+            "bottom": 867.1,
+            "width": 24.7,
+            "height": 11.5
+          },
+          "priceFont": "11px",
+          "priceScroll": 25,
+          "priceClient": 25,
+          "priceHeight": 12,
+          "priceClientHeight": 12
+        },
+        {
+          "index": 9,
+          "tile": {
+            "x": 194.8,
+            "y": 779.7,
+            "right": 266.4,
+            "bottom": 869,
+            "width": 71.6,
+            "height": 89.3
+          },
+          "name": "San Juan",
+          "title": "San Juan",
+          "nameRect": {
+            "x": 197.8,
+            "y": 827.6,
+            "right": 263.4,
+            "bottom": 854.6,
+            "width": 65.6,
+            "height": 27
+          },
+          "nameFont": "12px",
+          "nameLine": "12.6px",
+          "nameScroll": 27,
+          "nameClient": 27,
+          "price": "200",
+          "priceRect": {
+            "x": 216.7,
+            "y": 855.6,
+            "right": 244.5,
+            "bottom": 867.1,
+            "width": 27.8,
+            "height": 11.5
+          },
+          "priceFont": "11px",
+          "priceScroll": 28,
+          "priceClient": 28,
+          "priceHeight": 12,
+          "priceClientHeight": 12
+        },
+        {
+          "index": 11,
+          "tile": {
+            "x": 51,
+            "y": 723.7,
+            "right": 190.8,
+            "bottom": 775.7,
+            "width": 139.8,
+            "height": 52
+          },
+          "name": "Berlín",
+          "title": "Berlín",
+          "nameRect": {
+            "x": 105,
+            "y": 736.2,
+            "right": 164.4,
+            "bottom": 763.2,
+            "width": 59.4,
+            "height": 27
+          },
+          "nameFont": "12px",
+          "nameLine": "12.6px",
+          "nameScroll": 27,
+          "nameClient": 27,
+          "price": "220",
+          "priceRect": {
+            "x": 165.4,
+            "y": 743.2,
+            "right": 187.8,
+            "bottom": 756.2,
+            "width": 22.4,
+            "height": 13
+          },
+          "priceFont": "11px",
+          "priceScroll": 22,
+          "priceClient": 22,
+          "priceHeight": 13,
+          "priceClientHeight": 13
+        },
+        {
+          "index": 13,
+          "tile": {
+            "x": 51,
+            "y": 611.6,
+            "right": 190.8,
+            "bottom": 663.6,
+            "width": 139.8,
+            "height": 52
+          },
+          "name": "Miami",
+          "title": "Miami",
+          "nameRect": {
+            "x": 105,
+            "y": 624.1,
+            "right": 163.6,
+            "bottom": 651.1,
+            "width": 58.6,
+            "height": 27
+          },
+          "nameFont": "12px",
+          "nameLine": "12.6px",
+          "nameScroll": 27,
+          "nameClient": 27,
+          "price": "240",
+          "priceRect": {
+            "x": 164.6,
+            "y": 631.1,
+            "right": 187.8,
+            "bottom": 644.1,
+            "width": 23.2,
+            "height": 13
+          },
+          "priceFont": "11px",
+          "priceScroll": 23,
+          "priceClient": 23,
+          "priceHeight": 13,
+          "priceClientHeight": 13
+        },
+        {
+          "index": 15,
+          "tile": {
+            "x": 51,
+            "y": 499.5,
+            "right": 190.8,
+            "bottom": 551.5,
+            "width": 139.8,
+            "height": 52
+          },
+          "name": "Santo Domingo",
+          "title": "Santo Domingo",
+          "nameRect": {
+            "x": 105,
+            "y": 512,
+            "right": 166.7,
+            "bottom": 539,
+            "width": 61.7,
+            "height": 27
+          },
+          "nameFont": "12px",
+          "nameLine": "12.6px",
+          "nameScroll": 27,
+          "nameClient": 27,
+          "price": "120",
+          "priceRect": {
+            "x": 167.7,
+            "y": 519,
+            "right": 187.8,
+            "bottom": 532,
+            "width": 20.1,
+            "height": 13
+          },
+          "priceFont": "11px",
+          "priceScroll": 20,
+          "priceClient": 20,
+          "priceHeight": 13,
+          "priceClientHeight": 13
+        },
+        {
+          "index": 16,
+          "tile": {
+            "x": 51,
+            "y": 443.4,
+            "right": 190.8,
+            "bottom": 495.5,
+            "width": 139.8,
+            "height": 52
+          },
+          "name": "París",
+          "title": "París",
+          "nameRect": {
+            "x": 105,
+            "y": 455.9,
+            "right": 163.8,
+            "bottom": 482.9,
+            "width": 58.8,
+            "height": 27
+          },
+          "nameFont": "12px",
+          "nameLine": "12.6px",
+          "nameScroll": 27,
+          "nameClient": 27,
+          "price": "280",
+          "priceRect": {
+            "x": 164.8,
+            "y": 462.9,
+            "right": 187.8,
+            "bottom": 475.9,
+            "width": 23,
+            "height": 13
+          },
+          "priceFont": "11px",
+          "priceScroll": 23,
+          "priceClient": 23,
+          "priceHeight": 13,
+          "priceClientHeight": 13
+        },
+        {
+          "index": 17,
+          "tile": {
+            "x": 51,
+            "y": 387.4,
+            "right": 190.8,
+            "bottom": 439.4,
+            "width": 139.8,
+            "height": 52
+          },
+          "name": "Tokio",
+          "title": "Tokio",
+          "nameRect": {
+            "x": 105,
+            "y": 399.9,
+            "right": 162.6,
+            "bottom": 426.9,
+            "width": 57.6,
+            "height": 27
+          },
+          "nameFont": "12px",
+          "nameLine": "12.6px",
+          "nameScroll": 27,
+          "nameClient": 27,
+          "price": "300",
+          "priceRect": {
+            "x": 163.6,
+            "y": 406.9,
+            "right": 187.8,
+            "bottom": 419.9,
+            "width": 24.1,
+            "height": 13
+          },
+          "priceFont": "11px",
+          "priceScroll": 24,
+          "priceClient": 24,
+          "priceHeight": 13,
+          "priceClientHeight": 13
+        },
+        {
+          "index": 19,
+          "tile": {
+            "x": 51,
+            "y": 275.3,
+            "right": 190.8,
+            "bottom": 327.3,
+            "width": 139.8,
+            "height": 52
+          },
+          "name": "Barcelona",
+          "title": "Barcelona",
+          "nameRect": {
+            "x": 105,
+            "y": 287.8,
+            "right": 164.1,
+            "bottom": 314.8,
+            "width": 59.1,
+            "height": 27
+          },
+          "nameFont": "12px",
+          "nameLine": "12.6px",
+          "nameScroll": 27,
+          "nameClient": 27,
+          "price": "320",
+          "priceRect": {
+            "x": 165.1,
+            "y": 294.8,
+            "right": 187.8,
+            "bottom": 307.8,
+            "width": 22.7,
+            "height": 13
+          },
+          "priceFont": "11px",
+          "priceScroll": 23,
+          "priceClient": 23,
+          "priceHeight": 13,
+          "priceClientHeight": 13
+        },
+        {
+          "index": 21,
+          "tile": {
+            "x": 194.8,
+            "y": 182,
+            "right": 266.4,
+            "bottom": 271.3,
+            "width": 71.6,
+            "height": 89.3
+          },
+          "name": "Estambul",
+          "title": "Estambul",
+          "nameRect": {
+            "x": 197.8,
+            "y": 229.9,
+            "right": 263.4,
+            "bottom": 256.9,
+            "width": 65.6,
+            "height": 27
+          },
+          "nameFont": "12px",
+          "nameLine": "12.6px",
+          "nameScroll": 27,
+          "nameClient": 27,
+          "price": "340",
+          "priceRect": {
+            "x": 216.8,
+            "y": 257.9,
+            "right": 244.3,
+            "bottom": 269.4,
+            "width": 27.5,
+            "height": 11.5
+          },
+          "priceFont": "11px",
+          "priceScroll": 28,
+          "priceClient": 28,
+          "priceHeight": 12,
+          "priceClientHeight": 12
+        },
+        {
+          "index": 22,
+          "tile": {
+            "x": 270.4,
+            "y": 182,
+            "right": 342,
+            "bottom": 271.3,
+            "width": 71.6,
+            "height": 89.3
+          },
+          "name": "La Habana",
+          "title": "La Habana",
+          "nameRect": {
+            "x": 273.4,
+            "y": 229.9,
+            "right": 339,
+            "bottom": 256.9,
+            "width": 65.6,
+            "height": 27
+          },
+          "nameFont": "12px",
+          "nameLine": "12.6px",
+          "nameScroll": 27,
+          "nameClient": 27,
+          "price": "360",
+          "priceRect": {
+            "x": 292.5,
+            "y": 257.9,
+            "right": 319.8,
+            "bottom": 269.4,
+            "width": 27.4,
+            "height": 11.5
+          },
+          "priceFont": "11px",
+          "priceScroll": 27,
+          "priceClient": 27,
+          "priceHeight": 12,
+          "priceClientHeight": 12
+        },
+        {
+          "index": 24,
+          "tile": {
+            "x": 421.6,
+            "y": 182,
+            "right": 493.2,
+            "bottom": 271.3,
+            "width": 71.6,
+            "height": 89.3
+          },
+          "name": "Ciudad de México",
+          "title": "Ciudad de México",
+          "nameRect": {
+            "x": 424.6,
+            "y": 229.9,
+            "right": 490.2,
+            "bottom": 256.9,
+            "width": 65.6,
+            "height": 27
+          },
+          "nameFont": "12px",
+          "nameLine": "12.6px",
+          "nameScroll": 27,
+          "nameClient": 27,
+          "price": "380",
+          "priceRect": {
+            "x": 443.7,
+            "y": 257.9,
+            "right": 471,
+            "bottom": 269.4,
+            "width": 27.3,
+            "height": 11.5
+          },
+          "priceFont": "11px",
+          "priceScroll": 27,
+          "priceClient": 27,
+          "priceHeight": 12,
+          "priceClientHeight": 12
+        },
+        {
+          "index": 25,
+          "tile": {
+            "x": 497.2,
+            "y": 182,
+            "right": 568.8,
+            "bottom": 271.3,
+            "width": 71.6,
+            "height": 89.3
+          },
+          "name": "Lisboa",
+          "title": "Lisboa",
+          "nameRect": {
+            "x": 500.2,
+            "y": 229.9,
+            "right": 565.8,
+            "bottom": 256.9,
+            "width": 65.6,
+            "height": 27
+          },
+          "nameFont": "12px",
+          "nameLine": "12.6px",
+          "nameScroll": 27,
+          "nameClient": 27,
+          "price": "400",
+          "priceRect": {
+            "x": 518.7,
+            "y": 257.9,
+            "right": 547.3,
+            "bottom": 269.4,
+            "width": 28.6,
+            "height": 11.5
+          },
+          "priceFont": "11px",
+          "priceScroll": 29,
+          "priceClient": 29,
+          "priceHeight": 12,
+          "priceClientHeight": 12
+        },
+        {
+          "index": 28,
+          "tile": {
+            "x": 724,
+            "y": 182,
+            "right": 795.6,
+            "bottom": 271.3,
+            "width": 71.6,
+            "height": 89.3
+          },
+          "name": "Londres",
+          "title": "Londres",
+          "nameRect": {
+            "x": 727,
+            "y": 229.9,
+            "right": 792.6,
+            "bottom": 256.9,
+            "width": 65.6,
+            "height": 27
+          },
+          "nameFont": "12px",
+          "nameLine": "12.6px",
+          "nameScroll": 27,
+          "nameClient": 27,
+          "price": "420",
+          "priceRect": {
+            "x": 746.2,
+            "y": 257.9,
+            "right": 773.4,
+            "bottom": 269.4,
+            "width": 27.2,
+            "height": 11.5
+          },
+          "priceFont": "11px",
+          "priceScroll": 27,
+          "priceClient": 27,
+          "priceHeight": 12,
+          "priceClientHeight": 12
+        },
+        {
+          "index": 29,
+          "tile": {
+            "x": 799.6,
+            "y": 182,
+            "right": 871.2,
+            "bottom": 271.3,
+            "width": 71.6,
+            "height": 89.3
+          },
+          "name": "Roma",
+          "title": "Roma",
+          "nameRect": {
+            "x": 802.6,
+            "y": 229.9,
+            "right": 868.2,
+            "bottom": 256.9,
+            "width": 65.6,
+            "height": 27
+          },
+          "nameFont": "12px",
+          "nameLine": "12.6px",
+          "nameScroll": 27,
+          "nameClient": 27,
+          "price": "440",
+          "priceRect": {
+            "x": 821.4,
+            "y": 257.9,
+            "right": 849.4,
+            "bottom": 269.4,
+            "width": 28,
+            "height": 11.5
+          },
+          "priceFont": "11px",
+          "priceScroll": 28,
+          "priceClient": 28,
+          "priceHeight": 12,
+          "priceClientHeight": 12
+        },
+        {
+          "index": 31,
+          "tile": {
+            "x": 875.2,
+            "y": 275.3,
+            "right": 1015,
+            "bottom": 327.3,
+            "width": 139.8,
+            "height": 52
+          },
+          "name": "Newark",
+          "title": "Newark",
+          "nameRect": {
+            "x": 929.2,
+            "y": 287.8,
+            "right": 987.1,
+            "bottom": 314.8,
+            "width": 57.9,
+            "height": 27
+          },
+          "nameFont": "12px",
+          "nameLine": "12.6px",
+          "nameScroll": 27,
+          "nameClient": 27,
+          "price": "460",
+          "priceRect": {
+            "x": 988.1,
+            "y": 294.8,
+            "right": 1012,
+            "bottom": 307.8,
+            "width": 23.9,
+            "height": 13
+          },
+          "priceFont": "11px",
+          "priceScroll": 24,
+          "priceClient": 24,
+          "priceHeight": 13,
+          "priceClientHeight": 13
+        },
+        {
+          "index": 32,
+          "tile": {
+            "x": 875.2,
+            "y": 331.3,
+            "right": 1015,
+            "bottom": 383.4,
+            "width": 139.8,
+            "height": 52
+          },
+          "name": "Agra",
+          "title": "Agra",
+          "nameRect": {
+            "x": 929.2,
+            "y": 343.8,
+            "right": 987.1,
+            "bottom": 370.8,
+            "width": 57.9,
+            "height": 27
+          },
+          "nameFont": "12px",
+          "nameLine": "12.6px",
+          "nameScroll": 27,
+          "nameClient": 27,
+          "price": "480",
+          "priceRect": {
+            "x": 988.1,
+            "y": 350.8,
+            "right": 1012,
+            "bottom": 363.8,
+            "width": 23.9,
+            "height": 13
+          },
+          "priceFont": "11px",
+          "priceScroll": 24,
+          "priceClient": 24,
+          "priceHeight": 13,
+          "priceClientHeight": 13
+        },
+        {
+          "index": 33,
+          "tile": {
+            "x": 875.2,
+            "y": 387.4,
+            "right": 1015,
+            "bottom": 439.4,
+            "width": 139.8,
+            "height": 52
+          },
+          "name": "Atenas",
+          "title": "Atenas",
+          "nameRect": {
+            "x": 929.2,
+            "y": 399.9,
+            "right": 986.6,
+            "bottom": 426.9,
+            "width": 57.4,
+            "height": 27
+          },
+          "nameFont": "12px",
+          "nameLine": "12.6px",
+          "nameScroll": 27,
+          "nameClient": 27,
+          "price": "500",
+          "priceRect": {
+            "x": 987.6,
+            "y": 406.9,
+            "right": 1012,
+            "bottom": 419.9,
+            "width": 24.3,
+            "height": 13
+          },
+          "priceFont": "11px",
+          "priceScroll": 24,
+          "priceClient": 24,
+          "priceHeight": 13,
+          "priceClientHeight": 13
+        },
+        {
+          "index": 35,
+          "tile": {
+            "x": 875.2,
+            "y": 499.5,
+            "right": 1015,
+            "bottom": 551.5,
+            "width": 139.8,
+            "height": 52
+          },
+          "name": "Toronto",
+          "title": "Toronto",
+          "nameRect": {
+            "x": 929.2,
+            "y": 512,
+            "right": 988.2,
+            "bottom": 539,
+            "width": 59,
+            "height": 27
+          },
+          "nameFont": "12px",
+          "nameLine": "12.6px",
+          "nameScroll": 27,
+          "nameClient": 27,
+          "price": "520",
+          "priceRect": {
+            "x": 989.2,
+            "y": 519,
+            "right": 1012,
+            "bottom": 532,
+            "width": 22.8,
+            "height": 13
+          },
+          "priceFont": "11px",
+          "priceScroll": 23,
+          "priceClient": 23,
+          "priceHeight": 13,
+          "priceClientHeight": 13
+        },
+        {
+          "index": 36,
+          "tile": {
+            "x": 875.2,
+            "y": 555.5,
+            "right": 1015,
+            "bottom": 607.6,
+            "width": 139.8,
+            "height": 52
+          },
+          "name": "Sídney",
+          "title": "Sídney",
+          "nameRect": {
+            "x": 929.2,
+            "y": 568,
+            "right": 987.2,
+            "bottom": 595,
+            "width": 58,
+            "height": 27
+          },
+          "nameFont": "12px",
+          "nameLine": "12.6px",
+          "nameScroll": 27,
+          "nameClient": 27,
+          "price": "540",
+          "priceRect": {
+            "x": 988.2,
+            "y": 575,
+            "right": 1012,
+            "bottom": 588,
+            "width": 23.8,
+            "height": 13
+          },
+          "priceFont": "11px",
+          "priceScroll": 24,
+          "priceClient": 24,
+          "priceHeight": 13,
+          "priceClientHeight": 13
+        },
+        {
+          "index": 38,
+          "tile": {
+            "x": 875.2,
+            "y": 667.6,
+            "right": 1015,
+            "bottom": 719.7,
+            "width": 139.8,
+            "height": 52
+          },
+          "name": "Seúl",
+          "title": "Seúl",
+          "nameRect": {
+            "x": 929.2,
+            "y": 680.1,
+            "right": 987.4,
+            "bottom": 707.1,
+            "width": 58.2,
+            "height": 27
+          },
+          "nameFont": "12px",
+          "nameLine": "12.6px",
+          "nameScroll": 27,
+          "nameClient": 27,
+          "price": "560",
+          "priceRect": {
+            "x": 988.4,
+            "y": 687.1,
+            "right": 1012,
+            "bottom": 700.1,
+            "width": 23.6,
+            "height": 13
+          },
+          "priceFont": "11px",
+          "priceScroll": 24,
+          "priceClient": 24,
+          "priceHeight": 13,
+          "priceClientHeight": 13
+        }
+      ],
+      "screenshot": "/tmp/marble-property-tile-measure-20261012/tiles-1440-es.png"
+    }
+  ],
+  "errors": [],
+  "source_commit": "0fbfce8",
+  "scope": "Final 46px/48px art restored; final CSS in fresh turn-one two-context actual room, 24 properties across two sizes/two locales; build stages were before only final tile-copy/art refinements."
+}

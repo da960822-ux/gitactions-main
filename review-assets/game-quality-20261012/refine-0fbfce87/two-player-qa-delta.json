@@ -1,0 +1,78 @@
+{
+  "phase": "refine phase 2",
+  "sourceRevision": "816eb067467c55fda71d68a5c2c917818b2e3309",
+  "sourceState": "dirty phase-two tree; QA ran after current DOM/DVC/Minhwatu shared and game UI deltas were present; no runtime source modifications by QA",
+  "services": {
+    "vite": "http://127.0.0.1:5212",
+    "authority": "http://127.0.0.1:54331 local SQL fixture",
+    "realtime": false,
+    "productionSupabase": false
+  },
+  "sessions": "Two isolated Playwright browser contexts per game, KO p1 and es-DO p2; UI game selection and visible game actions; explicit reconnectRoom snapshot reads; no engine state writes or screenshots in this report.",
+  "results": {
+    "domino": {
+      "status": "pass",
+      "uiActions": "Two legal tile placements from alternating seats, versions 2→3→4; public chain length 0→1→2.",
+      "reload": "p1 reload retained seat, KO locale, game, v4, p2 turn, chain length 2, and own hand count 6; both explicit snapshots converged at v4.",
+      "privacy": "Both viewers had zero rival tile-face DOM nodes; no private hand/seed/stock keys in public board.",
+      "restart": "Not exercised in this bounded current-source pass: these fresh local rooms remain mid-match, and the replay consent control is only available after a terminal result. Reaching it would require another full match, which this pass did not run. Previous full-match/replay records are historical baseline only, not current-runtime replay confirmation.",
+      "overflowStress": {
+        "status": "pass; controlled DOM geometry after current CSS change",
+        "viewport": "1366x768 desktop with fine pointer",
+        "css": "src/styles/domino-premium.css uses desktop-only justify-content:safe center for .dp-hand; no tile scaling or mobile selector change.",
+        "hand21": {
+          "count": 21,
+          "containerLeft": 75,
+          "containerRight": 1291,
+          "startScrollLeft": 0,
+          "startFirstLeft": 78,
+          "startLastLeft": 1878,
+          "maxScrollLeft": 674,
+          "endLastRight": 1288,
+          "endWithinContainer": true
+        },
+        "chain28": {
+          "count": 28,
+          "scrollWidth": 1202,
+          "clientWidth": 1202,
+          "firstLeft": 96.5,
+          "lastRight": 1269.5,
+          "containerLeft": 82,
+          "containerRight": 1284,
+          "bothVisibleWithoutScrolling": true
+        },
+        "method": "Two consented KO/ES contexts; one legal UI opening placement populated the live chain. 21 hand items and 28 chain items were DOM clones for geometry only; clones did not alter game state.",
+        "screenshots": [
+          "/tmp/luna-domino-safe-center/hand-start.png",
+          "/tmp/luna-domino-safe-center/hand-end.png"
+        ]
+      }
+    },
+    "davinci": {
+      "status": "pass for bounded scope",
+      "uiActions": "Both seats completed setup; 8 UI actions including Joker placement, draw, guess and turn completion; snapshots converged at v10.",
+      "artAndPrivacy": "Black/white Joker portraits loaded in own view. Unrevealed rival tiles had no images; one already revealed Joker was correctly visible to its opponent.",
+      "reload": "Both contexts retained their seat, KO/ES locale, v10, draw/wait phase, and own hand count; versions agreed.",
+      "restart": "Not exercised in this bounded current-source pass: these fresh local rooms remain mid-match, and the replay consent control is only available after a terminal result. Reaching it would require another full match, which this pass did not run. Previous full-match/replay records are historical baseline only, not current-runtime replay confirmation."
+    },
+    "minhwatu": {
+      "status": "pass for bounded scope",
+      "uiActions": "Both seats consented through UI at v2; one legal card/capture turn committed v2→v3 and both viewers converged.",
+      "privacy": "Each rendered hand matched its viewer's own hand; opponent hand remained represented by count.",
+      "reload": "After p1 offline→online and browser reload, p1/KO/game/v3/turn p2 and the same own hand were restored; p2 remained separate and both snapshots were v3.",
+      "restart": "Not exercised in this bounded current-source pass: these fresh local rooms remain mid-match, and the replay consent control is only available after a terminal result. Reaching it would require another full match, which this pass did not run. Previous full-match/replay records are historical baseline only, not current-runtime replay confirmation."
+    },
+    "catchmind": {
+      "status": "pass; rerun on current 5212/54331 service",
+      "evidence": "Existing verify-catchmind-topics.mjs ran in two separate contexts at 1440x900. Category food was saved as the single topic; bilingual answer remained private to the drawer; guesser saw only the bilingual static hint; a real canvas stroke synchronized; page reload preserved the active round deadline; both-seat replay reset topic/score/strokes; actual 30-second timeout completed; late answer was rejected. Zero page errors.",
+      "artifactDir": "/tmp/luna-refine-catchmind (temporary; not archived)",
+      "realtime": "Explicit local fixture snapshot refresh only; deployed Realtime untested."
+    }
+  },
+  "scopeLimits": [
+    "These checks exercise a local SQL/RLS/authority fixture with explicit snapshot refresh; they do not verify deployed Supabase Auth or Realtime.",
+    "Domino, Da Vinci, and Minhwatu runs were bounded representative-turn regressions, not full-match reruns; prior full-match/replay coverage was reused.",
+    "Special branches not reached in these bounded runs remain unverified.",
+    "Current-runtime two-person replay was directly revalidated for Catchmind only. Domino, Da Vinci, and Minhwatu current-runtime replay remains unverified in this pass because their fresh rooms were nonterminal; do not infer it from prior branch runs."
+  ]
+}

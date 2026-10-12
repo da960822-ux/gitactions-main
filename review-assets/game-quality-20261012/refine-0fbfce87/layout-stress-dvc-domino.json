@@ -1,0 +1,2099 @@
+{
+  "source": {
+    "head": "816eb067467c55fda71d68a5c2c917818b2e3309",
+    "dirtyTree": true,
+    "note": "816eb067467c55fda71d68a5c2c917818b2e3309 with dirty phase-2 CSS/UI; no source edits by this QA run"
+  },
+  "fixture": "54331 local fixture; explicit reconnect; no production Realtime/Auth",
+  "rooms": [
+    {
+      "game": "davinci",
+      "actions": [
+        {
+          "seat": "p1",
+          "action": "finish-setup-via-ui",
+          "versionBefore": 2
+        },
+        {
+          "seat": "p2",
+          "action": "finish-setup-via-ui",
+          "versionBefore": 3
+        },
+        {
+          "seat": "p1",
+          "action": "draw-via-ui",
+          "versionBefore": 4,
+          "phaseAfter": "guess",
+          "handCountAfter": 5
+        }
+      ],
+      "actual": {
+        "1440x900": [
+          {
+            "seat": "p1",
+            "locale": "ko",
+            "snapshot": {
+              "playerId": "p1",
+              "version": 2,
+              "gameId": "davinci",
+              "pendingGame": null,
+              "phase": "setup",
+              "turn": "p1",
+              "handCount": 4,
+              "oppCount": 4,
+              "ownJokers": 0
+            },
+            "layout": {
+              "viewport": [
+                1440,
+                900
+              ],
+              "document": {
+                "clientWidth": 1440,
+                "scrollWidth": 1440,
+                "scrollHeight": 1843
+              },
+              "elements": {
+                ".dv-table": {
+                  "x": 112,
+                  "y": 189,
+                  "width": 1216,
+                  "height": 554.75,
+                  "right": 1328,
+                  "bottom": 743.75,
+                  "fontSize": "15.2px",
+                  "color": "rgb(242, 239, 223)",
+                  "background": "rgba(0, 0, 0, 0)",
+                  "scrollWidth": 1214,
+                  "clientWidth": 1214,
+                  "overflowX": false,
+                  "children": 5,
+                  "images": 0,
+                  "loadedImages": 0,
+                  "visibleChildren": 5
+                },
+                ".dv-own-rack": {
+                  "x": 122,
+                  "y": 479.96875,
+                  "width": 731.6875,
+                  "height": 185.78125,
+                  "right": 853.6875,
+                  "bottom": 665.75,
+                  "fontSize": "15.2px",
+                  "color": "rgb(242, 239, 223)",
+                  "background": "rgba(0, 0, 0, 0)",
+                  "scrollWidth": 730,
+                  "clientWidth": 730,
+                  "overflowX": false,
+                  "children": 2,
+                  "images": 0,
+                  "loadedImages": 0,
+                  "visibleChildren": 2
+                },
+                ".dv-rival-rack": {
+                  "x": 122,
+                  "y": 287.1875,
+                  "width": 731.6875,
+                  "height": 185.78125,
+                  "right": 853.6875,
+                  "bottom": 472.96875,
+                  "fontSize": "15.2px",
+                  "color": "rgb(242, 239, 223)",
+                  "background": "rgba(0, 0, 0, 0)",
+                  "scrollWidth": 730,
+                  "clientWidth": 730,
+                  "overflowX": false,
+                  "children": 2,
+                  "images": 0,
+                  "loadedImages": 0,
+                  "visibleChildren": 2
+                }
+              }
+            }
+          },
+          {
+            "seat": "p2",
+            "locale": "es-DO",
+            "snapshot": {
+              "playerId": "p2",
+              "version": 2,
+              "gameId": "davinci",
+              "pendingGame": null,
+              "phase": "setup",
+              "turn": "p2",
+              "handCount": 4,
+              "oppCount": 4,
+              "ownJokers": 0
+            },
+            "layout": {
+              "viewport": [
+                1440,
+                900
+              ],
+              "document": {
+                "clientWidth": 1440,
+                "scrollWidth": 1440,
+                "scrollHeight": 1907
+              },
+              "elements": {
+                ".dv-table": {
+                  "x": 112,
+                  "y": 189,
+                  "width": 1216,
+                  "height": 572.75,
+                  "right": 1328,
+                  "bottom": 761.75,
+                  "fontSize": "15.2px",
+                  "color": "rgb(242, 239, 223)",
+                  "background": "rgba(0, 0, 0, 0)",
+                  "scrollWidth": 1214,
+                  "clientWidth": 1214,
+                  "overflowX": false,
+                  "children": 5,
+                  "images": 0,
+                  "loadedImages": 0,
+                  "visibleChildren": 5
+                },
+                ".dv-own-rack": {
+                  "x": 122,
+                  "y": 497.96875,
+                  "width": 731.6875,
+                  "height": 185.78125,
+                  "right": 853.6875,
+                  "bottom": 683.75,
+                  "fontSize": "15.2px",
+                  "color": "rgb(242, 239, 223)",
+                  "background": "rgba(0, 0, 0, 0)",
+                  "scrollWidth": 730,
+                  "clientWidth": 730,
+                  "overflowX": false,
+                  "children": 2,
+                  "images": 0,
+                  "loadedImages": 0,
+                  "visibleChildren": 2
+                },
+                ".dv-rival-rack": {
+                  "x": 122,
+                  "y": 305.1875,
+                  "width": 731.6875,
+                  "height": 185.78125,
+                  "right": 853.6875,
+                  "bottom": 490.96875,
+                  "fontSize": "15.2px",
+                  "color": "rgb(242, 239, 223)",
+                  "background": "rgba(0, 0, 0, 0)",
+                  "scrollWidth": 730,
+                  "clientWidth": 730,
+                  "overflowX": false,
+                  "children": 2,
+                  "images": 0,
+                  "loadedImages": 0,
+                  "visibleChildren": 2
+                }
+              }
+            }
+          }
+        ],
+        "1366x768": [
+          {
+            "seat": "p1",
+            "locale": "ko",
+            "snapshot": {
+              "playerId": "p1",
+              "version": 2,
+              "gameId": "davinci",
+              "pendingGame": null,
+              "phase": "setup",
+              "turn": "p1",
+              "handCount": 4,
+              "oppCount": 4,
+              "ownJokers": 0
+            },
+            "layout": {
+              "viewport": [
+                1366,
+                768
+              ],
+              "document": {
+                "clientWidth": 1366,
+                "scrollWidth": 1366,
+                "scrollHeight": 1843
+              },
+              "elements": {
+                ".dv-table": {
+                  "x": 75,
+                  "y": 189,
+                  "width": 1216,
+                  "height": 554.75,
+                  "right": 1291,
+                  "bottom": 743.75,
+                  "fontSize": "15.2px",
+                  "color": "rgb(242, 239, 223)",
+                  "background": "rgba(0, 0, 0, 0)",
+                  "scrollWidth": 1214,
+                  "clientWidth": 1214,
+                  "overflowX": false,
+                  "children": 5,
+                  "images": 0,
+                  "loadedImages": 0,
+                  "visibleChildren": 5
+                },
+                ".dv-own-rack": {
+                  "x": 85,
+                  "y": 479.96875,
+                  "width": 731.6875,
+                  "height": 185.78125,
+                  "right": 816.6875,
+                  "bottom": 665.75,
+                  "fontSize": "15.2px",
+                  "color": "rgb(242, 239, 223)",
+                  "background": "rgba(0, 0, 0, 0)",
+                  "scrollWidth": 730,
+                  "clientWidth": 730,
+                  "overflowX": false,
+                  "children": 2,
+                  "images": 0,
+                  "loadedImages": 0,
+                  "visibleChildren": 2
+                },
+                ".dv-rival-rack": {
+                  "x": 85,
+                  "y": 287.1875,
+                  "width": 731.6875,
+                  "height": 185.78125,
+                  "right": 816.6875,
+                  "bottom": 472.96875,
+                  "fontSize": "15.2px",
+                  "color": "rgb(242, 239, 223)",
+                  "background": "rgba(0, 0, 0, 0)",
+                  "scrollWidth": 730,
+                  "clientWidth": 730,
+                  "overflowX": false,
+                  "children": 2,
+                  "images": 0,
+                  "loadedImages": 0,
+                  "visibleChildren": 2
+                }
+              }
+            }
+          },
+          {
+            "seat": "p2",
+            "locale": "es-DO",
+            "snapshot": {
+              "playerId": "p2",
+              "version": 2,
+              "gameId": "davinci",
+              "pendingGame": null,
+              "phase": "setup",
+              "turn": "p2",
+              "handCount": 4,
+              "oppCount": 4,
+              "ownJokers": 0
+            },
+            "layout": {
+              "viewport": [
+                1366,
+                768
+              ],
+              "document": {
+                "clientWidth": 1366,
+                "scrollWidth": 1366,
+                "scrollHeight": 1907
+              },
+              "elements": {
+                ".dv-table": {
+                  "x": 75,
+                  "y": 189,
+                  "width": 1216,
+                  "height": 572.75,
+                  "right": 1291,
+                  "bottom": 761.75,
+                  "fontSize": "15.2px",
+                  "color": "rgb(242, 239, 223)",
+                  "background": "rgba(0, 0, 0, 0)",
+                  "scrollWidth": 1214,
+                  "clientWidth": 1214,
+                  "overflowX": false,
+                  "children": 5,
+                  "images": 0,
+                  "loadedImages": 0,
+                  "visibleChildren": 5
+                },
+                ".dv-own-rack": {
+                  "x": 85,
+                  "y": 497.96875,
+                  "width": 731.6875,
+                  "height": 185.78125,
+                  "right": 816.6875,
+                  "bottom": 683.75,
+                  "fontSize": "15.2px",
+                  "color": "rgb(242, 239, 223)",
+                  "background": "rgba(0, 0, 0, 0)",
+                  "scrollWidth": 730,
+                  "clientWidth": 730,
+                  "overflowX": false,
+                  "children": 2,
+                  "images": 0,
+                  "loadedImages": 0,
+                  "visibleChildren": 2
+                },
+                ".dv-rival-rack": {
+                  "x": 85,
+                  "y": 305.1875,
+                  "width": 731.6875,
+                  "height": 185.78125,
+                  "right": 816.6875,
+                  "bottom": 490.96875,
+                  "fontSize": "15.2px",
+                  "color": "rgb(242, 239, 223)",
+                  "background": "rgba(0, 0, 0, 0)",
+                  "scrollWidth": 730,
+                  "clientWidth": 730,
+                  "overflowX": false,
+                  "children": 2,
+                  "images": 0,
+                  "loadedImages": 0,
+                  "visibleChildren": 2
+                }
+              }
+            }
+          }
+        ],
+        "after-1440x900": [
+          {
+            "seat": "p1",
+            "locale": "ko",
+            "snapshot": {
+              "playerId": "p1",
+              "version": 5,
+              "gameId": "davinci",
+              "pendingGame": null,
+              "phase": "guess",
+              "turn": "p1",
+              "handCount": 5,
+              "oppCount": 4,
+              "ownJokers": 0
+            },
+            "layout": {
+              "viewport": [
+                1440,
+                900
+              ],
+              "document": {
+                "clientWidth": 1440,
+                "scrollWidth": 1440,
+                "scrollHeight": 1843
+              },
+              "elements": {
+                ".dv-table": {
+                  "x": 112,
+                  "y": 189,
+                  "width": 1216,
+                  "height": 554.75,
+                  "right": 1328,
+                  "bottom": 743.75,
+                  "fontSize": "15.2px",
+                  "color": "rgb(242, 239, 223)",
+                  "background": "rgba(0, 0, 0, 0)",
+                  "scrollWidth": 1214,
+                  "clientWidth": 1214,
+                  "overflowX": false,
+                  "children": 5,
+                  "images": 0,
+                  "loadedImages": 0,
+                  "visibleChildren": 5
+                },
+                ".dv-own-rack": {
+                  "x": 122,
+                  "y": 479.96875,
+                  "width": 731.6875,
+                  "height": 185.78125,
+                  "right": 853.6875,
+                  "bottom": 665.75,
+                  "fontSize": "15.2px",
+                  "color": "rgb(242, 239, 223)",
+                  "background": "rgba(0, 0, 0, 0)",
+                  "scrollWidth": 730,
+                  "clientWidth": 730,
+                  "overflowX": false,
+                  "children": 2,
+                  "images": 0,
+                  "loadedImages": 0,
+                  "visibleChildren": 2
+                },
+                ".dv-rival-rack": {
+                  "x": 122,
+                  "y": 287.1875,
+                  "width": 731.6875,
+                  "height": 185.78125,
+                  "right": 853.6875,
+                  "bottom": 472.96875,
+                  "fontSize": "15.2px",
+                  "color": "rgb(242, 239, 223)",
+                  "background": "rgba(0, 0, 0, 0)",
+                  "scrollWidth": 730,
+                  "clientWidth": 730,
+                  "overflowX": false,
+                  "children": 2,
+                  "images": 0,
+                  "loadedImages": 0,
+                  "visibleChildren": 2
+                }
+              }
+            }
+          },
+          {
+            "seat": "p2",
+            "locale": "es-DO",
+            "snapshot": {
+              "playerId": "p2",
+              "version": 5,
+              "gameId": "davinci",
+              "pendingGame": null,
+              "phase": "waiting",
+              "turn": "p1",
+              "handCount": 4,
+              "oppCount": 5,
+              "ownJokers": 0
+            },
+            "layout": {
+              "viewport": [
+                1440,
+                900
+              ],
+              "document": {
+                "clientWidth": 1440,
+                "scrollWidth": 1440,
+                "scrollHeight": 1907
+              },
+              "elements": {
+                ".dv-table": {
+                  "x": 112,
+                  "y": 189,
+                  "width": 1216,
+                  "height": 572.75,
+                  "right": 1328,
+                  "bottom": 761.75,
+                  "fontSize": "15.2px",
+                  "color": "rgb(242, 239, 223)",
+                  "background": "rgba(0, 0, 0, 0)",
+                  "scrollWidth": 1214,
+                  "clientWidth": 1214,
+                  "overflowX": false,
+                  "children": 5,
+                  "images": 0,
+                  "loadedImages": 0,
+                  "visibleChildren": 5
+                },
+                ".dv-own-rack": {
+                  "x": 122,
+                  "y": 497.96875,
+                  "width": 731.6875,
+                  "height": 185.78125,
+                  "right": 853.6875,
+                  "bottom": 683.75,
+                  "fontSize": "15.2px",
+                  "color": "rgb(242, 239, 223)",
+                  "background": "rgba(0, 0, 0, 0)",
+                  "scrollWidth": 730,
+                  "clientWidth": 730,
+                  "overflowX": false,
+                  "children": 2,
+                  "images": 0,
+                  "loadedImages": 0,
+                  "visibleChildren": 2
+                },
+                ".dv-rival-rack": {
+                  "x": 122,
+                  "y": 305.1875,
+                  "width": 731.6875,
+                  "height": 185.78125,
+                  "right": 853.6875,
+                  "bottom": 490.96875,
+                  "fontSize": "15.2px",
+                  "color": "rgb(242, 239, 223)",
+                  "background": "rgba(0, 0, 0, 0)",
+                  "scrollWidth": 730,
+                  "clientWidth": 730,
+                  "overflowX": false,
+                  "children": 2,
+                  "images": 0,
+                  "loadedImages": 0,
+                  "visibleChildren": 2
+                }
+              }
+            }
+          }
+        ],
+        "after-1366x768": [
+          {
+            "seat": "p1",
+            "locale": "ko",
+            "snapshot": {
+              "playerId": "p1",
+              "version": 5,
+              "gameId": "davinci",
+              "pendingGame": null,
+              "phase": "guess",
+              "turn": "p1",
+              "handCount": 5,
+              "oppCount": 4,
+              "ownJokers": 0
+            },
+            "layout": {
+              "viewport": [
+                1366,
+                768
+              ],
+              "document": {
+                "clientWidth": 1366,
+                "scrollWidth": 1366,
+                "scrollHeight": 1843
+              },
+              "elements": {
+                ".dv-table": {
+                  "x": 75,
+                  "y": 189,
+                  "width": 1216,
+                  "height": 554.75,
+                  "right": 1291,
+                  "bottom": 743.75,
+                  "fontSize": "15.2px",
+                  "color": "rgb(242, 239, 223)",
+                  "background": "rgba(0, 0, 0, 0)",
+                  "scrollWidth": 1214,
+                  "clientWidth": 1214,
+                  "overflowX": false,
+                  "children": 5,
+                  "images": 0,
+                  "loadedImages": 0,
+                  "visibleChildren": 5
+                },
+                ".dv-own-rack": {
+                  "x": 85,
+                  "y": 479.96875,
+                  "width": 731.6875,
+                  "height": 185.78125,
+                  "right": 816.6875,
+                  "bottom": 665.75,
+                  "fontSize": "15.2px",
+                  "color": "rgb(242, 239, 223)",
+                  "background": "rgba(0, 0, 0, 0)",
+                  "scrollWidth": 730,
+                  "clientWidth": 730,
+                  "overflowX": false,
+                  "children": 2,
+                  "images": 0,
+                  "loadedImages": 0,
+                  "visibleChildren": 2
+                },
+                ".dv-rival-rack": {
+                  "x": 85,
+                  "y": 287.1875,
+                  "width": 731.6875,
+                  "height": 185.78125,
+                  "right": 816.6875,
+                  "bottom": 472.96875,
+                  "fontSize": "15.2px",
+                  "color": "rgb(242, 239, 223)",
+                  "background": "rgba(0, 0, 0, 0)",
+                  "scrollWidth": 730,
+                  "clientWidth": 730,
+                  "overflowX": false,
+                  "children": 2,
+                  "images": 0,
+                  "loadedImages": 0,
+                  "visibleChildren": 2
+                }
+              }
+            }
+          },
+          {
+            "seat": "p2",
+            "locale": "es-DO",
+            "snapshot": {
+              "playerId": "p2",
+              "version": 5,
+              "gameId": "davinci",
+              "pendingGame": null,
+              "phase": "waiting",
+              "turn": "p1",
+              "handCount": 4,
+              "oppCount": 5,
+              "ownJokers": 0
+            },
+            "layout": {
+              "viewport": [
+                1366,
+                768
+              ],
+              "document": {
+                "clientWidth": 1366,
+                "scrollWidth": 1366,
+                "scrollHeight": 1907
+              },
+              "elements": {
+                ".dv-table": {
+                  "x": 75,
+                  "y": 189,
+                  "width": 1216,
+                  "height": 572.75,
+                  "right": 1291,
+                  "bottom": 761.75,
+                  "fontSize": "15.2px",
+                  "color": "rgb(242, 239, 223)",
+                  "background": "rgba(0, 0, 0, 0)",
+                  "scrollWidth": 1214,
+                  "clientWidth": 1214,
+                  "overflowX": false,
+                  "children": 5,
+                  "images": 0,
+                  "loadedImages": 0,
+                  "visibleChildren": 5
+                },
+                ".dv-own-rack": {
+                  "x": 85,
+                  "y": 497.96875,
+                  "width": 731.6875,
+                  "height": 185.78125,
+                  "right": 816.6875,
+                  "bottom": 683.75,
+                  "fontSize": "15.2px",
+                  "color": "rgb(242, 239, 223)",
+                  "background": "rgba(0, 0, 0, 0)",
+                  "scrollWidth": 730,
+                  "clientWidth": 730,
+                  "overflowX": false,
+                  "children": 2,
+                  "images": 0,
+                  "loadedImages": 0,
+                  "visibleChildren": 2
+                },
+                ".dv-rival-rack": {
+                  "x": 85,
+                  "y": 305.1875,
+                  "width": 731.6875,
+                  "height": 185.78125,
+                  "right": 816.6875,
+                  "bottom": 490.96875,
+                  "fontSize": "15.2px",
+                  "color": "rgb(242, 239, 223)",
+                  "background": "rgba(0, 0, 0, 0)",
+                  "scrollWidth": 730,
+                  "clientWidth": 730,
+                  "overflowX": false,
+                  "children": 2,
+                  "images": 0,
+                  "loadedImages": 0,
+                  "visibleChildren": 2
+                }
+              }
+            }
+          }
+        ]
+      },
+      "synthetic": {
+        "1440x900": {
+          "label": "SYNTHETIC DOM LAYOUT STRESS TEST — DAVINCI",
+          "document": {
+            "clientWidth": 1440,
+            "scrollWidth": 1440,
+            "horizontalOverflow": false
+          },
+          "elements": [
+            {
+              "className": "dv-rack dv-own-rack qa-synthetic-dv-own-rack",
+              "width": 1052,
+              "height": 173.78125,
+              "scrollWidth": 1050,
+              "clientWidth": 1050,
+              "overflowX": false,
+              "children": 2,
+              "fontSizes": [
+                "16px",
+                "12px",
+                "11px",
+                "33.6px"
+              ],
+              "innerRow": {
+                "width": 1032,
+                "height": 124,
+                "scrollWidth": 1260,
+                "clientWidth": 1032,
+                "overflowX": true,
+                "children": 13,
+                "firstTileWidth": 88,
+                "lastTileWidth": 88,
+                "images": 0,
+                "loadedImages": 0
+              }
+            },
+            {
+              "className": "dv-rack dv-rival-rack qa-synthetic-dv-rival-rack",
+              "width": 1052,
+              "height": 173.78125,
+              "scrollWidth": 1050,
+              "clientWidth": 1050,
+              "overflowX": false,
+              "children": 2,
+              "fontSizes": [
+                "16px",
+                "12px",
+                "11px",
+                "33.6px"
+              ],
+              "innerRow": {
+                "width": 1032,
+                "height": 124,
+                "scrollWidth": 1260,
+                "clientWidth": 1032,
+                "overflowX": true,
+                "children": 13,
+                "firstTileWidth": 88,
+                "lastTileWidth": 88,
+                "images": 0,
+                "loadedImages": 0
+              }
+            }
+          ],
+          "scrollAccess": {
+            "own": {
+              "start": {
+                "scrollLeft": 0,
+                "scrollWidth": 1260,
+                "clientWidth": 1032,
+                "firstVisible": true,
+                "lastVisible": false
+              },
+              "end": {
+                "scrollLeft": 228,
+                "scrollWidth": 1260,
+                "clientWidth": 1032,
+                "firstVisible": false,
+                "lastVisible": true
+              },
+              "maxScroll": 228
+            },
+            "rival": {
+              "start": {
+                "scrollLeft": 0,
+                "scrollWidth": 1260,
+                "clientWidth": 1032,
+                "firstVisible": true,
+                "lastVisible": false
+              },
+              "end": {
+                "scrollLeft": 228,
+                "scrollWidth": 1260,
+                "clientWidth": 1032,
+                "firstVisible": false,
+                "lastVisible": true
+              },
+              "maxScroll": 228
+            }
+          }
+        },
+        "1366x768": {
+          "label": "SYNTHETIC DOM LAYOUT STRESS TEST — DAVINCI",
+          "document": {
+            "clientWidth": 1366,
+            "scrollWidth": 1366,
+            "horizontalOverflow": false
+          },
+          "elements": [
+            {
+              "className": "dv-rack dv-own-rack qa-synthetic-dv-own-rack",
+              "width": 1052,
+              "height": 173.78125,
+              "scrollWidth": 1050,
+              "clientWidth": 1050,
+              "overflowX": false,
+              "children": 2,
+              "fontSizes": [
+                "16px",
+                "12px",
+                "11px",
+                "33.6px"
+              ],
+              "innerRow": {
+                "width": 1032,
+                "height": 124,
+                "scrollWidth": 1260,
+                "clientWidth": 1032,
+                "overflowX": true,
+                "children": 13,
+                "firstTileWidth": 88,
+                "lastTileWidth": 88,
+                "images": 0,
+                "loadedImages": 0
+              }
+            },
+            {
+              "className": "dv-rack dv-rival-rack qa-synthetic-dv-rival-rack",
+              "width": 1052,
+              "height": 173.78125,
+              "scrollWidth": 1050,
+              "clientWidth": 1050,
+              "overflowX": false,
+              "children": 2,
+              "fontSizes": [
+                "16px",
+                "12px",
+                "11px",
+                "33.6px"
+              ],
+              "innerRow": {
+                "width": 1032,
+                "height": 124,
+                "scrollWidth": 1260,
+                "clientWidth": 1032,
+                "overflowX": true,
+                "children": 13,
+                "firstTileWidth": 88,
+                "lastTileWidth": 88,
+                "images": 0,
+                "loadedImages": 0
+              }
+            }
+          ],
+          "scrollAccess": {
+            "own": {
+              "start": {
+                "scrollLeft": 0,
+                "scrollWidth": 1260,
+                "clientWidth": 1032,
+                "firstVisible": true,
+                "lastVisible": false
+              },
+              "end": {
+                "scrollLeft": 228,
+                "scrollWidth": 1260,
+                "clientWidth": 1032,
+                "firstVisible": false,
+                "lastVisible": true
+              },
+              "maxScroll": 228
+            },
+            "rival": {
+              "start": {
+                "scrollLeft": 0,
+                "scrollWidth": 1260,
+                "clientWidth": 1032,
+                "firstVisible": true,
+                "lastVisible": false
+              },
+              "end": {
+                "scrollLeft": 228,
+                "scrollWidth": 1260,
+                "clientWidth": 1032,
+                "firstVisible": false,
+                "lastVisible": true
+              },
+              "maxScroll": 228
+            }
+          }
+        }
+      }
+    },
+    {
+      "game": "domino",
+      "actions": [
+        {
+          "seat": "p1",
+          "action": "play-legal-tile-through-UI",
+          "versionBefore": 2,
+          "chainAfter": 1
+        },
+        {
+          "seat": "p2",
+          "action": "play-legal-tile-through-UI",
+          "versionBefore": 3,
+          "chainAfter": 2
+        }
+      ],
+      "actual": {
+        "1440x900": [
+          {
+            "seat": "p1",
+            "locale": "ko",
+            "snapshot": {
+              "playerId": "p1",
+              "version": 2,
+              "gameId": "domino",
+              "pendingGame": null,
+              "phase": "play",
+              "turn": "p1",
+              "handCount": 7,
+              "oppCount": 7,
+              "boardCount": 0,
+              "ownJokers": 0
+            },
+            "layout": {
+              "viewport": [
+                1440,
+                900
+              ],
+              "document": {
+                "clientWidth": 1440,
+                "scrollWidth": 1440,
+                "scrollHeight": 1878
+              },
+              "elements": {
+                ".domino-premium": {
+                  "x": 29,
+                  "y": 187,
+                  "width": 1382,
+                  "height": 664.921875,
+                  "right": 1411,
+                  "bottom": 851.921875,
+                  "fontSize": "14px",
+                  "color": "rgb(23, 37, 31)",
+                  "background": "rgba(0, 0, 0, 0)",
+                  "scrollWidth": 1380,
+                  "clientWidth": 1380,
+                  "overflowX": false,
+                  "children": 5,
+                  "images": 0,
+                  "loadedImages": 0,
+                  "visibleChildren": 3
+                },
+                ".dp-seat-row": {
+                  "x": 63,
+                  "y": 345,
+                  "width": 1314,
+                  "height": 75.140625,
+                  "right": 1377,
+                  "bottom": 420.140625,
+                  "fontSize": "14px",
+                  "color": "rgb(23, 37, 31)",
+                  "background": "rgba(0, 0, 0, 0)",
+                  "scrollWidth": 1314,
+                  "clientWidth": 1314,
+                  "overflowX": false,
+                  "children": 2,
+                  "images": 0,
+                  "loadedImages": 0,
+                  "visibleChildren": 2
+                },
+                ".dp-hand": {
+                  "x": 75,
+                  "y": 745.921875,
+                  "width": 1290,
+                  "height": 62,
+                  "right": 1365,
+                  "bottom": 807.921875,
+                  "fontSize": "14px",
+                  "color": "rgb(23, 37, 31)",
+                  "background": "rgba(0, 0, 0, 0)",
+                  "scrollWidth": 1290,
+                  "clientWidth": 1290,
+                  "overflowX": false,
+                  "children": 7,
+                  "images": 0,
+                  "loadedImages": 0,
+                  "visibleChildren": 7
+                }
+              }
+            }
+          },
+          {
+            "seat": "p2",
+            "locale": "es-DO",
+            "snapshot": {
+              "playerId": "p2",
+              "version": 2,
+              "gameId": "domino",
+              "pendingGame": null,
+              "phase": "play",
+              "turn": "p1",
+              "handCount": 7,
+              "oppCount": 7,
+              "boardCount": 0,
+              "ownJokers": 0
+            },
+            "layout": {
+              "viewport": [
+                1440,
+                900
+              ],
+              "document": {
+                "clientWidth": 1440,
+                "scrollWidth": 1440,
+                "scrollHeight": 1911
+              },
+              "elements": {
+                ".domino-premium": {
+                  "x": 29,
+                  "y": 187,
+                  "width": 1382,
+                  "height": 673.921875,
+                  "right": 1411,
+                  "bottom": 860.921875,
+                  "fontSize": "14px",
+                  "color": "rgb(23, 37, 31)",
+                  "background": "rgba(0, 0, 0, 0)",
+                  "scrollWidth": 1380,
+                  "clientWidth": 1380,
+                  "overflowX": false,
+                  "children": 6,
+                  "images": 0,
+                  "loadedImages": 0,
+                  "visibleChildren": 4
+                },
+                ".dp-seat-row": {
+                  "x": 63,
+                  "y": 345,
+                  "width": 1314,
+                  "height": 74.140625,
+                  "right": 1377,
+                  "bottom": 419.140625,
+                  "fontSize": "14px",
+                  "color": "rgb(23, 37, 31)",
+                  "background": "rgba(0, 0, 0, 0)",
+                  "scrollWidth": 1314,
+                  "clientWidth": 1314,
+                  "overflowX": false,
+                  "children": 2,
+                  "images": 0,
+                  "loadedImages": 0,
+                  "visibleChildren": 2
+                },
+                ".dp-hand": {
+                  "x": 75,
+                  "y": 754.921875,
+                  "width": 1290,
+                  "height": 62,
+                  "right": 1365,
+                  "bottom": 816.921875,
+                  "fontSize": "14px",
+                  "color": "rgb(23, 37, 31)",
+                  "background": "rgba(0, 0, 0, 0)",
+                  "scrollWidth": 1290,
+                  "clientWidth": 1290,
+                  "overflowX": false,
+                  "children": 7,
+                  "images": 0,
+                  "loadedImages": 0,
+                  "visibleChildren": 7
+                }
+              }
+            }
+          }
+        ],
+        "1366x768": [
+          {
+            "seat": "p1",
+            "locale": "ko",
+            "snapshot": {
+              "playerId": "p1",
+              "version": 2,
+              "gameId": "domino",
+              "pendingGame": null,
+              "phase": "play",
+              "turn": "p1",
+              "handCount": 7,
+              "oppCount": 7,
+              "boardCount": 0,
+              "ownJokers": 0
+            },
+            "layout": {
+              "viewport": [
+                1366,
+                768
+              ],
+              "document": {
+                "clientWidth": 1366,
+                "scrollWidth": 1366,
+                "scrollHeight": 1878
+              },
+              "elements": {
+                ".domino-premium": {
+                  "x": 29,
+                  "y": 187,
+                  "width": 1308,
+                  "height": 664.921875,
+                  "right": 1337,
+                  "bottom": 851.921875,
+                  "fontSize": "14px",
+                  "color": "rgb(23, 37, 31)",
+                  "background": "rgba(0, 0, 0, 0)",
+                  "scrollWidth": 1306,
+                  "clientWidth": 1306,
+                  "overflowX": false,
+                  "children": 5,
+                  "images": 0,
+                  "loadedImages": 0,
+                  "visibleChildren": 3
+                },
+                ".dp-seat-row": {
+                  "x": 63,
+                  "y": 345,
+                  "width": 1240,
+                  "height": 75.140625,
+                  "right": 1303,
+                  "bottom": 420.140625,
+                  "fontSize": "14px",
+                  "color": "rgb(23, 37, 31)",
+                  "background": "rgba(0, 0, 0, 0)",
+                  "scrollWidth": 1240,
+                  "clientWidth": 1240,
+                  "overflowX": false,
+                  "children": 2,
+                  "images": 0,
+                  "loadedImages": 0,
+                  "visibleChildren": 2
+                },
+                ".dp-hand": {
+                  "x": 75,
+                  "y": 745.921875,
+                  "width": 1216,
+                  "height": 62,
+                  "right": 1291,
+                  "bottom": 807.921875,
+                  "fontSize": "14px",
+                  "color": "rgb(23, 37, 31)",
+                  "background": "rgba(0, 0, 0, 0)",
+                  "scrollWidth": 1216,
+                  "clientWidth": 1216,
+                  "overflowX": false,
+                  "children": 7,
+                  "images": 0,
+                  "loadedImages": 0,
+                  "visibleChildren": 7
+                }
+              }
+            }
+          },
+          {
+            "seat": "p2",
+            "locale": "es-DO",
+            "snapshot": {
+              "playerId": "p2",
+              "version": 2,
+              "gameId": "domino",
+              "pendingGame": null,
+              "phase": "play",
+              "turn": "p1",
+              "handCount": 7,
+              "oppCount": 7,
+              "boardCount": 0,
+              "ownJokers": 0
+            },
+            "layout": {
+              "viewport": [
+                1366,
+                768
+              ],
+              "document": {
+                "clientWidth": 1366,
+                "scrollWidth": 1366,
+                "scrollHeight": 1911
+              },
+              "elements": {
+                ".domino-premium": {
+                  "x": 29,
+                  "y": 187,
+                  "width": 1308,
+                  "height": 673.921875,
+                  "right": 1337,
+                  "bottom": 860.921875,
+                  "fontSize": "14px",
+                  "color": "rgb(23, 37, 31)",
+                  "background": "rgba(0, 0, 0, 0)",
+                  "scrollWidth": 1306,
+                  "clientWidth": 1306,
+                  "overflowX": false,
+                  "children": 6,
+                  "images": 0,
+                  "loadedImages": 0,
+                  "visibleChildren": 4
+                },
+                ".dp-seat-row": {
+                  "x": 63,
+                  "y": 345,
+                  "width": 1240,
+                  "height": 74.140625,
+                  "right": 1303,
+                  "bottom": 419.140625,
+                  "fontSize": "14px",
+                  "color": "rgb(23, 37, 31)",
+                  "background": "rgba(0, 0, 0, 0)",
+                  "scrollWidth": 1240,
+                  "clientWidth": 1240,
+                  "overflowX": false,
+                  "children": 2,
+                  "images": 0,
+                  "loadedImages": 0,
+                  "visibleChildren": 2
+                },
+                ".dp-hand": {
+                  "x": 75,
+                  "y": 754.921875,
+                  "width": 1216,
+                  "height": 62,
+                  "right": 1291,
+                  "bottom": 816.921875,
+                  "fontSize": "14px",
+                  "color": "rgb(23, 37, 31)",
+                  "background": "rgba(0, 0, 0, 0)",
+                  "scrollWidth": 1216,
+                  "clientWidth": 1216,
+                  "overflowX": false,
+                  "children": 7,
+                  "images": 0,
+                  "loadedImages": 0,
+                  "visibleChildren": 7
+                }
+              }
+            }
+          }
+        ],
+        "after-1440x900": [
+          {
+            "seat": "p1",
+            "locale": "ko",
+            "snapshot": {
+              "playerId": "p1",
+              "version": 4,
+              "gameId": "domino",
+              "pendingGame": null,
+              "phase": "play",
+              "turn": "p1",
+              "handCount": 6,
+              "oppCount": 6,
+              "boardCount": 2,
+              "ownJokers": 0
+            },
+            "layout": {
+              "viewport": [
+                1440,
+                900
+              ],
+              "document": {
+                "clientWidth": 1440,
+                "scrollWidth": 1440,
+                "scrollHeight": 1937
+              },
+              "elements": {
+                ".domino-premium": {
+                  "x": 29,
+                  "y": 154,
+                  "width": 1382,
+                  "height": 723.921875,
+                  "right": 1411,
+                  "bottom": 877.921875,
+                  "fontSize": "14px",
+                  "color": "rgb(23, 37, 31)",
+                  "background": "rgba(0, 0, 0, 0)",
+                  "scrollWidth": 1380,
+                  "clientWidth": 1380,
+                  "overflowX": false,
+                  "children": 8,
+                  "images": 0,
+                  "loadedImages": 0,
+                  "visibleChildren": 7
+                },
+                ".dp-seat-row": {
+                  "x": 63,
+                  "y": 312,
+                  "width": 1314,
+                  "height": 75.140625,
+                  "right": 1377,
+                  "bottom": 387.140625,
+                  "fontSize": "14px",
+                  "color": "rgb(23, 37, 31)",
+                  "background": "rgba(0, 0, 0, 0)",
+                  "scrollWidth": 1314,
+                  "clientWidth": 1314,
+                  "overflowX": false,
+                  "children": 2,
+                  "images": 0,
+                  "loadedImages": 0,
+                  "visibleChildren": 2
+                },
+                ".dp-chain-scroll": {
+                  "x": 82,
+                  "y": 448.640625,
+                  "width": 1276,
+                  "height": 133,
+                  "right": 1358,
+                  "bottom": 581.640625,
+                  "fontSize": "14px",
+                  "color": "rgb(23, 37, 31)",
+                  "background": "rgba(0, 0, 0, 0)",
+                  "scrollWidth": 1276,
+                  "clientWidth": 1276,
+                  "overflowX": false,
+                  "children": 1,
+                  "images": 0,
+                  "loadedImages": 0,
+                  "visibleChildren": 1
+                },
+                ".dp-chain": {
+                  "x": 657,
+                  "y": 469.140625,
+                  "width": 126,
+                  "height": 88,
+                  "right": 783,
+                  "bottom": 557.140625,
+                  "fontSize": "14px",
+                  "color": "rgb(23, 37, 31)",
+                  "background": "rgba(0, 0, 0, 0)",
+                  "scrollWidth": 126,
+                  "clientWidth": 126,
+                  "overflowX": false,
+                  "children": 2,
+                  "images": 0,
+                  "loadedImages": 0,
+                  "visibleChildren": 2
+                },
+                ".dp-hand": {
+                  "x": 75,
+                  "y": 712.921875,
+                  "width": 1290,
+                  "height": 62,
+                  "right": 1365,
+                  "bottom": 774.921875,
+                  "fontSize": "14px",
+                  "color": "rgb(23, 37, 31)",
+                  "background": "rgba(0, 0, 0, 0)",
+                  "scrollWidth": 1290,
+                  "clientWidth": 1290,
+                  "overflowX": false,
+                  "children": 6,
+                  "images": 0,
+                  "loadedImages": 0,
+                  "visibleChildren": 6
+                }
+              }
+            }
+          },
+          {
+            "seat": "p2",
+            "locale": "es-DO",
+            "snapshot": {
+              "playerId": "p2",
+              "version": 4,
+              "gameId": "domino",
+              "pendingGame": null,
+              "phase": "play",
+              "turn": "p1",
+              "handCount": 6,
+              "oppCount": 6,
+              "boardCount": 2,
+              "ownJokers": 0
+            },
+            "layout": {
+              "viewport": [
+                1440,
+                900
+              ],
+              "document": {
+                "clientWidth": 1440,
+                "scrollWidth": 1440,
+                "scrollHeight": 1970
+              },
+              "elements": {
+                ".domino-premium": {
+                  "x": 29,
+                  "y": 155,
+                  "width": 1382,
+                  "height": 732.921875,
+                  "right": 1411,
+                  "bottom": 887.921875,
+                  "fontSize": "14px",
+                  "color": "rgb(23, 37, 31)",
+                  "background": "rgba(0, 0, 0, 0)",
+                  "scrollWidth": 1380,
+                  "clientWidth": 1380,
+                  "overflowX": false,
+                  "children": 8,
+                  "images": 0,
+                  "loadedImages": 0,
+                  "visibleChildren": 7
+                },
+                ".dp-seat-row": {
+                  "x": 63,
+                  "y": 313,
+                  "width": 1314,
+                  "height": 74.140625,
+                  "right": 1377,
+                  "bottom": 387.140625,
+                  "fontSize": "14px",
+                  "color": "rgb(23, 37, 31)",
+                  "background": "rgba(0, 0, 0, 0)",
+                  "scrollWidth": 1314,
+                  "clientWidth": 1314,
+                  "overflowX": false,
+                  "children": 2,
+                  "images": 0,
+                  "loadedImages": 0,
+                  "visibleChildren": 2
+                },
+                ".dp-chain-scroll": {
+                  "x": 82,
+                  "y": 448.640625,
+                  "width": 1276,
+                  "height": 133,
+                  "right": 1358,
+                  "bottom": 581.640625,
+                  "fontSize": "14px",
+                  "color": "rgb(23, 37, 31)",
+                  "background": "rgba(0, 0, 0, 0)",
+                  "scrollWidth": 1276,
+                  "clientWidth": 1276,
+                  "overflowX": false,
+                  "children": 1,
+                  "images": 0,
+                  "loadedImages": 0,
+                  "visibleChildren": 1
+                },
+                ".dp-chain": {
+                  "x": 657,
+                  "y": 469.140625,
+                  "width": 126,
+                  "height": 88,
+                  "right": 783,
+                  "bottom": 557.140625,
+                  "fontSize": "14px",
+                  "color": "rgb(23, 37, 31)",
+                  "background": "rgba(0, 0, 0, 0)",
+                  "scrollWidth": 126,
+                  "clientWidth": 126,
+                  "overflowX": false,
+                  "children": 2,
+                  "images": 0,
+                  "loadedImages": 0,
+                  "visibleChildren": 2
+                },
+                ".dp-hand": {
+                  "x": 75,
+                  "y": 722.921875,
+                  "width": 1290,
+                  "height": 62,
+                  "right": 1365,
+                  "bottom": 784.921875,
+                  "fontSize": "14px",
+                  "color": "rgb(23, 37, 31)",
+                  "background": "rgba(0, 0, 0, 0)",
+                  "scrollWidth": 1290,
+                  "clientWidth": 1290,
+                  "overflowX": false,
+                  "children": 6,
+                  "images": 0,
+                  "loadedImages": 0,
+                  "visibleChildren": 6
+                }
+              }
+            }
+          }
+        ],
+        "after-1366x768": [
+          {
+            "seat": "p1",
+            "locale": "ko",
+            "snapshot": {
+              "playerId": "p1",
+              "version": 4,
+              "gameId": "domino",
+              "pendingGame": null,
+              "phase": "play",
+              "turn": "p1",
+              "handCount": 6,
+              "oppCount": 6,
+              "boardCount": 2,
+              "ownJokers": 0
+            },
+            "layout": {
+              "viewport": [
+                1366,
+                768
+              ],
+              "document": {
+                "clientWidth": 1366,
+                "scrollWidth": 1366,
+                "scrollHeight": 1937
+              },
+              "elements": {
+                ".domino-premium": {
+                  "x": 29,
+                  "y": 154,
+                  "width": 1308,
+                  "height": 723.921875,
+                  "right": 1337,
+                  "bottom": 877.921875,
+                  "fontSize": "14px",
+                  "color": "rgb(23, 37, 31)",
+                  "background": "rgba(0, 0, 0, 0)",
+                  "scrollWidth": 1306,
+                  "clientWidth": 1306,
+                  "overflowX": false,
+                  "children": 8,
+                  "images": 0,
+                  "loadedImages": 0,
+                  "visibleChildren": 7
+                },
+                ".dp-seat-row": {
+                  "x": 63,
+                  "y": 312,
+                  "width": 1240,
+                  "height": 75.140625,
+                  "right": 1303,
+                  "bottom": 387.140625,
+                  "fontSize": "14px",
+                  "color": "rgb(23, 37, 31)",
+                  "background": "rgba(0, 0, 0, 0)",
+                  "scrollWidth": 1240,
+                  "clientWidth": 1240,
+                  "overflowX": false,
+                  "children": 2,
+                  "images": 0,
+                  "loadedImages": 0,
+                  "visibleChildren": 2
+                },
+                ".dp-chain-scroll": {
+                  "x": 82,
+                  "y": 448.640625,
+                  "width": 1202,
+                  "height": 133,
+                  "right": 1284,
+                  "bottom": 581.640625,
+                  "fontSize": "14px",
+                  "color": "rgb(23, 37, 31)",
+                  "background": "rgba(0, 0, 0, 0)",
+                  "scrollWidth": 1202,
+                  "clientWidth": 1202,
+                  "overflowX": false,
+                  "children": 1,
+                  "images": 0,
+                  "loadedImages": 0,
+                  "visibleChildren": 1
+                },
+                ".dp-chain": {
+                  "x": 620,
+                  "y": 469.140625,
+                  "width": 126,
+                  "height": 88,
+                  "right": 746,
+                  "bottom": 557.140625,
+                  "fontSize": "14px",
+                  "color": "rgb(23, 37, 31)",
+                  "background": "rgba(0, 0, 0, 0)",
+                  "scrollWidth": 126,
+                  "clientWidth": 126,
+                  "overflowX": false,
+                  "children": 2,
+                  "images": 0,
+                  "loadedImages": 0,
+                  "visibleChildren": 2
+                },
+                ".dp-hand": {
+                  "x": 75,
+                  "y": 712.921875,
+                  "width": 1216,
+                  "height": 62,
+                  "right": 1291,
+                  "bottom": 774.921875,
+                  "fontSize": "14px",
+                  "color": "rgb(23, 37, 31)",
+                  "background": "rgba(0, 0, 0, 0)",
+                  "scrollWidth": 1216,
+                  "clientWidth": 1216,
+                  "overflowX": false,
+                  "children": 6,
+                  "images": 0,
+                  "loadedImages": 0,
+                  "visibleChildren": 6
+                }
+              }
+            }
+          },
+          {
+            "seat": "p2",
+            "locale": "es-DO",
+            "snapshot": {
+              "playerId": "p2",
+              "version": 4,
+              "gameId": "domino",
+              "pendingGame": null,
+              "phase": "play",
+              "turn": "p1",
+              "handCount": 6,
+              "oppCount": 6,
+              "boardCount": 2,
+              "ownJokers": 0
+            },
+            "layout": {
+              "viewport": [
+                1366,
+                768
+              ],
+              "document": {
+                "clientWidth": 1366,
+                "scrollWidth": 1366,
+                "scrollHeight": 1970
+              },
+              "elements": {
+                ".domino-premium": {
+                  "x": 29,
+                  "y": 155,
+                  "width": 1308,
+                  "height": 732.921875,
+                  "right": 1337,
+                  "bottom": 887.921875,
+                  "fontSize": "14px",
+                  "color": "rgb(23, 37, 31)",
+                  "background": "rgba(0, 0, 0, 0)",
+                  "scrollWidth": 1306,
+                  "clientWidth": 1306,
+                  "overflowX": false,
+                  "children": 8,
+                  "images": 0,
+                  "loadedImages": 0,
+                  "visibleChildren": 7
+                },
+                ".dp-seat-row": {
+                  "x": 63,
+                  "y": 313,
+                  "width": 1240,
+                  "height": 74.140625,
+                  "right": 1303,
+                  "bottom": 387.140625,
+                  "fontSize": "14px",
+                  "color": "rgb(23, 37, 31)",
+                  "background": "rgba(0, 0, 0, 0)",
+                  "scrollWidth": 1240,
+                  "clientWidth": 1240,
+                  "overflowX": false,
+                  "children": 2,
+                  "images": 0,
+                  "loadedImages": 0,
+                  "visibleChildren": 2
+                },
+                ".dp-chain-scroll": {
+                  "x": 82,
+                  "y": 448.640625,
+                  "width": 1202,
+                  "height": 133,
+                  "right": 1284,
+                  "bottom": 581.640625,
+                  "fontSize": "14px",
+                  "color": "rgb(23, 37, 31)",
+                  "background": "rgba(0, 0, 0, 0)",
+                  "scrollWidth": 1202,
+                  "clientWidth": 1202,
+                  "overflowX": false,
+                  "children": 1,
+                  "images": 0,
+                  "loadedImages": 0,
+                  "visibleChildren": 1
+                },
+                ".dp-chain": {
+                  "x": 620,
+                  "y": 469.140625,
+                  "width": 126,
+                  "height": 88,
+                  "right": 746,
+                  "bottom": 557.140625,
+                  "fontSize": "14px",
+                  "color": "rgb(23, 37, 31)",
+                  "background": "rgba(0, 0, 0, 0)",
+                  "scrollWidth": 126,
+                  "clientWidth": 126,
+                  "overflowX": false,
+                  "children": 2,
+                  "images": 0,
+                  "loadedImages": 0,
+                  "visibleChildren": 2
+                },
+                ".dp-hand": {
+                  "x": 75,
+                  "y": 722.921875,
+                  "width": 1216,
+                  "height": 62,
+                  "right": 1291,
+                  "bottom": 784.921875,
+                  "fontSize": "14px",
+                  "color": "rgb(23, 37, 31)",
+                  "background": "rgba(0, 0, 0, 0)",
+                  "scrollWidth": 1216,
+                  "clientWidth": 1216,
+                  "overflowX": false,
+                  "children": 6,
+                  "images": 0,
+                  "loadedImages": 0,
+                  "visibleChildren": 6
+                }
+              }
+            }
+          }
+        ]
+      },
+      "synthetic": {
+        "1440x900": {
+          "label": "SYNTHETIC DOM LAYOUT STRESS TEST — DOMINO",
+          "document": {
+            "clientWidth": 1440,
+            "scrollWidth": 1440,
+            "horizontalOverflow": false
+          },
+          "elements": [
+            {
+              "className": "dp-hand qa-synthetic-domino-hand",
+              "width": 1052,
+              "height": 62,
+              "scrollWidth": 1890,
+              "clientWidth": 1052,
+              "overflowX": true,
+              "children": 21,
+              "fontSizes": [
+                "16px"
+              ],
+              "innerRow": null
+            },
+            {
+              "className": "dp-chain-scroll qa-synthetic-domino-chain-scroll",
+              "width": 1052,
+              "height": 133,
+              "scrollWidth": 2997,
+              "clientWidth": 1050,
+              "overflowX": true,
+              "children": 1,
+              "fontSizes": [
+                "16px"
+              ],
+              "innerRow": null
+            },
+            {
+              "className": "dp-chain qa-synthetic-domino-chain",
+              "width": 2993,
+              "height": 88,
+              "scrollWidth": 2993,
+              "clientWidth": 2993,
+              "overflowX": false,
+              "children": 28,
+              "fontSizes": [
+                "16px"
+              ],
+              "innerRow": null
+            }
+          ],
+          "scrollAccess": {
+            "hand": {
+              "start": {
+                "scrollLeft": 0,
+                "scrollWidth": 1890,
+                "clientWidth": 1052,
+                "firstVisible": true,
+                "lastVisible": false,
+                "firstWidth": 84,
+                "lastWidth": 84,
+                "firstRect": {
+                  "left": 197,
+                  "right": 281
+                },
+                "lastRect": {
+                  "left": 1997,
+                  "right": 2081
+                }
+              },
+              "end": {
+                "scrollLeft": 838,
+                "scrollWidth": 1890,
+                "clientWidth": 1052,
+                "firstVisible": false,
+                "lastVisible": true,
+                "firstWidth": 84,
+                "lastWidth": 84,
+                "firstRect": {
+                  "left": -641,
+                  "right": -557
+                },
+                "lastRect": {
+                  "left": 1159,
+                  "right": 1243
+                }
+              },
+              "maxScroll": 838
+            },
+            "chain": {
+              "start": {
+                "scrollLeft": 0,
+                "scrollWidth": 2997,
+                "clientWidth": 1050,
+                "firstVisible": true,
+                "lastVisible": false,
+                "firstWidth": 104,
+                "lastWidth": 104,
+                "firstRect": {
+                  "left": 197,
+                  "right": 301
+                },
+                "lastRect": {
+                  "left": 3086,
+                  "right": 3190
+                }
+              },
+              "end": {
+                "scrollLeft": 1947,
+                "scrollWidth": 2997,
+                "clientWidth": 1050,
+                "firstVisible": false,
+                "lastVisible": true,
+                "firstWidth": 104,
+                "lastWidth": 104,
+                "firstRect": {
+                  "left": -1750,
+                  "right": -1646
+                },
+                "lastRect": {
+                  "left": 1139,
+                  "right": 1243
+                }
+              },
+              "maxScroll": 1947
+            },
+            "documentHorizontalOverflow": false
+          }
+        },
+        "1366x768": {
+          "label": "SYNTHETIC DOM LAYOUT STRESS TEST — DOMINO",
+          "document": {
+            "clientWidth": 1366,
+            "scrollWidth": 1366,
+            "horizontalOverflow": false
+          },
+          "elements": [
+            {
+              "className": "dp-hand qa-synthetic-domino-hand",
+              "width": 1052,
+              "height": 62,
+              "scrollWidth": 1890,
+              "clientWidth": 1052,
+              "overflowX": true,
+              "children": 21,
+              "fontSizes": [
+                "16px"
+              ],
+              "innerRow": null
+            },
+            {
+              "className": "dp-chain-scroll qa-synthetic-domino-chain-scroll",
+              "width": 1052,
+              "height": 133,
+              "scrollWidth": 2997,
+              "clientWidth": 1050,
+              "overflowX": true,
+              "children": 1,
+              "fontSizes": [
+                "16px"
+              ],
+              "innerRow": null
+            },
+            {
+              "className": "dp-chain qa-synthetic-domino-chain",
+              "width": 2993,
+              "height": 88,
+              "scrollWidth": 2993,
+              "clientWidth": 2993,
+              "overflowX": false,
+              "children": 28,
+              "fontSizes": [
+                "16px"
+              ],
+              "innerRow": null
+            }
+          ],
+          "scrollAccess": {
+            "hand": {
+              "start": {
+                "scrollLeft": 0,
+                "scrollWidth": 1890,
+                "clientWidth": 1052,
+                "firstVisible": true,
+                "lastVisible": false,
+                "firstWidth": 84,
+                "lastWidth": 84,
+                "firstRect": {
+                  "left": 160,
+                  "right": 244
+                },
+                "lastRect": {
+                  "left": 1960,
+                  "right": 2044
+                }
+              },
+              "end": {
+                "scrollLeft": 838,
+                "scrollWidth": 1890,
+                "clientWidth": 1052,
+                "firstVisible": false,
+                "lastVisible": true,
+                "firstWidth": 84,
+                "lastWidth": 84,
+                "firstRect": {
+                  "left": -678,
+                  "right": -594
+                },
+                "lastRect": {
+                  "left": 1122,
+                  "right": 1206
+                }
+              },
+              "maxScroll": 838
+            },
+            "chain": {
+              "start": {
+                "scrollLeft": 0,
+                "scrollWidth": 2997,
+                "clientWidth": 1050,
+                "firstVisible": true,
+                "lastVisible": false,
+                "firstWidth": 104,
+                "lastWidth": 104,
+                "firstRect": {
+                  "left": 160,
+                  "right": 264
+                },
+                "lastRect": {
+                  "left": 3049,
+                  "right": 3153
+                }
+              },
+              "end": {
+                "scrollLeft": 1947,
+                "scrollWidth": 2997,
+                "clientWidth": 1050,
+                "firstVisible": false,
+                "lastVisible": true,
+                "firstWidth": 104,
+                "lastWidth": 104,
+                "firstRect": {
+                  "left": -1787,
+                  "right": -1683
+                },
+                "lastRect": {
+                  "left": 1102,
+                  "right": 1206
+                }
+              },
+              "maxScroll": 1947
+            },
+            "documentHorizontalOverflow": false
+          }
+        }
+      },
+      "verticalAccess": {
+        "1440x900": {
+          "viewport": [
+            1440,
+            900
+          ],
+          "checks": {
+            ".dp-hand": {
+              "x": 75,
+              "y": 712.921875,
+              "width": 1290,
+              "height": 62,
+              "topVisible": true,
+              "bottomVisible": true,
+              "windowScrollY": 33,
+              "scrollAncestors": [],
+              "buttons": 6,
+              "firstButtonVisible": true,
+              "beforeY": 712.921875
+            },
+            ".dp-end-docks": {
+              "x": 76,
+              "y": 400.140625,
+              "width": 1288,
+              "height": 244,
+              "topVisible": true,
+              "bottomVisible": true,
+              "windowScrollY": 33,
+              "scrollAncestors": [],
+              "buttons": 2,
+              "firstButtonVisible": true,
+              "beforeY": 400.140625
+            }
+          },
+          "document": {
+            "scrollHeight": 1937,
+            "scrollTop": 33
+          }
+        },
+        "1366x768": {
+          "viewport": [
+            1366,
+            768
+          ],
+          "checks": {
+            ".dp-hand": {
+              "x": 75,
+              "y": 712.921875,
+              "width": 1216,
+              "height": 62,
+              "topVisible": true,
+              "bottomVisible": false,
+              "windowScrollY": 33,
+              "scrollAncestors": [],
+              "buttons": 6,
+              "firstButtonVisible": true,
+              "beforeY": 712.921875
+            },
+            ".dp-end-docks": {
+              "x": 76,
+              "y": 400.140625,
+              "width": 1214,
+              "height": 244,
+              "topVisible": true,
+              "bottomVisible": true,
+              "windowScrollY": 33,
+              "scrollAncestors": [],
+              "buttons": 2,
+              "firstButtonVisible": true,
+              "beforeY": 400.140625
+            }
+          },
+          "document": {
+            "scrollHeight": 1937,
+            "scrollTop": 33
+          }
+        },
+        "actualUserWheelAndSelection": {
+          "viewport": [
+            1366,
+            768
+          ],
+          "seat": "p1",
+          "legalUIAction": "selected opening legal tile; did not commit play action",
+          "startTileButton": {
+            "visible": true,
+            "disabled": false,
+            "top": 610.5,
+            "bottom": 654.5
+          },
+          "actionScreenshot": "/workspace/deliverables/game-quality-restart-20261012/refine-phase2/domino-actual-start-action-1366x768.png",
+          "userWheelDeltaY": 700,
+          "afterScroll": {
+            "windowScrollY": 733,
+            "handRect": {
+              "top": 47.3,
+              "bottom": 109.3,
+              "fullyVisible": true
+            },
+            "firstHandButtonRect": {
+              "top": 51.3,
+              "bottom": 102.3,
+              "visible": true
+            }
+          },
+          "handScreenshot": "/workspace/deliverables/game-quality-restart-20261012/refine-phase2/domino-actual-hand-scroll-1366x768.png",
+          "stateWrite": "none; DOM tile selection only"
+        }
+      }
+    }
+  ],
+  "errors": []
+}
