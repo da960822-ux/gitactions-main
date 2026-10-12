@@ -38,5 +38,5 @@ export function balloonPlan(index: number, mobile: boolean) {
     : .17 + Math.sin(local * 1.9) * .045;
   return {x, y, depth: left || right ? [7.2, 10.6, 14.4][layer] : 18.4,
     pixels: (mobile ? 56 : 88) + randomAt(index + 4) * (mobile ? 46 : 67) + (local % 9 === 0 ? (mobile ? 38 : 68) : 0),
-    material: index % 3, rotation: (randomAt(index + 32) - .5) * .7};
+    material: (index + Math.floor(index/3)) % 3, rotation: (randomAt(index + 32) - .5) * .7};
 }

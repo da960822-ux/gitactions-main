@@ -1,52 +1,47 @@
 import * as T from 'three';
 import {clamp} from './spaceMotion';
 
-/** A cupped rose petal with a scalloped lip and a narrow attachment point. */
-export function createPetalGeometry() {
-  const columns = 36, rows = 48, points: number[] = [], indices: number[] = [];
-  for (let side = 0; side < 2; side++) for (let row = 0; row <= rows; row++) for (let col = 0; col <= columns; col++) {
-    const u = col / columns * 2 - 1, v = row / rows;
-    const width = .03 + Math.sin(Math.PI * v) ** .72 * (.8 + .17 * Math.sin(v * 5));
-    points.push(u * width, (v - .5) * 2.6 + .10 * Math.cos(u * 5) * v ** 6,
-      .55 * u * u - .48 * Math.sin(v * Math.PI) + .20 * v * v + (side ? -.025 : .025));
-  }
-  const stride = columns + 1, sheet = stride * (rows + 1);
-  for (let side = 0; side < 2; side++) for (let row = 0; row < rows; row++) for (let col = 0; col < columns; col++) {
-    const a = side * sheet + row * stride + col, b = a + 1, c = a + stride, d = c + 1;
-    indices.push(...(side ? [a,c,b,b,c,d] : [a,b,c,b,d,c]));
-  }
-  for (let row = 0; row < rows; row++) for (const col of [0, columns]) {
-    const a = row * stride + col, b = a + stride;
-    indices.push(a, a + sheet, b, b, a + sheet, b + sheet);
-  }
-  for (const row of [0, rows]) for (let col = 0; col < columns; col++) {
-    const a = row * stride + col, b = a + 1;
-    indices.push(a, b, a + sheet, b, b + sheet, a + sheet);
-  }
-  const geometry = new T.BufferGeometry();
-  geometry.setAttribute('position', new T.Float32BufferAttribute(points, 3));
-  geometry.setIndex(indices); geometry.computeVertexNormals(); geometry.computeBoundingBox();
-  return geometry;
-}
-
 /** A broad folded gift ribbon, never a tube or wire. Same vertices unfold into the next surface. */
 export function createRibbonGeometry() {
-  const geometry = new T.PlaneGeometry(5.4, 1.0, 96, 12);
-  geometry.userData.original = new Float32Array(geometry.attributes.position.array);
+  const columns=96,rows=12,stride=columns+1,sheet=stride*(rows+1),positions:number[]=[],indices:number[]=[];
+  for(const side of [1,-1])for(let row=0;row<=rows;row++)for(let col=0;col<=columns;col++)positions.push((col/columns-.5)*5.4,(row/rows-.5),side*.018);
+  for(let row=0;row<rows;row++)for(let col=0;col<columns;col++){
+    const a=row*stride+col,b=a+1,c=a+stride,d=c+1;
+    indices.push(a,b,c,b,d,c,a+sheet,c+sheet,b+sheet,b+sheet,c+sheet,d+sheet);
+  }
+  for(let row=0;row<rows;row++)for(const col of [0,columns]){const a=row*stride+col,b=a+stride;indices.push(a,a+sheet,b,b,a+sheet,b+sheet);}
+  for(const row of [0,rows])for(let col=0;col<columns;col++){const a=row*stride+col,b=a+1;indices.push(a,b,a+sheet,b,b+sheet,a+sheet);}
+  const geometry=new T.BufferGeometry();geometry.setAttribute('position',new T.Float32BufferAttribute(positions,3));geometry.setIndex(indices);
+  geometry.userData.original = new Float32Array(positions);
+  geometry.userData.path=new T.CatmullRomCurve3([
+    new T.Vector3(0,0,.05),new T.Vector3(-.65,.36,.34),new T.Vector3(-1.7,.83,.45),
+    new T.Vector3(-2.25,.47,.12),new T.Vector3(-1.96,-.23,-.30),new T.Vector3(-.74,-.21,-.18),new T.Vector3(0,0,-.02),
+  ],false,'centripetal');
   updateRibbon(geometry, 0);
   return geometry;
 }
 export function updateRibbon(geometry: T.BufferGeometry, amount: number) {
   const original = geometry.userData.original as Float32Array, positions = geometry.attributes.position as T.BufferAttribute;
+  const path=geometry.userData.path as T.CatmullRomCurve3;
   for (let i = 0; i < positions.count; i++) {
     const x = original[i*3], y = original[i*3+1], u = x / 2.7;
-    const bowX = Math.sin(u * Math.PI) * 1.9;
-    const bowY = .45 * Math.sin(u * Math.PI * 2) + y * (.85 + .35 * Math.abs(u));
-    const bowZ = (1 - Math.cos(u * Math.PI * 2)) * .48 + y * Math.sin(u * Math.PI) * .5;
-    positions.setXYZ(i, T.MathUtils.lerp(bowX, u * 8.5, amount),
-      T.MathUtils.lerp(bowY, y * 8, amount), T.MathUtils.lerp(bowZ, -.08 * Math.cos(u * Math.PI), amount));
+    const t=clamp((u+1)/2),center=path.getPoint(t),tangent=path.getTangent(t),across=new T.Vector3(-tangent.y,tangent.x,0).normalize();
+    const normal=tangent.clone().cross(across).normalize(),band=.68+.16*Math.sin(t*Math.PI),thickness=original[i*3+2];
+    const point=center.addScaledVector(across,y*band).addScaledVector(normal,thickness);point.z+=y*y*.10;
+    positions.setXYZ(i, T.MathUtils.lerp(point.x, u * 8.5, amount),
+      T.MathUtils.lerp(point.y, y * 8, amount), T.MathUtils.lerp(point.z, -.08 * Math.cos(u * Math.PI)+thickness, amount));
   }
   positions.needsUpdate = true; geometry.computeVertexNormals(); geometry.computeBoundingBox(); geometry.computeBoundingSphere();
+}
+
+export function createRibbonTailGeometry() {
+  const shape=new T.Shape();shape.moveTo(-.21,0);shape.lineTo(.21,0);shape.lineTo(.29,-1.35);
+  shape.quadraticCurveTo(.30,-1.57,.12,-1.62);shape.quadraticCurveTo(0,-1.66,-.12,-1.62);
+  shape.quadraticCurveTo(-.30,-1.57,-.29,-1.35);shape.closePath();
+  const geometry=new T.ExtrudeGeometry(shape,{depth:.025,bevelEnabled:true,bevelThickness:.008,bevelSize:.012,bevelSegments:2,steps:8,curveSegments:16});
+  const positions=geometry.attributes.position as T.BufferAttribute;
+  for(let i=0;i<positions.count;i++){const x=positions.getX(i),y=positions.getY(i);positions.setXYZ(i,x+Math.sin(y*2)*.12,y,positions.getZ(i)+Math.sin(y*2.2)*.13+y*y*.08);}
+  positions.needsUpdate=true;geometry.computeVertexNormals();return geometry;
 }
 
 /** Six paper panels: a three-column fold followed by a horizontal fold. */
