@@ -1,5 +1,7 @@
 # 통합 우주 히어로 — 시각 검수용 로컬 변경
 
+**최신 후속 검수:** b039e92의 머리 사각형 보호가 빈 배경에서도 선을 자르는 현상을 연속 프레임으로 확인했다. 해당 사각형을 제거하고 곡선의 중앙 두 경로를 실제 인물 실루엣 뒤로 내려/뒤로 배치했다. 아래 초기 수치와 영상을 후속 검수 결과와 구분한다. 현재 최신 영상은 `video-path-cleanup/after-fixes-actual.mp4`이다. 외부 전송은 사용자 승인 응답 대기 중이며 추가 시도하지 않는다.
+
 이 문서는 기존 WIP `137b539e044dd50f2b151582f168837c01ded6f2` 이후의 **랜딩 수정만** 다룬다. 부모/사용자의 영상 시각 승인을 기다리는 검수본이다. 이번 변경은 원격 push·main merge·배포 없이 로컬에 보존한다. 원격 마지막 확인본은 `12b03ca087075cdb8107d43e71baa8c241f3289f`이며 최신 게임 `6a4d21f046843abc10d07ad3819845d51fea3a6c`는 이번 랜딩에 통합하지 않았다.
 
 ## 화면의 중심과 실제 구현
@@ -16,7 +18,7 @@
 |---|---|---|---|
 | P0 | 궤도가 “이제 같이 놀자.”를 통과 | 실제 글자 Range/버튼/캡션을 화면 좌표로 읽어 물체 shader fragment를 보호한다. 아래 곡선을 화면 바깥으로 재배치한다. 실제 GL program의 보호 uniform이 컴파일된 것을 확인했다. | `src/preview/UnifiedHeroScene.tsx` |
 | P0 | 440px에서 갈색 하트가 전화기/손/몸통을 덮고 펄이 과도하게 큼 | 세 하트를 사진 전체 바깥 좌우로 배치한다. 실제 회전 mesh의 투영 AABB를 두 번 보정해 최대112px/사진폭20.5%를 적용한다. 원본 알파·전경 깊이 마스크와 실제 framebuffer 투명 픽셀로 얼굴/전화기/손/몸통을 확인했다. | `src/preview/UnifiedHeroScene.tsx`, `src/preview/spaceSafety.ts` |
-| P1 | 남성 머리 바로 옆 선과 y817 하단의 일직선 잘림 | 머리 주변18px 추가 보호, 상단 곡선 위치 조정, 화면 아래로 빠지는 곡선 경로와 하단 알파 fade를 적용했다. 이 보호는 선의 일부를 가리므로 영상에서 끊긴 선으로 느껴지는지 부모 시각 판단이 필요하다. | `src/preview/UnifiedHeroScene.tsx`, `src/preview/preview.css` |
+| P1 | 남성 머리 바로 옆 선과 y817 하단의 일직선 잘림 | 하단 알파 fade를 유지한다. 추가했던 머리 사각형은 후속 검수에서 부자연스러운 단절로 판정해 제거했다. 중앙 곡선의 위치/깊이를 변경해 빈 배경에서 자르지 않고 실제 사진 알파 실루엣 뒤로 지나간다. | `src/preview/UnifiedHeroScene.tsx`, `src/preview/preview.css` |
 | P1 | 회전된 성운 PNG의 사선/직사각형 마스크 경계 | 한 번 생성하는128×128의 부드러운 다중 스케일 cloud alpha로 교체했다. Gaussian 분포와 네 가장자리 fade를 사용하고 기존 사선 마스크 PNG는 통합 scene에서 제거한다. 실제0/440px 캡처에서 내부 사각형 경계가 사라진 것을 직접 확인했다. | `src/preview/UnifiedHeroScene.tsx` |
 
 커플 사진 아래의 기존 검은 직사각형 덮개도 통합 scene에서만 제거하고 원본 이미지 하단25%를 부드럽게 알파 fade한다. 제목/사진의 scale은 균일하다. 원본 글자 자체를 휘지 않는다. CTA는 스크롤 중 유지한다. 작은 화면의 기존 Landing 경계는 유지한다.
@@ -47,3 +49,19 @@
 두 최종MP4는각24.10초/1440×900/H.264/CFR30이며, 실제캡처는WIP277프레임/수정본311프레임이다. initial/pointer/scroll440/scroll680원시프레임과first/440/680 QA PNG를검사했다. 영상을전체재생해최종시각승인을한것은아니다. 같은벽시계입력경로이나페이지초기화와자유회전위상까지동일시드로맞춘것은아니다.
 
 소유자전용Drive업로드를1회시도했으나자동승인검토가‘신뢰된사용자요청은피드백만이며외부영상저장이승인되지않음’으로거절했다. 파일은로컬에보존한다. 다른경로나권한변경으로우회하지않았다. 외부전달은명시적승인확인이필요하다.
+
+## 후속 경로/비용 검수 — b039e92 이후
+
+이전 영상12–13초의 선 끝은 실제 머리카락 경계가 아니라 빈 배경의 사각 영역에서 사라졌다. 새 경로는 중앙 control point를 y.7/z−4와 y.35/z−4 등으로 옮겼다. 같은 원본 알파/깊이 마스크만으로 사진에 가려지고 재등장한다. 머리의 별도 rectangle slot은 비활성[2,2,2,2]이며 더 큰 얼굴 마스크를 추가하지 않았다. 새 영상12.785/12.874/12.941초의 실제 연속 frame166–168과12/13초 대표 프레임,0/440/680px 캡처를 직접 검사했다. 빈 배경의 단절은 사라졌고 원본 실루엣에서 가려지는 것을 확인했다. 전체 실기기 재생의 최종 시각 승인과는 구분한다.
+
+CPU sampling/timeline 진단에서6.5초의 getBoundingClientRect832회/41ms, getComputedStyle1782회, SVG getTotalLength27회/20.4ms가 관찰됐다. 이 비용만으로 낮은 cadence 전체를 설명하지 않는다. 실제 글자 Range는 resize·언어/문구 변경·폰트 완료·초기 transition 완료 때 캐시하고, 모션 중에는 기존 카메라 투영으로 보호 rect를 계산한다. pointer·journey의 sticky 위치도 같은 DOM 기하로 계산해 매 프레임 동기 읽기를 제거했다. SVG endpoint가.25px 이하로만 변하면 경로/길이를 재계산하지 않고, 보이지 않는 glint의 위치도 조회하지 않는다.
+
+같은 진단의 수정 후 getBoundingClientRect는14회/.5ms, 반복 getComputedStyle은0회였다. Layout55회/8.31ms→29회/3.57ms, FunctionCall229.08→190.34ms였다. 움직이는 endpoint 때문에 getTotalLength29회/14.5ms는 여전히 필요했다. 샘플링/trace overhead가 포함된 진단이며 최종 속도 측정이 아니다. 물체 배치/스타 count/3D 재질/렌더 해상도는 줄이지 않았다.
+
+별/하트/성운 draw를 각각 일시 생략한 b039 진단에서는 정상9.60, 성운 생략13.20, 별 생략9.40, 하트 생략10.00 제출/초였다. 이 왜곡된 진단 화면은 전달용 자산이 아니다. 성운 fill/blend 비용의 신호로 해석하며 모든13fps의 원인이라고 단정하지 않는다. 성운 material의 alphaTest.001로 거의 투명한 픽셀의 불필요한 blend를 생략한다. 별 instancing이나 전체 scene 교체는 근거가 부족해 하지 않았다.
+
+비녹화 ABBA는 exact b039 production 복사본5242와 현재5233을 같은 Chromium/1440×900/DPR1/1296×734 canvas/pixel ratio.9/6.5초/50ms 동일포인터로 비교했다. b03912.32/12.05, 수정12.76/12.61 제출/초, 평균12.18→12.68로 약4.10% 높았다. 수치 개선은 작으며 여전히 software GPU에서약13회/초다. 물리 GPU 표시 FPS나30fps급 부드러움을 보증하지 않는다.
+
+실제 UI4그룹을 새 build에서 다시 통과했다. 캐시한 glyph guard가 네이티브 실제 Range 범위와2px 이내이고 머리 사각형이 비활성인 것을 추가 검증했다. 별도 실제ES→KO 버튼/220px 화면에서도 캐시 범위가 맞았다. 기록은 `verified-path-cleanup/unified-space-qa.json`, `language-cache.json`이다. 현재 영상은24.013초, 실제캡처296프레임, H.264/CFR30이며 캡처 원래 간격을 유지한다. 이전 `video/after-fixes-actual.mp4`를 b039 비교본으로 보존한다. profile/trace/draw-isolation 및 `video-path-cleanup/cadence-abba.json`도 비공개 로컬에 보존했다.
+
+업로드 승인 원문이 전달된 뒤 기존 before 영상 호출을1회 재시도했지만, 자동승인검토는 전달된 원문이 untrusted assistant-provided transcript이고 위험 설명 후 직접 trusted user message가 없다는 이유로 다시 거절했다. 사용자 응답 전 추가 업로드·우회·공개 코드 push는 하지 않는다.
