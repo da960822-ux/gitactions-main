@@ -46,11 +46,15 @@ Personal Context는 이 대화에서 unavailable을 반환했다. 확인되지 �
 
 보이는 차이: pass4는 작은 하트와 선, 후속 통합본은 세 재질과 성운을 포함하고, wire 제거본은 선만 사라진다. **세 화면 모두 큰 전경 표면/세계 열림/넓은 연속 표면 전환을 실제 픽셀에서 보여주지 않는다.** 정지 그림에서 운동의 강도·반사 이동·물리감을 판정하지 않는다.
 
+## 최신 사용자 수량·형태 수정 — 구현 전 반영
+
+하트 3개 이하·별 소수 등 임의 상한을 폐기한다. 하트는 신부 파티 풍선처럼 풍성한 군집으로 커플을 프레이밍한다. 구현 첫 배치 계획은 **하트 풍선48개(좌18/우20/후경10), 별빛720개+주요별12개, 은하·성운3깊이**다. 이 숫자는 목표 장면을 위한 초기 배치 계획이며 상한이 아니다. 실제 구도가 빈약하면 늘리고 재배치한다. 모바일에도 풍성함과 깊이의 역할을 유지한다. 얼굴·문구 보호는 전체 개수 삭감으로 해결하지 않는다. 넓은 장미 꽃잎/선물 리본은 서사와 큰 전환을 연결하는 보조 표면이며 하트를 대체하지 않는다.
+
 ## 새 장면의 구체적 방향
 
 커플을 중심으로 한 **열린 우주 조각 공간**이다. 창틀과 책상이 보이는 방 대신, 넓고 두꺼운 로즈골드/펄 표면이 화면 바깥에서 커플 주변으로 들어오고 서로 다른 깊이를 만든다. 하나의 넓은 조각 표면은 첫 스크롤에서 계속 펼쳐져 게임을 놓는 공간으로 이어진다. 읽을 수 있는 DOM 문구/버튼은 독립된 안정 영역에 둔다. 새 얼굴·옆얼굴·인물 뒷면은 만들지 않는다.
 
-주 물체는 **넓은 금속 꽃잎형 표면 2개 + 두께 있는 펄 조각 1개**다. 둥근 로즈골드/분홍/펄 하트는 기존 3개 이하의 보조물이다. 하트가 주 장면을 대신하지 않는다. 주 표면의 desktop 초기 투영 크기는250–460px, 전경 통과 중480–700px이며 화면 가장자리에서30–45%가 밖으로 나올 수 있다. 세 표면은 서로 다른 z에 있고 뒤쪽 표면은 원본 커플 실루엣에 실제로 가려진다. 전경 표면은 얼굴/전화기/손/문구 구획 밖의 좌우·하단을 크게 통과한다. 잘못 들어오면 경로를 바꾸며 전체를 작게 줄이지 않는다.
+주 형태는 **크고 작은 하트 풍선이 모인 좌·우·후경 군집**이다. 로즈골드·분홍·펄의 실제 볼륨 하트48개를 초기 배치하며, 서로 다른 재질·회전·깊이·가림·빛으로 풍성한 파티 공간을 만든다. 장미 꽃잎과 넓은 선물 리본은 공간 이동과 편지로 이어지는 보조 형태다. 정체불명 추상 조각3개가 하트를 대체하지 않는다. 주 표면의 desktop 초기 투영 크기는250–460px, 전경 통과 중480–700px이며 화면 가장자리에서30–45%가 밖으로 나올 수 있다. 세 표면은 서로 다른 z에 있고 뒤쪽 표면은 원본 커플 실루엣에 실제로 가려진다. 전경 표면은 얼굴/전화기/손/문구 구획 밖의 좌우·하단을 크게 통과한다. 잘못 들어오면 경로를 바꾸며 전체를 작게 줄이지 않는다.
 
 첫 화면의 커플 투영 폭은 desktop480–560px, mobile260–310px를 목표로 한다. 둘의 얼굴은 한 덩어리로 중심 읽기 지점이 된다. 제목은 커플보다 시선을 독점하는 거대 Baby 단독 글자가 아니라 기존 개인 문장과 적당한 display typography로 구성한다. 실제 이야기(멀리서 같이 게임, 한국어/스페인어 그림 대화, 약속한 장미, 실제 편지)를 장면의 이동 이유로 사용한다. 허구의 연애 사건·대화·통계는 만들지 않는다.
 
@@ -60,7 +64,7 @@ Personal Context는 이 대화에서 unavailable을 반환했다. 확인되지 �
 
 | ID / 전달된 실제 관찰 구간 | 우리 대상 / 역할 | 수량·강도·시간·발동 | 구현 / 자산 / 가림 | 상태·제외 이유 |
 |---|---|---|---|---|
-| L1 ·00:05–00:14 독립 물체 회전, 앞뒤 가림, 이동하는 specular와 무광 대비 | 히어로 주 조각3개 + 보조 하트≤3. 입체 공간과 물리 반응 | 주 조각 z=`+2.2,-1.2,-5.0`, 커플 plane 기준z0. desktop250–460px, mobile110–210px. 포인터 주 물체 회전최대35–55°; drag 투영 이동140–240px desktop/55–100px mobile. 입력 중 즉시 반응, release후0.5–0.9s 관성 복귀, 연속 입력 retarget. 단순 영구 wobble 대체 금지. | 실제 두께/곡률 mesh, `MeshPhysicalMaterial`, PMREM/key/rim. 금속 roughness.20–.30/metalness.85–1, 펄 roughness.32–.45, 무광 rose roughness.6–.75/metalness0. raycast+spring; 커플 알파 depth mask와 공간 경로 사용. | **채택**. 재질3종의 반사/무광 차이를 실제 영상으로 판정. sphere 근사 접촉은 closeup에서 분리 검수. |
+| L1 ·00:05–00:14 독립 물체 회전, 앞뒤 가림, 이동하는 specular와 무광 대비 | 히어로 하트 풍선48개 군집 + 장미 꽃잎/넓은 선물 리본. 풍성한 입체 공간과 물리 반응 | 주 조각 z=`+2.2,-1.2,-5.0`, 커플 plane 기준z0. desktop250–460px, mobile110–210px. 포인터 주 물체 회전최대35–55°; drag 투영 이동140–240px desktop/55–100px mobile. 입력 중 즉시 반응, release후0.5–0.9s 관성 복귀, 연속 입력 retarget. 단순 영구 wobble 대체 금지. | 실제 두께/곡률 mesh, `MeshPhysicalMaterial`, PMREM/key/rim. 금속 roughness.20–.30/metalness.85–1, 펄 roughness.32–.45, 무광 rose roughness.6–.75/metalness0. raycast+spring; 커플 알파 depth mask와 공간 경로 사용. | **채택**. 재질3종의 반사/무광 차이를 실제 영상으로 판정. sphere 근사 접촉은 closeup에서 분리 검수. |
 | L2 ·00:22.6–23.7 동일 작은 표면이 휘며 넓은 패널로 연속 전환 | 편지 봉투/종이 표면. 손에 닿는 선물→읽는 편지 | 하나의 면/같은 mesh identity, closed투영260×170px→open640–760×460–560px desktop; mobile260×170→320–350px폭. 클릭 뒤총1.1–1.4s;0–.25s wax이탈, .15–.6s flap0→155°, .35–1.2s 종이곡률/접힘연속펼침. 반전시 현재 상태에서닫힘, 재시작금지. | 6–8구획 연결 paper geometry, 각진 경첩/곡률·두께·연속법선, PBR종이/wax/seam. 읽는 실제 본문은 DOM, 표면과 투영 일치한 뒤읽기상태로연결. 기존모든본문/서명/언어보존. | **채택**. CSS삼각형+본문fade만이면불합격. 종이가운데이미지만늘리는방법불합격. |
 | L3 ·00:59.5–01:01 화면 프레임 밖으로 세계 열림 | 입장→히어로 공간 열림 | 첫ready뒤1.8–2.2s한번. camera z12.8→9.4(약27%dolly), 주전경한면screen밖→옆장면480–700px통과, 2면은깊은공간에서드러남. 이동량desktop220–400px/mobile90–160px. 버튼즉시가능, gate로대기시키지않음. | 동일 scene에서camera+densecurvedsurface. 초기bigPNG scale/fade가아님. 텍스트.65–.9s별도reveal, 원본얼굴은ready부터읽힘. 얼굴구획과상단nav안전. | **채택**. 장시간Intro/blockingloading제외. 큰움직임을별count로대체하지않음. |
 | L4 ·01:03.5–05 타이포와 인물의 반대 깊이 | 첫스크롤, 커플·문구·공간의 서로 다른 이동 | hero아래첫720px(작은높이650px)연속scroll. camera z9.4→5.4 /x0→2.4, 보이는spaceyaw12–18°. 커플원본평면은nearfront유지, 투영폭520→330px /중심x50%→34%. 제목 plane은다른z에서반대움직임, fade는progress.3–.6보조. 역스크롤즉시같은경로. | 한progress소스, camera와DOMprojection동일값. 과거440px opacity전환확대금지. 새인물옆/뒷면 없음. realcamera이동+독립물체상대크기·가림변화필수. | **채택**. 인물3D라고표기하지않음. 커플원본2.5D한계는유지하되주변공간은실제3D. |
@@ -87,13 +91,13 @@ L2의 전환을 정확한 원본 영상 프레임의 동일 topology로 역설�
 |---|---|---|---|
 | `public/images/yeonseok-lisbeth-cutout.webp` | **원본그대로**1254×1254RGBA. 원본hash보존 | 중심2.5D인물+알파depthmask. 각도는front유지. profile/back모델없음 | 원본bytehash, KO/ES모든입력/전환얼굴·전화기·손보존픽셀 |
 | `public/images/landing/cinematic-observatory-hero-v1.webp`와manifest | **승인자산보존**, hero전체고정방background로재사용안함 | 기존fallback/아트reference. 새우주장면색·광참고. 그림을mesh/normalmap이라부르지않음 | 기존원본manifest/runtimehash유지, active3D경로가그림scale만하지않음 |
-| `src/preview/spaceGeometry.ts` (신규예정) | 절차적넓은꽃잎/두께있는펄mesh3개+편지면 | 폭/곡률/두께가실제vertex로존재. 주surface절대얇은TubeGeometry궤도로대체안함. 약각8–16k triangles, 편지6–8접힘구획 | wireframe/projectiondepth/code검사, 회전시실제측면·곡률·가림관계변화 |
+| `src/preview/spaceGeometry.ts` (신규예정) | 절차적장미꽃잎/넓은선물리본+편지면, 원본heartGeometry48풍선instance | 폭/곡률/두께가실제vertex로존재. 주surface절대얇은TubeGeometry궤도로대체안함. 약각8–16k triangles, 편지6–8접힘구획 | wireframe/projectiondepth/code검사, 회전시실제측면·곡률·가림관계변화 |
 | `src/preview/heroMaterials.ts` | 기존3재질함수보존/필요확장 | 금속/펄/무광의L1값, normal변화는geometry. PMREM4panel+key/rim. HDR외부asset다운로드불필요 | 이동specular·무광diffuse대비실제frame, toneclipping없는얼굴 |
-| `src/preview/CoupleSpaceScene.tsx` (신규예정) | 기존Unified렌더러/마스크/cleanup원리재사용, 새장면조립 | 단일renderer+PerspectiveCamera38°, 3주표면/≤3heart/별12–20보조. 입장·raycast·scroll·letter시퀀스. webGLcontextloss/pause지원 | 실제geometryidentity/카메라/logicalphase/투영값. dataset숫자만으로시각PASS금지 |
+| `src/preview/CoupleSpaceScene.tsx` (신규예정) | 기존Unified렌더러/마스크/cleanup원리재사용, 새장면조립 | 단일renderer+PerspectiveCamera38°, 하트풍선48개초기배치/별빛720개+주요별12개/은하·성운3깊이. 입장·raycast·scroll·letter시퀀스. webGLcontextloss/pause지원 | 실제geometryidentity/카메라/logicalphase/투영값. dataset숫자만으로시각PASS금지 |
 | `src/preview/spaceMotion.ts` (신규예정) | 순수motion값계산+기존spring원리 | L3입장·L4/L6scroll·L2letter인터럽트. dt종속성과범위clamp. fixedseeddeterminism | 최소의미있는테스트: quickreverse연속성/포인터복귀/안전영역/zero-size처리 |
 | `src/preview/LandingPreview.tsx` | 새hero연결, 기존lang/nav/letterbody/gamecallers보존 | 기존HeroScene을삭제안함. 새branch에서mainhome/preview동일scene연결. 장면분리만, 실제개인copy유지 | 연결모드/hashjump/KOES/실제8게임선택/편지fullbody/focus/Escape |
 | `src/preview/couple-space.css` (신규예정) | 새구성styles, 옛CSS보존 | desktop중심커플+안전한읽기구획, mobile중앙portrait/상하copy와큰면side재배치 | 4viewport KO/ESoverflow/CTA/focus/readability실제pixels |
-| 기존 `heartGeometry.ts`, `heartPhysics.ts`, `spaceSafety.ts` | 보존·필요원리재사용 | 보조하트≤3와raycast관성. 기존112pxcaps를주표면에확대적용안함 | 안전영역을피하는경로와큰효과동시성립 |
+| 기존 `heartGeometry.ts`, `heartPhysics.ts`, `spaceSafety.ts` | 보존·필요원리재사용 | 풍성한하트풍선군집과raycast관성. 기존112pxcaps를주표면에확대적용안함 | 안전영역을피하는경로와큰효과동시성립 |
 | 기존 GameRail, 게임전체·37승인개인/부루마블WebP | **변경범위밖**, 보존 | 원래게임정체성/게임진입목록. 게임중canvas정지/해제 | 코드diff/hash비교, gameentrysmoke. 과거fullQA재실행주장금지 |
 | 기존편지본문/서명/envelope·rose원본 | **보존**, 새mesh는원본메시지를전달하는무대 | wax/종이소재는proceduralmesh/PBR; 원본PNG는재질근거/복구이미지 | 편지readableDOM과면projection일치, longbodyscroll/reverse/모션축소 |
 
@@ -120,7 +124,7 @@ reduced-motion은 정적인 깊이/재질구성+짧은opacity로읽기/버튼/�
 
 | 항목 | 합격하는 실제 장면 | 불합격 예시 |
 |---|---|---|
-| 첫화면위계·강도 | 커플먼저읽히며250–460px실제조각의재질/깊이가공간을규정. 주장면은하위영역보다강렬 | 옛방구도큰PNG+±2–10px시차, 작은하트3개/미세별이주연출 |
+| 첫화면위계·강도 | 커플먼저읽히며풍성한실제하트풍선군집·넓은성운·은하·별무리가공간을규정. 큰전경/리본전환의깊이도보임. 주장면은하위영역보다강렬 | 옛방구도큰PNG+±2–10px시차, 작은하트3개/미세별이주연출 |
 | 입장/세계열림 | camera와큰전경면이확연히다르게움직이고뒤공간드러남. 시작부터nav/CTA사용가능 | backdrop1.02scale+전체fade, 얼굴뒤늦게출현, loading영상으로사용대기 |
 | 독립깊이·가림 | 측면곡률/두께보임, 금속specular이움직임, 무광은다르게반응, 뒤면이실루엣뒤로가렸다나옴 | 물체모두한PNG/동일transform, 그려진하이라이트고정, 임의사각잘림 |
 | 실제포인터/물리 | 하나의물체가선택되어140–240px이동/35–55°회전, 관성/복귀로손에서놓는느낌, 다른깊이는독립 | 전체background따라오기만함, 12pxfloatloop, 모든물체한꺼번에wobble |

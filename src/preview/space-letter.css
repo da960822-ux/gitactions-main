@@ -1,0 +1,363 @@
+.cs-letter-section {
+  position: relative;
+  z-index: 2;
+  height: 100svh;
+  min-height: 540px;
+  overflow: hidden;
+  color: #f7e8e8;
+  text-align: center;
+  isolation: isolate;
+}
+
+.cs-letter-heading {
+  position: absolute;
+  z-index: 4;
+  top: clamp(18px, 4vh, 42px);
+  left: 16px;
+  right: 16px;
+  pointer-events: none;
+  text-shadow: 0 2px 16px #140c15;
+}
+
+.cs-letter-kicker {
+  color: #e8b7b0;
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: .2em;
+}
+
+.cs-letter-heading h2 {
+  margin: 9px 0 0;
+  font: 400 clamp(28px, 4vw, 42px)/1.12 Georgia, 'Times New Roman', serif;
+  letter-spacing: -.035em;
+}
+
+.cs-letter-heading p {
+  margin: 9px 0 0;
+  color: #e8d5d8;
+  font-size: 14px;
+}
+
+.cs-letter-stage {
+  position: absolute;
+  inset: 130px 0 70px;
+  z-index: 2;
+  min-height: 0;
+}
+
+.cs-letter-paper {
+  position: absolute;
+  z-index: 3;
+  top: 50%;
+  left: 50%;
+  display: flex;
+  width: clamp(640px, 70vw, 760px);
+  max-width: calc(100vw - 20px);
+  max-height: 100%;
+  box-sizing: border-box;
+  flex-direction: column;
+  padding: clamp(20px, 3vw, 34px) clamp(22px, 4vw, 48px);
+  overflow: hidden;
+  color: #372b30;
+  text-align: left;
+  background: transparent;
+  border: 1px solid transparent;
+  box-shadow: none;
+  opacity: 0;
+  visibility: hidden;
+  transform: translate(-50%, -50%);
+  transition: opacity 180ms ease, visibility 0s linear 180ms;
+}
+
+.cs-page[data-letter-ready='true'] .cs-letter-section.is-open .cs-letter-paper {
+  visibility: visible;
+  opacity: 1;
+  transition-delay: 0s;
+}
+
+.cs-no-webgl .cs-letter-section.is-open .cs-letter-paper {
+  visibility: visible;
+  background: linear-gradient(135deg, #f1e4d1, #e3cfb7 58%, #d8bea1);
+  border-color: #f3dec1;
+  box-shadow: 0 16px 48px #09070c99, inset 0 0 30px #7b573611;
+  opacity: 1;
+  transition: none;
+}
+
+.cs-letter-paper-top {
+  display: flex;
+  flex: 0 0 auto;
+  justify-content: space-between;
+  padding-bottom: 10px;
+  color: #785143;
+  border-bottom: 1px solid #88645345;
+  font-size: 10px;
+  letter-spacing: .14em;
+}
+
+.cs-letter-paper-top i {
+  color: #94564f;
+  font-size: 17px;
+  font-style: normal;
+}
+
+.cs-letter-address {
+  flex: 0 0 auto;
+  margin: 14px 0 0;
+  color: #865c4b;
+  font-size: 12px;
+  letter-spacing: .04em;
+}
+
+.cs-letter-paper h3 {
+  flex: 0 0 auto;
+  margin: 10px 0 14px;
+  font: 29px/1.2 Georgia, 'Times New Roman', serif;
+}
+
+.cs-letter-body {
+  min-height: 0;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  scrollbar-color: #a98a70 transparent;
+  scrollbar-width: thin;
+  font-size: 15px;
+  line-height: 1.7;
+}
+
+.cs-letter-body:focus-visible {
+  outline: 2px solid #8b5a50;
+  outline-offset: 3px;
+}
+
+.cs-letter-body p {
+  margin: 11px 0 0;
+}
+
+.cs-letter-body p:first-child {
+  margin-top: 0;
+}
+
+.cs-letter-signature {
+  flex: 0 0 auto;
+  margin-top: 14px;
+  color: #815748;
+  font: italic 23px/1.3 Georgia, 'Times New Roman', serif;
+}
+
+.cs-letter-seal {
+  position: absolute;
+  z-index: 5;
+  top: 50%;
+  left: 50%;
+  display: grid;
+  width: 92px;
+  height: 92px;
+  place-content: center;
+  gap: 4px;
+  padding: 0;
+  color: #ffe9d8;
+  background: radial-gradient(circle at 34% 26%, #a8585c, #612c39 70%);
+  border: 3px solid #d9a79a;
+  border-radius: 50%;
+  box-shadow: 0 5px 22px #100a0db3, inset 0 0 0 2px #542b36;
+  cursor: pointer;
+  transform: translate(-50%, -50%);
+  transition: opacity 220ms ease, transform 260ms ease, box-shadow 220ms ease;
+}
+
+.cs-letter-seal span {
+  font: 600 21px/1 Georgia, 'Times New Roman', serif;
+}
+
+.cs-letter-seal i {
+  color: #e9bdb1;
+  font-style: normal;
+}
+
+.cs-letter-seal small {
+  font-size: 9px;
+  letter-spacing: .12em;
+}
+
+.cs-page[data-space-ready='true'] .cs-letter-seal {
+  width: 84px;
+  height: 84px;
+  color: #fff5ed;
+  background: transparent;
+  border: 0;
+  box-shadow: none;
+  text-shadow: 0 1px 4px #241118;
+}
+
+.cs-letter-seal:focus-visible,
+.cs-letter-close:focus-visible {
+  outline: 3px solid #ffe6c7;
+  outline-offset: 4px;
+}
+
+.cs-letter-section.is-open .cs-letter-seal {
+  opacity: 0;
+  pointer-events: none;
+  transform: translate(-50%, -50%) scale(.8);
+}
+
+.cs-letter-rose {
+  position: absolute;
+  z-index: 2;
+  right: clamp(14px, 5vw, 72px);
+  bottom: 24px;
+  width: clamp(92px, 13vw, 164px);
+  margin: 0;
+  pointer-events: none;
+}
+
+.cs-letter-rose img {
+  display: block;
+  width: 100%;
+  height: auto;
+  filter: drop-shadow(6px 10px 12px #07060a99);
+}
+
+.cs-letter-rose figcaption {
+  margin-top: 5px;
+  color: #e3c7c8;
+  font-size: 11px;
+  text-shadow: 0 1px 8px #140c15;
+}
+
+.cs-letter-close {
+  position: absolute;
+  z-index: 6;
+  right: 18px;
+  bottom: 18px;
+  display: inline-flex;
+  min-width: 44px;
+  min-height: 44px;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  padding: 8px 16px;
+  color: #f5e2df;
+  background: #21131bc9;
+  border: 1px solid #eac5b875;
+  border-radius: 999px;
+  font: inherit;
+  cursor: pointer;
+  backdrop-filter: blur(8px);
+}
+
+.cs-letter-close span {
+  font-size: 19px;
+  line-height: 1;
+}
+
+.cs-letter-close[hidden] {
+  display: none;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .cs-letter-seal:hover:not(:disabled) {
+    transform: translate(-50%, -50%) scale(1.05);
+  }
+}
+
+@media (max-width: 700px) {
+  .cs-letter-section {
+    min-height: 500px;
+  }
+
+  .cs-letter-heading {
+    top: max(16px, env(safe-area-inset-top));
+  }
+
+  .cs-letter-heading h2 {
+    font-size: clamp(27px, 8vw, 34px);
+  }
+
+  .cs-letter-heading p {
+    max-width: 340px;
+    margin: 8px auto 0;
+    font-size: 13px;
+  }
+
+  .cs-letter-stage {
+    inset: 110px 0 65px;
+  }
+
+  .cs-letter-paper {
+    width: calc(100vw - 20px);
+    max-height: 100%;
+    padding: 19px 20px 21px;
+  }
+
+  .cs-letter-paper-top {
+    font-size: 8px;
+  }
+
+  .cs-letter-address {
+    margin-top: 11px;
+    font-size: 11px;
+  }
+
+  .cs-letter-paper h3 {
+    margin: 8px 0 11px;
+    font-size: 25px;
+  }
+
+  .cs-letter-body {
+    font-size: 14px;
+    line-height: 1.62;
+  }
+
+  .cs-letter-body p {
+    margin-top: 9px;
+  }
+
+  .cs-letter-signature {
+    margin-top: 11px;
+    font-size: 21px;
+  }
+
+  .cs-letter-seal {
+    width: 76px;
+    height: 76px;
+  }
+
+  .cs-page[data-space-ready='true'] .cs-letter-seal {
+    width: 80px;
+    height: 80px;
+  }
+
+  .cs-letter-rose {
+    right: 10px;
+    bottom: max(66px, calc(env(safe-area-inset-bottom) + 54px));
+    width: 84px;
+  }
+
+  .cs-letter-section.is-open {
+    margin-bottom: 120px;
+    overflow: visible;
+  }
+
+  .cs-letter-section.is-open .cs-letter-rose {
+    bottom: -110px;
+  }
+
+  .cs-letter-rose figcaption {
+    max-width: 100px;
+    font-size: 9px;
+  }
+
+  .cs-letter-close {
+    right: 12px;
+    bottom: max(10px, env(safe-area-inset-bottom));
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .cs-letter-paper,
+  .cs-letter-seal {
+    transition-duration: 1ms;
+  }
+}

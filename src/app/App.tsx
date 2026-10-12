@@ -1,5 +1,4 @@
 import { Suspense, lazy, useEffect, useState } from 'react';
-import { Landing } from '../landing/Landing';
 import { LandingPreview } from '../preview/LandingPreview';
 import { Link } from './Router';
 import { canEnterPlayRoute, DESKTOP_GAME_QUERY } from '../core/display';
@@ -23,7 +22,7 @@ export function App() {
     window.addEventListener('popstate', onPop);
     return () => window.removeEventListener('popstate', onPop);
   }, []);
-  if (path === '/') return canPlay ? <LandingPreview connected/> : <Landing />;
+  if (path === '/') return <LandingPreview connected/>;
   if (path !== '/feedback' && !canEnterPlayRoute(canPlay, path)) return <DesktopGameNotice language={localStorage.getItem('dos-language') === 'es' ? 'es' : 'ko'}/>;
   return <Suspense fallback={<main className="loading-screen"><strong>{localStorage.getItem('dos-language') === 'es' ? 'Nosotros' : '우리 둘'}</strong><span className="loader"/><p>{localStorage.getItem('dos-language') === 'es' ? 'Cargando juegos…' : '게임방을 불러오는 중…'}</p></main>}>{path === '/feedback' ? <FeedbackRoute/> : <PlayApp path={path} desktopDisplay={canPlay} />}</Suspense>;
 }
