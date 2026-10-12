@@ -1,0 +1,115 @@
+{
+  "pass": true,
+  "checks": [
+    {
+      "independentDepth": true,
+      "returnsToRest": true,
+      "left": [
+        {
+          "class": "hero-scene-backdrop",
+          "x": "1.7222222222222223px",
+          "y": "0.6909090909090909px"
+        },
+        {
+          "class": "hero-scene-foreground",
+          "x": "6.027777777777779px",
+          "y": "2.418181818181818px"
+        },
+        {
+          "class": "hero-scene-portrait",
+          "x": "-12.055555555555557px",
+          "y": "-4.836363636363636px"
+        },
+        {
+          "class": "hero-postcard",
+          "x": "10.333333333333334px",
+          "y": "4.1454545454545455px"
+        },
+        {
+          "class": "hero-envelope",
+          "x": "-10.333333333333334px",
+          "y": "-4.1454545454545455px"
+        },
+        {
+          "class": "hero-table-details",
+          "x": "-15.5px",
+          "y": "-6.218181818181819px"
+        },
+        {
+          "class": "hero-scene-sparkles",
+          "x": "1.7222222222222223px",
+          "y": "0.6909090909090909px"
+        }
+      ],
+      "right": [
+        {
+          "class": "hero-scene-backdrop",
+          "x": "-1.6666666666666665px",
+          "y": "-0.12727272727272743px"
+        },
+        {
+          "class": "hero-scene-foreground",
+          "x": "-5.833333333333333px",
+          "y": "-0.445454545454546px"
+        },
+        {
+          "class": "hero-scene-portrait",
+          "x": "11.666666666666666px",
+          "y": "0.890909090909092px"
+        },
+        {
+          "class": "hero-postcard",
+          "x": "-10px",
+          "y": "-0.7636363636363646px"
+        },
+        {
+          "class": "hero-envelope",
+          "x": "10px",
+          "y": "0.7636363636363646px"
+        },
+        {
+          "class": "hero-table-details",
+          "x": "14.999999999999998px",
+          "y": "1.1454545454545468px"
+        },
+        {
+          "class": "hero-scene-sparkles",
+          "x": "-1.6666666666666665px",
+          "y": "-0.12727272727272743px"
+        }
+      ]
+    },
+    {
+      "effectsBehindPortrait": true,
+      "layer": {
+        "windowZ": 0,
+        "portraitContextZ": 2,
+        "pointerEvents": "none",
+        "glowZ": 0
+      },
+      "meteor": {
+        "opacity": 0.4875,
+        "transform": "matrix(0.961262, 0.275637, -0.275637, 0.961262, 47.5, 13.5)"
+      },
+      "meteorStill": "CSS timeline intentionally sampled at active phase; not a natural-time recording"
+    },
+    {
+      "rapidOpenCloseOpen": true,
+      "paperBounds": {
+        "x": 244.9248504638672,
+        "y": 161.947265625,
+        "width": 772.3415679931641,
+        "height": 455.692626953125
+      },
+      "keyboardFocus": true,
+      "offscreenPause": true
+    },
+    {
+      "userPauseSuppressesHeroAndCardMotion": true
+    },
+    {
+      "reducedMotion": true
+    }
+  ],
+  "errors": []
+}

@@ -1,0 +1,189 @@
+{
+  "pass": true,
+  "revision": "b9cbbf04cc451ffe0f3319efb205ad72e78420f5",
+  "results": [
+    {
+      "language": "ko",
+      "game": "davinci",
+      "selected": "다빈치 코드",
+      "lobbyLanguage": true,
+      "boardLanguage": true,
+      "guideLanguage": true,
+      "feedbackFromRoom": true,
+      "mode": "same-browser demo seat switch; no online two-session assertion"
+    },
+    {
+      "language": "ko",
+      "game": "catchmind",
+      "selected": "캐치마인드",
+      "lobbyLanguage": true,
+      "boardLanguage": true,
+      "guideLanguage": true,
+      "feedbackFromRoom": true,
+      "mode": "same-browser demo seat switch; no online two-session assertion"
+    },
+    {
+      "language": "ko",
+      "game": "domino",
+      "selected": "도미노",
+      "lobbyLanguage": true,
+      "boardLanguage": true,
+      "guideLanguage": true,
+      "feedbackFromRoom": true,
+      "mode": "same-browser demo seat switch; no online two-session assertion"
+    },
+    {
+      "language": "ko",
+      "game": "jaipur",
+      "selected": "자이푸르",
+      "lobbyLanguage": true,
+      "boardLanguage": true,
+      "guideLanguage": true,
+      "feedbackFromRoom": true,
+      "mode": "same-browser demo seat switch; no online two-session assertion"
+    },
+    {
+      "language": "ko",
+      "game": "splendor",
+      "selected": "스플렌더",
+      "lobbyLanguage": true,
+      "boardLanguage": true,
+      "guideLanguage": true,
+      "feedbackFromRoom": true,
+      "mode": "same-browser demo seat switch; no online two-session assertion"
+    },
+    {
+      "language": "ko",
+      "game": "minhwatu",
+      "selected": "민화투",
+      "lobbyLanguage": true,
+      "boardLanguage": true,
+      "guideLanguage": true,
+      "feedbackFromRoom": true,
+      "mode": "same-browser demo seat switch; no online two-session assertion"
+    },
+    {
+      "language": "ko",
+      "game": "marble",
+      "selected": "부루마블 (우리 규칙)",
+      "lobbyLanguage": true,
+      "boardLanguage": true,
+      "guideLanguage": true,
+      "feedbackFromRoom": true,
+      "mode": "same-browser demo seat switch; no online two-session assertion"
+    },
+    {
+      "language": "ko",
+      "game": "rhythm",
+      "selected": "뮤직톡톡",
+      "lobbyLanguage": true,
+      "boardLanguage": true,
+      "guideLanguage": true,
+      "feedbackFromRoom": true,
+      "mode": "same-browser demo seat switch; no online two-session assertion"
+    },
+    {
+      "language": "es",
+      "game": "davinci",
+      "selected": "El código Da Vinci",
+      "lobbyLanguage": true,
+      "boardLanguage": true,
+      "guideLanguage": true,
+      "feedbackFromRoom": true,
+      "mode": "same-browser demo seat switch; no online two-session assertion"
+    },
+    {
+      "language": "es",
+      "game": "catchmind",
+      "selected": "Adivina el dibujo",
+      "lobbyLanguage": true,
+      "boardLanguage": true,
+      "guideLanguage": true,
+      "feedbackFromRoom": true,
+      "mode": "same-browser demo seat switch; no online two-session assertion"
+    },
+    {
+      "language": "es",
+      "game": "domino",
+      "selected": "Dominó",
+      "lobbyLanguage": true,
+      "boardLanguage": true,
+      "guideLanguage": true,
+      "feedbackFromRoom": true,
+      "mode": "same-browser demo seat switch; no online two-session assertion"
+    },
+    {
+      "language": "es",
+      "game": "jaipur",
+      "selected": "Jaipur",
+      "lobbyLanguage": true,
+      "boardLanguage": true,
+      "guideLanguage": true,
+      "feedbackFromRoom": true,
+      "mode": "same-browser demo seat switch; no online two-session assertion"
+    },
+    {
+      "language": "es",
+      "game": "splendor",
+      "selected": "Splendor",
+      "lobbyLanguage": true,
+      "boardLanguage": true,
+      "guideLanguage": true,
+      "feedbackFromRoom": true,
+      "mode": "same-browser demo seat switch; no online two-session assertion"
+    },
+    {
+      "language": "es",
+      "game": "minhwatu",
+      "selected": "Minhwatu",
+      "lobbyLanguage": true,
+      "boardLanguage": true,
+      "guideLanguage": true,
+      "feedbackFromRoom": true,
+      "mode": "same-browser demo seat switch; no online two-session assertion"
+    },
+    {
+      "language": "es",
+      "game": "marble",
+      "selected": "Marble · juego de bienes raíces",
+      "lobbyLanguage": true,
+      "boardLanguage": true,
+      "guideLanguage": true,
+      "feedbackFromRoom": true,
+      "mode": "same-browser demo seat switch; no online two-session assertion"
+    },
+    {
+      "language": "es",
+      "game": "rhythm",
+      "selected": "Music Talk Talk",
+      "lobbyLanguage": true,
+      "boardLanguage": true,
+      "guideLanguage": true,
+      "feedbackFromRoom": true,
+      "mode": "same-browser demo seat switch; no online two-session assertion"
+    },
+    {
+      "language": "ko",
+      "topGames": true,
+      "topLetter": true,
+      "feedbackCreateSubmitStatus": true,
+      "feedbackReturnGames": true,
+      "feedbackReturnLetter": true,
+      "copyProgressPreserved": true
+    },
+    {
+      "language": "es",
+      "topGames": true,
+      "topLetter": true,
+      "feedbackCreateSubmitStatus": true,
+      "feedbackReturnGames": true,
+      "feedbackReturnLetter": true,
+      "copyProgressPreserved": true
+    }
+  ],
+  "errors": [],
+  "original_template_revision_label": "b9cbbf04cc451ffe0f3319efb205ad72e78420f5",
+  "revision_under_test": "Working tree during approved refinements, based on b9cbbf0",
+  "applies_to_final_revision": "e7bd1fc01e713712a565e2999db91c543979f350",
+  "note": "App/core/feedback code remains byte-identical to b9; final later changes are landing CSS visual details. This is same-browser demo UI, not independent online sessions."
+}

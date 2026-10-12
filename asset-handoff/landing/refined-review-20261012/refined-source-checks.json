@@ -1,0 +1,16 @@
+{
+  "revision": "e7bd1fc01e713712a565e2999db91c543979f350",
+  "checks": {
+    "feedback_commit_included": true,
+    "game_commit_included": true,
+    "feedback_files_unchanged": true,
+    "game_and_rhythm_files_unchanged_since_b9": true,
+    "original_cutout_unchanged": true,
+    "home_branch_fast_forward": true
+  },
+  "copy_changes": "Only explicitly requested hero Mami→Baby and removal of third letter paragraph closing baby in KO/ES. Other existing copy preserved.",
+  "source_code_pushed": false,
+  "main_changed": false,
+  "deployed": false,
+  "final_css_adjustment": "Rare meteor begins in the free window space rather than behind the postcard; other verified behavior unchanged."
+}
