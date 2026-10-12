@@ -1,6 +1,6 @@
 import approvedArt from '../../public/images/personalization/manifest.json';
 
-/** Approved generated portraits are local assets; host overrides never enter room state. */
+/** Approved local portraits; host overrides never enter room state. */
 export type JokerPortraits = Partial<Record<'black' | 'white', string>>;
 
 declare global {

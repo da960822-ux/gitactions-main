@@ -1,10 +1,10 @@
 {
   "sourceRevision": "0be54b63f3e053cb6367fd099421b8799ba2d191",
-  "approval": "User explicitly approved public transfer of these four generated drawings; original live-action photos excluded",
-  "policy": "WebP quality92; preserve full composition/aspect ratio, no crop or new artwork. Original PNGs preserved in source branch.",
+  "approval": "User explicitly approved public transfer of the four existing generated drawings and requested the existing caricature cutout for DaVinci jokers; original live-action photos excluded",
+  "policy": "Existing generated drawings remain unchanged. DaVinci jokers are alpha-preserving, lossless crops of the existing caricature cutout; no new artwork. Splendor portraits are WebP quality92 with original PNGs preserved in source branch.",
   "davinciJokers": {
-    "black": "/images/davinci/joker-couple-waterfront.webp",
-    "white": "/images/davinci/joker-couple-indoor.webp"
+    "black": "/images/davinci/joker-yeonseok.webp",
+    "white": "/images/davinci/joker-lisbeth.webp"
   },
   "splendorNobles": {
     "n0": "/images/splendor/nobles/doctor-noble-portrait.webp",
@@ -50,6 +50,58 @@
       "pixelInspection": "approved original PNG and optimized WebP personally visually inspected; in-game QA pending"
     },
     {
+      "id": "davinci-black-yeonseok",
+      "path": "/images/davinci/joker-yeonseok.webp",
+      "sourcePath": "public/images/yeonseok-lisbeth-cutout.webp",
+      "sourceCommit": "fbdec4804323082caf2703fa6a03dc6cfc11f04f",
+      "sourceBytes": 1241834,
+      "sourceSha256": "72a0010ae5960d33e62b4678715bfd1df71e3d8f743248c69eeb4c5c1c55b318",
+      "sourceGitBlobSha": "392b7aa1b8676945bb1584d3ffce2f3d5d23df60",
+      "sourceDimensions": [
+        1254,
+        1254
+      ],
+      "crop": [
+        680,
+        0,
+        440,
+        520
+      ],
+      "dimensions": [
+        440,
+        520
+      ],
+      "bytes": 186006,
+      "sha256": "cdadec3042628049945650f5642c8d8673bcf31cc66f3f54a38ff318210e7304",
+      "pixelInspection": "Source cutout inspected; only Yeonseok is in this crop. Lossless WebP preserves source pixels and alpha."
+    },
+    {
+      "id": "davinci-white-lisbeth",
+      "path": "/images/davinci/joker-lisbeth.webp",
+      "sourcePath": "public/images/yeonseok-lisbeth-cutout.webp",
+      "sourceCommit": "fbdec4804323082caf2703fa6a03dc6cfc11f04f",
+      "sourceBytes": 1241834,
+      "sourceSha256": "72a0010ae5960d33e62b4678715bfd1df71e3d8f743248c69eeb4c5c1c55b318",
+      "sourceGitBlobSha": "392b7aa1b8676945bb1584d3ffce2f3d5d23df60",
+      "sourceDimensions": [
+        1254,
+        1254
+      ],
+      "crop": [
+        205,
+        120,
+        420,
+        620
+      ],
+      "dimensions": [
+        420,
+        620
+      ],
+      "bytes": 266606,
+      "sha256": "b67afa3bbec8d5622c4e75c2f4c624403d64631a330861e2df5daac364c54bc6",
+      "pixelInspection": "Source cutout inspected; only Lisbeth is in this crop. Lossless WebP preserves source pixels and alpha."
+    },
+    {
       "id": "splendor-n0",
       "path": "/images/splendor/nobles/doctor-noble-portrait.webp",
       "sourcePath": "asset-handoff/personalization/doctor-noble-portrait.png",
@@ -88,7 +140,7 @@
       "pixelInspection": "approved original PNG and optimized WebP personally visually inspected; in-game QA pending"
     }
   ],
-  "originalBytes": 11393050,
-  "runtimeBytes": 441766,
+  "originalBytes": 12634884,
+  "runtimeBytes": 894378,
   "oldMarble33Unchanged": true
 }

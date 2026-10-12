@@ -10,6 +10,8 @@ import { PGlite } from '@electric-sql/pglite';
 const host = '127.0.0.1';
 const port = Number(process.env.PORT ?? 54321);
 const anonKey = 'local-fixture-public-key';
+const marbleFixtureSeed = process.env.MARBLE_FIXTURE_SEED === undefined ? undefined : Number(process.env.MARBLE_FIXTURE_SEED);
+if (marbleFixtureSeed !== undefined && (!Number.isInteger(marbleFixtureSeed) || marbleFixtureSeed < 0 || marbleFixtureSeed > 0xffffffff)) throw new Error('MARBLE_FIXTURE_SEED must be an unsigned 32-bit integer');
 const usersByToken = new Map();
 const userIds = new Set();
 const db = new PGlite();
@@ -179,7 +181,7 @@ async function action(req, userId) {
     if (input.selectGame !== undefined) {
       if (!['davinci', 'catchmind', 'domino', 'jaipur', 'splendor', 'minhwatu', 'marble', 'rhythm'].includes(input.selectGame)) throw new Error('invalid_game');
       if (members.length !== 2 || !(pending === input.selectGame && pendingBy !== userId)) { pending = input.selectGame; pendingBy = userId; }
-      else { gameId = input.selectGame; pending = null; pendingBy = null; state = engines[gameId]?.createInitialState(crypto.getRandomValues(new Uint32Array(1))[0]) ?? null; }
+      else { gameId = input.selectGame; pending = null; pendingBy = null; const seed = gameId === 'marble' && marbleFixtureSeed !== undefined ? marbleFixtureSeed : crypto.getRandomValues(new Uint32Array(1))[0]; state = engines[gameId]?.createInitialState(seed) ?? null; }
     } else if (input.reaction !== undefined) {
       chat = reactionMessageForId(input.reaction);
     } else if (input.chat !== undefined) {

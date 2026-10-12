@@ -30,6 +30,7 @@ try {
   assert.equal((await snapshot(pages[0])).view.hand.choices.length, 0);
   await pages[0].screenshot({ path: path.join(out, '01-host-category-desktop.png'), fullPage: true });
   await pages[0].locator('input[value=food]').check();
+  assert.equal(await pages[0].locator('.cm-categories input:checked').count(), 1);
   await pages[0].locator('.cm-setting-grid input[type=number]').nth(0).fill('30');
   await pages[0].locator('.cm-setting-grid input[type=number]').nth(1).fill('2');
   await pages[0].locator('.cm-settings-foot button').click(); await refresh();
@@ -42,6 +43,8 @@ try {
   assert.equal(drawing.playerId, 'p1'); assert.equal(guessing.playerId, 'p2');
   assert.equal(guessing.view.hand, null); assert.equal(guessing.view.board.answer, null);
   const answer = drawing.view.hand.answer;
+  assert.deepEqual(guessing.view.board.hintLength, { ko: [...answer.ko].length, es: [...answer.es].length });
+  assert.deepEqual({ ko: [...guessing.view.board.hintWord.ko].length, es: [...guessing.view.board.hintWord.es].length }, guessing.view.board.hintLength);
   assert.equal(await pages[0].locator('.cm-categories').count(), 0);
   assert.equal(await pages[1].locator('.cm-hint-word').count(), 1);
   assert.equal(await pages[1].locator('.cm-hint-word').textContent(), `${guessing.view.board.hintWord.ko} / ${guessing.view.board.hintWord.es}`);
@@ -56,14 +59,29 @@ try {
   await pages[1].screenshot({ path: path.join(out, '03-guesser-static-mask-es.png'), fullPage: true });
   await pages[1].locator('#room-message').fill(answer.es); await pages[1].locator('#room-message').press('Enter');
   await pages[1].waitForFunction(() => window.qaClient.getSnapshot().view.phase === 'round-over'); await refresh();
-  assert.equal((await snapshot(pages[0])).view.board.answer.ko, (await snapshot(pages[1])).view.board.answer.ko);
+  const firstCorrect = await Promise.all(pages.map(snapshot));
+  assert.equal(firstCorrect[0].version, firstCorrect[1].version);
+  assert.equal(firstCorrect[0].view.phase, 'round-over'); assert.equal(firstCorrect[1].view.phase, 'round-over');
+  assert.equal(firstCorrect[0].view.board.answer.ko, firstCorrect[1].view.board.answer.ko);
   await pages[0].getByRole('button', { name: /다음 라운드/ }).click(); await refresh();
   await pages[1].locator('.cm-word-choices button').first().click(); await refresh();
-  const deadline = (await snapshot(pages[1])).view.deadlineAt;
-  await pages[1].reload(); await pages[1].locator('.cm-table').waitFor();
-  await pages[1].evaluate(async () => { window.qaClient = (await import('/src/core/client.ts')).client; }); await refresh();
-  assert.equal((await snapshot(pages[1])).view.deadlineAt, deadline);
-  await pages[1].getByRole('button', { name: /Pasar palabra/ }).click(); await refresh();
+  const secondRound = await Promise.all(pages.map(snapshot));
+  const secondAnswer = secondRound[1].view.hand.answer;
+  assert.equal(secondRound[1].playerId, 'p2'); assert.equal(secondRound[0].view.hand, null);
+  assert.equal(secondRound[0].view.board.answer, null);
+  assert.deepEqual(secondRound[0].view.board.hintLength, { ko: [...secondAnswer.ko].length, es: [...secondAnswer.es].length });
+  assert.deepEqual({ ko: [...secondRound[0].view.board.hintWord.ko].length, es: [...secondRound[0].view.board.hintWord.es].length }, secondRound[0].view.board.hintLength);
+  const deadline = secondRound[0].view.deadlineAt;
+  await pages[0].screenshot({ path: path.join(out, '06-ko-guesser-bilingual-hint.png'), fullPage: true });
+  await pages[0].reload(); await pages[0].locator('.cm-table').waitFor();
+  await pages[0].evaluate(async () => { window.qaClient = (await import('/src/core/client.ts')).client; }); await refresh();
+  assert.equal((await snapshot(pages[0])).view.deadlineAt, deadline);
+  await pages[0].locator('#room-message').fill(secondAnswer.ko); await pages[0].locator('#room-message').press('Enter');
+  await pages[0].waitForFunction(() => window.qaClient.getSnapshot().view.phase === 'round-over'); await refresh();
+  const secondCorrect = await Promise.all(pages.map(snapshot));
+  assert.equal(secondCorrect[0].version, secondCorrect[1].version);
+  assert.equal(secondCorrect[0].view.phase, 'round-over'); assert.equal(secondCorrect[1].view.phase, 'round-over');
+  assert.equal(secondCorrect[0].view.board.guesses.at(-1).correct, true);
   await pages[1].getByRole('button', { name: /Siguiente ronda/ }).click(); await refresh();
   assert((await snapshot(pages[0])).view.result);
   await pages[0].screenshot({ path: path.join(out, '04-result-rematch-desktop.png'), fullPage: true });
@@ -76,6 +94,7 @@ try {
   assert.deepEqual(reset.board.scores, { p1: 0, p2: 0 }); assert.deepEqual(reset.board.strokes, []); assert.deepEqual(reset.hand.choices, []);
   await pages[0].locator('input[value=nature_space]').check();
   await pages[0].locator('.cm-setting-grid input[type=number]').nth(0).fill('30');
+  await pages[0].locator('.cm-setting-grid input[type=number]').nth(1).fill('2');
   await pages[0].locator('.cm-settings-foot button').click(); await refresh();
   await pages[0].locator('.cm-word-choices button').first().click(); await refresh();
   const lateAnswer = (await snapshot(pages[0])).view.hand.answer.es;
@@ -89,8 +108,28 @@ try {
   assert.notEqual((await snapshot(pages[1])).messages.at(-1)?.status, 'correct');
   assert.deepEqual((await snapshot(pages[1])).view.board.scores, { p1: 0, p2: 0 });
   await pages[1].screenshot({ path: path.join(out, '05-real-30-second-timeout-es.png'), fullPage: true });
+  await pages[0].getByRole('button', { name: /다음 라운드/ }).click(); await refresh();
+  await pages[1].locator('.cm-word-choices button').first().click(); await refresh();
+  const secondTimeoutAnswer = (await snapshot(pages[1])).view.hand.answer;
+  await Promise.race(pages.map(page => page.waitForFunction(() => window.qaClient.getSnapshot().view.phase === 'round-over', null, { timeout: 42000 }))); await refresh();
+  const timeoutRound = await Promise.all(pages.map(snapshot));
+  assert.equal(timeoutRound[0].version, timeoutRound[1].version);
+  for (const current of timeoutRound) { assert.equal(current.view.phase, 'round-over'); assert.equal(current.view.deadlineAt, null); assert.deepEqual(current.view.board.scores, { p1: 0, p2: 0 }); }
+  assert.equal(timeoutRound[0].view.board.answer.ko, secondTimeoutAnswer.ko);
+  await pages[1].screenshot({ path: path.join(out, '07-timeout-final-round-es.png'), fullPage: true });
+  await pages[1].getByRole('button', { name: /Siguiente ronda/ }).click(); await refresh();
+  await pages[0].waitForFunction(() => window.qaClient.getSnapshot().view.phase === 'finished'); await refresh();
+  const timeoutFinish = await Promise.all(pages.map(snapshot));
+  assert.equal(timeoutFinish[0].version, timeoutFinish[1].version);
+  for (const current of timeoutFinish) { assert.equal(current.view.phase, 'finished'); assert.equal(current.view.result.winner, 'draw'); assert.deepEqual(current.view.board.scores, { p1: 0, p2: 0 }); }
+  await pages[0].screenshot({ path: path.join(out, '08-timeout-match-finished-ko.png'), fullPage: true });
+  await pages[0].getByRole('button', { name: '다시 하기', exact: true }).click(); await refresh();
+  await pages[1].getByRole('button', { name: 'Aceptar revancha', exact: true }).click(); await refresh();
+  const afterTimeoutReplay = await Promise.all(pages.map(snapshot));
+  for (const current of afterTimeoutReplay) { assert.equal(current.view.phase, 'choosing'); assert.equal(current.view.board.settings.category_id, null); assert.deepEqual(current.view.board.scores, { p1: 0, p2: 0 }); assert.equal(current.view.deadlineAt, null); }
+  await pages[1].screenshot({ path: path.join(out, '09-timeout-replay-reset-es.png'), fullPage: true });
   assert.deepEqual(errors, []);
-  reports.push({ independentSessions: 2, viewport: '1440×900', categories: 6, selectedCategory: 'food', bilingualAnswer: true, privateAnswer: true, staticMasks: true, synchronizedStroke: true, reloadPreservesDeadline: true, rematchRequiresBoth: true, resetVerified: true, actualThirtySecondTimeout: true, lateAnswerRejected: true, realtimeVerified: false, productionDeployed: false });
+  reports.push({ independentSessions: 2, viewport: '1440×900', categories: 6, selectedCategory: 'food', exactlyOneCategorySelected: true, koAndEsAnswersAcceptedInConsecutiveRounds: true, correctAnswersSynchronizeBothViews: true, koAndEsHintLengthsMatchMaskedAnswers: true, privateAnswer: true, staticMasks: true, synchronizedStroke: true, reloadPreservesDeadline: true, rematchRequiresBoth: true, resetVerified: true, actualThirtySecondTimeouts: 2, timeoutFailureScore: { p1: 0, p2: 0 }, lateAnswerRejected: true, timeoutMatchReplayReset: true, realtimeVerified: false, productionDeployed: false });
   await fs.writeFile(path.join(out, 'report.json'), JSON.stringify({ reports, errors }, null, 2));
   console.log(JSON.stringify({ reports, errors }, null, 2));
 } catch (error) {
