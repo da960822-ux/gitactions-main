@@ -319,9 +319,10 @@
         "category": "animals",
         "drawTimeSeconds": 80,
         "wordSelectionViaUI": true,
-        "secretOmittedFromAllSavedCaptures": true,
-        "safeKoFrame": "pre-word-selection settings saved",
-        "safeEsFrame": "drawing spectator view with answer hidden"
+        "drawerAnswerVisible": true,
+        "guesserAnswerVisible": false,
+        "safeKoFrame": "drawing player after UI word selection; selected prompt shown in normal drawer view",
+        "safeEsFrame": "drawing viewer; answer hidden"
       },
       "screenshots": {
         "1440x900-ko": "/workspace/deliverables/game-quality-restart-20261012/after-final/05-catchmind-1440x900-ko-p1.png",
@@ -367,7 +368,11 @@
           }
         }
       ],
-      "privateDataSafety": "The KO drawer view after selecting a secret word is excluded from public screenshots; only pre-selection KO and spectator ES frames are saved."
+      "privateDataSafety": "The KO setter capture intentionally shows the selected prompt in the real drawer-player UI. The ES guesser capture keeps the prompt hidden. Prompt text is omitted from metadata; no personal auth/storage data is included.",
+      "preselectionCopies": {
+        "1440x900": "/workspace/deliverables/game-quality-restart-20261012/after-final/05-catchmind-1440x900-ko-preselection-copy.png",
+        "1366x768": "/workspace/deliverables/game-quality-restart-20261012/after-final/05-catchmind-1366x768-ko-preselection-copy.png"
+      }
     },
     {
       "game": "domino",
@@ -549,7 +554,7 @@
     "dominoGuide": "/workspace/deliverables/game-quality-restart-20261012/after-final/domino-guide-audit.json",
     "minhwatuLayout": "/workspace/deliverables/game-quality-restart-20261012/after-final/minhwatu-layout-audit.json"
   },
-  "privacySafety": "Catchmind KO drawer-answer image was excluded; safe KO preselection and ES spectator images remain. No personal auth/storage data included.",
+  "privacySafety": "Catchmind’s Korean drawing-player images show the UI after the real word-selection action, including the selected prompt in the drawer view. The Spanish guesser images keep the answer hidden. No personal auth/storage data is included.",
   "guideCaptures": {
     "dominoInactiveViewer": {
       "screenshot": "/workspace/deliverables/game-quality-restart-20261012/after-final/06-domino-inactive-guide-es-1366x768.png",

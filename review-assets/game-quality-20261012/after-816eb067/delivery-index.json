@@ -3,7 +3,7 @@
   "source_branch": "games/product-quality-restart-20261012",
   "purpose": "Frozen checkpoint after captures; quality incomplete; clipping failures preserved",
   "fixture": "local54331; explicit two-context refresh; production Realtime not tested",
-  "catchmind": "Public captures omit drawer secret answer; KO preselection and ES guesser are intentionally different phases",
+  "catchmind": "KO drawer screenshots display the prompt normally; ES guesser screenshots hide the answer and choices. Previous preselection frames are retained. No personal auth/storage data included.",
   "files": [
     {
       "path": "01-marble-1366x768-es-p2.png",
@@ -187,11 +187,16 @@
     },
     {
       "path": "05-catchmind-1366x768-es-p2.png",
-      "bytes": 117141,
-      "sha256": "b4c8fde8232252a815ca83220fa0ebbc72662056ce23b7150e1c368e4f5b93c0"
+      "bytes": 117522,
+      "sha256": "7b3b21e34a8cf5e4e52a1d75180715f974f2c08cd9502c0bfa952142e039eda8"
     },
     {
       "path": "05-catchmind-1366x768-ko-p1.png",
+      "bytes": 134149,
+      "sha256": "f1d3f532881e5cff1007810bf1cf60da2976b194fa21069905cfda2a6dd11f32"
+    },
+    {
+      "path": "05-catchmind-1366x768-ko-preselection-copy.png",
       "bytes": 172085,
       "sha256": "f39e42823786438d83aae7a7aabe738c24b78d263b7f13ac490e87006074c745"
     },
@@ -202,11 +207,16 @@
     },
     {
       "path": "05-catchmind-1440x900-es-p2.png",
-      "bytes": 127864,
-      "sha256": "c80eb7ed47b18798f003dbfcc09327adeacec10958921665b2126bdd1b7b7420"
+      "bytes": 128288,
+      "sha256": "1fde15795ffcc53c3a752440c8d946b7b5217e9871141140b91c5f8b6509cdb7"
     },
     {
       "path": "05-catchmind-1440x900-ko-p1.png",
+      "bytes": 150934,
+      "sha256": "6de934933da9fa96c1e4a825c8a52879729419860692ee8ac03ea795efd010bc"
+    },
+    {
+      "path": "05-catchmind-1440x900-ko-preselection-copy.png",
       "bytes": 188093,
       "sha256": "d14f8dad44030601cd67b9c7b547c73565e87f1141f66bf9fcf98e32b6b4b39d"
     },
@@ -277,8 +287,8 @@
     },
     {
       "path": "catchmind-safe-report.json",
-      "bytes": 956,
-      "sha256": "473e90b8ef5b1e72bd2e654a163c07762d30f292a8cc0a1c6cd56bf0820fbbe2"
+      "bytes": 1963,
+      "sha256": "cb20e4d3ccc127efae7563da7755193a1e7f93d1e99f3733d8b1f487068cbf1e"
     },
     {
       "path": "davinci-privacy-audit.json",
@@ -302,8 +312,8 @@
     },
     {
       "path": "manifest.json",
-      "bytes": 19944,
-      "sha256": "e9a219639d7cfe8271216875684a0fe5550ab465375b8f794d6c60a3edc771af"
+      "bytes": 20492,
+      "sha256": "59035daceee15062ceea77688a27cfdd4c8f0fab58e1ee41440202c2bc62e3d0"
     },
     {
       "path": "marble-route3-1366x768-es.png",

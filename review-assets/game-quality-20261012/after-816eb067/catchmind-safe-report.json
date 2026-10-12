@@ -2,16 +2,15 @@
   "head": "816eb067467c55fda71d68a5c2c917818b2e3309",
   "origin": "http://127.0.0.1:5211",
   "fixture": "54331 local fixture",
-  "roomId": "5268644d-c789-42c1-9ee2-f6da8b5c5b8c",
+  "roomId": "a9600955-c4a5-4f5d-86ae-58abcfdb53c9",
   "settings": {
     "category": "animals",
     "drawTimeSeconds": 80,
-    "wordSelectionViaUI": true,
-    "secretOmitted": true
+    "wordSelectionViaUI": true
   },
   "safeFrames": {
-    "koP1": "before word selection, settings saved",
-    "esP2": "drawing viewer, answer hidden"
+    "koP1": "drawing player after selecting a word through the actual UI; selected prompt visible in player view",
+    "esP2": "drawing viewer; answer hidden"
   },
   "textarea": {
     "x": 1145,
@@ -23,11 +22,18 @@
     "clientHeight": 66
   },
   "selectedPenAriaPressed": "true",
+  "p1Drawer": {
+    "drawerPlayer": true,
+    "answerVisibleInUI": true,
+    "proof": "The selected prompt is shown in the drawing-player UI above the canvas; prompt text intentionally omitted from JSON."
+  },
   "p2Visible": {
     "secretWords": 0,
     "choiceButtons": 0,
-    "hintVisible": true
+    "hintVisible": true,
+    "answerVisibleInUI": false
   },
+  "privacySafety": "The KO setter screenshot intentionally shows the selected prompt in the drawer, as part of the actual game UI. The ES guesser screenshot does not reveal the prompt.",
   "phases": [
     "choosing",
     "choosing"
@@ -43,5 +49,10 @@
       "phase": "drawing",
       "turn": "p1"
     }
-  ]
+  ],
+  "privateDataSafety": "The KO setter screenshot intentionally includes the selected game prompt in its normal UI. The ES guesser screenshot keeps the prompt hidden. Prompt text is omitted from metadata; no personal auth/storage data is included.",
+  "preselectionCopies": {
+    "1440x900": "/workspace/deliverables/game-quality-restart-20261012/after-final/05-catchmind-1440x900-ko-preselection-copy.png",
+    "1366x768": "/workspace/deliverables/game-quality-restart-20261012/after-final/05-catchmind-1366x768-ko-preselection-copy.png"
+  }
 }
