@@ -1,0 +1,41 @@
+{
+  "status": "unapproved-incomplete",
+  "implementationRevision": "6a5a432bbe3c89838fb8f887e94d087876ead2e7",
+  "branch": "local/lusion-space-restart-20261012",
+  "base": "ab81a9e2de168b89c58e197edbb6e5a541aad4ca",
+  "capture": "Actual local production Chromium desktop1440x900/DPR1 on 2026-10-12 06:24 and06:29UTC; application code at capture matches implementation revision; documentation/provenance notes finalized after capture. No mobile capture/video in this stage.",
+  "files": [
+    {
+      "path": "hero-1440-ko.png",
+      "bytes": 1758119,
+      "sha256": "a16cebd0a42a027098db00a1d4bf5f923ab67346da4d2b21a29ae6ab441c4b97"
+    },
+    {
+      "path": "scroll-720.png",
+      "bytes": 1063539,
+      "sha256": "4c0d1caa5a2118833238e28310d4c6a79f13c5d5ea15dd81ba23e248cf80a34a"
+    },
+    {
+      "path": "letter-1440-es.png",
+      "bytes": 1221212,
+      "sha256": "1d0a6828713c34c8178111eac7604bd8da48157b21702774e7df861a23aa9eb1"
+    },
+    {
+      "path": "inspection.json",
+      "bytes": 14638,
+      "sha256": "b80f19779a5cf5ce945d97fcaf932cb8d32cd63c1ac8072accceac537abed844"
+    },
+    {
+      "path": "letter-inspection.json",
+      "bytes": 7143,
+      "sha256": "5cacca7f7d3546f5fac9fdc4bc99a0ec57e2e3af6fd785b6dfe44ea5932139bd"
+    }
+  ],
+  "remaining": [
+    "continuous input/entry/scroll/letter inspection",
+    "P1 text and ambient trigger specification conformance",
+    "P3 mount text clip reveal",
+    "visual acceptance of auxiliary gift forms and hierarchy"
+  ],
+  "notFinalVisualAcceptance": true
+}
