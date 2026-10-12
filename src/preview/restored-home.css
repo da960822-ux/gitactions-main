@@ -28,7 +28,7 @@
 .rd-restored .hero-window-light i:nth-child(4){left:82%;top:32%;animation-delay:-1s}
 .rd-restored .hero-window-light i:nth-child(5){left:24%;top:65%;animation-delay:-5s}
 .rd-restored .hero-window-light i:nth-child(6){left:88%;top:61%;animation-delay:-3s}
-.rd-restored .hero-window-meteor{position:absolute;left:12%;top:13%;width:64px;height:1px;background:linear-gradient(90deg,transparent,#ffe8cd);opacity:0;transform:rotate(16deg);animation:rd-window-meteor 26s linear infinite}
+.rd-restored .hero-window-meteor{position:absolute;left:30%;top:8%;width:64px;height:1px;background:linear-gradient(90deg,transparent,#ffe8cd);opacity:0;transform:rotate(16deg);animation:rd-window-meteor 26s linear infinite}
 .rd-restored .hero-scene-portrait::before{content:"";position:absolute;left:12%;right:7%;bottom:-7px;height:37px;border-radius:50%;background:#0e0817a3;filter:blur(13px);pointer-events:none}
 .rd-restored .hero-scene-portrait img{position:relative;filter:drop-shadow(-4px -2px 9px #efb3832b) drop-shadow(5px 12px 16px #130c168c);animation:rd-portrait-enter 650ms var(--scene-ease) both}
 .rd-restored .hero-scene-portrait::after{content:"";position:absolute;inset:0;pointer-events:none;background:linear-gradient(125deg,#efb18318,transparent 46%,#b06e5410);mask:url('/images/yeonseok-lisbeth-cutout.webp') center bottom/contain no-repeat;animation:rd-ambient-enter 650ms var(--scene-ease) both}
