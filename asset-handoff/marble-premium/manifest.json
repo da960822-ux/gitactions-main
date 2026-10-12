@@ -193,6 +193,12 @@
       "bytes": 2434260,
       "sha256": "840470f9bf925cefc08415f92d868c59b6df85a2a96dce57ed0a868e074ae8b3",
       "git_blob_sha": "f037336b33fea40f8df057dcc783c44dbb9d230b"
+    },
+    {
+      "path": "asset-handoff/marble-premium/pawns/sali-suli.png",
+      "bytes": 2008991,
+      "sha256": "05c637e38bdd22187f1cf9984c8874e589155c322ac6f2ba03b6b64e23ba7560",
+      "git_blob_sha": "e0f9ad5f8e52719d330cdd6583ac2603b1df26f7"
     }
   ]
 }
