@@ -1,0 +1,274 @@
+{
+  "revision": "e7bd1fc01e713712a565e2999db91c543979f350",
+  "viewport": [
+    1440,
+    900
+  ],
+  "duration": 3.838,
+  "frameCount": 51,
+  "capturedFramesPerSecond": 13.288170922355393,
+  "naturalMeteorAt": null,
+  "errors": [],
+  "frames": [
+    {
+      "file": "frame-000000.jpg",
+      "timestamp": 1791773361.746601,
+      "received": 1.088
+    },
+    {
+      "file": "frame-000001.jpg",
+      "timestamp": 1791773362.167541,
+      "received": 1.488
+    },
+    {
+      "file": "frame-000002.jpg",
+      "timestamp": 1791773362.724871,
+      "received": 2.049
+    },
+    {
+      "file": "frame-000003.jpg",
+      "timestamp": 1791773362.794784,
+      "received": 2.122
+    },
+    {
+      "file": "frame-000004.jpg",
+      "timestamp": 1791773362.931075,
+      "received": 2.269
+    },
+    {
+      "file": "frame-000005.jpg",
+      "timestamp": 1791773362.984212,
+      "received": 2.321
+    },
+    {
+      "file": "frame-000006.jpg",
+      "timestamp": 1791773363.046925,
+      "received": 2.385
+    },
+    {
+      "file": "frame-000007.jpg",
+      "timestamp": 1791773363.095161,
+      "received": 2.431
+    },
+    {
+      "file": "frame-000008.jpg",
+      "timestamp": 1791773363.137671,
+      "received": 2.476
+    },
+    {
+      "file": "frame-000009.jpg",
+      "timestamp": 1791773363.216376,
+      "received": 2.557
+    },
+    {
+      "file": "frame-000010.jpg",
+      "timestamp": 1791773363.275558,
+      "received": 2.605
+    },
+    {
+      "file": "frame-000011.jpg",
+      "timestamp": 1791773363.321997,
+      "received": 2.655
+    },
+    {
+      "file": "frame-000012.jpg",
+      "timestamp": 1791773363.384455,
+      "received": 2.715
+    },
+    {
+      "file": "frame-000013.jpg",
+      "timestamp": 1791773363.452274,
+      "received": 2.798
+    },
+    {
+      "file": "frame-000014.jpg",
+      "timestamp": 1791773363.518188,
+      "received": 2.853
+    },
+    {
+      "file": "frame-000015.jpg",
+      "timestamp": 1791773363.581881,
+      "received": 2.915
+    },
+    {
+      "file": "frame-000016.jpg",
+      "timestamp": 1791773363.642041,
+      "received": 2.984
+    },
+    {
+      "file": "frame-000017.jpg",
+      "timestamp": 1791773363.694822,
+      "received": 3.024
+    },
+    {
+      "file": "frame-000018.jpg",
+      "timestamp": 1791773363.742086,
+      "received": 3.089
+    },
+    {
+      "file": "frame-000019.jpg",
+      "timestamp": 1791773363.807569,
+      "received": 3.143
+    },
+    {
+      "file": "frame-000020.jpg",
+      "timestamp": 1791773363.874095,
+      "received": 3.205
+    },
+    {
+      "file": "frame-000021.jpg",
+      "timestamp": 1791773363.918538,
+      "received": 3.254
+    },
+    {
+      "file": "frame-000022.jpg",
+      "timestamp": 1791773363.987779,
+      "received": 3.326
+    },
+    {
+      "file": "frame-000023.jpg",
+      "timestamp": 1791773364.039437,
+      "received": 3.394
+    },
+    {
+      "file": "frame-000024.jpg",
+      "timestamp": 1791773364.105252,
+      "received": 3.439
+    },
+    {
+      "file": "frame-000025.jpg",
+      "timestamp": 1791773364.165359,
+      "received": 3.499
+    },
+    {
+      "file": "frame-000026.jpg",
+      "timestamp": 1791773364.209741,
+      "received": 3.541
+    },
+    {
+      "file": "frame-000027.jpg",
+      "timestamp": 1791773364.267611,
+      "received": 3.61
+    },
+    {
+      "file": "frame-000028.jpg",
+      "timestamp": 1791773364.32678,
+      "received": 3.68
+    },
+    {
+      "file": "frame-000029.jpg",
+      "timestamp": 1791773364.393161,
+      "received": 3.728
+    },
+    {
+      "file": "frame-000030.jpg",
+      "timestamp": 1791773364.451193,
+      "received": 3.801
+    },
+    {
+      "file": "frame-000031.jpg",
+      "timestamp": 1791773364.512191,
+      "received": 3.849
+    },
+    {
+      "file": "frame-000032.jpg",
+      "timestamp": 1791773364.582695,
+      "received": 3.913
+    },
+    {
+      "file": "frame-000033.jpg",
+      "timestamp": 1791773364.629579,
+      "received": 3.977
+    },
+    {
+      "file": "frame-000034.jpg",
+      "timestamp": 1791773364.692462,
+      "received": 4.025
+    },
+    {
+      "file": "frame-000035.jpg",
+      "timestamp": 1791773364.734653,
+      "received": 4.084
+    },
+    {
+      "file": "frame-000036.jpg",
+      "timestamp": 1791773364.803354,
+      "received": 4.135
+    },
+    {
+      "file": "frame-000037.jpg",
+      "timestamp": 1791773364.84639,
+      "received": 4.186
+    },
+    {
+      "file": "frame-000038.jpg",
+      "timestamp": 1791773364.909529,
+      "received": 4.243
+    },
+    {
+      "file": "frame-000039.jpg",
+      "timestamp": 1791773364.966209,
+      "received": 4.303
+    },
+    {
+      "file": "frame-000040.jpg",
+      "timestamp": 1791773365.011483,
+      "received": 4.343
+    },
+    {
+      "file": "frame-000041.jpg",
+      "timestamp": 1791773365.072537,
+      "received": 4.403
+    },
+    {
+      "file": "frame-000042.jpg",
+      "timestamp": 1791773365.115445,
+      "received": 4.444
+    },
+    {
+      "file": "frame-000043.jpg",
+      "timestamp": 1791773365.176568,
+      "received": 4.501
+    },
+    {
+      "file": "frame-000044.jpg",
+      "timestamp": 1791773365.233197,
+      "received": 4.58
+    },
+    {
+      "file": "frame-000045.jpg",
+      "timestamp": 1791773365.294109,
+      "received": 4.626
+    },
+    {
+      "file": "frame-000046.jpg",
+      "timestamp": 1791773365.337405,
+      "received": 4.688
+    },
+    {
+      "file": "frame-000047.jpg",
+      "timestamp": 1791773365.404171,
+      "received": 4.74
+    },
+    {
+      "file": "frame-000048.jpg",
+      "timestamp": 1791773365.472576,
+      "received": 4.804
+    },
+    {
+      "file": "frame-000049.jpg",
+      "timestamp": 1791773365.515756,
+      "received": 4.851
+    },
+    {
+      "file": "frame-000050.jpg",
+      "timestamp": 1791773365.576241,
+      "received": 4.909
+    }
+  ],
+  "note": "Screencast begins before native reload after one normal visit, showing entry with populated browser cache. This is cached re-entry, not first cold load. No animation seek, no artificial network delay, no interpolation or speed change. CFR30 repeats captured frames. Supplemental segment only; physical-device smoothness unverified.",
+  "video": {
+    "duration": "3.800000",
+    "size": "609744"
+  }
+}

@@ -1,0 +1,439 @@
+{
+  "revision": "e7bd1fc01e713712a565e2999db91c543979f350",
+  "viewport": [
+    1440,
+    900
+  ],
+  "duration": 6.111999999999999,
+  "frameCount": 84,
+  "capturedFramesPerSecond": 13.7434554973822,
+  "naturalMeteorAt": 6.287,
+  "errors": [],
+  "frames": [
+    {
+      "file": "frame-000000.jpg",
+      "timestamp": 1791772955.017456,
+      "received": 1.992
+    },
+    {
+      "file": "frame-000001.jpg",
+      "timestamp": 1791772955.213368,
+      "received": 2.187
+    },
+    {
+      "file": "frame-000002.jpg",
+      "timestamp": 1791772956.011451,
+      "received": 2.989
+    },
+    {
+      "file": "frame-000003.jpg",
+      "timestamp": 1791772956.069327,
+      "received": 3.054
+    },
+    {
+      "file": "frame-000004.jpg",
+      "timestamp": 1791772956.203042,
+      "received": 3.19
+    },
+    {
+      "file": "frame-000005.jpg",
+      "timestamp": 1791772956.26903,
+      "received": 3.251
+    },
+    {
+      "file": "frame-000006.jpg",
+      "timestamp": 1791772956.317029,
+      "received": 3.326
+    },
+    {
+      "file": "frame-000007.jpg",
+      "timestamp": 1791772956.383415,
+      "received": 3.369
+    },
+    {
+      "file": "frame-000008.jpg",
+      "timestamp": 1791772956.433293,
+      "received": 3.435
+    },
+    {
+      "file": "frame-000009.jpg",
+      "timestamp": 1791772956.498229,
+      "received": 3.48
+    },
+    {
+      "file": "frame-000010.jpg",
+      "timestamp": 1791772956.572199,
+      "received": 3.552
+    },
+    {
+      "file": "frame-000011.jpg",
+      "timestamp": 1791772956.617667,
+      "received": 3.591
+    },
+    {
+      "file": "frame-000012.jpg",
+      "timestamp": 1791772956.679543,
+      "received": 3.661
+    },
+    {
+      "file": "frame-000013.jpg",
+      "timestamp": 1791772956.727652,
+      "received": 3.704
+    },
+    {
+      "file": "frame-000014.jpg",
+      "timestamp": 1791772956.790641,
+      "received": 3.773
+    },
+    {
+      "file": "frame-000015.jpg",
+      "timestamp": 1791772956.833459,
+      "received": 3.835
+    },
+    {
+      "file": "frame-000016.jpg",
+      "timestamp": 1791772956.892749,
+      "received": 3.871
+    },
+    {
+      "file": "frame-000017.jpg",
+      "timestamp": 1791772956.935406,
+      "received": 3.924
+    },
+    {
+      "file": "frame-000018.jpg",
+      "timestamp": 1791772957.001297,
+      "received": 3.991
+    },
+    {
+      "file": "frame-000019.jpg",
+      "timestamp": 1791772957.066221,
+      "received": 4.052
+    },
+    {
+      "file": "frame-000020.jpg",
+      "timestamp": 1791772957.116694,
+      "received": 4.093
+    },
+    {
+      "file": "frame-000021.jpg",
+      "timestamp": 1791772957.181155,
+      "received": 4.171
+    },
+    {
+      "file": "frame-000022.jpg",
+      "timestamp": 1791772957.241331,
+      "received": 4.244
+    },
+    {
+      "file": "frame-000023.jpg",
+      "timestamp": 1791772957.305685,
+      "received": 4.279
+    },
+    {
+      "file": "frame-000024.jpg",
+      "timestamp": 1791772957.366179,
+      "received": 4.345
+    },
+    {
+      "file": "frame-000025.jpg",
+      "timestamp": 1791772957.406156,
+      "received": 4.39
+    },
+    {
+      "file": "frame-000026.jpg",
+      "timestamp": 1791772957.463241,
+      "received": 4.448
+    },
+    {
+      "file": "frame-000027.jpg",
+      "timestamp": 1791772957.50797,
+      "received": 4.486
+    },
+    {
+      "file": "frame-000028.jpg",
+      "timestamp": 1791772957.56621,
+      "received": 4.548
+    },
+    {
+      "file": "frame-000029.jpg",
+      "timestamp": 1791772957.607825,
+      "received": 4.587
+    },
+    {
+      "file": "frame-000030.jpg",
+      "timestamp": 1791772957.666044,
+      "received": 4.649
+    },
+    {
+      "file": "frame-000031.jpg",
+      "timestamp": 1791772957.714441,
+      "received": 4.696
+    },
+    {
+      "file": "frame-000032.jpg",
+      "timestamp": 1791772957.772117,
+      "received": 4.754
+    },
+    {
+      "file": "frame-000033.jpg",
+      "timestamp": 1791772957.816475,
+      "received": 4.801
+    },
+    {
+      "file": "frame-000034.jpg",
+      "timestamp": 1791772957.88301,
+      "received": 4.869
+    },
+    {
+      "file": "frame-000035.jpg",
+      "timestamp": 1791772957.930802,
+      "received": 4.924
+    },
+    {
+      "file": "frame-000036.jpg",
+      "timestamp": 1791772957.992464,
+      "received": 4.974
+    },
+    {
+      "file": "frame-000037.jpg",
+      "timestamp": 1791772958.042931,
+      "received": 5.034
+    },
+    {
+      "file": "frame-000038.jpg",
+      "timestamp": 1791772958.107621,
+      "received": 5.089
+    },
+    {
+      "file": "frame-000039.jpg",
+      "timestamp": 1791772958.167439,
+      "received": 5.144
+    },
+    {
+      "file": "frame-000040.jpg",
+      "timestamp": 1791772958.212341,
+      "received": 5.195
+    },
+    {
+      "file": "frame-000041.jpg",
+      "timestamp": 1791772958.275021,
+      "received": 5.26
+    },
+    {
+      "file": "frame-000042.jpg",
+      "timestamp": 1791772958.322823,
+      "received": 5.299
+    },
+    {
+      "file": "frame-000043.jpg",
+      "timestamp": 1791772958.38792,
+      "received": 5.37
+    },
+    {
+      "file": "frame-000044.jpg",
+      "timestamp": 1791772958.433888,
+      "received": 5.431
+    },
+    {
+      "file": "frame-000045.jpg",
+      "timestamp": 1791772958.495782,
+      "received": 5.473
+    },
+    {
+      "file": "frame-000046.jpg",
+      "timestamp": 1791772958.543469,
+      "received": 5.547
+    },
+    {
+      "file": "frame-000047.jpg",
+      "timestamp": 1791772958.608333,
+      "received": 5.589
+    },
+    {
+      "file": "frame-000048.jpg",
+      "timestamp": 1791772958.671945,
+      "received": 5.649
+    },
+    {
+      "file": "frame-000049.jpg",
+      "timestamp": 1791772958.718599,
+      "received": 5.701
+    },
+    {
+      "file": "frame-000050.jpg",
+      "timestamp": 1791772958.780457,
+      "received": 5.758
+    },
+    {
+      "file": "frame-000051.jpg",
+      "timestamp": 1791772958.822528,
+      "received": 5.827
+    },
+    {
+      "file": "frame-000052.jpg",
+      "timestamp": 1791772958.890622,
+      "received": 5.877
+    },
+    {
+      "file": "frame-000053.jpg",
+      "timestamp": 1791772958.935821,
+      "received": 5.933
+    },
+    {
+      "file": "frame-000054.jpg",
+      "timestamp": 1791772958.994737,
+      "received": 5.974
+    },
+    {
+      "file": "frame-000055.jpg",
+      "timestamp": 1791772959.037313,
+      "received": 6.037
+    },
+    {
+      "file": "frame-000056.jpg",
+      "timestamp": 1791772959.103197,
+      "received": 6.08
+    },
+    {
+      "file": "frame-000057.jpg",
+      "timestamp": 1791772959.171673,
+      "received": 6.149
+    },
+    {
+      "file": "frame-000058.jpg",
+      "timestamp": 1791772959.214103,
+      "received": 6.191
+    },
+    {
+      "file": "frame-000059.jpg",
+      "timestamp": 1791772959.280649,
+      "received": 6.257
+    },
+    {
+      "file": "frame-000060.jpg",
+      "timestamp": 1791772959.326364,
+      "received": 6.326
+    },
+    {
+      "file": "frame-000061.jpg",
+      "timestamp": 1791772959.385491,
+      "received": 6.37
+    },
+    {
+      "file": "frame-000062.jpg",
+      "timestamp": 1791772959.436796,
+      "received": 6.434
+    },
+    {
+      "file": "frame-000063.jpg",
+      "timestamp": 1791772959.503263,
+      "received": 6.48
+    },
+    {
+      "file": "frame-000064.jpg",
+      "timestamp": 1791772960.087046,
+      "received": 7.09
+    },
+    {
+      "file": "frame-000065.jpg",
+      "timestamp": 1791772960.089955,
+      "received": 7.092
+    },
+    {
+      "file": "frame-000066.jpg",
+      "timestamp": 1791772960.084817,
+      "received": 7.093
+    },
+    {
+      "file": "frame-000067.jpg",
+      "timestamp": 1791772960.168581,
+      "received": 7.148
+    },
+    {
+      "file": "frame-000068.jpg",
+      "timestamp": 1791772960.21836,
+      "received": 7.198
+    },
+    {
+      "file": "frame-000069.jpg",
+      "timestamp": 1791772960.2722,
+      "received": 7.252
+    },
+    {
+      "file": "frame-000070.jpg",
+      "timestamp": 1791772960.320025,
+      "received": 7.299
+    },
+    {
+      "file": "frame-000071.jpg",
+      "timestamp": 1791772960.380073,
+      "received": 7.362
+    },
+    {
+      "file": "frame-000072.jpg",
+      "timestamp": 1791772960.426842,
+      "received": 7.426
+    },
+    {
+      "file": "frame-000073.jpg",
+      "timestamp": 1791772960.49207,
+      "received": 7.476
+    },
+    {
+      "file": "frame-000074.jpg",
+      "timestamp": 1791772960.573039,
+      "received": 7.551
+    },
+    {
+      "file": "frame-000075.jpg",
+      "timestamp": 1791772960.625342,
+      "received": 7.603
+    },
+    {
+      "file": "frame-000076.jpg",
+      "timestamp": 1791772960.685486,
+      "received": 7.675
+    },
+    {
+      "file": "frame-000077.jpg",
+      "timestamp": 1791772960.738794,
+      "received": 7.745
+    },
+    {
+      "file": "frame-000078.jpg",
+      "timestamp": 1791772960.819131,
+      "received": 7.807
+    },
+    {
+      "file": "frame-000079.jpg",
+      "timestamp": 1791772960.880998,
+      "received": 7.855
+    },
+    {
+      "file": "frame-000080.jpg",
+      "timestamp": 1791772960.928874,
+      "received": 7.924
+    },
+    {
+      "file": "frame-000081.jpg",
+      "timestamp": 1791772960.986225,
+      "received": 7.968
+    },
+    {
+      "file": "frame-000082.jpg",
+      "timestamp": 1791772961.02807,
+      "received": 8.023
+    },
+    {
+      "file": "frame-000083.jpg",
+      "timestamp": 1791772961.095655,
+      "received": 8.075
+    }
+  ],
+  "note": "Screencast begins before actual root navigation, includes natural entry and first meteor cycle. No animation seek, no artificial network delay, no interpolation or speed change. CFR30 repeats captured frames. Supplemental segment only; physical-device smoothness unverified.",
+  "video": {
+    "duration": "6.133333",
+    "size": "470401"
+  }
+}
