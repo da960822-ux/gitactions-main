@@ -11,9 +11,9 @@ import { resolve } from 'node:path';
 import { engines } from '../core/registry';
 
 describe('public game boards', () => {
-  it('shows local country flags beside all modern Marble city names in both locales', () => {
+  it('keeps local country flags beside all saved route-v2 city names in both locales', () => {
     const engine = engines.marble!;
-    const state = engine.createInitialState(7) as any;
+    const state = { ...(engine.createInitialState(7) as any), cityRouteVersion: 2 };
     const view = engine.getPlayerView(state, 'p1') as any;
     const codes = ['ca','cl','cu','do','es','fr','gb','it','jp','kr','mx','nz','ph','pr','pt','us'];
     for (const language of ['ko', 'es'] as const) {

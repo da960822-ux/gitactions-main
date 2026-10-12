@@ -1,11 +1,23 @@
 # 데스크톱 게임 독립 작업 인계 — 2026-10-11
 
+**현재 인계:** canonical 자산은 메인 ac25936의 `/images/marble/premium/`32WebP이며원본 ccec83d와runtime해시/bytes/pixels확인후컴포넌트연결했다. 자체98df6a8 WebP32는중복을제거하고Git이력만보존했다. f0/5f/1c원본객체확보후부모승인게임source를범위별통합했고ac의최신KO마스크공백fix도보존했다. 기존6종+raster6+추가살리·술리단일pawn정의/선택/private주입완료. 살리·술리이미지·새개인조커2·귀족2실제bytes는비공개전달대기. 전체최신source회귀50파일466및TypeScript/Vite/Edgebuild통과. 인게임최종Luna두세션QA·코드push는미완료. 아래이전상태/제작기록은현재차단상태와구분한다.
+
+## 최신 인계 상태 — 아래 본문은 8c90594 제작 기록
+
+최신 요구사항과 완료/미완료 대조는 `reviews/DESKTOP-REQUIREMENTS-LEDGER-2026-10-11.ko.md`를 따른다. 27d802e는 초보자 설명·데스크톱 보드 높이·큰 도시 미리보기·fresh route3 exact6 변경과 기존 저장판 호환성, 53cf8be는 cat ID 유지한 랙돌 명칭을 담는다. 후속 변경은 robot ID 유지한 리스연 명칭, 말 간격/안쪽 별도 공간, 도시 이미지 contain/상단 여백, 비공개 조커 runtime 주입이다. **후속 화면 검수와 전체 최신 통합본 2인 QA는 사용자 지시에 따라 나중에 수행한다.**
+
+새 부루마블 raster 25개 Library record는 resolve됐으나 공식 helper 초기와 소비자 로컬 재시도 모두 download failed, 로컬 bytes0·픽셀 미검수·미적용이다. JSON에는 ID/버전/선언 크기/실패만 기록하고 이미지 경로는 null이다. 반려 SVG 그림을 최종 승인 그림으로 취급하지 않는다. 새 조커는 사진2장 캐리커처로 최신 지시가 바뀌었으며, 공개 repo 업로드 없이 `PRIVATE-GAME-ART.ko.md`의 주입 구조를 사용한다. 부모가 사진을 확보 중이다.
+
+27d802e 전체49파일444,53cf8be 관련52 테스트 및 빌드 통과. 후속 변경의 새 비공개 조커/리스연 관련18 회귀 통과. 이번 증거를 최신 Catchmind/아바타/초기 f0 개선 통합 완료와 혼동하지 않는다. 부모 최신 소스로 Edge를 재생성해야 하며 이 실행기의 전체 generated 파일로 최신 Catchmind를 덮어쓰지 않는다.
+
+정상 작업 브랜치 push는 자동 승인 검토가 2회 거절했다. 본인 소유·admin/push 권한 조회는 성공했지만 현재 세션 최초 금지 지시와 전달된 이전 승인 불인정을 이유로 차단됐다. 추가 push 없음. 8c90594 이후 변경은 로컬 commit/bundle/patch로 보존한다. 환경 도구는 재확인 시 정상 작동했으며 재시작용 `resume-snapshot`도 별도로 검증했다.
+
 ## 베이스와 통합 조건
 
 작업 공간 `/workspace/gitactions-games`, 브랜치 `games/desktop-approved-portraits`.
 베이스 **b37c10b5a93d44236a7d5ed5834b817531e8ea39**.
 원본 `/workspace/gitactions-main`의 work 브랜치와 기존 파일은 수정하지 않았다.
-push/PR/배포하지 않는다. 랜딩/히어로/모바일/리듬타파 SWF/건의사항 페이지는 수정 범위에서 제외했다.
+최초 작업은 push/PR/배포 금지였다. 이후 사용자가 정확한 원격 저장소에 정상 작업 브랜치 push를 명시 승인했다. 승인된 `games/desktop-improvements-20261011-8c90594-379a58`만 업데이트하며 main/force push/PR/배포는 하지 않는다. 랜딩/히어로/모바일/리듬타파 SWF/건의사항 페이지는 수정 범위에서 제외했다.
 
 다음 Git 객체는 조사 시 모두 없었다. 이 변경을 최신 작업 완료본이라고 간주하지 말고 부모 세션에서 기존 커밋/파일과 통합한 뒤 다시 검증해야 한다.
 

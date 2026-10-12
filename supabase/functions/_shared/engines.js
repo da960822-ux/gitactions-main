@@ -5942,7 +5942,7 @@ var marbleCreditRules = {
   ko: [
     "\uBAA9\uD45C \u2014 \uC790\uCCB4 \uBD80\uB3D9\uC0B0 \uAC8C\uC784 \uADDC\uCE59\uC785\uB2C8\uB2E4. \uC0C1\uB300\uAC00 \uD30C\uC0B0\uD558\uBA74 \uC774\uAE30\uACE0, 120\uD134 \uB4A4\uC5D0\uB294 \uD604\uAE08+\uB3C4\uC2DC \uB9E4\uC785\uAC00+\uAC74\uC124 \uBE44\uC6A9\u2212\uBBF8\uC0C1\uD658 \uB300\uCD9C\uC744 \uD569\uCE5C \uC21C\uC790\uC0B0\uC744 \uBE44\uAD50\uD569\uB2C8\uB2E4.",
     "\uB9D0\uACFC \uC774\uB3D9 \u2014 \uCCAB \uC8FC\uC0AC\uC704\uB97C \uAD74\uB9AC\uAE30 \uC804\uC5D0 \uC6D0\uD558\uB294 \uB9D0\uC744 \uACE0\uB985\uB2C8\uB2E4. \uC0C1\uB300\uC640 \uAC19\uC740 \uB9D0\uC740 \uC120\uD0DD\uD560 \uC218 \uC5C6\uACE0 \uCCAB \uC774\uB3D9 \uB4A4\uC5D0\uB294 \uACE0\uC815\uB429\uB2C8\uB2E4. \uB450 \uC8FC\uC0AC\uC704 \uD569\uB9CC\uD07C 40\uCE78 \uBCF4\uB4DC\uB97C \uC774\uB3D9\uD558\uBA70 \uCD9C\uBC1C\uC810\uC744 \uC9C0\uB098\uBA74 200\uC744 \uBC1B\uC2B5\uB2C8\uB2E4. \uAD11\uC8FC\uC640 \uC0B0\uD1A0\uB3C4\uBC0D\uACE0\uB97C \uD3EC\uD568\uD574 24\uAC1C \uB3C4\uC2DC\uAC00 \uC788\uC2B5\uB2C8\uB2E4.",
-    "\uB3C4\uC2DC\uC640 \uAC74\uC124 \u2014 \uBE48 \uB3C4\uC2DC\uB97C \uAD6C\uB9E4\uD558\uAC70\uB098 \uC9C0\uB098\uAC11\uB2C8\uB2E4. \uB0B4 \uB3C4\uC2DC\uC5D0\uB294 \uC0C9\uC0C1 \uB3C4\uC2DC\uAD70 \uC644\uC131 \uC5EC\uBD80\uC640 \uAD00\uACC4\uC5C6\uC774 \uBCC4\uC7A5\u2192\uBE4C\uB529\u2192\uB79C\uB4DC\uB9C8\uD06C\uB97C \uC21C\uC11C\uB300\uB85C \uC9C0\uC744 \uC218 \uC788\uC2B5\uB2C8\uB2E4. \uB2E8\uACC4\uB9C8\uB2E4 100, \uD1B5\uD589\uB8CC\uB294 \uAE30\uBCF8\uC758 2\uBC30\u21924\uBC30\u21928\uBC30\uC785\uB2C8\uB2E4. \uC0C1\uB300 \uB3C4\uC2DC\uC758 \uD1B5\uD589\uB8CC\uB294 \uC790\uB3D9 \uC9C0\uAE09\uB429\uB2C8\uB2E4.",
+    "\uB3C4\uC2DC\uC640 \uAC74\uC124 \u2014 \uBE48 \uB3C4\uC2DC\uB97C \uAD6C\uB9E4\uD558\uAC70\uB098 \uC9C0\uB098\uAC11\uB2C8\uB2E4. \uB0B4 \uB3C4\uC2DC\uC5D0\uB294 \uC0C9\uC0C1 \uB3C4\uC2DC\uAD70 \uC644\uC131 \uC5EC\uBD80\uC640 \uAD00\uACC4\uC5C6\uC774 \uB2E8\uB3C5\uC8FC\uD0DD\u2192\uC544\uD30C\uD2B8\u2192\uB79C\uB4DC\uB9C8\uD06C\uB97C \uC21C\uC11C\uB300\uB85C \uC9C0\uC744 \uC218 \uC788\uC2B5\uB2C8\uB2E4. \uB2E8\uACC4\uB9C8\uB2E4 100, \uD1B5\uD589\uB8CC\uB294 \uAE30\uBCF8\uC758 2\uBC30\u21924\uBC30\u21928\uBC30\uC785\uB2C8\uB2E4. \uC0C1\uB300 \uB3C4\uC2DC\uC758 \uD1B5\uD589\uB8CC\uB294 \uC790\uB3D9 \uC9C0\uAE09\uB429\uB2C8\uB2E4.",
     "\uB300\uCD9C \u2014 \uC790\uAE30 \uCC28\uB840\uC5D0 \uBBF8\uC0C1\uD658 \uB300\uCD9C\uC774 \uC5C6\uC73C\uBA74 300\uC744 \uBC1B\uC744 \uC218 \uC788\uACE0, \uC0C1\uD658\uC561\uC740 330\uC785\uB2C8\uB2E4. \uCD94\uAC00 \uC774\uC790\uB098 \uB9CC\uAE30\uB294 \uC5C6\uC2B5\uB2C8\uB2E4. \uC9C0\uAE09 \uC704\uAE30 \uC678\uC758 \uC790\uAE30 \uCC28\uB840\uC5D0 330 \uC804\uC561\uC744 \uC0C1\uD658\uD569\uB2C8\uB2E4. \uBBF8\uC0C1\uD658\uC561\uC740 \uC21C\uC790\uC0B0\uC5D0\uC11C \uBE7C\uBA70, \uC0C1\uD658 \uD6C4 \uB2E4\uC2DC \uBE4C\uB824\uB3C4 \uB9E4\uBC88 30\uC758 \uBE44\uC6A9\uC774 \uBC1C\uC0DD\uD569\uB2C8\uB2E4.",
     "\uC9C0\uAE09 \uC704\uAE30 \u2014 \uD1B5\uD589\uB8CC\xB7\uC138\uAE08\xB7\uCE74\uB4DC \uBE44\uC6A9\uC744 \uB0BC \uD604\uAE08\uC774 \uBD80\uC871\uD558\uBA74 \uD589\uB3D9\uC774 \uBA48\uCDA5\uB2C8\uB2E4. \uD604\uC7AC \uD604\uAE08+300\uC73C\uB85C \uC9C0\uAE09\uC561\uC744 \uCDA9\uB2F9\uD560 \uC218 \uC788\uACE0 \uAE30\uC874 \uB300\uCD9C\uC774 \uC5C6\uC744 \uB54C\uB9CC \uB300\uCD9C\uB85C \uD574\uACB0\uD560 \uC218 \uC788\uC2B5\uB2C8\uB2E4. \uB300\uCD9C\uC744 \uC120\uD0DD\uD558\uBA74 \uD574\uB2F9 \uC9C0\uAE09\uC744 \uD55C \uBC88 \uCC98\uB9AC\uD558\uACE0 \uC6D0\uB798 \uCC28\uB840\uB85C \uB3CC\uC544\uAC11\uB2C8\uB2E4. \uD30C\uC0B0 \uC778\uC815\uC740 \uACBD\uAE30 \uC885\uB8CC\uB97C \uB73B\uD558\uBA70 \uB3C4\uC2DC \uC790\uB3D9 \uB9E4\uAC01\uC740 \uC5C6\uC2B5\uB2C8\uB2E4.",
     "\uD669\uAE08\uC5F4\uC1E0 \u2014 13\uC885 \uCE74\uB4DC\uB294 \uC0C1\uAE08(150\xB7200\xB780), \uC5EC\uD589\uBE44 100, \uAC74\uC124 \uB2E8\uACC4\uB2F9 \uC218\uB9AC\uBE44 40, \uC0B0\uD1A0\uB3C4\uBC0D\uACE0 \uBC29\uBB38, \uCD9C\uBC1C \uC774\uB3D9(+200), \uC138 \uCE78 \uD6C4\uD1F4, \uBB34\uC778\uB3C4 \uC774\uB3D9, \uD0C8\uCD9C\uAD8C, \uBB34\uB8CC \uC5F4\uCC28\uD45C, \uB3C4\uC2DC\uB2F9 \uBC30\uB2F9 30, \uB3C5\uC810 \uACBD\uACE0\uC785\uB2C8\uB2E4. \uC774\uB3D9 \uCE74\uB4DC\uC758 \uB3C4\uCC29 \uD6A8\uACFC\uB3C4 \uC801\uC6A9\uB418\uBA70 \uC138 \uCE78 \uD6C4\uD1F4\uC5D0\uB294 \uCD9C\uBC1C \uBCF4\uB108\uC2A4\uAC00 \uC5C6\uC2B5\uB2C8\uB2E4.",
@@ -5952,7 +5952,7 @@ var marbleCreditRules = {
   es: [
     "Objetivo \u2014 Usamos reglas propias de un juego de propiedades. Ganas si tu pareja quiebra; despu\xE9s de 120 turnos se compara el patrimonio neto: efectivo + precio de las ciudades + costo de construcci\xF3n \u2212 deuda pendiente.",
     "Figura y movimiento \u2014 Elige una figura antes de lanzar tus primeros dados. No puede ser la misma de tu pareja y queda fija despu\xE9s. Avanza la suma de los dos dados por las 40 casillas. Al pasar por Salida recibes 200. Hay 24 ciudades, incluyendo Gwangju y Santo Domingo.",
-    "Ciudades y construcci\xF3n \u2014 Puedes comprar una ciudad libre o pasar. En cualquier ciudad tuya puedes construir villa, edificio y monumento, sin completar un color. Cada nivel cuesta 100 y el alquiler pasa a 2, 4 y 8 veces el valor base. El alquiler rival se paga autom\xE1ticamente.",
+    "Ciudades y construcci\xF3n \u2014 Puedes comprar una ciudad libre o pasar. En cualquier ciudad tuya puedes construir casa unifamiliar, apartamentos y monumento, sin completar un color. Cada nivel cuesta 100 y el alquiler pasa a 2, 4 y 8 veces el valor base. El alquiler rival se paga autom\xE1ticamente.",
     "Pr\xE9stamo \u2014 En tu turno, si no tienes deuda pendiente, puedes recibir 300 y debes devolver 330. No hay intereses adicionales ni fecha de vencimiento. Pagas los 330 completos en tu turno, fuera de una crisis de pago. La deuda se resta del patrimonio; pedir otro pr\xE9stamo despu\xE9s de pagarlo vuelve a costar 30.",
     "Crisis de pago \u2014 Si no tienes efectivo para un alquiler, impuesto o gasto de carta, el juego espera tu decisi\xF3n. Solo puedes resolverlo con un pr\xE9stamo si no debes otro y tu efectivo + 300 cubre el pago. Al pedirlo, el pago se procesa una sola vez y contin\xFAa el turno original. Declarar quiebra termina la partida; las ciudades no se venden autom\xE1ticamente.",
     "Llave dorada \u2014 Las 13 cartas incluyen premios (150, 200 y 80), gasto de viaje 100, mantenimiento 40 por nivel construido, visita a Santo Domingo, viaje a Salida (+200), retroceso de tres casillas, isla, pase de salida, boleto gratis, dividendo 30 por ciudad y advertencia de monopolio. Se aplica tambi\xE9n el efecto del destino; al retroceder no cobras Salida.",
@@ -5961,8 +5961,8 @@ var marbleCreditRules = {
   ]
 };
 var marbleTieredRules = {
-  ko: marbleCreditRules.ko.map((rule, index) => index === 2 ? "\uB3C4\uC2DC\uC640 \uAC74\uC124 \u2014 \uBE48 \uB3C4\uC2DC\uB97C \uAD6C\uB9E4\uD558\uAC70\uB098 \uC9C0\uB098\uAC11\uB2C8\uB2E4. \uB0B4 \uB3C4\uC2DC\uC5D0\uB294 \uC0C9\uC0C1 \uB3C4\uC2DC\uAD70 \uC644\uC131 \uC5EC\uBD80\uC640 \uAD00\uACC4\uC5C6\uC774 \uBCC4\uC7A5\u2192\uBE4C\uB529\u2192\uB79C\uB4DC\uB9C8\uD06C\uB97C \uC21C\uC11C\uB300\uB85C \uC9C0\uC744 \uC218 \uC788\uC2B5\uB2C8\uB2E4. \uAC74\uC124\uBE44\uB294 \uD574\uB2F9 \uB3C4\uC2DC \uB9E4\uC785\uAC00\uC758 40%\u219260%\u219280%\uC774\uBA70, 10 \uB2E8\uC704\uB85C \uBC18\uC62C\uB9BC\uD558\uACE0 \uCD5C\uC18C 40\uC785\uB2C8\uB2E4. \uD1B5\uD589\uB8CC\uB294 \uAE30\uBCF8\uC758 2\uBC30\u21924\uBC30\u21928\uBC30\uAC00 \uB429\uB2C8\uB2E4. \uC0C1\uB300 \uB3C4\uC2DC\uC758 \uD1B5\uD589\uB8CC\uB294 \uC790\uB3D9 \uC9C0\uAE09\uB429\uB2C8\uB2E4." : rule),
-  es: marbleCreditRules.es.map((rule, index) => index === 2 ? "Ciudades y construcci\xF3n \u2014 Puedes comprar una ciudad libre o pasar. En cualquier ciudad tuya puedes construir villa, edificio y monumento, sin completar un color. Cada nivel cuesta el 40 %, 60 % y 80 % del precio de compra de la ciudad; se redondea a 10 y nunca baja de 40. El alquiler pasa a 2, 4 y 8 veces el valor base. El alquiler rival se paga autom\xE1ticamente." : rule)
+  ko: marbleCreditRules.ko.map((rule, index) => index === 2 ? "\uB3C4\uC2DC\uC640 \uAC74\uC124 \u2014 \uBE48 \uB3C4\uC2DC\uB97C \uAD6C\uB9E4\uD558\uAC70\uB098 \uC9C0\uB098\uAC11\uB2C8\uB2E4. \uB0B4 \uB3C4\uC2DC\uC5D0\uB294 \uC0C9\uC0C1 \uB3C4\uC2DC\uAD70 \uC644\uC131 \uC5EC\uBD80\uC640 \uAD00\uACC4\uC5C6\uC774 \uB2E8\uB3C5\uC8FC\uD0DD\u2192\uC544\uD30C\uD2B8\u2192\uB79C\uB4DC\uB9C8\uD06C\uB97C \uC21C\uC11C\uB300\uB85C \uC9C0\uC744 \uC218 \uC788\uC2B5\uB2C8\uB2E4. \uAC74\uC124\uBE44\uB294 \uD574\uB2F9 \uB3C4\uC2DC \uB9E4\uC785\uAC00\uC758 40%\u219260%\u219280%\uC774\uBA70, 10 \uB2E8\uC704\uB85C \uBC18\uC62C\uB9BC\uD558\uACE0 \uCD5C\uC18C 40\uC785\uB2C8\uB2E4. \uD1B5\uD589\uB8CC\uB294 \uAE30\uBCF8\uC758 2\uBC30\u21924\uBC30\u21928\uBC30\uAC00 \uB429\uB2C8\uB2E4. \uC0C1\uB300 \uB3C4\uC2DC\uC758 \uD1B5\uD589\uB8CC\uB294 \uC790\uB3D9 \uC9C0\uAE09\uB429\uB2C8\uB2E4." : rule),
+  es: marbleCreditRules.es.map((rule, index) => index === 2 ? "Ciudades y construcci\xF3n \u2014 Puedes comprar una ciudad libre o pasar. En cualquier ciudad tuya puedes construir casa unifamiliar, apartamentos y monumento, sin completar un color. Cada nivel cuesta el 40 %, 60 % y 80 % del precio de compra de la ciudad; se redondea a 10 y nunca baja de 40. El alquiler pasa a 2, 4 y 8 veces el valor base. El alquiler rival se paga autom\xE1ticamente." : rule)
 };
 var marbleExpandedRules = {
   ko: [
@@ -5978,8 +5978,8 @@ var marbleExpandedRules = {
 };
 
 // src/games/marble.ts
-var marblePawnIds = ["fox", "cat", "penguin", "astronaut", "robot", "dragon"];
-var pawnNames = { fox: { ko: "\uB9D0\uD2F0\uD478", es: "Maltipoo" }, cat: { ko: "\uACE0\uC591\uC774", es: "Gata" }, penguin: { ko: "\uD310\uB2E4", es: "Panda" }, astronaut: { ko: "\uC6B0\uC8FC\uBE44\uD589\uC0AC", es: "Astronauta" }, robot: { ko: "\uB85C\uBD07", es: "Robot" }, dragon: { ko: "\uCE5C\uCE60\uB77C", es: "Chinchilla" } };
+var marblePawnIds = ["fox", "cat", "penguin", "astronaut", "robot", "dragon", "sali-suli"];
+var pawnNames = { fox: { ko: "\uB9D0\uD2F0\uD478", es: "Maltipoo" }, cat: { ko: "\uB799\uB3CC", es: "Ragdoll" }, penguin: { ko: "\uD310\uB2E4", es: "Panda" }, astronaut: { ko: "\uC6B0\uC8FC\uC778", es: "Astronauta" }, robot: { ko: "\uB9AC\uC2A4\uC5F0", es: "Lisyeon" }, dragon: { ko: "\uCE5C\uCE60\uB77C", es: "Chinchilla" }, "sali-suli": { ko: "\uC0B4\uB9AC\xB7\uC220\uB9AC", es: "Sali y Suli" } };
 var legacyBoard = [
   { kind: "start", name: { ko: "\uCD9C\uBC1C", es: "Salida" } },
   { kind: "property", name: { ko: "\uAD11\uC8FC", es: "Gwangju" }, price: 100, rent: 12, group: "green" },
@@ -6043,7 +6043,18 @@ var modernBoard = [
   { kind: "rest", name: { ko: "\uD734\uC2DD \uAD11\uC7A5", es: "Plaza de descanso" } }
 ];
 var journeyBoard = modernBoard.map((tile, index) => index === 3 ? modernBoard[15] : index === 15 ? modernBoard[3] : index === 31 ? { ...tile, name: { ko: "\uB274\uC5B4\uD06C", es: "Newark" } } : index === 38 ? { ...tile, name: { ko: "\uC11C\uC6B8", es: "Se\xFAl" } } : tile);
-var boardFor = (s) => s.boardVersion === 2 ? s.cityRouteVersion === 2 ? journeyBoard : modernBoard : legacyBoard;
+var landmarkJourneyBoard = journeyBoard.map((tile, index) => {
+  const names = {
+    11: { ko: "\uBCA0\uB97C\uB9B0", es: "Berl\xEDn" },
+    13: { ko: "\uB9C8\uC774\uC560\uBBF8", es: "Miami" },
+    21: { ko: "\uC774\uC2A4\uD0C4\uBD88", es: "Estambul" },
+    32: { ko: "\uC544\uADF8\uB77C", es: "Agra" },
+    33: { ko: "\uC544\uD14C\uB124", es: "Atenas" },
+    36: { ko: "\uC2DC\uB4DC\uB2C8", es: "S\xEDdney" }
+  };
+  return names[index] ? { ...tile, name: names[index] } : tile;
+});
+var boardFor = (s) => s.boardVersion === 2 ? s.cityRouteVersion === 3 ? landmarkJourneyBoard : s.cityRouteVersion === 2 ? journeyBoard : modernBoard : legacyBoard;
 var legacyIds = ["festival", "lottery", "rent-rebate", "travel-cost", "maintenance", "visit-santo-domingo", "advance-start", "retreat"];
 var modernIds = [...legacyIds, "go-to-island", "escape-pass", "train-ticket", "city-dividend"];
 var expandedIds = [...modernIds, "monopoly-warning", "city-festival", "blackout", "rent-pass"];
@@ -6052,7 +6063,7 @@ var cards = {
   lottery: { title: { ko: "\uC791\uC740 \uBCF5\uAD8C \uB2F9\uCCA8", es: "Premio de loter\xEDa" }, text: { ko: "\uBCF5\uAD8C\uC5D0 \uB2F9\uCCA8\uB418\uC5B4 200\uC744 \uBC1B\uC2B5\uB2C8\uB2E4.", es: "Te ganas un premio de loter\xEDa y recibes 200." }, effect: "cash" },
   "rent-rebate": { title: { ko: "\uC784\uB300\uB8CC \uD658\uAE09", es: "Reembolso de alquiler" }, text: { ko: "\uC784\uB300\uB8CC \uC77C\uBD80\uB97C \uB3CC\uB824\uBC1B\uC544 80\uC744 \uBC1B\uC2B5\uB2C8\uB2E4.", es: "Te devuelven parte del alquiler: recibes 80." }, effect: "cash" },
   "travel-cost": { title: { ko: "\uC5EC\uD589 \uACBD\uBE44", es: "Gastos de viaje" }, text: { ko: "\uC5EC\uD589 \uACBD\uBE44\uB85C 100\uC744 \uB0C5\uB2C8\uB2E4.", es: "Pagas 100 por gastos de viaje." }, effect: "cash" },
-  maintenance: { title: { ko: "\uAC74\uBB3C \uC218\uB9AC", es: "Mantenimiento de edificios" }, text: { ko: "\uB0B4 \uB3C4\uC2DC\uC758 \uAC74\uC124 \uB2E8\uACC4 \uD569\uACC4\uC5D0 40\uC744 \uACF1\uD55C \uC218\uB9AC\uBE44\uB97C \uB0C5\uB2C8\uB2E4. \uBCC4\uC7A5\uC740 1\uB2E8\uACC4, \uBE4C\uB529\uC740 2\uB2E8\uACC4, \uB79C\uB4DC\uB9C8\uD06C\uB294 3\uB2E8\uACC4\uC785\uB2C8\uB2E4.", es: "Pagas 40 por cada nivel construido en tus ciudades: villa cuenta 1, edificio 2 y monumento 3." }, effect: "maintenance" },
+  maintenance: { title: { ko: "\uAC74\uBB3C \uC218\uB9AC", es: "Mantenimiento de edificios" }, text: { ko: "\uB0B4 \uB3C4\uC2DC\uC758 \uAC74\uC124 \uB2E8\uACC4 \uD569\uACC4\uC5D0 40\uC744 \uACF1\uD55C \uC218\uB9AC\uBE44\uB97C \uB0C5\uB2C8\uB2E4. \uB2E8\uB3C5\uC8FC\uD0DD\uC740 1\uB2E8\uACC4, \uC544\uD30C\uD2B8\uB294 2\uB2E8\uACC4, \uB79C\uB4DC\uB9C8\uD06C\uB294 3\uB2E8\uACC4\uC785\uB2C8\uB2E4.", es: "Pagas 40 por cada nivel construido en tus ciudades: casa unifamiliar cuenta 1, apartamentos 2 y monumento 3." }, effect: "maintenance" },
   "visit-santo-domingo": { title: { ko: "\uC0B0\uD1A0\uB3C4\uBC0D\uACE0 \uBC29\uBB38", es: "Visita a Santo Domingo" }, text: { ko: "\uC0B0\uD1A0\uB3C4\uBC0D\uACE0\uB85C \uC774\uB3D9\uD574 \uADF8\uACF3\uC758 \uBD80\uB3D9\uC0B0 \uADDC\uCE59\uC744 \uC801\uC6A9\uD569\uB2C8\uB2E4.", es: "Ve a Santo Domingo y aplica las reglas normales de esa propiedad." }, effect: "visit" },
   "advance-start": { title: { ko: "\uCD9C\uBC1C\uC810\uC73C\uB85C \uC774\uB3D9", es: "Ve a Salida" }, text: { ko: "\uCD9C\uBC1C\uC810\uC73C\uB85C \uC774\uB3D9\uD558\uACE0 200\uC744 \uBC1B\uC2B5\uB2C8\uB2E4.", es: "Ve a Salida y recibe 200." }, effect: "move" },
   retreat: { title: { ko: "\uC138 \uCE78 \uB4A4\uB85C", es: "Retrocede tres casillas" }, text: { ko: "\uC138 \uCE78 \uB4A4\uB85C \uC774\uB3D9\uD569\uB2C8\uB2E4. \uCD9C\uBC1C \uBCF4\uB108\uC2A4\uB294 \uBC1B\uC9C0 \uC54A\uC2B5\uB2C8\uB2E4.", es: "Retrocede tres casillas. No cobras al pasar por Salida." }, effect: "move" },
@@ -6137,7 +6148,7 @@ function view2(s, p) {
         const levels = s.boardVersion === 2 ? 3 : 2;
         const cost = marbleBuildCost(tile, record.houses, s.economicVersion);
         if (canBuild && record.houses < levels && s.money[p] >= cost) {
-          const tier = s.boardVersion === 2 ? [["\uBCC4\uC7A5", "Villa"], ["\uBE4C\uB529", "Edificio"], "landmark"][record.houses] : ["\uC9D1", "Casa"];
+          const tier = s.boardVersion === 2 ? [["\uB2E8\uB3C5\uC8FC\uD0DD", "Casa unifamiliar"], ["\uC544\uD30C\uD2B8", "Apartamentos"], "landmark"][record.houses] : ["\uC9D1", "Casa"];
           const name = Array.isArray(tier) ? tier : s.economicVersion === 1 || s.economicVersion === 2 ? ["\uB79C\uB4DC\uB9C8\uD06C", "Monumento"] : ["\uD638\uD154", "Hotel"];
           add(`${name[0]}: ${tile.name.ko} (${cost})`, `${name[1]}: ${tile.name.es} (${cost})`, { type: "build", payload: { tile: index } });
         }
@@ -6635,7 +6646,7 @@ function step(s, p, a) {
     n.money[p] -= cost;
     n.properties[String(index)] = { ...n.properties[String(index)], houses: n.properties[String(index)].houses + 1 };
     const level = n.properties[String(index)].houses;
-    emit(n, "build", p, "\uAC74\uC124 \uC644\uB8CC", "Construcci\xF3n terminada", `${board[index].name.ko}: ${level === 3 ? "\uB79C\uB4DC\uB9C8\uD06C" : level === 2 ? "\uBE4C\uB529" : "\uBCC4\uC7A5"} \xB7 \uD1B5\uD589\uB8CC ${propertyRent(board[index], n.properties[String(index)], n.boardVersion === 2)}`, `${board[index].name.es}: ${level === 3 ? "monumento" : level === 2 ? "edificio" : "villa"} \xB7 alquiler ${propertyRent(board[index], n.properties[String(index)], n.boardVersion === 2)}`, { tile: index, amount: cost, fromAccount: p, toAccount: "bank", moneyDelta: { [p]: -cost } });
+    emit(n, "build", p, "\uAC74\uC124 \uC644\uB8CC", "Construcci\xF3n terminada", `${board[index].name.ko}: ${level === 3 ? "\uB79C\uB4DC\uB9C8\uD06C" : level === 2 ? "\uC544\uD30C\uD2B8" : "\uB2E8\uB3C5\uC8FC\uD0DD"} \xB7 \uD1B5\uD589\uB8CC ${propertyRent(board[index], n.properties[String(index)], n.boardVersion === 2)}`, `${board[index].name.es}: ${level === 3 ? "monumento" : level === 2 ? "apartamentos" : "casa unifamiliar"} \xB7 alquiler ${propertyRent(board[index], n.properties[String(index)], n.boardVersion === 2)}`, { tile: index, amount: cost, fromAccount: p, toAccount: "bank", moneyDelta: { [p]: -cost } });
   } else if (a.type === "endTurn") return finishTurn2(n, p);
   return n;
 }
@@ -6650,7 +6661,7 @@ var marbleEngine = {
       money: { p1: 1500, p2: 1500 },
       properties: {},
       boardVersion: 2,
-      cityRouteVersion: 2,
+      cityRouteVersion: 3,
       phase: "roll",
       pendingTile: null,
       lastRoll: [],

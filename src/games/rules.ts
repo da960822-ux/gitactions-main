@@ -6,7 +6,7 @@ export const marbleCreditRules: LocalizedRules = {
   ko: [
     '목표 — 자체 부동산 게임 규칙입니다. 상대가 파산하면 이기고, 120턴 뒤에는 현금+도시 매입가+건설 비용−미상환 대출을 합친 순자산을 비교합니다.',
     '말과 이동 — 첫 주사위를 굴리기 전에 원하는 말을 고릅니다. 상대와 같은 말은 선택할 수 없고 첫 이동 뒤에는 고정됩니다. 두 주사위 합만큼 40칸 보드를 이동하며 출발점을 지나면 200을 받습니다. 광주와 산토도밍고를 포함해 24개 도시가 있습니다.',
-    '도시와 건설 — 빈 도시를 구매하거나 지나갑니다. 내 도시에는 색상 도시군 완성 여부와 관계없이 별장→빌딩→랜드마크를 순서대로 지을 수 있습니다. 단계마다 100, 통행료는 기본의 2배→4배→8배입니다. 상대 도시의 통행료는 자동 지급됩니다.',
+    '도시와 건설 — 빈 도시를 구매하거나 지나갑니다. 내 도시에는 색상 도시군 완성 여부와 관계없이 단독주택→아파트→랜드마크를 순서대로 지을 수 있습니다. 단계마다 100, 통행료는 기본의 2배→4배→8배입니다. 상대 도시의 통행료는 자동 지급됩니다.',
     '대출 — 자기 차례에 미상환 대출이 없으면 300을 받을 수 있고, 상환액은 330입니다. 추가 이자나 만기는 없습니다. 지급 위기 외의 자기 차례에 330 전액을 상환합니다. 미상환액은 순자산에서 빼며, 상환 후 다시 빌려도 매번 30의 비용이 발생합니다.',
     '지급 위기 — 통행료·세금·카드 비용을 낼 현금이 부족하면 행동이 멈춥니다. 현재 현금+300으로 지급액을 충당할 수 있고 기존 대출이 없을 때만 대출로 해결할 수 있습니다. 대출을 선택하면 해당 지급을 한 번 처리하고 원래 차례로 돌아갑니다. 파산 인정은 경기 종료를 뜻하며 도시 자동 매각은 없습니다.',
     '황금열쇠 — 13종 카드는 상금(150·200·80), 여행비 100, 건설 단계당 수리비 40, 산토도밍고 방문, 출발 이동(+200), 세 칸 후퇴, 무인도 이동, 탈출권, 무료 열차표, 도시당 배당 30, 독점 경고입니다. 이동 카드의 도착 효과도 적용되며 세 칸 후퇴에는 출발 보너스가 없습니다.',
@@ -16,7 +16,7 @@ export const marbleCreditRules: LocalizedRules = {
   es: [
     'Objetivo — Usamos reglas propias de un juego de propiedades. Ganas si tu pareja quiebra; después de 120 turnos se compara el patrimonio neto: efectivo + precio de las ciudades + costo de construcción − deuda pendiente.',
     'Figura y movimiento — Elige una figura antes de lanzar tus primeros dados. No puede ser la misma de tu pareja y queda fija después. Avanza la suma de los dos dados por las 40 casillas. Al pasar por Salida recibes 200. Hay 24 ciudades, incluyendo Gwangju y Santo Domingo.',
-    'Ciudades y construcción — Puedes comprar una ciudad libre o pasar. En cualquier ciudad tuya puedes construir villa, edificio y monumento, sin completar un color. Cada nivel cuesta 100 y el alquiler pasa a 2, 4 y 8 veces el valor base. El alquiler rival se paga automáticamente.',
+    'Ciudades y construcción — Puedes comprar una ciudad libre o pasar. En cualquier ciudad tuya puedes construir casa unifamiliar, apartamentos y monumento, sin completar un color. Cada nivel cuesta 100 y el alquiler pasa a 2, 4 y 8 veces el valor base. El alquiler rival se paga automáticamente.',
     'Préstamo — En tu turno, si no tienes deuda pendiente, puedes recibir 300 y debes devolver 330. No hay intereses adicionales ni fecha de vencimiento. Pagas los 330 completos en tu turno, fuera de una crisis de pago. La deuda se resta del patrimonio; pedir otro préstamo después de pagarlo vuelve a costar 30.',
     'Crisis de pago — Si no tienes efectivo para un alquiler, impuesto o gasto de carta, el juego espera tu decisión. Solo puedes resolverlo con un préstamo si no debes otro y tu efectivo + 300 cubre el pago. Al pedirlo, el pago se procesa una sola vez y continúa el turno original. Declarar quiebra termina la partida; las ciudades no se venden automáticamente.',
     'Llave dorada — Las 13 cartas incluyen premios (150, 200 y 80), gasto de viaje 100, mantenimiento 40 por nivel construido, visita a Santo Domingo, viaje a Salida (+200), retroceso de tres casillas, isla, pase de salida, boleto gratis, dividendo 30 por ciudad y advertencia de monopolio. Se aplica también el efecto del destino; al retroceder no cobras Salida.',
@@ -27,10 +27,10 @@ export const marbleCreditRules: LocalizedRules = {
 
 export const marbleTieredRules: LocalizedRules = {
   ko: marbleCreditRules.ko.map((rule, index) => index === 2
-    ? '도시와 건설 — 빈 도시를 구매하거나 지나갑니다. 내 도시에는 색상 도시군 완성 여부와 관계없이 별장→빌딩→랜드마크를 순서대로 지을 수 있습니다. 건설비는 해당 도시 매입가의 40%→60%→80%이며, 10 단위로 반올림하고 최소 40입니다. 통행료는 기본의 2배→4배→8배가 됩니다. 상대 도시의 통행료는 자동 지급됩니다.'
+    ? '도시와 건설 — 빈 도시를 구매하거나 지나갑니다. 내 도시에는 색상 도시군 완성 여부와 관계없이 단독주택→아파트→랜드마크를 순서대로 지을 수 있습니다. 건설비는 해당 도시 매입가의 40%→60%→80%이며, 10 단위로 반올림하고 최소 40입니다. 통행료는 기본의 2배→4배→8배가 됩니다. 상대 도시의 통행료는 자동 지급됩니다.'
     : rule),
   es: marbleCreditRules.es.map((rule, index) => index === 2
-    ? 'Ciudades y construcción — Puedes comprar una ciudad libre o pasar. En cualquier ciudad tuya puedes construir villa, edificio y monumento, sin completar un color. Cada nivel cuesta el 40 %, 60 % y 80 % del precio de compra de la ciudad; se redondea a 10 y nunca baja de 40. El alquiler pasa a 2, 4 y 8 veces el valor base. El alquiler rival se paga automáticamente.'
+    ? 'Ciudades y construcción — Puedes comprar una ciudad libre o pasar. En cualquier ciudad tuya puedes construir casa unifamiliar, apartamentos y monumento, sin completar un color. Cada nivel cuesta el 40 %, 60 % y 80 % del precio de compra de la ciudad; se redondea a 10 y nunca baja de 40. El alquiler pasa a 2, 4 y 8 veces el valor base. El alquiler rival se paga automáticamente.'
     : rule),
 };
 
@@ -183,7 +183,7 @@ export const gameRules: Record<GameId, LocalizedRules> = {
     ko: [
       '목표 — 현금을 모으거나 상대를 파산시키면 이깁니다. Marble은 고전 부동산 보드게임에서 영감을 받은 자체 규칙입니다.',
       '이동 — ‘주사위 굴리기’를 눌러 두 주사위의 합만큼 이동합니다. 출발점을 지나면 200을 받습니다. 40칸 보드에는 광주, 산토도밍고를 포함한 24개 도시가 있습니다.',
-      '부동산과 건물 — 빈 부동산에서는 ‘구매’를 누르거나 지나갈 수 있고, 상대 부동산의 임대료는 자동으로 냅니다. 소유한 부동산에는 별장→빌딩→호텔 순서로 건설할 수 있습니다. 단계마다 100이며 임대료는 기본의 2배→4배→8배가 됩니다.',
+      '부동산과 건물 — 빈 부동산에서는 ‘구매’를 누르거나 지나갈 수 있고, 상대 부동산의 임대료는 자동으로 냅니다. 소유한 부동산에는 단독주택→아파트→호텔 순서로 건설할 수 있습니다. 단계마다 100이며 임대료는 기본의 2배→4배→8배가 됩니다.',
       '황금열쇠와 기금 — 황금열쇠 칸에서는 공개 카드가 바로 적용됩니다. 카드에는 상금·비용·이동·탈출권·무료 열차표가 있습니다. 기금 납부 칸에 도착하면 150을 공동 기금에 내고, 사회복지기금 칸에서는 쌓인 기금을 모두 받습니다.',
       '무인도와 열차 — 무인도에 보내지면 세 번의 자기 차례를 쉽니다. 차례마다 쌍을 노려 탈출할 수 있고, 아니면 차례를 잃습니다. 또는 100을 내거나 탈출권을 써서 나온 뒤 주사위를 굴립니다. 역에 도착하면 다음 자기 차례에 운임 100으로 부동산을 골라 이동하거나 열차를 건너뛸 수 있습니다.',
       '승리 — 무료 열차표로는 운임 없이 부동산으로 이동합니다. 이동 경로가 출발점을 지나면 200을 받습니다. 임대료나 비용을 낼 수 없으면 파산하며, 120턴 뒤에는 현금+부동산 가격+건물 비용을 합친 총자산이 많은 사람이 이깁니다.',

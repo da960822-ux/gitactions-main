@@ -2,18 +2,20 @@ import { useId, useState } from 'react';
 import type { CSSProperties } from 'react';
 import type { GameAction, Language, PlayerId } from '../core/types';
 import '../styles/marble-pawns.css';
+import pawnAssets from '../../public/images/marble/pawns/manifest.json';
+import { getPrivateSaliSuliPawn } from './private-game-art';
 
-// Persisted IDs are stable skin slots: fox → Maltipoo, penguin → Panda, dragon → Chinchilla.
-export type MarblePawnId = 'fox' | 'cat' | 'penguin' | 'astronaut' | 'robot' | 'dragon';
+export type MarblePawnId = 'fox' | 'cat' | 'penguin' | 'astronaut' | 'robot' | 'dragon' | 'sali-suli';
 type Copy = Record<Language, string>;
 
 export const marblePawnCatalog: { id: MarblePawnId; name: Copy; color: string }[] = [
-  { id: 'fox', name: { ko: '말티푸', es: 'Maltipoo' }, color: '#c5a581' },
-  { id: 'cat', name: { ko: '고양이', es: 'Gata' }, color: '#d88cbd' },
-  { id: 'penguin', name: { ko: '판다', es: 'Panda' }, color: '#475665' },
-  { id: 'astronaut', name: { ko: '우주비행사', es: 'Astronauta' }, color: '#55a99d' },
-  { id: 'robot', name: { ko: '로봇', es: 'Robot' }, color: '#a58c70' },
-  { id: 'dragon', name: { ko: '친칠라', es: 'Chinchilla' }, color: '#a098b3' },
+  { id: 'fox', name: { ko: '말티푸', es: 'Maltipoo' }, color: '#d3aa79' },
+  { id: 'cat', name: { ko: '랙돌', es: 'Ragdoll' }, color: '#d88cbd' },
+  { id: 'penguin', name: { ko: '판다', es: 'Panda' }, color: '#465559' },
+  { id: 'astronaut', name: { ko: '우주인', es: 'Astronauta' }, color: '#55a99d' },
+  { id: 'robot', name: { ko: '리스연', es: 'Lisyeon' }, color: '#a58c70' },
+  { id: 'dragon', name: { ko: '친칠라', es: 'Chinchilla' }, color: '#a7adb3' },
+  { id: 'sali-suli', name: { ko: '살리·술리', es: 'Sali y Suli' }, color: '#b89073' },
 ];
 
 const copy = (language: Language, ko: string, es: string) => language === 'ko' ? ko : es;
@@ -23,6 +25,10 @@ export function MarblePawn({ pawn, language, label }: { pawn: MarblePawnId; lang
   const name = marblePawnCatalog.find(item => item.id === pawn)?.name[language] ?? pawn;
   const title = label ?? name;
   const g = (name: string) => `${id}-${name}`;
+
+  const image = pawn === 'sali-suli' ? getPrivateSaliSuliPawn() : pawnAssets.assets.find(asset => asset.id === pawn)?.path;
+  if (image) return <img className={`marble-pawn marble-pawn--${pawn}`} src={image} alt={title} decoding="async"/>;
+  if (pawn === 'sali-suli') return <span className="marble-pawn marble-pawn--pending" role="img" aria-label={`${title} · ${copy(language, '그림 준비 중', 'Imagen pendiente')}`}>S·S</span>;
 
   return <svg className={`marble-pawn marble-pawn--${pawn}`} viewBox="0 0 120 150" role="img" aria-label={title} focusable="false">
     <defs>

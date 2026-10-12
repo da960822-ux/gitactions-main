@@ -13,3 +13,5 @@ supabase/.temp/
 
 dist-preview/
 public/private-assets/
+# Personal game artwork is supplied by the private host, never committed.
+public/private-game-art/

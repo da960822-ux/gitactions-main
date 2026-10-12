@@ -9,9 +9,9 @@ export interface MarbleTile {
   group?: string;
 }
 export type MarbleEventId = 'festival' | 'lottery' | 'rent-rebate' | 'travel-cost' | 'maintenance' | 'visit-santo-domingo' | 'advance-start' | 'retreat' | 'go-to-island' | 'escape-pass' | 'train-ticket' | 'city-dividend' | 'monopoly-warning' | 'city-festival' | 'blackout' | 'rent-pass';
-export const marblePawnIds = ['fox', 'cat', 'penguin', 'astronaut', 'robot', 'dragon'] as const;
+export const marblePawnIds = ['fox', 'cat', 'penguin', 'astronaut', 'robot', 'dragon', 'sali-suli'] as const;
 export type MarblePawnId = typeof marblePawnIds[number];
-const pawnNames: Record<MarblePawnId, { ko: string; es: string }> = { fox: { ko: '말티푸', es: 'Maltipoo' }, cat: { ko: '고양이', es: 'Gata' }, penguin: { ko: '판다', es: 'Panda' }, astronaut: { ko: '우주비행사', es: 'Astronauta' }, robot: { ko: '로봇', es: 'Robot' }, dragon: { ko: '친칠라', es: 'Chinchilla' } };
+const pawnNames: Record<MarblePawnId, { ko: string; es: string }> = { fox: { ko: '말티푸', es: 'Maltipoo' }, cat: { ko: '랙돌', es: 'Ragdoll' }, penguin: { ko: '판다', es: 'Panda' }, astronaut: { ko: '우주인', es: 'Astronauta' }, robot: { ko: '리스연', es: 'Lisyeon' }, dragon: { ko: '친칠라', es: 'Chinchilla' }, 'sali-suli': { ko: '살리·술리', es: 'Sali y Suli' } };
 export interface MarbleActionEvent {
   sequence: number; type: 'roll' | 'move' | 'arrival' | 'buy' | 'build' | 'rent' | 'tax' | 'bonus' | 'event-card' | 'loan' | 'repay' | 'crisis' | 'bankruptcy' | 'monopoly-warning' | 'island' | 'escape' | 'train' | 'rest' | 'turn' | 'win' | 'pawn';
   actor: PlayerId; title: { ko: string; es: string }; text: { ko: string; es: string };
@@ -31,7 +31,7 @@ export interface MarbleState {
   properties: Record<string, { owner: PlayerId; houses: number }>;
   phase: 'roll' | 'decision' | 'main' | 'island' | 'train-decision' | 'event-decision' | 'rent-decision' | 'debt' | 'finished'; pendingTile: number | null; lastRoll: number[]; turns: number; result: GameResult | null;
   eventRng?: number; eventDeck?: MarbleEventId[]; eventSequence?: number; lastEvent?: MarblePublicEvent | null;
-  boardVersion?: 2; cityRouteVersion?: 2; islandTurns?: Record<PlayerId, number>; escapePasses?: Record<PlayerId, number>; trainReady?: Record<PlayerId, boolean>;
+  boardVersion?: 2; cityRouteVersion?: 2 | 3; islandTurns?: Record<PlayerId, number>; escapePasses?: Record<PlayerId, number>; trainReady?: Record<PlayerId, boolean>;
   pendingTrainFare?: number | null; pendingTrainSource?: 'station' | 'card' | null;
   lastMove?: { sequence: number; playerId: PlayerId; from: number; to: number; steps: number | null; source: 'dice' | 'card' | 'train' | 'island' } | null;
   moveSequence?: number; fundPool?: number; diceSequence?: number;
@@ -110,7 +110,16 @@ const modernBoard: MarbleTile[] = [
 const journeyBoard = modernBoard.map((tile, index) => index === 3 ? modernBoard[15] : index === 15 ? modernBoard[3]
   : index === 31 ? { ...tile, name: { ko: '뉴어크', es: 'Newark' } }
     : index === 38 ? { ...tile, name: { ko: '서울', es: 'Seúl' } } : tile);
-const boardFor = (s: MarbleState) => s.boardVersion === 2 ? s.cityRouteVersion === 2 ? journeyBoard : modernBoard : legacyBoard;
+const landmarkJourneyBoard = journeyBoard.map((tile, index) => {
+  const names: Record<number, { ko: string; es: string }> = {
+    11: { ko: '베를린', es: 'Berlín' }, 13: { ko: '마이애미', es: 'Miami' },
+    21: { ko: '이스탄불', es: 'Estambul' }, 32: { ko: '아그라', es: 'Agra' },
+    33: { ko: '아테네', es: 'Atenas' }, 36: { ko: '시드니', es: 'Sídney' },
+  };
+  return names[index] ? { ...tile, name: names[index] } : tile;
+});
+const boardFor = (s: MarbleState) => s.boardVersion === 2
+  ? s.cityRouteVersion === 3 ? landmarkJourneyBoard : s.cityRouteVersion === 2 ? journeyBoard : modernBoard : legacyBoard;
 const legacyIds: MarbleEventId[] = ['festival', 'lottery', 'rent-rebate', 'travel-cost', 'maintenance', 'visit-santo-domingo', 'advance-start', 'retreat'];
 const modernIds: MarbleEventId[] = [...legacyIds, 'go-to-island', 'escape-pass', 'train-ticket', 'city-dividend'];
 const expandedIds: MarbleEventId[] = [...modernIds, 'monopoly-warning', 'city-festival', 'blackout', 'rent-pass'];
@@ -119,7 +128,7 @@ const cards: Record<MarbleEventId, CardData> = {
   lottery: { title: { ko: '작은 복권 당첨', es: 'Premio de lotería' }, text: { ko: '복권에 당첨되어 200을 받습니다.', es: 'Te ganas un premio de lotería y recibes 200.' }, effect: 'cash' },
   'rent-rebate': { title: { ko: '임대료 환급', es: 'Reembolso de alquiler' }, text: { ko: '임대료 일부를 돌려받아 80을 받습니다.', es: 'Te devuelven parte del alquiler: recibes 80.' }, effect: 'cash' },
   'travel-cost': { title: { ko: '여행 경비', es: 'Gastos de viaje' }, text: { ko: '여행 경비로 100을 냅니다.', es: 'Pagas 100 por gastos de viaje.' }, effect: 'cash' },
-  maintenance: { title: { ko: '건물 수리', es: 'Mantenimiento de edificios' }, text: { ko: '내 도시의 건설 단계 합계에 40을 곱한 수리비를 냅니다. 별장은 1단계, 빌딩은 2단계, 랜드마크는 3단계입니다.', es: 'Pagas 40 por cada nivel construido en tus ciudades: villa cuenta 1, edificio 2 y monumento 3.' }, effect: 'maintenance' },
+  maintenance: { title: { ko: '건물 수리', es: 'Mantenimiento de edificios' }, text: { ko: '내 도시의 건설 단계 합계에 40을 곱한 수리비를 냅니다. 단독주택은 1단계, 아파트는 2단계, 랜드마크는 3단계입니다.', es: 'Pagas 40 por cada nivel construido en tus ciudades: casa unifamiliar cuenta 1, apartamentos 2 y monumento 3.' }, effect: 'maintenance' },
   'visit-santo-domingo': { title: { ko: '산토도밍고 방문', es: 'Visita a Santo Domingo' }, text: { ko: '산토도밍고로 이동해 그곳의 부동산 규칙을 적용합니다.', es: 'Ve a Santo Domingo y aplica las reglas normales de esa propiedad.' }, effect: 'visit' },
   'advance-start': { title: { ko: '출발점으로 이동', es: 'Ve a Salida' }, text: { ko: '출발점으로 이동하고 200을 받습니다.', es: 'Ve a Salida y recibe 200.' }, effect: 'move' },
   retreat: { title: { ko: '세 칸 뒤로', es: 'Retrocede tres casillas' }, text: { ko: '세 칸 뒤로 이동합니다. 출발 보너스는 받지 않습니다.', es: 'Retrocede tres casillas. No cobras al pasar por Salida.' }, effect: 'move' },
@@ -203,7 +212,7 @@ function view(s: MarbleState, p: PlayerId) {
         const levels = s.boardVersion === 2 ? 3 : 2;
         const cost = marbleBuildCost(tile, record.houses, s.economicVersion);
         if (canBuild && record.houses < levels && s.money[p] >= cost) {
-          const tier = s.boardVersion === 2 ? [['별장', 'Villa'], ['빌딩', 'Edificio'], 'landmark'][record.houses] : ['집', 'Casa'];
+          const tier = s.boardVersion === 2 ? [['단독주택', 'Casa unifamiliar'], ['아파트', 'Apartamentos'], 'landmark'][record.houses] : ['집', 'Casa'];
           const name = Array.isArray(tier) ? tier : (s.economicVersion === 1 || s.economicVersion === 2 ? ['랜드마크', 'Monumento'] : ['호텔', 'Hotel']);
           add(`${name[0]}: ${tile.name.ko} (${cost})`, `${name[1]}: ${tile.name.es} (${cost})`, { type: 'build', payload: { tile: index } });
         }
@@ -564,7 +573,7 @@ function step(s: MarbleState, p: PlayerId, a: GameAction): MarbleState {
   else if (a.type === 'build') {
     const index = payload.tile as number, cost = marbleBuildCost(board[index], n.properties[String(index)].houses, n.economicVersion); n.money[p] -= cost; n.properties[String(index)] = { ...n.properties[String(index)], houses: n.properties[String(index)].houses + 1 };
     const level = n.properties[String(index)].houses;
-    emit(n, 'build', p, '건설 완료', 'Construcción terminada', `${board[index].name.ko}: ${level === 3 ? '랜드마크' : level === 2 ? '빌딩' : '별장'} · 통행료 ${propertyRent(board[index], n.properties[String(index)], n.boardVersion === 2)}`, `${board[index].name.es}: ${level === 3 ? 'monumento' : level === 2 ? 'edificio' : 'villa'} · alquiler ${propertyRent(board[index], n.properties[String(index)], n.boardVersion === 2)}`, { tile: index, amount: cost, fromAccount: p, toAccount: 'bank', moneyDelta: { [p]: -cost } });
+    emit(n, 'build', p, '건설 완료', 'Construcción terminada', `${board[index].name.ko}: ${level === 3 ? '랜드마크' : level === 2 ? '아파트' : '단독주택'} · 통행료 ${propertyRent(board[index], n.properties[String(index)], n.boardVersion === 2)}`, `${board[index].name.es}: ${level === 3 ? 'monumento' : level === 2 ? 'apartamentos' : 'casa unifamiliar'} · alquiler ${propertyRent(board[index], n.properties[String(index)], n.boardVersion === 2)}`, { tile: index, amount: cost, fromAccount: p, toAccount: 'bank', moneyDelta: { [p]: -cost } });
   } else if (a.type === 'endTurn') return finishTurn(n, p);
   return n;
 }
@@ -573,7 +582,7 @@ export const marbleEngine: GameEngine<MarbleState> = {
   id: 'marble',
   createInitialState(seed) {
     const rng = seed >>> 0, eventRng = (rng ^ 0xa5a5a5a5) >>> 0;
-    return { rng, active: 'p1', positions: { p1: 0, p2: 0 }, money: { p1: 1500, p2: 1500 }, properties: {}, boardVersion: 2, cityRouteVersion: 2,
+    return { rng, active: 'p1', positions: { p1: 0, p2: 0 }, money: { p1: 1500, p2: 1500 }, properties: {}, boardVersion: 2, cityRouteVersion: 3,
       phase: 'roll', pendingTile: null, lastRoll: [], turns: 0, result: null, eventRng: (eventRng + (expandedIds.length - 1) * 0x6d2b79f5) >>> 0,
       eventDeck: shuffle(expandedIds, seededRandom(eventRng)), eventSequence: 0, lastEvent: null, fundPool: 0,
       eventVersion: 3, pendingEvent: null, pendingRent: null, rentPasses: { p1: 0, p2: 0 }, rentModifiers: {}, economicVersion: 2, debt: { p1: 0, p2: 0 }, pendingPayment: null, actionLog: [], actionSequence: 0, pawns: { p1: 'fox', p2: 'cat' }, pawnLocked: { p1: false, p2: false },

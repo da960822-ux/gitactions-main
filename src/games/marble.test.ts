@@ -27,10 +27,22 @@ describe('Marble 40-space house-rule engine', () => {
     const tiles = marbleEngine.getPlayerView(fresh, 'p1').board.tiles;
     const saved = marbleEngine.getPlayerView(initial(15), 'p1').board.tiles;
     expect(fresh.boardVersion).toBe(2);
-    expect(fresh.cityRouteVersion).toBe(2);
+    expect(fresh.cityRouteVersion).toBe(3);
     expect(tiles).toHaveLength(40);
     expect(tiles.filter((tile: any) => tile.kind === 'property')).toHaveLength(24);
     expect([1, 3, 15, 31, 38].map(i => tiles[i].name.ko)).toEqual(['광주', '뉴욕', '산토도밍고', '뉴어크', '서울']);
+    const savedV2 = marbleEngine.getPlayerView({ ...fresh, cityRouteVersion: 2 }, 'p1').board.tiles;
+    const changes = [[11, '베를린', '라베가'], [13, '마이애미', '푼타카나'], [21, '이스탄불', '사마나'], [32, '아그라', '발파라이소'], [33, '아테네', '세부'], [36, '시드니', '오클랜드']] as const;
+    for (const [index, name, previousName] of changes) {
+      expect(tiles[index].name.ko).toBe(name);
+      expect(savedV2[index].name.ko).toBe(previousName);
+    }
+    for (const [index, tile] of tiles.entries()) {
+      const { name, ...values } = tile;
+      const { name: previousName, ...previousValues } = savedV2[index];
+      expect(values).toEqual(previousValues);
+      if (!changes.some(([changed]) => changed === index)) expect(name).toEqual(previousName);
+    }
     const economy = (board: any[]) => board.map(tile => `${tile.kind}:${tile.price}:${tile.rent}:${tile.group}`).sort();
     expect(economy(tiles)).toEqual(economy(saved));
     expect(tiles[3]).toMatchObject({ price: saved[15].price, rent: saved[15].rent, group: saved[15].group });
@@ -288,10 +300,23 @@ describe('Marble 40-space house-rule engine', () => {
     expect(again.debt?.p1).toBe(330);
   });
 
-  it('offers six unique pawns, rejects occupied choices, and locks a pawn after the first roll', () => {
+  it('treats Sali and Suli as one additional skin with one position and the existing turn', () => {
+    const start = initial();
+    const chosen = marbleEngine.applyAction(start, 'p1', { type: 'choose-pawn', payload: { pawn: 'sali-suli' } });
+    expect(chosen.pawns?.p1).toBe('sali-suli');
+    expect(chosen.positions).toEqual(start.positions);
+    expect(chosen.money).toEqual(start.money);
+    expect(chosen.active).toBe(start.active);
+    expect(chosen.phase).toBe(start.phase);
+    expect(chosen.turns).toBe(start.turns);
+    expect(marbleEngine.getPlayerView(chosen, 'p1').board.pawns.p1).toBe('sali-suli');
+    expect(marbleEngine.validateAction({ ...chosen, active: 'p2' }, 'p2', { type: 'choose-pawn', payload: { pawn: 'sali-suli' } })).toBe('Invalid or occupied figure');
+  });
+
+  it('offers seven unique pawns, rejects occupied choices, and locks a pawn after the first roll', () => {
     const start = initial();
     const view = marbleEngine.getPlayerView(start, 'p1');
-    expect(view.actions.filter((item: any) => item.action.type === 'choose-pawn')).toHaveLength(5);
+    expect(view.actions.filter((item: any) => item.action.type === 'choose-pawn')).toHaveLength(6);
     expect(marbleEngine.validateAction(start, 'p1', { type: 'choose-pawn', payload: { pawn: 'cat' } })).toBe('Invalid or occupied figure');
     const chosen = marbleEngine.applyAction(start, 'p1', { type: 'choose-pawn', payload: { pawn: 'dragon' } });
     expect(chosen.pawns?.p1).toBe('dragon');
