@@ -1,0 +1,109 @@
+{
+  "format": "game-premium-tokens-v1",
+  "assets": [
+    {
+      "path": "asset-handoff/game-premium-tokens/splendor/black-onyx.png",
+      "bytes": 1418765,
+      "sha256": "0ba920276a4006512c3bd5b3fe0f8429faf6be1b77f4d37dbbdc3bd260118c43",
+      "git_blob_sha": "d38c118e97443f37de1c29c006c8b91ba5640f97",
+      "width": 1254,
+      "height": 1254
+    },
+    {
+      "path": "asset-handoff/game-premium-tokens/splendor/blue-sapphire.png",
+      "bytes": 1292994,
+      "sha256": "0f4eff1be7ccb07aae9ff54cd2efe4ab86a286a0d80f3a1ef27f47dc9db68206",
+      "git_blob_sha": "38c2262ed5888247e7d381c74c960e34117843cd",
+      "width": 1254,
+      "height": 1254
+    },
+    {
+      "path": "asset-handoff/game-premium-tokens/splendor/gold-joker-coin.png",
+      "bytes": 2535979,
+      "sha256": "f033861d3ea89594eece181a324072bf52af4d826c3b35ca487bba6ad0ead7c6",
+      "git_blob_sha": "e1d7f5ffa0e5dcea20310147e6b6968ad74b37e2",
+      "width": 1254,
+      "height": 1254
+    },
+    {
+      "path": "asset-handoff/game-premium-tokens/splendor/green-emerald.png",
+      "bytes": 1412990,
+      "sha256": "c4a8b1f4ca63036eef1568ca5e2cb805034376395e204ba46acabd9513691d8e",
+      "git_blob_sha": "d611fafe2efba3db3ddfd230691f476069f07a88",
+      "width": 1254,
+      "height": 1254
+    },
+    {
+      "path": "asset-handoff/game-premium-tokens/splendor/red-ruby.png",
+      "bytes": 1076138,
+      "sha256": "761d6f3276b6724d3e0e17d932ecf34675224daf6c9768db272fd999429e81ff",
+      "git_blob_sha": "1f0c1ac38e7a951f625371ab88317ef986c4b389",
+      "width": 1254,
+      "height": 1254
+    },
+    {
+      "path": "asset-handoff/game-premium-tokens/splendor/white-diamond.png",
+      "bytes": 1352759,
+      "sha256": "4696aa72302e14bc255fbc0f01f38dfc9cb4d8f8c4ab2dc77fb963b690e0c363",
+      "git_blob_sha": "ff702b839ec3a39ff04511a3a8d37c6c4cc37893",
+      "width": 1254,
+      "height": 1254
+    },
+    {
+      "path": "asset-handoff/game-premium-tokens/jaipur/bonus-token-back.png",
+      "bytes": 2876724,
+      "sha256": "5b016de4e70abf31f005ac37250b315c847928b7fef76f41b0e79b28a8ebc923",
+      "git_blob_sha": "d17595a8c04d411407fbde557e2d89271f19968a",
+      "width": 1254,
+      "height": 1254
+    },
+    {
+      "path": "asset-handoff/game-premium-tokens/jaipur/cloth.png",
+      "bytes": 1645821,
+      "sha256": "461a449b08cb3d4d701b5e1f5b28d7645173823190ed4ececbcdc8e737b1c4d8",
+      "git_blob_sha": "bb17a243147653c65595c0f8f3a03eda5c60efd2",
+      "width": 1254,
+      "height": 1254
+    },
+    {
+      "path": "asset-handoff/game-premium-tokens/jaipur/diamond.png",
+      "bytes": 968872,
+      "sha256": "f6ebc9a619f20907153dbf4fd75dcb7c4c5aa0c89309b46ae5775ca5f05cac91",
+      "git_blob_sha": "79b770019828ca44efeaa58741ac74cecf3989ca",
+      "width": 1254,
+      "height": 1254
+    },
+    {
+      "path": "asset-handoff/game-premium-tokens/jaipur/gold.png",
+      "bytes": 1600430,
+      "sha256": "29d99cd92aa3ed2181de8ab4332448533aa236ce722362f42c07be7834ffb2d2",
+      "git_blob_sha": "df7a9fc99664b64871e0a3cf8b255203a44ff1d2",
+      "width": 1254,
+      "height": 1254
+    },
+    {
+      "path": "asset-handoff/game-premium-tokens/jaipur/leather.png",
+      "bytes": 2420439,
+      "sha256": "4380f2b908e67ee7a061707bc28930f5a78fd35d4ae39ea42945b41294760550",
+      "git_blob_sha": "83acdfd1020d415a5107da34150356b460f3ada0",
+      "width": 1254,
+      "height": 1254
+    },
+    {
+      "path": "asset-handoff/game-premium-tokens/jaipur/silver.png",
+      "bytes": 1587992,
+      "sha256": "bda289d90ca6930c32fccd00cf5a0e6135eaddd8f7394e360a8778cd89aed835",
+      "git_blob_sha": "cdccd5e6d0e1f46e2a41aab279ce6394284b62f6",
+      "width": 1254,
+      "height": 1254
+    },
+    {
+      "path": "asset-handoff/game-premium-tokens/jaipur/spice.png",
+      "bytes": 720573,
+      "sha256": "7b08de073bbe70a7ce24187af2982326e4f3037fed97d00c2f1b157eaddb5a2e",
+      "git_blob_sha": "42798b1ef729d2c815460acdc8c9ef5ba5d820d6",
+      "width": 1254,
+      "height": 1254
+    }
+  ]
+}
