@@ -1,0 +1,37 @@
+{
+  "sourceSha": "32d0a3d52c2304602d143e2897cfbcb6ab93a2af",
+  "sourceBranch": "local/lusion-space-restart-20261012",
+  "url": "http://127.0.0.1:5265/landing-preview.html",
+  "viewport": {
+    "width": 1440,
+    "height": 900,
+    "dpr": 1
+  },
+  "browser": "Chromium headless; software WebGL",
+  "sequence": [
+    "3s idle at hero",
+    "wheel scroll 0→720px",
+    "2.5s idle at game section",
+    "wheel scroll back"
+  ],
+  "start": {
+    "y": 0,
+    "position": "fixed",
+    "top": 0,
+    "progress": "0.0000"
+  },
+  "down": {
+    "y": 720,
+    "position": "fixed",
+    "top": 0,
+    "progress": "1.0000"
+  },
+  "back": {
+    "y": 0,
+    "position": "fixed",
+    "top": 0,
+    "progress": "0.0000"
+  },
+  "frameCount": 39,
+  "errors": []
+}

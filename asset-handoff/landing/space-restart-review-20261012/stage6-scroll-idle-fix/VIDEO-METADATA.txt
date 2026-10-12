@@ -1,0 +1,14 @@
+Short targeted scroll/idle evidence — desktop landing fix
+
+Source branch: local/lusion-space-restart-20261012
+Source SHA: 32d0a3d52c2304602d143e2897cfbcb6ab93a2af
+Media branch: local/landing-review-media-20261012
+File: scroll-idle-short.mp4
+SHA-256: d5533fa8f468b2210962126b59ead8e46dba3857cef3bb81c11189f121e75f06
+Container/codec: MP4 / H.264, silent
+Dimensions/rate: 1440x900, 5 fps
+Duration/frame count: 7.8 seconds, 39 frames
+Size: 1,854,458 bytes
+Capture: Chromium headless via CDP screencast, software WebGL, 2026-10-12 UTC.
+Sequence: 3s hero idle; wheel scroll 0→720px; 2.5s game-section idle; wheel scroll back.
+This is a short targeted capture, not a re-recording of the full stage5 video.
