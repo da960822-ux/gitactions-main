@@ -9,7 +9,7 @@
 .header-caption { color: var(--ink-faint); font-size: 9px; letter-spacing: .18em; }
 .header-home { color: var(--teal); font-size: 12px; font-weight: 700; text-decoration: none; }
 .header-home span { margin-left: 8px; }
-.loading-screen { min-height: 50vh; display: grid; place-content: center; justify-items: center; gap: 14px; color: var(--ink-soft); font-size: 13px; }
+.loading-screen { min-height: 50vh; display: grid; place-content: center; justify-items: center; gap: 14px; color: #d9c5ce; font-size: 13px; }
 .loader { width: 28px; height: 28px; border-radius: 50%; border: 2px solid var(--line); border-top-color: var(--teal); animation: spin .8s linear infinite; }
 @keyframes spin { to { transform: rotate(360deg); } }
 .error-card { width: min(500px, calc(100% - 40px)); margin: 90px auto; padding: 48px; text-align: center; background: var(--white); border-radius: var(--round); box-shadow: var(--shadow); }

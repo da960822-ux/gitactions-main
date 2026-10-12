@@ -22,6 +22,12 @@ export function HeroScene({ children, backgroundSrc, envelopeSrc, portraitSrc, p
   const [heartBurst, setHeartBurst] = useState(0);
   const [previewOpen, setPreviewOpen] = useState(false);
   const [visible, setVisible] = useState(true);
+  const [readyImages, setReadyImages] = useState<string[]>([]);
+  const revealImage = (src: string) => setReadyImages(current => current.includes(src) ? current : [...current, src]);
+  const decodeImage = (image: HTMLImageElement) => {
+    const src = image.getAttribute('src')!;
+    void image.decode().then(() => revealImage(src), () => revealImage(src));
+  };
   const letterOpen = letterExpanded ?? previewOpen;
 
   const resetPointer = () => {
@@ -39,6 +45,11 @@ export function HeroScene({ children, backgroundSrc, envelopeSrc, portraitSrc, p
   };
 
   useEffect(() => { if (motionPaused) resetPointer(); }, [motionPaused]);
+  useEffect(() => {
+    sceneRef.current?.querySelectorAll<HTMLImageElement>('img[data-enter-image]').forEach(image => {
+      if (image.complete) decodeImage(image);
+    });
+  }, [portraitSrc, postcardSrc, envelopeSrc]);
   useEffect(() => {
     const observer = new IntersectionObserver(([entry]) => setVisible(entry.isIntersecting));
     if (sceneRef.current) observer.observe(sceneRef.current);
@@ -95,15 +106,15 @@ export function HeroScene({ children, backgroundSrc, envelopeSrc, portraitSrc, p
     <div className="hero-scene-inner">
       <div className="hero-scene-copy">{children}</div>
       <div className="hero-scene-art">
-        <figure className="hero-scene-portrait" data-parallax="14">
-          <img src={portraitSrc} width="1254" height="1254" alt={portraitAlt} fetchPriority="high" aria-hidden="false" />
+        <figure className="hero-scene-portrait" data-parallax="14" data-image-ready={readyImages.includes(portraitSrc)}>
+          <img data-enter-image src={portraitSrc} width="1254" height="1254" alt={portraitAlt} fetchPriority="high" aria-hidden="false" onLoad={event => decodeImage(event.currentTarget)} onError={() => revealImage(portraitSrc)} />
         </figure>
-        <div className="hero-postcard" data-parallax="-12" aria-hidden="true">
-          <img src={postcardSrc} alt="" />
+        <div className="hero-postcard" data-parallax="-12" aria-hidden="true" data-image-ready={readyImages.includes(postcardSrc)}>
+          <img data-enter-image src={postcardSrc} alt="" onLoad={event => decodeImage(event.currentTarget)} onError={() => revealImage(postcardSrc)} />
           <span className="hero-postmark" aria-hidden="true">♡</span>
         </div>
-        <button className="hero-envelope" data-parallax="12" type="button" aria-label={envelopeLabel} aria-expanded={letterOpen} aria-controls={onOpenLetter ? 'gift-paper' : 'hero-letter-preview'} onClick={onOpenLetter ?? (() => setPreviewOpen(value => !value))}>
-          <img src={envelopeSrc} alt="" />
+        <button className="hero-envelope" data-parallax="12" type="button" data-image-ready={readyImages.includes(envelopeSrc)} aria-label={envelopeLabel} aria-expanded={letterOpen} aria-controls={onOpenLetter ? 'gift-paper' : 'hero-letter-preview'} onClick={onOpenLetter ?? (() => setPreviewOpen(value => !value))}>
+          <img data-enter-image src={envelopeSrc} width="1536" height="1024" alt="" onLoad={event => decodeImage(event.currentTarget)} onError={() => revealImage(envelopeSrc)} />
           <span className="hero-envelope-flap" aria-hidden="true" />
           <span className="hero-letter-preview" id="hero-letter-preview" aria-hidden={!!onOpenLetter || !letterOpen}><b>For my Mami ♡</b><small>Baby, surprise!</small></span>
         </button>

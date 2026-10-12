@@ -63,3 +63,13 @@
 .rd-still .game-rail-card::before{display:none}
 
 @keyframes rd-ambient-enter{from{opacity:0}to{opacity:1}}
+/* Reveal each decorative image when its own bytes are ready; controls never wait. */
+.rd-restored .hero-scene-portrait img,.rd-restored .hero-scene-portrait::after{opacity:0;animation:none}
+.rd-restored .hero-scene-portrait[data-image-ready=true] img{opacity:1;animation:rd-portrait-enter 650ms var(--scene-ease) both}
+.rd-restored .hero-scene-portrait[data-image-ready=true]::after{opacity:1;animation:rd-ambient-enter 650ms var(--scene-ease) both}
+.rd-restored .hero-postcard,.rd-restored .hero-envelope{opacity:0;animation:none;visibility:hidden}
+.rd-restored .hero-postcard[data-image-ready=true]{opacity:1;visibility:visible;animation:hero-card-enter 400ms var(--scene-ease) both}
+.rd-restored .hero-envelope[data-image-ready=true]{opacity:1;visibility:visible;animation:hero-envelope-enter 400ms var(--scene-ease) both}
+.rd-restored .game-rail-art{transition:opacity 220ms var(--scene-ease)}
+.rd-restored .game-rail-art[data-image-ready=false]{opacity:0}
+@media(prefers-reduced-motion:reduce){.rd-restored .hero-scene-portrait[data-image-ready=true] img,.rd-restored .hero-scene-portrait[data-image-ready=true]::after{animation:none!important}}
