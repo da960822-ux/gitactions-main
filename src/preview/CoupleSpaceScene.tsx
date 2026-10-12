@@ -3,7 +3,7 @@ import * as T from 'three';
 import {createHeartGeometry} from './heartGeometry';
 import {createHeroMaterials} from './heroMaterials';
 import {createPaperGeometry, createRibbonGeometry, createRibbonTailGeometry, updatePaper, updateRibbon} from './spaceGeometry';
-import {SPACE_PLAN, advanceLetter, balloonPlan, clamp, randomAt, smooth, stepSpring} from './spaceMotion';
+import {SPACE_PLAN, advanceLetter, balloonPlan, clamp, pointerRepulsionFactor, randomAt, smooth, stepSpring} from './spaceMotion';
 
 type Props = {paused: boolean; reduced: boolean; open: boolean; onUnavailable: () => void};
 type Balloon = {mesh: T.InstancedMesh; slot: number; index: number; base: T.Vector3; position: T.Vector3;
@@ -137,7 +137,7 @@ export default function CoupleSpaceScene(props: Props) {
       pointer.lerp(stop?new T.Vector2():targetPointer,snap?1:1-Math.exp(-elapsed*8));
       letterPhase=advanceLetter(letterPhase,control.current.open,elapsed,stop);
       const nearLetter=letterTop-scroll<height+120&&letterTop+letterHeight-scroll>-120;
-      camera.position.set(nearLetter?0:progress*2.4+pointer.x*.45,nearLetter?0:pointer.y*.2,nearLetter?10:T.MathUtils.lerp(SPACE_PLAN.cameraStart,SPACE_PLAN.cameraRest,smooth(0,1,entry))-progress*4);
+      camera.position.set(nearLetter?0:progress*2.4,0,nearLetter?10:T.MathUtils.lerp(SPACE_PLAN.cameraStart,SPACE_PLAN.cameraRest,smooth(0,1,entry))-progress*4);
       camera.lookAt(nearLetter?0:progress*.8,nearLetter?0:-progress*.25,nearLetter?0:-progress*2);camera.updateMatrixWorld();
       universe.position.copy(camera.localToWorld(new T.Vector3(0,0,-60)));universe.quaternion.copy(camera.quaternion);
       node.style.transform=`translate3d(0,${scroll-docTop}px,0)`;
@@ -155,7 +155,8 @@ export default function CoupleSpaceScene(props: Props) {
         const plan=balloonPlan(balloon.index,mobile),pulse=stop?0:Math.sin(time*.43+balloon.index)*.035;
         const baseScreen=project(balloon.base),cursorX=(targetPointer.x+1)*width/2,cursorY=(1-targetPointer.y)*height/2,dx=baseScreen.x-cursorX,dy=baseScreen.y-cursorY,distance=Math.hypot(dx,dy);
         const target=drag&&selected===balloon?balloon.target:new T.Vector2();
-        if(!stop&&!drag&&distance<180&&targetPointer.length()>0)target.set(dx,dy).normalize().multiplyScalar((1-distance/180)*(mobile?55:140));
+        const pointerForce=pointerRepulsionFactor(distance);
+        if(!stop&&!drag&&pointerForce>0&&targetPointer.length()>0)target.set(dx/distance,dy/distance).multiplyScalar(pointerForce*(mobile?55:140));
         for(const axis of ['x','y'] as const){const state=stepSpring(balloon.offset[axis],balloon.velocity[axis],stop?0:target[axis],elapsed);balloon.offset[axis]=state.position;balloon.velocity[axis]=state.velocity;}
         const exit=smooth(.34,.94,progress),depth=-camera.worldToLocal(balloon.base.clone()).z+exit*5;
         let x=baseScreen.x+balloon.offset.x+(1-entryAmount)*(plan.x<.5?-1:1)*(plan.depth<10?300:150)+(plan.x<.5?-1:1)*exit*width*.07,y=baseScreen.y+balloon.offset.y+(1-entryAmount)*(plan.depth<10?80:25)-exit*height*.68;

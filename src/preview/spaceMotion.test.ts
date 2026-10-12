@@ -1,5 +1,5 @@
 import {describe, expect, it} from 'vitest';
-import {advanceLetter, balloonPlan, stepSpring} from './spaceMotion';
+import {advanceLetter, balloonPlan, pointerRepulsionFactor, stepSpring} from './spaceMotion';
 import {createPaperGeometry, createRibbonGeometry, updateRibbon, updatePaper} from './spaceGeometry';
 import {createRoseBloomGeometry} from './roseBloomGeometry';
 
@@ -20,6 +20,13 @@ describe('couple space continuity and preserved volume', () => {
     const slowFrame=stepSpring(180,0,0,1.6);
     expect(Math.abs(slowFrame.position)).toBeLessThan(1);
     expect(Number.isFinite(stepSpring(0, 0, 180, 5).position)).toBe(true);
+  });
+  it('leaves a balloon pickable at the cursor center while retaining a strong near-pointer response', () => {
+    expect(pointerRepulsionFactor(0)).toBe(0);
+    expect(pointerRepulsionFactor(1)).toBeGreaterThan(0);
+    expect(pointerRepulsionFactor(64)).toBeCloseTo(116/180, 8);
+    expect(pointerRepulsionFactor(180)).toBe(0);
+    expect(pointerRepulsionFactor(Number.NaN)).toBe(0);
   });
   it('keeps foreground, middle and rear balloons on mobile too', () => {
     for(const mobile of [false,true]) {

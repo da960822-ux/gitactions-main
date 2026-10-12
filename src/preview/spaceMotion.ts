@@ -16,6 +16,10 @@ export const randomAt = (i: number) => {
 export function advanceLetter(value: number, open: boolean, dt: number, immediate: boolean) {
   return immediate ? Number(open) : clamp(value + (open ? 1 : -1) * dt / SPACE_PLAN.letterSeconds);
 }
+export function pointerRepulsionFactor(distance: number) {
+  if(!Number.isFinite(distance)||distance<=0||distance>=180)return 0;
+  return (1-distance/180)*Math.min(1,distance/64);
+}
 export function stepSpring(position: number, velocity: number, target: number, dt: number) {
   // Substeps stabilize a long visible frame while preserving wall-clock spring timing.
   const elapsed = clamp(Number.isFinite(dt) ? dt : 0, 0, 2);
