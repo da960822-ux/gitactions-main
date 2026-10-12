@@ -3,7 +3,7 @@ import { Link } from '../app/Router';
 import '../styles/landing.css';
 import { landingCopy } from '../copy/home';
 import { AcrossHero } from './AcrossHero';
-import { GameRail } from './GameRail';
+import { GameGallery } from './gallery/GameGallery';
 import { LandingMoments } from './LandingMoments';
 
 export function Landing() {
@@ -45,13 +45,7 @@ export function Landing() {
     <AcrossHero language={language} />
 
     <div className="home-content wrap">
-      <section className="game-picker" id="games" aria-labelledby="games-title">
-        <header className="picker-head personal-picker-head">
-          <h2 id="games-title">{copy.gamesTitle}</h2>
-          <p>{copy.gamesIntro[0]}<br/>{copy.gamesIntro[1]}</p>
-        </header>
-        <GameRail language={language} />
-      </section>
+      <GameGallery language={language} />
 
     </div>
     <LandingMoments language={language} />
