@@ -14,12 +14,13 @@ export const randomAt = (i: number) => {
   return n - Math.floor(n);
 };
 export function advanceLetter(value: number, open: boolean, dt: number, immediate: boolean) {
-  return immediate ? Number(open) : clamp(value + (open ? 1 : -1) * Math.min(dt, .25) / SPACE_PLAN.letterSeconds);
+  return immediate ? Number(open) : clamp(value + (open ? 1 : -1) * dt / SPACE_PLAN.letterSeconds);
 }
 export function stepSpring(position: number, velocity: number, target: number, dt: number) {
-  // Substeps keep a sudden resumed frame from injecting energy into a dragged balloon.
-  const count = Math.max(1, Math.ceil(Math.min(dt, .05) / .008));
-  const step = Math.min(dt, .05) / count;
+  // Substeps stabilize a long visible frame while preserving wall-clock spring timing.
+  const elapsed = clamp(Number.isFinite(dt) ? dt : 0, 0, 2);
+  const count = Math.max(1, Math.ceil(elapsed / .008));
+  const step = elapsed / count;
   for (let i = 0; i < count; i++) {
     velocity += ((target - position) * 100 - velocity * 15) * step;
     position += velocity * step;

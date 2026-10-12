@@ -130,12 +130,12 @@ export default function CoupleSpaceScene(props: Props) {
       for(const balloon of balloons){const plan=balloonPlan(balloon.index,mobile);balloon.base.copy(atPixel(plan.x*width,plan.y*height,plan.depth));balloon.scale=plan.pixels*pixelUnit(plan.depth)/2.0;balloon.rotation=plan.rotation;balloon.twist=plan.tiltX;balloon.yaw=plan.tiltY;}
       render(0,true);sync();
     };
-    const render=(dt:number,snap=false)=>{
+    const render=(dt:number,snap=false,elapsed=dt)=>{
       if(!width||disposed||lost)return;
       const stop=control.current.paused||control.current.reduced,progress=clamp((scroll-docTop)/(mobile?650:SPACE_PLAN.scrollDistance));
       if(textureReady&&!stop&&entryBegan)entry=clamp((performance.now()-entryBegan)/1000/SPACE_PLAN.entranceSeconds);else if(stop)entry=1;
-      pointer.lerp(stop?new T.Vector2():targetPointer,snap?1:1-Math.exp(-dt*8));
-      letterPhase=advanceLetter(letterPhase,control.current.open,dt,stop);
+      pointer.lerp(stop?new T.Vector2():targetPointer,snap?1:1-Math.exp(-elapsed*8));
+      letterPhase=advanceLetter(letterPhase,control.current.open,elapsed,stop);
       const nearLetter=letterTop-scroll<height+120&&letterTop+letterHeight-scroll>-120;
       camera.position.set(nearLetter?0:progress*2.4+pointer.x*.45,nearLetter?0:pointer.y*.2,nearLetter?10:T.MathUtils.lerp(SPACE_PLAN.cameraStart,SPACE_PLAN.cameraRest,smooth(0,1,entry))-progress*4);
       camera.lookAt(nearLetter?0:progress*.8,nearLetter?0:-progress*.25,nearLetter?0:-progress*2);camera.updateMatrixWorld();
@@ -156,7 +156,7 @@ export default function CoupleSpaceScene(props: Props) {
         const baseScreen=project(balloon.base),cursorX=(targetPointer.x+1)*width/2,cursorY=(1-targetPointer.y)*height/2,dx=baseScreen.x-cursorX,dy=baseScreen.y-cursorY,distance=Math.hypot(dx,dy);
         const target=drag&&selected===balloon?balloon.target:new T.Vector2();
         if(!stop&&!drag&&distance<180&&targetPointer.length()>0)target.set(dx,dy).normalize().multiplyScalar((1-distance/180)*(mobile?55:140));
-        for(const axis of ['x','y'] as const){const state=stepSpring(balloon.offset[axis],balloon.velocity[axis],stop?0:target[axis],dt);balloon.offset[axis]=state.position;balloon.velocity[axis]=state.velocity;}
+        for(const axis of ['x','y'] as const){const state=stepSpring(balloon.offset[axis],balloon.velocity[axis],stop?0:target[axis],elapsed);balloon.offset[axis]=state.position;balloon.velocity[axis]=state.velocity;}
         const exit=smooth(.34,.94,progress),depth=-camera.worldToLocal(balloon.base.clone()).z+exit*5;
         let x=baseScreen.x+balloon.offset.x+(1-entryAmount)*(plan.x<.5?-1:1)*(plan.depth<10?300:150)+(plan.x<.5?-1:1)*exit*width*.07,y=baseScreen.y+balloon.offset.y+(1-entryAmount)*(plan.depth<10?80:25)-exit*height*.68;
         const radius=plan.pixels*plan.depth/depth*.58;
@@ -198,7 +198,7 @@ export default function CoupleSpaceScene(props: Props) {
       canvas.dataset.materials=JSON.stringify(materials.map(m=>({color:m.color.getHexString(),metalness:m.metalness,roughness:m.roughness})));canvas.dataset.subject=JSON.stringify(subject);canvas.dataset.renderer=renderer.getContext().getParameter(renderer.getContext().RENDERER);
       canvas.dataset.background=JSON.stringify({galaxy:'/images/landing/spiral-galaxy-far-v1.webp',galaxyLoaded:!!galaxy.image,galaxyViewDepth:60,projection:'camera-facing far environment plate',cloudZ:[-18,-12],cloudPeriodSeconds:22,cloudTravelViewport:[.11,.11],cloudDirections:[1,-1],starZ:[-19,-28,-42]});
     };
-    const frame=(now:number)=>{const dt=last?Math.min(.25,(now-last)/1000):1/60;last=now;time+=dt;render(dt);};
+    const frame=(now:number)=>{const elapsed=last?Math.max(0,(now-last)/1000):1/60,dt=Math.min(.25,elapsed);last=now;time=now/1000;render(dt,false,elapsed);};
     const sync=()=>{const visible=scroll-docTop<height+1000||letterTop-scroll<height+120&&letterTop+letterHeight-scroll>-120;
       const run=visible&&!document.hidden&&!control.current.paused&&!control.current.reduced&&!lost&&!disposed;
       renderer.setAnimationLoop(run?frame:null);canvas.dataset.loop=run?'running':'stopped';if(!run)last=0;};

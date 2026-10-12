@@ -9,12 +9,16 @@ describe('couple space continuity and preserved volume', () => {
     const closing = advanceLetter(opening, false, .016, false);
     expect(closing).toBeCloseTo(.43, 8);
     expect(advanceLetter(.99, true, 2, false)).toBe(1);
+    expect(advanceLetter(0, true, 1.2, false)).toBe(1);
+    expect(advanceLetter(1, false, .6, false)).toBeCloseTo(.5, 8);
     expect(advanceLetter(.25, true, 0, true)).toBe(1);
   });
   it('settles released input and remains finite after a resumed tab', () => {
     let state = {position: 180, velocity: 120};
     for(let i=0;i<90;i++) state = stepSpring(state.position, state.velocity, 0, 1/60);
     expect(Math.abs(state.position)).toBeLessThan(.05);
+    const slowFrame=stepSpring(180,0,0,1.6);
+    expect(Math.abs(slowFrame.position)).toBeLessThan(1);
     expect(Number.isFinite(stepSpring(0, 0, 180, 5).position)).toBe(true);
   });
   it('keeps foreground, middle and rear balloons on mobile too', () => {
