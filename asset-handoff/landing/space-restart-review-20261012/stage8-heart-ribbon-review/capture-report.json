@@ -1,0 +1,100 @@
+{
+  "purpose": "Parent review of the hero ribbon removal and revised heart material before any full motion recapture.",
+  "before": {
+    "sourceSha": "32d0a3d52c2304602d143e2897cfbcb6ab93a2af",
+    "url": "http://127.0.0.1:5265/landing-preview.html",
+    "file": "hero-before-1440x900.png",
+    "stateFile": "before-state.json"
+  },
+  "after": {
+    "sourceSha": "d72f11df266bdd62f8f7c7c5452b5259c9095490",
+    "branch": "games/game-landing-review-20261012",
+    "url": "http://127.0.0.1:5270/landing-preview.html",
+    "file": "hero-after-1440x900.png",
+    "stateFile": "after-state.json"
+  },
+  "viewport": {
+    "width": 1440,
+    "height": 900,
+    "deviceScaleFactor": 1,
+    "reducedMotion": true
+  },
+  "browser": {
+    "name": "Chromium",
+    "version": "154.0.8037.57",
+    "reportedRenderer": "WebKit WebGL",
+    "underlyingRenderer": "ANGLE / Vulkan SwiftShader Device (Subzero)",
+    "physicalGpuAvailable": false
+  },
+  "sceneComparison": {
+    "bothReady": true,
+    "sameViewportCameraAndHeroState": true,
+    "sameBalloonCount": 48,
+    "balloonCoordinatesDepthPixelsAndOffsetsMatch": true,
+    "ornamentalHeroRibbonRemoved": true,
+    "gameCardPanelsChanged": false,
+    "couplePortraitAndRoseChanged": false,
+    "interactiveDragSmoke": {
+      "balloonRecords": 48,
+      "targetIndex": 32,
+      "dragOffsetPx": [121.109, 46.818],
+      "settledOffsetPx": [0, 0],
+      "pageErrors": []
+    }
+  },
+  "materialsAfter": [
+    {
+      "role": "rose gold",
+      "color": "#d99486",
+      "metalness": 0.24,
+      "roughness": 0.4,
+      "clearcoat": 0.16,
+      "clearcoatRoughness": 0.4,
+      "envMapIntensity": 0.72
+    },
+    {
+      "role": "pink",
+      "color": "#d55280",
+      "metalness": 0.03,
+      "roughness": 0.5,
+      "clearcoat": 0.12,
+      "clearcoatRoughness": 0.48,
+      "envMapIntensity": 0.68,
+      "sheen": 0.34
+    },
+    {
+      "role": "pearl",
+      "color": "#e7d9f2",
+      "metalness": 0.08,
+      "roughness": 0.4,
+      "clearcoat": 0.18,
+      "clearcoatRoughness": 0.42,
+      "envMapIntensity": 0.74,
+      "iridescence": 0.2
+    }
+  ],
+  "heartGeometryCheck": {
+    "productionSegments": 48,
+    "productionRings": 12,
+    "vertices": 1106,
+    "triangles": 2208,
+    "normalLengths": "all finite and unit length",
+    "frontBackBoundary": "outer normals lie in the silhouette plane; no seam normal discontinuity found",
+    "geometryChanged": false
+  },
+  "artifacts": [
+    "hero-before-1440x900.png",
+    "hero-after-1440x900.png",
+    "hero-before-after-1440x900.png",
+    "heart-material-before-after.png",
+    "heart-material-after-closeup.png",
+    "before-state.json",
+    "after-state.json"
+  ],
+  "continuousVideoRerecorded": false,
+  "limitations": [
+    "The renderer used SwiftShader because the environment has no physical GPU device.",
+    "Mobile and physical-GPU appearance are not verified.",
+    "The full motion video was intentionally not recaptured before parent review."
+  ]
+}
