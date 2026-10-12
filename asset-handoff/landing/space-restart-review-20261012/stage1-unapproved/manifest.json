@@ -1,0 +1,29 @@
+{
+  "status": "unapproved-incomplete",
+  "base": "ab81a9e2de168b89c58e197edbb6e5a541aad4ca",
+  "implementationCheckpoint": "a30fdc2098ce0b41b0b7047d36bdb991ec54918e",
+  "capture": "Local production Chromium, 1440x900 DPR1, 2026-10-12 05:53–05:55 UTC; captured WIP before checkpoint. Checkpoint also removes wire-bearing fallback background after capture. No visual acceptance.",
+  "files": [
+    {
+      "path": "hero-1440-ko.png",
+      "bytes": 1048041,
+      "sha256": "9c2d0d7dd6f060b514e2959346ed50edf54fa497d27f41ddee4bf42a8eaf6bb0"
+    },
+    {
+      "path": "scroll-720.png",
+      "bytes": 739708,
+      "sha256": "c85dbe1d2aa8f9bc12f2b94bad09b04159bb94bdc851ce09bae3ca80bbab1970"
+    },
+    {
+      "path": "letter-1440-es.png",
+      "bytes": 385619,
+      "sha256": "6ec30ca41f8f6b11688a56083d3fd3418fa42e141de7ed08e8786227d731697d"
+    }
+  ],
+  "knownFailures": [
+    "auxiliary petal/ribbon recognition",
+    "scroll panel occludes lower face",
+    "galaxy structure needs improvement"
+  ],
+  "mobileWorkDeferred": true
+}
