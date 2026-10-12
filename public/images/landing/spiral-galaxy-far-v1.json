@@ -1,0 +1,17 @@
+{
+  "source": "imagegen",
+  "sourceFile": "exec-305deea3-911b-4ff4-9e6c-cfca3b25cfea.png",
+  "sourceSha256": "987141cb45af41c53f3f82a45b9d7339704ddf99d2e17a8e9ee3d40bd9ee225e",
+  "sourceBytes": 2589189,
+  "dimensions": [
+    1672,
+    941
+  ],
+  "runtimePath": "public/images/landing/spiral-galaxy-far-v1.webp",
+  "runtimeBytes": 377518,
+  "runtimeSha256": "bc9608cf0037884b8838a9a2e4b390f1a711db1f4bc787a2311241bc74028b72",
+  "processing": "WebP quality92/method6, original dimensions/composition; no face/reference image supplied",
+  "role": "Farthest camera-facing environment plate at view-depth60; independently positioned 3D stars/clouds/balloons/camera remain active",
+  "approvalStatus": "new visual review asset; in-context acceptance pending",
+  "originalRetained": "/workspace/generated_images/exec-305deea3-911b-4ff4-9e6c-cfca3b25cfea.png"
+}
