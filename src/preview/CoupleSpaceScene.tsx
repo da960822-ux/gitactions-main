@@ -7,7 +7,8 @@ import {SPACE_PLAN, advanceLetter, balloonPlan, clamp, pointerRepulsionFactor, r
 
 type Props = {paused: boolean; reduced: boolean; open: boolean; onUnavailable: () => void};
 type Balloon = {mesh: T.InstancedMesh; slot: number; index: number; base: T.Vector3; position: T.Vector3;
-  rotation: number; yaw: number; scale: number; offset: T.Vector2; velocity: T.Vector2; twist: number; target: T.Vector2};
+  rotation: number; yaw: number; scale: number; offset: T.Vector2; velocity: T.Vector2; twist: number; target: T.Vector2;
+  driftSpeed: number; driftPhase: number; driftSecondary: number; driftX: number; driftY: number};
 
 function universeTexture(cloudOnly = false) {
   const canvas = document.createElement('canvas'); canvas.width = 768; canvas.height = 512;
@@ -88,13 +89,15 @@ export default function CoupleSpaceScene(props: Props) {
       const y=cluster?Math.sin(angle+r*.13)*r*.54:(randomAt(i+941)-.5)*60;
       starPositions.push(x,y,[-19,-28,-42][i%3]);const c=new T.Color(i%5===0?'#f7b3a7':i%3===0?'#b7a6ed':'#f7e9dd');starColors.push(c.r,c.g,c.b);
     }
-    const starsGeometry=new T.BufferGeometry();starsGeometry.setAttribute('position',new T.Float32BufferAttribute(starPositions,3));starsGeometry.setAttribute('color',new T.Float32BufferAttribute(starColors,3));
+    const starsGeometry=new T.BufferGeometry(),starPosition=new T.Float32BufferAttribute(starPositions,3),starColor=new T.Float32BufferAttribute(starColors,3);
+    starPosition.setUsage(T.DynamicDrawUsage);starColor.setUsage(T.DynamicDrawUsage);starsGeometry.setAttribute('position',starPosition);starsGeometry.setAttribute('color',starColor);
+    const starMotion=Array.from({length:SPACE_PLAN.stars},(_,i)=>({phase:randomAt(i+1251)*Math.PI*2,speed:.22+randomAt(i+1513)*.25,lightPhase:randomAt(i+1777)*Math.PI*2,lightSpeed:.55+randomAt(i+1981)*.7,drift:[.085,.06,.04][i%3]}));
     const stars=new T.Points(starsGeometry,new T.PointsMaterial({size:.092,vertexColors:true,transparent:true,opacity:.87,depthWrite:false}));scene.add(stars);
     const lightCanvas=document.createElement('canvas');lightCanvas.width=lightCanvas.height=64;const lightCtx=lightCanvas.getContext('2d')!,glow=lightCtx.createRadialGradient(32,32,0,32,32,31);glow.addColorStop(0,'#fff');glow.addColorStop(.12,'#fff5e4');glow.addColorStop(.35,'#fcd9c555');glow.addColorStop(1,'#ffffff00');lightCtx.fillStyle=glow;lightCtx.fillRect(0,0,64,64);lightCtx.fillStyle='#ffe7d5aa';lightCtx.fillRect(31,10,2,44);lightCtx.fillRect(10,31,44,2);
     const starMap=new T.CanvasTexture(lightCanvas);textures.push(starMap);
     const bright=Array.from({length:SPACE_PLAN.brightStars},(_,i)=>{const sprite=new T.Sprite(new T.SpriteMaterial({map:starMap,transparent:true,depthWrite:false,opacity:.75}));sprite.position.set((randomAt(i+33)-.5)*26,(randomAt(i+60)-.5)*17,-15-i%3*5);sprite.scale.setScalar(.23+randomAt(i+20)*.18);scene.add(sprite);return sprite;});
     const heartGeometry=createHeartGeometry(48,12),materials=createHeroMaterials(),batches=materials.map(material=>{const mesh=new T.InstancedMesh(heartGeometry,material,SPACE_PLAN.balloons/3);mesh.instanceMatrix.setUsage(T.DynamicDrawUsage);mesh.frustumCulled=false;heroGroup.add(mesh);return mesh;});
-    const balloons:Balloon[]=Array.from({length:SPACE_PLAN.balloons},(_,index)=>({mesh:batches[balloonPlan(index,false).material],slot:Math.floor(index/3),index,base:new T.Vector3(),position:new T.Vector3(),rotation:0,yaw:0,scale:1,offset:new T.Vector2(),velocity:new T.Vector2(),twist:0,target:new T.Vector2()}));
+    const balloons:Balloon[]=Array.from({length:SPACE_PLAN.balloons},(_,index)=>({mesh:batches[balloonPlan(index,false).material],slot:Math.floor(index/3),index,base:new T.Vector3(),position:new T.Vector3(),rotation:0,yaw:0,scale:1,offset:new T.Vector2(),velocity:new T.Vector2(),twist:0,target:new T.Vector2(),driftSpeed:.24+randomAt(index+2063)*.24,driftPhase:randomAt(index+2311)*Math.PI*2,driftSecondary:randomAt(index+2549)*Math.PI*2,driftX:6+randomAt(index+2791)*8,driftY:4+randomAt(index+3001)*6}));
     const roseMaterial=new T.MeshBasicMaterial({map:roseMap,transparent:true,alphaTest:.025,depthWrite:true,toneMapped:false,side:T.DoubleSide});
     const rose=new T.Mesh(new T.PlaneGeometry(2/3,1),roseMaterial);heroGroup.add(rose);
     const ribbonGeometry=createRibbonGeometry(),ribbonMaterial=new T.MeshPhysicalMaterial({color:'#d59a8c',map:fabric.map,bumpMap:fabric.relief,bumpScale:.009,metalness:.02,roughness:.49,side:T.DoubleSide,clearcoat:.28,clearcoatRoughness:.34,sheen:.72,sheenColor:'#ffe0d2'}),ribbon=new T.Mesh(ribbonGeometry,ribbonMaterial);heroGroup.add(ribbon);
@@ -123,6 +126,7 @@ export default function CoupleSpaceScene(props: Props) {
     const heroBoxes:{x:number;y:number;right:number;bottom:number}[]=[];
     const measure=()=>{
       width=innerWidth;height=innerHeight;mobile=width<760;docTop=page.getBoundingClientRect().top+scrollY;
+      if(!mobile)node.style.removeProperty('transform');
       renderer.setSize(width,height);camera.aspect=width/height;camera.position.set(0,0,SPACE_PLAN.cameraRest);camera.lookAt(0,0,0);camera.updateProjectionMatrix();camera.updateMatrixWorld();
       universe.scale.setScalar(2*Math.tan(T.MathUtils.degToRad(19))*(SPACE_PLAN.cameraStart+48)/9);
       const lb=letterStage.getBoundingClientRect(),pb=paperDOM.getBoundingClientRect();letterTop=lb.top+scrollY;letterHeight=lb.height;letterX=lb.left+lb.width/2;letterY=letterTop+lb.height/2;paperWidth=pb.width;paperHeight=pb.height;
@@ -140,8 +144,16 @@ export default function CoupleSpaceScene(props: Props) {
       camera.position.set(nearLetter?0:progress*2.4,0,nearLetter?10:T.MathUtils.lerp(SPACE_PLAN.cameraStart,SPACE_PLAN.cameraRest,smooth(0,1,entry))-progress*4);
       camera.lookAt(nearLetter?0:progress*.8,nearLetter?0:-progress*.25,nearLetter?0:-progress*2);camera.updateMatrixWorld();
       universe.position.copy(camera.localToWorld(new T.Vector3(0,0,-60)));universe.quaternion.copy(camera.quaternion);
-      node.style.transform=`translate3d(0,${scroll-docTop}px,0)`;
+      if(mobile)node.style.transform=`translate3d(0,${scroll-docTop}px,0)`;
       heroGroup.visible=!nearLetter&&scroll-docTop<height+1000;letterGroup.visible=nearLetter;
+      if(!mobile) {
+        for(let i=0;i<SPACE_PLAN.stars;i++) {
+          const base=i*3,motion=starMotion[i],phase=time*motion.speed+motion.phase,light=.78+.22*(.5+.5*Math.sin(time*motion.lightSpeed+motion.lightPhase));
+          starPosition.setXYZ(i,starPositions[base]+Math.sin(phase)*motion.drift,starPositions[base+1]+Math.cos(phase*.73+motion.phase)*motion.drift*.58,starPositions[base+2]);
+          starColor.setXYZ(i,starColors[base]*light,starColors[base+1]*light,starColors[base+2]);
+        }
+        starPosition.needsUpdate=starColor.needsUpdate=true;
+      }
       lightLocal.set(pointer.x*.8,pointer.y*.8,-3.4);const lightRadius=Math.hypot(lightLocal.x,lightLocal.y);if(lightRadius>1){lightLocal.x/=lightRadius;lightLocal.y/=lightRadius;}
       pointerLight.position.copy(camera.localToWorld(lightLocal));pointerLight.intensity=pointerActive&&!stop&&!nearLetter?24:0;
       const photoPixels=mobile?Math.min(310,width*.78):Math.min(560,width*.385),photoDepth=T.MathUtils.lerp(9.4,14.8,progress);
@@ -153,13 +165,14 @@ export default function CoupleSpaceScene(props: Props) {
       const entryAmount=smooth(0,.9,entry);
       for(const balloon of balloons) {
         const plan=balloonPlan(balloon.index,mobile),pulse=stop?0:Math.sin(time*.43+balloon.index)*.035;
+        const orbit=time*balloon.driftSpeed+balloon.driftPhase,orbitX=mobile?0:Math.sin(orbit)*balloon.driftX+Math.sin(orbit*.57+balloon.driftSecondary)*balloon.driftX*.22,orbitY=mobile?0:Math.sin(orbit*.81+balloon.driftSecondary)*balloon.driftY;
         const baseScreen=project(balloon.base),cursorX=(targetPointer.x+1)*width/2,cursorY=(1-targetPointer.y)*height/2,dx=baseScreen.x-cursorX,dy=baseScreen.y-cursorY,distance=Math.hypot(dx,dy);
         const target=drag&&selected===balloon?balloon.target:new T.Vector2();
         const pointerForce=pointerRepulsionFactor(distance);
         if(!stop&&!drag&&pointerForce>0&&targetPointer.length()>0)target.set(dx/distance,dy/distance).multiplyScalar(pointerForce*(mobile?55:140));
         for(const axis of ['x','y'] as const){const state=stepSpring(balloon.offset[axis],balloon.velocity[axis],stop?0:target[axis],elapsed);balloon.offset[axis]=state.position;balloon.velocity[axis]=state.velocity;}
         const exit=smooth(.34,.94,progress),depth=-camera.worldToLocal(balloon.base.clone()).z+exit*5;
-        let x=baseScreen.x+balloon.offset.x+(1-entryAmount)*(plan.x<.5?-1:1)*(plan.depth<10?300:150)+(plan.x<.5?-1:1)*exit*width*.07,y=baseScreen.y+balloon.offset.y+(1-entryAmount)*(plan.depth<10?80:25)-exit*height*.68;
+        let x=baseScreen.x+balloon.offset.x+orbitX+(1-entryAmount)*(plan.x<.5?-1:1)*(plan.depth<10?300:150)+(plan.x<.5?-1:1)*exit*width*.07,y=baseScreen.y+balloon.offset.y+orbitY+(1-entryAmount)*(plan.depth<10?80:25)-exit*height*.68;
         const radius=plan.pixels*plan.depth/depth*.58;
         // Foreground paths go around the complete source portrait, retaining balloon size and count.
         if(depth<photoDepth&&x+radius>subject.x-10&&x-radius<subject.right+10&&y+radius>subject.y&&y-radius<subject.bottom) x=plan.x<.5?subject.x-radius-12:subject.right+radius+12;
@@ -201,6 +214,7 @@ export default function CoupleSpaceScene(props: Props) {
     };
     const frame=(now:number)=>{const elapsed=last?Math.max(0,(now-last)/1000):1/60,dt=Math.min(.25,elapsed);last=now;time=now/1000;render(dt,false,elapsed);};
     const sync=()=>{const visible=scroll-docTop<height+1000||letterTop-scroll<height+120&&letterTop+letterHeight-scroll>-120;
+      node.style.visibility=mobile?'visible':visible?'visible':'hidden';
       const run=visible&&!document.hidden&&!control.current.paused&&!control.current.reduced&&!lost&&!disposed;
       renderer.setAnimationLoop(run?frame:null);canvas.dataset.loop=run?'running':'stopped';if(!run)last=0;};
     redraw.current=()=>{render(0,true);sync();};
