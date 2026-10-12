@@ -3,7 +3,7 @@ import * as T from 'three';
 import {createHeartGeometry} from './heartGeometry';
 import {createHeroMaterials} from './heroMaterials';
 import {createPaperGeometry, updatePaper} from './spaceGeometry';
-import {SPACE_PLAN, advanceLetter, balloonPlan, clamp, pointerRepulsionFactor, randomAt, smooth, stepSpring} from './spaceMotion';
+import {SPACE_PLAN, advanceLetter, balloonBatchIndex, balloonDepthAppearance, balloonPlan, clamp, pointerRepulsionFactor, randomAt, smooth, stepSpring} from './spaceMotion';
 
 type Props = {paused: boolean; reduced: boolean; open: boolean; onUnavailable: () => void};
 type Balloon = {mesh: T.InstancedMesh; slot: number; index: number; base: T.Vector3; position: T.Vector3;
@@ -39,6 +39,14 @@ function paperTexture() {
   for(let i=0;i<1800;i++){const x=randomAt(i+110)*512,y=randomAt(i+530)*512,alpha=.025+randomAt(i+860)*.035;context.strokeStyle=`rgba(112,77,56,${alpha})`;context.lineWidth=.5+randomAt(i+1200);context.beginPath();context.moveTo(x,y);context.lineTo(x+1+randomAt(i+1600)*8,y+(randomAt(i+2000)-.5)*1.4);context.stroke();}
   const map=new T.CanvasTexture(canvas);map.colorSpace=T.SRGBColorSpace;map.anisotropy=8;return map;
 }
+function galaxyReflectionTexture(image: HTMLImageElement) {
+  const canvas=document.createElement('canvas');canvas.width=1024;canvas.height=512;const context=canvas.getContext('2d')!;
+  context.fillStyle='#201526';context.fillRect(0,0,1024,512);context.save();context.filter='blur(18px)';context.globalAlpha=.42;
+  const crop=(image.height-image.width/2)/2;context.drawImage(image,0,crop,image.width,image.height-2*crop,0,0,1024,512);context.restore();
+  const wash=context.createLinearGradient(0,0,1024,512);wash.addColorStop(0,'rgba(119,84,169,.16)');wash.addColorStop(.48,'rgba(230,126,163,.17)');wash.addColorStop(1,'rgba(83,69,148,.19)');
+  context.globalCompositeOperation='screen';context.fillStyle=wash;context.fillRect(0,0,1024,512);
+  const texture=new T.CanvasTexture(canvas);texture.colorSpace=T.SRGBColorSpace;texture.mapping=T.EquirectangularReflectionMapping;return texture;
+}
 
 export default function CoupleSpaceScene(props: Props) {
   const host=useRef<HTMLDivElement>(null),control=useRef(props),redraw=useRef<()=>void>(()=>{}),[ready,setReady]=useState(false);
@@ -58,15 +66,18 @@ export default function CoupleSpaceScene(props: Props) {
     canvas.dataset.renderer=rendererName;canvas.dataset.plan=JSON.stringify(SPACE_PLAN);
     const scene=new T.Scene(),camera=new T.PerspectiveCamera(38,1,.1,150);camera.position.z=SPACE_PLAN.cameraRest;
     const heroGroup=new T.Group(),letterGroup=new T.Group();scene.add(heroGroup,letterGroup);
-    const key=new T.DirectionalLight('#ffe1c6',3.4);key.position.set(-4,6,8);key.castShadow=true;key.shadow.mapSize.set(1024,1024);key.shadow.camera.left=-10;key.shadow.camera.right=10;key.shadow.camera.top=10;key.shadow.camera.bottom=-10;key.shadow.normalBias=.03;
-    const rim=new T.DirectionalLight('#b3a1f4',1.8);rim.position.set(5,2,-3);scene.add(key,rim,new T.HemisphereLight('#dbc5e0','#190919',.85));
-    const pointerLight=new T.PointLight('#ffd2a6',0,12,2);scene.add(pointerLight);
+    const key=new T.DirectionalLight('#ffd8df',2.8);key.position.set(-4,6,8);key.castShadow=true;key.shadow.mapSize.set(1024,1024);key.shadow.camera.left=-10;key.shadow.camera.right=10;key.shadow.camera.top=10;key.shadow.camera.bottom=-10;key.shadow.normalBias=.03;
+    const rim=new T.DirectionalLight('#ba9fe9',1.45);rim.position.set(5,2,-3);scene.add(key,rim,new T.HemisphereLight('#d9b4df','#190919',.9));
+    const pointerLight=new T.PointLight('#f0a6ca',0,12,2);scene.add(pointerLight);
     const environmentScene=new T.Scene();environmentScene.background=new T.Color('#24141f');
-    for(const [x,y,z,w,h,color] of [[-5,4,5,4,7,'#fff2de'],[5,1,2,2,6,'#d8c7f9'],[0,6,-2,7,2,'#fddac8'],[0,-3,4,5,1,'#e098a4']] as const) {
+    for(const [x,y,z,w,h,color] of [[-5,4,5,8,12,'#ffc8d6'],[5,1,2,4,9,'#c7b8ef'],[0,6,-2,13,4,'#f3aeca'],[0,-3,4,10,2,'#b37bc3']] as const) {
       const panel=new T.Mesh(new T.PlaneGeometry(w,h),new T.MeshBasicMaterial({color,side:T.DoubleSide}));panel.position.set(x,y,z);panel.lookAt(0,0,0);environmentScene.add(panel);
     }
-    const pmrem=new T.PMREMGenerator(renderer),environment=pmrem.fromScene(environmentScene,.12);scene.environment=environment.texture;pmrem.dispose();
-    const textures:T.Texture[]=[],galaxy=new T.TextureLoader().load('/images/landing/spiral-galaxy-far-v1.webp'),cloud=universeTexture(true),paperFiber=paperTexture(),roseMap=new T.TextureLoader().load('/images/landing-preview/organic-rose-generated.png'),envelopeMap=new T.TextureLoader().load('/images/lisbeth-letter-envelope.webp');galaxy.colorSpace=T.SRGBColorSpace;roseMap.colorSpace=envelopeMap.colorSpace=T.SRGBColorSpace;textures.push(galaxy,cloud,paperFiber,roseMap,envelopeMap);
+    const pmrem=new T.PMREMGenerator(renderer);let environment=pmrem.fromScene(environmentScene,.12);scene.environment=environment.texture;
+    const textures:T.Texture[]=[],galaxy=new T.TextureLoader().load('/images/landing/spiral-galaxy-far-v1.webp',()=>{
+      if(disposed)return;const reflection=galaxyReflectionTexture(galaxy.image as HTMLImageElement);textures.push(reflection);environmentScene.background=reflection;
+      const next=pmrem.fromScene(environmentScene,.16),previous=environment;environment=next;scene.environment=next.texture;previous.dispose();pmrem.dispose();canvas.dataset.environmentSource='blurred visible galaxy texture + broad rose/lavender panels';redraw.current();
+    },undefined,()=>pmrem.dispose()),cloud=universeTexture(true),paperFiber=paperTexture(),roseMap=new T.TextureLoader().load('/images/landing-preview/organic-rose-generated.png'),envelopeMap=new T.TextureLoader().load('/images/lisbeth-letter-envelope.webp');galaxy.colorSpace=T.SRGBColorSpace;roseMap.colorSpace=envelopeMap.colorSpace=T.SRGBColorSpace;textures.push(galaxy,cloud,paperFiber,roseMap,envelopeMap);
     const universe=new T.Mesh(new T.PlaneGeometry(16,9),new T.MeshBasicMaterial({map:galaxy,toneMapped:false}));universe.position.set(0,0,-48);scene.add(universe);
     const clouds=[[-12,4,-18,82,48,.28],[10,-4,-12,60,38,.20]].map(([x,y,z,w,h,opacity],i)=>{
       const mesh=new T.Mesh(new T.PlaneGeometry(w,h),new T.MeshBasicMaterial({map:cloud,transparent:true,opacity,depthWrite:false,toneMapped:false,color:i?'#d8b1ff':'#ffb8bb'}));mesh.position.set(x,y,z);mesh.rotation.z=i?-.32:.17;scene.add(mesh);return {mesh,x,z,direction:i?-1:1};
@@ -87,9 +98,11 @@ export default function CoupleSpaceScene(props: Props) {
     const lightCanvas=document.createElement('canvas');lightCanvas.width=lightCanvas.height=64;const lightCtx=lightCanvas.getContext('2d')!,glow=lightCtx.createRadialGradient(32,32,0,32,32,31);glow.addColorStop(0,'#fff');glow.addColorStop(.12,'#fff5e4');glow.addColorStop(.35,'#fcd9c555');glow.addColorStop(1,'#ffffff00');lightCtx.fillStyle=glow;lightCtx.fillRect(0,0,64,64);lightCtx.fillStyle='#ffe7d5aa';lightCtx.fillRect(31,10,2,44);lightCtx.fillRect(10,31,44,2);
     const starMap=new T.CanvasTexture(lightCanvas);textures.push(starMap);
     const bright=Array.from({length:SPACE_PLAN.brightStars},(_,i)=>{const sprite=new T.Sprite(new T.SpriteMaterial({map:starMap,transparent:true,depthWrite:false,opacity:.75}));sprite.position.set((randomAt(i+33)-.5)*26,(randomAt(i+60)-.5)*17,-15-i%3*5);sprite.scale.setScalar(.23+randomAt(i+20)*.18);scene.add(sprite);return sprite;});
-    const heartGeometry=createHeartGeometry(48,12),materials=createHeroMaterials(),batches=materials.map(material=>{const mesh=new T.InstancedMesh(heartGeometry,material,SPACE_PLAN.balloons/3);mesh.instanceMatrix.setUsage(T.DynamicDrawUsage);mesh.frustumCulled=false;heroGroup.add(mesh);return mesh;});
-    canvas.dataset.materials=JSON.stringify(materials.map(m=>({color:m.color.getHexString(),metalness:m.metalness,roughness:m.roughness,clearcoat:m.clearcoat,clearcoatRoughness:m.clearcoatRoughness,envMapIntensity:m.envMapIntensity,iridescence:m.iridescence})));
-    const balloons:Balloon[]=Array.from({length:SPACE_PLAN.balloons},(_,index)=>{const plan=balloonPlan(index,false);return{mesh:batches[plan.material],slot:Math.floor(index/3),index,plan,scratch:new T.Vector3(),base:new T.Vector3(),position:new T.Vector3(),rotation:0,yaw:0,scale:1,offset:new T.Vector2(),velocity:new T.Vector2(),twist:0,target:new T.Vector2(),driftSpeed:.24+randomAt(index+2063)*.24,driftPhase:randomAt(index+2311)*Math.PI*2,driftSecondary:randomAt(index+2549)*Math.PI*2,driftX:6+randomAt(index+2791)*8,driftY:4+randomAt(index+3001)*6};});
+    const heartGeometry=createHeartGeometry(48,12),baseMaterials=createHeroMaterials(),farMaterials=baseMaterials.map(material=>{const distant=material.clone();distant.roughness=Math.min(.68,material.roughness+.1);distant.clearcoat*=.55;distant.envMapIntensity*=.76;return distant;}),materials=[...baseMaterials,...farMaterials],plans=Array.from({length:SPACE_PLAN.balloons},(_,index)=>{const plan=balloonPlan(index,false);return{index,plan,batch:balloonBatchIndex(plan)};}),batchCounts=Array(6).fill(0);plans.forEach(item=>batchCounts[item.batch]++);
+    const batches=materials.map((material,index)=>{const mesh=new T.InstancedMesh(heartGeometry,material,batchCounts[index]);mesh.instanceMatrix.setUsage(T.DynamicDrawUsage);mesh.frustumCulled=false;heroGroup.add(mesh);return mesh;}),batchSlots=Array(6).fill(0);
+    canvas.dataset.materials=JSON.stringify(materials.map((m,i)=>({band:i<3?'near':'far',color:m.color.getHexString(),metalness:m.metalness,roughness:m.roughness,clearcoat:m.clearcoat,clearcoatRoughness:m.clearcoatRoughness,envMapIntensity:m.envMapIntensity,iridescence:m.iridescence})));
+    const balloons:Balloon[]=plans.map(({index,plan,batch})=>{const mesh=batches[batch],slot=batchSlots[batch]++,depthLook=balloonDepthAppearance(plan.depth),tint=new T.Color('#fff2ef').lerp(new T.Color('#d5b3da'),depthLook.tint);mesh.setColorAt(slot,tint);return{mesh,slot,index,plan,scratch:new T.Vector3(),base:new T.Vector3(),position:new T.Vector3(),rotation:0,yaw:0,scale:1,offset:new T.Vector2(),velocity:new T.Vector2(),twist:0,target:new T.Vector2(),driftSpeed:.24+randomAt(index+2063)*.24,driftPhase:randomAt(index+2311)*Math.PI*2,driftSecondary:randomAt(index+2549)*Math.PI*2,driftX:6+randomAt(index+2791)*8,driftY:4+randomAt(index+3001)*6};});
+    batches.forEach(batch=>{if(batch.instanceColor)batch.instanceColor.needsUpdate=true;});
     const coordinateBounds:{i:number;x:number;y:number;depth:number;offset:[number,number];pixels:number}[]=balloons.map(b=>({i:b.index,x:0,y:0,depth:0,offset:[0,0],pixels:b.plan.pixels}));
     const roseMaterial=new T.MeshBasicMaterial({map:roseMap,transparent:true,alphaTest:.025,depthWrite:true,toneMapped:false,side:T.DoubleSide});
     const rose=new T.Mesh(new T.PlaneGeometry(2/3,1),roseMaterial);heroGroup.add(rose);
@@ -120,7 +133,7 @@ export default function CoupleSpaceScene(props: Props) {
       universe.scale.setScalar(2*Math.tan(T.MathUtils.degToRad(19))*(SPACE_PLAN.cameraStart+48)/9);
       const lb=letterStage.getBoundingClientRect(),pb=paperDOM.getBoundingClientRect();letterTop=lb.top+scrollY;letterHeight=lb.height;letterX=lb.left+lb.width/2;letterY=letterTop+lb.height/2;paperWidth=pb.width;paperHeight=pb.height;
       heroBoxes.length=0;for(const text of copy.querySelectorAll<HTMLElement>('h1,p,.cs-actions')){const b=text.getBoundingClientRect();heroBoxes.push({x:b.left,y:b.top+scrollY,right:b.right,bottom:b.bottom+scrollY});}
-      for(const balloon of balloons){const plan=balloon.plan=balloonPlan(balloon.index,mobile);atPixel(plan.x*width,plan.y*height,plan.depth,balloon.base);balloon.scale=plan.pixels*pixelUnit(plan.depth)/2.0;balloon.rotation=plan.rotation;balloon.twist=plan.tiltX;balloon.yaw=plan.tiltY;coordinateBounds[balloon.index].pixels=plan.pixels;}
+      for(const balloon of balloons){const plan=balloon.plan=balloonPlan(balloon.index,mobile),depthLook=balloonDepthAppearance(plan.depth);atPixel(plan.x*width,plan.y*height,plan.depth,balloon.base);balloon.scale=plan.pixels*pixelUnit(plan.depth)/2.0*depthLook.scale;balloon.rotation=plan.rotation;balloon.twist=plan.tiltX;balloon.yaw=plan.tiltY;coordinateBounds[balloon.index].pixels=plan.pixels*depthLook.scale;}
       render(0,true);sync();
     };
     const render=(dt:number,snap=false,elapsed=dt)=>{
@@ -227,7 +240,7 @@ export default function CoupleSpaceScene(props: Props) {
     document.fonts.ready.then(()=>{if(!disposed)measure();});window.addEventListener('scroll',onScroll,{passive:true});window.addEventListener('resize',measure);document.addEventListener('visibilitychange',sync);
     stage.addEventListener('pointermove',move);stage.addEventListener('pointerdown',down);stage.addEventListener('pointerup',up);stage.addEventListener('pointercancel',up);stage.addEventListener('pointerleave',leave);canvas.addEventListener('webglcontextlost',loss);measure();
     return()=>{disposed=true;renderer.setAnimationLoop(null);cancelAnimationFrame(scrollFrame);observer.disconnect();changes.disconnect();window.removeEventListener('scroll',onScroll);window.removeEventListener('resize',measure);document.removeEventListener('visibilitychange',sync);stage.removeEventListener('pointermove',move);stage.removeEventListener('pointerdown',down);stage.removeEventListener('pointerup',up);stage.removeEventListener('pointercancel',up);stage.removeEventListener('pointerleave',leave);canvas.removeEventListener('webglcontextlost',loss);redraw.current=()=>{};
-      const geometries=new Set<T.BufferGeometry>(),ownedMaterials=new Set<T.Material>();scene.traverse(object=>{if(object instanceof T.Mesh||object instanceof T.Points){geometries.add(object.geometry);(Array.isArray(object.material)?object.material:[object.material]).forEach(m=>ownedMaterials.add(m));}else if(object instanceof T.Sprite)ownedMaterials.add(object.material);});geometries.forEach(g=>g.dispose());ownedMaterials.forEach(m=>m.dispose());textures.forEach(t=>t.dispose());environment.dispose();environmentScene.traverse(o=>{if(o instanceof T.Mesh){o.geometry.dispose();o.material.dispose();}});renderer.dispose();renderer.forceContextLoss();canvas.remove();delete page.dataset.spaceReady;delete page.dataset.letterReady;};
+      const geometries=new Set<T.BufferGeometry>(),ownedMaterials=new Set<T.Material>();scene.traverse(object=>{if(object instanceof T.Mesh||object instanceof T.Points){geometries.add(object.geometry);(Array.isArray(object.material)?object.material:[object.material]).forEach(m=>ownedMaterials.add(m));}else if(object instanceof T.Sprite)ownedMaterials.add(object.material);});geometries.forEach(g=>g.dispose());ownedMaterials.forEach(m=>m.dispose());textures.forEach(t=>t.dispose());environment.dispose();pmrem.dispose();environmentScene.traverse(o=>{if(o instanceof T.Mesh){o.geometry.dispose();o.material.dispose();}});renderer.dispose();renderer.forceContextLoss();canvas.remove();delete page.dataset.spaceReady;delete page.dataset.letterReady;};
   },[]);
   return <div className="cs-canvas" ref={host} data-ready={ready}/>;
 }

@@ -1,5 +1,5 @@
 import {describe, expect, it} from 'vitest';
-import {advanceLetter, balloonPlan, pointerRepulsionFactor, stepSpring} from './spaceMotion';
+import {advanceLetter, balloonBatchIndex, balloonDepthAppearance, balloonPlan, pointerRepulsionFactor, SPACE_PLAN, stepSpring} from './spaceMotion';
 import {createPaperGeometry, updatePaper} from './spaceGeometry';
 import {createRoseBloomGeometry} from './roseBloomGeometry';
 
@@ -44,6 +44,20 @@ describe('couple space continuity and preserved volume', () => {
       expect(plan.filter(p=>p.depth!==18.4&&p.x<.3)).toHaveLength(18);
       expect(plan.filter(p=>p.depth!==18.4&&p.x>.7)).toHaveLength(20);
     }
+  });
+  it('adds a restrained size and color falloff with distance while preserving the foreground', () => {
+    const near = balloonDepthAppearance(7.2), middle = balloonDepthAppearance(10.6), far = balloonDepthAppearance(18.4);
+    expect(near).toEqual({scale: 1, tint: 0});
+    expect(middle.scale).toBeLessThan(near.scale);
+    expect(far.scale).toBeCloseTo(.7);
+    expect(far.tint).toBeCloseTo(.42);
+    expect(far.scale).toBeGreaterThan(.65);
+  });
+  it('allocates every depth/material bucket from the actual balloon count', () => {
+    const plans = Array.from({length: SPACE_PLAN.balloons}, (_, index) => balloonPlan(index, false));
+    const counts = Array(6).fill(0); plans.forEach(plan => counts[balloonBatchIndex(plan)]++);
+    expect(counts.reduce((sum, count) => sum + count, 0)).toBe(SPACE_PLAN.balloons);
+    expect(counts.every(count => count > 0)).toBe(true);
   });
   it('has a genuinely thick petal and unfolds the same paper vertices', () => {
     const petal = createRoseBloomGeometry();

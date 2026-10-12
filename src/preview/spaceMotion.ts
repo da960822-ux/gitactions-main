@@ -20,6 +20,10 @@ export function pointerRepulsionFactor(distance: number) {
   if(!Number.isFinite(distance)||distance<=0||distance>=180)return 0;
   return (1-distance/180)*Math.min(1,distance/64);
 }
+export function balloonDepthAppearance(depth: number) {
+  const amount = clamp((depth - 7.2) / (18.4 - 7.2));
+  return {scale: 1 - amount * .3, tint: amount * .42};
+}
 export function stepSpring(position: number, velocity: number, target: number, dt: number, result:{position:number;velocity:number}={position,velocity}) {
   // Substeps stabilize a long visible frame while preserving wall-clock spring timing.
   const elapsed = clamp(Number.isFinite(dt) ? dt : 0, 0, 2);
@@ -41,9 +45,9 @@ export function balloonPlan(index: number, mobile: boolean) {
   }else if(left||right){
     const centers=left?[[.055,.23],[.16,.48],[.065,.73]]:[[.80,.18],[.94,.39],[.81,.64],[.94,.84]];
     const clusterSize=left?6:5,cluster=Math.floor(local/clusterSize),slot=local%clusterSize,center=centers[cluster];
-    const angle=slot/clusterSize*Math.PI*2+(randomAt(index+931)-.5)*.62;
-    const rx=left?.035+randomAt(index+741)*.035:.04+randomAt(index+741)*.045;
-    const ry=left?.045+randomAt(index+501)*.045:.07+randomAt(index+501)*.08;
+    const angle=slot/clusterSize*Math.PI*2+(randomAt(index+931)-.5)*.78;
+    const rx=left?.04+randomAt(index+741)*.045:.05+randomAt(index+741)*.05;
+    const ry=left?.05+randomAt(index+501)*.055:.075+randomAt(index+501)*.085;
     x=center[0]+Math.cos(angle)*rx;y=center[1]+Math.sin(angle)*ry;
   }else{
     x=.25+local*.055+(randomAt(index+741)-.5)*.025;y=.16+Math.sin(local*1.9)*.045+(randomAt(index+501)-.5)*.035;
@@ -52,6 +56,9 @@ export function balloonPlan(index: number, mobile: boolean) {
   const rightBonus=right&&local%9===0;
   return {x, y, depth: left || right ? [7.2, 10.6, 14.4][layer] : 18.4,
     pixels: right&&!mobile?68+randomAt(index+4)*48+(rightBonus?28:0):(mobile?56:88)+randomAt(index+4)*(mobile?46:67)+(local%9===0?(mobile?38:68):0),
-    material: (index + Math.floor(index/3)) % 3, rotation: (randomAt(index + 32) - .5) * .9,
-    tiltX:(randomAt(index+72)-.5)*(right&&!mobile?1.1:.9),tiltY:(randomAt(index+112)-.5)*(right&&!mobile?1.45:1.15)};
+    material: (index + Math.floor(index/3)) % 3, rotation: (randomAt(index + 32) - .5) * 1.18,
+    tiltX:(randomAt(index+72)-.5)*(right&&!mobile?1.2:1),tiltY:(randomAt(index+112)-.5)*(right&&!mobile?1.55:1.25)};
+}
+export function balloonBatchIndex(plan: ReturnType<typeof balloonPlan>) {
+  return plan.material + (plan.depth >= 14.4 ? 3 : 0);
 }
