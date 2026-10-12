@@ -1,7 +1,7 @@
 export const landingCopy = {
   ko: {
     heroKicker: 'Para ti, Mami ♡',
-    heroTitle: ['Mami,', '이거 내가 만들었어!'],
+    heroTitle: ['Baby,', '이거 내가 만들었어!'],
     heroBody: 'Baby, 너랑 통화할 때 같이 놀 수 있는 걸 만들고 싶었어.\n네가 좋아하는 도미노도 넣었고, 다른 게임들도 몇 개 준비해 봤어.\n어때, 나랑 한 판 할래? ㅋㅋ',
     primaryAction: '같이 놀자 ♡',
     secondaryAction: 'Papi의 편지',
@@ -42,7 +42,7 @@ export const landingCopy = {
   },
   es: {
     heroKicker: 'Para ti, Mami ♡',
-    heroTitle: ['Mami,', '¡lo hice para ti!'],
+    heroTitle: ['Baby,', '¡lo hice para ti!'],
     heroBody: 'Baby, quería hacer algo para que pudiéramos jugar mientras hablamos por teléfono.\nIncluí el dominó, que tanto te gusta, y preparé algunos juegos más.\n¿Qué te parece? ¿Jugamos una partida? Jajaja.',
     primaryAction: 'Vamos a jugar ♡',
     secondaryAction: 'La carta de Papi',

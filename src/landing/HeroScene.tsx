@@ -11,14 +11,17 @@ type HeroSceneProps = {
   onOpenLetter?: () => void;
   letterExpanded?: boolean;
   motionPaused?: boolean;
+  postcardSrc?: string;
+  windowLight?: boolean;
 };
 
-export function HeroScene({ children, backgroundSrc, envelopeSrc, portraitSrc, portraitAlt, language, onOpenLetter, letterExpanded, motionPaused = false }: HeroSceneProps) {
+export function HeroScene({ children, backgroundSrc, envelopeSrc, portraitSrc, portraitAlt, language, onOpenLetter, letterExpanded, motionPaused = false, postcardSrc = '/images/our-universe-scene.webp', windowLight = false }: HeroSceneProps) {
   const sceneRef = useRef<HTMLElement>(null);
   const pointerFrame = useRef(0);
   const pointerPosition = useRef({ x: 0, y: 0, localX: 0, localY: 0 });
   const [heartBurst, setHeartBurst] = useState(0);
   const [previewOpen, setPreviewOpen] = useState(false);
+  const [visible, setVisible] = useState(true);
   const letterOpen = letterExpanded ?? previewOpen;
 
   const resetPointer = () => {
@@ -36,6 +39,11 @@ export function HeroScene({ children, backgroundSrc, envelopeSrc, portraitSrc, p
   };
 
   useEffect(() => { if (motionPaused) resetPointer(); }, [motionPaused]);
+  useEffect(() => {
+    const observer = new IntersectionObserver(([entry]) => setVisible(entry.isIntersecting));
+    if (sceneRef.current) observer.observe(sceneRef.current);
+    return () => observer.disconnect();
+  }, []);
 
   useEffect(() => {
     const motionPreference = window.matchMedia('(prefers-reduced-motion: reduce)');
@@ -77,11 +85,12 @@ export function HeroScene({ children, backgroundSrc, envelopeSrc, portraitSrc, p
 
   const envelopeLabel = language === 'ko' ? 'Papi의 편지 열기' : 'Abrir la carta de Papi';
 
-  return <section className="couple-hero hero-scene" id="home" aria-labelledby="hero-title" ref={sceneRef} onPointerMove={onPointerMove} onPointerLeave={resetPointer}>
+  return <section className="couple-hero hero-scene" id="home" aria-labelledby="hero-title" data-visible={visible} ref={sceneRef} onPointerMove={onPointerMove} onPointerLeave={resetPointer}>
     {backgroundSrc && <>
       <img className="hero-scene-backdrop" data-parallax="-2" src={backgroundSrc} alt="" aria-hidden="true" />
       <img className="hero-scene-foreground" data-parallax="-7" src={backgroundSrc} alt="" aria-hidden="true" />
     </>}
+    {windowLight && <div className="hero-window-light" aria-hidden="true"><i/><i/><i/><i/><i/><i/><span className="hero-window-meteor"/></div>}
     <div className="hero-pointer-glow" aria-hidden="true" />
     <div className="hero-scene-inner">
       <div className="hero-scene-copy">{children}</div>
@@ -90,7 +99,7 @@ export function HeroScene({ children, backgroundSrc, envelopeSrc, portraitSrc, p
           <img src={portraitSrc} width="1254" height="1254" alt={portraitAlt} fetchPriority="high" aria-hidden="false" />
         </figure>
         <div className="hero-postcard" data-parallax="-12" aria-hidden="true">
-          <img src="/images/our-universe-scene.webp" alt="" />
+          <img src={postcardSrc} alt="" />
           <span className="hero-postmark" aria-hidden="true">♡</span>
         </div>
         <button className="hero-envelope" data-parallax="12" type="button" aria-label={envelopeLabel} aria-expanded={letterOpen} aria-controls={onOpenLetter ? 'gift-paper' : 'hero-letter-preview'} onClick={onOpenLetter ?? (() => setPreviewOpen(value => !value))}>
