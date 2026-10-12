@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import { Link } from '../app/Router';
 import '../styles/landing.css';
 import { landingCopy } from '../copy/home';
-import { HeroScene } from './HeroScene';
+import { AcrossHero } from './AcrossHero';
 import { GameRail } from './GameRail';
 import { LandingMoments } from './LandingMoments';
 
@@ -42,18 +42,7 @@ export function Landing() {
       </nav>
     </header>
 
-    <HeroScene backgroundSrc="/images/our-universe-scene.webp" envelopeSrc="/images/lisbeth-letter-envelope.webp" portraitSrc="/images/yeonseok-lisbeth-cutout.webp" portraitAlt={es ? 'Yeonseok y Lisbeth juntos' : '함께 있는 연석과 리스벳'} language={language}>
-      <div className="hero-copy">
-        <p className="hero-dedication">{copy.heroKicker}</p>
-        <h1 id="hero-title">{copy.heroTitle[0]}<br/>{copy.heroTitle[1]}</h1>
-        <p>{copy.heroBody}</p>
-        <div className="hero-actions">
-          <a href="#games" className="primary-action">{copy.primaryAction} <span aria-hidden="true">↓</span></a>
-          <a href="#papi-letter" className="secondary-action">{copy.secondaryAction} <span aria-hidden="true">↓</span></a>
-        </div>
-
-      </div>
-    </HeroScene>
+    <AcrossHero language={language} />
 
     <div className="home-content wrap">
       <section className="game-picker" id="games" aria-labelledby="games-title">
