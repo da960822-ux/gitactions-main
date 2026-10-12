@@ -25,8 +25,21 @@
 }
 
 .marble-event-mark .marble-event-symbol { position: relative; z-index: 1; width: 1.45rem; height: 1.45rem; overflow: visible; fill: none; stroke: currentColor; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
-.marble-event-stage--event-card .marble-event-mark { flex-basis: 3rem; width: 3rem; height: 4rem; background: transparent; perspective: 180px; }
-.marble-event-stage--event-card .marble-event-golden-key-art { position: relative; z-index: 1; width: 100%; height: 100%; overflow: visible; }
+.marble-event-stage--event-card:not(.has-card-art) .marble-event-mark,
+.marble-event-stage.has-card-art .marble-event-mark { flex-basis: 3rem; width: 3rem; height: 3.75rem; background: transparent; perspective: 180px; }
+.marble-event-stage--event-card:not(.has-card-art) .marble-event-golden-key-art,
+.marble-event-stage.has-card-art .marble-event-golden-key-art { position: relative; z-index: 1; width: 100%; height: 100%; overflow: visible; }
+.marble-event-stage--event-card:not(.has-card-art) .marble-event-card-art,
+.marble-event-stage--event-card:not(.has-card-art) .marble-event-card-art-pending,
+.marble-event-stage.has-card-art .marble-event-card-art,
+.marble-event-stage.has-card-art .marble-event-card-art-pending { position: relative; z-index: 1; display: block; width: 100%; height: 100%; border-radius: 7px; }
+.marble-event-stage--event-card:not(.has-card-art) .marble-event-card-art,
+.marble-event-stage.has-card-art .marble-event-card-art { object-fit: contain; }
+.marble-event-stage--event-card:not(.has-card-art) .marble-event-card-art-pending,
+.marble-event-stage.has-card-art .marble-event-card-art-pending { display: grid; place-items: center; background: transparent; }
+@media (pointer: fine) and (min-width: 900px) {
+  .marble-event-stage.has-card-art .marble-event-mark { flex-basis: 6rem; width: 6rem; height: 7.5rem; }
+}
 .marble-event-stage--buy .marble-event-mark { background: #f8e9d4; color: #8c5e2f; }
 .marble-event-stage--build .marble-event-mark { background: #e6f1e6; color: #477c58; }
 .marble-event-stage--rent .marble-event-mark, .marble-event-stage--tax .marble-event-mark { background: #f7ead3; color: #966825; }
@@ -37,7 +50,7 @@
 .marble-event-stage.is-animating.marble-event-stage--win .marble-event-mark::before, .marble-event-stage.is-animating.marble-event-stage--win .marble-event-mark::after { position: absolute; z-index: 0; width: 2px; height: 4px; border-radius: 1px; background: #d49b43; content: ''; opacity: 0; }
 .marble-event-stage.is-animating.marble-event-stage--win .marble-event-mark::before { box-shadow: 11px -6px #789b75, -10px -8px #d77d78; animation: marble-win-confetti 580ms ease-out both; }
 .marble-event-stage.is-animating.marble-event-stage--win .marble-event-mark::after { box-shadow: -11px 6px #8a77aa, 10px 8px #d49b43; animation: marble-win-confetti 580ms 55ms ease-out both; }
-.marble-event-stage.is-animating.marble-event-stage--event-card .marble-event-card-face, .marble-event-stage.is-animating.marble-event-stage--monopoly-warning .marble-event-card-face { transform-origin: center; animation: marble-card-flip 620ms cubic-bezier(.2,.75,.25,1) both; }
+.marble-event-stage.is-animating.marble-event-stage--event-card .marble-event-card-face, .marble-event-stage.is-animating .marble-event-card-art, .marble-event-stage.is-animating.marble-event-stage--monopoly-warning .marble-event-card-face { transform-origin: center; animation: marble-card-flip 620ms cubic-bezier(.2,.75,.25,1) both; }
 .marble-event-stage.is-animating.marble-event-stage--monopoly-warning .marble-event-alert { stroke: #b34d48; stroke-width: 2.3; animation: marble-warning-pop 500ms ease-out both; }
 .marble-event-stage.is-animating.marble-event-stage--buy .marble-event-mark::before, .marble-event-stage.is-animating.marble-event-stage--buy .marble-event-mark::after { position: absolute; z-index: 0; width: 3px; height: 3px; border-radius: 50%; background: #c4933b; content: ''; opacity: 0; }
 .marble-event-stage.is-animating.marble-event-stage--buy .marble-event-mark::before { box-shadow: 10px -12px #c4933b, -10px -9px #e7ad54; animation: marble-buy-spark 580ms ease-out both; }

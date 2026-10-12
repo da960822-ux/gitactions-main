@@ -101,6 +101,7 @@ describe('DaVinciTable', () => {
       opponentCount: 1, actions: [{ label: { ko: '뽑기', es: 'Robar' }, action: { type: 'draw' } }],
     };
     const html = render(view, 'p2', 'es');
+    expect(html).toContain('data-workbench-stage="draw"');
     expect(html).toContain('>7</b>');
     expect(html).toContain('Ficha 2:');
     expect(html).toContain('<strong>7</strong>');

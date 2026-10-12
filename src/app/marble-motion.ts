@@ -136,6 +136,22 @@ export type MarblePresentationFrame = {
   traveler: { seat: 'p1' | 'p2'; tile: number; seq: number } | null;
 };
 
+export type MarbleJourneyDisplay = 'inspect' | 'moving' | 'arrived';
+
+/** Keep the map's arrival label in step with the animated pawn, while an explicit city inspection takes precedence. */
+export function marbleJourneyDisplay(input: {
+  selectedTile: number;
+  actionTile: number;
+  displayedTile: number;
+  traveler: { seat: 'p1' | 'p2' } | null;
+  playerId: 'p1' | 'p2';
+  diceRolling: boolean;
+}): MarbleJourneyDisplay {
+  if (input.selectedTile !== input.actionTile) return 'inspect';
+  if (input.diceRolling || input.traveler?.seat === input.playerId || input.displayedTile !== input.actionTile) return 'moving';
+  return 'arrived';
+}
+
 // One clock orders confirmed dice, movement and arrival feedback. Long catch-up
 // batches are shown through the persistent history instead of replaying old turns.
 export function marblePresentationFrames(events: MarbleActionEvent[], from: Record<'p1' | 'p2', number>, to: Record<'p1' | 'p2', number>, size: number) {

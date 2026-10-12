@@ -74,7 +74,7 @@ export function MinhwatuGuide({ language }: { language: Language }) {
             {example.table.map(id => <Face key={id} id={id} language={language} selected={example.take.includes(id)}/>) }
           </div></div>
         </div>
-        <p>{example[language]}</p>
+        <p className="minhwatu-match-outcome"><b className="minhwatu-match-desktop">{ko ? `${example.count}장 일치 →` : `${example.count} ${example.count === 1 ? 'coincidencia' : 'coincidencias'} →`}</b> {example[language]} {example.take.length > 0 && <span className="minhwatu-match-desktop">{ko ? `획득 ${example.take.length + 1}장` : `Capturas ${example.take.length + 1}`}</span>}</p>
       </article>)}
     </div>
 

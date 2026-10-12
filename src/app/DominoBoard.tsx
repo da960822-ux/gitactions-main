@@ -122,6 +122,9 @@ export default function DominoBoard({ view: rawView, language, playerId, runActi
           : mode === 'humans-vs-bots' && (view.turn === 'p1' || view.turn === 'p2')
             ? copy(language, '팀원 차례예요', 'Turno de tu compañero')
             : copy(language, '상대의 차례예요', 'Turno de tu rival');
+  const waitingOnSeat = !active && !roundOver && seats.includes(view.turn as Seat)
+    ? seatLabel(view.turn as Seat, playerId, mode, language)
+    : '';
 
   useEffect(() => { setConfig(settings); }, [settings.mode, settings.difficulty, settings.targetScore, settings.capicuaBonus, settings.pasoCorridoBonus, settings.tranqueRule]);
   const gameIdentity = `${view.roomId ?? view.room ?? ''}:${playerId}:${number(view.round) || 1}:${mode}`;
@@ -311,7 +314,7 @@ export default function DominoBoard({ view: rawView, language, playerId, runActi
     </section>
 
     <section className="dp-play-area">
-      <div className="dp-play-copy"><span className={`dp-turn-light ${active ? 'is-active' : ''}`} aria-hidden="true"/><div><h3>{active ? copy(language, '내 손패', 'Tu mano') : copy(language, '도미노 테이블', 'Mesa de dominó')}</h3><p>{active ? copy(language, '타일을 고른 다음 열린 끝을 확인하세요.', 'Elige una ficha y revisa los extremos disponibles.') : statusText}</p></div></div>
+      <div className={`dp-play-copy ${active ? 'is-active' : 'is-waiting'}`}><span className={`dp-turn-light ${active ? 'is-active' : ''}`} aria-hidden="true"/><div><h3>{active ? copy(language, '내 손패', 'Tu mano') : waitingOnSeat ? copy(language, `${waitingOnSeat} 차례 · 타일 선택`, `${waitingOnSeat} juega ahora`) : copy(language, '도미노 테이블', 'Mesa de dominó')}</h3><p>{active ? copy(language, '타일을 고른 다음 열린 끝을 확인하세요.', 'Elige una ficha y revisa los extremos disponibles.') : waitingOnSeat ? copy(language, `${waitingOnSeat}가 타일을 고르고 있어요. 놓인 끝을 확인하세요.`, `${waitingOnSeat} elige una ficha. Revisa los extremos abiertos.`) : statusText}</p></div></div>
       <div className="dp-hand" aria-label={copy(language, '내 도미노 타일', 'Tus fichas de dominó')}>
         {hand.map((tile, index) => {
           const legal = playChoices.some(choice => number(choice.action.payload?.index) === index);

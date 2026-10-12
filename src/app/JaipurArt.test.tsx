@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest';
 import { renderToStaticMarkup } from 'react-dom/server';
-import { JaipurBonusArt, JaipurCamelAward, JaipurCoin, JaipurGoodArt, jaipurCardVariant, type JaipurGood } from './JaipurArt';
+import { JaipurBonusArt, JaipurBonusTokenBack, JaipurCamelAward, JaipurCoin, JaipurGoodArt, JaipurProductToken, jaipurCardVariant, type JaipurGood } from './JaipurArt';
 
 const goods: JaipurGood[] = ['diamond', 'gold', 'silver', 'cloth', 'spice', 'leather', 'camel'];
 
@@ -46,6 +46,18 @@ describe('Jaipur illustrated assets', () => {
     expect(hidden).not.toContain('data-value');
     expect(shown).toContain('aria-label="Bono de venta: 9 puntos"');
     expect(shown).toContain('>9</text>');
+  });
+
+  it('binds distinct premium commodity and bonus-back assets while retaining SVG visual fallbacks', () => {
+    for (const good of goods.filter((item): item is Exclude<JaipurGood, 'camel'> => item !== 'camel')) {
+      const html = renderToStaticMarkup(<JaipurProductToken good={good}/>);
+      expect(html).toContain(`/images/game-premium-tokens/jaipur/${good}.webp`);
+      expect(html).toContain(`data-good="${good}"`);
+    }
+    const bonus = renderToStaticMarkup(<JaipurBonusTokenBack count={2} language="es"/>);
+    expect(bonus).toContain('/images/game-premium-tokens/jaipur/bonus-token-back.webp');
+    expect(bonus).toContain('aria-label="Bono de venta boca abajo"');
+    expect(bonus).not.toContain('>9</text>');
   });
 
   it('labels the illustrated point coin and camel-majority seal in both locales', () => {

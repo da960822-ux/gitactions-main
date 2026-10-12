@@ -12,6 +12,13 @@ import { client, isOnlineConfigured } from '../core/client';
 
 vi.mock('./App', () => ({ BrandHeader: () => null }));
 
+it('limits the new Splendor purchase walkthrough to the desktop guide boundary', () => {
+  const render = (desktopDisplay: boolean) => renderToStaticMarkup(createElement(GameGuide, { gameId: 'splendor', language: 'es', desktopDisplay }));
+  expect(render(false)).not.toContain('sp-guide-purchase-flow');
+  expect(render(false)).toContain('Resta del coste las bonificaciones permanentes');
+  expect(render(true)).toContain('sp-guide-purchase-flow');
+});
+
 afterEach(async () => { if (!isOnlineConfigured) await client.closeRoom(); });
 
 it('announces a settled round instead of an inactive player turn', () => {

@@ -1,0 +1,268 @@
+{
+  "format": "game-token-runtime-assets-v1",
+  "sourceArchiveCommit": "1dc181214cfb8d776195864cb954dc95760e1ba4",
+  "sourceManifestSha256": "22d974cf848ea8b4e4e65a0c96473148b6ba87918c60330b1017051386e932ad",
+  "resampling": "Lanczos square-fit to 384x384 (source is square; no crop)",
+  "assets": [
+    {
+      "family": "splendor",
+      "id": "white",
+      "output": "public/images/game-premium-tokens/splendor/white.webp",
+      "outputBytes": 34064,
+      "width": 384,
+      "height": 384,
+      "format": "WEBP",
+      "quality": 90,
+      "alpha": true,
+      "source": "asset-handoff/game-premium-tokens/splendor/white-diamond.png",
+      "sourceBytes": 1352759,
+      "sourceSha256": "4696aa72302e14bc255fbc0f01f38dfc9cb4d8f8c4ab2dc77fb963b690e0c363",
+      "sourceGitBlobSha": "ff702b839ec3a39ff04511a3a8d37c6c4cc37893",
+      "sourceDimensions": [
+        1254,
+        1254
+      ],
+      "outputSha256": "3d02fcd499f9e937c488586b07961480cde9fa201c5a9c65c7b3d245a4c5cde9"
+    },
+    {
+      "family": "splendor",
+      "id": "blue",
+      "output": "public/images/game-premium-tokens/splendor/blue.webp",
+      "outputBytes": 32472,
+      "width": 384,
+      "height": 384,
+      "format": "WEBP",
+      "quality": 90,
+      "alpha": true,
+      "source": "asset-handoff/game-premium-tokens/splendor/blue-sapphire.png",
+      "sourceBytes": 1292994,
+      "sourceSha256": "0f4eff1be7ccb07aae9ff54cd2efe4ab86a286a0d80f3a1ef27f47dc9db68206",
+      "sourceGitBlobSha": "38c2262ed5888247e7d381c74c960e34117843cd",
+      "sourceDimensions": [
+        1254,
+        1254
+      ],
+      "outputSha256": "a89fe8b2e10a0a146d9ff3b2e8baf344b89054f039885ceba6a5ace80269c107"
+    },
+    {
+      "family": "splendor",
+      "id": "green",
+      "output": "public/images/game-premium-tokens/splendor/green.webp",
+      "outputBytes": 31512,
+      "width": 384,
+      "height": 384,
+      "format": "WEBP",
+      "quality": 90,
+      "alpha": true,
+      "source": "asset-handoff/game-premium-tokens/splendor/green-emerald.png",
+      "sourceBytes": 1412990,
+      "sourceSha256": "c4a8b1f4ca63036eef1568ca5e2cb805034376395e204ba46acabd9513691d8e",
+      "sourceGitBlobSha": "d611fafe2efba3db3ddfd230691f476069f07a88",
+      "sourceDimensions": [
+        1254,
+        1254
+      ],
+      "outputSha256": "e96d7fe869ec587ed7be1c47d24d693c2b2f49a42c807f8615fb09d64793d5d7"
+    },
+    {
+      "family": "splendor",
+      "id": "red",
+      "output": "public/images/game-premium-tokens/splendor/red.webp",
+      "outputBytes": 27464,
+      "width": 384,
+      "height": 384,
+      "format": "WEBP",
+      "quality": 90,
+      "alpha": true,
+      "source": "asset-handoff/game-premium-tokens/splendor/red-ruby.png",
+      "sourceBytes": 1076138,
+      "sourceSha256": "761d6f3276b6724d3e0e17d932ecf34675224daf6c9768db272fd999429e81ff",
+      "sourceGitBlobSha": "1f0c1ac38e7a951f625371ab88317ef986c4b389",
+      "sourceDimensions": [
+        1254,
+        1254
+      ],
+      "outputSha256": "c6d4848c55b1bebca9e0fffc485b903168a1683125724cf34f4dde479f29065e"
+    },
+    {
+      "family": "splendor",
+      "id": "black",
+      "output": "public/images/game-premium-tokens/splendor/black.webp",
+      "outputBytes": 23248,
+      "width": 384,
+      "height": 384,
+      "format": "WEBP",
+      "quality": 90,
+      "alpha": true,
+      "source": "asset-handoff/game-premium-tokens/splendor/black-onyx.png",
+      "sourceBytes": 1418765,
+      "sourceSha256": "0ba920276a4006512c3bd5b3fe0f8429faf6be1b77f4d37dbbdc3bd260118c43",
+      "sourceGitBlobSha": "d38c118e97443f37de1c29c006c8b91ba5640f97",
+      "sourceDimensions": [
+        1254,
+        1254
+      ],
+      "outputSha256": "d1f94099cbca0baeba7369df42a2d95a6343d5186f4aaa53692ce6a5899f4530"
+    },
+    {
+      "family": "splendor",
+      "id": "gold",
+      "output": "public/images/game-premium-tokens/splendor/gold.webp",
+      "outputBytes": 53516,
+      "width": 384,
+      "height": 384,
+      "format": "WEBP",
+      "quality": 90,
+      "alpha": true,
+      "source": "asset-handoff/game-premium-tokens/splendor/gold-joker-coin.png",
+      "sourceBytes": 2535979,
+      "sourceSha256": "f033861d3ea89594eece181a324072bf52af4d826c3b35ca487bba6ad0ead7c6",
+      "sourceGitBlobSha": "e1d7f5ffa0e5dcea20310147e6b6968ad74b37e2",
+      "sourceDimensions": [
+        1254,
+        1254
+      ],
+      "outputSha256": "d7d6560b61b698d40544a8a01c87d85da29fe9996abd19fb07a304be2518a47b"
+    },
+    {
+      "family": "jaipur",
+      "id": "diamond",
+      "output": "public/images/game-premium-tokens/jaipur/diamond.webp",
+      "outputBytes": 26522,
+      "width": 384,
+      "height": 384,
+      "format": "WEBP",
+      "quality": 90,
+      "alpha": true,
+      "source": "asset-handoff/game-premium-tokens/jaipur/diamond.png",
+      "sourceBytes": 968872,
+      "sourceSha256": "f6ebc9a619f20907153dbf4fd75dcb7c4c5aa0c89309b46ae5775ca5f05cac91",
+      "sourceGitBlobSha": "79b770019828ca44efeaa58741ac74cecf3989ca",
+      "sourceDimensions": [
+        1254,
+        1254
+      ],
+      "outputSha256": "28ace018a7f05900666a2e5e0efa888878ccf191089b5fb40b83fcd9a2f6f333"
+    },
+    {
+      "family": "jaipur",
+      "id": "gold",
+      "output": "public/images/game-premium-tokens/jaipur/gold.webp",
+      "outputBytes": 40844,
+      "width": 384,
+      "height": 384,
+      "format": "WEBP",
+      "quality": 90,
+      "alpha": true,
+      "source": "asset-handoff/game-premium-tokens/jaipur/gold.png",
+      "sourceBytes": 1600430,
+      "sourceSha256": "29d99cd92aa3ed2181de8ab4332448533aa236ce722362f42c07be7834ffb2d2",
+      "sourceGitBlobSha": "df7a9fc99664b64871e0a3cf8b255203a44ff1d2",
+      "sourceDimensions": [
+        1254,
+        1254
+      ],
+      "outputSha256": "5b5e1cdd24cc4ecced3f299036e0d464ad4e782e99a07cb8b2e5e61b210ca78c"
+    },
+    {
+      "family": "jaipur",
+      "id": "silver",
+      "output": "public/images/game-premium-tokens/jaipur/silver.webp",
+      "outputBytes": 30200,
+      "width": 384,
+      "height": 384,
+      "format": "WEBP",
+      "quality": 90,
+      "alpha": true,
+      "source": "asset-handoff/game-premium-tokens/jaipur/silver.png",
+      "sourceBytes": 1587992,
+      "sourceSha256": "bda289d90ca6930c32fccd00cf5a0e6135eaddd8f7394e360a8778cd89aed835",
+      "sourceGitBlobSha": "cdccd5e6d0e1f46e2a41aab279ce6394284b62f6",
+      "sourceDimensions": [
+        1254,
+        1254
+      ],
+      "outputSha256": "c459a480c0ae8bf0848b001a6714093846d5991b7f29d028b3aa29a1929875a9"
+    },
+    {
+      "family": "jaipur",
+      "id": "cloth",
+      "output": "public/images/game-premium-tokens/jaipur/cloth.webp",
+      "outputBytes": 36192,
+      "width": 384,
+      "height": 384,
+      "format": "WEBP",
+      "quality": 90,
+      "alpha": true,
+      "source": "asset-handoff/game-premium-tokens/jaipur/cloth.png",
+      "sourceBytes": 1645821,
+      "sourceSha256": "461a449b08cb3d4d701b5e1f5b28d7645173823190ed4ececbcdc8e737b1c4d8",
+      "sourceGitBlobSha": "bb17a243147653c65595c0f8f3a03eda5c60efd2",
+      "sourceDimensions": [
+        1254,
+        1254
+      ],
+      "outputSha256": "0dd229ee9bd90dd08398d1ab900f194e454fd30b9f46e9433cb38edb4237a969"
+    },
+    {
+      "family": "jaipur",
+      "id": "spice",
+      "output": "public/images/game-premium-tokens/jaipur/spice.webp",
+      "outputBytes": 22906,
+      "width": 384,
+      "height": 384,
+      "format": "WEBP",
+      "quality": 90,
+      "alpha": true,
+      "source": "asset-handoff/game-premium-tokens/jaipur/spice.png",
+      "sourceBytes": 720573,
+      "sourceSha256": "7b08de073bbe70a7ce24187af2982326e4f3037fed97d00c2f1b157eaddb5a2e",
+      "sourceGitBlobSha": "42798b1ef729d2c815460acdc8c9ef5ba5d820d6",
+      "sourceDimensions": [
+        1254,
+        1254
+      ],
+      "outputSha256": "082253342ce13d1e19f4e17d490d808083ba63745bdfd20b342406c46a2129f4"
+    },
+    {
+      "family": "jaipur",
+      "id": "leather",
+      "output": "public/images/game-premium-tokens/jaipur/leather.webp",
+      "outputBytes": 49700,
+      "width": 384,
+      "height": 384,
+      "format": "WEBP",
+      "quality": 90,
+      "alpha": true,
+      "source": "asset-handoff/game-premium-tokens/jaipur/leather.png",
+      "sourceBytes": 2420439,
+      "sourceSha256": "4380f2b908e67ee7a061707bc28930f5a78fd35d4ae39ea42945b41294760550",
+      "sourceGitBlobSha": "83acdfd1020d415a5107da34150356b460f3ada0",
+      "sourceDimensions": [
+        1254,
+        1254
+      ],
+      "outputSha256": "d36a42725a544b2d880fd5c8801d96af353973962614bc86da4af3bd56e1c020"
+    },
+    {
+      "family": "jaipur",
+      "id": "bonus-token-back",
+      "output": "public/images/game-premium-tokens/jaipur/bonus-token-back.webp",
+      "outputBytes": 62060,
+      "width": 384,
+      "height": 384,
+      "format": "WEBP",
+      "quality": 90,
+      "alpha": true,
+      "source": "asset-handoff/game-premium-tokens/jaipur/bonus-token-back.png",
+      "sourceBytes": 2876724,
+      "sourceSha256": "5b016de4e70abf31f005ac37250b315c847928b7fef76f41b0e79b28a8ebc923",
+      "sourceGitBlobSha": "d17595a8c04d411407fbde557e2d89271f19968a",
+      "sourceDimensions": [
+        1254,
+        1254
+      ],
+      "outputSha256": "000e411039f6b4873742f061bbffacf1cb417856e029a22c1c3d1daa4234f0be"
+    }
+  ]
+}

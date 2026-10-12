@@ -2,8 +2,8 @@ import type { GameId, Language } from '../core/types';
 import { getBeginnerGuide, type BeginnerGuideOptions } from './beginner-guides';
 import { MarblePropertyArt } from './MarblePropertyArt';
 
-export function GameInstructions({ gameId, language, options, rules }: {
-  gameId: GameId; language: Language; options?: BeginnerGuideOptions; rules: string[];
+export function GameInstructions({ gameId, language, options, rules, desktopDisplay = true }: {
+  gameId: GameId; language: Language; options?: BeginnerGuideOptions; rules: string[]; desktopDisplay?: boolean;
 }) {
   const guide = getBeginnerGuide(gameId, language, options);
   const legacyMarble = gameId === 'marble' && options?.marbleVersion === 1;
@@ -12,6 +12,14 @@ export function GameInstructions({ gameId, language, options, rules }: {
   const imageSource = legacyMarble ? '/images/marble/cities/santo-domingo.svg' : `/images/guides/${gameId}-${language}.webp`;
   return <div className="beginner-guide" lang={language === 'ko' ? 'ko' : 'es-DO'}>
     <p className="guide-goal"><strong>{language === 'ko' ? '목표' : 'Meta'}</strong> {guide.goal}</p>
+    {desktopDisplay && gameId === 'marble' && !legacyMarble && <section className="first-action-walkthrough" aria-label={language === 'ko' ? '첫 차례 따라 하기' : 'Tu primer turno'}>
+      <h3>{language === 'ko' ? '첫 차례 따라 하기' : 'Tu primer turno'}</h3>
+      <ol>
+        <li><b>1 · {language === 'ko' ? '내 말 선택' : 'Elige tu figura'}</b><span>{language === 'ko' ? '캐릭터 그림을 눌러 내 말을 정해요.' : 'Pulsa un personaje para elegir tu figura.'}</span></li>
+        <li><b>2 · {language === 'ko' ? '주사위 굴리기' : 'Lanza los dados'}</b><span>{language === 'ko' ? '내 차례에 주사위를 굴리고 도착한 칸을 확인해요.' : 'En tu turno, lanza y revisa la casilla de llegada.'}</span></li>
+        <li><b>3 · {language === 'ko' ? '도착 후 결정' : 'Decide al llegar'}</b><span>{language === 'ko' ? '예: 뉴욕에 도착하면 260에 구매하거나 지나가요. 구매 전 잔액이 1,500이면 구매 후 1,240이에요.' : 'Ejemplo: en Nueva York puedes comprar por 260 o continuar. Si tenías 1,500, después de comprar quedan 1,240.'}</span></li>
+      </ol>
+    </section>}
     {gameId === 'marble' && !legacyMarble ? <figure className="guide-example guide-marble-example">
       <div className="guide-marble-stages">{[0, 1, 2, 3].map(level => <div key={level}>
         <MarblePropertyArt city="gwangju" level={level} routeVersion={options?.marbleCityRouteVersion ?? 3} className="guide-marble-art" language={language}/>

@@ -82,20 +82,36 @@ describe('MarbleBoard', () => {
     }
   });
 
-  it('labels an unbuilt city preview separately from the actual land on its tile', () => {
+  it('shows the selected arrival with its actual build stage instead of a false landmark preview', () => {
     const view = marbleEngine.getPlayerView({ ...marbleEngine.createInitialState(11), cityRouteVersion: 2 }, 'p1');
     view.board.positions.p1 = 1;
     const html = render(view);
-    const preview = html.slice(html.indexOf('<figure class="mp-city-preview"'), html.indexOf('</figure>') + 9);
-    expect(preview).toContain('/images/marble/landmarks/gwangju.svg');
-    expect(preview).toContain('랜드마크 미리보기 · 미건설');
-    expect(html).toContain('/images/marble/building-stages.svg#land');
+    const arrival = html.slice(html.indexOf('<section class="mp-journey-hud"'), html.indexOf('</section>') + 10);
+    expect(arrival).toContain('현재 도착 · 행동 위치');
+    expect(arrival).toContain('data-building-level="0"');
+    expect(arrival).toContain('현재 미건설');
+    expect(arrival).toContain('/images/marble/landmarks/gwangju.svg');
+    expect(arrival).toContain('랜드마크 모습 · 미건설');
+    expect(arrival).toContain('24개 도시 중 대표 도시 빠른 바로가기');
+    expect((arrival.match(/빠른 바로가기/g) ?? []).length).toBeGreaterThanOrEqual(5);
     expect(html).not.toContain('aria-label="랜드마크"');
+  });
+
+  it('keeps the arrival and action location focused on the active seat in the counterpart view', () => {
+    const state = marbleEngine.createInitialState(21);
+    state.positions.p1 = 8;
+    state.active = 'p1';
+    const html = render(marbleEngine.getPlayerView(state, 'p2'), 'es', 'p2');
+    expect(html).toContain('<h3>Puerto Plata</h3>');
+    expect(html).toContain('Llegada actual · ubicación de acción');
+    expect(html).toContain('Ubicación de acción</small>');
+    expect(html).toContain('Puerto Plata');
   });
 
   it('shows connected route-v3 landmark attribution and its verified image', () => {
     const view = marbleEngine.getPlayerView(marbleEngine.createInitialState(11), 'p1');
     view.board.positions.p1 = 13;
+    view.board.tiles[13].houses = 3;
     expect(render(view, 'es')).toContain('situado en Miami Beach');
     expect(render(view, 'es')).toContain('/images/marble/premium/cities/miami-colony-hotel.webp');
     view.board.positions.p1 = 15;
@@ -175,6 +191,9 @@ describe('MarbleBoard', () => {
     const spanish = render(view, 'es');
     expect(html).toContain('산토도밍고');
     expect(html).toContain('도시 구매 · 120');
+    expect(html).toContain('매입 120 · 매입 후 현금 1,380');
+    expect(html).toContain('기본 통행료 15');
+    expect(html.indexOf('mp-purchase-recap')).toBeLessThan(html.indexOf('mp-actions'));
     expect(html).toContain('구매 120 · 기본 통행료 15');
     expect(html).toContain('구매 후 현금 1,380');
     expect(html).toContain('선택한 칸');

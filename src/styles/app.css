@@ -617,6 +617,18 @@
 }
 .connection-strip { display:flex; align-items:center; justify-content:space-between; gap:12px; margin:6px 0; padding:8px 12px; border:1px solid #ab9369; border-radius:9px; background:#f5ecd7; color:#574422; font-size:13px; line-height:1.45; }
 .connection-strip button,.error-strip button { min-width:44px; min-height:44px; cursor:pointer; }
+@media (min-width: 1024px) and (pointer: fine) {
+  .app-shell.room-shell.has-inline-players:has(.board-card) .app-header.compact { height: 28px; min-height: 28px; padding-block: 2px; }
+  .room-shell.has-inline-players .room-topline { gap: 16px; min-height: 32px; }
+  .room-shell.has-inline-players .room-topline > .room-player-pills { justify-content: center; min-width: 0; }
+  .room-shell.has-inline-players .room-topline .player-pill { max-width: 200px; min-width: 0; padding: 2px 7px; }
+  .room-shell.has-inline-players .room-topline .player-pill > span:not(.ready-dot) { min-width: 0; }
+  .room-shell.has-inline-players .room-topline .player-pill b { display: block; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .room-shell.has-inline-players .room-topline .player-pill small { display: none; }
+  .room-shell.room-game-catchmind .catchmind-chat-panel .chat-compose textarea { min-height: 68px; font-size: 17px; border-color: #c3a3b6; background: #211728; color: #fff4ef; }
+  .room-shell.room-game-catchmind .catchmind-chat-panel .chat-compose textarea:focus { border-color: #f2c695; box-shadow: 0 0 0 2px #f2c69555; }
+  .room-shell.room-game-catchmind .catchmind-chat-panel .chat-compose textarea::placeholder { color: #dbc7d1; }
+}
 @media (min-width: 1000px) {
   .quality-table-room .room-main { padding-top:6px; }
   .quality-table-room .room-topline { margin:0 0 4px; }

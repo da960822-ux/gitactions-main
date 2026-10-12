@@ -1,12 +1,20 @@
 import type { Language } from '../core/types';
 import { JaipurBonusArt, JaipurCamelAward, JaipurCoin, JaipurGoodArt } from './JaipurArt';
 
-export function JaipurQuickGuide({ language }: { language: Language }) {
+export function JaipurQuickGuide({ language, desktopDisplay = true }: { language: Language; desktopDisplay?: boolean }) {
   const es = language === 'es';
 
   return <div className="quick-guide" lang={language}>
     <p className="quick-guide-goal">{es ? 'Objetivo: gana 2 rondas para ganar la partida; se juegan hasta 3.' : '목표: 최대 3라운드에서 먼저 2승을 해요.'}</p>
     <p>{es ? 'El mercado del centro es público. Abajo están tu mano y tu manada; las cartas rivales siguen ocultas. Las fichas de mercancía son la recompensa por vender.' : '중앙 시장은 누구나 보는 카드예요. 아래는 내 손패와 낙타 무리이고, 상대 손패는 숨겨져요. 상품 토큰은 판매하면 받는 점수예요.'}</p>
+    {desktopDisplay && <section className="first-action-walkthrough" aria-label={es ? 'Primera toma, paso a paso' : '첫 가져오기 따라 하기'}>
+      <h3>{es ? 'Primera toma, paso a paso' : '첫 가져오기 따라 하기'}</h3>
+      <ol>
+        <li><b>1 · {es ? 'Tomar' : '가져오기'}</b><span>{es ? 'Elige «Tomar» entre las tres acciones.' : '세 행동 중 ‘가져오기’를 선택해요.'}</span></li>
+        <li><b>2 · {es ? 'Una mercancía' : '시장 상품 1장'}</b><span>{es ? 'Pulsa una mercancía disponible. Ejemplo: tela, si hay una en el mercado.' : '시장에서 상품 한 장을 눌러요. 예를 들어 옷감이 있다면 옷감을 골라요.'}</span></li>
+        <li><b>3 · {es ? 'Confirmar' : '가져오기 확정'}</b><span>{es ? 'Confirma: sale del mercado y entra en tu mano. Una mano de 5 pasa a 6; el mercado se repone.' : '확정하면 시장에서 내 손패로 옮겨요. 손패가 5장이었다면 6장이 되고, 시장에는 새 카드가 채워져요.'}</span></li>
+      </ol>
+    </section>}
     <ol className="quick-guide-steps">
       <li>
         <figure className="quick-guide-image">

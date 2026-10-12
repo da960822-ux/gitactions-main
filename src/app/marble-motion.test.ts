@@ -1,9 +1,17 @@
 import { describe, expect, it } from 'vitest';
-import { marbleCueForEvent, marbleEventSequence, marbleEventWindow, marbleEventsAfter, marbleMoneyDelta, marbleGridPosition, marbleMovementPath, marblePresentationFrames } from './marble-motion';
+import { marbleCueForEvent, marbleEventSequence, marbleEventWindow, marbleEventsAfter, marbleMoneyDelta, marbleGridPosition, marbleJourneyDisplay, marbleMovementPath, marblePresentationFrames } from './marble-motion';
 
 const moveEvent = (effect: string, from: number, to: number, steps: number | null, playerId = 'p1') => ({ sequence: 1, playerId, effect, from, to, steps });
 
 describe('Marble board movement path', () => {
+  it('keeps destination, transit, arrival and explicit inspection labels in sync with visible presentation', () => {
+    const base = { selectedTile: 9, actionTile: 9, displayedTile: 0, traveler: null, playerId: 'p1' as const, diceRolling: false };
+    expect(marbleJourneyDisplay(base)).toBe('moving'); // authority has advanced; the pawn has not.
+    expect(marbleJourneyDisplay({ ...base, displayedTile: 4, traveler: { seat: 'p1' as const } })).toBe('moving');
+    expect(marbleJourneyDisplay({ ...base, displayedTile: 9 })).toBe('arrived');
+    expect(marbleJourneyDisplay({ ...base, selectedTile: 31, displayedTile: 9, traveler: { seat: 'p1' as const }, diceRolling: true })).toBe('inspect');
+  });
+
   it('completes a partial event path from a stable origin without skipping or overshooting cells', () => {
     const frames = marblePresentationFrames([{ sequence: 3, type: 'move', actor: 'p1', from: 0, to: 2, steps: 2 }], { p1: 0, p2: 9 }, { p1: 5, p2: 9 }, 40);
     expect(frames.filter(frame => frame.traveler).map(frame => frame.traveler!.tile)).toEqual([1, 2, 3, 4, 5]);

@@ -70,3 +70,12 @@
 .app-shell .game-guide .minhwatu-guide-steps li { grid-template-columns: minmax(0, 1fr); }
 .minhwatu-guide .minhwatu-guide-steps li > span,
 .app-shell .game-guide .minhwatu-guide-steps li > span { color: #ddcbd3; font-weight: 400; font-size: 13px; }
+
+.minhwatu-match-desktop { display: none; }
+@media (min-width: 1024px) and (pointer: fine) {
+.minhwatu-match-outcome { display: flex; flex-wrap: wrap; align-items: center; gap: 4px 7px; }
+.minhwatu-match-desktop { display: inline; }
+.minhwatu-match-outcome > b { color: #f2d79d; }
+.minhwatu-match-outcome > span { padding: 2px 6px; border: 1px solid #826b4e; border-radius: 999px; color: #fff0c0; background: #332b2a; font-size: 11px; font-weight: 700; }
+.minhwatu-guide-face.is-selected img { box-shadow: 0 0 0 2px #e5c674, 0 3px 7px #08060b78; }
+}

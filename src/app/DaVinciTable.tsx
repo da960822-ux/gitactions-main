@@ -205,7 +205,8 @@ export default function DaVinciTable({ view, language, playerId, runAction, joke
     }
   }
 
-  return <div ref={tableRef} className="table-game dv-table" aria-label={copy(language, '다빈치 코드 게임판', 'Mesa de Código Da Vinci')}>
+  const workbenchStage = view?.result ? 'result' : setupPhase ? 'setup' : placementPhase ? 'joker' : drawChoice ? 'draw' : skipDrawChoice ? 'guess' : guessChoices.length ? 'guess' : stopChoice ? 'stop' : 'waiting';
+  return <div ref={tableRef} className="table-game dv-table" data-workbench-stage={workbenchStage} aria-label={copy(language, '다빈치 코드 게임판', 'Mesa de Código Da Vinci')}>
     <header className="dv-header">
       <div><h2>{copy(language, '다빈치 코드', 'Código Da Vinci')}</h2><p>{copy(language, '색과 정렬 순서를 단서로 상대의 숨은 숫자를 추리하세요.', 'Usa el color y el orden como pistas para deducir los números ocultos.')}</p></div>
       <div className="dv-score-strip"><div className={view?.turn === playerId ? 'is-active' : ''}><span>{copy(language, '내 타일', 'Tus fichas')}</span><b>{own.length}</b>{streaks[playerId] > 0 && <small>{copy(language, `연속 정답 ${streaks[playerId]}`, `Aciertos seguidos: ${streaks[playerId]}`)}</small>}</div><div className="dv-hidden-stat"><span>{copy(language, '숫자 숨김', 'Números ocultos')}</span><GameValue value={Number(view?.opponentCount ?? hidden.length)} resetKey={`${playerId}:davinci:hidden`}/></div><div className={view?.turn !== playerId ? 'is-active' : ''}><span>{copy(language, '상대 타일', 'Fichas rivales')}</span><b>{rival.length}</b>{streaks[playerId === 'p1' ? 'p2' : 'p1'] > 0 && <small>{copy(language, `상대 연속 정답 ${streaks[playerId === 'p1' ? 'p2' : 'p1']}`, `Aciertos rivales seguidos: ${streaks[playerId === 'p1' ? 'p2' : 'p1']}`)}</small>}</div></div>
@@ -254,7 +255,7 @@ export default function DaVinciTable({ view, language, playerId, runAction, joke
               if (mounted.current) { setSubmitting(false); if (accepted !== false) setConfirming(null); }
             } catch { if (mounted.current) setSubmitting(false); }
           }}>{submitting ? copy(language, '전송 중…', 'Enviando…') : copy(language, '추측 확정', 'Confirmar')}</button><button type="button" className="dv-cancel" disabled={submitting} onClick={cancelGuess}>{copy(language, '취소', 'Cancelar')}</button></div> : <button type="button" className="dv-guess-submit" disabled={!guess || !active || !target || !filteredTargets.some(item => item.index === targetIndex)} onClick={() => guess && setConfirming(guess)}>{daVinciGuessButtonLabel(language, number)}</button>}
-          {active && guessChoices.length > 0 && stopChoice && Number(board.deckCount ?? 0) > 0 && <p className="dv-rule-note">{copy(language, '맞히면 계속 추측하거나 차례를 마칠 수 있어요. 틀리면 방금 뽑은 타일이 공개되고 차례가 끝나요.', 'Si aciertas, puedes seguir o terminar tu turno. Si fallas, se revela la ficha que acabas de robar y termina tu turno.')}</p>}
+          {active && guessChoices.length > 0 && stopChoice && Number(board.deckCount ?? 0) > 0 && <p className="dv-rule-note dv-rule-penalty"><span className="dv-penalty-visual" aria-hidden="true"><i/>→<i/></span>{copy(language, '맞히면 계속 추측하거나 차례를 마칠 수 있어요. 틀리면 방금 뽑은 타일이 공개되고 차례가 끝나요.', 'Si aciertas, puedes seguir o terminar tu turno. Si fallas, se revela la ficha que acabas de robar y termina tu turno.')}</p>}
           {active && guessChoices.length > 0 && stopChoice && Number(board.deckCount ?? 0) <= 0 && <p className="dv-rule-note">{copy(language, '더미가 비었어요. 틀려도 새로 공개될 내 타일은 없고 차례가 끝나요.', 'El mazo está vacío. Si fallas, no se revela una ficha nueva y termina tu turno.')}</p>}
           {active && skipDrawChoice && <p className="dv-rule-note">{copy(language, '더미가 비었어요. 타일을 뽑지 않고 추측을 계속해요.', 'El mazo está vacío. Puedes seguir adivinando sin robar.')}</p>}
         </div>
