@@ -4,10 +4,10 @@
   "counts": {
     "cities": 24,
     "buildings": 2,
-    "pawns": 6
+    "pawns": 7
   },
-  "originalBytes": 52604560,
-  "runtimeBytes": 2206982,
+  "originalBytes": 54613551,
+  "runtimeBytes": 2236776,
   "policy": "WebP quality92, original colors and interior alpha, padded alpha16 crop; cities/buildings512px, pawns256px. Original PNGs preserved in the source branch. Game mapping and in-game pixels are separate validation.",
   "assets": [
     {
@@ -585,6 +585,26 @@
       ],
       "bytes": 97304,
       "sha256": "0cf60ffd807705bc72b94498c6619277fa9d214d5bdd10a5fc0f4a905d22a5c0"
+    },
+    {
+      "path": "pawns/sali-suli.webp",
+      "sourcePath": "asset-handoff/marble-premium/pawns/sali-suli.png",
+      "sourceSha256": "05c637e38bdd22187f1cf9984c8874e589155c322ac6f2ba03b6b64e23ba7560",
+      "sourceBytes": 2008991,
+      "crop": [
+        127,
+        88,
+        1157,
+        1224
+      ],
+      "dimensions": [
+        232,
+        256
+      ],
+      "bytes": 29794,
+      "sha256": "fdcada517e081847686eb4bfc9f51cb54adf71a158692fbc37bd6f4ab7c3b98e",
+      "sourceRevision": "519dcdf1b925bafaf7d5d453df74ea5bd60eb9f0"
     }
-  ]
+  ],
+  "additionalSourceRevision": "519dcdf1b925bafaf7d5d453df74ea5bd60eb9f0"
 }

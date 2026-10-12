@@ -1,5 +1,7 @@
 # 랜딩 보존 게임 통합 — 검증용 로컬 분기
 
+**후속 상태:** 이 문서는6a4d21f/3b3f270시점의이력이다. 최신b4c9f28 delta와살리술리연결/490회귀/영상전달은 `LOCAL-GAME-INTEGRATION-B4C9F28-2026-10-12.ko.md`를읽는다. 원래6aworktree는당시상태로보존했다.
+
 전체 게임 요청의 최종 완료본이 아니다. 별도 `/workspace/gitactions-game-integration-6a4d21f`, `local/game-integration-6a4d21f-20261012`에 랜딩 **1cf833215196aa68b68b062d5a01e3c1b01f7530** 위로 원격 게임 **6a4d21f046843abc10d07ad3819845d51fea3a6c**를3-way 통합했다. 요청 원격 `games/desktop-improvements-20261011-8c90594-379a58`의 SHA가 정확히 일치함을 확인했다. 공통 조상은8c90594a8e1345ee6870aa504d97d4b716b00493이다. 게임 담당의 추가 누락 수정과 모든 개인 그림을 수령한 뒤 최종검수를 해야 한다.
 
 원래 `/workspace/gitactions-home-integration`의1cf8332와 `/workspace/gitactions-main`의51a9ee3를 변경하지 않았다. 외부 push·공개·배포·DB/migration 실행·영상 업로드를 하지 않는다. 현재 개인 영상의 Drive 승인은 응답 대기이며 재시도하지 않았다.

@@ -3,7 +3,6 @@ import type { CSSProperties } from 'react';
 import type { GameAction, Language, PlayerId } from '../core/types';
 import '../styles/marble-pawns.css';
 import pawnAssets from '../../public/images/marble/pawns/manifest.json';
-import { getPrivateSaliSuliPawn } from './private-game-art';
 
 export type MarblePawnId = 'fox' | 'cat' | 'penguin' | 'astronaut' | 'robot' | 'dragon' | 'sali-suli';
 type Copy = Record<Language, string>;
@@ -26,9 +25,8 @@ export function MarblePawn({ pawn, language, label }: { pawn: MarblePawnId; lang
   const title = label ?? name;
   const g = (name: string) => `${id}-${name}`;
 
-  const image = pawn === 'sali-suli' ? getPrivateSaliSuliPawn() : pawnAssets.assets.find(asset => asset.id === pawn)?.path;
+  const image = pawnAssets.assets.find(asset => asset.id === pawn)?.path;
   if (image) return <img className={`marble-pawn marble-pawn--${pawn}`} src={image} alt={title} decoding="async"/>;
-  if (pawn === 'sali-suli') return <span className="marble-pawn marble-pawn--pending" role="img" aria-label={`${title} · ${copy(language, '그림 준비 중', 'Imagen pendiente')}`}>S·S</span>;
 
   return <svg className={`marble-pawn marble-pawn--${pawn}`} viewBox="0 0 120 150" role="img" aria-label={title} focusable="false">
     <defs>

@@ -126,14 +126,26 @@ describe('same-game replay availability', () => {
 });
 
 describe('inline game guide', () => {
+  it('uses current assets and economy for a new-game guide while keeping saved rooms versioned', () => {
+    for (const language of ['ko', 'es'] as const) {
+      const fresh = renderToStaticMarkup(createElement(GameGuide, { gameId: 'marble', language }));
+      expect(fresh).toContain('/images/marble/premium/cities/gwangju-chosun-university.webp');
+      expect(fresh).toContain(language === 'ko' ? '첫 건설 40' : 'primera mejora 40');
+      const saved = renderToStaticMarkup(createElement(GameGuide, { gameId: 'marble', language, marbleVersion: 2 }));
+      expect(saved).toContain('/images/marble/landmarks/gwangju.svg');
+      expect(saved).toContain(language === 'ko' ? '첫 건설 100' : 'primera mejora 100');
+      expect(saved).not.toContain('premium/cities/gwangju');
+    }
+  });
   it('offers the same concise illustrated introduction before and during the three upgraded games', () => {
     for (const gameId of ['davinci', 'catchmind', 'marble'] as const) for (const language of ['ko', 'es'] as const) {
       const quick = getBeginnerGuide(gameId, language)!;
-      const inline = renderToStaticMarkup(createElement(GameGuide, { gameId, language, marbleVersion: 2, marbleEconomyVersion: 2 }));
+      const inline = renderToStaticMarkup(createElement(GameGuide, { gameId, language, marbleVersion: 2, marbleEconomyVersion: 2, marbleCityRouteVersion: 3 }));
       const dialog = renderToStaticMarkup(createElement(RulesDialog, { gameId, language, onClose: () => {} }));
       for (const html of [inline, dialog]) {
         expect(html).toContain(quick.goal);
-        expect(html).toContain(`/images/guides/${gameId}-${language}.webp`);
+        if (gameId === 'marble') { expect(html).toContain('/images/marble/premium/buildings/stage1-house.webp'); expect(html).toContain('/images/marble/premium/cities/gwangju-chosun-university.webp'); }
+        else expect(html).toContain(`/images/guides/${gameId}-${language}.webp`);
         expect(html).toContain(language === 'es' ? 'lang="es-DO"' : 'lang="ko"');
         expect(html).toContain('<details class="guide-details">');
         expect(html).not.toContain('<details open');

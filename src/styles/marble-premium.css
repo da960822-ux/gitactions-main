@@ -246,7 +246,7 @@
 .mp-die circle { fill:#1f5363; }
 .mp-die.has-value { animation:mp-dice-reveal 260ms cubic-bezier(.16,1,.3,1) both; }
 .mp-dice-total { display:grid; place-items:center; width:35px; height:35px; border:1px solid #d0bd8f; border-radius:50%; background:#f0e3c5; color:#475d58; font-size:14px; }
-.mp-dice-row.is-rolling .mp-die { animation:mp-dice-roll 580ms cubic-bezier(.16,1,.3,1) both; }
+.mp-dice-row.is-rolling .mp-die { animation:mp-dice-roll 620ms cubic-bezier(.16,1,.3,1) both; }
 .mp-current-tile { display:flex; align-items:center; gap:9px; min-height:54px; padding:8px 9px; border:1px solid #d9c9a8; border-radius:10px; background:#f8f1df; }
 .mp-current-flag { flex:none; width:32px; height:26px; }
 .mp-current-flag img { width:100%; height:100%; object-fit:cover; border:1px solid #d0c3a8; border-radius:4px; }
@@ -425,3 +425,9 @@
   .is-modern .mp-map-hud { bottom:38px; }
   .is-modern .mp-city-preview { left:62px; }
 }
+
+.guide-marble-stages { display:grid; grid-template-columns:repeat(4,minmax(0,1fr)); gap:10px; }
+.guide-marble-stages > div { display:grid; grid-template-rows:110px auto; justify-items:center; align-items:end; gap:6px; text-align:center; font-size:12px; }
+.guide-marble-stages .guide-marble-art { width:100%; height:110px; object-fit:contain; object-position:center bottom; }
+.guide-marble-stages [data-building-level="1"] { transform:scale(.54); transform-origin:center bottom; }
+.guide-marble-stages [data-building-level="2"] { transform:scale(.73); transform-origin:center bottom; }

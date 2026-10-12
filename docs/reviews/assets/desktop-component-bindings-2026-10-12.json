@@ -1,0 +1,951 @@
+{
+  "base": "12b03ca087075cdb8107d43e71baa8c241f3289f",
+  "sourceGame": "6a4d21f046843abc10d07ad3819845d51fea3a6c plus local functional fixes",
+  "method": "React server-rendered component references and local file existence. No browser, sessions or real play.",
+  "characters": [
+    {
+      "id": "fox",
+      "name": {
+        "ko": "말티푸",
+        "es": "Maltipoo"
+      },
+      "path": "/images/marble/premium/pawns/maltipoo.webp",
+      "actualRenderer": "img",
+      "savedIdPreserved": true
+    },
+    {
+      "id": "cat",
+      "name": {
+        "ko": "랙돌",
+        "es": "Ragdoll"
+      },
+      "path": "/images/marble/premium/pawns/ragdoll.webp",
+      "actualRenderer": "img",
+      "savedIdPreserved": true
+    },
+    {
+      "id": "penguin",
+      "name": {
+        "ko": "판다",
+        "es": "Panda"
+      },
+      "path": "/images/marble/premium/pawns/panda.webp",
+      "actualRenderer": "img",
+      "savedIdPreserved": true
+    },
+    {
+      "id": "astronaut",
+      "name": {
+        "ko": "우주인",
+        "es": "Astronauta"
+      },
+      "path": "/images/marble/premium/pawns/astronaut-rose-heart.webp",
+      "actualRenderer": "img",
+      "savedIdPreserved": true
+    },
+    {
+      "id": "robot",
+      "name": {
+        "ko": "리스연",
+        "es": "Lisyeon"
+      },
+      "path": "/images/marble/premium/pawns/lisyeon.webp",
+      "actualRenderer": "img",
+      "savedIdPreserved": true
+    },
+    {
+      "id": "dragon",
+      "name": {
+        "ko": "친칠라",
+        "es": "Chinchilla"
+      },
+      "path": "/images/marble/premium/pawns/chinchilla.webp",
+      "actualRenderer": "img",
+      "savedIdPreserved": true
+    },
+    {
+      "id": "sali-suli",
+      "name": {
+        "ko": "살리·술리",
+        "es": "Sali y Suli"
+      },
+      "path": "/images/marble/premium/pawns/sali-suli.webp",
+      "actualRenderer": "img",
+      "savedIdPreserved": false
+    }
+  ],
+  "cities": [
+    {
+      "index": 1,
+      "slug": "gwangju",
+      "name": {
+        "ko": "광주",
+        "es": "Gwangju"
+      },
+      "levels": [
+        {
+          "level": 0,
+          "path": "/images/marble/building-stages.svg#land",
+          "renderer": "land SVG"
+        },
+        {
+          "level": 1,
+          "path": "/images/marble/premium/buildings/stage1-house.webp",
+          "renderer": "SVG image with city color filter"
+        },
+        {
+          "level": 2,
+          "path": "/images/marble/premium/buildings/stage2-apartment.webp",
+          "renderer": "SVG image with city color filter"
+        },
+        {
+          "level": 3,
+          "path": "/images/marble/premium/cities/gwangju-chosun-university.webp",
+          "renderer": "img"
+        }
+      ]
+    },
+    {
+      "index": 3,
+      "slug": "new-york",
+      "name": {
+        "ko": "뉴욕",
+        "es": "Nueva York"
+      },
+      "levels": [
+        {
+          "level": 0,
+          "path": "/images/marble/building-stages.svg#land",
+          "renderer": "land SVG"
+        },
+        {
+          "level": 1,
+          "path": "/images/marble/premium/buildings/stage1-house.webp",
+          "renderer": "SVG image with city color filter"
+        },
+        {
+          "level": 2,
+          "path": "/images/marble/premium/buildings/stage2-apartment.webp",
+          "renderer": "SVG image with city color filter"
+        },
+        {
+          "level": 3,
+          "path": "/images/marble/premium/cities/new-york-empire-state.webp",
+          "renderer": "img"
+        }
+      ]
+    },
+    {
+      "index": 4,
+      "slug": "madrid",
+      "name": {
+        "ko": "마드리드",
+        "es": "Madrid"
+      },
+      "levels": [
+        {
+          "level": 0,
+          "path": "/images/marble/building-stages.svg#land",
+          "renderer": "land SVG"
+        },
+        {
+          "level": 1,
+          "path": "/images/marble/premium/buildings/stage1-house.webp",
+          "renderer": "SVG image with city color filter"
+        },
+        {
+          "level": 2,
+          "path": "/images/marble/premium/buildings/stage2-apartment.webp",
+          "renderer": "SVG image with city color filter"
+        },
+        {
+          "level": 3,
+          "path": "/images/marble/premium/cities/madrid-royal-palace.webp",
+          "renderer": "img"
+        }
+      ]
+    },
+    {
+      "index": 5,
+      "slug": "santiago",
+      "name": {
+        "ko": "산티아고",
+        "es": "Santiago"
+      },
+      "levels": [
+        {
+          "level": 0,
+          "path": "/images/marble/building-stages.svg#land",
+          "renderer": "land SVG"
+        },
+        {
+          "level": 1,
+          "path": "/images/marble/premium/buildings/stage1-house.webp",
+          "renderer": "SVG image with city color filter"
+        },
+        {
+          "level": 2,
+          "path": "/images/marble/premium/buildings/stage2-apartment.webp",
+          "renderer": "SVG image with city color filter"
+        },
+        {
+          "level": 3,
+          "path": "/images/marble/premium/cities/santiago-restoration-monument.webp",
+          "renderer": "img"
+        }
+      ]
+    },
+    {
+      "index": 8,
+      "slug": "puerto-plata",
+      "name": {
+        "ko": "푸에르토플라타",
+        "es": "Puerto Plata"
+      },
+      "levels": [
+        {
+          "level": 0,
+          "path": "/images/marble/building-stages.svg#land",
+          "renderer": "land SVG"
+        },
+        {
+          "level": 1,
+          "path": "/images/marble/premium/buildings/stage1-house.webp",
+          "renderer": "SVG image with city color filter"
+        },
+        {
+          "level": 2,
+          "path": "/images/marble/premium/buildings/stage2-apartment.webp",
+          "renderer": "SVG image with city color filter"
+        },
+        {
+          "level": 3,
+          "path": "/images/marble/premium/cities/puerto-plata-fortaleza-san-felipe.webp",
+          "renderer": "img"
+        }
+      ]
+    },
+    {
+      "index": 9,
+      "slug": "san-juan",
+      "name": {
+        "ko": "산후안",
+        "es": "San Juan"
+      },
+      "levels": [
+        {
+          "level": 0,
+          "path": "/images/marble/building-stages.svg#land",
+          "renderer": "land SVG"
+        },
+        {
+          "level": 1,
+          "path": "/images/marble/premium/buildings/stage1-house.webp",
+          "renderer": "SVG image with city color filter"
+        },
+        {
+          "level": 2,
+          "path": "/images/marble/premium/buildings/stage2-apartment.webp",
+          "renderer": "SVG image with city color filter"
+        },
+        {
+          "level": 3,
+          "path": "/images/marble/premium/cities/san-juan-el-morro.webp",
+          "renderer": "img"
+        }
+      ]
+    },
+    {
+      "index": 11,
+      "slug": "berlin",
+      "name": {
+        "ko": "베를린",
+        "es": "Berlín"
+      },
+      "levels": [
+        {
+          "level": 0,
+          "path": "/images/marble/building-stages.svg#land",
+          "renderer": "land SVG"
+        },
+        {
+          "level": 1,
+          "path": "/images/marble/premium/buildings/stage1-house.webp",
+          "renderer": "SVG image with city color filter"
+        },
+        {
+          "level": 2,
+          "path": "/images/marble/premium/buildings/stage2-apartment.webp",
+          "renderer": "SVG image with city color filter"
+        },
+        {
+          "level": 3,
+          "path": "/images/marble/premium/cities/berlin.webp",
+          "renderer": "img"
+        }
+      ]
+    },
+    {
+      "index": 13,
+      "slug": "miami",
+      "name": {
+        "ko": "마이애미",
+        "es": "Miami"
+      },
+      "levels": [
+        {
+          "level": 0,
+          "path": "/images/marble/building-stages.svg#land",
+          "renderer": "land SVG"
+        },
+        {
+          "level": 1,
+          "path": "/images/marble/premium/buildings/stage1-house.webp",
+          "renderer": "SVG image with city color filter"
+        },
+        {
+          "level": 2,
+          "path": "/images/marble/premium/buildings/stage2-apartment.webp",
+          "renderer": "SVG image with city color filter"
+        },
+        {
+          "level": 3,
+          "path": "/images/marble/premium/cities/miami-colony-hotel.webp",
+          "renderer": "img"
+        }
+      ]
+    },
+    {
+      "index": 15,
+      "slug": "santo-domingo",
+      "name": {
+        "ko": "산토도밍고",
+        "es": "Santo Domingo"
+      },
+      "levels": [
+        {
+          "level": 0,
+          "path": "/images/marble/building-stages.svg#land",
+          "renderer": "land SVG"
+        },
+        {
+          "level": 1,
+          "path": "/images/marble/premium/buildings/stage1-house.webp",
+          "renderer": "SVG image with city color filter"
+        },
+        {
+          "level": 2,
+          "path": "/images/marble/premium/buildings/stage2-apartment.webp",
+          "renderer": "SVG image with city color filter"
+        },
+        {
+          "level": 3,
+          "path": "/images/marble/premium/cities/santo-domingo-alcazar.webp",
+          "renderer": "img"
+        }
+      ]
+    },
+    {
+      "index": 16,
+      "slug": "paris",
+      "name": {
+        "ko": "파리",
+        "es": "París"
+      },
+      "levels": [
+        {
+          "level": 0,
+          "path": "/images/marble/building-stages.svg#land",
+          "renderer": "land SVG"
+        },
+        {
+          "level": 1,
+          "path": "/images/marble/premium/buildings/stage1-house.webp",
+          "renderer": "SVG image with city color filter"
+        },
+        {
+          "level": 2,
+          "path": "/images/marble/premium/buildings/stage2-apartment.webp",
+          "renderer": "SVG image with city color filter"
+        },
+        {
+          "level": 3,
+          "path": "/images/marble/premium/cities/paris-eiffel-tower.webp",
+          "renderer": "img"
+        }
+      ]
+    },
+    {
+      "index": 17,
+      "slug": "tokyo",
+      "name": {
+        "ko": "도쿄",
+        "es": "Tokio"
+      },
+      "levels": [
+        {
+          "level": 0,
+          "path": "/images/marble/building-stages.svg#land",
+          "renderer": "land SVG"
+        },
+        {
+          "level": 1,
+          "path": "/images/marble/premium/buildings/stage1-house.webp",
+          "renderer": "SVG image with city color filter"
+        },
+        {
+          "level": 2,
+          "path": "/images/marble/premium/buildings/stage2-apartment.webp",
+          "renderer": "SVG image with city color filter"
+        },
+        {
+          "level": 3,
+          "path": "/images/marble/premium/cities/tokyo-kaminarimon.webp",
+          "renderer": "img"
+        }
+      ]
+    },
+    {
+      "index": 19,
+      "slug": "barcelona",
+      "name": {
+        "ko": "바르셀로나",
+        "es": "Barcelona"
+      },
+      "levels": [
+        {
+          "level": 0,
+          "path": "/images/marble/building-stages.svg#land",
+          "renderer": "land SVG"
+        },
+        {
+          "level": 1,
+          "path": "/images/marble/premium/buildings/stage1-house.webp",
+          "renderer": "SVG image with city color filter"
+        },
+        {
+          "level": 2,
+          "path": "/images/marble/premium/buildings/stage2-apartment.webp",
+          "renderer": "SVG image with city color filter"
+        },
+        {
+          "level": 3,
+          "path": "/images/marble/premium/cities/barcelona-sagrada-familia.webp",
+          "renderer": "img"
+        }
+      ]
+    },
+    {
+      "index": 21,
+      "slug": "istanbul",
+      "name": {
+        "ko": "이스탄불",
+        "es": "Estambul"
+      },
+      "levels": [
+        {
+          "level": 0,
+          "path": "/images/marble/building-stages.svg#land",
+          "renderer": "land SVG"
+        },
+        {
+          "level": 1,
+          "path": "/images/marble/premium/buildings/stage1-house.webp",
+          "renderer": "SVG image with city color filter"
+        },
+        {
+          "level": 2,
+          "path": "/images/marble/premium/buildings/stage2-apartment.webp",
+          "renderer": "SVG image with city color filter"
+        },
+        {
+          "level": 3,
+          "path": "/images/marble/premium/cities/istanbul-hagia-sophia.webp",
+          "renderer": "img"
+        }
+      ]
+    },
+    {
+      "index": 22,
+      "slug": "havana",
+      "name": {
+        "ko": "아바나",
+        "es": "La Habana"
+      },
+      "levels": [
+        {
+          "level": 0,
+          "path": "/images/marble/building-stages.svg#land",
+          "renderer": "land SVG"
+        },
+        {
+          "level": 1,
+          "path": "/images/marble/premium/buildings/stage1-house.webp",
+          "renderer": "SVG image with city color filter"
+        },
+        {
+          "level": 2,
+          "path": "/images/marble/premium/buildings/stage2-apartment.webp",
+          "renderer": "SVG image with city color filter"
+        },
+        {
+          "level": 3,
+          "path": "/images/marble/premium/cities/havana-el-capitolio.webp",
+          "renderer": "img"
+        }
+      ]
+    },
+    {
+      "index": 24,
+      "slug": "mexico-city",
+      "name": {
+        "ko": "멕시코시티",
+        "es": "Ciudad de México"
+      },
+      "levels": [
+        {
+          "level": 0,
+          "path": "/images/marble/building-stages.svg#land",
+          "renderer": "land SVG"
+        },
+        {
+          "level": 1,
+          "path": "/images/marble/premium/buildings/stage1-house.webp",
+          "renderer": "SVG image with city color filter"
+        },
+        {
+          "level": 2,
+          "path": "/images/marble/premium/buildings/stage2-apartment.webp",
+          "renderer": "SVG image with city color filter"
+        },
+        {
+          "level": 3,
+          "path": "/images/marble/premium/cities/mexico-city-bellas-artes.webp",
+          "renderer": "img"
+        }
+      ]
+    },
+    {
+      "index": 25,
+      "slug": "lisbon",
+      "name": {
+        "ko": "리스본",
+        "es": "Lisboa"
+      },
+      "levels": [
+        {
+          "level": 0,
+          "path": "/images/marble/building-stages.svg#land",
+          "renderer": "land SVG"
+        },
+        {
+          "level": 1,
+          "path": "/images/marble/premium/buildings/stage1-house.webp",
+          "renderer": "SVG image with city color filter"
+        },
+        {
+          "level": 2,
+          "path": "/images/marble/premium/buildings/stage2-apartment.webp",
+          "renderer": "SVG image with city color filter"
+        },
+        {
+          "level": 3,
+          "path": "/images/marble/premium/cities/lisbon-belem-tower.webp",
+          "renderer": "img"
+        }
+      ]
+    },
+    {
+      "index": 28,
+      "slug": "london",
+      "name": {
+        "ko": "런던",
+        "es": "Londres"
+      },
+      "levels": [
+        {
+          "level": 0,
+          "path": "/images/marble/building-stages.svg#land",
+          "renderer": "land SVG"
+        },
+        {
+          "level": 1,
+          "path": "/images/marble/premium/buildings/stage1-house.webp",
+          "renderer": "SVG image with city color filter"
+        },
+        {
+          "level": 2,
+          "path": "/images/marble/premium/buildings/stage2-apartment.webp",
+          "renderer": "SVG image with city color filter"
+        },
+        {
+          "level": 3,
+          "path": "/images/marble/premium/cities/london-elizabeth-tower.webp",
+          "renderer": "img"
+        }
+      ]
+    },
+    {
+      "index": 29,
+      "slug": "rome",
+      "name": {
+        "ko": "로마",
+        "es": "Roma"
+      },
+      "levels": [
+        {
+          "level": 0,
+          "path": "/images/marble/building-stages.svg#land",
+          "renderer": "land SVG"
+        },
+        {
+          "level": 1,
+          "path": "/images/marble/premium/buildings/stage1-house.webp",
+          "renderer": "SVG image with city color filter"
+        },
+        {
+          "level": 2,
+          "path": "/images/marble/premium/buildings/stage2-apartment.webp",
+          "renderer": "SVG image with city color filter"
+        },
+        {
+          "level": 3,
+          "path": "/images/marble/premium/cities/rome-colosseum.webp",
+          "renderer": "img"
+        }
+      ]
+    },
+    {
+      "index": 31,
+      "slug": "newark",
+      "name": {
+        "ko": "뉴어크",
+        "es": "Newark"
+      },
+      "levels": [
+        {
+          "level": 0,
+          "path": "/images/marble/building-stages.svg#land",
+          "renderer": "land SVG"
+        },
+        {
+          "level": 1,
+          "path": "/images/marble/premium/buildings/stage1-house.webp",
+          "renderer": "SVG image with city color filter"
+        },
+        {
+          "level": 2,
+          "path": "/images/marble/premium/buildings/stage2-apartment.webp",
+          "renderer": "SVG image with city color filter"
+        },
+        {
+          "level": 3,
+          "path": "/images/marble/premium/cities/newark-sacred-heart.webp",
+          "renderer": "img"
+        }
+      ]
+    },
+    {
+      "index": 32,
+      "slug": "agra",
+      "name": {
+        "ko": "아그라",
+        "es": "Agra"
+      },
+      "levels": [
+        {
+          "level": 0,
+          "path": "/images/marble/building-stages.svg#land",
+          "renderer": "land SVG"
+        },
+        {
+          "level": 1,
+          "path": "/images/marble/premium/buildings/stage1-house.webp",
+          "renderer": "SVG image with city color filter"
+        },
+        {
+          "level": 2,
+          "path": "/images/marble/premium/buildings/stage2-apartment.webp",
+          "renderer": "SVG image with city color filter"
+        },
+        {
+          "level": 3,
+          "path": "/images/marble/premium/cities/agra-taj-mahal.webp",
+          "renderer": "img"
+        }
+      ]
+    },
+    {
+      "index": 33,
+      "slug": "athens",
+      "name": {
+        "ko": "아테네",
+        "es": "Atenas"
+      },
+      "levels": [
+        {
+          "level": 0,
+          "path": "/images/marble/building-stages.svg#land",
+          "renderer": "land SVG"
+        },
+        {
+          "level": 1,
+          "path": "/images/marble/premium/buildings/stage1-house.webp",
+          "renderer": "SVG image with city color filter"
+        },
+        {
+          "level": 2,
+          "path": "/images/marble/premium/buildings/stage2-apartment.webp",
+          "renderer": "SVG image with city color filter"
+        },
+        {
+          "level": 3,
+          "path": "/images/marble/premium/cities/athens-parthenon.webp",
+          "renderer": "img"
+        }
+      ]
+    },
+    {
+      "index": 35,
+      "slug": "toronto",
+      "name": {
+        "ko": "토론토",
+        "es": "Toronto"
+      },
+      "levels": [
+        {
+          "level": 0,
+          "path": "/images/marble/building-stages.svg#land",
+          "renderer": "land SVG"
+        },
+        {
+          "level": 1,
+          "path": "/images/marble/premium/buildings/stage1-house.webp",
+          "renderer": "SVG image with city color filter"
+        },
+        {
+          "level": 2,
+          "path": "/images/marble/premium/buildings/stage2-apartment.webp",
+          "renderer": "SVG image with city color filter"
+        },
+        {
+          "level": 3,
+          "path": "/images/marble/premium/cities/toronto-cn-tower.webp",
+          "renderer": "img"
+        }
+      ]
+    },
+    {
+      "index": 36,
+      "slug": "sydney",
+      "name": {
+        "ko": "시드니",
+        "es": "Sídney"
+      },
+      "levels": [
+        {
+          "level": 0,
+          "path": "/images/marble/building-stages.svg#land",
+          "renderer": "land SVG"
+        },
+        {
+          "level": 1,
+          "path": "/images/marble/premium/buildings/stage1-house.webp",
+          "renderer": "SVG image with city color filter"
+        },
+        {
+          "level": 2,
+          "path": "/images/marble/premium/buildings/stage2-apartment.webp",
+          "renderer": "SVG image with city color filter"
+        },
+        {
+          "level": 3,
+          "path": "/images/marble/premium/cities/sydney-opera-house.webp",
+          "renderer": "img"
+        }
+      ]
+    },
+    {
+      "index": 38,
+      "slug": "seoul",
+      "name": {
+        "ko": "서울",
+        "es": "Seúl"
+      },
+      "levels": [
+        {
+          "level": 0,
+          "path": "/images/marble/building-stages.svg#land",
+          "renderer": "land SVG"
+        },
+        {
+          "level": 1,
+          "path": "/images/marble/premium/buildings/stage1-house.webp",
+          "renderer": "SVG image with city color filter"
+        },
+        {
+          "level": 2,
+          "path": "/images/marble/premium/buildings/stage2-apartment.webp",
+          "renderer": "SVG image with city color filter"
+        },
+        {
+          "level": 3,
+          "path": "/images/marble/premium/cities/seoul-n-seoul-tower.webp",
+          "renderer": "img"
+        }
+      ]
+    }
+  ],
+  "guides": [
+    {
+      "gameId": "davinci",
+      "language": "ko",
+      "rendered": true,
+      "imageRefs": [
+        "/images/guides/davinci-ko.webp"
+      ]
+    },
+    {
+      "gameId": "davinci",
+      "language": "es",
+      "rendered": true,
+      "imageRefs": [
+        "/images/guides/davinci-es.webp"
+      ]
+    },
+    {
+      "gameId": "catchmind",
+      "language": "ko",
+      "rendered": true,
+      "imageRefs": [
+        "/images/guides/catchmind-ko.webp"
+      ]
+    },
+    {
+      "gameId": "catchmind",
+      "language": "es",
+      "rendered": true,
+      "imageRefs": [
+        "/images/guides/catchmind-es.webp"
+      ]
+    },
+    {
+      "gameId": "domino",
+      "language": "ko",
+      "rendered": true,
+      "imageRefs": []
+    },
+    {
+      "gameId": "domino",
+      "language": "es",
+      "rendered": true,
+      "imageRefs": []
+    },
+    {
+      "gameId": "jaipur",
+      "language": "ko",
+      "rendered": true,
+      "imageRefs": [
+        "/images/jaipur/merchant-atlas.webp"
+      ]
+    },
+    {
+      "gameId": "jaipur",
+      "language": "es",
+      "rendered": true,
+      "imageRefs": [
+        "/images/jaipur/merchant-atlas.webp"
+      ]
+    },
+    {
+      "gameId": "splendor",
+      "language": "ko",
+      "rendered": true,
+      "imageRefs": [
+        "/images/splendor-gems/white.svg",
+        "/images/splendor-gems/blue.svg",
+        "/images/splendor-gems/green.svg",
+        "/images/splendor/cards/01.jpg",
+        "/images/splendor/nobles/20001.jpg"
+      ]
+    },
+    {
+      "gameId": "splendor",
+      "language": "es",
+      "rendered": true,
+      "imageRefs": [
+        "/images/splendor-gems/white.svg",
+        "/images/splendor-gems/blue.svg",
+        "/images/splendor-gems/green.svg",
+        "/images/splendor/cards/01.jpg",
+        "/images/splendor/nobles/20001.jpg"
+      ]
+    },
+    {
+      "gameId": "minhwatu",
+      "language": "ko",
+      "rendered": true,
+      "imageRefs": [
+        "/images/hwatu/01-01.svg",
+        "/images/hwatu/02-01.svg",
+        "/images/hwatu/01-03.svg",
+        "/images/hwatu/01-04.svg",
+        "/images/hwatu/01-02.svg",
+        "/images/hwatu/02-02.svg",
+        "/images/hwatu/03-02.svg",
+        "/images/hwatu/06-02.svg",
+        "/images/hwatu/09-02.svg",
+        "/images/hwatu/10-02.svg",
+        "/images/hwatu/04-02.svg",
+        "/images/hwatu/05-02.svg",
+        "/images/hwatu/07-02.svg",
+        "/images/hwatu/04-01.svg",
+        "/images/hwatu/08-02.svg"
+      ]
+    },
+    {
+      "gameId": "minhwatu",
+      "language": "es",
+      "rendered": true,
+      "imageRefs": [
+        "/images/hwatu/01-01.svg",
+        "/images/hwatu/02-01.svg",
+        "/images/hwatu/01-03.svg",
+        "/images/hwatu/01-04.svg",
+        "/images/hwatu/01-02.svg",
+        "/images/hwatu/02-02.svg",
+        "/images/hwatu/03-02.svg",
+        "/images/hwatu/06-02.svg",
+        "/images/hwatu/09-02.svg",
+        "/images/hwatu/10-02.svg",
+        "/images/hwatu/04-02.svg",
+        "/images/hwatu/05-02.svg",
+        "/images/hwatu/07-02.svg",
+        "/images/hwatu/04-01.svg",
+        "/images/hwatu/08-02.svg"
+      ]
+    },
+    {
+      "gameId": "marble",
+      "language": "ko",
+      "rendered": true,
+      "imageRefs": [
+        "/images/marble/building-stages.svg",
+        "/images/marble/premium/buildings/stage1-house.webp",
+        "/images/marble/premium/buildings/stage2-apartment.webp",
+        "/images/marble/premium/cities/gwangju-chosun-university.webp"
+      ]
+    },
+    {
+      "gameId": "marble",
+      "language": "es",
+      "rendered": true,
+      "imageRefs": [
+        "/images/marble/building-stages.svg",
+        "/images/marble/premium/buildings/stage1-house.webp",
+        "/images/marble/premium/buildings/stage2-apartment.webp",
+        "/images/marble/premium/cities/gwangju-chosun-university.webp"
+      ]
+    }
+  ]
+}

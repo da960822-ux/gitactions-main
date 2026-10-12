@@ -1,0 +1,529 @@
+{
+  "sourceCommit": "ccec83d87fac6ad1a65dd2b900dec8870ef1c71b",
+  "runtimeBase": "12b03ca087075cdb8107d43e71baa8c241f3289f",
+  "gameCommit": "6a4d21f046843abc10d07ad3819845d51fea3a6c",
+  "count": 32,
+  "runtimeBytes": 2206982,
+  "mappingCounts": {
+    "cities": 24,
+    "buildings": 2,
+    "publicPawns": 6,
+    "pendingPrivatePawnDefinitions": 1
+  },
+  "pixelQualityReviewThisRun": "not run; byte/decoder/alpha checks only",
+  "realPlayerQA": "not run",
+  "assets": [
+    {
+      "path": "/images/marble/premium/cities/agra-taj-mahal.webp",
+      "bytes": 100920,
+      "sha256": "ded67c27ccc49e615de0ce4bdbdd5f82acc3a4487ecf31fcbdb6fa074d3b142b",
+      "dimensions": [
+        512,
+        488
+      ],
+      "alphaExtrema": [
+        0,
+        255
+      ],
+      "sourceSha256Verified": true,
+      "sourceBytesVerified": true,
+      "decoded": true
+    },
+    {
+      "path": "/images/marble/premium/cities/athens-parthenon.webp",
+      "bytes": 76424,
+      "sha256": "ac576d10311a0e10af066e6c99f9ada7b188f479433b3528b59455393174fb03",
+      "dimensions": [
+        512,
+        358
+      ],
+      "alphaExtrema": [
+        0,
+        255
+      ],
+      "sourceSha256Verified": true,
+      "sourceBytesVerified": true,
+      "decoded": true
+    },
+    {
+      "path": "/images/marble/premium/cities/barcelona-sagrada-familia.webp",
+      "bytes": 96078,
+      "sha256": "a384a165a35901ef2e4f9e7abfbfd4a407d1885e175f342b36309c29f467b74e",
+      "dimensions": [
+        466,
+        512
+      ],
+      "alphaExtrema": [
+        0,
+        255
+      ],
+      "sourceSha256Verified": true,
+      "sourceBytesVerified": true,
+      "decoded": true
+    },
+    {
+      "path": "/images/marble/premium/cities/gwangju-chosun-university.webp",
+      "bytes": 50850,
+      "sha256": "8ad606e2e52e00336861fdfe0b18bf4532f6202c67a4cc22511acb0e6d93b13c",
+      "dimensions": [
+        512,
+        249
+      ],
+      "alphaExtrema": [
+        0,
+        255
+      ],
+      "sourceSha256Verified": true,
+      "sourceBytesVerified": true,
+      "decoded": true
+    },
+    {
+      "path": "/images/marble/premium/cities/havana-el-capitolio.webp",
+      "bytes": 81808,
+      "sha256": "c736929155921dd391169d55320c6281c9ba67b1047bacf30003c5cc973f21b9",
+      "dimensions": [
+        512,
+        490
+      ],
+      "alphaExtrema": [
+        0,
+        255
+      ],
+      "sourceSha256Verified": true,
+      "sourceBytesVerified": true,
+      "decoded": true
+    },
+    {
+      "path": "/images/marble/premium/cities/istanbul-hagia-sophia.webp",
+      "bytes": 97540,
+      "sha256": "a9cd78ef1e5beb275e2fca3f7cf7ffd4ba15a95b3567949bc5600db6d59575d6",
+      "dimensions": [
+        512,
+        506
+      ],
+      "alphaExtrema": [
+        0,
+        255
+      ],
+      "sourceSha256Verified": true,
+      "sourceBytesVerified": true,
+      "decoded": true
+    },
+    {
+      "path": "/images/marble/premium/cities/lisbon-belem-tower.webp",
+      "bytes": 99892,
+      "sha256": "9e570a7b691651dba197f56d4db749e424fd867f4462db326c4bd198dcb25978",
+      "dimensions": [
+        487,
+        512
+      ],
+      "alphaExtrema": [
+        0,
+        255
+      ],
+      "sourceSha256Verified": true,
+      "sourceBytesVerified": true,
+      "decoded": true
+    },
+    {
+      "path": "/images/marble/premium/cities/london-elizabeth-tower.webp",
+      "bytes": 38988,
+      "sha256": "885cd0b24f20cd6b36a58185287739f27aaf214c9b32ef991b8f171c16ed6af8",
+      "dimensions": [
+        193,
+        512
+      ],
+      "alphaExtrema": [
+        0,
+        255
+      ],
+      "sourceSha256Verified": true,
+      "sourceBytesVerified": true,
+      "decoded": true
+    },
+    {
+      "path": "/images/marble/premium/cities/madrid-royal-palace.webp",
+      "bytes": 87670,
+      "sha256": "66d0d4aebd10fab95d21119ac426783d52d7c6afe46259538f5f82da7ce5ffe0",
+      "dimensions": [
+        512,
+        348
+      ],
+      "alphaExtrema": [
+        0,
+        255
+      ],
+      "sourceSha256Verified": true,
+      "sourceBytesVerified": true,
+      "decoded": true
+    },
+    {
+      "path": "/images/marble/premium/cities/mexico-city-bellas-artes.webp",
+      "bytes": 97372,
+      "sha256": "b6200c1116b97cf67fbc6c334626de4e53ab11220b15ec87420781face303585",
+      "dimensions": [
+        512,
+        483
+      ],
+      "alphaExtrema": [
+        0,
+        255
+      ],
+      "sourceSha256Verified": true,
+      "sourceBytesVerified": true,
+      "decoded": true
+    },
+    {
+      "path": "/images/marble/premium/cities/miami-colony-hotel.webp",
+      "bytes": 86374,
+      "sha256": "38d8e08a65af8283b970bffeffb870bc636bd6ffbf2fcb878a9b8bdda005d7f2",
+      "dimensions": [
+        512,
+        430
+      ],
+      "alphaExtrema": [
+        0,
+        255
+      ],
+      "sourceSha256Verified": true,
+      "sourceBytesVerified": true,
+      "decoded": true
+    },
+    {
+      "path": "/images/marble/premium/cities/new-york-empire-state.webp",
+      "bytes": 40042,
+      "sha256": "8207b1af192a6e562f72f6f3c9617f4566ae9907856b5e12877c0a52a6cb1bfc",
+      "dimensions": [
+        259,
+        512
+      ],
+      "alphaExtrema": [
+        0,
+        255
+      ],
+      "sourceSha256Verified": true,
+      "sourceBytesVerified": true,
+      "decoded": true
+    },
+    {
+      "path": "/images/marble/premium/cities/newark-sacred-heart.webp",
+      "bytes": 105306,
+      "sha256": "10f210ccfd1a5d0c9db243ab9b672bb700a43d1679b651ef02b9943261c253e6",
+      "dimensions": [
+        503,
+        512
+      ],
+      "alphaExtrema": [
+        0,
+        255
+      ],
+      "sourceSha256Verified": true,
+      "sourceBytesVerified": true,
+      "decoded": true
+    },
+    {
+      "path": "/images/marble/premium/cities/paris-eiffel-tower.webp",
+      "bytes": 59334,
+      "sha256": "f9ab90e8ebc0fdb99036fde5ea6141a0c116081c770a4884ad0b9c34de5b4fb5",
+      "dimensions": [
+        404,
+        512
+      ],
+      "alphaExtrema": [
+        0,
+        255
+      ],
+      "sourceSha256Verified": true,
+      "sourceBytesVerified": true,
+      "decoded": true
+    },
+    {
+      "path": "/images/marble/premium/cities/rome-colosseum.webp",
+      "bytes": 114014,
+      "sha256": "57aa50ad3bb1cb8b9c6d12cebdbcc5841bb5e66da8b2c7345b6ce3d7393cec44",
+      "dimensions": [
+        512,
+        458
+      ],
+      "alphaExtrema": [
+        0,
+        255
+      ],
+      "sourceSha256Verified": true,
+      "sourceBytesVerified": true,
+      "decoded": true
+    },
+    {
+      "path": "/images/marble/premium/cities/san-juan-el-morro.webp",
+      "bytes": 90654,
+      "sha256": "f8d4410a821f1a6abbb5fcca94598cbb70848fb2239a9b6f173c5ad50a83a58b",
+      "dimensions": [
+        512,
+        411
+      ],
+      "alphaExtrema": [
+        0,
+        255
+      ],
+      "sourceSha256Verified": true,
+      "sourceBytesVerified": true,
+      "decoded": true
+    },
+    {
+      "path": "/images/marble/premium/cities/santiago-restoration-monument.webp",
+      "bytes": 51456,
+      "sha256": "0df8aad41e996d989de470a7e37fbbfd46d30757849277953be2b1478d8eca47",
+      "dimensions": [
+        397,
+        512
+      ],
+      "alphaExtrema": [
+        0,
+        255
+      ],
+      "sourceSha256Verified": true,
+      "sourceBytesVerified": true,
+      "decoded": true
+    },
+    {
+      "path": "/images/marble/premium/cities/santo-domingo-alcazar.webp",
+      "bytes": 93866,
+      "sha256": "62bf32e1582d599971d4786fc612a37066df4c492315c51ceb87192949e1e27b",
+      "dimensions": [
+        512,
+        372
+      ],
+      "alphaExtrema": [
+        0,
+        255
+      ],
+      "sourceSha256Verified": true,
+      "sourceBytesVerified": true,
+      "decoded": true
+    },
+    {
+      "path": "/images/marble/premium/cities/seoul-n-seoul-tower.webp",
+      "bytes": 30188,
+      "sha256": "cad8461702f6832812d4f8b7ecb061158a384f08e31ddc1fd99c06c992bf993e",
+      "dimensions": [
+        207,
+        512
+      ],
+      "alphaExtrema": [
+        0,
+        255
+      ],
+      "sourceSha256Verified": true,
+      "sourceBytesVerified": true,
+      "decoded": true
+    },
+    {
+      "path": "/images/marble/premium/cities/sydney-opera-house.webp",
+      "bytes": 75646,
+      "sha256": "5d3edef7c677dd89627cc0e4bc5191eb0eaf5f2b805722bff76f4eba0e943bea",
+      "dimensions": [
+        512,
+        407
+      ],
+      "alphaExtrema": [
+        0,
+        255
+      ],
+      "sourceSha256Verified": true,
+      "sourceBytesVerified": true,
+      "decoded": true
+    },
+    {
+      "path": "/images/marble/premium/cities/toronto-cn-tower.webp",
+      "bytes": 18732,
+      "sha256": "e5c09027ede4181e51a3592f3cc02aa1c28d4fb04c2006bed2d3d2a9139c2b1f",
+      "dimensions": [
+        170,
+        512
+      ],
+      "alphaExtrema": [
+        0,
+        255
+      ],
+      "sourceSha256Verified": true,
+      "sourceBytesVerified": true,
+      "decoded": true
+    },
+    {
+      "path": "/images/marble/premium/cities/berlin.webp",
+      "bytes": 111858,
+      "sha256": "3805bb67515a568b735aa862dda484873de83e9c41c3bad2e403f46e9b19f215",
+      "dimensions": [
+        512,
+        461
+      ],
+      "alphaExtrema": [
+        0,
+        255
+      ],
+      "sourceSha256Verified": true,
+      "sourceBytesVerified": true,
+      "decoded": true
+    },
+    {
+      "path": "/images/marble/premium/buildings/stage1-house.webp",
+      "bytes": 117882,
+      "sha256": "5389130787990202489d458b4da36cef2945d07a6f3e5afd8ec7da696d269a06",
+      "dimensions": [
+        512,
+        482
+      ],
+      "alphaExtrema": [
+        0,
+        255
+      ],
+      "sourceSha256Verified": true,
+      "sourceBytesVerified": true,
+      "decoded": true
+    },
+    {
+      "path": "/images/marble/premium/buildings/stage2-apartment.webp",
+      "bytes": 71666,
+      "sha256": "8c53a50b54c6c6a10f66048790c71d517c5cfa785c2a7b786d86daf461e83f40",
+      "dimensions": [
+        438,
+        512
+      ],
+      "alphaExtrema": [
+        0,
+        255
+      ],
+      "sourceSha256Verified": true,
+      "sourceBytesVerified": true,
+      "decoded": true
+    },
+    {
+      "path": "/images/marble/premium/pawns/maltipoo.webp",
+      "bytes": 22840,
+      "sha256": "1d1a3dc92c455f2f23c99490459d69b6230e8f21b569c5e0960310024acdb246",
+      "dimensions": [
+        177,
+        256
+      ],
+      "alphaExtrema": [
+        0,
+        255
+      ],
+      "sourceSha256Verified": true,
+      "sourceBytesVerified": true,
+      "decoded": true
+    },
+    {
+      "path": "/images/marble/premium/pawns/ragdoll.webp",
+      "bytes": 22446,
+      "sha256": "61c71514adc1e72ad58b6de264bfb744ac15adce38cbaf35ec5e611647fb8c0c",
+      "dimensions": [
+        195,
+        256
+      ],
+      "alphaExtrema": [
+        0,
+        255
+      ],
+      "sourceSha256Verified": true,
+      "sourceBytesVerified": true,
+      "decoded": true
+    },
+    {
+      "path": "/images/marble/premium/pawns/panda.webp",
+      "bytes": 22812,
+      "sha256": "a71f1186e9c27cc5814eec9e6afb228b7a7917767c63f02a5f5808d1561f3433",
+      "dimensions": [
+        177,
+        256
+      ],
+      "alphaExtrema": [
+        0,
+        255
+      ],
+      "sourceSha256Verified": true,
+      "sourceBytesVerified": true,
+      "decoded": true
+    },
+    {
+      "path": "/images/marble/premium/pawns/chinchilla.webp",
+      "bytes": 21982,
+      "sha256": "836c7a369227418035891ce8b4bc2e94cffb3069e7d02eff5c41127e278c9151",
+      "dimensions": [
+        197,
+        256
+      ],
+      "alphaExtrema": [
+        0,
+        255
+      ],
+      "sourceSha256Verified": true,
+      "sourceBytesVerified": true,
+      "decoded": true
+    },
+    {
+      "path": "/images/marble/premium/pawns/astronaut-rose-heart.webp",
+      "bytes": 19666,
+      "sha256": "c69088133b1336c4436e4974ac5e3505a7957247252ee02f24ff2ba1bae0751d",
+      "dimensions": [
+        153,
+        256
+      ],
+      "alphaExtrema": [
+        0,
+        255
+      ],
+      "sourceSha256Verified": true,
+      "sourceBytesVerified": true,
+      "decoded": true
+    },
+    {
+      "path": "/images/marble/premium/pawns/lisyeon.webp",
+      "bytes": 15462,
+      "sha256": "509f4029d95229e944ae9df31a3f774b5757bb956a1e22a0a66aabb03e27047e",
+      "dimensions": [
+        187,
+        256
+      ],
+      "alphaExtrema": [
+        0,
+        255
+      ],
+      "sourceSha256Verified": true,
+      "sourceBytesVerified": true,
+      "decoded": true
+    },
+    {
+      "path": "/images/marble/premium/cities/tokyo-kaminarimon.webp",
+      "bytes": 89910,
+      "sha256": "a770add7d737ac5de00b95a901fb76d8c210c6e4c07c5799a8d97cda8bf25241",
+      "dimensions": [
+        512,
+        432
+      ],
+      "alphaExtrema": [
+        0,
+        255
+      ],
+      "sourceSha256Verified": true,
+      "sourceBytesVerified": true,
+      "decoded": true
+    },
+    {
+      "path": "/images/marble/premium/cities/puerto-plata-fortaleza-san-felipe.webp",
+      "bytes": 97304,
+      "sha256": "0cf60ffd807705bc72b94498c6619277fa9d214d5bdd10a5fc0f4a905d22a5c0",
+      "dimensions": [
+        512,
+        381
+      ],
+      "alphaExtrema": [
+        0,
+        255
+      ],
+      "sourceSha256Verified": true,
+      "sourceBytesVerified": true,
+      "decoded": true
+    }
+  ]
+}

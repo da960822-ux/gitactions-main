@@ -1,6 +1,7 @@
 import art from '../../public/images/splendor/card-map.json';
 import type { Language } from '../core/types';
 import { SplendorGem } from './SplendorGem';
+import { getPrivateNoblePortrait } from './private-game-art';
 
 const exampleCard = art.cards.find(card => card.engineId === 't1-01')!;
 const exampleNoble = art.nobles.find(noble => noble.engineId === 'n0')!;
@@ -33,7 +34,7 @@ export function SplendorQuickGuide({ language }: { language: Language }) {
       </li>
       <li>
         <figure className="quick-guide-image">
-          <img src={`/images/splendor/${exampleNoble.src}`} alt={text('흰색 4개와 파랑 4개 보너스로 방문하는 귀족','Noble que requiere 4 bonificaciones blancas y 4 azules')}/>
+          <img src={getPrivateNoblePortrait(exampleNoble.engineId) ?? `/images/splendor/${exampleNoble.src}`} alt={text('흰색 4개와 파랑 4개 보너스로 방문하는 귀족','Noble que requiere 4 bonificaciones blancas y 4 azules')}/>
           <figcaption className="quick-guide-gems" aria-hidden="true"><SplendorGem gem="white"/> 4 + <SplendorGem gem="blue"/> 4 → 3 {text('점','pts')}</figcaption>
         </figure>
         <h3>{text('귀족과 마지막 차례','Nobles y final')}</h3>
