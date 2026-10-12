@@ -40,3 +40,13 @@
 - 미실행: 최신 실제 인게임/화면 QA. 기존 Luna(gpt-6-luna) 실플레이 작업은 최신 부모 지시로 중단 상태다. 최종 통합 후 Luna가 서로 분리된 두 세션에서 턴교환·숨김 정보·재접속·재시작을 검증해야 한다. 이 정적/회귀 결과를 멀티플레이 완료로 보고하지 않는다.
 
 24도시/40칸 boardVersion2 및 legacy18·경제 수치·기존6말 ID·한국어/스페인어 사용자별 설정을 보존했다. 랜딩/모바일 대상 CSS/리듬SWF/건의사항은 수정하지 않았다. 도시 구성·landmark/pawn canonical32는 이전 승인 전달을 사용하며 새 생성·재변환·canonical 자산 변경이 없다.
+
+## 후속 자산 연결 — 업로드 이후
+
+일반 추가 코드18파일은 기존 게임 브랜치에 정상 fast-forward `6a4d21f → 06d558621cdf76138ad4e5b26ac77aa1b2858d0b`로 업로드하고 원격에서 확인했다. main `b37c10b`, 홈 `12b03ca`는 그대로다. 해당 게임 브랜치 기준50파일472개/빌드도 별도로 통과했다. 위483개는 홈12b 통합 기준이며 두 결과를 합산하지 않는다.
+
+살리·술리는 별도 공개 승인 후 asset branch `519dcdf1b925bafaf7d5d453df74ea5bd60eb9f0`에서 실제 원본2,008,991bytes를 받았다. SHA256 `05c637e38bdd22187f1cf9984c8874e589155c322ac6f2ba03b6b64e23ba7560` 및 PNG 픽셀을 확인하고 기존 quality92/alpha16 crop/padding/256px 방식으로232×256 WebP29,794bytes를 연결했다. 기존32개 파일의 해시는 모두 그대로다. 공개 런타임은33개2,236,776bytes이며7말 모두 실제 img, 하나의 Sali/Suli ID·턴이다. `assets/sali-suli-verification-2026-10-12.json`에 근거를 남겼다.
+
+개인 이미지4장의 Drive metadata(`shared:false`, owner-only)·원본크기·공식 raw fetch 파일 참조는 확인했다. 그러나 이 소비 실행기의 다운로드는 URLError이고, 한 번 재시도한 경로도 `Tunnel connection failed: 403 Forbidden`이었다. 실제 로컬 bytes0·픽셀 확인/이미지 연결 미완료다. 공개 링크/base64/다운로드 프록시 우회 없이, 기존 private host 주입 구조에 귀족 art resolver/방문 공지/모션/도움말 연동만 준비하고 dummy blob fixture로 비용·점수·기존 identity 불변을 검사했다. 사진을 실제로 읽거나 적용했다고 주장하지 않는다. 새 개인 소스/인코딩/Drive/SAS URL은 Git에 없다.
+
+후속 통합 회귀: **53파일484개 테스트**, TypeScript/Vite/Edge 빌드 및 diff 공백 검사 통과.7말 실제 img·24도시96단계·인게임 안내14개 SSR 참조도 확인했다. 이 결과는 개인4장 이미지 적용 또는 실제 두 세션 플레이/화면 검수 통과를 뜻하지 않는다.

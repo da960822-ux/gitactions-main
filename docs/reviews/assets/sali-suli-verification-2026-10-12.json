@@ -1,0 +1,25 @@
+{
+  "asset": {
+    "path": "pawns/sali-suli.webp",
+    "sourcePath": "asset-handoff/marble-premium/pawns/sali-suli.png",
+    "sourceSha256": "05c637e38bdd22187f1cf9984c8874e589155c322ac6f2ba03b6b64e23ba7560",
+    "sourceBytes": 2008991,
+    "crop": [
+      127,
+      88,
+      1157,
+      1224
+    ],
+    "dimensions": [
+      232,
+      256
+    ],
+    "bytes": 29794,
+    "sha256": "fdcada517e081847686eb4bfc9f51cb54adf71a158692fbc37bd6f4ab7c3b98e",
+    "sourceRevision": "519dcdf1b925bafaf7d5d453df74ea5bd60eb9f0"
+  },
+  "sourcePixels": "two dogs on one round cream/gold base, transparent background; personally inspected",
+  "original32Unchanged": true,
+  "realPlayerQA": "not run",
+  "publicPosting": "latest explicit asset delivery approval"
+}

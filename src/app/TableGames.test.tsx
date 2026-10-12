@@ -2,11 +2,12 @@ import { createElement } from 'react';
 import { renderToStaticMarkup } from 'react-dom/server';
 import { existsSync } from 'node:fs';
 import { resolve } from 'node:path';
-import { describe, expect, it } from 'vitest';
+import { describe, expect, it, vi } from 'vitest';
 import splendorArt from '../../public/images/splendor/card-map.json';
 import { deriveSplendorVisualEvent, splendorActionPanelMessages, splendorCardAction, splendorCardArtSrc, splendorCardCostPlan, splendorCardPaymentRows, splendorGuidance, splendorNobleArtSrc, splendorRequiredReturns, splendorReserveChoices, splendorSelectedTier, splendorSelectedTierText, splendorTakeAction, splendorTotalAfterTake, TableGames } from './TableGames';
 import { jaipurSalePreview } from './JaipurBoard';
 import { splendorEngine } from '../games/splendor';
+import { SplendorQuickGuide } from './SplendorQuickGuide';
 
 const render = (game: 'jaipur' | 'splendor' | 'davinci', view: any, language: 'ko' | 'es' = 'ko', playerId: 'p1' | 'p2' = 'p1') => renderToStaticMarkup(createElement(TableGames, { game, view, language, playerId, runAction: () => {} }));
 
@@ -353,5 +354,31 @@ describe('TableGames public-state interaction guidance', () => {
       const html = render(item.game, { turn: 'p1', board: {}, actions: [], result: { winner: item.winner, scores: { p1: 1, p2: 0 } } });
       expect(html).toContain(`data-game="${item.game}" data-outcome="${item.outcome}"`);
     }
+  });
+});
+
+
+describe('private noble artwork injection', () => {
+  it('changes only configured artwork and keeps noble identity, cost and points in the public view', () => {
+    const noble = { id: 'n0', points: 3, requirement: { white: 4, blue: 4 } };
+    const view = { board: { nobles: { n0: noble, n1: { ...noble, id: 'n1' }, n2: { ...noble, id: 'n2' } } }, ownHand: {}, actions: [] };
+    const before = JSON.stringify(view);
+    vi.stubGlobal('window', { __DOS_PRIVATE_GAME_ART__: { splendorNobles: { n0: 'blob:doctor-fixture', n1: 'blob:hanbok-fixture', unknown: 'blob:invalid-fixture' } } });
+    try {
+      for (const player of ['p1', 'p2'] as const) for (const language of ['ko', 'es'] as const) {
+        const html = render('splendor', view, language, player);
+        expect(html).toContain('blob:doctor-fixture');
+        expect(html).toContain('blob:hanbok-fixture');
+        expect(html).toContain('/images/splendor/nobles/20003.jpg');
+        expect(html).not.toContain('/images/splendor/nobles/20001.jpg');
+        expect(html).not.toContain('blob:invalid-fixture');
+      }
+      expect(splendorNobleArtSrc('unknown')).toBeNull();
+      const guide = renderToStaticMarkup(createElement(SplendorQuickGuide, { language: 'ko' }));
+      expect(guide).toContain('blob:doctor-fixture');
+      expect(guide).toContain('4 +');
+      expect(JSON.stringify(view)).toBe(before);
+    } finally { vi.unstubAllGlobals(); }
+    expect(splendorNobleArtSrc('n0')).toBe('/images/splendor/nobles/20001.jpg');
   });
 });

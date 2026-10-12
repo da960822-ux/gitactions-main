@@ -4,16 +4,13 @@ import { describe, expect, it, vi } from 'vitest';
 import { MarblePawn, MarblePawnPicker, marblePawnCatalog } from './MarblePawn';
 
 describe('Marble pawn selection', () => {
-  it('injects the private two-dog image as exactly one pawn without publishing a default URL', () => {
-    const props = { pawn: 'sali-suli' as const, language: 'ko' as const };
-    expect(renderToStaticMarkup(createElement(MarblePawn, props))).toContain('그림 준비 중');
-    vi.stubGlobal('window', { __DOS_PRIVATE_GAME_ART__: { marblePawns: { 'sali-suli': 'blob:private-test-two-dogs' } } });
-    try {
-      const html = renderToStaticMarkup(createElement(MarblePawn, props));
+  it('renders the approved two dogs as exactly one public pawn image in both languages', () => {
+    for (const language of ['ko', 'es'] as const) {
+      const html = renderToStaticMarkup(createElement(MarblePawn, { pawn: 'sali-suli', language }));
       expect(html.match(/<img /g)).toHaveLength(1);
-      expect(html).toContain('src="blob:private-test-two-dogs"');
-      expect(html).toContain('alt="살리·술리"');
-    } finally { vi.unstubAllGlobals(); }
+      expect(html).toContain('src="/images/marble/premium/pawns/sali-suli.webp"');
+      expect(html).toContain(language === 'ko' ? 'alt="살리·술리"' : 'alt="Sali y Suli"');
+    }
   });
   it('shows the six original figures and the approved seventh pair but only enables engine-legal choices', () => {
     const html = renderToStaticMarkup(createElement(MarblePawnPicker, {
@@ -51,7 +48,7 @@ describe('Marble pawn selection', () => {
     expect(html).toContain('Ragdoll');
     expect(html).toContain('Lisyeon');
     expect(html).toContain('Sali y Suli');
-    expect(html).toContain('Imagen pendiente');
+    expect(html).toContain('/images/marble/premium/pawns/sali-suli.webp');
     expect(html).not.toContain('Gata');
     expect(html).toContain('De tu pareja');
     expect(html).toContain('Elegir');

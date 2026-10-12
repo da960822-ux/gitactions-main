@@ -1,6 +1,7 @@
 import { useEffect, useLayoutEffect, useRef, useState, type CSSProperties } from 'react';
 import art from '../../public/images/splendor/card-map.json';
 import { SplendorGem } from './SplendorGem';
+import { getPrivateNoblePortrait } from './private-game-art';
 import { playCue, type AudioCue } from '../audio/audio';
 
 type Box = { left: number; top: number; width: number; height: number };
@@ -136,7 +137,7 @@ export function SplendorMotion({ scope, version, viewer, event }: { scope: strin
       const from = positions.current.before.get(`noble:${event.nobleId}`);
       const seat = event.nobleRecipient === 'you' ? viewer : viewer === 'p1' ? 'p2' : 'p1';
       const to = box(`[data-sp-score-seat="${seat}"] > b`), source = art.nobles.find(noble => noble.engineId === event.nobleId);
-      if (from && to && source) batch.push({ id: `${event.key}:noble`, kind: 'noble', from, to, delay: event.purchasedCard ? 760 : 0, src: `/images/splendor/${source.src}`, cue: event.result ? undefined : 'noble' });
+      if (from && to && source) batch.push({ id: `${event.key}:noble`, kind: 'noble', from, to, delay: event.purchasedCard ? 760 : 0, src: getPrivateNoblePortrait(event.nobleId) ?? `/images/splendor/${source.src}`, cue: event.result ? undefined : 'noble' });
     }
     setFlights(current => appendSplendorFlights(current, batch));
     const ids = new Set(batch.map(flight => flight.id));
