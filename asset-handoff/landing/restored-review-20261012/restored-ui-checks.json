@@ -1,0 +1,202 @@
+{
+  "pass": true,
+  "base": "http://127.0.0.1:5245",
+  "results": [
+    {
+      "width": 1440,
+      "height": 900,
+      "language": "ko",
+      "overflow": 0,
+      "canvas": 0,
+      "wire": 0,
+      "gameBottom": 884,
+      "hrefs": [
+        "/play?game=davinci",
+        "/play?game=catchmind",
+        "/play?game=domino",
+        "/play?game=jaipur",
+        "/play?game=splendor",
+        "/play?game=minhwatu",
+        "/play?game=marble",
+        "/play?game=rhythm"
+      ],
+      "title": "Mami,\n이거 내가 만들었어!",
+      "paper": {
+        "x": 244.9248504638672,
+        "y": 161.947265625,
+        "width": 772.3415679931641,
+        "height": 455.692626953125
+      },
+      "letterFocusEscape": true,
+      "jaipurLobby": true,
+      "feedback": true
+    },
+    {
+      "width": 1440,
+      "height": 900,
+      "language": "es",
+      "overflow": 0,
+      "canvas": 0,
+      "wire": 0,
+      "gameBottom": 884,
+      "hrefs": [
+        "/play?game=davinci",
+        "/play?game=catchmind",
+        "/play?game=domino",
+        "/play?game=jaipur",
+        "/play?game=splendor",
+        "/play?game=minhwatu",
+        "/play?game=marble",
+        "/play?game=rhythm"
+      ],
+      "title": "Mami,\n¡lo hice para ti!",
+      "paper": {
+        "x": 284.133544921875,
+        "y": 161.2969512939453,
+        "width": 693.92578125,
+        "height": 478.4657440185547
+      },
+      "letterFocusEscape": true,
+      "jaipurLobby": true,
+      "feedback": true
+    },
+    {
+      "width": 1280,
+      "height": 800,
+      "language": "ko",
+      "overflow": 0,
+      "canvas": 0,
+      "wire": 0,
+      "gameBottom": 780,
+      "hrefs": [
+        "/play?game=davinci",
+        "/play?game=catchmind",
+        "/play?game=domino",
+        "/play?game=jaipur",
+        "/play?game=splendor",
+        "/play?game=minhwatu",
+        "/play?game=marble",
+        "/play?game=rhythm"
+      ],
+      "title": "Mami,\n이거 내가 만들었어!",
+      "paper": {
+        "x": 233.0611114501953,
+        "y": 161.99954223632812,
+        "width": 655.8296966552734,
+        "height": 386.9489440917969
+      },
+      "letterFocusEscape": true,
+      "jaipurLobby": true,
+      "feedback": true
+    },
+    {
+      "width": 1280,
+      "height": 800,
+      "language": "es",
+      "overflow": 0,
+      "canvas": 0,
+      "wire": 0,
+      "gameBottom": 780,
+      "hrefs": [
+        "/play?game=davinci",
+        "/play?game=catchmind",
+        "/play?game=domino",
+        "/play?game=jaipur",
+        "/play?game=splendor",
+        "/play?game=minhwatu",
+        "/play?game=marble",
+        "/play?game=rhythm"
+      ],
+      "title": "Mami,\n¡lo hice para ti!",
+      "paper": {
+        "x": 267.7231750488281,
+        "y": 161.4585723876953,
+        "width": 586.5069274902344,
+        "height": 404.3998260498047
+      },
+      "letterFocusEscape": true,
+      "jaipurLobby": true,
+      "feedback": true
+    },
+    {
+      "width": 1366,
+      "height": 768,
+      "language": "ko",
+      "overflow": 0,
+      "canvas": 0,
+      "wire": 0,
+      "gameBottom": 765.90625,
+      "hrefs": [
+        "/play?game=davinci",
+        "/play?game=catchmind",
+        "/play?game=domino",
+        "/play?game=jaipur",
+        "/play?game=splendor",
+        "/play?game=minhwatu",
+        "/play?game=marble",
+        "/play?game=rhythm"
+      ],
+      "title": "Mami,\n이거 내가 만들었어!",
+      "paper": {
+        "x": 289.97247314453125,
+        "y": 161.92674255371094,
+        "width": 617.3927612304688,
+        "height": 364.27064514160156
+      },
+      "letterFocusEscape": true,
+      "jaipurLobby": true,
+      "feedback": true
+    },
+    {
+      "width": 1366,
+      "height": 768,
+      "language": "es",
+      "overflow": 0,
+      "canvas": 0,
+      "wire": 0,
+      "gameBottom": 765.90625,
+      "hrefs": [
+        "/play?game=davinci",
+        "/play?game=catchmind",
+        "/play?game=domino",
+        "/play?game=jaipur",
+        "/play?game=splendor",
+        "/play?game=minhwatu",
+        "/play?game=marble",
+        "/play?game=rhythm"
+      ],
+      "title": "Mami,\n¡lo hice para ti!",
+      "paper": {
+        "x": 322.60302734375,
+        "y": 161.42279052734375,
+        "width": 552.1329345703125,
+        "height": 380.69873046875
+      },
+      "letterFocusEscape": true,
+      "jaipurLobby": true,
+      "feedback": true
+    },
+    {
+      "width": 768,
+      "height": 1024,
+      "touch": true,
+      "originalMobileLanding": true,
+      "noOverflow": true,
+      "gameCards": 8
+    },
+    {
+      "width": 390,
+      "height": 844,
+      "touch": true,
+      "originalMobileLanding": true,
+      "noOverflow": true,
+      "gameCards": 8
+    },
+    {
+      "motionPause": true,
+      "heartFeedback": true,
+      "normalPortraitTransform": "matrix3d(0.999657, 0, 0.0261737, 0, 0, 1, 0, 0, -0.0261737, 0, 0.999657, 0, 11.6652, 5.3448, 48, 1)"
+    }
+  ],
+  "errors": []
+}

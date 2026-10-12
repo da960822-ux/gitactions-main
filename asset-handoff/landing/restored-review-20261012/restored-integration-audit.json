@@ -1,0 +1,164 @@
+{
+  "integrated_revision": "b9cbbf04cc451ffe0f3319efb205ad72e78420f5",
+  "game_source_revision": "42d0f7e998a678a26dad8da8a2520965444bbe2a",
+  "landing_restore_revision": "b61b8dfcf604e2799638c8cfc1be5d97d39acf7d",
+  "game_manifest_asset_checks": [
+    {
+      "path": "/images/davinci/joker-couple-waterfront.webp",
+      "sha256": "9608e70d1ea3b92a3b543816c8c8b601584e76e2c0c87d67509fcee12e8d1ef6",
+      "matches_manifest": true,
+      "matches_game_commit": true
+    },
+    {
+      "path": "/images/davinci/joker-couple-indoor.webp",
+      "sha256": "e1c2079e80fa59b89073c6bd46095e8df781cdf33d363790b5e6488c0296d8ed",
+      "matches_manifest": true,
+      "matches_game_commit": true
+    },
+    {
+      "path": "/images/splendor/nobles/doctor-noble-portrait.webp",
+      "sha256": "4139259123b3a3cadb8d81139dc32e9dc6b8c4dede394ea5dd1cd5b2ffdf5e83",
+      "matches_manifest": true,
+      "matches_game_commit": true
+    },
+    {
+      "path": "/images/splendor/nobles/hanbok-noble-frontal.webp",
+      "sha256": "b26090b576bf2b1d46e962666ed6ecfc91c3fb91a709628484c280ab0a8f4d7e",
+      "matches_manifest": true,
+      "matches_game_commit": true
+    },
+    {
+      "path": "public/images/marble/premium/buildings/stage1-house.webp",
+      "matches_prior_game_commit": true
+    },
+    {
+      "path": "public/images/marble/premium/buildings/stage2-apartment.webp",
+      "matches_prior_game_commit": true
+    },
+    {
+      "path": "public/images/marble/premium/cities/tokyo-kaminarimon.webp",
+      "matches_prior_game_commit": true
+    },
+    {
+      "path": "public/images/marble/premium/cities/barcelona-sagrada-familia.webp",
+      "matches_prior_game_commit": true
+    },
+    {
+      "path": "public/images/marble/premium/cities/paris-eiffel-tower.webp",
+      "matches_prior_game_commit": true
+    },
+    {
+      "path": "public/images/marble/premium/cities/istanbul-hagia-sophia.webp",
+      "matches_prior_game_commit": true
+    },
+    {
+      "path": "public/images/marble/premium/cities/havana-el-capitolio.webp",
+      "matches_prior_game_commit": true
+    },
+    {
+      "path": "public/images/marble/premium/cities/london-elizabeth-tower.webp",
+      "matches_prior_game_commit": true
+    },
+    {
+      "path": "public/images/marble/premium/cities/new-york-empire-state.webp",
+      "matches_prior_game_commit": true
+    },
+    {
+      "path": "public/images/marble/premium/cities/sydney-opera-house.webp",
+      "matches_prior_game_commit": true
+    },
+    {
+      "path": "public/images/marble/premium/cities/newark-sacred-heart.webp",
+      "matches_prior_game_commit": true
+    },
+    {
+      "path": "public/images/marble/premium/cities/mexico-city-bellas-artes.webp",
+      "matches_prior_game_commit": true
+    },
+    {
+      "path": "public/images/marble/premium/cities/seoul-n-seoul-tower.webp",
+      "matches_prior_game_commit": true
+    },
+    {
+      "path": "public/images/marble/premium/cities/berlin.webp",
+      "matches_prior_game_commit": true
+    },
+    {
+      "path": "public/images/marble/premium/cities/miami-colony-hotel.webp",
+      "matches_prior_game_commit": true
+    },
+    {
+      "path": "public/images/marble/premium/cities/rome-colosseum.webp",
+      "matches_prior_game_commit": true
+    },
+    {
+      "path": "public/images/marble/premium/cities/santo-domingo-alcazar.webp",
+      "matches_prior_game_commit": true
+    },
+    {
+      "path": "public/images/marble/premium/cities/santiago-restoration-monument.webp",
+      "matches_prior_game_commit": true
+    },
+    {
+      "path": "public/images/marble/premium/cities/athens-parthenon.webp",
+      "matches_prior_game_commit": true
+    },
+    {
+      "path": "public/images/marble/premium/cities/toronto-cn-tower.webp",
+      "matches_prior_game_commit": true
+    },
+    {
+      "path": "public/images/marble/premium/cities/san-juan-el-morro.webp",
+      "matches_prior_game_commit": true
+    },
+    {
+      "path": "public/images/marble/premium/cities/madrid-royal-palace.webp",
+      "matches_prior_game_commit": true
+    },
+    {
+      "path": "public/images/marble/premium/cities/lisbon-belem-tower.webp",
+      "matches_prior_game_commit": true
+    },
+    {
+      "path": "public/images/marble/premium/cities/gwangju-chosun-university.webp",
+      "matches_prior_game_commit": true
+    },
+    {
+      "path": "public/images/marble/premium/cities/agra-taj-mahal.webp",
+      "matches_prior_game_commit": true
+    },
+    {
+      "path": "public/images/marble/premium/cities/puerto-plata-fortaleza-san-felipe.webp",
+      "matches_prior_game_commit": true
+    },
+    {
+      "path": "public/images/marble/premium/pawns/sali-suli.webp",
+      "matches_prior_game_commit": true
+    },
+    {
+      "path": "public/images/marble/premium/pawns/maltipoo.webp",
+      "matches_prior_game_commit": true
+    },
+    {
+      "path": "public/images/marble/premium/pawns/ragdoll.webp",
+      "matches_prior_game_commit": true
+    },
+    {
+      "path": "public/images/marble/premium/pawns/panda.webp",
+      "matches_prior_game_commit": true
+    },
+    {
+      "path": "public/images/marble/premium/pawns/chinchilla.webp",
+      "matches_prior_game_commit": true
+    },
+    {
+      "path": "public/images/marble/premium/pawns/astronaut-rose-heart.webp",
+      "matches_prior_game_commit": true
+    },
+    {
+      "path": "public/images/marble/premium/pawns/lisyeon.webp",
+      "matches_prior_game_commit": true
+    }
+  ],
+  "approved_assets_match": true
+}

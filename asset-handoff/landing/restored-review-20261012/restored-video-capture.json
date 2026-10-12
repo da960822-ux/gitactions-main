@@ -1,0 +1,56 @@
+{
+  "revision": "b9cbbf04cc451ffe0f3319efb205ad72e78420f5",
+  "viewport": [
+    1440,
+    900
+  ],
+  "elapsed": 31.441,
+  "duration": 30.997999999999998,
+  "frameCount": 336,
+  "capturedFramesPerSecond": 10.839408994128654,
+  "encodedFramesPerSecond": 30,
+  "inputs": [
+    {
+      "name": "KO initial",
+      "t": 0.002
+    },
+    {
+      "name": "independent hero layers",
+      "t": 9.196
+    },
+    {
+      "name": "heart click",
+      "t": 10.191
+    },
+    {
+      "name": "card hover",
+      "t": 12.882
+    },
+    {
+      "name": "forward scroll",
+      "t": 15.372
+    },
+    {
+      "name": "full KO letter and rose",
+      "t": 17.004
+    },
+    {
+      "name": "close letter",
+      "t": 20.304
+    },
+    {
+      "name": "reverse scroll",
+      "t": 23.721
+    },
+    {
+      "name": "ES home",
+      "t": 29.448
+    }
+  ],
+  "errors": [],
+  "note": "Actual browser UI pointer, clicks and wheel input. Original captured intervals retained; CFR30 duplicates frames without interpolation or acceleration. Not an identical-path comparison with earlier rejected design.",
+  "video": {
+    "duration": "31.000000",
+    "size": "6683965"
+  }
+}
