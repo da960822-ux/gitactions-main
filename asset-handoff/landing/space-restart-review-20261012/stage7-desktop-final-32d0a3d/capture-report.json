@@ -1,0 +1,423 @@
+{
+  "sourceSha": "32d0a3d52c2304602d143e2897cfbcb6ab93a2af",
+  "branch": "local/lusion-space-restart-20261012",
+  "url": "http://127.0.0.1:5265/landing-preview.html",
+  "viewport": {
+    "width": 1440,
+    "height": 900,
+    "dpr": 1
+  },
+  "reducedMotion": "no-preference",
+  "browser": "Chromium headless /usr/bin/chromium; software WebGL; Playwright video recorder via system ffmpeg 7.1.5 in isolated Playwright cache",
+  "input": "Playwright pointer and wheel input; capture-only pointer ring overlay with pointer-events:none",
+  "sequence": [
+    "hero entry",
+    "9s idle",
+    "foreground heart drag and spring return",
+    "0→720px scroll and reverse with all eight game images",
+    "KO→ES→KO→ES",
+    "Spanish letter open and close"
+  ],
+  "metrics": {
+    "viewport": {
+      "width": 1440,
+      "height": 900,
+      "dpr": 1
+    },
+    "assets": {
+      "spaceReady": true,
+      "decoded": [
+        {
+          "src": "/images/yeonseok-lisbeth-cutout.webp",
+          "ok": true,
+          "w": 1254,
+          "h": 1254
+        },
+        {
+          "src": "/images/rose-game-atlas.webp",
+          "ok": true,
+          "w": 1254,
+          "h": 1254
+        },
+        {
+          "src": "/images/rose-game-atlas.webp",
+          "ok": true,
+          "w": 1254,
+          "h": 1254
+        },
+        {
+          "src": "/images/rose-game-atlas.webp",
+          "ok": true,
+          "w": 1254,
+          "h": 1254
+        },
+        {
+          "src": "/images/rose-game-atlas.webp",
+          "ok": true,
+          "w": 1254,
+          "h": 1254
+        },
+        {
+          "src": "/images/splendor/box-cover.jpg",
+          "ok": true,
+          "w": 998,
+          "h": 1280
+        },
+        {
+          "src": "/images/hwatu/01-01.svg",
+          "ok": true,
+          "w": 103,
+          "h": 168
+        },
+        {
+          "src": "/images/rose-game-atlas.webp",
+          "ok": true,
+          "w": 1254,
+          "h": 1254
+        },
+        {
+          "src": "/images/rose-game-atlas.webp",
+          "ok": true,
+          "w": 1254,
+          "h": 1254
+        },
+        {
+          "src": "/images/landing-preview/organic-rose-generated.png",
+          "ok": true,
+          "w": 1024,
+          "h": 1536
+        }
+      ],
+      "gameArt": [
+        {
+          "id": "art-davinci",
+          "background": "url(\"http://127.0.0.1:5265/images/rose-game-atlas.webp\")"
+        },
+        {
+          "id": "art-catchmind",
+          "background": "url(\"http://127.0.0.1:5265/images/rose-game-atlas.webp\")"
+        },
+        {
+          "id": "art-domino",
+          "background": "url(\"http://127.0.0.1:5265/images/rose-game-atlas.webp\")"
+        },
+        {
+          "id": "art-jaipur",
+          "background": "url(\"http://127.0.0.1:5265/images/rose-game-atlas.webp\")"
+        },
+        {
+          "id": "art-splendor",
+          "background": "url(\"http://127.0.0.1:5265/images/splendor/box-cover.jpg\")"
+        },
+        {
+          "id": "art-minhwatu",
+          "background": "url(\"http://127.0.0.1:5265/images/hwatu/01-01.svg\")"
+        },
+        {
+          "id": "art-marble",
+          "background": "url(\"http://127.0.0.1:5265/images/rose-game-atlas.webp\")"
+        },
+        {
+          "id": "art-rhythm",
+          "background": "url(\"http://127.0.0.1:5265/images/rose-game-atlas.webp\")"
+        }
+      ]
+    },
+    "entry": {
+      "renderer": "WebKit WebGL",
+      "entry": 1,
+      "camera": [
+        0,
+        0,
+        9.4
+      ],
+      "frames": 22
+    },
+    "idleStart": {
+      "loop": "running",
+      "frames": 28
+    },
+    "idleEnd": {
+      "loop": "running",
+      "frames": 45
+    },
+    "dragTarget": {
+      "i": 32,
+      "x": 1210.134028192177,
+      "y": 463.64754499561633,
+      "depth": 7.2,
+      "pixels": 115.44327937113121
+    },
+    "dragStart": {
+      "i": 32,
+      "x": 1194.3000224073373,
+      "y": 472.9470795944305,
+      "depth": 7.2,
+      "offset": [
+        1.9929001995271045e-21,
+        -9.621013573864814e-22
+      ],
+      "pixels": 115.44327937113121
+    },
+    "dragMoved": {
+      "i": 32,
+      "x": 1342.5277948647804,
+      "y": 554.5405190228583,
+      "depth": 7.2,
+      "offset": [
+        151.80449619233238,
+        86.78414228461712
+      ],
+      "pixels": 115.44327937113121
+    },
+    "dragReleased": {
+      "i": 32,
+      "x": 1207.6367521057982,
+      "y": 473.0174455720486,
+      "depth": 7.2,
+      "offset": [
+        -7.142684783900391e-17,
+        -4.083355817042598e-17
+      ],
+      "pixels": 115.44327937113121
+    },
+    "scrollDown": {
+      "y": 720,
+      "progress": 1,
+      "canvas": {
+        "position": "fixed",
+        "top": 0
+      }
+    },
+    "gameArtDuringScroll": [
+      {
+        "id": "art-davinci",
+        "background": "url(\"http://127.0.0.1:5265/images/rose-game-atlas.webp\")"
+      },
+      {
+        "id": "art-catchmind",
+        "background": "url(\"http://127.0.0.1:5265/images/rose-game-atlas.webp\")"
+      },
+      {
+        "id": "art-domino",
+        "background": "url(\"http://127.0.0.1:5265/images/rose-game-atlas.webp\")"
+      },
+      {
+        "id": "art-jaipur",
+        "background": "url(\"http://127.0.0.1:5265/images/rose-game-atlas.webp\")"
+      },
+      {
+        "id": "art-splendor",
+        "background": "url(\"http://127.0.0.1:5265/images/splendor/box-cover.jpg\")"
+      },
+      {
+        "id": "art-minhwatu",
+        "background": "url(\"http://127.0.0.1:5265/images/hwatu/01-01.svg\")"
+      },
+      {
+        "id": "art-marble",
+        "background": "url(\"http://127.0.0.1:5265/images/rose-game-atlas.webp\")"
+      },
+      {
+        "id": "art-rhythm",
+        "background": "url(\"http://127.0.0.1:5265/images/rose-game-atlas.webp\")"
+      }
+    ],
+    "scrollBack": {
+      "y": 0,
+      "progress": 0
+    },
+    "languagees-DO-1": "Juegos\nLa carta de Papi\nKO\nES · RD",
+    "languageko-0": "게임\nPapi의 편지\nKO\nES · RD",
+    "letterOpen": {
+      "phase": 1,
+      "lang": "es-DO",
+      "paperVisibility": "visible",
+      "paragraphs": 5
+    },
+    "letterClosed": {
+      "phase": 0,
+      "paperVisibility": "hidden",
+      "expanded": "false"
+    },
+    "errors": [],
+    "consoleErrors": [
+      {
+        "type": "console",
+        "message": "Failed to load resource: the server responded with a status of 404 (Not Found)"
+      }
+    ],
+    "imageHttpErrors": [],
+    "failedRequests": []
+  },
+  "trace": [
+    {
+      "label": "navigation:domcontentloaded",
+      "elapsedSec": 0.49
+    },
+    {
+      "label": "hero ready",
+      "elapsedSec": 9.41
+    },
+    {
+      "label": "assets decoded",
+      "elapsedSec": 12.85,
+      "details": [
+        {
+          "src": "/images/yeonseok-lisbeth-cutout.webp",
+          "ok": true,
+          "w": 1254,
+          "h": 1254
+        },
+        {
+          "src": "/images/rose-game-atlas.webp",
+          "ok": true,
+          "w": 1254,
+          "h": 1254
+        },
+        {
+          "src": "/images/rose-game-atlas.webp",
+          "ok": true,
+          "w": 1254,
+          "h": 1254
+        },
+        {
+          "src": "/images/rose-game-atlas.webp",
+          "ok": true,
+          "w": 1254,
+          "h": 1254
+        },
+        {
+          "src": "/images/rose-game-atlas.webp",
+          "ok": true,
+          "w": 1254,
+          "h": 1254
+        },
+        {
+          "src": "/images/splendor/box-cover.jpg",
+          "ok": true,
+          "w": 998,
+          "h": 1280
+        },
+        {
+          "src": "/images/hwatu/01-01.svg",
+          "ok": true,
+          "w": 103,
+          "h": 168
+        },
+        {
+          "src": "/images/rose-game-atlas.webp",
+          "ok": true,
+          "w": 1254,
+          "h": 1254
+        },
+        {
+          "src": "/images/rose-game-atlas.webp",
+          "ok": true,
+          "w": 1254,
+          "h": 1254
+        },
+        {
+          "src": "/images/landing-preview/organic-rose-generated.png",
+          "ok": true,
+          "w": 1024,
+          "h": 1536
+        }
+      ]
+    },
+    {
+      "label": "hero entry complete; idle begins",
+      "elapsedSec": 23.81,
+      "details": {
+        "renderer": "WebKit WebGL",
+        "entry": 1,
+        "camera": [
+          0,
+          0,
+          9.4
+        ],
+        "frames": 22
+      }
+    },
+    {
+      "label": "9-second idle complete",
+      "elapsedSec": 36.22,
+      "details": {
+        "loop": "running",
+        "frames": 45
+      }
+    },
+    {
+      "label": "heart drag and spring return verified",
+      "elapsedSec": 70.05,
+      "details": {
+        "target": {
+          "i": 32,
+          "x": 1210.134028192177,
+          "y": 463.64754499561633,
+          "depth": 7.2,
+          "pixels": 115.44327937113121
+        },
+        "offsetBeforeRelease": [
+          151.80449619233238,
+          86.78414228461712
+        ],
+        "settled": [
+          -7.142684783900391e-17,
+          -4.083355817042598e-17
+        ]
+      }
+    },
+    {
+      "label": "game-art scroll and return verified",
+      "elapsedSec": 89.01,
+      "details": {
+        "scrollDown": 720,
+        "scrollBack": 0,
+        "art": [
+          "art-davinci",
+          "art-catchmind",
+          "art-domino",
+          "art-jaipur",
+          "art-splendor",
+          "art-minhwatu",
+          "art-marble",
+          "art-rhythm"
+        ]
+      }
+    },
+    {
+      "label": "language changed es-DO",
+      "elapsedSec": 100.35
+    },
+    {
+      "label": "language changed ko",
+      "elapsedSec": 112.2
+    },
+    {
+      "label": "language changed es-DO",
+      "elapsedSec": 123.34
+    },
+    {
+      "label": "Spanish letter opened",
+      "elapsedSec": 136.52,
+      "details": {
+        "phase": 1,
+        "lang": "es-DO",
+        "paperVisibility": "visible",
+        "paragraphs": 5
+      }
+    },
+    {
+      "label": "letter closed",
+      "elapsedSec": 144.54,
+      "details": {
+        "phase": 0,
+        "paperVisibility": "hidden",
+        "expanded": "false"
+      }
+    }
+  ],
+  "failure": null,
+  "totalElapsedSec": 145.43
+}

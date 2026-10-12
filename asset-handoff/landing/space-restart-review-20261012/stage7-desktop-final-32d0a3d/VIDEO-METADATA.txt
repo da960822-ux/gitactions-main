@@ -1,0 +1,6 @@
+Source commit: 32d0a3d52c2304602d143e2897cfbcb6ab93a2af
+Capture branch: local/lusion-space-restart-20261012
+MP4 SHA-256: 5296f1d1f73a0618d440031f55b0a818724587855044fd33915899f973350788
+WebM SHA-256: ded68b160af4e2dba1e03f5ba90f70273066552c45d4cb45caa1282425276186
+MP4: H.264, 1440x900, 25 fps, 145.12 seconds, 3,628 frames
+WebM: VP9, 1440x900, 25 fps, 145.12 seconds, 3,628 frames
