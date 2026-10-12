@@ -1,5 +1,11 @@
 # 다른 세션 작업 인계 — 2026-10-11
 
+## 최신 우선 지시 — 2026-10-12 현대적 우주 랜딩 재시작
+
+사용자가 구현 재개를 승인했다. 최신 보존 기준은 `ab81a9e2de168b89c58e197edbb6e5a541aad4ca`, 별도 작업 브랜치는 `local/lusion-space-restart-20261012`다. [출처 적용 명세](LUSION-SPACE-RESTART-SPEC-2026-10-12.ko.md)와 `AGENTS.md`의 Authorized landing restart 규칙을 먼저 읽는다. 아래 오래된 구성·작은 효과 지침이 새 목표와 충돌하면 최신 사용자 지시를 따른다.
+
+합의 기준 전부 충족해야 완료, 하나라도 미달이면 미완료다. 구현 실패·난이도 때문에 목표/강도/검수를 줄이거나 거절된 쉬운 구도로 돌아가지 않는다. 기능/테스트는 시각 품질을 대체하지 못한다. 사용자 승인 없이 방향/기준 변경 금지. 원본 커플·승인 자산·여덟 게임·게임 개선을 보존하고 통째 revert/main 변경/배포/강제 push를 하지 않는다. 출처→명세→코드·자산 적합성 확인이 영상 기록보다 먼저다. 현재는 명세를 부모에게 전달하는 단계이며 새 장면 구현·합격은 아직 없다.
+
 ## 프로젝트와 실행
 
 연석과 Lisbeth 둘만 쓰는 개인 미니게임 사이트. GitHub 저장소는 비공개로 유지해야 한다. `AGENTS.md`와 `.agents/skills/ponytail/SKILL.md` full을 읽고 적용한다. `npm ci`, `npm run dev`; 검증은 `npm test`, `npm run build`. Supabase 없는 기본 모드는 같은 브라우저 연습이며 온라인이 아니다. 온라인 연결은 `docs/DEPLOYMENT.md` 및 `.env.example` 참조. 비밀키·node_modules·빌드·output 및 브라우저 캐시는 Git에 넣지 않는다.
