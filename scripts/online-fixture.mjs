@@ -64,10 +64,11 @@ async function body(req) {
   for await (const part of req) { text += part; if (text.length > 30000) throw Object.assign(new Error('payload_too_large'), { status: 413 }); }
   return text ? JSON.parse(text) : {};
 }
-function error(res, cause) {
+function error(res, cause, actionResponse = false) {
   const message = cause instanceof Error ? cause.message : 'fixture_error';
-  const status = cause?.status ?? (/permission denied|row-level security/i.test(message) ? 403 : 400);
-  json(res, { code: message, message, details: null, hint: null }, status);
+  const status = cause?.status ?? (actionResponse && message === 'stale_state' ? 409 : /permission denied|row-level security/i.test(message) ? 403 : 400);
+  // Edge Functions use {error}; RPCs retain the PostgREST-shaped error body.
+  json(res, actionResponse ? { error: message } : { code: message, message, details: null, hint: null }, status);
 }
 function uuid(value) { return typeof value === 'string' && /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(value); }
 
@@ -239,7 +240,7 @@ const server = createServer((req, res) => {
       return tableRequest(req, res, url, userId);
     }
     return json(res, { message: 'not_found' }, 404);
-  }).catch(cause => error(res, cause));
+  }).catch(cause => error(res, cause, url.pathname === '/functions/v1/action'));
 });
 server.listen(port, host, () => console.log(`PGlite SQL/RLS fixture listening at http://${host}:${port} (not Supabase Auth/PostgREST/Realtime)`));
 for (const signal of ['SIGINT', 'SIGTERM']) process.on(signal, async () => { server.close(); await asSerial(() => db.close()); process.exit(0); });
