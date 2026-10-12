@@ -1,0 +1,45 @@
+Verified landing interaction capture — corrected game-art preview
+
+Source branch: local/lusion-space-restart-20261012
+Source SHA: 6daaf2a3d67651a8acf80668dcbfb6475808d3e5
+Source preview: production landing preview, landing-preview.html
+Media branch: local/landing-review-media-20261012
+
+File: landing-motion-1440x900.mp4
+SHA-256: 53021f641696e2ba6384446876cb3c3419dc4918bf8c79d437cff75e6e395392
+Container/codec: MP4 / H.264 High, silent
+Dimensions/rate: 1440x900, 25 fps
+Duration/frame count: 158.24 seconds, 3,956 frames
+Size: 8,540,922 bytes
+
+The MP4 is a direct re-encode of the stage5 WebM. No clips were cut, reordered,
+or sped up. The source WebM is landing-motion-1440x900.webm, SHA-256
+4536760983d1c60efae75e6a0057bc9cab56e9c3291f5bfac63c91920d809603.
+
+Capture: 2026-10-12 UTC; Chromium headless at /usr/bin/chromium; 1440x900,
+DPR 1; prefers-reduced-motion=no-preference; software WebGL; /dev/dri unavailable.
+Playwright pointer and wheel inputs were used. A capture-only pointer ring marks
+the mouse location; it has pointer-events:none and is not part of the website.
+
+Preview image-copy failure cause: vite.preview.config.ts sets copyPublicDir:false
+and relies on an explicit previewAssets list. The list omitted the rose game
+atlas and Splendor cover (as well as the midnight rose sky and envelope grain),
+so the cards/scene rendered with missing image assets. Source SHA above adds the
+missing public paths to that list.
+
+Frame review of this recording:
+- 1–8s: cold entry and title/body reveal; 0s is the first blank capture frame.
+- 43s: visible foreground heart balloon target; 53–63s: pointer drags it down/right.
+- 68s: balloon spring returns to its original location.
+- 82–90s: scroll reaches the game section; all eight illustrated cards are visible.
+- 104–140s: Korean and Dominican Spanish language switches are visible.
+- 145–155s: Spanish letter opens with five paragraphs, then closes to the envelope.
+
+Capture-report validation: all eight gameArt backgrounds were present; DOM images
+and CSS image backgrounds decoded; image HTTP errors 0; failed requests 0; page
+errors 0. The recorded balloon offset reached 170.47x78.53 CSS pixels and
+returned to within floating-point noise of zero. Scroll moved 0→720px
+(progress 0→1) and returned to 0px (progress 1→0). Language checks reached ES
+and KO; the Spanish letter reached open phase 1 and returned to closed phase 0.
+The ambient scene loop reported running before and after its 2.1s idle sample
+(20→29 frames). Physical-GPU performance and mobile behavior were not captured.
