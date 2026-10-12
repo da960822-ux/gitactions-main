@@ -21,8 +21,19 @@ describe('HeroScene', () => {
     expect(html).toContain('aria-expanded="false"');
     expect(html).toContain('aria-controls="hero-letter-preview"');
     expect(html).toContain('aria-hidden="true"><b>For my Mami ♡</b><small>Baby, surprise!</small>');
-    expect(html).toContain('class="hero-orbit-svg"');
+    expect(html).not.toContain('hero-orbit-svg');
     expect((html.match(/data-parallax=/g) ?? []).length).toBeGreaterThanOrEqual(7);
     expect((html.match(/class="hero-scene-sparkles/g) ?? []).length).toBe(1);
+  });
+  it('connects the hero envelope to the full letter when supplied', () => {
+    const html = renderToStaticMarkup(createElement(HeroScene, {
+      language: 'ko', children: createElement('h1', { id: 'hero-title' }, 'hero'),
+      backgroundSrc: '/scene.webp', envelopeSrc: '/letter.webp',
+      portraitSrc: '/couple.webp', portraitAlt: 'couple',
+      onOpenLetter: () => {}, letterExpanded: true,
+    }));
+    expect(html).toContain('aria-controls="gift-paper"');
+    expect(html).toContain('aria-expanded="true"');
+    expect(html).toContain('id="hero-letter-preview" aria-hidden="true"');
   });
 });

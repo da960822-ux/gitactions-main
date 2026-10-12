@@ -1,0 +1,14 @@
+{
+  "sourceRevision": "0be54b63f3e053cb6367fd099421b8799ba2d191",
+  "sourcePath": "asset-handoff/landing/cinematic-observatory-hero-v1.png",
+  "sourceBytes": 2307857,
+  "sourceSha256": "71e9d0d48b9e3bec7a4a1cd39deef5b3dfd7794b8f62b010e483682752b46af8",
+  "runtimePath": "/images/landing/cinematic-observatory-hero-v1.webp",
+  "runtimeBytes": 325646,
+  "runtimeSha256": "f584c0ac8ecb3e135e6be1eef062faaf55a5169616f9cbdf04fab40c1e729b0d",
+  "dimensions": [
+    1672,
+    941
+  ],
+  "processing": "WebP quality92/method6, original dimensions/composition/colors; no image regeneration or distortion"
+}

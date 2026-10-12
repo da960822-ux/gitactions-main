@@ -8,14 +8,18 @@ type HeroSceneProps = {
   portraitSrc: string;
   portraitAlt: string;
   language: 'ko' | 'es';
+  onOpenLetter?: () => void;
+  letterExpanded?: boolean;
+  motionPaused?: boolean;
 };
 
-export function HeroScene({ children, backgroundSrc, envelopeSrc, portraitSrc, portraitAlt, language }: HeroSceneProps) {
+export function HeroScene({ children, backgroundSrc, envelopeSrc, portraitSrc, portraitAlt, language, onOpenLetter, letterExpanded, motionPaused = false }: HeroSceneProps) {
   const sceneRef = useRef<HTMLElement>(null);
   const pointerFrame = useRef(0);
   const pointerPosition = useRef({ x: 0, y: 0, localX: 0, localY: 0 });
   const [heartBurst, setHeartBurst] = useState(0);
-  const [letterOpen, setLetterOpen] = useState(false);
+  const [previewOpen, setPreviewOpen] = useState(false);
+  const letterOpen = letterExpanded ?? previewOpen;
 
   const resetPointer = () => {
     const scene = sceneRef.current;
@@ -31,6 +35,8 @@ export function HeroScene({ children, backgroundSrc, envelopeSrc, portraitSrc, p
     scene.querySelector<HTMLElement>('.hero-scene-portrait')?.style.setProperty('--portrait-tilt', '0deg');
   };
 
+  useEffect(() => { if (motionPaused) resetPointer(); }, [motionPaused]);
+
   useEffect(() => {
     const motionPreference = window.matchMedia('(prefers-reduced-motion: reduce)');
     const resetForReducedMotion = () => { if (motionPreference.matches) resetPointer(); };
@@ -42,7 +48,7 @@ export function HeroScene({ children, backgroundSrc, envelopeSrc, portraitSrc, p
   }, []);
 
   const onPointerMove = (event: PointerEvent<HTMLElement>) => {
-    if (event.pointerType !== 'mouse' || window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+    if (motionPaused || event.pointerType !== 'mouse' || window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
     const scene = sceneRef.current;
     if (!scene) return;
     const bounds = scene.getBoundingClientRect();
@@ -80,22 +86,17 @@ export function HeroScene({ children, backgroundSrc, envelopeSrc, portraitSrc, p
     <div className="hero-scene-inner">
       <div className="hero-scene-copy">{children}</div>
       <div className="hero-scene-art">
-        <svg className="hero-orbit-svg" data-parallax="-4" viewBox="0 0 800 480" preserveAspectRatio="none" aria-hidden="true">
-          <ellipse className="hero-orbit-path hero-orbit-path-wide" cx="405" cy="244" rx="345" ry="164" transform="rotate(-14 405 244)" pathLength="1" />
-          <ellipse className="hero-orbit-path hero-orbit-path-close" cx="405" cy="244" rx="303" ry="137" transform="rotate(18 405 244)" pathLength="1" />
-          <g className="hero-orbit-traveler"><circle cx="70" cy="244" r="3" /><circle cx="70" cy="244" r="8" /></g>
-        </svg>
         <figure className="hero-scene-portrait" data-parallax="14">
           <img src={portraitSrc} width="1254" height="1254" alt={portraitAlt} fetchPriority="high" aria-hidden="false" />
         </figure>
         <div className="hero-postcard" data-parallax="-12" aria-hidden="true">
-          <img src={backgroundSrc || '/images/midnight-rose-sky.webp'} alt="" />
+          <img src="/images/our-universe-scene.webp" alt="" />
           <span className="hero-postmark" aria-hidden="true">♡</span>
         </div>
-        <button className="hero-envelope" data-parallax="12" type="button" aria-label={envelopeLabel} aria-expanded={letterOpen} aria-controls="hero-letter-preview" onClick={() => setLetterOpen(value => !value)}>
+        <button className="hero-envelope" data-parallax="12" type="button" aria-label={envelopeLabel} aria-expanded={letterOpen} aria-controls={onOpenLetter ? 'gift-paper' : 'hero-letter-preview'} onClick={onOpenLetter ?? (() => setPreviewOpen(value => !value))}>
           <img src={envelopeSrc} alt="" />
           <span className="hero-envelope-flap" aria-hidden="true" />
-          <span className="hero-letter-preview" id="hero-letter-preview" aria-hidden={!letterOpen}><b>For my Mami ♡</b><small>Baby, surprise!</small></span>
+          <span className="hero-letter-preview" id="hero-letter-preview" aria-hidden={!!onOpenLetter || !letterOpen}><b>For my Mami ♡</b><small>Baby, surprise!</small></span>
         </button>
         <div className="hero-table-details" data-parallax="18">
           <button className="hero-glass-heart" type="button" aria-label={language === 'ko' ? '하트 반짝이기' : 'Hacer brillar el corazón'} onClick={() => setHeartBurst(value => value + 1)}>
