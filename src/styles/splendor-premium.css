@@ -585,13 +585,13 @@
 }
 
 @media (min-width: 1200px) and (hover: hover) and (pointer: fine) {
-  .sp-splendor .sp-card-details { grid-template-columns: minmax(0,1fr) 40px; grid-template-rows: auto auto auto; }
-  .sp-splendor .sp-card-details > .sp-bonus-label { grid-column: 1; grid-row: 1; min-width: 0; gap: 1px; padding: 2px 3px; font-size: 12px; }
+  .sp-splendor .sp-card-details { grid-template-columns: minmax(0,1fr); grid-template-rows: auto auto auto auto; }
+  .sp-splendor .sp-card-details > .sp-bonus-label { grid-column: 1; grid-row: 1; justify-self: start; min-width: 0; gap: 1px; padding: 2px 3px; font-size: 12px; }
   .sp-splendor .sp-card-details > .sp-bonus-label .sp-gem-icon { width: 19px; height: 19px; }
-  .sp-splendor .sp-card-details > .sp-card-prestige { display: block; grid-column: 2; grid-row: 1; align-self: center; color: #253c3d; font-size: 16px; font-weight: 800; font-variant-numeric: tabular-nums; white-space: nowrap; }
+  .sp-splendor .sp-card-details > .sp-card-prestige { display: flex; grid-column: 1; grid-row: 2; justify-self: start; align-items: baseline; gap: 5px; min-height: 24px; padding: 1px 6px; border: 1px solid #bcae8e; border-radius: 6px; background: #ece5d2; color: #253c3d; font-size: 16px; font-weight: 800; font-variant-numeric: tabular-nums; white-space: nowrap; }
   .sp-splendor .sp-card-details > .sp-card-cost-summary,.sp-splendor .sp-card-details > .sp-card-select-hint { grid-column: 1 / -1; }
-  .sp-splendor .sp-card-details > .sp-card-cost-summary { grid-row: 2; }
-  .sp-splendor .sp-card-details > .sp-card-select-hint { grid-row: 3; }
+  .sp-splendor .sp-card-details > .sp-card-cost-summary { grid-row: 3; }
+  .sp-splendor .sp-card-details > .sp-card-select-hint { grid-row: 4; }
 }
 
 @media (min-width: 1200px) and (hover: hover) and (pointer: fine) {
