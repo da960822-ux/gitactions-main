@@ -1,0 +1,418 @@
+{
+  "purpose": "Before screenshots of the real UI from the isolated pre-change worktree; visual capture only.",
+  "source": {
+    "cwd": "/workspace/gitactions-quality-before-20261012",
+    "head": "ab81a9e2de168b89c58e197edbb6e5a541aad4ca",
+    "origin": "http://127.0.0.1:5208"
+  },
+  "fixture": {
+    "enabled": true,
+    "url": "http://127.0.0.1:54330",
+    "warning": "Local PGlite SQL/RLS/action-authority fixture; Supabase Realtime/Auth/PostgREST are not production services. Explicit room refresh used between contexts."
+  },
+  "viewport": {
+    "width": 1440,
+    "height": 900
+  },
+  "method": "Two independent browser contexts per room, KO host p1 and ES guest p2; actual UI consent and game selection; no engine state/props injected; no match play.",
+  "games": [
+    {
+      "game": "marble",
+      "roomId": "9a21c64a-161a-4fb9-ba6f-c53819199d20",
+      "seats": [
+        {
+          "playerId": "p1",
+          "language": "ko",
+          "gameId": "marble",
+          "phase": "roll",
+          "turn": "p1",
+          "version": 2
+        },
+        {
+          "playerId": "p2",
+          "language": "es",
+          "gameId": "marble",
+          "phase": "roll",
+          "turn": "p1",
+          "version": 2
+        }
+      ],
+      "boardSelector": ".marble-premium",
+      "layoutSelector": ".room-layout",
+      "region": {
+        "x": 28,
+        "y": 0,
+        "width": 1384,
+        "height": 1876.390625
+      },
+      "domInfo": [
+        {
+          "title": "우리 둘 · 게임방",
+          "language": "ko",
+          "boardVisible": true,
+          "boardTextSample": "01\n출발\n출발\n02\n광주\n100\n03\n황금열쇠\n황금 열쇠\n04\n뉴욕\n260\n05\n마드리드\n140\n06\n산티아고\n160\n07\n도시세\n세금 · 납부 100\n08\n황금열쇠\n황금 열쇠\n09\n푸에르토플라타\n180\n10\n산후안\n200\n11\n무인도\n무인도\n12\n베를린\n220\n13\n황금열쇠\n황금 열쇠\n14\n마이애미\n240\n15\n열차역\n열차역\n16\n산토도밍고\n120\n17\n파리\n280\n18\n도쿄\n300\n19\n황금열쇠\n황금 열쇠\n20\n바르셀로나\n320\n21\n사회복지기금\n사회복지기금\n22\n이스탄불\n340\n23\n아바나\n360\n24\n휴식 광장\n휴식\n25\n멕시코시티\n380\n26\n리스본\n400\n27\n열차역\n열차역\n28\n황금열쇠\n황금 열쇠\n29\n런던\n420\n30\n로마\n440\n31\n세계 여행\n열차역\n32\n뉴어크\n460\n33\n아그라\n480\n34\n아테네\n500\n35\n황금열쇠\n황금 열쇠\n36\n토론토\n520\n37\n시드니\n540\n38\n기금 납부\n기금 납부 · 납부 150\n39\n서울\n560\n40\n휴식 광장\n휴식\n광주 → 뉴"
+        },
+        {
+          "title": "Nosotros · Juegos",
+          "language": "es-DO",
+          "boardVisible": true,
+          "boardTextSample": "01\nSalida\nSalida\n02\nGwangju\n100\n03\nLlave dorada\nLlave dorada\n04\nNueva York\n260\n05\nMadrid\n140\n06\nSantiago\n160\n07\nImpuesto municipal\nImpuesto · Pago 100\n08\nLlave dorada\nLlave dorada\n09\nPuerto Plata\n180\n10\nSan Juan\n200\n11\nIsla desierta\nIsla desierta\n12\nBerlín\n220\n13\nLlave dorada\nLlave dorada\n14\nMiami\n240\n15\nEstación de tren\nEstación de tren\n16\nSanto Domingo\n120\n17\nParís\n280\n18\nTokio\n300\n19\nLlave dorada\nLlave dorada\n20\nBarcelona\n320\n21\nFondo social\nFondo social\n22\nEstambul\n340\n23\nLa Habana\n360\n24\nPl"
+        }
+      ],
+      "stateSetup": {},
+      "screenshots": {
+        "p1Viewport": "/workspace/deliverables/game-quality-restart-20261012/before/01-marble-viewport-p1.png",
+        "p1BoardRegion": "/workspace/deliverables/game-quality-restart-20261012/before/01-marble-board-region-p1.png",
+        "p2EsViewport": "/workspace/deliverables/game-quality-restart-20261012/before/01-marble-viewport-p2-es.png"
+      },
+      "consoleErrors": {
+        "expectedFixtureRealtime404Count": 4,
+        "pageErrors": 0,
+        "note": "Only the local fixture’s unsupported Supabase Realtime WebSocket handshake (HTTP 404) was logged; explicit UI refresh supplied peer state. No page errors or auth errors."
+      }
+    },
+    {
+      "game": "splendor",
+      "roomId": "633be7ea-a65f-44bf-9222-22079ead8209",
+      "seats": [
+        {
+          "playerId": "p1",
+          "language": "ko",
+          "gameId": "splendor",
+          "phase": "action",
+          "turn": "p1",
+          "version": 2
+        },
+        {
+          "playerId": "p2",
+          "language": "es",
+          "gameId": "splendor",
+          "phase": "waiting",
+          "turn": "p1",
+          "version": 2
+        }
+      ],
+      "boardSelector": ".sp-splendor",
+      "layoutSelector": ".room-layout",
+      "region": {
+        "x": 28,
+        "y": 0,
+        "width": 1384,
+        "height": 1612.84375
+      },
+      "domInfo": [
+        {
+          "title": "우리 둘 · 게임방",
+          "language": "ko",
+          "boardVisible": true,
+          "boardTextSample": "스플렌더\n보석을 모아 개발 카드를 얻고, 먼저 15점에 도달하세요.\n나\n0\n점\n0 개발 카드\n차례\n0\n0\n0\n0\n0\n상대\n0\n점\n0 개발 카드\n0\n0\n0\n0\n0\n\n보석을 가져오거나, 비용이 맞는 카드를 구매하거나 예약하세요.\n\n3\n3단계\n4 / 4\n덱 예약\n+1\n3\n3\n6\n+1\n7\n+1\n7\n3\n+1\n3\n7\n2\n2단계\n4 / 4\n덱 예약\n+1\n5\n3\n+1\n5\n3\n+1\n2\n3\n2\n+1\n5\n3\n1\n1단계\n4 / 4\n덱 예약\n+1\n2\n2\n1\n+1\n2\n2\n+1\n4\n+1\n4\n보석 은행\n\n가져오기: 서로 다른 색 보석 3개, 또는 은행에 4개 이상 있는 같은 색 2개.\n\n4\n흰색\n+2 선택\n4\n파랑\n+2 선택\n4\n초록\n+2 선택\n4\n빨강\n+2 선택\n4\n검정\n+2 선택\n5\n황금\n내 보관함\n0 / 10\n0\n흰색\n0\n파랑\n0\n초록\n0\n빨강\n0\n검정\n0\n황금\n영구 보너스\n0\n0\n0\n0\n0\n예약 카드\n0 / 3\n빈 슬롯\n빈 슬롯\n빈 슬롯\n\n상대 예약 카드 0 / 3 · 상대 토큰 0개\n\n귀족 방문\n3 점"
+        },
+        {
+          "title": "Nosotros · Juegos",
+          "language": "es-DO",
+          "boardVisible": true,
+          "boardTextSample": "Splendor\nReúne gemas, compra desarrollos y alcanza 15 puntos.\nRival\n0\npts\n0 cartas\nTurno\n0\n0\n0\n0\n0\nTú\n0\npts\n0 cartas\n0\n0\n0\n0\n0\n\nTurno rival. Puedes revisar las cartas y el banco.\n\n3\nNivel 3\n4 / 4\nReservar\n+1\n3\n3\n6\n+1\n7\n+1\n7\n3\n+1\n3\n7\n2\nNivel 2\n4 / 4\nReservar\n+1\n5\n3\n+1\n5\n3\n+1\n2\n3\n2\n+1\n5\n3\n1\nNivel 1\n4 / 4\nReservar\n+1\n2\n2\n1\n+1\n2\n2\n+1\n4\n+1\n4\nBanco de gemas\n\nPodrás tomar gemas en tu turno.\n\n4\nBlanca\n4\nAzul\n4\nVerde\n4\nRoja\n4\nNegra\n5\nComodín\nTus gemas\n0 / 10\n0\nBlanca\n0\nAzul\n0\nVerde\n0\nRoja\n0\nNegra\n0\nComod"
+        }
+      ],
+      "stateSetup": {},
+      "screenshots": {
+        "p1Viewport": "/workspace/deliverables/game-quality-restart-20261012/before/02-splendor-viewport-p1.png",
+        "p1BoardRegion": "/workspace/deliverables/game-quality-restart-20261012/before/02-splendor-board-region-p1.png",
+        "p2EsViewport": "/workspace/deliverables/game-quality-restart-20261012/before/02-splendor-viewport-p2-es.png"
+      },
+      "consoleErrors": {
+        "expectedFixtureRealtime404Count": 2,
+        "pageErrors": 0,
+        "note": "Only the local fixture’s unsupported Supabase Realtime WebSocket handshake (HTTP 404) was logged; explicit UI refresh supplied peer state. No page errors or auth errors."
+      }
+    },
+    {
+      "game": "jaipur",
+      "roomId": "7a6caad1-3831-44a8-9cae-0849690d4c04",
+      "seats": [
+        {
+          "playerId": "p1",
+          "language": "ko",
+          "gameId": "jaipur",
+          "phase": "choose",
+          "turn": "p1",
+          "version": 2
+        },
+        {
+          "playerId": "p2",
+          "language": "es",
+          "gameId": "jaipur",
+          "phase": "waiting",
+          "turn": "p1",
+          "version": 2
+        }
+      ],
+      "boardSelector": ".jaipur-board",
+      "layoutSelector": ".room-layout",
+      "region": {
+        "x": 28,
+        "y": 0,
+        "width": 1384,
+        "height": 1685.671875
+      },
+      "domInfo": [
+        {
+          "title": "우리 둘 · 게임방",
+          "language": "ko",
+          "boardVisible": true,
+          "boardTextSample": "자이푸르\n라운드\n1\n/ 3\nA\n나 · 내 차례\n0\n점\n0\n라운드 승리\n0\n/2\n낙타 다수\n0\nB\n상대\n0\n점\n1\n라운드 승리\n0\n/2\n낙타 다수\n0\n시장\n남은 덱\n40\n낙타\n무리로 가져오기\n낙타\n무리로 가져오기\n낙타\n무리로 가져오기\n다이아몬드\n한 장 가져오기\n다이아몬드\n한 장 가져오기\n가져오기\n교환\n판매\n\n시장 상품이나 낙타 무리를 선택하세요.\n\n가져오기 선택\n취소\n상대 손패\n4 장\n내 손패 5 / 7\n\n낙타는 손패 제한에 포함되지 않아요.\n\n향신료\n은\n가죽\n옷감\n가죽\n낙타 무리\n\n손패 제한에 포함되지 않아요.\n\n0\n상대 낙타 무리\n1\n상품 토큰\n다이아몬드\n남음\n5\n개\n7\n7점\n금\n남음\n5\n개\n6\n6점\n은\n남음\n5\n개\n5\n5점\n옷감\n남음\n7\n개\n5\n5점\n향신료\n남음\n7\n개\n5\n5점\n가죽\n남음\n9\n개\n4\n4점\n판매 보너스\n3\n장 판매\n7 남음\n4\n장 판매\n6 남음\n5+\n장 판매\n5 남음"
+        },
+        {
+          "title": "Nosotros · Juegos",
+          "language": "es-DO",
+          "boardVisible": true,
+          "boardTextSample": "Jaipur\nRonda\n1\n/ 3\nA\nRival · Turno rival\n0\npts\n0\nRondas ganadas\n0\n/2\nMayoría de camellos\n0\nB\nTú\n0\npts\n1\nRondas ganadas\n0\n/2\nMayoría de camellos\n0\nMercado\nMazo\n40\nCamellos\nNo disponible\nCamellos\nNo disponible\nCamellos\nNo disponible\nDiamantes\nNo disponible\nDiamantes\nNo disponible\nTomar\nIntercambiar\nVender\n\nElige una mercancía o la manada del mercado.\n\nConfirma la toma\nCancelar\nMANO RIVAL\n5 cartas\nTu mano 4 / 7\n\nLos camellos no cuentan en el límite de la mano.\n\nEspecias\nCuero\nCuero\nTela\nTu manada\n\n"
+        }
+      ],
+      "stateSetup": {},
+      "screenshots": {
+        "p1Viewport": "/workspace/deliverables/game-quality-restart-20261012/before/03-jaipur-viewport-p1.png",
+        "p1BoardRegion": "/workspace/deliverables/game-quality-restart-20261012/before/03-jaipur-board-region-p1.png",
+        "p2EsViewport": "/workspace/deliverables/game-quality-restart-20261012/before/03-jaipur-viewport-p2-es.png"
+      },
+      "consoleErrors": {
+        "expectedFixtureRealtime404Count": 3,
+        "pageErrors": 0,
+        "note": "Only the local fixture’s unsupported Supabase Realtime WebSocket handshake (HTTP 404) was logged; explicit UI refresh supplied peer state. No page errors or auth errors."
+      }
+    },
+    {
+      "game": "davinci",
+      "roomId": "9106db32-b31a-4722-8b81-c7fccf0a38ff",
+      "seats": [
+        {
+          "playerId": "p1",
+          "language": "ko",
+          "gameId": "davinci",
+          "phase": "setup",
+          "turn": "p1",
+          "version": 4
+        },
+        {
+          "playerId": "p2",
+          "language": "es",
+          "gameId": "davinci",
+          "phase": "waiting",
+          "turn": "p1",
+          "version": 4
+        }
+      ],
+      "boardSelector": ".dv-table",
+      "layoutSelector": ".room-layout",
+      "region": {
+        "x": 28,
+        "y": 0,
+        "width": 1384,
+        "height": 1584.875
+      },
+      "domInfo": [
+        {
+          "title": "우리 둘 · 게임방",
+          "language": "ko",
+          "boardVisible": true,
+          "boardTextSample": "다빈치 코드\n내 타일\n4\n숫자 숨김\n4\n상대 타일\n4\n내 차례\n초기 패 준비\n남은 더미 18개\n1번째 차례\n상대 타일\n색과 위치는 공개, 숫자는 가려져요\n1\n· ·\n흰색\n2\n· ·\n흰색\n3\n· ·\n검정\n4\n· ·\n흰색\n초기 패 준비 완료\n손패 배치를 확인했어요\n손패 준비\n\n조커가 있다면 아래에서 원하는 위치에 먼저 배치하고 준비 완료를 눌러 주세요.\n\n내 타일\n내 숫자는 나에게 공개돼요\n1\n검정\n2\n3\n검정\n3\n7\n검정\n4\n10\n검정"
+        },
+        {
+          "title": "Nosotros · Juegos",
+          "language": "es-DO",
+          "boardVisible": true,
+          "boardTextSample": "Código Da Vinci\nTus fichas\n4\nNúmeros ocultos\n4\nFichas rivales\n4\nListo\nMano inicial lista\nMazo: 18 fichas\nTurno 1\nFichas rivales\nColor y posición visibles; número oculto\n1\n· ·\nNegra\n2\n· ·\nNegra\n3\n· ·\nNegra\n4\n· ·\nNegra\n\nTu mano está lista. La partida comenzará cuando la otra persona termine.\n\nPreparar la mano\n\nSi tienes un comodín, colócalo abajo donde prefieras y luego confirma que terminaste.\n\nTus fichas\nTú puedes ver tus números\n1\n1\nBlanca\n2\n2\nBlanca\n3\n5\nNegra\n4\n9\nBlanca"
+        }
+      ],
+      "stateSetup": {
+        "visualState": "initial setup phase; both clients rendered the real setup board",
+        "setupConsentedViaUI": false,
+        "note": "No gameplay was played; the capture remains on the initial Da Vinci hand setup screen."
+      },
+      "screenshots": {
+        "p1Viewport": "/workspace/deliverables/game-quality-restart-20261012/before/04-davinci-viewport-p1.png",
+        "p1BoardRegion": "/workspace/deliverables/game-quality-restart-20261012/before/04-davinci-board-region-p1.png",
+        "p2EsViewport": "/workspace/deliverables/game-quality-restart-20261012/before/04-davinci-viewport-p2-es.png"
+      },
+      "consoleErrors": {
+        "expectedFixtureRealtime404Count": 2,
+        "pageErrors": 0,
+        "note": "Only the local fixture’s unsupported Supabase Realtime WebSocket handshake (HTTP 404) was logged; explicit UI refresh supplied peer state. No page errors or auth errors."
+      }
+    },
+    {
+      "game": "catchmind",
+      "roomId": "20c54622-27f8-40b9-8606-e0d86e28c670",
+      "seats": [
+        {
+          "playerId": "p1",
+          "language": "ko",
+          "gameId": "catchmind",
+          "phase": "drawing",
+          "turn": "p1",
+          "version": 4
+        },
+        {
+          "playerId": "p2",
+          "language": "es",
+          "gameId": "catchmind",
+          "phase": "drawing",
+          "turn": "p1",
+          "version": 4
+        }
+      ],
+      "boardSelector": ".cm-table",
+      "layoutSelector": ".room-layout",
+      "region": {
+        "x": 28,
+        "y": 0,
+        "width": 1384,
+        "height": 1665.515625
+      },
+      "domInfo": [
+        {
+          "title": "우리 둘 · 게임방",
+          "language": "ko",
+          "boardVisible": true,
+          "boardTextSample": "라운드\n1 / 6\n동물\n출제자 · 그리는 중\n✦\n나\n0\n♡\n상대\n0\n◷\n80\n초 남음\n이 그림을 완성해 보세요\n문어\n＋\n여기에 그려 보세요\n그림은 두 사람에게 실시간으로 보여요.\n이 단어 건너뛰기 →\n라운드 마치기 →\n라운드 상태\n내가 그리고 있어요\n시도\n0\n\n첫 답을 기다리고 있어요.\n\n그리기 도구\n펜\n펜\n채우기\n색 선택\n기본\n보조 · 오른쪽 클릭\n지우개\n굵기\n6\n실행 취소\n모두 지우기"
+        },
+        {
+          "title": "Nosotros · Juegos",
+          "language": "es-DO",
+          "boardVisible": true,
+          "boardTextSample": "RONDA\n1 / 6\nAnimales\nAdivina\n♡\nPareja\n0\n✦\nTú\n0\n◷\n80\ns restantes\nMIRA Y ADIVINA\n□□\n/\n?????\n＋\nEsperando el primer trazo\n♡\nMira con calma\nEl dibujo se comparte en tiempo real.\nESTADO DE RONDA\nTu pareja dibuja\nINTENTOS\n0\n\nEsperando la primera respuesta.\n\n✳\n\nSolo quien dibuja ve la respuesta. Se revela al acertar."
+        }
+      ],
+      "stateSetup": {
+        "category": "animals",
+        "drawTimeSeconds": 80,
+        "wordSelectedViaUI": true,
+        "answerOmittedFromManifest": true
+      },
+      "screenshots": {
+        "p1Viewport": "/workspace/deliverables/game-quality-restart-20261012/before/05-catchmind-viewport-p1.png",
+        "p1BoardRegion": "/workspace/deliverables/game-quality-restart-20261012/before/05-catchmind-board-region-p1.png",
+        "p2EsViewport": "/workspace/deliverables/game-quality-restart-20261012/before/05-catchmind-viewport-p2-es.png"
+      },
+      "consoleErrors": {
+        "expectedFixtureRealtime404Count": 2,
+        "pageErrors": 0,
+        "note": "Only the local fixture’s unsupported Supabase Realtime WebSocket handshake (HTTP 404) was logged; explicit UI refresh supplied peer state. No page errors or auth errors."
+      }
+    },
+    {
+      "game": "domino",
+      "roomId": "1bcc96bd-cf91-4c15-b465-8ef2b2ad3830",
+      "seats": [
+        {
+          "playerId": "p1",
+          "language": "ko",
+          "gameId": "domino",
+          "phase": "play",
+          "turn": "p2",
+          "version": 2
+        },
+        {
+          "playerId": "p2",
+          "language": "es",
+          "gameId": "domino",
+          "phase": "play",
+          "turn": "p2",
+          "version": 2
+        }
+      ],
+      "boardSelector": ".domino-premium",
+      "layoutSelector": ".room-layout",
+      "region": {
+        "x": 28,
+        "y": 0,
+        "width": 1384,
+        "height": 1593.078125
+      },
+      "domInfo": [
+        {
+          "title": "우리 둘 · 게임방",
+          "language": "ko",
+          "boardVisible": true,
+          "boardTextSample": "더블 식스 · 블록 도미노\n\n도미노\n\n상대의 차례예요\n\n라운드\n1\n게임 설정\n내 팀\n나\n라운드 종료 후 공개\n상대\n상대\n라운드 종료 후 공개\n나\n내 팀\n7\n타일\n내 손패\n상대\n상대\n7\n타일\n28\n첫 타일을 놓으면 줄이 시작돼요\n시작 타일을 손패에서 선택해 주세요.\n도미노 테이블\n\n상대의 차례예요"
+        },
+        {
+          "title": "Nosotros · Juegos",
+          "language": "es-DO",
+          "boardVisible": true,
+          "boardTextSample": "DOBLE SEIS · DOMINÓ BLOQUEADO\n\nDominó\n\nElige una ficha para jugar\n\nRonda\n1\nRival\nRival\nSe muestran al final\nTu equipo\nTú\nSe muestran al final\nVer ajustes de juego\nRival\nRival\n7\nfichas\nTú\nTu equipo\n7\nfichas\nTu mano\n28\nLa cadena empieza con la primera ficha\nElige la ficha inicial en tu mano.\nTu mano\n\nElige una ficha y revisa los extremos disponibles."
+        }
+      ],
+      "stateSetup": {},
+      "screenshots": {
+        "p1Viewport": "/workspace/deliverables/game-quality-restart-20261012/before/06-domino-viewport-p1.png",
+        "p1BoardRegion": "/workspace/deliverables/game-quality-restart-20261012/before/06-domino-board-region-p1.png",
+        "p2EsViewport": "/workspace/deliverables/game-quality-restart-20261012/before/06-domino-viewport-p2-es.png"
+      },
+      "consoleErrors": {
+        "expectedFixtureRealtime404Count": 3,
+        "pageErrors": 0,
+        "note": "Only the local fixture’s unsupported Supabase Realtime WebSocket handshake (HTTP 404) was logged; explicit UI refresh supplied peer state. No page errors or auth errors."
+      }
+    },
+    {
+      "game": "minhwatu",
+      "roomId": "5457f80b-3f77-47ff-a561-444a46321346",
+      "seats": [
+        {
+          "playerId": "p1",
+          "language": "ko",
+          "gameId": "minhwatu",
+          "phase": "play",
+          "turn": "p1",
+          "version": 2
+        },
+        {
+          "playerId": "p2",
+          "language": "es",
+          "gameId": "minhwatu",
+          "phase": "play",
+          "turn": "p1",
+          "version": 2
+        }
+      ],
+      "boardSelector": ".minhwatu-table",
+      "layoutSelector": ".room-layout",
+      "region": {
+        "x": 18,
+        "y": 0,
+        "width": 1404,
+        "height": 1757
+      },
+      "domInfo": [
+        {
+          "title": "우리 둘 · 게임방",
+          "language": "ko",
+          "boardVisible": true,
+          "boardTextSample": "QA KO 나 · 내 차례\n0점\nQA ES 상대\n0점\n상대가 모은 패\n0 장\n광\n0\n열끗\n0\n띠\n0\n피\n0\n홍단\n0/3\n청단\n0/3\n초단\n0/3\n고도리\n0/3\n11월 완성\n0/4\n5월 완성\n0/4\n10월 완성\n0/4\n12월 완성\n0/4\n상대 손패\n10장\n내 차례\n바닥 패\n공개된 패 8장\n남은 더미\n20\n4월\n2월\n9월\n1월\n1월\n7월\n5월\n8월\n이번 차례 공개\n손패에서 이번 차례에 낼 패를 선택하세요.\n내가 모은 패\n0 장\n광\n0\n열끗\n0\n띠\n0\n피\n0\n홍단\n0/3\n청단\n0/3\n초단\n0/3\n고도리\n0/3\n11월 완성\n0/4\n5월 완성\n0/4\n10월 완성\n0/4\n12월 완성\n0/4\n내 손패\n10\n내 차례\n금색 테두리 패는 바닥패를 가져올 수 있어요.\n1월\n12월\n8월\n3월\n9월\n10월\n4월\n10월\n2월\n5월\n최근 행동 · 1\n점수 계산과 족보 상세 · 내 기본점수 + 내 족보 × 2 − 상대 족보"
+        },
+        {
+          "title": "Nosotros · Juegos",
+          "language": "es-DO",
+          "boardVisible": true,
+          "boardTextSample": "QA KO Rival · Turno rival\n0pts\nQA ES Tú\n0pts\nCapturas rivales\n0 cartas\nBrillantes\n0\nAnimales\n0\nCintas\n0\nSimples\n0\nHongdan\n0/3\nCheongdan\n0/3\nChodan\n0/3\nGodori\n0/3\nMes 11 completo\n0/4\nMes 5 completo\n0/4\nMes 10 completo\n0/4\nMes 12 completo\n0/4\nMano rival\n10 cartas\nTurno rival\nMesa\n8 cartas visibles\nMazo\n20\nMes 4\nMes 2\nMes 9\nMes 1\nMes 1\nMes 7\nMes 5\nMes 8\nCarta revelada\nTurno rival. Puedes revisar las cartas visibles y los puntos.\nMis capturas\n0 cartas\nBrillantes\n0\nAnimales\n0\nCintas\n0\nSimples\n0\nHongd"
+        }
+      ],
+      "stateSetup": {},
+      "screenshots": {
+        "p1Viewport": "/workspace/deliverables/game-quality-restart-20261012/before/07-minhwatu-viewport-p1.png",
+        "p1BoardRegion": "/workspace/deliverables/game-quality-restart-20261012/before/07-minhwatu-board-region-p1.png",
+        "p2EsViewport": "/workspace/deliverables/game-quality-restart-20261012/before/07-minhwatu-viewport-p2-es.png"
+      },
+      "consoleErrors": {
+        "expectedFixtureRealtime404Count": 2,
+        "pageErrors": 0,
+        "note": "Only the local fixture’s unsupported Supabase Realtime WebSocket handshake (HTTP 404) was logged; explicit UI refresh supplied peer state. No page errors or auth errors."
+      }
+    }
+  ],
+  "errors": {
+    "pageErrors": [],
+    "note": "Realtime 404 console messages are expected because the local fixture has no Realtime service; this is not a production connectivity validation."
+  }
+}
