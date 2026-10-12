@@ -1,0 +1,26 @@
+{
+  "pass": true,
+  "revision": "7b3a19d delta merged with landing startup fix",
+  "environment": "Two independent Chromium contexts with compiled production frontend and current PGlite SQL/RLS/authority fixture; no HMR, no offline screenshot, no production Supabase claim",
+  "sameCanvasAcrossOffline": true,
+  "distinctStrokes": [
+    {
+      "id": "ae4e458a-df67-4ef4-8925-07d252ce0eb7",
+      "color": "#2f655b",
+      "width": 4,
+      "points": 7
+    },
+    {
+      "id": "82e4336f-8872-41fc-aff8-e6f4efdc7091",
+      "color": "#ce6990",
+      "width": 12,
+      "points": 7
+    }
+  ],
+  "localPixels": 12300,
+  "remotePixels": 12292,
+  "spanishCorrectAnswer": true,
+  "nextRound": 2,
+  "nextRoundEmptyBothCanvases": true,
+  "errors": []
+}

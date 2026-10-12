@@ -1,0 +1,123 @@
+{
+  "pass": true,
+  "controlledAssetDelay": true,
+  "controlsAvailableWhileImagesPending": true,
+  "entryStartsAfterDecode": {
+    "name": "rd-portrait-enter",
+    "currentTime": 0,
+    "opacity": 0
+  },
+  "noLayoutMovement": true,
+  "before": {
+    "portraitReady": "false",
+    "portraitOpacity": 0,
+    "artReady": [
+      "false",
+      "false",
+      "false",
+      "false",
+      "true",
+      "true",
+      "false",
+      "false"
+    ],
+    "hero": {
+      "x": 0,
+      "y": 76,
+      "width": 1440,
+      "height": 440,
+      "top": 76,
+      "right": 1440,
+      "bottom": 516,
+      "left": 0
+    },
+    "actions": {
+      "x": 62,
+      "y": 388.734375,
+      "width": 498,
+      "height": 46,
+      "top": 388.734375,
+      "right": 560,
+      "bottom": 434.734375,
+      "left": 62
+    },
+    "firstCard": {
+      "x": 55,
+      "y": 628,
+      "width": 156.625,
+      "height": 256,
+      "top": 628,
+      "right": 211.625,
+      "bottom": 884,
+      "left": 55
+    },
+    "title": {
+      "x": 62,
+      "y": 174.4375,
+      "width": 475.40625,
+      "height": 114.5,
+      "top": 174.4375,
+      "right": 537.40625,
+      "bottom": 288.9375,
+      "left": 62
+    },
+    "loaders": 0,
+    "overflow": 0
+  },
+  "after": {
+    "portraitReady": "true",
+    "portraitOpacity": 1,
+    "artReady": [
+      "true",
+      "true",
+      "true",
+      "true",
+      "true",
+      "true",
+      "true",
+      "true"
+    ],
+    "hero": {
+      "x": 0,
+      "y": 76,
+      "width": 1440,
+      "height": 440,
+      "top": 76,
+      "right": 1440,
+      "bottom": 516,
+      "left": 0
+    },
+    "actions": {
+      "x": 62,
+      "y": 388.734375,
+      "width": 498,
+      "height": 46,
+      "top": 388.734375,
+      "right": 560,
+      "bottom": 434.734375,
+      "left": 62
+    },
+    "firstCard": {
+      "x": 55,
+      "y": 628,
+      "width": 156.625,
+      "height": 256,
+      "top": 628,
+      "right": 211.625,
+      "bottom": 884,
+      "left": 55
+    },
+    "title": {
+      "x": 62,
+      "y": 174.4375,
+      "width": 475.40625,
+      "height": 114.5,
+      "top": 174.4375,
+      "right": 537.40625,
+      "bottom": 288.9375,
+      "left": 62
+    },
+    "loaders": 0,
+    "overflow": 0
+  }
+}

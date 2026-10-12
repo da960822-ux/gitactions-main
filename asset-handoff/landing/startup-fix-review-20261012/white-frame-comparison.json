@@ -1,0 +1,34 @@
+{
+  "before": {
+    "sampled_frames": 38,
+    "bright_blank_samples": [
+      {
+        "t_approx": 0.4,
+        "bright_fraction": 1.0
+      },
+      {
+        "t_approx": 0.5,
+        "bright_fraction": 1.0
+      },
+      {
+        "t_approx": 0.6,
+        "bright_fraction": 1.0
+      },
+      {
+        "t_approx": 0.7,
+        "bright_fraction": 1.0
+      },
+      {
+        "t_approx": 0.8,
+        "bright_fraction": 1.0
+      }
+    ],
+    "max_bright_fraction": 1.0
+  },
+  "after": {
+    "sampled_frames": 42,
+    "bright_blank_samples": [],
+    "max_bright_fraction": 0.022222222222222223
+  },
+  "method": "Actual encoded video sampled every0.1s at96x60; bright blank means >95% of pixels have all RGB channels>230. No source/video image was altered."
+}

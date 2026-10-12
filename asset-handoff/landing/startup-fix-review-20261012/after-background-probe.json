@@ -1,0 +1,25 @@
+[
+  {
+    "scenario": "HTML with external stylesheet unavailable and React module held",
+    "htmlBackground": "rgb(19, 14, 23)",
+    "bodyBackground": "rgb(19, 14, 23)",
+    "rootBackground": "rgb(19, 14, 23)",
+    "rootChildren": 0,
+    "styleSheets": 2
+  },
+  {
+    "scenario": "stylesheet loaded; React module held",
+    "htmlBackground": "rgb(19, 14, 23)",
+    "bodyBackground": "rgb(19, 14, 23)",
+    "rootBackground": "rgb(19, 14, 23)",
+    "rootChildren": 0,
+    "styleSheets": 2
+  },
+  {
+    "scenario": "actual SPA feedback navigation while lazy module pending",
+    "htmlBackground": "rgb(19, 14, 23)",
+    "rootBackground": "rgb(19, 14, 23)",
+    "loadingBackground": "rgba(0, 0, 0, 0)",
+    "loadingColor": "rgb(217, 197, 206)"
+  }
+]
