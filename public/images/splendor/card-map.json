@@ -1301,12 +1301,16 @@
     {
       "engineId": "n0",
       "sourceId": "20001",
-      "src": "nobles/20001.jpg"
+      "src": "nobles/doctor-noble-portrait.webp",
+      "originalSrc": "nobles/20001.jpg",
+      "personalizationSourceCommit": "0be54b63f3e053cb6367fd099421b8799ba2d191"
     },
     {
       "engineId": "n1",
       "sourceId": "20002",
-      "src": "nobles/20002.jpg"
+      "src": "nobles/hanbok-noble-frontal.webp",
+      "originalSrc": "nobles/20002.jpg",
+      "personalizationSourceCommit": "0be54b63f3e053cb6367fd099421b8799ba2d191"
     },
     {
       "engineId": "n2",
