@@ -1,11 +1,11 @@
-Landing implementation source SHA: 36af263c8ba3960629410d7230e16593eebf1de1
+Landing implementation source SHA: 6fe63450eb024678fb087f6823fda38f0ca95bf3
 Code branch: local/lusion-space-restart-20261012
 Source worktree: /workspace/gitactions-lusion-space-restart
 
-All three PNGs are fresh local Chromium/WebKit WebGL renders of the committed source tree, 1440x900 at DPR 1. They are rendered states, not source artwork or generated mockups.
+All three PNGs are fresh local Chromium renders of this committed source tree, 1440x900 at DPR 1. They are rendered states, not source artwork or generated mockups. Capture set explicitly used prefers-reduced-motion: no-preference for motion states. The browser reports WebKit WebGL in the Chromium software-rendering environment; this does not certify a physical GPU.
 
-- hero-1440-ko.png — settled Korean hero; capture 2026-10-12 07:20 UTC.
-- scroll-720.png — first-scroll landing/game transition at 720px.
-- letter-1440-es.png — open Spanish letter, including the preserved five-paragraph body and signature; capture 2026-10-12 07:25 UTC.
+- hero-1440-ko.png — settled Korean hero; 48 balloon instances, entry settled.
+- scroll-720.png — first-scroll transition at 720px, progress 1.0.
+- letter-1440-es.png — open Spanish letter, phase 1.0, five paragraphs visible.
 
-The hero and letter captures report zero page errors. The screen set is desktop-only; it does not certify a physical GPU or mobile rendering.
+Desktop only; mobile remains untested.
