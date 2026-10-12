@@ -1,0 +1,37 @@
+{
+  "format": "marble-event-art-v1",
+  "assets": [
+    {
+      "path": "asset-handoff/marble-event-art/cash-dividend.png",
+      "bytes": 2283968,
+      "sha256": "a430e849f15ae08d808be39419a05cf311fb27b99c7fbe5df127f095a5decaa1",
+      "git_blob_sha": "883e1796599a678184e58b0cd0d40f13590ab25d",
+      "width": 1122,
+      "height": 1402
+    },
+    {
+      "path": "asset-handoff/marble-event-art/movement-travel.png",
+      "bytes": 2304958,
+      "sha256": "c2c0bed5e49ed192c10977009078ab4973bf8f17e5e2c6277da8bb3ef1035ddb",
+      "git_blob_sha": "ba2ee8e12efa882f335a023c9c45df3c2e19411c",
+      "width": 1122,
+      "height": 1402
+    },
+    {
+      "path": "asset-handoff/marble-event-art/city-intervention.png",
+      "bytes": 2831503,
+      "sha256": "38564b9621713354f9c1bab98f5fd0c95e2185abedd0454fe5e4c8b3c0dd8e0c",
+      "git_blob_sha": "ce6ca1742927fb671882075ea7da4326d7e1e3c9",
+      "width": 1122,
+      "height": 1402
+    },
+    {
+      "path": "asset-handoff/marble-event-art/protection-exemption.png",
+      "bytes": 2229690,
+      "sha256": "2308454d328accb336e6150dacd80bf54bd2f7e7b10fbf57ace5a12719c458a4",
+      "git_blob_sha": "caa0283d95dfe7b9ef79a77a58c9b5d16cb2a34c",
+      "width": 1122,
+      "height": 1402
+    }
+  ]
+}
