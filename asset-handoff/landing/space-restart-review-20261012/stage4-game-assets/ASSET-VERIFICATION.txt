@@ -1,0 +1,21 @@
+Landing game thumbnail preview verification
+
+Corrected implementation source SHA: 6daaf2a3d67651a8acf80668dcbfb6475808d3e5
+Implementation branch: local/lusion-space-restart-20261012
+Preview: production build from the source SHA above, served locally from dist-preview
+Capture: 2026-10-12 UTC, Chromium headless, 1440x900 viewport, DPR 1
+Screenshot: game-section-1440x900.png
+
+Cause reproduced on prior source SHA 1c68c5eaed22568218f835565541eccdb3564274: vite.preview.config.ts used copyPublicDir:false and omitted the existing game thumbnail sprite atlas and Splendor cover from its explicit asset-copy list. Production preview returned 404 for /images/rose-game-atlas.webp and /images/splendor/box-cover.jpg. The six atlas-backed cards and Splendor therefore had naturalWidth 0 and displayed only their CSS background colors; Minhwatu used its separately copied Hwatu SVG and remained visible.
+
+Fix: include every image referenced by the landing CSS/preview, including images/rose-game-atlas.webp, images/splendor/box-cover.jpg, images/midnight-rose-sky.webp, and images/landing-preview/envelope-paper-grain.svg, in the production-preview copy list. Existing approved image files and design remain unchanged.
+
+Post-fix checks on the production preview:
+- /images/rose-game-atlas.webp: HTTP 200, decoded, natural size 1254x1254.
+- /images/splendor/box-cover.jpg: HTTP 200, decoded, natural size 998x1280.
+- /images/hwatu/01-01.svg: HTTP 200, decoded, natural size 103x168.
+- All rendered <img> elements decoded with nonzero naturalWidth; all visible CSS image backgrounds decoded. Galaxy, envelope, portrait and rose texture requests returned HTTP 200.
+- 0 image responses >=400, 0 failed requests, 0 page errors. Landing scene reported spaceReady=true. DM Sans and Gowun Batang loaded.
+- The 1440x900 screenshot shows all eight cards with their actual artwork.
+
+PNG SHA-256: 226e477ae5b7557a019b33518965ba90c96b636126b2533d38895964d79f424c
