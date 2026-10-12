@@ -1,0 +1,902 @@
+{
+  "fixture": "local browser UI connected to fixture 54331; no production Realtime",
+  "steps": [
+    {
+      "phase": "overlimit-setup",
+      "seat": "p1",
+      "move": {
+        "plan": "은행 → 내 토큰\n흰색\n파랑\n초록\n\n서로 다른 색 3/3 선택 · 반환 0개 · 현재 0 + 획득 3 − 반환 0 = 3/10\n\n보석 가져오기",
+        "geometry": {
+          "x": 827,
+          "y": 528.484375,
+          "w": 502,
+          "h": 110,
+          "bottom": 638.484375,
+          "scrollHeight": 110,
+          "clientHeight": 110
+        },
+        "payload": {
+          "gems": [
+            "white",
+            "blue",
+            "green"
+          ]
+        }
+      }
+    },
+    {
+      "phase": "overlimit-setup",
+      "seat": "p2",
+      "move": "reserve"
+    },
+    {
+      "phase": "overlimit-setup",
+      "seat": "p1",
+      "move": {
+        "plan": "은행 → 내 토큰\n흰색\n초록\n빨강\n\n서로 다른 색 3/3 선택 · 반환 0개 · 현재 3 + 획득 3 − 반환 0 = 6/10\n\n보석 가져오기",
+        "geometry": {
+          "x": 827,
+          "y": 489.484375,
+          "w": 502,
+          "h": 110,
+          "bottom": 599.484375,
+          "scrollHeight": 110,
+          "clientHeight": 110
+        },
+        "payload": {
+          "gems": [
+            "white",
+            "green",
+            "red"
+          ]
+        }
+      }
+    },
+    {
+      "phase": "overlimit-setup",
+      "seat": "p2",
+      "move": "reserve"
+    },
+    {
+      "phase": "overlimit-setup",
+      "seat": "p1",
+      "move": {
+        "plan": "은행 → 내 토큰\n흰색\n파랑\n빨강\n\n서로 다른 색 3/3 선택 · 반환 0개 · 현재 6 + 획득 3 − 반환 0 = 9/10\n\n보석 가져오기",
+        "geometry": {
+          "x": 827,
+          "y": 489.484375,
+          "w": 502,
+          "h": 110,
+          "bottom": 599.484375,
+          "scrollHeight": 110,
+          "clientHeight": 110
+        },
+        "payload": {
+          "gems": [
+            "white",
+            "blue",
+            "red"
+          ]
+        }
+      }
+    },
+    {
+      "phase": "overlimit-setup",
+      "seat": "p2",
+      "move": "reserve"
+    },
+    {
+      "phase": "overlimit-confirm",
+      "seat": "p1",
+      "move": {
+        "status": "검정 2개 선택 · 반환 1개 · 현재 9 + 획득 2 − 반환 1 = 10/10",
+        "returnControls": "흰색 1\n+\n−\n파랑 0\n+\n−\n초록 0\n+\n−\n빨강 0\n+\n−\n검정 0\n+\n−\n황금 0\n+\n−",
+        "expectedPayload": {
+          "gem": "black",
+          "returnTokens": {
+            "black": 1
+          }
+        }
+      }
+    },
+    {
+      "phase": "noble-progress",
+      "seat": "p2",
+      "move": {
+        "type": "buy",
+        "id": "t1-12",
+        "bonus": "blue",
+        "points": 0
+      }
+    },
+    {
+      "phase": "noble-progress",
+      "seat": "p1",
+      "move": {
+        "type": "buy",
+        "id": "t1-25",
+        "bonus": "black",
+        "points": 0,
+        "cost": {
+          "red": 0,
+          "blue": 0,
+          "black": 0,
+          "green": 2,
+          "white": 2
+        }
+      }
+    },
+    {
+      "phase": "noble-progress",
+      "seat": "p2",
+      "move": {
+        "plan": "Banco → tus fichas\nBlanca\nAzul\nVerde\n\nColores distintos 3/3 · Devolver 0 · ahora 0 + tomas 3 − devuelves 0 = 3/10\n\nTomar gemas",
+        "geometry": {
+          "x": 827,
+          "y": 476.484375,
+          "w": 502,
+          "h": 110,
+          "bottom": 586.484375,
+          "scrollHeight": 110,
+          "clientHeight": 110
+        },
+        "payload": {
+          "gems": [
+            "white",
+            "blue",
+            "green"
+          ]
+        }
+      }
+    },
+    {
+      "phase": "noble-progress",
+      "seat": "p1",
+      "move": {
+        "plan": "은행 → 내 토큰\n흰색\n파랑\n빨강\n\n서로 다른 색 3/3 선택 · 반환 0개 · 현재 6 + 획득 3 − 반환 0 = 9/10\n\n보석 가져오기",
+        "geometry": {
+          "x": 827,
+          "y": 437.484375,
+          "w": 502,
+          "h": 110,
+          "bottom": 547.484375,
+          "scrollHeight": 110,
+          "clientHeight": 110
+        },
+        "payload": {
+          "gems": [
+            "white",
+            "blue",
+            "red"
+          ]
+        },
+        "score": 2
+      }
+    },
+    {
+      "phase": "noble-progress",
+      "seat": "p2",
+      "move": {
+        "plan": "Banco → tus fichas\nBlanca\nVerde\nRoja\n\nColores distintos 3/3 · Devolver 0 · ahora 3 + tomas 3 − devuelves 0 = 6/10\n\nTomar gemas",
+        "geometry": {
+          "x": 827,
+          "y": 437.484375,
+          "w": 502,
+          "h": 110,
+          "bottom": 547.484375,
+          "scrollHeight": 110,
+          "clientHeight": 110
+        },
+        "payload": {
+          "gems": [
+            "white",
+            "green",
+            "red"
+          ]
+        }
+      }
+    },
+    {
+      "phase": "noble-progress",
+      "seat": "p1",
+      "move": {
+        "type": "buy",
+        "id": "t1-38",
+        "bonus": "green",
+        "points": 0,
+        "cost": {
+          "red": 1,
+          "blue": 1,
+          "black": 1,
+          "green": 0,
+          "white": 1
+        }
+      }
+    },
+    {
+      "phase": "noble-progress",
+      "seat": "p2",
+      "move": {
+        "plan": "Banco → tus fichas\nBlanca\nAzul\nVerde\n\nColores distintos 3/3 · Devolver 0 · ahora 6 + tomas 3 − devuelves 0 = 9/10\n\nTomar gemas",
+        "geometry": {
+          "x": 827,
+          "y": 437.484375,
+          "w": 502,
+          "h": 110,
+          "bottom": 547.484375,
+          "scrollHeight": 110,
+          "clientHeight": 110
+        },
+        "payload": {
+          "gems": [
+            "white",
+            "blue",
+            "green"
+          ]
+        }
+      }
+    },
+    {
+      "phase": "noble-progress",
+      "seat": "p1",
+      "move": {
+        "plan": "은행 → 내 토큰\n흰색\n초록\n빨강\n\n서로 다른 색 3/3 선택 · 반환 0개 · 현재 6 + 획득 3 − 반환 0 = 9/10\n\n보석 가져오기",
+        "geometry": {
+          "x": 827,
+          "y": 437.484375,
+          "w": 502,
+          "h": 110,
+          "bottom": 547.484375,
+          "scrollHeight": 110,
+          "clientHeight": 110
+        },
+        "payload": {
+          "gems": [
+            "white",
+            "green",
+            "red"
+          ]
+        },
+        "score": 2
+      }
+    },
+    {
+      "phase": "noble-progress",
+      "seat": "p2",
+      "move": {
+        "type": "buy",
+        "id": "t1-08",
+        "bonus": "green",
+        "points": 0
+      }
+    },
+    {
+      "phase": "noble-progress",
+      "seat": "p1",
+      "move": {
+        "type": "buy",
+        "id": "t1-13",
+        "bonus": "green",
+        "points": 0,
+        "cost": {
+          "red": 3,
+          "blue": 0,
+          "black": 0,
+          "green": 0,
+          "white": 0
+        }
+      }
+    },
+    {
+      "phase": "noble-progress",
+      "seat": "p2",
+      "move": {
+        "type": "reserve",
+        "cardId": "t1-29",
+        "tier": 1
+      }
+    },
+    {
+      "phase": "noble-progress",
+      "seat": "p1",
+      "move": {
+        "plan": "은행 → 내 토큰\n흰색\n파랑\n빨강\n\n서로 다른 색 3/3 선택 · 반환 0개 · 현재 6 + 획득 3 − 반환 0 = 9/10\n\n보석 가져오기",
+        "geometry": {
+          "x": 827,
+          "y": 437.484375,
+          "w": 502,
+          "h": 110,
+          "bottom": 547.484375,
+          "scrollHeight": 110,
+          "clientHeight": 110
+        },
+        "payload": {
+          "gems": [
+            "white",
+            "blue",
+            "red"
+          ]
+        },
+        "score": 0
+      }
+    },
+    {
+      "phase": "noble-progress",
+      "seat": "p2",
+      "move": {
+        "type": "buy",
+        "id": "t1-26",
+        "bonus": "white",
+        "points": 0
+      }
+    },
+    {
+      "phase": "noble-progress",
+      "seat": "p1",
+      "move": {
+        "type": "buy",
+        "id": "t1-35",
+        "bonus": "black",
+        "points": 0,
+        "cost": {
+          "red": 1,
+          "blue": 0,
+          "black": 0,
+          "green": 2,
+          "white": 0
+        }
+      }
+    },
+    {
+      "phase": "noble-progress",
+      "seat": "p2",
+      "move": {
+        "plan": "Banco → tus fichas\nAzul\nVerde\nRoja\n\nColores distintos 3/3 · Devolver 0 · ahora 3 + tomas 3 − devuelves 0 = 6/10\n\nTomar gemas",
+        "geometry": {
+          "x": 827,
+          "y": 476.484375,
+          "w": 502,
+          "h": 110,
+          "bottom": 586.484375,
+          "scrollHeight": 110,
+          "clientHeight": 110
+        },
+        "payload": {
+          "gems": [
+            "blue",
+            "green",
+            "red"
+          ]
+        }
+      }
+    },
+    {
+      "phase": "noble-progress",
+      "seat": "p1",
+      "move": {
+        "plan": "은행 → 내 토큰\n초록\n빨강\n검정\n\n서로 다른 색 3/3 선택 · 반환 1개 · 현재 8 + 획득 3 − 반환 1 = 10/10\n\n흰색 0\n+\n−\n파랑 0\n+\n−\n초록 0\n+\n−\n빨강 0\n+\n−\n검정 1\n+\n−\n황금 0\n+\n−\n보석 가져오기",
+        "geometry": {
+          "x": 827,
+          "y": 437.484375,
+          "w": 502,
+          "h": 220,
+          "bottom": 657.484375,
+          "scrollHeight": 220,
+          "clientHeight": 220
+        },
+        "payload": {
+          "gems": [
+            "green",
+            "red",
+            "black"
+          ],
+          "returnTokens": {
+            "black": 1
+          }
+        },
+        "score": 0
+      }
+    },
+    {
+      "phase": "noble-progress",
+      "seat": "p2",
+      "move": {
+        "type": "buy",
+        "id": "t1-07",
+        "bonus": "blue",
+        "points": 0
+      }
+    },
+    {
+      "phase": "noble-progress",
+      "seat": "p1",
+      "move": {
+        "type": "buy",
+        "id": "t1-36",
+        "bonus": "white",
+        "points": 0,
+        "cost": {
+          "red": 1,
+          "blue": 1,
+          "black": 1,
+          "green": 1,
+          "white": 0
+        }
+      }
+    },
+    {
+      "phase": "noble-progress",
+      "seat": "p2",
+      "move": {
+        "type": "buy",
+        "id": "t1-33",
+        "bonus": "green",
+        "points": 0
+      }
+    },
+    {
+      "phase": "noble-progress",
+      "seat": "p1",
+      "move": {
+        "type": "buy",
+        "id": "t1-21",
+        "bonus": "white",
+        "points": 0,
+        "cost": {
+          "red": 0,
+          "blue": 2,
+          "black": 2,
+          "green": 0,
+          "white": 0
+        }
+      }
+    },
+    {
+      "phase": "noble-progress",
+      "seat": "p2",
+      "move": {
+        "plan": "Banco → tus fichas\nBlanca\nAzul\nVerde\n\nColores distintos 3/3 · Devolver 0 · ahora 2 + tomas 3 − devuelves 0 = 5/10\n\nTomar gemas",
+        "geometry": {
+          "x": 827,
+          "y": 476.484375,
+          "w": 502,
+          "h": 110,
+          "bottom": 586.484375,
+          "scrollHeight": 110,
+          "clientHeight": 110
+        },
+        "payload": {
+          "gems": [
+            "white",
+            "blue",
+            "green"
+          ]
+        }
+      }
+    },
+    {
+      "phase": "noble-progress",
+      "seat": "p1",
+      "move": {
+        "type": "buy",
+        "id": "t1-19",
+        "bonus": "red",
+        "points": 0,
+        "cost": {
+          "red": 0,
+          "blue": 0,
+          "black": 2,
+          "green": 1,
+          "white": 2
+        }
+      }
+    },
+    {
+      "phase": "noble-progress",
+      "seat": "p2",
+      "move": {
+        "plan": "Banco → tus fichas\nAzul\nVerde\nRoja\n\nColores distintos 3/3 · Devolver 0 · ahora 5 + tomas 3 − devuelves 0 = 8/10\n\nTomar gemas",
+        "geometry": {
+          "x": 827,
+          "y": 476.484375,
+          "w": 502,
+          "h": 110,
+          "bottom": 586.484375,
+          "scrollHeight": 110,
+          "clientHeight": 110
+        },
+        "payload": {
+          "gems": [
+            "blue",
+            "green",
+            "red"
+          ]
+        }
+      }
+    },
+    {
+      "phase": "noble-progress",
+      "seat": "p1",
+      "move": {
+        "type": "buy",
+        "id": "t1-09",
+        "bonus": "red",
+        "points": 0,
+        "cost": {
+          "red": 1,
+          "blue": 0,
+          "black": 3,
+          "green": 0,
+          "white": 1
+        }
+      }
+    },
+    {
+      "phase": "noble-progress",
+      "seat": "p2",
+      "move": {
+        "type": "buy",
+        "id": "t1-30",
+        "bonus": "black",
+        "points": 0
+      }
+    },
+    {
+      "phase": "noble-progress",
+      "seat": "p1",
+      "move": {
+        "type": "buy",
+        "id": "t1-24",
+        "bonus": "red",
+        "points": 0,
+        "cost": {
+          "red": 2,
+          "blue": 0,
+          "black": 0,
+          "green": 0,
+          "white": 2
+        }
+      }
+    },
+    {
+      "phase": "noble-progress",
+      "seat": "p2",
+      "move": {
+        "type": "buy",
+        "id": "t1-11",
+        "bonus": "white",
+        "points": 0
+      }
+    },
+    {
+      "phase": "noble-progress",
+      "seat": "p1",
+      "move": {
+        "type": "buy",
+        "id": "t1-27",
+        "bonus": "blue",
+        "points": 0,
+        "cost": {
+          "red": 2,
+          "blue": 0,
+          "black": 1,
+          "green": 1,
+          "white": 1
+        }
+      }
+    },
+    {
+      "phase": "noble-progress",
+      "seat": "p2",
+      "move": {
+        "type": "buy",
+        "id": "t1-06",
+        "bonus": "white",
+        "points": 0
+      }
+    },
+    {
+      "phase": "noble-progress",
+      "seat": "p1",
+      "move": {
+        "type": "buy",
+        "id": "t1-01",
+        "bonus": "white",
+        "points": 1,
+        "cost": {
+          "red": 0,
+          "blue": 0,
+          "black": 0,
+          "green": 4,
+          "white": 0
+        }
+      }
+    },
+    {
+      "phase": "noble-progress",
+      "seat": "p2",
+      "move": {
+        "type": "buy",
+        "id": "t1-34",
+        "bonus": "red",
+        "points": 0
+      }
+    },
+    {
+      "phase": "noble-progress",
+      "seat": "p1",
+      "move": {
+        "type": "buy",
+        "id": "t1-18",
+        "bonus": "green",
+        "points": 0,
+        "cost": {
+          "red": 2,
+          "blue": 1,
+          "black": 2,
+          "green": 0,
+          "white": 0
+        }
+      }
+    },
+    {
+      "phase": "noble-progress",
+      "seat": "p2",
+      "move": {
+        "type": "buy",
+        "id": "t1-20",
+        "bonus": "black",
+        "points": 0
+      }
+    },
+    {
+      "phase": "noble-progress",
+      "seat": "p1",
+      "move": {
+        "type": "buy",
+        "id": "t1-15",
+        "bonus": "black",
+        "points": 0,
+        "cost": {
+          "red": 0,
+          "blue": 0,
+          "black": 0,
+          "green": 3,
+          "white": 0
+        }
+      }
+    },
+    {
+      "phase": "noble-progress",
+      "seat": "p2",
+      "move": {
+        "type": "buy",
+        "id": "t1-37",
+        "bonus": "blue",
+        "points": 0
+      }
+    },
+    {
+      "phase": "noble-progress",
+      "seat": "p1",
+      "move": {
+        "type": "buy",
+        "id": "t1-31",
+        "bonus": "white",
+        "points": 0,
+        "cost": {
+          "red": 2,
+          "blue": 0,
+          "black": 1,
+          "green": 0,
+          "white": 0
+        }
+      }
+    },
+    {
+      "phase": "noble-progress",
+      "seat": "p2",
+      "move": {
+        "type": "buy",
+        "id": "t1-22",
+        "bonus": "blue",
+        "points": 0
+      }
+    },
+    {
+      "phase": "noble-progress",
+      "seat": "p1",
+      "move": {
+        "type": "buy",
+        "id": "t1-28",
+        "bonus": "green",
+        "points": 0,
+        "cost": {
+          "red": 1,
+          "blue": 1,
+          "black": 2,
+          "green": 0,
+          "white": 1
+        }
+      }
+    },
+    {
+      "phase": "noble-progress",
+      "seat": "p2",
+      "move": {
+        "type": "buy",
+        "id": "t1-16",
+        "bonus": "white",
+        "points": 0
+      }
+    },
+    {
+      "phase": "noble-progress",
+      "seat": "p1",
+      "move": {
+        "type": "buy",
+        "id": "t1-14",
+        "bonus": "red",
+        "points": 0,
+        "cost": {
+          "red": 0,
+          "blue": 0,
+          "black": 0,
+          "green": 0,
+          "white": 3
+        }
+      }
+    }
+  ],
+  "errors": [],
+  "screenshots": [
+    "/workspace/deliverables/game-quality-noble-review-20261012/splendor/03-overlimit-return-plan-ko.png"
+  ],
+  "room": "http://127.0.0.1:5214/room/02feba28-1ccd-4cbd-894f-527389c3d078",
+  "initial": [
+    {
+      "seat": "p1",
+      "version": 2,
+      "connection": "reconnecting",
+      "phase": "action",
+      "roomId": "02feba28-1ccd-4cbd-894f-527389c3d078",
+      "turn": "p1",
+      "hand": {
+        "red": 0,
+        "blue": 0,
+        "gold": 0,
+        "black": 0,
+        "green": 0,
+        "white": 0
+      }
+    },
+    {
+      "seat": "p2",
+      "version": 2,
+      "connection": "reconnecting",
+      "phase": "waiting",
+      "roomId": "02feba28-1ccd-4cbd-894f-527389c3d078",
+      "turn": "p1",
+      "hand": {
+        "red": 0,
+        "blue": 0,
+        "gold": 0,
+        "black": 0,
+        "green": 0,
+        "white": 0
+      }
+    }
+  ],
+  "preOverlimit": {
+    "p1Tokens": {
+      "red": 2,
+      "blue": 2,
+      "gold": 0,
+      "black": 0,
+      "green": 2,
+      "white": 3
+    },
+    "coloredTotal": 9,
+    "p2OpponentReservedCount": 3,
+    "p1PrivateReserved": 0,
+    "p2OwnReserved": 3,
+    "connection": [
+      "reconnecting",
+      "reconnecting"
+    ]
+  },
+  "overlimitPrompt": {
+    "status": "검정 2개 선택 · 반환 1개 · 현재 9 + 획득 2 − 반환 1 = 10/10",
+    "returnControls": "흰색 1\n+\n−\n파랑 0\n+\n−\n초록 0\n+\n−\n빨강 0\n+\n−\n검정 0\n+\n−\n황금 0\n+\n−",
+    "planBox": {
+      "x": 827,
+      "y": 489.484375,
+      "w": 502,
+      "h": 220,
+      "bottom": 709.484375,
+      "scrollHeight": 220,
+      "clientHeight": 220
+    },
+    "viewport": {
+      "w": 1366,
+      "h": 768
+    },
+    "expectedPayload": {
+      "gem": "black",
+      "returnTokens": {
+        "black": 1
+      }
+    }
+  },
+  "afterOverlimit": {
+    "version": [
+      9,
+      9
+    ],
+    "turn": [
+      "p2",
+      "p2"
+    ],
+    "p1Tokens": {
+      "red": 2,
+      "blue": 2,
+      "gold": 0,
+      "black": 2,
+      "green": 2,
+      "white": 2
+    },
+    "total": 10,
+    "p1PrivateReserved": 0,
+    "p2OwnReserved": 3,
+    "p1PublicOpponentReserveCount": 3
+  },
+  "reconnect": {
+    "versions": [
+      9,
+      9
+    ],
+    "connections": [
+      "reconnecting",
+      "reconnecting"
+    ],
+    "privateP1": [],
+    "privateP2": [
+      "t1-10",
+      "t1-17",
+      "t1-08"
+    ],
+    "p1OpponentCount": 3
+  },
+  "nobleGoal": {
+    "id": "n4",
+    "requirement": {
+      "black": 4,
+      "white": 4
+    },
+    "points": 3
+  },
+  "progress": {
+    "turnCount": 40,
+    "view": {
+      "nobles": 3,
+      "points": 1,
+      "tokens": {
+        "red": 0,
+        "blue": 0,
+        "gold": 0,
+        "black": 1,
+        "green": 0,
+        "white": 2
+      },
+      "bonuses": {
+        "red": 4,
+        "blue": 1,
+        "black": 3,
+        "green": 4,
+        "white": 4
+      },
+      "reserved": []
+    },
+    "goalId": "n4"
+  }
+}

@@ -1,0 +1,3001 @@
+{
+  "sourceHead": "0fbfce87a6b7b69fd27479e25fe6f62d71941d29",
+  "game": "minhwatu",
+  "base": "http://127.0.0.1:5212",
+  "authority": "local SQL authority fixture :54331; explicit read refresh, no Realtime",
+  "contexts": 2,
+  "actions": [
+    {
+      "seat": "p1",
+      "type": "play",
+      "from": 2,
+      "to": 3,
+      "phase": "play"
+    },
+    {
+      "seat": "p2",
+      "type": "play",
+      "from": 3,
+      "to": 3,
+      "phase": "play"
+    },
+    {
+      "seat": "p1",
+      "type": "play",
+      "from": 4,
+      "to": 5,
+      "phase": "play"
+    },
+    {
+      "seat": "p2",
+      "type": "play",
+      "from": 5,
+      "to": 5,
+      "phase": "play"
+    },
+    {
+      "seat": "p1",
+      "type": "play",
+      "from": 6,
+      "to": 6,
+      "phase": "play"
+    },
+    {
+      "seat": "p2",
+      "type": "play",
+      "from": 7,
+      "to": 8,
+      "phase": "play"
+    },
+    {
+      "seat": "p1",
+      "type": "play",
+      "from": 8,
+      "to": 8,
+      "phase": "play"
+    },
+    {
+      "seat": "p2",
+      "type": "play",
+      "from": 9,
+      "to": 10,
+      "phase": "play"
+    },
+    {
+      "seat": "p1",
+      "type": "play",
+      "from": 10,
+      "to": 10,
+      "phase": "play"
+    },
+    {
+      "seat": "p2",
+      "type": "play",
+      "from": 11,
+      "to": 11,
+      "phase": "play"
+    },
+    {
+      "seat": "p1",
+      "type": "play",
+      "from": 12,
+      "to": 12,
+      "phase": "play"
+    },
+    {
+      "seat": "p2",
+      "type": "play",
+      "from": 13,
+      "to": 13,
+      "phase": "play"
+    },
+    {
+      "seat": "p1",
+      "type": "play",
+      "from": 14,
+      "to": 14,
+      "phase": "play"
+    },
+    {
+      "seat": "p2",
+      "type": "play",
+      "from": 15,
+      "to": 15,
+      "phase": "play"
+    },
+    {
+      "seat": "p1",
+      "type": "play",
+      "from": 16,
+      "to": 16,
+      "phase": "play"
+    },
+    {
+      "seat": "p2",
+      "type": "play",
+      "from": 17,
+      "to": 17,
+      "phase": "play"
+    },
+    {
+      "seat": "p1",
+      "type": "play",
+      "from": 18,
+      "to": 18,
+      "phase": "play"
+    },
+    {
+      "seat": "p2",
+      "type": "play",
+      "from": 19,
+      "to": 19,
+      "phase": "play"
+    },
+    {
+      "seat": "p1",
+      "type": "play",
+      "from": 20,
+      "to": 20,
+      "phase": "play"
+    },
+    {
+      "seat": "p2",
+      "type": "play",
+      "from": 21,
+      "to": 21,
+      "phase": "play"
+    }
+  ],
+  "requests": [
+    {
+      "p": 1,
+      "origin": "http://127.0.0.1:54331",
+      "path": "/rest/v1/rpc/room_snapshot",
+      "status": 200
+    },
+    {
+      "p": 1,
+      "origin": "http://127.0.0.1:54331",
+      "path": "/rest/v1/rpc/room_snapshot",
+      "status": 200
+    },
+    {
+      "p": 2,
+      "origin": "http://127.0.0.1:54331",
+      "path": "/rest/v1/rpc/room_snapshot",
+      "status": 200
+    },
+    {
+      "p": 1,
+      "origin": "http://127.0.0.1:54331",
+      "path": "/rest/v1/rpc/room_snapshot",
+      "status": 200
+    },
+    {
+      "p": 2,
+      "origin": "http://127.0.0.1:54331",
+      "path": "/rest/v1/rpc/room_snapshot",
+      "status": 200
+    },
+    {
+      "p": 2,
+      "origin": "http://127.0.0.1:54331",
+      "path": "/rest/v1/rpc/room_snapshot",
+      "status": 200
+    },
+    {
+      "p": 1,
+      "origin": "http://127.0.0.1:54331",
+      "path": "/functions/v1/action",
+      "status": 200
+    },
+    {
+      "p": 2,
+      "origin": "http://127.0.0.1:54331",
+      "path": "/rest/v1/rpc/room_snapshot",
+      "status": 200
+    },
+    {
+      "p": 1,
+      "origin": "http://127.0.0.1:54331",
+      "path": "/rest/v1/rpc/room_snapshot",
+      "status": 200
+    },
+    {
+      "p": 2,
+      "origin": "http://127.0.0.1:54331",
+      "path": "/functions/v1/action",
+      "status": 200
+    },
+    {
+      "p": 1,
+      "origin": "http://127.0.0.1:54331",
+      "path": "/rest/v1/rpc/room_snapshot",
+      "status": 200
+    },
+    {
+      "p": 2,
+      "origin": "http://127.0.0.1:54331",
+      "path": "/rest/v1/rpc/room_snapshot",
+      "status": 200
+    },
+    {
+      "p": 2,
+      "origin": "http://127.0.0.1:54331",
+      "path": "/rest/v1/rpc/room_snapshot",
+      "status": 200
+    },
+    {
+      "p": 2,
+      "origin": "http://127.0.0.1:54331",
+      "path": "/rest/v1/rpc/room_snapshot",
+      "status": 200
+    },
+    {
+      "p": 1,
+      "origin": "http://127.0.0.1:54331",
+      "path": "/rest/v1/rpc/room_snapshot",
+      "status": 200
+    },
+    {
+      "p": 1,
+      "origin": "http://127.0.0.1:54331",
+      "path": "/rest/v1/rpc/room_snapshot",
+      "status": 200
+    },
+    {
+      "p": 2,
+      "origin": "http://127.0.0.1:54331",
+      "path": "/rest/v1/rpc/room_snapshot",
+      "status": 200
+    },
+    {
+      "p": 1,
+      "origin": "http://127.0.0.1:54331",
+      "path": "/functions/v1/action",
+      "status": 200
+    },
+    {
+      "p": 1,
+      "origin": "http://127.0.0.1:54331",
+      "path": "/rest/v1/rpc/room_snapshot",
+      "status": 200
+    },
+    {
+      "p": 1,
+      "origin": "http://127.0.0.1:54331",
+      "path": "/rest/v1/rpc/room_snapshot",
+      "status": 200
+    },
+    {
+      "p": 2,
+      "origin": "http://127.0.0.1:54331",
+      "path": "/rest/v1/rpc/room_snapshot",
+      "status": 200
+    },
+    {
+      "p": 1,
+      "origin": "http://127.0.0.1:54331",
+      "path": "/rest/v1/rpc/room_snapshot",
+      "status": 200
+    },
+    {
+      "p": 2,
+      "origin": "http://127.0.0.1:54331",
+      "path": "/functions/v1/action",
+      "status": 200
+    },
+    {
+      "p": 2,
+      "origin": "http://127.0.0.1:54331",
+      "path": "/rest/v1/rpc/room_snapshot",
+      "status": 200
+    },
+    {
+      "p": 2,
+      "origin": "http://127.0.0.1:54331",
+      "path": "/rest/v1/rpc/room_snapshot",
+      "status": 200
+    },
+    {
+      "p": 1,
+      "origin": "http://127.0.0.1:54331",
+      "path": "/rest/v1/rpc/room_snapshot",
+      "status": 200
+    },
+    {
+      "p": 2,
+      "origin": "http://127.0.0.1:54331",
+      "path": "/rest/v1/rpc/room_snapshot",
+      "status": 200
+    },
+    {
+      "p": 1,
+      "origin": "http://127.0.0.1:54331",
+      "path": "/functions/v1/action",
+      "status": 200
+    },
+    {
+      "p": 1,
+      "origin": "http://127.0.0.1:54331",
+      "path": "/rest/v1/rpc/room_snapshot",
+      "status": 200
+    },
+    {
+      "p": 1,
+      "origin": "http://127.0.0.1:54331",
+      "path": "/rest/v1/rpc/room_snapshot",
+      "status": 200
+    },
+    {
+      "p": 2,
+      "origin": "http://127.0.0.1:54331",
+      "path": "/rest/v1/rpc/room_snapshot",
+      "status": 200
+    },
+    {
+      "p": 1,
+      "origin": "http://127.0.0.1:54331",
+      "path": "/rest/v1/rpc/room_snapshot",
+      "status": 200
+    },
+    {
+      "p": 2,
+      "origin": "http://127.0.0.1:54331",
+      "path": "/functions/v1/action",
+      "status": 200
+    },
+    {
+      "p": 2,
+      "origin": "http://127.0.0.1:54331",
+      "path": "/rest/v1/rpc/room_snapshot",
+      "status": 200
+    },
+    {
+      "p": 2,
+      "origin": "http://127.0.0.1:54331",
+      "path": "/rest/v1/rpc/room_snapshot",
+      "status": 200
+    },
+    {
+      "p": 1,
+      "origin": "http://127.0.0.1:54331",
+      "path": "/rest/v1/rpc/room_snapshot",
+      "status": 200
+    },
+    {
+      "p": 2,
+      "origin": "http://127.0.0.1:54331",
+      "path": "/rest/v1/rpc/room_snapshot",
+      "status": 200
+    },
+    {
+      "p": 1,
+      "origin": "http://127.0.0.1:54331",
+      "path": "/functions/v1/action",
+      "status": 200
+    },
+    {
+      "p": 1,
+      "origin": "http://127.0.0.1:54331",
+      "path": "/rest/v1/rpc/room_snapshot",
+      "status": 200
+    },
+    {
+      "p": 1,
+      "origin": "http://127.0.0.1:54331",
+      "path": "/rest/v1/rpc/room_snapshot",
+      "status": 200
+    },
+    {
+      "p": 2,
+      "origin": "http://127.0.0.1:54331",
+      "path": "/rest/v1/rpc/room_snapshot",
+      "status": 200
+    },
+    {
+      "p": 1,
+      "origin": "http://127.0.0.1:54331",
+      "path": "/rest/v1/rpc/room_snapshot",
+      "status": 200
+    },
+    {
+      "p": 2,
+      "origin": "http://127.0.0.1:54331",
+      "path": "/functions/v1/action",
+      "status": 200
+    },
+    {
+      "p": 2,
+      "origin": "http://127.0.0.1:54331",
+      "path": "/rest/v1/rpc/room_snapshot",
+      "status": 200
+    },
+    {
+      "p": 2,
+      "origin": "http://127.0.0.1:54331",
+      "path": "/rest/v1/rpc/room_snapshot",
+      "status": 200
+    },
+    {
+      "p": 1,
+      "origin": "http://127.0.0.1:54331",
+      "path": "/rest/v1/rpc/room_snapshot",
+      "status": 200
+    },
+    {
+      "p": 2,
+      "origin": "http://127.0.0.1:54331",
+      "path": "/rest/v1/rpc/room_snapshot",
+      "status": 200
+    },
+    {
+      "p": 1,
+      "origin": "http://127.0.0.1:54331",
+      "path": "/functions/v1/action",
+      "status": 200
+    },
+    {
+      "p": 1,
+      "origin": "http://127.0.0.1:54331",
+      "path": "/rest/v1/rpc/room_snapshot",
+      "status": 200
+    },
+    {
+      "p": 1,
+      "origin": "http://127.0.0.1:54331",
+      "path": "/rest/v1/rpc/room_snapshot",
+      "status": 200
+    },
+    {
+      "p": 2,
+      "origin": "http://127.0.0.1:54331",
+      "path": "/rest/v1/rpc/room_snapshot",
+      "status": 200
+    },
+    {
+      "p": 1,
+      "origin": "http://127.0.0.1:54331",
+      "path": "/rest/v1/rpc/room_snapshot",
+      "status": 200
+    },
+    {
+      "p": 2,
+      "origin": "http://127.0.0.1:54331",
+      "path": "/functions/v1/action",
+      "status": 200
+    },
+    {
+      "p": 2,
+      "origin": "http://127.0.0.1:54331",
+      "path": "/rest/v1/rpc/room_snapshot",
+      "status": 200
+    },
+    {
+      "p": 2,
+      "origin": "http://127.0.0.1:54331",
+      "path": "/rest/v1/rpc/room_snapshot",
+      "status": 200
+    },
+    {
+      "p": 1,
+      "origin": "http://127.0.0.1:54331",
+      "path": "/rest/v1/rpc/room_snapshot",
+      "status": 200
+    },
+    {
+      "p": 2,
+      "origin": "http://127.0.0.1:54331",
+      "path": "/rest/v1/rpc/room_snapshot",
+      "status": 200
+    },
+    {
+      "p": 2,
+      "origin": "http://127.0.0.1:54331",
+      "path": "/rest/v1/rpc/room_snapshot",
+      "status": 200
+    },
+    {
+      "p": 2,
+      "origin": "http://127.0.0.1:54331",
+      "path": "/rest/v1/rpc/room_snapshot",
+      "status": 200
+    },
+    {
+      "p": 2,
+      "origin": "http://127.0.0.1:54331",
+      "path": "/rest/v1/rpc/room_snapshot",
+      "status": 200
+    },
+    {
+      "p": 1,
+      "origin": "http://127.0.0.1:54331",
+      "path": "/rest/v1/rpc/room_snapshot",
+      "status": 200
+    },
+    {
+      "p": 2,
+      "origin": "http://127.0.0.1:54331",
+      "path": "/rest/v1/rpc/room_snapshot",
+      "status": 200
+    },
+    {
+      "p": 1,
+      "origin": "http://127.0.0.1:54331",
+      "path": "/rest/v1/rpc/room_snapshot",
+      "status": 200
+    },
+    {
+      "p": 2,
+      "origin": "http://127.0.0.1:54331",
+      "path": "/rest/v1/rpc/room_snapshot",
+      "status": 200
+    },
+    {
+      "p": 1,
+      "origin": "http://127.0.0.1:54331",
+      "path": "/rest/v1/rpc/room_snapshot",
+      "status": 200
+    },
+    {
+      "p": 1,
+      "origin": "http://127.0.0.1:54331",
+      "path": "/functions/v1/action",
+      "status": 200
+    },
+    {
+      "p": 1,
+      "origin": "http://127.0.0.1:54331",
+      "path": "/rest/v1/rpc/room_snapshot",
+      "status": 200
+    },
+    {
+      "p": 1,
+      "origin": "http://127.0.0.1:54331",
+      "path": "/rest/v1/rpc/room_snapshot",
+      "status": 200
+    },
+    {
+      "p": 2,
+      "origin": "http://127.0.0.1:54331",
+      "path": "/rest/v1/rpc/room_snapshot",
+      "status": 200
+    },
+    {
+      "p": 1,
+      "origin": "http://127.0.0.1:54331",
+      "path": "/rest/v1/rpc/room_snapshot",
+      "status": 200
+    },
+    {
+      "p": 2,
+      "origin": "http://127.0.0.1:54331",
+      "path": "/functions/v1/action",
+      "status": 200
+    },
+    {
+      "p": 2,
+      "origin": "http://127.0.0.1:54331",
+      "path": "/rest/v1/rpc/room_snapshot",
+      "status": 200
+    },
+    {
+      "p": 2,
+      "origin": "http://127.0.0.1:54331",
+      "path": "/rest/v1/rpc/room_snapshot",
+      "status": 200
+    },
+    {
+      "p": 1,
+      "origin": "http://127.0.0.1:54331",
+      "path": "/rest/v1/rpc/room_snapshot",
+      "status": 200
+    },
+    {
+      "p": 2,
+      "origin": "http://127.0.0.1:54331",
+      "path": "/rest/v1/rpc/room_snapshot",
+      "status": 200
+    },
+    {
+      "p": 1,
+      "origin": "http://127.0.0.1:54331",
+      "path": "/functions/v1/action",
+      "status": 200
+    },
+    {
+      "p": 1,
+      "origin": "http://127.0.0.1:54331",
+      "path": "/rest/v1/rpc/room_snapshot",
+      "status": 200
+    },
+    {
+      "p": 1,
+      "origin": "http://127.0.0.1:54331",
+      "path": "/rest/v1/rpc/room_snapshot",
+      "status": 200
+    },
+    {
+      "p": 2,
+      "origin": "http://127.0.0.1:54331",
+      "path": "/rest/v1/rpc/room_snapshot",
+      "status": 200
+    },
+    {
+      "p": 1,
+      "origin": "http://127.0.0.1:54331",
+      "path": "/rest/v1/rpc/room_snapshot",
+      "status": 200
+    },
+    {
+      "p": 2,
+      "origin": "http://127.0.0.1:54331",
+      "path": "/functions/v1/action",
+      "status": 200
+    },
+    {
+      "p": 2,
+      "origin": "http://127.0.0.1:54331",
+      "path": "/rest/v1/rpc/room_snapshot",
+      "status": 200
+    },
+    {
+      "p": 2,
+      "origin": "http://127.0.0.1:54331",
+      "path": "/rest/v1/rpc/room_snapshot",
+      "status": 200
+    },
+    {
+      "p": 1,
+      "origin": "http://127.0.0.1:54331",
+      "path": "/rest/v1/rpc/room_snapshot",
+      "status": 200
+    },
+    {
+      "p": 2,
+      "origin": "http://127.0.0.1:54331",
+      "path": "/rest/v1/rpc/room_snapshot",
+      "status": 200
+    },
+    {
+      "p": 1,
+      "origin": "http://127.0.0.1:54331",
+      "path": "/functions/v1/action",
+      "status": 200
+    },
+    {
+      "p": 1,
+      "origin": "http://127.0.0.1:54331",
+      "path": "/rest/v1/rpc/room_snapshot",
+      "status": 200
+    },
+    {
+      "p": 1,
+      "origin": "http://127.0.0.1:54331",
+      "path": "/rest/v1/rpc/room_snapshot",
+      "status": 200
+    },
+    {
+      "p": 2,
+      "origin": "http://127.0.0.1:54331",
+      "path": "/rest/v1/rpc/room_snapshot",
+      "status": 200
+    },
+    {
+      "p": 1,
+      "origin": "http://127.0.0.1:54331",
+      "path": "/rest/v1/rpc/room_snapshot",
+      "status": 200
+    },
+    {
+      "p": 2,
+      "origin": "http://127.0.0.1:54331",
+      "path": "/functions/v1/action",
+      "status": 200
+    },
+    {
+      "p": 2,
+      "origin": "http://127.0.0.1:54331",
+      "path": "/rest/v1/rpc/room_snapshot",
+      "status": 200
+    },
+    {
+      "p": 2,
+      "origin": "http://127.0.0.1:54331",
+      "path": "/rest/v1/rpc/room_snapshot",
+      "status": 200
+    },
+    {
+      "p": 1,
+      "origin": "http://127.0.0.1:54331",
+      "path": "/rest/v1/rpc/room_snapshot",
+      "status": 200
+    },
+    {
+      "p": 2,
+      "origin": "http://127.0.0.1:54331",
+      "path": "/rest/v1/rpc/room_snapshot",
+      "status": 200
+    },
+    {
+      "p": 1,
+      "origin": "http://127.0.0.1:54331",
+      "path": "/functions/v1/action",
+      "status": 200
+    },
+    {
+      "p": 1,
+      "origin": "http://127.0.0.1:54331",
+      "path": "/rest/v1/rpc/room_snapshot",
+      "status": 200
+    },
+    {
+      "p": 1,
+      "origin": "http://127.0.0.1:54331",
+      "path": "/rest/v1/rpc/room_snapshot",
+      "status": 200
+    },
+    {
+      "p": 2,
+      "origin": "http://127.0.0.1:54331",
+      "path": "/rest/v1/rpc/room_snapshot",
+      "status": 200
+    },
+    {
+      "p": 1,
+      "origin": "http://127.0.0.1:54331",
+      "path": "/rest/v1/rpc/room_snapshot",
+      "status": 200
+    },
+    {
+      "p": 2,
+      "origin": "http://127.0.0.1:54331",
+      "path": "/functions/v1/action",
+      "status": 200
+    },
+    {
+      "p": 2,
+      "origin": "http://127.0.0.1:54331",
+      "path": "/rest/v1/rpc/room_snapshot",
+      "status": 200
+    },
+    {
+      "p": 2,
+      "origin": "http://127.0.0.1:54331",
+      "path": "/rest/v1/rpc/room_snapshot",
+      "status": 200
+    },
+    {
+      "p": 1,
+      "origin": "http://127.0.0.1:54331",
+      "path": "/rest/v1/rpc/room_snapshot",
+      "status": 200
+    },
+    {
+      "p": 2,
+      "origin": "http://127.0.0.1:54331",
+      "path": "/rest/v1/rpc/room_snapshot",
+      "status": 200
+    },
+    {
+      "p": 1,
+      "origin": "http://127.0.0.1:54331",
+      "path": "/rest/v1/rpc/room_snapshot",
+      "status": 200
+    },
+    {
+      "p": 2,
+      "origin": "http://127.0.0.1:54331",
+      "path": "/rest/v1/rpc/room_snapshot",
+      "status": 200
+    },
+    {
+      "p": 1,
+      "origin": "http://127.0.0.1:54331",
+      "path": "/functions/v1/action",
+      "status": 200
+    },
+    {
+      "p": 1,
+      "origin": "http://127.0.0.1:54331",
+      "path": "/rest/v1/rpc/room_snapshot",
+      "status": 200
+    },
+    {
+      "p": 1,
+      "origin": "http://127.0.0.1:54331",
+      "path": "/rest/v1/rpc/room_snapshot",
+      "status": 200
+    },
+    {
+      "p": 2,
+      "origin": "http://127.0.0.1:54331",
+      "path": "/rest/v1/rpc/room_snapshot",
+      "status": 200
+    },
+    {
+      "p": 1,
+      "origin": "http://127.0.0.1:54331",
+      "path": "/rest/v1/rpc/room_snapshot",
+      "status": 200
+    },
+    {
+      "p": 2,
+      "origin": "http://127.0.0.1:54331",
+      "path": "/functions/v1/action",
+      "status": 200
+    },
+    {
+      "p": 2,
+      "origin": "http://127.0.0.1:54331",
+      "path": "/rest/v1/rpc/room_snapshot",
+      "status": 200
+    },
+    {
+      "p": 2,
+      "origin": "http://127.0.0.1:54331",
+      "path": "/rest/v1/rpc/room_snapshot",
+      "status": 200
+    },
+    {
+      "p": 1,
+      "origin": "http://127.0.0.1:54331",
+      "path": "/rest/v1/rpc/room_snapshot",
+      "status": 200
+    },
+    {
+      "p": 2,
+      "origin": "http://127.0.0.1:54331",
+      "path": "/rest/v1/rpc/room_snapshot",
+      "status": 200
+    },
+    {
+      "p": 1,
+      "origin": "http://127.0.0.1:54331",
+      "path": "/functions/v1/action",
+      "status": 200
+    },
+    {
+      "p": 1,
+      "origin": "http://127.0.0.1:54331",
+      "path": "/rest/v1/rpc/room_snapshot",
+      "status": 200
+    },
+    {
+      "p": 1,
+      "origin": "http://127.0.0.1:54331",
+      "path": "/rest/v1/rpc/room_snapshot",
+      "status": 200
+    },
+    {
+      "p": 2,
+      "origin": "http://127.0.0.1:54331",
+      "path": "/rest/v1/rpc/room_snapshot",
+      "status": 200
+    },
+    {
+      "p": 1,
+      "origin": "http://127.0.0.1:54331",
+      "path": "/rest/v1/rpc/room_snapshot",
+      "status": 200
+    },
+    {
+      "p": 2,
+      "origin": "http://127.0.0.1:54331",
+      "path": "/functions/v1/action",
+      "status": 200
+    },
+    {
+      "p": 2,
+      "origin": "http://127.0.0.1:54331",
+      "path": "/rest/v1/rpc/room_snapshot",
+      "status": 200
+    },
+    {
+      "p": 2,
+      "origin": "http://127.0.0.1:54331",
+      "path": "/rest/v1/rpc/room_snapshot",
+      "status": 200
+    },
+    {
+      "p": 1,
+      "origin": "http://127.0.0.1:54331",
+      "path": "/rest/v1/rpc/room_snapshot",
+      "status": 200
+    },
+    {
+      "p": 2,
+      "origin": "http://127.0.0.1:54331",
+      "path": "/rest/v1/rpc/room_snapshot",
+      "status": 200
+    },
+    {
+      "p": 1,
+      "origin": "http://127.0.0.1:54331",
+      "path": "/rest/v1/rpc/room_snapshot",
+      "status": 200
+    },
+    {
+      "p": 2,
+      "origin": "http://127.0.0.1:54331",
+      "path": "/rest/v1/rpc/room_snapshot",
+      "status": 200
+    },
+    {
+      "p": 1,
+      "origin": "http://127.0.0.1:54331",
+      "path": "/functions/v1/action",
+      "status": 200
+    },
+    {
+      "p": 2,
+      "origin": "http://127.0.0.1:54331",
+      "path": "/rest/v1/rpc/room_snapshot",
+      "status": 200
+    },
+    {
+      "p": 1,
+      "origin": "http://127.0.0.1:54331",
+      "path": "/rest/v1/rpc/room_snapshot",
+      "status": 200
+    },
+    {
+      "p": 1,
+      "origin": "http://127.0.0.1:54331",
+      "path": "/rest/v1/rpc/room_snapshot",
+      "status": 200
+    },
+    {
+      "p": 2,
+      "origin": "http://127.0.0.1:54331",
+      "path": "/functions/v1/action",
+      "status": 200
+    },
+    {
+      "p": 1,
+      "origin": "http://127.0.0.1:54331",
+      "path": "/rest/v1/rpc/room_snapshot",
+      "status": 200
+    },
+    {
+      "p": 2,
+      "origin": "http://127.0.0.1:54331",
+      "path": "/rest/v1/rpc/room_snapshot",
+      "status": 200
+    },
+    {
+      "p": 2,
+      "origin": "http://127.0.0.1:54331",
+      "path": "/rest/v1/rpc/room_snapshot",
+      "status": 200
+    }
+  ],
+  "errors": [],
+  "initial": [
+    {
+      "playerId": "p1",
+      "version": 2,
+      "phase": "play",
+      "turn": "p1",
+      "handCount": 10,
+      "deckCount": 20,
+      "tableCount": 8
+    },
+    {
+      "playerId": "p2",
+      "version": 2,
+      "phase": "play",
+      "turn": "p1",
+      "handCount": 10,
+      "deckCount": 20,
+      "tableCount": 8
+    }
+  ],
+  "reload": {
+    "before": [
+      {
+        "playerId": "p1",
+        "version": 10,
+        "phase": "play",
+        "turn": "p1"
+      },
+      {
+        "playerId": "p2",
+        "version": 10,
+        "phase": "play",
+        "turn": "p1"
+      }
+    ],
+    "after": [
+      {
+        "playerId": "p1",
+        "version": 10,
+        "phase": "play",
+        "turn": "p1"
+      },
+      {
+        "playerId": "p2",
+        "version": 10,
+        "phase": "play",
+        "turn": "p1"
+      }
+    ],
+    "pageReload": true,
+    "versionsAgree": true,
+    "samePublicBoard": true,
+    "seatsPreserved": true
+  },
+  "terminal": [
+    {
+      "playerId": "p1",
+      "version": 22,
+      "phase": "finished",
+      "turn": "p1",
+      "result": {
+        "reason": "Higher Minhwatu score / mayor puntuación",
+        "scores": {
+          "p1": 125,
+          "p2": 245
+        },
+        "winner": "p2"
+      },
+      "handCount": 0,
+      "deckCount": 0,
+      "scores": {
+        "p1": 125,
+        "p2": 245
+      },
+      "breakdown": {
+        "p1": {
+          "yakus": [
+            {
+              "id": "hongdan",
+              "have": 3,
+              "need": 3,
+              "bonus": 30,
+              "label": {
+                "es": "Hongdan",
+                "ko": "홍단"
+              },
+              "cardIds": [
+                "1-2",
+                "2-2",
+                "3-2"
+              ],
+              "complete": true
+            },
+            {
+              "id": "cheongdan",
+              "have": 1,
+              "need": 3,
+              "bonus": 30,
+              "label": {
+                "es": "Cheongdan",
+                "ko": "청단"
+              },
+              "cardIds": [
+                "6-2",
+                "9-2",
+                "10-2"
+              ],
+              "complete": false
+            },
+            {
+              "id": "chodan",
+              "have": 1,
+              "need": 3,
+              "bonus": 30,
+              "label": {
+                "es": "Chodan",
+                "ko": "초단"
+              },
+              "cardIds": [
+                "4-2",
+                "5-2",
+                "7-2"
+              ],
+              "complete": false
+            },
+            {
+              "id": "godori",
+              "have": 1,
+              "need": 3,
+              "bonus": 50,
+              "label": {
+                "es": "Godori",
+                "ko": "고도리"
+              },
+              "cardIds": [
+                "2-1",
+                "4-1",
+                "8-2"
+              ],
+              "complete": false
+            },
+            {
+              "id": "month-11",
+              "have": 0,
+              "need": 4,
+              "bonus": 40,
+              "label": {
+                "es": "Mes 11 completo",
+                "ko": "11월 완성"
+              },
+              "cardIds": [
+                "11-1",
+                "11-2",
+                "11-3",
+                "11-4"
+              ],
+              "complete": false
+            },
+            {
+              "id": "month-5",
+              "have": 4,
+              "need": 4,
+              "bonus": 20,
+              "label": {
+                "es": "Mes 5 completo",
+                "ko": "5월 완성"
+              },
+              "cardIds": [
+                "5-1",
+                "5-2",
+                "5-3",
+                "5-4"
+              ],
+              "complete": true
+            },
+            {
+              "id": "month-10",
+              "have": 0,
+              "need": 4,
+              "bonus": 20,
+              "label": {
+                "es": "Mes 10 completo",
+                "ko": "10월 완성"
+              },
+              "cardIds": [
+                "10-1",
+                "10-2",
+                "10-3",
+                "10-4"
+              ],
+              "complete": false
+            },
+            {
+              "id": "month-12",
+              "have": 0,
+              "need": 4,
+              "bonus": 20,
+              "label": {
+                "es": "Mes 12 completo",
+                "ko": "12월 완성"
+              },
+              "cardIds": [
+                "12-1",
+                "12-2",
+                "12-3",
+                "12-4"
+              ],
+              "complete": false
+            }
+          ],
+          "counts": {
+            "plain": 13,
+            "animal": 4,
+            "bright": 2,
+            "ribbon": 5
+          },
+          "basePoints": 105,
+          "finalScore": 125,
+          "ownYakuPoints": 50,
+          "opponentYakuPoints": 80
+        },
+        "p2": {
+          "yakus": [
+            {
+              "id": "hongdan",
+              "have": 0,
+              "need": 3,
+              "bonus": 30,
+              "label": {
+                "es": "Hongdan",
+                "ko": "홍단"
+              },
+              "cardIds": [
+                "1-2",
+                "2-2",
+                "3-2"
+              ],
+              "complete": false
+            },
+            {
+              "id": "cheongdan",
+              "have": 2,
+              "need": 3,
+              "bonus": 30,
+              "label": {
+                "es": "Cheongdan",
+                "ko": "청단"
+              },
+              "cardIds": [
+                "6-2",
+                "9-2",
+                "10-2"
+              ],
+              "complete": false
+            },
+            {
+              "id": "chodan",
+              "have": 2,
+              "need": 3,
+              "bonus": 30,
+              "label": {
+                "es": "Chodan",
+                "ko": "초단"
+              },
+              "cardIds": [
+                "4-2",
+                "5-2",
+                "7-2"
+              ],
+              "complete": false
+            },
+            {
+              "id": "godori",
+              "have": 2,
+              "need": 3,
+              "bonus": 50,
+              "label": {
+                "es": "Godori",
+                "ko": "고도리"
+              },
+              "cardIds": [
+                "2-1",
+                "4-1",
+                "8-2"
+              ],
+              "complete": false
+            },
+            {
+              "id": "month-11",
+              "have": 4,
+              "need": 4,
+              "bonus": 40,
+              "label": {
+                "es": "Mes 11 completo",
+                "ko": "11월 완성"
+              },
+              "cardIds": [
+                "11-1",
+                "11-2",
+                "11-3",
+                "11-4"
+              ],
+              "complete": true
+            },
+            {
+              "id": "month-5",
+              "have": 0,
+              "need": 4,
+              "bonus": 20,
+              "label": {
+                "es": "Mes 5 completo",
+                "ko": "5월 완성"
+              },
+              "cardIds": [
+                "5-1",
+                "5-2",
+                "5-3",
+                "5-4"
+              ],
+              "complete": false
+            },
+            {
+              "id": "month-10",
+              "have": 4,
+              "need": 4,
+              "bonus": 20,
+              "label": {
+                "es": "Mes 10 completo",
+                "ko": "10월 완성"
+              },
+              "cardIds": [
+                "10-1",
+                "10-2",
+                "10-3",
+                "10-4"
+              ],
+              "complete": true
+            },
+            {
+              "id": "month-12",
+              "have": 4,
+              "need": 4,
+              "bonus": 20,
+              "label": {
+                "es": "Mes 12 completo",
+                "ko": "12월 완성"
+              },
+              "cardIds": [
+                "12-1",
+                "12-2",
+                "12-3",
+                "12-4"
+              ],
+              "complete": true
+            }
+          ],
+          "counts": {
+            "plain": 11,
+            "animal": 5,
+            "bright": 3,
+            "ribbon": 5
+          },
+          "basePoints": 135,
+          "finalScore": 245,
+          "ownYakuPoints": 80,
+          "opponentYakuPoints": 50
+        }
+      }
+    },
+    {
+      "playerId": "p2",
+      "version": 22,
+      "phase": "finished",
+      "turn": "p1",
+      "result": {
+        "reason": "Higher Minhwatu score / mayor puntuación",
+        "scores": {
+          "p1": 125,
+          "p2": 245
+        },
+        "winner": "p2"
+      },
+      "handCount": 0,
+      "deckCount": 0,
+      "scores": {
+        "p1": 125,
+        "p2": 245
+      },
+      "breakdown": {
+        "p1": {
+          "yakus": [
+            {
+              "id": "hongdan",
+              "have": 3,
+              "need": 3,
+              "bonus": 30,
+              "label": {
+                "es": "Hongdan",
+                "ko": "홍단"
+              },
+              "cardIds": [
+                "1-2",
+                "2-2",
+                "3-2"
+              ],
+              "complete": true
+            },
+            {
+              "id": "cheongdan",
+              "have": 1,
+              "need": 3,
+              "bonus": 30,
+              "label": {
+                "es": "Cheongdan",
+                "ko": "청단"
+              },
+              "cardIds": [
+                "6-2",
+                "9-2",
+                "10-2"
+              ],
+              "complete": false
+            },
+            {
+              "id": "chodan",
+              "have": 1,
+              "need": 3,
+              "bonus": 30,
+              "label": {
+                "es": "Chodan",
+                "ko": "초단"
+              },
+              "cardIds": [
+                "4-2",
+                "5-2",
+                "7-2"
+              ],
+              "complete": false
+            },
+            {
+              "id": "godori",
+              "have": 1,
+              "need": 3,
+              "bonus": 50,
+              "label": {
+                "es": "Godori",
+                "ko": "고도리"
+              },
+              "cardIds": [
+                "2-1",
+                "4-1",
+                "8-2"
+              ],
+              "complete": false
+            },
+            {
+              "id": "month-11",
+              "have": 0,
+              "need": 4,
+              "bonus": 40,
+              "label": {
+                "es": "Mes 11 completo",
+                "ko": "11월 완성"
+              },
+              "cardIds": [
+                "11-1",
+                "11-2",
+                "11-3",
+                "11-4"
+              ],
+              "complete": false
+            },
+            {
+              "id": "month-5",
+              "have": 4,
+              "need": 4,
+              "bonus": 20,
+              "label": {
+                "es": "Mes 5 completo",
+                "ko": "5월 완성"
+              },
+              "cardIds": [
+                "5-1",
+                "5-2",
+                "5-3",
+                "5-4"
+              ],
+              "complete": true
+            },
+            {
+              "id": "month-10",
+              "have": 0,
+              "need": 4,
+              "bonus": 20,
+              "label": {
+                "es": "Mes 10 completo",
+                "ko": "10월 완성"
+              },
+              "cardIds": [
+                "10-1",
+                "10-2",
+                "10-3",
+                "10-4"
+              ],
+              "complete": false
+            },
+            {
+              "id": "month-12",
+              "have": 0,
+              "need": 4,
+              "bonus": 20,
+              "label": {
+                "es": "Mes 12 completo",
+                "ko": "12월 완성"
+              },
+              "cardIds": [
+                "12-1",
+                "12-2",
+                "12-3",
+                "12-4"
+              ],
+              "complete": false
+            }
+          ],
+          "counts": {
+            "plain": 13,
+            "animal": 4,
+            "bright": 2,
+            "ribbon": 5
+          },
+          "basePoints": 105,
+          "finalScore": 125,
+          "ownYakuPoints": 50,
+          "opponentYakuPoints": 80
+        },
+        "p2": {
+          "yakus": [
+            {
+              "id": "hongdan",
+              "have": 0,
+              "need": 3,
+              "bonus": 30,
+              "label": {
+                "es": "Hongdan",
+                "ko": "홍단"
+              },
+              "cardIds": [
+                "1-2",
+                "2-2",
+                "3-2"
+              ],
+              "complete": false
+            },
+            {
+              "id": "cheongdan",
+              "have": 2,
+              "need": 3,
+              "bonus": 30,
+              "label": {
+                "es": "Cheongdan",
+                "ko": "청단"
+              },
+              "cardIds": [
+                "6-2",
+                "9-2",
+                "10-2"
+              ],
+              "complete": false
+            },
+            {
+              "id": "chodan",
+              "have": 2,
+              "need": 3,
+              "bonus": 30,
+              "label": {
+                "es": "Chodan",
+                "ko": "초단"
+              },
+              "cardIds": [
+                "4-2",
+                "5-2",
+                "7-2"
+              ],
+              "complete": false
+            },
+            {
+              "id": "godori",
+              "have": 2,
+              "need": 3,
+              "bonus": 50,
+              "label": {
+                "es": "Godori",
+                "ko": "고도리"
+              },
+              "cardIds": [
+                "2-1",
+                "4-1",
+                "8-2"
+              ],
+              "complete": false
+            },
+            {
+              "id": "month-11",
+              "have": 4,
+              "need": 4,
+              "bonus": 40,
+              "label": {
+                "es": "Mes 11 completo",
+                "ko": "11월 완성"
+              },
+              "cardIds": [
+                "11-1",
+                "11-2",
+                "11-3",
+                "11-4"
+              ],
+              "complete": true
+            },
+            {
+              "id": "month-5",
+              "have": 0,
+              "need": 4,
+              "bonus": 20,
+              "label": {
+                "es": "Mes 5 completo",
+                "ko": "5월 완성"
+              },
+              "cardIds": [
+                "5-1",
+                "5-2",
+                "5-3",
+                "5-4"
+              ],
+              "complete": false
+            },
+            {
+              "id": "month-10",
+              "have": 4,
+              "need": 4,
+              "bonus": 20,
+              "label": {
+                "es": "Mes 10 completo",
+                "ko": "10월 완성"
+              },
+              "cardIds": [
+                "10-1",
+                "10-2",
+                "10-3",
+                "10-4"
+              ],
+              "complete": true
+            },
+            {
+              "id": "month-12",
+              "have": 4,
+              "need": 4,
+              "bonus": 20,
+              "label": {
+                "es": "Mes 12 completo",
+                "ko": "12월 완성"
+              },
+              "cardIds": [
+                "12-1",
+                "12-2",
+                "12-3",
+                "12-4"
+              ],
+              "complete": true
+            }
+          ],
+          "counts": {
+            "plain": 11,
+            "animal": 5,
+            "bright": 3,
+            "ribbon": 5
+          },
+          "basePoints": 135,
+          "finalScore": 245,
+          "ownYakuPoints": 80,
+          "opponentYakuPoints": 50
+        }
+      }
+    }
+  ],
+  "final": [
+    {
+      "playerId": "p1",
+      "version": 22,
+      "phase": "finished",
+      "turn": "p1",
+      "result": {
+        "reason": "Higher Minhwatu score / mayor puntuación",
+        "scores": {
+          "p1": 125,
+          "p2": 245
+        },
+        "winner": "p2"
+      },
+      "handCount": 0,
+      "deckCount": 0,
+      "scores": {
+        "p1": 125,
+        "p2": 245
+      },
+      "breakdown": {
+        "p1": {
+          "yakus": [
+            {
+              "id": "hongdan",
+              "have": 3,
+              "need": 3,
+              "bonus": 30,
+              "label": {
+                "es": "Hongdan",
+                "ko": "홍단"
+              },
+              "cardIds": [
+                "1-2",
+                "2-2",
+                "3-2"
+              ],
+              "complete": true
+            },
+            {
+              "id": "cheongdan",
+              "have": 1,
+              "need": 3,
+              "bonus": 30,
+              "label": {
+                "es": "Cheongdan",
+                "ko": "청단"
+              },
+              "cardIds": [
+                "6-2",
+                "9-2",
+                "10-2"
+              ],
+              "complete": false
+            },
+            {
+              "id": "chodan",
+              "have": 1,
+              "need": 3,
+              "bonus": 30,
+              "label": {
+                "es": "Chodan",
+                "ko": "초단"
+              },
+              "cardIds": [
+                "4-2",
+                "5-2",
+                "7-2"
+              ],
+              "complete": false
+            },
+            {
+              "id": "godori",
+              "have": 1,
+              "need": 3,
+              "bonus": 50,
+              "label": {
+                "es": "Godori",
+                "ko": "고도리"
+              },
+              "cardIds": [
+                "2-1",
+                "4-1",
+                "8-2"
+              ],
+              "complete": false
+            },
+            {
+              "id": "month-11",
+              "have": 0,
+              "need": 4,
+              "bonus": 40,
+              "label": {
+                "es": "Mes 11 completo",
+                "ko": "11월 완성"
+              },
+              "cardIds": [
+                "11-1",
+                "11-2",
+                "11-3",
+                "11-4"
+              ],
+              "complete": false
+            },
+            {
+              "id": "month-5",
+              "have": 4,
+              "need": 4,
+              "bonus": 20,
+              "label": {
+                "es": "Mes 5 completo",
+                "ko": "5월 완성"
+              },
+              "cardIds": [
+                "5-1",
+                "5-2",
+                "5-3",
+                "5-4"
+              ],
+              "complete": true
+            },
+            {
+              "id": "month-10",
+              "have": 0,
+              "need": 4,
+              "bonus": 20,
+              "label": {
+                "es": "Mes 10 completo",
+                "ko": "10월 완성"
+              },
+              "cardIds": [
+                "10-1",
+                "10-2",
+                "10-3",
+                "10-4"
+              ],
+              "complete": false
+            },
+            {
+              "id": "month-12",
+              "have": 0,
+              "need": 4,
+              "bonus": 20,
+              "label": {
+                "es": "Mes 12 completo",
+                "ko": "12월 완성"
+              },
+              "cardIds": [
+                "12-1",
+                "12-2",
+                "12-3",
+                "12-4"
+              ],
+              "complete": false
+            }
+          ],
+          "counts": {
+            "plain": 13,
+            "animal": 4,
+            "bright": 2,
+            "ribbon": 5
+          },
+          "basePoints": 105,
+          "finalScore": 125,
+          "ownYakuPoints": 50,
+          "opponentYakuPoints": 80
+        },
+        "p2": {
+          "yakus": [
+            {
+              "id": "hongdan",
+              "have": 0,
+              "need": 3,
+              "bonus": 30,
+              "label": {
+                "es": "Hongdan",
+                "ko": "홍단"
+              },
+              "cardIds": [
+                "1-2",
+                "2-2",
+                "3-2"
+              ],
+              "complete": false
+            },
+            {
+              "id": "cheongdan",
+              "have": 2,
+              "need": 3,
+              "bonus": 30,
+              "label": {
+                "es": "Cheongdan",
+                "ko": "청단"
+              },
+              "cardIds": [
+                "6-2",
+                "9-2",
+                "10-2"
+              ],
+              "complete": false
+            },
+            {
+              "id": "chodan",
+              "have": 2,
+              "need": 3,
+              "bonus": 30,
+              "label": {
+                "es": "Chodan",
+                "ko": "초단"
+              },
+              "cardIds": [
+                "4-2",
+                "5-2",
+                "7-2"
+              ],
+              "complete": false
+            },
+            {
+              "id": "godori",
+              "have": 2,
+              "need": 3,
+              "bonus": 50,
+              "label": {
+                "es": "Godori",
+                "ko": "고도리"
+              },
+              "cardIds": [
+                "2-1",
+                "4-1",
+                "8-2"
+              ],
+              "complete": false
+            },
+            {
+              "id": "month-11",
+              "have": 4,
+              "need": 4,
+              "bonus": 40,
+              "label": {
+                "es": "Mes 11 completo",
+                "ko": "11월 완성"
+              },
+              "cardIds": [
+                "11-1",
+                "11-2",
+                "11-3",
+                "11-4"
+              ],
+              "complete": true
+            },
+            {
+              "id": "month-5",
+              "have": 0,
+              "need": 4,
+              "bonus": 20,
+              "label": {
+                "es": "Mes 5 completo",
+                "ko": "5월 완성"
+              },
+              "cardIds": [
+                "5-1",
+                "5-2",
+                "5-3",
+                "5-4"
+              ],
+              "complete": false
+            },
+            {
+              "id": "month-10",
+              "have": 4,
+              "need": 4,
+              "bonus": 20,
+              "label": {
+                "es": "Mes 10 completo",
+                "ko": "10월 완성"
+              },
+              "cardIds": [
+                "10-1",
+                "10-2",
+                "10-3",
+                "10-4"
+              ],
+              "complete": true
+            },
+            {
+              "id": "month-12",
+              "have": 4,
+              "need": 4,
+              "bonus": 20,
+              "label": {
+                "es": "Mes 12 completo",
+                "ko": "12월 완성"
+              },
+              "cardIds": [
+                "12-1",
+                "12-2",
+                "12-3",
+                "12-4"
+              ],
+              "complete": true
+            }
+          ],
+          "counts": {
+            "plain": 11,
+            "animal": 5,
+            "bright": 3,
+            "ribbon": 5
+          },
+          "basePoints": 135,
+          "finalScore": 245,
+          "ownYakuPoints": 80,
+          "opponentYakuPoints": 50
+        }
+      }
+    },
+    {
+      "playerId": "p2",
+      "version": 22,
+      "phase": "finished",
+      "turn": "p1",
+      "result": {
+        "reason": "Higher Minhwatu score / mayor puntuación",
+        "scores": {
+          "p1": 125,
+          "p2": 245
+        },
+        "winner": "p2"
+      },
+      "handCount": 0,
+      "deckCount": 0,
+      "scores": {
+        "p1": 125,
+        "p2": 245
+      },
+      "breakdown": {
+        "p1": {
+          "yakus": [
+            {
+              "id": "hongdan",
+              "have": 3,
+              "need": 3,
+              "bonus": 30,
+              "label": {
+                "es": "Hongdan",
+                "ko": "홍단"
+              },
+              "cardIds": [
+                "1-2",
+                "2-2",
+                "3-2"
+              ],
+              "complete": true
+            },
+            {
+              "id": "cheongdan",
+              "have": 1,
+              "need": 3,
+              "bonus": 30,
+              "label": {
+                "es": "Cheongdan",
+                "ko": "청단"
+              },
+              "cardIds": [
+                "6-2",
+                "9-2",
+                "10-2"
+              ],
+              "complete": false
+            },
+            {
+              "id": "chodan",
+              "have": 1,
+              "need": 3,
+              "bonus": 30,
+              "label": {
+                "es": "Chodan",
+                "ko": "초단"
+              },
+              "cardIds": [
+                "4-2",
+                "5-2",
+                "7-2"
+              ],
+              "complete": false
+            },
+            {
+              "id": "godori",
+              "have": 1,
+              "need": 3,
+              "bonus": 50,
+              "label": {
+                "es": "Godori",
+                "ko": "고도리"
+              },
+              "cardIds": [
+                "2-1",
+                "4-1",
+                "8-2"
+              ],
+              "complete": false
+            },
+            {
+              "id": "month-11",
+              "have": 0,
+              "need": 4,
+              "bonus": 40,
+              "label": {
+                "es": "Mes 11 completo",
+                "ko": "11월 완성"
+              },
+              "cardIds": [
+                "11-1",
+                "11-2",
+                "11-3",
+                "11-4"
+              ],
+              "complete": false
+            },
+            {
+              "id": "month-5",
+              "have": 4,
+              "need": 4,
+              "bonus": 20,
+              "label": {
+                "es": "Mes 5 completo",
+                "ko": "5월 완성"
+              },
+              "cardIds": [
+                "5-1",
+                "5-2",
+                "5-3",
+                "5-4"
+              ],
+              "complete": true
+            },
+            {
+              "id": "month-10",
+              "have": 0,
+              "need": 4,
+              "bonus": 20,
+              "label": {
+                "es": "Mes 10 completo",
+                "ko": "10월 완성"
+              },
+              "cardIds": [
+                "10-1",
+                "10-2",
+                "10-3",
+                "10-4"
+              ],
+              "complete": false
+            },
+            {
+              "id": "month-12",
+              "have": 0,
+              "need": 4,
+              "bonus": 20,
+              "label": {
+                "es": "Mes 12 completo",
+                "ko": "12월 완성"
+              },
+              "cardIds": [
+                "12-1",
+                "12-2",
+                "12-3",
+                "12-4"
+              ],
+              "complete": false
+            }
+          ],
+          "counts": {
+            "plain": 13,
+            "animal": 4,
+            "bright": 2,
+            "ribbon": 5
+          },
+          "basePoints": 105,
+          "finalScore": 125,
+          "ownYakuPoints": 50,
+          "opponentYakuPoints": 80
+        },
+        "p2": {
+          "yakus": [
+            {
+              "id": "hongdan",
+              "have": 0,
+              "need": 3,
+              "bonus": 30,
+              "label": {
+                "es": "Hongdan",
+                "ko": "홍단"
+              },
+              "cardIds": [
+                "1-2",
+                "2-2",
+                "3-2"
+              ],
+              "complete": false
+            },
+            {
+              "id": "cheongdan",
+              "have": 2,
+              "need": 3,
+              "bonus": 30,
+              "label": {
+                "es": "Cheongdan",
+                "ko": "청단"
+              },
+              "cardIds": [
+                "6-2",
+                "9-2",
+                "10-2"
+              ],
+              "complete": false
+            },
+            {
+              "id": "chodan",
+              "have": 2,
+              "need": 3,
+              "bonus": 30,
+              "label": {
+                "es": "Chodan",
+                "ko": "초단"
+              },
+              "cardIds": [
+                "4-2",
+                "5-2",
+                "7-2"
+              ],
+              "complete": false
+            },
+            {
+              "id": "godori",
+              "have": 2,
+              "need": 3,
+              "bonus": 50,
+              "label": {
+                "es": "Godori",
+                "ko": "고도리"
+              },
+              "cardIds": [
+                "2-1",
+                "4-1",
+                "8-2"
+              ],
+              "complete": false
+            },
+            {
+              "id": "month-11",
+              "have": 4,
+              "need": 4,
+              "bonus": 40,
+              "label": {
+                "es": "Mes 11 completo",
+                "ko": "11월 완성"
+              },
+              "cardIds": [
+                "11-1",
+                "11-2",
+                "11-3",
+                "11-4"
+              ],
+              "complete": true
+            },
+            {
+              "id": "month-5",
+              "have": 0,
+              "need": 4,
+              "bonus": 20,
+              "label": {
+                "es": "Mes 5 completo",
+                "ko": "5월 완성"
+              },
+              "cardIds": [
+                "5-1",
+                "5-2",
+                "5-3",
+                "5-4"
+              ],
+              "complete": false
+            },
+            {
+              "id": "month-10",
+              "have": 4,
+              "need": 4,
+              "bonus": 20,
+              "label": {
+                "es": "Mes 10 completo",
+                "ko": "10월 완성"
+              },
+              "cardIds": [
+                "10-1",
+                "10-2",
+                "10-3",
+                "10-4"
+              ],
+              "complete": true
+            },
+            {
+              "id": "month-12",
+              "have": 4,
+              "need": 4,
+              "bonus": 20,
+              "label": {
+                "es": "Mes 12 completo",
+                "ko": "12월 완성"
+              },
+              "cardIds": [
+                "12-1",
+                "12-2",
+                "12-3",
+                "12-4"
+              ],
+              "complete": true
+            }
+          ],
+          "counts": {
+            "plain": 11,
+            "animal": 5,
+            "bright": 3,
+            "ribbon": 5
+          },
+          "basePoints": 135,
+          "finalScore": 245,
+          "ownYakuPoints": 80,
+          "opponentYakuPoints": 50
+        }
+      }
+    }
+  ],
+  "resultText": [
+    "QA KO Minh 나\n145점\nQA ES Minh 상대 · 상대 차례\n190점\n상대가 모은 패\n20 장\n최근 2장 · 금색 테두리\n광\n3\n8\n11\n12\n열끗\n4\n7\n8\n10\n12\n띠\n4\n4\n6\n7\n12\n피\n9\n4\n6\n7\n7\n10\n11\n11\n11\n12\n홍단\n0/3\n청단\n1/3\n초단\n2/3\n고도리\n1/3\n11월 완성\n+40\n5월 완성\n0/4\n10월 완성\n2/4\n12월 완성\n+20\n상대 손패\n0장\n10월 청단 내기\n상대 차례\n바닥 패\n공개된 패 2장\n남은 더미\n1\n10월\n4월\n이번 차례 공개\n패가 자리를 옮기고 있어요.\n처리 중…\n내가 모은 패\n24 장\n최근 2장 · 금색 테두리\n광\n2\n1\n3\n열끗\n4\n2\n5\n6\n9\n띠\n5\n1\n2\n3\n5\n9\n피\n13\n1\n1\n2\n2\n3\n3\n5\n5\n6\n8\n8\n9\n9\n홍단\n+30\n청단\n1/3\n초단\n1/3\n고도리\n1/3\n11월 완성\n0/4\n5월 완성\n+20\n10월 완성\n0/4\n12월 완성\n0/4\n내 손패\n0\n금색 테두리 패는 바닥패를 가져올 수 있어요.\n최근 행동 · 37 · 내 획득: 3월 2장 획득\n점수 계산과 족보 상세 · 내 기본점수 + 내 족보 × 2 − 상대 족보",
+    "QA KO Minh Rival\n145pts\nQA ES Minh Tú · Tu turno\n190pts\nCapturas rivales\n24 cartas\nÚltimas 2 · borde dorado\nBrillantes\n2\n1\n3\nAnimales\n4\n2\n5\n6\n9\nCintas\n5\n1\n2\n3\n5\n9\nSimples\n13\n1\n1\n2\n2\n3\n3\n5\n5\n6\n8\n8\n9\n9\nHongdan\n+30\nCheongdan\n1/3\nChodan\n1/3\nGodori\n1/3\nMes 11 completo\n0/4\nMes 5 completo\n+20\nMes 10 completo\n0/4\nMes 12 completo\n0/4\nMano rival\n0 cartas\nJugada: mes 10, cinta azul\nTu turno\nMesa\n2 cartas visibles\nMazo\n1\nMes 10\nMes 4\nCarta revelada\nLas cartas se están moviendo.\nProcesando…\nMis capturas\n20 cartas\nÚltimas 2 · borde dorado\nBrillantes\n3\n8\n11\n12\nAnimales\n4\n7\n8\n10\n12\nCintas\n4\n4\n6\n7\n12\nSimples\n9\n4\n6\n7\n7\n10\n11\n11\n11\n12\nHongdan\n0/3\nCheongdan\n1/3\nChodan\n2/3\nGodori\n1/3\nMes 11 completo\n+40\nMes 5 completo\n0/4\nMes 10 completo\n2/4\nMes 12 completo\n+20\nTu mano\n0\nLas cartas con borde dorado pueden capturar.\nActividad reciente · 37 · Captura rival: Captura de 2 cartas del mes 3\nDetalle de puntos y combinaciones · Tus puntos base + tus yakus × 2 − yakus rivales"
+  ],
+  "replay": {
+    "ready": [
+      0,
+      1
+    ],
+    "beforeVersion": 22,
+    "pending": [
+      {
+        "playerId": "p1",
+        "version": 23,
+        "gameId": "minhwatu",
+        "pendingGame": "minhwatu",
+        "phase": "finished",
+        "turn": "p1",
+        "result": {
+          "reason": "Higher Minhwatu score / mayor puntuación",
+          "scores": {
+            "p1": 125,
+            "p2": 245
+          },
+          "winner": "p2"
+        },
+        "status": "finished",
+        "handCount": 0,
+        "opponentCount": 0,
+        "board": {
+          "deckCount": 0,
+          "tableCount": 0,
+          "captures": {
+            "p1": 24,
+            "p2": 24
+          },
+          "scores": {
+            "p1": 125,
+            "p2": 245
+          },
+          "breakdown": {
+            "p1": {
+              "yakus": [
+                {
+                  "id": "hongdan",
+                  "have": 3,
+                  "need": 3,
+                  "bonus": 30,
+                  "label": {
+                    "es": "Hongdan",
+                    "ko": "홍단"
+                  },
+                  "cardIds": [
+                    "1-2",
+                    "2-2",
+                    "3-2"
+                  ],
+                  "complete": true
+                },
+                {
+                  "id": "cheongdan",
+                  "have": 1,
+                  "need": 3,
+                  "bonus": 30,
+                  "label": {
+                    "es": "Cheongdan",
+                    "ko": "청단"
+                  },
+                  "cardIds": [
+                    "6-2",
+                    "9-2",
+                    "10-2"
+                  ],
+                  "complete": false
+                },
+                {
+                  "id": "chodan",
+                  "have": 1,
+                  "need": 3,
+                  "bonus": 30,
+                  "label": {
+                    "es": "Chodan",
+                    "ko": "초단"
+                  },
+                  "cardIds": [
+                    "4-2",
+                    "5-2",
+                    "7-2"
+                  ],
+                  "complete": false
+                },
+                {
+                  "id": "godori",
+                  "have": 1,
+                  "need": 3,
+                  "bonus": 50,
+                  "label": {
+                    "es": "Godori",
+                    "ko": "고도리"
+                  },
+                  "cardIds": [
+                    "2-1",
+                    "4-1",
+                    "8-2"
+                  ],
+                  "complete": false
+                },
+                {
+                  "id": "month-11",
+                  "have": 0,
+                  "need": 4,
+                  "bonus": 40,
+                  "label": {
+                    "es": "Mes 11 completo",
+                    "ko": "11월 완성"
+                  },
+                  "cardIds": [
+                    "11-1",
+                    "11-2",
+                    "11-3",
+                    "11-4"
+                  ],
+                  "complete": false
+                },
+                {
+                  "id": "month-5",
+                  "have": 4,
+                  "need": 4,
+                  "bonus": 20,
+                  "label": {
+                    "es": "Mes 5 completo",
+                    "ko": "5월 완성"
+                  },
+                  "cardIds": [
+                    "5-1",
+                    "5-2",
+                    "5-3",
+                    "5-4"
+                  ],
+                  "complete": true
+                },
+                {
+                  "id": "month-10",
+                  "have": 0,
+                  "need": 4,
+                  "bonus": 20,
+                  "label": {
+                    "es": "Mes 10 completo",
+                    "ko": "10월 완성"
+                  },
+                  "cardIds": [
+                    "10-1",
+                    "10-2",
+                    "10-3",
+                    "10-4"
+                  ],
+                  "complete": false
+                },
+                {
+                  "id": "month-12",
+                  "have": 0,
+                  "need": 4,
+                  "bonus": 20,
+                  "label": {
+                    "es": "Mes 12 completo",
+                    "ko": "12월 완성"
+                  },
+                  "cardIds": [
+                    "12-1",
+                    "12-2",
+                    "12-3",
+                    "12-4"
+                  ],
+                  "complete": false
+                }
+              ],
+              "counts": {
+                "plain": 13,
+                "animal": 4,
+                "bright": 2,
+                "ribbon": 5
+              },
+              "basePoints": 105,
+              "finalScore": 125,
+              "ownYakuPoints": 50,
+              "opponentYakuPoints": 80
+            },
+            "p2": {
+              "yakus": [
+                {
+                  "id": "hongdan",
+                  "have": 0,
+                  "need": 3,
+                  "bonus": 30,
+                  "label": {
+                    "es": "Hongdan",
+                    "ko": "홍단"
+                  },
+                  "cardIds": [
+                    "1-2",
+                    "2-2",
+                    "3-2"
+                  ],
+                  "complete": false
+                },
+                {
+                  "id": "cheongdan",
+                  "have": 2,
+                  "need": 3,
+                  "bonus": 30,
+                  "label": {
+                    "es": "Cheongdan",
+                    "ko": "청단"
+                  },
+                  "cardIds": [
+                    "6-2",
+                    "9-2",
+                    "10-2"
+                  ],
+                  "complete": false
+                },
+                {
+                  "id": "chodan",
+                  "have": 2,
+                  "need": 3,
+                  "bonus": 30,
+                  "label": {
+                    "es": "Chodan",
+                    "ko": "초단"
+                  },
+                  "cardIds": [
+                    "4-2",
+                    "5-2",
+                    "7-2"
+                  ],
+                  "complete": false
+                },
+                {
+                  "id": "godori",
+                  "have": 2,
+                  "need": 3,
+                  "bonus": 50,
+                  "label": {
+                    "es": "Godori",
+                    "ko": "고도리"
+                  },
+                  "cardIds": [
+                    "2-1",
+                    "4-1",
+                    "8-2"
+                  ],
+                  "complete": false
+                },
+                {
+                  "id": "month-11",
+                  "have": 4,
+                  "need": 4,
+                  "bonus": 40,
+                  "label": {
+                    "es": "Mes 11 completo",
+                    "ko": "11월 완성"
+                  },
+                  "cardIds": [
+                    "11-1",
+                    "11-2",
+                    "11-3",
+                    "11-4"
+                  ],
+                  "complete": true
+                },
+                {
+                  "id": "month-5",
+                  "have": 0,
+                  "need": 4,
+                  "bonus": 20,
+                  "label": {
+                    "es": "Mes 5 completo",
+                    "ko": "5월 완성"
+                  },
+                  "cardIds": [
+                    "5-1",
+                    "5-2",
+                    "5-3",
+                    "5-4"
+                  ],
+                  "complete": false
+                },
+                {
+                  "id": "month-10",
+                  "have": 4,
+                  "need": 4,
+                  "bonus": 20,
+                  "label": {
+                    "es": "Mes 10 completo",
+                    "ko": "10월 완성"
+                  },
+                  "cardIds": [
+                    "10-1",
+                    "10-2",
+                    "10-3",
+                    "10-4"
+                  ],
+                  "complete": true
+                },
+                {
+                  "id": "month-12",
+                  "have": 4,
+                  "need": 4,
+                  "bonus": 20,
+                  "label": {
+                    "es": "Mes 12 completo",
+                    "ko": "12월 완성"
+                  },
+                  "cardIds": [
+                    "12-1",
+                    "12-2",
+                    "12-3",
+                    "12-4"
+                  ],
+                  "complete": true
+                }
+              ],
+              "counts": {
+                "plain": 11,
+                "animal": 5,
+                "bright": 3,
+                "ribbon": 5
+              },
+              "basePoints": 135,
+              "finalScore": 245,
+              "ownYakuPoints": 80,
+              "opponentYakuPoints": 50
+            }
+          }
+        }
+      },
+      {
+        "playerId": "p2",
+        "version": 23,
+        "gameId": "minhwatu",
+        "pendingGame": "minhwatu",
+        "phase": "finished",
+        "turn": "p1",
+        "result": {
+          "reason": "Higher Minhwatu score / mayor puntuación",
+          "scores": {
+            "p1": 125,
+            "p2": 245
+          },
+          "winner": "p2"
+        },
+        "status": "finished",
+        "handCount": 0,
+        "opponentCount": 0,
+        "board": {
+          "deckCount": 0,
+          "tableCount": 0,
+          "captures": {
+            "p1": 24,
+            "p2": 24
+          },
+          "scores": {
+            "p1": 125,
+            "p2": 245
+          },
+          "breakdown": {
+            "p1": {
+              "yakus": [
+                {
+                  "id": "hongdan",
+                  "have": 3,
+                  "need": 3,
+                  "bonus": 30,
+                  "label": {
+                    "es": "Hongdan",
+                    "ko": "홍단"
+                  },
+                  "cardIds": [
+                    "1-2",
+                    "2-2",
+                    "3-2"
+                  ],
+                  "complete": true
+                },
+                {
+                  "id": "cheongdan",
+                  "have": 1,
+                  "need": 3,
+                  "bonus": 30,
+                  "label": {
+                    "es": "Cheongdan",
+                    "ko": "청단"
+                  },
+                  "cardIds": [
+                    "6-2",
+                    "9-2",
+                    "10-2"
+                  ],
+                  "complete": false
+                },
+                {
+                  "id": "chodan",
+                  "have": 1,
+                  "need": 3,
+                  "bonus": 30,
+                  "label": {
+                    "es": "Chodan",
+                    "ko": "초단"
+                  },
+                  "cardIds": [
+                    "4-2",
+                    "5-2",
+                    "7-2"
+                  ],
+                  "complete": false
+                },
+                {
+                  "id": "godori",
+                  "have": 1,
+                  "need": 3,
+                  "bonus": 50,
+                  "label": {
+                    "es": "Godori",
+                    "ko": "고도리"
+                  },
+                  "cardIds": [
+                    "2-1",
+                    "4-1",
+                    "8-2"
+                  ],
+                  "complete": false
+                },
+                {
+                  "id": "month-11",
+                  "have": 0,
+                  "need": 4,
+                  "bonus": 40,
+                  "label": {
+                    "es": "Mes 11 completo",
+                    "ko": "11월 완성"
+                  },
+                  "cardIds": [
+                    "11-1",
+                    "11-2",
+                    "11-3",
+                    "11-4"
+                  ],
+                  "complete": false
+                },
+                {
+                  "id": "month-5",
+                  "have": 4,
+                  "need": 4,
+                  "bonus": 20,
+                  "label": {
+                    "es": "Mes 5 completo",
+                    "ko": "5월 완성"
+                  },
+                  "cardIds": [
+                    "5-1",
+                    "5-2",
+                    "5-3",
+                    "5-4"
+                  ],
+                  "complete": true
+                },
+                {
+                  "id": "month-10",
+                  "have": 0,
+                  "need": 4,
+                  "bonus": 20,
+                  "label": {
+                    "es": "Mes 10 completo",
+                    "ko": "10월 완성"
+                  },
+                  "cardIds": [
+                    "10-1",
+                    "10-2",
+                    "10-3",
+                    "10-4"
+                  ],
+                  "complete": false
+                },
+                {
+                  "id": "month-12",
+                  "have": 0,
+                  "need": 4,
+                  "bonus": 20,
+                  "label": {
+                    "es": "Mes 12 completo",
+                    "ko": "12월 완성"
+                  },
+                  "cardIds": [
+                    "12-1",
+                    "12-2",
+                    "12-3",
+                    "12-4"
+                  ],
+                  "complete": false
+                }
+              ],
+              "counts": {
+                "plain": 13,
+                "animal": 4,
+                "bright": 2,
+                "ribbon": 5
+              },
+              "basePoints": 105,
+              "finalScore": 125,
+              "ownYakuPoints": 50,
+              "opponentYakuPoints": 80
+            },
+            "p2": {
+              "yakus": [
+                {
+                  "id": "hongdan",
+                  "have": 0,
+                  "need": 3,
+                  "bonus": 30,
+                  "label": {
+                    "es": "Hongdan",
+                    "ko": "홍단"
+                  },
+                  "cardIds": [
+                    "1-2",
+                    "2-2",
+                    "3-2"
+                  ],
+                  "complete": false
+                },
+                {
+                  "id": "cheongdan",
+                  "have": 2,
+                  "need": 3,
+                  "bonus": 30,
+                  "label": {
+                    "es": "Cheongdan",
+                    "ko": "청단"
+                  },
+                  "cardIds": [
+                    "6-2",
+                    "9-2",
+                    "10-2"
+                  ],
+                  "complete": false
+                },
+                {
+                  "id": "chodan",
+                  "have": 2,
+                  "need": 3,
+                  "bonus": 30,
+                  "label": {
+                    "es": "Chodan",
+                    "ko": "초단"
+                  },
+                  "cardIds": [
+                    "4-2",
+                    "5-2",
+                    "7-2"
+                  ],
+                  "complete": false
+                },
+                {
+                  "id": "godori",
+                  "have": 2,
+                  "need": 3,
+                  "bonus": 50,
+                  "label": {
+                    "es": "Godori",
+                    "ko": "고도리"
+                  },
+                  "cardIds": [
+                    "2-1",
+                    "4-1",
+                    "8-2"
+                  ],
+                  "complete": false
+                },
+                {
+                  "id": "month-11",
+                  "have": 4,
+                  "need": 4,
+                  "bonus": 40,
+                  "label": {
+                    "es": "Mes 11 completo",
+                    "ko": "11월 완성"
+                  },
+                  "cardIds": [
+                    "11-1",
+                    "11-2",
+                    "11-3",
+                    "11-4"
+                  ],
+                  "complete": true
+                },
+                {
+                  "id": "month-5",
+                  "have": 0,
+                  "need": 4,
+                  "bonus": 20,
+                  "label": {
+                    "es": "Mes 5 completo",
+                    "ko": "5월 완성"
+                  },
+                  "cardIds": [
+                    "5-1",
+                    "5-2",
+                    "5-3",
+                    "5-4"
+                  ],
+                  "complete": false
+                },
+                {
+                  "id": "month-10",
+                  "have": 4,
+                  "need": 4,
+                  "bonus": 20,
+                  "label": {
+                    "es": "Mes 10 completo",
+                    "ko": "10월 완성"
+                  },
+                  "cardIds": [
+                    "10-1",
+                    "10-2",
+                    "10-3",
+                    "10-4"
+                  ],
+                  "complete": true
+                },
+                {
+                  "id": "month-12",
+                  "have": 4,
+                  "need": 4,
+                  "bonus": 20,
+                  "label": {
+                    "es": "Mes 12 completo",
+                    "ko": "12월 완성"
+                  },
+                  "cardIds": [
+                    "12-1",
+                    "12-2",
+                    "12-3",
+                    "12-4"
+                  ],
+                  "complete": true
+                }
+              ],
+              "counts": {
+                "plain": 11,
+                "animal": 5,
+                "bright": 3,
+                "ribbon": 5
+              },
+              "basePoints": 135,
+              "finalScore": 245,
+              "ownYakuPoints": 80,
+              "opponentYakuPoints": 50
+            }
+          }
+        }
+      }
+    ],
+    "pendingStates": [
+      {
+        "playerId": "p1",
+        "version": 23,
+        "phase": "finished",
+        "pendingGame": "minhwatu",
+        "hasResult": true
+      },
+      {
+        "playerId": "p2",
+        "version": 23,
+        "phase": "finished",
+        "pendingGame": "minhwatu",
+        "hasResult": true
+      }
+    ],
+    "fresh": [
+      {
+        "playerId": "p1",
+        "version": 24,
+        "phase": "play",
+        "turn": "p1",
+        "handCount": 10,
+        "deckCount": 20,
+        "tableCount": 8
+      },
+      {
+        "playerId": "p2",
+        "version": 24,
+        "phase": "play",
+        "turn": "p1",
+        "handCount": 10,
+        "deckCount": 20,
+        "tableCount": 8
+      }
+    ]
+  },
+  "checks": [
+    {
+      "name": "natural terminal through legal UI actions",
+      "pass": true
+    },
+    {
+      "name": "two player views agree on terminal version/result",
+      "pass": true
+    },
+    {
+      "name": "two consent replay starts a fresh match",
+      "pass": true
+    }
+  ]
+}

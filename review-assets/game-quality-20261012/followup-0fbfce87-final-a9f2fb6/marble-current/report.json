@@ -1,0 +1,5958 @@
+{
+  "source": "0fbfce87a6b7b69fd27479e25fe6f62d71941d29",
+  "game": "marble",
+  "base": "http://127.0.0.1:5212",
+  "fixture": "local SQL authority on 54331, read-only explicit refresh; no Realtime",
+  "method": "two isolated browser contexts, KO p1 / ES p2, room/game/consent/actions through UI",
+  "requests": [
+    {
+      "p": 1,
+      "origin": "http://127.0.0.1:54331",
+      "path": "/rest/v1/rpc/room_snapshot",
+      "status": 200,
+      "version": 0,
+      "seat": "p1",
+      "game": null,
+      "pending": null
+    },
+    {
+      "p": 1,
+      "origin": "http://127.0.0.1:54331",
+      "path": "/rest/v1/rpc/room_snapshot",
+      "status": 200,
+      "version": 0,
+      "seat": "p1",
+      "game": null,
+      "pending": null
+    },
+    {
+      "p": 2,
+      "origin": "http://127.0.0.1:54331",
+      "path": "/rest/v1/rpc/room_snapshot",
+      "status": 200,
+      "version": 0,
+      "seat": "p2",
+      "game": null,
+      "pending": null
+    },
+    {
+      "p": 2,
+      "origin": "http://127.0.0.1:54331",
+      "path": "/rest/v1/rpc/room_snapshot",
+      "status": 200,
+      "version": 0,
+      "seat": "p2",
+      "game": null,
+      "pending": null
+    },
+    {
+      "p": 1,
+      "origin": "http://127.0.0.1:54331",
+      "path": "/functions/v1/action",
+      "status": 200,
+      "version": 1
+    },
+    {
+      "p": 1,
+      "origin": "http://127.0.0.1:54331",
+      "path": "/rest/v1/rpc/room_snapshot",
+      "status": 200,
+      "version": 1,
+      "seat": "p1",
+      "game": null,
+      "pending": "marble"
+    },
+    {
+      "p": 1,
+      "origin": "http://127.0.0.1:54331",
+      "path": "/rest/v1/rpc/room_snapshot",
+      "status": 200,
+      "version": 1,
+      "seat": "p1",
+      "game": null,
+      "pending": "marble"
+    },
+    {
+      "p": 2,
+      "origin": "http://127.0.0.1:54331",
+      "path": "/rest/v1/rpc/room_snapshot",
+      "status": 200,
+      "version": 1,
+      "seat": "p2",
+      "game": null,
+      "pending": "marble"
+    },
+    {
+      "p": 2,
+      "origin": "http://127.0.0.1:54331",
+      "path": "/functions/v1/action",
+      "status": 200,
+      "version": 2
+    },
+    {
+      "p": 2,
+      "origin": "http://127.0.0.1:54331",
+      "path": "/rest/v1/rpc/room_snapshot",
+      "status": 200,
+      "version": 2,
+      "seat": "p2",
+      "game": "marble",
+      "pending": null
+    },
+    {
+      "p": 1,
+      "origin": "http://127.0.0.1:54331",
+      "path": "/rest/v1/rpc/room_snapshot",
+      "status": 200,
+      "version": 2,
+      "seat": "p1",
+      "game": "marble",
+      "pending": null
+    },
+    {
+      "p": 2,
+      "origin": "http://127.0.0.1:54331",
+      "path": "/rest/v1/rpc/room_snapshot",
+      "status": 200,
+      "version": 2,
+      "seat": "p2",
+      "game": "marble",
+      "pending": null
+    },
+    {
+      "p": 1,
+      "origin": "http://127.0.0.1:54331",
+      "path": "/rest/v1/rpc/room_snapshot",
+      "status": 200,
+      "version": 2,
+      "seat": "p1",
+      "game": "marble",
+      "pending": null
+    },
+    {
+      "p": 2,
+      "origin": "http://127.0.0.1:54331",
+      "path": "/rest/v1/rpc/room_snapshot",
+      "status": 200,
+      "version": 2,
+      "seat": "p2",
+      "game": "marble",
+      "pending": null
+    },
+    {
+      "p": 2,
+      "origin": "http://127.0.0.1:54331",
+      "path": "/rest/v1/rpc/room_snapshot",
+      "status": 200,
+      "version": 2,
+      "seat": "p2",
+      "game": "marble",
+      "pending": null
+    },
+    {
+      "p": 1,
+      "origin": "http://127.0.0.1:54331",
+      "path": "/rest/v1/rpc/room_snapshot",
+      "status": 200,
+      "version": 2,
+      "seat": "p1",
+      "game": "marble",
+      "pending": null
+    },
+    {
+      "p": 1,
+      "origin": "http://127.0.0.1:54331",
+      "path": "/functions/v1/action",
+      "status": 200,
+      "version": 3
+    },
+    {
+      "p": 1,
+      "origin": "http://127.0.0.1:54331",
+      "path": "/rest/v1/rpc/room_snapshot",
+      "status": 200,
+      "version": 3,
+      "seat": "p1",
+      "game": "marble",
+      "pending": null
+    },
+    {
+      "p": 1,
+      "origin": "http://127.0.0.1:54331",
+      "path": "/rest/v1/rpc/room_snapshot",
+      "status": 200,
+      "version": 3,
+      "seat": "p1",
+      "game": "marble",
+      "pending": null
+    },
+    {
+      "p": 1,
+      "origin": "http://127.0.0.1:54331",
+      "path": "/rest/v1/rpc/room_snapshot",
+      "status": 200,
+      "version": 3,
+      "seat": "p1",
+      "game": "marble",
+      "pending": null
+    },
+    {
+      "p": 2,
+      "origin": "http://127.0.0.1:54331",
+      "path": "/rest/v1/rpc/room_snapshot",
+      "status": 200,
+      "version": 3,
+      "seat": "p2",
+      "game": "marble",
+      "pending": null
+    },
+    {
+      "p": 1,
+      "origin": "http://127.0.0.1:54331",
+      "path": "/functions/v1/action",
+      "status": 200,
+      "version": 4
+    },
+    {
+      "p": 1,
+      "origin": "http://127.0.0.1:54331",
+      "path": "/rest/v1/rpc/room_snapshot",
+      "status": 200,
+      "version": 4,
+      "seat": "p1",
+      "game": "marble",
+      "pending": null
+    },
+    {
+      "p": 1,
+      "origin": "http://127.0.0.1:54331",
+      "path": "/rest/v1/rpc/room_snapshot",
+      "status": 200,
+      "version": 4,
+      "seat": "p1",
+      "game": "marble",
+      "pending": null
+    },
+    {
+      "p": 2,
+      "origin": "http://127.0.0.1:54331",
+      "path": "/rest/v1/rpc/room_snapshot",
+      "status": 200,
+      "version": 4,
+      "seat": "p2",
+      "game": "marble",
+      "pending": null
+    },
+    {
+      "p": 1,
+      "origin": "http://127.0.0.1:54331",
+      "path": "/rest/v1/rpc/room_snapshot",
+      "status": 200,
+      "version": 4,
+      "seat": "p1",
+      "game": "marble",
+      "pending": null
+    },
+    {
+      "p": 1,
+      "origin": "http://127.0.0.1:54331",
+      "path": "/functions/v1/action",
+      "status": 200,
+      "version": 5
+    },
+    {
+      "p": 1,
+      "origin": "http://127.0.0.1:54331",
+      "path": "/rest/v1/rpc/room_snapshot",
+      "status": 200,
+      "version": 5,
+      "seat": "p1",
+      "game": "marble",
+      "pending": null
+    },
+    {
+      "p": 1,
+      "origin": "http://127.0.0.1:54331",
+      "path": "/rest/v1/rpc/room_snapshot",
+      "status": 200,
+      "version": 5,
+      "seat": "p1",
+      "game": "marble",
+      "pending": null
+    },
+    {
+      "p": 1,
+      "origin": "http://127.0.0.1:54331",
+      "path": "/rest/v1/rpc/room_snapshot",
+      "status": 200,
+      "version": 5,
+      "seat": "p1",
+      "game": "marble",
+      "pending": null
+    },
+    {
+      "p": 2,
+      "origin": "http://127.0.0.1:54331",
+      "path": "/rest/v1/rpc/room_snapshot",
+      "status": 200,
+      "version": 5,
+      "seat": "p2",
+      "game": "marble",
+      "pending": null
+    },
+    {
+      "p": 2,
+      "origin": "http://127.0.0.1:54331",
+      "path": "/functions/v1/action",
+      "status": 200,
+      "version": 6
+    },
+    {
+      "p": 2,
+      "origin": "http://127.0.0.1:54331",
+      "path": "/rest/v1/rpc/room_snapshot",
+      "status": 200,
+      "version": 6,
+      "seat": "p2",
+      "game": "marble",
+      "pending": null
+    },
+    {
+      "p": 2,
+      "origin": "http://127.0.0.1:54331",
+      "path": "/rest/v1/rpc/room_snapshot",
+      "status": 200,
+      "version": 6,
+      "seat": "p2",
+      "game": "marble",
+      "pending": null
+    },
+    {
+      "p": 1,
+      "origin": "http://127.0.0.1:54331",
+      "path": "/rest/v1/rpc/room_snapshot",
+      "status": 200,
+      "version": 6,
+      "seat": "p1",
+      "game": "marble",
+      "pending": null
+    },
+    {
+      "p": 2,
+      "origin": "http://127.0.0.1:54331",
+      "path": "/rest/v1/rpc/room_snapshot",
+      "status": 200,
+      "version": 6,
+      "seat": "p2",
+      "game": "marble",
+      "pending": null
+    },
+    {
+      "p": 2,
+      "origin": "http://127.0.0.1:54331",
+      "path": "/functions/v1/action",
+      "status": 200,
+      "version": 7
+    },
+    {
+      "p": 2,
+      "origin": "http://127.0.0.1:54331",
+      "path": "/rest/v1/rpc/room_snapshot",
+      "status": 200,
+      "version": 7,
+      "seat": "p2",
+      "game": "marble",
+      "pending": null
+    },
+    {
+      "p": 1,
+      "origin": "http://127.0.0.1:54331",
+      "path": "/rest/v1/rpc/room_snapshot",
+      "status": 200,
+      "version": 7,
+      "seat": "p1",
+      "game": "marble",
+      "pending": null
+    },
+    {
+      "p": 2,
+      "origin": "http://127.0.0.1:54331",
+      "path": "/rest/v1/rpc/room_snapshot",
+      "status": 200,
+      "version": 7,
+      "seat": "p2",
+      "game": "marble",
+      "pending": null
+    },
+    {
+      "p": 2,
+      "origin": "http://127.0.0.1:54331",
+      "path": "/rest/v1/rpc/room_snapshot",
+      "status": 200,
+      "version": 7,
+      "seat": "p2",
+      "game": "marble",
+      "pending": null
+    },
+    {
+      "p": 2,
+      "origin": "http://127.0.0.1:54331",
+      "path": "/functions/v1/action",
+      "status": 200,
+      "version": 8
+    },
+    {
+      "p": 2,
+      "origin": "http://127.0.0.1:54331",
+      "path": "/rest/v1/rpc/room_snapshot",
+      "status": 200,
+      "version": 8,
+      "seat": "p2",
+      "game": "marble",
+      "pending": null
+    },
+    {
+      "p": 2,
+      "origin": "http://127.0.0.1:54331",
+      "path": "/rest/v1/rpc/room_snapshot",
+      "status": 200,
+      "version": 8,
+      "seat": "p2",
+      "game": "marble",
+      "pending": null
+    },
+    {
+      "p": 1,
+      "origin": "http://127.0.0.1:54331",
+      "path": "/rest/v1/rpc/room_snapshot",
+      "status": 200,
+      "version": 8,
+      "seat": "p1",
+      "game": "marble",
+      "pending": null
+    },
+    {
+      "p": 2,
+      "origin": "http://127.0.0.1:54331",
+      "path": "/rest/v1/rpc/room_snapshot",
+      "status": 200,
+      "version": 8,
+      "seat": "p2",
+      "game": "marble",
+      "pending": null
+    },
+    {
+      "p": 1,
+      "origin": "http://127.0.0.1:54331",
+      "path": "/functions/v1/action",
+      "status": 200,
+      "version": 9
+    },
+    {
+      "p": 1,
+      "origin": "http://127.0.0.1:54331",
+      "path": "/rest/v1/rpc/room_snapshot",
+      "status": 200,
+      "version": 9,
+      "seat": "p1",
+      "game": "marble",
+      "pending": null
+    },
+    {
+      "p": 2,
+      "origin": "http://127.0.0.1:54331",
+      "path": "/rest/v1/rpc/room_snapshot",
+      "status": 200,
+      "version": 9,
+      "seat": "p2",
+      "game": "marble",
+      "pending": null
+    },
+    {
+      "p": 1,
+      "origin": "http://127.0.0.1:54331",
+      "path": "/rest/v1/rpc/room_snapshot",
+      "status": 200,
+      "version": 9,
+      "seat": "p1",
+      "game": "marble",
+      "pending": null
+    },
+    {
+      "p": 1,
+      "origin": "http://127.0.0.1:54331",
+      "path": "/rest/v1/rpc/room_snapshot",
+      "status": 200,
+      "version": 9,
+      "seat": "p1",
+      "game": "marble",
+      "pending": null
+    },
+    {
+      "p": 1,
+      "origin": "http://127.0.0.1:54331",
+      "path": "/functions/v1/action",
+      "status": 200,
+      "version": 10
+    },
+    {
+      "p": 1,
+      "origin": "http://127.0.0.1:54331",
+      "path": "/rest/v1/rpc/room_snapshot",
+      "status": 200,
+      "version": 10,
+      "seat": "p1",
+      "game": "marble",
+      "pending": null
+    },
+    {
+      "p": 1,
+      "origin": "http://127.0.0.1:54331",
+      "path": "/rest/v1/rpc/room_snapshot",
+      "status": 200,
+      "version": 10,
+      "seat": "p1",
+      "game": "marble",
+      "pending": null
+    },
+    {
+      "p": 2,
+      "origin": "http://127.0.0.1:54331",
+      "path": "/rest/v1/rpc/room_snapshot",
+      "status": 200,
+      "version": 10,
+      "seat": "p2",
+      "game": "marble",
+      "pending": null
+    },
+    {
+      "p": 1,
+      "origin": "http://127.0.0.1:54331",
+      "path": "/rest/v1/rpc/room_snapshot",
+      "status": 200,
+      "version": 10,
+      "seat": "p1",
+      "game": "marble",
+      "pending": null
+    },
+    {
+      "p": 1,
+      "origin": "http://127.0.0.1:54331",
+      "path": "/functions/v1/action",
+      "status": 200,
+      "version": 11
+    },
+    {
+      "p": 1,
+      "origin": "http://127.0.0.1:54331",
+      "path": "/rest/v1/rpc/room_snapshot",
+      "status": 200,
+      "version": 11,
+      "seat": "p1",
+      "game": "marble",
+      "pending": null
+    },
+    {
+      "p": 1,
+      "origin": "http://127.0.0.1:54331",
+      "path": "/rest/v1/rpc/room_snapshot",
+      "status": 200,
+      "version": 11,
+      "seat": "p1",
+      "game": "marble",
+      "pending": null
+    },
+    {
+      "p": 1,
+      "origin": "http://127.0.0.1:54331",
+      "path": "/rest/v1/rpc/room_snapshot",
+      "status": 200,
+      "version": 11,
+      "seat": "p1",
+      "game": "marble",
+      "pending": null
+    },
+    {
+      "p": 2,
+      "origin": "http://127.0.0.1:54331",
+      "path": "/rest/v1/rpc/room_snapshot",
+      "status": 200,
+      "version": 11,
+      "seat": "p2",
+      "game": "marble",
+      "pending": null
+    },
+    {
+      "p": 1,
+      "origin": "http://127.0.0.1:54331",
+      "path": "/functions/v1/action",
+      "status": 200,
+      "version": 12
+    },
+    {
+      "p": 1,
+      "origin": "http://127.0.0.1:54331",
+      "path": "/rest/v1/rpc/room_snapshot",
+      "status": 200,
+      "version": 12,
+      "seat": "p1",
+      "game": "marble",
+      "pending": null
+    },
+    {
+      "p": 1,
+      "origin": "http://127.0.0.1:54331",
+      "path": "/rest/v1/rpc/room_snapshot",
+      "status": 200,
+      "version": 12,
+      "seat": "p1",
+      "game": "marble",
+      "pending": null
+    },
+    {
+      "p": 2,
+      "origin": "http://127.0.0.1:54331",
+      "path": "/rest/v1/rpc/room_snapshot",
+      "status": 200,
+      "version": 12,
+      "seat": "p2",
+      "game": "marble",
+      "pending": null
+    },
+    {
+      "p": 1,
+      "origin": "http://127.0.0.1:54331",
+      "path": "/rest/v1/rpc/room_snapshot",
+      "status": 200,
+      "version": 12,
+      "seat": "p1",
+      "game": "marble",
+      "pending": null
+    },
+    {
+      "p": 1,
+      "origin": "http://127.0.0.1:54331",
+      "path": "/functions/v1/action",
+      "status": 200,
+      "version": 13
+    },
+    {
+      "p": 1,
+      "origin": "http://127.0.0.1:54331",
+      "path": "/rest/v1/rpc/room_snapshot",
+      "status": 200,
+      "version": 13,
+      "seat": "p1",
+      "game": "marble",
+      "pending": null
+    },
+    {
+      "p": 1,
+      "origin": "http://127.0.0.1:54331",
+      "path": "/rest/v1/rpc/room_snapshot",
+      "status": 200,
+      "version": 13,
+      "seat": "p1",
+      "game": "marble",
+      "pending": null
+    }
+  ],
+  "actions": [
+    {
+      "seat": 1,
+      "type": "choose-pawn",
+      "fromVersion": 2,
+      "toVersion": 3,
+      "fromPhase": "roll",
+      "turns": 0
+    },
+    {
+      "seat": 1,
+      "type": "roll",
+      "fromVersion": 3,
+      "toVersion": 4,
+      "fromPhase": "roll",
+      "turns": 0
+    },
+    {
+      "seat": 1,
+      "type": "endTurn",
+      "fromVersion": 4,
+      "toVersion": 5,
+      "fromPhase": "main",
+      "turns": 1
+    },
+    {
+      "seat": 2,
+      "type": "choose-pawn",
+      "fromVersion": 5,
+      "toVersion": 6,
+      "fromPhase": "roll",
+      "turns": 1
+    },
+    {
+      "seat": 2,
+      "type": "roll",
+      "fromVersion": 6,
+      "toVersion": 7,
+      "fromPhase": "roll",
+      "turns": 1
+    },
+    {
+      "seat": 2,
+      "type": "endTurn",
+      "fromVersion": 7,
+      "toVersion": 8,
+      "fromPhase": "main",
+      "turns": 2
+    },
+    {
+      "seat": 1,
+      "type": "roll",
+      "fromVersion": 8,
+      "toVersion": 9,
+      "fromPhase": "roll",
+      "turns": 2
+    },
+    {
+      "seat": 1,
+      "type": "buy",
+      "fromVersion": 9,
+      "toVersion": 10,
+      "fromPhase": "decision",
+      "turns": 2
+    },
+    {
+      "seat": 1,
+      "type": "build",
+      "fromVersion": 10,
+      "toVersion": 11,
+      "fromPhase": "main",
+      "turns": 2
+    },
+    {
+      "seat": 1,
+      "type": "build",
+      "fromVersion": 11,
+      "toVersion": 12,
+      "fromPhase": "main",
+      "turns": 2
+    },
+    {
+      "seat": 1,
+      "type": "build",
+      "fromVersion": 12,
+      "toVersion": 13,
+      "fromPhase": "main",
+      "turns": 2
+    }
+  ],
+  "builds": [
+    {
+      "stage": 1,
+      "city": {
+        "es": "Berlín",
+        "ko": "베를린"
+      },
+      "money": 1090,
+      "houseCount": 1,
+      "version": 11,
+      "phase": "main",
+      "owner": "p1"
+    },
+    {
+      "stage": 2,
+      "city": {
+        "es": "Berlín",
+        "ko": "베를린"
+      },
+      "money": 960,
+      "houseCount": 2,
+      "version": 12,
+      "phase": "main",
+      "owner": "p1"
+    },
+    {
+      "stage": 3,
+      "city": {
+        "es": "Berlín",
+        "ko": "베를린"
+      },
+      "money": 780,
+      "houseCount": 3,
+      "version": 13,
+      "phase": "main",
+      "owner": "p1"
+    }
+  ],
+  "captures": [
+    {
+      "stage": 1,
+      "city": "베를린",
+      "seat": 1,
+      "language": "ko",
+      "viewport": {
+        "width": 1366,
+        "height": 768
+      },
+      "file": "/workspace/deliverables/game-quality-restart-20261012/after-frozen-0fbfce87/marble-current/stage1-1366-ko.png",
+      "metrics": {
+        "viewport": {
+          "width": 1366,
+          "height": 768
+        },
+        "scroll": {
+          "width": 1366,
+          "height": 2354
+        },
+        "board": {
+          "x": 29,
+          "y": -18,
+          "width": 1308,
+          "height": 974.765625,
+          "top": -18,
+          "right": 1337,
+          "bottom": 956.765625,
+          "left": 29
+        },
+        "tileNamesVisible": 40,
+        "tileEconomyVisible": 24,
+        "tiles": [
+          {
+            "name": "출발",
+            "nameVisible": true,
+            "economy": "100",
+            "economyVisible": true
+          },
+          {
+            "name": "광주",
+            "nameVisible": true,
+            "economy": "260",
+            "economyVisible": true
+          },
+          {
+            "name": "황금열쇠",
+            "nameVisible": true,
+            "economy": "140",
+            "economyVisible": true
+          },
+          {
+            "name": "뉴욕",
+            "nameVisible": true,
+            "economy": "160",
+            "economyVisible": true
+          },
+          {
+            "name": "마드리드",
+            "nameVisible": true,
+            "economy": "180",
+            "economyVisible": true
+          },
+          {
+            "name": "산티아고",
+            "nameVisible": true,
+            "economy": "200",
+            "economyVisible": true
+          },
+          {
+            "name": "도시세",
+            "nameVisible": true,
+            "economy": "220",
+            "economyVisible": true
+          },
+          {
+            "name": "황금열쇠",
+            "nameVisible": true,
+            "economy": "240",
+            "economyVisible": true
+          },
+          {
+            "name": "푸에르토플라타",
+            "nameVisible": true,
+            "economy": "120",
+            "economyVisible": true
+          },
+          {
+            "name": "산후안",
+            "nameVisible": true,
+            "economy": "280",
+            "economyVisible": true
+          },
+          {
+            "name": "무인도",
+            "nameVisible": true,
+            "economy": "300",
+            "economyVisible": true
+          },
+          {
+            "name": "베를린",
+            "nameVisible": true,
+            "economy": "320",
+            "economyVisible": true
+          },
+          {
+            "name": "황금열쇠",
+            "nameVisible": true,
+            "economy": "340",
+            "economyVisible": true
+          },
+          {
+            "name": "마이애미",
+            "nameVisible": true,
+            "economy": "360",
+            "economyVisible": true
+          },
+          {
+            "name": "열차역",
+            "nameVisible": true,
+            "economy": "380",
+            "economyVisible": true
+          },
+          {
+            "name": "산토도밍고",
+            "nameVisible": true,
+            "economy": "400",
+            "economyVisible": true
+          },
+          {
+            "name": "파리",
+            "nameVisible": true,
+            "economy": "420",
+            "economyVisible": true
+          },
+          {
+            "name": "도쿄",
+            "nameVisible": true,
+            "economy": "440",
+            "economyVisible": true
+          },
+          {
+            "name": "황금열쇠",
+            "nameVisible": true,
+            "economy": "460",
+            "economyVisible": true
+          },
+          {
+            "name": "바르셀로나",
+            "nameVisible": true,
+            "economy": "480",
+            "economyVisible": true
+          },
+          {
+            "name": "사회복지기금",
+            "nameVisible": true,
+            "economy": "500",
+            "economyVisible": true
+          },
+          {
+            "name": "이스탄불",
+            "nameVisible": true,
+            "economy": "520",
+            "economyVisible": true
+          },
+          {
+            "name": "아바나",
+            "nameVisible": true,
+            "economy": "540",
+            "economyVisible": true
+          },
+          {
+            "name": "휴식 광장",
+            "nameVisible": true,
+            "economy": "560",
+            "economyVisible": true
+          },
+          {
+            "name": "멕시코시티",
+            "nameVisible": true,
+            "economyVisible": false
+          },
+          {
+            "name": "리스본",
+            "nameVisible": true,
+            "economyVisible": false
+          },
+          {
+            "name": "열차역",
+            "nameVisible": true,
+            "economyVisible": false
+          },
+          {
+            "name": "황금열쇠",
+            "nameVisible": true,
+            "economyVisible": false
+          },
+          {
+            "name": "런던",
+            "nameVisible": true,
+            "economyVisible": false
+          },
+          {
+            "name": "로마",
+            "nameVisible": true,
+            "economyVisible": false
+          },
+          {
+            "name": "세계 여행",
+            "nameVisible": true,
+            "economyVisible": false
+          },
+          {
+            "name": "뉴어크",
+            "nameVisible": true,
+            "economyVisible": false
+          },
+          {
+            "name": "아그라",
+            "nameVisible": true,
+            "economyVisible": false
+          },
+          {
+            "name": "아테네",
+            "nameVisible": true,
+            "economyVisible": false
+          },
+          {
+            "name": "황금열쇠",
+            "nameVisible": true,
+            "economyVisible": false
+          },
+          {
+            "name": "토론토",
+            "nameVisible": true,
+            "economyVisible": false
+          },
+          {
+            "name": "시드니",
+            "nameVisible": true,
+            "economyVisible": false
+          },
+          {
+            "name": "기금 납부",
+            "nameVisible": true,
+            "economyVisible": false
+          },
+          {
+            "name": "서울",
+            "nameVisible": true,
+            "economyVisible": false
+          },
+          {
+            "name": "휴식 광장",
+            "nameVisible": true,
+            "economyVisible": false
+          }
+        ],
+        "propertyArts": [
+          {
+            "level": null,
+            "tag": "use",
+            "href": "/images/marble/building-stages.svg#land"
+          },
+          {
+            "level": null,
+            "tag": "use",
+            "href": "/images/marble/building-stages.svg#land"
+          },
+          {
+            "level": null,
+            "tag": "use",
+            "href": "/images/marble/building-stages.svg#land"
+          },
+          {
+            "level": null,
+            "tag": "use",
+            "href": "/images/marble/building-stages.svg#land"
+          },
+          {
+            "level": null,
+            "tag": "use",
+            "href": "/images/marble/building-stages.svg#land"
+          },
+          {
+            "level": null,
+            "tag": "use",
+            "href": "/images/marble/building-stages.svg#land"
+          },
+          {
+            "level": null,
+            "tag": "defs"
+          },
+          {
+            "level": null,
+            "tag": "use",
+            "href": "/images/marble/building-stages.svg#land"
+          },
+          {
+            "level": null,
+            "tag": "use",
+            "href": "/images/marble/building-stages.svg#land"
+          },
+          {
+            "level": null,
+            "tag": "use",
+            "href": "/images/marble/building-stages.svg#land"
+          },
+          {
+            "level": null,
+            "tag": "use",
+            "href": "/images/marble/building-stages.svg#land"
+          },
+          {
+            "level": null,
+            "tag": "use",
+            "href": "/images/marble/building-stages.svg#land"
+          },
+          {
+            "level": null,
+            "tag": "use",
+            "href": "/images/marble/building-stages.svg#land"
+          },
+          {
+            "level": null,
+            "tag": "use",
+            "href": "/images/marble/building-stages.svg#land"
+          },
+          {
+            "level": null,
+            "tag": "use",
+            "href": "/images/marble/building-stages.svg#land"
+          },
+          {
+            "level": null,
+            "tag": "use",
+            "href": "/images/marble/building-stages.svg#land"
+          },
+          {
+            "level": null,
+            "tag": "use",
+            "href": "/images/marble/building-stages.svg#land"
+          },
+          {
+            "level": null,
+            "tag": "use",
+            "href": "/images/marble/building-stages.svg#land"
+          },
+          {
+            "level": null,
+            "tag": "use",
+            "href": "/images/marble/building-stages.svg#land"
+          },
+          {
+            "level": null,
+            "tag": "use",
+            "href": "/images/marble/building-stages.svg#land"
+          },
+          {
+            "level": null,
+            "tag": "use",
+            "href": "/images/marble/building-stages.svg#land"
+          },
+          {
+            "level": null,
+            "tag": "use",
+            "href": "/images/marble/building-stages.svg#land"
+          },
+          {
+            "level": null,
+            "tag": "use",
+            "href": "/images/marble/building-stages.svg#land"
+          },
+          {
+            "level": null,
+            "tag": "use",
+            "href": "/images/marble/building-stages.svg#land"
+          }
+        ],
+        "pawns": [
+          {
+            "name": null,
+            "rect": {
+              "x": 350.34375,
+              "y": 429,
+              "width": 36,
+              "height": 46,
+              "top": 429,
+              "right": 386.34375,
+              "bottom": 475,
+              "left": 350.34375
+            },
+            "imgs": [
+              {
+                "src": "/images/marble/premium/pawns/ragdoll.webp",
+                "loaded": true,
+                "width": 195
+              }
+            ]
+          },
+          {
+            "name": null,
+            "rect": {
+              "x": 182.046875,
+              "y": 430.5,
+              "width": 36,
+              "height": 46,
+              "top": 430.5,
+              "right": 218.046875,
+              "bottom": 476.5,
+              "left": 182.046875
+            },
+            "imgs": [
+              {
+                "src": "/images/marble/premium/pawns/sali-suli.webp",
+                "loaded": true,
+                "width": 232
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "stage": 1,
+      "city": "베를린",
+      "seat": 2,
+      "language": "es",
+      "viewport": {
+        "width": 1366,
+        "height": 768
+      },
+      "file": "/workspace/deliverables/game-quality-restart-20261012/after-frozen-0fbfce87/marble-current/stage1-1366-es.png",
+      "metrics": {
+        "viewport": {
+          "width": 1366,
+          "height": 768
+        },
+        "scroll": {
+          "width": 1366,
+          "height": 2186
+        },
+        "board": {
+          "x": 29,
+          "y": 160,
+          "width": 1308,
+          "height": 723.125,
+          "top": 160,
+          "right": 1337,
+          "bottom": 883.125,
+          "left": 29
+        },
+        "tileNamesVisible": 40,
+        "tileEconomyVisible": 24,
+        "tiles": [
+          {
+            "name": "Salida",
+            "nameVisible": true,
+            "economy": "100",
+            "economyVisible": true
+          },
+          {
+            "name": "Gwangju",
+            "nameVisible": true,
+            "economy": "260",
+            "economyVisible": true
+          },
+          {
+            "name": "Llave dorada",
+            "nameVisible": true,
+            "economy": "140",
+            "economyVisible": true
+          },
+          {
+            "name": "Nueva York",
+            "nameVisible": true,
+            "economy": "160",
+            "economyVisible": true
+          },
+          {
+            "name": "Madrid",
+            "nameVisible": true,
+            "economy": "180",
+            "economyVisible": true
+          },
+          {
+            "name": "Santiago",
+            "nameVisible": true,
+            "economy": "200",
+            "economyVisible": true
+          },
+          {
+            "name": "Impuesto municipal",
+            "nameVisible": true,
+            "economy": "220",
+            "economyVisible": true
+          },
+          {
+            "name": "Llave dorada",
+            "nameVisible": true,
+            "economy": "240",
+            "economyVisible": true
+          },
+          {
+            "name": "Puerto Plata",
+            "nameVisible": true,
+            "economy": "120",
+            "economyVisible": true
+          },
+          {
+            "name": "San Juan",
+            "nameVisible": true,
+            "economy": "280",
+            "economyVisible": true
+          },
+          {
+            "name": "Isla desierta",
+            "nameVisible": true,
+            "economy": "300",
+            "economyVisible": true
+          },
+          {
+            "name": "Berlín",
+            "nameVisible": true,
+            "economy": "320",
+            "economyVisible": true
+          },
+          {
+            "name": "Llave dorada",
+            "nameVisible": true,
+            "economy": "340",
+            "economyVisible": true
+          },
+          {
+            "name": "Miami",
+            "nameVisible": true,
+            "economy": "360",
+            "economyVisible": true
+          },
+          {
+            "name": "Estación de tren",
+            "nameVisible": true,
+            "economy": "380",
+            "economyVisible": true
+          },
+          {
+            "name": "Santo Domingo",
+            "nameVisible": true,
+            "economy": "400",
+            "economyVisible": true
+          },
+          {
+            "name": "París",
+            "nameVisible": true,
+            "economy": "420",
+            "economyVisible": true
+          },
+          {
+            "name": "Tokio",
+            "nameVisible": true,
+            "economy": "440",
+            "economyVisible": true
+          },
+          {
+            "name": "Llave dorada",
+            "nameVisible": true,
+            "economy": "460",
+            "economyVisible": true
+          },
+          {
+            "name": "Barcelona",
+            "nameVisible": true,
+            "economy": "480",
+            "economyVisible": true
+          },
+          {
+            "name": "Fondo social",
+            "nameVisible": true,
+            "economy": "500",
+            "economyVisible": true
+          },
+          {
+            "name": "Estambul",
+            "nameVisible": true,
+            "economy": "520",
+            "economyVisible": true
+          },
+          {
+            "name": "La Habana",
+            "nameVisible": true,
+            "economy": "540",
+            "economyVisible": true
+          },
+          {
+            "name": "Plaza de descanso",
+            "nameVisible": true,
+            "economy": "560",
+            "economyVisible": true
+          },
+          {
+            "name": "Ciudad de México",
+            "nameVisible": true,
+            "economyVisible": false
+          },
+          {
+            "name": "Lisboa",
+            "nameVisible": true,
+            "economyVisible": false
+          },
+          {
+            "name": "Estación de tren",
+            "nameVisible": true,
+            "economyVisible": false
+          },
+          {
+            "name": "Llave dorada",
+            "nameVisible": true,
+            "economyVisible": false
+          },
+          {
+            "name": "Londres",
+            "nameVisible": true,
+            "economyVisible": false
+          },
+          {
+            "name": "Roma",
+            "nameVisible": true,
+            "economyVisible": false
+          },
+          {
+            "name": "Viaje mundial",
+            "nameVisible": true,
+            "economyVisible": false
+          },
+          {
+            "name": "Newark",
+            "nameVisible": true,
+            "economyVisible": false
+          },
+          {
+            "name": "Agra",
+            "nameVisible": true,
+            "economyVisible": false
+          },
+          {
+            "name": "Atenas",
+            "nameVisible": true,
+            "economyVisible": false
+          },
+          {
+            "name": "Llave dorada",
+            "nameVisible": true,
+            "economyVisible": false
+          },
+          {
+            "name": "Toronto",
+            "nameVisible": true,
+            "economyVisible": false
+          },
+          {
+            "name": "Sídney",
+            "nameVisible": true,
+            "economyVisible": false
+          },
+          {
+            "name": "Aporte al fondo",
+            "nameVisible": true,
+            "economyVisible": false
+          },
+          {
+            "name": "Seúl",
+            "nameVisible": true,
+            "economyVisible": false
+          },
+          {
+            "name": "Plaza de descanso",
+            "nameVisible": true,
+            "economyVisible": false
+          }
+        ],
+        "propertyArts": [
+          {
+            "level": null,
+            "tag": "use",
+            "href": "/images/marble/building-stages.svg#land"
+          },
+          {
+            "level": null,
+            "tag": "use",
+            "href": "/images/marble/building-stages.svg#land"
+          },
+          {
+            "level": null,
+            "tag": "use",
+            "href": "/images/marble/building-stages.svg#land"
+          },
+          {
+            "level": null,
+            "tag": "use",
+            "href": "/images/marble/building-stages.svg#land"
+          },
+          {
+            "level": null,
+            "tag": "use",
+            "href": "/images/marble/building-stages.svg#land"
+          },
+          {
+            "level": null,
+            "tag": "use",
+            "href": "/images/marble/building-stages.svg#land"
+          },
+          {
+            "level": null,
+            "tag": "use",
+            "href": "/images/marble/building-stages.svg#land"
+          },
+          {
+            "level": null,
+            "tag": "use",
+            "href": "/images/marble/building-stages.svg#land"
+          },
+          {
+            "level": null,
+            "tag": "use",
+            "href": "/images/marble/building-stages.svg#land"
+          },
+          {
+            "level": null,
+            "tag": "use",
+            "href": "/images/marble/building-stages.svg#land"
+          },
+          {
+            "level": null,
+            "tag": "use",
+            "href": "/images/marble/building-stages.svg#land"
+          },
+          {
+            "level": null,
+            "tag": "use",
+            "href": "/images/marble/building-stages.svg#land"
+          },
+          {
+            "level": null,
+            "tag": "use",
+            "href": "/images/marble/building-stages.svg#land"
+          },
+          {
+            "level": null,
+            "tag": "use",
+            "href": "/images/marble/building-stages.svg#land"
+          },
+          {
+            "level": null,
+            "tag": "use",
+            "href": "/images/marble/building-stages.svg#land"
+          },
+          {
+            "level": null,
+            "tag": "use",
+            "href": "/images/marble/building-stages.svg#land"
+          },
+          {
+            "level": null,
+            "tag": "use",
+            "href": "/images/marble/building-stages.svg#land"
+          },
+          {
+            "level": null,
+            "tag": "use",
+            "href": "/images/marble/building-stages.svg#land"
+          },
+          {
+            "level": null,
+            "tag": "use",
+            "href": "/images/marble/building-stages.svg#land"
+          },
+          {
+            "level": null,
+            "tag": "use",
+            "href": "/images/marble/building-stages.svg#land"
+          },
+          {
+            "level": null,
+            "tag": "use",
+            "href": "/images/marble/building-stages.svg#land"
+          },
+          {
+            "level": null,
+            "tag": "use",
+            "href": "/images/marble/building-stages.svg#land"
+          },
+          {
+            "level": null,
+            "tag": "use",
+            "href": "/images/marble/building-stages.svg#land"
+          },
+          {
+            "level": null,
+            "tag": "use",
+            "href": "/images/marble/building-stages.svg#land"
+          }
+        ],
+        "pawns": [
+          {
+            "name": null,
+            "rect": {
+              "x": 350.34375,
+              "y": 607,
+              "width": 36,
+              "height": 46,
+              "top": 607,
+              "right": 386.34375,
+              "bottom": 653,
+              "left": 350.34375
+            },
+            "imgs": [
+              {
+                "src": "/images/marble/premium/pawns/ragdoll.webp",
+                "loaded": true,
+                "width": 195
+              }
+            ]
+          },
+          {
+            "name": null,
+            "rect": {
+              "x": 182.046875,
+              "y": 608.5,
+              "width": 36,
+              "height": 46,
+              "top": 608.5,
+              "right": 218.046875,
+              "bottom": 654.5,
+              "left": 182.046875
+            },
+            "imgs": [
+              {
+                "src": "/images/marble/premium/pawns/sali-suli.webp",
+                "loaded": true,
+                "width": 232
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "stage": 1,
+      "city": "베를린",
+      "seat": 1,
+      "language": "ko",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "file": "/workspace/deliverables/game-quality-restart-20261012/after-frozen-0fbfce87/marble-current/stage1-1440-ko.png",
+      "metrics": {
+        "viewport": {
+          "width": 1440,
+          "height": 900
+        },
+        "scroll": {
+          "width": 1440,
+          "height": 2354
+        },
+        "board": {
+          "x": 29,
+          "y": -18,
+          "width": 1382,
+          "height": 974.765625,
+          "top": -18,
+          "right": 1411,
+          "bottom": 956.765625,
+          "left": 29
+        },
+        "tileNamesVisible": 40,
+        "tileEconomyVisible": 24,
+        "tiles": [
+          {
+            "name": "출발",
+            "nameVisible": true,
+            "economy": "100",
+            "economyVisible": true
+          },
+          {
+            "name": "광주",
+            "nameVisible": true,
+            "economy": "260",
+            "economyVisible": true
+          },
+          {
+            "name": "황금열쇠",
+            "nameVisible": true,
+            "economy": "140",
+            "economyVisible": true
+          },
+          {
+            "name": "뉴욕",
+            "nameVisible": true,
+            "economy": "160",
+            "economyVisible": true
+          },
+          {
+            "name": "마드리드",
+            "nameVisible": true,
+            "economy": "180",
+            "economyVisible": true
+          },
+          {
+            "name": "산티아고",
+            "nameVisible": true,
+            "economy": "200",
+            "economyVisible": true
+          },
+          {
+            "name": "도시세",
+            "nameVisible": true,
+            "economy": "220",
+            "economyVisible": true
+          },
+          {
+            "name": "황금열쇠",
+            "nameVisible": true,
+            "economy": "240",
+            "economyVisible": true
+          },
+          {
+            "name": "푸에르토플라타",
+            "nameVisible": true,
+            "economy": "120",
+            "economyVisible": true
+          },
+          {
+            "name": "산후안",
+            "nameVisible": true,
+            "economy": "280",
+            "economyVisible": true
+          },
+          {
+            "name": "무인도",
+            "nameVisible": true,
+            "economy": "300",
+            "economyVisible": true
+          },
+          {
+            "name": "베를린",
+            "nameVisible": true,
+            "economy": "320",
+            "economyVisible": true
+          },
+          {
+            "name": "황금열쇠",
+            "nameVisible": true,
+            "economy": "340",
+            "economyVisible": true
+          },
+          {
+            "name": "마이애미",
+            "nameVisible": true,
+            "economy": "360",
+            "economyVisible": true
+          },
+          {
+            "name": "열차역",
+            "nameVisible": true,
+            "economy": "380",
+            "economyVisible": true
+          },
+          {
+            "name": "산토도밍고",
+            "nameVisible": true,
+            "economy": "400",
+            "economyVisible": true
+          },
+          {
+            "name": "파리",
+            "nameVisible": true,
+            "economy": "420",
+            "economyVisible": true
+          },
+          {
+            "name": "도쿄",
+            "nameVisible": true,
+            "economy": "440",
+            "economyVisible": true
+          },
+          {
+            "name": "황금열쇠",
+            "nameVisible": true,
+            "economy": "460",
+            "economyVisible": true
+          },
+          {
+            "name": "바르셀로나",
+            "nameVisible": true,
+            "economy": "480",
+            "economyVisible": true
+          },
+          {
+            "name": "사회복지기금",
+            "nameVisible": true,
+            "economy": "500",
+            "economyVisible": true
+          },
+          {
+            "name": "이스탄불",
+            "nameVisible": true,
+            "economy": "520",
+            "economyVisible": true
+          },
+          {
+            "name": "아바나",
+            "nameVisible": true,
+            "economy": "540",
+            "economyVisible": true
+          },
+          {
+            "name": "휴식 광장",
+            "nameVisible": true,
+            "economy": "560",
+            "economyVisible": true
+          },
+          {
+            "name": "멕시코시티",
+            "nameVisible": true,
+            "economyVisible": false
+          },
+          {
+            "name": "리스본",
+            "nameVisible": true,
+            "economyVisible": false
+          },
+          {
+            "name": "열차역",
+            "nameVisible": true,
+            "economyVisible": false
+          },
+          {
+            "name": "황금열쇠",
+            "nameVisible": true,
+            "economyVisible": false
+          },
+          {
+            "name": "런던",
+            "nameVisible": true,
+            "economyVisible": false
+          },
+          {
+            "name": "로마",
+            "nameVisible": true,
+            "economyVisible": false
+          },
+          {
+            "name": "세계 여행",
+            "nameVisible": true,
+            "economyVisible": false
+          },
+          {
+            "name": "뉴어크",
+            "nameVisible": true,
+            "economyVisible": false
+          },
+          {
+            "name": "아그라",
+            "nameVisible": true,
+            "economyVisible": false
+          },
+          {
+            "name": "아테네",
+            "nameVisible": true,
+            "economyVisible": false
+          },
+          {
+            "name": "황금열쇠",
+            "nameVisible": true,
+            "economyVisible": false
+          },
+          {
+            "name": "토론토",
+            "nameVisible": true,
+            "economyVisible": false
+          },
+          {
+            "name": "시드니",
+            "nameVisible": true,
+            "economyVisible": false
+          },
+          {
+            "name": "기금 납부",
+            "nameVisible": true,
+            "economyVisible": false
+          },
+          {
+            "name": "서울",
+            "nameVisible": true,
+            "economyVisible": false
+          },
+          {
+            "name": "휴식 광장",
+            "nameVisible": true,
+            "economyVisible": false
+          }
+        ],
+        "propertyArts": [
+          {
+            "level": null,
+            "tag": "use",
+            "href": "/images/marble/building-stages.svg#land"
+          },
+          {
+            "level": null,
+            "tag": "use",
+            "href": "/images/marble/building-stages.svg#land"
+          },
+          {
+            "level": null,
+            "tag": "use",
+            "href": "/images/marble/building-stages.svg#land"
+          },
+          {
+            "level": null,
+            "tag": "use",
+            "href": "/images/marble/building-stages.svg#land"
+          },
+          {
+            "level": null,
+            "tag": "use",
+            "href": "/images/marble/building-stages.svg#land"
+          },
+          {
+            "level": null,
+            "tag": "use",
+            "href": "/images/marble/building-stages.svg#land"
+          },
+          {
+            "level": null,
+            "tag": "defs"
+          },
+          {
+            "level": null,
+            "tag": "use",
+            "href": "/images/marble/building-stages.svg#land"
+          },
+          {
+            "level": null,
+            "tag": "use",
+            "href": "/images/marble/building-stages.svg#land"
+          },
+          {
+            "level": null,
+            "tag": "use",
+            "href": "/images/marble/building-stages.svg#land"
+          },
+          {
+            "level": null,
+            "tag": "use",
+            "href": "/images/marble/building-stages.svg#land"
+          },
+          {
+            "level": null,
+            "tag": "use",
+            "href": "/images/marble/building-stages.svg#land"
+          },
+          {
+            "level": null,
+            "tag": "use",
+            "href": "/images/marble/building-stages.svg#land"
+          },
+          {
+            "level": null,
+            "tag": "use",
+            "href": "/images/marble/building-stages.svg#land"
+          },
+          {
+            "level": null,
+            "tag": "use",
+            "href": "/images/marble/building-stages.svg#land"
+          },
+          {
+            "level": null,
+            "tag": "use",
+            "href": "/images/marble/building-stages.svg#land"
+          },
+          {
+            "level": null,
+            "tag": "use",
+            "href": "/images/marble/building-stages.svg#land"
+          },
+          {
+            "level": null,
+            "tag": "use",
+            "href": "/images/marble/building-stages.svg#land"
+          },
+          {
+            "level": null,
+            "tag": "use",
+            "href": "/images/marble/building-stages.svg#land"
+          },
+          {
+            "level": null,
+            "tag": "use",
+            "href": "/images/marble/building-stages.svg#land"
+          },
+          {
+            "level": null,
+            "tag": "use",
+            "href": "/images/marble/building-stages.svg#land"
+          },
+          {
+            "level": null,
+            "tag": "use",
+            "href": "/images/marble/building-stages.svg#land"
+          },
+          {
+            "level": null,
+            "tag": "use",
+            "href": "/images/marble/building-stages.svg#land"
+          },
+          {
+            "level": null,
+            "tag": "use",
+            "href": "/images/marble/building-stages.svg#land"
+          }
+        ],
+        "pawns": [
+          {
+            "name": null,
+            "rect": {
+              "x": 378.578125,
+              "y": 553.703125,
+              "width": 36,
+              "height": 46,
+              "top": 553.703125,
+              "right": 414.578125,
+              "bottom": 599.703125,
+              "left": 378.578125
+            },
+            "imgs": [
+              {
+                "src": "/images/marble/premium/pawns/ragdoll.webp",
+                "loaded": true,
+                "width": 195
+              }
+            ]
+          },
+          {
+            "name": null,
+            "rect": {
+              "x": 192.765625,
+              "y": 548.671875,
+              "width": 36,
+              "height": 46,
+              "top": 548.671875,
+              "right": 228.765625,
+              "bottom": 594.671875,
+              "left": 192.765625
+            },
+            "imgs": [
+              {
+                "src": "/images/marble/premium/pawns/sali-suli.webp",
+                "loaded": true,
+                "width": 232
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "stage": 1,
+      "city": "베를린",
+      "seat": 2,
+      "language": "es",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "file": "/workspace/deliverables/game-quality-restart-20261012/after-frozen-0fbfce87/marble-current/stage1-1440-es.png",
+      "metrics": {
+        "viewport": {
+          "width": 1440,
+          "height": 900
+        },
+        "scroll": {
+          "width": 1440,
+          "height": 2194
+        },
+        "board": {
+          "x": 29,
+          "y": 45,
+          "width": 1382,
+          "height": 731,
+          "top": 45,
+          "right": 1411,
+          "bottom": 776,
+          "left": 29
+        },
+        "tileNamesVisible": 40,
+        "tileEconomyVisible": 24,
+        "tiles": [
+          {
+            "name": "Salida",
+            "nameVisible": true,
+            "economy": "100",
+            "economyVisible": true
+          },
+          {
+            "name": "Gwangju",
+            "nameVisible": true,
+            "economy": "260",
+            "economyVisible": true
+          },
+          {
+            "name": "Llave dorada",
+            "nameVisible": true,
+            "economy": "140",
+            "economyVisible": true
+          },
+          {
+            "name": "Nueva York",
+            "nameVisible": true,
+            "economy": "160",
+            "economyVisible": true
+          },
+          {
+            "name": "Madrid",
+            "nameVisible": true,
+            "economy": "180",
+            "economyVisible": true
+          },
+          {
+            "name": "Santiago",
+            "nameVisible": true,
+            "economy": "200",
+            "economyVisible": true
+          },
+          {
+            "name": "Impuesto municipal",
+            "nameVisible": true,
+            "economy": "220",
+            "economyVisible": true
+          },
+          {
+            "name": "Llave dorada",
+            "nameVisible": true,
+            "economy": "240",
+            "economyVisible": true
+          },
+          {
+            "name": "Puerto Plata",
+            "nameVisible": true,
+            "economy": "120",
+            "economyVisible": true
+          },
+          {
+            "name": "San Juan",
+            "nameVisible": true,
+            "economy": "280",
+            "economyVisible": true
+          },
+          {
+            "name": "Isla desierta",
+            "nameVisible": true,
+            "economy": "300",
+            "economyVisible": true
+          },
+          {
+            "name": "Berlín",
+            "nameVisible": true,
+            "economy": "320",
+            "economyVisible": true
+          },
+          {
+            "name": "Llave dorada",
+            "nameVisible": true,
+            "economy": "340",
+            "economyVisible": true
+          },
+          {
+            "name": "Miami",
+            "nameVisible": true,
+            "economy": "360",
+            "economyVisible": true
+          },
+          {
+            "name": "Estación de tren",
+            "nameVisible": true,
+            "economy": "380",
+            "economyVisible": true
+          },
+          {
+            "name": "Santo Domingo",
+            "nameVisible": true,
+            "economy": "400",
+            "economyVisible": true
+          },
+          {
+            "name": "París",
+            "nameVisible": true,
+            "economy": "420",
+            "economyVisible": true
+          },
+          {
+            "name": "Tokio",
+            "nameVisible": true,
+            "economy": "440",
+            "economyVisible": true
+          },
+          {
+            "name": "Llave dorada",
+            "nameVisible": true,
+            "economy": "460",
+            "economyVisible": true
+          },
+          {
+            "name": "Barcelona",
+            "nameVisible": true,
+            "economy": "480",
+            "economyVisible": true
+          },
+          {
+            "name": "Fondo social",
+            "nameVisible": true,
+            "economy": "500",
+            "economyVisible": true
+          },
+          {
+            "name": "Estambul",
+            "nameVisible": true,
+            "economy": "520",
+            "economyVisible": true
+          },
+          {
+            "name": "La Habana",
+            "nameVisible": true,
+            "economy": "540",
+            "economyVisible": true
+          },
+          {
+            "name": "Plaza de descanso",
+            "nameVisible": true,
+            "economy": "560",
+            "economyVisible": true
+          },
+          {
+            "name": "Ciudad de México",
+            "nameVisible": true,
+            "economyVisible": false
+          },
+          {
+            "name": "Lisboa",
+            "nameVisible": true,
+            "economyVisible": false
+          },
+          {
+            "name": "Estación de tren",
+            "nameVisible": true,
+            "economyVisible": false
+          },
+          {
+            "name": "Llave dorada",
+            "nameVisible": true,
+            "economyVisible": false
+          },
+          {
+            "name": "Londres",
+            "nameVisible": true,
+            "economyVisible": false
+          },
+          {
+            "name": "Roma",
+            "nameVisible": true,
+            "economyVisible": false
+          },
+          {
+            "name": "Viaje mundial",
+            "nameVisible": true,
+            "economyVisible": false
+          },
+          {
+            "name": "Newark",
+            "nameVisible": true,
+            "economyVisible": false
+          },
+          {
+            "name": "Agra",
+            "nameVisible": true,
+            "economyVisible": false
+          },
+          {
+            "name": "Atenas",
+            "nameVisible": true,
+            "economyVisible": false
+          },
+          {
+            "name": "Llave dorada",
+            "nameVisible": true,
+            "economyVisible": false
+          },
+          {
+            "name": "Toronto",
+            "nameVisible": true,
+            "economyVisible": false
+          },
+          {
+            "name": "Sídney",
+            "nameVisible": true,
+            "economyVisible": false
+          },
+          {
+            "name": "Aporte al fondo",
+            "nameVisible": true,
+            "economyVisible": false
+          },
+          {
+            "name": "Seúl",
+            "nameVisible": true,
+            "economyVisible": false
+          },
+          {
+            "name": "Plaza de descanso",
+            "nameVisible": true,
+            "economyVisible": false
+          }
+        ],
+        "propertyArts": [
+          {
+            "level": null,
+            "tag": "use",
+            "href": "/images/marble/building-stages.svg#land"
+          },
+          {
+            "level": null,
+            "tag": "use",
+            "href": "/images/marble/building-stages.svg#land"
+          },
+          {
+            "level": null,
+            "tag": "use",
+            "href": "/images/marble/building-stages.svg#land"
+          },
+          {
+            "level": null,
+            "tag": "use",
+            "href": "/images/marble/building-stages.svg#land"
+          },
+          {
+            "level": null,
+            "tag": "use",
+            "href": "/images/marble/building-stages.svg#land"
+          },
+          {
+            "level": null,
+            "tag": "use",
+            "href": "/images/marble/building-stages.svg#land"
+          },
+          {
+            "level": null,
+            "tag": "use",
+            "href": "/images/marble/building-stages.svg#land"
+          },
+          {
+            "level": null,
+            "tag": "use",
+            "href": "/images/marble/building-stages.svg#land"
+          },
+          {
+            "level": null,
+            "tag": "use",
+            "href": "/images/marble/building-stages.svg#land"
+          },
+          {
+            "level": null,
+            "tag": "use",
+            "href": "/images/marble/building-stages.svg#land"
+          },
+          {
+            "level": null,
+            "tag": "use",
+            "href": "/images/marble/building-stages.svg#land"
+          },
+          {
+            "level": null,
+            "tag": "use",
+            "href": "/images/marble/building-stages.svg#land"
+          },
+          {
+            "level": null,
+            "tag": "use",
+            "href": "/images/marble/building-stages.svg#land"
+          },
+          {
+            "level": null,
+            "tag": "use",
+            "href": "/images/marble/building-stages.svg#land"
+          },
+          {
+            "level": null,
+            "tag": "use",
+            "href": "/images/marble/building-stages.svg#land"
+          },
+          {
+            "level": null,
+            "tag": "use",
+            "href": "/images/marble/building-stages.svg#land"
+          },
+          {
+            "level": null,
+            "tag": "use",
+            "href": "/images/marble/building-stages.svg#land"
+          },
+          {
+            "level": null,
+            "tag": "use",
+            "href": "/images/marble/building-stages.svg#land"
+          },
+          {
+            "level": null,
+            "tag": "use",
+            "href": "/images/marble/building-stages.svg#land"
+          },
+          {
+            "level": null,
+            "tag": "use",
+            "href": "/images/marble/building-stages.svg#land"
+          },
+          {
+            "level": null,
+            "tag": "use",
+            "href": "/images/marble/building-stages.svg#land"
+          },
+          {
+            "level": null,
+            "tag": "use",
+            "href": "/images/marble/building-stages.svg#land"
+          },
+          {
+            "level": null,
+            "tag": "use",
+            "href": "/images/marble/building-stages.svg#land"
+          },
+          {
+            "level": null,
+            "tag": "use",
+            "href": "/images/marble/building-stages.svg#land"
+          }
+        ],
+        "pawns": [
+          {
+            "name": null,
+            "rect": {
+              "x": 378.578125,
+              "y": 616.703125,
+              "width": 36,
+              "height": 46,
+              "top": 616.703125,
+              "right": 414.578125,
+              "bottom": 662.703125,
+              "left": 378.578125
+            },
+            "imgs": [
+              {
+                "src": "/images/marble/premium/pawns/ragdoll.webp",
+                "loaded": true,
+                "width": 195
+              }
+            ]
+          },
+          {
+            "name": null,
+            "rect": {
+              "x": 192.765625,
+              "y": 611.671875,
+              "width": 36,
+              "height": 46,
+              "top": 611.671875,
+              "right": 228.765625,
+              "bottom": 657.671875,
+              "left": 192.765625
+            },
+            "imgs": [
+              {
+                "src": "/images/marble/premium/pawns/sali-suli.webp",
+                "loaded": true,
+                "width": 232
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "stage": 2,
+      "city": "베를린",
+      "seat": 1,
+      "language": "ko",
+      "viewport": {
+        "width": 1366,
+        "height": 768
+      },
+      "file": "/workspace/deliverables/game-quality-restart-20261012/after-frozen-0fbfce87/marble-current/stage2-1366-ko.png",
+      "metrics": {
+        "viewport": {
+          "width": 1366,
+          "height": 768
+        },
+        "scroll": {
+          "width": 1366,
+          "height": 2354
+        },
+        "board": {
+          "x": 29,
+          "y": -18,
+          "width": 1308,
+          "height": 974.765625,
+          "top": -18,
+          "right": 1337,
+          "bottom": 956.765625,
+          "left": 29
+        },
+        "tileNamesVisible": 40,
+        "tileEconomyVisible": 24,
+        "tiles": [
+          {
+            "name": "출발",
+            "nameVisible": true,
+            "economy": "100",
+            "economyVisible": true
+          },
+          {
+            "name": "광주",
+            "nameVisible": true,
+            "economy": "260",
+            "economyVisible": true
+          },
+          {
+            "name": "황금열쇠",
+            "nameVisible": true,
+            "economy": "140",
+            "economyVisible": true
+          },
+          {
+            "name": "뉴욕",
+            "nameVisible": true,
+            "economy": "160",
+            "economyVisible": true
+          },
+          {
+            "name": "마드리드",
+            "nameVisible": true,
+            "economy": "180",
+            "economyVisible": true
+          },
+          {
+            "name": "산티아고",
+            "nameVisible": true,
+            "economy": "200",
+            "economyVisible": true
+          },
+          {
+            "name": "도시세",
+            "nameVisible": true,
+            "economy": "220",
+            "economyVisible": true
+          },
+          {
+            "name": "황금열쇠",
+            "nameVisible": true,
+            "economy": "240",
+            "economyVisible": true
+          },
+          {
+            "name": "푸에르토플라타",
+            "nameVisible": true,
+            "economy": "120",
+            "economyVisible": true
+          },
+          {
+            "name": "산후안",
+            "nameVisible": true,
+            "economy": "280",
+            "economyVisible": true
+          },
+          {
+            "name": "무인도",
+            "nameVisible": true,
+            "economy": "300",
+            "economyVisible": true
+          },
+          {
+            "name": "베를린",
+            "nameVisible": true,
+            "economy": "320",
+            "economyVisible": true
+          },
+          {
+            "name": "황금열쇠",
+            "nameVisible": true,
+            "economy": "340",
+            "economyVisible": true
+          },
+          {
+            "name": "마이애미",
+            "nameVisible": true,
+            "economy": "360",
+            "economyVisible": true
+          },
+          {
+            "name": "열차역",
+            "nameVisible": true,
+            "economy": "380",
+            "economyVisible": true
+          },
+          {
+            "name": "산토도밍고",
+            "nameVisible": true,
+            "economy": "400",
+            "economyVisible": true
+          },
+          {
+            "name": "파리",
+            "nameVisible": true,
+            "economy": "420",
+            "economyVisible": true
+          },
+          {
+            "name": "도쿄",
+            "nameVisible": true,
+            "economy": "440",
+            "economyVisible": true
+          },
+          {
+            "name": "황금열쇠",
+            "nameVisible": true,
+            "economy": "460",
+            "economyVisible": true
+          },
+          {
+            "name": "바르셀로나",
+            "nameVisible": true,
+            "economy": "480",
+            "economyVisible": true
+          },
+          {
+            "name": "사회복지기금",
+            "nameVisible": true,
+            "economy": "500",
+            "economyVisible": true
+          },
+          {
+            "name": "이스탄불",
+            "nameVisible": true,
+            "economy": "520",
+            "economyVisible": true
+          },
+          {
+            "name": "아바나",
+            "nameVisible": true,
+            "economy": "540",
+            "economyVisible": true
+          },
+          {
+            "name": "휴식 광장",
+            "nameVisible": true,
+            "economy": "560",
+            "economyVisible": true
+          },
+          {
+            "name": "멕시코시티",
+            "nameVisible": true,
+            "economyVisible": false
+          },
+          {
+            "name": "리스본",
+            "nameVisible": true,
+            "economyVisible": false
+          },
+          {
+            "name": "열차역",
+            "nameVisible": true,
+            "economyVisible": false
+          },
+          {
+            "name": "황금열쇠",
+            "nameVisible": true,
+            "economyVisible": false
+          },
+          {
+            "name": "런던",
+            "nameVisible": true,
+            "economyVisible": false
+          },
+          {
+            "name": "로마",
+            "nameVisible": true,
+            "economyVisible": false
+          },
+          {
+            "name": "세계 여행",
+            "nameVisible": true,
+            "economyVisible": false
+          },
+          {
+            "name": "뉴어크",
+            "nameVisible": true,
+            "economyVisible": false
+          },
+          {
+            "name": "아그라",
+            "nameVisible": true,
+            "economyVisible": false
+          },
+          {
+            "name": "아테네",
+            "nameVisible": true,
+            "economyVisible": false
+          },
+          {
+            "name": "황금열쇠",
+            "nameVisible": true,
+            "economyVisible": false
+          },
+          {
+            "name": "토론토",
+            "nameVisible": true,
+            "economyVisible": false
+          },
+          {
+            "name": "시드니",
+            "nameVisible": true,
+            "economyVisible": false
+          },
+          {
+            "name": "기금 납부",
+            "nameVisible": true,
+            "economyVisible": false
+          },
+          {
+            "name": "서울",
+            "nameVisible": true,
+            "economyVisible": false
+          },
+          {
+            "name": "휴식 광장",
+            "nameVisible": true,
+            "economyVisible": false
+          }
+        ],
+        "propertyArts": [
+          {
+            "level": null,
+            "tag": "use",
+            "href": "/images/marble/building-stages.svg#land"
+          },
+          {
+            "level": null,
+            "tag": "use",
+            "href": "/images/marble/building-stages.svg#land"
+          },
+          {
+            "level": null,
+            "tag": "use",
+            "href": "/images/marble/building-stages.svg#land"
+          },
+          {
+            "level": null,
+            "tag": "use",
+            "href": "/images/marble/building-stages.svg#land"
+          },
+          {
+            "level": null,
+            "tag": "use",
+            "href": "/images/marble/building-stages.svg#land"
+          },
+          {
+            "level": null,
+            "tag": "use",
+            "href": "/images/marble/building-stages.svg#land"
+          },
+          {
+            "level": null,
+            "tag": "defs"
+          },
+          {
+            "level": null,
+            "tag": "use",
+            "href": "/images/marble/building-stages.svg#land"
+          },
+          {
+            "level": null,
+            "tag": "use",
+            "href": "/images/marble/building-stages.svg#land"
+          },
+          {
+            "level": null,
+            "tag": "use",
+            "href": "/images/marble/building-stages.svg#land"
+          },
+          {
+            "level": null,
+            "tag": "use",
+            "href": "/images/marble/building-stages.svg#land"
+          },
+          {
+            "level": null,
+            "tag": "use",
+            "href": "/images/marble/building-stages.svg#land"
+          },
+          {
+            "level": null,
+            "tag": "use",
+            "href": "/images/marble/building-stages.svg#land"
+          },
+          {
+            "level": null,
+            "tag": "use",
+            "href": "/images/marble/building-stages.svg#land"
+          },
+          {
+            "level": null,
+            "tag": "use",
+            "href": "/images/marble/building-stages.svg#land"
+          },
+          {
+            "level": null,
+            "tag": "use",
+            "href": "/images/marble/building-stages.svg#land"
+          },
+          {
+            "level": null,
+            "tag": "use",
+            "href": "/images/marble/building-stages.svg#land"
+          },
+          {
+            "level": null,
+            "tag": "use",
+            "href": "/images/marble/building-stages.svg#land"
+          },
+          {
+            "level": null,
+            "tag": "use",
+            "href": "/images/marble/building-stages.svg#land"
+          },
+          {
+            "level": null,
+            "tag": "use",
+            "href": "/images/marble/building-stages.svg#land"
+          },
+          {
+            "level": null,
+            "tag": "use",
+            "href": "/images/marble/building-stages.svg#land"
+          },
+          {
+            "level": null,
+            "tag": "use",
+            "href": "/images/marble/building-stages.svg#land"
+          },
+          {
+            "level": null,
+            "tag": "use",
+            "href": "/images/marble/building-stages.svg#land"
+          },
+          {
+            "level": null,
+            "tag": "use",
+            "href": "/images/marble/building-stages.svg#land"
+          }
+        ],
+        "pawns": [
+          {
+            "name": null,
+            "rect": {
+              "x": 350.34375,
+              "y": 429,
+              "width": 36,
+              "height": 46,
+              "top": 429,
+              "right": 386.34375,
+              "bottom": 475,
+              "left": 350.34375
+            },
+            "imgs": [
+              {
+                "src": "/images/marble/premium/pawns/ragdoll.webp",
+                "loaded": true,
+                "width": 195
+              }
+            ]
+          },
+          {
+            "name": null,
+            "rect": {
+              "x": 182.046875,
+              "y": 430.5,
+              "width": 36,
+              "height": 46,
+              "top": 430.5,
+              "right": 218.046875,
+              "bottom": 476.5,
+              "left": 182.046875
+            },
+            "imgs": [
+              {
+                "src": "/images/marble/premium/pawns/sali-suli.webp",
+                "loaded": true,
+                "width": 232
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "stage": 2,
+      "city": "베를린",
+      "seat": 2,
+      "language": "es",
+      "viewport": {
+        "width": 1366,
+        "height": 768
+      },
+      "file": "/workspace/deliverables/game-quality-restart-20261012/after-frozen-0fbfce87/marble-current/stage2-1366-es.png",
+      "metrics": {
+        "viewport": {
+          "width": 1366,
+          "height": 768
+        },
+        "scroll": {
+          "width": 1366,
+          "height": 2204
+        },
+        "board": {
+          "x": 29,
+          "y": 45,
+          "width": 1308,
+          "height": 740.390625,
+          "top": 45,
+          "right": 1337,
+          "bottom": 785.390625,
+          "left": 29
+        },
+        "tileNamesVisible": 40,
+        "tileEconomyVisible": 24,
+        "tiles": [
+          {
+            "name": "Salida",
+            "nameVisible": true,
+            "economy": "100",
+            "economyVisible": true
+          },
+          {
+            "name": "Gwangju",
+            "nameVisible": true,
+            "economy": "260",
+            "economyVisible": true
+          },
+          {
+            "name": "Llave dorada",
+            "nameVisible": true,
+            "economy": "140",
+            "economyVisible": true
+          },
+          {
+            "name": "Nueva York",
+            "nameVisible": true,
+            "economy": "160",
+            "economyVisible": true
+          },
+          {
+            "name": "Madrid",
+            "nameVisible": true,
+            "economy": "180",
+            "economyVisible": true
+          },
+          {
+            "name": "Santiago",
+            "nameVisible": true,
+            "economy": "200",
+            "economyVisible": true
+          },
+          {
+            "name": "Impuesto municipal",
+            "nameVisible": true,
+            "economy": "220",
+            "economyVisible": true
+          },
+          {
+            "name": "Llave dorada",
+            "nameVisible": true,
+            "economy": "240",
+            "economyVisible": true
+          },
+          {
+            "name": "Puerto Plata",
+            "nameVisible": true,
+            "economy": "120",
+            "economyVisible": true
+          },
+          {
+            "name": "San Juan",
+            "nameVisible": true,
+            "economy": "280",
+            "economyVisible": true
+          },
+          {
+            "name": "Isla desierta",
+            "nameVisible": true,
+            "economy": "300",
+            "economyVisible": true
+          },
+          {
+            "name": "Berlín",
+            "nameVisible": true,
+            "economy": "320",
+            "economyVisible": true
+          },
+          {
+            "name": "Llave dorada",
+            "nameVisible": true,
+            "economy": "340",
+            "economyVisible": true
+          },
+          {
+            "name": "Miami",
+            "nameVisible": true,
+            "economy": "360",
+            "economyVisible": true
+          },
+          {
+            "name": "Estación de tren",
+            "nameVisible": true,
+            "economy": "380",
+            "economyVisible": true
+          },
+          {
+            "name": "Santo Domingo",
+            "nameVisible": true,
+            "economy": "400",
+            "economyVisible": true
+          },
+          {
+            "name": "París",
+            "nameVisible": true,
+            "economy": "420",
+            "economyVisible": true
+          },
+          {
+            "name": "Tokio",
+            "nameVisible": true,
+            "economy": "440",
+            "economyVisible": true
+          },
+          {
+            "name": "Llave dorada",
+            "nameVisible": true,
+            "economy": "460",
+            "economyVisible": true
+          },
+          {
+            "name": "Barcelona",
+            "nameVisible": true,
+            "economy": "480",
+            "economyVisible": true
+          },
+          {
+            "name": "Fondo social",
+            "nameVisible": true,
+            "economy": "500",
+            "economyVisible": true
+          },
+          {
+            "name": "Estambul",
+            "nameVisible": true,
+            "economy": "520",
+            "economyVisible": true
+          },
+          {
+            "name": "La Habana",
+            "nameVisible": true,
+            "economy": "540",
+            "economyVisible": true
+          },
+          {
+            "name": "Plaza de descanso",
+            "nameVisible": true,
+            "economy": "560",
+            "economyVisible": true
+          },
+          {
+            "name": "Ciudad de México",
+            "nameVisible": true,
+            "economyVisible": false
+          },
+          {
+            "name": "Lisboa",
+            "nameVisible": true,
+            "economyVisible": false
+          },
+          {
+            "name": "Estación de tren",
+            "nameVisible": true,
+            "economyVisible": false
+          },
+          {
+            "name": "Llave dorada",
+            "nameVisible": true,
+            "economyVisible": false
+          },
+          {
+            "name": "Londres",
+            "nameVisible": true,
+            "economyVisible": false
+          },
+          {
+            "name": "Roma",
+            "nameVisible": true,
+            "economyVisible": false
+          },
+          {
+            "name": "Viaje mundial",
+            "nameVisible": true,
+            "economyVisible": false
+          },
+          {
+            "name": "Newark",
+            "nameVisible": true,
+            "economyVisible": false
+          },
+          {
+            "name": "Agra",
+            "nameVisible": true,
+            "economyVisible": false
+          },
+          {
+            "name": "Atenas",
+            "nameVisible": true,
+            "economyVisible": false
+          },
+          {
+            "name": "Llave dorada",
+            "nameVisible": true,
+            "economyVisible": false
+          },
+          {
+            "name": "Toronto",
+            "nameVisible": true,
+            "economyVisible": false
+          },
+          {
+            "name": "Sídney",
+            "nameVisible": true,
+            "economyVisible": false
+          },
+          {
+            "name": "Aporte al fondo",
+            "nameVisible": true,
+            "economyVisible": false
+          },
+          {
+            "name": "Seúl",
+            "nameVisible": true,
+            "economyVisible": false
+          },
+          {
+            "name": "Plaza de descanso",
+            "nameVisible": true,
+            "economyVisible": false
+          }
+        ],
+        "propertyArts": [
+          {
+            "level": null,
+            "tag": "use",
+            "href": "/images/marble/building-stages.svg#land"
+          },
+          {
+            "level": null,
+            "tag": "use",
+            "href": "/images/marble/building-stages.svg#land"
+          },
+          {
+            "level": null,
+            "tag": "use",
+            "href": "/images/marble/building-stages.svg#land"
+          },
+          {
+            "level": null,
+            "tag": "use",
+            "href": "/images/marble/building-stages.svg#land"
+          },
+          {
+            "level": null,
+            "tag": "use",
+            "href": "/images/marble/building-stages.svg#land"
+          },
+          {
+            "level": null,
+            "tag": "use",
+            "href": "/images/marble/building-stages.svg#land"
+          },
+          {
+            "level": null,
+            "tag": "defs"
+          },
+          {
+            "level": null,
+            "tag": "use",
+            "href": "/images/marble/building-stages.svg#land"
+          },
+          {
+            "level": null,
+            "tag": "use",
+            "href": "/images/marble/building-stages.svg#land"
+          },
+          {
+            "level": null,
+            "tag": "use",
+            "href": "/images/marble/building-stages.svg#land"
+          },
+          {
+            "level": null,
+            "tag": "use",
+            "href": "/images/marble/building-stages.svg#land"
+          },
+          {
+            "level": null,
+            "tag": "use",
+            "href": "/images/marble/building-stages.svg#land"
+          },
+          {
+            "level": null,
+            "tag": "use",
+            "href": "/images/marble/building-stages.svg#land"
+          },
+          {
+            "level": null,
+            "tag": "use",
+            "href": "/images/marble/building-stages.svg#land"
+          },
+          {
+            "level": null,
+            "tag": "use",
+            "href": "/images/marble/building-stages.svg#land"
+          },
+          {
+            "level": null,
+            "tag": "use",
+            "href": "/images/marble/building-stages.svg#land"
+          },
+          {
+            "level": null,
+            "tag": "use",
+            "href": "/images/marble/building-stages.svg#land"
+          },
+          {
+            "level": null,
+            "tag": "use",
+            "href": "/images/marble/building-stages.svg#land"
+          },
+          {
+            "level": null,
+            "tag": "use",
+            "href": "/images/marble/building-stages.svg#land"
+          },
+          {
+            "level": null,
+            "tag": "use",
+            "href": "/images/marble/building-stages.svg#land"
+          },
+          {
+            "level": null,
+            "tag": "use",
+            "href": "/images/marble/building-stages.svg#land"
+          },
+          {
+            "level": null,
+            "tag": "use",
+            "href": "/images/marble/building-stages.svg#land"
+          },
+          {
+            "level": null,
+            "tag": "use",
+            "href": "/images/marble/building-stages.svg#land"
+          },
+          {
+            "level": null,
+            "tag": "use",
+            "href": "/images/marble/building-stages.svg#land"
+          }
+        ],
+        "pawns": [
+          {
+            "name": null,
+            "rect": {
+              "x": 350.34375,
+              "y": 492,
+              "width": 36,
+              "height": 46,
+              "top": 492,
+              "right": 386.34375,
+              "bottom": 538,
+              "left": 350.34375
+            },
+            "imgs": [
+              {
+                "src": "/images/marble/premium/pawns/ragdoll.webp",
+                "loaded": true,
+                "width": 195
+              }
+            ]
+          },
+          {
+            "name": null,
+            "rect": {
+              "x": 182.046875,
+              "y": 493.5,
+              "width": 36,
+              "height": 46,
+              "top": 493.5,
+              "right": 218.046875,
+              "bottom": 539.5,
+              "left": 182.046875
+            },
+            "imgs": [
+              {
+                "src": "/images/marble/premium/pawns/sali-suli.webp",
+                "loaded": true,
+                "width": 232
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "stage": 2,
+      "city": "베를린",
+      "seat": 1,
+      "language": "ko",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "file": "/workspace/deliverables/game-quality-restart-20261012/after-frozen-0fbfce87/marble-current/stage2-1440-ko.png",
+      "metrics": {
+        "viewport": {
+          "width": 1440,
+          "height": 900
+        },
+        "scroll": {
+          "width": 1440,
+          "height": 2354
+        },
+        "board": {
+          "x": 29,
+          "y": -18,
+          "width": 1382,
+          "height": 974.765625,
+          "top": -18,
+          "right": 1411,
+          "bottom": 956.765625,
+          "left": 29
+        },
+        "tileNamesVisible": 40,
+        "tileEconomyVisible": 24,
+        "tiles": [
+          {
+            "name": "출발",
+            "nameVisible": true,
+            "economy": "100",
+            "economyVisible": true
+          },
+          {
+            "name": "광주",
+            "nameVisible": true,
+            "economy": "260",
+            "economyVisible": true
+          },
+          {
+            "name": "황금열쇠",
+            "nameVisible": true,
+            "economy": "140",
+            "economyVisible": true
+          },
+          {
+            "name": "뉴욕",
+            "nameVisible": true,
+            "economy": "160",
+            "economyVisible": true
+          },
+          {
+            "name": "마드리드",
+            "nameVisible": true,
+            "economy": "180",
+            "economyVisible": true
+          },
+          {
+            "name": "산티아고",
+            "nameVisible": true,
+            "economy": "200",
+            "economyVisible": true
+          },
+          {
+            "name": "도시세",
+            "nameVisible": true,
+            "economy": "220",
+            "economyVisible": true
+          },
+          {
+            "name": "황금열쇠",
+            "nameVisible": true,
+            "economy": "240",
+            "economyVisible": true
+          },
+          {
+            "name": "푸에르토플라타",
+            "nameVisible": true,
+            "economy": "120",
+            "economyVisible": true
+          },
+          {
+            "name": "산후안",
+            "nameVisible": true,
+            "economy": "280",
+            "economyVisible": true
+          },
+          {
+            "name": "무인도",
+            "nameVisible": true,
+            "economy": "300",
+            "economyVisible": true
+          },
+          {
+            "name": "베를린",
+            "nameVisible": true,
+            "economy": "320",
+            "economyVisible": true
+          },
+          {
+            "name": "황금열쇠",
+            "nameVisible": true,
+            "economy": "340",
+            "economyVisible": true
+          },
+          {
+            "name": "마이애미",
+            "nameVisible": true,
+            "economy": "360",
+            "economyVisible": true
+          },
+          {
+            "name": "열차역",
+            "nameVisible": true,
+            "economy": "380",
+            "economyVisible": true
+          },
+          {
+            "name": "산토도밍고",
+            "nameVisible": true,
+            "economy": "400",
+            "economyVisible": true
+          },
+          {
+            "name": "파리",
+            "nameVisible": true,
+            "economy": "420",
+            "economyVisible": true
+          },
+          {
+            "name": "도쿄",
+            "nameVisible": true,
+            "economy": "440",
+            "economyVisible": true
+          },
+          {
+            "name": "황금열쇠",
+            "nameVisible": true,
+            "economy": "460",
+            "economyVisible": true
+          },
+          {
+            "name": "바르셀로나",
+            "nameVisible": true,
+            "economy": "480",
+            "economyVisible": true
+          },
+          {
+            "name": "사회복지기금",
+            "nameVisible": true,
+            "economy": "500",
+            "economyVisible": true
+          },
+          {
+            "name": "이스탄불",
+            "nameVisible": true,
+            "economy": "520",
+            "economyVisible": true
+          },
+          {
+            "name": "아바나",
+            "nameVisible": true,
+            "economy": "540",
+            "economyVisible": true
+          },
+          {
+            "name": "휴식 광장",
+            "nameVisible": true,
+            "economy": "560",
+            "economyVisible": true
+          },
+          {
+            "name": "멕시코시티",
+            "nameVisible": true,
+            "economyVisible": false
+          },
+          {
+            "name": "리스본",
+            "nameVisible": true,
+            "economyVisible": false
+          },
+          {
+            "name": "열차역",
+            "nameVisible": true,
+            "economyVisible": false
+          },
+          {
+            "name": "황금열쇠",
+            "nameVisible": true,
+            "economyVisible": false
+          },
+          {
+            "name": "런던",
+            "nameVisible": true,
+            "economyVisible": false
+          },
+          {
+            "name": "로마",
+            "nameVisible": true,
+            "economyVisible": false
+          },
+          {
+            "name": "세계 여행",
+            "nameVisible": true,
+            "economyVisible": false
+          },
+          {
+            "name": "뉴어크",
+            "nameVisible": true,
+            "economyVisible": false
+          },
+          {
+            "name": "아그라",
+            "nameVisible": true,
+            "economyVisible": false
+          },
+          {
+            "name": "아테네",
+            "nameVisible": true,
+            "economyVisible": false
+          },
+          {
+            "name": "황금열쇠",
+            "nameVisible": true,
+            "economyVisible": false
+          },
+          {
+            "name": "토론토",
+            "nameVisible": true,
+            "economyVisible": false
+          },
+          {
+            "name": "시드니",
+            "nameVisible": true,
+            "economyVisible": false
+          },
+          {
+            "name": "기금 납부",
+            "nameVisible": true,
+            "economyVisible": false
+          },
+          {
+            "name": "서울",
+            "nameVisible": true,
+            "economyVisible": false
+          },
+          {
+            "name": "휴식 광장",
+            "nameVisible": true,
+            "economyVisible": false
+          }
+        ],
+        "propertyArts": [
+          {
+            "level": null,
+            "tag": "use",
+            "href": "/images/marble/building-stages.svg#land"
+          },
+          {
+            "level": null,
+            "tag": "use",
+            "href": "/images/marble/building-stages.svg#land"
+          },
+          {
+            "level": null,
+            "tag": "use",
+            "href": "/images/marble/building-stages.svg#land"
+          },
+          {
+            "level": null,
+            "tag": "use",
+            "href": "/images/marble/building-stages.svg#land"
+          },
+          {
+            "level": null,
+            "tag": "use",
+            "href": "/images/marble/building-stages.svg#land"
+          },
+          {
+            "level": null,
+            "tag": "use",
+            "href": "/images/marble/building-stages.svg#land"
+          },
+          {
+            "level": null,
+            "tag": "defs"
+          },
+          {
+            "level": null,
+            "tag": "use",
+            "href": "/images/marble/building-stages.svg#land"
+          },
+          {
+            "level": null,
+            "tag": "use",
+            "href": "/images/marble/building-stages.svg#land"
+          },
+          {
+            "level": null,
+            "tag": "use",
+            "href": "/images/marble/building-stages.svg#land"
+          },
+          {
+            "level": null,
+            "tag": "use",
+            "href": "/images/marble/building-stages.svg#land"
+          },
+          {
+            "level": null,
+            "tag": "use",
+            "href": "/images/marble/building-stages.svg#land"
+          },
+          {
+            "level": null,
+            "tag": "use",
+            "href": "/images/marble/building-stages.svg#land"
+          },
+          {
+            "level": null,
+            "tag": "use",
+            "href": "/images/marble/building-stages.svg#land"
+          },
+          {
+            "level": null,
+            "tag": "use",
+            "href": "/images/marble/building-stages.svg#land"
+          },
+          {
+            "level": null,
+            "tag": "use",
+            "href": "/images/marble/building-stages.svg#land"
+          },
+          {
+            "level": null,
+            "tag": "use",
+            "href": "/images/marble/building-stages.svg#land"
+          },
+          {
+            "level": null,
+            "tag": "use",
+            "href": "/images/marble/building-stages.svg#land"
+          },
+          {
+            "level": null,
+            "tag": "use",
+            "href": "/images/marble/building-stages.svg#land"
+          },
+          {
+            "level": null,
+            "tag": "use",
+            "href": "/images/marble/building-stages.svg#land"
+          },
+          {
+            "level": null,
+            "tag": "use",
+            "href": "/images/marble/building-stages.svg#land"
+          },
+          {
+            "level": null,
+            "tag": "use",
+            "href": "/images/marble/building-stages.svg#land"
+          },
+          {
+            "level": null,
+            "tag": "use",
+            "href": "/images/marble/building-stages.svg#land"
+          },
+          {
+            "level": null,
+            "tag": "use",
+            "href": "/images/marble/building-stages.svg#land"
+          }
+        ],
+        "pawns": [
+          {
+            "name": null,
+            "rect": {
+              "x": 378.578125,
+              "y": 553.703125,
+              "width": 36,
+              "height": 46,
+              "top": 553.703125,
+              "right": 414.578125,
+              "bottom": 599.703125,
+              "left": 378.578125
+            },
+            "imgs": [
+              {
+                "src": "/images/marble/premium/pawns/ragdoll.webp",
+                "loaded": true,
+                "width": 195
+              }
+            ]
+          },
+          {
+            "name": null,
+            "rect": {
+              "x": 192.765625,
+              "y": 548.671875,
+              "width": 36,
+              "height": 46,
+              "top": 548.671875,
+              "right": 228.765625,
+              "bottom": 594.671875,
+              "left": 192.765625
+            },
+            "imgs": [
+              {
+                "src": "/images/marble/premium/pawns/sali-suli.webp",
+                "loaded": true,
+                "width": 232
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "stage": 2,
+      "city": "베를린",
+      "seat": 2,
+      "language": "es",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "file": "/workspace/deliverables/game-quality-restart-20261012/after-frozen-0fbfce87/marble-current/stage2-1440-es.png",
+      "metrics": {
+        "viewport": {
+          "width": 1440,
+          "height": 900
+        },
+        "scroll": {
+          "width": 1440,
+          "height": 2204
+        },
+        "board": {
+          "x": 29,
+          "y": 28,
+          "width": 1382,
+          "height": 740.390625,
+          "top": 28,
+          "right": 1411,
+          "bottom": 768.390625,
+          "left": 29
+        },
+        "tileNamesVisible": 40,
+        "tileEconomyVisible": 24,
+        "tiles": [
+          {
+            "name": "Salida",
+            "nameVisible": true,
+            "economy": "100",
+            "economyVisible": true
+          },
+          {
+            "name": "Gwangju",
+            "nameVisible": true,
+            "economy": "260",
+            "economyVisible": true
+          },
+          {
+            "name": "Llave dorada",
+            "nameVisible": true,
+            "economy": "140",
+            "economyVisible": true
+          },
+          {
+            "name": "Nueva York",
+            "nameVisible": true,
+            "economy": "160",
+            "economyVisible": true
+          },
+          {
+            "name": "Madrid",
+            "nameVisible": true,
+            "economy": "180",
+            "economyVisible": true
+          },
+          {
+            "name": "Santiago",
+            "nameVisible": true,
+            "economy": "200",
+            "economyVisible": true
+          },
+          {
+            "name": "Impuesto municipal",
+            "nameVisible": true,
+            "economy": "220",
+            "economyVisible": true
+          },
+          {
+            "name": "Llave dorada",
+            "nameVisible": true,
+            "economy": "240",
+            "economyVisible": true
+          },
+          {
+            "name": "Puerto Plata",
+            "nameVisible": true,
+            "economy": "120",
+            "economyVisible": true
+          },
+          {
+            "name": "San Juan",
+            "nameVisible": true,
+            "economy": "280",
+            "economyVisible": true
+          },
+          {
+            "name": "Isla desierta",
+            "nameVisible": true,
+            "economy": "300",
+            "economyVisible": true
+          },
+          {
+            "name": "Berlín",
+            "nameVisible": true,
+            "economy": "320",
+            "economyVisible": true
+          },
+          {
+            "name": "Llave dorada",
+            "nameVisible": true,
+            "economy": "340",
+            "economyVisible": true
+          },
+          {
+            "name": "Miami",
+            "nameVisible": true,
+            "economy": "360",
+            "economyVisible": true
+          },
+          {
+            "name": "Estación de tren",
+            "nameVisible": true,
+            "economy": "380",
+            "economyVisible": true
+          },
+          {
+            "name": "Santo Domingo",
+            "nameVisible": true,
+            "economy": "400",
+            "economyVisible": true
+          },
+          {
+            "name": "París",
+            "nameVisible": true,
+            "economy": "420",
+            "economyVisible": true
+          },
+          {
+            "name": "Tokio",
+            "nameVisible": true,
+            "economy": "440",
+            "economyVisible": true
+          },
+          {
+            "name": "Llave dorada",
+            "nameVisible": true,
+            "economy": "460",
+            "economyVisible": true
+          },
+          {
+            "name": "Barcelona",
+            "nameVisible": true,
+            "economy": "480",
+            "economyVisible": true
+          },
+          {
+            "name": "Fondo social",
+            "nameVisible": true,
+            "economy": "500",
+            "economyVisible": true
+          },
+          {
+            "name": "Estambul",
+            "nameVisible": true,
+            "economy": "520",
+            "economyVisible": true
+          },
+          {
+            "name": "La Habana",
+            "nameVisible": true,
+            "economy": "540",
+            "economyVisible": true
+          },
+          {
+            "name": "Plaza de descanso",
+            "nameVisible": true,
+            "economy": "560",
+            "economyVisible": true
+          },
+          {
+            "name": "Ciudad de México",
+            "nameVisible": true,
+            "economyVisible": false
+          },
+          {
+            "name": "Lisboa",
+            "nameVisible": true,
+            "economyVisible": false
+          },
+          {
+            "name": "Estación de tren",
+            "nameVisible": true,
+            "economyVisible": false
+          },
+          {
+            "name": "Llave dorada",
+            "nameVisible": true,
+            "economyVisible": false
+          },
+          {
+            "name": "Londres",
+            "nameVisible": true,
+            "economyVisible": false
+          },
+          {
+            "name": "Roma",
+            "nameVisible": true,
+            "economyVisible": false
+          },
+          {
+            "name": "Viaje mundial",
+            "nameVisible": true,
+            "economyVisible": false
+          },
+          {
+            "name": "Newark",
+            "nameVisible": true,
+            "economyVisible": false
+          },
+          {
+            "name": "Agra",
+            "nameVisible": true,
+            "economyVisible": false
+          },
+          {
+            "name": "Atenas",
+            "nameVisible": true,
+            "economyVisible": false
+          },
+          {
+            "name": "Llave dorada",
+            "nameVisible": true,
+            "economyVisible": false
+          },
+          {
+            "name": "Toronto",
+            "nameVisible": true,
+            "economyVisible": false
+          },
+          {
+            "name": "Sídney",
+            "nameVisible": true,
+            "economyVisible": false
+          },
+          {
+            "name": "Aporte al fondo",
+            "nameVisible": true,
+            "economyVisible": false
+          },
+          {
+            "name": "Seúl",
+            "nameVisible": true,
+            "economyVisible": false
+          },
+          {
+            "name": "Plaza de descanso",
+            "nameVisible": true,
+            "economyVisible": false
+          }
+        ],
+        "propertyArts": [
+          {
+            "level": null,
+            "tag": "use",
+            "href": "/images/marble/building-stages.svg#land"
+          },
+          {
+            "level": null,
+            "tag": "use",
+            "href": "/images/marble/building-stages.svg#land"
+          },
+          {
+            "level": null,
+            "tag": "use",
+            "href": "/images/marble/building-stages.svg#land"
+          },
+          {
+            "level": null,
+            "tag": "use",
+            "href": "/images/marble/building-stages.svg#land"
+          },
+          {
+            "level": null,
+            "tag": "use",
+            "href": "/images/marble/building-stages.svg#land"
+          },
+          {
+            "level": null,
+            "tag": "use",
+            "href": "/images/marble/building-stages.svg#land"
+          },
+          {
+            "level": null,
+            "tag": "defs"
+          },
+          {
+            "level": null,
+            "tag": "use",
+            "href": "/images/marble/building-stages.svg#land"
+          },
+          {
+            "level": null,
+            "tag": "use",
+            "href": "/images/marble/building-stages.svg#land"
+          },
+          {
+            "level": null,
+            "tag": "use",
+            "href": "/images/marble/building-stages.svg#land"
+          },
+          {
+            "level": null,
+            "tag": "use",
+            "href": "/images/marble/building-stages.svg#land"
+          },
+          {
+            "level": null,
+            "tag": "use",
+            "href": "/images/marble/building-stages.svg#land"
+          },
+          {
+            "level": null,
+            "tag": "use",
+            "href": "/images/marble/building-stages.svg#land"
+          },
+          {
+            "level": null,
+            "tag": "use",
+            "href": "/images/marble/building-stages.svg#land"
+          },
+          {
+            "level": null,
+            "tag": "use",
+            "href": "/images/marble/building-stages.svg#land"
+          },
+          {
+            "level": null,
+            "tag": "use",
+            "href": "/images/marble/building-stages.svg#land"
+          },
+          {
+            "level": null,
+            "tag": "use",
+            "href": "/images/marble/building-stages.svg#land"
+          },
+          {
+            "level": null,
+            "tag": "use",
+            "href": "/images/marble/building-stages.svg#land"
+          },
+          {
+            "level": null,
+            "tag": "use",
+            "href": "/images/marble/building-stages.svg#land"
+          },
+          {
+            "level": null,
+            "tag": "use",
+            "href": "/images/marble/building-stages.svg#land"
+          },
+          {
+            "level": null,
+            "tag": "use",
+            "href": "/images/marble/building-stages.svg#land"
+          },
+          {
+            "level": null,
+            "tag": "use",
+            "href": "/images/marble/building-stages.svg#land"
+          },
+          {
+            "level": null,
+            "tag": "use",
+            "href": "/images/marble/building-stages.svg#land"
+          },
+          {
+            "level": null,
+            "tag": "use",
+            "href": "/images/marble/building-stages.svg#land"
+          }
+        ],
+        "pawns": [
+          {
+            "name": null,
+            "rect": {
+              "x": 378.578125,
+              "y": 599.703125,
+              "width": 36,
+              "height": 46,
+              "top": 599.703125,
+              "right": 414.578125,
+              "bottom": 645.703125,
+              "left": 378.578125
+            },
+            "imgs": [
+              {
+                "src": "/images/marble/premium/pawns/ragdoll.webp",
+                "loaded": true,
+                "width": 195
+              }
+            ]
+          },
+          {
+            "name": null,
+            "rect": {
+              "x": 192.765625,
+              "y": 594.671875,
+              "width": 36,
+              "height": 46,
+              "top": 594.671875,
+              "right": 228.765625,
+              "bottom": 640.671875,
+              "left": 192.765625
+            },
+            "imgs": [
+              {
+                "src": "/images/marble/premium/pawns/sali-suli.webp",
+                "loaded": true,
+                "width": 232
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "stage": 3,
+      "city": "베를린",
+      "seat": 1,
+      "language": "ko",
+      "viewport": {
+        "width": 1366,
+        "height": 768
+      },
+      "file": "/workspace/deliverables/game-quality-restart-20261012/after-frozen-0fbfce87/marble-current/stage3-1366-ko.png",
+      "metrics": {
+        "viewport": {
+          "width": 1366,
+          "height": 768
+        },
+        "scroll": {
+          "width": 1366,
+          "height": 2255
+        },
+        "board": {
+          "x": 29,
+          "y": -18,
+          "width": 1308,
+          "height": 875.5,
+          "top": -18,
+          "right": 1337,
+          "bottom": 857.5,
+          "left": 29
+        },
+        "tileNamesVisible": 40,
+        "tileEconomyVisible": 24,
+        "tiles": [
+          {
+            "name": "출발",
+            "nameVisible": true,
+            "economy": "100",
+            "economyVisible": true
+          },
+          {
+            "name": "광주",
+            "nameVisible": true,
+            "economy": "260",
+            "economyVisible": true
+          },
+          {
+            "name": "황금열쇠",
+            "nameVisible": true,
+            "economy": "140",
+            "economyVisible": true
+          },
+          {
+            "name": "뉴욕",
+            "nameVisible": true,
+            "economy": "160",
+            "economyVisible": true
+          },
+          {
+            "name": "마드리드",
+            "nameVisible": true,
+            "economy": "180",
+            "economyVisible": true
+          },
+          {
+            "name": "산티아고",
+            "nameVisible": true,
+            "economy": "200",
+            "economyVisible": true
+          },
+          {
+            "name": "도시세",
+            "nameVisible": true,
+            "economy": "220",
+            "economyVisible": true
+          },
+          {
+            "name": "황금열쇠",
+            "nameVisible": true,
+            "economy": "240",
+            "economyVisible": true
+          },
+          {
+            "name": "푸에르토플라타",
+            "nameVisible": true,
+            "economy": "120",
+            "economyVisible": true
+          },
+          {
+            "name": "산후안",
+            "nameVisible": true,
+            "economy": "280",
+            "economyVisible": true
+          },
+          {
+            "name": "무인도",
+            "nameVisible": true,
+            "economy": "300",
+            "economyVisible": true
+          },
+          {
+            "name": "베를린",
+            "nameVisible": true,
+            "economy": "320",
+            "economyVisible": true
+          },
+          {
+            "name": "황금열쇠",
+            "nameVisible": true,
+            "economy": "340",
+            "economyVisible": true
+          },
+          {
+            "name": "마이애미",
+            "nameVisible": true,
+            "economy": "360",
+            "economyVisible": true
+          },
+          {
+            "name": "열차역",
+            "nameVisible": true,
+            "economy": "380",
+            "economyVisible": true
+          },
+          {
+            "name": "산토도밍고",
+            "nameVisible": true,
+            "economy": "400",
+            "economyVisible": true
+          },
+          {
+            "name": "파리",
+            "nameVisible": true,
+            "economy": "420",
+            "economyVisible": true
+          },
+          {
+            "name": "도쿄",
+            "nameVisible": true,
+            "economy": "440",
+            "economyVisible": true
+          },
+          {
+            "name": "황금열쇠",
+            "nameVisible": true,
+            "economy": "460",
+            "economyVisible": true
+          },
+          {
+            "name": "바르셀로나",
+            "nameVisible": true,
+            "economy": "480",
+            "economyVisible": true
+          },
+          {
+            "name": "사회복지기금",
+            "nameVisible": true,
+            "economy": "500",
+            "economyVisible": true
+          },
+          {
+            "name": "이스탄불",
+            "nameVisible": true,
+            "economy": "520",
+            "economyVisible": true
+          },
+          {
+            "name": "아바나",
+            "nameVisible": true,
+            "economy": "540",
+            "economyVisible": true
+          },
+          {
+            "name": "휴식 광장",
+            "nameVisible": true,
+            "economy": "560",
+            "economyVisible": true
+          },
+          {
+            "name": "멕시코시티",
+            "nameVisible": true,
+            "economyVisible": false
+          },
+          {
+            "name": "리스본",
+            "nameVisible": true,
+            "economyVisible": false
+          },
+          {
+            "name": "열차역",
+            "nameVisible": true,
+            "economyVisible": false
+          },
+          {
+            "name": "황금열쇠",
+            "nameVisible": true,
+            "economyVisible": false
+          },
+          {
+            "name": "런던",
+            "nameVisible": true,
+            "economyVisible": false
+          },
+          {
+            "name": "로마",
+            "nameVisible": true,
+            "economyVisible": false
+          },
+          {
+            "name": "세계 여행",
+            "nameVisible": true,
+            "economyVisible": false
+          },
+          {
+            "name": "뉴어크",
+            "nameVisible": true,
+            "economyVisible": false
+          },
+          {
+            "name": "아그라",
+            "nameVisible": true,
+            "economyVisible": false
+          },
+          {
+            "name": "아테네",
+            "nameVisible": true,
+            "economyVisible": false
+          },
+          {
+            "name": "황금열쇠",
+            "nameVisible": true,
+            "economyVisible": false
+          },
+          {
+            "name": "토론토",
+            "nameVisible": true,
+            "economyVisible": false
+          },
+          {
+            "name": "시드니",
+            "nameVisible": true,
+            "economyVisible": false
+          },
+          {
+            "name": "기금 납부",
+            "nameVisible": true,
+            "economyVisible": false
+          },
+          {
+            "name": "서울",
+            "nameVisible": true,
+            "economyVisible": false
+          },
+          {
+            "name": "휴식 광장",
+            "nameVisible": true,
+            "economyVisible": false
+          }
+        ],
+        "propertyArts": [
+          {
+            "level": null,
+            "tag": "use",
+            "href": "/images/marble/building-stages.svg#land"
+          },
+          {
+            "level": null,
+            "tag": "use",
+            "href": "/images/marble/building-stages.svg#land"
+          },
+          {
+            "level": null,
+            "tag": "use",
+            "href": "/images/marble/building-stages.svg#land"
+          },
+          {
+            "level": null,
+            "tag": "use",
+            "href": "/images/marble/building-stages.svg#land"
+          },
+          {
+            "level": null,
+            "tag": "use",
+            "href": "/images/marble/building-stages.svg#land"
+          },
+          {
+            "level": null,
+            "tag": "use",
+            "href": "/images/marble/building-stages.svg#land"
+          },
+          {
+            "level": null
+          },
+          {
+            "level": null,
+            "tag": "use",
+            "href": "/images/marble/building-stages.svg#land"
+          },
+          {
+            "level": null,
+            "tag": "use",
+            "href": "/images/marble/building-stages.svg#land"
+          },
+          {
+            "level": null,
+            "tag": "use",
+            "href": "/images/marble/building-stages.svg#land"
+          },
+          {
+            "level": null,
+            "tag": "use",
+            "href": "/images/marble/building-stages.svg#land"
+          },
+          {
+            "level": null,
+            "tag": "use",
+            "href": "/images/marble/building-stages.svg#land"
+          },
+          {
+            "level": null,
+            "tag": "use",
+            "href": "/images/marble/building-stages.svg#land"
+          },
+          {
+            "level": null,
+            "tag": "use",
+            "href": "/images/marble/building-stages.svg#land"
+          },
+          {
+            "level": null,
+            "tag": "use",
+            "href": "/images/marble/building-stages.svg#land"
+          },
+          {
+            "level": null,
+            "tag": "use",
+            "href": "/images/marble/building-stages.svg#land"
+          },
+          {
+            "level": null,
+            "tag": "use",
+            "href": "/images/marble/building-stages.svg#land"
+          },
+          {
+            "level": null,
+            "tag": "use",
+            "href": "/images/marble/building-stages.svg#land"
+          },
+          {
+            "level": null,
+            "tag": "use",
+            "href": "/images/marble/building-stages.svg#land"
+          },
+          {
+            "level": null,
+            "tag": "use",
+            "href": "/images/marble/building-stages.svg#land"
+          },
+          {
+            "level": null,
+            "tag": "use",
+            "href": "/images/marble/building-stages.svg#land"
+          },
+          {
+            "level": null,
+            "tag": "use",
+            "href": "/images/marble/building-stages.svg#land"
+          },
+          {
+            "level": null,
+            "tag": "use",
+            "href": "/images/marble/building-stages.svg#land"
+          },
+          {
+            "level": null,
+            "tag": "use",
+            "href": "/images/marble/building-stages.svg#land"
+          }
+        ],
+        "pawns": [
+          {
+            "name": null,
+            "rect": {
+              "x": 350.34375,
+              "y": 429,
+              "width": 36,
+              "height": 46,
+              "top": 429,
+              "right": 386.34375,
+              "bottom": 475,
+              "left": 350.34375
+            },
+            "imgs": [
+              {
+                "src": "/images/marble/premium/pawns/ragdoll.webp",
+                "loaded": true,
+                "width": 195
+              }
+            ]
+          },
+          {
+            "name": null,
+            "rect": {
+              "x": 182.046875,
+              "y": 430.5,
+              "width": 36,
+              "height": 46,
+              "top": 430.5,
+              "right": 218.046875,
+              "bottom": 476.5,
+              "left": 182.046875
+            },
+            "imgs": [
+              {
+                "src": "/images/marble/premium/pawns/sali-suli.webp",
+                "loaded": true,
+                "width": 232
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "stage": 3,
+      "city": "베를린",
+      "seat": 2,
+      "language": "es",
+      "viewport": {
+        "width": 1366,
+        "height": 768
+      },
+      "file": "/workspace/deliverables/game-quality-restart-20261012/after-frozen-0fbfce87/marble-current/stage3-1366-es.png",
+      "metrics": {
+        "viewport": {
+          "width": 1366,
+          "height": 768
+        },
+        "scroll": {
+          "width": 1366,
+          "height": 2204
+        },
+        "board": {
+          "x": 29,
+          "y": 28,
+          "width": 1308,
+          "height": 740.390625,
+          "top": 28,
+          "right": 1337,
+          "bottom": 768.390625,
+          "left": 29
+        },
+        "tileNamesVisible": 40,
+        "tileEconomyVisible": 24,
+        "tiles": [
+          {
+            "name": "Salida",
+            "nameVisible": true,
+            "economy": "100",
+            "economyVisible": true
+          },
+          {
+            "name": "Gwangju",
+            "nameVisible": true,
+            "economy": "260",
+            "economyVisible": true
+          },
+          {
+            "name": "Llave dorada",
+            "nameVisible": true,
+            "economy": "140",
+            "economyVisible": true
+          },
+          {
+            "name": "Nueva York",
+            "nameVisible": true,
+            "economy": "160",
+            "economyVisible": true
+          },
+          {
+            "name": "Madrid",
+            "nameVisible": true,
+            "economy": "180",
+            "economyVisible": true
+          },
+          {
+            "name": "Santiago",
+            "nameVisible": true,
+            "economy": "200",
+            "economyVisible": true
+          },
+          {
+            "name": "Impuesto municipal",
+            "nameVisible": true,
+            "economy": "220",
+            "economyVisible": true
+          },
+          {
+            "name": "Llave dorada",
+            "nameVisible": true,
+            "economy": "240",
+            "economyVisible": true
+          },
+          {
+            "name": "Puerto Plata",
+            "nameVisible": true,
+            "economy": "120",
+            "economyVisible": true
+          },
+          {
+            "name": "San Juan",
+            "nameVisible": true,
+            "economy": "280",
+            "economyVisible": true
+          },
+          {
+            "name": "Isla desierta",
+            "nameVisible": true,
+            "economy": "300",
+            "economyVisible": true
+          },
+          {
+            "name": "Berlín",
+            "nameVisible": true,
+            "economy": "320",
+            "economyVisible": true
+          },
+          {
+            "name": "Llave dorada",
+            "nameVisible": true,
+            "economy": "340",
+            "economyVisible": true
+          },
+          {
+            "name": "Miami",
+            "nameVisible": true,
+            "economy": "360",
+            "economyVisible": true
+          },
+          {
+            "name": "Estación de tren",
+            "nameVisible": true,
+            "economy": "380",
+            "economyVisible": true
+          },
+          {
+            "name": "Santo Domingo",
+            "nameVisible": true,
+            "economy": "400",
+            "economyVisible": true
+          },
+          {
+            "name": "París",
+            "nameVisible": true,
+            "economy": "420",
+            "economyVisible": true
+          },
+          {
+            "name": "Tokio",
+            "nameVisible": true,
+            "economy": "440",
+            "economyVisible": true
+          },
+          {
+            "name": "Llave dorada",
+            "nameVisible": true,
+            "economy": "460",
+            "economyVisible": true
+          },
+          {
+            "name": "Barcelona",
+            "nameVisible": true,
+            "economy": "480",
+            "economyVisible": true
+          },
+          {
+            "name": "Fondo social",
+            "nameVisible": true,
+            "economy": "500",
+            "economyVisible": true
+          },
+          {
+            "name": "Estambul",
+            "nameVisible": true,
+            "economy": "520",
+            "economyVisible": true
+          },
+          {
+            "name": "La Habana",
+            "nameVisible": true,
+            "economy": "540",
+            "economyVisible": true
+          },
+          {
+            "name": "Plaza de descanso",
+            "nameVisible": true,
+            "economy": "560",
+            "economyVisible": true
+          },
+          {
+            "name": "Ciudad de México",
+            "nameVisible": true,
+            "economyVisible": false
+          },
+          {
+            "name": "Lisboa",
+            "nameVisible": true,
+            "economyVisible": false
+          },
+          {
+            "name": "Estación de tren",
+            "nameVisible": true,
+            "economyVisible": false
+          },
+          {
+            "name": "Llave dorada",
+            "nameVisible": true,
+            "economyVisible": false
+          },
+          {
+            "name": "Londres",
+            "nameVisible": true,
+            "economyVisible": false
+          },
+          {
+            "name": "Roma",
+            "nameVisible": true,
+            "economyVisible": false
+          },
+          {
+            "name": "Viaje mundial",
+            "nameVisible": true,
+            "economyVisible": false
+          },
+          {
+            "name": "Newark",
+            "nameVisible": true,
+            "economyVisible": false
+          },
+          {
+            "name": "Agra",
+            "nameVisible": true,
+            "economyVisible": false
+          },
+          {
+            "name": "Atenas",
+            "nameVisible": true,
+            "economyVisible": false
+          },
+          {
+            "name": "Llave dorada",
+            "nameVisible": true,
+            "economyVisible": false
+          },
+          {
+            "name": "Toronto",
+            "nameVisible": true,
+            "economyVisible": false
+          },
+          {
+            "name": "Sídney",
+            "nameVisible": true,
+            "economyVisible": false
+          },
+          {
+            "name": "Aporte al fondo",
+            "nameVisible": true,
+            "economyVisible": false
+          },
+          {
+            "name": "Seúl",
+            "nameVisible": true,
+            "economyVisible": false
+          },
+          {
+            "name": "Plaza de descanso",
+            "nameVisible": true,
+            "economyVisible": false
+          }
+        ],
+        "propertyArts": [
+          {
+            "level": null,
+            "tag": "use",
+            "href": "/images/marble/building-stages.svg#land"
+          },
+          {
+            "level": null,
+            "tag": "use",
+            "href": "/images/marble/building-stages.svg#land"
+          },
+          {
+            "level": null,
+            "tag": "use",
+            "href": "/images/marble/building-stages.svg#land"
+          },
+          {
+            "level": null,
+            "tag": "use",
+            "href": "/images/marble/building-stages.svg#land"
+          },
+          {
+            "level": null,
+            "tag": "use",
+            "href": "/images/marble/building-stages.svg#land"
+          },
+          {
+            "level": null,
+            "tag": "use",
+            "href": "/images/marble/building-stages.svg#land"
+          },
+          {
+            "level": null,
+            "tag": "defs"
+          },
+          {
+            "level": null,
+            "tag": "use",
+            "href": "/images/marble/building-stages.svg#land"
+          },
+          {
+            "level": null,
+            "tag": "use",
+            "href": "/images/marble/building-stages.svg#land"
+          },
+          {
+            "level": null,
+            "tag": "use",
+            "href": "/images/marble/building-stages.svg#land"
+          },
+          {
+            "level": null,
+            "tag": "use",
+            "href": "/images/marble/building-stages.svg#land"
+          },
+          {
+            "level": null,
+            "tag": "use",
+            "href": "/images/marble/building-stages.svg#land"
+          },
+          {
+            "level": null,
+            "tag": "use",
+            "href": "/images/marble/building-stages.svg#land"
+          },
+          {
+            "level": null,
+            "tag": "use",
+            "href": "/images/marble/building-stages.svg#land"
+          },
+          {
+            "level": null,
+            "tag": "use",
+            "href": "/images/marble/building-stages.svg#land"
+          },
+          {
+            "level": null,
+            "tag": "use",
+            "href": "/images/marble/building-stages.svg#land"
+          },
+          {
+            "level": null,
+            "tag": "use",
+            "href": "/images/marble/building-stages.svg#land"
+          },
+          {
+            "level": null,
+            "tag": "use",
+            "href": "/images/marble/building-stages.svg#land"
+          },
+          {
+            "level": null,
+            "tag": "use",
+            "href": "/images/marble/building-stages.svg#land"
+          },
+          {
+            "level": null,
+            "tag": "use",
+            "href": "/images/marble/building-stages.svg#land"
+          },
+          {
+            "level": null,
+            "tag": "use",
+            "href": "/images/marble/building-stages.svg#land"
+          },
+          {
+            "level": null,
+            "tag": "use",
+            "href": "/images/marble/building-stages.svg#land"
+          },
+          {
+            "level": null,
+            "tag": "use",
+            "href": "/images/marble/building-stages.svg#land"
+          },
+          {
+            "level": null,
+            "tag": "use",
+            "href": "/images/marble/building-stages.svg#land"
+          }
+        ],
+        "pawns": [
+          {
+            "name": null,
+            "rect": {
+              "x": 350.34375,
+              "y": 475,
+              "width": 36,
+              "height": 46,
+              "top": 475,
+              "right": 386.34375,
+              "bottom": 521,
+              "left": 350.34375
+            },
+            "imgs": [
+              {
+                "src": "/images/marble/premium/pawns/ragdoll.webp",
+                "loaded": true,
+                "width": 195
+              }
+            ]
+          },
+          {
+            "name": null,
+            "rect": {
+              "x": 182.046875,
+              "y": 476.5,
+              "width": 36,
+              "height": 46,
+              "top": 476.5,
+              "right": 218.046875,
+              "bottom": 522.5,
+              "left": 182.046875
+            },
+            "imgs": [
+              {
+                "src": "/images/marble/premium/pawns/sali-suli.webp",
+                "loaded": true,
+                "width": 232
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "stage": 3,
+      "city": "베를린",
+      "seat": 1,
+      "language": "ko",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "file": "/workspace/deliverables/game-quality-restart-20261012/after-frozen-0fbfce87/marble-current/stage3-1440-ko.png",
+      "metrics": {
+        "viewport": {
+          "width": 1440,
+          "height": 900
+        },
+        "scroll": {
+          "width": 1440,
+          "height": 2255
+        },
+        "board": {
+          "x": 29,
+          "y": -18,
+          "width": 1382,
+          "height": 875.5,
+          "top": -18,
+          "right": 1411,
+          "bottom": 857.5,
+          "left": 29
+        },
+        "tileNamesVisible": 40,
+        "tileEconomyVisible": 24,
+        "tiles": [
+          {
+            "name": "출발",
+            "nameVisible": true,
+            "economy": "100",
+            "economyVisible": true
+          },
+          {
+            "name": "광주",
+            "nameVisible": true,
+            "economy": "260",
+            "economyVisible": true
+          },
+          {
+            "name": "황금열쇠",
+            "nameVisible": true,
+            "economy": "140",
+            "economyVisible": true
+          },
+          {
+            "name": "뉴욕",
+            "nameVisible": true,
+            "economy": "160",
+            "economyVisible": true
+          },
+          {
+            "name": "마드리드",
+            "nameVisible": true,
+            "economy": "180",
+            "economyVisible": true
+          },
+          {
+            "name": "산티아고",
+            "nameVisible": true,
+            "economy": "200",
+            "economyVisible": true
+          },
+          {
+            "name": "도시세",
+            "nameVisible": true,
+            "economy": "220",
+            "economyVisible": true
+          },
+          {
+            "name": "황금열쇠",
+            "nameVisible": true,
+            "economy": "240",
+            "economyVisible": true
+          },
+          {
+            "name": "푸에르토플라타",
+            "nameVisible": true,
+            "economy": "120",
+            "economyVisible": true
+          },
+          {
+            "name": "산후안",
+            "nameVisible": true,
+            "economy": "280",
+            "economyVisible": true
+          },
+          {
+            "name": "무인도",
+            "nameVisible": true,
+            "economy": "300",
+            "economyVisible": true
+          },
+          {
+            "name": "베를린",
+            "nameVisible": true,
+            "economy": "320",
+            "economyVisible": true
+          },
+          {
+            "name": "황금열쇠",
+            "nameVisible": true,
+            "economy": "340",
+            "economyVisible": true
+          },
+          {
+            "name": "마이애미",
+            "nameVisible": true,
+            "economy": "360",
+            "economyVisible": true
+          },
+          {
+            "name": "열차역",
+            "nameVisible": true,
+            "economy": "380",
+            "economyVisible": true
+          },
+          {
+            "name": "산토도밍고",
+            "nameVisible": true,
+            "economy": "400",
+            "economyVisible": true
+          },
+          {
+            "name": "파리",
+            "nameVisible": true,
+            "economy": "420",
+            "economyVisible": true
+          },
+          {
+            "name": "도쿄",
+            "nameVisible": true,
+            "economy": "440",
+            "economyVisible": true
+          },
+          {
+            "name": "황금열쇠",
+            "nameVisible": true,
+            "economy": "460",
+            "economyVisible": true
+          },
+          {
+            "name": "바르셀로나",
+            "nameVisible": true,
+            "economy": "480",
+            "economyVisible": true
+          },
+          {
+            "name": "사회복지기금",
+            "nameVisible": true,
+            "economy": "500",
+            "economyVisible": true
+          },
+          {
+            "name": "이스탄불",
+            "nameVisible": true,
+            "economy": "520",
+            "economyVisible": true
+          },
+          {
+            "name": "아바나",
+            "nameVisible": true,
+            "economy": "540",
+            "economyVisible": true
+          },
+          {
+            "name": "휴식 광장",
+            "nameVisible": true,
+            "economy": "560",
+            "economyVisible": true
+          },
+          {
+            "name": "멕시코시티",
+            "nameVisible": true,
+            "economyVisible": false
+          },
+          {
+            "name": "리스본",
+            "nameVisible": true,
+            "economyVisible": false
+          },
+          {
+            "name": "열차역",
+            "nameVisible": true,
+            "economyVisible": false
+          },
+          {
+            "name": "황금열쇠",
+            "nameVisible": true,
+            "economyVisible": false
+          },
+          {
+            "name": "런던",
+            "nameVisible": true,
+            "economyVisible": false
+          },
+          {
+            "name": "로마",
+            "nameVisible": true,
+            "economyVisible": false
+          },
+          {
+            "name": "세계 여행",
+            "nameVisible": true,
+            "economyVisible": false
+          },
+          {
+            "name": "뉴어크",
+            "nameVisible": true,
+            "economyVisible": false
+          },
+          {
+            "name": "아그라",
+            "nameVisible": true,
+            "economyVisible": false
+          },
+          {
+            "name": "아테네",
+            "nameVisible": true,
+            "economyVisible": false
+          },
+          {
+            "name": "황금열쇠",
+            "nameVisible": true,
+            "economyVisible": false
+          },
+          {
+            "name": "토론토",
+            "nameVisible": true,
+            "economyVisible": false
+          },
+          {
+            "name": "시드니",
+            "nameVisible": true,
+            "economyVisible": false
+          },
+          {
+            "name": "기금 납부",
+            "nameVisible": true,
+            "economyVisible": false
+          },
+          {
+            "name": "서울",
+            "nameVisible": true,
+            "economyVisible": false
+          },
+          {
+            "name": "휴식 광장",
+            "nameVisible": true,
+            "economyVisible": false
+          }
+        ],
+        "propertyArts": [
+          {
+            "level": null,
+            "tag": "use",
+            "href": "/images/marble/building-stages.svg#land"
+          },
+          {
+            "level": null,
+            "tag": "use",
+            "href": "/images/marble/building-stages.svg#land"
+          },
+          {
+            "level": null,
+            "tag": "use",
+            "href": "/images/marble/building-stages.svg#land"
+          },
+          {
+            "level": null,
+            "tag": "use",
+            "href": "/images/marble/building-stages.svg#land"
+          },
+          {
+            "level": null,
+            "tag": "use",
+            "href": "/images/marble/building-stages.svg#land"
+          },
+          {
+            "level": null,
+            "tag": "use",
+            "href": "/images/marble/building-stages.svg#land"
+          },
+          {
+            "level": null
+          },
+          {
+            "level": null,
+            "tag": "use",
+            "href": "/images/marble/building-stages.svg#land"
+          },
+          {
+            "level": null,
+            "tag": "use",
+            "href": "/images/marble/building-stages.svg#land"
+          },
+          {
+            "level": null,
+            "tag": "use",
+            "href": "/images/marble/building-stages.svg#land"
+          },
+          {
+            "level": null,
+            "tag": "use",
+            "href": "/images/marble/building-stages.svg#land"
+          },
+          {
+            "level": null,
+            "tag": "use",
+            "href": "/images/marble/building-stages.svg#land"
+          },
+          {
+            "level": null,
+            "tag": "use",
+            "href": "/images/marble/building-stages.svg#land"
+          },
+          {
+            "level": null,
+            "tag": "use",
+            "href": "/images/marble/building-stages.svg#land"
+          },
+          {
+            "level": null,
+            "tag": "use",
+            "href": "/images/marble/building-stages.svg#land"
+          },
+          {
+            "level": null,
+            "tag": "use",
+            "href": "/images/marble/building-stages.svg#land"
+          },
+          {
+            "level": null,
+            "tag": "use",
+            "href": "/images/marble/building-stages.svg#land"
+          },
+          {
+            "level": null,
+            "tag": "use",
+            "href": "/images/marble/building-stages.svg#land"
+          },
+          {
+            "level": null,
+            "tag": "use",
+            "href": "/images/marble/building-stages.svg#land"
+          },
+          {
+            "level": null,
+            "tag": "use",
+            "href": "/images/marble/building-stages.svg#land"
+          },
+          {
+            "level": null,
+            "tag": "use",
+            "href": "/images/marble/building-stages.svg#land"
+          },
+          {
+            "level": null,
+            "tag": "use",
+            "href": "/images/marble/building-stages.svg#land"
+          },
+          {
+            "level": null,
+            "tag": "use",
+            "href": "/images/marble/building-stages.svg#land"
+          },
+          {
+            "level": null,
+            "tag": "use",
+            "href": "/images/marble/building-stages.svg#land"
+          }
+        ],
+        "pawns": [
+          {
+            "name": null,
+            "rect": {
+              "x": 378.578125,
+              "y": 553.703125,
+              "width": 36,
+              "height": 46,
+              "top": 553.703125,
+              "right": 414.578125,
+              "bottom": 599.703125,
+              "left": 378.578125
+            },
+            "imgs": [
+              {
+                "src": "/images/marble/premium/pawns/ragdoll.webp",
+                "loaded": true,
+                "width": 195
+              }
+            ]
+          },
+          {
+            "name": null,
+            "rect": {
+              "x": 192.765625,
+              "y": 548.671875,
+              "width": 36,
+              "height": 46,
+              "top": 548.671875,
+              "right": 228.765625,
+              "bottom": 594.671875,
+              "left": 192.765625
+            },
+            "imgs": [
+              {
+                "src": "/images/marble/premium/pawns/sali-suli.webp",
+                "loaded": true,
+                "width": 232
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "stage": 3,
+      "city": "베를린",
+      "seat": 2,
+      "language": "es",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "file": "/workspace/deliverables/game-quality-restart-20261012/after-frozen-0fbfce87/marble-current/stage3-1440-es.png",
+      "metrics": {
+        "viewport": {
+          "width": 1440,
+          "height": 900
+        },
+        "scroll": {
+          "width": 1440,
+          "height": 2204
+        },
+        "board": {
+          "x": 29,
+          "y": 28,
+          "width": 1382,
+          "height": 740.390625,
+          "top": 28,
+          "right": 1411,
+          "bottom": 768.390625,
+          "left": 29
+        },
+        "tileNamesVisible": 40,
+        "tileEconomyVisible": 24,
+        "tiles": [
+          {
+            "name": "Salida",
+            "nameVisible": true,
+            "economy": "100",
+            "economyVisible": true
+          },
+          {
+            "name": "Gwangju",
+            "nameVisible": true,
+            "economy": "260",
+            "economyVisible": true
+          },
+          {
+            "name": "Llave dorada",
+            "nameVisible": true,
+            "economy": "140",
+            "economyVisible": true
+          },
+          {
+            "name": "Nueva York",
+            "nameVisible": true,
+            "economy": "160",
+            "economyVisible": true
+          },
+          {
+            "name": "Madrid",
+            "nameVisible": true,
+            "economy": "180",
+            "economyVisible": true
+          },
+          {
+            "name": "Santiago",
+            "nameVisible": true,
+            "economy": "200",
+            "economyVisible": true
+          },
+          {
+            "name": "Impuesto municipal",
+            "nameVisible": true,
+            "economy": "220",
+            "economyVisible": true
+          },
+          {
+            "name": "Llave dorada",
+            "nameVisible": true,
+            "economy": "240",
+            "economyVisible": true
+          },
+          {
+            "name": "Puerto Plata",
+            "nameVisible": true,
+            "economy": "120",
+            "economyVisible": true
+          },
+          {
+            "name": "San Juan",
+            "nameVisible": true,
+            "economy": "280",
+            "economyVisible": true
+          },
+          {
+            "name": "Isla desierta",
+            "nameVisible": true,
+            "economy": "300",
+            "economyVisible": true
+          },
+          {
+            "name": "Berlín",
+            "nameVisible": true,
+            "economy": "320",
+            "economyVisible": true
+          },
+          {
+            "name": "Llave dorada",
+            "nameVisible": true,
+            "economy": "340",
+            "economyVisible": true
+          },
+          {
+            "name": "Miami",
+            "nameVisible": true,
+            "economy": "360",
+            "economyVisible": true
+          },
+          {
+            "name": "Estación de tren",
+            "nameVisible": true,
+            "economy": "380",
+            "economyVisible": true
+          },
+          {
+            "name": "Santo Domingo",
+            "nameVisible": true,
+            "economy": "400",
+            "economyVisible": true
+          },
+          {
+            "name": "París",
+            "nameVisible": true,
+            "economy": "420",
+            "economyVisible": true
+          },
+          {
+            "name": "Tokio",
+            "nameVisible": true,
+            "economy": "440",
+            "economyVisible": true
+          },
+          {
+            "name": "Llave dorada",
+            "nameVisible": true,
+            "economy": "460",
+            "economyVisible": true
+          },
+          {
+            "name": "Barcelona",
+            "nameVisible": true,
+            "economy": "480",
+            "economyVisible": true
+          },
+          {
+            "name": "Fondo social",
+            "nameVisible": true,
+            "economy": "500",
+            "economyVisible": true
+          },
+          {
+            "name": "Estambul",
+            "nameVisible": true,
+            "economy": "520",
+            "economyVisible": true
+          },
+          {
+            "name": "La Habana",
+            "nameVisible": true,
+            "economy": "540",
+            "economyVisible": true
+          },
+          {
+            "name": "Plaza de descanso",
+            "nameVisible": true,
+            "economy": "560",
+            "economyVisible": true
+          },
+          {
+            "name": "Ciudad de México",
+            "nameVisible": true,
+            "economyVisible": false
+          },
+          {
+            "name": "Lisboa",
+            "nameVisible": true,
+            "economyVisible": false
+          },
+          {
+            "name": "Estación de tren",
+            "nameVisible": true,
+            "economyVisible": false
+          },
+          {
+            "name": "Llave dorada",
+            "nameVisible": true,
+            "economyVisible": false
+          },
+          {
+            "name": "Londres",
+            "nameVisible": true,
+            "economyVisible": false
+          },
+          {
+            "name": "Roma",
+            "nameVisible": true,
+            "economyVisible": false
+          },
+          {
+            "name": "Viaje mundial",
+            "nameVisible": true,
+            "economyVisible": false
+          },
+          {
+            "name": "Newark",
+            "nameVisible": true,
+            "economyVisible": false
+          },
+          {
+            "name": "Agra",
+            "nameVisible": true,
+            "economyVisible": false
+          },
+          {
+            "name": "Atenas",
+            "nameVisible": true,
+            "economyVisible": false
+          },
+          {
+            "name": "Llave dorada",
+            "nameVisible": true,
+            "economyVisible": false
+          },
+          {
+            "name": "Toronto",
+            "nameVisible": true,
+            "economyVisible": false
+          },
+          {
+            "name": "Sídney",
+            "nameVisible": true,
+            "economyVisible": false
+          },
+          {
+            "name": "Aporte al fondo",
+            "nameVisible": true,
+            "economyVisible": false
+          },
+          {
+            "name": "Seúl",
+            "nameVisible": true,
+            "economyVisible": false
+          },
+          {
+            "name": "Plaza de descanso",
+            "nameVisible": true,
+            "economyVisible": false
+          }
+        ],
+        "propertyArts": [
+          {
+            "level": null,
+            "tag": "use",
+            "href": "/images/marble/building-stages.svg#land"
+          },
+          {
+            "level": null,
+            "tag": "use",
+            "href": "/images/marble/building-stages.svg#land"
+          },
+          {
+            "level": null,
+            "tag": "use",
+            "href": "/images/marble/building-stages.svg#land"
+          },
+          {
+            "level": null,
+            "tag": "use",
+            "href": "/images/marble/building-stages.svg#land"
+          },
+          {
+            "level": null,
+            "tag": "use",
+            "href": "/images/marble/building-stages.svg#land"
+          },
+          {
+            "level": null,
+            "tag": "use",
+            "href": "/images/marble/building-stages.svg#land"
+          },
+          {
+            "level": null,
+            "tag": "defs"
+          },
+          {
+            "level": null,
+            "tag": "use",
+            "href": "/images/marble/building-stages.svg#land"
+          },
+          {
+            "level": null,
+            "tag": "use",
+            "href": "/images/marble/building-stages.svg#land"
+          },
+          {
+            "level": null,
+            "tag": "use",
+            "href": "/images/marble/building-stages.svg#land"
+          },
+          {
+            "level": null,
+            "tag": "use",
+            "href": "/images/marble/building-stages.svg#land"
+          },
+          {
+            "level": null,
+            "tag": "use",
+            "href": "/images/marble/building-stages.svg#land"
+          },
+          {
+            "level": null,
+            "tag": "use",
+            "href": "/images/marble/building-stages.svg#land"
+          },
+          {
+            "level": null,
+            "tag": "use",
+            "href": "/images/marble/building-stages.svg#land"
+          },
+          {
+            "level": null,
+            "tag": "use",
+            "href": "/images/marble/building-stages.svg#land"
+          },
+          {
+            "level": null,
+            "tag": "use",
+            "href": "/images/marble/building-stages.svg#land"
+          },
+          {
+            "level": null,
+            "tag": "use",
+            "href": "/images/marble/building-stages.svg#land"
+          },
+          {
+            "level": null,
+            "tag": "use",
+            "href": "/images/marble/building-stages.svg#land"
+          },
+          {
+            "level": null,
+            "tag": "use",
+            "href": "/images/marble/building-stages.svg#land"
+          },
+          {
+            "level": null,
+            "tag": "use",
+            "href": "/images/marble/building-stages.svg#land"
+          },
+          {
+            "level": null,
+            "tag": "use",
+            "href": "/images/marble/building-stages.svg#land"
+          },
+          {
+            "level": null,
+            "tag": "use",
+            "href": "/images/marble/building-stages.svg#land"
+          },
+          {
+            "level": null,
+            "tag": "use",
+            "href": "/images/marble/building-stages.svg#land"
+          },
+          {
+            "level": null,
+            "tag": "use",
+            "href": "/images/marble/building-stages.svg#land"
+          }
+        ],
+        "pawns": [
+          {
+            "name": null,
+            "rect": {
+              "x": 378.578125,
+              "y": 599.703125,
+              "width": 36,
+              "height": 46,
+              "top": 599.703125,
+              "right": 414.578125,
+              "bottom": 645.703125,
+              "left": 378.578125
+            },
+            "imgs": [
+              {
+                "src": "/images/marble/premium/pawns/ragdoll.webp",
+                "loaded": true,
+                "width": 195
+              }
+            ]
+          },
+          {
+            "name": null,
+            "rect": {
+              "x": 192.765625,
+              "y": 594.671875,
+              "width": 36,
+              "height": 46,
+              "top": 594.671875,
+              "right": 228.765625,
+              "bottom": 640.671875,
+              "left": 192.765625
+            },
+            "imgs": [
+              {
+                "src": "/images/marble/premium/pawns/sali-suli.webp",
+                "loaded": true,
+                "width": 232
+              }
+            ]
+          }
+        ]
+      }
+    }
+  ],
+  "errors": [],
+  "initial": [
+    {
+      "playerId": "p1",
+      "version": 2,
+      "phase": "roll",
+      "turn": "p1",
+      "actions": [
+        {
+          "type": "borrow"
+        },
+        {
+          "type": "choose-pawn",
+          "payload": {
+            "pawn": "fox"
+          }
+        },
+        {
+          "type": "choose-pawn",
+          "payload": {
+            "pawn": "penguin"
+          }
+        },
+        {
+          "type": "choose-pawn",
+          "payload": {
+            "pawn": "astronaut"
+          }
+        },
+        {
+          "type": "choose-pawn",
+          "payload": {
+            "pawn": "robot"
+          }
+        },
+        {
+          "type": "choose-pawn",
+          "payload": {
+            "pawn": "dragon"
+          }
+        },
+        {
+          "type": "choose-pawn",
+          "payload": {
+            "pawn": "sali-suli"
+          }
+        },
+        {
+          "type": "roll"
+        }
+      ],
+      "turns": 0,
+      "pawns": {
+        "p1": "fox",
+        "p2": "cat"
+      },
+      "money": {
+        "p1": 1500,
+        "p2": 1500
+      }
+    },
+    {
+      "playerId": "p2",
+      "version": 2,
+      "phase": "roll",
+      "turn": "p1",
+      "actions": [],
+      "turns": 0,
+      "pawns": {
+        "p1": "fox",
+        "p2": "cat"
+      },
+      "money": {
+        "p1": 1500,
+        "p2": 1500
+      }
+    }
+  ],
+  "finishedStages": true,
+  "attempts": [
+    {
+      "classification": "runner harness error, not product failure",
+      "cause": "The first fresh-room run repeatedly selected every still-legal choose-pawn option because the active player can switch the pawn before first roll. It was stopped at version 157 before rolling/building. The runner was corrected to choose once per seat; the successful second run is the evidence below."
+    }
+  ],
+  "result": {
+    "stageCoverage": [
+      1,
+      2,
+      3
+    ],
+    "captureCount": 12,
+    "allContextsTwoSeat": true,
+    "fixtureEndpoints": [
+      "http://127.0.0.1:54331"
+    ],
+    "sourceHead": "0fbfce87a6b7b69fd27479e25fe6f62d71941d29",
+    "operations": "All setup, consent, pawn selection, roll, purchase, and construction actions used the two browser UIs; snapshot reconnects were read-only local fixture refreshes.",
+    "limitations": [
+      "Local SQL authority fixture has no Supabase Realtime or production Auth.",
+      "Current run verifies stage 1/2/3 city rendering and action prices but not full-match terminal/replay.",
+      "City/economy labels were visible in full board-element captures; not all of the 1366x768 viewport simultaneously, because screenshot crops to the board element."
+    ]
+  }
+}

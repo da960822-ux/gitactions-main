@@ -1,0 +1,5198 @@
+{
+  "fixture": "local browser UI connected to fixture 54331; no production Realtime",
+  "steps": [
+    {
+      "phase": "overlimit-setup",
+      "seat": "p1",
+      "move": {
+        "plan": "은행 → 내 토큰\n흰색\n파랑\n초록\n\n서로 다른 색 3/3 선택 · 반환 0개 · 현재 0 + 획득 3 − 반환 0 = 3/10\n\n보석 가져오기",
+        "geometry": {
+          "x": 827,
+          "y": 528.484375,
+          "w": 502,
+          "h": 110,
+          "bottom": 638.484375,
+          "scrollHeight": 110,
+          "clientHeight": 110
+        },
+        "payload": {
+          "gems": [
+            "white",
+            "blue",
+            "green"
+          ]
+        }
+      }
+    },
+    {
+      "phase": "overlimit-setup",
+      "seat": "p2",
+      "move": "reserve"
+    },
+    {
+      "phase": "overlimit-setup",
+      "seat": "p1",
+      "move": {
+        "plan": "은행 → 내 토큰\n흰색\n초록\n빨강\n\n서로 다른 색 3/3 선택 · 반환 0개 · 현재 3 + 획득 3 − 반환 0 = 6/10\n\n보석 가져오기",
+        "geometry": {
+          "x": 827,
+          "y": 489.484375,
+          "w": 502,
+          "h": 110,
+          "bottom": 599.484375,
+          "scrollHeight": 110,
+          "clientHeight": 110
+        },
+        "payload": {
+          "gems": [
+            "white",
+            "green",
+            "red"
+          ]
+        }
+      }
+    },
+    {
+      "phase": "overlimit-setup",
+      "seat": "p2",
+      "move": "reserve"
+    },
+    {
+      "phase": "overlimit-setup",
+      "seat": "p1",
+      "move": {
+        "plan": "은행 → 내 토큰\n흰색\n파랑\n빨강\n\n서로 다른 색 3/3 선택 · 반환 0개 · 현재 6 + 획득 3 − 반환 0 = 9/10\n\n보석 가져오기",
+        "geometry": {
+          "x": 827,
+          "y": 489.484375,
+          "w": 502,
+          "h": 110,
+          "bottom": 599.484375,
+          "scrollHeight": 110,
+          "clientHeight": 110
+        },
+        "payload": {
+          "gems": [
+            "white",
+            "blue",
+            "red"
+          ]
+        }
+      }
+    },
+    {
+      "phase": "overlimit-setup",
+      "seat": "p2",
+      "move": "reserve"
+    },
+    {
+      "phase": "overlimit-confirm",
+      "seat": "p1",
+      "move": {
+        "status": "검정 2개 선택 · 반환 1개 · 현재 9 + 획득 2 − 반환 1 = 10/10",
+        "returnControls": "흰색 1\n+\n−\n파랑 0\n+\n−\n초록 0\n+\n−\n빨강 0\n+\n−\n검정 0\n+\n−\n황금 0\n+\n−",
+        "expectedPayload": {
+          "gem": "black",
+          "returnTokens": {
+            "black": 1
+          }
+        }
+      }
+    },
+    {
+      "phase": "noble-progress",
+      "seat": "p2",
+      "move": {
+        "type": "buy",
+        "id": "t1-12",
+        "bonus": "blue",
+        "points": 0
+      }
+    },
+    {
+      "phase": "noble-progress",
+      "seat": "p1",
+      "move": {
+        "type": "buy",
+        "id": "t1-25",
+        "bonus": "black",
+        "points": 0,
+        "cost": {
+          "red": 0,
+          "blue": 0,
+          "black": 0,
+          "green": 2,
+          "white": 2
+        }
+      }
+    },
+    {
+      "phase": "noble-progress",
+      "seat": "p2",
+      "move": {
+        "plan": "Banco → tus fichas\nBlanca\nAzul\nVerde\n\nColores distintos 3/3 · Devolver 0 · ahora 0 + tomas 3 − devuelves 0 = 3/10\n\nTomar gemas",
+        "geometry": {
+          "x": 827,
+          "y": 476.484375,
+          "w": 502,
+          "h": 110,
+          "bottom": 586.484375,
+          "scrollHeight": 110,
+          "clientHeight": 110
+        },
+        "payload": {
+          "gems": [
+            "white",
+            "blue",
+            "green"
+          ]
+        }
+      }
+    },
+    {
+      "phase": "noble-progress",
+      "seat": "p1",
+      "move": {
+        "plan": "은행 → 내 토큰\n흰색\n파랑\n빨강\n\n서로 다른 색 3/3 선택 · 반환 0개 · 현재 6 + 획득 3 − 반환 0 = 9/10\n\n보석 가져오기",
+        "geometry": {
+          "x": 827,
+          "y": 437.484375,
+          "w": 502,
+          "h": 110,
+          "bottom": 547.484375,
+          "scrollHeight": 110,
+          "clientHeight": 110
+        },
+        "payload": {
+          "gems": [
+            "white",
+            "blue",
+            "red"
+          ]
+        },
+        "score": 2
+      }
+    },
+    {
+      "phase": "noble-progress",
+      "seat": "p2",
+      "move": {
+        "plan": "Banco → tus fichas\nBlanca\nVerde\nRoja\n\nColores distintos 3/3 · Devolver 0 · ahora 3 + tomas 3 − devuelves 0 = 6/10\n\nTomar gemas",
+        "geometry": {
+          "x": 827,
+          "y": 437.484375,
+          "w": 502,
+          "h": 110,
+          "bottom": 547.484375,
+          "scrollHeight": 110,
+          "clientHeight": 110
+        },
+        "payload": {
+          "gems": [
+            "white",
+            "green",
+            "red"
+          ]
+        }
+      }
+    },
+    {
+      "phase": "noble-progress",
+      "seat": "p1",
+      "move": {
+        "type": "buy",
+        "id": "t1-38",
+        "bonus": "green",
+        "points": 0,
+        "cost": {
+          "red": 1,
+          "blue": 1,
+          "black": 1,
+          "green": 0,
+          "white": 1
+        }
+      }
+    },
+    {
+      "phase": "noble-progress",
+      "seat": "p2",
+      "move": {
+        "plan": "Banco → tus fichas\nBlanca\nAzul\nVerde\n\nColores distintos 3/3 · Devolver 0 · ahora 6 + tomas 3 − devuelves 0 = 9/10\n\nTomar gemas",
+        "geometry": {
+          "x": 827,
+          "y": 437.484375,
+          "w": 502,
+          "h": 110,
+          "bottom": 547.484375,
+          "scrollHeight": 110,
+          "clientHeight": 110
+        },
+        "payload": {
+          "gems": [
+            "white",
+            "blue",
+            "green"
+          ]
+        }
+      }
+    },
+    {
+      "phase": "noble-progress",
+      "seat": "p1",
+      "move": {
+        "plan": "은행 → 내 토큰\n흰색\n초록\n빨강\n\n서로 다른 색 3/3 선택 · 반환 0개 · 현재 6 + 획득 3 − 반환 0 = 9/10\n\n보석 가져오기",
+        "geometry": {
+          "x": 827,
+          "y": 437.484375,
+          "w": 502,
+          "h": 110,
+          "bottom": 547.484375,
+          "scrollHeight": 110,
+          "clientHeight": 110
+        },
+        "payload": {
+          "gems": [
+            "white",
+            "green",
+            "red"
+          ]
+        },
+        "score": 2
+      }
+    },
+    {
+      "phase": "noble-progress",
+      "seat": "p2",
+      "move": {
+        "type": "buy",
+        "id": "t1-08",
+        "bonus": "green",
+        "points": 0
+      }
+    },
+    {
+      "phase": "noble-progress",
+      "seat": "p1",
+      "move": {
+        "type": "buy",
+        "id": "t1-13",
+        "bonus": "green",
+        "points": 0,
+        "cost": {
+          "red": 3,
+          "blue": 0,
+          "black": 0,
+          "green": 0,
+          "white": 0
+        }
+      }
+    },
+    {
+      "phase": "noble-progress",
+      "seat": "p2",
+      "move": {
+        "type": "reserve",
+        "cardId": "t1-29",
+        "tier": 1
+      }
+    },
+    {
+      "phase": "noble-progress",
+      "seat": "p1",
+      "move": {
+        "plan": "은행 → 내 토큰\n흰색\n파랑\n빨강\n\n서로 다른 색 3/3 선택 · 반환 0개 · 현재 6 + 획득 3 − 반환 0 = 9/10\n\n보석 가져오기",
+        "geometry": {
+          "x": 827,
+          "y": 437.484375,
+          "w": 502,
+          "h": 110,
+          "bottom": 547.484375,
+          "scrollHeight": 110,
+          "clientHeight": 110
+        },
+        "payload": {
+          "gems": [
+            "white",
+            "blue",
+            "red"
+          ]
+        },
+        "score": 0
+      }
+    },
+    {
+      "phase": "noble-progress",
+      "seat": "p2",
+      "move": {
+        "type": "buy",
+        "id": "t1-26",
+        "bonus": "white",
+        "points": 0
+      }
+    },
+    {
+      "phase": "noble-progress",
+      "seat": "p1",
+      "move": {
+        "type": "buy",
+        "id": "t1-35",
+        "bonus": "black",
+        "points": 0,
+        "cost": {
+          "red": 1,
+          "blue": 0,
+          "black": 0,
+          "green": 2,
+          "white": 0
+        }
+      }
+    },
+    {
+      "phase": "noble-progress",
+      "seat": "p2",
+      "move": {
+        "plan": "Banco → tus fichas\nAzul\nVerde\nRoja\n\nColores distintos 3/3 · Devolver 0 · ahora 3 + tomas 3 − devuelves 0 = 6/10\n\nTomar gemas",
+        "geometry": {
+          "x": 827,
+          "y": 476.484375,
+          "w": 502,
+          "h": 110,
+          "bottom": 586.484375,
+          "scrollHeight": 110,
+          "clientHeight": 110
+        },
+        "payload": {
+          "gems": [
+            "blue",
+            "green",
+            "red"
+          ]
+        }
+      }
+    },
+    {
+      "phase": "noble-progress",
+      "seat": "p1",
+      "move": {
+        "plan": "은행 → 내 토큰\n초록\n빨강\n검정\n\n서로 다른 색 3/3 선택 · 반환 1개 · 현재 8 + 획득 3 − 반환 1 = 10/10\n\n흰색 0\n+\n−\n파랑 0\n+\n−\n초록 0\n+\n−\n빨강 0\n+\n−\n검정 1\n+\n−\n황금 0\n+\n−\n보석 가져오기",
+        "geometry": {
+          "x": 827,
+          "y": 437.484375,
+          "w": 502,
+          "h": 220,
+          "bottom": 657.484375,
+          "scrollHeight": 220,
+          "clientHeight": 220
+        },
+        "payload": {
+          "gems": [
+            "green",
+            "red",
+            "black"
+          ],
+          "returnTokens": {
+            "black": 1
+          }
+        },
+        "score": 0
+      }
+    },
+    {
+      "phase": "noble-progress",
+      "seat": "p2",
+      "move": {
+        "type": "buy",
+        "id": "t1-07",
+        "bonus": "blue",
+        "points": 0
+      }
+    },
+    {
+      "phase": "noble-progress",
+      "seat": "p1",
+      "move": {
+        "type": "buy",
+        "id": "t1-36",
+        "bonus": "white",
+        "points": 0,
+        "cost": {
+          "red": 1,
+          "blue": 1,
+          "black": 1,
+          "green": 1,
+          "white": 0
+        }
+      }
+    },
+    {
+      "phase": "noble-progress",
+      "seat": "p2",
+      "move": {
+        "type": "buy",
+        "id": "t1-33",
+        "bonus": "green",
+        "points": 0
+      }
+    },
+    {
+      "phase": "noble-progress",
+      "seat": "p1",
+      "move": {
+        "type": "buy",
+        "id": "t1-21",
+        "bonus": "white",
+        "points": 0,
+        "cost": {
+          "red": 0,
+          "blue": 2,
+          "black": 2,
+          "green": 0,
+          "white": 0
+        }
+      }
+    },
+    {
+      "phase": "noble-progress",
+      "seat": "p2",
+      "move": {
+        "plan": "Banco → tus fichas\nBlanca\nAzul\nVerde\n\nColores distintos 3/3 · Devolver 0 · ahora 2 + tomas 3 − devuelves 0 = 5/10\n\nTomar gemas",
+        "geometry": {
+          "x": 827,
+          "y": 476.484375,
+          "w": 502,
+          "h": 110,
+          "bottom": 586.484375,
+          "scrollHeight": 110,
+          "clientHeight": 110
+        },
+        "payload": {
+          "gems": [
+            "white",
+            "blue",
+            "green"
+          ]
+        }
+      }
+    },
+    {
+      "phase": "noble-progress",
+      "seat": "p1",
+      "move": {
+        "type": "buy",
+        "id": "t1-19",
+        "bonus": "red",
+        "points": 0,
+        "cost": {
+          "red": 0,
+          "blue": 0,
+          "black": 2,
+          "green": 1,
+          "white": 2
+        }
+      }
+    },
+    {
+      "phase": "noble-progress",
+      "seat": "p2",
+      "move": {
+        "plan": "Banco → tus fichas\nAzul\nVerde\nRoja\n\nColores distintos 3/3 · Devolver 0 · ahora 5 + tomas 3 − devuelves 0 = 8/10\n\nTomar gemas",
+        "geometry": {
+          "x": 827,
+          "y": 476.484375,
+          "w": 502,
+          "h": 110,
+          "bottom": 586.484375,
+          "scrollHeight": 110,
+          "clientHeight": 110
+        },
+        "payload": {
+          "gems": [
+            "blue",
+            "green",
+            "red"
+          ]
+        }
+      }
+    },
+    {
+      "phase": "noble-progress",
+      "seat": "p1",
+      "move": {
+        "type": "buy",
+        "id": "t1-09",
+        "bonus": "red",
+        "points": 0,
+        "cost": {
+          "red": 1,
+          "blue": 0,
+          "black": 3,
+          "green": 0,
+          "white": 1
+        }
+      }
+    },
+    {
+      "phase": "noble-progress",
+      "seat": "p2",
+      "move": {
+        "type": "buy",
+        "id": "t1-30",
+        "bonus": "black",
+        "points": 0
+      }
+    },
+    {
+      "phase": "noble-progress",
+      "seat": "p1",
+      "move": {
+        "type": "buy",
+        "id": "t1-24",
+        "bonus": "red",
+        "points": 0,
+        "cost": {
+          "red": 2,
+          "blue": 0,
+          "black": 0,
+          "green": 0,
+          "white": 2
+        }
+      }
+    },
+    {
+      "phase": "noble-progress",
+      "seat": "p2",
+      "move": {
+        "type": "buy",
+        "id": "t1-11",
+        "bonus": "white",
+        "points": 0
+      }
+    },
+    {
+      "phase": "noble-progress",
+      "seat": "p1",
+      "move": {
+        "type": "buy",
+        "id": "t1-27",
+        "bonus": "blue",
+        "points": 0,
+        "cost": {
+          "red": 2,
+          "blue": 0,
+          "black": 1,
+          "green": 1,
+          "white": 1
+        }
+      }
+    },
+    {
+      "phase": "noble-progress",
+      "seat": "p2",
+      "move": {
+        "type": "buy",
+        "id": "t1-06",
+        "bonus": "white",
+        "points": 0
+      }
+    },
+    {
+      "phase": "noble-progress",
+      "seat": "p1",
+      "move": {
+        "type": "buy",
+        "id": "t1-01",
+        "bonus": "white",
+        "points": 1,
+        "cost": {
+          "red": 0,
+          "blue": 0,
+          "black": 0,
+          "green": 4,
+          "white": 0
+        }
+      }
+    },
+    {
+      "phase": "noble-progress",
+      "seat": "p2",
+      "move": {
+        "type": "buy",
+        "id": "t1-34",
+        "bonus": "red",
+        "points": 0
+      }
+    },
+    {
+      "phase": "noble-progress",
+      "seat": "p1",
+      "move": {
+        "type": "buy",
+        "id": "t1-18",
+        "bonus": "green",
+        "points": 0,
+        "cost": {
+          "red": 2,
+          "blue": 1,
+          "black": 2,
+          "green": 0,
+          "white": 0
+        }
+      }
+    },
+    {
+      "phase": "noble-progress",
+      "seat": "p2",
+      "move": {
+        "type": "buy",
+        "id": "t1-20",
+        "bonus": "black",
+        "points": 0
+      }
+    },
+    {
+      "phase": "noble-progress",
+      "seat": "p1",
+      "move": {
+        "type": "buy",
+        "id": "t1-15",
+        "bonus": "black",
+        "points": 0,
+        "cost": {
+          "red": 0,
+          "blue": 0,
+          "black": 0,
+          "green": 3,
+          "white": 0
+        }
+      }
+    },
+    {
+      "phase": "noble-progress",
+      "seat": "p2",
+      "move": {
+        "type": "buy",
+        "id": "t1-37",
+        "bonus": "blue",
+        "points": 0
+      }
+    },
+    {
+      "phase": "noble-progress",
+      "seat": "p1",
+      "move": {
+        "type": "buy",
+        "id": "t1-31",
+        "bonus": "white",
+        "points": 0,
+        "cost": {
+          "red": 2,
+          "blue": 0,
+          "black": 1,
+          "green": 0,
+          "white": 0
+        }
+      }
+    },
+    {
+      "phase": "noble-progress",
+      "seat": "p2",
+      "move": {
+        "type": "buy",
+        "id": "t1-22",
+        "bonus": "blue",
+        "points": 0
+      }
+    },
+    {
+      "phase": "noble-progress",
+      "seat": "p1",
+      "move": {
+        "type": "buy",
+        "id": "t1-28",
+        "bonus": "green",
+        "points": 0,
+        "cost": {
+          "red": 1,
+          "blue": 1,
+          "black": 2,
+          "green": 0,
+          "white": 1
+        }
+      }
+    },
+    {
+      "phase": "noble-progress",
+      "seat": "p2",
+      "move": {
+        "type": "buy",
+        "id": "t1-16",
+        "bonus": "white",
+        "points": 0
+      }
+    },
+    {
+      "phase": "noble-progress",
+      "seat": "p1",
+      "move": {
+        "type": "buy",
+        "id": "t1-14",
+        "bonus": "red",
+        "points": 0,
+        "cost": {
+          "red": 0,
+          "blue": 0,
+          "black": 0,
+          "green": 0,
+          "white": 3
+        }
+      }
+    },
+    {
+      "phase": "noble-progress",
+      "seat": "p2",
+      "move": {
+        "type": "buy",
+        "id": "t1-39",
+        "bonus": "red",
+        "points": 0
+      }
+    },
+    {
+      "phase": "noble-progress",
+      "seat": "p1",
+      "move": {
+        "type": "buy",
+        "id": "t1-32",
+        "bonus": "blue",
+        "points": 0,
+        "cost": {
+          "red": 0,
+          "blue": 0,
+          "black": 2,
+          "green": 0,
+          "white": 1
+        }
+      }
+    },
+    {
+      "phase": "noble-progress",
+      "seat": "p2",
+      "move": {
+        "type": "buy",
+        "id": "t1-23",
+        "bonus": "green",
+        "points": 0
+      }
+    },
+    {
+      "phase": "noble-progress",
+      "seat": "p1",
+      "move": {
+        "type": "buy",
+        "id": "t1-40",
+        "bonus": "black",
+        "points": 0,
+        "cost": {
+          "red": 1,
+          "blue": 1,
+          "black": 0,
+          "green": 1,
+          "white": 1
+        }
+      }
+    }
+  ],
+  "errors": [],
+  "screenshots": [
+    "/workspace/deliverables/game-quality-noble-review-20261012/splendor/03-overlimit-return-plan-ko.png",
+    "/workspace/deliverables/game-quality-noble-review-20261012/splendor/07-after-noble-ko.png",
+    "/workspace/deliverables/game-quality-noble-review-20261012/splendor/07-after-noble-es.png",
+    "/workspace/deliverables/game-quality-noble-review-20261012/splendor/08-normal-flow-projection-noble-1366-ko.png",
+    "/workspace/deliverables/game-quality-noble-review-20261012/splendor/09-after-noble-1440-ko.png",
+    "/workspace/deliverables/game-quality-noble-review-20261012/splendor/08-normal-flow-projection-noble-1366-es.png",
+    "/workspace/deliverables/game-quality-noble-review-20261012/splendor/09-after-noble-1440-es.png"
+  ],
+  "room": "http://127.0.0.1:5214/room/02feba28-1ccd-4cbd-894f-527389c3d078",
+  "initial": [
+    {
+      "seat": "p1",
+      "version": 2,
+      "connection": "reconnecting",
+      "phase": "action",
+      "roomId": "02feba28-1ccd-4cbd-894f-527389c3d078",
+      "turn": "p1",
+      "hand": {
+        "red": 0,
+        "blue": 0,
+        "gold": 0,
+        "black": 0,
+        "green": 0,
+        "white": 0
+      }
+    },
+    {
+      "seat": "p2",
+      "version": 2,
+      "connection": "reconnecting",
+      "phase": "waiting",
+      "roomId": "02feba28-1ccd-4cbd-894f-527389c3d078",
+      "turn": "p1",
+      "hand": {
+        "red": 0,
+        "blue": 0,
+        "gold": 0,
+        "black": 0,
+        "green": 0,
+        "white": 0
+      }
+    }
+  ],
+  "preOverlimit": {
+    "p1Tokens": {
+      "red": 2,
+      "blue": 2,
+      "gold": 0,
+      "black": 0,
+      "green": 2,
+      "white": 3
+    },
+    "coloredTotal": 9,
+    "p2OpponentReservedCount": 3,
+    "p1PrivateReserved": 0,
+    "p2OwnReserved": 3,
+    "connection": [
+      "reconnecting",
+      "reconnecting"
+    ]
+  },
+  "overlimitPrompt": {
+    "status": "검정 2개 선택 · 반환 1개 · 현재 9 + 획득 2 − 반환 1 = 10/10",
+    "returnControls": "흰색 1\n+\n−\n파랑 0\n+\n−\n초록 0\n+\n−\n빨강 0\n+\n−\n검정 0\n+\n−\n황금 0\n+\n−",
+    "planBox": {
+      "x": 827,
+      "y": 489.484375,
+      "w": 502,
+      "h": 220,
+      "bottom": 709.484375,
+      "scrollHeight": 220,
+      "clientHeight": 220
+    },
+    "viewport": {
+      "w": 1366,
+      "h": 768
+    },
+    "expectedPayload": {
+      "gem": "black",
+      "returnTokens": {
+        "black": 1
+      }
+    }
+  },
+  "afterOverlimit": {
+    "version": [
+      9,
+      9
+    ],
+    "turn": [
+      "p2",
+      "p2"
+    ],
+    "p1Tokens": {
+      "red": 2,
+      "blue": 2,
+      "gold": 0,
+      "black": 2,
+      "green": 2,
+      "white": 2
+    },
+    "total": 10,
+    "p1PrivateReserved": 0,
+    "p2OwnReserved": 3,
+    "p1PublicOpponentReserveCount": 3
+  },
+  "reconnect": {
+    "versions": [
+      9,
+      9
+    ],
+    "connections": [
+      "reconnecting",
+      "reconnecting"
+    ],
+    "privateP1": [],
+    "privateP2": [
+      "t1-10",
+      "t1-17",
+      "t1-08"
+    ],
+    "p1OpponentCount": 3
+  },
+  "nobleGoal": {
+    "id": "n4",
+    "requirement": {
+      "black": 4,
+      "white": 4
+    },
+    "points": 3
+  },
+  "progress": {
+    "turnCount": 40,
+    "view": {
+      "nobles": 3,
+      "points": 1,
+      "tokens": {
+        "red": 0,
+        "blue": 0,
+        "gold": 0,
+        "black": 1,
+        "green": 0,
+        "white": 2
+      },
+      "bonuses": {
+        "red": 4,
+        "blue": 1,
+        "black": 3,
+        "green": 4,
+        "white": 4
+      },
+      "reserved": []
+    },
+    "goalId": "n4"
+  },
+  "nobleResult": {
+    "nobleAward": true,
+    "turnCount": 44,
+    "phase": "waiting",
+    "turn": [
+      "p2",
+      "p2"
+    ],
+    "scores": [
+      {
+        "p1": 7,
+        "p2": 0
+      },
+      {
+        "p1": 7,
+        "p2": 0
+      }
+    ],
+    "p1Hand": {
+      "nobles": 6,
+      "points": 1,
+      "tokens": {
+        "red": 0,
+        "blue": 0,
+        "gold": 0,
+        "black": 1,
+        "green": 0,
+        "white": 2
+      },
+      "bonuses": {
+        "red": 4,
+        "blue": 2,
+        "black": 4,
+        "green": 4,
+        "white": 4
+      },
+      "reserved": []
+    },
+    "remainingNobles": {
+      "n7": {
+        "points": 3,
+        "requirement": {
+          "red": 3,
+          "blue": 3,
+          "green": 3
+        }
+      }
+    }
+  },
+  "raw1366Geometry": [
+    {
+      "viewport": {
+        "w": 1366,
+        "h": 768
+      },
+      "board": {
+        "x": 29,
+        "y": 176,
+        "w": 1308,
+        "h": 600.296875,
+        "right": 1337,
+        "bottom": 776.296875,
+        "scrollHeight": 598,
+        "clientHeight": 598
+      },
+      "market": {
+        "x": 32,
+        "y": 353.296875,
+        "w": 790,
+        "h": 420,
+        "right": 822,
+        "bottom": 773.296875,
+        "scrollHeight": 420,
+        "clientHeight": 420
+      },
+      "tiers": [
+        {
+          "x": 32,
+          "y": 353.296875,
+          "w": 790,
+          "h": 140,
+          "right": 822,
+          "bottom": 493.296875,
+          "scrollHeight": 138,
+          "clientHeight": 138
+        },
+        {
+          "x": 32,
+          "y": 493.296875,
+          "w": 790,
+          "h": 140,
+          "right": 822,
+          "bottom": 633.296875,
+          "scrollHeight": 138,
+          "clientHeight": 138
+        },
+        {
+          "x": 32,
+          "y": 633.296875,
+          "w": 790,
+          "h": 140,
+          "right": 822,
+          "bottom": 773.296875,
+          "scrollHeight": 138,
+          "clientHeight": 138
+        }
+      ],
+      "cards": [
+        {
+          "box": {
+            "x": 102.796875,
+            "y": 357.296875,
+            "w": 175.046875,
+            "h": 132,
+            "right": 277.84375,
+            "bottom": 489.296875,
+            "scrollHeight": 130,
+            "clientHeight": 130
+          },
+          "bonus": {
+            "x": 198.796875,
+            "y": 377.796875,
+            "w": 36.328125,
+            "h": 25,
+            "right": 235.125,
+            "bottom": 402.796875,
+            "scrollHeight": 23,
+            "clientHeight": 23
+          },
+          "points": {
+            "x": 198.796875,
+            "y": 405.796875,
+            "w": 42.90625,
+            "h": 24,
+            "right": 241.703125,
+            "bottom": 429.796875,
+            "scrollHeight": 22,
+            "clientHeight": 22
+          },
+          "bonusText": "+1",
+          "pointsText": "4 점"
+        },
+        {
+          "box": {
+            "x": 282.84375,
+            "y": 357.296875,
+            "w": 175.046875,
+            "h": 132,
+            "right": 457.890625,
+            "bottom": 489.296875,
+            "scrollHeight": 130,
+            "clientHeight": 130
+          },
+          "bonus": {
+            "x": 378.84375,
+            "y": 377.796875,
+            "w": 36.328125,
+            "h": 25,
+            "right": 415.171875,
+            "bottom": 402.796875,
+            "scrollHeight": 23,
+            "clientHeight": 23
+          },
+          "points": {
+            "x": 378.84375,
+            "y": 405.796875,
+            "w": 42.453125,
+            "h": 24,
+            "right": 421.296875,
+            "bottom": 429.796875,
+            "scrollHeight": 22,
+            "clientHeight": 22
+          },
+          "bonusText": "+1",
+          "pointsText": "5 점"
+        },
+        {
+          "box": {
+            "x": 462.890625,
+            "y": 357.296875,
+            "w": 175.046875,
+            "h": 132,
+            "right": 637.9375,
+            "bottom": 489.296875,
+            "scrollHeight": 130,
+            "clientHeight": 130
+          },
+          "bonus": {
+            "x": 558.890625,
+            "y": 377.796875,
+            "w": 36.328125,
+            "h": 25,
+            "right": 595.21875,
+            "bottom": 402.796875,
+            "scrollHeight": 23,
+            "clientHeight": 23
+          },
+          "points": {
+            "x": 558.890625,
+            "y": 405.796875,
+            "w": 42.453125,
+            "h": 24,
+            "right": 601.34375,
+            "bottom": 429.796875,
+            "scrollHeight": 22,
+            "clientHeight": 22
+          },
+          "bonusText": "+1",
+          "pointsText": "5 점"
+        },
+        {
+          "box": {
+            "x": 642.9375,
+            "y": 357.296875,
+            "w": 175.0625,
+            "h": 132,
+            "right": 818,
+            "bottom": 489.296875,
+            "scrollHeight": 130,
+            "clientHeight": 130
+          },
+          "bonus": {
+            "x": 738.9375,
+            "y": 366.796875,
+            "w": 36.328125,
+            "h": 25,
+            "right": 775.265625,
+            "bottom": 391.796875,
+            "scrollHeight": 23,
+            "clientHeight": 23
+          },
+          "points": {
+            "x": 738.9375,
+            "y": 394.796875,
+            "w": 42.15625,
+            "h": 24,
+            "right": 781.09375,
+            "bottom": 418.796875,
+            "scrollHeight": 22,
+            "clientHeight": 22
+          },
+          "bonusText": "+1",
+          "pointsText": "3 점"
+        },
+        {
+          "box": {
+            "x": 102.796875,
+            "y": 497.296875,
+            "w": 175.046875,
+            "h": 132,
+            "right": 277.84375,
+            "bottom": 629.296875,
+            "scrollHeight": 130,
+            "clientHeight": 130
+          },
+          "bonus": {
+            "x": 198.796875,
+            "y": 517.796875,
+            "w": 36.328125,
+            "h": 25,
+            "right": 235.125,
+            "bottom": 542.796875,
+            "scrollHeight": 23,
+            "clientHeight": 23
+          },
+          "points": {
+            "x": 198.796875,
+            "y": 545.796875,
+            "w": 42.15625,
+            "h": 24,
+            "right": 240.953125,
+            "bottom": 569.796875,
+            "scrollHeight": 22,
+            "clientHeight": 22
+          },
+          "bonusText": "+1",
+          "pointsText": "3 점"
+        },
+        {
+          "box": {
+            "x": 282.84375,
+            "y": 497.296875,
+            "w": 175.046875,
+            "h": 132,
+            "right": 457.890625,
+            "bottom": 629.296875,
+            "scrollHeight": 130,
+            "clientHeight": 130
+          },
+          "bonus": {
+            "x": 378.84375,
+            "y": 517.796875,
+            "w": 36.328125,
+            "h": 25,
+            "right": 415.171875,
+            "bottom": 542.796875,
+            "scrollHeight": 23,
+            "clientHeight": 23
+          },
+          "points": {
+            "x": 378.84375,
+            "y": 545.796875,
+            "w": 42.15625,
+            "h": 24,
+            "right": 421,
+            "bottom": 569.796875,
+            "scrollHeight": 22,
+            "clientHeight": 22
+          },
+          "bonusText": "+1",
+          "pointsText": "3 점"
+        },
+        {
+          "box": {
+            "x": 462.890625,
+            "y": 497.296875,
+            "w": 175.046875,
+            "h": 132,
+            "right": 637.9375,
+            "bottom": 629.296875,
+            "scrollHeight": 130,
+            "clientHeight": 130
+          },
+          "bonus": {
+            "x": 558.890625,
+            "y": 517.796875,
+            "w": 36.328125,
+            "h": 25,
+            "right": 595.21875,
+            "bottom": 542.796875,
+            "scrollHeight": 23,
+            "clientHeight": 23
+          },
+          "points": {
+            "x": 558.890625,
+            "y": 545.796875,
+            "w": 41.734375,
+            "h": 24,
+            "right": 600.625,
+            "bottom": 569.796875,
+            "scrollHeight": 22,
+            "clientHeight": 22
+          },
+          "bonusText": "+1",
+          "pointsText": "2 점"
+        },
+        {
+          "box": {
+            "x": 642.9375,
+            "y": 497.296875,
+            "w": 175.0625,
+            "h": 132,
+            "right": 818,
+            "bottom": 629.296875,
+            "scrollHeight": 130,
+            "clientHeight": 130
+          },
+          "bonus": {
+            "x": 738.9375,
+            "y": 517.796875,
+            "w": 36.328125,
+            "h": 25,
+            "right": 775.265625,
+            "bottom": 542.796875,
+            "scrollHeight": 23,
+            "clientHeight": 23
+          },
+          "points": {
+            "x": 738.9375,
+            "y": 545.796875,
+            "w": 41.734375,
+            "h": 24,
+            "right": 780.671875,
+            "bottom": 569.796875,
+            "scrollHeight": 22,
+            "clientHeight": 22
+          },
+          "bonusText": "+1",
+          "pointsText": "2 점"
+        },
+        {
+          "box": {
+            "x": 102.796875,
+            "y": 637.296875,
+            "w": 175.046875,
+            "h": 132,
+            "right": 277.84375,
+            "bottom": 769.296875,
+            "scrollHeight": 130,
+            "clientHeight": 130
+          },
+          "bonus": {
+            "x": 198.796875,
+            "y": 657.796875,
+            "w": 36.328125,
+            "h": 25,
+            "right": 235.125,
+            "bottom": 682.796875,
+            "scrollHeight": 23,
+            "clientHeight": 23
+          },
+          "points": {
+            "x": 198.796875,
+            "y": 685.796875,
+            "w": 38.328125,
+            "h": 24,
+            "right": 237.125,
+            "bottom": 709.796875,
+            "scrollHeight": 22,
+            "clientHeight": 22
+          },
+          "bonusText": "+1",
+          "pointsText": "1 점"
+        },
+        {
+          "box": {
+            "x": 282.84375,
+            "y": 637.296875,
+            "w": 175.046875,
+            "h": 132,
+            "right": 457.890625,
+            "bottom": 769.296875,
+            "scrollHeight": 130,
+            "clientHeight": 130
+          },
+          "bonus": {
+            "x": 378.84375,
+            "y": 657.796875,
+            "w": 36.328125,
+            "h": 25,
+            "right": 415.171875,
+            "bottom": 682.796875,
+            "scrollHeight": 23,
+            "clientHeight": 23
+          },
+          "points": {
+            "x": 378.84375,
+            "y": 685.796875,
+            "w": 38.328125,
+            "h": 24,
+            "right": 417.171875,
+            "bottom": 709.796875,
+            "scrollHeight": 22,
+            "clientHeight": 22
+          },
+          "bonusText": "+1",
+          "pointsText": "1 점"
+        },
+        {
+          "box": {
+            "x": 462.890625,
+            "y": 637.296875,
+            "w": 175.046875,
+            "h": 132,
+            "right": 637.9375,
+            "bottom": 769.296875,
+            "scrollHeight": 130,
+            "clientHeight": 130
+          },
+          "bonus": {
+            "x": 558.890625,
+            "y": 657.796875,
+            "w": 36.328125,
+            "h": 25,
+            "right": 595.21875,
+            "bottom": 682.796875,
+            "scrollHeight": 23,
+            "clientHeight": 23
+          },
+          "points": {
+            "x": 558.890625,
+            "y": 685.796875,
+            "w": 38.328125,
+            "h": 24,
+            "right": 597.21875,
+            "bottom": 709.796875,
+            "scrollHeight": 22,
+            "clientHeight": 22
+          },
+          "bonusText": "+1",
+          "pointsText": "1 점"
+        },
+        {
+          "box": {
+            "x": 642.9450073242188,
+            "y": 637.3483276367188,
+            "w": 175.0474853515625,
+            "h": 131.98870849609375,
+            "right": 817.9924926757812,
+            "bottom": 769.3370361328125,
+            "scrollHeight": 130,
+            "clientHeight": 130
+          },
+          "bonus": {
+            "x": 738.936767578125,
+            "y": 657.8465576171875,
+            "w": 36.32501220703125,
+            "h": 24.99786376953125,
+            "right": 775.2617797851562,
+            "bottom": 682.8444213867188,
+            "scrollHeight": 23,
+            "clientHeight": 23
+          },
+          "points": {
+            "x": 738.936767578125,
+            "y": 685.8441772460938,
+            "w": 38.3248291015625,
+            "h": 23.9979248046875,
+            "right": 777.2615966796875,
+            "bottom": 709.8421020507812,
+            "scrollHeight": 22,
+            "clientHeight": 22
+          },
+          "bonusText": "+1",
+          "pointsText": "1 점"
+        }
+      ],
+      "nobles": {
+        "x": 32,
+        "y": 255.5,
+        "w": 790,
+        "h": 97.796875,
+        "right": 822,
+        "bottom": 353.296875,
+        "scrollHeight": 96,
+        "clientHeight": 96
+      },
+      "bank": {
+        "x": 822,
+        "y": 255.5,
+        "w": 512,
+        "h": 243.984375,
+        "right": 1334,
+        "bottom": 499.484375,
+        "scrollHeight": 242,
+        "clientHeight": 242
+      },
+      "treasury": {
+        "x": 822,
+        "y": 503.484375,
+        "w": 297,
+        "h": 109,
+        "right": 1119,
+        "bottom": 612.484375,
+        "scrollHeight": 107,
+        "clientHeight": 107
+      },
+      "reserved": {
+        "x": 1123,
+        "y": 503.484375,
+        "w": 211,
+        "h": 118,
+        "right": 1334,
+        "bottom": 621.484375,
+        "scrollHeight": 116,
+        "clientHeight": 116
+      },
+      "reservedCardCount": 0,
+      "opponentReserveText": "상대 예약 카드 3 / 3 · 상대 토큰 5개",
+      "action": null
+    },
+    {
+      "viewport": {
+        "w": 1366,
+        "h": 768
+      },
+      "board": {
+        "x": 29,
+        "y": 176,
+        "w": 1308,
+        "h": 600.296875,
+        "right": 1337,
+        "bottom": 776.296875,
+        "scrollHeight": 598,
+        "clientHeight": 598
+      },
+      "market": {
+        "x": 32,
+        "y": 353.296875,
+        "w": 790,
+        "h": 420,
+        "right": 822,
+        "bottom": 773.296875,
+        "scrollHeight": 420,
+        "clientHeight": 420
+      },
+      "tiers": [
+        {
+          "x": 32,
+          "y": 353.296875,
+          "w": 790,
+          "h": 140,
+          "right": 822,
+          "bottom": 493.296875,
+          "scrollHeight": 138,
+          "clientHeight": 138
+        },
+        {
+          "x": 32,
+          "y": 493.296875,
+          "w": 790,
+          "h": 140,
+          "right": 822,
+          "bottom": 633.296875,
+          "scrollHeight": 138,
+          "clientHeight": 138
+        },
+        {
+          "x": 32,
+          "y": 633.296875,
+          "w": 790,
+          "h": 140,
+          "right": 822,
+          "bottom": 773.296875,
+          "scrollHeight": 138,
+          "clientHeight": 138
+        }
+      ],
+      "cards": [
+        {
+          "box": {
+            "x": 102.796875,
+            "y": 357.296875,
+            "w": 175.046875,
+            "h": 132,
+            "right": 277.84375,
+            "bottom": 489.296875,
+            "scrollHeight": 130,
+            "clientHeight": 130
+          },
+          "bonus": {
+            "x": 198.796875,
+            "y": 377.796875,
+            "w": 36.328125,
+            "h": 25,
+            "right": 235.125,
+            "bottom": 402.796875,
+            "scrollHeight": 23,
+            "clientHeight": 23
+          },
+          "points": {
+            "x": 198.796875,
+            "y": 405.796875,
+            "w": 53.78125,
+            "h": 24,
+            "right": 252.578125,
+            "bottom": 429.796875,
+            "scrollHeight": 22,
+            "clientHeight": 22
+          },
+          "bonusText": "+1",
+          "pointsText": "4 pts"
+        },
+        {
+          "box": {
+            "x": 282.84375,
+            "y": 357.296875,
+            "w": 175.046875,
+            "h": 132,
+            "right": 457.890625,
+            "bottom": 489.296875,
+            "scrollHeight": 130,
+            "clientHeight": 130
+          },
+          "bonus": {
+            "x": 378.84375,
+            "y": 377.796875,
+            "w": 36.328125,
+            "h": 25,
+            "right": 415.171875,
+            "bottom": 402.796875,
+            "scrollHeight": 23,
+            "clientHeight": 23
+          },
+          "points": {
+            "x": 378.84375,
+            "y": 405.796875,
+            "w": 53.328125,
+            "h": 24,
+            "right": 432.171875,
+            "bottom": 429.796875,
+            "scrollHeight": 22,
+            "clientHeight": 22
+          },
+          "bonusText": "+1",
+          "pointsText": "5 pts"
+        },
+        {
+          "box": {
+            "x": 462.890625,
+            "y": 357.296875,
+            "w": 175.046875,
+            "h": 132,
+            "right": 637.9375,
+            "bottom": 489.296875,
+            "scrollHeight": 130,
+            "clientHeight": 130
+          },
+          "bonus": {
+            "x": 558.890625,
+            "y": 377.796875,
+            "w": 36.328125,
+            "h": 25,
+            "right": 595.21875,
+            "bottom": 402.796875,
+            "scrollHeight": 23,
+            "clientHeight": 23
+          },
+          "points": {
+            "x": 558.890625,
+            "y": 405.796875,
+            "w": 53.328125,
+            "h": 24,
+            "right": 612.21875,
+            "bottom": 429.796875,
+            "scrollHeight": 22,
+            "clientHeight": 22
+          },
+          "bonusText": "+1",
+          "pointsText": "5 pts"
+        },
+        {
+          "box": {
+            "x": 642.9375,
+            "y": 357.296875,
+            "w": 175.0625,
+            "h": 132,
+            "right": 818,
+            "bottom": 489.296875,
+            "scrollHeight": 130,
+            "clientHeight": 130
+          },
+          "bonus": {
+            "x": 738.9375,
+            "y": 366.796875,
+            "w": 36.328125,
+            "h": 25,
+            "right": 775.265625,
+            "bottom": 391.796875,
+            "scrollHeight": 23,
+            "clientHeight": 23
+          },
+          "points": {
+            "x": 738.9375,
+            "y": 394.796875,
+            "w": 53.03125,
+            "h": 24,
+            "right": 791.96875,
+            "bottom": 418.796875,
+            "scrollHeight": 22,
+            "clientHeight": 22
+          },
+          "bonusText": "+1",
+          "pointsText": "3 pts"
+        },
+        {
+          "box": {
+            "x": 102.796875,
+            "y": 497.296875,
+            "w": 175.046875,
+            "h": 132,
+            "right": 277.84375,
+            "bottom": 629.296875,
+            "scrollHeight": 130,
+            "clientHeight": 130
+          },
+          "bonus": {
+            "x": 198.796875,
+            "y": 517.796875,
+            "w": 36.328125,
+            "h": 25,
+            "right": 235.125,
+            "bottom": 542.796875,
+            "scrollHeight": 23,
+            "clientHeight": 23
+          },
+          "points": {
+            "x": 198.796875,
+            "y": 545.796875,
+            "w": 53.03125,
+            "h": 24,
+            "right": 251.828125,
+            "bottom": 569.796875,
+            "scrollHeight": 22,
+            "clientHeight": 22
+          },
+          "bonusText": "+1",
+          "pointsText": "3 pts"
+        },
+        {
+          "box": {
+            "x": 282.84375,
+            "y": 497.296875,
+            "w": 175.046875,
+            "h": 132,
+            "right": 457.890625,
+            "bottom": 629.296875,
+            "scrollHeight": 130,
+            "clientHeight": 130
+          },
+          "bonus": {
+            "x": 378.84375,
+            "y": 517.796875,
+            "w": 36.328125,
+            "h": 25,
+            "right": 415.171875,
+            "bottom": 542.796875,
+            "scrollHeight": 23,
+            "clientHeight": 23
+          },
+          "points": {
+            "x": 378.84375,
+            "y": 545.796875,
+            "w": 53.03125,
+            "h": 24,
+            "right": 431.875,
+            "bottom": 569.796875,
+            "scrollHeight": 22,
+            "clientHeight": 22
+          },
+          "bonusText": "+1",
+          "pointsText": "3 pts"
+        },
+        {
+          "box": {
+            "x": 462.890625,
+            "y": 497.296875,
+            "w": 175.046875,
+            "h": 132,
+            "right": 637.9375,
+            "bottom": 629.296875,
+            "scrollHeight": 130,
+            "clientHeight": 130
+          },
+          "bonus": {
+            "x": 558.890625,
+            "y": 517.796875,
+            "w": 36.328125,
+            "h": 25,
+            "right": 595.21875,
+            "bottom": 542.796875,
+            "scrollHeight": 23,
+            "clientHeight": 23
+          },
+          "points": {
+            "x": 558.890625,
+            "y": 545.796875,
+            "w": 52.609375,
+            "h": 24,
+            "right": 611.5,
+            "bottom": 569.796875,
+            "scrollHeight": 22,
+            "clientHeight": 22
+          },
+          "bonusText": "+1",
+          "pointsText": "2 pts"
+        },
+        {
+          "box": {
+            "x": 642.9375,
+            "y": 497.296875,
+            "w": 175.0625,
+            "h": 132,
+            "right": 818,
+            "bottom": 629.296875,
+            "scrollHeight": 130,
+            "clientHeight": 130
+          },
+          "bonus": {
+            "x": 738.9375,
+            "y": 517.796875,
+            "w": 36.328125,
+            "h": 25,
+            "right": 775.265625,
+            "bottom": 542.796875,
+            "scrollHeight": 23,
+            "clientHeight": 23
+          },
+          "points": {
+            "x": 738.9375,
+            "y": 545.796875,
+            "w": 52.609375,
+            "h": 24,
+            "right": 791.546875,
+            "bottom": 569.796875,
+            "scrollHeight": 22,
+            "clientHeight": 22
+          },
+          "bonusText": "+1",
+          "pointsText": "2 pts"
+        },
+        {
+          "box": {
+            "x": 102.796875,
+            "y": 637.296875,
+            "w": 175.046875,
+            "h": 132,
+            "right": 277.84375,
+            "bottom": 769.296875,
+            "scrollHeight": 130,
+            "clientHeight": 130
+          },
+          "bonus": {
+            "x": 198.796875,
+            "y": 657.796875,
+            "w": 36.328125,
+            "h": 25,
+            "right": 235.125,
+            "bottom": 682.796875,
+            "scrollHeight": 23,
+            "clientHeight": 23
+          },
+          "points": {
+            "x": 198.796875,
+            "y": 685.796875,
+            "w": 49.203125,
+            "h": 24,
+            "right": 248,
+            "bottom": 709.796875,
+            "scrollHeight": 22,
+            "clientHeight": 22
+          },
+          "bonusText": "+1",
+          "pointsText": "1 pts"
+        },
+        {
+          "box": {
+            "x": 282.84375,
+            "y": 637.296875,
+            "w": 175.046875,
+            "h": 132,
+            "right": 457.890625,
+            "bottom": 769.296875,
+            "scrollHeight": 130,
+            "clientHeight": 130
+          },
+          "bonus": {
+            "x": 378.84375,
+            "y": 657.796875,
+            "w": 36.328125,
+            "h": 25,
+            "right": 415.171875,
+            "bottom": 682.796875,
+            "scrollHeight": 23,
+            "clientHeight": 23
+          },
+          "points": {
+            "x": 378.84375,
+            "y": 685.796875,
+            "w": 49.203125,
+            "h": 24,
+            "right": 428.046875,
+            "bottom": 709.796875,
+            "scrollHeight": 22,
+            "clientHeight": 22
+          },
+          "bonusText": "+1",
+          "pointsText": "1 pts"
+        },
+        {
+          "box": {
+            "x": 462.890625,
+            "y": 637.296875,
+            "w": 175.046875,
+            "h": 132,
+            "right": 637.9375,
+            "bottom": 769.296875,
+            "scrollHeight": 130,
+            "clientHeight": 130
+          },
+          "bonus": {
+            "x": 558.890625,
+            "y": 657.796875,
+            "w": 36.328125,
+            "h": 25,
+            "right": 595.21875,
+            "bottom": 682.796875,
+            "scrollHeight": 23,
+            "clientHeight": 23
+          },
+          "points": {
+            "x": 558.890625,
+            "y": 685.796875,
+            "w": 49.203125,
+            "h": 24,
+            "right": 608.09375,
+            "bottom": 709.796875,
+            "scrollHeight": 22,
+            "clientHeight": 22
+          },
+          "bonusText": "+1",
+          "pointsText": "1 pts"
+        },
+        {
+          "box": {
+            "x": 642.9375,
+            "y": 637.296875,
+            "w": 175.0625,
+            "h": 132,
+            "right": 818,
+            "bottom": 769.296875,
+            "scrollHeight": 130,
+            "clientHeight": 130
+          },
+          "bonus": {
+            "x": 738.9375,
+            "y": 657.796875,
+            "w": 36.328125,
+            "h": 25,
+            "right": 775.265625,
+            "bottom": 682.796875,
+            "scrollHeight": 23,
+            "clientHeight": 23
+          },
+          "points": {
+            "x": 738.9375,
+            "y": 685.796875,
+            "w": 49.203125,
+            "h": 24,
+            "right": 788.140625,
+            "bottom": 709.796875,
+            "scrollHeight": 22,
+            "clientHeight": 22
+          },
+          "bonusText": "+1",
+          "pointsText": "1 pts"
+        }
+      ],
+      "nobles": {
+        "x": 32,
+        "y": 255.5,
+        "w": 790,
+        "h": 97.796875,
+        "right": 822,
+        "bottom": 353.296875,
+        "scrollHeight": 96,
+        "clientHeight": 96
+      },
+      "bank": {
+        "x": 822,
+        "y": 255.5,
+        "w": 512,
+        "h": 282.984375,
+        "right": 1334,
+        "bottom": 538.484375,
+        "scrollHeight": 281,
+        "clientHeight": 281
+      },
+      "treasury": {
+        "x": 822,
+        "y": 542.484375,
+        "w": 297,
+        "h": 109,
+        "right": 1119,
+        "bottom": 651.484375,
+        "scrollHeight": 107,
+        "clientHeight": 107
+      },
+      "reserved": {
+        "x": 1123,
+        "y": 542.484375,
+        "w": 211,
+        "h": 157,
+        "right": 1334,
+        "bottom": 699.484375,
+        "scrollHeight": 155,
+        "clientHeight": 155
+      },
+      "reservedCardCount": 3,
+      "opponentReserveText": "Reservadas de la otra persona 0 / 3 · Fichas rivales: 3",
+      "action": null
+    }
+  ],
+  "normalFlowProjection1366": [
+    {
+      "viewport": {
+        "w": 1366,
+        "h": 768
+      },
+      "board": {
+        "x": 29,
+        "y": 106,
+        "w": 1308,
+        "h": 600.296875,
+        "right": 1337,
+        "bottom": 706.296875,
+        "scrollHeight": 598,
+        "clientHeight": 598
+      },
+      "market": {
+        "x": 32,
+        "y": 283.296875,
+        "w": 790,
+        "h": 420,
+        "right": 822,
+        "bottom": 703.296875,
+        "scrollHeight": 420,
+        "clientHeight": 420
+      },
+      "tiers": [
+        {
+          "x": 32,
+          "y": 283.296875,
+          "w": 790,
+          "h": 140,
+          "right": 822,
+          "bottom": 423.296875,
+          "scrollHeight": 138,
+          "clientHeight": 138
+        },
+        {
+          "x": 32,
+          "y": 423.296875,
+          "w": 790,
+          "h": 140,
+          "right": 822,
+          "bottom": 563.296875,
+          "scrollHeight": 138,
+          "clientHeight": 138
+        },
+        {
+          "x": 32,
+          "y": 563.296875,
+          "w": 790,
+          "h": 140,
+          "right": 822,
+          "bottom": 703.296875,
+          "scrollHeight": 138,
+          "clientHeight": 138
+        }
+      ],
+      "cards": [
+        {
+          "box": {
+            "x": 102.796875,
+            "y": 287.296875,
+            "w": 175.046875,
+            "h": 132,
+            "right": 277.84375,
+            "bottom": 419.296875,
+            "scrollHeight": 130,
+            "clientHeight": 130
+          },
+          "bonus": {
+            "x": 198.796875,
+            "y": 307.796875,
+            "w": 36.328125,
+            "h": 25,
+            "right": 235.125,
+            "bottom": 332.796875,
+            "scrollHeight": 23,
+            "clientHeight": 23
+          },
+          "points": {
+            "x": 198.796875,
+            "y": 335.796875,
+            "w": 42.90625,
+            "h": 24,
+            "right": 241.703125,
+            "bottom": 359.796875,
+            "scrollHeight": 22,
+            "clientHeight": 22
+          },
+          "bonusText": "+1",
+          "pointsText": "4 점"
+        },
+        {
+          "box": {
+            "x": 282.84375,
+            "y": 287.296875,
+            "w": 175.046875,
+            "h": 132,
+            "right": 457.890625,
+            "bottom": 419.296875,
+            "scrollHeight": 130,
+            "clientHeight": 130
+          },
+          "bonus": {
+            "x": 378.84375,
+            "y": 307.796875,
+            "w": 36.328125,
+            "h": 25,
+            "right": 415.171875,
+            "bottom": 332.796875,
+            "scrollHeight": 23,
+            "clientHeight": 23
+          },
+          "points": {
+            "x": 378.84375,
+            "y": 335.796875,
+            "w": 42.453125,
+            "h": 24,
+            "right": 421.296875,
+            "bottom": 359.796875,
+            "scrollHeight": 22,
+            "clientHeight": 22
+          },
+          "bonusText": "+1",
+          "pointsText": "5 점"
+        },
+        {
+          "box": {
+            "x": 462.890625,
+            "y": 287.296875,
+            "w": 175.046875,
+            "h": 132,
+            "right": 637.9375,
+            "bottom": 419.296875,
+            "scrollHeight": 130,
+            "clientHeight": 130
+          },
+          "bonus": {
+            "x": 558.890625,
+            "y": 307.796875,
+            "w": 36.328125,
+            "h": 25,
+            "right": 595.21875,
+            "bottom": 332.796875,
+            "scrollHeight": 23,
+            "clientHeight": 23
+          },
+          "points": {
+            "x": 558.890625,
+            "y": 335.796875,
+            "w": 42.453125,
+            "h": 24,
+            "right": 601.34375,
+            "bottom": 359.796875,
+            "scrollHeight": 22,
+            "clientHeight": 22
+          },
+          "bonusText": "+1",
+          "pointsText": "5 점"
+        },
+        {
+          "box": {
+            "x": 642.9375,
+            "y": 287.296875,
+            "w": 175.0625,
+            "h": 132,
+            "right": 818,
+            "bottom": 419.296875,
+            "scrollHeight": 130,
+            "clientHeight": 130
+          },
+          "bonus": {
+            "x": 738.9375,
+            "y": 296.796875,
+            "w": 36.328125,
+            "h": 25,
+            "right": 775.265625,
+            "bottom": 321.796875,
+            "scrollHeight": 23,
+            "clientHeight": 23
+          },
+          "points": {
+            "x": 738.9375,
+            "y": 324.796875,
+            "w": 42.15625,
+            "h": 24,
+            "right": 781.09375,
+            "bottom": 348.796875,
+            "scrollHeight": 22,
+            "clientHeight": 22
+          },
+          "bonusText": "+1",
+          "pointsText": "3 점"
+        },
+        {
+          "box": {
+            "x": 102.796875,
+            "y": 427.296875,
+            "w": 175.046875,
+            "h": 132,
+            "right": 277.84375,
+            "bottom": 559.296875,
+            "scrollHeight": 130,
+            "clientHeight": 130
+          },
+          "bonus": {
+            "x": 198.796875,
+            "y": 447.796875,
+            "w": 36.328125,
+            "h": 25,
+            "right": 235.125,
+            "bottom": 472.796875,
+            "scrollHeight": 23,
+            "clientHeight": 23
+          },
+          "points": {
+            "x": 198.796875,
+            "y": 475.796875,
+            "w": 42.15625,
+            "h": 24,
+            "right": 240.953125,
+            "bottom": 499.796875,
+            "scrollHeight": 22,
+            "clientHeight": 22
+          },
+          "bonusText": "+1",
+          "pointsText": "3 점"
+        },
+        {
+          "box": {
+            "x": 282.84375,
+            "y": 427.296875,
+            "w": 175.046875,
+            "h": 132,
+            "right": 457.890625,
+            "bottom": 559.296875,
+            "scrollHeight": 130,
+            "clientHeight": 130
+          },
+          "bonus": {
+            "x": 378.84375,
+            "y": 447.796875,
+            "w": 36.328125,
+            "h": 25,
+            "right": 415.171875,
+            "bottom": 472.796875,
+            "scrollHeight": 23,
+            "clientHeight": 23
+          },
+          "points": {
+            "x": 378.84375,
+            "y": 475.796875,
+            "w": 42.15625,
+            "h": 24,
+            "right": 421,
+            "bottom": 499.796875,
+            "scrollHeight": 22,
+            "clientHeight": 22
+          },
+          "bonusText": "+1",
+          "pointsText": "3 점"
+        },
+        {
+          "box": {
+            "x": 462.890625,
+            "y": 427.296875,
+            "w": 175.046875,
+            "h": 132,
+            "right": 637.9375,
+            "bottom": 559.296875,
+            "scrollHeight": 130,
+            "clientHeight": 130
+          },
+          "bonus": {
+            "x": 558.890625,
+            "y": 447.796875,
+            "w": 36.328125,
+            "h": 25,
+            "right": 595.21875,
+            "bottom": 472.796875,
+            "scrollHeight": 23,
+            "clientHeight": 23
+          },
+          "points": {
+            "x": 558.890625,
+            "y": 475.796875,
+            "w": 41.734375,
+            "h": 24,
+            "right": 600.625,
+            "bottom": 499.796875,
+            "scrollHeight": 22,
+            "clientHeight": 22
+          },
+          "bonusText": "+1",
+          "pointsText": "2 점"
+        },
+        {
+          "box": {
+            "x": 642.9375,
+            "y": 427.296875,
+            "w": 175.0625,
+            "h": 132,
+            "right": 818,
+            "bottom": 559.296875,
+            "scrollHeight": 130,
+            "clientHeight": 130
+          },
+          "bonus": {
+            "x": 738.9375,
+            "y": 447.796875,
+            "w": 36.328125,
+            "h": 25,
+            "right": 775.265625,
+            "bottom": 472.796875,
+            "scrollHeight": 23,
+            "clientHeight": 23
+          },
+          "points": {
+            "x": 738.9375,
+            "y": 475.796875,
+            "w": 41.734375,
+            "h": 24,
+            "right": 780.671875,
+            "bottom": 499.796875,
+            "scrollHeight": 22,
+            "clientHeight": 22
+          },
+          "bonusText": "+1",
+          "pointsText": "2 점"
+        },
+        {
+          "box": {
+            "x": 102.796875,
+            "y": 567.296875,
+            "w": 175.046875,
+            "h": 132,
+            "right": 277.84375,
+            "bottom": 699.296875,
+            "scrollHeight": 130,
+            "clientHeight": 130
+          },
+          "bonus": {
+            "x": 198.796875,
+            "y": 587.796875,
+            "w": 36.328125,
+            "h": 25,
+            "right": 235.125,
+            "bottom": 612.796875,
+            "scrollHeight": 23,
+            "clientHeight": 23
+          },
+          "points": {
+            "x": 198.796875,
+            "y": 615.796875,
+            "w": 38.328125,
+            "h": 24,
+            "right": 237.125,
+            "bottom": 639.796875,
+            "scrollHeight": 22,
+            "clientHeight": 22
+          },
+          "bonusText": "+1",
+          "pointsText": "1 점"
+        },
+        {
+          "box": {
+            "x": 282.84375,
+            "y": 567.296875,
+            "w": 175.046875,
+            "h": 132,
+            "right": 457.890625,
+            "bottom": 699.296875,
+            "scrollHeight": 130,
+            "clientHeight": 130
+          },
+          "bonus": {
+            "x": 378.84375,
+            "y": 587.796875,
+            "w": 36.328125,
+            "h": 25,
+            "right": 415.171875,
+            "bottom": 612.796875,
+            "scrollHeight": 23,
+            "clientHeight": 23
+          },
+          "points": {
+            "x": 378.84375,
+            "y": 615.796875,
+            "w": 38.328125,
+            "h": 24,
+            "right": 417.171875,
+            "bottom": 639.796875,
+            "scrollHeight": 22,
+            "clientHeight": 22
+          },
+          "bonusText": "+1",
+          "pointsText": "1 점"
+        },
+        {
+          "box": {
+            "x": 462.890625,
+            "y": 567.296875,
+            "w": 175.046875,
+            "h": 132,
+            "right": 637.9375,
+            "bottom": 699.296875,
+            "scrollHeight": 130,
+            "clientHeight": 130
+          },
+          "bonus": {
+            "x": 558.890625,
+            "y": 587.796875,
+            "w": 36.328125,
+            "h": 25,
+            "right": 595.21875,
+            "bottom": 612.796875,
+            "scrollHeight": 23,
+            "clientHeight": 23
+          },
+          "points": {
+            "x": 558.890625,
+            "y": 615.796875,
+            "w": 38.328125,
+            "h": 24,
+            "right": 597.21875,
+            "bottom": 639.796875,
+            "scrollHeight": 22,
+            "clientHeight": 22
+          },
+          "bonusText": "+1",
+          "pointsText": "1 점"
+        },
+        {
+          "box": {
+            "x": 642.9375,
+            "y": 567.296875,
+            "w": 175.0625,
+            "h": 132,
+            "right": 818,
+            "bottom": 699.296875,
+            "scrollHeight": 130,
+            "clientHeight": 130
+          },
+          "bonus": {
+            "x": 738.9375,
+            "y": 587.796875,
+            "w": 36.328125,
+            "h": 25,
+            "right": 775.265625,
+            "bottom": 612.796875,
+            "scrollHeight": 23,
+            "clientHeight": 23
+          },
+          "points": {
+            "x": 738.9375,
+            "y": 615.796875,
+            "w": 38.328125,
+            "h": 24,
+            "right": 777.265625,
+            "bottom": 639.796875,
+            "scrollHeight": 22,
+            "clientHeight": 22
+          },
+          "bonusText": "+1",
+          "pointsText": "1 점"
+        }
+      ],
+      "nobles": {
+        "x": 32,
+        "y": 185.5,
+        "w": 790,
+        "h": 97.796875,
+        "right": 822,
+        "bottom": 283.296875,
+        "scrollHeight": 96,
+        "clientHeight": 96
+      },
+      "bank": {
+        "x": 822,
+        "y": 185.5,
+        "w": 512,
+        "h": 243.984375,
+        "right": 1334,
+        "bottom": 429.484375,
+        "scrollHeight": 242,
+        "clientHeight": 242
+      },
+      "treasury": {
+        "x": 822,
+        "y": 433.484375,
+        "w": 297,
+        "h": 109,
+        "right": 1119,
+        "bottom": 542.484375,
+        "scrollHeight": 107,
+        "clientHeight": 107
+      },
+      "reserved": {
+        "x": 1123,
+        "y": 433.484375,
+        "w": 211,
+        "h": 118,
+        "right": 1334,
+        "bottom": 551.484375,
+        "scrollHeight": 116,
+        "clientHeight": 116
+      },
+      "reservedCardCount": 0,
+      "opponentReserveText": "상대 예약 카드 3 / 3 · 상대 토큰 5개",
+      "action": null
+    },
+    {
+      "viewport": {
+        "w": 1366,
+        "h": 768
+      },
+      "board": {
+        "x": 29,
+        "y": 106,
+        "w": 1308,
+        "h": 600.296875,
+        "right": 1337,
+        "bottom": 706.296875,
+        "scrollHeight": 598,
+        "clientHeight": 598
+      },
+      "market": {
+        "x": 32,
+        "y": 283.296875,
+        "w": 790,
+        "h": 420,
+        "right": 822,
+        "bottom": 703.296875,
+        "scrollHeight": 420,
+        "clientHeight": 420
+      },
+      "tiers": [
+        {
+          "x": 32,
+          "y": 283.296875,
+          "w": 790,
+          "h": 140,
+          "right": 822,
+          "bottom": 423.296875,
+          "scrollHeight": 138,
+          "clientHeight": 138
+        },
+        {
+          "x": 32,
+          "y": 423.296875,
+          "w": 790,
+          "h": 140,
+          "right": 822,
+          "bottom": 563.296875,
+          "scrollHeight": 138,
+          "clientHeight": 138
+        },
+        {
+          "x": 32,
+          "y": 563.296875,
+          "w": 790,
+          "h": 140,
+          "right": 822,
+          "bottom": 703.296875,
+          "scrollHeight": 138,
+          "clientHeight": 138
+        }
+      ],
+      "cards": [
+        {
+          "box": {
+            "x": 102.796875,
+            "y": 287.296875,
+            "w": 175.046875,
+            "h": 132,
+            "right": 277.84375,
+            "bottom": 419.296875,
+            "scrollHeight": 130,
+            "clientHeight": 130
+          },
+          "bonus": {
+            "x": 198.796875,
+            "y": 307.796875,
+            "w": 36.328125,
+            "h": 25,
+            "right": 235.125,
+            "bottom": 332.796875,
+            "scrollHeight": 23,
+            "clientHeight": 23
+          },
+          "points": {
+            "x": 198.796875,
+            "y": 335.796875,
+            "w": 53.78125,
+            "h": 24,
+            "right": 252.578125,
+            "bottom": 359.796875,
+            "scrollHeight": 22,
+            "clientHeight": 22
+          },
+          "bonusText": "+1",
+          "pointsText": "4 pts"
+        },
+        {
+          "box": {
+            "x": 282.84375,
+            "y": 287.296875,
+            "w": 175.046875,
+            "h": 132,
+            "right": 457.890625,
+            "bottom": 419.296875,
+            "scrollHeight": 130,
+            "clientHeight": 130
+          },
+          "bonus": {
+            "x": 378.84375,
+            "y": 307.796875,
+            "w": 36.328125,
+            "h": 25,
+            "right": 415.171875,
+            "bottom": 332.796875,
+            "scrollHeight": 23,
+            "clientHeight": 23
+          },
+          "points": {
+            "x": 378.84375,
+            "y": 335.796875,
+            "w": 53.328125,
+            "h": 24,
+            "right": 432.171875,
+            "bottom": 359.796875,
+            "scrollHeight": 22,
+            "clientHeight": 22
+          },
+          "bonusText": "+1",
+          "pointsText": "5 pts"
+        },
+        {
+          "box": {
+            "x": 462.890625,
+            "y": 287.296875,
+            "w": 175.046875,
+            "h": 132,
+            "right": 637.9375,
+            "bottom": 419.296875,
+            "scrollHeight": 130,
+            "clientHeight": 130
+          },
+          "bonus": {
+            "x": 558.890625,
+            "y": 307.796875,
+            "w": 36.328125,
+            "h": 25,
+            "right": 595.21875,
+            "bottom": 332.796875,
+            "scrollHeight": 23,
+            "clientHeight": 23
+          },
+          "points": {
+            "x": 558.890625,
+            "y": 335.796875,
+            "w": 53.328125,
+            "h": 24,
+            "right": 612.21875,
+            "bottom": 359.796875,
+            "scrollHeight": 22,
+            "clientHeight": 22
+          },
+          "bonusText": "+1",
+          "pointsText": "5 pts"
+        },
+        {
+          "box": {
+            "x": 642.9375,
+            "y": 287.296875,
+            "w": 175.0625,
+            "h": 132,
+            "right": 818,
+            "bottom": 419.296875,
+            "scrollHeight": 130,
+            "clientHeight": 130
+          },
+          "bonus": {
+            "x": 738.9375,
+            "y": 296.796875,
+            "w": 36.328125,
+            "h": 25,
+            "right": 775.265625,
+            "bottom": 321.796875,
+            "scrollHeight": 23,
+            "clientHeight": 23
+          },
+          "points": {
+            "x": 738.9375,
+            "y": 324.796875,
+            "w": 53.03125,
+            "h": 24,
+            "right": 791.96875,
+            "bottom": 348.796875,
+            "scrollHeight": 22,
+            "clientHeight": 22
+          },
+          "bonusText": "+1",
+          "pointsText": "3 pts"
+        },
+        {
+          "box": {
+            "x": 102.796875,
+            "y": 427.296875,
+            "w": 175.046875,
+            "h": 132,
+            "right": 277.84375,
+            "bottom": 559.296875,
+            "scrollHeight": 130,
+            "clientHeight": 130
+          },
+          "bonus": {
+            "x": 198.796875,
+            "y": 447.796875,
+            "w": 36.328125,
+            "h": 25,
+            "right": 235.125,
+            "bottom": 472.796875,
+            "scrollHeight": 23,
+            "clientHeight": 23
+          },
+          "points": {
+            "x": 198.796875,
+            "y": 475.796875,
+            "w": 53.03125,
+            "h": 24,
+            "right": 251.828125,
+            "bottom": 499.796875,
+            "scrollHeight": 22,
+            "clientHeight": 22
+          },
+          "bonusText": "+1",
+          "pointsText": "3 pts"
+        },
+        {
+          "box": {
+            "x": 282.84375,
+            "y": 427.296875,
+            "w": 175.046875,
+            "h": 132,
+            "right": 457.890625,
+            "bottom": 559.296875,
+            "scrollHeight": 130,
+            "clientHeight": 130
+          },
+          "bonus": {
+            "x": 378.84375,
+            "y": 447.796875,
+            "w": 36.328125,
+            "h": 25,
+            "right": 415.171875,
+            "bottom": 472.796875,
+            "scrollHeight": 23,
+            "clientHeight": 23
+          },
+          "points": {
+            "x": 378.84375,
+            "y": 475.796875,
+            "w": 53.03125,
+            "h": 24,
+            "right": 431.875,
+            "bottom": 499.796875,
+            "scrollHeight": 22,
+            "clientHeight": 22
+          },
+          "bonusText": "+1",
+          "pointsText": "3 pts"
+        },
+        {
+          "box": {
+            "x": 462.890625,
+            "y": 427.296875,
+            "w": 175.046875,
+            "h": 132,
+            "right": 637.9375,
+            "bottom": 559.296875,
+            "scrollHeight": 130,
+            "clientHeight": 130
+          },
+          "bonus": {
+            "x": 558.890625,
+            "y": 447.796875,
+            "w": 36.328125,
+            "h": 25,
+            "right": 595.21875,
+            "bottom": 472.796875,
+            "scrollHeight": 23,
+            "clientHeight": 23
+          },
+          "points": {
+            "x": 558.890625,
+            "y": 475.796875,
+            "w": 52.609375,
+            "h": 24,
+            "right": 611.5,
+            "bottom": 499.796875,
+            "scrollHeight": 22,
+            "clientHeight": 22
+          },
+          "bonusText": "+1",
+          "pointsText": "2 pts"
+        },
+        {
+          "box": {
+            "x": 642.9375,
+            "y": 427.296875,
+            "w": 175.0625,
+            "h": 132,
+            "right": 818,
+            "bottom": 559.296875,
+            "scrollHeight": 130,
+            "clientHeight": 130
+          },
+          "bonus": {
+            "x": 738.9375,
+            "y": 447.796875,
+            "w": 36.328125,
+            "h": 25,
+            "right": 775.265625,
+            "bottom": 472.796875,
+            "scrollHeight": 23,
+            "clientHeight": 23
+          },
+          "points": {
+            "x": 738.9375,
+            "y": 475.796875,
+            "w": 52.609375,
+            "h": 24,
+            "right": 791.546875,
+            "bottom": 499.796875,
+            "scrollHeight": 22,
+            "clientHeight": 22
+          },
+          "bonusText": "+1",
+          "pointsText": "2 pts"
+        },
+        {
+          "box": {
+            "x": 102.796875,
+            "y": 567.296875,
+            "w": 175.046875,
+            "h": 132,
+            "right": 277.84375,
+            "bottom": 699.296875,
+            "scrollHeight": 130,
+            "clientHeight": 130
+          },
+          "bonus": {
+            "x": 198.796875,
+            "y": 587.796875,
+            "w": 36.328125,
+            "h": 25,
+            "right": 235.125,
+            "bottom": 612.796875,
+            "scrollHeight": 23,
+            "clientHeight": 23
+          },
+          "points": {
+            "x": 198.796875,
+            "y": 615.796875,
+            "w": 49.203125,
+            "h": 24,
+            "right": 248,
+            "bottom": 639.796875,
+            "scrollHeight": 22,
+            "clientHeight": 22
+          },
+          "bonusText": "+1",
+          "pointsText": "1 pts"
+        },
+        {
+          "box": {
+            "x": 282.84375,
+            "y": 567.296875,
+            "w": 175.046875,
+            "h": 132,
+            "right": 457.890625,
+            "bottom": 699.296875,
+            "scrollHeight": 130,
+            "clientHeight": 130
+          },
+          "bonus": {
+            "x": 378.84375,
+            "y": 587.796875,
+            "w": 36.328125,
+            "h": 25,
+            "right": 415.171875,
+            "bottom": 612.796875,
+            "scrollHeight": 23,
+            "clientHeight": 23
+          },
+          "points": {
+            "x": 378.84375,
+            "y": 615.796875,
+            "w": 49.203125,
+            "h": 24,
+            "right": 428.046875,
+            "bottom": 639.796875,
+            "scrollHeight": 22,
+            "clientHeight": 22
+          },
+          "bonusText": "+1",
+          "pointsText": "1 pts"
+        },
+        {
+          "box": {
+            "x": 462.890625,
+            "y": 567.296875,
+            "w": 175.046875,
+            "h": 132,
+            "right": 637.9375,
+            "bottom": 699.296875,
+            "scrollHeight": 130,
+            "clientHeight": 130
+          },
+          "bonus": {
+            "x": 558.890625,
+            "y": 587.796875,
+            "w": 36.328125,
+            "h": 25,
+            "right": 595.21875,
+            "bottom": 612.796875,
+            "scrollHeight": 23,
+            "clientHeight": 23
+          },
+          "points": {
+            "x": 558.890625,
+            "y": 615.796875,
+            "w": 49.203125,
+            "h": 24,
+            "right": 608.09375,
+            "bottom": 639.796875,
+            "scrollHeight": 22,
+            "clientHeight": 22
+          },
+          "bonusText": "+1",
+          "pointsText": "1 pts"
+        },
+        {
+          "box": {
+            "x": 642.9375,
+            "y": 567.296875,
+            "w": 175.0625,
+            "h": 132,
+            "right": 818,
+            "bottom": 699.296875,
+            "scrollHeight": 130,
+            "clientHeight": 130
+          },
+          "bonus": {
+            "x": 738.9375,
+            "y": 587.796875,
+            "w": 36.328125,
+            "h": 25,
+            "right": 775.265625,
+            "bottom": 612.796875,
+            "scrollHeight": 23,
+            "clientHeight": 23
+          },
+          "points": {
+            "x": 738.9375,
+            "y": 615.796875,
+            "w": 49.203125,
+            "h": 24,
+            "right": 788.140625,
+            "bottom": 639.796875,
+            "scrollHeight": 22,
+            "clientHeight": 22
+          },
+          "bonusText": "+1",
+          "pointsText": "1 pts"
+        }
+      ],
+      "nobles": {
+        "x": 32,
+        "y": 185.5,
+        "w": 790,
+        "h": 97.796875,
+        "right": 822,
+        "bottom": 283.296875,
+        "scrollHeight": 96,
+        "clientHeight": 96
+      },
+      "bank": {
+        "x": 822,
+        "y": 185.5,
+        "w": 512,
+        "h": 282.984375,
+        "right": 1334,
+        "bottom": 468.484375,
+        "scrollHeight": 281,
+        "clientHeight": 281
+      },
+      "treasury": {
+        "x": 822,
+        "y": 472.484375,
+        "w": 297,
+        "h": 109,
+        "right": 1119,
+        "bottom": 581.484375,
+        "scrollHeight": 107,
+        "clientHeight": 107
+      },
+      "reserved": {
+        "x": 1123,
+        "y": 472.484375,
+        "w": 211,
+        "h": 157,
+        "right": 1334,
+        "bottom": 629.484375,
+        "scrollHeight": 155,
+        "clientHeight": 155
+      },
+      "reservedCardCount": 3,
+      "opponentReserveText": "Reservadas de la otra persona 0 / 3 · Fichas rivales: 3",
+      "action": null
+    }
+  ],
+  "withReconnectBanner1440": [
+    {
+      "viewport": {
+        "w": 1440,
+        "h": 900
+      },
+      "board": {
+        "x": 29,
+        "y": 176,
+        "w": 1382,
+        "h": 600.296875,
+        "right": 1411,
+        "bottom": 776.296875,
+        "scrollHeight": 598,
+        "clientHeight": 598
+      },
+      "market": {
+        "x": 32,
+        "y": 353.296875,
+        "w": 864,
+        "h": 420,
+        "right": 896,
+        "bottom": 773.296875,
+        "scrollHeight": 420,
+        "clientHeight": 420
+      },
+      "tiers": [
+        {
+          "x": 32,
+          "y": 353.296875,
+          "w": 864,
+          "h": 140,
+          "right": 896,
+          "bottom": 493.296875,
+          "scrollHeight": 138,
+          "clientHeight": 138
+        },
+        {
+          "x": 32,
+          "y": 493.296875,
+          "w": 864,
+          "h": 140,
+          "right": 896,
+          "bottom": 633.296875,
+          "scrollHeight": 138,
+          "clientHeight": 138
+        },
+        {
+          "x": 32,
+          "y": 633.296875,
+          "w": 864,
+          "h": 140,
+          "right": 896,
+          "bottom": 773.296875,
+          "scrollHeight": 138,
+          "clientHeight": 138
+        }
+      ],
+      "cards": [
+        {
+          "box": {
+            "x": 102.796875,
+            "y": 357.296875,
+            "w": 193.546875,
+            "h": 132,
+            "right": 296.34375,
+            "bottom": 489.296875,
+            "scrollHeight": 130,
+            "clientHeight": 130
+          },
+          "bonus": {
+            "x": 198.796875,
+            "y": 377.796875,
+            "w": 36.328125,
+            "h": 25,
+            "right": 235.125,
+            "bottom": 402.796875,
+            "scrollHeight": 23,
+            "clientHeight": 23
+          },
+          "points": {
+            "x": 198.796875,
+            "y": 405.796875,
+            "w": 42.90625,
+            "h": 24,
+            "right": 241.703125,
+            "bottom": 429.796875,
+            "scrollHeight": 22,
+            "clientHeight": 22
+          },
+          "bonusText": "+1",
+          "pointsText": "4 점"
+        },
+        {
+          "box": {
+            "x": 301.34375,
+            "y": 357.296875,
+            "w": 193.546875,
+            "h": 132,
+            "right": 494.890625,
+            "bottom": 489.296875,
+            "scrollHeight": 130,
+            "clientHeight": 130
+          },
+          "bonus": {
+            "x": 397.34375,
+            "y": 377.796875,
+            "w": 36.328125,
+            "h": 25,
+            "right": 433.671875,
+            "bottom": 402.796875,
+            "scrollHeight": 23,
+            "clientHeight": 23
+          },
+          "points": {
+            "x": 397.34375,
+            "y": 405.796875,
+            "w": 42.453125,
+            "h": 24,
+            "right": 439.796875,
+            "bottom": 429.796875,
+            "scrollHeight": 22,
+            "clientHeight": 22
+          },
+          "bonusText": "+1",
+          "pointsText": "5 점"
+        },
+        {
+          "box": {
+            "x": 499.890625,
+            "y": 357.296875,
+            "w": 193.546875,
+            "h": 132,
+            "right": 693.4375,
+            "bottom": 489.296875,
+            "scrollHeight": 130,
+            "clientHeight": 130
+          },
+          "bonus": {
+            "x": 595.890625,
+            "y": 377.796875,
+            "w": 36.328125,
+            "h": 25,
+            "right": 632.21875,
+            "bottom": 402.796875,
+            "scrollHeight": 23,
+            "clientHeight": 23
+          },
+          "points": {
+            "x": 595.890625,
+            "y": 405.796875,
+            "w": 42.453125,
+            "h": 24,
+            "right": 638.34375,
+            "bottom": 429.796875,
+            "scrollHeight": 22,
+            "clientHeight": 22
+          },
+          "bonusText": "+1",
+          "pointsText": "5 점"
+        },
+        {
+          "box": {
+            "x": 698.4375,
+            "y": 357.296875,
+            "w": 193.5625,
+            "h": 132,
+            "right": 892,
+            "bottom": 489.296875,
+            "scrollHeight": 130,
+            "clientHeight": 130
+          },
+          "bonus": {
+            "x": 794.4375,
+            "y": 366.796875,
+            "w": 36.328125,
+            "h": 25,
+            "right": 830.765625,
+            "bottom": 391.796875,
+            "scrollHeight": 23,
+            "clientHeight": 23
+          },
+          "points": {
+            "x": 794.4375,
+            "y": 394.796875,
+            "w": 42.15625,
+            "h": 24,
+            "right": 836.59375,
+            "bottom": 418.796875,
+            "scrollHeight": 22,
+            "clientHeight": 22
+          },
+          "bonusText": "+1",
+          "pointsText": "3 점"
+        },
+        {
+          "box": {
+            "x": 102.796875,
+            "y": 497.296875,
+            "w": 193.546875,
+            "h": 132,
+            "right": 296.34375,
+            "bottom": 629.296875,
+            "scrollHeight": 130,
+            "clientHeight": 130
+          },
+          "bonus": {
+            "x": 198.796875,
+            "y": 517.796875,
+            "w": 36.328125,
+            "h": 25,
+            "right": 235.125,
+            "bottom": 542.796875,
+            "scrollHeight": 23,
+            "clientHeight": 23
+          },
+          "points": {
+            "x": 198.796875,
+            "y": 545.796875,
+            "w": 42.15625,
+            "h": 24,
+            "right": 240.953125,
+            "bottom": 569.796875,
+            "scrollHeight": 22,
+            "clientHeight": 22
+          },
+          "bonusText": "+1",
+          "pointsText": "3 점"
+        },
+        {
+          "box": {
+            "x": 301.34375,
+            "y": 497.296875,
+            "w": 193.546875,
+            "h": 132,
+            "right": 494.890625,
+            "bottom": 629.296875,
+            "scrollHeight": 130,
+            "clientHeight": 130
+          },
+          "bonus": {
+            "x": 397.34375,
+            "y": 517.796875,
+            "w": 36.328125,
+            "h": 25,
+            "right": 433.671875,
+            "bottom": 542.796875,
+            "scrollHeight": 23,
+            "clientHeight": 23
+          },
+          "points": {
+            "x": 397.34375,
+            "y": 545.796875,
+            "w": 42.15625,
+            "h": 24,
+            "right": 439.5,
+            "bottom": 569.796875,
+            "scrollHeight": 22,
+            "clientHeight": 22
+          },
+          "bonusText": "+1",
+          "pointsText": "3 점"
+        },
+        {
+          "box": {
+            "x": 499.890625,
+            "y": 497.296875,
+            "w": 193.546875,
+            "h": 132,
+            "right": 693.4375,
+            "bottom": 629.296875,
+            "scrollHeight": 130,
+            "clientHeight": 130
+          },
+          "bonus": {
+            "x": 595.890625,
+            "y": 517.796875,
+            "w": 36.328125,
+            "h": 25,
+            "right": 632.21875,
+            "bottom": 542.796875,
+            "scrollHeight": 23,
+            "clientHeight": 23
+          },
+          "points": {
+            "x": 595.890625,
+            "y": 545.796875,
+            "w": 41.734375,
+            "h": 24,
+            "right": 637.625,
+            "bottom": 569.796875,
+            "scrollHeight": 22,
+            "clientHeight": 22
+          },
+          "bonusText": "+1",
+          "pointsText": "2 점"
+        },
+        {
+          "box": {
+            "x": 698.4375,
+            "y": 497.296875,
+            "w": 193.5625,
+            "h": 132,
+            "right": 892,
+            "bottom": 629.296875,
+            "scrollHeight": 130,
+            "clientHeight": 130
+          },
+          "bonus": {
+            "x": 794.4375,
+            "y": 517.796875,
+            "w": 36.328125,
+            "h": 25,
+            "right": 830.765625,
+            "bottom": 542.796875,
+            "scrollHeight": 23,
+            "clientHeight": 23
+          },
+          "points": {
+            "x": 794.4375,
+            "y": 545.796875,
+            "w": 41.734375,
+            "h": 24,
+            "right": 836.171875,
+            "bottom": 569.796875,
+            "scrollHeight": 22,
+            "clientHeight": 22
+          },
+          "bonusText": "+1",
+          "pointsText": "2 점"
+        },
+        {
+          "box": {
+            "x": 102.796875,
+            "y": 637.296875,
+            "w": 193.546875,
+            "h": 132,
+            "right": 296.34375,
+            "bottom": 769.296875,
+            "scrollHeight": 130,
+            "clientHeight": 130
+          },
+          "bonus": {
+            "x": 198.796875,
+            "y": 657.796875,
+            "w": 36.328125,
+            "h": 25,
+            "right": 235.125,
+            "bottom": 682.796875,
+            "scrollHeight": 23,
+            "clientHeight": 23
+          },
+          "points": {
+            "x": 198.796875,
+            "y": 685.796875,
+            "w": 38.328125,
+            "h": 24,
+            "right": 237.125,
+            "bottom": 709.796875,
+            "scrollHeight": 22,
+            "clientHeight": 22
+          },
+          "bonusText": "+1",
+          "pointsText": "1 점"
+        },
+        {
+          "box": {
+            "x": 301.34375,
+            "y": 637.296875,
+            "w": 193.546875,
+            "h": 132,
+            "right": 494.890625,
+            "bottom": 769.296875,
+            "scrollHeight": 130,
+            "clientHeight": 130
+          },
+          "bonus": {
+            "x": 397.34375,
+            "y": 657.796875,
+            "w": 36.328125,
+            "h": 25,
+            "right": 433.671875,
+            "bottom": 682.796875,
+            "scrollHeight": 23,
+            "clientHeight": 23
+          },
+          "points": {
+            "x": 397.34375,
+            "y": 685.796875,
+            "w": 38.328125,
+            "h": 24,
+            "right": 435.671875,
+            "bottom": 709.796875,
+            "scrollHeight": 22,
+            "clientHeight": 22
+          },
+          "bonusText": "+1",
+          "pointsText": "1 점"
+        },
+        {
+          "box": {
+            "x": 499.890625,
+            "y": 637.296875,
+            "w": 193.546875,
+            "h": 132,
+            "right": 693.4375,
+            "bottom": 769.296875,
+            "scrollHeight": 130,
+            "clientHeight": 130
+          },
+          "bonus": {
+            "x": 595.890625,
+            "y": 657.796875,
+            "w": 36.328125,
+            "h": 25,
+            "right": 632.21875,
+            "bottom": 682.796875,
+            "scrollHeight": 23,
+            "clientHeight": 23
+          },
+          "points": {
+            "x": 595.890625,
+            "y": 685.796875,
+            "w": 38.328125,
+            "h": 24,
+            "right": 634.21875,
+            "bottom": 709.796875,
+            "scrollHeight": 22,
+            "clientHeight": 22
+          },
+          "bonusText": "+1",
+          "pointsText": "1 점"
+        },
+        {
+          "box": {
+            "x": 698.4375,
+            "y": 637.296875,
+            "w": 193.5625,
+            "h": 132,
+            "right": 892,
+            "bottom": 769.296875,
+            "scrollHeight": 130,
+            "clientHeight": 130
+          },
+          "bonus": {
+            "x": 794.4375,
+            "y": 657.796875,
+            "w": 36.328125,
+            "h": 25,
+            "right": 830.765625,
+            "bottom": 682.796875,
+            "scrollHeight": 23,
+            "clientHeight": 23
+          },
+          "points": {
+            "x": 794.4375,
+            "y": 685.796875,
+            "w": 38.328125,
+            "h": 24,
+            "right": 832.765625,
+            "bottom": 709.796875,
+            "scrollHeight": 22,
+            "clientHeight": 22
+          },
+          "bonusText": "+1",
+          "pointsText": "1 점"
+        }
+      ],
+      "nobles": {
+        "x": 32,
+        "y": 255.5,
+        "w": 864,
+        "h": 97.796875,
+        "right": 896,
+        "bottom": 353.296875,
+        "scrollHeight": 96,
+        "clientHeight": 96
+      },
+      "bank": {
+        "x": 896,
+        "y": 255.5,
+        "w": 512,
+        "h": 243.984375,
+        "right": 1408,
+        "bottom": 499.484375,
+        "scrollHeight": 242,
+        "clientHeight": 242
+      },
+      "treasury": {
+        "x": 896,
+        "y": 503.484375,
+        "w": 297,
+        "h": 109,
+        "right": 1193,
+        "bottom": 612.484375,
+        "scrollHeight": 107,
+        "clientHeight": 107
+      },
+      "reserved": {
+        "x": 1197,
+        "y": 503.484375,
+        "w": 211,
+        "h": 118,
+        "right": 1408,
+        "bottom": 621.484375,
+        "scrollHeight": 116,
+        "clientHeight": 116
+      },
+      "reservedCardCount": 0,
+      "opponentReserveText": "상대 예약 카드 3 / 3 · 상대 토큰 5개",
+      "action": null
+    },
+    {
+      "viewport": {
+        "w": 1440,
+        "h": 900
+      },
+      "board": {
+        "x": 29,
+        "y": 176,
+        "w": 1382,
+        "h": 600.296875,
+        "right": 1411,
+        "bottom": 776.296875,
+        "scrollHeight": 598,
+        "clientHeight": 598
+      },
+      "market": {
+        "x": 32,
+        "y": 353.296875,
+        "w": 864,
+        "h": 420,
+        "right": 896,
+        "bottom": 773.296875,
+        "scrollHeight": 420,
+        "clientHeight": 420
+      },
+      "tiers": [
+        {
+          "x": 32,
+          "y": 353.296875,
+          "w": 864,
+          "h": 140,
+          "right": 896,
+          "bottom": 493.296875,
+          "scrollHeight": 138,
+          "clientHeight": 138
+        },
+        {
+          "x": 32,
+          "y": 493.296875,
+          "w": 864,
+          "h": 140,
+          "right": 896,
+          "bottom": 633.296875,
+          "scrollHeight": 138,
+          "clientHeight": 138
+        },
+        {
+          "x": 32,
+          "y": 633.296875,
+          "w": 864,
+          "h": 140,
+          "right": 896,
+          "bottom": 773.296875,
+          "scrollHeight": 138,
+          "clientHeight": 138
+        }
+      ],
+      "cards": [
+        {
+          "box": {
+            "x": 102.796875,
+            "y": 357.296875,
+            "w": 193.546875,
+            "h": 132,
+            "right": 296.34375,
+            "bottom": 489.296875,
+            "scrollHeight": 130,
+            "clientHeight": 130
+          },
+          "bonus": {
+            "x": 198.796875,
+            "y": 377.796875,
+            "w": 36.328125,
+            "h": 25,
+            "right": 235.125,
+            "bottom": 402.796875,
+            "scrollHeight": 23,
+            "clientHeight": 23
+          },
+          "points": {
+            "x": 198.796875,
+            "y": 405.796875,
+            "w": 53.78125,
+            "h": 24,
+            "right": 252.578125,
+            "bottom": 429.796875,
+            "scrollHeight": 22,
+            "clientHeight": 22
+          },
+          "bonusText": "+1",
+          "pointsText": "4 pts"
+        },
+        {
+          "box": {
+            "x": 301.34375,
+            "y": 357.296875,
+            "w": 193.546875,
+            "h": 132,
+            "right": 494.890625,
+            "bottom": 489.296875,
+            "scrollHeight": 130,
+            "clientHeight": 130
+          },
+          "bonus": {
+            "x": 397.34375,
+            "y": 377.796875,
+            "w": 36.328125,
+            "h": 25,
+            "right": 433.671875,
+            "bottom": 402.796875,
+            "scrollHeight": 23,
+            "clientHeight": 23
+          },
+          "points": {
+            "x": 397.34375,
+            "y": 405.796875,
+            "w": 53.328125,
+            "h": 24,
+            "right": 450.671875,
+            "bottom": 429.796875,
+            "scrollHeight": 22,
+            "clientHeight": 22
+          },
+          "bonusText": "+1",
+          "pointsText": "5 pts"
+        },
+        {
+          "box": {
+            "x": 499.890625,
+            "y": 357.296875,
+            "w": 193.546875,
+            "h": 132,
+            "right": 693.4375,
+            "bottom": 489.296875,
+            "scrollHeight": 130,
+            "clientHeight": 130
+          },
+          "bonus": {
+            "x": 595.890625,
+            "y": 377.796875,
+            "w": 36.328125,
+            "h": 25,
+            "right": 632.21875,
+            "bottom": 402.796875,
+            "scrollHeight": 23,
+            "clientHeight": 23
+          },
+          "points": {
+            "x": 595.890625,
+            "y": 405.796875,
+            "w": 53.328125,
+            "h": 24,
+            "right": 649.21875,
+            "bottom": 429.796875,
+            "scrollHeight": 22,
+            "clientHeight": 22
+          },
+          "bonusText": "+1",
+          "pointsText": "5 pts"
+        },
+        {
+          "box": {
+            "x": 698.4375,
+            "y": 357.296875,
+            "w": 193.5625,
+            "h": 132,
+            "right": 892,
+            "bottom": 489.296875,
+            "scrollHeight": 130,
+            "clientHeight": 130
+          },
+          "bonus": {
+            "x": 794.4375,
+            "y": 366.796875,
+            "w": 36.328125,
+            "h": 25,
+            "right": 830.765625,
+            "bottom": 391.796875,
+            "scrollHeight": 23,
+            "clientHeight": 23
+          },
+          "points": {
+            "x": 794.4375,
+            "y": 394.796875,
+            "w": 53.03125,
+            "h": 24,
+            "right": 847.46875,
+            "bottom": 418.796875,
+            "scrollHeight": 22,
+            "clientHeight": 22
+          },
+          "bonusText": "+1",
+          "pointsText": "3 pts"
+        },
+        {
+          "box": {
+            "x": 102.796875,
+            "y": 497.296875,
+            "w": 193.546875,
+            "h": 132,
+            "right": 296.34375,
+            "bottom": 629.296875,
+            "scrollHeight": 130,
+            "clientHeight": 130
+          },
+          "bonus": {
+            "x": 198.796875,
+            "y": 517.796875,
+            "w": 36.328125,
+            "h": 25,
+            "right": 235.125,
+            "bottom": 542.796875,
+            "scrollHeight": 23,
+            "clientHeight": 23
+          },
+          "points": {
+            "x": 198.796875,
+            "y": 545.796875,
+            "w": 53.03125,
+            "h": 24,
+            "right": 251.828125,
+            "bottom": 569.796875,
+            "scrollHeight": 22,
+            "clientHeight": 22
+          },
+          "bonusText": "+1",
+          "pointsText": "3 pts"
+        },
+        {
+          "box": {
+            "x": 301.34375,
+            "y": 497.296875,
+            "w": 193.546875,
+            "h": 132,
+            "right": 494.890625,
+            "bottom": 629.296875,
+            "scrollHeight": 130,
+            "clientHeight": 130
+          },
+          "bonus": {
+            "x": 397.34375,
+            "y": 517.796875,
+            "w": 36.328125,
+            "h": 25,
+            "right": 433.671875,
+            "bottom": 542.796875,
+            "scrollHeight": 23,
+            "clientHeight": 23
+          },
+          "points": {
+            "x": 397.34375,
+            "y": 545.796875,
+            "w": 53.03125,
+            "h": 24,
+            "right": 450.375,
+            "bottom": 569.796875,
+            "scrollHeight": 22,
+            "clientHeight": 22
+          },
+          "bonusText": "+1",
+          "pointsText": "3 pts"
+        },
+        {
+          "box": {
+            "x": 499.890625,
+            "y": 497.296875,
+            "w": 193.546875,
+            "h": 132,
+            "right": 693.4375,
+            "bottom": 629.296875,
+            "scrollHeight": 130,
+            "clientHeight": 130
+          },
+          "bonus": {
+            "x": 595.890625,
+            "y": 517.796875,
+            "w": 36.328125,
+            "h": 25,
+            "right": 632.21875,
+            "bottom": 542.796875,
+            "scrollHeight": 23,
+            "clientHeight": 23
+          },
+          "points": {
+            "x": 595.890625,
+            "y": 545.796875,
+            "w": 52.609375,
+            "h": 24,
+            "right": 648.5,
+            "bottom": 569.796875,
+            "scrollHeight": 22,
+            "clientHeight": 22
+          },
+          "bonusText": "+1",
+          "pointsText": "2 pts"
+        },
+        {
+          "box": {
+            "x": 698.4375,
+            "y": 497.296875,
+            "w": 193.5625,
+            "h": 132,
+            "right": 892,
+            "bottom": 629.296875,
+            "scrollHeight": 130,
+            "clientHeight": 130
+          },
+          "bonus": {
+            "x": 794.4375,
+            "y": 517.796875,
+            "w": 36.328125,
+            "h": 25,
+            "right": 830.765625,
+            "bottom": 542.796875,
+            "scrollHeight": 23,
+            "clientHeight": 23
+          },
+          "points": {
+            "x": 794.4375,
+            "y": 545.796875,
+            "w": 52.609375,
+            "h": 24,
+            "right": 847.046875,
+            "bottom": 569.796875,
+            "scrollHeight": 22,
+            "clientHeight": 22
+          },
+          "bonusText": "+1",
+          "pointsText": "2 pts"
+        },
+        {
+          "box": {
+            "x": 102.796875,
+            "y": 637.296875,
+            "w": 193.546875,
+            "h": 132,
+            "right": 296.34375,
+            "bottom": 769.296875,
+            "scrollHeight": 130,
+            "clientHeight": 130
+          },
+          "bonus": {
+            "x": 198.796875,
+            "y": 657.796875,
+            "w": 36.328125,
+            "h": 25,
+            "right": 235.125,
+            "bottom": 682.796875,
+            "scrollHeight": 23,
+            "clientHeight": 23
+          },
+          "points": {
+            "x": 198.796875,
+            "y": 685.796875,
+            "w": 49.203125,
+            "h": 24,
+            "right": 248,
+            "bottom": 709.796875,
+            "scrollHeight": 22,
+            "clientHeight": 22
+          },
+          "bonusText": "+1",
+          "pointsText": "1 pts"
+        },
+        {
+          "box": {
+            "x": 301.34375,
+            "y": 637.296875,
+            "w": 193.546875,
+            "h": 132,
+            "right": 494.890625,
+            "bottom": 769.296875,
+            "scrollHeight": 130,
+            "clientHeight": 130
+          },
+          "bonus": {
+            "x": 397.34375,
+            "y": 657.796875,
+            "w": 36.328125,
+            "h": 25,
+            "right": 433.671875,
+            "bottom": 682.796875,
+            "scrollHeight": 23,
+            "clientHeight": 23
+          },
+          "points": {
+            "x": 397.34375,
+            "y": 685.796875,
+            "w": 49.203125,
+            "h": 24,
+            "right": 446.546875,
+            "bottom": 709.796875,
+            "scrollHeight": 22,
+            "clientHeight": 22
+          },
+          "bonusText": "+1",
+          "pointsText": "1 pts"
+        },
+        {
+          "box": {
+            "x": 499.890625,
+            "y": 637.296875,
+            "w": 193.546875,
+            "h": 132,
+            "right": 693.4375,
+            "bottom": 769.296875,
+            "scrollHeight": 130,
+            "clientHeight": 130
+          },
+          "bonus": {
+            "x": 595.890625,
+            "y": 657.796875,
+            "w": 36.328125,
+            "h": 25,
+            "right": 632.21875,
+            "bottom": 682.796875,
+            "scrollHeight": 23,
+            "clientHeight": 23
+          },
+          "points": {
+            "x": 595.890625,
+            "y": 685.796875,
+            "w": 49.203125,
+            "h": 24,
+            "right": 645.09375,
+            "bottom": 709.796875,
+            "scrollHeight": 22,
+            "clientHeight": 22
+          },
+          "bonusText": "+1",
+          "pointsText": "1 pts"
+        },
+        {
+          "box": {
+            "x": 698.4375,
+            "y": 637.296875,
+            "w": 193.5625,
+            "h": 132,
+            "right": 892,
+            "bottom": 769.296875,
+            "scrollHeight": 130,
+            "clientHeight": 130
+          },
+          "bonus": {
+            "x": 794.4375,
+            "y": 657.796875,
+            "w": 36.328125,
+            "h": 25,
+            "right": 830.765625,
+            "bottom": 682.796875,
+            "scrollHeight": 23,
+            "clientHeight": 23
+          },
+          "points": {
+            "x": 794.4375,
+            "y": 685.796875,
+            "w": 49.203125,
+            "h": 24,
+            "right": 843.640625,
+            "bottom": 709.796875,
+            "scrollHeight": 22,
+            "clientHeight": 22
+          },
+          "bonusText": "+1",
+          "pointsText": "1 pts"
+        }
+      ],
+      "nobles": {
+        "x": 32,
+        "y": 255.5,
+        "w": 864,
+        "h": 97.796875,
+        "right": 896,
+        "bottom": 353.296875,
+        "scrollHeight": 96,
+        "clientHeight": 96
+      },
+      "bank": {
+        "x": 896,
+        "y": 255.5,
+        "w": 512,
+        "h": 282.984375,
+        "right": 1408,
+        "bottom": 538.484375,
+        "scrollHeight": 281,
+        "clientHeight": 281
+      },
+      "treasury": {
+        "x": 896,
+        "y": 542.484375,
+        "w": 297,
+        "h": 109,
+        "right": 1193,
+        "bottom": 651.484375,
+        "scrollHeight": 107,
+        "clientHeight": 107
+      },
+      "reserved": {
+        "x": 1197,
+        "y": 542.484375,
+        "w": 211,
+        "h": 157,
+        "right": 1408,
+        "bottom": 699.484375,
+        "scrollHeight": 155,
+        "clientHeight": 155
+      },
+      "reservedCardCount": 3,
+      "opponentReserveText": "Reservadas de la otra persona 0 / 3 · Fichas rivales: 3",
+      "action": null
+    }
+  ],
+  "normalFlowProjection1440": [
+    {
+      "viewport": {
+        "w": 1440,
+        "h": 900
+      },
+      "board": {
+        "x": 29,
+        "y": 106,
+        "w": 1382,
+        "h": 600.296875,
+        "right": 1411,
+        "bottom": 706.296875,
+        "scrollHeight": 598,
+        "clientHeight": 598
+      },
+      "market": {
+        "x": 32,
+        "y": 283.296875,
+        "w": 864,
+        "h": 420,
+        "right": 896,
+        "bottom": 703.296875,
+        "scrollHeight": 420,
+        "clientHeight": 420
+      },
+      "tiers": [
+        {
+          "x": 32,
+          "y": 283.296875,
+          "w": 864,
+          "h": 140,
+          "right": 896,
+          "bottom": 423.296875,
+          "scrollHeight": 138,
+          "clientHeight": 138
+        },
+        {
+          "x": 32,
+          "y": 423.296875,
+          "w": 864,
+          "h": 140,
+          "right": 896,
+          "bottom": 563.296875,
+          "scrollHeight": 138,
+          "clientHeight": 138
+        },
+        {
+          "x": 32,
+          "y": 563.296875,
+          "w": 864,
+          "h": 140,
+          "right": 896,
+          "bottom": 703.296875,
+          "scrollHeight": 138,
+          "clientHeight": 138
+        }
+      ],
+      "cards": [
+        {
+          "box": {
+            "x": 102.796875,
+            "y": 287.296875,
+            "w": 193.546875,
+            "h": 132,
+            "right": 296.34375,
+            "bottom": 419.296875,
+            "scrollHeight": 130,
+            "clientHeight": 130
+          },
+          "bonus": {
+            "x": 198.796875,
+            "y": 307.796875,
+            "w": 36.328125,
+            "h": 25,
+            "right": 235.125,
+            "bottom": 332.796875,
+            "scrollHeight": 23,
+            "clientHeight": 23
+          },
+          "points": {
+            "x": 198.796875,
+            "y": 335.796875,
+            "w": 42.90625,
+            "h": 24,
+            "right": 241.703125,
+            "bottom": 359.796875,
+            "scrollHeight": 22,
+            "clientHeight": 22
+          },
+          "bonusText": "+1",
+          "pointsText": "4 점"
+        },
+        {
+          "box": {
+            "x": 301.34375,
+            "y": 287.296875,
+            "w": 193.546875,
+            "h": 132,
+            "right": 494.890625,
+            "bottom": 419.296875,
+            "scrollHeight": 130,
+            "clientHeight": 130
+          },
+          "bonus": {
+            "x": 397.34375,
+            "y": 307.796875,
+            "w": 36.328125,
+            "h": 25,
+            "right": 433.671875,
+            "bottom": 332.796875,
+            "scrollHeight": 23,
+            "clientHeight": 23
+          },
+          "points": {
+            "x": 397.34375,
+            "y": 335.796875,
+            "w": 42.453125,
+            "h": 24,
+            "right": 439.796875,
+            "bottom": 359.796875,
+            "scrollHeight": 22,
+            "clientHeight": 22
+          },
+          "bonusText": "+1",
+          "pointsText": "5 점"
+        },
+        {
+          "box": {
+            "x": 499.890625,
+            "y": 287.296875,
+            "w": 193.546875,
+            "h": 132,
+            "right": 693.4375,
+            "bottom": 419.296875,
+            "scrollHeight": 130,
+            "clientHeight": 130
+          },
+          "bonus": {
+            "x": 595.890625,
+            "y": 307.796875,
+            "w": 36.328125,
+            "h": 25,
+            "right": 632.21875,
+            "bottom": 332.796875,
+            "scrollHeight": 23,
+            "clientHeight": 23
+          },
+          "points": {
+            "x": 595.890625,
+            "y": 335.796875,
+            "w": 42.453125,
+            "h": 24,
+            "right": 638.34375,
+            "bottom": 359.796875,
+            "scrollHeight": 22,
+            "clientHeight": 22
+          },
+          "bonusText": "+1",
+          "pointsText": "5 점"
+        },
+        {
+          "box": {
+            "x": 698.4375,
+            "y": 287.296875,
+            "w": 193.5625,
+            "h": 132,
+            "right": 892,
+            "bottom": 419.296875,
+            "scrollHeight": 130,
+            "clientHeight": 130
+          },
+          "bonus": {
+            "x": 794.4375,
+            "y": 296.796875,
+            "w": 36.328125,
+            "h": 25,
+            "right": 830.765625,
+            "bottom": 321.796875,
+            "scrollHeight": 23,
+            "clientHeight": 23
+          },
+          "points": {
+            "x": 794.4375,
+            "y": 324.796875,
+            "w": 42.15625,
+            "h": 24,
+            "right": 836.59375,
+            "bottom": 348.796875,
+            "scrollHeight": 22,
+            "clientHeight": 22
+          },
+          "bonusText": "+1",
+          "pointsText": "3 점"
+        },
+        {
+          "box": {
+            "x": 102.796875,
+            "y": 427.296875,
+            "w": 193.546875,
+            "h": 132,
+            "right": 296.34375,
+            "bottom": 559.296875,
+            "scrollHeight": 130,
+            "clientHeight": 130
+          },
+          "bonus": {
+            "x": 198.796875,
+            "y": 447.796875,
+            "w": 36.328125,
+            "h": 25,
+            "right": 235.125,
+            "bottom": 472.796875,
+            "scrollHeight": 23,
+            "clientHeight": 23
+          },
+          "points": {
+            "x": 198.796875,
+            "y": 475.796875,
+            "w": 42.15625,
+            "h": 24,
+            "right": 240.953125,
+            "bottom": 499.796875,
+            "scrollHeight": 22,
+            "clientHeight": 22
+          },
+          "bonusText": "+1",
+          "pointsText": "3 점"
+        },
+        {
+          "box": {
+            "x": 301.34375,
+            "y": 427.296875,
+            "w": 193.546875,
+            "h": 132,
+            "right": 494.890625,
+            "bottom": 559.296875,
+            "scrollHeight": 130,
+            "clientHeight": 130
+          },
+          "bonus": {
+            "x": 397.34375,
+            "y": 447.796875,
+            "w": 36.328125,
+            "h": 25,
+            "right": 433.671875,
+            "bottom": 472.796875,
+            "scrollHeight": 23,
+            "clientHeight": 23
+          },
+          "points": {
+            "x": 397.34375,
+            "y": 475.796875,
+            "w": 42.15625,
+            "h": 24,
+            "right": 439.5,
+            "bottom": 499.796875,
+            "scrollHeight": 22,
+            "clientHeight": 22
+          },
+          "bonusText": "+1",
+          "pointsText": "3 점"
+        },
+        {
+          "box": {
+            "x": 499.890625,
+            "y": 427.296875,
+            "w": 193.546875,
+            "h": 132,
+            "right": 693.4375,
+            "bottom": 559.296875,
+            "scrollHeight": 130,
+            "clientHeight": 130
+          },
+          "bonus": {
+            "x": 595.890625,
+            "y": 447.796875,
+            "w": 36.328125,
+            "h": 25,
+            "right": 632.21875,
+            "bottom": 472.796875,
+            "scrollHeight": 23,
+            "clientHeight": 23
+          },
+          "points": {
+            "x": 595.890625,
+            "y": 475.796875,
+            "w": 41.734375,
+            "h": 24,
+            "right": 637.625,
+            "bottom": 499.796875,
+            "scrollHeight": 22,
+            "clientHeight": 22
+          },
+          "bonusText": "+1",
+          "pointsText": "2 점"
+        },
+        {
+          "box": {
+            "x": 698.4375,
+            "y": 427.296875,
+            "w": 193.5625,
+            "h": 132,
+            "right": 892,
+            "bottom": 559.296875,
+            "scrollHeight": 130,
+            "clientHeight": 130
+          },
+          "bonus": {
+            "x": 794.4375,
+            "y": 447.796875,
+            "w": 36.328125,
+            "h": 25,
+            "right": 830.765625,
+            "bottom": 472.796875,
+            "scrollHeight": 23,
+            "clientHeight": 23
+          },
+          "points": {
+            "x": 794.4375,
+            "y": 475.796875,
+            "w": 41.734375,
+            "h": 24,
+            "right": 836.171875,
+            "bottom": 499.796875,
+            "scrollHeight": 22,
+            "clientHeight": 22
+          },
+          "bonusText": "+1",
+          "pointsText": "2 점"
+        },
+        {
+          "box": {
+            "x": 102.796875,
+            "y": 567.296875,
+            "w": 193.546875,
+            "h": 132,
+            "right": 296.34375,
+            "bottom": 699.296875,
+            "scrollHeight": 130,
+            "clientHeight": 130
+          },
+          "bonus": {
+            "x": 198.796875,
+            "y": 587.796875,
+            "w": 36.328125,
+            "h": 25,
+            "right": 235.125,
+            "bottom": 612.796875,
+            "scrollHeight": 23,
+            "clientHeight": 23
+          },
+          "points": {
+            "x": 198.796875,
+            "y": 615.796875,
+            "w": 38.328125,
+            "h": 24,
+            "right": 237.125,
+            "bottom": 639.796875,
+            "scrollHeight": 22,
+            "clientHeight": 22
+          },
+          "bonusText": "+1",
+          "pointsText": "1 점"
+        },
+        {
+          "box": {
+            "x": 301.34375,
+            "y": 567.296875,
+            "w": 193.546875,
+            "h": 132,
+            "right": 494.890625,
+            "bottom": 699.296875,
+            "scrollHeight": 130,
+            "clientHeight": 130
+          },
+          "bonus": {
+            "x": 397.34375,
+            "y": 587.796875,
+            "w": 36.328125,
+            "h": 25,
+            "right": 433.671875,
+            "bottom": 612.796875,
+            "scrollHeight": 23,
+            "clientHeight": 23
+          },
+          "points": {
+            "x": 397.34375,
+            "y": 615.796875,
+            "w": 38.328125,
+            "h": 24,
+            "right": 435.671875,
+            "bottom": 639.796875,
+            "scrollHeight": 22,
+            "clientHeight": 22
+          },
+          "bonusText": "+1",
+          "pointsText": "1 점"
+        },
+        {
+          "box": {
+            "x": 499.890625,
+            "y": 567.296875,
+            "w": 193.546875,
+            "h": 132,
+            "right": 693.4375,
+            "bottom": 699.296875,
+            "scrollHeight": 130,
+            "clientHeight": 130
+          },
+          "bonus": {
+            "x": 595.890625,
+            "y": 587.796875,
+            "w": 36.328125,
+            "h": 25,
+            "right": 632.21875,
+            "bottom": 612.796875,
+            "scrollHeight": 23,
+            "clientHeight": 23
+          },
+          "points": {
+            "x": 595.890625,
+            "y": 615.796875,
+            "w": 38.328125,
+            "h": 24,
+            "right": 634.21875,
+            "bottom": 639.796875,
+            "scrollHeight": 22,
+            "clientHeight": 22
+          },
+          "bonusText": "+1",
+          "pointsText": "1 점"
+        },
+        {
+          "box": {
+            "x": 698.4375,
+            "y": 567.296875,
+            "w": 193.5625,
+            "h": 132,
+            "right": 892,
+            "bottom": 699.296875,
+            "scrollHeight": 130,
+            "clientHeight": 130
+          },
+          "bonus": {
+            "x": 794.4375,
+            "y": 587.796875,
+            "w": 36.328125,
+            "h": 25,
+            "right": 830.765625,
+            "bottom": 612.796875,
+            "scrollHeight": 23,
+            "clientHeight": 23
+          },
+          "points": {
+            "x": 794.4375,
+            "y": 615.796875,
+            "w": 38.328125,
+            "h": 24,
+            "right": 832.765625,
+            "bottom": 639.796875,
+            "scrollHeight": 22,
+            "clientHeight": 22
+          },
+          "bonusText": "+1",
+          "pointsText": "1 점"
+        }
+      ],
+      "nobles": {
+        "x": 32,
+        "y": 185.5,
+        "w": 864,
+        "h": 97.796875,
+        "right": 896,
+        "bottom": 283.296875,
+        "scrollHeight": 96,
+        "clientHeight": 96
+      },
+      "bank": {
+        "x": 896,
+        "y": 185.5,
+        "w": 512,
+        "h": 243.984375,
+        "right": 1408,
+        "bottom": 429.484375,
+        "scrollHeight": 242,
+        "clientHeight": 242
+      },
+      "treasury": {
+        "x": 896,
+        "y": 433.484375,
+        "w": 297,
+        "h": 109,
+        "right": 1193,
+        "bottom": 542.484375,
+        "scrollHeight": 107,
+        "clientHeight": 107
+      },
+      "reserved": {
+        "x": 1197,
+        "y": 433.484375,
+        "w": 211,
+        "h": 118,
+        "right": 1408,
+        "bottom": 551.484375,
+        "scrollHeight": 116,
+        "clientHeight": 116
+      },
+      "reservedCardCount": 0,
+      "opponentReserveText": "상대 예약 카드 3 / 3 · 상대 토큰 5개",
+      "action": null
+    },
+    {
+      "viewport": {
+        "w": 1440,
+        "h": 900
+      },
+      "board": {
+        "x": 29,
+        "y": 106,
+        "w": 1382,
+        "h": 600.296875,
+        "right": 1411,
+        "bottom": 706.296875,
+        "scrollHeight": 598,
+        "clientHeight": 598
+      },
+      "market": {
+        "x": 32,
+        "y": 283.296875,
+        "w": 864,
+        "h": 420,
+        "right": 896,
+        "bottom": 703.296875,
+        "scrollHeight": 420,
+        "clientHeight": 420
+      },
+      "tiers": [
+        {
+          "x": 32,
+          "y": 283.296875,
+          "w": 864,
+          "h": 140,
+          "right": 896,
+          "bottom": 423.296875,
+          "scrollHeight": 138,
+          "clientHeight": 138
+        },
+        {
+          "x": 32,
+          "y": 423.296875,
+          "w": 864,
+          "h": 140,
+          "right": 896,
+          "bottom": 563.296875,
+          "scrollHeight": 138,
+          "clientHeight": 138
+        },
+        {
+          "x": 32,
+          "y": 563.296875,
+          "w": 864,
+          "h": 140,
+          "right": 896,
+          "bottom": 703.296875,
+          "scrollHeight": 138,
+          "clientHeight": 138
+        }
+      ],
+      "cards": [
+        {
+          "box": {
+            "x": 102.796875,
+            "y": 287.296875,
+            "w": 193.546875,
+            "h": 132,
+            "right": 296.34375,
+            "bottom": 419.296875,
+            "scrollHeight": 130,
+            "clientHeight": 130
+          },
+          "bonus": {
+            "x": 198.796875,
+            "y": 307.796875,
+            "w": 36.328125,
+            "h": 25,
+            "right": 235.125,
+            "bottom": 332.796875,
+            "scrollHeight": 23,
+            "clientHeight": 23
+          },
+          "points": {
+            "x": 198.796875,
+            "y": 335.796875,
+            "w": 53.78125,
+            "h": 24,
+            "right": 252.578125,
+            "bottom": 359.796875,
+            "scrollHeight": 22,
+            "clientHeight": 22
+          },
+          "bonusText": "+1",
+          "pointsText": "4 pts"
+        },
+        {
+          "box": {
+            "x": 301.34375,
+            "y": 287.296875,
+            "w": 193.546875,
+            "h": 132,
+            "right": 494.890625,
+            "bottom": 419.296875,
+            "scrollHeight": 130,
+            "clientHeight": 130
+          },
+          "bonus": {
+            "x": 397.34375,
+            "y": 307.796875,
+            "w": 36.328125,
+            "h": 25,
+            "right": 433.671875,
+            "bottom": 332.796875,
+            "scrollHeight": 23,
+            "clientHeight": 23
+          },
+          "points": {
+            "x": 397.34375,
+            "y": 335.796875,
+            "w": 53.328125,
+            "h": 24,
+            "right": 450.671875,
+            "bottom": 359.796875,
+            "scrollHeight": 22,
+            "clientHeight": 22
+          },
+          "bonusText": "+1",
+          "pointsText": "5 pts"
+        },
+        {
+          "box": {
+            "x": 499.890625,
+            "y": 287.296875,
+            "w": 193.546875,
+            "h": 132,
+            "right": 693.4375,
+            "bottom": 419.296875,
+            "scrollHeight": 130,
+            "clientHeight": 130
+          },
+          "bonus": {
+            "x": 595.890625,
+            "y": 307.796875,
+            "w": 36.328125,
+            "h": 25,
+            "right": 632.21875,
+            "bottom": 332.796875,
+            "scrollHeight": 23,
+            "clientHeight": 23
+          },
+          "points": {
+            "x": 595.890625,
+            "y": 335.796875,
+            "w": 53.328125,
+            "h": 24,
+            "right": 649.21875,
+            "bottom": 359.796875,
+            "scrollHeight": 22,
+            "clientHeight": 22
+          },
+          "bonusText": "+1",
+          "pointsText": "5 pts"
+        },
+        {
+          "box": {
+            "x": 698.4375,
+            "y": 287.296875,
+            "w": 193.5625,
+            "h": 132,
+            "right": 892,
+            "bottom": 419.296875,
+            "scrollHeight": 130,
+            "clientHeight": 130
+          },
+          "bonus": {
+            "x": 794.4375,
+            "y": 296.796875,
+            "w": 36.328125,
+            "h": 25,
+            "right": 830.765625,
+            "bottom": 321.796875,
+            "scrollHeight": 23,
+            "clientHeight": 23
+          },
+          "points": {
+            "x": 794.4375,
+            "y": 324.796875,
+            "w": 53.03125,
+            "h": 24,
+            "right": 847.46875,
+            "bottom": 348.796875,
+            "scrollHeight": 22,
+            "clientHeight": 22
+          },
+          "bonusText": "+1",
+          "pointsText": "3 pts"
+        },
+        {
+          "box": {
+            "x": 102.796875,
+            "y": 427.296875,
+            "w": 193.546875,
+            "h": 132,
+            "right": 296.34375,
+            "bottom": 559.296875,
+            "scrollHeight": 130,
+            "clientHeight": 130
+          },
+          "bonus": {
+            "x": 198.796875,
+            "y": 447.796875,
+            "w": 36.328125,
+            "h": 25,
+            "right": 235.125,
+            "bottom": 472.796875,
+            "scrollHeight": 23,
+            "clientHeight": 23
+          },
+          "points": {
+            "x": 198.796875,
+            "y": 475.796875,
+            "w": 53.03125,
+            "h": 24,
+            "right": 251.828125,
+            "bottom": 499.796875,
+            "scrollHeight": 22,
+            "clientHeight": 22
+          },
+          "bonusText": "+1",
+          "pointsText": "3 pts"
+        },
+        {
+          "box": {
+            "x": 301.34375,
+            "y": 427.296875,
+            "w": 193.546875,
+            "h": 132,
+            "right": 494.890625,
+            "bottom": 559.296875,
+            "scrollHeight": 130,
+            "clientHeight": 130
+          },
+          "bonus": {
+            "x": 397.34375,
+            "y": 447.796875,
+            "w": 36.328125,
+            "h": 25,
+            "right": 433.671875,
+            "bottom": 472.796875,
+            "scrollHeight": 23,
+            "clientHeight": 23
+          },
+          "points": {
+            "x": 397.34375,
+            "y": 475.796875,
+            "w": 53.03125,
+            "h": 24,
+            "right": 450.375,
+            "bottom": 499.796875,
+            "scrollHeight": 22,
+            "clientHeight": 22
+          },
+          "bonusText": "+1",
+          "pointsText": "3 pts"
+        },
+        {
+          "box": {
+            "x": 499.890625,
+            "y": 427.296875,
+            "w": 193.546875,
+            "h": 132,
+            "right": 693.4375,
+            "bottom": 559.296875,
+            "scrollHeight": 130,
+            "clientHeight": 130
+          },
+          "bonus": {
+            "x": 595.890625,
+            "y": 447.796875,
+            "w": 36.328125,
+            "h": 25,
+            "right": 632.21875,
+            "bottom": 472.796875,
+            "scrollHeight": 23,
+            "clientHeight": 23
+          },
+          "points": {
+            "x": 595.890625,
+            "y": 475.796875,
+            "w": 52.609375,
+            "h": 24,
+            "right": 648.5,
+            "bottom": 499.796875,
+            "scrollHeight": 22,
+            "clientHeight": 22
+          },
+          "bonusText": "+1",
+          "pointsText": "2 pts"
+        },
+        {
+          "box": {
+            "x": 698.4375,
+            "y": 427.296875,
+            "w": 193.5625,
+            "h": 132,
+            "right": 892,
+            "bottom": 559.296875,
+            "scrollHeight": 130,
+            "clientHeight": 130
+          },
+          "bonus": {
+            "x": 794.4375,
+            "y": 447.796875,
+            "w": 36.328125,
+            "h": 25,
+            "right": 830.765625,
+            "bottom": 472.796875,
+            "scrollHeight": 23,
+            "clientHeight": 23
+          },
+          "points": {
+            "x": 794.4375,
+            "y": 475.796875,
+            "w": 52.609375,
+            "h": 24,
+            "right": 847.046875,
+            "bottom": 499.796875,
+            "scrollHeight": 22,
+            "clientHeight": 22
+          },
+          "bonusText": "+1",
+          "pointsText": "2 pts"
+        },
+        {
+          "box": {
+            "x": 102.796875,
+            "y": 567.296875,
+            "w": 193.546875,
+            "h": 132,
+            "right": 296.34375,
+            "bottom": 699.296875,
+            "scrollHeight": 130,
+            "clientHeight": 130
+          },
+          "bonus": {
+            "x": 198.796875,
+            "y": 587.796875,
+            "w": 36.328125,
+            "h": 25,
+            "right": 235.125,
+            "bottom": 612.796875,
+            "scrollHeight": 23,
+            "clientHeight": 23
+          },
+          "points": {
+            "x": 198.796875,
+            "y": 615.796875,
+            "w": 49.203125,
+            "h": 24,
+            "right": 248,
+            "bottom": 639.796875,
+            "scrollHeight": 22,
+            "clientHeight": 22
+          },
+          "bonusText": "+1",
+          "pointsText": "1 pts"
+        },
+        {
+          "box": {
+            "x": 301.34375,
+            "y": 567.296875,
+            "w": 193.546875,
+            "h": 132,
+            "right": 494.890625,
+            "bottom": 699.296875,
+            "scrollHeight": 130,
+            "clientHeight": 130
+          },
+          "bonus": {
+            "x": 397.34375,
+            "y": 587.796875,
+            "w": 36.328125,
+            "h": 25,
+            "right": 433.671875,
+            "bottom": 612.796875,
+            "scrollHeight": 23,
+            "clientHeight": 23
+          },
+          "points": {
+            "x": 397.34375,
+            "y": 615.796875,
+            "w": 49.203125,
+            "h": 24,
+            "right": 446.546875,
+            "bottom": 639.796875,
+            "scrollHeight": 22,
+            "clientHeight": 22
+          },
+          "bonusText": "+1",
+          "pointsText": "1 pts"
+        },
+        {
+          "box": {
+            "x": 499.890625,
+            "y": 567.296875,
+            "w": 193.546875,
+            "h": 132,
+            "right": 693.4375,
+            "bottom": 699.296875,
+            "scrollHeight": 130,
+            "clientHeight": 130
+          },
+          "bonus": {
+            "x": 595.890625,
+            "y": 587.796875,
+            "w": 36.328125,
+            "h": 25,
+            "right": 632.21875,
+            "bottom": 612.796875,
+            "scrollHeight": 23,
+            "clientHeight": 23
+          },
+          "points": {
+            "x": 595.890625,
+            "y": 615.796875,
+            "w": 49.203125,
+            "h": 24,
+            "right": 645.09375,
+            "bottom": 639.796875,
+            "scrollHeight": 22,
+            "clientHeight": 22
+          },
+          "bonusText": "+1",
+          "pointsText": "1 pts"
+        },
+        {
+          "box": {
+            "x": 698.4375,
+            "y": 567.296875,
+            "w": 193.5625,
+            "h": 132,
+            "right": 892,
+            "bottom": 699.296875,
+            "scrollHeight": 130,
+            "clientHeight": 130
+          },
+          "bonus": {
+            "x": 794.4375,
+            "y": 587.796875,
+            "w": 36.328125,
+            "h": 25,
+            "right": 830.765625,
+            "bottom": 612.796875,
+            "scrollHeight": 23,
+            "clientHeight": 23
+          },
+          "points": {
+            "x": 794.4375,
+            "y": 615.796875,
+            "w": 49.203125,
+            "h": 24,
+            "right": 843.640625,
+            "bottom": 639.796875,
+            "scrollHeight": 22,
+            "clientHeight": 22
+          },
+          "bonusText": "+1",
+          "pointsText": "1 pts"
+        }
+      ],
+      "nobles": {
+        "x": 32,
+        "y": 185.5,
+        "w": 864,
+        "h": 97.796875,
+        "right": 896,
+        "bottom": 283.296875,
+        "scrollHeight": 96,
+        "clientHeight": 96
+      },
+      "bank": {
+        "x": 896,
+        "y": 185.5,
+        "w": 512,
+        "h": 282.984375,
+        "right": 1408,
+        "bottom": 468.484375,
+        "scrollHeight": 281,
+        "clientHeight": 281
+      },
+      "treasury": {
+        "x": 896,
+        "y": 472.484375,
+        "w": 297,
+        "h": 109,
+        "right": 1193,
+        "bottom": 581.484375,
+        "scrollHeight": 107,
+        "clientHeight": 107
+      },
+      "reserved": {
+        "x": 1197,
+        "y": 472.484375,
+        "w": 211,
+        "h": 157,
+        "right": 1408,
+        "bottom": 629.484375,
+        "scrollHeight": 155,
+        "clientHeight": 155
+      },
+      "reservedCardCount": 3,
+      "opponentReserveText": "Reservadas de la otra persona 0 / 3 · Fichas rivales: 3",
+      "action": null
+    }
+  ],
+  "terminal": {
+    "actionCount": 5,
+    "result": [
+      {
+        "reason": "final score 15-6",
+        "scores": {
+          "p1": 15,
+          "p2": 6
+        },
+        "winner": "p1"
+      },
+      {
+        "reason": "final score 15-6",
+        "scores": {
+          "p1": 15,
+          "p2": 6
+        },
+        "winner": "p1"
+      }
+    ],
+    "scores": [
+      {
+        "p1": 15,
+        "p2": 6
+      },
+      {
+        "p1": 15,
+        "p2": 6
+      }
+    ],
+    "phase": [
+      "finished",
+      "finished"
+    ],
+    "lastActions": [
+      {
+        "seat": "p2",
+        "type": "buy",
+        "bonus": "blue",
+        "points": 3
+      },
+      {
+        "seat": "p1",
+        "type": "buy",
+        "bonus": "blue",
+        "points": 3
+      },
+      {
+        "seat": "p2",
+        "type": "buy",
+        "bonus": "black",
+        "points": 1
+      },
+      {
+        "seat": "p1",
+        "type": "buy",
+        "bonus": "white",
+        "points": 2
+      },
+      {
+        "seat": "p2",
+        "type": "buy",
+        "bonus": "black",
+        "points": 2
+      }
+    ]
+  },
+  "replay": {
+    "pending": [
+      null,
+      null
+    ],
+    "versions": [
+      60,
+      60
+    ],
+    "phase": [
+      "action",
+      "waiting"
+    ],
+    "score": [
+      {
+        "p1": 0,
+        "p2": 0
+      },
+      {
+        "p1": 0,
+        "p2": 0
+      }
+    ]
+  }
+}

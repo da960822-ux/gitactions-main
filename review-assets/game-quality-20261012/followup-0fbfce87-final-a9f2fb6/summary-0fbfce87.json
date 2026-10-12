@@ -1,0 +1,45 @@
+{
+  "sourceHead": "0fbfce87a6b7b69fd27479e25fe6f62d71941d29",
+  "environment": {
+    "app": "http://127.0.0.1:5212",
+    "authority": "local SQL fixture :54331; browser contexts use explicit snapshot refresh; Realtime not available",
+    "contexts": "two separate Playwright browser contexts, KO p1 / ES p2"
+  },
+  "results": {
+    "marble": {
+      "status": "partial-pass",
+      "evidence": "marble-current/report.json and stage1/2/3 screenshots for 1366x768 and 1440x900, KO+ES",
+      "scope": "Legal UI purchase and level 1→2→3 builds captured; separate fresh two-context reload check restored KO/ES seats and matched version/money/position/pawn/initial owner-build state after explicit fixture refresh. No full match terminal/replay.",
+      "reconnectEvidence": "marble-current/reconnect/report.json (first comparison false due a harness comparing seat-specific playerId; corrected board-field comparison pass recorded with note)"
+    },
+    "davinci": {
+      "status": "pass",
+      "evidence": "davinci-final-replay/report.json and screenshots",
+      "scope": "39 legal UI actions to natural p2 terminal at v41; page reload restored seat/version/phase at v11; two-player replay consent pending v42 then fresh setup v43 on both contexts; unrevealed rival values/portrait URLs hidden; white indoor Joker loaded in own context; black waterfront Joker loaded in separate natural run davinci-bounded (not this terminal run)"
+    },
+    "jaipur": {
+      "status": "pass",
+      "evidence": "jaipur/report.json, finished/replayed screenshots",
+      "scope": "87 legal UI moves, p1 won two rounds 2-0 at v89; page reload restored state at v8; replay request/consent v90, fresh round v91 on both seats"
+    },
+    "domino": {
+      "status": "pass",
+      "evidence": "domino/report.json and terminal/replay screenshots",
+      "scope": "16 legal UI actions to terminal and two-seat replay/fresh state; report says 139 assertions pass"
+    },
+    "minhwatu": {
+      "status": "pass",
+      "evidence": "minhwatu/report.json and terminal/replay screenshots",
+      "scope": "20 legal UI actions to terminal; p2 won 245-125; page reload restored v10; two-player consent created fresh game v24"
+    },
+    "catchmind": "out-of-scope for this run; handled by other agent",
+    "splendor": "out-of-scope for this run; handled by other agent"
+  },
+  "limitations": [
+    "Local fixture has no Supabase Realtime; all cross-seat synchronization was explicit refresh/read.",
+    "No production Supabase/service, native device, or live network reconnection verification.",
+    "Marble terminal/replay skipped; only actual stage 1/2/3 legal build UI checks were captured.",
+    "Special branches not reached remain unverified.",
+    "Jaipur final attempt duplicate/interruption is not counted; use the separate successful jaipur/report.json run."
+  ]
+}

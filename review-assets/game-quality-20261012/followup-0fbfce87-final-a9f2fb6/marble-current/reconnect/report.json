@@ -1,0 +1,216 @@
+{
+  "sourceHead": "0fbfce87a6b7b69fd27479e25fe6f62d71941d29",
+  "game": "marble",
+  "base": "http://127.0.0.1:5212",
+  "authority": "local SQL fixture :54331; explicit refresh only, no Realtime",
+  "contexts": 2,
+  "checks": [
+    {
+      "name": "two independent seats retain KO/ES language after p2 page reload",
+      "pass": true
+    },
+    {
+      "name": "explicit fixture refresh after reload preserves shared initial version, money, positions, ownership/build levels",
+      "pass": true,
+      "note": "Compared each seat before/after and both seats after, excluding seat-specific playerId; initial board has no owned/building tiles."
+    }
+  ],
+  "requests": [
+    {
+      "seat": "p1",
+      "origin": "http://127.0.0.1:54331",
+      "path": "/rest/v1/rpc/room_snapshot",
+      "status": 200
+    },
+    {
+      "seat": "p1",
+      "origin": "http://127.0.0.1:54331",
+      "path": "/rest/v1/rpc/room_snapshot",
+      "status": 200
+    },
+    {
+      "seat": "p2",
+      "origin": "http://127.0.0.1:54331",
+      "path": "/rest/v1/rpc/room_snapshot",
+      "status": 200
+    },
+    {
+      "seat": "p2",
+      "origin": "http://127.0.0.1:54331",
+      "path": "/rest/v1/rpc/room_snapshot",
+      "status": 200
+    },
+    {
+      "seat": "p1",
+      "origin": "http://127.0.0.1:54331",
+      "path": "/functions/v1/action",
+      "status": 200
+    },
+    {
+      "seat": "p1",
+      "origin": "http://127.0.0.1:54331",
+      "path": "/rest/v1/rpc/room_snapshot",
+      "status": 200
+    },
+    {
+      "seat": "p2",
+      "origin": "http://127.0.0.1:54331",
+      "path": "/functions/v1/action",
+      "status": 409
+    },
+    {
+      "seat": "p2",
+      "origin": "http://127.0.0.1:54331",
+      "path": "/rest/v1/rpc/room_snapshot",
+      "status": 200
+    },
+    {
+      "seat": "p2",
+      "origin": "http://127.0.0.1:54331",
+      "path": "/functions/v1/action",
+      "status": 200
+    },
+    {
+      "seat": "p2",
+      "origin": "http://127.0.0.1:54331",
+      "path": "/rest/v1/rpc/room_snapshot",
+      "status": 200
+    },
+    {
+      "seat": "p1",
+      "origin": "http://127.0.0.1:54331",
+      "path": "/rest/v1/rpc/room_snapshot",
+      "status": 200
+    },
+    {
+      "seat": "p2",
+      "origin": "http://127.0.0.1:54331",
+      "path": "/rest/v1/rpc/room_snapshot",
+      "status": 200
+    },
+    {
+      "seat": "p1",
+      "origin": "http://127.0.0.1:54331",
+      "path": "/rest/v1/rpc/room_snapshot",
+      "status": 200
+    },
+    {
+      "seat": "p2",
+      "origin": "http://127.0.0.1:54331",
+      "path": "/rest/v1/rpc/room_snapshot",
+      "status": 200
+    },
+    {
+      "seat": "p2",
+      "origin": "http://127.0.0.1:54331",
+      "path": "/rest/v1/rpc/room_snapshot",
+      "status": 200
+    },
+    {
+      "seat": "p1",
+      "origin": "http://127.0.0.1:54331",
+      "path": "/rest/v1/rpc/room_snapshot",
+      "status": 200
+    },
+    {
+      "seat": "p2",
+      "origin": "http://127.0.0.1:54331",
+      "path": "/rest/v1/rpc/room_snapshot",
+      "status": 200
+    }
+  ],
+  "errors": [],
+  "before": [
+    {
+      "playerId": "p1",
+      "version": 2,
+      "gameId": "marble",
+      "pendingGame": null,
+      "phase": "roll",
+      "turn": "p1",
+      "money": {
+        "p1": 1500,
+        "p2": 1500
+      },
+      "positions": {
+        "p1": 0,
+        "p2": 0
+      },
+      "pawns": {
+        "p1": "fox",
+        "p2": "cat"
+      },
+      "tiles": []
+    },
+    {
+      "playerId": "p2",
+      "version": 2,
+      "gameId": "marble",
+      "pendingGame": null,
+      "phase": "roll",
+      "turn": "p1",
+      "money": {
+        "p1": 1500,
+        "p2": 1500
+      },
+      "positions": {
+        "p1": 0,
+        "p2": 0
+      },
+      "pawns": {
+        "p1": "fox",
+        "p2": "cat"
+      },
+      "tiles": []
+    }
+  ],
+  "locales": [
+    "ko",
+    "es-DO"
+  ],
+  "after": [
+    {
+      "playerId": "p1",
+      "version": 2,
+      "gameId": "marble",
+      "pendingGame": null,
+      "phase": "roll",
+      "turn": "p1",
+      "money": {
+        "p1": 1500,
+        "p2": 1500
+      },
+      "positions": {
+        "p1": 0,
+        "p2": 0
+      },
+      "pawns": {
+        "p1": "fox",
+        "p2": "cat"
+      },
+      "tiles": []
+    },
+    {
+      "playerId": "p2",
+      "version": 2,
+      "gameId": "marble",
+      "pendingGame": null,
+      "phase": "roll",
+      "turn": "p1",
+      "money": {
+        "p1": 1500,
+        "p2": 1500
+      },
+      "positions": {
+        "p1": 0,
+        "p2": 0
+      },
+      "pawns": {
+        "p1": "fox",
+        "p2": "cat"
+      },
+      "tiles": []
+    }
+  ],
+  "runnerAssertionNote": "First runner-side comparison included playerId across contexts, so it falsely failed equality. Rechecked the stored UI snapshots with the correct shared-board fields; the underlying board data match."
+}

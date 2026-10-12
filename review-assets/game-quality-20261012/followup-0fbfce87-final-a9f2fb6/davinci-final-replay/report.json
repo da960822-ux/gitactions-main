@@ -1,0 +1,2097 @@
+{
+  "sourceHead": "0fbfce87a6b7b69fd27479e25fe6f62d71941d29",
+  "game": "davinci",
+  "base": "http://127.0.0.1:5212",
+  "authority": "local SQL fixture :54331; explicit read refresh, no Realtime",
+  "contexts": 2,
+  "actions": [
+    {
+      "seat": "p1",
+      "type": "finish-setup",
+      "from": 2,
+      "to": 3,
+      "phaseBefore": "setup",
+      "phaseAfter": "waiting",
+      "deckCount": 18,
+      "turn": "p2",
+      "ownCount": 4,
+      "opponentCount": 4
+    },
+    {
+      "seat": "p2",
+      "type": "setup-place-joker",
+      "to": 4
+    },
+    {
+      "seat": "p2",
+      "type": "finish-setup",
+      "from": 4,
+      "to": 5,
+      "phaseBefore": "setup",
+      "phaseAfter": "waiting",
+      "deckCount": 18,
+      "turn": "p1",
+      "ownCount": 4,
+      "opponentCount": 4
+    },
+    {
+      "seat": "p1",
+      "type": "draw",
+      "from": 5,
+      "to": 6,
+      "phaseBefore": "draw",
+      "phaseAfter": "guess",
+      "deckCount": 17,
+      "turn": "p1",
+      "ownCount": 5,
+      "opponentCount": 4
+    },
+    {
+      "seat": "p1",
+      "type": "guess",
+      "from": 6,
+      "to": 7,
+      "phaseBefore": "guess",
+      "phaseAfter": "waiting",
+      "deckCount": 17,
+      "turn": "p2",
+      "ownCount": 5,
+      "opponentCount": 4
+    },
+    {
+      "seat": "p2",
+      "type": "draw",
+      "from": 7,
+      "to": 8,
+      "phaseBefore": "draw",
+      "phaseAfter": "guess",
+      "deckCount": 16,
+      "turn": "p2",
+      "ownCount": 5,
+      "opponentCount": 4
+    },
+    {
+      "seat": "p2",
+      "type": "guess",
+      "from": 8,
+      "to": 9,
+      "phaseBefore": "guess",
+      "phaseAfter": "waiting",
+      "deckCount": 16,
+      "turn": "p1",
+      "ownCount": 5,
+      "opponentCount": 4
+    },
+    {
+      "seat": "p1",
+      "type": "draw",
+      "from": 9,
+      "to": 10,
+      "phaseBefore": "draw",
+      "phaseAfter": "guess",
+      "deckCount": 15,
+      "turn": "p1",
+      "ownCount": 6,
+      "opponentCount": 4
+    },
+    {
+      "seat": "p1",
+      "type": "guess",
+      "from": 10,
+      "to": 11,
+      "phaseBefore": "guess",
+      "phaseAfter": "waiting",
+      "deckCount": 15,
+      "turn": "p2",
+      "ownCount": 6,
+      "opponentCount": 4
+    },
+    {
+      "seat": "p2",
+      "type": "draw",
+      "from": 11,
+      "to": 12,
+      "phaseBefore": "draw",
+      "phaseAfter": "guess",
+      "deckCount": 14,
+      "turn": "p2",
+      "ownCount": 6,
+      "opponentCount": 4
+    },
+    {
+      "seat": "p2",
+      "type": "guess",
+      "from": 12,
+      "to": 13,
+      "phaseBefore": "guess",
+      "phaseAfter": "guess",
+      "deckCount": 14,
+      "turn": "p2",
+      "ownCount": 6,
+      "opponentCount": 3
+    },
+    {
+      "seat": "p2",
+      "type": "stop",
+      "from": 13,
+      "to": 14,
+      "phaseBefore": "guess",
+      "phaseAfter": "waiting",
+      "deckCount": 14,
+      "turn": "p1",
+      "ownCount": 6,
+      "opponentCount": 3
+    },
+    {
+      "seat": "p1",
+      "type": "draw",
+      "from": 14,
+      "to": 15,
+      "phaseBefore": "draw",
+      "phaseAfter": "guess",
+      "deckCount": 13,
+      "turn": "p1",
+      "ownCount": 7,
+      "opponentCount": 5
+    },
+    {
+      "seat": "p1",
+      "type": "guess",
+      "from": 15,
+      "to": 16,
+      "phaseBefore": "guess",
+      "phaseAfter": "waiting",
+      "deckCount": 13,
+      "turn": "p2",
+      "ownCount": 7,
+      "opponentCount": 5
+    },
+    {
+      "seat": "p2",
+      "type": "draw",
+      "from": 16,
+      "to": 17,
+      "phaseBefore": "draw",
+      "phaseAfter": "guess",
+      "deckCount": 12,
+      "turn": "p2",
+      "ownCount": 7,
+      "opponentCount": 3
+    },
+    {
+      "seat": "p2",
+      "type": "guess",
+      "from": 17,
+      "to": 18,
+      "phaseBefore": "guess",
+      "phaseAfter": "waiting",
+      "deckCount": 12,
+      "turn": "p1",
+      "ownCount": 7,
+      "opponentCount": 3
+    },
+    {
+      "seat": "p1",
+      "type": "draw",
+      "from": 18,
+      "to": 19,
+      "phaseBefore": "draw",
+      "phaseAfter": "guess",
+      "deckCount": 11,
+      "turn": "p1",
+      "ownCount": 8,
+      "opponentCount": 5
+    },
+    {
+      "seat": "p1",
+      "type": "guess",
+      "from": 19,
+      "to": 20,
+      "phaseBefore": "guess",
+      "phaseAfter": "waiting",
+      "deckCount": 11,
+      "turn": "p2",
+      "ownCount": 8,
+      "opponentCount": 5
+    },
+    {
+      "seat": "p2",
+      "type": "draw",
+      "from": 20,
+      "to": 21,
+      "phaseBefore": "draw",
+      "phaseAfter": "place-joker",
+      "deckCount": 10,
+      "turn": "p2",
+      "ownCount": 8,
+      "opponentCount": 3
+    },
+    {
+      "seat": "p2",
+      "type": "place-joker",
+      "from": 21,
+      "to": 22,
+      "phaseBefore": "place-joker",
+      "phaseAfter": "guess",
+      "deckCount": 10,
+      "turn": "p2",
+      "ownCount": 8,
+      "opponentCount": 3
+    },
+    {
+      "seat": "p2",
+      "type": "guess",
+      "from": 22,
+      "to": 22,
+      "phaseBefore": "guess",
+      "phaseAfter": "guess",
+      "deckCount": 10,
+      "turn": "p2",
+      "ownCount": 8,
+      "opponentCount": 3
+    },
+    {
+      "seat": "p1",
+      "type": "draw",
+      "from": 23,
+      "to": 24,
+      "phaseBefore": "draw",
+      "phaseAfter": "guess",
+      "deckCount": 9,
+      "turn": "p1",
+      "ownCount": 9,
+      "opponentCount": 5
+    },
+    {
+      "seat": "p1",
+      "type": "guess",
+      "from": 24,
+      "to": 25,
+      "phaseBefore": "guess",
+      "phaseAfter": "waiting",
+      "deckCount": 9,
+      "turn": "p2",
+      "ownCount": 9,
+      "opponentCount": 5
+    },
+    {
+      "seat": "p2",
+      "type": "draw",
+      "from": 25,
+      "to": 26,
+      "phaseBefore": "draw",
+      "phaseAfter": "guess",
+      "deckCount": 8,
+      "turn": "p2",
+      "ownCount": 9,
+      "opponentCount": 3
+    },
+    {
+      "seat": "p2",
+      "type": "guess",
+      "from": 26,
+      "to": 27,
+      "phaseBefore": "guess",
+      "phaseAfter": "guess",
+      "deckCount": 8,
+      "turn": "p2",
+      "ownCount": 9,
+      "opponentCount": 2
+    },
+    {
+      "seat": "p2",
+      "type": "stop",
+      "from": 27,
+      "to": 28,
+      "phaseBefore": "guess",
+      "phaseAfter": "waiting",
+      "deckCount": 8,
+      "turn": "p1",
+      "ownCount": 9,
+      "opponentCount": 2
+    },
+    {
+      "seat": "p1",
+      "type": "draw",
+      "from": 28,
+      "to": 29,
+      "phaseBefore": "draw",
+      "phaseAfter": "guess",
+      "deckCount": 7,
+      "turn": "p1",
+      "ownCount": 10,
+      "opponentCount": 6
+    },
+    {
+      "seat": "p1",
+      "type": "guess",
+      "from": 29,
+      "to": 30,
+      "phaseBefore": "guess",
+      "phaseAfter": "waiting",
+      "deckCount": 7,
+      "turn": "p2",
+      "ownCount": 10,
+      "opponentCount": 6
+    },
+    {
+      "seat": "p2",
+      "type": "draw",
+      "from": 30,
+      "to": 31,
+      "phaseBefore": "draw",
+      "phaseAfter": "guess",
+      "deckCount": 6,
+      "turn": "p2",
+      "ownCount": 10,
+      "opponentCount": 2
+    },
+    {
+      "seat": "p2",
+      "type": "guess",
+      "from": 31,
+      "to": 32,
+      "phaseBefore": "guess",
+      "phaseAfter": "waiting",
+      "deckCount": 6,
+      "turn": "p1",
+      "ownCount": 10,
+      "opponentCount": 2
+    },
+    {
+      "seat": "p1",
+      "type": "draw",
+      "from": 32,
+      "to": 33,
+      "phaseBefore": "draw",
+      "phaseAfter": "guess",
+      "deckCount": 5,
+      "turn": "p1",
+      "ownCount": 11,
+      "opponentCount": 6
+    },
+    {
+      "seat": "p1",
+      "type": "guess",
+      "from": 33,
+      "to": 34,
+      "phaseBefore": "guess",
+      "phaseAfter": "waiting",
+      "deckCount": 5,
+      "turn": "p2",
+      "ownCount": 11,
+      "opponentCount": 6
+    },
+    {
+      "seat": "p2",
+      "type": "draw",
+      "from": 34,
+      "to": 35,
+      "phaseBefore": "draw",
+      "phaseAfter": "guess",
+      "deckCount": 4,
+      "turn": "p2",
+      "ownCount": 11,
+      "opponentCount": 2
+    },
+    {
+      "seat": "p2",
+      "type": "guess",
+      "from": 35,
+      "to": 36,
+      "phaseBefore": "guess",
+      "phaseAfter": "guess",
+      "deckCount": 4,
+      "turn": "p2",
+      "ownCount": 11,
+      "opponentCount": 1
+    },
+    {
+      "seat": "p2",
+      "type": "stop",
+      "from": 36,
+      "to": 37,
+      "phaseBefore": "guess",
+      "phaseAfter": "waiting",
+      "deckCount": 4,
+      "turn": "p1",
+      "ownCount": 11,
+      "opponentCount": 1
+    },
+    {
+      "seat": "p1",
+      "type": "draw",
+      "from": 37,
+      "to": 38,
+      "phaseBefore": "draw",
+      "phaseAfter": "guess",
+      "deckCount": 3,
+      "turn": "p1",
+      "ownCount": 12,
+      "opponentCount": 7
+    },
+    {
+      "seat": "p1",
+      "type": "guess",
+      "from": 38,
+      "to": 39,
+      "phaseBefore": "guess",
+      "phaseAfter": "waiting",
+      "deckCount": 3,
+      "turn": "p2",
+      "ownCount": 12,
+      "opponentCount": 7
+    },
+    {
+      "seat": "p2",
+      "type": "draw",
+      "from": 39,
+      "to": 40,
+      "phaseBefore": "draw",
+      "phaseAfter": "guess",
+      "deckCount": 2,
+      "turn": "p2",
+      "ownCount": 12,
+      "opponentCount": 1
+    },
+    {
+      "seat": "p2",
+      "type": "guess",
+      "from": 40,
+      "to": 41,
+      "phaseBefore": "guess",
+      "phaseAfter": "guess",
+      "deckCount": 2,
+      "turn": "p2",
+      "ownCount": 12,
+      "opponentCount": 0
+    }
+  ],
+  "requests": [
+    {
+      "p": 1,
+      "origin": "http://127.0.0.1:54331",
+      "path": "/rest/v1/rpc/room_snapshot",
+      "status": 200
+    },
+    {
+      "p": 1,
+      "origin": "http://127.0.0.1:54331",
+      "path": "/rest/v1/rpc/room_snapshot",
+      "status": 200
+    },
+    {
+      "p": 2,
+      "origin": "http://127.0.0.1:54331",
+      "path": "/rest/v1/rpc/room_snapshot",
+      "status": 200
+    },
+    {
+      "p": 1,
+      "origin": "http://127.0.0.1:54331",
+      "path": "/rest/v1/rpc/room_snapshot",
+      "status": 200
+    },
+    {
+      "p": 2,
+      "origin": "http://127.0.0.1:54331",
+      "path": "/rest/v1/rpc/room_snapshot",
+      "status": 200
+    },
+    {
+      "p": 2,
+      "origin": "http://127.0.0.1:54331",
+      "path": "/rest/v1/rpc/room_snapshot",
+      "status": 200
+    },
+    {
+      "p": 2,
+      "origin": "http://127.0.0.1:54331",
+      "path": "/rest/v1/rpc/room_snapshot",
+      "status": 200
+    },
+    {
+      "p": 1,
+      "origin": "http://127.0.0.1:54331",
+      "path": "/functions/v1/action",
+      "status": 200
+    },
+    {
+      "p": 1,
+      "origin": "http://127.0.0.1:54331",
+      "path": "/rest/v1/rpc/room_snapshot",
+      "status": 200
+    },
+    {
+      "p": 1,
+      "origin": "http://127.0.0.1:54331",
+      "path": "/rest/v1/rpc/room_snapshot",
+      "status": 200
+    },
+    {
+      "p": 2,
+      "origin": "http://127.0.0.1:54331",
+      "path": "/functions/v1/action",
+      "status": 200
+    },
+    {
+      "p": 2,
+      "origin": "http://127.0.0.1:54331",
+      "path": "/rest/v1/rpc/room_snapshot",
+      "status": 200
+    },
+    {
+      "p": 2,
+      "origin": "http://127.0.0.1:54331",
+      "path": "/rest/v1/rpc/room_snapshot",
+      "status": 200
+    },
+    {
+      "p": 1,
+      "origin": "http://127.0.0.1:54331",
+      "path": "/rest/v1/rpc/room_snapshot",
+      "status": 200
+    },
+    {
+      "p": 1,
+      "origin": "http://127.0.0.1:54331",
+      "path": "/rest/v1/rpc/room_snapshot",
+      "status": 200
+    },
+    {
+      "p": 1,
+      "origin": "http://127.0.0.1:54331",
+      "path": "/functions/v1/action",
+      "status": 200
+    },
+    {
+      "p": 1,
+      "origin": "http://127.0.0.1:54331",
+      "path": "/rest/v1/rpc/room_snapshot",
+      "status": 200
+    },
+    {
+      "p": 1,
+      "origin": "http://127.0.0.1:54331",
+      "path": "/rest/v1/rpc/room_snapshot",
+      "status": 200
+    },
+    {
+      "p": 2,
+      "origin": "http://127.0.0.1:54331",
+      "path": "/rest/v1/rpc/room_snapshot",
+      "status": 200
+    },
+    {
+      "p": 2,
+      "origin": "http://127.0.0.1:54331",
+      "path": "/functions/v1/action",
+      "status": 200
+    },
+    {
+      "p": 2,
+      "origin": "http://127.0.0.1:54331",
+      "path": "/rest/v1/rpc/room_snapshot",
+      "status": 200
+    },
+    {
+      "p": 2,
+      "origin": "http://127.0.0.1:54331",
+      "path": "/rest/v1/rpc/room_snapshot",
+      "status": 200
+    },
+    {
+      "p": 2,
+      "origin": "http://127.0.0.1:54331",
+      "path": "/rest/v1/rpc/room_snapshot",
+      "status": 200
+    },
+    {
+      "p": 2,
+      "origin": "http://127.0.0.1:54331",
+      "path": "/functions/v1/action",
+      "status": 200
+    },
+    {
+      "p": 2,
+      "origin": "http://127.0.0.1:54331",
+      "path": "/rest/v1/rpc/room_snapshot",
+      "status": 200
+    },
+    {
+      "p": 2,
+      "origin": "http://127.0.0.1:54331",
+      "path": "/rest/v1/rpc/room_snapshot",
+      "status": 200
+    },
+    {
+      "p": 1,
+      "origin": "http://127.0.0.1:54331",
+      "path": "/rest/v1/rpc/room_snapshot",
+      "status": 200
+    },
+    {
+      "p": 2,
+      "origin": "http://127.0.0.1:54331",
+      "path": "/rest/v1/rpc/room_snapshot",
+      "status": 200
+    },
+    {
+      "p": 1,
+      "origin": "http://127.0.0.1:54331",
+      "path": "/rest/v1/rpc/room_snapshot",
+      "status": 200
+    },
+    {
+      "p": 2,
+      "origin": "http://127.0.0.1:54331",
+      "path": "/rest/v1/rpc/room_snapshot",
+      "status": 200
+    },
+    {
+      "p": 1,
+      "origin": "http://127.0.0.1:54331",
+      "path": "/functions/v1/action",
+      "status": 200
+    },
+    {
+      "p": 1,
+      "origin": "http://127.0.0.1:54331",
+      "path": "/rest/v1/rpc/room_snapshot",
+      "status": 200
+    },
+    {
+      "p": 1,
+      "origin": "http://127.0.0.1:54331",
+      "path": "/rest/v1/rpc/room_snapshot",
+      "status": 200
+    },
+    {
+      "p": 1,
+      "origin": "http://127.0.0.1:54331",
+      "path": "/rest/v1/rpc/room_snapshot",
+      "status": 200
+    },
+    {
+      "p": 1,
+      "origin": "http://127.0.0.1:54331",
+      "path": "/functions/v1/action",
+      "status": 200
+    },
+    {
+      "p": 1,
+      "origin": "http://127.0.0.1:54331",
+      "path": "/rest/v1/rpc/room_snapshot",
+      "status": 200
+    },
+    {
+      "p": 1,
+      "origin": "http://127.0.0.1:54331",
+      "path": "/rest/v1/rpc/room_snapshot",
+      "status": 200
+    },
+    {
+      "p": 2,
+      "origin": "http://127.0.0.1:54331",
+      "path": "/rest/v1/rpc/room_snapshot",
+      "status": 200
+    },
+    {
+      "p": 1,
+      "origin": "http://127.0.0.1:54331",
+      "path": "/rest/v1/rpc/room_snapshot",
+      "status": 200
+    },
+    {
+      "p": 2,
+      "origin": "http://127.0.0.1:54331",
+      "path": "/rest/v1/rpc/room_snapshot",
+      "status": 200
+    },
+    {
+      "p": 1,
+      "origin": "http://127.0.0.1:54331",
+      "path": "/rest/v1/rpc/room_snapshot",
+      "status": 200
+    },
+    {
+      "p": 2,
+      "origin": "http://127.0.0.1:54331",
+      "path": "/functions/v1/action",
+      "status": 200
+    },
+    {
+      "p": 2,
+      "origin": "http://127.0.0.1:54331",
+      "path": "/rest/v1/rpc/room_snapshot",
+      "status": 200
+    },
+    {
+      "p": 2,
+      "origin": "http://127.0.0.1:54331",
+      "path": "/rest/v1/rpc/room_snapshot",
+      "status": 200
+    },
+    {
+      "p": 2,
+      "origin": "http://127.0.0.1:54331",
+      "path": "/rest/v1/rpc/room_snapshot",
+      "status": 200
+    },
+    {
+      "p": 2,
+      "origin": "http://127.0.0.1:54331",
+      "path": "/functions/v1/action",
+      "status": 200
+    },
+    {
+      "p": 2,
+      "origin": "http://127.0.0.1:54331",
+      "path": "/rest/v1/rpc/room_snapshot",
+      "status": 200
+    },
+    {
+      "p": 2,
+      "origin": "http://127.0.0.1:54331",
+      "path": "/rest/v1/rpc/room_snapshot",
+      "status": 200
+    },
+    {
+      "p": 2,
+      "origin": "http://127.0.0.1:54331",
+      "path": "/rest/v1/rpc/room_snapshot",
+      "status": 200
+    },
+    {
+      "p": 1,
+      "origin": "http://127.0.0.1:54331",
+      "path": "/rest/v1/rpc/room_snapshot",
+      "status": 200
+    },
+    {
+      "p": 2,
+      "origin": "http://127.0.0.1:54331",
+      "path": "/rest/v1/rpc/room_snapshot",
+      "status": 200
+    },
+    {
+      "p": 1,
+      "origin": "http://127.0.0.1:54331",
+      "path": "/rest/v1/rpc/room_snapshot",
+      "status": 200
+    },
+    {
+      "p": 1,
+      "origin": "http://127.0.0.1:54331",
+      "path": "/functions/v1/action",
+      "status": 200
+    },
+    {
+      "p": 1,
+      "origin": "http://127.0.0.1:54331",
+      "path": "/rest/v1/rpc/room_snapshot",
+      "status": 200
+    },
+    {
+      "p": 1,
+      "origin": "http://127.0.0.1:54331",
+      "path": "/rest/v1/rpc/room_snapshot",
+      "status": 200
+    },
+    {
+      "p": 1,
+      "origin": "http://127.0.0.1:54331",
+      "path": "/rest/v1/rpc/room_snapshot",
+      "status": 200
+    },
+    {
+      "p": 1,
+      "origin": "http://127.0.0.1:54331",
+      "path": "/functions/v1/action",
+      "status": 200
+    },
+    {
+      "p": 1,
+      "origin": "http://127.0.0.1:54331",
+      "path": "/rest/v1/rpc/room_snapshot",
+      "status": 200
+    },
+    {
+      "p": 1,
+      "origin": "http://127.0.0.1:54331",
+      "path": "/rest/v1/rpc/room_snapshot",
+      "status": 200
+    },
+    {
+      "p": 1,
+      "origin": "http://127.0.0.1:54331",
+      "path": "/rest/v1/rpc/room_snapshot",
+      "status": 200
+    },
+    {
+      "p": 2,
+      "origin": "http://127.0.0.1:54331",
+      "path": "/rest/v1/rpc/room_snapshot",
+      "status": 200
+    },
+    {
+      "p": 2,
+      "origin": "http://127.0.0.1:54331",
+      "path": "/rest/v1/rpc/room_snapshot",
+      "status": 200
+    },
+    {
+      "p": 2,
+      "origin": "http://127.0.0.1:54331",
+      "path": "/rest/v1/rpc/room_snapshot",
+      "status": 200
+    },
+    {
+      "p": 1,
+      "origin": "http://127.0.0.1:54331",
+      "path": "/rest/v1/rpc/room_snapshot",
+      "status": 200
+    },
+    {
+      "p": 2,
+      "origin": "http://127.0.0.1:54331",
+      "path": "/rest/v1/rpc/room_snapshot",
+      "status": 200
+    },
+    {
+      "p": 1,
+      "origin": "http://127.0.0.1:54331",
+      "path": "/rest/v1/rpc/room_snapshot",
+      "status": 200
+    },
+    {
+      "p": 2,
+      "origin": "http://127.0.0.1:54331",
+      "path": "/rest/v1/rpc/room_snapshot",
+      "status": 200
+    },
+    {
+      "p": 2,
+      "origin": "http://127.0.0.1:54331",
+      "path": "/functions/v1/action",
+      "status": 200
+    },
+    {
+      "p": 2,
+      "origin": "http://127.0.0.1:54331",
+      "path": "/rest/v1/rpc/room_snapshot",
+      "status": 200
+    },
+    {
+      "p": 2,
+      "origin": "http://127.0.0.1:54331",
+      "path": "/rest/v1/rpc/room_snapshot",
+      "status": 200
+    },
+    {
+      "p": 2,
+      "origin": "http://127.0.0.1:54331",
+      "path": "/rest/v1/rpc/room_snapshot",
+      "status": 200
+    },
+    {
+      "p": 2,
+      "origin": "http://127.0.0.1:54331",
+      "path": "/functions/v1/action",
+      "status": 200
+    },
+    {
+      "p": 2,
+      "origin": "http://127.0.0.1:54331",
+      "path": "/rest/v1/rpc/room_snapshot",
+      "status": 200
+    },
+    {
+      "p": 2,
+      "origin": "http://127.0.0.1:54331",
+      "path": "/rest/v1/rpc/room_snapshot",
+      "status": 200
+    },
+    {
+      "p": 2,
+      "origin": "http://127.0.0.1:54331",
+      "path": "/functions/v1/action",
+      "status": 200
+    },
+    {
+      "p": 2,
+      "origin": "http://127.0.0.1:54331",
+      "path": "/rest/v1/rpc/room_snapshot",
+      "status": 200
+    },
+    {
+      "p": 2,
+      "origin": "http://127.0.0.1:54331",
+      "path": "/rest/v1/rpc/room_snapshot",
+      "status": 200
+    },
+    {
+      "p": 1,
+      "origin": "http://127.0.0.1:54331",
+      "path": "/rest/v1/rpc/room_snapshot",
+      "status": 200
+    },
+    {
+      "p": 2,
+      "origin": "http://127.0.0.1:54331",
+      "path": "/rest/v1/rpc/room_snapshot",
+      "status": 200
+    },
+    {
+      "p": 1,
+      "origin": "http://127.0.0.1:54331",
+      "path": "/rest/v1/rpc/room_snapshot",
+      "status": 200
+    },
+    {
+      "p": 2,
+      "origin": "http://127.0.0.1:54331",
+      "path": "/rest/v1/rpc/room_snapshot",
+      "status": 200
+    },
+    {
+      "p": 1,
+      "origin": "http://127.0.0.1:54331",
+      "path": "/functions/v1/action",
+      "status": 200
+    },
+    {
+      "p": 1,
+      "origin": "http://127.0.0.1:54331",
+      "path": "/rest/v1/rpc/room_snapshot",
+      "status": 200
+    },
+    {
+      "p": 1,
+      "origin": "http://127.0.0.1:54331",
+      "path": "/rest/v1/rpc/room_snapshot",
+      "status": 200
+    },
+    {
+      "p": 1,
+      "origin": "http://127.0.0.1:54331",
+      "path": "/rest/v1/rpc/room_snapshot",
+      "status": 200
+    },
+    {
+      "p": 1,
+      "origin": "http://127.0.0.1:54331",
+      "path": "/functions/v1/action",
+      "status": 200
+    },
+    {
+      "p": 1,
+      "origin": "http://127.0.0.1:54331",
+      "path": "/rest/v1/rpc/room_snapshot",
+      "status": 200
+    },
+    {
+      "p": 1,
+      "origin": "http://127.0.0.1:54331",
+      "path": "/rest/v1/rpc/room_snapshot",
+      "status": 200
+    },
+    {
+      "p": 1,
+      "origin": "http://127.0.0.1:54331",
+      "path": "/rest/v1/rpc/room_snapshot",
+      "status": 200
+    },
+    {
+      "p": 2,
+      "origin": "http://127.0.0.1:54331",
+      "path": "/rest/v1/rpc/room_snapshot",
+      "status": 200
+    },
+    {
+      "p": 1,
+      "origin": "http://127.0.0.1:54331",
+      "path": "/rest/v1/rpc/room_snapshot",
+      "status": 200
+    },
+    {
+      "p": 2,
+      "origin": "http://127.0.0.1:54331",
+      "path": "/rest/v1/rpc/room_snapshot",
+      "status": 200
+    },
+    {
+      "p": 2,
+      "origin": "http://127.0.0.1:54331",
+      "path": "/functions/v1/action",
+      "status": 200
+    },
+    {
+      "p": 2,
+      "origin": "http://127.0.0.1:54331",
+      "path": "/rest/v1/rpc/room_snapshot",
+      "status": 200
+    },
+    {
+      "p": 2,
+      "origin": "http://127.0.0.1:54331",
+      "path": "/rest/v1/rpc/room_snapshot",
+      "status": 200
+    },
+    {
+      "p": 2,
+      "origin": "http://127.0.0.1:54331",
+      "path": "/rest/v1/rpc/room_snapshot",
+      "status": 200
+    },
+    {
+      "p": 2,
+      "origin": "http://127.0.0.1:54331",
+      "path": "/functions/v1/action",
+      "status": 200
+    },
+    {
+      "p": 2,
+      "origin": "http://127.0.0.1:54331",
+      "path": "/rest/v1/rpc/room_snapshot",
+      "status": 200
+    },
+    {
+      "p": 2,
+      "origin": "http://127.0.0.1:54331",
+      "path": "/rest/v1/rpc/room_snapshot",
+      "status": 200
+    },
+    {
+      "p": 1,
+      "origin": "http://127.0.0.1:54331",
+      "path": "/rest/v1/rpc/room_snapshot",
+      "status": 200
+    },
+    {
+      "p": 2,
+      "origin": "http://127.0.0.1:54331",
+      "path": "/rest/v1/rpc/room_snapshot",
+      "status": 200
+    },
+    {
+      "p": 2,
+      "origin": "http://127.0.0.1:54331",
+      "path": "/rest/v1/rpc/room_snapshot",
+      "status": 200
+    },
+    {
+      "p": 1,
+      "origin": "http://127.0.0.1:54331",
+      "path": "/rest/v1/rpc/room_snapshot",
+      "status": 200
+    },
+    {
+      "p": 1,
+      "origin": "http://127.0.0.1:54331",
+      "path": "/functions/v1/action",
+      "status": 200
+    },
+    {
+      "p": 1,
+      "origin": "http://127.0.0.1:54331",
+      "path": "/rest/v1/rpc/room_snapshot",
+      "status": 200
+    },
+    {
+      "p": 1,
+      "origin": "http://127.0.0.1:54331",
+      "path": "/rest/v1/rpc/room_snapshot",
+      "status": 200
+    },
+    {
+      "p": 1,
+      "origin": "http://127.0.0.1:54331",
+      "path": "/rest/v1/rpc/room_snapshot",
+      "status": 200
+    },
+    {
+      "p": 1,
+      "origin": "http://127.0.0.1:54331",
+      "path": "/functions/v1/action",
+      "status": 200
+    },
+    {
+      "p": 1,
+      "origin": "http://127.0.0.1:54331",
+      "path": "/rest/v1/rpc/room_snapshot",
+      "status": 200
+    },
+    {
+      "p": 1,
+      "origin": "http://127.0.0.1:54331",
+      "path": "/rest/v1/rpc/room_snapshot",
+      "status": 200
+    },
+    {
+      "p": 2,
+      "origin": "http://127.0.0.1:54331",
+      "path": "/rest/v1/rpc/room_snapshot",
+      "status": 200
+    },
+    {
+      "p": 1,
+      "origin": "http://127.0.0.1:54331",
+      "path": "/rest/v1/rpc/room_snapshot",
+      "status": 200
+    },
+    {
+      "p": 2,
+      "origin": "http://127.0.0.1:54331",
+      "path": "/rest/v1/rpc/room_snapshot",
+      "status": 200
+    },
+    {
+      "p": 1,
+      "origin": "http://127.0.0.1:54331",
+      "path": "/rest/v1/rpc/room_snapshot",
+      "status": 200
+    },
+    {
+      "p": 2,
+      "origin": "http://127.0.0.1:54331",
+      "path": "/functions/v1/action",
+      "status": 200
+    },
+    {
+      "p": 2,
+      "origin": "http://127.0.0.1:54331",
+      "path": "/rest/v1/rpc/room_snapshot",
+      "status": 200
+    },
+    {
+      "p": 2,
+      "origin": "http://127.0.0.1:54331",
+      "path": "/rest/v1/rpc/room_snapshot",
+      "status": 200
+    },
+    {
+      "p": 2,
+      "origin": "http://127.0.0.1:54331",
+      "path": "/rest/v1/rpc/room_snapshot",
+      "status": 200
+    },
+    {
+      "p": 2,
+      "origin": "http://127.0.0.1:54331",
+      "path": "/functions/v1/action",
+      "status": 200
+    },
+    {
+      "p": 2,
+      "origin": "http://127.0.0.1:54331",
+      "path": "/rest/v1/rpc/room_snapshot",
+      "status": 200
+    },
+    {
+      "p": 2,
+      "origin": "http://127.0.0.1:54331",
+      "path": "/rest/v1/rpc/room_snapshot",
+      "status": 200
+    },
+    {
+      "p": 2,
+      "origin": "http://127.0.0.1:54331",
+      "path": "/functions/v1/action",
+      "status": 200
+    },
+    {
+      "p": 2,
+      "origin": "http://127.0.0.1:54331",
+      "path": "/rest/v1/rpc/room_snapshot",
+      "status": 200
+    },
+    {
+      "p": 2,
+      "origin": "http://127.0.0.1:54331",
+      "path": "/rest/v1/rpc/room_snapshot",
+      "status": 200
+    },
+    {
+      "p": 1,
+      "origin": "http://127.0.0.1:54331",
+      "path": "/rest/v1/rpc/room_snapshot",
+      "status": 200
+    },
+    {
+      "p": 2,
+      "origin": "http://127.0.0.1:54331",
+      "path": "/rest/v1/rpc/room_snapshot",
+      "status": 200
+    },
+    {
+      "p": 2,
+      "origin": "http://127.0.0.1:54331",
+      "path": "/rest/v1/rpc/room_snapshot",
+      "status": 200
+    },
+    {
+      "p": 1,
+      "origin": "http://127.0.0.1:54331",
+      "path": "/rest/v1/rpc/room_snapshot",
+      "status": 200
+    },
+    {
+      "p": 1,
+      "origin": "http://127.0.0.1:54331",
+      "path": "/functions/v1/action",
+      "status": 200
+    },
+    {
+      "p": 1,
+      "origin": "http://127.0.0.1:54331",
+      "path": "/rest/v1/rpc/room_snapshot",
+      "status": 200
+    },
+    {
+      "p": 1,
+      "origin": "http://127.0.0.1:54331",
+      "path": "/rest/v1/rpc/room_snapshot",
+      "status": 200
+    },
+    {
+      "p": 1,
+      "origin": "http://127.0.0.1:54331",
+      "path": "/rest/v1/rpc/room_snapshot",
+      "status": 200
+    },
+    {
+      "p": 1,
+      "origin": "http://127.0.0.1:54331",
+      "path": "/functions/v1/action",
+      "status": 200
+    },
+    {
+      "p": 1,
+      "origin": "http://127.0.0.1:54331",
+      "path": "/rest/v1/rpc/room_snapshot",
+      "status": 200
+    },
+    {
+      "p": 1,
+      "origin": "http://127.0.0.1:54331",
+      "path": "/rest/v1/rpc/room_snapshot",
+      "status": 200
+    },
+    {
+      "p": 2,
+      "origin": "http://127.0.0.1:54331",
+      "path": "/rest/v1/rpc/room_snapshot",
+      "status": 200
+    },
+    {
+      "p": 1,
+      "origin": "http://127.0.0.1:54331",
+      "path": "/rest/v1/rpc/room_snapshot",
+      "status": 200
+    },
+    {
+      "p": 1,
+      "origin": "http://127.0.0.1:54331",
+      "path": "/rest/v1/rpc/room_snapshot",
+      "status": 200
+    },
+    {
+      "p": 2,
+      "origin": "http://127.0.0.1:54331",
+      "path": "/rest/v1/rpc/room_snapshot",
+      "status": 200
+    },
+    {
+      "p": 2,
+      "origin": "http://127.0.0.1:54331",
+      "path": "/functions/v1/action",
+      "status": 200
+    },
+    {
+      "p": 2,
+      "origin": "http://127.0.0.1:54331",
+      "path": "/rest/v1/rpc/room_snapshot",
+      "status": 200
+    },
+    {
+      "p": 2,
+      "origin": "http://127.0.0.1:54331",
+      "path": "/rest/v1/rpc/room_snapshot",
+      "status": 200
+    },
+    {
+      "p": 2,
+      "origin": "http://127.0.0.1:54331",
+      "path": "/rest/v1/rpc/room_snapshot",
+      "status": 200
+    },
+    {
+      "p": 2,
+      "origin": "http://127.0.0.1:54331",
+      "path": "/functions/v1/action",
+      "status": 200
+    },
+    {
+      "p": 2,
+      "origin": "http://127.0.0.1:54331",
+      "path": "/rest/v1/rpc/room_snapshot",
+      "status": 200
+    },
+    {
+      "p": 2,
+      "origin": "http://127.0.0.1:54331",
+      "path": "/rest/v1/rpc/room_snapshot",
+      "status": 200
+    },
+    {
+      "p": 2,
+      "origin": "http://127.0.0.1:54331",
+      "path": "/functions/v1/action",
+      "status": 200
+    },
+    {
+      "p": 2,
+      "origin": "http://127.0.0.1:54331",
+      "path": "/rest/v1/rpc/room_snapshot",
+      "status": 200
+    },
+    {
+      "p": 2,
+      "origin": "http://127.0.0.1:54331",
+      "path": "/rest/v1/rpc/room_snapshot",
+      "status": 200
+    },
+    {
+      "p": 1,
+      "origin": "http://127.0.0.1:54331",
+      "path": "/rest/v1/rpc/room_snapshot",
+      "status": 200
+    },
+    {
+      "p": 2,
+      "origin": "http://127.0.0.1:54331",
+      "path": "/rest/v1/rpc/room_snapshot",
+      "status": 200
+    },
+    {
+      "p": 1,
+      "origin": "http://127.0.0.1:54331",
+      "path": "/rest/v1/rpc/room_snapshot",
+      "status": 200
+    },
+    {
+      "p": 2,
+      "origin": "http://127.0.0.1:54331",
+      "path": "/rest/v1/rpc/room_snapshot",
+      "status": 200
+    },
+    {
+      "p": 1,
+      "origin": "http://127.0.0.1:54331",
+      "path": "/functions/v1/action",
+      "status": 200
+    },
+    {
+      "p": 1,
+      "origin": "http://127.0.0.1:54331",
+      "path": "/rest/v1/rpc/room_snapshot",
+      "status": 200
+    },
+    {
+      "p": 1,
+      "origin": "http://127.0.0.1:54331",
+      "path": "/rest/v1/rpc/room_snapshot",
+      "status": 200
+    },
+    {
+      "p": 1,
+      "origin": "http://127.0.0.1:54331",
+      "path": "/rest/v1/rpc/room_snapshot",
+      "status": 200
+    },
+    {
+      "p": 1,
+      "origin": "http://127.0.0.1:54331",
+      "path": "/functions/v1/action",
+      "status": 200
+    },
+    {
+      "p": 1,
+      "origin": "http://127.0.0.1:54331",
+      "path": "/rest/v1/rpc/room_snapshot",
+      "status": 200
+    },
+    {
+      "p": 1,
+      "origin": "http://127.0.0.1:54331",
+      "path": "/rest/v1/rpc/room_snapshot",
+      "status": 200
+    },
+    {
+      "p": 2,
+      "origin": "http://127.0.0.1:54331",
+      "path": "/rest/v1/rpc/room_snapshot",
+      "status": 200
+    },
+    {
+      "p": 1,
+      "origin": "http://127.0.0.1:54331",
+      "path": "/rest/v1/rpc/room_snapshot",
+      "status": 200
+    },
+    {
+      "p": 1,
+      "origin": "http://127.0.0.1:54331",
+      "path": "/rest/v1/rpc/room_snapshot",
+      "status": 200
+    },
+    {
+      "p": 2,
+      "origin": "http://127.0.0.1:54331",
+      "path": "/rest/v1/rpc/room_snapshot",
+      "status": 200
+    },
+    {
+      "p": 2,
+      "origin": "http://127.0.0.1:54331",
+      "path": "/functions/v1/action",
+      "status": 200
+    },
+    {
+      "p": 2,
+      "origin": "http://127.0.0.1:54331",
+      "path": "/rest/v1/rpc/room_snapshot",
+      "status": 200
+    },
+    {
+      "p": 2,
+      "origin": "http://127.0.0.1:54331",
+      "path": "/rest/v1/rpc/room_snapshot",
+      "status": 200
+    },
+    {
+      "p": 2,
+      "origin": "http://127.0.0.1:54331",
+      "path": "/rest/v1/rpc/room_snapshot",
+      "status": 200
+    },
+    {
+      "p": 2,
+      "origin": "http://127.0.0.1:54331",
+      "path": "/functions/v1/action",
+      "status": 200
+    },
+    {
+      "p": 2,
+      "origin": "http://127.0.0.1:54331",
+      "path": "/rest/v1/rpc/room_snapshot",
+      "status": 200
+    },
+    {
+      "p": 2,
+      "origin": "http://127.0.0.1:54331",
+      "path": "/rest/v1/rpc/room_snapshot",
+      "status": 200
+    },
+    {
+      "p": 1,
+      "origin": "http://127.0.0.1:54331",
+      "path": "/rest/v1/rpc/room_snapshot",
+      "status": 200
+    },
+    {
+      "p": 2,
+      "origin": "http://127.0.0.1:54331",
+      "path": "/rest/v1/rpc/room_snapshot",
+      "status": 200
+    },
+    {
+      "p": 1,
+      "origin": "http://127.0.0.1:54331",
+      "path": "/rest/v1/rpc/room_snapshot",
+      "status": 200
+    },
+    {
+      "p": 2,
+      "origin": "http://127.0.0.1:54331",
+      "path": "/rest/v1/rpc/room_snapshot",
+      "status": 200
+    },
+    {
+      "p": 1,
+      "origin": "http://127.0.0.1:54331",
+      "path": "/functions/v1/action",
+      "status": 200
+    },
+    {
+      "p": 1,
+      "origin": "http://127.0.0.1:54331",
+      "path": "/rest/v1/rpc/room_snapshot",
+      "status": 200
+    },
+    {
+      "p": 1,
+      "origin": "http://127.0.0.1:54331",
+      "path": "/rest/v1/rpc/room_snapshot",
+      "status": 200
+    },
+    {
+      "p": 1,
+      "origin": "http://127.0.0.1:54331",
+      "path": "/rest/v1/rpc/room_snapshot",
+      "status": 200
+    },
+    {
+      "p": 1,
+      "origin": "http://127.0.0.1:54331",
+      "path": "/functions/v1/action",
+      "status": 200
+    },
+    {
+      "p": 1,
+      "origin": "http://127.0.0.1:54331",
+      "path": "/rest/v1/rpc/room_snapshot",
+      "status": 200
+    },
+    {
+      "p": 1,
+      "origin": "http://127.0.0.1:54331",
+      "path": "/rest/v1/rpc/room_snapshot",
+      "status": 200
+    },
+    {
+      "p": 1,
+      "origin": "http://127.0.0.1:54331",
+      "path": "/rest/v1/rpc/room_snapshot",
+      "status": 200
+    },
+    {
+      "p": 2,
+      "origin": "http://127.0.0.1:54331",
+      "path": "/rest/v1/rpc/room_snapshot",
+      "status": 200
+    },
+    {
+      "p": 2,
+      "origin": "http://127.0.0.1:54331",
+      "path": "/rest/v1/rpc/room_snapshot",
+      "status": 200
+    },
+    {
+      "p": 1,
+      "origin": "http://127.0.0.1:54331",
+      "path": "/rest/v1/rpc/room_snapshot",
+      "status": 200
+    },
+    {
+      "p": 2,
+      "origin": "http://127.0.0.1:54331",
+      "path": "/functions/v1/action",
+      "status": 200
+    },
+    {
+      "p": 2,
+      "origin": "http://127.0.0.1:54331",
+      "path": "/rest/v1/rpc/room_snapshot",
+      "status": 200
+    },
+    {
+      "p": 2,
+      "origin": "http://127.0.0.1:54331",
+      "path": "/rest/v1/rpc/room_snapshot",
+      "status": 200
+    },
+    {
+      "p": 2,
+      "origin": "http://127.0.0.1:54331",
+      "path": "/rest/v1/rpc/room_snapshot",
+      "status": 200
+    },
+    {
+      "p": 2,
+      "origin": "http://127.0.0.1:54331",
+      "path": "/functions/v1/action",
+      "status": 200
+    },
+    {
+      "p": 2,
+      "origin": "http://127.0.0.1:54331",
+      "path": "/rest/v1/rpc/room_snapshot",
+      "status": 200
+    },
+    {
+      "p": 2,
+      "origin": "http://127.0.0.1:54331",
+      "path": "/rest/v1/rpc/room_snapshot",
+      "status": 200
+    },
+    {
+      "p": 2,
+      "origin": "http://127.0.0.1:54331",
+      "path": "/functions/v1/action",
+      "status": 200
+    },
+    {
+      "p": 2,
+      "origin": "http://127.0.0.1:54331",
+      "path": "/rest/v1/rpc/room_snapshot",
+      "status": 200
+    },
+    {
+      "p": 2,
+      "origin": "http://127.0.0.1:54331",
+      "path": "/rest/v1/rpc/room_snapshot",
+      "status": 200
+    },
+    {
+      "p": 1,
+      "origin": "http://127.0.0.1:54331",
+      "path": "/rest/v1/rpc/room_snapshot",
+      "status": 200
+    },
+    {
+      "p": 2,
+      "origin": "http://127.0.0.1:54331",
+      "path": "/rest/v1/rpc/room_snapshot",
+      "status": 200
+    },
+    {
+      "p": 2,
+      "origin": "http://127.0.0.1:54331",
+      "path": "/rest/v1/rpc/room_snapshot",
+      "status": 200
+    },
+    {
+      "p": 1,
+      "origin": "http://127.0.0.1:54331",
+      "path": "/rest/v1/rpc/room_snapshot",
+      "status": 200
+    },
+    {
+      "p": 1,
+      "origin": "http://127.0.0.1:54331",
+      "path": "/functions/v1/action",
+      "status": 200
+    },
+    {
+      "p": 1,
+      "origin": "http://127.0.0.1:54331",
+      "path": "/rest/v1/rpc/room_snapshot",
+      "status": 200
+    },
+    {
+      "p": 1,
+      "origin": "http://127.0.0.1:54331",
+      "path": "/rest/v1/rpc/room_snapshot",
+      "status": 200
+    },
+    {
+      "p": 1,
+      "origin": "http://127.0.0.1:54331",
+      "path": "/rest/v1/rpc/room_snapshot",
+      "status": 200
+    },
+    {
+      "p": 1,
+      "origin": "http://127.0.0.1:54331",
+      "path": "/functions/v1/action",
+      "status": 200
+    },
+    {
+      "p": 1,
+      "origin": "http://127.0.0.1:54331",
+      "path": "/rest/v1/rpc/room_snapshot",
+      "status": 200
+    },
+    {
+      "p": 1,
+      "origin": "http://127.0.0.1:54331",
+      "path": "/rest/v1/rpc/room_snapshot",
+      "status": 200
+    },
+    {
+      "p": 2,
+      "origin": "http://127.0.0.1:54331",
+      "path": "/rest/v1/rpc/room_snapshot",
+      "status": 200
+    },
+    {
+      "p": 1,
+      "origin": "http://127.0.0.1:54331",
+      "path": "/rest/v1/rpc/room_snapshot",
+      "status": 200
+    },
+    {
+      "p": 2,
+      "origin": "http://127.0.0.1:54331",
+      "path": "/rest/v1/rpc/room_snapshot",
+      "status": 200
+    },
+    {
+      "p": 1,
+      "origin": "http://127.0.0.1:54331",
+      "path": "/rest/v1/rpc/room_snapshot",
+      "status": 200
+    },
+    {
+      "p": 2,
+      "origin": "http://127.0.0.1:54331",
+      "path": "/functions/v1/action",
+      "status": 200
+    },
+    {
+      "p": 2,
+      "origin": "http://127.0.0.1:54331",
+      "path": "/rest/v1/rpc/room_snapshot",
+      "status": 200
+    },
+    {
+      "p": 2,
+      "origin": "http://127.0.0.1:54331",
+      "path": "/rest/v1/rpc/room_snapshot",
+      "status": 200
+    },
+    {
+      "p": 2,
+      "origin": "http://127.0.0.1:54331",
+      "path": "/rest/v1/rpc/room_snapshot",
+      "status": 200
+    },
+    {
+      "p": 2,
+      "origin": "http://127.0.0.1:54331",
+      "path": "/functions/v1/action",
+      "status": 200
+    },
+    {
+      "p": 2,
+      "origin": "http://127.0.0.1:54331",
+      "path": "/rest/v1/rpc/room_snapshot",
+      "status": 200
+    },
+    {
+      "p": 2,
+      "origin": "http://127.0.0.1:54331",
+      "path": "/rest/v1/rpc/room_snapshot",
+      "status": 200
+    },
+    {
+      "p": 1,
+      "origin": "http://127.0.0.1:54331",
+      "path": "/rest/v1/rpc/room_snapshot",
+      "status": 200
+    },
+    {
+      "p": 2,
+      "origin": "http://127.0.0.1:54331",
+      "path": "/rest/v1/rpc/room_snapshot",
+      "status": 200
+    },
+    {
+      "p": 2,
+      "origin": "http://127.0.0.1:54331",
+      "path": "/rest/v1/rpc/room_snapshot",
+      "status": 200
+    },
+    {
+      "p": 1,
+      "origin": "http://127.0.0.1:54331",
+      "path": "/functions/v1/action",
+      "status": 200
+    },
+    {
+      "p": 1,
+      "origin": "http://127.0.0.1:54331",
+      "path": "/rest/v1/rpc/room_snapshot",
+      "status": 200
+    },
+    {
+      "p": 1,
+      "origin": "http://127.0.0.1:54331",
+      "path": "/rest/v1/rpc/room_snapshot",
+      "status": 200
+    },
+    {
+      "p": 2,
+      "origin": "http://127.0.0.1:54331",
+      "path": "/functions/v1/action",
+      "status": 200
+    },
+    {
+      "p": 2,
+      "origin": "http://127.0.0.1:54331",
+      "path": "/rest/v1/rpc/room_snapshot",
+      "status": 200
+    },
+    {
+      "p": 2,
+      "origin": "http://127.0.0.1:54331",
+      "path": "/rest/v1/rpc/room_snapshot",
+      "status": 200
+    },
+    {
+      "p": 1,
+      "origin": "http://127.0.0.1:54331",
+      "path": "/rest/v1/rpc/room_snapshot",
+      "status": 200
+    }
+  ],
+  "checks": [
+    {
+      "name": "two independent seat contexts and KO/ES",
+      "pass": true
+    },
+    {
+      "name": "unrevealed opponent values and joker portrait URLs stay hidden in both DOMs",
+      "pass": true
+    },
+    {
+      "name": "p2 Joker remains hidden in peer DOM",
+      "pass": true
+    },
+    {
+      "name": "two contexts retained synchronized visible public versions after turns/reload",
+      "pass": true
+    }
+  ],
+  "errors": [],
+  "initial": [
+    {
+      "playerId": "p1",
+      "version": 2,
+      "phase": "setup",
+      "turn": "p1",
+      "ownCount": 4,
+      "opponentCount": 4,
+      "deckCount": 18
+    },
+    {
+      "playerId": "p2",
+      "version": 2,
+      "phase": "setup",
+      "turn": "p2",
+      "ownCount": 4,
+      "opponentCount": 4,
+      "deckCount": 18
+    }
+  ],
+  "privateCheckInitial": [
+    {
+      "hiddenTileCount": 4,
+      "hiddenNumbers": [
+        "· ·",
+        "· ·",
+        "· ·",
+        "· ·"
+      ],
+      "hiddenPortraitImages": [],
+      "rivalPortraitImages": [],
+      "rivalHasJokerPortrait": false
+    },
+    {
+      "hiddenTileCount": 4,
+      "hiddenNumbers": [
+        "· ·",
+        "· ·",
+        "· ·",
+        "· ·"
+      ],
+      "hiddenPortraitImages": [],
+      "rivalPortraitImages": [],
+      "rivalHasJokerPortrait": false
+    }
+  ],
+  "reload": {
+    "before": [
+      {
+        "playerId": "p1",
+        "version": 11,
+        "phase": "waiting",
+        "turn": "p2",
+        "opponentCount": 4
+      },
+      {
+        "playerId": "p2",
+        "version": 11,
+        "phase": "draw",
+        "turn": "p2",
+        "opponentCount": 4
+      }
+    ],
+    "after": [
+      {
+        "playerId": "p1",
+        "version": 11,
+        "phase": "waiting",
+        "turn": "p2",
+        "opponentCount": 4
+      },
+      {
+        "playerId": "p2",
+        "version": 11,
+        "phase": "draw",
+        "turn": "p2",
+        "opponentCount": 4
+      }
+    ],
+    "pageReload": true,
+    "samePublicVersion": true,
+    "seatPreserved": true
+  },
+  "jokersObserved": [
+    {
+      "seat": "p2",
+      "color": "dv-tile-white",
+      "src": "/images/davinci/joker-couple-indoor.webp",
+      "loaded": true
+    }
+  ],
+  "terminal": [
+    {
+      "playerId": "p2",
+      "version": 41,
+      "gameId": "davinci",
+      "pendingGame": null,
+      "phase": "guess",
+      "turn": "p2",
+      "result": {
+        "reason": "All opposing tiles were revealed",
+        "winner": "p2"
+      },
+      "status": "finished",
+      "ownCount": 12,
+      "opponentCount": 0,
+      "deckCount": 2,
+      "turnNumber": 16,
+      "opponentTiles": [
+        {
+          "color": "white",
+          "revealed": true,
+          "value": 0
+        },
+        {
+          "color": "black",
+          "revealed": true,
+          "value": 1
+        },
+        {
+          "color": "white",
+          "revealed": true,
+          "value": 1
+        },
+        {
+          "color": "black",
+          "revealed": true,
+          "value": 2
+        },
+        {
+          "color": "black",
+          "revealed": true,
+          "value": 3
+        },
+        {
+          "color": "black",
+          "revealed": true,
+          "value": 4
+        },
+        {
+          "color": "black",
+          "revealed": true,
+          "value": 6
+        },
+        {
+          "color": "white",
+          "revealed": true,
+          "value": 6
+        },
+        {
+          "color": "black",
+          "revealed": true,
+          "value": 7
+        },
+        {
+          "color": "black",
+          "revealed": true,
+          "value": 8
+        },
+        {
+          "color": "black",
+          "revealed": true,
+          "value": 11
+        },
+        {
+          "color": "white",
+          "revealed": true,
+          "value": 11
+        }
+      ]
+    }
+  ],
+  "final": [
+    {
+      "playerId": "p1",
+      "version": 41,
+      "phase": "waiting",
+      "turn": "p2",
+      "result": {
+        "reason": "All opposing tiles were revealed",
+        "winner": "p2"
+      },
+      "ownCount": 12,
+      "opponentCount": 8,
+      "deckCount": 2
+    },
+    {
+      "playerId": "p2",
+      "version": 41,
+      "phase": "guess",
+      "turn": "p2",
+      "result": {
+        "reason": "All opposing tiles were revealed",
+        "winner": "p2"
+      },
+      "ownCount": 12,
+      "opponentCount": 0,
+      "deckCount": 2
+    }
+  ],
+  "replay": {
+    "terminalVersion": 41,
+    "consentClicks": 2,
+    "pending": [
+      {
+        "version": 42,
+        "phase": "waiting",
+        "pendingGame": "davinci",
+        "hasResult": true
+      },
+      {
+        "version": 42,
+        "phase": "guess",
+        "pendingGame": "davinci",
+        "hasResult": true
+      }
+    ],
+    "fresh": [
+      {
+        "playerId": "p1",
+        "version": 43,
+        "phase": "setup",
+        "turn": "p1",
+        "ownCount": 4,
+        "opponentCount": 4,
+        "deckCount": 18
+      },
+      {
+        "playerId": "p2",
+        "version": 43,
+        "phase": "setup",
+        "turn": "p2",
+        "ownCount": 4,
+        "opponentCount": 4,
+        "deckCount": 18
+      }
+    ]
+  }
+}

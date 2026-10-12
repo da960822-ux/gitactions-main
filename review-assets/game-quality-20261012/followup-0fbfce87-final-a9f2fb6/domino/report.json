@@ -1,0 +1,1797 @@
+{
+  "game": "domino",
+  "baseUrl": "http://127.0.0.1:5212",
+  "method": "Two independent contexts; UI-only room/create/join/consent/play; explicit read-only refresh; no Realtime",
+  "checks": [
+    {
+      "name": "Both public boards and versions agree",
+      "pass": true,
+      "details": {
+        "version": 0
+      }
+    },
+    {
+      "name": "Different contexts own separate seats",
+      "pass": true,
+      "details": [
+        {
+          "playerId": "p1",
+          "players": 2,
+          "gameId": null
+        },
+        {
+          "playerId": "p2",
+          "players": 2,
+          "gameId": null
+        }
+      ]
+    },
+    {
+      "name": "Both public boards and versions agree",
+      "pass": true,
+      "details": {
+        "version": 2,
+        "tiles": 0
+      }
+    },
+    {
+      "name": "Both public boards and versions agree",
+      "pass": true,
+      "details": {
+        "version": 2,
+        "tiles": 0
+      }
+    },
+    {
+      "name": "p1 opponent values hidden during play",
+      "pass": true,
+      "details": {
+        "own": 7,
+        "opponentTiles": 0,
+        "revealed": 0,
+        "width": 1440,
+        "board": {
+          "x": 29,
+          "y": 187,
+          "width": 1382,
+          "height": 664.921875,
+          "top": 187,
+          "right": 1411,
+          "bottom": 851.921875,
+          "left": 29
+        }
+      }
+    },
+    {
+      "name": "p2 opponent values hidden during play",
+      "pass": true,
+      "details": {
+        "own": 7,
+        "opponentTiles": 0,
+        "revealed": 0,
+        "width": 1440,
+        "board": {
+          "x": 29,
+          "y": 187,
+          "width": 1382,
+          "height": 673.921875,
+          "top": 187,
+          "right": 1411,
+          "bottom": 860.921875,
+          "left": 29
+        }
+      }
+    },
+    {
+      "name": "Escape cancels selection and restores tile focus",
+      "pass": true
+    },
+    {
+      "name": "The UI request settles before comparing peers",
+      "pass": true
+    },
+    {
+      "name": "Both public boards and versions agree",
+      "pass": true,
+      "details": {
+        "version": 3,
+        "tiles": 1
+      }
+    },
+    {
+      "name": "One commit per UI move including duplicate clicks",
+      "pass": true,
+      "details": {
+        "before": 2,
+        "after": 3
+      }
+    },
+    {
+      "name": "Turn changes or round finishes",
+      "pass": true
+    },
+    {
+      "name": "Both public boards and versions agree",
+      "pass": true,
+      "details": {
+        "version": 3,
+        "tiles": 1
+      }
+    },
+    {
+      "name": "p1 opponent values hidden during play",
+      "pass": true,
+      "details": {
+        "own": 6,
+        "opponentTiles": 0,
+        "revealed": 0,
+        "width": 1440,
+        "board": {
+          "x": 29,
+          "y": 187,
+          "width": 1382,
+          "height": 733.921875,
+          "top": 187,
+          "right": 1411,
+          "bottom": 920.921875,
+          "left": 29
+        }
+      }
+    },
+    {
+      "name": "p2 opponent values hidden during play",
+      "pass": true,
+      "details": {
+        "own": 7,
+        "opponentTiles": 0,
+        "revealed": 0,
+        "width": 1440,
+        "board": {
+          "x": 29,
+          "y": 187,
+          "width": 1382,
+          "height": 722.921875,
+          "top": 187,
+          "right": 1411,
+          "bottom": 909.921875,
+          "left": 29
+        }
+      }
+    },
+    {
+      "name": "The UI request settles before comparing peers",
+      "pass": true
+    },
+    {
+      "name": "Both public boards and versions agree",
+      "pass": true,
+      "details": {
+        "version": 4,
+        "tiles": 2
+      }
+    },
+    {
+      "name": "One commit per UI move including duplicate clicks",
+      "pass": true,
+      "details": {
+        "before": 3,
+        "after": 4
+      }
+    },
+    {
+      "name": "Turn changes or round finishes",
+      "pass": true
+    },
+    {
+      "name": "Both public boards and versions agree",
+      "pass": true,
+      "details": {
+        "version": 4,
+        "tiles": 2
+      }
+    },
+    {
+      "name": "p1 opponent values hidden during play",
+      "pass": true,
+      "details": {
+        "own": 6,
+        "opponentTiles": 0,
+        "revealed": 0,
+        "width": 1440,
+        "board": {
+          "x": 29,
+          "y": 187,
+          "width": 1382,
+          "height": 775.921875,
+          "top": 187,
+          "right": 1411,
+          "bottom": 962.921875,
+          "left": 29
+        }
+      }
+    },
+    {
+      "name": "p2 opponent values hidden during play",
+      "pass": true,
+      "details": {
+        "own": 6,
+        "opponentTiles": 0,
+        "revealed": 0,
+        "width": 1440,
+        "board": {
+          "x": 29,
+          "y": 187,
+          "width": 1382,
+          "height": 732.921875,
+          "top": 187,
+          "right": 1411,
+          "bottom": 919.921875,
+          "left": 29
+        }
+      }
+    },
+    {
+      "name": "The UI request settles before comparing peers",
+      "pass": true
+    },
+    {
+      "name": "Both public boards and versions agree",
+      "pass": true,
+      "details": {
+        "version": 5,
+        "tiles": 2
+      }
+    },
+    {
+      "name": "One commit per UI move including duplicate clicks",
+      "pass": true,
+      "details": {
+        "before": 4,
+        "after": 5
+      }
+    },
+    {
+      "name": "Turn changes or round finishes",
+      "pass": true
+    },
+    {
+      "name": "Both public boards and versions agree",
+      "pass": true,
+      "details": {
+        "version": 5,
+        "tiles": 2
+      }
+    },
+    {
+      "name": "p1 opponent values hidden during play",
+      "pass": true,
+      "details": {
+        "own": 6,
+        "opponentTiles": 0,
+        "revealed": 0,
+        "width": 1440,
+        "board": {
+          "x": 29,
+          "y": 187,
+          "width": 1382,
+          "height": 733.921875,
+          "top": 187,
+          "right": 1411,
+          "bottom": 920.921875,
+          "left": 29
+        }
+      }
+    },
+    {
+      "name": "p2 opponent values hidden during play",
+      "pass": true,
+      "details": {
+        "own": 6,
+        "opponentTiles": 0,
+        "revealed": 0,
+        "width": 1440,
+        "board": {
+          "x": 29,
+          "y": 187,
+          "width": 1382,
+          "height": 722.921875,
+          "top": 187,
+          "right": 1411,
+          "bottom": 909.921875,
+          "left": 29
+        }
+      }
+    },
+    {
+      "name": "Wrong endpoint is disabled and cannot advance version",
+      "pass": true,
+      "details": "Extremo izquierdo 1 · La ficha seleccionada no coincide con 1"
+    },
+    {
+      "name": "The UI request settles before comparing peers",
+      "pass": true
+    },
+    {
+      "name": "Both public boards and versions agree",
+      "pass": true,
+      "details": {
+        "version": 6,
+        "tiles": 3
+      }
+    },
+    {
+      "name": "One commit per UI move including duplicate clicks",
+      "pass": true,
+      "details": {
+        "before": 5,
+        "after": 6
+      }
+    },
+    {
+      "name": "Turn changes or round finishes",
+      "pass": true
+    },
+    {
+      "name": "Both public boards and versions agree",
+      "pass": true,
+      "details": {
+        "version": 6,
+        "tiles": 3
+      }
+    },
+    {
+      "name": "p1 opponent values hidden during play",
+      "pass": true,
+      "details": {
+        "own": 6,
+        "opponentTiles": 0,
+        "revealed": 0,
+        "width": 1440,
+        "board": {
+          "x": 29,
+          "y": 187,
+          "width": 1382,
+          "height": 723.921875,
+          "top": 187,
+          "right": 1411,
+          "bottom": 910.921875,
+          "left": 29
+        }
+      }
+    },
+    {
+      "name": "p2 opponent values hidden during play",
+      "pass": true,
+      "details": {
+        "own": 5,
+        "opponentTiles": 0,
+        "revealed": 0,
+        "width": 1440,
+        "board": {
+          "x": 29,
+          "y": 187,
+          "width": 1382,
+          "height": 732.921875,
+          "top": 187,
+          "right": 1411,
+          "bottom": 919.921875,
+          "left": 29
+        }
+      }
+    },
+    {
+      "name": "The UI request settles before comparing peers",
+      "pass": true
+    },
+    {
+      "name": "Both public boards and versions agree",
+      "pass": true,
+      "details": {
+        "version": 7,
+        "tiles": 4
+      }
+    },
+    {
+      "name": "One commit per UI move including duplicate clicks",
+      "pass": true,
+      "details": {
+        "before": 6,
+        "after": 7
+      }
+    },
+    {
+      "name": "Turn changes or round finishes",
+      "pass": true
+    },
+    {
+      "name": "Both public boards and versions agree",
+      "pass": true,
+      "details": {
+        "version": 7,
+        "tiles": 4
+      }
+    },
+    {
+      "name": "p1 opponent values hidden during play",
+      "pass": true,
+      "details": {
+        "own": 5,
+        "opponentTiles": 0,
+        "revealed": 0,
+        "width": 1440,
+        "board": {
+          "x": 29,
+          "y": 187,
+          "width": 1382,
+          "height": 733.921875,
+          "top": 187,
+          "right": 1411,
+          "bottom": 920.921875,
+          "left": 29
+        }
+      }
+    },
+    {
+      "name": "p2 opponent values hidden during play",
+      "pass": true,
+      "details": {
+        "own": 5,
+        "opponentTiles": 0,
+        "revealed": 0,
+        "width": 1440,
+        "board": {
+          "x": 29,
+          "y": 187,
+          "width": 1382,
+          "height": 722.921875,
+          "top": 187,
+          "right": 1411,
+          "bottom": 909.921875,
+          "left": 29
+        }
+      }
+    },
+    {
+      "name": "The UI request settles before comparing peers",
+      "pass": true
+    },
+    {
+      "name": "Both public boards and versions agree",
+      "pass": true,
+      "details": {
+        "version": 8,
+        "tiles": 5
+      }
+    },
+    {
+      "name": "One commit per UI move including duplicate clicks",
+      "pass": true,
+      "details": {
+        "before": 7,
+        "after": 8
+      }
+    },
+    {
+      "name": "Turn changes or round finishes",
+      "pass": true
+    },
+    {
+      "name": "Both public boards and versions agree",
+      "pass": true,
+      "details": {
+        "version": 8,
+        "tiles": 5
+      }
+    },
+    {
+      "name": "p1 opponent values hidden during play",
+      "pass": true,
+      "details": {
+        "own": 5,
+        "opponentTiles": 0,
+        "revealed": 0,
+        "width": 1440,
+        "board": {
+          "x": 29,
+          "y": 187,
+          "width": 1382,
+          "height": 775.921875,
+          "top": 187,
+          "right": 1411,
+          "bottom": 962.921875,
+          "left": 29
+        }
+      }
+    },
+    {
+      "name": "p2 opponent values hidden during play",
+      "pass": true,
+      "details": {
+        "own": 4,
+        "opponentTiles": 0,
+        "revealed": 0,
+        "width": 1440,
+        "board": {
+          "x": 29,
+          "y": 187,
+          "width": 1382,
+          "height": 732.921875,
+          "top": 187,
+          "right": 1411,
+          "bottom": 919.921875,
+          "left": 29
+        }
+      }
+    },
+    {
+      "name": "The UI request settles before comparing peers",
+      "pass": true
+    },
+    {
+      "name": "Both public boards and versions agree",
+      "pass": true,
+      "details": {
+        "version": 9,
+        "tiles": 5
+      }
+    },
+    {
+      "name": "One commit per UI move including duplicate clicks",
+      "pass": true,
+      "details": {
+        "before": 8,
+        "after": 9
+      }
+    },
+    {
+      "name": "Turn changes or round finishes",
+      "pass": true
+    },
+    {
+      "name": "Both public boards and versions agree",
+      "pass": true,
+      "details": {
+        "version": 9,
+        "tiles": 5
+      }
+    },
+    {
+      "name": "p1 opponent values hidden during play",
+      "pass": true,
+      "details": {
+        "own": 5,
+        "opponentTiles": 0,
+        "revealed": 0,
+        "width": 1440,
+        "board": {
+          "x": 29,
+          "y": 187,
+          "width": 1382,
+          "height": 733.921875,
+          "top": 187,
+          "right": 1411,
+          "bottom": 920.921875,
+          "left": 29
+        }
+      }
+    },
+    {
+      "name": "p2 opponent values hidden during play",
+      "pass": true,
+      "details": {
+        "own": 4,
+        "opponentTiles": 0,
+        "revealed": 0,
+        "width": 1440,
+        "board": {
+          "x": 29,
+          "y": 187,
+          "width": 1382,
+          "height": 722.921875,
+          "top": 187,
+          "right": 1411,
+          "bottom": 909.921875,
+          "left": 29
+        }
+      }
+    },
+    {
+      "name": "The UI request settles before comparing peers",
+      "pass": true
+    },
+    {
+      "name": "Both public boards and versions agree",
+      "pass": true,
+      "details": {
+        "version": 10,
+        "tiles": 6
+      }
+    },
+    {
+      "name": "One commit per UI move including duplicate clicks",
+      "pass": true,
+      "details": {
+        "before": 9,
+        "after": 10
+      }
+    },
+    {
+      "name": "Turn changes or round finishes",
+      "pass": true
+    },
+    {
+      "name": "Both public boards and versions agree",
+      "pass": true,
+      "details": {
+        "version": 10,
+        "tiles": 6
+      }
+    },
+    {
+      "name": "p1 opponent values hidden during play",
+      "pass": true,
+      "details": {
+        "own": 5,
+        "opponentTiles": 0,
+        "revealed": 0,
+        "width": 1440,
+        "board": {
+          "x": 29,
+          "y": 187,
+          "width": 1382,
+          "height": 775.921875,
+          "top": 187,
+          "right": 1411,
+          "bottom": 962.921875,
+          "left": 29
+        }
+      }
+    },
+    {
+      "name": "p2 opponent values hidden during play",
+      "pass": true,
+      "details": {
+        "own": 3,
+        "opponentTiles": 0,
+        "revealed": 0,
+        "width": 1440,
+        "board": {
+          "x": 29,
+          "y": 187,
+          "width": 1382,
+          "height": 732.921875,
+          "top": 187,
+          "right": 1411,
+          "bottom": 919.921875,
+          "left": 29
+        }
+      }
+    },
+    {
+      "name": "The UI request settles before comparing peers",
+      "pass": true
+    },
+    {
+      "name": "Both public boards and versions agree",
+      "pass": true,
+      "details": {
+        "version": 11,
+        "tiles": 6
+      }
+    },
+    {
+      "name": "One commit per UI move including duplicate clicks",
+      "pass": true,
+      "details": {
+        "before": 10,
+        "after": 11
+      }
+    },
+    {
+      "name": "Turn changes or round finishes",
+      "pass": true
+    },
+    {
+      "name": "Both public boards and versions agree",
+      "pass": true,
+      "details": {
+        "version": 11,
+        "tiles": 6
+      }
+    },
+    {
+      "name": "p1 opponent values hidden during play",
+      "pass": true,
+      "details": {
+        "own": 5,
+        "opponentTiles": 0,
+        "revealed": 0,
+        "width": 1440,
+        "board": {
+          "x": 29,
+          "y": 187,
+          "width": 1382,
+          "height": 733.921875,
+          "top": 187,
+          "right": 1411,
+          "bottom": 920.921875,
+          "left": 29
+        }
+      }
+    },
+    {
+      "name": "p2 opponent values hidden during play",
+      "pass": true,
+      "details": {
+        "own": 3,
+        "opponentTiles": 0,
+        "revealed": 0,
+        "width": 1440,
+        "board": {
+          "x": 29,
+          "y": 187,
+          "width": 1382,
+          "height": 722.921875,
+          "top": 187,
+          "right": 1411,
+          "bottom": 909.921875,
+          "left": 29
+        }
+      }
+    },
+    {
+      "name": "The UI request settles before comparing peers",
+      "pass": true
+    },
+    {
+      "name": "Both public boards and versions agree",
+      "pass": true,
+      "details": {
+        "version": 12,
+        "tiles": 7
+      }
+    },
+    {
+      "name": "One commit per UI move including duplicate clicks",
+      "pass": true,
+      "details": {
+        "before": 11,
+        "after": 12
+      }
+    },
+    {
+      "name": "Turn changes or round finishes",
+      "pass": true
+    },
+    {
+      "name": "Both public boards and versions agree",
+      "pass": true,
+      "details": {
+        "version": 12,
+        "tiles": 7
+      }
+    },
+    {
+      "name": "p1 opponent values hidden during play",
+      "pass": true,
+      "details": {
+        "own": 5,
+        "opponentTiles": 0,
+        "revealed": 0,
+        "width": 1440,
+        "board": {
+          "x": 29,
+          "y": 187,
+          "width": 1382,
+          "height": 723.921875,
+          "top": 187,
+          "right": 1411,
+          "bottom": 910.921875,
+          "left": 29
+        }
+      }
+    },
+    {
+      "name": "p2 opponent values hidden during play",
+      "pass": true,
+      "details": {
+        "own": 2,
+        "opponentTiles": 0,
+        "revealed": 0,
+        "width": 1440,
+        "board": {
+          "x": 29,
+          "y": 187,
+          "width": 1382,
+          "height": 732.921875,
+          "top": 187,
+          "right": 1411,
+          "bottom": 919.921875,
+          "left": 29
+        }
+      }
+    },
+    {
+      "name": "The UI request settles before comparing peers",
+      "pass": true
+    },
+    {
+      "name": "Both public boards and versions agree",
+      "pass": true,
+      "details": {
+        "version": 13,
+        "tiles": 8
+      }
+    },
+    {
+      "name": "One commit per UI move including duplicate clicks",
+      "pass": true,
+      "details": {
+        "before": 12,
+        "after": 13
+      }
+    },
+    {
+      "name": "Turn changes or round finishes",
+      "pass": true
+    },
+    {
+      "name": "Both public boards and versions agree",
+      "pass": true,
+      "details": {
+        "version": 13,
+        "tiles": 8
+      }
+    },
+    {
+      "name": "p1 opponent values hidden during play",
+      "pass": true,
+      "details": {
+        "own": 4,
+        "opponentTiles": 0,
+        "revealed": 0,
+        "width": 1440,
+        "board": {
+          "x": 29,
+          "y": 187,
+          "width": 1382,
+          "height": 733.921875,
+          "top": 187,
+          "right": 1411,
+          "bottom": 920.921875,
+          "left": 29
+        }
+      }
+    },
+    {
+      "name": "p2 opponent values hidden during play",
+      "pass": true,
+      "details": {
+        "own": 2,
+        "opponentTiles": 0,
+        "revealed": 0,
+        "width": 1440,
+        "board": {
+          "x": 29,
+          "y": 187,
+          "width": 1382,
+          "height": 722.921875,
+          "top": 187,
+          "right": 1411,
+          "bottom": 909.921875,
+          "left": 29
+        }
+      }
+    },
+    {
+      "name": "The UI request settles before comparing peers",
+      "pass": true
+    },
+    {
+      "name": "Both public boards and versions agree",
+      "pass": true,
+      "details": {
+        "version": 14,
+        "tiles": 9
+      }
+    },
+    {
+      "name": "One commit per UI move including duplicate clicks",
+      "pass": true,
+      "details": {
+        "before": 13,
+        "after": 14
+      }
+    },
+    {
+      "name": "Turn changes or round finishes",
+      "pass": true
+    },
+    {
+      "name": "Both public boards and versions agree",
+      "pass": true,
+      "details": {
+        "version": 14,
+        "tiles": 9
+      }
+    },
+    {
+      "name": "p1 opponent values hidden during play",
+      "pass": true,
+      "details": {
+        "own": 4,
+        "opponentTiles": 0,
+        "revealed": 0,
+        "width": 1440,
+        "board": {
+          "x": 29,
+          "y": 187,
+          "width": 1382,
+          "height": 723.921875,
+          "top": 187,
+          "right": 1411,
+          "bottom": 910.921875,
+          "left": 29
+        }
+      }
+    },
+    {
+      "name": "p2 opponent values hidden during play",
+      "pass": true,
+      "details": {
+        "own": 1,
+        "opponentTiles": 0,
+        "revealed": 0,
+        "width": 1440,
+        "board": {
+          "x": 29,
+          "y": 187,
+          "width": 1382,
+          "height": 732.921875,
+          "top": 187,
+          "right": 1411,
+          "bottom": 919.921875,
+          "left": 29
+        }
+      }
+    },
+    {
+      "name": "The UI request settles before comparing peers",
+      "pass": true
+    },
+    {
+      "name": "Both public boards and versions agree",
+      "pass": true,
+      "details": {
+        "version": 15,
+        "tiles": 10
+      }
+    },
+    {
+      "name": "One commit per UI move including duplicate clicks",
+      "pass": true,
+      "details": {
+        "before": 14,
+        "after": 15
+      }
+    },
+    {
+      "name": "Turn changes or round finishes",
+      "pass": true
+    },
+    {
+      "name": "Both public boards and versions agree",
+      "pass": true,
+      "details": {
+        "version": 15,
+        "tiles": 10
+      }
+    },
+    {
+      "name": "p1 opponent values hidden during play",
+      "pass": true,
+      "details": {
+        "own": 3,
+        "opponentTiles": 0,
+        "revealed": 0,
+        "width": 1440,
+        "board": {
+          "x": 29,
+          "y": 187,
+          "width": 1382,
+          "height": 733.921875,
+          "top": 187,
+          "right": 1411,
+          "bottom": 920.921875,
+          "left": 29
+        }
+      }
+    },
+    {
+      "name": "p2 opponent values hidden during play",
+      "pass": true,
+      "details": {
+        "own": 1,
+        "opponentTiles": 0,
+        "revealed": 0,
+        "width": 1440,
+        "board": {
+          "x": 29,
+          "y": 187,
+          "width": 1382,
+          "height": 774.921875,
+          "top": 187,
+          "right": 1411,
+          "bottom": 961.921875,
+          "left": 29
+        }
+      }
+    },
+    {
+      "name": "The UI request settles before comparing peers",
+      "pass": true
+    },
+    {
+      "name": "Both public boards and versions agree",
+      "pass": true,
+      "details": {
+        "version": 16,
+        "tiles": 10
+      }
+    },
+    {
+      "name": "One commit per UI move including duplicate clicks",
+      "pass": true,
+      "details": {
+        "before": 15,
+        "after": 16
+      }
+    },
+    {
+      "name": "Turn changes or round finishes",
+      "pass": true
+    },
+    {
+      "name": "Both public boards and versions agree",
+      "pass": true,
+      "details": {
+        "version": 16,
+        "tiles": 10
+      }
+    },
+    {
+      "name": "p1 opponent values hidden during play",
+      "pass": true,
+      "details": {
+        "own": 3,
+        "opponentTiles": 0,
+        "revealed": 0,
+        "width": 1440,
+        "board": {
+          "x": 29,
+          "y": 187,
+          "width": 1382,
+          "height": 723.921875,
+          "top": 187,
+          "right": 1411,
+          "bottom": 910.921875,
+          "left": 29
+        }
+      }
+    },
+    {
+      "name": "p2 opponent values hidden during play",
+      "pass": true,
+      "details": {
+        "own": 1,
+        "opponentTiles": 0,
+        "revealed": 0,
+        "width": 1440,
+        "board": {
+          "x": 29,
+          "y": 187,
+          "width": 1382,
+          "height": 732.921875,
+          "top": 187,
+          "right": 1411,
+          "bottom": 919.921875,
+          "left": 29
+        }
+      }
+    },
+    {
+      "name": "The UI request settles before comparing peers",
+      "pass": true
+    },
+    {
+      "name": "Both public boards and versions agree",
+      "pass": true,
+      "details": {
+        "version": 17,
+        "tiles": 11
+      }
+    },
+    {
+      "name": "One commit per UI move including duplicate clicks",
+      "pass": true,
+      "details": {
+        "before": 16,
+        "after": 17
+      }
+    },
+    {
+      "name": "Turn changes or round finishes",
+      "pass": true
+    },
+    {
+      "name": "Both public boards and versions agree",
+      "pass": true,
+      "details": {
+        "version": 17,
+        "tiles": 11
+      }
+    },
+    {
+      "name": "p1 opponent values hidden during play",
+      "pass": true,
+      "details": {
+        "own": 2,
+        "opponentTiles": 0,
+        "revealed": 0,
+        "width": 1440,
+        "board": {
+          "x": 29,
+          "y": 187,
+          "width": 1382,
+          "height": 733.921875,
+          "top": 187,
+          "right": 1411,
+          "bottom": 920.921875,
+          "left": 29
+        }
+      }
+    },
+    {
+      "name": "p2 opponent values hidden during play",
+      "pass": true,
+      "details": {
+        "own": 1,
+        "opponentTiles": 0,
+        "revealed": 0,
+        "width": 1440,
+        "board": {
+          "x": 29,
+          "y": 187,
+          "width": 1382,
+          "height": 722.921875,
+          "top": 187,
+          "right": 1411,
+          "bottom": 909.921875,
+          "left": 29
+        }
+      }
+    },
+    {
+      "name": "The UI request settles before comparing peers",
+      "pass": true
+    },
+    {
+      "name": "Both public boards and versions agree",
+      "pass": true,
+      "details": {
+        "version": 18,
+        "tiles": 12
+      }
+    },
+    {
+      "name": "One commit per UI move including duplicate clicks",
+      "pass": true,
+      "details": {
+        "before": 17,
+        "after": 18
+      }
+    },
+    {
+      "name": "Turn changes or round finishes",
+      "pass": true
+    },
+    {
+      "name": "Both public boards and versions agree",
+      "pass": true,
+      "details": {
+        "version": 18,
+        "tiles": 12
+      }
+    },
+    {
+      "name": "Both public boards and versions agree",
+      "pass": true,
+      "details": {
+        "version": 18,
+        "tiles": 12
+      }
+    },
+    {
+      "name": "Default single round finishes through UI play",
+      "pass": true
+    },
+    {
+      "name": "Both result panels appear in their languages",
+      "pass": true
+    },
+    {
+      "name": "Both public boards and versions agree",
+      "pass": true,
+      "details": {
+        "version": 18,
+        "tiles": 12
+      }
+    },
+    {
+      "name": "Replay regression starts from a finished match",
+      "pass": true
+    },
+    {
+      "name": "Losing Domino headline uses the neutral result title",
+      "pass": true,
+      "details": "경기 결과"
+    },
+    {
+      "name": "Losing Domino winner badge names the rival team",
+      "pass": true,
+      "details": "상대 팀 승리"
+    },
+    {
+      "name": "p1 replay name and ready state match the contract",
+      "pass": true
+    },
+    {
+      "name": "p2 replay name and ready state match the contract",
+      "pass": true
+    },
+    {
+      "name": "Both public boards and versions agree",
+      "pass": true,
+      "details": {
+        "version": 19,
+        "tiles": 12
+      }
+    },
+    {
+      "name": "One replay request preserves the finished result for both seats",
+      "pass": true,
+      "details": [
+        {
+          "playerId": "p1",
+          "version": 19,
+          "pendingGame": "domino",
+          "phase": "finished"
+        },
+        {
+          "playerId": "p2",
+          "version": 19,
+          "pendingGame": "domino",
+          "phase": "finished"
+        }
+      ]
+    },
+    {
+      "name": "Pending replay preserves the previous public game board",
+      "pass": true
+    },
+    {
+      "name": "The other player can approve the pending replay",
+      "pass": true
+    },
+    {
+      "name": "Both public boards and versions agree",
+      "pass": true,
+      "details": {
+        "version": 20,
+        "tiles": 0
+      }
+    },
+    {
+      "name": "Other player consent creates a newer fresh same-game state",
+      "pass": true
+    },
+    {
+      "name": "Replayed Domino has empty public chain and seven tiles per seat",
+      "pass": true
+    },
+    {
+      "name": "p1 opponent values hidden during play",
+      "pass": true,
+      "details": {
+        "own": 7,
+        "opponentTiles": 0,
+        "revealed": 0,
+        "width": 1440,
+        "board": {
+          "x": 29,
+          "y": -296,
+          "width": 1382,
+          "height": 664.921875,
+          "top": -296,
+          "right": 1411,
+          "bottom": 368.921875,
+          "left": 29
+        }
+      }
+    },
+    {
+      "name": "p2 opponent values hidden during play",
+      "pass": true,
+      "details": {
+        "own": 7,
+        "opponentTiles": 0,
+        "revealed": 0,
+        "width": 1440,
+        "board": {
+          "x": 29,
+          "y": -354,
+          "width": 1382,
+          "height": 673.921875,
+          "top": -354,
+          "right": 1411,
+          "bottom": 319.921875,
+          "left": 29
+        }
+      }
+    },
+    {
+      "name": "Old Domino result and win effects are gone",
+      "pass": true
+    },
+    {
+      "name": "Old Domino result and win effects are gone",
+      "pass": true
+    },
+    {
+      "name": "No uncaught browser errors",
+      "pass": true,
+      "details": []
+    }
+  ],
+  "moves": [
+    {
+      "step": 1,
+      "player": "p1",
+      "type": "play",
+      "tile": [
+        4,
+        4
+      ],
+      "side": "left",
+      "reason": "shed 8 pips; keep 0 tiles connected to outer 4",
+      "versionBefore": 2,
+      "keyboard": true
+    },
+    {
+      "step": 2,
+      "player": "p2",
+      "type": "play",
+      "tile": [
+        1,
+        4
+      ],
+      "side": "left",
+      "reason": "shed 5 pips; keep 3 tiles connected to outer 1",
+      "versionBefore": 3,
+      "keyboard": false
+    },
+    {
+      "step": 3,
+      "player": "p1",
+      "type": "pass",
+      "reason": "No enabled matching tile in this player’s hand",
+      "versionBefore": 4
+    },
+    {
+      "step": 4,
+      "player": "p2",
+      "type": "play",
+      "tile": [
+        3,
+        4
+      ],
+      "side": "right",
+      "reason": "shed 7 pips; keep 2 tiles connected to outer 3",
+      "versionBefore": 5,
+      "keyboard": true
+    },
+    {
+      "step": 5,
+      "player": "p1",
+      "type": "play",
+      "tile": [
+        2,
+        3
+      ],
+      "side": "right",
+      "reason": "shed 5 pips; keep 4 tiles connected to outer 2",
+      "versionBefore": 6,
+      "keyboard": true
+    },
+    {
+      "step": 6,
+      "player": "p2",
+      "type": "play",
+      "tile": [
+        1,
+        2
+      ],
+      "side": "right",
+      "reason": "shed 3 pips; keep 2 tiles connected to outer 1",
+      "versionBefore": 7,
+      "keyboard": true
+    },
+    {
+      "step": 7,
+      "player": "p1",
+      "type": "pass",
+      "reason": "No enabled matching tile in this player’s hand",
+      "versionBefore": 8
+    },
+    {
+      "step": 8,
+      "player": "p2",
+      "type": "play",
+      "tile": [
+        1,
+        3
+      ],
+      "side": "left",
+      "reason": "shed 4 pips; keep 1 tiles connected to outer 3",
+      "versionBefore": 9,
+      "keyboard": true
+    },
+    {
+      "step": 9,
+      "player": "p1",
+      "type": "pass",
+      "reason": "No enabled matching tile in this player’s hand",
+      "versionBefore": 10
+    },
+    {
+      "step": 10,
+      "player": "p2",
+      "type": "play",
+      "tile": [
+        0,
+        3
+      ],
+      "side": "left",
+      "reason": "shed 3 pips; keep 1 tiles connected to outer 0",
+      "versionBefore": 11,
+      "keyboard": true
+    },
+    {
+      "step": 11,
+      "player": "p1",
+      "type": "play",
+      "tile": [
+        0,
+        2
+      ],
+      "side": "left",
+      "reason": "shed 2 pips; keep 3 tiles connected to outer 2",
+      "versionBefore": 12,
+      "keyboard": true
+    },
+    {
+      "step": 12,
+      "player": "p2",
+      "type": "play",
+      "tile": [
+        0,
+        1
+      ],
+      "side": "right",
+      "reason": "shed 1 pips; keep 0 tiles connected to outer 0",
+      "versionBefore": 13,
+      "keyboard": true
+    },
+    {
+      "step": 13,
+      "player": "p1",
+      "type": "play",
+      "tile": [
+        2,
+        2
+      ],
+      "side": "left",
+      "reason": "shed 4 pips; keep 2 tiles connected to outer 2",
+      "versionBefore": 14,
+      "keyboard": true
+    },
+    {
+      "step": 14,
+      "player": "p2",
+      "type": "pass",
+      "reason": "No enabled matching tile in this player’s hand",
+      "versionBefore": 15
+    },
+    {
+      "step": 15,
+      "player": "p1",
+      "type": "play",
+      "tile": [
+        2,
+        6
+      ],
+      "side": "left",
+      "reason": "shed 8 pips; keep 0 tiles connected to outer 6",
+      "versionBefore": 16,
+      "keyboard": true
+    },
+    {
+      "step": 16,
+      "player": "p2",
+      "type": "play",
+      "tile": [
+        4,
+        6
+      ],
+      "side": "left",
+      "reason": "shed 10 pips; keep 0 tiles connected to outer 4",
+      "versionBefore": 17,
+      "keyboard": true
+    }
+  ],
+  "errors": [],
+  "observations": [
+    {
+      "resultKO": "매치 결과\n상대 팀 승리\n\n남은 점수 7 대 0 · 이번 점수 7\n\n정산 점수: 내 팀 +0 · 상대 +7\n\n손패를 먼저 비워 이겼어요.",
+      "resultES": "Resultado del partido\n¡Ganó tu equipo!\n\nPuntos restantes 7 a 0 · premio 7\n\nPuntos liquidados: Rival +0 · Tu equipo +7\n\nGanó quien se quedó sin fichas primero.",
+      "restartControls": [
+        "⧉",
+        "방 닫기",
+        "상태 다시 확인",
+        "♫게임 효과음",
+        "↻",
+        "왼쪽 · 4",
+        "오른쪽 · 0",
+        "",
+        "",
+        "같은 게임 다시 하기",
+        "⌃",
+        "",
+        "",
+        "",
+        "",
+        "",
+        "",
+        "",
+        "",
+        "",
+        "",
+        "",
+        ""
+      ],
+      "sameGameSwitcher": 0,
+      "wrongEndDone": true,
+      "duplicateDone": true
+    },
+    {
+      "narrowReadOnly": "Yeonseok ♡ Lisbeth\n게임은 컴퓨터에서 같이 하자 ♡\n\n휴대폰에서는 우리 페이지와 편지를 볼 수 있어. 게임은 컴퓨터의 넓은 화면에서 열어줘, baby.\n\n우리 페이지로 돌아가기\n↗",
+      "documentWidth": 390
+    },
+    {
+      "narrowReadOnly": "Yeonseok ♡ Lisbeth\nJuguemos juntos en la computadora ♡\n\nDesde tu celular puedes ver nuestra página y leer la carta. Para jugar, abre la página en una computadora, baby.\n\nVolver a nuestra página\n↗",
+      "documentWidth": 390
+    }
+  ],
+  "screenshots": [
+    "/workspace/deliverables/game-quality-restart-20261012/after-frozen-0fbfce87/domino/initial-p1.png",
+    "/workspace/deliverables/game-quality-restart-20261012/after-frozen-0fbfce87/domino/initial-p2.png",
+    "/workspace/deliverables/game-quality-restart-20261012/after-frozen-0fbfce87/domino/midgame-p1.png",
+    "/workspace/deliverables/game-quality-restart-20261012/after-frozen-0fbfce87/domino/midgame-p2.png",
+    "/workspace/deliverables/game-quality-restart-20261012/after-frozen-0fbfce87/domino/finished-p1.png",
+    "/workspace/deliverables/game-quality-restart-20261012/after-frozen-0fbfce87/domino/finished-p2.png",
+    "/workspace/deliverables/game-quality-restart-20261012/after-frozen-0fbfce87/domino/replay-awaiting-consent-p1.png",
+    "/workspace/deliverables/game-quality-restart-20261012/after-frozen-0fbfce87/domino/replay-awaiting-consent-p2.png",
+    "/workspace/deliverables/game-quality-restart-20261012/after-frozen-0fbfce87/domino/replayed-p1.png",
+    "/workspace/deliverables/game-quality-restart-20261012/after-frozen-0fbfce87/domino/replayed-p2.png"
+  ],
+  "roomCreatedViaUi": true,
+  "seatsBeforeRefresh": [
+    {
+      "playerId": "p1",
+      "version": 0,
+      "syncEpoch": 0,
+      "gameId": null,
+      "pendingGame": null,
+      "players": 1
+    },
+    {
+      "playerId": "p2",
+      "version": 0,
+      "syncEpoch": 0,
+      "gameId": null,
+      "pendingGame": null,
+      "players": 2
+    }
+  ],
+  "latestPublicStates": [
+    {
+      "playerId": "p1",
+      "version": 20,
+      "syncEpoch": 37,
+      "gameId": "domino",
+      "pendingGame": null,
+      "players": 2,
+      "phase": "play",
+      "turn": "p1",
+      "round": 1,
+      "board": {
+        "ends": null,
+        "round": 1,
+        "seats": [
+          "p1",
+          "p2"
+        ],
+        "teams": {
+          "p1": [
+            "p1"
+          ],
+          "p2": [
+            "p2"
+          ]
+        },
+        "tiles": [],
+        "counts": {
+          "p1": 7,
+          "p2": 7
+        },
+        "scores": null,
+        "settings": {
+          "difficulty": "normal",
+          "targetScore": 0,
+          "tranqueRule": "team",
+          "capicuaBonus": 0,
+          "pasoCorridoBonus": 0
+        },
+        "actionLog": [],
+        "matchScores": {
+          "p1": 0,
+          "p2": 0
+        },
+        "roundResult": null,
+        "roundBonuses": {
+          "p1": 0,
+          "p2": 0
+        },
+        "rulesVersion": 1
+      },
+      "result": null
+    },
+    {
+      "playerId": "p2",
+      "version": 20,
+      "syncEpoch": 38,
+      "gameId": "domino",
+      "pendingGame": null,
+      "players": 2,
+      "phase": "play",
+      "turn": "p1",
+      "round": 1,
+      "board": {
+        "ends": null,
+        "round": 1,
+        "seats": [
+          "p1",
+          "p2"
+        ],
+        "teams": {
+          "p1": [
+            "p1"
+          ],
+          "p2": [
+            "p2"
+          ]
+        },
+        "tiles": [],
+        "counts": {
+          "p1": 7,
+          "p2": 7
+        },
+        "scores": null,
+        "settings": {
+          "difficulty": "normal",
+          "targetScore": 0,
+          "tranqueRule": "team",
+          "capicuaBonus": 0,
+          "pasoCorridoBonus": 0
+        },
+        "actionLog": [],
+        "matchScores": {
+          "p1": 0,
+          "p2": 0
+        },
+        "roundResult": null,
+        "roundBonuses": {
+          "p1": 0,
+          "p2": 0
+        },
+        "rulesVersion": 1
+      },
+      "result": null
+    }
+  ],
+  "seatsAfterRefresh": [
+    {
+      "playerId": "p1",
+      "version": 0,
+      "syncEpoch": 0,
+      "gameId": null,
+      "pendingGame": null,
+      "players": 2
+    },
+    {
+      "playerId": "p2",
+      "version": 0,
+      "syncEpoch": 0,
+      "gameId": null,
+      "pendingGame": null,
+      "players": 2
+    }
+  ],
+  "final": [
+    {
+      "playerId": "p1",
+      "version": 18,
+      "syncEpoch": 34,
+      "gameId": "domino",
+      "pendingGame": null,
+      "players": 2,
+      "phase": "finished",
+      "turn": "p1",
+      "round": 1,
+      "result": {
+        "reason": "A player played all dominoes",
+        "scores": {
+          "p1": 7,
+          "p2": 0
+        },
+        "winner": "p2"
+      },
+      "tileCount": 12,
+      "counts": {
+        "p1": 2,
+        "p2": 0
+      }
+    },
+    {
+      "playerId": "p2",
+      "version": 18,
+      "syncEpoch": 35,
+      "gameId": "domino",
+      "pendingGame": null,
+      "players": 2,
+      "phase": "finished",
+      "turn": "p1",
+      "round": 1,
+      "result": {
+        "reason": "A player played all dominoes",
+        "scores": {
+          "p1": 7,
+          "p2": 0
+        },
+        "winner": "p2"
+      },
+      "tileCount": 12,
+      "counts": {
+        "p1": 2,
+        "p2": 0
+      }
+    }
+  ],
+  "replay": {
+    "beforeVersion": 18,
+    "requestVersion": 19,
+    "freshVersion": 20,
+    "game": "domino",
+    "twoPlayerConsent": true
+  }
+}
