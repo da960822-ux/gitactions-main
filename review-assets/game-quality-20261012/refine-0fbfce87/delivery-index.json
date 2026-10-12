@@ -349,6 +349,37 @@
       "path": "two-player-qa-delta.json",
       "bytes": 5873,
       "sha256": "ffdfec7020c5f2041f4ef8fcf93c9e79c0aa9ccdeea678d906d5b76979fbe31e"
+    },
+    {
+      "path": "catchmind-current-run/01-host-category-desktop.png",
+      "bytes": 318482,
+      "sha256": "bbc6086eebe9d4ae9913fe9174ff45c02e38ac833efe9c6391c6182b9e0727ab"
+    },
+    {
+      "path": "catchmind-current-run/02-drawer-desktop.png",
+      "bytes": 281566,
+      "sha256": "564d43a3cf56f364f9a127844b27212f7a413896e8de2128c6817f41bd6bb3a5"
+    },
+    {
+      "path": "catchmind-current-run/03-guesser-static-mask-es.png",
+      "bytes": 267661,
+      "sha256": "65084f213247b80874144af8646e994aaaf434e2879bcc5e9790f63999b950a4"
+    },
+    {
+      "path": "catchmind-current-run/04-result-rematch-desktop.png",
+      "bytes": 249273,
+      "sha256": "9c464ca23c77c4a1ed10bea8da0530ac71612b7a7098bdc7919ee4006ef82640"
+    },
+    {
+      "path": "catchmind-current-run/05-real-30-second-timeout-es.png",
+      "bytes": 257598,
+      "sha256": "73fc0b0ccc56abe336d0d2051f74ccd8e6fc4f88cb3b0ad417de21dd2dedb0b5"
+    },
+    {
+      "path": "catchmind-current-run/report.json",
+      "bytes": 536,
+      "sha256": "fc61c006e04c24151b5fd29d7a1ef96bc431b7cf63120f6d676dfd5e6147b232"
     }
-  ]
+  ],
+  "catchmind_current_run": "Actual two independent KO/ES UI contexts on 5212/54331, role-specific answer visibility, stroke, reload deadline, mutual replay and real 30-second timeout; original run report and five screenshots archived; normal dummy prompt retained."
 }

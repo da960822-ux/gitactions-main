@@ -1,0 +1,22 @@
+{
+  "reports": [
+    {
+      "independentSessions": 2,
+      "viewport": "1440×900",
+      "categories": 6,
+      "selectedCategory": "food",
+      "bilingualAnswer": true,
+      "privateAnswer": true,
+      "staticMasks": true,
+      "synchronizedStroke": true,
+      "reloadPreservesDeadline": true,
+      "rematchRequiresBoth": true,
+      "resetVerified": true,
+      "actualThirtySecondTimeout": true,
+      "lateAnswerRejected": true,
+      "realtimeVerified": false,
+      "productionDeployed": false
+    }
+  ],
+  "errors": []
+}
