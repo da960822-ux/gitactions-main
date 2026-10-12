@@ -15,3 +15,20 @@
 }
 @media(max-height:780px) and (min-width:760px){.cs-hero-copy .cs-body{bottom:130px;line-height:1.75}.cs-hero-copy h1{font-size:38px;max-width:290px}.cs-hero-copy .cs-dedication{top:14%}}
 @media(prefers-reduced-motion:reduce){.cs-canvas{will-change:auto}}
+
+/* The title reveals only after the first visible scene render; navigation and
+   its action buttons stay present and usable throughout the reveal. */
+.cs-hero-copy h1 .cs-headline-accent{display:block;font:italic 400 1.12em/.95 Georgia,serif;color:#edbca9;margin-bottom:13px}
+.cs-hero-copy h1 .cs-headline-main{display:block;font:inherit;letter-spacing:inherit;color:inherit;margin:0}
+.cs-page[data-space-ready=true] .cs-hero-copy .cs-dedication,
+.cs-page[data-space-ready=true] .cs-hero-copy .cs-headline-accent,
+.cs-page[data-space-ready=true] .cs-hero-copy .cs-headline-main,
+.cs-page[data-space-ready=true] .cs-hero-copy .cs-body{animation:cs-copy-reveal .74s cubic-bezier(.18,.72,.24,1) both}
+.cs-page[data-space-ready=true] .cs-hero-copy .cs-dedication{animation-delay:.15s}
+.cs-page[data-space-ready=true] .cs-hero-copy .cs-headline-accent{animation-delay:.23s}
+.cs-page[data-space-ready=true] .cs-hero-copy .cs-headline-main{animation-delay:.31s}
+.cs-page[data-space-ready=true] .cs-hero-copy .cs-body{animation-delay:.39s}
+@keyframes cs-copy-reveal{from{clip-path:inset(0 0 100% 0);transform:translateY(12px)}to{clip-path:inset(0);transform:translateY(0)}}
+@media(max-width:759px){.cs-hero-copy h1 .cs-headline-accent{display:inline;margin:0 10px 0 0}.cs-hero-copy h1 .cs-headline-main{display:inline;font:inherit;color:inherit}}
+@media(prefers-reduced-motion:reduce){.cs-page[data-space-ready=true] .cs-hero-copy .cs-dedication,.cs-page[data-space-ready=true] .cs-hero-copy .cs-headline-accent,.cs-page[data-space-ready=true] .cs-hero-copy .cs-headline-main,.cs-page[data-space-ready=true] .cs-hero-copy .cs-body{animation:none}}
+.cs-stage[data-dragging=true],.cs-stage[data-dragging=true] *{user-select:none}

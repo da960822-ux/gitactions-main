@@ -29,14 +29,24 @@ export function stepSpring(position: number, velocity: number, target: number, d
 export function balloonPlan(index: number, mobile: boolean) {
   const left = index < 18, right = index >= 18 && index < 38;
   const local = left ? index : right ? index - 18 : index - 38;
-  const layer = index % 3;
-  const x = left ? (mobile ? -.06 : .155) + Math.sin(local * 2.4) * (mobile ? .115 : .065)
-    : right ? (mobile ? 1.06 : .855) + Math.cos(local * 2.1) * (mobile ? .115 : .068)
-    : .27 + local * .051;
-  const y = left ? (mobile ? .28 : .35) + local / 18 * (mobile ? .28 : .26)
-    : right ? (mobile ? .27 : .22) + local / 20 * (mobile ? .32 : .56)
-    : .17 + Math.sin(local * 1.9) * .045;
+  let x:number,y:number;
+  if(mobile){
+    x=left?-.06+Math.sin(local*2.4)*.115:right?1.06+Math.cos(local*2.1)*.115:.27+local*.051;
+    y=left?.28+local/18*.28:right?.27+local/20*.32:.17+Math.sin(local*1.9)*.045;
+  }else if(left||right){
+    const centers=left?[[.055,.23],[.16,.48],[.065,.73]]:[[.80,.18],[.94,.39],[.81,.64],[.94,.84]];
+    const clusterSize=left?6:5,cluster=Math.floor(local/clusterSize),slot=local%clusterSize,center=centers[cluster];
+    const angle=slot/clusterSize*Math.PI*2+(randomAt(index+931)-.5)*.62;
+    const rx=left?.035+randomAt(index+741)*.035:.04+randomAt(index+741)*.045;
+    const ry=left?.045+randomAt(index+501)*.045:.07+randomAt(index+501)*.08;
+    x=center[0]+Math.cos(angle)*rx;y=center[1]+Math.sin(angle)*ry;
+  }else{
+    x=.25+local*.055+(randomAt(index+741)-.5)*.025;y=.16+Math.sin(local*1.9)*.045+(randomAt(index+501)-.5)*.035;
+  }
+  const layer=Math.floor(randomAt(index+171)*3);
+  const rightBonus=right&&local%9===0;
   return {x, y, depth: left || right ? [7.2, 10.6, 14.4][layer] : 18.4,
-    pixels: (mobile ? 56 : 88) + randomAt(index + 4) * (mobile ? 46 : 67) + (local % 9 === 0 ? (mobile ? 38 : 68) : 0),
-    material: (index + Math.floor(index/3)) % 3, rotation: (randomAt(index + 32) - .5) * .7};
+    pixels: right&&!mobile?68+randomAt(index+4)*48+(rightBonus?28:0):(mobile?56:88)+randomAt(index+4)*(mobile?46:67)+(local%9===0?(mobile?38:68):0),
+    material: (index + Math.floor(index/3)) % 3, rotation: (randomAt(index + 32) - .5) * .9,
+    tiltX:(randomAt(index+72)-.5)*(right&&!mobile?1.1:.9),tiltY:(randomAt(index+112)-.5)*(right&&!mobile?1.45:1.15)};
 }
