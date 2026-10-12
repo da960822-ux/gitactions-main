@@ -1,0 +1,489 @@
+{
+  "source": "native src/audio/audio.ts playCue; production audio code unchanged",
+  "origin": "http://127.0.0.1:5211",
+  "authority": "no room actions; app shell only",
+  "generated": false,
+  "listened": false,
+  "timing": {
+    "intervalSeconds": 1.05,
+    "finalTailSeconds": 0.55,
+    "waitMethod": "Playwright waitForFunction against actual AudioContext.currentTime"
+  },
+  "recordings": [
+    {
+      "game": "davinci",
+      "cues": [
+        "draw",
+        "guess",
+        "correct",
+        "error"
+      ],
+      "setup": {
+        "preferences": {
+          "sfxEnabled": true,
+          "sfxVolume": 0.4
+        },
+        "contextState": "running"
+      },
+      "recording": {
+        "mime": "audio/webm;codecs=opus",
+        "webmBytes": 15752,
+        "webmEncodedDurationSeconds": 3.400207,
+        "restoredSilentTailSeconds": 1.401,
+        "wallElapsedSeconds": 4.8,
+        "audioClockElapsedSeconds": 4.801,
+        "sampleRate": 44100,
+        "wavBytes": 466830,
+        "decodedWavDurationSeconds": 4.862,
+        "wav": "/workspace/deliverables/game-quality-restart-20261012/audio-review-clock/davinci-cues.wav",
+        "webm": "/workspace/deliverables/game-quality-restart-20261012/audio-review-clock/davinci-cues.webm",
+        "sha256": "20d7e6cd1139ecc5f7727e11ee91aba7094bc652cf78f6b00f9cacc8ae876f79",
+        "volumeSummary": [
+          "mean_volume: -48.0 dB",
+          "max_volume: -26.2 dB"
+        ]
+      },
+      "cueTrace": [
+        {
+          "cue": "draw",
+          "issuedAtAudioSeconds": 0.040634920634920635,
+          "afterWaitAudioSeconds": 1.1000453514739228,
+          "separationSeconds": 1.059
+        },
+        {
+          "cue": "guess",
+          "issuedAtAudioSeconds": 1.1000453514739228,
+          "afterWaitAudioSeconds": 2.162358276643991,
+          "separationSeconds": 1.062
+        },
+        {
+          "cue": "correct",
+          "issuedAtAudioSeconds": 2.162358276643991,
+          "afterWaitAudioSeconds": 3.221768707482993,
+          "separationSeconds": 1.059
+        },
+        {
+          "cue": "error",
+          "issuedAtAudioSeconds": 3.221768707482993,
+          "afterWaitAudioSeconds": 4.2811791383219955,
+          "separationSeconds": 1.059
+        }
+      ],
+      "checks": {
+        "fourCues": true,
+        "spaced": true,
+        "clockAdvance": true,
+        "wavLongEnough": true,
+        "nonSilent": true
+      }
+    },
+    {
+      "game": "catchmind",
+      "cues": [
+        "select",
+        "correct",
+        "error",
+        "win"
+      ],
+      "setup": {
+        "preferences": {
+          "sfxEnabled": true,
+          "sfxVolume": 0.35
+        },
+        "contextState": "running"
+      },
+      "recording": {
+        "mime": "audio/webm;codecs=opus",
+        "webmBytes": 20582,
+        "webmEncodedDurationSeconds": 3.518372,
+        "restoredSilentTailSeconds": 1.283,
+        "wallElapsedSeconds": 4.801,
+        "audioClockElapsedSeconds": 4.801,
+        "sampleRate": 44100,
+        "wavBytes": 466734,
+        "decodedWavDurationSeconds": 4.861,
+        "wav": "/workspace/deliverables/game-quality-restart-20261012/audio-review-clock/catchmind-cues.wav",
+        "webm": "/workspace/deliverables/game-quality-restart-20261012/audio-review-clock/catchmind-cues.webm",
+        "sha256": "dbea28e74322fda2e2712d20efb739be79104c8f5cac8bb320ff0ffc0b4942c5",
+        "volumeSummary": [
+          "mean_volume: -40.6 dB",
+          "max_volume: -23.9 dB"
+        ]
+      },
+      "cueTrace": [
+        {
+          "cue": "select",
+          "issuedAtAudioSeconds": 5.16063492063492,
+          "afterWaitAudioSeconds": 6.211337868480726,
+          "separationSeconds": 1.051
+        },
+        {
+          "cue": "correct",
+          "issuedAtAudioSeconds": 6.220045351473923,
+          "afterWaitAudioSeconds": 7.270748299319728,
+          "separationSeconds": 1.051
+        },
+        {
+          "cue": "error",
+          "issuedAtAudioSeconds": 7.270748299319728,
+          "afterWaitAudioSeconds": 8.33015873015873,
+          "separationSeconds": 1.059
+        },
+        {
+          "cue": "win",
+          "issuedAtAudioSeconds": 8.33015873015873,
+          "afterWaitAudioSeconds": 9.401179138321995,
+          "separationSeconds": 1.071
+        }
+      ],
+      "checks": {
+        "fourCues": true,
+        "spaced": true,
+        "clockAdvance": true,
+        "wavLongEnough": true,
+        "nonSilent": true
+      }
+    },
+    {
+      "game": "domino",
+      "cues": [
+        "place",
+        "pass",
+        "tranque",
+        "score"
+      ],
+      "setup": {
+        "preferences": {
+          "sfxEnabled": true,
+          "sfxVolume": 0.42
+        },
+        "contextState": "running"
+      },
+      "recording": {
+        "mime": "audio/webm;codecs=opus",
+        "webmBytes": 12854,
+        "webmEncodedDurationSeconds": 3.297417,
+        "restoredSilentTailSeconds": 1.504,
+        "wallElapsedSeconds": 4.803,
+        "audioClockElapsedSeconds": 4.801,
+        "sampleRate": 44100,
+        "wavBytes": 466926,
+        "decodedWavDurationSeconds": 4.863,
+        "wav": "/workspace/deliverables/game-quality-restart-20261012/audio-review-clock/domino-cues.wav",
+        "webm": "/workspace/deliverables/game-quality-restart-20261012/audio-review-clock/domino-cues.webm",
+        "sha256": "0049f7452e5b0b2e786c7879453994c27fbe5201a15a0b42a3853570f43745eb",
+        "volumeSummary": [
+          "mean_volume: -48.2 dB",
+          "max_volume: -26.0 dB"
+        ]
+      },
+      "cueTrace": [
+        {
+          "cue": "place",
+          "issuedAtAudioSeconds": 10.251609977324263,
+          "afterWaitAudioSeconds": 11.311020408163266,
+          "separationSeconds": 1.059
+        },
+        {
+          "cue": "pass",
+          "issuedAtAudioSeconds": 11.311020408163266,
+          "afterWaitAudioSeconds": 12.370430839002267,
+          "separationSeconds": 1.059
+        },
+        {
+          "cue": "tranque",
+          "issuedAtAudioSeconds": 12.370430839002267,
+          "afterWaitAudioSeconds": 13.432743764172336,
+          "separationSeconds": 1.062
+        },
+        {
+          "cue": "score",
+          "issuedAtAudioSeconds": 13.432743764172336,
+          "afterWaitAudioSeconds": 14.492154195011338,
+          "separationSeconds": 1.059
+        }
+      ],
+      "checks": {
+        "fourCues": true,
+        "spaced": true,
+        "clockAdvance": true,
+        "wavLongEnough": true,
+        "nonSilent": true
+      }
+    },
+    {
+      "game": "jaipur",
+      "cues": [
+        "draw",
+        "exchange",
+        "sell",
+        "bonus"
+      ],
+      "setup": {
+        "preferences": {
+          "sfxEnabled": true,
+          "sfxVolume": 0.42
+        },
+        "contextState": "running"
+      },
+      "recording": {
+        "mime": "audio/webm;codecs=opus",
+        "webmBytes": 12854,
+        "webmEncodedDurationSeconds": 3.367227,
+        "restoredSilentTailSeconds": 1.483,
+        "wallElapsedSeconds": 4.85,
+        "audioClockElapsedSeconds": 4.85,
+        "sampleRate": 44100,
+        "wavBytes": 471534,
+        "decodedWavDurationSeconds": 4.911,
+        "wav": "/workspace/deliverables/game-quality-restart-20261012/audio-review-clock/jaipur-cues.wav",
+        "webm": "/workspace/deliverables/game-quality-restart-20261012/audio-review-clock/jaipur-cues.webm",
+        "sha256": "0120ea68e431e61c2b0ce98d590bce1a48ad68fe219a198cf8cc88d670bc3dcb",
+        "volumeSummary": [
+          "mean_volume: -45.2 dB",
+          "max_volume: -24.5 dB"
+        ]
+      },
+      "cueTrace": [
+        {
+          "cue": "draw",
+          "issuedAtAudioSeconds": 15.351292517006803,
+          "afterWaitAudioSeconds": 16.410702947845806,
+          "separationSeconds": 1.059
+        },
+        {
+          "cue": "exchange",
+          "issuedAtAudioSeconds": 16.410702947845806,
+          "afterWaitAudioSeconds": 17.470113378684808,
+          "separationSeconds": 1.059
+        },
+        {
+          "cue": "sell",
+          "issuedAtAudioSeconds": 17.470113378684808,
+          "afterWaitAudioSeconds": 18.532426303854876,
+          "separationSeconds": 1.062
+        },
+        {
+          "cue": "bonus",
+          "issuedAtAudioSeconds": 18.532426303854876,
+          "afterWaitAudioSeconds": 19.591836734693878,
+          "separationSeconds": 1.059
+        }
+      ],
+      "checks": {
+        "fourCues": true,
+        "spaced": true,
+        "clockAdvance": true,
+        "wavLongEnough": true,
+        "nonSilent": true
+      }
+    },
+    {
+      "game": "splendor",
+      "cues": [
+        "place",
+        "buy",
+        "noble",
+        "win"
+      ],
+      "setup": {
+        "preferences": {
+          "sfxEnabled": true,
+          "sfxVolume": 0.38
+        },
+        "contextState": "running"
+      },
+      "recording": {
+        "mime": "audio/webm;codecs=opus",
+        "webmBytes": 19616,
+        "webmEncodedDurationSeconds": 3.542227,
+        "restoredSilentTailSeconds": 1.259,
+        "wallElapsedSeconds": 4.798,
+        "audioClockElapsedSeconds": 4.801,
+        "sampleRate": 44100,
+        "wavBytes": 466734,
+        "decodedWavDurationSeconds": 4.861,
+        "wav": "/workspace/deliverables/game-quality-restart-20261012/audio-review-clock/splendor-cues.wav",
+        "webm": "/workspace/deliverables/game-quality-restart-20261012/audio-review-clock/splendor-cues.webm",
+        "sha256": "749a31a8f29c56b5c0169300e1c37ff56fb516d0eb8869ffee3cf0ef35e3a594",
+        "volumeSummary": [
+          "mean_volume: -41.9 dB",
+          "max_volume: -24.7 dB"
+        ]
+      },
+      "cueTrace": [
+        {
+          "cue": "place",
+          "issuedAtAudioSeconds": 20.491609977324263,
+          "afterWaitAudioSeconds": 21.551020408163264,
+          "separationSeconds": 1.059
+        },
+        {
+          "cue": "buy",
+          "issuedAtAudioSeconds": 21.551020408163264,
+          "afterWaitAudioSeconds": 22.610430839002266,
+          "separationSeconds": 1.059
+        },
+        {
+          "cue": "noble",
+          "issuedAtAudioSeconds": 22.610430839002266,
+          "afterWaitAudioSeconds": 23.672743764172335,
+          "separationSeconds": 1.062
+        },
+        {
+          "cue": "win",
+          "issuedAtAudioSeconds": 23.672743764172335,
+          "afterWaitAudioSeconds": 24.732154195011336,
+          "separationSeconds": 1.059
+        }
+      ],
+      "checks": {
+        "fourCues": true,
+        "spaced": true,
+        "clockAdvance": true,
+        "wavLongEnough": true,
+        "nonSilent": true
+      }
+    },
+    {
+      "game": "minhwatu",
+      "cues": [
+        "draw",
+        "place",
+        "capture",
+        "win"
+      ],
+      "setup": {
+        "preferences": {
+          "sfxEnabled": true,
+          "sfxVolume": 0.36
+        },
+        "contextState": "running"
+      },
+      "recording": {
+        "mime": "audio/webm;codecs=opus",
+        "webmBytes": 15752,
+        "webmEncodedDurationSeconds": 3.550194,
+        "restoredSilentTailSeconds": 1.3,
+        "wallElapsedSeconds": 4.851,
+        "audioClockElapsedSeconds": 4.85,
+        "sampleRate": 44100,
+        "wavBytes": 471246,
+        "decodedWavDurationSeconds": 4.908,
+        "wav": "/workspace/deliverables/game-quality-restart-20261012/audio-review-clock/minhwatu-cues.wav",
+        "webm": "/workspace/deliverables/game-quality-restart-20261012/audio-review-clock/minhwatu-cues.webm",
+        "sha256": "7ac0212f70c7f4064355fc318b95f4c8e19ff876748fcd7349d990147f7e9bd8",
+        "volumeSummary": [
+          "mean_volume: -68.9 dB",
+          "max_volume: -37.0 dB"
+        ]
+      },
+      "cueTrace": [
+        {
+          "cue": "draw",
+          "issuedAtAudioSeconds": 26.801632653061226,
+          "afterWaitAudioSeconds": 27.861043083900228,
+          "separationSeconds": 1.059
+        },
+        {
+          "cue": "place",
+          "issuedAtAudioSeconds": 27.861043083900228,
+          "afterWaitAudioSeconds": 28.92045351473923,
+          "separationSeconds": 1.059
+        },
+        {
+          "cue": "capture",
+          "issuedAtAudioSeconds": 28.92045351473923,
+          "afterWaitAudioSeconds": 29.982766439909298,
+          "separationSeconds": 1.062
+        },
+        {
+          "cue": "win",
+          "issuedAtAudioSeconds": 29.982766439909298,
+          "afterWaitAudioSeconds": 31.0421768707483,
+          "separationSeconds": 1.059
+        }
+      ],
+      "checks": {
+        "fourCues": true,
+        "spaced": true,
+        "clockAdvance": true,
+        "wavLongEnough": true,
+        "nonSilent": true
+      }
+    },
+    {
+      "game": "marble",
+      "cues": [
+        "dice",
+        "move",
+        "buy",
+        "build"
+      ],
+      "setup": {
+        "preferences": {
+          "sfxEnabled": true,
+          "sfxVolume": 0.42
+        },
+        "contextState": "running"
+      },
+      "recording": {
+        "mime": "audio/webm;codecs=opus",
+        "webmBytes": 15752,
+        "webmEncodedDurationSeconds": 3.41023,
+        "restoredSilentTailSeconds": 1.391,
+        "wallElapsedSeconds": 4.799,
+        "audioClockElapsedSeconds": 4.801,
+        "sampleRate": 44100,
+        "wavBytes": 466542,
+        "decodedWavDurationSeconds": 4.859,
+        "wav": "/workspace/deliverables/game-quality-restart-20261012/audio-review-clock/marble-cues.wav",
+        "webm": "/workspace/deliverables/game-quality-restart-20261012/audio-review-clock/marble-cues.webm",
+        "sha256": "0bcf213724f95251f5506a7891d601b247724a565ad261093afb02e882a20286",
+        "volumeSummary": [
+          "mean_volume: -46.8 dB",
+          "max_volume: -26.1 dB"
+        ]
+      },
+      "cueTrace": [
+        {
+          "cue": "dice",
+          "issuedAtAudioSeconds": 31.970975056689344,
+          "afterWaitAudioSeconds": 33.03038548752834,
+          "separationSeconds": 1.059
+        },
+        {
+          "cue": "move",
+          "issuedAtAudioSeconds": 33.03038548752834,
+          "afterWaitAudioSeconds": 34.09269841269841,
+          "separationSeconds": 1.062
+        },
+        {
+          "cue": "buy",
+          "issuedAtAudioSeconds": 34.09269841269841,
+          "afterWaitAudioSeconds": 35.15210884353741,
+          "separationSeconds": 1.059
+        },
+        {
+          "cue": "build",
+          "issuedAtAudioSeconds": 35.15210884353741,
+          "afterWaitAudioSeconds": 36.211519274376414,
+          "separationSeconds": 1.059
+        }
+      ],
+      "checks": {
+        "fourCues": true,
+        "spaced": true,
+        "clockAdvance": true,
+        "wavLongEnough": true,
+        "nonSilent": true
+      }
+    }
+  ],
+  "failures": [],
+  "context": {
+    "state": "running",
+    "sampleRate": 44100,
+    "tee": true
+  }
+}

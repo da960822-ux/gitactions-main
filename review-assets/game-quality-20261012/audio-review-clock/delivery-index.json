@@ -1,0 +1,84 @@
+{
+  "source_head": "816eb067467c55fda71d68a5c2c917818b2e3309",
+  "purpose": "Existing native cues, four per game, audio-clock-spaced listening candidates. No source audio changed.",
+  "listened": false,
+  "physical_output_checked": false,
+  "full_game_motion_sound_synchronization_verified": false,
+  "files": [
+    {
+      "path": "catchmind-cues.wav",
+      "bytes": 466734,
+      "sha256": "dbea28e74322fda2e2712d20efb739be79104c8f5cac8bb320ff0ffc0b4942c5"
+    },
+    {
+      "path": "catchmind-cues.webm",
+      "bytes": 20582,
+      "sha256": "d1ca9667a8ef8eb65025d4a9147e37fab0142f2406e4da51c57e327b2df2ed58"
+    },
+    {
+      "path": "davinci-cues.wav",
+      "bytes": 466830,
+      "sha256": "20d7e6cd1139ecc5f7727e11ee91aba7094bc652cf78f6b00f9cacc8ae876f79"
+    },
+    {
+      "path": "davinci-cues.webm",
+      "bytes": 15752,
+      "sha256": "b0e6aa8cb5f36c2d8bcc86a2b1c632eddb5dbaa811d11aee37c0b5c541816313"
+    },
+    {
+      "path": "domino-cues.wav",
+      "bytes": 466926,
+      "sha256": "0049f7452e5b0b2e786c7879453994c27fbe5201a15a0b42a3853570f43745eb"
+    },
+    {
+      "path": "domino-cues.webm",
+      "bytes": 12854,
+      "sha256": "3ce87e411809251cbf8d75992029fa82370823af80c2bacc15015a95bc1fadfc"
+    },
+    {
+      "path": "jaipur-cues.wav",
+      "bytes": 471534,
+      "sha256": "0120ea68e431e61c2b0ce98d590bce1a48ad68fe219a198cf8cc88d670bc3dcb"
+    },
+    {
+      "path": "jaipur-cues.webm",
+      "bytes": 12854,
+      "sha256": "2ca0fda1d14def8cc1c3f730b7255c8dc1e3e5ac5212f9c2a2b530707aa677ae"
+    },
+    {
+      "path": "marble-cues.wav",
+      "bytes": 466542,
+      "sha256": "0bcf213724f95251f5506a7891d601b247724a565ad261093afb02e882a20286"
+    },
+    {
+      "path": "marble-cues.webm",
+      "bytes": 15752,
+      "sha256": "2b13fc643fbdd9046014361be0b779c320a91c895f67ee4b3c4f07547b00fe7c"
+    },
+    {
+      "path": "minhwatu-cues.wav",
+      "bytes": 471246,
+      "sha256": "7ac0212f70c7f4064355fc318b95f4c8e19ff876748fcd7349d990147f7e9bd8"
+    },
+    {
+      "path": "minhwatu-cues.webm",
+      "bytes": 15752,
+      "sha256": "c22b92e63aec48fcac7261e6f1934edfe572fc18f76b8da6284a47f5c4262767"
+    },
+    {
+      "path": "review-report.json",
+      "bytes": 14668,
+      "sha256": "1c854dbac7db30db7ac5ab966770b0f57c1ee2fd706958677ae7f77d945e4f34"
+    },
+    {
+      "path": "splendor-cues.wav",
+      "bytes": 466734,
+      "sha256": "749a31a8f29c56b5c0169300e1c37ff56fb516d0eb8869ffee3cf0ef35e3a594"
+    },
+    {
+      "path": "splendor-cues.webm",
+      "bytes": 19616,
+      "sha256": "9d24fe3a90ea8aaef114b2c40df385c8771ccbc34a376697ee5b28185b787f7f"
+    }
+  ]
+}
