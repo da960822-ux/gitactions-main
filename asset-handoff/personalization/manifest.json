@@ -1,0 +1,37 @@
+{
+  "format": "original-png-source-assets-v1",
+  "assets": [
+    {
+      "path": "asset-handoff/personalization/joker-couple-waterfront.png",
+      "bytes": 2601933,
+      "sha256": "958801d14ad06d5e2c1a2a2973da669cc04a034a8be4f051b1f6f15e695b3c93",
+      "git_blob_sha": "0234cbb0c984b1bfd7322d7179af6ced2be0f69c",
+      "width": 1024,
+      "height": 1536
+    },
+    {
+      "path": "asset-handoff/personalization/joker-couple-indoor.png",
+      "bytes": 2806565,
+      "sha256": "38f37f202b37a026513d55b031f1d74962eca7fbd6df86bc62a6100038394146",
+      "git_blob_sha": "a46e4f4e771a60476ebba788c8d697d55db36c9b",
+      "width": 1024,
+      "height": 1536
+    },
+    {
+      "path": "asset-handoff/personalization/doctor-noble-portrait.png",
+      "bytes": 2937897,
+      "sha256": "b4a76d5800cad0ffab8e532ed9d490bdf3f7ea5db96e646e9a4af009167dddc4",
+      "git_blob_sha": "d90a83d59b5ff30feb23e805b35ffc8b12496999",
+      "width": 1122,
+      "height": 1402
+    },
+    {
+      "path": "asset-handoff/personalization/hanbok-noble-frontal.png",
+      "bytes": 3046655,
+      "sha256": "debcad8ce55e61683a6005f8a361d51768368f770570a8c93dcbfa7873aa0ee1",
+      "git_blob_sha": "b74c5d89b57f0de6564c34ffc0388b8cc762fa16",
+      "width": 1122,
+      "height": 1402
+    }
+  ]
+}

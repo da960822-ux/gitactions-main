@@ -1,0 +1,13 @@
+{
+  "format": "original-png-source-assets-v1",
+  "assets": [
+    {
+      "path": "asset-handoff/landing/cinematic-observatory-hero-v1.png",
+      "bytes": 2307857,
+      "sha256": "71e9d0d48b9e3bec7a4a1cd39deef5b3dfd7794b8f62b010e483682752b46af8",
+      "git_blob_sha": "0d81a4c777557cef948d972b5e0f8d7d15101118",
+      "width": 1672,
+      "height": 941
+    }
+  ]
+}
