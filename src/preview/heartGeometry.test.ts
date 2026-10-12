@@ -20,3 +20,18 @@ it('creates a closed, finite inflated surface suitable for shared heart meshes',
     expect(geometry.boundingSphere!.radius).toBeLessThan(1.4);
     geometry.dispose();
 });
+
+it('keeps the hero balloon normals smooth at the front-to-back seam', () => {
+    const segments = 48, rings = 12;
+    const geometry = createHeartGeometry(segments, rings);
+    const normals = geometry.getAttribute('normal');
+    for (let index = 0; index < normals.count; index++) {
+        const length = Math.hypot(normals.getX(index), normals.getY(index), normals.getZ(index));
+        expect(length).toBeCloseTo(1, 4);
+    }
+    const perimeterStart = 1 + (rings - 1) * segments;
+    for (let segment = 0; segment < segments; segment += 12) {
+        expect(Math.abs(normals.getZ(perimeterStart + segment))).toBeLessThan(0.001);
+    }
+    geometry.dispose();
+});

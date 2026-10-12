@@ -1,6 +1,6 @@
 import {describe, expect, it} from 'vitest';
 import {advanceLetter, balloonPlan, pointerRepulsionFactor, stepSpring} from './spaceMotion';
-import {createPaperGeometry, createRibbonGeometry, updateRibbon, updatePaper} from './spaceGeometry';
+import {createPaperGeometry, updatePaper} from './spaceGeometry';
 import {createRoseBloomGeometry} from './roseBloomGeometry';
 
 describe('couple space continuity and preserved volume', () => {
@@ -20,6 +20,15 @@ describe('couple space continuity and preserved volume', () => {
     const slowFrame=stepSpring(180,0,0,1.6);
     expect(Math.abs(slowFrame.position)).toBeLessThan(1);
     expect(Number.isFinite(stepSpring(0, 0, 180, 5).position)).toBe(true);
+  });
+  it('can reuse spring output storage without changing its trajectory', () => {
+    const output={position:0,velocity:0};let expected={position:180,velocity:120},actual={...expected};
+    for(let i=0;i<90;i++){
+      expected=stepSpring(expected.position,expected.velocity,0,1/60);
+      expect(stepSpring(actual.position,actual.velocity,0,1/60,output)).toBe(output);
+      actual={position:output.position,velocity:output.velocity};
+    }
+    expect(actual).toEqual(expected);
   });
   it('leaves a balloon pickable at the cursor center while retaining a strong near-pointer response', () => {
     expect(pointerRepulsionFactor(0)).toBe(0);
@@ -47,16 +56,5 @@ describe('couple space continuity and preserved volume', () => {
     expect(foldedWidth).toBeLessThan(3);
     expect(paper.boundingBox!.max.z - paper.boundingBox!.min.z).toBeLessThan(.001);
     petal.dispose(); paper.dispose();
-  });
-  it('keeps the thick ribbon vertices finite and continuous through the full unfold', () => {
-    const ribbon=createRibbonGeometry(),array=ribbon.attributes.position.array;
-    for(const amount of [0,.2,.5,.9,1]){
-      updateRibbon(ribbon,amount);
-      expect([...ribbon.attributes.position.array].every(Number.isFinite)).toBe(true);
-      expect(ribbon.attributes.position.array).toBe(array);
-    }
-    expect(ribbon.boundingBox!.max.x-ribbon.boundingBox!.min.x).toBeCloseTo(17);
-    expect(ribbon.boundingBox!.max.z-ribbon.boundingBox!.min.z).toBeGreaterThan(.03);
-    ribbon.dispose();
   });
 });

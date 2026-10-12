@@ -20,7 +20,7 @@ export function pointerRepulsionFactor(distance: number) {
   if(!Number.isFinite(distance)||distance<=0||distance>=180)return 0;
   return (1-distance/180)*Math.min(1,distance/64);
 }
-export function stepSpring(position: number, velocity: number, target: number, dt: number) {
+export function stepSpring(position: number, velocity: number, target: number, dt: number, result:{position:number;velocity:number}={position,velocity}) {
   // Substeps stabilize a long visible frame while preserving wall-clock spring timing.
   const elapsed = clamp(Number.isFinite(dt) ? dt : 0, 0, 2);
   const count = Math.max(1, Math.ceil(elapsed / .008));
@@ -29,7 +29,7 @@ export function stepSpring(position: number, velocity: number, target: number, d
     velocity += ((target - position) * 100 - velocity * 15) * step;
     position += velocity * step;
   }
-  return {position, velocity};
+  result.position=position;result.velocity=velocity;return result;
 }
 export function balloonPlan(index: number, mobile: boolean) {
   const left = index < 18, right = index >= 18 && index < 38;
