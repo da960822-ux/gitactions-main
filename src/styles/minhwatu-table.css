@@ -228,3 +228,11 @@
 .hwatu-count-line { font-size: 12px; }
 .hwatu-yaku-list li { font-size: 13px; }
 }
+
+@media (min-width: 1024px) and (max-height: 820px) and (pointer: fine) {
+  .hwatu-capture-rack.is-empty { padding-block: 2px; }
+  .hwatu-capture-rack.is-empty .hwatu-capture-categories { margin-top: 0; }
+  .hwatu-capture-rack.is-empty .hwatu-category-heading { min-height: 18px; }
+  .hwatu-capture-rack.is-empty .hwatu-rail-progress { margin-top: 1px; padding: 2px 0 0; }
+  .hwatu-capture-rack.is-empty .hwatu-rail-progress li { min-height: 24px; padding-block: 2px; }
+}

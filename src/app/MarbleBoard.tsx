@@ -85,6 +85,20 @@ function ImpactText({ tile, language }: { tile: Record<string, any>; language: L
   return <><b>{name || specialNames[kind]?.[language]}</b><span>{specialNames[kind]?.[language] ?? ''}{amount > 0 && ['tax', 'fund-deposit'].includes(kind) ? ` · ${copy(language, `납부 ${moneyText(amount, language)}`, `Pago ${moneyText(amount, language)}`)}` : ''}</span></>;
 }
 
+function journeySpecialLine(tile: Record<string, any>, language: Language, fund: number) {
+  switch (tile.kind) {
+    case 'start': return copy(language, '통과할 때 200을 받아요.', 'Recibe 200 al pasar.');
+    case 'tax': return copy(language, `납부 ${moneyText(num(tile.price), language)}`, `Pago ${moneyText(num(tile.price), language)}`);
+    case 'fund-deposit': return copy(language, `공동 기금에 ${moneyText(num(tile.price), language)}을 내요.`, `Aporta ${moneyText(num(tile.price), language)} al fondo común.`);
+    case 'fund': return copy(language, `공동 기금 ${moneyText(fund, language)}을 받아요.`, `Recibe ${moneyText(fund, language)} del fondo común.`);
+    case 'event': return copy(language, '카드를 뽑아 효과를 확인해요.', 'Roba una carta y aplica su efecto.');
+    case 'island': return copy(language, '최대 세 차례 쉬어요 · 다음 차례에 탈출 방법을 선택해요.', 'Hasta tres turnos de espera · elige cómo salir en tu próximo turno.');
+    case 'train': return copy(language, '다음 차례에 목적지를 골라요 · 운임 100.', 'Elige destino en tu próximo turno · pasaje 100.');
+    case 'rest': return copy(language, '추가 비용이 없어요.', 'No tiene costo adicional.');
+    default: return copy(language, '이 칸에서는 추가 효과가 없어요.', 'Esta casilla no tiene un efecto adicional.');
+  }
+}
+
 export default function MarbleBoard({ view: rawView, language, playerId, runAction }: Props) {
   const view = record(rawView), board = record(view.board), tiles = list(board.tiles), choices: Choice[] = list(view.actions);
   const modern = tiles.length === 40 || num(board.version) >= 2;
@@ -289,12 +303,12 @@ export default function MarbleBoard({ view: rawView, language, playerId, runActi
                 <div className="mp-tile-top"><span>{String(index + 1).padStart(2, '0')}</span>{flag && <img src={`/images/marble/flags/${flag}.svg`} alt="" aria-hidden="true" loading="lazy" decoding="async"/>}{tileOwner && <b className={`mp-owner mp-owner-${tileOwner}`}>{seatName(tileOwner, playerId, language)}</b>}</div>
                 {kind === 'property' ? <div className="mp-property-tile-view">
                   {cityArtNames[name] && <MarblePropertyArt routeVersion={num(board.cityRouteVersion)} language={language} className="mp-property-tile-art" city={cityArtNames[name]} level={modern ? num(tile.houses) : 0}/>}
-                  <div className="mp-property-tile-copy"><strong className="mp-tile-name">{name}</strong><small className="mp-tile-economy"><b>{moneyText(num(tile.price), language)}</b><span>{copy(language, `임대 ${moneyText(rentValue(tile, modern), language)}`, `Renta ${moneyText(rentValue(tile, modern), language)}`)}</span></small></div>
+                  <div className="mp-property-tile-copy"><strong className="mp-tile-name" title={name}>{name}</strong><small className="mp-tile-economy"><b>{moneyText(num(tile.price), language)}</b><span>{copy(language, `임대 ${moneyText(rentValue(tile, modern), language)}`, `Renta ${moneyText(rentValue(tile, modern), language)}`)}</span></small></div>
                   {num(tile.houses) > 0 && modern && <span className="mp-building-badge" aria-label={building}>{num(tile.houses) >= 3 ? '★' : num(tile.houses)}</span>}
-                </div> : <><strong className="mp-tile-name">{name}</strong>{['start', 'key', 'island', 'train', 'rest', 'fund', 'fund-pay', 'tax'].includes(tileSymbol) && <svg className="mp-tile-symbol" aria-hidden="true" viewBox="0 0 32 32"><use href={`/images/marble/tile-symbols.svg#${tileSymbol}`}/></svg>}<small className="mp-tile-kind">{specialNames[kind]?.[language] ?? ''}{['tax', 'fund-deposit'].includes(kind) && num(tile.price) ? ` · ${copy(language, `납부 ${moneyText(num(tile.price), language)}`, `Pago ${moneyText(num(tile.price), language)}`)}` : ''}</small></>}
+                </div> : <><strong className="mp-tile-name" title={name}>{name}</strong>{['start', 'key', 'island', 'train', 'rest', 'fund', 'fund-pay', 'tax'].includes(tileSymbol) && <svg className="mp-tile-symbol" aria-hidden="true" viewBox="0 0 32 32"><use href={`/images/marble/tile-symbols.svg#${tileSymbol}`}/></svg>}<small className="mp-tile-kind">{specialNames[kind]?.[language] ?? ''}{['tax', 'fund-deposit'].includes(kind) && num(tile.price) ? ` · ${copy(language, `납부 ${moneyText(num(tile.price), language)}`, `Pago ${moneyText(num(tile.price), language)}`)}` : ''}</small></>}
               </div>
               {['festival', 'blackout'].filter(effect => record(tile.rentModifiers)[effect]).map(effect => <span className="mp-city-effect" key={effect} title={effect === 'festival' ? copy(language, '도시 축제 · 다음 상대 방문 통행료 2배 · 1회', 'Festival · próxima visita rival: renta doble · un uso') : copy(language, '정전 · 다음 카드 소유자 방문 통행료 절반 · 1회', 'Apagón · próxima visita del titular: media renta · un uso')}><svg viewBox="0 0 128 128" aria-hidden="true"><use href={`/images/marble/golden-key-cards.svg#${effect === 'festival' ? 'city-festival' : 'blackout'}-mark`}/></svg><span>{effect === 'festival' ? '×2' : '½'}</span></span>)}
-              {(seats.length > 0 || movingSeat) && <div className="mp-pawns" aria-label={copy(language, '이 칸의 말', 'Fichas en esta casilla')}>
+              {(seats.length > 0 || movingSeat) && <div className={`mp-pawns${seats.length > 1 ? ' has-two-pawns' : ''}`} aria-label={copy(language, '이 칸의 말', 'Fichas en esta casilla')}>
                 {seats.map(seat => { const id = pawnId(record(board.pawns)[seat]) ?? (seat === 'p1' ? 'fox' : 'cat'); return <span className={`mp-pawn-marker ${seat === playerId ? 'is-you' : ''}`} key={seat} data-seat-number={seat === 'p1' ? 1 : 2} title={seatName(seat, playerId, language)}><MarblePawn pawn={id} language={language} label={seatName(seat, playerId, language)}/></span>; })}
                 {movingSeat && <span className={`mp-pawn-marker is-moving-pawn ${movingSeat === playerId ? 'is-you' : ''}`} key={`${movingSeat}-${traveler?.seq}`} data-seat-number={movingSeat === 'p1' ? 1 : 2}><MarblePawn pawn={pawnId(record(board.pawns)[movingSeat]) ?? (movingSeat === 'p1' ? 'fox' : 'cat')} language={language} label={seatName(movingSeat, playerId, language)}/></span>}
               </div>}
@@ -308,13 +322,13 @@ export default function MarbleBoard({ view: rawView, language, playerId, runActi
             {modern && <section className="mp-journey-hud" aria-label={copy(language, '현재 도시와 24개 도시 빠른 바로가기', 'Ciudad actual y accesos rápidos a las 24 ciudades')}>
                 <div className="mp-journey-arrival">
                 <div className="mp-journey-stage" aria-label={copy(language, '실제 건설 단계', 'Etapa construida')}>
-                  {selectedCity.kind === 'property' && selectedCityArt ? <MarblePropertyArt routeVersion={num(board.cityRouteVersion)} language={language} city={selectedCityArt} level={num(selectedCity.houses)}/> : <span>{specialNames[String(selectedCity.kind ?? '')]?.[language] ?? copy(language, '도시', 'Ciudad')}</span>}
+                  {selectedCity.kind === 'property' && selectedCityArt ? <MarblePropertyArt routeVersion={num(board.cityRouteVersion)} language={language} city={selectedCityArt} level={num(selectedCity.houses)}/> : selectedCity.kind === 'property' ? <span>{selectedName}</span> : <svg className="mp-journey-special-symbol" viewBox="0 0 32 32" aria-hidden="true"><use href={`/images/marble/tile-symbols.svg#${selectedCity.kind === 'fund-deposit' ? 'fund-pay' : selectedCity.kind === 'event' ? 'key' : String(selectedCity.kind ?? 'rest')}`}/></svg>}
                   {selectedCity.kind === 'property' && <small>{buildingName(num(selectedCity.houses), language, modern) || copy(language, '현재 미건설', 'Sin construir')}</small>}
                 </div>
                 <div className="mp-journey-copy">
                   <small>{copy(language, journeyDisplay === 'inspect' ? '도시 살펴보기 · 행동 위치는 유지' : journeyDisplay === 'moving' ? '이동 중 · 이번 도착 예정' : '현재 도착 · 행동 위치', journeyDisplay === 'inspect' ? 'Vista de ciudad · la acción sigue en su destino' : journeyDisplay === 'moving' ? 'En movimiento · próximo destino' : 'Llegada actual · ubicación de acción')}</small>
                   <h3>{selectedName || specialNames[String(selectedCity.kind ?? '')]?.[language] || copy(language, '여행 도시', 'Ciudad del viaje')}</h3>
-                  {selectedCity.kind === 'property' ? <p className="mp-journey-impact"><b>{selectedName}</b><span><strong>{selectedOwner ? copy(language, '현재 통행료', 'Renta actual') : copy(language, '매입가', 'Compra')}</strong> {moneyText(selectedOwner ? selectedRent : num(selectedCity.price), language)}</span><span><strong>{selectedOwner ? copy(language, '기본 통행료', 'Renta base') : copy(language, '예상 통행료', 'Renta')}</strong> {moneyText(selectedOwner ? num(selectedCity.rent) : selectedRent, language)}</span></p> : <p><ImpactText tile={selectedCity} language={language}/></p>}
+                  {selectedCity.kind === 'property' ? <p className="mp-journey-impact"><span><strong>{selectedOwner ? copy(language, '현재 통행료', 'Renta actual') : copy(language, '매입가', 'Compra')}</strong> {moneyText(selectedOwner ? selectedRent : num(selectedCity.price), language)}</span><span><strong>{selectedOwner ? copy(language, '기본 통행료', 'Renta base') : copy(language, '예상 통행료', 'Renta')}</strong> {moneyText(selectedOwner ? num(selectedCity.rent) : selectedRent, language)}</span></p> : <p className="mp-journey-special-line">{journeySpecialLine(selectedCity, language, fund)}</p>}
                   {selectedOwner && <span className={`mp-journey-owner mp-owner-${selectedOwner}`}>{copy(language, `소유 · ${seatName(selectedOwner, playerId, language)}`, `Dueño · ${seatName(selectedOwner, playerId, language)}`)} · {buildingName(num(selectedCity.houses), language, modern) || copy(language, '미건설', 'Sin construir')}</span>}
                 </div>
                 {selectedCityArt && <figure className="mp-journey-landmark" aria-label={copy(language, '랜드마크 모습 미리보기', 'Vista del monumento')}>

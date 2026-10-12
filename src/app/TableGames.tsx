@@ -436,7 +436,7 @@ function SplendorTable({ view, language, playerId, roomId = null, version = 0, d
         <div className="sp-reserved-list">{Array.from({length:3},(_,index)=>{
           const card=reserved[index]; if(!card)return <div className="sp-reserved-empty" key={`slot-${index}`}><span>{index+1}</span>{copy(language,'빈 슬롯','Espacio vacío')}</div>;
           const id=String(card.id??index), selected=selectedCard?.source==='reserved'&&selectedCard.id===id;
-          return <SplendorReservedCard key={id} card={{...record(card),id,index}} language={language} selected={selected} viewer={playerId} version={version} incoming={reservedArrivals.has(id)} onSelect={(target,keyboard)=>card.id!=null&&selectCard(String(card.id),'reserved',undefined,target,keyboard)}/>;
+          return <SplendorReservedCard key={id} card={{...record(card),id,index}} language={language} desktopDisplay={desktopDisplay} selected={selected} viewer={playerId} version={version} incoming={reservedArrivals.has(id)} onSelect={(target,keyboard)=>card.id!=null&&selectCard(String(card.id),'reserved',undefined,target,keyboard)}/>;
         })}</div>
         <p className="sp-opponent-reserved">{copy(language,'상대 예약 카드','Reservadas de la otra persona')} <b>{Number(board.reservedOpponentCount??0)} / 3</b> · {copy(language,`상대 토큰 ${Number(view?.opponentCount??0)}개`,`Fichas rivales: ${Number(view?.opponentCount??0)}`)}</p>
       </section>
@@ -471,13 +471,25 @@ function SplendorMarketCard({card,language,selected,viewer,version,incoming,defi
   </article>;
 }
 
-function SplendorReservedCard({card,language,selected,viewer,version,incoming,onSelect}:{card:RecordValue;language:Language;selected:boolean;viewer:PlayerId;version:number;incoming:boolean;onSelect:(target:HTMLElement,keyboard:boolean)=>void}) {
+function SplendorReservedCard({card,language,desktopDisplay,selected,viewer,version,incoming,onSelect}:{card:RecordValue;language:Language;desktopDisplay:boolean;selected:boolean;viewer:PlayerId;version:number;incoming:boolean;onSelect:(target:HTMLElement,keyboard:boolean)=>void}) {
   const bonus=String(card.bonus??'white'),cost=colors.filter(gem=>Number(card.cost?.[gem]??0)>0);
   const artSrc=splendorCardArtSrc(card.id);
   const costDescription=cost.map(gem=>`${Number(card.cost[gem])} ${gemName(gem,language)}`).join(', ')||copy(language,'없음','ninguno');
   const accessibleName=copy(language,`예약 ${Number(card.tier)}단계 카드 · 보너스 ${gemName(bonus,language)} +1 · ${Number(card.points??0)}점 · 비용 ${costDescription}`,`Carta reservada de nivel ${Number(card.tier)} · bonificación ${gemName(bonus,language)} +1 · ${Number(card.points??0)} pts · coste ${costDescription}`);
   const choose=(event:React.KeyboardEvent<HTMLElement>)=>{if(event.key==='Enter'||event.key===' '){event.preventDefault();onSelect(event.currentTarget,true);}};
-  return <article className={`sp-reserved-card ${selected?'is-selected':''} ${incoming?'is-arrival':''}`} data-card-id={card.id} data-source-zone="reserved" data-viewer={viewer} data-version={version} aria-pressed={selected} aria-label={accessibleName} role="button" tabIndex={0} onClick={event=>onSelect(event.currentTarget,event.detail===0)} onKeyDown={choose}><span className="sp-reserved-art" aria-hidden="true">{artSrc&&<img src={artSrc} alt="" width="52" height="74" loading="lazy"/>}</span><div><b>{copy(language,'예약 카드','Carta reservada')} · {copy(language,`단계 ${Number(card.tier)}`,`Nivel ${Number(card.tier)}`)}</b><span className="sp-reserved-value">{Number(card.points??0)} {copy(language,'점','pts')} · {copy(language,`보너스 ${gemName(bonus,language)}`,`Bonificación ${gemName(bonus,language)}`)}</span><span className="sp-reserved-cost">{costDescription}</span></div></article>;
+  return <article className={`sp-reserved-card ${selected?'is-selected':''} ${incoming?'is-arrival':''}`} data-card-id={card.id} data-source-zone="reserved" data-viewer={viewer} data-version={version} aria-pressed={selected} aria-label={accessibleName} role="button" tabIndex={0} onClick={event=>onSelect(event.currentTarget,event.detail===0)} onKeyDown={choose}>
+    <span className="sp-reserved-art" aria-hidden="true">{artSrc&&<img src={artSrc} alt="" width="52" height="74" loading="lazy"/>}</span>
+    <div>
+      <b>{!desktopDisplay&&<>{copy(language,'예약 카드','Carta reservada')} · </>}{copy(language,`단계 ${Number(card.tier)}`,`Nivel ${Number(card.tier)}`)}</b>
+      <span className="sp-reserved-value">{desktopDisplay?<>
+        <span>{Number(card.points??0)} {copy(language,'점','pts')}</span>
+        <span className={`sp-reserved-bonus sp-color-${bonus}`} title={copy(language,`보너스 ${gemName(bonus,language)} +1`,`Bonificación ${gemName(bonus,language)} +1`)}><GemIcon gem={bonus}/> +1</span>
+      </>:<>{Number(card.points??0)} {copy(language,'점','pts')} · {copy(language,`보너스 ${gemName(bonus,language)}`,`Bonificación ${gemName(bonus,language)}`)}</>}</span>
+      <span className="sp-reserved-cost" title={costDescription}>{!desktopDisplay?costDescription:cost.length?cost.map(gem=>
+        <span className={`sp-reserved-cost-chip sp-color-${gem}`} key={gem} title={`${gemName(gem,language)} ${Number(card.cost[gem])}`}><GemIcon gem={gem}/><b>{Number(card.cost[gem])}</b></span>
+      ):copy(language,'비용 없음','Sin costo')}</span>
+    </div>
+  </article>;
 }
 
 function sameStrings(left: unknown, right: string[]) { return Array.isArray(left) && left.length === right.length && left.every(value => right.includes(value as string)); }

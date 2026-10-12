@@ -54,6 +54,17 @@ describe('MarbleBoard', () => {
     expect(es).toContain('Patrimonio neto');
   });
 
+  it('preserves full Spanish city names for visual wrapping and hover inspection', () => {
+    const view = marbleEngine.getPlayerView(marbleEngine.createInitialState(733), 'p1');
+    const es = render(view, 'es');
+    for (const name of ['Ciudad de México', 'Barcelona', 'Santo Domingo']) {
+      expect(es).toContain(`title="${name}"`);
+      expect(es).toContain(`aria-label="${name},`);
+    }
+    expect(es).toContain('Acceso rápido a Santo Domingo');
+    expect(es).toContain('<strong class="mp-tile-name" title="Ciudad de México">Ciudad de México</strong>');
+  });
+
   it('uses the same current turn in the map and actions, capped at 120 including final settlement', () => {
     const view = marbleEngine.getPlayerView(marbleEngine.createInitialState(11), 'p1');
     for (const turns of [0, 28, 119, 120]) {
@@ -95,6 +106,24 @@ describe('MarbleBoard', () => {
     expect(arrival).toContain('24개 도시 중 대표 도시 빠른 바로가기');
     expect((arrival.match(/빠른 바로가기/g) ?? []).length).toBeGreaterThanOrEqual(5);
     expect(html).not.toContain('aria-label="랜드마크"');
+  });
+
+  it('shows one special-tile title and one accurate effect line in the journey panel', () => {
+    const state = marbleEngine.createInitialState(31);
+    const view = marbleEngine.getPlayerView(state, 'p1');
+    const journey = () => {
+      const html = render(view);
+      const start = html.indexOf('<section class="mp-journey-hud"');
+      return html.slice(start, html.indexOf('</section>', start) + 10);
+    };
+    expect(journey().match(/출발/g)).toHaveLength(1);
+    expect(journey()).toContain('통과할 때 200을 받아요.');
+    view.board.positions.p1 = 23;
+    expect(journey()).toContain('추가 비용이 없어요.');
+    view.board.positions.p1 = 10;
+    expect(journey()).toContain('최대 세 차례 쉬어요 · 다음 차례에 탈출 방법을 선택해요.');
+    view.board.positions.p1 = 14;
+    expect(journey()).toContain('다음 차례에 목적지를 골라요 · 운임 100.');
   });
 
   it('keeps the arrival and action location focused on the active seat in the counterpart view', () => {

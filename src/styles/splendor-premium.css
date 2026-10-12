@@ -534,10 +534,38 @@
   .sp-splendor .sp-sidebar:has(.sp-action-panel) .sp-bank .sp-gem-piles { grid-template-columns: repeat(3,minmax(0,1fr)); gap: 3px; }
   .sp-splendor .sp-sidebar:has(.sp-action-panel) .sp-bank .sp-gem-option,.sp-splendor .sp-sidebar:has(.sp-action-panel) .sp-bank .sp-gem-option.sp-gem-gold { grid-template-columns: minmax(0,1fr); grid-template-rows: 52px auto 44px; align-content: start; justify-items: center; gap: 2px; min-width: 0; padding: 2px; }
   .sp-splendor .sp-sidebar:has(.sp-action-panel) .sp-bank .sp-gem-pile { grid-column: 1; grid-row: 1; justify-self: center; }
-  .sp-splendor .sp-sidebar:has(.sp-action-panel) .sp-bank .sp-gem-name { grid-column: 1; grid-row: 2; min-width: 0; max-width: 100%; overflow-wrap: anywhere; font-size: 9px; line-height: 1; text-align: center; }
+  .sp-splendor .sp-sidebar:has(.sp-action-panel) .sp-bank .sp-gem-name { grid-column: 2; grid-row: 1; min-width: 0; max-width: 100%; overflow-wrap: anywhere; font-size: 12px; line-height: 1.2; text-align: left; }
   .sp-splendor .sp-sidebar:has(.sp-action-panel) .sp-bank .sp-double-take { grid-column: 1; grid-row: 3; width: 100%; min-width: 44px; min-height: 44px; padding: 2px; font-size: 10px; }
   .sp-splendor .sp-sidebar:has(.sp-action-panel) .sp-bank .sp-double-take { white-space: nowrap; word-break: keep-all; }
   .sp-splendor .sp-action-panel:has(.sp-payment-preview) > .sp-acquisition-preview { grid-column: 1 / -1; }
+  .sp-splendor .sp-sidebar:has(.sp-action-panel) > .sp-action-panel { grid-column: 1 / 8; grid-row: 1; }
+  .sp-splendor .sp-sidebar:has(.sp-action-panel) > .sp-bank { grid-column: 8 / -1; grid-row: 1; }
+  .sp-splendor .sp-sidebar:has(.sp-action-panel) > .sp-treasury { grid-column: 1 / -1; grid-row: 3; }
+  .sp-splendor .sp-sidebar:has(.sp-action-panel) > .sp-reserved { grid-column: 1 / -1; grid-row: 2; }
+  .sp-splendor .sp-sidebar:has(.sp-action-panel) > .sp-bank .sp-gem-piles { grid-template-columns: repeat(3,minmax(0,1fr)); gap: 3px; }
+  .sp-splendor .sp-sidebar:has(.sp-action-panel) > .sp-bank .sp-gem-option,
+  .sp-splendor .sp-sidebar:has(.sp-action-panel) > .sp-bank .sp-gem-option.sp-gem-gold { grid-template-columns: minmax(0,1fr); grid-template-rows: 52px auto 44px; align-content: start; justify-items: center; gap: 2px; min-width: 0; padding: 2px; }
+  .sp-splendor .sp-sidebar:has(.sp-action-panel) > .sp-bank .sp-gem-pile { grid-column: 1; grid-row: 1; justify-self: center; }
+  .sp-splendor .sp-sidebar:has(.sp-action-panel) > .sp-bank .sp-gem-name { grid-column: 1; grid-row: 2; min-width: 0; max-width: 100%; overflow-wrap: normal; font-size: 12px; line-height: 1.2; text-align: center; white-space: nowrap; }
+  .sp-splendor .sp-sidebar:has(.sp-action-panel) > .sp-bank .sp-double-take { grid-column: 1; grid-row: 3; width: 100%; min-width: 44px; min-height: 44px; padding: 2px; font-size: 12px; white-space: nowrap; word-break: keep-all; }
+  .sp-splendor .sp-sidebar:has(.sp-action-panel) > .sp-reserved .sp-reserved-list { grid-template-columns: repeat(3,minmax(0,1fr)); gap: 4px; }
+  .sp-splendor .sp-sidebar:has(.sp-action-panel) > .sp-reserved .sp-reserved-card { grid-column: auto; }
+  .sp-splendor .sp-sidebar:has(.sp-action-panel) > .sp-reserved:has(.sp-reserved-card) .sp-reserved-empty { display: none; }
+  .sp-splendor .sp-sidebar:has(.sp-action-panel) > .sp-reserved .sp-reserved-card { grid-template-columns: 60px minmax(0,1fr); gap: 4px; padding: 4px; }
+  .sp-splendor .sp-sidebar:has(.sp-action-panel) > .sp-reserved .sp-reserved-art { width: 60px; height: 76px; min-height: 76px; }
+  .sp-splendor .sp-sidebar:has(.sp-action-panel) > .sp-reserved .sp-reserved-card > div { gap: 2px; font-size: 10px; line-height: 1.1; }
+  .sp-splendor .sp-sidebar:has(.sp-action-panel) > .sp-reserved .sp-reserved-card .sp-reserved-value,
+  .sp-splendor .sp-sidebar:has(.sp-action-panel) > .sp-reserved .sp-reserved-card .sp-reserved-cost { font-size: 12px; line-height: 1.2; }
+  .sp-splendor .sp-sidebar:has(.sp-action-panel) > .sp-reserved { gap: 3px; padding: 3px; }
+  .sp-splendor .sp-sidebar:has(.sp-action-panel) > .sp-reserved .sp-reserved-empty { min-height: 36px; padding: 2px 4px; }
+  .sp-splendor .sp-sidebar:has(.sp-action-panel) > .sp-reserved .sp-opponent-reserved { margin-top: 4px !important; padding-top: 4px; font-size: 12px; line-height: 1.2; }
+  .sp-splendor .sp-action-panel .sp-payment-preview { grid-template-columns: minmax(0,1fr) auto; align-items: center; }
+  .sp-splendor .sp-action-panel .sp-payment-preview > .sp-payment-title { grid-column: 1; }
+  .sp-splendor .sp-action-panel .sp-payment-preview > .sp-pay-gold { grid-column: 2; grid-row: 1; justify-self: end; }
+  .sp-splendor .sp-action-panel .sp-payment-preview .sp-pay-grid { grid-column: 1 / -1; }
+  .sp-splendor .sp-action-panel .sp-action-art { width: 58px; height: 84px; }
+  .sp-splendor .sp-action-panel .sp-noble-preview { grid-template-columns: repeat(3,minmax(0,1fr)); gap: 2px; margin-top: 3px; }
+  .sp-splendor .sp-action-panel .sp-noble-preview > b { grid-column: 1 / -1; }
 }
 
 @media (min-width: 1024px) and (hover: hover) and (pointer: fine) {
@@ -554,4 +582,65 @@
   .sp-guide-purchase-flow .sp-gem-icon { width: 23px; height: 23px; }
   .sp-guide-purchase-flow > div > small { grid-column: 1 / -1; color: #52645d; font-size: 11px; line-height: 1.35; }
   .sp-guide-flow-arrow { color: #8a713e; font-size: 22px; font-weight: 800; }
+}
+
+@media (min-width: 1200px) and (hover: hover) and (pointer: fine) {
+  .sp-splendor .sp-card-details { grid-template-columns: minmax(0,1fr) 40px; grid-template-rows: auto auto auto; }
+  .sp-splendor .sp-card-details > .sp-bonus-label { grid-column: 1; grid-row: 1; min-width: 0; gap: 1px; padding: 2px 3px; font-size: 12px; }
+  .sp-splendor .sp-card-details > .sp-bonus-label .sp-gem-icon { width: 19px; height: 19px; }
+  .sp-splendor .sp-card-details > .sp-card-prestige { display: block; grid-column: 2; grid-row: 1; align-self: center; color: #253c3d; font-size: 16px; font-weight: 800; font-variant-numeric: tabular-nums; white-space: nowrap; }
+  .sp-splendor .sp-card-details > .sp-card-cost-summary,.sp-splendor .sp-card-details > .sp-card-select-hint { grid-column: 1 / -1; }
+  .sp-splendor .sp-card-details > .sp-card-cost-summary { grid-row: 2; }
+  .sp-splendor .sp-card-details > .sp-card-select-hint { grid-row: 3; }
+}
+
+@media (min-width: 1200px) and (hover: hover) and (pointer: fine) {
+  .sp-splendor { position: relative; grid-template-columns: minmax(0,1fr) 32rem; grid-template-areas: "score score" "feedback feedback" "treasury treasury" "nobles sidebar" "market sidebar" "result result"; grid-template-rows: min-content min-content min-content min-content minmax(0,1fr) min-content; gap: 0; padding: 2px; }
+  .sp-splendor .sp-market { gap: 0; }
+  .sp-splendor .sp-sidebar:has(.sp-action-panel) { display: contents; }
+  .sp-splendor .sp-sidebar:has(.sp-action-panel) > .sp-action-panel { position: absolute; grid-area: sidebar; justify-self: start; align-self: start; width: 297px; align-content: start; grid-auto-rows: min-content; }
+  .sp-splendor .sp-sidebar:has(.sp-action-panel) > .sp-action-panel { padding: 4px; }
+  .sp-splendor .sp-sidebar:has(.sp-action-panel) > .sp-bank { position: absolute; grid-area: sidebar; justify-self: end; align-self: start; width: 211px; }
+  .sp-splendor .sp-sidebar:has(.sp-action-panel) > .sp-treasury { grid-area: treasury; display: grid; grid-template-columns: max-content minmax(0,1fr) max-content; align-items: center; gap: 8px; padding: 4px 8px; }
+  .sp-splendor .sp-sidebar:has(.sp-action-panel) > .sp-treasury > .sp-section-heading { display: flex; align-items: center; justify-content: space-between; gap: 5px; margin: 0; }
+  .sp-splendor .sp-sidebar:has(.sp-action-panel) > .sp-treasury > .sp-section-heading p { white-space: nowrap; }
+  .sp-splendor .sp-sidebar:has(.sp-action-panel) > .sp-treasury .sp-treasury-gems { display: flex; flex-wrap: nowrap; justify-content: space-between; gap: 5px; }
+  .sp-splendor .sp-sidebar:has(.sp-action-panel) > .sp-treasury .sp-treasury-gem { display: inline-flex; align-items: center; gap: 2px; white-space: nowrap; }
+  .sp-splendor .sp-sidebar:has(.sp-action-panel) > .sp-treasury .sp-treasury-gem .sp-gem-icon { width: 18px; height: 18px; }
+  .sp-splendor .sp-sidebar:has(.sp-action-panel) > .sp-treasury .sp-bonus-row { display: flex; align-items: center; gap: 4px; margin: 0; white-space: nowrap; }
+  .sp-splendor .sp-sidebar:has(.sp-action-panel) > .sp-reserved { position: absolute; grid-area: sidebar; justify-self: stretch; align-self: end; width: 100%; }
+  .sp-splendor .sp-nobles .sp-section-heading { display: flex; margin-bottom: 3px; }
+  .sp-splendor .sp-sidebar:has(.sp-action-panel) > .sp-action-panel:has(.sp-payment-preview) { align-content: start; grid-auto-rows: min-content; }
+  .sp-splendor .sp-scorebar { grid-template-columns: minmax(10rem,1fr) repeat(2,minmax(0,1fr)); grid-template-rows: auto auto; align-items: stretch; gap: 2px 8px; padding-block: 1px; }
+  .sp-splendor .sp-title { grid-column: 1; grid-row: 1; align-self: center; }
+  .sp-splendor .sp-player-score { grid-template-columns: auto auto auto minmax(0,1fr) auto; grid-template-rows: auto auto; align-items: center; gap: 2px 6px; min-width: 0; padding: 0 8px; }
+  .sp-splendor .sp-player-score > span:first-child { grid-column: 1; grid-row: 1; }
+  .sp-splendor .sp-player-score > b { grid-column: 2; grid-row: 1; font-size: 1.35rem; }
+  .sp-splendor .sp-player-score > small:not(.sp-public-card-count) { grid-column: 3; grid-row: 1; }
+  .sp-splendor .sp-player-score > .sp-public-card-count { grid-column: 4; grid-row: 1; font-size: 12px; white-space: nowrap; }
+  .sp-splendor .sp-player-score > i { position: static; grid-column: 5; grid-row: 1; font-size: 12px; }
+  .sp-splendor .sp-player-score > .sp-public-bonuses { grid-column: 1 / -1; grid-row: 2; }
+  .sp-splendor .sp-sidebar:has(.sp-action-panel) > .sp-bank .sp-gem-option,
+  .sp-splendor .sp-sidebar:has(.sp-action-panel) > .sp-bank .sp-gem-option.sp-gem-gold { grid-template-columns: minmax(0,1fr); grid-template-rows: 52px auto 44px; align-content: start; justify-items: center; gap: 2px; min-width: 0; padding: 2px; }
+  .sp-splendor .sp-sidebar:has(.sp-action-panel) > .sp-bank .sp-gem-pile { grid-column: 1; grid-row: 1; justify-self: center; }
+  .sp-splendor .sp-sidebar:has(.sp-action-panel) > .sp-bank .sp-gem-name { grid-column: 1; grid-row: 2; align-self: center; min-width: 0; max-width: 100%; overflow-wrap: normal; font-size: 12px; line-height: 1.2; text-align: center; white-space: nowrap; }
+  .sp-splendor .sp-sidebar:has(.sp-action-panel) > .sp-bank .sp-double-take { grid-column: 1; grid-row: 3; width: 100%; min-width: 44px; min-height: 44px; padding: 2px; font-size: 12px; white-space: nowrap; word-break: keep-all; }
+  .sp-splendor .sp-sidebar:has(.sp-action-panel) > .sp-reserved .sp-reserved-list { grid-template-columns: repeat(3,minmax(0,1fr)); gap: 4px; }
+  .sp-splendor .sp-sidebar:has(.sp-action-panel) > .sp-reserved .sp-reserved-card { grid-column: auto; grid-template-columns: 60px minmax(0,1fr); grid-template-rows: minmax(76px,auto); align-items: center; gap: 4px; }
+  .sp-splendor .sp-sidebar:has(.sp-action-panel) > .sp-reserved:has(.sp-reserved-card) .sp-reserved-empty { display: none; }
+  .sp-splendor .sp-sidebar:has(.sp-action-panel) > .sp-action-panel .sp-payment-preview { margin-top: 0; padding-top: 0; }
+  .sp-splendor .sp-sidebar:has(.sp-action-panel) > .sp-action-panel .sp-noble-preview { margin-top: 0; }
+  .sp-splendor .sp-sidebar:has(.sp-action-panel) > .sp-action-panel .sp-reserve-preview { margin-top: 0 !important; }
+  .sp-splendor .sp-sidebar:has(.sp-action-panel) > .sp-action-panel .sp-action-buttons { margin-top: 0; }
+  .sp-splendor .sp-sidebar:has(.sp-action-panel) > .sp-reserved .sp-reserved-card { padding: 4px; }
+  .sp-splendor .sp-sidebar:has(.sp-action-panel) > .sp-reserved .sp-reserved-art { justify-self: center; width: 60px; height: 76px; min-height: 76px; }
+  .sp-splendor .sp-sidebar:has(.sp-action-panel) > .sp-reserved .sp-reserved-card > div { gap: 4px; min-width: 0; font-size: 12px; line-height: 1.2; }
+  .sp-splendor .sp-sidebar:has(.sp-action-panel) > .sp-reserved .sp-reserved-card > div > b { display: block; font-size: 12px; line-height: 1.2; }
+  .sp-splendor .sp-sidebar:has(.sp-action-panel) > .sp-reserved .sp-reserved-value { display: flex; flex-wrap: wrap; align-items: center; gap: 4px; font-size: 12px; line-height: 1.2; }
+  .sp-splendor .sp-sidebar:has(.sp-action-panel) > .sp-reserved .sp-reserved-bonus { display: inline-flex; align-items: center; gap: 2px; font-size: 12px; white-space: nowrap; }
+  .sp-splendor .sp-sidebar:has(.sp-action-panel) > .sp-reserved .sp-reserved-bonus .sp-gem-icon { width: 16px; height: 16px; }
+  .sp-splendor .sp-sidebar:has(.sp-action-panel) > .sp-reserved .sp-reserved-cost { display: flex; flex-wrap: wrap; align-items: center; gap: 2px; font-size: 12px; line-height: 1.2; }
+  .sp-splendor .sp-sidebar:has(.sp-action-panel) > .sp-reserved .sp-reserved-cost-chip { display: inline-flex; align-items: center; gap: 2px; padding: 1px 3px; border: 1px solid #d8cfb8; border-radius: 5px; background: #fffdf7; color: #304b49; font-size: 12px; line-height: 1.2; white-space: nowrap; }
+  .sp-splendor .sp-sidebar:has(.sp-action-panel) > .sp-reserved .sp-reserved-cost-chip .sp-gem-icon { width: 16px; height: 16px; }
+  .sp-splendor .sp-sidebar:has(.sp-action-panel) > .sp-reserved .sp-opponent-reserved { margin-top: 4px !important; padding-top: 4px; font-size: 12px; line-height: 1.2; }
 }

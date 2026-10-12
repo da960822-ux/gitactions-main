@@ -172,16 +172,23 @@ describe('TableGames public-state interaction guidance', () => {
   });
 
   it('labels private reserved faces, exposes only the rival public token total, and explains an empty bank', () => {
-    const html = render('splendor', {
+    const view = {
       turn: 'p1', ownHand: { tokens: {}, bonuses: {}, reserved: [{ id: 't1-01', tier: 1, bonus: 'white', points: 1, cost: { green: 4 } }], points: 0, nobles: 0 },
       board: { bank: { white: 0, blue: 0, green: 0, red: 0, black: 0, gold: 0 }, score: { p1: 0, p2: 0 }, market: { 1: [], 2: [], 3: [] }, nobles: {}, reservedOpponentCount: 2 },
       opponentCount: 7, actions: [],
-    }, 'es');
+    };
+    const html = render('splendor', view, 'es');
 
     expect(html).toContain('aria-label="Carta reservada de nivel 1');
+    expect(html).toContain('bonificación Blanca +1 · 1 pts · coste 4 Verde');
     expect(html).toContain('class="sp-reserved-art" aria-hidden="true"');
+    expect(html).toContain('class="sp-reserved-cost-chip sp-color-green"');
     expect(html).toContain('Fichas rivales: 7');
     expect(html).toContain('No quedan gemas disponibles para tomar');
+    const originalDisplay = renderToStaticMarkup(createElement(TableGames, { game: 'splendor', view, language: 'es', playerId: 'p1', desktopDisplay: false, runAction: () => {} }));
+    expect(originalDisplay).toContain('Carta reservada · Nivel 1');
+    expect(originalDisplay).not.toContain('sp-reserved-cost-chip');
+    expect(originalDisplay).toContain('title="4 Verde">4 Verde');
   });
 
   it('maps all 90 engine cards and 10 nobles to distinct original faces and renders by engine ID', () => {

@@ -438,11 +438,23 @@
   .jaipur-board.has-desktop-preview .jp-premium-token-wrap.is-loaded .jp-premium-token-image { opacity: 1; }
   .jaipur-board.has-desktop-preview .jp-premium-token-wrap.is-loaded .jp-premium-token-fallback { opacity: 0; }
   .jaipur-board.has-desktop-preview .jp-pile-name { display: flex; align-items: center; justify-content: space-between; gap: .25rem; }
-  .jaipur-board.has-desktop-preview .jp-product-token { width: 2rem; height: 2rem; border-radius: 50%; background: radial-gradient(circle,#fffdf8 43%,#e9e0cc 72%,#bda77b); }
+  .jaipur-board.has-desktop-preview .jp-product-token { width: 3.5rem; height: 3.5rem; border-radius: 50%; background: radial-gradient(circle,#fffdf8 43%,#e9e0cc 72%,#bda77b); }
   .jaipur-board.has-desktop-preview .jp-product-token .jp-premium-token-fallback { width: 100%; height: 100%; }
-  .jaipur-board.has-desktop-preview .jp-bonus-token-back { width: 1.8rem; height: 2.05rem; }
+  .jaipur-board.has-desktop-preview .jp-bonus-token-back { width: 3.125rem; height: 3.625rem; }
   .jaipur-board.has-desktop-preview .jp-bonus-token-back .jp-premium-token-fallback { width: 100%; height: 100%; }
   .jaipur-board.has-desktop-preview .jp-bonus-token-back .jp-premium-token-image { border-radius: 50%; }
+  .jaipur-board.has-desktop-preview .jp-pile { position: relative; grid-template-columns: minmax(0,1fr); grid-template-rows: auto auto auto; min-height: 4.5rem; padding-left: 4rem; }
+  .jaipur-board.has-desktop-preview .jp-pile-name { grid-column: 1; grid-row: 1; min-height: 1rem; font-size: .75rem; }
+  .jaipur-board.has-desktop-preview .jp-product-token { position: absolute; left: .35rem; top: 50%; transform: translateY(-50%); }
+  .jaipur-board.has-desktop-preview .jp-pile-count { grid-column: 1; grid-row: 2; font-size: .75rem; }
+  .jaipur-board.has-desktop-preview .jp-pile-next { grid-column: 1; grid-row: 3; font-size: .75rem; }
+  .jaipur-board.has-desktop-preview .jp-bonus-row { grid-template-columns: repeat(3,minmax(0,1fr)); gap: .3rem; }
+  .jaipur-board.has-desktop-preview .jp-bonus-stack { display: grid; grid-template-columns: minmax(0,1fr); grid-template-rows: 3rem auto; justify-items: center; min-height: 3.2rem; gap: .2rem; padding: .25rem .3rem; text-align: center; }
+  .jaipur-board.has-desktop-preview .jp-bonus-token-back { flex: 0 0 3rem; width: 3rem; height: 3rem; }
+  .jaipur-board.has-desktop-preview .jp-bonus-stack > span { display: grid; grid-template-columns: minmax(0,1fr); grid-template-rows: repeat(3,auto); justify-items: center; gap: .05rem; min-width: 0; }
+  .jaipur-board.has-desktop-preview .jp-bonus-stack > span > small { font-size: .75rem; white-space: nowrap; }
+  .jaipur-board.has-desktop-preview .jp-bonus-stack > span > strong { font-size: .86rem; white-space: nowrap; }
+  .jaipur-board.has-desktop-preview .jp-bonus-stack small { font-size: .75rem; }
   .jaipur-board.has-desktop-preview > .jp-opponent-row { grid-area: title; align-self: end; justify-self: center; z-index: 2; width: auto; min-height: 28px; padding: .12rem .45rem; transform: translateX(-150px); }
   .jaipur-board.has-desktop-preview > .jp-opponent-row > div:first-child b { display: inline; }
   .jaipur-board.has-desktop-preview > .jp-rival-herd { grid-area: title; align-self: end; justify-self: center; z-index: 2; width: auto; min-height: 28px; margin: 0; padding: .12rem .45rem; transform: translateX(155px); }
