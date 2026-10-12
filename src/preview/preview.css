@@ -85,3 +85,5 @@
 @media(min-width:1024px) and (pointer:fine){.rd-space-journey{display:block;height:calc(100svh - 84px + 440px);max-height:none;overflow:clip;background:none}.rd-space-journey .rd-hero-pin{position:sticky;top:0;height:calc(100svh - 84px);min-height:646px;max-height:920px;overflow:clip;isolation:isolate;background:radial-gradient(ellipse at 50% 42%,#35232c,transparent 64%),#0c080e}.rd-unified-space{position:absolute;inset:0;z-index:3;pointer-events:none}.rd-unified-space canvas{display:block;position:absolute;inset:0;width:100%;height:100%;opacity:0;transition:opacity .35s}.rd-unified-space[data-ready=true] canvas{opacity:1}.rd-hero:has(.rd-unified-space[data-ready=true]) .rd-heart-fallback{opacity:0}.rd-space-journey .rd-scene-space,.rd-space-journey .rd-hero-decorations{display:none}.rd-space-journey .rd-couple-drift{transform-origin:50% 50%;will-change:transform}.rd-space-journey .rd-baby-plane{transform-origin:50% 50%}}
 
 .rd-space-journey .rd-couple-art{mask-image:linear-gradient(#000 75%,transparent 100%)}.rd-space-journey .rd-couple-art:after{display:none}
+
+.rd-unified-space canvas{mask-image:linear-gradient(transparent,#000 4%,#000 84%,transparent)}
