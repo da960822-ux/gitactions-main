@@ -1,0 +1,568 @@
+{
+  "stage": "final after capture on frozen source revision",
+  "source": {
+    "cwd": "/workspace/gitactions-quality-20261012",
+    "head": "816eb067467c55fda71d68a5c2c917818b2e3309",
+    "origin": "http://127.0.0.1:5211"
+  },
+  "fixture": {
+    "enabled": true,
+    "url": "http://127.0.0.1:54331",
+    "warning": "Local SQL/RLS/action-authority fixture without Supabase Realtime/Auth/PostgREST; explicit UI refresh used."
+  },
+  "sizes": [
+    {
+      "width": 1440,
+      "height": 900
+    },
+    {
+      "width": 1366,
+      "height": 768
+    }
+  ],
+  "method": "Two independent KO/ES browser contexts, real room and game selection through UI, actual rendered board; no engine props/state injection; no match-play loops.",
+  "games": [
+    {
+      "game": "marble",
+      "roomId": "b89efd1e-4cc3-42f3-a9ce-4f883114e6c8",
+      "states": [
+        {
+          "playerId": "p1",
+          "language": "ko",
+          "gameId": "marble",
+          "phase": "roll",
+          "turn": "p1",
+          "version": 2
+        },
+        {
+          "playerId": "p2",
+          "language": "es",
+          "gameId": "marble",
+          "phase": "roll",
+          "turn": "p1",
+          "version": 2
+        }
+      ],
+      "selectedState": {},
+      "screenshots": {
+        "1440x900-ko": "/workspace/deliverables/game-quality-restart-20261012/after-final/01-marble-1440x900-ko-p1.png",
+        "1440x900-es": "/workspace/deliverables/game-quality-restart-20261012/after-final/01-marble-1440x900-es-p2.png",
+        "1366x768-ko": "/workspace/deliverables/game-quality-restart-20261012/after-final/01-marble-1366x768-ko-p1.png",
+        "1366x768-es": "/workspace/deliverables/game-quality-restart-20261012/after-final/01-marble-1366x768-es-p2.png",
+        "boardRegion1440Ko": "/workspace/deliverables/game-quality-restart-20261012/after-final/01-marble-1440x900-board-region-ko.png"
+      },
+      "overflowAt1366x768": [
+        {
+          "viewport": {
+            "width": 1440,
+            "height": 900
+          },
+          "document": {
+            "clientWidth": 1440,
+            "scrollWidth": 1440,
+            "scrollHeight": 2280,
+            "verticalOverflow": true,
+            "horizontalOverflow": false
+          },
+          "body": {
+            "clientWidth": 1440,
+            "scrollWidth": 1440,
+            "scrollHeight": 2280
+          }
+        },
+        {
+          "viewport": {
+            "width": 1366,
+            "height": 768
+          },
+          "document": {
+            "clientWidth": 1366,
+            "scrollWidth": 1366,
+            "scrollHeight": 2050,
+            "verticalOverflow": true,
+            "horizontalOverflow": false
+          },
+          "body": {
+            "clientWidth": 1366,
+            "scrollWidth": 1366,
+            "scrollHeight": 2050
+          }
+        }
+      ]
+    },
+    {
+      "game": "splendor",
+      "roomId": "106acfc1-8e62-4a26-a156-1dd2b4e236ca",
+      "states": [
+        {
+          "playerId": "p1",
+          "language": "ko",
+          "gameId": "splendor",
+          "phase": "action",
+          "turn": "p1",
+          "version": 2
+        },
+        {
+          "playerId": "p2",
+          "language": "es",
+          "gameId": "splendor",
+          "phase": "waiting",
+          "turn": "p1",
+          "version": 2
+        }
+      ],
+      "selectedState": {},
+      "screenshots": {
+        "1440x900-ko": "/workspace/deliverables/game-quality-restart-20261012/after-final/02-splendor-1440x900-ko-p1.png",
+        "1440x900-es": "/workspace/deliverables/game-quality-restart-20261012/after-final/02-splendor-1440x900-es-p2.png",
+        "1366x768-ko": "/workspace/deliverables/game-quality-restart-20261012/after-final/02-splendor-1366x768-ko-p1.png",
+        "1366x768-es": "/workspace/deliverables/game-quality-restart-20261012/after-final/02-splendor-1366x768-es-p2.png",
+        "boardRegion1440Ko": "/workspace/deliverables/game-quality-restart-20261012/after-final/02-splendor-1440x900-board-region-ko.png"
+      },
+      "overflowAt1366x768": [
+        {
+          "viewport": {
+            "width": 1440,
+            "height": 900
+          },
+          "document": {
+            "clientWidth": 1440,
+            "scrollWidth": 1440,
+            "scrollHeight": 2240,
+            "verticalOverflow": true,
+            "horizontalOverflow": false
+          },
+          "body": {
+            "clientWidth": 1440,
+            "scrollWidth": 1440,
+            "scrollHeight": 2240
+          }
+        },
+        {
+          "viewport": {
+            "width": 1366,
+            "height": 768
+          },
+          "document": {
+            "clientWidth": 1366,
+            "scrollWidth": 1366,
+            "scrollHeight": 2152,
+            "verticalOverflow": true,
+            "horizontalOverflow": false
+          },
+          "body": {
+            "clientWidth": 1366,
+            "scrollWidth": 1366,
+            "scrollHeight": 2152
+          }
+        }
+      ]
+    },
+    {
+      "game": "jaipur",
+      "roomId": "cc8a5757-f71b-4d08-ad5e-89be4d98f648",
+      "states": [
+        {
+          "playerId": "p1",
+          "language": "ko",
+          "gameId": "jaipur",
+          "phase": "choose",
+          "turn": "p1",
+          "version": 2
+        },
+        {
+          "playerId": "p2",
+          "language": "es",
+          "gameId": "jaipur",
+          "phase": "waiting",
+          "turn": "p1",
+          "version": 2
+        }
+      ],
+      "selectedState": {},
+      "screenshots": {
+        "1440x900-ko": "/workspace/deliverables/game-quality-restart-20261012/after-final/03-jaipur-1440x900-ko-p1.png",
+        "1440x900-es": "/workspace/deliverables/game-quality-restart-20261012/after-final/03-jaipur-1440x900-es-p2.png",
+        "1366x768-ko": "/workspace/deliverables/game-quality-restart-20261012/after-final/03-jaipur-1366x768-ko-p1.png",
+        "1366x768-es": "/workspace/deliverables/game-quality-restart-20261012/after-final/03-jaipur-1366x768-es-p2.png",
+        "boardRegion1440Ko": "/workspace/deliverables/game-quality-restart-20261012/after-final/03-jaipur-1440x900-board-region-ko.png"
+      },
+      "overflowAt1366x768": [
+        {
+          "viewport": {
+            "width": 1440,
+            "height": 900
+          },
+          "document": {
+            "clientWidth": 1440,
+            "scrollWidth": 1440,
+            "scrollHeight": 2133,
+            "verticalOverflow": true,
+            "horizontalOverflow": false
+          },
+          "body": {
+            "clientWidth": 1440,
+            "scrollWidth": 1440,
+            "scrollHeight": 2133
+          }
+        },
+        {
+          "viewport": {
+            "width": 1366,
+            "height": 768
+          },
+          "document": {
+            "clientWidth": 1366,
+            "scrollWidth": 1366,
+            "scrollHeight": 2208,
+            "verticalOverflow": true,
+            "horizontalOverflow": false
+          },
+          "body": {
+            "clientWidth": 1366,
+            "scrollWidth": 1366,
+            "scrollHeight": 2208
+          }
+        }
+      ]
+    },
+    {
+      "game": "davinci",
+      "roomId": "bcdd8f13-ade8-4fcb-b551-4425cb7e20a4",
+      "states": [
+        {
+          "playerId": "p1",
+          "language": "ko",
+          "gameId": "davinci",
+          "phase": "setup",
+          "turn": "p1",
+          "version": 2
+        },
+        {
+          "playerId": "p2",
+          "language": "es",
+          "gameId": "davinci",
+          "phase": "setup",
+          "turn": "p2",
+          "version": 2
+        }
+      ],
+      "selectedState": {},
+      "screenshots": {
+        "1440x900-ko": "/workspace/deliverables/game-quality-restart-20261012/after-final/04-davinci-1440x900-ko-p1.png",
+        "1440x900-es": "/workspace/deliverables/game-quality-restart-20261012/after-final/04-davinci-1440x900-es-p2.png",
+        "1366x768-ko": "/workspace/deliverables/game-quality-restart-20261012/after-final/04-davinci-1366x768-ko-p1.png",
+        "1366x768-es": "/workspace/deliverables/game-quality-restart-20261012/after-final/04-davinci-1366x768-es-p2.png",
+        "boardRegion1440Ko": "/workspace/deliverables/game-quality-restart-20261012/after-final/04-davinci-1440x900-board-region-ko.png"
+      },
+      "overflowAt1366x768": [
+        {
+          "viewport": {
+            "width": 1440,
+            "height": 900
+          },
+          "document": {
+            "clientWidth": 1440,
+            "scrollWidth": 1440,
+            "scrollHeight": 1843,
+            "verticalOverflow": true,
+            "horizontalOverflow": false
+          },
+          "body": {
+            "clientWidth": 1440,
+            "scrollWidth": 1440,
+            "scrollHeight": 1843
+          }
+        },
+        {
+          "viewport": {
+            "width": 1366,
+            "height": 768
+          },
+          "document": {
+            "clientWidth": 1366,
+            "scrollWidth": 1366,
+            "scrollHeight": 1907,
+            "verticalOverflow": true,
+            "horizontalOverflow": false
+          },
+          "body": {
+            "clientWidth": 1366,
+            "scrollWidth": 1366,
+            "scrollHeight": 1907
+          }
+        }
+      ]
+    },
+    {
+      "game": "catchmind",
+      "roomId": "5268644d-c789-42c1-9ee2-f6da8b5c5b8c",
+      "states": [
+        {
+          "playerId": "p1",
+          "language": "ko",
+          "gameId": "catchmind",
+          "phase": "drawing",
+          "turn": "p1",
+          "version": 4
+        },
+        {
+          "playerId": "p2",
+          "language": "es",
+          "gameId": "catchmind",
+          "phase": "drawing",
+          "turn": "p1",
+          "version": 4
+        }
+      ],
+      "selectedState": {
+        "category": "animals",
+        "drawTimeSeconds": 80,
+        "wordSelectionViaUI": true,
+        "secretOmittedFromAllSavedCaptures": true,
+        "safeKoFrame": "pre-word-selection settings saved",
+        "safeEsFrame": "drawing spectator view with answer hidden"
+      },
+      "screenshots": {
+        "1440x900-ko": "/workspace/deliverables/game-quality-restart-20261012/after-final/05-catchmind-1440x900-ko-p1.png",
+        "1440x900-es": "/workspace/deliverables/game-quality-restart-20261012/after-final/05-catchmind-1440x900-es-p2.png",
+        "1366x768-ko": "/workspace/deliverables/game-quality-restart-20261012/after-final/05-catchmind-1366x768-ko-p1.png",
+        "1366x768-es": "/workspace/deliverables/game-quality-restart-20261012/after-final/05-catchmind-1366x768-es-p2.png"
+      },
+      "overflowAt1366x768": [
+        {
+          "viewport": {
+            "width": 1440,
+            "height": 900
+          },
+          "document": {
+            "clientWidth": 1440,
+            "scrollWidth": 1440,
+            "scrollHeight": 1893,
+            "verticalOverflow": true,
+            "horizontalOverflow": false
+          },
+          "body": {
+            "clientWidth": 1440,
+            "scrollWidth": 1440,
+            "scrollHeight": 1893
+          }
+        },
+        {
+          "viewport": {
+            "width": 1366,
+            "height": 768
+          },
+          "document": {
+            "clientWidth": 1366,
+            "scrollWidth": 1366,
+            "scrollHeight": 1873,
+            "verticalOverflow": true,
+            "horizontalOverflow": false
+          },
+          "body": {
+            "clientWidth": 1366,
+            "scrollWidth": 1366,
+            "scrollHeight": 1873
+          }
+        }
+      ],
+      "privateDataSafety": "The KO drawer view after selecting a secret word is excluded from public screenshots; only pre-selection KO and spectator ES frames are saved."
+    },
+    {
+      "game": "domino",
+      "roomId": "f8cb380f-306e-4dfd-a52f-4f3cf48873b0",
+      "states": [
+        {
+          "playerId": "p1",
+          "language": "ko",
+          "gameId": "domino",
+          "phase": "play",
+          "turn": "p1",
+          "version": 2
+        },
+        {
+          "playerId": "p2",
+          "language": "es",
+          "gameId": "domino",
+          "phase": "play",
+          "turn": "p1",
+          "version": 2
+        }
+      ],
+      "selectedState": {},
+      "screenshots": {
+        "1440x900-ko": "/workspace/deliverables/game-quality-restart-20261012/after-final/06-domino-1440x900-ko-p1.png",
+        "1440x900-es": "/workspace/deliverables/game-quality-restart-20261012/after-final/06-domino-1440x900-es-p2.png",
+        "1366x768-ko": "/workspace/deliverables/game-quality-restart-20261012/after-final/06-domino-1366x768-ko-p1.png",
+        "1366x768-es": "/workspace/deliverables/game-quality-restart-20261012/after-final/06-domino-1366x768-es-p2.png",
+        "boardRegion1440Ko": "/workspace/deliverables/game-quality-restart-20261012/after-final/06-domino-1440x900-board-region-ko.png"
+      },
+      "overflowAt1366x768": [
+        {
+          "viewport": {
+            "width": 1440,
+            "height": 900
+          },
+          "document": {
+            "clientWidth": 1440,
+            "scrollWidth": 1440,
+            "scrollHeight": 1878,
+            "verticalOverflow": true,
+            "horizontalOverflow": false
+          },
+          "body": {
+            "clientWidth": 1440,
+            "scrollWidth": 1440,
+            "scrollHeight": 1878
+          }
+        },
+        {
+          "viewport": {
+            "width": 1366,
+            "height": 768
+          },
+          "document": {
+            "clientWidth": 1366,
+            "scrollWidth": 1366,
+            "scrollHeight": 1911,
+            "verticalOverflow": true,
+            "horizontalOverflow": false
+          },
+          "body": {
+            "clientWidth": 1366,
+            "scrollWidth": 1366,
+            "scrollHeight": 1911
+          }
+        }
+      ]
+    },
+    {
+      "game": "minhwatu",
+      "roomId": "6eab674a-6b90-4761-a794-702fcdb28420",
+      "states": [
+        {
+          "playerId": "p1",
+          "language": "ko",
+          "gameId": "minhwatu",
+          "phase": "play",
+          "turn": "p1",
+          "version": 2
+        },
+        {
+          "playerId": "p2",
+          "language": "es",
+          "gameId": "minhwatu",
+          "phase": "play",
+          "turn": "p1",
+          "version": 2
+        }
+      ],
+      "selectedState": {},
+      "screenshots": {
+        "1440x900-ko": "/workspace/deliverables/game-quality-restart-20261012/after-final/07-minhwatu-1440x900-ko-p1.png",
+        "1440x900-es": "/workspace/deliverables/game-quality-restart-20261012/after-final/07-minhwatu-1440x900-es-p2.png",
+        "1366x768-ko": "/workspace/deliverables/game-quality-restart-20261012/after-final/07-minhwatu-1366x768-ko-p1.png",
+        "1366x768-es": "/workspace/deliverables/game-quality-restart-20261012/after-final/07-minhwatu-1366x768-es-p2.png",
+        "boardRegion1440Ko": "/workspace/deliverables/game-quality-restart-20261012/after-final/07-minhwatu-1440x900-board-region-ko.png"
+      },
+      "overflowAt1366x768": [
+        {
+          "viewport": {
+            "width": 1440,
+            "height": 900
+          },
+          "document": {
+            "clientWidth": 1440,
+            "scrollWidth": 1440,
+            "scrollHeight": 2020,
+            "verticalOverflow": true,
+            "horizontalOverflow": false
+          },
+          "body": {
+            "clientWidth": 1440,
+            "scrollWidth": 1440,
+            "scrollHeight": 2020
+          }
+        },
+        {
+          "viewport": {
+            "width": 1366,
+            "height": 768
+          },
+          "document": {
+            "clientWidth": 1366,
+            "scrollWidth": 1366,
+            "scrollHeight": 2132,
+            "verticalOverflow": true,
+            "horizontalOverflow": false
+          },
+          "body": {
+            "clientWidth": 1366,
+            "scrollWidth": 1366,
+            "scrollHeight": 2132
+          }
+        }
+      ]
+    }
+  ],
+  "errors": [],
+  "actionCaptures": {
+    "splendor": {
+      "report": "/workspace/deliverables/game-quality-restart-20261012/after-final/splendor-action-report.json",
+      "screenshots": [
+        "/workspace/deliverables/game-quality-restart-20261012/after-final/02-splendor-token-tray-3-ko.png",
+        "/workspace/deliverables/game-quality-restart-20261012/after-final/02-splendor-token-tray-3-es.png",
+        "/workspace/deliverables/game-quality-restart-20261012/after-final/02-splendor-acquisition-preview-ko-1440x900.png",
+        "/workspace/deliverables/game-quality-restart-20261012/after-final/02-splendor-acquisition-preview-ko-1366x768.png",
+        "/workspace/deliverables/game-quality-restart-20261012/after-final/02-splendor-purchase-after-ko.png"
+      ],
+      "selectedCard": "t1-32",
+      "previewMatchesCard": true,
+      "purchaseConfirmed": true
+    },
+    "jaipur": {
+      "report": "/workspace/deliverables/game-quality-restart-20261012/after-final/jaipur-action-report.json",
+      "screenshots": [
+        "/workspace/deliverables/game-quality-restart-20261012/after-final/03-jaipur-exchange-preview-ko.png",
+        "/workspace/deliverables/game-quality-restart-20261012/after-final/03-jaipur-sale-preview-ko.png",
+        "/workspace/deliverables/game-quality-restart-20261012/after-final/03-jaipur-sale-after-ko.png"
+      ],
+      "exchangeAndSaleConfirmed": true
+    },
+    "marbleRoute3": {
+      "report": "/workspace/deliverables/game-quality-restart-20261012/after-final/report.json",
+      "screenshots": [
+        "/workspace/deliverables/game-quality-restart-20261012/after-final/marble-route3-1440x900-ko.png",
+        "/workspace/deliverables/game-quality-restart-20261012/after-final/marble-route3-1440x900-es.png",
+        "/workspace/deliverables/game-quality-restart-20261012/after-final/marble-route3-1366x768-ko.png",
+        "/workspace/deliverables/game-quality-restart-20261012/after-final/marble-route3-1366x768-es.png"
+      ],
+      "checks": 3
+    },
+    "allActionsReport": "/workspace/deliverables/game-quality-restart-20261012/after-final/action-states.json"
+  },
+  "supplementalReports": {
+    "catchmindSafe": "/workspace/deliverables/game-quality-restart-20261012/after-final/catchmind-safe-report.json",
+    "jaipurTokens": "/workspace/deliverables/game-quality-restart-20261012/after-final/jaipur-token-audit.json",
+    "davinciPrivacy": "/workspace/deliverables/game-quality-restart-20261012/after-final/davinci-privacy-audit.json",
+    "dominoGuide": "/workspace/deliverables/game-quality-restart-20261012/after-final/domino-guide-audit.json",
+    "minhwatuLayout": "/workspace/deliverables/game-quality-restart-20261012/after-final/minhwatu-layout-audit.json"
+  },
+  "privacySafety": "Catchmind KO drawer-answer image was excluded; safe KO preselection and ES spectator images remain. No personal auth/storage data included.",
+  "guideCaptures": {
+    "dominoInactiveViewer": {
+      "screenshot": "/workspace/deliverables/game-quality-restart-20261012/after-final/06-domino-inactive-guide-es-1366x768.png",
+      "report": "/workspace/deliverables/game-quality-restart-20261012/after-final/domino-guide-audit.json",
+      "player": "p2 waiting while p1 active",
+      "firstStepVisible": true
+    },
+    "minhwatu1366x768Audit": "/workspace/deliverables/game-quality-restart-20261012/after-final/07-minhwatu-1366x768-layout-audit-ko.png",
+    "davinciPrivacyReady": {
+      "screenshotKo": "/workspace/deliverables/game-quality-restart-20261012/after-final/04-davinci-1366x768-ko-p1.png",
+      "screenshotEs": "/workspace/deliverables/game-quality-restart-20261012/after-final/04-davinci-1366x768-es-p2.png",
+      "report": "/workspace/deliverables/game-quality-restart-20261012/after-final/davinci-privacy-audit.json",
+      "note": "Separate initial setup screenshot shows an own joker portrait; supplemental post-consent room has no joker in its deal, but verifies opponent hidden values remain null and opponent rack has no images."
+    }
+  }
+}

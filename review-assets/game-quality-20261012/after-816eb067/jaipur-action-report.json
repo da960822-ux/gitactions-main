@@ -1,0 +1,54 @@
+{
+  "stage": "final UI-driven Jaipur action QA on frozen revision 816eb067467c55fda71d68a5c2c917818b2e3309",
+  "origin": "http://127.0.0.1:5211",
+  "fixture": "54331 local action authority; no Realtime/Auth/PostgREST",
+  "roomId": "5b0a2971-7c27-40c5-b532-b62cf1493b2b",
+  "actions": {
+    "exchange": {
+      "ui": "2 goods from hand ↔ 2 goods from market",
+      "handBefore": [
+        {
+          "id": "r1-p1-h0",
+          "good": "spice"
+        },
+        {
+          "id": "r1-p1-h1",
+          "good": "cloth"
+        }
+      ],
+      "marketBefore": [
+        {
+          "id": "r1-m3",
+          "good": "diamond"
+        },
+        {
+          "id": "r1-m4",
+          "good": "silver"
+        }
+      ],
+      "selectionText": "내 상품 2 ↔ 시장 2",
+      "versionBefore": 2,
+      "versionAfter": 5,
+      "screenshot": "/workspace/deliverables/game-quality-restart-20261012/after-final/03-jaipur-exchange-preview-ko.png"
+    },
+    "handoff": "p2 completed one market take through UI",
+    "sale": {
+      "good": "leather",
+      "handCountsBeforeSale": {
+        "leather": 1,
+        "gold": 1,
+        "silver": 2,
+        "diamond": 1
+      },
+      "previewText": "가죽 · 1장 보유 → 첫 토큰 4점; 1장 판매 확정",
+      "versionBefore": 4,
+      "versionAfter": [
+        5,
+        5
+      ],
+      "previewScreenshot": "/workspace/deliverables/game-quality-restart-20261012/after-final/03-jaipur-sale-preview-ko.png",
+      "afterScreenshot": "/workspace/deliverables/game-quality-restart-20261012/after-final/03-jaipur-sale-after-ko.png"
+    }
+  },
+  "notes": "Another fresh room on this local fixture did not expose a 2-for-2 action after three legal market takes; no extra turns were forced. The successful room above has the exact actual UI evidence."
+}

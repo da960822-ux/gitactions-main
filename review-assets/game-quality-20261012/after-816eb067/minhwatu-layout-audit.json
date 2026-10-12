@@ -1,0 +1,39 @@
+{
+  "head": "816eb067467c55fda71d68a5c2c917818b2e3309",
+  "origin": "http://127.0.0.1:5211",
+  "fixture": "54331",
+  "roomId": "6b813e8b-93b5-4e40-8ccc-70378e9ca909",
+  "playerId": "p1",
+  "phase": "play",
+  "turn": "p1",
+  "ownHand": 10,
+  "opponentCount": 10,
+  "dom": {
+    "viewport": [
+      1366,
+      768
+    ],
+    "handCount": 10,
+    "opponentCount": "10장",
+    "opponentFanCards": 10,
+    "captureFaceUpCount": 0,
+    "handSection": {
+      "x": 28,
+      "y": 661.15625,
+      "right": 1338,
+      "bottom": 801.15625,
+      "width": 1310,
+      "height": 140
+    },
+    "handChoices": {
+      "x": 37,
+      "y": 689.15625,
+      "right": 1087,
+      "bottom": 795.15625,
+      "width": 1050,
+      "height": 106
+    },
+    "guideLink": "게임 방법 ↓",
+    "scrollWidth": 1366
+  }
+}

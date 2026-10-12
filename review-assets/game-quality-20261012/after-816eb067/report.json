@@ -1,0 +1,129 @@
+{
+  "checks": [
+    {
+      "name": "fresh two-player room is route 3, 40 tile / economic v2",
+      "pass": true
+    },
+    {
+      "name": "both live seats show the same actual arrival and approved asset with real unbuilt stage",
+      "pass": true
+    },
+    {
+      "name": "purchase/toll action context and five-city quick shortcuts are visible",
+      "pass": true
+    }
+  ],
+  "rolls": [
+    {
+      "actor": 0,
+      "version": 4,
+      "phase": "decision",
+      "city": {
+        "es": "Santiago",
+        "ko": "산티아고"
+      },
+      "positions": {
+        "p1": 5,
+        "p2": 0
+      }
+    }
+  ],
+  "errors": [],
+  "fresh": [
+    {
+      "roomId": "0edbb259-42b2-49f4-924e-883c7f0d76bd",
+      "playerId": "p1",
+      "version": 2,
+      "gameId": "marble",
+      "phase": "roll",
+      "turn": "p1",
+      "board": {
+        "version": 2,
+        "cityRouteVersion": 3,
+        "economicVersion": 2,
+        "positions": {
+          "p1": 0,
+          "p2": 0
+        }
+      }
+    },
+    {
+      "roomId": "0edbb259-42b2-49f4-924e-883c7f0d76bd",
+      "playerId": "p2",
+      "version": 2,
+      "gameId": "marble",
+      "phase": "roll",
+      "turn": "p1",
+      "board": {
+        "version": 2,
+        "cityRouteVersion": 3,
+        "economicVersion": 2,
+        "positions": {
+          "p1": 0,
+          "p2": 0
+        }
+      }
+    }
+  ],
+  "arrival": [
+    {
+      "playerId": "p1",
+      "version": 4,
+      "phase": "decision",
+      "turn": "p1",
+      "cityRouteVersion": 3,
+      "positions": {
+        "p1": 5,
+        "p2": 0
+      },
+      "city": {
+        "es": "Santiago",
+        "ko": "산티아고"
+      },
+      "actions": [
+        "borrow",
+        "buy",
+        "decline"
+      ]
+    },
+    {
+      "playerId": "p2",
+      "version": 4,
+      "phase": "decision",
+      "turn": "p1",
+      "cityRouteVersion": 3,
+      "positions": {
+        "p1": 5,
+        "p2": 0
+      },
+      "city": {
+        "es": "Salida",
+        "ko": "출발"
+      },
+      "actions": []
+    }
+  ],
+  "assets": [
+    {
+      "hud": "현재 도시와 24개 도시 빠른 바로가기",
+      "journey": "현재 도착 · 행동 위치\n산티아고\n\n산티아고\n매입가 160\n예상 통행료 22",
+      "stage": "현재 미건설",
+      "stageLevel": "0",
+      "landmark": "/images/marble/premium/cities/santiago-restoration-monument.webp",
+      "landmarkLabel": "랜드마크 모습 · 미건설",
+      "action": "현재 행동 위치\n산티아고\n구매 160 · 기본 통행료 22",
+      "recap": "산티아고\n매입 160 · 매입 후 현금 1,340\n기본 통행료 22",
+      "shortcutCount": 5
+    },
+    {
+      "hud": "Ciudad actual y accesos rápidos a las 24 ciudades",
+      "journey": "Llegada actual · ubicación de acción\nSantiago\n\nSantiago\nCompra 160\nRenta 22",
+      "stage": "Sin construir",
+      "stageLevel": "0",
+      "landmark": "/images/marble/premium/cities/santiago-restoration-monument.webp",
+      "landmarkLabel": "Monumento · sin construir",
+      "action": "Ubicación de acción\nSantiago\nCompra 160 · renta 22",
+      "shortcutCount": 5
+    }
+  ]
+}

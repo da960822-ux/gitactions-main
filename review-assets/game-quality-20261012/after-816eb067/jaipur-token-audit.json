@@ -1,0 +1,198 @@
+{
+  "head": "816eb067467c55fda71d68a5c2c917818b2e3309",
+  "origin": "http://127.0.0.1:5211",
+  "fixture": "54331 local fixture",
+  "roomId": "9ccc96ed-dcde-4d11-92ae-fd589ca41631",
+  "views": [
+    {
+      "seat": 1,
+      "viewport": [
+        1440,
+        900
+      ],
+      "tokens": [
+        {
+          "cls": "jp-premium-token-wrap jp-product-token is-loaded",
+          "imgs": [
+            {
+              "src": "/images/game-premium-tokens/jaipur/diamond.webp",
+              "currentSrc": "http://127.0.0.1:5211/images/game-premium-tokens/jaipur/diamond.webp",
+              "naturalWidth": 384,
+              "loaded": true
+            }
+          ],
+          "fallback": "block"
+        },
+        {
+          "cls": "jp-premium-token-wrap jp-product-token is-loaded",
+          "imgs": [
+            {
+              "src": "/images/game-premium-tokens/jaipur/gold.webp",
+              "currentSrc": "http://127.0.0.1:5211/images/game-premium-tokens/jaipur/gold.webp",
+              "naturalWidth": 384,
+              "loaded": true
+            }
+          ],
+          "fallback": "block"
+        },
+        {
+          "cls": "jp-premium-token-wrap jp-product-token is-loaded",
+          "imgs": [
+            {
+              "src": "/images/game-premium-tokens/jaipur/silver.webp",
+              "currentSrc": "http://127.0.0.1:5211/images/game-premium-tokens/jaipur/silver.webp",
+              "naturalWidth": 384,
+              "loaded": true
+            }
+          ],
+          "fallback": "block"
+        },
+        {
+          "cls": "jp-premium-token-wrap jp-product-token is-loaded",
+          "imgs": [
+            {
+              "src": "/images/game-premium-tokens/jaipur/cloth.webp",
+              "currentSrc": "http://127.0.0.1:5211/images/game-premium-tokens/jaipur/cloth.webp",
+              "naturalWidth": 384,
+              "loaded": true
+            }
+          ],
+          "fallback": "block"
+        },
+        {
+          "cls": "jp-premium-token-wrap jp-product-token is-loaded",
+          "imgs": [
+            {
+              "src": "/images/game-premium-tokens/jaipur/spice.webp",
+              "currentSrc": "http://127.0.0.1:5211/images/game-premium-tokens/jaipur/spice.webp",
+              "naturalWidth": 384,
+              "loaded": true
+            }
+          ],
+          "fallback": "block"
+        },
+        {
+          "cls": "jp-premium-token-wrap jp-product-token is-loaded",
+          "imgs": [
+            {
+              "src": "/images/game-premium-tokens/jaipur/leather.webp",
+              "currentSrc": "http://127.0.0.1:5211/images/game-premium-tokens/jaipur/leather.webp",
+              "naturalWidth": 384,
+              "loaded": true
+            }
+          ],
+          "fallback": "block"
+        }
+      ],
+      "bonusValueNodes": [],
+      "numberLeaks": [],
+      "buttonText": [
+        null,
+        null,
+        null
+      ],
+      "snapshot": null,
+      "gameData": {
+        "playerId": "p1",
+        "phase": "choose",
+        "bonusValuesInPublicView": null,
+        "bonusValuesPropertyPresent": false
+      }
+    },
+    {
+      "seat": 2,
+      "viewport": [
+        1440,
+        900
+      ],
+      "tokens": [
+        {
+          "cls": "jp-premium-token-wrap jp-product-token is-loaded",
+          "imgs": [
+            {
+              "src": "/images/game-premium-tokens/jaipur/diamond.webp",
+              "currentSrc": "http://127.0.0.1:5211/images/game-premium-tokens/jaipur/diamond.webp",
+              "naturalWidth": 384,
+              "loaded": true
+            }
+          ],
+          "fallback": "block"
+        },
+        {
+          "cls": "jp-premium-token-wrap jp-product-token is-loaded",
+          "imgs": [
+            {
+              "src": "/images/game-premium-tokens/jaipur/gold.webp",
+              "currentSrc": "http://127.0.0.1:5211/images/game-premium-tokens/jaipur/gold.webp",
+              "naturalWidth": 384,
+              "loaded": true
+            }
+          ],
+          "fallback": "block"
+        },
+        {
+          "cls": "jp-premium-token-wrap jp-product-token is-loaded",
+          "imgs": [
+            {
+              "src": "/images/game-premium-tokens/jaipur/silver.webp",
+              "currentSrc": "http://127.0.0.1:5211/images/game-premium-tokens/jaipur/silver.webp",
+              "naturalWidth": 384,
+              "loaded": true
+            }
+          ],
+          "fallback": "block"
+        },
+        {
+          "cls": "jp-premium-token-wrap jp-product-token is-loaded",
+          "imgs": [
+            {
+              "src": "/images/game-premium-tokens/jaipur/cloth.webp",
+              "currentSrc": "http://127.0.0.1:5211/images/game-premium-tokens/jaipur/cloth.webp",
+              "naturalWidth": 384,
+              "loaded": true
+            }
+          ],
+          "fallback": "block"
+        },
+        {
+          "cls": "jp-premium-token-wrap jp-product-token is-loaded",
+          "imgs": [
+            {
+              "src": "/images/game-premium-tokens/jaipur/spice.webp",
+              "currentSrc": "http://127.0.0.1:5211/images/game-premium-tokens/jaipur/spice.webp",
+              "naturalWidth": 384,
+              "loaded": true
+            }
+          ],
+          "fallback": "block"
+        },
+        {
+          "cls": "jp-premium-token-wrap jp-product-token is-loaded",
+          "imgs": [
+            {
+              "src": "/images/game-premium-tokens/jaipur/leather.webp",
+              "currentSrc": "http://127.0.0.1:5211/images/game-premium-tokens/jaipur/leather.webp",
+              "naturalWidth": 384,
+              "loaded": true
+            }
+          ],
+          "fallback": "block"
+        }
+      ],
+      "bonusValueNodes": [],
+      "numberLeaks": [],
+      "buttonText": [
+        null,
+        null,
+        null
+      ],
+      "snapshot": null,
+      "gameData": {
+        "playerId": "p2",
+        "phase": "waiting",
+        "bonusValuesInPublicView": null,
+        "bonusValuesPropertyPresent": false
+      }
+    }
+  ]
+}

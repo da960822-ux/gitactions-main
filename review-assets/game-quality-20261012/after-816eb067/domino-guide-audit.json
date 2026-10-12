@@ -1,0 +1,31 @@
+{
+  "head": "816eb067467c55fda71d68a5c2c917818b2e3309",
+  "origin": "http://127.0.0.1:5211",
+  "fixture": "54331",
+  "roomId": "dad522ac-cadf-4435-bc6f-2453b92d70f0",
+  "data": {
+    "viewport": [
+      1366,
+      768
+    ],
+    "phase": null,
+    "guideTitle": "Dominó · Cómo jugar",
+    "guideHeight": 722.8125,
+    "dialog": false,
+    "viewer": {
+      "playerId": "p2",
+      "turn": "p1",
+      "ownActions": 0
+    },
+    "activePlayer": {
+      "playerId": "p1",
+      "turn": "p1",
+      "phase": "play"
+    },
+    "guideGoal": "Vacía tu mano para ganar la ronda. Con cuatro jugadores, juegan en parejas. En un partido por puntos, llega a la meta elegida de 100 o 200.",
+    "firstStep": "Elige en tu turno",
+    "firstStepsVisible": 3,
+    "inactiveViewerGuideWorks": true,
+    "viewportScreenshot": "/workspace/deliverables/game-quality-restart-20261012/after-final/06-domino-inactive-guide-es-1366x768.png"
+  }
+}

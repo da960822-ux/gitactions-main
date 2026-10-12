@@ -1,0 +1,315 @@
+{
+  "stage": "final UI-driven Splendor action capture",
+  "head": "816eb067467c55fda71d68a5c2c917818b2e3309",
+  "origin": "http://127.0.0.1:5211",
+  "fixture": "54331 local action authority; no Realtime/Auth/PostgREST",
+  "roomId": "ef923660-074c-4305-a8ca-22686786de69",
+  "trail": [
+    {
+      "seat": "p1",
+      "action": "take",
+      "tokens": [
+        "black",
+        "white",
+        "blue"
+      ],
+      "targetCard": "t1-32",
+      "targetMissing": [
+        [
+          "white",
+          1
+        ],
+        [
+          "blue",
+          0
+        ],
+        [
+          "green",
+          0
+        ],
+        [
+          "red",
+          0
+        ],
+        [
+          "black",
+          2
+        ]
+      ]
+    },
+    {
+      "seat": "p2",
+      "action": "take",
+      "tokens": [
+        "white",
+        "blue",
+        "green"
+      ]
+    },
+    {
+      "seat": "p1",
+      "action": "take",
+      "tokens": [
+        "black",
+        "white",
+        "blue"
+      ],
+      "targetCard": "t1-32",
+      "targetMissing": [
+        [
+          "white",
+          0
+        ],
+        [
+          "blue",
+          0
+        ],
+        [
+          "green",
+          0
+        ],
+        [
+          "red",
+          0
+        ],
+        [
+          "black",
+          1
+        ]
+      ]
+    },
+    {
+      "seat": "p2",
+      "action": "take",
+      "tokens": [
+        "white",
+        "blue",
+        "green"
+      ]
+    }
+  ],
+  "shots": [
+    "/workspace/deliverables/game-quality-restart-20261012/after-final/02-splendor-token-tray-3-ko.png",
+    "/workspace/deliverables/game-quality-restart-20261012/after-final/02-splendor-token-tray-3-es.png",
+    "/workspace/deliverables/game-quality-restart-20261012/after-final/02-splendor-token-tray-3-ko.png",
+    "/workspace/deliverables/game-quality-restart-20261012/after-final/02-splendor-token-tray-3-es.png",
+    "/workspace/deliverables/game-quality-restart-20261012/after-final/02-splendor-acquisition-preview-ko-1440x900.png",
+    "/workspace/deliverables/game-quality-restart-20261012/after-final/02-splendor-acquisition-preview-ko-1366x768.png",
+    "/workspace/deliverables/game-quality-restart-20261012/after-final/02-splendor-purchase-after-ko.png"
+  ],
+  "buyCount": 1,
+  "purchase": {
+    "src": {
+      "id": "t1-32",
+      "points": "0",
+      "bonus": "blue"
+    },
+    "preview": {
+      "id": "t1-32",
+      "bonus": "blue",
+      "bonusText": "+1\n영구 파랑",
+      "pointsText": "+0\n점수 0 → 0"
+    },
+    "enabled": true,
+    "versionAfter": [
+      7,
+      7
+    ],
+    "previewShot": "/workspace/deliverables/game-quality-restart-20261012/after-final/02-splendor-acquisition-preview-ko-1440x900.png",
+    "payShot": "/workspace/deliverables/game-quality-restart-20261012/after-final/02-splendor-acquisition-preview-ko-1366x768.png",
+    "postShot": "/workspace/deliverables/game-quality-restart-20261012/after-final/02-splendor-purchase-after-ko.png",
+    "selectedLayout": {
+      ".sp-acquisition-preview": {
+        "x": 827,
+        "y": 525.390625,
+        "right": 1114,
+        "bottom": 575.890625,
+        "width": 287,
+        "height": 50.5,
+        "visible": true
+      },
+      ".sp-action-panel": {
+        "x": 822,
+        "y": 368,
+        "right": 1119,
+        "bottom": 730.140625,
+        "width": 297,
+        "height": 362.140625,
+        "visible": true
+      },
+      ".sp-button-buy": {
+        "x": 827,
+        "y": 681.140625,
+        "right": 968,
+        "bottom": 725.140625,
+        "width": 141,
+        "height": 44,
+        "visible": true
+      },
+      ".sp-selected-token-tray": null,
+      ".sp-reserved": {
+        "x": 1123,
+        "y": 734.140625,
+        "right": 1334,
+        "bottom": 852.140625,
+        "width": 211,
+        "height": 118,
+        "visible": true
+      },
+      ".sp-bank": {
+        "x": 1123,
+        "y": 368,
+        "right": 1334,
+        "bottom": 662.171875,
+        "width": 211,
+        "height": 294.171875,
+        "visible": true
+      },
+      ".sp-nobles": {
+        "x": 32,
+        "y": 289,
+        "right": 1334,
+        "bottom": 367,
+        "width": 1302,
+        "height": 78,
+        "visible": true
+      }
+    },
+    "diagnostics": {
+      "viewport": [
+        1366,
+        768
+      ],
+      "scrollWidth": 1366,
+      "nobles": [
+        {
+          "id": "n4",
+          "src": "/images/splendor/nobles/20005.jpg",
+          "currentSrc": "http://127.0.0.1:5211/images/splendor/nobles/20005.jpg",
+          "naturalWidth": 250,
+          "loaded": true,
+          "points": "3 점",
+          "cost": "4\n4"
+        },
+        {
+          "id": "n5",
+          "src": "/images/splendor/nobles/20006.jpg",
+          "currentSrc": "http://127.0.0.1:5211/images/splendor/nobles/20006.jpg",
+          "naturalWidth": 250,
+          "loaded": true,
+          "points": "3 점",
+          "cost": "3\n3\n3"
+        },
+        {
+          "id": "n8",
+          "src": "/images/splendor/nobles/20009.jpg",
+          "currentSrc": "http://127.0.0.1:5211/images/splendor/nobles/20009.jpg",
+          "naturalWidth": 250,
+          "loaded": true,
+          "points": "3 점",
+          "cost": "3\n3\n3"
+        }
+      ],
+      "images": [
+        {
+          "src": "/images/splendor/nobles/20005.jpg",
+          "currentSrc": "http://127.0.0.1:5211/images/splendor/nobles/20005.jpg",
+          "naturalWidth": 250
+        },
+        {
+          "src": "/images/splendor-gems/white.svg",
+          "currentSrc": "http://127.0.0.1:5211/images/game-premium-tokens/splendor/white.webp",
+          "naturalWidth": 384
+        },
+        {
+          "src": "/images/splendor-gems/black.svg",
+          "currentSrc": "http://127.0.0.1:5211/images/game-premium-tokens/splendor/black.webp",
+          "naturalWidth": 384
+        },
+        {
+          "src": "/images/splendor/nobles/20006.jpg",
+          "currentSrc": "http://127.0.0.1:5211/images/splendor/nobles/20006.jpg",
+          "naturalWidth": 250
+        },
+        {
+          "src": "/images/splendor-gems/white.svg",
+          "currentSrc": "http://127.0.0.1:5211/images/game-premium-tokens/splendor/white.webp",
+          "naturalWidth": 384
+        },
+        {
+          "src": "/images/splendor-gems/blue.svg",
+          "currentSrc": "http://127.0.0.1:5211/images/game-premium-tokens/splendor/blue.webp",
+          "naturalWidth": 384
+        },
+        {
+          "src": "/images/splendor-gems/black.svg",
+          "currentSrc": "http://127.0.0.1:5211/images/game-premium-tokens/splendor/black.webp",
+          "naturalWidth": 384
+        },
+        {
+          "src": "/images/splendor/nobles/20009.jpg",
+          "currentSrc": "http://127.0.0.1:5211/images/splendor/nobles/20009.jpg",
+          "naturalWidth": 250
+        },
+        {
+          "src": "/images/splendor-gems/green.svg",
+          "currentSrc": "http://127.0.0.1:5211/images/game-premium-tokens/splendor/green.webp",
+          "naturalWidth": 384
+        },
+        {
+          "src": "/images/splendor-gems/red.svg",
+          "currentSrc": "http://127.0.0.1:5211/images/game-premium-tokens/splendor/red.webp",
+          "naturalWidth": 384
+        },
+        {
+          "src": "/images/splendor-gems/black.svg",
+          "currentSrc": "http://127.0.0.1:5211/images/game-premium-tokens/splendor/black.webp",
+          "naturalWidth": 384
+        }
+      ],
+      "cardCost": [
+        {
+          "text": "비용",
+          "font": "",
+          "size": "10px",
+          "whiteSpace": "nowrap",
+          "scrollWidth": 74,
+          "clientWidth": 74
+        },
+        {
+          "text": "비용",
+          "font": "",
+          "size": "10px",
+          "whiteSpace": "nowrap",
+          "scrollWidth": 74,
+          "clientWidth": 74
+        },
+        {
+          "text": "비용",
+          "font": "",
+          "size": "10px",
+          "whiteSpace": "nowrap",
+          "scrollWidth": 74,
+          "clientWidth": 74
+        },
+        {
+          "text": "비용",
+          "font": "",
+          "size": "10px",
+          "whiteSpace": "nowrap",
+          "scrollWidth": 74,
+          "clientWidth": 74
+        },
+        {
+          "text": "비용",
+          "font": "",
+          "size": "10px",
+          "whiteSpace": "nowrap",
+          "scrollWidth": 74,
+          "clientWidth": 74
+        }
+      ],
+      "plusTwo": "nowrap"
+    }
+  }
+}

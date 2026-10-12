@@ -1,0 +1,47 @@
+{
+  "head": "816eb067467c55fda71d68a5c2c917818b2e3309",
+  "origin": "http://127.0.0.1:5211",
+  "fixture": "54331 local fixture",
+  "roomId": "5268644d-c789-42c1-9ee2-f6da8b5c5b8c",
+  "settings": {
+    "category": "animals",
+    "drawTimeSeconds": 80,
+    "wordSelectionViaUI": true,
+    "secretOmitted": true
+  },
+  "safeFrames": {
+    "koP1": "before word selection, settings saved",
+    "esP2": "drawing viewer, answer hidden"
+  },
+  "textarea": {
+    "x": 1145,
+    "y": 661,
+    "width": 216,
+    "height": 68,
+    "fontSize": "17px",
+    "minHeight": "68px",
+    "clientHeight": 66
+  },
+  "selectedPenAriaPressed": "true",
+  "p2Visible": {
+    "secretWords": 0,
+    "choiceButtons": 0,
+    "hintVisible": true
+  },
+  "phases": [
+    "choosing",
+    "choosing"
+  ],
+  "afterSelection": [
+    {
+      "player": "p1",
+      "phase": "drawing",
+      "turn": "p1"
+    },
+    {
+      "player": "p2",
+      "phase": "drawing",
+      "turn": "p1"
+    }
+  ]
+}

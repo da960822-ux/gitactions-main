@@ -1,0 +1,118 @@
+{
+  "head": "816eb067467c55fda71d68a5c2c917818b2e3309",
+  "origin": "http://127.0.0.1:5211",
+  "fixture": "54331",
+  "roomId": "229dfc23-456c-4aee-9263-a90ed1c6e043",
+  "pre": [
+    {
+      "ownJokers": [],
+      "rivalImages": 0,
+      "opponentHiddenTileCount": 0,
+      "privateImages": []
+    },
+    {
+      "ownJokers": [],
+      "rivalImages": 0,
+      "opponentHiddenTileCount": 0,
+      "privateImages": []
+    }
+  ],
+  "post": [
+    {
+      "seat": 1,
+      "dom": {
+        "viewport": [
+          1440,
+          900
+        ],
+        "rivalImages": 0,
+        "opponentTiles": [
+          {
+            "text": "1\n· ·\n흰색\n목표",
+            "images": 0
+          },
+          {
+            "text": "2\n· ·\n흰색",
+            "images": 0
+          },
+          {
+            "text": "3\n· ·\n검정",
+            "images": 0
+          },
+          {
+            "text": "4\n· ·\n검정",
+            "images": 0
+          }
+        ],
+        "ownJoker": [],
+        "ownImages": []
+      },
+      "game": {
+        "phase": "draw",
+        "turn": "p1",
+        "ownHand": [
+          6,
+          7,
+          8,
+          11
+        ],
+        "opponentHidden": [
+          null,
+          null,
+          null,
+          null
+        ]
+      }
+    },
+    {
+      "seat": 2,
+      "dom": {
+        "viewport": [
+          1440,
+          900
+        ],
+        "rivalImages": 0,
+        "opponentTiles": [
+          {
+            "text": "1\n· ·\nBlanca",
+            "images": 0
+          },
+          {
+            "text": "2\n· ·\nNegra",
+            "images": 0
+          },
+          {
+            "text": "3\n· ·\nBlanca",
+            "images": 0
+          },
+          {
+            "text": "4\n· ·\nNegra",
+            "images": 0
+          }
+        ],
+        "ownJoker": [],
+        "ownImages": []
+      },
+      "game": {
+        "phase": "waiting",
+        "turn": "p1",
+        "ownHand": [
+          1,
+          4,
+          8,
+          9
+        ],
+        "opponentHidden": [
+          null,
+          null,
+          null,
+          null
+        ]
+      }
+    }
+  ],
+  "setupPhases": [
+    "draw",
+    "waiting"
+  ]
+}
