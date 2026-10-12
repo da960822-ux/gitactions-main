@@ -45,4 +45,8 @@
 
 **추가게임대조결과대기:** 부모가다른환경의로컬`games/local-integration-20261012`, **ed26cb9**를보고했다. Catchmind전송대기열·논리적선ID·ACK경합복원, Marble620/640ms연출·중복재경기버튼·현재자산/버전별도움말, Splendor동점승리이유KO/ES가추가됐다. 아직해당변경의원격새SHA/bytes를수령하지않았고이통합에포함하지않았다. 원격확정SHA수령후6a→후속delta만현재랜딩/게임보존상태에선별추가통합해야한다. 신규디자인을만들지않는다.
 
+부모의후속보고에따르면ed26cb9외부push지시는자동승인검토에서거절되어새원격SHA가없다. 이는**전달승인대기**이며이통합기의빌드/테스트실패가아니다. 다른경로/브랜치/공개upload로전송을우회하지않는다.7d01b62는6a4d21f까지만통합한merge commit이다.
+
+새직접사용자포괄승인후기존비교원본video업로드를요청범위에서1회재시도했지만자동승인검토가다시거절했다. 사유는‘all development-related permissions’승인은있지만sensitive egress에필요한specific payload/destination식별이부족하다는것이다.기존개인영상metadata의owner da960822@gmail.com/shared false를read-only확인했으며새파일/공개권한은생성하지않았다.최신1cf8332녹화는`/workspace/home-integration-deliverables-20261011/unified-space-20261011/video-path-cleanup/after-fixes-actual.mp4`,비교WIP137은`video/before-wip-actual.mp4`에그대로보존한다.거절후수정본업로드나우회호출은하지않았다.
+
 최종Luna두사람실플레이는모든이미지와요청수정이끝난뒤다. 실제운영Auth/Realtime/두기기/물리음향과새자산tint·말공간·전체게임최종픽셀검수도이번자동검증범위밖이다.
