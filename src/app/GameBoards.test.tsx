@@ -105,3 +105,17 @@ describe('original Splendor faces', () => {
     for(const noble of art.nobles) expect(existsSync(resolve('public/images/splendor',noble.src))).toBe(true);
   });
 });
+
+
+describe('Splendor equal-score result explanation', () => {
+  it('explains the existing fewer-card tiebreak in both players’ languages only when it determines the winner', () => {
+    for (const playerId of ['p1', 'p2'] as const) for (const language of ['ko', 'es'] as const) {
+      const expected = language === 'ko' ? '같은 점수라 개발 카드가 적은 쪽이 이겼어요.' : 'Con los mismos puntos, ganó quien tiene menos cartas de desarrollo.';
+      const view = { board: {}, ownHand: {}, actions: [], result: { winner: 'p1', scores: { p1: 15, p2: 15 } } };
+      const render = (result: typeof view.result) => renderToStaticMarkup(<TableGames game="splendor" view={{ ...view, result }} playerId={playerId} language={language} runAction={() => {}}/>);
+      expect(render(view.result)).toContain(expected);
+      expect(render({ winner: 'draw', scores: { p1: 15, p2: 15 } })).not.toContain(expected);
+      expect(render({ winner: 'p1', scores: { p1: 16, p2: 15 } })).not.toContain(expected);
+    }
+  });
+});

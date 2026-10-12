@@ -486,5 +486,6 @@ function ResultLine({game, result, playerId, language}: {game: TableGameId; resu
       : game === 'davinci'
         ? copy(language, '상대의 타일을 모두 공개했어요.', 'Se revelaron todas las fichas de la otra persona.')
         : '';
-  return <div className={`tg-result tg-result-${outcome}`} data-game={game} data-outcome={outcome} role="status"><b>{message}</b>{detail && <span>{detail}</span>}</div>;
+  const tiedScoreWinner = game === 'splendor' && scores.p1 !== undefined && Number(scores.p1) === Number(scores.p2) && result?.winner !== 'draw';
+  return <div className={`tg-result tg-result-${outcome}`} data-game={game} data-outcome={outcome} role="status"><b>{message}</b>{detail && <span>{detail}</span>}{tiedScoreWinner && <span>{copy(language, '같은 점수라 개발 카드가 적은 쪽이 이겼어요.', 'Con los mismos puntos, ganó quien tiene menos cartas de desarrollo.')}</span>}</div>;
 }

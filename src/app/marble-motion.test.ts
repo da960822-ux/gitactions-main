@@ -15,11 +15,21 @@ describe('Marble board movement path', () => {
     const frames = marblePresentationFrames(events, { p1: 38, p2: 6 }, { p1: 39, p2: 6 }, 40);
     const moves = frames.filter(frame => frame.traveler);
     expect(moves.map(frame => frame.traveler!.tile)).toEqual([39, 0, 1, 2, 1, 0, 39]);
-    expect(moves[0].at).toBeGreaterThanOrEqual(420);
+    expect(moves[0].at).toBeGreaterThanOrEqual(620);
     expect(frames.find(frame => frame.event.sequence === 3)!.at).toBeGreaterThan(moves[3].at);
     expect(frames.find(frame => frame.event.sequence === 6)!.at).toBeGreaterThan(moves.at(-1)!.at);
     expect(frames.at(-1)?.traveler).toBeNull();
   });
+  it('holds the dice for 620ms and the confirmed arrival for 640ms without adding skipped tiles', () => {
+    for (const steps of [3, 5, 8]) {
+      const events = [{ sequence: 1, type: 'roll', actor: 'p1' }, { sequence: 2, type: 'move', actor: 'p1', from: 0, to: steps, steps }, { sequence: 3, type: 'arrival', actor: 'p1' }, { sequence: 4, type: 'turn', actor: 'p2' }];
+      const frames = marblePresentationFrames(events, { p1: 0, p2: 9 }, { p1: steps, p2: 9 }, 40);
+      expect(frames.filter(frame => frame.traveler).map(frame => frame.traveler!.tile)).toEqual(Array.from({ length: steps }, (_, index) => index + 1));
+      expect(frames.find(frame => frame.traveler)?.at).toBe(620);
+      expect(frames.find(frame => frame.event.sequence === 4)!.at - frames.find(frame => frame.event.sequence === 3)!.at).toBe(640);
+    }
+  });
+
   it('lists each tile in a normal roll and repeats deterministically for equal rolls', () => {
     const first = marbleMovementPath(2, 6, 4, null, false, 'p1');
     expect(first).toEqual([3, 4, 5, 6]);

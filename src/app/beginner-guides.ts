@@ -19,6 +19,7 @@ export interface BeginnerGuideOptions {
   marbleVersion?: number;
   /** Economy 0 has no credit; 1 uses fixed construction costs; 2 uses tiered costs. */
   marbleEconomyVersion?: number;
+  marbleCityRouteVersion?: number;
 }
 
 type BeginnerGameId = Extract<GameId, 'davinci' | 'catchmind' | 'marble'>;

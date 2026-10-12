@@ -6,6 +6,7 @@ import './catchmind-table.css';
 
 type Point = { x: number; y: number };
 type Props = {
+  roomId?: string;
   view: any;
   playerId: PlayerId;
   language: Language;
@@ -35,6 +36,35 @@ function paintStroke(ctx: CanvasRenderingContext2D, stroke: any) {
   ctx.stroke();
 }
 
+export function catchmindPersistedSettingsKey(identity: string, settings: unknown, words: unknown) {
+  return `${identity}:${JSON.stringify(settings ?? null)}:${JSON.stringify(words ?? null)}`;
+}
+
+export function restoreCatchmindPenColor(color: string) { return color === '#fffefa' ? '#284f49' : color; }
+
+type DrawBatch = { points: Point[]; color: string; width: number; strokeId: string; segmentIndex: number; round: number; identity?: string };
+
+export async function sendDrawQueue(queue: DrawBatch[], send: (batch: DrawBatch) => Promise<boolean>) {
+  try {
+    while (queue.length) {
+      const batch = queue[0];
+      if (!await send(batch)) return false;
+      const index = queue.indexOf(batch);
+      if (index >= 0) queue.splice(index, 1);
+    }
+    return true;
+  } catch { return false; }
+}
+
+export function composeDisplayedStrokes(strokes: any[], pending: DrawBatch[], active: { points: Point[]; color: string; width: number; by: PlayerId } | null) {
+  return [
+    ...strokes,
+    ...pending.filter(batch => !strokes.some(stroke => stroke.strokeId === batch.strokeId && (stroke.segmentIndex ?? -1) >= batch.segmentIndex))
+      .map(batch => ({ ...batch, order: Number.MAX_SAFE_INTEGER })),
+    ...(active?.points.length ? [{ ...active, order: Number.MAX_SAFE_INTEGER }] : []),
+  ];
+}
+
 export function bucketFill(ctx: CanvasRenderingContext2D, x: number, y: number, color: string) {
   const image = ctx.getImageData(0, 0, 1000, 600), { data, width, height } = image;
   const start = (Math.max(0, Math.min(height - 1, Math.round(y))) * width + Math.max(0, Math.min(width - 1, Math.round(x)))) * 4;
@@ -60,38 +90,56 @@ export function bucketFill(ctx: CanvasRenderingContext2D, x: number, y: number, 
   return true;
 }
 
-export default function CatchmindTable({ view, playerId, language, now, palette, setPalette, strokeWidth, setStrokeWidth, runAction, onReplay, replayPending = false }: Props) {
+export default function CatchmindTable({ roomId, view, playerId, language, now, palette, setPalette, strokeWidth, setStrokeWidth, runAction, onReplay, replayPending = false }: Props) {
+  const board = view?.board ?? {};
   const [activePoints, setActivePoints] = useState<Point[]>([]);
+  const [pendingVisual, setPendingVisual] = useState<DrawBatch[]>([]);
   const [activeColor, setActiveColor] = useState(palette);
   const [secondaryColor, setSecondaryColor] = useState('#fffefa');
+  const [eraser, setEraser] = useState(false);
+  const lastDrawingColor = useRef(palette === '#fffefa' ? '#284f49' : palette);
   const [tool, setTool] = useState<'brush' | 'fill' | 'pick'>('brush');
   const [settingsDraft, setSettingsDraft] = useState({ category_id: null as CatchmindCategoryId | null, drawTimeSeconds: 80, rounds: 6, choices: 3, hints: 2, customOnly: false });
   const [customWordsText, setCustomWordsText] = useState('');
+  const persistedSettings = board.settings;
+  const persistedWords = view?.hand?.settingsCustomWords;
+  const persistedIdentity = `${roomId ?? view?.roomId ?? view?.room?.id ?? ''}:${playerId}`;
+  const appliedSettings = useRef('');
   const [settingsNotice, setSettingsNotice] = useState('');
   const [toolNotice, setToolNotice] = useState('');
   const fillBusy = useRef(false);
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const drawingRef = useRef(false);
   const pointsRef = useRef<Point[]>([]);
+  const sendQueue = useRef<DrawBatch[]>([]);
+  const currentRound = useRef(1);
+  const observedIdentity = useRef('');
+  const drawingIdentity = `${persistedIdentity}:${board.round ?? 1}:${view?.phase ?? ''}:${view?.deadlineAt ?? ''}`;
+  const currentIdentity = useRef(drawingIdentity);
+  currentIdentity.current = drawingIdentity;
+  const strokeId = useRef('');
+  const nextSegment = useRef(0);
+  const [sendError, setSendError] = useState(false);
+  const [staleDrawNotice, setStaleDrawNotice] = useState(false);
+  const sendErrorRef = useRef(false);
   const activeColorRef = useRef(palette);
   const activeWidthRef = useRef(strokeWidth);
   const flushBusy = useRef(false);
-  const drawingGeneration = useRef(0);
-  const retryAfter = useRef(0);
-  const startStrokeCount = useRef(0);
-  const board = view?.board ?? {};
+  const flushWaiters = useRef<Array<() => void>>([]);
   const strokes = Array.isArray(board.strokes) ? board.strokes : [];
   const fills = Array.isArray(board.fills) ? board.fills : [];
-  const drawing = view?.turn === playerId && view?.phase === 'drawing';
-  const choosing = view?.turn === playerId && view?.phase === 'choosing';
+  currentRound.current = board.round ?? 1;
+  const isDrawer = (view?.turn ?? board.drawer) === playerId;
+  const drawing = isDrawer && view?.phase === 'drawing';
+  const choosing = isDrawer && view?.phase === 'choosing';
+  const choosingPhase = view?.phase === 'choosing';
   const activeDrawing = view?.phase === 'drawing';
   const roundOver = view?.phase === 'round-over';
   const finished = view?.phase === 'finished' || !!view?.result;
   const roundSolved = roundOver && (board.guesses ?? []).some((guess: any) => guess.correct);
-  const isDrawer = view?.turn === playerId;
   const secondsLeft = view?.deadlineAt ? Math.max(0, Math.ceil((Date.parse(view.deadlineAt) - now) / 1000)) : 80;
   const category = board.settings?.categoryOptions?.find((option: any) => option.id === board.settings?.category_id);
-  const phaseLabel = view?.phase === 'choosing'
+  const phaseLabel = choosingPhase
     ? copy(language, isDrawer ? '제시어 선택' : '상대가 제시어를 고르는 중', isDrawer ? 'Elige una palabra' : 'Tu pareja está eligiendo')
     : activeDrawing
       ? copy(language, isDrawer ? '출제자 · 그리는 중' : '맞히는 사람 · 맞혀 보세요', isDrawer ? 'Dibujas' : 'Adivina')
@@ -100,23 +148,30 @@ export default function CatchmindTable({ view, playerId, language, now, palette,
         : finished
           ? copy(language, '최종 결과', 'Resultado final')
           : copy(language, '게임 준비 중', 'Preparando la partida');
-  const displayedStrokes = useMemo(() => drawingRef.current && activePoints.length
-    ? [...strokes.slice(0, startStrokeCount.current), { by: playerId, points: activePoints, color: activeColor, width: strokeWidth, order: Number.MAX_SAFE_INTEGER }]
-    : strokes, [strokes, activePoints, activeColor, strokeWidth, playerId]);
+  const displayedStrokes = useMemo(() => composeDisplayedStrokes(
+    strokes,
+    pendingVisual,
+    drawingRef.current && activePoints.length ? { by: playerId, points: activePoints, color: activeColorRef.current, width: activeWidthRef.current } : null,
+  ), [strokes, pendingVisual, activePoints, activeColor, strokeWidth, playerId]);
   const allowed = (type: string) => Array.isArray(view?.actions) && view.actions.some((option: any) => option.action?.type === type);
 
   useEffect(() => {
-    const settings = board.settings;
-    if (settings) setSettingsDraft({ category_id: settings.category_id ?? null, drawTimeSeconds: settings.drawTimeSeconds, rounds: settings.rounds, choices: settings.choices, hints: settings.hints, customOnly: settings.customOnly });
-    const customWords = view?.hand?.settingsCustomWords;
-    if (Array.isArray(customWords)) setCustomWordsText(customWords.map((word: any) => `${word.ko}|${word.es}`).join('\n'));
-  }, [board.settings, view?.hand?.settingsCustomWords]);
+    const key = catchmindPersistedSettingsKey(persistedIdentity, persistedSettings, persistedWords);
+    if (appliedSettings.current === key) return;
+    appliedSettings.current = key;
+    if (persistedSettings) setSettingsDraft({ category_id: persistedSettings.category_id ?? null, drawTimeSeconds: persistedSettings.drawTimeSeconds, rounds: persistedSettings.rounds, choices: persistedSettings.choices, hints: persistedSettings.hints, customOnly: persistedSettings.customOnly });
+    if (Array.isArray(persistedWords)) setCustomWordsText(persistedWords.map((word: any) => `${word.ko}|${word.es}`).join('\n'));
+    setSettingsNotice('');
+  }, [persistedIdentity, persistedSettings, persistedWords]);
 
   useEffect(() => {
-    drawingGeneration.current++;
-    drawingRef.current = false; pointsRef.current = []; setActivePoints([]);
-    retryAfter.current = 0; setToolNotice(''); setSettingsNotice('');
-  }, [board.round, view?.phase, playerId]);
+    if (observedIdentity.current === drawingIdentity) return;
+    if (sendQueue.current.length || pointsRef.current.length > 1) setStaleDrawNotice(true);
+    observedIdentity.current = drawingIdentity;
+    drawingRef.current = false; sendQueue.current = []; pointsRef.current = [];
+    setPendingVisual([]); setActivePoints([]); sendErrorRef.current = false; setSendError(false);
+    setToolNotice('');
+  }, [drawingIdentity]);
 
   useEffect(() => {
     const canvas = canvasRef.current, ctx = canvas?.getContext('2d');
@@ -128,29 +183,78 @@ export default function CatchmindTable({ view, playerId, language, now, palette,
       if (operation.kind === 'fill') bucketFill(ctx, operation.x * 1000, operation.y * 600, operation.color);
       else paintStroke(ctx, operation);
     }
-    if (displayedStrokes !== strokes) paintStroke(ctx, displayedStrokes.at(-1));
+    for (const stroke of displayedStrokes.slice(strokes.length)) paintStroke(ctx, stroke);
   }, [strokes, fills, displayedStrokes, activePoints, activeColor, strokeWidth]);
+
+  useEffect(() => {
+    if (!pendingVisual.length) return;
+    const confirmed = (batch: DrawBatch) => strokes.some((stroke: any) => stroke.strokeId === batch.strokeId && (stroke.segmentIndex ?? -1) >= batch.segmentIndex);
+    for (let index = sendQueue.current.length - 1; index >= 0; index--) if (confirmed(sendQueue.current[index])) sendQueue.current.splice(index, 1);
+    const next = pendingVisual.filter(batch => !confirmed(batch));
+    if (next.length !== pendingVisual.length) setPendingVisual(next);
+  }, [strokes, pendingVisual]);
 
   const coordinate = (event: PointerEvent<HTMLCanvasElement>): Point => {
     const rect = event.currentTarget.getBoundingClientRect();
     return { x: Math.max(0, Math.min(1, (event.clientX - rect.left) / rect.width)), y: Math.max(0, Math.min(1, (event.clientY - rect.top) / rect.height)) };
   };
   const flush = async () => {
-    if (flushBusy.current || pointsRef.current.length < 2 || Date.now() < retryAfter.current) return;
+    if (pointsRef.current.length >= 2) {
+      const batch = pointsRef.current.splice(0, 60);
+      if (pointsRef.current.length || drawingRef.current) pointsRef.current.unshift(batch.at(-1)!);
+      const advances = nextSegment.current === 0 || batch.slice(1).some(point => point.x !== batch[0].x || point.y !== batch[0].y);
+      if (advances) {
+        const queued = { points: batch, color: activeColorRef.current, width: activeWidthRef.current, strokeId: strokeId.current, segmentIndex: nextSegment.current++, round: currentRound.current, identity: currentIdentity.current };
+        sendQueue.current.push(queued);
+        setPendingVisual(current => [...current, queued]);
+      }
+      setActivePoints([...pointsRef.current]);
+    }
+    if (flushBusy.current || sendErrorRef.current || !sendQueue.current.length) return;
     flushBusy.current = true;
-    const generation = drawingGeneration.current;
-    const batch = pointsRef.current.splice(0, 60);
-    if (pointsRef.current.length) pointsRef.current.unshift(batch[batch.length - 1]);
-    const ok = await runAction({ type: 'draw', payload: { strokes: [{ points: batch, color: activeColorRef.current, width: activeWidthRef.current }] } });
-    if (generation !== drawingGeneration.current) { flushBusy.current = false; return; }
-    if (!ok) {
-      const overlap = pointsRef.current[0] === batch.at(-1);
-      pointsRef.current.unshift(...batch.slice(0, overlap ? -1 : undefined));
-      retryAfter.current = Date.now() + 1200;
-    } else retryAfter.current = 0;
-    flushBusy.current = false;
-    if (ok && pointsRef.current.length >= 2) void flush();
-    else if (ok && !drawingRef.current) { pointsRef.current = []; setActivePoints([]); }
+    const queue = sendQueue.current;
+    try {
+      const sent = await sendDrawQueue(queue, async batch => {
+        if (batch.round !== currentRound.current || batch.identity !== currentIdentity.current) return false;
+        const ok = await runAction({ type: 'draw', payload: { strokes: [{ points: batch.points, color: batch.color, width: batch.width, strokeId: batch.strokeId, segmentIndex: batch.segmentIndex }] } });
+        return ok;
+      });
+      if (queue !== sendQueue.current) return;
+      if (!sent) { sendErrorRef.current = true; setSendError(true); }
+    } finally {
+      flushBusy.current = false;
+      flushWaiters.current.splice(0).forEach(resolve => resolve());
+    }
+    if (!sendQueue.current.length && !drawingRef.current && pointsRef.current.length < 2) { pointsRef.current = []; setActivePoints([]); sendErrorRef.current = false; setSendError(false); }
+  };
+  const retryDraws = () => { sendErrorRef.current = false; setSendError(false); void flush(); };
+  const flushAndWait = async () => {
+    await flush();
+    while (flushBusy.current) await new Promise<void>(resolve => flushWaiters.current.push(resolve));
+    return !sendErrorRef.current && !sendQueue.current.length;
+  };
+  const runAfterDraws = async (action: GameAction) => {
+    const identity = currentIdentity.current;
+    const flushed = await flushAndWait();
+    if (identity !== currentIdentity.current) return false;
+    if (!flushed) { sendErrorRef.current = true; setSendError(true); return false; }
+    try { return await runAction(action); } catch { return false; }
+  };
+  const clearDrawing = async () => {
+    if (fillBusy.current) return;
+    const identity = currentIdentity.current;
+    fillBusy.current = true; drawingRef.current = false;
+    while (flushBusy.current) await new Promise<void>(resolve => flushWaiters.current.push(resolve));
+    if (identity !== currentIdentity.current) { fillBusy.current = false; return; }
+    flushBusy.current = true;
+    try {
+      const ok = await runAction({ type: 'clear' });
+      if (identity !== currentIdentity.current) return;
+      if (!ok) { setToolNotice(copy(language, '그림을 지우지 못했어요. 다시 시도해 주세요.', 'No se pudo borrar el dibujo. Inténtalo otra vez.')); return; }
+      pointsRef.current = []; sendQueue.current = []; setActivePoints([]); setPendingVisual([]);
+      sendErrorRef.current = false; setSendError(false);
+    } catch { if (identity === currentIdentity.current) setToolNotice(copy(language, '그림을 지우지 못했어요. 다시 시도해 주세요.', 'No se pudo borrar el dibujo. Inténtalo otra vez.')); }
+    finally { fillBusy.current = false; flushBusy.current = false; flushWaiters.current.splice(0).forEach(resolve => resolve()); }
   };
   useEffect(() => {
     if (!drawing) return;
@@ -159,15 +263,15 @@ export default function CatchmindTable({ view, playerId, language, now, palette,
   }, [drawing, palette, strokeWidth]);
 
   const pointerDown = (event: PointerEvent<HTMLCanvasElement>) => {
-    if (!drawing) return;
+    if (!drawing || fillBusy.current) return;
     const point = coordinate(event);
     const color = event.button === 2 ? secondaryColor : palette;
     event.currentTarget.setPointerCapture(event.pointerId);
     drawingRef.current = true;
-    startStrokeCount.current = strokes.length;
+    strokeId.current = crypto.randomUUID(); nextSegment.current = 0;
     activeColorRef.current = color; activeWidthRef.current = strokeWidth; setActiveColor(color);
     pointsRef.current = [point];
-    setActivePoints(pointsRef.current);
+    setActivePoints([point]);
   };
   const pointerMove = (event: PointerEvent<HTMLCanvasElement>) => {
     if (!drawingRef.current) return;
@@ -184,13 +288,13 @@ export default function CatchmindTable({ view, playerId, language, now, palette,
     void flush();
   };
   const onCanvasPointerDown = (event: PointerEvent<HTMLCanvasElement>) => {
-    if (!drawing) return;
+    if (!drawing || fillBusy.current) return;
     const point = coordinate(event), x = point.x * 1000, y = point.y * 600;
     const color = event.button === 2 ? secondaryColor : palette;
     const ctx = event.currentTarget.getContext('2d');
     if (tool === 'pick') {
       const pixel = ctx?.getImageData(Math.min(999, Math.round(x)), Math.min(599, Math.round(y)), 1, 1).data;
-      if (pixel) setPalette(`#${[pixel[0], pixel[1], pixel[2]].map(value => value.toString(16).padStart(2, '0')).join('')}`);
+      if (pixel) { const picked = `#${[pixel[0], pixel[1], pixel[2]].map(value => value.toString(16).padStart(2, '0')).join('')}`; lastDrawingColor.current = restoreCatchmindPenColor(picked); setEraser(false); setPalette(picked); }
       setTool('brush');
       return;
     }
@@ -203,9 +307,9 @@ export default function CatchmindTable({ view, playerId, language, now, palette,
       }
       fillBusy.current = true;
       setToolNotice(copy(language, '색을 채우는 중…', 'Aplicando el color…'));
-      void runAction({ type: 'fill', payload: { x: point.x, y: point.y, color } }).then(ok => {
+      void runAfterDraws({ type: 'fill', payload: { x: point.x, y: point.y, color } }).then(ok => {
         setToolNotice(ok ? copy(language, '색을 채웠어요.', 'Color aplicado.') : copy(language, '색을 채우지 못했어요. 다시 시도해 주세요.', 'No se pudo aplicar el color. Inténtalo otra vez.'));
-      }).finally(() => { fillBusy.current = false; });
+      }).catch(() => { setToolNotice(copy(language, '색을 채우지 못했어요. 다시 시도해 주세요.', 'No se pudo aplicar el color. Inténtalo otra vez.')); }).finally(() => { fillBusy.current = false; });
       return;
     }
     pointerDown(event);
@@ -290,8 +394,8 @@ export default function CatchmindTable({ view, playerId, language, now, palette,
 
         {(activeDrawing || choosing || roundOver || finished) && <div key={`${board.round}:${view?.phase}`} className="cm-bottom-note" aria-live="polite">
           <span>{roundOver ? roundSolved ? copy(language, '정답을 맞혀서 두 사람 모두 점수를 얻었어요.', 'Respuesta correcta: ambos suman puntos.') : copy(language, '라운드가 끝났어요. 정답을 확인하고 다음 그림으로 넘어가요.', 'Terminó la ronda. Mira la respuesta y pasa al siguiente dibujo.') : finished ? copy(language, view.result?.winner === 'draw' ? '멋진 무승부예요.' : view.result?.winner === playerId ? '이번 판에서 이겼어요!' : '상대가 이번 판에서 이겼어요.', view.result?.winner === 'draw' ? 'Un empate estupendo.' : view.result?.winner === playerId ? '¡Ganaste la partida!' : 'Tu pareja ganó esta partida.') : activeDrawing ? copy(language, '그림은 두 사람에게 실시간으로 보여요.', 'El dibujo se comparte en tiempo real.') : choosing ? !view.hand?.choices?.length ? copy(language, '주제를 하나 선택하고 설정을 저장해요.', 'Elige una categoría y guarda los ajustes.') : copy(language, `${board.settings?.choices ?? 3}개 보기 중 하나를 선택해요.`, `Elige una de ${board.settings?.choices ?? 3} palabras.`) : copy(language, '그림이 끝나면 답이 공개돼요.', 'La respuesta se revela al terminar la ronda.')}</span>
-          {allowed('pass') && <button type="button" className="cm-text-action" onClick={() => void runAction({ type: 'pass' })}>{copy(language, '이 단어 건너뛰기', 'Pasar palabra')} <span>→</span></button>}
-          {allowed('end-round') && <button type="button" className="cm-text-action" onClick={() => void runAction({ type: 'end-round' })}>{roundOver ? copy(language, '다음 라운드', 'Siguiente ronda') : finished ? copy(language, '한 판이 끝났어요', 'Partida finalizada') : copy(language, '라운드 마치기', 'Terminar ronda')} <span>→</span></button>}
+          {allowed('pass') && <button type="button" className="cm-text-action" onClick={() => void runAction({ type: 'pass' })}><ToolIcon tool="skip"/>{copy(language, '이 단어 건너뛰기', 'Pasar palabra')} <span>→</span></button>}
+          {allowed('end-round') && <button type="button" className="cm-text-action" onClick={() => void runAction({ type: 'end-round' })}><ToolIcon tool="round-end"/>{roundOver ? copy(language, '다음 라운드', 'Siguiente ronda') : finished ? copy(language, '한 판이 끝났어요', 'Partida finalizada') : copy(language, '라운드 마치기', 'Terminar ronda')} <span>→</span></button>}
         </div>}
       </div>
 
@@ -300,17 +404,19 @@ export default function CatchmindTable({ view, playerId, language, now, palette,
         <div className="cm-player-list">{scoresBySeat.map(({ seat, mine, score }) => <div key={seat} className={`cm-player-row ${mine ? 'is-you' : ''}`}><span className="cm-player-avatar">{mine ? '✦' : '♡'}</span><span><b>{mine ? copy(language, '나', 'Tú') : copy(language, '상대', 'Pareja')}</b><small>{mine === isDrawer ? copy(language, '출제자', 'Dibuja') : copy(language, '맞히는 사람', 'Adivina')}</small></span><strong>{score}<small> {copy(language, '점', 'pts')}</small></strong></div>)}</div>
         <div className="cm-guess-section"><div className="cm-guess-title"><span>{copy(language, '시도', 'INTENTOS')}</span><b>{(board.guesses ?? []).filter((guess: any) => !guess.correct).length}</b></div><div className="cm-guess-list" aria-live="polite">{(board.guesses ?? []).length ? board.guesses.map((guess: any, index: number) => <div className={`cm-guess-row ${guess.correct ? 'is-correct' : ''}`} key={`${guess.by}-${index}`}><span>{guess.correct ? '✓' : '·'}</span><b>{guess.correct ? copy(language, '정답을 맞혔어요!', '¡Respuesta correcta!') : copy(language, '다시 한번 생각해 보세요', 'Prueba otra vez')}</b></div>) : <p>{copy(language, '첫 답을 기다리고 있어요.', 'Esperando la primera respuesta.')}</p>}</div></div>
         {drawing && <div className="cm-tools">
+          {sendError && <div className="cm-send-error" role="alert"><span>{copy(language, '그림 전송에 실패했어요. 선은 보존돼 있어요.', 'No se pudo enviar el dibujo. Tus trazos se conservaron.')}</span><button type="button" onClick={retryDraws}>{copy(language, '그림 다시 보내기', 'Reintentar dibujo')}</button></div>}
+          {staleDrawNotice && <p className="cm-tool-notice" role="status">{copy(language, '지난 그림의 미전송 선은 새 라운드에 보내지 않아요.', 'Los trazos pendientes anteriores no se envían a la nueva ronda.')}</p>}
           <p className="cm-tool-notice" role="status">{toolNotice}</p><div className="cm-tools-head"><span className="cm-eyebrow">{copy(language, '그리기 도구', 'HERRAMIENTAS')}</span><span>{copy(language, tool === 'brush' ? '펜' : tool === 'fill' ? '채우기' : '색 선택', tool === 'brush' ? 'PINCEL' : tool === 'fill' ? 'RELLENAR' : 'COLOR')}</span></div>
           <div className="cm-tool-modes" role="group" aria-label={copy(language, '도구 선택', 'Herramientas')}>
-            <button type="button" className={tool === 'brush' ? 'active' : ''} aria-pressed={tool === 'brush'} onClick={() => setTool('brush')}><ToolIcon tool="brush"/> <span>{copy(language, '펜', 'Pincel')}</span></button>
+            <button type="button" className={tool === 'brush' ? 'active' : ''} aria-pressed={tool === 'brush'} onClick={() => { setEraser(false); setPalette(lastDrawingColor.current); setTool('brush'); }}><ToolIcon tool="brush"/> <span>{copy(language, '펜', 'Pincel')}</span></button>
             <button type="button" className={tool === 'fill' ? 'active' : ''} aria-pressed={tool === 'fill'} onClick={() => setTool('fill')}><ToolIcon tool="fill"/> <span>{copy(language, '채우기', 'Rellenar')}</span></button>
             <button type="button" className={tool === 'pick' ? 'active' : ''} aria-pressed={tool === 'pick'} onClick={() => setTool('pick')}><ToolIcon tool="pick"/> <span>{copy(language, '색 선택', 'Elegir color')}</span></button>
           </div>
-          <div className="cm-color-grid" role="group" aria-label={copy(language, '펜 색상 · 오른쪽 클릭은 보조 색', 'Color · clic derecho para color secundario')}>{colors.map(color => <button type="button" key={color} className={`cm-color ${palette === color ? 'active' : ''} ${secondaryColor === color ? 'secondary' : ''}`} style={{ '--cm-color': color } as CSSProperties} aria-label={`${copy(language, '색상', 'Color')} ${color}`} aria-pressed={palette === color} onClick={() => setPalette(color)} onContextMenu={event => { event.preventDefault(); setSecondaryColor(color); }} />)}</div>
-          <div className="cm-secondary-row"><span><i style={{ backgroundColor: palette }} />{copy(language, '기본', 'Principal')}</span><button type="button" className="cm-swap-colors" aria-label={copy(language, '색 바꾸기', 'Intercambiar colores')} onClick={() => { setSecondaryColor(palette); setPalette(secondaryColor); }}>↔</button><span><i style={{ backgroundColor: secondaryColor }} />{copy(language, '보조 · 오른쪽 클릭', 'Secundario · clic derecho')}</span></div>
-          <button type="button" className={`cm-eraser ${palette === '#fffefa' ? 'active' : ''}`} aria-pressed={palette === '#fffefa'} onClick={() => { setPalette('#fffefa'); setTool('brush'); }}><span aria-hidden="true">▱</span>{copy(language, '지우개', 'Borrador')}</button>
+          <div className="cm-color-grid" role="group" aria-label={copy(language, '펜 색상 · 오른쪽 클릭은 보조 색', 'Color · clic derecho para color secundario')}>{colors.map(color => <button type="button" key={color} className={`cm-color ${palette === color ? 'active' : ''} ${secondaryColor === color ? 'secondary' : ''}`} style={{ '--cm-color': color } as CSSProperties} aria-label={`${copy(language, '색상', 'Color')} ${color}`} aria-pressed={palette === color} onClick={() => { lastDrawingColor.current = color; setEraser(false); setPalette(color); }} onContextMenu={event => { event.preventDefault(); setSecondaryColor(color); }} />)}</div>
+          <div className="cm-secondary-row"><span><i style={{ backgroundColor: palette }} />{copy(language, '기본', 'Principal')}</span><button type="button" className="cm-swap-colors" aria-label={copy(language, '색 바꾸기', 'Intercambiar colores')} onClick={() => { setSecondaryColor(palette); setPalette(secondaryColor); }}><ToolIcon tool="swap"/></button><span><i style={{ backgroundColor: secondaryColor }} />{copy(language, '보조 · 오른쪽 클릭', 'Secundario · clic derecho')}</span></div>
+          <button type="button" className={`cm-eraser ${eraser ? 'active' : ''}`} aria-pressed={eraser} onClick={() => { if (!eraser) { lastDrawingColor.current = restoreCatchmindPenColor(palette); setPalette('#fffefa'); } else setPalette(lastDrawingColor.current); setEraser(!eraser); setTool('brush'); }}><ToolIcon tool="eraser"/>{copy(language, '지우개', 'Borrador')}</button>
           <label className="cm-width-control"><span>{copy(language, '굵기', 'Grosor')} <b>{strokeWidth}</b></span><input type="range" min="2" max="18" value={strokeWidth} onChange={event => setStrokeWidth(Number(event.target.value))} aria-label={copy(language, '펜 굵기', 'Grosor del pincel')}/></label>
-          <div className="cm-tool-actions">{allowed('undo') && <button type="button" onClick={() => void runAction({ type: 'undo' })}>{copy(language, '실행 취소', 'Deshacer')}</button>}{allowed('clear') && <button type="button" onClick={() => void runAction({ type: 'clear' })}>{copy(language, '모두 지우기', 'Borrar todo')}</button>}</div>
+          <div className="cm-tool-actions">{allowed('undo') && <button type="button" onClick={() => void runAfterDraws({ type: 'undo' })}><ToolIcon tool="undo"/>{copy(language, '실행 취소', 'Deshacer')}</button>}{allowed('clear') && <button type="button" onClick={() => void clearDrawing()}><ToolIcon tool="clear"/>{copy(language, '모두 지우기', 'Borrar todo')}</button>}</div>
         </div>}
         {!drawing && !choosing && !roundOver && !finished && <div className="cm-side-tip"><span>✳</span><p>{copy(language, '정답은 출제자만 볼 수 있어요. 답이 맞으면 자동으로 공개돼요.', 'Solo quien dibuja ve la respuesta. Se revela al acertar.')}</p></div>}
         {finished && <div className="cm-finish-card"><span aria-hidden="true">✦</span><b>{copy(language, view.result?.winner === 'draw' ? '같은 점수예요' : view.result?.winner === playerId ? '오늘의 승리' : '다음 판을 노려봐요', view.result?.winner === 'draw' ? 'Mismo puntaje' : view.result?.winner === playerId ? 'Victoria de hoy' : 'Habrá revancha')}</b><small>{copy(language, `${Number(scores.p1 ?? 0)}점 · ${Number(scores.p2 ?? 0)}점`, `${Number(scores.p1 ?? 0)} pts · ${Number(scores.p2 ?? 0)} pts`)}</small>{onReplay && <><button type="button" onClick={() => void onReplay()}>{copy(language, replayPending ? '같이 다시 시작하기' : '다시 하기', replayPending ? 'Aceptar revancha' : 'Volver a jugar')}</button><small role="status">{copy(language, replayPending ? '두 사람이 모두 수락하면 새 판을 시작해요.' : '다시 하기는 두 사람의 동의가 필요해요.', replayPending ? 'La nueva partida comienza cuando ambos aceptan.' : 'La revancha necesita el acuerdo de ambos.')}</small></>}</div>}
@@ -319,8 +425,8 @@ export default function CatchmindTable({ view, playerId, language, now, palette,
   </section>;
 }
 
-function ToolIcon({ tool }: { tool: 'brush' | 'fill' | 'pick' }) {
+function ToolIcon({ tool }: { tool: 'brush' | 'fill' | 'pick' | 'eraser' | 'undo' | 'clear' | 'swap' | 'skip' | 'round-end' }) {
   return <svg className="cm-tool-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
-    {tool === 'brush' ? <><path d="m14 4 6 6-9 9-6-6zM5 13l-2 8 8-2"/><path d="m12 6 6 6"/></> : tool === 'fill' ? <><path d="m10 3 9 9-7 7-9-9zM7 6l5 5M3 14h14"/><path d="M20 15s-2 3-2 4a2 2 0 0 0 4 0c0-1-2-4-2-4Z"/></> : <><path d="m15 3 6 6-3 3-6-6zM13 7l-9 9v4h4l9-9M9 15l-3-3"/></>}
+    {tool === 'pick' ? <><path d="m15 3 6 6-3 3-6-6zM13 7l-9 9v4h4l9-9M9 15l-3-3"/></> : <use href={`/images/catchmind/tool-icons.svg#${tool === 'brush' ? 'pen' : tool}`}/>}
   </svg>;
 }

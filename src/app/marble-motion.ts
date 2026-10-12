@@ -153,7 +153,7 @@ export function marblePresentationFrames(events: MarbleActionEvent[], from: Reco
         frames.push({ at, event, dice: false, positions: { ...positions }, traveler: { seat, tile, seq: marbleEventSequence(event) } });
         at += 80;
       });
-    } else at += type === 'roll' ? 420 : type === 'turn' ? 160 : 300;
+    } else at += type === 'roll' ? 620 : type === 'arrival' ? 640 : type === 'turn' ? 160 : 300;
   }
   // If the event window missed the end of a displacement, append from one stable
   // origin. Updating the origin inside the loop skips cells (3,5,8 instead of 3,4,5).
