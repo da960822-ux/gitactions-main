@@ -194,7 +194,7 @@ describe('TableGames public-state interaction guidance', () => {
     expect(splendorArt.cards.every(card => existsSync(resolve(process.cwd(), 'public/images/splendor', card.src)))).toBe(true);
     expect(splendorArt.nobles.every(noble => existsSync(resolve(process.cwd(), 'public/images/splendor', noble.src)))).toBe(true);
     expect(splendorCardArtSrc('t1-01')).toBe('/images/splendor/cards/01.jpg');
-    expect(splendorNobleArtSrc('n0')).toBe('/images/splendor/nobles/20001.jpg');
+    expect(splendorNobleArtSrc('n0')).toBe('/images/splendor/nobles/doctor-noble-portrait.webp');
 
     const html = render('splendor', {
       turn: 'p1', ownHand: { tokens: {}, bonuses: {}, reserved: [], points: 0, nobles: 0 },
@@ -205,7 +205,7 @@ describe('TableGames public-state interaction guidance', () => {
     });
     expect(html).toContain('data-art-src="/images/splendor/cards/01.jpg"');
     expect(html).toContain('src="/images/splendor/cards/01.jpg"');
-    expect(html).toContain('src="/images/splendor/nobles/20001.jpg"');
+    expect(html).toContain('src="/images/splendor/nobles/doctor-noble-portrait.webp"');
   });
 
   it('Jaipur previews only the face-up reward and shows the sale bonus reveal', () => {
@@ -370,7 +370,7 @@ describe('private noble artwork injection', () => {
         expect(html).toContain('blob:doctor-fixture');
         expect(html).toContain('blob:hanbok-fixture');
         expect(html).toContain('/images/splendor/nobles/20003.jpg');
-        expect(html).not.toContain('/images/splendor/nobles/20001.jpg');
+        expect(html).not.toContain('/images/splendor/nobles/doctor-noble-portrait.webp');
         expect(html).not.toContain('blob:invalid-fixture');
       }
       expect(splendorNobleArtSrc('unknown')).toBeNull();
@@ -379,6 +379,6 @@ describe('private noble artwork injection', () => {
       expect(guide).toContain('4 +');
       expect(JSON.stringify(view)).toBe(before);
     } finally { vi.unstubAllGlobals(); }
-    expect(splendorNobleArtSrc('n0')).toBe('/images/splendor/nobles/20001.jpg');
+    expect(splendorNobleArtSrc('n0')).toBe('/images/splendor/nobles/doctor-noble-portrait.webp');
   });
 });

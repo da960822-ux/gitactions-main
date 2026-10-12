@@ -2,7 +2,7 @@ import { useEffect, useRef, useState } from 'react';
 import type { GameAction, Language, PlayerId } from '../core/types';
 import { GameValue } from './GameValue';
 import { playCue } from '../audio/audio';
-import { getPrivateJokerPortraits, type JokerPortraits } from './private-game-art';
+import { getJokerPortraits, type JokerPortraits } from './private-game-art';
 import '../styles/davinci-premium.css';
 
 type Choice = { label: Record<Language, string>; action: GameAction };
@@ -97,7 +97,7 @@ export function deriveDaVinciVisualEvent(previous: { viewer: PlayerId; view: any
   return { key: `${viewer}:${type}:${snapshot}:${Number(record(next?.board?.lastEvent).sequence ?? 0)}`, snapshot, viewer, type, ...(index === undefined ? {} : { index }), ...(value === undefined || (value !== 'joker' && !Number.isFinite(value)) ? {} : { value }), ...(guess === undefined ? {} : { guess }), ...(actor ? { actor } : {}) };
 }
 
-export default function DaVinciTable({ view, language, playerId, runAction, jokerPortraits = getPrivateJokerPortraits() }: DaVinciTableProps) {
+export default function DaVinciTable({ view, language, playerId, runAction, jokerPortraits = getJokerPortraits() }: DaVinciTableProps) {
   const board = record(view?.board), rival: Tile[] = list(board.opponentTiles), own: Tile[] = list(view?.hand);
   const choices: Choice[] = list(view?.actions), guessChoices = choices.filter(choice => choice.action.type === 'guess');
   const hidden = rival.map((tile, index) => ({ tile, index })).filter(item => !item.tile?.revealed);

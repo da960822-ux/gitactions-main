@@ -1,0 +1,94 @@
+{
+  "sourceRevision": "0be54b63f3e053cb6367fd099421b8799ba2d191",
+  "approval": "User explicitly approved public transfer of these four generated drawings; original live-action photos excluded",
+  "policy": "WebP quality92; preserve full composition/aspect ratio, no crop or new artwork. Original PNGs preserved in source branch.",
+  "davinciJokers": {
+    "black": "/images/davinci/joker-couple-waterfront.webp",
+    "white": "/images/davinci/joker-couple-indoor.webp"
+  },
+  "splendorNobles": {
+    "n0": "/images/splendor/nobles/doctor-noble-portrait.webp",
+    "n1": "/images/splendor/nobles/hanbok-noble-frontal.webp"
+  },
+  "assets": [
+    {
+      "id": "davinci-black",
+      "path": "/images/davinci/joker-couple-waterfront.webp",
+      "sourcePath": "asset-handoff/personalization/joker-couple-waterfront.png",
+      "sourceBytes": 2601933,
+      "sourceSha256": "958801d14ad06d5e2c1a2a2973da669cc04a034a8be4f051b1f6f15e695b3c93",
+      "sourceGitBlobSha": "0234cbb0c984b1bfd7322d7179af6ced2be0f69c",
+      "sourceDimensions": [
+        1024,
+        1536
+      ],
+      "dimensions": [
+        512,
+        768
+      ],
+      "bytes": 101752,
+      "sha256": "9608e70d1ea3b92a3b543816c8c8b601584e76e2c0c87d67509fcee12e8d1ef6",
+      "pixelInspection": "approved original PNG and optimized WebP personally visually inspected; in-game QA pending"
+    },
+    {
+      "id": "davinci-white",
+      "path": "/images/davinci/joker-couple-indoor.webp",
+      "sourcePath": "asset-handoff/personalization/joker-couple-indoor.png",
+      "sourceBytes": 2806565,
+      "sourceSha256": "38f37f202b37a026513d55b031f1d74962eca7fbd6df86bc62a6100038394146",
+      "sourceGitBlobSha": "a46e4f4e771a60476ebba788c8d697d55db36c9b",
+      "sourceDimensions": [
+        1024,
+        1536
+      ],
+      "dimensions": [
+        512,
+        768
+      ],
+      "bytes": 110412,
+      "sha256": "e1c2079e80fa59b89073c6bd46095e8df781cdf33d363790b5e6488c0296d8ed",
+      "pixelInspection": "approved original PNG and optimized WebP personally visually inspected; in-game QA pending"
+    },
+    {
+      "id": "splendor-n0",
+      "path": "/images/splendor/nobles/doctor-noble-portrait.webp",
+      "sourcePath": "asset-handoff/personalization/doctor-noble-portrait.png",
+      "sourceBytes": 2937897,
+      "sourceSha256": "b4a76d5800cad0ffab8e532ed9d490bdf3f7ea5db96e646e9a4af009167dddc4",
+      "sourceGitBlobSha": "d90a83d59b5ff30feb23e805b35ffc8b12496999",
+      "sourceDimensions": [
+        1122,
+        1402
+      ],
+      "dimensions": [
+        512,
+        640
+      ],
+      "bytes": 98564,
+      "sha256": "4139259123b3a3cadb8d81139dc32e9dc6b8c4dede394ea5dd1cd5b2ffdf5e83",
+      "pixelInspection": "approved original PNG and optimized WebP personally visually inspected; in-game QA pending"
+    },
+    {
+      "id": "splendor-n1",
+      "path": "/images/splendor/nobles/hanbok-noble-frontal.webp",
+      "sourcePath": "asset-handoff/personalization/hanbok-noble-frontal.png",
+      "sourceBytes": 3046655,
+      "sourceSha256": "debcad8ce55e61683a6005f8a361d51768368f770570a8c93dcbfa7873aa0ee1",
+      "sourceGitBlobSha": "b74c5d89b57f0de6564c34ffc0388b8cc762fa16",
+      "sourceDimensions": [
+        1122,
+        1402
+      ],
+      "dimensions": [
+        512,
+        640
+      ],
+      "bytes": 131038,
+      "sha256": "b26090b576bf2b1d46e962666ed6ecfc91c3fb91a709628484c280ab0a8f4d7e",
+      "pixelInspection": "approved original PNG and optimized WebP personally visually inspected; in-game QA pending"
+    }
+  ],
+  "originalBytes": 11393050,
+  "runtimeBytes": 441766,
+  "oldMarble33Unchanged": true
+}
