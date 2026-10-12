@@ -1,0 +1,15 @@
+Continuous landing gameplay/interaction capture
+
+Source SHA: 1c68c5eaed22568218f835565541eccdb3564274
+Implementation branch: local/lusion-space-restart-20261012
+Source preview: production landing preview built from the source SHA above
+Media branch: local/landing-review-media-20261012
+Video: landing-motion-1440x900.mp4
+Video SHA-256: c4629fe4a27bad24be21981437d8c158b3d2212d981cf2464f51a7c62b417bb3
+Duration: 241.76 seconds
+Encoding: H.264 / MP4, 1440x900, 25 fps
+Capture: 2026-10-12 UTC, Chromium headless (/usr/bin/chromium), viewport 1440x900, DPR 1, prefers-reduced-motion=no-preference, software WebGL; /dev/dri was unavailable.
+Input: Playwright pointer and wheel input. A small capture-only pointer ring overlay makes headless pointer position visible; pointer-events:none.
+Sequence: cold entry/reveal; hover and 170x78px balloon drag/release spring; continuous scroll 0 to 720px and reverse; KO/ES switching; Spanish letter open, settle, close, envelope return.
+Validation: drag offset reached approximately 169.47x78.01px and returned to zero; scroll progress reached 1 then 0; Spanish letter reached phase 1 with five paragraphs; close returned to phase 0; page errors: none.
+Scope: desktop capture only. No physical GPU or mobile-browser behavior is certified.
