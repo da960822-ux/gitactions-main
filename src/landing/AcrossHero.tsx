@@ -5,6 +5,8 @@ import {INTRO_SECONDS,introPose,smoothRange,type FoldPose} from './cinematic/fol
 import './across-hero.css';
 
 gsap.registerPlugin(ScrollTrigger);
+// Re-export the shared scene after this art-direction review; never play the rejected world's film.
+const SHARED_INTRO_FILM_READY=false;
 export function AcrossHero({language}:{language:'ko'|'es'}){
  const section=useRef<HTMLElement>(null),canvas=useRef<HTMLCanvasElement>(null),video=useRef<HTMLVideoElement>(null),copy=useRef<HTMLDivElement>(null),destination=useRef<HTMLDivElement>(null);
  const [ready,setReady]=useState(false),[filmVisible,setFilmVisible]=useState(false),[introActive,setIntroActive]=useState(()=>!matchMedia('(prefers-reduced-motion: reduce)').matches&&!sessionStorage.getItem('folded-playhouse-seen')&&!location.hash);
@@ -61,7 +63,7 @@ export function AcrossHero({language}:{language:'ko'|'es'}){
    <div className="folded-backdrop" aria-hidden="true"/>
    <img className={`folded-portrait-fallback${ready?' is-ready':''}`} src="/images/yeonseok-lisbeth-cutout.webp" alt="" aria-hidden="true" fetchPriority="high"/>
    <canvas ref={canvas} className="across-canvas" role="img" aria-label={es?'Yeonseok y Lisbeth, juntos en un escenario que se abre hacia otro espacio':'다음 공간으로 펼쳐지는 무대에 함께 있는 연석과 리스벳'}/>
-   <video ref={video} className={`folded-intro-film${filmVisible?' is-visible':''}`} src={`/motion/folded-playhouse-intro-${film}.mp4`} muted playsInline preload="auto" aria-hidden="true" onEnded={()=>skip.current()} onError={()=>filmFailure.current()}/>
+   <video ref={video} className={`folded-intro-film${filmVisible?' is-visible':''}`} src={SHARED_INTRO_FILM_READY?`/motion/folded-playhouse-intro-${film}.mp4`:undefined} muted playsInline preload="auto" aria-hidden="true" onEnded={()=>skip.current()} onError={()=>filmFailure.current()}/>
    <div ref={copy} className="across-editorial">
     <p className="folded-dedication">YEONSEOK <span aria-hidden="true">♡</span> LISBETH <i>04.04.2025</i></p>
     <h1 id="hero-title"><span className="across-title-line folded-baby">Baby,</span><span className="across-title-line">{es?'¡lo hice':'이거 내가'}</span><span className="across-title-line">{es?'para ti!':'만들었어!'}</span></h1>

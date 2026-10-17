@@ -4,7 +4,7 @@ describe('folded-world deterministic scene contract',()=>{
  it('passes beside the portrait instead of through its plane',()=>{
   for(const mobile of [false,true])for(let i=0;i<=1000;i++){
    const [x,,z]=cameraPose(i/1000,1,mobile).position;
-   if(Math.abs(z-.05)<.3)expect(x).toBeGreaterThan(1.85+5.9/2+.15);
+   if(Math.abs(z-.05)<.3)expect(x).toBeLessThan(1.85-5.9/2-.15);
   }
  });
  it('uses the exact stable pose at the exported final intro frame',()=>{
@@ -24,7 +24,7 @@ describe('folded-world deterministic scene contract',()=>{
   for(const [i,p]of [...samples].reverse().entries())expect(cameraPose(p,1,false)).toEqual(forward[forward.length-1-i]);
  });
  it('keeps position and sightline continuous at every camera keyframe',()=>{
-  for(const mobile of [false,true])for(const p of [.2,.45,.72]){
+  for(const mobile of [false,true])for(const p of [.2,.35,.5,.65,.85]){
    const a=cameraPose(p-.00001,1,mobile),b=cameraPose(p+.00001,1,mobile);
    for(let i=0;i<3;i++){expect(Math.abs(a.position[i]-b.position[i])).toBeLessThan(.002);expect(Math.abs(a.target[i]-b.target[i])).toBeLessThan(.002);}
   }
