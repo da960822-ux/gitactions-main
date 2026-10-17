@@ -11,3 +11,7 @@
 /* The lightwell stays to the right of the arrival copy. */
 @media(min-width:761px){.folded-destination{align-items:flex-start;text-align:left;padding-left:8%;padding-right:54%;text-shadow:0 2px 24px #06101a}.folded-destination h2{font-size:clamp(52px,4.7vw,90px)}}
 .landing:has(.folded-playhouse)>.landing-nav{background:linear-gradient(#0d151fe8,#0d151f00)}
+
+.folded-side-note{color:#311c25;opacity:.8;text-shadow:0 1px 8px #f3e8db55}.folded-side-note i{background:#40243166}
+
+@media(min-width:761px){.folded-destination{padding-left:5.8%}.folded-destination h2{font-size:clamp(48px,4.3vw,82px)}.folded-destination a{background:#23121de8;border:1px solid #e0bbab44;padding:13px 20px;min-height:48px;border-radius:2px}}
