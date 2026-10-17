@@ -1,6 +1,7 @@
 import { useEffect, useLayoutEffect, useRef, useState, type CSSProperties } from 'react';
 import art from '../../public/images/splendor/card-map.json';
 import { SplendorGem } from './SplendorGem';
+import { SplendorArtwork } from './SplendorArtwork';
 import { getPrivateNoblePortrait } from './private-game-art';
 import { playCue, type AudioCue } from '../audio/audio';
 
@@ -148,7 +149,7 @@ export function SplendorMotion({ scope, version, viewer, event }: { scope: strin
   }, [event, scope, version, viewer]);
   return <span ref={marker} className="sp-motion-layer" aria-hidden="true">{flights.map(flight => {
     const from = center(flight.from), to = center(flight.to), width = flight.gem ? 22 : Math.min(flight.from.width, 90), height = flight.kind === 'card' ? width * 1.4 : width;
-    return <span key={flight.id} className={`sp-confirmed-flight sp-confirmed-${flight.kind}`} data-motion-kind={flight.kind} style={{ left: from.x - width / 2, top: from.y - height / 2, width, height, '--sp-dx': `${to.x - from.x}px`, '--sp-dy': `${to.y - from.y}px`, '--sp-delay': `${flight.delay}ms` } as CSSProperties} onAnimationEnd={() => { if (flight.cue) landingCue(flight.id, flight.cue); setFlights(current => current.filter(item => item.id !== flight.id)); }}>{flight.gem ? <><SplendorGem gem={flight.gem}/><b className="sp-flight-count">×{flight.count}</b></> : <img src={flight.src} alt=""/>}</span>;
+    return <span key={flight.id} className={`sp-confirmed-flight sp-confirmed-${flight.kind}`} data-motion-kind={flight.kind} style={{ left: from.x - width / 2, top: from.y - height / 2, width, height, '--sp-dx': `${to.x - from.x}px`, '--sp-dy': `${to.y - from.y}px`, '--sp-delay': `${flight.delay}ms` } as CSSProperties} onAnimationEnd={() => { if (flight.cue) landingCue(flight.id, flight.cue); setFlights(current => current.filter(item => item.id !== flight.id)); }}>{flight.gem ? <><SplendorGem gem={flight.gem}/><b className="sp-flight-count">×{flight.count}</b></> : flight.src && <SplendorArtwork src={flight.src}/>}</span>;
   })}</span>;
 }
 
@@ -156,7 +157,7 @@ function readPositions(root: Element) {
   const next = new Map<string, Box>();
   root.querySelectorAll('[data-card-id], [data-sp-noble-id]').forEach(node => {
     const id = node.getAttribute('data-card-id') ?? `noble:${node.getAttribute('data-sp-noble-id')}`;
-    const face = node.querySelector('.sp-card-face,.sp-reserved-art img,.sp-noble-art img') ?? node;
+    const face = node.querySelector('.sp-card-face,.sp-reserved-art .sp-artwork,.sp-noble-art .sp-artwork') ?? node;
     const rect = face.getBoundingClientRect();
     next.set(id, { left: rect.left, top: rect.top, width: rect.width, height: rect.height });
   });

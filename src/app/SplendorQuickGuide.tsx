@@ -1,6 +1,7 @@
 import art from '../../public/images/splendor/card-map.json';
 import type { Language } from '../core/types';
 import { SplendorGem } from './SplendorGem';
+import { SplendorArtwork } from './SplendorArtwork';
 import { getPrivateNoblePortrait } from './private-game-art';
 
 const exampleCard = art.cards.find(card => card.engineId === 't1-01')!;
@@ -26,7 +27,7 @@ export function SplendorQuickGuide({ language, desktopDisplay = true }: { langua
       </li>
       <li>
         <figure className="quick-guide-image">
-          <img src={`/images/splendor/${exampleCard.src}`} alt={text('1단계 1점 카드: 초록 보석 4개 비용, 흰색 보너스 +1','Carta de nivel 1 de 1 punto: cuesta 4 gemas verdes y da +1 blanco')}/>
+          <SplendorArtwork src={`/images/splendor/${exampleCard.src}`} label={text('1단계 1점 카드: 초록 보석 4개 비용, 흰색 보너스 +1','Carta de nivel 1 de 1 punto: cuesta 4 gemas verdes y da +1 blanco')}/>
           <figcaption>{text('초록 4 → 흰색 보너스 +1 · 1점','4 verdes → blanca +1 · 1 punto')}</figcaption>
         </figure>
         {desktopDisplay && <div className="sp-guide-purchase-flow" aria-label={text('첫 구매 예시: 비용에서 영구 보너스를 빼고 카드와 보너스를 얻어요','Ejemplo de primera compra: resta bonificaciones y ganas la carta y su bonificación')}>
@@ -44,7 +45,7 @@ export function SplendorQuickGuide({ language, desktopDisplay = true }: { langua
       </li>
       <li>
         <figure className="quick-guide-image">
-          <img src={getPrivateNoblePortrait(exampleNoble.engineId) ?? `/images/splendor/${exampleNoble.src}`} alt={text('흰색 4개와 파랑 4개 보너스로 방문하는 귀족','Noble que requiere 4 bonificaciones blancas y 4 azules')}/>
+          <SplendorArtwork src={getPrivateNoblePortrait(exampleNoble.engineId) ?? `/images/splendor/${exampleNoble.src}`} label={text('흰색 4개와 파랑 4개 보너스로 방문하는 귀족','Noble que requiere 4 bonificaciones blancas y 4 azules')}/>
           <figcaption className="quick-guide-gems" aria-hidden="true"><SplendorGem gem="white"/> 4 + <SplendorGem gem="blue"/> 4 → 3 {text('점','pts')}</figcaption>
         </figure>
         <h3>{text('귀족과 마지막 차례','Nobles y final')}</h3>

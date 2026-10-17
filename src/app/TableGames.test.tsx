@@ -211,8 +211,8 @@ describe('TableGames public-state interaction guidance', () => {
       }, actions: [],
     });
     expect(html).toContain('data-art-src="/images/splendor/cards/01.jpg"');
-    expect(html).toContain('src="/images/splendor/cards/01.jpg"');
-    expect(html).toContain('src="/images/splendor/nobles/doctor-noble-portrait.webp"');
+    expect(html).toContain('href="/images/splendor/cards/01.jpg"');
+    expect(html).toContain('href="/images/splendor/nobles/doctor-noble-portrait.webp"');
   });
 
   it('Jaipur previews only the face-up reward and shows the sale bonus reveal', () => {
