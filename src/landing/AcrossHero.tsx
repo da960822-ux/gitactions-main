@@ -45,7 +45,6 @@ export function AcrossHero({language}:{language:'ko'|'es'}){
    if(copy.current){const copyExit=copy.current.querySelector(':focus-visible')?0:exit;copy.current.style.opacity=String(1-copyExit);copy.current.style.transform=`translate3d(${-copyExit*90}px,${-copyExit*65}px,${copyExit*320}px)`;copy.current.style.pointerEvents=copyExit>.98?'none':'auto';copy.current.inert=copyExit>.98;}
    titleLines.forEach((line,index)=>{const a=smoothRange(.12+index*.1,.42+index*.13,pose.entrance);line.style.opacity=String(a);line.style.transform=`translateY(${(1-a)*22}px)`;});
    if(destination.current){destination.current.style.opacity=String(appear);destination.current.style.transform=`translate3d(0,${(1-appear)*35}px,0)`;destination.current.inert=appear<.95;}
-   host.style.setProperty('--entry',String(pose.entrance));
   };
   void import('./cinematic/folded/world').then(async({createFoldedWorld})=>{
    if(disposed)return;world=createFoldedWorld(screen,{width:screen.clientWidth,height:screen.clientHeight,pixelRatio:Math.min(devicePixelRatio,innerWidth<760?1.25:1.5),portrait:'/images/yeonseok-lisbeth-cutout.webp',surfaceFilm:'/motion/folded-playhouse-lightwell.mp4',onFrame:data=>Object.assign(screen.dataset,data)});

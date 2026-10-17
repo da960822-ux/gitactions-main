@@ -1,0 +1,355 @@
+{
+  "version": "chamber-v6.1",
+  "generatorSha256": "1ca42bf4317f0db207823c8e0ffca831c53dc0c6733b581112595e998defba8e",
+  "authorBlendSha256": "8f0d5245c87da13497d0fb56f5930e1f25966ed88d788d4cac4c1faadbf0d5d9",
+  "bakedBlendSha256": "867da0a729fbaf0cfa786b8ee9ba9ca8058f600e7a193823b990deae055503d0",
+  "blender": "4.3.2",
+  "bakeDevice": "CPU",
+  "bakeSamples": 48,
+  "normalSpace": "TANGENT",
+  "normalUV": "TEXCOORD_0",
+  "environmentOrientation": "axis-calibrated horizontal remap; +X u=.5, +Z u=.75, +Y v=1",
+  "lightmapQuantity": "outgoingDiffusePerUnitAlbedo",
+  "storageScale": 1,
+  "unitToIrradiance": 3.141592653589793,
+  "poseSamples": [
+    0,
+    0.65,
+    1
+  ],
+  "records": [
+    {
+      "node": "Shared_Sculpted_Cove",
+      "progress": 0,
+      "file": "shell-diffuse-0.exr",
+      "size": 2048,
+      "maxLinear": 10.739459991455078
+    },
+    {
+      "node": "Shared_Light_Chamber",
+      "progress": 0,
+      "file": "room-diffuse-0.exr",
+      "size": 2048,
+      "maxLinear": 10.958479881286621
+    },
+    {
+      "node": "Shared_Sculpted_Foreground",
+      "progress": 0,
+      "file": "foreground-diffuse-0.exr",
+      "size": 1024,
+      "maxLinear": 1.1735957860946655
+    },
+    {
+      "node": "Shared_Unfolding_Canopy",
+      "progress": 0,
+      "file": "canopy-diffuse-0.exr",
+      "size": 2048,
+      "maxLinear": 19.27616310119629
+    },
+    {
+      "node": "Shared_Sculpted_Cove",
+      "progress": 0.65,
+      "file": "shell-diffuse-0_65.exr",
+      "size": 2048,
+      "maxLinear": 13.79512882232666
+    },
+    {
+      "node": "Shared_Light_Chamber",
+      "progress": 0.65,
+      "file": "room-diffuse-0_65.exr",
+      "size": 2048,
+      "maxLinear": 9.96617317199707
+    },
+    {
+      "node": "Shared_Sculpted_Foreground",
+      "progress": 0.65,
+      "file": "foreground-diffuse-0_65.exr",
+      "size": 1024,
+      "maxLinear": 1.0
+    },
+    {
+      "node": "Shared_Unfolding_Canopy",
+      "progress": 0.65,
+      "file": "canopy-diffuse-0_65.exr",
+      "size": 2048,
+      "maxLinear": 19.17646598815918
+    },
+    {
+      "node": "Shared_Sculpted_Cove",
+      "progress": 1,
+      "file": "shell-diffuse-1.exr",
+      "size": 2048,
+      "maxLinear": 14.250442504882812
+    },
+    {
+      "node": "Shared_Light_Chamber",
+      "progress": 1,
+      "file": "room-diffuse-1.exr",
+      "size": 2048,
+      "maxLinear": 9.85204029083252
+    },
+    {
+      "node": "Shared_Sculpted_Foreground",
+      "progress": 1,
+      "file": "foreground-diffuse-1.exr",
+      "size": 1024,
+      "maxLinear": 1.0
+    },
+    {
+      "node": "Shared_Unfolding_Canopy",
+      "progress": 1,
+      "file": "canopy-diffuse-1.exr",
+      "size": 2048,
+      "maxLinear": 19.16633415222168
+    }
+  ],
+  "files": {
+    "room-diffuse-1.exr": {
+      "sha256": "958f9a4437b5db276979dc96d0c20c14bedc191154f1279454eb359308c8f88d",
+      "bytes": 9159071
+    },
+    "shell-normal.png": {
+      "sha256": "0173a0192534838d0946604aea190eb246580693b244efed7ef2b8dcf5342616",
+      "bytes": 193850
+    },
+    "canopy-normal.png": {
+      "sha256": "027804cddfdcc6ef2ae81d1a1ee740a87bd769422b8af7456a6c926baee28ac8",
+      "bytes": 177112
+    },
+    "foreground-diffuse-1.exr": {
+      "sha256": "aa2f33c79cb649109639eba6a28e5cf40d50fd7ec1f3388534209f577653039b",
+      "bytes": 1650291
+    },
+    "room-diffuse-0.exr": {
+      "sha256": "ea71d260af31ccc381615e75463c0254d6e3d54f76b0a19b8532728345f9b3c1",
+      "bytes": 9021884
+    },
+    "foreground-diffuse-0_65.exr": {
+      "sha256": "185e71cf534a98ab339edd472d1395f8c72cd1e80c19138e29a0bd6ccf62e5b0",
+      "bytes": 1655199
+    },
+    "shell-diffuse-1.exr": {
+      "sha256": "45005f03342cb19562e69c898bc6c9232b9051c7288c6f3ab18f98eccd20d975",
+      "bytes": 8237117
+    },
+    "hero-environment.hdr": {
+      "sha256": "6cf84f1aac7a2fd5824af94ef413ed8b91f38d9fba63c9f5c62e503f5b42a2d8",
+      "bytes": 1084489
+    },
+    "arrival-environment.hdr": {
+      "sha256": "ac8ca9ba76eb4dff8b61479ff2d0733c39d63bfde491b95e05126f1c1a80278e",
+      "bytes": 1608380
+    },
+    "chamber.glb": {
+      "sha256": "5a7dd3aae5b4dd0352c762e656a8573933b435ea037b9aff64ad8dc54bde0129",
+      "bytes": 9050984
+    },
+    "accent-normal.png": {
+      "sha256": "f31cd096ea44f7f51b51b0d23a138c0f5fbcad59ee3492655113ae54094b1221",
+      "bytes": 28232
+    },
+    "canopy-diffuse-1.exr": {
+      "sha256": "6d58afac86bd769e3bb1ee68342552ca79b8a92b49bc4df346554aa19c2ac3eb",
+      "bytes": 9006846
+    },
+    "foreground-normal.png": {
+      "sha256": "00fb5b4fcca156b2ebd8772761218d8314a0981fdf1205d65f0f839397c82f3d",
+      "bytes": 21207
+    },
+    "foreground-diffuse-0.exr": {
+      "sha256": "77d65f7725126bbb1e6ca6ec46a42548b297c41a8d4634dafa4297121d399eb4",
+      "bytes": 1691655
+    },
+    "shell-diffuse-0.exr": {
+      "sha256": "6d75050d3d7bb6dba3f3c965c957347d0409053b3c45deca636cfcd288387fce",
+      "bytes": 8365925
+    },
+    "room-diffuse-0_65.exr": {
+      "sha256": "3130ee648c5e9ac105166431ece4a959438dd55e8f487427ae1dcff2562d4cb1",
+      "bytes": 9133161
+    },
+    "canopy-diffuse-0.exr": {
+      "sha256": "7588412c072f865aa145735dadb8f60e3a140bc5d5cc068012772ccdc48923a1",
+      "bytes": 8711864
+    },
+    "shell-diffuse-0_65.exr": {
+      "sha256": "46d9c3a67797d3c4d01dce3be250734a1b0ed69519e5fc61c7e4a9b1a45ab24f",
+      "bytes": 8163971
+    },
+    "room-normal.png": {
+      "sha256": "a64f6f11b43a9dcc9e1a806f9a7b8a0b0c56298d7a8880d0a631591703ca2491",
+      "bytes": 435207
+    },
+    "canopy-diffuse-0_65.exr": {
+      "sha256": "8d5ead153d6b82f3e3b8e2e47924b3b5847b73996afeea4518204c6d136e4302",
+      "bytes": 8612053
+    },
+    "wine-environment.hdr": {
+      "sha256": "ef8b7f2342b89926ffae55f590db99b1084fc6dd847bb6daa4740eed88acf07c",
+      "bytes": 1145563
+    }
+  },
+  "runtimeTextureTransfer": {
+    "diffuseEXRFlipY": true,
+    "normalPNGFlipY": false,
+    "UV": "TEXCOORD_0",
+    "normalYWithoutTangents": -1,
+    "evidence": "four-corner WebGL float readback; UV0 unchanged"
+  },
+  "postprocess": {
+    "tool": "Intel Open Image Denoise 2.5.1",
+    "filter": "RTLightmap",
+    "device": "CPU",
+    "input": "linear HDR diffuse; alpha preserved; no tone mapping",
+    "source": "https://www.openimagedenoise.org/downloads.html",
+    "binarySha256": "1cb3a28ebc99b90d7548b0b8b16f70c163cb59abe8582458a254aa303338269c",
+    "scriptSha256": "3d5fccd8fd7086a615317b942500eb84c65e9c47f4fbe7ef8541e29c02cc48d0",
+    "records": [
+      {
+        "file": "shell-diffuse-0.exr",
+        "rawSha256": "806bc554ae44449397143c517ec09ec5907bb71f12e0ec3b9bb3b411cdd6b84c",
+        "maxRawRGB": 10.7421875,
+        "maxDenoisedRGB": 7.486467361450195,
+        "meanRaw": 0.12777818739414215,
+        "meanDenoised": 0.12788930535316467,
+        "energyRatio": 1.0008696160220192,
+        "meanAbsoluteChange": 0.012898191809654236,
+        "normalAndUVChanged": false
+      },
+      {
+        "file": "room-diffuse-0.exr",
+        "rawSha256": "71041393c83f9362a1f2348f5d690f8ae1405081c8e47a216776595023a7294a",
+        "maxRawRGB": 10.9609375,
+        "maxDenoisedRGB": 3.8334105014801025,
+        "meanRaw": 0.07642123848199844,
+        "meanDenoised": 0.07619606703519821,
+        "energyRatio": 0.9970535488396557,
+        "meanAbsoluteChange": 0.005654993932694197,
+        "normalAndUVChanged": false
+      },
+      {
+        "file": "foreground-diffuse-0.exr",
+        "rawSha256": "ebc5ef91d2bed2d5c658d08deefb1a1b2a4a21fd37a73ebd5129ee9338b68792",
+        "maxRawRGB": 1.173828125,
+        "maxDenoisedRGB": 1.1358722448349,
+        "meanRaw": 0.042085763067007065,
+        "meanDenoised": 0.042185600847005844,
+        "energyRatio": 1.0023722459264863,
+        "meanAbsoluteChange": 0.002222975017502904,
+        "normalAndUVChanged": false
+      },
+      {
+        "file": "canopy-diffuse-0.exr",
+        "rawSha256": "b0794c73141824a677844175e231ebd50ef9e877107c25d2470a27bfd9879ff4",
+        "maxRawRGB": 19.28125,
+        "maxDenoisedRGB": 18.447790145874023,
+        "meanRaw": 0.12586936354637146,
+        "meanDenoised": 0.1258404701948166,
+        "energyRatio": 0.999770449688941,
+        "meanAbsoluteChange": 0.016025302931666374,
+        "normalAndUVChanged": false
+      },
+      {
+        "file": "shell-diffuse-0_65.exr",
+        "rawSha256": "f522c7f5d69602fb427eba18e77f1e52786ea375ed660d7f9d640a0ff4b32241",
+        "maxRawRGB": 13.796875,
+        "maxDenoisedRGB": 11.568002700805664,
+        "meanRaw": 0.16084252297878265,
+        "meanDenoised": 0.16097503900527954,
+        "energyRatio": 1.0008238867685155,
+        "meanAbsoluteChange": 0.017919091507792473,
+        "normalAndUVChanged": false
+      },
+      {
+        "file": "room-diffuse-0_65.exr",
+        "rawSha256": "7f2392b4a17052abd2832210e9e5f74413b0df165dd2e3aeb166bddcbc625b72",
+        "maxRawRGB": 9.96875,
+        "maxDenoisedRGB": 3.8142080307006836,
+        "meanRaw": 0.07798195630311966,
+        "meanDenoised": 0.07777353376150131,
+        "energyRatio": 0.9973272978583893,
+        "meanAbsoluteChange": 0.00585178704932332,
+        "normalAndUVChanged": false
+      },
+      {
+        "file": "foreground-diffuse-0_65.exr",
+        "rawSha256": "f29abcad0dbce0b8d40ee37f0ccf0da7ebc1b70798a4c0cbf1b9316a603103ec",
+        "maxRawRGB": 0.75341796875,
+        "maxDenoisedRGB": 0.7669833898544312,
+        "meanRaw": 0.024416297674179077,
+        "meanDenoised": 0.024477435275912285,
+        "energyRatio": 1.0025039669219737,
+        "meanAbsoluteChange": 0.001501916442066431,
+        "normalAndUVChanged": false
+      },
+      {
+        "file": "canopy-diffuse-0_65.exr",
+        "rawSha256": "06ee0e4672fd79749f48166f5e36394c45bcf1d42673e0526131d940da60e5ea",
+        "maxRawRGB": 19.171875,
+        "maxDenoisedRGB": 18.456100463867188,
+        "meanRaw": 0.10861799120903015,
+        "meanDenoised": 0.10859578102827072,
+        "energyRatio": 0.9997955202401351,
+        "meanAbsoluteChange": 0.013803187757730484,
+        "normalAndUVChanged": false
+      },
+      {
+        "file": "shell-diffuse-1.exr",
+        "rawSha256": "d5b11d591b6959a90adce98e8c1ad108f8d32177fbf56ed7400d255f58a683c3",
+        "maxRawRGB": 14.25,
+        "maxDenoisedRGB": 11.80245590209961,
+        "meanRaw": 0.189383402466774,
+        "meanDenoised": 0.1895606964826584,
+        "energyRatio": 1.0009361644873578,
+        "meanAbsoluteChange": 0.019970430061221123,
+        "normalAndUVChanged": false
+      },
+      {
+        "file": "room-diffuse-1.exr",
+        "rawSha256": "2cc17a85f55003cf7a81cfc55d6aaa74304819a57f8e8291e0e4a77467a9289c",
+        "maxRawRGB": 9.8515625,
+        "maxDenoisedRGB": 3.8184988498687744,
+        "meanRaw": 0.07686293125152588,
+        "meanDenoised": 0.07663725316524506,
+        "energyRatio": 0.997063889151686,
+        "meanAbsoluteChange": 0.006381886079907417,
+        "normalAndUVChanged": false
+      },
+      {
+        "file": "foreground-diffuse-1.exr",
+        "rawSha256": "dba448a7e19658892b0c77d280a83eafda0a75a789544ccd5af73a40ad8caa2f",
+        "maxRawRGB": 0.68310546875,
+        "maxDenoisedRGB": 0.6758440732955933,
+        "meanRaw": 0.021624935790896416,
+        "meanDenoised": 0.02167472057044506,
+        "energyRatio": 1.002302193173198,
+        "meanAbsoluteChange": 0.0013767555356025696,
+        "normalAndUVChanged": false
+      },
+      {
+        "file": "canopy-diffuse-1.exr",
+        "rawSha256": "8a3d0c5458f0f5827c25ab1edee131089ab2c619d05f66d7fef4891577385850",
+        "maxRawRGB": 19.171875,
+        "maxDenoisedRGB": 18.317089080810547,
+        "meanRaw": 0.0879761204123497,
+        "meanDenoised": 0.0879419669508934,
+        "energyRatio": 0.9996117871384165,
+        "meanAbsoluteChange": 0.010055097751319408,
+        "normalAndUVChanged": false
+      }
+    ]
+  },
+  "receiverProbeCorrection": {
+    "revision": 2,
+    "receiver": "Deep burgundy mineral",
+    "probePosition": [
+      -10,
+      -2.7,
+      -5
+    ],
+    "sourceBlendSHA256": "8f0d5245c87da13497d0fb56f5930e1f25966ed88d788d4cac4c1faadbf0d5d9",
+    "scriptSHA256": "d8c22af4e8f10ef8b931cdd0b7687e6849a5cc1f5972596a0eb81898bd6f234b",
+    "samples": 32,
+    "note": "Same geometry and illumination; local receiver probe replaces the unrelated central view for wine specular. GI and normal files unchanged."
+  }
+}
