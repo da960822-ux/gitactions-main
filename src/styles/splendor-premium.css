@@ -500,9 +500,9 @@
   .sp-splendor .sp-card-details > .sp-bonus-label .sp-gem-icon { width: 19px; height: 19px; }
   .sp-splendor .sp-card-cost-summary { justify-content: flex-start; flex-wrap: wrap; gap: 2px; min-width: 0; max-width: 100%; }
   .sp-splendor .sp-card-cost-label { flex: 0 0 100%; color: #625844; font-size: 10px; font-weight: 800; line-height: 1.1; white-space: nowrap; }
-  .sp-splendor .sp-card-cost-chip { gap: 1px; padding: 1px 2px; border: 1px solid #ded5c0; border-radius: 5px; background: #fffdf7; font-size: 12px; }
+  .sp-splendor .sp-card-cost-chip { gap: 1px; padding: 1px 2px; border: 1px solid #ded5c0; border-radius: 5px; background: #fffdf7; font-size: 13px; }
   .sp-splendor .sp-card-cost-chip .sp-gem-icon { width: 16px; height: 16px; flex-basis: 16px; }
-  .sp-splendor .sp-card-cost-chip b { font-size: 12px; }
+  .sp-splendor .sp-card-cost-chip b { font-size: 13px; }
   .sp-splendor .sp-card-select-hint { overflow: hidden; color: #6a7568; font-size: 9px; line-height: 1.15; text-overflow: ellipsis; white-space: nowrap; }
   .sp-splendor .sp-sidebar:has(.sp-action-panel) > .sp-action-panel { grid-column: 1 / 8; }
   .sp-splendor .sp-sidebar:has(.sp-action-panel) > .sp-bank { grid-column: 8 / -1; }

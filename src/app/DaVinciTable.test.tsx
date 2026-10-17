@@ -143,6 +143,15 @@ describe('DaVinciTable', () => {
     expect(loss).not.toContain('모든 상대 타일을 공개했어요.');
   });
 
+  it('replaces waiting or guessing tools with the result once the game ends', () => {
+    for (const language of ['ko', 'es'] as const) for (const phase of ['waiting', 'guess']) {
+      const html = render({ turn: 'p2', phase, hand: [], board: { opponentTiles: [] }, actions: [], result: { winner: 'p2' } }, 'p1', language);
+      expect(html).not.toContain('dv-number-grid');
+      expect(html).not.toContain('class="dv-waiting"');
+      expect(html).toContain(language === 'ko' ? '<h3>결과</h3>' : '<h3>Resultado</h3>');
+    }
+  });
+
   it('uses an injected private portrait on an own joker and falls back to the rule symbol without it', () => {
     const view = { game: 'davinci', turn: 'p1', phase: 'draw', hand: [{ color: 'black', value: 'joker', revealed: false }], board: { opponentTiles: [{ color: 'white', value: null, revealed: false }], deckCount: 12, turnNumber: 1, tileCount: 26, actionLog: [], lastEvent: null }, actions: [] };
     const html = render(view);

@@ -1,7 +1,7 @@
 {
   "sourceRevision": "0be54b63f3e053cb6367fd099421b8799ba2d191",
   "approval": "User explicitly approved public transfer of the four existing generated drawings and requested the existing caricature cutout for DaVinci jokers; original live-action photos excluded",
-  "policy": "Existing generated drawings remain unchanged. DaVinci jokers are alpha-preserving, lossless crops of the existing caricature cutout; no new artwork. Splendor portraits are WebP quality92 with original PNGs preserved in source branch.",
+  "policy": "Existing generated drawings remain unchanged. DaVinci jokers are lossless WebP derivatives of the approved caricature cutout, with alpha masks shaped from its existing pixels to keep each face whole; no new artwork. Splendor portraits are WebP quality92 with original PNGs preserved in source branch.",
   "davinciJokers": {
     "black": "/images/davinci/joker-yeonseok.webp",
     "white": "/images/davinci/joker-lisbeth.webp"
@@ -62,18 +62,121 @@
         1254
       ],
       "crop": [
-        680,
+        590,
         0,
-        440,
-        520
+        530,
+        640
       ],
       "dimensions": [
-        440,
-        520
+        530,
+        640
       ],
-      "bytes": 186006,
-      "sha256": "cdadec3042628049945650f5642c8d8673bcf31cc66f3f54a38ff318210e7304",
-      "pixelInspection": "Source cutout inspected; only Yeonseok is in this crop. Lossless WebP preserves source pixels and alpha."
+      "bytes": 298828,
+      "sha256": "201ff568b36ba3b1496267c8b6816215fd72c6667f3953e720c9a1749dba1635",
+      "pixelInspection": "At source scale and 50x54 preview, complete forehead, both eyes, mouth, and chin remain visible. The silhouette mask excludes Lisbeth’s face while retaining the source hair strand naturally crossing his cheek. WebP is lossless; source RGB pixels and likeness are unchanged; alpha is shaped from the source.",
+      "maskSourcePolygon": [
+        [
+          706,
+          0
+        ],
+        [
+          951,
+          0
+        ],
+        [
+          1005,
+          45
+        ],
+        [
+          1030,
+          100
+        ],
+        [
+          1065,
+          128
+        ],
+        [
+          1085,
+          195
+        ],
+        [
+          1070,
+          260
+        ],
+        [
+          1092,
+          335
+        ],
+        [
+          1105,
+          430
+        ],
+        [
+          1118,
+          514
+        ],
+        [
+          1085,
+          568
+        ],
+        [
+          1040,
+          603
+        ],
+        [
+          1005,
+          624
+        ],
+        [
+          830,
+          640
+        ],
+        [
+          760,
+          618
+        ],
+        [
+          705,
+          579
+        ],
+        [
+          688,
+          528
+        ],
+        [
+          675,
+          472
+        ],
+        [
+          653,
+          429
+        ],
+        [
+          632,
+          384
+        ],
+        [
+          626,
+          327
+        ],
+        [
+          630,
+          252
+        ],
+        [
+          638,
+          181
+        ],
+        [
+          646,
+          119
+        ],
+        [
+          666,
+          67
+        ]
+      ],
+      "maskEdgeFeatherPx": 1.2
     },
     {
       "id": "davinci-white-lisbeth",
@@ -88,18 +191,145 @@
         1254
       ],
       "crop": [
-        205,
-        120,
-        420,
-        620
+        130,
+        105,
+        570,
+        595
       ],
       "dimensions": [
-        420,
-        620
+        570,
+        595
       ],
-      "bytes": 266606,
-      "sha256": "b67afa3bbec8d5622c4e75c2f4c624403d64631a330861e2df5daac364c54bc6",
-      "pixelInspection": "Source cutout inspected; only Lisbeth is in this crop. Lossless WebP preserves source pixels and alpha."
+      "bytes": 311758,
+      "sha256": "586f699fc2271c23394fea4838b494421ca998733bd782d6c562b00a3d2ece00",
+      "pixelInspection": "At source scale and 50x54 preview, complete forehead, both eyes, mouth, and chin remain visible. The silhouette mask excludes Yeonseok’s face; the selfie phone remains below the face as source context. WebP is lossless; source RGB pixels and likeness are unchanged; alpha is shaped from the source.",
+      "maskSourcePolygon": [
+        [
+          250,
+          131
+        ],
+        [
+          312,
+          112
+        ],
+        [
+          380,
+          130
+        ],
+        [
+          436,
+          160
+        ],
+        [
+          487,
+          184
+        ],
+        [
+          528,
+          215
+        ],
+        [
+          557,
+          254
+        ],
+        [
+          579,
+          291
+        ],
+        [
+          598,
+          326
+        ],
+        [
+          616,
+          360
+        ],
+        [
+          644,
+          397
+        ],
+        [
+          670,
+          430
+        ],
+        [
+          687,
+          475
+        ],
+        [
+          699,
+          533
+        ],
+        [
+          680,
+          574
+        ],
+        [
+          646,
+          611
+        ],
+        [
+          598,
+          645
+        ],
+        [
+          538,
+          670
+        ],
+        [
+          470,
+          686
+        ],
+        [
+          397,
+          698
+        ],
+        [
+          330,
+          700
+        ],
+        [
+          262,
+          692
+        ],
+        [
+          195,
+          674
+        ],
+        [
+          148,
+          646
+        ],
+        [
+          130,
+          600
+        ],
+        [
+          133,
+          517
+        ],
+        [
+          143,
+          440
+        ],
+        [
+          157,
+          365
+        ],
+        [
+          171,
+          302
+        ],
+        [
+          190,
+          241
+        ],
+        [
+          211,
+          185
+        ]
+      ],
+      "maskEdgeFeatherPx": 1.2
     },
     {
       "id": "splendor-n0",

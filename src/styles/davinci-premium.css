@@ -70,6 +70,9 @@
 .dv-tile-white { background: linear-gradient(145deg,#fbf6e8,#d9d3bf); border-color: #c9c3af; }
 .dv-tile-black { background: linear-gradient(145deg,#545958,#282d2e); border-color: #858984; color: #f0eee4; box-shadow: 0 4px 8px #11191c66, inset 0 0 0 2px #ffffff16; }
 .dv-tile > b { font: 700 2rem/1 Georgia,serif; font-variant-numeric: tabular-nums; }
+.dv-tile:not(.dv-joker-preview) > b { grid-row: 2; display: grid; place-items: center; }
+.dv-tile:not(.dv-joker-preview) > .dv-tile-color { grid-row: 3; }
+.dv-tile:not(.dv-joker-preview) > .dv-tile-state { grid-row: 4; }
 .dv-tile-color,.dv-tile-state { color: #596461; font-size: 11px; line-height: 1.1; }
 .dv-tile-black .dv-tile-color,.dv-tile-black .dv-tile-state { color: #d0d1c7; }
 .dv-tile-order { position: absolute; top: 4px; left: 6px; color: #726c5d; font-size: 11px; font-weight: 800; }
@@ -248,7 +251,7 @@ button.dv-tile:disabled { opacity: .78; cursor: default; }
 .dv-joker-preview .dv-joker-portrait { width: 58px; height: 58px; }
 @media (min-width: 1024px) and (pointer: fine) {
   .dv-rack .dv-tile-row { gap: 9px; }
-  .dv-rack .dv-tile-row:not(:has(.dv-tile:nth-child(10))) { justify-content: center; }
+  .dv-rack .dv-tile-row:not(:has(.dv-tile:nth-child(10))) { justify-content: safe center; }
   .dv-rack .dv-tile { flex-basis: 88px; min-height: 118px; padding: 7px 6px; }
   .dv-rack .dv-tile > b { font-size: 2.1rem; }
   .dv-rack .dv-tile .dv-joker-portrait { width: 50px; height: 54px; }

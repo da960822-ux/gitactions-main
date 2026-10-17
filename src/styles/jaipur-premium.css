@@ -290,6 +290,7 @@
 @media (max-width: 560px) {
   .jp-action-tray { width: 100%; flex-basis: auto; }
   .jp-action-tray .jp-primary-action { margin-left: 0; }
+  .jp-exchange-controls .jp-primary-action { flex: 1 1 100%; width: 100%; white-space: normal; }
   .jp-sale-stepper { gap: .35rem; }
   .jp-sale-stepper > span { flex-basis: calc(100% - 130px); }
   .jp-sale-stepper > .jp-primary-action { flex-basis: 100%; order: 3; }
