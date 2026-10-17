@@ -7,7 +7,7 @@ import './across-hero.css';
 gsap.registerPlugin(ScrollTrigger);
 export function AcrossHero({language}:{language:'ko'|'es'}){
  const section=useRef<HTMLElement>(null),canvas=useRef<HTMLCanvasElement>(null),video=useRef<HTMLVideoElement>(null),copy=useRef<HTMLDivElement>(null),destination=useRef<HTMLDivElement>(null);
- const [ready,setReady]=useState(false),[filmVisible,setFilmVisible]=useState(false),[introActive,setIntroActive]=useState(false);
+ const [ready,setReady]=useState(false),[filmVisible,setFilmVisible]=useState(false),[introActive,setIntroActive]=useState(()=>!matchMedia('(prefers-reduced-motion: reduce)').matches&&!sessionStorage.getItem('folded-playhouse-seen')&&!location.hash);
  const skip=useRef<()=>void>(()=>{}),filmFailure=useRef<()=>void>(()=>{});const es=language==='es';
  useEffect(()=>{
   const host=section.current!,screen=canvas.current!,reduced=matchMedia('(prefers-reduced-motion: reduce)');
@@ -48,7 +48,7 @@ export function AcrossHero({language}:{language:'ko'|'es'}){
   void import('./cinematic/folded/world').then(async({createFoldedWorld})=>{
    if(disposed)return;world=createFoldedWorld(screen,{width:screen.clientWidth,height:screen.clientHeight,pixelRatio:Math.min(devicePixelRatio,innerWidth<760?1.25:1.5),portrait:'/images/yeonseok-lisbeth-cutout.webp',surfaceFilm:'/motion/folded-playhouse-surface.mp4',onFrame:data=>Object.assign(screen.dataset,data)});
    await world.ready;if(disposed)return;setReady(true);world.render(pose);start=performance.now();
-   if(first){setIntroActive(true);const aspect=screen.clientWidth/screen.clientHeight;const sourceAspect=innerWidth<760?390/498:innerWidth/innerHeight<1.7?1440/900:1920/1080;
+   if(inIntro){setIntroActive(true);const aspect=screen.clientWidth/screen.clientHeight;const sourceAspect=innerWidth<760?390/498:innerWidth/innerHeight<1.7?1440/900:1920/1080;
     if(video.current&&video.current.readyState>=2&&Math.abs(aspect-sourceAspect)<.012){usingFilm=true;setFilmVisible(true);void video.current.play().catch(()=>{usingFilm=false;setFilmVisible(false);});}}
    raf=requestAnimationFrame(tick);
   }).catch(error=>{console.error('Folded Playhouse WebGL:',error);endIntro();});
@@ -56,7 +56,7 @@ export function AcrossHero({language}:{language:'ko'|'es'}){
   return()=>{disposed=true;cancelAnimationFrame(raf);media.revert();obs.disconnect();world?.dispose();host.removeEventListener('pointermove',onMove);host.removeEventListener('pointerleave',leave);window.removeEventListener('resize',resize);reduced.removeEventListener('change',preference);screen.removeEventListener('webglcontextlost',lost);screen.removeEventListener('webglcontextrestored',restored);document.removeEventListener('visibilitychange',docVisibility);};
  },[]);
  const film=typeof window!=='undefined'&&innerWidth<760?'tall':typeof window!=='undefined'&&innerWidth/innerHeight<1.7?'classic':'wide';
- return <section ref={section} className="across-hero folded-playhouse" id="home" aria-labelledby="hero-title">
+ return <section ref={section} className={`across-hero folded-playhouse${introActive?' is-intro':''}`} id="home" aria-labelledby="hero-title">
   <div className="across-stage">
    <div className="folded-backdrop" aria-hidden="true"/>
    <img className={`folded-portrait-fallback${ready?' is-ready':''}`} src="/images/yeonseok-lisbeth-cutout.webp" alt="" aria-hidden="true" fetchPriority="high"/>
