@@ -48,7 +48,7 @@ export function AcrossHero({language}:{language:'ko'|'es'}){
    host.style.setProperty('--entry',String(pose.entrance));
   };
   void import('./cinematic/folded/world').then(async({createFoldedWorld})=>{
-   if(disposed)return;world=createFoldedWorld(screen,{width:screen.clientWidth,height:screen.clientHeight,pixelRatio:Math.min(devicePixelRatio,innerWidth<760?1.25:1.5),portrait:'/images/yeonseok-lisbeth-cutout.webp',surfaceFilm:'/motion/folded-playhouse-surface.mp4',onFrame:data=>Object.assign(screen.dataset,data)});
+   if(disposed)return;world=createFoldedWorld(screen,{width:screen.clientWidth,height:screen.clientHeight,pixelRatio:Math.min(devicePixelRatio,innerWidth<760?1.25:1.5),portrait:'/images/yeonseok-lisbeth-cutout.webp',surfaceFilm:'/motion/folded-playhouse-lightwell.mp4',onFrame:data=>Object.assign(screen.dataset,data)});
    await world.ready;if(disposed)return;setReady(true);world.render(pose);start=performance.now();
    if(inIntro){setIntroActive(true);const aspect=screen.clientWidth/screen.clientHeight;const sourceAspect=innerWidth<760?390/498:innerWidth/innerHeight<1.7?1440/900:1920/1080;
     if(video.current&&video.current.readyState>=2&&Math.abs(aspect-sourceAspect)<.012){usingFilm=true;setFilmVisible(true);void video.current.play().catch(()=>{usingFilm=false;setFilmVisible(false);});}}
