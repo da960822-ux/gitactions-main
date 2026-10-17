@@ -231,17 +231,17 @@ describe('DaVinciTable', () => {
 
 
 describe('approved public joker artwork', () => {
-  it('shows one approved caricature per joker and omits both from hidden rival tiles', () => {
+  it('shows the approved couple drawing for each joker and omits both from hidden rival tiles', () => {
     const base = { game: 'davinci', turn: 'p1', phase: 'waiting', hand: [], board: { opponentTiles: [], deckCount: 12, tileCount: 26, turnNumber: 1, actionLog: [], lastEvent: null }, actions: [] };
-    for (const [color, name] of [['black', 'yeonseok'], ['white', 'lisbeth']] as const) {
+    for (const [color, name] of [['black', 'couple-waterfront'], ['white', 'couple-indoor']] as const) {
       const html = renderToStaticMarkup(createElement(DaVinciTable, { view: { ...base, hand: [{ color, value: 'joker', revealed: false }] }, playerId: 'p1', language: 'ko', runAction: vi.fn() }));
       expect(html).toContain(`/images/davinci/joker-${name}.webp`);
     }
     for (const playerId of ['p1', 'p2'] as const) for (const language of ['ko', 'es'] as const) {
       const view = { ...base, board: { ...base.board, opponentTiles: [{ color: 'black', value: 'joker', revealed: false }, { color: 'white', value: 'joker', revealed: false }] } };
       const html = renderToStaticMarkup(createElement(DaVinciTable, { view, playerId, language, runAction: vi.fn() }));
-      expect(html).not.toContain('joker-yeonseok');
-      expect(html).not.toContain('joker-lisbeth');
+      expect(html).not.toContain('joker-couple-waterfront');
+      expect(html).not.toContain('joker-couple-indoor');
       expect(html).not.toContain('dv-joker-portrait');
       expect(html).not.toContain('<img');
     }
