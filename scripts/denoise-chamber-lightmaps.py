@@ -1,8 +1,8 @@
 """Offline OIDN RTLightmap pass; retains raw radiance, UVs, normals, scale and source lock."""
 import bpy,numpy as np,json,hashlib,subprocess,shutil,sys
 from pathlib import Path
-ROOT=Path(__file__).resolve().parents[1];ASSET=ROOT/'public/models/folded-chamber-v6';WORK=Path('/workspace/gate1-assets-r6/denoise');WORK.mkdir(parents=True,exist_ok=True)
-OIDN=Path(sys.argv[sys.argv.index('--')+1]);assert OIDN.is_file();manifest=json.loads((ASSET/'asset-manifest.json').read_text());assert manifest['version']=='chamber-v6.1'
+ROOT=Path(__file__).resolve().parents[1];ASSET=ROOT/'public/models/folded-chamber-v7';WORK=Path('/workspace/gate1-assets-r7/denoise');WORK.mkdir(parents=True,exist_ok=True)
+OIDN=Path(sys.argv[sys.argv.index('--')+1]);assert OIDN.is_file();manifest=json.loads((ASSET/'asset-manifest.json').read_text());assert manifest['version']=='chamber-v7.0'
 assert not manifest.get('postprocess'),'Already denoised; do not filter a filtered asset again'
 for file,meta in manifest['files'].items():assert hashlib.sha256((ASSET/file).read_bytes()).hexdigest()==meta['sha256'],file
 s=bpy.context.scene;s.render.image_settings.file_format='OPEN_EXR';s.render.image_settings.color_depth='16';s.render.image_settings.exr_codec='ZIP'
