@@ -1,0 +1,292 @@
+{
+  "url": "http://127.0.0.1:4179/",
+  "checks": [
+    {
+      "name": "WebGL canvas attached",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "Desktop no horizontal overflow",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "Click opens q to1",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "Actual flap rotated >150deg",
+      "pass": true,
+      "detail": "{\"flapAngle\":\"-2.8797932657906435\",\"insertY\":\"1.6\",\"topFoldAngle\":\"0\",\"bottomFoldAngle\":\"0\",\"cameraZ\":\"6.11810396873252\",\"paperVisible\":\"true\"}"
+    },
+    {
+      "name": "Actual paper extracted above body",
+      "pass": true,
+      "detail": "{\"flapAngle\":\"-2.8797932657906435\",\"insertY\":\"1.6\",\"topFoldAngle\":\"0\",\"bottomFoldAngle\":\"0\",\"cameraZ\":\"6.11810396873252\",\"paperVisible\":\"true\"}"
+    },
+    {
+      "name": "Click closes q back0",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "Actual flap returns closed",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "KO source paragraph preserved",
+      "pass": true,
+      "detail": "이거 만들면서 네가 보고 어떤 반응을 할까 계속 생각했어."
+    },
+    {
+      "name": "KO source paragraph preserved",
+      "pass": true,
+      "detail": "네가 가족들이랑 자주 하는 도미노도 같이 해보고 싶었고, 다른 게임도 우리 둘이 하면 재밌을 것 같았어."
+    },
+    {
+      "name": "KO source paragraph preserved",
+      "pass": true,
+      "detail": "직접 옆에 있으면 더 좋겠지만, 떨어져 있는 동안에도 이렇게 같이 놀 수 있으면 좋겠어."
+    },
+    {
+      "name": "KO source paragraph preserved",
+      "pass": true,
+      "detail": "아직 부족한 게 있으면 같이 하면서 고쳐갈게."
+    },
+    {
+      "name": "KO source paragraph preserved",
+      "pass": true,
+      "detail": "사랑해, mami."
+    },
+    {
+      "name": "One letter DOM",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "3D insert hands off without duplicate blank paper",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "Language document es-DO",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "ES source paragraph preserved",
+      "pass": true,
+      "detail": "Mientras hacía esto, no dejaba de pensar en qué cara pondrías al verlo."
+    },
+    {
+      "name": "ES source paragraph preserved",
+      "pass": true,
+      "detail": "Quería jugar contigo al dominó, que juegas tanto con tu familia, y pensé que los otros juegos también serían divertidos para nosotros dos."
+    },
+    {
+      "name": "ES source paragraph preserved",
+      "pass": true,
+      "detail": "Me encantaría estar a tu lado, pero ojalá podamos divertirnos así mientras estamos lejos."
+    },
+    {
+      "name": "ES source paragraph preserved",
+      "pass": true,
+      "detail": "Si algo todavía necesita mejorar, lo iremos arreglando mientras jugamos."
+    },
+    {
+      "name": "ES source paragraph preserved",
+      "pass": true,
+      "detail": "Te amo, mami."
+    },
+    {
+      "name": "Original game and feedback links retained",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "Domino interaction completes",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "Balance rejects unbalanced confirm",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "Balance confirms near center",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "Drawing survives flip",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "Rhythm recognizes user input",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "Paper rotations complete bridge",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "Bilingual phrase turns to Spanish",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "Aligned prism reveals game destination",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "768/ko no overflow",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "768/ko reduced-motion direct read",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "768/ko paper in viewport",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "390/ko no overflow",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "390/ko reduced-motion direct read",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "390/ko paper in viewport",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "390/es no overflow",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "390/es reduced-motion direct read",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "390/es paper in viewport",
+      "pass": true,
+      "detail": ""
+    }
+  ],
+  "errors": [],
+  "screenshots": [
+    "01-story-ko-desktop.png",
+    "02-open-mesh-ko-desktop.png",
+    "03-full-letter-ko-desktop.png",
+    "04-full-letter-es-desktop.png",
+    "05-ending-es-desktop.png",
+    "06-local-details-ko-desktop.png",
+    "07-story-ko-768.png",
+    "08-letter-ko-768.png",
+    "07-story-ko-390.png",
+    "08-letter-ko-390.png",
+    "07-story-es-390.png",
+    "08-letter-es-390.png"
+  ],
+  "browser": "Chromium software WebGL",
+  "limitations": [
+    "No Safari or physical device testing",
+    "No Hero integration or server coevents",
+    "Latest approved pawn/joker/noble assets are not in this checkout"
+  ],
+  "followup": {
+    "reason": "Manual reopen boundary and mobile artwork framing fixes",
+    "checks": [
+      {
+        "name": "Manual close persists at reading progress",
+        "pass": true
+      },
+      {
+        "name": "Reading scroll does not reopen closed letter",
+        "pass": true
+      },
+      {
+        "name": "Reverse to intro clears direct reopen and closes actual flap",
+        "pass": true
+      },
+      {
+        "name": "ko scene separated below body",
+        "pass": true
+      },
+      {
+        "name": "ko mobile no horizontal overflow",
+        "pass": true
+      },
+      {
+        "name": "ko reduced-motion camera holds within story stage",
+        "pass": true
+      },
+      {
+        "name": "ko mobile full source letter visible",
+        "pass": true
+      },
+      {
+        "name": "es scene separated below body",
+        "pass": true
+      },
+      {
+        "name": "es mobile no horizontal overflow",
+        "pass": true
+      },
+      {
+        "name": "es reduced-motion camera holds within story stage",
+        "pass": true
+      },
+      {
+        "name": "es mobile full source letter visible",
+        "pass": true
+      }
+    ],
+    "errors": [],
+    "screenshots": [
+      "07-story-ko-390.png",
+      "08-letter-ko-390.png",
+      "07-story-es-390.png",
+      "08-letter-es-390.png"
+    ]
+  },
+  "finalVisualRecheck": [
+    {
+      "name": "ko final story separation/overflow",
+      "pass": true,
+      "values": {
+        "top": 489.515625,
+        "height": 844,
+        "overflow": false
+      }
+    },
+    {
+      "name": "es final story separation/overflow",
+      "pass": true,
+      "values": {
+        "top": 489.515625,
+        "height": 844,
+        "overflow": false
+      }
+    }
+  ]
+}

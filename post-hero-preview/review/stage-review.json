@@ -1,0 +1,353 @@
+{
+  "baseURL": "http://127.0.0.1:4179/",
+  "viewport": {
+    "width": 1600,
+    "height": 1000
+  },
+  "captures": [
+    {
+      "screenshot": "01-distance-ko.png",
+      "stage": "distance",
+      "expectedP": 0.22,
+      "actualP": 0.22,
+      "q": 0,
+      "scrollY": 820,
+      "overflowX": false,
+      "copyBounds": {
+        "x": 120,
+        "y": 350,
+        "width": 450,
+        "height": 274.671875,
+        "top": 350,
+        "right": 570,
+        "bottom": 624.671875
+      },
+      "copyInViewport": true,
+      "scene": {
+        "ready": true,
+        "stage": "story",
+        "lightSignature": "ffd4ae:1.350:-3,7,5:0.000",
+        "floorColor": "3a202b",
+        "cameraZ": "7.1",
+        "flapAngle": "0",
+        "insertY": "0.55",
+        "topFoldAngle": "2.9530970943744053",
+        "bottomFoldAngle": "-2.9530970943744053",
+        "paperVisible": "true"
+      },
+      "anchorPose": ".22"
+    },
+    {
+      "screenshot": "02-play-ko.png",
+      "stage": "play-table",
+      "expectedP": 0.45,
+      "actualP": 0.45,
+      "q": 0,
+      "scrollY": 1740,
+      "overflowX": false,
+      "copyBounds": {
+        "x": 120,
+        "y": 350,
+        "width": 490,
+        "height": 338.78125,
+        "top": 350,
+        "right": 610,
+        "bottom": 688.78125
+      },
+      "copyInViewport": true,
+      "scene": {
+        "ready": true,
+        "stage": "play",
+        "lightSignature": "ffd4ae:2.214:-3,7,5:0.000",
+        "floorColor": "2a3028",
+        "cameraZ": "7.1",
+        "flapAngle": "0",
+        "insertY": "0.55",
+        "topFoldAngle": "2.9530970943744053",
+        "bottomFoldAngle": "-2.9530970943744053",
+        "paperVisible": "true"
+      },
+      "anchorPose": ".45"
+    },
+    {
+      "screenshot": "03-opened-letter-ko.png",
+      "stage": "opened-3d-letter",
+      "expectedP": 0.62,
+      "actualP": 0.62,
+      "q": 1,
+      "scrollY": 2580,
+      "overflowX": false,
+      "copyBounds": {
+        "x": 120,
+        "y": 350,
+        "width": 303.0625,
+        "height": 266.484375,
+        "top": 350,
+        "right": 423.0625,
+        "bottom": 616.484375
+      },
+      "copyInViewport": true,
+      "scene": {
+        "ready": true,
+        "stage": "letter",
+        "lightSignature": "ffe2c7:2.400:-1.5,6,5:5.500",
+        "floorColor": "292724",
+        "cameraZ": "6.3548",
+        "flapAngle": "-2.8797932657906435",
+        "insertY": "1.6",
+        "topFoldAngle": "0",
+        "bottomFoldAngle": "0",
+        "paperVisible": "true"
+      },
+      "anchorPose": ".62"
+    },
+    {
+      "screenshot": "04-read-dom-ko.png",
+      "stage": "read-dom-ko",
+      "actualP": 0.867,
+      "q": 1,
+      "scrollY": 3570,
+      "overflowX": false,
+      "visible": true,
+      "scene": {
+        "ready": true,
+        "stage": "letter",
+        "lightSignature": "ffefdd:2.550:0,5,5:11.000",
+        "floorColor": "281a20",
+        "cameraZ": "5.949999999999999",
+        "paperVisible": "false"
+      }
+    },
+    {
+      "screenshot": "05-read-dom-es.png",
+      "stage": "read-dom-es",
+      "actualP": 0.04,
+      "q": 1,
+      "scrollY": 3570,
+      "overflowX": false,
+      "visible": true,
+      "scene": {
+        "ready": true,
+        "stage": "story",
+        "lightSignature": "ffd4ae:1.350:-3,7,5:0.000",
+        "floorColor": "3a202b",
+        "cameraZ": "7.1",
+        "paperVisible": "true"
+      }
+    },
+    {
+      "screenshot": "06-ending-es.png",
+      "stage": "ending",
+      "expectedP": 1,
+      "actualP": 1,
+      "q": 1,
+      "scrollY": 4582,
+      "overflowX": false,
+      "copyBounds": {
+        "x": 120,
+        "y": 150.328125,
+        "width": 660,
+        "height": 439.671875,
+        "top": 150.328125,
+        "right": 780,
+        "bottom": 590
+      },
+      "copyInViewport": true,
+      "scene": {
+        "ready": true,
+        "stage": "ending",
+        "lightSignature": "ffc7ae:2.950:3.9999966733760215,6.9999983366880105,-2.999993346752043:0.000",
+        "floorColor": "b5747c",
+        "cameraZ": "8.549997837694413",
+        "flapAngle": "-2.8797932657906435",
+        "insertY": "1.6",
+        "topFoldAngle": "0",
+        "bottomFoldAngle": "0",
+        "paperVisible": "false"
+      },
+      "anchorPose": "1"
+    }
+  ],
+  "checks": [
+    {
+      "name": "distance: progress reached expected anchor",
+      "pass": true,
+      "details": "actual=0.22"
+    },
+    {
+      "name": "distance: no horizontal overflow",
+      "pass": true,
+      "details": ""
+    },
+    {
+      "name": "distance: chapter copy fits viewport",
+      "pass": true,
+      "details": "{\"x\":120,\"y\":350,\"width\":450,\"height\":274.671875,\"top\":350,\"right\":570,\"bottom\":624.671875}"
+    },
+    {
+      "name": "distance: WebGL scene ready",
+      "pass": true,
+      "details": ""
+    },
+    {
+      "name": "play-table: progress reached expected anchor",
+      "pass": true,
+      "details": "actual=0.45"
+    },
+    {
+      "name": "play-table: no horizontal overflow",
+      "pass": true,
+      "details": ""
+    },
+    {
+      "name": "play-table: chapter copy fits viewport",
+      "pass": true,
+      "details": "{\"x\":120,\"y\":350,\"width\":490,\"height\":338.78125,\"top\":350,\"right\":610,\"bottom\":688.78125}"
+    },
+    {
+      "name": "play-table: WebGL scene ready",
+      "pass": true,
+      "details": ""
+    },
+    {
+      "name": "opened-3d-letter: progress reached expected anchor",
+      "pass": true,
+      "details": "actual=0.62"
+    },
+    {
+      "name": "opened-3d-letter: no horizontal overflow",
+      "pass": true,
+      "details": ""
+    },
+    {
+      "name": "opened-3d-letter: chapter copy fits viewport",
+      "pass": true,
+      "details": "{\"x\":120,\"y\":350,\"width\":303.0625,\"height\":266.484375,\"top\":350,\"right\":423.0625,\"bottom\":616.484375}"
+    },
+    {
+      "name": "opened-3d-letter: WebGL scene ready",
+      "pass": true,
+      "details": ""
+    },
+    {
+      "name": "KO original letter has one DOM copy",
+      "pass": true,
+      "details": ""
+    },
+    {
+      "name": "KO original paragraph preserved",
+      "pass": true,
+      "details": "이거 만들면서 네가 보고 어떤 반응을 할까 계속 생각했어."
+    },
+    {
+      "name": "KO original paragraph preserved",
+      "pass": true,
+      "details": "네가 가족들이랑 자주 하는 도미노도 같이 해보고 싶었고, 다른 게임도 우리 둘이 하면 재밌을 것 같았어."
+    },
+    {
+      "name": "KO original paragraph preserved",
+      "pass": true,
+      "details": "직접 옆에 있으면 더 좋겠지만, 떨어져 있는 동안에도 이렇게 같이 놀 수 있으면 좋겠어."
+    },
+    {
+      "name": "KO original paragraph preserved",
+      "pass": true,
+      "details": "아직 부족한 게 있으면 같이 하면서 고쳐갈게."
+    },
+    {
+      "name": "KO original paragraph preserved",
+      "pass": true,
+      "details": "사랑해, mami."
+    },
+    {
+      "name": "KO read DOM: no horizontal overflow",
+      "pass": true,
+      "details": ""
+    },
+    {
+      "name": "KO read DOM: source is visible",
+      "pass": true,
+      "details": ""
+    },
+    {
+      "name": "KO read DOM: WebGL scene ready",
+      "pass": true,
+      "details": ""
+    },
+    {
+      "name": "ES original letter has one DOM copy",
+      "pass": true,
+      "details": ""
+    },
+    {
+      "name": "ES original paragraph preserved",
+      "pass": true,
+      "details": "Mientras hacía esto, no dejaba de pensar en qué cara pondrías al verlo."
+    },
+    {
+      "name": "ES original paragraph preserved",
+      "pass": true,
+      "details": "Quería jugar contigo al dominó, que juegas tanto con tu familia, y pensé que los otros juegos también serían divertidos para nosotros dos."
+    },
+    {
+      "name": "ES original paragraph preserved",
+      "pass": true,
+      "details": "Me encantaría estar a tu lado, pero ojalá podamos divertirnos así mientras estamos lejos."
+    },
+    {
+      "name": "ES original paragraph preserved",
+      "pass": true,
+      "details": "Si algo todavía necesita mejorar, lo iremos arreglando mientras jugamos."
+    },
+    {
+      "name": "ES original paragraph preserved",
+      "pass": true,
+      "details": "Te amo, mami."
+    },
+    {
+      "name": "ES read DOM: no horizontal overflow",
+      "pass": true,
+      "details": ""
+    },
+    {
+      "name": "ES read DOM: source is visible",
+      "pass": true,
+      "details": ""
+    },
+    {
+      "name": "ES read DOM: WebGL scene ready",
+      "pass": true,
+      "details": ""
+    },
+    {
+      "name": "ending: progress reached expected anchor",
+      "pass": true,
+      "details": "actual=1"
+    },
+    {
+      "name": "ending: no horizontal overflow",
+      "pass": true,
+      "details": ""
+    },
+    {
+      "name": "ending: chapter copy fits viewport",
+      "pass": true,
+      "details": "{\"x\":120,\"y\":150.328125,\"width\":660,\"height\":439.671875,\"top\":150.328125,\"right\":780,\"bottom\":590}"
+    },
+    {
+      "name": "ending: WebGL scene ready",
+      "pass": true,
+      "details": ""
+    },
+    {
+      "name": "No page errors",
+      "pass": true,
+      "details": ""
+    }
+  ],
+  "pageErrors": [],
+  "limitations": [
+    "Screenshots need a human visual review; bounding boxes cannot assess faces or art direction.",
+    "This preview does not include the pending approved pawn, joker, or noble assets."
+  ]
+}
