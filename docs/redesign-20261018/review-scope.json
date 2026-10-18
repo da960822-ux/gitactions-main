@@ -34,5 +34,17 @@
     "Spanish desktop actual-browser short recording",
     "mobile responsive adaptation and 390x844 QA last"
   ],
+  "operatingRoles": {
+    "policy": "New operating policy; does not assert historical model configuration or past task ownership.",
+    "Sol": "Design, assets, and independent visual review.",
+    "Luna": "Clear, small-scope code cleanup, test execution, logs, and document cleanup.",
+    "root": "Task assignment and final integration."
+  },
+  "visualReviewStatus": {
+    "implementationSelfTests": "Passing self-tests do not establish visual completion.",
+    "firstIndependentResult": "visual Block remains in force",
+    "freshBuildReview": "independent review in progress",
+    "stateTracking": "Keep handoff, fixes, review, and unreviewed items distinct."
+  },
   "mobileAdditionalWork": "paused until desktop completion per latest user instruction"
 }
