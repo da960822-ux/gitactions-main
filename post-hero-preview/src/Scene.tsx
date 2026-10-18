@@ -242,8 +242,7 @@ export function createPostHeroCollection(options:{scene:THREE.Scene;camera:THREE
       const {progress:rawProgress,opening:q,effect,reducedMotion,galleryPresence=0}=latest;
       const gallery=THREE.MathUtils.clamp(galleryPresence,0,1);
       const p=reducedMotion?(rawProgress<.35?.15:rawProgress<.56?.47:rawProgress<.9?.85:1):rawProgress;
-      const paperHandoff=rawProgress>=.70&&rawProgress<.86&&q>.9&&width>=600&&!reducedMotion;
-      insert.visible=paperHandoff?false:rawProgress<.80;
+      insert.visible=!(q>.9&&Boolean(latest.onPaperPose)&&(rawProgress>=.86||(rawProgress>=.70&&width>=600&&!reducedMotion)));
       if(effectNonce!==effect.nonce){effectNonce=effect.nonce;effectStart=now;}
       const phase=reducedMotion?1:Math.min(1,(now-effectStart)/850);
       const table=ease(.23,.48,p), story=1-ease(.27,.48,p);
