@@ -1,0 +1,552 @@
+{
+  "status": "interim verification branch, not final visual upgrade or production release",
+  "sourceGameMerge": "39cc33ac3f85c87b183db1545aecc3203f835b3f",
+  "sourceFeedback": "1a288c215b6b598a2f8b02433979b87b2410e92b",
+  "tests": {
+    "files": 53,
+    "passed": 471,
+    "failed": 0,
+    "build": "TypeScript, Vite and generated Edge engines passed",
+    "phase": "471 game/unit tests passed before this landing-only pass; no game source changed. Current TypeScript/Vite/Edge build and landing UI checks passed."
+  },
+  "homeEffects": {
+    "pass": true,
+    "base": "http://127.0.0.1:5233",
+    "viewport": [
+      1440,
+      900
+    ],
+    "maximumParticles": 4,
+    "checks": [
+      "Peripheral burst animates and expires; no particles over the central portrait",
+      "Particle cap, user motion pause, and offscreen twinkle pause",
+      "Language persists; selected exhibition enters the real Jaipur lobby; both letters visibly open, hide the seal and close with Escape; topnav ideas and browser Back preserve language",
+      "Reduced motion suppresses new particles and twinkles; all eight selected game links and PNG fallbacks work without WebGL",
+      "Production SPA direct play, feedback, and room routes resolve to nonempty UI"
+    ],
+    "errors": [],
+    "bad": [],
+    "note": "Chromium uses software rendering. These are UI compatibility and cleanup assertions, not hardware FPS or production connection evidence."
+  },
+  "feedback": {
+    "checks": 45,
+    "allPassed": true,
+    "errors": [],
+    "method": "Local HTTP/PGlite fixture; no production Auth/PostgREST/Realtime",
+    "sourceCommit": "1a288c215b6b598a2f8b02433979b87b2410e92b",
+    "screens": [
+      "1440x900",
+      "800x900",
+      "768x1024",
+      "390x844"
+    ]
+  },
+  "luna": {
+    "model": "gpt-6-luna",
+    "method": "Playwright Chromium visible UI; independent Korean and Spanish browser contexts for each room; no app API calls for game actions.",
+    "fixture": "Local PGlite SQL/RLS/authority HTTP fixture; it does not provide Supabase Realtime. The second player saw peer state after manual refresh; page reload used for reconnection checks.",
+    "games": [
+      {
+        "game": "davinci",
+        "twoContexts": true,
+        "action": "draw tile; complete any required joker placement through the visible rack controls"
+      },
+      {
+        "game": "catchmind",
+        "twoContexts": true,
+        "action": "select a word and draw one mouse stroke on the canvas"
+      },
+      {
+        "game": "domino",
+        "twoContexts": true,
+        "action": "select and place opening tile (첫 타일 4|4 놓기)"
+      },
+      {
+        "game": "jaipur",
+        "twoContexts": true,
+        "action": "select and take a market good (시장 카드: 옷감)"
+      },
+      {
+        "game": "splendor",
+        "twoContexts": true,
+        "action": "take three distinct gems from the public bank"
+      },
+      {
+        "game": "minhwatu",
+        "twoContexts": true,
+        "action": "play a legal hand card (5월 창포 초단, 5 점) and complete the public match target if requested"
+      },
+      {
+        "game": "marble",
+        "twoContexts": true,
+        "action": "choose an available pawn, then roll the dice using the board action"
+      },
+      {
+        "game": "rhythm",
+        "twoContexts": true,
+        "action": "focus each embedded original Ruffle player and send ArrowUp and Space key input"
+      }
+    ],
+    "errors": [],
+    "limitations": [
+      "Local PGlite fixture has no production Supabase Realtime; peer propagation was observed after manually refreshing the second context.",
+      "Rhythm is the unchanged original standalone Ruffle SWF. Both seats received local focus/keyboard input, but SWF state, score, and completion are not synchronized with the room and full gameplay was not verified.",
+      "This is a functional playtest at desktop sizes, not full commercial QA or visual approval. The user rejected current simplified city/landmark art; visual quality work remains open.",
+      "No mobile viewport testing was performed."
+    ]
+  },
+  "remaining": [
+    "New game local1feaca317 unavailable; its blocked push must not be repeated through another route",
+    "Approved32 Marble images optimized and production files prepared; game component linking and airline assets remain",
+    "New personal joker/noble assets must remain private; Library delivery and private injection pending",
+    "Production Auth/PostgREST/Realtime/cron/migrations and two real devices untested",
+    "Final Luna full-game testing deferred until implementation and asset integration closes",
+    "Real hardware motion performance and final user visual approval pending"
+  ],
+  "backup": {
+    "files": 772,
+    "allArchiveMembersVerified": true,
+    "allFilesMatchOriginalCommittedSource": true,
+    "originalRevision": "51a9ee3acf6a93cc899ab67e0911f6a6e91f996d",
+    "archiveSha256": "593047a7e6a0d963865385615db229603db0353dcb084493477cad402a62f26a"
+  },
+  "sourceHomeJourney": "305255a3f17572beda972e997ebc407b29d8cfbe",
+  "sourceFeedbackMerge": "f6b3b9c7db8f5740a51f4b5745f98e556d78d4a6",
+  "homeJourney": {
+    "pass": true,
+    "checks": [
+      "1440×900: opposing peripheral depth; bounded heart repulsion returns within 700ms; stable title and slight portrait retreat; thread end stops at games; existing eight choices; only topnav ideas; same rose stem behind and bloom before paper; curved paper outline flattens; KO/ES final body/signature hit-tests are unobscured, open-state copy matches, letter fits and wheel reaches footer",
+      "1280×800: opposing peripheral depth; bounded heart repulsion returns within 700ms; stable title and slight portrait retreat; thread end stops at games; existing eight choices; only topnav ideas; same rose stem behind and bloom before paper; curved paper outline flattens; KO/ES final body/signature hit-tests are unobscured, open-state copy matches, letter fits and wheel reaches footer",
+      "Retained WebGL: one canvas; original portrait alpha depth mask; independent rotations with fixed light; pause stops loop; offscreen releases canvas and hero clear count freezes; resume and context-loss PNG work",
+      "Reduced motion uses complete static thread and rose; no glint or hero animation loop"
+    ],
+    "errors": [],
+    "note": "Actual local production desktop captures. Underlying GPU remains SwiftShader even in the forced WebGL compatibility branch; not hardware performance or a direct inspection of the current Lusion website."
+  },
+  "lusionResearch": {
+    "provenance": "Parent supplied observations from public 2023 recording; not direct inspection in this integration executor and no original shader-source inspection",
+    "recording": "https://www.landing.love/sites/lusion/",
+    "homepageOnlySeconds": 108,
+    "observations": [
+      {
+        "time": "00:22.6–00:23.7",
+        "motion": "The same existing small image bends its outline and expands while its content changes; not a newly added video panel"
+      },
+      {
+        "time": "00:59.5–01:01",
+        "motion": "Small astronaut screen tilts and grows; its border leaves the field of view as entry continues into the internal space"
+      },
+      {
+        "time": "01:04–01:05",
+        "motion": "Typography grows toward and passes the viewer while the character shrinks in the opposite depth direction"
+      },
+      {
+        "time": "01:35–01:36.5",
+        "motion": "Monitor border reappears during exit; astronaut crosses the foreground and glass-like fragments separate"
+      }
+    ],
+    "status": "Specific safe applications implemented: independent fixed-light materials/axes, bounded repulsion, portrait retreat and curve continuity, original rose front/back masks, existing paper clip-path flattening. Original shader source and live current website not inspected."
+  },
+  "personalAssets": {
+    "publicUploads": false,
+    "newPhotoDescriptionsFromParent": [
+      "night beach drink photograph",
+      "indoor mural selfie"
+    ],
+    "sourcePathsAndIdsReceived": false,
+    "newPrivateBytesIntegrated": false,
+    "newJokerIdsReceived": true,
+    "materialization": "Each new joker output was attempted once through the current Library helper; both download failed. Local bytes0; no alternate downloader or repeat.",
+    "connection": "Color-specific optional local paths under /private-assets/davinci/ only. Neutral joker without bytes. Hidden rival tiles never emit image URLs. Git ignores supplied bytes."
+  },
+  "newRegression": {
+    "catchmindHintSpaces": "Both languages retain word spaces and private answers remain hidden",
+    "davinciHelp": "Both readiness labels match actual buttons"
+  },
+  "sourcePrivateJokerInjection": "305255a3f17572beda972e997ebc407b29d8cfbe",
+  "latestGameCodeFromParent": {
+    "commit": "6a4d21f046843abc10d07ad3819845d51fea3a6c",
+    "integrated": false,
+    "note": "New game revision reported ready by parent; deliberately deferred for landing-only task. Prior blocked1fea is historical."
+  },
+  "newMarbleAssetsFromParent": {
+    "pngBlobsReported": 32,
+    "treeOrAssetCommitReported": false,
+    "localBytesIntegrated": 0,
+    "supportedLibraryTransferFailedElsewhere": true,
+    "publicPermissionAnswerPending": false,
+    "alternatePublicUploadAttemptedHere": false,
+    "sourceRevision": "ccec83d87fac6ad1a65dd2b900dec8870ef1c71b",
+    "pngFilesReceived": 32,
+    "totalOriginalBytes": 52604560,
+    "verifiedSha256AndBlobHashAndBytes": 32,
+    "runtimeConnected": false,
+    "note": "Explicit later public approval superseded the earlier asset-transfer block. Fetched exact approved asset branch and inspected representative source PNGs; game code integration is still pending.",
+    "runtimeWebPFilesPrepared": 32,
+    "runtimeWebPBytes": 2206982,
+    "publicRuntimeDirectory": "public/images/marble/premium",
+    "allRuntimeFilesDecodedRGBA": true,
+    "allProductionCopiesVerified": true,
+    "sourceAndRuntimePixelsInspected": true,
+    "componentEditingOwner": "Separate game implementation task; no duplicate editing of MarblePropertyArt, MarblePawn or game economy here"
+  },
+  "sourceLandingPolish": "f805a19f5e64346682687a14e7c611faa2bfe2f4",
+  "landingPolish": {
+    "scope": "Landing only; no game implementation files modified",
+    "letterFinalPositionChanged": false,
+    "finalBodyAndSignatureHitTests": "KO/ES,1440x900 and1280x800; glyph-range endpoints and centers must hit paper rather than envelope faces",
+    "openStateCopyUpdated": true,
+    "envelope": "128px static paper grain, edge thickness, differentiated face shading, matched SVG fold/contact seams",
+    "hero": "Same colors and original couple; heart sizes reduced6–10%, rose/pearl gloss reduced, stronger bounded pointer orientation/PNG front-pose feedback",
+    "background": "Nebula opacity52/55/58%; source central alpha region500,180–940,640 is entirely0; star count unchanged, sizes+1px and brightness raised",
+    "recording": "Each heart approached and left; slow actual cursor paths; both final letters visible. Original compositor intervals retained, final static hold included; encoded duration checked within80ms."
+  },
+  "earlierRecordings": [
+    {
+      "mode": "software",
+      "url": "https://drive.google.com/file/d/1uHQdB5HoCLLt8vuF4nrWiFVpPTgyx68O/view?usp=drivesdk",
+      "durationSeconds": 18.466667,
+      "bytes": 2264145,
+      "shared": false,
+      "permissions": [
+        "owner"
+      ],
+      "errors": []
+    },
+    {
+      "mode": "webgl-diagnostic",
+      "url": "https://drive.google.com/file/d/1FhiJ1JsTyhwkRf43QVF-b738UuIg-5dR/view?usp=drivesdk",
+      "durationSeconds": 14.7,
+      "bytes": 1878390,
+      "shared": false,
+      "permissions": [
+        "owner"
+      ],
+      "errors": []
+    }
+  ],
+  "performanceEarlierLanding": {
+    "method": "Production builds, same Chromium SwiftShader process, same viewport/DPR, 6.5-second requested 50ms sine-path events delivered to existing pointer handlers. No screencast or tracing. ABBA order. Recorded rAF timestamps and WebGL color-clear API calls; neither is GPU presentation FPS.",
+    "phase": "Current refined landing, stronger front-pose response, smaller hearts and static fringe background gain",
+    "runs": [
+      {
+        "run": 1,
+        "kind": "before",
+        "uniqueRafPerSecond": 29.98,
+        "colorClears": 0,
+        "errors": []
+      },
+      {
+        "run": 1,
+        "kind": "after",
+        "uniqueRafPerSecond": 22.29,
+        "colorClears": 0,
+        "errors": []
+      },
+      {
+        "run": 2,
+        "kind": "after",
+        "uniqueRafPerSecond": 22.58,
+        "colorClears": 0,
+        "errors": []
+      },
+      {
+        "run": 2,
+        "kind": "before",
+        "uniqueRafPerSecond": 30.58,
+        "colorClears": 0,
+        "errors": []
+      }
+    ],
+    "averageCadenceReductionPercent": 25.92,
+    "warning": "Matched against the old approved simple hero ee50a228; software rAF cadence, not GPU FPS. Earlier ac25936 measurement is a different run and does not establish a measured polish-only regression or improvement. Actual hardware smoothness remains unverified."
+  },
+  "recordingsEarlierLanding": [
+    {
+      "mode": "software",
+      "url": "https://drive.google.com/file/d/1Fzt9CQezdIH5hVsxZ8uPRsjqMZJZOGSR/view?usp=drivesdk",
+      "durationSeconds": 29.766667,
+      "bytes": 4210762,
+      "shared": false,
+      "permissions": [
+        "owner"
+      ],
+      "errors": []
+    },
+    {
+      "mode": "webgl-diagnostic",
+      "url": "https://drive.google.com/file/d/1BOFt2lqOijR6nX4uh_z3-snmnksE20qG/view?usp=drivesdk",
+      "durationSeconds": 35.233333,
+      "bytes": 5122293,
+      "shared": false,
+      "permissions": [
+        "owner"
+      ],
+      "errors": []
+    }
+  ],
+  "unifiedSpace": {
+    "baseWip": "137b539e044dd50f2b151582f168837c01ded6f2",
+    "scope": "Landing only; local commit, no push/deployment; latest game6a4d21f intentionally not integrated",
+    "qa": [
+      "1440×900: continuous pinned-camera transition; capped and routed hearts; compiled glyph/head masks; live framebuffer face/phone/hand/torso protection; pointer return; pause; KO/ES final letter; original eight choices; context-loss fallback",
+      "1280×800: continuous pinned-camera transition; capped and routed hearts; compiled glyph/head masks; live framebuffer face/phone/hand/torso protection; pointer return; pause; KO/ES final letter; original eight choices; context-loss fallback",
+      "reduced: complete ordered original image fallback and eight links without a visible canvas",
+      "no-webgl: complete ordered original image fallback and eight links without a visible canvas"
+    ],
+    "pass": true,
+    "errors": [],
+    "build": "TypeScript/Vite/generated Edge passed after final source edits",
+    "newHelperTestsPassed": 2,
+    "originalPortraitSha256": "72a0010ae5960d33e62b4678715bfd1df71e3d8f743248c69eeb4c5c1c55b318",
+    "heartCount": 3,
+    "starCount": 16,
+    "maxProjectedHeartPixels": 112,
+    "scene": "One actual WebGL scene/camera, original DOM portrait projected with same camera, fixed lights; no generated person back-face",
+    "performance": {
+      "method": "Same Chromium process, 1440x900 DPR1, 6.5s pointer sine path requested every50ms; ABBA order. Isolated without screencast/tracing. renderCount measures actual renderer.render API submissions; rAF measures browser callback cadence. Neither is physical GPU presentation FPS.",
+      "runs": [
+        {
+          "run": 1,
+          "kind": "before-wip",
+          "seconds": 6.50139999999851,
+          "rendered": 86,
+          "renderCallsPerSecond": 13.22792014028051,
+          "rafPerSecond": 13.22792014028051,
+          "resolution": {
+            "width": 1296,
+            "height": 734,
+            "pixelRatio": 0.9
+          },
+          "gpu": "ANGLE (Google, Vulkan 1.3.0 (SwiftShader Device (Subzero) (0x0000C0DE)), SwiftShader driver)",
+          "errors": []
+        },
+        {
+          "run": 1,
+          "kind": "after-fixes",
+          "seconds": 6.59879999999702,
+          "rendered": 86,
+          "renderCallsPerSecond": 13.032672607146578,
+          "rafPerSecond": 13.032672607146578,
+          "resolution": {
+            "width": 1296,
+            "height": 734,
+            "pixelRatio": 0.9
+          },
+          "gpu": "ANGLE (Google, Vulkan 1.3.0 (SwiftShader Device (Subzero) (0x0000C0DE)), SwiftShader driver)",
+          "errors": []
+        },
+        {
+          "run": 2,
+          "kind": "after-fixes",
+          "seconds": 6.59220000000298,
+          "rendered": 85,
+          "renderCallsPerSecond": 12.894026273468883,
+          "rafPerSecond": 12.894026273468883,
+          "resolution": {
+            "width": 1296,
+            "height": 734,
+            "pixelRatio": 0.9
+          },
+          "gpu": "ANGLE (Google, Vulkan 1.3.0 (SwiftShader Device (Subzero) (0x0000C0DE)), SwiftShader driver)",
+          "errors": []
+        },
+        {
+          "run": 2,
+          "kind": "before-wip",
+          "seconds": 6.62919999999553,
+          "rendered": 95,
+          "renderCallsPerSecond": 14.330537621442113,
+          "rafPerSecond": 14.330537621442113,
+          "resolution": {
+            "width": 1296,
+            "height": 734,
+            "pixelRatio": 0.9
+          },
+          "gpu": "ANGLE (Google, Vulkan 1.3.0 (SwiftShader Device (Subzero) (0x0000C0DE)), SwiftShader driver)",
+          "errors": []
+        }
+      ],
+      "averageBefore": 13.77922888086131,
+      "averageAfter": 12.96334944030773,
+      "averageReductionPercent": 5.921081996734934,
+      "limit": "Software GPU ~13 render submissions/sec; physical presentation FPS and hardware smoothness unverified"
+    },
+    "recordings": [
+      {
+        "kind": "before-wip",
+        "path": "/workspace/home-integration-deliverables-20261011/unified-space-20261011/video/before-wip-actual.mp4",
+        "durationSeconds": 24.101999999999997,
+        "capturedFrameCount": 277,
+        "delivery": "Local only: owner-only Drive upload rejected by automatic approval review; no alternate upload attempted"
+      },
+      {
+        "kind": "after-fixes",
+        "path": "/workspace/home-integration-deliverables-20261011/unified-space-20261011/video/after-fixes-actual.mp4",
+        "durationSeconds": 24.096,
+        "capturedFrameCount": 311,
+        "delivery": "Local only: owner-only Drive upload rejected by automatic approval review; no alternate upload attempted"
+      }
+    ],
+    "remaining": [
+      "Parent/user must inspect full video before final visual approval",
+      "Physical desktop GPU performance not tested",
+      "Head/glyph safety mask creates visible orbit gaps; final visual judgement pending",
+      "No mobile unified scene or current game integration requested"
+    ]
+  },
+  "unifiedSpacePathCleanup": {
+    "baseRevision": "b039e92bdf37fc18eb001759586238a7a9279226",
+    "scope": "Local landing only; no game edits, external uploads, push or deployment",
+    "pass": true,
+    "checks": [
+      "1440×900: continuous pinned-camera transition; capped and routed hearts; compiled cached glyph masks; inactive head rectangle; live framebuffer face/phone/hand/torso protection; pointer return; pause; KO/ES final letter; original eight choices; context-loss fallback",
+      "1280×800: continuous pinned-camera transition; capped and routed hearts; compiled cached glyph masks; inactive head rectangle; live framebuffer face/phone/hand/torso protection; pointer return; pause; KO/ES final letter; original eight choices; context-loss fallback",
+      "reduced: complete ordered original image fallback and eight links without a visible canvas",
+      "no-webgl: complete ordered original image fallback and eight links without a visible canvas"
+    ],
+    "errors": [],
+    "languageCache": {
+      "pass": true,
+      "rows": [
+        {
+          "language": "es-DO",
+          "scroll": 220,
+          "errors": [
+            4.444490124733136e-05,
+            5.496457386833242e-05,
+            1.868278875605256e-05,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ]
+        },
+        {
+          "language": "ko",
+          "scroll": 220,
+          "errors": [
+            3.5955560608869064e-05,
+            5.496457386833242e-05,
+            1.868278875605256e-05,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ]
+        }
+      ],
+      "errors": []
+    },
+    "orbit": "Head rectangle removed; central control points routed behind original portrait alpha silhouette; actual contiguous frame166/167/168 at12.785/12.874/12.941s inspected",
+    "cpuProfile": {
+      "method": "Instrumented software-GPU CPU sampling/timeline; not final cadence",
+      "boundsCallsBefore": 832,
+      "boundsCallsAfter": 14,
+      "computedStyleCallsBefore": 1782,
+      "computedStyleCallsAfter": 0,
+      "boundsMillisecondsBefore": 41,
+      "boundsMillisecondsAfter": 0.5,
+      "profileFiles": [
+        "profile-b039.json",
+        "profile-path-cleanup.json",
+        "draw-isolation.json"
+      ]
+    },
+    "performance": {
+      "method": "Same Chromium process, 1440x900 DPR1, 6.5s pointer sine path requested every50ms; ABBA order. Isolated without screencast/tracing. renderCount measures actual renderer.render API submissions; rAF measures browser callback cadence. Neither is physical GPU presentation FPS.",
+      "baselineRevision": "b039e92bdf37fc18eb001759586238a7a9279226",
+      "runs": [
+        {
+          "run": 1,
+          "kind": "before",
+          "seconds": 6.6535,
+          "rendered": 82,
+          "renderCallsPerSecond": 12.324340572630947,
+          "rafPerSecond": 12.324340572630947,
+          "resolution": {
+            "width": 1296,
+            "height": 734,
+            "pixelRatio": 0.9
+          },
+          "gpu": "ANGLE (Google, Vulkan 1.3.0 (SwiftShader Device (Subzero) (0x0000C0DE)), SwiftShader driver)",
+          "errors": []
+        },
+        {
+          "run": 1,
+          "kind": "after-fixes",
+          "seconds": 6.583400000005961,
+          "rendered": 84,
+          "renderCallsPerSecond": 12.759364462120477,
+          "rafPerSecond": 12.607467266142852,
+          "resolution": {
+            "width": 1296,
+            "height": 734,
+            "pixelRatio": 0.9
+          },
+          "gpu": "ANGLE (Google, Vulkan 1.3.0 (SwiftShader Device (Subzero) (0x0000C0DE)), SwiftShader driver)",
+          "errors": []
+        },
+        {
+          "run": 2,
+          "kind": "after-fixes",
+          "seconds": 6.66139999999851,
+          "rendered": 84,
+          "renderCallsPerSecond": 12.609961869880024,
+          "rafPerSecond": 12.459843276190975,
+          "resolution": {
+            "width": 1296,
+            "height": 734,
+            "pixelRatio": 0.9
+          },
+          "gpu": "ANGLE (Google, Vulkan 1.3.0 (SwiftShader Device (Subzero) (0x0000C0DE)), SwiftShader driver)",
+          "errors": []
+        },
+        {
+          "run": 2,
+          "kind": "before",
+          "seconds": 6.72470000000298,
+          "rendered": 81,
+          "renderCallsPerSecond": 12.045146995399662,
+          "rafPerSecond": 12.045146995399662,
+          "resolution": {
+            "width": 1296,
+            "height": 734,
+            "pixelRatio": 0.9
+          },
+          "gpu": "ANGLE (Google, Vulkan 1.3.0 (SwiftShader Device (Subzero) (0x0000C0DE)), SwiftShader driver)",
+          "errors": []
+        }
+      ],
+      "meanBefore": 12.184743784015303,
+      "meanAfter": 12.68466316600025,
+      "improvementPercent": 4.102830480857311,
+      "limit": "Still ~13 software render submissions/sec; modest improvement, no physical-GPU presentation FPS claim"
+    },
+    "newVideo": {
+      "path": "/workspace/home-integration-deliverables-20261011/unified-space-20261011/video-path-cleanup/after-fixes-actual.mp4",
+      "capture": {
+        "duration": 24.013,
+        "frameCount": 296,
+        "errors": []
+      },
+      "shared": false,
+      "uploaded": false,
+      "delivery": "Waiting for direct user approval after automatic review rejection; no further attempt"
+    },
+    "previousB039Video": "/workspace/home-integration-deliverables-20261011/unified-space-20261011/video/after-fixes-actual.mp4",
+    "remaining": [
+      "Physical-GPU frame performance",
+      "Parent/user full-video visual approval",
+      "External video delivery pending user response"
+    ]
+  }
+}

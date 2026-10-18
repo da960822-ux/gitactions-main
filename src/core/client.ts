@@ -3,7 +3,7 @@ import { engines } from './registry';
 import { executeAction, RETENTION_MS, chatMessageForGame, reactionMessageForId } from './authority';
 import type { ReactionId } from './reactions';
 import type { GameId, GameAction, Language, PlayerId } from './types';
-import { isCorrectGuess, getCatchmindDrawDurationMs, getCatchmindHintStage } from '../games/catchmind';
+import { isCorrectGuess, getCatchmindDrawDurationMs } from '../games/catchmind';
 
 export interface RoomPlayer { id: PlayerId; nickname: string; language: Language; ready: boolean }
 export interface ChatMessage { id: string; playerId: PlayerId; text: string; translation?: string; targetLanguage?: Language; status: 'original'|'translated'|'limit'|'unavailable'|'correct'; createdAt:string }
@@ -100,7 +100,7 @@ class RoomClient {
     const message=chatMessageForGame(this.snapshot.gameId,text);text=message.text;
     if(this.db){await this.invoke({chat:text});return;}
     this.checkLocal();await this.tick();let correct=false;
-    if(message.status==='pending' && this.snapshot.gameId==='catchmind' && this.state?.phase==='drawing' && this.state?.drawer!==this.snapshot.playerId){correct=isCorrectGuess(this.state,text);try{await this.sendAction({type:'guess',payload:{text}});}catch{/* Human chat remains available when guess not accepted. */}}
+    if(message.status==='pending' && this.snapshot.gameId==='catchmind' && this.state?.phase==='drawing' && this.state?.drawer!==this.snapshot.playerId){const matching=isCorrectGuess(this.state,text);try{await this.sendAction({type:'guess',payload:{text}});correct=matching;}catch{/* Human chat remains available when guess not accepted. */}}
     const saved:ChatMessage={id:crypto.randomUUID(),playerId:this.snapshot.playerId,text:correct?'':text,status:correct?'correct':message.status==='pending'?'unavailable':'original',createdAt:new Date().toISOString()};
     this.snapshot.messages=[...this.snapshot.messages,saved].filter(x=>Date.now()-Date.parse(x.createdAt)<RETENTION_MS);this.emit();
   }
@@ -113,25 +113,26 @@ class RoomClient {
   async tick() {
     if(this.snapshot.gameId!=='catchmind'||!this.snapshot.view?.deadlineAt)return;
     const now=Date.now(), expired=Date.parse(this.snapshot.view.deadlineAt)<=now;
-    if(this.db){if(expired||this.snapshot.view.phase==='drawing'&&this.snapshot.view.board?.hintStage<getCatchmindHintStage({settings:this.snapshot.view.board.settings,deadlineAt:this.snapshot.view.deadlineAt},now))await this.invoke({tick:true});return;}
+    if(this.db){if(expired)await this.invoke({tick:true});return;}
     if(this.state?.phase==='drawing'){
       let changed=false;
       if(expired){this.state=executeAction(engines.catchmind!,this.state,this.state.drawer,{type:'timeout'}).state;this.state.deadlineAt=null;changed=true;}
-      else while(this.state.hintStage<getCatchmindHintStage(this.state,now)){this.state=executeAction(engines.catchmind!,this.state,this.state.drawer,{type:'reveal-hint'}).state;changed=true;}
       if(changed){this.snapshot.version++;this.localView();this.emit();}
     }
   }
   private invoke(operation:Record<string,unknown>) {
     const roomId=this.snapshot.roomId;
-    const selectionVersion=operation.action && ['domino','jaipur','splendor'].includes(this.snapshot.gameId??'') ? this.snapshot.version : null;
-    const request=this.requestQueue.then(()=>this.invokeNow(operation,roomId,selectionVersion));
+    const selectionVersion=operation.action && (['domino','jaipur','splendor'].includes(this.snapshot.gameId??'') || this.snapshot.gameId==='catchmind'&&['choose','settings'].includes((operation.action as GameAction).type)) ? this.snapshot.version : null;
+    const drawingDeadline=this.snapshot.gameId==='catchmind'&&operation.action&&this.snapshot.view?.phase==='drawing'?this.snapshot.view.deadlineAt:null;
+    const request=this.requestQueue.then(()=>this.invokeNow(operation,roomId,selectionVersion,drawingDeadline));
     this.requestQueue=request.catch(()=>{});return request;
   }
-  private async invokeNow(operation:Record<string,unknown>,roomId:string|null,selectionVersion:number|null) {
+  private async invokeNow(operation:Record<string,unknown>,roomId:string|null,selectionVersion:number|null,drawingDeadline:string|null) {
     const requestId=crypto.randomUUID();
     for(let attempt=0;attempt<2;attempt++){
       if(!roomId || roomId!==this.snapshot.roomId)throw new Error('room_expired');
       if(selectionVersion!==null && selectionVersion!==this.snapshot.version)throw new Error('stale_state');
+      if(drawingDeadline && drawingDeadline!==this.snapshot.view?.deadlineAt)throw new Error('stale_state');
       const {error}=await this.db!.functions.invoke('action',{body:{roomId,version:this.snapshot.version,requestId,...operation}});
       if(!error){await this.refresh();return;}
       if(selectionVersion!==null && ['FunctionsFetchError','FunctionsRelayError'].includes(error.name)){

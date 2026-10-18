@@ -1,0 +1,211 @@
+{
+  "family": "Personalized forty-space journey, final property levels",
+  "cityRouteVersion": 2,
+  "boardVersion": 2,
+  "count": 24,
+  "dimensions": [
+    192,
+    192
+  ],
+  "view": "three-quarter isometric vector diorama",
+  "light": "upper left",
+  "outline": "#344c59",
+  "source": "Project-owned hand-authored SVGs. Fourteen existing city faces reused, ten new landmark silhouettes; no external artwork copied.",
+  "accuracy": "Stylized landmark silhouettes for native game scale; not architectural models.",
+  "approval": "Functional and XML checks complete. Luna verified all 24 city base/final assets and 48 shared stage symbols in Chromium, plus two-session desktop gameplay. User final visual acceptance pending.",
+  "legacy": "Original 24 city files and manifest remain for saved route-v1 forty-space rooms and older faces.",
+  "assets": [
+    {
+      "tileIndex": 1,
+      "city": "Gwangju",
+      "slug": "gwangju",
+      "landmark": "Sajik observation tower",
+      "path": "/images/marble/landmarks/gwangju.svg",
+      "bytes": 1257
+    },
+    {
+      "tileIndex": 3,
+      "city": "Nueva York",
+      "slug": "new-york",
+      "landmark": "Empire State Building skyline",
+      "path": "/images/marble/cities/new-york.svg",
+      "bytes": 3628
+    },
+    {
+      "tileIndex": 4,
+      "city": "Madrid",
+      "slug": "madrid",
+      "landmark": "Royal Palace of Madrid",
+      "path": "/images/marble/cities/madrid.svg",
+      "bytes": 3730
+    },
+    {
+      "tileIndex": 5,
+      "city": "Santiago",
+      "slug": "santiago",
+      "landmark": "Monumento a los Héroes de la Restauración",
+      "path": "/images/marble/landmarks/santiago.svg",
+      "bytes": 1037
+    },
+    {
+      "tileIndex": 8,
+      "city": "Puerto Plata",
+      "slug": "puerto-plata",
+      "landmark": "Fortaleza San Felipe",
+      "path": "/images/marble/cities/puerto-plata.svg",
+      "bytes": 3419
+    },
+    {
+      "tileIndex": 9,
+      "city": "San Juan",
+      "slug": "san-juan",
+      "landmark": "Castillo San Felipe del Morro",
+      "path": "/images/marble/cities/san-juan.svg",
+      "bytes": 4265
+    },
+    {
+      "tileIndex": 11,
+      "city": "La Vega",
+      "slug": "la-vega",
+      "landmark": "Cathedral of the Immaculate Conception",
+      "path": "/images/marble/landmarks/la-vega.svg",
+      "bytes": 903
+    },
+    {
+      "tileIndex": 13,
+      "city": "Punta Cana",
+      "slug": "punta-cana",
+      "landmark": "Punta Cana airport terminal",
+      "path": "/images/marble/landmarks/punta-cana.svg",
+      "bytes": 857
+    },
+    {
+      "tileIndex": 15,
+      "city": "Santo Domingo",
+      "slug": "santo-domingo",
+      "landmark": "Alcázar de Colón",
+      "path": "/images/marble/landmarks/santo-domingo.svg",
+      "bytes": 1351
+    },
+    {
+      "tileIndex": 16,
+      "city": "París",
+      "slug": "paris",
+      "landmark": "Eiffel Tower",
+      "path": "/images/marble/cities/paris.svg",
+      "bytes": 3273
+    },
+    {
+      "tileIndex": 17,
+      "city": "Tokio",
+      "slug": "tokyo",
+      "landmark": "Tokyo Tower",
+      "path": "/images/marble/cities/tokyo.svg",
+      "bytes": 3512
+    },
+    {
+      "tileIndex": 19,
+      "city": "Barcelona",
+      "slug": "barcelona",
+      "landmark": "Sagrada Família",
+      "path": "/images/marble/cities/barcelona.svg",
+      "bytes": 6261
+    },
+    {
+      "tileIndex": 21,
+      "city": "Samaná",
+      "slug": "samana",
+      "landmark": "Bridges of Samaná",
+      "path": "/images/marble/landmarks/samana.svg",
+      "bytes": 786
+    },
+    {
+      "tileIndex": 22,
+      "city": "La Habana",
+      "slug": "havana",
+      "landmark": "El Capitolio",
+      "path": "/images/marble/cities/havana.svg",
+      "bytes": 3412
+    },
+    {
+      "tileIndex": 24,
+      "city": "Ciudad de México",
+      "slug": "mexico-city",
+      "landmark": "Palacio de Bellas Artes",
+      "path": "/images/marble/landmarks/mexico-city.svg",
+      "bytes": 952
+    },
+    {
+      "tileIndex": 25,
+      "city": "Lisboa",
+      "slug": "lisbon",
+      "landmark": "Belém Tower",
+      "path": "/images/marble/landmarks/lisbon.svg",
+      "bytes": 1031
+    },
+    {
+      "tileIndex": 28,
+      "city": "Londres",
+      "slug": "london",
+      "landmark": "Elizabeth Tower and Parliament",
+      "path": "/images/marble/cities/london.svg",
+      "bytes": 3928
+    },
+    {
+      "tileIndex": 29,
+      "city": "Roma",
+      "slug": "rome",
+      "landmark": "Colosseum",
+      "path": "/images/marble/cities/rome.svg",
+      "bytes": 2862
+    },
+    {
+      "tileIndex": 31,
+      "city": "Newark",
+      "slug": "newark",
+      "landmark": "Ballantine House",
+      "path": "/images/marble/landmarks/newark.svg",
+      "bytes": 1073
+    },
+    {
+      "tileIndex": 32,
+      "city": "Valparaíso",
+      "slug": "valparaiso",
+      "landmark": "Historic funiculars of Valparaíso",
+      "path": "/images/marble/cities/valparaiso.svg",
+      "bytes": 3108
+    },
+    {
+      "tileIndex": 33,
+      "city": "Cebú",
+      "slug": "cebu",
+      "landmark": "Basílica del Santo Niño",
+      "path": "/images/marble/cities/cebu.svg",
+      "bytes": 3981
+    },
+    {
+      "tileIndex": 35,
+      "city": "Toronto",
+      "slug": "toronto",
+      "landmark": "CN Tower",
+      "path": "/images/marble/cities/toronto.svg",
+      "bytes": 3518
+    },
+    {
+      "tileIndex": 36,
+      "city": "Auckland",
+      "slug": "auckland",
+      "landmark": "Sky Tower",
+      "path": "/images/marble/cities/auckland.svg",
+      "bytes": 2597
+    },
+    {
+      "tileIndex": 38,
+      "city": "Seúl",
+      "slug": "seoul",
+      "landmark": "N Seoul Tower",
+      "path": "/images/marble/landmarks/seoul.svg",
+      "bytes": 1125
+    }
+  ]
+}

@@ -1,4 +1,4 @@
-export type Concept = { ko: string; es: string };
+export type Concept = { ko: string; es: string; aliases?: { ko?: string[]; es?: string[] } };
 
 export const catchmindDictionary: Concept[] = [
   { ko: '고양이', es: 'gato' }, { ko: '개', es: 'perro' }, { ko: '토끼', es: 'conejo' },

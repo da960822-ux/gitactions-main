@@ -1,0 +1,75 @@
+.rd-restored{--rose:#d6a4aa;--muted:#d1b7c0;background:#130e17}
+.rd-restored .landing-nav nav>button{font:400 13px 'DM Sans',sans-serif;min-height:44px;padding:0;color:#ead4d8}
+.rd-restored .hero-scene{height:440px;min-height:440px}
+.rd-restored .hero-scene-backdrop{object-position:center 40%;opacity:.9}
+.rd-restored .hero-scene-foreground{height:33%;opacity:.37}
+.rd-restored .hero-scene::before{background:linear-gradient(90deg,#160e18b8 0%,#160e1880 28%,#160e182b 47%,transparent 70%),linear-gradient(0deg,#120d1855,transparent 35%)}
+.rd-restored .hero-scene-portrait{right:9%;height:calc(100% - 12px)}
+.rd-restored .hero-letter-preview[aria-hidden=true]{visibility:hidden}
+.rd-restored .home-content{padding-top:12px;padding-bottom:32px}
+.rd-restored .personal-picker-head{margin-bottom:10px}
+.rd-restored .personal-picker-head p{font-size:12px;line-height:1.5}
+.rd-restored .rd-letter-section{margin-top:10px}
+.rd-restored .hero-scene-sparkles,.rd-restored .hero-postcard::after{opacity:.65}
+.rd-still .hero-scene [data-parallax]{--shift-x:0px!important;--shift-y:0px!important}
+.rd-still .hero-scene-portrait{--portrait-tilt:0deg!important}
+@media(min-width:1024px){.rd-restored .game-rail-card{flex:1 1 0;min-width:0}}
+@media(min-width:1024px) and (max-height:850px){.rd-restored .hero-scene{height:clamp(330px,44vh,380px);min-height:330px}.rd-restored .game-rail-card{height:240px}.rd-restored .hero-scene .hero-copy h1{font-size:44px}}
+@media(max-width:1100px) and (min-width:821px){.rd-restored .hero-scene .hero-copy h1{font-size:44px}}
+@media(max-width:820px){.rd-restored .hero-scene{height:auto;min-height:0}.rd-restored .landing-nav nav{gap:12px}.rd-restored .hero-scene-backdrop{object-position:65% 35%}}
+/* The window effects sit behind the portrait and stay within the glass. */
+.rd-restored .hero-pointer-glow{z-index:0;background:radial-gradient(circle,#ffc4c31c,transparent 68%)}
+.rd-restored .hero-scene-sparkles{display:none}
+.rd-restored .hero-window-light{position:absolute;z-index:0;left:40%;top:4%;width:58%;height:73%;overflow:hidden;clip-path:ellipse(48% 49% at 53% 43%);pointer-events:none}
+.rd-restored .hero-window-light i{position:absolute;width:3px;height:3px;border-radius:50%;background:#ffe4c3;box-shadow:0 0 7px #ffe4c37a;opacity:.35;animation:rd-window-star 7s ease-in-out infinite alternate}
+.rd-restored .hero-window-light i:nth-child(1){left:12%;top:19%}
+.rd-restored .hero-window-light i:nth-child(2){left:33%;top:8%;animation-delay:-2s}
+.rd-restored .hero-window-light i:nth-child(3){left:63%;top:18%;animation-delay:-4s}
+.rd-restored .hero-window-light i:nth-child(4){left:82%;top:32%;animation-delay:-1s}
+.rd-restored .hero-window-light i:nth-child(5){left:24%;top:65%;animation-delay:-5s}
+.rd-restored .hero-window-light i:nth-child(6){left:88%;top:61%;animation-delay:-3s}
+.rd-restored .hero-window-meteor{position:absolute;left:30%;top:8%;width:64px;height:1px;background:linear-gradient(90deg,transparent,#ffe8cd);opacity:0;transform:rotate(16deg);animation:rd-window-meteor 26s linear infinite}
+.rd-restored .hero-scene-portrait::before{content:"";position:absolute;left:12%;right:7%;bottom:-7px;height:37px;border-radius:50%;background:#0e0817a3;filter:blur(13px);pointer-events:none}
+.rd-restored .hero-scene-portrait img{position:relative;filter:drop-shadow(-4px -2px 9px #efb3832b) drop-shadow(5px 12px 16px #130c168c);animation:rd-portrait-enter 650ms var(--scene-ease) both}
+.rd-restored .hero-scene-portrait::after{content:"";position:absolute;inset:0;pointer-events:none;background:linear-gradient(125deg,#efb18318,transparent 46%,#b06e5410);mask:url('/images/yeonseok-lisbeth-cutout.webp') center bottom/contain no-repeat;animation:rd-ambient-enter 650ms var(--scene-ease) both}
+.rd-restored .hero-postcard img{aspect-ratio:4/3;object-fit:cover;object-position:50% 27%}
+.rd-restored .hero-scene .hero-actions .primary-action,.rd-restored .hero-scene .hero-actions .secondary-action{animation:none;transition:transform 160ms var(--scene-ease),background-color 180ms ease,box-shadow 180ms ease}
+.rd-restored .hero-scene .hero-actions button:active{transform:scale(.97)}
+.rd-restored .rd-envelope-object{top:0;transform:translate3d(-50%,var(--closed-y,220px),0) rotateX(7deg);transition:transform 500ms var(--scene-ease)}
+.rd-restored .is-open .rd-envelope-object{top:0;transform:translate3d(-50%,var(--open-y),0) rotateX(0) scale(var(--unit-scale))}
+.rd-restored .rd-envelope-flap{transition:transform 280ms var(--scene-ease) 350ms}
+.rd-restored .is-open .rd-envelope-flap{transition-delay:0s}
+.rd-restored .rd-paper{transition:transform 500ms var(--scene-ease),clip-path 500ms var(--scene-ease);background:repeating-linear-gradient(23deg,#ffffff06 0 1px,transparent 1px 4px),linear-gradient(130deg,#efe1cd,#dcc4a7)}
+.rd-restored .is-open .rd-paper{transition-delay:180ms}
+.rd-restored .rd-seal{background:radial-gradient(ellipse at 30% 24%,#dcab8c,#ae765c 43%,#85573f 74%,#603c31);box-shadow:3px 5px 6px #180b1280,inset 1px 1px 2px #ffe1c0a6,inset -3px -4px 4px #55312680;transition:transform 160ms var(--scene-ease),opacity 160ms ease 350ms}
+.rd-restored .is-open .rd-seal{transition-delay:0s}
+.rd-restored .rd-envelope-pocket::after,.rd-restored .rd-flap-front::after,.rd-restored .rd-flap-back::after{content:"";position:absolute;inset:0;pointer-events:none;background:repeating-linear-gradient(17deg,#fff7e407 0 1px,transparent 1px 3px),repeating-linear-gradient(107deg,#170e1305 0 1px,transparent 1px 5px);mix-blend-mode:soft-light}
+.rd-restored .rd-pocket-left{background:linear-gradient(129deg,#b28b71,#78574f 63%,#4c353c)}
+.rd-restored .rd-pocket-right{background:linear-gradient(231deg,#9b7563,#654c47 64%,#3f2c35)}
+.rd-restored .rd-pocket-bottom{background:linear-gradient(166deg,#b28a71,#87665a 30%,#614749 77%)}
+.rd-restored .rd-flap-front{background:linear-gradient(167deg,#bc987b,#947160 40%,#674b4c 83%)}
+.rd-restored .rd-flap-back{background:linear-gradient(160deg,#8f695a,#62464a 71%,#3b2936)}
+.rd-restored .rd-envelope-seams{opacity:.6}
+.rd-restored .hero-scene[data-visible=false] *,.rd-restored .hero-scene[data-visible=false] *::before,.rd-restored .hero-scene[data-visible=false] *::after{animation-play-state:paused!important}
+.rd-still *::before,.rd-still *::after{animation:none!important;transition:none!important}
+.rd-still .hero-window-meteor{display:none}
+@keyframes rd-window-star{from{opacity:.18}to{opacity:.65}}
+@keyframes rd-window-meteor{0%,53%,60%,100%{opacity:0;transform:translate3d(0,0,0) rotate(16deg)}54%{opacity:.65;transform:translate3d(0,0,0) rotate(16deg)}58%{opacity:0;transform:translate3d(190px,54px,0) rotate(16deg)}}
+@keyframes rd-portrait-enter{from{opacity:0;transform:translateY(12px) scale(.985)}to{opacity:1;transform:translateY(0) scale(1)}}
+@media(hover:hover) and (pointer:fine){.rd-restored .hero-scene .hero-actions button:hover{animation:none}}
+@media(prefers-reduced-motion:reduce){.rd-restored .hero-window-meteor{display:none}.rd-restored .hero-scene-portrait img{animation:none;transform:none}.rd-restored .rd-envelope-object,.rd-restored .rd-envelope-flap,.rd-restored .rd-paper,.rd-restored .rd-seal{transition:none!important}}
+.rd-restored .hero-window-meteor{animation-delay:-8s}
+.rd-still .game-rail-card,.rd-still .hero-glass-heart,.rd-still .hero-scene .hero-actions button{transform:none!important}
+.rd-still .game-rail-card::before{display:none}
+
+@keyframes rd-ambient-enter{from{opacity:0}to{opacity:1}}
+/* Reveal each decorative image when its own bytes are ready; controls never wait. */
+.rd-restored .hero-scene-portrait img,.rd-restored .hero-scene-portrait::after{opacity:0;animation:none}
+.rd-restored .hero-scene-portrait[data-image-ready=true] img{opacity:1;animation:rd-portrait-enter 650ms var(--scene-ease) both}
+.rd-restored .hero-scene-portrait[data-image-ready=true]::after{opacity:1;animation:rd-ambient-enter 650ms var(--scene-ease) both}
+.rd-restored .hero-postcard,.rd-restored .hero-envelope{opacity:0;animation:none;visibility:hidden}
+.rd-restored .hero-postcard[data-image-ready=true]{opacity:1;visibility:visible;animation:hero-card-enter 400ms var(--scene-ease) both}
+.rd-restored .hero-envelope[data-image-ready=true]{opacity:1;visibility:visible;animation:hero-envelope-enter 400ms var(--scene-ease) both}
+.rd-restored .game-rail-art{transition:opacity 220ms var(--scene-ease)}
+.rd-restored .game-rail-art[data-image-ready=false]{opacity:0}
+@media(prefers-reduced-motion:reduce){.rd-restored .hero-scene-portrait[data-image-ready=true] img,.rd-restored .hero-scene-portrait[data-image-ready=true]::after{animation:none!important}}

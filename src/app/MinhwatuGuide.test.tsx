@@ -15,14 +15,24 @@ describe('Minhwatu illustrated guide', () => {
     }
     expect(ko).toContain('같은 달 카드를 모아 점수를 얻고');
     expect(ko).toContain('같은 달 짝이 있어요');
-    expect(ko).toContain('후보가 두 장이면 하나를 눌러요');
+    expect(ko).toContain('후보가 두 장이면 하나를 눌러 확정해요');
     expect(ko).toContain('더미 맨 위가 자동 공개돼요');
     expect(ko).toContain('낸 패와 바닥의 세 장, 모두 4장을 가져와요');
+    expect(ko).toContain('0장 일치 →');
+    expect(ko).toContain('1장 일치 →');
+    expect(ko).toContain('2장 일치 →');
+    expect(ko).toContain('3장 일치 →');
+    expect(ko).toContain('획득 4장');
     expect(es).toContain('Junta cartas del mismo mes');
-    expect(es).toContain('Elige una carta de tu mano');
-    expect(es).toContain('Si hay dos opciones, elige una');
+    expect(es).toContain('pulsa una carta de tu mano');
+    expect(es).toContain('Si hay dos del mismo mes, pulsa una');
     expect(es).toContain('El juego revela la primera carta del mazo');
     expect(es).toContain('Te llevas la carta jugada y las tres de la mesa');
+    expect(es).toContain('0 coincidencias →');
+    expect(es).toContain('1 coincidencia →');
+    expect(es).toContain('2 coincidencias →');
+    expect(es).toContain('3 coincidencias →');
+    expect(es).toContain('Capturas 4');
     expect(es).not.toMatch(/\b(vosotros|ustedes)\b/i);
     expect(es).toContain('No hay Go ni Stop');
     expect(ko.match(/<details class="minhwatu-guide-details">/)?.length).toBe(1);

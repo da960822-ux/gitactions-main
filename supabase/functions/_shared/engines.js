@@ -123,201 +123,3728 @@ var davinciEngine = {
   getResult: (s) => s.result
 };
 
-// src/games/catchmindWords.ts
-var catchmindDictionary = [
-  { ko: "\uACE0\uC591\uC774", es: "gato" },
-  { ko: "\uAC1C", es: "perro" },
-  { ko: "\uD1A0\uB07C", es: "conejo" },
-  { ko: "\uB9D0", es: "caballo" },
-  { ko: "\uC18C", es: "vaca" },
-  { ko: "\uB3FC\uC9C0", es: "cerdo" },
-  { ko: "\uC591", es: "oveja" },
-  { ko: "\uC5FC\uC18C", es: "cabra" },
-  { ko: "\uC554\uD0C9", es: "gallina" },
-  { ko: "\uC218\uD0C9", es: "gallo" },
-  { ko: "\uC624\uB9AC", es: "pato" },
-  { ko: "\uAC70\uC704", es: "ganso" },
-  { ko: "\uCE60\uBA74\uC870", es: "pavo" },
-  { ko: "\uBB3C\uACE0\uAE30", es: "pez" },
-  { ko: "\uC0C1\uC5B4", es: "tibur\xF3n" },
-  { ko: "\uACE0\uB798", es: "ballena" },
-  { ko: "\uB3CC\uACE0\uB798", es: "delf\xEDn" },
-  { ko: "\uBB38\uC5B4", es: "pulpo" },
-  { ko: "\uAC8C", es: "cangrejo" },
-  { ko: "\uAC70\uBD81\uC774", es: "tortuga" },
-  { ko: "\uAC1C\uAD6C\uB9AC", es: "rana" },
-  { ko: "\uBC40", es: "serpiente" },
-  { ko: "\uB3C4\uB9C8\uBC40", es: "lagarto" },
-  { ko: "\uC545\uC5B4", es: "cocodrilo" },
-  { ko: "\uCF54\uB07C\uB9AC", es: "elefante" },
-  { ko: "\uAE30\uB9B0", es: "jirafa" },
-  { ko: "\uC0AC\uC790", es: "le\xF3n" },
-  { ko: "\uD638\uB791\uC774", es: "tigre" },
-  { ko: "\uACF0", es: "oso" },
-  { ko: "\uC6D0\uC22D\uC774", es: "mono" },
-  { ko: "\uC5BC\uB8E9\uB9D0", es: "cebra" },
-  { ko: "\uCEA5\uAC70\uB8E8", es: "canguro" },
-  { ko: "\uD310\uB2E4", es: "panda" },
-  { ko: "\uD3AD\uADC4", es: "ping\xFCino" },
-  { ko: "\uBD80\uC5C9\uC774", es: "b\xFAho" },
-  { ko: "\uC575\uBB34\uC0C8", es: "loro" },
-  { ko: "\uB098\uBE44", es: "mariposa" },
-  { ko: "\uBC8C", es: "abeja" },
-  { ko: "\uAC1C\uBBF8", es: "hormiga" },
-  { ko: "\uAC70\uBBF8", es: "ara\xF1a" },
-  { ko: "\uB2EC\uD33D\uC774", es: "caracol" },
-  { ko: "\uACE0\uC2B4\uB3C4\uCE58", es: "erizo" },
-  { ko: "\uC0AC\uC2B4", es: "ciervo" },
-  { ko: "\uC5EC\uC6B0", es: "zorro" },
-  { ko: "\uB291\uB300", es: "lobo" },
-  { ko: "\uB3C5\uC218\uB9AC", es: "\xE1guila" },
-  { ko: "\uBE44\uB458\uAE30", es: "paloma" },
-  { ko: "\uBC8C\uC0C8", es: "colibr\xED" },
-  { ko: "\uACF5\uC791", es: "pavo real" },
-  { ko: "\uACE0\uB798\uC0C1\uC5B4", es: "tibur\xF3n ballena" },
-  { ko: "\uD574\uD30C\uB9AC", es: "medusa" },
-  { ko: "\uBD88\uAC00\uC0AC\uB9AC", es: "estrella de mar" },
-  { ko: "\uC0C8\uC6B0", es: "camar\xF3n" },
-  { ko: "\uBC14\uB2F7\uAC00\uC7AC", es: "langosta" },
-  { ko: "\uB9E4\uD654", es: "flor de ciruelo" },
-  { ko: "\uC7A5\uBBF8", es: "rosa" },
-  { ko: "\uD574\uBC14\uB77C\uAE30", es: "girasol" },
-  { ko: "\uD2A4\uB9BD", es: "tulip\xE1n" },
-  { ko: "\uC120\uC778\uC7A5", es: "cactus" },
-  { ko: "\uBC84\uC12F", es: "hongo" },
-  { ko: "\uB098\uBB34", es: "\xE1rbol" },
-  { ko: "\uC57C\uC790\uC218", es: "palmera" },
-  { ko: "\uAD6C\uB984", es: "nube" },
-  { ko: "\uD574", es: "sol" },
-  { ko: "\uB2EC", es: "luna" },
-  { ko: "\uBCC4", es: "estrella" },
-  { ko: "\uBB34\uC9C0\uAC1C", es: "arco\xEDris" },
-  { ko: "\uC0B0", es: "monta\xF1a" },
-  { ko: "\uD654\uC0B0", es: "volc\xE1n" },
-  { ko: "\uAC15", es: "r\xEDo" },
-  { ko: "\uD3ED\uD3EC", es: "cascada" },
-  { ko: "\uBC14\uB2E4", es: "oc\xE9ano" },
-  { ko: "\uC12C", es: "isla" },
-  { ko: "\uD574\uBCC0", es: "playa" },
-  { ko: "\uB208\uC0AC\uB78C", es: "mu\xF1eco de nieve" },
-  { ko: "\uBC88\uAC1C", es: "rayo" },
-  { ko: "\uB208\uC1A1\uC774", es: "copo de nieve" },
-  { ko: "\uC57C\uC790\uC5F4\uB9E4", es: "coco" },
-  { ko: "\uC9D1", es: "casa" },
-  { ko: "\uC544\uD30C\uD2B8", es: "apartamento" },
-  { ko: "\uD559\uAD50", es: "escuela" },
-  { ko: "\uBCD1\uC6D0", es: "hospital" },
-  { ko: "\uAD50\uD68C", es: "iglesia" },
-  { ko: "\uC131", es: "castillo" },
-  { ko: "\uB2E4\uB9AC", es: "puente" },
-  { ko: "\uB4F1\uB300", es: "faro" },
-  { ko: "\uD150\uD2B8", es: "carpa" },
-  { ko: "\uB3C4\uC11C\uAD00", es: "biblioteca" },
-  { ko: "\uC18C\uBC29\uC11C", es: "estaci\xF3n de bomberos" },
-  { ko: "\uC6B0\uCCB4\uAD6D", es: "oficina de correos" },
-  { ko: "\uC2DD\uB2F9", es: "restaurante" },
-  { ko: "\uC2DC\uC7A5", es: "mercado" },
-  { ko: "\uACF5\uC6D0", es: "parque" },
-  { ko: "\uC218\uC601\uC7A5", es: "piscina" },
-  { ko: "\uB180\uC774\uD130", es: "parque infantil" },
-  { ko: "\uAE30\uCC28\uC5ED", es: "estaci\xF3n de tren" },
-  { ko: "\uBC84\uC2A4 \uC815\uB958\uC7A5", es: "parada de autob\xFAs" },
-  { ko: "\uACF5\uD56D", es: "aeropuerto" },
-  { ko: "\uB18D\uC7A5", es: "granja" },
-  { ko: "\uC790\uB3D9\uCC28", es: "carro" },
-  { ko: "\uBC84\uC2A4", es: "guagua" },
-  { ko: "\uD2B8\uB7ED", es: "cami\xF3n" },
-  { ko: "\uD0DD\uC2DC", es: "taxi" },
-  { ko: "\uC790\uC804\uAC70", es: "bicicleta" },
-  { ko: "\uC624\uD1A0\uBC14\uC774", es: "motocicleta" },
-  { ko: "\uBE44\uD589\uAE30", es: "avi\xF3n" },
-  { ko: "\uD5EC\uB9AC\uCF65\uD130", es: "helic\xF3ptero" },
-  { ko: "\uBCF4\uD2B8", es: "bote" },
-  { ko: "\uBC30", es: "barco" },
-  { ko: "\uAE30\uCC28", es: "tren" },
-  { ko: "\uB85C\uCF13", es: "cohete" },
-  { ko: "\uD2B8\uB799\uD130", es: "tractor" },
-  { ko: "\uC2A4\uCF00\uC774\uD2B8\uBCF4\uB4DC", es: "patineta" },
-  { ko: "\uC720\uBAA8\uCC28", es: "cochecito" },
-  { ko: "\uCEF4\uD4E8\uD130", es: "computadora" },
-  { ko: "\uD0DC\uBE14\uB9BF", es: "tableta" },
-  { ko: "\uC804\uD654\uAE30", es: "tel\xE9fono" },
-  { ko: "\uCE74\uBA54\uB77C", es: "c\xE1mara" },
-  { ko: "\uD154\uB808\uBE44\uC804", es: "televisor" },
-  { ko: "\uB77C\uB514\uC624", es: "radio" },
-  { ko: "\uD5E4\uB4DC\uD3F0", es: "auriculares" },
-  { ko: "\uC2DC\uACC4", es: "reloj" },
-  { ko: "\uC548\uACBD", es: "lentes" },
-  { ko: "\uC6B0\uC0B0", es: "paraguas" },
-  { ko: "\uC5F4\uC1E0", es: "llave" },
-  { ko: "\uC790\uBB3C\uC1E0", es: "candado" },
-  { ko: "\uBB38", es: "puerta" },
-  { ko: "\uCC3D\uBB38", es: "ventana" },
-  { ko: "\uC758\uC790", es: "silla" },
-  { ko: "\uD0C1\uC790", es: "mesa" },
-  { ko: "\uCE68\uB300", es: "cama" },
-  { ko: "\uC18C\uD30C", es: "sof\xE1" },
-  { ko: "\uB7A8\uD504", es: "l\xE1mpara" },
-  { ko: "\uAC70\uC6B8", es: "espejo" },
-  { ko: "\uCC45", es: "libro" },
-  { ko: "\uC5F0\uD544", es: "l\xE1piz" },
-  { ko: "\uBD93", es: "pincel" },
-  { ko: "\uAC00\uC704", es: "tijeras" },
-  { ko: "\uB9DD\uCE58", es: "martillo" },
-  { ko: "\uD1B1", es: "sierra" },
-  { ko: "\uAE30\uD0C0", es: "guitarra" },
-  { ko: "\uD53C\uC544\uB178", es: "piano" },
-  { ko: "\uB4DC\uB7FC", es: "tambor" },
-  { ko: "\uD2B8\uB7FC\uD3AB", es: "trompeta" },
-  { ko: "\uCD95\uAD6C\uACF5", es: "bal\xF3n de f\xFAtbol" },
-  { ko: "\uB18D\uAD6C\uACF5", es: "bal\xF3n de baloncesto" },
-  { ko: "\uC57C\uAD6C \uBC29\uB9DD\uC774", es: "bate de b\xE9isbol" },
-  { ko: "\uD53C\uC790", es: "pizza" },
-  { ko: "\uD584\uBC84\uAC70", es: "hamburguesa" },
-  { ko: "\uD56B\uB3C4\uADF8", es: "perro caliente" },
-  { ko: "\uC0CC\uB4DC\uC704\uCE58", es: "s\xE1ndwich" },
-  { ko: "\uBC25\uADF8\uB987", es: "taz\xF3n de arroz" },
-  { ko: "\uB2EC\uAC40", es: "huevo" },
-  { ko: "\uBE75", es: "pan" },
-  { ko: "\uCE58\uC988", es: "queso" },
-  { ko: "\uC6B0\uC720", es: "leche" },
-  { ko: "\uC544\uC774\uC2A4\uD06C\uB9BC", es: "helado" },
-  { ko: "\uCF00\uC774\uD06C", es: "pastel" },
-  { ko: "\uCFE0\uD0A4", es: "galleta" },
-  { ko: "\uC0AC\uACFC", es: "manzana" },
-  { ko: "\uC624\uB80C\uC9C0", es: "naranja" },
-  { ko: "\uB9DD\uACE0", es: "mango" },
-  { ko: "\uBC14\uB098\uB098", es: "guineo" },
-  { ko: "\uD328\uC158\uD504\uB8E8\uD2B8", es: "chinola" },
-  { ko: "\uD30C\uC778\uC560\uD50C", es: "pi\xF1a" },
-  { ko: "\uC544\uBCF4\uCE74\uB3C4", es: "aguacate" },
-  { ko: "\uD1A0\uB9C8\uD1A0", es: "tomate" },
-  { ko: "\uC625\uC218\uC218", es: "ma\xEDz" },
-  { ko: "\uB2F9\uADFC", es: "zanahoria" },
-  { ko: "\uAC10\uC790", es: "papa" },
-  { ko: "\uC591\uD30C", es: "cebolla" },
-  { ko: "\uACE0\uCD94", es: "aj\xED" },
-  { ko: "\uB808\uBAAC", es: "lim\xF3n" },
-  { ko: "\uD3EC\uB3C4", es: "uva" },
-  { ko: "\uB538\uAE30", es: "fresa" },
-  { ko: "\uC218\uBC15", es: "sand\xEDa" },
-  { ko: "\uCF54\uCF54\uB11B", es: "coco rallado" },
-  { ko: "\uCD95\uAD6C", es: "f\xFAtbol" },
-  { ko: "\uB18D\uAD6C", es: "baloncesto" },
-  { ko: "\uC57C\uAD6C", es: "b\xE9isbol" },
-  { ko: "\uD14C\uB2C8\uC2A4", es: "tenis" },
-  { ko: "\uC218\uC601", es: "nataci\xF3n" },
-  { ko: "\uB2EC\uB9AC\uAE30", es: "carrera" },
-  { ko: "\uCDA4", es: "baile" },
-  { ko: "\uB09A\uC2DC", es: "pesca" },
-  { ko: "\uC5F0", es: "chichigua" },
-  { ko: "\uC120\uBB3C", es: "regalo" },
-  { ko: "\uC0DD\uC77C \uCF00\uC774\uD06C", es: "pastel de cumplea\xF1os" },
-  { ko: "\uC591\uCD08", es: "vela" },
-  { ko: "\uC655\uAD00", es: "corona" },
-  { ko: "\uB9C8\uC2A4\uD06C", es: "m\xE1scara" },
-  { ko: "\uD48D\uC120", es: "globo" }
-];
+// src/games/catchmind-topic-dictionary.json
+var catchmind_topic_dictionary_default = {
+  schema_version: "1.0.0",
+  source_revision: "875b7c9ae1dc97bdafce50a6939c7ef003b7a0b4",
+  description: "Categorized bilingual Catchmind word deck. Legacy content pairs retain stable positional IDs; additions are supplemental.",
+  selection_policy: {
+    mode: "single_category_required",
+    allow_multiple: false,
+    allow_mixed_all_categories: false,
+    lock_category_after_game_start: true
+  },
+  counts: {
+    total: 272,
+    existing_legacy: 192,
+    added: 80,
+    categories: 6
+  },
+  categories: [
+    {
+      id: "animals",
+      label: {
+        ko: "\uB3D9\uBB3C",
+        es: "Animales"
+      },
+      target_count: 62,
+      examples: [
+        {
+          ko: "\uACE0\uC591\uC774",
+          es: "gato"
+        },
+        {
+          ko: "\uD310\uB2E4",
+          es: "panda"
+        },
+        {
+          ko: "\uD574\uD30C\uB9AC",
+          es: "medusa"
+        }
+      ],
+      word_count: 62,
+      added_count: 8,
+      legacy_count: 54,
+      word_ids: [
+        "legacy-001",
+        "legacy-002",
+        "legacy-003",
+        "legacy-004",
+        "legacy-005",
+        "legacy-006",
+        "legacy-007",
+        "legacy-008",
+        "legacy-009",
+        "legacy-010",
+        "legacy-011",
+        "legacy-012",
+        "legacy-013",
+        "legacy-014",
+        "legacy-015",
+        "legacy-016",
+        "legacy-017",
+        "legacy-018",
+        "legacy-019",
+        "legacy-020",
+        "legacy-021",
+        "legacy-022",
+        "legacy-023",
+        "legacy-024",
+        "legacy-025",
+        "legacy-026",
+        "legacy-027",
+        "legacy-028",
+        "legacy-029",
+        "legacy-030",
+        "legacy-031",
+        "legacy-032",
+        "legacy-033",
+        "legacy-034",
+        "legacy-035",
+        "legacy-036",
+        "legacy-037",
+        "legacy-038",
+        "legacy-039",
+        "legacy-040",
+        "legacy-041",
+        "legacy-042",
+        "legacy-043",
+        "legacy-044",
+        "legacy-045",
+        "legacy-046",
+        "legacy-047",
+        "legacy-048",
+        "legacy-049",
+        "legacy-050",
+        "legacy-051",
+        "legacy-052",
+        "legacy-053",
+        "legacy-054",
+        "animals-extra-001",
+        "animals-extra-002",
+        "animals-extra-003",
+        "animals-extra-004",
+        "animals-extra-005",
+        "animals-extra-006",
+        "animals-extra-007",
+        "animals-extra-008"
+      ]
+    },
+    {
+      id: "food",
+      label: {
+        ko: "\uC74C\uC2DD",
+        es: "Comida"
+      },
+      target_count: 45,
+      examples: [
+        {
+          ko: "\uD53C\uC790",
+          es: "pizza"
+        },
+        {
+          ko: "\uD328\uC158\uD504\uB8E8\uD2B8",
+          es: "chinola"
+        },
+        {
+          ko: "\uB9DD\uAD6C",
+          es: "mang\xFA"
+        }
+      ],
+      word_count: 45,
+      added_count: 15,
+      legacy_count: 30,
+      word_ids: [
+        "legacy-148",
+        "legacy-149",
+        "legacy-150",
+        "legacy-151",
+        "legacy-152",
+        "legacy-153",
+        "legacy-154",
+        "legacy-155",
+        "legacy-156",
+        "legacy-157",
+        "legacy-158",
+        "legacy-159",
+        "legacy-160",
+        "legacy-161",
+        "legacy-162",
+        "legacy-163",
+        "legacy-164",
+        "legacy-165",
+        "legacy-166",
+        "legacy-167",
+        "legacy-168",
+        "legacy-169",
+        "legacy-170",
+        "legacy-171",
+        "legacy-172",
+        "legacy-173",
+        "legacy-174",
+        "legacy-175",
+        "legacy-176",
+        "legacy-177",
+        "food-extra-001",
+        "food-extra-002",
+        "food-extra-003",
+        "food-extra-004",
+        "food-extra-005",
+        "food-extra-006",
+        "food-extra-007",
+        "food-extra-008",
+        "food-extra-009",
+        "food-extra-010",
+        "food-extra-011",
+        "food-extra-012",
+        "food-extra-013",
+        "food-extra-014",
+        "food-extra-015"
+      ]
+    },
+    {
+      id: "nature_space",
+      label: {
+        ko: "\uC790\uC5F0\xB7\uC6B0\uC8FC",
+        es: "Naturaleza y espacio"
+      },
+      target_count: 40,
+      examples: [
+        {
+          ko: "\uC7A5\uBBF8",
+          es: "rosa"
+        },
+        {
+          ko: "\uD654\uC0B0",
+          es: "volc\xE1n"
+        },
+        {
+          ko: "\uD1A0\uC131",
+          es: "Saturno"
+        }
+      ],
+      word_count: 40,
+      added_count: 16,
+      legacy_count: 24,
+      word_ids: [
+        "legacy-055",
+        "legacy-056",
+        "legacy-057",
+        "legacy-058",
+        "legacy-059",
+        "legacy-060",
+        "legacy-061",
+        "legacy-062",
+        "legacy-063",
+        "legacy-064",
+        "legacy-065",
+        "legacy-066",
+        "legacy-067",
+        "legacy-068",
+        "legacy-069",
+        "legacy-070",
+        "legacy-071",
+        "legacy-072",
+        "legacy-073",
+        "legacy-074",
+        "legacy-075",
+        "legacy-076",
+        "legacy-077",
+        "legacy-078",
+        "nature_space-extra-001",
+        "nature_space-extra-002",
+        "nature_space-extra-003",
+        "nature_space-extra-004",
+        "nature_space-extra-005",
+        "nature_space-extra-006",
+        "nature_space-extra-007",
+        "nature_space-extra-008",
+        "nature_space-extra-009",
+        "nature_space-extra-010",
+        "nature_space-extra-011",
+        "nature_space-extra-012",
+        "nature_space-extra-013",
+        "nature_space-extra-014",
+        "nature_space-extra-015",
+        "nature_space-extra-016"
+      ]
+    },
+    {
+      id: "places",
+      label: {
+        ko: "\uC7A5\uC18C\xB7\uAC74\uBB3C",
+        es: "Lugares y edificios"
+      },
+      target_count: 35,
+      examples: [
+        {
+          ko: "\uD559\uAD50",
+          es: "escuela"
+        },
+        {
+          ko: "\uB3C4\uC11C\uAD00",
+          es: "biblioteca"
+        },
+        {
+          ko: "\uB3D9\uB124 \uC2DD\uB8CC\uD488\uC810",
+          es: "colmado"
+        }
+      ],
+      word_count: 35,
+      added_count: 14,
+      legacy_count: 21,
+      word_ids: [
+        "legacy-079",
+        "legacy-080",
+        "legacy-081",
+        "legacy-082",
+        "legacy-083",
+        "legacy-084",
+        "legacy-085",
+        "legacy-086",
+        "legacy-087",
+        "legacy-088",
+        "legacy-089",
+        "legacy-090",
+        "legacy-091",
+        "legacy-092",
+        "legacy-093",
+        "legacy-094",
+        "legacy-095",
+        "legacy-096",
+        "legacy-097",
+        "legacy-098",
+        "legacy-099",
+        "places-extra-001",
+        "places-extra-002",
+        "places-extra-003",
+        "places-extra-004",
+        "places-extra-005",
+        "places-extra-006",
+        "places-extra-007",
+        "places-extra-008",
+        "places-extra-009",
+        "places-extra-010",
+        "places-extra-011",
+        "places-extra-012",
+        "places-extra-013",
+        "places-extra-014"
+      ]
+    },
+    {
+      id: "transport",
+      label: {
+        ko: "\uD0C8\uAC83",
+        es: "Transporte"
+      },
+      target_count: 30,
+      examples: [
+        {
+          ko: "\uC790\uB3D9\uCC28",
+          es: "carro"
+        },
+        {
+          ko: "\uAD6C\uAE09\uCC28",
+          es: "ambulancia"
+        },
+        {
+          ko: "\uC9C0\uD558\uCCA0",
+          es: "metro"
+        }
+      ],
+      word_count: 30,
+      added_count: 15,
+      legacy_count: 15,
+      word_ids: [
+        "legacy-100",
+        "legacy-101",
+        "legacy-102",
+        "legacy-103",
+        "legacy-104",
+        "legacy-105",
+        "legacy-106",
+        "legacy-107",
+        "legacy-108",
+        "legacy-109",
+        "legacy-110",
+        "legacy-111",
+        "legacy-112",
+        "legacy-113",
+        "legacy-114",
+        "transport-extra-001",
+        "transport-extra-002",
+        "transport-extra-003",
+        "transport-extra-004",
+        "transport-extra-005",
+        "transport-extra-006",
+        "transport-extra-007",
+        "transport-extra-008",
+        "transport-extra-009",
+        "transport-extra-010",
+        "transport-extra-011",
+        "transport-extra-012",
+        "transport-extra-013",
+        "transport-extra-014",
+        "transport-extra-015"
+      ]
+    },
+    {
+      id: "life_hobbies",
+      label: {
+        ko: "\uC0DD\uD65C\xB7\uCDE8\uBBF8",
+        es: "Vida diaria y pasatiempos"
+      },
+      target_count: 60,
+      examples: [
+        {
+          ko: "\uCEF4\uD4E8\uD130",
+          es: "computadora"
+        },
+        {
+          ko: "\uCD95\uAD6C",
+          es: "f\xFAtbol"
+        },
+        {
+          ko: "\uC8FC\uC0AC\uC704",
+          es: "dado"
+        }
+      ],
+      word_count: 60,
+      added_count: 12,
+      legacy_count: 48,
+      word_ids: [
+        "legacy-115",
+        "legacy-116",
+        "legacy-117",
+        "legacy-118",
+        "legacy-119",
+        "legacy-120",
+        "legacy-121",
+        "legacy-122",
+        "legacy-123",
+        "legacy-124",
+        "legacy-125",
+        "legacy-126",
+        "legacy-127",
+        "legacy-128",
+        "legacy-129",
+        "legacy-130",
+        "legacy-131",
+        "legacy-132",
+        "legacy-133",
+        "legacy-134",
+        "legacy-135",
+        "legacy-136",
+        "legacy-137",
+        "legacy-138",
+        "legacy-139",
+        "legacy-140",
+        "legacy-141",
+        "legacy-142",
+        "legacy-143",
+        "legacy-144",
+        "legacy-145",
+        "legacy-146",
+        "legacy-147",
+        "legacy-178",
+        "legacy-179",
+        "legacy-180",
+        "legacy-181",
+        "legacy-182",
+        "legacy-183",
+        "legacy-184",
+        "legacy-185",
+        "legacy-186",
+        "legacy-187",
+        "legacy-188",
+        "legacy-189",
+        "legacy-190",
+        "legacy-191",
+        "legacy-192",
+        "life_hobbies-extra-001",
+        "life_hobbies-extra-002",
+        "life_hobbies-extra-003",
+        "life_hobbies-extra-004",
+        "life_hobbies-extra-005",
+        "life_hobbies-extra-006",
+        "life_hobbies-extra-007",
+        "life_hobbies-extra-008",
+        "life_hobbies-extra-009",
+        "life_hobbies-extra-010",
+        "life_hobbies-extra-011",
+        "life_hobbies-extra-012"
+      ]
+    }
+  ],
+  words: [
+    {
+      id: "legacy-001",
+      source_index: 1,
+      category_id: "animals",
+      ko: "\uACE0\uC591\uC774",
+      es: "gato",
+      aliases: {
+        ko: [],
+        es: []
+      },
+      provenance: "existing"
+    },
+    {
+      id: "legacy-002",
+      source_index: 2,
+      category_id: "animals",
+      ko: "\uAC1C",
+      es: "perro",
+      aliases: {
+        ko: [],
+        es: []
+      },
+      provenance: "existing"
+    },
+    {
+      id: "legacy-003",
+      source_index: 3,
+      category_id: "animals",
+      ko: "\uD1A0\uB07C",
+      es: "conejo",
+      aliases: {
+        ko: [],
+        es: []
+      },
+      provenance: "existing"
+    },
+    {
+      id: "legacy-004",
+      source_index: 4,
+      category_id: "animals",
+      ko: "\uB9D0",
+      es: "caballo",
+      aliases: {
+        ko: [],
+        es: []
+      },
+      provenance: "existing"
+    },
+    {
+      id: "legacy-005",
+      source_index: 5,
+      category_id: "animals",
+      ko: "\uC18C",
+      es: "vaca",
+      aliases: {
+        ko: [],
+        es: []
+      },
+      provenance: "existing"
+    },
+    {
+      id: "legacy-006",
+      source_index: 6,
+      category_id: "animals",
+      ko: "\uB3FC\uC9C0",
+      es: "cerdo",
+      aliases: {
+        ko: [],
+        es: []
+      },
+      provenance: "existing"
+    },
+    {
+      id: "legacy-007",
+      source_index: 7,
+      category_id: "animals",
+      ko: "\uC591",
+      es: "oveja",
+      aliases: {
+        ko: [],
+        es: []
+      },
+      provenance: "existing"
+    },
+    {
+      id: "legacy-008",
+      source_index: 8,
+      category_id: "animals",
+      ko: "\uC5FC\uC18C",
+      es: "cabra",
+      aliases: {
+        ko: [],
+        es: []
+      },
+      provenance: "existing"
+    },
+    {
+      id: "legacy-009",
+      source_index: 9,
+      category_id: "animals",
+      ko: "\uC554\uD0C9",
+      es: "gallina",
+      aliases: {
+        ko: [],
+        es: []
+      },
+      provenance: "existing"
+    },
+    {
+      id: "legacy-010",
+      source_index: 10,
+      category_id: "animals",
+      ko: "\uC218\uD0C9",
+      es: "gallo",
+      aliases: {
+        ko: [],
+        es: []
+      },
+      provenance: "existing"
+    },
+    {
+      id: "legacy-011",
+      source_index: 11,
+      category_id: "animals",
+      ko: "\uC624\uB9AC",
+      es: "pato",
+      aliases: {
+        ko: [],
+        es: []
+      },
+      provenance: "existing"
+    },
+    {
+      id: "legacy-012",
+      source_index: 12,
+      category_id: "animals",
+      ko: "\uAC70\uC704",
+      es: "ganso",
+      aliases: {
+        ko: [],
+        es: []
+      },
+      provenance: "existing"
+    },
+    {
+      id: "legacy-013",
+      source_index: 13,
+      category_id: "animals",
+      ko: "\uCE60\uBA74\uC870",
+      es: "pavo",
+      aliases: {
+        ko: [],
+        es: []
+      },
+      provenance: "existing"
+    },
+    {
+      id: "legacy-014",
+      source_index: 14,
+      category_id: "animals",
+      ko: "\uBB3C\uACE0\uAE30",
+      es: "pez",
+      aliases: {
+        ko: [],
+        es: []
+      },
+      provenance: "existing"
+    },
+    {
+      id: "legacy-015",
+      source_index: 15,
+      category_id: "animals",
+      ko: "\uC0C1\uC5B4",
+      es: "tibur\xF3n",
+      aliases: {
+        ko: [],
+        es: []
+      },
+      provenance: "existing"
+    },
+    {
+      id: "legacy-016",
+      source_index: 16,
+      category_id: "animals",
+      ko: "\uACE0\uB798",
+      es: "ballena",
+      aliases: {
+        ko: [],
+        es: []
+      },
+      provenance: "existing"
+    },
+    {
+      id: "legacy-017",
+      source_index: 17,
+      category_id: "animals",
+      ko: "\uB3CC\uACE0\uB798",
+      es: "delf\xEDn",
+      aliases: {
+        ko: [],
+        es: []
+      },
+      provenance: "existing"
+    },
+    {
+      id: "legacy-018",
+      source_index: 18,
+      category_id: "animals",
+      ko: "\uBB38\uC5B4",
+      es: "pulpo",
+      aliases: {
+        ko: [],
+        es: []
+      },
+      provenance: "existing"
+    },
+    {
+      id: "legacy-019",
+      source_index: 19,
+      category_id: "animals",
+      ko: "\uAC8C",
+      es: "cangrejo",
+      aliases: {
+        ko: [],
+        es: []
+      },
+      provenance: "existing"
+    },
+    {
+      id: "legacy-020",
+      source_index: 20,
+      category_id: "animals",
+      ko: "\uAC70\uBD81\uC774",
+      es: "tortuga",
+      aliases: {
+        ko: [],
+        es: []
+      },
+      provenance: "existing"
+    },
+    {
+      id: "legacy-021",
+      source_index: 21,
+      category_id: "animals",
+      ko: "\uAC1C\uAD6C\uB9AC",
+      es: "rana",
+      aliases: {
+        ko: [],
+        es: []
+      },
+      provenance: "existing"
+    },
+    {
+      id: "legacy-022",
+      source_index: 22,
+      category_id: "animals",
+      ko: "\uBC40",
+      es: "serpiente",
+      aliases: {
+        ko: [],
+        es: []
+      },
+      provenance: "existing"
+    },
+    {
+      id: "legacy-023",
+      source_index: 23,
+      category_id: "animals",
+      ko: "\uB3C4\uB9C8\uBC40",
+      es: "lagarto",
+      aliases: {
+        ko: [],
+        es: []
+      },
+      provenance: "existing"
+    },
+    {
+      id: "legacy-024",
+      source_index: 24,
+      category_id: "animals",
+      ko: "\uC545\uC5B4",
+      es: "cocodrilo",
+      aliases: {
+        ko: [],
+        es: []
+      },
+      provenance: "existing"
+    },
+    {
+      id: "legacy-025",
+      source_index: 25,
+      category_id: "animals",
+      ko: "\uCF54\uB07C\uB9AC",
+      es: "elefante",
+      aliases: {
+        ko: [],
+        es: []
+      },
+      provenance: "existing"
+    },
+    {
+      id: "legacy-026",
+      source_index: 26,
+      category_id: "animals",
+      ko: "\uAE30\uB9B0",
+      es: "jirafa",
+      aliases: {
+        ko: [],
+        es: []
+      },
+      provenance: "existing"
+    },
+    {
+      id: "legacy-027",
+      source_index: 27,
+      category_id: "animals",
+      ko: "\uC0AC\uC790",
+      es: "le\xF3n",
+      aliases: {
+        ko: [],
+        es: []
+      },
+      provenance: "existing"
+    },
+    {
+      id: "legacy-028",
+      source_index: 28,
+      category_id: "animals",
+      ko: "\uD638\uB791\uC774",
+      es: "tigre",
+      aliases: {
+        ko: [],
+        es: []
+      },
+      provenance: "existing"
+    },
+    {
+      id: "legacy-029",
+      source_index: 29,
+      category_id: "animals",
+      ko: "\uACF0",
+      es: "oso",
+      aliases: {
+        ko: [],
+        es: []
+      },
+      provenance: "existing"
+    },
+    {
+      id: "legacy-030",
+      source_index: 30,
+      category_id: "animals",
+      ko: "\uC6D0\uC22D\uC774",
+      es: "mono",
+      aliases: {
+        ko: [],
+        es: []
+      },
+      provenance: "existing"
+    },
+    {
+      id: "legacy-031",
+      source_index: 31,
+      category_id: "animals",
+      ko: "\uC5BC\uB8E9\uB9D0",
+      es: "cebra",
+      aliases: {
+        ko: [],
+        es: []
+      },
+      provenance: "existing"
+    },
+    {
+      id: "legacy-032",
+      source_index: 32,
+      category_id: "animals",
+      ko: "\uCEA5\uAC70\uB8E8",
+      es: "canguro",
+      aliases: {
+        ko: [],
+        es: []
+      },
+      provenance: "existing"
+    },
+    {
+      id: "legacy-033",
+      source_index: 33,
+      category_id: "animals",
+      ko: "\uD310\uB2E4",
+      es: "panda",
+      aliases: {
+        ko: [],
+        es: []
+      },
+      provenance: "existing"
+    },
+    {
+      id: "legacy-034",
+      source_index: 34,
+      category_id: "animals",
+      ko: "\uD3AD\uADC4",
+      es: "ping\xFCino",
+      aliases: {
+        ko: [],
+        es: []
+      },
+      provenance: "existing"
+    },
+    {
+      id: "legacy-035",
+      source_index: 35,
+      category_id: "animals",
+      ko: "\uBD80\uC5C9\uC774",
+      es: "b\xFAho",
+      aliases: {
+        ko: [],
+        es: []
+      },
+      provenance: "existing"
+    },
+    {
+      id: "legacy-036",
+      source_index: 36,
+      category_id: "animals",
+      ko: "\uC575\uBB34\uC0C8",
+      es: "loro",
+      aliases: {
+        ko: [],
+        es: []
+      },
+      provenance: "existing"
+    },
+    {
+      id: "legacy-037",
+      source_index: 37,
+      category_id: "animals",
+      ko: "\uB098\uBE44",
+      es: "mariposa",
+      aliases: {
+        ko: [],
+        es: []
+      },
+      provenance: "existing"
+    },
+    {
+      id: "legacy-038",
+      source_index: 38,
+      category_id: "animals",
+      ko: "\uBC8C",
+      es: "abeja",
+      aliases: {
+        ko: [],
+        es: []
+      },
+      provenance: "existing"
+    },
+    {
+      id: "legacy-039",
+      source_index: 39,
+      category_id: "animals",
+      ko: "\uAC1C\uBBF8",
+      es: "hormiga",
+      aliases: {
+        ko: [],
+        es: []
+      },
+      provenance: "existing"
+    },
+    {
+      id: "legacy-040",
+      source_index: 40,
+      category_id: "animals",
+      ko: "\uAC70\uBBF8",
+      es: "ara\xF1a",
+      aliases: {
+        ko: [],
+        es: []
+      },
+      provenance: "existing"
+    },
+    {
+      id: "legacy-041",
+      source_index: 41,
+      category_id: "animals",
+      ko: "\uB2EC\uD33D\uC774",
+      es: "caracol",
+      aliases: {
+        ko: [],
+        es: []
+      },
+      provenance: "existing"
+    },
+    {
+      id: "legacy-042",
+      source_index: 42,
+      category_id: "animals",
+      ko: "\uACE0\uC2B4\uB3C4\uCE58",
+      es: "erizo",
+      aliases: {
+        ko: [],
+        es: []
+      },
+      provenance: "existing"
+    },
+    {
+      id: "legacy-043",
+      source_index: 43,
+      category_id: "animals",
+      ko: "\uC0AC\uC2B4",
+      es: "ciervo",
+      aliases: {
+        ko: [],
+        es: []
+      },
+      provenance: "existing"
+    },
+    {
+      id: "legacy-044",
+      source_index: 44,
+      category_id: "animals",
+      ko: "\uC5EC\uC6B0",
+      es: "zorro",
+      aliases: {
+        ko: [],
+        es: []
+      },
+      provenance: "existing"
+    },
+    {
+      id: "legacy-045",
+      source_index: 45,
+      category_id: "animals",
+      ko: "\uB291\uB300",
+      es: "lobo",
+      aliases: {
+        ko: [],
+        es: []
+      },
+      provenance: "existing"
+    },
+    {
+      id: "legacy-046",
+      source_index: 46,
+      category_id: "animals",
+      ko: "\uB3C5\uC218\uB9AC",
+      es: "\xE1guila",
+      aliases: {
+        ko: [],
+        es: []
+      },
+      provenance: "existing"
+    },
+    {
+      id: "legacy-047",
+      source_index: 47,
+      category_id: "animals",
+      ko: "\uBE44\uB458\uAE30",
+      es: "paloma",
+      aliases: {
+        ko: [],
+        es: []
+      },
+      provenance: "existing"
+    },
+    {
+      id: "legacy-048",
+      source_index: 48,
+      category_id: "animals",
+      ko: "\uBC8C\uC0C8",
+      es: "colibr\xED",
+      aliases: {
+        ko: [],
+        es: []
+      },
+      provenance: "existing"
+    },
+    {
+      id: "legacy-049",
+      source_index: 49,
+      category_id: "animals",
+      ko: "\uACF5\uC791",
+      es: "pavo real",
+      aliases: {
+        ko: [],
+        es: []
+      },
+      provenance: "existing"
+    },
+    {
+      id: "legacy-050",
+      source_index: 50,
+      category_id: "animals",
+      ko: "\uACE0\uB798\uC0C1\uC5B4",
+      es: "tibur\xF3n ballena",
+      aliases: {
+        ko: [],
+        es: []
+      },
+      provenance: "existing"
+    },
+    {
+      id: "legacy-051",
+      source_index: 51,
+      category_id: "animals",
+      ko: "\uD574\uD30C\uB9AC",
+      es: "medusa",
+      aliases: {
+        ko: [],
+        es: []
+      },
+      provenance: "existing"
+    },
+    {
+      id: "legacy-052",
+      source_index: 52,
+      category_id: "animals",
+      ko: "\uBD88\uAC00\uC0AC\uB9AC",
+      es: "estrella de mar",
+      aliases: {
+        ko: [],
+        es: []
+      },
+      provenance: "existing"
+    },
+    {
+      id: "legacy-053",
+      source_index: 53,
+      category_id: "animals",
+      ko: "\uC0C8\uC6B0",
+      es: "camar\xF3n",
+      aliases: {
+        ko: [],
+        es: []
+      },
+      provenance: "existing"
+    },
+    {
+      id: "legacy-054",
+      source_index: 54,
+      category_id: "animals",
+      ko: "\uBC14\uB2F7\uAC00\uC7AC",
+      es: "langosta",
+      aliases: {
+        ko: [],
+        es: []
+      },
+      provenance: "existing"
+    },
+    {
+      id: "legacy-055",
+      source_index: 55,
+      category_id: "nature_space",
+      ko: "\uB9E4\uD654",
+      es: "flor de ciruelo",
+      aliases: {
+        ko: [],
+        es: []
+      },
+      provenance: "existing"
+    },
+    {
+      id: "legacy-056",
+      source_index: 56,
+      category_id: "nature_space",
+      ko: "\uC7A5\uBBF8",
+      es: "rosa",
+      aliases: {
+        ko: [],
+        es: []
+      },
+      provenance: "existing"
+    },
+    {
+      id: "legacy-057",
+      source_index: 57,
+      category_id: "nature_space",
+      ko: "\uD574\uBC14\uB77C\uAE30",
+      es: "girasol",
+      aliases: {
+        ko: [],
+        es: []
+      },
+      provenance: "existing"
+    },
+    {
+      id: "legacy-058",
+      source_index: 58,
+      category_id: "nature_space",
+      ko: "\uD2A4\uB9BD",
+      es: "tulip\xE1n",
+      aliases: {
+        ko: [],
+        es: []
+      },
+      provenance: "existing"
+    },
+    {
+      id: "legacy-059",
+      source_index: 59,
+      category_id: "nature_space",
+      ko: "\uC120\uC778\uC7A5",
+      es: "cactus",
+      aliases: {
+        ko: [],
+        es: []
+      },
+      provenance: "existing"
+    },
+    {
+      id: "legacy-060",
+      source_index: 60,
+      category_id: "nature_space",
+      ko: "\uBC84\uC12F",
+      es: "hongo",
+      aliases: {
+        ko: [],
+        es: []
+      },
+      provenance: "existing"
+    },
+    {
+      id: "legacy-061",
+      source_index: 61,
+      category_id: "nature_space",
+      ko: "\uB098\uBB34",
+      es: "\xE1rbol",
+      aliases: {
+        ko: [],
+        es: []
+      },
+      provenance: "existing"
+    },
+    {
+      id: "legacy-062",
+      source_index: 62,
+      category_id: "nature_space",
+      ko: "\uC57C\uC790\uC218",
+      es: "palmera",
+      aliases: {
+        ko: [],
+        es: []
+      },
+      provenance: "existing"
+    },
+    {
+      id: "legacy-063",
+      source_index: 63,
+      category_id: "nature_space",
+      ko: "\uAD6C\uB984",
+      es: "nube",
+      aliases: {
+        ko: [],
+        es: []
+      },
+      provenance: "existing"
+    },
+    {
+      id: "legacy-064",
+      source_index: 64,
+      category_id: "nature_space",
+      ko: "\uD574",
+      es: "sol",
+      aliases: {
+        ko: [],
+        es: []
+      },
+      provenance: "existing"
+    },
+    {
+      id: "legacy-065",
+      source_index: 65,
+      category_id: "nature_space",
+      ko: "\uB2EC",
+      es: "luna",
+      aliases: {
+        ko: [],
+        es: []
+      },
+      provenance: "existing"
+    },
+    {
+      id: "legacy-066",
+      source_index: 66,
+      category_id: "nature_space",
+      ko: "\uBCC4",
+      es: "estrella",
+      aliases: {
+        ko: [],
+        es: []
+      },
+      provenance: "existing"
+    },
+    {
+      id: "legacy-067",
+      source_index: 67,
+      category_id: "nature_space",
+      ko: "\uBB34\uC9C0\uAC1C",
+      es: "arco\xEDris",
+      aliases: {
+        ko: [],
+        es: []
+      },
+      provenance: "existing"
+    },
+    {
+      id: "legacy-068",
+      source_index: 68,
+      category_id: "nature_space",
+      ko: "\uC0B0",
+      es: "monta\xF1a",
+      aliases: {
+        ko: [],
+        es: []
+      },
+      provenance: "existing"
+    },
+    {
+      id: "legacy-069",
+      source_index: 69,
+      category_id: "nature_space",
+      ko: "\uD654\uC0B0",
+      es: "volc\xE1n",
+      aliases: {
+        ko: [],
+        es: []
+      },
+      provenance: "existing"
+    },
+    {
+      id: "legacy-070",
+      source_index: 70,
+      category_id: "nature_space",
+      ko: "\uAC15",
+      es: "r\xEDo",
+      aliases: {
+        ko: [],
+        es: []
+      },
+      provenance: "existing"
+    },
+    {
+      id: "legacy-071",
+      source_index: 71,
+      category_id: "nature_space",
+      ko: "\uD3ED\uD3EC",
+      es: "cascada",
+      aliases: {
+        ko: [],
+        es: []
+      },
+      provenance: "existing"
+    },
+    {
+      id: "legacy-072",
+      source_index: 72,
+      category_id: "nature_space",
+      ko: "\uBC14\uB2E4",
+      es: "oc\xE9ano",
+      aliases: {
+        ko: [],
+        es: []
+      },
+      provenance: "existing"
+    },
+    {
+      id: "legacy-073",
+      source_index: 73,
+      category_id: "nature_space",
+      ko: "\uC12C",
+      es: "isla",
+      aliases: {
+        ko: [],
+        es: []
+      },
+      provenance: "existing"
+    },
+    {
+      id: "legacy-074",
+      source_index: 74,
+      category_id: "nature_space",
+      ko: "\uD574\uBCC0",
+      es: "playa",
+      aliases: {
+        ko: [],
+        es: []
+      },
+      provenance: "existing"
+    },
+    {
+      id: "legacy-075",
+      source_index: 75,
+      category_id: "nature_space",
+      ko: "\uB208\uC0AC\uB78C",
+      es: "mu\xF1eco de nieve",
+      aliases: {
+        ko: [],
+        es: []
+      },
+      provenance: "existing"
+    },
+    {
+      id: "legacy-076",
+      source_index: 76,
+      category_id: "nature_space",
+      ko: "\uBC88\uAC1C",
+      es: "rayo",
+      aliases: {
+        ko: [],
+        es: []
+      },
+      provenance: "existing"
+    },
+    {
+      id: "legacy-077",
+      source_index: 77,
+      category_id: "nature_space",
+      ko: "\uB208\uC1A1\uC774",
+      es: "copo de nieve",
+      aliases: {
+        ko: [],
+        es: []
+      },
+      provenance: "existing"
+    },
+    {
+      id: "legacy-078",
+      source_index: 78,
+      category_id: "nature_space",
+      ko: "\uC57C\uC790\uC5F4\uB9E4",
+      es: "coco",
+      aliases: {
+        ko: [],
+        es: []
+      },
+      provenance: "existing"
+    },
+    {
+      id: "legacy-079",
+      source_index: 79,
+      category_id: "places",
+      ko: "\uC9D1",
+      es: "casa",
+      aliases: {
+        ko: [],
+        es: []
+      },
+      provenance: "existing"
+    },
+    {
+      id: "legacy-080",
+      source_index: 80,
+      category_id: "places",
+      ko: "\uC544\uD30C\uD2B8",
+      es: "apartamento",
+      aliases: {
+        ko: [],
+        es: []
+      },
+      provenance: "existing"
+    },
+    {
+      id: "legacy-081",
+      source_index: 81,
+      category_id: "places",
+      ko: "\uD559\uAD50",
+      es: "escuela",
+      aliases: {
+        ko: [],
+        es: []
+      },
+      provenance: "existing"
+    },
+    {
+      id: "legacy-082",
+      source_index: 82,
+      category_id: "places",
+      ko: "\uBCD1\uC6D0",
+      es: "hospital",
+      aliases: {
+        ko: [],
+        es: []
+      },
+      provenance: "existing"
+    },
+    {
+      id: "legacy-083",
+      source_index: 83,
+      category_id: "places",
+      ko: "\uAD50\uD68C",
+      es: "iglesia",
+      aliases: {
+        ko: [],
+        es: []
+      },
+      provenance: "existing"
+    },
+    {
+      id: "legacy-084",
+      source_index: 84,
+      category_id: "places",
+      ko: "\uC131",
+      es: "castillo",
+      aliases: {
+        ko: [],
+        es: []
+      },
+      provenance: "existing"
+    },
+    {
+      id: "legacy-085",
+      source_index: 85,
+      category_id: "places",
+      ko: "\uB2E4\uB9AC",
+      es: "puente",
+      aliases: {
+        ko: [],
+        es: []
+      },
+      provenance: "existing"
+    },
+    {
+      id: "legacy-086",
+      source_index: 86,
+      category_id: "places",
+      ko: "\uB4F1\uB300",
+      es: "faro",
+      aliases: {
+        ko: [],
+        es: []
+      },
+      provenance: "existing"
+    },
+    {
+      id: "legacy-087",
+      source_index: 87,
+      category_id: "places",
+      ko: "\uD150\uD2B8",
+      es: "carpa",
+      aliases: {
+        ko: [],
+        es: []
+      },
+      provenance: "existing"
+    },
+    {
+      id: "legacy-088",
+      source_index: 88,
+      category_id: "places",
+      ko: "\uB3C4\uC11C\uAD00",
+      es: "biblioteca",
+      aliases: {
+        ko: [],
+        es: []
+      },
+      provenance: "existing"
+    },
+    {
+      id: "legacy-089",
+      source_index: 89,
+      category_id: "places",
+      ko: "\uC18C\uBC29\uC11C",
+      es: "estaci\xF3n de bomberos",
+      aliases: {
+        ko: [],
+        es: []
+      },
+      provenance: "existing"
+    },
+    {
+      id: "legacy-090",
+      source_index: 90,
+      category_id: "places",
+      ko: "\uC6B0\uCCB4\uAD6D",
+      es: "oficina de correos",
+      aliases: {
+        ko: [],
+        es: []
+      },
+      provenance: "existing"
+    },
+    {
+      id: "legacy-091",
+      source_index: 91,
+      category_id: "places",
+      ko: "\uC2DD\uB2F9",
+      es: "restaurante",
+      aliases: {
+        ko: [],
+        es: []
+      },
+      provenance: "existing"
+    },
+    {
+      id: "legacy-092",
+      source_index: 92,
+      category_id: "places",
+      ko: "\uC2DC\uC7A5",
+      es: "mercado",
+      aliases: {
+        ko: [],
+        es: []
+      },
+      provenance: "existing"
+    },
+    {
+      id: "legacy-093",
+      source_index: 93,
+      category_id: "places",
+      ko: "\uACF5\uC6D0",
+      es: "parque",
+      aliases: {
+        ko: [],
+        es: []
+      },
+      provenance: "existing"
+    },
+    {
+      id: "legacy-094",
+      source_index: 94,
+      category_id: "places",
+      ko: "\uC218\uC601\uC7A5",
+      es: "piscina",
+      aliases: {
+        ko: [],
+        es: []
+      },
+      provenance: "existing"
+    },
+    {
+      id: "legacy-095",
+      source_index: 95,
+      category_id: "places",
+      ko: "\uB180\uC774\uD130",
+      es: "parque infantil",
+      aliases: {
+        ko: [],
+        es: []
+      },
+      provenance: "existing"
+    },
+    {
+      id: "legacy-096",
+      source_index: 96,
+      category_id: "places",
+      ko: "\uAE30\uCC28\uC5ED",
+      es: "estaci\xF3n de tren",
+      aliases: {
+        ko: [],
+        es: []
+      },
+      provenance: "existing"
+    },
+    {
+      id: "legacy-097",
+      source_index: 97,
+      category_id: "places",
+      ko: "\uBC84\uC2A4 \uC815\uB958\uC7A5",
+      es: "parada de autob\xFAs",
+      aliases: {
+        ko: [],
+        es: []
+      },
+      provenance: "existing"
+    },
+    {
+      id: "legacy-098",
+      source_index: 98,
+      category_id: "places",
+      ko: "\uACF5\uD56D",
+      es: "aeropuerto",
+      aliases: {
+        ko: [],
+        es: []
+      },
+      provenance: "existing"
+    },
+    {
+      id: "legacy-099",
+      source_index: 99,
+      category_id: "places",
+      ko: "\uB18D\uC7A5",
+      es: "granja",
+      aliases: {
+        ko: [],
+        es: []
+      },
+      provenance: "existing"
+    },
+    {
+      id: "legacy-100",
+      source_index: 100,
+      category_id: "transport",
+      ko: "\uC790\uB3D9\uCC28",
+      es: "carro",
+      aliases: {
+        ko: [],
+        es: []
+      },
+      provenance: "existing"
+    },
+    {
+      id: "legacy-101",
+      source_index: 101,
+      category_id: "transport",
+      ko: "\uBC84\uC2A4",
+      es: "guagua",
+      aliases: {
+        ko: [],
+        es: [
+          "autob\xFAs",
+          "bus"
+        ]
+      },
+      provenance: "existing"
+    },
+    {
+      id: "legacy-102",
+      source_index: 102,
+      category_id: "transport",
+      ko: "\uD2B8\uB7ED",
+      es: "cami\xF3n",
+      aliases: {
+        ko: [],
+        es: []
+      },
+      provenance: "existing"
+    },
+    {
+      id: "legacy-103",
+      source_index: 103,
+      category_id: "transport",
+      ko: "\uD0DD\uC2DC",
+      es: "taxi",
+      aliases: {
+        ko: [],
+        es: []
+      },
+      provenance: "existing"
+    },
+    {
+      id: "legacy-104",
+      source_index: 104,
+      category_id: "transport",
+      ko: "\uC790\uC804\uAC70",
+      es: "bicicleta",
+      aliases: {
+        ko: [],
+        es: []
+      },
+      provenance: "existing"
+    },
+    {
+      id: "legacy-105",
+      source_index: 105,
+      category_id: "transport",
+      ko: "\uC624\uD1A0\uBC14\uC774",
+      es: "motocicleta",
+      aliases: {
+        ko: [],
+        es: []
+      },
+      provenance: "existing"
+    },
+    {
+      id: "legacy-106",
+      source_index: 106,
+      category_id: "transport",
+      ko: "\uBE44\uD589\uAE30",
+      es: "avi\xF3n",
+      aliases: {
+        ko: [],
+        es: []
+      },
+      provenance: "existing"
+    },
+    {
+      id: "legacy-107",
+      source_index: 107,
+      category_id: "transport",
+      ko: "\uD5EC\uB9AC\uCF65\uD130",
+      es: "helic\xF3ptero",
+      aliases: {
+        ko: [],
+        es: []
+      },
+      provenance: "existing"
+    },
+    {
+      id: "legacy-108",
+      source_index: 108,
+      category_id: "transport",
+      ko: "\uBCF4\uD2B8",
+      es: "bote",
+      aliases: {
+        ko: [],
+        es: []
+      },
+      provenance: "existing"
+    },
+    {
+      id: "legacy-109",
+      source_index: 109,
+      category_id: "transport",
+      ko: "\uBC30",
+      es: "barco",
+      aliases: {
+        ko: [],
+        es: []
+      },
+      provenance: "existing"
+    },
+    {
+      id: "legacy-110",
+      source_index: 110,
+      category_id: "transport",
+      ko: "\uAE30\uCC28",
+      es: "tren",
+      aliases: {
+        ko: [],
+        es: []
+      },
+      provenance: "existing"
+    },
+    {
+      id: "legacy-111",
+      source_index: 111,
+      category_id: "transport",
+      ko: "\uB85C\uCF13",
+      es: "cohete",
+      aliases: {
+        ko: [],
+        es: []
+      },
+      provenance: "existing"
+    },
+    {
+      id: "legacy-112",
+      source_index: 112,
+      category_id: "transport",
+      ko: "\uD2B8\uB799\uD130",
+      es: "tractor",
+      aliases: {
+        ko: [],
+        es: []
+      },
+      provenance: "existing"
+    },
+    {
+      id: "legacy-113",
+      source_index: 113,
+      category_id: "transport",
+      ko: "\uC2A4\uCF00\uC774\uD2B8\uBCF4\uB4DC",
+      es: "patineta",
+      aliases: {
+        ko: [],
+        es: []
+      },
+      provenance: "existing"
+    },
+    {
+      id: "legacy-114",
+      source_index: 114,
+      category_id: "transport",
+      ko: "\uC720\uBAA8\uCC28",
+      es: "cochecito",
+      aliases: {
+        ko: [],
+        es: []
+      },
+      provenance: "existing"
+    },
+    {
+      id: "legacy-115",
+      source_index: 115,
+      category_id: "life_hobbies",
+      ko: "\uCEF4\uD4E8\uD130",
+      es: "computadora",
+      aliases: {
+        ko: [],
+        es: []
+      },
+      provenance: "existing"
+    },
+    {
+      id: "legacy-116",
+      source_index: 116,
+      category_id: "life_hobbies",
+      ko: "\uD0DC\uBE14\uB9BF",
+      es: "tableta",
+      aliases: {
+        ko: [],
+        es: []
+      },
+      provenance: "existing"
+    },
+    {
+      id: "legacy-117",
+      source_index: 117,
+      category_id: "life_hobbies",
+      ko: "\uC804\uD654\uAE30",
+      es: "tel\xE9fono",
+      aliases: {
+        ko: [],
+        es: []
+      },
+      provenance: "existing"
+    },
+    {
+      id: "legacy-118",
+      source_index: 118,
+      category_id: "life_hobbies",
+      ko: "\uCE74\uBA54\uB77C",
+      es: "c\xE1mara",
+      aliases: {
+        ko: [],
+        es: []
+      },
+      provenance: "existing"
+    },
+    {
+      id: "legacy-119",
+      source_index: 119,
+      category_id: "life_hobbies",
+      ko: "\uD154\uB808\uBE44\uC804",
+      es: "televisor",
+      aliases: {
+        ko: [],
+        es: []
+      },
+      provenance: "existing"
+    },
+    {
+      id: "legacy-120",
+      source_index: 120,
+      category_id: "life_hobbies",
+      ko: "\uB77C\uB514\uC624",
+      es: "radio",
+      aliases: {
+        ko: [],
+        es: []
+      },
+      provenance: "existing"
+    },
+    {
+      id: "legacy-121",
+      source_index: 121,
+      category_id: "life_hobbies",
+      ko: "\uD5E4\uB4DC\uD3F0",
+      es: "auriculares",
+      aliases: {
+        ko: [],
+        es: []
+      },
+      provenance: "existing"
+    },
+    {
+      id: "legacy-122",
+      source_index: 122,
+      category_id: "life_hobbies",
+      ko: "\uC2DC\uACC4",
+      es: "reloj",
+      aliases: {
+        ko: [],
+        es: []
+      },
+      provenance: "existing"
+    },
+    {
+      id: "legacy-123",
+      source_index: 123,
+      category_id: "life_hobbies",
+      ko: "\uC548\uACBD",
+      es: "lentes",
+      aliases: {
+        ko: [],
+        es: [
+          "gafas",
+          "anteojos"
+        ]
+      },
+      provenance: "existing"
+    },
+    {
+      id: "legacy-124",
+      source_index: 124,
+      category_id: "life_hobbies",
+      ko: "\uC6B0\uC0B0",
+      es: "paraguas",
+      aliases: {
+        ko: [],
+        es: []
+      },
+      provenance: "existing"
+    },
+    {
+      id: "legacy-125",
+      source_index: 125,
+      category_id: "life_hobbies",
+      ko: "\uC5F4\uC1E0",
+      es: "llave",
+      aliases: {
+        ko: [],
+        es: []
+      },
+      provenance: "existing"
+    },
+    {
+      id: "legacy-126",
+      source_index: 126,
+      category_id: "life_hobbies",
+      ko: "\uC790\uBB3C\uC1E0",
+      es: "candado",
+      aliases: {
+        ko: [],
+        es: []
+      },
+      provenance: "existing"
+    },
+    {
+      id: "legacy-127",
+      source_index: 127,
+      category_id: "life_hobbies",
+      ko: "\uBB38",
+      es: "puerta",
+      aliases: {
+        ko: [],
+        es: []
+      },
+      provenance: "existing"
+    },
+    {
+      id: "legacy-128",
+      source_index: 128,
+      category_id: "life_hobbies",
+      ko: "\uCC3D\uBB38",
+      es: "ventana",
+      aliases: {
+        ko: [],
+        es: []
+      },
+      provenance: "existing"
+    },
+    {
+      id: "legacy-129",
+      source_index: 129,
+      category_id: "life_hobbies",
+      ko: "\uC758\uC790",
+      es: "silla",
+      aliases: {
+        ko: [],
+        es: []
+      },
+      provenance: "existing"
+    },
+    {
+      id: "legacy-130",
+      source_index: 130,
+      category_id: "life_hobbies",
+      ko: "\uD0C1\uC790",
+      es: "mesa",
+      aliases: {
+        ko: [],
+        es: []
+      },
+      provenance: "existing"
+    },
+    {
+      id: "legacy-131",
+      source_index: 131,
+      category_id: "life_hobbies",
+      ko: "\uCE68\uB300",
+      es: "cama",
+      aliases: {
+        ko: [],
+        es: []
+      },
+      provenance: "existing"
+    },
+    {
+      id: "legacy-132",
+      source_index: 132,
+      category_id: "life_hobbies",
+      ko: "\uC18C\uD30C",
+      es: "sof\xE1",
+      aliases: {
+        ko: [],
+        es: []
+      },
+      provenance: "existing"
+    },
+    {
+      id: "legacy-133",
+      source_index: 133,
+      category_id: "life_hobbies",
+      ko: "\uB7A8\uD504",
+      es: "l\xE1mpara",
+      aliases: {
+        ko: [],
+        es: []
+      },
+      provenance: "existing"
+    },
+    {
+      id: "legacy-134",
+      source_index: 134,
+      category_id: "life_hobbies",
+      ko: "\uAC70\uC6B8",
+      es: "espejo",
+      aliases: {
+        ko: [],
+        es: []
+      },
+      provenance: "existing"
+    },
+    {
+      id: "legacy-135",
+      source_index: 135,
+      category_id: "life_hobbies",
+      ko: "\uCC45",
+      es: "libro",
+      aliases: {
+        ko: [],
+        es: []
+      },
+      provenance: "existing"
+    },
+    {
+      id: "legacy-136",
+      source_index: 136,
+      category_id: "life_hobbies",
+      ko: "\uC5F0\uD544",
+      es: "l\xE1piz",
+      aliases: {
+        ko: [],
+        es: []
+      },
+      provenance: "existing"
+    },
+    {
+      id: "legacy-137",
+      source_index: 137,
+      category_id: "life_hobbies",
+      ko: "\uBD93",
+      es: "pincel",
+      aliases: {
+        ko: [],
+        es: []
+      },
+      provenance: "existing"
+    },
+    {
+      id: "legacy-138",
+      source_index: 138,
+      category_id: "life_hobbies",
+      ko: "\uAC00\uC704",
+      es: "tijeras",
+      aliases: {
+        ko: [],
+        es: []
+      },
+      provenance: "existing"
+    },
+    {
+      id: "legacy-139",
+      source_index: 139,
+      category_id: "life_hobbies",
+      ko: "\uB9DD\uCE58",
+      es: "martillo",
+      aliases: {
+        ko: [],
+        es: []
+      },
+      provenance: "existing"
+    },
+    {
+      id: "legacy-140",
+      source_index: 140,
+      category_id: "life_hobbies",
+      ko: "\uD1B1",
+      es: "sierra",
+      aliases: {
+        ko: [],
+        es: []
+      },
+      provenance: "existing"
+    },
+    {
+      id: "legacy-141",
+      source_index: 141,
+      category_id: "life_hobbies",
+      ko: "\uAE30\uD0C0",
+      es: "guitarra",
+      aliases: {
+        ko: [],
+        es: []
+      },
+      provenance: "existing"
+    },
+    {
+      id: "legacy-142",
+      source_index: 142,
+      category_id: "life_hobbies",
+      ko: "\uD53C\uC544\uB178",
+      es: "piano",
+      aliases: {
+        ko: [],
+        es: []
+      },
+      provenance: "existing"
+    },
+    {
+      id: "legacy-143",
+      source_index: 143,
+      category_id: "life_hobbies",
+      ko: "\uB4DC\uB7FC",
+      es: "tambor",
+      aliases: {
+        ko: [],
+        es: []
+      },
+      provenance: "existing"
+    },
+    {
+      id: "legacy-144",
+      source_index: 144,
+      category_id: "life_hobbies",
+      ko: "\uD2B8\uB7FC\uD3AB",
+      es: "trompeta",
+      aliases: {
+        ko: [],
+        es: []
+      },
+      provenance: "existing"
+    },
+    {
+      id: "legacy-145",
+      source_index: 145,
+      category_id: "life_hobbies",
+      ko: "\uCD95\uAD6C\uACF5",
+      es: "bal\xF3n de f\xFAtbol",
+      aliases: {
+        ko: [],
+        es: []
+      },
+      provenance: "existing"
+    },
+    {
+      id: "legacy-146",
+      source_index: 146,
+      category_id: "life_hobbies",
+      ko: "\uB18D\uAD6C\uACF5",
+      es: "bal\xF3n de baloncesto",
+      aliases: {
+        ko: [],
+        es: []
+      },
+      provenance: "existing"
+    },
+    {
+      id: "legacy-147",
+      source_index: 147,
+      category_id: "life_hobbies",
+      ko: "\uC57C\uAD6C \uBC29\uB9DD\uC774",
+      es: "bate de b\xE9isbol",
+      aliases: {
+        ko: [],
+        es: []
+      },
+      provenance: "existing"
+    },
+    {
+      id: "legacy-148",
+      source_index: 148,
+      category_id: "food",
+      ko: "\uD53C\uC790",
+      es: "pizza",
+      aliases: {
+        ko: [],
+        es: []
+      },
+      provenance: "existing"
+    },
+    {
+      id: "legacy-149",
+      source_index: 149,
+      category_id: "food",
+      ko: "\uD584\uBC84\uAC70",
+      es: "hamburguesa",
+      aliases: {
+        ko: [],
+        es: []
+      },
+      provenance: "existing"
+    },
+    {
+      id: "legacy-150",
+      source_index: 150,
+      category_id: "food",
+      ko: "\uD56B\uB3C4\uADF8",
+      es: "perro caliente",
+      aliases: {
+        ko: [],
+        es: []
+      },
+      provenance: "existing"
+    },
+    {
+      id: "legacy-151",
+      source_index: 151,
+      category_id: "food",
+      ko: "\uC0CC\uB4DC\uC704\uCE58",
+      es: "s\xE1ndwich",
+      aliases: {
+        ko: [],
+        es: []
+      },
+      provenance: "existing"
+    },
+    {
+      id: "legacy-152",
+      source_index: 152,
+      category_id: "food",
+      ko: "\uBC25\uADF8\uB987",
+      es: "taz\xF3n de arroz",
+      aliases: {
+        ko: [],
+        es: []
+      },
+      provenance: "existing"
+    },
+    {
+      id: "legacy-153",
+      source_index: 153,
+      category_id: "food",
+      ko: "\uB2EC\uAC40",
+      es: "huevo",
+      aliases: {
+        ko: [],
+        es: []
+      },
+      provenance: "existing"
+    },
+    {
+      id: "legacy-154",
+      source_index: 154,
+      category_id: "food",
+      ko: "\uBE75",
+      es: "pan",
+      aliases: {
+        ko: [],
+        es: []
+      },
+      provenance: "existing"
+    },
+    {
+      id: "legacy-155",
+      source_index: 155,
+      category_id: "food",
+      ko: "\uCE58\uC988",
+      es: "queso",
+      aliases: {
+        ko: [],
+        es: []
+      },
+      provenance: "existing"
+    },
+    {
+      id: "legacy-156",
+      source_index: 156,
+      category_id: "food",
+      ko: "\uC6B0\uC720",
+      es: "leche",
+      aliases: {
+        ko: [],
+        es: []
+      },
+      provenance: "existing"
+    },
+    {
+      id: "legacy-157",
+      source_index: 157,
+      category_id: "food",
+      ko: "\uC544\uC774\uC2A4\uD06C\uB9BC",
+      es: "helado",
+      aliases: {
+        ko: [],
+        es: []
+      },
+      provenance: "existing"
+    },
+    {
+      id: "legacy-158",
+      source_index: 158,
+      category_id: "food",
+      ko: "\uCF00\uC774\uD06C",
+      es: "pastel",
+      aliases: {
+        ko: [],
+        es: []
+      },
+      provenance: "existing"
+    },
+    {
+      id: "legacy-159",
+      source_index: 159,
+      category_id: "food",
+      ko: "\uCFE0\uD0A4",
+      es: "galleta",
+      aliases: {
+        ko: [],
+        es: []
+      },
+      provenance: "existing"
+    },
+    {
+      id: "legacy-160",
+      source_index: 160,
+      category_id: "food",
+      ko: "\uC0AC\uACFC",
+      es: "manzana",
+      aliases: {
+        ko: [],
+        es: []
+      },
+      provenance: "existing"
+    },
+    {
+      id: "legacy-161",
+      source_index: 161,
+      category_id: "food",
+      ko: "\uC624\uB80C\uC9C0",
+      es: "naranja",
+      aliases: {
+        ko: [],
+        es: []
+      },
+      provenance: "existing"
+    },
+    {
+      id: "legacy-162",
+      source_index: 162,
+      category_id: "food",
+      ko: "\uB9DD\uACE0",
+      es: "mango",
+      aliases: {
+        ko: [],
+        es: []
+      },
+      provenance: "existing"
+    },
+    {
+      id: "legacy-163",
+      source_index: 163,
+      category_id: "food",
+      ko: "\uBC14\uB098\uB098",
+      es: "guineo",
+      aliases: {
+        ko: [],
+        es: [
+          "banana",
+          "banano"
+        ]
+      },
+      provenance: "existing"
+    },
+    {
+      id: "legacy-164",
+      source_index: 164,
+      category_id: "food",
+      ko: "\uD328\uC158\uD504\uB8E8\uD2B8",
+      es: "chinola",
+      aliases: {
+        ko: [],
+        es: [
+          "maracuy\xE1"
+        ]
+      },
+      provenance: "existing"
+    },
+    {
+      id: "legacy-165",
+      source_index: 165,
+      category_id: "food",
+      ko: "\uD30C\uC778\uC560\uD50C",
+      es: "pi\xF1a",
+      aliases: {
+        ko: [],
+        es: []
+      },
+      provenance: "existing"
+    },
+    {
+      id: "legacy-166",
+      source_index: 166,
+      category_id: "food",
+      ko: "\uC544\uBCF4\uCE74\uB3C4",
+      es: "aguacate",
+      aliases: {
+        ko: [],
+        es: []
+      },
+      provenance: "existing"
+    },
+    {
+      id: "legacy-167",
+      source_index: 167,
+      category_id: "food",
+      ko: "\uD1A0\uB9C8\uD1A0",
+      es: "tomate",
+      aliases: {
+        ko: [],
+        es: []
+      },
+      provenance: "existing"
+    },
+    {
+      id: "legacy-168",
+      source_index: 168,
+      category_id: "food",
+      ko: "\uC625\uC218\uC218",
+      es: "ma\xEDz",
+      aliases: {
+        ko: [],
+        es: []
+      },
+      provenance: "existing"
+    },
+    {
+      id: "legacy-169",
+      source_index: 169,
+      category_id: "food",
+      ko: "\uB2F9\uADFC",
+      es: "zanahoria",
+      aliases: {
+        ko: [],
+        es: []
+      },
+      provenance: "existing"
+    },
+    {
+      id: "legacy-170",
+      source_index: 170,
+      category_id: "food",
+      ko: "\uAC10\uC790",
+      es: "papa",
+      aliases: {
+        ko: [],
+        es: [
+          "patata"
+        ]
+      },
+      provenance: "existing"
+    },
+    {
+      id: "legacy-171",
+      source_index: 171,
+      category_id: "food",
+      ko: "\uC591\uD30C",
+      es: "cebolla",
+      aliases: {
+        ko: [],
+        es: []
+      },
+      provenance: "existing"
+    },
+    {
+      id: "legacy-172",
+      source_index: 172,
+      category_id: "food",
+      ko: "\uACE0\uCD94",
+      es: "aj\xED",
+      aliases: {
+        ko: [],
+        es: []
+      },
+      provenance: "existing"
+    },
+    {
+      id: "legacy-173",
+      source_index: 173,
+      category_id: "food",
+      ko: "\uB808\uBAAC",
+      es: "lim\xF3n",
+      aliases: {
+        ko: [],
+        es: []
+      },
+      provenance: "existing"
+    },
+    {
+      id: "legacy-174",
+      source_index: 174,
+      category_id: "food",
+      ko: "\uD3EC\uB3C4",
+      es: "uva",
+      aliases: {
+        ko: [],
+        es: []
+      },
+      provenance: "existing"
+    },
+    {
+      id: "legacy-175",
+      source_index: 175,
+      category_id: "food",
+      ko: "\uB538\uAE30",
+      es: "fresa",
+      aliases: {
+        ko: [],
+        es: []
+      },
+      provenance: "existing"
+    },
+    {
+      id: "legacy-176",
+      source_index: 176,
+      category_id: "food",
+      ko: "\uC218\uBC15",
+      es: "sand\xEDa",
+      aliases: {
+        ko: [],
+        es: []
+      },
+      provenance: "existing"
+    },
+    {
+      id: "legacy-177",
+      source_index: 177,
+      category_id: "food",
+      ko: "\uCF54\uCF54\uB11B",
+      es: "coco rallado",
+      aliases: {
+        ko: [],
+        es: []
+      },
+      provenance: "existing"
+    },
+    {
+      id: "legacy-178",
+      source_index: 178,
+      category_id: "life_hobbies",
+      ko: "\uCD95\uAD6C",
+      es: "f\xFAtbol",
+      aliases: {
+        ko: [],
+        es: []
+      },
+      provenance: "existing"
+    },
+    {
+      id: "legacy-179",
+      source_index: 179,
+      category_id: "life_hobbies",
+      ko: "\uB18D\uAD6C",
+      es: "baloncesto",
+      aliases: {
+        ko: [],
+        es: []
+      },
+      provenance: "existing"
+    },
+    {
+      id: "legacy-180",
+      source_index: 180,
+      category_id: "life_hobbies",
+      ko: "\uC57C\uAD6C",
+      es: "b\xE9isbol",
+      aliases: {
+        ko: [],
+        es: []
+      },
+      provenance: "existing"
+    },
+    {
+      id: "legacy-181",
+      source_index: 181,
+      category_id: "life_hobbies",
+      ko: "\uD14C\uB2C8\uC2A4",
+      es: "tenis",
+      aliases: {
+        ko: [],
+        es: []
+      },
+      provenance: "existing"
+    },
+    {
+      id: "legacy-182",
+      source_index: 182,
+      category_id: "life_hobbies",
+      ko: "\uC218\uC601",
+      es: "nataci\xF3n",
+      aliases: {
+        ko: [],
+        es: []
+      },
+      provenance: "existing"
+    },
+    {
+      id: "legacy-183",
+      source_index: 183,
+      category_id: "life_hobbies",
+      ko: "\uB2EC\uB9AC\uAE30",
+      es: "carrera",
+      aliases: {
+        ko: [],
+        es: []
+      },
+      provenance: "existing"
+    },
+    {
+      id: "legacy-184",
+      source_index: 184,
+      category_id: "life_hobbies",
+      ko: "\uCDA4",
+      es: "baile",
+      aliases: {
+        ko: [],
+        es: []
+      },
+      provenance: "existing"
+    },
+    {
+      id: "legacy-185",
+      source_index: 185,
+      category_id: "life_hobbies",
+      ko: "\uB09A\uC2DC",
+      es: "pesca",
+      aliases: {
+        ko: [],
+        es: []
+      },
+      provenance: "existing"
+    },
+    {
+      id: "legacy-186",
+      source_index: 186,
+      category_id: "life_hobbies",
+      ko: "\uC5F0",
+      es: "chichigua",
+      aliases: {
+        ko: [],
+        es: [
+          "cometa"
+        ]
+      },
+      provenance: "existing"
+    },
+    {
+      id: "legacy-187",
+      source_index: 187,
+      category_id: "life_hobbies",
+      ko: "\uC120\uBB3C",
+      es: "regalo",
+      aliases: {
+        ko: [],
+        es: []
+      },
+      provenance: "existing"
+    },
+    {
+      id: "legacy-188",
+      source_index: 188,
+      category_id: "life_hobbies",
+      ko: "\uC0DD\uC77C \uCF00\uC774\uD06C",
+      es: "pastel de cumplea\xF1os",
+      aliases: {
+        ko: [],
+        es: []
+      },
+      provenance: "existing"
+    },
+    {
+      id: "legacy-189",
+      source_index: 189,
+      category_id: "life_hobbies",
+      ko: "\uC591\uCD08",
+      es: "vela",
+      aliases: {
+        ko: [],
+        es: []
+      },
+      provenance: "existing"
+    },
+    {
+      id: "legacy-190",
+      source_index: 190,
+      category_id: "life_hobbies",
+      ko: "\uC655\uAD00",
+      es: "corona",
+      aliases: {
+        ko: [],
+        es: []
+      },
+      provenance: "existing"
+    },
+    {
+      id: "legacy-191",
+      source_index: 191,
+      category_id: "life_hobbies",
+      ko: "\uB9C8\uC2A4\uD06C",
+      es: "m\xE1scara",
+      aliases: {
+        ko: [],
+        es: []
+      },
+      provenance: "existing"
+    },
+    {
+      id: "legacy-192",
+      source_index: 192,
+      category_id: "life_hobbies",
+      ko: "\uD48D\uC120",
+      es: "globo",
+      aliases: {
+        ko: [],
+        es: []
+      },
+      provenance: "existing"
+    },
+    {
+      id: "animals-extra-001",
+      category_id: "animals",
+      ko: "\uB099\uD0C0",
+      es: "camello",
+      aliases: {
+        ko: [],
+        es: []
+      },
+      provenance: "added"
+    },
+    {
+      id: "animals-extra-002",
+      category_id: "animals",
+      ko: "\uCF54\uBFD4\uC18C",
+      es: "rinoceronte",
+      aliases: {
+        ko: [],
+        es: []
+      },
+      provenance: "added"
+    },
+    {
+      id: "animals-extra-003",
+      category_id: "animals",
+      ko: "\uD558\uB9C8",
+      es: "hipop\xF3tamo",
+      aliases: {
+        ko: [],
+        es: []
+      },
+      provenance: "added"
+    },
+    {
+      id: "animals-extra-004",
+      category_id: "animals",
+      ko: "\uBB3C\uAC1C",
+      es: "foca",
+      aliases: {
+        ko: [],
+        es: []
+      },
+      provenance: "added"
+    },
+    {
+      id: "animals-extra-005",
+      category_id: "animals",
+      ko: "\uCE74\uBA5C\uB808\uC628",
+      es: "camale\xF3n",
+      aliases: {
+        ko: [],
+        es: [
+          "lagarto camale\xF3n"
+        ]
+      },
+      provenance: "added"
+    },
+    {
+      id: "animals-extra-006",
+      category_id: "animals",
+      ko: "\uBC15\uC950",
+      es: "murci\xE9lago",
+      aliases: {
+        ko: [],
+        es: []
+      },
+      provenance: "added"
+    },
+    {
+      id: "animals-extra-007",
+      category_id: "animals",
+      ko: "\uD64D\uD559",
+      es: "flamenco",
+      aliases: {
+        ko: [],
+        es: []
+      },
+      provenance: "added"
+    },
+    {
+      id: "animals-extra-008",
+      category_id: "animals",
+      ko: "\uC218\uB2EC",
+      es: "nutria",
+      aliases: {
+        ko: [],
+        es: []
+      },
+      provenance: "added"
+    },
+    {
+      id: "food-extra-001",
+      category_id: "food",
+      ko: "\uB3C4\uB11B",
+      es: "dona",
+      aliases: {
+        ko: [],
+        es: [
+          "rosquilla",
+          "donut",
+          "d\xF3nut"
+        ]
+      },
+      provenance: "added"
+    },
+    {
+      id: "food-extra-002",
+      category_id: "food",
+      ko: "\uD32C\uCF00\uC774\uD06C",
+      es: "panqueque",
+      aliases: {
+        ko: [],
+        es: [
+          "pancake",
+          "hotcake"
+        ]
+      },
+      provenance: "added"
+    },
+    {
+      id: "food-extra-003",
+      category_id: "food",
+      ko: "\uD31D\uCF58",
+      es: "palomitas",
+      aliases: {
+        ko: [],
+        es: [
+          "rosetas de ma\xEDz",
+          "popcorn"
+        ]
+      },
+      provenance: "added"
+    },
+    {
+      id: "food-extra-004",
+      category_id: "food",
+      ko: "\uCD08\uCF5C\uB9BF",
+      es: "chocolate",
+      aliases: {
+        ko: [],
+        es: []
+      },
+      provenance: "added"
+    },
+    {
+      id: "food-extra-005",
+      category_id: "food",
+      ko: "\uD30C\uC2A4\uD0C0",
+      es: "pasta",
+      aliases: {
+        ko: [],
+        es: []
+      },
+      provenance: "added"
+    },
+    {
+      id: "food-extra-006",
+      category_id: "food",
+      ko: "\uD0C0\uCF54",
+      es: "taco",
+      aliases: {
+        ko: [],
+        es: []
+      },
+      provenance: "added"
+    },
+    {
+      id: "food-extra-007",
+      category_id: "food",
+      ko: "\uC5E0\uD30C\uB098\uB2E4",
+      es: "empanada",
+      aliases: {
+        ko: [],
+        es: []
+      },
+      provenance: "added"
+    },
+    {
+      id: "food-extra-008",
+      category_id: "food",
+      ko: "\uC218\uD504",
+      es: "sopa",
+      aliases: {
+        ko: [],
+        es: []
+      },
+      provenance: "added"
+    },
+    {
+      id: "food-extra-009",
+      category_id: "food",
+      ko: "\uB9DD\uAD6C",
+      es: "mang\xFA",
+      aliases: {
+        ko: [],
+        es: [
+          "mangu"
+        ]
+      },
+      provenance: "added"
+    },
+    {
+      id: "food-extra-010",
+      category_id: "food",
+      ko: "\uBAA8\uD401\uACE0",
+      es: "mofongo",
+      aliases: {
+        ko: [],
+        es: []
+      },
+      provenance: "added"
+    },
+    {
+      id: "food-extra-011",
+      category_id: "food",
+      ko: "\uC0B0\uCF54\uCD08",
+      es: "sancocho",
+      aliases: {
+        ko: [],
+        es: []
+      },
+      provenance: "added"
+    },
+    {
+      id: "food-extra-012",
+      category_id: "food",
+      ko: "\uD1A0\uC2A4\uD1A4",
+      es: "tostones",
+      aliases: {
+        ko: [],
+        es: []
+      },
+      provenance: "added"
+    },
+    {
+      id: "food-extra-013",
+      category_id: "food",
+      ko: "\uC720\uCE74\uD280\uAE40",
+      es: "yuca frita",
+      aliases: {
+        ko: [],
+        es: [
+          "fritura de yuca"
+        ]
+      },
+      provenance: "added"
+    },
+    {
+      id: "food-extra-014",
+      category_id: "food",
+      ko: "\uC694\uAD6C\uB974\uD2B8",
+      es: "yogur",
+      aliases: {
+        ko: [],
+        es: [
+          "yogurt"
+        ]
+      },
+      provenance: "added"
+    },
+    {
+      id: "food-extra-015",
+      category_id: "food",
+      ko: "\uCEE4\uD53C",
+      es: "caf\xE9",
+      aliases: {
+        ko: [],
+        es: [
+          "cafe"
+        ]
+      },
+      provenance: "added"
+    },
+    {
+      id: "nature_space-extra-001",
+      category_id: "nature_space",
+      ko: "\uC9C0\uAD6C",
+      es: "planeta Tierra",
+      aliases: {
+        ko: [],
+        es: []
+      },
+      provenance: "added"
+    },
+    {
+      id: "nature_space-extra-002",
+      category_id: "nature_space",
+      ko: "\uD1A0\uC131",
+      es: "Saturno",
+      aliases: {
+        ko: [],
+        es: []
+      },
+      provenance: "added"
+    },
+    {
+      id: "nature_space-extra-003",
+      category_id: "nature_space",
+      ko: "\uC6B0\uC8FC\uC120",
+      es: "nave espacial",
+      aliases: {
+        ko: [],
+        es: [
+          "astronave"
+        ]
+      },
+      provenance: "added"
+    },
+    {
+      id: "nature_space-extra-004",
+      category_id: "nature_space",
+      ko: "\uC6B0\uC8FC\uBE44\uD589\uC0AC",
+      es: "astronauta",
+      aliases: {
+        ko: [],
+        es: [
+          "cosmonauta"
+        ]
+      },
+      provenance: "added"
+    },
+    {
+      id: "nature_space-extra-005",
+      category_id: "nature_space",
+      ko: "\uBCC4\uB625\uBCC4",
+      es: "estrella fugaz",
+      aliases: {
+        ko: [],
+        es: []
+      },
+      provenance: "added"
+    },
+    {
+      id: "nature_space-extra-006",
+      category_id: "nature_space",
+      ko: "\uB2EC \uAE30\uC9C0",
+      es: "base lunar",
+      aliases: {
+        ko: [],
+        es: []
+      },
+      provenance: "added"
+    },
+    {
+      id: "nature_space-extra-007",
+      category_id: "nature_space",
+      ko: "\uC0B0\uD638\uCD08",
+      es: "arrecife de coral",
+      aliases: {
+        ko: [],
+        es: []
+      },
+      provenance: "added"
+    },
+    {
+      id: "nature_space-extra-008",
+      category_id: "nature_space",
+      ko: "\uB208\uC0AC\uD0DC",
+      es: "avalancha",
+      aliases: {
+        ko: [],
+        es: []
+      },
+      provenance: "added"
+    },
+    {
+      id: "nature_space-extra-009",
+      category_id: "nature_space",
+      ko: "\uB3C4\uD1A0\uB9AC",
+      es: "bellota",
+      aliases: {
+        ko: [],
+        es: []
+      },
+      provenance: "added"
+    },
+    {
+      id: "nature_space-extra-010",
+      category_id: "nature_space",
+      ko: "\uC774\uB07C",
+      es: "musgo",
+      aliases: {
+        ko: [],
+        es: []
+      },
+      provenance: "added"
+    },
+    {
+      id: "nature_space-extra-011",
+      category_id: "nature_space",
+      ko: "\uD30C\uB3C4",
+      es: "ola",
+      aliases: {
+        ko: [],
+        es: []
+      },
+      provenance: "added"
+    },
+    {
+      id: "nature_space-extra-012",
+      category_id: "nature_space",
+      ko: "\uBE59\uC0B0",
+      es: "t\xE9mpano de hielo",
+      aliases: {
+        ko: [],
+        es: [
+          "t\xE9mpano",
+          "iceberg"
+        ]
+      },
+      provenance: "added"
+    },
+    {
+      id: "nature_space-extra-013",
+      category_id: "nature_space",
+      ko: "\uC131\uC6B4",
+      es: "nebulosa",
+      aliases: {
+        ko: [],
+        es: []
+      },
+      provenance: "added"
+    },
+    {
+      id: "nature_space-extra-014",
+      category_id: "nature_space",
+      ko: "\uD1A0\uC591",
+      es: "suelo",
+      aliases: {
+        ko: [],
+        es: []
+      },
+      provenance: "added"
+    },
+    {
+      id: "nature_space-extra-015",
+      category_id: "nature_space",
+      ko: "\uC120\uC778\uC7A5 \uAF43",
+      es: "flor de cactus",
+      aliases: {
+        ko: [],
+        es: []
+      },
+      provenance: "added"
+    },
+    {
+      id: "nature_space-extra-016",
+      category_id: "nature_space",
+      ko: "\uC870\uAC1C\uAECD\uB370\uAE30",
+      es: "concha marina",
+      aliases: {
+        ko: [],
+        es: []
+      },
+      provenance: "added"
+    },
+    {
+      id: "places-extra-001",
+      category_id: "places",
+      ko: "\uBC15\uBB3C\uAD00",
+      es: "museo",
+      aliases: {
+        ko: [],
+        es: []
+      },
+      provenance: "added"
+    },
+    {
+      id: "places-extra-002",
+      category_id: "places",
+      ko: "\uD638\uD154",
+      es: "hotel",
+      aliases: {
+        ko: [],
+        es: []
+      },
+      provenance: "added"
+    },
+    {
+      id: "places-extra-003",
+      category_id: "places",
+      ko: "\uACBD\uCC30\uC11C",
+      es: "comisar\xEDa",
+      aliases: {
+        ko: [],
+        es: [
+          "cuartel de polic\xEDa"
+        ]
+      },
+      provenance: "added"
+    },
+    {
+      id: "places-extra-004",
+      category_id: "places",
+      ko: "\uC740\uD589",
+      es: "banco",
+      aliases: {
+        ko: [],
+        es: []
+      },
+      provenance: "added"
+    },
+    {
+      id: "places-extra-005",
+      category_id: "places",
+      ko: "\uADF9\uC7A5",
+      es: "teatro",
+      aliases: {
+        ko: [],
+        es: []
+      },
+      provenance: "added"
+    },
+    {
+      id: "places-extra-006",
+      category_id: "places",
+      ko: "\uAD81\uC804",
+      es: "palacio",
+      aliases: {
+        ko: [],
+        es: []
+      },
+      provenance: "added"
+    },
+    {
+      id: "places-extra-007",
+      category_id: "places",
+      ko: "\uBD84\uC218",
+      es: "fuente",
+      aliases: {
+        ko: [],
+        es: []
+      },
+      provenance: "added"
+    },
+    {
+      id: "places-extra-008",
+      category_id: "places",
+      ko: "\uC9C0\uD558\uCCA0\uC5ED",
+      es: "estaci\xF3n de metro",
+      aliases: {
+        ko: [],
+        es: []
+      },
+      provenance: "added"
+    },
+    {
+      id: "places-extra-009",
+      category_id: "places",
+      ko: "\uB3D9\uB124 \uC2DD\uB8CC\uD488\uC810",
+      es: "colmado",
+      aliases: {
+        ko: [],
+        es: []
+      },
+      provenance: "added"
+    },
+    {
+      id: "places-extra-010",
+      category_id: "places",
+      ko: "\uC57C\uC2DC\uC7A5",
+      es: "mercado nocturno",
+      aliases: {
+        ko: [],
+        es: []
+      },
+      provenance: "added"
+    },
+    {
+      id: "places-extra-011",
+      category_id: "places",
+      ko: "\uAE30\uB150\uBE44",
+      es: "monumento",
+      aliases: {
+        ko: [],
+        es: []
+      },
+      provenance: "added"
+    },
+    {
+      id: "places-extra-012",
+      category_id: "places",
+      ko: "\uACBD\uAE30\uC7A5",
+      es: "estadio",
+      aliases: {
+        ko: [],
+        es: []
+      },
+      provenance: "added"
+    },
+    {
+      id: "places-extra-013",
+      category_id: "places",
+      ko: "\uD130\uB110",
+      es: "t\xFAnel",
+      aliases: {
+        ko: [],
+        es: []
+      },
+      provenance: "added"
+    },
+    {
+      id: "places-extra-014",
+      category_id: "places",
+      ko: "\uC218\uB3C4\uC6D0",
+      es: "monasterio",
+      aliases: {
+        ko: [],
+        es: []
+      },
+      provenance: "added"
+    },
+    {
+      id: "transport-extra-001",
+      category_id: "transport",
+      ko: "\uAD6C\uAE09\uCC28",
+      es: "ambulancia",
+      aliases: {
+        ko: [],
+        es: []
+      },
+      provenance: "added"
+    },
+    {
+      id: "transport-extra-002",
+      category_id: "transport",
+      ko: "\uACBD\uCC30\uCC28",
+      es: "coche patrulla",
+      aliases: {
+        ko: [],
+        es: [
+          "patrulla",
+          "veh\xEDculo policial"
+        ]
+      },
+      provenance: "added"
+    },
+    {
+      id: "transport-extra-003",
+      category_id: "transport",
+      ko: "\uC18C\uBC29\uCC28",
+      es: "cami\xF3n de bomberos",
+      aliases: {
+        ko: [],
+        es: []
+      },
+      provenance: "added"
+    },
+    {
+      id: "transport-extra-004",
+      category_id: "transport",
+      ko: "\uC7A0\uC218\uD568",
+      es: "submarino",
+      aliases: {
+        ko: [],
+        es: [
+          "sumergible"
+        ]
+      },
+      provenance: "added"
+    },
+    {
+      id: "transport-extra-005",
+      category_id: "transport",
+      ko: "\uC694\uD2B8",
+      es: "yate",
+      aliases: {
+        ko: [],
+        es: []
+      },
+      provenance: "added"
+    },
+    {
+      id: "transport-extra-006",
+      category_id: "transport",
+      ko: "\uCE74\uB204",
+      es: "canoa",
+      aliases: {
+        ko: [],
+        es: []
+      },
+      provenance: "added"
+    },
+    {
+      id: "transport-extra-007",
+      category_id: "transport",
+      ko: "\uCF00\uC774\uBE14\uCE74",
+      es: "telef\xE9rico",
+      aliases: {
+        ko: [],
+        es: []
+      },
+      provenance: "added"
+    },
+    {
+      id: "transport-extra-008",
+      category_id: "transport",
+      ko: "\uC804\uB3D9\uD0A5\uBCF4\uB4DC",
+      es: "scooter el\xE9ctrico",
+      aliases: {
+        ko: [],
+        es: [
+          "patinete el\xE9ctrico"
+        ]
+      },
+      provenance: "added"
+    },
+    {
+      id: "transport-extra-009",
+      category_id: "transport",
+      ko: "\uC9C0\uD558\uCCA0",
+      es: "metro",
+      aliases: {
+        ko: [],
+        es: [
+          "tren del metro"
+        ]
+      },
+      provenance: "added"
+    },
+    {
+      id: "transport-extra-010",
+      category_id: "transport",
+      ko: "\uD2B8\uB7A8",
+      es: "tranv\xEDa",
+      aliases: {
+        ko: [],
+        es: []
+      },
+      provenance: "added"
+    },
+    {
+      id: "transport-extra-011",
+      category_id: "transport",
+      ko: "\uACAC\uC778\uCC28",
+      es: "gr\xFAa",
+      aliases: {
+        ko: [],
+        es: [
+          "cami\xF3n gr\xFAa"
+        ]
+      },
+      provenance: "added"
+    },
+    {
+      id: "transport-extra-012",
+      category_id: "transport",
+      ko: "\uD654\uBB3C\uC120",
+      es: "buque de carga",
+      aliases: {
+        ko: [],
+        es: [
+          "barco de carga"
+        ]
+      },
+      provenance: "added"
+    },
+    {
+      id: "transport-extra-013",
+      category_id: "transport",
+      ko: "\uD06C\uB8E8\uC988\uC120",
+      es: "crucero",
+      aliases: {
+        ko: [],
+        es: [
+          "barco crucero"
+        ]
+      },
+      provenance: "added"
+    },
+    {
+      id: "transport-extra-014",
+      category_id: "transport",
+      ko: "\uB4DC\uB860",
+      es: "dron",
+      aliases: {
+        ko: [],
+        es: [
+          "drone"
+        ]
+      },
+      provenance: "added"
+    },
+    {
+      id: "transport-extra-015",
+      category_id: "transport",
+      ko: "\uC9C0\uAC8C\uCC28",
+      es: "montacargas",
+      aliases: {
+        ko: [],
+        es: []
+      },
+      provenance: "added"
+    },
+    {
+      id: "life_hobbies-extra-001",
+      category_id: "life_hobbies",
+      ko: "\uBC30\uB0AD",
+      es: "mochila",
+      aliases: {
+        ko: [],
+        es: [
+          "bulto"
+        ]
+      },
+      provenance: "added"
+    },
+    {
+      id: "life_hobbies-extra-002",
+      category_id: "life_hobbies",
+      ko: "\uCE6B\uC194",
+      es: "cepillo de dientes",
+      aliases: {
+        ko: [],
+        es: [
+          "cepillo dental"
+        ]
+      },
+      provenance: "added"
+    },
+    {
+      id: "life_hobbies-extra-003",
+      category_id: "life_hobbies",
+      ko: "\uC57C\uAD6C \uBAA8\uC790",
+      es: "gorra de b\xE9isbol",
+      aliases: {
+        ko: [],
+        es: [
+          "gorra"
+        ]
+      },
+      provenance: "added"
+    },
+    {
+      id: "life_hobbies-extra-004",
+      category_id: "life_hobbies",
+      ko: "\uC2E0\uBC1C",
+      es: "zapato",
+      aliases: {
+        ko: [],
+        es: [
+          "zapatos"
+        ]
+      },
+      provenance: "added"
+    },
+    {
+      id: "life_hobbies-extra-005",
+      category_id: "life_hobbies",
+      ko: "\uC30D\uC548\uACBD",
+      es: "binoculares",
+      aliases: {
+        ko: [],
+        es: [
+          "prism\xE1ticos"
+        ]
+      },
+      provenance: "added"
+    },
+    {
+      id: "life_hobbies-extra-006",
+      category_id: "life_hobbies",
+      ko: "\uC8FC\uC0AC\uC704",
+      es: "dado",
+      aliases: {
+        ko: [],
+        es: [
+          "dados"
+        ]
+      },
+      provenance: "added"
+    },
+    {
+      id: "life_hobbies-extra-007",
+      category_id: "life_hobbies",
+      ko: "\uD37C\uC990",
+      es: "rompecabezas",
+      aliases: {
+        ko: [],
+        es: []
+      },
+      provenance: "added"
+    },
+    {
+      id: "life_hobbies-extra-008",
+      category_id: "life_hobbies",
+      ko: "\uBC30\uAD6C\uACF5",
+      es: "bal\xF3n de voleibol",
+      aliases: {
+        ko: [],
+        es: [
+          "pelota de voleibol"
+        ]
+      },
+      provenance: "added"
+    },
+    {
+      id: "life_hobbies-extra-009",
+      category_id: "life_hobbies",
+      ko: "\uD14C\uB2C8\uC2A4 \uB77C\uCF13",
+      es: "raqueta de tenis",
+      aliases: {
+        ko: [],
+        es: []
+      },
+      provenance: "added"
+    },
+    {
+      id: "life_hobbies-extra-010",
+      category_id: "life_hobbies",
+      ko: "\uC2A4\uD0A4",
+      es: "esqu\xED",
+      aliases: {
+        ko: [],
+        es: [
+          "esqu\xEDs",
+          "esqu\xEDes"
+        ]
+      },
+      provenance: "added"
+    },
+    {
+      id: "life_hobbies-extra-011",
+      category_id: "life_hobbies",
+      ko: "\uD604\uBBF8\uACBD",
+      es: "microscopio",
+      aliases: {
+        ko: [],
+        es: []
+      },
+      provenance: "added"
+    },
+    {
+      id: "life_hobbies-extra-012",
+      category_id: "life_hobbies",
+      ko: "\uBCA0\uAC1C",
+      es: "almohada",
+      aliases: {
+        ko: [],
+        es: []
+      },
+      provenance: "added"
+    }
+  ]
+};
+
+// src/games/catchmindTopics.ts
+var catchmindCategories = catchmind_topic_dictionary_default.categories.map(({ id, label: label5 }) => ({ id, label: label5 }));
+var catchmindTopicWords = catchmind_topic_dictionary_default.words;
 
 // src/games/catchmind.ts
 var label2 = (ko, es, action) => ({ label: { ko, es }, action });
@@ -328,27 +3855,33 @@ function norm(v) {
   return v.normalize("NFC").toLowerCase().trim();
 }
 function answers(c) {
-  return [c.ko, c.es].map(norm);
+  return [c.ko, c.es, ...c.aliases?.ko ?? [], ...c.aliases?.es ?? []].map(norm);
 }
-var defaultSettings = () => ({ drawTimeSeconds: 80, rounds: 6, choices: 3, hints: 2, customWords: [], customOnly: false });
+function localeAnswers(c, locale) {
+  return [c[locale], ...c.aliases?.[locale] ?? []].map(norm);
+}
+var defaultSettings = () => ({ category_id: null, drawTimeSeconds: 80, rounds: 6, choices: 3, hints: 2, customWords: [], customOnly: false });
 function uniqueConcepts(concepts) {
-  const seenKo = /* @__PURE__ */ new Set(), seenEs = /* @__PURE__ */ new Set();
-  return concepts.filter(({ ko, es }) => {
-    const normalizedKo = norm(ko), normalizedEs = norm(es);
-    if (!normalizedKo || !normalizedEs || seenKo.has(normalizedKo) || seenEs.has(normalizedEs)) return false;
-    seenKo.add(normalizedKo);
-    seenEs.add(normalizedEs);
+  const seen = { ko: /* @__PURE__ */ new Set(), es: /* @__PURE__ */ new Set() };
+  return concepts.filter((concept) => {
+    const keys = { ko: localeAnswers(concept, "ko"), es: localeAnswers(concept, "es") };
+    if (keys.ko.some((key) => !key || seen.ko.has(key)) || keys.es.some((key) => !key || seen.es.has(key))) return false;
+    keys.ko.forEach((key) => seen.ko.add(key));
+    keys.es.forEach((key) => seen.es.add(key));
     return true;
   });
 }
 function dealWords(seed, settings) {
-  const source = settings.customOnly ? settings.customWords : [...settings.customWords, ...catchmindDictionary];
+  if (!settings.category_id) return [];
+  const categoryWords = catchmindTopicWords.filter((word) => word.category_id === settings.category_id).map(({ ko, es, aliases }) => aliases && (aliases.ko?.length || aliases.es?.length) ? { ko, es, aliases } : { ko, es });
+  const source = settings.customOnly ? settings.customWords : [...settings.customWords, ...categoryWords];
   const concepts = shuffle(uniqueConcepts(source), seededRandom(seed));
-  return Array.from({ length: settings.rounds }, (_, i) => concepts.slice(i * settings.choices, (i + 1) * settings.choices));
+  return Array.from({ length: settings.rounds }, (_, round) => Array.from({ length: settings.choices }, (_2, choice) => concepts[(round * settings.choices + choice) % concepts.length]));
 }
 function validSettings(value) {
   if (!value || typeof value !== "object") return false;
   const settings = value;
+  if (!catchmindCategories.some((category) => category.id === settings.category_id)) return false;
   if (!Number.isInteger(settings.drawTimeSeconds) || settings.drawTimeSeconds < 30 || settings.drawTimeSeconds > 180) return false;
   if (!Number.isInteger(settings.rounds) || settings.rounds < 2 || settings.rounds > 12) return false;
   if (!Number.isInteger(settings.choices) || settings.choices < 3 || settings.choices > 5) return false;
@@ -361,7 +3894,7 @@ function validSettings(value) {
     if (!ko || !es || [...ko].length > 32 || [...es].length > 32) return false;
     customWords.push({ ko, es });
   }
-  const base = uniqueConcepts(catchmindDictionary);
+  const base = uniqueConcepts(catchmindTopicWords.filter((word) => word.category_id === settings.category_id));
   const all = uniqueConcepts([...customWords, ...base]);
   if (all.length !== customWords.length + base.length) return false;
   return !settings.customOnly || customWords.length >= settings.rounds * settings.choices;
@@ -381,16 +3914,8 @@ function guessPoints(s) {
   const remaining = s.deadlineAt ? Math.max(0, Date.parse(s.deadlineAt) - Date.now()) : 0;
   return Math.max(1, Math.ceil(3 * remaining / getCatchmindDrawDurationMs(s)));
 }
-function maskedHint(word, stage) {
-  let left = stage;
-  return [...word].map((char) => {
-    if (/\s/u.test(char)) return char;
-    if (left > 0) {
-      left--;
-      return char;
-    }
-    return "\uFF3F";
-  }).join(" ");
+function maskedHint(word, locale) {
+  return [...word].map((char) => /\s/u.test(char) ? char : locale === "ko" ? "\u25A1" : /\p{L}/u.test(char) ? "?" : char).join("");
 }
 function isCorrectGuess(s, text) {
   return s.phase === "drawing" && s.answer !== null && typeof text === "string" && answers(s.answer).includes(norm(text));
@@ -404,15 +3929,15 @@ var catchmindEngine = {
   id: "catchmind",
   createInitialState(seed) {
     const settings = defaultSettings();
-    return { seed, round: 0, drawer: "p1", wordChoices: dealWords(seed, settings), answer: null, strokes: [], fills: [], nextOrder: 0, guesses: [], score: { p1: 0, p2: 0 }, deadlineAt: null, hintStage: 0, settings, phase: "choosing", result: null };
+    return { seed, round: 0, drawer: "p1", wordChoices: [], answer: null, strokes: [], fills: [], nextOrder: 0, guesses: [], score: { p1: 0, p2: 0 }, deadlineAt: null, hintStage: 0, settings, phase: "choosing", result: null };
   },
   validateAction(s, p, a) {
     if (!isPlayer2(p)) return "Invalid player";
     if (s.result) return "Game is over";
     if (!a || typeof a.type !== "string") return "Invalid action";
     const payload = a.payload ?? {};
-    if (a.type === "settings") return p === "p1" && s.round === 0 && s.phase === "choosing" && validSettings(payload.settings) ? null : "Room settings are invalid or locked";
-    if (a.type === "choose") return s.phase === "choosing" && p === s.drawer && Number.isInteger(payload.wordId) && payload.wordId >= 0 && payload.wordId < s.settings.choices ? null : "Choose one of the offered words as the drawer";
+    if (a.type === "settings") return p === "p1" && s.round === 0 && s.phase === "choosing" && Object.hasOwn(s.settings, "category_id") && validSettings(payload.settings) ? null : "Room settings are invalid or locked";
+    if (a.type === "choose") return s.phase === "choosing" && p === s.drawer && Number.isInteger(payload.wordId) && payload.wordId >= 0 && payload.wordId < (s.wordChoices[s.round]?.length ?? 0) ? null : "Choose one of the offered words as the drawer";
     if (a.type === "draw") {
       if (s.phase !== "drawing" || p !== s.drawer) return "Only the drawer can draw during an active round";
       const strokes = payload.strokes;
@@ -462,6 +3987,7 @@ var catchmindEngine = {
     if (error) throw new Error(error);
     if (a.type === "settings") {
       const settings = structuredClone(a.payload.settings);
+      settings.customWords = settings.customWords.map(({ ko, es }) => ({ ko: ko.trim(), es: es.trim() }));
       return { ...s, settings, wordChoices: dealWords(s.seed, settings) };
     }
     if (a.type === "choose") return { ...s, answer: s.wordChoices[s.round][a.payload.wordId], strokes: [], fills: [], guesses: [], hintStage: 0, phase: "drawing" };
@@ -501,17 +4027,17 @@ var catchmindEngine = {
   getPlayerView(s, p) {
     const guesser = otherPlayer(s.drawer), active = s.phase === "drawing";
     const actions = [];
-    if (!s.result && s.phase === "choosing" && p === "p1" && s.round === 0) actions.push(label2("\uBC29 \uC124\uC815", "Ajustes de sala", { type: "settings", payload: { settings: s.settings } }));
-    if (!s.result && s.phase === "choosing" && p === s.drawer) s.wordChoices[s.round].forEach((word, wordId) => actions.push(label2(`${word.ko} / ${word.es}`, `${word.es} / ${word.ko}`, { type: "choose", payload: { wordId } })));
+    if (!s.result && s.phase === "choosing" && p === "p1" && s.round === 0 && Object.hasOwn(s.settings, "category_id")) actions.push(label2("\uBC29 \uC124\uC815", "Ajustes de sala", { type: "settings", payload: { settings: s.settings } }));
+    if (!s.result && s.phase === "choosing" && p === s.drawer) (s.wordChoices[s.round] ?? []).forEach((word, wordId) => actions.push(label2(`${word.ko} / ${word.es}`, `${word.es} / ${word.ko}`, { type: "choose", payload: { wordId } })));
     if (!s.result && active && p === s.drawer) actions.push(label2("\uB77C\uC6B4\uB4DC \uC885\uB8CC", "Terminar ronda", { type: "end-round" }), label2("\uD328\uC2A4", "Pasar", { type: "pass" }), label2("\uC2E4\uD589 \uCDE8\uC18C", "Deshacer", { type: "undo" }), label2("\uC804\uCCB4 \uC9C0\uC6B0\uAE30", "Borrar todo", { type: "clear" }), label2("\uCC44\uC6B0\uAE30", "Rellenar", { type: "fill" }));
     if (!s.result && s.phase === "round-over" && p === s.drawer) actions.push(label2("\uB2E4\uC74C \uB77C\uC6B4\uB4DC", "Siguiente ronda", { type: "end-round" }));
     if (!s.result && active && p === guesser) actions.push(label2("\uC815\uB2F5 \uC81C\uCD9C", "Enviar respuesta", { type: "guess", payload: { text: "" } }));
     const visibleGuesses = s.guesses.map((g) => ({ by: g.by, correct: g.correct, text: g.correct ? g.text : "\u2026" }));
     const ownAnswer = p === s.drawer && s.phase === "drawing" ? s.answer : null;
-    const visibleSettings = { drawTimeSeconds: s.settings.drawTimeSeconds, rounds: s.settings.rounds, choices: s.settings.choices, hints: s.settings.hints, customWordCount: s.settings.customWords.length, customOnly: s.settings.customOnly };
+    const visibleSettings = { category_id: s.settings.category_id, categoryOptions: catchmindCategories, drawTimeSeconds: s.settings.drawTimeSeconds, rounds: s.settings.rounds, choices: s.settings.choices, hints: s.settings.hints, customWordCount: s.settings.customWords.length, customOnly: s.settings.customOnly };
     const hintLength = active && s.answer ? { ko: [...s.answer.ko].length, es: [...s.answer.es].length } : null;
-    const hintWord = active && p !== s.drawer && s.answer && s.settings.hints ? { ko: maskedHint(s.answer.ko, s.hintStage), es: maskedHint(s.answer.es, s.hintStage) } : null;
-    return { game: "catchmind", turn: s.drawer, phase: s.phase, hand: p === s.drawer ? { choices: s.phase === "choosing" ? s.wordChoices[s.round].map((c, wordId) => ({ wordId, ko: c.ko, es: c.es })) : [], answer: ownAnswer, settingsCustomWords: p === "p1" ? structuredClone(s.settings.customWords) : [] } : null, board: { strokes: s.strokes.map((st) => ({ ...st, points: st.points.map((pt) => ({ ...pt })) })), fills: s.fills.map((fill) => ({ ...fill })), guesses: visibleGuesses, round: s.round + 1, totalRounds: s.settings.rounds, drawer: s.drawer, answer: s.phase === "round-over" || s.phase === "finished" ? s.answer : null, hintLength, hintWord, hintStage: s.hintStage, settings: visibleSettings, scores: { ...s.score } }, opponentCount: 0, status: s.result ? "finished" : s.phase === "choosing" ? p === s.drawer ? "choose-word" : "waiting" : active ? p === s.drawer ? "drawing" : "guessing" : "round-over", result: s.result, actions };
+    const hintWord = active && p !== s.drawer && s.answer && s.settings.hints ? { ko: maskedHint(s.answer.ko, "ko"), es: maskedHint(s.answer.es, "es") } : null;
+    return { game: "catchmind", turn: s.drawer, phase: s.phase, hand: p === s.drawer ? { choices: s.phase === "choosing" ? (s.wordChoices[s.round] ?? []).map((c, wordId) => ({ wordId, ko: c.ko, es: c.es })) : [], answer: ownAnswer, settingsCustomWords: p === "p1" ? structuredClone(s.settings.customWords) : [] } : null, board: { strokes: s.strokes.map((st) => ({ ...st, points: st.points.map((pt) => ({ ...pt })) })), fills: s.fills.map((fill) => ({ ...fill })), guesses: visibleGuesses, round: s.round + 1, totalRounds: s.settings.rounds, drawer: s.drawer, answer: s.phase === "round-over" || s.phase === "finished" ? s.answer : null, hintLength, hintWord, hintStage: s.hintStage, settings: visibleSettings, scores: { ...s.score } }, opponentCount: 0, status: s.result ? "finished" : s.phase === "choosing" ? p === s.drawer ? "choose-word" : "waiting" : active ? p === s.drawer ? "drawing" : "guessing" : "round-over", result: s.result, actions };
   },
   getResult: (s) => s.result
 };
@@ -2416,7 +5942,7 @@ var marbleCreditRules = {
   ko: [
     "\uBAA9\uD45C \u2014 \uC790\uCCB4 \uBD80\uB3D9\uC0B0 \uAC8C\uC784 \uADDC\uCE59\uC785\uB2C8\uB2E4. \uC0C1\uB300\uAC00 \uD30C\uC0B0\uD558\uBA74 \uC774\uAE30\uACE0, 120\uD134 \uB4A4\uC5D0\uB294 \uD604\uAE08+\uB3C4\uC2DC \uB9E4\uC785\uAC00+\uAC74\uC124 \uBE44\uC6A9\u2212\uBBF8\uC0C1\uD658 \uB300\uCD9C\uC744 \uD569\uCE5C \uC21C\uC790\uC0B0\uC744 \uBE44\uAD50\uD569\uB2C8\uB2E4.",
     "\uB9D0\uACFC \uC774\uB3D9 \u2014 \uCCAB \uC8FC\uC0AC\uC704\uB97C \uAD74\uB9AC\uAE30 \uC804\uC5D0 \uC6D0\uD558\uB294 \uB9D0\uC744 \uACE0\uB985\uB2C8\uB2E4. \uC0C1\uB300\uC640 \uAC19\uC740 \uB9D0\uC740 \uC120\uD0DD\uD560 \uC218 \uC5C6\uACE0 \uCCAB \uC774\uB3D9 \uB4A4\uC5D0\uB294 \uACE0\uC815\uB429\uB2C8\uB2E4. \uB450 \uC8FC\uC0AC\uC704 \uD569\uB9CC\uD07C 40\uCE78 \uBCF4\uB4DC\uB97C \uC774\uB3D9\uD558\uBA70 \uCD9C\uBC1C\uC810\uC744 \uC9C0\uB098\uBA74 200\uC744 \uBC1B\uC2B5\uB2C8\uB2E4. \uAD11\uC8FC\uC640 \uC0B0\uD1A0\uB3C4\uBC0D\uACE0\uB97C \uD3EC\uD568\uD574 24\uAC1C \uB3C4\uC2DC\uAC00 \uC788\uC2B5\uB2C8\uB2E4.",
-    "\uB3C4\uC2DC\uC640 \uAC74\uC124 \u2014 \uBE48 \uB3C4\uC2DC\uB97C \uAD6C\uB9E4\uD558\uAC70\uB098 \uC9C0\uB098\uAC11\uB2C8\uB2E4. \uB0B4 \uB3C4\uC2DC\uC5D0\uB294 \uC0C9\uC0C1 \uB3C4\uC2DC\uAD70 \uC644\uC131 \uC5EC\uBD80\uC640 \uAD00\uACC4\uC5C6\uC774 \uBCC4\uC7A5\u2192\uBE4C\uB529\u2192\uB79C\uB4DC\uB9C8\uD06C\uB97C \uC21C\uC11C\uB300\uB85C \uC9C0\uC744 \uC218 \uC788\uC2B5\uB2C8\uB2E4. \uB2E8\uACC4\uB9C8\uB2E4 100, \uD1B5\uD589\uB8CC\uB294 \uAE30\uBCF8\uC758 2\uBC30\u21924\uBC30\u21928\uBC30\uC785\uB2C8\uB2E4. \uC0C1\uB300 \uB3C4\uC2DC\uC758 \uD1B5\uD589\uB8CC\uB294 \uC790\uB3D9 \uC9C0\uAE09\uB429\uB2C8\uB2E4.",
+    "\uB3C4\uC2DC\uC640 \uAC74\uC124 \u2014 \uBE48 \uB3C4\uC2DC\uB97C \uAD6C\uB9E4\uD558\uAC70\uB098 \uC9C0\uB098\uAC11\uB2C8\uB2E4. \uB0B4 \uB3C4\uC2DC\uC5D0\uB294 \uC0C9\uC0C1 \uB3C4\uC2DC\uAD70 \uC644\uC131 \uC5EC\uBD80\uC640 \uAD00\uACC4\uC5C6\uC774 \uB2E8\uB3C5\uC8FC\uD0DD\u2192\uC544\uD30C\uD2B8\u2192\uB79C\uB4DC\uB9C8\uD06C\uB97C \uC21C\uC11C\uB300\uB85C \uC9C0\uC744 \uC218 \uC788\uC2B5\uB2C8\uB2E4. \uB2E8\uACC4\uB9C8\uB2E4 100, \uD1B5\uD589\uB8CC\uB294 \uAE30\uBCF8\uC758 2\uBC30\u21924\uBC30\u21928\uBC30\uC785\uB2C8\uB2E4. \uC0C1\uB300 \uB3C4\uC2DC\uC758 \uD1B5\uD589\uB8CC\uB294 \uC790\uB3D9 \uC9C0\uAE09\uB429\uB2C8\uB2E4.",
     "\uB300\uCD9C \u2014 \uC790\uAE30 \uCC28\uB840\uC5D0 \uBBF8\uC0C1\uD658 \uB300\uCD9C\uC774 \uC5C6\uC73C\uBA74 300\uC744 \uBC1B\uC744 \uC218 \uC788\uACE0, \uC0C1\uD658\uC561\uC740 330\uC785\uB2C8\uB2E4. \uCD94\uAC00 \uC774\uC790\uB098 \uB9CC\uAE30\uB294 \uC5C6\uC2B5\uB2C8\uB2E4. \uC9C0\uAE09 \uC704\uAE30 \uC678\uC758 \uC790\uAE30 \uCC28\uB840\uC5D0 330 \uC804\uC561\uC744 \uC0C1\uD658\uD569\uB2C8\uB2E4. \uBBF8\uC0C1\uD658\uC561\uC740 \uC21C\uC790\uC0B0\uC5D0\uC11C \uBE7C\uBA70, \uC0C1\uD658 \uD6C4 \uB2E4\uC2DC \uBE4C\uB824\uB3C4 \uB9E4\uBC88 30\uC758 \uBE44\uC6A9\uC774 \uBC1C\uC0DD\uD569\uB2C8\uB2E4.",
     "\uC9C0\uAE09 \uC704\uAE30 \u2014 \uD1B5\uD589\uB8CC\xB7\uC138\uAE08\xB7\uCE74\uB4DC \uBE44\uC6A9\uC744 \uB0BC \uD604\uAE08\uC774 \uBD80\uC871\uD558\uBA74 \uD589\uB3D9\uC774 \uBA48\uCDA5\uB2C8\uB2E4. \uD604\uC7AC \uD604\uAE08+300\uC73C\uB85C \uC9C0\uAE09\uC561\uC744 \uCDA9\uB2F9\uD560 \uC218 \uC788\uACE0 \uAE30\uC874 \uB300\uCD9C\uC774 \uC5C6\uC744 \uB54C\uB9CC \uB300\uCD9C\uB85C \uD574\uACB0\uD560 \uC218 \uC788\uC2B5\uB2C8\uB2E4. \uB300\uCD9C\uC744 \uC120\uD0DD\uD558\uBA74 \uD574\uB2F9 \uC9C0\uAE09\uC744 \uD55C \uBC88 \uCC98\uB9AC\uD558\uACE0 \uC6D0\uB798 \uCC28\uB840\uB85C \uB3CC\uC544\uAC11\uB2C8\uB2E4. \uD30C\uC0B0 \uC778\uC815\uC740 \uACBD\uAE30 \uC885\uB8CC\uB97C \uB73B\uD558\uBA70 \uB3C4\uC2DC \uC790\uB3D9 \uB9E4\uAC01\uC740 \uC5C6\uC2B5\uB2C8\uB2E4.",
     "\uD669\uAE08\uC5F4\uC1E0 \u2014 13\uC885 \uCE74\uB4DC\uB294 \uC0C1\uAE08(150\xB7200\xB780), \uC5EC\uD589\uBE44 100, \uAC74\uC124 \uB2E8\uACC4\uB2F9 \uC218\uB9AC\uBE44 40, \uC0B0\uD1A0\uB3C4\uBC0D\uACE0 \uBC29\uBB38, \uCD9C\uBC1C \uC774\uB3D9(+200), \uC138 \uCE78 \uD6C4\uD1F4, \uBB34\uC778\uB3C4 \uC774\uB3D9, \uD0C8\uCD9C\uAD8C, \uBB34\uB8CC \uC5F4\uCC28\uD45C, \uB3C4\uC2DC\uB2F9 \uBC30\uB2F9 30, \uB3C5\uC810 \uACBD\uACE0\uC785\uB2C8\uB2E4. \uC774\uB3D9 \uCE74\uB4DC\uC758 \uB3C4\uCC29 \uD6A8\uACFC\uB3C4 \uC801\uC6A9\uB418\uBA70 \uC138 \uCE78 \uD6C4\uD1F4\uC5D0\uB294 \uCD9C\uBC1C \uBCF4\uB108\uC2A4\uAC00 \uC5C6\uC2B5\uB2C8\uB2E4.",
@@ -2426,7 +5952,7 @@ var marbleCreditRules = {
   es: [
     "Objetivo \u2014 Usamos reglas propias de un juego de propiedades. Ganas si tu pareja quiebra; despu\xE9s de 120 turnos se compara el patrimonio neto: efectivo + precio de las ciudades + costo de construcci\xF3n \u2212 deuda pendiente.",
     "Figura y movimiento \u2014 Elige una figura antes de lanzar tus primeros dados. No puede ser la misma de tu pareja y queda fija despu\xE9s. Avanza la suma de los dos dados por las 40 casillas. Al pasar por Salida recibes 200. Hay 24 ciudades, incluyendo Gwangju y Santo Domingo.",
-    "Ciudades y construcci\xF3n \u2014 Puedes comprar una ciudad libre o pasar. En cualquier ciudad tuya puedes construir villa, edificio y monumento, sin completar un color. Cada nivel cuesta 100 y el alquiler pasa a 2, 4 y 8 veces el valor base. El alquiler rival se paga autom\xE1ticamente.",
+    "Ciudades y construcci\xF3n \u2014 Puedes comprar una ciudad libre o pasar. En cualquier ciudad tuya puedes construir casa unifamiliar, apartamentos y monumento, sin completar un color. Cada nivel cuesta 100 y el alquiler pasa a 2, 4 y 8 veces el valor base. El alquiler rival se paga autom\xE1ticamente.",
     "Pr\xE9stamo \u2014 En tu turno, si no tienes deuda pendiente, puedes recibir 300 y debes devolver 330. No hay intereses adicionales ni fecha de vencimiento. Pagas los 330 completos en tu turno, fuera de una crisis de pago. La deuda se resta del patrimonio; pedir otro pr\xE9stamo despu\xE9s de pagarlo vuelve a costar 30.",
     "Crisis de pago \u2014 Si no tienes efectivo para un alquiler, impuesto o gasto de carta, el juego espera tu decisi\xF3n. Solo puedes resolverlo con un pr\xE9stamo si no debes otro y tu efectivo + 300 cubre el pago. Al pedirlo, el pago se procesa una sola vez y contin\xFAa el turno original. Declarar quiebra termina la partida; las ciudades no se venden autom\xE1ticamente.",
     "Llave dorada \u2014 Las 13 cartas incluyen premios (150, 200 y 80), gasto de viaje 100, mantenimiento 40 por nivel construido, visita a Santo Domingo, viaje a Salida (+200), retroceso de tres casillas, isla, pase de salida, boleto gratis, dividendo 30 por ciudad y advertencia de monopolio. Se aplica tambi\xE9n el efecto del destino; al retroceder no cobras Salida.",
@@ -2435,8 +5961,8 @@ var marbleCreditRules = {
   ]
 };
 var marbleTieredRules = {
-  ko: marbleCreditRules.ko.map((rule, index) => index === 2 ? "\uB3C4\uC2DC\uC640 \uAC74\uC124 \u2014 \uBE48 \uB3C4\uC2DC\uB97C \uAD6C\uB9E4\uD558\uAC70\uB098 \uC9C0\uB098\uAC11\uB2C8\uB2E4. \uB0B4 \uB3C4\uC2DC\uC5D0\uB294 \uC0C9\uC0C1 \uB3C4\uC2DC\uAD70 \uC644\uC131 \uC5EC\uBD80\uC640 \uAD00\uACC4\uC5C6\uC774 \uBCC4\uC7A5\u2192\uBE4C\uB529\u2192\uB79C\uB4DC\uB9C8\uD06C\uB97C \uC21C\uC11C\uB300\uB85C \uC9C0\uC744 \uC218 \uC788\uC2B5\uB2C8\uB2E4. \uAC74\uC124\uBE44\uB294 \uD574\uB2F9 \uB3C4\uC2DC \uB9E4\uC785\uAC00\uC758 40%\u219260%\u219280%\uC774\uBA70, 10 \uB2E8\uC704\uB85C \uBC18\uC62C\uB9BC\uD558\uACE0 \uCD5C\uC18C 40\uC785\uB2C8\uB2E4. \uD1B5\uD589\uB8CC\uB294 \uAE30\uBCF8\uC758 2\uBC30\u21924\uBC30\u21928\uBC30\uAC00 \uB429\uB2C8\uB2E4. \uC0C1\uB300 \uB3C4\uC2DC\uC758 \uD1B5\uD589\uB8CC\uB294 \uC790\uB3D9 \uC9C0\uAE09\uB429\uB2C8\uB2E4." : rule),
-  es: marbleCreditRules.es.map((rule, index) => index === 2 ? "Ciudades y construcci\xF3n \u2014 Puedes comprar una ciudad libre o pasar. En cualquier ciudad tuya puedes construir villa, edificio y monumento, sin completar un color. Cada nivel cuesta el 40 %, 60 % y 80 % del precio de compra de la ciudad; se redondea a 10 y nunca baja de 40. El alquiler pasa a 2, 4 y 8 veces el valor base. El alquiler rival se paga autom\xE1ticamente." : rule)
+  ko: marbleCreditRules.ko.map((rule, index) => index === 2 ? "\uB3C4\uC2DC\uC640 \uAC74\uC124 \u2014 \uBE48 \uB3C4\uC2DC\uB97C \uAD6C\uB9E4\uD558\uAC70\uB098 \uC9C0\uB098\uAC11\uB2C8\uB2E4. \uB0B4 \uB3C4\uC2DC\uC5D0\uB294 \uC0C9\uC0C1 \uB3C4\uC2DC\uAD70 \uC644\uC131 \uC5EC\uBD80\uC640 \uAD00\uACC4\uC5C6\uC774 \uB2E8\uB3C5\uC8FC\uD0DD\u2192\uC544\uD30C\uD2B8\u2192\uB79C\uB4DC\uB9C8\uD06C\uB97C \uC21C\uC11C\uB300\uB85C \uC9C0\uC744 \uC218 \uC788\uC2B5\uB2C8\uB2E4. \uAC74\uC124\uBE44\uB294 \uD574\uB2F9 \uB3C4\uC2DC \uB9E4\uC785\uAC00\uC758 40%\u219260%\u219280%\uC774\uBA70, 10 \uB2E8\uC704\uB85C \uBC18\uC62C\uB9BC\uD558\uACE0 \uCD5C\uC18C 40\uC785\uB2C8\uB2E4. \uD1B5\uD589\uB8CC\uB294 \uAE30\uBCF8\uC758 2\uBC30\u21924\uBC30\u21928\uBC30\uAC00 \uB429\uB2C8\uB2E4. \uC0C1\uB300 \uB3C4\uC2DC\uC758 \uD1B5\uD589\uB8CC\uB294 \uC790\uB3D9 \uC9C0\uAE09\uB429\uB2C8\uB2E4." : rule),
+  es: marbleCreditRules.es.map((rule, index) => index === 2 ? "Ciudades y construcci\xF3n \u2014 Puedes comprar una ciudad libre o pasar. En cualquier ciudad tuya puedes construir casa unifamiliar, apartamentos y monumento, sin completar un color. Cada nivel cuesta el 40 %, 60 % y 80 % del precio de compra de la ciudad; se redondea a 10 y nunca baja de 40. El alquiler pasa a 2, 4 y 8 veces el valor base. El alquiler rival se paga autom\xE1ticamente." : rule)
 };
 var marbleExpandedRules = {
   ko: [
@@ -2452,8 +5978,8 @@ var marbleExpandedRules = {
 };
 
 // src/games/marble.ts
-var marblePawnIds = ["fox", "cat", "penguin", "astronaut", "robot", "dragon"];
-var pawnNames = { fox: { ko: "\uC5EC\uC6B0", es: "Zorro" }, cat: { ko: "\uACE0\uC591\uC774", es: "Gata" }, penguin: { ko: "\uD3AD\uADC4", es: "Ping\xFCino" }, astronaut: { ko: "\uC6B0\uC8FC\uBE44\uD589\uC0AC", es: "Astronauta" }, robot: { ko: "\uB85C\uBD07", es: "Robot" }, dragon: { ko: "\uC6A9", es: "Drag\xF3n" } };
+var marblePawnIds = ["fox", "cat", "penguin", "astronaut", "robot", "dragon", "sali-suli"];
+var pawnNames = { fox: { ko: "\uB9D0\uD2F0\uD478", es: "Maltipoo" }, cat: { ko: "\uB799\uB3CC", es: "Ragdoll" }, penguin: { ko: "\uD310\uB2E4", es: "Panda" }, astronaut: { ko: "\uC6B0\uC8FC\uC778", es: "Astronauta" }, robot: { ko: "\uB9AC\uC2A4\uC5F0", es: "Lisyeon" }, dragon: { ko: "\uCE5C\uCE60\uB77C", es: "Chinchilla" }, "sali-suli": { ko: "\uC0B4\uB9AC\xB7\uC220\uB9AC", es: "Sali y Suli" } };
 var legacyBoard = [
   { kind: "start", name: { ko: "\uCD9C\uBC1C", es: "Salida" } },
   { kind: "property", name: { ko: "\uAD11\uC8FC", es: "Gwangju" }, price: 100, rent: 12, group: "green" },
@@ -2516,7 +6042,19 @@ var modernBoard = [
   { kind: "property", name: { ko: "\uBC34\uCFE0\uBC84", es: "Vancouver" }, price: 560, rent: 112, group: "silver" },
   { kind: "rest", name: { ko: "\uD734\uC2DD \uAD11\uC7A5", es: "Plaza de descanso" } }
 ];
-var boardFor = (s) => s.boardVersion === 2 ? modernBoard : legacyBoard;
+var journeyBoard = modernBoard.map((tile, index) => index === 3 ? modernBoard[15] : index === 15 ? modernBoard[3] : index === 31 ? { ...tile, name: { ko: "\uB274\uC5B4\uD06C", es: "Newark" } } : index === 38 ? { ...tile, name: { ko: "\uC11C\uC6B8", es: "Se\xFAl" } } : tile);
+var landmarkJourneyBoard = journeyBoard.map((tile, index) => {
+  const names = {
+    11: { ko: "\uBCA0\uB97C\uB9B0", es: "Berl\xEDn" },
+    13: { ko: "\uB9C8\uC774\uC560\uBBF8", es: "Miami" },
+    21: { ko: "\uC774\uC2A4\uD0C4\uBD88", es: "Estambul" },
+    32: { ko: "\uC544\uADF8\uB77C", es: "Agra" },
+    33: { ko: "\uC544\uD14C\uB124", es: "Atenas" },
+    36: { ko: "\uC2DC\uB4DC\uB2C8", es: "S\xEDdney" }
+  };
+  return names[index] ? { ...tile, name: names[index] } : tile;
+});
+var boardFor = (s) => s.boardVersion === 2 ? s.cityRouteVersion === 3 ? landmarkJourneyBoard : s.cityRouteVersion === 2 ? journeyBoard : modernBoard : legacyBoard;
 var legacyIds = ["festival", "lottery", "rent-rebate", "travel-cost", "maintenance", "visit-santo-domingo", "advance-start", "retreat"];
 var modernIds = [...legacyIds, "go-to-island", "escape-pass", "train-ticket", "city-dividend"];
 var expandedIds = [...modernIds, "monopoly-warning", "city-festival", "blackout", "rent-pass"];
@@ -2525,7 +6063,7 @@ var cards = {
   lottery: { title: { ko: "\uC791\uC740 \uBCF5\uAD8C \uB2F9\uCCA8", es: "Premio de loter\xEDa" }, text: { ko: "\uBCF5\uAD8C\uC5D0 \uB2F9\uCCA8\uB418\uC5B4 200\uC744 \uBC1B\uC2B5\uB2C8\uB2E4.", es: "Te ganas un premio de loter\xEDa y recibes 200." }, effect: "cash" },
   "rent-rebate": { title: { ko: "\uC784\uB300\uB8CC \uD658\uAE09", es: "Reembolso de alquiler" }, text: { ko: "\uC784\uB300\uB8CC \uC77C\uBD80\uB97C \uB3CC\uB824\uBC1B\uC544 80\uC744 \uBC1B\uC2B5\uB2C8\uB2E4.", es: "Te devuelven parte del alquiler: recibes 80." }, effect: "cash" },
   "travel-cost": { title: { ko: "\uC5EC\uD589 \uACBD\uBE44", es: "Gastos de viaje" }, text: { ko: "\uC5EC\uD589 \uACBD\uBE44\uB85C 100\uC744 \uB0C5\uB2C8\uB2E4.", es: "Pagas 100 por gastos de viaje." }, effect: "cash" },
-  maintenance: { title: { ko: "\uAC74\uBB3C \uC218\uB9AC", es: "Mantenimiento de edificios" }, text: { ko: "\uB0B4 \uB3C4\uC2DC\uC758 \uAC74\uC124 \uB2E8\uACC4 \uD569\uACC4\uC5D0 40\uC744 \uACF1\uD55C \uC218\uB9AC\uBE44\uB97C \uB0C5\uB2C8\uB2E4. \uBCC4\uC7A5\uC740 1\uB2E8\uACC4, \uBE4C\uB529\uC740 2\uB2E8\uACC4, \uB79C\uB4DC\uB9C8\uD06C\uB294 3\uB2E8\uACC4\uC785\uB2C8\uB2E4.", es: "Pagas 40 por cada nivel construido en tus ciudades: villa cuenta 1, edificio 2 y monumento 3." }, effect: "maintenance" },
+  maintenance: { title: { ko: "\uAC74\uBB3C \uC218\uB9AC", es: "Mantenimiento de edificios" }, text: { ko: "\uB0B4 \uB3C4\uC2DC\uC758 \uAC74\uC124 \uB2E8\uACC4 \uD569\uACC4\uC5D0 40\uC744 \uACF1\uD55C \uC218\uB9AC\uBE44\uB97C \uB0C5\uB2C8\uB2E4. \uB2E8\uB3C5\uC8FC\uD0DD\uC740 1\uB2E8\uACC4, \uC544\uD30C\uD2B8\uB294 2\uB2E8\uACC4, \uB79C\uB4DC\uB9C8\uD06C\uB294 3\uB2E8\uACC4\uC785\uB2C8\uB2E4.", es: "Pagas 40 por cada nivel construido en tus ciudades: casa unifamiliar cuenta 1, apartamentos 2 y monumento 3." }, effect: "maintenance" },
   "visit-santo-domingo": { title: { ko: "\uC0B0\uD1A0\uB3C4\uBC0D\uACE0 \uBC29\uBB38", es: "Visita a Santo Domingo" }, text: { ko: "\uC0B0\uD1A0\uB3C4\uBC0D\uACE0\uB85C \uC774\uB3D9\uD574 \uADF8\uACF3\uC758 \uBD80\uB3D9\uC0B0 \uADDC\uCE59\uC744 \uC801\uC6A9\uD569\uB2C8\uB2E4.", es: "Ve a Santo Domingo y aplica las reglas normales de esa propiedad." }, effect: "visit" },
   "advance-start": { title: { ko: "\uCD9C\uBC1C\uC810\uC73C\uB85C \uC774\uB3D9", es: "Ve a Salida" }, text: { ko: "\uCD9C\uBC1C\uC810\uC73C\uB85C \uC774\uB3D9\uD558\uACE0 200\uC744 \uBC1B\uC2B5\uB2C8\uB2E4.", es: "Ve a Salida y recibe 200." }, effect: "move" },
   retreat: { title: { ko: "\uC138 \uCE78 \uB4A4\uB85C", es: "Retrocede tres casillas" }, text: { ko: "\uC138 \uCE78 \uB4A4\uB85C \uC774\uB3D9\uD569\uB2C8\uB2E4. \uCD9C\uBC1C \uBCF4\uB108\uC2A4\uB294 \uBC1B\uC9C0 \uC54A\uC2B5\uB2C8\uB2E4.", es: "Retrocede tres casillas. No cobras al pasar por Salida." }, effect: "move" },
@@ -2610,7 +6148,7 @@ function view2(s, p) {
         const levels = s.boardVersion === 2 ? 3 : 2;
         const cost = marbleBuildCost(tile, record.houses, s.economicVersion);
         if (canBuild && record.houses < levels && s.money[p] >= cost) {
-          const tier = s.boardVersion === 2 ? [["\uBCC4\uC7A5", "Villa"], ["\uBE4C\uB529", "Edificio"], "landmark"][record.houses] : ["\uC9D1", "Casa"];
+          const tier = s.boardVersion === 2 ? [["\uB2E8\uB3C5\uC8FC\uD0DD", "Casa unifamiliar"], ["\uC544\uD30C\uD2B8", "Apartamentos"], "landmark"][record.houses] : ["\uC9D1", "Casa"];
           const name = Array.isArray(tier) ? tier : s.economicVersion === 1 || s.economicVersion === 2 ? ["\uB79C\uB4DC\uB9C8\uD06C", "Monumento"] : ["\uD638\uD154", "Hotel"];
           add(`${name[0]}: ${tile.name.ko} (${cost})`, `${name[1]}: ${tile.name.es} (${cost})`, { type: "build", payload: { tile: index } });
         }
@@ -2623,6 +6161,7 @@ function view2(s, p) {
     phase: s.result ? "finished" : s.phase,
     board: {
       version: s.boardVersion ?? 1,
+      cityRouteVersion: s.cityRouteVersion ?? 1,
       tiles: board.map((tile, index) => {
         const houses = s.properties[String(index)]?.houses ?? 0;
         const maxLevels = s.boardVersion === 2 ? 3 : 2;
@@ -2849,7 +6388,7 @@ function resolveEvent(s, p) {
     const houses = Object.values(s.properties).filter((property) => property.owner === p).reduce((count2, property) => count2 + property.houses, 0);
     s = pay(s, p, houses * 40, "bank", card2.title);
   } else if (id === "visit-santo-domingo") {
-    const destination = isModern ? 3 : 2;
+    const destination = board.findIndex((tile) => tile.name.ko === "\uC0B0\uD1A0\uB3C4\uBC0D\uACE0");
     movement = "visit";
     steps = (destination - from + board.length) % board.length;
     moveForward(s, p, destination, board);
@@ -3107,7 +6646,7 @@ function step(s, p, a) {
     n.money[p] -= cost;
     n.properties[String(index)] = { ...n.properties[String(index)], houses: n.properties[String(index)].houses + 1 };
     const level = n.properties[String(index)].houses;
-    emit(n, "build", p, "\uAC74\uC124 \uC644\uB8CC", "Construcci\xF3n terminada", `${board[index].name.ko}: ${level === 3 ? "\uB79C\uB4DC\uB9C8\uD06C" : level === 2 ? "\uBE4C\uB529" : "\uBCC4\uC7A5"} \xB7 \uD1B5\uD589\uB8CC ${propertyRent(board[index], n.properties[String(index)], n.boardVersion === 2)}`, `${board[index].name.es}: ${level === 3 ? "monumento" : level === 2 ? "edificio" : "villa"} \xB7 alquiler ${propertyRent(board[index], n.properties[String(index)], n.boardVersion === 2)}`, { tile: index, amount: cost, fromAccount: p, toAccount: "bank", moneyDelta: { [p]: -cost } });
+    emit(n, "build", p, "\uAC74\uC124 \uC644\uB8CC", "Construcci\xF3n terminada", `${board[index].name.ko}: ${level === 3 ? "\uB79C\uB4DC\uB9C8\uD06C" : level === 2 ? "\uC544\uD30C\uD2B8" : "\uB2E8\uB3C5\uC8FC\uD0DD"} \xB7 \uD1B5\uD589\uB8CC ${propertyRent(board[index], n.properties[String(index)], n.boardVersion === 2)}`, `${board[index].name.es}: ${level === 3 ? "monumento" : level === 2 ? "apartamentos" : "casa unifamiliar"} \xB7 alquiler ${propertyRent(board[index], n.properties[String(index)], n.boardVersion === 2)}`, { tile: index, amount: cost, fromAccount: p, toAccount: "bank", moneyDelta: { [p]: -cost } });
   } else if (a.type === "endTurn") return finishTurn2(n, p);
   return n;
 }
@@ -3122,6 +6661,7 @@ var marbleEngine = {
       money: { p1: 1500, p2: 1500 },
       properties: {},
       boardVersion: 2,
+      cityRouteVersion: 3,
       phase: "roll",
       pendingTile: null,
       lastRoll: [],

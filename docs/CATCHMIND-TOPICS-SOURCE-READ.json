@@ -1,0 +1,14 @@
+{
+  "library_file_ids": [
+    "libfile_dd93d69c12c48191bb2fc9513bdadeec",
+    "libfile_0f06b827658c8191a8ba5dc64a9e7632"
+  ],
+  "transfer_method": "Official materialize helper failed for both. Complete text retrieved through supported Library read pagination: lines 1–1000,1001–2000,2001–3000,3001–3717. JSON parsed successfully. This is a text-derived local copy, not a claimed direct binary materialization.",
+  "counts": {
+    "total": 272,
+    "existing_legacy": 192,
+    "added": 80,
+    "categories": 6
+  },
+  "legacy_pairs_verified": 192
+}

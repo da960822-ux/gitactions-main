@@ -70,6 +70,9 @@
 .dv-tile-white { background: linear-gradient(145deg,#fbf6e8,#d9d3bf); border-color: #c9c3af; }
 .dv-tile-black { background: linear-gradient(145deg,#545958,#282d2e); border-color: #858984; color: #f0eee4; box-shadow: 0 4px 8px #11191c66, inset 0 0 0 2px #ffffff16; }
 .dv-tile > b { font: 700 2rem/1 Georgia,serif; font-variant-numeric: tabular-nums; }
+.dv-tile:not(.dv-joker-preview) > b { grid-row: 2; display: grid; place-items: center; }
+.dv-tile:not(.dv-joker-preview) > .dv-tile-color { grid-row: 3; }
+.dv-tile:not(.dv-joker-preview) > .dv-tile-state { grid-row: 4; }
 .dv-tile-color,.dv-tile-state { color: #596461; font-size: 11px; line-height: 1.1; }
 .dv-tile-black .dv-tile-color,.dv-tile-black .dv-tile-state { color: #d0d1c7; }
 .dv-tile-order { position: absolute; top: 4px; left: 6px; color: #726c5d; font-size: 11px; font-weight: 800; }
@@ -207,3 +210,59 @@ button.dv-tile:disabled { opacity: .78; cursor: default; }
 @media (min-width: 1100px) {
   .table-game.dv-table { gap: 8px; padding: 10px; grid-template-columns: minmax(0, 1fr) minmax(360px, 380px); }
 }
+.dv-joker-portrait { display: block; width: 42px; height: 48px; border-radius: 6px; object-fit: contain; }
+@media (min-width: 901px) {
+  .dv-joker-preview .dv-joker-portrait { width: 48px; height: 55px; }
+}
+
+@media (min-width: 1024px) {
+  .table-game.dv-table { grid-template-columns: minmax(0,1.6fr) minmax(340px,1fr); grid-template-areas: "header header" "rival controls" "own controls" "phase phase" "history history" "event event" "result result"; gap: 7px; padding: 9px; }
+  .dv-table .dv-header { padding: 6px 10px; }
+  .dv-table .dv-header h2 { font-size: 21px; }
+  .dv-table .dv-header p { display: none; }
+  .dv-table .dv-controls { grid-template-columns: 1fr; gap: 7px; }
+  .dv-table .dv-rack { padding: 8px; min-height: 0; }
+  .dv-table .dv-tile { flex-basis: 64px; min-height: 96px; }
+  .dv-table .dv-tile-row { gap: 6px; padding-block: 6px; }
+  .dv-table .dv-stage-message { min-height: 0; padding: 7px 10px; gap: 3px; }
+  .dv-table .dv-stage-message p { margin: 0; }
+  .dv-table .dv-guess-box { padding: 8px; }
+  .dv-table .dv-color-filter { margin-bottom: 5px; }
+  .dv-table .dv-number-grid { gap: 4px; }
+}
+
+.dv-penalty-visual { display: none; }
+@media (min-width: 1024px) and (pointer: fine) {
+/* The workbench follows the legal stage: act first, guess only when needed. */
+.dv-table { gap: 10px; padding: 12px; }
+.dv-table[data-workbench-stage="draw"] .dv-controls { grid-template-rows: auto 1fr; }
+.dv-table[data-workbench-stage="draw"] .dv-guess-box { align-content: start; padding: 9px; border-color: #68716c; background: #252c2c; }
+.dv-table[data-workbench-stage="draw"] .dv-guess-box > .dv-section-title { opacity: .68; }
+.dv-table[data-workbench-stage="draw"] .dv-number-grid { opacity: .42; filter: saturate(.55); }
+.dv-table[data-workbench-stage="draw"] .dv-number-grid button { min-height: 33px; }
+.dv-table[data-workbench-stage="draw"] .dv-actions { align-content: center; }
+.dv-table[data-workbench-stage="draw"] .dv-action-primary { min-height: 74px; box-shadow: 0 8px 24px #d2b46925; }
+.dv-table[data-workbench-stage="draw"] .dv-action-primary small { font-size: 12px; }
+.dv-table[data-workbench-stage="guess"] .dv-number-grid { opacity: 1; filter: none; }
+.dv-table[data-workbench-stage="guess"] .dv-rival-rack { border-color: #d2b469; box-shadow: inset 0 0 0 1px #d2b46933; }
+.dv-table[data-workbench-stage="joker"] .dv-own-rack { border-color: #d2b469; box-shadow: 0 0 0 2px #d2b46935; }
+.dv-table[data-workbench-stage="setup"] .dv-own-rack { border-color: #d2b469; }
+.dv-tile .dv-joker-portrait { display: block; width: 42px; height: 42px; object-fit: contain; }
+.dv-joker-preview .dv-joker-portrait { width: 58px; height: 58px; }
+@media (min-width: 1024px) and (pointer: fine) {
+  .dv-rack .dv-tile-row { gap: 9px; }
+  .dv-rack .dv-tile-row:not(:has(.dv-tile:nth-child(10))) { justify-content: safe center; }
+  .dv-rack .dv-tile { flex-basis: 88px; min-height: 118px; padding: 7px 6px; }
+  .dv-rack .dv-tile > b { font-size: 2.1rem; }
+  .dv-rack .dv-tile .dv-joker-portrait { width: 50px; height: 54px; }
+  .dv-rack .dv-tile:has(.dv-joker-portrait)::before { position: absolute; top: 3px; right: 4px; display: grid; min-width: 20px; height: 17px; place-items: center; border: 1px solid #e3ca7e; border-radius: 999px; background: #282f2f; color: #f0d98c; content: 'J'; font: 800 11px/1 Georgia,serif; }
+}
+.dv-rule-penalty { display: flex; align-items: center; gap: 8px; }
+.dv-penalty-visual { display: inline-flex; flex: 0 0 auto; align-items: center; gap: 4px; color: #8b4c43; font-size: 13px; font-weight: 800; }
+.dv-penalty-visual i { display: grid; width: 20px; height: 28px; place-items: center; border: 1px solid #8b4c43; border-radius: 4px; background: linear-gradient(145deg,#f8f2e4,#e1d6bd); }
+.dv-penalty-visual i:last-child { background: linear-gradient(145deg,#b9c0b6,#66716c); box-shadow: inset 0 0 0 2px #e1d6bd; }
+}
+
+/* Preserve both faces in the approved couple drawings without changing the source pixels. */
+.dv-tile > b:has(> .dv-joker-portrait[src*="/images/davinci/joker-couple-"]) { width: 100%; min-width: 0; }
+.dv-tile .dv-joker-portrait[src*="/images/davinci/joker-couple-"] { width: 100%; max-width: 72px; height: 64px; margin-inline: auto; object-fit: cover; object-position: 50% 10%; }

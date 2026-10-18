@@ -1,6 +1,8 @@
 import { useEffect, useLayoutEffect, useRef, useState, type CSSProperties } from 'react';
 import art from '../../public/images/splendor/card-map.json';
 import { SplendorGem } from './SplendorGem';
+import { SplendorArtwork } from './SplendorArtwork';
+import { getPrivateNoblePortrait } from './private-game-art';
 import { playCue, type AudioCue } from '../audio/audio';
 
 type Box = { left: number; top: number; width: number; height: number };
@@ -17,7 +19,7 @@ const center = (box: Box) => ({ x: box.left + box.width / 2, y: box.top + box.he
 // explanations visible without delaying either authority transition.
 export function appendSplendorFlights<T extends { id: string }>(current: T[], incoming: T[]): T[] {
   const ids = new Set(current.map(flight => flight.id));
-  return [...current, ...incoming.filter(flight => !ids.has(flight.id))];
+  return [...current, ...incoming.filter(flight => !ids.has(flight.id))].slice(-24);
 }
 
 export function splendorReserveGoldFlight(event: Pick<MotionEvent, 'reserveGoldCount' | 'incomingCounts'>) {
@@ -62,11 +64,14 @@ export function SplendorMotion({ scope, version, viewer, event }: { scope: strin
       if (root) positions.current = { scope, before: new Map(), current: readPositions(root) };
     };
     const hidden = () => { if (document.hidden) clear(); else moved(); };
+    const motion = window.matchMedia('(prefers-reduced-motion: reduce)');
+    const reduce = () => { if (motion.matches) clear(); };
+    motion.addEventListener('change', reduce);
     document.addEventListener('visibilitychange', hidden);
     window.addEventListener('resize', moved);
     document.addEventListener('scroll', moved, true);
     return () => {
-      clear(); document.removeEventListener('visibilitychange', hidden);
+      clear(); motion.removeEventListener('change', reduce); document.removeEventListener('visibilitychange', hidden);
       window.removeEventListener('resize', moved); document.removeEventListener('scroll', moved, true);
     };
   }, [scope]);
@@ -107,6 +112,12 @@ export function SplendorMotion({ scope, version, viewer, event }: { scope: strin
       return { left: rect.left, top: rect.top, width: rect.width, height: rect.height };
     };
     const batch: Flight[] = [];
+    for (const gem of ['white', 'blue', 'green', 'red', 'black', 'gold']) {
+      const count = Number(event.incomingCounts?.[gem] ?? 0);
+      if (!Number.isInteger(count) || count <= 0) continue;
+      const from = box(`.sp-bank .sp-gem-pile.sp-color-${gem}`), to = box(`.sp-treasury-gem .sp-color-${gem}`);
+      if (from && to) batch.push({ id: `${event.key}:gain-${gem}`, kind: 'gain', from, to, delay: batch.length * 35, gem, count });
+    }
     const reserveGoldCount = splendorReserveGoldFlight(event);
     if (reserveGoldCount) {
       const from = box('.sp-bank .sp-gem-pile.sp-color-gold'), to = box('.sp-treasury-gem .sp-color-gold');
@@ -127,7 +138,7 @@ export function SplendorMotion({ scope, version, viewer, event }: { scope: strin
       const from = positions.current.before.get(`noble:${event.nobleId}`);
       const seat = event.nobleRecipient === 'you' ? viewer : viewer === 'p1' ? 'p2' : 'p1';
       const to = box(`[data-sp-score-seat="${seat}"] > b`), source = art.nobles.find(noble => noble.engineId === event.nobleId);
-      if (from && to && source) batch.push({ id: `${event.key}:noble`, kind: 'noble', from, to, delay: event.purchasedCard ? 760 : 0, src: `/images/splendor/${source.src}`, cue: event.result ? undefined : 'noble' });
+      if (from && to && source) batch.push({ id: `${event.key}:noble`, kind: 'noble', from, to, delay: event.purchasedCard ? 760 : 0, src: getPrivateNoblePortrait(event.nobleId) ?? `/images/splendor/${source.src}`, cue: event.result ? undefined : 'noble' });
     }
     setFlights(current => appendSplendorFlights(current, batch));
     const ids = new Set(batch.map(flight => flight.id));
@@ -138,7 +149,7 @@ export function SplendorMotion({ scope, version, viewer, event }: { scope: strin
   }, [event, scope, version, viewer]);
   return <span ref={marker} className="sp-motion-layer" aria-hidden="true">{flights.map(flight => {
     const from = center(flight.from), to = center(flight.to), width = flight.gem ? 22 : Math.min(flight.from.width, 90), height = flight.kind === 'card' ? width * 1.4 : width;
-    return <span key={flight.id} className={`sp-confirmed-flight sp-confirmed-${flight.kind}`} data-motion-kind={flight.kind} style={{ left: from.x - width / 2, top: from.y - height / 2, width, height, '--sp-dx': `${to.x - from.x}px`, '--sp-dy': `${to.y - from.y}px`, '--sp-delay': `${flight.delay}ms` } as CSSProperties} onAnimationEnd={() => { if (flight.cue) landingCue(flight.id, flight.cue); setFlights(current => current.filter(item => item.id !== flight.id)); }}>{flight.gem ? <><SplendorGem gem={flight.gem}/><b className="sp-flight-count">×{flight.count}</b></> : <img src={flight.src} alt=""/>}</span>;
+    return <span key={flight.id} className={`sp-confirmed-flight sp-confirmed-${flight.kind}`} data-motion-kind={flight.kind} style={{ left: from.x - width / 2, top: from.y - height / 2, width, height, '--sp-dx': `${to.x - from.x}px`, '--sp-dy': `${to.y - from.y}px`, '--sp-delay': `${flight.delay}ms` } as CSSProperties} onAnimationEnd={() => { if (flight.cue) landingCue(flight.id, flight.cue); setFlights(current => current.filter(item => item.id !== flight.id)); }}>{flight.gem ? <><SplendorGem gem={flight.gem}/><b className="sp-flight-count">×{flight.count}</b></> : flight.src && <SplendorArtwork src={flight.src}/>}</span>;
   })}</span>;
 }
 
@@ -146,7 +157,7 @@ function readPositions(root: Element) {
   const next = new Map<string, Box>();
   root.querySelectorAll('[data-card-id], [data-sp-noble-id]').forEach(node => {
     const id = node.getAttribute('data-card-id') ?? `noble:${node.getAttribute('data-sp-noble-id')}`;
-    const face = node.querySelector('.sp-card-face,.sp-reserved-art img,.sp-noble-art img') ?? node;
+    const face = node.querySelector('.sp-card-face,.sp-reserved-art .sp-artwork,.sp-noble-art .sp-artwork') ?? node;
     const rect = face.getBoundingClientRect();
     next.set(id, { left: rect.left, top: rect.top, width: rect.width, height: rect.height });
   });

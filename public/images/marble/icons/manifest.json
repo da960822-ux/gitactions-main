@@ -1,0 +1,53 @@
+{
+  "assets": [
+    {
+      "path": "public/images/marble/icons/coins.svg",
+      "sha256": "5780789d13e252180ecf39d7499d5ade5990655ecd28e31ed97f3f0ae665c7be",
+      "dimensions": "64x64 transparent vector",
+      "source": "Project-authored geometry; see SOURCE.txt",
+      "evidence": "output/playwright/improvements/regressions/native-assets.png; marble-reduced.png"
+    },
+    {
+      "path": "public/images/marble/icons/gwangju.svg",
+      "sha256": "2ae648e34141d84746913ae84fc38df20402a0de9504e157118545d13f5c0c6c",
+      "dimensions": "64x64 transparent vector",
+      "source": "Project-authored geometry; see SOURCE.txt",
+      "evidence": "output/playwright/improvements/regressions/native-assets.png; marble-reduced.png"
+    },
+    {
+      "path": "public/images/marble/icons/island.svg",
+      "sha256": "bd653b14ada4e2ed31e8303e120573b76426dd9a2ec1d73745a838e4b0508af3",
+      "dimensions": "64x64 transparent vector",
+      "source": "Project-authored geometry; see SOURCE.txt",
+      "evidence": "output/playwright/improvements/regressions/native-assets.png; marble-reduced.png"
+    },
+    {
+      "path": "public/images/marble/icons/key.svg",
+      "sha256": "e5a5f2179779bc0e266dd3f1539924b6a19af3bdc3153d622a2fc9023c8b3b5f",
+      "dimensions": "64x64 transparent vector",
+      "source": "Project-authored geometry; see SOURCE.txt",
+      "evidence": "output/playwright/improvements/regressions/native-assets.png; marble-reduced.png"
+    },
+    {
+      "path": "public/images/marble/icons/santo.svg",
+      "sha256": "3e2363d543f2c7b915f417e0ae2e5576cec49c9d084d2afbe446e6ffed02e122",
+      "dimensions": "64x64 transparent vector",
+      "source": "Project-authored geometry; see SOURCE.txt",
+      "evidence": "output/playwright/improvements/regressions/native-assets.png; marble-reduced.png"
+    },
+    {
+      "path": "public/images/marble/icons/ticket.svg",
+      "sha256": "d695830807d17ceede496ba8a27d47de497a6b87443e1114382b220ef6656172",
+      "dimensions": "64x64 transparent vector",
+      "source": "Project-authored geometry; see SOURCE.txt",
+      "evidence": "output/playwright/improvements/regressions/native-assets.png; marble-reduced.png"
+    },
+    {
+      "path": "public/images/marble/icons/train.svg",
+      "sha256": "fe62a0b6fc54a14a3288a1b5dc62a484993c0f5ba48f2abb5e678284921a5b37",
+      "dimensions": "64x64 transparent vector",
+      "source": "Project-authored geometry; see SOURCE.txt",
+      "evidence": "output/playwright/improvements/regressions/native-assets.png; marble-reduced.png"
+    }
+  ]
+}

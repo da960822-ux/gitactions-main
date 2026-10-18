@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="192" height="192" viewBox="0 0 192 192">
+  <title>Monumento a los Héroes de la Restauración, Santiago de los Caballeros</title>
+  <g stroke="#344c59" stroke-width="2" stroke-linejoin="round">
+    <path d="M20 137l74-39 77 38v10l-74 39-77-39z" fill="#a5b9af"/><path d="M20 137l74-39 77 38-74 39z" fill="#e7e5cc"/>
+    <path d="M43 126l51-26 51 26v13l-51 27-51-27z" fill="#c5cbbb"/><path d="M49 115l45-23 45 23v12l-45 24-45-24z" fill="#e9e6d8"/>
+    <path d="M63 90l31-17 31 16v31l-31 16-31-15z" fill="#f0ece0"/><path d="M94 105l31-16v31l-31 16z" fill="#bec5bf"/>
+    <path d="M84 43l11 5v57l-11-5z" fill="#f7f4e8"/><path d="M95 48l12-6v57l-12 6z" fill="#c0cac7"/>
+    <path d="M79 39l16-8 18 8-17 9z" fill="#e1e6da"/>
+    <path d="M93 31V16m0 3-13-9 7 17m6-8 14-9-8 17" fill="none" stroke="#687975" stroke-width="4"/>
+    <path d="M72 106l9 4v16l-9-4zM107 108l9-5v16l-9 5z" fill="#65808b"/>
+    <path d="M48 137l46 24 45-24M54 144l40 21 38-20" fill="none" stroke="#9da998"/>
+  </g>
+</svg>

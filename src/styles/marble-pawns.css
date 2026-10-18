@@ -163,3 +163,8 @@
   .marble-pawn-choice { transition: none; }
   .marble-pawn-choice:hover:not(:disabled), .marble-pawn-choice:focus-visible { transform: none; }
 }
+
+/* Future approved raster figures share the existing pawn placement and animation. */
+img.marble-pawn { object-fit: contain; object-position: center bottom; }
+/* The private seventh image can be supplied without publishing personal artwork. */
+.marble-pawn--pending { display:grid; place-items:center; border:1px dashed #ab8b68; border-radius:50%; background:#f5ead9; color:#6f543b; font-size:9px; font-weight:800; }

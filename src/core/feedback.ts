@@ -1,6 +1,6 @@
 import { createClient } from '@supabase/supabase-js';
 
-export type FeedbackCategory = 'message' | 'game' | 'feature';
+export type FeedbackCategory = 'message' | 'game' | 'feature' | 'complaint' | 'other';
 export type FeedbackStatus = 'new' | 'read' | 'planned' | 'done';
 export type FeedbackInput = { category: FeedbackCategory; title: string; body: string };
 export type FeedbackEntry = FeedbackInput & { id: string; status: FeedbackStatus; createdAt: string };
@@ -18,7 +18,7 @@ type DemoSpace = { role: 'p1' | 'p2'; members: ('p1' | 'p2')[] };
 function inputValues(input: FeedbackInput): FeedbackInput {
   const title = input.title.trim();
   const body = input.body.trim();
-  if (!['message', 'game', 'feature'].includes(input.category) || !title || title.length > 120 || !body || body.length > 4000) throw new Error('feedback_invalid');
+  if (!['message', 'game', 'feature', 'complaint', 'other'].includes(input.category) || !title || title.length > 120 || !body || body.length > 4000) throw new Error('feedback_invalid');
   return { category: input.category, title, body };
 }
 
@@ -39,7 +39,7 @@ function readSpace(spaceId: string): DemoSpace {
 }
 
 function readEntries(spaceId: string): FeedbackEntry[] {
-  return parseLocal(entriesKey(spaceId), (value): value is FeedbackEntry[] => Array.isArray(value) && !value.some(entry => !entry || typeof entry.id !== 'string' || !['message', 'game', 'feature'].includes(entry.category) || typeof entry.title !== 'string' || typeof entry.body !== 'string' || !['new', 'read', 'planned', 'done'].includes(entry.status) || !Number.isFinite(Date.parse(entry.createdAt))));
+  return parseLocal(entriesKey(spaceId), (value): value is FeedbackEntry[] => Array.isArray(value) && !value.some(entry => !entry || typeof entry.id !== 'string' || !['message', 'game', 'feature', 'complaint', 'other'].includes(entry.category) || typeof entry.title !== 'string' || typeof entry.body !== 'string' || !['new', 'read', 'planned', 'done'].includes(entry.status) || !Number.isFinite(Date.parse(entry.createdAt))));
 }
 
 function writeEntries(spaceId: string, entries: FeedbackEntry[]) {
@@ -117,17 +117,23 @@ export const feedback = {
     return (data ?? []).map(row => fromRow(row as unknown as Parameters<typeof fromRow>[0]));
   },
 
-  async create(spaceId: string, input: FeedbackInput): Promise<FeedbackEntry> {
+  async create(spaceId: string, input: FeedbackInput, requestId: string = crypto.randomUUID()): Promise<FeedbackEntry> {
     if (!spaceId) throw new Error('feedback_space_required');
     const values = inputValues(input);
     if (!db) {
       readSpace(spaceId);
-      const entry: FeedbackEntry = { ...values, id: crypto.randomUUID(), status: 'new', createdAt: new Date().toISOString() };
-      writeEntries(spaceId, [entry, ...(await this.list(spaceId))]);
+      const entries = await this.list(spaceId);
+      const prior = entries.find(entry => entry.id === requestId);
+      if (prior) {
+        if (prior.category !== values.category || prior.title !== values.title || prior.body !== values.body) throw new Error('feedback_request_conflict');
+        return prior;
+      }
+      const entry: FeedbackEntry = { ...values, id: requestId, status: 'new', createdAt: new Date().toISOString() };
+      writeEntries(spaceId, [entry, ...entries]);
       return entry;
     }
     await session();
-    const { data, error } = await db.from('feedback_entries').insert({ space_id: spaceId, ...values }).select(selected).single();
+    const { data, error } = await db.rpc('submit_feedback', { p_space: spaceId, p_request: requestId, p_category: values.category, p_title: values.title, p_body: values.body });
     if (error) throw error;
     return fromRow(data as unknown as Parameters<typeof fromRow>[0]);
   },

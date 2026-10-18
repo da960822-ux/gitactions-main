@@ -4,6 +4,16 @@ import { renderToStaticMarkup } from 'react-dom/server';
 import { MarbleEventStage } from './MarbleEventStage';
 
 describe('Marble event stage server rendering', () => {
+  it('keeps the confirmed board timeline event ahead of the newest receipt', () => {
+    const event = { sequence: 1, type: 'move', actor: 'p1', title: { ko: '이동 중', es: 'En camino' } };
+    const latest = { sequence: 2, type: 'arrival', actor: 'p1', title: { ko: '도착', es: 'Llegada' } };
+    const html = renderToStaticMarkup(createElement(MarbleEventStage, { events: [latest], event, animating: true, language: 'ko', playerId: 'p1' }));
+    expect(html).toContain('이동 중');
+    expect(html).not.toContain('도착');
+    expect(html).toContain('is-animating');
+    expect(renderToStaticMarkup(createElement(MarbleEventStage, { events: [latest], event: null, language: 'ko', playerId: 'p1' }))).toBe('');
+  });
+
   it('renders a current legacy card and signed cash delta without starting its motion', () => {
     const html = renderToStaticMarkup(createElement(MarbleEventStage, {
       language: 'es', playerId: 'p1',
@@ -11,6 +21,7 @@ describe('Marble event stage server rendering', () => {
     }));
     expect(html).toContain('Gastos de viaje');
     expect(html).toContain('−100');
+    expect(html).toContain('/images/marble/events/city-intervention.webp');
     expect(html).not.toContain('is-animating');
   });
 
@@ -39,7 +50,7 @@ describe('Marble public event meaning', () => {
   const renderEvent = (event: Record<string, unknown>) => renderToStaticMarkup(createElement(MarbleEventStage, { language: 'ko', playerId: 'p1', events: [{ sequence: 10, ...event }] }));
   it('distinguishes an exposed penalty card from a settled payment without inventing a debit', () => {
     const card = renderEvent({ type: 'event-card', cardId: 'travel-cost', text: { ko: '100을 냅니다.' } });
-    expect(card).toContain('golden-key-cards.svg#tax');
+    expect(card).toContain('/images/marble/events/city-intervention.webp');
     expect(card).toContain('카드 공개');
     expect(card).toContain('100을 냅니다.');
     expect(card).not.toContain('marble-event-amount');
@@ -49,13 +60,28 @@ describe('Marble public event meaning', () => {
     expect(paid).toContain('−100');
   });
   it.each([
-    ['city-festival', 'city-festival'], ['blackout', 'blackout'], ['rent-pass', 'rent-pass'],
+    ['city-festival', 'city'], ['blackout', 'city'], ['rent-pass', 'protection'],
   ])('illustrates %s with its card family', (cardId, family) => {
     const html = renderEvent({ type: 'event-card', cardId });
-    expect(html).toContain(`golden-key-cards.svg#${family}`);
-    expect(html).toContain('viewBox="0 0 128 160"');
-    expect(html).toContain('marble-event-card-face');
+    expect(html).toContain('has-card-art');
+    expect(html).toContain(`data-event-art-family="${family}"`);
+    expect(html).toContain(`data-event-family="${family}"`);
+    expect(html).toContain(`/images/marble/events/${family === 'city' ? 'city-intervention' : 'protection-exemption'}.webp`);
     expect(html).not.toContain('tile-symbols.svg');
+  });
+  it('marks every approved card family as a shared portrait-art stage, including special event types', () => {
+    const cases = [
+      ['festival', 'cash', 'event-card'], ['lottery', 'cash', 'event-card'], ['rent-rebate', 'cash', 'event-card'], ['city-dividend', 'cash', 'bonus'],
+      ['visit-santo-domingo', 'movement', 'event-card'], ['retreat', 'movement', 'event-card'], ['advance-start', 'movement', 'event-card'], ['train-ticket', 'movement', 'train'], ['go-to-island', 'movement', 'island'],
+      ['travel-cost', 'city', 'event-card'], ['maintenance', 'city', 'event-card'], ['monopoly-warning', 'city', 'monopoly-warning'], ['city-festival', 'city', 'event-card'], ['blackout', 'city', 'event-card'],
+      ['escape-pass', 'protection', 'escape'], ['rent-pass', 'protection', 'event-card'],
+    ] as const;
+    for (const [cardId, family, type] of cases) {
+      const html = renderEvent({ type, cardId });
+      expect(html, `${cardId} should use the common portrait stage`).toContain('has-card-art');
+      expect(html).toContain(`data-event-art-family="${family}"`);
+      expect(html).toContain(`data-event-family="${family}"`);
+    }
   });
   it('shows an unpaid crisis and the actual creditor without a fabricated cash change', () => {
     const crisis = renderEvent({ type: 'crisis', actor: 'p1', fromAccount: 'p1', toAccount: 'p2', amount: 200 });
@@ -71,9 +97,13 @@ describe('Marble public event meaning', () => {
     expect(free).not.toContain('marble-event-transfer');
   });
   it('uses distinct reward/island/train symbols and the public movement endpoints', () => {
-    for (const [cardId, symbol] of [['festival', 'festival'], ['go-to-island', 'island'], ['train-ticket', 'train']]) {
-      expect(renderEvent({ type: 'event-card', cardId })).toContain(`golden-key-cards.svg#${symbol}`);
+    for (const cardId of ['festival', 'go-to-island', 'train-ticket']) {
+      expect(renderEvent({ type: 'event-card', cardId })).toContain('/images/marble/events/');
     }
+    expect(renderEvent({ type: 'island', cardId: 'go-to-island' })).toContain('/images/marble/events/movement-travel.webp');
+    expect(renderEvent({ type: 'escape', cardId: 'escape-pass' })).toContain('/images/marble/events/protection-exemption.webp');
+    expect(renderEvent({ type: 'train', cardId: 'train-ticket' })).toContain('/images/marble/events/movement-travel.webp');
+    expect(renderEvent({ type: 'monopoly-warning', cardId: 'monopoly-warning' })).toContain('/images/marble/events/city-intervention.webp');
     expect(renderEvent({ type: 'train', from: 5, to: 15 })).toContain('6번 → 16번 칸');
   });
 });

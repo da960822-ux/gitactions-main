@@ -8,6 +8,29 @@ const render = (view: any, language: 'ko' | 'es' = 'ko', playerId: 'p1' | 'p2' =
   renderToStaticMarkup(createElement(MarbleBoard, { view, language, playerId, runAction: vi.fn() }));
 
 describe('MarbleBoard', () => {
+  it('uses the updated Korean and Spanish figure names for old saved pawn IDs', () => {
+    const state = marbleEngine.createInitialState(71);
+    state.pawns = { p1: 'fox', p2: 'penguin' };
+    const view = marbleEngine.getPlayerView(state, 'p1');
+    expect(render(view)).toContain('말티푸');
+    expect(render(view)).toContain('판다');
+    expect(render(view, 'es')).toContain('Maltipoo');
+    expect(render(view, 'es')).toContain('Panda');
+    expect(view.actions.some((choice: any) => choice.label.ko.includes('친칠라') && choice.label.es.includes('Chinchilla'))).toBe(true);
+  });
+  it('shows only a confirmed world-travel arrival as an imagined airline trip', () => {
+    const view = marbleEngine.getPlayerView(marbleEngine.createInitialState(12), 'p1');
+    expect(render(view)).not.toContain('mp-flight');
+    view.board.lastMove = { sequence: 1, from: 30, to: 15, steps: 25, source: 'train', playerId: 'p1' };
+    expect(render(view)).toContain('아시아나');
+    expect(render(view)).toContain('둘의 상상 여행');
+    expect(render(view)).not.toContain('mp-flight is-flying');
+    view.board.lastMove.playerId = 'p2';
+    expect(render(view, 'es')).toContain('JetBlue');
+    expect(render(view, 'es')).toContain('Nuestro viaje imaginado');
+    view.board.lastMove.from = 14;
+    expect(render(view)).not.toContain('mp-flight');
+  });
   it('renders the current forty-space route with Gwangju and Santo Domingo in both languages', () => {
     const state = marbleEngine.createInitialState(733);
     const view = marbleEngine.getPlayerView(state, 'p1');
@@ -23,12 +46,23 @@ describe('MarbleBoard', () => {
     expect(ko).toContain('mp-pawn-picker-shell');
     expect(ko.indexOf('mp-pawn-picker-shell')).toBeLessThan(ko.indexOf('mp-turn-panel'));
     expect(ko.indexOf('mp-turn-panel')).toBeLessThan(ko.indexOf('mp-city-detail'));
-    expect(ko).toContain('/images/marble/cities/gwangju.svg');
+    expect(ko).toContain('/images/marble/building-stages.svg#land');
     expect(es).toContain('Gwangju');
     expect(es).toContain('Santo Domingo');
     expect(es).toContain('<h2>Marble</h2>');
     expect(es).toContain('Lanzar los dados');
     expect(es).toContain('Patrimonio neto');
+  });
+
+  it('preserves full Spanish city names for visual wrapping and hover inspection', () => {
+    const view = marbleEngine.getPlayerView(marbleEngine.createInitialState(733), 'p1');
+    const es = render(view, 'es');
+    for (const name of ['Ciudad de México', 'Barcelona', 'Santo Domingo']) {
+      expect(es).toContain(`title="${name}"`);
+      expect(es).toContain(`aria-label="${name},`);
+    }
+    expect(es).toContain('Acceso rápido a Santo Domingo');
+    expect(es).toContain('<strong class="mp-tile-name" title="Ciudad de México">Ciudad de México</strong>');
   });
 
   it('uses the same current turn in the map and actions, capped at 120 including final settlement', () => {
@@ -43,6 +77,74 @@ describe('MarbleBoard', () => {
     }
     view.result = { winner: 'p1', scores: { p1: 1, p2: 0 } };
     expect(render(view)).toContain('턴 120 / 120');
+  });
+
+  it('resolves the same saved-v2 final art in the board and portfolio for Newark and Seoul', () => {
+    const view = marbleEngine.getPlayerView({ ...marbleEngine.createInitialState(11), cityRouteVersion: 2 }, 'p1');
+    for (const index of [31, 38]) {
+      view.board.tiles[index].owner = 'p1';
+      view.board.tiles[index].houses = 3;
+    }
+    const html = render(view);
+    const portfolio = html.slice(html.indexOf('<details class="mp-portfolio"'));
+    for (const city of ['newark', 'seoul']) {
+      expect(portfolio).toContain(`/images/marble/landmarks/${city}.svg`);
+      expect(html).not.toContain(`/images/marble/cities/${city}.svg`);
+    }
+  });
+
+  it('shows the selected arrival with its actual build stage instead of a false landmark preview', () => {
+    const view = marbleEngine.getPlayerView({ ...marbleEngine.createInitialState(11), cityRouteVersion: 2 }, 'p1');
+    view.board.positions.p1 = 1;
+    const html = render(view);
+    const arrival = html.slice(html.indexOf('<section class="mp-journey-hud"'), html.indexOf('</section>') + 10);
+    expect(arrival).toContain('현재 도착 · 행동 위치');
+    expect(arrival).toContain('data-building-level="0"');
+    expect(arrival).toContain('현재 미건설');
+    expect(arrival).toContain('/images/marble/landmarks/gwangju.svg');
+    expect(arrival).toContain('랜드마크 모습 · 미건설');
+    expect(arrival).toContain('24개 도시 중 대표 도시 빠른 바로가기');
+    expect((arrival.match(/빠른 바로가기/g) ?? []).length).toBeGreaterThanOrEqual(5);
+    expect(html).not.toContain('aria-label="랜드마크"');
+  });
+
+  it('shows one special-tile title and one accurate effect line in the journey panel', () => {
+    const state = marbleEngine.createInitialState(31);
+    const view = marbleEngine.getPlayerView(state, 'p1');
+    const journey = () => {
+      const html = render(view);
+      const start = html.indexOf('<section class="mp-journey-hud"');
+      return html.slice(start, html.indexOf('</section>', start) + 10);
+    };
+    expect(journey().match(/출발/g)).toHaveLength(1);
+    expect(journey()).toContain('통과할 때 200을 받아요.');
+    view.board.positions.p1 = 23;
+    expect(journey()).toContain('추가 비용이 없어요.');
+    view.board.positions.p1 = 10;
+    expect(journey()).toContain('최대 세 차례 쉬어요 · 다음 차례에 탈출 방법을 선택해요.');
+    view.board.positions.p1 = 14;
+    expect(journey()).toContain('다음 차례에 목적지를 골라요 · 운임 100.');
+  });
+
+  it('keeps the arrival and action location focused on the active seat in the counterpart view', () => {
+    const state = marbleEngine.createInitialState(21);
+    state.positions.p1 = 8;
+    state.active = 'p1';
+    const html = render(marbleEngine.getPlayerView(state, 'p2'), 'es', 'p2');
+    expect(html).toContain('<h3>Puerto Plata</h3>');
+    expect(html).toContain('Llegada actual · ubicación de acción');
+    expect(html).toContain('Ubicación de acción</small>');
+    expect(html).toContain('Puerto Plata');
+  });
+
+  it('shows connected route-v3 landmark attribution and its verified image', () => {
+    const view = marbleEngine.getPlayerView(marbleEngine.createInitialState(11), 'p1');
+    view.board.positions.p1 = 13;
+    view.board.tiles[13].houses = 3;
+    expect(render(view, 'es')).toContain('situado en Miami Beach');
+    expect(render(view, 'es')).toContain('/images/marble/premium/cities/miami-colony-hotel.webp');
+    view.board.positions.p1 = 15;
+    expect(render(view)).toContain('디에고 콜론의 거주지');
   });
 
   it('shows the latest receipt immediately beside actions before animated history', () => {
@@ -109,7 +211,7 @@ describe('MarbleBoard', () => {
     const state = marbleEngine.createInitialState(5);
     const view = marbleEngine.getPlayerView(state, 'p1');
     view.phase = 'decision';
-    view.board.positions.p1 = 3;
+    view.board.positions.p1 = 15;
     view.actions = [
       { label: { ko: '구매', es: 'Comprar' }, action: { type: 'buy' } },
       { label: { ko: '거절', es: 'Pasar' }, action: { type: 'decline' } },
@@ -118,6 +220,9 @@ describe('MarbleBoard', () => {
     const spanish = render(view, 'es');
     expect(html).toContain('산토도밍고');
     expect(html).toContain('도시 구매 · 120');
+    expect(html).toContain('매입 120 · 매입 후 현금 1,380');
+    expect(html).toContain('기본 통행료 15');
+    expect(html.indexOf('mp-purchase-recap')).toBeLessThan(html.indexOf('mp-actions'));
     expect(html).toContain('구매 120 · 기본 통행료 15');
     expect(html).toContain('구매 후 현금 1,380');
     expect(html).toContain('선택한 칸');
@@ -142,9 +247,9 @@ describe('MarbleBoard', () => {
     expect(html).toContain('건설 후 현금 20');
     expect(html).toContain('통행료 24 → 48 (+24)');
     expect(html).toContain('비용 40');
-    expect(html).toContain('/images/marble/cities/gwangju.svg');
+    expect(html).not.toContain('/images/marble/cities/gwangju.svg');
     expect(html).toContain('/images/marble/ownership-card-frame.svg');
-    expect(html).toContain('/images/marble/buildings/villa.svg');
+    expect(html).toContain('/images/marble/premium/buildings/stage1-house.webp');
     expect(html).toContain('건설 단계별 통행료');
     expect(html.indexOf('mp-build-shortcut')).toBeLessThan(html.indexOf('mp-city-detail'));
     expect((html.match(/>별장: 광주 \(40\)/g) ?? []).length).toBe(1);
