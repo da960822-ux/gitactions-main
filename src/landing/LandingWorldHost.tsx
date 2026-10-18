@@ -5,10 +5,12 @@ import {ScrollTrigger} from 'gsap/ScrollTrigger';
 import {AcrossHero} from './AcrossHero';
 import {GameGallery} from './gallery/GameGallery';
 import {createGalleryCollection} from './gallery/GalleryCollection';
+import {createPostHeroComposition} from './PostHeroComposition';
 import {PostHeroPreview} from '../../post-hero-preview/src/PostHeroPreview';
 import type {PostHeroState} from '../../post-hero-preview/src/Scene';
 import {createLetterCollection} from '../../post-hero-preview/src/LetterCollection';
 import {cameraPose as heroCameraPose} from './cinematic/folded/poseSpaceV19';
+import {ROOM_WORLD,roomWorldVertex} from './cinematic/folded/approvedRoomGeometry';
 import {pointerDecay} from './cinematic/folded/pointerResponse';
 import {INTRO_SECONDS, introPose, smoothRange, type FoldPose} from './cinematic/folded/pose';
 import '../../post-hero-preview/src/preview.css';
@@ -18,12 +20,9 @@ gsap.registerPlugin(ScrollTrigger);
 gsap.ticker.lagSmoothing(0);
 const PORTRAIT='/images/approved-couple-room/approved-character-reference.png';
 const PORTRAIT_MASK='/images/approved-couple-room/character-opacity-mask.png';
-const LETTER_ANCHOR=new THREE.Vector3(-11,1.82,-54);
-const GALLERY_ANCHOR=new THREE.Vector3(-11,1.82,-54);
-const ROOM_EYE=new THREE.Vector3(-11,7.6,-40);
-const ROOM_TARGET=new THREE.Vector3(-11,7.6,-64);
-const GALLERY_EYE=new THREE.Vector3(-11,6.7,-40.5);
-const GALLERY_TARGET=new THREE.Vector3(-11,4.7,-63);
+const ROOM_EYE=new THREE.Vector3(...roomWorldVertex(836,470.5,24));
+const ROOM_TARGET=new THREE.Vector3(ROOM_WORLD.x,ROOM_WORLD.y,ROOM_WORLD.z);
+const ROOM_BACK=ROOM_EYE.clone().sub(ROOM_TARGET);
 
 type Props={language:'ko'|'es';onLanguageChange:(language:'ko'|'es')=>void;selected:string;onSelect:(game:string)=>void};
 function hasSeenIntro(){try{return sessionStorage.getItem('folded-playhouse-seen')==='1';}catch{return false;}}
@@ -48,6 +47,7 @@ export function LandingWorldHost({language,onLanguageChange,selected,onSelect}:P
   const pose:FoldPose={progress:0,entrance:first.current?0:1,pointerX:0,pointerY:0,time:0};
   let world:ReturnType<typeof import('./cinematic/folded/previewSpaceV19')['createFoldedWorld']>|undefined;
   let post:ReturnType<typeof createLetterCollection>|undefined,gallery:ReturnType<typeof createGalleryCollection>|undefined;
+  let composition:ReturnType<typeof createPostHeroComposition>|undefined;
   let disposed=false,frame=0,clockStart=0,last=0,elapsed=0,inIntro=first.current,lost=false;
   let trigger:ScrollTrigger|undefined,heroEnd=innerHeight*2.6,previousPost=false,galleryInput=false,postNeedsFrame=false;
   let lastRenderSignature='',pressed:{x:number;y:number;id:number}|null=null;
@@ -55,7 +55,6 @@ export function LandingWorldHost({language,onLanguageChange,selected,onSelect}:P
   const cameraPosition=new THREE.Vector3(),cameraTarget=new THREE.Vector3(),roomEye=ROOM_EYE.clone();
   let heroBackdrop:THREE.Scene['background']|undefined;
   const roomBackground=new THREE.Color('#21151d');
-  const postBackground=new THREE.Color('#21151d');
   const roomContain=(width:number,height:number)=>Math.max(1,(1672/941)/(width/height));
   const roomFov=(width:number,height:number)=>width<760?THREE.MathUtils.radToDeg(2*Math.atan(Math.tan(THREE.MathUtils.degToRad(24))*roomContain(width,height))):48;
   const frameFallback=()=>{
@@ -71,10 +70,10 @@ export function LandingWorldHost({language,onLanguageChange,selected,onSelect}:P
    Object.assign(image.style,{left:'0',top:'0',width:'1312px',height:'1199px',maxWidth:'none',right:'auto',bottom:'auto',transformOrigin:'0 0',transform:`matrix3d(${transform.elements.join(',')})`});
   };
   const frameHero=(camera:THREE.PerspectiveCamera,p:number,width:number,height:number)=>{
-   const room=smoothRange(.65,1,p);camera.clearViewOffset();
+   const room=smoothRange(.20,.32,p);camera.clearViewOffset();
    if(world){if(heroBackdrop===undefined)heroBackdrop=world.scene.background;world.scene.background=p>.72?roomBackground:heroBackdrop;}
    if(width<760){const base=THREE.MathUtils.radToDeg(2*Math.atan(Math.tan(THREE.MathUtils.degToRad(camera.fov/2))/.59));camera.fov=THREE.MathUtils.lerp(base,roomFov(width,height),room);camera.setViewOffset(width,height,0,-height*.195*(1-room),width,height);}
-   else {camera.position.z+=(24*roomContain(width,height)-24)*room;const target=heroCameraPose(p,pose.entrance,false).target;camera.lookAt(...target as [number,number,number]);}
+   else {const contain=roomContain(width,height)-1;camera.position.y+=(ROOM_EYE.y-ROOM_TARGET.y)*contain*room;camera.position.z+=(ROOM_EYE.z-ROOM_TARGET.z)*contain*room;const target=heroCameraPose(p,pose.entrance,false).target;camera.lookAt(...target as [number,number,number]);}
   };
   const titleLines=[...hero.querySelectorAll<HTMLElement>('.across-title-line')];
   const copy=hero.querySelector<HTMLElement>('.across-editorial')!,destination=hero.querySelector<HTMLElement>('.folded-destination')!;
@@ -113,7 +112,7 @@ export function LandingWorldHost({language,onLanguageChange,selected,onSelect}:P
   });
   const resizeObserver=new ResizeObserver(invalidate);resizeObserver.observe(root);
   const updateEditorial=(p:number,_entrance:number)=>{
-   const exit=smoothRange(.15,.46,p),appear=smoothRange(.73,.94,p),focused=copy.querySelector(':focus-visible');
+   const exit=smoothRange(.11,.23,p),appear=smoothRange(.73,.94,p),focused=copy.querySelector(':focus-visible');
    const copyExit=focused?0:exit;
    hero.style.setProperty('--hero-atmosphere-opacity',String(1-copyExit));
    copy.style.opacity=String(1-copyExit);copy.style.setProperty('--hero-copy-opacity',String(1-copyExit));copy.style.transform=`translate3d(${-copyExit*90}px,${-copyExit*65}px,${copyExit*320}px)`;copy.style.pointerEvents=copyExit>.98?'none':'auto';copy.inert=copyExit>.98;
@@ -147,45 +146,28 @@ export function LandingWorldHost({language,onLanguageChange,selected,onSelect}:P
    if(!needsFrame){if(!postActive){world.render(pose);updateEditorial(Number(screen.dataset.progress??pose.progress),Number(screen.dataset.entrance??pose.entrance));}return;}lastRenderSignature=signature;dirty.current=false;
    if(!postActive){
     if(previousPost){world.setPostActive(false);world.camera.clearViewOffset();lastRenderSignature='';}
-    previousPost=false;if(post)post.root.visible=false;if(gallery)gallery.root.visible=false;
+    previousPost=false;if(post)post.root.visible=false;if(gallery)gallery.root.visible=false;if(composition)composition.root.visible=false;
     world.updateRoomExit(0);world.updateRoomDesk(0);world.render(pose);
     updateEditorial(Number(screen.dataset.progress??pose.progress),Number(screen.dataset.entrance??pose.entrance));
-   }else if(post&&gallery){
+   }else if(post&&gallery&&composition){
     if(!previousPost){world.render({...pose,progress:1,entrance:1});if(Number(screen.dataset.progress??0)<.999||Number(screen.dataset.entrance??0)<.999){dirty.current=true;return;}world.setPostActive(true);}
     previousPost=true;
     const progress=postState.current.progress;
-    const letterWeight=smoothRange(.48,.61,progress)*(1-smoothRange(.88,.99,progress))*(1-galleryWeight);
     post.root.visible=true;
-    const collectionPresence=Math.max(galleryWeight,smoothRange(.43,.49,progress)*(1-smoothRange(.86,.98,progress)));
-    gallery.root.visible=collectionPresence>.001;
+    gallery.root.visible=true;
+    composition.root.visible=true;
     world.updateRoomDesk(bridge);
-    world.updateRoomExit(.035*galleryWeight);
-    post.root.position.lerpVectors(new THREE.Vector3(-13.5,1.82,-55.5),LETTER_ANCHOR,letterWeight);post.root.scale.setScalar(.5+.5*letterWeight);
+    world.updateRoomExit(0);
     post.update({...postState.current,width,height,ownCamera:false});postNeedsFrame=false;
-    world.scene.background=postBackground;
-    roomEye.copy(ROOM_EYE);if(width>=760)roomEye.z+=24*roomContain(width,height)-24;
-    cameraPosition.copy(roomEye).lerp(GALLERY_EYE,galleryWeight*bridge);
-    cameraTarget.copy(ROOM_TARGET).lerp(GALLERY_TARGET,galleryWeight*bridge);
-    const letterFocus=smoothRange(.52,.72,progress)*(1-smoothRange(.88,1,progress))*(1-galleryWeight);
-    cameraPosition.lerp(new THREE.Vector3(-11,5,-44.5),letterFocus);
-    cameraTarget.lerp(new THREE.Vector3(-11,3,-54),letterFocus);
-    const ending=smoothRange(.9,1,progress);
-    cameraPosition.lerp(new THREE.Vector3(-11,8.1,-37),ending);
-    cameraTarget.lerp(new THREE.Vector3(-11,7.2,-64),ending);
+    roomEye.copy(ROOM_EYE);if(width>=760)roomEye.addScaledVector(ROOM_BACK,roomContain(width,height)-1);
+    const composed=composition.update({progress,bridge,galleryWeight,opening:postState.current.opening,time:elapsed,reducedMotion:media.matches,width,height,roomEye,roomTarget:ROOM_TARGET,effect:postState.current.effect});
+    world.updateRoomExit(composed.roomExit);world.updateRoomDesk(composed.roomDesk);
+    cameraPosition.copy(composed.eye);cameraTarget.copy(composed.target);
     world.camera.position.copy(cameraPosition);world.camera.lookAt(cameraTarget);
-    world.camera.clearViewOffset();
-    let fov=THREE.MathUtils.lerp(roomFov(width,height),60,galleryWeight*bridge);
-    if(width<760){
-     const mobileFov=roomFov(width,height);
-     fov=THREE.MathUtils.lerp(roomFov(width,height),mobileFov,bridge);
-     fov=THREE.MathUtils.lerp(fov,60,letterFocus);
-     fov=THREE.MathUtils.lerp(fov,roomFov(width,height),ending);
-     const shift=THREE.MathUtils.lerp(-.07,.15,galleryWeight);
-     world.camera.setViewOffset(width,height,0,height*shift*bridge*(1-letterFocus)*(1-ending),width,height);
-    }
-    world.camera.fov=fov;world.camera.updateProjectionMatrix();
-    gallery.root.position.copy(GALLERY_ANCHOR);gallery.root.position.y-=(1-collectionPresence)*8.5;gallery.root.position.z-=letterFocus*4;
-    gallery.root.rotation.y=0;
+    world.camera.clearViewOffset();world.camera.fov=composed.fov;world.camera.updateProjectionMatrix();
+    world.scene.background=composed.background;
+    gallery.root.position.copy(composed.galleryAnchor);gallery.root.rotation.y=0;
+    post.root.position.copy(composed.letterAnchor);post.root.scale.setScalar(composed.letterScale);
     gallery.update({selected:selection.current.selected,time:elapsed,paused:media.matches,dt,snap:media.matches,mobile:width<700,effect:postState.current.effect});
     if(!world.renderExternal()){dirty.current=true;return;}post.projectPaper();
     Object.assign(screen.dataset,{scene:root.dataset.scene,camera:world.camera.position.toArray().map(n=>n.toFixed(3)).join(','),target:cameraTarget.toArray().map(n=>n.toFixed(3)).join(','),drawCalls:String(world.renderer.info.render.calls),triangles:String(world.renderer.info.render.triangles),gallery:galleryWeight.toFixed(4),frameRenderingMode:'approved-room-direct',reflection:'Hero SSR inactive in this frame',contactShadow:'1024 PCF from room key on desk contact receiver',geometries:String(world.renderer.info.memory.geometries),textures:String(world.renderer.info.memory.textures)});
@@ -196,12 +178,13 @@ export function LandingWorldHost({language,onLanguageChange,selected,onSelect}:P
    if(disposed)return;
    world=createFoldedWorld(screen,{width:screen.clientWidth,height:screen.clientHeight,pixelRatio:Math.min(devicePixelRatio,innerWidth<760?1.25:1.5),portrait:PORTRAIT,portraitMask:PORTRAIT_MASK,beforeRender:frameHero,surfaceFilm:'/motion/folded-playhouse-lightwell.mp4',introSurfaceFilm:'/motion/folded-playhouse-gift-edge-v18.mp4',onFrame:data=>{Object.assign(screen.dataset,data,{frameRenderingMode:'hero-curved-SSR'});if(!disposed&&(first.current||Number(data.entrance)>=.999))setReady(true);}});
    await world.ready;if(disposed)return;
-   post=createLetterCollection({scene:world.scene,camera:world.camera,host:screen});post.root.position.copy(LETTER_ANCHOR);post.root.visible=false;
-   gallery=createGalleryCollection(invalidate);gallery.root.position.copy(GALLERY_ANCHOR);gallery.root.visible=false;world.scene.add(gallery.root);
+   post=createLetterCollection({scene:world.scene,camera:world.camera,host:screen});post.root.visible=false;
+   composition=createPostHeroComposition(world.scene);
+   gallery=createGalleryCollection(invalidate);gallery.root.visible=false;world.scene.add(gallery.root);
    setPostReady(true);clockStart=performance.now();world.render(pose);frame=requestAnimationFrame(tick);resize();
-  }).catch(error=>{if(disposed)return;console.error('Landing world:',error);endIntro();post?.dispose();gallery?.dispose();world?.dispose();world=undefined;setReady(false);setFailed(true);});
+  }).catch(error=>{if(disposed)return;console.error('Landing world:',error);endIntro();post?.dispose();gallery?.dispose();composition?.dispose();world?.dispose();world=undefined;setReady(false);setFailed(true);});
   root.addEventListener('pointermove',move);root.addEventListener('pointerleave',resetPointer);root.addEventListener('pointerdown',down);root.addEventListener('pointerup',up);root.addEventListener('pointercancel',resetPointer);window.addEventListener('resize',resize);window.addEventListener('scroll',invalidate,{passive:true});media.addEventListener('change',preference);screen.addEventListener('webglcontextlost',contextLost);screen.addEventListener('webglcontextrestored',contextRestored);document.addEventListener('visibilitychange',visibility);
-  return()=>{disposed=true;cancelAnimationFrame(frame);mm.revert();resizeObserver.disconnect();post?.dispose();gallery?.dispose();world?.dispose();root.removeEventListener('pointermove',move);root.removeEventListener('pointerleave',resetPointer);root.removeEventListener('pointerdown',down);root.removeEventListener('pointerup',up);root.removeEventListener('pointercancel',resetPointer);window.removeEventListener('resize',resize);window.removeEventListener('scroll',invalidate);media.removeEventListener('change',preference);screen.removeEventListener('webglcontextlost',contextLost);screen.removeEventListener('webglcontextrestored',contextRestored);document.removeEventListener('visibilitychange',visibility);};
+  return()=>{disposed=true;cancelAnimationFrame(frame);mm.revert();resizeObserver.disconnect();post?.dispose();gallery?.dispose();composition?.dispose();world?.dispose();root.removeEventListener('pointermove',move);root.removeEventListener('pointerleave',resetPointer);root.removeEventListener('pointerdown',down);root.removeEventListener('pointerup',up);root.removeEventListener('pointercancel',resetPointer);window.removeEventListener('resize',resize);window.removeEventListener('scroll',invalidate);media.removeEventListener('change',preference);screen.removeEventListener('webglcontextlost',contextLost);screen.removeEventListener('webglcontextrestored',contextRestored);document.removeEventListener('visibilitychange',visibility);};
  },[]);
  useEffect(()=>{dirty.current=true;},[selected,language]);
  return <div ref={host} className={`landing-world-host${ready?' is-world-ready':''}${failed?' world-unavailable':''}`}>

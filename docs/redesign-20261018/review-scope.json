@@ -1,6 +1,6 @@
 {
   "date": "2026-10-18",
-  "userDirection": "Existing proposal visuals are not approved. Reuse functionality only. Redesign from approved room and canonical original requirements.",
+  "userDirection": "LATEST ACTIVE USER DIRECTIVE (long prompt, 2026-10-18): finish approved room as static scene; submit actual inside/near-entry/diagonal 2–3 view renders at 1920x1080 and 1440x900; obtain one user approval of the new game-room composition; after that approval proceed with Hero-path reverse design and shared camera/post-connector integration. No additional user approval gate for the connector. Prior short Hero-first/integration sequences are superseded. Only main merge/deployment retains the already-required separate approval.",
   "approvedInputs": [
     "approved-couple-gaming-room.png",
     "approved-character-reference.png",
@@ -18,20 +18,26 @@
     "output/landing-final: rejected old proposal recording, do not deliver",
     "output/playwright/approved-room-redesign first HMR run: empty engine-only canvas metadata; invalid screen evidence"
   ],
-  "currentStatus": "redesign in progress; no design completion or approval claimed",
+  "currentStatus": "E1 and E2 source ownership stopped after E self FAIL1/FAIL2. Current work is static room redesign only; E2 captured A at two desktop sizes but not B/C and its capture report completed=false. New room owner sol_room_static_g starts at counter 0. Previous POST2 owner stopped after own FAIL2; new sol_post_stage_f starts at 0 for separate stage/UI work.",
   "runtimeChange": "LandingWorldHost now instantiates approved room, renderer-free game collection and letter-only collection. Legacy full PostHero Scene is lazy-loaded only in standalone preview.",
   "pending": [
-    "Approved-room desk continuation visual review",
-    "Fixed-build desktop and mobile visual review",
-    "Forward/reverse/interrupted scroll and interaction validation",
-    "Fresh Spanish actual-browser short recording",
-    "Safe commit/push to existing Hero branch; no main merge or deployment"
+    "Complete static room under sol_room_static_g ownership",
+    "Produce actual A/inside, B/near-entry, and C/diagonal renders at 1920x1080 and 1440x900; current E2 report has A only and completed=false",
+    "Obtain the single user approval of the new game-room composition",
+    "After that approval, reverse-design Hero path and review actual pre-entry/mid-transition/arrival video",
+    "Continue separate POST stage/UI under sol_post_stage_f; shared camera/connector integration proceeds after the same room approval without a new connector approval gate",
+    "Complete desktop QA; mobile responsive adaptation and 390x844 QA remain last",
+    "Audit and implement all 16 local Easter egg families L01-L16 from EASTER-EGGS.ko.md v3; do not substitute UI-group or callback counts for the requirements inventory",
+    "Implement and verify the four authenticated remote collaboration families R01-R04 with two real authenticated users on two real devices",
+    "Implement eight visible roses within the letter scene only (four left, four right); owner sol_post_stage_f. Add no flowers to the approved game-room scene",
+    "Preserve required story flow: distance -> folded surface transition -> play table -> actual letter open/read -> ending; treat design-session coordinates as draft references, not binding coordinates",
+    "Keep the literal letter copy unchanged and do not revive rejected prior visuals"
   ],
   "executionPriority": [
-    "desktop landing implementation",
-    "independent desktop supervision and corrections",
-    "1920x1080 and 1440x900 desktop integration QA",
-    "Spanish desktop actual-browser short recording",
+    "static room redesign",
+    "actual A/inside, B/near-entry, C/diagonal comparison renders at 1920x1080 and 1440x900",
+    "single user approval of the new game-room composition",
+    "after approval, Hero reverse-design and actual entry/mid/arrival review; shared connector integration proceeds under same approval",
     "mobile responsive adaptation and 390x844 QA last"
   ],
   "operatingRoles": {
@@ -41,40 +47,325 @@
     "root": "Task assignment and final integration."
   },
   "visualReviewStatus": {
-    "implementationSelfTests": "Passing self-tests do not establish visual completion.",
+    "implementationSelfTests": "Passing self-tests do not establish visual completion or the required user composition approval.",
     "firstIndependentResult": "visual Block remains in force",
-    "freshBuildReview": "r3 failure confirmed; source frozen and browser closed for handoff; independent review of the recovery build is pending.",
-    "stateTracking": "Keep handoff, fixes, review, and unreviewed items distinct."
+    "freshBuildReview": "D2 self-fail2 and independent BLOCK are historical evidence. Current E1 transition development is stopped; E prepares static room actual multi-view evidence, with own visual attempt count held at 0 until the user judges the actual batch. Post continues separately at POST2; shared camera/connector remains paused.",
+    "stateTracking": "Keep handoff, fixes, review, and unreviewed items distinct; test/build passes do not establish visual completion."
   },
-  "mobileAdditionalWork": "paused until desktop completion per latest user instruction",
+  "mobileAdditionalWork": "last priority; only after the desktop journey per current user instruction",
   "visualIterationPolicy": {
     "trigger": "If the same owner fails visual review twice in the same change area, stop further iteration and hand off evidence, current source state, and review scope to another explicitly assigned owner.",
     "urlChangesResetFailureCount": false,
     "newOwnerAttemptCount": 0,
     "inheritedFailureCountsAsNewOwnerAttempt": false,
     "replacementTrigger": "Replace the new owner after two of their own failed visual attempts.",
-    "selfTestsAreVisualApproval": false
+    "selfTestsAreVisualApproval": false,
+    "attemptCounterStartsAt": "After an actual multi-view render batch is judged; E remains at zero before that judgment."
   },
   "currentHandoff": {
-    "previousOwner": "sol_desktop_design",
-    "previousOwnerModelHistory": "Not asserted; role label is operational routing only.",
-    "previousOwnerFailedVisualAttempts": 2,
-    "failedExperimentUrls": [
-      "5235",
-      "5236"
-    ],
-    "r3Status": "visual failure confirmed; source frozen; browser closed for handoff",
-    "newCorrectionOwner": {
-      "role": "sol_transition_recovery_b",
-      "model": "gpt-6.1-sol",
+    "statusAsOf": "2026-10-18 latest long user prompt active",
+    "supersedes": "Earlier short Hero-first integration sequence and earlier orderings; preserve them as history, do not execute them concurrently.",
+    "E1": {
+      "source": "preserved",
+      "development": "stopped",
+      "status": "not accepted; no new source changes authorized in transition scope"
+    },
+    "heroRoomOwner": {
+      "role": "sol_room_static_g",
+      "assignment": "explicit Sol High",
       "ownAttemptCount": 0,
-      "inheritedR3FailureCounts": false
+      "scope": "static room and actual multi-view render comparison"
     },
-    "independentReviewer": {
-      "role": "sol_independent_review",
-      "model": "gpt-6.1-sol",
-      "separateFromCorrectionOwner": true
+    "roomEvidenceNext": {
+      "requiredViews": [
+        "A / inside",
+        "B / near-entry",
+        "C / diagonal"
+      ],
+      "viewCount": 3,
+      "viewports": [
+        [
+          1920,
+          1080
+        ],
+        [
+          1440,
+          900
+        ]
+      ],
+      "actualRenderedViewsRequired": true,
+      "coordinatesAloneSuffice": false,
+      "userCompositionApprovalRequiredBeforeHeroPath": true
     },
-    "evidenceAndScopeHandoff": "Required before the new correction owner proceeds."
+    "D2HistoricalEvidence": {
+      "manifest": "/workspace/scratch/handoff-d2-source/manifest.json",
+      "independentReview": "/workspace/scratch/sol-independent-review/hero-d2-frame-review.ko.json",
+      "selfFailureCount": 2,
+      "independentVerdict": "BLOCK",
+      "sourceBackupFiles": 8
+    },
+    "postOwner": {
+      "previousOwnerDisposition": "Previous POST2 owner stopped after own same-area visual failure 2.",
+      "sourceBackup": "/workspace/scratch/handoff-post2-source/manifest.json",
+      "backupFileCount": 6,
+      "newOwner": "sol_post_stage_f",
+      "assignment": "explicit Sol High",
+      "ownAttemptCount": 0,
+      "scope": "separate POST stage/UI work; maintain separate visual counter",
+      "letterFlowers": {
+        "requirement": "4 roses on left + 4 roses on right = 8 total, all visible in the letter scene",
+        "owner": "sol_post_stage_f",
+        "approvedGameRoom": "no added flowers"
+      },
+      "remoteAuthenticatedQA": "R01-R04 require actual 2 authenticated users on 2 devices; no completion evidence recorded."
+    },
+    "sharedIntegration": "After the single user approval of the new game-room composition, proceed with shared camera/post-connector integration; no additional user approval gate for the connector.",
+    "video": "actual pre-entry/mid-transition/arrival video pending after static room approval and Hero path redesign",
+    "mobile": "last priority; incomplete",
+    "independentReviewer": "separate from implementation owners; review stages pending",
+    "mainMerge": "not done",
+    "deployment": "not done",
+    "push": "not done",
+    "roomApprovalGate": "One user approval of the new game-room composition; independent review does not replace it.",
+    "mainMergeDeploymentApproval": "Keep the already-required separate approval for main merge/deployment only.",
+    "E1E2": {
+      "previousOwner": "sol_scene_scale_e",
+      "E1": "self and independent FAIL1",
+      "E2": "self FAIL2; source STOP",
+      "E2Manifest": "/workspace/scratch/handoff-e2-source/manifest.json",
+      "E2Report": "/workspace/scratch/room-e2-static-study/captures/report.json",
+      "asyncMapBug": "Material clone occurred before async maps were ready; clone retained null/pending map, leading to white background/table in the actual captured run.",
+      "capturedViews": [
+        "A / inside at 1920x1080",
+        "A / inside at 1440x900"
+      ],
+      "missingViews": [
+        "B / near-entry",
+        "C / diagonal"
+      ],
+      "captureCompleted": false,
+      "browserClosed": true
+    },
+    "currentSequence": "static room -> actual A/B/C views at 1920x1080 and 1440x900 -> one user approval of new game-room composition -> Hero reverse-design and shared connector integration",
+    "additionalConnectorApprovalGate": false,
+    "priorAuditCorrection": "Earlier 12-card/7-callback audit was an implementation component/wiring count, not the full requirement inventory; tracked EASTER-EGGS v3 requires 16 local + 4 authenticated remote event families."
+  },
+  "B2SelfReview": {
+    "status": "failed",
+    "reviewer": "sol_transition_recovery_b (Sol-reported judgment)",
+    "attemptNumber": 2,
+    "sameAreaOwnFailureCount": 2,
+    "browser": {
+      "url": "http://127.0.0.1:5239/",
+      "viewport": [
+        1920,
+        1080
+      ],
+      "exitCode": 0,
+      "reportErrors": []
+    },
+    "shotEvidence": [
+      "/workspace/scratch/sol-transition-b2/6shots/00-cold-1920.png",
+      "/workspace/scratch/sol-transition-b2/6shots/01-stable-1920.png",
+      "/workspace/scratch/sol-transition-b2/6shots/02-p32-1920.png",
+      "/workspace/scratch/sol-transition-b2/6shots/03-p43-1920.png",
+      "/workspace/scratch/sol-transition-b2/6shots/04-p50-1920.png",
+      "/workspace/scratch/sol-transition-b2/6shots/05-arrival-1920.png"
+    ],
+    "visualFindings": {
+      "source": "sol_transition_recovery_b direct handoff message; Luna did not inspect images",
+      "items": [
+        "brown tunnel behind the room reads as a screen",
+        "approved-character/prop semantic silhouettes allow cosmic background leakage",
+        "cosmic floor intrusion remains",
+        "both arrival windows are completely black"
+      ]
+    },
+    "lunaImageReview": false,
+    "independentReview": "pending",
+    "diagnosticHypotheses": {
+      "source": "Sol read-only code inspection; runtime cause not confirmed",
+      "items": [
+        "The actual source wall aperture is excluded, but opaque backing may still use the full original polygon; a backing depth offset (-.06) may sit in front of window wall (-.65).",
+        "Simultaneous discard in source and backing may leave the opaque enclosure open and permit cosmic leakage."
+      ],
+      "runtimeCause": "unconfirmed"
+    }
+  },
+  "roomApprovalCriteria": [
+    "Room must not read as a small model.",
+    "Empty space around objects must not dominate the composition.",
+    "No unintended cut or color boundary between floor, walls, and background.",
+    "No abrupt scale change or occlusion during movement.",
+    "Do not conceal issues with lighting or decor."
+  ],
+  "userChangePolicy": {
+    "uiAppearance": "may change",
+    "existingFunctionality": "must be preserved",
+    "letterLiteralCopy": "must remain exactly unchanged"
+  },
+  "requiredStoryFlow": {
+    "sequence": [
+      "distance",
+      "folded surface transition",
+      "play table",
+      "actual letter open/read",
+      "ending"
+    ],
+    "status": "required; current implementation and integration QA are not accepted as complete by this record",
+    "designCoordinates": "draft references, not binding implementation coordinates",
+    "priorRejectedVisuals": "remain rejected; not approval evidence"
+  },
+  "postFeatureRequirements": {
+    "sourceDocuments": [
+      "design-sessions/post-hero-2026-10-18/EASTER-EGGS.ko.md",
+      "design-sessions/post-hero-2026-10-18/DESIGN.ko.md"
+    ],
+    "sourceDocumentStatus": "both files are present and tracked in this repository; earlier scratch audit omitted them because it inspected current UI components/runtime callbacks rather than the design-session requirements catalog.",
+    "catalogCount": 20,
+    "localFamiliesCount": 16,
+    "authenticatedRemoteFamiliesCount": 4,
+    "localFamilies": [
+      {
+        "id": "L01",
+        "title": "도미노 연쇄/서랍 발견",
+        "currentSourceMapping": "Details domino UI; domino-chain currently maps to production Gallery domino sculpture. UI toy exists, drawer unlock/reward integration not evidenced.",
+        "requirementStatus": "not accepted complete; function-specific QA pending"
+      },
+      {
+        "id": "L02",
+        "title": "균형 구슬/받침",
+        "currentSourceMapping": "Details balance UI; balance maps to production Jaipur sculpture. UI and callback exist; integrated physical tray/ball mini-scene is not evidenced.",
+        "requirementStatus": "not accepted complete; function-specific QA pending"
+      },
+      {
+        "id": "L03",
+        "title": "접힌 표면 안 놀이방 pocket",
+        "currentSourceMapping": "No explicit user-triggered pocket/mini-room feature found in current production UI. Scroll-driven folds/architecture are not equivalent.",
+        "requirementStatus": "not accepted complete; function-specific QA pending"
+      },
+      {
+        "id": "L04",
+        "title": "승인 말 그림자 놀이",
+        "currentSourceMapping": "AssetPlayground has local DOM/CSS shadow/light controls; no production 3D light/shadow binding evidenced.",
+        "requirementStatus": "not accepted complete; function-specific QA pending"
+      },
+      {
+        "id": "L05",
+        "title": "보석 렌즈/아이콘 정렬",
+        "currentSourceMapping": "Details prism angle UI and production Gallery Splendor rotation are connected; specified lens/icon alignment reward is not evidenced.",
+        "requirementStatus": "not accepted complete; function-specific QA pending"
+      },
+      {
+        "id": "L06",
+        "title": "연필 그림판/뒤집기",
+        "currentSourceMapping": "Details local canvas-like SVG drawing, shape/line/clear/flip UI exists; session-local only, no remote collaboration.",
+        "requirementStatus": "not accepted complete; function-specific QA pending"
+      },
+      {
+        "id": "L07",
+        "title": "리듬 막대 따라 누르기/다리",
+        "currentSourceMapping": "Details rhythm UI; rhythm-bridge maps to production Rhythm sculpture motion. Specified bars becoming a small bridge is not evidenced.",
+        "requirementStatus": "not accepted complete; function-specific QA pending"
+      },
+      {
+        "id": "L08",
+        "title": "승인 말 레일/한 바퀴",
+        "currentSourceMapping": "AssetPlayground pawn carousel selection is DOM-local; no 3D foreground rail travel binding evidenced.",
+        "requirementStatus": "not accepted complete; function-specific QA pending"
+      },
+      {
+        "id": "L09",
+        "title": "흑백 커플 조커 셔터",
+        "currentSourceMapping": "AssetPlayground local DOM shutter controls for photos exist; production 3D photo shutter binding not evidenced.",
+        "requirementStatus": "not accepted complete; function-specific QA pending"
+      },
+      {
+        "id": "L10",
+        "title": "커플 귀족 카드 pop-up",
+        "currentSourceMapping": "AssetPlayground local DOM/CSS noble theatre controls exist; production 3D folded-paper stand/pop-up binding not evidenced.",
+        "requirementStatus": "not accepted complete; function-specific QA pending"
+      },
+      {
+        "id": "L11",
+        "title": "봉인 옆 wax sample/stamp",
+        "currentSourceMapping": "Details local wax UI emits wax-stamp/press; Host forwards events to production LetterCollection, which switches YL/heart seal and press scale. This does not certify complete tactile event UX.",
+        "requirementStatus": "not accepted complete; function-specific QA pending"
+      },
+      {
+        "id": "L12",
+        "title": "4-page pawn flipbook",
+        "currentSourceMapping": "AssetPlayground local DOM/CSS four-page UI exists; no production 3D flipbook binding evidenced.",
+        "requirementStatus": "not accepted complete; function-specific QA pending"
+      },
+      {
+        "id": "L13",
+        "title": "세 조각 접이식 종이 다리",
+        "currentSourceMapping": "Details local rotating-piece UI and paper-bridge event exist; current production Gallery/LetterCollection has no handler. Standalone legacy Scene has bridge handling only.",
+        "requirementStatus": "not accepted complete; function-specific QA pending"
+      },
+      {
+        "id": "L14",
+        "title": "바람/떠오르는 종이",
+        "currentSourceMapping": "Details wind UI and local paper response exist; paper-wind maps to production Catchmind sculpture rotation, not the specified production paper/fan prop.",
+        "requirementStatus": "not accepted complete; function-specific QA pending"
+      },
+      {
+        "id": "L15",
+        "title": "장식 선택/재방문 배치",
+        "currentSourceMapping": "Local decor choice/preferences exist; persistent production tabletop placement/ drawer-reward behavior not evidenced.",
+        "requirementStatus": "not accepted complete; function-specific QA pending"
+      },
+      {
+        "id": "L16",
+        "title": "KO/ES 양면 초대 문구",
+        "currentSourceMapping": "Details local phrase flip exists; static DOM text, not a production 3D card.",
+        "requirementStatus": "not accepted complete; function-specific QA pending"
+      }
+    ],
+    "authenticatedRemoteFamilies": [
+      {
+        "id": "R01",
+        "title": "Authenticated two-member coordinated letter opening",
+        "currentSourceMapping": "No current production Host/event wiring or verified authenticated remote run evidenced.",
+        "requirementStatus": "implementation and real authenticated 2-user/2-device QA pending"
+      },
+      {
+        "id": "R02",
+        "title": "Sender chooses object; authenticated recipient explicitly accepts; shared path animates it",
+        "currentSourceMapping": "No current production Host/event wiring or verified authenticated remote run evidenced.",
+        "requirementStatus": "implementation and real authenticated 2-user/2-device QA pending"
+      },
+      {
+        "id": "R03",
+        "title": "Two authenticated participants draw bounded halves that join into a card",
+        "currentSourceMapping": "Local drawing exists, but no remote state synchronization or verified two-device run evidenced.",
+        "requirementStatus": "implementation and real authenticated 2-user/2-device QA pending"
+      },
+      {
+        "id": "R04",
+        "title": "Authenticated alternating rhythm/light pattern exchange and response",
+        "currentSourceMapping": "Local rhythm UI exists, but no authenticated remote exchange or verified two-device run evidenced.",
+        "requirementStatus": "implementation and real authenticated 2-user/2-device QA pending"
+      }
+    ],
+    "previousAuditCorrection": {
+      "priorScratchArtifact": "/workspace/scratch/egg-effect-mapping-20261018.json",
+      "priorNumbersMeaning": "12 current UI card groups and 7 production callback bindings were component/runtime inventory counts, not the complete design requirement count. They must not be reported as the full feature scope.",
+      "priorCountAsRequirementInventory": false
+    },
+    "letterFlowers": {
+      "requiredTotal": 8,
+      "left": 4,
+      "right": 4,
+      "location": "letter scene only",
+      "implementationOwner": "sol_post_stage_f",
+      "approvedGameRoomFlowers": 0
+    },
+    "qaRequired": {
+      "localFamilies": "Each of L01-L16 requires source/function inspection plus relevant interaction, bilingual/accessibility/reduced-motion/responsive review; all currently pending acceptance.",
+      "remoteFamilies": "Two actual authenticated users on two actual devices; verify consent, cancel, duplicate/stale events, expiry, latency/reconnect, and asymmetric reduced-motion behavior.",
+      "letter": "verify all eight roses appear in the letter scene and are absent from approved game-room additions; verify exact letter source copy unchanged."
+    }
   }
 }

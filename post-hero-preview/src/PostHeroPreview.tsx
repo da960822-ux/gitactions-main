@@ -31,7 +31,7 @@ export function PostHeroPreview({embedded=false,language:externalLanguage,onLang
  const pendingScroll=useRef<(()=>void)|null>(null);
  const q=useRef(0), p=useRef(0), target=useRef(0), reduced=useRef(reducedMotion);
  const host=useRef<HTMLElement>(null);
- const opener=useRef<HTMLButtonElement>(null);
+ const opener=useRef<HTMLButtonElement>(null),detailsOpener=useRef<HTMLButtonElement>(null);
  const paper=useRef<HTMLElement>(null),paperSlot=useRef<HTMLDivElement>(null);
  const trackPaper=useCallback((pose:PaperPose)=>{
    const article=paper.current,slot=paperSlot.current;if(!article||!slot)return;
@@ -46,6 +46,7 @@ export function PostHeroPreview({embedded=false,language:externalLanguage,onLang
  },[]);
  useEffect(()=>{onSceneState?.({progress,opening,reducedMotion,effect,portraitSrc,portraitMaskSrc,onPaperPose:trackPaper});},[progress,opening,reducedMotion,effect,portraitSrc,portraitMaskSrc,trackPaper,onSceneState]);
  const copy=landingCopy[language], text=story[language];
+ const ko=language==='ko';
  const setNewEffect=useCallback((name:string,value=1)=>setEffect(old=>({name,value,nonce:old.nonce+1})),[]);
  const refreshTarget=useCallback(()=>{target.current=reduced.current&&control.current.manual===null?(p.current>=.57?1:0):envelopeTarget(control.current,p.current);},[]);
  useEffect(()=>{reduced.current=reducedMotion;if(reducedMotion){q.current=target.current;setOpening(q.current);}},[reducedMotion]);
@@ -96,6 +97,8 @@ export function PostHeroPreview({embedded=false,language:externalLanguage,onLang
  },[refreshTarget]);
  const readLetter=(event?:React.MouseEvent)=>{event?.preventDefault();control.current=reopenEnvelope(control.current);q.current=1;setOpening(1);refreshTarget();document.getElementById('papi-letter')?.scrollIntoView({behavior:'instant',block:'start'});};
  useEffect(()=>{if(location.hash==='#papi-letter')readLetter();},[]);
+ useEffect(()=>{if(detailsOpen)document.getElementById('details-playground')?.scrollIntoView({behavior:reducedMotion?'instant':'smooth',block:'start'});},[detailsOpen,reducedMotion]);
+ const closeDetails=()=>{setDetailsOpen(false);detailsOpener.current?.focus({preventScroll:true});detailsOpener.current?.scrollIntoView({behavior:reducedMotion?'instant':'smooth',block:'center'});};
  const letterVisible=opening>.9;
  const letterPublic=control.current.manual!==false||letterVisible;
  const stage=progress<.35?'story':progress<.56?'play':progress<.90?'letter':'ending';
@@ -116,13 +119,26 @@ export function PostHeroPreview({embedded=false,language:externalLanguage,onLang
    <div className="chapter-copy"><p className="eyebrow">{text.subtitle}</p><h1>{text.title}</h1><p className="intro-body">{text.body}</p><div className="intro-actions"><a className="primary-button" href="/#games">{text.play}<span>↗</span></a><a className="scroll-cue" href="#distance"><span>↓</span>{text.next}</a></div></div>
    <div className="chapter-number">01 <span>/</span> 05</div><p className="side-dedication">PARA TI, MAMI ♡</p>
   </section>}
-  <section id="distance" className="chapter distance" data-pose={embedded?"0":".22"}><div className="chapter-copy"><p className="eyebrow">01 — {text.chapter}</p><h2>{text.distance}</h2><p>{text.distanceBody}</p><div className="country-labels"><span><img src="/images/marble/flags/kr.svg" alt=""/>한국 · Corea</span><i>↔</i><span><img src="/images/marble/flags/do.svg" alt=""/>República Dominicana</span></div></div></section>
-  <section className="chapter play-table" data-pose=".45"><div className="chapter-copy"><p className="eyebrow">02 — BABY, MIRA</p><h2>{text.table}</h2><p>{text.tableBody}</p><button className="text-button" aria-label={detailsOpen?text.hideDetails:text.details} onClick={()=>setDetailsOpen(value=>!value)} aria-expanded={detailsOpen} aria-controls="details-playground">{detailsOpen?text.hideDetails:text.details} <span>↗</span></button></div></section>
+  <section id="distance" className="chapter distance" data-pose={embedded?"0":".10"}>
+   <div className="chapter-copy"><p className="eyebrow">2025.04.04</p><h2>{text.distance}</h2><p>{text.distanceBody}</p><div className="country-labels"><span><img src="/images/marble/flags/kr.svg" alt=""/>한국 · Corea</span><i>↔</i><span><img src="/images/marble/flags/do.svg" alt=""/>República Dominicana</span></div></div>
+   <p className="story-margin-note">{ko?'그래서, 우리 둘이 놀 곳.':'Por eso, un lugar para jugar contigo.'}</p>
+  </section>
+  <section className="chapter story-invitation" data-pose=".14" aria-labelledby="story-invite-title">
+   <div className="chapter-copy"><p className="eyebrow">{ko?'같은 방에서':'En la misma sala'}</p><h2 id="story-invite-title">{copy.moments[0].title}</h2><p>{copy.moments[0].body}</p><a className="text-button" href="/play">{copy.primaryAction}<span>↗</span></a></div>
+  </section>
+  <section className="chapter story-translation" data-pose=".28" aria-labelledby="story-translation-title">
+   <div className="chapter-copy"><p className="eyebrow">Catchmind</p><h2 id="story-translation-title">{copy.moments[1].title}</h2><p>{copy.moments[1].body}</p><p className="translation-note">{copy.translationLimitNote}</p><a className="text-button" href="/play?game=catchmind">{copy.catchmindAction}<span>↗</span></a></div>
+  </section>
+  <section className="chapter play-table" data-pose=".45">
+   <div className="chapter-copy"><p className="eyebrow">{ko?'Baby, 하나 골라봐.':'Baby, escoge uno.'}</p><h2>{text.table}</h2><p>{text.tableBody}</p><a className="text-button" href="#games">{text.play}<span>↓</span></a></div>
+   <aside className="story-ideas"><h3>{copy.moments[2].title}</h3><p>{copy.moments[2].body}</p><a className="text-button" href="/feedback">{copy.ideasAction}<span>↗</span></a></aside>
+   <button ref={detailsOpener} className="easter-discovery" aria-expanded={detailsOpen} aria-controls="details-playground" onClick={()=>detailsOpen?closeDetails():setDetailsOpen(true)}><img src="/images/approved-couple-room/lisyeon-pawn.png" alt=""/><span><strong>{detailsOpen?text.hideDetails:text.details}</strong><small>{ko?'토끼, 우리 사진, 종이와 빛… 눌러봐 ㅋㅋㅋ':'El conejito, nuestras fotos, papel y luz… toca, haha.'}</small></span><b aria-hidden="true">{detailsOpen?'−':'+'}</b></button>
+  </section>
   {gallery}
-  {detailsOpen&&<section className="details-section" id="details-playground" aria-label={text.details}><div className="section-top"><p className="eyebrow">{text.details}</p><button className="icon-button" aria-label={text.hideDetails} onClick={()=>setDetailsOpen(false)}>×</button></div><Details language={language} reducedMotion={reducedMotion} onEffect={setNewEffect}/></section>}
-  <section id="letter-scene" className="chapter letter-invitation" data-pose=".62"><div className="chapter-copy"><p className="eyebrow">03 — FOR MY MAMI</p><h2>{text.letter}</h2><p>{text.letterBody}</p><div className="invitation-actions"><button ref={opener} className="primary-button" aria-label={opening>.5?text.close:text.open} aria-expanded={letterVisible} aria-controls="moment-letter-copy" onClick={openLetter}>{opening>.5?text.close:text.open}<span>{opening>.5?'−':'↗'}</span></button><a href="#papi-letter" className="text-button" onClick={readLetter}>{text.reading}</a></div></div></section>
+  {detailsOpen&&<section className="details-section" id="details-playground" aria-label={text.details}><div className="section-top"><p className="eyebrow">{text.details}</p><button className="icon-button" aria-label={text.hideDetails} onClick={closeDetails}>×</button></div><Details language={language} reducedMotion={reducedMotion} onEffect={setNewEffect}/></section>}
+  <section id="letter-scene" className="chapter letter-invitation" data-pose=".62"><div className="chapter-copy"><p className="eyebrow">For my Mami</p><h2>{text.letter}</h2><p>{text.letterBody}</p><div className="invitation-actions"><button ref={opener} className="primary-button" aria-label={opening>.5?text.close:text.open} aria-expanded={letterVisible} aria-controls="moment-letter-copy" onClick={openLetter}>{opening>.5?text.close:text.open}<span>{opening>.5?'−':'↗'}</span></button><a href="#papi-letter" className="text-button" onClick={readLetter}>{text.reading}</a></div></div></section>
   <section id="papi-letter" className={`letter-section ${letterVisible?'is-open':'is-folded'}`} data-pose=".86" aria-labelledby="letter-title">
-   <div className="letter-section-label"><span className="eyebrow">04 — {text.ready}</span><button className="text-button" aria-label={letterVisible?text.close:text.open} onClick={letterVisible?toggleLetter:()=>{control.current=reopenEnvelope(control.current);refreshTarget();}} aria-expanded={letterVisible} aria-controls="moment-letter-copy">{letterVisible?text.close:text.open} <span>{letterVisible?'−':'+'}</span></button></div>
+   <div className="letter-section-label"><span className="eyebrow">{text.ready}</span><button className="text-button" aria-label={letterVisible?text.close:text.open} onClick={letterVisible?toggleLetter:()=>{control.current=reopenEnvelope(control.current);refreshTarget();}} aria-expanded={letterVisible} aria-controls="moment-letter-copy">{letterVisible?text.close:text.open} <span>{letterVisible?'−':'+'}</span></button></div>
    <div className="letter-paper-slot" ref={paperSlot}><article ref={paper} className={`letter-paper ${!letterVisible&&letterPublic?'is-visually-sealed':''}`} id="moment-letter-copy" hidden={!letterPublic}>
     <div className="paper-rule"/><p className="letter-address">{copy.letterAddress}</p><h2 id="letter-title">{copy.letterTitle}</h2>{copy.letterBody.map(paragraph=><p key={paragraph}>{paragraph}</p>)}<p className="letter-signature">{copy.letterSignature}</p><div className="paper-bottom-mark">Y <span>♡</span> L</div>
    </article></div>

@@ -2,8 +2,8 @@ import * as T from 'three';
 import {gameCatalog} from '../../games/catalog';
 import {createGameObject, normalizeSculpture, studioMaterials} from './studioObjects';
 
-const DESK_X=[-8.2,-6,-3.9,-1.9,2.6,5.1,7.6];
-const DESK_Z=[1.4,1.4,1.6,1.9,1.9,1.6,1.4];
+const DESK_X=[-7.8,-5.7,-3.3,-1.7,3.3,5.7,7.8];
+const DESK_Z=[-.7,-2,-3.2,-3.6,-3.2,-2,-.7];
 const MOBILE_X=[-8,-3,3,8,-7,-3.5,6];
 const MOBILE_Z=[2.8,2.8,2.8,2.8,7,7,7];
 
@@ -50,7 +50,7 @@ export function createGalleryCollection(onAssetReady = () => {}) {
       objects.forEach(({group, handles, contactY}, index) => {
         const chosen = gameCatalog[index].id === selected;
         const slot=index<selectedIndex?index:index-1;
-        const scale=chosen?(mobile?1.55:1.9):mobile?1.2:.94;
+        const scale=chosen?(mobile?1.55:1.9):mobile?1.2:1.12;
         target.set(chosen?0:(mobile?MOBILE_X[slot]:DESK_X[slot]),contactY*scale,chosen?(mobile?7:3.2):(mobile?MOBILE_Z[slot]:DESK_Z[slot]));
         const game=gameCatalog[index].id;
         const event=effect?.name??'none',value=effect?.value??0;

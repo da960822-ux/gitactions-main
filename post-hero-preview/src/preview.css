@@ -73,3 +73,85 @@
  .post-hero-preview.post-hero-embedded .world-vignette{background:linear-gradient(180deg,#160e17 52%,transparent 76%)}
  .post-hero-preview.post-hero-embedded .ending{min-height:calc(100svh + 180px)}
 }
+
+/* The story has its own camera journey; each beat carries content as the space unfolds. */
+@media(min-width:761px){
+ .landing-world-host .post-hero-preview.post-hero-embedded .chapter.distance,
+ .landing-world-host .post-hero-preview.post-hero-embedded .chapter.story-invitation,
+ .landing-world-host .post-hero-preview.post-hero-embedded .chapter.story-translation,
+ .landing-world-host .post-hero-preview.post-hero-embedded .chapter.play-table{
+  align-items:center;padding:13svh 7.5vw 12svh;min-height:96svh;
+ }
+ .landing-world-host .post-hero-preview.post-hero-embedded .chapter.story-invitation{min-height:88svh;padding-left:13vw}
+ .landing-world-host .post-hero-preview.post-hero-embedded .chapter.story-translation{min-height:104svh}
+ .landing-world-host .post-hero-preview.post-hero-embedded .distance .chapter-copy,
+ .landing-world-host .post-hero-preview.post-hero-embedded .play-table .chapter-copy,
+ .landing-world-host .post-hero-preview.post-hero-embedded .story-invitation .chapter-copy,
+ .landing-world-host .post-hero-preview.post-hero-embedded .story-translation .chapter-copy{
+  max-width:min(540px,38vw);padding:0;border:0;background:none;position:relative;z-index:1;
+ }
+ .landing-world-host .post-hero-preview.post-hero-embedded .chapter.distance h2,
+ .landing-world-host .post-hero-preview.post-hero-embedded .chapter.play-table h2,
+ .landing-world-host .post-hero-preview.post-hero-embedded .story-invitation h2,
+ .landing-world-host .post-hero-preview.post-hero-embedded .story-translation h2{
+  font-size:clamp(40px,3.2vw,62px);line-height:1.26;max-width:15ch;margin-bottom:27px;
+ }
+ .landing-world-host .post-hero-preview.post-hero-embedded .chapter-copy>p:not(.eyebrow){color:#f1ddd5;text-shadow:0 2px 16px #140b15;font-size:17px;line-height:1.9;max-width:48ch}
+ .landing-world-host .post-hero-preview.post-hero-embedded .chapter:before{content:'';position:absolute;inset:0;pointer-events:none;background:linear-gradient(90deg,#15121bc4,transparent 58%)}
+ .landing-world-host .post-hero-preview.post-hero-embedded .chapter.play-table{min-height:128svh;align-items:flex-start;padding-top:22svh}
+ .landing-world-host .post-hero-preview.post-hero-embedded .letter-invitation{align-items:center;padding-top:15svh;padding-bottom:15svh;min-height:105svh}
+ .landing-world-host .post-hero-preview.post-hero-embedded .letter-invitation .chapter-copy{padding:0;background:none;border:0;max-width:410px}
+ .landing-world-host .post-hero-preview.post-hero-embedded .letter-invitation h2{font-size:clamp(42px,3.8vw,64px)}
+ .landing-world-host .post-hero-preview.post-hero-embedded .ending{padding-top:22svh;min-height:110svh}
+ .landing-world-host .post-hero-preview.post-hero-embedded .ending-copy{padding:0;background:none;max-width:620px;color:#faeee6}
+ .landing-world-host .post-hero-preview.post-hero-embedded .ending h2{font-size:clamp(48px,4.3vw,76px);line-height:1.25}
+ .landing-world-host .post-hero-preview.post-hero-embedded .ending-rule{margin-top:22svh}
+ .landing-world-host .post-hero-preview.post-hero-embedded .ending footer{color:#e9cbbf}
+}
+.post-hero-preview .story-margin-note{position:absolute;right:7.5vw;bottom:8svh;font:400 18px/1.6 'Gowun Batang',Georgia,serif;color:#ead7c6;max-width:25ch;text-align:right}
+.post-hero-preview .story-language-pair{position:absolute;right:10vw;bottom:18svh;display:flex;align-items:center;gap:28px;font:400 clamp(38px,4.8vw,90px)/1 'Gowun Batang',Georgia,serif;color:#eddcc8}
+.post-hero-preview .story-language-pair i{font:400 24px Georgia,serif;color:#bb8e7a}
+.post-hero-preview .story-word-pair{position:absolute;right:12vw;bottom:17svh;display:flex;flex-direction:column;color:#efdbc1;text-align:center;font:400 clamp(42px,5.5vw,90px)/1.1 'Gowun Batang',Georgia,serif;gap:12px}
+.post-hero-preview .story-word-pair i{font-style:normal;color:#c18a91}
+.post-hero-preview .story-word-pair small{font:400 11px/1.7 'DM Sans',sans-serif;letter-spacing:.05em;margin-top:16px}
+.post-hero-preview .chapter-copy>p.translation-note{font-size:12px!important;line-height:1.75!important;color:#c5aeb6!important;max-width:43ch}
+.post-hero-preview .story-ideas{position:absolute;right:8vw;bottom:20svh;max-width:350px;z-index:1}
+.post-hero-preview .story-ideas h3{font:400 26px/1.4 'Gowun Batang',Georgia,serif;color:#f1ddcd;margin:0 0 15px;letter-spacing:-.025em}
+.post-hero-preview .story-ideas>p{font-size:14px;line-height:1.85;color:#dfc7ce}
+.post-hero-preview .easter-discovery{position:absolute;left:7.5vw;bottom:9svh;z-index:1;display:flex;align-items:center;gap:20px;width:min(490px,40vw);padding:14px 0;background:none;border:0;border-top:1px solid #d5ac8e66;border-bottom:1px solid #d5ac8e66;text-align:left;color:#f2ddca;transition:transform 160ms var(--ease)}
+.post-hero-preview .easter-discovery img{width:55px;height:72px;object-fit:contain}
+.post-hero-preview .easter-discovery span{display:flex;flex-direction:column;gap:7px}
+.post-hero-preview .easter-discovery strong{font:400 20px/1.3 'Gowun Batang',Georgia,serif}
+.post-hero-preview .easter-discovery small{font-size:11px;line-height:1.6;color:#ccacb6}
+.post-hero-preview .easter-discovery b{font:400 27px Georgia,serif;margin-left:auto}
+.post-hero-preview .easter-discovery:active{transform:scale(.98)}
+.post-hero-preview .details-section{margin-bottom:12svh;border-radius:0;box-shadow:none}
+@media(hover:hover) and (pointer:fine){.post-hero-preview .easter-discovery:hover{transform:translateY(-2px)}}
+@media(prefers-reduced-motion:reduce){.post-hero-preview .easter-discovery:hover,.post-hero-preview .easter-discovery:active{transform:none}}
+
+/* Selection controls stay beside the same physical collection while it is in view. */
+@media(min-width:761px){
+ .landing-world-host .post-hero-preview.post-hero-embedded #games{min-height:140svh;padding:120px 5vw 0}
+ .landing-world-host .post-hero-preview.post-hero-embedded #games>header{position:sticky;top:120px;height:80px;z-index:2}
+ .landing-world-host .post-hero-preview.post-hero-embedded #games .rd-game-stage{position:sticky;top:200px;height:calc(100svh - 280px);margin-top:0}
+ .landing-world-host .post-hero-preview.post-hero-embedded #games .rd-game-sculptures{height:calc(100svh - 410px);min-height:0}
+ .landing-world-host .post-hero-preview.post-hero-embedded #games .rd-game-caption{min-height:110px;padding:12px 18px}
+ .landing-world-host .post-hero-preview.post-hero-embedded #games .rd-game-choices{position:sticky;top:calc(100svh - 80px);margin:0 auto;min-height:60px;z-index:3;background:#211721e8}
+ .landing-world-host .post-hero-preview.post-hero-embedded .letter-section{background:none;padding-top:90px;min-height:690px}
+ .landing-world-host .post-hero-preview.post-hero-embedded .letter-section-label{max-width:none;margin:0 7.5vw 30px;padding:0}
+ .landing-world-host .post-hero-preview.post-hero-embedded .closed-note{max-width:270px;min-height:380px;margin:0 0 0 7.5vw;align-items:flex-start;justify-content:flex-end;padding:0 0 30px;border:0;background:none}
+ .landing-world-host .post-hero-preview.post-hero-embedded .closed-note>span{font-size:24px}
+ .landing-world-host .post-hero-preview.post-hero-embedded .closed-note>p{font-size:15px;color:#ead7cf}
+ .landing-world-host .post-hero-preview.post-hero-embedded .ending-copy{max-width:min(620px,39vw)}
+ .landing-world-host .post-hero-preview.post-hero-embedded .ending h2{font-size:clamp(46px,4vw,68px)}
+ .landing-world-host .post-hero-preview.post-hero-embedded .ending h2 em{color:#edc2a2}
+ .landing-world-host .post-hero-preview.post-hero-embedded .ending .eyebrow{color:#dfb69b}
+}
+
+/* Keep the whole independent letter view active before the ending enters. */
+@media(min-width:761px){
+ .landing-world-host .post-hero-preview.post-hero-embedded .letter-section{min-height:100svh;padding-top:90px;padding-bottom:90px}
+ .landing-world-host .post-hero-preview.post-hero-embedded .closed-note{min-height:calc(100svh - 250px)}
+ .landing-world-host .post-hero-preview.post-hero-embedded #games .rd-game-choices{background:#342832ed}
+ .landing-world-host .post-hero-preview.post-hero-embedded .ending footer{color:#f1ddd5}
+}

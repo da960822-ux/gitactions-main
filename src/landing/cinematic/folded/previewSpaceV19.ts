@@ -1,3 +1,4 @@
+import {ROOM_WORLD} from './approvedRoomGeometry';
 import {createApprovedGamingRoom} from './ApprovedGamingRoom';
 import {createStorySurface,surfacePose} from './storySurfaceV19';
 import {createRoomThreshold} from './RoomThreshold';
@@ -34,8 +35,8 @@ export function createFoldedWorld(canvas:HTMLCanvasElement,options:WorldOptions)
  const progressUniform={value:0},environmentMix={value:0},apertureMix={value:0},environmentArrival={value:null as T.Texture|null};
  const textureLoader=new T.TextureLoader(),exrLoader=new EXRLoader();
  let cosmicSky:T.Texture|undefined;
- const skyReady=textureLoader.loadAsync('/images/our-universe-scene.webp').then(texture=>{cosmicSky=keep(texture);texture.colorSpace=T.SRGBColorSpace;scene.background=texture;storySurface.setHeroImage(texture);fitSky();});
- function fitSky(){if(!cosmicSky)return;const imageAspect=1536/1024,viewAspect=width/height;cosmicSky.repeat.set(viewAspect<imageAspect?viewAspect/imageAspect:1,viewAspect>imageAspect?imageAspect/viewAspect:1);cosmicSky.offset.set((1-cosmicSky.repeat.x)*.58,(1-cosmicSky.repeat.y)*.5);}
+ const skyReady=textureLoader.loadAsync('/images/our-universe-scene.webp').then(texture=>{cosmicSky=keep(texture);texture.colorSpace=T.SRGBColorSpace;scene.background=new T.Color('#120c14');storySurface.setHeroImage(texture);fitSky();});
+ function fitSky(){if(!cosmicSky)return;cosmicSky.repeat.set(1,1);cosmicSky.offset.set(0,0);}
  const glassMaterials:T.MeshStandardMaterial[]=[];
  const floorAnchor={value:new T.Vector2(1.85,.05)};
  // The Hero image remains outside; the camera enters a real architectural destination.
@@ -53,13 +54,13 @@ export function createFoldedWorld(canvas:HTMLCanvasElement,options:WorldOptions)
  const coveSample:CoveSample={x:0,y:0,xx:1,xy:0,xz:0,yy:1,yz:0};
  const deformableLights:{light:T.RectAreaLight;position:number[];target:number[];size:number[];power:number}[]=[];
  const supportMeshes:{mesh:T.Mesh;positions:Float32Array;normals:Float32Array}[]=[],supportSample:SupportSample={height:0,dx:0,dy:0,dz:0};
- const lightingCards:T.Mesh[]=[],floorReceivers:T.Mesh[]=[storySurface.mesh],moving:{mesh:T.Mesh;kind:string}[]=[],materials:T.MeshStandardMaterial[]=[];
+ const lightingCards:T.Mesh[]=[],floorReceivers:T.Mesh[]=[],moving:{mesh:T.Mesh;kind:string}[]=[],materials:T.MeshStandardMaterial[]=[];
  const atrium=createApprovedGamingRoom(scene,keep);floorReceivers.push(atrium.floor);
  const threshold=createRoomThreshold(scene,keep);
  const roomLighting=new T.Group();roomLighting.name='APPROVED_ROOM_PRACTICAL_LIGHTING';roomLighting.visible=false;scene.add(roomLighting);
  const roomHemi=new T.HemisphereLight('#ffe0ba','#352837',.7);roomLighting.add(roomHemi);
- const roomKey=new T.DirectionalLight('#ffe3bf',2.1);roomKey.position.set(-18,14,-45);roomKey.target.position.set(-11,1.8,-58);roomKey.castShadow=true;roomKey.shadow.mapSize.set(1024,1024);Object.assign(roomKey.shadow.camera,{left:-14,right:14,top:12,bottom:-12,near:1,far:50});roomKey.shadow.normalBias=.015;roomKey.shadow.bias=-.00015;roomLighting.add(roomKey,roomKey.target);
- const contact=new T.Mesh(keep(new T.PlaneGeometry(36,30)),keep(new T.ShadowMaterial({color:'#2e1820',opacity:.33,depthWrite:false})));contact.name='ORIGINAL_DESK_CONTACT_SHADOWS_ONLY';contact.rotation.x=-Math.PI/2;contact.position.set(-11,1.815,-59);contact.receiveShadow=true;roomLighting.add(contact);
+ const roomKey=new T.DirectionalLight('#ffe3bf',2.1);roomKey.position.set(-12,7,-1);roomKey.target.position.set(-6,-2,-9);roomKey.castShadow=true;roomKey.shadow.mapSize.set(1024,1024);Object.assign(roomKey.shadow.camera,{left:-14,right:14,top:12,bottom:-12,near:1,far:50});roomKey.shadow.normalBias=.015;roomKey.shadow.bias=-.00015;roomLighting.add(roomKey,roomKey.target);
+ const contact=new T.Mesh(keep(new T.PlaneGeometry(36,30)),keep(new T.ShadowMaterial({color:'#2e1820',opacity:.33,depthWrite:false})));contact.name='ORIGINAL_DESK_CONTACT_SHADOWS_ONLY';contact.rotation.x=-Math.PI/2;contact.position.set(ROOM_WORLD.x,ROOM_WORLD.desk-.01,ROOM_WORLD.z+1);contact.receiveShadow=true;roomLighting.add(contact);
  const curvedReflection=createCurvedFloorReflection(renderer,scene,camera,floorReceivers);
  let film:HTMLVideoElement|undefined,filmTexture:T.VideoTexture|undefined,lastFilmTime=-1,introFilm:HTMLVideoElement|undefined,introTexture:T.VideoTexture|undefined,lastIntroTime=-1;
  const mediaReady:Promise<void>[]=[];
@@ -125,7 +126,7 @@ if(key===JSON.stringify([-3.5,6.5,6])){const light=new T.SpotLight(new T.Color()
  const portraitReady=textureLoader.loadAsync(options.portrait).then(texture=>{keep(texture);texture.colorSpace=T.SRGBColorSpace;portraitMaterial.map=texture;portraitMaterial.needsUpdate=true;portraitDepth.map=texture;portraitDepth.needsUpdate=true;});
  const portraitMaskReady=options.portraitMask?textureLoader.loadAsync(options.portraitMask).then(texture=>{keep(texture);texture.colorSpace=T.NoColorSpace;portraitMaterial.alphaMap=texture;portraitDepth.alphaMap=texture;portraitMaterial.needsUpdate=portraitDepth.needsUpdate=true;}):Promise.resolve();
  const gl=renderer.getContext(),debug=gl.getExtension('WEBGL_debug_renderer_info'),rendererName=debug?String(gl.getParameter(debug.UNMASKED_RENDERER_WEBGL)):'unreported';
- const ready=Promise.all([modelReady,portraitReady,portraitMaskReady,skyReady,atrium.ready,...mediaReady]).then(async()=>{
+ const ready=Promise.all([modelReady,portraitReady,portraitMaskReady,skyReady,storySurface.ready,atrium.ready,...mediaReady]).then(async()=>{
   if(disposed)return;marks.assets=performance.now()-start;
   // Compile and complete a real first frame before the caller starts the entry clock.
   const warmupStart=performance.now();render({progress:0,entrance:0,pointerX:0,pointerY:0,time:0});
@@ -138,10 +139,10 @@ if(key===JSON.stringify([-3.5,6.5,6])){const light=new T.SpotLight(new T.Color()
  function render(pose:FoldPose){
   if(disposed)return;const signature=[pose.progress,pose.entrance,pose.pointerX,pose.pointerY].map(n=>n.toFixed(4)).join(',');if(pendingFence){const status=fenceGL.clientWaitSync(pendingFence,0,0);if(status===fenceGL.TIMEOUT_EXPIRED){skippedWhilePending++;return;}fenceGL.deleteSync(pendingFence);pendingFence=null;publishCompletedFrame();}if(signature===lastSignature)return;lastSignature=signature;
   const p=clamp01(pose.progress),e=clamp01(pose.entrance),cam=cameraPose(p,e,width<760),pointer=1-smoothRange(.25,.6,p),weights=surfaceWeights(p),unfold=weights.aperture;
-  storySurface.update(p,e);storySurface.setProjection(width,height,e);const surfaceMap=p>.12?filmTexture:introTexture??filmTexture;if(surfaceMap&&storySurface.material.emissiveMap!==surfaceMap){storySurface.material.emissiveMap=surfaceMap;storySurface.material.needsUpdate=true;}
+  storySurface.setProjection(width,height,e);storySurface.update(p,e);atrium.updateFold(p);roomLighting.visible=p>.18;const surfaceMap=p>.12?filmTexture:introTexture??filmTexture;if(surfaceMap&&storySurface.material.emissiveMap!==surfaceMap){storySurface.material.emissiveMap=surfaceMap;storySurface.material.needsUpdate=true;}
   if(introFilm&&introFilm.readyState>=2){const t=e*Math.max(0,(introFilm.duration||3.2)-1/30);if(Math.abs(t-lastIntroTime)>1/30&&!introFilm.seeking){introFilm.currentTime=t;lastIntroTime=t;}}
-  camera.fov=38+10*smoothRange(.43,.65,p);camera.updateProjectionMatrix();camera.position.set(cam.position[0]+pose.pointerX*.12*pointer,cam.position[1]-pose.pointerY*.06*pointer,cam.position[2]);camera.lookAt(...cam.target as[number,number,number]);
-  foldedHorizon.constant=12+36*smoothRange(.12,.43,p)+352*smoothRange(.25,.6,p);const portraitPose=portraitStagePose(p);applyRigidPose(portraitRig,portraitPose);floorAnchor.value.set(portraitPose.pivot[0]+portraitPose.delta[0],portraitPose.pivot[2]+portraitPose.delta[2]);for(const m of glassMaterials)m.opacity=.025+.975*smoothRange(.14,.48,p);
+  camera.fov=38+10*smoothRange(.18,.32,p);camera.updateProjectionMatrix();camera.position.set(cam.position[0]+pose.pointerX*.12*pointer,cam.position[1]-pose.pointerY*.06*pointer,cam.position[2]);camera.lookAt(...cam.target as[number,number,number]);
+  foldedHorizon.constant=400;const portraitPose=portraitStagePose(p);applyRigidPose(portraitRig,portraitPose);floorAnchor.value.set(portraitPose.pivot[0]+portraitPose.delta[0],portraitPose.pivot[2]+portraitPose.delta[2]);for(const m of glassMaterials)m.opacity=.025+.975*smoothRange(.14,.48,p);
   const floorSignature=p.toFixed(6)+':'+e.toFixed(6);
   if(floorSignature!==lastFloorPose){lastFloorPose=floorSignature;for(const item of twistMeshes){const pos=item.mesh.geometry.getAttribute('position'),normal=item.mesh.geometry.getAttribute('normal');for(let i=0;i<pos.count;i++){const k=i*3;sampleShellTwist(item.positions[k],item.positions[k+2],p,e,twistSample);workPosition.set(twistSample.x,item.positions[k+1],twistSample.z).applyMatrix4(item.inverse);pos.setXYZ(i,workPosition.x,workPosition.y,workPosition.z);const nx=item.normals[k],ny=item.normals[k+1],nz=item.normals[k+2];workNormal.set(twistSample.zz*nx-twistSample.zx*nz,ny,-twistSample.xz*nx+twistSample.xx*nz).applyMatrix3(item.normalInverse).normalize();normal.setXYZ(i,workNormal.x,workNormal.y,workNormal.z);}pos.needsUpdate=true;normal.needsUpdate=true;}const shape=floorSupportShape(p);for(const item of supportMeshes){const pos=item.mesh.geometry.getAttribute('position'),normal=item.mesh.geometry.getAttribute('normal');for(let i=0;i<pos.count;i++){const offset=i*3,ox=item.positions[offset],oy=item.positions[offset+1],z=item.positions[offset+2];sampleArrivalCove(ox,oy,z,p,coveSample);const x=coveSample.x,y=coveSample.y;sampleFloorSupport(x,y,z+(1-e)*.25,shape,supportSample);pos.setXYZ(i,x,y+supportSample.height,z);const rawX=item.normals[offset]/coveSample.xx,rawY=(item.normals[offset+1]-coveSample.xy*rawX)/coveSample.yy,rawZ=item.normals[offset+2]-coveSample.xz*rawX-coveSample.yz*rawY,j=1+supportSample.dy,yy=rawY/j,xx=rawX-supportSample.dx*yy,zz=rawZ-supportSample.dz*yy,length=Math.hypot(xx,yy,zz);normal.setXYZ(i,xx/length,yy/length,zz/length);}pos.needsUpdate=true;normal.needsUpdate=true;}}
   for(const source of deformableLights){sampleArrivalCove(source.position[0],source.position[1],source.position[2],p,coveSample);source.light.position.set(coveSample.x,coveSample.y,source.position[2]);const sx=coveSample.xx,sy=coveSample.yy;source.light.width=source.size[0]*sx;source.light.height=source.size[1]*sy;source.light.intensity=source.power/(sx*sy);sampleArrivalCove(source.target[0],source.target[1],source.target[2],p,coveSample);source.light.lookAt(coveSample.x,coveSample.y,source.target[2]);}

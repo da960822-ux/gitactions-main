@@ -86,7 +86,7 @@ export function FeedbackRoute() {
     <header className="landing-nav wrap">
       <Link href="/" className="couple-brand">Yeonseok <span className="feedback-brand-heart" aria-hidden="true">♡</span> Lisbeth</Link>
       <nav aria-label={es ? 'Navegación' : '메뉴'}>
-        <a href="/#games">{es ? 'Juegos' : '게임'}</a>
+        <Link href="/play">{es ? 'Juegos' : '게임'}</Link>
         <a href="/#papi-letter">{es ? 'La carta de Papi' : 'Papi의 편지'}</a>
         <a href="/feedback" className="feedback-nav-current" aria-current="page">{es ? 'Ideas de Mami' : 'Mami의 아이디어'}</a>
         <div className="landing-language" role="group" aria-label={es ? 'Idioma' : '언어'}>{(['ko','es'] as const).map(lang => <button key={lang} className={language === lang ? 'active' : ''} aria-pressed={language === lang} onClick={() => { localStorage.setItem('dos-language',lang); setLanguage(lang); }}>{lang === 'ko' ? 'KO' : 'ES · RD'}</button>)}</div>

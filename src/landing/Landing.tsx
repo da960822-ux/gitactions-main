@@ -33,7 +33,7 @@ export function Landing() {
         <span>Lisbeth</span>
       </Link>
       <nav aria-label={es ? 'Navegación' : '메뉴'}>
-        <a href="#games">{copy.navGames}</a>
+        <Link href="/play">{copy.navGames}</Link>
         <a href="#papi-letter">{copy.navLetter}</a>
         <Link href="/feedback">{copy.navFeedback}</Link>
         <div className="landing-language" role="group" aria-label={es ? 'Idioma' : '언어'}>

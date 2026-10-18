@@ -1,161 +1,70 @@
-import { useEffect, useRef, useState } from 'react';
-import type { PointerEvent } from 'react';
-import { createDominoState, isDominoChainComplete, loadPreferences, placeDominoTile, savePreferences } from './interaction';
-import './details.css';
+import { useCallback, useEffect, useRef, useState, type PointerEvent } from 'react';
+import { createDominoState, isDominoChainComplete, placeDominoTile } from './interaction';
+import { createLocalEventState, localEventIds, stepBalance, type DrawingPoint, type LocalEventId, type LocalEventState } from './LocalEventRig';
 import AssetPlayground from './AssetPlayground';
+import './details.css';
 
-type Props = { language: 'ko' | 'es'; reducedMotion: boolean; onEffect: (name: string, value?: number) => void };
-type Point = { x: number; y: number };
-const copy = {
-  ko: { title: '작은 장난들', intro: '원하는 것만 눌러서 놀아봐.', domino: '도미노 맞추기', balance: '균형 잡기', draw: '종이에 그려보기', rhythm: '리듬 따라 누르기', bridge: '종이 조각 맞추기', details: '종이와 빛', left: '왼쪽', right: '오른쪽', tip: '실제 게임 점수와는 별개의 작은 놀이야.', flip: '카드로 뒤집기', clear: '지우기', shape: '마름모', line: '선', play: '따라 누르기', show: '신호 보기', reset: '다시 놓기', turn: '돌리기', bridgeDone: '통로가 이어졌어.', stamp: '도장 찍기', wind: '바람 보내기', pocket: '종이 주머니 펼치기', prism: '빛 각도 바꾸기', effects: '장식 효과', off: '끄기', on: '켜기', saved: '이 기기에 선택 저장', mismatch: '이 끝 숫자와 맞지 않아.', phrase: '양면 문구', phraseKo: '같이 놀자', phraseEs: 'Vamos a jugar', decor: '작은 장식', gem: '보석', clip: '종이 클립', playGame: 'Catchmind 열기' },
-  es: { title: 'Pequeños juegos', intro: 'Elige algo y juega un rato.', domino: 'Unir dominós', balance: 'Equilibrar', draw: 'Dibujar en papel', rhythm: 'Seguir el ritmo', bridge: 'Unir piezas de papel', details: 'Papel y luz', left: 'Izquierda', right: 'Derecha', tip: 'Es un juego pequeño, aparte de las partidas reales.', flip: 'Voltear a tarjeta', clear: 'Borrar', shape: 'Rombo', line: 'Línea', play: 'Repetir', show: 'Ver señal', reset: 'Reiniciar', turn: 'Girar', bridgeDone: 'El paso está conectado.', stamp: 'Poner un sello', wind: 'Mover aire', pocket: 'Abrir el pliegue', prism: 'Cambiar el ángulo de luz', effects: 'Efectos decorativos', off: 'Apagar', on: 'Encender', saved: 'Preferencias guardadas en este dispositivo', mismatch: 'Ese extremo no coincide.', phrase: 'Frase por ambos lados', phraseKo: '같이 놀자', phraseEs: 'Vamos a jugar', decor: 'Detalle pequeño', gem: 'Gema', clip: 'Clip de papel', playGame: 'Abrir Catchmind' },
-};
-const dominoSupply: readonly (readonly [number, number])[] = [[4, 5], [2, 1], [2, 3], [4, 3]];
-const rhythm = [0, 2, 1];
-const PREF_KEY = 'post-hero-preview:v1';
-
-function save(prefs: { effectsEnabled: boolean; stamp: 'YL' | 'heart'; decor?: 'gem' | 'clip' }) {
-  try { return savePreferences(window.localStorage, PREF_KEY, {...readPrefs(),...prefs}); } catch { return false; }
+type Props={language:'ko'|'es';reducedMotion:boolean;onEffect:(name:string,value?:number)=>void;onLocalEvent?:(state:LocalEventState)=>void};
+const names={ko:['도미노 연쇄','균형 잡기','접힌 놀이방','그림자 놀이','보석 렌즈','그려서 카드 만들기','리듬 다리','한 바퀴','사진 셔터','종이 팝업','도장 찍기','작은 넘김책','종이 통로','바람 보내기','테이블 장식','양면 초대말'],es:['Cadena de dominós','Equilibrar','Sala de papel','Jugar con sombras','Lente de gema','Dibujar una tarjeta','Puente de ritmo','Dar una vuelta','Ventanas de fotos','Escenario de papel','Poner un sello','Librito animado','Camino de papel','Soplar','Decorar la mesa','Invitación de dos caras']};
+const descriptions={ko:['끝 숫자를 맞추고 첫 타일을 눌러봐. 마지막 타일이 서랍을 열어.','좌우로 기울여 구슬을 가운데 홈에 놓아봐. 아래 작은 창이 열려.','같은 접힌 종이를 펼치면 두 자리와 작은 테이블이 나와.','조명을 움직여 같은 게임말의 그림자를 크게, 작게 만들어봐.','세 각도 중 하나에서 흩어진 문양이 도미노로 맞춰져.','직접 그린 선을 뒤집으면 테이블의 카드가 돼. 이 화면에만 남아.','신호를 보고 같은 순서로 세 막대를 눌러봐. 시간제한은 없어.','선택한 말이 레일 앞뒤를 지나 다시 제자리로 돌아와.','셔터를 열어 우리 사진을 한 장씩, 또는 나란히 봐.','카드와 종이 받침을 펼쳐 앞과 옆에서 봐.','봉인 옆의 작은 밀랍 조각이야. 편지 봉인과는 별개야.','같은 말들의 작은 동작을 네 장으로 앞뒤 넘겨봐.','세 조각을 돌려 길을 이어봐. 편지는 언제든 따로 열 수 있어.','같은 종이 조각이 잠깐 들렸다가 제자리로 내려와.','말, 보석, 클립을 골라 세 자리 중 한 곳에 두어봐.','같은 초대말을 한국어와 스페인어 양면으로 봐.'],es:['Une los extremos y pulsa la primera ficha. La última abre un cajón.','Inclina a los lados para llevar la bolita al centro. Se abre una ventanita debajo.','Despliega el mismo papel para encontrar dos asientos y una mesita.','Mueve la luz para agrandar o reducir la sombra de la figura.','En uno de los tres ángulos, las partes forman un dominó.','Al voltear tu dibujo, se convierte en una tarjeta de la mesa. Se queda en esta pantalla.','Mira la señal y repite el orden de las tres barras. No hay límite de tiempo.','La figura elegida pasa por delante y detrás del riel y vuelve a su lugar.','Abre las ventanas para ver nuestras fotos por separado o juntas.','Despliega la carta y su soporte de papel; míralos de frente y de lado.','Es una muestra de cera, aparte del sello de la carta.','Pasa adelante y atrás las cuatro escenas con las mismas figuras.','Gira las tres piezas para conectar el camino. La carta siempre se puede abrir aparte.','El mismo papel se levanta un momento y vuelve a su lugar.','Elige una figura, gema o clip y colócalo en uno de tres lugares.','Mira la misma invitación en coreano y español, por ambos lados.']};
+const supply:readonly(readonly[number,number])[]=[[4,5],[2,1],[2,3],[4,3]];
+const pattern=[0,2,1];
+const PREF_KEY='post-hero-preview:v1';
+function stored(language:'ko'|'es'){
+ const initial=createLocalEventState(language);
+ try{const p=JSON.parse(localStorage.getItem(PREF_KEY)??'{}');if(p&&typeof p==='object'){
+  if(typeof p.effectsEnabled==='boolean')initial.effectsEnabled=p.effectsEnabled;
+  if(p.stamp==='YL'||p.stamp==='heart')initial.stamp=p.stamp;
+  if(['pawn','gem','clip'].includes(p.decorKind))initial.decorKind=p.decorKind;else if(p.decor==='gem'||p.decor==='clip')initial.decorKind=p.decor;
+  if(Number.isInteger(p.pawn)&&p.pawn>=0&&p.pawn<7)initial.decorPawn=p.pawn;
+  if(Number.isInteger(p.decorSlot)&&p.decorSlot>=0&&p.decorSlot<3)initial.decorSlot=p.decorSlot;
+ }}catch{/* Preferences are optional. */}return initial;
 }
-function readPrefs() {
-  try { return loadPreferences(window.localStorage, PREF_KEY); } catch { return {}; }
-}
-function buttonClass() { return 'egg-button'; }
-
-export default function Details({ language, reducedMotion, onEffect }: Props) {
-  const t = copy[language];
-  const [domino, setDomino] = useState(createDominoState);
-  const [tiles, setTiles] = useState([...dominoSupply]);
-  const [selectedTile, setSelectedTile] = useState(1);
-  const [dominoMismatch, setDominoMismatch] = useState(false);
-  const [tilt, setTilt] = useState(4);
-  const [settled, setSettled] = useState(false);
-  const [strokes, setStrokes] = useState<Point[][]>([]);
-  const [flipped, setFlipped] = useState(false);
-  const [rhythmInput, setRhythmInput] = useState<number[]>([]);
-  const [signalShown, setSignalShown] = useState(false);
-  const [patches, setPatches] = useState([0, 0, 0]);
-  const [stamp, setStamp] = useState<'YL' | 'heart'>(() => readPrefs().stamp ?? 'YL');
-  const [effects, setEffects] = useState(() => readPrefs().effectsEnabled ?? true);
-  const [wind, setWind] = useState(false);
-  const [pocket, setPocket] = useState(false);
-  const [prism, setPrism] = useState(0);
-  const [phraseFlipped, setPhraseFlipped] = useState(false);
-  const [decor, setDecor] = useState<'gem' | 'clip'>(() => readPrefs().decor ?? 'gem');
-  const [waxPressed, setWaxPressed] = useState(false);
-  const [saved, setSaved] = useState(false);
-  const drawing = useRef(false);
-  const activeEffect = useRef<string | null>(null);
-  const emit = (name: string, value = 1) => {
-    if (!effects) return;
-    onEffect(name, value);
-    if (value === 0 && activeEffect.current === name) activeEffect.current = null;
-    else if (value !== 0) activeEffect.current = name;
-  };
-  const svg = useRef<SVGSVGElement>(null);
-
-  const dominoDone = isDominoChainComplete(domino);
-  const selected = tiles[selectedTile];
-  const bridgeDone = patches.every((turn, i) => turn === [1, 2, 0][i]);
-
-  useEffect(() => { emit('balance', tilt); }, [tilt, effects, onEffect]);
-  useEffect(() => { emit('balance-settled', settled ? 1 : 0); }, [settled, effects, onEffect]);
-  useEffect(() => { emit('domino-chain', dominoDone ? 1 : 0); }, [dominoDone, effects, onEffect]);
-  useEffect(() => { emit('paper-bridge', bridgeDone ? 1 : 0); }, [bridgeDone, effects, onEffect]);
-
-  function saveSetting(next: { effectsEnabled: boolean; stamp: 'YL' | 'heart'; decor?: 'gem' | 'clip' }) {
-    setSaved(save(next));
-  }
-  function placeSelectedDomino() {
-    if (!selected) return;
-    const next = placeDominoTile(domino, selected);
-    if (!next) { setDominoMismatch(true); return; }
-    setDomino(next); setDominoMismatch(false); setTiles((current) => current.filter((_, i) => i !== selectedTile));
-    setSelectedTile((i) => Math.max(0, Math.min(i, tiles.length - 2)));
-  }
-  function resetDomino() { setDomino(createDominoState()); setTiles([...dominoSupply]); setSelectedTile(1); setDominoMismatch(false); }
-  function stopWax() { setWaxPressed(false); emit('wax-press', 0); }
-  function saveDecor(next: 'gem' | 'clip') { setDecor(next); saveSetting({ stamp, effectsEnabled: effects, decor: next }); }
-  function stopEffects() {
-    const active = activeEffect.current;
-    if (effects && active) onEffect(active, 0);
-    activeEffect.current = null;
-    setWaxPressed(false); setPocket(false); setWind(false); setSettled(false);
-  }
-  function point(event: PointerEvent<SVGSVGElement>): Point {
-    const box = svg.current!.getBoundingClientRect();
-    return { x: Math.max(0, Math.min(100, (event.clientX - box.left) / box.width * 100)), y: Math.max(0, Math.min(60, (event.clientY - box.top) / box.height * 60)) };
-  }
-  function startDraw(event: PointerEvent<SVGSVGElement>) {
-    event.currentTarget.setPointerCapture(event.pointerId);
-    drawing.current = strokes.reduce((n, stroke) => n + stroke.length, 0) < 200;
-    if (drawing.current) setStrokes([...strokes, [point(event)]]);
-  }
-  function addShape(points: Point[]) {
-    setStrokes((current) => current.reduce((n, stroke) => n + stroke.length, 0) + points.length <= 200 ? [...current, points] : current);
-  }
-  function moveDraw(event: PointerEvent<SVGSVGElement>) {
-    if (!drawing.current) return;
-    const next = point(event);
-    setStrokes((current) => current.map((line, i) => i === current.length - 1 && current.reduce((n, stroke) => n + stroke.length, 0) < 200 ? [...line, next] : line));
-  }
-  function endDraw() { drawing.current = false; }
-  function pressRhythm(index: number) {
-    const next = [...rhythmInput, index]; setRhythmInput(next);
-    if (next.length === rhythm.length) {
-      const correct = next.every((value, i) => value === rhythm[i]);
-      if (correct) emit('rhythm-bridge', 1);
-    }
-  }
-
-  return <section className="details-eggs" aria-labelledby="details-title">
-    <div className="details-heading"><p className="details-kicker">{language === 'ko' ? '테이블 위에서' : 'Sobre la mesa'}</p><h2 id="details-title">{t.title}</h2><p>{t.intro}</p></div>
-    <div className="egg-grid">
-      <article className="egg-card domino-card"><h3>{t.domino}</h3><p>{language === 'ko' ? '끝 숫자 하나를 맞춰 놓고 연쇄를 눌러봐.' : 'Une un número y luego inicia la cadena.'}</p>
-        <div className="domino-row" aria-label={language === 'ko' ? '실제로 놓은 도미노' : 'Dominós colocados'}>{domino.placed.map(([a, b], index) => <div className={`domino-tile ${index < domino.placed.length - 1 ? 'fallen' : ''}`} key={index}><span>{a}</span><i /><span>{b}</span></div>)}</div>
-        <div className="domino-pickers" role="group" aria-label={language === 'ko' ? '놓을 실제 타일 선택' : 'Elegir una ficha'}>{tiles.map((tile, index) => <button key={`${tile[0]}-${tile[1]}`} className={buttonClass()} aria-pressed={selectedTile === index} onClick={() => { setSelectedTile(index); setDominoMismatch(false); }}>{tile[0]} · {tile[1]}</button>)}</div>
-        <button className="egg-button egg-primary" disabled={!selected || dominoDone} onClick={placeSelectedDomino}>{dominoDone ? (language === 'ko' ? '연쇄 완성' : 'Cadena completa') : language === 'ko' ? '선택한 타일 놓기' : 'Colocar ficha elegida'}</button>
-        {dominoMismatch && <p className="egg-reward" role="status">{t.mismatch}</p>}
-        <button className={buttonClass()} onClick={resetDomino}>{t.reset}</button>{dominoDone && <p className="egg-reward">{language === 'ko' ? '맞췄네 haha' : 'Encajó, haha.'}</p>}
-      </article>
-
-      <article className="egg-card balance-card"><h3>{t.balance}</h3><p>{language === 'ko' ? '구슬을 가운데 홈에 두어봐.' : 'Lleva la bolita al centro.'}</p>
-        <div className={`balance-tray ${settled ? 'settled' : ''}`} style={{ transform: `rotate(${tilt * 1.1}deg)`, transitionDuration: reducedMotion ? '0ms' : '260ms' }}><span className="tray-groove" /><span className="balance-ball" style={{ left: `${50 + tilt * 3}%` }}>●</span></div>
-        <div className="egg-actions"><button className={buttonClass()} onClick={() => { setTilt((n) => Math.max(-8, n - 1)); setSettled(false); }}>{t.left}</button><button className={buttonClass()} onClick={() => { setTilt((n) => Math.min(8, n + 1)); setSettled(false); }}>{t.right}</button><button className="egg-button egg-primary" onClick={() => setSettled(Math.abs(tilt) <= 1)} disabled={Math.abs(tilt) > 1}>{language === 'ko' ? '가운데 놓기' : 'Centrar'}</button></div>
-        {settled && <div className="balance-window" aria-live="polite"><span>◦</span><span>◇</span><span>◦</span></div>}
-      </article>
-
-      <article className="egg-card drawing-card"><h3>{t.draw}</h3><p>{language === 'ko' ? '직접 그린 선은 이 화면에만 남아.' : 'Tu dibujo se queda solo en esta pantalla.'}</p>
-        {!flipped ? <svg ref={svg} className="drawing-paper" viewBox="0 0 100 60" preserveAspectRatio="none" role="img" aria-label={language === 'ko' ? '그림판' : 'Área para dibujar'} onPointerDown={startDraw} onPointerMove={moveDraw} onPointerUp={endDraw} onPointerCancel={endDraw}>{strokes.map((line, i) => <polyline key={i} points={line.map(({ x, y }) => `${x},${y}`).join(' ')} fill="none" stroke="#7b293d" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />)}</svg> : <div className="drawing-paper drawing-card-face"><svg className="flipped-drawing" viewBox="0 0 100 60" aria-hidden="true">{strokes.map((line, i) => <polyline key={i} points={line.map(({ x, y }) => `${x},${y}`).join(' ')} fill="none" stroke="#7b293d" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />)}</svg><small>{language === 'ko' ? '내가 그린 카드' : 'Mi tarjeta dibujada'}</small></div>}
-        <div className="egg-actions"><button className={buttonClass()} onClick={() => addShape([{ x: 18, y: 30 }, { x: 50, y: 12 }, { x: 82, y: 30 }, { x: 50, y: 50 }, { x: 18, y: 30 }])}>{t.shape}</button><button className={buttonClass()} onClick={() => addShape([{ x: 15, y: 45 }, { x: 85, y: 15 }])}>{t.line}</button><button className={buttonClass()} onClick={() => setStrokes([])}>{t.clear}</button><button className={buttonClass()} onClick={() => setFlipped((v) => !v)}>{t.flip}</button></div>
-      </article>
-
-      <article className="egg-card rhythm-card"><h3>{t.rhythm}</h3><p>{language === 'ko' ? '신호를 보고 같은 순서로 세 막대를 눌러.' : 'Mira la señal y pulsa las tres barras en orden.'}</p>
-        <div className="rhythm-bars" aria-label={signalShown ? rhythm.map((v) => v + 1).join(', ') : undefined}>{[0, 1, 2].map((bar) => <button key={bar} className={`rhythm-bar bar-${bar} ${signalShown && rhythm.includes(bar) ? 'signal' : ''} ${rhythmInput.includes(bar) ? 'pressed' : ''}`} onClick={() => pressRhythm(bar)} aria-label={`${language === 'ko' ? '막대' : 'Barra'} ${bar + 1}`}><span />{signalShown && rhythm.indexOf(bar) >= 0 && <b className="signal-order">{rhythm.indexOf(bar) + 1}</b>}</button>)}</div>
-        <div className="egg-actions"><button className={buttonClass()} onClick={() => { setSignalShown((v) => !v); setRhythmInput([]); }}>{t.show}</button><button className="egg-button egg-primary" onClick={() => { if (rhythmInput.join() === rhythm.join()) emit('rhythm-bridge', 1); setRhythmInput([]); }}>{t.play}</button><button className={buttonClass()} onClick={() => { setRhythmInput([]); emit('rhythm-bridge', 0); }}>{t.reset}</button></div>
-        {rhythmInput.length === rhythm.length && rhythmInput.every((v, i) => v === rhythm[i]) && <p className="egg-reward" aria-live="polite">{language === 'ko' ? '막대가 작은 다리로 이어졌어.' : 'Las barras forman un pequeño puente.'}</p>}
-      </article>
-
-      <article className="egg-card bridge-card"><h3>{t.bridge}</h3><p>{language === 'ko' ? '각 조각을 돌려 접힌 길을 이어봐.' : 'Gira cada pieza para conectar el camino.'}</p>
-        <div className={`paper-bridge ${bridgeDone ? 'complete' : ''}`} aria-label={bridgeDone ? t.bridgeDone : t.bridge}><span className="bridge-start">✉</span>{patches.map((turn, i) => <button key={i} className="patch-piece" style={{ transform: `rotate(${turn * 90}deg)`, transitionDuration: reducedMotion ? '0ms' : '220ms' }} onClick={() => setPatches((p) => p.map((v, index) => index === i ? (v + 1) % 4 : v))} aria-label={`${t.turn} ${i + 1}`}>⌜</button>)}<span className="bridge-end">◇</span></div>
-        <div className="egg-actions"><button className={buttonClass()} onClick={() => setPatches([0, 0, 0])}>{t.reset}</button>{bridgeDone && <span className="egg-reward">{t.bridgeDone}</span>}</div>
-      </article>
-
-      <article className="egg-card details-card"><h3>{t.details}</h3><p>{language === 'ko' ? '작은 조각으로 눌러 보고 빛을 움직여봐.' : 'Prueba un sello y mueve la luz.'}</p>
-        <div className={`wax-sample ${waxPressed ? 'pressed' : ''}`} aria-label={stamp === 'YL' ? 'YL' : language === 'ko' ? '하트' : 'Corazón'}>{stamp === 'YL' ? 'YL' : '♡'}</div>
-        <div className="egg-actions"><button className={buttonClass()} aria-pressed={stamp === 'YL'} onClick={() => { setStamp('YL'); saveSetting({ stamp: 'YL', effectsEnabled: effects }); emit('wax-stamp', 0); }}>{language === 'ko' ? 'YL' : 'YL'}</button><button className={buttonClass()} aria-pressed={stamp === 'heart'} onClick={() => { setStamp('heart'); saveSetting({ stamp: 'heart', effectsEnabled: effects }); emit('wax-stamp', 1); }}>♡</button><button className={`egg-button egg-primary ${waxPressed ? 'pressing' : ''}`} aria-pressed={waxPressed} onPointerDown={(event) => { event.currentTarget.setPointerCapture(event.pointerId); setWaxPressed(true); emit('wax-press', 1); }} onPointerUp={stopWax} onPointerCancel={stopWax} onPointerLeave={stopWax} onKeyDown={(event) => { if ((event.key === ' ' || event.key === 'Enter') && !waxPressed) { event.preventDefault(); setWaxPressed(true); emit('wax-press', 1); } }} onKeyUp={(event) => { if (event.key === ' ' || event.key === 'Enter') stopWax(); }} onBlur={stopWax}>{t.stamp}</button></div>
-        <div className={`pocket-fold ${pocket ? 'open' : ''}`}><span>◇</span><span>□</span></div>
-        <div className="egg-actions"><button className={buttonClass()} onClick={() => { setPocket((v) => !v); emit('paper-pocket', pocket ? 0 : 1); }}>{t.pocket}</button><button className={buttonClass()} onClick={() => { setWind((v) => !v); emit('paper-wind', wind ? 0 : 1); }}>{t.wind}</button><button className={buttonClass()} onClick={() => { setPrism((v) => (v + 1) % 3); emit('prism-angle', (prism + 1) % 3); }}>{t.prism} {prism + 1}/3</button></div>
-        <div className={`prism-preview angle-${prism}`} aria-label={language === 'ko' ? '프리즘 문양' : 'Figura del prisma'}><span className="prism-fragment prism-left">◢</span><span className="prism-fragment prism-right">◣</span>{prism === 1 && <b aria-hidden="true">◇</b>}</div>
-        {prism === 1 && <a className="egg-button prism-game-link" href="/play?game=catchmind">{t.playGame}</a>}
-        <div className="egg-actions"><span>{t.phrase}</span><button className={buttonClass()} onClick={() => setPhraseFlipped((v) => !v)} aria-label={t.phrase}>{phraseFlipped ? (language === 'ko' ? t.phraseEs : t.phraseKo) : (language === 'ko' ? t.phraseKo : t.phraseEs)}</button></div>
-        <div className="phrase-card" lang={phraseFlipped ? (language === 'ko' ? 'es' : 'ko') : language}>{phraseFlipped ? (language === 'ko' ? t.phraseEs : t.phraseKo) : (language === 'ko' ? t.phraseKo : t.phraseEs)}</div>
-        <div className="egg-actions decor-choices"><span>{t.decor}</span><button className={buttonClass()} aria-pressed={decor === 'gem'} onClick={() => saveDecor('gem')}>{t.gem} ◇</button><button className={buttonClass()} aria-pressed={decor === 'clip'} onClick={() => saveDecor('clip')}>{t.clip} ⌇</button><span className={`decor-preview ${decor}`}>{decor === 'gem' ? '◇' : '⌇'}</span></div>
-        <div className={`loose-paper ${wind ? 'lifted' : ''}`}>◇</div><div className="egg-actions effects-setting"><span>{t.effects}</span><button className={buttonClass()} aria-pressed={effects} onClick={() => { const next = !effects; if (!next) stopEffects(); setEffects(next); saveSetting({ stamp, effectsEnabled: next }); }}>{effects ? t.on : t.off}</button></div>
-        {saved && <small>{t.saved}</small>}
-      </article>
-    </div>
-    <AssetPlayground language={language} reducedMotion={reducedMotion}/>
-    <p className="details-footnote">{t.tip}</p>
-  </section>;
+export default function Details({language,reducedMotion,onEffect,onLocalEvent}:Props){
+ const ko=language==='ko';const [s,set]=useState(()=>stored(language));const [domino,setDomino]=useState(createDominoState);const [tiles,setTiles]=useState([...supply]);const [selected,setSelected]=useState(1);const [mismatch,setMismatch]=useState(false);const [input,setInput]=useState<number[]>([]);const [signal,setSignal]=useState(false);const [saved,setSaved]=useState(false);
+ const svg=useRef<SVGSVGElement>(null),drawing=useRef<number|null>(null),trigger=useRef<HTMLButtonElement|null>(null);const state=useRef(s);state.current=s;const signalTimer=useRef<number[]>([]);const lastPhysical=useRef<Record<string,number>>({});
+ const change=useCallback((patch:Partial<LocalEventState>,animate=false)=>set(old=>({...old,...patch,motionSerial:old.motionSerial+(animate?1:0)})),[]);
+ const stop=useCallback(()=>{signalTimer.current.forEach(clearTimeout);signalTimer.current=[];setSignal(false);drawing.current=null;set(old=>({...old,active:null,rhythmSignal:null,waxPressed:false}));onEffect('wax-press',0);},[onEffect]);
+ useEffect(()=>{set(old=>({...old,language,phraseFlipped:false}));},[language]);
+ useEffect(()=>{onLocalEvent?.(s);},[s,onLocalEvent]);
+ useEffect(()=>{const escape=(event:KeyboardEvent)=>{if(event.key==='Escape'){stop();trigger.current?.focus({preventScroll:true});}};const settle=()=>{if(state.current.active)stop();};addEventListener('keydown',escape);addEventListener('scroll',settle,{passive:true});return()=>{removeEventListener('keydown',escape);removeEventListener('scroll',settle);signalTimer.current.forEach(clearTimeout);onLocalEvent?.({...state.current,active:null});};},[stop,onLocalEvent]);
+ useEffect(()=>{
+  if(s.active!=='L02'||s.ball.settled||reducedMotion||!s.effectsEnabled)return;
+  let frame=0,previous=0;const tick=(now:number)=>{const dt=previous?(now-previous)/1000:1/60;previous=now;set(old=>({...old,ball:stepBalance(old.ball,old.tilt,dt)}));frame=requestAnimationFrame(tick);};frame=requestAnimationFrame(tick);return()=>cancelAnimationFrame(frame);
+ },[s.active,s.ball.settled,reducedMotion,s.effectsEnabled]);
+ function persist(patch:Partial<LocalEventState>){const next={...s,...patch};change(patch);try{const raw=JSON.parse(localStorage.getItem(PREF_KEY)??'{}');localStorage.setItem(PREF_KEY,JSON.stringify({...raw,effectsEnabled:next.effectsEnabled,stamp:next.stamp,decorKind:next.decorKind,decor:next.decorKind==='pawn'?undefined:next.decorKind,pawn:next.decorPawn,decorSlot:next.decorSlot}));setSaved(true);}catch{setSaved(false);}}
+ function choose(id:LocalEventId,event:React.MouseEvent<HTMLButtonElement>){signalTimer.current.forEach(clearTimeout);setSignal(false);trigger.current=event.currentTarget;change({active:id,rhythmSignal:null,waxPressed:false,sideView:false});}
+ function physical(patch:Partial<LocalEventState>){if(!s.active)return;const now=performance.now();if(now-(lastPhysical.current[s.active]??-Infinity)<5000)return;lastPhysical.current[s.active]=now;change(patch,true);}
+ function reset(){const fresh=createLocalEventState(language);change({...fresh,active:s.active,effectsEnabled:s.effectsEnabled,stamp:s.stamp,decorKind:s.decorKind,decorPawn:s.decorPawn,decorSlot:s.decorSlot});setDomino(createDominoState());setTiles([...supply]);setSelected(1);setMismatch(false);setInput([]);setSignal(false);signalTimer.current.forEach(clearTimeout);}
+ function place(){const tile=tiles[selected];if(!tile)return;const next=placeDominoTile(domino,tile);if(!next){setMismatch(true);return;}setDomino(next);change({dominoTiles:next.placed,dominoFallen:false});setMismatch(false);setTiles(tiles.filter((_,i)=>i!==selected));setSelected(Math.max(0,Math.min(selected,tiles.length-2)));}
+ function point(event:PointerEvent<SVGSVGElement>):DrawingPoint{const box=svg.current!.getBoundingClientRect();return {x:Math.max(0,Math.min(100,(event.clientX-box.left)/box.width*100)),y:Math.max(0,Math.min(60,(event.clientY-box.top)/box.height*60))};}
+ function addShape(points:DrawingPoint[]){if(s.strokes.reduce((n,line)=>n+line.length,0)+points.length<=200)change({strokes:[...s.strokes,points]});}
+ function startDraw(event:PointerEvent<SVGSVGElement>){if(drawing.current!==null||s.strokes.reduce((n,line)=>n+line.length,0)>=200)return;drawing.current=event.pointerId;event.currentTarget.setPointerCapture(event.pointerId);change({strokes:[...s.strokes,[point(event)]]});}
+ function moveDraw(event:PointerEvent<SVGSVGElement>){if(drawing.current!==event.pointerId)return;const p=point(event);set(old=>old.strokes.reduce((n,line)=>n+line.length,0)<200?{...old,strokes:old.strokes.map((line,i)=>i===old.strokes.length-1?[...line,p]:line)}:old);}
+ function showSignal(){signalTimer.current.forEach(clearTimeout);setInput([]);setSignal(true);change({rhythmSolved:false,rhythmSignal:reducedMotion?null:pattern[0]});if(reducedMotion||!s.effectsEnabled)return;pattern.forEach((bar,i)=>{signalTimer.current.push(window.setTimeout(()=>change({rhythmSignal:bar}),i*500));});signalTimer.current.push(window.setTimeout(()=>{change({rhythmSignal:null});setSignal(false);},1500));}
+ function pressBar(bar:number){const next=input.length>=3?[bar]:[...input,bar];setInput(next);if(next.length===3)change({rhythmSolved:next.every((v,i)=>v===pattern[i])},true);}
+ function waxRelease(){change({waxPressed:false},true);onEffect('wax-press',0);}
+ const activeIndex=s.active?localEventIds.indexOf(s.active):-1;const done=isDominoChainComplete(domino);const bridgeDone=s.patchTurns.every((v,i)=>v===[1,2,0][i]);
+ const button=(label:string,click:()=>void,pressed?:boolean)=><button className="egg-button" onClick={click} aria-pressed={pressed}>{label}</button>;
+ return <section className="details-eggs" aria-labelledby="details-title">
+  <div className="details-heading"><p className="details-kicker">{ko?'테이블 위에서':'Sobre la mesa'}</p><h2 id="details-title">{ko?'작은 장난들':'Detallitos'}</h2><p>{ko?'하나를 골라 테이블 위에서 놀아봐.':'Elige algo para jugar sobre la mesa.'}</p></div>
+  <div className="local-event-picker" role="group" aria-label={ko?'작은 놀이 선택':'Elegir un detallito'}>{localEventIds.map((id,i)=><button key={id} className="egg-button" data-local-event={id} aria-pressed={s.active===id} aria-controls="local-event-controls" onClick={event=>choose(id,event)}>{names[language][i]}</button>)}</div>
+  {s.active&&<article id="local-event-controls" className="egg-card local-event-controls" data-active-local-event={s.active}>
+   <h3>{names[language][activeIndex]}</h3><p>{descriptions[language][activeIndex]}</p>
+   {s.active==='L01'&&<><div className="domino-row" aria-label={ko?'놓은 도미노':'Dominós colocados'}>{domino.placed.map(([a,b],i)=><div className={`domino-tile ${s.dominoFallen?'fallen':''}`} key={i}><span>{a}</span><i/><span>{b}</span></div>)}</div><div className="domino-pickers">{tiles.map((tile,i)=><button className="egg-button" key={tile.join('-')} aria-pressed={selected===i} onClick={()=>{setSelected(i);setMismatch(false);}}>{tile[0]} · {tile[1]}</button>)}</div><div className="egg-actions"><button className="egg-button" disabled={done||!tiles.length} onClick={place}>{ko?'선택한 타일 놓기':'Colocar ficha elegida'}</button><button className="egg-button egg-primary" disabled={!done} onClick={()=>physical({dominoFallen:true})}>{ko?'첫 타일 넘어뜨리기':'Empujar la primera ficha'}</button>{button(ko?'서랍 직접 열기':'Abrir el cajón',()=>change({active:'L15',drawerOpen:true}))}</div>{mismatch&&<p role="status">{ko?'이 끝 숫자와 맞지 않아.':'Ese extremo no coincide.'}</p>}{s.dominoFallen&&<p className="egg-reward">{ko?'맞췄네 haha':'Encajó, haha.'}</p>}</>}
+   {s.active==='L02'&&<><div className={`balance-tray ${s.ball.settled?'settled':''}`} style={{transform:`rotate(${-s.tilt}deg)`}}><span className="tray-groove"/><span className="balance-ball" style={{transform:`translateX(${s.ball.position*100}px)`}}>●</span></div><p aria-live="polite">{ko?`기울기 ${s.tilt}°`:`Inclinación ${s.tilt}°`}{s.ball.settled?(ko?' · 작은 창이 열렸어.':' · Se abrió la ventanita.'):''}</p><div className="egg-actions">{button(ko?'왼쪽':'Izquierda',()=>change({tilt:Math.max(-8,s.tilt-1),ball:reducedMotion||!s.effectsEnabled?{position:Math.max(-.85,s.ball.position-.1),velocity:0,settled:false}:{...s.ball,settled:false}}))}{button(ko?'수평으로':'Nivelar',()=>change({tilt:0}))}{button(ko?'오른쪽':'Derecha',()=>change({tilt:Math.min(8,s.tilt+1),ball:reducedMotion||!s.effectsEnabled?{position:Math.min(.85,s.ball.position+.1),velocity:0,settled:false}:{...s.ball,settled:false}}))}{button(ko?'완성 모습 보기':'Ver el resultado',()=>change({tilt:0,ball:{position:0,velocity:0,settled:true}}))}</div></>}
+   {s.active==='L03'&&<><div className={`pocket-fold ${s.pocketOpen?'open':''}`}><span>◇</span><span>□</span></div><div className="egg-actions">{button(ko?'놀이방 펼치기':'Abrir la sala',()=>change({pocketOpen:!s.pocketOpen},true),s.pocketOpen)}{button(ko?'정면 / 옆면':'Frente / lado',()=>change({sideView:!s.sideView}),s.sideView)}</div></>}
+   {s.active==='L05'&&<><div className={`prism-preview angle-${s.prism}`}><span className="prism-fragment prism-left">◢</span><span className="prism-fragment prism-right">◣</span>{s.prism===1&&<b aria-hidden="true">▣</b>}</div><div className="egg-actions">{[0,1,2].map(angle=><button className="egg-button" key={angle} aria-pressed={s.prism===angle} onClick={()=>physical({prism:angle as 0|1|2})}>{ko?`각도 ${angle+1}`:`Ángulo ${angle+1}`}</button>)}</div>{s.prism===1&&<a className="egg-button" href="/play?game=domino">{ko?'도미노 열기':'Abrir dominó'}</a>}</>}
+   {s.active==='L06'&&<><svg ref={svg} className="drawing-paper" viewBox="0 0 100 60" role="img" aria-label={ko?'200점까지 그리는 그림판':'Papel para dibujar, hasta 200 puntos'} onPointerDown={startDraw} onPointerMove={moveDraw} onPointerUp={()=>drawing.current=null} onPointerCancel={()=>drawing.current=null}>{s.strokes.map((line,i)=><polyline key={i} points={line.map(p=>`${p.x},${p.y}`).join(' ')} fill="none" stroke="#7b293d" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>)}</svg><div className="egg-actions">{button(ko?'마름모 찍기':'Dibujar rombo',()=>addShape([{x:18,y:30},{x:50,y:12},{x:82,y:30},{x:50,y:50},{x:18,y:30}]))}{button(ko?'선 찍기':'Dibujar línea',()=>addShape([{x:15,y:45},{x:85,y:15}]))}{button(ko?'지우기':'Borrar',()=>change({strokes:[]}))}{button(ko?'카드로 뒤집기':'Voltear a tarjeta',()=>change({drawingFlipped:!s.drawingFlipped}),s.drawingFlipped)}</div></>}
+   {s.active==='L07'&&<><div className="rhythm-bars">{[0,1,2].map(bar=><button key={bar} className={`rhythm-bar bar-${bar} ${s.rhythmSignal===bar?'signal':''} ${input.includes(bar)?'pressed':''}`} aria-label={`${ko?'막대':'Barra'} ${bar+1}`} onClick={()=>pressBar(bar)}><span/>{bar+1}</button>)}</div><div className="egg-actions">{button(ko?'신호 보기':'Ver señal',showSignal)}{button(ko?'다시 입력':'Repetir',()=>{setInput([]);change({rhythmSolved:false});})}</div>{(reducedMotion||!s.effectsEnabled||signal)&&<p>{ko?'순서':'Orden'}: 1 → 3 → 2</p>}<p role="status">{s.rhythmSolved?(ko?'세 막대가 다리가 됐어.':'Las tres barras forman un puente.'):input.length===3?(ko?'신호를 다시 볼 수 있어.':'Puedes volver a ver la señal.'):input.map(i=>i+1).join(' → ')}</p></>}
+   {s.active==='L11'&&<><div className={`wax-sample ${s.waxPressed?'pressed':''}`}>{s.stamp==='YL'?'YL':'♡'}</div><div className="egg-actions">{button('YL',()=>{persist({stamp:'YL'});onEffect('wax-stamp',0);},s.stamp==='YL')}{button(ko?'작은 하트':'Corazón',()=>{persist({stamp:'heart'});onEffect('wax-stamp',1);},s.stamp==='heart')}<button className="egg-button egg-primary" aria-pressed={s.waxPressed} onPointerDown={event=>{event.currentTarget.setPointerCapture(event.pointerId);change({waxPressed:true});onEffect('wax-press',1);}} onPointerUp={waxRelease} onPointerCancel={waxRelease} onKeyDown={event=>{if((event.key===' '||event.key==='Enter')&&!event.repeat){event.preventDefault();change({waxPressed:true});onEffect('wax-press',1);}}} onKeyUp={event=>{if(event.key===' '||event.key==='Enter')waxRelease();}} onBlur={()=>s.waxPressed&&waxRelease()}>{ko?'누르기':'Presionar'}</button></div></>}
+   {s.active==='L13'&&<><div className={`paper-bridge ${bridgeDone?'complete':''}`}>{s.patchTurns.map((turn,i)=><button className="patch-piece" key={i} aria-label={`${ko?'조각 돌리기':'Girar pieza'} ${i+1}`} style={{transform:`rotate(${turn*90}deg)`}} onClick={()=>change({patchTurns:s.patchTurns.map((v,n)=>n===i?(v+1)%4:v)})}>⌜</button>)}</div>{button(ko?'완성 모습 보기':'Ver el resultado',()=>change({patchTurns:[1,2,0]},true))}{bridgeDone&&<p role="status">{ko?'종이 통로가 이어졌어.':'El camino de papel está conectado.'}</p>}</>}
+   {s.active==='L14'&&<><div className={`loose-paper ${s.windRaised?'lifted':''}`}>◇</div>{button(ko?'바람 한 번 보내기':'Soplar una vez',()=>physical({windRaised:true}))}{button(ko?'내려놓기':'Dejar en su lugar',()=>change({windRaised:false}))}</>}
+   {s.active==='L16'&&<><div className="phrase-card" lang={(language==='es')!==s.phraseFlipped?'es':'ko'}>{(language==='es')!==s.phraseFlipped?'Vamos a jugar':'같이 놀자'}</div>{button(ko?'같은 카드 뒤집기':'Voltear la misma tarjeta',()=>change({phraseFlipped:!s.phraseFlipped}),s.phraseFlipped)}</>}
+   <AssetPlayground language={language} state={s} change={change} saveDecor={persist}/>
+   <div className="egg-actions local-event-footer">{button(ko?'이 놀이 처음부터':'Reiniciar este juego',reset)}{button(ko?'장난 내려놓기':'Dejar el detallito',()=>{stop();trigger.current?.focus({preventScroll:true});})}</div>
+  </article>}
+  <div className="egg-actions effects-setting"><span>{ko?'장식 효과':'Efectos decorativos'}</span>{button(s.effectsEnabled?(ko?'켜짐':'Activados'):(ko?'꺼짐 · 완성 모습':'Desactivados · vista final'),()=>persist({effectsEnabled:!s.effectsEnabled}),s.effectsEnabled)}{button(ko?'저장한 장식 초기화':'Restablecer detalles guardados',()=>persist({decorKind:'gem',decorPawn:0,decorSlot:1,stamp:'YL'}))}</div>{saved&&<small>{ko?'이 기기에 선택 저장':'Preferencias guardadas en este dispositivo'}</small>}
+  <p className="details-footnote">{ko?'실제 게임 점수와는 별개의 작은 놀이야. Escape 또는 스크롤로 내려놓을 수 있어.':'Son pequeños juegos, aparte de las partidas reales. Pulsa Escape o desplázate para dejarlos.'}</p>
+ </section>;
 }
