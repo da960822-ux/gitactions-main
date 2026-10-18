@@ -37,14 +37,44 @@
   "operatingRoles": {
     "policy": "New operating policy; does not assert historical model configuration or past task ownership.",
     "Sol": "Design, assets, and independent visual review.",
-    "Luna": "Clear, small-scope code cleanup, test execution, logs, and document cleanup.",
+    "Luna": "Builds, clear command execution, logs, documents, and only small predefined code patches; not responsible for design changes.",
     "root": "Task assignment and final integration."
   },
   "visualReviewStatus": {
     "implementationSelfTests": "Passing self-tests do not establish visual completion.",
     "firstIndependentResult": "visual Block remains in force",
-    "freshBuildReview": "independent review in progress",
+    "freshBuildReview": "r3 failure confirmed; source frozen and browser closed for handoff; independent review of the recovery build is pending.",
     "stateTracking": "Keep handoff, fixes, review, and unreviewed items distinct."
   },
-  "mobileAdditionalWork": "paused until desktop completion per latest user instruction"
+  "mobileAdditionalWork": "paused until desktop completion per latest user instruction",
+  "visualIterationPolicy": {
+    "trigger": "If the same owner fails visual review twice in the same change area, stop further iteration and hand off evidence, current source state, and review scope to another explicitly assigned owner.",
+    "urlChangesResetFailureCount": false,
+    "newOwnerAttemptCount": 0,
+    "inheritedFailureCountsAsNewOwnerAttempt": false,
+    "replacementTrigger": "Replace the new owner after two of their own failed visual attempts.",
+    "selfTestsAreVisualApproval": false
+  },
+  "currentHandoff": {
+    "previousOwner": "sol_desktop_design",
+    "previousOwnerModelHistory": "Not asserted; role label is operational routing only.",
+    "previousOwnerFailedVisualAttempts": 2,
+    "failedExperimentUrls": [
+      "5235",
+      "5236"
+    ],
+    "r3Status": "visual failure confirmed; source frozen; browser closed for handoff",
+    "newCorrectionOwner": {
+      "role": "sol_transition_recovery_b",
+      "model": "gpt-6.1-sol",
+      "ownAttemptCount": 0,
+      "inheritedR3FailureCounts": false
+    },
+    "independentReviewer": {
+      "role": "sol_independent_review",
+      "model": "gpt-6.1-sol",
+      "separateFromCorrectionOwner": true
+    },
+    "evidenceAndScopeHandoff": "Required before the new correction owner proceeds."
+  }
 }
