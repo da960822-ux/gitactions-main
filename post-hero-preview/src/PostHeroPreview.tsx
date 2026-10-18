@@ -12,8 +12,8 @@ const story = {
 };
 function storedLanguage():Language { try { return localStorage.getItem('dos-language')==='es'?'es':'ko'; } catch { return 'ko'; } }
 
-type PreviewProps = { embedded?: boolean; language?: Language; onLanguageChange?: (language: Language) => void; portraitSrc?: string; portraitMaskSrc?: string; gallery?: ReactNode; renderScene?: boolean; onSceneState?: (state:PostHeroState)=>void; externalSceneReady?: boolean; onRegisterFrame?: (tick:((now:number)=>void)|null)=>void };
-export function PostHeroPreview({embedded=false,language:externalLanguage,onLanguageChange,portraitSrc='/images/yeonseok-lisbeth-cutout.webp',portraitMaskSrc,gallery,renderScene=true,onSceneState,externalSceneReady=false,onRegisterFrame}:PreviewProps = {}) {
+type PreviewProps = { embedded?: boolean; language?: Language; onLanguageChange?: (language: Language) => void; portraitSrc?: string; portraitMaskSrc?: string; gallery?: ReactNode; playHref?: string; renderScene?: boolean; onSceneState?: (state:PostHeroState)=>void; externalSceneReady?: boolean; onRegisterFrame?: (tick:((now:number)=>void)|null)=>void };
+export function PostHeroPreview({embedded=false,language:externalLanguage,onLanguageChange,portraitSrc='/images/yeonseok-lisbeth-cutout.webp',portraitMaskSrc,gallery,playHref,renderScene=true,onSceneState,externalSceneReady=false,onRegisterFrame}:PreviewProps = {}) {
  const [localLanguage,setLocalLanguage]=useState<Language>(storedLanguage);
  const language=externalLanguage??localLanguage;
  const setLanguage=(value:Language)=>{setLocalLanguage(value);onLanguageChange?.(value);};
@@ -126,7 +126,7 @@ export function PostHeroPreview({embedded=false,language:externalLanguage,onLang
    </article></div>
    {!letterVisible&&<div className="closed-note"><span>♡</span><p>{text.sealed}</p><button className="text-button" onClick={()=>{control.current=reopenEnvelope(control.current);refreshTarget();}}>{text.open} ↗</button></div>}
   </section>
-  <section className="chapter ending" data-pose="1"><div className="ending-copy"><p className="eyebrow">2025.04.04 — YEONSEOK ♡ LISBETH</p><h2>{text.ending}</h2><div className="ending-actions"><a className="primary-button" href="/#games">{text.play}<span>↗</span></a><a className="text-button" href="/feedback">{text.ideas}</a></div></div><div className="ending-rule"/><footer><span>Para ti, Lisbeth ♡</span><a href={embedded?'#distance':'#intro'}>{text.back} ↑</a></footer></section>
+  <section className="chapter ending" data-pose="1"><div className="ending-copy"><p className="eyebrow">2025.04.04 — YEONSEOK ♡ LISBETH</p><h2>{text.ending}</h2><div className="ending-actions"><a className="primary-button" href={playHref??'/#games'}>{text.play}<span>↗</span></a><a className="text-button" href="/feedback">{text.ideas}</a></div></div><div className="ending-rule"/><footer><span>Para ti, Lisbeth ♡</span><a href={embedded?'#distance':'#intro'}>{text.back} ↑</a></footer></section>
   {!embedded&&<aside className="preview-status"><span>{text.status}</span><details><summary>{language==='ko'?'인수 항목':'Pendiente de conectar'}</summary><p>{text.notice}</p>{sceneError&&<p>{language==='ko'?'입체 장면을 사용할 수 없어 정적 봉투를 표시합니다. 편지는 그대로 읽을 수 있습니다.':'Se muestra el sobre estático. Puedes leer la carta completa.'}</p>}</details></aside>}
  </Container>;
 }
