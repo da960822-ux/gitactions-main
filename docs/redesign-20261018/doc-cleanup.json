@@ -722,10 +722,62 @@
       "restoreCommit": "e29da5c1f0676aa45978886b3ef199e4d0bcc9d6",
       "restoreCommand": "git show e29da5c1f0676aa45978886b3ef199e4d0bcc9d6:preserved-work/2026-10-18/gate1-rework-evidence/baseline-profile.md",
       "identicalEmbeddedEvidencePreservedAs": []
+    },
+    {
+      "file": "post-hero-preview/review/VISUAL-REVIEW.ko.md",
+      "reason": "과거 독립 후반 시각 검토/다음 패스 제안의 반복 문서. 현재 API·구현·검수 상태는 최신 후반 인계, 과거 고유 구도 수치·정지 투영/접근성 한계는 대표 검수제한에 이관",
+      "canonicalReplacement": [
+        "post-hero-preview/docs/REDESIGN-HANDOFF-20261018.ko.md",
+        "preserved-work/2026-10-18/REVIEW-LIMITATIONS.ko.md"
+      ],
+      "oldSha256": "353fd562abb7f669957b3f439af92cf3e901fa12f38d4634f7691e52b30632f7",
+      "bytes": 4989,
+      "restoreCommit": "feac88098249984925f4cc74b0c6860cd8e44545",
+      "restoreCommand": "git show feac88098249984925f4cc74b0c6860cd8e44545:post-hero-preview/review/VISUAL-REVIEW.ko.md",
+      "identicalEmbeddedEvidencePreservedAs": []
+    },
+    {
+      "file": "post-hero-preview/review/IMPLEMENTED-VISUAL-PASS.ko.md",
+      "reason": "과거 독립 후반 시각 검토/다음 패스 제안의 반복 문서. 현재 API·구현·검수 상태는 최신 후반 인계, 과거 고유 구도 수치·정지 투영/접근성 한계는 대표 검수제한에 이관",
+      "canonicalReplacement": [
+        "post-hero-preview/docs/REDESIGN-HANDOFF-20261018.ko.md",
+        "preserved-work/2026-10-18/REVIEW-LIMITATIONS.ko.md"
+      ],
+      "oldSha256": "8ee16a9ad2961803f508dc647f5626fd1d1004c1b12d7112c8685e347282b716",
+      "bytes": 4399,
+      "restoreCommit": "feac88098249984925f4cc74b0c6860cd8e44545",
+      "restoreCommand": "git show feac88098249984925f4cc74b0c6860cd8e44545:post-hero-preview/review/IMPLEMENTED-VISUAL-PASS.ko.md",
+      "identicalEmbeddedEvidencePreservedAs": []
+    },
+    {
+      "file": "post-hero-preview/review/DIRECTION-PAUSE.ko.md",
+      "reason": "과거 독립 후반 시각 검토/다음 패스 제안의 반복 문서. 현재 API·구현·검수 상태는 최신 후반 인계, 과거 고유 구도 수치·정지 투영/접근성 한계는 대표 검수제한에 이관",
+      "canonicalReplacement": [
+        "post-hero-preview/docs/REDESIGN-HANDOFF-20261018.ko.md",
+        "preserved-work/2026-10-18/REVIEW-LIMITATIONS.ko.md"
+      ],
+      "oldSha256": "a9908008a39ee6ca202de32314906b2355903e2e1e821dcd2648cc47c11f5ad1",
+      "bytes": 5032,
+      "restoreCommit": "feac88098249984925f4cc74b0c6860cd8e44545",
+      "restoreCommand": "git show feac88098249984925f4cc74b0c6860cd8e44545:post-hero-preview/review/DIRECTION-PAUSE.ko.md",
+      "identicalEmbeddedEvidencePreservedAs": []
+    },
+    {
+      "file": "design-sessions/post-hero-2026-10-18/NEXT-VISUAL-PASS.ko.md",
+      "reason": "과거 독립 후반 시각 검토/다음 패스 제안의 반복 문서. 현재 API·구현·검수 상태는 최신 후반 인계, 과거 고유 구도 수치·정지 투영/접근성 한계는 대표 검수제한에 이관",
+      "canonicalReplacement": [
+        "post-hero-preview/docs/REDESIGN-HANDOFF-20261018.ko.md",
+        "preserved-work/2026-10-18/REVIEW-LIMITATIONS.ko.md"
+      ],
+      "oldSha256": "f1ae9c5be137b741385fa0dcf9c882fa20fd97a7962d150973db15527c9222b4",
+      "bytes": 5576,
+      "restoreCommit": "feac88098249984925f4cc74b0c6860cd8e44545",
+      "restoreCommand": "git show feac88098249984925f4cc74b0c6860cd8e44545:design-sessions/post-hero-2026-10-18/NEXT-VISUAL-PASS.ko.md",
+      "identicalEmbeddedEvidencePreservedAs": []
     }
   ],
-  "removedCount": 53,
-  "removedBytes": 11844921,
+  "removedCount": 57,
+  "removedBytes": 11864917,
   "keptCanonical": [
     "preserved-work/2026-10-18/README.ko.md",
     "preserved-work/2026-10-18/gate0-final-review-20261018/PLAN.ko.md",
@@ -747,9 +799,12 @@
     "allRemovedFilesByteIdenticalToRestoreCommit": true,
     "baselineEmbeddedImagesAllMatchedExistingPng": true,
     "noProductSourceEdited": true,
-    "removedFilesRestorableSha256Verified": 53,
+    "removedFilesRestorableSha256Verified": 57,
     "latestTraceUniqueRequirementIds": 186,
     "representativeMarkdownLocalBrokenLinks": 0,
-    "sourcePrototypeHtmlPreserved": 9
-  }
+    "sourcePrototypeHtmlPreserved": 9,
+    "totalCleanupCountAfterPostReview": 57,
+    "postCleanupReadmeLocalBrokenLinks": 0
+  },
+  "updatedAt": "2026-10-18T11:21:40.980417+00:00"
 }

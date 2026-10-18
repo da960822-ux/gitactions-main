@@ -1,3 +1,5 @@
+> 현재 인계는 [REDESIGN-HANDOFF-20261018.ko.md](docs/REDESIGN-HANDOFF-20261018.ko.md)를 따른다. 아래는 이전 독립 구현 기록이며, 자산 미확보·시각 방향 대기는 현재 구현 중단 지시가 아니다. 과거 검토4문서의 고유 제한은 대표 검수제한으로 통합했다.
+
 # 후반부 독립 구현 인수
 
 브랜치 `feature/post-hero-preview`, 디렉터리 `post-hero-preview/`. 기존 Hero·Landing·게임·번역·home.ts·공유 package/lock은 수정하지 않았다. main의 Hero 승인이나 통합 승인을 주장하지 않는다.
@@ -37,12 +39,12 @@ Luna는 순수상태/단위테스트·도미노실제타일연결·균형·200�
 
 ## 장면별 시각 보정 후속
 
-스토리 접힌 지형→놀이 테이블→편지 조명→밝은 열린 테라스로 같은 오브젝트/표면을 변형했다. 상세 개선·남은 디자인 문제·1600×1000 단일 캡처는 `review/VISUAL-REVIEW.ko.md`와 `review/stage-review.json`을 참조한다. 이전 51개 전체를 새 보정 후 재통과했다고 확대하지 않는다.
+스토리 접힌 지형→놀이 테이블→편지 조명→밝은 열린 테라스로 같은 오브젝트/표면을 변형했다. 상세 개선·남은 디자인 문제·1600×1000 단일 캡처는 `../preserved-work/2026-10-18/REVIEW-LIMITATIONS.ko.md`와 `review/stage-review.json`을 참조한다. 이전 51개 전체를 새 보정 후 재통과했다고 확대하지 않는다.
 
 ## v3 실제 보정
 
-제안한지형/문/실제DOM카드투영/모바일경계와footer를코드에적용했다. 현재검수와한계는 `review/IMPLEMENTED-VISUAL-PASS.ko.md`를참조한다. `PostHeroScene`의옵셔널 `onPaperPose({corners,visible})`는 viewport좌표 TL/TR/BR/BL이며부모가동일DOM원문을배치한다.
+제안한지형/문/실제DOM카드투영/모바일경계와footer를코드에적용했다. 현재검수와한계는 `docs/REDESIGN-HANDOFF-20261018.ko.md`를참조한다. `PostHeroScene`의옵셔널 `onPaperPose({corners,visible})`는 viewport좌표 TL/TR/BR/BL이며부모가동일DOM원문을배치한다.
 
 ## 시각 방향 선택 전 보존
 
-40697fe 이후이미적용한공간탐색과초기원문접근성수정을별도보존했다. 현재구현과검수는 `review/DIRECTION-PAUSE.ko.md`가우선한다. 초기q0에서도원문은접근성트리에있고시각적으로만접혀있으며명시적닫기후에만hidden이다. 새미술방향선택전조형/재질추가수정은보류한다.
+40697fe 이후이미적용한공간탐색과초기원문접근성수정을별도보존했다. 현재구현과검수는 `docs/REDESIGN-HANDOFF-20261018.ko.md`가우선한다. 초기q0에서도원문은접근성트리에있고시각적으로만접혀있으며명시적닫기후에만hidden이다. 새미술방향선택전조형/재질추가수정은보류한다.

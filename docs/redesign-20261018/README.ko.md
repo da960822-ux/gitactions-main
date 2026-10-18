@@ -14,3 +14,9 @@
 - main병합·배포는별도승인전금지. 원래사용자0–13절독립원문전체는미발견이며계획/추적표를원문으로간주하지않는다.
 
 복구는manifest의restoreCommit과file을이용해git show로원래내용을읽을수있다. 제품source/모델/텍스처/PNG/영상/원시JSON/승인원본/license/skill/game계약은이정리에서삭제하지않았다.
+
+## 남아 있는 요구사항과 복구
+
+현재 요구사항 문서는 남아 있다. 대표5문서는 README, 최종 PLAN, TRACE(157개본문+이전29개부록=186개고유요구), 게임방TECHNICAL-DESIGN, REVIEW-LIMITATIONS다. 미발견은과거사용자대화0–13절의별도원문파일이며요구목록을삭제했다는뜻이아니다.
+
+중복/불필요검토문서의총삭제는57개(기존53+후반4)다. 삭제전고유추적사항은대표검수제한과 [최신후반인계](../../post-hero-preview/docs/REDESIGN-HANDOFF-20261018.ko.md)에남겼고 원시PNG/JSON/영상은유지했다. `git show <restoreCommit>:<file>`로manifest에기록한원래내용을확인할수있다.
