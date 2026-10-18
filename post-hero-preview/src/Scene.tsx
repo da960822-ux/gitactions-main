@@ -4,10 +4,10 @@ import { RoomEnvironment } from 'three/addons/environments/RoomEnvironment.js';
 
 export type PaperPose = { corners: Array<{ x: number; y: number }>; visible: boolean };
 
-type Props = {
+export type PostHeroState = {
   progress: number; opening: number; reducedMotion: boolean;
   effect: { name: string; value: number; nonce: number };
-  portraitSrc: string; onReady?: () => void; onFailure?: (message: string) => void;
+  portraitSrc: string; portraitMaskSrc?: string; onReady?: () => void; onFailure?: (message: string) => void;
   onPaperPose?: (pose: PaperPose) => void;
 };
 const ease = (a: number, b: number, v: number) => {
@@ -15,42 +15,26 @@ const ease = (a: number, b: number, v: number) => {
   return t * t * (3 - 2 * t);
 };
 
-export function PostHeroScene(props: Props) {
-  const host = useRef<HTMLDivElement>(null);
-  const latest = useRef(props);
-  latest.current = props;
-  const redraw = useRef<() => void>(() => {});
-  useEffect(() => { redraw.current(); }, [props.progress, props.opening, props.effect, props.reducedMotion]);
-  useEffect(() => {
-    if (!host.current) return;
-    const element = host.current;
-    let renderer: THREE.WebGLRenderer;
-    try { renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true, powerPreference: 'low-power' }); }
-    catch { latest.current.onFailure?.('WebGL is unavailable. The complete letter remains available below.'); return; }
-    renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 1.5));
-    renderer.shadowMap.enabled = true;
-    renderer.shadowMap.type = THREE.PCFSoftShadowMap;
-    renderer.outputColorSpace = THREE.SRGBColorSpace;
-    renderer.toneMapping = THREE.ACESFilmicToneMapping;
-    renderer.toneMappingExposure = .9;
-    renderer.domElement.setAttribute('aria-hidden', 'true');
-    renderer.domElement.style.cssText = 'width:100%;height:100%;display:block';
-    element.appendChild(renderer.domElement);
-    const scene = new THREE.Scene();
-    scene.fog = new THREE.FogExp2(0x150f19, 0.035);
-    const camera = new THREE.PerspectiveCamera(38, 1, 0.05, 60);
+export function createPostHeroCollection(options:{scene:THREE.Scene;camera:THREE.PerspectiveCamera;renderer:THREE.WebGLRenderer;host?:HTMLElement;onInvalidate?:()=>void},initialState:PostHeroState){
+ const {scene:worldScene,camera,renderer}=options;
+    const scene=new THREE.Group();scene.name='post-hero-collection';worldScene.add(scene);
+    const fog=new THREE.FogExp2(0x150f19,.035);
+    let exposure=.9;
+    let latest=initialState;
+    let width=1,height=1,ownCamera=true,now=performance.now();
+    const element=options.host??renderer.domElement;
     const pmrem = new THREE.PMREMGenerator(renderer);
     const room = new RoomEnvironment();
     const environment = pmrem.fromScene(room, .04);
-    scene.environment = environment.texture;
-    scene.environmentIntensity = .45;
+
+
     room.dispose(); pmrem.dispose();
     const hemisphere=new THREE.HemisphereLight(0xffe8d9, 0x3c1b30, .7);scene.add(hemisphere);
     const key = new THREE.DirectionalLight(0xffe7cd, 2.5);
     key.position.set(-3, 7, 5); key.castShadow = true;
     key.shadow.mapSize.set(1024, 1024);
     Object.assign(key.shadow.camera, { left: -7, right: 7, top: 7, bottom: -7, near: .5, far: 20 });
-    key.shadow.bias = -.0004; key.shadow.normalBias = .025; scene.add(key);
+    key.shadow.bias = -.0004; key.shadow.normalBias = .025; scene.add(key,key.target);
     const rose = new THREE.PointLight(0xe39ca9, 3, 15); rose.position.set(4, 3, -2); scene.add(rose);
     const paper = new THREE.MeshStandardMaterial({ color: 0xf4e8d2, roughness: .85, side: THREE.DoubleSide });
     const cream = new THREE.MeshStandardMaterial({ color: 0xdfc9ad, roughness: .92, side: THREE.DoubleSide });
@@ -145,14 +129,20 @@ export function PostHeroScene(props: Props) {
       label.castShadow=false;
     }
     const portraitGroup=new THREE.Group(); portraitGroup.position.set(-1.4,.04,-1.9); scene.add(portraitGroup);
-    let disposed=false;
-    const portraitTexture = new THREE.TextureLoader().load(props.portraitSrc, texture => {
+    let disposed=false,portraitLoaded=false,maskLoaded=!initialState.portraitMaskSrc;
+    portraitGroup.visible=false;
+    const portraitMask=initialState.portraitMaskSrc?new THREE.TextureLoader().load(initialState.portraitMaskSrc,texture=>{
+      if(disposed){texture.dispose();return;}
+      texture.colorSpace=THREE.NoColorSpace;maskLoaded=true;portraitGroup.visible=portraitLoaded;options.onInvalidate?.();
+    },undefined,()=>initialState.onFailure?.('The approved character opacity mask could not be loaded.')):undefined;
+    if(portraitMask)portraitMask.colorSpace=THREE.NoColorSpace;
+    const portraitTexture = new THREE.TextureLoader().load(initialState.portraitSrc, texture => {
       if(disposed) {texture.dispose();return;}
       texture.colorSpace=THREE.SRGBColorSpace;
       const ratio=texture.image.width/texture.image.height;
-      const height=2.05, width=height*ratio;
-      const portrait=mesh(new THREE.PlaneGeometry(width,height),new THREE.MeshBasicMaterial({map:texture,transparent:true,alphaTest:.05,toneMapped:false,fog:false,side:THREE.DoubleSide}),portraitGroup,0,height/2,0);
-      portrait.castShadow=false; draw();
+      const height=2.65, width=height*ratio;
+      const portrait=mesh(new THREE.PlaneGeometry(width,height),new THREE.MeshBasicMaterial({map:texture,alphaMap:portraitMask??null,transparent:true,alphaTest:.05,toneMapped:false,fog:false,side:THREE.DoubleSide}),portraitGroup,0,height/2,0);
+      portrait.castShadow=false;portraitLoaded=true;portraitGroup.visible=maskLoaded; options.onInvalidate?.();
     });
     const dominoes:THREE.Group[]=[];
     const dotPositions = [[],[[0,0]],[[-1,-1],[1,1]],[[-1,-1],[0,0],[1,1]],[[-1,-1],[1,-1],[-1,1],[1,1]],[[-1,-1],[1,-1],[0,0],[-1,1],[1,1]],[[-1,-1],[1,-1],[-1,0],[1,0],[-1,1],[1,1]]];
@@ -172,8 +162,7 @@ export function PostHeroScene(props: Props) {
     const shaft=mesh(new THREE.CylinderGeometry(.037,.037,1.65,6),gold,pencil); shaft.rotation.z=Math.PI/2;
     const tip=mesh(new THREE.ConeGeometry(.038,.16,6),cream,pencil,.9,0,0);tip.rotation.z=-Math.PI/2;
     const graphite=mesh(new THREE.ConeGeometry(.012,.055,6),ink,pencil,.99,0,0);graphite.rotation.z=-Math.PI/2;
-    for(let i=0;i<2;i++) {const r=mesh(new THREE.TorusGeometry(.22,.025,10,48),gold,scene,2.8+i*.25,.04,-.6+i*.15);r.rotation.x=Math.PI/2;}
-    const balance=new THREE.Group();balance.position.set(-2.8,.3,-.65);scene.add(balance);
+    const balance=new THREE.Group();balance.position.set(.5,.3,-1.25);scene.add(balance);
     box(.035,.6,.035,gold,balance,0,0,0);
     const tray=new THREE.Group();balance.add(tray); box(.9,.035,.27,gold,tray,0,.32,0);
     const ball=mesh(new THREE.SphereGeometry(.085,16,12),waxMat,tray,-.25,.42,0);
@@ -245,17 +234,17 @@ export function PostHeroScene(props: Props) {
     const railCurve=new THREE.CatmullRomCurve3(railPoints);
     mesh(new THREE.TubeGeometry(railCurve,64,.025,6,false),gold,terrace);
     const letterLight=new THREE.SpotLight(0xffe4b7,0,14,.42,.8,1.5);letterLight.position.set(1,5,3);letterLight.target=envelope;scene.add(letterLight);
-    const storyFloor=new THREE.Color(0x3a202b),playFloor=new THREE.Color(0x293128),letterFloor=new THREE.Color(0x281a20),dawnFloor=new THREE.Color(0xb5747c);
-    const darkArchitecture=new THREE.Color(0x311e2a),dawnArchitecture=new THREE.Color(0xe4b6ac);
-    let width=1,height=1, animationFrame=0, effectNonce=-1, effectStart=0;
+    const storyFloor=new THREE.Color(0x3a202b),playFloor=new THREE.Color(0x293128),letterFloor=new THREE.Color(0x281a20),dawnFloor=new THREE.Color(0xb5a18e);
+    const darkArchitecture=new THREE.Color(0x311e2a),dawnArchitecture=new THREE.Color(0xd8c8ac);
+    let effectNonce=-1, effectStart=0;
     function draw() {
       if(disposed)return;
-      const {progress:rawProgress,opening:q,effect,reducedMotion}=latest.current;
+      const {progress:rawProgress,opening:q,effect,reducedMotion}=latest;
       const p=reducedMotion?(rawProgress<.35?.15:rawProgress<.56?.47:rawProgress<.9?.85:1):rawProgress;
       const paperHandoff=rawProgress>=.70&&rawProgress<.86&&q>.9&&width>=600&&!reducedMotion;
       insert.visible=paperHandoff?false:rawProgress<.80;
-      if(effectNonce!==effect.nonce){effectNonce=effect.nonce;effectStart=performance.now();}
-      const phase=reducedMotion?1:Math.min(1,(performance.now()-effectStart)/850);
+      if(effectNonce!==effect.nonce){effectNonce=effect.nonce;effectStart=now;}
+      const phase=reducedMotion?1:Math.min(1,(now-effectStart)/850);
       const table=ease(.23,.48,p), story=1-ease(.27,.48,p);
       const letterFocus=ease(.54,.70,p)*(1-ease(.90,1,p));
       const dawn=ease(.90,1,p);
@@ -285,9 +274,9 @@ export function PostHeroScene(props: Props) {
       rose.color.set(0xc98b72).lerp(new THREE.Color(0xffe7cc),dawn);
       rose.intensity=6*story+2*table+dawn*4;
       letterLight.intensity=letterFocus*11;
-      renderer.toneMappingExposure=.78+table*.12+letterFocus*.04+dawn*.18;
-      (scene.fog as THREE.FogExp2).color.set(0x150f19).lerp(new THREE.Color(0xc6989c),dawn);
-      (scene.fog as THREE.FogExp2).density=.045-letterFocus*.01+dawn*.005;
+      exposure=.78+table*.12+letterFocus*.04+dawn*.18;
+      fog.color.set(0x150f19).lerp(new THREE.Color(0xb6ab9a),dawn);
+      fog.density=.045-letterFocus*.01+dawn*.005;
       const positions=surfaceGeo.attributes.position;
       for(let i=0;i<positions.count;i++) {
         const x=original[i*3],z=original[i*3+2];
@@ -318,11 +307,14 @@ export function PostHeroScene(props: Props) {
       topFold.rotation.x=(1-ease(.62,.75,q))*Math.PI*.94;
       bottomFold.rotation.x=-(1-ease(.73,.86,q))*Math.PI*.94;
       const mobile=width<600;
-      const distance=(mobile?8.5:7.1)-approach*(mobile?.3:1.15)+ending*2.6;
-      camera.position.set((mobile?0:-.5)+Math.sin(p*Math.PI*2)*.35,3.15-approach*.8+ending*1.0+table*(1-approach)*1.05-(width>=600?story*.75:0),distance);
+      const distance=(mobile?8.5:7.6)-approach*(mobile?.3:1.15)+ending*2.6;
+      desiredPosition.set((mobile?0:-.5)+Math.sin(p*Math.PI*2)*.35,3.15-approach*.8+ending*1.0+table*(1-approach)*1.05-(width>=600?story*.75:0),distance);
       const targetX=mobile?.45:THREE.MathUtils.lerp(-1.1,.65,ease(.70,.84,p));
-      camera.lookAt(targetX,.65+approach*.65-ending*.3,-.2);
-      portraitGroup.position.x=mobile?-.9:THREE.MathUtils.lerp(-1.4,1.0,ending);
+      desiredTarget.set(targetX,.65+approach*.65-ending*.3,-.2);
+      if(ownCamera){camera.position.copy(desiredPosition).add(scene.position);camera.lookAt(desiredTarget.clone().add(scene.position));}
+      portraitGroup.position.x=mobile?-.9:THREE.MathUtils.lerp(-.55,1.5,ending);
+      portraitGroup.scale.setScalar(1-letterFocus*.55+ending*.2);
+      portraitGroup.position.z=-1.9-ending*.45;
       portraitGroup.rotation.y=.08;
       const aliases:Record<string,string> = { 'balance-settled':'balance', 'domino-chain':'domino', 'paper-bridge':'bridge', 'rhythm-bridge':'rhythm', 'wax-stamp':'wax', 'wax-press':'wax', 'paper-pocket':'pocket', 'paper-wind':'wind', 'prism-angle':'prism' };
       const effectName=aliases[effect.name]||effect.name;
@@ -369,30 +361,61 @@ export function PostHeroScene(props: Props) {
         lightSignature: `${key.color.getHexString()}:${key.intensity.toFixed(3)}:${key.position.toArray().join(',')}:${letterLight.intensity.toFixed(3)}`,
         floorColor: floorMaterial.color.getHexString(),
       });
-      renderer.render(scene,camera);
-      if(latest.current.onPaperPose) {
+      if(ownCamera)projectPaper();
+      return !reducedMotion&&phase<1&&effect.value!==0;
+    }
+
+    const desiredPosition=new THREE.Vector3(),desiredTarget=new THREE.Vector3();
+    function projectPaper(){
+      scene.updateMatrixWorld(true);camera.updateMatrixWorld(true);
+      if(latest.onPaperPose) {
         const bounds=element.getBoundingClientRect();
         const corners=[[-.88,.93],[.88,.93],[.88,-.93],[-.88,-.93]].map(([x,y])=>{
           const point=insert.localToWorld(new THREE.Vector3(x,y,.015)).project(camera);
           return {x:bounds.left+(point.x+1)*width/2,y:bounds.top+(1-point.y)*height/2};
         });
-        latest.current.onPaperPose({corners,visible:paperHandoff});
+        latest.onPaperPose({corners,visible:latest.progress>=.70&&latest.progress<.86&&latest.opening>.9&&width>=600&&!latest.reducedMotion});
       }
-      if(!reducedMotion&&phase<1&&effect.value!==0&&!animationFrame) animationFrame=requestAnimationFrame(()=>{animationFrame=0;draw();});
 
     }
-    redraw.current=draw;
-    const observer=new ResizeObserver(()=>{width=element.clientWidth||1;height=element.clientHeight||700;renderer.setSize(width,height,false);camera.aspect=width/height;camera.updateProjectionMatrix();draw();});observer.observe(element);
-    const contextLost=(event:Event)=>{event.preventDefault();latest.current.onFailure?.('The 3D view was interrupted. The letter is still available below.');};
-    renderer.domElement.addEventListener('webglcontextlost',contextLost);
-    draw(); latest.current.onReady?.();
-    return ()=>{
-      disposed=true;cancelAnimationFrame(animationFrame);redraw.current=()=>{};observer.disconnect();renderer.setAnimationLoop(null);
-      renderer.domElement.removeEventListener('webglcontextlost',contextLost);
-      const geometries=new Set<THREE.BufferGeometry>(),materials=new Set<THREE.Material>();
-      scene.traverse(object=>{if(object instanceof THREE.Mesh||object instanceof THREE.Line){geometries.add(object.geometry);(Array.isArray(object.material)?object.material:[object.material]).forEach(m=>materials.add(m));}});
-      geometries.forEach(g=>g.dispose());materials.forEach(m=>m.dispose());portraitTexture.dispose();foilTexture.dispose();paperLabelTextures.forEach(texture=>texture.dispose());grainTexture.dispose();environment.dispose();renderer.dispose();renderer.forceContextLoss();renderer.domElement.remove();
+    return {
+      root:scene,
+      update(state:PostHeroState,viewport:{width:number;height:number;ownCamera?:boolean;now?:number}){
+        latest=state;width=viewport.width;height=viewport.height;ownCamera=viewport.ownCamera??true;now=viewport.now??performance.now();
+        const needsFrame=draw();return {position:desiredPosition.clone(),target:desiredTarget.clone(),needsFrame};
+      },
+      projectPaper,
+      applyAtmosphere(){worldScene.environment=environment.texture;worldScene.environmentIntensity=.45;worldScene.fog=fog;renderer.toneMappingExposure=exposure;},
+      dispose(){
+        disposed=true;scene.removeFromParent();
+        const geometries=new Set<THREE.BufferGeometry>(),materials=new Set<THREE.Material>();
+        scene.traverse(object=>{if(object instanceof THREE.Mesh||object instanceof THREE.Line){geometries.add(object.geometry);(Array.isArray(object.material)?object.material:[object.material]).forEach(m=>materials.add(m));}});
+        geometries.forEach(g=>g.dispose());materials.forEach(m=>m.dispose());portraitTexture.dispose();portraitMask?.dispose();foilTexture.dispose();paperLabelTextures.forEach(texture=>texture.dispose());grainTexture.dispose();environment.dispose();
+        if(worldScene.environment===environment.texture)worldScene.environment=null;
+        if(worldScene.fog===fog)worldScene.fog=null;
+      }
     };
-  }, [props.portraitSrc]);
-  return <div ref={host} className="post-hero-scene" style={{width:'100%',height:'100%',minHeight:400}} />;
+}
+
+export function PostHeroScene(props:PostHeroState){
+ const host=useRef<HTMLDivElement>(null),latest=useRef(props);latest.current=props;
+ const redraw=useRef<()=>void>(()=>{});
+ useEffect(()=>{redraw.current();},[props.progress,props.opening,props.effect,props.reducedMotion]);
+ useEffect(()=>{
+  if(!host.current)return;const element=host.current;let renderer:THREE.WebGLRenderer;
+  try{renderer=new THREE.WebGLRenderer({antialias:true,alpha:true,powerPreference:'low-power'});}catch{latest.current.onFailure?.('WebGL is unavailable. The complete letter remains available below.');return;}
+  renderer.setPixelRatio(Math.min(window.devicePixelRatio||1,1.5));renderer.shadowMap.enabled=true;renderer.shadowMap.type=THREE.PCFSoftShadowMap;renderer.outputColorSpace=THREE.SRGBColorSpace;renderer.toneMapping=THREE.ACESFilmicToneMapping;
+  renderer.domElement.setAttribute('aria-hidden','true');renderer.domElement.style.cssText='width:100%;height:100%;display:block';element.appendChild(renderer.domElement);
+  const scene=new THREE.Scene(),camera=new THREE.PerspectiveCamera(38,1,.05,60);
+  let width=1,height=1,frame=0,disposed=false;
+  const collection=createPostHeroCollection({scene,camera,renderer,host:element,onInvalidate:()=>request()},latest.current);
+  function draw(){if(disposed)return;const pose=collection.update(latest.current,{width,height});collection.applyAtmosphere();renderer.render(scene,camera);if(pose.needsFrame)request();}
+  function request(){if(!frame)frame=requestAnimationFrame(()=>{frame=0;draw();});}
+  redraw.current=draw;
+  const observer=new ResizeObserver(()=>{width=element.clientWidth||1;height=element.clientHeight||700;renderer.setSize(width,height,false);camera.aspect=width/height;camera.updateProjectionMatrix();draw();});observer.observe(element);
+  const contextLost=(event:Event)=>{event.preventDefault();latest.current.onFailure?.('The 3D view was interrupted. The letter is still available below.');};renderer.domElement.addEventListener('webglcontextlost',contextLost);
+  draw();latest.current.onReady?.();
+  return()=>{disposed=true;cancelAnimationFrame(frame);redraw.current=()=>{};observer.disconnect();renderer.domElement.removeEventListener('webglcontextlost',contextLost);collection.dispose();renderer.dispose();renderer.forceContextLoss();renderer.domElement.remove();};
+ },[props.portraitSrc,props.portraitMaskSrc]);
+ return <div ref={host} className="post-hero-scene" style={{width:'100%',height:'100%',minHeight:400}}/>;
 }

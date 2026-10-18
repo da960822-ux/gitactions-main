@@ -22,7 +22,7 @@ export function createEnvelopeState(): EnvelopeState {
 
 export function updateEnvelopeFromScroll(state: EnvelopeState, sceneP: number): EnvelopeState {
   const inRange = clamp01(sceneP) >= LETTER_RANGE[0];
-  return { manual: !inRange && state.previousInRange ? null : state.manual, previousInRange: inRange };
+  return { manual: state.manual, previousInRange: inRange };
 }
 
 export function toggleEnvelope(state: EnvelopeState, sceneP: number): EnvelopeState {
@@ -38,7 +38,7 @@ export function envelopeTarget(state: EnvelopeState, sceneP: number): number {
   return state.manual === null ? letterOpenProgress(sceneP) : state.manual ? 1 : 0;
 }
 
-export type LocalPreferences = { effectsEnabled?: boolean; stamp?: 'YL' | 'heart'; decor?: 'gem' | 'clip' };
+export type LocalPreferences = { effectsEnabled?: boolean; stamp?: 'YL' | 'heart'; decor?: 'gem' | 'clip'; pawn?: number };
 
 export function loadPreferences(storage: Pick<Storage, 'getItem'> | null | undefined, key: string): LocalPreferences {
   try {
@@ -50,6 +50,7 @@ export function loadPreferences(storage: Pick<Storage, 'getItem'> | null | undef
     return {
       ...(typeof data.effectsEnabled === 'boolean' ? { effectsEnabled: data.effectsEnabled } : {}),
       ...(data.stamp === 'YL' || data.stamp === 'heart' ? { stamp: data.stamp } : {}),
+      ...(typeof data.pawn === 'number' && Number.isInteger(data.pawn) && data.pawn >= 0 && data.pawn < 7 ? { pawn: data.pawn } : {}),
       ...(data.decor === 'gem' || data.decor === 'clip' ? { decor: data.decor } : {}),
     };
   } catch {

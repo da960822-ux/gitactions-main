@@ -12,7 +12,7 @@ test('normalized progress clamps finite values and maps letter range', () => {
   assert.equal(letterOpenProgress(0.76), 1);
 });
 
-test('manual click persists within letter section and clears after leaving', () => {
+test('manual letter state survives forward, reverse and mid-scroll direction changes', () => {
   let state = createEnvelopeState();
   state = toggleEnvelope(state, 0.62);
   assert.equal(envelopeTarget(state, 0.62), 1);
@@ -29,11 +29,13 @@ test('manual click persists within letter section and clears after leaving', () 
   const reopenedAtLetter = reopenEnvelope(createEnvelopeState());
   assert.equal(envelopeTarget(reopenedAtLetter, 0.86), 1);
   assert.equal(envelopeTarget(updateEnvelopeFromScroll(reopenedAtLetter, 0.86), 0.86), 1);
-  assert.equal(envelopeTarget(updateEnvelopeFromScroll(reopenedAtLetter, 0.4), 0.4), 0);
+  assert.equal(envelopeTarget(updateEnvelopeFromScroll(reopenedAtLetter, 0.4), 0.4), 1);
 });
 
 test('preferences tolerate invalid and unavailable storage', () => {
   assert.deepEqual(loadPreferences(null, 'p'), {});
+  assert.deepEqual(loadPreferences({getItem:()=>'{"pawn":6}'}, 'p'), {pawn:6});
+  assert.deepEqual(loadPreferences({getItem:()=>'{"pawn":7}'}, 'p'), {});
   assert.deepEqual(loadPreferences({ getItem: () => '{bad' }, 'p'), {});
   const values = new Map<string, string>();
   const store = { getItem: (key: string) => values.get(key) ?? null, setItem: (key: string, value: string) => { values.set(key, value); } };

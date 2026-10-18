@@ -2,6 +2,7 @@ import { useEffect, useRef, useState } from 'react';
 import type { PointerEvent } from 'react';
 import { createDominoState, isDominoChainComplete, loadPreferences, placeDominoTile, savePreferences } from './interaction';
 import './details.css';
+import AssetPlayground from './AssetPlayground';
 
 type Props = { language: 'ko' | 'es'; reducedMotion: boolean; onEffect: (name: string, value?: number) => void };
 type Point = { x: number; y: number };
@@ -14,7 +15,7 @@ const rhythm = [0, 2, 1];
 const PREF_KEY = 'post-hero-preview:v1';
 
 function save(prefs: { effectsEnabled: boolean; stamp: 'YL' | 'heart'; decor?: 'gem' | 'clip' }) {
-  try { return savePreferences(window.localStorage, PREF_KEY, prefs); } catch { return false; }
+  try { return savePreferences(window.localStorage, PREF_KEY, {...readPrefs(),...prefs}); } catch { return false; }
 }
 function readPrefs() {
   try { return loadPreferences(window.localStorage, PREF_KEY); } catch { return {}; }
@@ -154,6 +155,7 @@ export default function Details({ language, reducedMotion, onEffect }: Props) {
         {saved && <small>{t.saved}</small>}
       </article>
     </div>
+    <AssetPlayground language={language} reducedMotion={reducedMotion}/>
     <p className="details-footnote">{t.tip}</p>
   </section>;
 }
