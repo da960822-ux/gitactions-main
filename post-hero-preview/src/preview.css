@@ -19,3 +19,25 @@
  .intro .scroll-cue{margin-top:8px}
  .letter-is-open .world{opacity:.55}
 }
+/* The persistent world changes light and space; no repeated universe image. */
+.post-hero-preview{--play-warmth:0%;--dawn:0%}
+.post-hero-preview .world{background:radial-gradient(ellipse at 70% 40%,#6c3d3428,transparent 65%),color-mix(in srgb,color-mix(in srgb,#160e17,#302016 var(--play-warmth)),#e9d9c5 var(--dawn))}
+.post-hero-preview .world-vignette{background:linear-gradient(90deg,color-mix(in srgb,#160e17db,#e9d9c5bb var(--dawn)),transparent 67%),linear-gradient(0deg,color-mix(in srgb,#160e1755,#e9d9c555 var(--dawn)),transparent 55%)}
+.post-hero-preview[data-stage='letter'] .world-vignette{background:radial-gradient(ellipse at 72% 35%,transparent 0 22%,#180f1a66 70%),linear-gradient(90deg,#160e17bd,transparent 65%)}
+.letter-section{background:linear-gradient(#160e1700,#160e17cc 20%,#160e17e8 85%,#160e1700)}
+.letter-paper{box-shadow:0 32px 110px #050207b3,0 0 0 1px #ffebce40}
+.ending-copy,.ending footer,.ending-rule{color:color-mix(in srgb,#faeee6,#402a33 var(--dawn))}
+.ending .eyebrow,.ending .text-button,.ending footer a{color:color-mix(in srgb,#d7a18f,#704353 var(--dawn))}
+.ending h2 em{color:color-mix(in srgb,#e4af9a,#82394b var(--dawn))}
+.ending-rule{background:color-mix(in srgb,#d7a18f30,#824c5a55 var(--dawn))}
+.post-hero-preview[data-stage='ending'] .preview-status{background:#e9d9c5;color:#6e4b56;border-color:#7b293d22}
+.post-hero-preview[data-stage='ending'] .preview-status details p{color:#704353}
+@media(max-width:600px){
+ .post-hero-preview .world-vignette{background:linear-gradient(180deg,color-mix(in srgb,#160e1733,#e9d9c533 var(--dawn)),transparent 35%,color-mix(in srgb,#160e1755,#e9d9c555 var(--dawn)))}
+ .post-hero-preview[data-stage='letter'] .world-vignette{background:linear-gradient(180deg,#160e1777,transparent 55%,#160e1755)}
+}
+
+.chapter h1,.chapter h2,.ending h2{word-break:keep-all;overflow-wrap:normal}
+.post-hero-preview[data-stage='ending'] .ending .primary-button{background:#82394b;border-color:#82394b;color:#fff1e2}
+.post-hero-preview{background:color-mix(in srgb,#160e17,#e9d9c5 var(--dawn))}
+@media(max-width:600px){.post-hero-preview[data-stage='ending'] .world{opacity:1}}

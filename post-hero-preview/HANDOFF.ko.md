@@ -33,4 +33,8 @@ Luna는 순수상태/단위테스트·도미노실제타일연결·균형·200�
 
 `npm run build` TypeScript/Vite 통과, `npm test` 상태·저장·도미노검증4개통과. 실제Chromium/WebGL검수스크립트는 `scripts/verify-preview.mjs`, 캡처와정확한최종결과는 `output/playwright/qa-report.json`이다. KO/es-DO원문,실제메시개봉·복귀,미니상호작용,1440/768/390과축소모션을확인한다. Safari/실제물리기기/60fps나온라인동기화검수로확대하지않는다. 긴영상렌더·베이크·push·배포는하지않았다.
 
-최종 결과: Chromium 실제 검수 51/51 통과(기본38+복귀/모바일11+최종구도2), JavaScript 예외0, 실제캡처12개. 추적가능한요약은 review/qa-report.json에도보존했다.
+기준 커밋 fcf726a의 결과: Chromium 실제 검수 51/51 통과(기본38+복귀/모바일11+최종구도2), JavaScript 예외0, 실제캡처12개. 추적가능한요약은 review/qa-report.json에도보존했다.
+
+## 장면별 시각 보정 후속
+
+스토리 접힌 지형→놀이 테이블→편지 조명→밝은 열린 테라스로 같은 오브젝트/표면을 변형했다. 상세 개선·남은 디자인 문제·1600×1000 단일 캡처는 `review/VISUAL-REVIEW.ko.md`와 `review/stage-review.json`을 참조한다. 이전 51개 전체를 새 보정 후 재통과했다고 확대하지 않는다.

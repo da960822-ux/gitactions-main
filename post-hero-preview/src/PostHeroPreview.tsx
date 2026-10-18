@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useRef, useState } from 'react';
+import { useCallback, useEffect, useRef, useState, type CSSProperties } from 'react';
 import { landingCopy } from '../../src/copy/home';
 import { PostHeroScene } from './Scene';
 import Details from './Details';
@@ -69,7 +69,11 @@ export function PostHeroPreview() {
  const readLetter=(event?:React.MouseEvent)=>{event?.preventDefault();control.current=reopenEnvelope(control.current);q.current=1;setOpening(1);refreshTarget();document.getElementById('papi-letter')?.scrollIntoView({behavior:'instant',block:'start'});};
  useEffect(()=>{if(location.hash==='#papi-letter')readLetter();},[]);
  const letterVisible=opening>.9;
- return <main className={`post-hero-preview ${letterVisible?'letter-is-open':''}`} data-scene-ready={sceneReady} data-opening={opening.toFixed(3)} data-progress={progress.toFixed(3)}>
+ const stage=progress<.35?'story':progress<.56?'play':progress<.90?'letter':'ending';
+ const playWarmth=clamp01((progress-.27)/.15)*(1-clamp01((progress-.54)/.16));
+ const dawn=clamp01((progress-.9)/.1);
+ const stageStyle={'--play-warmth':`${playWarmth*100}%`,'--dawn':`${dawn*100}%`} as CSSProperties;
+ return <main className={`post-hero-preview ${letterVisible?'letter-is-open':''}`} data-stage={stage} style={stageStyle} data-scene-ready={sceneReady} data-opening={opening.toFixed(3)} data-progress={progress.toFixed(3)}>
   <div className="world" aria-hidden="true">
    {!sceneError&&<PostHeroScene progress={progress} opening={opening} reducedMotion={reducedMotion} effect={effect} portraitSrc="/images/yeonseok-lisbeth-cutout.webp" onReady={()=>setSceneReady(true)} onFailure={setSceneError}/>}
    {sceneError&&<div className="world-fallback"><img src="/images/lisbeth-letter-envelope.webp" alt=""/></div>}
