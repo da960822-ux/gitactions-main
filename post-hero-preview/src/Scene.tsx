@@ -2,10 +2,13 @@ import { useEffect, useRef } from 'react';
 import * as THREE from 'three';
 import { RoomEnvironment } from 'three/addons/environments/RoomEnvironment.js';
 
+export type PaperPose = { corners: Array<{ x: number; y: number }>; visible: boolean };
+
 type Props = {
   progress: number; opening: number; reducedMotion: boolean;
   effect: { name: string; value: number; nonce: number };
   portraitSrc: string; onReady?: () => void; onFailure?: (message: string) => void;
+  onPaperPose?: (pose: PaperPose) => void;
 };
 const ease = (a: number, b: number, v: number) => {
   const t = THREE.MathUtils.clamp((v - a) / (b - a), 0, 1);
@@ -108,6 +111,18 @@ export function PostHeroScene(props: Props) {
     for (const x of [-.81,.81]) box(.009,.51,.003,gold,insert,x,0,.012);
     box(1.62,.009,.003,gold,topFold,0,.55,.012);
     box(1.62,.009,.003,gold,bottomFold,0,-.55,.012);
+    const paperLabelTextures:THREE.CanvasTexture[]=[];
+    for(const [text,parent,y] of [
+      ['For my Mami ♡',topFold,.38],
+      ['Your Papi, Yeonseok ♡',bottomFold,-.43],
+    ] as const) {
+      const canvas=document.createElement('canvas');canvas.width=1024;canvas.height=160;
+      const context=canvas.getContext('2d');
+      if(context){context.fillStyle='#785047';context.font='italic 48px Georgia, serif';context.textAlign='center';context.textBaseline='middle';context.fillText(text,512,80);}
+      const texture=new THREE.CanvasTexture(canvas);texture.colorSpace=THREE.SRGBColorSpace;paperLabelTextures.push(texture);
+      const label=mesh(new THREE.PlaneGeometry(1.5,.234),new THREE.MeshBasicMaterial({map:texture,transparent:true,depthWrite:false,toneMapped:false}),parent,0,y,.015);
+      label.castShadow=false;
+    }
     const portraitGroup=new THREE.Group(); portraitGroup.position.set(-1.4,.04,-1.9); scene.add(portraitGroup);
     let disposed=false;
     const portraitTexture = new THREE.TextureLoader().load(props.portraitSrc, texture => {
@@ -184,12 +199,13 @@ export function PostHeroScene(props: Props) {
     [...dominoes,drawer,pencil,balance,pocket,lensRig,waxSample,imprint,stamp,strip,...bars,bridge].forEach(object=>playProps.attach(object));
     const architecture=new THREE.Group();architecture.position.z=-4.1;scene.add(architecture);
     const architectureMaterial=new THREE.MeshStandardMaterial({color:0x311e2a,roughness:.8,metalness:.1,side:THREE.DoubleSide});
+    const trimMaterial=new THREE.MeshStandardMaterial({color:0x4b343b,roughness:.94,metalness:.04});
     const doors:THREE.Group[]=[];
     for(const side of [-1,1]) {
       const door=new THREE.Group();door.position.set(side*3.65,0,0);architecture.add(door);doors.push(door);
-      box(3.5,3.25,.16,architectureMaterial,door,-side*1.75,1.625,0);
-      box(.025,3.15,.025,gold,door,-side*3.42,1.625,.1);
-      for(let i=0;i<5;i++)box(3.25,.012,.025,gold,door,-side*1.75,.3+i*.6,.105);
+      box(3.5,4.5,.16,architectureMaterial,door,-side*1.75,2.25,0);
+      box(.018,4.4,.025,trimMaterial,door,-side*3.42,2.25,.1);
+      for(let i=0;i<2;i++)box(3.25,.009,.025,trimMaterial,door,-side*1.75,.7+i*1.25,.105);
     }
     const terrace=new THREE.Group();terrace.position.set(0,0,-4.45);scene.add(terrace);
     for(let i=0;i<15;i++) {
@@ -207,7 +223,8 @@ export function PostHeroScene(props: Props) {
       if(disposed)return;
       const {progress:rawProgress,opening:q,effect,reducedMotion}=latest.current;
       const p=reducedMotion?(rawProgress<.35?.15:rawProgress<.56?.47:rawProgress<.9?.85:1):rawProgress;
-      insert.visible=rawProgress<.80;
+      const paperHandoff=rawProgress>=.70&&rawProgress<.86&&q>.9&&width>=600&&!reducedMotion;
+      insert.visible=paperHandoff?false:rawProgress<.80;
       if(effectNonce!==effect.nonce){effectNonce=effect.nonce;effectStart=performance.now();}
       const phase=reducedMotion?1:Math.min(1,(performance.now()-effectStart)/850);
       const table=ease(.23,.48,p), story=1-ease(.27,.48,p);
@@ -217,6 +234,7 @@ export function PostHeroScene(props: Props) {
       floorMaterial.roughness=.9-table*.2+dawn*.15;
       floorMaterial.metalness=.04+table*.13-dawn*.12;
       architectureMaterial.color.copy(darkArchitecture).lerp(dawnArchitecture,dawn);
+      trimMaterial.color.set(0x4b343b).lerp(architectureMaterial.color,letterFocus*.75).lerp(new THREE.Color(0xc09c94),dawn);
       doors.forEach((door,i)=>{door.rotation.y=(i===0?-1:1)*(table*.20+dawn*1.18);});
       terrace.visible=dawn>.02;terrace.scale.y=Math.max(.01,dawn);
       const propPresence=table*(1-letterFocus*.97)*(1-dawn);
@@ -236,8 +254,11 @@ export function PostHeroScene(props: Props) {
       const positions=surfaceGeo.attributes.position;
       for(let i=0;i<positions.count;i++) {
         const x=original[i*3],z=original[i*3+2];
-        const fold=Math.exp(-Math.pow((Math.abs(x)-2.7)/.95,2))*(.16+story*2.3)*(1-table*.92);
-        positions.setY(i,fold+.06*Math.sin(z*1.4+x*.4)*(1-table)+dawn*.035*x*x);
+        const lobe=x<0?Math.exp(-Math.pow((x+3.25)/1.1,2)):Math.exp(-Math.pow((x-3.55)/1.3,2));
+        const fold=lobe*(.16+story*1.3)*(1-table*.92);
+        let surfaceY=fold+.06*Math.sin(z*1.4+x*.4)*(1-table)+dawn*.035*x*x;
+        if(x>=-1.8&&x<=2.1)surfaceY=Math.min(.15,surfaceY);
+        positions.setY(i,surfaceY);
       }
       positions.needsUpdate=true;surfaceGeo.computeVertexNormals();
       const approach=ease(.53,.68,p), ending=ease(.9,1,p);
@@ -301,6 +322,14 @@ export function PostHeroScene(props: Props) {
         floorColor: floorMaterial.color.getHexString(),
       });
       renderer.render(scene,camera);
+      if(latest.current.onPaperPose) {
+        const bounds=element.getBoundingClientRect();
+        const corners=[[-.88,.93],[.88,.93],[.88,-.93],[-.88,-.93]].map(([x,y])=>{
+          const point=insert.localToWorld(new THREE.Vector3(x,y,.015)).project(camera);
+          return {x:bounds.left+(point.x+1)*width/2,y:bounds.top+(1-point.y)*height/2};
+        });
+        latest.current.onPaperPose({corners,visible:paperHandoff});
+      }
       if(!reducedMotion&&phase<1&&effect.value!==0&&!animationFrame) animationFrame=requestAnimationFrame(()=>{animationFrame=0;draw();});
 
     }
@@ -314,7 +343,7 @@ export function PostHeroScene(props: Props) {
       renderer.domElement.removeEventListener('webglcontextlost',contextLost);
       const geometries=new Set<THREE.BufferGeometry>(),materials=new Set<THREE.Material>();
       scene.traverse(object=>{if(object instanceof THREE.Mesh||object instanceof THREE.Line){geometries.add(object.geometry);(Array.isArray(object.material)?object.material:[object.material]).forEach(m=>materials.add(m));}});
-      geometries.forEach(g=>g.dispose());materials.forEach(m=>m.dispose());portraitTexture.dispose();foilTexture.dispose();environment.dispose();renderer.dispose();renderer.forceContextLoss();renderer.domElement.remove();
+      geometries.forEach(g=>g.dispose());materials.forEach(m=>m.dispose());portraitTexture.dispose();foilTexture.dispose();paperLabelTextures.forEach(texture=>texture.dispose());environment.dispose();renderer.dispose();renderer.forceContextLoss();renderer.domElement.remove();
     };
   }, [props.portraitSrc]);
   return <div ref={host} className="post-hero-scene" style={{width:'100%',height:'100%',minHeight:400}} />;

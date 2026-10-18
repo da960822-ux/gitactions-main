@@ -12,7 +12,7 @@
       "language": "ko",
       "requestedStage": "play",
       "overflow": false,
-      "stage": "play",
+      "stage": "story",
       "worldTop": 489.515625,
       "viewportHeight": 844
     },
@@ -28,10 +28,10 @@
       "language": "ko",
       "requestedStage": "ending",
       "overflow": false,
-      "stage": "letter",
+      "stage": "ending",
       "worldTop": 489.515625,
       "viewportHeight": 844,
-      "headingBackgroundContrast": 16.62058145644014
+      "headingBackgroundContrast": 9.515490741120995
     },
     {
       "language": "es",
@@ -61,10 +61,10 @@
       "language": "es",
       "requestedStage": "ending",
       "overflow": false,
-      "stage": "ending",
+      "stage": "letter",
       "worldTop": 489.515625,
       "viewportHeight": 844,
-      "headingBackgroundContrast": 9.515490741120995
+      "headingBackgroundContrast": 16.62058145644014
     }
   ]
 }

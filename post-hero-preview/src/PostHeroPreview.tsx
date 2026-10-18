@@ -1,6 +1,7 @@
 import { useCallback, useEffect, useRef, useState, type CSSProperties } from 'react';
 import { landingCopy } from '../../src/copy/home';
-import { PostHeroScene } from './Scene';
+import { PostHeroScene, type PaperPose } from './Scene';
+import { paperTransform, blendPaperCorners } from './paperProjection';
 import Details from './Details';
 import { clamp01, createEnvelopeState, updateEnvelopeFromScroll, toggleEnvelope, reopenEnvelope, envelopeTarget } from './interaction';
 
@@ -23,6 +24,18 @@ export function PostHeroPreview() {
  const control=useRef(createEnvelopeState());
  const q=useRef(0), p=useRef(0), target=useRef(0), reduced=useRef(reducedMotion);
  const opener=useRef<HTMLButtonElement>(null);
+ const paper=useRef<HTMLElement>(null),paperSlot=useRef<HTMLDivElement>(null);
+ const trackPaper=useCallback((pose:PaperPose)=>{
+   const article=paper.current,slot=paperSlot.current;if(!article||!slot)return;
+   if(!pose.visible){article.removeAttribute('data-tracking');article.removeAttribute('data-paper-corners');article.style.removeProperty('position');article.style.removeProperty('left');article.style.removeProperty('top');article.style.removeProperty('width');article.style.removeProperty('transform');slot.style.removeProperty('height');return;}
+   const bounds=slot.getBoundingClientRect(),width=bounds.width,height=article.offsetHeight;
+   if(!width||!height)return;
+   slot.style.height=`${height}px`;
+   const destination=[{x:bounds.left,y:bounds.top},{x:bounds.right,y:bounds.top},{x:bounds.right,y:bounds.top+height},{x:bounds.left,y:bounds.top+height}];
+   const corners=blendPaperCorners(pose.corners,destination,clamp01((p.current-.70)/.16));
+   const transform=paperTransform(corners,width,height);if(!transform)return;
+   article.dataset.tracking='true';article.dataset.paperCorners=JSON.stringify(corners);article.style.position='fixed';article.style.left='0';article.style.top='0';article.style.width=`${width}px`;article.style.transform=transform;
+ },[]);
  const copy=landingCopy[language], text=story[language];
  const setNewEffect=useCallback((name:string,value=1)=>setEffect(old=>({name,value,nonce:old.nonce+1})),[]);
  const refreshTarget=useCallback(()=>{target.current=reduced.current&&control.current.manual===null?(p.current>=.57?1:0):envelopeTarget(control.current,p.current);},[]);
@@ -75,7 +88,7 @@ export function PostHeroPreview() {
  const stageStyle={'--play-warmth':`${playWarmth*100}%`,'--dawn':`${dawn*100}%`} as CSSProperties;
  return <main className={`post-hero-preview ${letterVisible?'letter-is-open':''}`} data-stage={stage} style={stageStyle} data-scene-ready={sceneReady} data-opening={opening.toFixed(3)} data-progress={progress.toFixed(3)}>
   <div className="world" aria-hidden="true">
-   {!sceneError&&<PostHeroScene progress={progress} opening={opening} reducedMotion={reducedMotion} effect={effect} portraitSrc="/images/yeonseok-lisbeth-cutout.webp" onReady={()=>setSceneReady(true)} onFailure={setSceneError}/>}
+   {!sceneError&&<PostHeroScene progress={progress} opening={opening} reducedMotion={reducedMotion} effect={effect} portraitSrc="/images/yeonseok-lisbeth-cutout.webp" onPaperPose={trackPaper} onReady={()=>setSceneReady(true)} onFailure={setSceneError}/>}
    {sceneError&&<div className="world-fallback"><img src="/images/lisbeth-letter-envelope.webp" alt=""/></div>}
    <div className="world-vignette"/>
   </div>
@@ -93,9 +106,9 @@ export function PostHeroPreview() {
   <section id="letter-scene" className="chapter letter-invitation" data-pose=".62"><div className="chapter-copy"><p className="eyebrow">03 — FOR MY MAMI</p><h2>{text.letter}</h2><p>{text.letterBody}</p><div className="invitation-actions"><button ref={opener} className="primary-button" aria-label={opening>.5?text.close:text.open} aria-expanded={letterVisible} aria-controls="moment-letter-copy" onClick={opening>.5?toggleLetter:openLetter}>{opening>.5?text.close:text.open}<span>{opening>.5?'−':'↗'}</span></button><a href="#papi-letter" className="text-button" onClick={readLetter}>{text.reading}</a></div></div></section>
   <section id="papi-letter" className={`letter-section ${letterVisible?'is-open':'is-folded'}`} data-pose=".86" aria-labelledby="letter-title">
    <div className="letter-section-label"><span className="eyebrow">04 — {text.ready}</span><button className="text-button" aria-label={letterVisible?text.close:text.open} onClick={toggleLetter} aria-expanded={letterVisible} aria-controls="moment-letter-copy">{letterVisible?text.close:text.open} <span>{letterVisible?'−':'+'}</span></button></div>
-   <article className="letter-paper" id="moment-letter-copy" hidden={!letterVisible}>
+   <div className="letter-paper-slot" ref={paperSlot}><article ref={paper} className="letter-paper" id="moment-letter-copy" hidden={!letterVisible}>
     <div className="paper-rule"/><p className="letter-address">{copy.letterAddress}</p><h2 id="letter-title">{copy.letterTitle}</h2>{copy.letterBody.map(paragraph=><p key={paragraph}>{paragraph}</p>)}<p className="letter-signature">{copy.letterSignature}</p><div className="paper-bottom-mark">Y <span>♡</span> L</div>
-   </article>
+   </article></div>
    {!letterVisible&&<div className="closed-note"><span>♡</span><p>{text.sealed}</p><button className="text-button" onClick={()=>{control.current=reopenEnvelope(control.current);refreshTarget();}}>{text.open} ↗</button></div>}
   </section>
   <section className="chapter ending" data-pose="1"><div className="ending-copy"><p className="eyebrow">2025.04.04 — YEONSEOK ♡ LISBETH</p><h2>{text.ending}</h2><div className="ending-actions"><a className="primary-button" href="/#games">{text.play}<span>↗</span></a><a className="text-button" href="/feedback">{text.ideas}</a></div></div><div className="ending-rule"/><footer><span>Para ti, Lisbeth ♡</span><a href="#intro">{text.back} ↑</a></footer></section>

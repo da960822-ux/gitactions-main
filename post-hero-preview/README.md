@@ -24,7 +24,7 @@ Open http://localhost:4178/ . `npm run build` checks TypeScript and creates the 
 
 The original letter source and approved cutout are resolved from this checkout. Vite serves `../public`; the build therefore includes that public directory. Parent integration should use its own current public paths and stop copying unrelated game assets into a dedicated preview build. Existing `/#games` and `/feedback` links describe production targets: this standalone server does not host the game/feedback app. Parent must supply navigation into the real app (or an explicit app-origin) when integrating.
 
-Hero's final object identity/pose, video seam and start/end camera are NOT connected or approved here. No claim is made that DOM letter corners track the 3D insert within2px: this preview transitions to a separately readable normal-flow paper. That precise surface handoff remains integration work, not a passing check.
+Hero's final object identity/pose, video seam and start/end camera are not connected or approved here. Desktop now projects the insert's corners onto the same DOM letter and interpolates to its normal reading position at p=.70–.86. Three static 1600×1000 poses have under .1px DOM bounding-box error against the intended interpolated quad; this does not certify all frames/devices. Mobile and reduced-motion retain the normal reading surface. See review/IMPLEMENTED-VISUAL-PASS.ko.md.
 
 ## Asset-dependent work awaiting main handoff
 
