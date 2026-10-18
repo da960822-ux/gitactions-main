@@ -83,7 +83,7 @@ export function PostHeroPreview({embedded=false,language:externalLanguage,onLang
    const loop=(time:number)=>{tick(time);frame=requestAnimationFrame(loop);};
    frame=requestAnimationFrame(loop);return()=>cancelAnimationFrame(frame);
  },[onRegisterFrame]);
- const openLetter=()=>{control.current=toggleEnvelope(control.current,p.current);refreshTarget();};
+ const openLetter=()=>{control.current=opening>.5?{...control.current,manual:false}:reopenEnvelope(control.current);refreshTarget();};
  const toggleLetter=()=>{
    if(target.current>.5 && document.activeElement?.closest('#moment-letter-copy'))opener.current?.focus();
    control.current=toggleEnvelope(control.current,p.current);refreshTarget();
