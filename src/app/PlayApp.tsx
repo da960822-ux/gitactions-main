@@ -8,6 +8,7 @@ import DominoBoard from './DominoBoard';
 import MarbleBoard from './MarbleBoard';
 import CatchmindTable from './CatchmindTable';
 import { TableGames } from './TableGames';
+import { CoupleResultMoment } from './CoupleResultMoment';
 import { MatchReplay } from './MatchReplay';
 import { DaVinciMatchSummary } from './DaVinciMatchSummary';
 import { RhythmBoard } from './RhythmBoard';
@@ -280,6 +281,7 @@ export function Room({ api, roomId, desktopDisplay = true }: { api: Api; roomId:
           {!!game && <footer className="board-footer"><span>{snapshot.mode === 'online' ? text(language, '이 방의 게임은 두 사람만 볼 수 있어요.', 'Solo ustedes dos pueden ver la partida.') : text(language, '데모 게임은 이 브라우저에서만 보여요.', 'La demo solo se ve en este navegador.')}</span><a href="#game-guide">{text(language, '게임 방법 보기 ↓', 'Ver cómo jugar ↓')}</a></footer>}
         </section>}
         {sameGameReplayAvailable(snapshot.gameId, view) && <SameGameReplay gameId={snapshot.gameId} language={language} pendingGame={snapshot.pendingGame} onReplay={() => chooseGame(snapshot.gameId!)}/>}
+        {snapshot.gameId && <CoupleResultMoment key={`${roomId}:${snapshot.gameId}`} gameId={snapshot.gameId} result={view?.result ?? null} players={snapshot.players} language={language} teams={view?.board?.teams}/>}
         {snapshot.gameId === 'marble' && view?.board?.version === 1 && <p className="marble-legacy-notice">{text(language, '이 저장된 게임은 이전 18칸 보드예요.', 'Esta partida guardada usa el tablero anterior de 18 casillas.')} <Link href="/play">{text(language, '40칸 보드로 하려면 새 게임방 만들기', 'Para jugar en el tablero de 40 casillas, crea una sala nueva')} ↗</Link></p>}
         {!isCatchmind && <aside className={`chat-panel reaction-chat-panel ${chatCollapsed ? 'is-collapsed' : ''}`}>
           <header><h2>{text(language, '표정 보내기', 'Reacciones')}</h2><span className="chat-count">{snapshot.messages.filter(message => reactionForText(message.text)).length}</span><button className="chat-toggle" type="button" aria-expanded={!chatCollapsed} aria-controls="room-reactions" aria-label={text(language, chatCollapsed ? '반응 열기' : '반응 접기', chatCollapsed ? 'Abrir reacciones' : 'Contraer reacciones')} onClick={() => setChatCollapsed(value => !value)}>{chatCollapsed ? '⌄' : '⌃'}</button></header>

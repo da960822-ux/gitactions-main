@@ -1,0 +1,76 @@
+import { useId, useState } from 'react';
+import type { GameId, GameResult, Language, PlayerId } from '../core/types';
+import './couple-result-moment.css';
+
+type CoupleIdentity = 'yeonseok' | 'lisbeth';
+type Player = { id: PlayerId; nickname: string };
+type Props = {
+  gameId: GameId;
+  result: GameResult | null;
+  players: readonly Player[];
+  language: Language;
+  teams?: Record<string, readonly string[]>;
+};
+
+function identity(nickname: string): CoupleIdentity | null {
+  const name = nickname.normalize('NFC').trim().toLowerCase();
+  if (name === 'yeonseok' || name === '연석') return 'yeonseok';
+  if (name === 'lisbeth' || name === '리스벳') return 'lisbeth';
+  return null;
+}
+
+export function coupleResultWinner({ gameId, result, players, teams }: Omit<Props, 'language'>): CoupleIdentity | null {
+  if (!result || (result.winner !== 'p1' && result.winner !== 'p2') || gameId === 'rhythm') return null;
+  const first = players.filter(player => player.id === 'p1');
+  const second = players.filter(player => player.id === 'p2');
+  if (first.length !== 1 || second.length !== 1) return null;
+  const p1 = identity(first[0].nickname), p2 = identity(second[0].nickname);
+  if (!p1 || !p2 || p1 === p2) return null;
+  // Domino winners can be teams; a shared human victory must not become a couple rivalry.
+  const members = gameId === 'domino' ? teams?.[result.winner] : undefined;
+  if (gameId === 'domino' && !members) return null;
+  if (members) {
+    const humans = members.filter(seat => seat === 'p1' || seat === 'p2');
+    if (humans.length !== 1) return null;
+    return humans[0] === 'p1' ? p1 : p2;
+  }
+  return result.winner === 'p1' ? p1 : p2;
+}
+
+export function CoupleResultMoment(props: Props) {
+  const winner = coupleResultWinner(props);
+  return winner ? <ResultPicture key={`${props.gameId}:${winner}`} winner={winner} language={props.language}/> : null;
+}
+
+function ResultPicture({ winner, language }: { winner: CoupleIdentity; language: Language }) {
+  const id = useId();
+  const [dismissed, setDismissed] = useState(false);
+  if (dismissed) return null;
+  const name = winner === 'lisbeth' ? 'Lisbeth' : 'Yeonseok';
+  const es = language === 'es';
+  const alt = winner === 'lisbeth'
+    ? es ? 'Lisbeth celebra sacando la lengua; Yeonseok está cabizbajo en su escritorio.' : '리스벳이 메롱하며 기뻐하고 연석은 책상에서 풀이 죽어 있어요.'
+    : es ? 'Yeonseok celebra aplaudiendo; Lisbeth está frustrada frente a su laptop.' : '연석이 박수치며 기뻐하고 리스벳은 노트북 앞에서 답답해하고 있어요.';
+  return <aside className="couple-result-moment" aria-label={es ? 'Después de la partida' : '한 판 끝나고'}>
+    <div className="couple-result-moment-heading"><p>{es ? `Ganó ${name}. Baby, ¿otra partida? haha` : `${name} 승! Baby, 한 판 더 할까? ㅋㅋㅋ`}</p><button type="button" onClick={() => setDismissed(true)}>{es ? 'Ocultar imagen' : '그림 접기'}</button></div>
+    <svg viewBox="0 0 1672 941" role="img" aria-labelledby={`${id}-title`}>
+      <title id={`${id}-title`}>{alt}</title>
+      <defs>
+        <filter id={`${id}-people`} filterUnits="userSpaceOnUse" x="0" y="0" width="1672" height="941" colorInterpolationFilters="sRGB">
+          <feColorMatrix type="matrix" values="0 0 0 0 1  0 0 0 0 1  0 0 0 0 1  1 -1 -1 0 0"/>
+          <feMorphology operator="dilate" radius="1"/>
+        </filter>
+        <filter id={`${id}-new-pose`} filterUnits="userSpaceOnUse" x="0" y="0" width="1672" height="941" colorInterpolationFilters="sRGB">
+          <feColorMatrix type="matrix" values="0 0 0 0 1  0 0 0 0 1  0 0 0 0 1  1 0 0 0 0"/>
+        </filter>
+        <mask id={`${id}-reaction`} maskUnits="userSpaceOnUse" x="0" y="0" width="1672" height="941" style={{ maskType: 'alpha' }}>
+          {/* Union clears the original arms while preserving the new pose outside the old silhouette. */}
+          <image href="/images/approved-couple-room/foreground-semantic-mask.png" width="1672" height="941" preserveAspectRatio="none" filter={`url(#${id}-people)`} onError={() => setDismissed(true)}/>
+          <image href={`/images/approved-couple-room/result-${winner}-mask.png`} width="1672" height="941" preserveAspectRatio="none" filter={`url(#${id}-new-pose)`} onError={() => setDismissed(true)}/>
+        </mask>
+      </defs>
+      <image href="/images/approved-couple-room/approved-couple-gaming-room.png" width="1672" height="941" onError={() => setDismissed(true)}/>
+      <image href={`/images/approved-couple-room/result-${winner}-wins.png`} width="1672" height="941" mask={`url(#${id}-reaction)`} onError={() => setDismissed(true)}/>
+    </svg>
+  </aside>;
+}
