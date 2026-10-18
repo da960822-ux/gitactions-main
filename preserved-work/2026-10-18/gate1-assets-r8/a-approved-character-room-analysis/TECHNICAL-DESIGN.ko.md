@@ -1,3 +1,5 @@
+> 현재 자산 인수 — 2026-10-18: 사용자가 최종 게임방 적용을 승인했고 직접 첨부했다. 현재 원본은 `public/images/approved-couple-room/approved-couple-gaming-room.png`(1672×941, SHA-256 `a569e1a1ed8c21fffb7a11cc7065816a0882fdaaba3e1a4bcd65dc241681eb26`)이다. 같은 폴더의 `source-sha256.json`과 각 파생 자산 provenance를 따른다. 아래 Library 미확보·방 승인 대기 설명은 과거 전송 장애 기록이며 현재 blocker가 아니다. 얼굴·체형·의상·헤드셋, 여자 노트북/오른쪽 침대 하나, 남자 데스크톱/침대, 분홍 토끼·커플 사진 액자를 보존하고 꽃을 늘리지 않는다. 실제 적용·최신 QA 상태는 구현과 증거에서 별도로 확인한다.
+
 # A 우주 Hero → 반반 게임방: 적용 전 기술 설계
 
 ## 승인 상태와 확보 결과

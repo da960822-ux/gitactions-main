@@ -3,10 +3,10 @@ import {smoothRange} from './poseSpaceV19';
 
 // One indexed sheet keeps its UVs while its silhouette opens into the story wall.
 export function surfacePose(progress:number,entrance=1){
- const keys=[[0,-.35,-1.8,-.4,1.15,.72,-.14,.12],[.32,-1.2,.4,-3.5,4.3,2.6,-.25,1.05],[.55,-3.4,1.1,-12,7,4.4,.15,1.8],[.7,-10,1,-38,9,6,.4,2.2],[1,-11,-1.13,-58,12,8,.13,.12]];
+ const keys=[[0,-.35,-1.8,-.4,1.15,.72,-.14,.12],[.32,-1.2,.4,-3.5,4.3,2.6,-.25,1.05],[.55,-3.4,-2.8,-12,7,4.4,.15,.8],[.7,-11,-3.05,-42,12,16,0,.2],[1,-11,-3.05,-80,16,30,0,.02]];
  const p=Math.max(0,Math.min(1,progress));let i=0;while(i<keys.length-2&&p>keys[i+1][0])i++;
  const a=keys[i],b=keys[i+1],t=smoothRange(a[0],b[0],p),v=a.slice(1).map((x,j)=>x+(b[j+1]-x)*t);
- return{center:v.slice(0,3),width:v[3],height:v[4],yaw:v[5],bend:v[6]+(1-entrance)*.65,pitch:-Math.PI/2*smoothRange(.58,1,p),open:smoothRange(.08,.7,p)};
+ return{center:v.slice(0,3),width:v[3],height:v[4],yaw:v[5],bend:v[6]+(1-entrance)*.65,pitch:-Math.PI/2*smoothRange(.32,.65,p),open:smoothRange(.08,.7,p)};
 }
 export function surfaceVertex(u:number,v:number,p:number,e=1){
  const s=surfacePose(p,e),x=(u-.5)*s.width,y=(v-.5)*s.height;

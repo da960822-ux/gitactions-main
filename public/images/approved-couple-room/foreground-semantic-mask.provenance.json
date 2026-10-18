@@ -1,0 +1,13 @@
+{
+  "tool": "image_gen edit",
+  "role": "semantic opacity mask only; output RGB never used on approved characters",
+  "source": "approved-couple-gaming-room.png",
+  "sha256": "bf4fc92ab334a09bcf8da5e0c3dc164940d879af6058df734addbbdb86b12b01",
+  "categories": {
+    "red": "characters/chairs",
+    "green": "computer/laptop",
+    "blue": "desk and accessories",
+    "yellow": "room rabbit plush"
+  },
+  "limitations": "Generated boundary mask inspected in frontal and oblique software-rendered views; fine edge accuracy remains a visual QA item. All visible character RGB samples come from unchanged original source."
+}

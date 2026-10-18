@@ -1,3 +1,5 @@
+> 현재 지시 — 2026-10-18 인수: 사용자가 승인 우주 Hero→최종 반반 게임방 적용, 후반 통합, 병렬 리디자인과 불필요·중복 문서 정리를 허용했다. 아래의 과거 Gate0 승인 대기·구현 금지·옛 원격 부재는 작성 당시 기록이다. 현재 구현 중단이나 재승인 요구의 근거로 사용하지 않는다. main 병합·배포는 별도 승인 전 금지다. 실제 화면 검수·보호 기능·품질 기준은 계속 유효하다.
+
 # 원문 요구사항 대조표
 
 2026-10-18 · 원문 0–13절과 추가 작업 맥락을 대응한다. **계획 대응표이며 구현 완료표가 아니다.** 검증 열은 후속 수행 계획이고 이번 확인은 제2·7·17절을 따른다. 승인 주체는 사용자이며 ChatGPT는 총괄 검수·권고를 맡는다.
@@ -163,3 +165,42 @@
 | C-14 | 계획 승인 전 구현 금지·승인 대기로 종료 | 1·12·17 | 사용자 명시 승인만 유효, 이전 위임 문구 배제 | 문서 승인 상태 | G0 이후 Gate별 | 명시 사용자 승인 |
 
 총 157개 검토 ID. 개수는 품질·무누락 보증이 아니며 원문 역대조와 사용자 검수를 계속한다. 사용자 계획 명시 승인 대기.
+
+
+## 이전판에만 있던29개 요구 — 통합 보존 부록
+
+이전172ID 표와 본문157ID 표의 공통143개 요구 문구는 동일하다. 본문 C14개가 이전 AS20개/REV9개를 모두 대체한 것으로 간주하지 않고 아래29행을 보존한다. 계획의 작성 당시 근거/승인 표현이며 구현 완료 판정이 아니다. 현재 사용자 직접 지시가 우선한다. 원래 사용자 개발지시0–13절의 독립 원문 전체는 저장소에서 발견하지 못했다. 이 계획·추적표를 원문 전체의 대체물이라고 주장하지 않는다.
+
+| ID | 요구사항 | 계획 절(이전판) | 구체 대응 | 근거/상태 | 검증 방법 | 승인 시점(이전판) |
+|---|---|---|---|---|---|---|
+| AS-01 | 승인 커플 원화 우선·얼굴 임의생성/인물변경 금지 | 9·16 | 원본 픽셀 보존·추가레이어 승인 | 실제 원화치수·사용자 제공·공식 source | 원본 대조/checksum | G0 조사·해당 Gate 전 확인 |
+| AS-02 | 신규필요 자산 제작/요청 | 9·16 | 표면/영상/game preview/사진 | 실제 원화치수·사용자 제공·공식 source | asset manifest | G0 조사·해당 Gate 전 확인 |
+| AS-03 | 자산이름/장면/해상도/형식/alpha/없을때제약 | 9·16 | 제9 자산 matrix 전열 | 실제 원화치수·사용자 제공·공식 source | 자산 준비 gate | G0 조사·해당 Gate 전 확인 |
+| AS-04 | 임시저품질 이미지 최종금지 | 9·16 | 최종source·실제게임·고품질 export | 실제 원화치수·사용자 제공·공식 source | visual/권리 QA | G0 조사·해당 Gate 전 확인 |
+| AS-05 | 한국어 전체문서+짧은요약·Library 납품 | 9·16 | 프로젝트밖 문서·추적표·요약 | 실제 원화치수·사용자 제공·공식 source | 최종 파일 링크 | G0 조사·해당 Gate 전 확인 |
+| AS-06 | 원문보다 구체·누락검사, 분량 재진술 금지 | 9·16 | geometry/camera/interaction/handoff/DOM 검증 | 실제 원화치수·사용자 제공·공식 source | 부모 trace 재검토 | G0 조사·해당 Gate 전 확인 |
+| AS-07 | 실측/설계 숫자 구분 | 9·16 | 모든예산/좌표/시간 목표 표시 | 실제 원화치수·사용자 제공·공식 source | 문서 감사 | G0 조사·해당 Gate 전 확인 |
+| AS-08 | 단순Luna 적극·메인6.1sol medium 유지 | 9·16 | Luna source audit, 메인 최종책임·모델전환 주장없음 | 실제 원화치수·사용자 제공·공식 source | 분담실적 | G0 조사·해당 Gate 전 확인 |
+| AS-09 | 구글 갤러리 자료 사용 가능·서비스추측 금지 | 9·16 | 정확 URL/권리 확인전 사용 보류 | 실제 원화치수·사용자 제공·공식 source | 출처/권한 | G0 조사·해당 Gate 전 확인 |
+| AS-10 | Open-Generative-AI 원본확인 | 9·16 | 소유자URL 미확정·특정repo 단정금지 | 실제 원화치수·사용자 제공·공식 source | 보류 사유 | G0 조사·해당 Gate 전 확인 |
+| AS-11 | HyperFrames/Remotion/BlenderMCP/Manim/algorithmic-art 후보 | 9·16 | 공식source/license/환경/API·비용 분리 | 실제 원화치수·사용자 제공·공식 source | 제16.1 | G0 조사·해당 Gate 전 확인 |
+| AS-12 | 전부 억지설치 금지·미사용 이유 | 9·16 | Blender선정/MCP선택·Manim중복 미선정 | 실제 원화치수·사용자 제공·공식 source | 필요성 비교 | G0 조사·해당 Gate 전 확인 |
+| AS-13 | 필요자산제작 승인·유료/새계정권한 제외 | 9·16 | local first·비용 별도승인 | 실제 원화치수·사용자 제공·공식 source | 외부 API/계정 검토 | G0 조사·해당 Gate 전 확인 |
+| AS-14 | 국적으로 취향단정금지·Baby/게임/실제기억 | 9·16 | 개인 원화/날짜/도미노/이중정답 | 실제 원화치수·사용자 제공·공식 source | 제16.2 | G0 조사·해당 Gate 전 확인 |
+| AS-15 | 기존보다 압도적품질·색/효과수만으론 불가 | 9·16 | 7축 동일동작 before/after | 실제 원화치수·사용자 제공·공식 source | 부모 전체영상/실제화면 판단 | G0 조사·해당 Gate 전 확인 |
+| AS-16 | 최신 승인: 부모 통과후 다음단계, 사용자질문 반복없이 완성까지 | 9·16 | Gate마다 부모 통과·현재는G0 | 실제 원화치수·사용자 제공·공식 source | 구현시작 지시전 대기 | G0 조사·해당 Gate 전 확인 |
+| AS-17 | 환경끊김 확인·중복작업 금지 | 9·16 | 저장문서/git상태 재확인·서버 미시작 | 실제 원화치수·사용자 제공·공식 source | 도구 재호출 성공 | G0 조사·해당 Gate 전 확인 |
+| AS-18 | 최종ES 화면·무추가자막10초 실제browser highlight | 9·16 | 전체Gate 이후 별도 편집추출 | 실제 원화치수·사용자 제공·공식 source | runtime 원본과 구분 | G0 조사·해당 Gate 전 확인 |
+| AS-19 | 스킬 사용 불안 해소: 정확 지침→결정→파일/자산→실제결과 체인 | 17 | 로컬hash/공식commit·읽은범위·새제작미실시 분리 | 실제 읽은 SKILL/소스 | 다음Gate source/render/web연결/browser 증거 없으면 적용미완료 | G0설계·각Gate실제증거 |
+| AS-20 | 기존lock 그대로 npm ci·기존화면 실행 허용 | 2.3·18 | 분석복사본만 복원·1920/1440/390·caa preview 실제캡처 | npm로그·PNG17개·JSON·git clean | 소스/manifest/lock불변·이미지직접검토 | G0진단만, 신규구현금지 |
+| REV-01 | persistent renderer/scene와 gallery 이행 구조 확정 | 19.1 | 단일Host·GalleryCollection·local/world좌표·q입력전환·selected 단일state | 현재gallery원본/설계 | renderer1·raycast/선택/reverse·공유재질·실제raw | G1인터페이스·G3통합 |
+| REV-02 | 공유장면코드→Remotion 실제프레임 export 경로 | 19.2 | purefactory/evaluatePose 공용·canvasadapter·delayRender/continue/cancel | 기존stack/공식Remotion계약 | source→PNG→MP4→웹decode/handoff | G1 |
+| REV-03 | 인물/DOM/video 픽셀소유권·시간 단일매핑 | 20.2 | 인물 단일visible·DOM카피·T(p)·seek generation | 설계계약 | 중복/flash·skip/pointer/scroll/resize/decode실패 | G1·G2 |
+| REV-04 | S00–S06 geometry identity/target/hinge/anchor 표 | 20.1 | FOLD_A/B 지속·신규ID 구분·Host dispose소유 | 설계계약 | 중간shape/UV/normal/교차/역행 | 각Gate |
+| REV-05 | G1 랜딩base 독립시작·게임bundle은 통합에만선행 | 19.3 | 24a6ec6새worktree·T0/T1/T2보호/검증·G3전통합 | 부모df087fc요청전달 | bundle verify/fsck/hash/hunk/route·game smoke | G1착수·G3통합 |
+| REV-06 | 승인표현/기준미실행문구 최신정합 | 1·8·12·13·16.3·18 | 부모각Gate통과·기존baseline실행확인 | 사용자최신위임·실제PNG | 문서정합·원문대조 | G0 |
+| REV-07 | 보조사례 실제 캡처/관찰/적용결정 | 22 | Codrops공식원본로컬실행·4PNG·DOM FLIP한계명시 | ade47c56…·직접이미지검토 | identity/읽기plane만참고·3D진입대체금지 | G0조사 |
+| REV-08 | 정확OpenGenerativeAI신원/비용/GPU검증·Lusion원본시청 | 19.4·21 | 신원확인후최신지시로비채택·추가조사중단; Lusion403 | 공식README/실행진단/403로그 | 생성물비교전미사용; Lusion실제시청은미완료 | G0잔여·해당제작Gate |
+| REV-09 | 게임 최종bundle Library전달·별도clone검증·fullSHA갱신 | 23·19.3 | df087fc85b35edc5e14eb3a196fc0fc60f86dc33를G기준; 앱merge없음 | 복구안내직접읽음·담당검증기록·materialize403 | bytes수령후sha256/verify/fsck/hash재검증 미완료 | Hero비차단·통합전필수 |
+
+이전판 제19–23절의 고유 계약: 전체 지속 renderer/scene/camera와 GalleryCollection의 소유권, 공유 Three factory/pose를 쓰는 Remotion 프레임 렌더·색 관리·세 비율 match, 영상/인물/DOM 픽셀 단일 소유와 T(p)·seek generation, FOLD_A/B geometry identity 및 신규 ID 분리, 독립 Hero 착수와 게임 최종 df087fc의 T0/T1/T2 보호·통합검증이다. 현재 요구에서 유지한다. Open-Generative-AI는 사용자 지시에 따라 비채택이며 Lusion 원본 직접 시청은 과거403으로 미완료였다. 최신 스페인어 실제 브라우저 영상은10초 이내·추가자막 없음, 별도 전체 상호작용 검수증거를 대체하지 않는다.

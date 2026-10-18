@@ -1,0 +1,9 @@
+{
+  "source": "approved-couple-gaming-room.png",
+  "tool": "image_gen edit",
+  "requested": "Two actual game victory reactions. Original background composed under character-only reaction mask.",
+  "assets": {
+    "result-yeonseok-wins.png": "951df23e84b26cfb82432b4a784d7a9045d25729b8795cc303f0d1719d759f1e",
+    "result-lisbeth-wins.png": "09bf706f6528498167dfd02d09347afe8814cc0b7a649b66f1b94c4f184a180e"
+  }
+}
