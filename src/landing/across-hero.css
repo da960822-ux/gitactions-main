@@ -6,7 +6,7 @@
 @media(max-width:1100px) and (min-width:761px){.across-editorial{top:24%;left:5%;width:46%}.across-editorial h1{font-size:6.5vw}.across-editorial .folded-baby{font-size:11vw}.folded-dedication i{display:none}.across-caption{font-size:15px}.landing .across-play{gap:25px}.across-actions{gap:18px}}
 @media(max-width:760px){.landing:has(.folded-playhouse)>.landing-nav{height:auto;padding-top:16px;border:0}.landing:has(.folded-playhouse) .landing-nav .couple-brand{font-size:16px;height:28px}.landing:has(.folded-playhouse) .landing-nav nav{margin-top:8px;border-top:1px solid #c49b9633;gap:5px}.landing:has(.folded-playhouse) .landing-nav nav>a{font-size:10px}.across-stage{height:100svh;min-height:844px}.across-editorial{left:7%;right:7%;top:15%;width:auto}.folded-dedication{font-size:8px;gap:8px;letter-spacing:.12em;margin-bottom:17px}.folded-dedication i{font-size:7px;margin-left:auto}.across-editorial h1{font-size:clamp(38px,10.2vw,68px);line-height:1.08;max-width:82%}.across-editorial .folded-baby{font-size:clamp(68px,17vw,115px);padding-bottom:.05em}.across-caption{font-size:13px;line-height:1.6;margin:18px 0 16px}.across-actions{gap:18px}.landing .across-play{min-height:46px;padding:0 17px;font-size:12px;gap:23px}.across-letter-link{font-size:10px;gap:12px}.across-canvas{top:40%;height:59%}.folded-intro-film{top:40%;height:59%}.folded-portrait-fallback{width:90%;max-height:52%;bottom:7%;right:3%}.folded-side-note{display:none}.across-bottom{left:7%;right:7%;bottom:18px;font-size:7px;letter-spacing:.07em;padding-top:14px}.across-bottom>span:last-child{display:none}.across-bottom a{font-size:8px;gap:14px}.folded-destination{padding:0 24px;justify-content:flex-end;padding-bottom:25%}.folded-destination h2{font-size:44px;margin:22px 0}.folded-skip{right:7%;bottom:73px}}
 @media(prefers-reduced-motion:reduce){.across-stage{min-height:740px}.across-editorial{transform:none!important;opacity:1!important}.folded-destination{display:none}.folded-intro-film{display:none}.across-play,.folded-skip{transition:none}}
-.folded-playhouse.is-intro .across-title-line{opacity:0}
+.folded-playhouse.is-intro .across-title-line{opacity:1}
 
 /* The lightwell stays to the right of the arrival copy. */
 @media(min-width:761px){.folded-destination{align-items:flex-start;text-align:left;padding-left:8%;padding-right:54%;text-shadow:0 2px 24px #06101a}.folded-destination h2{font-size:clamp(52px,4.7vw,90px)}}
@@ -25,3 +25,10 @@
 /* Keep the approved loading composition visible until a completed WebGL frame can replace it. */
 .folded-playhouse .folded-backdrop{background:url('/images/our-universe-scene.webp') 58% 50%/cover no-repeat}.folded-playhouse .across-canvas{opacity:0}.folded-playhouse .across-canvas.is-ready{opacity:1}
 @media(min-width:1101px){.folded-playhouse .folded-portrait-fallback{left:40.1%;top:11.9%;width:41.4%;height:73.7%;right:auto;bottom:auto;max-height:none;object-fit:fill}}
+
+/* Approved reference RGB stays intact; only the supplied opacity mask removes its backdrop. */
+.folded-playhouse .folded-portrait-fallback{mask-image:url('/images/approved-couple-room/character-opacity-mask.png');mask-mode:luminance;mask-size:100% 100%;mask-repeat:no-repeat;object-fit:contain}
+.folded-playhouse .across-stage{min-height:100svh}
+
+/* Keep fallback pixels and its grayscale mask in the same intrinsic image rect. */
+.folded-playhouse .folded-portrait-fallback{height:auto;max-height:none;aspect-ratio:1312/1199;object-fit:fill}

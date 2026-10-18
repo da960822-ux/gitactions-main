@@ -1,5 +1,5 @@
 import {portraitStagePose} from './stageMotionV19';
-export const FLOOR_SUPPORT={height:.75,radiusX:10,radiusZ:7,plateau:0,verticalStart:-2.8,verticalEnd:0}as const;
+export const FLOOR_SUPPORT={height:.48,radiusX:10,radiusZ:7,plateau:0,verticalStart:-2.8,verticalEnd:0}as const;
 export type SupportShape={x:number;z:number;cos:number;sin:number;progress:number};
 export type SupportSample={height:number;dx:number;dy:number;dz:number};
 export function floorSupportShape(progress:number):SupportShape{

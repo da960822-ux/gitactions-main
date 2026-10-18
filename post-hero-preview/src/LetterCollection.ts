@@ -1,7 +1,7 @@
 import * as THREE from 'three';
 
 export type LetterPaperPose = {corners:Array<{x:number;y:number}>;visible:boolean};
-export type LetterFrame = {opening:number;progress:number;width:number;height:number;ownCamera?:boolean;reducedMotion?:boolean;onPaperPose?:(pose:LetterPaperPose)=>void};
+export type LetterFrame = {opening:number;progress:number;width:number;height:number;ownCamera?:boolean;reducedMotion?:boolean;onPaperPose?:(pose:LetterPaperPose)=>void;effect?:{name:string;value:number;nonce:number}};
 
 const ease=(a:number,b:number,value:number)=>{const t=THREE.MathUtils.clamp((value-a)/(b-a),0,1);return t*t*(3-2*t);};
 
@@ -55,7 +55,12 @@ export function createLetterCollection(options:{scene:THREE.Scene;camera:THREE.P
     const wax = mesh(new THREE.CylinderGeometry(.155,.16,.035,40),waxMat,seal); wax.rotation.x=Math.PI/2;
     mesh(new THREE.TorusGeometry(.118,.008,6,40),gold,seal,0,0,.021);
     const heart = new THREE.Shape(); heart.moveTo(0,-.055); heart.bezierCurveTo(-.13,.025,-.06,.10,0,.045); heart.bezierCurveTo(.06,.10,.13,.025,0,-.055);
-    mesh(new THREE.ShapeGeometry(heart),gold,seal,0,0,.024);
+    const heartStamp=mesh(new THREE.ShapeGeometry(heart),gold,seal,0,0,.024);
+    const initialsCanvas=document.createElement('canvas');initialsCanvas.width=256;initialsCanvas.height=256;
+    const initialsContext=initialsCanvas.getContext('2d')!;initialsContext.fillStyle='#d7a18f';initialsContext.font='italic 108px Georgia,serif';initialsContext.textAlign='center';initialsContext.textBaseline='middle';initialsContext.fillText('YL',128,130);
+    const initialsTexture=new THREE.CanvasTexture(initialsCanvas);initialsTexture.colorSpace=THREE.SRGBColorSpace;
+    const initialsStamp=mesh(new THREE.PlaneGeometry(.21,.21),new THREE.MeshBasicMaterial({map:initialsTexture,transparent:true,depthWrite:false,toneMapped:false}),seal,0,0,.025);
+    let heartSelected=false;
     const insert = new THREE.Group();insert.name='letter-insert'; insert.position.set(0,.55,0); envelope.add(insert);
     const panelH=.62;
     box(1.76,panelH,.018,paper,insert,0,0,0);
@@ -93,6 +98,9 @@ export function createLetterCollection(options:{scene:THREE.Scene;camera:THREE.P
   if(disposed)return {position:position.clone(),target:target.clone(),ready:false};
   latest=frame;
   const q=THREE.MathUtils.clamp(Number.isFinite(frame.opening)?frame.opening:0,0,1);
+  if(frame.effect?.name==='wax-stamp')heartSelected=frame.effect.value>0;
+  heartStamp.visible=heartSelected;initialsStamp.visible=!heartSelected;
+  seal.scale.setScalar(frame.effect?.name==='wax-press'&&frame.effect.value>0?.88:1);
   insert.visible=!(q>.9&&Boolean(frame.onPaperPose)&&(frame.progress>=.86||(frame.progress>=.70&&frame.width>=600&&!frame.reducedMotion)));
       flap.rotation.x=-ease(.12,.36,q)*THREE.MathUtils.degToRad(165);
       seal.position.y=.48-ease(.12,.34,q)*.35;
@@ -120,7 +128,7 @@ export function createLetterCollection(options:{scene:THREE.Scene;camera:THREE.P
    if(disposed)return;disposed=true;scene.removeFromParent();
    const geometries=new Set<THREE.BufferGeometry>(),materials=new Set<THREE.Material>();
    scene.traverse(object=>{if(object instanceof THREE.Mesh){geometries.add(object.geometry);(Array.isArray(object.material)?object.material:[object.material]).forEach(material=>materials.add(material));}});
-   geometries.forEach(geometry=>geometry.dispose());materials.forEach(material=>material.dispose());foilTexture.dispose();paperLabelTextures.forEach(texture=>texture.dispose());
+   geometries.forEach(geometry=>geometry.dispose());materials.forEach(material=>material.dispose());foilTexture.dispose();initialsTexture.dispose();paperLabelTextures.forEach(texture=>texture.dispose());
    latest.onPaperPose?.({corners:[],visible:false});
   }
  };

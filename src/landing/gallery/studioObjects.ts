@@ -3,9 +3,9 @@ import {RoundedBoxGeometry} from 'three/addons/geometries/RoundedBoxGeometry.js'
 import {createHeartGeometry} from './heartGeometry';
 
 export function studioMaterials(){return{
- chrome:new T.MeshPhysicalMaterial({color:'#29272b',metalness:1,roughness:.22,clearcoat:1,clearcoatRoughness:.25}),
- gold:new T.MeshPhysicalMaterial({color:'#dba998',metalness:1,roughness:.3,clearcoat:1}),
- ivory:new T.MeshPhysicalMaterial({color:'#f0e6d9',roughness:.35,clearcoat:.7}),
+ chrome:new T.MeshPhysicalMaterial({color:'#30292b',metalness:.72,roughness:.36,clearcoat:.2,clearcoatRoughness:.45}),
+ gold:new T.MeshPhysicalMaterial({color:'#cda88c',metalness:.85,roughness:.38,clearcoat:.2}),
+ ivory:new T.MeshPhysicalMaterial({color:'#f0e6d9',roughness:.55,clearcoat:.12}),
  ink:new T.MeshStandardMaterial({color:'#141216',roughness:.6,metalness:.08}),
  red:new T.MeshPhysicalMaterial({color:'#8d273f',roughness:.28,metalness:.2,clearcoat:1}),
  jade:new T.MeshPhysicalMaterial({color:'#487e73',roughness:.25,metalness:.15,clearcoat:1}),
@@ -31,9 +31,6 @@ function sculptCamel(g:T.Group,m:Materials){
  const geometry=new T.ExtrudeGeometry(s,{depth:.48,bevelEnabled:true,bevelThickness:.07,bevelSize:.07,bevelSegments:8,steps:1,curveSegments:36});geometry.translate(0,0,-.24);mesh(g,geometry,m.gold);
  disc(g,m.ink,.028,1.02,1.035,.32);line(g,m.gold,[[.13,.31,.34],[-.02,.43,.34],[-.3,.39,.34],[-.42,.27,.34]],.018);g.rotation.y=-.3;
 }
-function boardTexture(){const c=document.createElement('canvas');c.width=c.height=768;const p=c.getContext('2d')!;p.fillStyle='#e7dac3';p.fillRect(0,0,768,768);p.strokeStyle='#70554d';p.lineWidth=3;const colors=['#507665','#70637c','#b69556','#975a69'];
- for(let side=0;side<4;side++)for(let i=0;i<10;i++){p.save();p.translate(384,384);p.rotate(side*Math.PI/2);p.translate(-346+i*69,-346);p.fillStyle='#eadfcd';p.fillRect(0,0,68,84);p.strokeRect(0,0,68,84);p.fillStyle=colors[Math.floor(i/3)%4];p.fillRect(0,0,68,17);p.fillStyle='#493b3a';p.textAlign='center';p.font='11px sans-serif';p.fillText(String(side*10+i+1).padStart(2,'0'),34,53);p.restore();}
- p.fillStyle='#392a31';p.fillRect(124,124,520,520);p.strokeStyle='#caa58e';p.strokeRect(132,132,504,504);p.fillStyle='#d7b39b';p.textAlign='center';p.font='38px Georgia';p.fillText('MARBLE',384,348);p.font='17px sans-serif';p.fillText('GWANGJU · SANTO DOMINGO',384,385);p.font='14px sans-serif';p.fillText('FOR THE TWO OF US',384,423);const map=new T.CanvasTexture(c);map.colorSpace=T.SRGBColorSpace;return map;}
 export function normalizeSculpture(art:T.Group){art.updateMatrixWorld(true);const bounds=new T.Box3().setFromObject(art),center=bounds.getCenter(new T.Vector3()),radius=bounds.getBoundingSphere(new T.Sphere()).radius;const g=new T.Group(),scale=new T.Group();art.position.sub(center);scale.scale.setScalar(1/radius);scale.add(art);g.add(scale);return g;}
 export function createGameObject(id:string,m:Materials,onAssetReady=()=>{}){
  const g=new T.Group();
@@ -50,9 +47,10 @@ export function createGameObject(id:string,m:Materials,onAssetReady=()=>{}){
  }else if(id==='minhwatu'){
   ['01-01','03-01','08-01'].forEach((id,i)=>{const card=new T.Group();card.position.set((i-1)*.32,0,(i-1)*.18);card.rotation.z=(i-1)*-.18;box(card,m.chrome,.97,1.59,.095,0,0,0,.025);const map=new T.TextureLoader().load('/images/hwatu/'+id+'.svg',()=>{map.userData.pending=false;onAssetReady();});map.userData.pending=true;map.colorSpace=T.SRGBColorSpace;mesh(card,new T.PlaneGeometry(.91,1.48),new T.MeshStandardMaterial({map,roughness:.65}),0,0,.051);g.add(card);});
  }else if(id==='marble'){
-  box(g,m.chrome,2,2,.17);box(g,m.gold,1.96,1.96,.027,0,0,.096,.025);mesh(g,new T.PlaneGeometry(1.9,1.9),new T.MeshStandardMaterial({map:boardTexture(),roughness:.64}),0,0,.112);
-  const dice=new T.Group();box(dice,m.ivory,.56,.56,.56,0,0,0,.09);pips(dice,m.ink,5,0,.287,.12);const side=new T.Group();pips(side,m.ink,3,0,.287,.12);side.rotation.y=Math.PI/2;dice.add(side);const top=new T.Group();pips(top,m.ink,1,0,.287,.12);top.rotation.x=-Math.PI/2;dice.add(top);dice.position.set(-.38,.32,.46);dice.rotation.set(.19,-.25,.16);g.add(dice);
-  const house=new T.Group();box(house,m.ivory,.48,.42,.34);const roof=new T.Shape();roof.moveTo(-.31,.17);roof.lineTo(0,.48);roof.lineTo(.31,.17);roof.closePath();mesh(house,new T.ExtrudeGeometry(roof,{depth:.4,bevelEnabled:true,bevelSize:.025,bevelThickness:.025,bevelSegments:3}),m.red,0,0,-.2);box(house,m.ink,.1,.19,.015,0,-.105,.178,.012);box(house,m.gold,.08,.09,.015,.14,.04,.178,.01);house.position.set(.41,-.4,.41);house.rotation.y=-.15;g.add(house);g.rotation.z=-.1;
+  const rabbitMap=new T.TextureLoader().load('/images/marble/premium/pawns/lisyeon.webp',()=>{rabbitMap.userData.pending=false;onAssetReady();});rabbitMap.userData.pending=true;rabbitMap.colorSpace=T.SRGBColorSpace;
+  mesh(g,new T.PlaneGeometry(1.12,1.48),new T.MeshBasicMaterial({map:rabbitMap,transparent:true,toneMapped:false,depthWrite:false}),-.32,.12,.22);
+  const dice=new T.Group();box(dice,m.ivory,.56,.56,.56,0,0,0,.09);pips(dice,m.ink,5,0,.287,.12);const side=new T.Group();pips(side,m.ink,3,0,.287,.12);side.rotation.y=Math.PI/2;dice.add(side);const top=new T.Group();pips(top,m.ink,1,0,.287,.12);top.rotation.x=-Math.PI/2;dice.add(top);dice.position.set(.4,-.36,.42);dice.rotation.set(.19,-.25,.16);g.add(dice);
+  const house=new T.Group();box(house,m.ivory,.48,.42,.34);const roof=new T.Shape();roof.moveTo(-.31,.17);roof.lineTo(0,.48);roof.lineTo(.31,.17);roof.closePath();mesh(house,new T.ExtrudeGeometry(roof,{depth:.4,bevelEnabled:true,bevelSize:.025,bevelThickness:.025,bevelSegments:3}),m.red,0,0,-.2);box(house,m.ink,.1,.19,.015,0,-.105,.178,.012);box(house,m.gold,.08,.09,.015,.14,.04,.178,.01);house.position.set(.66,.38,.05);house.rotation.y=-.15;g.add(house);g.rotation.z=-.1;
  }else{
   mesh(g,new T.TorusGeometry(.77,.055,16,96,Math.PI),m.gold,0,.14,0);mesh(g,new T.TorusGeometry(.68,.073,16,96,Math.PI),m.ink,0,.14,.025);
   for(const side of [-1,1]){line(g,m.gold,[[side*.77,.14,0],[side*.8,-.08,0],[side*.74,-.21,0]],.045);const cup=new T.Group();box(cup,m.chrome,.42,.72,.27,0,0,0,.12);const cushion=mesh(cup,new T.TorusGeometry(.25,.075,16,64),m.ink,0,0,.19);cushion.scale.set(.7,1.12,.85);box(cup,m.ink,.25,.43,.085,0,0,.19,.065);line(cup,m.gold,[[-.12,.28,.15],[.12,.28,.15],[.16,0,.15],[.12,-.28,.15],[-.12,-.28,.15]],.012);cup.position.set(side*.76,-.24,0);cup.rotation.y=-side*.27;g.add(cup);}

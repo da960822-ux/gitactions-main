@@ -1,4 +1,11 @@
+import {MathUtils} from 'three';
+
 export const ROOM_REFERENCE = { width: 1672, height: 941, distance: 24, fov: 48 } as const;
+
+export function roomBackgroundDepth(u:number,y:number){
+  const sides=8*Math.pow(Math.abs(u-.5)*2,4),floorDepth=10*MathUtils.smoothstep(y,620,941);
+  return -10+sides*(1-floorDepth/10)+floorDepth;
+}
 
 // Project the unchanged illustration onto independently placed room surfaces.
 export function roomVertex(x: number, y: number, z: number): [number, number, number] {

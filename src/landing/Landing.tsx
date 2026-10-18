@@ -2,12 +2,13 @@ import { useEffect, useState } from 'react';
 import { Link } from '../app/Router';
 import '../styles/landing.css';
 import { landingCopy } from '../copy/home';
-import { AcrossHero } from './AcrossHero';
-import { GameGallery } from './gallery/GameGallery';
-import { LandingMoments } from './LandingMoments';
+import { LandingWorldHost } from './LandingWorldHost';
+import { gameCatalog } from '../games/catalog';
 
 export function Landing() {
-  const [language, setLanguage] = useState<'ko' | 'es'>(() => typeof window !== 'undefined' && localStorage.getItem('dos-language') === 'es' ? 'es' : 'ko');
+  const [language, setLanguage] = useState<'ko' | 'es'>(() => { try { return localStorage.getItem('dos-language') === 'es' ? 'es' : 'ko'; } catch { return 'ko'; } });
+  const [selected, setSelected] = useState(() => { try { const saved = sessionStorage.getItem('folded-selected-game'); return gameCatalog.some(game => game.id === saved) ? saved! : 'domino'; } catch { return 'domino'; } });
+  const chooseGame = (id: string) => { if (!gameCatalog.some(game => game.id === id)) return; setSelected(id); try { sessionStorage.setItem('folded-selected-game', id); } catch { /* Storage is optional. */ } };
   const es = language === 'es';
   const copy = landingCopy[language];
   useEffect(() => {
@@ -21,7 +22,7 @@ export function Landing() {
   }, []);
   const changeLanguage = (next: 'ko' | 'es') => {
     setLanguage(next);
-    localStorage.setItem('dos-language', next);
+    try { localStorage.setItem('dos-language', next); } catch { /* Storage is optional. */ }
   };
 
   return <main className="landing">
@@ -42,13 +43,7 @@ export function Landing() {
       </nav>
     </header>
 
-    <AcrossHero language={language} />
-
-    <div className="home-content wrap">
-      <GameGallery language={language} />
-
-    </div>
-    <LandingMoments language={language} />
+    <LandingWorldHost language={language} onLanguageChange={changeLanguage} selected={selected} onSelect={chooseGame}/>
     <footer className="home-footer wrap">
       <Link href="/" className="couple-brand"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20.8 8.7c0 5.1-8.8 10.2-8.8 10.2S3.2 13.8 3.2 8.7a4.3 4.3 0 0 1 8.8-1.3 4.3 4.3 0 0 1 8.8 1.3Z"/></svg><span>{copy.footerBrand}</span></Link>
       <span>{copy.footerCredit}</span>

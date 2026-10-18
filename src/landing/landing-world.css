@@ -1,0 +1,64 @@
+.landing-world-host{position:relative;isolation:isolate;background:transparent}
+.landing-world-canvas{position:fixed;inset:0;width:100%;height:100svh;display:block;z-index:0;pointer-events:none;opacity:0}
+.landing-world-host.is-world-ready>.landing-world-canvas{opacity:1}
+.landing-world-host>.across-hero,.landing-world-host>.post-hero-preview{position:relative;z-index:1;background:transparent}
+.landing-world-host .across-stage{background:transparent}
+.landing-world-host.is-world-ready .folded-backdrop{visibility:hidden}
+.landing-world-host .folded-destination{inset:auto 0 88px;align-items:center;justify-content:center;padding:0 24px;text-align:center;text-shadow:0 2px 12px #120a12}
+.landing-world-host .folded-destination h2{font:400 clamp(15px,1.25vw,20px)/1.5 'DM Sans',sans-serif;letter-spacing:0;margin:0 0 10px}
+.landing-world-host .folded-destination a{font-size:12px;min-height:44px;background:#21101cd6;padding:8px 18px;border:1px solid #e0bbab55;border-radius:2px;gap:24px}
+.landing-world-host [data-room-active=true] .folded-side-note,.landing-world-host [data-room-active=true] .across-bottom{visibility:hidden}
+.landing-world-host .across-stage::after{opacity:var(--hero-atmosphere-opacity,1)}
+.landing-world-host .post-hero-preview.post-hero-embedded{background:transparent;overflow:visible;isolation:auto}
+.landing-world-host .cs-game-gallery{scroll-margin-top:24px}
+.landing-world-host .post-hero-preview .letter-section{background:linear-gradient(#160e1700,#160e1780 20%,#160e1790 85%,#160e1700)}
+.landing-world-host .post-hero-preview .letter-paper{color:#402a33}
+.landing-world-host .post-hero-preview .letter-paper p{color:inherit}
+.landing-world-host .cs-game-gallery .rd-game-sculptures{background:none}
+.landing-world-host.world-unavailable>.landing-world-canvas{display:none}
+@media(max-width:760px){
+ .landing-world-canvas{height:100svh}
+ .landing-world-host .folded-playhouse .across-stage::after{inset:0 0 55%;background:linear-gradient(90deg,#100a1366,transparent 90%)}
+ .landing-world-host .folded-destination{top:calc(50% - 160px);bottom:auto;padding:0 18px}
+ .landing-world-host .folded-destination h2{font-size:15px;margin-bottom:5px}
+ .landing-world-host .folded-destination a{position:absolute;top:300px;font-size:11px;min-height:44px}
+ .landing-world-host .post-hero-preview .chapter{padding-top:70px;min-height:110svh}
+ .landing-world-host .post-hero-preview .chapter-copy{position:relative;z-index:2}
+ .landing-world-host .post-hero-preview .ending-rule{margin-top:max(300px,calc(100svh - 414px))}
+ .landing-world-host .post-hero-preview .ending-copy,.landing-world-host .post-hero-preview .ending h2{color:#faeee6}
+ .landing-world-host .post-hero-preview .ending .eyebrow{color:#d7a18f}
+ .landing-world-host .post-hero-preview .letter-invitation .chapter-copy{padding:18px 16px;margin-inline:-16px;background:linear-gradient(110deg,#21151df2,#21151db3 78%,#21151d40)}
+ .landing-world-host .cs-game-gallery .rd-game-caption{padding:12px 10px;background:linear-gradient(110deg,#21151df2,#21151dbf);border-radius:3px}
+}
+@media(prefers-reduced-motion:reduce){
+ .landing-world-host .across-hero{min-height:200svh}
+ .landing-world-host .across-stage{position:sticky;top:0;height:100svh}
+ .landing-world-host .across-editorial{opacity:var(--hero-copy-opacity,1)!important;transform:none!important}
+ .landing-world-host .folded-destination{display:flex}
+}
+@media(min-width:761px){.landing-world-host .post-hero-preview .ending-copy{max-width:34vw}}
+/* Copy belongs to the desk foreground; the approved faces remain the focus. */
+@media(min-width:761px){
+ .landing-world-host .post-hero-preview .chapter.distance,
+ .landing-world-host .post-hero-preview .chapter.play-table{align-items:flex-end;padding-top:60svh;padding-bottom:6svh}
+ .landing-world-host .post-hero-preview .distance .chapter-copy,
+ .landing-world-host .post-hero-preview .play-table .chapter-copy{max-width:470px;padding:20px 24px;background:linear-gradient(110deg,#21151ded,#21151d88 80%,transparent);border-left:1px solid #e9c1a488}
+ .landing-world-host .post-hero-preview .chapter.distance h2,
+ .landing-world-host .post-hero-preview .chapter.play-table h2{font-size:clamp(30px,2.6vw,44px);margin-bottom:12px}
+ .landing-world-host .post-hero-preview .distance .eyebrow,
+ .landing-world-host .post-hero-preview .play-table .eyebrow{margin-bottom:12px}
+ .landing-world-host .post-hero-preview .country-labels{margin-top:18px}
+ .landing-world-host .post-hero-preview .ending{justify-content:flex-end;padding-top:62svh;min-height:105svh}
+ .landing-world-host .post-hero-preview .ending-copy{max-width:540px;padding:22px 26px;background:linear-gradient(110deg,#21151ded,#21151d88 80%,transparent);color:#faeee6}
+ .landing-world-host .post-hero-preview .ending h2{font-size:clamp(34px,3vw,48px)}
+ .landing-world-host .post-hero-preview .ending-rule{margin-top:35px}
+}
+.landing-world-host .post-hero-preview .ending .text-button{color:#ebc8b6}
+
+.landing-world-host .cs-game-gallery{opacity:var(--gallery-presence,1)}
+@media(min-width:761px){
+ .landing-world-host .post-hero-preview .letter-invitation{align-items:flex-end;padding-top:55svh;padding-bottom:12svh}
+ .landing-world-host .post-hero-preview .letter-invitation .chapter-copy{max-width:400px;padding:20px 24px;background:linear-gradient(110deg,#21151de8,#21151d80 80%,transparent);border-left:1px solid #e9c1a488}
+ .landing-world-host .post-hero-preview .letter-invitation .eyebrow{margin-bottom:12px}
+ .landing-world-host .post-hero-preview .letter-invitation h2{font-size:clamp(32px,3vw,46px);margin-bottom:15px}
+}

@@ -1,0 +1,88 @@
+{
+  "sourceCommit": "df087fc",
+  "appServer": "http://127.0.0.1:5220",
+  "environment": "Chromium /usr/bin/chromium, viewport1920x1080, DSF1; local SQL/RLS/authority fixture with explicit read refresh, not production Supabase",
+  "capture": {
+    "roomId": "3b366867-f95d-4328-8911-68fce1fef210",
+    "version": 7,
+    "phases": [
+      "guess",
+      "waiting"
+    ],
+    "turn": "p1",
+    "seats": [
+      "p1:Yeonseok:ko",
+      "p2:Lisbeth:es"
+    ],
+    "method": "Unmodified real app UI create/join/consent/setup/draw; board DOM screenshots at the same accepted version; no state injection."
+  },
+  "actions": 5,
+  "errors": [],
+  "network": [],
+  "files": [
+    {
+      "path": "/workspace/scratch/intake-review/real-monitor-pair-v2/davinci-board-yeonseok-ko.png",
+      "sha256": "25791f43ea93cda5cbb9d3971a6fa15d255a2649e9428b7778511988e2f11a2a",
+      "dimensions": [
+        1216,
+        555
+      ],
+      "source": "Real .dv-table DOM screenshot; unedited PNG"
+    },
+    {
+      "path": "/workspace/scratch/intake-review/real-monitor-pair-v2/davinci-board-lisbeth-es.png",
+      "sha256": "96a5f4486b0d462faf973ef6df3dedbe5a806b030af7e60f7a1d25d1a11ff2c3",
+      "dimensions": [
+        1216,
+        573
+      ],
+      "source": "Real .dv-table DOM screenshot; unedited PNG"
+    }
+  ],
+  "approvedRoomImageDimensions": [
+    1672,
+    941
+  ],
+  "leftDisplayQuadTLTRBRBL": [
+    [
+      60,
+      330
+    ],
+    [
+      207,
+      318
+    ],
+    [
+      246,
+      628
+    ],
+    [
+      116,
+      604
+    ]
+  ],
+  "leftVisibleDisplayClipClockwise": [
+    [
+      60,
+      330
+    ],
+    [
+      207,
+      318
+    ],
+    [
+      246,
+      628
+    ],
+    [
+      116,
+      604
+    ],
+    [
+      80,
+      339
+    ]
+  ],
+  "coordinateLimit": "Approximate source-pixel boundary measurements; refine 2-4px in rendered visual QA. Foreground black monitor bezel must occlude left edge.",
+  "rightLaptop": "Visible ROG surface is rear lid, not display. Preserve it; place Spanish screen texture on woman-facing inner plane, visible only when camera can physically see it."
+}
