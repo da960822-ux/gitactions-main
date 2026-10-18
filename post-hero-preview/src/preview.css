@@ -131,12 +131,6 @@
 
 /* Selection controls stay beside the same physical collection while it is in view. */
 @media(min-width:761px){
- .landing-world-host .post-hero-preview.post-hero-embedded #games{min-height:140svh;padding:120px 5vw 0}
- .landing-world-host .post-hero-preview.post-hero-embedded #games>header{position:sticky;top:120px;height:80px;z-index:2}
- .landing-world-host .post-hero-preview.post-hero-embedded #games .rd-game-stage{position:sticky;top:200px;height:calc(100svh - 280px);margin-top:0}
- .landing-world-host .post-hero-preview.post-hero-embedded #games .rd-game-sculptures{height:calc(100svh - 410px);min-height:0}
- .landing-world-host .post-hero-preview.post-hero-embedded #games .rd-game-caption{min-height:110px;padding:12px 18px}
- .landing-world-host .post-hero-preview.post-hero-embedded #games .rd-game-choices{position:sticky;top:calc(100svh - 80px);margin:0 auto;min-height:60px;z-index:3;background:#211721e8}
  .landing-world-host .post-hero-preview.post-hero-embedded .letter-section{background:none;padding-top:90px;min-height:690px}
  .landing-world-host .post-hero-preview.post-hero-embedded .letter-section-label{max-width:none;margin:0 7.5vw 30px;padding:0}
  .landing-world-host .post-hero-preview.post-hero-embedded .closed-note{max-width:270px;min-height:380px;margin:0 0 0 7.5vw;align-items:flex-start;justify-content:flex-end;padding:0 0 30px;border:0;background:none}
@@ -152,6 +146,39 @@
 @media(min-width:761px){
  .landing-world-host .post-hero-preview.post-hero-embedded .letter-section{min-height:100svh;padding-top:90px;padding-bottom:90px}
  .landing-world-host .post-hero-preview.post-hero-embedded .closed-note{min-height:calc(100svh - 250px)}
- .landing-world-host .post-hero-preview.post-hero-embedded #games .rd-game-choices{background:#342832ed}
  .landing-world-host .post-hero-preview.post-hero-embedded .ending footer{color:#f1ddd5}
+}
+.post-hero-preview .letter-bottom-controls{width:min(740px,100%);margin:20px auto 0;display:flex;justify-content:flex-end}
+
+/* Reserve the left reading field; the original pair stays whole in the shared world. */
+@media(min-width:761px){
+ .landing-world-host .post-hero-preview.post-hero-embedded .ending-copy{max-width:31vw}
+ .landing-world-host .post-hero-preview.post-hero-embedded .ending h2{font-size:clamp(40px,3.3vw,62px);line-height:1.22}
+ .landing-world-host .post-hero-preview.post-hero-embedded .chapter:before{background:linear-gradient(90deg,#13131cc9,transparent 48%)}
+}
+
+/* The tracked physical card settles into a native, selectable reading composition. */
+.post-hero-preview .letter-section.reading-surround{isolation:isolate}
+.post-hero-preview .letter-reading-art{--flank-width:min(360px,calc((100vw - 740px)/2 - 64px));position:absolute;inset:0;z-index:-1;pointer-events:none;background:radial-gradient(ellipse at 50% 45%,#251822 0,#13131c 72%)}
+.post-hero-preview .reading-roses{position:absolute;top:50%;width:var(--flank-width);aspect-ratio:1;transform:translateY(-50%);background-image:url('/images/landing-preview/letter-roses-atlas.png');background-size:200% 100%;background-repeat:no-repeat}
+.post-hero-preview .reading-roses-left{left:calc(50% - 370px - var(--flank-width) - 32px);background-position:left center}
+.post-hero-preview .reading-roses-right{left:calc(50% + 370px + 32px);background-position:right center}
+@media(min-width:761px){
+ .landing-world-host .post-hero-preview.post-hero-embedded .ending-copy{max-width:23vw}
+ .landing-world-host .post-hero-preview.post-hero-embedded .ending h2{font-size:clamp(40px,3.3vw,62px)}
+}
+@media(max-width:1000px){.post-hero-preview .letter-reading-art{background:#13131c}.post-hero-preview .reading-roses{display:none}}
+
+/* Keep the rose artwork decorative except for its two explicit hint controls. */
+.post-hero-preview .letter-reading-art{z-index:0}
+.post-hero-preview .letter-section-label,.post-hero-preview .letter-paper-slot,.post-hero-preview .letter-bottom-controls,.post-hero-preview .rose-meaning{position:relative;z-index:1}
+.post-hero-preview .reading-roses{appearance:none;border:0;padding:0;margin:0;display:block;background-color:transparent;color:transparent;pointer-events:auto;cursor:pointer}
+.post-hero-preview .reading-roses:focus-visible{outline:2px solid #f4e8d2;outline-offset:4px}
+.post-hero-preview .rose-meaning{width:min(740px,100%);min-height:1.5em;margin:16px auto 0;text-align:center;color:#f0d5cc;font-size:13px;line-height:1.5;letter-spacing:.02em}
+
+/* A shared eye line gives the drawing and the complete pair the same reading field. */
+@media(min-width:761px){
+ .landing-world-host .post-hero-preview.post-hero-embedded .chapter.story-translation{align-items:flex-start;padding-top:18svh}
+ .landing-world-host .post-hero-preview.post-hero-embedded .story-translation .chapter-copy{max-width:min(570px,40vw)}
+ .landing-world-host .post-hero-preview.post-hero-embedded .chapter.story-translation h2{max-width:18ch;font-size:clamp(40px,3.15vw,60px);line-height:1.22;text-wrap:balance}
 }

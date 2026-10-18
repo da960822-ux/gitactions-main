@@ -1,4 +1,4 @@
-import { createClient, type SupabaseClient, type RealtimeChannel } from '@supabase/supabase-js';
+import { type SupabaseClient, type RealtimeChannel } from '@supabase/supabase-js';
 import { engines } from './registry';
 import { executeAction, RETENTION_MS, chatMessageForGame, reactionMessageForId } from './authority';
 import type { ReactionId } from './reactions';
@@ -8,12 +8,11 @@ import { isCorrectGuess, getCatchmindDrawDurationMs } from '../games/catchmind';
 export interface RoomPlayer { id: PlayerId; nickname: string; language: Language; ready: boolean }
 export interface ChatMessage { id: string; playerId: PlayerId; text: string; translation?: string; targetLanguage?: Language; status: 'original'|'translated'|'limit'|'unavailable'|'correct'; createdAt:string }
 export interface RoomSnapshot { roomId:string|null; mode:'demo'|'online'; playerId:PlayerId; players:RoomPlayer[]; gameId:GameId|null; version:number; view:any|null; messages:ChatMessage[]; pendingGame:GameId|null; error:string|null; connection?:'local'|'connecting'|'connected'|'reconnecting'; syncEpoch?:number }
-const supabaseUrl = import.meta.env.VITE_SUPABASE_URL;
-const anonKey = import.meta.env.VITE_SUPABASE_ANON_KEY;
-export const isOnlineConfigured = Boolean(supabaseUrl && anonKey);
+import { onlineDb } from './supabase';
+export const isOnlineConfigured = Boolean(onlineDb);
 const emptySnapshot = (): RoomSnapshot => ({roomId:null,mode:isOnlineConfigured?'online':'demo',playerId:'p1',players:[],gameId:null,version:0,view:null,messages:[],pendingGame:null,error:null,connection:isOnlineConfigured?'connecting':'local',syncEpoch:0});
 class RoomClient {
-  private db:SupabaseClient|null = isOnlineConfigured ? createClient(supabaseUrl,anonKey) : null;
+  private db:SupabaseClient|null = onlineDb;
   private snapshot = emptySnapshot();
   private state:any=null;
   private listeners=new Set<(snapshot:RoomSnapshot)=>void>();

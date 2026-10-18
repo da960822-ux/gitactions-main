@@ -1,8 +1,11 @@
-import { lazy, Suspense, useCallback, useEffect, useRef, useState, type CSSProperties, type ReactNode } from 'react';
+import { lazy, Suspense, useCallback, useEffect, useId, useRef, useState, type CSSProperties, type ReactNode } from 'react';
 import { landingCopy } from '../../src/copy/home';
 import type { PaperPose, PostHeroState } from './Scene';
 import { paperTransform, blendPaperCorners } from './paperProjection';
 import Details from './Details';
+import SharedEventsPanel from './SharedEventsPanel';
+import type {SharedEventRound} from '../../src/core/sharedEventsState';
+import {restoreLocalEventState,type LocalEventState} from './LocalEventRig';
 import { clamp01, createEnvelopeState, updateEnvelopeFromScroll, toggleEnvelope, reopenEnvelope, envelopeTarget } from './interaction';
 
 const StandalonePostHeroScene=lazy(()=>import('./Scene').then(module=>({default:module.PostHeroScene})));
@@ -24,8 +27,13 @@ export function PostHeroPreview({embedded=false,language:externalLanguage,onLang
  const [progress,setProgress]=useState(0);
  const [opening,setOpening]=useState(0);
  const [detailsOpen,setDetailsOpen]=useState(false);
+ const [roseHintOpen,setRoseHintOpen]=useState(false);
+ const roseHintId=useId();
  const [sceneReady,setSceneReady]=useState(false);
  const [sceneError,setSceneError]=useState('');
+ const [localEvent,setLocalEvent]=useState<LocalEventState>(()=>restoreLocalEventState(language));
+ const localTick=useRef<((now:number)=>void)|null>(null);
+ const registerLocalTick=useCallback((tick:((now:number)=>void)|null)=>{localTick.current=tick;},[]);
  const [effect,setEffect]=useState({name:'none',value:0,nonce:0});
  const control=useRef(createEnvelopeState());
  const pendingScroll=useRef<(()=>void)|null>(null);
@@ -44,11 +52,16 @@ export function PostHeroPreview({embedded=false,language:externalLanguage,onLang
    const transform=paperTransform(corners,width,height);if(!transform)return;
    article.dataset.tracking='true';article.dataset.paperCorners=JSON.stringify(corners);article.style.position='fixed';article.style.left='0';article.style.top='0';article.style.width=`${width}px`;article.style.transform=transform;
  },[]);
- useEffect(()=>{onSceneState?.({progress,opening,reducedMotion,effect,portraitSrc,portraitMaskSrc,onPaperPose:trackPaper});},[progress,opening,reducedMotion,effect,portraitSrc,portraitMaskSrc,trackPaper,onSceneState]);
+ useEffect(()=>{onSceneState?.({progress,opening,reducedMotion,effect,localEvent,portraitSrc,portraitMaskSrc,onPaperPose:trackPaper});},[progress,opening,reducedMotion,effect,localEvent,portraitSrc,portraitMaskSrc,trackPaper,onSceneState]);
  const copy=landingCopy[language], text=story[language];
  const ko=language==='ko';
  const setNewEffect=useCallback((name:string,value=1)=>setEffect(old=>({name,value,nonce:old.nonce+1})),[]);
- const refreshTarget=useCallback(()=>{target.current=reduced.current&&control.current.manual===null?(p.current>=.57?1:0):envelopeTarget(control.current,p.current);},[]);
+ const refreshTarget=useCallback(()=>{target.current=reduced.current&&control.current.manual===null?(p.current>=.57?1:0):envelopeTarget(control.current,p.current);if(target.current<=.5)setRoseHintOpen(false);},[setRoseHintOpen]);
+ const handleSharedEventStart=useCallback((round:SharedEventRound,{settle}:{settle:boolean})=>{
+   if(round.eventId!=='R01')return;
+   control.current=reopenEnvelope(control.current);refreshTarget();
+   if(settle){q.current=1;setOpening(1);}
+ },[refreshTarget]);
  useEffect(()=>{reduced.current=reducedMotion;if(reducedMotion){q.current=target.current;setOpening(q.current);}},[reducedMotion]);
  useEffect(()=>{
    const media=matchMedia('(prefers-reduced-motion: reduce)');
@@ -77,6 +90,7 @@ export function PostHeroPreview({embedded=false,language:externalLanguage,onLang
  useEffect(()=>{
    let frame=0,previous=0;
    const tick=(time:number)=>{
+     localTick.current?.(time);
      const measure=pendingScroll.current;pendingScroll.current=null;measure?.();
      const dt=previous?Math.max(0,(time-previous)/1000):0;previous=time;
      const diff=target.current-q.current;
@@ -86,15 +100,16 @@ export function PostHeroPreview({embedded=false,language:externalLanguage,onLang
    const loop=(time:number)=>{tick(time);frame=requestAnimationFrame(loop);};
    frame=requestAnimationFrame(loop);return()=>cancelAnimationFrame(frame);
  },[onRegisterFrame]);
- const openLetter=()=>{control.current=opening>.5?{...control.current,manual:false}:reopenEnvelope(control.current);refreshTarget();};
+ const openLetter=()=>{if(opening>.5)setRoseHintOpen(false);control.current=opening>.5?{...control.current,manual:false}:reopenEnvelope(control.current);refreshTarget();};
  const toggleLetter=()=>{
+   if(target.current>.5)setRoseHintOpen(false);
    if(target.current>.5 && document.activeElement?.closest('#moment-letter-copy'))opener.current?.focus();
    control.current=toggleEnvelope(control.current,p.current);refreshTarget();
  };
  useEffect(()=>{
-   const closeOnEscape=(event:KeyboardEvent)=>{if(event.key!=='Escape'||target.current<=.5)return;control.current={...control.current,manual:false};refreshTarget();opener.current?.focus({preventScroll:true});};
+   const closeOnEscape=(event:KeyboardEvent)=>{if(event.key!=='Escape')return;if(roseHintOpen){event.preventDefault();setRoseHintOpen(false);return;}if(target.current<=.5)return;control.current={...control.current,manual:false};refreshTarget();opener.current?.focus({preventScroll:true});};
    addEventListener('keydown',closeOnEscape);return()=>removeEventListener('keydown',closeOnEscape);
- },[refreshTarget]);
+ },[refreshTarget,roseHintOpen]);
  const readLetter=(event?:React.MouseEvent)=>{event?.preventDefault();control.current=reopenEnvelope(control.current);q.current=1;setOpening(1);refreshTarget();document.getElementById('papi-letter')?.scrollIntoView({behavior:'instant',block:'start'});};
  useEffect(()=>{if(location.hash==='#papi-letter')readLetter();},[]);
  useEffect(()=>{if(detailsOpen)document.getElementById('details-playground')?.scrollIntoView({behavior:reducedMotion?'instant':'smooth',block:'start'});},[detailsOpen,reducedMotion]);
@@ -135,13 +150,17 @@ export function PostHeroPreview({embedded=false,language:externalLanguage,onLang
    <button ref={detailsOpener} className="easter-discovery" aria-expanded={detailsOpen} aria-controls="details-playground" onClick={()=>detailsOpen?closeDetails():setDetailsOpen(true)}><img src="/images/approved-couple-room/lisyeon-pawn.png" alt=""/><span><strong>{detailsOpen?text.hideDetails:text.details}</strong><small>{ko?'토끼, 우리 사진, 종이와 빛… 눌러봐 ㅋㅋㅋ':'El conejito, nuestras fotos, papel y luz… toca, haha.'}</small></span><b aria-hidden="true">{detailsOpen?'−':'+'}</b></button>
   </section>
   {gallery}
-  {detailsOpen&&<section className="details-section" id="details-playground" aria-label={text.details}><div className="section-top"><p className="eyebrow">{text.details}</p><button className="icon-button" aria-label={text.hideDetails} onClick={closeDetails}>×</button></div><Details language={language} reducedMotion={reducedMotion} onEffect={setNewEffect}/></section>}
+  {detailsOpen&&<section className="details-section" id="details-playground" data-pose=".50" aria-label={text.details}><div className="section-top"><p className="eyebrow">{text.details}</p><button className="icon-button" aria-label={text.hideDetails} onClick={closeDetails}>×</button></div><Details language={language} reducedMotion={reducedMotion} onEffect={setNewEffect} onLocalEvent={setLocalEvent} onRegisterFrame={registerLocalTick}/><span className="details-pose-end" data-pose=".55" aria-hidden="true"/></section>}
+  <SharedEventsPanel language={language} onSharedStart={handleSharedEventStart}/>
   <section id="letter-scene" className="chapter letter-invitation" data-pose=".62"><div className="chapter-copy"><p className="eyebrow">For my Mami</p><h2>{text.letter}</h2><p>{text.letterBody}</p><div className="invitation-actions"><button ref={opener} className="primary-button" aria-label={opening>.5?text.close:text.open} aria-expanded={letterVisible} aria-controls="moment-letter-copy" onClick={openLetter}>{opening>.5?text.close:text.open}<span>{opening>.5?'−':'↗'}</span></button><a href="#papi-letter" className="text-button" onClick={readLetter}>{text.reading}</a></div></div></section>
-  <section id="papi-letter" className={`letter-section ${letterVisible?'is-open':'is-folded'}`} data-pose=".86" aria-labelledby="letter-title">
+  <section id="papi-letter" className={`letter-section ${letterVisible?'is-open':'is-folded'} ${progress>=.86&&letterVisible?'reading-surround':''}`} data-pose=".86" aria-labelledby="letter-title">
+   {progress>=.86&&letterVisible&&<div className="letter-reading-art"><button type="button" className="reading-roses reading-roses-left" aria-label={ko?'장미에 숨은 뜻 보기':'Ver qué significan las rosas'} aria-expanded={roseHintOpen} aria-controls={roseHintId} onClick={()=>setRoseHintOpen(open=>!open)}/><button type="button" className="reading-roses reading-roses-right" aria-label={ko?'장미에 숨은 뜻 보기':'Ver qué significan las rosas'} aria-expanded={roseHintOpen} aria-controls={roseHintId} onClick={()=>setRoseHintOpen(open=>!open)}/></div>}
    <div className="letter-section-label"><span className="eyebrow">{text.ready}</span><button className="text-button" aria-label={letterVisible?text.close:text.open} onClick={letterVisible?toggleLetter:()=>{control.current=reopenEnvelope(control.current);refreshTarget();}} aria-expanded={letterVisible} aria-controls="moment-letter-copy">{letterVisible?text.close:text.open} <span>{letterVisible?'−':'+'}</span></button></div>
    <div className="letter-paper-slot" ref={paperSlot}><article ref={paper} className={`letter-paper ${!letterVisible&&letterPublic?'is-visually-sealed':''}`} id="moment-letter-copy" hidden={!letterPublic}>
     <div className="paper-rule"/><p className="letter-address">{copy.letterAddress}</p><h2 id="letter-title">{copy.letterTitle}</h2>{copy.letterBody.map(paragraph=><p key={paragraph}>{paragraph}</p>)}<p className="letter-signature">{copy.letterSignature}</p><div className="paper-bottom-mark">Y <span>♡</span> L</div>
    </article></div>
+   {letterVisible&&progress>=.86&&<p id={roseHintId} className="rose-meaning" role="status" aria-live="polite" aria-atomic="true">{roseHintOpen?(ko?'4송이, 그리고 4송이. 우리 시작한 날 ♡':'Cuatro rosas y otras cuatro. El día que empezamos: 4 de abril ♡'):''}</p>}
+   {letterVisible&&<div className="letter-bottom-controls"><button className="text-button" onClick={()=>{opener.current?.focus({preventScroll:true});toggleLetter();}}>{text.close} <span>−</span></button></div>}
    {!letterVisible&&<div className="closed-note"><span>♡</span><p>{text.sealed}</p><button className="text-button" onClick={()=>{control.current=reopenEnvelope(control.current);refreshTarget();}}>{text.open} ↗</button></div>}
   </section>
   <section className="chapter ending" data-pose="1"><div className="ending-copy"><p className="eyebrow">2025.04.04 — YEONSEOK ♡ LISBETH</p><h2>{text.ending}</h2><div className="ending-actions"><a className="primary-button" href={playHref??'/#games'}>{text.play}<span>↗</span></a><a className="text-button" href="/feedback">{text.ideas}</a></div></div><div className="ending-rule"/><footer><span>Para ti, Lisbeth ♡</span><a href={embedded?'#distance':'#intro'}>{text.back} ↑</a></footer></section>

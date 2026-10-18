@@ -6076,16 +6076,16 @@ var cards = {
   blackout: { title: { ko: "\uC815\uC804", es: "Apag\xF3n" }, text: { ko: "\uC0C1\uB300 \uB3C4\uC2DC \uD558\uB098\uB97C \uC120\uD0DD\uD569\uB2C8\uB2E4. \uADF8 \uB3C4\uC2DC\uC758 \uB2E4\uC74C \uB0B4 \uCC29\uC9C0 1\uD68C \uD1B5\uD589\uB8CC\uAC00 \uC808\uBC18\uC774 \uB429\uB2C8\uB2E4(\uB0B4\uB9BC, \uCD5C\uC18C 1). \uB300\uC0C1 \uCC29\uC9C0\uAE4C\uC9C0 \uC720\uC9C0\uB429\uB2C8\uB2E4.", es: "Elige una ciudad rival. En tu pr\xF3xima llegada a ella pagas la mitad una vez (redondeo hacia abajo, m\xEDnimo 1). Permanece hasta esa llegada." }, effect: "cash" },
   "rent-pass": { title: { ko: "\uD1B5\uD589\uB8CC \uBA74\uC81C\uAD8C", es: "Pase de alquiler" }, text: { ko: "\uD1B5\uD589\uB8CC \uBA74\uC81C\uAD8C \uD55C \uC7A5\uC744 \uBCF4\uAD00\uD569\uB2C8\uB2E4. \uC55E\uC73C\uB85C \uD1B5\uD589\uB8CC\uB97C \uB0B4\uAE30 \uC804\uC5D0 \uC9C1\uC811 \uC120\uD0DD\uD574 1\uD68C \uBA74\uC81C\uD560 \uC218 \uC788\uC2B5\uB2C8\uB2E4. \uC790\uB3D9 \uC0AC\uC6A9\uB418\uC9C0 \uC54A\uC73C\uBA70 \uC138\uAE08\uC5D0\uB294 \uC4F8 \uC218 \uC5C6\uC2B5\uB2C8\uB2E4.", es: "Guarda un pase. Antes de un futuro alquiler puedes elegir usarlo para eximir un solo pago. No se usa autom\xE1ticamente ni sirve para impuestos." }, effect: "pass" }
 };
-var propertyRent = (tile, record, modern) => (tile.rent ?? 0) * (modern ? [1, 2, 4, 8][record.houses] ?? 1 : record.houses + 1);
+var propertyRent = (tile, record2, modern) => (tile.rent ?? 0) * (modern ? [1, 2, 4, 8][record2.houses] ?? 1 : record2.houses + 1);
 function marbleBuildCost(tile, level, economicVersion) {
   if (economicVersion !== 2) return 100;
   const factor = [0.4, 0.6, 0.8][Math.max(0, Math.min(2, Math.trunc(level)))] ?? 0.4;
   return Math.max(40, Math.round(Math.max(0, tile.price ?? 0) * factor / 10) * 10);
 }
-var assetsFor = (s, p, board) => s.money[p] - (s.debt?.[p] ?? 0) + Object.entries(s.properties).reduce((sum2, [index, record]) => {
-  if (record.owner !== p) return sum2;
+var assetsFor = (s, p, board) => s.money[p] - (s.debt?.[p] ?? 0) + Object.entries(s.properties).reduce((sum2, [index, record2]) => {
+  if (record2.owner !== p) return sum2;
   const tile = board[Number(index)];
-  const buildingCost = tile ? Array.from({ length: record.houses }, (_, level) => marbleBuildCost(tile, level, s.economicVersion)).reduce((total, cost) => total + cost, 0) : 0;
+  const buildingCost = tile ? Array.from({ length: record2.houses }, (_, level) => marbleBuildCost(tile, level, s.economicVersion)).reduce((total, cost) => total + cost, 0) : 0;
   return sum2 + (tile?.price ?? 0) + buildingCost;
 }, 0);
 var completedGroups = (s, p) => {
@@ -6139,16 +6139,16 @@ function view2(s, p) {
       add("\uAD6C\uB9E4 \uAC70\uC808 / \uACC4\uC18D", "Pasar / continuar", { type: "decline" });
     }
     if (s.phase === "main") {
-      for (const [indexText, record] of Object.entries(s.properties)) {
+      for (const [indexText, record2] of Object.entries(s.properties)) {
         const index = Number(indexText), tile = board[index];
-        if (record.owner !== p || tile?.kind !== "property") continue;
+        if (record2.owner !== p || tile?.kind !== "property") continue;
         const groupSize = board.filter((space) => space.kind === "property" && space.group === tile.group).length;
         const ownedCount = Object.entries(s.properties).filter(([ownedIndex, owned]) => owned.owner === p && board[Number(ownedIndex)]?.group === tile.group).length;
         const canBuild = s.boardVersion === 2 || ownedCount === groupSize;
         const levels = s.boardVersion === 2 ? 3 : 2;
-        const cost = marbleBuildCost(tile, record.houses, s.economicVersion);
-        if (canBuild && record.houses < levels && s.money[p] >= cost) {
-          const tier = s.boardVersion === 2 ? [["\uB2E8\uB3C5\uC8FC\uD0DD", "Casa unifamiliar"], ["\uC544\uD30C\uD2B8", "Apartamentos"], "landmark"][record.houses] : ["\uC9D1", "Casa"];
+        const cost = marbleBuildCost(tile, record2.houses, s.economicVersion);
+        if (canBuild && record2.houses < levels && s.money[p] >= cost) {
+          const tier = s.boardVersion === 2 ? [["\uB2E8\uB3C5\uC8FC\uD0DD", "Casa unifamiliar"], ["\uC544\uD30C\uD2B8", "Apartamentos"], "landmark"][record2.houses] : ["\uC9D1", "Casa"];
           const name = Array.isArray(tier) ? tier : s.economicVersion === 1 || s.economicVersion === 2 ? ["\uB79C\uB4DC\uB9C8\uD06C", "Monumento"] : ["\uD638\uD154", "Hotel"];
           add(`${name[0]}: ${tile.name.ko} (${cost})`, `${name[1]}: ${tile.name.es} (${cost})`, { type: "build", payload: { tile: index } });
         }
@@ -6754,11 +6754,136 @@ function reactionMessageForId(value) {
   if (!isReactionId(value)) throw new ActionError("invalid_reaction");
   return { text: reactionEmoji[value], status: "original" };
 }
+
+// src/core/sharedEventsState.ts
+var SHARED_EVENT_READY_MS = 2e4;
+var SHARED_EVENT_COOLDOWN_MS = 3e4;
+var SHARED_EVENT_START_DELAY_MS = 700;
+var MAX_RECEIPTS = 128;
+var UUID = /^[0-9a-f]{8}-[0-9a-f]{4}-[1-8][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i;
+var DECOR_IDS = /* @__PURE__ */ new Set(["fox", "cat", "penguin", "astronaut", "robot", "dragon", "sali-suli"]);
+function createSharedEventRound() {
+  return { roundId: "", eventId: "R01", revision: 0, seed: 0, ackBy: {}, expiresAt: 0, startAt: null, status: "cancelled", intentBy: {}, readyBy: {}, confirmBy: {}, lastStartedAt: null, receipts: [] };
+}
+function fail(code) {
+  throw new Error(code);
+}
+function record(value) {
+  return value !== null && typeof value === "object" && !Array.isArray(value);
+}
+function keysAre(value, allowed) {
+  return Object.keys(value).every((key) => allowed.includes(key));
+}
+function validUuid(value) {
+  return typeof value === "string" && UUID.test(value);
+}
+function validIntent(eventId, intent) {
+  if (eventId === "R01") return intent === null;
+  if (!record(intent) || !keysAre(intent, eventId === "R02" ? ["decorId"] : eventId === "R03" ? ["points"] : ["pattern"])) return false;
+  if (eventId === "R02") return typeof intent.decorId === "string" && DECOR_IDS.has(intent.decorId);
+  if (eventId === "R03") return Array.isArray(intent.points) && intent.points.length >= 1 && intent.points.length <= 200 && intent.points.every((point) => record(point) && keysAre(point, ["x", "y"]) && Number.isFinite(point.x) && Number.isFinite(point.y) && point.x >= 0 && point.x <= 1 && point.y >= 0 && point.y <= 1);
+  return Array.isArray(intent.pattern) && intent.pattern.length >= 1 && intent.pattern.length <= 6 && intent.pattern.every((step2) => Number.isInteger(step2) && step2 >= 0 && step2 <= 5);
+}
+function hasRequiredIntents(state) {
+  if (state.eventId === "R03") return Boolean(state.intentBy.p1?.points?.length && state.intentBy.p2?.points?.length);
+  if (state.eventId === "R04") return Boolean(state.intentBy.p1?.pattern?.length && state.intentBy.p2?.pattern?.length);
+  return true;
+}
+function applySharedEventAction(current, actor, action, serverNow) {
+  if (!Number.isFinite(serverNow)) fail("invalid_server_time");
+  if (actor !== "p1" && actor !== "p2" && actor !== "system") fail("not_event_member");
+  if (!record(action)) fail("invalid_event_action");
+  const allowed = action.type === "acknowledge" ? ["type", "requestId", "revision", "roundId", "pattern"] : action.type === "propose" ? ["type", "requestId", "revision", "roundId", "eventId", "intent"] : action.type === "contribute" ? ["type", "requestId", "revision", "roundId", "intent"] : action.type === "cancel" ? ["type", "requestId", "revision", "roundId", "reason"] : ["type", "requestId", "revision", "roundId"];
+  if (!keysAre(action, allowed)) fail("invalid_event_action");
+  if (!validUuid(action.requestId) || !Number.isSafeInteger(action.revision) || !validUuid(action.roundId)) fail("invalid_event_action");
+  if (!["propose", "contribute", "acknowledge", "ready", "confirm", "cancel"].includes(action.type)) fail("invalid_event_action");
+  if (action.type === "propose") {
+    if (actor === "system" || !["R01", "R02", "R03", "R04"].includes(action.eventId) || !validIntent(action.eventId, action.intent)) fail("invalid_event_intent");
+  } else if (action.type === "contribute") {
+    if (actor === "system" || !record(action.intent) || !keysAre(action.intent, ["points", "pattern"])) fail("invalid_event_intent");
+  } else if (action.type === "acknowledge") {
+    if (!validIntent("R04", { pattern: action.pattern })) fail("invalid_event_intent");
+  } else if (action.type !== "cancel" && ("eventId" in action || "intent" in action || "reason" in action)) fail("invalid_event_action");
+  else if (action.type === "cancel" && action.reason !== void 0 && !["cancel", "timeout", "disconnect", "hidden"].includes(action.reason)) fail("invalid_event_action");
+  if (action.type === "cancel" && actor === "system" && !["timeout", "disconnect", "hidden"].includes(action.reason ?? "")) fail("invalid_event_action");
+  if (action.type === "cancel" && actor !== "system" && action.reason !== void 0 && action.reason !== "cancel") fail("invalid_event_action");
+  if (action.type !== "cancel" && actor === "system") fail("not_event_member");
+  const state = current;
+  if (action.type === "contribute" && (state.eventId !== "R03" && state.eventId !== "R04" || !validIntent(state.eventId, action.intent))) fail("invalid_event_intent");
+  const signature = JSON.stringify(action);
+  const prior = state.receipts.find((receipt) => receipt.requestId === action.requestId);
+  if (prior) {
+    if (prior.actor !== actor || prior.signature !== signature) fail("event_request_conflict");
+    return state;
+  }
+  if (state.receipts.length >= MAX_RECEIPTS) fail("event_receipt_limit");
+  if (action.revision !== state.revision) fail("stale_event_state");
+  if (state.status === "proposed" && serverNow >= state.expiresAt) fail("event_round_expired");
+  if (state.status === "scheduled" && state.startAt !== null && serverNow >= state.startAt) fail("event_round_unavailable");
+  let next;
+  if (action.type === "propose") {
+    if (state.status === "proposed" || state.status === "scheduled") fail("event_round_unavailable");
+    if (state.lastStartedAt !== null && serverNow < state.lastStartedAt + SHARED_EVENT_COOLDOWN_MS) fail("event_cooldown");
+    next = { ...state, roundId: action.roundId, eventId: action.eventId, seed: parseInt(action.roundId.replaceAll("-", "").slice(-8), 16), ackBy: {}, revision: state.revision + 1, expiresAt: serverNow + SHARED_EVENT_READY_MS, startAt: null, status: "proposed", intentBy: { [actor]: action.intent }, readyBy: {}, confirmBy: {} };
+  } else {
+    if (action.roundId !== state.roundId || !["proposed", "scheduled"].includes(state.status)) fail(state.status === "expired" ? "event_round_expired" : "event_round_unavailable");
+    if (action.type === "cancel") {
+      next = { ...state, revision: state.revision + 1, status: action.reason === "timeout" ? "expired" : "cancelled", startAt: null, ackBy: {}, readyBy: {}, confirmBy: {} };
+    } else {
+      if (state.status !== "proposed") fail("event_round_unavailable");
+      if (action.type === "contribute") {
+        next = { ...state, revision: state.revision + 1, intentBy: { ...state.intentBy, [actor]: action.intent }, ackBy: {}, readyBy: {}, confirmBy: {} };
+      } else if (action.type === "acknowledge") {
+        const other = actor === "p1" ? "p2" : "p1";
+        if (state.eventId !== "R04" || !hasRequiredIntents(state)) fail("event_both_contributions_required");
+        if (JSON.stringify(action.pattern) !== JSON.stringify(state.intentBy[other].pattern)) fail("event_pattern_mismatch");
+        next = { ...state, revision: state.revision + 1, ackBy: { ...state.ackBy, [actor]: true } };
+      } else if (action.type === "ready") {
+        if (state.eventId === "R04" && (!state.ackBy.p1 || !state.ackBy.p2)) fail("event_both_acknowledged_required");
+        if (!hasRequiredIntents(state)) fail("event_both_contributions_required");
+        next = { ...state, revision: state.revision + 1, readyBy: { ...state.readyBy, [actor]: true } };
+      } else {
+        if (!hasRequiredIntents(state)) fail("event_both_contributions_required");
+        if (!state.readyBy.p1 || !state.readyBy.p2) fail("event_both_ready_required");
+        const confirmBy = { ...state.confirmBy, [actor]: true };
+        const scheduled = Boolean(confirmBy.p1 && confirmBy.p2);
+        next = { ...state, revision: state.revision + 1, confirmBy, status: scheduled ? "scheduled" : state.status, expiresAt: scheduled ? 0 : state.expiresAt, startAt: scheduled ? serverNow + SHARED_EVENT_START_DELAY_MS : state.startAt };
+      }
+    }
+  }
+  return { ...next, receipts: [...state.receipts, { requestId: action.requestId, actor, signature, revision: next.revision }] };
+}
+
+// src/core/sharedEventsServer.ts
+var uuid = (value) => typeof value === "string" && /^[0-9a-f]{8}-[0-9a-f]{4}-[1-8][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i.test(value);
+function sameEventRequest(a, b) {
+  const canonical = (value) => JSON.stringify(value, (_key, nested) => nested && typeof nested === "object" && !Array.isArray(nested) ? Object.fromEntries(Object.keys(nested).sort().map((key) => [key, nested[key]])) : nested);
+  return canonical(a) === canonical(b);
+}
+async function executeSharedEventRequest(store, verifiedActor, input, now) {
+  if (!verifiedActor) throw new Error("authentication_required");
+  if (!input || typeof input !== "object" || Array.isArray(input)) throw new Error("invalid_event_request");
+  const request = input;
+  if (Object.keys(request).some((key) => !["sessionId", "action"].includes(key)) || !uuid(request.sessionId) || !request.action || !uuid(request.action.requestId)) throw new Error("invalid_event_request");
+  const session = await store.read(request.sessionId, verifiedActor);
+  if (Date.parse(session.expiresAt) <= now) throw new Error("event_session_unavailable");
+  const prior = await store.receipt(request.sessionId, request.action.requestId);
+  if (prior) {
+    if (prior.user_id !== verifiedActor || !sameEventRequest(prior.signature, request.action)) throw new Error("event_request_conflict");
+    return session;
+  }
+  if (session.memberCount !== 2) throw new Error("event_session_not_ready");
+  const current = session.eventState ?? createSharedEventRound();
+  if (current.revision !== session.revision) throw new Error("event_state_invalid");
+  const next = applySharedEventAction(current, session.seat, request.action, now);
+  return store.commit(request.sessionId, verifiedActor, request.action, { ...next, receipts: [] });
+}
 export {
   catchmindDrawDurationMs,
   chatMessageForGame,
   engines,
   executeAction,
+  executeSharedEventRequest,
   getCatchmindDrawDurationMs,
   getCatchmindHintStage,
   isCorrectGuess,

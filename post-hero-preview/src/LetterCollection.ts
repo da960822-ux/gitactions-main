@@ -13,13 +13,14 @@ export function createLetterCollection(options:{scene:THREE.Scene;camera:THREE.P
  let latest:LetterFrame=initialState??{opening:0,progress:0,width:1,height:1};
  const position=new THREE.Vector3(0,1.3,6.2),target=new THREE.Vector3(0,1.3,0);
     const paper = new THREE.MeshStandardMaterial({ color: 0xf4e8d2, roughness: .94, emissive:0x503524, emissiveIntensity:.12, side: THREE.DoubleSide });
-    const cream = new THREE.MeshStandardMaterial({ color: 0xdfc9ad, roughness: .96, emissive:0x38271b, emissiveIntensity:.08, side: THREE.DoubleSide });
+    const cream = new THREE.MeshStandardMaterial({ color: 0xeddfc6, roughness: .96, emissive:0x38271b, emissiveIntensity:.08, side: THREE.DoubleSide });
+    const crease = new THREE.MeshStandardMaterial({color:0xb39a82,roughness:.96});
     const gold = new THREE.MeshStandardMaterial({ color: 0xd7a18f, metalness: .8, roughness: .46 });
     const burgundy = new THREE.MeshStandardMaterial({ color: 0x35101f, roughness: .85, metalness: .08, side: THREE.DoubleSide });
     const waxMat = new THREE.MeshStandardMaterial({ color: 0x8c253f, roughness: .34, metalness: .12 });
     function mesh(g: THREE.BufferGeometry, m: THREE.Material, parent: THREE.Object3D, x=0, y=0, z=0) {
       const object = new THREE.Mesh(g,m); object.position.set(x,y,z);
-      object.castShadow = true; object.receiveShadow = true; parent.add(object); return object;
+      object.castShadow = true; object.receiveShadow = false; parent.add(object); return object;
     }
     function box(w:number,h:number,d:number,m:THREE.Material,parent:THREE.Object3D,x=0,y=0,z=0) {
       return mesh(new THREE.BoxGeometry(w,h,d),m,parent,x,y,z);
@@ -41,6 +42,12 @@ export function createLetterCollection(options:{scene:THREE.Scene;camera:THREE.P
     const flap = new THREE.Group();flap.name='letter-flap'; flap.position.set(0,1.35,-.035); envelope.add(flap);
     polygon([[-1.025,0],[1.025,0],[0,-.96]],paper,flap,.12);
     polygon([[-.95,-.04],[.95,-.04],[0,-.88]],cream,flap,.105);
+    // A real raised fold edge keeps the sealed flap legible under the shared soft light.
+    const flapCrease=new THREE.Group();flapCrease.name='letter-flap-crease';flap.add(flapCrease);
+    for(const x of [-1.025,1.025]){
+      const curve=new THREE.LineCurve3(new THREE.Vector3(x,-.006,.134),new THREE.Vector3(0,-.96,.134));
+      mesh(new THREE.TubeGeometry(curve,1,.004,4,false),crease,flapCrease);
+    }
     const foilCanvas=document.createElement('canvas'); foilCanvas.width=1024;foilCanvas.height=256;
     const foilContext=foilCanvas.getContext('2d');
     if(foilContext) {
@@ -97,11 +104,13 @@ export function createLetterCollection(options:{scene:THREE.Scene;camera:THREE.P
  function update(frame:LetterFrame){
   if(disposed)return {position:position.clone(),target:target.clone(),ready:false};
   latest=frame;
+  scene.rotation.y=-.777*ease(.55,.78,frame.progress)*(1-ease(.94,1,frame.progress));
+  envelope.rotation.x=-Math.PI/2*(1-ease(.55,.62,frame.progress));
   const q=THREE.MathUtils.clamp(Number.isFinite(frame.opening)?frame.opening:0,0,1);
   if(frame.effect?.name==='wax-stamp')heartSelected=frame.effect.value>0;
   heartStamp.visible=heartSelected;initialsStamp.visible=!heartSelected;
   seal.scale.setScalar(frame.effect?.name==='wax-press'&&frame.effect.value>0?.88:1);
-  insert.visible=!(q>.9&&Boolean(frame.onPaperPose)&&(frame.progress>=.86||(frame.progress>=.70&&frame.width>=600&&!frame.reducedMotion)));
+  insert.visible=!(q>.9&&Boolean(frame.onPaperPose)&&((frame.progress>=.86&&frame.progress<.94)||(frame.progress>=.70&&frame.progress<.86&&frame.width>=600&&!frame.reducedMotion)));
       flap.rotation.x=-ease(.12,.36,q)*THREE.MathUtils.degToRad(165);
       seal.position.y=.48-ease(.12,.34,q)*.35;
       seal.position.z=.235+ease(0,.12,q)*.08;

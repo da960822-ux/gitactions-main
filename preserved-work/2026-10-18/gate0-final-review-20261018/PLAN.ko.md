@@ -1,30 +1,32 @@
-> **현재 활성 지시 — 사용자 최신 긴 프롬프트 (2026-10-18):** 정적 승인 방 완성 → 실제 A/B/C 시점 렌더/1920·1440 비교 → 새 게임방 구도에 대한 단 한 번의 사용자 승인 → 승인 후 Hero 경로 역설계와 shared connector 통합 진행. 이전의 짧은 Hero 우선·통합 순서와 더 이전 순서는 superseded이며 현재 병행 지시가 아니다. 상세 순서·기준은 아래 “현재 실행 지시”를 따른다. main 병합·배포·push는 하지 않는다.
+> **현재 최종 범위 — 2026-10-18:** 사용자 지시의 갤러리 롤백은 구현됐다. Leonardo 초상과 사용자 제공 Splendor 커버를 유지하고, 나머지 여섯 게임의 정의/helper는 `24a6ec6` 기준으로 복원됐다(9개 source check true, factory SHA-256 `1df86d06bd53d2bebd15193b4895e8218fc9fe1a7264761b5c41b86c6e5f5087`). 색상/배치는 `#0c080e`, 390px stage, 중앙 항목+7개 ellipse, 2x4 선택지다. TypeScript/build 및 3개 테스트 통과가 보고됐고 `/workspace/scratch/gallery-rollback-capture-final/captures/gallery-rollback-report.json`에는 스페인어 1920×1080·1440×900 각각 8개 선택 캡처와 caption/href 상태, 추가 PNG 11장이 기록됐다. 이는 롤백의 범위 증거이며 전체 랜딩 시각 승인이 아니다. 요청된 약 1분 스페인어 실제 브라우저 영상은 57.96초 파일 `/workspace/hero-review/output/current-review/landing-rollback-walkthrough-es.mp4`로 비공개 Google Drive에 전달됐다: https://drive.google.com/file/d/1CT_hTFvJmn0wsYoCXf5T9ew93waVTz4Q/view?usp=drivesdk (file ID `1CT_hTFvJmn0wsYoCXf5T9ew93waVTz4Q`). 출력은 1920×1080 H.264 25fps, 실제 브라우저 세 세션, 1.2–3배 속도 편집, 자막 없음, SwiftShader다. 이는 port 5284의 R04 통합 전 캡처이며 알려진 실패가 영상에 남아 있다. 이전 ≤10초 목표는 superseded이며 미완료 gate가 아니다. 보조 녹화에서 로컬 16 UI 동작 성공은 기록됐으나 전 기능 시각 통과는 아니다. root는 현재 고정된 편지 읽기 프레임에서 장미 4+4 아트가 보이지 않았다고 보고했다. R01–R04의 server/client/UI 소스 구현은 진행/완료 보고 상태지만 최종 QA는 미완료: 보고된 54 shared + 28 game-client 테스트 및 5-service Supabase Docker Auth/JWT/edge-negative QA 통과, 실제 realtime 갱신과 인증 사용자 2명·기기 2대 UI 검수는 대기 중이다. cloud 배포와 main 병합은 없고 모바일은 최하위다. 기존 story/letter/Hero 작업은 보존한다. 전체 랜딩 완료로 표시하지 않는다.
 
-## 현재 실행 지시 — 사용자 최신 긴 프롬프트 (2026-10-18)
+## 이전 설계 지시 및 승인 기록 (현재 롤백 범위가 우선하며 이 아래 상세 설계는 기록 보존용)
 
-> 이 지시가 현재 활성 계획이다. 직전의 짧은 Hero→통합 순서와 그 이전의 병렬·교체 순서는 superseded이며 동시에 적용하지 않는다. 과거 기록은 보존하되 현재 단계 순서로 해석하지 않는다.
+> 아래는 이전 설계·검수 맥락이며 현재 실행을 지시하지 않는다. 현재는 상단의 사용자 롤백 범위만 진행하고 추가 디자인·큐레이션은 중단한다.
 
 1. 승인된 게임방을 최종 정적 장면으로 완성한다.
 2. 실제 장면을 inside / near-entry / diagonal의 2~3 시점으로 렌더하고 1920×1080 및 1440×900 비교자료를 제출한다. 좌표 목록만으로 대체하지 않는다.
-3. 사용자가 정적 방 구도를 승인한 뒤에만 Hero 경로를 역설계한다.
+3. 사용자가 선택한 B 정적 구도 승인이 완료됐다. room 의존 Hero 궤적 역설계와 shared camera/post connector 통합을 진행한다.
 4. 진입 전·전환 중간·도착의 실제 영상을 검수하고 제출한다. 모바일 반응형은 계속 최하위 우선순위다.
-5. 같은 사용자 게임방 구도 승인 뒤 shared camera/post connector를 공동 장면에 통합한다. connector를 위한 별도 사용자 승인 관문은 추가하지 않는다.
+5. connector에 별도 사용자 승인 관문을 추가하지 않는다.
 
 정적 방과 이동 장면은 다음 다섯 기준을 모두 충족해야 한다: 방이 작은 모형처럼 보이지 않을 것; 오브젝트 주변의 빈 공간이 장면을 지배하지 않을 것; 바닥·벽·배경 사이에 의도치 않은 절단/색 경계가 없을 것; 이동 중 급격한 스케일 변화나 가림이 없을 것; 문제를 조명·장식으로 감춰서 통과 처리하지 않을 것. UI 외형은 바꿀 수 있지만 기존 기능은 보존하고, 편지 원문은 글자 단위로 그대로 유지한다.
 
-필수 스토리 흐름은 거리 → 접힌 표면을 통한 이동 → 놀이 테이블 → 실제 편지 개봉·읽기 → 엔딩이며, 기존 8게임 선택과 원문을 보존한다. 디자인 세션 좌표는 구도 초안이지 고정 구현 계약이 아니다. 이전에 거절된 시안은 재사용·승인 근거가 아니다. 후반 기능 요구는 `design-sessions/post-hero-2026-10-18/EASTER-EGGS.ko.md` v3의 로컬 16 계열 L01–L16 및 인증 원격 공동 4 계열 R01–R04, 총 20개다. 기존 코드의 12 UI 카드 그룹 또는 7 production callback 연결은 이 요구 카탈로그를 대체하지 않는다. 모두 기능별 실제 구현·양언어/접근성 검수 대기이며 원격 4개는 실제 인증 사용자 2명·실기기 2대로 검수해야 한다. 편지 장면에는 왼쪽 장미 4송이와 오른쪽 장미 4송이, 총 8송이가 모두 나타나야 하며 구현 담당은 F (`sol_post_stage_f`)다. 승인 게임방은 편지 장면 밖이며 거기에 꽃을 추가하지 않는다.
+필수 스토리 흐름은 거리 → 접힌 표면을 통한 이동 → 놀이 테이블 → 실제 편지 개봉·읽기 → 엔딩이며, 기존 8게임 선택과 원문을 보존한다. 디자인 세션 좌표는 구도 초안이지 고정 구현 계약이 아니다. 이전에 거절된 시안은 재사용·승인 근거가 아니다. 후반 기능 요구는 `design-sessions/post-hero-2026-10-18/EASTER-EGGS.ko.md` v3의 로컬 16 계열 L01–L16 및 인증 원격 공동 4 계열 R01–R04, 총 20개다. 기존 코드의 12 UI 카드 그룹 또는 7 production callback 연결은 이 요구 카탈로그를 대체하지 않는다. 모두 기능별 실제 구현·양언어/접근성 검수 대기이며 원격 4개는 실제 인증 사용자 2명·실기기 2대로 검수해야 한다. 편지 장면에는 왼쪽 장미 4송이와 오른쪽 장미 4송이, 총 8송이가 모두 나타나야 한다. F의 이전 rig 구현은 8송이 개수 확인만 다뤘으며, 현재 L2는 self 및 독립 FAIL2로 STOP했으며 새 POST owner P가 own0에서 인수해 P1 source를 M2 coherent build 대기 상태로 동결했다. 승인 게임방은 편지 장면 밖이며 거기에 꽃을 추가하지 않는다.
 
-현재 배정: Hero 전환 소스 E1은 보존 상태로 개발을 중단했으며 E2도 자체 실패 2회 후 source STOP이다. E2 비동기 재질 복제에서 map이 null/pending인 시점의 재질 clone이 남아 흰 배경과 책상을 만든 것으로 기록됐다. 실제 캡처는 A 시점 1920×1080과 1440×900뿐이며 B/C 시점은 없고 capture report `completed=false`; 브라우저는 종료됐다. 근거는 `/workspace/scratch/handoff-e2-source/manifest.json`과 `/workspace/scratch/room-e2-static-study/captures/report.json`이다. 새 정적 room 담당 `sol_room_static_g` (명시적 Sol High)는 실제 room stage를 새로 맡아 자기 시도 카운터 0에서 시작한다. 2~3 actual view batch의 사용자 판정 전까지 Hero 역설계·전환 수정은 진행하지 않는다. POST2 이전 담당은 자체 실패 2회 후 STOP했으며 6개 파일 backup은 `/workspace/scratch/handoff-post2-source/manifest.json`이다. 새 담당 `sol_post_stage_f` (명시적 Sol High)는 POST stage/UI scope를 0회부터 이어받는다. shared ramp/camera 최종 확정과 Host 공동 통합은 정적 room 사용자 승인 전까지 중단한다. 독립 감독은 구현 담당자와 분리한다. 자체 빌드/테스트 통과는 시각 완료가 아니다.
+현재 운영 상태(2026-10-18, 롤백 및 후속 통합): 갤러리 롤백은 구현됐으며, 여섯 기존 정의/helper의 24a6ec6 대조 9개 검사는 true, factory SHA-256 `1df86d06bd53d2bebd15193b4895e8218fc9fe1a7264761b5c41b86c6e5f5087`이다. 기존 `#0c080e` 배경, 390px stage, 중앙 항목+7개 ellipse, 2x4 선택지로 원복했고 Leonardo 초상과 사용자 제공 Splendor 커버를 보존했다. 보고된 TypeScript/build와 세 테스트가 통과했다. `/workspace/scratch/gallery-rollback-capture-final/captures/gallery-rollback-report.json`에는 Spanish 1920×1080 및 1440×900 각 8개 선택의 캡션/href와 11개 추가 PNG가 기록돼 있다. 이 자료는 gallery rollback 범위에 한정되며 전체 landing의 시각 승인이나 기능 완료가 아니다.
+
+`/workspace/hero-review/output/current-review/landing-rollback-walkthrough-es.mp4`는 실제 브라우저 세 세션을 연결한 57.96초 스페인어 review artifact다. 기록된 출력은 1920×1080 H.264 25fps, 세 실제 세션, 구간별 1.2–3배 속도, 자막 없음, Chromium SwiftShader다. 원격 4개 통합 전 녹화여서 final ≤10초 납품이 아니다. 보조 실제 녹화에서 로컬 16 UI 동작은 성공했지만, 이는 전 기능 시각 통과가 아니다. root가 현재 고정 편지 읽기 프레임에서 장미 4+4 아트가 보이지 않는다고 보고했다. 이전 H5260 hint-flow 통과는 다른 snapshot이므로 현재 프레임 검수를 대체하지 않는다.
+
+R01–R04 server/client/UI 소스는 동결됐다. 최신 backend 검증 보고는 14개 검사 통과이며 실제 두-context browser QA는 대기 중이다. cloud deployment/main merge는 하지 않았다. 추가 디자인·큐레이션은 중단한다. 기존 story, letter, Hero 및 다른 작업은 보존한다. 전체 랜딩 시각 승인은 미완료이며 모바일은 최하위다. 요청된 약 1분 영상은 위 링크로 전달됐고, 이전 ≤10초 목표는 superseded다.
 
 ### 현재 진행 순서
 
-1. 최종 정적 room 구성 및 실장면 2~3 시점 렌더 준비.
-2. 1920×1080·1440×900 비교자료에 대한 사용자 구도 승인.
-3. 승인 후 Hero 경로 역설계 및 진입 전·중간·도착 실제 영상 검수.
-4. PostHero 자체 stage/UI는 별도 구현 영역으로 진행한다.
-5. 이미 받은 새 게임방 구도 승인에 따라 Hero 경로와 shared camera/post connector 공동 통합을 진행한다. 별도 connector 승인 관문은 두지 않는다.
-6. 모바일 반응형과 390×844 검수는 전체 데스크톱 여정 뒤 최하위로 진행.
-
+1. 구현된 gallery rollback의 범위 증거를 유지한다: 24a6ec6 기준 6개 정의/helper, 사용자 지정 색상·배치, retained Leonardo/Splendor cover, Spanish 8 selections × 2 desktop viewports, 세 테스트 및 TypeScript/build 결과.
+2. 동결된 R01–R04의 실제 두-context browser QA를 마치고, 최신 14개 backend 검사와 실제 브라우저 결과를 구분한다.
+3. 약 1분 영상은 Google Drive 전달 완료다. 이전 ≤10초 목표는 superseded이며 추가 gate가 아니다. 전달본은 port 5284의 pre-R04 녹화로 알려진 실패가 보인다.
+4. 장미 4+4 아트가 현재 고정된 편지 읽기 프레임에서 보이지 않는다는 root 보고를 포함해 미검수 시각 항목을 계속 분리한다. 로컬 16 UI action 성공을 전부 시각 통과로 간주하지 않는다.
+5. 전체 desktop 완료 전에 모바일 작업을 완료로 표시하지 않으며, 모바일은 최하위로 둔다. main merge/cloud deployment는 하지 않았다.
 ### 현재 운영 역할 분담
 
 - **Sol:** 디자인·자산 작업과 독립 시각 검수.
@@ -41,7 +43,9 @@
 
 이는 현재와 향후의 운영 정책·담당 배정이며 과거 작업자나 모델 구성을 소급 단정하지 않는다. 기존 독립 감독의 첫 결과 및 D2 독립 시각 Block을 유지한다. 인수·수정·검수·미검수 상태를 구분해 기록한다. UI 외형은 변경할 수 있으나 기능을 보존하고, 편지 원문은 글자 단위로 변경하지 않는다.
 
-최신 운영 인계(2026-10-18, E2 / POST2 교체 반영): `sol_scene_scale_e`는 E1 자체+독립 FAIL1, E2 FAIL2에 도달해 source 작업을 중단했다. E2 원인 기록은 async map 로딩 전 재질 복제본이 null/pending map을 유지한 오류다. `/workspace/scratch/room-e2-static-study/captures/report.json`에는 A inside view 1920×1080·1440×900만 있고 B/near-entry 및 C/diagonal 캡처가 없다; `completed=false`, 브라우저 종료 상태다. 백업 `/workspace/scratch/handoff-e2-source/manifest.json`을 보존했다. 새 room static 담당 `sol_room_static_g` (명시적 Sol High)는 자기 시도 0으로 정적 장면과 실제 A/B/C 구도 비교를 준비한다. room 승인 전 Hero 역설계는 보류한다. POST2 이전 담당도 own FAIL2로 중단됐고 6개 파일 백업은 `/workspace/scratch/handoff-post2-source/manifest.json`이다. 새 `sol_post_stage_f` (명시적 Sol High)가 POST stage/UI 작업을 자기 시도 0으로 인수하며, 편지 장면의 좌·우 각 4송이 장미 구현도 맡는다. E와 Post의 카운터는 분리한다. 현재 활성 순서는 정적 room → actual A/B/C 1920×1080·1440×900 비교 → 단일 사용자 새 게임방 구도 승인 → 승인 뒤 Hero 경로 역설계 및 shared connector 통합이다. 스토리 거리→접힌 표면→놀이 테이블→편지 개봉/읽기→엔딩과 EASTER-EGGS v3의 로컬16/원격4(총20) 기능 계열은 보존 요구사항이며 완료로 간주하지 않는다. 실제 인증 원격 QA는 사용자 2명·실기기 2대가 필요하다. 편지 안 좌4+우4=8송이 장미는 F가 구현하고, 승인 게임방에는 꽃을 추가하지 않는다. 독립 리뷰는 사용자 승인을 대체하지 않으며, 별도 connector 승인 관문은 없다. 모바일은 최하위로 유지한다. 전환 영상·최종 영상·모바일 QA는 미완료이고 main 병합·배포·push는 하지 않았다.
+이전 상세 인계(2026-10-18; H hint QA 완료·M1/N/L2 최신 결과 전, 과거 증거 보존): 사용자가 B 구도를 선택해 단일 room 구도 승인 관문은 충족됐다. K1 정적 독립 scoped PASS는 A/B/C 1920×1080·1440×900 실제 이미지(`room-k1-static-scoped-review.ko.json`)에 대한 제한 판정이며, 원화는 Three 단일 2D plane이다. H2 초기 Hero KO/ES 두 해상도 scoped PASS(`hero-h2-scoped-review.ko.json`)도 초기 화면 범위만 통과했다. 전체 journey, room 진입, 연속 모션, 실GPU 성능은 미검수다. H (`sol_hero_opening_h`, Sol High 독립 검수)는 driver 두 차례 실패 후 main Host 5260 token flow/state 검수를 이어받아 현재 진행 중이며, 별도 브라우저 슬롯을 사용한다. M (`sol_spatial_connection_m`)은 shared connection의 초기 p≤0.12 구간, 5개 파일을 맡아 진행한다. POST Composition/Gallery L (`sol_post_finish_l`)은 own counter 0으로 시작했고 L1 self FAIL1 이후 L2 layout 중이다. N (`sol_game_art_n`)은 8개 게임의 실제 고유 game art와 source identity를 담당한다; 사용자가 지목한 이미지 12245의 Catchmind·domino·generic props 문제는 예전 버전이라는 이유로 무시하지 않고 교체한다. Rose hint는 `PostHeroPreview.tsx`/`preview.css`에 KO `4송이, 그리고 4송이. 우리 시작한 날 ♡`, ES `Cuatro rosas y otras cuatro. El día que empezamos: 4 de abril ♡`를 버튼 클릭으로 구현했고 TypeScript 검사는 통과했다. Luna의 standalone 4178 KO 1920×1080 단일 상호작용은 통과했지만 KO→ES 전환에서 hint node가 사라진 확인이 있어 모든 경우 완료로 표시하지 않는다. 현재 main Host 5260의 한 1920 KO 확인에서는 버튼이 렌더되지 않았고, 별도 L1 ES 1920 프레임의 두 버튼/Enter/Space/Escape 결과와 서로 다른 snapshot이다. H가 main flow/state를 검수한다. 편지 원문은 변경하지 않았으며 힌트 코드는 아직 통합 동작 승인되지 않았다. Remote shared session에는 로컬 SharedSessions DDL·6 tests·독립 security review(no critical findings)가 있으나 edge/client/realtime/deploy 및 2인·2기기 QA가 남아 있다. 모바일은 마지막이다.
+
+과거 운영 인계 기록(2026-10-18, 이후 B 승인 및 H/M/L/N 재배정 전; 역사 보존): G1 FAIL1·G2 FAIL2로 기존 room source 담당은 STOP했으며 백업은 `/workspace/scratch/handoff-g2-source/manifest.json`이다. 새 room 담당 `sol_room_structure_i` (명시적 Sol High)는 native 3D 환경과 변경하지 않는 2D 인물의 혼합 구도를 맡고, 자기 시도 0이며 시각 검수는 대기 중이다. 별도 Hero opening 담당 `sol_hero_opening_h` (명시적 Sol High)는 AcrossHero/CSS, initial cosmic Hero, 좁은 opener hook의 storySurface/preview 연결을 맡아 자기 시도 0으로 진행한다. 4개 테스트는 기록됐지만 시각 통과가 아니며 실제 baseline 캡처의 false `ready` 조건을 수정 중이다; 실제 readiness 전 이미지를 완료 증거로 주장하지 않는다. room 승인 관문은 room 의존 Hero 궤적과 shared connector에만 적용되며 독립 Hero opening 및 별도 POST 작업은 계속한다. POST 담당 F (`sol_post_stage_f`)는 F2 자체 FAIL2로 STOP하고 source 9개 파일을 `/workspace/scratch/handoff-f2-source/manifest.json`에 보존했다. Sol의 S1/S2 판정은 큰 빈 갈색 접힘, 잘린 두 인물, ending paper의 남성 인물 가림이다. F2에서 읽기/장미 상태와 gallery 기능은 개선 보고됐으나 rose shape는 아직 검수되지 않았고, 8송이 개수의 1920·1440 확인은 F1 증거다. L09/L03 rig controls는 실제 CLOSED로 효과 증거가 아니다. 새 POST 담당 `sol_post_art_j` (명시적 Sol High)가 자기 시도 0에서 인수하며 F의 두 실패는 포함하지 않는다. root Host/Scene localEvent 전달·invalidate·needsFrame 연결과 tsc-b 통과, F main UI/Composition children 연결은 기술 증거일 뿐 시각 승인이나 전체 기능 완료가 아니다. 로컬 L01–L16은 실제 시각 검수 대기 중이고 5 rig unit test 통과는 16개 요구 완료를 뜻하지 않는다. 원격 R01–R04는 현재 로컬 SharedSessions DDL과 6개 테스트 및 독립 보안 검토(no critical findings) 기록까지다. edge/client/realtime 구현·배포와 실제 인증 2인·2기기 QA는 아직 없다. 동시에 실행 가능한 작업은 병행하되 브라우저 세션은 한 번에 하나만 사용하며 현재 환경은 SwiftShader다. 모바일은 데스크톱 완료 뒤 최하위다. 체크포인트 `f818b85ff3c33bc0394a826deaa3ceef5587d244`는 기존 Hero 브랜치에 정상 push되어 원격 SHA가 확인됐고 기준 `e29da5c` 대비 92 ahead/0 behind다. force push·main 병합·배포는 하지 않았다.
 
 
 독립 감독의 첫 판정은 시각 불합격이다. 책상 원화 늘어짐, 인물·소품 경계 틈, 편지 구간 얼굴 가림, 게임 조각 접지, 후반 공간 변화가 수정 대상이다. 품질 기준과 게임/API/편지 보호, main 병합·배포 금지는 유지한다.

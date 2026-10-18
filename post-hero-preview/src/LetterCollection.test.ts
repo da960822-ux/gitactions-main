@@ -17,6 +17,7 @@ test('letter-only collection preserves room ownership, reversible folds, DOM han
  assert.equal(scene.children.length,2);assert.equal(scene.fog,fog);assert.equal(scene.background,background);
  const flap=collection.root.getObjectByName('letter-flap')!;const insert=collection.root.getObjectByName('letter-insert')!;
  const frame={opening:0,progress:.62,width:1440,height:900,ownCamera:false};
+ collection.update({...frame,progress:.45});assert.equal(collection.root.getObjectByName('letter-envelope')!.rotation.x,-Math.PI/2,'the same sealed envelope rests on the play surface before approach');
  collection.update(frame);assert.equal(Math.abs(flap.rotation.x),0);assert.ok(insert.visible);
  collection.update({...frame,opening:1});const openFlap=flap.rotation.x,openInsert=insert.position.clone();
  assert.ok(openFlap<-2.8);assert.ok(openInsert.y>1.5);assert.ok(camera.position.equals(initialCamera));
@@ -26,6 +27,9 @@ test('letter-only collection preserves room ownership, reversible folds, DOM han
  collection.update({...frame,opening:1,progress:.75,onPaperPose});collection.projectPaper();assert.equal(insert.visible,false);assert.equal(paper!.visible,true);assert.equal(paper!.corners.length,4);assert.ok(paper!.corners.every(point=>Number.isFinite(point.x)&&Number.isFinite(point.y)));
  collection.update({...frame,opening:1,progress:.75,width:390,reducedMotion:true,onPaperPose});collection.projectPaper();assert.equal(insert.visible,true);assert.equal(paper!.visible,false);
  collection.update({...frame,opening:1,progress:.86,width:390,reducedMotion:true,onPaperPose});assert.equal(insert.visible,false);
+ collection.update({...frame,opening:1,progress:.84,onPaperPose});const readingTurn=collection.root.rotation.y;assert.ok(readingTurn<-.77,'the same envelope turns to face the reader camera');
+ collection.update({...frame,opening:1,progress:1,onPaperPose});assert.equal(Math.abs(collection.root.rotation.y),0);assert.equal(insert.visible,true,'the physical paper returns for the ending view');
+ collection.update({...frame,opening:1,progress:.84,onPaperPose});assert.equal(collection.root.rotation.y,readingTurn,'reverse scroll restores the reading orientation');
  collection.update({...frame,opening:.8,progress:.86,onPaperPose});assert.equal(insert.visible,true);
  collection.dispose();collection.dispose();assert.equal(collection.ready,false);assert.deepEqual(scene.children,[room]);assert.equal(roomDisposed,false);assert.equal(scene.fog,fog);assert.equal(scene.background,background);assert.equal(paper!.visible,false);
  room.geometry.dispose();(room.material as THREE.Material).dispose();

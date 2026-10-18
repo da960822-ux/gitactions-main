@@ -16,7 +16,7 @@ export function AcrossHero({language,ready,introActive,onSkip}:Props){
     <div className="across-actions"><a className="across-play" href="#games"><span>{es?'Vamos a jugar':'같이 놀자'}</span><span aria-hidden="true">↗</span></a><a className="across-letter-link" href="#papi-letter">{es?'La carta de Papi':'Papi의 편지'}<span aria-hidden="true">↗</span></a></div>
    </div>
    <div className="folded-side-note" aria-hidden="true"><span>한국</span><i/> <span>República Dominicana</span></div>
-   <div className="folded-destination" aria-labelledby="folded-destination-title"><h2 id="folded-destination-title">{es?'Baby, juguemos juntos.':'Baby, 같이 놀자.'}</h2><a href="#games">{es?'Vamos a jugar':'같이 놀자'} <span aria-hidden="true">↗</span></a></div>
+   <div className="folded-destination" aria-labelledby="folded-destination-title" inert><h2 id="folded-destination-title">{es?'Baby, juguemos juntos.':'Baby, 같이 놀자.'}</h2><a href="#games">{es?'Vamos a jugar':'같이 놀자'} <span aria-hidden="true">↗</span></a></div>
    <div className="across-bottom"><span>YEONSEOK & LISBETH</span><a href="#games">{es?'Un lugar para los dos':'우리 둘이 같이 놀 수 있는 곳'}<span aria-hidden="true">↓</span></a><span>MADE FOR YOU, BABY.</span></div>
    {introActive&&<button className="folded-skip" type="button" onClick={onSkip}>{es?'Saltar intro':'건너뛰기'} <span aria-hidden="true">↗</span></button>}
   </div>

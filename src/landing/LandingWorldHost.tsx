@@ -9,7 +9,7 @@ import {createPostHeroComposition} from './PostHeroComposition';
 import {PostHeroPreview} from '../../post-hero-preview/src/PostHeroPreview';
 import type {PostHeroState} from '../../post-hero-preview/src/Scene';
 import {createLetterCollection} from '../../post-hero-preview/src/LetterCollection';
-import {cameraPose as heroCameraPose} from './cinematic/folded/poseSpaceV19';
+import {cameraPose as heroCameraPose,postConnectionPose} from './cinematic/folded/poseSpaceV19';
 import {ROOM_WORLD,roomWorldVertex} from './cinematic/folded/approvedRoomGeometry';
 import {pointerDecay} from './cinematic/folded/pointerResponse';
 import {INTRO_SECONDS, introPose, smoothRange, type FoldPose} from './cinematic/folded/pose';
@@ -47,12 +47,13 @@ export function LandingWorldHost({language,onLanguageChange,selected,onSelect}:P
   const pose:FoldPose={progress:0,entrance:first.current?0:1,pointerX:0,pointerY:0,time:0};
   let world:ReturnType<typeof import('./cinematic/folded/previewSpaceV19')['createFoldedWorld']>|undefined;
   let post:ReturnType<typeof createLetterCollection>|undefined,gallery:ReturnType<typeof createGalleryCollection>|undefined;
-  let composition:ReturnType<typeof createPostHeroComposition>|undefined;
+  let composition:ReturnType<typeof createPostHeroComposition>|undefined,postStage:THREE.Group|undefined;
+  const postTransform=new THREE.Matrix4().makeTranslation(-6,-4.3,6).multiply(new THREE.Matrix4().makeRotationY(Math.PI)).multiply(new THREE.Matrix4().makeTranslation(-9,4.3,10));
   let disposed=false,frame=0,clockStart=0,last=0,elapsed=0,inIntro=first.current,lost=false;
   let trigger:ScrollTrigger|undefined,heroEnd=innerHeight*2.6,previousPost=false,galleryInput=false,postNeedsFrame=false;
   let lastRenderSignature='',pressed:{x:number;y:number;id:number}|null=null;
   const pointer={x:0,y:0},raycaster=new THREE.Raycaster(),ndc=new THREE.Vector2();
-  const cameraPosition=new THREE.Vector3(),cameraTarget=new THREE.Vector3(),roomEye=ROOM_EYE.clone();
+  const cameraPosition=new THREE.Vector3(),cameraTarget=new THREE.Vector3(),roomEye=ROOM_EYE.clone(),connectionBackground=new THREE.Color();
   let heroBackdrop:THREE.Scene['background']|undefined;
   const roomBackground=new THREE.Color('#21151d');
   const roomContain=(width:number,height:number)=>Math.max(1,(1672/941)/(width/height));
@@ -70,7 +71,7 @@ export function LandingWorldHost({language,onLanguageChange,selected,onSelect}:P
    Object.assign(image.style,{left:'0',top:'0',width:'1312px',height:'1199px',maxWidth:'none',right:'auto',bottom:'auto',transformOrigin:'0 0',transform:`matrix3d(${transform.elements.join(',')})`});
   };
   const frameHero=(camera:THREE.PerspectiveCamera,p:number,width:number,height:number)=>{
-   const room=smoothRange(.20,.32,p);camera.clearViewOffset();
+   const room=smoothRange(.27,.38,p);camera.clearViewOffset();
    if(world){if(heroBackdrop===undefined)heroBackdrop=world.scene.background;world.scene.background=p>.72?roomBackground:heroBackdrop;}
    if(width<760){const base=THREE.MathUtils.radToDeg(2*Math.atan(Math.tan(THREE.MathUtils.degToRad(camera.fov/2))/.59));camera.fov=THREE.MathUtils.lerp(base,roomFov(width,height),room);camera.setViewOffset(width,height,0,-height*.195*(1-room),width,height);}
    else {const contain=roomContain(width,height)-1;camera.position.y+=(ROOM_EYE.y-ROOM_TARGET.y)*contain*room;camera.position.z+=(ROOM_EYE.z-ROOM_TARGET.z)*contain*room;const target=heroCameraPose(p,pose.entrance,false).target;camera.lookAt(...target as [number,number,number]);}
@@ -91,7 +92,7 @@ export function LandingWorldHost({language,onLanguageChange,selected,onSelect}:P
    pointer.x=Math.max(-1,Math.min(1,event.clientX/innerWidth*2-1));pointer.y=Math.max(-1,Math.min(1,event.clientY/innerHeight*2-1));
   };
   const down=(event:PointerEvent)=>{
-   if(!galleryInput||!event.isPrimary||event.button!==0||(event.target as Element)?.closest('a,button,input,textarea,summary'))return;
+   if(!galleryInput||!event.isPrimary||event.button!==0||(event.target as Element)?.closest('a,button,input,textarea,summary,.rd-studio'))return;
    pressed={x:event.clientX,y:event.clientY,id:event.pointerId};
   };
   const up=(event:PointerEvent)=>{
@@ -138,7 +139,7 @@ export function LandingWorldHost({language,onLanguageChange,selected,onSelect}:P
    const galleryWeight=reveal*departure;
    section?.style.setProperty('--gallery-presence',String(galleryWeight));
    if(!galleryInput&&galleryWeight>=.92)galleryInput=true;else if(galleryInput&&galleryWeight<.88)galleryInput=false;
-   gallery?.setInputEnabled(galleryInput);
+   gallery?.setInputEnabled(galleryInput&&!section?.querySelector('.rd-studio'));
    root.dataset.scene=!postActive?'hero':galleryWeight>.5?'gallery':postState.current.progress<.56?'story':postState.current.progress<.9?'letter':'ending';
    root.dataset.galleryInput=String(galleryInput);root.dataset.bridge=bridge.toFixed(4);
    const signature=[pose.progress,pose.entrance,pose.pointerX,pose.pointerY,bridge,postState.current.progress,postState.current.opening,galleryWeight,selection.current.selected,scrollY,width,height].map(value=>typeof value==='number'?value.toFixed(4):value).join(':');
@@ -160,18 +161,21 @@ export function LandingWorldHost({language,onLanguageChange,selected,onSelect}:P
     world.updateRoomExit(0);
     post.update({...postState.current,width,height,ownCamera:false});postNeedsFrame=false;
     roomEye.copy(ROOM_EYE);if(width>=760)roomEye.addScaledVector(ROOM_BACK,roomContain(width,height)-1);
-    const composed=composition.update({progress,bridge,galleryWeight,opening:postState.current.opening,time:elapsed,reducedMotion:media.matches,width,height,roomEye,roomTarget:ROOM_TARGET,effect:postState.current.effect});
+    const composed=composition.update({progress,bridge,galleryWeight,opening:postState.current.opening,time:elapsed,reducedMotion:media.matches,width,height,roomEye,roomTarget:ROOM_TARGET,effect:postState.current.effect,localEvent:postState.current.localEvent});
+    postNeedsFrame=composed.needsFrame;
     world.updateRoomExit(composed.roomExit);world.updateRoomDesk(composed.roomDesk);
-    cameraPosition.copy(composed.eye);cameraTarget.copy(composed.target);
+    cameraPosition.copy(composed.eye).applyMatrix4(postTransform);cameraTarget.copy(composed.target).applyMatrix4(postTransform);
+    const connection=postConnectionPose(bridge,{position:roomEye.toArray(),target:ROOM_TARGET.toArray(),fov:roomFov(width,height)},{position:cameraPosition.toArray(),target:cameraTarget.toArray(),fov:composed.fov},width>=760?Math.max(1,(16/9)/(width/height)):1);
+    cameraPosition.fromArray(connection.position);cameraTarget.fromArray(connection.target);
     world.camera.position.copy(cameraPosition);world.camera.lookAt(cameraTarget);
-    world.camera.clearViewOffset();world.camera.fov=composed.fov;world.camera.updateProjectionMatrix();
-    world.scene.background=composed.background;
-    gallery.root.position.copy(composed.galleryAnchor);gallery.root.rotation.y=0;
+    world.camera.clearViewOffset();world.camera.fov=connection.fov;world.camera.updateProjectionMatrix();
+    world.scene.background=connectionBackground.copy(roomBackground).lerp(composed.background,bridge);
+    gallery.root.position.copy(composed.galleryAnchor);gallery.root.scale.setScalar(composed.galleryScale??1);gallery.root.rotation.y=0;
     post.root.position.copy(composed.letterAnchor);post.root.scale.setScalar(composed.letterScale);
-    gallery.update({selected:selection.current.selected,time:elapsed,paused:media.matches,dt,snap:media.matches,mobile:width<700,effect:postState.current.effect});
+    gallery.update({selected:composed.galleryDisplayId??selection.current.selected,storyFocus:composed.galleryStoryFocus,time:elapsed,paused:media.matches,dt,snap:media.matches,mobile:width<700,effect:postState.current.effect});
     if(!world.renderExternal()){dirty.current=true;return;}post.projectPaper();
-    Object.assign(screen.dataset,{scene:root.dataset.scene,camera:world.camera.position.toArray().map(n=>n.toFixed(3)).join(','),target:cameraTarget.toArray().map(n=>n.toFixed(3)).join(','),drawCalls:String(world.renderer.info.render.calls),triangles:String(world.renderer.info.render.triangles),gallery:galleryWeight.toFixed(4),frameRenderingMode:'approved-room-direct',reflection:'Hero SSR inactive in this frame',contactShadow:'1024 PCF from room key on desk contact receiver',geometries:String(world.renderer.info.memory.geometries),textures:String(world.renderer.info.memory.textures)});
-    updateEditorial(1,1);
+    Object.assign(screen.dataset,{scene:root.dataset.scene,camera:world.camera.position.toArray().map(n=>n.toFixed(3)).join(','),target:cameraTarget.toArray().map(n=>n.toFixed(3)).join(','),drawCalls:String(world.renderer.info.render.calls),triangles:String(world.renderer.info.render.triangles),gallery:galleryWeight.toFixed(4),frameRenderingMode:'approved-room-direct',reflection:'Hero SSR inactive in this frame',contactShadow:'room art is rigid and unlit; post props use live contact shadows',geometries:String(world.renderer.info.memory.geometries),textures:String(world.renderer.info.memory.textures)});
+    updateEditorial(1,1);destination.style.opacity=String(1-smoothRange(0,.2,bridge));destination.inert=bridge>.2;
    }
   };
   void import('./cinematic/folded/previewSpaceV19').then(async({createFoldedWorld})=>{
@@ -179,12 +183,13 @@ export function LandingWorldHost({language,onLanguageChange,selected,onSelect}:P
    world=createFoldedWorld(screen,{width:screen.clientWidth,height:screen.clientHeight,pixelRatio:Math.min(devicePixelRatio,innerWidth<760?1.25:1.5),portrait:PORTRAIT,portraitMask:PORTRAIT_MASK,beforeRender:frameHero,surfaceFilm:'/motion/folded-playhouse-lightwell.mp4',introSurfaceFilm:'/motion/folded-playhouse-gift-edge-v18.mp4',onFrame:data=>{Object.assign(screen.dataset,data,{frameRenderingMode:'hero-curved-SSR'});if(!disposed&&(first.current||Number(data.entrance)>=.999))setReady(true);}});
    await world.ready;if(disposed)return;
    post=createLetterCollection({scene:world.scene,camera:world.camera,host:screen});post.root.visible=false;
-   composition=createPostHeroComposition(world.scene);
-   gallery=createGalleryCollection(invalidate);gallery.root.visible=false;world.scene.add(gallery.root);
+   composition=createPostHeroComposition(world.scene,invalidate);
+   gallery=createGalleryCollection(invalidate);gallery.root.visible=false;
+   postStage=new THREE.Group();postStage.name='POST_SHARED_FOREGROUND_STAGE';postStage.matrix.copy(postTransform);postStage.matrixAutoUpdate=false;postStage.add(composition.root,gallery.root,post.root);world.scene.add(postStage);
    setPostReady(true);clockStart=performance.now();world.render(pose);frame=requestAnimationFrame(tick);resize();
   }).catch(error=>{if(disposed)return;console.error('Landing world:',error);endIntro();post?.dispose();gallery?.dispose();composition?.dispose();world?.dispose();world=undefined;setReady(false);setFailed(true);});
   root.addEventListener('pointermove',move);root.addEventListener('pointerleave',resetPointer);root.addEventListener('pointerdown',down);root.addEventListener('pointerup',up);root.addEventListener('pointercancel',resetPointer);window.addEventListener('resize',resize);window.addEventListener('scroll',invalidate,{passive:true});media.addEventListener('change',preference);screen.addEventListener('webglcontextlost',contextLost);screen.addEventListener('webglcontextrestored',contextRestored);document.addEventListener('visibilitychange',visibility);
-  return()=>{disposed=true;cancelAnimationFrame(frame);mm.revert();resizeObserver.disconnect();post?.dispose();gallery?.dispose();composition?.dispose();world?.dispose();root.removeEventListener('pointermove',move);root.removeEventListener('pointerleave',resetPointer);root.removeEventListener('pointerdown',down);root.removeEventListener('pointerup',up);root.removeEventListener('pointercancel',resetPointer);window.removeEventListener('resize',resize);window.removeEventListener('scroll',invalidate);media.removeEventListener('change',preference);screen.removeEventListener('webglcontextlost',contextLost);screen.removeEventListener('webglcontextrestored',contextRestored);document.removeEventListener('visibilitychange',visibility);};
+  return()=>{disposed=true;cancelAnimationFrame(frame);mm.revert();resizeObserver.disconnect();post?.dispose();gallery?.dispose();composition?.dispose();postStage?.removeFromParent();world?.dispose();root.removeEventListener('pointermove',move);root.removeEventListener('pointerleave',resetPointer);root.removeEventListener('pointerdown',down);root.removeEventListener('pointerup',up);root.removeEventListener('pointercancel',resetPointer);window.removeEventListener('resize',resize);window.removeEventListener('scroll',invalidate);media.removeEventListener('change',preference);screen.removeEventListener('webglcontextlost',contextLost);screen.removeEventListener('webglcontextrestored',contextRestored);document.removeEventListener('visibilitychange',visibility);};
  },[]);
  useEffect(()=>{dirty.current=true;},[selected,language]);
  return <div ref={host} className={`landing-world-host${ready?' is-world-ready':''}${failed?' world-unavailable':''}`}>

@@ -5,20 +5,36 @@ export type FoldPose={progress:number;entrance:number;pointerX:number;pointerY:n
 export const clamp01=(v:number)=>Math.max(0,Math.min(1,v));
 export const smoothRange=(a:number,b:number,v:number)=>{const t=clamp01((v-a)/(b-a));return t*t*(3-2*t);};
 export function introPose(seconds:number):FoldPose{return{progress:0,entrance:smoothRange(.1,2.9,seconds),pointerX:0,pointerY:0,time:Math.min(seconds,INTRO_SECONDS)};}
-export function cameraPose(p:number,entrance:number,mobile:boolean){
- const stable=mobile?[1.3,.25,12.1,1.35,-.1,0]:[0,.3,11.7,.3,-.05,0];
- const arrival=roomWorldVertex(836,470.5,24);
- const keys=[[0,...stable],[.08,...stable],[.16,-5.8,.35,8.8,-5.5,.25,-6],[.22,-6,.45,5,-6,.5,-10],[.32,...arrival,-6,.5,-10],[.43,-6.12,.54,-.45,-6,.5,-10],[.6,-5.9,.48,-.38,-6,.5,-10],[1,...arrival,-6,.5,-10]];
- const i=Math.min(keys.length-2,Math.max(0,keys.findIndex((k,j)=>j<keys.length-1&&p>=k[0]&&p<=keys[j+1][0]))),a=keys[i],b=keys[i+1],span=b[0]-a[0],t=clamp01((p-a[0])/span),t2=t*t,t3=t2*t;
- // Shared monotone tangents keep cruise velocity through keys without overshooting a wall.
- const tangent=(index:number,column:number)=>{
-  if(index===0||index===keys.length-1)return 0;
-  const previous=keys[index-1],current=keys[index],next=keys[index+1];
-  const incoming=(current[column]-previous[column])/(current[0]-previous[0]),outgoing=(next[column]-current[column])/(next[0]-current[0]);
+/** One progress-only path: reversing scroll evaluates the same pose, including at the room boundary. */
+export function cameraPose(progress:number,entrance:number,mobile:boolean){
+ const p=clamp01(progress),stable=mobile?[1.3,.25,12.1,1.35,-.1,0]:[0,.3,11.7,.3,-.05,0];
+ const arrival=roomWorldVertex(836,470.5,24),target=[-6,.5,-10];
+ const keys=[[0,...stable],[.27,...stable],[.38,...arrival,...target],[1,...arrival,...target]];
+ const values=interpolatePath(keys,p);
+ values[2]+=(1-entrance)*2.5;
+ return{position:values.slice(0,3),target:values.slice(3,6)};
+}
+
+function interpolatePath(keys:number[][],p:number){
+ const index=Math.min(keys.length-2,Math.max(0,keys.findIndex((key,i)=>i<keys.length-1&&p>=key[0]&&p<=keys[i+1][0])));
+ const a=keys[index],b=keys[index+1],span=b[0]-a[0],t=clamp01((p-a[0])/span),t2=t*t,t3=t2*t;
+ const tangent=(i:number,column:number)=>{
+  if(i===0||i===keys.length-1)return 0;
+  const left=keys[i-1],middle=keys[i],right=keys[i+1];
+  const incoming=(middle[column]-left[column])/(middle[0]-left[0]),outgoing=(right[column]-middle[column])/(right[0]-middle[0]);
   return incoming*outgoing<=0?0:2*incoming*outgoing/(incoming+outgoing);
  };
- const v=a.slice(1).map((value,j)=>(2*t3-3*t2+1)*value+(t3-2*t2+t)*span*tangent(i,j+1)+(-2*t3+3*t2)*b[j+1]+(t3-t2)*span*tangent(i+1,j+1));
- v[2]+=(1-entrance)*2.5;return{position:v.slice(0,3),target:v.slice(3,6)};
+ const values=a.slice(1).map((value,i)=>(2*t3-3*t2+1)*value+(t3-2*t2+t)*span*tangent(index,i+1)+(-2*t3+3*t2)*b[i+1]+(t3-t2)*span*tangent(index+1,i+1));
+ return values;
+}
+
+export type ConnectionView={position:number[];target:number[];fov:number};
+/** The room remains framed during the retreat, then the camera curls over the shared sheet. */
+export function postConnectionPose(progress:number,from:ConnectionView,to:ConnectionView,contain=1):ConnectionView{
+ const p=clamp01(progress),eye=from.position,target=from.target;
+ const keys=[[0,...eye,...target,from.fov],[.25,-6,1.5*contain,1.8,-8,-1.5,-1.5,44],[.5,-6,-.3,1.8,-7.5,-2.35,8.8,42],[1,...to.position,...to.target,to.fov]];
+ const values=interpolatePath(keys,p);
+ return{position:values.slice(0,3),target:values.slice(3,6),fov:values[6]};
 }
 
 export function surfaceWeights(p:number){return{aperture:smoothRange(.08,.43,p),rail:smoothRange(.55,.85,p)};}

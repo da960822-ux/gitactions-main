@@ -10,11 +10,9 @@
 .landing-world-host [data-room-active=true] .folded-side-note,.landing-world-host [data-room-active=true] .across-bottom{visibility:hidden}
 .landing-world-host .across-stage::after{opacity:var(--hero-atmosphere-opacity,1)}
 .landing-world-host .post-hero-preview.post-hero-embedded{background:transparent;overflow:visible;isolation:auto}
-.landing-world-host .cs-game-gallery{scroll-margin-top:24px}
 .landing-world-host .post-hero-preview .letter-section{background:linear-gradient(#160e1700,#160e1780 20%,#160e1790 85%,#160e1700)}
 .landing-world-host .post-hero-preview .letter-paper{color:#402a33}
 .landing-world-host .post-hero-preview .letter-paper p{color:inherit}
-.landing-world-host .cs-game-gallery .rd-game-sculptures{background:none}
 .landing-world-host.world-unavailable>.landing-world-canvas{display:none}
 @media(max-width:760px){
  .landing-world-canvas{height:100svh}
@@ -28,7 +26,6 @@
  .landing-world-host .post-hero-preview .ending-copy,.landing-world-host .post-hero-preview .ending h2{color:#faeee6}
  .landing-world-host .post-hero-preview .ending .eyebrow{color:#d7a18f}
  .landing-world-host .post-hero-preview .letter-invitation .chapter-copy{padding:18px 16px;margin-inline:-16px;background:linear-gradient(110deg,#21151df2,#21151db3 78%,#21151d40)}
- .landing-world-host .cs-game-gallery .rd-game-caption{padding:12px 10px;background:linear-gradient(110deg,#21151df2,#21151dbf);border-radius:3px}
 }
 @media(prefers-reduced-motion:reduce){
  .landing-world-host .across-hero{min-height:200svh}
@@ -55,7 +52,6 @@
 }
 .landing-world-host .post-hero-preview .ending .text-button{color:#ebc8b6}
 
-.landing-world-host .cs-game-gallery{opacity:var(--gallery-presence,1)}
 @media(min-width:761px){
  .landing-world-host .post-hero-preview .letter-invitation{align-items:flex-end;padding-top:55svh;padding-bottom:12svh}
  .landing-world-host .post-hero-preview .letter-invitation .chapter-copy{max-width:400px;padding:20px 24px;background:linear-gradient(110deg,#21151de8,#21151d80 80%,transparent);border-left:1px solid #e9c1a488}

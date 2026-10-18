@@ -21,7 +21,7 @@ export const landingCopy = {
     momentsTitle: 'Mami, 이렇게 하면 돼 ♡',
     moments: [
       { title: '같이 게임하기', body: '초대 링크로 같은 게임방에 들어와서 우리 둘이 같이 놀 수 있어.' },
-      { title: '캐치마인드에서는 번역도 돼', body: '그림 맞히면서 한국어나 스페인어로 채팅해도 돼. 서로 알아볼 수 있게 번역하고 원문도 볼 수 있게 만들었어.' },
+      { title: 'Baby, 내 그림 맞혀봐.', body: '다음엔 내가 맞힐게 ㅋㅋㅋ 캐치마인드에서는 한국어나 스페인어로 얘기하고, 번역과 원문을 함께 볼 수 있어.' },
       { title: '하고 싶은 게 더 있다면?', body: '다른 게임이나 추가했으면 하는 게 있으면 알려줘. Papi가 한번 만들어볼게 ㅋㅋㅋ' },
     ],
     translationLimitNote: '번역 한도를 넘거나 번역이 어려울 때는 원문으로 보여줄게.',
@@ -62,7 +62,7 @@ export const landingCopy = {
     momentsTitle: 'Mami, mira cómo jugamos ♡',
     moments: [
       { title: 'Juguemos juntos', body: 'Entramos a la misma sala con el enlace de invitación y jugamos juntos.' },
-      { title: 'En Catchmind también hay traducción', body: 'Mientras adivinamos el dibujo, podemos chatear en coreano o en español. Los mensajes se traducen para que nos entendamos, y el mensaje original también queda visible.' },
+      { title: 'Baby, adivina qué dibujé.', body: 'Después me toca adivinar a mí, haha. En Catchmind podemos escribir en coreano o español y ver la traducción junto al mensaje original.' },
       { title: '¿Se te ocurre algo más?', body: 'Si quieres otro juego o te gustaría que agregara algo, dímelo. Papi tratará de hacerlo, haha.' },
     ],
     translationLimitNote: 'Si se llega al límite o la traducción no está disponible, verás el mensaje original.',

@@ -95,3 +95,21 @@
 .post-hero-preview .egg-button:active{transform:scale(.97)}
 .post-hero-preview .details-card{grid-column:1/-1;max-width:47rem;width:100%;justify-self:center}
 @media(max-width:680px){.post-hero-preview .egg-grid{grid-template-columns:1fr}.post-hero-preview .details-card{grid-column:auto}}
+
+/* The controls leave the physical toy in the shared scene visible beside them. */
+.post-hero-preview .local-event-picker{display:flex;flex-wrap:wrap;gap:8px;max-width:43rem;margin:0 0 24px}
+.post-hero-preview .local-event-picker .egg-button{font-size:12px;min-height:44px;padding:9px 12px}
+.post-hero-preview .local-event-picker .egg-button[aria-pressed=true]{background:#7b293d;color:#fff3e3;border-color:#7b293d}
+.post-hero-preview .local-event-controls{max-width:43rem;min-height:380px;background:#efe0ce;padding:28px;border:1px solid #a87e6a66}
+.post-hero-preview .local-event-footer{border-top:1px solid #b58f7b66;margin-top:24px;padding-top:16px}
+@media(min-width:901px){
+ .landing-world-host .post-hero-preview .details-section{min-height:115svh;margin:0;background:transparent;overflow:visible;padding:70px 0 70px 6vw}
+ .landing-world-host .post-hero-preview .details-section>.section-top{width:min(43vw,690px);padding:0 0 20px;background:#efe0ce}
+ .landing-world-host .post-hero-preview .details-eggs{background:transparent;padding:28px 0 0;max-width:none;margin:0}
+ .landing-world-host .post-hero-preview .details-heading{width:min(43vw,690px);background:#efe0ce;margin:0;padding:28px 28px 24px}
+ .landing-world-host .post-hero-preview .local-event-picker{width:min(43vw,690px);background:#efe0ce;padding:0 28px 24px;margin:0}
+ .landing-world-host .post-hero-preview .local-event-controls{width:min(43vw,690px);max-width:none;border:0;margin:0}
+ .landing-world-host .post-hero-preview .details-card{width:min(43vw,690px);background:#efe0ce;margin:0;padding:24px 28px}
+ .landing-world-host .post-hero-preview .details-footnote{width:min(43vw,690px);margin:0;background:#efe0ce;padding:0 28px 24px;text-align:left}
+}
+.post-hero-preview .details-pose-end{position:absolute;bottom:0;left:0;width:1px;height:1px;pointer-events:none}

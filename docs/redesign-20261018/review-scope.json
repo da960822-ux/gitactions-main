@@ -18,27 +18,19 @@
     "output/landing-final: rejected old proposal recording, do not deliver",
     "output/playwright/approved-room-redesign first HMR run: empty engine-only canvas metadata; invalid screen evidence"
   ],
-  "currentStatus": "E1 and E2 source ownership stopped after E self FAIL1/FAIL2. Current work is static room redesign only; E2 captured A at two desktop sizes but not B/C and its capture report completed=false. New room owner sol_room_static_g starts at counter 0. Previous POST2 owner stopped after own FAIL2; new sol_post_stage_f starts at 0 for separate stage/UI work.",
+  "currentStatus": "Gallery rollback is implemented: the six old definitions/helpers are restored against 24a6ec6 (nine source checks true; factory SHA-256 1df86d06bd53d2bebd15193b4895e8218fc9fe1a7264761b5c41b86c6e5f5087), with the old #0c080e background, 390px stage, central item + seven ellipses, and 2x4 choices. Leonardo portrait and user-provided Splendor cover are retained. TypeScript/build and three tests passed. Browser evidence at /workspace/scratch/gallery-rollback-capture-final/captures/gallery-rollback-report.json records all eight Spanish captions/hrefs at 1920x1080 and 1440x900; 11 additional PNGs are reported. This is scoped rollback/function evidence, not whole-landing visual acceptance. The requested approximately one-minute Spanish actual-browser video was delivered privately: https://drive.google.com/file/d/1CT_hTFvJmn0wsYoCXf5T9ew93waVTz4Q/view?usp=drivesdk (file ID 1CT_hTFvJmn0wsYoCXf5T9ew93waVTz4Q). The 57.96s artifact is from the 5284 pre-R04 integration capture; known failures remain visible. The earlier <=10s target is superseded, not a pending gate. All 16 local UI actions succeeded in the supplemental recording, but not all have visual acceptance; root reports the rose 4+4 art absent in the current frozen reading frame despite hint interaction. R01-R04 server/client/UI source is frozen. The latest backend verification reports 14 checks passed; actual two-context browser QA remains pending. No cloud deployment or main merge. Additional design/curation stopped; preserve story/letter/Hero and other work. Mobile remains last; whole landing is not complete.",
   "runtimeChange": "LandingWorldHost now instantiates approved room, renderer-free game collection and letter-only collection. Legacy full PostHero Scene is lazy-loaded only in standalone preview.",
   "pending": [
-    "Complete static room under sol_room_static_g ownership",
-    "Produce actual A/inside, B/near-entry, and C/diagonal renders at 1920x1080 and 1440x900; current E2 report has A only and completed=false",
-    "Obtain the single user approval of the new game-room composition",
-    "After that approval, reverse-design Hero path and review actual pre-entry/mid-transition/arrival video",
-    "Continue separate POST stage/UI under sol_post_stage_f; shared camera/connector integration proceeds after the same room approval without a new connector approval gate",
-    "Complete desktop QA; mobile responsive adaptation and 390x844 QA remain last",
-    "Audit and implement all 16 local Easter egg families L01-L16 from EASTER-EGGS.ko.md v3; do not substitute UI-group or callback counts for the requirements inventory",
-    "Implement and verify the four authenticated remote collaboration families R01-R04 with two real authenticated users on two real devices",
-    "Implement eight visible roses within the letter scene only (four left, four right); owner sol_post_stage_f. Add no flowers to the approved game-room scene",
-    "Preserve required story flow: distance -> folded surface transition -> play table -> actual letter open/read -> ending; treat design-session coordinates as draft references, not binding coordinates",
-    "Keep the literal letter copy unchanged and do not revive rejected prior visuals"
+    "R01-R04 actual two-context browser QA remains pending; source freeze and 14 backend checks do not establish browser acceptance",
+    "Current-frame visual acceptance is incomplete: root reports the rose 4+4 art absent despite successful hint interaction; local16 action success is supplementary and not all-visual-pass",
+    "No cloud deployment or main merge; preserve existing story/letter/Hero and other owners’ work",
+    "Do not claim whole-landing completion; mobile remains last priority and incomplete"
   ],
   "executionPriority": [
-    "static room redesign",
-    "actual A/inside, B/near-entry, C/diagonal comparison renders at 1920x1080 and 1440x900",
-    "single user approval of the new game-room composition",
-    "after approval, Hero reverse-design and actual entry/mid/arrival review; shared connector integration proceeds under same approval",
-    "mobile responsive adaptation and 390x844 QA last"
+    "Retain the delivered approximately one-minute Spanish browser video as requested: 57.96s, private Drive delivery recorded below. The earlier <=10s target is superseded and is not a new completion gate.",
+    "Finish actual two-context browser QA for frozen R01-R04 implementation; the latest backend check reports 14 passed.",
+    "Keep current visual findings separate from interaction evidence: root reports rose 4+4 art absent in the current frozen reading frame; do not claim whole-landing visual acceptance.",
+    "No cloud deployment or main merge. Mobile remains last; whole landing is not complete."
   ],
   "operatingRoles": {
     "policy": "New operating policy; does not assert historical model configuration or past task ownership.",
@@ -48,8 +40,8 @@
   },
   "visualReviewStatus": {
     "implementationSelfTests": "Passing self-tests do not establish visual completion or the required user composition approval.",
-    "firstIndependentResult": "visual Block remains in force",
-    "freshBuildReview": "D2 self-fail2 and independent BLOCK are historical evidence. Current E1 transition development is stopped; E prepares static room actual multi-view evidence, with own visual attempt count held at 0 until the user judges the actual batch. Post continues separately at POST2; shared camera/connector remains paused.",
+    "firstIndependentResult": "Prior visual BLOCK/history remains. Current user rollback is implemented with scoped browser captures; this is not whole-landing visual acceptance. Root reports rose 4+4 art absent in the current frozen reading frame despite successful hint interaction.",
+    "freshBuildReview": "Gallery rollback implementation and scoped Spanish selection evidence are recorded in /workspace/scratch/gallery-rollback-capture-final/captures/gallery-rollback-report.json (eight selections at each of 1920x1080 and 1440x900; 11 additional PNGs). Reported TypeScript/build and three tests passed. Whole-landing visual acceptance remains pending; root reports 4+4 rose art absent in current frozen reading frame. The requested approximately one-minute video was delivered at https://drive.google.com/file/d/1CT_hTFvJmn0wsYoCXf5T9ew93waVTz4Q/view?usp=drivesdk; earlier <=10s target is superseded. R01-R04 source is frozen, 14 backend checks passed, and actual two-context browser QA remains pending.",
     "stateTracking": "Keep handoff, fixes, review, and unreviewed items distinct; test/build passes do not establish visual completion."
   },
   "mobileAdditionalWork": "last priority; only after the desktop journey per current user instruction",
@@ -63,7 +55,7 @@
     "attemptCounterStartsAt": "After an actual multi-view render batch is judged; E remains at zero before that judgment."
   },
   "currentHandoff": {
-    "statusAsOf": "2026-10-18 latest long user prompt active",
+    "statusAsOf": "2026-10-18 latest implementation and QA status",
     "supersedes": "Earlier short Hero-first integration sequence and earlier orderings; preserve them as history, do not execute them concurrently.",
     "E1": {
       "source": "preserved",
@@ -71,10 +63,9 @@
       "status": "not accepted; no new source changes authorized in transition scope"
     },
     "heroRoomOwner": {
-      "role": "sol_room_static_g",
-      "assignment": "explicit Sol High",
-      "ownAttemptCount": 0,
-      "scope": "static room and actual multi-view render comparison"
+      "role": "sol_room_structure_i",
+      "status": "B composition selected/approved; K1 scoped static pass",
+      "visualScopeLimit": "static composition only; not full environment/motion/trajectory approval"
     },
     "roomEvidenceNext": {
       "requiredViews": [
@@ -95,7 +86,8 @@
       ],
       "actualRenderedViewsRequired": true,
       "coordinatesAloneSuffice": false,
-      "userCompositionApprovalRequiredBeforeHeroPath": true
+      "userCompositionApprovalRequiredBeforeHeroPath": false,
+      "userApprovedComposition": "B"
     },
     "D2HistoricalEvidence": {
       "manifest": "/workspace/scratch/handoff-d2-source/manifest.json",
@@ -105,29 +97,28 @@
       "sourceBackupFiles": 8
     },
     "postOwner": {
-      "previousOwnerDisposition": "Previous POST2 owner stopped after own same-area visual failure 2.",
-      "sourceBackup": "/workspace/scratch/handoff-post2-source/manifest.json",
-      "backupFileCount": 6,
-      "newOwner": "sol_post_stage_f",
-      "assignment": "explicit Sol High",
-      "ownAttemptCount": 0,
-      "scope": "separate POST stage/UI work; maintain separate visual counter",
-      "letterFlowers": {
-        "requirement": "4 roses on left + 4 roses on right = 8 total, all visible in the letter scene",
-        "owner": "sol_post_stage_f",
-        "approvedGameRoom": "no added flowers"
-      },
-      "remoteAuthenticatedQA": "R01-R04 require actual 2 authenticated users on 2 devices; no completion evidence recorded."
+      "status": "Gallery rollback implemented; TypeScript/build and 3 tests passed; browser report verifies all eight Spanish selection captions/hrefs at 1920x1080 and 1440x900, plus 11 PNGs. This scoped check is not whole-landing visual acceptance.",
+      "visualAcceptance": "pending full current desktop scope; root reports 4+4 rose art absent in current frozen reading frame despite successful hint action"
     },
-    "sharedIntegration": "After the single user approval of the new game-room composition, proceed with shared camera/post-connector integration; no additional user approval gate for the connector.",
-    "video": "actual pre-entry/mid-transition/arrival video pending after static room approval and Hero path redesign",
+    "sharedIntegration": "Room approval B is satisfied. M (sol_spatial_connection_m) owns initial five-file shared-connection p<=0.12 work; no additional connector approval gate.",
+    "video": {
+      "status": "delivered to user privately; approximately one-minute target satisfied by the 57.96s actual-browser video",
+      "path": "/workspace/hero-review/output/current-review/landing-rollback-walkthrough-es.mp4",
+      "evidence": "/workspace/hero-review/output/current-review/landing-rollback-recording-evidence.json",
+      "durationSeconds": 57.96,
+      "driveFileId": "1CT_hTFvJmn0wsYoCXf5T9ew93waVTz4Q",
+      "deliveryUrl": "https://drive.google.com/file/d/1CT_hTFvJmn0wsYoCXf5T9ew93waVTz4Q/view?usp=drivesdk",
+      "format": "1920x1080 H.264 25fps, three actual browser sessions, segment acceleration 1.2-3x, no subtitles; Chromium SwiftShader software WebGL",
+      "captureState": "Port 5284/pre-R04 integration capture; known failures remain visible",
+      "supersededTarget": "Earlier <=10s target is superseded; do not list as pending or add a new gate."
+    },
     "mobile": "last priority; incomplete",
     "independentReviewer": "separate from implementation owners; review stages pending",
     "mainMerge": "not done",
     "deployment": "not done",
-    "push": "not done",
-    "roomApprovalGate": "One user approval of the new game-room composition; independent review does not replace it.",
-    "mainMergeDeploymentApproval": "Keep the already-required separate approval for main merge/deployment only.",
+    "push": "normal push done; remote SHA verified",
+    "roomApprovalGate": "Satisfied for B composition. It gates only room-dependent work; no extra connector approval. Separate main merge/deploy approval remains.",
+    "mainMergeDeploymentApproval": "Separate approval remains for main merge/deployment only.",
     "E1E2": {
       "previousOwner": "sol_scene_scale_e",
       "E1": "self and independent FAIL1",
@@ -144,11 +135,108 @@
         "C / diagonal"
       ],
       "captureCompleted": false,
-      "browserClosed": true
+      "browserClosed": true,
+      "newRoomOwner": "sol_room_structure_i",
+      "currentDisposition": "G1 FAIL1/G2 FAIL2; prior room owner STOP; backup /workspace/scratch/handoff-g2-source/manifest.json"
     },
-    "currentSequence": "static room -> actual A/B/C views at 1920x1080 and 1440x900 -> one user approval of new game-room composition -> Hero reverse-design and shared connector integration",
+    "currentSequence": "Gallery rollback and scoped Spanish captures recorded -> complete actual two-context browser QA for frozen R01-R04 -> address/verify current visual findings without expanding design scope -> mobile last; no main merge/cloud deployment.",
     "additionalConnectorApprovalGate": false,
-    "priorAuditCorrection": "Earlier 12-card/7-callback audit was an implementation component/wiring count, not the full requirement inventory; tracked EASTER-EGGS v3 requires 16 local + 4 authenticated remote event families."
+    "priorAuditCorrection": "Earlier 12-card/7-callback audit was an implementation component/wiring count, not the full requirement inventory; tracked EASTER-EGGS v3 requires 16 local + 4 authenticated remote event families.",
+    "heroOpeningOwner": {
+      "role": "sol_hero_opening_h",
+      "assignment": "Sol High independent review",
+      "scope": "actual main Host 5260 token-flow/state after two driver failures",
+      "status": "Actual MAIN Host 5260 rose-hint mandatory flow passed 4/4; this does not establish full journey or connector acceptance."
+    },
+    "checkpoint": {
+      "sha": "f818b85ff3c33bc0394a826deaa3ceef5587d244",
+      "status": "committed and normally pushed to existing Hero branch; remote SHA verified",
+      "ancestryFrom": "e29da5c",
+      "ahead": 92,
+      "behind": 0,
+      "forcePush": false,
+      "mainMerge": false,
+      "deployment": false
+    },
+    "technicalWiring": "Root Host/Scene localEvent prop, invalidate, needsFrame wired; tsc-b passed. F main UI and Composition children wired. Technical checks are not visual acceptance.",
+    "local16Visual": "All 16 local UI actions succeeded in supplemental recording; this is action evidence only, not all-feature visual acceptance. Root reports rose 4+4 art absent in current frozen reading frame despite hint interaction.",
+    "remote4Current": {
+      "implementation": "R01-R04 server/client/UI source frozen",
+      "backendVerification": "14 checks passed (latest reported result)",
+      "pending": "Actual two-context browser QA remains pending; no cloud deployment or main merge",
+      "acceptance": "browser QA pending"
+    },
+    "browser": "parallel work allowed; browser sessions one at a time; environment uses SwiftShader",
+    "userCompositionApproval": "User explicitly approved composition B; K1 static-room scoped PASS and H2 initial-Hero scoped PASS only. No additional connector approval gate; separate main merge/deploy approval remains.",
+    "postCompositionGallery": {
+      "previousOwner": "L2 owner",
+      "previousOwnerResult": "self+independent visual FAIL2; STOP",
+      "newOwner": "P (exact owner handle not supplied in handoff)",
+      "newOwnerOwnAttemptCount": 0,
+      "P1Source": "frozen awaiting coherent M2 build",
+      "visualAcceptance": "pending"
+    },
+    "gameArt": {
+      "owner": "N",
+      "restoredGames": [
+        "catchmind",
+        "domino",
+        "jaipur",
+        "minhwatu",
+        "marble",
+        "rhythm"
+      ],
+      "baseline": "24a6ec6 old definitions and helpers",
+      "verificationReport": "/workspace/scratch/game-art-n-study/user-six-revert-source-check.json",
+      "nineSourceChecks": true,
+      "factorySha256": "1df86d06bd53d2bebd15193b4895e8218fc9fe1a7264761b5c41b86c6e5f5087",
+      "retained": [
+        "Leonardo portrait",
+        "user-provided Splendor cover"
+      ],
+      "currentTwoCoverImagesChanged": false,
+      "browserVerification": "pending"
+    },
+    "roseHintImplementation": {
+      "files": [
+        "post-hero-preview/src/PostHeroPreview.tsx",
+        "post-hero-preview/src/preview.css"
+      ],
+      "implementation": "KO/ES click hint; TypeScript check passed",
+      "verification": "H independent actual MAIN 5260 mandatory flow passed 4/4: KO/ES × 1920x1080/1440x900. Real invitation read, exact localized hint, aria-expanded, Escape, Tab focus, Enter, Space verified. Report: /workspace/scratch/rose-h-qa/mandatory-flow-summary.json. Scope is hint flow only; no whole design/connector approval.",
+      "status": "implemented; runtime verification pending",
+      "visualJudgmentByLuna": false
+    },
+    "sharedSessions": "R01-R04 source frozen; latest backend verification reports 14 checks passed. Actual two-context browser QA remains pending; no cloud deployment or main merge.",
+    "sharedConnection": "No further design/curation under current user scope; preserve existing work.",
+    "remoteAuthenticatedQA": "Actual two-context browser QA pending; latest backend verification reports 14 checks passed. Do not claim browser acceptance.",
+    "RFunctionalReview": {
+      "report": "/workspace/scratch/postl2-current/captures-final/actual-review.json",
+      "coverage": "32 actual functional controls; ES at 1920x1080 and 1440x900",
+      "browser": "closed normally",
+      "errors": [],
+      "networkErrors": [],
+      "scopeLimit": "functional controls only; not design acceptance and does not clear L2 visual FAIL2"
+    },
+    "copyChangeSinceCheckpoint": {
+      "path": "src/copy/home.ts",
+      "changedFields": "KO and ES Catchmind moment title/body only",
+      "letterFields": "KO/ES address/title/body/signature exactly match f818b85",
+      "preservationAudit": "/workspace/scratch/preservation-audit-20261018.json"
+    },
+    "activeDirective": "Rollback gallery definitions and color/layout to 24a6ec6: six old asset definitions/helpers, #0c080e background, 390px stage, central item plus seven ellipses, and 2x4 choices. Retain Leonardo portrait and user-provided Splendor cover. Stop additional design/curation. P implements full visual rollback; actual screenshots/browser check pending, so not complete. Preserve other work; do not claim whole landing complete.",
+    "designCuration": "stopped under current user scope",
+    "S": {
+      "status": "interrupted",
+      "S1": "four source hashes root-verified unchanged",
+      "S2": "not run"
+    },
+    "P": {
+      "status": "rollback implemented; source checks, TypeScript/build, and three tests passed",
+      "browserVerification": "scoped Spanish rollback report exists at /workspace/scratch/gallery-rollback-capture-final/captures/gallery-rollback-report.json; all eight selections at 1920x1080 and 1440x900; 11 additional PNGs. Not whole-landing acceptance."
+    },
+    "preservation": "Existing story/letter/Hero changes and other owners’ work are preserved; not reset by this gallery rollback.",
+    "overallCompletion": "Whole landing is not complete; scoped gallery rollback evidence exists, remote4 final QA and visual acceptance remain pending."
   },
   "B2SelfReview": {
     "status": "failed",
@@ -359,13 +447,270 @@
       "left": 4,
       "right": 4,
       "location": "letter scene only",
-      "implementationOwner": "sol_post_stage_f",
-      "approvedGameRoomFlowers": 0
+      "implementationOwner": "P (exact owner handle not supplied in handoff)",
+      "approvedGameRoomFlowers": 0,
+      "owner": "P (exact owner handle not supplied in handoff)",
+      "priorRigWork": "F1 count passed at both desktop sizes; F2 rose shape not visually reviewed",
+      "priorImplementationOwner": "sol_post_stage_f",
+      "currentStatus": "P1 source frozen awaiting coherent M2 build; new owner own0. Do not infer visual acceptance."
     },
     "qaRequired": {
-      "localFamilies": "Each of L01-L16 requires source/function inspection plus relevant interaction, bilingual/accessibility/reduced-motion/responsive review; all currently pending acceptance.",
-      "remoteFamilies": "Two actual authenticated users on two actual devices; verify consent, cancel, duplicate/stale events, expiry, latency/reconnect, and asymmetric reduced-motion behavior.",
-      "letter": "verify all eight roses appear in the letter scene and are absent from approved game-room additions; verify exact letter source copy unchanged."
+      "localFamilies": "Each of L01-L16 still requires function-specific implementation and QA; not all verified.",
+      "remoteFamilies": "R01-R04 still require actual two authenticated users on two real devices; pending.",
+      "letter": "KO/ES letter address/title/body/signature remain exact against f818b85; root changed Catchmind moment title/body only. Verify all eight roses and game-room exclusion separately."
     }
+  },
+  "branchCheckpoint": {
+    "sha": "f818b85ff3c33bc0394a826deaa3ceef5587d244",
+    "committed": true,
+    "normalPush": true,
+    "remoteShaVerified": true,
+    "ancestryFrom": "e29da5c",
+    "ahead": 92,
+    "behind": 0,
+    "forcePush": false,
+    "mainMerge": false,
+    "deployment": false
+  },
+  "reportedAtUtc": "2026-10-18; exact UTC time not supplied in root handoff",
+  "activeUserDirective_20261018": {
+    "priority": "Latest user scope remains full gallery rollback with Leonardo portrait and user-provided Splendor cover retained; rollback now implemented. No extra design/curation, whole-landing completion claim, cloud deployment, or main merge.",
+    "sequence": [
+      "Restore six assets/helpers exactly against 24a6ec6 and old gallery palette/layout; source checks, TypeScript/build, and three tests reported passed.",
+      "Record scoped Spanish browser evidence for all eight captions/hrefs at 1920x1080 and 1440x900; this does not establish whole-landing visual acceptance.",
+      "Preserve existing story/letter/Hero and other work; keep local16 action success separate from visual acceptance and note root-reported absent rose 4+4 art in current frozen reading frame.",
+      "Complete R01-R04 realtime and actual authenticated two-user/two-device UI QA; do not claim final QA, deployment, or main merge.",
+      "The requested approximately one-minute Spanish video is delivered at https://drive.google.com/file/d/1CT_hTFvJmn0wsYoCXf5T9ew93waVTz4Q/view?usp=drivesdk; earlier <=10s target is superseded. Actual two-context R01-R04 browser QA remains pending; mobile remains last."
+    ],
+    "sourceVerificationReport": "/workspace/scratch/game-art-n-study/user-six-revert-source-check.json",
+    "factorySha256": "1df86d06bd53d2bebd15193b4895e8218fc9fe1a7264761b5c41b86c6e5f5087",
+    "S": {
+      "status": "interrupted",
+      "S1": "four source hashes root-verified unchanged",
+      "S2": "not run"
+    }
+  },
+  "latestOperationalUpdate": {
+    "statusAsOf": "2026-10-18 latest user rollback scope",
+    "supersedes": "Earlier short Hero-first integration sequence and earlier orderings; preserve them as history, do not execute them concurrently.",
+    "E1": {
+      "source": "preserved",
+      "development": "stopped",
+      "status": "not accepted; no new source changes authorized in transition scope"
+    },
+    "heroRoomOwner": {
+      "role": "sol_room_structure_i",
+      "status": "B composition selected/approved; K1 scoped static pass",
+      "visualScopeLimit": "static composition only; not full environment/motion/trajectory approval"
+    },
+    "roomEvidenceNext": {
+      "requiredViews": [
+        "A / inside",
+        "B / near-entry",
+        "C / diagonal"
+      ],
+      "viewCount": 3,
+      "viewports": [
+        [
+          1920,
+          1080
+        ],
+        [
+          1440,
+          900
+        ]
+      ],
+      "actualRenderedViewsRequired": true,
+      "coordinatesAloneSuffice": false,
+      "userCompositionApprovalRequiredBeforeHeroPath": false,
+      "userApprovedComposition": "B"
+    },
+    "D2HistoricalEvidence": {
+      "manifest": "/workspace/scratch/handoff-d2-source/manifest.json",
+      "independentReview": "/workspace/scratch/sol-independent-review/hero-d2-frame-review.ko.json",
+      "selfFailureCount": 2,
+      "independentVerdict": "BLOCK",
+      "sourceBackupFiles": 8
+    },
+    "postOwner": {
+      "status": "Gallery rollback implemented; TypeScript/build and 3 tests passed; browser report verifies all eight Spanish selection captions/hrefs at 1920x1080 and 1440x900, plus 11 PNGs. This scoped check is not whole-landing visual acceptance.",
+      "visualAcceptance": "pending full current desktop scope; root reports 4+4 rose art absent in current frozen reading frame despite successful hint action"
+    },
+    "sharedIntegration": "Room approval B is satisfied. M (sol_spatial_connection_m) owns initial five-file shared-connection p<=0.12 work; no additional connector approval gate.",
+    "video": {
+      "status": "delivered to user privately; approximately one-minute target satisfied by the 57.96s actual-browser video",
+      "path": "/workspace/hero-review/output/current-review/landing-rollback-walkthrough-es.mp4",
+      "evidence": "/workspace/hero-review/output/current-review/landing-rollback-recording-evidence.json",
+      "durationSeconds": 57.96,
+      "driveFileId": "1CT_hTFvJmn0wsYoCXf5T9ew93waVTz4Q",
+      "deliveryUrl": "https://drive.google.com/file/d/1CT_hTFvJmn0wsYoCXf5T9ew93waVTz4Q/view?usp=drivesdk",
+      "format": "1920x1080 H.264 25fps, three actual browser sessions, segment acceleration 1.2-3x, no subtitles; Chromium SwiftShader software WebGL",
+      "captureState": "Port 5284/pre-R04 integration capture; known failures remain visible",
+      "supersededTarget": "Earlier <=10s target is superseded; do not list as pending or add a new gate."
+    },
+    "mobile": "last priority; incomplete",
+    "independentReviewer": "separate from implementation owners; review stages pending",
+    "mainMerge": "not done",
+    "deployment": "not done",
+    "push": "normal push done; remote SHA verified",
+    "roomApprovalGate": "Satisfied for B composition. It gates only room-dependent work; no extra connector approval. Separate main merge/deploy approval remains.",
+    "mainMergeDeploymentApproval": "Separate approval remains for main merge/deployment only.",
+    "E1E2": {
+      "previousOwner": "sol_scene_scale_e",
+      "E1": "self and independent FAIL1",
+      "E2": "self FAIL2; source STOP",
+      "E2Manifest": "/workspace/scratch/handoff-e2-source/manifest.json",
+      "E2Report": "/workspace/scratch/room-e2-static-study/captures/report.json",
+      "asyncMapBug": "Material clone occurred before async maps were ready; clone retained null/pending map, leading to white background/table in the actual captured run.",
+      "capturedViews": [
+        "A / inside at 1920x1080",
+        "A / inside at 1440x900"
+      ],
+      "missingViews": [
+        "B / near-entry",
+        "C / diagonal"
+      ],
+      "captureCompleted": false,
+      "browserClosed": true,
+      "newRoomOwner": "sol_room_structure_i",
+      "currentDisposition": "G1 FAIL1/G2 FAIL2; prior room owner STOP; backup /workspace/scratch/handoff-g2-source/manifest.json"
+    },
+    "currentSequence": "Gallery rollback and scoped Spanish captures recorded -> complete actual two-context browser QA for frozen R01-R04 -> address/verify current visual findings without expanding design scope -> mobile last; no main merge/cloud deployment.",
+    "additionalConnectorApprovalGate": false,
+    "priorAuditCorrection": "Earlier 12-card/7-callback audit was an implementation component/wiring count, not the full requirement inventory; tracked EASTER-EGGS v3 requires 16 local + 4 authenticated remote event families.",
+    "heroOpeningOwner": {
+      "role": "sol_hero_opening_h",
+      "assignment": "Sol High independent review",
+      "scope": "actual main Host 5260 token-flow/state after two driver failures",
+      "status": "Actual MAIN Host 5260 rose-hint mandatory flow passed 4/4; this does not establish full journey or connector acceptance."
+    },
+    "checkpoint": {
+      "sha": "f818b85ff3c33bc0394a826deaa3ceef5587d244",
+      "status": "committed and normally pushed to existing Hero branch; remote SHA verified",
+      "ancestryFrom": "e29da5c",
+      "ahead": 92,
+      "behind": 0,
+      "forcePush": false,
+      "mainMerge": false,
+      "deployment": false
+    },
+    "technicalWiring": "Root Host/Scene localEvent prop, invalidate, needsFrame wired; tsc-b passed. F main UI and Composition children wired. Technical checks are not visual acceptance.",
+    "local16Visual": "All 16 local UI actions succeeded in supplemental recording; this is action evidence only, not all-feature visual acceptance. Root reports rose 4+4 art absent in current frozen reading frame despite hint interaction.",
+    "remote4Current": {
+      "implementation": "R01-R04 server/client/UI source frozen",
+      "backendVerification": "14 checks passed (latest reported result)",
+      "pending": "Actual two-context browser QA remains pending; no cloud deployment or main merge",
+      "acceptance": "browser QA pending"
+    },
+    "browser": "parallel work allowed; browser sessions one at a time; environment uses SwiftShader",
+    "userCompositionApproval": "User explicitly approved composition B; K1 static-room scoped PASS and H2 initial-Hero scoped PASS only. No additional connector approval gate; separate main merge/deploy approval remains.",
+    "postCompositionGallery": {
+      "previousOwner": "L2 owner",
+      "previousOwnerResult": "self+independent visual FAIL2; STOP",
+      "newOwner": "P (exact owner handle not supplied in handoff)",
+      "newOwnerOwnAttemptCount": 0,
+      "P1Source": "frozen awaiting coherent M2 build",
+      "visualAcceptance": "pending"
+    },
+    "gameArt": {
+      "owner": "N",
+      "restoredGames": [
+        "catchmind",
+        "domino",
+        "jaipur",
+        "minhwatu",
+        "marble",
+        "rhythm"
+      ],
+      "baseline": "24a6ec6 old definitions and helpers",
+      "verificationReport": "/workspace/scratch/game-art-n-study/user-six-revert-source-check.json",
+      "nineSourceChecks": true,
+      "factorySha256": "1df86d06bd53d2bebd15193b4895e8218fc9fe1a7264761b5c41b86c6e5f5087",
+      "retained": [
+        "Leonardo portrait",
+        "user-provided Splendor cover"
+      ],
+      "currentTwoCoverImagesChanged": false,
+      "browserVerification": "pending"
+    },
+    "roseHintImplementation": {
+      "files": [
+        "post-hero-preview/src/PostHeroPreview.tsx",
+        "post-hero-preview/src/preview.css"
+      ],
+      "implementation": "KO/ES click hint; TypeScript check passed",
+      "verification": "H independent actual MAIN 5260 mandatory flow passed 4/4: KO/ES × 1920x1080/1440x900. Real invitation read, exact localized hint, aria-expanded, Escape, Tab focus, Enter, Space verified. Report: /workspace/scratch/rose-h-qa/mandatory-flow-summary.json. Scope is hint flow only; no whole design/connector approval.",
+      "status": "implemented; runtime verification pending",
+      "visualJudgmentByLuna": false
+    },
+    "sharedSessions": "R01-R04 source frozen; latest backend verification reports 14 checks passed. Actual two-context browser QA remains pending; no cloud deployment or main merge.",
+    "sharedConnection": "No further design/curation under current user scope; preserve existing work.",
+    "remoteAuthenticatedQA": "Actual two-context browser QA pending; latest backend verification reports 14 checks passed. Do not claim browser acceptance.",
+    "RFunctionalReview": {
+      "report": "/workspace/scratch/postl2-current/captures-final/actual-review.json",
+      "coverage": "32 actual functional controls; ES at 1920x1080 and 1440x900",
+      "browser": "closed normally",
+      "errors": [],
+      "networkErrors": [],
+      "scopeLimit": "functional controls only; not design acceptance and does not clear L2 visual FAIL2"
+    },
+    "copyChangeSinceCheckpoint": {
+      "path": "src/copy/home.ts",
+      "changedFields": "KO and ES Catchmind moment title/body only",
+      "letterFields": "KO/ES address/title/body/signature exactly match f818b85",
+      "preservationAudit": "/workspace/scratch/preservation-audit-20261018.json"
+    },
+    "activeDirective": "Rollback gallery asset definitions to 24a6ec6 for six assets; retain Leonardo portrait and the user-provided Splendor cover. Stop additional design/curation. Preserve other work. P prepares rollback proof, actual browser check pending; do not claim whole landing complete.",
+    "designCuration": "stopped under current user scope",
+    "S": {
+      "status": "interrupted",
+      "S1": "four source hashes root-verified unchanged",
+      "S2": "not run"
+    },
+    "P": {
+      "status": "rollback implemented; source checks, TypeScript/build, and three tests passed",
+      "browserVerification": "scoped Spanish rollback report exists at /workspace/scratch/gallery-rollback-capture-final/captures/gallery-rollback-report.json; all eight selections at 1920x1080 and 1440x900; 11 additional PNGs. Not whole-landing acceptance."
+    },
+    "preservation": "Existing story/letter/Hero changes and other owners’ work are preserved; not reset by this gallery rollback.",
+    "overallCompletion": "Whole landing is not complete; scoped gallery rollback evidence exists, remote4 final QA and visual acceptance remain pending."
+  },
+  "L2Review": {
+    "status": "self+independent visual FAIL2; STOP",
+    "nextOwner": "P (exact owner handle not supplied in handoff)",
+    "ownAttemptCount": 0,
+    "source": "frozen awaiting coherent M2 build",
+    "MSharedRoomPlaneOcclusion": "separate issue"
+  },
+  "RFunctionalReview": {
+    "report": "/workspace/scratch/postl2-current/captures-final/actual-review.json",
+    "controls": 32,
+    "locales": [
+      "es-DO"
+    ],
+    "viewports": [
+      [
+        1920,
+        1080
+      ],
+      [
+        1440,
+        900
+      ]
+    ],
+    "browserClosedNormally": true,
+    "errors": [],
+    "networkErrors": [],
+    "scope": "functional controls only; not visual/design acceptance"
+  },
+  "copyPreservationSinceCheckpoint": {
+    "path": "src/copy/home.ts",
+    "wholeFileMatchesCheckpoint": false,
+    "authorizedChanges": "KO and ES Catchmind moment title/body only",
+    "letterFieldsMatchCheckpoint": true,
+    "letterFields": [
+      "KO address/title/body/signature",
+      "ES address/title/body/signature"
+    ],
+    "scratchReport": "/workspace/scratch/preservation-audit-20261018.json"
   }
 }

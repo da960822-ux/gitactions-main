@@ -1,0 +1,32 @@
+{
+  "source": "approved-couple-gaming-room.png",
+  "sourceSha256": "a569e1a1ed8c21fffb7a11cc7065816a0882fdaaba3e1a4bcd65dc241681eb26",
+  "tool": "image_gen.imagegen image edit",
+  "generatedOriginal": "/workspace/generated_images/exec-766d491c-534c-4717-a542-85ca1f671b8d.png",
+  "derivativeSha256": "241908ad7bc3051d958465cf8ec1ed0a7f8869570a7f919c2fcc5a0c38d04244",
+  "generatedDimensions": [
+    1536,
+    1024
+  ],
+  "approval": "Unapproved edge-only candidate; generated central people/photos are never displayed. Original approved source owns the entire central rectangle.",
+  "authorization": "Latest explicit user prioritizes beauty over native3D reconstruction and authorizes needed asset generation; root authorized vertical outpaint.",
+  "prompt": "VERTICAL OUTPAINT only. Output landscape1536x1024. Complete supplied1672x941 illustration centered at full width1536, uniformly scaled to864px height, top80 bottom944; keep central exactly unchanged. Extend only upper80px (cropped upper books and warm/burgundy walls/ceiling) and lower80px (existing foreground desk timber/front edges) with matching perspective/colors. No flowers, furniture, new fixtures, people, faces, photos, animals, text, logos, frames, borders, mirrored/stretched pixels or features. Runtime overlays byte-untouched approved source over whole center; only outer top/bottom rows are used.",
+  "actualAlignment": {
+    "topSourceBoundaryInGeneratedPixels": 53,
+    "bottomExtensionBeginsInGeneratedPixels": 915,
+    "sourceToGeneratedScale": 0.9186602870813397,
+    "analysis": "Read-only RGB border correspondence at source resized1536x864; top/bottom aggregate RMS about7RGB levels; visual seam remains actual-capture gate."
+  },
+  "runtimeSampling": {
+    "central": "uv.y>=0 && uv.y<=1 -> approved original only",
+    "top": "generatedY=53+sourceY*1536/1672",
+    "bottom": "generatedY=915+(sourceY-941)*1536/1672",
+    "visibleSourceExtensionPixels": 52,
+    "noGeneratedCenterSamples": true
+  },
+  "rejectedExploration": {
+    "path": "/workspace/generated_images/exec-8b5fb7b3-6e49-42e8-a8bb-3160aace9c47.png",
+    "reason": "Transparent-center request produced strips at wrong boundaries, repeated original upper content and an added ceiling light. Not used."
+  },
+  "modifiedOriginalAssets": false
+}

@@ -65,13 +65,15 @@ describe('shared event round state', () => {
     expect(() => apply(empty, 'p1', 'propose', 1, { eventId: 'R04', intent: { pattern: [] } })).toThrow('invalid_event_intent');
     let state = apply(empty, 'p1', 'propose', 10, { eventId: 'R04', intent: { pattern: [1, 2] } });
     state = apply(state, 'p2', 'contribute', 11, { intent: { pattern: [4, 5] } });
-    state = apply(state, 'p1', 'ready', 12);
-    state = apply(state, 'p2', 'ready', 13);
-    state = apply(state, 'p1', 'confirm', 14);
-    state = apply(state, 'p2', 'confirm', 15);
+    state = apply(state, 'p1', 'acknowledge', 11, { pattern: [4, 5] });
+    state = apply(state, 'p2', 'acknowledge', 12, { pattern: [1, 2] });
+    state = apply(state, 'p1', 'ready', 13);
+    state = apply(state, 'p2', 'ready', 14);
+    state = apply(state, 'p1', 'confirm', 15);
+    state = apply(state, 'p2', 'confirm', 16);
     expect(state.status).toBe('scheduled');
-    expect(() => apply(state, 'p2', 'confirm', 16)).toThrow('event_round_unavailable');
-    expect(() => apply(state, 'p2', 'contribute', 16, { intent: { pattern: [0] } })).toThrow('event_round_unavailable');
+    expect(() => apply(state, 'p2', 'confirm', 17)).toThrow('event_round_unavailable');
+    expect(() => apply(state, 'p2', 'contribute', 17, { intent: { pattern: [0] } })).toThrow('event_round_unavailable');
   });
 
   it('uses a server-resolved actor argument and rejects forged actor fields or nonmember actors', () => {
@@ -99,7 +101,7 @@ describe('shared event round state', () => {
   it('enforces a 30 second gap between scheduled starts', () => {
     let state = scheduledRound(1_000);
     state = advanceSharedEventRound(state, state.startAt!);
-    expect(() => apply(state, 'p1', 'propose', state.lastStartedAt! + SHARED_EVENT_COOLDOWN_MS - 1, { eventId: 'R04', intent: { pattern: [1] } })).toThrow('event_round_unavailable');
+    expect(() => apply(state, 'p1', 'propose', state.lastStartedAt! + SHARED_EVENT_COOLDOWN_MS - 1, { eventId: 'R04', intent: { pattern: [1] } })).toThrow('event_cooldown');
     const next = apply(state, 'p1', 'propose', state.lastStartedAt! + SHARED_EVENT_COOLDOWN_MS, { eventId: 'R04', intent: { pattern: [1] } });
     expect(next.status).toBe('proposed');
   });
