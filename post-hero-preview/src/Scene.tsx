@@ -5,7 +5,7 @@ import { RoomEnvironment } from 'three/addons/environments/RoomEnvironment.js';
 export type PaperPose = { corners: Array<{ x: number; y: number }>; visible: boolean };
 
 export type PostHeroState = {
-  progress: number; opening: number; reducedMotion: boolean;
+  progress: number; opening: number; reducedMotion: boolean; galleryPresence?: number;
   effect: { name: string; value: number; nonce: number };
   portraitSrc: string; portraitMaskSrc?: string; onReady?: () => void; onFailure?: (message: string) => void;
   onPaperPose?: (pose: PaperPose) => void;
@@ -36,9 +36,9 @@ export function createPostHeroCollection(options:{scene:THREE.Scene;camera:THREE
     Object.assign(key.shadow.camera, { left: -7, right: 7, top: 7, bottom: -7, near: .5, far: 20 });
     key.shadow.bias = -.0004; key.shadow.normalBias = .025; scene.add(key,key.target);
     const rose = new THREE.PointLight(0xe39ca9, 3, 15); rose.position.set(4, 3, -2); scene.add(rose);
-    const paper = new THREE.MeshStandardMaterial({ color: 0xf4e8d2, roughness: .85, side: THREE.DoubleSide });
-    const cream = new THREE.MeshStandardMaterial({ color: 0xdfc9ad, roughness: .92, side: THREE.DoubleSide });
-    const gold = new THREE.MeshStandardMaterial({ color: 0xd7a18f, metalness: .8, roughness: .3 });
+    const paper = new THREE.MeshStandardMaterial({ color: 0xf4e8d2, roughness: .94, emissive:0x503524, emissiveIntensity:.12, side: THREE.DoubleSide });
+    const cream = new THREE.MeshStandardMaterial({ color: 0xdfc9ad, roughness: .96, emissive:0x38271b, emissiveIntensity:.08, side: THREE.DoubleSide });
+    const gold = new THREE.MeshStandardMaterial({ color: 0xd7a18f, metalness: .8, roughness: .46 });
     const burgundy = new THREE.MeshStandardMaterial({ color: 0x35101f, roughness: .85, metalness: .08, side: THREE.DoubleSide });
     const waxMat = new THREE.MeshStandardMaterial({ color: 0x8c253f, roughness: .34, metalness: .12 });
     const ink = new THREE.MeshStandardMaterial({ color: 0x35232d, roughness: .8 });
@@ -239,7 +239,8 @@ export function createPostHeroCollection(options:{scene:THREE.Scene;camera:THREE
     let effectNonce=-1, effectStart=0;
     function draw() {
       if(disposed)return;
-      const {progress:rawProgress,opening:q,effect,reducedMotion}=latest;
+      const {progress:rawProgress,opening:q,effect,reducedMotion,galleryPresence=0}=latest;
+      const gallery=THREE.MathUtils.clamp(galleryPresence,0,1);
       const p=reducedMotion?(rawProgress<.35?.15:rawProgress<.56?.47:rawProgress<.9?.85:1):rawProgress;
       const paperHandoff=rawProgress>=.70&&rawProgress<.86&&q>.9&&width>=600&&!reducedMotion;
       insert.visible=paperHandoff?false:rawProgress<.80;
@@ -264,11 +265,11 @@ export function createPostHeroCollection(options:{scene:THREE.Scene;camera:THREE
       });
       terrace.visible=dawn>.02;terrace.scale.y=Math.max(.01,dawn);
       const propPresence=table*(1-letterFocus*.97)*(1-dawn);
-      playProps.scale.setScalar(Math.max(.001,propPresence));playProps.position.y=-(1-propPresence)*.65;
+      playProps.scale.setScalar(Math.max(.001,propPresence));playProps.position.y=-(1-propPresence)*.65-gallery*5;
       key.position.set(-3+letterFocus*3+dawn*7,7-letterFocus*2,5-dawn*8);
       key.color.set(0xffd4ae).lerp(new THREE.Color(0xffefdd),letterFocus).lerp(new THREE.Color(0xffc7ae),dawn);
-      key.intensity=1.35+table*.9+letterFocus*.3+dawn*.7;
-      hemisphere.intensity=.35+table*.25-letterFocus*.2+dawn*.8;
+      key.intensity=1.9+table*.9+letterFocus*.3+dawn*.7;
+      hemisphere.intensity=.5+table*.25-letterFocus*.2+dawn*.8;
       hemisphere.color.set(0xc5b6d1).lerp(new THREE.Color(0xffdfc6),dawn);
       rose.position.set(story*.1+4*table,1.8+table, -3+letterFocus*3);
       rose.color.set(0xc98b72).lerp(new THREE.Color(0xffe7cc),dawn);
@@ -295,7 +296,9 @@ export function createPostHeroCollection(options:{scene:THREE.Scene;camera:THREE
         attribute.needsUpdate=true;
       });
       const approach=ease(.53,.68,p), ending=ease(.9,1,p);
-      envelope.position.x=THREE.MathUtils.lerp(1.15,.65,approach)+(width>=600?ending*2.35:0);
+      envelope.position.x=THREE.MathUtils.lerp(1.15,.65,approach)+(width>=600?ending*2.35:0)+.4;
+      envelope.position.y=.11-gallery*5;
+      envelope.scale.setScalar(.8);
       envelope.position.z=.3-story*1.15;
       envelope.rotation.set(-.18+approach*.09, -.13*(1-approach), -.06*(1-approach));
       flap.rotation.x=-ease(.12,.36,q)*THREE.MathUtils.degToRad(165);
@@ -312,6 +315,7 @@ export function createPostHeroCollection(options:{scene:THREE.Scene;camera:THREE
       const targetX=mobile?.45:THREE.MathUtils.lerp(-1.1,.65,ease(.70,.84,p));
       desiredTarget.set(targetX,.65+approach*.65-ending*.3,-.2);
       if(ownCamera){camera.position.copy(desiredPosition).add(scene.position);camera.lookAt(desiredTarget.clone().add(scene.position));}
+      portraitGroup.position.y=.04-gallery*5;
       portraitGroup.position.x=mobile?-.9:THREE.MathUtils.lerp(-.55,1.5,ending);
       portraitGroup.scale.setScalar(1-letterFocus*.55+ending*.2);
       portraitGroup.position.z=-1.9-ending*.45;
@@ -348,7 +352,7 @@ export function createPostHeroCollection(options:{scene:THREE.Scene;camera:THREE
       });
       bars.forEach((bar,i)=>{
         bar.rotation.x=active('rhythm')*ease(i*.15,.5+i*.15,phase)*Math.PI/2+story*.22;
-        bar.position.set(.1+i*.32+story*.25,.04+active('rhythm')*.08+story*(.16+i*.045),-1.15-story*1.2);
+        bar.position.set(.1+i*.32+story*.25,.04+active('rhythm')*.08+story*(.16+i*.045)-gallery*5,-1.15-story*1.2);
         bar.scale.setScalar(Math.max(.01,(1-letterFocus*.97)*(1-dawn)));
       });
       bridgeHinges.forEach((hinge,i)=>{hinge.rotation.z=(1-active('bridge')*ease(i*.13,.65+i*.13,phase))*(i%2?-.8:.8);});
