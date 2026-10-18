@@ -1,9 +1,11 @@
-import { useCallback, useEffect, useRef, useState, type CSSProperties, type ReactNode } from 'react';
+import { lazy, Suspense, useCallback, useEffect, useRef, useState, type CSSProperties, type ReactNode } from 'react';
 import { landingCopy } from '../../src/copy/home';
-import { PostHeroScene, type PaperPose, type PostHeroState } from './Scene';
+import type { PaperPose, PostHeroState } from './Scene';
 import { paperTransform, blendPaperCorners } from './paperProjection';
 import Details from './Details';
 import { clamp01, createEnvelopeState, updateEnvelopeFromScroll, toggleEnvelope, reopenEnvelope, envelopeTarget } from './interaction';
+
+const StandalonePostHeroScene=lazy(()=>import('./Scene').then(module=>({default:module.PostHeroScene})));
 
 type Language = 'ko' | 'es';
 const story = {
@@ -102,7 +104,7 @@ export function PostHeroPreview({embedded=false,language:externalLanguage,onLang
  const stageStyle={'--play-warmth':`${playWarmth*100}%`,'--dawn':`${dawn*100}%`,'--intro-mark':Math.max(0,1-progress/.08)} as CSSProperties;
  return <Container ref={host} className={`post-hero-preview ${embedded?'post-hero-embedded':''} ${letterVisible?'letter-is-open':''}`} data-stage={stage} style={stageStyle} data-scene-ready={renderScene?sceneReady:externalSceneReady} data-opening={opening.toFixed(3)} data-progress={progress.toFixed(3)}>
   {renderScene&&<div className="world" aria-hidden="true">
-   {!sceneError&&<PostHeroScene progress={progress} opening={opening} reducedMotion={reducedMotion} effect={effect} portraitSrc={portraitSrc} portraitMaskSrc={portraitMaskSrc} onPaperPose={trackPaper} onReady={()=>setSceneReady(true)} onFailure={setSceneError}/>}
+   {!sceneError&&<Suspense fallback={null}><StandalonePostHeroScene progress={progress} opening={opening} reducedMotion={reducedMotion} effect={effect} portraitSrc={portraitSrc} portraitMaskSrc={portraitMaskSrc} onPaperPose={trackPaper} onReady={()=>setSceneReady(true)} onFailure={setSceneError}/></Suspense>}
    {sceneError&&<div className="world-fallback"><img src="/images/lisbeth-letter-envelope.webp" alt=""/></div>}
    <div className="world-vignette"/>
   </div>}
