@@ -50,3 +50,10 @@
  .ending-rule{margin-top:300px}
  .ending footer{position:relative;padding:18px 14px;background:#e9d9c5;border:1px solid #ab7d6c33;border-radius:3px;gap:18px}
 }
+/* Space for the story image and shorter, personal copy. */
+.intro-actions{display:flex;align-items:center;gap:25px;flex-wrap:wrap;margin-top:30px}
+.intro-actions .scroll-cue{margin:0}
+.chapter-number,.side-dedication{opacity:var(--intro-mark,1)}
+.letter-paper.is-visually-sealed{position:absolute!important;width:1px!important;height:1px!important;min-height:0!important;padding:0!important;clip-path:inset(50%);overflow:hidden;white-space:nowrap;transform:none!important}
+@media(min-width:901px){.chapter:not(.intro):not(.ending){align-items:flex-start;padding-top:170px}.intro{align-items:flex-start}}
+@media(max-width:600px){.intro-actions{gap:18px;margin-top:24px}.intro-actions .primary-button{min-height:48px;padding:12px 18px}.intro-actions .scroll-cue{font-size:10px;gap:8px}}

@@ -1,3 +1,5 @@
+Current checkpoint: art direction is pending selection. See review/DIRECTION-PAUSE.ko.md for changes after 40697fe, preserved functionality, and current regression evidence. Further visual work is paused.
+
 # Independent post-Hero preview
 
 Branch: `feature/post-hero-preview`. This directory is an independent React/Vite/Three.js workspace. It does not edit or replace the product landing, Hero, games, translations, letter source, or root package/lockfile.

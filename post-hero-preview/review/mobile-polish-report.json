@@ -12,7 +12,7 @@
       "language": "ko",
       "requestedStage": "play",
       "overflow": false,
-      "stage": "story",
+      "stage": "play",
       "worldTop": 489.515625,
       "viewportHeight": 844
     },
@@ -20,7 +20,7 @@
       "language": "ko",
       "requestedStage": "letter",
       "overflow": false,
-      "stage": "letter",
+      "stage": "play",
       "worldTop": 489.515625,
       "viewportHeight": 844
     },
@@ -61,10 +61,24 @@
       "language": "es",
       "requestedStage": "ending",
       "overflow": false,
-      "stage": "letter",
+      "stage": "ending",
       "worldTop": 489.515625,
       "viewportHeight": 844,
-      "headingBackgroundContrast": 16.62058145644014
+      "headingBackgroundContrast": 9.515490741120995
+    }
+  ],
+  "sourceChecks": [
+    {
+      "language": "ko",
+      "initialOriginalAccessible": true,
+      "earlyGameLink": true,
+      "explicitCloseHidesOriginal": true
+    },
+    {
+      "language": "es",
+      "initialOriginalAccessible": true,
+      "earlyGameLink": true,
+      "explicitCloseHidesOriginal": true
     }
   ]
 }

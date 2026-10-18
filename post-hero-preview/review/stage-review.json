@@ -15,19 +15,19 @@
       "overflowX": false,
       "copyBounds": {
         "x": 120,
-        "y": 523.25,
-        "width": 380.78125,
-        "height": 243.484375,
-        "top": 523.25,
-        "right": 500.78125,
-        "bottom": 766.734375
+        "y": 350,
+        "width": 450,
+        "height": 274.671875,
+        "top": 350,
+        "right": 570,
+        "bottom": 624.671875
       },
       "copyInViewport": true,
       "scene": {
         "ready": true,
         "stage": "story",
         "lightSignature": "ffd4ae:1.350:-3,7,5:0.000",
-        "floorColor": "190c18",
+        "floorColor": "3a202b",
         "cameraZ": "7.1",
         "flapAngle": "0",
         "insertY": "0.55",
@@ -47,19 +47,19 @@
       "overflowX": false,
       "copyBounds": {
         "x": 120,
-        "y": 435.609375,
+        "y": 350,
         "width": 490,
         "height": 338.78125,
-        "top": 435.609375,
+        "top": 350,
         "right": 610,
-        "bottom": 774.390625
+        "bottom": 688.78125
       },
       "copyInViewport": true,
       "scene": {
         "ready": true,
         "stage": "play",
         "lightSignature": "ffd4ae:2.214:-3,7,5:0.000",
-        "floorColor": "283027",
+        "floorColor": "2a3028",
         "cameraZ": "7.1",
         "flapAngle": "0",
         "insertY": "0.55",
@@ -79,12 +79,12 @@
       "overflowX": false,
       "copyBounds": {
         "x": 120,
-        "y": 526.75,
+        "y": 350,
         "width": 303.0625,
         "height": 266.484375,
-        "top": 526.75,
+        "top": 350,
         "right": 423.0625,
-        "bottom": 793.234375
+        "bottom": 616.484375
       },
       "copyInViewport": true,
       "scene": {
@@ -130,7 +130,7 @@
         "ready": true,
         "stage": "story",
         "lightSignature": "ffd4ae:1.350:-3,7,5:0.000",
-        "floorColor": "190c18",
+        "floorColor": "3a202b",
         "cameraZ": "7.1",
         "paperVisible": "true"
       }
@@ -182,7 +182,7 @@
     {
       "name": "distance: chapter copy fits viewport",
       "pass": true,
-      "details": "{\"x\":120,\"y\":523.25,\"width\":380.78125,\"height\":243.484375,\"top\":523.25,\"right\":500.78125,\"bottom\":766.734375}"
+      "details": "{\"x\":120,\"y\":350,\"width\":450,\"height\":274.671875,\"top\":350,\"right\":570,\"bottom\":624.671875}"
     },
     {
       "name": "distance: WebGL scene ready",
@@ -202,7 +202,7 @@
     {
       "name": "play-table: chapter copy fits viewport",
       "pass": true,
-      "details": "{\"x\":120,\"y\":435.609375,\"width\":490,\"height\":338.78125,\"top\":435.609375,\"right\":610,\"bottom\":774.390625}"
+      "details": "{\"x\":120,\"y\":350,\"width\":490,\"height\":338.78125,\"top\":350,\"right\":610,\"bottom\":688.78125}"
     },
     {
       "name": "play-table: WebGL scene ready",
@@ -222,7 +222,7 @@
     {
       "name": "opened-3d-letter: chapter copy fits viewport",
       "pass": true,
-      "details": "{\"x\":120,\"y\":526.75,\"width\":303.0625,\"height\":266.484375,\"top\":526.75,\"right\":423.0625,\"bottom\":793.234375}"
+      "details": "{\"x\":120,\"y\":350,\"width\":303.0625,\"height\":266.484375,\"top\":350,\"right\":423.0625,\"bottom\":616.484375}"
     },
     {
       "name": "opened-3d-letter: WebGL scene ready",

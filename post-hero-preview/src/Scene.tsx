@@ -73,6 +73,27 @@ export function PostHeroScene(props: Props) {
     const floorMaterial=burgundy.clone();
     const surface = mesh(surfaceGeo,floorMaterial,scene,0,-.09,-1);
     const original = Float32Array.from(surfaceGeo.attributes.position.array);
+    const grainCanvas=document.createElement('canvas');grainCanvas.width=128;grainCanvas.height=128;
+    const grainContext=grainCanvas.getContext('2d');
+    if(grainContext){const data=grainContext.createImageData(128,128);let seed=741;
+      for(let i=0;i<data.data.length;i+=4){seed=(seed*1664525+1013904223)>>>0;const value=165+(seed%55);data.data[i]=value;data.data[i+1]=value;data.data[i+2]=value;data.data[i+3]=255;}grainContext.putImageData(data,0,0);}
+    const grainTexture=new THREE.CanvasTexture(grainCanvas);grainTexture.wrapS=grainTexture.wrapT=THREE.RepeatWrapping;grainTexture.repeat.set(18,12);
+    floorMaterial.roughnessMap=grainTexture;floorMaterial.bumpMap=grainTexture;floorMaterial.bumpScale=.012;
+    const layerMaterial=new THREE.MeshStandardMaterial({color:0x82605b,roughness:.93,side:THREE.DoubleSide});
+    const surfaceLayers=[1,2].map(index=>{const geometry=surfaceGeo.clone();return mesh(geometry,layerMaterial,scene,0,-.09-index*.024,-1+index*.018);});
+    const creaseLines=[-1,1].map(()=>{
+      const geometry=new THREE.BufferGeometry().setFromPoints(Array.from({length:41},()=>new THREE.Vector3()));
+      const line=new THREE.Line(geometry,new THREE.LineBasicMaterial({color:0xb18b79,transparent:true,opacity:.55}));scene.add(line);return line;
+    });
+    const gap=new THREE.Group();gap.position.set(.3,.10,-2);scene.add(gap);
+    box(.22,.008,3.5,ink,gap);
+    const gapGlow=new THREE.MeshBasicMaterial({color:0xe5ad82,transparent:true,opacity:.7});
+    for(const x of [-.12,.12])box(.015,.012,3.5,gapGlow,gap,x,.014,0);
+    const storyRibbons=[-1,1].map(side=>{
+      const group=new THREE.Group();scene.add(group);
+      for(let i=0;i<12;i++) {const segment=box(.13,.012,.17,i%3===0?cream:paper,group,i*.125,Math.sin(i/11*Math.PI)*.07,0);segment.rotation.z=Math.cos(i/11*Math.PI)*.13;}
+      return {group,side};
+    });
     const envelope = new THREE.Group(); envelope.position.set(1.15,.21,.3); scene.add(envelope);
     box(2.05,1.35,.025,paper,envelope,0,.675,-.055);
     box(1.96,1.28,.012,burgundy,envelope,0,.68,-.035);
@@ -196,7 +217,15 @@ export function PostHeroScene(props: Props) {
     const lineGeo=new THREE.BufferGeometry().setFromPoints(inlay.map(v=>new THREE.Vector3(v.x,-.03,v.y)));
     scene.add(new THREE.LineLoop(lineGeo,new THREE.LineBasicMaterial({color:0xb47770,transparent:true,opacity:.5})));
     const playProps=new THREE.Group();scene.add(playProps);
+    const foreground=new THREE.Group();foreground.position.set(2.85,0,2.25);foreground.rotation.y=-.4;playProps.add(foreground);
+    for(let i=0;i<3;i++)box(.88,.022,1.2,i===1?cream:paper,foreground,i*.025,.025+i*.024,0);
+    box(.72,.1,1.04,paper,foreground,0,.15,0);box(.63,.005,.012,gold,foreground,0,.203,0);
+    for(const half of [-1,1])for(const [x,z] of [[-1,-1],[1,-1],[-1,1],[1,1]])mesh(new THREE.CylinderGeometry(.037,.037,.006,12),ink,foreground,x*.16,.207,half*.25+z*.12);
+    const riser=new THREE.Group();riser.position.set(2.7,.015,-.1);playProps.add(riser);
+    box(1.1,.12,.68,cream,riser,0,.06,0);box(.93,.06,.56,paper,riser,0,.15,0);
+    box(.91,.008,.012,gold,riser,0,.184,.26);
     [...dominoes,drawer,pencil,balance,pocket,lensRig,waxSample,imprint,stamp,strip,...bars,bridge].forEach(object=>playProps.attach(object));
+    bars.forEach(bar=>scene.attach(bar));
     const architecture=new THREE.Group();architecture.position.z=-4.1;scene.add(architecture);
     const architectureMaterial=new THREE.MeshStandardMaterial({color:0x311e2a,roughness:.8,metalness:.1,side:THREE.DoubleSide});
     const trimMaterial=new THREE.MeshStandardMaterial({color:0x4b343b,roughness:.94,metalness:.04});
@@ -216,7 +245,7 @@ export function PostHeroScene(props: Props) {
     const railCurve=new THREE.CatmullRomCurve3(railPoints);
     mesh(new THREE.TubeGeometry(railCurve,64,.025,6,false),gold,terrace);
     const letterLight=new THREE.SpotLight(0xffe4b7,0,14,.42,.8,1.5);letterLight.position.set(1,5,3);letterLight.target=envelope;scene.add(letterLight);
-    const storyFloor=new THREE.Color(0x190c18),playFloor=new THREE.Color(0x293128),letterFloor=new THREE.Color(0x281a20),dawnFloor=new THREE.Color(0xb5747c);
+    const storyFloor=new THREE.Color(0x3a202b),playFloor=new THREE.Color(0x293128),letterFloor=new THREE.Color(0x281a20),dawnFloor=new THREE.Color(0xb5747c);
     const darkArchitecture=new THREE.Color(0x311e2a),dawnArchitecture=new THREE.Color(0xe4b6ac);
     let width=1,height=1, animationFrame=0, effectNonce=-1, effectStart=0;
     function draw() {
@@ -235,7 +264,15 @@ export function PostHeroScene(props: Props) {
       floorMaterial.metalness=.04+table*.13-dawn*.12;
       architectureMaterial.color.copy(darkArchitecture).lerp(dawnArchitecture,dawn);
       trimMaterial.color.set(0x4b343b).lerp(architectureMaterial.color,letterFocus*.75).lerp(new THREE.Color(0xc09c94),dawn);
-      doors.forEach((door,i)=>{door.rotation.y=(i===0?-1:1)*(table*.20+dawn*1.18);});
+      architecture.position.z=-8.8+4.7*dawn-letterFocus*1.5;
+      architecture.position.y=-4.6*(1-dawn)-letterFocus*2;
+      doors.forEach((door,i)=>{door.position.x=(i===0?-1:1)*(5.3-dawn*1.65);door.rotation.y=(i===0?-1:1)*(.7*(1-dawn)+dawn*1.38);});
+      gap.scale.z=1-table*.7;gapGlow.opacity=.65*(1-letterFocus)*(1-dawn);
+      storyRibbons.forEach(({group,side},i)=>{
+        group.position.set(side*(1.0+story*.35),.035+story*(.26+i*.12),-.9-story*(1.5+i*.4));
+        group.rotation.set(story*.12,side*story*.4,side*story*.1);
+        group.scale.setScalar(1-letterFocus*.8-dawn*.2);
+      });
       terrace.visible=dawn>.02;terrace.scale.y=Math.max(.01,dawn);
       const propPresence=table*(1-letterFocus*.97)*(1-dawn);
       playProps.scale.setScalar(Math.max(.001,propPresence));playProps.position.y=-(1-propPresence)*.65;
@@ -254,13 +291,20 @@ export function PostHeroScene(props: Props) {
       const positions=surfaceGeo.attributes.position;
       for(let i=0;i<positions.count;i++) {
         const x=original[i*3],z=original[i*3+2];
-        const lobe=x<0?Math.exp(-Math.pow((x+3.25)/1.1,2)):Math.exp(-Math.pow((x-3.55)/1.3,2));
-        const fold=lobe*(.16+story*1.3)*(1-table*.92);
-        let surfaceY=fold+.06*Math.sin(z*1.4+x*.4)*(1-table)+dawn*.035*x*x;
-        if(x>=-1.8&&x<=2.1)surfaceY=Math.min(.15,surfaceY);
+        const center=x<0?-3.25:3.55, distance=Math.abs(x-center);
+        const folded=Math.max(0,1-distance/(x<0?1.8:2.0));
+        const fold=folded*(.10+story*.62)*(1-table*.94);
+        let surfaceY=fold+.025*Math.sin(z*1.2)*(1-table)+dawn*.035*x*x;
+        if(x>=-1.8&&x<=2.1)surfaceY=Math.min(.10,surfaceY);
         positions.setY(i,surfaceY);
       }
       positions.needsUpdate=true;surfaceGeo.computeVertexNormals();
+      surfaceLayers.forEach(layer=>{const attribute=layer.geometry.attributes.position;attribute.array.set(positions.array);attribute.needsUpdate=true;layer.geometry.computeVertexNormals();});
+      creaseLines.forEach((line,index)=>{
+        const attribute=line.geometry.attributes.position;const x=index===0?-3.25:3.55;
+        for(let i=0;i<41;i++){const z=-5.5+i*11/40;attribute.setXYZ(i,x,.013+(.10+story*.62)*(1-table*.94)+.025*Math.sin(z*1.2)*(1-table)+dawn*.035*x*x-.09,z-1);}
+        attribute.needsUpdate=true;
+      });
       const approach=ease(.53,.68,p), ending=ease(.9,1,p);
       envelope.position.x=THREE.MathUtils.lerp(1.15,.65,approach)+(width>=600?ending*2.35:0);
       envelope.position.z=.3-story*1.15;
@@ -275,7 +319,7 @@ export function PostHeroScene(props: Props) {
       bottomFold.rotation.x=-(1-ease(.73,.86,q))*Math.PI*.94;
       const mobile=width<600;
       const distance=(mobile?8.5:7.1)-approach*(mobile?.3:1.15)+ending*2.6;
-      camera.position.set((mobile?0:-.5)+Math.sin(p*Math.PI*2)*.35,3.15-approach*.8+ending*1.0+table*(1-approach)*1.05,distance);
+      camera.position.set((mobile?0:-.5)+Math.sin(p*Math.PI*2)*.35,3.15-approach*.8+ending*1.0+table*(1-approach)*1.05-(width>=600?story*.75:0),distance);
       const targetX=mobile?.45:THREE.MathUtils.lerp(-1.1,.65,ease(.70,.84,p));
       camera.lookAt(targetX,.65+approach*.65-ending*.3,-.2);
       portraitGroup.position.x=mobile?-.9:THREE.MathUtils.lerp(-1.4,1.0,ending);
@@ -310,7 +354,11 @@ export function PostHeroScene(props: Props) {
         const t=i/11;panel.position.y=Math.sin(t*Math.PI)*gust;
         panel.rotation.z=Math.atan(Math.cos(t*Math.PI)*gust*Math.PI/1.32);
       });
-      bars.forEach((bar,i)=>{bar.rotation.x=active('rhythm')*ease(i*.15,.5+i*.15,phase)*Math.PI/2;bar.position.y=.04+active('rhythm')*.08;});
+      bars.forEach((bar,i)=>{
+        bar.rotation.x=active('rhythm')*ease(i*.15,.5+i*.15,phase)*Math.PI/2+story*.22;
+        bar.position.set(.1+i*.32+story*.25,.04+active('rhythm')*.08+story*(.16+i*.045),-1.15-story*1.2);
+        bar.scale.setScalar(Math.max(.01,(1-letterFocus*.97)*(1-dawn)));
+      });
       bridgeHinges.forEach((hinge,i)=>{hinge.rotation.z=(1-active('bridge')*ease(i*.13,.65+i*.13,phase))*(i%2?-.8:.8);});
       // Idle is deliberately absent: unchanged poses do not need GPU frames.
       Object.assign(element.dataset, {
@@ -343,7 +391,7 @@ export function PostHeroScene(props: Props) {
       renderer.domElement.removeEventListener('webglcontextlost',contextLost);
       const geometries=new Set<THREE.BufferGeometry>(),materials=new Set<THREE.Material>();
       scene.traverse(object=>{if(object instanceof THREE.Mesh||object instanceof THREE.Line){geometries.add(object.geometry);(Array.isArray(object.material)?object.material:[object.material]).forEach(m=>materials.add(m));}});
-      geometries.forEach(g=>g.dispose());materials.forEach(m=>m.dispose());portraitTexture.dispose();foilTexture.dispose();paperLabelTextures.forEach(texture=>texture.dispose());environment.dispose();renderer.dispose();renderer.forceContextLoss();renderer.domElement.remove();
+      geometries.forEach(g=>g.dispose());materials.forEach(m=>m.dispose());portraitTexture.dispose();foilTexture.dispose();paperLabelTextures.forEach(texture=>texture.dispose());grainTexture.dispose();environment.dispose();renderer.dispose();renderer.forceContextLoss();renderer.domElement.remove();
     };
   }, [props.portraitSrc]);
   return <div ref={host} className="post-hero-scene" style={{width:'100%',height:'100%',minHeight:400}} />;

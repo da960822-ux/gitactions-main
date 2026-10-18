@@ -42,3 +42,7 @@ Luna는 순수상태/단위테스트·도미노실제타일연결·균형·200�
 ## v3 실제 보정
 
 제안한지형/문/실제DOM카드투영/모바일경계와footer를코드에적용했다. 현재검수와한계는 `review/IMPLEMENTED-VISUAL-PASS.ko.md`를참조한다. `PostHeroScene`의옵셔널 `onPaperPose({corners,visible})`는 viewport좌표 TL/TR/BR/BL이며부모가동일DOM원문을배치한다.
+
+## 시각 방향 선택 전 보존
+
+40697fe 이후이미적용한공간탐색과초기원문접근성수정을별도보존했다. 현재구현과검수는 `review/DIRECTION-PAUSE.ko.md`가우선한다. 초기q0에서도원문은접근성트리에있고시각적으로만접혀있으며명시적닫기후에만hidden이다. 새미술방향선택전조형/재질추가수정은보류한다.
