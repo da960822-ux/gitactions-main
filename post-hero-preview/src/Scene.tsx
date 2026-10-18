@@ -385,7 +385,7 @@ export function createPostHeroCollection(options:{scene:THREE.Scene;camera:THREE
         const needsFrame=draw();return {position:desiredPosition.clone(),target:desiredTarget.clone(),needsFrame};
       },
       projectPaper,
-      applyAtmosphere(){worldScene.environment=environment.texture;worldScene.environmentIntensity=.45;worldScene.fog=fog;renderer.toneMappingExposure=exposure;},
+      applyAtmosphere(){worldScene.environment=environment.texture;worldScene.environmentIntensity=.45;worldScene.fog=fog;worldScene.background=fog.color;renderer.toneMappingExposure=exposure;},
       dispose(){
         disposed=true;scene.removeFromParent();
         const geometries=new Set<THREE.BufferGeometry>(),materials=new Set<THREE.Material>();
