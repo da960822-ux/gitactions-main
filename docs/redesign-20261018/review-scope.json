@@ -1,0 +1,38 @@
+{
+  "date": "2026-10-18",
+  "userDirection": "Existing proposal visuals are not approved. Reuse functionality only. Redesign from approved room and canonical original requirements.",
+  "approvedInputs": [
+    "approved-couple-gaming-room.png",
+    "approved-character-reference.png",
+    "lisyeon-pawn.png",
+    "our-universe-scene.webp"
+  ],
+  "rejectedVisuals": [
+    "Old post-hero floating stage, balance/seesaw and oversized paper/table scenes",
+    "Old gallery orbit/plinth composition",
+    "Stretched source-row wood extension first attempt"
+  ],
+  "invalidEvidence": [
+    "output/playwright/world-host: old post-hero visuals, diagnostic only",
+    "output/playwright/mobile-polish: prior visuals, diagnostic only",
+    "output/landing-final: rejected old proposal recording, do not deliver",
+    "output/playwright/approved-room-redesign first HMR run: empty engine-only canvas metadata; invalid screen evidence"
+  ],
+  "currentStatus": "redesign in progress; no design completion or approval claimed",
+  "runtimeChange": "LandingWorldHost now instantiates approved room, renderer-free game collection and letter-only collection. Legacy full PostHero Scene is lazy-loaded only in standalone preview.",
+  "pending": [
+    "Approved-room desk continuation visual review",
+    "Fixed-build desktop and mobile visual review",
+    "Forward/reverse/interrupted scroll and interaction validation",
+    "Fresh Spanish actual-browser short recording",
+    "Safe commit/push to existing Hero branch; no main merge or deployment"
+  ],
+  "executionPriority": [
+    "desktop landing implementation",
+    "independent desktop supervision and corrections",
+    "1920x1080 and 1440x900 desktop integration QA",
+    "Spanish desktop actual-browser short recording",
+    "mobile responsive adaptation and 390x844 QA last"
+  ],
+  "mobileAdditionalWork": "paused until desktop completion per latest user instruction"
+}
