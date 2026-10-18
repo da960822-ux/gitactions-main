@@ -1,0 +1,32 @@
+import test from 'node:test';
+import assert from 'node:assert/strict';
+import * as THREE from 'three';
+import {createLetterCollection,type LetterPaperPose} from './LetterCollection';
+
+test('letter-only collection preserves room ownership, reversible folds, DOM handoff and camera ownership',t=>{
+ const originalDocument=Object.getOwnPropertyDescriptor(globalThis,'document');
+ Object.defineProperty(globalThis,'document',{configurable:true,value:{createElement:(tag:string)=>{assert.equal(tag,'canvas');return {width:0,height:0,getContext:()=>({clearRect(){},fillText(){}})};}}});
+ t.after(()=>{if(originalDocument)Object.defineProperty(globalThis,'document',originalDocument);else Reflect.deleteProperty(globalThis,'document');});
+ const scene=new THREE.Scene();scene.background=new THREE.Color('#17131b');scene.fog=new THREE.Fog('#17131b',1,100);
+ const room=new THREE.Mesh(new THREE.BoxGeometry(1,1,1),new THREE.MeshBasicMaterial());scene.add(room);
+ let roomDisposed=false;room.geometry.addEventListener('dispose',()=>{roomDisposed=true;});
+ const camera=new THREE.PerspectiveCamera(38,1440/900,.05,100);camera.position.set(-11,1.3,-47.8);camera.lookAt(-11,1.3,-54);camera.updateProjectionMatrix();
+ const initialCamera=camera.position.clone();const fog=scene.fog,background=scene.background;
+ const collection=createLetterCollection({scene,camera});collection.root.position.set(-11,0,-54);
+ assert.equal(collection.ready,true);assert.equal(collection.root.children.length,1);assert.equal(collection.root.children[0].name,'letter-envelope');
+ assert.equal(scene.children.length,2);assert.equal(scene.fog,fog);assert.equal(scene.background,background);
+ const flap=collection.root.getObjectByName('letter-flap')!;const insert=collection.root.getObjectByName('letter-insert')!;
+ const frame={opening:0,progress:.62,width:1440,height:900,ownCamera:false};
+ collection.update(frame);assert.equal(Math.abs(flap.rotation.x),0);assert.ok(insert.visible);
+ collection.update({...frame,opening:1});const openFlap=flap.rotation.x,openInsert=insert.position.clone();
+ assert.ok(openFlap<-2.8);assert.ok(openInsert.y>1.5);assert.ok(camera.position.equals(initialCamera));
+ collection.update({...frame,opening:.35});collection.update({...frame,opening:1});assert.equal(flap.rotation.x,openFlap);assert.ok(insert.position.equals(openInsert));
+ const bounds=new THREE.Box3().setFromObject(collection.root);assert.ok(bounds.max.y<=3,'rig stays below the room characters');assert.ok(bounds.getSize(new THREE.Vector3()).x<2.2,'no floor, architecture or play-table geometry');
+ let paper:LetterPaperPose|undefined;const onPaperPose=(pose:LetterPaperPose)=>{paper=pose;};
+ collection.update({...frame,opening:1,progress:.75,onPaperPose});collection.projectPaper();assert.equal(insert.visible,false);assert.equal(paper!.visible,true);assert.equal(paper!.corners.length,4);assert.ok(paper!.corners.every(point=>Number.isFinite(point.x)&&Number.isFinite(point.y)));
+ collection.update({...frame,opening:1,progress:.75,width:390,reducedMotion:true,onPaperPose});collection.projectPaper();assert.equal(insert.visible,true);assert.equal(paper!.visible,false);
+ collection.update({...frame,opening:1,progress:.86,width:390,reducedMotion:true,onPaperPose});assert.equal(insert.visible,false);
+ collection.update({...frame,opening:.8,progress:.86,onPaperPose});assert.equal(insert.visible,true);
+ collection.dispose();collection.dispose();assert.equal(collection.ready,false);assert.deepEqual(scene.children,[room]);assert.equal(roomDisposed,false);assert.equal(scene.fog,fog);assert.equal(scene.background,background);assert.equal(paper!.visible,false);
+ room.geometry.dispose();(room.material as THREE.Material).dispose();
+});
