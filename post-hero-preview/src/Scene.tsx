@@ -265,7 +265,7 @@ export function createPostHeroCollection(options:{scene:THREE.Scene;camera:THREE
       });
       terrace.visible=dawn>.02;terrace.scale.y=Math.max(.01,dawn);
       const propPresence=table*(1-letterFocus*.97)*(1-dawn);
-      playProps.scale.setScalar(Math.max(.001,propPresence));playProps.position.y=-(1-propPresence)*.65-gallery*5;
+      playProps.scale.setScalar(Math.max(.001,propPresence));playProps.position.y=-(1-propPresence)*.65-gallery*10;
       key.position.set(-3+letterFocus*3+dawn*7,7-letterFocus*2,5-dawn*8);
       key.color.set(0xffd4ae).lerp(new THREE.Color(0xffefdd),letterFocus).lerp(new THREE.Color(0xffc7ae),dawn);
       key.intensity=1.9+table*.9+letterFocus*.3+dawn*.7;
@@ -297,7 +297,7 @@ export function createPostHeroCollection(options:{scene:THREE.Scene;camera:THREE
       });
       const approach=ease(.53,.68,p), ending=ease(.9,1,p);
       envelope.position.x=THREE.MathUtils.lerp(1.15,.65,approach)+(width>=600?ending*2.35:0)+.4;
-      envelope.position.y=.11-gallery*5;
+      envelope.position.y=.11-gallery*10;
       envelope.scale.setScalar(.8);
       envelope.position.z=.3-story*1.15;
       envelope.rotation.set(-.18+approach*.09, -.13*(1-approach), -.06*(1-approach));
@@ -315,7 +315,7 @@ export function createPostHeroCollection(options:{scene:THREE.Scene;camera:THREE
       const targetX=mobile?.45:THREE.MathUtils.lerp(-1.1,.65,ease(.70,.84,p));
       desiredTarget.set(targetX,.65+approach*.65-ending*.3,-.2);
       if(ownCamera){camera.position.copy(desiredPosition).add(scene.position);camera.lookAt(desiredTarget.clone().add(scene.position));}
-      portraitGroup.position.y=.04-gallery*5;
+      portraitGroup.position.y=.04-gallery*10;
       portraitGroup.position.x=mobile?-.9:THREE.MathUtils.lerp(-.55,1.5,ending);
       portraitGroup.scale.setScalar(1-letterFocus*.55+ending*.2);
       portraitGroup.position.z=-1.9-ending*.45;
@@ -352,7 +352,7 @@ export function createPostHeroCollection(options:{scene:THREE.Scene;camera:THREE
       });
       bars.forEach((bar,i)=>{
         bar.rotation.x=active('rhythm')*ease(i*.15,.5+i*.15,phase)*Math.PI/2+story*.22;
-        bar.position.set(.1+i*.32+story*.25,.04+active('rhythm')*.08+story*(.16+i*.045)-gallery*5,-1.15-story*1.2);
+        bar.position.set(.1+i*.32+story*.25,.04+active('rhythm')*.08+story*(.16+i*.045)-gallery*10,-1.15-story*1.2);
         bar.scale.setScalar(Math.max(.01,(1-letterFocus*.97)*(1-dawn)));
       });
       bridgeHinges.forEach((hinge,i)=>{hinge.rotation.z=(1-active('bridge')*ease(i*.13,.65+i*.13,phase))*(i%2?-.8:.8);});
