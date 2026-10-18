@@ -15,3 +15,13 @@
 .folded-side-note{color:#311c25;opacity:.8;text-shadow:0 1px 8px #f3e8db55}.folded-side-note i{background:#40243166}
 
 @media(min-width:761px){.folded-destination{padding-left:5.8%}.folded-destination h2{font-size:clamp(48px,4.3vw,82px)}.folded-destination a{background:#23121de8;border:1px solid #e0bbab44;padding:13px 20px;min-height:48px;border-radius:2px}}
+
+/* Reviewed cosmic composition: retain the portrait camera and the same live folded world. */
+.folded-playhouse .across-stage::after{content:"";position:absolute;inset:0;z-index:-1;pointer-events:none;background:radial-gradient(ellipse 32% 50% at 22% 55%,#100a13f7 8%,#100a13cf 52%,transparent 100%)}
+@media(min-width:1101px){.landing:has(.folded-playhouse)>.landing-nav{max-width:none;width:87%;margin:0 auto}.folded-playhouse .across-editorial{left:6.5104%;top:22.4074%;width:32.8125%;max-width:none}.folded-playhouse .folded-dedication{margin-bottom:35px}.folded-playhouse .across-editorial h1{font-size:clamp(62px,6.041667vw,116px);line-height:1.13}.folded-playhouse .across-editorial .folded-baby{font-size:clamp(104px,9.0625vw,174px);padding-bottom:25px;margin-left:-4px}.folded-playhouse .across-caption{margin:29px 0 28px}}
+
+.folded-playhouse .across-editorial{text-shadow:0 2px 18px #100a13,0 0 40px #100a13}.folded-playhouse .folded-baby{font-synthesis:style}
+
+/* Keep the approved loading composition visible until a completed WebGL frame can replace it. */
+.folded-playhouse .folded-backdrop{background:url('/images/our-universe-scene.webp') 58% 50%/cover no-repeat}.folded-playhouse .across-canvas{opacity:0}.folded-playhouse .across-canvas.is-ready{opacity:1}
+@media(min-width:1101px){.folded-playhouse .folded-portrait-fallback{left:40.1%;top:11.9%;width:41.4%;height:73.7%;right:auto;bottom:auto;max-height:none;object-fit:fill}}

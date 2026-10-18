@@ -1,0 +1,16 @@
+{
+  "kind": "static HTML composition study, not new 3D render",
+  "dimensions": [
+    1920,
+    1080
+  ],
+  "titlePixelsUnchangedInROI": [
+    120,
+    300,
+    600,
+    750
+  ],
+  "portrait": "unchanged original cutout with original camera perspective mapping",
+  "sourceChangesThisStep": 0,
+  "newVideoBakePerformanceRun": false
+}

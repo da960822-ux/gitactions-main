@@ -2,6 +2,8 @@ import {useEffect,useLayoutEffect,useRef,useState} from 'react';
 import {AbsoluteFill,Composition,continueRender,delayRender,cancelRender,registerRoot,staticFile,useCurrentFrame,useVideoConfig} from 'remotion';
 import {createFoldedWorld} from '../../src/landing/cinematic/folded/world';
 import {introPose} from '../../src/landing/cinematic/folded/pose';
+import {GiftSurfaceEdge} from './GiftSurfaceEdge';
+import {GiftSurfaceEdgeV18} from './GiftSurfaceEdgeV18';
 
 export function SharedSceneIntro(){
  const frame=useCurrentFrame(),{width,height,fps}=useVideoConfig(),canvas=useRef<HTMLCanvasElement>(null),world=useRef<ReturnType<typeof createFoldedWorld>|null>(null),current=useRef(frame);
@@ -16,6 +18,8 @@ export function SharedSceneIntro(){
  return <AbsoluteFill style={{background:'#100e14'}}><canvas ref={canvas} width={width} height={height} style={{width,height,display:'block'}}/></AbsoluteFill>;
 }
 const Root=()=> <>
+ <Composition id="GiftSurfaceEdgeV18" component={GiftSurfaceEdgeV18} width={512} height={512} fps={30} durationInFrames={96}/>
+ <Composition id="GiftSurfaceEdge" component={GiftSurfaceEdge} width={512} height={512} fps={30} durationInFrames={96}/>
  <Composition id="FoldedIntroWide" component={SharedSceneIntro} width={1920} height={1080} fps={30} durationInFrames={96}/>
  <Composition id="FoldedIntroClassic" component={SharedSceneIntro} width={1440} height={900} fps={30} durationInFrames={96}/>
  <Composition id="FoldedIntroTall" component={SharedSceneIntro} width={390} height={498} fps={30} durationInFrames={96}/>

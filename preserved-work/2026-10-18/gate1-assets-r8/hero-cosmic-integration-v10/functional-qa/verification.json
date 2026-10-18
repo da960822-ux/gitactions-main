@@ -1,0 +1,97 @@
+{
+  "base": "http://127.0.0.1:5201/",
+  "viewport": {
+    "width": 1440,
+    "height": 900,
+    "deviceScaleFactor": 0.5
+  },
+  "checks": [
+    {
+      "name": "landing renders eight game choices",
+      "pass": true,
+      "detail": "8"
+    },
+    {
+      "name": "gallery choice updates href: davinci",
+      "pass": true,
+      "detail": "/play?game=davinci"
+    },
+    {
+      "name": "gallery choice updates href: catchmind",
+      "pass": true,
+      "detail": "/play?game=catchmind"
+    },
+    {
+      "name": "gallery choice updates href: domino",
+      "pass": false,
+      "detail": "TimeoutError: page.waitForFunction: Timeout 2500ms exceeded."
+    },
+    {
+      "name": "gallery choice updates href: jaipur",
+      "pass": false,
+      "detail": "TimeoutError: page.waitForFunction: Timeout 2500ms exceeded."
+    },
+    {
+      "name": "gallery choice updates href: splendor",
+      "pass": true,
+      "detail": "/play?game=splendor"
+    },
+    {
+      "name": "gallery choice updates href: minhwatu",
+      "pass": true,
+      "detail": "/play?game=minhwatu"
+    },
+    {
+      "name": "gallery choice updates href: marble",
+      "pass": true,
+      "detail": "/play?game=marble"
+    },
+    {
+      "name": "gallery choice updates href: rhythm",
+      "pass": true,
+      "detail": "/play?game=rhythm"
+    },
+    {
+      "name": "gallery start link selects chosen game in lobby",
+      "pass": true,
+      "detail": "{\"route\":\"/play?game=rhythm\",\"selected\":\"game-thumbnail art-rhythm\"}"
+    },
+    {
+      "name": "Korean five original paragraphs intact",
+      "pass": true,
+      "detail": "[\"이거 만들면서 네가 보고 어떤 반응을 할까 계속 생각했어.\",\"네가 가족들이랑 자주 하는 도미노도 같이 해보고 싶었고, 다른 게임도 우리 둘이 하면 재밌을 것 같았어.\",\"직접 옆에 있으면 더 좋겠지만, 떨어져 있는 동안에도 이렇게 같이 놀 수 있으면 좋겠어.\",\"아직 부족한 게 있으면 같이 하면서 고쳐갈게.\",\"사랑해, mami.\"]"
+    },
+    {
+      "name": "Korean letter begins open",
+      "pass": true,
+      "detail": "{\"expanded\":\"true\",\"hidden\":\"false\"}"
+    },
+    {
+      "name": "Korean letter closes",
+      "pass": true,
+      "detail": "{\"expanded\":\"false\",\"hidden\":\"true\"}"
+    },
+    {
+      "name": "Korean letter reopens",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "Spanish select sets locale",
+      "pass": true,
+      "detail": "{\"stored\":\"es\",\"html\":\"es-DO\"}"
+    }
+  ],
+  "errors": [
+    {
+      "type": "qa-run-error",
+      "message": "TimeoutError: page.reload: Timeout 7000ms exceeded.\nCall log:\n\u001b[2m  - waiting for navigation until \"domcontentloaded\"\u001b[22m\n"
+    }
+  ],
+  "heroNote": "V10 frame/camera proof referenced from parent native capture; short functional browser pass does not wait for software-WebGL initialization.",
+  "summary": {
+    "passed": 13,
+    "failed": 2,
+    "total": 15
+  }
+}

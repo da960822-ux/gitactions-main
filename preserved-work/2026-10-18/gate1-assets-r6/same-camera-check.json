@@ -1,0 +1,26 @@
+{
+  "checks": [
+    {
+      "progress": 0,
+      "matrixWorldMaxAbsoluteDifference": 2.9086349714879667e-07,
+      "projectionMaxAbsoluteDifference": 3.1020145740967564e-07,
+      "sourceSha256": "8f0d5245c87da13497d0fb56f5930e1f25966ed88d788d4cac4c1faadbf0d5d9",
+      "glError": 0
+    },
+    {
+      "progress": 0.65,
+      "matrixWorldMaxAbsoluteDifference": 9.536743172944284e-08,
+      "projectionMaxAbsoluteDifference": 1.4104139789417047e-07,
+      "sourceSha256": "8f0d5245c87da13497d0fb56f5930e1f25966ed88d788d4cac4c1faadbf0d5d9",
+      "glError": 0
+    },
+    {
+      "progress": 1,
+      "matrixWorldMaxAbsoluteDifference": 9.868894876308154e-08,
+      "projectionMaxAbsoluteDifference": 1.8245010391382266e-08,
+      "sourceSha256": "8f0d5245c87da13497d0fb56f5930e1f25966ed88d788d4cac4c1faadbf0d5d9",
+      "glError": 0
+    }
+  ],
+  "note": "Matching projection and pose are geometric checks, not a pixel or design equivalence claim."
+}

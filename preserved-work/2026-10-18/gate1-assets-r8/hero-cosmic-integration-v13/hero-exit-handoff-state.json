@@ -1,0 +1,159 @@
+{
+  "status": "Gate1 visual UNAPPROVED; replaces the older V10 exit state; no Gate2 implementation",
+  "completedFrame": {
+    "engine": "three.js r186",
+    "frameSerial": "6",
+    "reflectionColorAttachmentBytes": "15552000",
+    "progress": "1.0000",
+    "entrance": "1.0000",
+    "pointerX": "0.0000",
+    "pointerY": "0.0000",
+    "camera": "-3.800,0.850,-40.000",
+    "target": "-4.000,1.000,-69.000",
+    "fold": "1.0000",
+    "renderer": "ANGLE (Google, Vulkan 1.3.0 (SwiftShader Device (Subzero) (0x0000C0DE)), SwiftShader driver)",
+    "drawCalls": "125",
+    "triangles": "2548013",
+    "geometries": "27",
+    "textures": "34",
+    "filmTime": "3.967",
+    "filmReady": "1",
+    "cpuSubmitMs": "20.30",
+    "initMarks": "{\"model\":3417.399999999994,\"assets\":3417.600000000006,\"warmupReadback\":1.099999999976717,\"firstFrameWarmup\":37169.09999999998}",
+    "bufferSize": "960x540",
+    "assetVersion": "chamber-r8.cosmic-v13",
+    "diffuse": "unchanged wing GI; Hero rest bake blended to live light during nonrigid opening; new-space analytic direct + authored indirect-only IBL preview",
+    "normal": "actual radius-dependent nonrigid twist; inverse-transpose normals; new geometry normals analytically transformed with continuous floor field",
+    "morphMeshes": "8",
+    "reflectionEmitters": "9",
+    "environmentMap": "authored specular probes plus source-excluded indirect-diffuse probes; world-position blend plus actual arrival warm/cool sources",
+    "reflection": "actual curved normal/depth SSR, alpha-preserved auxiliary buffers, dense normalized33tap roughness blur; authored IBL for offscreen sources",
+    "portraitStageMatrix": "0.991445,0.000000,-0.130526,0.000000,0.000000,1.000000,0.000000,0.000000,0.130526,0.000000,0.991445,0.000000,-2.840699,0.000000,-51.808099,1.000000",
+    "heroHingeMatrix": "1.000000,0.000000,0.000000,0.000000,0.000000,1.000000,0.000000,0.000000,0.000000,0.000000,1.000000,0.000000,0.000000,0.000000,0.000000,1.000000",
+    "shellDeformation": "radius-dependent twist: same vertices and topology, determinant1 analytic Jacobian; not a rigid hinge",
+    "gpuPendingSkips": "1",
+    "floorSupport": "same continuous floor mesh, no separate frame/pedestal; continuous .75m wide crest; rear fold follows portrait, keeping both cutout corners occluded; same floor unrolls to arrival; existing cove widens/raises with positive analytic Jacobian",
+    "contactShadow": "actual2048 PCF from calibrated Hero key proxy, alpha-tested portrait caster",
+    "copyZone": "dark burgundy DOM atmosphere with original cosmic environment; portrait pixels untouched",
+    "cosmicEnvironment": "original our-universe-scene.webp background, actual geometry/camera transition remains live",
+    "previewStage": "unapproved low-cost lighting/surface prototype",
+    "allocationNote": "VRAM and hardware GPU performance not measured",
+    "fenceCompletedAtMs": "85179.200"
+  },
+  "camera": {
+    "position": [
+      -3.8,
+      0.85,
+      -40
+    ],
+    "target": [
+      -4,
+      1,
+      -69
+    ],
+    "fovDegrees": 48,
+    "near": 0.1,
+    "far": 400
+  },
+  "sameSurface": {
+    "asset": "/models/folded-chamber-r8-space-v6/chamber.glb",
+    "sha256": "3fb3e1311a780b9363133f85aefc4b16c592cb6c1ffcb8b72230ebeeb3a43e69",
+    "owners": [
+      "Shared_Unfolding_Canopy",
+      "Deep_Burgundy_Continuous_Return"
+    ],
+    "evaluators": [
+      "arrivalCoveV13.ts",
+      "floorSupportV12.ts",
+      "shellTwist.ts"
+    ],
+    "progress": 1,
+    "entrance": 1,
+    "floorCrestHeight": 0.75,
+    "floorRadiusX": 10,
+    "floorRadiusZ": 7,
+    "coveEndSpread": 4,
+    "coveEndRoofRise": 35,
+    "jacobian": "positive; analytic inverse-transpose normals",
+    "globalRevealPlane": {
+      "normal": [
+        0,
+        0,
+        1
+      ],
+      "constant": 400
+    }
+  },
+  "portrait": {
+    "asset": "/images/yeonseok-lisbeth-cutout.webp",
+    "sameObject": true,
+    "stageEvaluator": "stageMotionV12.ts",
+    "centerAtExit": [
+      -1,
+      0.03,
+      -52
+    ],
+    "faceRegenerated": false
+  },
+  "environment": {
+    "approvedAsset": "/images/our-universe-scene.webp",
+    "backgroundLayer": "original image with aspect-cover, no animated image zoom",
+    "arrivalLayer": {
+      "position": [
+        -4,
+        -4,
+        -100
+      ],
+      "size": [
+        120,
+        80
+      ],
+      "curve": "z= -8*(localX/60)^2, fixed world geometry"
+    },
+    "realtimeGeometryAndCamera": "actual live cove deformation and camera motion are distinct from the existing 2D environment image"
+  },
+  "lighting": {
+    "authoredProbes": "existing hero/arrival specular+indirect HDR in folded-chamber-r8-space-v6",
+    "additionalWarm": {
+      "type": "PointLight",
+      "color": "#f3b084",
+      "intensity": 28,
+      "distance": 28,
+      "decay": 2,
+      "position": [
+        -10,
+        4,
+        -57
+      ]
+    },
+    "additionalCool": {
+      "type": "PointLight",
+      "color": "#929de0",
+      "intensity": 14,
+      "distance": 24,
+      "decay": 2,
+      "position": [
+        2,
+        5,
+        -61
+      ]
+    },
+    "reflection": "curved-floor actual SSR plus authored IBL; rose-tinted tighter reflection; no new bake"
+  },
+  "inputContract": {
+    "progress": "0..1, reversible same evaluators",
+    "entrance": "0..1",
+    "pointerX": "-1..1, actual completed-frame metadata",
+    "pointerY": "-1..1",
+    "language": "existing KO / es-DO state",
+    "eventImplementation": "none added; future approved event design may read this state"
+  },
+  "sourceSHA256": {
+    "previewSpaceV13.ts": "d4ea46353a7f1dd066ed631e4513c8cf6b00b6e1e7175eca0c681ff27b0f1e2e",
+    "poseSpaceV11.ts": "b8c479e9969620c723742661cf98529b4df6e1dcb620fde16dd5889d1e762e03",
+    "stageMotionV12.ts": "ed98702abb959d2d91cafb4aad7b0b8698443bbab897e20deba95e26dc7a1c80",
+    "arrivalCoveV13.ts": "1d20e99a217c8b37ab3ed23edf34be339278e0b47739fec4333d0af285ef25f9",
+    "floorSupportV12.ts": "9a1eff01d7cfa46e29e0ff6325327b8240634230ddbc5f8ab7f43d736bceb1e4",
+    "curvedReflectionV11.ts": "de8471cd815447483fe06c115bf835fa87f1cdb333a990536e0b63bea3b71b27"
+  }
+}

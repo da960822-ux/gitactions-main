@@ -1,0 +1,188 @@
+{
+  "hits": {
+    "right-upper": [
+      {
+        "name": "Deep_Burgundy_Continuous_Return",
+        "parent": "VERSIONED_SHARED_CHAMBER",
+        "material": "Burgundy satin architecture",
+        "point": [
+          18.80481559369173,
+          12.284907616895802,
+          -76.18992192078709
+        ],
+        "distance": 44.17516552164141
+      },
+      {
+        "name": "Deep_Burgundy_Continuous_Return",
+        "parent": "VERSIONED_SHARED_CHAMBER",
+        "material": "Burgundy satin architecture",
+        "point": [
+          19.201357266280244,
+          12.485502811910994,
+          -76.82477833489213
+        ],
+        "distance": 44.95010190412245
+      },
+      {
+        "name": "EXISTING_COSMIC_ENVIRONMENT_IN_ARRIVAL",
+        "parent": "",
+        "material": "",
+        "point": [
+          35.88618397860633,
+          20.925715529797856,
+          -103.5368996295003
+        ],
+        "distance": 77.55620650435625
+      }
+    ],
+    "right-middle": [
+      {
+        "name": "Deep_Burgundy_Continuous_Return",
+        "parent": "VERSIONED_SHARED_CHAMBER",
+        "material": "Burgundy satin architecture",
+        "point": [
+          17.298978557531925,
+          1.0242425498245362,
+          -73.83400539336839
+        ],
+        "distance": 39.874016321356976
+      },
+      {
+        "name": "Deep_Burgundy_Continuous_Return",
+        "parent": "VERSIONED_SHARED_CHAMBER",
+        "material": "Burgundy satin architecture",
+        "point": [
+          17.644005257290203,
+          1.0270918978040842,
+          -74.38728503146302
+        ],
+        "distance": 40.52606685640785
+      },
+      {
+        "name": "EXISTING_COSMIC_ENVIRONMENT_IN_ARRIVAL",
+        "parent": "",
+        "material": "",
+        "point": [
+          35.813684596542295,
+          1.1771432971612965,
+          -103.5239101568805
+        ],
+        "distance": 74.86413154288665
+      }
+    ],
+    "left-door": [
+      {
+        "name": "Lightwell_far_reveal",
+        "parent": "VERSIONED_SHARED_CHAMBER",
+        "material": "Warm lightwell mineral emitter",
+        "point": [
+          -16.827932121149008,
+          3.2649283203619315,
+          -88.49495697021484
+        ],
+        "distance": 50.2724551388605
+      },
+      {
+        "name": "Lightwell_far_reveal",
+        "parent": "VERSIONED_SHARED_CHAMBER",
+        "material": "Warm lightwell mineral emitter",
+        "point": [
+          -16.865542269900402,
+          3.2718999419906103,
+          -88.63495635986328
+        ],
+        "distance": 50.41758596225502
+      },
+      {
+        "name": "EXISTING_COSMIC_ENVIRONMENT_IN_ARRIVAL",
+        "parent": "",
+        "material": "",
+        "point": [
+          -20.073454797180492,
+          3.8665360468868384,
+          -100.57603638146695
+        ],
+        "distance": 62.79634547047186
+      }
+    ]
+  },
+  "bounds": [
+    {
+      "name": "Shared_Sculpted_Cove",
+      "box": [
+        -4.451578140258789,
+        -3.525181770324707,
+        -8.804784059524536,
+        18.005334854125977,
+        11.571236610412598,
+        -2.5063865184783936
+      ]
+    },
+    {
+      "name": "Retained_Hero_Wing_And_Floor",
+      "box": [
+        -50.209367752075195,
+        -3.429999828338623,
+        -26.607147216796875,
+        20.209367752075195,
+        8.149999618530273,
+        8.52714729309082
+      ]
+    },
+    {
+      "name": "Warm_Recessed_Lightwell",
+      "box": [
+        -17.34270477294922,
+        0.5391696095466614,
+        -88.56571197509766,
+        -13.743876457214355,
+        4.706729888916016,
+        -62.95803451538086
+      ]
+    },
+    {
+      "name": "Lightwell_lower_reveal",
+      "box": [
+        -17.282230377197266,
+        0.46924763917922974,
+        -88.56505584716797,
+        -12.10444164276123,
+        0.7582364082336426,
+        -62.959590911865234
+      ]
+    },
+    {
+      "name": "Lightwell_upper_reveal",
+      "box": [
+        -17.2822322845459,
+        4.332177639007568,
+        -88.56512451171875,
+        -12.10444164276123,
+        4.776697635650635,
+        -62.959564208984375
+      ]
+    },
+    {
+      "name": "Lightwell_near_reveal",
+      "box": [
+        -13.794844627380371,
+        0.6869112253189087,
+        -63.02960205078125,
+        -12.094843864440918,
+        4.706905841827393,
+        -62.88960266113281
+      ]
+    },
+    {
+      "name": "Lightwell_far_reveal",
+      "box": [
+        -17.28683853149414,
+        0.5387277603149414,
+        -88.63495635986328,
+        -15.586838722229004,
+        4.401296138763428,
+        -88.49495697021484
+      ]
+    }
+  ]
+}

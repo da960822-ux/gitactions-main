@@ -1,0 +1,17 @@
+{
+  "createdAtUTC": "2026-10-18T00:22:59.035040+00:00",
+  "version": "chamber-v7.0",
+  "authorBlendSHA256": "ba0843975411b97684f264cbfbb9a4ed63fafbd6a7d5f1f168a741ef3042ba56",
+  "generatorSHA256": "49f20417fa043f468077e44a1b1de067238ec09cb1befc7436e1b64b1229ce1d",
+  "cameraPosesSHA256": "9b4ac21b4eb82cda3071c997fe9eaf5c5813021e17128b4badb46eeda237222e",
+  "source": {
+    "scripts/build-folded-chamber.py": "49f20417fa043f468077e44a1b1de067238ec09cb1befc7436e1b64b1229ce1d",
+    "scripts/denoise-chamber-lightmaps.py": "ed42d7bb072d2585bcc93dafac416e42800462aef79a905f14e3b37a5bb5e627",
+    "src/landing/cinematic/folded/world.ts": "b468b75e537f56e06616b449ec9a53d35e7457802422a7349113f6c633c7b2ee",
+    "src/landing/cinematic/folded/pose.ts": "79cc1ec376b893fe628f42fb2fa3730693fd96f3d91588a4d4f4654ac9984b3c",
+    "src/landing/cinematic/folded/chamber-asset.test.ts": "d103b611fba6616e4ac652604fde8736220e28dae96bcc39530e3395729e019a",
+    "src/landing/cinematic/folded/pose.test.ts": "04a4760978a45eb0ad4b888327fc930a2d57d9390deaabf55b33d949dec5f3e7"
+  },
+  "sourceNote": "Camera-invisible lighting cards are retained in the export for physical planar reflections only. This export metadata change does not alter native beauty preview pixels.",
+  "baseGitHead": "491b16883d9ca1591065a22b23731f04587e5b38"
+}

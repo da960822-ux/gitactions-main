@@ -1,0 +1,14 @@
+{
+  "commit": "ade47c56f8f2f756e7e6df8e578407690b2fb782",
+  "source": "https://github.com/codrops/ScrollBasedLayoutAnimations",
+  "viewport": {
+    "width": 1440,
+    "height": 900
+  },
+  "trigger": {
+    "id": "gallery-1",
+    "start": 1343,
+    "end": 4043
+  },
+  "note": "unmodified official source locally served; external analytics/font requests blocked"
+}

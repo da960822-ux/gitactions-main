@@ -1,0 +1,85 @@
+{
+  "scope": "Prototype, no full GI bake. Diffuse maps upsampled solely to share PMREM layout; no added detail claim.",
+  "records": [
+    {
+      "name": "hero",
+      "mode": "specular",
+      "position": [
+        1,
+        0.7,
+        1
+      ],
+      "pose": 0,
+      "nativeResolution": [
+        1024,
+        512
+      ],
+      "storedResolution": [
+        1024,
+        512
+      ],
+      "samples": 4,
+      "indirectOnly": false
+    },
+    {
+      "name": "hero",
+      "mode": "indirect-diffuse",
+      "position": [
+        1,
+        0.7,
+        1
+      ],
+      "pose": 0,
+      "nativeResolution": [
+        512,
+        256
+      ],
+      "storedResolution": [
+        1024,
+        512
+      ],
+      "samples": 4,
+      "indirectOnly": "Analytic source surfaces camera-invisible; lighting transport remains active"
+    },
+    {
+      "name": "arrival",
+      "mode": "specular",
+      "position": [
+        -4.5,
+        1,
+        -55
+      ],
+      "pose": 1,
+      "nativeResolution": [
+        1024,
+        512
+      ],
+      "storedResolution": [
+        1024,
+        512
+      ],
+      "samples": 4,
+      "indirectOnly": false
+    },
+    {
+      "name": "arrival",
+      "mode": "indirect-diffuse",
+      "position": [
+        -4.5,
+        1,
+        -55
+      ],
+      "pose": 1,
+      "nativeResolution": [
+        512,
+        256
+      ],
+      "storedResolution": [
+        1024,
+        512
+      ],
+      "samples": 4,
+      "indirectOnly": "Analytic source surfaces camera-invisible; lighting transport remains active"
+    }
+  ]
+}

@@ -1,0 +1,53 @@
+{
+  "scope": "Active product Hero cosmic V13, actual browser CSS1920x1080 DPR.5, native960x540 quick review. Returning visit; no module override. Still frames only; not motion/visual approval.",
+  "errors": [],
+  "frames": [
+    {
+      "name": "hero",
+      "requested": 0,
+      "frame": {
+        "engine": "three.js r186",
+        "frameSerial": "3",
+        "reflectionColorAttachmentBytes": "15552000",
+        "progress": "0.0000",
+        "entrance": "1.0000",
+        "pointerX": "0.0000",
+        "pointerY": "0.0000",
+        "camera": "0.000,0.300,11.700",
+        "target": "0.300,-0.050,0.000",
+        "fold": "0.0000",
+        "renderer": "ANGLE (Google, Vulkan 1.3.0 (SwiftShader Device (Subzero) (0x0000C0DE)), SwiftShader driver)",
+        "drawCalls": "107",
+        "triangles": "1779297",
+        "geometries": "27",
+        "textures": "34",
+        "filmTime": "0.000",
+        "filmReady": "4",
+        "cpuSubmitMs": "7.00",
+        "initMarks": "{\"model\":3492.9000000059605,\"assets\":3493.10000000149,\"warmupReadback\":4.699999995529652,\"firstFrameWarmup\":32745.60000000149}",
+        "bufferSize": "960x540",
+        "assetVersion": "chamber-r8.cosmic-v13",
+        "diffuse": "unchanged wing GI; Hero rest bake blended to live light during nonrigid opening; new-space analytic direct + authored indirect-only IBL preview",
+        "normal": "actual radius-dependent nonrigid twist; inverse-transpose normals; new geometry normals analytically transformed with continuous floor field",
+        "morphMeshes": "8",
+        "reflectionEmitters": "9",
+        "environmentMap": "authored specular probes plus source-excluded indirect-diffuse probes; world-position blend plus actual arrival warm/cool sources",
+        "reflection": "actual curved normal/depth SSR, alpha-preserved auxiliary buffers, dense normalized33tap roughness blur; authored IBL for offscreen sources",
+        "portraitStageMatrix": "1.000000,0.000000,0.000000,0.000000,0.000000,1.000000,0.000000,0.000000,0.000000,0.000000,1.000000,0.000000,0.000000,0.000000,0.000000,1.000000",
+        "heroHingeMatrix": "1.000000,0.000000,0.000000,0.000000,0.000000,1.000000,0.000000,0.000000,0.000000,0.000000,1.000000,0.000000,0.000000,0.000000,0.000000,1.000000",
+        "shellDeformation": "radius-dependent twist: same vertices and topology, determinant1 analytic Jacobian; not a rigid hinge",
+        "gpuPendingSkips": "1",
+        "floorSupport": "same continuous floor mesh, no separate frame/pedestal; continuous .75m wide crest; rear fold follows portrait, keeping both cutout corners occluded; same floor unrolls to arrival; existing cove widens/raises with positive analytic Jacobian",
+        "contactShadow": "actual2048 PCF from calibrated Hero key proxy, alpha-tested portrait caster",
+        "copyZone": "dark burgundy DOM atmosphere with original cosmic environment; portrait pixels untouched",
+        "cosmicEnvironment": "original our-universe-scene.webp background, actual geometry/camera transition remains live",
+        "previewStage": "unapproved low-cost lighting/surface prototype",
+        "allocationNote": "VRAM and hardware GPU performance not measured",
+        "fenceCompletedAtMs": "53736.800"
+      },
+      "overflow": false,
+      "title": "Baby,이거 내가만들었어!",
+      "scrollY": 0
+    }
+  ]
+}

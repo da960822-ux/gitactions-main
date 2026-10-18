@@ -1,0 +1,17 @@
+[
+  {
+    "name": "paired",
+    "url": "https://www.paired.com/",
+    "error": "page.goto: net::ERR_TUNNEL_CONNECTION_FAILED at https://www.paired.com/\nCall log:\n\u001b[2m  - navigating to \"https://www.paired.com/\", waiting until \"domcontentloaded\"\u001b[22m\n"
+  },
+  {
+    "name": "life360",
+    "url": "https://www.life360.com/",
+    "error": "page.goto: net::ERR_TUNNEL_CONNECTION_FAILED at https://www.life360.com/\nCall log:\n\u001b[2m  - navigating to \"https://www.life360.com/\", waiting until \"domcontentloaded\"\u001b[22m\n"
+  },
+  {
+    "name": "codrops",
+    "url": "https://tympanus.net/Development/OnScroll3DGrid/",
+    "error": "page.goto: net::ERR_TUNNEL_CONNECTION_FAILED at https://tympanus.net/Development/OnScroll3DGrid/\nCall log:\n\u001b[2m  - navigating to \"https://tympanus.net/Development/OnScroll3DGrid/\", waiting until \"domcontentloaded\"\u001b[22m\n"
+  }
+]

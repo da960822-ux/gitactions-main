@@ -1,0 +1,17 @@
+{
+  "checks": [
+    {
+      "name": "title-hidden-before-scene-ready",
+      "pass": true
+    },
+    {
+      "name": "early-skip-does-not-restart-film",
+      "pass": true
+    },
+    {
+      "name": "repeat-session-no-intro",
+      "pass": true
+    }
+  ],
+  "errors": []
+}

@@ -1,0 +1,3 @@
+import fs from 'node:fs';
+import esbuild from '/workspace/yl-folded-playhouse-g1/node_modules/esbuild/lib/main.js';
+const path='/workspace/gate1-assets-r6';const source=fs.readFileSync('/workspace/yl-folded-playhouse-g1/src/landing/cinematic/folded/pose.ts','utf8');const result=await esbuild.transform(source,{loader:'ts',format:'esm'});fs.writeFileSync(path+'/camera-functions.mjs',result.code);const{cameraPose,smoothRange}=await import(path+'/camera-functions.mjs');fs.writeFileSync(path+'/camera-poses.json',JSON.stringify([0,.65,1].map(progress=>({progress,...cameraPose(progress,1,false),fov:38+10*smoothRange(.4,1,progress),morph:smoothRange(.15,.85,progress)})),null,2));

@@ -1,0 +1,344 @@
+[hyperframes] Could not persist telemetry config: ENOENT: no such file or directory, mkdir '/home/agent/.hyperframes'. Canary cohort assignment will not be stable across runs.
+
+  Hyperframes collects anonymous usage data to improve the tool.
+  File paths and composition content are never collected.
+  If you sign in to HeyGen, your account (email, or username) is linked to your usage.
+
+  Disable anytime: hyperframes telemetry disable
+
+[SystemMemory] cgroup memory limit detected: 16384 MiB. It governs memory-adaptive render behaviour instead of host RAM.
+[hyperframes] Using system Chrome at /usr/bin/chromium; HeadlessExperimental.beginFrame is unavailable in regular Chrome builds, so the perf-optimized capture path falls back to screenshot mode. Install chrome-headless-shell for the optimized path:
+  npx @puppeteer/browsers install chrome-headless-shell
+(Or set HYPERFRAMES_BROWSER_PATH to point at an existing chrome-headless-shell binary.)
+[hyperframes] browserGpuMode probe → software (WebGL renderer vendor="Google Inc. (Mesa)" renderer="ANGLE (Mesa, llvmpipe (LLVM 19.1.7 256 bits), OpenGL ES 3.2)")
+{
+  "ok": true,
+  "strict": false,
+  "browserSkipped": false,
+  "lint": {
+    "ok": true,
+    "errorCount": 0,
+    "warningCount": 2,
+    "infoCount": 0,
+    "findings": [
+      {
+        "code": "studio_missing_editable_id",
+        "severity": "warning",
+        "message": "<section data-start=\"0\"> has no id, so Studio cannot use a stable edit target for its timeline and canvas controls.",
+        "selector": "[data-composition-id]",
+        "dataAttributes": {},
+        "sourceFile": "/workspace/yl-folded-playhouse-g1/videos/folded-playhouse-hyperframes/index.html",
+        "bbox": {
+          "x": 0,
+          "y": 0,
+          "width": 0,
+          "height": 0
+        },
+        "time": 0,
+        "fixHint": "Add a stable, human-readable id such as id=\"hero-title\" or id=\"scene-1-card\" to every timeline-visible element you want agents or Studio to edit."
+      },
+      {
+        "code": "nested_structure_needs_subcomposition",
+        "severity": "warning",
+        "message": "<section> is a timeline element that contains nested <div>. The timeline shows one row per top-level element, and the root composition is built only from sub-compositions.",
+        "selector": "[data-composition-id]",
+        "dataAttributes": {},
+        "sourceFile": "/workspace/yl-folded-playhouse-g1/videos/folded-playhouse-hyperframes/index.html",
+        "bbox": {
+          "x": 0,
+          "y": 0,
+          "width": 0,
+          "height": 0
+        },
+        "time": 0,
+        "fixHint": "Move <section> and its contents into a sub-composition file and mount it with data-composition-src."
+      }
+    ],
+    "filesScanned": 1
+  },
+  "runtime": {
+    "ok": true,
+    "errorCount": 0,
+    "warningCount": 0,
+    "infoCount": 0,
+    "findings": []
+  },
+  "layout": {
+    "ok": true,
+    "errorCount": 0,
+    "warningCount": 2,
+    "infoCount": 3,
+    "findings": [
+      {
+        "code": "escaped_container",
+        "severity": "warning",
+        "time": 2.889,
+        "selector": "div.streak",
+        "message": "Positioned element renders far outside its offset parent — its coordinates were likely computed in a different frame (canvas/viewport pixels).",
+        "rect": {
+          "left": -261.62,
+          "top": -132.14,
+          "right": 1285.64,
+          "bottom": 287.6,
+          "width": 1547.26,
+          "height": 419.74
+        },
+        "containerSelector": "div.field",
+        "text": "",
+        "fixHint": "Compute left/top in the offset parent's frame (subtract its rect), or mark intentional placement with data-layout-allow-overflow.",
+        "containerRect": {
+          "left": 81.91,
+          "top": 81.91,
+          "right": 942.09,
+          "bottom": 942.09,
+          "width": 860.19,
+          "height": 860.19
+        },
+        "dataAttributes": {},
+        "sourceFile": "index.html",
+        "bbox": {
+          "x": -261.62,
+          "y": -132.14,
+          "width": 1547.26,
+          "height": 419.74
+        },
+        "firstSeen": 2.889,
+        "lastSeen": 3.778,
+        "occurrences": 3,
+        "heldMs": 889.0000000000002,
+        "times": [
+          2.889,
+          3.333,
+          3.778
+        ]
+      },
+      {
+        "code": "rotation_pivot_drift",
+        "severity": "warning",
+        "time": 3.778,
+        "selector": "div.streak",
+        "dataAttributes": {},
+        "sourceFile": "index.html",
+        "bbox": {
+          "x": -246.52999999999997,
+          "y": -321.86,
+          "width": 1517.08,
+          "height": 600.98
+        },
+        "rect": {
+          "left": -246.52999999999997,
+          "top": -321.86,
+          "right": 1270.55,
+          "bottom": 279.12,
+          "width": 1517.08,
+          "height": 600.98
+        },
+        "message": "Rotating element's bounding-box center drifts 552px across rotation — it is not spinning about its own center (check transformOrigin/svgOrigin).",
+        "fixHint": "The bounding-box center should stay fixed while the element spins; check its transformOrigin/svgOrigin so rotation pivots about the element's own center rather than a point in a coordinate space it was resized out of.",
+        "firstSeen": 3.778,
+        "lastSeen": 3.778,
+        "occurrences": 1,
+        "heldMs": 0,
+        "times": [
+          3.778
+        ]
+      },
+      {
+        "code": "panel_out_of_canvas",
+        "severity": "info",
+        "time": 0.222,
+        "selector": "div.fold.f1",
+        "message": "Painted panel extends outside the composition canvas.",
+        "rect": {
+          "left": -40.44,
+          "top": -11.43,
+          "right": 699.91,
+          "bottom": 1041.87,
+          "width": 740.35,
+          "height": 1053.31
+        },
+        "containerSelector": "#root",
+        "text": "",
+        "fixHint": "Move the panel inward, or mark intentional off-canvas animation with data-layout-allow-overflow.",
+        "containerRect": {
+          "left": 0,
+          "top": 0,
+          "right": 1024,
+          "bottom": 1024,
+          "width": 1024,
+          "height": 1024
+        },
+        "overflow": {
+          "left": 40.44
+        },
+        "dataAttributes": {},
+        "sourceFile": "index.html",
+        "bbox": {
+          "x": -40.44,
+          "y": -11.43,
+          "width": 740.35,
+          "height": 1053.31
+        },
+        "firstSeen": 0.222,
+        "lastSeen": 1.111,
+        "occurrences": 3,
+        "heldMs": 889,
+        "times": [
+          0.222,
+          0.667,
+          1.111
+        ]
+      },
+      {
+        "code": "panel_out_of_canvas",
+        "severity": "info",
+        "time": 0.222,
+        "selector": "div.fold.f2",
+        "message": "Painted panel extends outside the composition canvas.",
+        "rect": {
+          "left": 251.16,
+          "top": -48.31,
+          "right": 1146.44,
+          "bottom": 1040.57,
+          "width": 895.28,
+          "height": 1088.88
+        },
+        "containerSelector": "#root",
+        "text": "",
+        "fixHint": "Move the panel inward, or mark intentional off-canvas animation with data-layout-allow-overflow.",
+        "containerRect": {
+          "left": 0,
+          "top": 0,
+          "right": 1024,
+          "bottom": 1024,
+          "width": 1024,
+          "height": 1024
+        },
+        "overflow": {
+          "right": 122.44,
+          "top": 48.31
+        },
+        "dataAttributes": {},
+        "sourceFile": "index.html",
+        "bbox": {
+          "x": 251.16,
+          "y": -48.31,
+          "width": 895.28,
+          "height": 1088.88
+        },
+        "firstSeen": 0.222,
+        "lastSeen": 3.778,
+        "occurrences": 5,
+        "heldMs": 1334,
+        "times": [
+          0.222,
+          2.444,
+          2.889,
+          3.333,
+          3.778
+        ]
+      },
+      {
+        "code": "panel_out_of_canvas",
+        "severity": "info",
+        "time": 2,
+        "selector": "div.fold.f3",
+        "message": "Painted panel extends outside the composition canvas.",
+        "rect": {
+          "left": -26.27,
+          "top": 237.01,
+          "right": 1030.69,
+          "bottom": 875.18,
+          "width": 1056.96,
+          "height": 638.16
+        },
+        "containerSelector": "#root",
+        "text": "",
+        "fixHint": "Move the panel inward, or mark intentional off-canvas animation with data-layout-allow-overflow.",
+        "containerRect": {
+          "left": 0,
+          "top": 0,
+          "right": 1024,
+          "bottom": 1024,
+          "width": 1024,
+          "height": 1024
+        },
+        "overflow": {
+          "left": 26.27
+        },
+        "dataAttributes": {},
+        "sourceFile": "index.html",
+        "bbox": {
+          "x": -26.27,
+          "y": 237.01,
+          "width": 1056.96,
+          "height": 638.16
+        },
+        "firstSeen": 2,
+        "lastSeen": 2,
+        "occurrences": 1,
+        "heldMs": 0,
+        "times": [
+          2
+        ]
+      }
+    ],
+    "duration": 4,
+    "samples": [
+      0.222,
+      0.667,
+      1.111,
+      1.556,
+      2,
+      2.444,
+      2.889,
+      3.333,
+      3.778
+    ],
+    "transitionSamples": [],
+    "transitionSamplesDropped": 0,
+    "tolerance": 2,
+    "totalIssueCount": 5,
+    "truncated": false
+  },
+  "motion": {
+    "ok": true,
+    "errorCount": 0,
+    "warningCount": 0,
+    "infoCount": 0,
+    "findings": [],
+    "enabled": false,
+    "samples": 0
+  },
+  "contrast": {
+    "ok": true,
+    "errorCount": 0,
+    "warningCount": 0,
+    "infoCount": 0,
+    "findings": [],
+    "enabled": true,
+    "samples": [
+      0.222,
+      1.111,
+      2,
+      2.889,
+      3.778
+    ],
+    "checked": 0,
+    "passed": 0
+  },
+  "hdr": {
+    "autoPromotion": null,
+    "inspection": "available"
+  },
+  "snapshots": {
+    "enabled": false,
+    "files": [],
+    "times": [],
+    "findingFiles": []
+  },
+  "_meta": {
+    "version": "0.8.149",
+    "updateAvailable": false
+  }
+}

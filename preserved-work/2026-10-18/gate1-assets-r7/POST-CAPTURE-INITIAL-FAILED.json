@@ -1,0 +1,5 @@
+{
+  "stage": "POST_CAPTURE_FAILED",
+  "checkedAtUTC": "2026-10-18T01:36:47.651126+00:00",
+  "error": "RuntimeError('Existing pipeline failed; preserve state for targeted recovery')"
+}

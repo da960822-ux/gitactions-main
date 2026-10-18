@@ -1,0 +1,26 @@
+{
+  "cpuQuota": "400000/100000 = 4 CPU",
+  "jobs": [
+    {
+      "pid": 25176,
+      "role": "bake",
+      "allowedCpuIds": [
+        0,
+        1,
+        2
+      ],
+      "sampleCountUnchanged": true,
+      "processRestarted": false
+    },
+    {
+      "pid": 26136,
+      "role": "native",
+      "allowedCpuIds": [
+        3
+      ],
+      "sampleCountUnchanged": true,
+      "processRestarted": false
+    }
+  ],
+  "note": "CPU affinity scheduling only. No renderer, bake parameter, geometry, sample or asset change."
+}

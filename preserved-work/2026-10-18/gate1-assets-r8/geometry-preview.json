@@ -1,0 +1,30 @@
+{
+  "version": "chamber-r8.preview",
+  "sourceR7SHA256": "ba0843975411b97684f264cbfbb9a4ed63fafbd6a7d5f1f168a741ef3042ba56",
+  "sourceSHA256": "1a3eb2281b45bfc37c5e873140670fee7a6241a2f542d7d887176829fb479780",
+  "checks": [
+    {
+      "object": "Shared_Unfolding_Canopy",
+      "vertices": 80243,
+      "faces": 79582,
+      "boundaryEdges": 0,
+      "nonManifoldEdges": 0
+    },
+    {
+      "object": "Deep_Burgundy_Continuous_Return",
+      "vertices": 22874,
+      "faces": 22872,
+      "boundaryEdges": 0,
+      "nonManifoldEdges": 0
+    },
+    {
+      "object": "Warm_Recessed_Lightwell",
+      "vertices": 3314,
+      "faces": 3312,
+      "boundaryEdges": 0,
+      "nonManifoldEdges": 0
+    }
+  ],
+  "baked": false,
+  "artifact": "Actual geometry prototype, final GI/normal/HDR not produced"
+}

@@ -1,0 +1,5 @@
+{
+  "atUTC": "2026-10-18T04:08:59.536619+00:00",
+  "reason": "Found live DOM versus GPU-completed pose mismatch under software GPU backlog. Preserve V7 recording as diagnostic baseline, stop only this owned recorder gracefully, fix in isolated V8, then record full sequence again.",
+  "visualApproval": false
+}

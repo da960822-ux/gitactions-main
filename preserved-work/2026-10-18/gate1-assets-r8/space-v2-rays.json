@@ -1,0 +1,282 @@
+[
+  {
+    "pixel": [
+      500,
+      290
+    ],
+    "hits": [
+      {
+        "object": "Deep_Burgundy_Continuous_Return",
+        "material": "Deep burgundy mineral.001__room",
+        "position": [
+          -8.72271678873112,
+          -2.1628013658966263,
+          -117.37356930210443
+        ],
+        "distance": 93.6686803457618,
+        "emissive": [
+          0,
+          0,
+          0
+        ],
+        "emissiveIntensity": 1
+      },
+      {
+        "object": "Deep_Burgundy_Continuous_Return",
+        "material": "Deep burgundy mineral.001__room",
+        "position": [
+          -8.746056371184732,
+          -2.1737818170421326,
+          -117.69773885858008
+        ],
+        "distance": 93.99387445358371,
+        "emissive": [
+          0,
+          0,
+          0
+        ],
+        "emissiveIntensity": 1
+      }
+    ]
+  },
+  {
+    "pixel": [
+      540,
+      300
+    ],
+    "hits": [
+      {
+        "object": "Deep_Burgundy_Continuous_Return",
+        "material": "Deep burgundy mineral.001__room",
+        "position": [
+          -2.5059918154237444,
+          -3.064427400032134,
+          -105.21238937845123
+        ],
+        "distance": 81.31560604437863,
+        "emissive": [
+          0,
+          0,
+          0
+        ],
+        "emissiveIntensity": 1
+      },
+      {
+        "object": "Deep_Burgundy_Continuous_Return",
+        "material": "Deep burgundy mineral.001__room",
+        "position": [
+          -2.5104705988971543,
+          -3.100403654416594,
+          -105.93124034855981
+        ],
+        "distance": 82.03537063617722,
+        "emissive": [
+          0,
+          0,
+          0
+        ],
+        "emissiveIntensity": 1
+      }
+    ]
+  },
+  {
+    "pixel": [
+      480,
+      270
+    ],
+    "hits": [
+      {
+        "object": "Deep_Burgundy_Continuous_Return",
+        "material": "Deep burgundy mineral.001__room",
+        "position": [
+          -12.258351843007025,
+          0.9191776993156606,
+          -121.4879159714167
+        ],
+        "distance": 98.02619076159807,
+        "emissive": [
+          0,
+          0,
+          0
+        ],
+        "emissiveIntensity": 1
+      },
+      {
+        "object": "Deep_Burgundy_Continuous_Return",
+        "material": "Deep burgundy mineral.001__room",
+        "position": [
+          -12.28919039094838,
+          0.9189347321770278,
+          -121.78098310504566
+        ],
+        "distance": 98.32087605116249,
+        "emissive": [
+          0,
+          0,
+          0
+        ],
+        "emissiveIntensity": 1
+      }
+    ]
+  },
+  {
+    "pixel": [
+      450,
+      290
+    ],
+    "hits": [
+      {
+        "object": "Deep_Burgundy_Continuous_Return",
+        "material": "Deep burgundy mineral.001__room",
+        "position": [
+          -18.009705431113886,
+          -2.517859940157256,
+          -126.95081981797618
+        ],
+        "distance": 104.24757698739572,
+        "emissive": [
+          0,
+          0,
+          0
+        ],
+        "emissiveIntensity": 1
+      },
+      {
+        "object": "Deep_Burgundy_Continuous_Return",
+        "material": "Deep burgundy mineral.001__room",
+        "position": [
+          -18.052073816225302,
+          -2.5271696707674742,
+          -127.22327080093476
+        ],
+        "distance": 104.52345973288024,
+        "emissive": [
+          0,
+          0,
+          0
+        ],
+        "emissiveIntensity": 1
+      }
+    ]
+  },
+  {
+    "pixel": [
+      400,
+      242
+    ],
+    "hits": [
+      {
+        "object": "Lightwell_far_reveal",
+        "material": "Warm mineral plaster.001__canopy",
+        "position": [
+          -15.209309096559702,
+          3.5399641602588607,
+          -78.92444610595703
+        ],
+        "distance": 56.54760865668886,
+        "emissive": [
+          0,
+          0,
+          0
+        ],
+        "emissiveIntensity": 1
+      },
+      {
+        "object": "Lightwell_far_reveal",
+        "material": "Warm mineral plaster.001__canopy",
+        "position": [
+          -15.242978898302052,
+          3.546438389083657,
+          -79.06444549560547
+        ],
+        "distance": 56.69174539832741,
+        "emissive": [
+          0,
+          0,
+          0
+        ],
+        "emissiveIntensity": 1
+      }
+    ]
+  },
+  {
+    "pixel": [
+      401,
+      250
+    ],
+    "hits": [
+      {
+        "object": "Lightwell_far_reveal",
+        "material": "Warm mineral plaster.001__canopy",
+        "position": [
+          -15.11513581349338,
+          2.8007461161455423,
+          -78.92444610595703
+        ],
+        "distance": 56.497294218638196,
+        "emissive": [
+          0,
+          0,
+          0
+        ],
+        "emissiveIntensity": 1
+      },
+      {
+        "object": "Lightwell_far_reveal",
+        "material": "Warm mineral plaster.001__canopy",
+        "position": [
+          -15.148565572721234,
+          2.805336118868298,
+          -79.06444549560547
+        ],
+        "distance": 56.64130271154386,
+        "emissive": [
+          0,
+          0,
+          0
+        ],
+        "emissiveIntensity": 1
+      }
+    ]
+  },
+  {
+    "pixel": [
+      397,
+      257
+    ],
+    "hits": [
+      {
+        "object": "Lightwell_far_reveal",
+        "material": "Warm mineral plaster.001__canopy",
+        "position": [
+          -15.492029482701586,
+          2.155143790698452,
+          -78.92444610595703
+        ],
+        "distance": 56.56910814910782,
+        "emissive": [
+          0,
+          0,
+          0
+        ],
+        "emissiveIntensity": 1
+      },
+      {
+        "object": "Lightwell_far_reveal",
+        "material": "Warm mineral plaster.001__canopy",
+        "position": [
+          -15.526419923145047,
+          2.1580881886326972,
+          -79.06444549560547
+        ],
+        "distance": 56.71329969176905,
+        "emissive": [
+          0,
+          0,
+          0
+        ],
+        "emissiveIntensity": 1
+      }
+    ]
+  }
+]

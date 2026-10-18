@@ -1,0 +1,50 @@
+{
+  "/workspace/gate1-assets-r8/space-v6-model/arrival-environment.hdr": {
+    "bytes": 2083727,
+    "sha256": "20b84ff83fffc1221e9aa60b60cd45987270977a750ab28764a0afac12a67730"
+  },
+  "/workspace/gate1-assets-r8/space-v6-model/arrival-indirect.hdr": {
+    "bytes": 1927758,
+    "sha256": "6493cae1dbaf118d90f09244b3c84c32ccf5e021d6d96ec0c9fd026552244ce6"
+  },
+  "/workspace/gate1-assets-r8/space-v6-model/chamber.glb": {
+    "bytes": 12330160,
+    "sha256": "3608e45bd81346b68f61e0ab2a93360a2271d1443e5ac5dff7d70754884b4398"
+  },
+  "/workspace/gate1-assets-r8/space-v6-model/hero-environment.hdr": {
+    "bytes": 1311997,
+    "sha256": "86ff2cdc3908c523ca2b4fc77ff7b961334950cdcb67d8ecb60dc718011c5abf"
+  },
+  "/workspace/gate1-assets-r8/space-v6-model/hero-indirect.hdr": {
+    "bytes": 1166384,
+    "sha256": "42b6229e09032eaf5b07a8a65b26da114cb7bc61142a93d5c463d125b576aa6f"
+  },
+  "/workspace/gate1-assets-r8/chamber-space-v6.blend": {
+    "bytes": 23650764,
+    "sha256": "b1ea5fc952cb4eeefd0c1369a5df7ff5ea623b5561f34e7ccd460e2b73ca448b"
+  },
+  "/workspace/gate1-assets-r8/author-space-v6.py": {
+    "bytes": 15374,
+    "sha256": "4cc668f691bf4cc52934879e691ce8d09ab33d0f2eefece7cff88fc2b3c22904"
+  },
+  "/workspace/gate1-assets-r8/space-v6-probes.py": {
+    "bytes": 3901,
+    "sha256": "e316fb351b51f91a320b04ed7d3054f2f74e9eae76fba19ad0d6616f77a8786c"
+  },
+  "/workspace/yl-folded-playhouse-r8/src/landing/cinematic/folded/previewSpaceV6.ts": {
+    "bytes": 27093,
+    "sha256": "66813a32e6ff3f88cf306b9dc9d115fb2e45fe402ea1e4b7402edd4486ca8740"
+  },
+  "/workspace/yl-folded-playhouse-r8/src/landing/cinematic/folded/floorSupportV6.ts": {
+    "bytes": 1406,
+    "sha256": "458a1fc04cd6cbc19db877b7129185d9b811fa08a6013ac9025631ec955da739"
+  },
+  "/workspace/yl-folded-playhouse-r8/src/landing/cinematic/folded/shellTwist.ts": {
+    "bytes": 782,
+    "sha256": "f7ee21e9893380c5d49a6e44a87c6d702899ea8f66bf051461930fad107d4e50"
+  },
+  "/workspace/yl-folded-playhouse-r8/src/landing/cinematic/folded/poseSpaceV6.ts": {
+    "bytes": 1257,
+    "sha256": "5a909cc983df8bcd76b05b481e366a68e84e8ab52da32d20822a4bf04509e486"
+  }
+}

@@ -1,0 +1,29 @@
+from pathlib import Path
+p=Path('/workspace/yl-folded-playhouse-r8/src/landing/cinematic/folded');s=p.joinpath('previewSpaceV4.ts').read_text().replace('chamber-r8.space-v4','chamber-r8.space-v5').replace('folded-chamber-r8-space-v4/','folded-chamber-r8-space-v5/')
+s="import {floorSupportShape,sampleFloorSupport,type SupportSample} from './floorSupport';\n"+s
+s=s.replace("lastSignature='';", "lastSignature='',lastShadowPose='',lastFloorPose='';",1)
+s=s.replace("renderer.shadowMap.type=T.PCFSoftShadowMap;", "renderer.shadowMap.type=T.VSMShadowMap;renderer.shadowMap.autoUpdate=false;")
+s=s.replace("const lightingCards:T.Mesh[]=", "const supportMeshes:{mesh:T.Mesh;positions:Float32Array;normals:Float32Array}[]=[],supportSample:SupportSample={height:0,dx:0,dy:0,dz:0};\n const lightingCards:T.Mesh[]=")
+a=s.index("const size=data.rect_area_size,area=new T.RectAreaLight");b=s.index("scene.add(area);",a)+len("scene.add(area);")
+s=s[:a]+'''const size=data.rect_area_size,key=JSON.stringify(data.rect_area_position);
++if(key===JSON.stringify([-3.5,6.5,6])){const light=new T.SpotLight(new T.Color().fromArray(data.rect_area_color),data.rect_area_power*size[0]*size[1],40,.9,.4,2);light.position.fromArray(data.rect_area_position);light.target.position.fromArray(data.rect_area_target);light.castShadow=true;light.shadow.mapSize.set(1024,1024);light.shadow.camera.near=.2;light.shadow.camera.far=40;light.shadow.bias=-.0002;light.shadow.normalBias=.01;light.shadow.radius=4;light.shadow.blurSamples=8;scene.add(light,light.target);}else{const area=new T.RectAreaLight(new T.Color().fromArray(data.rect_area_color),data.rect_area_power,size[0],size[1]);area.position.fromArray(data.rect_area_position);area.lookAt(new T.Vector3().fromArray(data.rect_area_target));scene.add(area);}'''.replace('\n+','\n')+s[b:]
+needle="   if(object.morphTargetInfluences)moving.push"
+s=s.replace(needle,"   if(owner?.userData.floorSupport){const pos=object.geometry.getAttribute('position'),normal=object.geometry.getAttribute('normal'),positions=new Float32Array(pos.count*3),normals=new Float32Array(normal.count*3);for(let i=0;i<pos.count;i++){positions.set([pos.getX(i),pos.getY(i),pos.getZ(i)],i*3);normals.set([normal.getX(i),normal.getY(i),normal.getZ(i)],i*3);}pos.setUsage(T.DynamicDrawUsage);normal.setUsage(T.DynamicDrawUsage);object.geometry.computeBoundingSphere();object.geometry.boundingSphere!.radius+=.5;object.frustumCulled=false;supportMeshes.push({mesh:object,positions,normals});}\n"+needle)
+# The material mask changes physical albedo/roughness only in the left copy zone.
+s=s.replace("      if(filmSurface)shader.fragmentShader=", "      if(m.name.includes('Warm mineral plaster'))shader.fragmentShader=shader.fragmentShader.replace('#include <color_fragment>','#include <color_fragment>\\nfloat copyZone=(1.-smoothstep(18.,36.,-vSpaceWorld.z))*(1.-smoothstep(-5.,-2.,vSpaceWorld.x))*smoothstep(-2.,0.,vSpaceWorld.y);diffuseColor.rgb=mix(diffuseColor.rgb,vec3(.016,.006,.014),copyZone);').replace('#include <roughnessmap_fragment>','#include <roughnessmap_fragment>\\nfloat copyRough=(1.-smoothstep(18.,36.,-vSpaceWorld.z))*(1.-smoothstep(-5.,-2.,vSpaceWorld.x))*smoothstep(-2.,0.,vSpaceWorld.y);roughnessFactor=mix(roughnessFactor,.82,copyRough);');\n      if(filmSurface)shader.fragmentShader=")
+# Capture world position is declared in the standard shader path before BRDF evaluation.
+s=s.replace("portrait.name='APPROVED_UNCHANGED_PORTRAIT';", "portrait.name='APPROVED_UNCHANGED_PORTRAIT';portrait.castShadow=true;")
+s=s.replace("const portraitReady=textureLoader.loadAsync", "const portraitDepth=keep(new T.MeshDepthMaterial({depthPacking:T.RGBADepthPacking,alphaTest:.025}));portrait.customDepthMaterial=portraitDepth;\n const portraitReady=textureLoader.loadAsync")
+s=s.replace("portraitMaterial.map=texture;portraitMaterial.needsUpdate=true;", "portraitMaterial.map=texture;portraitMaterial.needsUpdate=true;portraitDepth.map=texture;portraitDepth.needsUpdate=true;")
+needle="  applyRigidPose(shellRig,heroHingePose(p,e));applyRigidPose(portraitRig,portraitStagePose(p));"
+assert needle in s
+new=needle+'''
++  const floorSignature=p.toFixed(6)+':'+e.toFixed(6);
++  if(floorSignature!==lastFloorPose){lastFloorPose=floorSignature;const shape=floorSupportShape(p);for(const item of supportMeshes){const pos=item.mesh.geometry.getAttribute('position'),normal=item.mesh.geometry.getAttribute('normal');for(let i=0;i<pos.count;i++){const offset=i*3,x=item.positions[offset],y=item.positions[offset+1],z=item.positions[offset+2];sampleFloorSupport(x,y,z+(1-e)*.25,shape,supportSample);pos.setXYZ(i,x,y+supportSample.height,z);const nx=item.normals[offset],ny=item.normals[offset+1],nz=item.normals[offset+2],j=1+supportSample.dy,yy=ny/j,xx=nx-supportSample.dx*yy,zz=nz-supportSample.dz*yy,length=Math.hypot(xx,yy,zz);normal.setXYZ(i,xx/length,yy/length,zz/length);}pos.needsUpdate=true;normal.needsUpdate=true;}}
++  if(floorSignature!==lastShadowPose){lastShadowPose=floorSignature;renderer.shadowMap.needsUpdate=true;}
++'''.replace('\n+','\n')
+s=s.replace(needle,new)
+s=s.replace("normal:'retained maps on unchanged surfaces; new receiver geometric normals only'", "normal:'rigid finished hinge; new geometry normals analytically transformed with continuous floor field'")
+s=s.replace("previewStage:'unbaked geometry review'", "floorSupport:'same continuous floor mesh, no separate frame/pedestal; .48m moving height field',contactShadow:'actual1024 VSM from calibrated Hero key proxy, alpha-tested portrait caster',copyZone:'world-space dark burgundy material; portrait pixels untouched',previewStage:'unapproved low-cost lighting/surface prototype'")
+s=s.replace("[Boolean(data),restOnly,floor,filmSurface,'chamber-r8.space-v5']","[Boolean(data),restOnly,floor,filmSurface,m.name.includes('Warm mineral plaster'),'chamber-r8.space-v5']")
+p.joinpath('previewSpaceV5.ts').write_text(s);print('SPACE_V5_WORLD_READY',len(s))

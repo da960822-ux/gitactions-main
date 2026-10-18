@@ -1,0 +1,37 @@
+{
+  "checkedAtUTC": "2026-10-18T02:19:56.881321+00:00",
+  "R6": {
+    "worktree": "/workspace/yl-folded-playhouse-g1",
+    "checkpoint": "/workspace/gate1-assets-r6/LATEST-CHECKPOINT.json",
+    "complete": true,
+    "head": "491b16883d9ca1591065a22b23731f04587e5b38",
+    "normals": 5,
+    "GI": 12,
+    "native": 3,
+    "tests": 16,
+    "build": "passed",
+    "browser": "completed"
+  },
+  "R7": {
+    "worktree": "/workspace/yl-folded-playhouse-r7",
+    "state": {
+      "stage": "PIPELINE_COMPLETE",
+      "checkedAtUTC": "2026-10-18T01:44:49.576Z",
+      "bakePID": 32763,
+      "nativePID": 32764,
+      "activePID": 34384,
+      "recovery": "Only failed pointer/ES screenshot stage resumed; original renders/captures preserved",
+      "priorCaptureErrorRecovered": "AssertionError(('capture.log', 1))"
+    },
+    "normals": 5,
+    "GI": 12,
+    "HDR": 4,
+    "nativeCompleted": 3,
+    "currentNativeSample": 64,
+    "bakeAlive": false,
+    "nativeAlive": false,
+    "review": "Not visually approved. Frozen c69618a. Component diagnoses complete; corrections isolated in yl-folded-playhouse-r8."
+  },
+  "authority": "Continue approved Gate1 R7 implementation/polish/verification. No Gate0 regression or new approval question. No Gate2 before parent visual review.",
+  "currentRepair": "/workspace/gate1-assets-r8/CURRENT-TASK.json"
+}

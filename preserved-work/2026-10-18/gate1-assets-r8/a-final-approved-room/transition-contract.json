@@ -1,0 +1,30 @@
+{
+  "status": "design contract only; not connected to product",
+  "approved_asset": "libfile_df98a1d2c6048191bd09d7c4aa103522",
+  "asset_available": false,
+  "scope": "Hero and directly connected arrival only; no gallery/game/letter implementation",
+  "state_ownership": {
+    "scroll": "one normalized reversible progress value; GSAP/ScrollTrigger owns input",
+    "camera": "world owns camera/target; no separate scroll animation writer",
+    "mesh": "world owns same topology/UV surface deformation",
+    "hero_character": "fixed at Hero stage; must not follow camera into room",
+    "arrival_characters": "approved new gaming pose assets anchored to separate rooms",
+    "monitor_media": "actual game capture decode and visible-frame state; no invented game UI",
+    "dom_focus": "existing CTA/navigation retain semantic focus; visual hiding must coordinate inert state"
+  },
+  "phases": [
+    {"range": [0, 0.18], "action": "stable cosmic Hero", "hero_primary": true},
+    {"range": [0.18, 0.42], "action": "same foreground surface bends on distinct axes; opens boundary", "hero_character_follows_camera": false},
+    {"range": [0.42, 0.68], "action": "camera crosses actual rim into newly revealed separate rooms", "requires": ["approved room asset inspected", "actual depth geometry", "monitor media ready"]},
+    {"range": [0.68, 1], "action": "settle in split gaming rooms; desk line connects; different atmospheres", "preserve": ["male room", "female single bed", "female laptop", "pink bunny", "couple photo", "approved clothes and acting"]}
+  ],
+  "reversal_contract": [
+    "same progress must produce same camera/mesh/light pose regardless scroll direction",
+    "no irreversible onEnter mutation for geometry/character placement",
+    "seek completed displayed frame must be checked before claiming media restored",
+    "p=0 restores original Hero composition and usable CTA",
+    "p=1 does not activate hidden game session or change language state"
+  ],
+  "deferred_until_pixels_available": ["camera absolute coordinates and FOV", "room geometry proportions", "character alpha/layer segmentation", "monitor quadrilateral UV positions", "lighting calibration", "single-bed and photo visual audit"],
+  "acceptance_evidence_future": ["native1920x1080 stable Hero", "forward middle frames", "camera rim crossing", "actual arrival frame", "reverse same progress comparison", "KO/es navigation and existing game routes", "reported actual renderer and frame time"]
+}

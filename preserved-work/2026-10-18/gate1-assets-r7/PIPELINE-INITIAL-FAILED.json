@@ -1,0 +1,8 @@
+{
+  "stage": "PIPELINE_FAILED",
+  "checkedAtUTC": "2026-10-18T01:36:45.546201+00:00",
+  "bakePID": 32763,
+  "nativePID": 32764,
+  "activePID": 34384,
+  "error": "AssertionError(('capture.log', 1))"
+}

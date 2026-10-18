@@ -1,0 +1,3 @@
+import bpy,json,hashlib
+from pathlib import Path
+P=Path('/workspace/gate1-assets-r7');source=P/'chamber.blend';before=hashlib.sha256(source.read_bytes()).hexdigest();bpy.ops.wm.open_mainfile(filepath=str(source));bpy.ops.file.pack_all();out=P/'chamber-source-portable.blend';bpy.ops.wm.save_as_mainfile(filepath=str(out),compress=True);assert hashlib.sha256(source.read_bytes()).hexdigest()==before;(P/'portable-source.json').write_text(json.dumps({'source':str(source),'sourceSha256':before,'portable':str(out),'portableSha256':hashlib.sha256(out.read_bytes()).hexdigest(),'change':'Only packed the existing approved portrait into a separate compressed source copy. Original source unchanged.'},indent=2))

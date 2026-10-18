@@ -1,0 +1,18 @@
+{
+  "head": "37583421daba9a0e127c208f9c6d41e488a76b5c",
+  "status": "",
+  "sources": {
+    "/workspace/gate1-assets-r4/alcove.blend": {
+      "sha256": "7735172391e13aa57326b8902a05a0a96260287f4c912b73a264a5f77d1815ad",
+      "bytes": 8268948
+    },
+    "/workspace/yl-folded-playhouse-g1/public/models/folded-alcove/alcove.glb": {
+      "sha256": "c50281168ba201d3979b5167e1f2272d8c294c09c022c1436d622b0a406df997",
+      "bytes": 6703064
+    },
+    "/workspace/yl-folded-playhouse-g1/src/landing/cinematic/folded/world.ts": {
+      "sha256": "2481a838c203aa5f0185e219eefcddea1e2a7efefc03ec2dbbc5315c1204bdca",
+      "bytes": 10966
+    }
+  }
+}

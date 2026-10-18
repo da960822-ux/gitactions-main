@@ -1,0 +1,51 @@
+[
+  {
+    "object": "Shared_Unfolding_Canopy",
+    "vertices": 70694,
+    "faces": 70094,
+    "boundaryEdges": 0,
+    "nonManifoldEdges": 0
+  },
+  {
+    "object": "Deep_Burgundy_Continuous_Return",
+    "vertices": 35178,
+    "faces": 35176,
+    "boundaryEdges": 0,
+    "nonManifoldEdges": 0
+  },
+  {
+    "object": "Warm_Recessed_Lightwell",
+    "vertices": 2658,
+    "faces": 2656,
+    "boundaryEdges": 0,
+    "nonManifoldEdges": 0
+  },
+  {
+    "object": "Lightwell lower reveal",
+    "vertices": 1346,
+    "faces": 1344,
+    "boundaryEdges": 0,
+    "nonManifoldEdges": 0
+  },
+  {
+    "object": "Lightwell upper reveal",
+    "vertices": 1346,
+    "faces": 1344,
+    "boundaryEdges": 0,
+    "nonManifoldEdges": 0
+  },
+  {
+    "object": "Lightwell near reveal",
+    "vertices": 1346,
+    "faces": 1344,
+    "boundaryEdges": 0,
+    "nonManifoldEdges": 0
+  },
+  {
+    "object": "Lightwell far reveal",
+    "vertices": 1346,
+    "faces": 1344,
+    "boundaryEdges": 0,
+    "nonManifoldEdges": 0
+  }
+]

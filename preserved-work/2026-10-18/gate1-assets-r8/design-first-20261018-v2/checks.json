@@ -1,0 +1,31 @@
+{
+  "viewport": [
+    1920,
+    1080
+  ],
+  "horizontalOverflow": false,
+  "portraitTransform": "matrix3d(0.649627, 0.00515417, 0, 1.04526e-05, 0.0117069, 0.646102, 0, 1.21947e-05, 0, 0, 1, 0, 769.857, 128.498, 0, 1)",
+  "title": "Baby,\n이거 내가\n만들었어!",
+  "ctaHref": "#games",
+  "letterHref": "#papi-letter",
+  "typeRects": [
+    {
+      "x": 125,
+      "y": 301,
+      "right": 755,
+      "bottom": 749.96875
+    },
+    {
+      "x": 125,
+      "y": 778.96875,
+      "right": 755,
+      "bottom": 848.25
+    },
+    {
+      "x": 125,
+      "y": 876.25,
+      "right": 755,
+      "bottom": 941.25
+    }
+  ]
+}

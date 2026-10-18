@@ -1,0 +1,16 @@
+[
+  {
+    "progress": 0.65,
+    "positionMaxError": 0.0,
+    "projectionMaxError": 0.0,
+    "worldMatrixMaxError": 0.0,
+    "glError": 0
+  },
+  {
+    "progress": 1,
+    "positionMaxError": 0.0,
+    "projectionMaxError": 0.0,
+    "worldMatrixMaxError": 0.0,
+    "glError": 0
+  }
+]

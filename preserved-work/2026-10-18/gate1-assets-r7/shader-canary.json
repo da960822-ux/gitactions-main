@@ -1,0 +1,22 @@
+{
+  "scope": "R7 shader only against routed immutable R6 fixture assets; not R7 geometry/lighting proof",
+  "result": {
+    "glError": 0,
+    "programs": [
+      {},
+      {},
+      {},
+      {},
+      {},
+      {},
+      {},
+      {},
+      {},
+      {},
+      {},
+      {}
+    ],
+    "reflectionMipmaps": true
+  },
+  "errors": []
+}
