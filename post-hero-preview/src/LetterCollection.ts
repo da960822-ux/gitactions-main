@@ -93,7 +93,7 @@ export function createLetterCollection(options:{scene:THREE.Scene;camera:THREE.P
   if(disposed)return {position:position.clone(),target:target.clone(),ready:false};
   latest=frame;
   scene.rotation.y=-.777*ease(.55,.78,frame.progress)*(1-ease(.94,1,frame.progress));
-  envelope.rotation.x=-Math.PI/2*(1-ease(.55,.62,frame.progress));
+  envelope.rotation.x=-Math.PI/2*(1-ease(.55,.62,frame.progress))-.5*Math.PI*ease(.94,1,frame.progress);
   const q=THREE.MathUtils.clamp(Number.isFinite(frame.opening)?frame.opening:0,0,1);
   if(frame.effect?.name==='wax-stamp')heartSelected=frame.effect.value>0;
   heartStamp.visible=heartSelected;initialsStamp.visible=!heartSelected;

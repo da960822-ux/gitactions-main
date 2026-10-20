@@ -30,8 +30,10 @@ export default function StudioScene(props:Props){
   if(collection){scene.add(collection.root);objects.push(...collection.root.children as T.Group[]);}
   const canvas=renderer.domElement;node.appendChild(canvas);canvas.setAttribute('aria-hidden','true');
   let width=0,height=0,mobile=false,time=0,last=0,visible=true,disposed=false,loaded=false,impulse=props.impulse??0,energy=0;
-  const pointer=new T.Vector2(),ray=new T.Raycaster();
-  const resize=()=>{const box=node.getBoundingClientRect();width=box.width;height=box.height;mobile=width<700;renderer.setSize(width,height);camera.aspect=width/height;camera.position.set(0,0,props.mode==='hearts'?(mobile?10.5:11.8):(mobile?10.2:9.6));camera.fov=props.mode==='hearts'&&mobile?43:38;camera.updateProjectionMatrix();render(true);};
+  const pointer=new T.Vector2(),ray=new T.Raycaster(),hoverCenter=new T.Vector3();
+  const hoverMedia=window.matchMedia('(hover: hover) and (pointer: fine)');
+  let hovered:{id:string;x:number;y:number}|null=null,selection=props.selected;
+  const resize=()=>{hovered=null;canvas.style.cursor='';const box=node.getBoundingClientRect();width=box.width;height=box.height;mobile=width<700;renderer.setSize(width,height);camera.aspect=width/height;camera.position.set(0,0,props.mode==='hearts'?(mobile?10.5:11.8):(mobile?10.2:9.6));camera.fov=props.mode==='hearts'&&mobile?43:38;camera.updateProjectionMatrix();render(true);};
   const render=(snap=false,dt=1/60)=>{
    if(!width||!height||disposed)return;const active=!controls.current.paused&&!document.hidden;
    objects.forEach((g,i)=>{
@@ -45,7 +47,8 @@ export default function StudioScene(props:Props){
     g.position.lerp(new T.Vector3(x,y,z),lerp);g.scale.lerp(new T.Vector3(size,size,size),lerp);
     g.rotation.x+= (rx-g.rotation.x)*lerp;g.rotation.y+=(ry-g.rotation.y)*lerp;g.rotation.z+=(rz-g.rotation.z)*lerp;
    });
-   collection?.update({selected:controls.current.selected??'domino',time,paused:controls.current.paused,dt,snap,mobile});
+   collection?.update({selected:controls.current.selected??'domino',time,paused:controls.current.paused,dt,snap,mobile,hovered});
+   canvas.dataset.hovered=hovered?.id??'';
    renderer.render(scene,camera);let assetsReady=true;scene.traverse(o=>{if(o instanceof T.Mesh){for(const m of Array.isArray(o.material)?o.material:[o.material]){const image=(m as T.MeshStandardMaterial).map?.image;if((m as T.MeshStandardMaterial).map?.userData.pending||(image instanceof HTMLImageElement&&!image.complete))assetsReady=false;}}});if(assetsReady&&!loaded){loaded=true;setReady(true);}canvas.dataset.ready=String(assetsReady);
    if(props.mode==='games'){const chosen=objects.find(g=>g.userData.game===(controls.current.selected??'domino'))!;const box=new T.Box3().setFromObject(chosen),pixels=[];for(const x of [box.min.x,box.max.x])for(const y of [box.min.y,box.max.y])for(const z of [box.min.z,box.max.z]){const p=new T.Vector3(x,y,z).project(camera);pixels.push([(p.x+1)*width/2,(1-p.y)*height/2]);}canvas.dataset.selectedBounds=JSON.stringify({left:Math.min(...pixels.map(p=>p[0])),right:Math.max(...pixels.map(p=>p[0])),top:Math.min(...pixels.map(p=>p[1])),bottom:Math.max(...pixels.map(p=>p[1])),width,height});}canvas.dataset.motion=active&&visible?'running':'paused';
   };
@@ -53,19 +56,33 @@ export default function StudioScene(props:Props){
    if(!controls.current.paused){time+=dt;energy*=Math.exp(-dt*2);render(false,dt);}
   };
   renderer.setAnimationLoop(frame);
-  const sync=()=>{if(impulse!==(controls.current.impulse??0)){impulse=controls.current.impulse??0;energy=.85;}render(controls.current.paused);};redraw.current=sync;
-  const move=(event:PointerEvent)=>{const box=canvas.getBoundingClientRect();pointer.set((event.clientX-box.left)/box.width*2-1,-(event.clientY-box.top)/box.height*2+1);if(!controls.current.paused){energy=Math.max(energy,.06);render();}};
+  const sync=()=>{if(controls.current.paused||selection!==controls.current.selected){hovered=null;canvas.style.cursor='';}selection=controls.current.selected;if(impulse!==(controls.current.impulse??0)){impulse=controls.current.impulse??0;energy=.85;}render(controls.current.paused);};redraw.current=sync;
+  const move=(event:PointerEvent)=>{
+   const box=canvas.getBoundingClientRect();pointer.set((event.clientX-box.left)/box.width*2-1,-(event.clientY-box.top)/box.height*2+1);
+   if(collection){
+    ray.setFromCamera(pointer,camera);const id=collection.pick(ray);
+    const mouse=event.pointerType==='mouse'&&hoverMedia.matches;
+    canvas.style.cursor=mouse&&id?'pointer':'';hovered=null;
+    if(id&&mouse&&!controls.current.paused&&visible&&!document.hidden){
+     const group=objects.find(g=>g.userData.game===id)!;
+     group.getWorldPosition(hoverCenter);const radius=group.scale.x/(camera.position.z-hoverCenter.z)/Math.tan(T.MathUtils.degToRad(camera.fov/2));hoverCenter.project(camera);
+     hovered={id,x:T.MathUtils.clamp((pointer.x-hoverCenter.x)*camera.aspect/radius,-1,1),y:T.MathUtils.clamp((pointer.y-hoverCenter.y)/radius,-1,1)};
+    }
+   }else if(!controls.current.paused){energy=Math.max(energy,.06);render();}
+  };
   let pressed:{x:number;y:number;id:number}|null=null;
   const down=(event:PointerEvent)=>{if(event.isPrimary&&event.button===0)pressed={x:event.clientX,y:event.clientY,id:event.pointerId};};
-  const cancel=()=>{pressed=null;};
+  const cancel=()=>{pressed=null;hovered=null;canvas.style.cursor='';};
   const click=(event:PointerEvent)=>{const start=pressed;pressed=null;if(!start||start.id!==event.pointerId||Math.hypot(event.clientX-start.x,event.clientY-start.y)>8)return;move(event);if(props.mode==='hearts'){if(!controls.current.paused)energy=.6;return;}ray.setFromCamera(pointer,camera);const id=collection?.pick(ray);if(id)controls.current.onSelect?.(id);};
-  const leave=()=>{pointer.set(0,0);pressed=null;};
-  const lost=(event:Event)=>{event.preventDefault();renderer.setAnimationLoop(null);loaded=false;setReady(false);};
+  const leave=()=>{pointer.set(0,0);cancel();};
+  const reset=()=>{leave();render(true);};
+  const lost=(event:Event)=>{event.preventDefault();leave();renderer.setAnimationLoop(null);loaded=false;setReady(false);};
   const restored=()=>{renderer.setAnimationLoop(frame);render(true);};
-  const observer=new ResizeObserver(resize);observer.observe(node);const intersection=new IntersectionObserver(([entry])=>{visible=entry.isIntersecting;if(visible)render(true);});intersection.observe(node);
+  const observer=new ResizeObserver(resize);observer.observe(node);const intersection=new IntersectionObserver(([entry])=>{visible=entry.isIntersecting;if(!visible)leave();render(true);});intersection.observe(node);
+  document.addEventListener('visibilitychange',reset);window.addEventListener('blur',reset);hoverMedia.addEventListener('change',reset);
   canvas.addEventListener('pointermove',move);canvas.addEventListener('pointerdown',down);canvas.addEventListener('pointerup',click);canvas.addEventListener('pointercancel',cancel);canvas.addEventListener('pointerleave',leave);canvas.addEventListener('webglcontextlost',lost);canvas.addEventListener('webglcontextrestored',restored);
   resize();
-  return()=>{disposed=true;redraw.current=()=>{};renderer.setAnimationLoop(null);observer.disconnect();intersection.disconnect();canvas.removeEventListener('pointermove',move);canvas.removeEventListener('pointerdown',down);canvas.removeEventListener('pointerup',click);canvas.removeEventListener('pointercancel',cancel);canvas.removeEventListener('pointerleave',leave);canvas.removeEventListener('webglcontextlost',lost);canvas.removeEventListener('webglcontextrestored',restored);canvas.remove();
+  return()=>{disposed=true;redraw.current=()=>{};renderer.setAnimationLoop(null);observer.disconnect();intersection.disconnect();document.removeEventListener('visibilitychange',reset);window.removeEventListener('blur',reset);hoverMedia.removeEventListener('change',reset);canvas.removeEventListener('pointermove',move);canvas.removeEventListener('pointerdown',down);canvas.removeEventListener('pointerup',click);canvas.removeEventListener('pointercancel',cancel);canvas.removeEventListener('pointerleave',leave);canvas.removeEventListener('webglcontextlost',lost);canvas.removeEventListener('webglcontextrestored',restored);canvas.remove();
    collection?.dispose();
    const geometries=new Set<T.BufferGeometry>(),mats=new Set<T.Material>();scene.traverse(o=>{if(o instanceof T.Mesh){geometries.add(o.geometry);(Array.isArray(o.material)?o.material:[o.material]).forEach(m=>mats.add(m));}});geometries.forEach(g=>g.dispose());Object.values(materials).forEach(m=>m.dispose());mats.forEach(m=>{const map=(m as T.MeshStandardMaterial).map;map?.dispose();m.dispose();});environment.dispose();environmentScene.traverse(o=>{if(o instanceof T.Mesh){o.geometry.dispose();o.material.dispose();}});renderer.dispose();renderer.forceContextLoss();};
  },[props.mode,mounted]);

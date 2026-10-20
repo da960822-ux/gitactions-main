@@ -32,3 +32,10 @@
  .landing-world-host .folded-destination{display:flex}
 }
 .landing-world-host .post-hero-preview .ending .text-button{color:#ebc8b6}
+.room-discoveries{position:fixed;inset:0;z-index:4;pointer-events:none}
+.room-discoveries[hidden]{display:none}
+.room-discoveries button{position:fixed;pointer-events:auto;padding:0;border:0;background:none;color:#faeee6;cursor:pointer;touch-action:manipulation}
+.room-discoveries button span{position:absolute;bottom:0;left:50%;transform:translate(-50%,8px);opacity:0;pointer-events:none;white-space:nowrap;background:#20131fed;padding:7px 12px;font:14px/1.5 'DM Sans',sans-serif;transition:opacity 150ms,transform 150ms}
+.room-discoveries button:hover span,.room-discoveries button:focus-visible span{opacity:1;transform:translate(-50%,0)}
+.room-discoveries button:focus-visible{outline:2px solid #efbca8;outline-offset:4px}
+@media(prefers-reduced-motion:reduce){.room-discoveries button span{transition:none}}

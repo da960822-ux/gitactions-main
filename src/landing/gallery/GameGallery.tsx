@@ -41,5 +41,6 @@ export function GameGallery({language, selected: controlledSelected, onSelect}: 
       {gameCatalog.map((item, index) => <button type="button" key={item.id} aria-pressed={selected === item.id} data-game={item.id} onClick={() => setSelected(item.id)}><small>{String(index + 1).padStart(2, '0')}</small><span>{item.title[language]}</span><i aria-hidden="true">↗</i></button>)}
     </div>
     <p className="rd-preview-note"><Link className="rd-game-start rd-main-action" href={`/play?game=${selected}`} aria-label={`${game.title[language]} · ${language === 'ko' ? '같이 놀기' : 'Jugar juntos'}`}>{language === 'ko' ? '같이 놀기' : 'Jugar juntos'}<span aria-hidden="true">↗</span></Link></p>
+    {selected === 'catchmind' && <details className="rd-catchmind-help"><summary>{copy.moments[1].title}</summary><p>{copy.moments[1].body}</p><p>{copy.translationLimitNote}</p></details>}
   </section>;
 }

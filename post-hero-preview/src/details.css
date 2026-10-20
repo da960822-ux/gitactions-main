@@ -7,7 +7,7 @@
 .post-hero-preview .egg-button{min-height:44px;padding:9px 12px;border:1px solid #b9838580;border-radius:2px;color:#edd0c5;background:#30202a;font:inherit;font-size:13px;cursor:pointer;touch-action:manipulation;transition:transform 160ms var(--ease),background 160ms var(--ease)}
 .post-hero-preview .egg-button:active{transform:scale(.97)}
 .post-hero-preview .egg-button[aria-pressed=true]{border-color:#e5b99e;background:#693246;color:#fff1e4}
-.post-hero-preview .egg-primary{background:#a66572;border-color:#be7f87;color:#fff8e9}
+.post-hero-preview .egg-primary{background:#7b293d;border-color:#be7f87;color:#fff8e9}
 .post-hero-preview .egg-button:focus-visible,.post-hero-preview .rhythm-bar:focus-visible,.post-hero-preview .patch-piece:focus-visible{outline:2px solid #efbca8;outline-offset:3px}
 .post-hero-preview .egg-button:disabled{opacity:.45;cursor:default}
 .post-hero-preview .egg-actions,.post-hero-preview .domino-pickers,.post-hero-preview .pawn-pickers{display:flex;flex-wrap:wrap;align-items:center;gap:8px;margin-top:14px}
@@ -40,8 +40,7 @@
 .post-hero-preview .wax-sample.pressed{transform:scale(.9)}
 .post-hero-preview .pocket-fold{display:flex;justify-content:space-around;align-items:center;height:65px;margin:24px 0;border:1px solid #d6b3a5;background:#f4e3d5;color:#7b293d;transform-origin:bottom;transition:transform 220ms var(--ease)}
 .post-hero-preview .pocket-fold.open{transform:perspective(400px) rotateX(-25deg)}
-.post-hero-preview .loose-paper{width:85px;margin:20px auto;padding:20px;color:#7b293d;background:#f4e8d2;transition:transform 280ms var(--ease)}
-.post-hero-preview .loose-paper.lifted{transform:translateY(-22px) rotate(25deg)}
+.post-hero-preview .paper-gust{display:block;width:min(100%,360px);height:auto;margin:12px auto 20px;overflow:visible}
 .post-hero-preview .prism-preview{display:flex;align-items:center;justify-content:center;gap:10px;height:110px;margin:20px 0;background:#291c26;color:#e1bba9;font-size:32px}
 .post-hero-preview .prism-fragment{transition:transform 180ms var(--ease)}
 .post-hero-preview .prism-preview.angle-0 .prism-left{transform:translateX(-15px) rotate(-15deg)}.post-hero-preview .prism-preview.angle-0 .prism-right{transform:translateX(15px) rotate(15deg)}
@@ -69,10 +68,19 @@
 .post-hero-preview .book-spine{position:absolute;left:50%;top:0;bottom:0;width:1px;background:#c7b08f}.post-hero-preview .book-props{position:absolute;bottom:40px;font-size:24px;color:#7b293d;letter-spacing:10px}.post-hero-preview .pawn-flipbook small{position:absolute;bottom:10px;right:12px}
 .post-hero-preview .decor-stage{height:230px;display:flex;align-items:center;justify-content:center;flex-direction:column}.post-hero-preview .decor-stage img{width:130px;height:185px}.post-hero-preview .decor-stage span{border-top:2px solid #be9875;padding:7px 40px;font:24px Georgia,serif}
 /* The scene owns the object; only its real controls remain in the reading field. */
-.post-hero-preview .has-world :is(.domino-row,.balance-tray,.pocket-fold,.prism-preview,.pawn-shadow-stage,.pawn-rail,.joker-pair,.noble-theatre,.pawn-flipbook,.decor-stage,.wax-sample,.loose-paper,.phrase-card){display:none}
+.post-hero-preview .has-world :is(.domino-row,.balance-tray,.pocket-fold,.prism-preview,.pawn-shadow-stage,.pawn-rail,.joker-pair,.noble-theatre,.pawn-flipbook,.decor-stage,.wax-sample,.paper-gust,.phrase-card){display:none}
 .post-hero-preview .has-world .paper-bridge{background:none;min-height:90px;justify-content:flex-start}
 .post-hero-preview .has-world .asset-playground{margin-top:12px}
 .post-hero-preview .asset-motion-reduced *{transition:none!important}
 @media(hover:hover) and (pointer:fine){.post-hero-preview .egg-button:hover:not(:disabled){background:#6a3b4b}.post-hero-preview .related-objects .egg-button:hover{background:none;color:#fff0e5}}
 @media(max-width:760px){.post-hero-preview .details-eggs{padding-top:5px}.post-hero-preview .local-event-title h3{font-size:28px}.post-hero-preview .egg-button{font-size:12px;padding:9px 10px}.post-hero-preview .drawing-paper{max-width:500px}.post-hero-preview .context-workbench{padding:22px;background:#20151ef5;border:1px solid #9d6b735c}}
 @media(prefers-reduced-motion:reduce){.post-hero-preview .details-eggs *{transition:none!important}.post-hero-preview .egg-button:active{transform:none}}
+
+.post-hero-preview .drawing-surface.is-card{width:min(100%,520px);margin:22px auto;padding:26px 28px 20px;border:1px solid #c5a88e;border-radius:2px;background:#f4e8d2;color:#7b293d;box-shadow:0 12px 30px #09050b66}
+.post-hero-preview .drawing-surface.is-card .drawing-paper{margin:0;border:0;box-shadow:none;cursor:default;touch-action:auto}
+.post-hero-preview .drawing-card-signature{margin:16px 0 0;text-align:right;font:400 19px/1.5 'Gowun Batang',Georgia,serif;color:#7b293d}
+.post-hero-preview .drawing-card-note{margin-bottom:14px}
+.post-hero-preview .shutter-controls{display:none}
+.post-hero-preview .has-world .shutter-controls{display:flex}
+.post-hero-preview .object-options{margin-top:8px;color:#caabb5;font-size:12px}
+.post-hero-preview [data-active-local-event="L04"] .related-objects{padding-top:12px;border-top:1px solid #d7a18f33}

@@ -37,6 +37,8 @@ Never cut: validation at trust boundaries, error handling that prevents data los
 
 The user revoked automatic owner/model rotation after visual-review failures. Keep the current owner; use observed frames and measurements to identify bad prompt assumptions or missing constraints, revise the brief, and check the new result under the same conditions. A FAIL label alone is not corrective feedback. Design backward from the approved B arrival, inspect actual intermediate compositions before motion, and preserve approved assets and protected functionality. Historical rotation records are not current policy.
 
+For this landing, optional Easter eggs are discoveries attached to B-room objects and their contextual details; an independent toy table/list is not an Easter egg and must not enter the main flow. Keep Sol on visual/motion/assets and review, Luna on clear feature requirements/inventory, and root on shared camera/host integration. Give the same owner observed evidence and corrective prompt feedback; do not rotate after failure. Desktop evidence comes first and mobile is the final review. Avoid redundant same-path evidence/backups; verify and clean existing work in place.
+
 ## Game-development skills
 
 The user requested Awesome GameDev Agent Skills. The upstream collection (74 skills plus router) is installed under `.agents/skills/`, pinned in `.agents/gamedev-skills-manifest.json`; license, notice and provenance are in `.agents/gamedev-skills-source/`. Read `.agents/skills/router/SKILL.md` when selecting game-development guidance, then only the relevant skills and references. Preserve the upstream instructions verbatim.

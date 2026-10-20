@@ -53,6 +53,9 @@ export default function SharedEventsPanel({ language, onSharedStart, initialEven
   const [playbackStep, setPlaybackStep] = useState<number | null>(null);
   const [motionRoundId, setMotionRoundId] = useState<string | null>(null);
   const previous = useRef<SharedEventSnapshot | null>(null);
+  const mounted = useRef(false);
+  const languageRef = useRef(language);
+  languageRef.current = language;
   const onStart = useRef(onSharedStart);
   onStart.current = onSharedStart;
   const inviteInput = useRef<HTMLInputElement>(null);
@@ -60,6 +63,7 @@ export default function SharedEventsPanel({ language, onSharedStart, initialEven
   const lifecycle = useRef<Promise<unknown>>(Promise.resolve());
 
   const receive = useCallback((next: SharedEventSnapshot | null) => {
+    if (!mounted.current) return;
     if (!next) {
       previous.current = null;
       setSnapshot(null);
@@ -90,7 +94,26 @@ export default function SharedEventsPanel({ language, onSharedStart, initialEven
     setSnapshot(next);
   }, []);
 
-  useEffect(() => snapshot ? sharedEventsClient.subscribe(receive) : undefined, [snapshot?.sessionId, receive]);
+  useEffect(() => {
+    mounted.current = true;
+    return () => { mounted.current = false; };
+  }, []);
+  const contextualOptIn = Boolean(initialEventId && initiallyOpen);
+  useEffect(() => {
+    if (!contextualOptIn) return;
+    let active = true;
+    const unsubscribe = sharedEventsClient.subscribe(next => { if (active) receive(next); });
+    if (sharedEventsClient.getSnapshot()) {
+      void sharedEventsClient.resume()
+        .then(next => { if (active) receive(next); })
+        .catch(cause => { if (active && mounted.current) setError(messageForError(cause, languageRef.current)); });
+    }
+    return () => { active = false; unsubscribe(); };
+  }, [contextualOptIn, receive]);
+  useEffect(() => {
+    if (contextualOptIn || !snapshot) return;
+    return sharedEventsClient.subscribe(receive);
+  }, [contextualOptIn, snapshot?.sessionId, receive]);
   useEffect(() => {
     if (!motionRoundId) return;
     const timer = window.setTimeout(() => setMotionRoundId(null), 1200);
@@ -99,10 +122,11 @@ export default function SharedEventsPanel({ language, onSharedStart, initialEven
     return () => { clearTimeout(timer); document.removeEventListener('visibilitychange', settleWhenHidden); };
   }, [motionRoundId]);
   async function run(task: () => Promise<SharedEventSnapshot | void>) {
+    if (!mounted.current) return;
     setBusy(true); setError('');
     try { const next = await task(); if (next) receive(next); }
-    catch (cause) { setError(messageForError(cause, language)); }
-    finally { setBusy(false); }
+    catch (cause) { if (mounted.current) setError(messageForError(cause, language)); }
+    finally { if (mounted.current) setBusy(false); }
   }
 
   const createSession = () => run(() => sharedEventsClient.createSession());
@@ -110,8 +134,8 @@ export default function SharedEventsPanel({ language, onSharedStart, initialEven
   const send = (input: Parameters<typeof sharedEventsClient.send>[0]) => run(() => sharedEventsClient.send(input));
   async function copyInvite() {
     if (!snapshot) return;
-    try { await navigator.clipboard.writeText(snapshot.sessionId); setCopied(true); }
-    catch { inviteInput.current?.focus(); inviteInput.current?.select(); }
+    try { await navigator.clipboard.writeText(snapshot.sessionId); if (mounted.current) setCopied(true); }
+    catch { if (mounted.current) { inviteInput.current?.focus(); inviteInput.current?.select(); } }
   }
   const round = snapshot?.round;
   const seat = snapshot?.seat;
@@ -184,7 +208,7 @@ export default function SharedEventsPanel({ language, onSharedStart, initialEven
     lifecycle.current = lifecycle.current.then(async () => {
       if (isOpen) receive(await sharedEventsClient.resume());
       else await sharedEventsClient.pause();
-    }).catch(cause => setError(messageForError(cause, language)));
+    }).catch(cause => { if (mounted.current) setError(messageForError(cause, language)); });
   }
 
   function onPanelKeyDown(event: KeyboardEvent<HTMLDetailsElement>) {

@@ -7,6 +7,7 @@ import {GameGallery} from './gallery/GameGallery';
 import {createPostHeroComposition} from './PostHeroComposition';
 import {PostHeroPreview} from '../../post-hero-preview/src/PostHeroPreview';
 import type {PostHeroState} from '../../post-hero-preview/src/Scene';
+import type {LocalEventId} from '../../post-hero-preview/src/LocalEventRig';
 import {createLetterCollection} from '../../post-hero-preview/src/LetterCollection';
 import {cameraPose as heroCameraPose,openingCameraPose,postConnectionPose} from './cinematic/folded/poseSpaceV19';
 import {ROOM_WORLD,roomWorldVertex} from './cinematic/folded/approvedRoomGeometry';
@@ -22,6 +23,7 @@ const PORTRAIT_MASK='/images/approved-couple-room/character-opacity-mask.png';
 const ROOM_EYE=new THREE.Vector3(...roomWorldVertex(836,470.5,24));
 const ROOM_TARGET=new THREE.Vector3(ROOM_WORLD.x,ROOM_WORLD.y,ROOM_WORLD.z);
 const ROOM_BACK=ROOM_EYE.clone().sub(ROOM_TARGET);
+const ROOM_DISCOVERIES=[{id:'L04',x:1535,y:610,w:160,h:235,ko:'토끼에게 장난 걸기',es:'Tocar el conejito'},{id:'L09',x:109,y:713,w:126,h:168,ko:'우리 사진 가까이 보기',es:'Mirar nuestra foto'},{id:'L06',x:1320,y:656,w:190,h:145,ko:'노트북에 낙서해 보기',es:'Dejar un dibujito'}] as const;
 
 type Props={language:'ko'|'es';onLanguageChange:(language:'ko'|'es')=>void;selected:string;onSelect:(game:string)=>void};
 function hasSeenIntro(){try{return sessionStorage.getItem('folded-playhouse-seen')==='1';}catch{return false;}}
@@ -32,6 +34,8 @@ export function LandingWorldHost({language,onLanguageChange,selected,onSelect}:P
  const host=useRef<HTMLDivElement>(null),canvas=useRef<HTMLCanvasElement>(null);
  const first=useRef(!matchMedia('(prefers-reduced-motion: reduce)').matches&&!hasSeenIntro()&&!location.hash);
  const [ready,setReady]=useState(false),[postReady,setPostReady]=useState(false),[failed,setFailed]=useState(false),[introActive,setIntroActive]=useState(first.current);
+ const [roomActive,setRoomActive]=useState(false),roomVisible=useRef(false),discoveryNonce=useRef(0);
+ const [roomDiscovery,setRoomDiscovery]=useState<{id:LocalEventId;trigger:HTMLButtonElement;nonce:number}>();
  const selection=useRef({selected,onSelect});selection.current={selected,onSelect};
  const skip=useRef<()=>void>(()=>{}),dirty=useRef(true);
  const postState=useRef<PostHeroState>({progress:0,opening:0,reducedMotion:matchMedia('(prefers-reduced-motion: reduce)').matches,effect:{name:'none',value:0,nonce:0},portraitSrc:PORTRAIT,portraitMaskSrc:PORTRAIT_MASK});
@@ -52,6 +56,17 @@ export function LandingWorldHost({language,onLanguageChange,selected,onSelect}:P
   let trigger:ScrollTrigger|undefined,heroEnd=innerHeight*2.6,previousPost=false,postNeedsFrame=false;
   let lastRenderSignature='';
   const pointer={x:0,y:0};
+  const projectRoomDiscoveries=(active:boolean)=>{
+   if(roomVisible.current!==active){roomVisible.current=active;setRoomActive(active);}
+   if(!active||!world)return;
+   const bounds=screen.getBoundingClientRect();
+   for(const object of ROOM_DISCOVERIES){
+    const button=root.querySelector<HTMLElement>(`[data-room-object="${object.id}"]`);if(!button)continue;
+    const corners=[[-1,-1],[1,1]].map(([x,y])=>new THREE.Vector3(...roomWorldVertex(object.x+x*object.w/2,object.y+y*object.h/2,0)).project(world!.camera));
+    const left=bounds.left+(corners[0].x+1)*bounds.width/2,top=bounds.top+(1-corners[0].y)*bounds.height/2;
+    Object.assign(button.style,{left:`${left}px`,top:`${top}px`,width:`${(corners[1].x-corners[0].x)*bounds.width/2}px`,height:`${(corners[0].y-corners[1].y)*bounds.height/2}px`});
+   }
+  };
   const cameraPosition=new THREE.Vector3(),cameraTarget=new THREE.Vector3(),roomEye=ROOM_EYE.clone(),connectionBackground=new THREE.Color();
   let heroBackdrop:THREE.Scene['background']|undefined;
   const roomBackground=new THREE.Color('#21151d');
@@ -90,7 +105,7 @@ export function LandingWorldHost({language,onLanguageChange,selected,onSelect}:P
    if(event.pointerType==='touch'||media.matches)return;
    pointer.x=Math.max(-1,Math.min(1,event.clientX/innerWidth*2-1));pointer.y=Math.max(-1,Math.min(1,event.clientY/innerHeight*2-1));
   };
-  const contextLost=(event:Event)=>{event.preventDefault();lost=true;setReady(false);setPostReady(false);endIntro();};
+  const contextLost=(event:Event)=>{event.preventDefault();lost=true;projectRoomDiscoveries(false);setReady(false);setPostReady(false);endIntro();};
   const contextRestored=()=>{lost=false;lastRenderSignature='';resize();setReady(true);setPostReady(true);};
   const visibility=()=>{last=0;dirty.current=true;};
   const mm=gsap.matchMedia();
@@ -133,13 +148,15 @@ export function LandingWorldHost({language,onLanguageChange,selected,onSelect}:P
    root.dataset.bridge=bridge.toFixed(4);
    const signature=[pose.progress,pose.entrance,pose.pointerX,pose.pointerY,bridge,postState.current.progress,postState.current.opening,galleryWeight,selection.current.selected,scrollY,width,height].map(value=>typeof value==='number'?value.toFixed(4):value).join(':');
    const needsFrame=dirty.current||signature!==lastRenderSignature||postNeedsFrame||(!media.matches&&postState.current.effect.value!==0);
-   if(!needsFrame){if(!postActive){world.render(pose);updateEditorial(Number(screen.dataset.progress??pose.progress),Number(screen.dataset.entrance??pose.entrance));}return;}lastRenderSignature=signature;dirty.current=false;
+   if(!needsFrame){if(!postActive){world.render(pose);updateEditorial(Number(screen.dataset.progress??pose.progress),Number(screen.dataset.entrance??pose.entrance));projectRoomDiscoveries(Number(screen.dataset.progress??0)>.94);}return;}lastRenderSignature=signature;dirty.current=false;
    if(!postActive){
     if(previousPost){world.setPostActive(false);world.camera.clearViewOffset();lastRenderSignature='';}
     previousPost=false;if(post)post.root.visible=false;if(composition)composition.root.visible=false;
     world.updateRoomExit(0);world.updateRoomDesk(0);world.render(pose);
     updateEditorial(Number(screen.dataset.progress??pose.progress),Number(screen.dataset.entrance??pose.entrance));
+    projectRoomDiscoveries(Number(screen.dataset.progress??0)>.94);
    }else if(post&&composition){
+    projectRoomDiscoveries(false);
     if(!previousPost){world.render({...pose,progress:1,entrance:1});if(Number(screen.dataset.progress??0)<.999||Number(screen.dataset.entrance??0)<.999){dirty.current=true;return;}world.setPostActive(true);}
     previousPost=true;
     const progress=postState.current.progress;
@@ -181,6 +198,7 @@ export function LandingWorldHost({language,onLanguageChange,selected,onSelect}:P
  return <div ref={host} className={`landing-world-host${ready?' is-world-ready':''}${failed?' world-unavailable':''}`}>
   <canvas ref={canvas} className="landing-world-canvas" role="img" aria-label={language==='ko'?'우주에서 게임방, 이야기와 게임 조각, 편지로 이어지는 우리 둘의 공간':'Nuestro espacio, desde el universo hasta la sala de juegos, las piezas y la carta'}/>
   <AcrossHero language={language} ready={ready} introActive={introActive} onSkip={()=>skip.current()}/>
-  <PostHeroPreview embedded language={language} onLanguageChange={onLanguageChange} portraitSrc={PORTRAIT} portraitMaskSrc={PORTRAIT_MASK} renderScene={false} externalSceneReady={postReady} onSceneState={receivePostState} onRegisterFrame={registerFrame} playHref={`/play?game=${selected}`} gallery={<GameGallery language={language} selected={selected} onSelect={onSelect}/>}/>
+  <div className="room-discoveries" hidden={!roomActive}>{ROOM_DISCOVERIES.map(object=><button key={object.id} type="button" data-room-object={object.id} aria-label={language==='ko'?object.ko:object.es} onClick={event=>setRoomDiscovery({id:object.id,trigger:event.currentTarget,nonce:++discoveryNonce.current})}><span>{language==='ko'?object.ko:object.es}</span></button>)}</div>
+  <PostHeroPreview embedded language={language} onLanguageChange={onLanguageChange} portraitSrc={PORTRAIT} portraitMaskSrc={PORTRAIT_MASK} renderScene={false} externalSceneReady={postReady} onSceneState={receivePostState} onRegisterFrame={registerFrame} roomDiscovery={roomDiscovery} roomActive={roomActive} playHref={`/play?game=${selected}`} gallery={<GameGallery language={language} selected={selected} onSelect={onSelect}/>}/>
  </div>;
 }

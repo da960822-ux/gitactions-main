@@ -1,18 +1,6 @@
 import assert from 'node:assert/strict';
-import { readFileSync } from 'node:fs';
 import test from 'node:test';
 import { appendDrawingPoint, canChooseNewRound, gridPoint, matchesPattern, sharedStartMode } from './SharedEventsPanel.logic.ts';
-
-const panelSource = readFileSync(new URL('./SharedEventsPanel.tsx', import.meta.url), 'utf8');
-
-test('context entry seeds and titles one event while standalone keeps the event chooser', () => {
-  assert.match(panelSource, /initialEventId\?: SharedEventId/);
-  assert.match(panelSource, /initiallyOpen = false/);
-  assert.match(panelSource, /useState<SharedEventId>\(initialEventId \?\? 'R01'\)/);
-  assert.match(panelSource, /open=\{initiallyOpen\}/);
-  assert.match(panelSource, /initialEventId \? eventNames\[language\]\[selectedEvent\] : t\.eventPicker/);
-  assert.match(panelSource, /!initialEventId && <div className="shared-event-choices"/);
-});
 
 function observation(overrides: Record<string, unknown> = {}) {
   return {

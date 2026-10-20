@@ -5,20 +5,22 @@ import { paperTransform, blendPaperCorners } from './paperProjection';
 import Details from './Details';
 import SharedEventsPanel from './SharedEventsPanel';
 import type {SharedEventId,SharedEventRound} from '../../src/core/sharedEventsState';
-import {restoreLocalEventState,localEventIds,type LocalEventId,type LocalEventState} from './LocalEventRig';
+import {restoreLocalEventState,type LocalEventId,type LocalEventState} from './LocalEventRig';
 import { clamp01, LETTER_RANGE, createEnvelopeState, updateEnvelopeFromScroll, toggleEnvelope, reopenEnvelope, envelopeTarget } from './interaction';
 
 const StandalonePostHeroScene=lazy(()=>import('./Scene').then(module=>({default:module.PostHeroScene})));
 
 type Language = 'ko' | 'es';
 const story = {
- ko: { title:<>멀리 있어도,<br/>우리 둘이 같이.</>, body:'Baby, 너랑 같이 게임하려고 만들었어.', next:'조금 내려봐', distance:'한국과 도미니카.', distanceBody:'Baby, 도미니카에서는 한국 리듬게임에 접속이 안 됐잖아.', table:'Baby, 하나 눌러봐.', tableBody:'이것도 같이 놀 수 있게 넣었어.', letter:'Baby, 이번엔 이거 열어봐.', letterBody:'이건 네가 읽어줬으면 해서.', open:'편지 열기', close:'편지 접기', ending:<>자, 이제 같이 놀자,<br/><em>Baby.</em></>, play:'게임 고르기', ideas:'Mami의 아이디어', reading:'편지 읽기', back:'처음으로', sealed:'봉투가 닫혀 있어요.', },
- es: { title:<>Aunque estemos lejos,<br/>juguemos juntos.</>, body:'Baby, hice esto para que juguemos juntos.', next:'Baja un poquito', distance:'Corea y República Dominicana.', distanceBody:'Baby, desde República Dominicana no podías entrar al juego de ritmo de Corea.', table:'Baby, toca uno.', tableBody:'También puse estas cositas para jugar.', letter:'Baby, ahora abre esto.', letterBody:'Esto sí quería que lo leyeras.', open:'Abrir la carta', close:'Doblar la carta', ending:<>Ahora sí, vamos a jugar,<br/><em>baby.</em></>, play:'Elegir un juego', ideas:'Ideas de Mami', reading:'Leer la carta', back:'Volver arriba', sealed:'El sobre está cerrado.', }
+ ko: { title:<>멀리 있어도,<br/>우리 둘이 같이.</>, body:'Baby, 너랑 같이 게임하려고 만들었어.', next:'조금 내려봐', distance:'한국과 도미니카.', distanceBody:'Baby, 도미니카에서는 한국 리듬게임에 접속이 안 됐잖아.', letter:'Baby, 이번엔 이거 열어봐.', letterBody:'이건 네가 읽어줬으면 해서.', open:'편지 열기', close:'편지 접기', ending:<>자, 이제 같이 놀자,<br/><em>Baby.</em></>, play:'게임 고르기', ideas:'Mami의 아이디어', reading:'편지 읽기', back:'처음으로', sealed:'봉투가 닫혀 있어요.', },
+ es: { title:<>Aunque estemos lejos,<br/>juguemos juntos.</>, body:'Baby, hice esto para que juguemos juntos.', next:'Baja un poquito', distance:'Corea y República Dominicana.', distanceBody:'Baby, desde República Dominicana no podías entrar al juego de ritmo de Corea.', letter:'Baby, ahora abre esto.', letterBody:'Esto sí quería que lo leyeras.', open:'Abrir la carta', close:'Doblar la carta', ending:<>Ahora sí, vamos a jugar,<br/><em>baby.</em></>, play:'Elegir un juego', ideas:'Ideas de Mami', reading:'Leer la carta', back:'Volver arriba', sealed:'El sobre está cerrado.', }
 };
 function storedLanguage():Language { try { return localStorage.getItem('dos-language')==='es'?'es':'ko'; } catch { return 'ko'; } }
 
-type PreviewProps = { embedded?: boolean; language?: Language; onLanguageChange?: (language: Language) => void; portraitSrc?: string; portraitMaskSrc?: string; gallery?: ReactNode; playHref?: string; renderScene?: boolean; onSceneState?: (state:PostHeroState)=>void; externalSceneReady?: boolean; onRegisterFrame?: (tick:((now:number)=>void)|null)=>void };
-export function PostHeroPreview({embedded=false,language:externalLanguage,onLanguageChange,portraitSrc='/images/yeonseok-lisbeth-cutout.webp',portraitMaskSrc,gallery,playHref,renderScene=true,onSceneState,externalSceneReady=false,onRegisterFrame}:PreviewProps = {}) {
+type DetailRegion='room'|'envelope'|'ending';
+type RoomDiscovery={id:LocalEventId;trigger:HTMLButtonElement;nonce:number};
+type PreviewProps = { roomDiscovery?:RoomDiscovery;roomActive?:boolean; embedded?: boolean; language?: Language; onLanguageChange?: (language: Language) => void; portraitSrc?: string; portraitMaskSrc?: string; gallery?: ReactNode; playHref?: string; renderScene?: boolean; onSceneState?: (state:PostHeroState)=>void; externalSceneReady?: boolean; onRegisterFrame?: (tick:((now:number)=>void)|null)=>void };
+export function PostHeroPreview({embedded=false,language:externalLanguage,onLanguageChange,portraitSrc='/images/yeonseok-lisbeth-cutout.webp',portraitMaskSrc,gallery,playHref,renderScene=true,onSceneState,externalSceneReady=false,onRegisterFrame,roomDiscovery,roomActive}:PreviewProps = {}) {
  const [localLanguage,setLocalLanguage]=useState<Language>(storedLanguage);
  const language=externalLanguage??localLanguage;
  const setLanguage=(value:Language)=>{setLocalLanguage(value);onLanguageChange?.(value);};
@@ -26,8 +28,8 @@ export function PostHeroPreview({embedded=false,language:externalLanguage,onLang
  const [reducedMotion,setReducedMotion]=useState(()=>matchMedia('(prefers-reduced-motion: reduce)').matches);
  const [progress,setProgress]=useState(0);
  const [opening,setOpening]=useState(0);
- const [detailRegion,setDetailRegion]=useState<'distance'|'table'|'envelope'|'ending'|null>(null);
- const [sharedEvent,setSharedEvent]=useState<{id:SharedEventId;region:'distance'|'table'|'envelope'|'ending'}|null>(null);
+ const [detailRegion,setDetailRegion]=useState<DetailRegion|null>(null);
+ const [sharedEvent,setSharedEvent]=useState<{id:SharedEventId;region:DetailRegion}|null>(null);
  const [roseHintOpen,setRoseHintOpen]=useState(false);
  const roseHintId=useId();
  const [sceneReady,setSceneReady]=useState(false);
@@ -40,7 +42,8 @@ export function PostHeroPreview({embedded=false,language:externalLanguage,onLang
  const pendingScroll=useRef<(()=>void)|null>(null);
  const q=useRef(0), p=useRef(0), target=useRef(0), reduced=useRef(reducedMotion);
  const host=useRef<HTMLElement>(null);
- const opener=useRef<HTMLButtonElement>(null),detailsOpener=useRef<HTMLButtonElement|null>(null),sharedOpener=useRef<HTMLButtonElement|null>(null);
+ const opener=useRef<HTMLButtonElement>(null),detailsOpener=useRef<HTMLButtonElement|null>(null),sharedOpener=useRef<HTMLButtonElement|null>(null),sharedClose=useRef<HTMLButtonElement>(null);
+ const roomDialog=useRef<HTMLDialogElement>(null),lastRoomNonce=useRef<number|undefined>(undefined);
  const paper=useRef<HTMLElement>(null),paperSlot=useRef<HTMLDivElement>(null);
  const trackPaper=useCallback((pose:PaperPose)=>{
    const article=paper.current,slot=paperSlot.current;if(!article||!slot)return;
@@ -114,16 +117,29 @@ export function PostHeroPreview({embedded=false,language:externalLanguage,onLang
  },[refreshTarget,roseHintOpen,detailRegion,sharedEvent]);
  const readLetter=(event?:React.MouseEvent)=>{event?.preventDefault();control.current=reopenEnvelope(control.current);q.current=1;setOpening(1);refreshTarget();document.getElementById('papi-letter')?.scrollIntoView({behavior:'instant',block:'start'});};
  useEffect(()=>{const onHash=()=>{if(location.hash==='#papi-letter')readLetter();};onHash();addEventListener('hashchange',onHash);return()=>removeEventListener('hashchange',onHash);},[]);
- const closeDetails=useCallback((restoreFocus=true)=>{setDetailRegion(null);setLocalEvent(old=>({...old,active:null,rhythmSignal:null,waxPressed:false}));if(restoreFocus)detailsOpener.current?.focus({preventScroll:true});},[]);
- const openDetails=(id:LocalEventId,region:NonNullable<typeof detailRegion>,trigger:HTMLButtonElement)=>{detailsOpener.current=trigger;setSharedEvent(null);setDetailRegion(region);setLocalEvent(old=>({...old,active:id,rhythmSignal:null,waxPressed:false,sideView:false}));};
+ const closeDetails=useCallback((restoreFocus=true)=>{setDetailRegion(null);setLocalEvent(old=>({...old,active:null,rhythmSignal:null,waxPressed:false}));if(restoreFocus)requestAnimationFrame(()=>detailsOpener.current?.focus({preventScroll:true}));},[]);
+
  const openShared=(id:SharedEventId,region:NonNullable<typeof detailRegion>,trigger:HTMLButtonElement)=>{sharedOpener.current=trigger;setSharedEvent({id,region});};
  const closeShared=()=>{setSharedEvent(null);requestAnimationFrame(()=>sharedOpener.current?.focus({preventScroll:true}));};
+ useEffect(()=>{if(sharedEvent)sharedClose.current?.focus({preventScroll:true});},[sharedEvent]);
+ useEffect(()=>{
+  if(!roomDiscovery||lastRoomNonce.current===roomDiscovery.nonce)return;
+  lastRoomNonce.current=roomDiscovery.nonce;detailsOpener.current=roomDiscovery.trigger;setSharedEvent(null);setDetailRegion('room');
+  setLocalEvent(old=>({...old,active:roomDiscovery.id,rhythmSignal:null,waxPressed:false,sideView:false}));
+ },[roomDiscovery]);
+ useEffect(()=>{if(roomActive===false&&(detailRegion==='room'||sharedEvent?.region==='room')){setSharedEvent(null);closeDetails(false);}},[roomActive,detailRegion,sharedEvent,closeDetails]);
+ const roomIsOpen=detailRegion==='room'||sharedEvent?.region==='room';
+ useEffect(()=>{
+  const dialog=roomDialog.current;if(!dialog)return;
+  if(roomIsOpen&&!dialog.open){dialog.showModal();dialog.querySelector<HTMLElement>('#details-title')?.focus({preventScroll:true});}
+  else if(!roomIsOpen&&dialog.open)dialog.close();
+ },[roomIsOpen]);
  const sceneVisible=!renderScene&&externalSceneReady;
  const workbench=(region:NonNullable<typeof detailRegion>)=>(detailRegion===region||sharedEvent?.region===region)&&<div className="context-workbench" id={`details-${region}`} data-detail-region={region}>
-  {detailRegion===region&&<div hidden={Boolean(sharedEvent)}><Details language={language} reducedMotion={reducedMotion} state={localEvent} setState={setLocalEvent} suspended={Boolean(sharedEvent)} onClose={closeDetails} sceneVisible={sceneVisible} onEffect={setNewEffect} onRegisterFrame={registerLocalTick} onSharedEvent={(id,trigger)=>openShared(id,region,trigger)}/></div>}
-  {sharedEvent?.region===region&&<div className="shared-context" onKeyDownCapture={event=>{if(event.key==='Escape'){event.preventDefault();event.stopPropagation();closeShared();}}}><button className="text-button shared-context-close" onClick={closeShared}>{ko?'혼자 계속하기':'Seguir por mi cuenta'} <span aria-hidden="true">×</span></button><SharedEventsPanel key={sharedEvent.id} language={language} initialEventId={sharedEvent.id} initiallyOpen onSharedStart={handleSharedEventStart}/></div>}
+  {detailRegion===region&&<div hidden={Boolean(sharedEvent)}><Details language={language} reducedMotion={reducedMotion} state={localEvent} setState={setLocalEvent} suspended={Boolean(sharedEvent)} onClose={closeDetails} sceneVisible={region!=='room'&&sceneVisible} onEffect={setNewEffect} onRegisterFrame={registerLocalTick} onSharedEvent={(id,trigger)=>openShared(id,region,trigger)}/></div>}
+  {sharedEvent?.region===region&&<div className="shared-context" onKeyDownCapture={event=>{if(event.key==='Escape'){event.preventDefault();event.stopPropagation();closeShared();}}}><button ref={sharedClose} className="text-button shared-context-close" onClick={closeShared}>{ko?'혼자 계속하기':'Seguir por mi cuenta'} <span aria-hidden="true">×</span></button><SharedEventsPanel key={sharedEvent.id} language={language} initialEventId={sharedEvent.id} initiallyOpen onSharedStart={handleSharedEventStart}/></div>}
  </div>;
- const discover=(id:LocalEventId,label:string,region:NonNullable<typeof detailRegion>,className='object-discovery')=><button key={id} className={className} data-local-event={id} aria-expanded={detailRegion===region&&localEvent.active===id} aria-controls={`details-${region}`} onClick={event=>openDetails(id,region,event.currentTarget)}>{label}<span aria-hidden="true">↗</span></button>;
+
  const letterVisible=opening>.9;
  const wantsLetterOpen=target.current>.5;
  const letterPublic=control.current.manual!==false||letterVisible;
@@ -139,27 +155,14 @@ export function PostHeroPreview({embedded=false,language:externalLanguage,onLang
    <nav aria-label={language==='ko'?'메뉴':'Navegación'}><a href="#papi-letter" onClick={readLetter}>{text.reading}</a><button className="language-toggle" onClick={()=>setLanguage(language==='ko'?'es':'ko')} aria-label={language==='ko'?'Cambiar a español':'한국어로 바꾸기'}>{language==='ko'?'KO / ES':'ES / KO'}</button></nav>
   </header>}
   {!embedded&&<section id="intro" className="chapter intro" data-pose="0"><div className="chapter-copy"><h1>{text.title}</h1><p>{text.body}</p><div className="intro-actions"><a className="primary-button" href="/#games">{text.play}</a><a className="text-button" href="#distance">{text.next} <span aria-hidden="true">↓</span></a></div></div></section>}
-  <section id="distance" className={`chapter distance ${detailRegion==='distance'?'has-detail':''}`} data-pose={embedded?"0":".10"} aria-labelledby="distance-title">
-   <div className="chapter-copy" hidden={detailRegion==='distance'}><h2 id="distance-title">{text.distance}</h2><p>{text.distanceBody}</p><p className="motivation-answer">{ko?'그래서 멀리 있어도 우리 둘이 같이 놀 곳을 만들고 싶었어.':'Por eso quería hacer un lugar para que juguemos juntos aunque estemos lejos.'}</p><a className="text-button" href="#games">{text.play}<span aria-hidden="true">↓</span></a></div>
-   <div className="country-labels"><span><img src="/images/marble/flags/kr.svg" alt=""/>한국 · Corea</span><span className="country-gap" aria-hidden="true"/><span><img src="/images/marble/flags/do.svg" alt=""/>República Dominicana</span></div>
-   <div className="distance-discoveries">{discover('L16',ko?'같이 놀자 / Vamos a jugar':'Vamos a jugar / 같이 놀자','distance','phrase-tab object-discovery')}{discover('L03',ko?'접힌 방 열어보기':'Abrir la sala de papel','distance')}{discover('L13',ko?'종이 길 이어보기':'Conectar el camino','distance')}</div>
-   {workbench('distance')}
-  </section>
-  <section id="toy-table" className={`chapter play-table ${detailRegion==='table'?'has-detail':''}`} data-pose=".30" aria-labelledby="toy-title">
-   <div className="chapter-copy" hidden={detailRegion==='table'}><h2 id="toy-title">{text.table}</h2><p>{text.tableBody}</p><a className="text-button" href="#games">{text.play}<span aria-hidden="true">↓</span></a></div>
-   <div className="toy-affordances" aria-label={ko?'테이블 위 물건':'Objetos de la mesa'}>{discover('L01',ko?'도미노 넘어뜨리기':'Empujar el dominó','table','toy-affordance domino-affordance')}{discover('L04',ko?'토끼의 빛 움직이기':'Mover la luz del conejito','table','toy-affordance light-affordance')}{discover('L06',ko?'이 종이에 그리기':'Dibujar en este papel','table','toy-affordance drawing-affordance')}</div>
-   <div className="table-discoveries">{discover('L09',ko?'사진 셔터':'Ventanas de fotos','table')}{discover('L10',ko?'접힌 카드':'Carta de papel','table')}{discover('L12',ko?'작은 넘김책':'Librito animado','table')}</div>
-   <details className="other-objects"><summary>{ko?'다른 작은 물건 보기':'Ver otros detallitos'}</summary><div className="object-groups">{[
-    {label:ko?'종이':'Papel',ids:['L03','L06','L10','L12','L13','L16']},
-    {label:ko?'타일':'Fichas',ids:['L01','L02','L05']},
-    {label:ko?'빛과 바람':'Luz y aire',ids:['L04','L07','L11','L14']},
-    {label:ko?'말과 장식':'Figuras y detalles',ids:['L08','L09','L15']}
-   ].map(group=><details key={group.label} name="small-object-group"><summary>{group.label}</summary><div>{group.ids.map(id=>discover(id as LocalEventId,(ko?['도미노 연쇄','균형 잡기','접힌 놀이방','그림자 놀이','보석 렌즈','그려서 카드 만들기','리듬 다리','한 바퀴','사진 셔터','종이 팝업','도장 찍기','작은 넘김책','종이 통로','바람 보내기','테이블 장식','양면 초대말']:['Cadena de dominós','Equilibrar','Sala de papel','Sombras','Lente de gema','Dibujar una tarjeta','Puente de ritmo','Dar una vuelta','Fotos','Papel desplegable','Poner un sello','Librito','Camino de papel','Soplar','Decorar','Invitación de dos caras'])[localEventIds.indexOf(id as LocalEventId)],'table'))}</div></details>)}</div></details>
-   {workbench('table')}
+  <section id="distance" className="chapter distance" data-pose={embedded?"0":".10"} aria-labelledby="distance-title">
+   <div className="chapter-copy"><h2 id="distance-title">{text.distance}</h2><p>{text.distanceBody}</p><p className="motivation-answer">{ko?'그래서 멀리 있어도 우리 둘이 같이 놀 곳을 만들고 싶었어.':'Por eso quería hacer un lugar para que juguemos juntos aunque estemos lejos.'}</p><a className="text-button" href="#games">{text.play}<span aria-hidden="true">↓</span></a></div>
+   <div className={`country-labels ${sceneVisible?'world-country-labels':''}`}><span><img src="/images/marble/flags/kr.svg" alt=""/>한국 · Corea</span><span className="country-gap" aria-hidden="true"/><span><img src="/images/marble/flags/do.svg" alt=""/>República Dominicana</span></div>
+   <span id="toy-table" className="story-internal-anchor" data-pose=".30" aria-hidden="true"/>
    <span className="gallery-arrival" data-pose=".45" aria-hidden="true"/>
   </section>
   {gallery}
-  <section id="letter-scene" className={`chapter letter-invitation ${detailRegion==='envelope'||sharedEvent?.region==='envelope'?'has-detail':''}`} data-pose=".62" aria-labelledby="envelope-title"><div className="chapter-copy" hidden={detailRegion==='envelope'||sharedEvent?.region==='envelope'}><h2 id="envelope-title">{text.letter}</h2><p>{text.letterBody}</p><div className="invitation-actions"><button ref={opener} className="primary-button" aria-label={wantsLetterOpen?text.close:text.open} aria-expanded={letterPublic} aria-controls="moment-letter-copy" onClick={openLetter}>{wantsLetterOpen?text.close:text.open}<span aria-hidden="true">{wantsLetterOpen?'−':'↗'}</span></button><a href="#papi-letter" className="text-button" onClick={readLetter}>{text.reading}</a></div><button className="text-button together-choice" data-shared-event="R01" onClick={event=>openShared('R01','envelope',event.currentTarget)}>{ko?'같이 열어볼까?':'¿La abrimos juntos?'}</button></div>{progress<.84&&<div className="envelope-discoveries">{discover('L11',ko?'작은 밀랍에 도장 찍기':'Poner un sello en la cera','envelope')}{discover('L12',ko?'옆에 있는 넘김책':'El librito de al lado','envelope')}</div>}{workbench('envelope')}</section>
+  <section id="letter-scene" className={`chapter letter-invitation ${detailRegion==='envelope'||sharedEvent?.region==='envelope'?'has-detail':''}`} data-pose=".62" aria-labelledby="envelope-title"><div className="chapter-copy" hidden={detailRegion==='envelope'||sharedEvent?.region==='envelope'}><h2 id="envelope-title">{text.letter}</h2><p>{text.letterBody}</p><div className="invitation-actions"><button ref={opener} className="primary-button" aria-label={wantsLetterOpen?text.close:text.open} aria-expanded={letterPublic} aria-controls="moment-letter-copy" onClick={openLetter}>{wantsLetterOpen?text.close:text.open}<span aria-hidden="true">{wantsLetterOpen?'−':'↗'}</span></button><a href="#papi-letter" className="text-button" onClick={readLetter}>{text.reading}</a></div><button className="text-button together-choice" data-shared-event="R01" onClick={event=>openShared('R01','envelope',event.currentTarget)}>{ko?'같이 열어볼까?':'¿La abrimos juntos?'}</button></div>{workbench('envelope')}</section>
   <section id="papi-letter" className={`letter-section ${letterVisible?'is-open':'is-folded'} ${progress>=.86&&letterVisible?'reading-surround':''}`} data-pose=".86" aria-labelledby="letter-title">
    {progress>=.86&&letterVisible&&<div className="letter-reading-art"><button type="button" className="reading-roses reading-roses-left" aria-label={ko?'장미에 숨은 뜻 보기':'Ver qué significan las rosas'} aria-expanded={roseHintOpen} aria-controls={roseHintId} onClick={()=>setRoseHintOpen(open=>!open)}/><button type="button" className="reading-roses reading-roses-right" aria-label={ko?'장미에 숨은 뜻 보기':'Ver qué significan las rosas'} aria-expanded={roseHintOpen} aria-controls={roseHintId} onClick={()=>setRoseHintOpen(open=>!open)}/></div>}
    <div className="letter-section-label"><button className="text-button" aria-label={letterVisible?text.close:text.open} onClick={letterVisible?toggleLetter:()=>{control.current=reopenEnvelope(control.current);refreshTarget();}} aria-expanded={letterPublic} aria-controls="moment-letter-copy">{letterVisible?text.close:text.open} <span>{letterVisible?'−':'+'}</span></button></div>
@@ -170,7 +173,10 @@ export function PostHeroPreview({embedded=false,language:externalLanguage,onLang
    {letterVisible&&<div className="letter-bottom-controls"><button className="text-button" onClick={()=>{opener.current?.focus({preventScroll:true});toggleLetter();}}>{text.close} <span>−</span></button></div>}
    {!letterVisible&&<div className="closed-note"><span>♡</span><p>{text.sealed}</p><button className="text-button" onClick={()=>{control.current=reopenEnvelope(control.current);refreshTarget();}}>{text.open} ↗</button></div>}
   </section>
-  <section className={`chapter ending ${detailRegion==='ending'?'has-detail':''}`} data-pose="1"><div className="ending-copy" hidden={detailRegion==='ending'}><h2>{text.ending}</h2>{localEvent.drawingFlipped&&localEvent.strokes.length>0&&<p className="action-recall">{ko?'네가 그린 카드도 여기 두었어.':'Tu tarjeta también se queda aquí.'}</p>}<div className="ending-actions"><a className="primary-button" href={playHref??'/#games'}>{playHref?copy.primaryAction:text.play}<span aria-hidden="true">↗</span></a><a className="text-button" href="/feedback">{text.ideas}</a></div><div className="ending-object-choices">{discover('L15',ko?'장식 여기 두기':'Dejar un detalle aquí','ending')}{discover('L07',ko?'리듬 한 번 더':'Otro ritmo','ending')}</div><p className="ending-date">2025.04.04 — Yeonseok ♡ Lisbeth</p></div>{workbench('ending')}<footer><span>Para ti, Lisbeth ♡</span><a href={embedded?'#home':'#intro'}>{text.back} ↑</a></footer></section>
+  <section className={`chapter ending ${detailRegion==='ending'?'has-detail':''}`} data-pose="1"><div className="ending-copy" hidden={detailRegion==='ending'}><h2>{text.ending}</h2>{localEvent.drawingFlipped&&localEvent.strokes.length>0&&<p className="action-recall">{ko?'네가 그린 카드도 여기 두었어.':'Tu tarjeta también se queda aquí.'}</p>}<div className="ending-actions"><a className="primary-button" href={playHref??'/#games'}>{playHref?copy.primaryAction:text.play}<span aria-hidden="true">↗</span></a><a className="text-button" href="/feedback">{text.ideas}</a></div><p className="ending-date">2025.04.04 — Yeonseok ♡ Lisbeth</p></div>{workbench('ending')}<footer><span>Para ti, Lisbeth ♡</span><a href={embedded?'#home':'#intro'}>{text.back} ↑</a></footer></section>
 
+  <dialog ref={roomDialog} className="room-discovery-dialog" aria-label={ko?'선택한 물건':'Objeto seleccionado'} onCancel={event=>{event.preventDefault();if(sharedEvent)closeShared();else closeDetails();}}>
+   {workbench('room')}
+  </dialog>
  </Container>;
 }

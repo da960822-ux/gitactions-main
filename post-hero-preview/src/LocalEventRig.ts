@@ -70,6 +70,18 @@ export function restoreLocalEventState(language:'ko'|'es'='ko',storage?:Pick<Sto
 }
 const smooth=(value:number)=>{const v=THREE.MathUtils.clamp(value,0,1);return v*v*(3-2*v);};
 
+// Radial falloff adapted from Ruixen UI's MIT Ripple Distortion; see third-party-notices/ruixen-ui-MIT.txt.
+export function paperGustHeight(u:number,v:number,phase:number,staticPose=false):number {
+  if(!Number.isFinite(u)||!Number.isFinite(v)||!Number.isFinite(phase))return 0;
+  const x=THREE.MathUtils.clamp(u,-1,1),z=THREE.MathUtils.clamp(v,-1,1),t=THREE.MathUtils.clamp(phase,0,1);
+  const pinned=(1-x*x)*(1-z*z);
+  if(staticPose)return pinned*.5;
+  if(t===0||t===1)return 0;
+  const distance=Math.hypot(x,z),ripple=Math.sin(distance*30-t*.85*5)*.018/(distance+.1);
+  return pinned*Math.sin(t*Math.PI)*THREE.MathUtils.clamp(.5+ripple,0,.68);
+}
+
+
 /** Child props only. The host owns placement, camera, envelope and the one render loop. */
 export function createLocalEventRig(parent:THREE.Group,onInvalidate:()=>void=()=>{}) {
   const root=new THREE.Group();root.name='local-sixteen-props';parent.add(root);
@@ -109,7 +121,15 @@ export function createLocalEventRig(parent:THREE.Group,onInvalidate:()=>void=()=
   const sample=groups.L11;const wax=mesh(new THREE.CylinderGeometry(.52,.55,.12,48),wine,sample,0,.07,0);const stampHandle=group(sample,0,.7,0);box(.64,.08,.64,gold,stampHandle);mesh(new THREE.CylinderGeometry(.09,.07,.4,20),wine,stampHandle,0,.22,0);const stampTextCanvas=document.createElement('canvas');stampTextCanvas.width=256;stampTextCanvas.height=256;const stampTexture=new THREE.CanvasTexture(stampTextCanvas);textures.add(stampTexture);const waxMark=mesh(new THREE.PlaneGeometry(.62,.62),new THREE.MeshBasicMaterial({map:stampTexture,transparent:true,toneMapped:false}),sample,0,.135,0);waxMark.rotation.x=-Math.PI/2;let stampKind='';
   const book=groups.L12;box(2.4,.06,1.5,wine,book,0,.03,0);box(2.3,.06,1.4,paper,book,0,.09,0);box(.035,.08,1.45,gold,book,0,.13,0);const bookPawns=[pawn(book,.65,-.65,.14,-.2),pawn(book,.65,.65,.14,-.2)];const bookTile=group(book,-.3,.15,.38);domino(bookTile,4,4);bookTile.scale.setScalar(.48);bookTile.rotation.x=-Math.PI/2;const bookCards=Array.from({length:3},(_,i)=>{const c=box(.38,.015,.55,i%2?cream:paper,book,.2+i*.16,.16+i*.018,.3);return c;});const pageHinge=group(book,0,.15,0);box(1.12,.012,1.35,paper,pageHinge,-.56,0,0);
   const patches=groups.L13;const patchGroups=Array.from({length:3},(_,i)=>{const h=group(patches,-.9+i*.6,.12,0);box(.58,.03,.7,paper,h,.29,0,0);box(.3,.008,.035,gold,h,.29,.024,0);box(.035,.008,.3,gold,h,.43,.024,.13);return h;});for(const x of [-.95,1])box(.08,.24,.7,wine,patches,x,0,0);
-  const wind=groups.L14;const windPanels=Array.from({length:15},(_,i)=>box(.13,.014,.5,i%2?cream:paper,wind,-.91+i*.13,.08,0));box(1.75,.02,.32,gold,wind,0,.035,0);const windReward=mesh(new THREE.OctahedronGeometry(.12),gold,wind,0,.14,0);windReward.name='WIND_REVEALED_DECOR';const fan=group(wind,-1.25,.15,.1);for(let i=0;i<5;i++){const blade=box(.4,.025,.12,paper,fan);blade.rotation.y=i*Math.PI/5;}
+  const wind=groups.L14;
+  const windGeometry=new THREE.PlaneGeometry(1.9,.95,48,24);windGeometry.rotateX(-Math.PI/2);
+  const windPaper=mesh(windGeometry,paper,wind,0,.2,0);windPaper.name='LOCAL_L14_CONTINUOUS_PAPER';
+  const windVertices=windGeometry.getAttribute('position'),windBase=windVertices.array.slice();
+  box(2,.025,1.04,gold,wind,0,.0125,0);
+  for(const side of [-1,1])box(.035,.2,1.04,gold,wind,side*.968,.1,0);box(1.9,.2,.035,gold,wind,0,.1,-.492);
+  const windReward=mesh(new THREE.OctahedronGeometry(.095),gold,wind,0,.1,0);windReward.name='WIND_REVEALED_DECOR';
+  const fan=group(wind,-1.25,.15,.1);for(let i=0;i<5;i++){const blade=box(.4,.025,.12,paper,fan);blade.rotation.y=i*Math.PI/5;}
+
   const decor=groups.L15;const slots=[-1,0,1].map(x=>{const ring=mesh(new THREE.TorusGeometry(.24,.015,8,32),gold.clone(),decor,x*.8,.02,.55);ring.rotation.x=-Math.PI/2;return ring;});const decorObjects=group(decor);const decorPawn=pawn(decorObjects,.85);const decorGem=mesh(new THREE.OctahedronGeometry(.25),gold,decorObjects,0,.25,0);const clipCurve=new THREE.CatmullRomCurve3([[-.1,.01,-.25],[-.18,.01,.2],[0,.01,.3],[.15,.01,.15],[.15,.01,-.25],[.02,.01,-.32],[-.04,.01,.08]].map(p=>new THREE.Vector3(...p)));const decorClip=mesh(new THREE.TubeGeometry(clipCurve,36,.022,8,false),gold,decorObjects);
   const phrase=groups.L16;const phraseCard=group(phrase,0,.62,0);box(1.9,1.05,.035,paper,phraseCard);box(.25,.3,.04,gold,phraseCard,1.06,0,0);const phraseLabels=['같이 놀자','Vamos a jugar'].map((text,i)=>{const canvas=document.createElement('canvas');canvas.width=768;canvas.height=256;const ctx=canvas.getContext('2d');if(ctx){ctx.fillStyle='#402935';ctx.font='52px sans-serif';ctx.textAlign='center';ctx.textBaseline='middle';ctx.fillText(text,384,128);}const map=new THREE.CanvasTexture(canvas);map.colorSpace=THREE.SRGBColorSpace;textures.add(map);const plane=mesh(new THREE.PlaneGeometry(1.68,.56),new THREE.MeshBasicMaterial({map,transparent:true,toneMapped:false,side:THREE.FrontSide}),phraseCard,0,0,i?-.025:.025);plane.rotation.y=i?Math.PI:0;plane.castShadow=false;return plane;});
   let lastSerial=-1,start=0,lastActive:LocalEventId|null=null,lastNow=0,pocketQ=0,popupQ=0,lastBookPage=0,bookFrom=0;
@@ -123,18 +143,18 @@ export function createLocalEventRig(parent:THREE.Group,onInvalidate:()=>void=()=
       root.visible=overview||ending||state.active!==null||state.hasSavedDecor;const visibleEvent=state.active??'L15';
       localEventIds.forEach(id=>{const g=groups[id];g.position.set(0,0,0);g.scale.setScalar(1);g.visible=id===visibleEvent;});
       if(overview||ending){
-        groups.L01.position.set(ending?1.35:-.6,0,.6);groups.L01.scale.setScalar(.86);
-        groups.L04.position.set(1.6,0,-.3);groups.L04.scale.setScalar(.93);
-        groups.L06.position.set(ending?3.4:3.8,0,.5);groups.L06.scale.setScalar(1.05);
-        groups.L15.position.set(ending?4.1:1.2,0,ending?1.8:-.7);groups.L15.scale.setScalar(.65);
+        groups.L01.position.set(1.54,0,1.8);groups.L01.rotation.y=-.18;groups.L01.scale.setScalar(.86);
+        groups.L04.position.set(2.9,0,-.3);groups.L04.scale.setScalar(.93);
+        groups.L06.position.set(ending?4.3:5.2,0,ending?3.65:.5);groups.L06.scale.setScalar(1.05);
+        groups.L15.position.set(ending?2.85:1.2,0,ending?2.5:-.7);groups.L15.scale.setScalar(.65);
         if(state.active===null){
-          localEventIds.forEach(id=>groups[id].visible=ending? id==='L01'||id==='L06'&&state.strokes.length>0||id==='L15'&&state.hasSavedDecor:['L01','L04','L06'].includes(id));
+          localEventIds.forEach(id=>groups[id].visible=ending? id==='L06'&&state.strokes.length>0||id==='L15'&&state.hasSavedDecor:['L01','L04','L06'].includes(id));
         }
         // These are the same closed objects the contextual buttons later open.
         if(overview&&state.active===null){
-          groups.L09.visible=true;groups.L09.position.set(.4,0,-1);groups.L09.scale.setScalar(.27);
-          groups.L10.visible=true;groups.L10.position.set(2.55,0,-1.15);groups.L10.scale.setScalar(.28);
-          groups.L12.visible=true;groups.L12.position.set(4.05,.02,-1.05);groups.L12.scale.setScalar(.27);
+          groups.L09.visible=true;groups.L09.position.set(1.5,0,-1);groups.L09.scale.setScalar(.27);
+          groups.L10.visible=true;groups.L10.position.set(3.7,0,-1.15);groups.L10.scale.setScalar(.28);
+          groups.L12.visible=true;groups.L12.position.set(4.7,.02,-1.05);groups.L12.scale.setScalar(.27);
         }
       }
       const drawerHost=state.active==='L15'||presentation==='focused'&&visibleEvent==='L15'?groups.L15:groups.L01;if(drawerCase.parent!==drawerHost)drawerHost.add(drawerCase);drawerCase.visible=state.active!==null||overview||ending;
@@ -147,7 +167,7 @@ export function createLocalEventRig(parent:THREE.Group,onInvalidate:()=>void=()=
       choose(shadowPawn,state.pawn);shadows.forEach((m,i)=>{m.visible=i===state.pawn;m.position.x=-state.lightAngle*.55;const growth=1+Math.abs(state.lightAngle)*.38;m.scale.multiplyScalar(growth);m.position.y=.8+(growth-1)*.35;});lamp.position.x=-state.lightAngle*.9;lamp.rotation.z=-state.lightAngle*.2;
       gem.rotation.set(.2,state.prism*Math.PI/3,.3);fragments.forEach((f,i)=>{f.position.x=(i?1:-1)*(state.prism===1?.13:.38);f.rotation.z=state.prism===1?0:(i?1:-1)*.45;});ring.rotation.y=(state.prism-1)*.17;
       if(strokesRef!==state.strokes){strokesRef=state.strokes;const ctx=drawingCanvas.getContext('2d');if(ctx){ctx.clearRect(0,0,600,360);ctx.strokeStyle='#7b293d';ctx.lineWidth=6;ctx.lineCap='round';ctx.lineJoin='round';state.strokes.forEach(stroke=>{ctx.beginPath();stroke.forEach((p,i)=>i?ctx.lineTo(p.x*6,p.y*6):ctx.moveTo(p.x*6,p.y*6));ctx.stroke();});drawingTexture.needsUpdate=true;}}
-      drawingPivot.rotation.x=state.drawingFlipped?0:-Math.PI/2;drawingPivot.position.z=state.drawingFlipped?-.5:.55;cardStand.visible=state.drawingFlipped;
+      drawingPivot.rotation.x=state.drawingFlipped?0:-Math.PI*.38;drawingPivot.position.z=state.drawingFlipped?-.5:.55;cardStand.visible=state.drawingFlipped;
       bars.forEach((h,i)=>{const barQ=state.rhythmSolved?(staticPose?1:smooth((phase-i*.14)/.7)):0;h.rotation.z=-barQ*Math.PI/2;h.position.set(THREE.MathUtils.lerp(-.58+i*.58,-1.2+i*.8,barQ),.06+barQ*.26,0);const face=h.children[0] as THREE.Mesh<THREE.BoxGeometry,THREE.MeshStandardMaterial>;face.scale.y=state.rhythmSignal===i?1.08:1;face.material.emissive.set(state.rhythmSignal===i?0x9b633f:0);});
       const orbit=state.railStep===8?phase*Math.PI*2:state.railStep*Math.PI/4;choose(rider,state.pawn);rider.root.position.set(Math.sin(orbit)*1.13,0,Math.cos(orbit)*.66);rider.root.scale.setScalar(1);rider.root.rotation.y=0;
       photoGroups.forEach((photo,i)=>{photo.root.visible=state.jokerView==='both'||state.jokerView===i;photo.root.position.x=state.jokerView==='both'?(i?1:-1)*.7:0;photo.shutters.forEach((shutter,j)=>shutter.position.x=(j?1:-1)*(.3125+(state.jokerOpen[i]?.7:0)));});
@@ -156,8 +176,15 @@ export function createLocalEventRig(parent:THREE.Group,onInvalidate:()=>void=()=
       if(stampKind!==state.stamp){stampKind=state.stamp;const ctx=stampTextCanvas.getContext('2d');if(ctx){ctx.clearRect(0,0,256,256);ctx.fillStyle='#d7a18f';ctx.font='bold 100px Georgia';ctx.textAlign='center';ctx.textBaseline='middle';ctx.fillText(state.stamp==='YL'?'YL':'♡',128,128);stampTexture.needsUpdate=true;}}
       bookPawns.forEach((fig,i)=>{choose(fig,i===0?state.pawn:1);fig.root.position.x=(i?1:-1)*(.65-state.bookPage*.09);fig.root.rotation.y=(i?1:-1)*state.bookPage*.08;});bookTile.visible=state.bookPage>=1;bookTile.position.x=-.5+state.bookPage*.1;bookCards.forEach((card,i)=>{card.visible=state.bookPage>=2;card.rotation.y=state.bookPage===3?(i-1)*.3:0;card.position.x=.05+i*(state.bookPage===3?.34:.12);});if(lastBookPage!==state.bookPage){lastBookPage=state.bookPage;bookFrom=pageHinge.rotation.z;}pageHinge.rotation.z=staticPose?state.bookPage*Math.PI:THREE.MathUtils.lerp(bookFrom,state.bookPage*Math.PI,q);
       const bridgeDone=state.patchTurns.every((v,i)=>v===[1,2,0][i]);patchGroups.forEach((h,i)=>{h.rotation.y=bridgeDone?0:state.patchTurns[i]*Math.PI/2;h.rotation.z=bridgeDone?0:(i%2?-.5:.5);});
-      const gust=state.windRaised?(staticPose?.5:Math.sin(phase*Math.PI)*.65):0;windPanels.forEach((m,i)=>{const t=i/14;m.position.y=.08+Math.sin(t*Math.PI)*gust;m.rotation.z=Math.atan(Math.cos(t*Math.PI)*gust*Math.PI/1.82);});fan.rotation.y=state.windRaised?phase*Math.PI:0;
-      decorObjects.position.set((state.decorSlot-1)*.8,0,.55);choose(decorPawn,state.decorPawn);decorPawn.root.visible=state.decorKind==='pawn';decorGem.visible=state.decorKind==='gem';decorClip.visible=state.decorKind==='clip';slots.forEach((m,i)=>{m.visible=state.active==='L15';(m.material as THREE.MeshStandardMaterial).emissive.set(i===state.decorSlot?0x25120b:0);});
+      for(let i=0;i<windVertices.count;i++){
+        const x=windBase[i*3],z=windBase[i*3+2];
+        windVertices.setY(i,state.windRaised?paperGustHeight(x/.95,z/.475,phase,staticPose):0);
+      }
+      windVertices.needsUpdate=true;windGeometry.computeVertexNormals();fan.rotation.y=state.windRaised?phase*Math.PI:0;
+      // A fully pinned dome encloses its centre; the same small gem rolls past the front edge.
+      windReward.position.z=state.windRaised?(staticPose?1:Math.sin(Math.PI*phase))*.66:0;
+
+      decorObjects.position.set((state.decorSlot-1)*(ending?.22:.8),0,.55);choose(decorPawn,state.decorPawn);decorPawn.root.visible=state.decorKind==='pawn';decorGem.visible=state.decorKind==='gem';decorClip.visible=state.decorKind==='clip';slots.forEach((m,i)=>{m.visible=state.active==='L15';(m.material as THREE.MeshStandardMaterial).emissive.set(i===state.decorSlot?0x25120b:0);});
       const spanish=(state.language==='es')!==state.phraseFlipped;phraseCard.rotation.y=spanish?Math.PI:0;phraseLabels.forEach(m=>m.visible=true);
       const animated=state.active==='L01'&&state.dominoFallen||state.active==='L03'&&state.pocketOpen||state.active==='L07'&&state.rhythmSolved||state.active==='L08'&&state.railStep===8||state.active==='L12'||state.active==='L11'&&!state.waxPressed||state.active==='L14'&&state.windRaised;
       const hingesMoving=state.active==='L03'&&Math.abs(pocketQ-Number(state.pocketOpen))>.001||state.active==='L10'&&Math.abs(popupQ-Number(state.nobleOpen))>.001;return !staticPose&&(Boolean(animated)&&phase<1||hingesMoving);

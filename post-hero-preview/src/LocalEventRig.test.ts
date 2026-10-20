@@ -1,7 +1,7 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import * as THREE from 'three';
-import { approvedPawns, createLocalEventRig, createLocalEventState, jokerSources, localEventIds, nobleSources, pawnSource, stepBalance, restoreLocalEventState, LOCAL_EVENT_PREF_KEY, serializeLocalEventPreferences } from './LocalEventRig';
+import { approvedPawns, createLocalEventRig, createLocalEventState, jokerSources, localEventIds, nobleSources, pawnSource, stepBalance, restoreLocalEventState, LOCAL_EVENT_PREF_KEY, serializeLocalEventPreferences, paperGustHeight } from './LocalEventRig';
 
 const context = {
   clearRect() {}, fillText() {}, beginPath() {}, moveTo() {}, lineTo() {}, stroke() {},
@@ -159,7 +159,7 @@ test('saved decoration requires a valid explicit choice; effects and stamps alon
 });
 
 
-test('tabletop shows the three default physical toys and keeps the same drawing into ending',()=>{
+test('preserved output tabletop rig keeps the same drawing into ending without default toys there',()=>{
  const rig=createLocalEventRig(new THREE.Group());
  const state=createLocalEventState();
  rig.update(state,100,true,'tabletop');
@@ -169,7 +169,25 @@ test('tabletop shows the three default physical toys and keeps the same drawing 
  const saved={...state,strokes:[[{x:10,y:10},{x:40,y:20}]],drawingFlipped:true};
  rig.update(saved,200,true,'tabletop');const before=drawing.children[0];
  rig.update(saved,300,true,'ending');assert.equal(drawing.visible,true);assert.equal(drawing.children[0],before);
- assert.equal(namedGroup(rig.root,'L04').visible,false,'no unrelated shadow stage at ending');
+ assert.equal(namedGroup(rig.root,'L04').visible,false,'no unrelated shadow stage at ending');assert.equal(namedGroup(rig.root,'L01').visible,false,'ending does not invent a default domino result');
  rig.update({...saved,hasSavedDecor:true},400,true,'ending');assert.equal(namedGroup(rig.root,'L15').visible,true);
  rig.dispose();
+});
+
+
+test('Ruixen-adapted paper gust stays finite, bounded and pinned, and settles to the same sheet',()=>{
+ for(const phase of [0,.1,.25,.5,.75,.9,1])for(let i=0;i<=24;i++)for(let j=0;j<=12;j++){
+  const u=-1+i/12,v=-1+j/6,height=paperGustHeight(u,v,phase);
+  assert.ok(Number.isFinite(height)&&height>=0&&height<=.68);
+  if(i===0||i===24||j===0||j===12||phase===0||phase===1)assert.equal(height,0);
+ }
+ for(const value of [NaN,Infinity,-Infinity]){assert.equal(paperGustHeight(value,0,.5),0);assert.equal(paperGustHeight(0,value,.5),0);assert.equal(paperGustHeight(0,0,value),0);}
+ assert.equal(paperGustHeight(0,0,.3,true),.5);
+ const rig=createLocalEventRig(new THREE.Group()),state={...createLocalEventState(),active:'L14' as const};
+ rig.update(state,100,true);const sheet=rig.root.getObjectByName('LOCAL_L14_CONTINUOUS_PAPER') as THREE.Mesh;
+ assert.ok(sheet);assert.equal(sheet.geometry.getAttribute('position').count,49*25);
+ const reward=rig.root.getObjectByName('WIND_REVEALED_DECOR') as THREE.Mesh;reward.geometry.computeBoundingBox();assert.ok(reward.position.y+reward.geometry.boundingBox!.max.y<sheet.position.y,'gem is genuinely below the resting paper');
+ rig.update({...state,windRaised:true},200,true);sheet.geometry.computeBoundingBox();assert.ok(sheet.geometry.boundingBox!.max.y>=.49,'reduced motion provides the lifted result');assert.ok(reward.position.z>.475+.095,'reduced pose reveals the same gem past the near paper edge');
+ const snapshot=Array.from(sheet.geometry.getAttribute('position').array);rig.update({...state,windRaised:true},600,true);assert.deepEqual(Array.from(sheet.geometry.getAttribute('position').array),snapshot,'static result does not ripple');
+ rig.update(state,700,true);sheet.geometry.computeBoundingBox();assert.equal(sheet.geometry.boundingBox!.max.y,0);assert.equal(reward.position.z,0);const gust={...state,windRaised:true,motionSerial:1};rig.update(gust,1000,false);rig.update(gust,1425,false);assert.ok(reward.position.z>.57);rig.update(gust,1850,false);assert.ok(Math.abs(reward.position.z)<1e-9,'the gem returns beneath the settled sheet');rig.dispose();
 });

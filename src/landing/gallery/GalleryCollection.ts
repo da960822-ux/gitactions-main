@@ -3,7 +3,7 @@ import {gameCatalog} from '../../games/catalog';
 import {createGameObject, normalizeSculpture, studioMaterials} from './studioObjects';
 
 // Historical single focus and seven surrounding objects, from the approved caa6d31 gallery.
-type Frame = {selected: string; time: number; paused: boolean; dt?: number; snap?: boolean; mobile?: boolean; storyFocus?:number; effect?:{name:string;value:number;nonce:number}};
+type Frame = {selected: string; time: number; paused: boolean; dt?: number; snap?: boolean; mobile?: boolean; hovered?:{id:string;x:number;y:number}|null; storyFocus?:number; effect?:{name:string;value:number;nonce:number}};
 
 /** Renderer-free: the landing host owns the camera, lighting, environment and animation loop. */
 export function createGalleryCollection(onAssetReady = () => {}) {
@@ -38,7 +38,7 @@ export function createGalleryCollection(onAssetReady = () => {}) {
   const target = new T.Vector3(), size = new T.Vector3(),rootOrigin=new T.Vector3(),rootScale=new T.Vector3(),contactBounds=new T.Box3();
   return {
     root,
-    update({selected, time, paused, dt = 1 / 60, snap = false, mobile = false, storyFocus = 0, effect}: Frame) {
+    update({selected, time, paused, dt = 1 / 60, snap = false, mobile = false, hovered, storyFocus = 0, effect}: Frame) {
       const changed = previous !== selected;
       const focus=T.MathUtils.clamp(storyFocus,0,1);
       root.getWorldPosition(rootOrigin);root.getWorldScale(rootScale);
@@ -50,6 +50,10 @@ export function createGalleryCollection(onAssetReady = () => {}) {
         if(!paused)target.y+=Math.sin(time*.7+index)*.055*(1-focus);
         if(!chosen)target.y-=10*focus;
         const game=gameCatalog[index].id;
+        const hovering=!paused&&inputEnabled&&focus===0&&hovered?.id===game;
+        const tiltX=hovering?-T.MathUtils.clamp(hovered.y,-1,1)*T.MathUtils.degToRad(4):0;
+        const tiltY=hovering?T.MathUtils.clamp(hovered.x,-1,1)*T.MathUtils.degToRad(4):0;
+        if(hovering)target.y+=.12;
         const event=effect?.name??'none',value=effect?.value??0;
         const balance=game==='jaipur'&&event==='balance'?T.MathUtils.clamp(value/8,-1,1)*.12:0;
         const domino=game==='domino'&&event==='domino-chain'?T.MathUtils.clamp(value,0,1)*1.15:0;
@@ -61,8 +65,8 @@ export function createGalleryCollection(onAssetReady = () => {}) {
         const amount = snap || paused || focus>0 || previousStoryFocus>0 ? 1 : 1 - Math.exp(-dt * 8);
         group.position.lerp(target, amount);
         group.scale.lerp(size.setScalar(scale), amount);
-        group.rotation.x += (T.MathUtils.lerp(chosen?.15:.12,0,focus)+domino+wind - group.rotation.x) * amount;
-        group.rotation.y += (ry - group.rotation.y) * amount;
+        group.rotation.x += (T.MathUtils.lerp(chosen?.15:.12,0,focus)+domino+wind+tiltX - group.rotation.x) * amount;
+        group.rotation.y += (ry+tiltY - group.rotation.y) * amount;
         group.rotation.z += (T.MathUtils.lerp(chosen?-.1:Math.cos(angle)*.15,0,focus)+balance+rhythm - group.rotation.z) * amount;
         const support=group.getObjectByName('CATCHMIND_EASEL_SUPPORT');if(support)support.scale.setScalar(focus);
         // Story props meet the sheet; the restored gallery retains its deliberate suspended composition.
