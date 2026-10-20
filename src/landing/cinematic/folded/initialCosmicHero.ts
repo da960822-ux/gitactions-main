@@ -1,5 +1,5 @@
 import {Matrix4,PerspectiveCamera,MathUtils} from 'three';
-import {cameraPose,openingCameraPose} from './poseSpaceV19';
+import {openingCameraPose} from './poseSpaceV19';
 
 type Point = {x:number;y:number;z:number};
 type OpeningPose = {entry:number;pointerX:number;pointerY:number};
@@ -8,11 +8,12 @@ const clamp01=(value:number)=>Math.max(0,Math.min(1,value));
 const smooth=(value:number)=>{const t=clamp01(value);return t*t*(3-2*t);};
 
 /** Preserve the approved projection while moving the whole Hero into the room's camera neighborhood. */
-export function heroStageProjection(width:number,height:number,entrance:number,progress=0){
+export function heroStageProjection(width:number,height:number,entrance:number,_progress=0){
  const old=new PerspectiveCamera(38,width/height,.1,400),opening=openingCameraPose(entrance);
  old.position.fromArray(opening.position);old.lookAt(...opening.target as[number,number,number]);old.updateMatrixWorld();
- const near=new PerspectiveCamera(48,width/height,.1,400),pose=cameraPose(progress,1,false);
- near.position.fromArray(pose.position);near.position.z+=9.6*(Math.max(1,(1672/941)/(width/height))-1);near.lookAt(...pose.target as[number,number,number]);near.updateMatrixWorld();
+ const near=new PerspectiveCamera(48,width/height,.1,400);
+ // Authored source reference; the live camera must not change this registration.
+ near.position.set(-6,.5,-1.4+heroContain(width,height));near.lookAt(-6,.5,-10);near.updateMatrixWorld();
  const scale=.28,frameScale=Math.tan(MathUtils.degToRad(24))/Math.tan(MathUtils.degToRad(19));
  return near.matrixWorld.clone().multiply(new Matrix4().makeScale(scale*frameScale,scale*frameScale,scale)).multiply(old.matrixWorldInverse);
 }
@@ -41,4 +42,16 @@ export function deformInitialCosmicVertex(point:Point,u:number,v:number,pose:Ope
  point.x+=pose.entry*.18*Math.sin(Math.PI*across)*envelope;
  point.y+=pose.entry*.12*Math.sin(Math.PI*across)*envelope;
  point.z+=envelope*(pose.entry*(1.8+.5*Math.cos(Math.PI*u))+pose.pointerX*across-pose.pointerY*up);
+}
+
+/** Host applies this same camera containment once in beforeRender. */
+export function heroContain(width:number,height:number){return 9.6*(Math.max(1,(1672/941)/(width/height))-1);}
+
+/** Fixed world placement of the approved portrait; no progress-dependent reprojection. */
+export function heroWorldProjection(width:number,height:number,entrance:number){
+ const contain=heroContain(width,height);
+ return new Matrix4().makeTranslation(-6,.5,3.1+contain)
+  .multiply(new Matrix4().makeScale(.5,.5,.5))
+  .multiply(new Matrix4().makeTranslation(6,-.5,1.4-contain))
+  .multiply(heroStageProjection(width,height,entrance));
 }

@@ -170,11 +170,16 @@ export function LandingWorldHost({language,onLanguageChange,selected,onSelect}:P
     postNeedsFrame=composed.needsFrame;
     world.updateRoomExit(composed.roomExit);world.updateRoomDesk(composed.roomDesk);
     cameraPosition.copy(composed.eye).applyMatrix4(postTransform);cameraTarget.copy(composed.target).applyMatrix4(postTransform);
-    const connection=postConnectionPose(bridge,{position:roomEye.toArray(),target:ROOM_TARGET.toArray(),fov:roomFov(width,height)},{position:cameraPosition.toArray(),target:cameraTarget.toArray(),fov:composed.fov},width>=760?Math.max(1,(16/9)/(width/height)):1);
+    // Keep the approved room behind its workstation story; leave for the letter during gallery traversal.
+    const connectionProgress=Math.min(bridge,smoothRange(.45,.62,progress));
+    const endingBounds=root.querySelector('#together-again')?.getBoundingClientRect();
+    const endingCoversView=endingBounds&&endingBounds.top<=0&&endingBounds.bottom>=height;
+    composition.root.visible=post.root.visible=connectionProgress>.001&&!endingCoversView;
+    const connection=postConnectionPose(connectionProgress,{position:roomEye.toArray(),target:ROOM_TARGET.toArray(),fov:roomFov(width,height)},{position:cameraPosition.toArray(),target:cameraTarget.toArray(),fov:composed.fov},width>=760?Math.max(1,(16/9)/(width/height)):1);
     cameraPosition.fromArray(connection.position);cameraTarget.fromArray(connection.target);
     world.camera.position.copy(cameraPosition);world.camera.lookAt(cameraTarget);
     world.camera.clearViewOffset();world.camera.fov=connection.fov;world.camera.updateProjectionMatrix();
-    world.scene.background=connectionBackground.copy(roomBackground).lerp(composed.background,bridge);
+    world.scene.background=connectionBackground.copy(roomBackground).lerp(composed.background,connectionProgress);
     post.root.position.copy(composed.letterAnchor);post.root.scale.setScalar(composed.letterScale);
     if(!world.renderExternal()){dirty.current=true;return;}post.projectPaper();
     Object.assign(screen.dataset,{scene:root.dataset.scene,camera:world.camera.position.toArray().map(n=>n.toFixed(3)).join(','),target:cameraTarget.toArray().map(n=>n.toFixed(3)).join(','),drawCalls:String(world.renderer.info.render.calls),triangles:String(world.renderer.info.render.triangles),gallery:galleryWeight.toFixed(4),frameRenderingMode:'approved-room-direct',reflection:'Hero SSR inactive in this frame',contactShadow:'room art is rigid and unlit; post props use live contact shadows',geometries:String(world.renderer.info.memory.geometries),textures:String(world.renderer.info.memory.textures)});

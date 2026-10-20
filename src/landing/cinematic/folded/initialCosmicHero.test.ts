@@ -1,5 +1,5 @@
 import {describe,expect,it} from 'vitest';
-import {cosmicOpeningPose,deformInitialCosmicVertex,heroStageProjection} from './initialCosmicHero';
+import {cosmicOpeningPose,deformInitialCosmicVertex,heroWorldProjection,heroContain} from './initialCosmicHero';
 import {Scene,PerspectiveCamera,Vector3} from 'three';
 import {createStorySurface} from './storySurfaceV19';
 import {cameraPose,openingCameraPose} from './poseSpaceV19';
@@ -52,10 +52,10 @@ describe('initial cosmic surface',()=>{
   owned.forEach(resource=>resource.dispose());
  });
  it.each([[1920,1080],[1440,900]])('preserves the approved projection on the near-room stage at %i×%i',(width,height)=>{
-  for(const entrance of[0,.5,1])for(const progress of[0,.08,.1,1]){
+  for(const entrance of[0,.5,1]){
    const oldPose=openingCameraPose(entrance),old=new PerspectiveCamera(38,width/height,.1,400);old.position.fromArray(oldPose.position);old.lookAt(...oldPose.target as[number,number,number]);old.updateMatrixWorld();
-   const nearPose=cameraPose(progress,1,false),near=new PerspectiveCamera(48,width/height,.1,400);near.position.fromArray(nearPose.position);near.position.z+=9.6*(Math.max(1,(1672/941)/(width/height))-1);near.lookAt(...nearPose.target as[number,number,number]);near.updateMatrixWorld();
-   const stage=heroStageProjection(width,height,entrance,progress);
+   const nearPose=cameraPose(0,1,false),near=new PerspectiveCamera(48,width/height,.1,400);near.position.fromArray(nearPose.position);near.position.z+=heroContain(width,height);near.lookAt(...nearPose.target as[number,number,number]);near.updateMatrixWorld();
+   const stage=heroWorldProjection(width,height,entrance);
    for(const point of[new Vector3(1.85,3.13,.05),new Vector3(-1.54,-3.07,.05),new Vector3(5.24,3.13,.05),new Vector3(-8,4,-4)]){
     const before=point.clone().project(old),after=point.clone().applyMatrix4(stage).project(near);
     expect(after.x).toBeCloseTo(before.x,10);expect(after.y).toBeCloseTo(before.y,10);

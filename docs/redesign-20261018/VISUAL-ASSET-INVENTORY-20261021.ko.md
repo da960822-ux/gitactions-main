@@ -126,9 +126,9 @@ v6의 inside-coverage 합성은 과도한 총괄 기술 제약이었다. v8 당�
 
 후속 RGBA 분리 후보 `/workspace/generated_images/exec-2ab7ff3d-6750-4159-b864-ad2e6cadba3d.png`은 image_gen의 투명 배경 제거 방식으로 생성했다(1536×1024,2,089,657B,SHA `4da6cd9d3396e97ddc2cc416d1fd2be462ef7004bbb72d3050394a504b14f926`). 실제 RGBA이며 원경/난간 구멍 alpha=0, 가까운 벽은 불투명하다. root와 독립 검수는 연결 개선과 동시에 더 풍성한 꽃/잎 묘사, 벽·금속의 밝기·세부 변화, 작은 원경 잔류 가능성을 확인했다. 원본과 같은 꽃 수·형태를 완전히 보존했다고 주장할 수 없다. v8 당시에는 제품 runtime에 미연결이었다. 이후 사용하지 않는 mask2 이진 matte와 source-trace fallback helper는 checkpoint `50f833e`에서 회수할 수 있게 정리됐다. v9에는 파생 RGB와 별도 수리 alpha가 별도 채널로 연결됐으며, 현재 전환 모션은 별도 검수 대기 중이다. 사용자가 별도 장식/새 꽃을 요청한 것은 아니므로 이 파생 표현을 승인 첫 Hero/B에는 적용하지 않고, 전환 전경 후보로만 검수 중이다.
 
-## 2026-10-20 UTC v9 전환 전경 자산 — push 완료, 기술 검사 통과·모션 시각 검토 대기
+## 2026-10-20 UTC v9 전환 전경 자산 — historical checkpoint
 
-파일명 식별자 `20261021`은 한국 현지 작업일 표기다. provenance는 실제 생성 실행일을 `2026-10-20 UTC`로 기록한다. 앞선 v6/v8 구간은 당시의 상태·검수 이력으로 유지하며, 현재의 연결 상태는 다음 v9 표에 따른다.
+파일명 식별자 `20261021`은 한국 현지 작업일 표기다. provenance는 실제 생성 실행일을 `2026-10-20 UTC`로 기록한다. 앞선 v6/v8 구간은 당시의 상태·검수 이력으로 유지하며, 다음 표는 v9 checkpoint의 연결 상태를 기록한다.
 
 | 입력/레이어 | 저장 경로 · 치수 · 크기 · SHA-256 | 출처·연결 상태 |
 |---|---|---|
@@ -137,7 +137,9 @@ v6의 inside-coverage 합성은 과도한 총괄 기술 제약이었다. v8 당�
 | 수리한 alpha (`A`) | generated source `/workspace/generated_images/exec-84886c9d-60de-40b6-89a3-1d212b26e68a.png`; runtime `public/images/hero-cosmic-layers/near-repaired-alpha.png` · 1536×1024 · 2,160,095 bytes · `a488ea774fe3f2c9b8406cf6bbe75b09441c1118f58e0075a62802f4622e325b` | alpha만 쓰며 RGB는 무시한다. 기본 N alpha 대신 쓰는 범위는 실제 도시 첨탑 component x428–467,y459–564(2,224 source pixels)를 포함하도록 둔 padding ROI x424–480,y453–571뿐이다. 두 번째 후보 ROI x730–980,y635–680는 잎의 실제 차이로 인해 적용하지 않고 N alpha를 유지한다. PNG 전체를 합성·편집한 단일 RGBA 제품 파일은 만들지 않았다. |
 | 원경 disocclusion RGB (`C`) | generated source `/workspace/generated_images/exec-24b875b1-adb9-4f9f-85b6-d68be1b793b0.png`; runtime `public/images/hero-cosmic-layers/cosmic-disocclusion-plate.png` · 1536×1024 · 2,491,083 bytes · `24c91d12523dab0097384b90b8dea0856caa9a4421b74c27f0beea7ed90c5fdc` | 숨겨졌던 곳에 드러나는 원경 영역을 위한 새 RGB다. 승인 B·인물 원본을 교체하지 않으며 원본 우주 panorama 전체 replacement도 아니다. |
 
-`src/landing/cinematic/folded/cosmicLayers.ts`는 원본 texture, 파생 근경 RGB, 별도 alpha를 실제 runtime에서 채널별로 조합한다. 기본 alpha는 N의 첫 RGBA alpha이고, A는 source ROI x424–480,y453–571에만 적용된다. `src/landing/cinematic/folded/previewSpaceV19.ts`가 이들과 clean plate를 로드한다. 각 레이어는 별도 PNG이며, N의 RGB와 A의 alpha를 결합한 단일 합성 PNG를 만들지 않았다. 파일 크기·해시는 직접 `identify`, `sha256sum`, `stat`으로 확인했다. 현재 v9 연결은 기존 Hero 브랜치의 commit `50a98c2b59957d185fcb0298e4bbf03c6504d783`으로 push됐고, 원격 commit과 일치함을 확인했다. 코드 및 자산은 해당 commit에서 고정돼 있다.
+v9 checkpoint에서 `src/landing/cinematic/folded/cosmicLayers.ts`는 원본 texture, 파생 근경 RGB, 별도 alpha를 runtime에서 채널별로 조합했고, `previewSpaceV19.ts`가 clean plate를 로드했다. 기본 alpha는 N의 첫 RGBA alpha였고, A는 source ROI x424–480,y453–571에만 적용됐다. N의 RGB와 A의 alpha를 합친 단일 PNG는 만들지 않았다. 파일 크기·해시는 직접 확인했다. 이 checkpoint는 기존 Hero 브랜치 commit `50a98c2b59957d185fcb0298e4bbf03c6504d783`으로 push됐고 원격 commit과 일치했으며, 해당 commit에 기록된 코드·자산 연결은 보존된다.
+
+2026-10-21 cleanup: Hero runtime에서 import/decode caller와 자산 참조가 사라지고 Hero owner가 재사용하지 않음을 확인해 미사용 `cosmicLayers.ts` (4,723 B) 및 파생 N/A/C PNG 세 개 (6,740,835 B)를 삭제했다. 총 6,745,558 B를 정리했으며 `provenance.json`, 승인 원본, 요구사항과 실패 검수 근거는 보존했다.
 
 기존 v9 기록을 읽으면 기술 검증이 완료된 범위를 확인할 수 있다. `runtime-hybrid-v9-proof-v4/report.json`은 1920×1080과 1440×900에서 boundary 샘플을 기록하고 `errors`가 비어 있다. 검증 요약은 v9 경계/원경 handoff와 B 외곽 행 seam·측면 HUD 종료 수정을 범위로 적는다. `runtime-hybrid-v9-validation/interaction/settled-report.json`은 두 해상도 모두 pointer 반응·분리 전 입력 등록, settled/reversal/resize 이미지 일치 플래그가 참이며 오류가 0이다. `final-checks.log`에는 관련 집중 검사 27개 통과와 production build 통과가 기록돼 있다. 이는 범위가 지정된 기술 검증 결과이며 사용자 승인이나 전체 시각 합격을 뜻하지 않는다. 특히 독립 검토에서 실제 0.2초 추출 sequence는 fade/background replacement가 지배적으로 보였고, near layer의 source-camera-relative 투영이 상대 시차를 상당 부분 상쇄하는 것으로 관찰됐다. 따라서 정적·상호작용 기술 검증 통과와 전체 spatial motion의 시각 완성은 구분한다. root와 기존 Hero owner가 두 가지 실제 world-anchored 배치에 대한 output-only study를 진행 중이며, 아직 통합되거나 승인되지 않았다. v9 commit은 push됐고, `50f833e`는 v8 baseline/checkpoint 이력이지 현재 원격 상태가 아니다.
 

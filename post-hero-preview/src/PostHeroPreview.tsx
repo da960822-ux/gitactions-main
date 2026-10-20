@@ -5,7 +5,7 @@ import { paperTransform, blendPaperCorners } from './paperProjection';
 import Details from './Details';
 import SharedEventsPanel from './SharedEventsPanel';
 import type {SharedEventId,SharedEventRound} from '../../src/core/sharedEventsState';
-import {restoreLocalEventState,type LocalEventId,type LocalEventState} from './LocalEventRig';
+import {restoreLocalEventState,pawnSource,approvedPawns,type LocalEventId,type LocalEventState} from './LocalEventRig';
 import { clamp01, LETTER_RANGE, createEnvelopeState, updateEnvelopeFromScroll, toggleEnvelope, reopenEnvelope, envelopeTarget } from './interaction';
 
 const StandalonePostHeroScene=lazy(()=>import('./Scene').then(module=>({default:module.PostHeroScene})));
@@ -156,8 +156,10 @@ export function PostHeroPreview({embedded=false,language:externalLanguage,onLang
   </header>}
   {!embedded&&<section id="intro" className="chapter intro" data-pose="0"><div className="chapter-copy"><h1>{text.title}</h1><p>{text.body}</p><div className="intro-actions"><a className="primary-button" href="/#games">{text.play}</a><a className="text-button" href="#distance">{text.next} <span aria-hidden="true">↓</span></a></div></div></section>}
   <section id="distance" className="chapter distance" data-pose={embedded?"0":".10"} aria-labelledby="distance-title">
-   <div className="chapter-copy"><h2 id="distance-title">{text.distance}</h2><p>{text.distanceBody}</p><p className="motivation-answer">{ko?'그래서 멀리 있어도 우리 둘이 같이 놀 곳을 만들고 싶었어.':'Por eso quería hacer un lugar para que juguemos juntos aunque estemos lejos.'}</p><a className="text-button" href="#games">{text.play}<span aria-hidden="true">↓</span></a></div>
-   <div className={`country-labels ${sceneVisible?'world-country-labels':''}`}><span><img src="/images/marble/flags/kr.svg" alt=""/>한국 · Corea</span><span className="country-gap" aria-hidden="true"/><span><img src="/images/marble/flags/do.svg" alt=""/>República Dominicana</span></div>
+   <div className="distance-story"><h2 id="distance-title" className="distance-heading">{text.distance}</h2><div className="chapter-copy distance-reason"><p>{text.distanceBody}</p><p className="motivation-answer">{ko?'그래서 멀리 있어도 우리 둘이 같이 놀 곳을 만들고 싶었어.':'Por eso quería hacer un lugar para que juguemos juntos aunque estemos lejos.'}</p></div></div>
+   <div className="distance-workstations"><img src="/images/approved-couple-room/approved-couple-gaming-room.png" width="1672" height="941" alt={ko?'한국 쪽 키보드와 마우스를 쓰는 손, 도미니카 쪽 노트북과 마우스를 쓰는 손':'Las manos en el teclado y el ratón del lado de Corea, y el portátil y la mano en el ratón del lado dominicano'}/></div>
+   <div className="country-labels"><span><img src="/images/marble/flags/kr.svg" alt=""/>한국 · Corea</span><span><img src="/images/marble/flags/do.svg" alt=""/>República Dominicana</span></div>
+   <a className="text-button distance-play" href="#games">{text.play}<span aria-hidden="true">↓</span></a>
    <span id="toy-table" className="story-internal-anchor" data-pose=".30" aria-hidden="true"/>
    <span className="gallery-arrival" data-pose=".45" aria-hidden="true"/>
   </section>
@@ -173,7 +175,18 @@ export function PostHeroPreview({embedded=false,language:externalLanguage,onLang
    {letterVisible&&<div className="letter-bottom-controls"><button className="text-button" onClick={()=>{opener.current?.focus({preventScroll:true});toggleLetter();}}>{text.close} <span>−</span></button></div>}
    {!letterVisible&&<div className="closed-note"><span>♡</span><p>{text.sealed}</p><button className="text-button" onClick={()=>{control.current=reopenEnvelope(control.current);refreshTarget();}}>{text.open} ↗</button></div>}
   </section>
-  <section className={`chapter ending ${detailRegion==='ending'?'has-detail':''}`} data-pose="1"><div className="ending-copy" hidden={detailRegion==='ending'}><h2>{text.ending}</h2>{localEvent.drawingFlipped&&localEvent.strokes.length>0&&<p className="action-recall">{ko?'네가 그린 카드도 여기 두었어.':'Tu tarjeta también se queda aquí.'}</p>}<div className="ending-actions"><a className="primary-button" href={playHref??'/#games'}>{playHref?copy.primaryAction:text.play}<span aria-hidden="true">↗</span></a><a className="text-button" href="/feedback">{text.ideas}</a></div><p className="ending-date">2025.04.04 — Yeonseok ♡ Lisbeth</p></div>{workbench('ending')}<footer><span>Para ti, Lisbeth ♡</span><a href={embedded?'#home':'#intro'}>{text.back} ↑</a></footer></section>
+  <section id="together-again" className={`chapter ending ${detailRegion==='ending'?'has-detail':''}`} data-pose="1">
+   <div className="ending-room"><img src="/images/approved-couple-room/approved-couple-gaming-room.png" width="1672" height="941" alt={ko?'각자의 게임방에서 함께 게임하는 우리 둘':'Los dos jugando desde nuestras habitaciones'}/></div>
+   <div className={`ending-copy ${localEvent.strokes.length>0||localEvent.hasSavedDecor?'has-keepsake':''}`} hidden={detailRegion==='ending'}>
+    <div className="ending-message"><h2>{text.ending}</h2><div className="ending-actions"><a className="primary-button" href={playHref??'/#games'}>{playHref?copy.primaryAction:text.play}<span aria-hidden="true">↗</span></a><a className="text-button" href="/feedback">{text.ideas}</a></div><p className="ending-date">2025.04.04 — Yeonseok ♡ Lisbeth</p></div>
+    {(localEvent.strokes.length>0||localEvent.hasSavedDecor)&&<figure className="ending-keepsake">
+     {localEvent.strokes.length>0&&<svg className="ending-drawing" viewBox="0 0 100 60" role="img" aria-label={ko?'네가 그린 그림':'Tu dibujo'}>{localEvent.strokes.map((line,i)=><polyline key={i} points={line.map(point=>`${point.x},${point.y}`).join(' ')} fill="none" stroke="#7b293d" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>)}</svg>}
+     {localEvent.hasSavedDecor&&(localEvent.decorKind==='pawn'?<img className="ending-decor" src={pawnSource(localEvent.decorPawn)} alt={`${ko?'네가 고른 게임말':'La figura que elegiste'}: ${approvedPawns[localEvent.decorPawn][language]}`}/>:<svg className="ending-decor" viewBox="0 0 44 44" role="img" aria-label={localEvent.decorKind==='gem'?(ko?'네가 고른 보석':'La gema que elegiste'):(ko?'네가 고른 종이 클립':'El clip que elegiste')}>{localEvent.decorKind==='gem'?<><path d="M22 5 36 21 22 39 8 21Z" fill="#e6b58d"/><path d="M22 5V39L8 21Z" fill="#bc7e68"/><path d="M22 5 36 21 22 18Z" fill="#f9d5ac"/></>:<path d="M29 10 15 25a5 5 0 0 0 7 7l13-14a8 8 0 0 0-12-11L10 21a11 11 0 0 0 16 15" fill="none" stroke="#dbb7a3" strokeWidth="3" strokeLinecap="round"/>}</svg>)}
+     {localEvent.drawingFlipped&&localEvent.strokes.length>0&&<figcaption className="action-recall">{ko?'네가 그린 카드도 여기 두었어.':'Tu tarjeta también se queda aquí.'}</figcaption>}
+    </figure>}
+   </div>
+   {workbench('ending')}<footer><span>Para ti, Lisbeth ♡</span><a href={embedded?'#home':'#intro'}>{text.back} ↑</a></footer>
+  </section>
 
   <dialog ref={roomDialog} className="room-discovery-dialog" aria-label={ko?'선택한 물건':'Objeto seleccionado'} onCancel={event=>{event.preventDefault();if(sharedEvent)closeShared();else closeDetails();}}>
    {workbench('room')}

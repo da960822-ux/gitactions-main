@@ -2,6 +2,7 @@
 .landing-world-canvas{position:fixed;inset:0;width:100%;height:100svh;display:block;z-index:0;pointer-events:none;opacity:0}
 .landing-world-host.is-world-ready>.landing-world-canvas{opacity:1}
 .landing-world-host>.across-hero,.landing-world-host>.post-hero-preview{position:relative;z-index:1;background:transparent}
+.landing-world-host.is-world-ready[data-scene]:not([data-scene="hero"])>.across-hero{visibility:hidden}
 .landing-world-host .across-stage{background:transparent}
 .landing-world-host.is-world-ready .folded-backdrop{visibility:hidden}
 .landing-world-host .folded-destination{inset:auto 0 88px;align-items:center;justify-content:center;padding:0 24px;text-align:center;text-shadow:0 2px 12px #120a12}

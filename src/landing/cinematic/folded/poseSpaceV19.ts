@@ -8,12 +8,22 @@ export function introPose(seconds:number):FoldPose{return{progress:0,entrance:sm
 export function openingCameraPose(entrance:number){return{position:[0,.3,11.7+(1-entrance)*2.5],target:[.3,-.05,0]};}
 /** One progress-only path: reversing scroll evaluates the same pose, including at the room boundary. */
 export function cameraPose(progress:number,entrance:number,mobile:boolean){
- const p=clamp01(progress),stable=mobile?[1.3,.25,12.1,1.35,-.1,0]:[-6,.5,-1.4,-6,.5,-10];
- const arrival=roomWorldVertex(836,470.5,24),target=[-6,.5,-10];
- const keys=mobile?[[0,...stable],[.27,...stable],[.38,...arrival,...target],[1,...arrival,...target]]:[[0,...stable],[.06,...stable],[.10,...arrival,...target],[1,...arrival,...target]];
- const values=interpolatePath(keys,p);
- if(mobile)values[2]+=(1-entrance)*2.5;
+ const p=clamp01(progress),arrival=roomWorldVertex(836,470.5,24);
+ if(!mobile){
+  if(p>=.38)return{position:arrival,target:[-6,.5,-10]};
+  const motion=heroDepartureMotion(p),x=-6+motion.side;
+  return{position:[x,.5,3.1-motion.advance],target:[x,.5,-10]};
+ }
+ const stable=[1.3,.25,12.1,1.35,-.1,0],target=[-6,.5,-10];
+ const keys=[[0,...stable],[.27,...stable],[.38,...arrival,...target],[1,...arrival,...target]];
+ const values=interpolatePath(keys,p);values[2]+=(1-entrance)*2.5;
  return{position:values.slice(0,3),target:values.slice(3,6)};
+}
+
+/** Authored movement shared with the deforming surface, never sampled from the live camera. */
+export function heroDepartureMotion(progress:number){
+ const settle=smoothRange(.26,.38,progress);
+ return{advance:1.8*smoothRange(.02,.26,progress)+1.7*settle,side:-.7*smoothRange(.04,.20,progress)*(1-settle)};
 }
 
 function interpolatePath(keys:number[][],p:number){
