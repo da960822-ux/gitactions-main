@@ -89,6 +89,12 @@ R01–R04 공동 기능은 맥락별 opt-in이다. 인증을 강제하지 않고
 - [L06 실제 입력 진단 및 해결](../../output/current-review/implementation-20261021/mobile-post-confirmation/touch-diagnostic.json)의 `afterFix.passed=true`: KO/ES 자유 터치 그림→카드→그림에서 L06 유지/동일 stroke 보존, 터치·마우스·Enter·Space 각각 한 번 전환을 확인했다. 재배치 뒤 다른 관련 버튼에 전달되던 호환 click을 공통 조상 capture에서 막았다. console/network 0건. pointercancel/영역 밖 release 별도 주입, 실제 휴대폰과 실제 GPU는 미검수다.
 - 게임 선택 버튼의 잘못된 이동 화살표와 불필요한 영문 kicker만 제거했다. 실제 게임 진입 화살표, 중앙+7개, 2×4, 조각 크기·색·자산은 그대로다. 승인 I/B/P 원본과 게임/리듬 원본을 교체하지 않았다.
 
+### 후속 발견물 시각 통합과 모바일 경로 감사
+
+- L06는 실제 그림·같은 그림 카드가 주인공이 되도록 desktop CSS만 바꿨다. 독립 A의 **집중 작업 구도/위계/개인적 목적 각각 4/5**는 QA 후보 정지 화면에 한정하며 전체 랜딩이나 기본 B 구도 합격이 아니다. 같은 담당자가 `preview.css`의 min-width 761px/L06 스코프 24줄로 통합했다. [실제 통합 보고서](../../output/current-review/implementation-20261021/room-reward-correction/report.json)의 `productIntegration`은 1920 ES·1440 KO 자유 그림→동일 stroke 카드→복귀→X/Escape·B focus/scroll 복원과 390 기존 스타일 유지 총 11/11, 오류/overflow 0을 기록한다. root도 두 제품 PNG를 열고 [production build](../../output/current-review/implementation-20261021/room-reward-correction/build-integrated.log)를 확인했다. TSX·터치 guard·다른 15개·Host·모바일 CSS·원문·갤러리는 변경하지 않았다. 위 b5b2613 영상에는 이 CSS 후속 수정이 들어 있지 않다.
+- 모바일 경로 감사는 [content-audit-v3](../../output/current-review/implementation-20261021/content-audit-v3/report.json)의 `mobileFollowup.coverageSummary`에 실제 attempt/check를 매핑했다. 390×844 KO/ES 각각 8개 `/play?game=…` 경로·query·언어 전달, 최상단 feedback 진입/복귀를 확인했다. KO의 마지막 재시도 4개 boundingBox timeout을 포함한 raw 실패는 보존하며 **단일 배치 전체 통과가 아니다**. 실제 성공 증거는 이전 같은 검수의 native tap/route에 연결했다.
+- **모바일 게임 플레이에는 기존 제한이 남는다.** `src/core/display.ts`는 `desktop || gameId === 'jaipur'`이며, `PlayApp.tsx`는 7개 게임 선택/시작을 비활성화한다. `git blame`의 `fbdec480`(2026-10-11)과 게임 수정 기준 `df087fc`에도 같은 필터/KO·ES 안내가 있다. 따라서 위 경로/언어 성공은 8개 모바일 플레이 성공이 아니며, 이번 랜딩의 회귀와도 구분한다. 실제 두 사용자 플레이와 실물 휴대폰은 이번 감사 대상이 아니다.
+
 ### 게임·원본 보존 대조 (소스/Git 읽기 전용)
 
 | 범위 | 실제 확인 | 한계 |
