@@ -33,6 +33,10 @@ Never cut: validation at trust boundaries, error handling that prevents data los
 
 (Yes, this file also applies to agents working on the ponytail repo itself. Especially to them.)
 
+## Visual review workflow (latest user instruction, 2026-10-21)
+
+The user revoked automatic owner/model rotation after visual-review failures. Keep the current owner; use observed frames and measurements to identify bad prompt assumptions or missing constraints, revise the brief, and check the new result under the same conditions. A FAIL label alone is not corrective feedback. Design backward from the approved B arrival, inspect actual intermediate compositions before motion, and preserve approved assets and protected functionality. Historical rotation records are not current policy.
+
 ## Game-development skills
 
 The user requested Awesome GameDev Agent Skills. The upstream collection (74 skills plus router) is installed under `.agents/skills/`, pinned in `.agents/gamedev-skills-manifest.json`; license, notice and provenance are in `.agents/gamedev-skills-source/`. Read `.agents/skills/router/SKILL.md` when selecting game-development guidance, then only the relevant skills and references. Preserve the upstream instructions verbatim.

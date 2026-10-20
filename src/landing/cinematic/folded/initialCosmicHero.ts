@@ -1,8 +1,21 @@
+import {Matrix4,PerspectiveCamera,MathUtils} from 'three';
+import {cameraPose,openingCameraPose} from './poseSpaceV19';
+
 type Point = {x:number;y:number;z:number};
 type OpeningPose = {entry:number;pointerX:number;pointerY:number};
 
 const clamp01=(value:number)=>Math.max(0,Math.min(1,value));
 const smooth=(value:number)=>{const t=clamp01(value);return t*t*(3-2*t);};
+
+/** Preserve the approved projection while moving the whole Hero into the room's camera neighborhood. */
+export function heroStageProjection(width:number,height:number,entrance:number){
+ const old=new PerspectiveCamera(38,width/height,.1,400),opening=openingCameraPose(entrance);
+ old.position.fromArray(opening.position);old.lookAt(...opening.target as[number,number,number]);old.updateMatrixWorld();
+ const near=new PerspectiveCamera(48,width/height,.1,400),pose=cameraPose(0,1,false);
+ near.position.fromArray(pose.position);near.position.z+=9.6*(Math.max(1,(1672/941)/(width/height))-1);near.lookAt(...pose.target as[number,number,number]);near.updateMatrixWorld();
+ const scale=.28,frameScale=Math.tan(MathUtils.degToRad(24))/Math.tan(MathUtils.degToRad(19));
+ return near.matrixWorld.clone().multiply(new Matrix4().makeScale(scale*frameScale,scale*frameScale,scale)).multiply(old.matrixWorldInverse);
+}
 
 /** The approved panorama settles before the existing departure path starts. */
 export function cosmicOpeningPose(progress:number,entrance:number,pointerX=0,pointerY=0):OpeningPose{

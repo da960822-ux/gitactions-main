@@ -27,7 +27,7 @@ const result = await page.evaluate(async () => {
     const group = new T.Group(); group.add(new T.Mesh(createHeartGeometry(), materials[i])); group.position.set(x,y,z); group.scale.setScalar(size); group.rotation.set(.13,-.2,angle); scene.add(group); return group;
   });
   const png = () => renderer.domElement.toDataURL('image/png').split(',')[1];
-  renderer.render(scene, camera); const neutral = png(), assets = [], boxes = [];
+  const assets = [], boxes = [];
   for (let i = 0; i < groups.length; i++) {
     camera.clearViewOffset(); camera.aspect = 1440 / 816; camera.updateProjectionMatrix();
     const points = [], group = groups[i], mesh = group.children[0], positions = mesh.geometry.attributes.position;
@@ -44,15 +44,14 @@ const result = await page.evaluate(async () => {
       assets.push({ name: `heart-${i}-${name}.png`, data: png() });
     }
   }
-  renderer.dispose(); return { neutral, assets, boxes, fixedKey: key.position.toArray() };
+  renderer.dispose(); return { assets, boxes, fixedKey: key.position.toArray() };
 });
 assert.deepEqual(result.fixedKey, [-4, 6, 8]);
 assert.equal(new Set(result.assets.map(asset => asset.name)).size, 9);
 assert.ok(result.boxes.every(([left, top, width, height]) => left >= 0 && top >= 0 && width > 0 && height > 0 && left + width <= 1440 && top + height <= 816));
-for (const asset of [{ name: 'hearts-neutral.png', data: result.neutral }, ...result.assets]) assert.equal(Buffer.from(asset.data, 'base64').subarray(0, 8).toString('hex'), '89504e470d0a1a0a');
-await fs.writeFile(`${folder}/hearts-neutral.png`, Buffer.from(result.neutral, 'base64'));
+for (const asset of result.assets) assert.equal(Buffer.from(asset.data, 'base64').subarray(0, 8).toString('hex'), '89504e470d0a1a0a');
 for (const asset of result.assets) await fs.writeFile(`${folder}/${asset.name}`, Buffer.from(asset.data, 'base64'));
 const layoutPath = 'src/preview/heroRasterLayout.json', layout = JSON.parse(await fs.readFile(layoutPath, 'utf8'));
 await fs.writeFile(layoutPath, JSON.stringify({ ...layout, hearts: result.boxes }, null, 2) + '\n');
 await browser.close();
-console.log(JSON.stringify({ assets: result.assets.length + 1, boxes: result.boxes, fixedKey: result.fixedKey, note: 'Original 3D geometry, fixed light, three bounded front poses. PNG fallback blends these poses; it does not create a back face or run a 3D renderer.' }));
+console.log(JSON.stringify({ assets: result.assets.length, boxes: result.boxes, fixedKey: result.fixedKey, note: 'Original 3D geometry, fixed light, three bounded front poses. PNG fallback blends these poses; it does not create a back face or run a 3D renderer.' }));

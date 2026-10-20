@@ -1,70 +1,49 @@
 import * as T from 'three';
-import {cameraPose,smoothRange} from './poseSpaceV19';
+import {openingCameraPose,smoothRange} from './poseSpaceV19';
 import {cosmicOpeningPose,deformInitialCosmicVertex} from './initialCosmicHero';
 
+const SEGMENTS=192,RINGS=40;
 export function surfacePose(progress:number,entrance=1){
- const open=smoothRange(.175,.27,progress);
- return{center:[0,0,-4],width:24,height:14,yaw:0,bend:Math.sin(open*Math.PI)*Math.PI/3,pitch:0,open,entrance};
+ const open=smoothRange(.18,.43,progress);
+ return{center:[0,0,-4+22*smoothRange(.23,.43,progress)],width:24,height:14,yaw:0,bend:5.2*Math.sin(Math.PI*open),pitch:0,open,cover:0,entrance};
 }
-export function cosmicMarginX(u:number,p:number){return (u*2-1)**9*4*smoothRange(.12,.22,p);}
-export function cosmicMarginY(v:number,p:number){return (v*2-1)**9*2*smoothRange(.12,.22,p);}
-export function cosmicFoldAmount(u:number,v:number,p:number){
- const sweep=smoothRange(0,1,smoothRange(.14,.48,p)*1.8-u*.8);
- const interior=smoothRange(0,.04,u)*(1-smoothRange(.96,1,u))*smoothRange(0,.04,v)*(1-smoothRange(.96,1,v));
- return sweep*(interior+(1-interior)*smoothRange(.40,.46,p));
-}
-
-export function foldCosmicVertex(x:number,y:number,bottom:number,top:number,open:number){
- if(open===0)return[x,y,-4] as const;
- const v=(y-bottom)/(top-bottom),angle=open*Math.PI*.5+.35*Math.sin(v*Math.PI)*Math.sin(open*Math.PI),distance=y-bottom;
- return[x,bottom+distance*Math.cos(angle),-4-distance*Math.sin(angle)] as const;
-}
-export function surfaceVertex(u:number,v:number,p:number,_entrance=1){
- return foldCosmicVertex((u-.5)*24+cosmicMarginX(u,p),(v-.5)*14,-7,7,cosmicFoldAmount(u,v,p));
+/** A room-sized opening in the environment; the outside perimeter never enters the frame. */
+export function apertureVertex(angle:number,radial:number,progress:number){
+ const s=surfacePose(progress),c=Math.cos(angle),t=Math.sin(angle);
+ const square=1/Math.max(Math.abs(c),Math.abs(t));
+ const rounded=1/Math.pow(Math.abs(c)**16+Math.abs(t)**16,1/16);
+ const innerWidth=.4*smoothRange(.18,.25,progress),innerHeight=1.6*smoothRange(.18,.205,progress),outer=4;
+ const x=c*(innerWidth*rounded+(outer*square-innerWidth*rounded)*radial);
+ const y=t*(innerHeight*rounded+(outer*square-innerHeight*rounded)*radial);
+ return{x,y,z:s.center[2]-s.bend*Math.pow(1-radial,4),shade:1};
 }
 
-/** The Hero image is the same indexed surface that opens behind the characters. */
+/** The artwork stays registered to the environment while the physical aperture uncovers B. */
 export function createStorySurface(scene:T.Scene,keep:<A extends{dispose:()=>void}>(a:A)=>A){
- const geometry=keep(new T.PlaneGeometry(1,1,96,64));
- const material=keep(new T.MeshStandardMaterial({color:'#ffffff',metalness:0,roughness:.8,side:T.DoubleSide,emissive:'#ffffff',emissiveIntensity:0,toneMapped:false,transparent:false,depthWrite:true}));
- const reference=new T.PerspectiveCamera(38,16/9,.1,400),imageMap={value:null as T.Texture|null};
- const mesh=new T.Mesh(geometry,material);mesh.name='HERO_COSMIC_SURFACE_SAME_INDEXED_OPENING';mesh.frustumCulled=false;scene.add(mesh);
- const uv=geometry.getAttribute('uv'),position=geometry.getAttribute('position'),rest=new Float32Array(position.count*3),point=new T.Vector3();
- let signature='',projectionKey='';
- const fold={value:0};
- material.onBeforeCompile=shader=>{
-  shader.uniforms.approvedHeroImage=imageMap;shader.uniforms.cosmicFold=fold;
-  shader.fragmentShader='uniform sampler2D approvedHeroImage;uniform float cosmicFold;\n'+shader.fragmentShader;
-  shader.fragmentShader=shader.fragmentShader.replace('#include <opaque_fragment>','outgoingLight=mix(texture2D(approvedHeroImage,vMapUv).rgb,outgoingLight,.08*cosmicFold);\n#include <opaque_fragment>');
- };
- material.customProgramCacheKey=()=> 'same-index-cosmic-fold-to-approved-illustration';
- return{mesh,material,ready:Promise.resolve(),setHeroImage(texture:T.Texture){imageMap.value=texture;material.map=texture;material.needsUpdate=true;},setProjection(width:number,height:number,entrance:number){
-  const key=width+':'+height+':'+entrance.toFixed(4);if(key===projectionKey)return;projectionKey=key;signature='';
-  reference.aspect=width/height;const c=cameraPose(0,entrance,false);reference.position.fromArray(c.position);reference.lookAt(...c.target as [number,number,number]);reference.updateProjectionMatrix();reference.updateMatrixWorld();
-  const imageAspect=1536/1024,viewAspect=width/height,rx=viewAspect<imageAspect?viewAspect/imageAspect:1,ry=viewAspect>imageAspect?imageAspect/viewAspect:1;
-  for(let i=0;i<position.count;i++){
-   const u=i%97/96,v=1-Math.floor(i/97)/64;
-   point.set((u-.5)*2,(v-.5)*2,.5).unproject(reference).sub(reference.position);
-   point.multiplyScalar((-4-reference.position.z)/point.z).add(reference.position);rest.set(point.toArray(),i*3);
-   uv.setXY(i,u*rx+(1-rx)*.58,v*ry+(1-ry)*.5);
-  }
-  uv.needsUpdate=true;
+ const geometry=keep(new T.BufferGeometry()),count=(SEGMENTS+1)*(RINGS+1);
+ const positions=new T.Float32BufferAttribute(new Float32Array(count*3),3),uv=new T.Float32BufferAttribute(new Float32Array(count*2),2),colors=new T.Float32BufferAttribute(new Float32Array(count*3),3),indices:number[]=[];
+ for(let r=0;r<RINGS;r++)for(let j=0;j<SEGMENTS;j++){const a=r*(SEGMENTS+1)+j,b=a+SEGMENTS+1;indices.push(a,b,a+1,a+1,b,b+1);}
+ geometry.setAttribute('position',positions);geometry.setAttribute('uv',uv);geometry.setAttribute('color',colors);geometry.setIndex(indices);
+ const material=keep(new T.MeshBasicMaterial({color:'#ffffff',side:T.DoubleSide,toneMapped:false,vertexColors:true}));
+ const mesh=new T.Mesh(geometry,material);mesh.name='HERO_COSMIC_ENVIRONMENT_APERTURE';mesh.frustumCulled=false;scene.add(mesh);
+ const reference=new T.PerspectiveCamera(38,16/9,.1,400),point=new T.Vector3();
+ let width=1920,height=1080,signature='';
+ return{mesh,material,ready:Promise.resolve(),setHeroImage(texture:T.Texture){material.map=texture;material.needsUpdate=true;},setProjection(w:number,h:number,entrance:number){
+  const key=w+':'+h+':'+entrance.toFixed(4);if(key!==width+':'+height+':'+reference.userData.entrance){signature='';}
+  width=w;height=h;reference.userData.entrance=entrance.toFixed(4);reference.aspect=w/h;
+  const c=openingCameraPose(entrance);reference.position.fromArray(c.position);reference.lookAt(...c.target as[number,number,number]);reference.updateProjectionMatrix();reference.updateMatrixWorld();
  },update(p:number,e:number,pointerX=0,pointerY=0,_liveCamera?:T.PerspectiveCamera){
-  const opening=cosmicOpeningPose(p,e,pointerX,pointerY);
-  const next=[p,e,opening.entry,opening.pointerX,opening.pointerY].map(n=>n.toFixed(5)).join(':');if(next===signature)return;signature=next;
-  const flex=opening.entry!==0||opening.pointerX!==0||opening.pointerY!==0;
-  const s=surfacePose(p,e);fold.value=Math.sin(s.open*Math.PI);
-  mesh.visible=p<.27;
-  const bottom=rest[(position.count-1)*3+1],top=rest[1],height=top-bottom;
-  for(let i=0;i<position.count;i++){
-   const u=i%97/96,v=1-Math.floor(i/97)/64;let x=rest[i*3],y=rest[i*3+1],z=-4;
-   // A shallow cylindrical leading edge preserves arclength while the opaque sheet leaves the frame.
-   const reach=height*.24,hinge=top-reach,distance=Math.max(0,y-hinge);
-   if(distance>0&&s.bend>1e-6){const radius=reach/s.bend,theta=distance/radius;y=hinge+radius*Math.sin(theta);z+=radius*(1-Math.cos(theta));}
-   y-=height*1.12*s.open;
-   position.setXYZ(i,x,y,z);
-   if(flex){point.fromBufferAttribute(position,i);deformInitialCosmicVertex(point,u,v,opening);position.setXYZ(i,point.x,point.y,point.z);}
+  const next=[p,e,pointerX,pointerY,width,height].join(':');if(next===signature)return;signature=next;
+  const opening=cosmicOpeningPose(p,e,pointerX,pointerY),imageAspect=1536/1024,viewAspect=width/height,rx=viewAspect<imageAspect?viewAspect/imageAspect:1,ry=viewAspect>imageAspect?imageAspect/viewAspect:1;
+  for(let r=0;r<=RINGS;r++)for(let j=0;j<=SEGMENTS;j++){
+   const i=r*(SEGMENTS+1)+j,s=apertureVertex(j/SEGMENTS*Math.PI*2,r/RINGS,p),u=(s.x+1)/2,v=(s.y+1)/2;
+   point.set(s.x,s.y,.5).unproject(reference).sub(reference.position);point.multiplyScalar((-4-reference.position.z)/point.z).add(reference.position);point.z+=s.z+4;
+   deformInitialCosmicVertex(point,Math.max(0,Math.min(1,u)),Math.max(0,Math.min(1,v)),opening);
+   positions.setXYZ(i,point.x,point.y,point.z);uv.setXY(i,u*rx+(1-rx)*.58,v*ry+(1-ry)*.5);colors.setXYZ(i,s.shade,s.shade,s.shade);
   }
-  position.needsUpdate=true;geometry.computeVertexNormals();geometry.computeBoundingSphere();mesh.updateMatrixWorld();
+  positions.needsUpdate=uv.needsUpdate=true;geometry.computeVertexNormals();
+  const normals=geometry.getAttribute('normal'),relief=Math.sin(Math.PI*surfacePose(p).open);
+  for(let i=0;i<count;i++){const shade=1-relief*.65*(1-Math.max(0,normals.getZ(i)));colors.setXYZ(i,shade,shade,shade);}
+  colors.needsUpdate=true;geometry.computeBoundingSphere();mesh.updateMatrixWorld();
  }};
 }

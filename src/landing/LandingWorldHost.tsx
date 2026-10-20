@@ -9,7 +9,7 @@ import {createPostHeroComposition} from './PostHeroComposition';
 import {PostHeroPreview} from '../../post-hero-preview/src/PostHeroPreview';
 import type {PostHeroState} from '../../post-hero-preview/src/Scene';
 import {createLetterCollection} from '../../post-hero-preview/src/LetterCollection';
-import {cameraPose as heroCameraPose,postConnectionPose} from './cinematic/folded/poseSpaceV19';
+import {cameraPose as heroCameraPose,openingCameraPose,postConnectionPose} from './cinematic/folded/poseSpaceV19';
 import {ROOM_WORLD,roomWorldVertex} from './cinematic/folded/approvedRoomGeometry';
 import {pointerDecay} from './cinematic/folded/pointerResponse';
 import {INTRO_SECONDS, introPose, smoothRange, type FoldPose} from './cinematic/folded/pose';
@@ -60,7 +60,7 @@ export function LandingWorldHost({language,onLanguageChange,selected,onSelect}:P
   const roomFov=(width:number,height:number)=>width<760?THREE.MathUtils.radToDeg(2*Math.atan(Math.tan(THREE.MathUtils.degToRad(24))*roomContain(width,height))):48;
   const frameFallback=()=>{
    const image=root.querySelector<HTMLImageElement>('.folded-portrait-fallback');if(!image)return;if(screen.clientWidth<761){image.style.cssText='';return;}
-   const width=screen.clientWidth,height=screen.clientHeight,initial=heroCameraPose(0,first.current?0:1,false),camera=new THREE.PerspectiveCamera(38,width/height,.1,400);
+   const width=screen.clientWidth,height=screen.clientHeight,initial=openingCameraPose(first.current?0:1),camera=new THREE.PerspectiveCamera(38,width/height,.1,400);
    camera.position.fromArray(initial.position);camera.lookAt(...initial.target as [number,number,number]);camera.updateMatrixWorld();
    const portraitWidth=6.2*1312/1199;
    const imageToWorld=new THREE.Matrix4().set(portraitWidth/1312,0,0,1.85-portraitWidth/2,0,-6.2/1199,0,3.13,0,0,1,.05,0,0,0,1);
@@ -74,7 +74,7 @@ export function LandingWorldHost({language,onLanguageChange,selected,onSelect}:P
    const room=smoothRange(.27,.38,p);camera.clearViewOffset();
    if(world){if(heroBackdrop===undefined)heroBackdrop=world.scene.background;world.scene.background=p>.72?roomBackground:heroBackdrop;}
    if(width<760){const base=THREE.MathUtils.radToDeg(2*Math.atan(Math.tan(THREE.MathUtils.degToRad(camera.fov/2))/.59));camera.fov=THREE.MathUtils.lerp(base,roomFov(width,height),room);camera.setViewOffset(width,height,0,-height*.195*(1-room),width,height);}
-   else {const contain=roomContain(width,height)-1;camera.position.y+=(ROOM_EYE.y-ROOM_TARGET.y)*contain*room;camera.position.z+=(ROOM_EYE.z-ROOM_TARGET.z)*contain*room;const target=heroCameraPose(p,pose.entrance,false).target;camera.lookAt(...target as [number,number,number]);}
+   else {const contain=roomContain(width,height)-1;camera.position.y+=(ROOM_EYE.y-ROOM_TARGET.y)*contain;camera.position.z+=(ROOM_EYE.z-ROOM_TARGET.z)*contain;const target=heroCameraPose(p,pose.entrance,false).target;camera.lookAt(...target as [number,number,number]);}
   };
   const titleLines=[...hero.querySelectorAll<HTMLElement>('.across-title-line')];
   const copy=hero.querySelector<HTMLElement>('.across-editorial')!,destination=hero.querySelector<HTMLElement>('.folded-destination')!;
@@ -113,19 +113,21 @@ export function LandingWorldHost({language,onLanguageChange,selected,onSelect}:P
   });
   const resizeObserver=new ResizeObserver(invalidate);resizeObserver.observe(root);
   const updateEditorial=(p:number,_entrance:number)=>{
-   const exit=smoothRange(.11,.23,p),appear=smoothRange(.73,.94,p),focused=copy.querySelector(':focus-visible');
+   const exit=smoothRange(.10,.19,p),appear=smoothRange(.73,.94,p),focused=copy.querySelector(':focus-visible');
    const copyExit=focused?0:exit;
    hero.style.setProperty('--hero-atmosphere-opacity',String(1-copyExit));
-   copy.style.opacity=String(1-copyExit);copy.style.setProperty('--hero-copy-opacity',String(1-copyExit));copy.style.transform=`translate3d(${-copyExit*90}px,${-copyExit*65}px,${copyExit*320}px)`;copy.style.pointerEvents=copyExit>.98?'none':'auto';copy.inert=copyExit>.98;
+   copy.style.opacity=String(1-copyExit);copy.style.setProperty('--hero-copy-opacity',String(1-copyExit));copy.style.transform='none';copy.style.pointerEvents=copyExit>.98?'none':'auto';copy.inert=copyExit>.98;
    titleLines.forEach(line=>{line.style.opacity='1';line.style.transform='none';});
    destination.style.opacity=String(appear);destination.inert=appear<.95;
-   hero.dataset.roomActive=String(p>.18);hero.dataset.introOwner=inIntro?'live-space+remotion-surface':'live';hero.dataset.introTime=pose.time.toFixed(3);
+   hero.dataset.roomActive=String(p>.18);hero.dataset.introOwner='live-space';hero.dataset.introTime=pose.time.toFixed(3);
   };
   const tick=(now:number)=>{
    if(disposed)return;frame=requestAnimationFrame(tick);
    const actualDt=last?Math.max(0,(now-last)/1000):0,dt=Math.min(actualDt,.08);last=now;
-   if(document.hidden||lost||!world)return;
-   externalTick.current?.(now);elapsed+=dt;
+   if(document.hidden)return;
+   externalTick.current?.(now);
+   if(lost||!world)return;
+   elapsed+=dt;
    const width=screen.clientWidth,height=screen.clientHeight;
    if(media.matches)pose.progress=smoothRange(0,Math.max(1,hero.offsetHeight-height),scrollY);
    if(inIntro){pose.time=Math.max(0,(now-clockStart)/1000);pose.entrance=introPose(pose.time).entrance;if(pose.time>=INTRO_SECONDS-1/60&&Number(screen.dataset.entrance)>=.999)endIntro();}else pose.time=elapsed;
@@ -178,15 +180,16 @@ export function LandingWorldHost({language,onLanguageChange,selected,onSelect}:P
     updateEditorial(1,1);destination.style.opacity=String(1-smoothRange(0,.2,bridge));destination.inert=bridge>.2;
    }
   };
+  frame=requestAnimationFrame(tick);
   void import('./cinematic/folded/previewSpaceV19').then(async({createFoldedWorld})=>{
    if(disposed)return;
-   world=createFoldedWorld(screen,{width:screen.clientWidth,height:screen.clientHeight,pixelRatio:Math.min(devicePixelRatio,innerWidth<760?1.25:1.5),portrait:PORTRAIT,portraitMask:PORTRAIT_MASK,beforeRender:frameHero,surfaceFilm:'/motion/folded-playhouse-lightwell.mp4',introSurfaceFilm:'/motion/folded-playhouse-gift-edge-v18.mp4',onFrame:data=>{Object.assign(screen.dataset,data,{frameRenderingMode:'hero-curved-SSR'});if(!disposed&&(first.current||Number(data.entrance)>=.999))setReady(true);}});
+   world=createFoldedWorld(screen,{width:screen.clientWidth,height:screen.clientHeight,pixelRatio:Math.min(devicePixelRatio,innerWidth<760?1.25:1.5),portrait:PORTRAIT,portraitMask:PORTRAIT_MASK,beforeRender:frameHero,onFrame:data=>{Object.assign(screen.dataset,data,{frameRenderingMode:'hero-curved-aperture'});if(!disposed&&(first.current||Number(data.entrance)>=.999))setReady(true);}});
    await world.ready;if(disposed)return;
    post=createLetterCollection({scene:world.scene,camera:world.camera,host:screen});post.root.visible=false;
    composition=createPostHeroComposition(world.scene,invalidate);
    gallery=createGalleryCollection(invalidate);gallery.root.visible=false;
    postStage=new THREE.Group();postStage.name='POST_SHARED_FOREGROUND_STAGE';postStage.matrix.copy(postTransform);postStage.matrixAutoUpdate=false;postStage.add(composition.root,gallery.root,post.root);world.scene.add(postStage);
-   setPostReady(true);clockStart=performance.now();world.render(pose);frame=requestAnimationFrame(tick);resize();
+   setPostReady(true);clockStart=performance.now();world.render(pose);resize();
   }).catch(error=>{if(disposed)return;console.error('Landing world:',error);endIntro();post?.dispose();gallery?.dispose();composition?.dispose();world?.dispose();world=undefined;setReady(false);setFailed(true);});
   root.addEventListener('pointermove',move);root.addEventListener('pointerleave',resetPointer);root.addEventListener('pointerdown',down);root.addEventListener('pointerup',up);root.addEventListener('pointercancel',resetPointer);window.addEventListener('resize',resize);window.addEventListener('scroll',invalidate,{passive:true});media.addEventListener('change',preference);screen.addEventListener('webglcontextlost',contextLost);screen.addEventListener('webglcontextrestored',contextRestored);document.addEventListener('visibilitychange',visibility);
   return()=>{disposed=true;cancelAnimationFrame(frame);mm.revert();resizeObserver.disconnect();post?.dispose();gallery?.dispose();composition?.dispose();postStage?.removeFromParent();world?.dispose();root.removeEventListener('pointermove',move);root.removeEventListener('pointerleave',resetPointer);root.removeEventListener('pointerdown',down);root.removeEventListener('pointerup',up);root.removeEventListener('pointercancel',resetPointer);window.removeEventListener('resize',resize);window.removeEventListener('scroll',invalidate);media.removeEventListener('change',preference);screen.removeEventListener('webglcontextlost',contextLost);screen.removeEventListener('webglcontextrestored',contextRestored);document.removeEventListener('visibilitychange',visibility);};

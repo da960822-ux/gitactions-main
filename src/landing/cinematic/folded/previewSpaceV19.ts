@@ -1,182 +1,68 @@
-import {ROOM_WORLD} from './approvedRoomGeometry';
+import * as T from 'three';
+import {HDRLoader} from 'three/addons/loaders/HDRLoader.js';
+import {ROOM_WORLD,roomWorldVertex} from './approvedRoomGeometry';
+import {heroStageProjection} from './initialCosmicHero';
 import {createApprovedGamingRoom} from './ApprovedGamingRoom';
 import {createStorySurface,surfacePose} from './storySurfaceV19';
-import {createRoomThreshold} from './RoomThreshold';
-import {sampleArrivalCove,type CoveSample} from './arrivalCoveV15';
-import {applyMineralDetail} from './mineralDetail';
-import {createCurvedFloorReflection} from './curvedReflectionV19';
-import {sampleShellTwist,type ShellTwistSample} from './shellTwist';
-import {floorSupportShape,sampleFloorSupport,type SupportSample} from './floorSupportV19';
-import {applyRigidPose,portraitStagePose,heroHingePose} from './stageMotionV19';
-import * as T from 'three';
-import {GLTFLoader} from 'three/addons/loaders/GLTFLoader.js';
-import {HDRLoader} from 'three/addons/loaders/HDRLoader.js';
-import {EXRLoader} from 'three/addons/loaders/EXRLoader.js';
-import {RectAreaLightUniformsLib} from 'three/addons/lights/RectAreaLightUniformsLib.js';
-import {cameraPose,clamp01,smoothRange,surfaceWeights,type FoldPose} from './poseSpaceV19';
-export type WorldOptions={width:number;height:number;pixelRatio:number;portrait:string;portraitMask?:string;surfaceFilm?:string;introSurfaceFilm?:string;beforeRender?:(camera:T.PerspectiveCamera,progress:number,width:number,height:number)=>void;onFrame?:(data:Record<string,string>)=>void};
-export type LandingSceneModule={root:T.Group;anchor:T.Vector3;setSelected?:(id:string)=>void;setInputEnabled?:(enabled:boolean)=>void;dispose:()=>void};
-export const CHAMBER_RENDER_CONTRACT={assetVersion:'approved-room-continuous-world-20261018',storageScale:1,unitToIrradiance:Math.PI,bakePoses:[0,.43,1],diffuse:'hybrid-rest-GI-and-live-prototype',environment:'authored-specular-and-indirect-diffuse-probes',normalUV:0,normalFlipY:false,diffuseFlipY:true}as const;
-const ASSET='/models/folded-chamber-v7/';
+import {cameraPose,clamp01,smoothRange,type FoldPose} from './poseSpaceV19';
+export type WorldOptions={width:number;height:number;pixelRatio:number;portrait:string;portraitMask?:string;beforeRender?:(camera:T.PerspectiveCamera,progress:number,width:number,height:number)=>void;onFrame?:(data:Record<string,string>)=>void};
+
+export function portraitDeparture(progress:number){
+ const leave=smoothRange(.10,.20,progress);
+ return{z:-1.4*leave,opacity:1-leave};
+}
 
 export function createFoldedWorld(canvas:HTMLCanvasElement,options:WorldOptions){
- let pendingFrameData:Record<string,string>|null=null;let renderSerial=0;let disposed=false,width=options.width,height=options.height,lastSignature='',lastShadowPose='',lastFloorPose='';
+ let disposed=false,width=options.width,height=options.height,lastSignature='',stageProjectionKey='',renderSerial=0;
  const owned=new Set<{dispose:()=>void}>(),start=performance.now(),marks:Record<string,number>={};
  const keep=<A extends{dispose:()=>void}>(a:A)=>{if(disposed)a.dispose();else owned.add(a);return a;};
  const renderer=new T.WebGLRenderer({canvas,antialias:true,powerPreference:'high-performance'});
- renderer.setPixelRatio(options.pixelRatio);renderer.setSize(width,height,false);renderer.outputColorSpace=T.SRGBColorSpace;renderer.toneMapping=T.AgXToneMapping;renderer.toneMappingExposure=1;renderer.info.autoReset=false;renderer.localClippingEnabled=true;
- const fenceGL=renderer.getContext()as WebGL2RenderingContext;let pendingFence:WebGLSync|null=null,skippedWhilePending=0;const resetFence=()=>{pendingFence=null;pendingFrameData=null;lastSignature='';};canvas.addEventListener('webglcontextlost',resetFence);canvas.addEventListener('webglcontextrestored',resetFence);
- const scene=new T.Scene();scene.background=new T.Color('#100a13');const foldedHorizon=new T.Plane(new T.Vector3(0,0,1),12);renderer.clippingPlanes=[foldedHorizon];
- const camera=new T.PerspectiveCamera(38,width/height,.1,400);
- const storySurface=createStorySurface(scene,keep);const corridorEnd=new T.Plane(new T.Vector3(0,0,1),45);
- const foldWarm=new T.RectAreaLight('#efb28c',14,7,9);foldWarm.position.set(-5,5,-8);foldWarm.lookAt(-2,0,-12);const foldCool=new T.RectAreaLight('#9baad4',5,5,8);foldCool.position.set(5,4,-15);foldCool.lookAt(-2,0,-12);scene.add(foldWarm,foldCool);
- const twistMeshes:{mesh:T.Mesh;positions:Float32Array;normals:Float32Array;inverse:T.Matrix4;normalInverse:T.Matrix3}[]=[],twistSample:ShellTwistSample={x:0,z:0,xx:0,xz:0,zx:0,zz:0},workPosition=new T.Vector3(),workNormal=new T.Vector3();
- const portraitRig=new T.Group(),shellRig=new T.Group();portraitRig.name='PORTRAIT_AND_ROOTED_STAGE';shellRig.name='HERO_FINISHED_HINGE';scene.add(portraitRig,shellRig);
- const progressUniform={value:0},environmentMix={value:0},apertureMix={value:0},environmentArrival={value:null as T.Texture|null};
- const textureLoader=new T.TextureLoader(),exrLoader=new EXRLoader();
- let cosmicSky:T.Texture|undefined;
- const skyReady=textureLoader.loadAsync('/images/our-universe-scene.webp').then(texture=>{cosmicSky=keep(texture);texture.colorSpace=T.SRGBColorSpace;scene.background=new T.Color('#120c14');storySurface.setHeroImage(texture);fitSky();});
- function fitSky(){if(!cosmicSky)return;cosmicSky.repeat.set(1,1);cosmicSky.offset.set(0,0);}
- const glassMaterials:T.MeshStandardMaterial[]=[];
- const floorAnchor={value:new T.Vector2(1.85,.05)};
- // The camera approaches the approved rigid illustration; only the cosmic sheet folds.
- const arrivalWarm=new T.PointLight('#f3b084',28,28,2);arrivalWarm.position.set(-10,4,-57);const arrivalCool=new T.PointLight('#929de0',14,24,2);arrivalCool.position.set(2,5,-61);scene.add(arrivalWarm,arrivalCool);
- const inkCanvas=document.createElement('canvas');inkCanvas.width=1024;inkCanvas.height=512;const ink=inkCanvas.getContext('2d')!;ink.clearRect(0,0,1024,512);ink.textAlign='center';ink.fillStyle='#d4a589';ink.font='28px sans-serif';ink.fillText('한국',220,165);ink.font='24px sans-serif';ink.fillText('República Dominicana',710,345);ink.strokeStyle='#a87454';ink.lineWidth=2;ink.beginPath();ink.moveTo(250,200);ink.bezierCurveTo(400,175,500,370,660,350);ink.stroke();
- const floorInk=keep(new T.CanvasTexture(inkCanvas));floorInk.colorSpace=T.SRGBColorSpace;
-
-
- const loadNormal=(file:string)=>textureLoader.loadAsync(ASSET+file).then(t=>{keep(t);t.flipY=CHAMBER_RENDER_CONTRACT.normalFlipY;t.colorSpace=T.NoColorSpace;t.generateMipmaps=true;t.anisotropy=Math.min(4,renderer.capabilities.getMaxAnisotropy());return t;});
- const loadDiffuse=(file:string)=>exrLoader.loadAsync(ASSET+file).then(t=>{keep(t);t.flipY=CHAMBER_RENDER_CONTRACT.diffuseFlipY;t.colorSpace=T.NoColorSpace;t.generateMipmaps=false;t.minFilter=t.magFilter=T.LinearFilter;return t;});
- const hdrLoader=new HDRLoader(),pmrem=new T.PMREMGenerator(renderer);pmrem.compileEquirectangularShader();
- const environments=Promise.all(['hero-environment','arrival-environment','hero-indirect','arrival-indirect'].map(async name=>{const source=await hdrLoader.loadAsync('/models/folded-chamber-r8-space-v6/'+name+'.hdr');source.mapping=T.EquirectangularReflectionMapping;if(disposed){source.dispose();return null;}const map=keep(pmrem.fromEquirectangular(source)).texture;map.name='space-v2-'+name+'-authored-probe';source.dispose();return map;})).then(([hero,arrival,indirectHero,indirectArrival])=>{pmrem.dispose();environmentArrival.value=arrival;return[hero,arrival,hero,arrival,indirectHero,indirectArrival];},error=>{pmrem.dispose();throw error;});
- RectAreaLightUniformsLib.init();
- renderer.shadowMap.enabled=true;renderer.shadowMap.type=T.PCFSoftShadowMap;renderer.shadowMap.autoUpdate=false;
- const coveSample:CoveSample={x:0,y:0,xx:1,xy:0,xz:0,yy:1,yz:0};
- const deformableLights:{light:T.RectAreaLight;position:number[];target:number[];size:number[];power:number}[]=[];
- const supportMeshes:{mesh:T.Mesh;positions:Float32Array;normals:Float32Array}[]=[],supportSample:SupportSample={height:0,dx:0,dy:0,dz:0};
- const lightingCards:T.Mesh[]=[],floorReceivers:T.Mesh[]=[],moving:{mesh:T.Mesh;kind:string}[]=[],materials:T.MeshStandardMaterial[]=[];
- const atrium=createApprovedGamingRoom(scene,keep);floorReceivers.push(atrium.floor);
- const threshold=createRoomThreshold(scene,keep);
- const roomLighting=new T.Group();roomLighting.name='APPROVED_ROOM_PRACTICAL_LIGHTING';roomLighting.visible=false;scene.add(roomLighting);
- const roomHemi=new T.HemisphereLight('#ffe0ba','#352837',.7);roomLighting.add(roomHemi);
- const roomKey=new T.DirectionalLight('#ffe3bf',2.1);roomKey.position.set(-12,7,-1);roomKey.target.position.set(-6,-2,-9);roomKey.castShadow=true;roomKey.shadow.mapSize.set(1024,1024);Object.assign(roomKey.shadow.camera,{left:-14,right:14,top:12,bottom:-12,near:1,far:50});roomKey.shadow.normalBias=.015;roomKey.shadow.bias=-.00015;roomLighting.add(roomKey,roomKey.target);
- const contact=new T.Mesh(keep(new T.PlaneGeometry(36,30)),keep(new T.ShadowMaterial({color:'#2e1820',opacity:.33,depthWrite:false})));contact.name='ORIGINAL_DESK_CONTACT_SHADOWS_ONLY';contact.rotation.x=-Math.PI/2;contact.position.set(ROOM_WORLD.x,ROOM_WORLD.desk-.01,ROOM_WORLD.z+1);contact.receiveShadow=true;contact.visible=false;roomLighting.add(contact);
- const curvedReflection=createCurvedFloorReflection(renderer,scene,camera,floorReceivers);
- let film:HTMLVideoElement|undefined,filmTexture:T.VideoTexture|undefined,lastFilmTime=-1,introFilm:HTMLVideoElement|undefined,introTexture:T.VideoTexture|undefined,lastIntroTime=-1;
- const mediaReady:Promise<void>[]=[];
- const decoded=(video:HTMLVideoElement)=>new Promise<void>((resolve,reject)=>{video.addEventListener('loadeddata',()=>resolve(),{once:true});video.addEventListener('error',()=>reject(Error('Surface film load failed: '+video.src)),{once:true});});
- const invalidate=()=>{lastSignature='';};
- if(options.surfaceFilm){film=document.createElement('video');film.src=options.surfaceFilm;film.muted=true;film.playsInline=true;film.preload='auto';filmTexture=keep(new T.VideoTexture(film));filmTexture.colorSpace=T.SRGBColorSpace;film.addEventListener('seeked',invalidate);film.addEventListener('loadeddata',invalidate);mediaReady.push(decoded(film));film.load();}
- if(options.introSurfaceFilm){introFilm=document.createElement('video');introFilm.src=options.introSurfaceFilm;introFilm.muted=true;introFilm.playsInline=true;introFilm.preload='auto';introTexture=keep(new T.VideoTexture(introFilm));introTexture.colorSpace=T.SRGBColorSpace;introFilm.addEventListener('seeked',invalidate);introFilm.addEventListener('loadeddata',invalidate);mediaReady.push(decoded(introFilm));introFilm.load();}
- storySurface.material.emissiveMap=introTexture??filmTexture??null;storySurface.material.needsUpdate=true;
- // shortcut: three baked poses interpolate indirect light; add samples if motion QA reveals shadow drift.
- const atlasCache=new Map<string,Promise<{maps:T.DataTexture[];normal:T.Texture}>>();
- function atlas(stem:string,normal:string,restOnly=false){
-  const key=stem+(restOnly?':rest':'');
-  if(!atlasCache.has(key))atlasCache.set(key,Promise.all([Promise.all((restOnly?['0']:['0','0_43','1']).map(p=>loadDiffuse(stem+'-diffuse-'+p+'.exr'))),loadNormal(normal)]).then(([maps,normal])=>({maps:restOnly?[maps[0],maps[0],maps[0]]:maps,normal})));
-  return atlasCache.get(key)!;
- }
- const modelReady=Promise.all([new GLTFLoader().loadAsync('/models/folded-chamber-r8-space-v6/chamber.glb'),environments]).then(async([gltf,env])=>{
-  if(disposed)return;const root=gltf.scene;root.name='VERSIONED_SHARED_CHAMBER';scene.add(root);scene.environment=env[0];scene.environmentIntensity=.18;const pending:Promise<void>[]=[],areaSources=new Set<string>(),hingeRoots=new Set<T.Object3D>(),stageRoots=new Set<T.Object3D>();
-  root.traverse(object=>{
-   if(!(object instanceof T.Mesh))return;keep(object.geometry);if(object.userData.lighting_card||object.parent?.userData.lighting_card){lightingCards.push(object);object.visible=false;}const areaData=object.userData.rect_area_position?object.userData:object.parent?.userData;{const data=areaData;if(data?.rect_area_position&&!areaSources.has(JSON.stringify(data.rect_area_position))){areaSources.add(JSON.stringify(data.rect_area_position));const size=data.rect_area_size,key=JSON.stringify(data.rect_area_position);
-if(key===JSON.stringify([-3.5,6.5,6])){const light=new T.SpotLight(new T.Color().fromArray(data.rect_area_color),data.rect_area_power*size[0]*size[1],40,.9,.4,2);light.position.fromArray(data.rect_area_position);light.target.position.fromArray(data.rect_area_target);light.castShadow=true;const shadowSize=Math.max(512,Math.min(2048,2**Math.round(Math.log2(height*options.pixelRatio*1.5))));light.shadow.mapSize.set(shadowSize,shadowSize);light.shadow.camera.near=.2;light.shadow.camera.far=40;light.shadow.bias=-.0002;light.shadow.normalBias=.035;light.shadow.radius=4;light.shadow.blurSamples=8;scene.add(light,light.target);}else{const area=new T.RectAreaLight(new T.Color().fromArray(data.rect_area_color),data.rect_area_power,size[0],size[1]);area.position.fromArray(data.rect_area_position);area.lookAt(new T.Vector3().fromArray(data.rect_area_target));scene.add(area);if(object.name.startsWith('Lightwell_'))deformableLights.push({light:area,position:[...data.rect_area_position],target:[...data.rect_area_target],size:[...size],power:data.rect_area_power});}}}
-   let rigOwner:T.Object3D|null=object;while(rigOwner&&!rigOwner.userData.hingeRig&&!rigOwner.userData.portraitStage)rigOwner=rigOwner.parent;if(rigOwner?.userData.hingeRig){hingeRoots.add(rigOwner);object.updateWorldMatrix(true,false);const pos=object.geometry.getAttribute('position'),normal=object.geometry.getAttribute('normal'),positions=new Float32Array(pos.count*3),normals=new Float32Array(normal.count*3),normalMatrix=new T.Matrix3().getNormalMatrix(object.matrixWorld);for(let i=0;i<pos.count;i++){workPosition.fromBufferAttribute(pos,i).applyMatrix4(object.matrixWorld);workNormal.fromBufferAttribute(normal,i).applyMatrix3(normalMatrix).normalize();positions.set(workPosition.toArray(),i*3);normals.set(workNormal.toArray(),i*3);}twistMeshes.push({mesh:object,positions,normals,inverse:object.matrixWorld.clone().invert(),normalInverse:normalMatrix.clone().invert()});object.frustumCulled=false;}if(rigOwner?.userData.portraitStage)stageRoots.add(rigOwner);
-   let owner:T.Object3D|null=object;while(owner&&!owner.userData.lightmapStem&&!owner.userData.normalMap)owner=owner.parent;
-   if(owner?.userData.floorSupport||/^(Warm_Recessed_Lightwell|Lightwell_)/.test(object.name)){const pos=object.geometry.getAttribute('position'),normal=object.geometry.getAttribute('normal'),positions=new Float32Array(pos.count*3),normals=new Float32Array(normal.count*3);for(let i=0;i<pos.count;i++){positions.set([pos.getX(i),pos.getY(i),pos.getZ(i)],i*3);normals.set([normal.getX(i),normal.getY(i),normal.getZ(i)],i*3);}pos.setUsage(T.DynamicDrawUsage);normal.setUsage(T.DynamicDrawUsage);object.geometry.computeBoundingSphere();object.geometry.boundingSphere!.radius+=1;object.frustumCulled=false;supportMeshes.push({mesh:object,positions,normals});}
-   if(object.morphTargetInfluences)moving.push({mesh:object,kind:String(owner?.userData.motionGroup??object.userData.motionGroup??'shell')});
-   const stem=owner?.userData.lightmapStem as string|undefined,unbaked=Boolean(owner?.userData.previewUnbaked),restOnly=Boolean(owner?.userData.restBakeOnly);object.castShadow=!lightingCards.includes(object);object.receiveShadow=true;
-   const sourceMaterials=Array.isArray(object.material)?object.material:[object.material];
-   const copies=sourceMaterials.map(source=>{
-    keep(source);const m=keep(source.clone())as T.MeshStandardMaterial;materials.push(m);m.clippingPlanes=[corridorEnd];m.clipShadows=true;m.userData.mineralDetail=unbaked&&!m.name.includes('woven light')&&!m.name.includes('emitter');const heroGlass=object.name.startsWith('Shared_Sculpted_Cove')||object.name.startsWith('Retained_Hero_Wing')||((m.name.includes('Warm mineral plaster')||m.name.includes('Burgundy satin architecture'))&&Boolean(owner?.userData.floorSupport));
-    if(heroGlass){m.transparent=true;m.depthWrite=false;m.opacity=.025;m.color.set('#b6aaa0');m.roughness=.8;m.metalness=.08;m.userData.cosmicGlass=true;glassMaterials.push(m);}
-    if(m.name.includes('Soft rose gold')||m.name.includes('woven light')){m.color.set('#9e6045');m.emissive?.set('#2b100b');m.emissiveIntensity=.18;m.roughness=.38;}
-    if(m.name.includes('Satin graphite stone')){m.color.set('#735247');m.roughness=.72;m.metalness=.08;m.envMapIntensity=.5;}
-    const localWine=m.name.includes('Deep burgundy mineral');m.envMap=localWine?env[2]:env[0];m.envMapIntensity=heroGlass?.16:m.name.includes('Satin graphite stone')?.22:1;
-    if(!stem&&owner?.userData.normalMap)pending.push(loadNormal(owner.userData.normalMap).then(t=>{m.normalMap=t;m.normalScale.set(1,object.geometry.hasAttribute('tangent')?1:-1);m.needsUpdate=true;}));
-    const copyMaterial=['Warm mineral plaster','Satin graphite stone','Deep burgundy mineral'].some(name=>m.name.includes(name));const floor=m.name.includes('Satin graphite stone');if(floor)floorReceivers.push(object);
-    pending.push((stem&&!unbaked?atlas(stem,owner!.userData.normalMap,restOnly):Promise.resolve(undefined)).then(data=>{
-     if(data){m.lightMap=data.maps[0];m.lightMapIntensity=Number(owner!.userData.lightmapStorageScale)*Number(owner!.userData.lightmapUnitToIrradiance)*(heroGlass?.18:1);m.normalMap=data.normal;m.normalScale.set(1,object.geometry.hasAttribute('tangent')?1:-1);}
-     const filmSurface=Boolean(filmTexture&&m.name.includes('woven light'));
-     if(filmSurface)m.emissiveMap=filmTexture!;
-     m.onBeforeCompile=shader=>{
-      shader.vertexShader='varying vec3 vSpaceWorld;\n'+shader.vertexShader;shader.vertexShader=shader.vertexShader.replace('#include <project_vertex>','#include <project_vertex>\nvSpaceWorld=(modelMatrix*vec4(transformed,1.)).xyz;');
-      shader.uniforms.uFloorAnchor=floorAnchor;shader.uniforms.uFloorInk={value:floorInk};shader.uniforms.uIndirectHero={value:env[4]};shader.uniforms.uIndirectArrival={value:env[5]};shader.uniforms.uShellOpen=apertureMix;
-      shader.uniforms.uBakeProgress=progressUniform;shader.uniforms.uEnvMix=localWine?apertureMix:environmentMix;shader.uniforms.uArrivalEnv=localWine?{value:env[3]}:environmentArrival;
-      let maps=T.ShaderChunk.lights_fragment_maps;if(data&&!restOnly)maps=maps.replace('iblIrradiance += getIBLIrradiance( geometryNormal );','');if(restOnly){maps=maps.replace('iblIrradiance += getIBLIrradiance( geometryNormal );','iblIrradiance += getIBLIrradiance( geometryNormal )*uShellOpen;').replace('vec3 lightMapIrradiance = lightMapTexel.rgb * lightMapIntensity;','vec3 lightMapIrradiance = lightMapTexel.rgb * lightMapIntensity * (1.0-uShellOpen);');}
-      if(data){shader.uniforms.uDiffuseMid={value:data.maps[1]};shader.uniforms.uDiffuseEnd={value:data.maps[2]};maps=maps.replace('vec4 lightMapTexel = texture2D( lightMap, vLightMapUv );',`vec4 lightMapTexel = uBakeProgress < 0.43 ? mix(texture2D(lightMap,vLightMapUv),texture2D(uDiffuseMid,vLightMapUv),uBakeProgress/0.43) : mix(texture2D(uDiffuseMid,vLightMapUv),texture2D(uDiffuseEnd,vLightMapUv),(uBakeProgress-0.43)/0.57);`);}
-      shader.fragmentShader='uniform vec2 uFloorAnchor;uniform sampler2D uFloorInk;uniform sampler2D uIndirectHero;uniform sampler2D uIndirectArrival;uniform float uShellOpen;varying vec3 vSpaceWorld;uniform float uBakeProgress;uniform float uEnvMix;uniform sampler2D uArrivalEnv;'+(data?'uniform sampler2D uDiffuseMid;uniform sampler2D uDiffuseEnd;':'')+'\n'+shader.fragmentShader;
-      shader.fragmentShader=shader.fragmentShader.replace('#include <lights_fragment_maps>',maps).replace('#include <envmap_physical_pars_fragment>',T.ShaderChunk.envmap_physical_pars_fragment.replace('vec4 envMapColor = textureCubeUV( envMap, envMapRotation * worldNormal, 1.0 );','vec4 envMapColor=mix(textureCubeUV(uIndirectHero,envMapRotation*worldNormal,1.0),textureCubeUV(uIndirectArrival,envMapRotation*worldNormal,1.0),smoothstep(12.,55.,-vSpaceWorld.z));').replace('vec4 envMapColor = textureCubeUV( envMap, envMapRotation * reflectVec, roughness );','vec4 envMapColor = mix(textureCubeUV(envMap,envMapRotation*reflectVec,roughness),textureCubeUV(uArrivalEnv,envMapRotation*reflectVec,roughness),smoothstep(12.,55.,-vSpaceWorld.z));'));
-      shader.fragmentShader=shader.fragmentShader.replace('#include <lights_fragment_end>','#include <lights_fragment_end>\n'+(floor?'reflectedLight.directSpecular*=.06;':!unbaked?'reflectedLight.directSpecular=vec3(0.);':'')+(copyMaterial?'float copyLightLink=(1.-smoothstep(18.,36.,-vSpaceWorld.z))*(1.-smoothstep(-4.,-1.,vSpaceWorld.x));reflectedLight.indirectSpecular*=mix(1.,.12,copyLightLink);':'')+(data?(restOnly?'reflectedLight.directDiffuse*=uShellOpen;':'reflectedLight.directDiffuse=vec3(0.);'):''));
-      if(copyMaterial)shader.fragmentShader=shader.fragmentShader.replace('#include <color_fragment>','#include <color_fragment>\nfloat copyZone=(1.-smoothstep(18.,36.,-vSpaceWorld.z))*(1.-smoothstep(-4.,-1.,vSpaceWorld.x));diffuseColor.rgb=mix(diffuseColor.rgb,vec3(.016,.006,.014),copyZone);').replace('#include <roughnessmap_fragment>','#include <roughnessmap_fragment>\nfloat copyRough=(1.-smoothstep(18.,36.,-vSpaceWorld.z))*(1.-smoothstep(-4.,-1.,vSpaceWorld.x));roughnessFactor=mix(roughnessFactor,.82,copyRough);');
-      if(floor)shader.fragmentShader=shader.fragmentShader.replace('#include <emissivemap_fragment>','#include <emissivemap_fragment>\nfloat edgeCurve=uFloorAnchor.y-.2+.013*pow(vSpaceWorld.x-uFloorAnchor.x,2.);float edgeLight=exp(-pow((vSpaceWorld.z-edgeCurve)/.028,2.))*(1.-smoothstep(10.,19.,abs(vSpaceWorld.x-uFloorAnchor.x)));totalEmissiveRadiance+=vec3(.38,.135,.065)*edgeLight;vec2 inkUv=vec2((vSpaceWorld.x+11.)/14.,(-vSpaceWorld.z-48.)/14.);if(all(greaterThanEqual(inkUv,vec2(0.)))&&all(lessThanEqual(inkUv,vec2(1.)))){vec4 words=texture2D(uFloorInk,inkUv);totalEmissiveRadiance+=words.rgb*words.a*.25*uShellOpen;}');
-      if(filmSurface)shader.fragmentShader=shader.fragmentShader.replace('#include <emissivemap_fragment>','totalEmissiveRadiance += texture2D(emissiveMap,vEmissiveMapUv).rgb*.045;');
-
-      if(m.userData.mineralDetail)applyMineralDetail(shader);
-     };
-     m.customProgramCacheKey=()=>[Boolean(data),restOnly,floor,filmSurface,copyMaterial,Boolean(m.userData.mineralDetail),'chamber-r8.space-v7'].join(':');m.needsUpdate=true;
-    }));return m;
-   });
-   object.material=Array.isArray(object.material)?copies:copies[0];
-  });for(const obj of stageRoots)portraitRig.attach(obj);root.visible=false;await Promise.all(pending);marks.model=performance.now()-start;
- });
- const portraitMaterial=keep(new T.MeshBasicMaterial({transparent:true,alphaTest:.025,toneMapped:false}));
- const portrait=new T.Mesh(keep(new T.PlaneGeometry(options.portraitMask?6.2*1312/1199:5.9,options.portraitMask?6.2:5.9)),portraitMaterial);portrait.name='APPROVED_UNCHANGED_PORTRAIT';portrait.castShadow=true;portrait.position.set(1.85,.03,.05);portraitRig.add(portrait);
- const portraitDepth=keep(new T.MeshDepthMaterial({depthPacking:T.RGBADepthPacking,alphaTest:.025}));portrait.customDepthMaterial=portraitDepth;
- const portraitReady=textureLoader.loadAsync(options.portrait).then(texture=>{keep(texture);texture.colorSpace=T.SRGBColorSpace;portraitMaterial.map=texture;portraitMaterial.needsUpdate=true;portraitDepth.map=texture;portraitDepth.needsUpdate=true;});
- const portraitMaskReady=options.portraitMask?textureLoader.loadAsync(options.portraitMask).then(texture=>{keep(texture);texture.colorSpace=T.NoColorSpace;portraitMaterial.alphaMap=texture;portraitDepth.alphaMap=texture;portraitMaterial.needsUpdate=portraitDepth.needsUpdate=true;}):Promise.resolve();
- const gl=renderer.getContext(),debug=gl.getExtension('WEBGL_debug_renderer_info'),rendererName=debug?String(gl.getParameter(debug.UNMASKED_RENDERER_WEBGL)):'unreported';
- const ready=Promise.all([modelReady,portraitReady,portraitMaskReady,skyReady,storySurface.ready,atrium.ready,...mediaReady]).then(async()=>{
-  if(disposed)return;marks.assets=performance.now()-start;
-  // Compile and complete a real first frame before the caller starts the entry clock.
-  const warmupStart=performance.now();render({progress:0,entrance:0,pointerX:0,pointerY:0,time:0});
-  await new Promise<void>((resolve,reject)=>{const poll=()=>{if(disposed){resolve();return;}if(performance.now()-warmupStart>240000){reject(Error('First-frame warmup timeout'));return;}const status=pendingFence?fenceGL.clientWaitSync(pendingFence,0,0):fenceGL.ALREADY_SIGNALED;if(status===fenceGL.TIMEOUT_EXPIRED){setTimeout(poll,16);return;}if(status===fenceGL.WAIT_FAILED){reject(Error('First-frame GPU fence failed'));return;}resolve();};poll();});
-  if(disposed)return;const readbackStart=performance.now();gl.readPixels(0,0,1,1,gl.RGBA,gl.UNSIGNED_BYTE,new Uint8Array(4));marks.warmupReadback=performance.now()-readbackStart;marks.firstFrameWarmup=performance.now()-warmupStart;
-  if(gl.getError()!==gl.NO_ERROR)throw Error('First-frame WebGL failure');
-  if(pendingFence){fenceGL.deleteSync(pendingFence);pendingFence=null;}publishCompletedFrame();
- });
- function publishCompletedFrame(){if(!pendingFrameData||disposed)return;pendingFrameData.fenceCompletedAtMs=performance.now().toFixed(3);pendingFrameData.initMarks=JSON.stringify(marks);options.onFrame?.(pendingFrameData);pendingFrameData=null;}
+ renderer.setPixelRatio(options.pixelRatio);renderer.setSize(width,height,false);renderer.outputColorSpace=T.SRGBColorSpace;renderer.toneMapping=T.AgXToneMapping;renderer.toneMappingExposure=1;renderer.info.autoReset=false;renderer.shadowMap.enabled=true;renderer.shadowMap.type=T.PCFSoftShadowMap;renderer.shadowMap.autoUpdate=false;
+ const gl=renderer.getContext()as WebGL2RenderingContext;let pendingFence:WebGLSync|null=null,pendingFrameData:Record<string,string>|null=null,skippedWhilePending=0;
+ const resetFence=()=>{pendingFence=null;pendingFrameData=null;lastSignature='';};canvas.addEventListener('webglcontextlost',resetFence);canvas.addEventListener('webglcontextrestored',resetFence);
+ const scene=new T.Scene();scene.background=new T.Color('#120c14');const camera=new T.PerspectiveCamera(48,width/height,.1,400);
+ const storySurface=createStorySurface(scene,keep),atrium=createApprovedGamingRoom(scene,keep);
+ const portraitRig=new T.Group();portraitRig.name='APPROVED_FACE_FRONT_PORTRAIT';
+ const heroStage=new T.Group();heroStage.name='APPROVED_HERO_NEAR_ROOM_STAGE';heroStage.matrixAutoUpdate=false;scene.add(heroStage);heroStage.add(storySurface.mesh,portraitRig);
+ const portraitMaterial=keep(new T.MeshBasicMaterial({transparent:true,alphaTest:.005,toneMapped:false,depthWrite:false}));
+ const portrait=new T.Mesh(keep(new T.PlaneGeometry(options.portraitMask?6.2*1312/1199:5.9,options.portraitMask?6.2:5.9)),portraitMaterial);portrait.name='APPROVED_UNCHANGED_PORTRAIT';portrait.position.set(1.85,.03,.05);portraitRig.add(portrait);
+ const loader=new T.TextureLoader();
+ const skyReady=loader.loadAsync('/images/our-universe-scene.webp').then(texture=>{keep(texture);texture.colorSpace=T.SRGBColorSpace;storySurface.setHeroImage(texture);});
+ const portraitReady=loader.loadAsync(options.portrait).then(texture=>{keep(texture);texture.colorSpace=T.SRGBColorSpace;portraitMaterial.map=texture;portraitMaterial.needsUpdate=true;});
+ const maskReady=options.portraitMask?loader.loadAsync(options.portraitMask).then(texture=>{keep(texture);texture.colorSpace=T.NoColorSpace;portraitMaterial.alphaMap=texture;portraitMaterial.needsUpdate=true;}):Promise.resolve();
+ let arrivalEnvironment:T.Texture|null=null;
+ const pmrem=new T.PMREMGenerator(renderer);
+ const environmentReady=new HDRLoader().loadAsync('/models/folded-chamber-r8-space-v6/arrival-environment.hdr').then(source=>{
+  if(disposed){source.dispose();pmrem.dispose();return;}source.mapping=T.EquirectangularReflectionMapping;arrivalEnvironment=keep(pmrem.fromEquirectangular(source)).texture;source.dispose();pmrem.dispose();
+ },error=>{pmrem.dispose();throw error;});
+ const debug=gl.getExtension('WEBGL_debug_renderer_info'),rendererName=debug?String(gl.getParameter(debug.UNMASKED_RENDERER_WEBGL)):'unreported';
+ function publish(){if(!pendingFrameData||disposed)return;pendingFrameData.fenceCompletedAtMs=performance.now().toFixed(3);options.onFrame?.(pendingFrameData);pendingFrameData=null;}
+ function finishPending(){if(!pendingFence)return true;const status=gl.clientWaitSync(pendingFence,0,0);if(status===gl.TIMEOUT_EXPIRED){skippedWhilePending++;return false;}gl.deleteSync(pendingFence);pendingFence=null;publish();return true;}
+ function submit(){renderer.info.reset();renderer.render(scene,camera);pendingFence=gl.fenceSync(gl.SYNC_GPU_COMMANDS_COMPLETE,0);gl.flush();}
  function render(pose:FoldPose){
-  if(disposed)return;const signature=[pose.progress,pose.entrance,pose.pointerX,pose.pointerY].map(n=>n.toFixed(4)).join(',');if(pendingFence){const status=fenceGL.clientWaitSync(pendingFence,0,0);if(status===fenceGL.TIMEOUT_EXPIRED){skippedWhilePending++;return;}fenceGL.deleteSync(pendingFence);pendingFence=null;publishCompletedFrame();}if(signature===lastSignature)return;lastSignature=signature;
-  const p=clamp01(pose.progress),e=clamp01(pose.entrance),cam=cameraPose(p,e,width<760),pointer=1-smoothRange(.06,.12,p),weights=surfaceWeights(p),unfold=surfacePose(p,e).open;
-  storySurface.setProjection(width,height,e);atrium.updateFold(p);atrium.root.visible=p>.12;roomLighting.visible=p>.18;const surfaceMap=p>.12?filmTexture:introTexture??filmTexture;if(surfaceMap&&storySurface.material.emissiveMap!==surfaceMap){storySurface.material.emissiveMap=surfaceMap;storySurface.material.needsUpdate=true;}
-  if(introFilm&&introFilm.readyState>=2){const t=e*Math.max(0,(introFilm.duration||3.2)-1/30);if(Math.abs(t-lastIntroTime)>1/30&&!introFilm.seeking){introFilm.currentTime=t;lastIntroTime=t;}}
-  camera.fov=38+10*smoothRange(.27,.38,p);camera.updateProjectionMatrix();camera.position.set(cam.position[0]+pose.pointerX*.12*pointer,cam.position[1]-pose.pointerY*.06*pointer,cam.position[2]);camera.lookAt(...cam.target as[number,number,number]);
-  foldedHorizon.constant=400;const portraitPose=portraitStagePose(0);applyRigidPose(portraitRig,portraitPose);portraitMaterial.opacity=1-smoothRange(.12,.18,p);portraitMaterial.depthWrite=p<=.12;floorAnchor.value.set(portraitPose.pivot[0]+portraitPose.delta[0],portraitPose.pivot[2]+portraitPose.delta[2]);for(const m of glassMaterials)m.opacity=.025+.975*smoothRange(.14,.48,p);
-  const floorSignature=p.toFixed(6)+':'+e.toFixed(6);
-  if(floorSignature!==lastFloorPose){lastFloorPose=floorSignature;for(const item of twistMeshes){const pos=item.mesh.geometry.getAttribute('position'),normal=item.mesh.geometry.getAttribute('normal');for(let i=0;i<pos.count;i++){const k=i*3;sampleShellTwist(item.positions[k],item.positions[k+2],p,e,twistSample);workPosition.set(twistSample.x,item.positions[k+1],twistSample.z).applyMatrix4(item.inverse);pos.setXYZ(i,workPosition.x,workPosition.y,workPosition.z);const nx=item.normals[k],ny=item.normals[k+1],nz=item.normals[k+2];workNormal.set(twistSample.zz*nx-twistSample.zx*nz,ny,-twistSample.xz*nx+twistSample.xx*nz).applyMatrix3(item.normalInverse).normalize();normal.setXYZ(i,workNormal.x,workNormal.y,workNormal.z);}pos.needsUpdate=true;normal.needsUpdate=true;}const shape=floorSupportShape(p);for(const item of supportMeshes){const pos=item.mesh.geometry.getAttribute('position'),normal=item.mesh.geometry.getAttribute('normal');for(let i=0;i<pos.count;i++){const offset=i*3,ox=item.positions[offset],oy=item.positions[offset+1],z=item.positions[offset+2];sampleArrivalCove(ox,oy,z,p,coveSample);const x=coveSample.x,y=coveSample.y;sampleFloorSupport(x,y,z+(1-e)*.25,shape,supportSample);pos.setXYZ(i,x,y+supportSample.height,z);const rawX=item.normals[offset]/coveSample.xx,rawY=(item.normals[offset+1]-coveSample.xy*rawX)/coveSample.yy,rawZ=item.normals[offset+2]-coveSample.xz*rawX-coveSample.yz*rawY,j=1+supportSample.dy,yy=rawY/j,xx=rawX-supportSample.dx*yy,zz=rawZ-supportSample.dz*yy,length=Math.hypot(xx,yy,zz);normal.setXYZ(i,xx/length,yy/length,zz/length);}pos.needsUpdate=true;normal.needsUpdate=true;}}
-  for(const source of deformableLights){sampleArrivalCove(source.position[0],source.position[1],source.position[2],p,coveSample);source.light.position.set(coveSample.x,coveSample.y,source.position[2]);const sx=coveSample.xx,sy=coveSample.yy;source.light.width=source.size[0]*sx;source.light.height=source.size[1]*sy;source.light.intensity=source.power/(sx*sy);sampleArrivalCove(source.target[0],source.target[1],source.target[2],p,coveSample);source.light.lookAt(coveSample.x,coveSample.y,source.target[2]);}
-  if(floorSignature!==lastShadowPose){lastShadowPose=floorSignature;renderer.shadowMap.needsUpdate=true;}
-
-  for(const{mesh,kind}of moving){const dict=mesh.morphTargetDictionary!,influences=mesh.morphTargetInfluences!;if(dict.Space_Unfold!==undefined)influences[dict.Space_Unfold]=(kind==='rail'?weights.rail:weights.aperture)*e;if(dict.Gift_Entry!==undefined)influences[dict.Gift_Entry]=1-e;}
-  progressUniform.value=p<=.43?.43*weights.aperture:.43+.57*weights.rail;environmentMix.value=smoothRange(.43,1,p);apertureMix.value=weights.aperture;
-  for(const m of materials)m.envMapRotation.y=pose.pointerX*.035*pointer;
-  if(film&&film.readyState>=2){const t=smoothRange(.12,.85,p)*Math.max(0,(film.duration||4)-1/30);if(Math.abs(t-lastFilmTime)>1/30&&!film.seeking){film.currentTime=t;lastFilmTime=t;}}
-  options.beforeRender?.(camera,p,width,height);camera.updateProjectionMatrix();
-  storySurface.update(p,e,pose.pointerX,pose.pointerY,camera);
-  if(p>.12&&p<.38){const center=new T.Vector3(0,0,-1).applyQuaternion(camera.quaternion).multiplyScalar((-10-camera.position.z)/new T.Vector3(0,0,-1).applyQuaternion(camera.quaternion).z).add(camera.position);const contain=width>=760?Math.max(1,(1672/941)/(width/height)):1;atrium.root.position.copy(center);atrium.root.quaternion.copy(camera.quaternion);atrium.root.scale.setScalar(.4*camera.position.distanceTo(center)/(9.6*contain)*Math.tan(camera.fov*Math.PI/360)/Math.tan(24*Math.PI/180));}
-  else{atrium.root.position.set(ROOM_WORLD.x,ROOM_WORLD.y,ROOM_WORLD.z);atrium.root.rotation.set(ROOM_WORLD.tilt,0,0);atrium.root.scale.setScalar(ROOM_WORLD.scale);}
-  renderer.info.reset();const before=performance.now();curvedReflection.render();pendingFence=fenceGL.fenceSync(fenceGL.SYNC_GPU_COMMANDS_COMPLETE,0);fenceGL.flush();
-  pendingFrameData={frameSerial:String(++renderSerial),reflectionColorAttachmentBytes:String(curvedReflection.colorAttachmentBytes()),progress:p.toFixed(4),entrance:e.toFixed(4),pointerX:pose.pointerX.toFixed(4),pointerY:pose.pointerY.toFixed(4),camera:camera.position.toArray().map(n=>n.toFixed(3)).join(','),target:cam.target.map(n=>n.toFixed(3)).join(','),fold:unfold.toFixed(4),renderer:rendererName,drawCalls:String(renderer.info.render.calls),triangles:String(renderer.info.render.triangles),geometries:String(renderer.info.memory.geometries),textures:String(renderer.info.memory.textures),filmTime:film?.currentTime.toFixed(3)||'0',filmReady:String(film?.readyState||0),introFilmTime:introFilm?.currentTime.toFixed(3)||'0',introFilmReady:String(introFilm?.readyState||0),filmSeeking:String(film?.seeking??false),introFilmSeeking:String(introFilm?.seeking??false),storySurface:JSON.stringify({id:storySurface.mesh.uuid,name:storySurface.mesh.name,vertices:storySurface.mesh.geometry.getAttribute('position').count,...surfacePose(p,e)}),surfaceVideoOwner:p>.12?'hyperframes':'remotion',cpuSubmitMs:(performance.now()-before).toFixed(2),initMarks:JSON.stringify(marks),bufferSize:canvas.width+'x'+canvas.height,assetVersion:CHAMBER_RENDER_CONTRACT.assetVersion,diffuse:'approved cosmic panorama on the same indexed sheet; unchanged room illustration on one unlit rigid plane',normal:'indexed cosmic sheet recomputes normals while folding downward about its lower edge',morphMeshes:String(moving.length),reflectionEmitters:String(lightingCards.length),environmentMap:'authored specular probes plus source-excluded indirect-diffuse probes; world-position blend plus actual arrival warm/cool sources',reflection:'actual curved normal/depth SSR, alpha-preserved auxiliary buffers, dense normalized33tap roughness blur; authored IBL for offscreen sources',portraitStageMatrix:portraitRig.matrix.toArray().map(n=>n.toFixed(6)).join(','),heroHingeMatrix:shellRig.matrix.toArray().map(n=>n.toFixed(6)).join(','),shellDeformation:'legacy shell hidden; one continuous cosmic sheet folds downward without split-center stretching',gpuPendingSkips:String(skippedWhilePending),floorSupport:'Hero stage remains separate; cosmic sheet settles below the approved room framing',contactShadow:'actual2048 PCF from calibrated Hero key proxy, alpha-tested portrait caster',copyZone:'dark burgundy DOM atmosphere with original cosmic environment; portrait pixels untouched',cosmicEnvironment:'same indexed cosmic panorama folds downward about its lower edge; camera approaches approved B framing',storyAtrium:'one rigid unchanged approved illustration with edge-only outpaint; this is honest 2D art in a shared 3D scene',portraitContinuity:'portrait remains on Hero stage; actual camera passes it',surfaceDestination:'same indexed cosmic sheet folds into a low open surface; no room art, face or photo is deformed',previewStage:'unapproved low-cost lighting/surface prototype',allocationNote:'VRAM and hardware GPU performance not measured'};
+  if(disposed||!finishPending())return;const signature=[pose.progress,pose.entrance,pose.pointerX,pose.pointerY,width,height].join(':');if(signature===lastSignature)return;lastSignature=signature;
+  const p=clamp01(pose.progress),e=clamp01(pose.entrance),cam=cameraPose(p,e,width<760),pointer=1-smoothRange(.06,.12,p),departure=portraitDeparture(p);
+  storySurface.setProjection(width,height,e);atrium.updateFold(p);atrium.root.visible=true;
+  const stageKey=width+':'+height+':'+e.toFixed(4);if(stageKey!==stageProjectionKey){stageProjectionKey=stageKey;if(width>=760)heroStage.matrix.copy(heroStageProjection(width,height,e));else heroStage.matrix.identity();heroStage.updateMatrixWorld(true);}
+  const pointerScale=width>=760?.28*Math.tan(24*Math.PI/180)/Math.tan(19*Math.PI/180):1;
+  camera.fov=width>=760?48:38+10*smoothRange(.27,.38,p);camera.position.set(cam.position[0]+pose.pointerX*.12*pointer*pointerScale,cam.position[1]-pose.pointerY*.06*pointer*pointerScale,cam.position[2]);camera.lookAt(...cam.target as[number,number,number]);
+  portraitRig.position.set(0,0,departure.z);portraitRig.updateMatrix();portraitMaterial.opacity=departure.opacity;portraitRig.visible=departure.opacity>0;
+  options.beforeRender?.(camera,p,width,height);camera.updateProjectionMatrix();storySurface.update(p,e,pose.pointerX,pose.pointerY,camera);
+  atrium.root.position.set(ROOM_WORLD.x,ROOM_WORLD.y,ROOM_WORLD.z);atrium.root.rotation.set(ROOM_WORLD.tilt,0,0);atrium.root.scale.setScalar(ROOM_WORLD.scale);
+  const before=performance.now();submit();
+  const corners=[[0,-58],[1672,-58],[1672,999],[0,999]].map(([x,y])=>new T.Vector3(...roomWorldVertex(x,y,0)).project(camera));
+  Object.assign(canvas.dataset,{roomViewport:JSON.stringify({left:Math.min(...corners.map(v=>(v.x+1)*width/2)),right:Math.max(...corners.map(v=>(v.x+1)*width/2)),top:Math.min(...corners.map(v=>(1-v.y)*height/2)),bottom:Math.max(...corners.map(v=>(1-v.y)*height/2))}),roomMatrix:atrium.root.matrixWorld.toArray().join(','),heroStageMatrix:heroStage.matrixWorld.toArray().join(','),portraitRetreat:String(departure.z),portraitTurn:'0',portraitOpacity:String(departure.opacity),surfaceVisible:String(storySurface.mesh.visible),fov:String(camera.fov)});
+  pendingFrameData={frameSerial:String(++renderSerial),progress:p.toFixed(4),entrance:e.toFixed(4),pointerX:pose.pointerX.toFixed(4),pointerY:pose.pointerY.toFixed(4),camera:camera.position.toArray().map(n=>n.toFixed(3)).join(','),target:cam.target.map(n=>n.toFixed(3)).join(','),fold:surfacePose(p,e).open.toFixed(4),renderer:rendererName,drawCalls:String(renderer.info.render.calls),triangles:String(renderer.info.render.triangles),geometries:String(renderer.info.memory.geometries),textures:String(renderer.info.memory.textures),storySurface:JSON.stringify({id:storySurface.mesh.uuid,name:storySurface.mesh.name,vertices:storySurface.mesh.geometry.getAttribute('position').count,...surfacePose(p,e)}),cpuSubmitMs:(performance.now()-before).toFixed(2),initMarks:JSON.stringify(marks),bufferSize:canvas.width+'x'+canvas.height,portraitStageMatrix:portraitRig.matrix.toArray().join(','),gpuPendingSkips:String(skippedWhilePending),cosmicEnvironment:'oversized indexed environment with a curved architectural aperture',storyAtrium:'unchanged approved rigid illustration; no reconstructed interior',portraitContinuity:'face-front 2D artwork with shallow retreat and alpha exit',allocationNote:'SwiftShader composition capture does not measure hardware GPU performance'};
  }
- const heroLights:T.Light[]=[];ready.then(()=>{scene.traverse(object=>{if(object instanceof T.Light)heroLights.push(object);});},()=>{});
- let externalRenderSerial=0;
+ const ready=Promise.all([portraitReady,maskReady,skyReady,atrium.ready,environmentReady]).then(async()=>{
+  if(disposed)return;marks.assets=performance.now()-start;render({progress:0,entrance:0,pointerX:0,pointerY:0,time:0});
+  const warmup=performance.now();await new Promise<void>((resolve,reject)=>{const poll=()=>{if(disposed){resolve();return;}if(performance.now()-warmup>120000){reject(Error('First-frame warmup timeout'));return;}if(!finishPending()){setTimeout(poll,16);return;}resolve();};poll();});
+  if(!disposed&&gl.getError()!==gl.NO_ERROR)throw Error('First-frame WebGL failure');marks.firstFrameWarmup=performance.now()-warmup;
+ });
  let postActive=false;
- let savedAtmosphere:{background:T.Scene['background'];environment:T.Scene['environment'];fog:T.Scene['fog'];environmentIntensity:number;exposure:number;clipping:T.Plane[];lights:{light:T.Light;visible:boolean}[];hidden:{node:T.Object3D;visible:boolean}[]}|null=null;
- function setPostActive(active:boolean){
-  if(active===postActive)return;postActive=active;lastSignature='';
-  if(active){const lights:{light:T.Light;visible:boolean}[]=[];for(const light of heroLights){if(light.parent===roomLighting||light.parent===atrium.root)continue;lights.push({light,visible:light.visible});light.visible=false;}const hidden=[scene.getObjectByName('VERSIONED_SHARED_CHAMBER'),portraitRig,shellRig,storySurface.mesh,threshold.root].filter((node):node is T.Object3D=>Boolean(node)).map(node=>({node,visible:node.visible}));for(const {node}of hidden)node.visible=false;roomLighting.visible=false;savedAtmosphere={background:scene.background,environment:scene.environment,fog:scene.fog,environmentIntensity:scene.environmentIntensity,exposure:renderer.toneMappingExposure,clipping:renderer.clippingPlanes,lights,hidden};renderer.clippingPlanes=[];scene.environment=environmentArrival.value;scene.environmentIntensity=.8;scene.fog=null;renderer.toneMappingExposure=1;}
-  else if(savedAtmosphere){scene.background=savedAtmosphere.background;scene.environment=savedAtmosphere.environment;scene.fog=savedAtmosphere.fog;scene.environmentIntensity=savedAtmosphere.environmentIntensity;renderer.toneMappingExposure=savedAtmosphere.exposure;renderer.clippingPlanes=savedAtmosphere.clipping;for(const {light,visible}of savedAtmosphere.lights)light.visible=visible;for(const {node,visible}of savedAtmosphere.hidden)node.visible=visible;roomLighting.visible=false;savedAtmosphere=null;}
- }
- function renderExternal(){
-  if(disposed)return false;
-  if(pendingFence){const status=fenceGL.clientWaitSync(pendingFence,0,0);if(status===fenceGL.TIMEOUT_EXPIRED){skippedWhilePending++;return false;}fenceGL.deleteSync(pendingFence);pendingFence=null;publishCompletedFrame();}
-  lastSignature='';renderer.info.reset();renderer.shadowMap.needsUpdate=true;const submitStart=performance.now();renderer.render(scene,camera);canvas.dataset.externalFrameSerial=String(++externalRenderSerial);canvas.dataset.cpuSubmitMs=(performance.now()-submitStart).toFixed(2);pendingFence=fenceGL.fenceSync(fenceGL.SYNC_GPU_COMMANDS_COMPLETE,0);fenceGL.flush();return true;
- }
- return{scene,camera,renderer,ready,render,setPostActive,renderExternal,updateRoomExit:atrium.updateExit,updateRoomDesk:atrium.updateDesk,resize(w:number,h:number,dpr:number){width=w;height=h;fitSky();lastSignature='';renderer.setPixelRatio(dpr);renderer.setSize(w,h,false);camera.aspect=w/h;camera.updateProjectionMatrix();curvedReflection.resize();},dispose(){
-  disposed=true;canvas.removeEventListener('webglcontextlost',resetFence);canvas.removeEventListener('webglcontextrestored',resetFence);
-  if(pendingFence&&!fenceGL.isContextLost())fenceGL.deleteSync(pendingFence);pendingFence=null;
-  for(const video of [film,introFilm]){if(!video)continue;video.removeEventListener('seeked',invalidate);video.removeEventListener('loadeddata',invalidate);video.pause();video.removeAttribute('src');video.load();}
-  curvedReflection.dispose();owned.forEach(r=>r.dispose());renderer.dispose();
+ function setPostActive(active:boolean){if(active===postActive)return;postActive=active;lastSignature='';heroStage.visible=!active;scene.environment=active?arrivalEnvironment:null;scene.environmentIntensity=active?.8:0;}
+ function renderExternal(){if(disposed||!finishPending())return false;lastSignature='';renderer.shadowMap.needsUpdate=true;const before=performance.now();submit();canvas.dataset.externalFrameSerial=String(++renderSerial);canvas.dataset.cpuSubmitMs=(performance.now()-before).toFixed(2);return true;}
+ return{scene,camera,renderer,ready,render,setPostActive,renderExternal,updateRoomExit:atrium.updateExit,updateRoomDesk:atrium.updateDesk,resize(w:number,h:number,dpr:number){width=w;height=h;lastSignature='';renderer.setPixelRatio(dpr);renderer.setSize(w,h,false);camera.aspect=w/h;camera.updateProjectionMatrix();},dispose(){
+  disposed=true;canvas.removeEventListener('webglcontextlost',resetFence);canvas.removeEventListener('webglcontextrestored',resetFence);if(pendingFence&&!gl.isContextLost())gl.deleteSync(pendingFence);owned.forEach(resource=>resource.dispose());renderer.dispose();
  }};
 }

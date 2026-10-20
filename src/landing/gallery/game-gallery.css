@@ -1,4 +1,5 @@
 /* Gallery rules from caa6d31, scoped to the transplanted section. */
+.cs-game-gallery .rd-gallery-fallback{display:block;width:100%;height:100%;object-fit:contain}
 .cs-game-gallery{position:relative;z-index:2;margin-top:0;background:#0c080e;color:#efdfd6;font-family:GiftSans,Arial,sans-serif;--rose:#d3a491;--muted:#c1acb4;--line:#d3a49135}
 .cs-game-gallery *{box-sizing:border-box}
 .cs-game-gallery h2,.cs-game-gallery h3,.cs-game-gallery p{margin:0}

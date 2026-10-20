@@ -7,14 +7,14 @@ import {createGalleryCollection} from './GalleryCollection';
 type Props={mode:'hearts'|'games';selected?:string;paused:boolean;loadingLabel?:string;impulse?:number;onSelect?:(id:string)=>void};
 const heartLayout=[[1.2,.25,1.1,1.82,-.25],[3.55,-1.55,.2,1.2,.3],[3.45,2.18,-1.8,1.12,.35],[-.1,2.3,-1,.68,-.5],[5.1,.55,-1,.7,.1],[.15,-2.4,-1.8,.67,.3]];
 export default function StudioScene(props:Props){
- const host=useRef<HTMLDivElement>(null),controls=useRef(props),redraw=useRef<()=>void>(()=>{}),[ready,setReady]=useState(false),[mounted,setMounted]=useState(props.mode==='hearts');
+ const host=useRef<HTMLDivElement>(null),controls=useRef(props),redraw=useRef<()=>void>(()=>{}),[ready,setReady]=useState(false),[failed,setFailed]=useState(false),[mounted,setMounted]=useState(props.mode==='hearts');
  controls.current=props;
  useEffect(()=>{if(mounted)return;const observer=new IntersectionObserver(([entry])=>{if(entry.isIntersecting){setMounted(true);observer.disconnect();}},{rootMargin:'250px'});observer.observe(host.current!);return()=>observer.disconnect();},[mounted]);
  useEffect(()=>{redraw.current();},[props.paused,props.selected,props.impulse]);
  useEffect(()=>{
   if(!mounted)return;
   const node=host.current!;let renderer:T.WebGLRenderer;
-  try{renderer=new T.WebGLRenderer({alpha:true,antialias:true,powerPreference:'low-power'});}catch{return;}
+  try{renderer=new T.WebGLRenderer({alpha:true,antialias:true,powerPreference:'low-power'});}catch{setFailed(true);return;}
   const scene=new T.Scene(),camera=new T.PerspectiveCamera(38,1,.1,50),materials=studioMaterials();
   renderer.setPixelRatio(Math.min(devicePixelRatio,1.5));renderer.toneMapping=T.ACESFilmicToneMapping;renderer.toneMappingExposure=1.08;
   const environmentScene=new T.Scene();environmentScene.background=new T.Color('#121016');
@@ -69,5 +69,5 @@ export default function StudioScene(props:Props){
    collection?.dispose();
    const geometries=new Set<T.BufferGeometry>(),mats=new Set<T.Material>();scene.traverse(o=>{if(o instanceof T.Mesh){geometries.add(o.geometry);(Array.isArray(o.material)?o.material:[o.material]).forEach(m=>mats.add(m));}});geometries.forEach(g=>g.dispose());Object.values(materials).forEach(m=>m.dispose());mats.forEach(m=>{const map=(m as T.MeshStandardMaterial).map;map?.dispose();m.dispose();});environment.dispose();environmentScene.traverse(o=>{if(o instanceof T.Mesh){o.geometry.dispose();o.material.dispose();}});renderer.dispose();renderer.forceContextLoss();};
  },[props.mode,mounted]);
- return <div ref={host} className={`rd-studio rd-studio-${props.mode}`} data-ready={ready}>{!ready&&<span className="rd-render-fallback" role="status">{props.loadingLabel??'PREPARING YOUR GIFT'}</span>}</div>;
+ return <div ref={host} className={`rd-studio rd-studio-${props.mode}`} data-ready={ready||failed}>{failed&&props.mode==='games'?<img className="rd-gallery-fallback" src={`/images/landing-preview/games/${props.selected||'domino'}.png`} alt="" aria-hidden="true"/>:!ready&&<span className="rd-render-fallback" role="status">{props.loadingLabel??'PREPARING YOUR GIFT'}</span>}</div>;
 }
