@@ -1,0 +1,20 @@
+{
+  "role": "technical near-field binary matte, not replacement RGB artwork",
+  "sourceRGB": "/images/our-universe-scene.webp",
+  "sourceRGBSha256": "29747b92c13babd57938f064c9e5a6a94339594e6adafe342e18d0e25a3114e9",
+  "matteSha256": "408eeea701b060af318b587227ee18f8630000bd43f2051c82e2be34a1132eab",
+  "creation": "image_gen binary selection and one atomic repair, 2026-10-21, parent-owned tool calls",
+  "generatedFile": "exec-526525f4-d309-4086-98e8-8667537815fa.png",
+  "nearUnion": "original left architecture, telescope/tripod, balcony rails, tabletop and attached local props; sky, city, water and horizon excluded",
+  "geometryCorrection": "Original-source coordinate arch/capital polygon and rail openings replace wrong generated structural classification in both foreground and far backing; finer foliage retains technical matte.",
+  "knownLimit": "Approximate botanical contours and opaque prop selection remain technical artwork blockers. Props are frontal2.5D source image groups, not reconstructed volumes. No final visual approval.",
+  "approvedRGB": "unchanged; same original source is used by both layers",
+  "cleanplate": {
+    "file": "cosmic-disocclusion-plate.png",
+    "generatedFile": "exec-24b875b1-adb9-4f9f-85b6-d68be1b793b0.png",
+    "sha256": "24c91d12523dab0097384b90b8dea0856caa9a4421b74c27f0beea7ed90c5fdc",
+    "creation": "image_gen, parent-owned tool call, original panorama and technical matte references",
+    "status": "parent visually inspected; technical disocclusion test only, visual approval pending",
+    "coverage": "Coherent full distant backing handoff during .08\u2013.10, before foreground movement. Approved initial p0 RGB remains exact; near layer keeps originalRGB. Parent/independent reviewer removed earlier inside-only implementation restriction after actual seam evidence."
+  }
+}

@@ -10,5 +10,5 @@ export function createApprovedGamingRoom(scene:T.Scene,keep:Keep){
  const architecture=createApprovedRoomArchitecture(root,art,keep);
  const sourceReady=new T.TextureLoader().loadAsync('/images/approved-couple-room/approved-couple-gaming-room.png').then(texture=>{keep(texture);texture.colorSpace=T.SRGBColorSpace;art.map=texture;art.needsUpdate=true;});
  // shortcut: this beauty-first room is an illustration, so entry choreography must respect its rigid original plane.
- return{root,floor:architecture.floor,anchor:architecture.floorAnchor,ready:Promise.all([sourceReady,architecture.ready]).then(()=>{}),updateExit(_progress:number){},updateDesk(_progress:number){},updateFold(progress:number){root.visible=progress>.18;architecture.updateFold(progress);}};
+ return{root,floor:architecture.floor,anchor:architecture.floorAnchor,ready:Promise.all([sourceReady,architecture.ready]).then(()=>{}),setOpacity(opacity:number){art.transparent=opacity<1;art.opacity=opacity;art.depthWrite=opacity===1;},updateExit(_progress:number){},updateDesk(_progress:number){},updateFold(progress:number){root.visible=progress>.18;architecture.updateFold(progress);}};
 }

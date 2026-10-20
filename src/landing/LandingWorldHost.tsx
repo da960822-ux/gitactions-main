@@ -49,7 +49,7 @@ export function LandingWorldHost({language,onLanguageChange,selected,onSelect}:P
   let post:ReturnType<typeof createLetterCollection>|undefined,gallery:ReturnType<typeof createGalleryCollection>|undefined;
   let composition:ReturnType<typeof createPostHeroComposition>|undefined,postStage:THREE.Group|undefined;
   const postTransform=new THREE.Matrix4().makeTranslation(-6,-4.3,6).multiply(new THREE.Matrix4().makeRotationY(Math.PI)).multiply(new THREE.Matrix4().makeTranslation(-9,4.3,10));
-  let disposed=false,frame=0,clockStart=0,last=0,elapsed=0,inIntro=first.current,lost=false;
+  let disposed=false,assetsReady=false,frame=0,clockStart=0,last=0,elapsed=0,inIntro=first.current,lost=false;
   let trigger:ScrollTrigger|undefined,heroEnd=innerHeight*2.6,previousPost=false,galleryInput=false,postNeedsFrame=false;
   let lastRenderSignature='',pressed:{x:number;y:number;id:number}|null=null;
   const pointer={x:0,y:0},raycaster=new THREE.Raycaster(),ndc=new THREE.Vector2();
@@ -113,7 +113,7 @@ export function LandingWorldHost({language,onLanguageChange,selected,onSelect}:P
   });
   const resizeObserver=new ResizeObserver(invalidate);resizeObserver.observe(root);
   const updateEditorial=(p:number,_entrance:number)=>{
-   const exit=smoothRange(.10,.19,p),appear=smoothRange(.73,.94,p),focused=copy.querySelector(':focus-visible');
+   const exit=smoothRange(.06,.10,p),appear=smoothRange(.73,.94,p),focused=copy.querySelector(':focus-visible');
    const copyExit=focused?0:exit;
    hero.style.setProperty('--hero-atmosphere-opacity',String(1-copyExit));
    copy.style.opacity=String(1-copyExit);copy.style.setProperty('--hero-copy-opacity',String(1-copyExit));copy.style.transform='none';copy.style.pointerEvents=copyExit>.98?'none':'auto';copy.inert=copyExit>.98;
@@ -126,7 +126,7 @@ export function LandingWorldHost({language,onLanguageChange,selected,onSelect}:P
    const actualDt=last?Math.max(0,(now-last)/1000):0,dt=Math.min(actualDt,.08);last=now;
    if(document.hidden)return;
    externalTick.current?.(now);
-   if(lost||!world)return;
+   if(lost||!world||!assetsReady)return;
    elapsed+=dt;
    const width=screen.clientWidth,height=screen.clientHeight;
    if(media.matches)pose.progress=smoothRange(0,Math.max(1,hero.offsetHeight-height),scrollY);
@@ -183,8 +183,8 @@ export function LandingWorldHost({language,onLanguageChange,selected,onSelect}:P
   frame=requestAnimationFrame(tick);
   void import('./cinematic/folded/previewSpaceV19').then(async({createFoldedWorld})=>{
    if(disposed)return;
-   world=createFoldedWorld(screen,{width:screen.clientWidth,height:screen.clientHeight,pixelRatio:Math.min(devicePixelRatio,innerWidth<760?1.25:1.5),portrait:PORTRAIT,portraitMask:PORTRAIT_MASK,beforeRender:frameHero,onFrame:data=>{Object.assign(screen.dataset,data,{frameRenderingMode:'hero-curved-aperture'});if(!disposed&&(first.current||Number(data.entrance)>=.999))setReady(true);}});
-   await world.ready;if(disposed)return;
+   world=createFoldedWorld(screen,{width:screen.clientWidth,height:screen.clientHeight,pixelRatio:Math.min(devicePixelRatio,innerWidth<760?1.25:1.5),portrait:PORTRAIT,portraitMask:PORTRAIT_MASK,beforeRender:frameHero,onFrame:data=>{Object.assign(screen.dataset,data,{frameRenderingMode:'hero-distance-separated-surfaces'});if(!disposed&&assetsReady&&(first.current||Number(data.entrance)>=.999))setReady(true);}});
+   await world.ready;if(disposed)return;assetsReady=true;
    post=createLetterCollection({scene:world.scene,camera:world.camera,host:screen});post.root.visible=false;
    composition=createPostHeroComposition(world.scene,invalidate);
    gallery=createGalleryCollection(invalidate);gallery.root.visible=false;

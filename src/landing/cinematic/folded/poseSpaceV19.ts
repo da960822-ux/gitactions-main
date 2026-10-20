@@ -10,7 +10,7 @@ export function openingCameraPose(entrance:number){return{position:[0,.3,11.7+(1
 export function cameraPose(progress:number,entrance:number,mobile:boolean){
  const p=clamp01(progress),stable=mobile?[1.3,.25,12.1,1.35,-.1,0]:[-6,.5,-1.4,-6,.5,-10];
  const arrival=roomWorldVertex(836,470.5,24),target=[-6,.5,-10];
- const keys=mobile?[[0,...stable],[.27,...stable],[.38,...arrival,...target],[1,...arrival,...target]]:[[0,...stable],[.25,...stable],[.42,...arrival,...target],[1,...arrival,...target]];
+ const keys=mobile?[[0,...stable],[.27,...stable],[.38,...arrival,...target],[1,...arrival,...target]]:[[0,...stable],[.06,...stable],[.10,...arrival,...target],[1,...arrival,...target]];
  const values=interpolatePath(keys,p);
  if(mobile)values[2]+=(1-entrance)*2.5;
  return{position:values.slice(0,3),target:values.slice(3,6)};

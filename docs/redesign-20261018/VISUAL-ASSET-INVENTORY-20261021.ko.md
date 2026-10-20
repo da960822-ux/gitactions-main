@@ -98,4 +98,29 @@
 
 구성은 다섯 묶음의 아트 패밀리가 있다: (1) 따뜻한 승인 game-room anime illustration, (2) 둥근 수집형 Marble standees, (3) pink/gold decorative game atlas, (4) 어두운 cinematic space/hero, (5) 현실적/역사적 cover·사용자 사진. 각 원본은 자기 용도에 맞는 특징과 식별성이 있으나, 같은 장면의 색·광원·물성 조화를 화면에 섞는 일은 별도의 통합 평가다. 레이아웃이나 2D 합성 방식만을 이유로 승인 원본 자체를 나쁘다고 기록하지 않는다.
 
-현재 Hero revision 2 작업은 시작됐으나 이 문서 작성 시점의 사용자 승인 상태는 아니다. 여기서 하지 않은 일: 승인 ZIP 컨테이너 다운로드/재압축, 자산 생성·재인코딩·삭제, UI·source 변경, 브라우저 재렌더 및 실제 화면 재검수. 특히 현재 gallery 원복 상태의 여덟 자산을 각 지원 화면 크기에서 다시 승인하거나, 승리 반응의 이번 시점 실제 play result 화면을 검수한 것으로 기록하지 않는다.
+초기 자산 조사 당시 Hero revision 2는 사용자 승인 상태가 아니었다. 당시 조사자가 하지 않은 일: 승인 ZIP 컨테이너 다운로드/재압축, 자산 생성·재인코딩·삭제, UI·source 변경, 브라우저 재렌더 및 실제 화면 재검수. 특히 현재 gallery 원복 상태의 여덟 자산을 각 지원 화면 크기에서 다시 승인하거나, 승리 반응의 이번 시점 실제 play result 화면을 검수한 것으로 기록하지 않는다.
+
+## 2026-10-21 v6 기술 자산 검수 이력 — 당시 WIP, 시각 승인 아님
+
+초기 `cosmic-matte-generation.json`은 opacity matte 후보만 기록했지만 이후 상태가 바뀌었다. 후보 2는 `public/images/hero-cosmic-layers/near-foreground-matte.png`로 실제 v6 runtime에 연결된 기술 작업물이며, `public/images/hero-cosmic-layers/cosmic-disocclusion-plate.png`도 생성되어 runtime에 연결됐다. 두 파일은 당시 WIP였다. 최신 구현 계약은 아래 v8 추기를 따른다. `public/images/hero-cosmic-layers/provenance.json`과 `output/current-review/hero-spatial-rework-20261021/runtime-separated-v6/REVIEW.md`가 이 상태와 검사 범위를 기록한다.
+
+| 원본/후보 | 저장 경로 · 치수 · 크기 · SHA-256 | 출처와 현재 상태 |
+|---|---|---|
+| 원본 우주 RGB | `public/images/our-universe-scene.webp` · 1536×1024 · 1,826,360 bytes · `29747b92c13babd57938f064c9e5a6a94339594e6adafe342e18d0e25a3114e9` | 원본 파일 hash/크기를 직접 측정했다. RGB 원본은 수정되지 않았고 두 runtime layer의 기초로 유지된다. |
+| 후보 1 matte | `/workspace/generated_images/exec-c21ff612-4665-44f6-931c-91829fa70382.png` · 1536×1024 · 1,127,338 bytes · `6e7e9969bfb963eed90f1e78df44e7b1d9c6279999f8c311e7470fa651fe46a8` | 거절됨: 안쪽 검은 선화와 가까운 벽의 불투명 영역 누락. runtime에 연결된 자산이 아니다. |
+| 후보 2 matte / runtime copy | generated source `/workspace/generated_images/exec-526525f4-d309-4086-98e8-8667537815fa.png`; runtime `public/images/hero-cosmic-layers/near-foreground-matte.png` · 1536×1024 · 970,436 bytes · `408eeea701b060af318b587227ee18f8630000bd43f2051c82e2be34a1132eab` | 내부 소품 윤곽 문제는 원자적 수정과 원본 좌표 구조 보정으로 개선돼 v6 WIP runtime에 연결됐다. 가까운 구조의 경계 정합·일부 rail 잔여 결함 때문에 최종 matte 또는 시각 합격이 아니다. |
+| disocclusion clean plate | generated source `/workspace/generated_images/exec-24b875b1-adb9-4f9f-85b6-d68be1b793b0.png`; runtime `public/images/hero-cosmic-layers/cosmic-disocclusion-plate.png` · 1536×1024 · 2,491,083 bytes · `24c91d12523dab0097384b90b8dea0856caa9a4421b74c27f0beea7ed90c5fdc` | 가려졌다 드러나는 영역에만 쓰는 생성 RGB이며 v6 technical disocclusion test 용도로 연결됐다. 원본 우주 이미지 전체를 대체하지 않는다. `provenance.json`은 이 숨은 영역만 새 RGB를 갖는다고 기록한다. |
+
+승인된 Hero·인물·방의 원본 RGB는 그대로 보존됐다. 사람과 승인 원본 영역은 재생성하지 않았다. 다만 hidden/disocclusion 영역에는 별도 새 RGB clean plate가 존재한다. matte는 원본 RGB를 샘플링하는 전경/가림 선택 자료이고, clean plate는 그 뒤에 드러날 때의 픽셀이다. 따라서 “새 RGB 없음”이라고 뭉뚱그리지 않는다.
+
+v6에서 확인된 기술적 보존 범위는 제한적이다. B 카메라/frustum 도달, 입구가 읽히기 전 머리 가림 해소, 읽히는 B pose에서 원본 bunny/photo 가로 실루엣 유지, 기존 사람/방 RGB 유지가 기록됐다. 실제 런타임 정지 화면에서도 문제가 남는다: 원본 structural edge 선택의 일부 rail 흔적, 그리고 clean plate와 보존된 far RGB 경계 색차가 만드는 arch-shaped sky seam이다. `REVIEW.md`는 이 seam을 alpha만의 문제가 아니라 두 source RGB 경계의 불일치로 기록하며, far RGB 전체 덮어쓰기나 전역 이동을 해결책으로 삼지 않는다. 이는 카메라/영역 보존 등 기술 계약에 대한 부분 확인이지 장면 미감·경계 품질 합격이 아니다.
+
+초기 2026-10-21 생성 기록 시 clean plate는 아직 생성하지 않았고 후보 2 경계도 geometry union과 정지 프레임 확인을 기다렸다. 위 표는 그 뒤 v6에서 확인한 이력이며 현재 구현의 최종 상태가 아니다. 이후 v8의 계약과 확인 범위는 아래 추기를 따른다.
+
+## 후속 v8 계약 정정과 후보3 거절
+
+v6의 inside-coverage 합성은 과도한 총괄 기술 제약이었다. 현재 v8은 승인 p0 원본을 유지한 뒤 초기 원경 layer를 일관된 cleanplate로 이어 주며 실제 전경/카메라 기하는 유지한다. 원본 RGB 파일·승인 B·인물은 보존한다. root는 실제 두 해상도 중간 PNG에서 아치 색 접합선과 FAR 옛 소품 잔상 해소를 확인했다. 근경 꽃/소품 추출 가장자리는 아직 시각 합격이 아니다. 위 표의 v6 사용 범위와 현재 구현 계약을 구분한다.
+
+추가 mask 후보3 `/workspace/generated_images/exec-9a0c061c-9687-4a46-b580-8a3904cd2f92.png`(1536×1024,1,029,272B,SHA `799286f8281ecd9a922c10c38cd8164c0427a8c1c40cd9ba06e0cd5920b74623`)은 root가 직접 열어 거절했다. 가까운 벽의 잘못된 검정 영역과 소품 안쪽 선화가 다시 생겨 제품에 복사/연결하지 않았다. 자산 생성 성공을 품질 개선으로 기록하지 않는다.
+
+후속 RGBA 분리 후보 `/workspace/generated_images/exec-2ab7ff3d-6750-4159-b864-ad2e6cadba3d.png`은 image_gen의 투명 배경 제거 방식으로 생성했다(1536×1024,2,089,657B,SHA `4da6cd9d3396e97ddc2cc416d1fd2be462ef7004bbb72d3050394a504b14f926`). 실제 RGBA이며 원경/난간 구멍 alpha=0, 가까운 벽은 불투명하다. root와 독립 검수는 연결 개선과 동시에 더 풍성한 꽃/잎, 벽·금속 밝기·세부 변화, 작은 원경 잔류 가능성을 확인했다. 승인 원본의 정확한 픽셀 추출이 아닌 파생 후보이므로 현재 v8 제품에는 미연결이다. 실제 격리 합성에서 판단하며 원본 p0/B·인물 보존과 꽃 추가 금지 맥락을 함께 적용한다.

@@ -18,13 +18,18 @@ export function createApprovedRoomArchitecture(roomRoot:T.Group,art:T.MeshBasicM
     // Unconditional samples preserve mip derivatives at the protected rectangle's boundaries.
     vec4 originalColor=texture2D(map,sourceUv);
     vec4 outerColor=texture2D(roomOuterRows,vec2(sourceUv.x,1.-outerY/1024.));
+    float edgeY=sourceY<0.?0.:941.;
+    float outpaintEdgeY=sourceY<0.?53.:915.;
+    vec3 protectedEdge=texture2D(map,vec2(sourceUv.x,1.-edgeY/941.)).rgb;
+    vec3 derivativeEdge=texture2D(roomOuterRows,vec2(sourceUv.x,1.-outpaintEdgeY/1024.)).rgb;
+    outerColor.rgb=clamp(outerColor.rgb+(protectedEdge-derivativeEdge)*exp(-abs(sourceY-edgeY)/14.),0.,1.);
     float originalCenter=step(0.,sourceUv.y)*step(sourceUv.y,1.);
     vec4 sourceColor=mix(outerColor,originalColor,originalCenter);
     diffuseColor*=sourceColor;
    #endif
   `);
  };
- art.customProgramCacheKey=()=> 'approved-room-original-center-outer-rows-only-v2';
+ art.customProgramCacheKey=()=> 'approved-room-original-center-outer-rows-only-edge-registered-v3';
  const geometry=keep(new T.PlaneGeometry(ROOM_REFERENCE.width,1057,1,1));
  const position=geometry.getAttribute('position'),uv=geometry.getAttribute('uv');
  for(let i=0;i<position.count;i++){

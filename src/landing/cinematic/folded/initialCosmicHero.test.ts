@@ -52,10 +52,10 @@ describe('initial cosmic surface',()=>{
   owned.forEach(resource=>resource.dispose());
  });
  it.each([[1920,1080],[1440,900]])('preserves the approved projection on the near-room stage at %i×%i',(width,height)=>{
-  for(const entrance of[0,.5,1]){
+  for(const entrance of[0,.5,1])for(const progress of[0,.08,.1,1]){
    const oldPose=openingCameraPose(entrance),old=new PerspectiveCamera(38,width/height,.1,400);old.position.fromArray(oldPose.position);old.lookAt(...oldPose.target as[number,number,number]);old.updateMatrixWorld();
-   const nearPose=cameraPose(0,1,false),near=new PerspectiveCamera(48,width/height,.1,400);near.position.fromArray(nearPose.position);near.position.z+=9.6*(Math.max(1,(1672/941)/(width/height))-1);near.lookAt(...nearPose.target as[number,number,number]);near.updateMatrixWorld();
-   const stage=heroStageProjection(width,height,entrance);
+   const nearPose=cameraPose(progress,1,false),near=new PerspectiveCamera(48,width/height,.1,400);near.position.fromArray(nearPose.position);near.position.z+=9.6*(Math.max(1,(1672/941)/(width/height))-1);near.lookAt(...nearPose.target as[number,number,number]);near.updateMatrixWorld();
+   const stage=heroStageProjection(width,height,entrance,progress);
    for(const point of[new Vector3(1.85,3.13,.05),new Vector3(-1.54,-3.07,.05),new Vector3(5.24,3.13,.05),new Vector3(-8,4,-4)]){
     const before=point.clone().project(old),after=point.clone().applyMatrix4(stage).project(near);
     expect(after.x).toBeCloseTo(before.x,10);expect(after.y).toBeCloseTo(before.y,10);
@@ -66,4 +66,12 @@ describe('initial cosmic surface',()=>{
   const original=readFileSync(new URL('../../../../public/images/approved-couple-room/approved-character-reference.png',import.meta.url));
   expect(createHash('sha256').update(original).digest('hex')).toBe('ccabcdcc074d7f8840360c1cd5671a024d8c0336f6c7241e44cfb40e89b36f31');
  });
+ it.each([
+  ['our-universe-scene.webp','29747b92c13babd57938f064c9e5a6a94339594e6adafe342e18d0e25a3114e9'],
+  ['approved-couple-room/approved-couple-gaming-room.png','a569e1a1ed8c21fffb7a11cc7065816a0882fdaaba3e1a4bcd65dc241681eb26'],
+ ])('keeps the approved source RGB unchanged: %s',(path,hash)=>{
+  const source=readFileSync(new URL('../../../../public/images/'+path,import.meta.url));
+  expect(createHash('sha256').update(source).digest('hex')).toBe(hash);
+ });
+
 });
