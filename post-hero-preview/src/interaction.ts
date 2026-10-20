@@ -1,4 +1,4 @@
-export const LETTER_RANGE = [0.57, 0.76] as const;
+export const LETTER_RANGE = [0.65, 0.79] as const;
 
 export function clamp01(value: number): number {
   return Number.isFinite(value) ? Math.min(1, Math.max(0, value)) : 0;

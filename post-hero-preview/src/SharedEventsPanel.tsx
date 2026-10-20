@@ -36,8 +36,8 @@ function messageForError(error: unknown, language: 'ko' | 'es') {
   return t.error;
 }
 
-type Props = { language: 'ko' | 'es'; onSharedStart?: (round: SharedEventRound, options: { settle: boolean }) => void };
-export default function SharedEventsPanel({ language, onSharedStart }: Props) {
+type Props = { language: 'ko' | 'es'; onSharedStart?: (round: SharedEventRound, options: { settle: boolean }) => void; initialEventId?: SharedEventId; initiallyOpen?: boolean };
+export default function SharedEventsPanel({ language, onSharedStart, initialEventId, initiallyOpen = false }: Props) {
   const t = copy[language];
   const [snapshot, setSnapshot] = useState<SharedEventSnapshot | null>(null);
   const [code, setCode] = useState('');
@@ -45,7 +45,7 @@ export default function SharedEventsPanel({ language, onSharedStart }: Props) {
   const [busy, setBusy] = useState(false);
   const [copied, setCopied] = useState(false);
   const [decorId, setDecorId] = useState<string>('');
-  const [selectedEvent, setSelectedEvent] = useState<SharedEventId>('R01');
+  const [selectedEvent, setSelectedEvent] = useState<SharedEventId>(initialEventId ?? 'R01');
   const [points, setPoints] = useState<Array<{ x: number; y: number }>>([]);
   const [pattern, setPattern] = useState<number[]>([]);
   const [repeatInput, setRepeatInput] = useState<number[]>([]);
@@ -207,7 +207,7 @@ export default function SharedEventsPanel({ language, onSharedStart }: Props) {
     <button type="button" disabled={busy || !points.length} onClick={() => setPoints([])}>{t.clear}</button>
   </div>;
 
-  return <details className="shared-events" onToggle={onDetailsToggle} onKeyDown={onPanelKeyDown}>
+  return <details className="shared-events" data-initial-event-id={initialEventId} open={initiallyOpen} onToggle={onDetailsToggle} onKeyDown={onPanelKeyDown}>
     <summary ref={summaryInput}>{t.title}</summary>
     <div className="shared-events-body">
       <p className="shared-events-intro">{t.intro}</p>
@@ -260,8 +260,8 @@ export default function SharedEventsPanel({ language, onSharedStart }: Props) {
             {round.eventId === 'R03' && round.status === 'started' && <p role="status">{t.merged}</p>}
           </section>}
           {round && ['cancelled', 'expired'].includes(round.status) && <p role="status">{round.status === 'expired' ? t.expired : t.cancelled}</p>}
-          {(!round || canChooseNewRound(round.status)) && <section aria-labelledby="shared-event-picker-title"><h3 id="shared-event-picker-title">{t.eventPicker}</h3>
-            <div className="shared-event-choices" role="group" aria-label={t.eventPicker}>{(['R01', 'R02', 'R03', 'R04'] as SharedEventId[]).map(id => <button key={id} type="button" disabled={busy} aria-pressed={selectedEvent === id} onClick={() => setSelectedEvent(id)}>{eventNames[language][id]}</button>)}</div>
+          {(!round || canChooseNewRound(round.status)) && <section aria-labelledby="shared-event-picker-title"><h3 id="shared-event-picker-title">{initialEventId ? eventNames[language][selectedEvent] : t.eventPicker}</h3>
+            {!initialEventId && <div className="shared-event-choices" role="group" aria-label={t.eventPicker}>{(['R01', 'R02', 'R03', 'R04'] as SharedEventId[]).map(id => <button key={id} type="button" disabled={busy} aria-pressed={selectedEvent === id} onClick={() => setSelectedEvent(id)}>{eventNames[language][id]}</button>)}</div>}
             <div className="shared-draft-event">
               {selectedEvent === 'R01' && <p className="shared-events-note">{t.independent}</p>}
               {selectedEvent === 'R02' && <div className="shared-prop-picker shared-idle-picker"><p>{t.select}</p>{approvedPawns.map((pawn, index) => <button type="button" key={pawn.id} aria-pressed={decorId === pawn.id} onClick={() => setDecorId(pawn.id)}><img src={pawnSource(index)} alt=""/><span>{pawn[language]}</span></button>)}</div>}

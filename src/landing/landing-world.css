@@ -11,9 +11,6 @@
 .landing-world-host .across-stage::after{opacity:var(--hero-atmosphere-opacity,1)}
 .landing-world-host .folded-side-note{opacity:calc(.7 * var(--hero-atmosphere-opacity,1))}
 .landing-world-host .post-hero-preview.post-hero-embedded{background:transparent;overflow:visible;isolation:auto}
-.landing-world-host .post-hero-preview .letter-section{background:linear-gradient(#160e1700,#160e1780 20%,#160e1790 85%,#160e1700)}
-.landing-world-host .post-hero-preview .letter-paper{color:#402a33}
-.landing-world-host .post-hero-preview .letter-paper p{color:inherit}
 .landing-world-host.world-unavailable>.landing-world-canvas{display:none}
 @media(max-width:760px){
  .landing-world-canvas{height:100svh}
@@ -34,28 +31,4 @@
  .landing-world-host .across-editorial{opacity:var(--hero-copy-opacity,1)!important;transform:none!important}
  .landing-world-host .folded-destination{display:flex}
 }
-@media(min-width:761px){.landing-world-host .post-hero-preview .ending-copy{max-width:34vw}}
-/* Copy belongs to the desk foreground; the approved faces remain the focus. */
-@media(min-width:761px){
- .landing-world-host .post-hero-preview .chapter.distance,
- .landing-world-host .post-hero-preview .chapter.play-table{align-items:flex-end;padding-top:60svh;padding-bottom:6svh}
- .landing-world-host .post-hero-preview .distance .chapter-copy,
- .landing-world-host .post-hero-preview .play-table .chapter-copy{max-width:470px;padding:20px 24px;background:linear-gradient(110deg,#21151ded,#21151d88 80%,transparent);border-left:1px solid #e9c1a488}
- .landing-world-host .post-hero-preview .chapter.distance h2,
- .landing-world-host .post-hero-preview .chapter.play-table h2{font-size:clamp(30px,2.6vw,44px);margin-bottom:12px}
- .landing-world-host .post-hero-preview .distance .eyebrow,
- .landing-world-host .post-hero-preview .play-table .eyebrow{margin-bottom:12px}
- .landing-world-host .post-hero-preview .country-labels{margin-top:18px}
- .landing-world-host .post-hero-preview .ending{justify-content:flex-end;padding-top:62svh;min-height:105svh}
- .landing-world-host .post-hero-preview .ending-copy{max-width:540px;padding:22px 26px;background:linear-gradient(110deg,#21151ded,#21151d88 80%,transparent);color:#faeee6}
- .landing-world-host .post-hero-preview .ending h2{font-size:clamp(34px,3vw,48px)}
- .landing-world-host .post-hero-preview .ending-rule{margin-top:35px}
-}
 .landing-world-host .post-hero-preview .ending .text-button{color:#ebc8b6}
-
-@media(min-width:761px){
- .landing-world-host .post-hero-preview .letter-invitation{align-items:flex-end;padding-top:55svh;padding-bottom:12svh}
- .landing-world-host .post-hero-preview .letter-invitation .chapter-copy{max-width:400px;padding:20px 24px;background:linear-gradient(110deg,#21151de8,#21151d80 80%,transparent);border-left:1px solid #e9c1a488}
- .landing-world-host .post-hero-preview .letter-invitation .eyebrow{margin-bottom:12px}
- .landing-world-host .post-hero-preview .letter-invitation h2{font-size:clamp(32px,3vw,46px);margin-bottom:15px}
-}

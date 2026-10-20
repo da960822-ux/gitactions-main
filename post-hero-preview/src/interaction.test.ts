@@ -7,9 +7,9 @@ test('normalized progress clamps finite values and maps letter range', () => {
   assert.equal(clamp01(-2), 0);
   assert.ok(Math.abs(sceneProgress(15, 10, 20) - 0.5) < 1e-12);
   assert.equal(sceneProgress(10, 10, 10), 0);
-  assert.equal(letterOpenProgress(0.57), 0);
-  assert.ok(Math.abs(letterOpenProgress(0.665) - 0.5) < 1e-12);
-  assert.equal(letterOpenProgress(0.76), 1);
+  assert.equal(letterOpenProgress(0.62), 0);
+  assert.ok(Math.abs(letterOpenProgress(0.72) - 0.5) < 1e-12);
+  assert.equal(letterOpenProgress(0.79), 1);
 });
 
 test('manual letter state survives forward, reverse and mid-scroll direction changes', () => {

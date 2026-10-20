@@ -25,7 +25,7 @@ test('letter-only collection preserves room ownership, reversible folds, DOM han
  const bounds=new THREE.Box3().setFromObject(collection.root);assert.ok(bounds.max.y<=3,'rig stays below the room characters');assert.ok(bounds.getSize(new THREE.Vector3()).x<2.2,'no floor, architecture or play-table geometry');
  let paper:LetterPaperPose|undefined;const onPaperPose=(pose:LetterPaperPose)=>{paper=pose;};
  collection.update({...frame,opening:1,progress:.75,onPaperPose});collection.projectPaper();assert.equal(insert.visible,false);assert.equal(paper!.visible,true);assert.equal(paper!.corners.length,4);assert.ok(paper!.corners.every(point=>Number.isFinite(point.x)&&Number.isFinite(point.y)));
- collection.update({...frame,opening:1,progress:.75,width:390,reducedMotion:true,onPaperPose});collection.projectPaper();assert.equal(insert.visible,true);assert.equal(paper!.visible,false);
+ collection.update({...frame,opening:1,progress:.75,width:390,reducedMotion:true,onPaperPose});collection.projectPaper();assert.equal(insert.visible,false,'single DOM reading paper also owns reduced-motion and narrow layouts');assert.equal(paper!.visible,false);
  collection.update({...frame,opening:1,progress:.86,width:390,reducedMotion:true,onPaperPose});assert.equal(insert.visible,false);
  collection.update({...frame,opening:1,progress:.84,onPaperPose});const readingTurn=collection.root.rotation.y;assert.ok(readingTurn<-.77,'the same envelope turns to face the reader camera');
  collection.update({...frame,opening:1,progress:1,onPaperPose});assert.equal(Math.abs(collection.root.rotation.y),0);assert.equal(insert.visible,true,'the physical paper returns for the ending view');

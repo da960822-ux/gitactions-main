@@ -15,14 +15,14 @@ export function createLetterRoses(onAssetReady:()=>void=()=>{}){
   for(let i=0;i<uv.count;i++)uv.setX(i,uv.getX(i)*.5+(side>0?.5:0));
   geometries.push(geometry);
   const cluster=new THREE.Mesh(geometry,material);cluster.name=`LETTER_ROSE_CLUSTER_${label}`;
-  cluster.position.set(side*1.65,.62,-.28);cluster.visible=false;cluster.userData.medium='generated botanical cutout';
+  cluster.position.set(side*1.82,1.6,-.28);cluster.visible=false;cluster.userData.medium='generated botanical cutout';
   root.add(cluster);clusters.push(cluster);
  }
  return {root,update(opening:number){
   if(disposed)return;
   const progress=Number.isFinite(opening)?THREE.MathUtils.clamp(opening,0,1):0;
   const q=THREE.MathUtils.smoothstep(progress,.3,.8);
-  material.opacity=q;clusters.forEach(cluster=>{cluster.visible=q>0;cluster.position.y=.62-(1-q)*.08;});
+  material.opacity=q;clusters.forEach(cluster=>{cluster.visible=q>0;cluster.position.y=1.6;});
  },dispose(){
   if(disposed)return;disposed=true;root.removeFromParent();geometries.forEach(geometry=>geometry.dispose());material.dispose();texture.dispose();
  }};

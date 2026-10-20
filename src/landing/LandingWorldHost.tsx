@@ -4,7 +4,6 @@ import gsap from 'gsap';
 import {ScrollTrigger} from 'gsap/ScrollTrigger';
 import {AcrossHero} from './AcrossHero';
 import {GameGallery} from './gallery/GameGallery';
-import {createGalleryCollection} from './gallery/GalleryCollection';
 import {createPostHeroComposition} from './PostHeroComposition';
 import {PostHeroPreview} from '../../post-hero-preview/src/PostHeroPreview';
 import type {PostHeroState} from '../../post-hero-preview/src/Scene';
@@ -28,7 +27,7 @@ type Props={language:'ko'|'es';onLanguageChange:(language:'ko'|'es')=>void;selec
 function hasSeenIntro(){try{return sessionStorage.getItem('folded-playhouse-seen')==='1';}catch{return false;}}
 function rememberIntro(){try{sessionStorage.setItem('folded-playhouse-seen','1');}catch{/* Storage is optional. */}}
 
-/** One canvas and one render clock, from the approved Hero through the open letter. */
+/** The shared world carries the journey; the protected game gallery owns its existing stage. */
 export function LandingWorldHost({language,onLanguageChange,selected,onSelect}:Props){
  const host=useRef<HTMLDivElement>(null),canvas=useRef<HTMLCanvasElement>(null);
  const first=useRef(!matchMedia('(prefers-reduced-motion: reduce)').matches&&!hasSeenIntro()&&!location.hash);
@@ -46,13 +45,13 @@ export function LandingWorldHost({language,onLanguageChange,selected,onSelect}:P
   const media=matchMedia('(prefers-reduced-motion: reduce)');
   const pose:FoldPose={progress:0,entrance:first.current?0:1,pointerX:0,pointerY:0,time:0};
   let world:ReturnType<typeof import('./cinematic/folded/previewSpaceV19')['createFoldedWorld']>|undefined;
-  let post:ReturnType<typeof createLetterCollection>|undefined,gallery:ReturnType<typeof createGalleryCollection>|undefined;
+  let post:ReturnType<typeof createLetterCollection>|undefined;
   let composition:ReturnType<typeof createPostHeroComposition>|undefined,postStage:THREE.Group|undefined;
   const postTransform=new THREE.Matrix4().makeTranslation(-6,-4.3,6).multiply(new THREE.Matrix4().makeRotationY(Math.PI)).multiply(new THREE.Matrix4().makeTranslation(-9,4.3,10));
   let disposed=false,assetsReady=false,frame=0,clockStart=0,last=0,elapsed=0,inIntro=first.current,lost=false;
-  let trigger:ScrollTrigger|undefined,heroEnd=innerHeight*2.6,previousPost=false,galleryInput=false,postNeedsFrame=false;
-  let lastRenderSignature='',pressed:{x:number;y:number;id:number}|null=null;
-  const pointer={x:0,y:0},raycaster=new THREE.Raycaster(),ndc=new THREE.Vector2();
+  let trigger:ScrollTrigger|undefined,heroEnd=innerHeight*2.6,previousPost=false,postNeedsFrame=false;
+  let lastRenderSignature='';
+  const pointer={x:0,y:0};
   const cameraPosition=new THREE.Vector3(),cameraTarget=new THREE.Vector3(),roomEye=ROOM_EYE.clone(),connectionBackground=new THREE.Color();
   let heroBackdrop:THREE.Scene['background']|undefined;
   const roomBackground=new THREE.Color('#21151d');
@@ -79,7 +78,7 @@ export function LandingWorldHost({language,onLanguageChange,selected,onSelect}:P
   const titleLines=[...hero.querySelectorAll<HTMLElement>('.across-title-line')];
   const copy=hero.querySelector<HTMLElement>('.across-editorial')!,destination=hero.querySelector<HTMLElement>('.folded-destination')!;
   const endIntro=()=>{inIntro=false;pose.entrance=1;setIntroActive(false);rememberIntro();dirty.current=true;};skip.current=endIntro;
-  const resetPointer=()=>{pointer.x=pointer.y=0;pressed=null;};
+  const resetPointer=()=>{pointer.x=pointer.y=0;};
   const invalidate=()=>{dirty.current=true;};
   const resize=()=>{
    frameFallback();
@@ -90,16 +89,6 @@ export function LandingWorldHost({language,onLanguageChange,selected,onSelect}:P
   const move=(event:PointerEvent)=>{
    if(event.pointerType==='touch'||media.matches)return;
    pointer.x=Math.max(-1,Math.min(1,event.clientX/innerWidth*2-1));pointer.y=Math.max(-1,Math.min(1,event.clientY/innerHeight*2-1));
-  };
-  const down=(event:PointerEvent)=>{
-   if(!galleryInput||!event.isPrimary||event.button!==0||(event.target as Element)?.closest('a,button,input,textarea,summary,.rd-studio'))return;
-   pressed={x:event.clientX,y:event.clientY,id:event.pointerId};
-  };
-  const up=(event:PointerEvent)=>{
-   const start=pressed;pressed=null;
-   if(!start||!world||!galleryInput||start.id!==event.pointerId||Math.hypot(event.clientX-start.x,event.clientY-start.y)>8)return;
-   ndc.set(event.clientX/screen.clientWidth*2-1,1-event.clientY/screen.clientHeight*2);raycaster.setFromCamera(ndc,world.camera);
-   const id=gallery?.pick(raycaster);if(id){selection.current.onSelect(id);dirty.current=true;}
   };
   const contextLost=(event:Event)=>{event.preventDefault();lost=true;setReady(false);setPostReady(false);endIntro();};
   const contextRestored=()=>{lost=false;lastRenderSignature='';resize();setReady(true);setPostReady(true);};
@@ -140,30 +129,27 @@ export function LandingWorldHost({language,onLanguageChange,selected,onSelect}:P
    const departure=galleryBounds?smoothRange(height*.2,height*.8,galleryBounds.bottom):1;
    const galleryWeight=reveal*departure;
    section?.style.setProperty('--gallery-presence',String(galleryWeight));
-   if(!galleryInput&&galleryWeight>=.92)galleryInput=true;else if(galleryInput&&galleryWeight<.88)galleryInput=false;
-   gallery?.setInputEnabled(galleryInput&&!section?.querySelector('.rd-studio'));
    root.dataset.scene=!postActive?'hero':galleryWeight>.5?'gallery':postState.current.progress<.56?'story':postState.current.progress<.9?'letter':'ending';
-   root.dataset.galleryInput=String(galleryInput);root.dataset.bridge=bridge.toFixed(4);
+   root.dataset.bridge=bridge.toFixed(4);
    const signature=[pose.progress,pose.entrance,pose.pointerX,pose.pointerY,bridge,postState.current.progress,postState.current.opening,galleryWeight,selection.current.selected,scrollY,width,height].map(value=>typeof value==='number'?value.toFixed(4):value).join(':');
-   const needsFrame=dirty.current||signature!==lastRenderSignature||postNeedsFrame||(!media.matches&&(galleryWeight>.01||postState.current.effect.value!==0));
+   const needsFrame=dirty.current||signature!==lastRenderSignature||postNeedsFrame||(!media.matches&&postState.current.effect.value!==0);
    if(!needsFrame){if(!postActive){world.render(pose);updateEditorial(Number(screen.dataset.progress??pose.progress),Number(screen.dataset.entrance??pose.entrance));}return;}lastRenderSignature=signature;dirty.current=false;
    if(!postActive){
     if(previousPost){world.setPostActive(false);world.camera.clearViewOffset();lastRenderSignature='';}
-    previousPost=false;if(post)post.root.visible=false;if(gallery)gallery.root.visible=false;if(composition)composition.root.visible=false;
+    previousPost=false;if(post)post.root.visible=false;if(composition)composition.root.visible=false;
     world.updateRoomExit(0);world.updateRoomDesk(0);world.render(pose);
     updateEditorial(Number(screen.dataset.progress??pose.progress),Number(screen.dataset.entrance??pose.entrance));
-   }else if(post&&gallery&&composition){
+   }else if(post&&composition){
     if(!previousPost){world.render({...pose,progress:1,entrance:1});if(Number(screen.dataset.progress??0)<.999||Number(screen.dataset.entrance??0)<.999){dirty.current=true;return;}world.setPostActive(true);}
     previousPost=true;
     const progress=postState.current.progress;
     post.root.visible=true;
-    gallery.root.visible=true;
     composition.root.visible=true;
     world.updateRoomDesk(bridge);
     world.updateRoomExit(0);
     post.update({...postState.current,width,height,ownCamera:false});postNeedsFrame=false;
     roomEye.copy(ROOM_EYE);if(width>=760)roomEye.addScaledVector(ROOM_BACK,roomContain(width,height)-1);
-    const composed=composition.update({progress,bridge,galleryWeight,opening:postState.current.opening,time:elapsed,reducedMotion:media.matches,width,height,roomEye,roomTarget:ROOM_TARGET,effect:postState.current.effect,localEvent:postState.current.localEvent});
+    const composed=composition.update({progress,bridge,galleryWeight:0,opening:postState.current.opening,time:elapsed,reducedMotion:media.matches,width,height,roomEye,roomTarget:ROOM_TARGET,effect:postState.current.effect,localEvent:postState.current.localEvent});
     postNeedsFrame=composed.needsFrame;
     world.updateRoomExit(composed.roomExit);world.updateRoomDesk(composed.roomDesk);
     cameraPosition.copy(composed.eye).applyMatrix4(postTransform);cameraTarget.copy(composed.target).applyMatrix4(postTransform);
@@ -172,9 +158,7 @@ export function LandingWorldHost({language,onLanguageChange,selected,onSelect}:P
     world.camera.position.copy(cameraPosition);world.camera.lookAt(cameraTarget);
     world.camera.clearViewOffset();world.camera.fov=connection.fov;world.camera.updateProjectionMatrix();
     world.scene.background=connectionBackground.copy(roomBackground).lerp(composed.background,bridge);
-    gallery.root.position.copy(composed.galleryAnchor);gallery.root.scale.setScalar(composed.galleryScale??1);gallery.root.rotation.y=0;
     post.root.position.copy(composed.letterAnchor);post.root.scale.setScalar(composed.letterScale);
-    gallery.update({selected:composed.galleryDisplayId??selection.current.selected,storyFocus:composed.galleryStoryFocus,time:elapsed,paused:media.matches,dt,snap:media.matches,mobile:width<700,effect:postState.current.effect});
     if(!world.renderExternal()){dirty.current=true;return;}post.projectPaper();
     Object.assign(screen.dataset,{scene:root.dataset.scene,camera:world.camera.position.toArray().map(n=>n.toFixed(3)).join(','),target:cameraTarget.toArray().map(n=>n.toFixed(3)).join(','),drawCalls:String(world.renderer.info.render.calls),triangles:String(world.renderer.info.render.triangles),gallery:galleryWeight.toFixed(4),frameRenderingMode:'approved-room-direct',reflection:'Hero SSR inactive in this frame',contactShadow:'room art is rigid and unlit; post props use live contact shadows',geometries:String(world.renderer.info.memory.geometries),textures:String(world.renderer.info.memory.textures)});
     updateEditorial(1,1);destination.style.opacity=String(1-smoothRange(0,.2,bridge));destination.inert=bridge>.2;
@@ -187,17 +171,16 @@ export function LandingWorldHost({language,onLanguageChange,selected,onSelect}:P
    await world.ready;if(disposed)return;assetsReady=true;
    post=createLetterCollection({scene:world.scene,camera:world.camera,host:screen});post.root.visible=false;
    composition=createPostHeroComposition(world.scene,invalidate);
-   gallery=createGalleryCollection(invalidate);gallery.root.visible=false;
-   postStage=new THREE.Group();postStage.name='POST_SHARED_FOREGROUND_STAGE';postStage.matrix.copy(postTransform);postStage.matrixAutoUpdate=false;postStage.add(composition.root,gallery.root,post.root);world.scene.add(postStage);
+   postStage=new THREE.Group();postStage.name='POST_SHARED_FOREGROUND_STAGE';postStage.matrix.copy(postTransform);postStage.matrixAutoUpdate=false;postStage.add(composition.root,post.root);world.scene.add(postStage);
    setPostReady(true);clockStart=performance.now();world.render(pose);resize();
-  }).catch(error=>{if(disposed)return;console.error('Landing world:',error);endIntro();post?.dispose();gallery?.dispose();composition?.dispose();world?.dispose();world=undefined;setReady(false);setFailed(true);});
-  root.addEventListener('pointermove',move);root.addEventListener('pointerleave',resetPointer);root.addEventListener('pointerdown',down);root.addEventListener('pointerup',up);root.addEventListener('pointercancel',resetPointer);window.addEventListener('resize',resize);window.addEventListener('scroll',invalidate,{passive:true});media.addEventListener('change',preference);screen.addEventListener('webglcontextlost',contextLost);screen.addEventListener('webglcontextrestored',contextRestored);document.addEventListener('visibilitychange',visibility);
-  return()=>{disposed=true;cancelAnimationFrame(frame);mm.revert();resizeObserver.disconnect();post?.dispose();gallery?.dispose();composition?.dispose();postStage?.removeFromParent();world?.dispose();root.removeEventListener('pointermove',move);root.removeEventListener('pointerleave',resetPointer);root.removeEventListener('pointerdown',down);root.removeEventListener('pointerup',up);root.removeEventListener('pointercancel',resetPointer);window.removeEventListener('resize',resize);window.removeEventListener('scroll',invalidate);media.removeEventListener('change',preference);screen.removeEventListener('webglcontextlost',contextLost);screen.removeEventListener('webglcontextrestored',contextRestored);document.removeEventListener('visibilitychange',visibility);};
+  }).catch(error=>{if(disposed)return;console.error('Landing world:',error);endIntro();post?.dispose();composition?.dispose();world?.dispose();world=undefined;setReady(false);setFailed(true);});
+  root.addEventListener('pointermove',move);root.addEventListener('pointerleave',resetPointer);window.addEventListener('resize',resize);window.addEventListener('scroll',invalidate,{passive:true});media.addEventListener('change',preference);screen.addEventListener('webglcontextlost',contextLost);screen.addEventListener('webglcontextrestored',contextRestored);document.addEventListener('visibilitychange',visibility);
+  return()=>{disposed=true;cancelAnimationFrame(frame);mm.revert();resizeObserver.disconnect();post?.dispose();composition?.dispose();postStage?.removeFromParent();world?.dispose();root.removeEventListener('pointermove',move);root.removeEventListener('pointerleave',resetPointer);window.removeEventListener('resize',resize);window.removeEventListener('scroll',invalidate);media.removeEventListener('change',preference);screen.removeEventListener('webglcontextlost',contextLost);screen.removeEventListener('webglcontextrestored',contextRestored);document.removeEventListener('visibilitychange',visibility);};
  },[]);
  useEffect(()=>{dirty.current=true;},[selected,language]);
  return <div ref={host} className={`landing-world-host${ready?' is-world-ready':''}${failed?' world-unavailable':''}`}>
   <canvas ref={canvas} className="landing-world-canvas" role="img" aria-label={language==='ko'?'우주에서 게임방, 이야기와 게임 조각, 편지로 이어지는 우리 둘의 공간':'Nuestro espacio, desde el universo hasta la sala de juegos, las piezas y la carta'}/>
   <AcrossHero language={language} ready={ready} introActive={introActive} onSkip={()=>skip.current()}/>
-  <PostHeroPreview embedded language={language} onLanguageChange={onLanguageChange} portraitSrc={PORTRAIT} portraitMaskSrc={PORTRAIT_MASK} renderScene={false} externalSceneReady={postReady} onSceneState={receivePostState} onRegisterFrame={registerFrame} playHref={`/play?game=${selected}`} gallery={<GameGallery language={language} selected={selected} onSelect={onSelect} sharedScene={!failed}/>}/>
+  <PostHeroPreview embedded language={language} onLanguageChange={onLanguageChange} portraitSrc={PORTRAIT} portraitMaskSrc={PORTRAIT_MASK} renderScene={false} externalSceneReady={postReady} onSceneState={receivePostState} onRegisterFrame={registerFrame} playHref={`/play?game=${selected}`} gallery={<GameGallery language={language} selected={selected} onSelect={onSelect}/>}/>
  </div>;
 }

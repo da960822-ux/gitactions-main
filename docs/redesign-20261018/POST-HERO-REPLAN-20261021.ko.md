@@ -1,6 +1,29 @@
 # Hero 이후 재설계 계획 — 우리 둘이 같이 놀 곳
 
-문서 식별일: 2026-10-21 · 작성 환경 UTC 날짜: 2026-10-20 · 상태: **계획 작성, 구현·시각 승인 아님**
+문서 식별일: 2026-10-21 · 상태: **최신 사용자 지시로 전체 구현 착수, 시각 승인 아님**
+
+## 2026-10-21 구현 지시·소유권
+
+사용자가 콘텐츠 계획 전체의 구현과 업무별 스킬 배정, 독립 Impeccable 피드백 및 수정을 명시했다. 아래의 ‘계획 작성만’은 이전 문서 작성 시점의 범위이며 현재 구현을 막는 승인 대기가 아니다. 기존 Hero 브랜치 `ff034ac`을 기준으로 병렬 구현한다. main 병합/배포/force push는 하지 않는다.
+
+| 담당 | 단독 수정 범위 | 필수 적용 스킬 |
+|---|---|---|
+| 기존 Hero Sol High | folded의 Hero 공간/표면/카메라 모듈과 관련 검사 | Ponytail full, Impeccable craft-floor, Three.js scene/material, Emil animate, GPT Taste |
+| 후반 콘텐츠 Sol High | PostHeroPreview/Details/AssetPlayground와 scoped preview/details CSS | Ponytail full, Impeccable craft-floor, Emil design engineering, Game UI/UX의 입력·focus·상태 원칙 |
+| 후반 공간 Sol High | PostHeroComposition, LetterCollection, LetterRoses, LocalEventRig와 관련 검사 | Ponytail full, Impeccable craft-floor, Three.js scene/material, Emil animate |
+| 공동 맥락 Luna | SharedEventsPanel과 해당 검사: initialEventId/initiallyOpen만 추가 | Ponytail full, Impeccable craft-floor, Game UI/UX |
+| 기능 감사 Luna | 실제 DOM 행동을 확인하는 verify-landing-content 스크립트 | Ponytail full, Impeccable audit, Game UI/UX |
+| root | LandingWorldHost/Landing 통합, 공유 연결부, 보호 비교, 독립 검수 조율 | Ponytail full, Impeccable critique/craft-floor |
+
+업무별 스킬 읽기와 적용 결정은 담당자의 결과에 기록한다. 설치됐다는 이유만으로 적용했다고 보고하지 않는다. 같은 세션의 Impeccable context를 반복 실행하지 않고, 오래된 compact PRODUCT/DESIGN보다 최신 사용자 승인 자산과 이 콘텐츠 계획을 우선한다. 새 라이브러리나 자산 제작은 기존 구현·파일의 부족이 확인된 경우에만 한다.
+
+**자산 경로 정정:** 아래 이전 F6 표의 `yeonseok-lisbeth-cutout.webp`는 반실사 셀카 파생본이며 경로가 계획에 있다는 사실만으로 최신 승인 자산이 되지 않는다. root가 두 원본을 직접 열어 비교했고, 실제 F6는 기존 `approved-couple-room/approved-character-reference.png`와 opacity mask를 유지하도록 지정했다. Hero/B와 같은 승인 인물·화풍을 보존하며 새 얼굴이나 가짜 셀카 기억을 추가하지 않는다.
+
+### 독립 평가와 수정 기준
+
+디자인 검수 A(Sol)와 detector/실제 브라우저 근거 B(Luna)는 구현자와 분리한다. A가 평가를 마치기 전 detector 결과를 A 또는 총괄의 평가 종합에 섞지 않는다. Impeccable Nielsen 점수는 원래의0–4/해당 최대점으로 보고한다. 별도의 사용자 목표 점수는 **5점 만점**으로 Hero/후반 각각 구도·톤의 일관성·공간/모션·가독성·맥락에 맞는 상호작용을 평가하며, 각 영역4점 이상과 중대 P0/P1 없음이 목표다. 점수 목표에 맞춰 실제 점수를 올려 쓰지 않는다.
+
+실패하면 같은 담당자에게 관찰 프레임/입력→문제의 원인→잘못된 프롬프트 전제→개선 지시를 전달한다. 한 구현 묶음을 한 번에 검수하고 수정 묶음 뒤 확인해 무한 미세 패치를 피한다. 단위검사 통과/새 자산 수/코드량은 시각 합격이 아니다. 데스크톱1920→1440을 먼저 완성하고 모바일390은 마지막에 확인한다. 실제 GPU 성능과 SwiftShader 결과는 구분한다.
 
 이 문서 담당자의 산출물은 콘텐츠·구도 재계획이다. Hero 실제 수정과 병행해 후반 내용을 구체적으로 계획하라는 현재 지시를 따른다. 문서 담당자가 후반 구현까지 수행했다는 뜻은 아니다. 이후 사용자는 불필요 코드/자산 삭제와 리팩터링도 지시했고 별도 담당들이 수행 중이다. 공유 소스·카메라·UI·자산·원문은 이 문서 작성 과정에서 수정하지 않았다. 과거 Gate 0의 승인 대기 문구를 현재 작업의 중단 사유로 사용하지 않는다. 구현·검수·승인의 상태는 계속 따로 기록한다.
 

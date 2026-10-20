@@ -157,3 +157,19 @@ test('saved decoration requires a valid explicit choice; effects and stamps alon
   const serialized=JSON.parse(serializeLocalEventPreferences({...createLocalEventState(),decorKind:'pawn',decorPawn:3,decorSlot:0,hasSavedDecor:true}));
   assert.deepEqual({hasSavedDecor:serialized.hasSavedDecor,decorKind:serialized.decorKind,pawn:serialized.pawn,decorSlot:serialized.decorSlot},{hasSavedDecor:true,decorKind:'pawn',pawn:3,decorSlot:0});
 });
+
+
+test('tabletop shows the three default physical toys and keeps the same drawing into ending',()=>{
+ const rig=createLocalEventRig(new THREE.Group());
+ const state=createLocalEventState();
+ rig.update(state,100,true,'tabletop');
+ for(const id of ['L01','L04','L06'])assert.equal(namedGroup(rig.root,id).visible,true);
+ assert.deepEqual(state.dominoTiles,[[1,2],[2,3],[3,4],[4,5]]);
+ const drawing=namedGroup(rig.root,'L06');
+ const saved={...state,strokes:[[{x:10,y:10},{x:40,y:20}]],drawingFlipped:true};
+ rig.update(saved,200,true,'tabletop');const before=drawing.children[0];
+ rig.update(saved,300,true,'ending');assert.equal(drawing.visible,true);assert.equal(drawing.children[0],before);
+ assert.equal(namedGroup(rig.root,'L04').visible,false,'no unrelated shadow stage at ending');
+ rig.update({...saved,hasSavedDecor:true},400,true,'ending');assert.equal(namedGroup(rig.root,'L15').visible,true);
+ rig.dispose();
+});
