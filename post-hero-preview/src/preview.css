@@ -165,12 +165,16 @@
 .post-hero-preview #together-again footer>span,.post-hero-preview #together-again footer>a{padding:4px 8px;background:#20161feb}
 .post-hero-preview #together-again footer>a{display:inline-flex;align-items:center;min-height:44px}
 @media(max-width:760px){
- .post-hero-preview #together-again.ending{padding:0 20px 80px;min-height:100svh;display:flex;flex-direction:column;justify-content:flex-end;gap:20px}
- .post-hero-preview #together-again .ending-room{inset:0 0 auto;height:65svh}
+ .post-hero-preview[data-stage="ending"] .letter-bottom-controls{visibility:visible}
+ .post-hero-preview #together-again.ending{padding:60px 20px 80px;min-height:100svh;display:flex;flex-direction:column;justify-content:center;gap:24px}
+ .post-hero-preview #together-again .ending-room{position:relative;inset:auto;flex-shrink:0;width:calc(100% + 40px);height:auto;aspect-ratio:1672/941;margin-inline:-20px}
  .post-hero-preview #together-again .ending-copy{position:relative;inset:auto;transform:none;width:100%;padding:22px;max-width:none}
- .post-hero-preview #together-again .ending-copy.has-keepsake{width:100%;grid-template-columns:minmax(0,1fr) 90px;gap:15px}
+ .post-hero-preview #together-again .ending-copy.has-keepsake{width:100%;grid-template-columns:minmax(0,1fr);gap:18px}
  .post-hero-preview #together-again h2{font-size:28px;max-width:none}
  .post-hero-preview #together-again .ending-actions{gap:14px}
+ .post-hero-preview #together-again .ending-keepsake{display:grid;grid-template-columns:140px minmax(0,1fr);gap:10px 16px;justify-items:start}
+ .post-hero-preview #together-again .ending-drawing{width:140px;grid-row:1/span 2}
  .post-hero-preview #together-again .ending-decor{width:32px;height:38px}
- .post-hero-preview #together-again footer{left:20px;right:20px;font-size:10px}
+ .post-hero-preview #together-again .action-recall{text-align:left;font-size:12px;line-height:1.6}
+ .post-hero-preview #together-again footer{left:20px;right:20px;font-size:12px}
 }

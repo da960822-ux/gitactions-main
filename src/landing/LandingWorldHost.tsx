@@ -46,7 +46,7 @@ export function LandingWorldHost({language,onLanguageChange,selected,onSelect}:P
  useEffect(()=>{
   setReady(false);setPostReady(false);
   const root=host.current!,screen=canvas.current!,hero=root.querySelector<HTMLElement>('.across-hero')!;
-  const media=matchMedia('(prefers-reduced-motion: reduce)');
+  const media=matchMedia('(prefers-reduced-motion: reduce)'),coarsePointer=matchMedia('(pointer: coarse)');
   const pose:FoldPose={progress:0,entrance:first.current?0:1,pointerX:0,pointerY:0,time:0};
   let world:ReturnType<typeof import('./cinematic/folded/previewSpaceV19')['createFoldedWorld']>|undefined;
   let post:ReturnType<typeof createLetterCollection>|undefined;
@@ -64,7 +64,9 @@ export function LandingWorldHost({language,onLanguageChange,selected,onSelect}:P
     const button=root.querySelector<HTMLElement>(`[data-room-object="${object.id}"]`);if(!button)continue;
     const corners=[[-1,-1],[1,1]].map(([x,y])=>new THREE.Vector3(...roomWorldVertex(object.x+x*object.w/2,object.y+y*object.h/2,0)).project(world!.camera));
     const left=bounds.left+(corners[0].x+1)*bounds.width/2,top=bounds.top+(1-corners[0].y)*bounds.height/2;
-    Object.assign(button.style,{left:`${left}px`,top:`${top}px`,width:`${(corners[1].x-corners[0].x)*bounds.width/2}px`,height:`${(corners[0].y-corners[1].y)*bounds.height/2}px`});
+    const width=(corners[1].x-corners[0].x)*bounds.width/2,height=(corners[0].y-corners[1].y)*bounds.height/2;
+    const hitWidth=coarsePointer.matches?Math.max(44,width):width,hitHeight=coarsePointer.matches?Math.max(44,height):height;
+    Object.assign(button.style,{left:`${left-(hitWidth-width)/2}px`,top:`${top-(hitHeight-height)/2}px`,width:`${hitWidth}px`,height:`${hitHeight}px`});
    }
   };
   const cameraPosition=new THREE.Vector3(),cameraTarget=new THREE.Vector3(),roomEye=ROOM_EYE.clone(),connectionBackground=new THREE.Color();
