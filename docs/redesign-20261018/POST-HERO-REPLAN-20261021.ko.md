@@ -68,6 +68,8 @@ R01–R04 공동 기능은 맥락별 opt-in이다. 인증을 강제하지 않고
 
 ## 현재 증거와 남은 작업
 
+- [최신 실제 스페인어 녹화](../review/landing-current-es.mp4)는 source `b5b2613e1db899457b93687c0dc9d94b43c2e9cf`의 기록이다. 실제 Chromium/Linux/SwiftShader, 1440×900·DPR1, 44.83초·1.08배속·H.264·무음·무자막이며 root도 ffprobe와 contact sheet를 확인했다. Hero 정/역/정, B의 실제 L06 그림/카드/Escape, 엔진 보고 domino hover·Da Vinci 선택, 편지 열기/원문 5문단 읽기/닫기, 그림 상태를 회수한 settled 엔딩을 담았다. 브라우저/HTTP 오류 0건이며 실제 하드웨어 GPU나 전체 디자인 4/5 합격의 증거가 아니다. [현재 실행 metadata](../../output/current-review/implementation-20261021/spanish-landing-walkthrough/report-current.json)의 source와 연결한다. 아래 이전 5c12 영상은 독립 평가 대상 보존용이다.
+
 - [실제 스페인어 웹 사용 녹화](../review/landing-5c12f9b-es.mp4)는 source `5c12f9b`의 검수용 기록이다. 1440×900, 46.60초, 1.08배속, 무음·무자막 H.264로 Hero 왕복·B의 실제 낙서/카드·갤러리 hover/선택·편지 열기/읽기/닫기·엔딩을 담았다. 페이지를 재현한 제작 영상이 아니며 원본 녹화의 준비/마지막 대기 시간만 잘랐다. 전체 디자인 합격이나 이후 수정본을 뜻하지 않는다. 아래 `output/` 링크는 작업환경의 로컬 검수 자료다.
 
 - 현재 frozen source의 통합 checkpoint는 전체 77 files/620 tests, post 26/26, TypeScript/Vite/edge build 통과다. 편지·모바일·터치 최종 수정 뒤의 [full-test 로그](../../output/current-review/implementation-20261021/full-tests-final.log), [post 검사 로그](../../output/current-review/implementation-20261021/post-tests-final.log), [build 로그](../../output/current-review/implementation-20261021/build-final.log)에 남아 있으며 500 kB 이상 chunk 경고는 유지된다. Hero focused geometry test는 [focused log](../../output/current-review/hero-spatial-rework-20261021/hero-wall-volume-current/focused-tests.log)에서 22/22 통과했다. 수학 검사와 화면/성능 평가는 구분한다.
