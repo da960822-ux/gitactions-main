@@ -14,22 +14,25 @@ export function createApprovedRoomArchitecture(roomRoot:T.Group,art:T.MeshBasicM
    #ifdef USE_MAP
     vec2 sourceUv=vMapUv;
     float sourceY=(1.-sourceUv.y)*941.;
-    float outerY=sourceY<0.?53.+sourceY*1536./1672.:915.+(sourceY-941.)*1536./1672.;
-    // Unconditional samples preserve mip derivatives at the protected rectangle's boundaries.
+    // Each texture lookup has continuous coordinates across the protected edge.
+    // Selecting top/bottom coordinates before texture2D corrupts implicit mip derivatives.
     vec4 originalColor=texture2D(map,sourceUv);
-    vec4 outerColor=texture2D(roomOuterRows,vec2(sourceUv.x,1.-outerY/1024.));
-    float edgeY=sourceY<0.?0.:941.;
-    float outpaintEdgeY=sourceY<0.?53.:915.;
-    vec3 protectedEdge=texture2D(map,vec2(sourceUv.x,1.-edgeY/941.)).rgb;
-    vec3 derivativeEdge=texture2D(roomOuterRows,vec2(sourceUv.x,1.-outpaintEdgeY/1024.)).rgb;
-    outerColor.rgb=clamp(outerColor.rgb+(protectedEdge-derivativeEdge)*exp(-abs(sourceY-edgeY)/14.),0.,1.);
+    vec4 topColor=texture2D(roomOuterRows,vec2(sourceUv.x,1.-(53.+sourceY*1536./1672.)/1024.));
+    vec4 bottomColor=texture2D(roomOuterRows,vec2(sourceUv.x,1.-(915.+(sourceY-941.)*1536./1672.)/1024.));
+    vec3 protectedTop=texture2D(map,vec2(sourceUv.x,1.)).rgb;
+    vec3 protectedBottom=texture2D(map,vec2(sourceUv.x,0.)).rgb;
+    vec3 derivativeTop=texture2D(roomOuterRows,vec2(sourceUv.x,1.-53./1024.)).rgb;
+    vec3 derivativeBottom=texture2D(roomOuterRows,vec2(sourceUv.x,1.-915./1024.)).rgb;
+    topColor.rgb=clamp(topColor.rgb+(protectedTop-derivativeTop)*exp(-abs(sourceY)/14.),0.,1.);
+    bottomColor.rgb=clamp(bottomColor.rgb+(protectedBottom-derivativeBottom)*exp(-abs(sourceY-941.)/14.),0.,1.);
+    vec4 outerColor=mix(bottomColor,topColor,1.-step(0.,sourceY));
     float originalCenter=step(0.,sourceUv.y)*step(sourceUv.y,1.);
     vec4 sourceColor=mix(outerColor,originalColor,originalCenter);
     diffuseColor*=sourceColor;
    #endif
   `);
  };
- art.customProgramCacheKey=()=> 'approved-room-original-center-outer-rows-only-edge-registered-v3';
+ art.customProgramCacheKey=()=> 'approved-room-original-center-outer-rows-only-continuous-edge-derivatives-v4';
  const geometry=keep(new T.PlaneGeometry(ROOM_REFERENCE.width,1057,1,1));
  const position=geometry.getAttribute('position'),uv=geometry.getAttribute('uv');
  for(let i=0;i<position.count;i++){

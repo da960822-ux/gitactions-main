@@ -9,6 +9,7 @@
 .landing-world-host .folded-destination a{font-size:12px;min-height:44px;background:#21101cd6;padding:8px 18px;border:1px solid #e0bbab55;border-radius:2px;gap:24px}
 .landing-world-host [data-room-active=true] .folded-side-note,.landing-world-host [data-room-active=true] .across-bottom{visibility:hidden}
 .landing-world-host .across-stage::after{opacity:var(--hero-atmosphere-opacity,1)}
+.landing-world-host .folded-side-note{opacity:calc(.7 * var(--hero-atmosphere-opacity,1))}
 .landing-world-host .post-hero-preview.post-hero-embedded{background:transparent;overflow:visible;isolation:auto}
 .landing-world-host .post-hero-preview .letter-section{background:linear-gradient(#160e1700,#160e1780 20%,#160e1790 85%,#160e1700)}
 .landing-world-host .post-hero-preview .letter-paper{color:#402a33}

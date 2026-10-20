@@ -1,5 +1,6 @@
 # 시각 자산 위치·출처·상태 목록
 
+날짜 표기: 문서/폴더의 `20261021`은 한국 현지 작업일 식별자로 보존한다. 이번 실제 생성·브라우저·명령 실행일은 **2026-10-20 UTC**다.
 기준일: 2026-10-21 · 범위: 이미지 자산의 원본, 파생, 현재 코드 연결, 미사용·보존 위치. 이 문서는 자산과 연결 상태를 조사한 목록이며 구현·승인 기록은 아니다.
 
 ## 요약
@@ -104,7 +105,7 @@
 
 초기 `cosmic-matte-generation.json`은 opacity matte 후보만 기록했지만 이후 상태가 바뀌었다. 후보 2는 `public/images/hero-cosmic-layers/near-foreground-matte.png`로 실제 v6 runtime에 연결된 기술 작업물이며, `public/images/hero-cosmic-layers/cosmic-disocclusion-plate.png`도 생성되어 runtime에 연결됐다. 두 파일은 당시 WIP였다. 최신 구현 계약은 아래 v8 추기를 따른다. `public/images/hero-cosmic-layers/provenance.json`과 `output/current-review/hero-spatial-rework-20261021/runtime-separated-v6/REVIEW.md`가 이 상태와 검사 범위를 기록한다.
 
-| 원본/후보 | 저장 경로 · 치수 · 크기 · SHA-256 | 출처와 현재 상태 |
+| 원본/후보 | 저장 경로 · 치수 · 크기 · SHA-256 | 출처와 당시 상태 |
 |---|---|---|
 | 원본 우주 RGB | `public/images/our-universe-scene.webp` · 1536×1024 · 1,826,360 bytes · `29747b92c13babd57938f064c9e5a6a94339594e6adafe342e18d0e25a3114e9` | 원본 파일 hash/크기를 직접 측정했다. RGB 원본은 수정되지 않았고 두 runtime layer의 기초로 유지된다. |
 | 후보 1 matte | `/workspace/generated_images/exec-c21ff612-4665-44f6-931c-91829fa70382.png` · 1536×1024 · 1,127,338 bytes · `6e7e9969bfb963eed90f1e78df44e7b1d9c6279999f8c311e7470fa651fe46a8` | 거절됨: 안쪽 검은 선화와 가까운 벽의 불투명 영역 누락. runtime에 연결된 자산이 아니다. |
@@ -117,10 +118,27 @@ v6에서 확인된 기술적 보존 범위는 제한적이다. B 카메라/frust
 
 초기 2026-10-21 생성 기록 시 clean plate는 아직 생성하지 않았고 후보 2 경계도 geometry union과 정지 프레임 확인을 기다렸다. 위 표는 그 뒤 v6에서 확인한 이력이며 현재 구현의 최종 상태가 아니다. 이후 v8의 계약과 확인 범위는 아래 추기를 따른다.
 
-## 후속 v8 계약 정정과 후보3 거절
+## 후속 v8 계약 정정과 후보3 거절 — 당시 기록
 
-v6의 inside-coverage 합성은 과도한 총괄 기술 제약이었다. 현재 v8은 승인 p0 원본을 유지한 뒤 초기 원경 layer를 일관된 cleanplate로 이어 주며 실제 전경/카메라 기하는 유지한다. 원본 RGB 파일·승인 B·인물은 보존한다. root는 실제 두 해상도 중간 PNG에서 아치 색 접합선과 FAR 옛 소품 잔상 해소를 확인했다. 근경 꽃/소품 추출 가장자리는 아직 시각 합격이 아니다. 위 표의 v6 사용 범위와 현재 구현 계약을 구분한다.
+v6의 inside-coverage 합성은 과도한 총괄 기술 제약이었다. v8 당시 구현은 승인 p0 원본을 유지한 뒤 초기 원경 layer를 일관된 cleanplate로 이어 주며 실제 전경/카메라 기하를 유지했다. 원본 RGB 파일·승인 B·인물은 보존한다. root는 실제 두 해상도 중간 PNG에서 아치 색 접합선과 FAR 옛 소품 잔상 해소를 확인했다. 근경 꽃/소품 추출 가장자리는 당시 시각 합격이 아니었다. 위 표의 v6 사용 범위와 v8 당시 구현 계약을 구분한다.
 
 추가 mask 후보3 `/workspace/generated_images/exec-9a0c061c-9687-4a46-b580-8a3904cd2f92.png`(1536×1024,1,029,272B,SHA `799286f8281ecd9a922c10c38cd8164c0427a8c1c40cd9ba06e0cd5920b74623`)은 root가 직접 열어 거절했다. 가까운 벽의 잘못된 검정 영역과 소품 안쪽 선화가 다시 생겨 제품에 복사/연결하지 않았다. 자산 생성 성공을 품질 개선으로 기록하지 않는다.
 
-후속 RGBA 분리 후보 `/workspace/generated_images/exec-2ab7ff3d-6750-4159-b864-ad2e6cadba3d.png`은 image_gen의 투명 배경 제거 방식으로 생성했다(1536×1024,2,089,657B,SHA `4da6cd9d3396e97ddc2cc416d1fd2be462ef7004bbb72d3050394a504b14f926`). 실제 RGBA이며 원경/난간 구멍 alpha=0, 가까운 벽은 불투명하다. root와 독립 검수는 연결 개선과 동시에 더 풍성한 꽃/잎, 벽·금속 밝기·세부 변화, 작은 원경 잔류 가능성을 확인했다. 승인 원본의 정확한 픽셀 추출이 아닌 파생 후보이므로 현재 v8 제품에는 미연결이다. 실제 격리 합성에서 판단하며 원본 p0/B·인물 보존과 꽃 추가 금지 맥락을 함께 적용한다.
+후속 RGBA 분리 후보 `/workspace/generated_images/exec-2ab7ff3d-6750-4159-b864-ad2e6cadba3d.png`은 image_gen의 투명 배경 제거 방식으로 생성했다(1536×1024,2,089,657B,SHA `4da6cd9d3396e97ddc2cc416d1fd2be462ef7004bbb72d3050394a504b14f926`). 실제 RGBA이며 원경/난간 구멍 alpha=0, 가까운 벽은 불투명하다. root와 독립 검수는 연결 개선과 동시에 더 풍성한 꽃/잎 묘사, 벽·금속의 밝기·세부 변화, 작은 원경 잔류 가능성을 확인했다. 원본과 같은 꽃 수·형태를 완전히 보존했다고 주장할 수 없다. v8 당시에는 제품 runtime에 미연결이었다. 이후 사용하지 않는 mask2 이진 matte와 source-trace fallback helper는 checkpoint `50f833e`에서 회수할 수 있게 정리됐다. 현재 v9 source에는 파생 RGB와 별도 수리 alpha가 별도 채널로 연결된 WIP다. 사용자가 별도 장식/새 꽃을 요청한 것은 아니므로 이 파생 표현을 승인 첫 Hero/B에는 적용하지 않고, 전환 전경 후보로만 검수 중이다.
+
+## 2026-10-20 UTC v9 전환 전경 자산 — 소스 WIP, 기술 검사 완료·시각 승인 대기
+
+파일명 식별자 `20261021`은 한국 현지 작업일 표기다. provenance는 실제 생성 실행일을 `2026-10-20 UTC`로 기록한다. 앞선 v6/v8 구간은 당시의 상태·검수 이력으로 유지하며, 현재의 연결 상태는 다음 v9 표에 따른다.
+
+| 입력/레이어 | 저장 경로 · 치수 · 크기 · SHA-256 | 출처·연결 상태 |
+|---|---|---|
+| 원본 우주 RGB (`I`) | `public/images/our-universe-scene.webp` · 1536×1024 · 1,826,360 bytes · `29747b92c13babd57938f064c9e5a6a94339594e6adafe342e18d0e25a3114e9` | 파일 해시와 크기를 직접 확인했다. 원본 우주 RGB는 수정되지 않았다. 승인 첫 Hero/B 및 승인 인물·게임방 원본도 보호된다. |
+| 파생 근경 RGB (`N`) | generated source `/workspace/generated_images/exec-2ab7ff3d-6750-4159-b864-ad2e6cadba3d.png`; runtime `public/images/hero-cosmic-layers/near-derived-rgb.png` · 1536×1024 · 2,089,657 bytes · `4da6cd9d3396e97ddc2cc416d1fd2be462ef7004bbb72d3050394a504b14f926` | RGB는 파생 이미지에서 읽고, 기본 alpha는 같은 첫 RGBA 이미지의 alpha를 사용한다. 꽃/잎 묘사는 원본과 밀도·세부가 다르고 벽·돌·금속의 밝기·세부도 달라 exact cutout이 아니다. 원본과 같은 꽃 수·모양 전체를 보존한다고 말하지 않는다. |
+| 수리한 alpha (`A`) | generated source `/workspace/generated_images/exec-84886c9d-60de-40b6-89a3-1d212b26e68a.png`; runtime `public/images/hero-cosmic-layers/near-repaired-alpha.png` · 1536×1024 · 2,160,095 bytes · `a488ea774fe3f2c9b8406cf6bbe75b09441c1118f58e0075a62802f4622e325b` | alpha만 쓰며 RGB는 무시한다. 기본 N alpha 대신 쓰는 범위는 실제 도시 첨탑 component x428–467,y459–564(2,224 source pixels)를 포함하도록 둔 padding ROI x424–480,y453–571뿐이다. 두 번째 후보 ROI x730–980,y635–680는 잎의 실제 차이로 인해 적용하지 않고 N alpha를 유지한다. PNG 전체를 합성·편집한 단일 RGBA 제품 파일은 만들지 않았다. |
+| 원경 disocclusion RGB (`C`) | generated source `/workspace/generated_images/exec-24b875b1-adb9-4f9f-85b6-d68be1b793b0.png`; runtime `public/images/hero-cosmic-layers/cosmic-disocclusion-plate.png` · 1536×1024 · 2,491,083 bytes · `24c91d12523dab0097384b90b8dea0856caa9a4421b74c27f0beea7ed90c5fdc` | 숨겨졌던 곳에 드러나는 원경 영역을 위한 새 RGB다. 승인 B·인물 원본을 교체하지 않으며 원본 우주 panorama 전체 replacement도 아니다. |
+
+`src/landing/cinematic/folded/cosmicLayers.ts`는 원본 texture, 파생 근경 RGB, 별도 alpha를 실제 runtime에서 채널별로 조합한다. 기본 alpha는 N의 첫 RGBA alpha이고, A는 source ROI x424–480,y453–571에만 적용된다. `src/landing/cinematic/folded/previewSpaceV19.ts`가 이들과 clean plate를 로드한다. 각 레이어는 별도 PNG이며, N의 RGB와 A의 alpha를 결합한 단일 합성 PNG를 만들지 않았다. 파일 크기·해시는 직접 `identify`, `sha256sum`, `stat`으로 확인했다. 현재 v9 연결은 소스 WIP다.
+
+기존 v9 기록을 읽으면 기술 검증이 완료된 범위를 확인할 수 있다. `runtime-hybrid-v9-proof-v4/report.json`은 1920×1080과 1440×900에서 boundary 샘플을 기록하고 `errors`가 비어 있다. 검증 요약은 v9 경계/원경 handoff와 B 외곽 행 seam·측면 HUD 종료 수정을 범위로 적는다. `runtime-hybrid-v9-validation/interaction/settled-report.json`은 두 해상도 모두 pointer 반응·분리 전 입력 등록, settled/reversal/resize 이미지 일치 플래그가 참이며 오류가 0이다. `final-checks.log`에는 관련 집중 검사 27개 통과와 production build 통과가 기록돼 있다. 이는 범위가 지정된 기술 검증 결과이며 사용자 승인이나 전체 시각 합격을 뜻하지 않는다. 특히 독립 A의 실제 0.2초 추출 sequence에서는 fade/background replacement가 지배적으로 보였으므로 motion 최종 완료로 표시하지 않는다. 다음 timing study는 output-only로 남아 있다. v9 push도 아직 이뤄지지 않았고, 원격에는 v8 체크포인트 `50f833e`가 현재 상태다.
+
+Root가 보고한 제한된 실제 v2 `.16` study에서는 원경 도시 첨탑이 제거되고 연결이 이어지며 RGB가 더 어둡게 유지된 모습을 확인했다. 이는 한 정지 상태에서의 관찰로 full handoff 승인 근거가 아니다. 이 파생 RGB에 더 풍성한 꽃/잎과 원본 대비 벽·금속 차이가 있으므로, 사용자가 요청하지 않은 별도 장식/새 꽃의 표현은 승인 첫 Hero/B에 적용하지 않는다. 전환 전경 WIP에서만 원본 요소와의 관계를 검수 중이다. 꽃 개수나 형상의 완전한 보존은 주장하지 않는다.

@@ -1,10 +1,10 @@
 import * as T from 'three';
-import {COSMIC_COVERAGE_GLSL} from './cosmicOwnership';
 import {cameraPose,smoothRange} from './poseSpaceV19';
 
 type Keep=<A extends{dispose:()=>void}>(resource:A)=>A;
 export const COSMIC_CLEANPLATE='/images/hero-cosmic-layers/cosmic-disocclusion-plate.png';
-export const COSMIC_MATTE='/images/hero-cosmic-layers/near-foreground-matte.png';
+export const COSMIC_NEAR_RGB='/images/hero-cosmic-layers/near-derived-rgb.png';
+export const COSMIC_NEAR_ALPHA='/images/hero-cosmic-layers/near-repaired-alpha.png';
 export function cosmicLayerPose(progress:number){
  return{separation:smoothRange(.08,.10,progress),farOpacity:1-smoothRange(.14,.16,progress),approach:3*smoothRange(.10,.14,progress)+2.2*smoothRange(.24,.44,progress),nearOpacity:1-smoothRange(.38,.50,progress),room:smoothRange(.12,.14,progress)};
 }
@@ -17,17 +17,26 @@ export function createCosmicForeground(scene:T.Scene,keep:Keep){
  const material=keep(new T.MeshBasicMaterial({toneMapped:false,side:T.DoubleSide,transparent:true,alphaTest:.02,depthWrite:true,vertexColors:true}));
  geometry.setAttribute('color',new T.Float32BufferAttribute(new Float32Array(position.count*3).fill(1),3));
  const mesh=new T.Mesh(geometry,material);mesh.name='COSMIC_LOCAL_RIGID_PROPS_AND_OWNED_STRUCTURE';mesh.frustumCulled=false;mesh.renderOrder=3;scene.add(mesh);
- material.onBeforeCompile=shader=>{shader.fragmentShader=COSMIC_COVERAGE_GLSL+'\n'+shader.fragmentShader;shader.fragmentShader=shader.fragmentShader.replace('#include <alphamap_fragment>',`
-  #ifdef USE_ALPHAMAP
-   float coverage=originalNearCoverage(vAlphaMapUv,texture2D(alphaMap,vAlphaMapUv).g);
-   diffuseColor.a*=smoothstep(.30,.70,coverage);
+ const nearRGB={value:null as T.Texture|null},rgbBlend={value:0};
+ material.onBeforeCompile=shader=>{shader.uniforms.cosmicNearRGB=nearRGB;shader.uniforms.cosmicNearBlend=rgbBlend;shader.fragmentShader='uniform sampler2D cosmicNearRGB;uniform float cosmicNearBlend;\n'+shader.fragmentShader;shader.fragmentShader=shader.fragmentShader.replace('#include <map_fragment>',`
+  #ifdef USE_MAP
+   vec3 originalRGB=texture2D(map,vMapUv).rgb;
+   vec3 derivedRGB=texture2D(cosmicNearRGB,vMapUv).rgb;
+   diffuseColor.rgb*=mix(originalRGB,derivedRGB,cosmicNearBlend);
   #endif
- `);};material.customProgramCacheKey=()=> 'cosmic-local-original-RGB-source-traced-stone-filtered-foliage';
+ `).replace('#include <alphamap_fragment>',`
+  #ifdef USE_ALPHAMAP
+   vec2 source=vec2(vAlphaMapUv.x*1536.,(1.-vAlphaMapUv.y)*1024.);
+   float repair=step(424.,source.x)*step(source.x,480.)*step(453.,source.y)*step(source.y,571.);
+   float firstAlpha=texture2D(cosmicNearRGB,vAlphaMapUv).a;
+   diffuseColor.a*=mix(firstAlpha,texture2D(alphaMap,vAlphaMapUv).a,repair);
+  #endif
+ `);};material.customProgramCacheKey=()=> 'registered-original-to-derived-RGB-with-repaired-alpha';
  let key='',last='';const eye=new T.Vector3();
- return{mesh,material,setImages(rgb:T.Texture,matte:T.Texture){material.map=rgb;material.alphaMap=matte;material.needsUpdate=true;},update(p:number,width:number,height:number){
+ return{mesh,material,setImages(original:T.Texture,derived:T.Texture,alpha:T.Texture){material.map=original;nearRGB.value=derived;material.alphaMap=alpha;material.needsUpdate=true;},update(p:number,width:number,height:number){
   const pose=cosmicLayerPose(p),signature=[p,width,height].join(':');if(signature===last)return;last=signature;
   const base=cameraPose(p,1,false).position;eye.fromArray(base);eye.z+=9.6*(Math.max(1,(1672/941)/(width/height))-1);
-  mesh.visible=width>=760&&pose.separation>0&&pose.nearOpacity>0;material.opacity=pose.nearOpacity;if(!mesh.visible)return;
+  rgbBlend.value=pose.separation;mesh.visible=width>=760&&pose.separation>0&&pose.nearOpacity>0;material.opacity=pose.nearOpacity;if(!mesh.visible)return;
   const aspect=width/height,imageAspect=1.5,rx=aspect<imageAspect?aspect/imageAspect:1,ry=aspect>imageAspect?imageAspect/aspect:1,tan=Math.tan(24*Math.PI/180);
   const bend=smoothRange(.12,.34,p),colors=geometry.getAttribute('color');
   for(let i=0;i<position.count;i++){
@@ -40,5 +49,5 @@ export function createCosmicForeground(scene:T.Scene,keep:Keep){
   position.needsUpdate=true;geometry.computeVertexNormals();const normals=geometry.getAttribute('normal');
   for(let i=0;i<position.count;i++){const shade=1-.16*bend*cosmicStructuralWeight(uv.getX(i)*1536)*(1-Math.abs(normals.getY(i)));colors.setXYZ(i,shade,shade,shade);}colors.needsUpdate=true;
   key=width+':'+height;geometry.computeBoundingSphere();mesh.updateMatrixWorld();
- },get state(){return{projection:key,ownership:'whole left x<800 and right x>960 props rigid; only central wood/stone deforms',sourceRGB:'unchanged original panorama',matte:'filtered technical matte with source-traced original arch/capital/rail with filtered foliage matte'};}};
+ },get state(){return{projection:key,ownership:'whole left x<800 and right x>960 props rigid; only central wood/stone deforms',rgbBlend:rgbBlend.value,sourceRGB:'original I blends to derived near RGB before movement; derived art differs from original details',matte:'first RGBA alpha, with repair alpha only at source city-spire ROI424–480,453–571'};}};
 }

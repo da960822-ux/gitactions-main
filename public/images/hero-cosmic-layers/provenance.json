@@ -1,20 +1,40 @@
 {
-  "role": "technical near-field binary matte, not replacement RGB artwork",
+  "role": "v9 technical derived near RGB plus independently repaired alpha; not final user artwork approval",
   "sourceRGB": "/images/our-universe-scene.webp",
   "sourceRGBSha256": "29747b92c13babd57938f064c9e5a6a94339594e6adafe342e18d0e25a3114e9",
-  "matteSha256": "408eeea701b060af318b587227ee18f8630000bd43f2051c82e2be34a1132eab",
-  "creation": "image_gen binary selection and one atomic repair, 2026-10-21, parent-owned tool calls",
-  "generatedFile": "exec-526525f4-d309-4086-98e8-8667537815fa.png",
-  "nearUnion": "original left architecture, telescope/tripod, balcony rails, tabletop and attached local props; sky, city, water and horizon excluded",
-  "geometryCorrection": "Original-source coordinate arch/capital polygon and rail openings replace wrong generated structural classification in both foreground and far backing; finer foliage retains technical matte.",
-  "knownLimit": "Approximate botanical contours and opaque prop selection remain technical artwork blockers. Props are frontal2.5D source image groups, not reconstructed volumes. No final visual approval.",
-  "approvedRGB": "unchanged; same original source is used by both layers",
+  "initialAndPeople": "p0 original panorama/portrait and approved B source files unchanged",
+  "handoff": "Registered stationary UVs before movement: near=(I→N,s), far=(I→C,s), near opacity1 with A=firstRGBA alpha except local spire repair. Composite=mix(I,A*N+(1-A)*C,s). Starts.08, completes.10 before rigid approach.",
+  "nearRGB": {
+    "file": "near-derived-rgb.png",
+    "generatedFile": "exec-2ab7ff3d-6750-4159-b864-ad2e6cadba3d.png",
+    "sha256": "4da6cd9d3396e97ddc2cc416d1fd2be462ef7004bbb72d3050394a504b14f926",
+    "use": "RGB and default alpha. OriginalI→derivedRGB uses matched handoff s; first alpha stays authoritative outside the local repair.",
+    "difference": "Derived flower/leaf density, wall/stone/metal brightness and details differ from original. Not an exact source cutout."
+  },
+  "nearAlpha": {
+    "file": "near-repaired-alpha.png",
+    "generatedFile": "exec-84886c9d-60de-40b6-89a3-1d212b26e68a.png",
+    "sha256": "a488ea774fe3f2c9b8406cf6bbe75b09441c1118f58e0075a62802f4622e325b",
+    "use": "Alpha only within source x424–480,y453–571. Its RGB is ignored. Global use was rejected because it erased opaque wall interiors.",
+    "creation": "image_gen parent-owned cutout followed by narrow alpha cleanup. Residual city spires removed in actual isolated browser proof.",
+    "scopeEvidence": "Actual removed opaque component x428–467,y459–564,2224 source pixels. Padding avoids cutting component at y470. Second proposed region x730–980,y635–680 retains first alpha because differences mainly affect genuine foliage edges."
+  },
+  "status": "Actual v9 desktop boundary composition and seam/HUD correction inspected by parent/independent reviewer; 27 focused tests/build and settled pointer/reversal/resize checks pass. Overall spatial-motion quality and final user artwork acceptance remain open; output-only timing study follows.",
+  "limits": "Frontal2.5D prop groups and actual owned surfaces; no reconstructed people/volumetric room. Derived botanical differences remain explicit.",
   "cleanplate": {
     "file": "cosmic-disocclusion-plate.png",
     "generatedFile": "exec-24b875b1-adb9-4f9f-85b6-d68be1b793b0.png",
     "sha256": "24c91d12523dab0097384b90b8dea0856caa9a4421b74c27f0beea7ed90c5fdc",
-    "creation": "image_gen, parent-owned tool call, original panorama and technical matte references",
-    "status": "parent visually inspected; technical disocclusion test only, visual approval pending",
-    "coverage": "Coherent full distant backing handoff during .08\u2013.10, before foreground movement. Approved initial p0 RGB remains exact; near layer keeps originalRGB. Parent/independent reviewer removed earlier inside-only implementation restriction after actual seam evidence."
+    "creation": "image_gen, parent-owned tool call executed2026-10-20UTC; original panorama and technical matte references",
+    "status": "Used in actual v9 runtime distant backing; preserves original p0. Full perceptual transition quality remains under review.",
+    "coverage": "Coherent full distant backing handoff .08–.10, matched to near RGB originalI→derivedN with repaired alphaA kept independent of handoff. Initial p0 originalI is preserved."
+  },
+  "cleanup": "Unused binary matte and source-trace fallback helper removed; recoverable in v8 checkpoint50f833e.",
+  "executionDateUTC": "2026-10-20",
+  "workFolderIdentifier": "20261021 identifies Korean local work day, not UTC execution date",
+  "reviewFeedback": {
+    "missedCondition": "Two-frame .16 isolated study hid a repaired-alpha opaque-wall deletion because the wall had already retired. Actual .09 handoff exposed it.",
+    "improvedInstruction": "Use first RGBA alpha by default. Apply repaired alpha only to measured city-spire component with safe padding x424–480,y453–571. Preserve second region genuine foliage. Verify both .09 wall and .16 monitor clearance, plus either side of first visibility.",
+    "samplingCorrection": "1440 canvas-only exposed one-pixel outer-row seam at protected room top edge. Continuous unconditional top/bottom texture lookups remove implicit mip-derivative discontinuity; original center pixels/camera/geometry remain unchanged."
   }
 }

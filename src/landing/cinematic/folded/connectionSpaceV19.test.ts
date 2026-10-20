@@ -4,7 +4,6 @@ import {createStorySurface} from './storySurfaceV19';
 import {cosmicLayerPose,cosmicOwnership,createCosmicForeground} from './cosmicLayers';
 import {roomWorldVertex} from './approvedRoomGeometry';
 import {PerspectiveCamera,Scene,Vector3} from 'three';
-import {ARCH_TRACE,RAIL_HOLES} from './cosmicOwnership';
 import {portraitDeparture} from './previewSpaceV19';
 
 describe('approved B connection',()=>{
@@ -87,14 +86,13 @@ describe('approved B connection',()=>{
   }
   owned.forEach(resource=>resource.dispose());
  });
- it('traces the source arch/capital and genuine rail openings without a broad far rectangle',()=>{
-  const inside=(x:number,y:number,points:number[][])=>{let hit=false;for(let i=0,j=points.length-1;i<points.length;j=i++){const a=points[i],b=points[j];if((a[1]>y)!==(b[1]>y)&&x<(b[0]-a[0])*(y-a[1])/(b[1]-a[1])+a[0])hit=!hit;}return hit;};
-  expect(inside(420,400,ARCH_TRACE)).toBe(true);expect(inside(500,400,ARCH_TRACE)).toBe(false);
-  expect(inside(447,184,ARCH_TRACE)).toBe(true);expect(inside(470,184,ARCH_TRACE)).toBe(false);
-  expect(RAIL_HOLES.some(hole=>inside(870,775,hole))).toBe(true);
-  expect(RAIL_HOLES.some(hole=>inside(930,775,hole))).toBe(false);
+ it('keeps full near coverage while handing off RGB before the props move',()=>{
+  const owned:{dispose:()=>void}[]=[],near=createCosmicForeground(new Scene(),resource=>{owned.push(resource);return resource;});
+  for(const [p,blend]of[[.080001,0],[.09,.5],[.10,1]]){
+   near.update(p,1920,1080);expect(near.material.opacity).toBe(1);expect(near.state.rgbBlend).toBeCloseTo(blend,6);expect(cosmicLayerPose(p).approach).toBe(0);
+  }
+  owned.forEach(resource=>resource.dispose());
  });
-
  it.each([[1920,1080],[1440,900]])('registers the near layer before any rigid motion at %i×%i',(width,height)=>{
   const owned:{dispose:()=>void}[]=[],near=createCosmicForeground(new Scene(),resource=>{owned.push(resource);return resource;});
   const positions=near.mesh.geometry.getAttribute('position'),uv=near.mesh.geometry.getAttribute('uv');
