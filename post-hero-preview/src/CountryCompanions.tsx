@@ -42,7 +42,12 @@ export function CountryCompanions({language,children}:{language:'ko'|'es';childr
   const observer=new IntersectionObserver(([entry])=>{setVisible(entry.isIntersecting);if(!entry.isIntersecting)reset();},{threshold:.15});observer.observe(element);
   const hidden=()=>{if(document.hidden){setVisible(false);reset();}else setVisible(element.getBoundingClientRect().bottom>0&&element.getBoundingClientRect().top<innerHeight);};document.addEventListener('visibilitychange',hidden);
   const mm=gsap.matchMedia();mm.add('(prefers-reduced-motion: no-preference)',()=>{
-   const timeline=gsap.timeline({scrollTrigger:{trigger:element.closest('#distance')!,start:'top 85%',end:'top 10%',scrub:true,onUpdate:returnCurrent}});
+   const diagnose=(trigger:ScrollTrigger)=>{
+    element.dataset.companionStart=String(trigger.start);element.dataset.companionEnd=String(trigger.end);element.dataset.companionProgress=String(trigger.progress);
+    element.dataset.companionDistanceTop=String(trigger.trigger!.getBoundingClientRect().top+scrollY);
+   };
+   // The upstream Hero pin must contribute its spacer before this interval is measured.
+   const timeline=gsap.timeline({scrollTrigger:{trigger:element.closest('#distance')!,start:'top 85%',end:'top 10%',scrub:true,refreshPriority:-1,invalidateOnRefresh:true,onRefresh:diagnose,onUpdate:trigger=>{diagnose(trigger);returnCurrent();}}});
    timeline.fromTo(element.querySelector('.lovebird-left')!,{xPercent:-12},{xPercent:8,ease:'none'},0).fromTo(element.querySelector('.lovebird-right')!,{xPercent:12},{xPercent:-8,ease:'none'},0);
   });
   return()=>{observer.disconnect();resize.disconnect();document.removeEventListener('visibilitychange',hidden);mm.revert();};
