@@ -18,16 +18,18 @@ test('main letter stage omits DOM-owned ending copies and preserves letter, sess
  const frame:PostCompositionFrame={progress:.36,bridge:1,galleryWeight:0,opening:0,time:0,reducedMotion:true,width:1920,height:1080,roomEye:new THREE.Vector3(),roomTarget:new THREE.Vector3(),localEvent:createLocalEventState()};
  const evaluate=(progress:number,galleryWeight=0)=>rig.update({...frame,progress,galleryWeight});
  const first=evaluate(.36),pose={eye:first.eye.toArray(),target:first.target.toArray()};
+ assert.equal(rig.root.getObjectByName('STORY_COUNTRY_KOR'),undefined,'rejected geographic props stay absent');
+ assert.equal(rig.root.getObjectByName('STORY_COUNTRY_DOM'),undefined);
  for(const p of [0,.1,.3,.36,.425,.55,.62,.78,.86,.94,1]){
   evaluate(p);
-  for(const retired of ['local-sixteen-props','ENDING_APPROVED_PORTRAIT_PRINT','LETTER_EIGHT_ROSES','POST_SHARED_FOLDING_SURFACE','DISTANCE_HINGED_PAPER','DISTANCE_INVITATION_TAB'])assert.equal(rig.root.getObjectByName(retired),undefined,'DOM-owned story and ending do not acquire duplicate main-scene geometry');
+  for(const retired of ['local-sixteen-props','ENDING_APPROVED_PORTRAIT_PRINT','LETTER_EIGHT_ROSES','POST_SHARED_FOLDING_SURFACE','DISTANCE_HINGED_PAPER','DISTANCE_INVITATION_TAB'])assert.equal(rig.root.getObjectByName(retired),undefined,'retired toy-table and duplicate ending objects stay absent');
  }
  const tabletop=rig.root.getObjectByName('POST_FINITE_DESK_EDGE') as THREE.Mesh;
  tabletop.geometry.computeBoundingBox();const deskBounds=tabletop.geometry.boundingBox!,size=deskBounds.getSize(new THREE.Vector3());assert.ok(size.x<=12.001&&size.z<=10.001,'one finite physical desk, not an unbounded floor');
  assert.ok(Math.abs(deskBounds.max.y+tabletop.position.y+.012)<1e-5,'wood keeps the original contact height');
  const fixedDesk={position:tabletop.position.toArray(),scale:tabletop.scale.toArray(),vertices:Array.from(tabletop.geometry.getAttribute('position').array)};
  const writingPad=rig.root.getObjectByName('LETTER_WRITING_PAD')!;assert.equal(writingPad.parent?.name,'LETTER_WRITING_DESK');
- const gallery=evaluate(.5,1);assert.ok(gallery.galleryAnchor.distanceTo(new THREE.Vector3(2,.193,-14.3))<1e-6);
+ const gallery=evaluate(.5,1);assert.equal(gallery.background.getHexString(),'13141c','protected gallery background keeps its original palette');assert.ok(gallery.galleryAnchor.distanceTo(new THREE.Vector3(2,.193,-14.3))<1e-6);
  assert.equal(gallery.galleryDisplayId,undefined);assert.equal(gallery.galleryStoryFocus,0);assert.equal(gallery.galleryScale,.65);
  const hostTransform=new THREE.Matrix4().makeTranslation(-6,-4.3,6).multiply(new THREE.Matrix4().makeRotationY(Math.PI)).multiply(new THREE.Matrix4().makeTranslation(-9,4.3,10));
  for(const [width,height] of [[1920,1080],[1440,900]]){

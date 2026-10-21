@@ -1,0 +1,14 @@
+.post-hero-preview .duel-illustration{width:100%;min-width:0;color:#f6e6dc}
+.post-hero-preview .duel-illustration-stage{position:relative;width:100%;aspect-ratio:1672/941;isolation:isolate}
+.post-hero-preview .duel-illustration-layer{position:absolute;inset:0;opacity:0;pointer-events:none;transition:opacity 180ms var(--ease,cubic-bezier(.23,1,.32,1))}
+.post-hero-preview .duel-illustration-layer[data-active=true]{opacity:1}
+.post-hero-preview .duel-illustration[data-animate=false] .duel-illustration-layer{transition:none}
+.post-hero-preview .duel-illustration-stage svg,.post-hero-preview .duel-illustration-fallback{display:block;width:100%;height:100%;max-height:none;border-radius:0;object-fit:contain}
+.post-hero-preview .duel-illustration-choices{display:flex;align-items:center;justify-content:center;gap:clamp(24px,3.2vw,56px);margin-top:20px}
+.post-hero-preview .duel-illustration-choices button{position:relative;min-height:48px;padding:8px 4px 12px;border:0;border-bottom:1px solid #d7a18f42;border-radius:0;background:transparent;color:#c7b2b6;font:400 clamp(15px,1.05vw,18px)/1.5 'DM Sans','Apple SD Gothic Neo','Malgun Gothic',sans-serif;cursor:pointer;transition:color 160ms var(--ease,cubic-bezier(.23,1,.32,1)),border-color 160ms var(--ease,cubic-bezier(.23,1,.32,1))}
+.post-hero-preview .duel-illustration-choices button[aria-pressed=true]{color:#fff0e9;border-bottom-color:#edc2a2}
+.post-hero-preview .duel-illustration-choices button:focus-visible{outline:2px solid #efbca8;outline-offset:5px;transition:none}
+.post-hero-preview .duel-illustration-choices button:active{color:#edc2a2}
+.post-hero-preview .duel-illustration-error{margin:14px 0 0;text-align:center;color:#efd1c7;font-size:14px;line-height:1.6}
+@media(hover:hover) and (pointer:fine){.post-hero-preview .duel-illustration-choices button:hover{color:#fff0e9;border-bottom-color:#edc2a2}}
+@media(prefers-reduced-motion:reduce){.post-hero-preview .duel-illustration-layer,.post-hero-preview .duel-illustration-choices button{transition:none}}

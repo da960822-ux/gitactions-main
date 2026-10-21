@@ -2,7 +2,7 @@ import * as THREE from 'three';
 import {LETTER_UNFOLDED} from './interaction';
 
 export type LetterPaperPose = {corners:Array<{x:number;y:number}>;visible:boolean};
-export type LetterFrame = {opening:number;progress:number;width:number;height:number;ownCamera?:boolean;reducedMotion?:boolean;onPaperPose?:(pose:LetterPaperPose)=>void;effect?:{name:string;value:number;nonce:number}};
+export type LetterFrame = {opening:number;progress:number;width:number;height:number;paperAspect?:number;ownCamera?:boolean;reducedMotion?:boolean;onPaperPose?:(pose:LetterPaperPose)=>void;effect?:{name:string;value:number;nonce:number}};
 
 const ease=(a:number,b:number,value:number)=>{const t=THREE.MathUtils.clamp((value-a)/(b-a),0,1);return t*t*(3-2*t);};
 
@@ -97,7 +97,7 @@ export function createLetterCollection(options:{scene:THREE.Scene;camera:THREE.P
    const point=insert.localToWorld(new THREE.Vector3(x,y,.015)).project(camera);
    return {x:bounds.left+(point.x+1)*latest.width/2,y:bounds.top+(1-point.y)*latest.height/2};
   });
-  latest.onPaperPose({corners,visible:latest.progress>=.62&&latest.progress<.86&&latest.opening>LETTER_UNFOLDED&&latest.width>=600&&!latest.reducedMotion});
+  latest.onPaperPose({corners,visible:latest.progress>=.62&&(latest.progress<.86||latest.progress>=.94)&&latest.opening>LETTER_UNFOLDED&&latest.width>=600&&(!latest.reducedMotion||latest.progress>=.94)});
  }
  function update(frame:LetterFrame){
   if(disposed)return {position:position.clone(),target:target.clone(),ready:false};
@@ -111,14 +111,15 @@ export function createLetterCollection(options:{scene:THREE.Scene;camera:THREE.P
   if(frame.effect?.name==='wax-stamp')heartSelected=frame.effect.value>0;
   heartStamp.visible=heartSelected;initialsStamp.visible=!heartSelected;
   seal.scale.setScalar(1);
-  const domReading=Boolean(frame.onPaperPose)&&q>LETTER_UNFOLDED&&frame.progress>=.62&&frame.progress<.94;
+  const domReading=Boolean(frame.onPaperPose)&&q>LETTER_UNFOLDED&&frame.progress>=.62&&(frame.progress<.94||frame.width>=600);
   // Move the shell below the viewport while its insert hands the same paper to the DOM.
-  shell.position.y=desktop&&frame.onPaperPose?-4*ease(.9,1,q):0;
+  shell.position.y=desktop&&frame.onPaperPose?-4*ease(.9,1,q)*(1-ease(.94,1,frame.progress)):0;
   insert.visible=!domReading&&(!desktop||q>.36);
       flap.rotation.x=-ease(.12,.36,q)*THREE.MathUtils.degToRad(165);
       seal.position.y=.48-ease(.12,.34,q)*.35;
       seal.position.z=.235+ease(0,.12,q)*.08;
       seal.rotation.z=ease(0,.2,q)*.18;
+      insert.scale.y=THREE.MathUtils.lerp(1,frame.paperAspect&&Number.isFinite(frame.paperAspect)&&frame.paperAspect>0?1.76/(1.86*frame.paperAspect):1,ease(.94,1,frame.progress));
       insert.position.y=.55+ease(.36,.62,q)*1.05;
       insert.position.z=-.005+ease(.62,.84,q)*.16;
       topFold.rotation.x=(1-ease(.62,.75,q))*Math.PI*.94;

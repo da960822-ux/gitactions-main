@@ -2,17 +2,19 @@ import * as THREE from 'three';
 import type {LocalEventState} from '../../post-hero-preview/src/LocalEventRig';
 import {letterOpeningLayout} from '../../post-hero-preview/src/paperProjection';
 import {RoundedBoxGeometry} from 'three/examples/jsm/geometries/RoundedBoxGeometry.js';
+import {createEndingMat} from './endingMat';
+import {endingLetterView} from './endingLetterView';
 
-export type PostCompositionFrame={progress:number;bridge:number;galleryWeight:number;opening:number;time:number;reducedMotion:boolean;width:number;height:number;roomEye:THREE.Vector3;roomTarget:THREE.Vector3;effect?:{name:string;value:number;nonce:number};localEvent?:LocalEventState;paperHeight?:number};
+export type PostCompositionFrame={progress:number;bridge:number;galleryWeight:number;opening:number;time:number;reducedMotion:boolean;width:number;height:number;roomEye:THREE.Vector3;roomTarget:THREE.Vector3;effect?:{name:string;value:number;nonce:number};localEvent?:LocalEventState;paperHeight?:number;endingTop?:number;pointer?:{x:number;y:number}};
 const range=(a:number,b:number,p:number)=>THREE.MathUtils.smoothstep(p,a,b);
 // Stage-local poses; the room owner chooses the shared transform after room approval.
 const OFFSET=new THREE.Vector3(9,-4.3,-10);
 const GALLERY=new THREE.Vector3(-7,-.007,-4.3),LETTER=new THREE.Vector3(7.2,-.007,-1.2);
 const poses=[
- {p:0,eye:[1.2,3.2,8.3],target:[2.6,.65,-.7]},
- {p:.10,eye:[1.2,3.2,8.3],target:[2.6,.65,-.7]},
- {p:.30,eye:[3,4.8,10.2],target:[3,.1,-.1]},
- {p:.40,eye:[3,4.8,10.2],target:[3,.1,-.1]},
+ {p:0,eye:[4.2,6.3,10.7],target:[4.2,1.8,0]},
+ {p:.08,eye:[4.2,6.3,10.7],target:[4.2,1.8,0]},
+ {p:.24,eye:[6.4,8.4,10.8],target:[4.2,1.3,0]},
+ {p:.35,eye:[6.4,8.4,10.8],target:[4.2,1.3,0]},
  {p:.45,eye:[4.3,3.2,7.3],target:[4.3,.7,-1.1]},
  {p:.55,eye:[4.3,3.2,7.3],target:[4.3,.7,-1.1]},
  {p:.62,eye:[5.25,2.35,5.45],target:[6.25,.85,-1.2]},
@@ -25,6 +27,7 @@ const poses=[
 /** Renderer-free, open studio stages: no foreground walls or ceiling between eye and content. */
 export function createPostHeroComposition(scene:THREE.Scene,onInvalidate:()=>void=()=>{}){
  const root=new THREE.Group();root.name='POST_HERO_ARCHITECTURE';root.position.copy(OFFSET);root.visible=false;scene.add(root);
+ const story=createEndingMat();root.add(story.root);
  const geometries=new Set<THREE.BufferGeometry>(),materials=new Set<THREE.Material>(),textures=new Set<THREE.Texture>();
  let disposed=false;
  const loader=new THREE.TextureLoader();
@@ -46,14 +49,16 @@ export function createPostHeroComposition(scene:THREE.Scene,onInvalidate:()=>voi
  const cool=new THREE.DirectionalLight('#b9c4df',.6);cool.position.set(4,6,-5);root.add(cool);
  const eye=new THREE.Vector3(),target=new THREE.Vector3(),a=new THREE.Vector3(),b=new THREE.Vector3(),background=new THREE.Color('#13141c'),openingBackground=new THREE.Color('#21161f');
  let eventWeight=0,eventFrom=0,eventTarget=0,eventStart=0,lastLayout='';
- const output={eye,target,fov:38,galleryScale:.65,galleryDisplayId:undefined as string|undefined,galleryStoryFocus:0,galleryAnchor:GALLERY.clone().add(OFFSET),letterAnchor:LETTER.clone().add(OFFSET),letterScale:1,roomExit:0,roomDesk:0,background,needsFrame:false};
+ const output={eye,target,fov:38,galleryScale:.65,galleryDisplayId:undefined as string|undefined,galleryStoryFocus:0,galleryAnchor:GALLERY.clone().add(OFFSET),letterAnchor:LETTER.clone().add(OFFSET),letterScale:1,roomExit:0,roomDesk:0,background,needsFrame:false,story:story.state};
  return{root,
  update(frame:PostCompositionFrame){
   if(disposed)return output;
   const p=THREE.MathUtils.clamp(frame.progress,0,1),bridge=THREE.MathUtils.clamp(frame.bridge,0,1);root.visible=bridge>.001;
-  const index=Math.max(0,Math.min(poses.length-2,poses.findIndex((pose,i)=>i<poses.length-1&&p>=pose.p&&p<=poses[i+1].p))),from=poses[index],to=poses[index+1],t=range(from.p,to.p,p);
+  story.update(p);
+  const cameraP=frame.reducedMotion&&p<.45?(p<.16?0:p<.32?.16:.32):p;
+  const index=Math.max(0,Math.min(poses.length-2,poses.findIndex((pose,i)=>i<poses.length-1&&cameraP>=pose.p&&cameraP<=poses[i+1].p))),from=poses[index],to=poses[index+1],t=range(from.p,to.p,cameraP);
   eye.fromArray(from.eye).lerp(a.fromArray(to.eye),t);target.fromArray(from.target).lerp(b.fromArray(to.target),t);
-  const activeToy=Boolean(frame.localEvent?.active)&&(p<.43||p>=.56&&p<.70||p>=.94);
+  const activeToy=Boolean(frame.localEvent?.active)&&(p>=.56&&p<.70||p>=.94);
   const nextEventTarget=activeToy?1:0;
   if(nextEventTarget!==eventTarget){eventFrom=eventWeight;eventTarget=nextEventTarget;eventStart=frame.time;}
   eventWeight=frame.reducedMotion?eventTarget:THREE.MathUtils.lerp(eventFrom,eventTarget,range(0,.28,frame.time-eventStart));
@@ -77,11 +82,14 @@ export function createPostHeroComposition(scene:THREE.Scene,onInvalidate:()=>voi
    eye.lerp(a.set(x,LETTER.y+6,z+.04),overhead);target.lerp(b.set(x,LETTER.y,z),overhead);
   }
   background.set('#13141c').lerp(openingBackground,overhead);
+
+  const ending=range(.94,1,p);
+  if(ending>0){const view=endingLetterView(frame.width,frame.height,frame.opening,frame.endingTop??0);eye.lerp(a.fromArray(view.eye),ending);target.lerp(b.fromArray(view.target),ending);}
   eye.add(root.position);target.add(root.position);
   output.galleryAnchor.copy(GALLERY).add(root.position);output.galleryAnchor.x-=18*galleryDeparture;output.galleryAnchor.z-=4*galleryDeparture;output.galleryAnchor.y+=(4.5*settle-2.4*(1-settle));output.letterAnchor.copy(LETTER).add(root.position);output.letterAnchor.x=desk.position.x+root.position.x;
-  const letter=range(.55,.62,p),ending=range(.94,1,p);a.set(3,.3,0).lerp(LETTER,letter).lerp(b.set(4.6,1,-.3),ending);key.target.position.copy(a);key.position.copy(a).add(b.set(-6,11,7));key.intensity=2.3*bridge;fill.intensity=.8*bridge;cool.intensity=.6*bridge;
+  const letter=range(.55,.62,p);a.set(3,.3,0).lerp(LETTER,letter).lerp(b.set(4.6,1,-.3),ending);key.target.position.copy(a);key.position.copy(a).add(b.set(-6,11,7));key.intensity=2.3*bridge;fill.intensity=.8*bridge;cool.intensity=.6*bridge;
   const layoutKey=`${frame.width}:${frame.height}:${frame.paperHeight}`;
   output.needsFrame=Math.abs(eventWeight-eventTarget)>.0001||overhead>0&&layoutKey!==lastLayout;lastLayout=layoutKey;
-  output.fov=THREE.MathUtils.lerp(38,30,overhead);output.roomDesk=bridge;output.roomExit=0;return output;
- },dispose(){if(disposed)return;disposed=true;root.removeFromParent();geometries.forEach(item=>item.dispose());materials.forEach(item=>item.dispose());textures.forEach(item=>item.dispose());key.shadow.map?.dispose();}};
+  output.fov=THREE.MathUtils.lerp(THREE.MathUtils.lerp(38,30,overhead),endingLetterView(frame.width,frame.height,frame.opening,frame.endingTop??0).fov,ending);output.roomDesk=bridge;output.roomExit=0;return output;
+ },dispose(){if(disposed)return;disposed=true;story.dispose();root.removeFromParent();geometries.forEach(item=>item.dispose());materials.forEach(item=>item.dispose());textures.forEach(item=>item.dispose());key.shadow.map?.dispose();}};
 }

@@ -4,8 +4,10 @@ import type { PaperPose, PostHeroState } from './Scene';
 import { paperTransform, blendPaperCorners, letterOpeningLayout } from './paperProjection';
 import Details from './Details';
 import SharedEventsPanel from './SharedEventsPanel';
+import {StoryChapters} from './StoryChapters';
+import {EndingChapter} from './EndingChapter';
 import type {SharedEventId,SharedEventRound} from '../../src/core/sharedEventsState';
-import {restoreLocalEventState,pawnSource,approvedPawns,type LocalEventId,type LocalEventState} from './LocalEventRig';
+import {restoreLocalEventState,type LocalEventId,type LocalEventState} from './LocalEventRig';
 import { clamp01, LETTER_RANGE, LETTER_PAPER_HANDOFF, LETTER_UNFOLDED, closeEnvelope, createEnvelopeState, updateEnvelopeFromScroll, toggleEnvelope, reopenEnvelope, envelopeTarget } from './interaction';
 
 const StandalonePostHeroScene=lazy(()=>import('./Scene').then(module=>({default:module.PostHeroScene})));
@@ -51,14 +53,15 @@ export function PostHeroPreview({embedded=false,language:externalLanguage,onLang
    if(!pose.visible){article.removeAttribute('data-tracking');article.removeAttribute('data-paper-corners');article.style.removeProperty('position');article.style.removeProperty('left');article.style.removeProperty('top');article.style.removeProperty('width');article.style.removeProperty('transform');slot.style.removeProperty('height');return;}
    const bounds=slot.getBoundingClientRect(),phase=clamp01((p.current-LETTER_PAPER_HANDOFF)/(.86-LETTER_PAPER_HANDOFF)),readBlend=phase*phase*(3-2*phase),desktop=innerWidth>=761;
    const opening=letterOpeningLayout(innerWidth,innerHeight,article.offsetHeight,q.current);
-   const width=desktop?opening.width+(bounds.width-opening.width)*readBlend:bounds.width;
+   const ending=p.current>=.94;
+   const width=ending?Math.min(740,innerWidth*.52):desktop?opening.width+(bounds.width-opening.width)*readBlend:bounds.width;
    article.style.width=`${width}px`;const height=article.offsetHeight;
    if(!width||!height)return;
    slot.style.height=`${height}px`;
    const destination=[{x:bounds.left,y:bounds.top},{x:bounds.right,y:bounds.top},{x:bounds.right,y:bounds.top+height},{x:bounds.left,y:bounds.top+height}];
    const openingCorners=[{x:opening.left,y:opening.top},{x:opening.left+opening.width,y:opening.top},{x:opening.left+opening.width,y:opening.top+height},{x:opening.left,y:opening.top+height}];
    const reader=desktop?blendPaperCorners(openingCorners,destination,phase):destination;
-   const corners=desktop?blendPaperCorners(pose.corners,reader,opening.handoff):blendPaperCorners(pose.corners,destination,phase);
+   const corners=ending?pose.corners:desktop?blendPaperCorners(pose.corners,reader,opening.handoff):blendPaperCorners(pose.corners,destination,phase);
    const transform=paperTransform(corners,width,height);if(!transform)return;
    article.dataset.tracking='true';article.dataset.paperCorners=JSON.stringify(corners);article.style.position='fixed';article.style.left='0';article.style.top='0';article.style.width=`${width}px`;article.style.transform=transform;
  },[]);
@@ -177,14 +180,7 @@ export function PostHeroPreview({embedded=false,language:externalLanguage,onLang
    <nav aria-label={language==='ko'?'메뉴':'Navegación'}><a href="#papi-letter" onClick={readLetter}>{text.reading}</a><button className="language-toggle" onClick={()=>setLanguage(language==='ko'?'es':'ko')} aria-label={language==='ko'?'Cambiar a español':'한국어로 바꾸기'}>{language==='ko'?'KO / ES':'ES / KO'}</button></nav>
   </header>}
   {!embedded&&<section id="intro" className="chapter intro" data-pose="0"><div className="chapter-copy"><h1>{text.title}</h1><p>{text.body}</p><div className="intro-actions"><a className="primary-button" href="/#games">{text.play}</a><a className="text-button" href="#distance">{text.next} <span aria-hidden="true">↓</span></a></div></div></section>}
-  <section id="distance" className="chapter distance" data-pose={embedded?"0":".10"} aria-labelledby="distance-title">
-   <div className="distance-story"><h2 id="distance-title" className="distance-heading">{text.distance}</h2><div className="chapter-copy distance-reason"><p>{text.distanceBody}</p><p className="motivation-answer">{ko?'그래서 멀리 있어도 우리 둘이 같이 놀 곳을 만들고 싶었어.':'Por eso quería hacer un lugar para que juguemos juntos aunque estemos lejos.'}</p></div></div>
-   <div className="distance-workstations"><img src="/images/approved-couple-room/approved-couple-gaming-room.png" width="1672" height="941" alt={ko?'한국 쪽 키보드와 마우스를 쓰는 손, 도미니카 쪽 노트북과 마우스를 쓰는 손':'Las manos en el teclado y el ratón del lado de Corea, y el portátil y la mano en el ratón del lado dominicano'}/></div>
-   <div className="country-labels"><span><img src="/images/marble/flags/kr.svg" alt=""/>한국 · Corea</span><span><img src="/images/marble/flags/do.svg" alt=""/>República Dominicana</span></div>
-   <a className="text-button distance-play" href="#games">{text.play}<span aria-hidden="true">↓</span></a>
-   <span id="toy-table" className="story-internal-anchor" data-pose=".30" aria-hidden="true"/>
-   <span className="gallery-arrival" data-pose=".45" aria-hidden="true"/>
-  </section>
+  <StoryChapters language={language}/>
   {gallery}
   <section id="letter-scene" className={`chapter letter-invitation ${detailRegion==='envelope'||sharedEvent?.region==='envelope'?'has-detail':''}`} data-pose=".62" aria-labelledby="envelope-title"><div className="chapter-copy" hidden={detailRegion==='envelope'||sharedEvent?.region==='envelope'}><h2 id="envelope-title">{text.letter}</h2><p>{text.letterBody}</p><div className="invitation-actions"><button ref={opener} className="primary-button" aria-label={openAction} aria-expanded={letterPublic} aria-controls="moment-letter-copy" onClick={toggleLetter}>{openAction}<span aria-hidden="true">{wantsLetterOpen?'−':'↗'}</span></button><a href="#papi-letter" className="text-button" onClick={readLetter}>{text.reading}</a></div><button className="text-button together-choice" data-shared-event="R01" onClick={event=>openShared('R01','envelope',event.currentTarget)}>{ko?'같이 열어볼까?':'¿La abrimos juntos?'}</button></div>{workbench('envelope')}</section>
   <section id="papi-letter" className={`letter-section ${letterVisible?'is-open':'is-folded'} ${progress>=.86&&letterVisible?'reading-surround':''}`} data-pose=".86" aria-labelledby="letter-title">
@@ -197,18 +193,7 @@ export function PostHeroPreview({embedded=false,language:externalLanguage,onLang
    {letterVisible&&<div className="letter-bottom-controls"><button className="text-button" onClick={toggleLetter}>{readingAction} <span>−</span></button></div>}
    {!letterVisible&&control.current.manual===false&&<div className="closed-note"><p>{text.sealed}</p><button className="text-button" onClick={()=>{stopLetterMotion();focusAfterFold.current=false;control.current=reopenEnvelope(control.current);refreshTarget();}}>{text.open} ↗</button></div>}
   </section>
-  <section id="together-again" className={`chapter ending ${detailRegion==='ending'?'has-detail':''}`} data-pose="1">
-   <div className="ending-room"><img src="/images/approved-couple-room/approved-couple-gaming-room.png" width="1672" height="941" alt={ko?'각자의 게임방에서 함께 게임하는 우리 둘':'Los dos jugando desde nuestras habitaciones'}/></div>
-   <div className={`ending-copy ${localEvent.strokes.length>0||localEvent.hasSavedDecor?'has-keepsake':''}`} hidden={detailRegion==='ending'}>
-    <div className="ending-message"><h2>{text.ending}</h2><div className="ending-actions"><a className="primary-button" href={playHref??'/#games'}>{playHref?copy.primaryAction:text.play}<span aria-hidden="true">↗</span></a><a className="text-button" href="/feedback">{text.ideas}</a></div><p className="ending-date">2025.04.04 — Yeonseok ♡ Lisbeth</p></div>
-    {(localEvent.strokes.length>0||localEvent.hasSavedDecor)&&<figure className="ending-keepsake">
-     {localEvent.strokes.length>0&&<svg className="ending-drawing" viewBox="0 0 100 60" role="img" aria-label={ko?'네가 그린 그림':'Tu dibujo'}>{localEvent.strokes.map((line,i)=><polyline key={i} points={line.map(point=>`${point.x},${point.y}`).join(' ')} fill="none" stroke="#7b293d" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>)}</svg>}
-     {localEvent.hasSavedDecor&&(localEvent.decorKind==='pawn'?<img className="ending-decor" src={pawnSource(localEvent.decorPawn)} alt={`${ko?'네가 고른 게임말':'La figura que elegiste'}: ${approvedPawns[localEvent.decorPawn][language]}`}/>:<svg className="ending-decor" viewBox="0 0 44 44" role="img" aria-label={localEvent.decorKind==='gem'?(ko?'네가 고른 보석':'La gema que elegiste'):(ko?'네가 고른 종이 클립':'El clip que elegiste')}>{localEvent.decorKind==='gem'?<><path d="M22 5 36 21 22 39 8 21Z" fill="#e6b58d"/><path d="M22 5V39L8 21Z" fill="#bc7e68"/><path d="M22 5 36 21 22 18Z" fill="#f9d5ac"/></>:<path d="M29 10 15 25a5 5 0 0 0 7 7l13-14a8 8 0 0 0-12-11L10 21a11 11 0 0 0 16 15" fill="none" stroke="#dbb7a3" strokeWidth="3" strokeLinecap="round"/>}</svg>)}
-     {localEvent.drawingFlipped&&localEvent.strokes.length>0&&<figcaption className="action-recall">{ko?'네가 그린 카드도 여기 두었어.':'Tu tarjeta también se queda aquí.'}</figcaption>}
-    </figure>}
-   </div>
-   {workbench('ending')}<footer><span>Para ti, Lisbeth ♡</span><a href={embedded?'#home':'#intro'}>{text.back} ↑</a></footer>
-  </section>
+  <EndingChapter language={language} playHref={playHref} embedded={embedded} state={localEvent} detailsOpen={detailRegion==='ending'} onReadLetter={readLetter}>{workbench('ending')}</EndingChapter>
 
   <dialog ref={roomDialog} className="room-discovery-dialog" aria-label={ko?'선택한 물건':'Objeto seleccionado'} onCancel={event=>{event.preventDefault();if(sharedEvent)closeShared();else closeDetails();}}>
    {workbench('room')}
