@@ -5,11 +5,15 @@
 
 ## 현재 상태 — 2026-10-21 UTC
 
+독립 A의 최종 encoded 영상 표본 판정은 구도4·공간3·목적4·craft3/5이며 전체 4/5 관문은 미달이다. 이전 P1 가림은 해소됐고 `.35` 부분 노출은 짧게 지나가지만, 평평한 근접 벽·낮은 접힌 천장·직선 목재 접합이 B 원화를 상자 안의 삽화처럼 보이게 한다. 승인 B 도착은 보존하며 이 공간 통합 문제를 미완료로 남긴다.
+
 현재 증거 묶음은 [요구 완료 감사](../../output/current-review/hero-spatial-rework-20261021/hero-wall-volume-current/product-current/plan-completion-audit.json), [천장 정지 표본](../../output/current-review/hero-spatial-rework-20261021/hero-wall-volume-current/shallow-report.json), [현재 critique snapshot](../../output/current-review/hero-spatial-rework-20261021/hero-wall-volume-current/product-current/critique-snapshot-current.json) 및 [post-polish 검사](../../output/current-review/implementation-20261021/content-audit-v3/report.json)의 `postPolishImplementation`이다. 과거 `849344f` 영상/보고서는 역사 자료로 남기며 최신 통합 근거로 쓰지 않는다.
 
-현행 Hero 카메라 검토는 1920×1080과 1440×900 각 다섯 장, 총 열 장의 settled still을 포함한다. 독립 A는 종전 P1 구조면 가림을 해소로 판정하며, 남은 P2는 상자/삽화처럼 읽히는 인상과 `.35` 부분 jamb 가림이다. 별도의 이전 ceiling review는 1440×900 네 still에서 561개 정점의 실제 변형, `.35/.42` 곡면 실루엣, `.68` 복원을 확인했다. 이는 전체 경로 통과나 4/5 전체 점수가 아니다. root의 최종 1440 정방향·역방향 연속 영상과 1920/1440 성능 검수는 아직 대기 중이다.
+현행 Hero 카메라 검토는 1920×1080과 1440×900 각 다섯 장, 총 열 장의 settled still을 포함한다. 독립 A는 종전 P1 구조면 가림을 해소로 판정하며, 남은 P2는 상자/삽화처럼 읽히는 인상과 `.35` 부분 jamb 가림이다. 별도의 이전 ceiling review는 1440×900 네 still에서 561개 정점의 실제 변형, `.35/.42` 곡면 실루엣, `.68` 복원을 확인했다. 이는 전체 경로 통과나 4/5 전체 점수가 아니다. root의 최종 current-source [1440×900 ES 영상](../review/landing-current-es.mp4)은 기록됐고 SHA-256은 `db4a2d0ffee5e965137c74aa8d148a245242e7d329fb00fa637e7bc54fecebce`다. 48.466667초 H.264/1.2배속, 무음·무자막, 14 native action으로 Hero 왕복·L06 그림→카드·gallery hover/click·편지 5문단과 4+4 장미·ending을 담는다. 전체 16+4 행동 검수 영상이 아니며 독립 A의 전체 4/5 관문은 미달이며 아래 최종 판정을 따른다. Software SwiftShader 표본은 1920과 1440에서 완료됐으며 hardware GPU 성능은 미측정이다.
 
-Hero CTA pressed 상태와 갤러리 주변 선택물 크기·깊이·hover 맥락 타이틀은 구현됐으며 최종 QA가 진행 중이다. 현행 검사 기록은 main 76 files/623 tests, post 29/29, TypeScript/Vite/edge build 통과다. 이전 622 숫자는 선행 checkpoint다. 500kB 초과 chunk 경고와 실 GPU 성능 미검수는 남는다. 모바일 QA는 최신 사용자 지시에 따라 범위에서 제외됐으며 완료 관문이 아니다.
+Hero CTA pressed 상태와 GalleryCollection의 주변 선택물 크기·깊이·hover 맥락 타이틀은 구현됐다. [gallery scoped QA](../../output/current-review/hero-spatial-rework-20261021/hero-wall-volume-current/product-current/product-report.json)의 `galleryHoverPolishVerification`은 1440×900 ES normal 및 1920×1080 KO reduced에서 통과했고, height-only resize 문제를 StudioScene의 `54acdf349482489d926ee19d8b51500b16e0bc766338b6e8dedf21a252dda4b6` 수정으로 해결했다. 원 실패 attempt는 같은 보고서에 보존했다; 모바일 viewport QA는 실행하지 않았다.
+
+전체 검사는 main 76 files/623 tests, post 29/29와 TypeScript/Vite/edge build를 통과했다. listener 수정 뒤에는 기존 브랜치에 push된 97005d6 build, focused 5 tests, TypeScript를 통과했으며 623 full-suite는 그 수정 전에 실행됐다. 622는 이전 checkpoint다. [소프트웨어 성능 측정](../../output/current-review/hero-spatial-rework-20261021/hero-wall-volume-current/product-current/performance-probe.json)은 Linux headless Chromium·ANGLE SwiftShader·DPR1의 stable 97005d6 release build/source에서 수행했다: fence 뒤 완료된 WebGL 제출은 1920×1080에서 2.80회/초, 1440×900에서 4.38회/초였다. 이는 실제 화면에 제시된 frame/FPS나 hardware GPU 측정값이 아니다. 실제 GPU 성능은 미확인이다. 모바일 QA는 범위 밖이며 완료 gate가 아니다. 현재 source의 1440 연속 영상은 기록됐으며 독립 A의 전체 4/5 관문은 미달이며 아래 최종 판정을 따른다.
 
 이번 감독 교정의 핵심은 승인 B를 임의의 world 좌표·거리로 고정한 잘못된 전제, 20초 proof를 공동 그림/패턴 작성 전체 시간으로 읽은 전제, 상태 전이를 실제 화면 보상으로 대신한 판정을 제거한 것이다. 편지 최초 개봉/연속 닫기, 발견물 결과와 공동 기능은 각 실제 검수 범위를 구분한다. 테스트·스킬 이름·기능 수로 시각 합격을 대신하지 않는다.
 
@@ -85,4 +89,4 @@ Hero CTA pressed 상태와 갤러리 주변 선택물 크기·깊이·hover 맥�
 
 과거 시도에서 반복 확인된 교훈은 세 가지다. 승인 B는 도착 프레이밍과 인물 정체성을 보호하지만 특정 좌표·카메라·hinge 해결책을 강제하지 않는다. 테스트 통과와 정착 endpoint는 중간 화면의 시각 품질이나 연속 motion 증거가 아니다. 실패 뒤에는 같은 owner에게 실제 관찰 프레임과 잘못된 prompt 전제를 전달해 수정하며, 실패 횟수만으로 owner를 교체하지 않는다. 현재 제약은 [Hero brief](HERO-REVISION-BRIEF-20261021.ko.md), 요구·행동 범위는 [post-Hero plan](POST-HERO-REPLAN-20261021.ko.md), 공유 카메라/최종 연속 영상·성능 검수는 root가 소유한다.
 
-초기 개발자 지시 0–13 원문은 저장소에서 찾지 못했다. 보존된 요구 추적표·기술 설계·현재 사용자 지시를 근거로 삼으며, 누락 원문을 복원한 것처럼 쓰지 않는다. 모바일은 이번 요청 범위 밖이고 완료 gate가 아니다. actual GPU 성능과 root의 최종 연속 영상 결과가 도착하면 위 현재 상태만 갱신한다.
+초기 개발자 지시 0–13 원문은 저장소에서 찾지 못했다. 보존된 요구 추적표·기술 설계·현재 사용자 지시를 근거로 삼으며, 누락 원문을 복원한 것처럼 쓰지 않는다. 모바일은 이번 요청 범위 밖이고 완료 gate가 아니다. 최종 연속 영상과 software 성능 결과는 위 현재 상태에 반영했으며 actual GPU 성능은 미확인이다.

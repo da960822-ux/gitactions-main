@@ -4,12 +4,14 @@
 
 ## 현재 상태와 판정
 
-- 과거 `849344f` 기준 57.87초 영상과 독립 평가(구도4·공간3·목적4·craft3/5)는 Git 이력 및 [제품 보고서](../../output/current-review/hero-spatial-rework-20261021/hero-wall-volume-current/product-current/native-whole-report.json)에 남긴다. 이는 현행 수정 전 checkpoint다.
+독립 A의 최종 encoded 영상 표본 판정은 구도4·공간3·목적4·craft3/5이며 전체 4/5 관문은 미달이다. 이전 P1 가림은 해소됐고 `.35` 부분 노출은 짧게 지나가지만, 평평한 근접 벽·낮은 접힌 천장·직선 목재 접합이 B 원화를 상자 안의 삽화처럼 보이게 한다. 승인 B 도착은 보존하며 이 공간 통합 문제를 미완료로 남긴다.
+
+- 과거 `849344f` 영상(57.866667초, SHA-256 `4c49cb290e167e0a2eb122821ddba7b2930a4eb3a04203dd6f6ec9df28a8a035`)은 [immutable Git object](https://raw.githubusercontent.com/da960822-ux/gitactions-main/849344fc9354fdc1d1053172b512d67fb84f2994/docs/review/landing-current-es.mp4)로 보존한다. 해당 독립 점수는 구도4·공간3·목적4·craft3/5이며 현행 checkpoint 결과가 아니다.
 - 현행 근거는 [요구 완료 감사](../../output/current-review/hero-spatial-rework-20261021/hero-wall-volume-current/product-current/plan-completion-audit.json), [천장 표본 보고서](../../output/current-review/hero-spatial-rework-20261021/hero-wall-volume-current/shallow-report.json), [현재 critique snapshot](../../output/current-review/hero-spatial-rework-20261021/hero-wall-volume-current/product-current/critique-snapshot-current.json)이다. 천장면은 561개 정점의 실제 변형과 법선 갱신을 가지며 `.35/.42`에서 완만한 곡면 실루엣이 보이고 `.68`에서 복원된다. 이는 표면 변화 구현 증거이지 연속 모션 합격은 아니다.
-- 독립 A의 현행 10개 still 검토에서 이전 P1 큰 구조면 가림은 해소로 판정됐다. 남은 Hero 이슈는 상자/삽화처럼 읽히는 인상과 `.35`의 부분 jamb 가림이다. 연속 정방향·역방향 영상 및 성능 검수는 아직 대기 중이다. 그 결과 전에는 전체 완료나 전체 4/5 이상을 선언하지 않는다.
-- GalleryCollection의 깊이·주변 선택물 크기·hover 맥락 타이틀은 구현됐고 최종 QA 중이다. Hero CTA pressed 상태도 구현됐다. post-polish 구현 검수는 [content audit](../../output/current-review/implementation-20261021/content-audit-v3/report.json)의 `postPolishImplementation`에 기록한다.
-- 현행 테스트 집계는 main 76 files/623 tests, post 29/29이며 TypeScript/Vite/edge build 통과 기록이 있다. 622는 이전 checkpoint다. 테스트는 시각 합격을 대신하지 않는다. 500kB chunk 경고가 남는다.
-- 최신 사용자 지시로 모바일 QA는 이번 실행에서 제외됐으며 완료 관문이 아니다. 실제 GPU 성능은 미검수이며 root가 최종 연속 영상·성능 결과를 보충한다.
+- 독립 A의 현행 10개 still 검토에서 이전 P1 큰 구조면 가림은 해소로 판정됐다. 남은 Hero 이슈는 상자/삽화처럼 읽히는 인상과 `.35`의 부분 jamb 가림이다. 최종 1440 연속 영상의 독립 검토에서도 이전 P1은 해소됐지만 공간·craft는3/5다. hardware GPU 성능은 미측정이며 전체 완료를 선언하지 않는다.
+- GalleryCollection의 깊이·주변 선택물 크기·hover 맥락 타이틀은 구현됐고 [scoped final QA](../../output/current-review/hero-spatial-rework-20261021/hero-wall-volume-current/product-current/product-report.json)의 `galleryHoverPolishVerification`에서 1440×900 ES normal 및 1920×1080 KO reduced가 통과했다. height-only viewport resize의 hover 잔류를 고쳤고 capture source hash는 `StudioScene.tsx` `54acdf349482489d926ee19d8b51500b16e0bc766338b6e8dedf21a252dda4b6`이다. raw failed attempts도 같은 보고서에 남아 있으며 mobile viewport QA는 실행하지 않았다. Hero CTA pressed 상태도 구현됐다. post-polish 구현 검수는 [content audit](../../output/current-review/implementation-20261021/content-audit-v3/report.json)의 `postPolishImplementation`에 기록한다.
+- 현행 full-suite 집계는 main 76 files/623 tests, post 29/29이며 TypeScript/Vite/edge build가 통과했다. 이후 StudioScene listener 수정은 97005d6 빌드에서 다시 통과했고 focused 5 tests 및 TypeScript도 통과했다. 623 전체 검사는 listener 수정 전 실행이므로 그 뒤의 full-suite rerun으로 표현하지 않는다. 622는 이전 checkpoint다. 테스트는 시각 합격을 대신하지 않는다. 500kB chunk 경고가 남는다.
+- 소프트웨어 성능 표본은 [performance probe](../../output/current-review/hero-spatial-rework-20261021/hero-wall-volume-current/product-current/performance-probe.json)에 있다. 기존 브랜치에 push한 `97005d6` 측정 전후 source와 release build가 안정적이었다. Linux headless Chromium·ANGLE SwiftShader·DPR1에서 fence 완료 WebGL 제출은 1920×1080에서 2.80회/초, 1440×900에서 4.38회/초다. 이 수치는 화면 제시 FPS가 아니며 실제 GPU 성능은 미측정이다. 모바일 QA는 이번 실행에서 제외됐고 완료 관문이 아니다. 최종 current-source [1440×900 ES 영상](../review/landing-current-es.mp4)은 `97005d6` source로 기록 완료됐고 SHA-256은 `db4a2d0ffee5e965137c74aa8d148a245242e7d329fb00fa637e7bc54fecebce`다. 길이 48.466667초, H.264, 1.2배속, 무음·무자막이며 14 native action으로 Hero 왕복·B 발견·L06 그림→카드·gallery hover/click·편지 5문단 읽기와 4+4 장미·엔딩을 담는다. 전체 L01–L16/R01–R04 검수 영상은 아니다. source stable, browser/HTTP errors 0. 독립 A의 전체 4/5 관문은 미달이며 아래 최종 판정을 따른다.
 
 ## 현재 설계와 다음 수정의 이유
 
@@ -25,7 +27,7 @@
 
 2. 이 정지 표본을 독립 검토한 뒤에만 다음 단계를 진행한다. 승인 I/B, 원본 인물, 접합·가림, 실제 실내의 공간 책임을 확인한다. B만 보이는 도착 프레임은 전환 증거가 아니다.
 
-3. root의 최종 1440×900 데스크톱 연속 영상에서 native 정방향·역방향·중간 반전·도착을 확인한다. 현재 cameraOrientationReview에는 1920×1080과 1440×900 각 다섯 장, 총 열 장의 hash 확인된 실제 still이 있으며 독립 A가 이전 P1의 중간 벽 가림을 해소로 판정했다. 별도의 이전 천장 검토에는 1440×900 네 still만 있다. 연속 영상은 미실행이며 성능 검수는 두 데스크톱 크기에서 별도로 남는다. 모바일 QA는 이번 범위에서 제외된다.
+3. root의 최종 1440×900 데스크톱 연속 영상에서 native 정방향·역방향·중간 반전·도착을 확인한다. 현재 cameraOrientationReview에는 1920×1080과 1440×900 각 다섯 장, 총 열 장의 hash 확인된 실제 still이 있으며 독립 A가 이전 P1의 중간 벽 가림을 해소로 판정했다. 별도의 이전 천장 검토에는 1440×900 네 still만 있다. 최종 current-source 1440×900 native 영상이 기록됐으며 독립 A의 전체 4/5 관문은 미달이며 아래 최종 판정을 따른다. 두 데스크톱 크기의 software SwiftShader 표본은 별도로 수집했으며, 이는 hardware GPU 성능을 대신하지 않는다. 모바일 QA는 이번 범위에서 제외된다.
 
 4. 구도·공간·목적·craft 각 검토 점수는 4/5 이상이고 blocking 문제가 없어야 한다. 테스트·TypeScript·build는 시각 판단을 대신하지 않는다. SwiftShader는 실제 GPU 성능을 증명하지 않는다. 이전 실패 기록은 보존한다.
 
