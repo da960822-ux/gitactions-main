@@ -23,28 +23,26 @@
 .post-hero-preview .domino-tile{display:grid;grid-template-columns:1fr 1px 1fr;align-items:center;width:60px;height:82px;border:1px solid #baa288;border-radius:5px;color:#402935;background:#f4e8d2;text-align:center;box-shadow:0 5px 9px #08050b66;transform-origin:center bottom}
 .post-hero-preview .domino-tile i{height:70%;background:#baa288}
 .post-hero-preview .domino-tile.fallen{transform:rotate(60deg) translateY(4px)}
-.post-hero-preview .balance-tray{position:relative;height:100px;margin:25px auto;width:85%;border:3px solid #b87678;border-top:0;border-radius:0 0 50% 50%;background:#38242b;transform-origin:center top}
-.post-hero-preview .tray-groove{position:absolute;left:50%;bottom:3px;width:28px;height:10px;border-bottom:2px solid #d2a298;border-radius:50%;transform:translateX(-50%)}
-.post-hero-preview .balance-ball{position:absolute;top:22px;font-size:26px;color:#e5b7a1}
-.post-hero-preview .balance-tray.settled .balance-ball{top:50px}
+.post-hero-preview .balance-tray{display:block;width:min(100%,560px);height:auto;margin:16px auto;overflow:visible;transform-origin:50% 40%}
 .post-hero-preview .drawing-paper{display:block;width:100%;height:auto;aspect-ratio:5/3;margin:22px 0;border:1px solid #c5a88e;border-radius:2px;background:#f4e8d2;touch-action:none;cursor:crosshair;box-shadow:0 10px 30px #09050b4d}
-.post-hero-preview .rhythm-bars{display:flex;align-items:end;justify-content:center;gap:20px;height:180px;margin-top:24px;padding:20px;background:#291c26}
-.post-hero-preview .rhythm-bar{display:grid;place-items:center;width:22%;min-height:44px;height:68%;border:1px solid #b67d79;border-radius:3px;background:#af7780;color:#23141e;cursor:pointer}
-.post-hero-preview .rhythm-bar.bar-1{height:88%}.post-hero-preview .rhythm-bar.bar-2{height:52%}
-.post-hero-preview .rhythm-bar span{width:8px;height:8px;border-radius:50%;background:#fff4df}
+.post-hero-preview .rhythm-bars{position:relative;width:min(100%,560px);aspect-ratio:7/3;height:auto;margin:16px auto}
+.post-hero-preview .rhythm-bars>svg{position:absolute;inset:0;width:100%;height:100%;pointer-events:none}
+.post-hero-preview .rhythm-bar{position:absolute;top:12%;left:calc(25% - 4.2857%);display:grid;place-items:center;width:8.5714%;min-width:44px;min-height:44px;height:58.3333%;padding:0;border:1px solid #b67d79;border-radius:3px;background:#af7780;color:#23141e;cursor:pointer;box-shadow:inset 4px 0 #f4e8d24d,inset -4px 0 #7b293d33,0 5px 8px #09050b55;transform-origin:center}
+.post-hero-preview .rhythm-bar.bar-1{left:calc(50% - 4.2857%)}.post-hero-preview .rhythm-bar.bar-2{left:calc(75% - 4.2857%)}
+.post-hero-preview .rhythm-bar span{position:absolute;top:12px;left:calc(50% - 4px);width:8px;height:8px;border-radius:50%;background:#fff4df}
+.post-hero-preview .rhythm-bar b{font-weight:400}
+.post-hero-preview .rhythm-bars.solved .rhythm-bar{top:34.1667%;transform:rotate(90deg)}
+.post-hero-preview .rhythm-bars.solved .rhythm-bar b{transform:rotate(-90deg)}
 .post-hero-preview .rhythm-bar.signal{background:#f0bf9b}.post-hero-preview .rhythm-bar.pressed{border-color:#e8c5b0;background:#e0a1a6}
-.post-hero-preview .paper-bridge{display:flex;justify-content:center;gap:14px;min-height:120px;align-items:center;background:#291c26}
-.post-hero-preview .patch-piece{display:grid;place-items:center;width:56px;height:56px;border:1px solid #c99a8b;border-radius:3px;color:#7b293d;background:#f4e8d2;font-size:32px;cursor:pointer}
-.post-hero-preview .paper-bridge.complete{box-shadow:inset 0 -2px #d7a18f}
+.post-hero-preview .paper-bridge{display:flex;justify-content:center;gap:16px;min-height:220px;padding:24px 20px;align-items:center}
+.post-hero-preview .patch-piece{display:block;flex:0 1 140px;width:140px;max-width:calc((100% - 32px)/3);min-height:44px;aspect-ratio:1;padding:0;border:0;border-radius:1px;background:#f4e8d2;overflow:hidden;cursor:pointer;box-shadow:0 8px 14px #09050b55}
+.post-hero-preview .patch-piece svg{display:block;width:100%;height:100%}
+.post-hero-preview .paper-bridge.complete{gap:0}
 .post-hero-preview .wax-sample{display:grid;place-items:center;width:90px;height:90px;margin:24px auto;border:6px solid #8a3949;border-radius:50%;color:#f0c5aa;background:#8e3e53;box-shadow:inset 0 0 0 2px #bc7981,0 10px 20px #09050a66;font-family:Georgia,serif;transition:transform 180ms var(--ease)}
 .post-hero-preview .wax-sample.pressed{transform:scale(.9)}
 .post-hero-preview .pocket-fold{display:flex;justify-content:space-around;align-items:center;height:65px;margin:24px 0;border:1px solid #d6b3a5;background:#f4e3d5;color:#7b293d;transform-origin:bottom;transition:transform 220ms var(--ease)}
 .post-hero-preview .pocket-fold.open{transform:perspective(400px) rotateX(-25deg)}
 .post-hero-preview .paper-gust{display:block;width:min(100%,360px);height:auto;margin:12px auto 20px;overflow:visible}
-.post-hero-preview .prism-preview{display:flex;align-items:center;justify-content:center;gap:10px;height:110px;margin:20px 0;background:#291c26;color:#e1bba9;font-size:32px}
-.post-hero-preview .prism-fragment{transition:transform 180ms var(--ease)}
-.post-hero-preview .prism-preview.angle-0 .prism-left{transform:translateX(-15px) rotate(-15deg)}.post-hero-preview .prism-preview.angle-0 .prism-right{transform:translateX(15px) rotate(15deg)}
-.post-hero-preview .prism-preview.angle-2 .prism-left{transform:translateX(15px) rotate(15deg)}.post-hero-preview .prism-preview.angle-2 .prism-right{transform:translateX(-15px) rotate(-15deg)}
 .post-hero-preview .phrase-card{padding:25px;margin:24px 0;border:1px solid #d6b3a5;color:#7b293d;background:#f4e8d2;font:400 28px/1.4 'Gowun Batang',Georgia,serif;text-align:center}
 .post-hero-preview .asset-playground{margin-top:24px}.post-hero-preview .asset-playground img{object-fit:contain;max-width:100%}
 .post-hero-preview .pawn-shadow-stage{position:relative;height:250px;background:#e6d2b9;overflow:hidden;isolation:isolate}
@@ -65,10 +63,9 @@
 .post-hero-preview .noble-base{position:absolute;bottom:12px;left:10%;width:80%;height:100px;background:#d4b995;transform:rotateX(60deg);border:1px solid #ac8a6a}
 .post-hero-preview .pawn-flipbook{position:relative;min-height:250px;display:flex;align-items:flex-start;justify-content:center;padding:24px 15px 65px;background:#f4e8d2;color:#402935;box-shadow:0 8px 15px #09050b55;border:1px solid #cfb99b;perspective:500px}
 .post-hero-preview .pawn-flipbook>img{width:90px;height:150px;transition:transform 180ms var(--ease)}.post-hero-preview .pawn-flipbook.page-1>img:first-of-type{transform:translateX(20px) rotate(-8deg)}.post-hero-preview .pawn-flipbook.page-2>img:last-of-type{transform:translateX(-12px) rotate(8deg)}.post-hero-preview .pawn-flipbook.page-3>img{transform:translateY(-15px)}
-.post-hero-preview .book-spine{position:absolute;left:50%;top:0;bottom:0;width:1px;background:#c7b08f}.post-hero-preview .book-props{position:absolute;bottom:40px;font-size:24px;color:#7b293d;letter-spacing:10px}.post-hero-preview .pawn-flipbook small{position:absolute;bottom:10px;right:12px}
-.post-hero-preview .decor-stage{height:230px;display:flex;align-items:center;justify-content:center;flex-direction:column}.post-hero-preview .decor-stage img{width:130px;height:185px}.post-hero-preview .decor-stage span{border-top:2px solid #be9875;padding:7px 40px;font:24px Georgia,serif}
+.post-hero-preview .book-spine{position:absolute;left:50%;top:0;bottom:0;width:1px;background:#c7b08f}.post-hero-preview .pawn-flipbook small{position:absolute;bottom:10px;right:12px}
 /* The scene owns the object; only its real controls remain in the reading field. */
-.post-hero-preview .has-world :is(.domino-row,.balance-tray,.pocket-fold,.prism-preview,.pawn-shadow-stage,.pawn-rail,.joker-pair,.noble-theatre,.pawn-flipbook,.decor-stage,.wax-sample,.paper-gust,.phrase-card){display:none}
+.post-hero-preview .has-world :is(.domino-row,.balance-tray,.pocket-fold,.asset-prism,.pawn-shadow-stage,.pawn-rail,.joker-pair,.noble-theatre,.pawn-flipbook,.asset-decor-preview,.wax-sample,.paper-gust,.phrase-card){display:none}
 .post-hero-preview .has-world .paper-bridge{background:none;min-height:90px;justify-content:flex-start}
 .post-hero-preview .has-world .asset-playground{margin-top:12px}
 .post-hero-preview .asset-motion-reduced *{transition:none!important}
