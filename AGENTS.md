@@ -44,3 +44,10 @@ For this landing, optional Easter eggs are discoveries attached to B-room object
 The user requested Awesome GameDev Agent Skills. The upstream collection (74 skills plus router) is installed under `.agents/skills/`, pinned in `.agents/gamedev-skills-manifest.json`; license, notice and provenance are in `.agents/gamedev-skills-source/`. Read `.agents/skills/router/SKILL.md` when selecting game-development guidance, then only the relevant skills and references. Preserve the upstream instructions verbatim.
 
 This project uses React/TypeScript, DOM/SVG/CSS and Web Audio. Apply engine-neutral UI, input, feel, audio, asset and profiling principles to that existing stack. The collection has no React-specific engine skill; an unknown engine fingerprint is not authorization to migrate to Godot, Unity, Phaser or another renderer. The three-game improvement plan is in `docs/GAME-QUALITY-PLAN.md`; its proposed gates are not completed validation. Preserve the eight games, current rule contracts, private views and free-tier requirements.
+
+
+## Official animation skills (2026-10-21)
+
+Official project-local GSAP skills are installed as `gsap-core`, `gsap-timeline`, `gsap-scrolltrigger`, `gsap-react`, `gsap-performance`, `gsap-plugins`, `gsap-utils`, and `gsap-frameworks`. Read only the relevant SKILL.md for each task. Use `motion/SKILL.md` and its platform reference for Motion component animation. Source commits, file hashes, licenses and runtime verification are recorded in `.agents/animation-skills-manifest.json`.
+
+Keep GSAP on coordinated scroll/camera timelines and Motion on bounded component gestures/springs; neither may overwrite the other's animated property. Preserve the shared renderer owner and existing app versions. Installing instructions does not authorize a library migration, new scene design, mobile QA, or video production. Motion best-practices work offline; its hosted MCP and authenticated Motion+ features have not been connected. Impeccable is restored from its complete official Codex-targeted skill-v4.5.2 package; its generic design defaults remain subordinate to the latest user approvals.

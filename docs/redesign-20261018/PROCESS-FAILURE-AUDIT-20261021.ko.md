@@ -155,3 +155,14 @@ Chromium headless ANGLE SwiftShader, ES1440×900/KO1920×1080: 각각7그룹 검
 검증: 최종 production build/TypeScript 검사, 랜딩24파일95테스트, diff 공백 검사 통과. 최종 캡처에서 발견한 계약서 한글 단어 중간 줄바꿈도 keep-all로 바로잡았다. 기존 bundle 크기 경고는 남아 있으며 이를 성능 개선 완료로 보고하지 않는다.
 
 Taste 제품 소스 `114b30070c61984e396c5a06a1037eee26dafe3d`를 기존 Hero 브랜치에 normal push했다. 비공개 검수 사이트는 static 미러 `f2a8f0fc68da372f7c108cb7d1441f5eeff00a3b`에서 배포했으며 `appgdep_6ad8da0b9f18819199a43d40527ea0db` / 버전 `appgprj_6ad8bbe1b3248191a1456e8672ffbfbe~appgver_5670194336bc81919019eed0106056f5`가 2026-10-21 15:28:29 UTC에 native succeeded를 반환했다. 기존 검수 URL과 owner-only audience를 보존했다. 이 후속 기록 커밋은 제품 파일을 변경하지 않는다.
+
+
+## 스킬 설치 누락 복구 및 공식 GSAP/Motion 지침 추가
+
+설치 이력 확인: 이 저장소에서 Impeccable을 처음 등록한 `fbdec48`에도 reference가 audit/critique/polish/craft-floor 4개만 있었다. 이후 삭제된 것으로 단정하지 않으며, 왜 부분 복사됐는지는 커밋만으로 알 수 없다. 기존 실행기는 공식 engine0.1.14 배포 파일의 SHA-256과 이미 일치했다. 따라서 실행 라이브러리/엔진 부재로 디자인 실패를 설명하지 않는다. 세부 playbook 누락과 그 완전성을 확인하지 않은 인수·적용 과정은 실제 문제다.
+
+복구: 공식 pbakaus/impeccable `skill-v4.5.2`의 `d631a8827f99414d2b6daba4ef08b7f8701751d7`에서 Codex용 `.agents/skills/impeccable` 전체를 동기화했다. 같은 버전을 유지하며 누락46파일(세부 reference/위임 지침/에이전트 템플릿)을 추가했고 기존 `.agent` 경로의 부분 사본도 공식 `.agents` 경로 원문으로 맞췄다. 이전 점검에서 찾은 최상위 누락 링크28개는 모두 해결됐다.
+
+추가: greensock/gsap-skills `aed9cfd3277740755f6bfc1155c7aa645403b760`의 공식8스킬과 MIT LICENSE, motiondivision/ai-kit `78a83b1485fa70dab9037c480de0c7cf53930df7`의 공식 motion 스킬 및 전체11개 문서를 설치했다. Motion 소스의 MIT 선언은 upstream package metadata와 함께 보존했다. 이제 저장소의 SKILL.md는144개다. 세부 출처·전체 원문 파일 해시는 `.agents/animation-skills-manifest.json`에 기록했다. 프로젝트 AGENTS에 선택 적용 경로와 공유 속성 소유권을 명시했다.
+
+검증: 복사한 모든 upstream 파일 SHA-256 일치, 설치10대상 전체66개 Markdown의 상대 링크 누락0, Impeccable engine-probe/help 정상, 공식 엔진 release checksum 일치, 실제 Node import에서 GSAP3.15.0/Motion animate 함수 정상. npm/package-lock 및 제품 source/화면은 바꾸지 않았다. Motion MCP·Motion+ 계정/유료 기능·호스트 hook은 새로 연결하지 않았다. 이번 검증은 설치 완전성 확인이며 시각 품질 검수나 앱 기능 재검수가 아니다. 과거 점검 JSON의 누락 상태는 복구 전 시점의 기록이다.
