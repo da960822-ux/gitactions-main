@@ -115,3 +115,18 @@ Method: dual-agent (A: /root/story_critique_a · B: /root/story_critique_b)
 [한국어 편지](../review/letter-current-ko.png) · [스페인어 편지](../review/letter-current-es.png) · [새 설명](../review/companions-pact-1440-es-birds-apart.png)
 
 사용자 후속 말투 지시에 따라 편지의 혀 내미는 묘사를 ‘이겼다고 나 놀리면’으로 바꿨다. ES도 `me sacas la lengua` 대신 승리 후 장난스럽게 놀리는 표현으로 맞췄다. 승부 일러스트의 승인된 표정 자산은 변경하지 않았다.
+
+
+### 원앙·분홍 벌새와 직접 서명하는 평생 파트너 약속서
+
+사용자 최신 승인에 따라 기존 잉꼬/시구아팔메라를 귀여운 원앙과 연핑크 벌새로 교체했다. 새 자산은 동일한 부드러운 일러스트 방향으로 생성했고 실제 원본/크기/hash는 활성 provenance에 남겼다. 핑크는 개인적 선택이며 실제 특정 벌새 종·도미니카 국조·라틴권 공통 사랑 전통이라고 표현하지 않는다. 원앙 설명은 한국 혼례의 화목 상징에 한정한다. 사용하지 않는 구 PNG 두 개는 실제 참조 검사 뒤 제거했다.
+
+새가 거리→시계로 따라가던 의도 자체를 사용자의 지적에 따라 폐기했다. CountryCompanions를 #distance 안에 두고 절대 위치와 overflow:clip으로 경계를 소유하게 했다. sticky/시간/엔딩 이동 타임라인·상태와 시계 위 210px 보정 여백을 제거했다. 그림의 날개는 별도 생성 원본을 조합한 SVG/CSS 2.5D이며 실시간 3D 새라고 주장하지 않는다. 비행/하트의 Motion과 스크롤 위치의 GSAP 역할을 구분하고, offscreen/탭 숨김/감소 모션 및 키보드 즉시 응답을 유지한다.
+
+Pact는 단순 yes 버튼 대신 실제 서명 SVG 입력→명시적 확정으로 바뀌었다. 펜/마우스 stroke는 유한한 정규화 좌표/최대200점으로 검증하고, 탭/점만 남긴 입력은 서명으로 인정하지 않는다. 지우기·재작성·텍스트 이름 대안·저장 실패·초기화·재방문을 지원한다. 저장은 v2의 이 브라우저에만 해당하며 옛 v1 yes를 서명으로 승격하지 않는다. 다른 사람의 동의/법적 효력을 만들어내지 않는다. 서명을 확정하고 장미를 받은 뒤에만 ‘사인했으니까…’ 문구가 나온다.
+
+실제 첫 입력에서 React updater 안에 SyntheticEvent.currentTarget를 읽어 화면이 비는 오류를 발견했다. 동일 Luna 담당자가 좌표를 handler에서 즉시 계산하도록 고쳤고, 점 하나의 stroke가 다음 정상 서명을 막는 상태도 정리했다. 수정 뒤 KO1920×1080/ES1440×900 native 각6개 경로 PASS, pageerror0, fold scrollΔ0: 새 인사/날개·하트, 경계/역행, 클릭만으로 확정 불가, draw→type→draw, 실제26점 서명 저장, 장미 문구 조건, 재독서/초기화/초점 복귀. 자연 구동 녹화와 양쪽 정지 구도를 독립 A가 한 번에 검토하여 해당 범위 art/meaning/composition/observed motion4/5로 승인했다. 전체 Hero·게임/server·모바일·physical GPU 승인으로 확대하지 않는다.
+
+전체 87 files/671 tests, production build 통과. 별도 후반부29 node tests도 설치된 esbuild로 원본 TypeScript 테스트를 bundle한 뒤 node --test로 실행해 모두 통과했다. 원래 post npm test는 이 환경에 tsx가 없어 실행되지 않았고, 별도 dependency 설치 대신 기존 도구를 썼다. 오래된 LetterCollection 테스트의 엔딩 재투영 기대를 현행 단일 DOM→장미 계약으로 수정했으며 제품을 옛 중복 장면으로 되돌리지 않았다.
+
+버건디 핑크는 거리 장면의 넓은 배경, 핑크 선택 슬라이더·게임 선택 표시·연핑크 약속서 종이에 확대하고 로즈골드는 서명선/경계에 썼다. 기존 Hero 배경/카메라, 승인 인물·방, 원래 게임 규칙과 Rhythm 원본은 유지했다. 남는 큰 Landing chunk/소프트웨어 환경 성능 한계와 모바일·온라인 backend 미검수 범위도 유지된다.

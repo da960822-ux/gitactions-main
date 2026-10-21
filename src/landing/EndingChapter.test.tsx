@@ -1,7 +1,7 @@
 import {renderToStaticMarkup} from 'react-dom/server';
 import {afterEach,expect,it,vi} from 'vitest';
 import {EndingChapter} from '../../post-hero-preview/src/EndingChapter';
-import {PartnerPact,persistPactResponse} from '../../post-hero-preview/src/PartnerPact';
+import {PartnerPact,isPactSignature,parsePactResponse,persistPactResponse} from '../../post-hero-preview/src/PartnerPact';
 import {createLocalEventState} from '../../post-hero-preview/src/LocalEventRig';
 
 afterEach(()=>vi.unstubAllGlobals());
@@ -37,32 +37,54 @@ it('keeps the pact separate from the original letter and asks only for this view
   const html=renderToStaticMarkup(<PartnerPact language={language}/>);
   expect(html).toContain('aria-expanded="false"');
   expect(html).toMatch(/class="pp-paper" hidden=""/);
-  expect(html).toContain(language==='ko'?'Baby, 내 평생의 동반자가 되어줄래?':'Baby, ¿quieres ser mi compañera de vida?');
-  expect(html).toContain(language==='ko'?'이 대답은 이 브라우저에만 저장돼.':'Esta respuesta se guarda solo en este navegador.');
+  expect(html).toContain(language==='ko'?'평생 파트너 계약서':'Nuestro pacto para toda la vida');
+  expect(html).toContain(language==='ko'?'Baby, 나랑 평생 한 팀 할래?':'Baby, ¿hacemos equipo para toda la vida?');
+  expect(html).toContain(language==='ko'?'게임에서 져도 네 편은 계속 할게. 대신 다음 판은 꼭 해줘 ㅋㅋㅋ':'Aunque pierda, sigo de tu lado. Pero me debes otra partida, haha.');
+  expect(html).toContain(language==='ko'?'이 서명과 대답은 이 브라우저에만 저장돼.':'Esta firma y respuesta se guardan solo en este navegador.');
   expect(html).not.toContain('moment-letter-copy');
   expect(html).not.toContain('<dialog');
-  expect(html).not.toContain('<input');
+  expect(html).toContain('class="pp-signature-pad"');
+  expect(html).toContain('class="pp-signature-name"');
+  expect(html).toContain('disabled=""');
+  expect(html).toContain(language==='ko'?'사인하고 평생 파트너 하기 ♡':'Firmar y ser compañera para siempre ♡');
   expect(html).not.toContain('Lisbeth');
   expect(html).not.toContain('Yeonseok');
-  expect(html).toContain('aria-pressed="false"');
   expect(html).not.toContain('Mi respuesta: sí');
   expect(html).not.toContain('내 대답: 응');
  }
 });
 
-it('stores only a local answer and resets only its own key, preserving other saved work',()=>{
+it('accepts only bounded drawn or typed signatures and rejects taps, malformed and nonfinite strokes',()=>{
+ expect(isPactSignature({mode:'drawn',strokes:[[{x:2,y:3}]]})).toBe(false);
+ expect(isPactSignature({mode:'drawn',strokes:[[{x:2,y:3},{x:2.2,y:3.1}]]})).toBe(false);
+ expect(isPactSignature({mode:'drawn',strokes:[[{x:2,y:3},{x:12,y:13}]]})).toBe(true);
+ expect(isPactSignature({mode:'drawn',strokes:[[{x:2,y:3},{x:Infinity,y:13}]]})).toBe(false);
+ expect(isPactSignature({mode:'drawn',strokes:[[{x:2,y:3},{x:101,y:13}]]})).toBe(false);
+ expect(isPactSignature({mode:'drawn',strokes:[Array.from({length:201},(_,x)=>({x:x%100,y:20}))]})).toBe(false);
+ expect(isPactSignature({mode:'typed',name:'  '})).toBe(false);
+ expect(isPactSignature({mode:'typed',name:'Li'})).toBe(true);
+ expect(isPactSignature({mode:'typed',name:'L'.repeat(41)})).toBe(false);
+});
+
+it('persists only versioned signatures in this browser and ignores the old yes-only response',()=>{
  const setItem=vi.fn(),removeItem=vi.fn();vi.stubGlobal('localStorage',{setItem,removeItem});
- expect(persistPactResponse(true)).toBe(true);
- expect(setItem).toHaveBeenCalledExactlyOnceWith('dos-partner-pact-response-v1','yes');
- expect(persistPactResponse(false)).toBe(true);
- expect(removeItem).toHaveBeenCalledExactlyOnceWith('dos-partner-pact-response-v1');
+ const signature={mode:'drawn' as const,strokes:[[{x:2,y:3},{x:20,y:15}]]};
+ expect(persistPactResponse(signature)).toBe(true);
+ expect(setItem).toHaveBeenCalledExactlyOnceWith('dos-partner-pact-response-v2',JSON.stringify({version:2,signature}));
+ expect(persistPactResponse({mode:'drawn',strokes:[[{x:2,y:3}]]})).toBe(false);
+ expect(persistPactResponse(null)).toBe(true);
+ expect(removeItem).toHaveBeenCalledExactlyOnceWith('dos-partner-pact-response-v2');
+ expect(parsePactResponse('"yes"')).toBeNull();
+ expect(parsePactResponse('{broken')).toBeNull();
+ expect(parsePactResponse(JSON.stringify({version:1,signature}))).toBeNull();
+ expect(parsePactResponse(JSON.stringify({version:2,signature}))).toEqual(signature);
 });
 
 it('reports blocked local save and reset without throwing or pretending storage succeeded',()=>{
  const blocked=()=>{throw new Error('Storage unavailable');};
  vi.stubGlobal('localStorage',{setItem:blocked,removeItem:blocked});
- expect(persistPactResponse(true)).toBe(false);
- expect(persistPactResponse(false)).toBe(false);
+ expect(persistPactResponse({mode:'typed',name:'Lisbeth'})).toBe(false);
+ expect(persistPactResponse(null)).toBe(false);
 });
 
 it('preserves the existing ending workbench while hiding the closing controls',()=>{

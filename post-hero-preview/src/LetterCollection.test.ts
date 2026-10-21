@@ -39,12 +39,15 @@ test('letter-only collection preserves room ownership, reversible folds, DOM han
  collection.update({...frame,opening:1,progress:.75,width:390,reducedMotion:true,onPaperPose});collection.projectPaper();assert.equal(insert.visible,false,'single DOM reading paper also owns reduced-motion and narrow layouts');assert.equal(paper!.visible,false);
  collection.update({...frame,opening:1,progress:.86,width:390,reducedMotion:true,onPaperPose});assert.equal(insert.visible,false);
  collection.update({...frame,opening:1,progress:.84,onPaperPose});const readingTurn=collection.root.rotation.y;assert.equal(readingTurn,0,'desktop paper stays on the near-overhead plane');assert.equal(collection.root.getObjectByName('letter-envelope')!.rotation.x,-Math.PI/2);
- collection.update({...frame,opening:1,progress:1,onPaperPose});collection.projectPaper();assert.equal(Math.abs(collection.root.rotation.y),0);assert.equal(insert.visible,false,'the single original DOM article owns the ending paper instead of a blank duplicate');assert.equal(paper!.visible,true);assert.equal(Math.abs(shell.position.y),0,'the same envelope returns beneath the ending letter');
- collection.update({...frame,opening:1,progress:1,reducedMotion:true,onPaperPose});collection.projectPaper();assert.equal(paper!.visible,true,'reduced motion keeps the same original ending text in its static paper pose');
- collection.update({...frame,opening:1,progress:1,width:390,onPaperPose});collection.projectPaper();assert.equal(paper!.visible,false);assert.equal(insert.visible,true,'the existing narrow fallback retains its physical ending sheet');
- collection.update({...frame,opening:1,progress:1,paperAspect:1.2,onPaperPose});collection.projectPaper();
- const endingCorners=[[-.88,.93],[.88,.93],[.88,-.93]].map(([x,y])=>insert.localToWorld(new THREE.Vector3(x,y,.015)));
- assert.ok(Math.abs(endingCorners[0].distanceTo(endingCorners[1])/endingCorners[1].distanceTo(endingCorners[2])-1.2)<1e-9,'ending physical paper matches the original article aspect, preserving letter proportions');
+ // Ending belongs to the rose pane; the one article stays in normal flow, never restaged in 3D.
+ for(const variant of [{width:1440},{width:1440,reducedMotion:true},{width:390}]){
+  collection.update({...frame,...variant,opening:1,progress:1,letterView:'rose',onPaperPose});collection.projectPaper();
+  assert.equal(paper!.visible,false,'the ending must not project a second copy of the letter');
+  assert.equal(insert.visible,false,'normal-flow DOM ownership also suppresses the physical duplicate');
+ }
+ collection.update({...frame,opening:1,progress:.86,letterView:'folding',paperAspect:1.2,onPaperPose});collection.projectPaper();
+ const closingCorners=[[-.88,.93],[.88,.93],[.88,-.93]].map(([x,y])=>insert.localToWorld(new THREE.Vector3(x,y,.015)));
+ assert.ok(Math.abs(closingCorners[0].distanceTo(closingCorners[1])/closingCorners[1].distanceTo(closingCorners[2])-1.2)<1e-9,'the closing paper matches the original article aspect without an ending restage');
  collection.update({...frame,opening:1,progress:.84,onPaperPose});assert.equal(collection.root.rotation.y,readingTurn,'reverse scroll restores the reading orientation');assert.equal(insert.scale.y,1,'reverse scroll restores the original reading geometry');
  collection.update({...frame,opening:.8,progress:.86,onPaperPose});assert.equal(insert.visible,true);
  const desktopBack=collection.root.getObjectByName('letter-back') as THREE.Mesh;assert.ok(Array.isArray(desktopBack.material)&&desktopBack.material[4] instanceof THREE.MeshBasicMaterial);assert.equal(desktopBack.material[4],desktopBack.material[5],'front and back share the same cream reading surface while the original thickness material remains on the sides');

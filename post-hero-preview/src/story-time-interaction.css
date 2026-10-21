@@ -17,8 +17,8 @@
 .post-hero-preview .story-time-interaction .story-sky-guide{fill:none;stroke:#cba8ad;stroke-opacity:.15;stroke-width:.7}
 .post-hero-preview .story-time-interaction .story-sky-horizon{fill:none;stroke:#d7a18f;stroke-opacity:.5;stroke-width:.8}
 .post-hero-preview .story-time-interaction .story-sky-reflection{fill:none;stroke:#d7a18f;stroke-opacity:.12;stroke-width:.7}
-.post-hero-preview .story-time-interaction .story-hour-picker input{display:block;width:100%;height:44px;margin:4px 0 14px;accent-color:#d7a18f;cursor:pointer}
-.post-hero-preview .story-time-interaction .story-hour-picker input:focus-visible{outline:2px solid #efbca8;outline-offset:4px}
+.post-hero-preview .story-time-interaction .story-hour-picker input{display:block;width:100%;height:44px;margin:4px 0 14px;accent-color:#c57d98;cursor:pointer}
+.post-hero-preview .story-time-interaction .story-hour-picker input:focus-visible{outline:2px solid #efb7ca;outline-offset:4px}
 .post-hero-preview .story-time-interaction .story-hour-picker output{display:grid;grid-template-columns:1fr 1fr;gap:32px;justify-content:normal;font-size:16px;line-height:1.5;font-variant-numeric:tabular-nums;color:#f0d9cc}
 .post-hero-preview .story-time-interaction .story-hour-picker output small{display:block;margin-top:5px;font-size:12px;line-height:1.5;color:#c7a6b2}
 @media(max-width:1000px){.post-hero-preview .story-time-interaction .story-live-clocks,.post-hero-preview .story-time-interaction .story-preview-skies,.post-hero-preview .story-time-interaction .story-hour-picker output{gap:20px}.post-hero-preview .story-time-interaction .story-live-clocks time{font-size:clamp(36px,4.2vw,60px)}}

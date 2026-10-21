@@ -6,8 +6,8 @@ it('uses the playful lifetime-partner line only after receiving and an actual pa
  for(const language of ['ko','es'] as const){
   const normal=roseGiftClosingLine(language,true,false);
   expect(roseGiftClosingLine(language,false,true)).toBe(normal);
-  expect(roseGiftClosingLine(language,true,true)).toContain(language==='ko'?'약속했으니까':'Ya dijiste que sí');
-  expect(normal).not.toContain(language==='ko'?'약속했으니까':'Ya dijiste que sí');
+  expect(roseGiftClosingLine(language,true,true)).toContain(language==='ko'?'사인했으니까':'Ya firmaste');
+  expect(normal).not.toContain(language==='ko'?'사인했으니까':'Ya firmaste');
  }
 });
 
@@ -25,7 +25,7 @@ it('renders one live layered cutout and preserves semantics, loading and the app
  expect(html).toContain('data-rg-joint="donor-grip"');
  expect(html).toContain('data-rg-joint="recipient-reach"');
  expect(html).toMatch(/class="rg-replay" disabled=""/);
- expect(html).not.toContain('Ya dijiste que sí');
+ expect(html).not.toContain('Ya firmaste');
  expect(html).not.toContain('<canvas');
 });
 
