@@ -132,3 +132,9 @@ Pact는 단순 yes 버튼 대신 실제 서명 SVG 입력→명시적 확정으�
 버건디 핑크는 거리 장면의 넓은 배경, 핑크 선택 슬라이더·게임 선택 표시·연핑크 약속서 종이에 확대하고 로즈골드는 서명선/경계에 썼다. 기존 Hero 배경/카메라, 승인 인물·방, 원래 게임 규칙과 Rhythm 원본은 유지했다. 남는 큰 Landing chunk/소프트웨어 환경 성능 한계와 모바일·온라인 backend 미검수 범위도 유지된다.
 
 최종 사용자 지시에 따라 추가 영상 제작은 중단했다. 서명 직후 계약서 내용과 실제 입력한 잉크를 같은 종이에 유지하는 화면을 제공하고, 편지를 접은 뒤 장미 수령 문구를 ‘네가 사인했으니까, 이제 우리는 평생 함께야, Baby.’로 맞췄다. 기존 57.8초 영상은 이전 checkpoint이며 현재본 안내는 검수 사이트와 정지 증거를 사용한다.
+
+최종 제품 소스 `2644293132ddfac25f9fa0a886a3d982ad2a4f57`의 한국어·스페인어 문구/실제 입력을 두 PC에서 다시 확인했다(각6개 PASS, pageerror0, foldΔ0, 직접26점 잉크 저장/초기화). 이 최종 확인은 영상 녹화를 설정하지 않고 정지 화면만 남겼다. 최종 문구의 관련12검사와 production build도 통과했다. 새/서명에 관한 이전 독립4/5는 기능과 구도 평가이며 최종 로맨틱 문구를 별도로 다시 점수화하지 않았다.
+
+[실제 서명이 남은 계약서](../review/companions-pact-1440-es-pact-open.png) · [새가 없는 시간 장면](../review/time-current-es.png) · [서명 뒤 장미](../review/rose-gift-1440-es-received.png)
+
+최신 비공개 검수 사이트 배포는 `appgdep_6ad8ccb70c40819195dedf7efd95fa1f`, 저장 버전 `appgprj_6ad8bbe1b3248191a1456e8672ffbfbe~appgver_ca718efba8508191a3b862b6f638e791`, native 상태 succeeded(2026-10-21 14:31:38 UTC)다. 실제 제품 소스2644293의 static 미러 commit `e1aa7c16d3e0b595a9d460a3f60c3f19c825a3a9`에서 배포했다. URL은 https://yeonseok-lisbeth-review-20261021.pinktrout1024.chatgpt.site 이며 원래 main/서비스 배포·공유 audience는 변경하지 않았다.
