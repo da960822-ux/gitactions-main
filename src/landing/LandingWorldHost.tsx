@@ -9,7 +9,7 @@ import {PostHeroPreview} from '../../post-hero-preview/src/PostHeroPreview';
 import type {PostHeroState} from '../../post-hero-preview/src/Scene';
 import type {LocalEventId} from '../../post-hero-preview/src/LocalEventRig';
 import {createLetterCollection} from '../../post-hero-preview/src/LetterCollection';
-import {cameraPose as heroCameraPose,openingCameraPose,postConnectionPose} from './cinematic/folded/poseSpaceV19';
+import {openingCameraPose,postConnectionPose} from './cinematic/folded/poseSpaceV19';
 import {ROOM_WORLD,roomWorldVertex} from './cinematic/folded/approvedRoomGeometry';
 import {pointerDecay} from './cinematic/folded/pointerResponse';
 import {INTRO_SECONDS, introPose, smoothRange, type FoldPose} from './cinematic/folded/pose';
@@ -77,7 +77,9 @@ export function LandingWorldHost({language,onLanguageChange,selected,onSelect}:P
   const roomFov=(width:number,height:number)=>width<760?THREE.MathUtils.radToDeg(2*Math.atan(Math.tan(THREE.MathUtils.degToRad(24))*roomContain(width,height))):48;
   const frameFallback=()=>{
    const image=root.querySelector<HTMLImageElement>('.folded-portrait-fallback');if(!image)return;if(screen.clientWidth<761){image.style.cssText='';return;}
-   const width=screen.clientWidth,height=screen.clientHeight,initial=openingCameraPose(first.current?0:1),camera=new THREE.PerspectiveCamera(38,width/height,.1,400);
+   const width=screen.clientWidth,height=screen.clientHeight,initial=openingCameraPose(1),liveFov=first.current?47.4:48;
+   const fallbackFov=THREE.MathUtils.radToDeg(2*Math.atan(Math.tan(THREE.MathUtils.degToRad(19))*Math.tan(THREE.MathUtils.degToRad(liveFov/2))/Math.tan(THREE.MathUtils.degToRad(24))));
+   const camera=new THREE.PerspectiveCamera(fallbackFov,width/height,.1,400);
    camera.position.fromArray(initial.position);camera.lookAt(...initial.target as [number,number,number]);camera.updateMatrixWorld();
    const portraitWidth=6.2*1312/1199;
    const imageToWorld=new THREE.Matrix4().set(portraitWidth/1312,0,0,1.85-portraitWidth/2,0,-6.2/1199,0,3.13,0,0,1,.05,0,0,0,1);
@@ -90,8 +92,7 @@ export function LandingWorldHost({language,onLanguageChange,selected,onSelect}:P
   const frameHero=(camera:THREE.PerspectiveCamera,p:number,width:number,height:number)=>{
    const room=smoothRange(.27,.38,p);camera.clearViewOffset();
    if(world){if(heroBackdrop===undefined)heroBackdrop=world.scene.background;world.scene.background=p>.72?roomBackground:heroBackdrop;}
-   if(width<760){const base=THREE.MathUtils.radToDeg(2*Math.atan(Math.tan(THREE.MathUtils.degToRad(camera.fov/2))/.59));camera.fov=THREE.MathUtils.lerp(base,roomFov(width,height),room);camera.setViewOffset(width,height,0,-height*.195*(1-room),width,height);}
-   else {const contain=roomContain(width,height)-1;camera.position.y+=(ROOM_EYE.y-ROOM_TARGET.y)*contain;camera.position.z+=(ROOM_EYE.z-ROOM_TARGET.z)*contain;const target=heroCameraPose(p,pose.entrance,false).target;camera.lookAt(...target as [number,number,number]);}
+   const base=THREE.MathUtils.radToDeg(2*Math.atan(Math.tan(THREE.MathUtils.degToRad(camera.fov/2))/.59));camera.fov=THREE.MathUtils.lerp(base,roomFov(width,height),room);camera.setViewOffset(width,height,0,-height*.195*(1-room),width,height);
   };
   const titleLines=[...hero.querySelectorAll<HTMLElement>('.across-title-line')];
   const copy=hero.querySelector<HTMLElement>('.across-editorial')!,destination=hero.querySelector<HTMLElement>('.folded-destination')!;
@@ -162,6 +163,7 @@ export function LandingWorldHost({language,onLanguageChange,selected,onSelect}:P
     projectRoomDiscoveries(false);
     if(!previousPost){world.render({...pose,progress:1,entrance:1});if(Number(screen.dataset.progress??0)<.999||Number(screen.dataset.entrance??0)<.999){dirty.current=true;return;}world.setPostActive(true);}
     previousPost=true;
+    world.camera.near=.1;world.camera.far=400;
     const progress=postState.current.progress;
     post.root.visible=true;
     composition.root.visible=true;
@@ -194,7 +196,7 @@ export function LandingWorldHost({language,onLanguageChange,selected,onSelect}:P
   frame=requestAnimationFrame(tick);
   void import('./cinematic/folded/previewSpaceV19').then(async({createFoldedWorld})=>{
    if(disposed)return;
-   world=createFoldedWorld(screen,{width:screen.clientWidth,height:screen.clientHeight,pixelRatio:Math.min(devicePixelRatio,innerWidth<760?1.25:1.5),portrait:PORTRAIT,portraitMask:PORTRAIT_MASK,beforeRender:frameHero,onFrame:data=>{Object.assign(screen.dataset,data,{frameRenderingMode:'hero-distance-separated-surfaces'});if(!disposed&&assetsReady&&(first.current||Number(data.entrance)>=.999))setReady(true);}});
+   world=createFoldedWorld(screen,{width:screen.clientWidth,height:screen.clientHeight,pixelRatio:Math.min(devicePixelRatio,innerWidth<760?1.25:1.5),portrait:PORTRAIT,portraitMask:PORTRAIT_MASK,beforeRender:frameHero,onFrame:data=>{Object.assign(screen.dataset,data);if(!disposed&&assetsReady&&(first.current||Number(data.entrance)>=.999))setReady(true);}});
    await world.ready;if(disposed)return;assetsReady=true;
    post=createLetterCollection({scene:world.scene,camera:world.camera,host:screen});post.root.visible=false;
    composition=createPostHeroComposition(world.scene,invalidate);

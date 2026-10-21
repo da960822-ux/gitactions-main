@@ -38,6 +38,10 @@ Method: dual-agent (A: `/root/sol_video_critique_a` · B: `/root/sol_independent
 
 또 원본 I를 새 실내에서도 전역 불투명으로 계속 그려야 한다는 조건은 사용자 요구가 아닌 구현 전제였다. 실제 구조의 world-space stencil domain으로 구분하는 연구는 작동했으나, finite aperture의 먼 끝이 도착 viewport에 남고 return이 토끼/사진을 가리는 결함이 있다. 이 prototype은 제품에 넣지 않았고 원화·Hero/갤러리 원본도 그대로다. 다음 피드백은 임의 숫자 확대가 아니라 도착 frustum이 전부 속하는 실제 가시 volume/경계와 구조의 퇴장을 설계하도록 고쳤다. atlas·조명·장식은 이 구조 문제를 해결하지 못하므로 먼저 생성하지 않는다. 정지 3구도나 테스트 성공만으로 공간 연결 완료를 선언하지 않는다.
 
+## 현재 통합과 검수 상태 — 2026-10-21
+
+제품 기준 HEAD는 `f12c25d`이며, 아래 실제 녹화는 그 commit만이 아니라 보고서의 `sourceFilesAtEnd`에 기록된 당시 uncommitted Hero source를 검수했다. 1440×900 native whole-motion 녹화는 57.866667초·1.15배속·12개 기록 action·browser/HTTP 오류 0이다. 1920×1080과 1440×900에서 settled same-p reverse follow-up은 각각 일치했고, 실제 pointer response 및 L04/L09/L06 열기·Escape/focus 복귀를 기록했다. 독립 평정은 composition 4/5, space 3/5, purpose 4/5, craft 3/5로 전체 4/5 기준 미달이다. 실제 boundary/camera 이동은 확인했으나 표면 mesh deformation은 미구현이며 갤러리 선택물의 크기/depth가 약하다. 이는 SwiftShader의 정지/영상 근거이며 real GPU 성능·새 모바일 경로 완료는 아니다. 자세한 action·source hash·점수는 [native whole report](../../output/current-review/hero-spatial-rework-20261021/hero-wall-volume-current/product-current/native-whole-report.json)와 [현재 source/reversal report](../../output/current-review/hero-spatial-rework-20261021/hero-wall-volume-current/product-current/product-report.json)에 기록됐다. 기존 75 files/621 tests와 build 통과는 앞선 checkpoint 증거다. 새 helper test는 focused 1/1 통과했고, 이 감사자의 `npm test`도 76 files/622 tests 통과했다. 처음 전체 build는 당시 test mock의 `Texture<unknown>` 형식 오류로 중단됐지만, owner가 test-only generic을 고친 뒤 `tsc -b`와 focused test가 통과했다. helper의 앞선 Vite/edge build는 통과했으며, 최근 ceiling 변경을 포함한 최종 전체 build는 별도 root 실행 전이다. 이는 전체 시각 승인 근거가 아니다.
+
 아래는 `cf907bc` 및 그 뒤 중간 작업본을 대상으로 한 과거 감사 이력이다. 당시의 현재/미완료 표현과 수치를 최신 소스의 상태로 재사용하지 않는다.
 
 ## 과거 판정과 자료 한계
@@ -104,7 +108,7 @@ Method: dual-agent (A: `/root/sol_video_critique_a` · B: `/root/sol_independent
 
 **확인하지 않은 것:** 원시 사용자 프롬프트 전체, 현재 video playback, 현재 브라우저 재현, V1–V19 전 파일별 픽셀 비교, 과거 각 skill invocation log. 남은 위험은 미확인 렌더 원인을 사실처럼 적지 않고, 후속 owner가 범위별 실제 화면에서 확인해야 한다는 점이다.
 
-## 총괄 추기: 이번 시도의 실제 결과
+## 과거 총괄 추기: 당시 중간 시도의 실제 결과 (현재 통합 전 이력)
 
 위 표의 감사자 범위와 별도로 root/독립 Sol은 기존 영상과 이번 Hero 실제 브라우저 캡처를 확인했다. 활성 V19에서 방의 카메라 추종 확대를 없애고 우주 표면을 옆으로 여는 시도를 했으나, 중간 p=.20–.24에 사각 방과 검은 여백이 노출되고 p=.18에서 여자친구가 오른쪽으로 잘렸다. 위아래 분할을 없앤 사실이 더 나은 공간을 만들었다는 뜻은 아니었다. root와 독립 시각 검수 모두 **불합격**이다.
 
