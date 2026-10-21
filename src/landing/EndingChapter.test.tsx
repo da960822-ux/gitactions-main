@@ -20,6 +20,20 @@ it('keeps the ending open to the shared scene and real letter/game destinations 
  expect(html).toContain('/images/story-companions/hanbok-pact-dolls.png');
  expect(html).toContain('우리의 약속');
  expect(html).not.toContain('<canvas');
+ expect(html).not.toContain('id="rose-gift-finale"');
+});
+
+it('mounts the rose celebration only after completion while preserving pact, game and rereading paths',()=>{
+ const html=renderToStaticMarkup(<EndingChapter language="es" state={createLocalEventState('es')} playHref="/play?game=domino" showRoseGift reducedMotion onReadLetter={()=>{}}/>);
+ expect(html).toContain('has-rose-gift');
+ expect(html).toContain('aria-labelledby="rose-gift-title"');
+ expect(html).toContain('id="rose-gift-finale"');
+ expect(html).toContain('class="ec-invitation" hidden=""');
+ expect(html).toContain('/images/rose-gift/received.png');
+ expect(html).toContain('Nuestro pacto');
+ expect(html).toContain('href="/play?game=domino"');
+ expect(html).toContain('href="#papi-letter"');
+ expect(html).not.toContain('Ya dijiste que sí');
 });
 
 it('replaces only the old ending drawing display while preserving actual session drawing and decor state',()=>{

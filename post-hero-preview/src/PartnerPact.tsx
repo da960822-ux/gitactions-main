@@ -10,12 +10,13 @@ export function persistPactResponse(accepted:boolean){
  catch{return false;}
 }
 
-export function PartnerPact({language}:{language:'ko'|'es'}){
+export function PartnerPact({language,onResponseChange}:{language:'ko'|'es';onResponseChange?:(accepted:boolean)=>void}){
  const ko=language==='ko',panelId=useId(),titleId=useId(),reduced=useReducedMotion();
  const opener=useRef<HTMLButtonElement>(null),answerButton=useRef<HTMLButtonElement>(null),paper=useRef<HTMLElement>(null),title=useRef<HTMLHeadingElement>(null),animateOpening=useRef(false),previousOpen=useRef(false);
  const [open,setOpen]=useState(false),[accepted,setAccepted]=useState(false),[pressed,setPressed]=useState(false),[imageFailed,setImageFailed]=useState(false),[storageIssue,setStorageIssue]=useState<'read'|'save'|'reset'|null>(null);
  const readResponse=()=>{try{setAccepted(localStorage.getItem(responseKey)==='yes');setStorageIssue(null);}catch{setStorageIssue('read');}};
  useEffect(()=>{readResponse();},[]);
+ useEffect(()=>{onResponseChange?.(accepted);},[accepted,onResponseChange]);
  useLayoutEffect(()=>{
   if(open)title.current?.focus({preventScroll:true});
   else if(previousOpen.current)opener.current?.focus({preventScroll:true});

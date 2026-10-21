@@ -1,4 +1,4 @@
-import { lazy, Suspense, useCallback, useEffect, useId, useRef, useState, type ReactNode } from 'react';
+import { lazy, Suspense, useCallback, useEffect, useId, useLayoutEffect, useRef, useState, type ReactNode } from 'react';
 import { landingCopy } from '../../src/copy/home';
 import type { PaperPose, PostHeroState } from './Scene';
 import { paperTransform, blendPaperCorners, letterOpeningLayout } from './paperProjection';
@@ -19,6 +19,11 @@ const story = {
 };
 function storedLanguage():Language { try { return localStorage.getItem('dos-language')==='es'?'es':'ko'; } catch { return 'ko'; } }
 
+export function letterCloseOutcome(opening:number,target:number,roseGiftPending:boolean):'rose-gift'|'opener'|null{
+ if(target===0&&opening<.0005)return roseGiftPending?'rose-gift':'opener';
+ return null;
+}
+
 type DetailRegion='room'|'envelope'|'ending';
 type RoomDiscovery={id:LocalEventId;trigger:HTMLButtonElement;nonce:number};
 type PreviewProps = { roomDiscovery?:RoomDiscovery;roomActive?:boolean; embedded?: boolean; language?: Language; onLanguageChange?: (language: Language) => void; portraitSrc?: string; portraitMaskSrc?: string; gallery?: ReactNode; playHref?: string; renderScene?: boolean; onSceneState?: (state:PostHeroState)=>void; externalSceneReady?: boolean; onRegisterFrame?: (tick:((now:number)=>void)|null)=>void };
@@ -33,6 +38,7 @@ export function PostHeroPreview({embedded=false,language:externalLanguage,onLang
  const [detailRegion,setDetailRegion]=useState<DetailRegion|null>(null);
  const [sharedEvent,setSharedEvent]=useState<{id:SharedEventId;region:DetailRegion}|null>(null);
  const [roseHintOpen,setRoseHintOpen]=useState(false);
+ const [showRoseGift,setShowRoseGift]=useState(false);
  const roseHintId=useId();
  const [sceneReady,setSceneReady]=useState(false);
  const [sceneError,setSceneError]=useState('');
@@ -42,6 +48,8 @@ export function PostHeroPreview({embedded=false,language:externalLanguage,onLang
  const [effect,setEffect]=useState({name:'none',value:0,nonce:0});
  const control=useRef(createEnvelopeState());
  const focusAfterFold=useRef(false);
+ const roseGiftPending=useRef(false);
+ const clearRoseGift=useCallback(()=>{roseGiftPending.current=false;setShowRoseGift(false);},[]);
  const pendingScroll=useRef<(()=>void)|null>(null);
  const q=useRef(0), p=useRef(0), target=useRef(0), reduced=useRef(reducedMotion);
  const host=useRef<HTMLElement>(null);
@@ -73,15 +81,20 @@ export function PostHeroPreview({embedded=false,language:externalLanguage,onLang
  const refreshTarget=useCallback(()=>{target.current=reduced.current&&control.current.manual===null?(p.current>=LETTER_RANGE[0]?1:0):envelopeTarget(control.current,p.current);if(target.current<=.5)setRoseHintOpen(false);},[setRoseHintOpen]);
  const handleSharedEventStart=useCallback((round:SharedEventRound,{settle}:{settle:boolean})=>{
    if(round.eventId!=='R01')return;
-   stopLetterMotion();focusAfterFold.current=false;alignEnvelopeView(settle);control.current=reopenEnvelope(control.current);refreshTarget();
+   clearRoseGift();stopLetterMotion();focusAfterFold.current=false;alignEnvelopeView(settle);control.current=reopenEnvelope(control.current);refreshTarget();
    if(settle){q.current=1;setOpening(1);}
- },[refreshTarget]);
+ },[refreshTarget,clearRoseGift]);
  useEffect(()=>{reduced.current=reducedMotion;if(reducedMotion){q.current=target.current;setOpening(q.current);}},[reducedMotion]);
  useEffect(()=>{
    const media=matchMedia('(prefers-reduced-motion: reduce)');
    const update=()=>setReducedMotion(media.matches);media.addEventListener('change',update);return()=>media.removeEventListener('change',update);
  },[]);
  useEffect(()=>{document.documentElement.lang=language==='es'?'es-DO':'ko'; try{localStorage.setItem('dos-language',language);}catch{/* Storage is optional. */}},[language]);
+ useLayoutEffect(()=>{
+   if(!showRoseGift)return;
+   host.current?.querySelector('#together-again')?.scrollIntoView({behavior:'instant',block:'start'});
+   host.current?.querySelector<HTMLElement>('#rose-gift-title')?.focus({preventScroll:true});
+ },[showRoseGift]);
  useEffect(()=>{
    let frame=0;
    const update=()=>{
@@ -109,7 +122,7 @@ export function PostHeroPreview({embedded=false,language:externalLanguage,onLang
      const dt=previous?Math.max(0,(time-previous)/1000):0;previous=time;
      const diff=target.current-q.current;
      if(Math.abs(diff)>.0005){q.current=reduced.current?target.current:q.current+Math.sign(diff)*Math.min(Math.abs(diff),dt/1.8);setOpening(q.current);}
-     if(focusAfterFold.current&&target.current===0&&q.current<.0005){focusAfterFold.current=false;opener.current?.focus({preventScroll:true});}
+     if(focusAfterFold.current){const outcome=letterCloseOutcome(q.current,target.current,roseGiftPending.current);if(outcome){focusAfterFold.current=false;roseGiftPending.current=false;if(outcome==='rose-gift')setShowRoseGift(true);else opener.current?.focus({preventScroll:true});}}
    };
    if(onRegisterFrame){onRegisterFrame(tick);return()=>onRegisterFrame(null);}
    const loop=(time:number)=>{tick(time);frame=requestAnimationFrame(loop);};
@@ -121,24 +134,24 @@ export function PostHeroPreview({embedded=false,language:externalLanguage,onLang
    if(bounds&&bounds.top>1)scene?.scrollIntoView({behavior:instant||reduced.current?'instant':'smooth',block:'start'});
  }
  const closeLetter=()=>{
-   stopLetterMotion();setRoseHintOpen(false);control.current=closeEnvelope(control.current,p.current);focusAfterFold.current=true;refreshTarget();
+   roseGiftPending.current=q.current>=.9995;setShowRoseGift(false);stopLetterMotion();setRoseHintOpen(false);control.current=closeEnvelope(control.current,p.current);focusAfterFold.current=true;refreshTarget();
    if(control.current.returning)document.getElementById('letter-scene')?.scrollIntoView({behavior:reduced.current?'instant':'smooth',block:'start'});
  };
  const toggleLetter=()=>{
    if(!control.current.returning&&target.current>=.5){closeLetter();return;}
-   stopLetterMotion();focusAfterFold.current=false;control.current=toggleEnvelope(control.current,p.current);if(control.current.manual===true&&q.current<LETTER_UNFOLDED)alignEnvelopeView();refreshTarget();
+   clearRoseGift();stopLetterMotion();focusAfterFold.current=false;control.current=toggleEnvelope(control.current,p.current);if(control.current.manual===true&&q.current<LETTER_UNFOLDED)alignEnvelopeView();refreshTarget();
  };
  useEffect(()=>{
-   const interrupt=()=>stopLetterMotion();
+   const interrupt=()=>{stopLetterMotion();if(roseGiftPending.current){roseGiftPending.current=false;focusAfterFold.current=false;}};
    const scrollKey=(event:KeyboardEvent)=>{if(['ArrowUp','ArrowDown','PageUp','PageDown','Home','End'].includes(event.key))interrupt();};
    addEventListener('wheel',interrupt,{passive:true});addEventListener('pointerdown',interrupt,{passive:true,capture:true});addEventListener('keydown',scrollKey);
    return()=>{removeEventListener('wheel',interrupt);removeEventListener('pointerdown',interrupt,true);removeEventListener('keydown',scrollKey);};
  },[]);
  useEffect(()=>{
-   const closeOnEscape=(event:KeyboardEvent)=>{if(event.key!=='Escape'||detailRegion||sharedEvent)return;if(roseHintOpen){event.preventDefault();setRoseHintOpen(false);return;}if(control.current.returning){event.preventDefault();stopLetterMotion();return;}if(target.current<=.5)return;event.preventDefault();closeLetter();};
+   const closeOnEscape=(event:KeyboardEvent)=>{if(event.key!=='Escape'||detailRegion||sharedEvent)return;if(roseHintOpen){event.preventDefault();setRoseHintOpen(false);return;}if(control.current.returning){event.preventDefault();stopLetterMotion();roseGiftPending.current=false;focusAfterFold.current=false;return;}if(target.current<=.5)return;event.preventDefault();closeLetter();};
    addEventListener('keydown',closeOnEscape);return()=>removeEventListener('keydown',closeOnEscape);
  },[refreshTarget,roseHintOpen,detailRegion,sharedEvent]);
- const readLetter=(event?:React.MouseEvent)=>{event?.preventDefault();stopLetterMotion();focusAfterFold.current=false;control.current=reopenEnvelope(control.current);q.current=1;setOpening(1);refreshTarget();document.getElementById('papi-letter')?.scrollIntoView({behavior:'instant',block:'start'});};
+ const readLetter=(event?:React.MouseEvent)=>{event?.preventDefault();clearRoseGift();stopLetterMotion();focusAfterFold.current=false;control.current=reopenEnvelope(control.current);q.current=1;setOpening(1);refreshTarget();document.getElementById('papi-letter')?.scrollIntoView({behavior:'instant',block:'start'});};
  useEffect(()=>{const onHash=()=>{if(location.hash==='#papi-letter')readLetter();};onHash();addEventListener('hashchange',onHash);return()=>removeEventListener('hashchange',onHash);},[]);
  const closeDetails=useCallback((restoreFocus=true)=>{setDetailRegion(null);setLocalEvent(old=>({...old,active:null,rhythmSignal:null,waxPressed:false}));if(restoreFocus)requestAnimationFrame(()=>detailsOpener.current?.focus({preventScroll:true}));},[]);
 
@@ -169,7 +182,7 @@ export function PostHeroPreview({embedded=false,language:externalLanguage,onLang
  const letterPublic=control.current.manual!==false||letterVisible;
  const readingAction=control.current.returning?text.cancelClose:control.current.manual===false?text.open:text.close;
  const stage=progress<.35?'story':progress<.56?'play':progress<.90?'letter':'ending';
- return <Container ref={host} className={`post-hero-preview ${embedded?'post-hero-embedded':''} ${letterVisible?'letter-is-open':''}`} data-stage={stage} data-letter-returning={control.current.returning} data-scene-ready={renderScene?sceneReady:externalSceneReady} data-opening={opening.toFixed(3)} data-progress={progress.toFixed(3)}>
+ return <Container ref={host} className={`post-hero-preview ${embedded?'post-hero-embedded':''} ${letterVisible?'letter-is-open':''}`} data-stage={stage} data-letter-returning={control.current.returning} data-scene-ready={renderScene?sceneReady:externalSceneReady} data-opening={opening.toFixed(3)} data-progress={progress.toFixed(3)} data-rose-gift={showRoseGift}>
   {renderScene&&<div className="world" aria-hidden="true">
    {!sceneError&&<Suspense fallback={null}><StandalonePostHeroScene progress={progress} opening={opening} reducedMotion={reducedMotion} effect={effect} portraitSrc={portraitSrc} portraitMaskSrc={portraitMaskSrc} localEvent={localEvent} onPaperPose={trackPaper} onReady={()=>setSceneReady(true)} onFailure={setSceneError}/></Suspense>}
    {sceneError&&<div className="world-fallback"><img src="/images/lisbeth-letter-envelope.webp" alt=""/></div>}
@@ -191,9 +204,9 @@ export function PostHeroPreview({embedded=false,language:externalLanguage,onLang
    </article></div>
    {letterVisible&&progress>=.86&&<p id={roseHintId} className="rose-meaning" role="status" aria-live="polite" aria-atomic="true">{roseHintOpen?(ko?'4송이, 그리고 4송이. 우리 시작한 날 ♡':'Cuatro rosas y otras cuatro. El día que empezamos: 4 de abril ♡'):''}</p>}
    {letterVisible&&<div className="letter-bottom-controls"><button className="text-button" onClick={toggleLetter}>{readingAction} <span>−</span></button></div>}
-   {!letterVisible&&control.current.manual===false&&<div className="closed-note"><p>{text.sealed}</p><button className="text-button" onClick={()=>{stopLetterMotion();focusAfterFold.current=false;control.current=reopenEnvelope(control.current);refreshTarget();}}>{text.open} ↗</button></div>}
+   {!letterVisible&&control.current.manual===false&&<div className="closed-note"><p>{text.sealed}</p><button className="text-button" onClick={()=>{clearRoseGift();stopLetterMotion();focusAfterFold.current=false;control.current=reopenEnvelope(control.current);refreshTarget();}}>{text.open} ↗</button></div>}
   </section>
-  <EndingChapter language={language} playHref={playHref} embedded={embedded} state={localEvent} detailsOpen={detailRegion==='ending'} onReadLetter={readLetter}>{workbench('ending')}</EndingChapter>
+  <EndingChapter language={language} playHref={playHref} embedded={embedded} state={localEvent} detailsOpen={detailRegion==='ending'} showRoseGift={showRoseGift} reducedMotion={reducedMotion} onReadLetter={readLetter}>{workbench('ending')}</EndingChapter>
 
   <dialog ref={roomDialog} className="room-discovery-dialog" aria-label={ko?'선택한 물건':'Objeto seleccionado'} onCancel={event=>{event.preventDefault();if(sharedEvent)closeShared();else closeDetails();}}>
    {workbench('room')}

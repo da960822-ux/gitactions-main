@@ -1,0 +1,54 @@
+{
+  "assets": [
+    {
+      "file": "offer.png",
+      "source": "/workspace/generated_images/exec-98c9c918-38e9-4cdc-b92d-0a29ccfe561d.png",
+      "sha256": "1d43a32bc6a77804f682b223d3b937db9f6bc47242791eecac54c3543fc770cd",
+      "size": [
+        1199,
+        1312
+      ],
+      "mode": "RGBA",
+      "alphaExtrema": [
+        0,
+        255
+      ],
+      "pose": "offer"
+    },
+    {
+      "file": "contact.png",
+      "source": "/workspace/generated_images/exec-de004809-f0c0-4242-b4bd-1e1f44904b47.png",
+      "sha256": "3df83a521525e73e881f6afe04904e34dc47383cea09d5a56b922089bba10df9",
+      "size": [
+        1199,
+        1312
+      ],
+      "mode": "RGBA",
+      "alphaExtrema": [
+        0,
+        255
+      ],
+      "pose": "contact"
+    },
+    {
+      "file": "received.png",
+      "source": "/workspace/generated_images/exec-8cd959da-77ed-4390-a167-e9f537316cff.png",
+      "sha256": "ebcc7e51928277a3627341eab6c54e5c4768d882fdc4a2aeaa8ff085cd38b395",
+      "size": [
+        1199,
+        1312
+      ],
+      "mode": "RGBA",
+      "alphaExtrema": [
+        0,
+        255
+      ],
+      "pose": "received"
+    }
+  ],
+  "reference": "/images/approved-couple-room/approved-character-reference.png",
+  "generator": "image_gen.imagegen",
+  "postprocessing": "None; original transparent PNG bytes copied unchanged.",
+  "scope": "Three registered illustration keyposes: male offers a single rose, shared stem handover, female receives. Runtime illustrated pose animation, not a full skeletal character rig.",
+  "continuity": "Original approved faces, clothing, headsets and fixed head/foot positions retained; no wedding/proposal/ring depiction."
+}
