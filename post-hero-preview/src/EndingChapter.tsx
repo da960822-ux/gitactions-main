@@ -1,14 +1,13 @@
 import type {ReactNode} from 'react';
 import {landingCopy} from '../../src/copy/home';
-import {approvedPawns,pawnSource,type LocalEventState} from './LocalEventRig';
+import type {LocalEventState} from './LocalEventRig';
+import {PartnerPact} from './PartnerPact';
 import './ending-chapter.css';
 
 type Props={language:'ko'|'es';playHref?:string;embedded?:boolean;state:LocalEventState;detailsOpen?:boolean;onReadLetter:()=>void;children?:ReactNode};
 
-export function EndingChapter({language,playHref,embedded=false,state,detailsOpen=false,onReadLetter,children}:Props){
+export function EndingChapter({language,playHref,embedded=false,detailsOpen=false,onReadLetter,children}:Props){
  const ko=language==='ko',copy=landingCopy[language];
- const hasDrawing=state.strokes.some(line=>line.length>0);
- const pawn=approvedPawns[state.decorPawn]??approvedPawns[0];
  return <section id="together-again" className={`chapter ending ending-chapter${detailsOpen?' has-detail':''}`} data-pose="1" aria-labelledby="ending-title">
   <div className="ec-closing" hidden={detailsOpen}>
    <div className="ec-invitation">
@@ -19,11 +18,7 @@ export function EndingChapter({language,playHref,embedded=false,state,detailsOpe
     </div>
    </div>
    <div className="ec-artifact-window" data-ending-artifact-window="true">
-    {(hasDrawing||state.hasSavedDecor)&&<figure className="ec-keepsake">
-     {hasDrawing&&<svg className="ec-drawing" viewBox="0 0 100 60" role="img" aria-label={ko?'네가 그린 그림':'Tu dibujo'}>{state.strokes.map((line,i)=>line.length===1?<circle key={i} cx={line[0].x} cy={line[0].y} r=".8"/>:<polyline key={i} points={line.map(point=>`${point.x},${point.y}`).join(' ')} fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>)}</svg>}
-     {state.hasSavedDecor&&(state.decorKind==='pawn'?<img className="ec-decor ec-pawn" src={pawnSource(state.decorPawn)} alt={`${ko?'네가 고른 게임말':'La figura que elegiste'}: ${pawn[language]}`}/>:<svg className="ec-decor" viewBox="0 0 44 44" role="img" aria-label={state.decorKind==='gem'?(ko?'네가 고른 보석':'La gema que elegiste'):(ko?'네가 고른 종이 클립':'El clip que elegiste')}>{state.decorKind==='gem'?<><path d="M22 5 36 21 22 39 8 21Z" fill="#e6b58d"/><path d="M22 5V39L8 21Z" fill="#bc7e68"/><path d="M22 5 36 21 22 18Z" fill="#f9d5ac"/></>:<path d="M29 10 15 25a5 5 0 0 0 7 7l13-14a8 8 0 0 0-12-11L10 21a11 11 0 0 0 16 15" fill="none" stroke="#dbb7a3" strokeWidth="3" strokeLinecap="round"/>}</svg>)}
-     <figcaption>{hasDrawing?(ko?'네가 그린 카드':'Tu tarjeta'):(ko?'네가 고른 작은 장식':'El detalle que elegiste')}</figcaption>
-    </figure>}
+    <PartnerPact language={language}/>
    </div>
    <div className="ec-letter-return">
     <p className="ec-date"><span>{ko?'우리 시작':'Desde el'}</span><time dateTime="2025-04-04">2025.04.04</time></p>
