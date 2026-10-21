@@ -2,7 +2,7 @@ import { describe, expect, it, vi } from 'vitest';
 import { createElement } from 'react';
 import { renderToStaticMarkup } from 'react-dom/server';
 import { catchmindEngine } from '../games/catchmind';
-import CatchmindTable, { bucketFill, sendDrawQueue, composeDisplayedStrokes, catchmindPersistedSettingsKey, restoreCatchmindPenColor } from './CatchmindTable';
+import CatchmindTable, { bucketFill, sendDrawQueue, composeDisplayedStrokes } from './CatchmindTable';
 
 function configured(seed: number) {
   const state = catchmindEngine.createInitialState(seed);

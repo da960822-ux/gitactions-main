@@ -112,7 +112,7 @@ void main(){vec4 q=cameraWorld*inverseProjection*vec4(screenUv*2.-1.,1.,1.);vec3
   // The base cell is a conservative domain for B contents, not the deformed roof's exact volume.
   // The downward intrados can cover upper B background; its actual triangles own that occlusion
   // by ordinary depth. Protected people/objects are checked against those triangles, not this half-space.
-  function cameraAt(p:number){let i=cameraKeys.findIndex((v,i)=>i<cameraKeys.length-1&&p<=cameraKeys[i+1].p);if(i<0)i=cameraKeys.length-2;const a=cameraKeys[i],b=cameraKeys[i+1],t=smooth(a.p,b.p,p);camera.position.copy(a.position).lerp(b.position,t);camera.rotation.set(0,T.MathUtils.degToRad(T.MathUtils.lerp(a.yaw,b.yaw,t)),0);camera.fov=T.MathUtils.lerp(a.fov,b.fov,t);camera.updateProjectionMatrix();camera.updateMatrixWorld();}
+  function cameraAt(p:number){let i=cameraKeys.findIndex((_v,i)=>i<cameraKeys.length-1&&p<=cameraKeys[i+1].p);if(i<0)i=cameraKeys.length-2;const a=cameraKeys[i],b=cameraKeys[i+1],t=smooth(a.p,b.p,p);camera.position.copy(a.position).lerp(b.position,t);camera.rotation.set(0,T.MathUtils.degToRad(T.MathUtils.lerp(a.yaw,b.yaw,t)),0);camera.fov=T.MathUtils.lerp(a.fov,b.fov,t);camera.updateProjectionMatrix();camera.updateMatrixWorld();}
   stage.matrixAutoUpdate=false;stage.matrix.copy(normalization);stage.updateMatrixWorld(true);
   const geometries=new Set<T.BufferGeometry>(),materials=new Set<T.Material>([leftMat,rightMat]);
   stage.traverse(object=>{if((object as T.Mesh).isMesh){const mesh=object as T.Mesh;geometries.add(mesh.geometry);for(const value of Array.isArray(mesh.material)?mesh.material:[mesh.material])materials.add(value);}});

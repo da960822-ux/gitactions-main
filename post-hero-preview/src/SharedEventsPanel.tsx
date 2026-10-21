@@ -142,7 +142,6 @@ export default function SharedEventsPanel({ language, onSharedStart, initialEven
   const seat = snapshot?.seat;
   const active = Boolean(round && ['proposed', 'scheduled', 'started'].includes(round.status));
   const memberSeat = seat && otherSeat(seat);
-  const ownIntent = seat ? asRecord(round?.intentBy[seat] ?? null) : null;
   const otherIntent = memberSeat ? asRecord(round?.intentBy[memberSeat] ?? null) : null;
   const bothIntents = Boolean(round && round.intentBy.p1 !== undefined && round.intentBy.p2 !== undefined);
   const ownReady = Boolean(seat && round?.readyBy[seat]);

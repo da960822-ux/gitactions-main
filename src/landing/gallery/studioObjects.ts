@@ -32,16 +32,8 @@ function mesh(g:T.Group,geometry:T.BufferGeometry,material:T.Material,x=0,y=0,z=
 function box(g:T.Group,m:T.Material,w:number,h:number,d:number,x=0,y=0,z=0,r=.075){return mesh(g,new RoundedBoxGeometry(w,h,d,6,Math.min(r,d/3)),m,x,y,z);}
 function line(g:T.Group,m:T.Material,points:number[][],radius=.025){return mesh(g,new T.TubeGeometry(new T.CatmullRomCurve3(points.map(p=>new T.Vector3(...p as [number,number,number]))),48,radius,12,false),m);}
 function disc(g:T.Group,m:T.Material,r:number,x:number,y:number,z:number){const o=mesh(g,new T.CylinderGeometry(r,r,.018,32),m,x,y,z);o.rotation.x=Math.PI/2;return o;}
-function print(g:T.Group,text:string,color:string,x=0,y=0,z=.16,w=.65,h=.9){const c=document.createElement('canvas');c.width=256;c.height=320;const ctx=c.getContext('2d')!;ctx.fillStyle=color;ctx.font='700 220px GiftSans, sans-serif';ctx.textAlign='center';ctx.textBaseline='middle';ctx.fillText(text,128,170);const map=new T.CanvasTexture(c);map.colorSpace=T.SRGBColorSpace;mesh(g,new T.PlaneGeometry(w,h),new T.MeshStandardMaterial({map,transparent:true,roughness:.75,depthWrite:false}),x,y,z);}
 function pips(g:T.Group,m:T.Material,n:number,y:number,z=.22,spread=.2){const p=n===1?[[0,0]]:n===2?[[-1,-1],[1,1]]:n===3?[[-1,-1],[0,0],[1,1]]:n===4?[[-1,-1],[1,-1],[-1,1],[1,1]]:[[-1,-1],[1,-1],[0,0],[-1,1],[1,1]];p.forEach(([x,dy])=>disc(g,m,.062,x*spread,y+dy*spread,z));}
-function cutGem(g:T.Group,source:T.MeshPhysicalMaterial,size:number,x=0,y=0,z=0){
- const rings=[[.35,.53],[.7,.38],[1,.08],[.99,-.06],[.47,-.5],[.015,-.77]],points:number[]=[];
- const v=(r:number,i:number)=>{const [radius,depth]=rings[r],angle=i/8*Math.PI*2+(r===1||r===4?Math.PI/8:0);return[Math.cos(angle)*radius,Math.sin(angle)*radius,depth];};
- for(let i=0;i<8;i++){points.push(0,0,.53,...v(0,i),...v(0,i+1));for(let r=0;r<5;r++){const a=v(r,i),b=v(r,i+1),c=v(r+1,i),d=v(r+1,i+1);points.push(...a,...c,...b,...b,...c,...d);}}
- const geometry=new T.BufferGeometry();geometry.setAttribute('position',new T.Float32BufferAttribute(points,3));geometry.computeVertexNormals();
- const m=source.clone();m.metalness=.06;m.roughness=.22;m.envMapIntensity=.7;m.ior=1.72;m.clearcoat=.9;
- const o=mesh(g,geometry,m,x,y,z);o.scale.setScalar(size);o.rotation.set(.24,-.38,.16);return o;
-}
+
 function sculptCamel(g:T.Group,m:Materials){
  // One continuous carved silhouette replaces the disconnected torso, hump and tube neck.
  const s=new T.Shape();s.moveTo(1.2,.91);s.bezierCurveTo(1.32,.96,1.34,1.07,1.2,1.11);s.lineTo(.94,1.13);s.lineTo(.83,1.28);s.quadraticCurveTo(.73,1.3,.77,1.09);s.bezierCurveTo(.61,1.07,.57,.83,.51,.48);s.bezierCurveTo(.45,.22,.28,.24,.18,.49);s.bezierCurveTo(.03,.97,-.35,.92,-.5,.52);s.bezierCurveTo(-.62,.24,-.85,.43,-.98,.2);s.quadraticCurveTo(-1.12,.12,-1.13,-.14);s.quadraticCurveTo(-1.2,-.32,-1.14,-.47);s.lineTo(-1.08,-.48);s.quadraticCurveTo(-1.07,-.29,-1.01,-.22);s.lineTo(-.81,-.56);s.lineTo(-.93,-1.01);s.quadraticCurveTo(-.97,-1.1,-.82,-1.1);s.lineTo(-.6,-1.1);s.quadraticCurveTo(-.56,-1.03,-.68,-1);s.lineTo(-.58,-.56);s.lineTo(-.42,-.22);s.bezierCurveTo(-.2,-.3,.2,-.28,.45,-.2);s.lineTo(.55,-.98);s.quadraticCurveTo(.5,-1.09,.66,-1.1);s.lineTo(.87,-1.1);s.quadraticCurveTo(.93,-1.04,.79,-.99);s.lineTo(.75,-.3);s.bezierCurveTo(.8,.04,.71,.23,.72,.41);s.bezierCurveTo(.76,.7,.89,.91,1.02,.89);s.lineTo(1.2,.91);

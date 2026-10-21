@@ -99,3 +99,17 @@ Method: dual-agent (A: /root/story_critique_a · B: /root/story_critique_b)
 ### 건의사항의 불필요한 초대 절차 제거
 
 사용자 지적에 따라 초대 코드 입력·참여·링크 복사·공간 생성 setup과 전용 CSS를 제거했다. `/feedback` 첫 진입부터 기존 글 목록과 작성 폼을 연다. 기존 저장 scope/글·API 보안은 유지하고 필요한 저장 scope만 내부 초기화한다. 옛 query는 주소에서 제거하며 임의 초대 코드로 자동 가입하지 않는다. 현재 정적 검수본은 계속 브라우저 로컬 저장이다. KO 1920×1080·ES 1440×900 실제 브라우저에서 첫 진입 작성 가능, 초대 UI 없음, 글 저장과 reload 보존, 오류 0을 확인했다. 관련 테스트 14개 및 production build 통과. 모바일은 제외했다.
+
+
+### Ponytail 정리·문구 보강 — 2026-10-21 후속 요청
+
+이번 사용자의 편지 보강/수정 승인을 근거로 KO·ES 편지 다섯 문단을 확장했다. 과거의 ‘원문 변경 없음’ 검사는 이전 checkpoint에만 해당한다. 가족과 하는 도미노·광주/산토도밍고·13시간·승부 장난이라는 확인된 내용과 앞으로 같이 놀고 싶다는 마음을 담았고, 새 만남/여행의 추억이나 문화 전설은 만들지 않았다. Hero 본문에 들어 있던 강제 newline을 없애고 편지 본문은 다섯 의미 문단으로 자연스럽게 줄바꿈한다. 선택 약속의 추상적인 맹세도 직접 말하는 문장으로 바꿨다. 기존 장미/얼굴/방과 게임 규칙·Rhythm 원본은 바꾸지 않았다.
+
+- 강화 전 `tsc --noUnusedLocals --noUnusedParameters`의 19개 진단을 해소했다. 미사용 변수/함수/import/이전 story 카피와 미사용 procedural asset 생성기 2개를 정리했고, 필요한 callback/API 서명은 유지했다. 두 검사를 tsconfig에 활성화해 재발을 막는다. game engine 생성물은 원본 소스로 재생성했으며 차이는 미사용 인자 이름/unused callback 인자 제거뿐이다.
+- App에서 Landing을 정적으로 import하던 의존성을 route lazy import로 분리했다. entry JS는 이전 1,244,638 bytes → 현재 약233.65kB(uncompressed build size)로 분리됐다. 전체 자산 총량/실제 FPS 개선 수치가 아니다. 실제 두 PC 브라우저의 `/feedback`에서 Landing chunk·우주/방 HDR/새 asset 요청이 없고, 홈 링크를 누르면 Landing chunk가 로드돼 화면이 나타나는 것을 확인했다.
+- 잉꼬/시구아팔메라의 이름과 선택 이유를 거리 장면에 표시하고 각각의 새 버튼과 `aria-describedby`로 연결했다. 잉꼬는 한국에서 다정한 부부를 ‘잉꼬부부’라 부르는 표현, 시구아팔메라는 도미니카 국조라는 사실을 구분한다. 홍학/벌새 대체는 대화에서 설명했으나 사용자가 교체를 지시하지 않아 현재 새를 유지했다.
+- 최신 전체 87 files / 670 tests·TypeScript/Vite/edge build 통과. 두 PC(KO1920×1080/ES1440×900) 실제 브라우저에서 자연 줄바꿈·본문 overflow 없음·새 설명/접근성 연결·route 분리·오류0 확인. 길어진 편지의 읽기→선택→접기→장미→재독서→역행도 각6개 PASS, scrollΔ0. 새 설명 추가 전 같은 편지/접기 소스에서 수행했으며 새 설명 후에는 구도/route 검사를 별도로 했다.
+
+남는 범위: Landing의 3D/모션 묶음은 여전히 약1MB이고 Vite chunk 경고가 있다. 이번 작업으로 전체 기술부채가 사라졌다고 선언하지 않는다. 소프트웨어 렌더링 검수이며 physical GPU·모바일·온라인 backend 검수는 하지 않았다. 기존 57.8초 영상은 edb3589의 이전 문구 checkpoint로 남아 있고 이번 문구/새 설명의 증거는 아래 최신 정지 캡처다.
+
+[한국어 편지](../review/letter-current-ko.png) · [스페인어 편지](../review/letter-current-es.png) · [새 설명](../review/companions-pact-1440-es-birds-apart.png)

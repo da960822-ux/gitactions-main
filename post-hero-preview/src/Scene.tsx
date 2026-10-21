@@ -60,7 +60,7 @@ export function createPostHeroCollection(options:{scene:THREE.Scene;camera:THREE
     }
     const surfaceGeo = new THREE.PlaneGeometry(16, 11, 64, 40); surfaceGeo.rotateX(-Math.PI/2);
     const floorMaterial=burgundy.clone();
-    const surface = mesh(surfaceGeo,floorMaterial,scene,0,-.09,-1);
+    mesh(surfaceGeo,floorMaterial,scene,0,-.09,-1);
     const original = Float32Array.from(surfaceGeo.attributes.position.array);
     const grainCanvas=document.createElement('canvas');grainCanvas.width=128;grainCanvas.height=128;
     const grainContext=grainCanvas.getContext('2d');

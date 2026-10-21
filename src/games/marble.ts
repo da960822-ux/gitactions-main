@@ -162,7 +162,6 @@ function emit(s: MarbleState, type: MarbleActionEvent['type'], actor: PlayerId, 
   s.actionSequence = sequence;
   s.actionLog = [...(s.actionLog ?? []), { sequence, type, actor, title: { ko, es }, text: { ko: textKo, es: textEs }, ...extra }].slice(-40);
 }
-const numeric = (value: unknown) => typeof value === 'number' && Number.isFinite(value);
 const propIndices = (board: MarbleTile[]) => board.flatMap((tile, index) => tile.kind === 'property' ? [index] : []);
 function view(s: MarbleState, p: PlayerId) {
   const board = boardFor(s);
@@ -339,7 +338,7 @@ function bonus(s: MarbleState, p: PlayerId, amount: number, ko: string, es: stri
   s.money[p] += amount;
   emit(s, 'bonus', p, ko, es, `${amount}을 받았습니다.`, `Recibiste ${amount}.`, { amount, toPlayer: p, fromAccount: source, toAccount: p, moneyDelta: { [p]: amount } });
 }
-function moveForward(s: MarbleState, p: PlayerId, to: number, board: MarbleTile[]) {
+function moveForward(s: MarbleState, p: PlayerId, to: number, _board: MarbleTile[]) {
   const from = s.positions[p];
   if (to < from) bonus(s, p, 200, '출발 보너스', 'Bono de Salida');
   s.positions[p] = to;

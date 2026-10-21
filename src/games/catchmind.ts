@@ -1,5 +1,5 @@
 import { otherPlayer, seededRandom, shuffle, type GameAction, type GameEngine, type GameResult, type PlayerId } from '../core/types';
-import { catchmindDictionary, type Concept } from './catchmindWords';
+import { type Concept } from './catchmindWords';
 import { catchmindCategories, catchmindTopicWords, type CatchmindCategoryId } from './catchmindTopics';
 export { catchmindCategories, catchmindTopicWords } from './catchmindTopics';
 export type { CatchmindCategoryId } from './catchmindTopics';

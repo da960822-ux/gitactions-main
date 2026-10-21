@@ -33,7 +33,7 @@ export function toggleEnvelope(state: EnvelopeState, sceneP: number): EnvelopeSt
   return { manual: !current, previousInRange: clamp01(sceneP) >= LETTER_RANGE[0], returning: false };
 }
 
-export function reopenEnvelope(state: EnvelopeState): EnvelopeState {
+export function reopenEnvelope(_state: EnvelopeState): EnvelopeState {
   return { manual: true, previousInRange: true, returning: false };
 }
 

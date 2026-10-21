@@ -210,7 +210,7 @@ function hardRolloutScore(move: BotMove, hand: Domino[], actor: Seat, mode: Mode
   if(!worlds.length) return 0;
   return worlds.reduce((total,world)=>total+sampledRollout(move,hand,actor,mode,board,ends,context,world),0)/worlds.length;
 }
-function utility(move: BotMove, hand: Domino[], board: Placed[], ends: DominoState['ends'], context: PublicBotContext, difficulty: Difficulty, unseen: Domino[], voids: Map<Seat,Set<number>>) {
+function utility(move: BotMove, hand: Domino[], board: Placed[], _ends: DominoState['ends'], context: PublicBotContext, difficulty: Difficulty, unseen: Domino[], voids: Map<Seat,Set<number>>) {
   const rest=hand.filter((_,index)=>index!==move.index),pips=move.tile.a+move.tile.b;
   if(!rest.length) return 1_000_000+pips+(move.tile.a===move.tile.b?move.tile.a:0);
   const support=handSupport(rest,move.ends),leftSupport=rest.filter(tile=>matches(tile,move.ends.left)).length,rightSupport=rest.filter(tile=>matches(tile,move.ends.right)).length;
@@ -237,7 +237,7 @@ export function chooseDominoBotAction(hand: Domino[], board: Placed[], ends: Dom
   const moves=legalMoves(hand,ends);
   if(!moves.length) return {type:'pass'};
   if(moves.length===1) return {type:'play',payload:{index:moves[0].index,side:moves[0].side}};
-  const handOut=moves.find(move=>hand.length===1);
+  const handOut=moves.find(()=>hand.length===1);
   if(handOut) return {type:'play',payload:{index:handOut.index,side:handOut.side}};
   const unseen=difficulty==='hard'?unseenTiles(hand,board):[],voids=difficulty==='hard'?passVoids(publicContext,board):new Map<Seat,Set<number>>();
   const worlds=difficulty==='hard'&&publicContext.actor ? hardRolloutWorlds(hand,publicContext.actor,publicContext.mode??'1v1',board,publicContext,unseen,voids) : [];

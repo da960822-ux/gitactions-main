@@ -190,3 +190,5 @@
  .post-hero-preview .reading-roses-left:hover:not(:active){transform:translateY(-50%) scale(1.02) rotate(-2deg)}
  .post-hero-preview .reading-roses-right:hover:not(:active){transform:translateY(-50%) scale(1.02) rotate(2deg)}
 }
+
+.post-hero-preview .letter-paper p:not(.letter-address):not(.letter-signature){white-space:normal;word-break:keep-all;overflow-wrap:break-word;text-wrap:pretty}

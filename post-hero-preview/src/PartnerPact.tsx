@@ -43,9 +43,9 @@ export function PartnerPact({language,onResponseChange}:{language:'ko'|'es';onRe
    <header className="pp-heading"><h3 ref={title} id={titleId} tabIndex={-1}>{ko?'우리의 약속':'Nuestro pacto'}</h3><button type="button" className="pp-close" onClick={close}>{ko?'접기':'Cerrar'}<svg viewBox="0 0 24 24" aria-hidden="true"><path d="m7 7 10 10M17 7 7 17"/></svg></button></header>
    <blockquote>{ko?'Baby, 내 평생의 동반자가 되어줄래?':'Baby, ¿quieres ser mi compañera de vida?'}</blockquote>
    <div className="pp-promises">
-    <p>{ko?'13시간 차이가 나도, 너를 위한 시간을 만들게.':'Aunque nos separen trece horas, buscaré tiempo para ti.'}</p>
-    <p>{ko?'서로의 마음을 듣고 존중하면서 함께 돌볼게.':'Voy a escucharte, respetarte y cuidar de nosotros.'}</p>
-    <p>{ko?'그리고 계속 같이 놀자. 네가 이겨도, ㅋㅋㅋ.':'Y seguir jugando contigo… aunque me ganes, haha.'}</p>
+    <p>{ko?'13시간 차이가 나도, 너랑 얘기할 시간은 챙기고 싶어.':'Aunque nos separen trece horas, quiero hacer tiempo para hablar contigo.'}</p>
+    <p>{ko?'보고 싶으면 보고 싶다고, 서운하면 서운하다고 말하자. 나도 잘 들을게.':'Si me extrañas o algo te molesta, dímelo. Yo también voy a hablarte y escucharte.'}</p>
+    <p>{ko?'그리고 계속 같이 놀자. 내가 져도 또 할게 ㅋㅋㅋ':'Y sigamos jugando. Aunque pierda, voy a pedir otra partida, haha.'}</p>
    </div>
    <div className="pp-response">
     <button ref={answerButton} type="button" className="pp-answer" aria-pressed={accepted} onClick={answer}>{accepted?(ko?'내 대답: 응, 너랑 함께 ♡':'Mi respuesta: sí, contigo ♡'):(ko?'응, 너랑 함께 ♡':'Sí, contigo ♡')}</button>

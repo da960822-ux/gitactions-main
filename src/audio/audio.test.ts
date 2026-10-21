@@ -84,7 +84,7 @@ describe('game-specific sound effects', () => {
   });
 
   it('applies the active game volume only and suppresses Rhythm cues', async () => {
-    const { context, gains, sources } = installAudioMocks();
+    const { gains, sources } = installAudioMocks();
     const audio = await import('./audio');
     audio.setPreferences('splendor', { sfxEnabled: true, sfxVolume: 0.3 });
     audio.setPreferences('marble', { sfxEnabled: true, sfxVolume: 0.6 });

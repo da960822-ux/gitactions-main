@@ -1,5 +1,5 @@
 import {Object3D,Vector3} from 'three';
-import {cameraPose,smoothRange} from './poseSpaceV19';
+import {smoothRange} from './poseSpaceV19';
 type Triple=readonly[number,number,number];
 export type RigidPose={pivot:Triple;delta:Triple;angleY:number};
 const up=new Vector3(0,1,0),rotatedPivot=new Vector3();

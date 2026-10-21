@@ -68,7 +68,6 @@ function phaseName(phase: string, language: Language) {
   };
   return phases[phase]?.[language] ?? copy(language, '게임 현황', 'Estado de la partida');
 }
-function moneyLabel(value: unknown, language: Language) { return moneyText(num(value), language); }
 
 function Die({ value, language }: { value: number; language: Language }) {
   const dots: Record<number, string[]> = { 1: ['m'], 2: ['tl', 'br'], 3: ['tl', 'm', 'br'], 4: ['tl', 'tr', 'bl', 'br'], 5: ['tl', 'tr', 'm', 'bl', 'br'], 6: ['tl', 'ml', 'bl', 'tr', 'mr', 'br'] };
@@ -269,8 +268,6 @@ export default function MarbleBoard({ view: rawView, language, playerId, runActi
     debt: { ko: '상대가 결제 방법을 선택하고 있어요', es: 'Tu pareja está resolviendo un pago' },
   };
   const phaseLabel = !active && !view.result ? opponentPhase[phase]?.[language] ?? phaseName(phase, language) : phaseName(phase, language);
-  const monopolyLabels = list(record(board.monopolies)[playerId]).map(group => groups[String(group)]?.[language] ?? String(group));
-  const tileKind = String(currentTile.kind ?? '');
   const ownerName = currentTile.owner === 'p1' || currentTile.owner === 'p2' ? seatName(currentTile.owner, playerId, language) : null;
   const statusCopy = view.result ? copy(language, '경기가 끝났어요', 'Partida terminada') : active ? copy(language, '내 차례', 'Tu turno') : copy(language, '상대 차례', 'Turno de tu pareja');
   const scoreLabel = modern ? num(board.economicVersion) >= 1 ? copy(language, '순자산', 'Patrimonio neto') : copy(language, '총 자산', 'Activos totales') : copy(language, '현금', 'Efectivo');

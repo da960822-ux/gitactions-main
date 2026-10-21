@@ -13,12 +13,12 @@ export function companionBodyMotion(phase:CompanionPhase,together:boolean,shift:
  const transition=reduced||phase==='instant'?{duration:0}:phase==='return'?{duration:.22,ease:[.23,1,.32,1] as const}:{duration:1.15,ease:[.77,0,.175,1] as const,times:[0,.25,.5,.8,1]};
  return{transform,transition};
 }
-function Companion({side,together,phase,shift,reduced,interactive,language,onGreet,onError}:{side:1|-1;together:boolean;phase:CompanionPhase;shift:number;reduced:boolean;interactive:boolean;language:'ko'|'es';onGreet:(pointer:boolean)=>void;onError:()=>void}){
+function Companion({side,together,phase,shift,reduced,interactive,language,descriptionId,onGreet,onError}:{side:1|-1;together:boolean;phase:CompanionPhase;shift:number;reduced:boolean;interactive:boolean;language:'ko'|'es';descriptionId:string;onGreet:(pointer:boolean)=>void;onError:()=>void}){
  const ko=language==='ko',id=useId(),x=useSpring(useMotionValue(0),spring),rotation=useSpring(useMotionValue(0),spring),animated=phase==='greet';
  const transform=useMotionTemplate`translateX(${x}px) rotate(${rotation}deg)`,body=companionBodyMotion(phase,together,shift,side,reduced);
  useEffect(()=>{if(reduced||!interactive){x.jump(0);rotation.jump(0);}},[reduced,interactive,x,rotation]);
  return <div className={`bird-scroll lovebird-${side===1?'left':'right'}`} inert={!interactive}>
-  <motion.button type="button" className="lovebird" aria-label={ko?(side===1?'광주의 잉꼬에게 인사하기':'산토도밍고의 시구아팔메라에게 인사하기'):(side===1?'Saludar al inseparable de Gwangju':'Saludar a la cigua palmera de Santo Domingo')} aria-pressed={together} aria-hidden={!interactive} tabIndex={interactive?0:-1} initial={false} animate={{transform:body.transform}} transition={body.transition} onClick={event=>onGreet(event.detail>0)} onPointerMove={event=>{if(reduced||event.pointerType!=='mouse'||!matchMedia('(hover: hover) and (pointer: fine)').matches)return;const bounds=event.currentTarget.getBoundingClientRect(),ratio=(event.clientX-bounds.left)/bounds.width-.5;x.set(ratio*8);rotation.set(ratio*4);}} onPointerLeave={()=>{x.set(0);rotation.set(0);}}>
+  <motion.button type="button" className="lovebird" aria-describedby={interactive?descriptionId:undefined} aria-label={ko?(side===1?'광주의 잉꼬에게 인사하기':'산토도밍고의 시구아팔메라에게 인사하기'):(side===1?'Saludar al inseparable de Gwangju':'Saludar a la cigua palmera de Santo Domingo')} aria-pressed={together} aria-hidden={!interactive} tabIndex={interactive?0:-1} initial={false} animate={{transform:body.transform}} transition={body.transition} onClick={event=>onGreet(event.detail>0)} onPointerMove={event=>{if(reduced||event.pointerType!=='mouse'||!matchMedia('(hover: hover) and (pointer: fine)').matches)return;const bounds=event.currentTarget.getBoundingClientRect(),ratio=(event.clientX-bounds.left)/bounds.width-.5;x.set(ratio*8);rotation.set(ratio*4);}} onPointerLeave={()=>{x.set(0);rotation.set(0);}}>
    <motion.svg className="lovebird-art" style={{transform}} viewBox="0 0 1254 1254" aria-hidden="true">
     <defs><clipPath id={`${id}-wing`}><path d={side===1?'M584 501C527 468 445 475 409 519C348 597 324 695 257 779C210 838 160 923 142 988C278 955 402 856 489 769C577 685 635 595 636 546C636 523 614 507 584 501Z':'M567 435C640 422 710 458 748 510C801 579 847 674 924 755C969 806 1016 868 1042 938C919 906 824 846 735 780C650 714 575 626 552 552C535 496 537 455 567 435Z'}/></clipPath></defs>
     <image href={side===1?'/images/story-companions/lovebird.png':'/images/story-companions/palmchat.png'} width="1254" height="1254" onError={onError}/>
@@ -31,7 +31,7 @@ function Companion({side,together,phase,shift,reduced,interactive,language,onGre
 }
 
 export function CountryCompanions({language}:{language:'ko'|'es'}){
- const ko=language==='ko',root=useRef<HTMLDivElement>(null),reduced=useReducedMotion();
+ const ko=language==='ko',root=useRef<HTMLDivElement>(null),reduced=useReducedMotion(),lovebirdNote=useId(),palmchatNote=useId();
  const [together,setTogether]=useState(false),[visible,setVisible]=useState(false),[phase,setPhase]=useState<CompanionPhase>('instant'),[shift,setShift]=useState(0),[failed,setFailed]=useState(false),[trace,setTrace]=useState({x:0,y:0}),[moment,setMoment]=useState<'distance'|'time'|'shared'>('distance');
  useEffect(()=>{
   const element=root.current;if(!element)return;
@@ -75,11 +75,15 @@ export function CountryCompanions({language}:{language:'ko'|'es'}){
  };
  return <div ref={root} className="country-companions" data-together={together} data-visible={visible} data-interaction-phase={phase} data-story-moment={moment} role="group" aria-labelledby="story-distance-title">
   <div className="companion-stage">
-  <Companion side={1} together={together} phase={phase} shift={shift} reduced={Boolean(reduced)||!visible} interactive={moment==='distance'} language={language} onGreet={greet} onError={()=>setFailed(true)}/>
+  <Companion side={1} together={together} phase={phase} shift={shift} reduced={Boolean(reduced)||!visible} interactive={moment==='distance'} language={language} descriptionId={lovebirdNote} onGreet={greet} onError={()=>setFailed(true)}/>
   <svg className="companion-heart" aria-hidden="true"><g transform={`translate(${trace.x} ${trace.y-118})`}>
    {[-1,1].map(side=><motion.path key={side} d={`M0 12C${side*24} -25 ${side*80} -22 ${side*80} 18C${side*80} 62 ${side*30} 92 0 118`} initial={false} animate={{pathLength:together?1:0,opacity:together?.5:0}} transition={{duration:phase==='greet'&&!reduced?.75:phase==='return'&&!reduced?.22:0,delay:together&&phase==='greet'&&!reduced?.4:0,ease:[.23,1,.32,1]}}/>)}</g></svg>
-  <Companion side={-1} together={together} phase={phase} shift={shift} reduced={Boolean(reduced)||!visible} interactive={moment==='distance'} language={language} onGreet={greet} onError={()=>setFailed(true)}/>
+  <Companion side={-1} together={together} phase={phase} shift={shift} reduced={Boolean(reduced)||!visible} interactive={moment==='distance'} language={language} descriptionId={palmchatNote} onGreet={greet} onError={()=>setFailed(true)}/>
   <button type="button" className="lovebird-greeting text-button" hidden={moment!=='distance'} aria-pressed={together} onClick={event=>greet(event.detail>0)}>{together?(ko?'조금 떨어져 볼까':'Un poquito de espacio'):(ko?'가까이 와':'Acérquense')}</button>
+  </div>
+  <div className="companion-meanings" hidden={moment!=='distance'}>
+   <div id={lovebirdNote}><h3>{ko?'잉꼬 · 내 쪽에서':'Inseparable · de mi lado'}</h3><p>{ko?'한국에서는 다정한 부부를 ‘잉꼬부부’라고 불러. 나도 너랑 오래 그렇게 지내고 싶어서 내 쪽에 뒀어.':'En Corea llamamos «잉꼬부부» (ingkko bubu) a una pareja muy cariñosa. Lo puse de mi lado porque quiero que sigamos así, juntitos.'}</p></div>
+   <div id={palmchatNote}><h3>{ko?'시구아팔메라 · 네 쪽에서':'Cigua palmera · de tu lado'}</h3><p>{ko?'시구아팔메라는 도미니카의 국조야. 네 나라의 새와 내 쪽의 잉꼬가 서로 다가오게 했어. 우리처럼, Baby.':'La cigua palmera es el ave nacional dominicana. La puse de tu lado, acercándose a mi inseparable. Como nosotros, Baby.'}</p></div>
   </div>
   {failed&&<p className="lovebird-error" role="status">{ko?'새 그림을 불러오지 못했어. 페이지를 다시 열어줘.':'No se cargaron las aves. Vuelve a abrir la página.'}</p>}
  </div>;

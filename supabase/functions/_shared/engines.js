@@ -4296,7 +4296,7 @@ function hardRolloutScore(move, hand, actor, mode, board, ends, context, worlds)
   if (!worlds.length) return 0;
   return worlds.reduce((total, world) => total + sampledRollout(move, hand, actor, mode, board, ends, context, world), 0) / worlds.length;
 }
-function utility(move, hand, board, ends, context, difficulty, unseen, voids) {
+function utility(move, hand, board, _ends, context, difficulty, unseen, voids) {
   const rest = hand.filter((_, index) => index !== move.index), pips = move.tile.a + move.tile.b;
   if (!rest.length) return 1e6 + pips + (move.tile.a === move.tile.b ? move.tile.a : 0);
   const support = handSupport(rest, move.ends), leftSupport = rest.filter((tile) => matches(tile, move.ends.left)).length, rightSupport = rest.filter((tile) => matches(tile, move.ends.right)).length;
@@ -4321,7 +4321,7 @@ function chooseDominoBotAction(hand, board, ends, difficulty = "normal", publicC
   const moves = legalMoves(hand, ends);
   if (!moves.length) return { type: "pass" };
   if (moves.length === 1) return { type: "play", payload: { index: moves[0].index, side: moves[0].side } };
-  const handOut = moves.find((move) => hand.length === 1);
+  const handOut = moves.find(() => hand.length === 1);
   if (handOut) return { type: "play", payload: { index: handOut.index, side: handOut.side } };
   const unseen = difficulty === "hard" ? unseenTiles(hand, board) : [], voids = difficulty === "hard" ? passVoids(publicContext, board) : /* @__PURE__ */ new Map();
   const worlds = difficulty === "hard" && publicContext.actor ? hardRolloutWorlds(hand, publicContext.actor, publicContext.mode ?? "1v1", board, publicContext, unseen, voids) : [];
@@ -6299,7 +6299,7 @@ function bonus(s, p, amount, ko, es, source = "bank") {
   s.money[p] += amount;
   emit(s, "bonus", p, ko, es, `${amount}\uC744 \uBC1B\uC558\uC2B5\uB2C8\uB2E4.`, `Recibiste ${amount}.`, { amount, toPlayer: p, fromAccount: source, toAccount: p, moneyDelta: { [p]: amount } });
 }
-function moveForward(s, p, to, board) {
+function moveForward(s, p, to, _board) {
   const from = s.positions[p];
   if (to < from) bonus(s, p, 200, "\uCD9C\uBC1C \uBCF4\uB108\uC2A4", "Bono de Salida");
   s.positions[p] = to;

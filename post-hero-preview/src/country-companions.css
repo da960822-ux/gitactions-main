@@ -15,3 +15,8 @@
 .post-hero-preview .companion-heart path{fill:none;stroke:#d7a18f;stroke-width:1.4;stroke-linecap:round}
 .post-hero-preview .companion-wing{transform-box:view-box}
 @media(hover:hover) and (pointer:fine){.post-hero-preview .lovebird-greeting:hover{color:#fff0e9;border-bottom-color:#edc2a2}}
+
+.post-hero-preview .companion-meanings{position:absolute;top:18svh;left:43vw;right:7vw;display:grid;grid-template-columns:1fr 1fr;gap:clamp(24px,3vw,56px);color:#e7d1c6}
+.post-hero-preview .companion-meanings[hidden]{display:none}
+.post-hero-preview .companion-meanings h3{margin:0 0 10px;color:#edc2a2;font:400 17px/1.5 'Gowun Batang',Georgia,serif}
+.post-hero-preview .companion-meanings p{margin:0;max-width:34ch;font-size:13px;line-height:1.8;word-break:keep-all;overflow-wrap:break-word;text-wrap:pretty}
