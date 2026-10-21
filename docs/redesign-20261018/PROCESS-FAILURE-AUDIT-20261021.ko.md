@@ -3,9 +3,13 @@
 날짜 표기: 문서/폴더의 `20261021`은 한국 현지 작업일 식별자로 보존한다. 원 감사의 실제 실행일은 **2026-10-20 UTC**, 현재 보충 검수일은 **2026-10-21 UTC**다.
 작성: 2026-10-21 · 범위: 프롬프트/계획/스킬/활성 source/QA 기록의 읽기 전용 대조
 
-## 현재 상태 — 2026-10-21 UTC
+## 장미 마무리 추가 — 2026-10-21 UTC
 
-**현행 검수 상태:** source `f6736cd` main 84 files/654 tests, post 29/29, build 통과(10:28 UTC; 동일 source bytes)다. Focused follow-up `8c67caa`는 관련 6 tests와 TypeScript/build를 통과했다. A는 현행 12 still의 scoped 시각 검수를 통과했고 1440 ES full native flow/reduced motion 및 1920 KO의 targeted distance/visible-greeting return + Partner Pact keyboard/open/reset/focus/letter QA가 통과했다. 이전 raw 1920 focus/trigger 실패는 보존되며 targeted 재검증으로 해결됐다. [정본 후반 검수 상태](POST-HERO-REPLAN-20261021.ko.md)에 12 still과 상세 native/video 범위를 한 곳에 기록한다. [현재 1440×900 ES 영상](../review/landing-current-es.mp4)은 source `f6736cd`의 실제 브라우저 녹화: 56.33초, 1.2× H.264, 무음·무자막, 22 native action, source stable/page·console·HTTP 오류 0, SHA-256 `c6eecb30dd71a2292e94cf5f2d1cc7b6d81c9d0af00a3c6f6b7568d956bf0802`다. 독립 A의 encoded-frame spot review는 인사·하트와 엔딩 약속서의 연속 표본에서 차단 문제 없이 통과했다. 전체 프레임·해부학적 리깅 검수로 확대하지 않는다. 모바일 QA는 제외됐다. 이 scoped 검수는 Hero의 공간 3/5와 전체 4/5 미달을 바꾸지 않으며 전체 3D/Lusion 모션 또는 hardware GPU 합격을 뜻하지 않는다.
+원문 편지의 명시적 접힘 완료에 연결하는 장미 선물과 실제 local pact yes에만 나오는 평생 파트너 농담을 추가했다. 승인 인물·의상을 보존한 3포즈 일러스트이며 원문/게임/Hero는 변경하지 않았다. 통합 시 main 86 files/660 tests와 build 통과, 독립 detector clean. 실제 전환의 alpha 밝기 저하를 교정한 뒤 focused 12 tests/build와 한정 motion confirm을 통과했다. 두 데스크톱 크기의 실제 native 17항목과 3포즈 공연 범위의 독립 시각·모션 평가 각 4/5를 확인했다. source `f041dfd`의 새 전체 스페인어 영상은 57.40초/1.21×이며 독립 A가 마지막 8초의 접힘→전달→약속 문구와 출판용 SHA 일치를 확인했다. [정본 구현·검수 범위](POST-HERO-REPLAN-20261021.ko.md)를 따른다. 모바일은 제외하며 전체 랜딩/Lusion 품질 완료로 확대하지 않는다.
+
+## 이전 동행새·약속서 검수 — `f6736cd`
+
+**현행 검수 상태:** source `f6736cd` main 84 files/654 tests, post 29/29, build 통과(10:28 UTC; 동일 source bytes)다. Focused follow-up `8c67caa`는 관련 6 tests와 TypeScript/build를 통과했다. A는 현행 12 still의 scoped 시각 검수를 통과했고 1440 ES full native flow/reduced motion 및 1920 KO의 targeted distance/visible-greeting return + Partner Pact keyboard/open/reset/focus/letter QA가 통과했다. 이전 raw 1920 focus/trigger 실패는 보존되며 targeted 재검증으로 해결됐다. [정본 후반 검수 상태](POST-HERO-REPLAN-20261021.ko.md)에 12 still과 상세 native/video 범위를 한 곳에 기록한다. [동행새·약속서 기준 1440×900 ES 영상](https://raw.githubusercontent.com/da960822-ux/gitactions-main/0a40c12e34a8f9a0bce4b247da70e62c4cc69b49/docs/review/landing-current-es.mp4)은 source `f6736cd`의 실제 브라우저 녹화: 56.33초, 1.2× H.264, 무음·무자막, 22 native action, source stable/page·console·HTTP 오류 0, SHA-256 `c6eecb30dd71a2292e94cf5f2d1cc7b6d81c9d0af00a3c6f6b7568d956bf0802`다. 독립 A의 encoded-frame spot review는 인사·하트와 엔딩 약속서의 연속 표본에서 차단 문제 없이 통과했다. 전체 프레임·해부학적 리깅 검수로 확대하지 않는다. 모바일 QA는 제외됐다. 이 scoped 검수는 Hero의 공간 3/5와 전체 4/5 미달을 바꾸지 않으며 전체 3D/Lusion 모션 또는 hardware GPU 합격을 뜻하지 않는다.
 
 `97005d6` Hero를 담은 이전 영상에 대한 독립 A의 표본 판정은 구도4·공간3·목적4·craft3/5이며 전체 4/5 관문은 미달이다. 이전 P1 가림은 해소됐고 `.35` 부분 노출은 짧게 지나가지만, 평평한 근접 벽·낮은 접힌 천장·직선 목재 접합이 B 원화를 상자 안의 삽화처럼 보이게 한다. 승인 B 도착은 보존하며 이 공간 통합 문제를 미완료로 남긴다.
 
