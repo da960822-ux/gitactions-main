@@ -1,0 +1,1969 @@
+{
+  "before": {
+    "url": "http://127.0.0.1:5174/",
+    "at": "2026-10-21T15:11:18.497Z",
+    "allow": [],
+    "viewports": [
+      {
+        "width": 1440,
+        "height": 900,
+        "load": "load",
+        "screens": 10,
+        "filled": [
+          0.93,
+          0.93,
+          1,
+          1,
+          1,
+          0.99,
+          1,
+          1,
+          1,
+          0.99
+        ],
+        "motion": {
+          "elements": 16,
+          "css": 3,
+          "transitions": 1,
+          "scripted": 12,
+          "videos": 0,
+          "playingVideos": 0
+        },
+        "metrics": {
+          "viewport": {
+            "w": 1440,
+            "h": 900
+          },
+          "page": {
+            "height": 8838,
+            "screens": 9.8,
+            "words": 276,
+            "img": 2,
+            "video": 0,
+            "canvas": 2,
+            "svg": 13,
+            "sections": 9,
+            "horizontalOverflow": 0,
+            "overflowCulprits": [],
+            "uiFragments": 0,
+            "uiAbuse": false,
+            "realPictures": 2,
+            "videoCount": 0,
+            "uiPictures": 0,
+            "pictureSamples": [
+              "approved-character-reference.png"
+            ],
+            "blendText": 0,
+            "sideScrollers": 0,
+            "brokenImages": [],
+            "emoji": [
+              "♡"
+            ],
+            "videosNoPoster": 0
+          },
+          "hero": {
+            "text": "Baby,",
+            "words": 1,
+            "chars": 5,
+            "lines": 1,
+            "size": 130.5,
+            "vw": 9.1,
+            "font": "Gowun Batang",
+            "weight": 400,
+            "tracking": -0.075,
+            "leading": 0.93,
+            "upper": false,
+            "italic": true,
+            "mono": false,
+            "align": "left",
+            "position": "left",
+            "widthRatio": 0.33,
+            "top": 261,
+            "tag": "span",
+            "kind": "heading"
+          },
+          "h1": {
+            "text": "Baby, 이거 내가 만들었어!",
+            "words": 4,
+            "lines": 3,
+            "size": 87,
+            "font": "DM Sans"
+          },
+          "headings": [
+            {
+              "text": "Baby,",
+              "words": 1,
+              "chars": 5,
+              "lines": 1,
+              "size": 130.5,
+              "vw": 9.1,
+              "font": "Gowun Batang",
+              "weight": 400,
+              "tracking": -0.075,
+              "leading": 0.93,
+              "upper": false,
+              "italic": true,
+              "mono": false,
+              "align": "left",
+              "position": "left",
+              "widthRatio": 0.33,
+              "top": 261,
+              "tag": "span",
+              "kind": "heading"
+            },
+            {
+              "text": "우리 사이, 이만큼.",
+              "words": 3,
+              "chars": 11,
+              "lines": 1,
+              "size": 36,
+              "vw": 2.5,
+              "font": "Gowun Batang",
+              "weight": 400,
+              "tracking": -0.035,
+              "leading": 1.2,
+              "upper": false,
+              "italic": false,
+              "mono": false,
+              "align": "left",
+              "position": "left",
+              "widthRatio": 0.3,
+              "top": 3534,
+              "tag": "h2",
+              "kind": "heading"
+            },
+            {
+              "text": "약 13,792 km",
+              "words": 3,
+              "chars": 11,
+              "lines": 1,
+              "size": 72,
+              "vw": 5,
+              "font": "Gowun Batang",
+              "weight": 400,
+              "tracking": -0.04,
+              "leading": 1.05,
+              "upper": false,
+              "italic": false,
+              "mono": false,
+              "align": "left",
+              "position": "left",
+              "widthRatio": 0.3,
+              "top": 3611,
+              "mixedFonts": [
+                "Gowun Batang",
+                "DM Sans"
+              ],
+              "tag": "p",
+              "kind": "statement"
+            },
+            {
+              "text": "00:11",
+              "words": 1,
+              "chars": 5,
+              "lines": 1,
+              "size": 60.5,
+              "vw": 4.2,
+              "font": "DM Sans",
+              "weight": 400,
+              "tracking": -0.04,
+              "leading": 1.1,
+              "upper": false,
+              "italic": false,
+              "mono": false,
+              "align": "left",
+              "position": "center",
+              "widthRatio": 0.08,
+              "top": 4407,
+              "tag": "time",
+              "kind": "heading"
+            },
+            {
+              "text": "11:11",
+              "words": 1,
+              "chars": 5,
+              "lines": 1,
+              "size": 60.5,
+              "vw": 4.2,
+              "font": "DM Sans",
+              "weight": 400,
+              "tracking": -0.04,
+              "leading": 1.1,
+              "upper": false,
+              "italic": false,
+              "mono": false,
+              "align": "left",
+              "position": "right",
+              "widthRatio": 0.05,
+              "top": 4407,
+              "tag": "time",
+              "kind": "heading"
+            },
+            {
+              "text": "그래서, 같이 놀 시간.",
+              "words": 4,
+              "chars": 13,
+              "lines": 2,
+              "size": 51.8,
+              "vw": 3.6,
+              "font": "Gowun Batang",
+              "weight": 400,
+              "tracking": -0.035,
+              "leading": 1.2,
+              "upper": false,
+              "italic": false,
+              "mono": false,
+              "align": "left",
+              "position": "left",
+              "widthRatio": 0.29,
+              "top": 4484,
+              "tag": "h2",
+              "kind": "heading"
+            },
+            {
+              "text": "그 많은 사람 중, 너랑 나.",
+              "words": 6,
+              "chars": 16,
+              "lines": 2,
+              "size": 43.2,
+              "vw": 3,
+              "font": "Gowun Batang",
+              "weight": 400,
+              "tracking": -0.035,
+              "leading": 1.2,
+              "upper": false,
+              "italic": false,
+              "mono": false,
+              "align": "left",
+              "position": "left",
+              "widthRatio": 0.26,
+              "top": 5322,
+              "tag": "h2",
+              "kind": "heading"
+            },
+            {
+              "text": "Mami, 뭐부터 해볼래?",
+              "words": 3,
+              "chars": 14,
+              "lines": 1,
+              "size": 42,
+              "vw": 2.9,
+              "font": "Georgia",
+              "weight": 400,
+              "tracking": -0.04,
+              "leading": 1.2,
+              "upper": false,
+              "italic": false,
+              "mono": false,
+              "align": "center",
+              "position": "center",
+              "widthRatio": 0.88,
+              "top": 6000,
+              "tag": "h2",
+              "kind": "heading"
+            },
+            {
+              "text": "도미노",
+              "words": 1,
+              "chars": 3,
+              "lines": 1,
+              "size": 32,
+              "vw": 2.2,
+              "font": "Georgia",
+              "weight": 400,
+              "tracking": 0,
+              "leading": 1.3,
+              "upper": false,
+              "italic": false,
+              "mono": false,
+              "align": "center",
+              "position": "center",
+              "widthRatio": 0.86,
+              "top": 6578,
+              "tag": "h3",
+              "kind": "heading"
+            },
+            {
+              "text": "Baby, 이번엔 이거 열어봐.",
+              "words": 4,
+              "chars": 17,
+              "lines": 2,
+              "size": 48,
+              "vw": 3.3,
+              "font": "Gowun Batang",
+              "weight": 400,
+              "tracking": -0.035,
+              "leading": 1.3,
+              "upper": false,
+              "italic": false,
+              "mono": false,
+              "align": "left",
+              "position": "left",
+              "widthRatio": 0.23,
+              "top": 7207,
+              "tag": "h2",
+              "kind": "heading"
+            }
+          ],
+          "headingSummary": {
+            "count": 10,
+            "maxLines": 2,
+            "over2Lines": 0,
+            "statements": 1,
+            "centered": 2,
+            "medianWords": 3,
+            "mixedFontHeadings": 1
+          },
+          "type": {
+            "families": [
+              {
+                "family": "DM Sans",
+                "share": 0.73,
+                "mono": false
+              },
+              {
+                "family": "GiftSans",
+                "share": 0.15,
+                "mono": false
+              },
+              {
+                "family": "Gowun Batang",
+                "share": 0.1,
+                "mono": false
+              },
+              {
+                "family": "Georgia",
+                "share": 0.02,
+                "mono": false
+              }
+            ],
+            "familyCount": 4,
+            "sizes": [
+              9,
+              10,
+              11,
+              12,
+              13,
+              14,
+              15,
+              16,
+              17,
+              18,
+              19,
+              20,
+              23,
+              24,
+              32,
+              36,
+              42,
+              43,
+              48,
+              52,
+              61,
+              72,
+              87,
+              131
+            ],
+            "sizeCount": 24,
+            "notLoaded": [],
+            "body": {
+              "font": "DM Sans",
+              "size": 13,
+              "leading": 1.8,
+              "weight": 400,
+              "tracking": 0,
+              "contrast": null
+            },
+            "measureChars": 47,
+            "max": {
+              "size": 130.5,
+              "vw": 9.1,
+              "font": "Gowun Batang",
+              "text": "Baby,"
+            },
+            "monoShare": 0,
+            "monoProseShare": 0,
+            "monoFamilies": [],
+            "monoSamples": [],
+            "microLabels": 1,
+            "microLabelShare": 0.016,
+            "microSamples": [
+              "YEONSEOK LISBETH"
+            ],
+            "upperShare": 0.02,
+            "centerShare": 0.21,
+            "smallText": 2
+          },
+          "eyebrows": [
+            {
+              "text": "광주",
+              "above": "00:11",
+              "upper": false,
+              "tracked": false,
+              "mono": false,
+              "pill": false,
+              "size": 15,
+              "top": 4375
+            },
+            {
+              "text": "Santo Domingo",
+              "above": "11:11",
+              "upper": false,
+              "tracked": false,
+              "mono": false,
+              "pill": false,
+              "size": 15,
+              "top": 4375
+            },
+            {
+              "text": "03 / 08",
+              "above": "도미노",
+              "upper": false,
+              "tracked": true,
+              "mono": false,
+              "pill": false,
+              "size": 12,
+              "top": 6549
+            }
+          ],
+          "numbered": [
+            {
+              "text": "03 / 08",
+              "size": 12,
+              "top": 6549
+            },
+            {
+              "text": "01",
+              "size": 11,
+              "top": 6718
+            },
+            {
+              "text": "02",
+              "size": 11,
+              "top": 6718
+            },
+            {
+              "text": "03",
+              "size": 11,
+              "top": 6718
+            },
+            {
+              "text": "04",
+              "size": 11,
+              "top": 6718
+            },
+            {
+              "text": "05",
+              "size": 11,
+              "top": 6782
+            },
+            {
+              "text": "06",
+              "size": 11,
+              "top": 6782
+            },
+            {
+              "text": "07",
+              "size": 11,
+              "top": 6782
+            },
+            {
+              "text": "08",
+              "size": 11,
+              "top": 6782
+            }
+          ],
+          "color": {
+            "bodyBg": "#130e17",
+            "bodyBgHsl": {
+              "h": 273,
+              "s": 0.24,
+              "l": 0.07
+            },
+            "dark": true,
+            "sectionBgs": [
+              {
+                "color": "#130e17",
+                "top": 0,
+                "hsl": {
+                  "h": 273,
+                  "s": 0.24,
+                  "l": 0.07
+                }
+              },
+              {
+                "color": "#100e14",
+                "top": 0,
+                "hsl": {
+                  "h": 260,
+                  "s": 0.18,
+                  "l": 0.07
+                }
+              },
+              {
+                "color": "#21151e",
+                "top": 3240,
+                "hsl": {
+                  "h": 315,
+                  "s": 0.22,
+                  "l": 0.11
+                }
+              },
+              {
+                "color": "#0c080e",
+                "top": 5940,
+                "hsl": {
+                  "h": 280,
+                  "s": 0.27,
+                  "l": 0.04
+                }
+              }
+            ],
+            "textColors": [
+              {
+                "color": "#e7d1c6",
+                "share": 0.12
+              },
+              {
+                "color": "#faeee6",
+                "share": 0.1
+              },
+              {
+                "color": "#c1acb4",
+                "share": 0.08
+              },
+              {
+                "color": "#e7d0c7",
+                "share": 0.06
+              },
+              {
+                "color": "#ddc2c6",
+                "share": 0.06
+              }
+            ],
+            "button": {
+              "bg": "#e4bbab",
+              "hsl": {
+                "h": 17,
+                "s": 0.51,
+                "l": 0.78
+              },
+              "fg": "#271820"
+            },
+            "lowContrast": []
+          },
+          "buttons": {
+            "count": 4,
+            "inHero": 2,
+            "radius": 2,
+            "height": 58,
+            "withShadow": 1,
+            "withGradient": 0,
+            "mono": 0,
+            "upper": 0,
+            "heroLabels": [
+              "같이 놀자 ↗",
+              "같이 놀자 ↗"
+            ]
+          },
+          "surfaces": {
+            "shadowStatic": 1,
+            "shadowOverlay": 0,
+            "shadowSamples": [
+              "button.primary-button → rgba(12, 2, 10, 0.2) 0px 8px 30px 0px"
+            ],
+            "gradients": 3,
+            "scrims": 0,
+            "gradientSamples": [
+              "header.landing-nav.wrap → linear-gradient(rgba(13, 21, 31, 0.91), rgba(13, 21, 31, 0))",
+              "section#distance.story-chapter.story-distance → radial-gradient(at 70% 45%, rgba(158, 83, 104, 0.19), rgba(0, 0, 0, 0) 65%), linear-gradient(rgba(0, 0, 0, 0) ",
+              "div.rd-game-sculptures → radial-gradient(at 50% 60%, rgba(50, 35, 43, 0.333), rgba(0, 0, 0, 0) 68%)"
+            ],
+            "gradientText": 0,
+            "hairlines": 12,
+            "hairlineSamples": [
+              "header.landing-nav.wrap 1253px",
+              "div.story-hour-picker 689px",
+              "div.rd-game-stage 1267px",
+              "button 275px",
+              "button 275px"
+            ],
+            "outlinedBoxes": 0,
+            "dashed": 0,
+            "blurred": 0,
+            "roundedBoxes": 0,
+            "boxRadius": 0,
+            "squareMedia": 2,
+            "roundedMedia": 0,
+            "mediaRadius": 0,
+            "textShadow": 14,
+            "cardRows": []
+          },
+          "heroMedia": [
+            {
+              "type": "canvas",
+              "ratio": 1
+            }
+          ],
+          "nav": {
+            "links": 4,
+            "fixed": false,
+            "height": 96,
+            "floatingPill": false,
+            "blur": false
+          },
+          "fontsLoaded": [
+            "dm sans",
+            "gowun batang",
+            "giftsans"
+          ]
+        },
+        "layout": {
+          "viewport": {
+            "w": 1440,
+            "h": 900
+          },
+          "pageH": 8838,
+          "margins": {
+            "left": 94,
+            "right": 50
+          },
+          "sections": [
+            {
+              "sel": "section#home.across-hero.folded-playhouse",
+              "tag": "section",
+              "top": 0,
+              "height": 3240,
+              "words": 0,
+              "media": 0,
+              "middle": 0,
+              "heading": null,
+              "left": null,
+              "right": null,
+              "textLeft": null,
+              "textRight": null,
+              "fullBleed": false,
+              "footer": false,
+              "hero": true,
+              "continues": false,
+              "pinned": true
+            },
+            {
+              "sel": "section#distance.story-chapter.story-distance",
+              "tag": "section",
+              "top": 3240,
+              "height": 900,
+              "words": 72,
+              "media": 3,
+              "middle": 33,
+              "heading": {
+                "text": "13,792",
+                "size": 72,
+                "tag": "p"
+              },
+              "left": 108,
+              "right": 18,
+              "textLeft": 108,
+              "textRight": 169,
+              "fullBleed": true,
+              "footer": false,
+              "hero": false,
+              "continues": true,
+              "pinned": false
+            },
+            {
+              "sel": "section#time-difference.story-chapter.story-time",
+              "tag": "section",
+              "top": 4140,
+              "height": 900,
+              "words": 49,
+              "media": 2,
+              "middle": 216,
+              "heading": {
+                "text": "00",
+                "size": 60,
+                "tag": "time"
+              },
+              "left": 108,
+              "right": 108,
+              "textLeft": 108,
+              "textRight": 275,
+              "fullBleed": false,
+              "footer": false,
+              "hero": false,
+              "continues": true,
+              "pinned": false
+            },
+            {
+              "sel": "section#shared-place.story-chapter.story-shared-place",
+              "tag": "section",
+              "top": 5040,
+              "height": 900,
+              "words": 20,
+              "media": 1,
+              "middle": 142,
+              "heading": {
+                "text": "그 많은 사람 중,",
+                "size": 43,
+                "tag": "h2"
+              },
+              "left": 108,
+              "right": 58,
+              "textLeft": 108,
+              "textRight": 384,
+              "fullBleed": false,
+              "footer": false,
+              "hero": false,
+              "continues": true,
+              "pinned": false
+            },
+            {
+              "sel": "section#games.rd-games.cs-game-gallery",
+              "tag": "section",
+              "top": 5940,
+              "height": 1001,
+              "words": 50,
+              "media": 1,
+              "middle": 0,
+              "heading": {
+                "text": "Mami, 뭐부터 해볼래?",
+                "size": 42,
+                "tag": "h2"
+              },
+              "left": 86,
+              "right": 86,
+              "textLeft": 186,
+              "textRight": 346,
+              "fullBleed": false,
+              "footer": false,
+              "hero": false,
+              "continues": true,
+              "pinned": false
+            },
+            {
+              "sel": "section#letter-scene.chapter.letter-invitation",
+              "tag": "section",
+              "top": 6941,
+              "height": 900,
+              "words": 17,
+              "media": 0,
+              "middle": 0,
+              "heading": {
+                "text": "Baby, 이번엔 이거 열어봐.",
+                "size": 48,
+                "tag": "h2"
+              },
+              "left": 108,
+              "right": 1020,
+              "textLeft": 108,
+              "textRight": 1020,
+              "fullBleed": false,
+              "footer": false,
+              "hero": false,
+              "continues": true,
+              "pinned": false
+            },
+            {
+              "sel": "section#papi-letter.letter-section.letter-journey",
+              "tag": "section",
+              "top": 7841,
+              "height": 900,
+              "words": 5,
+              "media": 0,
+              "middle": 0,
+              "heading": null,
+              "left": 655,
+              "right": 655,
+              "textLeft": 655,
+              "textRight": 655,
+              "fullBleed": false,
+              "footer": true,
+              "hero": false,
+              "continues": true,
+              "pinned": false
+            }
+          ],
+          "gaps": [
+            {
+              "top": 6880,
+              "height": 320
+            },
+            {
+              "top": 7576,
+              "height": 372
+            },
+            {
+              "top": 8036,
+              "height": 748
+            }
+          ],
+          "h1s": [],
+          "edgeText": [],
+          "edges": [
+            {
+              "x": 108,
+              "n": 7
+            },
+            {
+              "x": 619,
+              "n": 1
+            },
+            {
+              "x": 1001,
+              "n": 1
+            }
+          ],
+          "leftBlocks": 9,
+          "bodySize": 13,
+          "stage": true,
+          "explains": false,
+          "slivers": [],
+          "voidShare": 0,
+          "voidBox": null
+        },
+        "app": null,
+        "consoleErrors": []
+      }
+    ],
+    "findings": [
+      {
+        "level": "WARN",
+        "id": "mixed-font-headline",
+        "width": 1440,
+        "message": "1 headline(s) switch typeface or to italic mid-line (the \"one italic serif word\" move).",
+        "fix": "Set the whole headline in one face. Emphasis comes from the words."
+      },
+      {
+        "level": "FAIL",
+        "id": "eyebrow",
+        "width": 1440,
+        "message": "3 eyebrow/kicker label(s) above headings: \"광주\" above \"00:11\"; \"Santo Domingo\" above \"11:11\"; \"03 / 08\" above \"도미노\"",
+        "fix": "Delete them. If the label carried real information, fold it into the headline or the supporting sentence."
+      },
+      {
+        "level": "FAIL",
+        "id": "numbering",
+        "width": 1440,
+        "message": "Decorative index numbers: \"03 / 08\", \"01\", \"02\", \"03\", \"04\", \"05\"",
+        "fix": "Remove them. If order truly matters, write it into the words (\"First, …\") or use a real <ol>."
+      },
+      {
+        "level": "WARN",
+        "id": "micro-label",
+        "width": 1440,
+        "message": "1 tiny uppercase letter-spaced label(s): \"YEONSEOK LISBETH\"",
+        "fix": "Prefer sentence case at body size."
+      },
+      {
+        "level": "FAIL",
+        "id": "emoji",
+        "width": 1440,
+        "message": "Emoji in the page: ♡",
+        "fix": "Remove. Use words or real imagery."
+      },
+      {
+        "level": "FAIL",
+        "id": "gradient",
+        "width": 1440,
+        "message": "3 gradient fill(s): header.landing-nav.wrap → linear-gradient(rgba(13, 21, 31, 0.91), rgba(13, 21, 31, 0)) | section#distance.story-chapter.story-distance → radial-gradient(at 70% 45%, rgba(158, 83, 104, 0.19), rgba(0, 0, 0, 0) 65%), linear-gradient(rgba(0, 0, 0, 0)  | div.rd-game-sculptures → radial-gradient(at 50% 60%, rgba(50, 35, 43, 0.333), rgba(0, 0, 0, 0) 68%)",
+        "fix": "Use a flat colour or a real image. The only gradient allowed by default is a neutral scrim over a photo for legibility."
+      },
+      {
+        "level": "FAIL",
+        "id": "shadow",
+        "width": 1440,
+        "message": "1 box-shadow(s) on elements at rest: button.primary-button → rgba(12, 2, 10, 0.2) 0px 8px 30px 0px",
+        "fix": "Remove. Separate surfaces with a tone step or space. Shadows are for things that really float (menus, dialogs, sticky bars)."
+      },
+      {
+        "level": "FAIL",
+        "id": "text-shadow",
+        "width": 1440,
+        "message": "14 text-shadow(s).",
+        "fix": "Remove; fix legibility with a scrim or a different crop."
+      },
+      {
+        "level": "FAIL",
+        "id": "button-fx",
+        "width": 1440,
+        "message": "Buttons with shadow/glow.",
+        "fix": "Flat fill, one colour."
+      },
+      {
+        "level": "FAIL",
+        "id": "hairline",
+        "width": 1440,
+        "message": "12 thin rule(s)/divider line(s): header.landing-nav.wrap 1253px | div.story-hour-picker 689px | div.rd-game-stage 1267px | button 275px",
+        "fix": "Delete. Separate with space, a tone change, or scale. Lines are only for real tables and form fields."
+      },
+      {
+        "level": "WARN",
+        "id": "palette-cream",
+        "width": 1440,
+        "message": "Yellow-cream background (text #faeee6).",
+        "fix": "Use the drawn palette. If you want warmth, take a low-chroma stone or bone, not a yellow cream."
+      },
+      {
+        "level": "FAIL",
+        "id": "font-count",
+        "width": 1440,
+        "message": "4 typefaces in use (DM Sans, GiftSans, Gowun Batang, Georgia).",
+        "fix": "Two at most: one display, one text. Often one is enough."
+      },
+      {
+        "level": "WARN",
+        "id": "size-count",
+        "width": 1440,
+        "message": "24 different font sizes (9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 23, 24, 32, 36, 42, 43, 48, 52, 61, 72, 87, 131).",
+        "fix": "A page needs about five: display, heading, lead, body, small."
+      },
+      {
+        "level": "FAIL",
+        "id": "body-size",
+        "width": 1440,
+        "message": "Body text is 13px (the size most of the running text is set in).",
+        "fix": "Body copy 16–20px. Map small sizes from blueprints onto your body step."
+      },
+      {
+        "level": "FAIL",
+        "id": "few-pictures",
+        "width": 1440,
+        "message": "Only 2 picture(s) on the page (2 photographs, footage or raster images, 0 interface fragments). Drawings in SVG do not count.",
+        "fix": "Find real pictures of the subject's world with scripts/assets.mjs (photographs, archival images, maps, engravings, footage), download them to assets/ and give them room: a hero picture, one per section that has a subject, a full-width band. At least four, usually six to twelve."
+      },
+      {
+        "level": "WARN",
+        "id": "no-footage",
+        "width": 1440,
+        "message": "No video anywhere on the page.",
+        "fix": "Look for one honest clip with scripts/assets.mjs --video (the place, the material, the process) and use it as a muted loop with a poster frame. Defend its absence only if no clip fits the subject."
+      },
+      {
+        "level": "WARN",
+        "id": "small-text",
+        "width": 1440,
+        "message": "2 text block(s) under 13px.",
+        "fix": "Nothing meant to be read goes below 13px."
+      },
+      {
+        "level": "WARN",
+        "id": "off-centre",
+        "width": 1440,
+        "message": "The margins differ: 94px on the left, 50px on the right, at 1440px.",
+        "fix": "Put the navigation and the content on one pair of margins; check for padding on one side only, a scrollbar gutter, or a header on another inset than the page."
+      },
+      {
+        "level": "WARN",
+        "id": "lopsided",
+        "width": 1440,
+        "message": "A section keeps its content on one side and leaves 1020px of the width empty: \"Baby, 이번엔 이거 열어봐.\".",
+        "fix": "Fill the other side with what the section has (its picture, a second column, the figure), or defend the void in one sentence."
+      },
+      {
+        "level": "WARN",
+        "id": "blank-gap",
+        "width": 1440,
+        "message": "1 stretch(es) of the page hold nothing at all: 748px at 8036px (the screen is 900px tall).",
+        "fix": "A fixed picture layer covers the screen here, so the DOM cannot tell whether the stretch is empty: check the screenshots. Close the gap: a section gap is 120–240px on desktop and 72–112px on a phone. Look for a min-height: 100vh on a short section, an empty grid row, a hidden element still holding its space, or a reveal that never fired. A deliberate rest is a placed picture or colour field, not nothing."
+      },
+      {
+        "level": "FAIL",
+        "id": "no-title",
+        "width": 1440,
+        "message": "The page has no visible h1.",
+        "fix": "Give the first screen a clear title in an h1 that says what this is (a name with what it does, the product with what it is for, the event with its date and place)."
+      },
+      {
+        "level": "FAIL",
+        "id": "covered-text",
+        "width": 1440,
+        "message": "Large text lies under another element at some scroll position: \"우리 사이, 이만큼.\" (screen 4, 100% hidden); \"약 13,792 km\" (screen 5, 100% hidden)",
+        "fix": "Nothing may sit on top of a headline or statement. Move the picture, shorten the pinned run, or raise the text above it (z-index) and give it a ground."
+      },
+      {
+        "level": "WARN",
+        "id": "pinned-over-picture",
+        "width": 1440,
+        "message": "Pinned large text slides across pictures while the page scrolls: \"Baby,\" (screen 3, 100% over a picture); \"이거 내가\" (screen 3, 100% over a picture); \"만들었어!\" (screen 3, 100% over a picture)",
+        "fix": "Jurors read a pinned title crossing drawings or photographs as a collision. Keep the pictures in the column the title does not occupy, or unpin it."
+      },
+      {
+        "level": "WARN",
+        "id": "long-pin",
+        "width": 1440,
+        "message": "The same large text stays on screen for 3 screens in a row: \"Baby, 이거 내가 만들었어!\"",
+        "fix": "A pinned element earns two screens, and something must change at each. Shorten the run or give every screen its own content."
+      },
+      {
+        "level": "FAIL",
+        "id": "reduced-hidden",
+        "width": 1440,
+        "message": "With reduced motion requested, 2 text block(s) on the first screen stay invisible: \"Baby, 같이 놀자.\", \"같이 놀자\"",
+        "fix": "Put every hidden starting state inside @media (prefers-reduced-motion: no-preference); the reduced page is the finished page (references/motion.md §8)."
+      }
+    ],
+    "images": [
+      {
+        "viewport": "desktop",
+        "width": 1440,
+        "fold": "/workspace/hero-review/output/current-review/taste-refinement/before/desktop-fold.jpg",
+        "pages": [
+          "/workspace/hero-review/output/current-review/taste-refinement/before/desktop-page-01.jpg",
+          "/workspace/hero-review/output/current-review/taste-refinement/before/desktop-page-02.jpg",
+          "/workspace/hero-review/output/current-review/taste-refinement/before/desktop-page-03.jpg"
+        ],
+        "film": []
+      }
+    ]
+  },
+  "after": {
+    "url": "http://127.0.0.1:5174/",
+    "at": "2026-10-21T15:24:57.792Z",
+    "allow": [],
+    "viewports": [
+      {
+        "width": 1440,
+        "height": 900,
+        "load": "load",
+        "screens": 10,
+        "filled": [
+          0.93,
+          0.93,
+          0.93,
+          1,
+          1,
+          0.99,
+          1,
+          1,
+          1,
+          0.99
+        ],
+        "motion": {
+          "elements": 16,
+          "css": 3,
+          "transitions": 1,
+          "scripted": 12,
+          "videos": 0,
+          "playingVideos": 0
+        },
+        "metrics": {
+          "viewport": {
+            "w": 1440,
+            "h": 900
+          },
+          "page": {
+            "height": 8811,
+            "screens": 9.8,
+            "words": 265,
+            "img": 2,
+            "video": 0,
+            "canvas": 2,
+            "svg": 13,
+            "sections": 9,
+            "horizontalOverflow": 0,
+            "overflowCulprits": [],
+            "uiFragments": 0,
+            "uiAbuse": false,
+            "realPictures": 2,
+            "videoCount": 0,
+            "uiPictures": 0,
+            "pictureSamples": [
+              "approved-character-reference.png"
+            ],
+            "blendText": 0,
+            "sideScrollers": 0,
+            "brokenImages": [],
+            "emoji": [
+              "♡"
+            ],
+            "videosNoPoster": 0
+          },
+          "hero": {
+            "text": "Baby,",
+            "words": 1,
+            "chars": 5,
+            "lines": 1,
+            "size": 130.5,
+            "vw": 9.1,
+            "font": "Gowun Batang",
+            "weight": 400,
+            "tracking": -0.075,
+            "leading": 0.93,
+            "upper": false,
+            "italic": true,
+            "mono": false,
+            "align": "left",
+            "position": "left",
+            "widthRatio": 0.33,
+            "top": 261,
+            "tag": "span",
+            "kind": "heading"
+          },
+          "h1": {
+            "text": "Baby, 이거 내가 만들었어!",
+            "words": 4,
+            "lines": 3,
+            "size": 87,
+            "font": "DM Sans"
+          },
+          "headings": [
+            {
+              "text": "Baby,",
+              "words": 1,
+              "chars": 5,
+              "lines": 1,
+              "size": 130.5,
+              "vw": 9.1,
+              "font": "Gowun Batang",
+              "weight": 400,
+              "tracking": -0.075,
+              "leading": 0.93,
+              "upper": false,
+              "italic": true,
+              "mono": false,
+              "align": "left",
+              "position": "left",
+              "widthRatio": 0.33,
+              "top": 261,
+              "tag": "span",
+              "kind": "heading"
+            },
+            {
+              "text": "우리 사이, 이만큼.",
+              "words": 3,
+              "chars": 11,
+              "lines": 1,
+              "size": 36,
+              "vw": 2.5,
+              "font": "Gowun Batang",
+              "weight": 400,
+              "tracking": -0.035,
+              "leading": 1.2,
+              "upper": false,
+              "italic": false,
+              "mono": false,
+              "align": "left",
+              "position": "left",
+              "widthRatio": 0.3,
+              "top": 3534,
+              "tag": "h2",
+              "kind": "heading"
+            },
+            {
+              "text": "약 13,792 km",
+              "words": 3,
+              "chars": 11,
+              "lines": 1,
+              "size": 72,
+              "vw": 5,
+              "font": "Gowun Batang",
+              "weight": 400,
+              "tracking": -0.04,
+              "leading": 1.05,
+              "upper": false,
+              "italic": false,
+              "mono": false,
+              "align": "left",
+              "position": "left",
+              "widthRatio": 0.3,
+              "top": 3611,
+              "mixedFonts": [
+                "Gowun Batang",
+                "DM Sans"
+              ],
+              "tag": "p",
+              "kind": "statement"
+            },
+            {
+              "text": "00:24",
+              "words": 1,
+              "chars": 5,
+              "lines": 1,
+              "size": 60.5,
+              "vw": 4.2,
+              "font": "DM Sans",
+              "weight": 400,
+              "tracking": -0.04,
+              "leading": 1.1,
+              "upper": false,
+              "italic": false,
+              "mono": false,
+              "align": "left",
+              "position": "center",
+              "widthRatio": 0.11,
+              "top": 4407,
+              "tag": "time",
+              "kind": "heading"
+            },
+            {
+              "text": "11:24",
+              "words": 1,
+              "chars": 5,
+              "lines": 1,
+              "size": 60.5,
+              "vw": 4.2,
+              "font": "DM Sans",
+              "weight": 400,
+              "tracking": -0.04,
+              "leading": 1.1,
+              "upper": false,
+              "italic": false,
+              "mono": false,
+              "align": "left",
+              "position": "right",
+              "widthRatio": 0.08,
+              "top": 4407,
+              "tag": "time",
+              "kind": "heading"
+            },
+            {
+              "text": "그래서, 같이 놀 시간.",
+              "words": 4,
+              "chars": 13,
+              "lines": 2,
+              "size": 51.8,
+              "vw": 3.6,
+              "font": "Gowun Batang",
+              "weight": 400,
+              "tracking": -0.035,
+              "leading": 1.2,
+              "upper": false,
+              "italic": false,
+              "mono": false,
+              "align": "left",
+              "position": "left",
+              "widthRatio": 0.29,
+              "top": 4484,
+              "tag": "h2",
+              "kind": "heading"
+            },
+            {
+              "text": "그 많은 사람 중, 너랑 나.",
+              "words": 6,
+              "chars": 16,
+              "lines": 2,
+              "size": 43.2,
+              "vw": 3,
+              "font": "Gowun Batang",
+              "weight": 400,
+              "tracking": -0.035,
+              "leading": 1.2,
+              "upper": false,
+              "italic": false,
+              "mono": false,
+              "align": "left",
+              "position": "left",
+              "widthRatio": 0.25,
+              "top": 5322,
+              "tag": "h2",
+              "kind": "heading"
+            },
+            {
+              "text": "Mami, 뭐부터 해볼래?",
+              "words": 3,
+              "chars": 14,
+              "lines": 1,
+              "size": 42,
+              "vw": 2.9,
+              "font": "Gowun Batang",
+              "weight": 400,
+              "tracking": -0.04,
+              "leading": 1.2,
+              "upper": false,
+              "italic": false,
+              "mono": false,
+              "align": "center",
+              "position": "center",
+              "widthRatio": 0.88,
+              "top": 6000,
+              "tag": "h2",
+              "kind": "heading"
+            },
+            {
+              "text": "도미노",
+              "words": 1,
+              "chars": 3,
+              "lines": 1,
+              "size": 32,
+              "vw": 2.2,
+              "font": "Gowun Batang",
+              "weight": 400,
+              "tracking": 0,
+              "leading": 1.3,
+              "upper": false,
+              "italic": false,
+              "mono": false,
+              "align": "center",
+              "position": "center",
+              "widthRatio": 0.86,
+              "top": 6551,
+              "tag": "h3",
+              "kind": "heading"
+            },
+            {
+              "text": "Baby, 이번엔 이거 열어봐.",
+              "words": 4,
+              "chars": 17,
+              "lines": 2,
+              "size": 48,
+              "vw": 3.3,
+              "font": "Gowun Batang",
+              "weight": 400,
+              "tracking": -0.035,
+              "leading": 1.3,
+              "upper": false,
+              "italic": false,
+              "mono": false,
+              "align": "left",
+              "position": "left",
+              "widthRatio": 0.23,
+              "top": 7181,
+              "tag": "h2",
+              "kind": "heading"
+            }
+          ],
+          "headingSummary": {
+            "count": 10,
+            "maxLines": 2,
+            "over2Lines": 0,
+            "statements": 1,
+            "centered": 2,
+            "medianWords": 3,
+            "mixedFontHeadings": 1
+          },
+          "type": {
+            "families": [
+              {
+                "family": "DM Sans",
+                "share": 0.88,
+                "mono": false
+              },
+              {
+                "family": "Gowun Batang",
+                "share": 0.12,
+                "mono": false
+              }
+            ],
+            "familyCount": 2,
+            "sizes": [
+              12,
+              13,
+              14,
+              15,
+              16,
+              17,
+              18,
+              19,
+              20,
+              23,
+              24,
+              32,
+              36,
+              42,
+              43,
+              48,
+              52,
+              61,
+              72,
+              87,
+              131
+            ],
+            "sizeCount": 21,
+            "notLoaded": [],
+            "body": {
+              "font": "DM Sans",
+              "size": 16,
+              "leading": 1.75,
+              "weight": 400,
+              "tracking": 0,
+              "contrast": null
+            },
+            "measureChars": 42,
+            "max": {
+              "size": 130.5,
+              "vw": 9.1,
+              "font": "Gowun Batang",
+              "text": "Baby,"
+            },
+            "monoShare": 0,
+            "monoProseShare": 0,
+            "monoFamilies": [],
+            "monoSamples": [],
+            "microLabels": 1,
+            "microLabelShare": 0.017,
+            "microSamples": [
+              "YEONSEOK LISBETH"
+            ],
+            "upperShare": 0.02,
+            "centerShare": 0.21,
+            "smallText": 1
+          },
+          "eyebrows": [
+            {
+              "text": "광주",
+              "above": "00:24",
+              "upper": false,
+              "tracked": false,
+              "mono": false,
+              "pill": false,
+              "size": 15,
+              "top": 4375
+            },
+            {
+              "text": "Santo Domingo",
+              "above": "11:24",
+              "upper": false,
+              "tracked": false,
+              "mono": false,
+              "pill": false,
+              "size": 15,
+              "top": 4375
+            }
+          ],
+          "numbered": [],
+          "color": {
+            "bodyBg": "#130e17",
+            "bodyBgHsl": {
+              "h": 273,
+              "s": 0.24,
+              "l": 0.07
+            },
+            "dark": true,
+            "sectionBgs": [
+              {
+                "color": "#130e17",
+                "top": 0,
+                "hsl": {
+                  "h": 273,
+                  "s": 0.24,
+                  "l": 0.07
+                }
+              },
+              {
+                "color": "#100e14",
+                "top": 0,
+                "hsl": {
+                  "h": 260,
+                  "s": 0.18,
+                  "l": 0.07
+                }
+              },
+              {
+                "color": "#21151e",
+                "top": 3240,
+                "hsl": {
+                  "h": 315,
+                  "s": 0.22,
+                  "l": 0.11
+                }
+              },
+              {
+                "color": "#0c080e",
+                "top": 5940,
+                "hsl": {
+                  "h": 280,
+                  "s": 0.27,
+                  "l": 0.04
+                }
+              }
+            ],
+            "textColors": [
+              {
+                "color": "#e7d1c6",
+                "share": 0.13
+              },
+              {
+                "color": "#faeee6",
+                "share": 0.11
+              },
+              {
+                "color": "#c1acb4",
+                "share": 0.08
+              },
+              {
+                "color": "#e7d0c7",
+                "share": 0.07
+              },
+              {
+                "color": "#ddc2c6",
+                "share": 0.06
+              }
+            ],
+            "button": {
+              "bg": "#e4bbab",
+              "hsl": {
+                "h": 17,
+                "s": 0.51,
+                "l": 0.78
+              },
+              "fg": "#271820"
+            },
+            "lowContrast": []
+          },
+          "buttons": {
+            "count": 4,
+            "inHero": 2,
+            "radius": 2,
+            "height": 58,
+            "withShadow": 0,
+            "withGradient": 0,
+            "mono": 0,
+            "upper": 0,
+            "heroLabels": [
+              "같이 놀자 ↗",
+              "같이 놀자 ↗"
+            ]
+          },
+          "surfaces": {
+            "shadowStatic": 0,
+            "shadowOverlay": 0,
+            "shadowSamples": [],
+            "gradients": 3,
+            "scrims": 0,
+            "gradientSamples": [
+              "header.landing-nav.wrap → linear-gradient(rgba(13, 21, 31, 0.91), rgba(13, 21, 31, 0))",
+              "section#distance.story-chapter.story-distance → radial-gradient(at 70% 45%, rgba(158, 83, 104, 0.19), rgba(0, 0, 0, 0) 65%), linear-gradient(rgba(0, 0, 0, 0) ",
+              "div.rd-game-sculptures → radial-gradient(at 50% 60%, rgba(50, 35, 43, 0.333), rgba(0, 0, 0, 0) 68%)"
+            ],
+            "gradientText": 0,
+            "hairlines": 3,
+            "hairlineSamples": [
+              "header.landing-nav.wrap 1253px",
+              "div.story-hour-picker 689px",
+              "footer.home-footer.wrap 1340px"
+            ],
+            "outlinedBoxes": 0,
+            "dashed": 0,
+            "blurred": 0,
+            "roundedBoxes": 0,
+            "boxRadius": 0,
+            "squareMedia": 2,
+            "roundedMedia": 0,
+            "mediaRadius": 0,
+            "textShadow": 3,
+            "cardRows": []
+          },
+          "heroMedia": [
+            {
+              "type": "canvas",
+              "ratio": 1
+            }
+          ],
+          "nav": {
+            "links": 4,
+            "fixed": false,
+            "height": 96,
+            "floatingPill": false,
+            "blur": false
+          },
+          "fontsLoaded": [
+            "dm sans",
+            "gowun batang"
+          ]
+        },
+        "layout": {
+          "viewport": {
+            "w": 1440,
+            "h": 900
+          },
+          "pageH": 8811,
+          "margins": {
+            "left": 94,
+            "right": 50
+          },
+          "sections": [
+            {
+              "sel": "section#home.across-hero.folded-playhouse",
+              "tag": "section",
+              "top": 0,
+              "height": 3240,
+              "words": 0,
+              "media": 0,
+              "middle": 0,
+              "heading": null,
+              "left": null,
+              "right": null,
+              "textLeft": null,
+              "textRight": null,
+              "fullBleed": false,
+              "footer": false,
+              "hero": true,
+              "continues": false,
+              "pinned": true
+            },
+            {
+              "sel": "section#distance.story-chapter.story-distance",
+              "tag": "section",
+              "top": 3240,
+              "height": 900,
+              "words": 72,
+              "media": 3,
+              "middle": 33,
+              "heading": {
+                "text": "13,792",
+                "size": 72,
+                "tag": "p"
+              },
+              "left": 108,
+              "right": 18,
+              "textLeft": 108,
+              "textRight": 107,
+              "fullBleed": true,
+              "footer": false,
+              "hero": false,
+              "continues": true,
+              "pinned": false
+            },
+            {
+              "sel": "section#time-difference.story-chapter.story-time",
+              "tag": "section",
+              "top": 4140,
+              "height": 900,
+              "words": 49,
+              "media": 2,
+              "middle": 216,
+              "heading": {
+                "text": "00",
+                "size": 60,
+                "tag": "time"
+              },
+              "left": 108,
+              "right": 108,
+              "textLeft": 108,
+              "textRight": 275,
+              "fullBleed": false,
+              "footer": false,
+              "hero": false,
+              "continues": true,
+              "pinned": false
+            },
+            {
+              "sel": "section#shared-place.story-chapter.story-shared-place",
+              "tag": "section",
+              "top": 5040,
+              "height": 900,
+              "words": 20,
+              "media": 1,
+              "middle": 125,
+              "heading": {
+                "text": "그 많은 사람 중,",
+                "size": 43,
+                "tag": "h2"
+              },
+              "left": 108,
+              "right": 108,
+              "textLeft": 108,
+              "textRight": 417,
+              "fullBleed": false,
+              "footer": false,
+              "hero": false,
+              "continues": true,
+              "pinned": false
+            },
+            {
+              "sel": "section#games.rd-games.cs-game-gallery",
+              "tag": "section",
+              "top": 5940,
+              "height": 974,
+              "words": 39,
+              "media": 1,
+              "middle": 0,
+              "heading": {
+                "text": "Mami, 뭐부터 해볼래?",
+                "size": 42,
+                "tag": "h2"
+              },
+              "left": 86,
+              "right": 86,
+              "textLeft": 186,
+              "textRight": 370,
+              "fullBleed": false,
+              "footer": false,
+              "hero": false,
+              "continues": true,
+              "pinned": false
+            },
+            {
+              "sel": "section#letter-scene.chapter.letter-invitation",
+              "tag": "section",
+              "top": 6914,
+              "height": 900,
+              "words": 17,
+              "media": 0,
+              "middle": 0,
+              "heading": {
+                "text": "Baby, 이번엔 이거 열어봐.",
+                "size": 48,
+                "tag": "h2"
+              },
+              "left": 108,
+              "right": 1020,
+              "textLeft": 108,
+              "textRight": 1020,
+              "fullBleed": false,
+              "footer": false,
+              "hero": false,
+              "continues": true,
+              "pinned": false
+            },
+            {
+              "sel": "section#papi-letter.letter-section.letter-journey",
+              "tag": "section",
+              "top": 7814,
+              "height": 900,
+              "words": 5,
+              "media": 0,
+              "middle": 0,
+              "heading": null,
+              "left": 655,
+              "right": 655,
+              "textLeft": 655,
+              "textRight": 655,
+              "fullBleed": false,
+              "footer": true,
+              "hero": false,
+              "continues": true,
+              "pinned": false
+            }
+          ],
+          "gaps": [
+            {
+              "top": 6852,
+              "height": 324
+            },
+            {
+              "top": 7548,
+              "height": 372
+            },
+            {
+              "top": 8012,
+              "height": 748
+            }
+          ],
+          "h1s": [],
+          "edgeText": [],
+          "edges": [
+            {
+              "x": 108,
+              "n": 7
+            },
+            {
+              "x": 619,
+              "n": 2
+            },
+            {
+              "x": 1001,
+              "n": 1
+            }
+          ],
+          "leftBlocks": 10,
+          "bodySize": 16,
+          "stage": true,
+          "explains": false,
+          "slivers": [],
+          "voidShare": 0,
+          "voidBox": null
+        },
+        "app": null,
+        "consoleErrors": []
+      }
+    ],
+    "findings": [
+      {
+        "level": "WARN",
+        "id": "mixed-font-headline",
+        "width": 1440,
+        "message": "1 headline(s) switch typeface or to italic mid-line (the \"one italic serif word\" move).",
+        "fix": "Set the whole headline in one face. Emphasis comes from the words."
+      },
+      {
+        "level": "FAIL",
+        "id": "eyebrow",
+        "width": 1440,
+        "message": "2 eyebrow/kicker label(s) above headings: \"광주\" above \"00:24\"; \"Santo Domingo\" above \"11:24\"",
+        "fix": "Delete them. If the label carried real information, fold it into the headline or the supporting sentence."
+      },
+      {
+        "level": "WARN",
+        "id": "micro-label",
+        "width": 1440,
+        "message": "1 tiny uppercase letter-spaced label(s): \"YEONSEOK LISBETH\"",
+        "fix": "Prefer sentence case at body size."
+      },
+      {
+        "level": "FAIL",
+        "id": "emoji",
+        "width": 1440,
+        "message": "Emoji in the page: ♡",
+        "fix": "Remove. Use words or real imagery."
+      },
+      {
+        "level": "FAIL",
+        "id": "gradient",
+        "width": 1440,
+        "message": "3 gradient fill(s): header.landing-nav.wrap → linear-gradient(rgba(13, 21, 31, 0.91), rgba(13, 21, 31, 0)) | section#distance.story-chapter.story-distance → radial-gradient(at 70% 45%, rgba(158, 83, 104, 0.19), rgba(0, 0, 0, 0) 65%), linear-gradient(rgba(0, 0, 0, 0)  | div.rd-game-sculptures → radial-gradient(at 50% 60%, rgba(50, 35, 43, 0.333), rgba(0, 0, 0, 0) 68%)",
+        "fix": "Use a flat colour or a real image. The only gradient allowed by default is a neutral scrim over a photo for legibility."
+      },
+      {
+        "level": "FAIL",
+        "id": "text-shadow",
+        "width": 1440,
+        "message": "3 text-shadow(s).",
+        "fix": "Remove; fix legibility with a scrim or a different crop."
+      },
+      {
+        "level": "FAIL",
+        "id": "hairline",
+        "width": 1440,
+        "message": "3 thin rule(s)/divider line(s): header.landing-nav.wrap 1253px | div.story-hour-picker 689px | footer.home-footer.wrap 1340px",
+        "fix": "Delete. Separate with space, a tone change, or scale. Lines are only for real tables and form fields."
+      },
+      {
+        "level": "WARN",
+        "id": "palette-cream",
+        "width": 1440,
+        "message": "Yellow-cream background (text #faeee6).",
+        "fix": "Use the drawn palette. If you want warmth, take a low-chroma stone or bone, not a yellow cream."
+      },
+      {
+        "level": "WARN",
+        "id": "size-count",
+        "width": 1440,
+        "message": "21 different font sizes (12, 13, 14, 15, 16, 17, 18, 19, 20, 23, 24, 32, 36, 42, 43, 48, 52, 61, 72, 87, 131).",
+        "fix": "A page needs about five: display, heading, lead, body, small."
+      },
+      {
+        "level": "FAIL",
+        "id": "few-pictures",
+        "width": 1440,
+        "message": "Only 2 picture(s) on the page (2 photographs, footage or raster images, 0 interface fragments). Drawings in SVG do not count.",
+        "fix": "Find real pictures of the subject's world with scripts/assets.mjs (photographs, archival images, maps, engravings, footage), download them to assets/ and give them room: a hero picture, one per section that has a subject, a full-width band. At least four, usually six to twelve."
+      },
+      {
+        "level": "WARN",
+        "id": "no-footage",
+        "width": 1440,
+        "message": "No video anywhere on the page.",
+        "fix": "Look for one honest clip with scripts/assets.mjs --video (the place, the material, the process) and use it as a muted loop with a poster frame. Defend its absence only if no clip fits the subject."
+      },
+      {
+        "level": "WARN",
+        "id": "small-text",
+        "width": 1440,
+        "message": "1 text block(s) under 13px.",
+        "fix": "Nothing meant to be read goes below 13px."
+      },
+      {
+        "level": "WARN",
+        "id": "off-centre",
+        "width": 1440,
+        "message": "The margins differ: 94px on the left, 50px on the right, at 1440px.",
+        "fix": "Put the navigation and the content on one pair of margins; check for padding on one side only, a scrollbar gutter, or a header on another inset than the page."
+      },
+      {
+        "level": "WARN",
+        "id": "lopsided",
+        "width": 1440,
+        "message": "A section keeps its content on one side and leaves 1020px of the width empty: \"Baby, 이번엔 이거 열어봐.\".",
+        "fix": "Fill the other side with what the section has (its picture, a second column, the figure), or defend the void in one sentence."
+      },
+      {
+        "level": "WARN",
+        "id": "blank-gap",
+        "width": 1440,
+        "message": "1 stretch(es) of the page hold nothing at all: 748px at 8012px (the screen is 900px tall).",
+        "fix": "A fixed picture layer covers the screen here, so the DOM cannot tell whether the stretch is empty: check the screenshots. Close the gap: a section gap is 120–240px on desktop and 72–112px on a phone. Look for a min-height: 100vh on a short section, an empty grid row, a hidden element still holding its space, or a reveal that never fired. A deliberate rest is a placed picture or colour field, not nothing."
+      },
+      {
+        "level": "FAIL",
+        "id": "no-title",
+        "width": 1440,
+        "message": "The page has no visible h1.",
+        "fix": "Give the first screen a clear title in an h1 that says what this is (a name with what it does, the product with what it is for, the event with its date and place)."
+      },
+      {
+        "level": "FAIL",
+        "id": "covered-text",
+        "width": 1440,
+        "message": "Large text lies under another element at some scroll position: \"우리 사이, 이만큼.\" (screen 4, 100% hidden); \"약 13,792 km\" (screen 5, 100% hidden)",
+        "fix": "Nothing may sit on top of a headline or statement. Move the picture, shorten the pinned run, or raise the text above it (z-index) and give it a ground."
+      },
+      {
+        "level": "WARN",
+        "id": "pinned-over-picture",
+        "width": 1440,
+        "message": "Pinned large text slides across pictures while the page scrolls: \"Baby,\" (screen 3, 100% over a picture); \"이거 내가\" (screen 3, 100% over a picture); \"만들었어!\" (screen 3, 100% over a picture)",
+        "fix": "Jurors read a pinned title crossing drawings or photographs as a collision. Keep the pictures in the column the title does not occupy, or unpin it."
+      },
+      {
+        "level": "WARN",
+        "id": "long-pin",
+        "width": 1440,
+        "message": "The same large text stays on screen for 3 screens in a row: \"Baby, 이거 내가 만들었어!\"",
+        "fix": "A pinned element earns two screens, and something must change at each. Shorten the run or give every screen its own content."
+      },
+      {
+        "level": "FAIL",
+        "id": "reduced-hidden",
+        "width": 1440,
+        "message": "With reduced motion requested, 2 text block(s) on the first screen stay invisible: \"Baby, 같이 놀자.\", \"같이 놀자\"",
+        "fix": "Put every hidden starting state inside @media (prefers-reduced-motion: no-preference); the reduced page is the finished page (references/motion.md §8)."
+      }
+    ],
+    "images": [
+      {
+        "viewport": "desktop",
+        "width": 1440,
+        "fold": "/workspace/hero-review/output/current-review/taste-refinement/after/desktop-fold.jpg",
+        "pages": [
+          "/workspace/hero-review/output/current-review/taste-refinement/after/desktop-page-01.jpg",
+          "/workspace/hero-review/output/current-review/taste-refinement/after/desktop-page-02.jpg",
+          "/workspace/hero-review/output/current-review/taste-refinement/after/desktop-page-03.jpg"
+        ],
+        "film": []
+      }
+    ]
+  },
+  "browser": [
+    {
+      "language": "es",
+      "width": 1440,
+      "height": 900,
+      "status": "pass",
+      "checks": [
+        "cute new bird artwork, actual pointer greeting and wing/heart playback",
+        "section-owned clipping: no birds inside time section",
+        "reverse/mid-direction return and keyboard greeting remain usable",
+        "all eight selection states, matching play href, arrow-key focus, unified DM Sans",
+        "old yes ignored; empty tap rejected; draw/type/draw last input wins; real signature confirmed and saved",
+        "confirmed signature alone enables signed rose caption; fold scroll Δ0",
+        "reread retains actual signature; reset removes saved signature and restores pad focus"
+      ],
+      "errors": [],
+      "networkErrors": [],
+      "savedPointCount": 26,
+      "foldDelta": 0,
+      "video": null
+    },
+    {
+      "language": "ko",
+      "width": 1920,
+      "height": 1080,
+      "status": "pass",
+      "checks": [
+        "cute new bird artwork, actual pointer greeting and wing/heart playback",
+        "section-owned clipping: no birds inside time section",
+        "reverse/mid-direction return and keyboard greeting remain usable",
+        "all eight selection states, matching play href, arrow-key focus, unified DM Sans",
+        "old yes ignored; empty tap rejected; draw/type/draw last input wins; real signature confirmed and saved",
+        "confirmed signature alone enables signed rose caption; fold scroll Δ0",
+        "reread retains actual signature; reset removes saved signature and restores pad focus"
+      ],
+      "errors": [],
+      "networkErrors": [],
+      "savedPointCount": 26,
+      "foldDelta": 0,
+      "video": null
+    }
+  ]
+}

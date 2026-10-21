@@ -15,7 +15,7 @@
 .post-hero-preview .story-distance-reason{max-width:43ch;margin:30px 0 0;font-size:17px;line-height:1.85;color:#e7d0c7}
 .post-hero-preview .story-time{display:grid;grid-template-columns:.75fr 1.25fr;gap:10%;align-items:center}
 .post-hero-preview .story-time-intro>p{max-width:32ch;color:#ddc2c6;font-size:16px;line-height:1.85;margin:28px 0 0}
-.post-hero-preview .story-shared-place{display:grid;grid-template-columns:29% minmax(0,1fr);gap:4%;align-items:center;padding-right:4%}
+.post-hero-preview .story-shared-place{display:grid;grid-template-columns:29% minmax(0,1fr);gap:4%;align-items:center;padding-right:7.5vw}
 .post-hero-preview .story-couple-copy{position:relative;z-index:2;min-width:0;padding:0 0 30px}
 .post-hero-preview .story-couple-copy h2{font-size:clamp(38px,3vw,58px)}
 .post-hero-preview .story-since{display:flex;flex-direction:column;gap:5px;margin:22px 0 0;color:#cfaab4;font-size:13px;line-height:1.6}

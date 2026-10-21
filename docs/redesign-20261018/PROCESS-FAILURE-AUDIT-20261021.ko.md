@@ -138,3 +138,18 @@ Pact는 단순 yes 버튼 대신 실제 서명 SVG 입력→명시적 확정으�
 [실제 서명이 남은 계약서](../review/companions-pact-1440-es-pact-open.png) · [새가 없는 시간 장면](../review/time-current-es.png) · [서명 뒤 장미](../review/rose-gift-1440-es-received.png)
 
 최신 비공개 검수 사이트 배포는 `appgdep_6ad8ccb70c40819195dedf7efd95fa1f`, 저장 버전 `appgprj_6ad8bbe1b3248191a1456e8672ffbfbe~appgver_ca718efba8508191a3b862b6f638e791`, native 상태 succeeded(2026-10-21 14:31:38 UTC)다. 실제 제품 소스2644293의 static 미러 commit `e1aa7c16d3e0b595a9d460a3f60c3f19c825a3a9`에서 배포했다. URL은 https://yeonseok-lisbeth-review-20261021.pinktrout1024.chatgpt.site 이며 원래 main/서비스 배포·공유 audience는 변경하지 않았다.
+
+
+## Taste 적용: 기존 콘셉트 보존, 2026-10-21
+
+요청한 정확한 `design-taste-frontend`를 Leonxlnx/taste-skill의6010f91 커밋에서 설치했다. 원문 스킬·references·inspect/lint 도구와 MIT LICENSE/UPSTREAM.json을 보존했다. 사용자의 기존 콘셉트 보존 지시에 따라 랜덤 direction draw/새 레이아웃 생성은 실행하지 않았다. 실제로 적용한 과정은 기존 화면 캡처 → typography/layout/critique 기준 대조 → 제한된 스타일 수정 → 원본 inspect 재실행 → 실제 상호작용 검수다. 새 npm 의존성은 없다.
+
+변경: 본문 최빈 크기13→16px, 실제 사용 서체4→2(DM Sans/Gowun Batang), 게임 이름 앞 장식 번호 제거, 게임 선택/hover/focus와 로즈골드 진입 버튼 정리, Hero 메뉴·이름·날짜의 작은 글자 확대, 과도한 문자/버튼 그림자 축소, 승부 장면 양쪽 여백 균형, 계약서 본문16px·안내13px로 개선. 승인 원화/3D 오브젝트/팔레트/카메라/스토리/편지 문장은 교체하지 않았다. 방향키가 포커스 대신 이전 선택을 기준으로 이동하던 문제도 같은 게임 선택 컴포넌트에서 수정했다.
+
+원본 Taste inspector1440: 수정 전14FAIL/11WARN → 수정 후9FAIL/11WARN. 허용 플래그로 숨기지 않은 원시 결과이며 ‘전체 PASS’가 아니다. 남은 항목은 도시명이 시계 위에 있는 eyebrow, 승인된 ♡/색상 조명 gradient/구획선, DOM으로 집계되지 않는 WebGL·SVG 그림, 고정 공유 캔버스에서의 no-title/covered-text 판단, inert 목적지 문구의 reduced-hidden이다. 실제 첫 화면 h1·거리 제목·새/게임/봉투는 캡처에서 확인했으나, 이를 임의로 inspector0FAIL로 환산하지 않는다. 기존 Hero의3줄 제목과 긴 pin에 대한 경고도 남긴다. 이 작업은 승인 콘셉트 안의 가독성·조작 개선이며 Hero 공간 연출의 재설계/새 품질 승인을 뜻하지 않는다.
+
+Chromium headless ANGLE SwiftShader, ES1440×900/KO1920×1080: 각각7그룹 검수 PASS, pageerror0/HTTP4xx·5xx0. 8개 선택과 대응 href·방향키, 새 인사/구역 clipping/역방향 복귀, 빈 서명 거부/실제26점 잉크 저장/재열기·초기화, 편지 접기 scrollΔ0/장미 수령 문구를 확인했다. 이는 실제 GPU 성능 측정이 아니다. 모바일/새 영상은 요청에 따라 제외했다. 게임 내부 플레이와 온라인 두 사용자 API를 이번 스타일 검수에서 재검증한 것으로 보고하지 않는다.
+
+재현: production preview5174에서 `node scripts/verify-taste-refinement.mjs`, Taste `scripts/inspect.mjs http://127.0.0.1:5174/ --widths 1440 --out output/current-review/taste-refinement/after`. 전체 결과는 [전후 원시 보고서](../review/taste-refinement-report.json), [게임 선택](../review/taste-gallery-es.png), [새 설명](../review/taste-birds-es.png), [실제 서명이 남은 계약서](../review/taste-signature-es.png)에 남겼다.
+
+검증: 최종 production build/TypeScript 검사, 랜딩24파일95테스트, diff 공백 검사 통과. 최종 캡처에서 발견한 계약서 한글 단어 중간 줄바꿈도 keep-all로 바로잡았다. 기존 bundle 크기 경고는 남아 있으며 이를 성능 개선 완료로 보고하지 않는다.
