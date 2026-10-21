@@ -30,7 +30,7 @@ export const landingCopy = {
     letterTitle: 'Baby, surprise!',
     letterBody: [
       'Baby, 이거 열어보고 어떤 표정을 지을까 생각하면서 만들었어. 그냥 게임만 할 수 있는 곳 말고, 들어오면 내가 너 생각하면서 만들었다는 게 느껴졌으면 좋겠어.',
-      '네가 가족들이랑 하는 도미노도 나랑 같이 해보고 싶었어. 네가 이기고 메롱하면 조금 억울하겠지만, 그래도 네가 신나하는 얼굴은 보고 싶거든. 대신 내가 이기면 박수 쳐줘야 해 ㅋㅋㅋ',
+      '네가 가족들이랑 하는 도미노도 나랑 같이 해보고 싶었어. 네가 이겼다고 나 놀리면 좀 억울하겠지만, 네가 신나하는 얼굴은 보고 싶거든. 대신 내가 이기면 박수 쳐줘야 해 ㅋㅋㅋ',
       '나는 광주에 있고 너는 산토도밍고에 있잖아. 13시간이나 차이 나고 바로 옆에 갈 수도 없어서 많이 보고 싶어. 이렇게라도 너랑 얘기하고 같이 웃을 시간이 조금 더 생겼으면 좋겠어.',
       '나중에는 화면 말고 바로 옆에서 같이 놀고 싶어. 게임하다가 네 얼굴도 보고, 손도 잡고. 그때까지는 여기서 한 판씩 하자, Baby. 하고 싶은 게 있으면 말해줘. 같이 해보고 싶어.',
       '이 페이지 보고 네가 한 번 웃어주면 좋겠다. 그리고 내가 너 많이 좋아하고, 많이 사랑한다는 것도 알아줬으면 좋겠어. 오래오래 내 편 해줘, Mami. 나도 네 편일게. 사랑해 ♡',
@@ -71,7 +71,7 @@ export const landingCopy = {
     letterTitle: 'Baby, surprise!',
     letterBody: [
       'Baby, hice esto pensando en la cara que pondrías al abrirlo. Quería que fuera más que un lugar para jugar. Quería que al entrar sintieras que lo hice pensando en ti.',
-      'También quería jugar contigo al dominó, como juegas con tu familia. Si me ganas y me sacas la lengua, seguro me voy a quejar un poquito, pero quiero verte así de contenta. Eso sí, si gano yo, me tienes que aplaudir, haha.',
+      'También quería jugar contigo al dominó, como juegas con tu familia. Si me ganas y te burlas un poquito de mí, seguro me voy a quejar, pero también quiero verte así de contenta. Eso sí, si gano yo, me tienes que aplaudir, haha.',
       'Yo estoy en Gwangju y tú en Santo Domingo. Tenemos trece horas de diferencia y no puedo ir a verte así de fácil. Te extraño mucho. Ojalá esto nos dé un ratito más para hablar, jugar y reírnos juntos.',
       'Más adelante quiero jugar contigo teniéndote al lado, sin una pantalla de por medio. Poder mirarte y agarrarte la mano. Mientras tanto, juguemos aquí, Baby. Si hay algo que quieras hacer conmigo, dímelo. Yo también quiero hacerlo contigo.',
       'Si esta página te saca una sonrisa, yo ya estoy feliz. Quiero que sepas lo mucho que te amo. Quédate de mi lado por mucho tiempo, Mami. Yo también quiero estar del tuyo. Te amo ♡',

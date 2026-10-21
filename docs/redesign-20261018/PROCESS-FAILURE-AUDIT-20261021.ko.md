@@ -113,3 +113,5 @@ Method: dual-agent (A: /root/story_critique_a · B: /root/story_critique_b)
 남는 범위: Landing의 3D/모션 묶음은 여전히 약1MB이고 Vite chunk 경고가 있다. 이번 작업으로 전체 기술부채가 사라졌다고 선언하지 않는다. 소프트웨어 렌더링 검수이며 physical GPU·모바일·온라인 backend 검수는 하지 않았다. 기존 57.8초 영상은 edb3589의 이전 문구 checkpoint로 남아 있고 이번 문구/새 설명의 증거는 아래 최신 정지 캡처다.
 
 [한국어 편지](../review/letter-current-ko.png) · [스페인어 편지](../review/letter-current-es.png) · [새 설명](../review/companions-pact-1440-es-birds-apart.png)
+
+사용자 후속 말투 지시에 따라 편지의 혀 내미는 묘사를 ‘이겼다고 나 놀리면’으로 바꿨다. ES도 `me sacas la lengua` 대신 승리 후 장난스럽게 놀리는 표현으로 맞췄다. 승부 일러스트의 승인된 표정 자산은 변경하지 않았다.
