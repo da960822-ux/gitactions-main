@@ -6,8 +6,10 @@ it('uses the playful lifetime-partner line only after receiving and an actual pa
  for(const language of ['ko','es'] as const){
   const normal=roseGiftClosingLine(language,true,false);
   expect(roseGiftClosingLine(language,false,true)).toBe(normal);
-  expect(roseGiftClosingLine(language,true,true)).toContain(language==='ko'?'사인했으니까':'Ya firmaste');
-  expect(normal).not.toContain(language==='ko'?'사인했으니까':'Ya firmaste');
+  const signed=roseGiftClosingLine(language,true,true);
+  expect(signed.startsWith(language==='ko'?'네가 사인했으니까, 이제 우리는 평생 함께야, Baby.':'Como firmaste, ahora vamos a estar juntos toda la vida, Baby.')).toBe(true);
+  expect(signed).toContain(language==='ko'?'내가 제일 좋아하는 내 편':'Mi persona favorita');
+  expect(normal).not.toContain(language==='ko'?'네가 사인했으니까':'Como firmaste');
  }
 });
 
