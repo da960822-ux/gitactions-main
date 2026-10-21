@@ -37,6 +37,7 @@ export function PostHeroPreview({embedded=false,language:externalLanguage,onLang
  const [sharedEvent,setSharedEvent]=useState<{id:SharedEventId;region:DetailRegion}|null>(null);
  const [roseHintOpen,setRoseHintOpen]=useState(false);
  const [letterFinale,setLetterFinale]=useState(createLetterFinaleState);
+ const [giftEpoch,setGiftEpoch]=useState(0);
  useEffect(()=>{if(letterFinale.phase==='reading')void preloadRoseGiftArt();},[letterFinale.phase]);
  const finale=useRef(letterFinale);
  const [pactAccepted,setPactAccepted]=useState(false);
@@ -53,7 +54,7 @@ export function PostHeroPreview({embedded=false,language:externalLanguage,onLang
  const [effect,setEffect]=useState({name:'none',value:0,nonce:0});
  const control=useRef({...createEnvelopeState(),manual:false as boolean|null});
  const focusAfterFold=useRef(false),focusReader=useRef(false);
- const changeLetterView=useCallback((event:LetterFinaleEvent)=>{if(event.type==='read'||event.type==='reopen'||event.type==='shared-open'){closingRect.current=undefined;setLetterClosingRect(undefined);setSurfaceSnapshot(null);}const next=reduceLetterFinale(finale.current,event);finale.current=next;setLetterFinale(next);},[]);
+ const changeLetterView=useCallback((event:LetterFinaleEvent)=>{if(event.type==='read'||event.type==='reopen'||event.type==='shared-open'){setGiftEpoch(epoch=>epoch+1);closingRect.current=undefined;setLetterClosingRect(undefined);setSurfaceSnapshot(null);}const next=reduceLetterFinale(finale.current,event);finale.current=next;setLetterFinale(next);},[]);
  const pendingScroll=useRef<(()=>void)|null>(null);
  const q=useRef(0), p=useRef(0), target=useRef(0), reduced=useRef(reducedMotion);
  const host=useRef<HTMLElement>(null);
@@ -222,7 +223,7 @@ export function PostHeroPreview({embedded=false,language:externalLanguage,onLang
     </div>
     <div className="closed-note" hidden={letterFinale.phase!=='sealed'} style={surfaceSnapshot?{position:'absolute',top:surfaceSnapshot.offset,left:0,right:0}:undefined}><p>{text.sealed}</p><button ref={readerOpener} type="button" className="text-button" onClick={readLetter}>{text.open} ↗</button></div>
    </div>
-   {letterFinale.phase==='rose'&&<div className="letter-rose-pane" style={surfaceSnapshot?{top:surfaceSnapshot.offset}:undefined}><EndingChapter language={language} playHref={playHref} embedded={embedded} state={localEvent} detailsOpen={detailRegion==='ending'} pactAccepted={pactAccepted} reducedMotion={reducedMotion} onReadLetter={readLetter}>{workbench('ending')}</EndingChapter></div>}
+   {letterFinale.phase!=='sealed'&&<div key={giftEpoch} className="letter-rose-pane" hidden={letterFinale.phase!=='rose'} style={surfaceSnapshot?{top:surfaceSnapshot.offset}:undefined}><EndingChapter language={language} playHref={playHref} embedded={embedded} state={localEvent} detailsOpen={detailRegion==='ending'} pactAccepted={pactAccepted} reducedMotion={reducedMotion} onReadLetter={readLetter}>{workbench('ending')}</EndingChapter></div>}
   </section>
   <div id="letter-journey-end" className="letter-journey-anchor" data-pose="1" aria-hidden="true"/>
 
