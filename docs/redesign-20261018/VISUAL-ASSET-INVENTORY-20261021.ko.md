@@ -79,8 +79,12 @@
 | 8게임 장식 sprite atlas | `public/images/rose-game-atlas.png` / `.webp` 1254×1254, 4열×2행 | `.landing`/`.app-shell`의 `.game-thumbnail`, `GameRail` 숨은 로드/대체에 사용. 보석·카드·말·헤드폰·주사위 등은 각 칸에서 식별된다. 부드러운 핑크 장난감 스타일의 좋은 작은 장식 atlas이지만, 어두운 우주나 따뜻한 승인 방의 사실적 일러스트와 시각 계열이 다르다. 이것은 배치/아트 디렉션이 한 장면에서 맞는지 검수할 문제이지 원본 파일 훼손·결함 판정이 아니다 |
 | 편지 envelope | `public/images/lisbeth-letter-envelope.png` / `.webp` | 생성된 독립 foreground art. `src/preview/LandingPreview.tsx`의 `HeroScene` 호출에서 사용. 봉투·봉인·종이 결은 잘 읽힌다. 새 랜딩의 동일 3D 소품이라는 뜻은 아님 |
 | 밤하늘·우주 장면 | `public/images/midnight-rose-sky.webp`, `public/images/our-universe-scene.webp`, 구형 `public/images/landing/cinematic-observatory-hero-v1.webp` | CSS와 folded Hero source에서 우주/하늘 이미지를 참조한다. 2D 생성 배경이며 WebGL·실제 mesh room이 아니다. 보라·로즈 색조, 촛불과 별·행성이 식별된다. 승인 게임방과 겹치는 화면의 미감 적합성은 scene composition 문제다. Hero 현재 변경 중이므로 소스 경로를 final Hero 승인으로 간주하지 않는다 |
-| 구형 hero sprite pack | `public/images/landing-preview/hero/` 아래 heart/light/curve/portrait-shadow PNG들 | 이 폴더는 여러 레이어를 포함한다. 총괄 정리에서 `portrait-shadow.png`, `curve-neutral.png`, `hearts-neutral.png`를 미참조 PNG로 별도 제거 대상으로 확인했다. 이 세 파일과 나머지 폴더를 한 덩어리로 ‘모두 보존’ 또는 ‘모두 삭제’했다고 기록하지 않는다. 그 밖의 파일별 활성 연결·보존 상태는 이 목록에서 판정하지 않았다 |
-| envelope 종이 grain | `public/images/landing-preview/envelope-paper-grain.svg` | preview asset. 현 main-route의 활성 사용은 이번 조사에서 찾지 못했다 |
+| 구형 hero sprite pack | `public/images/landing-preview/hero/` 아래 heart/light/nebula PNG들 | 현재 tracked 파일은 `RasterHearts.tsx`, `HeroDecorations.tsx`, `preview.css`에서 사용한다. 이전 목록의 `portrait-shadow.png`, `curve-neutral.png`, `hearts-neutral.png`는 현재 checkout에 없고 HEAD `b59d36c7`의 Git tree에도 없다. 따라서 과거의 미참조 판정은 지금 삭제 후보를 뜻하지 않는다. 기존 파일은 별도 재검토 없이 보존한다 |
+| envelope 종이 grain | `public/images/landing-preview/envelope-paper-grain.svg` | preview 전용. `src/preview/preview.css`의 envelope 5개 면에서 직접 참조된다. 메인 랜딩 caller는 확인되지 않았지만 standalone preview가 연결돼 있어 미사용 자산으로 분류하지 않는다 |
+
+## 2026-10-21 후속 정리 후보 확인
+
+이번 좁은 재확인에서는 이미 완료된 동일 SHA 대량 정리를 반복하지 않고, 기존 문서가 미사용으로 지목한 항목만 현재 Git tree와 caller로 재검증했다. 추가 삭제 후보는 확인하지 못했다. 앞서 지목된 세 sprite 파일은 현재 파일 자체가 없으므로 크기·SHA를 제시할 수 없고, Git tree에서도 경로가 확인되지 않는다. 반면 남아 있는 sprite와 envelope grain은 preview caller가 있다. 승인/반응 원본, provenance·검수 기록, 보존 목적의 구형 3D 버전 및 Remotion/HyperFrames 자료는 중복으로 판정하지 않았다. 이 판정은 해당 경로에 대한 제한 확인이며 저장소 전체의 모든 자산을 전수 분류했다는 뜻은 아니다.
 
 ## 어디에 있는지와 보존 원칙
 

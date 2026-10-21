@@ -68,6 +68,8 @@ R01–R04 공동 기능은 맥락별 opt-in이다. 인증을 강제하지 않고
 
 ## 현재 증거와 남은 작업
 
+- `b59d36c` 이후 비활성 옛 소스 6개/187줄을 정리했다. 현재 앱·preview·scripts·진행 중 Hero 연구에서 호출하지 않는 `shellGeometry`, `arrivalCoveV15`, `poseSpaceV11`, `storyAtriumV19`와 앞 두 helper 전용 테스트를 제거했고 원본 archive·계획·승인 자산은 유지했다. 삭제 후 전체 76 files/623 tests와 TypeScript/Vite/edge build가 통과했다. 이전 629개 중 6개는 제거한 비활성 helper의 테스트다. 아래 기존 629 기록은 정리 전 구현의 검수이며, 같은 경로의 최신 full/build 로그는 이번 정리 결과다. [정리 metadata](../../output/current-review/implementation-20261021/room-reward-correction/report.json)의 `inactiveSourceCleanup`에 구분했다. 기존 500kB chunk 경고는 남는다.
+
 - [최신 실제 스페인어 녹화](../review/landing-current-es.mp4)는 source `da2464d15fa7f0203851ce72f47cd70e2735f13a`의 기록이다. 실제 Chromium/Linux/SwiftShader, 1440×900·DPR1, 44.53초·1.08배속·H.264·무음·무자막이며 root도 ffprobe·contact sheet와 실제 인코딩 파일의 36.5초/38.5초 편지 프레임을 확인했다. 두 프레임 모두 원문 5문단과 양쪽 장미가 보이며, 녹화의 독서 대기는 원속도 3초다. Hero 정/역/정, B의 실제 L06 그림/카드/Escape, 엔진 보고 domino hover·Da Vinci 선택, 편지 열기/원문 5문단 읽기/닫기, 그림 상태를 회수한 settled 엔딩을 담았다. 브라우저/HTTP 오류 0건이며 실제 하드웨어 GPU나 전체 디자인 4/5 합격의 증거가 아니다. [현재 실행 metadata](../../output/current-review/implementation-20261021/spanish-landing-walkthrough/report-current.json)의 source와 연결한다. 아래 이전 5c12 영상은 독립 평가 대상 보존용이다.
 
 - [실제 스페인어 웹 사용 녹화](../review/landing-5c12f9b-es.mp4)는 source `5c12f9b`의 검수용 기록이다. 1440×900, 46.60초, 1.08배속, 무음·무자막 H.264로 Hero 왕복·B의 실제 낙서/카드·갤러리 hover/선택·편지 열기/읽기/닫기·엔딩을 담았다. 페이지를 재현한 제작 영상이 아니며 원본 녹화의 준비/마지막 대기 시간만 잘랐다. 전체 디자인 합격이나 이후 수정본을 뜻하지 않는다. 아래 `output/` 링크는 작업환경의 로컬 검수 자료다.
