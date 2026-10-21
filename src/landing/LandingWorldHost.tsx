@@ -70,6 +70,7 @@ export function LandingWorldHost({language,onLanguageChange,selected,onSelect}:P
    }
   };
   const cameraPosition=new THREE.Vector3(),cameraTarget=new THREE.Vector3(),roomEye=ROOM_EYE.clone(),connectionBackground=new THREE.Color();
+  let measuredPaperHeight:number|undefined;
   let heroBackdrop:THREE.Scene['background']|undefined;
   const roomBackground=new THREE.Color('#21151d');
   const roomContain=(width:number,height:number)=>Math.max(1,(1672/941)/(width/height));
@@ -168,7 +169,9 @@ export function LandingWorldHost({language,onLanguageChange,selected,onSelect}:P
     world.updateRoomExit(0);
     post.update({...postState.current,width,height,ownCamera:false});postNeedsFrame=false;
     roomEye.copy(ROOM_EYE);if(width>=760)roomEye.addScaledVector(ROOM_BACK,roomContain(width,height)-1);
-    const composed=composition.update({progress,bridge,galleryWeight:0,opening:postState.current.opening,time:elapsed,reducedMotion:media.matches,width,height,roomEye,roomTarget:ROOM_TARGET,effect:postState.current.effect,localEvent:postState.current.localEvent});
+    const paperHeight=root.querySelector<HTMLElement>('#moment-letter-copy')?.offsetHeight??0;
+    if(paperHeight>32)measuredPaperHeight=paperHeight;
+    const composed=composition.update({progress,bridge,galleryWeight:0,opening:postState.current.opening,time:elapsed,reducedMotion:media.matches,width,height,roomEye,roomTarget:ROOM_TARGET,effect:postState.current.effect,localEvent:postState.current.localEvent,paperHeight:measuredPaperHeight});
     postNeedsFrame=composed.needsFrame;
     world.updateRoomExit(composed.roomExit);world.updateRoomDesk(composed.roomDesk);
     cameraPosition.copy(composed.eye).applyMatrix4(postTransform);cameraTarget.copy(composed.target).applyMatrix4(postTransform);

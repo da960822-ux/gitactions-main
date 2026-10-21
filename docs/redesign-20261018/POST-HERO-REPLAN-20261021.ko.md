@@ -89,6 +89,14 @@ R01–R04 공동 기능은 맥락별 opt-in이다. 인증을 강제하지 않고
 - [L06 실제 입력 진단 및 해결](../../output/current-review/implementation-20261021/mobile-post-confirmation/touch-diagnostic.json)의 `afterFix.passed=true`: KO/ES 자유 터치 그림→카드→그림에서 L06 유지/동일 stroke 보존, 터치·마우스·Enter·Space 각각 한 번 전환을 확인했다. 재배치 뒤 다른 관련 버튼에 전달되던 호환 click을 공통 조상 capture에서 막았다. console/network 0건. pointercancel/영역 밖 release 별도 주입, 실제 휴대폰과 실제 GPU는 미검수다.
 - 게임 선택 버튼의 잘못된 이동 화살표와 불필요한 영문 kicker만 제거했다. 실제 게임 진입 화살표, 중앙+7개, 2×4, 조각 크기·색·자산은 그대로다. 승인 I/B/P 원본과 게임/리듬 원본을 교체하지 않았다.
 
+### 실제 봉투·원문 구도 통합 — 2026-10-21 UTC
+
+같은 봉투의 개봉과 독서를 중심에 둔 연구는 독립 A의 정지 구도/읽기 위계/개인적 목적 각각 4/5를 받은 뒤 desktop에 통합했다. 넓은 목재 바닥·받침·펜은 desktop 전체 구간에서 숨겨 재등장하지 않으며, 모바일 기존 지원면은 유지한다. 새로운 장식·광원·이미지·본문·renderer는 추가하지 않았다. 봉투의 실제 불투명 front cap은 DOM 원문과 같은 크림색, 두께/봉인/접힘은 기존 lit material을 유지한다. 단일 원문 article이 정상 17px·1920의 740px/1440의 705px 너비로 개봉 화면 오른쪽에 도착한 뒤 같은 원문이 장미 4+4 독서 위치로 이어진다. 공유 Host는 유효한 본문 높이 cache를 전달하고 Hero/B 경로·postTransform·갤러리는 변경하지 않았다.
+
+[실제 통합 기록](../../output/current-review/implementation-20261021/early-letter-handoff/README.ko.md)의 1920 ES·1440 KO는 단일 원문 5문단, 개봉/독서/접기/재열기, q 중간 반전과 p .78→.69/.60→.663 복원, 오류·overflow 0을 확인했다. 390 KO는 기존 정상 독서 spot-check다. 최초 locator/초기 상태 실행에서 progress 이동이 나왔지만 직전 bbox 기록이 없어 원인을 확정하지 않았다. 후속 **보이는 버튼 중심을 실제 마우스로 클릭한 1920 ES 진단**은 별도 보정 스크롤 없이 q0→q1→q0 전체에서 scrollY 5968/p .663을 유지했다. 계약 pose로 보정했던 초기 검사와 이 native 증거를 구분한다.
+
+최종 소스는 [main 77 files/620 tests](../../output/current-review/implementation-20261021/early-letter-handoff/full-integrated-tests.log), [post 27/27](../../output/current-review/implementation-20261021/early-letter-handoff/post-integrated-tests.log), [TypeScript/Vite/edge build](../../output/current-review/implementation-20261021/early-letter-handoff/build-integrated.log)와 diffcheck를 통과했다. post runner는 기존 npm cache의 tsx를 offline으로 사용했으며 의존성/lockfile 변경은 없다. >500 kB chunk 경고는 남는다. 위 b5b2613 영상은 이 통합 전 기록이며 최신 영상은 source commit 이후 같은 현재 영상 파일을 갱신한다. 연구 4/5를 전체 Lusion 공간 모션이나 Hero의 새 점수로 옮기지 않는다.
+
 ### 후속 발견물 시각 통합과 모바일 경로 감사
 
 - L06는 실제 그림·같은 그림 카드가 주인공이 되도록 desktop CSS만 바꿨다. 독립 A의 **집중 작업 구도/위계/개인적 목적 각각 4/5**는 QA 후보 정지 화면에 한정하며 전체 랜딩이나 기본 B 구도 합격이 아니다. 같은 담당자가 `preview.css`의 min-width 761px/L06 스코프 24줄로 통합했다. [실제 통합 보고서](../../output/current-review/implementation-20261021/room-reward-correction/report.json)의 `productIntegration`은 1920 ES·1440 KO 자유 그림→동일 stroke 카드→복귀→X/Escape·B focus/scroll 복원과 390 기존 스타일 유지 총 11/11, 오류/overflow 0을 기록한다. root도 두 제품 PNG를 열고 [production build](../../output/current-review/implementation-20261021/room-reward-correction/build-integrated.log)를 확인했다. TSX·터치 guard·다른 15개·Host·모바일 CSS·원문·갤러리는 변경하지 않았다. 위 b5b2613 영상에는 이 CSS 후속 수정이 들어 있지 않다.

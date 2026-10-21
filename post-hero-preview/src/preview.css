@@ -79,6 +79,10 @@
 .post-hero-preview.post-hero-embedded .world{position:sticky;inset:auto;top:0;height:100svh;margin-bottom:-100svh;width:100%;min-height:400px}
 /* Keep shared-host layout rules out of the content's carefully reserved reading field. */
 @media(min-width:761px){
+ .post-hero-preview .letter-paper{word-break:keep-all;overflow-wrap:break-word}
+ .landing-world-host .post-hero-preview.post-hero-embedded .letter-invitation .chapter-copy{max-width:min(430px,28vw)}
+ .landing-world-host .post-hero-preview.post-hero-embedded .letter-invitation .chapter-copy h2{font-size:clamp(48px,3.02vw,58px)}
+ .landing-world-host .post-hero-preview.post-hero-embedded.letter-is-open .letter-invitation .chapter-copy h2{font-size:clamp(36px,2.1vw,40px)}
  .landing-world-host .post-hero-preview.post-hero-embedded .chapter.distance,.landing-world-host .post-hero-preview.post-hero-embedded .chapter.letter-invitation{align-items:center;padding:110px 7.5vw;min-height:100svh}
  .landing-world-host .post-hero-preview.post-hero-embedded .chapter-copy,.landing-world-host .post-hero-preview.post-hero-embedded .ending-copy{padding:0;margin:0;background:none;border:0;max-width:min(470px,33vw)}
  .landing-world-host .post-hero-preview.post-hero-embedded .chapter h2{font-size:clamp(40px,3.4vw,64px);margin-bottom:28px}
@@ -87,6 +91,7 @@
  .landing-world-host .post-hero-preview.post-hero-embedded .ending-copy{max-width:min(460px,31vw)}
  .landing-world-host .post-hero-preview.post-hero-embedded .letter-section{background:#13131c;padding:90px 24px;min-height:100svh}
 }
+@media(min-width:761px) and (max-width:1500px){.landing-world-host .post-hero-preview.post-hero-embedded .letter-invitation .chapter-copy{max-width:330px}}
 @media(max-width:1000px){
  .post-hero-preview .chapter-copy{max-width:40vw}.post-hero-preview .chapter h2{font-size:40px}
  .post-hero-preview .country-labels{right:5vw;gap:12px;font-size:12px}.post-hero-preview .country-gap{width:24px}

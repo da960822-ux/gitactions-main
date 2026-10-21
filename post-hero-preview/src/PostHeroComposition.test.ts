@@ -29,6 +29,16 @@ test('main letter stage omits DOM-owned ending copies and preserves letter, sess
  const writingPad=rig.root.getObjectByName('LETTER_WRITING_PAD')!;assert.equal(writingPad.parent?.name,'LETTER_WRITING_DESK');
  const gallery=evaluate(.5,1);assert.ok(gallery.galleryAnchor.distanceTo(new THREE.Vector3(2,.193,-14.3))<1e-6);
  assert.equal(gallery.galleryDisplayId,undefined);assert.equal(gallery.galleryStoryFocus,0);assert.equal(gallery.galleryScale,.65);
+ const hostTransform=new THREE.Matrix4().makeTranslation(-6,-4.3,6).multiply(new THREE.Matrix4().makeRotationY(Math.PI)).multiply(new THREE.Matrix4().makeTranslation(-9,4.3,10));
+ for(const [width,height] of [[1920,1080],[1440,900]]){
+  const opening=rig.update({...frame,progress:.663,opening:0,width,height,paperHeight:644});assert.equal(opening.fov,30);
+  const view=new THREE.PerspectiveCamera(opening.fov,width/height,.05,100);view.position.copy(opening.eye).applyMatrix4(hostTransform);view.lookAt(opening.target.clone().applyMatrix4(hostTransform));view.updateMatrixWorld(true);
+  const centre=opening.letterAnchor.clone().add(new THREE.Vector3(0,0,-.675)).applyMatrix4(hostTransform).project(view);
+  assert.ok(Math.abs((centre.x+1)/2-.7)<.004&&Math.abs((1-centre.y)/2-.5)<.004,'Host upY and unchanged shared transform register the close envelope at70%/50% in bothPC views');
+  assert.ok(Math.abs(opening.eye.z-opening.target.z)>.03,'near-overhead retains a stable camera basis');
+  for(const progress of [.54,.55,.663,.94]){rig.update({...frame,width,height,progress});assert.equal(tabletop.visible,false);assert.equal(writingPad.parent!.visible,false);}
+ }
+ const mobile=rig.update({...frame,width:390,height:844,progress:.663});assert.equal(mobile.fov,38);assert.equal(tabletop.visible,true);assert.equal(writingPad.parent!.visible,true,'mobile keeps its existing letter support and camera');
  const session={...createLocalEventState(),strokes:[[{x:10,y:10},{x:40,y:20}]],drawingFlipped:true,hasSavedDecor:true},savedSession=JSON.stringify(session);
  const end=rig.update({...frame,progress:1,opening:1,localEvent:session});
  assert.equal(JSON.stringify(session),savedSession,'DOM keeps the exact original session strokes and decoration choice');

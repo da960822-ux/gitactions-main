@@ -16,3 +16,14 @@ export function blendPaperCorners(from:Point[],to:Point[],progress:number):Point
  const t=Math.min(1,Math.max(0,progress));const s=t*t*(3-2*t);
  return from.map((point,i)=>({x:point.x+(to[i].x-point.x)*s,y:point.y+(to[i].y-point.y)*s}));
 }
+
+/** Natural reader placement and the matching envelope retirement, in viewport pixels. */
+export function letterOpeningLayout(width:number,height:number,paperHeight:number|undefined,opening:number){
+ const w=Number.isFinite(width)&&width>0?width:1,h=Number.isFinite(height)&&height>0?height:1;
+ const bodyHeight=typeof paperHeight==='number'&&Number.isFinite(paperHeight)&&paperHeight>32?paperHeight:640;
+ const paperWidth=Math.max(1,Math.min(740,Math.floor(w*.49))),top=h*.1;
+ const phase=Math.min(1,Math.max(0,(Number.isFinite(opening)?opening:.9)-.9)/.1),handoff=phase*phase*(3-2*phase);
+ const pixelsPerUnit=h/(12*Math.tan(Math.PI/12));
+ const closedBase=h/2+.675*pixelsPerUnit,openBase=top+Math.max(bodyHeight+105,(1.35+.96*Math.cos(Math.PI/12))*pixelsPerUnit+24);
+ return {left:w*.7-paperWidth/2,top,width:paperWidth,height:bodyHeight,pixelsPerUnit,handoff,envelopeBase:closedBase+(openBase-closedBase)*handoff};
+}

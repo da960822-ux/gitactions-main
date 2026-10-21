@@ -79,6 +79,14 @@ export function createLetterCollection(options:{scene:THREE.Scene;camera:THREE.P
     box(1.62,.009,.003,gold,topFold,0,.55,.012);
     box(1.62,.009,.003,gold,bottomFold,0,-.55,.012);
 
+ const paperFace=new THREE.MeshBasicMaterial({color:'#f4e8d2',side:THREE.DoubleSide,toneMapped:false});
+ const paperFaces:Array<{mesh:THREE.Mesh;original:THREE.Material;flat:THREE.Material[]}>=[];
+ scene.traverse(object=>{
+  if(!(object instanceof THREE.Mesh)||object.material!==paper&&object.material!==cream)return;
+  const original=object.material;
+  if(object.geometry.type==='ExtrudeGeometry')paperFaces.push({mesh:object,original,flat:[paperFace,original]});
+  else if(object.geometry.type==='BoxGeometry')paperFaces.push({mesh:object,original,flat:[original,original,original,original,paperFace,original]});
+ });
  function projectPaper(){
   if(disposed||!latest.onPaperPose)return;
   scene.updateWorldMatrix(true,true);camera.updateMatrixWorld(true);
@@ -94,12 +102,15 @@ export function createLetterCollection(options:{scene:THREE.Scene;camera:THREE.P
   latest=frame;
   scene.rotation.y=-.777*ease(.55,.78,frame.progress)*(1-ease(.94,1,frame.progress));
   envelope.rotation.x=-Math.PI/2*(1-ease(.55,.62,frame.progress))-.5*Math.PI*ease(.94,1,frame.progress);
+  const desktop=frame.width>=761;
+  if(desktop){scene.rotation.y=0;envelope.rotation.x=-Math.PI/2;}
+  for(const face of paperFaces)face.mesh.material=desktop?face.flat:face.original;
   const q=THREE.MathUtils.clamp(Number.isFinite(frame.opening)?frame.opening:0,0,1);
   if(frame.effect?.name==='wax-stamp')heartSelected=frame.effect.value>0;
   heartStamp.visible=heartSelected;initialsStamp.visible=!heartSelected;
   seal.scale.setScalar(1);
   const domReading=Boolean(frame.onPaperPose)&&q>.9&&frame.progress>=.62&&frame.progress<.94;
-  insert.visible=!domReading;
+  insert.visible=!domReading&&(!desktop||q>.36);
       flap.rotation.x=-ease(.12,.36,q)*THREE.MathUtils.degToRad(165);
       seal.position.y=.48-ease(.12,.34,q)*.35;
       seal.position.z=.235+ease(0,.12,q)*.08;
@@ -126,7 +137,7 @@ export function createLetterCollection(options:{scene:THREE.Scene;camera:THREE.P
    if(disposed)return;disposed=true;scene.removeFromParent();
    const geometries=new Set<THREE.BufferGeometry>(),materials=new Set<THREE.Material>();
    scene.traverse(object=>{if(object instanceof THREE.Mesh){geometries.add(object.geometry);(Array.isArray(object.material)?object.material:[object.material]).forEach(material=>materials.add(material));}});
-   geometries.forEach(geometry=>geometry.dispose());materials.forEach(material=>material.dispose());foilTexture.dispose();initialsTexture.dispose();
+   materials.add(paperFace);geometries.forEach(geometry=>geometry.dispose());materials.forEach(material=>material.dispose());foilTexture.dispose();initialsTexture.dispose();
    latest.onPaperPose?.({corners:[],visible:false});
   }
  };

@@ -1,8 +1,9 @@
 import * as THREE from 'three';
 import type {LocalEventState} from '../../post-hero-preview/src/LocalEventRig';
+import {letterOpeningLayout} from '../../post-hero-preview/src/paperProjection';
 import {RoundedBoxGeometry} from 'three/examples/jsm/geometries/RoundedBoxGeometry.js';
 
-export type PostCompositionFrame={progress:number;bridge:number;galleryWeight:number;opening:number;time:number;reducedMotion:boolean;width:number;height:number;roomEye:THREE.Vector3;roomTarget:THREE.Vector3;effect?:{name:string;value:number;nonce:number};localEvent?:LocalEventState};
+export type PostCompositionFrame={progress:number;bridge:number;galleryWeight:number;opening:number;time:number;reducedMotion:boolean;width:number;height:number;roomEye:THREE.Vector3;roomTarget:THREE.Vector3;effect?:{name:string;value:number;nonce:number};localEvent?:LocalEventState;paperHeight?:number};
 const range=(a:number,b:number,p:number)=>THREE.MathUtils.smoothstep(p,a,b);
 // Stage-local poses; the room owner chooses the shared transform after room approval.
 const OFFSET=new THREE.Vector3(9,-4.3,-10);
@@ -43,8 +44,8 @@ export function createPostHeroComposition(scene:THREE.Scene,onInvalidate:()=>voi
  const fill=new THREE.HemisphereLight('#eee1da','#181823',.8);root.add(fill);
  const key=new THREE.DirectionalLight('#f7eff0',2.3);key.castShadow=true;key.shadow.mapSize.set(1024,1024);Object.assign(key.shadow.camera,{left:-13,right:13,top:11,bottom:-11,near:1,far:45});key.shadow.camera.updateProjectionMatrix();key.shadow.bias=-.00025;key.shadow.normalBias=.008;key.shadow.intensity=.55;key.shadow.radius=4;root.add(key,key.target);
  const cool=new THREE.DirectionalLight('#b9c4df',.6);cool.position.set(4,6,-5);root.add(cool);
- const eye=new THREE.Vector3(),target=new THREE.Vector3(),a=new THREE.Vector3(),b=new THREE.Vector3(),background=new THREE.Color('#13141c');
- let eventWeight=0,eventFrom=0,eventTarget=0,eventStart=0;
+ const eye=new THREE.Vector3(),target=new THREE.Vector3(),a=new THREE.Vector3(),b=new THREE.Vector3(),background=new THREE.Color('#13141c'),openingBackground=new THREE.Color('#21161f');
+ let eventWeight=0,eventFrom=0,eventTarget=0,eventStart=0,lastLayout='';
  const output={eye,target,fov:38,galleryScale:.65,galleryDisplayId:undefined as string|undefined,galleryStoryFocus:0,galleryAnchor:GALLERY.clone().add(OFFSET),letterAnchor:LETTER.clone().add(OFFSET),letterScale:1,roomExit:0,roomDesk:0,background,needsFrame:false};
  return{root,
  update(frame:PostCompositionFrame){
@@ -68,10 +69,19 @@ export function createPostHeroComposition(scene:THREE.Scene,onInvalidate:()=>voi
   eye.sub(target).multiplyScalar(1+.08*invitationView).add(target);
   const contain=frame.width>=760?Math.max(1,(16/9)/(frame.width/Math.max(1,frame.height))):1;
   eye.sub(target).multiplyScalar(contain).add(target);
+  const desktopLetter=frame.width>=761,overhead=desktopLetter?range(.55,.62,p)*(1-range(.94,1,p)):0;
+  tabletop.visible=desk.visible=!desktopLetter;
+  if(overhead>0){
+   const layout=letterOpeningLayout(frame.width,frame.height,frame.paperHeight,frame.opening);
+   const viewHeight=frame.height/layout.pixelsPerUnit,x=LETTER.x-.2*viewHeight*frame.width/Math.max(1,frame.height),z=LETTER.z-(layout.envelopeBase-frame.height/2)/layout.pixelsPerUnit;
+   eye.lerp(a.set(x,LETTER.y+6,z+.04),overhead);target.lerp(b.set(x,LETTER.y,z),overhead);
+  }
+  background.set('#13141c').lerp(openingBackground,overhead);
   eye.add(root.position);target.add(root.position);
   output.galleryAnchor.copy(GALLERY).add(root.position);output.galleryAnchor.x-=18*galleryDeparture;output.galleryAnchor.z-=4*galleryDeparture;output.galleryAnchor.y+=(4.5*settle-2.4*(1-settle));output.letterAnchor.copy(LETTER).add(root.position);output.letterAnchor.x=desk.position.x+root.position.x;
   const letter=range(.55,.62,p),ending=range(.94,1,p);a.set(3,.3,0).lerp(LETTER,letter).lerp(b.set(4.6,1,-.3),ending);key.target.position.copy(a);key.position.copy(a).add(b.set(-6,11,7));key.intensity=2.3*bridge;fill.intensity=.8*bridge;cool.intensity=.6*bridge;
-  output.needsFrame=Math.abs(eventWeight-eventTarget)>.0001;
-  output.fov=38;output.roomDesk=bridge;output.roomExit=0;return output;
+  const layoutKey=`${frame.width}:${frame.height}:${frame.paperHeight}`;
+  output.needsFrame=Math.abs(eventWeight-eventTarget)>.0001||overhead>0&&layoutKey!==lastLayout;lastLayout=layoutKey;
+  output.fov=THREE.MathUtils.lerp(38,30,overhead);output.roomDesk=bridge;output.roomExit=0;return output;
  },dispose(){if(disposed)return;disposed=true;root.removeFromParent();geometries.forEach(item=>item.dispose());materials.forEach(item=>item.dispose());textures.forEach(item=>item.dispose());key.shadow.map?.dispose();}};
 }

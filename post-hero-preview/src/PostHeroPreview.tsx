@@ -1,7 +1,7 @@
 import { lazy, Suspense, useCallback, useEffect, useId, useRef, useState, type ReactNode } from 'react';
 import { landingCopy } from '../../src/copy/home';
 import type { PaperPose, PostHeroState } from './Scene';
-import { paperTransform, blendPaperCorners } from './paperProjection';
+import { paperTransform, blendPaperCorners, letterOpeningLayout } from './paperProjection';
 import Details from './Details';
 import SharedEventsPanel from './SharedEventsPanel';
 import type {SharedEventId,SharedEventRound} from '../../src/core/sharedEventsState';
@@ -48,11 +48,16 @@ export function PostHeroPreview({embedded=false,language:externalLanguage,onLang
  const trackPaper=useCallback((pose:PaperPose)=>{
    const article=paper.current,slot=paperSlot.current;if(!article||!slot)return;
    if(!pose.visible){article.removeAttribute('data-tracking');article.removeAttribute('data-paper-corners');article.style.removeProperty('position');article.style.removeProperty('left');article.style.removeProperty('top');article.style.removeProperty('width');article.style.removeProperty('transform');slot.style.removeProperty('height');return;}
-   const bounds=slot.getBoundingClientRect(),width=bounds.width,height=article.offsetHeight;
+   const bounds=slot.getBoundingClientRect(),phase=clamp01((p.current-.70)/.16),readBlend=phase*phase*(3-2*phase),desktop=innerWidth>=761;
+   const opening=letterOpeningLayout(innerWidth,innerHeight,article.offsetHeight,q.current);
+   const width=desktop?opening.width+(bounds.width-opening.width)*readBlend:bounds.width;
+   article.style.width=`${width}px`;const height=article.offsetHeight;
    if(!width||!height)return;
    slot.style.height=`${height}px`;
    const destination=[{x:bounds.left,y:bounds.top},{x:bounds.right,y:bounds.top},{x:bounds.right,y:bounds.top+height},{x:bounds.left,y:bounds.top+height}];
-   const corners=blendPaperCorners(pose.corners,destination,clamp01((p.current-.70)/.16));
+   const openingCorners=[{x:opening.left,y:opening.top},{x:opening.left+opening.width,y:opening.top},{x:opening.left+opening.width,y:opening.top+height},{x:opening.left,y:opening.top+height}];
+   const reader=desktop?blendPaperCorners(openingCorners,destination,phase):destination;
+   const corners=desktop?blendPaperCorners(pose.corners,reader,opening.handoff):blendPaperCorners(pose.corners,destination,phase);
    const transform=paperTransform(corners,width,height);if(!transform)return;
    article.dataset.tracking='true';article.dataset.paperCorners=JSON.stringify(corners);article.style.position='fixed';article.style.left='0';article.style.top='0';article.style.width=`${width}px`;article.style.transform=transform;
  },[]);
