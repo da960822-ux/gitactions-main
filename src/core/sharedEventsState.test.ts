@@ -38,6 +38,26 @@ describe('shared event round state', () => {
     expect(() => apply(expired, 'p2', 'confirm', 20_101)).toThrow('event_round_expired');
   });
 
+  it.each(['R03', 'R04'] as const)('gives %s time to create contributions without extending the fixed deadline on edits', eventId => {
+    const intent = eventId === 'R03' ? { points: [{ x: 0.1, y: 0.2 }] } : { pattern: [1, 2] };
+    let state = apply(createSharedEventRound(), 'p1', 'propose', 100, { eventId, intent });
+    expect(state.expiresAt).toBe(120_100);
+    expect(advanceSharedEventRound(state, 30_000)).toBe(state);
+    state = apply(state, 'p2', 'contribute', 30_000, { intent });
+    state = apply(state, 'p1', 'contribute', 60_000, { intent });
+    expect(state.expiresAt).toBe(120_100);
+    expect(advanceSharedEventRound(state, 120_099)).toBe(state);
+    expect(advanceSharedEventRound(state, 120_100)).toMatchObject({ status: 'expired', readyBy: {}, confirmBy: {}, ackBy: {} });
+    expect(() => apply(state, 'p2', 'ready', 120_100)).toThrow('event_round_expired');
+  });
+
+  it.each(['R01', 'R02'] as const)('keeps the short consent deadline for %s', eventId => {
+    const intent = eventId === 'R01' ? null : { decorId: 'robot' };
+    const state = apply(createSharedEventRound(), 'p1', 'propose', 100, { eventId, intent });
+    expect(state.expiresAt).toBe(20_100);
+    expect(advanceSharedEventRound(state, 20_100).status).toBe('expired');
+  });
+
   it('lets either member cancel and prevents a scheduled round from surviving cancellation', () => {
     let state = apply(createSharedEventRound(), 'p1', 'propose', 100, { eventId: 'R01', intent: null });
     state = apply(state, 'p1', 'ready', 101);

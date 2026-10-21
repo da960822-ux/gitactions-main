@@ -32,6 +32,8 @@ export type SharedEventAction =
   | { type: 'cancel'; requestId: string; revision: number; roundId: string; reason?: 'cancel' | 'timeout' | 'disconnect' | 'hidden' };
 
 export const SHARED_EVENT_READY_MS = 20_000;
+// Drawing and taking turns need more time than opening or accepting a gift.
+export const SHARED_EVENT_PREPARATION_MS = 120_000;
 export const SHARED_EVENT_COOLDOWN_MS = 30_000;
 export const SHARED_EVENT_START_DELAY_MS = 700;
 const MAX_RECEIPTS = 128;
@@ -115,7 +117,8 @@ export function applySharedEventAction(
   if (action.type === 'propose') {
     if (state.status === 'proposed' || state.status === 'scheduled') fail('event_round_unavailable');
     if (state.lastStartedAt !== null && serverNow < state.lastStartedAt + SHARED_EVENT_COOLDOWN_MS) fail('event_cooldown');
-    next = { ...state, roundId: action.roundId, eventId: action.eventId, seed: parseInt(action.roundId.replaceAll('-', '').slice(-8), 16), ackBy: {}, revision: state.revision + 1, expiresAt: serverNow + SHARED_EVENT_READY_MS, startAt: null, status: 'proposed', intentBy: { [actor]: action.intent }, readyBy: {}, confirmBy: {} };
+    const preparationMs = action.eventId === 'R03' || action.eventId === 'R04' ? SHARED_EVENT_PREPARATION_MS : SHARED_EVENT_READY_MS;
+    next = { ...state, roundId: action.roundId, eventId: action.eventId, seed: parseInt(action.roundId.replaceAll('-', '').slice(-8), 16), ackBy: {}, revision: state.revision + 1, expiresAt: serverNow + preparationMs, startAt: null, status: 'proposed', intentBy: { [actor]: action.intent }, readyBy: {}, confirmBy: {} };
   } else {
     if (action.roundId !== state.roundId || !['proposed', 'scheduled'].includes(state.status)) fail(state.status === 'expired' ? 'event_round_expired' : 'event_round_unavailable');
     if (action.type === 'cancel') {

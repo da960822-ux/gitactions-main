@@ -28,6 +28,7 @@ function messageForError(error: unknown, language: 'ko' | 'es') {
   const t = copy[language];
   if (code.includes('online_unavailable')) return t.unavailable;
   if (code.includes('auth') || code.includes('login')) return t.auth;
+  if (code.includes('event_round_expired')) return t.expired;
   if (code.includes('expired')) return t.sessionExpired;
   if (code.includes('event_cooldown')) return t.cooldown;
   if (code.includes('session') || code.includes('invite')) return t.sessionUnavailable;

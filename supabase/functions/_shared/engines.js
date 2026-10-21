@@ -6757,6 +6757,7 @@ function reactionMessageForId(value) {
 
 // src/core/sharedEventsState.ts
 var SHARED_EVENT_READY_MS = 2e4;
+var SHARED_EVENT_PREPARATION_MS = 12e4;
 var SHARED_EVENT_COOLDOWN_MS = 3e4;
 var SHARED_EVENT_START_DELAY_MS = 700;
 var MAX_RECEIPTS = 128;
@@ -6824,7 +6825,8 @@ function applySharedEventAction(current, actor, action, serverNow) {
   if (action.type === "propose") {
     if (state.status === "proposed" || state.status === "scheduled") fail("event_round_unavailable");
     if (state.lastStartedAt !== null && serverNow < state.lastStartedAt + SHARED_EVENT_COOLDOWN_MS) fail("event_cooldown");
-    next = { ...state, roundId: action.roundId, eventId: action.eventId, seed: parseInt(action.roundId.replaceAll("-", "").slice(-8), 16), ackBy: {}, revision: state.revision + 1, expiresAt: serverNow + SHARED_EVENT_READY_MS, startAt: null, status: "proposed", intentBy: { [actor]: action.intent }, readyBy: {}, confirmBy: {} };
+    const preparationMs = action.eventId === "R03" || action.eventId === "R04" ? SHARED_EVENT_PREPARATION_MS : SHARED_EVENT_READY_MS;
+    next = { ...state, roundId: action.roundId, eventId: action.eventId, seed: parseInt(action.roundId.replaceAll("-", "").slice(-8), 16), ackBy: {}, revision: state.revision + 1, expiresAt: serverNow + preparationMs, startAt: null, status: "proposed", intentBy: { [actor]: action.intent }, readyBy: {}, confirmBy: {} };
   } else {
     if (action.roundId !== state.roundId || !["proposed", "scheduled"].includes(state.status)) fail(state.status === "expired" ? "event_round_expired" : "event_round_unavailable");
     if (action.type === "cancel") {
