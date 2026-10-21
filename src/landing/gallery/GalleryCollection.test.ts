@@ -63,3 +63,45 @@ it('damps only the hovered sculpture within a small lift and tilt, and resets fo
   expect(selected.rotation.equals(original.rotation)).toBe(true);
  }finally{collection.dispose();baseline.dispose();}
 });
+
+it('keeps the pitched desktop orbit inside its stage without changing selected, mobile or story depth',()=>{
+ vi.spyOn(T.TextureLoader.prototype,'load').mockImplementation(()=>new T.Texture());
+ vi.stubGlobal('document',{createElement:()=>({width:0,height:0,getContext:()=>({fillText(){},fillRect(){},strokeRect(){},save(){},restore(){},translate(){},rotate(){}})})});
+ const collection=createGalleryCollection(),camera=new T.PerspectiveCamera(38,1267.21875/390,.1,50);
+ camera.position.z=9.6;camera.updateMatrixWorld(true);
+ try{
+  for(const selected of gameCatalog)for(const time of [0,2,5,10]){
+   collection.update({selected:selected.id,time,paused:false,snap:true});
+   for(const [index,group] of collection.root.children.entries()){
+    const chosen=group.userData.game===selected.id;
+    expect(group.scale.x).toBeCloseTo(chosen?2.1:(index>0&&index<4?0.65:0.45));
+    if(chosen){expect(group.position.x).toBeCloseTo(0);expect(group.position.z).toBeCloseTo(1.3);}
+    const box=new T.Box3().setFromObject(group);
+    let projectedMinY=Infinity,projectedMaxY=-Infinity;
+    for(const x of [box.min.x,box.max.x])for(const y of [box.min.y,box.max.y])for(const z of [box.min.z,box.max.z]){
+     const point=new T.Vector3(x,y,z).project(camera);
+     expect(Math.abs(point.x)).toBeLessThan(1);
+     expect(Math.abs(point.y)).toBeLessThan(1);
+     projectedMinY=Math.min(projectedMinY,point.y);
+     projectedMaxY=Math.max(projectedMaxY,point.y);
+    }
+    if(index>0&&index<4&&!chosen)expect((projectedMaxY-projectedMinY)*390/2).toBeGreaterThanOrEqual(42);
+   }
+  }
+  collection.update({selected:'domino',time:0,paused:true,snap:true,mobile:true});
+  collection.root.children.forEach((group,index)=>{
+   const chosen=group.userData.game==='domino',angle=index/8*Math.PI*2;
+   expect(group.scale.x).toBeCloseTo(chosen?1.9:.45);
+   expect(group.position.x).toBeCloseTo(chosen?0:Math.cos(angle)*3.35);
+   expect(group.position.y).toBeCloseTo(chosen?0:Math.sin(angle)*3.8);
+   expect(group.position.z).toBeCloseTo(chosen?1.3:-3.2);
+  });
+  collection.update({selected:'domino',time:0,paused:true,snap:true,storyFocus:.5});
+  collection.root.children.forEach((group,index)=>{
+   const chosen=group.userData.game==='domino',angle=index/8*Math.PI*2;
+   expect(group.scale.x).toBeCloseTo(chosen?2.3:.45);
+   expect(group.position.x).toBeCloseTo(chosen?2.55:Math.cos(angle)*5.8);
+   expect(group.position.z).toBeCloseTo(chosen?4.4:-3.2);
+  });
+ }finally{collection.dispose();}
+});

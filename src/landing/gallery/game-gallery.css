@@ -8,6 +8,8 @@
 .cs-game-gallery a{color:inherit;text-decoration:none;-webkit-tap-highlight-color:transparent}
 .cs-game-gallery button:focus-visible,.cs-game-gallery a:focus-visible{outline:2px solid #f5c3a6;outline-offset:5px}
 .cs-game-gallery .rd-game-start{color:#efdfd6}
+.cs-game-gallery .rd-game-hover-label{position:absolute;z-index:1;width:max-content;max-width:min(240px,calc(100% - 24px));padding:7px 11px;transform:translate(-50%,-100%);pointer-events:none;background:#21161ff5;color:#efdfd6;border:1px solid #d3a49166;border-radius:2px;box-shadow:0 5px 14px #0c080e80;font-size:12px;line-height:1.5;text-align:center}
+.cs-game-gallery .rd-game-choices button[data-hovered=true]{color:#f5c3a6;background:#d3a49120;border-bottom-color:#d3a491}
 .cs-game-gallery .rd-catchmind-help{max-width:54ch;margin:12px auto 0;color:var(--muted);font-size:14px}
 .cs-game-gallery .rd-catchmind-help summary{min-height:44px;padding:10px 0;cursor:pointer;text-align:center;color:inherit}
 .cs-game-gallery .rd-catchmind-help summary:focus-visible{outline:2px solid #f5c3a6;outline-offset:5px}

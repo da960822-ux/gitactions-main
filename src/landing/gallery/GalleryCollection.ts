@@ -45,8 +45,12 @@ export function createGalleryCollection(onAssetReady = () => {}) {
       objects.forEach(({group, handles}, index) => {
         const chosen = gameCatalog[index].id === selected;
         const angle=index/8*Math.PI*2;
-        const scale=chosen?T.MathUtils.lerp(mobile?1.9:2.1,2.5,focus):.45;
-        target.set(chosen?5.1*focus:Math.cos(angle)*(mobile?3.35:5.8),chosen?0:Math.sin(angle)*3.8,chosen?T.MathUtils.lerp(1.3,7.5,focus):-3.2);
+        const scale=chosen?T.MathUtils.lerp(mobile?1.9:2.1,2.5,focus):(!mobile&&focus===0&&index>0&&index<4)?0.65:0.45;
+        const pitched=!mobile&&focus===0;
+        const depth=pitched?.3-Math.sin(angle)*2.7:-3.2;
+        // Match the desktop camera's perspective to keep the nearer arc inside the vertical stage.
+        const orbitPerspective=pitched?(9.6-depth)/12.8:1;
+        target.set(chosen?5.1*focus:Math.cos(angle)*(mobile?3.35:5.8),chosen?0:Math.sin(angle)*(pitched?3.25:3.8)*orbitPerspective,chosen?T.MathUtils.lerp(1.3,7.5,focus):depth);
         if(!paused)target.y+=Math.sin(time*.7+index)*.055*(1-focus);
         if(!chosen)target.y-=10*focus;
         const game=gameCatalog[index].id;

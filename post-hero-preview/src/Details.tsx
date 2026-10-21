@@ -28,7 +28,7 @@ function GustPaper({raised,phase,staticPose,ko}:{raised:boolean;phase:number;sta
  </svg>;
 }
 export default function Details({language,reducedMotion,onEffect,state:s,setState:set,onClose,sceneVisible=false,suspended=false,onSharedEvent,onRegisterFrame}:Props){
- const ko=language==='ko';const domino={placed:[...s.dominoTiles],openEnd:s.dominoTiles.at(-1)?.[1]??2};const tiles=supply.filter(tile=>!s.dominoTiles.some(placed=>placed[0]===tile[0]&&placed[1]===tile[1]||placed[0]===tile[1]&&placed[1]===tile[0]));const [selected,setSelected]=useState(0);const [mismatch,setMismatch]=useState(false);const [input,setInput]=useState<number[]>([]);const [signal,setSignal]=useState(false);const [saved,setSaved]=useState(false);const [cooling,setCooling]=useState<LocalEventId[]>([]);const [gustPhase,setGustPhase]=useState(1);const gustSerial=useRef(-1);const cooldownTimers=useRef<number[]>([]);
+ const ko=language==='ko';const domino={placed:[...s.dominoTiles],openEnd:s.dominoTiles.at(-1)?.[1]??2};const tiles=supply.filter(tile=>!s.dominoTiles.some(placed=>placed[0]===tile[0]&&placed[1]===tile[1]||placed[0]===tile[1]&&placed[1]===tile[0]));const [selected,setSelected]=useState(0);const [mismatch,setMismatch]=useState(false);const [input,setInput]=useState<number[]>([]);const [signal,setSignal]=useState(false);const [saveStatus,setSaveStatus]=useState<'saved'|'session'|null>(null);const [cooling,setCooling]=useState<LocalEventId[]>([]);const [gustPhase,setGustPhase]=useState(1);const gustSerial=useRef(-1);const cooldownTimers=useRef<number[]>([]);
  const section=useRef<HTMLElement>(null),svg=useRef<SVGSVGElement>(null),drawing=useRef<number|null>(null),heading=useRef<HTMLHeadingElement>(null),touchFlipHandled=useRef(false);const state=useRef(s);state.current=s;const signalTimer=useRef<number[]>([]);const lastPhysical=useRef<Record<string,number>>({});
  const change=useCallback((patch:Partial<LocalEventState>,animate=false)=>set(old=>({...old,...patch,motionSerial:old.motionSerial+(animate?1:0)})),[set]);
  const stop=useCallback((restoreFocus=true)=>{signalTimer.current.forEach(clearTimeout);signalTimer.current=[];setSignal(false);drawing.current=null;set(old=>({...old,active:null,rhythmSignal:null,waxPressed:false}));onEffect('wax-press',0);onClose(restoreFocus);},[onEffect,onClose,set]);
@@ -51,7 +51,7 @@ export default function Details({language,reducedMotion,onEffect,state:s,setStat
   if(onRegisterFrame){onRegisterFrame(tick);return()=>onRegisterFrame(null);}
   let frame=0;const loop=(now:number)=>{tick(now);if(!finished)frame=requestAnimationFrame(loop);};frame=requestAnimationFrame(loop);return()=>cancelAnimationFrame(frame);
  },[s.active,s.ball.settled,s.windRaised,s.motionSerial,reducedMotion,s.effectsEnabled,onRegisterFrame,suspended]);
- function persist(patch:Partial<LocalEventState>,explicitDecor=false){const next={...s,...patch,hasSavedDecor:patch.hasSavedDecor??(explicitDecor||s.hasSavedDecor)};change({...patch,hasSavedDecor:next.hasSavedDecor});try{localStorage.setItem(PREF_KEY,serializeLocalEventPreferences(next));setSaved(true);}catch{setSaved(false);}}
+ function persist(patch:Partial<LocalEventState>,explicitDecor=false){const next={...s,...patch,hasSavedDecor:patch.hasSavedDecor??(explicitDecor||s.hasSavedDecor)};change({...patch,hasSavedDecor:next.hasSavedDecor});try{localStorage.setItem(PREF_KEY,serializeLocalEventPreferences(next));setSaveStatus('saved');}catch{setSaveStatus('session');}}
  function physical(patch:Partial<LocalEventState>){
   const id=s.active;if(!id)return false;const now=performance.now();if(now-(lastPhysical.current[id]??-Infinity)<5000)return false;
   lastPhysical.current[id]=now;setCooling(old=>[...old.filter(value=>value!==id),id]);cooldownTimers.current.push(window.setTimeout(()=>setCooling(old=>old.filter(value=>value!==id)),5000));change(patch,true);return true;
@@ -85,8 +85,8 @@ export default function Details({language,reducedMotion,onEffect,state:s,setStat
     <g clipPath="url(#balance-window-opening)">
      <image href={pawnSource(s.pawn)} x="250" y="150" width="60" height="73" preserveAspectRatio="xMidYMid meet"/>
      <path d="M203 223H357" stroke="#f4e8d2" strokeWidth="3"/>
-     <g className="tray-window-left" transform={s.ball.settled?'translate(-77 0)':undefined}><rect x="203" y="146" width="77" height="77" fill="#e5ceb2"/><path d="M273 176V195" stroke="#a77c69" strokeWidth="2"/></g>
-     <g className="tray-window-right" transform={s.ball.settled?'translate(77 0)':undefined}><rect x="280" y="146" width="77" height="77" fill="#dec6ac"/><path d="M287 176V195" stroke="#a77c69" strokeWidth="2"/></g>
+     <g className="tray-window-left"><rect x="203" y="146" width="77" height="77" fill="#e5ceb2"/><path d="M273 176V195" stroke="#a77c69" strokeWidth="2"/></g>
+     <g className="tray-window-right"><rect x="280" y="146" width="77" height="77" fill="#dec6ac"/><path d="M287 176V195" stroke="#a77c69" strokeWidth="2"/></g>
     </g>
     <path d="M66 70Q280 151 494 70V89Q280 171 66 89Z" fill="#c3a184" stroke="#aa8272" strokeWidth="1.5"/>
     <path d="M66 70Q280 124 494 70L481 49Q280 103 79 49Z" fill="#f4e8d2" stroke="#c5a88e" strokeWidth="1.5"/>
@@ -142,7 +142,7 @@ export default function Details({language,reducedMotion,onEffect,state:s,setStat
    {onSharedEvent&&(s.active==='L06'||s.active==='L07'||s.active==='L15')&&<button className="egg-button shared-context-choice" data-shared-event={s.active==='L06'?'R03':s.active==='L07'?'R04':'R02'} onClick={event=>onSharedEvent(s.active==='L06'?'R03':s.active==='L07'?'R04':'R02',event.currentTarget)}>{ko?(s.active==='L06'?'반씩 그려볼까?':s.active==='L07'?'번갈아 해보기':'장식 말 보내기'):(s.active==='L06'?'¿Dibujamos una mitad cada uno?':s.active==='L07'?'Jugar por turnos':'Enviar una figura')}</button>}
    {cooling.includes(s.active)&&<small role="status">{ko?'물체가 정착한 뒤 잠깐 쉬었다가 다시 눌러봐.':'Deja que el objeto se asiente un momento antes de repetir.'}</small>}<div className="egg-actions local-event-footer">{button(ko?'이 놀이 처음부터':'Reiniciar este juego',reset)}</div>
   </article>}
-  <details className="effects-setting"><summary>{ko?'효과와 저장한 장식':'Efectos y detalles guardados'}</summary><div className="egg-actions">{button(s.effectsEnabled?(ko?'켜짐':'Activados'):(ko?'꺼짐 · 완성 모습':'Desactivados · vista final'),()=>persist({effectsEnabled:!s.effectsEnabled}),s.effectsEnabled)}{button(ko?'저장한 장식 초기화':'Restablecer detalles guardados',()=>persist({decorKind:'gem',decorPawn:0,decorSlot:1,stamp:'YL',hasSavedDecor:false}))}</div></details>{saved&&<small>{ko?'이 기기에 선택 저장':'Preferencias guardadas en este dispositivo'}</small>}
+  <details className="effects-setting"><summary>{ko?'효과와 저장한 장식':'Efectos y detalles guardados'}</summary><div className="egg-actions">{button(s.effectsEnabled?(ko?'켜짐':'Activados'):(ko?'꺼짐 · 완성 모습':'Desactivados · vista final'),()=>persist({effectsEnabled:!s.effectsEnabled}),s.effectsEnabled)}{button(ko?'저장한 장식 초기화':'Restablecer detalles guardados',()=>persist({decorKind:'gem',decorPawn:0,decorSlot:1,stamp:'YL',hasSavedDecor:false}))}</div></details>{saveStatus&&<small className="preference-status" role="status">{saveStatus==='saved'?(ko?'이 기기에 선택 저장':'Preferencias guardadas en este dispositivo'):(ko?'이 브라우저에 저장할 수 없어. 지금 세션에서는 유지돼.':'No se pudo guardar en este navegador. Se conserva durante esta sesión.')}</small>}
   <p className="details-footnote">{ko?'Escape로 내려놓을 수 있어.':'Pulsa Escape para dejarlo.'}{s.active==='L06'&&(ko?' 그림은 이 세션에만 남아.':' El dibujo solo se queda durante esta sesión.')}</p>
  </section>;
 }

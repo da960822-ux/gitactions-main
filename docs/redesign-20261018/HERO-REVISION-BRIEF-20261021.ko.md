@@ -4,19 +4,18 @@
 
 ## 현재 상태와 판정
 
-- L자 얕은 실내 연구의 카메라 경로 `bc3c5e15`를 실제 main 랜딩에 연결했다. 구현은 `heroRoomJourney.ts`이며 녹화 당시 SHA는 `be0ea7c55449d1850c96dfa69eadf11f5c850734212b61ecf430924d7bf9dfe2`다. 공유 Host·renderer·canonical B와 후반부 카메라 계약을 유지한다.
-- 실제 제품 증거는 `output/current-review/hero-spatial-rework-20261021/hero-wall-volume-current/product-current/`의 `product-report.json` 및 `native-whole-report.json`이다. 현재 브랜치의 미커밋 소스를 녹화했으므로 보고서의 source 파일 해시를 기준으로 구분한다. 연구 폴더의 이전 파일 이름만으로 최신성을 추정하지 않는다.
-- 1920×1080·1440×900, Chromium/Linux/SwiftShader·DPR1에서 실제 시작·P 퇴장·첫 B·중간·도착을 확인했다. pointer 반응과 L04/L09/L06 클릭·Escape·초점 복귀도 확인했다. 충분히 정착한 `.42→1→.70→.42→.30→.42`의 카메라·target·FOV는 양 해상도에서 일치했다. 앞선 220ms 표본의 false는 원시 결과로 남겼다.
-- [현재 검수용 영상](../review/landing-current-es.mp4)은 57.866667초·1.15배속·1440×900·무음·무자막이다. 실제 스페인어 페이지에서 native pointer/wheel과 12개 동작으로 Hero 왕복, B 발견물, 갤러리, 최초 편지 개봉·원문 독서·복귀, 엔딩을 수행했다. browser/HTTP 오류 0, 녹화 전후 source 해시 일치다. 제작 영상으로 실시간 3D를 대신하지 않았다.
-- 독립 실제 영상 표본 판정은 **구도4·공간3·목적4·craft3/5**다. 전체 디자인 합격이 아니다. 실제 mesh/표면 변형이 아직 없고, 갤러리 주변 선택물의 작은 크기와 약한 깊이 단서가 남는다. B 이후 모든 DOM 섹션이 하나의 연속 3D 공간이라는 증거도 아니다.
-- main 76 files/622 tests와 TypeScript/Vite/edge build가 통과했다. canonical B·역진행·resize·stencil·취소/dispose 회귀 검사를 추가했다. 테스트는 시각 합격을 대신하지 않는다. 500kB chunk 경고가 남는다.
-- 모바일은 마지막 순서이며 현재 기존 경로를 유지한다. 새 Hero의 모바일 검수와 실제 GPU 성능 검수는 완료하지 않았다.
+- 과거 `849344f` 기준 57.87초 영상과 독립 평가(구도4·공간3·목적4·craft3/5)는 Git 이력 및 [제품 보고서](../../output/current-review/hero-spatial-rework-20261021/hero-wall-volume-current/product-current/native-whole-report.json)에 남긴다. 이는 현행 수정 전 checkpoint다.
+- 현행 근거는 [요구 완료 감사](../../output/current-review/hero-spatial-rework-20261021/hero-wall-volume-current/product-current/plan-completion-audit.json), [천장 표본 보고서](../../output/current-review/hero-spatial-rework-20261021/hero-wall-volume-current/shallow-report.json), [현재 critique snapshot](../../output/current-review/hero-spatial-rework-20261021/hero-wall-volume-current/product-current/critique-snapshot-current.json)이다. 천장면은 561개 정점의 실제 변형과 법선 갱신을 가지며 `.35/.42`에서 완만한 곡면 실루엣이 보이고 `.68`에서 복원된다. 이는 표면 변화 구현 증거이지 연속 모션 합격은 아니다.
+- 독립 A의 현행 10개 still 검토에서 이전 P1 큰 구조면 가림은 해소로 판정됐다. 남은 Hero 이슈는 상자/삽화처럼 읽히는 인상과 `.35`의 부분 jamb 가림이다. 연속 정방향·역방향 영상 및 성능 검수는 아직 대기 중이다. 그 결과 전에는 전체 완료나 전체 4/5 이상을 선언하지 않는다.
+- GalleryCollection의 깊이·주변 선택물 크기·hover 맥락 타이틀은 구현됐고 최종 QA 중이다. Hero CTA pressed 상태도 구현됐다. post-polish 구현 검수는 [content audit](../../output/current-review/implementation-20261021/content-audit-v3/report.json)의 `postPolishImplementation`에 기록한다.
+- 현행 테스트 집계는 main 76 files/623 tests, post 29/29이며 TypeScript/Vite/edge build 통과 기록이 있다. 622는 이전 checkpoint다. 테스트는 시각 합격을 대신하지 않는다. 500kB chunk 경고가 남는다.
+- 최신 사용자 지시로 모바일 QA는 이번 실행에서 제외됐으며 완료 관문이 아니다. 실제 GPU 성능은 미검수이며 root가 최종 연속 영상·성능 결과를 보충한다.
 
 ## 현재 설계와 다음 수정의 이유
 
 승인 B는 **원화 프레이밍과 인물 정체성**이며 특정 world 좌표·원경 거리·고정 카메라를 승인한 것이 아니다. 이전 distance120/yaw60 등의 추가 제약은 철회했다. 현재 경로는 I의 같은 석재 jamb 뒤를 지난 뒤 가까운 L자 실내로 진입한다. 실제 측벽·천장·바닥·별도 desk 하부가 경계를 소유하고 B 원화 하단을 floor로 접지 않는다. 원본 I/B/P의 RGB와 승인 도착 구도는 보존한다.
 
-다음 한정 수정은 기존 천장 연결면을 실제 grid로 만들고 아치 안쪽 곡면이 실내 천장으로 펴지는 의미를 구현하는 것이다. wall/back 접점과 도착 구도는 고정하며, 조명·장식·새 인물·새 카메라 경로를 추가하지 않는다. 이는 아직 검증 전 가설이다. 눈에 읽히는 변형·가림·접합을 실제 화면으로 확인하기 전 완료나 4점으로 세지 않는다.
+기존 천장 연결면은 grid로 구현됐다. 다음 검토는 현재 형상이 연속 native 진행·역행·중간 반전에서 실제로 방을 여는지 확인하는 것이다. 관찰로 원인이 확인될 때만 기존 경계를 최소 수정한다. 승인 자산과 B 도착을 보호하고 장식이나 조명으로 문제를 덮지 않는다.
 
 공유 카메라·Host와 후반 연결은 root가 통합한다. Sol은 시각·모션·자산, Luna는 명확한 기능·정리를 맡는다. 실패 횟수로 owner를 교체하지 않는다. 같은 owner에게 관찰 프레임·측정·잘못된 프롬프트 전제를 전달하고 수정한다. 이전 e28/444e 표본과 실패 설명은 문서 Git 이력 및 기존 연구 보고서에 보존하며 현재 제품 판정과 섞지 않는다.
 
@@ -26,7 +25,7 @@
 
 2. 이 정지 표본을 독립 검토한 뒤에만 다음 단계를 진행한다. 승인 I/B, 원본 인물, 접합·가림, 실제 실내의 공간 책임을 확인한다. B만 보이는 도착 프레임은 전환 증거가 아니다.
 
-3. 정지 구도가 성립한 뒤 1440×900에서 실제 native scroll로 정방향·역방향·중간 반전·직접 도착을 확인한다. 모바일은 데스크톱 검수 뒤 마지막이다.
+3. root의 최종 1440×900 데스크톱 연속 영상에서 native 정방향·역방향·중간 반전·도착을 확인한다. 현재 cameraOrientationReview에는 1920×1080과 1440×900 각 다섯 장, 총 열 장의 hash 확인된 실제 still이 있으며 독립 A가 이전 P1의 중간 벽 가림을 해소로 판정했다. 별도의 이전 천장 검토에는 1440×900 네 still만 있다. 연속 영상은 미실행이며 성능 검수는 두 데스크톱 크기에서 별도로 남는다. 모바일 QA는 이번 범위에서 제외된다.
 
 4. 구도·공간·목적·craft 각 검토 점수는 4/5 이상이고 blocking 문제가 없어야 한다. 테스트·TypeScript·build는 시각 판단을 대신하지 않는다. SwiftShader는 실제 GPU 성능을 증명하지 않는다. 이전 실패 기록은 보존한다.
 
@@ -57,6 +56,6 @@ Hero 작업은 다음 기능과 콘텐츠를 변경하지 않는다.
 | v11 | 공유 경계를 늦게 지나 B 도착 위주로만 보였다. 그 프레임은 연결 증거가 아니다. |
 | v12 | 거대한 물체 조각과 B 원화의 세로 가장자리가 함께 드러나 사진 병치처럼 보였다. 미통합이다. |
 | v6 고정 카메라·원경 RGB 고정 및 시간만 바꾸기 | 종료된 과도한 구현 제약이다. 사용자의 현재 지시가 아니며 재사용하지 않는다. |
-| 현재 `e28adc59`, `.12/.35/.44` | raw edge/검정 여백과 70% 인쇄판 접사는 해소됐으나 `.35`의 gray 면·40px B strip/raw B-C edge와 `.44`의 1340px 가림으로 인계 불합격이다. `.50`/`1`의 이전 `2c19fa51` 결과는 이번 소스 검수가 아니다. 합의된 L자 얕은 실내 안은 다음 구현 가설이며 미검증이다. |
+| 과거 `e28adc59`, `.12/.35/.44` | raw edge/검정 여백과 70% 인쇄판 접사는 해소됐으나 `.35`의 gray 면·40px B strip/raw B-C edge와 `.44`의 1340px 가림으로 인계 불합격이다. `.50`/`1`의 이전 `2c19fa51` 결과는 이번 소스 검수가 아니다. 합의된 L자 얕은 실내 안은 다음 구현 가설이며 미검증이다. |
 
 이 표는 실패 요약이다. 각 실험의 전체 지시, 캡처·측정·근거는 위 GitHub 원문과 현재 연구 폴더의 `shallow-report.json`, `SHALLOW-REVIEW.md`에서 확인한다.

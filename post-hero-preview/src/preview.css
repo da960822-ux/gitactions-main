@@ -34,6 +34,7 @@
 .post-hero-preview .text-button span{font-size:20px}
 .post-hero-preview .primary-button{display:inline-flex;align-items:center;justify-content:space-between;gap:30px;min-height:52px;padding:14px 23px;border-radius:2px;border:1px solid #e4bba4;background:#e1b39e;color:#331c27;font-size:14px;box-shadow:0 8px 30px #0c020a33;transition:transform 160ms var(--ease),background 160ms var(--ease)}
 .post-hero-preview .primary-button:active{transform:scale(.97)}
+.post-hero-preview .primary-button:focus-visible{transition:none}
 .post-hero-preview .country-labels{position:absolute;right:7vw;top:33%;display:flex;align-items:center;gap:24px;color:#f7e4d7;font-size:15px}
 .post-hero-preview .country-labels>span:not(.country-gap){display:flex;align-items:center;gap:10px}
 .post-hero-preview .country-labels img{width:28px;height:20px;object-fit:cover}
@@ -56,7 +57,7 @@
 .post-hero-preview .paper-rule{width:28px;height:2px;background:#a75b65;margin-bottom:26px}
 .post-hero-preview .letter-address{font-size:12px;color:#85575c;margin:0 0 16px}
 .post-hero-preview .letter-signature{margin:30px 0 0;font:400 18px/1.6 'Gowun Batang',Georgia,serif;color:#87485a}
-.post-hero-preview .paper-bottom-mark{text-align:right;font:400 12px Georgia,serif;letter-spacing:.15em;color:#8c5f58;margin-top:28px}
+.post-hero-preview .paper-bottom-mark{text-align:right;font:400 12px Georgia,serif;letter-spacing:.08em;color:#83564f;margin-top:28px}
 .post-hero-preview .paper-bottom-mark span{margin:0 9px}
 .post-hero-preview .letter-paper[data-tracking='true']{z-index:4;will-change:transform;pointer-events:none}
 .post-hero-preview .letter-paper.is-visually-sealed{position:absolute!important;width:1px!important;height:1px!important;min-height:0!important;padding:0!important;clip-path:inset(50%);overflow:hidden;white-space:nowrap;transform:none!important}
@@ -164,7 +165,7 @@
 }
 @media(max-width:760px){.post-hero-preview .room-discovery-dialog{width:calc(100vw - 24px);max-height:calc(100svh - 24px);padding:22px 20px}.post-hero-preview .room-discovery-dialog .shared-context{max-height:calc(100svh - 70px)}}
 
-@media(hover:hover) and (pointer:fine){.post-hero-preview .primary-button:hover{background:#edc7b1;transform:translateY(-2px)}.post-hero-preview .object-discovery:hover{color:#fff4e9}}
+@media(hover:hover) and (pointer:fine){.post-hero-preview .primary-button:hover:not(:disabled){background:#edc7b1}.post-hero-preview .object-discovery:hover{color:#fff4e9}}
 @media(max-width:1000px){.post-hero-preview .context-workbench{width:40vw}}
 @media(prefers-reduced-motion:reduce){.post-hero-preview *,.post-hero-preview *:before,.post-hero-preview *:after{animation:none!important;transition:none!important}.post-hero-preview .primary-button:hover,.post-hero-preview .primary-button:active,.post-hero-preview .object-discovery:active{transform:none}}
 
@@ -229,3 +230,19 @@
 /* The closed reader is a compact return point; its opaque surround starts at actual reading. */
 .landing-world-host .post-hero-preview.post-hero-embedded .letter-section.reading-surround,.post-hero-preview .letter-section.reading-surround{background:#13131c}
 .landing-world-host .post-hero-preview.post-hero-embedded .letter-section.is-folded,.post-hero-preview .letter-section.is-folded{min-height:0;padding:24px}
+
+.post-hero-preview .text-button,.post-hero-preview .detail-close{transition:color 160ms var(--ease),border-color 160ms var(--ease),opacity 120ms var(--ease)}
+.post-hero-preview .text-button:active,.post-hero-preview .detail-close:active{opacity:.78}
+.post-hero-preview .text-button:focus-visible,.post-hero-preview .detail-close:focus-visible{transition:none}
+@media(hover:hover) and (pointer:fine){.post-hero-preview .text-button:hover,.post-hero-preview .detail-close:hover{color:#fff0e9;border-color:#efbca8}}
+@media(min-width:761px) and (prefers-reduced-motion:no-preference){
+ .post-hero-preview .reading-roses{transition:transform 160ms var(--ease)}
+ .post-hero-preview .reading-roses:active:not(:focus-visible){transform:translateY(-50%) scale(.985)}
+}
+@media(hover:hover) and (pointer:fine) and (prefers-reduced-motion:no-preference){
+ .post-hero-preview .primary-button:hover:not(:active):not(:disabled){transform:translateY(-2px)}
+}
+@media(min-width:761px) and (hover:hover) and (pointer:fine) and (prefers-reduced-motion:no-preference){
+ .post-hero-preview .reading-roses-left:hover:not(:active){transform:translateY(-50%) scale(1.02) rotate(-2deg)}
+ .post-hero-preview .reading-roses-right:hover:not(:active){transform:translateY(-50%) scale(1.02) rotate(2deg)}
+}

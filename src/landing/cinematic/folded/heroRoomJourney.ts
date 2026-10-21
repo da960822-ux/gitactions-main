@@ -6,9 +6,10 @@ type CanonicalRoom=ReturnType<typeof createApprovedGamingRoom>;
 type Options={width:number;height:number;portrait:string;portraitMask?:string};
 type Built={update:(progress:number,camera:T.PerspectiveCamera)=>void;syncView:(camera:T.PerspectiveCamera)=>void;setActive:(active:boolean)=>void;dispose:()=>void};
 
-// Frozen 444e414a geometry; P registration and p-only camera synchronized from bc3c5e15.
+// Original source registration and p-only camera from bc3c5e15; one authored ceiling unfolds above them.
 export function createHeroRoomJourney(scene:T.Scene,canonicalRoom:CanonicalRoom,options:Options){
  let width=options.width,height=options.height,disposed=false,active=true,built:Built|undefined;
+ const reducedMotion=typeof matchMedia==='function'?matchMedia('(prefers-reduced-motion: reduce)'):undefined;
  let loaded:T.Texture[]|undefined;
  const textures=new Set<T.Texture>(),roomMaterials=new Set<T.Material>();
  canonicalRoom.root.traverse(object=>{if((object as T.Mesh).isMesh){const material=(object as T.Mesh).material;for(const value of Array.isArray(material)?material:[material])roomMaterials.add(value);}});
@@ -67,7 +68,30 @@ ${near?'if(a<.5)discard;diffuseColor*=texture2D(map,q);':'diffuseColor*=mix(text
   quad('INTERIOR_RIGHT_WALL_AFTER_FREE_ENTRY',V(rightAt(-entryBack),floor,-entryBack),V(rightAt(back),floor,back),V(rightAt(back),ceilingAt(back),back),V(rightAt(-entryBack),ceilingAt(-entryBack),-entryBack),rightMat.clone(),"physical-boundary",2,2);
   quad('INTERIOR_FRONT_RETURN_BEHIND_OBSERVER',V(left,floor,-endDepth),V(rightAt(-endDepth),floor,-endDepth),V(rightAt(-endDepth),ceiling,-endDepth),V(left,ceiling,-endDepth),leftMat.clone(),"physical-boundary",3,2);
   quad('ACTUAL_FLOOR_UNDER_OBSERVER',V(left,floor,-endDepth),V(left,floor,back),V(rightAt(back),floor,back),V(rightAt(-endDepth),floor,-endDepth),floorMat,"physical-boundary",3,3);
-  quad('AUTHORED_SHALLOW_CEILING_CONNECTION',V(left,ceiling,-endDepth),V(rightAt(-endDepth),ceiling,-endDepth),V(rightAt(back),ceilingAt(back),back),V(left,ceilingAt(back),back),material(warm,'#957281'),"physical-boundary",3,3);
+  const ceilingGeometry=new T.PlaneGeometry(1,1,32,16),ceilingPosition=ceilingGeometry.getAttribute('position'),ceilingUV=ceilingGeometry.getAttribute('uv'),ceilingWeights=new Float32Array(ceilingPosition.count);
+  for(let i=0;i<ceilingPosition.count;i++){
+   const u=ceilingUV.getX(i),v=1-ceilingUV.getY(i),z=T.MathUtils.lerp(-endDepth,back,v);
+   ceilingPosition.setXYZ(i,T.MathUtils.lerp(left,rightAt(z),u),ceilingAt(z),z);ceilingUV.setXY(i,u*3,v*3);
+   // A shallow intrados folds below the roof near the room, where the entry camera can see it.
+   // The front edge itself is above that frustum; moving it would be invisible again.
+   const foldSection=v>.42?Math.sin(Math.PI*(v-.42)/.58):0;
+   ceilingWeights[i]=u===0||u===1||v===0||v===1?0:Math.sin(Math.PI*u)*foldSection*foldSection;
+  }
+  ceilingGeometry.computeVertexNormals();ceilingGeometry.computeBoundingSphere();
+  const ceilingRest=new Float32Array(ceilingPosition.array),ceilingRestNormals=new Float32Array(ceilingGeometry.getAttribute('normal').array);
+  const ceilingMesh=new T.Mesh(ceilingGeometry,material(warm,'#957281'));ceilingMesh.name='AUTHORED_SHALLOW_CEILING_CONNECTION';ceilingMesh.userData.visibilityRole='physical-boundary';ceilingMesh.frustumCulled=false;stage.add(ceilingMesh);
+  const ceilingState={vertices:ceilingPosition.count,foldDepth:0,maxVertexDrop:0,maxNormalDelta:0,baseClearance:Infinity};let previousDepth=NaN;
+  function unfoldCeiling(progress:number){
+   // The real fold briefly owns upper-background occlusion, then opens to the flat arrival roof.
+   // All wall/B seams stay pinned; no source pixels or independent clip line follow the fold.
+   const depth=1.2*smooth(.12,.28,progress)*(1-smooth(.35,.58,progress))*(reducedMotion?.matches ? .2 : 1);
+   if(depth===previousDepth)return;previousDepth=depth;ceilingState.foldDepth=depth;ceilingState.maxVertexDrop=0;
+   for(let i=0;i<ceilingPosition.count;i++){const offset=depth*ceilingWeights[i];ceilingPosition.setY(i,ceilingRest[i*3+1]-offset);ceilingState.maxVertexDrop=Math.max(ceilingState.maxVertexDrop,offset);}
+   ceilingPosition.needsUpdate=true;ceilingGeometry.computeVertexNormals();ceilingGeometry.computeBoundingSphere();
+   const normal=ceilingGeometry.getAttribute('normal');ceilingState.maxNormalDelta=0;
+   for(let i=0;i<normal.count;i++)ceilingState.maxNormalDelta=Math.max(ceilingState.maxNormalDelta,Math.hypot(normal.getX(i)-ceilingRestNormals[i*3],normal.getY(i)-ceilingRestNormals[i*3+1],normal.getZ(i)-ceilingRestNormals[i*3+2]));
+   ceilingMesh.userData.deformation=ceilingState;
+  }
   const coreWidth=coreHeight*1672/941,outerBottom=.8-coreHeight*999/941+coreHeight/2;
   const deskGrain=wood.clone();deskGrain.repeat.set(804/1254,73/1254);deskGrain.offset.set(16/1254,1-85/1254);deskGrain.needsUpdate=true;
   quad('DESK_UNDERBODY_BELOW_OUTPAINT',V(-8.7-coreWidth/2,floor,-11.99),V(-8.7+coreWidth/2,floor,-11.99),V(-8.7+coreWidth/2,outerBottom,-11.99),V(-8.7-coreWidth/2,outerBottom,-11.99),material(deskGrain,'#7d5aae'),"interior-content",1,1);
@@ -79,7 +103,15 @@ bool entry(vec3 p){return abs(p.x-entrySlope*p.z)<.0001&&p.z< -entryNear+EPS&&p.
 void main(){vec4 q=cameraWorld*inverseProjection*vec4(screenUv*2.-1.,1.,1.);vec3 d=normalize(q.xyz/q.w-origin);float lo=0.,hi=10000.;for(int i=0;i<6;i++){float a=dot(planes[i].xyz,origin)+planes[i].w,v=dot(planes[i].xyz,d);if(abs(v)<1.e-8){if(a>EPS)discard;}else{float t=-a/v;if(v<0.)lo=max(lo,t);else hi=min(hi,t);}}float tn=nearDistance/max(.00001,dot(d,forward));if(hi<=max(lo,tn)+EPS)discard;if(lo>tn+EPS&&!entry(origin+d*lo))discard;if(entry(origin+d*hi))discard;gl_FragColor=vec4(1.);}`});
   const rayMask=new T.Mesh(new T.PlaneGeometry(2,2),rayMaterial);rayMask.renderOrder=-10;rayMask.frustumCulled=false;stage.add(rayMask);
   const earlySide=2.1*aspect/(1920/1080);
-  const cameraKeys=[{p:0,position:V(0,0,0),yaw:0,fov:48},{p:.12,position:V(-earlySide,0,-.3),yaw:-12.4,fov:33.8},{p:.18,position:V(-earlySide,.4,-2.2),yaw:-9,fov:40},{p:.27,position:V(-1.1,1.3,-3.8),yaw:0,fov:48},{p:.35,position:V(-1.3,1.3,-5.3),yaw:20,fov:48},{p:.43,position:V(-1.6,1.25,-6.2),yaw:20,fov:48},{p:.68,position:V(-8.4,.8,-7),yaw:3.4,fov:48},{p:1,position:endEye,yaw:0,fov:48}];
+  // Keep looking into the open exterior until the front is behind us, then discover
+  // the fixed room through the real entry. Under-aiming here made the right wall the subject.
+  const cameraKeys=[{p:0,position:V(0,0,0),yaw:0,fov:48},{p:.12,position:V(-earlySide,0,-.3),yaw:-12.4,fov:33.8},{p:.18,position:V(-earlySide,.4,-2.2),yaw:-9,fov:40},{p:.27,position:V(-1.1,1.3,-3.8),yaw:0,fov:48},{p:.30,position:V(-1.2,1.3,-4.5),yaw:0,fov:48},{p:.35,position:V(-1.3,1.3,-5.4),yaw:40,fov:48},{p:.43,position:V(-1.6,1.25,-6.2),yaw:49,fov:48},{p:.68,position:V(-8.4,.8,-7),yaw:3.4,fov:48},{p:1,position:endEye,yaw:0,fov:48}];
+  const belowBaseCeiling=(v:T.Vector3)=>{const clearance=ceilingAt(v.z)-v.y;if(clearance< -1e-6)throw Error('Hero camera/B crosses the conservative ceiling domain');ceilingState.baseClearance=Math.min(ceilingState.baseClearance,clearance);};
+  cameraKeys.forEach(key=>belowBaseCeiling(key.position));
+  canonicalRoom.root.updateWorldMatrix(true,true);canonicalRoom.root.traverse(object=>{if((object as T.Mesh).isMesh){const position=(object as T.Mesh).geometry.getAttribute('position');for(let i=0;i<position.count;i++)belowBaseCeiling(new T.Vector3().fromBufferAttribute(position,i).applyMatrix4(object.matrixWorld).applyMatrix4(inverseNormalization));}});
+  // The base cell is a conservative domain for B contents, not the deformed roof's exact volume.
+  // The downward intrados can cover upper B background; its actual triangles own that occlusion
+  // by ordinary depth. Protected people/objects are checked against those triangles, not this half-space.
   function cameraAt(p:number){let i=cameraKeys.findIndex((v,i)=>i<cameraKeys.length-1&&p<=cameraKeys[i+1].p);if(i<0)i=cameraKeys.length-2;const a=cameraKeys[i],b=cameraKeys[i+1],t=smooth(a.p,b.p,p);camera.position.copy(a.position).lerp(b.position,t);camera.rotation.set(0,T.MathUtils.degToRad(T.MathUtils.lerp(a.yaw,b.yaw,t)),0);camera.fov=T.MathUtils.lerp(a.fov,b.fov,t);camera.updateProjectionMatrix();camera.updateMatrixWorld();}
   stage.matrixAutoUpdate=false;stage.matrix.copy(normalization);stage.updateMatrixWorld(true);
   const geometries=new Set<T.BufferGeometry>(),materials=new Set<T.Material>([leftMat,rightMat]);
@@ -93,7 +125,7 @@ void main(){vec4 q=cameraWorld*inverseProjection*vec4(screenUv*2.-1.,1.,1.);vec3
    uniforms.nearDistance.value=output.near/scale;
   }
   return{update(progress,output){
-   cameraAt(T.MathUtils.clamp(progress,0,1));exteriorBlend.value=smooth(0,.06,T.MathUtils.clamp(progress,0,1));
+   const p=T.MathUtils.clamp(progress,0,1);cameraAt(p);unfoldCeiling(p);exteriorBlend.value=smooth(0,.06,p);output.userData.heroCeiling=ceilingState;
    output.position.copy(camera.position).applyMatrix4(normalization);output.quaternion.copy(rotation).multiply(camera.quaternion);output.up.copy(camera.up).applyQuaternion(rotation);output.scale.setScalar(1);
    output.clearViewOffset();output.fov=camera.fov;output.aspect=aspect;output.near=.02*scale;output.far=120*scale;output.updateProjectionMatrix();output.updateMatrixWorld(true);
    syncView(output);

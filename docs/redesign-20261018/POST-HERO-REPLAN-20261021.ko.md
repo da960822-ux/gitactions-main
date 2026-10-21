@@ -8,6 +8,13 @@
 
 두 원문은 제안 당시 기록으로 보존한다. DESIGN의 게임→스토리 권장 순서는 아래 현행 흐름으로 조정됐고, EASTER-EGGS의 공동 기능 미구현 설명은 제안 당시 상태다. 현재 구현·검수 범위는 이 문서의 검수 근거를 따른다.
 
+## 현행 검수 상태 — 2026-10-21 UTC
+
+- 이번 전체 통합의 최신 검사 집계는 main 76 files/623 tests, post 29/29 및 TypeScript/Vite/edge build 통과다. 과거 620/622/629 숫자는 각자 적힌 선행 checkpoint 결과다. chunk 경고는 남는다.
+- 최신 post-polish 세부 검수는 [content-audit-v3](../../output/current-review/implementation-20261021/content-audit-v3/report.json)의 `postPolishImplementation`이다. desktop KO/ES 입력에서 pressed/hover 구분, 5문단·4+4 장미, L02/L07 실제 전이, L04 라벨, reduced-motion 즉시 동작, 저장 실패 안내와 복구를 확인했다. 검사 실행은 분할 attempt이며 한 번의 무중단 전체 통과가 아니다. 저장 오류 안내 문구의 사후 화면 캡처는 없고 실제 DOM role/status·유지 state·복구 증거만 있다.
+- 이 항목들은 Hero/gallery 전체 완료 판정과 별도다. Hero의 현행 10개 still(1920 및 1440 각 다섯 장)에서 독립 A는 이전 P1 구조면 가림을 해소로 판정했고 상자/삽화 같은 인상 및 `.35` 부분 jamb를 P2로 남겼다. GalleryCollection의 주변 선택물 크기·깊이 및 hover 제목은 구현돼 최종 QA 중이다. root의 최종 1440 source 연속 영상과 두 데스크톱 크기 성능 검수 결과는 아직 들어오지 않았다. 전체 랜딩 점수나 합격은 선언하지 않는다.
+- 모바일 QA는 이번 실행 범위에서 제외됐으며 최종 완료 관문이 아니다. 아래 모바일 보고서들은 과거 검수 기록일 뿐 현재 요청에 대한 미완료 항목이 아니다. 실 GPU 성능 역시 미검수다.
+
 기본 흐름은 **승인 I → 승인 B 게임방 → 확인된 거리/제작 동기를 담은 하나의 이야기 → 보호된 8게임 갤러리 → 같은 봉투 열기와 원문 읽기 → 짧은 엔딩**이다. `#games`, `#papi-letter`, 기존 게임 경로와 편지의 직접 접근은 언제나 가능하다. 게임 갤러리 뒤에 독립 toy-table/list 장면을 두지 않는다. 이는 이스터에그가 아니다.
 
 L01–L16은 삭제하지 않는다. B의 실제 물체에서 선택해 여는 발견물과 관련 맥락의 세부 행동으로 보존한다. 기본 화면은 전체 16개 목록, 번호 표식, 진행률, 별도 실험실이나 강제 순회를 보여주지 않는다. 현재 기본 진입 후보는 B 안의 L04 토끼, L09 사진, L06 노트북 세 물체다. 선택 시에만 해당 물체의 관련 detail/dialog를 열고, 닫기/Escape로 같은 맥락에 돌아온다. 나머지 기능도 요구된 그래프와 관련 물체에서 발견 가능해야 한다. `.30`/`.45`는 한 거리 이야기 안의 내부 앵커일 뿐 별도 F2/table 구간이 아니다.
@@ -58,7 +65,7 @@ R01–R04 공동 기능은 맥락별 opt-in이다. 인증을 강제하지 않고
 
 담당은 Sol: 시각/모션/자산 및 자체 검토, Luna: 명확한 기능 요구와 콘텐츠 인벤토리/DOM 감사, root: 공유 카메라·host·통합 및 독립 검수다. 소유권을 유지하며 실패 횟수로 자동 교체하지 않는다. 같은 담당자가 관찰 프레임·측정·잘못된 지시 전제를 고쳐 같은 조건에서 재검수한다.
 
-1920×1080 후 1440×900 KO/ES 데스크톱을 먼저 확인하고 모바일은 마지막에 390×844 및 필요한 768 폭으로 검수한다. 입력·직접 링크·역방향/재진입·focus 복귀·언어 전환·오류와 네트워크 실패를 실제 DOM/브라우저에서 확인한다. 실제 GPU와 SwiftShader를 구분한다. 점수는 새 UI에 대해 다시 매긴다. 최초 A 평가 14/25는 기준점이며 목표는 각 5점 영역 최소 4점이다. Nielsen 27/40은 별도 척도다. 과거 UI 흐름 점수를 새 UI 결과로 옮기지 않는다.
+이번 실행은 1920×1080 및 1440×900 KO/ES 데스크톱 검수에 집중한다. 사용자가 모바일 QA를 이번 범위에서 명시적으로 제외했으므로 390×844/768 검수는 추후로 이연하며 현재 완료 관문이 아니다. 기존 모바일 캡처와 QA 기록은 보존한다. 데스크톱의 입력·직접 링크·역방향/재진입·focus 복귀·언어 전환·오류와 네트워크 실패를 실제 DOM/브라우저에서 확인하고, 실제 GPU와 SwiftShader를 구분한다. 점수는 새 UI에 대해 다시 매긴다. 최초 A 평가 14/25는 기준점이며 목표는 각 5점 영역 최소 4점이다. Nielsen 27/40은 별도 척도다. 과거 UI 흐름 점수를 새 UI 결과로 옮기지 않는다.
 
 | 영역 | 통과에 필요한 실제 증거 |
 |---|---|
@@ -72,14 +79,14 @@ R01–R04 공동 기능은 맥락별 opt-in이다. 인증을 강제하지 않고
 
 - 비활성 옛 소스 정리, 편지 시간축 교정, 그림자 경고 정리는 각각 과거 작업으로 완료했다. 그 시점의 main 76/623·post 29/29·build 결과는 [통합 로그](../../output/current-review/implementation-20261021/room-reward-correction/)에 있고, 629/27 숫자는 더 앞선 checkpoint 이력이다. 아래 현재 Hero 통합 판정과는 별도이며 오래된 수치를 최신 소스 검증으로 재사용하지 않는다. bundle 경고는 남아 있다.
 
-- [현재 실제 메인 녹화](../review/landing-current-es.mp4)는 uncommitted Hero 통합 source를 기록한 1440×900 Chromium/Linux SwiftShader 영상이다. H.264 길이 57.866667초, 재생 속도 1.15배, 기록된 12개 action, browser/HTTP 오류 0이며 원본 source hash와 시작/끝 안정성은 [native whole report](../../output/current-review/hero-spatial-rework-20261021/hero-wall-volume-current/product-current/native-whole-report.json)에 있다. 이 report의 source commit `f12c25d`는 기준점이고 영상의 실제 코드는 `sourceFilesAtEnd` 해시로 식별한다. 새 독립 검수 점수는 composition 4/5, space 3/5, purpose 4/5, craft 3/5로 전체 4/5 기준을 충족하지 않는다. 이는 실제 3D 카메라·경계 가림·사용 흐름의 근거지만 원화 표면 mesh deformation의 증거는 아니다.
+- 과거 [실제 메인 녹화](../review/landing-current-es.mp4)는 `849344f` 기반 1440×900 Chromium/Linux SwiftShader 영상이다. H.264 57.87초와 해당 checkpoint의 native 12개 action 근거는 보존하되 최신 수정의 영상으로 취급하지 않는다. 당시 독립 점수와 source 해시는 인용 보고서에서 확인한다.
 - 최초 개봉은 `PostHeroPreview.tsx`의 기존 native smooth scroll과 1.8초 개봉을 함께 시작해 편지 장면을 먼저 화면에 정렬한다. `.58`로 camera/DOM 준비를 앞당긴 임시안은 갤러리 위에 원문을 겹쳐 보여 3/5였으므로 폐기했고 공유 카메라·표시 gate는 기존 `.62`를 유지한다. 같은 native 첫 버튼에서 1440 ES p=.605 / 1920 KO p=.602 → p=.663, 갤러리 완전 퇴장·원문 5문단/단일 DOM·닫기/포커스 복귀를 확인했고 root도 두 PNG를 직접 열었다. 독립 A의 1440 ES 최초 개봉→독서/4+4→연속 닫기는 craft/continuity/personal purpose **각 4/5**, 해당 범위 blocking 없음이다. 개봉 중 q=.065 실제 wheel은 남은 자동정렬을 중단하고 2.1초 뒤 재개하지 않았지만, 이 입력으로 실제 역방향 이동까지 검증한 것은 아니다. [기존 report](../../output/current-review/implementation-20261021/content-audit-v3/report.json)의 `letterStageAlignmentVerification`과 `independentVisualReview.postFlowFollowup.correctionActualFollowup.continuityFinalActual.firstEntryReadiness.alignedConfirm`에 원시 실패·잘못된 runner assertion·범위별 최종 결과를 구분했다. 모바일/전체 Hero·후반 공간의 점수로 확대하지 않는다.
 
 
 - 앞선 source `5c12f9b`의 46.60초 스페인어 녹화는 [Git 이력](https://github.com/da960822-ux/gitactions-main/blob/f12c25d9e2b45c178abe359aa66575a957af6967/docs/review/landing-5c12f9b-es.mp4)에서 역사 증거로 남긴다. 현재 영상 파일을 중복 보관하지 않는다.
 
-- 이전 `b5b2613` 통합 checkpoint는 전체 77 files/620 tests, post 26/26, TypeScript/Vite/edge build 통과다. 편지·모바일·터치 최종 수정 뒤의 [full-test 로그](../../output/current-review/implementation-20261021/full-tests-final.log), [post 검사 로그](../../output/current-review/implementation-20261021/post-tests-final.log), [build 로그](../../output/current-review/implementation-20261021/build-final.log)에 남아 있으며 500 kB 이상 chunk 경고는 유지된다. Hero focused geometry test는 [focused log](../../output/current-review/hero-spatial-rework-20261021/hero-wall-volume-current/focused-tests.log)에서 22/22 통과했다. 수학 검사와 화면/성능 평가는 구분한다.
-- 현재 1920×1080·1440×900 정지/정착 역행 증거는 [product report](../../output/current-review/hero-spatial-rework-20261021/hero-wall-volume-current/product-current/product-report.json)에 있다. 두 해상도 모두 settled same-p reverse follow-up이 같음을 기록했고, 실제 pointer response와 L04/L09/L06 native pointer open/Escape focus return을 확인했다. 새 whole-motion recording에서 인물과 B 도착 구도는 유지됐지만 독립 점수는 composition 4/5·space 3/5·purpose 4/5·craft 3/5다. 남은 구체 항목은 actual mesh deformation 미구현과 갤러리 선택물의 작은 크기/약한 depth다. 모바일은 새 경로 미검수이고 SwiftShader 영상은 실GPU 성능 자료가 아니다. 원본 I/B/P는 보존한다. 이전 joint report/PNG는 이전 checkpoint의 역사 기록이다. 기존 75/621 전체 검사·build 통과는 앞선 snapshot이며, 이번 `npm test`는 76/622 통과했다. 새 helper focused test 1/1과 generic 교정 뒤 `tsc -b`도 통과했지만, 녹화 소스와 generic 교정 뒤의 최종 TypeScript/Vite/edge build도 root가 통과를 확인했다. 계획 중인 ceiling 변경은 이 검증에 포함하지 않는다. Hero 설계·남은 조건은 [Hero brief](HERO-REVISION-BRIEF-20261021.ko.md), 과정 판정은 [failure audit](PROCESS-FAILURE-AUDIT-20261021.ko.md)를 본다.
+- 이전 `b5b2613` 통합 checkpoint는 전체 77 files/620 tests 및 post 26/26을 기록했다. 이 수치는 최신 76/623·29/29와 별개인 과거 결과다. Hero focused geometry test 로그도 정지 기하 검증이며 현재 연속 영상이나 성능 평가를 대신하지 않는다.
+이 아래의 세부 항목은 작성 당시의 기록이다. 현재 Hero 판단·검사 집계는 문서 상단과 [Hero brief](HERO-REVISION-BRIEF-20261021.ko.md), [failure audit](PROCESS-FAILURE-AUDIT-20261021.ko.md)를 따른다. 이후 문단에 적힌 “현재”는 해당 자료의 실행 시점 기준이며 현행 결과로 자동 승격하지 않는다.
 - 새 갤러리 hover는 완료 기록이 있다: [구현/검수 보고서](../../output/gallery-pointer/REPORT.md). 기존 물체에 0.12 world-unit lift, 축별 최대 4°, 자산·레이아웃·재질 변화 없음, focused tests 2/2, 실제 1920/1440 포인터와 390 터치 및 reduced-motion 검수가 기록됐다. 브라우저는 SwiftShader 소프트웨어 렌더링이다. 이는 랜딩 전체 검수가 아니다.
 - 전체 KO 행동 검수는 [native-main-20261020-r4 보고서](../../output/current-review/implementation-20261021/main-local-sixteen-actions/native-main-20261020-r4/report.json)에서 1440×900 한 흐름의 L01–L16 16개 모두 통과했다. 별도 이중언어 확인은 L16의 KO/ES 양면을 spot-check했으며 전체 KO/ES 행동 전수 검수는 아니다. [room-discovery-v1](../../output/current-review/implementation-20261021/room-discovery-v1/report.json)은 desktop 22/22, ES lifecycle, L01 도미노와 exit-final을 통과했고 보고서 오류도 0이다. 과거의 숨김 selector timeout은 이 현재 통과 보고서의 결과가 아니다.
 - [content-audit-v2](../../output/current-review/implementation-20261021/content-audit-v2/report.json)는 34개 중 30개 통과, 4개 harness selector 오류로 전체 보고서가 미통과다. 후속 [content-audit-v3](../../output/current-review/implementation-20261021/content-audit-v3/report.json)는 실패 4개 시나리오를 고친 selector로 다시 실행해 L06 그림→카드·locale persistence·feedback/play 경로를 KO/ES 각 한 뷰포트씩 4/4 통과했으며 browser errors/network failures는 0이다. v2의 분류는 테스트 selector 오류이며 제품 hotspot 고장으로 취급하지 않는다. 두 해상도·언어 전체가 모두 통과했다는 의미는 아니다.
@@ -90,7 +97,7 @@ R01–R04 공동 기능은 맥락별 opt-in이다. 인증을 강제하지 않고
 - F1의 승인 B crop 화면은 제품 UI에 통합됐고 [F1 browser report](../../output/current-review/implementation-20261021/F1-workstation-integration/report.json)에서 1920/1440·KO/ES 구도/anchor 검사 9/9와 1440 ES reverse-camera 검사가 통과했다. 최신 main 5173의 [root 통합 흐름 기록](../../output/current-review/implementation-20261021/root-integrated-flow/flow-report.json)은 1920×1080 ES 10개 forward/reverse 상태, 원문 5문단, overflow·console·network 오류 0을 기록하고 4개 check 모두 통과했다. 종료화면은 실제 L06 그림 뒤집기와 L09→L01→L15 gem 선택을 거쳐 같은 SVG/Gem 상태를 전체 화면에 정착시켰다. 따라서 이전 optional frame의 미정착 판정은 이 최신 캡처로 보완됐으며, 구형 5175 캡처를 현재 증거로 쓰지 않는다.
 - Ending B2D 개별 [ending-room-replacement 보고서](../../output/current-review/implementation-20261021/ending-room-replacement/report.json)는 8개 기능 assertion이 통과했고 console/network 오류도 0이다. 별도 기본 프레임 4개는 1920/1440 KO/ES 각각 보호 영역·overflow 검사에 통과했고, 앞선 선택 프레임은 당시 약 69px 이동 때문에 미정착으로 표시됐다. 그 선택 상태는 위 최신 root 통합 캡처에서 실제 drawing/gem과 함께 settled로 확인됐다. main ending이 화면을 덮으면 `LandingWorldHost`가 GPU stage를 숨긴다. F2용 생성 책상 배경은 계속 output-only이며 product에 복사/통합하지 않았다. R20/wall-volume의 다른 output-only 실패 연구도 product 완료 근거가 아니다. 독립 A의 실제 1440 desktop motion/소프트웨어 5초 측정과 B의 별도 검수는 완료했다. A 25/32(8항목), B 18/28(7항목)는 서로 다른 적용 범위이므로 평균내지 않는다. Hero 공간/구도는 여전히 3/5이며 전체 시각 완료가 아니다. 기존 영상은 위의 5c12f9b 증거다. 실제 hardware GPU 성능 측정도 남아 있다.
 
-### 후속 편지·최종 모바일 확인
+### 편지 후속 및 과거 모바일 검수 기록
 
 - [early-letter-handoff](../../output/current-review/implementation-20261021/early-letter-handoff/README.ko.md): 개봉 직후 빈 판을 보이던 인계 시작을 .70→.62로 옮겨 같은 원문 DOM 한 개를 펼친 종이에 투영했다. 실제 1920 ES·1440 KO에서 클릭/읽기/접기/역행, 원문 5문단과 quad 오차 2px 이내를 확인했다. 초기 원근 미리보기의 작은 글자는 별도 정상 독서 장면을 대신하지 않는다.
 - [mobile-post-confirmation](../../output/current-review/implementation-20261021/mobile-post-confirmation/report.json): 마지막 단계 390×844 KO/ES 및 reduced motion에서 F1 가독성, 전체 B 자연 높이 엔딩/그림 회수, 16px 원문, 하단 접기·재열기·장미 힌트·세 방 물체 진입을 확인했다. coarse pointer의 세 진입 영역은 중심을 유지하며 최소 44px다. 이 보고서의 `passed:false`는 당시 L06 뒤집기 실패를 보존한 것으로 아래 후속 결과와 함께 읽는다.
