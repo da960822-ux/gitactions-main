@@ -12,7 +12,7 @@ export function createFoldedWorld(canvas:HTMLCanvasElement,options:WorldOptions)
  const owned=new Set<{dispose:()=>void}>(),start=performance.now(),marks:Record<string,number>={};
  const keep=<A extends{dispose:()=>void}>(a:A)=>{if(disposed)a.dispose();else owned.add(a);return a;};
  const renderer=new T.WebGLRenderer({canvas,antialias:true,powerPreference:'high-performance'});
- renderer.setPixelRatio(options.pixelRatio);renderer.setSize(width,height,false);renderer.outputColorSpace=T.SRGBColorSpace;renderer.toneMapping=T.AgXToneMapping;renderer.toneMappingExposure=1;renderer.info.autoReset=false;renderer.shadowMap.enabled=true;renderer.shadowMap.type=T.PCFSoftShadowMap;renderer.shadowMap.autoUpdate=false;
+ renderer.setPixelRatio(options.pixelRatio);renderer.setSize(width,height,false);renderer.outputColorSpace=T.SRGBColorSpace;renderer.toneMapping=T.AgXToneMapping;renderer.toneMappingExposure=1;renderer.info.autoReset=false;renderer.shadowMap.enabled=true;renderer.shadowMap.type=T.PCFShadowMap;renderer.shadowMap.autoUpdate=false;
  const gl=renderer.getContext()as WebGL2RenderingContext;let pendingFence:WebGLSync|null=null,pendingFrameData:Record<string,string>|null=null,skippedWhilePending=0;
  const resetFence=()=>{pendingFence=null;pendingFrameData=null;lastSignature='';};canvas.addEventListener('webglcontextlost',resetFence);canvas.addEventListener('webglcontextrestored',resetFence);
  const scene=new T.Scene();scene.background=new T.Color('#120c14');const camera=new T.PerspectiveCamera(48,width/height,.1,400);

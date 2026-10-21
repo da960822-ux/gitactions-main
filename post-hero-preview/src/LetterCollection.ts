@@ -1,4 +1,5 @@
 import * as THREE from 'three';
+import {LETTER_UNFOLDED} from './interaction';
 
 export type LetterPaperPose = {corners:Array<{x:number;y:number}>;visible:boolean};
 export type LetterFrame = {opening:number;progress:number;width:number;height:number;ownCamera?:boolean;reducedMotion?:boolean;onPaperPose?:(pose:LetterPaperPose)=>void;effect?:{name:string;value:number;nonce:number}};
@@ -30,22 +31,23 @@ export function createLetterCollection(options:{scene:THREE.Scene;camera:THREE.P
       return mesh(new THREE.ExtrudeGeometry(shape,{depth:.012,bevelEnabled:false}),m,parent,0,0,z);
     }
     const envelope = new THREE.Group(); envelope.name='letter-envelope'; scene.add(envelope);
-    box(2.05,1.35,.025,paper,envelope,0,.675,-.055).name='letter-back';
-    box(1.96,1.28,.012,burgundy,envelope,0,.68,-.035).name='letter-burgundy-liner';
-    box(.035,1.35,.11,cream,envelope,-1.01,.675,0);
-    box(.035,1.35,.11,cream,envelope,1.01,.675,0);
-    box(2.05,.04,.11,cream,envelope,0,.02,0);
+    const shell=new THREE.Group();shell.name='letter-envelope-shell';envelope.add(shell);
+    box(2.05,1.35,.025,paper,shell,0,.675,-.055).name='letter-back';
+    box(1.96,1.28,.012,burgundy,shell,0,.68,-.035).name='letter-burgundy-liner';
+    box(.035,1.35,.11,cream,shell,-1.01,.675,0);
+    box(.035,1.35,.11,cream,shell,1.01,.675,0);
+    box(2.05,.04,.11,cream,shell,0,.02,0);
     // The front folds sit in front of the insert, so extraction reveals real depth.
-    polygon([[-1.025,0],[-1.025,1.35],[.22,.42]],paper,envelope,.055);
-    polygon([[1.025,0],[1.025,1.35],[-.22,.42]],paper,envelope,.06);
-    polygon([[-1.025,0],[1.025,0],[1.025,.12],[0,.91],[-1.025,.12]],cream,envelope,.075);
-    const flap = new THREE.Group();flap.name='letter-flap'; flap.position.set(0,1.35,-.035); envelope.add(flap);
-    polygon([[-1.025,0],[1.025,0],[0,-.96]],paper,flap,.12);
-    polygon([[-.95,-.04],[.95,-.04],[0,-.88]],cream,flap,.105);
+    polygon([[-1.025,0],[-1.025,1.35],[.22,.42]],paper,shell,.055);
+    polygon([[1.025,0],[1.025,1.35],[-.22,.42]],paper,shell,.06);
+    polygon([[-1.025,0],[1.025,0],[1.025,.12],[0,.91],[-1.025,.12]],cream,shell,.075);
+    const flap = new THREE.Group();flap.name='letter-flap'; flap.position.set(0,1.35,.085); shell.add(flap);
+    polygon([[-1.025,0],[1.025,0],[0,-.96]],paper,flap,0);
+    polygon([[-.95,-.04],[.95,-.04],[0,-.88]],cream,flap,-.015);
     // A real raised fold edge keeps the sealed flap legible under the shared soft light.
     const flapCrease=new THREE.Group();flapCrease.name='letter-flap-crease';flap.add(flapCrease);
     for(const x of [-1.025,1.025]){
-      const curve=new THREE.LineCurve3(new THREE.Vector3(x,-.006,.134),new THREE.Vector3(0,-.96,.134));
+      const curve=new THREE.LineCurve3(new THREE.Vector3(x,-.006,.014),new THREE.Vector3(0,-.96,.014));
       mesh(new THREE.TubeGeometry(curve,1,.004,4,false),crease,flapCrease);
     }
     const foilCanvas=document.createElement('canvas'); foilCanvas.width=1024;foilCanvas.height=256;
@@ -56,9 +58,9 @@ export function createLetterCollection(options:{scene:THREE.Scene;camera:THREE.P
       foilContext.fillText('For Lisbeth',512,128);
     }
     const foilTexture=new THREE.CanvasTexture(foilCanvas);foilTexture.colorSpace=THREE.SRGBColorSpace;
-    const foilLabel=mesh(new THREE.PlaneGeometry(1.12,.28),new THREE.MeshBasicMaterial({map:foilTexture,transparent:true,depthWrite:false,toneMapped:false}),envelope,0,.24,.093);
+    const foilLabel=mesh(new THREE.PlaneGeometry(1.12,.28),new THREE.MeshBasicMaterial({map:foilTexture,transparent:true,depthWrite:false,toneMapped:false}),shell,0,.24,.093);
     foilLabel.castShadow=false;
-    const seal = new THREE.Group();seal.name='letter-detached-seal'; seal.position.set(0,.48,.235); envelope.add(seal);
+    const seal = new THREE.Group();seal.name='letter-detached-seal'; seal.position.set(0,.48,.235); shell.add(seal);
     const wax = mesh(new THREE.CylinderGeometry(.155,.16,.035,40),waxMat,seal); wax.rotation.x=Math.PI/2;
     mesh(new THREE.TorusGeometry(.118,.008,6,40),gold,seal,0,0,.021);
     const heart = new THREE.Shape(); heart.moveTo(0,-.055); heart.bezierCurveTo(-.13,.025,-.06,.10,0,.045); heart.bezierCurveTo(.06,.10,.13,.025,0,-.055);
@@ -85,7 +87,7 @@ export function createLetterCollection(options:{scene:THREE.Scene;camera:THREE.P
   if(!(object instanceof THREE.Mesh)||object.material!==paper&&object.material!==cream)return;
   const original=object.material;
   if(object.geometry.type==='ExtrudeGeometry')paperFaces.push({mesh:object,original,flat:[paperFace,original]});
-  else if(object.geometry.type==='BoxGeometry')paperFaces.push({mesh:object,original,flat:[original,original,original,original,paperFace,original]});
+  else if(object.geometry.type==='BoxGeometry')paperFaces.push({mesh:object,original,flat:[original,original,original,original,paperFace,paperFace]});
  });
  function projectPaper(){
   if(disposed||!latest.onPaperPose)return;
@@ -95,7 +97,7 @@ export function createLetterCollection(options:{scene:THREE.Scene;camera:THREE.P
    const point=insert.localToWorld(new THREE.Vector3(x,y,.015)).project(camera);
    return {x:bounds.left+(point.x+1)*latest.width/2,y:bounds.top+(1-point.y)*latest.height/2};
   });
-  latest.onPaperPose({corners,visible:latest.progress>=.62&&latest.progress<.86&&latest.opening>.9&&latest.width>=600&&!latest.reducedMotion});
+  latest.onPaperPose({corners,visible:latest.progress>=.62&&latest.progress<.86&&latest.opening>LETTER_UNFOLDED&&latest.width>=600&&!latest.reducedMotion});
  }
  function update(frame:LetterFrame){
   if(disposed)return {position:position.clone(),target:target.clone(),ready:false};
@@ -109,7 +111,9 @@ export function createLetterCollection(options:{scene:THREE.Scene;camera:THREE.P
   if(frame.effect?.name==='wax-stamp')heartSelected=frame.effect.value>0;
   heartStamp.visible=heartSelected;initialsStamp.visible=!heartSelected;
   seal.scale.setScalar(1);
-  const domReading=Boolean(frame.onPaperPose)&&q>.9&&frame.progress>=.62&&frame.progress<.94;
+  const domReading=Boolean(frame.onPaperPose)&&q>LETTER_UNFOLDED&&frame.progress>=.62&&frame.progress<.94;
+  // Move the shell below the viewport while its insert hands the same paper to the DOM.
+  shell.position.y=desktop&&frame.onPaperPose?-4*ease(.9,1,q):0;
   insert.visible=!domReading&&(!desktop||q>.36);
       flap.rotation.x=-ease(.12,.36,q)*THREE.MathUtils.degToRad(165);
       seal.position.y=.48-ease(.12,.34,q)*.35;

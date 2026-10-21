@@ -1,4 +1,6 @@
 export const LETTER_RANGE = [0.65, 0.79] as const;
+export const LETTER_PAPER_HANDOFF = .70;
+export const LETTER_UNFOLDED = .86;
 
 export function clamp01(value: number): number {
   return Number.isFinite(value) ? Math.min(1, Math.max(0, value)) : 0;
@@ -14,27 +16,33 @@ export function letterOpenProgress(sceneP: number): number {
   return clamp01((p - LETTER_RANGE[0]) / (LETTER_RANGE[1] - LETTER_RANGE[0]));
 }
 
-export type EnvelopeState = { manual: boolean | null; previousInRange: boolean };
+export type EnvelopeState = { manual: boolean | null; previousInRange: boolean; returning: boolean };
 
 export function createEnvelopeState(): EnvelopeState {
-  return { manual: null, previousInRange: false };
+  return { manual: null, previousInRange: false, returning: false };
 }
 
 export function updateEnvelopeFromScroll(state: EnvelopeState, sceneP: number): EnvelopeState {
   const inRange = clamp01(sceneP) >= LETTER_RANGE[0];
-  return { manual: state.manual, previousInRange: inRange };
+  return { manual: state.manual, previousInRange: inRange, returning: state.returning && clamp01(sceneP) > LETTER_PAPER_HANDOFF };
 }
 
 export function toggleEnvelope(state: EnvelopeState, sceneP: number): EnvelopeState {
+  if (state.returning) return reopenEnvelope(state);
   const current = envelopeTarget(state, sceneP) >= 0.5;
-  return { manual: !current, previousInRange: clamp01(sceneP) >= LETTER_RANGE[0] };
+  return { manual: !current, previousInRange: clamp01(sceneP) >= LETTER_RANGE[0], returning: false };
 }
 
 export function reopenEnvelope(state: EnvelopeState): EnvelopeState {
-  return { manual: true, previousInRange: true };
+  return { manual: true, previousInRange: true, returning: false };
+}
+
+export function closeEnvelope(state: EnvelopeState, sceneP: number): EnvelopeState {
+  return { ...state, manual: false, returning: clamp01(sceneP) >= LETTER_RANGE[1] };
 }
 
 export function envelopeTarget(state: EnvelopeState, sceneP: number): number {
+  if (state.returning && clamp01(sceneP) > LETTER_PAPER_HANDOFF) return 1;
   return state.manual === null ? letterOpenProgress(sceneP) : state.manual ? 1 : 0;
 }
 

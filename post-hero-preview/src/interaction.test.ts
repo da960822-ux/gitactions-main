@@ -1,6 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import { clamp01, sceneProgress, letterOpenProgress, createEnvelopeState, updateEnvelopeFromScroll, toggleEnvelope, reopenEnvelope, envelopeTarget, loadPreferences, savePreferences } from './interaction';
+import { clamp01, sceneProgress, letterOpenProgress, createEnvelopeState, updateEnvelopeFromScroll, toggleEnvelope, reopenEnvelope, envelopeTarget, closeEnvelope, LETTER_PAPER_HANDOFF, loadPreferences, savePreferences } from './interaction';
 
 test('normalized progress clamps finite values and maps letter range', () => {
   assert.equal(clamp01(Infinity), 0);
@@ -30,6 +30,25 @@ test('manual letter state survives forward, reverse and mid-scroll direction cha
   assert.equal(envelopeTarget(reopenedAtLetter, 0.86), 1);
   assert.equal(envelopeTarget(updateEnvelopeFromScroll(reopenedAtLetter, 0.86), 0.86), 1);
   assert.equal(envelopeTarget(updateEnvelopeFromScroll(reopenedAtLetter, 0.4), 0.4), 1);
+});
+
+test('a partial scroll opening still continues opening on the primary toggle',()=>{
+ const state=updateEnvelopeFromScroll(createEnvelopeState(),.686);
+ assert.ok(envelopeTarget(state,.686)>0&&envelopeTarget(state,.686)<.5);
+ assert.equal(envelopeTarget(toggleEnvelope(state,.686),.686),1);
+});
+
+test('reader close keeps the paper open through reverse handoff and a new opening owns the target',()=>{
+ let closing=closeEnvelope(reopenEnvelope(createEnvelopeState()),.884);
+ assert.equal(closing.manual,false,'the explicit close intent is retained during the return');
+ assert.equal(closing.returning,true);
+ for(const pausedOrReversed of [.884,.81,.83,.75]){closing=updateEnvelopeFromScroll(closing,pausedOrReversed);assert.equal(envelopeTarget(closing,pausedOrReversed),1,'a paused or reversed return cannot fold the reader in place');}
+ const reopened=reopenEnvelope(closing);
+ assert.equal(reopened.returning,false);assert.equal(envelopeTarget(updateEnvelopeFromScroll(reopened,LETTER_PAPER_HANDOFF),LETTER_PAPER_HANDOFF),1,'a new direct/shared/hash opening cancels the old close target');
+ assert.equal(toggleEnvelope(closing,.81).manual,true,'the same control can reverse its pending close');
+ closing=updateEnvelopeFromScroll(closing,LETTER_PAPER_HANDOFF);
+ assert.equal(closing.returning,false);assert.equal(envelopeTarget(closing,LETTER_PAPER_HANDOFF),0,'folding starts only after physical paper ownership returns');
+ assert.equal(envelopeTarget(updateEnvelopeFromScroll(closing,.884),.884),0,'later forward scroll does not undo the explicit close');
 });
 
 test('preferences tolerate invalid and unavailable storage', () => {

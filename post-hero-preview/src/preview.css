@@ -46,7 +46,7 @@
 .post-hero-preview .shared-context{height:auto;max-height:calc(100svh - 160px);overflow-y:auto;overscroll-behavior:contain;scrollbar-gutter:stable;scrollbar-color:#a7767f #20151e;scrollbar-width:thin;padding:20px;background:#20151ef5;border:1px solid #9d6b735c}
 .post-hero-preview .shared-context-close{margin-bottom:12px}
 .post-hero-preview .shared-context .shared-events{width:100%;max-width:none;margin:0;padding:0;border:0}
-.post-hero-preview .letter-section{position:relative;z-index:2;min-height:100svh;padding:90px 24px;background:#13131c;scroll-margin-top:20px}
+.post-hero-preview .letter-section{position:relative;z-index:2;min-height:100svh;padding:90px 24px;background:transparent;scroll-margin-top:20px}
 .post-hero-preview .letter-section-label,.post-hero-preview .letter-bottom-controls{display:flex;justify-content:flex-end;align-items:center;max-width:740px;margin:0 auto 16px;position:relative;z-index:2}
 .post-hero-preview .letter-paper-slot{max-width:740px;margin:auto;position:relative;z-index:1}
 .post-hero-preview .letter-paper{position:relative;width:100%;margin:0;padding:56px 64px 44px;background:#f4e8d2;color:#402935;box-shadow:0 28px 85px #050207a6,0 0 0 1px #ffebce40;isolation:isolate;border-radius:2px;transform-origin:0 0}
@@ -61,8 +61,7 @@
 .post-hero-preview .letter-paper[data-tracking='true']{z-index:4;will-change:transform;pointer-events:none}
 .post-hero-preview .letter-paper.is-visually-sealed{position:absolute!important;width:1px!important;height:1px!important;min-height:0!important;padding:0!important;clip-path:inset(50%);overflow:hidden;white-space:nowrap;transform:none!important}
 .post-hero-preview .letter-bottom-controls{margin:22px auto 0}
-.post-hero-preview .closed-note{max-width:740px;min-height:430px;margin:auto;display:flex;align-items:center;justify-content:center;flex-direction:column;color:#e3c9c5}
-.post-hero-preview .closed-note>span{font-size:32px;color:#c17d83}
+.post-hero-preview .closed-note{max-width:740px;margin:auto;display:flex;align-items:center;justify-content:center;flex-direction:column;color:#e3c9c5}
 .post-hero-preview .closed-note p{font-size:16px}
 .post-hero-preview .letter-reading-art{--flank-width:min(340px,calc((100vw - 740px)/2 - 52px));position:absolute;inset:0;pointer-events:none}
 .post-hero-preview .reading-roses{position:absolute;top:50%;width:var(--flank-width);aspect-ratio:1;transform:translateY(-50%);background:url('/images/landing-preview/letter-roses-atlas.png') no-repeat;background-size:200% 100%;border:0;padding:0;pointer-events:auto;cursor:pointer}
@@ -89,7 +88,7 @@
  .landing-world-host .post-hero-preview.post-hero-embedded .country-labels{margin:0}
  .landing-world-host .post-hero-preview.post-hero-embedded .ending{align-items:flex-start;justify-content:center;padding:110px 7.5vw;min-height:100svh}
  .landing-world-host .post-hero-preview.post-hero-embedded .ending-copy{max-width:min(460px,31vw)}
- .landing-world-host .post-hero-preview.post-hero-embedded .letter-section{background:#13131c;padding:90px 24px;min-height:100svh}
+ .landing-world-host .post-hero-preview.post-hero-embedded .letter-section{background:transparent;padding:90px 24px;min-height:100svh}
 }
 @media(min-width:761px) and (max-width:1500px){.landing-world-host .post-hero-preview.post-hero-embedded .letter-invitation .chapter-copy{max-width:330px}}
 @media(max-width:1000px){
@@ -107,7 +106,6 @@
  .post-hero-preview .letter-reading-art{position:relative;inset:auto;display:flex;justify-content:space-between;gap:35px;height:150px;margin-bottom:12px}.post-hero-preview .reading-roses{position:relative;inset:auto;width:140px;max-width:44%;height:auto;transform:none}.post-hero-preview .rose-meaning{font-size:12px}
 }
 
-.post-hero-preview[data-stage="ending"] .letter-bottom-controls{visibility:hidden}
 
 .post-hero-preview .world-country-labels{position:absolute!important;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip-path:inset(50%);white-space:nowrap;border:0}
 
@@ -227,3 +225,7 @@
  .post-hero-preview #together-again .action-recall{text-align:left;font-size:12px;line-height:1.6}
  .post-hero-preview #together-again footer{left:20px;right:20px;font-size:12px}
 }
+
+/* The closed reader is a compact return point; its opaque surround starts at actual reading. */
+.landing-world-host .post-hero-preview.post-hero-embedded .letter-section.reading-surround,.post-hero-preview .letter-section.reading-surround{background:#13131c}
+.landing-world-host .post-hero-preview.post-hero-embedded .letter-section.is-folded,.post-hero-preview .letter-section.is-folded{min-height:0;padding:24px}
