@@ -16,21 +16,6 @@
       "pose": "offer"
     },
     {
-      "file": "contact.png",
-      "source": "/workspace/generated_images/exec-de004809-f0c0-4242-b4bd-1e1f44904b47.png",
-      "sha256": "3df83a521525e73e881f6afe04904e34dc47383cea09d5a56b922089bba10df9",
-      "size": [
-        1199,
-        1312
-      ],
-      "mode": "RGBA",
-      "alphaExtrema": [
-        0,
-        255
-      ],
-      "pose": "contact"
-    },
-    {
       "file": "received.png",
       "source": "/workspace/generated_images/exec-8cd959da-77ed-4390-a167-e9f537316cff.png",
       "sha256": "ebcc7e51928277a3627341eab6c54e5c4768d882fdc4a2aeaa8ff085cd38b395",
@@ -49,6 +34,55 @@
   "reference": "/images/approved-couple-room/approved-character-reference.png",
   "generator": "image_gen.imagegen",
   "postprocessing": "None; original transparent PNG bytes copied unchanged.",
-  "scope": "Three registered illustration keyposes: male offers a single rose, shared stem handover, female receives. Runtime illustrated pose animation, not a full skeletal character rig.",
-  "continuity": "Original approved faces, clothing, headsets and fixed head/foot positions retained; no wedding/proposal/ring depiction."
+  "scope": "Continuous registered 2.5D cutout handover. Fixed approved bodies/faces/feet; articulated shoulder, elbow and wrist segments; one persistent rose; local finger-expression blending at contact. offer.png is a hand-only source atlas and received.png is the shared atlas/static fallback. Historical whole-scene contact pose is retired, not shipped.",
+  "continuity": "Original approved faces, clothing, headsets and fixed head/foot positions retained; no wedding/proposal/ring depiction.",
+  "puppetAssets": [
+    {
+      "file": "body-clean.png",
+      "source": "/workspace/generated_images/exec-3a948608-b0e9-45ed-bba8-46b6906f3f40.png",
+      "sha256": "e3209f954493caed54ba6c36313365525b3813c92d17979f7c94620522f3d5fd",
+      "size": [
+        1199,
+        1312
+      ],
+      "generator": "image_gen.imagegen",
+      "postprocessing": "None; original PNG bytes copied unchanged."
+    },
+    {
+      "file": "rose-single.png",
+      "source": "/workspace/generated_images/exec-822e0d39-ec96-4649-9910-470cd40cc2ed.png",
+      "sha256": "9e6615c5bf5dab538f74e102794198ef049cd961a02f32b672348ac8b9ebf407",
+      "size": [
+        1024,
+        1536
+      ],
+      "generator": "image_gen.imagegen",
+      "postprocessing": "None; original PNG bytes copied unchanged."
+    }
+  ],
+  "puppetSource": "received.png supplies unchanged fixed identity pixels, skin-contour arm/hand segments and reduced-motion/error fallback. offer.png supplies only donor closed-grip and recipient open-reach hand pixels, registered to those same articulated wrists and blended locally at contact. body-clean.png covers removed moving-limb/flower regions. rose-single.png is the only animated flower. No whole-body image swap or ending crossfade.",
+  "rejectedGeneratedAssets": [
+    "/workspace/generated_images/exec-a1be1f5e-97b3-44a4-8e58-0169e368fdd3.png",
+    "/workspace/generated_images/exec-30656e4c-e171-4823-ad1c-392af3162fe3.png",
+    "/workspace/generated_images/exec-f35968bc-7f36-40e8-87e2-6aae077f24bf.png"
+  ],
+  "wristRepair": "Curved overlapping recipient hand/forearm clip boundaries with a narrow sampled-skin-color SVG underlay close the rotating wrist seam. No raster files were edited.",
+  "retiredAssets": [
+    {
+      "file": "contact.png",
+      "source": "/workspace/generated_images/exec-de004809-f0c0-4242-b4bd-1e1f44904b47.png",
+      "sha256": "3df83a521525e73e881f6afe04904e34dc47383cea09d5a56b922089bba10df9",
+      "size": [
+        1199,
+        1312
+      ],
+      "mode": "RGBA",
+      "alphaExtrema": [
+        0,
+        255
+      ],
+      "pose": "contact",
+      "reason": "Whole-scene contact pose retired after continuous cutout handover visual acceptance; original generated source retained outside public runtime assets."
+    }
+  ]
 }

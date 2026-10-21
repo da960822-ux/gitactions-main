@@ -5,8 +5,11 @@
 .post-hero-preview .rose-gift-finale .rg-copy>p{max-width:32ch;margin:24px 0 0;color:#e0beb0;font-size:15px;line-height:1.7}
 .post-hero-preview .rose-gift-finale .rg-art{position:relative;height:66svh;max-height:760px;min-height:420px;isolation:isolate}
 .post-hero-preview .rose-gift-finale .rg-art[data-ready=false]{visibility:hidden}
-.post-hero-preview .rose-gift-finale .rg-pose{position:absolute;inset:0;width:100%;height:100%;object-fit:contain;object-position:center bottom;opacity:0;pointer-events:none;user-select:none}
-.post-hero-preview .rose-gift-finale .rg-pose-received{opacity:1}
+.post-hero-preview .rose-gift-finale .rg-static,.post-hero-preview .rose-gift-finale .rg-live{position:absolute;inset:0;width:100%;height:100%;object-fit:contain;object-position:center bottom;pointer-events:none;user-select:none}
+.post-hero-preview .rose-gift-finale .rg-live{fill:none;stroke:none;stroke-width:0;overflow:visible}
+.post-hero-preview .rose-gift-finale .rg-static{display:none}
+.post-hero-preview .rose-gift-finale .rg-art[data-static=true] .rg-static{display:block}
+.post-hero-preview .rose-gift-finale .rg-art[data-static=true] .rg-live{display:none}
 .post-hero-preview .rose-gift-finale .rg-replay{display:inline-flex;align-items:center;gap:12px;min-height:44px;margin-top:28px;padding:6px 0;border:0;border-bottom:1px solid #d7a18f66;background:none;color:#edc2a2;font:inherit;font-size:13px;cursor:pointer;transition:color 140ms ease}
 .post-hero-preview .rose-gift-finale .rg-replay svg{width:18px;height:18px;fill:none;stroke:currentColor;stroke-width:1.4;stroke-linecap:round;stroke-linejoin:round}
 .post-hero-preview .rose-gift-finale .rg-replay:disabled{color:#bd9c94;cursor:default}

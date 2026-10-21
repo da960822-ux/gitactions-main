@@ -148,7 +148,7 @@ export function LandingWorldHost({language,onLanguageChange,selected,onSelect}:P
    const departure=galleryBounds?smoothRange(height*.2,height*.8,galleryBounds.bottom):1;
    const galleryWeight=reveal*departure;
    section?.style.setProperty('--gallery-presence',String(galleryWeight));
-   root.dataset.scene=!postActive?'hero':galleryWeight>.5?'gallery':postState.current.progress<.56?'story':postState.current.progress<.9?'letter':'ending';
+   root.dataset.scene=!postActive?'hero':galleryWeight>.5?'gallery':postState.current.letterView==='rose'?'ending':postState.current.progress<.56?'story':'letter';
    root.dataset.bridge=bridge.toFixed(4);
    const signature=[pose.progress,pose.entrance,pose.pointerX,pose.pointerY,bridge,postState.current.progress,postState.current.opening,galleryWeight,selection.current.selected,scrollY,width,height].map(value=>typeof value==='number'?value.toFixed(4):value).join(':');
    const needsFrame=dirty.current||signature!==lastRenderSignature||postNeedsFrame||(!media.matches&&postState.current.effect.value!==0);
@@ -170,19 +170,20 @@ export function LandingWorldHost({language,onLanguageChange,selected,onSelect}:P
     world.updateRoomDesk(bridge);
     world.updateRoomExit(0);
     const originalPaper=root.querySelector<HTMLElement>('#moment-letter-copy');
-    const paperAspect=originalPaper&&originalPaper.offsetHeight>0?originalPaper.offsetWidth/originalPaper.offsetHeight:undefined;
+    const closingRect=postState.current.letterClosingRect;
+    const paperAspect=postState.current.letterView==='folding'&&closingRect?closingRect.width/closingRect.height:originalPaper&&originalPaper.offsetHeight>0?originalPaper.offsetWidth/originalPaper.offsetHeight:undefined;
     post.update({...postState.current,width,height,ownCamera:false,paperAspect});postNeedsFrame=false;
     roomEye.copy(ROOM_EYE);if(width>=760)roomEye.addScaledVector(ROOM_BACK,roomContain(width,height)-1);
     const paperHeight=root.querySelector<HTMLElement>('#moment-letter-copy')?.offsetHeight??0;
     if(paperHeight>32)measuredPaperHeight=paperHeight;
-    const composed=composition.update({progress,bridge,galleryWeight:0,opening:postState.current.opening,time:elapsed,reducedMotion:media.matches,width,height,roomEye,roomTarget:ROOM_TARGET,effect:postState.current.effect,localEvent:postState.current.localEvent,paperHeight:measuredPaperHeight,endingTop:root.querySelector('#together-again')?.getBoundingClientRect().top??0,pointer:{x:pose.pointerX,y:pose.pointerY}});
+    const composed=composition.update({progress,bridge,galleryWeight:0,opening:postState.current.opening,time:elapsed,reducedMotion:media.matches,width,height,roomEye,roomTarget:ROOM_TARGET,effect:postState.current.effect,localEvent:postState.current.localEvent,paperHeight:measuredPaperHeight,letterView:postState.current.letterView,letterClosingRect:closingRect,pointer:{x:pose.pointerX,y:pose.pointerY}});
     postNeedsFrame=composed.needsFrame;
     world.updateRoomExit(composed.roomExit);world.updateRoomDesk(composed.roomDesk);
     cameraPosition.copy(composed.eye).applyMatrix4(postTransform);cameraTarget.copy(composed.target).applyMatrix4(postTransform);
     // The same shared scene now carries the two story chapters and the original letter ending.
     const connectionProgress=bridge;
     composition.root.visible=connectionProgress>.001;
-    post.root.visible=connectionProgress>.001&&progress>=.55;
+    post.root.visible=connectionProgress>.001&&progress>=.55&&postState.current.letterView!=='rose'&&(progress<.94||postState.current.letterView==='folding');
     const connection=postConnectionPose(connectionProgress,{position:roomEye.toArray(),target:ROOM_TARGET.toArray(),fov:roomFov(width,height)},{position:cameraPosition.toArray(),target:cameraTarget.toArray(),fov:composed.fov},width>=760?Math.max(1,(16/9)/(width/height)):1);
     cameraPosition.fromArray(connection.position);cameraTarget.fromArray(connection.target);
     world.camera.position.copy(cameraPosition);world.camera.lookAt(cameraTarget);
@@ -190,7 +191,7 @@ export function LandingWorldHost({language,onLanguageChange,selected,onSelect}:P
     world.scene.background=connectionBackground.copy(roomBackground).lerp(composed.background,connectionProgress);
     post.root.position.copy(composed.letterAnchor);post.root.scale.setScalar(composed.letterScale);
     if(!world.renderExternal()){dirty.current=true;return;}post.projectPaper();
-    Object.assign(screen.dataset,{scene:root.dataset.scene,story:JSON.stringify(composed.story),letterObject:post.root.uuid,letterOpening:String(postState.current.opening),camera:world.camera.position.toArray().map(n=>n.toFixed(3)).join(','),target:cameraTarget.toArray().map(n=>n.toFixed(3)).join(','),drawCalls:String(world.renderer.info.render.calls),triangles:String(world.renderer.info.render.triangles),gallery:galleryWeight.toFixed(4),frameRenderingMode:progress<.55?'shared-story-surface':progress>=.94?'same-letter-ending':'shared-letter',reflection:'Hero SSR inactive in this frame',contactShadow:'room art is rigid and unlit; post props use live contact shadows',geometries:String(world.renderer.info.memory.geometries),textures:String(world.renderer.info.memory.textures)});
+    Object.assign(screen.dataset,{scene:root.dataset.scene,story:JSON.stringify(composed.story),letterObject:post.root.uuid,letterOpening:String(postState.current.opening),camera:world.camera.position.toArray().map(n=>n.toFixed(3)).join(','),target:cameraTarget.toArray().map(n=>n.toFixed(3)).join(','),drawCalls:String(world.renderer.info.render.calls),triangles:String(world.renderer.info.render.triangles),gallery:galleryWeight.toFixed(4),frameRenderingMode:progress<.55?'shared-story-surface':postState.current.letterView==='rose'?'rose-foreground':postState.current.letterView==='folding'?'in-place-letter-fold':'shared-letter',reflection:'Hero SSR inactive in this frame',contactShadow:'room art is rigid and unlit; post props use live contact shadows',geometries:String(world.renderer.info.memory.geometries),textures:String(world.renderer.info.memory.textures)});
     updateEditorial(1,1);destination.style.opacity=String(1-smoothRange(0,.2,bridge));destination.inert=bridge>.2;
    }
   };

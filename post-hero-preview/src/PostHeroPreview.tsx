@@ -6,9 +6,11 @@ import Details from './Details';
 import SharedEventsPanel from './SharedEventsPanel';
 import {StoryChapters} from './StoryChapters';
 import {EndingChapter} from './EndingChapter';
+import {PartnerPact} from './PartnerPact';
+import {createLetterFinaleState,reduceLetterFinale,type LetterFinaleEvent} from '../../src/landing/letterFinaleState';
 import type {SharedEventId,SharedEventRound} from '../../src/core/sharedEventsState';
 import {restoreLocalEventState,type LocalEventId,type LocalEventState} from './LocalEventRig';
-import { clamp01, LETTER_RANGE, LETTER_PAPER_HANDOFF, LETTER_UNFOLDED, closeEnvelope, createEnvelopeState, updateEnvelopeFromScroll, toggleEnvelope, reopenEnvelope, envelopeTarget } from './interaction';
+import { clamp01, LETTER_PAPER_HANDOFF, LETTER_UNFOLDED, closeEnvelope, createEnvelopeState, updateEnvelopeFromScroll, toggleEnvelope, reopenEnvelope, envelopeTarget } from './interaction';
 
 const StandalonePostHeroScene=lazy(()=>import('./Scene').then(module=>({default:module.PostHeroScene})));
 
@@ -18,11 +20,6 @@ const story = {
  es: { title:<>Aunque estemos lejos,<br/>juguemos juntos.</>, body:'Baby, hice esto para que juguemos juntos.', next:'Baja un poquito', distance:'Corea y República Dominicana.', distanceBody:'Baby, desde República Dominicana no podías entrar al juego de ritmo de Corea.', letter:'Baby, ahora abre esto.', letterBody:'Esto sí quería que lo leyeras.', open:'Abrir la carta', continueOpen:'Seguir abriendo', cancelClose:'Cancelar el cierre', close:'Doblar la carta', ending:<>Ahora sí, vamos a jugar,<br/><em>baby.</em></>, play:'Elegir un juego', ideas:'Ideas de Mami', reading:'Leer la carta', back:'Volver arriba', sealed:'El sobre está cerrado.', }
 };
 function storedLanguage():Language { try { return localStorage.getItem('dos-language')==='es'?'es':'ko'; } catch { return 'ko'; } }
-
-export function letterCloseOutcome(opening:number,target:number,roseGiftPending:boolean):'rose-gift'|'opener'|null{
- if(target===0&&opening<.0005)return roseGiftPending?'rose-gift':'opener';
- return null;
-}
 
 type DetailRegion='room'|'envelope'|'ending';
 type RoomDiscovery={id:LocalEventId;trigger:HTMLButtonElement;nonce:number};
@@ -38,7 +35,13 @@ export function PostHeroPreview({embedded=false,language:externalLanguage,onLang
  const [detailRegion,setDetailRegion]=useState<DetailRegion|null>(null);
  const [sharedEvent,setSharedEvent]=useState<{id:SharedEventId;region:DetailRegion}|null>(null);
  const [roseHintOpen,setRoseHintOpen]=useState(false);
- const [showRoseGift,setShowRoseGift]=useState(false);
+ const [letterFinale,setLetterFinale]=useState(createLetterFinaleState);
+ const finale=useRef(letterFinale);
+ const [pactAccepted,setPactAccepted]=useState(false);
+ const [letterClosingRect,setLetterClosingRect]=useState<{left:number;top:number;width:number;height:number}>();
+ const closingRect=useRef<typeof letterClosingRect>(undefined),closingScrollY=useRef(0);
+ const [surfaceSnapshot,setSurfaceSnapshot]=useState<{height:number;offset:number;paperHeight:number}|null>(null);
+ const readerSurface=useRef<HTMLElement>(null),readerOpener=useRef<HTMLButtonElement>(null);
  const roseHintId=useId();
  const [sceneReady,setSceneReady]=useState(false);
  const [sceneError,setSceneError]=useState('');
@@ -46,10 +49,9 @@ export function PostHeroPreview({embedded=false,language:externalLanguage,onLang
  const localTick=useRef<((now:number)=>void)|null>(null);
  const registerLocalTick=useCallback((tick:((now:number)=>void)|null)=>{localTick.current=tick;},[]);
  const [effect,setEffect]=useState({name:'none',value:0,nonce:0});
- const control=useRef(createEnvelopeState());
- const focusAfterFold=useRef(false);
- const roseGiftPending=useRef(false);
- const clearRoseGift=useCallback(()=>{roseGiftPending.current=false;setShowRoseGift(false);},[]);
+ const control=useRef({...createEnvelopeState(),manual:false as boolean|null});
+ const focusAfterFold=useRef(false),focusReader=useRef(false);
+ const changeLetterView=useCallback((event:LetterFinaleEvent)=>{if(event.type==='read'||event.type==='reopen'||event.type==='shared-open'){closingRect.current=undefined;setLetterClosingRect(undefined);setSurfaceSnapshot(null);}const next=reduceLetterFinale(finale.current,event);finale.current=next;setLetterFinale(next);},[]);
  const pendingScroll=useRef<(()=>void)|null>(null);
  const q=useRef(0), p=useRef(0), target=useRef(0), reduced=useRef(reducedMotion);
  const host=useRef<HTMLElement>(null);
@@ -58,32 +60,33 @@ export function PostHeroPreview({embedded=false,language:externalLanguage,onLang
  const paper=useRef<HTMLElement>(null),paperSlot=useRef<HTMLDivElement>(null);
  const trackPaper=useCallback((pose:PaperPose)=>{
    const article=paper.current,slot=paperSlot.current;if(!article||!slot)return;
-   if(!pose.visible){article.removeAttribute('data-tracking');article.removeAttribute('data-paper-corners');article.style.removeProperty('position');article.style.removeProperty('left');article.style.removeProperty('top');article.style.removeProperty('width');article.style.removeProperty('transform');slot.style.removeProperty('height');return;}
+   const folding=finale.current.phase==='folding';
+   if(!pose.visible||finale.current.phase==='rose'||!folding&&p.current>=.86){article.removeAttribute('data-tracking');article.removeAttribute('data-paper-corners');article.style.removeProperty('position');article.style.removeProperty('left');article.style.removeProperty('top');article.style.removeProperty('width');article.style.removeProperty('height');article.style.removeProperty('transform');slot.style.removeProperty('height');return;}
    const bounds=slot.getBoundingClientRect(),phase=clamp01((p.current-LETTER_PAPER_HANDOFF)/(.86-LETTER_PAPER_HANDOFF)),readBlend=phase*phase*(3-2*phase),desktop=innerWidth>=761;
    const opening=letterOpeningLayout(innerWidth,innerHeight,article.offsetHeight,q.current);
-   const ending=p.current>=.94;
-   const width=ending?Math.min(740,innerWidth*.52):desktop?opening.width+(bounds.width-opening.width)*readBlend:bounds.width;
-   article.style.width=`${width}px`;const height=article.offsetHeight;
+   const frozen=folding?closingRect.current:undefined;
+   const width=frozen?.width??(desktop?opening.width+(bounds.width-opening.width)*readBlend:bounds.width);
+   article.style.width=`${width}px`;if(frozen)article.style.height=`${frozen.height}px`;else article.style.removeProperty('height');const height=frozen?.height??article.offsetHeight;
    if(!width||!height)return;
    slot.style.height=`${height}px`;
    const destination=[{x:bounds.left,y:bounds.top},{x:bounds.right,y:bounds.top},{x:bounds.right,y:bounds.top+height},{x:bounds.left,y:bounds.top+height}];
    const openingCorners=[{x:opening.left,y:opening.top},{x:opening.left+opening.width,y:opening.top},{x:opening.left+opening.width,y:opening.top+height},{x:opening.left,y:opening.top+height}];
    const reader=desktop?blendPaperCorners(openingCorners,destination,phase):destination;
-   const corners=ending?pose.corners:desktop?blendPaperCorners(pose.corners,reader,opening.handoff):blendPaperCorners(pose.corners,destination,phase);
+   const corners=folding?pose.corners:desktop?blendPaperCorners(pose.corners,reader,opening.handoff):blendPaperCorners(pose.corners,destination,phase);
    const transform=paperTransform(corners,width,height);if(!transform)return;
    article.dataset.tracking='true';article.dataset.paperCorners=JSON.stringify(corners);article.style.position='fixed';article.style.left='0';article.style.top='0';article.style.width=`${width}px`;article.style.transform=transform;
  },[]);
- useEffect(()=>{onSceneState?.({progress,opening,reducedMotion,effect,localEvent,portraitSrc,portraitMaskSrc,onPaperPose:trackPaper});},[progress,opening,reducedMotion,effect,localEvent,portraitSrc,portraitMaskSrc,trackPaper,onSceneState]);
+ useEffect(()=>{onSceneState?.({progress,opening,reducedMotion,effect,localEvent,portraitSrc,portraitMaskSrc,onPaperPose:trackPaper,letterView:letterFinale.phase,letterClosingRect});},[progress,opening,reducedMotion,effect,localEvent,portraitSrc,portraitMaskSrc,trackPaper,onSceneState,letterFinale.phase,letterClosingRect]);
  const copy=landingCopy[language], text=story[language];
  const ko=language==='ko';
  useEffect(()=>{setLocalEvent(old=>({...old,language,phraseFlipped:false}));},[language]);
  const setNewEffect=useCallback((name:string,value=1)=>setEffect(old=>({name,value,nonce:old.nonce+1})),[]);
- const refreshTarget=useCallback(()=>{target.current=reduced.current&&control.current.manual===null?(p.current>=LETTER_RANGE[0]?1:0):envelopeTarget(control.current,p.current);if(target.current<=.5)setRoseHintOpen(false);},[setRoseHintOpen]);
+ const refreshTarget=useCallback(()=>{target.current=envelopeTarget(control.current,p.current);if(target.current<=.5)setRoseHintOpen(false);},[setRoseHintOpen]);
  const handleSharedEventStart=useCallback((round:SharedEventRound,{settle}:{settle:boolean})=>{
    if(round.eventId!=='R01')return;
-   clearRoseGift();stopLetterMotion();focusAfterFold.current=false;alignEnvelopeView(settle);control.current=reopenEnvelope(control.current);refreshTarget();
+   changeLetterView({type:'shared-open'});stopLetterMotion();focusAfterFold.current=false;alignEnvelopeView(settle);control.current=reopenEnvelope(control.current);refreshTarget();
    if(settle){q.current=1;setOpening(1);}
- },[refreshTarget,clearRoseGift]);
+ },[refreshTarget,changeLetterView]);
  useEffect(()=>{reduced.current=reducedMotion;if(reducedMotion){q.current=target.current;setOpening(q.current);}},[reducedMotion]);
  useEffect(()=>{
    const media=matchMedia('(prefers-reduced-motion: reduce)');
@@ -91,14 +94,18 @@ export function PostHeroPreview({embedded=false,language:externalLanguage,onLang
  },[]);
  useEffect(()=>{document.documentElement.lang=language==='es'?'es-DO':'ko'; try{localStorage.setItem('dos-language',language);}catch{/* Storage is optional. */}},[language]);
  useLayoutEffect(()=>{
-   if(!showRoseGift)return;
-   host.current?.querySelector('#together-again')?.scrollIntoView({behavior:'instant',block:'start'});
-   host.current?.querySelector<HTMLElement>('#rose-gift-title')?.focus({preventScroll:true});
- },[showRoseGift]);
+   if(letterFinale.phase==='rose'){host.current?.querySelector<HTMLElement>('#rose-gift-title')?.focus({preventScroll:true});focusAfterFold.current=false;}
+   else if(letterFinale.phase==='sealed'&&focusAfterFold.current){readerOpener.current?.focus({preventScroll:true});focusAfterFold.current=false;}
+ },[letterFinale.phase]);
+ useLayoutEffect(()=>{
+   if(!focusReader.current||letterFinale.phase!=='reading')return;
+   focusReader.current=false;host.current?.querySelector<HTMLElement>('#letter-title')?.focus({preventScroll:true});
+ });
  useEffect(()=>{
    let frame=0;
    const update=()=>{
      frame=0;
+     if(finale.current.phase==='folding'&&closingRect.current)setLetterClosingRect({...closingRect.current,top:closingRect.current.top-(scrollY-closingScrollY.current)});
      const anchors=[...(host.current?.querySelectorAll<HTMLElement>('[data-pose]')??[])].map(el=>({y:el.getBoundingClientRect().top+scrollY-innerHeight*.18,p:Number(el.dataset.pose)}));
      const y=scrollY;
      let value=0;
@@ -122,36 +129,40 @@ export function PostHeroPreview({embedded=false,language:externalLanguage,onLang
      const dt=previous?Math.max(0,(time-previous)/1000):0;previous=time;
      const diff=target.current-q.current;
      if(Math.abs(diff)>.0005){q.current=reduced.current?target.current:q.current+Math.sign(diff)*Math.min(Math.abs(diff),dt/1.8);setOpening(q.current);}
-     if(focusAfterFold.current){const outcome=letterCloseOutcome(q.current,target.current,roseGiftPending.current);if(outcome){focusAfterFold.current=false;roseGiftPending.current=false;if(outcome==='rose-gift')setShowRoseGift(true);else opener.current?.focus({preventScroll:true});}}
+     if(finale.current.phase==='folding'&&q.current<.0005&&target.current===0){changeLetterView({type:'fold-complete',opening:q.current,target:target.current});}
    };
    if(onRegisterFrame){onRegisterFrame(tick);return()=>onRegisterFrame(null);}
    const loop=(time:number)=>{tick(time);frame=requestAnimationFrame(loop);};
    frame=requestAnimationFrame(loop);return()=>cancelAnimationFrame(frame);
- },[onRegisterFrame]);
+ },[onRegisterFrame,changeLetterView]);
  function stopLetterMotion(){if(control.current.returning||control.current.manual===true&&q.current<1)scrollTo({top:scrollY,behavior:'instant'});}
  function alignEnvelopeView(instant=false){
    const scene=document.getElementById('letter-scene'),bounds=scene?.getBoundingClientRect();
    if(bounds&&bounds.top>1)scene?.scrollIntoView({behavior:instant||reduced.current?'instant':'smooth',block:'start'});
  }
  const closeLetter=()=>{
-   roseGiftPending.current=q.current>=.9995;setShowRoseGift(false);stopLetterMotion();setRoseHintOpen(false);control.current=closeEnvelope(control.current,p.current);focusAfterFold.current=true;refreshTarget();
-   if(control.current.returning)document.getElementById('letter-scene')?.scrollIntoView({behavior:reduced.current?'instant':'smooth',block:'start'});
+   const rect=paper.current?.getBoundingClientRect();
+   closingRect.current=rect&&rect.width>1&&rect.height>1?{left:rect.left,top:rect.top,width:rect.width,height:rect.height}:undefined;
+   closingScrollY.current=scrollY;
+   setLetterClosingRect(closingRect.current);
+   const surface=readerSurface.current;if(surface){const offset=-surface.getBoundingClientRect().top;setSurfaceSnapshot({offset,height:Math.max(surface.offsetHeight,offset+innerHeight),paperHeight:paperSlot.current?.offsetHeight??0});}
+   changeLetterView({type:'close',opening:q.current});setRoseHintOpen(false);control.current={...closeEnvelope(control.current,p.current),returning:false};focusAfterFold.current=true;refreshTarget();
  };
  const toggleLetter=()=>{
    if(!control.current.returning&&target.current>=.5){closeLetter();return;}
-   clearRoseGift();stopLetterMotion();focusAfterFold.current=false;control.current=toggleEnvelope(control.current,p.current);if(control.current.manual===true&&q.current<LETTER_UNFOLDED)alignEnvelopeView();refreshTarget();
+   changeLetterView({type:'reopen'});stopLetterMotion();focusAfterFold.current=false;control.current=toggleEnvelope(control.current,p.current);if(control.current.manual===true&&q.current<LETTER_UNFOLDED)alignEnvelopeView();refreshTarget();
  };
  useEffect(()=>{
-   const interrupt=()=>{stopLetterMotion();if(roseGiftPending.current){roseGiftPending.current=false;focusAfterFold.current=false;}};
+   const interrupt=()=>{focusReader.current=false;stopLetterMotion();if(finale.current.phase==='folding'){changeLetterView({type:'interrupt'});focusAfterFold.current=false;}};
    const scrollKey=(event:KeyboardEvent)=>{if(['ArrowUp','ArrowDown','PageUp','PageDown','Home','End'].includes(event.key))interrupt();};
    addEventListener('wheel',interrupt,{passive:true});addEventListener('pointerdown',interrupt,{passive:true,capture:true});addEventListener('keydown',scrollKey);
    return()=>{removeEventListener('wheel',interrupt);removeEventListener('pointerdown',interrupt,true);removeEventListener('keydown',scrollKey);};
- },[]);
+ },[changeLetterView]);
  useEffect(()=>{
-   const closeOnEscape=(event:KeyboardEvent)=>{if(event.key!=='Escape'||detailRegion||sharedEvent)return;if(roseHintOpen){event.preventDefault();setRoseHintOpen(false);return;}if(control.current.returning){event.preventDefault();stopLetterMotion();roseGiftPending.current=false;focusAfterFold.current=false;return;}if(target.current<=.5)return;event.preventDefault();closeLetter();};
+   const closeOnEscape=(event:KeyboardEvent)=>{if(event.key!=='Escape'||detailRegion||sharedEvent)return;if(roseHintOpen){event.preventDefault();setRoseHintOpen(false);return;}if(finale.current.phase==='folding'){event.preventDefault();toggleLetter();return;}if(target.current<=.5)return;event.preventDefault();closeLetter();};
    addEventListener('keydown',closeOnEscape);return()=>removeEventListener('keydown',closeOnEscape);
  },[refreshTarget,roseHintOpen,detailRegion,sharedEvent]);
- const readLetter=(event?:React.MouseEvent)=>{event?.preventDefault();clearRoseGift();stopLetterMotion();focusAfterFold.current=false;control.current=reopenEnvelope(control.current);q.current=1;setOpening(1);refreshTarget();document.getElementById('papi-letter')?.scrollIntoView({behavior:'instant',block:'start'});};
+ const readLetter=(event?:React.MouseEvent)=>{event?.preventDefault();focusReader.current=Boolean(event);changeLetterView({type:'read'});stopLetterMotion();focusAfterFold.current=false;control.current=reopenEnvelope(control.current);q.current=1;setOpening(1);refreshTarget();document.getElementById('papi-letter')?.scrollIntoView({behavior:'instant',block:'start'});};
  useEffect(()=>{const onHash=()=>{if(location.hash==='#papi-letter')readLetter();};onHash();addEventListener('hashchange',onHash);return()=>removeEventListener('hashchange',onHash);},[]);
  const closeDetails=useCallback((restoreFocus=true)=>{setDetailRegion(null);setLocalEvent(old=>({...old,active:null,rhythmSignal:null,waxPressed:false}));if(restoreFocus)requestAnimationFrame(()=>detailsOpener.current?.focus({preventScroll:true}));},[]);
 
@@ -178,13 +189,13 @@ export function PostHeroPreview({embedded=false,language:externalLanguage,onLang
 
  const letterVisible=opening>LETTER_UNFOLDED;
  const wantsLetterOpen=!control.current.returning&&target.current>.5;
- const openAction=control.current.returning?text.cancelClose:wantsLetterOpen?text.close:opening>.0005&&control.current.manual!==false?text.continueOpen:text.open;
+ const openAction=letterFinale.phase==='folding'?text.cancelClose:wantsLetterOpen?text.close:opening>.0005&&control.current.manual!==false?text.continueOpen:text.open;
  const letterPublic=control.current.manual!==false||letterVisible;
- const readingAction=control.current.returning?text.cancelClose:control.current.manual===false?text.open:text.close;
+ const readingAction=letterFinale.phase==='folding'?text.cancelClose:control.current.manual===false?text.open:text.close;
  const stage=progress<.35?'story':progress<.56?'play':progress<.90?'letter':'ending';
- return <Container ref={host} className={`post-hero-preview ${embedded?'post-hero-embedded':''} ${letterVisible?'letter-is-open':''}`} data-stage={stage} data-letter-returning={control.current.returning} data-scene-ready={renderScene?sceneReady:externalSceneReady} data-opening={opening.toFixed(3)} data-progress={progress.toFixed(3)} data-rose-gift={showRoseGift}>
+ return <Container ref={host} className={`post-hero-preview ${embedded?'post-hero-embedded':''} ${letterVisible?'letter-is-open':''}`} data-stage={stage} data-letter-returning={control.current.returning} data-scene-ready={renderScene?sceneReady:externalSceneReady} data-opening={opening.toFixed(3)} data-progress={progress.toFixed(3)} data-rose-gift={letterFinale.phase==='rose'} data-letter-view={letterFinale.phase}>
   {renderScene&&<div className="world" aria-hidden="true">
-   {!sceneError&&<Suspense fallback={null}><StandalonePostHeroScene progress={progress} opening={opening} reducedMotion={reducedMotion} effect={effect} portraitSrc={portraitSrc} portraitMaskSrc={portraitMaskSrc} localEvent={localEvent} onPaperPose={trackPaper} onReady={()=>setSceneReady(true)} onFailure={setSceneError}/></Suspense>}
+   {!sceneError&&<Suspense fallback={null}><StandalonePostHeroScene letterView={letterFinale.phase} letterClosingRect={letterClosingRect} progress={progress} opening={opening} reducedMotion={reducedMotion} effect={effect} portraitSrc={portraitSrc} portraitMaskSrc={portraitMaskSrc} localEvent={localEvent} onPaperPose={trackPaper} onReady={()=>setSceneReady(true)} onFailure={setSceneError}/></Suspense>}
    {sceneError&&<div className="world-fallback"><img src="/images/lisbeth-letter-envelope.webp" alt=""/></div>}
    <div className="world-vignette"/>
   </div>}
@@ -196,17 +207,22 @@ export function PostHeroPreview({embedded=false,language:externalLanguage,onLang
   <StoryChapters language={language}/>
   {gallery}
   <section id="letter-scene" className={`chapter letter-invitation ${detailRegion==='envelope'||sharedEvent?.region==='envelope'?'has-detail':''}`} data-pose=".62" aria-labelledby="envelope-title"><div className="chapter-copy" hidden={detailRegion==='envelope'||sharedEvent?.region==='envelope'}><h2 id="envelope-title">{text.letter}</h2><p>{text.letterBody}</p><div className="invitation-actions"><button ref={opener} className="primary-button" aria-label={openAction} aria-expanded={letterPublic} aria-controls="moment-letter-copy" onClick={toggleLetter}>{openAction}<span aria-hidden="true">{wantsLetterOpen?'−':'↗'}</span></button><a href="#papi-letter" className="text-button" onClick={readLetter}>{text.reading}</a></div><button className="text-button together-choice" data-shared-event="R01" onClick={event=>openShared('R01','envelope',event.currentTarget)}>{ko?'같이 열어볼까?':'¿La abrimos juntos?'}</button></div>{workbench('envelope')}</section>
-  <section id="papi-letter" className={`letter-section ${letterVisible?'is-open':'is-folded'} ${progress>=.86&&letterVisible?'reading-surround':''}`} data-pose=".86" aria-labelledby="letter-title">
-   {progress>=.86&&letterVisible&&<div className="letter-reading-art"><button type="button" className="reading-roses reading-roses-left" aria-label={ko?'장미에 숨은 뜻 보기':'Ver qué significan las rosas'} aria-expanded={roseHintOpen} aria-controls={roseHintId} onClick={()=>setRoseHintOpen(open=>!open)}/><button type="button" className="reading-roses reading-roses-right" aria-label={ko?'장미에 숨은 뜻 보기':'Ver qué significan las rosas'} aria-expanded={roseHintOpen} aria-controls={roseHintId} onClick={()=>setRoseHintOpen(open=>!open)}/></div>}
-   {letterVisible&&<div className="letter-section-label"><button className="text-button" aria-label={readingAction} onClick={toggleLetter} aria-expanded={letterPublic} aria-controls="moment-letter-copy">{readingAction} <span>−</span></button></div>}
-   <div className="letter-paper-slot" ref={paperSlot}><article ref={paper} className={`letter-paper ${!letterVisible&&letterPublic?'is-visually-sealed':''}`} id="moment-letter-copy" hidden={!letterPublic}>
-    <div className="paper-rule"/><p className="letter-address">{copy.letterAddress}</p><h2 id="letter-title">{copy.letterTitle}</h2>{copy.letterBody.map(paragraph=><p key={paragraph}>{paragraph}</p>)}<p className="letter-signature">{copy.letterSignature}</p><div className="paper-bottom-mark">Y <span>♡</span> L</div>
-   </article></div>
-   {letterVisible&&progress>=.86&&<p id={roseHintId} className="rose-meaning" role="status" aria-live="polite" aria-atomic="true">{roseHintOpen?(ko?'4송이, 그리고 4송이. 우리 시작한 날 ♡':'Cuatro rosas y otras cuatro. El día que empezamos: 4 de abril ♡'):''}</p>}
-   {letterVisible&&<div className="letter-bottom-controls"><button className="text-button" onClick={toggleLetter}>{readingAction} <span>−</span></button></div>}
-   {!letterVisible&&control.current.manual===false&&<div className="closed-note"><p>{text.sealed}</p><button className="text-button" onClick={()=>{clearRoseGift();stopLetterMotion();focusAfterFold.current=false;control.current=reopenEnvelope(control.current);refreshTarget();}}>{text.open} ↗</button></div>}
+  <section ref={readerSurface} id="papi-letter" className={`letter-section letter-journey ${letterVisible?'is-open':'is-folded'} ${progress>=.86&&letterVisible?'reading-surround':''}`} data-pose=".86" data-view={letterFinale.phase} aria-label={text.reading} style={surfaceSnapshot?{minHeight:surfaceSnapshot.height}:undefined}>
+   <div className="letter-reading-pane" hidden={letterFinale.phase==='rose'}>
+    {progress>=.86&&letterVisible&&<div className="letter-reading-art"><button type="button" className="reading-roses reading-roses-left" aria-label={ko?'장미에 숨은 뜻 보기':'Ver qué significan las rosas'} aria-expanded={roseHintOpen} aria-controls={roseHintId} onClick={()=>setRoseHintOpen(open=>!open)}/><button type="button" className="reading-roses reading-roses-right" aria-label={ko?'장미에 숨은 뜻 보기':'Ver qué significan las rosas'} aria-expanded={roseHintOpen} aria-controls={roseHintId} onClick={()=>setRoseHintOpen(open=>!open)}/></div>}
+    <div className="letter-paper-slot" ref={paperSlot} style={surfaceSnapshot?{minHeight:surfaceSnapshot.paperHeight}:undefined}><article ref={paper} className={`letter-paper ${!letterVisible&&letterPublic?'is-visually-sealed':''}`} id="moment-letter-copy" hidden={!letterPublic}>
+     <div className="paper-rule"/><p className="letter-address">{copy.letterAddress}</p><h2 id="letter-title" tabIndex={-1}>{copy.letterTitle}</h2>{copy.letterBody.map(paragraph=><p key={paragraph}>{paragraph}</p>)}<p className="letter-signature">{copy.letterSignature}</p><div className="paper-bottom-mark">Y <span>♡</span> L</div>
+    </article></div>
+    {(letterVisible||letterFinale.phase==='folding')&&progress>=.86&&<p id={roseHintId} className="rose-meaning" role="status" aria-live="polite" aria-atomic="true">{roseHintOpen?(ko?'4송이, 그리고 4송이. 우리 시작한 날 ♡':'Cuatro rosas y otras cuatro. El día que empezamos: 4 de abril ♡'):''}</p>}
+    <div id="letter-reading-end" className="letter-reading-end" hidden={letterFinale.phase==='sealed'||letterFinale.phase==='reading'&&!letterVisible}>
+     <div className="letter-optional-pact" data-active={letterFinale.phase==='reading'} inert={letterFinale.phase!=='reading'}><PartnerPact language={language} onResponseChange={setPactAccepted}/></div>
+     <div className="letter-bottom-controls"><button type="button" className="text-button" onClick={toggleLetter} aria-controls="moment-letter-copy">{readingAction}<svg viewBox="0 0 24 24" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg></button></div>
+    </div>
+    <div className="closed-note" hidden={letterFinale.phase!=='sealed'} style={surfaceSnapshot?{position:'absolute',top:surfaceSnapshot.offset,left:0,right:0}:undefined}><p>{text.sealed}</p><button ref={readerOpener} type="button" className="text-button" onClick={readLetter}>{text.open} ↗</button></div>
+   </div>
+   {letterFinale.phase==='rose'&&<div className="letter-rose-pane" style={surfaceSnapshot?{top:surfaceSnapshot.offset}:undefined}><EndingChapter language={language} playHref={playHref} embedded={embedded} state={localEvent} detailsOpen={detailRegion==='ending'} pactAccepted={pactAccepted} reducedMotion={reducedMotion} onReadLetter={readLetter}>{workbench('ending')}</EndingChapter></div>}
   </section>
-  <EndingChapter language={language} playHref={playHref} embedded={embedded} state={localEvent} detailsOpen={detailRegion==='ending'} showRoseGift={showRoseGift} reducedMotion={reducedMotion} onReadLetter={readLetter}>{workbench('ending')}</EndingChapter>
+  <div id="letter-journey-end" className="letter-journey-anchor" data-pose="1" aria-hidden="true"/>
 
   <dialog ref={roomDialog} className="room-discovery-dialog" aria-label={ko?'선택한 물건':'Objeto seleccionado'} onCancel={event=>{event.preventDefault();if(sharedEvent)closeShared();else closeDetails();}}>
    {workbench('room')}

@@ -14,5 +14,7 @@ describe('personal post-room story content',()=>{
   expect(html).toContain(language==='ko'?'한국 리듬게임에 접속이 안 됐잖아':'no podías entrar al juego de ritmo de Corea');
   expect(html).toContain(language==='ko'?'네가 이기면':'Si ganas tú');expect(html).toContain(language==='ko'?'내가 이기면':'Si gano yo');
   expect(html.match(/class="duel-illustration"/g)).toHaveLength(1);
+  expect(html.match(/class="country-companions"/g)).toHaveLength(1);expect(html.match(/class="lovebird"/g)).toHaveLength(2);
+  expect(html).not.toContain('data-selected-play-hour');
  });
 });

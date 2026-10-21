@@ -8,69 +8,43 @@
 
 두 원문은 제안 당시 기록으로 보존한다. DESIGN의 게임→스토리 권장 순서는 아래 현행 흐름으로 조정됐고, EASTER-EGGS의 공동 기능 미구현 설명은 제안 당시 상태다. 현재 구현·검수 범위는 이 문서의 검수 근거를 따른다.
 
-## 최신 전체 스토리 비평과 별도 UI 변경 — 2026-10-21 UTC
+## 스토리 재구성 — 구현 중, 현행 브라우저 미검수
 
-[독립 A/B 전체 비평](PROCESS-FAILURE-AUDIT-20261021.ko.md)은 `16664a0`의 실제 영상·데스크톱 흐름을 19/32로 평가했다. 열린 원본의 엔딩 재등장, 약속 뒤 재독서, 접을 때의 역스크롤/instant 이동으로 결말이 여러 번 시작된다. 기존 장미 장면의 scoped 4/5를 전체 흐름 승인으로 확대하지 않는다. 원문 DOM은 하나지만 사용자에게 중복으로 읽히는 구성은 수정 대상이다.
+[독립 A/B 비평](PROCESS-FAILURE-AUDIT-20261021.ko.md)은 `16664a0` 실제 57.4초 영상의 전체 흐름을 19/32로 평가했다. 수정할 네 우선순위는 (1) 장미 전에 끝나는 초대와 이른 게임 출발, (2) 원본 편지/약속이 엔딩에서 다시 전시되는 중복, (3) 접기 때 독서 화면에서 역스크롤·즉시 이동, (4) 거리·시차·시작 장면이 다음 행동을 준비하지 못하는 단절이다. 앞선 3포즈 장미의 4/5는 그 국소 공연에만 해당하며 새 단일 reader composition이나 전체 이야기 합격으로 옮기지 않는다.
 
-제안은 게임→편지 한 번 읽기→선택 약속→같은 자리에서 접기→장미→게임 출발의 한 방향이다. 거리·시간·시작 장면의 콘텐츠는 보존하면서 각각 다음 행동을 준비하도록 연결한다. Hero와 원문은 보호한다. 이 스토리 개편은 **제안이며 아직 적용하지 않았다**.
+현재 스토리 3장(`#distance`, `#time-difference`, `#shared-place`)은 1920 KO/1440 ES에서 독립 A의 범위 한정 4/5를 받았고, 8개 native check·source stable·HTTP 오류 0을 기록했다([`story-refresh-a.json`](../../output/current-review/implementation-20261021/critique_assessment_a/story-refresh-a.json)). 이는 세 장면의 scoped 결과이며 전체 후반 이야기나 장미 전달 승인이 아니다. 새 in-place reader/fold/gift 통합도 아직 별도 검수가 필요하다. 승인 방향은 `게임 선택 → 편지 한 번 읽기 → 원문 끝의 optional Pact → 현재 자리에서 접기 → 끊기지 않는 장미 전달 → 게임 출발`이다. Pact 선택은 응답을 강요하지 않고 저장된 실제 yes 없이 수락 문구를 만들지 않는다. 같은 원문 5문단/UUID를 한 번만 렌더링하며 8게임·Hero·승인 B·밝은 핑크/아이보리 Feedback 페이지는 보존한다. 모바일 QA는 범위 밖이다. `f6736cd`의 12 still/1440 full flow/1920 targeted QA와 영상은 이전 구성 검수 이력이며 현재 reader/fold/gift 통과 증거가 아니다.
 
-별도로 요청된 상단 게임 목록 `#games`와 건의사항 `/feedback` 메뉴는 실제 수정했다. 건의사항은 밝은 아이보리/핑크/로즈골드 일기장으로 변경했고, 현재 로컬 데모 모드의 안내와 저장 문구를 사실에 맞춰 정리했다. 관련 22 tests·build와 실제 메뉴/메모 저장을 확인했다. [현재 건의사항 화면](../review/feedback-journal-current-es.png)은 검수용 예시 데이터다. 실제 shared-cloud 연결은 설정되지 않아 두 기기 동기화 검수는 못했다. 상세 범위는 위 감사 문서에 정리했다.
+| 비평 요구 | 구현 추적 | 수용 기준 및 남은 검수 |
+|---|---|---|
+| P1: 장미 전에 종료·게임 출발을 제시 | `post-hero-preview/src/PostHeroPreview.tsx`, `post-hero-preview/src/EndingChapter.tsx`; SolPost가 한 개의 persistent reader와 하나의 ending으로 재구성 중 | 일반 스크롤만으로 read/finale를 표시하지 않는다. 약속은 원문 끝의 선택이고 게임 출발 CTA는 선물 끝에 둔다. 첫 진입부터 reduced-motion까지 실제 사용자 흐름 확인. |
+| P2: 원본 편지 재전시·별도 약속문으로 내용 중복 | `post-hero-preview/src/LetterCollection.ts`, `PartnerPact.tsx`, `EndingChapter.tsx`; 같은 reader 끝에 선택형 pact | 같은 원문 DOM/UUID와 5문단만 읽히고 별도 원문 사본/두 번째 결말이 없다. 응답은 optional, 로컬 기존 yes/reset을 정확히 반영하고 동의·서명을 꾸며내지 않는다. |
+| P2: 역스크롤·instant 점프 접기 | Root `post-hero-preview/src/Scene.tsx`의 `letterView`/`letterClosingRect`, `src/landing/LandingWorldHost.tsx`, `src/landing/PostHeroComposition.ts`; 이전 `endingMat`/`endingLetterView` 안은 제거하고 순수 `src/landing/letterClosingView.ts`/4 tests로 대체; Luna `letterFinaleState.ts`/7 tests | 완전히 열린 편지의 명시적 접기만 장미를 무장하고, 완전 접힘 때만 전달 단계로 간다. 부분 개봉/scroll-only는 장미를 열지 않는다. wheel·pointer·탐색키·재독서·재개봉 중단 뒤 늦은 gift/focus가 없어야 하며 동일 reader 위치에서 실제 연속 motion 검수. 순수 state tests는 통과했으나 통합 브라우저는 pending. |
+| P2: 거리·시차·시작 날짜/장난이 각기 다른 도입처럼 분리 | `post-hero-preview/src/StoryChapters.tsx`, `CountryCompanions.tsx`, `StoryTimeInteraction.tsx`; 공통 3장면과 동행새/선택 시각 연결 | 13,792km/13시간/시작일과 반응 놀이를 보존한다. 1920 KO·1440 ES 세 장면은 A scoped 4/5, 8 native check, source stable, HTTP 오류 0으로 확인됐다. 별도 전체 reader/gift 승인과 남은 사이트 흐름은 이 결과에 포함되지 않는다. |
+| 장미 소유 이전을 하나의 선물 장면으로 완성 | SolRose의 `post-hero-preview/src/RoseGiftFinale.tsx`, `LetterRoses.ts`, `rose-gift-finale.css` 작업 중 | 승인 캐릭터 비율/자산을 유지하면서 팔·손·한 송이의 소유 이동이 이어져 보여야 한다. 연속 parts rig는 제작 중이며 ImageGen atlas 2종은 탈락·미사용(저장소 밖); 성공한 atlas/rig 또는 A visual pass라고 주장하지 않는다. 실제 1× motion, reduced motion, transition/interrupt와 ownership 접점 검수 필요. |
 
-## 장미 선물 마무리 — 2026-10-21 UTC
+이전 `f6736cd`의 동행새/Pact 12 still 및 native 검수는 당시 장면에만 유효하다. 기존 3포즈 장미 scoped 검수도 history로 보존하지만 새 continuous rig/단일 reader flow를 통과시키지 않는다. 공유 장면/편지 상태의 pure tests는 단위검사 증거일 뿐 실제 페이지 전체 검수를 대신하지 않는다. 최신 전체 테스트 실행은 663 pass/2 fail이었고, 실패는 수정된 conditional-gift 계약과 어긋난 stale `LandingContent` SSR assertion이다. 그 계약의 focused tests 4/4는 통과했으나 전체 suite 재통과로 기록하지 않는다. close drift +28/+60은 실제 관찰 뒤 HTML `:has` anchor 보정을 적용했으며 0px 최종 확인은 아직 pending이다. 새 continuous rose/reader의 scoped 시각·기능 검수도 pending이다. Hero 전체 점수는 여전히 19/32 비평의 별도 맥락이며 새 후반 구현으로 점수를 갱신하지 않는다.
 
-사용자 추가 요구: 편지를 읽고 접으면 연석이 리스베스에게 장미를 선물하는 장면으로 끝낸다. 장미를 받은 뒤의 평생 파트너 농담은 실제 약속 응답과 연결한다.
+## 상단 메뉴·건의사항 개선 기록
 
-`PostHeroPreview.tsx`는 원문 개봉 완료 뒤 명시적 접기를 눌렀을 때만 선물을 대기시키고, 기존 접힘이 실제 완료된 다음 `EndingChapter.tsx`의 `RoseGiftFinale.tsx`를 보여준다. 접는 도중 휠·포인터·탐색키 입력이나 재개봉·재독서는 대기 중인 전환을 취소한다. 처음부터 끝으로 스크롤하는 동작만으로는 선물이 나오지 않는다. 편지 원문·같은 live envelope·게임·Hero는 변경하지 않는다.
+상단 게임 목록 `#games`와 건의사항 `/feedback`는 이전에 실제 수정됐다. 밝은 아이보리/핑크/로즈골드 일기장과 사실에 맞는 local demo 안내/저장 문구를 유지한다. 이 별도 화면 변경·검수는 현재 스토리 브라우저 미검수의 증거로 합치지 않는다. 실제 shared-cloud 연결은 설정되지 않아 두 기기 동기화 검수는 못했다. [이전 건의사항 캡처](../review/feedback-journal-current-es.png)는 검수용 예시 데이터다.
 
-새 `/images/rose-gift/` 원화 3개는 승인 캐릭터 참조를 사용한 투명 PNG다. 남자 보유→같은 줄기에 두 사람 손 접촉→여자 보유의 등록된 포즈를 GSAP으로 연결한다. 3포즈 일러스트 공연이며 연속 관절 리깅이라고 주장하지 않는다. 단일 빨간 장미이며 기존 4+4 장미와 별개다. reduced motion은 받은 결과를 정적으로 보여주고, 화면을 벗어나거나 재독서하면 진행 중 타임라인을 정리한다.
-
-`PartnerPact`의 기존 로컬 응답을 읽기만 하는 optional callback으로 전달한다. 실제 yes이고 받은 포즈에 도달했을 때만 “약속했으니까, 이제 내 평생 파트너야, Baby. ㅋㅋㅋ” / “Ya dijiste que sí, Baby. Ahora eres mi compañera de vida, haha.”를 보여준다. 서명이나 상대방의 공동 동의를 지어내지 않는다. 답을 지우면 기본 장미 문구로 돌아간다. 기존 저장 key·오류 처리·게임/건의/재독서 경로는 유지한다.
-
-구현 source는 `f041dfd8a1776cd990eebbcd5b9a704a2faa91fb`다. 통합 시 main 86 files/660 tests와 build가 통과했고, 실제 전환에서 발견한 전체 alpha 밝기 저하를 수정한 뒤 focused 12 tests 및 TypeScript/Vite/edge build를 다시 통과했다. 다음 포즈만 위로 드러내고 이전 포즈는 덮인 뒤 숨겨 밝기 저하를 없앴다. 독립 B의 TSX detector는 clean이고 본문/보조/버튼 대비는 실제 지정 배경 `#13131c`에 대해 각각 16.21/10.69/11.29:1이다.
-
-독립 A는 1440×900 ES·1920×1080 KO의 실제 native 입력 17항목을 통과했다. 미열람 끝스크롤의 미노출, 단일 원문 5문단·동일 live-letter UUID, 접힘 완료 뒤 표시/포커스, 실제 약속 yes·reset과 문구, 재독서, 역방향 휠 중단·부분개봉 취소, 키보드/reduced, 이미지 실패 대안을 확인했다. 실패 대안 검수는 의도적으로 contact PNG 요청을 한 번 중단했으므로 예상 `ERR_FAILED` 1건을 보존하며 정상 흐름의 오류와 구분한다. 이후 1440 ES 한정 motion confirm은 source-stable/error-free였다. 단일 장미·손 접촉·밝기 복원 및 실제 1× 재생 표본을 보고 이 **3포즈 공연 범위**의 디자인/목적·구도·motion craft를 각 4/5로 승인했다. 100ms 전환의 짧은 팔/장미 중첩은 남으며 연속 관절 리깅이라고 확대하지 않는다.
-
-[1440 ES 접촉 포즈](../review/rose-gift-1440-es-contact.png) · [1440 ES 약속 yes 이후 장미](../review/rose-gift-1440-es-received.png) · [1920 KO 기본 장미](../review/rose-gift-1920-ko-received.png). 현재 [스페인어 전체 실제 페이지 영상](../review/landing-current-es.mp4)은 57.40초, 1440×900, 1.21×, H.264, 무음·무자막, 22 native action이다. Hero·B·발견물·동행새·시차·리액션·갤러리·원문/4+4·약속 응답·재독서·명시적 접기·장미/평생 파트너 문구를 담았다. 시작/끝 source bytes 동일, 정상 녹화의 page/console/HTTP 오류 0, SHA-256 `04cc133c625d578df0a7ab0df958723725212f45ca6170fc4d0885c6b7abebdc`. 독립 A가 최종 인코딩의 마지막 8초를 검토해 편지 접힘→3포즈 전달→실제 yes 이후 문구를 확인하고 해당 범위를 승인했다. 54.5/56.5초 표본에서 문구가 선명하며 원본/출판용 MP4 SHA가 일치한다.
-
-환경은 Linux headless Chromium·ANGLE SwiftShader·DPR1이다. 모바일은 사용자 요청으로 제외했고 실제 GPU 성능은 미측정이다. 이 추가 장면의 scoped 합격을 Hero나 전체 랜딩/Lusion 품질 완료로 확대하지 않는다.
-
-## 동행새·약속서 검수 기록 — `f6736cd`
-
-**이전 검수 source `f6736cd`:** 새 알파 자산 3개를 쓰는 `CountryCompanions.tsx`는 광주 사람을 상징하는 러브버드와 도미니카 국조 팜챗(Cigua palmera)을 배치한다. GSAP은 스크롤 위치를, Motion은 포인터 기울임·복귀와 클릭 인사의 날갯짓·하트를 제어한다. 두 실제 시계는 현재 날짜 기준으로 30초마다 갱신하며 시간 슬라이더는 선택한 한국 시간의 상대 출력과 두 하늘의 낮/밤 미리보기만 바꾼다. 엔딩은 기존 직접 그린 카드만 `Partner Pact`로 바꾸며 L06 그림 기능은 유지한다. 답은 현재 브라우저의 localStorage에만 저장되며 공유 서명이나 상호 동의 기록을 만들지 않는다. 복식은 붉은 웨딩 한복과 아이보리색 Dominican chacabana/회갈색 바지로 표현하고 Casa de Campo 정장 결혼식 복식 참고를 따른다. Muñecas Limé를 검증되지 않은 사랑·혼례의 상징으로 소개하지 않는다. 기존 편지 원문 5문단, 8게임 갤러리, Hero는 보호한다. 국가 윤곽/지도 시안은 계속 거절 상태다.
-
-main 84 files/654 tests, post 29/29, build는 10:28 UTC에 같은 source bytes에서 통과했다. 12개 current still은 scoped visual review를 통과했고 1440 ES의 전체 native 흐름과 reduced motion도 통과했다. 1920 KO의 targeted native QA는 10:29:55에 source-stable/error-free 상태로 통과했다: 실제 거리 구간에서 상단 3888, cached start 2970/end 3780, 인사 장면은 section top 184에서 Y=3704/progress .906에 보였고, 실제 휠로 top 22/progress 1까지 돌아오는 동안 `greet → return`이 유지됐다. body Y는 −25.3→−37.6→−15→0으로 복귀했으며 순간 초기화는 재현되지 않았다. Partner Pact 즉시 열기→Escape, reset→Escape, Enter 키보드 focus→인형 복귀, 같은 UUID의 편지 원문 5문단 재독서도 통과했다. 앞선 1920 focus/trigger 실패 attempt는 원본 기록으로 보존하되 이 targeted 재검증에서 해결됐다. [동행새·약속서 기준 영상](https://raw.githubusercontent.com/da960822-ux/gitactions-main/0a40c12e34a8f9a0bce4b247da70e62c4cc69b49/docs/review/landing-current-es.mp4)은 실제 브라우저에서 녹화한 56.33초, 1440×900 ES, 1.2× H.264, 무음·무자막 22 native action이며 source stable/page·console·HTTP 오류 0이다. 담은 흐름은 Hero 왕복, L06 실제 그림, 동행새 인사/날갯짓·하트, 키보드로 고른 전날 시각 미리보기, 조건부 리액션, gallery hover/선택, 편지 5문단과 장미 4+4·닫기/재열기, 붉은 한복/아이보리 chacabana 인형과 별도 local-answer pact 열기다. 이건 Remotion/HyperFrames export나 실물 GPU 성능 측정이 아니다. SHA-256 `c6eecb30dd71a2292e94cf5f2d1cc7b6d81c9d0af00a3c6f6b7568d956bf0802`. 독립 A는 인코딩된 인사 구간(23.7–25.2초)과 약속서 구간(54.3–56.3초)의 연속 표본을 검토했다. 표본에서 날개 분리·얼굴 가림·약속서 가독성의 차단 문제는 발견하지 않았으며 해당 일러스트 상호작용 범위만 승인했다. 전체 해부학적 리깅이나 모든 프레임 검수는 아니다. 이전 `fb74a03`의 영상과 8 still은 [불변 Git 역사](https://github.com/da960822-ux/gitactions-main/tree/fb74a03/docs/review)에만 남겨 현재 증거로 쓰지 않는다. 모바일 QA는 제외하며 Hero의 3/5 공간 점수, 전체 랜딩 4/5, 연속 3D/Lusion 또는 hardware GPU 합격을 주장하지 않는다.
-
-| 현행 A 표본 | 거리/동행새 | 중간 인사 | 정착 인사 | 전날 시각 미리보기 | 엔딩 인형 | 약속 펼침 |
-|---|---|---|---|---|---|---|
-| 1920 KO | [열기](../review/companions-pact-1920-ko-birds-apart.png) | [열기](../review/companions-pact-1920-ko-greeting-mid.png) | [열기](../review/companions-pact-1920-ko-greeting-settled.png) | [열기](../review/companions-pact-1920-ko-time-previous-day.png) | [열기](../review/companions-pact-1920-ko-ending-dolls.png) | [열기](../review/companions-pact-1920-ko-pact-open.png) |
-| 1440 ES | [열기](../review/companions-pact-1440-es-birds-apart.png) | [열기](../review/companions-pact-1440-es-greeting-mid.png) | [열기](../review/companions-pact-1440-es-greeting-settled.png) | [열기](../review/companions-pact-1440-es-time-previous-day.png) | [열기](../review/companions-pact-1440-es-ending-dolls.png) | [열기](../review/companions-pact-1440-es-pact-open.png) |
-
-`97005d6` Hero를 담은 이전 영상에 대한 독립 A의 표본 판정은 구도4·공간3·목적4·craft3/5이며 전체 4/5 관문은 미달이다. 이전 P1 가림은 해소됐고 `.35` 부분 노출은 짧게 지나가지만, 평평한 근접 벽·낮은 접힌 천장·직선 목재 접합이 B 원화를 상자 안의 삽화처럼 보이게 한다. 승인 B 도착은 보존하며 이 공간 통합 문제를 미완료로 남긴다.
-
-- 최신 post-polish 세부 검수는 [content-audit-v3](../../output/current-review/implementation-20261021/content-audit-v3/report.json)의 `postPolishImplementation`이다. desktop KO/ES 입력에서 pressed/hover 구분, 5문단·4+4 장미, L02/L07 실제 전이, L04 라벨, reduced-motion 즉시 동작, 저장 실패 안내와 복구를 확인했다. 검사 실행은 분할 attempt이며 한 번의 무중단 전체 통과가 아니다. 저장 오류 안내 문구의 사후 화면 캡처는 없고 실제 DOM role/status·유지 state·복구 증거만 있다.
-- 이 항목들은 Hero/gallery 전체 완료 판정과 별도다. Hero의 현행 10개 still(1920 및 1440 각 다섯 장)에서 독립 A는 이전 P1 구조면 가림을 해소로 판정했고 상자/삽화 같은 인상 및 `.35` 부분 jamb를 P2로 남겼다. GalleryCollection의 주변 선택물 크기·깊이 및 hover 제목은 구현됐고 [scoped final QA](../../output/current-review/hero-spatial-rework-20261021/hero-wall-volume-current/product-current/product-report.json)의 `galleryHoverPolishVerification`에서 1440×900 ES normal과 1920×1080 KO reduced가 통과했다. Height-only resize 때 hover가 남던 문제는 기존 브랜치에 push된 `97005d6`의 `StudioScene.tsx` hash `54acdf349482489d926ee19d8b51500b16e0bc766338b6e8dedf21a252dda4b6` 수정으로 해결했다. 보고서에는 원 failed attempt도 보존했다. 성능은 [software SwiftShader probe](../../output/current-review/hero-spatial-rework-20261021/hero-wall-volume-current/product-current/performance-probe.json)에서 기록했다: 이전 97005d6 stable build/source, Linux headless Chromium·ANGLE SwiftShader·DPR1에서 1920×1080은 fence 뒤 완료 WebGL 제출 2.80회/초, 1440×900은 4.38회/초였다. 이는 화면에 실제 제시된 frame/FPS나 hardware GPU 측정값이 아니다. 44c0b11에 보존된 이전 영상은 97005d6 source의 48.466667초 역사 영상(SHA-256 `db4a2d0ffee5e965137c74aa8d148a245242e7d329fb00fa637e7bc54fecebce`)이며 현재 스토리 방향이나 최신 Hero의 완료 증거가 아니다. 새 연속 영상의 독립 검토는 별도다.
-- 이전 source `5420dc0`의 8 still은 거리·시계·반응·편지 읽기라는 당시 범위에서 scoped 검수를 통과했다. 현행 A 검수는 위 12개 companions/pact 이미지와 별도 native 흐름 결과를 따른다. 두 검수의 범위를 합쳐 전체 연속 경험 또는 전체 품질 완료로 계산하지 않는다.
-- 모바일 QA는 이번 실행 범위에서 제외됐으며 최종 완료 관문이 아니다. 아래 모바일 보고서들은 과거 검수 기록일 뿐 현재 요청에 대한 미완료 항목이 아니다. 실 GPU 성능 역시 미검수다.
-
-기본 흐름은 **승인 I → 승인 B → 거리(`#distance`) → 시차(`#time-difference`) → 함께 놓인 우연과 비동기 선택형 장난(`#shared-place`) → 보호된 8게임 갤러리(`#games`) → 같은 봉투/실제 편지(`#papi-letter`) → 짧은 엔딩**으로 재구성한다. 갤러리 뒤에 독립 toy-table/list를 추가하지 않는다. `#games`, `#papi-letter`, 게임 경로와 편지 직접 접근은 유지한다. Hero는 동결하며 게임/API/원문을 바꾸지 않는다. 모바일 QA는 이번 검수 범위에서 제외한다.
+기본 흐름은 **승인 I → 승인 B → 거리(`#distance`) → 시차(`#time-difference`) → 함께 놓인 우연과 비동기 선택형 장난(`#shared-place`) → 보호된 8게임 갤러리(`#games`) → 같은 편지 한 번 읽기 → 선택형 Pact → 같은 자리에서 접기 → 장미 전달 → 게임 출발**이다. 갤러리 뒤에 독립 toy-table/list를 추가하지 않는다. `#games`, `#papi-letter`, 게임 경로와 편지 직접 접근은 유지하고 top game menu는 상시 탈출 경로로 둔다. Hero는 동결하며 게임/API/원문을 바꾸지 않는다. 모바일 QA는 이번 검수 범위에서 제외한다.
 
 ## 장면별 콘텐츠 수용 기준
 
-거절된 국가 윤곽/지도 시안은 콘텐츠 완료가 아니다. 해당 8개 캡처는 거절 이력으로만 보존하며 새 백업을 만들거나 현재 동행새 구성의 통과 근거로 재사용하지 않는다. 앞선 source `5420dc0`의 거리·시계·리액션·편지 8 still은 그 시점의 scoped 기능/구도 증거다. 현재 `CountryCompanions.tsx`와 Partner Pact의 12 still 및 native 흐름은 위의 `f6736cd` 검수 범위에 따라 통과했다. 이 범위를 넘어 전체 연속 경험이나 품질 완료로 확대하지 않는다. 임의 숫자 확률·사건·실제 게임 승리를 만들지 않고, 보이는 각 장면이 서로 다른 사실·선택·회상을 수행하는지 본다.
+거절된 국가 윤곽/지도 시안은 콘텐츠 완료가 아니다. 해당 8개 캡처는 거절 이력으로만 보존하며 새 백업을 만들거나 현재 동행새 구성의 통과 근거로 재사용하지 않는다. 앞선 source `5420dc0`의 거리·시계·리액션·편지 8 still은 그 시점의 scoped 증거다. `f6736cd`의 동행새/Pact 12 still 및 native 흐름도 당시 구도·제품 구성 범위에 한정된다. 현재 reader/fold/gift 변경은 새 browser QA가 없어 이 이전 통과를 이어받지 않는다. 임의 숫자 확률·사건·실제 게임 승리를 만들지 않고, 보이는 각 장면이 서로 다른 사실·선택·회상을 수행하는지 본다.
 
 | 구간 | 콘텐츠와 상호작용 기준 | 수용 증거 |
 |---|---|---|
-| `#distance` | 광주–산토도밍고 도심 기준 약 13,792km를 사실값으로 보여준다. 국가 윤곽/지도/국기/지형물 시안은 거절 상태로 유지하며 세 장짜리 통계 카드를 만들지 않는다. 새 동행새는 광주 사람을 상징하는 러브버드와 도미니카 국조 팜챗(Cigua palmera)이며 국가/민족 표상으로 과장하지 않는다. | 실제 거리 구간·보이는 인사·포인터 복귀가 1920 KO targeted native QA에서 통과했다. |
-| `#time-difference` | 실제 13시간 시차를 광주와 산토도밍고의 현지시각 및 `StoryTimeInteraction`으로 체험한다. 계산용 IANA zone은 `Asia/Seoul`; 화면 위치명은 도시 이름으로 표시한다. 실시간 두 시계는 30초마다 현재 날짜 기준으로 갱신한다. 시간 슬라이더는 선택한 한국 시간을 상대 시각/날짜 출력과 두 하늘의 낮·밤 미리보기에만 적용한다. | 실시간 시계와 선택 시간 미리보기를 구분해 읽는다. 슬라이더는 실시간 시계나 날짜 입력을 바꾸지 않는다. 1440 ES와 1920 KO native QA 통과. |
+| `#distance` | 광주–산토도밍고 도심 기준 약 13,792km를 사실값으로 보여준다. 국가 윤곽/지도/국기/지형물 시안은 거절 상태로 유지하며 세 장짜리 통계 카드를 만들지 않는다. 새 동행새는 광주 사람을 상징하는 러브버드와 도미니카 국조 팜챗(Cigua palmera)이며 국가/민족 표상으로 과장하지 않는다. | 거리·인사·포인터 복귀가 같은 three-chapter 흐름에서 읽히는지 desktop browser QA 필요. |
+| `#time-difference` | 실제 13시간 시차를 광주와 산토도밍고의 현지시각 및 `StoryTimeInteraction`으로 체험한다. 계산용 IANA zone은 `Asia/Seoul`; 화면 위치명은 도시 이름으로 표시한다. 실시간 두 시계는 30초마다 현재 날짜 기준으로 갱신한다. 시간 슬라이더는 선택한 한국 시간을 상대 시각/날짜 출력과 두 하늘의 낮·밤 미리보기에만 적용한다. | 시계와 선택 시간 미리보기를 구분해 읽히고 shared story progression을 만드는지 desktop keyboard/pointer QA 필요. |
 | `#shared-place` | “수많은 사람 중 우리라서 운이 좋았다”는 비수치적 수사로 만남의 우연을 전한다. 비동기 선택형 메인 장난에서는 메롱·박수·삐짐 같은 서로 다른 리액션을 고르게 한다. 기존 두 결과 그림 `result-lisbeth-wins.png` / `result-yeonseok-wins.png`는 조건부 2상태 일러스트로 재해석할 수 있다. | 각 선택은 대기·동시 조작 없이 나중에 이어지고 선택한 반응이 분명한 시각 결과를 낸다. 승리 그림은 가상/조건부 장난임을 드러내며 실제 매치 결과·공유 이력으로 말하지 않는다. 기존 승인 원본과 mask/provenance를 그대로 사용한다. |
 | 갤러리 → 같은 편지 | 보호된 8게임 구조·경로 다음에 기존 동일 봉투와 실제 원문이 온다. | 중앙+7개 자산/구성, 게임/API, `#games`/`#papi-letter`, 원문 주소·제목·5문단·서명을 그대로 보존한다. 원문은 한 개의 DOM이고 접근/닫기/재열기가 된다. |
-| 엔딩 | 기존 직접 그린 카드 표시만 `Partner Pact`로 재해석한다. 실제 편지/원문 5문단, L06 그림·그리기 동작, 이름·2025-04-04와 D+565 동적 날짜는 보호한다. 여성 인형은 붉은 장식 웨딩 한복, 남성 인형은 아이보리색 Dominican chacabana 정장과 taupe 바지다. | pact는 현재 관람자의 개인 답만 보여주며 공유 서명·상호 동의·결혼 전통을 주장하지 않는다. Muñecas Limé의 문화 정체성/사랑 관습은 검증 전 사실로 서술하지 않는다. 즉시 열기/닫기·reset·Enter focus·인형 복귀와 같은 원문 5문단 독서는 1440 full 및 1920 targeted native QA를 통과했다. |
+| 엔딩 | 기존 직접 그린 카드 표시만 `Partner Pact`로 재해석한다. 실제 편지/원문 5문단, L06 그림·그리기 동작, 이름·2025-04-04와 D+565 동적 날짜는 보호한다. 여성 인형은 붉은 장식 웨딩 한복, 남성 인형은 아이보리색 Dominican chacabana 정장과 taupe 바지다. | pact는 관람자의 개인 답만 저장하며 공유 서명·상호 동의·검증되지 않은 문화 관습을 주장하지 않는다. 단일 reader 안의 실제 원문, pact 열기/닫기/reset, focus, return 및 이후 CTA는 current browser QA 필요. |
 
-두 결과 아트는 `public/images/approved-couple-room/result-lisbeth-wins.png`와 `result-yeonseok-wins.png`(각 1672×941) 및 같은 폴더의 mask/provenance 자료를 쓴다. 원본 아트 품질과 gameplay result 합성 기록은 현재 새 동행새/Partner Pact 검수와 별개의 증거다. `src/landing/endingMat.ts`는 같은 편지와 봉투를 받치는 문구류 매트다. 거절된 미사용 `storyCountryOutlines.ts`는 제거됐으며 거리 장면 근거로 되살리지 않는다. 승인 B 아트 자체는 보호 자산이며, 예전 B를 거리/엔딩에 무표정하게 반복하지 않는다.
+두 결과 아트는 `public/images/approved-couple-room/result-lisbeth-wins.png`와 `result-yeonseok-wins.png`(각 1672×941) 및 같은 폴더의 mask/provenance 자료를 쓴다. 원본 아트 품질과 gameplay result 합성 기록은 현재 새 동행새/Partner Pact 검수와 별개의 증거다. 이전 `endingMat.ts`/`endingLetterView.ts` 시안은 제거됐다; 현재 접힘용 camera transfer helper는 `src/landing/letterClosingView.ts`이며 view/rect 연결은 shared Scene/Host에 있다. 거절된 미사용 `storyCountryOutlines.ts`는 제거됐으며 거리 장면 근거로 되살리지 않는다. 승인 B 아트 자체는 보호 자산이며, 예전 B를 거리/엔딩에 무표정하게 반복하지 않는다.
 
-세부 native QA는 각 QA 보고서와 위 현행 12 still에서 분리해 확인한다. 이전 8-frame 표본은 source `5420dc0` 시점 기록으로만 남는다.
-
-요구된 범위는 현행 콘텐츠/화면 검수에만 적용한다. Hero는 동결하고 mobile QA를 완료 관문에 넣지 않는다. 행동 수·카드 수·state 수를 콘텐츠 깊이 증거로 대체하지 않는다. 현행 12개 정지 프레임의 scoped A 검수는 통과했지만 전체 연속 장면 검수와 전체 품질 완료는 아직 선언하지 않는다.
+이전 f6736cd still 검토는 당시 bird/Pact 장면에 한정된다. 현재 독서·접기·장미 통합 흐름의 A visual, keyboard, scroll-interruption, reduced-motion QA는 아직 실행하지 않았다. Hero는 동결하고 mobile QA를 범위 밖에 둔다. 행동 수·카드 수·state 수를 콘텐츠 깊이 증거로 대체하지 않으며, 전체 연속 장면이나 전체 품질 완료는 선언하지 않는다.
 
 L01–L16은 삭제하지 않는다. B의 실제 물체에서 선택해 여는 발견물과 관련 맥락의 세부 행동으로 보존한다. 기본 화면은 전체 16개 목록, 번호 표식, 진행률, 별도 실험실이나 강제 순회를 보여주지 않는다. 현재 기본 진입 후보는 B 안의 L04 토끼, L09 사진, L06 노트북 세 물체다. 선택 시에만 해당 물체의 관련 detail/dialog를 열고, 닫기/Escape로 같은 맥락에 돌아온다. 나머지 기능도 요구된 그래프와 관련 물체에서 발견 가능해야 한다. `.30`/`.45`는 한 거리 이야기 안의 내부 앵커일 뿐 별도 F2/table 구간이 아니다.
 

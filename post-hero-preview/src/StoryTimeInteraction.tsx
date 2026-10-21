@@ -48,9 +48,9 @@ function CitySky({hour,settle,active}:{hour:number;settle:boolean;active:boolean
  </svg>;
 }
 
-export function StoryTimeInteraction({language,now}:{language:'ko'|'es';now:Date}){
+export function StoryTimeInteraction({language,now,koreanHour,onHourChange}:{language:'ko'|'es';now:Date;koreanHour:number;onHourChange:(hour:number)=>void}){
  const ko=language==='ko',rangeId=useId(),host=useRef<HTMLDivElement>(null);
- const [koreanHour,setKoreanHour]=useState(20),[pointerInput,setPointerInput]=useState(false),[pageVisible,setPageVisible]=useState(()=>typeof document==='undefined'||!document.hidden);
+ const [pointerInput,setPointerInput]=useState(false),[pageVisible,setPageVisible]=useState(()=>typeof document==='undefined'||!document.hidden);
  const inView=useInView(host,{amount:.1}),reduced=useReducedMotion(),active=inView&&pageVisible&&!reduced,settle=active&&pointerInput;
  const clocks=storyClockTimes(now),preview=previewPlayHour(koreanHour);
  useEffect(()=>{const update=()=>setPageVisible(!document.hidden);document.addEventListener('visibilitychange',update);return()=>document.removeEventListener('visibilitychange',update);},[]);
@@ -66,7 +66,7 @@ export function StoryTimeInteraction({language,now}:{language:'ko'|'es';now:Date
   <div className="story-live-clocks"><div><span>{ko?'광주':'Gwangju'}</span><time>{pad(clocks.seoul.hour)}:{pad(clocks.seoul.minute)}</time><small>{clocks.seoul.month}.{pad(clocks.seoul.day)}</small></div><div><span>Santo Domingo</span><time>{pad(clocks.santoDomingo.hour)}:{pad(clocks.santoDomingo.minute)}</time><small>{clocks.santoDomingo.month}.{pad(clocks.santoDomingo.day)}</small></div></div>
   <div className="story-hour-picker"><label htmlFor={rangeId}>{ko?'한국 시간으로 골라봐':'Elige una hora de Corea'}</label>
    <div className="story-preview-skies" data-preview-visual="time-of-day"><CitySky hour={preview.koHour} settle={settle} active={active}/><CitySky hour={preview.drHour} settle={settle} active={active}/></div>
-   <input id={rangeId} type="range" min="0" max="23" step="1" value={koreanHour} onPointerDown={()=>setPointerInput(true)} onKeyDown={()=>setPointerInput(false)} onChange={event=>setKoreanHour(Number(event.target.value))}/>
+   <input id={rangeId} type="range" min="0" max="23" step="1" value={koreanHour} onPointerDown={()=>setPointerInput(true)} onKeyDown={()=>setPointerInput(false)} onChange={event=>onHourChange(Number(event.target.value))}/>
    <output htmlFor={rangeId} aria-live="polite" data-korean-hour={preview.koHour} data-dominican-hour={preview.drHour} data-day-offset={preview.drDayOffset}><span>{ko?'광주':'Gwangju'} {pad(preview.koHour)}:00</span><span>Santo Domingo {pad(preview.drHour)}:00 <small>{preview.drDayOffset<0?(ko?'전날':'el día anterior'):(ko?'같은 날':'el mismo día')}</small></span></output>
   </div>
  </div>;

@@ -2,12 +2,15 @@ import { useEffect, useRef } from 'react';
 import * as THREE from 'three';
 import { RoomEnvironment } from 'three/addons/environments/RoomEnvironment.js';
 import type { LocalEventState } from './LocalEventRig';
+import type {LetterFinalePhase} from '../../src/landing/letterFinaleState';
+import type {LetterClosingRect} from '../../src/landing/letterClosingView';
 
 export type PaperPose = { corners: Array<{ x: number; y: number }>; visible: boolean };
 
 export type PostHeroState = {
   progress: number; opening: number; reducedMotion: boolean; galleryPresence?: number;
   localEvent?: LocalEventState;
+  letterView?:LetterFinalePhase;letterClosingRect?:LetterClosingRect;
   effect: { name: string; value: number; nonce: number };
   portraitSrc: string; portraitMaskSrc?: string; onReady?: () => void; onFailure?: (message: string) => void;
   onPaperPose?: (pose: PaperPose) => void;
