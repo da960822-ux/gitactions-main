@@ -70,7 +70,7 @@ export function PostHeroPreview({embedded=false,language:externalLanguage,onLang
  const refreshTarget=useCallback(()=>{target.current=reduced.current&&control.current.manual===null?(p.current>=LETTER_RANGE[0]?1:0):envelopeTarget(control.current,p.current);if(target.current<=.5)setRoseHintOpen(false);},[setRoseHintOpen]);
  const handleSharedEventStart=useCallback((round:SharedEventRound,{settle}:{settle:boolean})=>{
    if(round.eventId!=='R01')return;
-   stopReturnMotion();focusAfterFold.current=false;control.current=reopenEnvelope(control.current);refreshTarget();
+   stopLetterMotion();focusAfterFold.current=false;alignEnvelopeView(settle);control.current=reopenEnvelope(control.current);refreshTarget();
    if(settle){q.current=1;setOpening(1);}
  },[refreshTarget]);
  useEffect(()=>{reduced.current=reducedMotion;if(reducedMotion){q.current=target.current;setOpening(q.current);}},[reducedMotion]);
@@ -112,26 +112,30 @@ export function PostHeroPreview({embedded=false,language:externalLanguage,onLang
    const loop=(time:number)=>{tick(time);frame=requestAnimationFrame(loop);};
    frame=requestAnimationFrame(loop);return()=>cancelAnimationFrame(frame);
  },[onRegisterFrame]);
- function stopReturnMotion(){if(control.current.returning)scrollTo({top:scrollY,behavior:'instant'});}
+ function stopLetterMotion(){if(control.current.returning||control.current.manual===true&&q.current<1)scrollTo({top:scrollY,behavior:'instant'});}
+ function alignEnvelopeView(instant=false){
+   const scene=document.getElementById('letter-scene'),bounds=scene?.getBoundingClientRect();
+   if(bounds&&bounds.top>1)scene?.scrollIntoView({behavior:instant||reduced.current?'instant':'smooth',block:'start'});
+ }
  const closeLetter=()=>{
-   setRoseHintOpen(false);control.current=closeEnvelope(control.current,p.current);focusAfterFold.current=true;refreshTarget();
+   stopLetterMotion();setRoseHintOpen(false);control.current=closeEnvelope(control.current,p.current);focusAfterFold.current=true;refreshTarget();
    if(control.current.returning)document.getElementById('letter-scene')?.scrollIntoView({behavior:reduced.current?'instant':'smooth',block:'start'});
  };
  const toggleLetter=()=>{
    if(!control.current.returning&&target.current>=.5){closeLetter();return;}
-   stopReturnMotion();focusAfterFold.current=false;control.current=toggleEnvelope(control.current,p.current);refreshTarget();
+   stopLetterMotion();focusAfterFold.current=false;control.current=toggleEnvelope(control.current,p.current);if(control.current.manual===true&&q.current<LETTER_UNFOLDED)alignEnvelopeView();refreshTarget();
  };
  useEffect(()=>{
-   const interrupt=()=>stopReturnMotion();
+   const interrupt=()=>stopLetterMotion();
    const scrollKey=(event:KeyboardEvent)=>{if(['ArrowUp','ArrowDown','PageUp','PageDown','Home','End'].includes(event.key))interrupt();};
    addEventListener('wheel',interrupt,{passive:true});addEventListener('pointerdown',interrupt,{passive:true,capture:true});addEventListener('keydown',scrollKey);
    return()=>{removeEventListener('wheel',interrupt);removeEventListener('pointerdown',interrupt,true);removeEventListener('keydown',scrollKey);};
  },[]);
  useEffect(()=>{
-   const closeOnEscape=(event:KeyboardEvent)=>{if(event.key!=='Escape'||detailRegion||sharedEvent)return;if(roseHintOpen){event.preventDefault();setRoseHintOpen(false);return;}if(control.current.returning){event.preventDefault();stopReturnMotion();return;}if(target.current<=.5)return;event.preventDefault();closeLetter();};
+   const closeOnEscape=(event:KeyboardEvent)=>{if(event.key!=='Escape'||detailRegion||sharedEvent)return;if(roseHintOpen){event.preventDefault();setRoseHintOpen(false);return;}if(control.current.returning){event.preventDefault();stopLetterMotion();return;}if(target.current<=.5)return;event.preventDefault();closeLetter();};
    addEventListener('keydown',closeOnEscape);return()=>removeEventListener('keydown',closeOnEscape);
  },[refreshTarget,roseHintOpen,detailRegion,sharedEvent]);
- const readLetter=(event?:React.MouseEvent)=>{event?.preventDefault();stopReturnMotion();focusAfterFold.current=false;control.current=reopenEnvelope(control.current);q.current=1;setOpening(1);refreshTarget();document.getElementById('papi-letter')?.scrollIntoView({behavior:'instant',block:'start'});};
+ const readLetter=(event?:React.MouseEvent)=>{event?.preventDefault();stopLetterMotion();focusAfterFold.current=false;control.current=reopenEnvelope(control.current);q.current=1;setOpening(1);refreshTarget();document.getElementById('papi-letter')?.scrollIntoView({behavior:'instant',block:'start'});};
  useEffect(()=>{const onHash=()=>{if(location.hash==='#papi-letter')readLetter();};onHash();addEventListener('hashchange',onHash);return()=>removeEventListener('hashchange',onHash);},[]);
  const closeDetails=useCallback((restoreFocus=true)=>{setDetailRegion(null);setLocalEvent(old=>({...old,active:null,rhythmSignal:null,waxPressed:false}));if(restoreFocus)requestAnimationFrame(()=>detailsOpener.current?.focus({preventScroll:true}));},[]);
 
@@ -191,7 +195,7 @@ export function PostHeroPreview({embedded=false,language:externalLanguage,onLang
    </article></div>
    {letterVisible&&progress>=.86&&<p id={roseHintId} className="rose-meaning" role="status" aria-live="polite" aria-atomic="true">{roseHintOpen?(ko?'4송이, 그리고 4송이. 우리 시작한 날 ♡':'Cuatro rosas y otras cuatro. El día que empezamos: 4 de abril ♡'):''}</p>}
    {letterVisible&&<div className="letter-bottom-controls"><button className="text-button" onClick={toggleLetter}>{readingAction} <span>−</span></button></div>}
-   {!letterVisible&&control.current.manual===false&&<div className="closed-note"><p>{text.sealed}</p><button className="text-button" onClick={()=>{stopReturnMotion();focusAfterFold.current=false;control.current=reopenEnvelope(control.current);refreshTarget();}}>{text.open} ↗</button></div>}
+   {!letterVisible&&control.current.manual===false&&<div className="closed-note"><p>{text.sealed}</p><button className="text-button" onClick={()=>{stopLetterMotion();focusAfterFold.current=false;control.current=reopenEnvelope(control.current);refreshTarget();}}>{text.open} ↗</button></div>}
   </section>
   <section id="together-again" className={`chapter ending ${detailRegion==='ending'?'has-detail':''}`} data-pose="1">
    <div className="ending-room"><img src="/images/approved-couple-room/approved-couple-gaming-room.png" width="1672" height="941" alt={ko?'각자의 게임방에서 함께 게임하는 우리 둘':'Los dos jugando desde nuestras habitaciones'}/></div>
