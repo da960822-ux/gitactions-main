@@ -51,7 +51,7 @@ export function FeedbackRoute() {
 
   useEffect(() => {
     document.documentElement.lang = language === 'es' ? 'es-DO' : 'ko';
-    document.title = es ? 'Ideas de Mami · Yeonseok & Lisbeth' : 'Mami의 아이디어 · Yeonseok & Lisbeth';
+    document.title = es ? 'Sugerencias · Yeonseok & Lisbeth' : '건의사항 · Yeonseok & Lisbeth';
     void refresh();
     const interval = window.setInterval(() => { if (!document.hidden) void refresh(); }, 15000);
     window.addEventListener('focus', refresh);
@@ -86,24 +86,28 @@ export function FeedbackRoute() {
     <header className="landing-nav wrap">
       <Link href="/" className="couple-brand">Yeonseok <span className="feedback-brand-heart" aria-hidden="true">♡</span> Lisbeth</Link>
       <nav aria-label={es ? 'Navegación' : '메뉴'}>
-        <Link href="/play">{es ? 'Juegos' : '게임'}</Link>
+        <a href="/#games">{es ? 'Ver los juegos' : '게임 목록'}</a>
         <a href="/#papi-letter">{es ? 'La carta de Papi' : 'Papi의 편지'}</a>
-        <a href="/feedback" className="feedback-nav-current" aria-current="page">{es ? 'Ideas de Mami' : 'Mami의 아이디어'}</a>
+        <a href="/feedback" className="feedback-nav-current" aria-current="page">{es ? 'Sugerencias' : '건의사항'}</a>
         <div className="landing-language" role="group" aria-label={es ? 'Idioma' : '언어'}>{(['ko','es'] as const).map(lang => <button key={lang} className={language === lang ? 'active' : ''} aria-pressed={language === lang} onClick={() => { localStorage.setItem('dos-language',lang); setLanguage(lang); }}>{lang === 'ko' ? 'KO' : 'ES · RD'}</button>)}</div>
       </nav>
     </header>
     {!spaceId ? <main className="wrap feedback-setup">
-      <span className="feedback-eyebrow">✦ {copy(language, 'Mami의 아이디어', 'Ideas de Mami')}</span>
-      <h1>{copy(language, 'Mami, 다음엔 뭐 만들까?', 'Mami, ¿qué hacemos después?')}</h1>
-      <p>{copy(language, '해보고 싶은 게임이나 추가했으면 하는 거 있으면 여기 적어줘.', 'Si hay algún juego que quieras probar o algo que te gustaría añadir, escríbelo aquí.')}</p>
-      <p>{copy(language, '불편한 게 있거나 마음에 안 드는 것도 말해줘. Papi가 보고 고쳐볼게.', 'Dime también si algo te incomoda o no te gusta. Papi lo revisa y lo arregla.')}</p>
-      <p>{copy(language, '둘만의 비공개 공간을 만들고 Mami에게 초대 링크를 보내줘.', 'Crea nuestro espacio privado y envíale la invitación a Mami.')}</p>
-      {error && <p className="feedback-error" role="alert">{error}</p>}
-      <button className="primary-action" disabled={working} onClick={() => void createSpace()}>{working ? copy(language, '만드는 중…', 'Creando…') : copy(language, '우리 공간 만들기', 'Crear nuestro espacio')} ↗</button>
-      <form className="feedback-join-form" onSubmit={joinSpace}><label htmlFor="feedback-invite-code">{copy(language, '초대 코드로 참여하기', 'Entrar con invitación')}</label><input id="feedback-invite-code" value={joinCode} onChange={event => setJoinCode(event.target.value)} placeholder={copy(language, '초대 코드 붙여넣기', 'Pega el código')} autoComplete="off"/><button className="secondary-action" disabled={working || !joinCode.trim()}>{copy(language, '참여하기', 'Entrar')}</button></form>
-      {!isFeedbackOnline && <p className="feedback-demo-note">{copy(language, '데모 공간은 이 브라우저에서만 쓸 수 있어요. 초대를 다른 기기와 공유해도 연결되지는 않아요.', 'El demo solo funciona en este navegador; el enlace no conecta otros dispositivos.')}</p>}
+      <div className="feedback-setup-copy">
+        <h1>{copy(language, 'Mami, 다음엔 뭐 만들까?', 'Mami, ¿qué hacemos después?')}</h1>
+        <p>{copy(language, '해보고 싶은 게임이나 추가했으면 하는 거 있으면 여기 적어줘.', 'Si hay algún juego que quieras probar o algo que te gustaría añadir, escríbelo aquí.')}</p>
+        <p>{copy(language, '불편한 게 있거나 마음에 안 드는 것도 말해줘. Papi가 보고 고쳐볼게.', 'Dime también si algo te incomoda o no te gusta. Papi lo revisa y lo arregla.')}</p>
+      </div>
+      <section className="feedback-setup-actions" aria-labelledby="feedback-setup-title">
+        <h2 id="feedback-setup-title">{copy(language, '우리의 아이디어 공간', 'Nuestro espacio de ideas')}</h2>
+        <p>{isFeedbackOnline ? copy(language, '둘만의 비공개 공간을 만들고 Mami에게 초대 링크를 보내줘.', 'Crea nuestro espacio privado y envíale la invitación a Mami.') : copy(language, '떠오른 생각을 적고, 나중에 다시 읽어봐요.', 'Anota lo que se te ocurra y vuelve a leerlo cuando quieras.')}</p>
+        {error && <p className="feedback-error" role="alert">{error}</p>}
+        <button className="primary-action" disabled={working} onClick={() => void createSpace()}>{working ? copy(language, '만드는 중…', 'Creando…') : copy(language, '우리 공간 만들기', 'Crear nuestro espacio')}</button>
+        <form className="feedback-join-form" onSubmit={joinSpace}><label htmlFor="feedback-invite-code">{copy(language, '초대 코드로 참여하기', 'Entrar con invitación')}</label><input id="feedback-invite-code" value={joinCode} onChange={event => setJoinCode(event.target.value)} placeholder={copy(language, '초대 코드 붙여넣기', 'Pega el código')} autoComplete="off"/><button className="secondary-action" disabled={working || !joinCode.trim()}>{copy(language, '참여하기', 'Entrar')}</button></form>
+        {!isFeedbackOnline && <p className="feedback-demo-note">{copy(language, '이 브라우저에만 저장돼요. 다른 기기와 공유되지 않고, 7일 뒤 삭제돼요.', 'Solo se guarda en este navegador, no se comparte con otros dispositivos y se elimina a los siete días.')}</p>}
+      </section>
     </main> : <>
-      <div className="wrap feedback-access-note"><div><b>{copy(language, '둘만의 비공개 아이디어 공간', 'Espacio privado de ideas para los dos')}</b><p>{copy(language, '각 아이디어는 작성한 지 7일이 지나면 삭제돼요.', 'Cada idea se elimina automáticamente siete días después de publicarse.')}</p></div><div className="feedback-space-actions"><button className="secondary-action" onClick={() => void refresh()}>{copy(language, '새로고침', 'Actualizar')}</button><button className="secondary-action" onClick={() => void copyInvite()}>{copy(language, '초대 링크 복사', 'Copiar enlace de invitación')}</button></div></div>
+      <div className="wrap feedback-access-note"><div><b>{isFeedbackOnline ? copy(language, '둘만의 비공개 아이디어 공간', 'Espacio privado de ideas para los dos') : copy(language, '우리의 아이디어 공간', 'Nuestro espacio de ideas')}</b>{isFeedbackOnline && <p>{copy(language, '각 아이디어는 작성한 지 7일이 지나면 삭제돼요.', 'Cada idea se elimina automáticamente siete días después de publicarse.')}</p>}</div><div className="feedback-space-actions"><button className="secondary-action" onClick={() => void refresh()}>{copy(language, '새로고침', 'Actualizar')}</button><button className="secondary-action" onClick={() => void copyInvite()}>{copy(language, '초대 링크 복사', 'Copiar enlace de invitación')}</button></div></div>
       <FeedbackPage language={language} mode={isFeedbackOnline ? 'online' : 'demo'} entries={entries} loading={loading} error={error} canCreate={!isFeedbackOnline || role === 'p2'} canAcknowledge={!isFeedbackOnline || role === 'p1'} onCreate={async (input,requestId) => { const entry = await feedback.create(spaceId,input,requestId); refreshGeneration.current += 1; setEntries(items => [entry, ...items.filter(item => item.id !== entry.id)]); }} onSetStatus={async (id,status) => { await feedback.updateStatus(spaceId,id,status); refreshGeneration.current += 1; setEntries(items => items.map(item => item.id === id ? { ...item, status } : item)); }}/>
     </>}
   </div>;

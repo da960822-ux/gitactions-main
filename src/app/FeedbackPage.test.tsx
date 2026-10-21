@@ -43,6 +43,16 @@ describe('Mami ideas page copy', () => {
     assert.equal((html.match(/<option /g) || []).length, 3);
   });
 
+  it('does not repeat an automatically generated title above a multiline idea', () => {
+    const html = renderToStaticMarkup(createElement(FeedbackPage, {
+      language: 'ko', mode: 'demo', loading: false, canCreate: true, canAcknowledge: true,
+      entries: [{ id: 'multiline', category: 'game', title: '같이 도미노 해보자 다음 주말에', body: '같이 도미노 해보자\n다음 주말에', status: 'new', createdAt: '2026-10-21T12:00:00Z' }],
+      onCreate: async () => undefined, onSetStatus: async () => undefined,
+    }));
+    assert.doesNotMatch(html, /<h3>/);
+    assert.match(html, /같이 도미노 해보자\n다음 주말에/);
+  });
+
   it('blocks composing while loading or failing and does not show a false empty state on error', () => {
     for (const state of [{ loading: true }, { loading: false, error: 'Connection failed' }]) {
       const html = renderToStaticMarkup(createElement(FeedbackPage, {
@@ -54,6 +64,32 @@ describe('Mami ideas page copy', () => {
       assert.doesNotMatch(html, /Todavía no hay ideas/);
       if (state.loading) assert.match(html, /<form aria-busy="true">/);
       else assert.match(html, /feedback-compose[\s\S]+role="alert">Connection failed/);
+    }
+  });
+
+  it('explains demo storage once and labels saving without implying delivery', () => {
+    for (const language of ['ko', 'es'] as const) {
+      const html = renderToStaticMarkup(createElement(FeedbackPage, {
+        language, mode: 'demo', entries: [], loading: false, canCreate: true, canAcknowledge: true,
+        onCreate: async () => undefined, onSetStatus: async () => undefined,
+      }));
+      assert.equal((html.match(/class="feedback-demo-note"/g) || []).length, 1);
+      assert.doesNotMatch(html, /feedback-mode|feedback-retention|Papi한테 보내기|Enviar a Papi/);
+      assert.match(html, language === 'ko' ? /메모 남기기/ : /Guardar mi idea/);
+      assert.match(html, language === 'ko' ? /다른 기기와 공유되지 않고, 7일 뒤 삭제돼요/ : /no se comparte con otros dispositivos y se elimina a los siete días/);
+    }
+  });
+
+  it('keeps composing and status controls restricted to their existing role props', () => {
+    for (const canCreate of [true, false]) {
+      const html = renderToStaticMarkup(createElement(FeedbackPage, {
+        language: 'es', mode: 'online', loading: false, canCreate, canAcknowledge: !canCreate,
+        entries: [{ id: 'role-check', category: 'game', title: 'Una idea', body: 'Una idea', status: 'new', createdAt: '2026-10-21T12:00:00Z' }],
+        onCreate: async () => undefined, onSetStatus: async () => undefined,
+      }));
+      assert.equal(html.includes('id="feedback-body"'), canCreate);
+      assert.equal(html.includes('<select'), !canCreate);
+      assert.equal(html.includes('feedback-layout-readonly'), !canCreate);
     }
   });
 

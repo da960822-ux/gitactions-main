@@ -80,12 +80,12 @@ export function FeedbackPage({ language, mode, entries, loading, error, canCreat
           <p>{copy(language, '해보고 싶은 게임이나 추가했으면 하는 거 있으면 여기 적어줘.', 'Si hay algún juego que quieras probar o algo que te gustaría añadir, escríbelo aquí.')}</p>
           <p>{copy(language, '불편한 게 있거나 마음에 안 드는 것도 말해줘. Papi가 보고 고쳐볼게.', 'Dime también si algo te incomoda o no te gusta. Papi lo revisa y lo arregla.')}</p>
         </div>
-        <span className={`feedback-mode ${mode}`}>{mode === 'online' ? copy(language, '비공개 보관함', 'Espacio privado') : copy(language, '같은 브라우저 데모', 'Demo en este navegador')}</span>
+        {mode === 'online' && <span className="feedback-mode">{copy(language, '비공개 보관함', 'Espacio privado')}</span>}
       </header>
 
-      {mode === 'demo' && <p className="feedback-demo-note">{copy(language, '이 데모 내용은 이 브라우저에서만 보여요.', 'Este demo solo se ve en este navegador.')}</p>}
+      {mode === 'demo' && <p className="feedback-demo-note">{copy(language, '이 브라우저에만 저장돼요. 다른 기기와 공유되지 않고, 7일 뒤 삭제돼요.', 'Solo se guarda en este navegador, no se comparte con otros dispositivos y se elimina a los siete días.')}</p>}
 
-      <div className="feedback-layout">
+      <div className={`feedback-layout${canCreate ? '' : ' feedback-layout-readonly'}`}>
         <section className="feedback-list-section" aria-labelledby="feedback-list-title">
           <div className="feedback-list-head">
             <div><h2 id="feedback-list-title">{copy(language, 'Mami의 아이디어', 'Ideas de Mami')}</h2></div>
@@ -97,7 +97,7 @@ export function FeedbackPage({ language, mode, entries, loading, error, canCreat
             : entries.length === 0 && !error ? <div className="feedback-empty"><b>{copy(language, '아직 아이디어가 없어요.', 'Todavía no hay ideas.')}</b><small>{copy(language, 'Mami, 생각난 걸 언제든 남겨줘.', 'Mami, cuéntame tu idea cuando quieras.')}</small></div>
               : <div className="feedback-list">{entries.map(entry => <article className="feedback-entry" key={entry.id}>
                 <div className="feedback-entry-top"><span className={`feedback-category category-${entry.category}`}>{categoryText(entry.category, language)}</span><span className={`feedback-status status-${entry.status}`}>{statusText(entry.status, language)}{entry.status === 'planned' && <small> · {copy(language, '해볼게요', 'Lo anoto')}</small>}</span></div>
-                {!entry.body.startsWith(entry.title) && <h3>{entry.title}</h3>}
+                {!entry.body.replace(/\s+/g, ' ').startsWith(entry.title) && <h3>{entry.title}</h3>}
                 <p className="feedback-entry-body">{entry.body}</p>
                 <footer className="feedback-entry-foot"><time dateTime={entry.createdAt}>{formatDate(entry.createdAt)}</time>
                   {canAcknowledge && <label className="feedback-status-control"><span className="sr-only">{copy(language, '아이디어 상태', 'Estado de la idea')}</span><select value={entry.status === 'read' ? 'new' : entry.status} disabled={Boolean(savingStatus) || loading || Boolean(error)} onChange={event => void setStatus(entry.id, event.target.value as FeedbackStatus)}>
@@ -115,13 +115,11 @@ export function FeedbackPage({ language, mode, entries, loading, error, canCreat
             <textarea id="feedback-body" className="feedback-input feedback-textarea" required maxLength={4000} rows={5} disabled={saving || loading || Boolean(error)} value={body} onChange={event => { setBody(event.target.value); setSaved(false); }} placeholder={copy(language, 'Baby, 여기 적어줘 ♡', 'Baby, escríbelo aquí ♡')} />
             {(error || actionError) && <p className="feedback-error" role="alert">{error || actionError}</p>}
             {saved && <p className="feedback-saved" role="status">{copy(language, '아이디어를 저장했어요.', 'Tu idea quedó guardada.')}</p>}
-            <div className="feedback-compose-bottom"><small>{mode === 'online' ? copy(language, '우리 둘의 비공개 공간에 저장돼요.', 'Se guarda en nuestro espacio privado.') : copy(language, '이 브라우저에만 저장돼요.', 'Solo en este navegador.')}</small><button className="feedback-submit" disabled={saving || loading || Boolean(error) || !body.trim()}>{saving ? copy(language, '보내는 중…', 'Enviando…') : copy(language, 'Papi한테 보내기', 'Enviar a Papi')}</button></div>
+            <div className="feedback-compose-bottom">{mode === 'online' && <small>{copy(language, '우리 둘의 비공개 공간에 저장돼요.', 'Se guarda en nuestro espacio privado.')}</small>}<button className="feedback-submit" disabled={saving || loading || Boolean(error) || !body.trim()}>{saving ? (mode === 'online' ? copy(language, '보내는 중…', 'Enviando…') : copy(language, '저장하는 중…', 'Guardando…')) : (mode === 'online' ? copy(language, 'Papi한테 보내기', 'Enviar a Papi') : copy(language, '메모 남기기', 'Guardar mi idea'))}</button></div>
           </form>
         </aside>}
       </div>
-      <p className="feedback-retention">{mode === 'online'
-        ? copy(language, '각 아이디어는 작성한 지 7일이 지나면 자동 삭제돼요. 비공개 공간은 계속 유지돼요.', 'Cada idea se elimina automáticamente siete días después de publicarse.')
-        : copy(language, '데모 아이디어는 이 브라우저에만 저장돼요. 다른 기기와 공유되지 않고 작성한 지 7일 뒤 삭제돼요.', 'Las ideas del demo solo se guardan en este navegador. No se comparten con otros dispositivos y se eliminan a los siete días.')}</p>
+      {mode === 'online' && <p className="feedback-retention">{copy(language, '각 아이디어는 작성한 지 7일이 지나면 자동 삭제돼요. 비공개 공간은 계속 유지돼요.', 'Cada idea se elimina automáticamente siete días después de publicarse.')}</p>}
     </div>
   </main>;
 }

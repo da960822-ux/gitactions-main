@@ -1,9 +1,21 @@
 import {afterEach,describe,expect,it,vi} from 'vitest';
 import {renderToStaticMarkup} from 'react-dom/server';
+import {Landing} from './Landing';
 import {PostHeroPreview} from '../../post-hero-preview/src/PostHeroPreview';
 import {landingCopy} from '../copy/home';
 
+vi.mock('./LandingWorldHost',()=>({LandingWorldHost:()=>null}));
+
 afterEach(()=>vi.unstubAllGlobals());
+describe('landing navigation',()=>{
+ for(const [language,label] of [['ko','게임 목록'],['es','Juegos']] as const)it(`links to the game gallery in ${language}`,()=>{
+  vi.stubGlobal('localStorage',{getItem:()=>language});
+  const html=renderToStaticMarkup(<Landing/>);
+  expect(html).toContain(`<a href="#games">${label}</a>`);
+  expect(html).toContain(`<a href="/feedback">${language === 'ko' ? '건의사항' : 'Sugerencias'}</a>`);
+ });
+});
+
 describe('main narrative content remains present without opening optional discoveries',()=>{
  for(const language of ['ko','es'] as const)it(language,()=>{
   vi.stubGlobal('matchMedia',()=>({matches:false}));

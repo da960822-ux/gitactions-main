@@ -1,98 +1,65 @@
-# 리디자인 진행 실패 감사
+# 스토리·모션 비평 및 리디자인 감사
 
-날짜 표기: 문서/폴더의 `20261021`은 한국 현지 작업일 식별자로 보존한다. 원 감사의 실제 실행일은 **2026-10-20 UTC**, 현재 보충 검수일은 **2026-10-21 UTC**다.
-작성: 2026-10-21 · 범위: 프롬프트/계획/스킬/활성 source/QA 기록의 읽기 전용 대조
+갱신: 2026-10-21 UTC
 
-## 장미 마무리 추가 — 2026-10-21 UTC
+Method: dual-agent (A: /root/story_critique_a · B: /root/story_critique_b)
 
-원문 편지의 명시적 접힘 완료에 연결하는 장미 선물과 실제 local pact yes에만 나오는 평생 파트너 농담을 추가했다. 승인 인물·의상을 보존한 3포즈 일러스트이며 원문/게임/Hero는 변경하지 않았다. 통합 시 main 86 files/660 tests와 build 통과, 독립 detector clean. 실제 전환의 alpha 밝기 저하를 교정한 뒤 focused 12 tests/build와 한정 motion confirm을 통과했다. 두 데스크톱 크기의 실제 native 17항목과 3포즈 공연 범위의 독립 시각·모션 평가 각 4/5를 확인했다. source `f041dfd`의 새 전체 스페인어 영상은 57.40초/1.21×이며 독립 A가 마지막 8초의 접힘→전달→약속 문구와 출판용 SHA 일치를 확인했다. [정본 구현·검수 범위](POST-HERO-REPLAN-20261021.ko.md)를 따른다. 모바일은 제외하며 전체 랜딩/Lusion 품질 완료로 확대하지 않는다.
+대상: `16664a026ccfd7deb5e9a1e4abf1fa78b4537bdb`의 57.4초 스페인어 영상과 실제 데스크톱 랜딩. 정본 소스 타깃은 `post-hero-preview/src/PostHeroPreview.tsx`다. Experience 모드. 이번 비평은 원본 스토리·모션에 대한 평가이며, 별도로 수정한 상단 메뉴·건의사항의 점수는 아니다.
 
-## 이전 동행새·약속서 검수 — `f6736cd`
+**판정: 전체 이야기 흐름은 19/32(59.4%). 결말의 순서와 공간 연속성은 수정 전 승인 보류(Block).** 앞선 장미 장면 4/5는 국소 구도·3포즈 전달에 한정되므로 전체 스토리 점수로 확대할 수 없다.
 
-**현행 검수 상태:** source `f6736cd` main 84 files/654 tests, post 29/29, build 통과(10:28 UTC; 동일 source bytes)다. Focused follow-up `8c67caa`는 관련 6 tests와 TypeScript/build를 통과했다. A는 현행 12 still의 scoped 시각 검수를 통과했고 1440 ES full native flow/reduced motion 및 1920 KO의 targeted distance/visible-greeting return + Partner Pact keyboard/open/reset/focus/letter QA가 통과했다. 이전 raw 1920 focus/trigger 실패는 보존되며 targeted 재검증으로 해결됐다. [정본 후반 검수 상태](POST-HERO-REPLAN-20261021.ko.md)에 12 still과 상세 native/video 범위를 한 곳에 기록한다. [동행새·약속서 기준 1440×900 ES 영상](https://raw.githubusercontent.com/da960822-ux/gitactions-main/0a40c12e34a8f9a0bce4b247da70e62c4cc69b49/docs/review/landing-current-es.mp4)은 source `f6736cd`의 실제 브라우저 녹화: 56.33초, 1.2× H.264, 무음·무자막, 22 native action, source stable/page·console·HTTP 오류 0, SHA-256 `c6eecb30dd71a2292e94cf5f2d1cc7b6d81c9d0af00a3c6f6b7568d956bf0802`다. 독립 A의 encoded-frame spot review는 인사·하트와 엔딩 약속서의 연속 표본에서 차단 문제 없이 통과했다. 전체 프레임·해부학적 리깅 검수로 확대하지 않는다. 모바일 QA는 제외됐다. 이 scoped 검수는 Hero의 공간 3/5와 전체 4/5 미달을 바꾸지 않으며 전체 3D/Lusion 모션 또는 hardware GPU 합격을 뜻하지 않는다.
+| Nielsen 항목 | 점수/4 | 핵심 근거 |
+|---|---:|---|
+| 상태 가시성 | 2 | 편지 접기가 장미를 여는 조건임을 알기 어렵다. |
+| 현실·사용자 언어 | 2 | 말투는 맞지만 읽기 뒤에 다시 독서로 돌아간다. |
+| 사용자 통제 | 3 | 재독서·닫기·취소·응답 초기화가 있다. |
+| 일관성 | 2 | 스크롤·수동 개봉·즉시 이동이 혼재한다. |
+| 오류 예방 | 3 | 실제 약속 응답만 농담에 반영한다. |
+| 재인식 | 2 | 다음 결말을 보려면 동작의 의미를 추론해야 한다. |
+| 유연성·효율 | n/a | Experience 표면으로 이번 점수에서 제외. |
+| 미학·최소성 | 2 | 원본 편지·약속문·끝맺음이 시각적으로 중복된다. |
+| 오류 회복 | 3 | 저장 재시도·그림 실패 안내는 소스 확인. 이번 전체 비평에서 오류를 강제 유발하지 않았다. |
+| 도움말 | n/a | Experience 표면으로 이번 점수에서 제외. |
+| 합계 | 19/32 | 의미 있는 구조 개선 필요. |
 
-`97005d6` Hero를 담은 이전 영상에 대한 독립 A의 표본 판정은 구도4·공간3·목적4·craft3/5이며 전체 4/5 관문은 미달이다. 이전 P1 가림은 해소됐고 `.35` 부분 노출은 짧게 지나가지만, 평평한 근접 벽·낮은 접힌 천장·직선 목재 접합이 B 원화를 상자 안의 삽화처럼 보이게 한다. 승인 B 도착은 보존하며 이 공간 통합 문제를 미완료로 남긴다.
+**디자인 특수성과 장점.** 광주–산토도밍고, 13시간, 시작 날짜, 두 사람의 승인 캐릭터, 언어와 새는 이 커플에게 맞는 소재다. 원문 다섯 문단을 읽는 화면은 집중도가 좋다. 약속의 로컬 yes와 장미 수령 뒤 농담을 연결한 의미도 맞다. 가장 큰 기회는 소재를 더 붙이는 것이 아니라 현재 소재를 한 번의 선물 경험으로 연결하는 것이다.
 
-현재 증거 묶음은 [요구 완료 감사](../../output/current-review/hero-spatial-rework-20261021/hero-wall-volume-current/product-current/plan-completion-audit.json), [천장 정지 표본](../../output/current-review/hero-spatial-rework-20261021/hero-wall-volume-current/shallow-report.json), [현재 critique snapshot](../../output/current-review/hero-spatial-rework-20261021/hero-wall-volume-current/product-current/critique-snapshot-current.json) 및 [post-polish 검사](../../output/current-review/implementation-20261021/content-audit-v3/report.json)의 `postPolishImplementation`이다. 과거 `849344f` 영상/보고서는 역사 자료로 남기며 최신 통합 근거로 쓰지 않는다.
+**편지가 두 번 보이는 이유.** 영상 41.5–45.5초는 첫 독서, 46–48.5초는 같은 원본 편지가 엔딩에서 다시 큰 소품으로 보이는 구간이다. 약 47–48.5초에는 내용이 다른 약속문이 열린다. 49–50.5초에는 녹화에서 재독서 링크를 직접 눌러 같은 원문으로 돌아간다. 원문 DOM은 하나이며 재독서에서도 같은 노드·다섯 문단이다. 그러나 엔딩의 열린 원본 전시와 별도 종이 약속문이 겹치고, 약속 뒤에 장미를 보려면 다시 독서·접기로 돌아가는 구조가 있어 사용자의 중복 인상은 타당하다. 촬영 경로도 이 왕복을 더 강조했다.
 
-이전 Hero 카메라 검토는 1920×1080과 1440×900 각 다섯 장, 총 열 장의 settled still을 포함했다. 독립 A는 종전 P1 구조면 가림을 해소로 판정하며, 남은 P2는 상자/삽화처럼 읽히는 인상과 `.35` 부분 jamb 가림이다. 별도의 이전 ceiling review는 1440×900 네 still에서 561개 정점의 실제 변형, `.35/.42` 곡면 실루엣, `.68` 복원을 확인했다. 이는 전체 경로 통과나 4/5 전체 점수가 아니다. 이전 source `97005d6`의 [1440×900 ES 영상(44c0b11 보존)](https://raw.githubusercontent.com/da960822-ux/gitactions-main/44c0b117194dba587033ceea36bccfe0344f001b/docs/review/landing-current-es.mp4)은 SHA-256 `db4a2d0ffee5e965137c74aa8d148a245242e7d329fb00fa637e7bc54fecebce`인 역사 자료다. 48.466667초 H.264/1.2배속, 무음·무자막, 14 native action으로 Hero 왕복·L06 그림→카드·gallery hover/click·편지 5문단과 4+4 장미·ending을 담았지만 현재 이야기 재구성의 QA가 아니다. 전체 16+4 행동 검수 영상도 아니다. Hero의 전체 4/5 관문은 미달이다. Software SwiftShader 표본은 1920과 1440에서 완료됐으며 hardware GPU 성능은 미측정이다.
+**우선 수정할 네 가지.**
 
-Hero CTA pressed 상태와 GalleryCollection의 주변 선택물 크기·깊이·hover 맥락 타이틀은 구현됐다. [gallery scoped QA](../../output/current-review/hero-spatial-rework-20261021/hero-wall-volume-current/product-current/product-report.json)의 `galleryHoverPolishVerification`은 1440×900 ES normal 및 1920×1080 KO reduced에서 통과했고, height-only resize 문제를 StudioScene의 `54acdf349482489d926ee19d8b51500b16e0bc766338b6e8dedf21a252dda4b6` 수정으로 해결했다. 원 실패 attempt는 같은 보고서에 보존했다; 모바일 viewport QA는 실행하지 않았다.
+1. **P1 — 진짜 결말 전에 종료·게임 출발을 제시한다.** `EndingChapter.tsx:15`, `PostHeroPreview.tsx:125`·`:137`. 아래로 스크롤하면 장미가 없는 게임 초대 엔딩에 도착한다. 그 뒤 약속, 재독서, 접기를 거쳐야 장미 결말이 생긴다. 주 경로를 `게임 선택 → 편지 한 번 읽기 → 선택적 약속 응답 → 그 자리에서 접기 → 장미 → 게임 출발`로 정리한다. 게임 바로가기는 상단에서 항상 제공하되 감정 결말 안에서 먼저 퇴장을 권하지 않는다. `/impeccable shape`, `/impeccable clarify`.
+2. **P2 — 읽은 편지가 엔딩에서 다시 주인공이 된다.** `PostHeroPreview.tsx:64`·`:72`·`:202`, `EndingChapter.tsx:23`, `PartnerPact.tsx:42`. 엔딩의 원본은 닫힌 봉투나 조용한 보관 소품으로 내려놓고, 재독서는 작은 선택 링크로 남긴다. 약속을 읽을 때 원본 본문을 뒤에 계속 전시하지 않는다. 편지 원문 자체는 삭제·재작성하지 않는다. `/impeccable distill`, `/impeccable layout`.
+3. **P2 — 접기가 뒤로 이동했다 앞으로 건너뛰는 동작이다.** 영상 49–52초, `PostHeroPreview.tsx:95`·`:138`. 현재 독서 위치에서 봉투 장면으로 역스크롤한 뒤 접힘 완료 시 엔딩으로 instant 이동한다. 독서 화면의 종이·봉투 기준점을 고정해 접기를 끝내고 같은 화면의 인물/장미로 이어간다. 시간을 늘리거나 블러를 얹어 왕복을 감추지 않는다. `/impeccable animate`.
+4. **P2 — 거리·시간·우리의 시작이 다음 장면을 준비하지 못한다.** `StoryChapters.tsx:14`·`:19`·`:24`. 각 내용은 필요하지만 방 도착 뒤 세 번의 새로운 도입처럼 느껴진다. 장면과 상호작용을 삭제하거나 사이트를 다시 짧게 만들지 않는다. 거리=함께 놀 공간을 만든 이유, 시차=함께 놀 시간을 고르는 행동, 시작 날짜·승부 장난=게임으로 가는 개인적 연결로 역할을 명확히 한다. 새·시계의 결과가 다음 장면을 준비하도록 공통 시선·방향·대상을 이어간다. `/impeccable shape`, `/impeccable animate`.
 
-이전 source checkpoint의 검사 기록은 main 76 files/623 tests, post 29/29와 TypeScript/Vite/edge build 통과였다. 뒤이은 listener 수정 후 97005d6 build, focused 5 tests와 TypeScript가 통과했으나 623 full-suite는 그 수정 전에 실행됐다. 622는 더 앞선 checkpoint다. 이 수치는 모두 위의 현행 84/654 결과 이전 역사 기록이다. [이전 소프트웨어 성능 측정](../../output/current-review/hero-spatial-rework-20261021/hero-wall-volume-current/product-current/performance-probe.json)은 Linux headless Chromium·ANGLE SwiftShader·DPR1의 stable 97005d6 release build/source에서 수행됐다: fence 뒤 완료된 WebGL 제출은 1920×1080에서 2.80회/초, 1440×900에서 4.38회/초였다. 이는 실제 화면에 제시된 frame/FPS나 hardware GPU 측정값이 아니다. 실제 GPU 성능은 미확인이다. 모바일 QA는 이번 범위 밖이며 완료 gate가 아니다. 이전 source의 1440 연속 영상은 역사 자료이며, 독립 A의 전체 4/5 관문은 미달이다.
+**모션 비평.** 영상은 1.21배속이며 SwiftShader 녹화이므로 체감 속도와 실기기 프레임 성능을 동일시하지 않는다.
 
-이번 감독 교정의 핵심은 승인 B를 임의의 world 좌표·거리로 고정한 잘못된 전제, 20초 proof를 공동 그림/패턴 작성 전체 시간으로 읽은 전제, 상태 전이를 실제 화면 보상으로 대신한 판정을 제거한 것이다. 편지 최초 개봉/연속 닫기, 발견물 결과와 공동 기능은 각 실제 검수 범위를 구분한다. 테스트·스킬 이름·기능 수로 시각 합격을 대신하지 않는다.
-
-상세 이전 진단과 원시 실패 이력은 [f12c25d 시점 감사 전문](https://github.com/da960822-ux/gitactions-main/blob/f12c25d9e2b45c178abe359aa66575a957af6967/docs/redesign-20261018/PROCESS-FAILURE-AUDIT-20261021.ko.md)에 보존한다. 최신 요구·보호 범위는 [Hero 지시](HERO-REVISION-BRIEF-20261021.ko.md)와 [후반 통합 계획](POST-HERO-REPLAN-20261021.ko.md)을 따른다. 아래 cf907bc 당시 checkout·점수·범위·검사 수치는 과거 감사 시점 기록이며, 현행 상태는 위 요약을 따른다.
-
-## 과거 판정과 자료 한계
-
-이 감사 범위에서는 “무슨 Three 좌표나 셰이더가 미감을 망쳤는가”라는 단일 원인을 확정하지 않는다. 저장소에 초기 사용자 개발 지시 0–13절 원문은 없고, 이번 감사자는 현재 MP4를 재생하거나 브라우저에서 새 검수를 하지 않았다. root가 전달한 현재 source 관찰은 별도로 기록하되, 수정 중이거나 브라우저 검증 중인 구현 세부를 과거 실패의 확정 원인으로 확대하지 않는다.
-
-확인 가능한 과정상 실패는 기록에 이미 적혀 있다. 총괄은 승인 없는 갤러리 자산·색·배치 변경, Hero와 후반의 명도/톤 단절, 구도보다 개별 오브젝트를 먼저 고친 반복, 테스트를 시각 완료와 혼동한 점을 인정했다. 현재 self-review도 전체 랜딩을 불합격으로 두고, Hero 전환 불합격·이스터에그 미검수·장미 그림 부재·엔딩 구도 미승인을 기록한다. 최신 커밋 `cf907bc` 역시 제목에 “visual review failed”를 남겼으며, 이 커밋만 74개 파일(+4,158/−644)을 바꿨다. 변경량이 실패의 원인이라는 뜻은 아니지만, 구현량과 시각 통과를 같은 척도로 볼 수 없다는 직접 증거다.
-
-현재 checkout은 `redesign/folded-playhouse-depth-r8-20261018`, HEAD `cf907bc`이며 감사 시작 시 worktree는 clean이었다. 조사한 사용자 지시의 최신 제약은 현재 대화에 전달된 내용이고, 전체 원시 대화 로그는 저장소에서 찾지 못했다.
-
-## 당시 지시와 오래된 문서의 대조
-
-| 현재 유효한 지시 | 오래됐거나 범위가 좁은 문서 기록 | 적용 기준 |
+| 현재 | 수정 방향 | 이유 |
 |---|---|---|
-| B 게임방 **정적 구도는 승인됨**. 품질은 세 콘셉트 중 하나를 고르는 것보다 중요하다. 작은 방이나 긴 복도는 금지. | `PLAN.ko.md`의 초안은 A안을 추천하고, 예전 Gate0 승인 대기를 적는다. `PRODUCT.md`/`DESIGN.md`는 한 줄 8게임·작은 우주 Hero 중심으로 기술한다. | B 정적 구도를 기준으로 한다. A 추천과 Gate0 대기는 낡은 상태다. 정적 구도 승인은 전체 Hero 경로·후반 장면의 시각 합격을 뜻하지 않는다. |
-| 데스크톱 먼저, 모바일은 마지막. | 일부 계획은 여러 해상도/모바일 설계를 동시에 상세히 적는다. | 데스크톱 시각 검수가 끝나기 전 모바일을 완료 상태로 취급하지 않는다. |
-| Hero는 새 Sol High 담당자가 수정한다. 후반부는 별도 Sol이 계획만 한다. | 이전 owner 이름·수정 범위·실패횟수와 승인 순서가 다른 역사 기록이 다수다. | 현재 owner 범위를 우선한다. 이번 감사 작성자는 디자인을 수정하지 않으며, Hero/후반 코드를 함께 고치지 않는다. |
-| 게임 정의 6개를 예전 상태로 복구하고 Leonardo 초상과 사용자 Splendor 표지를 유지하며 어두운 갤러리 팔레트/배치를 보존한다. | EASTER-EGGS v3의 승인 말 7종·조커·귀족은 후반 이벤트 자산 범위다. PLAN의 앞부분에는 갤러리 변경 중단 기록이 있다. | 갤러리 회귀 계약과 이스터에그 자산 계약은 별개다. 후반 자산 목록을 갤러리 여덟 게임의 새 정의/미술 지시로 읽지 않는다. |
-| 게임, 편지, 피드백은 각각 독립 목적지다. 실제 계약은 8개 게임/route, 한국어·도미니카 스페인어, 편지 원문 보존이다. | 한 페이지 `/`의 story→gallery→letter는 같은 스크롤 시퀀스로 이어진다는 과거 설계다. `/feedback`은 독립 route라고 self-review가 확인한다. | 랜딩 내 섹션의 연속 연출과 기능 페이지 합치기를 구분한다. `/play?game=…`, `#papi-letter`, `/feedback`을 한 “경험”으로 합쳐 라우트/기능을 지우지 않는다. |
-| root의 현재 지시는 Hero 실제 수정은 새 Sol High에게 허용하고, 후반부는 별도 Sol이 계획한다. 이 하위 감사 담당자의 범위만 감사 문서 1개 작성이다. | `PLAN.ko.md`에는 Gate별 진행 대기, owner 배정, 계획 승인 대기가 혼재한다. `REVIEW-LIMITATIONS.ko.md`와 PLAN 최신 서두는 후속 구현 허용과 별도 main/deploy 승인을 기록한다. | 계획 초안의 “승인 대기”를 새 중단 장벽으로 되살리지 않는다. 이 문서 작성자는 구현하지 않으며, 지정 Hero owner와 후반 계획 owner의 범위는 서로 분리한다. main 병합/배포는 별도 승인 전 금지다. |
+| 접기 때 역스크롤 → 접힘 → instant 이동 | 같은 독서 위치에서 접고 다음 장면으로 이어가기 | 가장 큰 공간 단절을 제거한다. |
+| 장미 3포즈를 100ms 혼합 | 현재 승인 구도·얼굴은 보존하고, 추가 완성도가 필요하면 팔·손·단일 장미를 분리해 실제 접촉·소유 이전을 연속 동작으로 만든다. | 현재는 연속 관절 애니메이션이 아니며 짧은 팔·꽃 중첩이 남는다. |
+| 구간마다 다른 스크롤/클릭/스프링·종이 전환 규칙 | 주 장면 전환과 포인터/클릭 반응의 역할을 구분하고 방향·종료 상태를 통일 | 효과 수가 많아도 한 공간의 리듬이 생기지 않는다. |
+| Hero와 방을 잇는 기존 연출 | 동결 제약을 유지하고 이번 후반부 수정 범위에서 제외 | 원본 편지 재작성이나 Hero 재설계가 결말 왕복 해결의 전제는 아니다. |
 
-`PRODUCT.md` 및 `DESIGN.md`는 2026-10-18에 작성된 파일이고, Impeccable context 출력은 “게임 8개 한 줄, 430–440px Hero, 현재 우주/장미 구성, gallery 없음”을 incumbent truth처럼 제시했다. 이 내용은 현재 승인 B 구도 및 실제 구현/사용자 제약과 다르다. context 로더가 이 파일들을 읽었다는 사실은 내용이 최신이라는 증거가 아니다. 최초 사용자 원문 부재도 계획문서가 원문보다 우선한다는 근거가 아니다.
+**인지 부하와 사용자 관점.** 첫 방문자는 접기 뒤 장미가 있는 줄 모르고 게임으로 나갈 수 있다. 앞뒤로 확인하는 사람은 열린 원본·엔딩 소품·약속문·재독서를 새 내용으로 오해할 수 있다. 다시 방문해 게임을 하려는 사람에게는 상단 바로가기를 제공해야 하며 감정 장면을 반복 수행하게 해서는 안 된다. 8개 게임은 필요한 선택 범위이므로 개수 자체를 결함으로 보지 않는다.
 
-## 스킬: 설치 흔적과 실제 적용 증거
+**기계 검사와 판정.** B의 markup CLI 검사는 모두 clean이었다. 별도 headless 브라우저 오버레이는 `italic-serif-display`, `hero-eyebrow-chip`, `wide-tracking`, `buried-raster` 네 규칙을 기록했다. 로맨틱 세리프·개인 날짜는 승인된 미감/내용과 대조해야 하며 자동 삭제하지 않는다. `wide-tracking`은 본문이 아니라 갤러리 로딩 상태였고, `buried-raster`는 활성 folded-playhouse에서 숨겨지는 전역 배경을 가리켜 오탐 가능성이 높다. 이 검사는 서사 왕복을 잡지 못했다. 오버레이는 별도 headless 페이지에서만 실행했고 사용자 탭에 표시하지 않았으며 임시 서버는 종료했다.
 
-스킬 파일이 존재하거나 계획 문서가 이름을 언급한 것만으로 실제 적용을 입증하지 않는다. 적용 증거는 해당 시점의 읽은 지침, 그 지침이 만든 구체 결정/변경, 그리고 검증 결과가 같은 범위에 연결돼 있어야 한다.
+**범위.** 원본 스토리·카메라·편지·장미는 이번 비평으로 변경하지 않았다. 모바일·실제 GPU 성능·전체 키보드 경로는 미검수다. 명시적으로 요청된 상단 게임 목록 메뉴와 밝은 핑크/아이보리/로즈골드 건의사항 개선은 별도 구현·검수한다. 다음 설계에서 결정할 질문은 약속을 편지 끝의 선택으로 둘지 별도 발견으로 남길지, 장미를 3포즈로 유지할지 연속 팔·손 동작까지 제작할지다.
 
-| 스킬/자료 | 현재 확인된 설치·기록 | 실제 적용으로 말할 수 있는 범위 |
-|---|---|---|
-| Ponytail full | `AGENTS.md`가 전체 agent에 적용하도록 요구하며 `.agents/skills/ponytail/SKILL.md`가 있다. 이 감사에서도 전문을 재사용해 읽었다. | 작업 규칙은 명시적이다. 과거 각 변경이 최소 완전 변경인지/후속 검증까지 따랐는지는 파일별 검토 없이 일반화할 수 없다. 과거 적용을 입증하는 실행 log는 찾지 못했다. |
-| `couple-games-landing-design` | `.agents/skills/couple-games-landing-design/SKILL.md` 존재. EASTER-EGGS v3는 실제 적용 지침이라고 쓴다. | 기술/제품 제약이 반영된 계획 증거는 있다. 구체 skill read/invocation→현재 디자인 결과 연결은 보존 기록에서 확인되지 않는다. |
-| Impeccable | `.agents/skills/impeccable/SKILL.md` frontmatter 스킬 버전은 4.5.2, 별도 bundled launcher `scripts/VERSION`은 0.1.14다. 이번 하위 감사에서 전문을 읽고 `context --target src/landing/LandingWorldHost.tsx`를 실행했다. 출력에 `MANUAL_DETECTOR_REQUIRED`와 “자동 hook 없음”이 표시됐다. | 두 버전은 서로 다른 구성요소의 버전이므로 값이 다르다는 것 자체는 결함 증거가 아니다. 이번 context는 오래된 Product/Design을 로드했으며, `reference/new-work.md` 및 skill이 fallback으로 지칭하는 `.agent/skills/impeccable/scripts` 경로는 현재 없다. `critique.md`와 `audit.md`는 있다. 이번 하위 감사는 critique/audit를 실행하지 않았지만 root가 별도 critique를 현재 실행 중이라는 인계가 있다. 자동 detector hook 부재는 확인된 운영상태이며, 시각 실패 원인이라는 증거는 아니다. |
-| Taste / `gpt-taste` / `taste-redesign` | `.agents/skills/gpt-taste/SKILL.md`, `taste-redesign/SKILL.md`는 있다. PLAN은 gpt-taste를 조사했다고 적지만 해당 Gate에서 새 design workflow를 실행하지 않았다고도 명시한다. | 저장소에 존재하는 것과 디자인 결과에 적용된 것은 다르다. 이전 이름 `design-taste-frontend`와 현재 `gpt-taste`를 하나로 뭉뚱그리지 않는다. |
-| Emil `animate`, `review-animations`, `animation-performance`, `emil-design-eng`, `prototype` | 관련 SKILL.md들이 존재한다. PLAN은 공식 문서/명칭을 조사했다고 기록하면서 “새 모션/디자인 실행 완료 아님”이라고 명시한다. 이전 `skill-application-audit.md`는 `24a6ec6` 기준 정적 source-mapping만 수행했고 “browser/render 없음”이라고 적었다. 그 파일은 현재 트리에 없고 `doc-cleanup.json`의 복구 항목으로만 남는다. | 정적 코드 연결/향후 검증 계획은 있다. 현재 `cf907bc` 디자인에 대한 Emil motion review 또는 performance 실측을 수행했다는 증거는 없다. |
-| GameDev skill collection | `.agents/gamedev-skills-manifest.json`은 74개와 router를 upstream commit `0a70cfc…`에 pin하며 source manifest와 hash를 둔다. | 이는 GameDev collection의 설치/무결성 근거다. `impeccable`, `couple-games-landing-design`, Taste, Emil 스킬의 manifest/실행 근거로 확장할 수 없다. |
+## 이번에 실제로 변경한 메뉴·건의사항
 
-현재 Impeccable context에서 확인된 자동 UI detector가 없다. 과거 gate 기록에 Playwright 캡처, 빌드, 테스트가 있어도 그 자체로 Impeccable critique 또는 `review-animations`를 실행했다는 뜻은 아니다. 이번 하위 감사에서는 UI 코드를 수정하지 않았고 이 agent는 `craft-floor`/detector/critique를 실행하지 않았다. root의 현재 critique와 과거 디자인 owner의 스킬 적용은 별도 증거로 기록해야 한다. 한번-per-session context 규칙을 subagent별 독립 실행에도 적용하지 못해, root가 이미 context를 실행한 뒤 이 하위 agent도 context를 중복 실행했다. 이 중복 실행은 이번 운영상 실수이며 시각 실패의 원인이라고 볼 근거는 없다. 같은 세션에서 context를 다시 실행하지 않는다. 새 담당의 실제 검토에서는 UX critique, measurable audit, motion review를 서로 다른 범위/결과로 기록해야 한다.
+- `Landing.tsx` 최상단 게임 메뉴는 `/play` 방 목록 대신 `#games`의 3D 게임 선택으로 이동한다. 표기는 한국어 “게임 목록”, 스페인어 “Juegos”다. 건의사항은 `/feedback`와 “건의사항”/“Sugerencias”로 명확히 했다. `/play` 자체는 보존했다.
+- `FeedbackRoute.tsx`·`FeedbackPage.tsx`·`feedback.css`는 밝은 아이보리 종이·옅은 핑크·로즈골드 선·버건디 글자의 편지/일기장으로 다듬었다. 다중행 본문의 자동 제목이 중복 표시되는 문제도 고쳤다.
+- 실제 기능은 공간 생성, 건의 작성/조회, 진행/완료 상태 변경, 재접속 유지다. 원래 없던 편집·삭제·필터 기능을 구현했다고 주장하지 않는다. API·권한·원래 저장 키·7일 만료 동작은 변경하지 않았다.
+- 현재 검수 빌드는 온라인 backend가 설정되지 않은 로컬 데모다. “보내기” 대신 “메모 남기기”/“Guardar mi idea”로 표시하며 브라우저 전용/다른 기기 공유 불가/7일 보관을 한 번만 안내한다. 온라인 모드의 기존 Papi 전송 문구와 비공개 안내는 보존한다.
+- 관련 4파일/22 tests(페이지 8·core 6·로컬 DB 4·nav 4), TypeScript/Vite/edge build, diffcheck 통과. 새 화면은 1440×900 ES와 1920×1080 KO의 기본 구도 확인 뒤, 중복 안내/버튼 문구 교정 후 1440 ES 한정 재검수에서 실제 메모 생성·안내 1개·저장 버튼 1개를 확인했다.
+- 상단 KO/ES 게임 목록 이동과 `/feedback` 진입, `/feedback`→`/#games` 복귀/ES 유지가 실제 브라우저에서 확인됐다. 최초 복귀 locale assertion은 하네스가 매 문서마다 KO를 강제로 넣어 실패했다. 테스트 초기화만 수정한 한정 확인에서 통과했고 원시 실패는 보존했다.
+- [현재 건의사항 실제 캡처](../review/feedback-journal-current-es.png)는 검수용 예시 메모를 넣은 데모 화면이다. 모바일과 실제 shared-cloud 두 기기 연결은 검수하지 않았다. 기존 로컬 데모를 온라인 공동 게시판 완료로 보고하지 않는다.
 
-## 기록으로 확인되는 원인과 아직 추정인 원인
+## 보존한 이력과 원문 한계
 
-| 분류 | 확인 내용 | 근거 / 한계 |
-|---|---|---|
-| 확인된 판단 오류 | 요청보다 넓게 갤러리 자산·색·배치를 교체하고, 사용자가 좋아한 기준을 바꿨다. | `IMPLEMENTATION-SELF-REVIEW.ko.md`의 총괄 자기 피드백과 갤러리 롤백 기록. |
-| 확인된 판단 오류 | Hero/후반의 전체 스크롤 톤을 먼저 검수하지 않고 밝은 크림 장면을 끼워 넣어 톤 단절을 만들었다. | 같은 self-review가 인정. |
-| 확인된 판단 오류 | 게임 식별성보다 새 조형을 앞세우고 이미 있던 Splendor cover 같은 명확한 자산을 우선하지 않았다. | self-review의 자산 회귀 원인 기록. |
-| 확인된 판단 오류 | 방의 최종 카메라·스케일·화면 점유를 먼저 검수하지 않고 가림/경계를 객체 단위로 반복 수정했다. “빈 상자 안 작은 이미지” 지적은 해결되지 않았다. | self-review의 작은 방/가림 항목. 세부 기술 원인은 그 문서도 미확정으로 둔다. |
-| 확인된 프로세스 공백 | 주요 실제 화면 검수보다 소스/테스트 확인이 앞섰고, self-test나 기능 통과를 시각 결과와 혼동했다. 현재 독립/총괄 시각 FAIL은 통과로 바뀌지 않았다. | PLAN 서두, REVIEW-LIMITATIONS, self-review, 최신 commit 제목의 상태가 일치한다. |
-| 확인된 QA 경계 | 장미 hint action과 장미 4+4가 현재 정적 읽기 프레임에 보이는지는 서로 다른 주장이다. 현재 프레임의 꽃 부재는 보고돼 있다. 16 local action 성공도 전 이벤트 시각 통과가 아니다. | self-review와 PLAN 서두. 보조 영상은 최신 전체 디자인 승인 자료가 아니다. |
-| 확인된 source 경계 | 런타임은 `LandingWorldHost.tsx`에서 `previewSpaceV19`를 동적 import하고 `poseSpaceV19`를 직접 import한다. 현재 V19는 `storySurfaceV19`, `ApprovedGamingRoom`, `stageMotionV19`, `poseSpaceV19` 등을 사용한다. 이전 표가 `curvedReflectionV19`, `floorSupportV19`, `arrivalCoveV15`를 현재 runtime 의존성으로 적은 것은 오래된 코드 기준의 오류였다. | 2026-10-21 현 import graph로 정정했다. 테스트만 연결된 `shellGeometry`·`arrivalCoveV15`와 그 테스트, 후자의 유일 helper `poseSpaceV11`, 호출자 없는 옛 재구성 방 `storyAtriumV19` 등 6개 파일/187줄을 활성 소스에서 제거했다. 현재 Hero 연구 담당도 미사용을 확인했다. 원본 계획·승인 자산·보존 archive·Git 계보는 유지한다. `shellTwist`/`poseSpaceV6`, reflection/floor/threshold는 기존 연구 patch의 의존성이 있어 이번 삭제에서 제외했다. 버전 이름만으로 미적 실패를 단정하지 않는다. |
-| 현재 root의 기술 확인/진행 | `previewSpaceV19`의 room 구간에서 camera billboard/scale 동작은 `.12 < p < .38` 범위에 있고, `p=.27`에서 cosmic surface down/disappear 경계가 있다. root가 이를 수정하고 브라우저 검증 중이라고 전달했다. | source상 위치와 진행 상태의 인계 사실이다. 이 감사자는 해당 변경 diff나 브라우저 결과를 독립 확인하지 않았으며, 이는 단일 원인 판정이 아니다. 수정/브라우저 검증은 root가 계속한다. |
-| 미확인 기술 원인 | S1 공간 전환 불합격, 작은 방, 빈 공간, 표면/캐릭터 가림이 어떤 기술 세부의 결과인지에 대한 단일 원인 판정. | 이 문서 감사범위에서는 현재 영상/브라우저를 재현하지 않았다. 사용자/독립검수 기록의 시각 FAIL과 root가 전달한 진행 중 source 관찰은 함께 남기되, 특정 수치나 코드 경로를 과거 실패의 확정 원인이라고 부르지 않는다. |
+이전 감사 전문은 [16664a0의 불변 Git 이력](https://github.com/da960822-ux/gitactions-main/blob/16664a026ccfd7deb5e9a1e4abf1fa78b4537bdb/docs/redesign-20261018/PROCESS-FAILURE-AUDIT-20261021.ko.md)에 남긴다. 과거 점수/검사 수치를 최신 전체 완료 근거로 재사용하지 않는다. 원래 개발자 지시 0–13 전문은 저장소에서 찾지 못했으며, 보존된 요구 추적표·설계·현재 사용자 지시를 근거로 삼는다. 원문을 복원한 것처럼 쓰지 않는다.
 
-사용자가 이전에 들은 642 테스트 숫자는 이 감사의 디자인 pass 근거가 아니다. 최신 문서에 남은 54 shared + 28 game-client 테스트, 14 backend 검사 및 로컬 두 인증 컨텍스트의 client 2/UI 9는 모두 기술/범위 증거다. 로컬 두 context는 물리 기기 두 대 QA가 아니다. 실제 realtime, 2인·2기기 검수와 cloud deployment는 미완료/미실행으로 분리하며 main 병합·배포도 하지 않았다.
-
-## 중단 프로세스와 다음 검수 게이트
-
-1. **현재 scope 동결:** 이번 감사자가 코드/자산/브라우저를 바꾸지 않는다. Hero 소스는 새 Sol High에게만, 후반은 별도 Sol의 계획 작업에만 맡긴다. `LandingWorldHost` 같은 공유 경계에 동시 수정이 필요하면 먼저 파일 소유자와 변경 경계를 합의한다.
-2. **모순 없는 최신 brief 하나를 기준으로 삼기:** B 정적 구도·기존 사용자 자산·보호 카피/8개 route·섹션 분리·데스크톱 우선·모바일 최후순위를 한 장의 요구사항표로 고정한다. 오래된 A 추천, Gate0 승인 대기, Impeccable Product/Design의 현행성 주장을 새 지시보다 앞세우지 않는다.
-3. **정적 방과 이동 Hero를 별도 검수:** B 정적 구도는 이미 승인된 기준이므로 다시 콘셉트 승인을 요구하지 않는다. 새 구현의 실제 desktop 렌더가 승인된 B의 크기/점유/주인공 배치를 따르는지 먼저 대조한다. 그 뒤에만 Hero 이동의 입장·중간·도착·역행을 검수한다. 계획서 숫자·world 좌표는 후보 설명이며 제품 UX 계약이 아니다. 불합격이면 원인 측정 전 다음 시각 patch를 덧대지 않는다.
-4. **후반은 별도 계획/페이지 검토:** 기존 story, gallery, letter, ending을 기능/원문 보존 경계에 맞춰 따로 설계한다. 피드백은 독립 `/feedback`, 편지는 독립 `#papi-letter`, 게임은 실제 `/play?game=` 목적지로 남긴다. 후반 계획이 승인되기 전 Hero와 합쳐 새 runtime/콘텐츠를 만들지 않는다.
-5. **증거를 분리해 제출:** 각 범위별 실제 browser 원본 캡처/영상, 화면 크기, 언어, route, 입력/역행, 검수자 판정과 미확인을 기록한다. B 수동 검출 결과로 보고된 `src/landing` 13개와 `post-hero-preview` markup 7개 검사에서 finding 0, warning 0은 그 범위의 정적 검사 결과다. 경고 0도 시각 승인/실제 브라우저 pass가 아니다. 빌드/test·정적 코드·기술 profile·렌더된 mockup은 각각 해당 범위로만 표기한다. 불합격 1건은 다음 변경의 시작점이지 평균점수로 상쇄할 항목이 아니다.
-6. **스킬 사용을 증명:** 사용 시점/읽은 SKILL 경로·버전, 특정 디자인/동작 결정에 적용한 문장, 결과 source, 실제 검수 artifact를 연결한다. Impeccable critique와 technical audit를 실행했다면 출력 파일을 남기고, motion은 `review-animations`, 성능은 계측 결과로 분리한다. 스킬 언급만 있는 기존 계획을 실행 기록으로 바꾸지 않는다.
-7. **합격 전 확장 금지:** 새로운 아트 변형, asset generation, 페이지/기능 확장, 모바일 마감은 desktop scope의 독립 시각 승인 뒤 진행한다. 인증 공동 기능은 backend 검사와 분리해 실제 두 사용자의 두 기기 검수 뒤에만 사용 가능으로 표시한다. main 병합/배포는 별도 사용자 승인이 필요하다.
-
-**확인하지 않은 것:** 원시 사용자 프롬프트 전체, 현재 video playback, 현재 브라우저 재현, V1–V19 전 파일별 픽셀 비교, 과거 각 skill invocation log. 남은 위험은 미확인 렌더 원인을 사실처럼 적지 않고, 후속 owner가 범위별 실제 화면에서 확인해야 한다는 점이다.
-
-## 역사 기록과 현재 적용 원칙
-
-`f12c25d` 시점의 전체 추가 감사와 개별 v6–v13 연구 chronology는 [Git history copy](https://github.com/da960822-ux/gitactions-main/blob/f12c25d9e2b45c178abe359aa66575a957af6967/docs/redesign-20261018/PROCESS-FAILURE-AUDIT-20261021.ko.md)에 보존한다. 이 문서는 그 긴 반복을 복제하지 않고, 현재 적용되는 판정과 경계만 유지한다. 과거 문단의 owner, source checkpoint, test 수치는 당시 상태다.
-
-과거 시도에서 반복 확인된 교훈은 세 가지다. 승인 B는 도착 프레이밍과 인물 정체성을 보호하지만 특정 좌표·카메라·hinge 해결책을 강제하지 않는다. 테스트 통과와 정착 endpoint는 중간 화면의 시각 품질이나 연속 motion 증거가 아니다. 실패 뒤에는 같은 owner에게 실제 관찰 프레임과 잘못된 prompt 전제를 전달해 수정하며, 실패 횟수만으로 owner를 교체하지 않는다. 현재 제약은 [Hero brief](HERO-REVISION-BRIEF-20261021.ko.md), 요구·행동 범위는 [post-Hero plan](POST-HERO-REPLAN-20261021.ko.md), 공유 카메라/최종 연속 영상·성능 검수는 root가 소유한다.
-
-초기 개발자 지시 0–13 원문은 저장소에서 찾지 못했다. 보존된 요구 추적표·기술 설계·현재 사용자 지시를 근거로 삼으며, 누락 원문을 복원한 것처럼 쓰지 않는다. 모바일은 이번 요청 범위 밖이고 완료 gate가 아니다. 최종 연속 영상과 software 성능 결과는 위 현재 상태에 반영했으며 actual GPU 성능은 미확인이다.
+동일 타깃의 이전 점수 15/28 → 이번 19/32는 평가 항목 집합이 달라 단순 향상으로 비교하지 않는다. 핵심 스토리·카메라는 이번 비평으로 변경하지 않았으며 수정 제안 상태다. main 병합·배포는 하지 않는다.
