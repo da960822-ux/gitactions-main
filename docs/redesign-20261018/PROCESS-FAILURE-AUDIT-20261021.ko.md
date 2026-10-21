@@ -153,3 +153,5 @@ Chromium headless ANGLE SwiftShader, ES1440×900/KO1920×1080: 각각7그룹 검
 재현: production preview5174에서 `node scripts/verify-taste-refinement.mjs`, Taste `scripts/inspect.mjs http://127.0.0.1:5174/ --widths 1440 --out output/current-review/taste-refinement/after`. 전체 결과는 [전후 원시 보고서](../review/taste-refinement-report.json), [게임 선택](../review/taste-gallery-es.png), [새 설명](../review/taste-birds-es.png), [실제 서명이 남은 계약서](../review/taste-signature-es.png)에 남겼다.
 
 검증: 최종 production build/TypeScript 검사, 랜딩24파일95테스트, diff 공백 검사 통과. 최종 캡처에서 발견한 계약서 한글 단어 중간 줄바꿈도 keep-all로 바로잡았다. 기존 bundle 크기 경고는 남아 있으며 이를 성능 개선 완료로 보고하지 않는다.
+
+Taste 제품 소스 `114b30070c61984e396c5a06a1037eee26dafe3d`를 기존 Hero 브랜치에 normal push했다. 비공개 검수 사이트는 static 미러 `f2a8f0fc68da372f7c108cb7d1441f5eeff00a3b`에서 배포했으며 `appgdep_6ad8da0b9f18819199a43d40527ea0db` / 버전 `appgprj_6ad8bbe1b3248191a1456e8672ffbfbe~appgver_5670194336bc81919019eed0106056f5`가 2026-10-21 15:28:29 UTC에 native succeeded를 반환했다. 기존 검수 URL과 owner-only audience를 보존했다. 이 후속 기록 커밋은 제품 파일을 변경하지 않는다.
