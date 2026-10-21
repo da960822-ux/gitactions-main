@@ -6,6 +6,7 @@ import Details from './Details';
 import SharedEventsPanel from './SharedEventsPanel';
 import {StoryChapters} from './StoryChapters';
 import {EndingChapter} from './EndingChapter';
+import {preloadRoseGiftArt} from './RoseGiftFinale';
 import {PartnerPact} from './PartnerPact';
 import {createLetterFinaleState,reduceLetterFinale,type LetterFinaleEvent} from '../../src/landing/letterFinaleState';
 import type {SharedEventId,SharedEventRound} from '../../src/core/sharedEventsState';
@@ -36,6 +37,7 @@ export function PostHeroPreview({embedded=false,language:externalLanguage,onLang
  const [sharedEvent,setSharedEvent]=useState<{id:SharedEventId;region:DetailRegion}|null>(null);
  const [roseHintOpen,setRoseHintOpen]=useState(false);
  const [letterFinale,setLetterFinale]=useState(createLetterFinaleState);
+ useEffect(()=>{if(letterFinale.phase==='reading')void preloadRoseGiftArt();},[letterFinale.phase]);
  const finale=useRef(letterFinale);
  const [pactAccepted,setPactAccepted]=useState(false);
  const [letterClosingRect,setLetterClosingRect]=useState<{left:number;top:number;width:number;height:number}>();

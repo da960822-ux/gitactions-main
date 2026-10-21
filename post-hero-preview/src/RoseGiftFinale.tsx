@@ -3,6 +3,19 @@ import gsap from 'gsap';
 import './rose-gift-finale.css';
 
 const original='/images/rose-gift/received.png',offering='/images/rose-gift/offer.png',body='/images/rose-gift/body-clean.png',flower='/images/rose-gift/rose-single.png';
+let roseGiftArtPreload:Promise<void>|null=null;
+export function preloadRoseGiftArt():Promise<void>{
+ if(typeof Image==='undefined')return Promise.resolve();
+ if(!roseGiftArtPreload)roseGiftArtPreload=Promise.all([original,offering,body,flower].map(src=>new Promise<void>(resolve=>{
+  try{
+   const image=new Image(),finish=()=>resolve();
+   image.onload=finish;image.onerror=finish;image.src=src;
+   if(typeof image.decode==='function')void image.decode().then(finish,finish);
+   else if(image.complete)finish();
+  }catch{resolve();}
+ }))).then(()=>undefined);
+ return roseGiftArtPreload;
+}
 const DURATION=3,TRANSFER=1.5,FLOWER_SCALE=.19;
 type Point={x:number;y:number};
 const turn=(point:Point,pivot:Point,degrees:number):Point=>{const angle=degrees*Math.PI/180,c=Math.cos(angle),s=Math.sin(angle),x=point.x-pivot.x,y=point.y-pivot.y;return{x:pivot.x+x*c-y*s,y:pivot.y+x*s+y*c};};

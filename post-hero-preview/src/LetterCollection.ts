@@ -114,7 +114,10 @@ export function createLetterCollection(options:{scene:THREE.Scene;camera:THREE.P
   seal.scale.setScalar(1);
   const domReading=Boolean(frame.onPaperPose)&&q>LETTER_UNFOLDED&&frame.progress>=.62;
   // Move the shell below the viewport while its insert hands the same paper to the DOM.
-  shell.position.y=desktop&&frame.onPaperPose?-4*ease(.9,1,q):0;
+  // During a close the camera must contain the sheet before the shell returns beneath it.
+  // Reusing the opening's .9→1 retreat brought the full open envelope back at reader scale.
+  const shellRetirement=frame.letterView==='folding'?ease(.35,.65,q):ease(.9,1,q);
+  shell.position.y=desktop&&frame.onPaperPose?-4*shellRetirement:0;
   insert.visible=!domReading&&(!desktop||q>.36);
       flap.rotation.x=-ease(.12,.36,q)*THREE.MathUtils.degToRad(165);
       seal.position.y=.48-ease(.12,.34,q)*.35;

@@ -23,3 +23,13 @@ it('begins with the registered reader and frames the closed envelope inside the 
   expect(Math.abs(point.x)).toBeLessThan(.4);expect(Math.abs(point.y)).toBeLessThan(.5);
  }
 });
+
+for(const [width,height]of [[1440,900],[1920,1080]])it(`contains the whole extracted sheet at the physical handoff, ${width}×${height}`,()=>{
+ const rect={left:(width-740)/2,top:-380,width:740,height:620};
+ const pose=letterFoldView(width,height,rect,.86),camera=new THREE.PerspectiveCamera(pose.fov,width/height,.1,400);
+ camera.position.fromArray(pose.eye);camera.lookAt(new THREE.Vector3().fromArray(pose.target));camera.updateMatrixWorld(true);
+ for(const [x,z]of [[6.32,-2.8-.88*620/740],[8.08,-2.8+.88*620/740]]){
+  const point=new THREE.Vector3(x,.163,z).project(camera);
+  expect(Math.abs(point.x)).toBeLessThan(.8);expect(Math.abs(point.y)).toBeLessThan(.98);
+ }
+});
