@@ -1,4 +1,4 @@
-import {useEffect,useId,useRef,useState} from 'react';
+import {useEffect,useId,useLayoutEffect,useRef,useState} from 'react';
 import {motion,useReducedMotion} from 'motion/react';
 import gsap from 'gsap';
 import './partner-pact.css';
@@ -12,21 +12,25 @@ export function persistPactResponse(accepted:boolean){
 
 export function PartnerPact({language}:{language:'ko'|'es'}){
  const ko=language==='ko',panelId=useId(),titleId=useId(),reduced=useReducedMotion();
- const opener=useRef<HTMLButtonElement>(null),answerButton=useRef<HTMLButtonElement>(null),paper=useRef<HTMLElement>(null),title=useRef<HTMLHeadingElement>(null),animateOpening=useRef(false);
+ const opener=useRef<HTMLButtonElement>(null),answerButton=useRef<HTMLButtonElement>(null),paper=useRef<HTMLElement>(null),title=useRef<HTMLHeadingElement>(null),animateOpening=useRef(false),previousOpen=useRef(false);
  const [open,setOpen]=useState(false),[accepted,setAccepted]=useState(false),[pressed,setPressed]=useState(false),[imageFailed,setImageFailed]=useState(false),[storageIssue,setStorageIssue]=useState<'read'|'save'|'reset'|null>(null);
  const readResponse=()=>{try{setAccepted(localStorage.getItem(responseKey)==='yes');setStorageIssue(null);}catch{setStorageIssue('read');}};
  useEffect(()=>{readResponse();},[]);
+ useLayoutEffect(()=>{
+  if(open)title.current?.focus({preventScroll:true});
+  else if(previousOpen.current)opener.current?.focus({preventScroll:true});
+  previousOpen.current=open;
+ },[open]);
  useEffect(()=>{
   if(!open||!paper.current)return;
   paper.current.scrollTop=0;
-  const focus=()=>title.current?.focus({preventScroll:true});
-  if(reduced||!animateOpening.current){focus();return;}
-  const tween=gsap.fromTo(paper.current,{opacity:.65,rotationX:-9,y:12,clipPath:'inset(0 0 88% 0)'},{opacity:1,rotationX:0,y:0,clipPath:'inset(0 0 0% 0)',duration:.48,ease:'power3.out',onComplete:focus});
+  if(reduced||!animateOpening.current)return;
+  const tween=gsap.fromTo(paper.current,{opacity:.65,rotationX:-9,y:12,clipPath:'inset(0 0 88% 0)'},{opacity:1,rotationX:0,y:0,clipPath:'inset(0 0 0% 0)',duration:.48,ease:'power3.out'});
   return()=>{tween.revert();};
  },[open,reduced]);
- const close=()=>{setOpen(false);setPressed(false);requestAnimationFrame(()=>opener.current?.focus({preventScroll:true}));};
+ const close=()=>{setOpen(false);setPressed(false);};
  const answer=()=>{setAccepted(true);setStorageIssue(persistPactResponse(true)?null:'save');};
- const reset=()=>{setAccepted(false);setStorageIssue(persistPactResponse(false)?null:'reset');requestAnimationFrame(()=>answerButton.current?.focus({preventScroll:true}));};
+ const reset=()=>{answerButton.current?.focus({preventScroll:true});setAccepted(false);setStorageIssue(persistPactResponse(false)?null:'reset');};
  const retry=()=>{if(storageIssue==='read')readResponse();else if(storageIssue==='save')answer();else reset();};
  return <div className="partner-pact" data-open={open}>
   <motion.button ref={opener} type="button" className="pp-dolls" hidden={open} aria-expanded={open} aria-controls={panelId} aria-label={ko?'인형과 우리의 약속 열기':'Abrir nuestro pacto con las figuras'} initial={false} animate={{transform:pressed&&!reduced?'scale(.97)':'scale(1)'}} transition={{type:'spring',stiffness:450,damping:32,mass:.6}} onPointerDown={event=>{if(event.pointerType==='mouse'&&!reduced)setPressed(true);}} onPointerUp={()=>setPressed(false)} onPointerLeave={()=>setPressed(false)} onPointerCancel={()=>setPressed(false)} onBlur={()=>setPressed(false)} onClick={event=>{animateOpening.current=event.detail>0;setPressed(false);setOpen(true);}}>
