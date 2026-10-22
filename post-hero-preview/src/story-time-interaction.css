@@ -1,25 +1,24 @@
 .post-hero-preview .story-time-interaction{min-width:0;align-self:center}
-.post-hero-preview .story-time-interaction .story-live-label{margin:0 0 22px;color:#d3b7bb;font-size:13px;line-height:1.6}
-.post-hero-preview .story-time-interaction .story-live-clocks{display:grid;grid-template-columns:1fr 1fr;gap:32px}
+.post-hero-preview .story-time-interaction .story-live-label{margin:0 0 20px;color:#d3b7bb;font-size:14px;line-height:1.6}
+.post-hero-preview .story-time-interaction .story-live-clocks{display:grid;grid-template-columns:1fr 1fr;gap:24px}
 .post-hero-preview .story-time-interaction .story-live-clocks>div{display:flex;flex-direction:column;align-items:flex-start;min-width:0}
 .post-hero-preview .story-time-interaction .story-live-clocks span{font-size:15px;line-height:1.5;color:#dfbbaa}
-.post-hero-preview .story-time-interaction .story-live-clocks time{margin:10px 0 7px;font:400 clamp(45px,4.2vw,80px)/1.1 'DM Sans',sans-serif;letter-spacing:-.04em;font-variant-numeric:tabular-nums;color:#faeee6}
+.post-hero-preview .story-time-interaction .story-live-clocks time{margin:10px 0 7px;font:400 clamp(40px,3.6vw,68px)/1.1 'DM Sans',sans-serif;letter-spacing:-.04em;font-variant-numeric:tabular-nums;color:#faeee6}
 .post-hero-preview .story-time-interaction .story-live-clocks small{font-size:13px;line-height:1.5;color:#c9aab4}
-.post-hero-preview .story-time-interaction .story-hour-picker{margin-top:40px;padding-top:23px;border-top:1px solid #a5737f66}
-.post-hero-preview .story-time-interaction .story-hour-picker label{display:block;font-size:14px;line-height:1.6;color:#e9c9b9}
-.post-hero-preview .story-time-interaction .story-preview-skies{display:grid;grid-template-columns:1fr 1fr;gap:32px;margin:10px 0 -12px}
-.post-hero-preview .story-time-interaction .story-time-sky{display:block;width:100%;height:auto;overflow:visible;touch-action:pan-y;fill:none;stroke:none;stroke-width:0}
-.post-hero-preview .story-time-interaction .story-time-sky ellipse{stroke:none;stroke-width:0}
-.post-hero-preview .story-time-interaction .story-sky-clip{fill:#fff;stroke:none}
-.post-hero-preview .story-time-interaction .story-sky-sun{fill:#f1c594;stroke:none}
-.post-hero-preview .story-time-interaction .story-sky-moon{fill:#d6d9e9;stroke:none}
-.post-hero-preview .story-time-interaction .story-sky-sun-rim{fill:none;stroke:#e3af86;stroke-opacity:.2;stroke-width:.8}
-.post-hero-preview .story-time-interaction .story-sky-guide{fill:none;stroke:#cba8ad;stroke-opacity:.15;stroke-width:.7}
-.post-hero-preview .story-time-interaction .story-sky-horizon{fill:none;stroke:#d7a18f;stroke-opacity:.5;stroke-width:.8}
-.post-hero-preview .story-time-interaction .story-sky-reflection{fill:none;stroke:#d7a18f;stroke-opacity:.12;stroke-width:.7}
-.post-hero-preview .story-time-interaction .story-hour-picker input{display:block;width:100%;height:44px;margin:4px 0 14px;accent-color:#c57d98;cursor:pointer}
+.post-hero-preview .story-time-interaction .story-hour-picker{margin-top:32px}
+.post-hero-preview .story-time-interaction .story-hour-picker label{display:block;font-size:16px;line-height:1.6;color:#e9c9b9}
+.post-hero-preview .story-time-interaction .story-preview-skies{display:grid;grid-template-columns:1fr 1fr;gap:24px;margin:20px 0 12px}
+.post-hero-preview .story-time-interaction .story-time-city{min-width:0;margin:0}
+.post-hero-preview .story-time-interaction .story-time-city-art{position:relative;aspect-ratio:1;background-image:url('/images/story/city-windows.png');background-size:200% 100%;background-position:left center;overflow:clip}
+.post-hero-preview .story-time-interaction .story-time-city[data-city=santo-domingo] .story-time-city-art{background-position:right center}
+.post-hero-preview .story-time-interaction .story-city-night,.post-hero-preview .story-time-interaction .story-city-day{position:absolute;inset:0;pointer-events:none}
+.post-hero-preview .story-time-interaction .story-city-night{background:#171324;mix-blend-mode:multiply}
+.post-hero-preview .story-time-interaction .story-city-day{background:#f1c594;mix-blend-mode:screen}
+.post-hero-preview .story-time-interaction .story-time-city figcaption{display:flex;align-items:center;gap:8px;margin-top:12px;color:#e9c9b9;font-size:14px;line-height:1.6}
+.post-hero-preview .story-time-interaction .story-time-city figcaption svg{display:block;width:20px;height:20px;flex:none;fill:none;stroke:currentColor;stroke-width:1.4;stroke-linecap:round;stroke-linejoin:round}
+.post-hero-preview .story-time-interaction .story-hour-picker input{display:block;width:100%;height:44px;margin:4px 0 12px;accent-color:#c57d98;cursor:pointer}
 .post-hero-preview .story-time-interaction .story-hour-picker input:focus-visible{outline:2px solid #efb7ca;outline-offset:4px}
-.post-hero-preview .story-time-interaction .story-hour-picker output{display:grid;grid-template-columns:1fr 1fr;gap:32px;justify-content:normal;font-size:16px;line-height:1.5;font-variant-numeric:tabular-nums;color:#f0d9cc}
-.post-hero-preview .story-time-interaction .story-hour-picker output small{display:block;margin-top:5px;font-size:12px;line-height:1.5;color:#c7a6b2}
-@media(max-width:1000px){.post-hero-preview .story-time-interaction .story-live-clocks,.post-hero-preview .story-time-interaction .story-preview-skies,.post-hero-preview .story-time-interaction .story-hour-picker output{gap:20px}.post-hero-preview .story-time-interaction .story-live-clocks time{font-size:clamp(36px,4.2vw,60px)}}
-@media(max-width:600px){.post-hero-preview .story-time-interaction .story-live-clocks,.post-hero-preview .story-time-interaction .story-preview-skies,.post-hero-preview .story-time-interaction .story-hour-picker output{gap:16px}.post-hero-preview .story-time-interaction .story-live-clocks time{font-size:clamp(32px,8vw,48px)}.post-hero-preview .story-time-interaction .story-hour-picker{margin-top:32px}.post-hero-preview .story-time-interaction .story-hour-picker output{font-size:15px}}
+.post-hero-preview .story-time-interaction .story-hour-picker output{display:grid;grid-template-columns:1fr 1fr;gap:24px;justify-content:normal;font-size:16px;line-height:1.5;font-variant-numeric:tabular-nums;color:#f0d9cc}
+.post-hero-preview .story-time-interaction .story-hour-picker output small{display:block;margin-top:5px;font-size:13px;line-height:1.5;color:#c7a6b2}
+@media(max-width:1000px){.post-hero-preview .story-time-interaction .story-live-clocks,.post-hero-preview .story-time-interaction .story-preview-skies,.post-hero-preview .story-time-interaction .story-hour-picker output{gap:20px}.post-hero-preview .story-time-interaction .story-live-clocks time{font-size:clamp(36px,5vw,60px)}}
+@media(max-width:600px){.post-hero-preview .story-time-interaction .story-live-clocks,.post-hero-preview .story-time-interaction .story-preview-skies,.post-hero-preview .story-time-interaction .story-hour-picker output{gap:16px}.post-hero-preview .story-time-interaction .story-live-clocks time{font-size:clamp(32px,8vw,48px)}.post-hero-preview .story-time-interaction .story-hour-picker output{font-size:15px}.post-hero-preview .story-time-interaction .story-time-city figcaption{font-size:13px}}

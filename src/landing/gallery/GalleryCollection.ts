@@ -53,12 +53,13 @@ export function createGalleryCollection(onAssetReady = () => {}) {
         const chosen = gameCatalog[index].id === selected;
         const angle=index/8*Math.PI*2;
         const representative=focus>0?T.MathUtils.lerp(mobile?1.9:2.1,2.5,focus):mobile?1.9:2.6;
-        const scale=chosen?representative:(!mobile&&focus===0&&index>0&&index<4)?0.65:0.45;
+        const scale=chosen?representative:!mobile&&focus===0?.7:.45;
         const pitched=!mobile&&focus===0;
-        const depth=pitched?.3-Math.sin(angle)*2.7:-3.2;
-        // Match the desktop camera's perspective to keep the nearer arc inside the vertical stage.
-        const orbitPerspective=pitched?(9.6-depth)/12.8:1;
-        target.set(chosen?5.1*focus:Math.cos(angle)*(mobile?3.35:5.8),chosen?0:Math.sin(angle)*(pitched?3.25:3.8)*orbitPerspective,chosen?T.MathUtils.lerp(1.3,7.5,focus):depth);
+        const depth=pitched?-1.6-Math.sin(angle)*.8:-3.2;
+        // Adapted from ThreeUI Community filmstrip focus/depth staging; keep peers beside the selected silhouette.
+        const peerRadius=mobile&&focus===0?3.35+1.6*Math.abs(Math.sin(angle)):mobile?3.35:5.8;
+        const peerX=pitched?Math.sign(Math.cos(angle))*(4.6+1.9*Math.abs(Math.cos(angle))):Math.cos(angle)*peerRadius;
+        target.set(chosen?5.1*focus:peerX,chosen?0:Math.sin(angle)*(pitched?2.4:3.8),chosen?T.MathUtils.lerp(1.3,7.5,focus):depth);
         if(!paused&&focus>0)target.y+=Math.sin(time*.7+index)*.055*(1-focus);
         if(!chosen)target.y-=10*focus;
         const game=gameCatalog[index].id;

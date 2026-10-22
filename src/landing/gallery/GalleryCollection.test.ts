@@ -93,40 +93,35 @@ it('clears the outgoing representative before enlarging the next, settles, and i
  }finally{collection.dispose();}
 });
 
-it('fits the enlarged desktop representative and orbit while preserving mobile and story geometry',()=>{
+it('keeps every desktop peer recognizable and clear of the selected silhouette, preserving story geometry',()=>{
  vi.spyOn(T.TextureLoader.prototype,'load').mockImplementation(()=>new T.Texture());
  vi.stubGlobal('document',{createElement:()=>({width:0,height:0,getContext:()=>({fillText(){},fillRect(){},strokeRect(){},save(){},restore(){},translate(){},rotate(){}})})});
  const collection=createGalleryCollection(),camera=new T.PerspectiveCamera(38,1267.21875/432,.1,50);
  camera.position.z=9.6;camera.updateMatrixWorld(true);
  try{
-  for(const height of [432,518.4])for(const selected of gameCatalog)for(const time of [0,2,5,10]){
+  for(const height of [432,518.4])for(const selected of gameCatalog)for(const corner of [null,[-1,-1],[-1,1],[1,-1],[1,1]]){
    camera.aspect=(height===432?1267.21875:1689.6)/height;camera.updateProjectionMatrix();
-   collection.update({selected:selected.id,time,paused:false,snap:true});
-   for(const [index,group] of collection.root.children.entries()){
+   collection.update({selected:selected.id,time:0,paused:false,snap:true,hovered:corner?{id:selected.id,x:corner[0],y:corner[1]}:null});
+   const bounds=[];
+   for(const group of collection.root.children){
     const chosen=group.userData.game===selected.id;
-    expect(group.scale.x).toBeCloseTo(chosen?2.6:(index>0&&index<4?0.65:0.45));
-    if(chosen){expect(group.position.x).toBeCloseTo(0);expect(group.position.z).toBeCloseTo(1.3);}
+    if(chosen){expect(group.scale.x).toBeCloseTo(2.6);expect(group.position.x).toBeCloseTo(0);expect(group.position.z).toBeCloseTo(1.3);}
     const box=new T.Box3().setFromObject(group);
-    let projectedMinY=Infinity,projectedMaxY=-Infinity;
+    let left=Infinity,right=-Infinity,top=Infinity,bottom=-Infinity;
     for(const x of [box.min.x,box.max.x])for(const y of [box.min.y,box.max.y])for(const z of [box.min.z,box.max.z]){
      const point=new T.Vector3(x,y,z).project(camera);
      expect(Math.abs(point.x)).toBeLessThan(1);
      expect(Math.abs(point.y)).toBeLessThan(1);
-     projectedMinY=Math.min(projectedMinY,point.y);
-     projectedMaxY=Math.max(projectedMaxY,point.y);
+     left=Math.min(left,(point.x+1)*camera.aspect*height/2);right=Math.max(right,(point.x+1)*camera.aspect*height/2);
+     top=Math.min(top,(1-point.y)*height/2);bottom=Math.max(bottom,(1-point.y)*height/2);
     }
-    if(chosen&&selected.id==='domino')expect((projectedMaxY-projectedMinY)*height/2).toBeGreaterThan(300);
-    if(index>0&&index<4&&!chosen)expect((projectedMaxY-projectedMinY)*height/2).toBeGreaterThanOrEqual(42);
+    bounds.push({id:group.userData.game,left,right,top,bottom});
+    if(chosen&&selected.id==='domino')expect(bottom-top).toBeGreaterThan(300);
+    if(!chosen)expect(bottom-top).toBeGreaterThanOrEqual(42);
    }
+   const chosen=bounds.find(bound=>bound.id===selected.id)!;
+   for(const peer of bounds.filter(bound=>bound!==chosen))expect(Math.max(peer.left-chosen.right,chosen.left-peer.right,peer.top-chosen.bottom,chosen.top-peer.bottom),`${selected.id}/${peer.id} clearance`).toBeGreaterThanOrEqual(16);
   }
-  collection.update({selected:'domino',time:0,paused:true,snap:true,mobile:true});
-  collection.root.children.forEach((group,index)=>{
-   const chosen=group.userData.game==='domino',angle=index/8*Math.PI*2;
-   expect(group.scale.x).toBeCloseTo(chosen?1.9:.45);
-   expect(group.position.x).toBeCloseTo(chosen?0:Math.cos(angle)*3.35);
-   expect(group.position.y).toBeCloseTo(chosen?0:Math.sin(angle)*3.8);
-   expect(group.position.z).toBeCloseTo(chosen?1.3:-3.2);
-  });
   collection.update({selected:'domino',time:0,paused:true,snap:true,storyFocus:.5});
   collection.root.children.forEach((group,index)=>{
    const chosen=group.userData.game==='domino',angle=index/8*Math.PI*2;
@@ -134,5 +129,30 @@ it('fits the enlarged desktop representative and orbit while preserving mobile a
    expect(group.position.x).toBeCloseTo(chosen?2.55:Math.cos(angle)*5.8);
    expect(group.position.z).toBeCloseTo(chosen?4.4:-3.2);
   });
+ }finally{collection.dispose();}
+});
+
+it('fits all eight mobile choices around the large representative without diagonal collisions',()=>{
+ vi.spyOn(T.TextureLoader.prototype,'load').mockImplementation(()=>new T.Texture());
+ vi.stubGlobal('document',{createElement:()=>({width:0,height:0,getContext:()=>({fillText(){},fillRect(){},strokeRect(){},save(){},restore(){},translate(){},rotate(){}})})});
+ const collection=createGalleryCollection(),camera=new T.PerspectiveCamera(38,351/400,.1,50);
+ camera.position.z=10.2;camera.updateMatrixWorld(true);
+ try{
+  for(const selected of gameCatalog){
+   collection.update({selected:selected.id,time:0,paused:true,snap:true,mobile:true});
+   const bounds=collection.root.children.map(group=>{
+    const box=new T.Box3().setFromObject(group);let left=Infinity,right=-Infinity,top=Infinity,bottom=-Infinity;
+    for(const x of [box.min.x,box.max.x])for(const y of [box.min.y,box.max.y])for(const z of [box.min.z,box.max.z]){
+     const point=new T.Vector3(x,y,z).project(camera);
+     expect(Math.abs(point.x)).toBeLessThan(1);expect(Math.abs(point.y)).toBeLessThan(1);
+     left=Math.min(left,(point.x+1)*351/2);right=Math.max(right,(point.x+1)*351/2);
+     top=Math.min(top,(1-point.y)*400/2);bottom=Math.max(bottom,(1-point.y)*400/2);
+    }
+    return {id:group.userData.game,left,right,top,bottom};
+   });
+   const chosen=bounds.find(bound=>bound.id===selected.id)!;
+   expect(collection.root.children.find(group=>group.userData.game===selected.id)!.scale.x).toBe(1.9);
+   for(const peer of bounds.filter(bound=>bound!==chosen))expect(Math.max(peer.left-chosen.right,chosen.left-peer.right,peer.top-chosen.bottom,chosen.top-peer.bottom),`${selected.id}/${peer.id} mobile clearance`).toBeGreaterThanOrEqual(12);
+  }
  }finally{collection.dispose();}
 });

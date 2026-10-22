@@ -1,8 +1,10 @@
 import {expect,it,vi} from 'vitest';
 import * as T from 'three';
 import {createHeroRoomJourney} from './heroRoomJourney';
+import {heroContain,heroWorldProjection} from './initialCosmicHero';
 
 it('preserves canonical B framing and reversible poses without owning B resources, including disposal before ready',async()=>{
+ const motionPreference={matches:false};vi.stubGlobal('matchMedia',()=>motionPreference);
  const textureDisposals:ReturnType<typeof vi.fn>[]=[];
  const load=vi.spyOn(T.TextureLoader.prototype,'loadAsync').mockImplementation(async()=>{
   const texture=new T.Texture<HTMLImageElement>(),disposed=vi.fn();
@@ -32,93 +34,134 @@ it('preserves canonical B framing and reversible poses without owning B resource
  };
  try{
   await journey.ready;
-  expect(material.stencilWrite).toBe(true);expect(material.stencilFunc).toBe(T.EqualStencilFunc);
+  expect(material).toMatchObject(originalStencil);
   arrival(1920,1080);
-  journey.update(.12,camera);expect(camera.fov).toBe(48);
   journey.update(.42,camera);const outbound=cameraState();
   for(const progress of[1,.3,.42])journey.update(progress,camera);
   expect(cameraState()).toEqual(outbound);
 
-  const roof=scene.getObjectByName('AUTHORED_SHALLOW_CEILING_CONNECTION') as T.Mesh<T.PlaneGeometry>;
+  const surface=scene.getObjectByName('INDEXED_COSMIC_DEPARTURE_SURFACE') as T.Mesh<T.PlaneGeometry>;
+  const portrait=scene.getObjectByName('RIGID_APPROVED_PORTRAIT') as T.Mesh<T.PlaneGeometry>;
+  const portraitVertices=Array.from(portrait.geometry.getAttribute('position').array);
+  const portraitRestMatrix=portrait.matrix.clone();
   journey.update(0,camera);
-  const roofRest=Array.from(roof.geometry.getAttribute('position').array),normalRest=Array.from(roof.geometry.getAttribute('normal').array);
-  expect(roof.geometry.getAttribute('position').count).toBeGreaterThan(100);
-  journey.update(.35,camera);
-  const bent=Array.from(roof.geometry.getAttribute('position').array),bentNormals=Array.from(roof.geometry.getAttribute('normal').array),uv=roof.geometry.getAttribute('uv');
-  expect(camera.userData.heroCeiling.maxVertexDrop).toBeGreaterThan(.5);
-  expect(camera.userData.heroCeiling.maxNormalDelta).toBeGreaterThan(.1);
-  expect(camera.userData.heroCeiling.baseClearance).toBeGreaterThan(0);
-  for(let i=0;i<uv.count;i++){
-   expect(bent[i*3]).toBe(roofRest[i*3]);expect(bent[i*3+2]).toBe(roofRest[i*3+2]);
-   expect(bent[i*3+1]).toBeLessThanOrEqual(roofRest[i*3+1]);
-   if(uv.getX(i)===0||uv.getX(i)===3||uv.getY(i)===0||uv.getY(i)===3)expect(bent[i*3+1]).toBe(roofRest[i*3+1]);
+  const rest=Array.from(surface.geometry.getAttribute('position').array),uv=Array.from(surface.geometry.getAttribute('uv').array),startEye=camera.position.clone();
+  expect(surface.geometry.index).not.toBeNull();expect(surface.geometry.getAttribute('position').count).toBeGreaterThan(1000);
+  // The outgoing source has the exact old cover projection, re-registered close to B.
+  const positions=surface.geometry.getAttribute('position');
+  for(const i of[68,41*67+65]){
+   const projected=new T.Vector3().fromBufferAttribute(positions,i).applyMatrix4(surface.matrixWorld).project(camera);
+   expect(Math.abs(projected.x)).toBeCloseTo(1,6);expect(Math.abs(projected.y)).toBeCloseTo((1920/1080)/1.5,6);
   }
-  journey.update(.68,camera);expect(Array.from(roof.geometry.getAttribute('position').array)).toEqual(roofRest);
-  journey.update(.35,camera);expect(Array.from(roof.geometry.getAttribute('position').array)).toEqual(bent);expect(Array.from(roof.geometry.getAttribute('normal').array)).toEqual(bentNormals);
-  journey.update(1,camera);expect(Array.from(roof.geometry.getAttribute('position').array)).toEqual(roofRest);expect(Array.from(roof.geometry.getAttribute('normal').array)).toEqual(normalRest);
-  journey.update(.42,camera);expect(cameraState()).toEqual(outbound);
+  for(const p of[.12,.2]){
+   journey.update(p,camera);if(p<.18)expect(Array.from(positions.array)).toEqual(rest);
+   expect((portrait.material as T.MeshBasicMaterial).opacity).toBe(1);expect(portrait.parent!.position.toArray()).toEqual([0,0,0]);expect(portrait.parent!.scale.toArray()).toEqual([1,1,1]);
+  }
+  journey.update(.24,camera);const handoffPosition=portrait.parent!.position.clone();
+  expect((portrait.material as T.MeshBasicMaterial).opacity).toBeCloseTo(.5,10);expect(handoffPosition.length()).toBeGreaterThan(0);
+  journey.update(.3,camera);expect((portrait.material as T.MeshBasicMaterial).opacity).toBe(0);
+  journey.update(.24,camera);expect(portrait.parent!.position).toEqual(handoffPosition);expect((portrait.material as T.MeshBasicMaterial).opacity).toBeCloseTo(.5,10);
+  journey.update(.28,camera);
+  const bent=Array.from(positions.array),normal=Array.from(surface.geometry.getAttribute('normal').array);
+  expect(camera.userData.heroSurface.maxVertexDisplacement).toBeCloseTo(.30,10);
+  expect(camera.userData.heroSurface.bend).toBeGreaterThan(.2);
+  expect(Array.from(surface.geometry.getAttribute('uv').array)).toEqual(uv);
+  expect((surface.material as T.MeshBasicMaterial).opacity).toBe(1);
+  const sourceUV=surface.geometry.getAttribute('uv');
+  for(let i=0;i<positions.count;i++){
+   expect(positions.getX(i)).toBe(rest[i*3]);expect(positions.getY(i)).toBe(rest[i*3+1]);
+   if(sourceUV.getX(i)===0||sourceUV.getX(i)===1||sourceUV.getY(i)===0||sourceUV.getY(i)===1)expect(positions.getZ(i)).toBe(rest[i*3+2]);
+  }
+  journey.update(.35,camera);expect((surface.material as T.MeshBasicMaterial).opacity).toBeCloseTo(.5,10);
 
-  // Sample complete protected source regions, not only face centers. The actual lowered
-  // roof must leave their visible camera-to-B segments clear at either desktop aspect.
-  const protectedSourceRects=[[280,75,630,470],[950,110,1405,570],[1380,390,1672,825],[20,565,250,820],[1505,35,1672,300]];
-  const raycaster=new T.Raycaster(),target=new T.Vector3(),direction=new T.Vector3();
-  let visibleProtectedRays=0;
+  expect(Array.from(portrait.geometry.getAttribute('position').array)).toEqual(portraitVertices);
+  expect(portrait.matrix).toEqual(portraitRestMatrix);
+  journey.update(1,camera);expect(surface.visible).toBe(false);expect(portrait.parent!.visible).toBe(false);
+  expect(startEye.distanceTo(camera.position)/.4).toBeLessThan(4);
+  journey.update(.28,camera);expect(Array.from(positions.array)).toEqual(bent);expect(Array.from(surface.geometry.getAttribute('normal').array)).toEqual(normal);
+  journey.update(0,camera);expect(Array.from(positions.array)).toEqual(rest);
+
   for(const [w,h]of[[1920,1080],[1440,900]]){
    journey.resize(w,h);
-   const currentRoof=scene.getObjectByName('AUTHORED_SHALLOW_CEILING_CONNECTION') as T.Mesh;
-   for(let step=18;step<=68;step++){
-    const p=step/100;journey.update(p,camera);
-    for(const [x0,y0,x1,y1]of protectedSourceRects)for(let iy=0;iy<=4;iy++)for(let ix=0;ix<=4;ix++){
-     target.set(((x0+(x1-x0)*ix/4)/1672-.5)*geometry.parameters.width,(.5-(y0+(y1-y0)*iy/4)/941)*geometry.parameters.height,0).applyMatrix4(root.matrixWorld);
-     const ndc=target.clone().project(camera);if(Math.abs(ndc.x)>1||Math.abs(ndc.y)>1||ndc.z< -1||ndc.z>1)continue;
-     visibleProtectedRays++;
-     const distance=camera.position.distanceTo(target);direction.copy(target).sub(camera.position).normalize();raycaster.set(camera.position,direction);raycaster.near=camera.near;raycaster.far=distance-1e-4;
-     expect(raycaster.intersectObject(currentRoof,false),`roof covers protected B source region at ${w} p${p} (${ix},${iy})`).toHaveLength(0);
+   const outgoing=scene.getObjectByName('RIGID_APPROVED_PORTRAIT') as T.Mesh;
+   const facePositions=outgoing.geometry.getAttribute('position');
+   const oldPortraitMatrix=new T.Matrix4().makeScale(2,2,2).multiply(new T.Matrix4().makeTranslation(6,-.5,-3.1-heroContain(w,h))).multiply(heroWorldProjection(w,h,1)).multiply(new T.Matrix4().makeTranslation(1.85,.03,.05));
+   const oldCamera=new T.PerspectiveCamera(48,w/h,.02,120);oldCamera.updateMatrixWorld();
+   journey.update(0,camera);
+   const cosmicSurface=scene.getObjectByName('INDEXED_COSMIC_DEPARTURE_SURFACE') as T.Mesh;
+   const cosmicPositions=cosmicSurface.geometry.getAttribute('position'),cosmicUV=cosmicSurface.geometry.getAttribute('uv');
+   // Every original 64×40 cell retains its old source registration; only an extra edge ring bleeds outward.
+   const rx=w/h<1.5?(w/h)/1.5:1,ry=w/h>1.5?1.5/(w/h):1;
+   for(let row=1;row<=41;row++)for(let column=1;column<=65;column++){
+    const i=row*67+column,u=(column-1)/64,v=(row-1)/40;
+    const ndc=new T.Vector3().fromBufferAttribute(cosmicPositions,i).applyMatrix4(cosmicSurface.matrixWorld).project(camera);
+    expect(ndc.x).toBeCloseTo((2*u-1)/rx,6);expect(ndc.y).toBeCloseTo((1-2*v)/ry,6);
+    expect(cosmicUV.getX(i)).toBeCloseTo(u,6);expect(cosmicUV.getY(i)).toBeCloseTo(1-v,6);
+   }
+   const raycaster=new T.Raycaster(),centerCamera=camera.clone();
+   for(const pointerX of[-1,1])for(const pointerY of[-1,1]){
+    camera.copy(centerCamera);camera.translateX(pointerX*.035);camera.translateY(pointerY*.018);camera.updateMatrixWorld(true);journey.syncView(camera);
+    for(const x of[-1,1])for(const y of[-1,1]){
+     raycaster.setFromCamera(new T.Vector2(x,y),camera);
+     expect(raycaster.intersectObject(cosmicSurface,false).length,`uncovered cosmic corner ${w} pointer(${pointerX},${pointerY}) screen(${x},${y})`).toBeGreaterThan(0);
     }
    }
-  }
-  expect(visibleProtectedRays).toBeGreaterThan(1000);
-  journey.resize(1920,1080);
-  journey.update(.35,camera);const foldedView=camera.clone(),stage=scene.getObjectByName('HERO_ROOM_JOURNEY')!;
-  const physical=stage.children.filter(object=>object.userData.visibilityRole==='physical-boundary');
-  const upperBackgroundOcclusion=()=>{
-   let rays=0;
-   for(let y=0;y<=60;y+=15)for(let x=0;x<=1672;x+=76){
-    target.set((x/1672-.5)*geometry.parameters.width,(.5-y/941)*geometry.parameters.height,0).applyMatrix4(root.matrixWorld);
-    const ndc=target.clone().project(camera);if(Math.abs(ndc.x)>1||Math.abs(ndc.y)>1)continue;
-    direction.copy(target).sub(camera.position).normalize();raycaster.set(camera.position,direction);raycaster.far=camera.position.distanceTo(target)-1e-4;
-    if(raycaster.intersectObjects(physical,false)[0]?.object.name==='AUTHORED_SHALLOW_CEILING_CONNECTION')rays++;
+   // The full-frame membrane remains in front of every viewport corner until its bounded reveal is complete.
+   for(let step=0;step<=42;step++){
+    journey.update(step/100,camera);
+    for(const x of[-1,1])for(const y of[-1,1]){
+     raycaster.setFromCamera(new T.Vector2(x,y),camera);
+     expect(raycaster.intersectObject(cosmicSurface,false).length,`membrane contour entered viewport at ${w} p${step/100}`).toBeGreaterThan(0);
+    }
    }
-   return rays;
-  };
-  const foldedOcclusion=upperBackgroundOcclusion();
-  journey.update(.68,camera);camera.copy(foldedView);camera.updateMatrixWorld();
-  expect(foldedOcclusion).toBeGreaterThan(upperBackgroundOcclusion());
-
-  // Once the room takes the gaze, aim at its people/game positions rather than
-  // the solid right wall. This protects the subject, without freezing an authored yaw value.
-  journey.update(.5,camera);
-  const roomDirection=root.getWorldPosition(new T.Vector3()).sub(camera.position).normalize();
-  expect(camera.getWorldDirection(new T.Vector3()).dot(roomDirection)).toBeGreaterThan(Math.cos(T.MathUtils.degToRad(10)));
-  for(const points of protectedSourceRects)for(const [x,y]of[[points[0],points[1]],[points[2],points[3]]]){
-   const sourcePoint=new T.Vector3((x/1672-.5)*geometry.parameters.width,(.5-y/941)*geometry.parameters.height,0).applyMatrix4(root.matrixWorld).project(camera);
-   expect(Math.abs(sourcePoint.x)).toBeLessThan(1);expect(Math.abs(sourcePoint.y)).toBeLessThan(1);
+   journey.update(0,camera);
+   for(let i=0;i<facePositions.count;i++){
+    const oldPoint=new T.Vector3().fromBufferAttribute(facePositions,i).applyMatrix4(oldPortraitMatrix).project(oldCamera);
+    const newPoint=new T.Vector3().fromBufferAttribute(facePositions,i).applyMatrix4(outgoing.matrixWorld).project(camera);
+    expect(newPoint.x).toBeCloseTo(oldPoint.x,10);expect(newPoint.y).toBeCloseTo(oldPoint.y,10);
+   }
+   let openingBounds:T.Box3|undefined;
+   for(let step=0;step<=100;step++){
+    const p=step/100;journey.update(p,camera);
+    // B remains fully framed throughout, including both face regions and every source corner.
+    for(const [x,y]of[[-1,-1],[1,-1],[-1,1],[1,1]]){
+     const corner=new T.Vector3(x*geometry.parameters.width/2,y*geometry.parameters.height/2,0).applyMatrix4(root.matrixWorld).project(camera);
+     expect(Math.abs(corner.x)).toBeLessThanOrEqual(1+1e-10);expect(Math.abs(corner.y)).toBeLessThanOrEqual(1+1e-10);
+    }
+    if(p<=.30){
+     const bounds=new T.Box3().setFromPoints(Array.from({length:facePositions.count},(_,i)=>new T.Vector3().fromBufferAttribute(facePositions,i).applyMatrix4(outgoing.matrixWorld).project(camera)));
+     if(!openingBounds)openingBounds=bounds.clone();
+     const size=bounds.getSize(new T.Vector3()),openingSize=openingBounds.getSize(new T.Vector3());
+     expect(size.x).toBeLessThanOrEqual(openingSize.x+1e-6);expect(size.y).toBeLessThanOrEqual(openingSize.y+1e-6);
+    }
+   }
+   arrival(w,h);
+   // Small reversals at the dolly, portrait and surface boundaries cannot jump the view.
+   for(const p of[.18,.20,.22,.28,.30,.36,.42,.50]){
+    journey.update(p-1e-6,camera);const before=root.getWorldPosition(new T.Vector3()).project(camera),eye=camera.position.clone();
+    journey.update(p+1e-6,camera);const after=root.getWorldPosition(new T.Vector3()).project(camera);
+    expect(before.distanceTo(after)).toBeLessThan(1e-4);expect(eye.distanceTo(camera.position)).toBeLessThan(1e-4);
+   }
   }
-  // Small input reversals across a key boundary must not jump projection or camera pose.
-  for(const p of[.27,.30,.35,.43,.68]){
-   journey.update(p-1e-6,camera);const before=root.getWorldPosition(new T.Vector3()).project(camera),beforeEye=camera.position.clone();
-   journey.update(p+1e-6,camera);const after=root.getWorldPosition(new T.Vector3()).project(camera);
-   expect(before.distanceTo(after)).toBeLessThan(1e-4);expect(beforeEye.distanceTo(camera.position)).toBeLessThan(1e-4);
-  }
+  const currentSurface=scene.getObjectByName('INDEXED_COSMIC_DEPARTURE_SURFACE') as T.Mesh<T.PlaneGeometry,T.MeshBasicMaterial>;
+  journey.update(.35,camera);const normalSurface=Array.from(currentSurface.geometry.getAttribute('position').array),normalPose=cameraState();
+  motionPreference.matches=true;journey.update(.35,camera);
+  expect(currentSurface.visible).toBe(true);expect(currentSurface.material.opacity).toBeCloseTo(.5,10);
+  motionPreference.matches=false;journey.update(.35,camera);
+  expect(currentSurface.visible).toBe(true);expect(currentSurface.material.opacity).toBeCloseTo(.5,10);expect(currentSurface.material.transparent).toBe(true);
+  expect(Array.from(currentSurface.geometry.getAttribute('position').array)).toEqual(normalSurface);expect(cameraState()).toEqual(normalPose);
+  journey.update(.12,camera);const heldPortrait=scene.getObjectByName('RIGID_APPROVED_PORTRAIT') as T.Mesh<T.PlaneGeometry,T.MeshBasicMaterial>;
+  expect(heldPortrait.material.opacity).toBe(1);expect(heldPortrait.parent!.visible).toBe(true);expect(heldPortrait.parent!.position.toArray()).toEqual([0,0,0]);
+  journey.resize(1920,1080);journey.update(.42,camera);expect(cameraState()).toEqual(outbound);
 
   const oldStage=scene.getObjectByName('HERO_ROOM_JOURNEY')!;
-  const oldGeometry=(oldStage.children[0] as T.Mesh).geometry,oldGeometryDispose=vi.spyOn(oldGeometry,'dispose');
+  const oldGeometry=(scene.getObjectByName('INDEXED_COSMIC_DEPARTURE_SURFACE') as T.Mesh).geometry,oldGeometryDispose=vi.spyOn(oldGeometry,'dispose');
   journey.setActive(false);
-  expect(oldStage.visible).toBe(false);expect(material.stencilWrite).toBe(false);
+  expect(oldStage.visible).toBe(false);expect(material).toMatchObject(originalStencil);
   const inactive=cameraState();journey.update(.12,camera);expect(cameraState()).toEqual(inactive);
   journey.resize(1440,900);
   expect(oldStage.parent).toBeNull();expect(oldGeometryDispose).toHaveBeenCalledOnce();
-  expect(material.stencilWrite).toBe(false);
+  expect(material).toMatchObject(originalStencil);
   journey.setActive(true);arrival(1440,900);
   journey.resize(1920,1080);arrival(1920,1080);
   journey.update(.42,camera);expect(cameraState()).toEqual(outbound);
@@ -139,6 +182,6 @@ it('preserves canonical B framing and reversible poses without owning B resource
   expect(scene.children).toEqual([root]);expect(material).toMatchObject(originalStencil);
   expect(geometryDispose).not.toHaveBeenCalled();expect(materialDispose).not.toHaveBeenCalled();
  }finally{
-  journey.dispose();geometryDispose.mockRestore();materialDispose.mockRestore();geometry.dispose();material.dispose();load.mockRestore();
+  vi.unstubAllGlobals();journey.dispose();geometryDispose.mockRestore();materialDispose.mockRestore();geometry.dispose();material.dispose();load.mockRestore();
  }
 });
