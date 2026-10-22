@@ -13,7 +13,7 @@ export function createStorySurface(scene:T.Scene,keep:<A extends{dispose:()=>voi
   width=w;height=h;const next=w+':'+h+':'+entrance.toFixed(4);if(next===key)return;key=next;signature='';
   const mobile=w<760;if(material.transparent!==mobile){material.transparent=mobile;material.depthTest=material.depthWrite=!mobile;material.needsUpdate=true;}mesh.renderOrder=mobile?1:0;
   if(!mobile){for(let i=0;i<uv.count;i++)uv.setXY(i,i%(columns+1)/columns,1-Math.floor(i/(columns+1))/rows);uv.needsUpdate=true;return;}
-  reference.aspect=w/h;const c=openingCameraPose(entrance);reference.position.fromArray(c.position);reference.lookAt(...c.target as[number,number,number]);reference.updateProjectionMatrix();reference.updateMatrixWorld();
+  reference.aspect=w/h;reference.fov=T.MathUtils.radToDeg(2*Math.atan(Math.tan(T.MathUtils.degToRad(19))/.59));reference.setViewOffset(w,h,0,-h*.195,w,h);const c=openingCameraPose(entrance);reference.position.fromArray(c.position);reference.lookAt(...c.target as[number,number,number]);reference.updateProjectionMatrix();reference.updateMatrixWorld();
   const aspect=w/h,rx=aspect<1.5?aspect/1.5:1,ry=aspect>1.5?1.5/aspect:1;
   for(let i=0;i<position.count;i++){const u=i%(columns+1)/columns,v=1-Math.floor(i/(columns+1))/rows,wideU=(u-.5)*1.2+.5,wideV=(v-.5)*1.2+.5;point.set((wideU-.5)*2,(wideV-.5)*2,.5).unproject(reference).sub(reference.position);point.multiplyScalar((-4-reference.position.z)/point.z).add(reference.position);rest.set(point.toArray(),i*3);uv.setXY(i,wideU*rx+(1-rx)*.58,wideV*ry+(1-ry)*.5);}uv.needsUpdate=true;
  },update(p:number,e:number,pointerX=0,pointerY=0,_camera?:T.PerspectiveCamera){

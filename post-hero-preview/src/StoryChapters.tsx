@@ -1,6 +1,7 @@
 import {useEffect,useState} from 'react';
 import {STORY_START_DATE,storyDistanceKm,relationshipDays,previewPlayHour} from '../../src/landing/coupleStoryFacts';
 import {DuelIllustration} from './DuelIllustration';
+import {FirstConversation} from '../../src/landing/FirstConversation';
 import {CountryCompanions} from './CountryCompanions';
 import {StoryTimeInteraction} from './StoryTimeInteraction';
 import './story-chapters.css';
@@ -12,10 +13,11 @@ export function StoryChapters({language}:{language:'ko'|'es'}){
  const chosen=previewPlayHour(koreanHour),pad=(value:number)=>String(value).padStart(2,'0');
  const distance=new Intl.NumberFormat(ko?'ko-KR':'es-DO').format(Math.round(storyDistanceKm)),days=new Intl.NumberFormat(ko?'ko-KR':'es-DO').format(relationshipDays(now));
  return <div className="story-connection">
-  <section id="distance" className="story-chapter story-distance" data-pose="0" aria-labelledby="story-distance-title">
-   <CountryCompanions language={language}/>
+  <div data-pose="0"><FirstConversation language={language}/></div>
+  <section id="distance" className="story-chapter story-distance" data-pose=".08" aria-labelledby="story-distance-title">
    <div className="story-distance-copy"><h2 id="story-distance-title">{ko?'우리 사이, 이만큼.':'Entre tú y yo.'}</h2><div className="story-distance-facts"><p className="story-distance-number"><span>{ko?'약':'Unos'}</span>{distance}<small>km</small></p><p className="story-reference">{ko?'광주에서 산토도밍고까지, 도시 중심을 잇는 직선거리야.':'Distancia aproximada entre los centros de Gwangju y Santo Domingo.'}</p></div>
    <p className="story-distance-reason">{ko?'한국 리듬게임에 접속이 안 됐잖아. 바로 옆에 갈 수는 없어도 너랑 같이 놀고 싶어서 우리 둘이 놀 곳을 만들었어.':'Desde República Dominicana no podías entrar al juego de ritmo de Corea. No puedo ir a verte así de fácil, pero sí quiero pasar tiempo contigo. Por eso hice esto para nosotros.'}</p></div>
+   <CountryCompanions language={language}/>
    <a className="text-button story-next" href="#time-difference">{ko?'같이 놀 시간도 골라볼까?':'Busquemos nuestra hora para jugar'}<span aria-hidden="true">↓</span></a>
   </section>
   <section id="time-difference" className="story-chapter story-time" data-pose=".16" aria-labelledby="story-time-title">

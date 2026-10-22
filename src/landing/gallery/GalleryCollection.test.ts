@@ -8,7 +8,7 @@ afterEach(()=>{vi.restoreAllMocks();vi.unstubAllGlobals();});
 it('keeps every surrounding game and selected representative raycast-selectable',()=>{
  vi.spyOn(T.TextureLoader.prototype,'load').mockImplementation(()=>new T.Texture());
  vi.stubGlobal('document',{createElement:()=>({width:0,height:0,getContext:()=>({fillText(){},fillRect(){},strokeRect(){},save(){},restore(){},translate(){},rotate(){}})})});
- const collection=createGalleryCollection(),origin=new T.Vector3(0,0,20),ray=new T.Raycaster();
+ const collection=createGalleryCollection(),origin=new T.Vector3(0,0,9.6),ray=new T.Raycaster();
  try{
   for(const selected of gameCatalog){
    collection.update({selected:selected.id,time:0,paused:true,snap:true});
@@ -64,17 +64,47 @@ it('damps only the hovered sculpture within a small lift and tilt, and resets fo
  }finally{collection.dispose();baseline.dispose();}
 });
 
-it('keeps the pitched desktop orbit inside its stage without changing selected, mobile or story depth',()=>{
+it('clears the outgoing representative before enlarging the next, settles, and interrupts from its current pose',()=>{
  vi.spyOn(T.TextureLoader.prototype,'load').mockImplementation(()=>new T.Texture());
  vi.stubGlobal('document',{createElement:()=>({width:0,height:0,getContext:()=>({fillText(){},fillRect(){},strokeRect(){},save(){},restore(){},translate(){},rotate(){}})})});
- const collection=createGalleryCollection(),camera=new T.PerspectiveCamera(38,1267.21875/390,.1,50);
+ const collection=createGalleryCollection();
+ const pose=()=>collection.root.children.map(group=>[...group.position.toArray(),...group.scale.toArray(),group.rotation.x,group.rotation.y,group.rotation.z]);
+ try{
+  collection.update({selected:'domino',time:0,paused:false,snap:true});
+  const outgoing=collection.root.children.find(group=>group.userData.game==='domino')!;
+  const incoming=collection.root.children.find(group=>group.userData.game==='splendor')!;
+  const origin=outgoing.position.clone(),incomingOrigin=incoming.position.clone(),smallScale=incoming.scale.x;
+  collection.update({selected:'splendor',time:0,paused:false,dt:.08});
+  expect(outgoing.position.distanceTo(origin)).toBeLessThan(1e-12);
+  expect(outgoing.scale.x).toBeLessThan(1.4);
+  expect(incoming.scale.x).toBe(smallScale);
+  expect(incoming.position.distanceTo(origin)).toBeLessThan(incomingOrigin.distanceTo(origin));
+  for(let frame=0;frame<30;frame++)collection.update({selected:'splendor',time:frame/60,paused:false});
+  const settled=pose();
+  collection.update({selected:'splendor',time:100,paused:false});
+  expect(pose()).toEqual(settled);
+  collection.update({selected:'davinci',time:100,paused:false,dt:.16});
+  const interrupted=pose();
+  collection.update({selected:'marble',time:100,paused:false,dt:0});
+  expect(pose()).toEqual(interrupted);
+  collection.update({selected:'domino',time:100,paused:true});
+  expect(outgoing.scale.x).toBe(2.6);
+  expect(outgoing.position.distanceTo(origin)).toBeLessThan(1e-12);
+ }finally{collection.dispose();}
+});
+
+it('fits the enlarged desktop representative and orbit while preserving mobile and story geometry',()=>{
+ vi.spyOn(T.TextureLoader.prototype,'load').mockImplementation(()=>new T.Texture());
+ vi.stubGlobal('document',{createElement:()=>({width:0,height:0,getContext:()=>({fillText(){},fillRect(){},strokeRect(){},save(){},restore(){},translate(){},rotate(){}})})});
+ const collection=createGalleryCollection(),camera=new T.PerspectiveCamera(38,1267.21875/432,.1,50);
  camera.position.z=9.6;camera.updateMatrixWorld(true);
  try{
-  for(const selected of gameCatalog)for(const time of [0,2,5,10]){
+  for(const height of [432,518.4])for(const selected of gameCatalog)for(const time of [0,2,5,10]){
+   camera.aspect=(height===432?1267.21875:1689.6)/height;camera.updateProjectionMatrix();
    collection.update({selected:selected.id,time,paused:false,snap:true});
    for(const [index,group] of collection.root.children.entries()){
     const chosen=group.userData.game===selected.id;
-    expect(group.scale.x).toBeCloseTo(chosen?2.1:(index>0&&index<4?0.65:0.45));
+    expect(group.scale.x).toBeCloseTo(chosen?2.6:(index>0&&index<4?0.65:0.45));
     if(chosen){expect(group.position.x).toBeCloseTo(0);expect(group.position.z).toBeCloseTo(1.3);}
     const box=new T.Box3().setFromObject(group);
     let projectedMinY=Infinity,projectedMaxY=-Infinity;
@@ -85,7 +115,8 @@ it('keeps the pitched desktop orbit inside its stage without changing selected, 
      projectedMinY=Math.min(projectedMinY,point.y);
      projectedMaxY=Math.max(projectedMaxY,point.y);
     }
-    if(index>0&&index<4&&!chosen)expect((projectedMaxY-projectedMinY)*390/2).toBeGreaterThanOrEqual(42);
+    if(chosen&&selected.id==='domino')expect((projectedMaxY-projectedMinY)*height/2).toBeGreaterThan(300);
+    if(index>0&&index<4&&!chosen)expect((projectedMaxY-projectedMinY)*height/2).toBeGreaterThanOrEqual(42);
    }
   }
   collection.update({selected:'domino',time:0,paused:true,snap:true,mobile:true});

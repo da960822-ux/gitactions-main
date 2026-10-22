@@ -34,7 +34,7 @@ it('preserves canonical B framing and reversible poses without owning B resource
   await journey.ready;
   expect(material.stencilWrite).toBe(true);expect(material.stencilFunc).toBe(T.EqualStencilFunc);
   arrival(1920,1080);
-  journey.update(.12,camera);expect(camera.fov).toBeLessThan(48);expect(camera.fov).toBeGreaterThan(0);
+  journey.update(.12,camera);expect(camera.fov).toBe(48);
   journey.update(.42,camera);const outbound=cameraState();
   for(const progress of[1,.3,.42])journey.update(progress,camera);
   expect(cameraState()).toEqual(outbound);

@@ -24,3 +24,17 @@
 .post-hero-preview .story-couple-play{margin-top:28px}
 .post-hero-preview .story-shared-place .gallery-arrival{position:absolute;bottom:0;left:0;width:1px;height:1px;pointer-events:none}
 .post-hero-preview .story-duel-question{margin:32px 0 0;color:#f0d9cd;font-size:16px;line-height:1.6}
+@media(max-width:1000px){
+ .post-hero-preview .story-chapter{min-height:0;padding:64px 6vw}
+ .post-hero-preview .story-distance{flex-direction:column;align-items:stretch;gap:40px}
+ .post-hero-preview .story-distance-copy{width:100%;max-width:64ch}
+ .post-hero-preview .story-distance-facts{margin-top:24px}
+ .post-hero-preview .story-distance-number{gap:8px;font-size:clamp(48px,9vw,72px)}
+ .post-hero-preview .story-distance-number>span{padding-top:8px}
+ .post-hero-preview .story-distance-number small{font-size:28px}
+ .post-hero-preview .story-distance-reason{max-width:54ch;margin-top:24px}
+ .post-hero-preview .story-next{position:static;justify-self:start;align-self:flex-start;margin-top:8px}
+ .post-hero-preview .story-time,.post-hero-preview .story-shared-place{grid-template-columns:minmax(0,1fr);gap:40px;align-items:start}
+ .post-hero-preview .story-time-intro>p{max-width:48ch;margin-top:24px}
+ .post-hero-preview .story-couple-copy{padding:0}
+}

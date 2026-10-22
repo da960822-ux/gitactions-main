@@ -31,27 +31,35 @@ export function createGalleryCollection(onAssetReady = () => {}) {
       object.material = Array.isArray(object.material) ? copies : copies[0];
     });
     root.add(group);
-    return {group, handles};
+    return {group, handles, fromPosition:new T.Vector3(), fromScale:1, fromRotation:new T.Euler()};
   });
   originalMaterials.forEach(material => material.dispose());
-  let inputEnabled = true, previous = '',previousStoryFocus=0;
+  let inputEnabled = true, previous = '',previousStoryFocus=0,exchange=1,departing='';
   const target = new T.Vector3(), size = new T.Vector3(),rootOrigin=new T.Vector3(),rootScale=new T.Vector3(),contactBounds=new T.Box3();
   return {
     root,
     update({selected, time, paused, dt = 1 / 60, snap = false, mobile = false, hovered, storyFocus = 0, effect}: Frame) {
       const changed = previous !== selected;
       const focus=T.MathUtils.clamp(storyFocus,0,1);
+      if(changed&&previous&&!snap&&!paused&&focus===0&&previousStoryFocus===0){
+        exchange=0;departing=previous;
+        objects.forEach(object=>{object.fromPosition.copy(object.group.position);object.fromScale=object.group.scale.x;object.fromRotation.copy(object.group.rotation);});
+      }
+      if(snap||paused||focus>0||previousStoryFocus>0)exchange=1;
+      const exchanging=exchange<1;
+      exchange=Math.min(1,exchange+dt/.48);
       root.getWorldPosition(rootOrigin);root.getWorldScale(rootScale);
-      objects.forEach(({group, handles}, index) => {
+      objects.forEach(({group, handles,fromPosition,fromScale,fromRotation}, index) => {
         const chosen = gameCatalog[index].id === selected;
         const angle=index/8*Math.PI*2;
-        const scale=chosen?T.MathUtils.lerp(mobile?1.9:2.1,2.5,focus):(!mobile&&focus===0&&index>0&&index<4)?0.65:0.45;
+        const representative=focus>0?T.MathUtils.lerp(mobile?1.9:2.1,2.5,focus):mobile?1.9:2.6;
+        const scale=chosen?representative:(!mobile&&focus===0&&index>0&&index<4)?0.65:0.45;
         const pitched=!mobile&&focus===0;
         const depth=pitched?.3-Math.sin(angle)*2.7:-3.2;
         // Match the desktop camera's perspective to keep the nearer arc inside the vertical stage.
         const orbitPerspective=pitched?(9.6-depth)/12.8:1;
         target.set(chosen?5.1*focus:Math.cos(angle)*(mobile?3.35:5.8),chosen?0:Math.sin(angle)*(pitched?3.25:3.8)*orbitPerspective,chosen?T.MathUtils.lerp(1.3,7.5,focus):depth);
-        if(!paused)target.y+=Math.sin(time*.7+index)*.055*(1-focus);
+        if(!paused&&focus>0)target.y+=Math.sin(time*.7+index)*.055*(1-focus);
         if(!chosen)target.y-=10*focus;
         const game=gameCatalog[index].id;
         const hovering=!paused&&inputEnabled&&focus===0&&hovered?.id===game;
@@ -65,13 +73,24 @@ export function createGalleryCollection(onAssetReady = () => {}) {
         const prism=game==='splendor'&&event==='prism-angle'?value*Math.PI*.35:0;
         const rhythm=game==='rhythm'&&event==='rhythm-bridge'&&value?Math.sin(time*2)*.04:0;
         let ry=T.MathUtils.lerp(chosen?-.2:Math.sin(angle)*.35,chosen?-.12:0,focus)+prism;
-        if(!paused)ry+=Math.sin(time*.45+index)*.065;
+        if(!paused&&focus>0)ry+=Math.sin(time*.45+index)*.065;
         const amount = snap || paused || focus>0 || previousStoryFocus>0 ? 1 : 1 - Math.exp(-dt * 8);
-        group.position.lerp(target, amount);
-        group.scale.lerp(size.setScalar(scale), amount);
-        group.rotation.x += (T.MathUtils.lerp(chosen?.15:.12,0,focus)+domino+wind+tiltX - group.rotation.x) * amount;
-        group.rotation.y += (ry+tiltY - group.rotation.y) * amount;
-        group.rotation.z += (T.MathUtils.lerp(chosen?-.1:Math.cos(angle)*.15,0,focus)+balance+rhythm - group.rotation.z) * amount;
+        const rx=T.MathUtils.lerp(chosen?.15:.12,0,focus)+domino+wind+tiltX,rz=T.MathUtils.lerp(chosen?-.1:Math.cos(angle)*.15,0,focus)+balance+rhythm;
+        if(exchanging){
+          const returning=game===departing;
+          // Clear the large outgoing piece before the incoming piece expands at the center.
+          const travel=T.MathUtils.smoothstep(exchange,returning?.2:0,chosen?.7:1);
+          const growth=T.MathUtils.smoothstep(exchange,chosen?.55:0,returning?.2:1);
+          group.position.lerpVectors(fromPosition,target,travel);
+          group.scale.setScalar(T.MathUtils.lerp(fromScale,scale,growth));
+          group.rotation.set(T.MathUtils.lerp(fromRotation.x,rx,travel),T.MathUtils.lerp(fromRotation.y,ry+tiltY,travel),T.MathUtils.lerp(fromRotation.z,rz,travel));
+        }else{
+          group.position.lerp(target, amount);
+          group.scale.lerp(size.setScalar(scale), amount);
+          group.rotation.x += (rx-group.rotation.x)*amount;
+          group.rotation.y += (ry+tiltY-group.rotation.y)*amount;
+          group.rotation.z += (rz-group.rotation.z)*amount;
+        }
         const support=group.getObjectByName('CATCHMIND_EASEL_SUPPORT');if(support)support.scale.setScalar(focus);
         // Story props meet the sheet; the restored gallery retains its deliberate suspended composition.
         if(focus>0){group.updateWorldMatrix(true,true);contactBounds.setFromObject(group);group.position.y+=(rootOrigin.y-(chosen?0:10*focus*rootScale.y)-contactBounds.min.y)/rootScale.y;}

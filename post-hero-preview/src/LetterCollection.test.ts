@@ -51,7 +51,7 @@ test('letter-only collection preserves room ownership, reversible folds, DOM han
  collection.update({...frame,opening:1,progress:.84,onPaperPose});assert.equal(collection.root.rotation.y,readingTurn,'reverse scroll restores the reading orientation');assert.equal(insert.scale.y,1,'reverse scroll restores the original reading geometry');
  collection.update({...frame,opening:.8,progress:.86,onPaperPose});assert.equal(insert.visible,true);
  const desktopBack=collection.root.getObjectByName('letter-back') as THREE.Mesh;assert.ok(Array.isArray(desktopBack.material)&&desktopBack.material[4] instanceof THREE.MeshBasicMaterial);assert.equal(desktopBack.material[4],desktopBack.material[5],'front and back share the same cream reading surface while the original thickness material remains on the sides');
- collection.update({...frame,width:390,opening:1,progress:.84,onPaperPose});assert.ok(collection.root.rotation.y<-.77,'mobile keeps its original camera-facing envelope turn');assert.ok(desktopBack.material instanceof THREE.MeshStandardMaterial,'mobile retains the original lit paper');
+ collection.update({...frame,width:390,opening:1,progress:.84,onPaperPose});assert.equal(collection.root.rotation.y,0,'shared mobile camera contains the same flat envelope');assert.ok(desktopBack.material instanceof THREE.MeshStandardMaterial,'mobile retains the original lit paper');
  collection.dispose();collection.dispose();assert.equal(collection.ready,false);assert.deepEqual(scene.children,[room]);assert.equal(roomDisposed,false);assert.equal(scene.fog,fog);assert.equal(scene.background,background);assert.equal(paper!.visible,false);
  room.geometry.dispose();(room.material as THREE.Material).dispose();
 });

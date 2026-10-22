@@ -106,7 +106,7 @@ export function createLetterCollection(options:{scene:THREE.Scene;camera:THREE.P
   scene.rotation.y=-.777*ease(.55,.78,frame.progress)*(1-ease(.94,1,frame.progress));
   envelope.rotation.x=-Math.PI/2*(1-ease(.55,.62,frame.progress))-.5*Math.PI*ease(.94,1,frame.progress);
   const desktop=frame.width>=761;
-  if(desktop){scene.rotation.y=0;envelope.rotation.x=-Math.PI/2;}
+  if(desktop||frame.ownCamera===false){scene.rotation.y=0;envelope.rotation.x=-Math.PI/2;}
   for(const face of paperFaces)face.mesh.material=desktop?face.flat:face.original;
   const q=THREE.MathUtils.clamp(Number.isFinite(frame.opening)?frame.opening:0,0,1);
   if(frame.effect?.name==='wax-stamp')heartSelected=frame.effect.value>0;
@@ -118,7 +118,7 @@ export function createLetterCollection(options:{scene:THREE.Scene;camera:THREE.P
   // Reusing the opening's .9→1 retreat brought the full open envelope back at reader scale.
   const shellRetirement=frame.letterView==='folding'?ease(.35,.65,q):ease(.9,1,q);
   shell.position.y=desktop&&frame.onPaperPose?-4*shellRetirement:0;
-  insert.visible=!domReading&&(!desktop||q>.36);
+  insert.visible=!domReading&&q>.36;
       flap.rotation.x=-ease(.12,.36,q)*THREE.MathUtils.degToRad(165);
       seal.position.y=.48-ease(.12,.34,q)*.35;
       seal.position.z=.235+ease(0,.12,q)*.08;

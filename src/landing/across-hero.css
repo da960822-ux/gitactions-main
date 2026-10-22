@@ -36,3 +36,5 @@
 
 /* Keep fallback pixels and its grayscale mask in the same intrinsic image rect. */
 .folded-playhouse .folded-portrait-fallback{height:auto;max-height:none;aspect-ratio:1312/1199;object-fit:fill}
+
+@media(max-width:760px){.landing:has(.folded-playhouse) .landing-nav nav>a{font-size:12px;min-height:44px;display:inline-flex;align-items:center}.landing:has(.folded-playhouse) .landing-language button{min-width:44px;min-height:44px}.across-letter-link{font-size:12px}.across-bottom a{font-size:11px;min-height:44px}}

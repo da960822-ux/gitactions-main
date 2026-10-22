@@ -5,13 +5,13 @@ import {studioMaterials} from './studioObjects';
 import {createGalleryCollection} from './GalleryCollection';
 
 export type GameHover={id:string;x:number;y:number};
-type Props={mode:'hearts'|'games';selected?:string;paused:boolean;loadingLabel?:string;impulse?:number;onSelect?:(id:string)=>void;onHover?:(hover:GameHover|null)=>void};
+type Props={mode:'hearts'|'games';selected?:string;paused:boolean;snapSelection?:boolean;loadingLabel?:string;impulse?:number;onSelect?:(id:string)=>void;onHover?:(hover:GameHover|null)=>void};
 const heartLayout=[[1.2,.25,1.1,1.82,-.25],[3.55,-1.55,.2,1.2,.3],[3.45,2.18,-1.8,1.12,.35],[-.1,2.3,-1,.68,-.5],[5.1,.55,-1,.7,.1],[.15,-2.4,-1.8,.67,.3]];
 export default function StudioScene(props:Props){
  const host=useRef<HTMLDivElement>(null),controls=useRef(props),redraw=useRef<()=>void>(()=>{}),[ready,setReady]=useState(false),[failed,setFailed]=useState(false),[mounted,setMounted]=useState(props.mode==='hearts');
  controls.current=props;
  useEffect(()=>{if(mounted)return;const observer=new IntersectionObserver(([entry])=>{if(entry.isIntersecting){setMounted(true);observer.disconnect();}},{rootMargin:'250px'});observer.observe(host.current!);return()=>observer.disconnect();},[mounted]);
- useEffect(()=>{redraw.current();},[props.paused,props.selected,props.impulse]);
+ useEffect(()=>{redraw.current();},[props.paused,props.selected,props.impulse,props.snapSelection]);
  useEffect(()=>{
   if(!mounted)return;
   const node=host.current!;let renderer:T.WebGLRenderer;
@@ -58,7 +58,7 @@ export default function StudioScene(props:Props){
    if(!controls.current.paused){time+=dt;energy*=Math.exp(-dt*2);render(false,dt);}
   };
   renderer.setAnimationLoop(frame);
-  const sync=()=>{if(controls.current.paused||selection!==controls.current.selected)clearHover();selection=controls.current.selected;if(impulse!==(controls.current.impulse??0)){impulse=controls.current.impulse??0;energy=.85;}render(controls.current.paused);};redraw.current=sync;
+  const sync=()=>{if(controls.current.paused||selection!==controls.current.selected)clearHover();selection=controls.current.selected;if(impulse!==(controls.current.impulse??0)){impulse=controls.current.impulse??0;energy=.85;}render(controls.current.paused||controls.current.snapSelection);};redraw.current=sync;
   const move=(event:PointerEvent)=>{
    const box=canvas.getBoundingClientRect();pointer.set((event.clientX-box.left)/box.width*2-1,-(event.clientY-box.top)/box.height*2+1);
    if(collection){

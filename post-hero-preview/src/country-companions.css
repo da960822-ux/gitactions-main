@@ -23,3 +23,17 @@
 .post-hero-preview .companion-meanings{position:absolute;top:18svh;left:43vw;right:7vw;display:grid;grid-template-columns:1fr 1fr;gap:clamp(24px,3vw,56px);color:#e7d1c6}
 .post-hero-preview .companion-meanings h3{margin:0 0 10px;color:#edc2a2;font:400 17px/1.5 'Gowun Batang',Georgia,serif}
 .post-hero-preview .companion-meanings p{margin:0;max-width:34ch;font-size:16px;line-height:1.75;word-break:keep-all;overflow-wrap:break-word;text-wrap:pretty}
+@media(max-width:1000px){
+ .post-hero-preview .story-distance>.country-companions{position:relative;inset:auto;height:auto;flex:none;overflow:visible}
+ .post-hero-preview .companion-stage{height:clamp(240px,60vw,520px)}
+ .post-hero-preview .bird-scroll{bottom:56px;width:48%}
+ .post-hero-preview .lovebird-left{left:0}
+ .post-hero-preview .lovebird-right{right:0;bottom:80px;width:40%}
+ .post-hero-preview .lovebird-greeting{bottom:0;left:50%;max-width:100%;white-space:normal;text-align:center}
+ .post-hero-preview .companion-meanings{position:static;grid-template-columns:1fr 1fr;gap:32px;margin-top:32px}
+ .post-hero-preview .companion-meanings p{max-width:42ch}
+ .post-hero-preview .lovebird-error{position:static;margin:24px 0 0}
+}
+@media(max-width:600px){
+ .post-hero-preview .companion-meanings{grid-template-columns:minmax(0,1fr);gap:24px}
+}

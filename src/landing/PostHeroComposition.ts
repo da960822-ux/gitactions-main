@@ -73,12 +73,15 @@ export function createPostHeroComposition(scene:THREE.Scene,onInvalidate:()=>voi
   eye.sub(target).multiplyScalar(1+.08*invitationView).add(target);
   const contain=frame.width>=760?Math.max(1,(16/9)/(frame.width/Math.max(1,frame.height))):1;
   eye.sub(target).multiplyScalar(contain).add(target);
-  const desktopLetter=frame.width>=761,overhead=desktopLetter?range(.55,.62,p):0;
-  tabletop.visible=desk.visible=!desktopLetter;
+  const desktopLetter=frame.width>=761,overhead=range(.55,.62,p);
+  tabletop.visible=desk.visible=!desktopLetter&&p>=.55;
   if(overhead>0){
    const layout=letterOpeningLayout(frame.width,frame.height,frame.paperHeight,frame.opening);
-   const viewHeight=frame.height/layout.pixelsPerUnit,x=LETTER.x-.2*viewHeight*frame.width/Math.max(1,frame.height),z=LETTER.z-(layout.envelopeBase-frame.height/2)/layout.pixelsPerUnit;
-   eye.lerp(a.set(x,LETTER.y+6,z+.04),overhead);target.lerp(b.set(x,LETTER.y,z),overhead);
+   const pixelsPerUnit=desktopLetter?layout.pixelsPerUnit:frame.width*.82/2.05;
+   const viewHeight=frame.height/pixelsPerUnit,x=desktopLetter?LETTER.x-.2*viewHeight*frame.width/Math.max(1,frame.height):LETTER.x;
+   const envelopeBase=desktopLetter?layout.envelopeBase:frame.height*.72+.675*pixelsPerUnit;
+   const z=LETTER.z-(envelopeBase-frame.height/2)/pixelsPerUnit,distance=desktopLetter?6:frame.height/(pixelsPerUnit*2*Math.tan(Math.PI/12));
+   eye.lerp(a.set(x,LETTER.y+distance,z+.04),overhead);target.lerp(b.set(x,LETTER.y,z),overhead);
   }
   background.set('#13141c').lerp(openingBackground,overhead);
 

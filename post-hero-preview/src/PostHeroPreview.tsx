@@ -104,6 +104,13 @@ export function PostHeroPreview({embedded=false,language:externalLanguage,onLang
    if(!focusReader.current||letterFinale.phase!=='reading')return;
    focusReader.current=false;host.current?.querySelector<HTMLElement>('#letter-title')?.focus({preventScroll:true});
  });
+ useLayoutEffect(()=>{
+   if(letterFinale.phase!=='rose')return;
+   const finale=readerSurface.current?.querySelector<HTMLElement>('#together-again');if(!finale)return;
+   const observer=new ResizeObserver(()=>setSurfaceSnapshot(snapshot=>snapshot?{...snapshot,height:Math.max(snapshot.height,snapshot.offset+finale.offsetHeight)}:snapshot));
+   observer.observe(finale);
+   return()=>observer.disconnect();
+ },[letterFinale.phase]);
  useEffect(()=>{
    let frame=0;
    const update=()=>{

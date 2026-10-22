@@ -141,7 +141,7 @@ export function LandingWorldHost({language,onLanguageChange,selected,onSelect}:P
    if(inIntro){pose.time=Math.max(0,(now-clockStart)/1000);pose.entrance=introPose(pose.time).entrance;if(pose.time>=INTRO_SECONDS-1/60&&Number(screen.dataset.entrance)>=.999)endIntro();}else pose.time=elapsed;
    const decay=pointerDecay(actualDt),input=inIntro||media.matches?0:1;
    pose.pointerX+=(pointer.x*input-pose.pointerX)*decay;pose.pointerY+=(pointer.y*input-pose.pointerY)*decay;
-   const bridge=smoothRange(heroEnd,heroEnd+height*1.1,scrollY),postActive=bridge>0;
+   const bridge=smoothRange(heroEnd+height*.55,heroEnd+height*1.1,scrollY),postActive=bridge>0;
    const section=root.querySelector<HTMLElement>('#games');
    const galleryBounds=section?.getBoundingClientRect();
    const reveal=galleryBounds?smoothRange(0,height*.75,height-galleryBounds.top):0;
