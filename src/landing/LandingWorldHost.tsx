@@ -171,10 +171,10 @@ export function LandingWorldHost({language,onLanguageChange,selected,onSelect}:P
     world.updateRoomExit(0);
     const originalPaper=root.querySelector<HTMLElement>('#moment-letter-copy');
     const closingRect=postState.current.letterClosingRect;
-    const paperAspect=postState.current.letterView==='folding'&&closingRect?closingRect.width/closingRect.height:originalPaper&&originalPaper.offsetHeight>0?originalPaper.offsetWidth/originalPaper.offsetHeight:undefined;
+    const paperWidth=Number(originalPaper?.dataset.layoutWidth??0),paperHeight=Number(originalPaper?.dataset.layoutHeight??0);
+    const paperAspect=postState.current.letterView==='folding'&&closingRect?closingRect.width/closingRect.height:paperWidth>0&&paperHeight>0?paperWidth/paperHeight:undefined;
     post.update({...postState.current,width,height,ownCamera:false,paperAspect});postNeedsFrame=false;
     roomEye.copy(ROOM_EYE);if(width>=760)roomEye.addScaledVector(ROOM_BACK,roomContain(width,height)-1);
-    const paperHeight=root.querySelector<HTMLElement>('#moment-letter-copy')?.offsetHeight??0;
     if(paperHeight>32)measuredPaperHeight=paperHeight;
     const composed=composition.update({progress,bridge,galleryWeight:0,opening:postState.current.opening,time:elapsed,reducedMotion:media.matches,width,height,roomEye,roomTarget:ROOM_TARGET,effect:postState.current.effect,localEvent:postState.current.localEvent,paperHeight:measuredPaperHeight,letterView:postState.current.letterView,letterClosingRect:closingRect,pointer:{x:pose.pointerX,y:pose.pointerY}});
     postNeedsFrame=composed.needsFrame;

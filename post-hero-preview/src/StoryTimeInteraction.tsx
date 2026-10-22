@@ -1,8 +1,9 @@
 import {useEffect,useId,useRef,useState} from 'react';
-import {useInView,useReducedMotion} from 'motion/react';
+import {useInView} from 'motion/react';
 import {gsap} from 'gsap';
 import {previewPlayHour,storyClockTimes} from '../../src/landing/coupleStoryFacts';
 import './story-time-interaction.css';
+import {useLiveReducedMotion} from './useLiveReducedMotion';
 
 const pad=(value:number)=>String(value).padStart(2,'0');
 function CitySky({hour,city,language}:{hour:number;city:'gwangju'|'santo-domingo';language:'ko'|'es'}){
@@ -22,7 +23,7 @@ function CitySky({hour,city,language}:{hour:number;city:'gwangju'|'santo-domingo
 export function StoryTimeInteraction({language,now,koreanHour,onHourChange}:{language:'ko'|'es';now:Date;koreanHour:number;onHourChange:(hour:number)=>void}){
  const ko=language==='ko',rangeId=useId(),host=useRef<HTMLDivElement>(null);
  const [pointerInput,setPointerInput]=useState(false),[pageVisible,setPageVisible]=useState(()=>typeof document==='undefined'||!document.hidden);
- const inView=useInView(host,{amount:.1}),reduced=useReducedMotion(),active=inView&&pageVisible&&!reduced,settle=active&&pointerInput;
+ const inView=useInView(host,{amount:.1}),reduced=useLiveReducedMotion(),active=inView&&pageVisible&&!reduced,settle=active&&pointerInput;
  const clocks=storyClockTimes(now),preview=previewPlayHour(koreanHour);
  useEffect(()=>{const update=()=>setPageVisible(!document.hidden);document.addEventListener('visibilitychange',update);return()=>document.removeEventListener('visibilitychange',update);},[]);
  useEffect(()=>{

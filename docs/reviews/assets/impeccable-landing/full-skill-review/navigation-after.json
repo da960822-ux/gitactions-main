@@ -1,0 +1,57 @@
+{
+  "hash": "#games",
+  "scrollY": 6946,
+  "margin": "80px",
+  "headingTop": 108.34375,
+  "navBottom": 64,
+  "choices": [
+    {
+      "id": "davinci",
+      "top": 779.125,
+      "bottom": 831.125,
+      "visible": true
+    },
+    {
+      "id": "catchmind",
+      "top": 779.125,
+      "bottom": 831.125,
+      "visible": true
+    },
+    {
+      "id": "domino",
+      "top": 779.125,
+      "bottom": 831.125,
+      "visible": true
+    },
+    {
+      "id": "jaipur",
+      "top": 779.125,
+      "bottom": 831.125,
+      "visible": true
+    },
+    {
+      "id": "splendor",
+      "top": 831.125,
+      "bottom": 883.125,
+      "visible": true
+    },
+    {
+      "id": "minhwatu",
+      "top": 831.125,
+      "bottom": 883.125,
+      "visible": true
+    },
+    {
+      "id": "marble",
+      "top": 831.125,
+      "bottom": 883.125,
+      "visible": true
+    },
+    {
+      "id": "rhythm",
+      "top": 831.125,
+      "bottom": 883.125,
+      "visible": true
+    }
+  ]
+}

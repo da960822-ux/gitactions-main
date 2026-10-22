@@ -46,6 +46,8 @@ it('keeps the pact separate from the original letter and asks only for this view
   expect(html).not.toContain('<dialog');
   expect(html).toContain('class="pp-signature-pad"');
   expect(html).toContain('class="pp-signature-name"');
+  expect(html).toContain(language==='ko'?'앞뒤 공백을 빼고 2~40자로':'entre 2 y 40 caracteres');
+  expect(html).toContain('aria-live="polite"');
   expect(html).toContain('disabled=""');
   expect(html).toContain(language==='ko'?'서명하고 평생 한 팀 되기 ♡':'Firmar para ser un equipo toda la vida ♡');
   expect(html).not.toContain('Lisbeth');

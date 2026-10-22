@@ -34,7 +34,7 @@ export function createGalleryCollection(onAssetReady = () => {}) {
     return {group, handles, fromPosition:new T.Vector3(), fromScale:1, fromRotation:new T.Euler()};
   });
   originalMaterials.forEach(material => material.dispose());
-  let inputEnabled = true, previous = '',previousStoryFocus=0,exchange=1,departing='';
+  let inputEnabled = true, previous = '',previousStoryFocus=0,previousMobile:boolean|undefined,exchange=1,departing='';
   const target = new T.Vector3(), size = new T.Vector3(),rootOrigin=new T.Vector3(),rootScale=new T.Vector3(),contactBounds=new T.Box3();
   return {
     root,
@@ -48,18 +48,20 @@ export function createGalleryCollection(onAssetReady = () => {}) {
       if(snap||paused||focus>0||previousStoryFocus>0)exchange=1;
       const exchanging=exchange<1;
       exchange=Math.min(1,exchange+dt/.48);
+      let needsFrame=exchange<1||(!paused&&(focus>0||Boolean(effect?.value)&&(effect?.name==='paper-wind'||effect?.name==='rhythm-bridge')));
       root.getWorldPosition(rootOrigin);root.getWorldScale(rootScale);
       objects.forEach(({group, handles,fromPosition,fromScale,fromRotation}, index) => {
         const chosen = gameCatalog[index].id === selected;
         const angle=index/8*Math.PI*2;
         const representative=focus>0?T.MathUtils.lerp(mobile?1.9:2.1,2.5,focus):mobile?1.9:2.6;
-        const scale=chosen?representative:!mobile&&focus===0?.7:.45;
+        const scale=chosen?representative:!mobile&&focus===0?1.1:.45;
         const pitched=!mobile&&focus===0;
         const depth=pitched?-1.6-Math.sin(angle)*.8:-3.2;
         // Adapted from ThreeUI Community filmstrip focus/depth staging; keep peers beside the selected silhouette.
         const peerRadius=mobile&&focus===0?3.35+1.6*Math.abs(Math.sin(angle)):mobile?3.35:5.8;
-        const peerX=pitched?Math.sign(Math.cos(angle))*(4.6+1.9*Math.abs(Math.cos(angle))):Math.cos(angle)*peerRadius;
-        target.set(chosen?5.1*focus:peerX,chosen?0:Math.sin(angle)*(pitched?2.4:3.8),chosen?T.MathUtils.lerp(1.3,7.5,focus):depth);
+        const peerX=pitched?Math.sign(Math.cos(angle))*(5.2+3.1*Math.abs(Math.cos(angle))):Math.cos(angle)*peerRadius;
+        const peerY=Math.sin(angle)*(pitched?2.75*(9.6-depth)/11.2:3.8);
+        target.set(chosen?5.1*focus:peerX,chosen?0:peerY,chosen?T.MathUtils.lerp(1.3,7.5,focus):depth);
         if(!paused&&focus>0)target.y+=Math.sin(time*.7+index)*.055*(1-focus);
         if(!chosen)target.y-=10*focus;
         const game=gameCatalog[index].id;
@@ -76,7 +78,8 @@ export function createGalleryCollection(onAssetReady = () => {}) {
         let ry=T.MathUtils.lerp(chosen?-.2:Math.sin(angle)*.35,chosen?-.12:0,focus)+prism;
         if(!paused&&focus>0)ry+=Math.sin(time*.45+index)*.065;
         const amount = snap || paused || focus>0 || previousStoryFocus>0 ? 1 : 1 - Math.exp(-dt * 8);
-        const rx=T.MathUtils.lerp(chosen?.15:.12,0,focus)+domino+wind+tiltX,rz=T.MathUtils.lerp(chosen?-.1:Math.cos(angle)*.15,0,focus)+balance+rhythm;
+        const peerRoll=Math.cos(angle)*(pitched?.08:.15);
+        const rx=T.MathUtils.lerp(chosen?.15:.12,0,focus)+domino+wind+tiltX,rz=T.MathUtils.lerp(chosen?-.1:peerRoll,0,focus)+balance+rhythm;
         if(exchanging){
           const returning=game===departing;
           // Clear the large outgoing piece before the incoming piece expands at the center.
@@ -92,17 +95,23 @@ export function createGalleryCollection(onAssetReady = () => {}) {
           group.rotation.y += (ry+tiltY-group.rotation.y)*amount;
           group.rotation.z += (rz-group.rotation.z)*amount;
         }
+        if(group.position.distanceToSquared(target)<.000001)group.position.copy(target);else needsFrame=true;
+        if(group.scale.distanceToSquared(size.setScalar(scale))<.000001)group.scale.copy(size);else needsFrame=true;
+        if(Math.abs(group.rotation.x-rx)<.001)group.rotation.x=rx;else needsFrame=true;
+        if(Math.abs(group.rotation.y-ry-tiltY)<.001)group.rotation.y=ry+tiltY;else needsFrame=true;
+        if(Math.abs(group.rotation.z-rz)<.001)group.rotation.z=rz;else needsFrame=true;
         const support=group.getObjectByName('CATCHMIND_EASEL_SUPPORT');if(support)support.scale.setScalar(focus);
         // Story props meet the sheet; the restored gallery retains its deliberate suspended composition.
         if(focus>0){group.updateWorldMatrix(true,true);contactBounds.setFromObject(group);group.position.y+=(rootOrigin.y-(chosen?0:10*focus*rootScale.y)-contactBounds.min.y)/rootScale.y;}
         group.traverse(object=>{if(object instanceof T.Mesh)object.castShadow=focus>0;});
-        if (changed) handles.forEach(material => {
-          material.color.copy(material.userData.baseColor).multiplyScalar(chosen || material instanceof T.MeshBasicMaterial ? 1 : .42);
-          if (typeof material.userData.baseEnvironment === 'number') material.envMapIntensity = material.userData.baseEnvironment * (chosen ? 1 : .45);
+        if (changed||previousStoryFocus!==focus||previousMobile!==mobile) handles.forEach(material => {
+          material.color.copy(material.userData.baseColor).multiplyScalar(chosen || material instanceof T.MeshBasicMaterial ? 1 : pitched?.78:.42);
+          if (typeof material.userData.baseEnvironment === 'number') material.envMapIntensity = material.userData.baseEnvironment * (chosen ? 1 : pitched?.8:.45);
         });
       });
-      previous = selected;previousStoryFocus=focus;
+      previous = selected;previousStoryFocus=focus;previousMobile=mobile;
       root.updateMatrixWorld(true);
+      return needsFrame;
     },
     pick(raycaster: T.Raycaster): string | null {
       if (!inputEnabled || !root.visible) return null;

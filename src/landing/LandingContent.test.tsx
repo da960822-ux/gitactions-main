@@ -31,3 +31,16 @@ describe('main narrative content remains present without opening optional discov
   expect(html).toContain('href="#games"');
  });
 });
+
+describe('letter entry points name the actual action',()=>{
+ for(const [language,envelope,direct,shared] of [
+  ['ko','봉투 열어보기','바로 읽기','연결해서 같이 열기'],
+  ['es','Abrir el sobre','Leerla directamente','Abrirla juntos en una sala'],
+ ] as const)it(language,()=>{
+  vi.stubGlobal('matchMedia',()=>({matches:false}));
+  const html=renderToStaticMarkup(<PostHeroPreview embedded renderScene={false} language={language}/>);
+  expect(html).toContain(`>${envelope}<span aria-hidden="true">`);
+  expect(html).toContain(`>${direct}</a>`);
+  expect(html).toContain(`>${shared}</button>`);
+ });
+});

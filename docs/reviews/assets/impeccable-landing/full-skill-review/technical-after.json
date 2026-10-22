@@ -1,0 +1,121 @@
+{
+  "environment": {
+    "engine": "Chromium headless SwiftShader",
+    "base": "http://127.0.0.1:5175",
+    "viewports": [
+      [
+        1440,
+        900
+      ],
+      [
+        1920,
+        1080
+      ]
+    ],
+    "contexts": "fresh disposable contexts; non-local requests blocked"
+  },
+  "errors": [],
+  "pact": {
+    "oneCharacter": {
+      "disabled": true,
+      "invalid": "true",
+      "instruction": "_r_h_-name-note _r_h_-name-error",
+      "message": "두 글자 이상 입력해줘."
+    },
+    "tokens": {
+      "accent": "#78414c",
+      "ink": "#71364d",
+      "paperColor": "rgb(113, 54, 77)"
+    },
+    "fieldContrast": {
+      ".pp-signature-pad": {
+        "border": "#78414c",
+        "surface": "#fae9e2",
+        "borderStyle": "solid",
+        "borderWidth": "1px",
+        "token": "#78414c",
+        "ratio": 6.7,
+        "threshold": 3,
+        "passes": true,
+        "borderMatchesToken": true
+      },
+      ".pp-signature-name": {
+        "border": "#78414c",
+        "surface": "#fff9ee",
+        "borderStyle": "solid",
+        "borderWidth": "1px",
+        "token": "#78414c",
+        "ratio": 7.54,
+        "threshold": 3,
+        "passes": true,
+        "borderMatchesToken": true
+      }
+    },
+    "focusAfterAccept": {
+      "tag": "DIV",
+      "className": "pp-signed",
+      "text": "서명했어, Baby ♡Li",
+      "role": "status",
+      "tabIndex": "-1"
+    },
+    "escape": {
+      "open": "false",
+      "focusTag": "BUTTON",
+      "focusClass": "pp-dolls",
+      "focusText": "우리의 약속"
+    }
+  },
+  "storage": {
+    "app": {
+      "bodyText": "Yeonseok\nLisbeth\n게임 목록\nPapi의 편지\n건의사항\nKO\nES · RD\n\nYEONSEOK\n♡\nLISBETH\n04.04.2025\n\nBaby,\n이거 내가\n만들었어!\n\n멀리 있어도,\n우리 둘이 같이 놀 수 있게.\n\n같이 놀자\n↗\nPapi의 편지\n↗\n한국\nRepública Dominicana\nBaby, 같이 놀자.\n같이 놀자\n↗\nYEONSEOK & LISBETH\n우리 둘이 같이 놀 수 있는 곳\n↓\nMADE FOR YOU, BABY.\n건너뛰기\n↗\n시작은\nInterPals였어.\n\n서로 다른 시간에 살던, 너랑 나.\n\n처음엔,\n좀 서툴렀지.\n\n처음부터 내가 잘했던 건 아니지. 좀 무례했잖아.\n\n그리고,\n쉬지 않고.\n\n그런데 그날, 우리는 12시간이나 쉬지 않고 연락했어.\n\n대화는 끝나지 않았네, Baby.\n\nInterPals\nYeonseok\n광주\nLisbeth\nSanto Domingo\n서로에게 닿은 첫 연락.\n우리 사이, 이만큼.\n\n약\n13,792\nkm\n\n광주에서 산토도밍고까지, 도시 중심을 잇는 직선거리야.\n\n한국 리듬게임에 접속이 안 됐잖아. 바로 옆에 갈 수는 없어도 너랑 같이 놀고 싶어서 우리 둘이 놀 곳을 만들었어.\n\nBaby, 가까이 와\n원앙 ·",
+      "visibleRoot": true,
+      "pageErrors": []
+    },
+    "feedback": {
+      "recoveryHeading": "브라우저 저장소를 사용할 수 없어요",
+      "recoveryLinks": [
+        "홈으로",
+        "게임 목록"
+      ],
+      "retryButton": "다시 시도",
+      "bodyText": "Yeonseok ♡ Lisbeth\n브라우저 저장소를 사용할 수 없어요\n\n이 브라우저에서는 건의사항을 열 수 없어요. 이 사이트의 저장소를 허용한 뒤 다시 시도해 주세요.\n\n다시 시도\n홈으로\n게임 목록",
+      "visiblePage": 0,
+      "chunkRequests": [],
+      "pageErrors": []
+    },
+    "optionalWrites": {
+      "warning": "Cambiamos el idioma, pero no pudimos guardarlo para la próxima visita.",
+      "language": "true",
+      "pageErrors": []
+    }
+  },
+  "pagination": {
+    "before": {
+      "viewport": [
+        1920,
+        1080
+      ],
+      "entryCards": 25,
+      "totalCount": "1,000 개",
+      "moreText": "더 보기 (975개 남음)",
+      "firstTitle": "게임 제안\n접수\n\nIdea 0\n\n10월 22일 오후 10:09\n아이디어 상태\n접수\n진행\n완료",
+      "lastRendered": "게임 제안\n접수\n\nIdea 24\n\n10월 22일 오후 10:08\n아이디어 상태\n접수\n진행\n완료",
+      "fixtureCount": 1000,
+      "overflow": false
+    },
+    "after": {
+      "viewport": [
+        1920,
+        1080
+      ],
+      "entryCards": 50,
+      "totalCount": "1,000 개",
+      "moreText": "더 보기 (950개 남음)",
+      "firstTitle": "게임 제안\n접수\n\nIdea 0\n\n10월 22일 오후 10:09\n아이디어 상태\n접수\n진행\n완료",
+      "lastRendered": "게임 제안\n진행\n· 해볼게요\n\nIdea 49\n\n10월 22일 오후 10:08\n아이디어 상태\n접수\n진행\n완료",
+      "fixtureCount": 1000,
+      "overflow": false
+    }
+  },
+  "views": []
+}

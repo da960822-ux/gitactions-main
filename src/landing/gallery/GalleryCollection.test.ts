@@ -117,10 +117,12 @@ it('keeps every desktop peer recognizable and clear of the selected silhouette, 
     }
     bounds.push({id:group.userData.game,left,right,top,bottom});
     if(chosen&&selected.id==='domino')expect(bottom-top).toBeGreaterThan(300);
-    if(!chosen)expect(bottom-top).toBeGreaterThanOrEqual(42);
+    if(!chosen)expect(bottom-top).toBeGreaterThanOrEqual(70);
    }
    const chosen=bounds.find(bound=>bound.id===selected.id)!;
    for(const peer of bounds.filter(bound=>bound!==chosen))expect(Math.max(peer.left-chosen.right,chosen.left-peer.right,peer.top-chosen.bottom,chosen.top-peer.bottom),`${selected.id}/${peer.id} clearance`).toBeGreaterThanOrEqual(16);
+   const peers=bounds.filter(bound=>bound!==chosen);
+   for(let a=0;a<peers.length;a++)for(let b=a+1;b<peers.length;b++)expect(Math.max(peers[a].left-peers[b].right,peers[b].left-peers[a].right,peers[a].top-peers[b].bottom,peers[b].top-peers[a].bottom),`${peers[a].id}/${peers[b].id} peer clearance`).toBeGreaterThanOrEqual(8);
   }
   collection.update({selected:'domino',time:0,paused:true,snap:true,storyFocus:.5});
   collection.root.children.forEach((group,index)=>{
@@ -129,6 +131,26 @@ it('keeps every desktop peer recognizable and clear of the selected silhouette, 
    expect(group.position.x).toBeCloseTo(chosen?2.55:Math.cos(angle)*5.8);
    expect(group.position.z).toBeCloseTo(chosen?4.4:-3.2);
   });
+ }finally{collection.dispose();}
+});
+
+it('reports settled frames and restarts for selection and hover, snapping the final residuals',()=>{
+ vi.spyOn(T.TextureLoader.prototype,'load').mockImplementation(()=>new T.Texture());
+ vi.stubGlobal('document',{createElement:()=>({width:0,height:0,getContext:()=>({fillText(){},fillRect(){},strokeRect(){},save(){},restore(){},translate(){},rotate(){}})})});
+ const collection=createGalleryCollection(),frame={selected:'domino',time:0,paused:false};
+ try{
+  expect(collection.update({...frame,snap:true})).toBe(false);
+  expect(collection.update({...frame,hovered:{id:'domino',x:1,y:1}})).toBe(true);
+  let moving=true,frames=0;
+  while(moving&&frames++<120)moving=collection.update(frame);
+  expect(moving).toBe(false);
+  const chosen=collection.root.children.find(group=>group.userData.game==='domino')!;
+  expect(chosen.position.y).toBe(0);expect(chosen.rotation.x).toBe(.15);expect(chosen.rotation.y).toBe(-.2);
+  expect(collection.update({...frame,selected:'splendor'})).toBe(true);
+  frames=0;moving=true;
+  while(moving&&frames++<120)moving=collection.update({...frame,selected:'splendor'});
+  expect(moving).toBe(false);expect(frames).toBeLessThan(40);
+  expect(collection.update({...frame,selected:'davinci',paused:true})).toBe(false);
  }finally{collection.dispose();}
 });
 

@@ -1,0 +1,150 @@
+{
+  "verdict": "PASS — scoped corrected story addition at the reviewed desktop states",
+  "whole_site_score": "No new whole-site aggregate. Prior31/40 remains the interim whole-site review from before this addition. Taste strict6.0 FAIL remains prior official inspector result, not a rerun for this revised story.",
+  "evidence": [
+    "correction/contact-ko-1440.png",
+    "correction/awkward-ko-1440.png",
+    "correction/contact-es-1920.png",
+    "correction/awkward-es-1920.png",
+    "correction/terminal-final-ko-1440.png",
+    "correction/terminal-final-es-1920.png",
+    "correction/reduced-cold-ko-1440.png",
+    "correction/reduced-cold-es-1920.png"
+  ],
+  "resolved": [
+    {
+      "id": "S1",
+      "result": "City labels and names clear of upperheart strokes in reviewed contact/kink/terminal/reduced compositions."
+    },
+    {
+      "id": "S2",
+      "result": "Exactly one normal story caption appears for each beat; final reduced caption preserved."
+    },
+    {
+      "id": "S3",
+      "result": "Terminal strokes visibly join at both desktop widths in normal and cold reduced state. Small inlay marks no longer form thick blobs."
+    },
+    {
+      "id": "S4",
+      "result": "Final sticky origin top96px at both sizes clears64px nav by32px; wholeheart andcaption visible.96pxpadding moved into fc-story enlarges gridrow."
+    }
+  ],
+  "criteria": {
+    "relationship_meaning": "Pass. Approved faces, names, InterPals and two-part heart make meaning immediately recognizable.",
+    "integrated_heart": "Pass. Open→kink→joined12-hour heart follows the factual three-beat story, without scattered confetti.",
+    "factual_legibility": "Pass at reviewed states. InterPals, own initialrudeness and first-day12continuoushours remain explicit in KO/ES. No first-contact date or fakechat added.",
+    "interaction_reversible": "Pass in correction batch. Attraction>5.8px resets<.05px; reverse restores exactcontact paths. Finalchange is CSStravelplacementonly.",
+    "reduced": "Pass in cold reduced correction evidence at both widths. Static completed heart, duration and all required narrative remain, transformnone. FinalCSSchange removes travelpadding in reducedmode.",
+    "layout": "No horizontaloverflow. Final normal heights1132px1440 and1326.39px1920, +96px from priorstory; scopeDOMcheck replaces any claim oldheightsunchanged. No officialinspector rerun."
+  },
+  "terminal_geometry": [
+    {
+      "width": 1440,
+      "section": {
+        "x": 0,
+        "y": -392,
+        "width": 1440,
+        "height": 1132,
+        "top": -392,
+        "right": 1440,
+        "bottom": 740,
+        "left": 0
+      },
+      "figure": {
+        "x": 670.421875,
+        "y": 96,
+        "width": 661.578125,
+        "height": 588.0625,
+        "top": 96,
+        "right": 1332,
+        "bottom": 684.0625,
+        "left": 670.421875
+      },
+      "origin": {
+        "x": 908.6796875,
+        "y": 96,
+        "width": 185.046875,
+        "height": 63.625,
+        "top": 96,
+        "right": 1093.7265625,
+        "bottom": 159.625,
+        "left": 908.6796875
+      },
+      "nav": {
+        "x": 0,
+        "y": 0,
+        "width": 1440,
+        "height": 64,
+        "top": 0,
+        "right": 1440,
+        "bottom": 64,
+        "left": 0
+      },
+      "beat": "continuous",
+      "caption": "그날의 대화는 계속됐어.",
+      "paths": [
+        "M360 238C280 126 120 151 120 268C120 310 174 368 230 410C270 450 320 490 360 520",
+        "M360 238C440 126 600 151 600 268C600 310 546 368 490 410C450 450 400 490 360 520"
+      ],
+      "durationOpacity": "1",
+      "overflow": 0
+    },
+    {
+      "width": 1920,
+      "section": {
+        "x": 0,
+        "y": -464,
+        "width": 1920,
+        "height": 1326.390625,
+        "top": -464,
+        "right": 1920,
+        "bottom": 862.390625,
+        "left": 0
+      },
+      "figure": {
+        "x": 1016,
+        "y": 96,
+        "width": 760,
+        "height": 675.546875,
+        "top": 96,
+        "right": 1776,
+        "bottom": 771.546875,
+        "left": 1016
+      },
+      "origin": {
+        "x": 1297.71875,
+        "y": 96,
+        "width": 196.5625,
+        "height": 67.59375,
+        "top": 96,
+        "right": 1494.28125,
+        "bottom": 163.59375,
+        "left": 1297.71875
+      },
+      "nav": {
+        "x": 0,
+        "y": 0,
+        "width": 1920,
+        "height": 64,
+        "top": 0,
+        "right": 1920,
+        "bottom": 64,
+        "left": 0
+      },
+      "beat": "continuous",
+      "caption": "Y ese día seguimos hablando.",
+      "paths": [
+        "M360 238C280 126 120 151 120 268C120 310 174 368 230 410C270 450 320 490 360 520",
+        "M360 238C440 126 600 151 600 268C600 310 546 368 490 410C450 450 400 490 360 520"
+      ],
+      "durationOpacity": "1",
+      "overflow": 0
+    }
+  ],
+  "remaining_limitations": [
+    "Square approved-face crops still read as inserted portraits; optional material/crop polish, not a blocker or permission to regenerate faces.",
+    "This is a bounded chapter check, not fullsite, alltransientpositions, screenreader, physicaltouch, mobile/video or hardwareperformance verification.",
+    "Previous wholeapp remaining priorities still stand; this pass only resolves scoped story addition defects."
+  ],
+  "method": "Fresh isolated Chromium/SwiftShader contexts. Six correction normalframes plus two coldreducedframes, then only two terminalframes for finalCSSplacement. All listed final evidence opened. No product edits or inspector/detector rerun by reviewer."
+}

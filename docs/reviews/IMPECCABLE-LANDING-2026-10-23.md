@@ -1,108 +1,123 @@
-# 랜딩 개선·스킬 적용 기록 — 2026-10-23 KST
+# 공식 스킬 재점검·수정·재검수 — 2026-10-22 UTC / 23 KST
 
-기존 브랜치 `redesign/folded-playhouse-depth-r8-20261018`, 시작 커밋 `2bebd90`. 승인된 우주 Hero/B 게임방·인물·8개 게임·원문 편지·실제 서명·장미 엔딩을 보존했다. 원본 main 병합이나 공개 배포는 하지 않는다.
+시작 소스 `921bac645d99ab0d7f54e00211b220695b422fd0`, 기존 `redesign/folded-playhouse-depth-r8-20261018` 브랜치. 승인된 우주 Hero/B 게임방, 인물, 8개 게임, 원문 편지, 두 언어, 실제 서명·장미·건의사항을 보존했다. 원본 main 병합·공개 audience 전환·새 영상·모바일 전수 검수는 하지 않았다. 이 문서는 현재 재점검 결과이며, [이전 체크포인트 기록](https://github.com/da960822-ux/gitactions-main/blob/921bac645d99ab0d7f54e00211b220695b422fd0/docs/reviews/IMPECCABLE-LANDING-2026-10-23.md)은 Git 이력에 남긴다.
 
-## 진단과 범위
+## 무엇을 실제 실행했나
 
-Impeccable 공식 v4.5.2 본문과 선택한 세부 지침을 읽고, 서로 결과를 보지 않은 시각 검수 A와 detector/브라우저 검수 B를 분리했다. A의 초기 평가는 21/32이며 완료 판정이 아니다. 기존 31/40 기록과는 평가 적용 항목이 달라 직접 비교하지 않는다. CLI 두 검사 `[]`와 실제 화면의 결함이 동시에 존재했다. 승인된 Baby 서체·헌정문은 일반적인 detector 경고로 제거하지 않았다.
+이전에는 선정한 지침을 적용했지만 모든 평가 워크플로를 완료한 것은 아니었다. 이번에는 설치된 **144개 SKILL.md를 분류**하고, 관련 평가·자문 본문 17종과 필수 참조를 읽었다. 144개 전부를 실행했다는 뜻은 아니다. 파일별 경로·해시·역할·실행 조건은 [전체 인벤토리](assets/impeccable-landing/full-skill-review/skill-inventory.json)에 있다. 제품 목적과 충돌하는 게임 엔진 이식·무작위 새 디자인·영상 제작 지침은 제외했다.
 
-루나는 설치된 전체 144개 SKILL.md(본문 142종)를 후보로 대조했다. Impeccable 내부 명령만 대상으로 삼지 않았다. 선정 스킬의 현재 본문·필수 참조자료를 읽고, 문제→주 스킬→보조 스킬→소유 파일→검증 기준을 매칭했다. 전체 설치 스킬을 이번 화면에 모두 실행했다는 뜻은 아니다.
-
-상세 [전체 스킬 매칭 기록](assets/impeccable-landing/skill-matching.json).
-
-## 실제 수정
-
-| 문제/새 요구 | 적용한 지침 | 실제 변경 | 검수 |
-|---|---|---|---|
-| 초반 카메라가 한 사람만 크게 잘라 보여줌 | camera-systems, Impeccable layout/animate, GSAP ScrollTrigger | 급격한 FOV 33.8° 확대 제거, 초기 이동/시선 재조정. B 최종 좌표·원화는 유지 | 동일 315px 스크롤 전후 캡처. 전체 이동 구도 최종 승인으로 간주하지 않음 |
-| B 이후 화면 약 60%가 빈 상태 | layout/animate | 들어오는 서사와 방의 유지 시간을 맞추고, 모바일의 관련 없는 테이블이 서사 중 나타나지 않게 함 | 방 도착·출구 실제 화면 |
-| 대표 게임이 작고 실행 버튼이 화면 아래 | layout/adapt | 데스크톱 대표 크기 2.1→2.6, 뷰포트 비례 무대, 설명/실행 버튼 한 묶음 | 1440/1920에서 대표 약 330/395px, 버튼 노출, 8개 선택·경로 |
-| 게임 조각이 선택 후에도 계속 흔들림 | Emil animate, Impeccable animate, 기존 Three 루프 | 480ms 퇴장 축소→이동→중앙 확대, 입력 중 방향 전환 시 현재 자세에서 재시작. 무한 부유 제거 | 정지 경계 3회 동일, 빠른 재선택·실제 포인터·키보드·움직임 감소 검사 |
-| 승부 표정 전환 때 배경까지 겹침 | Emil crossfade/button 지침, animate/delight, Motion의 CSS 선택 지침 | 방 배경은 한 장으로 고정, 마스크 포즈만 격리 합성, 280ms 포즈 전환/160ms 버튼 피드백 | 마우스·터치 에뮬레이션·빠른 역전환·키보드·움직임 감소. 독립적인 인체 애니메이션은 아님 |
-| 좁은 화면에서 거리·새 설명·시간·대결이 충돌 | adapt/layout | 좁은 화면의 명시적인 세로 흐름, 새 전용 영역, 시계/그림의 충분한 폭 | 390 실제 브라우저, 새 반응·내용·잘림 |
-| 장미 이후 다시 읽기가 스크롤 밖 | adapt/harden, Ponytail | 실제 엔딩 높이를 ResizeObserver로 반영하고 정리. 접는 위치 유지 | 실제 그린 사인→접기→장미→일반 클릭으로 다시 읽기 성공 |
-| 모바일 봉투 잘림/닫힌 종이 교차 | layout/adapt | 폭에 맞춘 위에서 보는 카메라, 닫힌 봉투 속 종이 숨김 | 봉투 전체 노출, 편지 1개 유지, 실제 서명/복귀 재검사 |
-| 사용자 제공 첫 만남 이야기 | couple-games-landing-design, bolder/layout/animate, GSAP core/timeline/scrolltrigger, Motion React | 게임방과 거리 사이에 InterPals/첫날 12시간 장면 추가. 새 SVG 접힌 종이와 잉크 선. GSAP은 바깥 스크롤, Motion은 별도 안쪽 포인터 반응 소유 | 한국어/스페인어, 세 화면, 역방향·포인터 복귀. SVG 상속 테두리/모바일 띄어쓰기 피드백 반영 |
-
-새 사실은 사용자의 직접 설명만 사용했다: InterPals에서 만남, 처음 조금 무례했던 행동, 그날 시차에도 12시간 끊임없이 연락한 일. 첫 대화 날짜를 4월 4일로 추정하거나 실제 채팅 문장을 만들지 않았다. 기존 편지 원문을 바꾸지 않았다.
-
-## 전후 화면
-
-| 항목 | 이전 | 이후 |
+| 순서 | 실제 수행한 워크플로 | 결과 / 한계 |
 |---|---|---|
-| Hero 같은 스크롤 위치 | [이전](assets/impeccable-landing/hero-before.png) | [이후](assets/impeccable-landing/hero-after.png) |
-| 게임 갤러리 | [이전](assets/impeccable-landing/gallery-before.png) | [이후](assets/impeccable-landing/gallery-after.png) |
-| 좁은 화면 거리 | [이전](assets/impeccable-landing/distance-before.png) | [이후](assets/impeccable-landing/distance-after.png) |
-| 좁은 화면 봉투 | [이전](assets/impeccable-landing/envelope-before.png) | [이후](assets/impeccable-landing/envelope-after.png) |
+|1|Impeccable `critique`: A는 디자인을 독립 평가, 완료 후에만 B의 detector/브라우저 결과 공개|같은 Nielsen 10항목, 29/40 → 31/40. B 결과를 본 뒤 A의 기준점수를 고치지 않음|
+|2|Impeccable `audit`: 접근성·성능·테마·구현 무결성|9/16 → 11/16. 반응형 항목 N/A로 분모에서 제외. 후속 기술 검증은 수정 담당 루나 + 루트 감독이며 새 독립 전체 감사를 가장하지 않음|
+|3|`ponytail-review` 및 `ponytail-audit`|현재 변경과 상위 앱/데이터 경로를 분리 검토. 저장소 예외와 도시 PNG 전송량 확인. 숫자 점수 없는 스킬에 점수를 만들지 않음|
+|4|`design-taste-frontend` 공식 inspector + critique, `taste-redesign`|1440/1920을 출력 폴더별로 실제 실행하고 전후 모든 inspector 이미지 열람. 엄격 상한 적용 6.0/10 FAIL 유지. 불리한 규칙을 숨기는 allow 옵션 사용 안 함|
+|5|`emil-design-eng` UI review|Before / After / Why 표, 키보드 즉시 반영·표정 중간 겹침·공간 전달을 평가. 임의 종합 점수 없음|
+|6|`review-animations`, `improve-animations`, `find-animation-opportunities`|실제 입력 빈도·이유·방향 전환·중간 자세·접근성을 검사. M01–M07 계획 작성 후 구현·재검수. Block → 해당 7개 수정 범위 Approve. 전체 미술 합격과 구분|
+|7|`animation-performance`, `performance-optimization`, GSAP 성능 지침, Motion 오프라인 성능 지침|실제 렌더/React commit/layout read/전송량 측정. 아래 수치 참조. SwiftShader를 실제 GPU 성능으로 해석하지 않음|
+|8|`break-ui`|실제 FeedbackPage/PartnerPact 데이터 fixture: 비어 있음·오류·로딩·긴 문장·서명/이름·1,000개 게시글. 1,000개 무제한 DOM을 25개씩 확장하도록 수정. 실제 25→50 및 원본 1,000개 유지 검증|
+|9|Impeccable `shape/layout/bolder/typeset/clarify/harden/extract/animate/optimize/polish` 중 진단에 맞는 지침|각 담당자가 실제 본문을 읽고 아래 소유 파일에 적용. 새 콘셉트로 교체하거나 조명·장식으로 구조 결함을 덮지 않음|
 
-새 첫 만남 장면은 기존 화면에 없었던 추가다. [현재 장면](assets/impeccable-landing/first-conversation.png).
+MotionScore는 Motion+ hosted MCP가 없어 **실행 불가 / 점수 없음**이다. `overdrive`의 새 콘셉트 선택 워크숍과 `live`의 사용자 선택 변형 워크숍은 실행했다고 주장하지 않는다. 실제 브라우저 비교/수정은 했다. Taste 전체 기본 gate의 모바일·film 항목은 사용자 제외 범위여서 생략했다. inspector의 1920 기본 높이는 1200px이며 이를 1080px로 표시하지 않았다. 별도 인간 시각 검수는 정확히 1920×1080과 1440×900이다.
 
-## 사용하지 않은 것과 제한
+## 전체 수정 배치 점수와 판정 — 추가 하트 장면 개편 전
 
-- shape는 이미 확인된 목적/보존 범위를 다시 승인받는 절차로 반복하지 않았다. overdrive의 새 기술 방향 선택과 live의 실시간 변형 선택 워크숍도 실행했다고 주장하지 않는다. polish는 실제 화면 피드백을 같은 담당자에게 돌려 수정하고 재검수하는 방식으로 적용했다.
-- Remotion/HyperFrames 영상, Motion+·MotionScore, 새 런타임 의존성, 새 인물 생성은 사용하지 않았다. 영상도 만들지 않았다. 새 종이 자산은 소스에 들어 있는 SVG다.
-- 기존 지역·리듬게임 접속 문제·시작 날짜·두 언어는 이미 구현된 서사여서 신규 콘텐츠라고 계산하지 않았다. 새 게임 코스/플레이 기능 추가안은 사용자 의도와 달라 제외했다.
-- Chromium headless, ANGLE SwiftShader, DPR1의 1920×1080·1440×900·390×844 결과다. 소프트웨어 렌더링이며 실제 GPU/스마트폰 성능이 아니다. 갤러리 480ms는 논리 동작 시간이고 병렬 소프트웨어 캡처의 첫 안정 표본은 663ms였다. 하드웨어 FPS 합격을 선언하지 않는다.
-- API/멀티플레이의 외부 운영 상태, 실제 게임 내부 전수 플레이, 스크린리더·200% 확대·Safari는 이번에 검수하지 않았다. 기존 API·게임 엔진·리듬타파 파일은 변경하지 않았다.
-- Hero의 다른 중간 위치에서 큰 벽/일부 인물 퇴장 구도, 갤러리 일부 주변 오브젝트 겹침은 남은 시각 검수 대상이다. 이 기록은 사이트 전체 완성 선언이 아니다.
+| Nielsen 항목 | 전 | 후 |
+|---|---:|---:|
+|상태 표시|3|3|
+|현실과의 대응|4|4|
+|사용자 제어|3|3|
+|일관성|2|3|
+|오류 예방|3|3|
+|알아보기 쉬움|3|3|
+|효율성|3|3|
+|시각적 간결함|2|3|
+|오류 복구|3|3|
+|안내|3|3|
+|**합계 /40**|**29**|**31**|
 
-검증 결과: 빌드 성공, Vitest 87개 파일/672개 테스트 통과, 별도 Node LetterCollection 테스트 1개 통과, 마지막 CLI detector `[]`, diff 공백 검사 통과. Vite의 기존 큰 청크 경고와 Motion의 use-client 번들 경고는 남아 있다.
+기술 점검은 접근성 **2→3**, 성능 **2→2**, 테마 **2→2**, 구현 무결성 **3→4**, 합계 **9→11/16**이다. 개선된 기능 경로의 제한적 점수이며 WCAG 인증·전체 저장소 완벽성 점수가 아니다.
 
-새 첫 만남 장면은 독립 섹션의 첫 버전이다. 현재는 사실 요약과 종이 비주얼·포인터/스크롤 반응까지이며, 풍부한 서사 전개 전체가 완료됐다고 간주하지 않는다.
+추가 하트 장면 개편 전 공식 Taste 엄격 판정은 **6.0→6.0/10, FAIL**이다. 원시 inspector는 전 8 FAIL/11 WARN, 후 1440은 8/11, 1920은 7/11이다. 시계 도시명을 kicker로, WebGL 봉투를 빈 구역으로, 승인된 하트·분위기 그라디언트·Baby 강조를 일반 금지 패턴으로 보는 경고를 실제 화면과 구분했다. 승인 예외를 이유로 원시 불합격을 합격으로 바꾸지 않았다. 시각·사용성 31/40과 Taste 엄격 상한은 서로 다른 평가다.
 
-## 실행 기록
+강점은 실제 InterPals/서툰 시작/첫날 12시간 이야기, 두 언어와 시차 기능, 원문 편지에서 직접 서명·장미·다시 읽기로 이어지는 실제 사용자 흐름이다. 첫 방문자는 Hero 포즈 컷을 공간 이동보다 장면 교체로 느낄 수 있다. 키보드 이용자의 서명 후 위치 손실은 수정했고, 움직임 감소 이용자는 실제 설정 변경 때 새 동작이 즉시 정착하는 것을 확인했다. 느린 네트워크 이용자에게 큰 전송량은 여전히 문제다.
 
-`context --target src/landing/Landing.tsx` 1회. 초기 CLI 표준/layout 검사와 마지막 표준 검사 완료. 브라우저 주입 검사의 모바일 overlay가 뷰포트 폭을 바꾸는 현상은 별도 기록하고, 오염된 측정값 대신 새 비주입 컨텍스트를 사용했다. 독립 A 완료 후에만 B 결과를 합쳤다. 사용자 목적·브랜치·보존 요구가 이미 명시돼 같은 승인 질문을 반복하지 않았다.
+## 발견 → 실제 수정 → 브라우저 증거
 
-Critique slug `src-landing-landing-tsx`; ignore 파일 없음. 현재 스냅샷 `.impeccable/critique/2026-10-22T20-11-54Z__src-landing-landing-tsx.md`는 남은 Hero 검수 때문에 닫지 않았다. 임시 critique 본문은 삭제했다. B의 전용 overlay 서버는 종료했다. 로컬 검수 서버는 루트 소유 Vite preview 5174이며 종료 시 해당 실행 세션에 Ctrl-C를 보낸다. 사용자 확인 주소는 기존 본인 전용 Site를 유지한다.
-
-## ThreeUI·Kexsio를 검토한 후 적용한 업그레이드
-
-이번 작업의 시작점은 기존 Hero 브랜치의 `0579f6e41bc9572e111c3eeecb63e6b647bc2560`이다. 위의 종이 포스터·복도 관련 설명은 이전 체크포인트 기록이며, 아래 구현으로 교체했다. 새 제품 브랜치·런타임 의존성을 만들지 않았다.
-
-### 실제 참고한 범위
-
-ThreeUI와 Kexsio는 여러 구현을 모은 카탈로그다. 실제 브라우저에서 ThreeUI 3D Paper의 드래그/굽힘, Kage의 정·역 스크롤, Kexsio Hover Row의 선택 영역 확대를 확인했다. Kexsio Shutter는 자동 순환 예제여서 스크롤 전환 증거로 쓰지 않았다. 로딩에 머문 Service Cards도 사용했다고 계산하지 않았다.
-
-ThreeUI Community 공개 소스는 커밋 `68802d5428071ada5c20db8094b1649e6bb770ed`로 고정했다. 두 패턴만 선별 적용했다. `glassToggleScene.ts:553–571`의 FOV/비율/카메라 거리 계산은 승인된 B 방의 물리 기하를 유지하는 데 적용했고, `character-filmstrip.html:401–434`의 초점/깊이 원리는 실제 갤러리 조각 경계에 맞춰 재배치했다. 전자는 기존 도착 공식과 대수적으로 동등하며, 그 자체가 새 시네마틱 연출을 만들어준다는 뜻은 아니다. [MIT 고지와 원본 파일 해시](../../THIRD_PARTY_NOTICES.md), [소스 검토 기록](assets/impeccable-landing/threeui-upgrade/source-audit.json).
-
-Kexsio는 선택된 대상이 충분한 공간을 받고 다른 선택지도 계속 찾을 수 있어야 한다는 구성 원리를 참고했다. 코드·사진·브랜드를 복사하지 않았다. ThreeUI Pro/Beta, 외부 카탈로그 미디어, 폰트도 가져오지 않았다. 기존 React 19.1.1·Three 0.186.1·GSAP 3.15.0·Motion 14.5.0을 유지했다. ThreeUI의 예전 색공간 API를 그대로 넣거나 별도 렌더러/iframe을 추가하지 않았다.
-
-### 병렬 구현과 실제 스킬 적용
-
-| 담당 영역 | 실제 변경 | 읽고 적용한 지침과 역할 | 직접 검수 |
-|---|---|---|---|
-| Sol: Hero → B | 기존 긴 복도·벽·측면으로 넘어가는 사진판 제거. 승인 우주 원본을 인덱스 메시의 전체 화면 표면에 등록하고 내부가 깊이 방향으로 휘게 했다. 짧은 카메라 이동 뒤 B 전체를 함께 드러낸다. 가장자리는 프레임 밖에 고정하고 3% 여유 영역만 추가해 포인터 이동 시 경계가 드러나지 않게 했다. 원본 인물은 변형하지 않았다. | camera-systems, threejs-scene-setup/scene graph, Impeccable layout/animate. 기존 GSAP 스크롤/공유 카메라 소유는 유지. | 1440×900·1920×1080에서 진행률 .20/.28/.35/.50 실제 완료 프레임. B 원본 행렬·끝 구도·정역 전환·포인터 경계·자원 정리 테스트. **아래 P2는 남음.** |
-| Sol: 첫 대화 | 한 장의 종이 요약을 InterPals → 서툰 첫인상 → 첫날 쉬지 않은 12시간의 세 장면으로 확장. 같은 연결선이 이어지고 꺾였다가 큰 `12시간 / 12 horas`와 함께 정리된다. 실제 DOM은 항상 읽을 수 있다. 첫 시안의 얇은 선/과한 빈 공간 피드백을 같은 담당자에게 돌려 50svh 텍스트 흐름과 480–540px 시각물로 재구성했다. | Taste, couple-games-landing-design, Impeccable bolder/layout/animate, GSAP React/core/timeline/ScrollTrigger. 네이티브 sticky와 단일 SVG 타임라인 사용. 새 Motion 포인터 기울기는 추가하지 않음. | 1440/1920 세 장면, 역방향·분수 단위 선 진행·언어·움직임 감소, 390 스페인어 제한적 잘림 확인. 가짜 채팅/날짜/시각/용서 장면을 만들지 않음. |
-| Sol: 두 도시·시차 | 광주와 산토도밍고를 한 쌍의 새 도시 일러스트로 제작. 한 이미지의 좌우를 CSS로 사용한다. 시간 선택에 따라 낮/밤 톤이 반응한다. 기존 현재 시계·날짜·13시간 차이·전날 계산 유지. | Taste와 Impeccable layout/animate. Motion의 in-view/reduced-motion 판단, GSAP 240ms 색조 전환. 키보드·오프스크린·움직임 감소에서는 즉시 반영. | 실제 슬라이더·Home/End·전날/같은 날·양 언어. 도시 그림은 분위기 일러스트이며 실제 방문 기록/첫 대화 날의 모습이 아님. |
-| Sol: 게임 갤러리 | 큰 대표 오브젝트와 기존 480ms 선택 교환을 유지. 주변 일곱 개를 양쪽 열린 호로 옮겨 대표 조각과 겹치지 않게 했다. Splendor·DaVinci 아트와 모든 기존 게임 자산/광원 유지. | threejs-scene-setup, game-ui-ux, ThreeUI 초점/깊이 원리와 Kexsio의 선택 공간 관찰. | 8개 대상 실제 메시 경계, 포인터 선택·hover·Home·빠른 선택 전환. 최소 대표/주변 간격 1440에서 35.47px, 1920에서 42.56px. [측정](assets/impeccable-landing/threeui-upgrade/gallery-checks.md). |
-| Luna: 공통 메뉴/복원 | Hero의 처음 메뉴를 유지하고 Hero를 지나면 같은 노드를 64px 고정 메뉴로 전환. 준비 완료와 ScrollTrigger pin 설치 뒤 직접 링크를 복원. 기존 게임·편지·건의사항·언어 항목 유지. | Ponytail, Impeccable live/polish·복원/접근성 원칙, ScrollTrigger 초기화 순서. | 1440×900·1920×900 초기/고정/역복귀, `/#games`, `/#papi-letter`, KO/ES, feedback 이동. 추가 1440/1920×1080에서 시간·편지 메뉴의 실제 페인트와 elementFromPoint까지 확인. [검증](assets/impeccable-landing/threeui-upgrade/navigation-checks.json). |
-| 독립 Sol 검수 + 루트 통합 | 구현 담당과 분리해 실제 중간 화면과 전체 사용자 흐름을 확인. 검사 실패만 전달하지 않고 원인과 개선된 프롬프트를 같은 담당자에게 돌려 재검수했다. | Impeccable critique/layout/polish의 독립 시각 판단, Taste, Ponytail. 이전 공식 critique 기록을 참고하되 새 전체 명령을 모두 실행했다고 주장하지 않음. | 양 데스크톱에서 8개 선택/경로, 시간 변경, 메뉴를 통한 편지 열기, 편지 1개, 직접 그린 서명→문서 서명→장미→일반 다시 읽기. |
-
-설치된 144개 SKILL.md/142종 본문은 후보군이다. 전체를 기계적으로 실행하지 않았으며, 실제 선정/역할은 [기존 스킬 매칭](assets/impeccable-landing/skill-matching.json)에 이어 위에 구분했다. GSAP는 스크롤/조정된 타임라인, Motion은 기존 컴포넌트 입력과 가시성 판단에 사용했다. Remotion/HyperFrames 영상은 제작하지 않았고 실시간 3D의 증거로 쓰지 않았다.
-
-### 전후 화면과 남은 시각 문제
-
-| 영역 | 이전/반려 | 현재 |
+| 발견 | 적용 스킬 / 소유 파일 | 실제 변경과 직접 검수 |
 |---|---|---|
-| 첫 대화 | [요약 포스터](assets/impeccable-landing/threeui-upgrade/story-before.png) | [InterPals](assets/impeccable-landing/threeui-upgrade/story-contact.png) · [서툰 시작](assets/impeccable-landing/threeui-upgrade/story-awkward.png) · [12시간](assets/impeccable-landing/threeui-upgrade/story-continuous.png) |
-| 시차 장면 | [이전](assets/impeccable-landing/threeui-upgrade/time-before.png) | [도시 일러스트](assets/impeccable-landing/threeui-upgrade/time-after.png) |
-| 갤러리 | [이전 배치](assets/impeccable-landing/threeui-upgrade/gallery-before.png) | [열린 양쪽 호](assets/impeccable-landing/threeui-upgrade/gallery-after.png) |
-| Hero 중간 | [반려한 사진판/얼굴 절단](assets/impeccable-landing/threeui-upgrade/hero-rejected.png) | [현재 .35](assets/impeccable-landing/threeui-upgrade/hero-current-midpoint.png) · [B 도착](assets/impeccable-landing/threeui-upgrade/hero-current-arrival.png) |
-| 공통 메뉴 | 처음 Hero 구도 유지 | [후반부 고정 메뉴](assets/impeccable-landing/threeui-upgrade/navigation-after.png) |
+|A1/M01: 인물 사라짐·얼굴 위 우주 RGB 겹침|camera-systems, threejs-scene-setup, GSAP ScrollTrigger/React, Impeccable layout/animate; `heroRoomJourney.ts/test`, 루트 진단 metadata|서 있는 원본을 .24까지 불투명 유지하고 앉은 B 원본으로 명시적 포즈 컷. B 원본 RGB/기존 semantic mask로 전경을 보호하고 실제 indexed 우주 메시를 B 뒤로 후퇴. 전체 이미지 alpha 혼합 제거. 전·역·재반전, .239/.241/.28/.35/.39/.50 실제 완료 frame/fence 확인|
+|첫 재검수에서 새 책상 절단선/마스크 구멍|같은 Hero 담당에게 원인·프롬프트 피드백, 새 담당으로 회피 안 함|새 재질이 기존 outpaint shader를 빠뜨리고 UV를 잘랐던 원인 수정. 원본 shader/uniform 계승, 승인 외곽 행 유지, coverage 개선. 마지막 양 데스크톱 12장 직접 열람: 하단 선·구멍 해결. **포즈 컷/곡선 열림의 미술적 한계는 남음**|
+|A2/M06: 작고 어두운 비선택 조각·정지 중 계속 렌더|ThreeUI 초점/깊이 원리, game-ui-ux, optimize, GSAP 성능; GalleryCollection/StudioScene/GameGallery/CSS|주변 크기 .7→1.1, 비이미지 재질만 밝게. 기존 대표 2.6·원래 조각·Splendor/DaVinci 유지. 실제 8개 선택·href·hover/raycast·focus 설명·즉시 키보드·빠른 역전환 검증. 정지 후 루프 종료, 입력 때 재개|
+|A3/A4: 반복되는 좌우 분할·큰 빈 공간·줄바꿈|layout/bolder/typeset/craft-floor/Taste; FirstConversation, StoryChapters, story-time/CSS, 초대문 선택자|InterPals 3개 beat와 실제 trigger 중심 정렬, 간격 축소. 시차는 전체 폭 제목→두 도시→슬라이더→짧은 footer. KO 마지막 ‘좋겠어.’ 유지, ES 대결 제목 두 줄. 두 크기 8장 열람, 13h/날짜·Home/End·선택시각·역방향 검증. 원문 편지는 수정 안 함|
+|B1/B3/B5: 서명 경계 대비·포커스 손실·최소 글자 안내 없음|harden/clarify/polish; PartnerPact/CSS|서명 패드/텍스트 경계 대비 6.70:1/7.54:1. 2–40자 안내/1자 오류·aria-invalid. 서명 후 실제 문서 서명+확인에 focus, Escape→인형 opener 복귀|
+|B2: 저장소 차단 시 빈 페이지|Ponytail/harden; App, FeedbackRoute, browserStorage/helper/test|선호 저장소 예외 보호. 실제 production 재검수에서 Supabase SDK top-level debug 읽기가 먼저 실패하는 추가 원인 발견. App이 lazy chunk 전에 저장소 불가를 감지해 실제 안내/재시도/홈/게임 경로 제공. 마지막 차단 테스트: FeedbackRoute chunk 요청 0, pageerror 0. 저장 성공을 가장하지 않음|
+|Break UI: 게시글 1,000개 모두 DOM 생성|Ponytail/optimize; FeedbackPage/test/CSS|25개씩 표시·더 보기. 실제 25→50, 남은 수 975→950, 저장 fixture는 1,000개 유지. API 데이터 삭제/서버 query 축소로 주장하지 않음|
+|M02/M03: 실시간 움직임 감소 누락·키보드 hover 애니메이션|Motion 오프라인 접근성, Emil animate; live reduced hook, CountryCompanions, StoryTimeInteraction, Pact, room CSS|실제 visible/greet 중 설정 변경→정착/identity transform. 재활성화 후 키보드 Enter 즉시 반영. 방 hint는 실제 Tab 즉시, reduced pointer hover도 즉시 보임|
+|M04/M05/M07: 종이 강제 layout·광범위 React 갱신·겹친 얼굴|animation-performance/GSAP performance/Emil; PostHeroPreview, LandingWorldHost, duel CSS|종이 자연 layout을 ResizeObserver로 cache, shared host도 cache 사용. 정확한 실수 상태는 ref로 전달하고 React는 의미 경계만 갱신. 표정 이미지 crossfade를 없애 두 눈 겹침 제거. 실제 중간 접기→재열기, 직접 그린 서명→장미→일반 다시 읽기 검증|
+|B4/B6: 큰 도시 PNG·반복 UI 색 값|optimize/extract; city asset, pact CSS|도시 PNG 2,852,299→WebP 2,092,858 bytes, decoded RGB 완전 동일 확인. 공용 public PNG 제거, 생성 원본 보존. 반복 서명 accent/ink만 두 scoped token으로 통합. 594개 색 literal 전체를 결함으로 취급하지 않음|
 
-**P2: Hero .35의 전경 겹침은 남아 있다.** 딱딱한 사진 경계가 얼굴을 가르는 문제는 없어졌지만, 전체 화면 혼합 중 망원경/하늘의 높은 대비가 게임방 얼굴 위에 겹친다. 두 인물이 함께 나타나는 것과 얼굴 가독성이 완성되는 것은 다르다. 메시 내부 변형과 짧은 카메라 이동은 실제 구현이지만, 게임방은 승인 일러스트이며 독립적인 완전한 3D 방이 아니다. Lusion 수준의 공간 전환이나 전체 디자인 합격으로 보고하지 않는다.
+게임 갤러리 최종 최소 주변 높이는 1440에서 **76.80px**, 1920에서 **92.16px**; 대표와의 최소 간격은 **52.66/63.19px**, 주변 간격은 **10.87/13.04px**이다. 네이티브 `/#games` 복원과 메뉴 클릭은 실제 heading top108px / 메뉴 하단64px, 8개 선택 모두 노출했다. 초기 raw-scroll 캡처의 제목 잘림은 scroll-margin을 우회한 harness 문제여서 불필요한 CSS 수정을 하지 않았다.
 
-독립 A의 휴리스틱 평가는 **24/32**(7·10번 해당 없음)이며, 사용성 기반이 개선됐다는 뜻이다. 시각 완성도 전체 통과가 아니다. 비선택 갤러리 조각이 작고 어둡다는 P3 관찰도 남겼다. [독립 평가 원문](assets/impeccable-landing/threeui-upgrade/assessment-a.json).
+## 실제 측정
 
-**P3: 첫 대화의 처음 두 상태는 절제된 연결선 시각물이다.** 12시간의 중심과 밀도는 개선됐으나 첫날을 재현한 풍부한 인물 일러스트 장면은 아니다. 새로운 기억이나 가짜 대화를 만들어 부풀리지 않았다. 독립 검수는 이 점을 마감 관찰로 남겼다.
+- 111개 개봉 외부 tick의 React commit **110→7**, 마지막 정확한 opening=1 유지. 100개 진행률 표본은 **4 commit**. standalone의 기존 연속 동작은 유지.
+- 종이 pose callback 60회에서 `offsetHeight` 읽기 **120→0**. 공유 host도 같은 cache 사용. 중간 접기·재열기 후 자연 높이 **838px** 복원, 고정 height 제거.
+- 갤러리 정지 2.1초 동안 실제 renderer count: **24→24**(1440), **23→23**(1920). 다음 포인터 입력으로 렌더 재개/선택 성공.
+- 같은 fresh production preview `/#games` 경로: **33,572,762→32,816,261 encoded bytes**, **41→42 requests**, pageerrors **0**. 새 semantic mask 때문에 요청은 1개 증가. 헤더 포함 전송량이며 개발 runtime 포함 39.9MB 값과 섞지 않았다.
+- 원본 DaVinci JPEG 5,328,969 bytes 유지. decoded RGB가 동일한 lossless WebP가 8,033,862 bytes로 더 커서 채택하지 않고 임시 후보를 제거했다. 큰 전체 payload와 약 1.016MB 미압축 Landing chunk는 남은 P2다.
 
-### 최종 검증과 보호 범위
+실행 환경: Linux `/usr/bin/chromium` headless, DPR1, ANGLE **SwiftShader 소프트웨어 렌더링**, localhost 및 병렬 검수. 실기기 GPU FPS·실사용자 Web Vitals가 아니다. 검증 결과: **Vitest 88개 파일/678개 테스트, production build 통과**, Node projection/collection 별도 4개 통과, scoped CLI 표준/layout/type 검사 `[]`, diff 검사 통과. 번들의 기존 큰 chunk 및 Motion use-client 경고는 남아 있다.
 
-최종 소스에서 Vitest **87개 파일/673개 테스트**, production build 통과. 별도 Node LetterCollection 검사 **1개 통과**. 실제 브라우저에서 위 사용자 흐름을 확인했고 수집된 page error는 0이었다. 1920 첫 검수 도중 한 번 실행 컨텍스트가 사라져 별도 새 컨텍스트에서 나머지 전체 흐름을 재검수했다. 재검수에서 자발적 reload나 page error는 재현되지 않았다. 실패한 최초 실행을 정상 완료로 숨기지 않는다. [통합 증거/제한](assets/impeccable-landing/threeui-upgrade/verification.json), [첫 대화 크기/상태](assets/impeccable-landing/threeui-upgrade/story-checks.json).
+## 전후 실제 화면
 
-환경은 `/usr/bin/chromium` headless, ANGLE Vulkan **SwiftShader**, DPR 1이다. 소프트웨어 렌더링이며 하드웨어 GPU FPS·실제 모바일 기기 성능은 측정하지 않았다. CPU submit 시간이나 타임라인 길이를 GPU 성능으로 해석하지 않는다. Vite의 기존 500kB 초과 청크 경고는 남아 있다. Safari·실물 기기·외부 API/멀티플레이 운영 상태·8개 게임 내부 전수 플레이는 이번 범위에서 검수하지 않았다. 모바일 전수 검수와 새 영상은 요청에 따라 하지 않았다.
+보고서용 JPG는 캡처를 압축한 것이며 제품 원화를 수정한 것이 아니다. 대상을 고정한 정지 비교와 실제 사용자 경로 검증을 함께 사용했다.
 
-8개 게임 엔진·규칙·라우트·API/데이터·리듬타파 원본은 수정하지 않았다. 원문 편지·서명 저장·장미 엔딩·KO/es-DO와 승인 인물/게임방 원본을 보존했다. 새 자산은 `public/images/story/city-windows.png` 한 장이며 생성 원본도 별도로 유지했다. 원본 main 병합이나 공개 audience 전환은 하지 않는다. 기존 본인 전용 Site에 이 변경을 업데이트한다.
+| 영역 | 수정 전 | 최종 |
+|---|---|---|
+|Hero p=.35|[얼굴 혼합](assets/impeccable-landing/full-skill-review/hero-before.jpg)|[불투명 전경·하단 경계 수정](assets/impeccable-landing/full-skill-review/hero-after.jpg)|
+|게임 갤러리|[이전](assets/impeccable-landing/full-skill-review/gallery-before.jpg)|[동일 대표 선택](assets/impeccable-landing/full-skill-review/gallery-after.jpg)|
+|시차 구성|[좌우 반복](assets/impeccable-landing/full-skill-review/time-before.jpg)|[전체 폭 도시 쌍](assets/impeccable-landing/full-skill-review/time-after.jpg)|
+|서명|[이전 경계](assets/impeccable-landing/full-skill-review/signature-before.jpg)|[경계·입력 안내 개선](assets/impeccable-landing/full-skill-review/signature-after.jpg)|
 
-현재 검수 서버는 루트 소유 Vite **dev 5174**이며 종료 명령은 해당 실행 세션 Ctrl-C다. 제품 확인 주소는 기존 private Site를 유지한다. 이번 기록은 구체적인 업그레이드와 남은 P2/P3를 보고하는 것이며 사이트 전체 완료 선언이 아니다.
+[Hero p=.39 최종 곡선 열림](assets/impeccable-landing/full-skill-review/hero-reveal-after.jpg)은 남은 비평도 확인할 수 있게 보존했다. 강점만 골라 전체 합격으로 포장하지 않았다.
+
+## 남은 문제와 구체적인 다음 방향
+
+1. **P2 미술:** .24 포즈 컷과 .39 곡선 열림이 눈에 띈다. 물리적 메시·카메라 이동은 실제지만, 승인 B는 일러스트이고 인물/방이 완전한 3D로 재구축된 것은 아니다. Lusion 수준의 자연스러운 공간 변환으로 승인하지 않는다. 다음 미술 검토는 새 효과 추가보다 같은 B 구도에 맞춘 포즈 연결/전환 silhouette의 정지 중간 구도 비교가 우선이다.
+2. **P2 성능:** 약32.82MB payload. 승인 인물 원본을 훼손하는 무단 저해상도 교체 대신 미사용 outcome/companions의 근접 로딩과 실제 사용 크기별 파생본을 별도 검증해야 한다. 픽셀 보존 조건 안에서 도시만 개선했고 전체 미디어 최적화를 끝냈다고 하지 않는다.
+3. **P3 서사/테마:** InterPals 초반은 연결선 중심으로 여전히 얇다. 가짜 대화·시각·기억을 만들지 않았다. 현재 두 scoped 색 token은 전역 테마 정리가 아니다.
+
+Motion 추가 후보 O1(서명 확인 피드백), O2(발견물 dialog 입장)는 선택적 제안으로 기록했으며, 모션 개수를 늘리기 위해 corrective 7개에 묶어 자동 추가하지 않았다. 자주 쓰는 게임 키보드·원문 편지 문장·무한 갤러리 회전은 새 애니메이션 후보에서 제외했다.
+
+## 검증 한계·보존·실행 기록
+
+모바일/터치, 실물 기기·Safari·스크린리더 음성, 실제 GPU, 8개 게임 내부 전수 플레이, 외부 Supabase 운영 설정/멀티플레이 실시간 운영은 검수하지 않았다. 로컬 fixture만 썼으며 온라인 게시글을 보내지 않았다. SQL/API/게임 엔진/리듬타파/편지 원문은 변경하지 않았다. 익명 RPC의 운영 quota 노출은 실제 운영 설정을 못 봤으므로 **조건부 확인 항목**이며 현재 생산 장애나 확인된 보안 결함으로 주장하지 않았다.
+
+원래 PRODUCT/DESIGN의 430px 축약 Hero·카드 atlas 등 낡은 landing 지침을 최신 사용자 승인으로 바로잡았고 게임별 요구는 보존했다. ThreeUI Community MIT 출처·기존 적용 범위는 [THIRD_PARTY_NOTICES](../../THIRD_PARTY_NOTICES.md)를 유지한다. Kexsio/ThreeUI 카탈로그를 복사하거나 새 라이브러리를 설치하지 않았다. Remotion/HyperFrames 영상은 사용하지 않았다.
+
+Critique target `src-landing-landing-tsx`, ignore 없음. A/B 독립 baseline 후 순차 병합, 표준 CLI/실제 browser injection 및 screenshot 검증을 구분했다. 로컬 headless 검수라 사용자 브라우저의 Human overlay를 표시했다고 주장하지 않는다. 첫 통합 재검수 한 건은 허용된 App 교정 중 HMR로 무효화되어 제품 통과 증거로 쓰지 않았고, 마지막 고정 source에서 필요한 suffix를 다시 확인했다. 서버와 임시 본문은 정리한다. 전체 디자인 합격을 선언하지 않으며 남은 Priority Issue는 열린 상태로 기록한다.
+
+
+## 사용자 추가 피드백 — InterPals 장면 강화와 남은 마감
+
+사용자가 선 중심의 표현을 알아보기 어렵다고 지적해 별도의 실제 장면 개편을 승인했다. 위 전체 점수 31/40은 이 추가 개편 전 고정 평가이며, 새 장면을 넣었다는 이유로 전체 점수를 올리지 않는다. 후속 검수는 해당 장면의 의미·읽기·상호작용을 독립적으로 확인한다.
+
+Sol은 Taste, Impeccable bolder/layout/animate/delight, GSAP React/ScrollTrigger, Motion의 실제 지침과 기존 ThreeUI/Kexsio 검토 기록을 읽고 첫 만남 전용 파일만 수정했다. 루나는 원화·라이선스·사용 가능한 작은 인물 표현의 경로/크기와 스킬을 대조해 전달했다. 새로 인물을 생성하지 않고 승인 원화의 두 얼굴을 식별 요소로 사용한다. ThreeUI/Kexsio는 로컬 변형·고정된 기준점·단계별 구도라는 참고 원리이며 새 유료 소스/미디어를 복사했다는 뜻이 아니다.
+
+새 시각 서사는 InterPals에서 시작한 두 반쪽 하트 → 내 쪽 선의 서툰 굽음 → 하나로 이어진 하트와 12시간의 상대적 표시다. 포인터가 중앙에 가까워지면 양쪽이 조금 끌리고 벗어남/취소/해제 시 원위치로 돌아온다. GSAP은 스크롤에 따른 SVG 형태/상태를, Motion은 별도 그룹의 작은 포인터 반응만 소유한다. 같은 속성을 서로 덮어쓰지 않고 무한 루프·새 미니게임·가짜 채팅·첫 대화 날짜/시각을 만들지 않았다.
+
+독립 A의 초기 6개 일반/2개 cold-reduced 화면 검수는 큰 하트와 두 인물의 의미·사실·방향 복원을 확인했지만, 도시명과 선의 겹침·숨은 캡션·1920 끝점 틈을 P2로 돌려보냈다. 같은 담당자가 원인과 개선 프롬프트를 받아 교정했다. 통과 숫자를 맞추려고 담당자를 바꾸거나 기존 전체 점수를 재산정하지 않는다.
+
+루나는 별도 명확한 마감도 수행했다. Pact의 hover를 fine pointer에 한정하고 모든 입력의 active는 즉시 반영한다. reduced 상태의 inert 도착 문구만 숨기고 주 Hero 제목/게임/편지 링크는 보존한다. 세 편지 진입은 ‘봉투 열어보기 / 바로 읽기 / 연결해서 같이 열기’, ‘Abrir el sobre / Leerla directamente / Abrirla juntos en una sala’로 목적을 구분했다. 원문 편지는 바꾸지 않았다. 1440×900 production 양 언어 검수에서 주 Hero 노출·inert display:none·문구·실제 Pact hover와 mouse/Space active 0s, pageerror0, 관련 7개 테스트를 확인했다. 이 검수는 물리 터치나 모바일 테스트가 아니다.
+
+공식 critique 스냅샷은 `.impeccable/critique/2026-10-22T22-18-26Z__src-landing-landing-tsx.md`에 기록했다. 추이는 **31/40 → 21/32 → 29/40 → 31/40**이며 분모가 달라 전체를 같은 척도의 개선선으로 읽지 않는다. 임시 본문은 삭제했고 남은 Priority Issue 때문에 열린 상태로 둔다. 질문은 기존 승인 범위가 명확해 반복하지 않았다.
+
+
+**추가 장면 최종 검수: 양 데스크톱 통과.** 독립 A는 마지막 두 화면을 직접 열어 제목/시각물 top96px와 메뉴 하단64px 사이32px 여유, 맞닿은 하트 끝, 도시명 여백, 한 개의 정상 캡션을 확인했다. 초기 하트 끊김은 불필요한 dash tween/array를 삭제하고 형태 변화만 남겨 해결했다. 시간 표시는 큰 흰 점 대신 작고 평평한 12개 inlay로 정리했다. Sticky 여유는 grid 바깥 padding이 실제 row를 늘리지 못하던 원인을 확인하고 같은96px을 story row 내부로 옮겼다. 전체 문장/beat 중심은 유지한다.
+
+이전 live reduced 복귀 harness timeout은 통과 증거로 쓰지 않았다. 마지막 고정 소스의 양 크기 상태·포인터 원상복귀·역방향·cold reduced 검증과 독립 A의 terminal 재검수로 범위를 구분했다. [독립 최종 피드백](assets/impeccable-landing/full-skill-review/story-heart-review.md) / [검수 데이터](assets/impeccable-landing/full-skill-review/story-heart-review.json).
+
+[이전 선 중심 장면](assets/impeccable-landing/full-skill-review/story-thread-before.jpg) → [첫 연락](assets/impeccable-landing/full-skill-review/story-heart-contact.jpg) → [서툰 시작](assets/impeccable-landing/full-skill-review/story-heart-awkward.jpg) → [이어진 하트·12시간](assets/impeccable-landing/full-skill-review/story-heart-complete.jpg). [1920 움직임 감소 화면](assets/impeccable-landing/full-skill-review/story-heart-reduced.jpg)도 비교한다.
+
+추가 작업 후 최종 **88개 파일/680개 테스트 및 production build 통과**. 마지막 CSS 교정은 두 terminal frame으로 재검수했다. 최종 fresh production 전송량은 **32,816,998 bytes /42requests /pageerrors0**이며 위 주요 수정 배치 측정과의737bytes 차이는 별도로 기록한다. 새 외부 미디어·런타임 의존성은 추가하지 않았다. 기존 본인 전용 Site만 업데이트하며 공개 audience/원본 main은 바꾸지 않는다.

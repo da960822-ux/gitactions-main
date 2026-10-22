@@ -93,6 +93,22 @@ describe('Mami ideas page copy', () => {
     }
   });
 
+  it('renders a bounded first page while retaining the true total and all remaining ideas', () => {
+    const entries = Array.from({ length: 1000 }, (_, index) => ({
+      id: `entry-${index}`, category: 'game' as const, title: `Idea ${index}`, body: `Idea ${index}`,
+      status: 'new' as const, createdAt: '2026-10-21T12:00:00Z',
+    }));
+    const html = renderToStaticMarkup(createElement(FeedbackPage, {
+      language: 'ko', mode: 'online', loading: false, canCreate: false, canAcknowledge: false,
+      entries, onCreate: async () => undefined, onSetStatus: async () => undefined,
+    }));
+    assert.equal((html.match(/class="feedback-entry"/g) || []).length, 25);
+    assert.match(html, /1,000 <small>개<\/small>/);
+    assert.match(html, /더 보기 \(975개 남음\)/);
+    assert.match(html, /Idea 0/);
+    assert.doesNotMatch(html, /Idea 999/);
+  });
+
   it('shows the requested Korean Mami and Papi copy', () => {
     const html = render('ko');
     assert.match(html, /Mami, 다음엔 뭐 만들까\?/);

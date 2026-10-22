@@ -1,6 +1,7 @@
 import {useEffect,useId,useLayoutEffect,useRef,useState} from 'react';
-import {motion,useReducedMotion} from 'motion/react';
+import {motion} from 'motion/react';
 import gsap from 'gsap';
+import {useLiveReducedMotion} from './useLiveReducedMotion';
 import './partner-pact.css';
 
 const responseKey='dos-partner-pact-response-v2';
@@ -48,8 +49,8 @@ function readPactResponse(){
 }
 
 export function PartnerPact({language,onResponseChange}:{language:'ko'|'es';onResponseChange?:(accepted:boolean)=>void}){
- const ko=language==='ko',panelId=useId(),titleId=useId(),padId=useId(),reduced=useReducedMotion();
- const opener=useRef<HTMLButtonElement>(null),answerButton=useRef<HTMLButtonElement>(null),signaturePad=useRef<SVGSVGElement>(null),paper=useRef<HTMLElement>(null),title=useRef<HTMLHeadingElement>(null),animateOpening=useRef(false),previousOpen=useRef(false),focusAfterReset=useRef(false),drawing=useRef<number|null>(null);
+ const ko=language==='ko',panelId=useId(),titleId=useId(),padId=useId(),reduced=useLiveReducedMotion();
+ const opener=useRef<HTMLButtonElement>(null),signaturePad=useRef<SVGSVGElement>(null),signedConfirmation=useRef<HTMLDivElement>(null),paper=useRef<HTMLElement>(null),title=useRef<HTMLHeadingElement>(null),animateOpening=useRef(false),previousOpen=useRef(false),focusAfterReset=useRef(false),focusAfterAnswer=useRef(false),drawing=useRef<number|null>(null);
  const [open,setOpen]=useState(false),[accepted,setAccepted]=useState(false),[pressed,setPressed]=useState(false),[imageFailed,setImageFailed]=useState(false),[storageIssue,setStorageIssue]=useState<'read'|'save'|'reset'|null>(null),[strokes,setStrokes]=useState<Point[][]>([]),[name,setName]=useState(''),[savedSignature,setSavedSignature]=useState<PactSignature|null>(null);
  const typedName=name.trim(),signature:PactSignature|null=typedName.length>=2?{mode:'typed',name:typedName}:isPactSignature({mode:'drawn',strokes})?{mode:'drawn',strokes}:null;
  const readResponse=()=>{const result=readPactResponse();setSavedSignature(result.signature);setAccepted(Boolean(result.signature));setStorageIssue(result.ok?null:'read');};
@@ -61,6 +62,7 @@ export function PartnerPact({language,onResponseChange}:{language:'ko'|'es';onRe
   previousOpen.current=open;
  },[open]);
  useLayoutEffect(()=>{if(focusAfterReset.current&&!accepted){signaturePad.current?.focus({preventScroll:true});focusAfterReset.current=false;}},[accepted]);
+ useLayoutEffect(()=>{if(focusAfterAnswer.current&&accepted){signedConfirmation.current?.focus({preventScroll:true});focusAfterAnswer.current=false;}},[accepted]);
  useEffect(()=>{
   if(!open||!paper.current)return;
   paper.current.scrollTop=0;
@@ -69,7 +71,7 @@ export function PartnerPact({language,onResponseChange}:{language:'ko'|'es';onRe
   return()=>{tween.revert();};
  },[open,reduced]);
  const close=()=>{drawing.current=null;setOpen(false);setPressed(false);};
- const answer=()=>{if(!signature||accepted)return;setSavedSignature(signature);setAccepted(true);setStorageIssue(persistPactResponse(signature)?null:'save');};
+ const answer=()=>{if(!signature||accepted)return;focusAfterAnswer.current=true;setSavedSignature(signature);setAccepted(true);setStorageIssue(persistPactResponse(signature)?null:'save');};
  const reset=()=>{focusAfterReset.current=true;setAccepted(false);setSavedSignature(null);setStrokes([]);setName('');setStorageIssue(persistPactResponse(null)?null:'reset');};
  const retry=()=>{if(storageIssue==='read')readResponse();else if(storageIssue==='save'&&savedSignature)setStorageIssue(persistPactResponse(savedSignature)?null:'save');else reset();};
  const point=(event:React.PointerEvent<SVGSVGElement>):Point=>{const rect=event.currentTarget.getBoundingClientRect();return {x:Math.max(0,Math.min(100,(event.clientX-rect.left)/Math.max(1,rect.width)*100)),y:Math.max(0,Math.min(60,(event.clientY-rect.top)/Math.max(1,rect.height)*60))};};
@@ -93,12 +95,12 @@ export function PartnerPact({language,onResponseChange}:{language:'ko'|'es';onRe
     <p>{ko?'내가 게임에서 져도 언제나 네 편이야. 대신 다음 판은 꼭 같이 해줘 ㅋㅋㅋ':'Aunque pierda, siempre estoy de tu lado. Pero prométeme otra partida, haha.'}</p>
    </div>
    <div className="pp-response" data-signature-mode={mode} data-signature-status={accepted?'signed':signature?'ready':'empty'}>
-    {accepted?<div className="pp-signed" role="status">{ko?'서명했어, Baby ♡':'Firmado, Baby ♡'}{savedSignature?.mode==='drawn'?<svg className="pp-signature-mark" viewBox="0 0 100 60" preserveAspectRatio="none" aria-label={ko?'직접 그린 서명':'Firma dibujada'}>{savedSignature.strokes.map((line,index)=><polyline key={index} points={line.map(p=>`${p.x},${p.y}`).join(' ')} fill="none" stroke="currentColor" strokeWidth="2.1" strokeLinecap="round" strokeLinejoin="round" vectorEffect="non-scaling-stroke"/>)}</svg>:<span className="pp-signed-name">{savedSignature?.mode==='typed'?savedSignature.name:''}</span>}</div>:<>
+    {accepted?<div ref={signedConfirmation} className="pp-signed" role="status" tabIndex={-1}>{ko?'서명했어, Baby ♡':'Firmado, Baby ♡'}{savedSignature?.mode==='drawn'?<svg className="pp-signature-mark" viewBox="0 0 100 60" preserveAspectRatio="none" aria-label={ko?'직접 그린 서명':'Firma dibujada'}>{savedSignature.strokes.map((line,index)=><polyline key={index} points={line.map(p=>`${p.x},${p.y}`).join(' ')} fill="none" stroke="currentColor" strokeWidth="2.1" strokeLinecap="round" strokeLinejoin="round" vectorEffect="non-scaling-stroke"/>)}</svg>:<span className="pp-signed-name">{savedSignature?.mode==='typed'?savedSignature.name:''}</span>}</div>:<>
      <p className="pp-signature-label" id={`${padId}-label`}>{ko?'여기에 직접 서명해줘':'Firma aquí con tu propio trazo'}</p>
      <svg ref={signaturePad} id={padId} className="pp-signature-pad" viewBox="0 0 100 60" preserveAspectRatio="none" role="img" tabIndex={0} aria-labelledby={`${padId}-label`} aria-describedby={`${padId}-note`} data-point-count={strokes.reduce((n,line)=>n+line.length,0)} onPointerDown={startDraw} onPointerMove={moveDraw} onPointerUp={event=>endDraw(event)} onPointerCancel={event=>endDraw(event,true)} onLostPointerCapture={event=>endDraw(event,true)}>{strokes.map((line,index)=><polyline key={index} points={line.map(p=>`${p.x},${p.y}`).join(' ')} fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" vectorEffect="non-scaling-stroke"/>)}</svg>
      <p id={`${padId}-note`} className="pp-signature-note">{ko?'톡 한 번은 서명이 되지 않아.':'Un solo toque no cuenta como firma.'}</p>
-     <details className="pp-name-details"><summary>{ko?'직접 쓰기 어렵다면 이름으로 서명':'Si prefieres escribir tu nombre'}</summary><label className="pp-signature-label pp-name-label" htmlFor={`${padId}-name`}>{ko?'이름을 입력해 텍스트로 서명':'Escribe tu nombre como firma'}</label><input className="pp-signature-name" id={`${padId}-name`} value={name} maxLength={40} autoComplete="name" onChange={event=>{setStrokes([]);setName(event.currentTarget.value);}} aria-describedby={`${padId}-name-note`} /><p id={`${padId}-name-note`} className="pp-signature-note">{ko?'이름을 입력하면 손글씨 대신 텍스트로 저장돼.':'El nombre se guarda como texto, no como letra manuscrita.'}</p></details>
-     <div className="pp-signature-actions"><button type="button" className="pp-clear" onClick={clear}>{ko?'다시 쓰기':'Borrar y volver a firmar'}</button><button ref={answerButton} type="button" className="pp-answer" disabled={!signature} aria-pressed="false" onClick={answer}>{ko?'서명하고 평생 한 팀 되기 ♡':'Firmar para ser un equipo toda la vida ♡'}</button></div>
+     <details className="pp-name-details"><summary>{ko?'직접 쓰기 어렵다면 이름으로 서명':'Si prefieres escribir tu nombre'}</summary><label className="pp-signature-label pp-name-label" htmlFor={`${padId}-name`}>{ko?'이름을 입력해 텍스트로 서명':'Escribe tu nombre como firma'}</label><input className="pp-signature-name" id={`${padId}-name`} value={name} maxLength={40} autoComplete="name" onChange={event=>{setStrokes([]);setName(event.currentTarget.value);}} aria-describedby={`${padId}-name-note ${padId}-name-error`} aria-invalid={typedName.length === 1 || undefined} /><p id={`${padId}-name-note`} className="pp-signature-note">{ko?'앞뒤 공백을 빼고 2~40자로 적어줘. 텍스트로 저장돼.':'Escribe entre 2 y 40 caracteres, sin contar espacios al inicio o al final. Se guardará como texto.'}</p><p id={`${padId}-name-error`} className="pp-name-validation" role="status" aria-live="polite">{typedName.length === 1 ? (ko?'두 글자 이상 입력해줘.':'Escribe al menos 2 caracteres.') : ''}</p></details>
+     <div className="pp-signature-actions"><button type="button" className="pp-clear" onClick={clear}>{ko?'다시 쓰기':'Borrar y volver a firmar'}</button><button type="button" className="pp-answer" disabled={!signature} aria-pressed="false" onClick={answer}>{ko?'서명하고 평생 한 팀 되기 ♡':'Firmar para ser un equipo toda la vida ♡'}</button></div>
     </>}
     <p className="pp-local-note">{ko?'이 서명과 대답은 이 브라우저에만 저장돼.':'Esta firma y respuesta se guardan solo en este navegador.'}</p>
     {storageIssue&&<p className="pp-storage-issue" role="status">{storageIssue==='save'?(ko?'지금 대답은 유지했어. 다음 방문을 위해 저장하지는 못했어.':'Tu respuesta sigue aquí, pero no pudimos guardarla para otra visita.'):storageIssue==='reset'?(ko?'지금 대답은 지웠지만, 저장된 대답을 지우지 못했어.':'Borramos la respuesta de esta visita, pero no la guardada.'):ko?'저장된 서명을 읽지 못했어. 여기서 새로 서명해도 돼.':'No pudimos leer la firma guardada. Puedes firmar aquí.'} <button type="button" onClick={retry}>{ko?'다시 시도':'Intentar de nuevo'}</button></p>}

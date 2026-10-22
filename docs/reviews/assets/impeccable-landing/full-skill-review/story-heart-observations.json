@@ -1,0 +1,302 @@
+[
+  {
+    "width": 1440,
+    "height": 900,
+    "language": "ko",
+    "errors": [],
+    "states": [
+      {
+        "beat": "contact",
+        "section": {
+          "x": 0,
+          "y": 256,
+          "width": 1440,
+          "height": 1132,
+          "top": 256,
+          "right": 1440,
+          "bottom": 1388,
+          "left": 0
+        },
+        "scrollY": 2984,
+        "paths": [
+          "M332 252C250 142 108 158 108 268C108 310 150 350 190 378C220 400 250 418 282 428",
+          "M388 252C470 142 612 158 612 268C612 310 570 350 530 378C500 400 470 418 438 428"
+        ],
+        "durationOpacity": "0",
+        "caption": "서로에게 닿은 첫 연락.",
+        "captions": [
+          {
+            "text": "서로에게 닿은 첫 연락.",
+            "display": "block"
+          },
+          {
+            "text": "조금 서툰 시작.",
+            "display": "none"
+          },
+          {
+            "text": "그날의 대화는 계속됐어.",
+            "display": "none"
+          }
+        ],
+        "text": "시작은\nInterPals였어.\n\n서로 다른 시간에 살던, 너랑 나.\n\n처음엔,\n좀 서툴렀지.\n\n처음부터 내가 잘했던 건 아니지. 좀 무례했잖아.\n\n그리고,\n쉬지 않고.\n\n그런데 그날, 우리는 12시간이나 쉬지 않고 연락했어.\n\n대화는 끝나지 않았네, Baby.\n\nInterPals\nYeonseok\n광주\nLisbeth\nSanto Domingo\n12\n시간, 쉬지 않고.\n서로에게 닿은 첫 연락.",
+        "figure": {
+          "x": 670.421875,
+          "y": 288,
+          "width": 661.578125,
+          "height": 588.0625,
+          "top": 288,
+          "right": 1332,
+          "bottom": 876.0625,
+          "left": 670.421875
+        },
+        "overflow": 0
+      },
+      {
+        "beat": "awkward",
+        "section": {
+          "x": 0,
+          "y": -68,
+          "width": 1440,
+          "height": 1132,
+          "top": -68,
+          "right": 1440,
+          "bottom": 1064,
+          "left": 0
+        },
+        "scrollY": 3308,
+        "paths": [
+          "M350 244C262 132 120 151 120 268C120 310 250 294 230 368C208 430 306 480 354 510",
+          "M370 244C450 132 600 151 600 268C600 310 546 368 490 410C450 450 400 490 366 510"
+        ],
+        "durationOpacity": "0",
+        "caption": "조금 서툰 시작.",
+        "captions": [
+          {
+            "text": "서로에게 닿은 첫 연락.",
+            "display": "none"
+          },
+          {
+            "text": "조금 서툰 시작.",
+            "display": "block"
+          },
+          {
+            "text": "그날의 대화는 계속됐어.",
+            "display": "none"
+          }
+        ],
+        "text": "시작은\nInterPals였어.\n\n서로 다른 시간에 살던, 너랑 나.\n\n처음엔,\n좀 서툴렀지.\n\n처음부터 내가 잘했던 건 아니지. 좀 무례했잖아.\n\n그리고,\n쉬지 않고.\n\n그런데 그날, 우리는 12시간이나 쉬지 않고 연락했어.\n\n대화는 끝나지 않았네, Baby.\n\nInterPals\nYeonseok\n광주\nLisbeth\nSanto Domingo\n12\n시간, 쉬지 않고.\n조금 서툰 시작.",
+        "figure": {
+          "x": 670.421875,
+          "y": 96,
+          "width": 661.578125,
+          "height": 588.0625,
+          "top": 96,
+          "right": 1332,
+          "bottom": 684.0625,
+          "left": 670.421875
+        },
+        "overflow": 0
+      },
+      {
+        "beat": "continuous",
+        "section": {
+          "x": 0,
+          "y": -392,
+          "width": 1440,
+          "height": 1132,
+          "top": -392,
+          "right": 1440,
+          "bottom": 740,
+          "left": 0
+        },
+        "scrollY": 3632,
+        "paths": [
+          "M360 238C280 126 120 151 120 268C120 310 174 368 230 410C270 450 320 490 360 520",
+          "M360 238C440 126 600 151 600 268C600 310 546 368 490 410C450 450 400 490 360 520"
+        ],
+        "durationOpacity": "1",
+        "caption": "그날의 대화는 계속됐어.",
+        "captions": [
+          {
+            "text": "서로에게 닿은 첫 연락.",
+            "display": "none"
+          },
+          {
+            "text": "조금 서툰 시작.",
+            "display": "none"
+          },
+          {
+            "text": "그날의 대화는 계속됐어.",
+            "display": "block"
+          }
+        ],
+        "text": "시작은\nInterPals였어.\n\n서로 다른 시간에 살던, 너랑 나.\n\n처음엔,\n좀 서툴렀지.\n\n처음부터 내가 잘했던 건 아니지. 좀 무례했잖아.\n\n그리고,\n쉬지 않고.\n\n그런데 그날, 우리는 12시간이나 쉬지 않고 연락했어.\n\n대화는 끝나지 않았네, Baby.\n\nInterPals\nYeonseok\n광주\nLisbeth\nSanto Domingo\n12\n시간, 쉬지 않고.\n그날의 대화는 계속됐어.",
+        "figure": {
+          "x": 670.421875,
+          "y": 23.9375,
+          "width": 661.578125,
+          "height": 588.0625,
+          "top": 23.9375,
+          "right": 1332,
+          "bottom": 612,
+          "left": 670.421875
+        },
+        "overflow": 0
+      }
+    ],
+    "pointerAttract": "matrix(1, 0, 0, 1, 5.80222, 0)",
+    "pointerReset": "matrix(1, 0, 0, 1, 0.046979, 0)",
+    "reverseContact": "contact",
+    "reversePaths": "M332 252C250 142 108 158 108 268C108 310 150 350 190 378C220 400 250 418 282 428"
+  },
+  {
+    "width": 1920,
+    "height": 1080,
+    "language": "es",
+    "errors": [],
+    "states": [
+      {
+        "beat": "contact",
+        "section": {
+          "x": 0,
+          "y": 314,
+          "width": 1920,
+          "height": 1326.390625,
+          "top": 314,
+          "right": 1920,
+          "bottom": 1640.390625,
+          "left": 0
+        },
+        "scrollY": 3574,
+        "paths": [
+          "M332 252C250 142 108 158 108 268C108 310 150 350 190 378C220 400 250 418 282 428",
+          "M388 252C470 142 612 158 612 268C612 310 570 350 530 378C500 400 470 418 438 428"
+        ],
+        "durationOpacity": "0",
+        "caption": "El primer contacto.",
+        "captions": [
+          {
+            "text": "El primer contacto.",
+            "display": "block"
+          },
+          {
+            "text": "Un comienzo un poco torpe.",
+            "display": "none"
+          },
+          {
+            "text": "Y ese día seguimos hablando.",
+            "display": "none"
+          }
+        ],
+        "text": "Todo empezó\nen InterPals.\n\nTú y yo, viviendo en horarios distintos.\n\nYo no\nempecé bien.\n\nNo empecé de la mejor manera. Fui un poco grosero contigo.\n\nY seguimos\nsin parar.\n\nPero ese primer día nos pasamos doce horas hablando, sin parar.\n\nY la conversación seguía, Baby.\n\nInterPals\nYeonseok\nGwangju\nLisbeth\nSanto Domingo\n12\nhoras, sin parar.\nEl primer contacto.",
+        "figure": {
+          "x": 1016,
+          "y": 346,
+          "width": 760,
+          "height": 675.546875,
+          "top": 346,
+          "right": 1776,
+          "bottom": 1021.546875,
+          "left": 1016
+        },
+        "overflow": 0
+      },
+      {
+        "beat": "awkward",
+        "section": {
+          "x": 0,
+          "y": -75,
+          "width": 1920,
+          "height": 1326.390625,
+          "top": -75,
+          "right": 1920,
+          "bottom": 1251.390625,
+          "left": 0
+        },
+        "scrollY": 3963,
+        "paths": [
+          "M350 244C262 132 120 151 120 268C120 310 250 294 230 368C208 430 306 480 354 510",
+          "M370 244C450 132 600 151 600 268C600 310 546 368 490 410C450 450 400 490 366 510"
+        ],
+        "durationOpacity": "0",
+        "caption": "Un comienzo un poco torpe.",
+        "captions": [
+          {
+            "text": "El primer contacto.",
+            "display": "none"
+          },
+          {
+            "text": "Un comienzo un poco torpe.",
+            "display": "block"
+          },
+          {
+            "text": "Y ese día seguimos hablando.",
+            "display": "none"
+          }
+        ],
+        "text": "Todo empezó\nen InterPals.\n\nTú y yo, viviendo en horarios distintos.\n\nYo no\nempecé bien.\n\nNo empecé de la mejor manera. Fui un poco grosero contigo.\n\nY seguimos\nsin parar.\n\nPero ese primer día nos pasamos doce horas hablando, sin parar.\n\nY la conversación seguía, Baby.\n\nInterPals\nYeonseok\nGwangju\nLisbeth\nSanto Domingo\n12\nhoras, sin parar.\nUn comienzo un poco torpe.",
+        "figure": {
+          "x": 1016,
+          "y": 96,
+          "width": 760,
+          "height": 675.546875,
+          "top": 96,
+          "right": 1776,
+          "bottom": 771.546875,
+          "left": 1016
+        },
+        "overflow": 0
+      },
+      {
+        "beat": "continuous",
+        "section": {
+          "x": 0,
+          "y": -464,
+          "width": 1920,
+          "height": 1326.390625,
+          "top": -464,
+          "right": 1920,
+          "bottom": 862.390625,
+          "left": 0
+        },
+        "scrollY": 4352,
+        "paths": [
+          "M360 238C280 126 120 151 120 268C120 310 174 368 230 410C270 450 320 490 360 520",
+          "M360 238C440 126 600 151 600 268C600 310 546 368 490 410C450 450 400 490 360 520"
+        ],
+        "durationOpacity": "1",
+        "caption": "Y ese día seguimos hablando.",
+        "captions": [
+          {
+            "text": "El primer contacto.",
+            "display": "none"
+          },
+          {
+            "text": "Un comienzo un poco torpe.",
+            "display": "none"
+          },
+          {
+            "text": "Y ese día seguimos hablando.",
+            "display": "block"
+          }
+        ],
+        "text": "Todo empezó\nen InterPals.\n\nTú y yo, viviendo en horarios distintos.\n\nYo no\nempecé bien.\n\nNo empecé de la mejor manera. Fui un poco grosero contigo.\n\nY seguimos\nsin parar.\n\nPero ese primer día nos pasamos doce horas hablando, sin parar.\n\nY la conversación seguía, Baby.\n\nInterPals\nYeonseok\nGwangju\nLisbeth\nSanto Domingo\n12\nhoras, sin parar.\nY ese día seguimos hablando.",
+        "figure": {
+          "x": 1016,
+          "y": 58.84375,
+          "width": 760,
+          "height": 675.546875,
+          "top": 58.84375,
+          "right": 1776,
+          "bottom": 734.390625,
+          "left": 1016
+        },
+        "overflow": 0
+      }
+    ],
+    "pointerAttract": "matrix(1, 0, 0, 1, 5.83419, 0)",
+    "pointerReset": "matrix(1, 0, 0, 1, 0.0115518, 0)",
+    "reverseContact": "contact",
+    "reversePaths": "M332 252C250 142 108 158 108 268C108 310 150 350 190 378C220 400 250 418 282 428"
+  }
+]

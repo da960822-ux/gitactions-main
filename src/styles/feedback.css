@@ -45,6 +45,8 @@
 .feedback-count { color: var(--fb-ink); font-size: 18px; font-variant-numeric: tabular-nums; }
 .feedback-count small { color: var(--fb-muted); font-size: 12px; }
 .feedback-list { display: grid; }
+.feedback-list-more { display: inline-flex; min-height: 44px; margin-top: 18px; padding: 0 15px; border: 1px solid #8d4c5d; border-radius: 3px; background: transparent; color: var(--fb-ink); font-size: 13px; cursor: pointer; }
+.feedback-list-more:hover { background: #f3e0dd; }
 .feedback-entry { padding: 24px 0 20px; border-bottom: 1px solid var(--fb-line); }
 .feedback-entry-top { display: flex; justify-content: space-between; align-items: center; gap: 12px; }
 .feedback-category,.feedback-status { display: inline-flex; align-items: center; min-height: 28px; font-size: 12px; font-weight: 500; }

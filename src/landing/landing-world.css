@@ -31,12 +31,15 @@
  .landing-world-host .across-stage{position:sticky;top:0;height:100svh}
  .landing-world-host .across-editorial{opacity:var(--hero-copy-opacity,1)!important;transform:none!important}
  .landing-world-host .folded-destination{display:flex}
+ .landing-world-host .folded-destination[inert]{display:none}
 }
 .landing-world-host .post-hero-preview .ending .text-button{color:#ebc8b6}
 .room-discoveries{position:fixed;inset:0;z-index:4;pointer-events:none}
 .room-discoveries[hidden]{display:none}
 .room-discoveries button{position:fixed;pointer-events:auto;padding:0;border:0;background:none;color:#faeee6;cursor:pointer;touch-action:manipulation}
-.room-discoveries button span{position:absolute;bottom:0;left:50%;transform:translate(-50%,8px);opacity:0;pointer-events:none;white-space:nowrap;background:#20131fed;padding:7px 12px;font:14px/1.5 'DM Sans',sans-serif;transition:opacity 150ms,transform 150ms}
-.room-discoveries button:hover span,.room-discoveries button:focus-visible span{opacity:1;transform:translate(-50%,0)}
+.room-discoveries button span{position:absolute;bottom:0;left:50%;transform:translate(-50%,8px);opacity:0;pointer-events:none;white-space:nowrap;background:#20131fed;padding:7px 12px;font:14px/1.5 'DM Sans',sans-serif}
+.room-discoveries button:focus-visible span{opacity:1;transform:translate(-50%,0);transition:none}
+@media(hover:hover) and (pointer:fine){.room-discoveries button:hover span{opacity:1;transform:translate(-50%,0)}}
+@media(hover:hover) and (pointer:fine) and (prefers-reduced-motion:no-preference){.room-discoveries button span{transition:opacity 150ms var(--ease-out),transform 150ms var(--ease-out)}.room-discoveries button:focus-visible span{transition:none}}
 .room-discoveries button:focus-visible{outline:2px solid #efbca8;outline-offset:4px}
 @media(prefers-reduced-motion:reduce){.room-discoveries button span{transition:none}}

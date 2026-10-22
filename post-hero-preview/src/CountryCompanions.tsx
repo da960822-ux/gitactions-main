@@ -1,8 +1,9 @@
 import {useEffect,useId,useRef,useState} from 'react';
 import gsap from 'gsap';
 import {ScrollTrigger} from 'gsap/ScrollTrigger';
-import {motion,useMotionValue,useSpring,useMotionTemplate,useReducedMotion} from 'motion/react';
+import {motion,useMotionValue,useSpring,useMotionTemplate} from 'motion/react';
 import './country-companions.css';
+import {useLiveReducedMotion} from './useLiveReducedMotion';
 
 gsap.registerPlugin(ScrollTrigger);
 const spring={mass:1,stiffness:100,damping:10};
@@ -32,7 +33,7 @@ function Companion({side,together,phase,shift,reduced,interactive,language,descr
 }
 
 export function CountryCompanions({language}:{language:'ko'|'es'}){
- const ko=language==='ko',root=useRef<HTMLDivElement>(null),reduced=useReducedMotion(),duckNote=useId(),hummingbirdNote=useId();
+ const ko=language==='ko',root=useRef<HTMLDivElement>(null),reduced=useLiveReducedMotion(),duckNote=useId(),hummingbirdNote=useId();
  const [together,setTogether]=useState(false),[visible,setVisible]=useState(false),[phase,setPhase]=useState<CompanionPhase>('instant'),[shift,setShift]=useState(0),[failed,setFailed]=useState(false),[trace,setTrace]=useState({x:0,y:0});
  const duckShift=Math.min(12,shift*.04),flightShift=shift-duckShift,heartWidth=flightShift*.28,heartHeight=Math.min(84,Math.max(48,flightShift*.24));
  useEffect(()=>{
