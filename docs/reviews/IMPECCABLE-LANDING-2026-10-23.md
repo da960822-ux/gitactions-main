@@ -121,3 +121,36 @@ Sol은 Taste, Impeccable bolder/layout/animate/delight, GSAP React/ScrollTrigger
 [이전 선 중심 장면](assets/impeccable-landing/full-skill-review/story-thread-before.jpg) → [첫 연락](assets/impeccable-landing/full-skill-review/story-heart-contact.jpg) → [서툰 시작](assets/impeccable-landing/full-skill-review/story-heart-awkward.jpg) → [이어진 하트·12시간](assets/impeccable-landing/full-skill-review/story-heart-complete.jpg). [1920 움직임 감소 화면](assets/impeccable-landing/full-skill-review/story-heart-reduced.jpg)도 비교한다.
 
 추가 작업 후 최종 **88개 파일/680개 테스트 및 production build 통과**. 마지막 CSS 교정은 두 terminal frame으로 재검수했다. 최종 fresh production 전송량은 **32,816,998 bytes /42requests /pageerrors0**이며 위 주요 수정 배치 측정과의737bytes 차이는 별도로 기록한다. 새 외부 미디어·런타임 의존성은 추가하지 않았다. 기존 본인 전용 Site만 업데이트하며 공개 audience/원본 main은 바꾸지 않는다.
+
+
+## 추가 재점검 — 새·장미 동작의 자연스러움 (2026-10-22)
+
+이전의 상태 복원·키보드·종료 장면 통과를 모든 중간 프레임의 자연스러움까지 검증한 것으로 확대하면 안 된다. 사용자 지적에 따라 Sol 구현 담당과 독립 Sol 검수, Luna의 스킬 사용 이력 대조를 분리했다. 이번 검수는 **소스·기존 실제 화면·새 오프라인 SVG 렌더**에 한정되며 새 브라우저 재생은 실행하지 못했다. localhost 서버는 listen EPERM, Chromium은 시작 단계에서 종료되어 우회하지 않았다.
+
+| 스킬 | 실제 확인한 적용 범위 |
+|---|---|
+| [bolder](../../.agents/skills/impeccable/reference/bolder.md) | 기존 InterPals 시각 서사의 강화에 지침을 적용했다. 이번 새·장미 교정은 강도를 더하는 작업보다 궤적·관절·접점을 바로잡는 작업이다. |
+| [overdrive](../../.agents/skills/impeccable/reference/overdrive.md) | 정식 워크숍은 실행하지 않았다. 2~3개 방향 제안과 사용자 선택 절차를 완료했다고 주장하지 않는다. 필요한 자연스러움 교정을 위해 별도 콘셉트 워크숍을 기계적으로 추가하지 않았다. |
+| [animate](../../.agents/skills/impeccable/reference/animate.md) + [delight](../../.agents/skills/impeccable/reference/delight.md) | 의미가 읽히는 접근·접촉·전달과 신속한 취소/복귀를 기준으로 실제 교정했다. 개별 명령을 실행했다는 의미가 아니라 읽은 지침을 구현과 검수에 적용한 것이다. |
+| [Emil animate](../../.agents/skills/emil-animate/SKILL.md) + [review-animations](../../.agents/skills/review-animations/SKILL.md) | 구현과 독립 검수에 적용했다. 새는 기존 Motion의 단일 진행률, 장미는 기존 GSAP의 순방향 타임라인을 사용한다. 새 라이브러리·새 인물·추가 장식으로 결함을 덮지 않는다. |
+
+새의 기존 다중 왕복 경로와 구간별 감속을 단일 진행률의 얕은 접근 곡선으로 바꿨다. 원앙은 이동하지 않고 작게 기울며, 벌새가 접근 거리를 담당한다. 포인터로 떨어질 때도 스크롤 복귀와 같은 220ms를 적용하고 현재 진행률에서 다시 목표를 잡는다. 위치 연속성을 확인했으며 속도 연속성이나 실제 빠른 연타를 검증했다고 주장하지 않는다. 날개는 어깨 기준을 고정하고 원근 레이어를 먼 날개→몸→가까운 날개로 바꿨다. 큰 궤적 하트는 도착 시 작은 하트로 교체했다. 원본 자산과 새의 의미 설명·언어·섹션 범위·키보드/동작 줄이기 처리는 보존한다.
+
+독립 검수는 새의 M2(복잡한 궤적)/M3(느린 복귀)를 **기계적 수정 확인**으로 판정했다. 110ms 날갯짓의 시각적 떨림, 빠른 방향 전환의 느낌, 실제 페이지의 가림은 브라우저 재생 검수 전까지 열린 항목이다. 이전 전체 점수 31/40을 갱신하거나 자연스러움 최종 합격으로 바꾸지 않는다.
+
+[새 오프라인 자세 렌더](assets/impeccable-landing/full-skill-review/motion-correction/birds-offline-poses.png) / [독립 baseline](assets/impeccable-landing/full-skill-review/motion-correction/independent-baseline.md) / [새 교정 후 독립 검수](assets/impeccable-landing/full-skill-review/motion-correction/birds-independent-after.md). 자세 렌더는 동일 소스 SVG를 librsvg로 렌더한 정지 그림이며 실제 페이지 캡처나 재생 영상이 아니다.
+
+
+장미는 가짜 손목 연결·색상 키 필터·손 모양 교체와 큰 팔 회전을 제거했다. 원래 펼친 손으로 건네고, 그녀는 팔꿈치를 기준으로 8° 움직여 받으며 보조 팔은 유지한다. 같은 줄기의 두 접점은 약44.37px 떨어져 있어 주먹이 겹치지 않는다. 1.20~1.85초 접촉 유지, 1.65초 소유 전환 후 손이 물러난다. 재생 버튼은 시작 자세로 명시적으로 초기화하고 순방향으로 재생하여 받았던 꽃을 역재생으로 빼앗지 않는다. 실제로 렌더하지 않는 가상 ‘손가락 닫기/놓기’ 값도 삭제했으며, 손가락 애니메이션까지 만들었다고 주장하지 않는다. 키보드 즉시 완료, 콜백 1회 보호, 원본 정적 대체, 언어와 서명 여부에 따른 문구는 유지했다. 원화 파일·얼굴·몸·의상·배경과 게임/API는 수정하지 않았다.
+
+**장미 M1 시각 결함은 아직 BLOCK이다.** [수정 후 접촉 확대](assets/impeccable-landing/full-skill-review/motion-correction/rose-offline-contact.png)에서 원본의 머리카락 뒤에 가려졌던 받는 팔 안쪽 윤곽과 공여자 손가락의 가림 경계가 남는다. [최종 보유 자세](assets/impeccable-landing/full-skill-review/motion-correction/rose-offline-held.png)는 더 깨끗하지만 중간 결함의 대체 증거가 아니다. 루트와 구현자가 실제 오프라인 그림을 열어 확인했다. 소매 틈·겹친 주먹·큰 삼각형 팔 틈은 교정했으나 남은 윤곽을 조명·블러로 가리지 않는다. 다음 미술 작업은 **원화와 같은 그림체의 완전한 공여자 팔/펼친 손과 받는 팔/손 레이어** 두 개다. 해당 팔만 사용하고 원래 인물 얼굴/몸/옷은 유지해야 한다.
+
+이를 위해 원본 received.png를 참조한 투명 팔 atlas 생성을 실제 시도했으나 이미지 도구가 HTTP400 `Unknown parameter: reasoning`을 반환했다. 해당 매개변수는 호출에 지정하지 않았다. 생성 자산은 없으며 성공했다고 보고하거나 접근 제한을 우회하지 않았다. 추가 장식 대신 필요한 해부학적 원본 레이어 확보가 남았다.
+
+고정 소스 검증: **Vitest 88개 파일/684개 테스트, TypeScript 포함 production build, diff 검사 통과**. 테스트는 양 접점·꽃 소유 전환의 연속성·관절 길이·정상 범위·언어/서명 조건과 단일 꽃을 검증한다. 테스트 수학이 실제 해부학·타이밍을 보증하지 않는다. 빌드의 기존 Motion use-client 및 큰 chunk 경고는 남는다. 새 의존성은 없다.
+
+이번 변경은 **미완료 검토용 후보**다. 새 브라우저 검수·사이트 배포·모바일 검수·영상·실제 GPU 성능 측정을 실행했다고 주장하지 않는다. 현재 확인용 Site는 이전 c566a898 버전이며, 이 미검수 후보를 최종본으로 게시하지 않았다. GitHub는 기존 redesign 브랜치에만 안전하게 보존하며 main 병합/강제 push/새 중복 브랜치는 하지 않는다. 로컬 Git 네트워크도 차단되어, native GitHub connector를 사용한 원격 보존과 로컬 ref 동기화 여부는 구분한다.
+
+독립 Sol은 최종 9개 손 확대 자세와 시작/끝 전체를 직접 열어 **M1 BLOCK 유지, M4 역재생 제거 확인**으로 판정했다. 받는 손은 시작부터 닫힌 원화이므로, 코드의 donor/recipient 소유 이름만으로 ‘건네기→받기’가 명확히 읽힌다고 단정할 수 없다. 이 의미 전달도 실제 재생에서 검증해야 한다. 새의 M2/M3은 기계적 교정 확인, 전체 모션의 자연스러움은 미승인이다.
+
+[이 배치의 독립 최종 검수](assets/impeccable-landing/full-skill-review/motion-correction/independent-after.md). 전체 판정은 **BLOCK / 미완료 후보**다.
