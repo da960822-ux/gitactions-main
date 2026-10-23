@@ -1,0 +1,20 @@
+{
+  "scope": "Baseline cost and video diagnostics only, no repeated bake or existing capture",
+  "stage": "BASELINE_COSTS_FINISHED",
+  "checkedAtUTC": "2026-10-18T01:57:10.508691+00:00",
+  "activePID": 35787,
+  "results": [
+    {
+      "script": "profile-runtime.mjs",
+      "exitCode": 0
+    },
+    {
+      "script": "performance/profile-actual-page.mjs",
+      "exitCode": 0
+    },
+    {
+      "script": "performance/analyze-rgb9e5.mjs",
+      "exitCode": 0
+    }
+  ]
+}

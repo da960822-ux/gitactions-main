@@ -8,14 +8,27 @@ type HeroSceneProps = {
   portraitSrc: string;
   portraitAlt: string;
   language: 'ko' | 'es';
+  onOpenLetter?: () => void;
+  letterExpanded?: boolean;
+  motionPaused?: boolean;
+  postcardSrc?: string;
+  windowLight?: boolean;
 };
 
-export function HeroScene({ children, backgroundSrc, envelopeSrc, portraitSrc, portraitAlt, language }: HeroSceneProps) {
+export function HeroScene({ children, backgroundSrc, envelopeSrc, portraitSrc, portraitAlt, language, onOpenLetter, letterExpanded, motionPaused = false, postcardSrc = '/images/our-universe-scene.webp', windowLight = false }: HeroSceneProps) {
   const sceneRef = useRef<HTMLElement>(null);
   const pointerFrame = useRef(0);
   const pointerPosition = useRef({ x: 0, y: 0, localX: 0, localY: 0 });
   const [heartBurst, setHeartBurst] = useState(0);
-  const [letterOpen, setLetterOpen] = useState(false);
+  const [previewOpen, setPreviewOpen] = useState(false);
+  const [visible, setVisible] = useState(true);
+  const [readyImages, setReadyImages] = useState<string[]>([]);
+  const revealImage = (src: string) => setReadyImages(current => current.includes(src) ? current : [...current, src]);
+  const decodeImage = (image: HTMLImageElement) => {
+    const src = image.getAttribute('src')!;
+    void image.decode().then(() => revealImage(src), () => revealImage(src));
+  };
+  const letterOpen = letterExpanded ?? previewOpen;
 
   const resetPointer = () => {
     const scene = sceneRef.current;
@@ -31,6 +44,18 @@ export function HeroScene({ children, backgroundSrc, envelopeSrc, portraitSrc, p
     scene.querySelector<HTMLElement>('.hero-scene-portrait')?.style.setProperty('--portrait-tilt', '0deg');
   };
 
+  useEffect(() => { if (motionPaused) resetPointer(); }, [motionPaused]);
+  useEffect(() => {
+    sceneRef.current?.querySelectorAll<HTMLImageElement>('img[data-enter-image]').forEach(image => {
+      if (image.complete) decodeImage(image);
+    });
+  }, [portraitSrc, postcardSrc, envelopeSrc]);
+  useEffect(() => {
+    const observer = new IntersectionObserver(([entry]) => setVisible(entry.isIntersecting));
+    if (sceneRef.current) observer.observe(sceneRef.current);
+    return () => observer.disconnect();
+  }, []);
+
   useEffect(() => {
     const motionPreference = window.matchMedia('(prefers-reduced-motion: reduce)');
     const resetForReducedMotion = () => { if (motionPreference.matches) resetPointer(); };
@@ -42,7 +67,7 @@ export function HeroScene({ children, backgroundSrc, envelopeSrc, portraitSrc, p
   }, []);
 
   const onPointerMove = (event: PointerEvent<HTMLElement>) => {
-    if (event.pointerType !== 'mouse' || window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+    if (motionPaused || event.pointerType !== 'mouse' || window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
     const scene = sceneRef.current;
     if (!scene) return;
     const bounds = scene.getBoundingClientRect();
@@ -71,31 +96,27 @@ export function HeroScene({ children, backgroundSrc, envelopeSrc, portraitSrc, p
 
   const envelopeLabel = language === 'ko' ? 'Papi의 편지 열기' : 'Abrir la carta de Papi';
 
-  return <section className="couple-hero hero-scene" id="home" aria-labelledby="hero-title" ref={sceneRef} onPointerMove={onPointerMove} onPointerLeave={resetPointer}>
+  return <section className="couple-hero hero-scene" id="home" aria-labelledby="hero-title" data-visible={visible} ref={sceneRef} onPointerMove={onPointerMove} onPointerLeave={resetPointer}>
     {backgroundSrc && <>
       <img className="hero-scene-backdrop" data-parallax="-2" src={backgroundSrc} alt="" aria-hidden="true" />
       <img className="hero-scene-foreground" data-parallax="-7" src={backgroundSrc} alt="" aria-hidden="true" />
     </>}
+    {windowLight && <div className="hero-window-light" aria-hidden="true"><i/><i/><i/><i/><i/><i/><span className="hero-window-meteor"/></div>}
     <div className="hero-pointer-glow" aria-hidden="true" />
     <div className="hero-scene-inner">
       <div className="hero-scene-copy">{children}</div>
       <div className="hero-scene-art">
-        <svg className="hero-orbit-svg" data-parallax="-4" viewBox="0 0 800 480" preserveAspectRatio="none" aria-hidden="true">
-          <ellipse className="hero-orbit-path hero-orbit-path-wide" cx="405" cy="244" rx="345" ry="164" transform="rotate(-14 405 244)" pathLength="1" />
-          <ellipse className="hero-orbit-path hero-orbit-path-close" cx="405" cy="244" rx="303" ry="137" transform="rotate(18 405 244)" pathLength="1" />
-          <g className="hero-orbit-traveler"><circle cx="70" cy="244" r="3" /><circle cx="70" cy="244" r="8" /></g>
-        </svg>
-        <figure className="hero-scene-portrait" data-parallax="14">
-          <img src={portraitSrc} width="1254" height="1254" alt={portraitAlt} fetchPriority="high" aria-hidden="false" />
+        <figure className="hero-scene-portrait" data-parallax="14" data-image-ready={readyImages.includes(portraitSrc)}>
+          <img data-enter-image src={portraitSrc} width="1254" height="1254" alt={portraitAlt} fetchPriority="high" aria-hidden="false" onLoad={event => decodeImage(event.currentTarget)} onError={() => revealImage(portraitSrc)} />
         </figure>
-        <div className="hero-postcard" data-parallax="-12" aria-hidden="true">
-          <img src={backgroundSrc || '/images/midnight-rose-sky.webp'} alt="" />
+        <div className="hero-postcard" data-parallax="-12" aria-hidden="true" data-image-ready={readyImages.includes(postcardSrc)}>
+          <img data-enter-image src={postcardSrc} alt="" onLoad={event => decodeImage(event.currentTarget)} onError={() => revealImage(postcardSrc)} />
           <span className="hero-postmark" aria-hidden="true">♡</span>
         </div>
-        <button className="hero-envelope" data-parallax="12" type="button" aria-label={envelopeLabel} aria-expanded={letterOpen} aria-controls="hero-letter-preview" onClick={() => setLetterOpen(value => !value)}>
-          <img src={envelopeSrc} alt="" />
+        <button className="hero-envelope" data-parallax="12" type="button" data-image-ready={readyImages.includes(envelopeSrc)} aria-label={envelopeLabel} aria-expanded={letterOpen} aria-controls={onOpenLetter ? 'gift-paper' : 'hero-letter-preview'} onClick={onOpenLetter ?? (() => setPreviewOpen(value => !value))}>
+          <img data-enter-image src={envelopeSrc} width="1536" height="1024" alt="" onLoad={event => decodeImage(event.currentTarget)} onError={() => revealImage(envelopeSrc)} />
           <span className="hero-envelope-flap" aria-hidden="true" />
-          <span className="hero-letter-preview" id="hero-letter-preview" aria-hidden={!letterOpen}><b>For my Mami ♡</b><small>Baby, surprise!</small></span>
+          <span className="hero-letter-preview" id="hero-letter-preview" aria-hidden={!!onOpenLetter || !letterOpen}><b>For my Mami ♡</b><small>Baby, surprise!</small></span>
         </button>
         <div className="hero-table-details" data-parallax="18">
           <button className="hero-glass-heart" type="button" aria-label={language === 'ko' ? '하트 반짝이기' : 'Hacer brillar el corazón'} onClick={() => setHeartBurst(value => value + 1)}>

@@ -1,0 +1,116 @@
+{
+  "assets": [
+    {
+      "file": "hanbok-pact-dolls.png",
+      "source": "/workspace/generated_images/exec-6efb0955-0b55-442d-94f8-06949e97ca52.png",
+      "sha256": "c3b9384b251ee5c2e9579847b3a23fe0ee4ab6c97e70616e211c8190ad904b14",
+      "size": [
+        1254,
+        1254
+      ],
+      "mode": "RGBA",
+      "alphaExtrema": [
+        0,
+        255
+      ],
+      "meaning": "Faceless ceramic couple inspired by Dominican dolls: red Korean ceremonial hanbok bride; ivory chacabana/guayabera formalwear groom. An authored cultural combination, not a canonical wedding costume or traditional love talisman.",
+      "generator": "image_gen.imagegen",
+      "postprocessing": "None; copied original PNG bytes."
+    },
+    {
+      "file": "mandarin-duck.png",
+      "source": "/workspace/generated_images/exec-0be681c7-5c41-42d2-857d-a8f818221fa2.png",
+      "sha256": "47bef1e1c2c3e9a93cdb02dc162c342a30ba4fcbe5a8b097b2ab41e088331fce",
+      "size": [
+        1254,
+        1254
+      ],
+      "mode": "RGBA",
+      "alphaExtrema": [
+        0,
+        255
+      ],
+      "meaning": "Stylized male mandarin duck on my/Gwangju side. Korean wedding wish for harmony in marriage; no claim of biological lifelong fidelity.",
+      "generator": "image_gen.imagegen",
+      "postprocessing": "None; original generated transparent PNG bytes copied unchanged."
+    },
+    {
+      "file": "hummingbird-body.png",
+      "source": "/workspace/generated_images/exec-3e4ca7a9-26fc-4b76-a1c7-1544a65f4d69.png",
+      "sha256": "99385469c27ec1be1c6cfcbcdd7ee74a876c155a88e8dfc9b7fb5c0000b45897",
+      "size": [
+        1254,
+        1254
+      ],
+      "mode": "RGBA",
+      "alphaExtrema": [
+        0,
+        255
+      ],
+      "meaning": "Wingless-body animation source for a stylized blush-pink personal hummingbird on Baby’s side. Not an exact Hispaniolan emerald specimen, Dominican national bird, endemic species, or universal Latin love symbol.",
+      "generator": "image_gen.imagegen",
+      "postprocessing": "None; original generated transparent PNG bytes copied unchanged."
+    },
+    {
+      "file": "hummingbird-wing.png",
+      "source": "/workspace/generated_images/exec-fa9ee506-b7f3-401f-813a-03bea14a952a.png",
+      "sha256": "3a6a5b74d8cd79c864c8e2da99d5226aa3711a859e3dc929cf6f66cea53e9361",
+      "size": [
+        1254,
+        1254
+      ],
+      "mode": "RGBA",
+      "alphaExtrema": [
+        0,
+        255
+      ],
+      "meaning": "Single matching feathered wing asset, rendered twice with registered near/far shoulder pivots behind the body for hovering. No duplicate extended stationary wing in the body source.",
+      "generator": "image_gen.imagegen",
+      "postprocessing": "None; original generated transparent PNG bytes copied unchanged."
+    }
+  ],
+  "references": [
+    "https://www.scscb.org/birds/palmchat/",
+    "https://www.nps.gov/articles/000/faceless-dolls-history.htm",
+    "https://www.casadecampo.com.do/blog/2024/03/22/what-to-wear-to-a-wedding-in-casa-de-campo/"
+  ],
+  "scope": "User-selected mandarin duck and softly blush-pink hummingbird, rendered only inside the clipped distance section. Warm rounded expressive storybook illustration; separate authored wings with registered 2.5D hover motion. Existing red-hanbok/ivory-chacabana dolls remain active and unchanged.",
+  "retiredAssets": [
+    {
+      "file": "lovebird.png",
+      "source": "/workspace/generated_images/exec-226b5df2-e7c6-4623-9823-7c0385fe485f.png",
+      "sha256": "9cfe1d2571a9a9df9a057814cf4a11f7b3551d1ae225972bfeca1c10d7edbef0",
+      "size": [
+        1254,
+        1254
+      ],
+      "mode": "RGBA",
+      "alphaExtrema": [
+        0,
+        255
+      ],
+      "meaning": "Personal lovebird for Yeonseok in Gwangju, not a Korean national animal.",
+      "generator": "image_gen.imagegen",
+      "postprocessing": "None; copied original PNG bytes.",
+      "retiredReason": "Replaced by the user-selected mandarin duck and softly blush-pink personal hummingbird. Original generated source retained; obsolete public PNG removed."
+    },
+    {
+      "file": "palmchat.png",
+      "source": "/workspace/generated_images/exec-b82e4f72-b768-4cac-9f1e-01fa6b62a60e.png",
+      "sha256": "386e79d8244374f568dbfd9cff75c6313e3e5573933dc7270da03d6080707e9f",
+      "size": [
+        1254,
+        1254
+      ],
+      "mode": "RGBA",
+      "alphaExtrema": [
+        0,
+        255
+      ],
+      "meaning": "Stylized Cigua palmera / Dulus dominicus, Dominican national bird.",
+      "generator": "image_gen.imagegen",
+      "postprocessing": "None; copied original PNG bytes.",
+      "retiredReason": "Replaced by the user-selected mandarin duck and softly blush-pink personal hummingbird. Original generated source retained; obsolete public PNG removed."
+    }
+  ]
+}

@@ -12,6 +12,13 @@ import { client, isOnlineConfigured } from '../core/client';
 
 vi.mock('./App', () => ({ BrandHeader: () => null }));
 
+it('limits the new Splendor purchase walkthrough to the desktop guide boundary', () => {
+  const render = (desktopDisplay: boolean) => renderToStaticMarkup(createElement(GameGuide, { gameId: 'splendor', language: 'es', desktopDisplay }));
+  expect(render(false)).not.toContain('sp-guide-purchase-flow');
+  expect(render(false)).toContain('Resta del coste las bonificaciones permanentes');
+  expect(render(true)).toContain('sp-guide-purchase-flow');
+});
+
 afterEach(async () => { if (!isOnlineConfigured) await client.closeRoom(); });
 
 it('announces a settled round instead of an inactive player turn', () => {
@@ -20,6 +27,11 @@ it('announces a settled round instead of an inactive player turn', () => {
   expect(statusLabel(settled, 'p1', 'es')).toBe('Fin de ronda');
   expect(statusLabel({ ...settled, result: { winner: 'p1' } }, 'p1', 'es')).toBe('Partida terminada');
   expect(statusLabel({ phase: 'play', turn: 'p1' }, 'p1', 'ko')).toBe('내 차례예요');
+});
+
+it('does not invent an opponent turn for the independent rhythm player in either locale', () => {
+  expect(statusLabel(null, 'p1', 'ko', 'rhythm')).toBe('원작 플레이어');
+  expect(statusLabel(null, 'p2', 'es', 'rhythm')).toBe('Juego original');
 });
 
 it('keeps Jaipur transfer and reward sounds out of the immediate snapshot channel', () => {
@@ -31,6 +43,44 @@ it('keeps Jaipur transfer and reward sounds out of the immediate snapshot channe
 });
 
 describe('PlayApp client binding', () => {
+  it.skipIf(isOnlineConfigured).each(gameCatalog)('opens the $id board after both local seats agree', async game => {
+    const api = bindApi({ client, isOnlineConfigured });
+    const roomId = await api.createRoom('Game launch check', 'ko');
+    await api.selectGame(game.id);
+    expect(api.getSnapshot().gameId).toBeNull();
+    api.localSeat('p2');
+    await api.selectGame(game.id);
+
+    const snapshot = api.getSnapshot();
+    expect(snapshot.gameId).toBe(game.id);
+    expect(snapshot.pendingGame).toBeNull();
+    if (game.id !== 'rhythm') expect(snapshot.view).toBeTruthy();
+    const previousDocument = globalThis.document;
+    vi.stubGlobal('document', { fullscreenEnabled: false });
+    try {
+      const html = renderToStaticMarkup(createElement(Room, { api, roomId }));
+      expect(html).toContain('id="game-board"');
+      expect(html).toContain(game.title.ko);
+      if (game.id === 'rhythm') expect(html).toContain('rhythm-game-mount');
+    } finally {
+      vi.stubGlobal('document', previousDocument);
+    }
+  });
+
+  it('keeps room entry available when optional preferences cannot be read or saved', () => {
+    const previousStorage = globalThis.localStorage;
+    vi.stubGlobal('localStorage', {
+      getItem() { throw new DOMException('blocked', 'SecurityError'); },
+      setItem() { throw new DOMException('blocked', 'SecurityError'); },
+    });
+    const api = { getSnapshot: () => ({ roomId: null, mode: 'demo', playerId: 'p1', players: [], gameId: null, version: 0, view: null, messages: [], pendingGame: null, error: null }), isOnlineConfigured: false } as any;
+    try {
+      expect(renderToStaticMarkup(createElement(Room, { api, roomId: 'invited-room' }))).toContain('게임방 참여하기');
+    } finally {
+      vi.stubGlobal('localStorage', previousStorage);
+    }
+  });
+
   it.skipIf(isOnlineConfigured)('keeps prototype methods callable through the loaded API and starts an agreed game', async () => {
     const api = bindApi({ client, isOnlineConfigured });
     const roomId = await api.createRoom('Integration test', 'ko');
@@ -121,14 +171,26 @@ describe('same-game replay availability', () => {
 });
 
 describe('inline game guide', () => {
+  it('uses current assets and economy for a new-game guide while keeping saved rooms versioned', () => {
+    for (const language of ['ko', 'es'] as const) {
+      const fresh = renderToStaticMarkup(createElement(GameGuide, { gameId: 'marble', language }));
+      expect(fresh).toContain('/images/marble/premium/cities/gwangju-chosun-university.webp');
+      expect(fresh).toContain(language === 'ko' ? '첫 건설 40' : 'primera mejora 40');
+      const saved = renderToStaticMarkup(createElement(GameGuide, { gameId: 'marble', language, marbleVersion: 2 }));
+      expect(saved).toContain('/images/marble/landmarks/gwangju.svg');
+      expect(saved).toContain(language === 'ko' ? '첫 건설 100' : 'primera mejora 100');
+      expect(saved).not.toContain('premium/cities/gwangju');
+    }
+  });
   it('offers the same concise illustrated introduction before and during the three upgraded games', () => {
     for (const gameId of ['davinci', 'catchmind', 'marble'] as const) for (const language of ['ko', 'es'] as const) {
       const quick = getBeginnerGuide(gameId, language)!;
-      const inline = renderToStaticMarkup(createElement(GameGuide, { gameId, language, marbleVersion: 2, marbleEconomyVersion: 2 }));
+      const inline = renderToStaticMarkup(createElement(GameGuide, { gameId, language, marbleVersion: 2, marbleEconomyVersion: 2, marbleCityRouteVersion: 3 }));
       const dialog = renderToStaticMarkup(createElement(RulesDialog, { gameId, language, onClose: () => {} }));
       for (const html of [inline, dialog]) {
         expect(html).toContain(quick.goal);
-        expect(html).toContain(`/images/guides/${gameId}-${language}.webp`);
+        if (gameId === 'marble') { expect(html).toContain('/images/marble/premium/buildings/stage1-house.webp'); expect(html).toContain('/images/marble/premium/cities/gwangju-chosun-university.webp'); }
+        else expect(html).toContain(`/images/guides/${gameId}-${language}.webp`);
         expect(html).toContain(language === 'es' ? 'lang="es-DO"' : 'lang="ko"');
         expect(html).toContain('<details class="guide-details">');
         expect(html).not.toContain('<details open');
@@ -149,6 +211,8 @@ describe('inline game guide', () => {
     expect(getBeginnerGuide('marble', 'ko', { marbleVersion: 1 })!.tip).toContain('18칸');
     expect(getBeginnerGuide('marble', 'es', { marbleEconomyVersion: 0 })!.tip).toContain('no tiene préstamos');
     expect(getBeginnerGuide('marble', 'ko', { marbleEconomyVersion: 1 })!.tip).toContain('100');
+    expect(getBeginnerGuide('marble', 'ko', { marbleEconomyVersion: 1 })!.steps[1].body).toContain('첫 건설 100');
+    expect(getBeginnerGuide('marble', 'es', { marbleEconomyVersion: 0 })!.steps[1].body).toContain('construir primero cuesta 100');
     expect(getBeginnerGuide('marble', 'es', { marbleEconomyVersion: 2 })!.tip).toContain('40');
   });
 

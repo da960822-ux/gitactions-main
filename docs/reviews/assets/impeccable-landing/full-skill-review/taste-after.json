@@ -1,0 +1,279 @@
+{
+  "kind": "Taste final after comparison; same14 passes and strict caps",
+  "baseline": "Frozen before review; final human captures and separate official after inspector artifacts",
+  "skills": [
+    "design-taste-frontend/SKILL.md full, references/critique.md full",
+    "taste-redesign/SKILL.md full",
+    "emil-design-eng/SKILL.md full674lines"
+  ],
+  "inspector": {
+    "allow": [],
+    "width1440": {
+      "report": "after-1440/report.json",
+      "images": "1440x900",
+      "fail": 8,
+      "warn": 11,
+      "pageHeight": 9758,
+      "contactHeight": 1036,
+      "fontSizes": 23
+    },
+    "width1920": {
+      "report": "after-1920/report.json",
+      "images": "1920x1200",
+      "fail": 7,
+      "warn": 11,
+      "pageHeight": 12720,
+      "contactHeight": 1360,
+      "fontSizes": 24
+    },
+    "all_listed_images_opened": [
+      "after-1440/desktop-fold.jpg",
+      "after-1440/desktop-page-01.jpg",
+      "after-1440/desktop-page-02.jpg",
+      "after-1440/desktop-page-03.jpg",
+      "after-1920/desktop-fold.jpg",
+      "after-1920/desktop-page-01.jpg",
+      "after-1920/desktop-page-02.jpg",
+      "after-1920/desktop-page-03.jpg"
+    ],
+    "scope_note": "Reports predate only final Hero mask-edge and App storage recovery corrections; unchanged DOM geometry and initial Hero make metrics valid, final Hero quality is superseded by12-frame addendum. No new official scan. No overflow or broken images."
+  },
+  "annotations": [
+    {
+      "rule": "mixed-font-headline",
+      "raw_level": "WARN",
+      "verdict": "Brand exception, not a required font change",
+      "evidence": "The italic Baby and sans Korean greeting are the approved personal treatment; the distance number/unit mix is also legitimate figure typography."
+    },
+    {
+      "rule": "eyebrow",
+      "raw_level": "FAIL",
+      "verdict": "False positive for clock labels",
+      "evidence": "광주 and Santo Domingo identify the two clock values. Removing them would increase ambiguity. These are data labels, not decorative marketing eyebrows."
+    },
+    {
+      "rule": "micro-label",
+      "raw_level": "WARN",
+      "verdict": "Minor real readability issue / personal-brand exception",
+      "evidence": "YEONSEOK LISBETH is a small tracked dedication; keep the real names, simplify tracking or increase size if it must be read. Do not replace the personal identity."
+    },
+    {
+      "rule": "emoji",
+      "raw_level": "FAIL",
+      "verdict": "Brand exception",
+      "evidence": "♡ belongs to the couple dedication/identity; it is not a generic feature-card emoji. Preserve the approved heart."
+    },
+    {
+      "rule": "gradient",
+      "raw_level": "FAIL",
+      "verdict": "Mixed: real style finding, constrained exception",
+      "evidence": "The header gradient is a legibility scrim over the scene. Distance and gallery gradients are restrained material/light cues in the approved rose universe. They remain raw failures; no blanket allow was added."
+    },
+    {
+      "rule": "text-shadow",
+      "raw_level": "FAIL",
+      "verdict": "Real raw style finding; low impact and scoped",
+      "evidence": "Three text shadows are reported. They do not justify restyling the whole gift; review only remaining readability/copy treatments, not lighting baked into original imagery."
+    },
+    {
+      "rule": "hairline",
+      "raw_level": "FAIL",
+      "verdict": "Real raw style finding; low priority",
+      "evidence": "Header/footer thin rules are visible. Their decorative use violates the generic house rule, but they are not a primary usability failure. Form/signature boundaries are functional and must remain."
+    },
+    {
+      "rule": "palette-cream",
+      "raw_level": "WARN",
+      "verdict": "False positive",
+      "evidence": "The report explicitly calls text #faeee6 a yellow-cream background; bodyBg is #130e17. Warm foreground ink is not a cream-ground defect."
+    },
+    {
+      "rule": "size-count",
+      "raw_level": "WARN",
+      "verdict": "Real measured complexity; partial normalization issue",
+      "evidence": "After23 sizes at1440 and24 at1920, with two loaded families. Fluid/type role complexity remains measured; no blind five-size rewrite."
+    },
+    {
+      "rule": "no-footage",
+      "raw_level": "WARN",
+      "verdict": "Explicit user override",
+      "evidence": "The user excluded video. Do not source a clip or add a background video to clear this warning."
+    },
+    {
+      "rule": "small-text",
+      "raw_level": "WARN",
+      "verdict": "Real minor readability issue",
+      "evidence": "One block under13px is measured; stable nav/supporting text is small. Increase text that carries meaning. Do not enlarge every decorative inscription indiscriminately."
+    },
+    {
+      "rule": "off-centre",
+      "raw_level": "WARN",
+      "verdict": "Partly real system-inset inconsistency",
+      "evidence": "Overall measured margins are94/50 at1440 and144/115 at1920. Major chapter interiors are108/108 and144/144; gallery uses86/86 and115/115. Preserve internal balance while aligning page-level edges; bird full-bleed art changes aggregate extents."
+    },
+    {
+      "rule": "lopsided",
+      "raw_level": "WARN",
+      "verdict": "False positive for canvas-owned envelope",
+      "evidence": "The DOM sees no media in letter-scene, but both page03 sheets and A11/A18 show a large envelope on the right. Do not fill that area with new decoration."
+    },
+    {
+      "rule": "blank-gap",
+      "raw_level": "WARN",
+      "verdict": "State-sensitive, not a missing-letter verdict",
+      "evidence": "After1440 raw748px at8956; page03 shows sealed envelope hold, not absent letter. Actual20-letter and21-letter-end plus signed/rose states prove content; repetition remains an editorial weakness."
+    },
+    {
+      "rule": "no-title",
+      "raw_level": "FAIL",
+      "verdict": "False positive from scroll-state layout probe",
+      "evidence": "Both official afterfolds and final reduced-ready-1440 visibly show the primary h1. Ready/fence JSON confirms h1 opacity1 and visibilityvisible. Probe no-title does not describe the actual finished first screen; no second h1 added."
+    },
+    {
+      "rule": "covered-text",
+      "raw_level": "FAIL",
+      "verdict": "Raw failure retained; rendered distance occlusion not reproduced in evidence",
+      "evidence": "Raw says distance heading/numeral100% hidden atscreen6. Opened afterpage02 sheets and actual15-distance-ko-1440/es-1920 show both legibly. Ready/progress-settled manual experience differs from the pointer-events canvas hit-test probe. This supports a probe/state mismatch; it does not prove every transient scroll position safe. No blanket waiver or raw edit."
+    },
+    {
+      "rule": "pinned-over-picture",
+      "raw_level": "WARN",
+      "verdict": "Generic geometric overlap / brand exception",
+      "evidence": "Initial Hero copy intentionally occupies negative space over scene and is legible in normal/reduced ready folds. Final .35 opaque seated faces remove actual baseline overprint. Generic geometric overlap remains raw; posecut is separate."
+    },
+    {
+      "rule": "long-pin",
+      "raw_level": "WARN",
+      "verdict": "Measured hold is real; repeated-text claim is overstated",
+      "evidence": "The Hero span is about3.6 viewport heights and the room recurs across three sheet cells. A heldp=.20 has already removed editorial copy. Shorten any inactive hold, but do not claim the same visible title persists through every measured screen."
+    },
+    {
+      "rule": "reduced-hidden",
+      "raw_level": "FAIL",
+      "verdict": "Inactive duplicate-state finding, not missing primary content; raw retained",
+      "evidence": "Raw names Baby, 같이 놀자. and 같이 놀자: AcrossHero.tsx:19 inert folded-destination. Final reduced-motion first-screen capture waits worldready, entrance1 and completed fence; primary h1, game and letter actions are visibly present. The two alternate destination strings remain inactive, and CSS still has conflicting display rules; semantically align hidden/inert state rather than exposing duplicate CTAs. This is actual rendered evidence, not an automatic waiver."
+    }
+  ],
+  "fourteen_passes": [
+    {
+      "pass": "1. One second / five seconds",
+      "verdict": "PASS",
+      "evidence": "Couple portrait leads; gift and game/letter actions remain clear in both desktop folds and final reduced ready frame."
+    },
+    {
+      "pass": "2. Squint",
+      "verdict": "IMPROVED / PARTIAL",
+      "evidence": "Inactive gallery sculptures now hold more mass and recognition; thin thread is still visually light."
+    },
+    {
+      "pass": "3. Cover the logo",
+      "verdict": "PASS",
+      "evidence": "Faces, exact cities, InterPals history, personal letter and pact identify this particular couple."
+    },
+    {
+      "pass": "4. Edges",
+      "verdict": "PARTIAL",
+      "evidence": "Narrative edges remain stable; gallery/header aggregate insets still differ."
+    },
+    {
+      "pass": "5. Space and frame",
+      "verdict": "IMPROVED / PARTIAL",
+      "evidence": "Contact height1414→1036px at1440; envelope holds remain repetitive, not empty missing content."
+    },
+    {
+      "pass": "6. Type",
+      "verdict": "IMPROVED / PARTIAL",
+      "evidence": "Korean word breakup fixed and Spanish duel two lines. Approved Hero still three lines;23/24 computed sizes and small labels remain."
+    },
+    {
+      "pass": "7. Colour",
+      "verdict": "PASS in approved world; raw FAIL",
+      "evidence": "Plum/rose/warm ink coherent; measured gradients, resting shadows and hairlines remain generic failures."
+    },
+    {
+      "pass": "8. Images",
+      "verdict": "PASS for brief; strict photography cap applies",
+      "evidence": "Original approved art remains intact with no broken images; drawings do not count as four photographs. No footage by user override."
+    },
+    {
+      "pass": "9. Sameness",
+      "verdict": "IMPROVED / PARTIAL",
+      "evidence": "Time now full-width heading and city/slider scene, interrupting consecutive split chapters; thread/distance/duel/invitation still share some language."
+    },
+    {
+      "pass": "10. Phone",
+      "verdict": "EXCLUDED",
+      "evidence": "User explicitly excludes mobile; no mobile usability pass claimed."
+    },
+    {
+      "pass": "11. Fullness",
+      "verdict": "PARTIAL",
+      "evidence": "Tighter thread and larger gallery improve density; sealed holds still repeat a single artifact."
+    },
+    {
+      "pass": "12. Substance",
+      "verdict": "PASS",
+      "evidence": "All approved story, eight games, actual letter, drawn pact, rose and reread exist and work. No invented facts."
+    },
+    {
+      "pass": "13. Collisions",
+      "verdict": "PASS at reviewed settled states; raw FAIL retained",
+      "evidence": "Final12 Hero frames show no face overprint, lower desk cutoff or pinholes. Actual distance text visible; raw100% hidden probe remains annotated and unwaived. No full transient-position guarantee."
+    },
+    {
+      "pass": "14. Competitor and live thing",
+      "verdict": "PASS",
+      "evidence": "Couple-specific idea survives page; city-time preview, native gallery and real signing/rose interaction are live."
+    }
+  ],
+  "scores": {
+    "before": {
+      "design": 6.5,
+      "usability": 7.5,
+      "creativity": 8,
+      "content": 8.5,
+      "weighted_uncapped": 7.3,
+      "strict_result": 6.0
+    },
+    "after_contextual_uncapped": {
+      "design": 7.5,
+      "usability": 8,
+      "creativity": 8,
+      "content": 8.5,
+      "weighted": 7.85
+    },
+    "after_generic_component_caps": {
+      "design": 6.5,
+      "usability": 8,
+      "creativity": 8,
+      "content": 8.5,
+      "weighted_before_overall_cap": 7.45
+    },
+    "strict_cap": 6.0,
+    "strict_result": 6.0,
+    "strict_status": "FAIL: inspector FAILs remain",
+    "interpretation": "7.85 is brand-constrained reviewer arithmetic, not a pass and not a mobile-qualified award score. Strict result unchanged6.0→6.0 despite visible improvements."
+  },
+  "caps": [
+    "Any remaining inspector FAIL caps overall6.0.1440 has8;1920 has7. No allow flags/raw reports changed.",
+    "Three-line approved Hero, gradients, resting shadows and decorative hairlines impose generic overall6.5; lower6.0 wins.",
+    "Strict fewer-than-four-photographs condition caps design6.5: approved drawings are retained by brief; contextual design7.5 reported separately.",
+    "Sealed-envelope holds and aggregate margin mismatch also support generic design6.5 cap. They cannot lift6.0 overall.",
+    "No unsupported5.0 clipped/missing-content cap: actual letter renders after opening; distance heading/numeral visible in supplied settled evidence. No assertion all transient states verified.",
+    "Mobile/video excluded by explicit user direction; absence is documented, not silently passed."
+  ],
+  "top_three": [
+    "P2 editorial pose cut/curved room reveal, finalhero01/.39 at bothwidths; refine registration/architecture only within approved art.",
+    "P2 thin thread and repeated sealed-envelope hold; shorten/recompose existing states, no fake chats.",
+    "P3 small support labels and semantic clarity of letter-entry modes; targeted type/clarify, preserve functions."
+  ],
+  "constraints": [
+    "No new draw/direction: existing approved brand and component refinement.",
+    "No generic marketing AIDA, randomized layouts, stock/Picsum photography, fake chats/facts, new proposals or claims.",
+    "Preserve faces/outfits/B artwork, game identities/rules/engines/API/rhythm and the actual letter/signature/rose chain.",
+    "GSAP owns coordinated camera/scroll; Motion owns bounded component gestures without overlapping property ownership.",
+    "User excludes mobile/video; do not clear no-footage by adding video.",
+    "No product edits, detector reruns or new full-page captures by this reviewer.",
+    "One later bounded post-fix comparison at the same evidence conditions; never mark a raw FAIL run as passed."
+  ]
+}

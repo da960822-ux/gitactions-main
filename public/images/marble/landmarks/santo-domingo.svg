@@ -1,0 +1,16 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="192" height="192" viewBox="0 0 192 192">
+  <title>Alcázar de Colón, Santo Domingo</title>
+  <g stroke="#344c59" stroke-width="2" stroke-linejoin="round">
+    <path d="M20 137l74-39 77 38v10l-74 39-77-39z" fill="#a5b9af"/><path d="M20 137l74-39 77 38-74 39z" fill="#e7e5cc"/>
+    <path d="M43 69l60 28v54l-60-28z" fill="#e8d4a8"/><path d="M103 97l45-23v54l-45 23z" fill="#b79c79"/>
+    <path d="M39 67l45-24 68 30-49 26z" fill="#f0dfb8"/><path d="M39 67v9l64 30 49-25v-8l-49 26z" fill="#c1a686"/>
+    <path d="M48 82v20l10 5V87q-5-11-10-5ZM65 90v20l10 5V95q-5-11-10-5ZM82 98v20l10 5v-20q-5-11-10-5Z" fill="#665e4f"/>
+    <path d="M111 100v19l9-5V95q-4-5-9 5ZM127 92v19l9-5V87q-4-5-9 5Z" fill="#746855"/>
+    <path d="M48 108v19l10 5v-19q-5-11-10-5ZM65 116v19l10 5v-19q-5-11-10-5ZM82 124v19l10 5v-19q-5-11-10-5Z" fill="#665e4f"/>
+    <path d="M111 124v17l9-5v-17q-4-5-9 5ZM127 116v17l9-5v-17q-4-5-9 5Z" fill="#746855"/>
+    <path d="M43 105l60 28 45-23M43 111l60 28 45-23" fill="none" stroke="#c5ab85" stroke-width="3"/>
+    <path d="M81 146l22 10 25-13v6l-25 14-22-10z" fill="#d4c3a1"/>
+    <path d="M29 121q5-21 5-35m0 2q-15-11-22 1 14-2 22 4m0-5q14-15 24-4-13 0-24 8" fill="#7ba993"/>
+    <path d="M160 136q-6-25-6-42m0 2q-15-11-22 1 14-2 22 4m0-5q14-15 24-4-13 0-24 8" fill="#7ba993"/>
+  </g>
+</svg>

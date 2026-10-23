@@ -1,0 +1,14 @@
+{
+  "live-still": {
+    "mean_abs_rgb_0_255": 0.0,
+    "p95_abs_rgb": 0.0,
+    "max_abs_rgb": 0.0,
+    "pixels_any_channel_gt_12_pct": 0.0
+  },
+  "encoded-still": {
+    "mean_abs_rgb_0_255": 1.2913876028806583,
+    "p95_abs_rgb": 4.0,
+    "max_abs_rgb": 59.0,
+    "pixels_any_channel_gt_12_pct": 1.4407793209876543
+  }
+}

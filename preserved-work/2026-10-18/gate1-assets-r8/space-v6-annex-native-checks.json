@@ -1,0 +1,52 @@
+[
+  {
+    "name": "Continuation common floor",
+    "boundaryEdges": 0,
+    "nonManifoldEdges": 0
+  },
+  {
+    "name": "Continuation left return",
+    "boundaryEdges": 0,
+    "nonManifoldEdges": 0
+  },
+  {
+    "name": "Continuation right return",
+    "boundaryEdges": 0,
+    "nonManifoldEdges": 0
+  },
+  {
+    "name": "Continuation vaulted roof",
+    "boundaryEdges": 0,
+    "nonManifoldEdges": 0
+  },
+  {
+    "name": "Continuation rear left pier",
+    "boundaryEdges": 0,
+    "nonManifoldEdges": 0
+  },
+  {
+    "name": "Continuation rear right pier",
+    "boundaryEdges": 0,
+    "nonManifoldEdges": 0
+  },
+  {
+    "name": "Continuation rear lintel",
+    "boundaryEdges": 0,
+    "nonManifoldEdges": 0
+  },
+  {
+    "name": "Continuation beyond floor",
+    "boundaryEdges": 0,
+    "nonManifoldEdges": 0
+  },
+  {
+    "name": "Continuation beyond left",
+    "boundaryEdges": 0,
+    "nonManifoldEdges": 0
+  },
+  {
+    "name": "Continuation beyond right",
+    "boundaryEdges": 0,
+    "nonManifoldEdges": 0
+  }
+]

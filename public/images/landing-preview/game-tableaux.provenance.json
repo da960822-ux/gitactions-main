@@ -1,0 +1,76 @@
+{
+  "assetId": "landing-gallery-user-six-restore-two-art-retained-20261018",
+  "kind": "Exact historical representative sculptures for six games; two retained original-art panels",
+  "implementation": "src/landing/gallery/studioObjects.ts",
+  "status": "User-requested six-asset rollback completed; actual integrated visual verification pending",
+  "originalsUnmodified": true,
+  "mapping": {
+    "davinci": {
+      "sources": [
+        "/images/landing-preview/art/leonardo-self-portrait.jpg"
+      ],
+      "layout": "Single thin4:5 art panel, full source image contained at native aspect, neutral unlit color",
+      "provenance": "public/images/landing-preview/art/leonardo-self-portrait.provenance.json",
+      "restriction": "Historical presumed Leonardo self-portrait, not official game packaging. Original joker photographs remain protected in actual games/Eggs."
+    },
+    "catchmind": {
+      "sources": [],
+      "layout": "Exact historical heart drawing board and pencil",
+      "baseline": "24a6ec6",
+      "scope": "Explicit user rollback; no new bird, palette, guess bubble or easel"
+    },
+    "domino": {
+      "sources": [],
+      "layout": "Exact historical single physical3|5 domino",
+      "baseline": "24a6ec6"
+    },
+    "jaipur": {
+      "sources": [],
+      "layout": "Exact historical continuous carved camel",
+      "baseline": "24a6ec6"
+    },
+    "splendor": {
+      "sources": [
+        "/images/splendor/box-cover.jpg"
+      ],
+      "layout": "Single thin4:5 art panel, full source image contained at native aspect, neutral unlit color",
+      "provenance": "docs/ASSETS.md identifies unchanged user-supplied11861.jpg",
+      "sha256": "41a62f7dc67e2e072e2c8b93104d230ad947598a5db9aa4045590457e95909b5",
+      "restriction": "Original cards and noble assets remain protected in actual games/Eggs; current single-person noble mapping is not relabeled."
+    },
+    "minhwatu": {
+      "sources": [
+        "/images/hwatu/01-01.svg",
+        "/images/hwatu/03-01.svg",
+        "/images/hwatu/08-01.svg"
+      ],
+      "layout": "Exact historical three-card physical fan",
+      "baseline": "24a6ec6",
+      "provenance": "public/images/hwatu/ATTRIBUTION.txt and source-verification.json"
+    },
+    "marble": {
+      "sources": [],
+      "layout": "Exact historical physical board with original procedural boardTexture, die and house",
+      "baseline": "24a6ec6"
+    },
+    "rhythm": {
+      "sources": [],
+      "layout": "Exact historical headphones and musical note",
+      "baseline": "24a6ec6",
+      "restriction": "Original SWF files and actual game remain unchanged"
+    }
+  },
+  "textureSettings": {
+    "retainedTwoArtPanels": "sRGB, native aspect fully contained, neutral MeshBasicMaterial, toneMapped false",
+    "restoredSix": "Exact historical material and texture definitions from24a6ec6"
+  },
+  "generation": "none",
+  "limitations": [
+    "Integrated actual selected-eight minimal proof remains pending.",
+    "No final visual/user-approval or real-GPU performance claim.",
+    "Other-six source curation stopped at user request; scratch candidates were not applied.",
+    "Protected actual-game photos, nobles, maps, pawns and SWF assets remain unchanged."
+  ],
+  "baseline": "24a6ec6:src/landing/gallery/studioObjects.ts",
+  "factorySha256": "1df86d06bd53d2bebd15193b4895e8218fc9fe1a7264761b5c41b86c6e5f5087"
+}

@@ -4,7 +4,7 @@ let client:typeof ClientType;
 beforeEach(async()=>{vi.resetModules();({client}=await import('./client'));});
 afterEach(()=>{vi.restoreAllMocks();vi.unstubAllGlobals();});
 async function startDrawing(){
- await client.createRoom('구름','ko');await client.selectGame('catchmind');client.localSeat('p2');await client.selectGame('catchmind');client.localSeat('p1');await client.sendAction({type:'choose',payload:{wordId:0}});
+ await client.createRoom('구름','ko');await client.selectGame('catchmind');client.localSeat('p2');await client.selectGame('catchmind');client.localSeat('p1');await client.sendAction({type:'settings',payload:{settings:{category_id:'animals',drawTimeSeconds:80,rounds:2,choices:3,hints:2,customWords:[],customOnly:false}}});await client.sendAction({type:'choose',payload:{wordId:0}});
 }
 describe('local practice client',()=>{
  it('preserves a finished Minhwatu game until both seats accept a rematch',async()=>{
@@ -39,6 +39,41 @@ describe('local practice client',()=>{
   client.localSeat('p2');await client.tick();expect(client.getSnapshot().view.phase).toBe('round-over');
   await client.sendChat('고양이');expect(client.getSnapshot().messages.at(-1)?.status).toBe('unavailable');
  });
+ it('expires once at the exact deadline even when the answer arrives before a clock tick',async()=>{
+  await startDrawing();const answer=client.getSnapshot().view.hand.answer.es,deadline=Date.parse(client.getSnapshot().view.deadlineAt),version=client.getSnapshot().version;
+  client.localSeat('p2');vi.spyOn(Date,'now').mockReturnValue(deadline);
+  await client.sendChat(answer);await Promise.all([client.tick(),client.tick()]);
+  expect(client.getSnapshot()).toMatchObject({version:version+1,view:{phase:'round-over',deadlineAt:null,board:{round:1,scores:{p1:0,p2:0},answer:{es:answer}}}});
+  expect(client.getSnapshot().messages.at(-1)?.status).toBe('unavailable');
+  client.localSeat('p1');expect(client.getSnapshot().view.board.scores).toEqual({p1:0,p2:0});
+ });
+ it('does not call an answer correct when the deadline expires between chat validation and execution',async()=>{
+  await startDrawing();const answer=client.getSnapshot().view.hand.answer.ko,deadline=Date.parse(client.getSnapshot().view.deadlineAt);
+  client.localSeat('p2');vi.spyOn(Date,'now').mockReturnValueOnce(deadline-1).mockReturnValue(deadline);
+  await client.sendChat(answer);
+  expect(client.getSnapshot().messages.at(-1)?.status).toBe('unavailable');
+  expect(client.getSnapshot().view.board.scores).toEqual({p1:0,p2:0});
+ });
+ it('accepts an answer just before expiration and ignores a later timeout',async()=>{
+  await startDrawing();const answer=client.getSnapshot().view.hand.answer.es,deadline=Date.parse(client.getSnapshot().view.deadlineAt);
+  client.localSeat('p2');const clock=vi.spyOn(Date,'now').mockReturnValue(deadline-1);
+  await client.sendChat(answer);const solved=structuredClone(client.getSnapshot().view);
+  clock.mockReturnValue(deadline+60_000);await client.tick();
+  expect(client.getSnapshot().view).toEqual(solved);
+  expect(solved.board.scores).toEqual({p1:1,p2:1});
+ });
+ it('keeps the same match until both seats accept, then resets category, drawing, answer, score and deadline',async()=>{
+  await startDrawing();const answer=client.getSnapshot().view.hand.answer.ko;
+  await client.sendAction({type:'draw',payload:{strokes:[{points:[{x:.1,y:.1},{x:.3,y:.3}]}]}});
+  client.localSeat('p2');await client.sendChat(answer);client.localSeat('p1');await client.sendAction({type:'end-round'});
+  client.localSeat('p2');await client.sendAction({type:'choose',payload:{wordId:0}});await client.sendAction({type:'pass'});await client.sendAction({type:'end-round'});
+  const finished=structuredClone(client.getSnapshot().view),version=client.getSnapshot().version;expect(finished.result).toBeTruthy();
+  await client.selectGame('catchmind');await client.selectGame('catchmind');
+  expect(client.getSnapshot().view).toEqual(finished);expect(client.getSnapshot().version).toBe(version);
+  client.localSeat('p1');await client.selectGame('catchmind');
+  expect(client.getSnapshot()).toMatchObject({version:version+1,pendingGame:null,view:{phase:'choosing',deadlineAt:null,result:null,hand:{choices:[],answer:null},board:{round:1,strokes:[],fills:[],guesses:[],hintStage:0,answer:null,scores:{p1:0,p2:0},settings:{category_id:null}}}});
+  expect(client.getSnapshot().view.actions.filter((option:any)=>option.action.type==='choose')).toHaveLength(0);
+ });
  it('keeps original chat when translation is not configured and validates length',async()=>{
   await client.createRoom('구름','ko');await client.selectGame('catchmind');client.localSeat('p2');await client.selectGame('catchmind');await client.sendChat('Hola, ¿cómo estás?');expect(client.getSnapshot().messages[0]).toMatchObject({text:'Hola, ¿cómo estás?',status:'unavailable'});
   await expect(client.sendChat('a'.repeat(501))).rejects.toThrow('chat_max_500');
@@ -57,6 +92,12 @@ describe('local practice client',()=>{
    {text:'❤️',status:'original',translation:undefined},
   ]);
   await expect(client.sendReaction('custom' as never)).rejects.toThrow('invalid_reaction');
+ });
+ it.each(['getItem','removeItem'])('closes the room when browser storage %s is blocked',async operation=>{
+  const id=await client.createRoom('구름','ko');
+  vi.stubGlobal('localStorage',{getItem:()=>id,removeItem:()=>{},[operation]:()=>{throw new DOMException('Storage blocked','SecurityError');}});
+  await expect(client.closeRoom()).resolves.toBeUndefined();
+  expect(client.getSnapshot()).toMatchObject({roomId:null,gameId:null,players:[],view:null});
  });
  it('cannot join a demo room from a different room or after seven days',async()=>{
   const room=await client.createRoom('구름','ko');await expect(client.joinRoom(crypto.randomUUID(),'Luna','es')).rejects.toThrow('demo_same_browser_only');

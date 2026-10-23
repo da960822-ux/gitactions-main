@@ -1,0 +1,58 @@
+{
+  "actualFrames": [
+    {
+      "name": "hero",
+      "progress": "0.0000",
+      "camera": "0.000,0.300,11.700",
+      "pointerX": "0.0000",
+      "bufferSize": "960x540"
+    },
+    {
+      "name": "middle",
+      "progress": "0.3202",
+      "camera": "-1.147,0.459,9.392",
+      "pointerX": "0.0000",
+      "bufferSize": "960x540"
+    },
+    {
+      "name": "arrival",
+      "progress": "1.0000",
+      "camera": "-3.800,0.850,-40.000",
+      "pointerX": "0.0000",
+      "bufferSize": "960x540"
+    },
+    {
+      "name": "reverse",
+      "progress": "0.0000",
+      "camera": "0.000,0.300,11.700",
+      "pointerX": "0.0000",
+      "bufferSize": "960x540"
+    },
+    {
+      "name": "pointer-left",
+      "progress": "0.0000",
+      "camera": "-0.100,0.302,11.700",
+      "pointerX": "-0.8333",
+      "bufferSize": "960x540"
+    },
+    {
+      "name": "pointer-right",
+      "progress": "0.0000",
+      "camera": "0.100,0.302,11.700",
+      "pointerX": "0.8333",
+      "bufferSize": "960x540"
+    }
+  ],
+  "errors": [],
+  "testedResolution": "CSS1920x1080 / native960x540; software renderer reported by actual browser",
+  "tests": "7 passed before reconnect; identical lock runtime restored; post-recovery build passed",
+  "visualApproval": false,
+  "libraryHero": "libfile_b034faa74c6881918fd97c31866dc59c",
+  "libraryComparison": "libfile_a1798db3258c81919d4202d5602220e6",
+  "remaining": [
+    "Middle occlusion and large right arrival wall require visual review",
+    "Native1920/motion/full-intro evidence not captured for V13",
+    "Hardware GPU FPS not measured",
+    "Old git alternate object store missing in /tmp; current working files preserved"
+  ]
+}

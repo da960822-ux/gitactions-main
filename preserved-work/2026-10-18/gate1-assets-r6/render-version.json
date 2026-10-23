@@ -1,0 +1,42 @@
+{
+  "createdAtUTC": "2026-10-17T23:53:11.990436+00:00",
+  "assetVersion": "chamber-v6.1",
+  "assetManifestSha256": "e483d4673187b1fa709485d53f0ac5ecf8fa00822cf290b917d6b2c7b4cfd25b",
+  "source": {
+    "src/landing/AcrossHero.tsx": "bd54da5599f4caa459e6b4dcfcb059a6622bbd1c50b6e979316c7f84a388719b",
+    "src/landing/cinematic/folded/world.ts": "a13dfb76d21456c52601ba7210ee2027f2fb44a4df5dc508226b93097c2090ed",
+    "src/landing/cinematic/folded/pose.ts": "70eed27ca67e9fc51a177babc2148c254837b7af7ea8ff39d055424f0ed35262",
+    "scripts/build-folded-chamber.py": "1ca42bf4317f0db207823c8e0ffca831c53dc0c6733b581112595e998defba8e",
+    "scripts/denoise-chamber-lightmaps.py": "3d5fccd8fd7086a615317b942500eb84c65e9c47f4fbe7ef8541e29c02cc48d0",
+    "src/landing/cinematic/folded/chamber-asset.test.ts": "6a88b87d57aece8aed0e3ab2dc4238fd1ffe08b861e94e20819b16ac3f1db9c0"
+  },
+  "authorBlendSHA256": "8f0d5245c87da13497d0fb56f5930e1f25966ed88d788d4cac4c1faadbf0d5d9",
+  "bakedBlendSHA256": "867da0a729fbaf0cfa786b8ee9ba9ca8058f600e7a193823b990deae055503d0",
+  "portable": {
+    "source": "/workspace/gate1-assets-r6/chamber.blend",
+    "sourceSha256": "8f0d5245c87da13497d0fb56f5930e1f25966ed88d788d4cac4c1faadbf0d5d9",
+    "portable": "/workspace/gate1-assets-r6/chamber-source-portable.blend",
+    "portableSha256": "020525132d5a0604dcf8f85e016490621fd1ce99fc5e7ebacd02ff04f25fce52",
+    "change": "Only embedded existing approved portrait and compressed a separate save; original source unchanged."
+  },
+  "cameraPosesSHA256": "d2e24ac7e6af3e656ce02ca2b0dffbffcd82f7bd17878174987cf016aa7af10b",
+  "renderEnvironment": "ANGLE (Google, Vulkan 1.3.0 (SwiftShader Device (Subzero) (0x0000C0DE)), SwiftShader driver)",
+  "protectedFiles": {
+    "checked": 2255,
+    "changed": [],
+    "missing": []
+  },
+  "reverse": {
+    "sameCameraAndObjectUUIDsAndMorphWeights": true,
+    "imageMeanAbsoluteError8Bit": 2.7809927983539093e-05,
+    "imageMaxChannelError8Bit": 1,
+    "nonidenticalPixels": 121
+  },
+  "textureBudgetEstimate": {
+    "GI_RGBA16F_Level0_MiB": 312.0,
+    "normal_RGBA8_FullMipChain_MiB": 70.66666666666667,
+    "note": "Arithmetic estimate from authored dimensions, not measured VRAM. Excludes probes, reflection/depth/framebuffers, portrait, video and driver allocation."
+  },
+  "gitHead": "491b16883d9ca1591065a22b23731f04587e5b38",
+  "gate": "Gate 1 static review; no self approval, no Gate 2"
+}

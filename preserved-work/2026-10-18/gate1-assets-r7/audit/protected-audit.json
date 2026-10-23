@@ -1,0 +1,54 @@
+{
+  "baseline_manifest": "/workspace/gate1-evidence/protected-file-sha256.json",
+  "baseline_commit": "24a6ec69eea712f632ee80e8f3cae863d38c769f",
+  "protected_file_count": 2255,
+  "r7": {
+    "path": "/workspace/yl-folded-playhouse-r7",
+    "head": "491b16883d9ca1591065a22b23731f04587e5b38",
+    "expected_head": "491b16883d9ca1591065a22b23731f04587e5b38",
+    "working_tree_status": [
+      "M scripts/build-folded-chamber.py",
+      " M scripts/denoise-chamber-lightmaps.py",
+      " M src/landing/cinematic/folded/chamber-asset.test.ts",
+      " M src/landing/cinematic/folded/pose.test.ts",
+      " M src/landing/cinematic/folded/pose.ts",
+      " M src/landing/cinematic/folded/world.ts"
+    ],
+    "changed_paths": [
+      "scripts/build-folded-chamber.py",
+      "scripts/denoise-chamber-lightmaps.py",
+      "src/landing/cinematic/folded/chamber-asset.test.ts",
+      "src/landing/cinematic/folded/pose.test.ts",
+      "src/landing/cinematic/folded/pose.ts",
+      "src/landing/cinematic/folded/world.ts"
+    ],
+    "protected_sha256": {
+      "checked": 2255,
+      "mismatches": [],
+      "missing": []
+    },
+    "protected_changed_paths": [],
+    "package_lock_status": [
+      {
+        "path": "package.json",
+        "changed_vs_head": false
+      },
+      {
+        "path": "package-lock.json",
+        "changed_vs_head": false
+      }
+    ]
+  },
+  "other_worktrees": {
+    "r6": {
+      "path": "/workspace/yl-folded-playhouse-g1",
+      "head": "491b16883d9ca1591065a22b23731f04587e5b38",
+      "status": []
+    },
+    "original": {
+      "path": "/workspace/gitactions-main",
+      "head": "b37c10b5a93d44236a7d5ed5834b817531e8ea39",
+      "status": []
+    }
+  }
+}

@@ -14,10 +14,20 @@ await fs.mkdir(out, { recursive: true });
 const browser = await launchChromium();
 const contexts = await Promise.all(['ko', 'es'].map(() => browser.newContext({ viewport: { width: 1440, height: 900 } })));
 const pages = await Promise.all(contexts.map(context => context.newPage()));
-const report = { game: gameId, baseUrl, method: 'Two independent contexts; UI-only room/create/join/consent/play; explicit read-only refresh; no Realtime', checks: [], moves: [], errors: [], observations: [], screenshots: [] };
+const report = { game: gameId, baseUrl, method: 'Two independent contexts; UI-only room/create/join/consent/play; explicit read-only refresh; no Realtime', checks: [], moves: [], errors: [], consoleErrors: [], expectedRealtimeSocketErrors: [], networkFailures: [], httpErrors: [], observations: [], screenshots: [] };
 const check = (name, pass, details) => { report.checks.push({ name, pass: Boolean(pass), details }); assert(pass, name); };
 const save = () => fs.writeFile(path.join(out, 'report.json'), JSON.stringify(report, null, 2));
-for (const page of pages) page.on('pageerror', error => report.errors.push(error.message));
+for (const page of pages) {
+  page.on('pageerror', error => report.errors.push(error.message));
+  page.on('console', message => {
+    if (message.type() !== 'error') return;
+    const text = message.text();
+    if (text.includes('/realtime/v1/websocket') && text.includes('404')) report.expectedRealtimeSocketErrors.push(text);
+    else report.consoleErrors.push(text);
+  });
+  page.on('requestfailed', request => report.networkFailures.push({ url: request.url(), error: request.failure()?.errorText }));
+  page.on('response', response => { if (response.status() >= 400) report.httpErrors.push({ status: response.status(), url: response.url() }); });
+}
 async function snapshot(page, refresh = false) {
   return page.evaluate(async shouldRefresh => {
     const moduleUrl = performance.getEntriesByType('resource').find(entry => /\/src\/core\/client\.ts(?:\?|$)/.test(entry.name))?.name;
@@ -62,6 +72,7 @@ async function privacy(phase) {
 
 async function playJaipur() {
   const fixes = process.env.QA_JAIPUR_FIXES === '1';
+  const fullMatch = process.env.QA_JAIPUR_MATCH === '1';
   const cancelledSeats = new Set();
   const noticeSeats = new Set();
   const goods = ['diamond', 'gold', 'silver', 'cloth', 'spice', 'leather'];
@@ -87,9 +98,9 @@ async function playJaipur() {
     await pages[i].setViewportSize({ width: 390, height: 844 });
     await checkLayout(pages[i], i + 1, 390);
   }
-  for (let step = 0; step < (fixes ? 36 : 90); step++) {
+  for (let step = 0; step < (fixes ? 36 : fullMatch ? 180 : 90); step++) {
     const [state] = await both();
-    if (state.result || (!fixes && state.round > 1 && report.moves.some(move => move.round > 1)) || (fixes && report.moves.length >= 16 && narrowSeats.size === 2 && noticeSeats.size === 2 && flags.exchange)) break;
+    if (state.result || (!fixes && !fullMatch && state.round > 1 && report.moves.some(move => move.round > 1)) || (fixes && report.moves.length >= 16 && narrowSeats.size === 2 && noticeSeats.size === 2 && flags.exchange)) break;
     const playerIndex = state.turn === 'p1' ? 0 : 1;
     const page = pages[playerIndex];
     const hand = await handOf(page), market = await marketOf(page);
@@ -184,7 +195,13 @@ async function playJaipur() {
       await modes.nth(1).click();
       for (const card of action.given) await page.locator(`.jp-hand-card[data-jaipur-card-id="${card.id}"]`).click();
       await page.locator(`.jp-market-card[data-jaipur-card-id="${action.received[0].id}"]`).click();
-      check('Exchange2↔1 explains mismatch and blocks confirm', await confirm().isDisabled() && /맞지|coincidir/.test(await page.locator('.jp-exchange-controls').innerText()));
+      const mismatch = await page.locator('.jp-exchange-controls').innerText(), blocked = await confirm().isDisabled();
+      check('Exchange2↔1 explains mismatch and blocks confirm', blocked && /수량(?: 불일치|이 맞지)|cantidades (?:distintas|deben coincidir)/i.test(mismatch), { blocked, mismatch });
+      if (fixes) {
+        const button = await confirm().boundingBox();
+        check(`p${playerIndex + 1} mobile exchange confirm remains readable`, button !== null && button.width >= 140 && button.height >= 44 && await page.evaluate(() => document.documentElement.scrollWidth === 390), button);
+        await capture(`exchange-mismatch-p${playerIndex + 1}`);
+      }
       await page.locator('.jp-exchange-controls .jp-cancel-action').click();
       check('Exchange cancel clears both sides', await page.locator('.jp-hand-card.is-selected,.jp-market-card.is-selected').count() === 0);
       await modes.nth(1).click();
@@ -240,6 +257,7 @@ async function playJaipur() {
   report.final = final.map(({ board, ...value }) => ({ ...value, deckCount: board.deckCount, roundSummary: board.roundSummary, roundsWon: board.roundsWon }));
   report.observations.push({ reached: flags, mobileSeats: [...narrowSeats], settlementKO: await pages[0].locator('.jp-history-drawer').innerText(), settlementES: await pages[1].locator('.jp-history-drawer').innerText() });
   if (!fixes) check('One Jaipur round completed and next round entered', final[0].round > 1);
+  if (fullMatch) check('Jaipur match settled after its winning round', final[0].phase === 'finished' && Boolean(final[0].result));
   if (fixes) report.observations.push({ fixScope: 'At least16 strategy actions, stop once both mobile sale flows and fresh notices plus exchange reached; bounded36 actions; no full match requirement', mobileSaleSeats: [...narrowSeats], mobileCancelSeats: [...cancelledSeats], freshNoticeSeats: [...noticeSeats], exchangeReached: flags.exchange });
   await capture(fixes ? 'after-fixes-midgame' : 'next-round');
 }
@@ -451,6 +469,8 @@ async function verifyFinishedReplay() {
     check('Losing Domino headline uses the neutral result title', heading === (losingIndex ? 'Resultado del partido' : '경기 결과'), heading);
     const badge = await pages[losingIndex].locator('.domino-event-winner').innerText();
     check('Losing Domino winner badge names the rival team', badge === (losingIndex ? 'Ganó el equipo rival' : '상대 팀 승리'), badge);
+  } else if (gameId === 'jaipur') {
+    for (let i = 0; i < pages.length; i++) check(`p${i + 1} sees the Jaipur match result`, await pages[i].locator('.jp-final-result').count() === 1 && await pages[i].locator('.jp-final-result').innerText().then(text => text.length > 0));
   }
   const replaySelector = `.same-game-replay-button[data-game-id="${gameId}"]`;
   for (let i = 0; i < pages.length; i++) check(`p${i + 1} replay name and ready state match the contract`, await pages[i].locator(replaySelector).innerText() === (i ? 'Jugar otra vez' : '같은 게임 다시 하기') && await pages[i].locator(replaySelector).getAttribute('data-replay-state') === 'ready');
@@ -469,6 +489,9 @@ async function verifyFinishedReplay() {
     check('Replayed Domino has empty public chain and seven tiles per seat', fresh[0].board.tiles.length === 0 && fresh[0].board.counts.p1 === 7 && fresh[0].board.counts.p2 === 7);
     await privacy('play');
     for (const page of pages) check('Old Domino result and win effects are gone', await page.locator('.dp-round-result').count() === 0 && await page.locator('.domino-event-stage--win').count() === 0);
+  } else if (gameId === 'jaipur') {
+    check('Replayed Jaipur resets the round and round wins', fresh[0].board.round === 1 && Object.values(fresh[0].board.roundsWon).every(value => value === 0));
+    for (const page of pages) check('Previous Jaipur result is gone after replay', await page.locator('.jp-final-result').count() === 0);
   } else {
     check('Replayed Splendor resets points, bonuses and turns', Object.values(fresh[0].board.score).every(value => value === 0) && Object.values(fresh[0].board.turns).every(value => value === 0) && Object.values(fresh[0].board.ownedBonuses).every(bonuses => Object.values(bonuses).every(value => value === 0)));
     for (const page of pages) {
@@ -581,7 +604,7 @@ try {
   }
   } else if (gameId === 'jaipur') await playJaipur();
   else await playSplendor();
-  if (process.env.QA_REPLAY_ON_FINISH === '1' && gameId !== 'jaipur') await verifyFinishedReplay();
+  if ((process.env.QA_REPLAY_ON_FINISH === '1' && gameId !== 'jaipur') || (process.env.QA_JAIPUR_MATCH === '1' && gameId === 'jaipur')) await verifyFinishedReplay();
   check('No uncaught browser errors', report.errors.length === 0, report.errors);
 } catch (error) {
   report.failure = { message: error.message, stack: error.stack };

@@ -321,23 +321,13 @@ export function GameFeedback({ language, gameId, playerId, view, pending = false
       return;
     }
 
-    if (gameId === 'minhwatu') return;
+    // The board presentation clock owns Marble event announcements and sound.
+    if (gameId === 'minhwatu' || gameId === 'marble') return;
     const transition = publicViewAnnouncement(gameId, previous.view, view, playerId, language);
     if (transition) {
       setAnnouncementState({ gameId, playerId, message: transition.message });
       if (clearTimer.current !== null) window.clearTimeout(clearTimer.current);
       clearTimer.current = window.setTimeout(() => { clearTimer.current = null; setAnnouncementState(null); }, 2600);
-    }
-    if (gameId === 'marble') {
-      const previousResult = resultSignature(previous.view.result), nextResult = resultSignature(view.result);
-      if (!previousResult && nextResult) {
-        cueTimers.current.forEach(window.clearTimeout);
-        cueTimers.current = [];
-        if (transition) playCue(gameId, transition.cue);
-        else playCue(gameId, resultForPlayer(gameId, view, playerId) === 'win' ? 'win' : 'lose');
-        return;
-      }
-      return;
     }
     if (gameId === 'jaipur') {
       const previousResult = resultSignature(previous.view.result), nextResult = resultSignature(view.result);

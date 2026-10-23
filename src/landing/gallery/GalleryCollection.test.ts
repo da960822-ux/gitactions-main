@@ -1,0 +1,180 @@
+import {afterEach,expect,it,vi} from 'vitest';
+import * as T from 'three';
+import {gameCatalog} from '../../games/catalog';
+import {createGalleryCollection} from './GalleryCollection';
+
+afterEach(()=>{vi.restoreAllMocks();vi.unstubAllGlobals();});
+
+it('keeps every surrounding game and selected representative raycast-selectable',()=>{
+ vi.spyOn(T.TextureLoader.prototype,'load').mockImplementation(()=>new T.Texture());
+ vi.stubGlobal('document',{createElement:()=>({width:0,height:0,getContext:()=>({fillText(){},fillRect(){},strokeRect(){},save(){},restore(){},translate(){},rotate(){}})})});
+ const collection=createGalleryCollection(),origin=new T.Vector3(0,0,9.6),ray=new T.Raycaster();
+ try{
+  for(const selected of gameCatalog){
+   collection.update({selected:selected.id,time:0,paused:true,snap:true});
+   for(const group of collection.root.children){
+    let surface:T.Mesh|undefined,fallback:T.Mesh|undefined;
+    group.traverse(node=>{
+     if(!(node instanceof T.Mesh))return;
+     fallback??=node;
+     if(!surface&&node.geometry instanceof T.BoxGeometry)surface=node;
+    });
+    surface??=fallback;
+    expect(surface).toBeDefined();
+    collection.root.updateMatrixWorld(true);
+    surface!.geometry.computeBoundingBox();
+    const point=surface!.localToWorld(surface!.geometry.boundingBox!.getCenter(new T.Vector3()));
+    ray.set(origin,point.sub(origin).normalize());
+    expect(collection.pick(ray)).toBe(group.userData.game);
+   }
+  }
+  collection.setInputEnabled(false);
+  expect(collection.pick(ray)).toBeNull();
+ }finally{collection.dispose();}
+});
+
+it('damps only the hovered sculpture within a small lift and tilt, and resets for reduced motion',()=>{
+ vi.spyOn(T.TextureLoader.prototype,'load').mockImplementation(()=>new T.Texture());
+ vi.stubGlobal('document',{createElement:()=>({width:0,height:0,getContext:()=>({fillText(){},fillRect(){},strokeRect(){},save(){},restore(){},translate(){},rotate(){}})})});
+ const collection=createGalleryCollection(),baseline=createGalleryCollection();
+ const frame={selected:'domino',time:0,paused:false,dt:1/60};
+ try{
+  collection.update({...frame,snap:true});baseline.update({...frame,snap:true});
+  const selected=collection.root.children.find(group=>group.userData.game==='domino')!;
+  const original=baseline.root.children.find(group=>group.userData.game==='domino')!;
+  for(let i=0;i<60;i++)collection.update({...frame,hovered:{id:'domino',x:9,y:-9}});
+  expect(selected.position.y-original.position.y).toBeCloseTo(.12,3);
+  expect(selected.rotation.x-original.rotation.x).toBeCloseTo(T.MathUtils.degToRad(4),3);
+  expect(selected.rotation.y-original.rotation.y).toBeCloseTo(T.MathUtils.degToRad(4),3);
+  for(let i=0;i<collection.root.children.length;i++){
+   const group=collection.root.children[i],reference=baseline.root.children[i];
+   expect(group.scale.equals(reference.scale)).toBe(true);
+   if(group!==selected){expect(group.position.equals(reference.position)).toBe(true);expect(group.rotation.equals(reference.rotation)).toBe(true);}
+  }
+  const lifted=selected.position.y;
+  collection.update(frame);
+  expect(selected.position.y).toBeLessThan(lifted);
+  expect(selected.position.y).toBeGreaterThan(original.position.y);
+  for(let i=0;i<90;i++)collection.update(frame);
+  expect(selected.position.distanceTo(original.position)).toBeLessThan(.00001);
+  collection.update({...frame,paused:true,hovered:{id:'domino',x:1,y:1}});
+  baseline.update({...frame,paused:true});
+  expect(selected.position.equals(original.position)).toBe(true);
+  expect(selected.rotation.equals(original.rotation)).toBe(true);
+ }finally{collection.dispose();baseline.dispose();}
+});
+
+it('clears the outgoing representative before enlarging the next, settles, and interrupts from its current pose',()=>{
+ vi.spyOn(T.TextureLoader.prototype,'load').mockImplementation(()=>new T.Texture());
+ vi.stubGlobal('document',{createElement:()=>({width:0,height:0,getContext:()=>({fillText(){},fillRect(){},strokeRect(){},save(){},restore(){},translate(){},rotate(){}})})});
+ const collection=createGalleryCollection();
+ const pose=()=>collection.root.children.map(group=>[...group.position.toArray(),...group.scale.toArray(),group.rotation.x,group.rotation.y,group.rotation.z]);
+ try{
+  collection.update({selected:'domino',time:0,paused:false,snap:true});
+  const outgoing=collection.root.children.find(group=>group.userData.game==='domino')!;
+  const incoming=collection.root.children.find(group=>group.userData.game==='splendor')!;
+  const origin=outgoing.position.clone(),incomingOrigin=incoming.position.clone(),smallScale=incoming.scale.x;
+  collection.update({selected:'splendor',time:0,paused:false,dt:.08});
+  expect(outgoing.position.distanceTo(origin)).toBeLessThan(1e-12);
+  expect(outgoing.scale.x).toBeLessThan(1.4);
+  expect(incoming.scale.x).toBe(smallScale);
+  expect(incoming.position.distanceTo(origin)).toBeLessThan(incomingOrigin.distanceTo(origin));
+  for(let frame=0;frame<30;frame++)collection.update({selected:'splendor',time:frame/60,paused:false});
+  const settled=pose();
+  collection.update({selected:'splendor',time:100,paused:false});
+  expect(pose()).toEqual(settled);
+  collection.update({selected:'davinci',time:100,paused:false,dt:.16});
+  const interrupted=pose();
+  collection.update({selected:'marble',time:100,paused:false,dt:0});
+  expect(pose()).toEqual(interrupted);
+  collection.update({selected:'domino',time:100,paused:true});
+  expect(outgoing.scale.x).toBe(2.6);
+  expect(outgoing.position.distanceTo(origin)).toBeLessThan(1e-12);
+ }finally{collection.dispose();}
+});
+
+it('keeps every desktop peer recognizable and clear of the selected silhouette, preserving story geometry',()=>{
+ vi.spyOn(T.TextureLoader.prototype,'load').mockImplementation(()=>new T.Texture());
+ vi.stubGlobal('document',{createElement:()=>({width:0,height:0,getContext:()=>({fillText(){},fillRect(){},strokeRect(){},save(){},restore(){},translate(){},rotate(){}})})});
+ const collection=createGalleryCollection(),camera=new T.PerspectiveCamera(38,1267.21875/432,.1,50);
+ camera.position.z=9.6;camera.updateMatrixWorld(true);
+ try{
+  for(const height of [432,518.4])for(const selected of gameCatalog)for(const corner of [null,[-1,-1],[-1,1],[1,-1],[1,1]]){
+   camera.aspect=(height===432?1267.21875:1689.6)/height;camera.updateProjectionMatrix();
+   collection.update({selected:selected.id,time:0,paused:false,snap:true,hovered:corner?{id:selected.id,x:corner[0],y:corner[1]}:null});
+   const bounds=[];
+   for(const group of collection.root.children){
+    const chosen=group.userData.game===selected.id;
+    if(chosen){expect(group.scale.x).toBeCloseTo(2.6);expect(group.position.x).toBeCloseTo(0);expect(group.position.z).toBeCloseTo(1.3);}
+    const box=new T.Box3().setFromObject(group);
+    let left=Infinity,right=-Infinity,top=Infinity,bottom=-Infinity;
+    for(const x of [box.min.x,box.max.x])for(const y of [box.min.y,box.max.y])for(const z of [box.min.z,box.max.z]){
+     const point=new T.Vector3(x,y,z).project(camera);
+     expect(Math.abs(point.x)).toBeLessThan(1);
+     expect(Math.abs(point.y)).toBeLessThan(1);
+     left=Math.min(left,(point.x+1)*camera.aspect*height/2);right=Math.max(right,(point.x+1)*camera.aspect*height/2);
+     top=Math.min(top,(1-point.y)*height/2);bottom=Math.max(bottom,(1-point.y)*height/2);
+    }
+    bounds.push({id:group.userData.game,left,right,top,bottom});
+    if(chosen&&selected.id==='domino')expect(bottom-top).toBeGreaterThan(300);
+    if(!chosen)expect(bottom-top).toBeGreaterThanOrEqual(70);
+   }
+   const chosen=bounds.find(bound=>bound.id===selected.id)!;
+   for(const peer of bounds.filter(bound=>bound!==chosen))expect(Math.max(peer.left-chosen.right,chosen.left-peer.right,peer.top-chosen.bottom,chosen.top-peer.bottom),`${selected.id}/${peer.id} clearance`).toBeGreaterThanOrEqual(16);
+   const peers=bounds.filter(bound=>bound!==chosen);
+   for(let a=0;a<peers.length;a++)for(let b=a+1;b<peers.length;b++)expect(Math.max(peers[a].left-peers[b].right,peers[b].left-peers[a].right,peers[a].top-peers[b].bottom,peers[b].top-peers[a].bottom),`${peers[a].id}/${peers[b].id} peer clearance`).toBeGreaterThanOrEqual(8);
+  }
+  collection.update({selected:'domino',time:0,paused:true,snap:true,storyFocus:.5});
+  collection.root.children.forEach((group,index)=>{
+   const chosen=group.userData.game==='domino',angle=index/8*Math.PI*2;
+   expect(group.scale.x).toBeCloseTo(chosen?2.3:.45);
+   expect(group.position.x).toBeCloseTo(chosen?2.55:Math.cos(angle)*5.8);
+   expect(group.position.z).toBeCloseTo(chosen?4.4:-3.2);
+  });
+ }finally{collection.dispose();}
+});
+
+it('reports settled frames and restarts for selection and hover, snapping the final residuals',()=>{
+ vi.spyOn(T.TextureLoader.prototype,'load').mockImplementation(()=>new T.Texture());
+ vi.stubGlobal('document',{createElement:()=>({width:0,height:0,getContext:()=>({fillText(){},fillRect(){},strokeRect(){},save(){},restore(){},translate(){},rotate(){}})})});
+ const collection=createGalleryCollection(),frame={selected:'domino',time:0,paused:false};
+ try{
+  expect(collection.update({...frame,snap:true})).toBe(false);
+  expect(collection.update({...frame,hovered:{id:'domino',x:1,y:1}})).toBe(true);
+  let moving=true,frames=0;
+  while(moving&&frames++<120)moving=collection.update(frame);
+  expect(moving).toBe(false);
+  const chosen=collection.root.children.find(group=>group.userData.game==='domino')!;
+  expect(chosen.position.y).toBe(0);expect(chosen.rotation.x).toBe(.15);expect(chosen.rotation.y).toBe(-.2);
+  expect(collection.update({...frame,selected:'splendor'})).toBe(true);
+  frames=0;moving=true;
+  while(moving&&frames++<120)moving=collection.update({...frame,selected:'splendor'});
+  expect(moving).toBe(false);expect(frames).toBeLessThan(40);
+  expect(collection.update({...frame,selected:'davinci',paused:true})).toBe(false);
+ }finally{collection.dispose();}
+});
+
+it('fits all eight mobile choices around the large representative without diagonal collisions',()=>{
+ vi.spyOn(T.TextureLoader.prototype,'load').mockImplementation(()=>new T.Texture());
+ vi.stubGlobal('document',{createElement:()=>({width:0,height:0,getContext:()=>({fillText(){},fillRect(){},strokeRect(){},save(){},restore(){},translate(){},rotate(){}})})});
+ const collection=createGalleryCollection(),camera=new T.PerspectiveCamera(38,351/400,.1,50);
+ camera.position.z=10.2;camera.updateMatrixWorld(true);
+ try{
+  for(const selected of gameCatalog){
+   collection.update({selected:selected.id,time:0,paused:true,snap:true,mobile:true});
+   const bounds=collection.root.children.map(group=>{
+    const box=new T.Box3().setFromObject(group);let left=Infinity,right=-Infinity,top=Infinity,bottom=-Infinity;
+    for(const x of [box.min.x,box.max.x])for(const y of [box.min.y,box.max.y])for(const z of [box.min.z,box.max.z]){
+     const point=new T.Vector3(x,y,z).project(camera);
+     expect(Math.abs(point.x)).toBeLessThan(1);expect(Math.abs(point.y)).toBeLessThan(1);
+     left=Math.min(left,(point.x+1)*351/2);right=Math.max(right,(point.x+1)*351/2);
+     top=Math.min(top,(1-point.y)*400/2);bottom=Math.max(bottom,(1-point.y)*400/2);
+    }
+    return {id:group.userData.game,left,right,top,bottom};
+   });
+   const chosen=bounds.find(bound=>bound.id===selected.id)!;
+   expect(collection.root.children.find(group=>group.userData.game===selected.id)!.scale.x).toBe(1.9);
+   for(const peer of bounds.filter(bound=>bound!==chosen))expect(Math.max(peer.left-chosen.right,chosen.left-peer.right,peer.top-chosen.bottom,chosen.top-peer.bottom),`${selected.id}/${peer.id} mobile clearance`).toBeGreaterThanOrEqual(12);
+  }
+ }finally{collection.dispose();}
+});

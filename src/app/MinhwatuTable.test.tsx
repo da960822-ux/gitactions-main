@@ -75,7 +75,6 @@ describe('MinhwatuTable public view', () => {
     const opponentCard = state.hands.p2[0];
     const { view, html } = markup(state);
     const ownCard = state.hands.p1[0];
-    const matches = state.table.filter(card => card.month === ownCard.month).length;
 
     expect(view.ownHand.map(card => card.id)).toContain(ownCard.id);
     expect(view.ownHand.map(card => card.id)).not.toContain(opponentCard.id);

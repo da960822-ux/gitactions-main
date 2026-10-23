@@ -1,4 +1,4 @@
-import { beforeEach, describe, expect, it, vi } from 'vitest';
+import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 
 const supabase = vi.hoisted(() => {
   let rpcHandler: (name: string, args: Record<string, unknown>) => Promise<{ data: unknown; error: unknown }>;
@@ -56,8 +56,35 @@ beforeEach(() => {
   supabase.handlers.length = 0;
   supabase.setRpcHandler(async () => ({ data: null, error: null }));
 });
+afterEach(() => { vi.restoreAllMocks(); vi.unstubAllEnvs(); });
 
 describe('online room client refreshes', () => {
+  it('resumes Catchmind with its saved deadline and asks the server to expire it after a tab absence', async () => {
+    const deadline = new Date(Date.now() + 80_000).toISOString();
+    let version = 2, phase = 'drawing';
+    supabase.setRpcHandler(async () => ({ data: { ...room('clock', { phase, deadlineAt: phase === 'drawing' ? deadline : null, board: { round: 1, hintStage: 0 } }), room: { version, game_id: 'catchmind', pending_game: null } }, error: null }));
+    const client = await loadClient(); const stop = client.subscribeRoom('clock', () => {});
+    await vi.waitFor(() => expect(client.getSnapshot().version).toBe(2));
+    await client.tick(); expect(supabase.db.functions.invoke).not.toHaveBeenCalled();
+    await client.reconnectRoom(); expect(client.getSnapshot().view.deadlineAt).toBe(deadline);
+    vi.spyOn(Date, 'now').mockReturnValue(Date.parse(deadline) + 300_000);
+    supabase.db.functions.invoke.mockImplementationOnce(async () => { version++; phase = 'round-over'; return { error: null }; });
+    await client.tick(); await client.tick();
+    expect(supabase.db.functions.invoke).toHaveBeenCalledTimes(1);
+    expect(supabase.db.functions.invoke.mock.calls[0][1].body).toMatchObject({ tick: true, version: 2 });
+    expect(client.getSnapshot().view).toMatchObject({ phase: 'round-over', deadlineAt: null }); stop();
+  });
+
+  it('does not retry a stale Catchmind stroke in another round after refreshing', async () => {
+    let version = 2, round = 1, deadlineAt = '2026-10-11T15:00:00Z';
+    supabase.setRpcHandler(async () => ({ data: { ...room('drawing', { phase: 'drawing', deadlineAt, board: { round } }), room: { version, game_id: 'catchmind', pending_game: null } }, error: null }));
+    const client = await loadClient(); const stop = client.subscribeRoom('drawing', () => {});
+    await vi.waitFor(() => expect(client.getSnapshot().version).toBe(2));
+    supabase.db.functions.invoke.mockImplementationOnce(async () => { version = 4; round = 2; deadlineAt = '2026-10-11T15:02:00Z'; return { error: { message: 'stale_state' } }; });
+    await expect(client.sendAction({ type: 'draw', payload: { strokes: [] } })).rejects.toThrow('stale_state');
+    expect(supabase.db.functions.invoke).toHaveBeenCalledTimes(1);
+    expect(client.getSnapshot().view.board.round).toBe(2); stop();
+  });
   it('resyncs an uncertain game-action response without sending the card index twice', async () => {
     let version = 3;
     supabase.setRpcHandler(async () => ({ data: { ...room('uncertain', { publicSequence: version }), room: { version, game_id: 'domino', pending_game: null } }, error: null }));

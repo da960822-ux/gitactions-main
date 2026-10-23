@@ -2,3 +2,6 @@ project_id = "dos-play"
 [functions.action]
 verify_jwt = false
 # The function verifies the bearer token with auth.getUser; gateway must support current JWT signing keys.
+[functions.shared-event]
+verify_jwt = false
+# Verified against auth.getUser inside the function, including current signing keys.

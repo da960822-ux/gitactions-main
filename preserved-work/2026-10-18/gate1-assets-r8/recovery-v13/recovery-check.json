@@ -1,0 +1,6 @@
+{
+  "protectedFiles": 2255,
+  "changedOrMissing": [],
+  "dependencyRestore": "same package-lock versions in /workspace/gate1-runtime-restore; original node_modules symlink target restored in /tmp",
+  "gitWarning": "old alternate object store missing in /tmp; no repository metadata edited"
+}

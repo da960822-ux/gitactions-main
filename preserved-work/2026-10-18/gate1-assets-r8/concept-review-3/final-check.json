@@ -1,0 +1,68 @@
+{
+  "protected_count": 2255,
+  "changed_or_missing": [],
+  "images": [
+    {
+      "concept": "A",
+      "scene": "hero",
+      "path": "/workspace/gate1-assets-r8/concept-review-3/A/hero.png",
+      "size": [
+        1920,
+        1080
+      ],
+      "sha256": "e13b49e4198253f56bfb399a2868bdb412e8ab735305b13e914cdb0fffee5aa7"
+    },
+    {
+      "concept": "A",
+      "scene": "arrival",
+      "path": "/workspace/gate1-assets-r8/concept-review-3/A/arrival.png",
+      "size": [
+        1920,
+        1080
+      ],
+      "sha256": "91155976c95dcf046338ee004ebaebf739739f0be51119f91d4a9bda1a001109"
+    },
+    {
+      "concept": "B",
+      "scene": "hero",
+      "path": "/workspace/gate1-assets-r8/concept-review-3/B/hero.png",
+      "size": [
+        1920,
+        1080
+      ],
+      "sha256": "ac3b210a56b3d62b181eb01002431b0b9b46f218b8dd1776f837ccefa713ca5c"
+    },
+    {
+      "concept": "B",
+      "scene": "arrival",
+      "path": "/workspace/gate1-assets-r8/concept-review-3/B/arrival.png",
+      "size": [
+        1920,
+        1080
+      ],
+      "sha256": "deeadde76f92c41756b1d33f575e8d9a275cb6e8f77e5b47f8c5c3711e8b28fd"
+    },
+    {
+      "concept": "C",
+      "scene": "hero",
+      "path": "/workspace/gate1-assets-r8/concept-review-3/C/hero.png",
+      "size": [
+        1920,
+        1080
+      ],
+      "sha256": "423e9184e5042af0eddac5ef43924a3a406ebbb60abda85e0721e0dc6bd1d84e"
+    },
+    {
+      "concept": "C",
+      "scene": "arrival",
+      "path": "/workspace/gate1-assets-r8/concept-review-3/C/arrival.png",
+      "size": [
+        1920,
+        1080
+      ],
+      "sha256": "87cccdcdd9d3b85a5b5d7c769a52a347f150241e54e7b8ac18953d15d4b61ddd"
+    }
+  ],
+  "static_only": true,
+  "user_approved": false
+}

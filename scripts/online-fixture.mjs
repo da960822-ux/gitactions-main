@@ -10,6 +10,8 @@ import { PGlite } from '@electric-sql/pglite';
 const host = '127.0.0.1';
 const port = Number(process.env.PORT ?? 54321);
 const anonKey = 'local-fixture-public-key';
+const marbleFixtureSeed = process.env.MARBLE_FIXTURE_SEED === undefined ? undefined : Number(process.env.MARBLE_FIXTURE_SEED);
+if (marbleFixtureSeed !== undefined && (!Number.isInteger(marbleFixtureSeed) || marbleFixtureSeed < 0 || marbleFixtureSeed > 0xffffffff)) throw new Error('MARBLE_FIXTURE_SEED must be an unsigned 32-bit integer');
 const usersByToken = new Map();
 const userIds = new Set();
 const db = new PGlite();
@@ -40,6 +42,7 @@ await db.exec(await migration('202610100001_rooms.sql'));
 await db.exec(await migration('202610100002_feedback.sql'));
 await db.exec(await migration('202610100003_feedback_spaces.sql'));
 await db.exec(await migration('202610100004_catchmind_translation.sql'));
+await db.exec(await migration('202610110005_feedback_submission.sql'));
 
 async function transaction(role, userId, work) {
   await db.exec('begin');
@@ -63,10 +66,11 @@ async function body(req) {
   for await (const part of req) { text += part; if (text.length > 30000) throw Object.assign(new Error('payload_too_large'), { status: 413 }); }
   return text ? JSON.parse(text) : {};
 }
-function error(res, cause) {
+function error(res, cause, actionResponse = false) {
   const message = cause instanceof Error ? cause.message : 'fixture_error';
-  const status = cause?.status ?? (/permission denied|row-level security/i.test(message) ? 403 : 400);
-  json(res, { code: message, message, details: null, hint: null }, status);
+  const status = cause?.status ?? (actionResponse && message === 'stale_state' ? 409 : /permission denied|row-level security/i.test(message) ? 403 : 400);
+  // Edge Functions use {error}; RPCs retain the PostgREST-shaped error body.
+  json(res, actionResponse ? { error: message } : { code: message, message, details: null, hint: null }, status);
 }
 function uuid(value) { return typeof value === 'string' && /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(value); }
 
@@ -79,6 +83,7 @@ async function rpc(name, args, userId) {
     set_language: ['select public.set_language($1,$2) as value', [args.p_room, args.p_language]],
     create_feedback_space: ['select public.create_feedback_space() as value', []],
     join_feedback_space: ['select public.join_feedback_space($1) as value', [args.p_space]],
+    submit_feedback: ['select public.submit_feedback($1,$2,$3,$4,$5) as value', [args.p_space, args.p_request, args.p_category, args.p_title, args.p_body]],
   };
   const call = roomCalls[name];
   if (!call) throw new Error('unknown_function');
@@ -149,7 +154,7 @@ async function tableRequest(req, res, url, userId) {
 
 async function action(req, userId) {
   if (!userId) throw Object.assign(new Error('authentication_required'), { status: 401 });
-  const { engines, executeAction, chatMessageForGame, reactionMessageForId, isCorrectGuess, getCatchmindDrawDurationMs, getCatchmindHintStage } = await authority();
+  const { engines, executeAction, chatMessageForGame, reactionMessageForId, isCorrectGuess, getCatchmindDrawDurationMs } = await authority();
   const input = await body(req);
   if (!uuid(input.roomId) || !uuid(input.requestId) || !Number.isSafeInteger(input.version) || input.version < 0) throw new Error('invalid_request');
   return transaction('service_role', null, async () => {
@@ -167,19 +172,16 @@ async function action(req, userId) {
     let gameId = room.game_id, pending = room.pending_game, pendingBy = room.pending_by, chat = null;
     const opCount = [input.selectGame !== undefined, input.chat !== undefined, input.reaction !== undefined, input.action !== undefined, input.tick === true].filter(Boolean).length;
     if (opCount !== 1) throw new Error('invalid_operation');
-    const now = Date.now(); let timedOut = false, advancedHint = false;
+    const now = Date.now(); let timedOut = false;
     if (gameId === 'catchmind' && state?.phase === 'drawing' && state.deadlineAt && Date.parse(state.deadlineAt) <= now) {
       state = executeAction(engines.catchmind, state, state.drawer, { type: 'timeout' }).state;
       state.deadlineAt = null;
       timedOut = true;
-    } else if (gameId === 'catchmind' && state?.phase === 'drawing' && state.deadlineAt && input.tick === true) {
-      const target = getCatchmindHintStage(state, now);
-      while ((state.hintStage ?? 0) < target) { state = executeAction(engines.catchmind, state, state.drawer, { type: 'reveal-hint' }).state; advancedHint = true; }
     }
     if (input.selectGame !== undefined) {
       if (!['davinci', 'catchmind', 'domino', 'jaipur', 'splendor', 'minhwatu', 'marble', 'rhythm'].includes(input.selectGame)) throw new Error('invalid_game');
       if (members.length !== 2 || !(pending === input.selectGame && pendingBy !== userId)) { pending = input.selectGame; pendingBy = userId; }
-      else { gameId = input.selectGame; pending = null; pendingBy = null; state = engines[gameId]?.createInitialState(crypto.getRandomValues(new Uint32Array(1))[0]) ?? null; }
+      else { gameId = input.selectGame; pending = null; pendingBy = null; const seed = gameId === 'marble' && marbleFixtureSeed !== undefined ? marbleFixtureSeed : crypto.getRandomValues(new Uint32Array(1))[0]; state = engines[gameId]?.createInitialState(seed) ?? null; }
     } else if (input.reaction !== undefined) {
       chat = reactionMessageForId(input.reaction);
     } else if (input.chat !== undefined) {
@@ -200,7 +202,7 @@ async function action(req, userId) {
         if (input.action.type === 'choose') state.deadlineAt = new Date(Date.now() + getCatchmindDrawDurationMs(state)).toISOString();
         else if (state.phase !== 'drawing') state.deadlineAt = null;
       }
-    } else if (input.tick === true && gameId === 'catchmind' && !timedOut && !advancedHint) return { version: room.version };
+    } else if (input.tick === true && gameId === 'catchmind' && !timedOut) return { version: room.version };
     const views = !gameId || !state ? { p1: null, p2: null } : Object.fromEntries(['p1', 'p2'].map(seat => [seat, { ...engines[gameId].getPlayerView(state, seat), deadlineAt: state.deadlineAt ?? null }]));
     const committed = await db.query('select public.commit_action($1,$2,$3,$4,$5::jsonb,$6::jsonb,$7,$8,$9,$10::jsonb) as version', [room.id, userId, input.version, input.requestId, JSON.stringify(state), JSON.stringify(views), gameId, pending, pendingBy, chat ? JSON.stringify(chat) : null]);
     return { version: committed.rows[0].version };
@@ -240,7 +242,7 @@ const server = createServer((req, res) => {
       return tableRequest(req, res, url, userId);
     }
     return json(res, { message: 'not_found' }, 404);
-  }).catch(cause => error(res, cause));
+  }).catch(cause => error(res, cause, url.pathname === '/functions/v1/action'));
 });
 server.listen(port, host, () => console.log(`PGlite SQL/RLS fixture listening at http://${host}:${port} (not Supabase Auth/PostgREST/Realtime)`));
 for (const signal of ['SIGINT', 'SIGTERM']) process.on(signal, async () => { server.close(); await asSerial(() => db.close()); process.exit(0); });

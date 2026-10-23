@@ -1,0 +1,55 @@
+{
+  "target": "http://127.0.0.1:5201/",
+  "viewport": {
+    "width": 1440,
+    "height": 900,
+    "deviceScaleFactor": 0.5
+  },
+  "evidence": "Playwright actual app functional checks; one browser at a time. No screenshots, recordings, renders, performance measurements, or product edits.",
+  "hero": {
+    "assetVersion": "chamber-r8.cosmic-v10",
+    "basis": "parent-provided native capture verification; independent DOM session did not expose data-asset-version within the 7 second software-WebGL warmup window",
+    "pointerDatasetCamera": "not independently verified; canvas dataset unavailable during short warmup"
+  },
+  "gallery": {
+    "eightChoicesRendered": true,
+    "dynamicStartHref": [
+      "davinci",
+      "catchmind",
+      "splendor",
+      "minhwatu",
+      "marble",
+      "rhythm"
+    ],
+    "dynamicStartHrefUnverified": [
+      "domino",
+      "jaipur"
+    ],
+    "hrefTimeouts": "2.5 s state-update waits in the extra WebGL browser pass; not treated as product defects",
+    "directLobbyRoutesAllEightSelectedCorrectly": true,
+    "galleryStartToLobby": "/play?game=rhythm selected art-rhythm"
+  },
+  "letter": {
+    "koreanParagraphsExactCount": 5,
+    "koreanTextMatchesOriginal": true,
+    "initiallyOpen": true,
+    "close": true,
+    "reopen": true,
+    "spanishParagraphsExactCount": 5,
+    "spanishTextMatchesOriginal": true
+  },
+  "languageAndFeedback": {
+    "uiSetsDosLanguageEs": true,
+    "documentLangEsDO": true,
+    "refreshPreservesBoth": true,
+    "spanishLetterAfterRefresh": true,
+    "feedbackRoutePreservesEsDO": true,
+    "heading": "Mami, ¿qué hacemos después?"
+  },
+  "pageErrorsObserved": 0,
+  "consoleErrorsObserved": 0,
+  "limitations": [
+    "One functional page reload exceeded the initial 7 second waitUntil=domcontentloaded bound; a separate commit-based locale pass then verified refresh, Spanish letter, and feedback successfully.",
+    "No online-room creation or live-game play was attempted."
+  ]
+}

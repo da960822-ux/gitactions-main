@@ -1,0 +1,71 @@
+{
+  "format": "marble-event-art-runtime-v1",
+  "sourceAssetCommit": "1dc181214cfb8d776195864cb954dc95760e1ba4",
+  "approval": "Approved four event-card artwork assets from the parent-provided handoff; source artwork is unchanged and only resized/encoded for web delivery.",
+  "eventCardDisplaySize": { "width": 96, "height": 120 },
+  "optimization": { "format": "WebP", "targetWidth": 384, "targetHeight": 480, "quality": 86, "method": 6, "resampling": "ImageMagick resize, preserve aspect ratio" },
+  "families": {
+    "cash": {
+      "path": "/images/marble/events/cash-dividend.webp",
+      "sourcePath": "asset-handoff/marble-event-art/cash-dividend.png",
+      "sourceFileName": "cash-dividend.png",
+      "sourceBytes": 2283968,
+      "sourceWidth": 1122,
+      "sourceHeight": 1402,
+      "sourceSha256": "a430e849f15ae08d808be39419a05cf311fb27b99c7fbe5df127f095a5decaa1",
+      "sourceGitBlobSha": "883e1796599a678184e58b0cd0d40f13590ab25d",
+      "optimizedBytes": 43758,
+      "optimizedWidth": 384,
+      "optimizedHeight": 480,
+      "optimizedSha256": "eb8b97f8008f6a6f6f6d07c997a249e9d8e9119629302bbc570bef1bc38aefe8"
+    },
+    "movement": {
+      "path": "/images/marble/events/movement-travel.webp",
+      "sourcePath": "asset-handoff/marble-event-art/movement-travel.png",
+      "sourceFileName": "movement-travel.png",
+      "sourceBytes": 2304958,
+      "sourceWidth": 1122,
+      "sourceHeight": 1402,
+      "sourceSha256": "c2c0bed5e49ed192c10977009078ab4973bf8f17e5e2c6277da8bb3ef1035ddb",
+      "sourceGitBlobSha": "ba2ee8e12efa882f335a023c9c45df3c2e19411c",
+      "optimizedBytes": 38090,
+      "optimizedWidth": 384,
+      "optimizedHeight": 480,
+      "optimizedSha256": "29c4a4458e4b2871defee24987c228beedf933f3496737dfbdf36b2325b377c9"
+    },
+    "city": {
+      "path": "/images/marble/events/city-intervention.webp",
+      "sourcePath": "asset-handoff/marble-event-art/city-intervention.png",
+      "sourceFileName": "city-intervention.png",
+      "sourceBytes": 2831503,
+      "sourceWidth": 1122,
+      "sourceHeight": 1402,
+      "sourceSha256": "38564b9621713354f9c1bab98f5fd0c95e2185abedd0454fe5e4c8b3c0dd8e0c",
+      "sourceGitBlobSha": "ce6ca1742927fb671882075ea7da4326d7e1e3c9",
+      "optimizedBytes": 60688,
+      "optimizedWidth": 384,
+      "optimizedHeight": 480,
+      "optimizedSha256": "2c872b344b285e8fdd31992d6d1e60d112fa2436e8305fe6adda39fe3fe969e2"
+    },
+    "protection": {
+      "path": "/images/marble/events/protection-exemption.webp",
+      "sourcePath": "asset-handoff/marble-event-art/protection-exemption.png",
+      "sourceFileName": "protection-exemption.png",
+      "sourceBytes": 2229690,
+      "sourceWidth": 1122,
+      "sourceHeight": 1402,
+      "sourceSha256": "2308454d328accb336e6150dacd80bf54bd2f7e7b10fbf57ace5a12719c458a4",
+      "sourceGitBlobSha": "caa0283d95dfe7b9ef79a77a58c9b5d16cb2a34c",
+      "optimizedBytes": 31700,
+      "optimizedWidth": 384,
+      "optimizedHeight": 480,
+      "optimizedSha256": "e2d997f880ce91196208292089d718e7268130fcaf39c8b48331e17ffd068085"
+    }
+  },
+  "eventMapping": {
+    "cash": ["festival", "lottery", "rent-rebate", "city-dividend"],
+    "movement": ["visit-santo-domingo", "retreat", "advance-start", "train-ticket", "go-to-island"],
+    "city": ["travel-cost", "maintenance", "monopoly-warning", "city-festival", "blackout"],
+    "protection": ["escape-pass", "rent-pass"]
+  }
+}

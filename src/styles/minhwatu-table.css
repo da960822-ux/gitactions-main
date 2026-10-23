@@ -201,3 +201,38 @@
 @media (min-height:850px) { .minhwatu-table { --hw-hand-width:60px; --hw-capture-width:38px; } .hwatu-table-card { flex-basis:min(var(--hw-field-card-width),54px); width:min(var(--hw-field-card-width),54px); } }
 @media (max-width:1000px) { .hwatu-hand-section { display:block; } .hwatu-felt-heading { position:static; } .hwatu-table-cards { width:calc(100% - 94px); margin:4px 94px 4px 0; } .hwatu-capture-categories { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); } .hwatu-choice-hand { justify-content:flex-start; } .hwatu-hand-choice { flex:0 0 54px; } }
 @media (prefers-reduced-motion:reduce) { .hwatu-hand-choice { transition:none; } }
+
+@media (min-width:1024px) {
+ .minhwatu-table { gap:3px; }
+ .hwatu-phase-note { padding-block:3px; }
+ .hwatu-hand-section { padding-top:1px; }
+}
+
+@media (min-width: 1024px) and (pointer: fine) {
+/* Keep capture totals and combination progress readable at a glance. */
+.hwatu-capture-rack { padding: 5px 7px; }
+.hwatu-category-heading { min-height: 22px; gap: 6px; }
+.hwatu-category-heading b { margin-left: auto; padding: 1px 5px; border: 1px solid #b9a57677; border-radius: 999px; background: #102d28; }
+.hwatu-rail-progress { margin-top: 5px; padding: 6px 0 2px; border-top-color: #d2bb7a55; }
+.hwatu-rail-progress ul { gap: 5px 7px; }
+.hwatu-rail-progress li { min-height: 25px; gap: 5px; padding: 3px 7px; border: 1px solid #82928566; border-radius: 999px; background: #183c34a8; font-size: 10px; }
+.hwatu-rail-progress li b { min-width: 3ch; text-align: center; font-size: 10px; }
+.hwatu-rail-progress li.is-complete { border-color: #e5d196; background: #e5d1961f; }
+.hwatu-rail-progress li.is-complete b { color: #f1d88f; }
+.hwatu-yaku-list li { align-items: center; padding: 2px 0; }
+.hwatu-yaku-list li.is-complete { color: #f6e8bd; }
+.hwatu-seat-score strong small,.hwatu-capture-rack-heading small,.hwatu-breakdown > header small { font-size: 12px; }
+.hwatu-rail-progress li { min-height: 28px; padding: 4px 8px; font-size: 12px; }
+.hwatu-rail-progress li b { min-width: 3ch; font-size: 12px; }
+.hwatu-breakdown > header b { font-size: 15px; }
+.hwatu-count-line { font-size: 12px; }
+.hwatu-yaku-list li { font-size: 13px; }
+}
+
+@media (min-width: 1024px) and (max-height: 820px) and (pointer: fine) {
+  .hwatu-capture-rack.is-empty { padding-block: 2px; }
+  .hwatu-capture-rack.is-empty .hwatu-capture-categories { margin-top: 0; }
+  .hwatu-capture-rack.is-empty .hwatu-category-heading { min-height: 18px; }
+  .hwatu-capture-rack.is-empty .hwatu-rail-progress { margin-top: 1px; padding: 2px 0 0; }
+  .hwatu-capture-rack.is-empty .hwatu-rail-progress li { min-height: 24px; padding-block: 2px; }
+}

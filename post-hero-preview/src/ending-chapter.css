@@ -1,0 +1,35 @@
+/* The footer must not pull the viewport when the reader reserves room for the finale. */
+html:has(.letter-journey[data-view=folding]),html:has(.letter-journey[data-view=rose]){overflow-anchor:none}
+.post-hero-preview #papi-letter.letter-journey{position:relative;min-height:100svh;padding:90px 24px;overflow:visible;overflow-anchor:none;background:transparent}
+.post-hero-preview .letter-reading-pane[hidden],.post-hero-preview .letter-reading-end[hidden],.post-hero-preview .closed-note[hidden]{display:none}
+.post-hero-preview .letter-optional-pact[data-active=false]{visibility:hidden}
+.post-hero-preview .letter-reading-end{position:relative;max-width:740px;margin:48px auto 0;z-index:5}
+.post-hero-preview .letter-reading-end .letter-bottom-controls{justify-content:center;margin-top:32px}
+.post-hero-preview .letter-bottom-controls button{display:inline-flex;align-items:center;gap:12px;min-height:44px}
+.post-hero-preview .letter-journey[data-view=folding] .letter-bottom-controls{min-height:44px}
+.post-hero-preview .letter-journey[data-view=folding] .letter-bottom-controls button{position:fixed;left:7.5vw;bottom:80px;z-index:8}
+.post-hero-preview .letter-bottom-controls svg{width:20px;height:20px;fill:none;stroke:currentColor;stroke-width:1.3}
+.post-hero-preview .letter-rose-pane{position:absolute;inset-inline:0;top:0;z-index:6;background:#13131c}
+.post-hero-preview .letter-journey-anchor{height:1px;pointer-events:none}
+.post-hero-preview #together-again.ending-chapter{position:relative;display:block;min-height:100svh;padding:0;overflow:visible;background:#13131c;color:#faeee6}
+.post-hero-preview #together-again .ec-closing{position:relative}
+.post-hero-preview #together-again .ec-closing[hidden],.post-hero-preview #together-again .ec-actions[hidden]{display:none}
+.post-hero-preview #together-again .ec-actions{display:flex;flex-wrap:wrap;align-items:center;gap:18px 28px;padding:0 7.5vw 30px}
+.post-hero-preview #together-again .primary-button{min-height:52px;padding:14px 23px;gap:28px}
+.post-hero-preview #together-again a svg{width:19px;height:19px;flex:none;fill:none;stroke:currentColor;stroke-width:1.3;stroke-linecap:round;stroke-linejoin:round}
+.post-hero-preview #together-again .ec-letter-return{display:flex;align-items:flex-end;justify-content:space-between;gap:24px;margin:20px 7.5vw 0;padding:24px 0;border-top:1px solid #d7a18f44}
+.post-hero-preview #together-again .ec-date{display:flex;flex-direction:column;gap:7px;margin:0;color:#e0beb0}
+.post-hero-preview #together-again .ec-date>span{font-size:12px;line-height:1.5}
+.post-hero-preview #together-again .ec-date time{font:400 clamp(25px,1.9vw,36px)/1.2 'Gowun Batang',Georgia,serif;letter-spacing:.035em;font-variant-numeric:tabular-nums}
+.post-hero-preview #together-again .ec-read-again{gap:16px;min-height:44px;white-space:nowrap}
+.post-hero-preview #together-again .ec-footer{display:flex;justify-content:space-between;align-items:center;gap:24px;margin:0 7.5vw;padding:18px 0 28px;border-top:1px solid #d7a18f26;color:#d2b4ad;font-size:12px;text-shadow:none}
+.post-hero-preview #together-again .ec-footer>span,.post-hero-preview #together-again .ec-footer>a{padding:0;background:none}
+.post-hero-preview #together-again .ec-footer>span>span{margin-inline:5px;color:#d7a18f}
+.post-hero-preview #together-again .ec-footer>a{display:inline-flex;align-items:center;gap:14px;min-height:44px}
+.post-hero-preview #together-again.has-detail{padding:80px 7.5vw 140px}
+@media(max-width:760px){
+ .post-hero-preview #papi-letter.letter-journey{padding:35px 20px 60px}
+ .post-hero-preview #together-again .ec-letter-return{align-items:flex-start;flex-direction:column;gap:20px}
+ .post-hero-preview #together-again .ec-actions{gap:16px}
+}
+@media(prefers-reduced-motion:reduce){.post-hero-preview #together-again a{transition:none}}

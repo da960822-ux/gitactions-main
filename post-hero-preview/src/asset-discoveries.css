@@ -1,0 +1,21 @@
+.post-hero-preview :is(.asset-prism,.asset-decor-preview,.book-game-props){stroke:none}
+.post-hero-preview .asset-prism{display:block;width:min(100%,420px);height:210px;margin:14px auto 18px;overflow:visible}
+.post-hero-preview [data-active-local-event="L05"]>a.egg-button{display:inline-flex;align-items:center;margin-top:12px}
+.post-hero-preview .asset-prism-fragment{transform-origin:210px 112px;transition:transform 220ms cubic-bezier(.23,1,.32,1)}
+.post-hero-preview .asset-prism.angle-0 .fragment-left{transform:translate(-42px,-10px) rotate(-14deg)}
+.post-hero-preview .asset-prism.angle-0 .fragment-right{transform:translate(39px,13px) rotate(13deg)}
+.post-hero-preview .asset-prism.angle-2 .fragment-left{transform:translate(31px,-15px) rotate(17deg)}
+.post-hero-preview .asset-prism.angle-2 .fragment-right{transform:translate(-35px,18px) rotate(-17deg)}
+.post-hero-preview .asset-playground .asset-flipbook{overflow:hidden;padding-bottom:92px;background:linear-gradient(90deg,#f4e8d2 48%,#dfc9ab 49.8%,#f4e8d2 51%);border-bottom:5px solid #b7987c}
+.post-hero-preview .asset-flipbook .book-spine{top:8px;bottom:8px;background:#ad8b7570}
+.post-hero-preview .asset-flipbook .book-game-props{position:absolute;bottom:23px;left:5%;width:90%;height:84px;overflow:visible}
+.post-hero-preview .asset-book-domino,.post-hero-preview .asset-book-cards{transform-box:fill-box;transform-origin:center;transition:transform 180ms cubic-bezier(.23,1,.32,1),opacity 180ms ease}
+.post-hero-preview .asset-flipbook.page-0 .asset-book-domino{transform:translateX(-60px) rotate(-9deg)}
+.post-hero-preview .asset-flipbook.page-0 .asset-book-cards,.post-hero-preview .asset-flipbook.page-1 .asset-book-cards{transform:translateX(48px) rotate(10deg)}
+.post-hero-preview .asset-flipbook.page-2 .asset-book-domino{transform:translateX(-16px) rotate(-6deg)}
+.post-hero-preview .asset-decor-preview{display:block;width:min(100%,500px);height:auto;margin:14px auto 20px;overflow:visible}
+.post-hero-preview .asset-decor-choice{transition:transform 220ms cubic-bezier(.23,1,.32,1)}
+.post-hero-preview .asset-decor-drawer{transition:transform 220ms cubic-bezier(.23,1,.32,1)}
+.post-hero-preview .asset-decor-preview .decor-slot-number{font:12px Georgia,serif;fill:#e2c1ad;text-anchor:middle}
+.post-hero-preview .asset-motion-reduced :is(.asset-prism-fragment,.asset-book-domino,.asset-book-cards,.asset-decor-choice,.asset-decor-drawer){transition:none}
+@media(prefers-reduced-motion:reduce){.post-hero-preview :is(.asset-prism-fragment,.asset-book-domino,.asset-book-cards,.asset-decor-choice,.asset-decor-drawer){transition:none}}

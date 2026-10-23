@@ -1,0 +1,204 @@
+{
+  "assessment": "B independent detector/browser + technical audit",
+  "integrityVerdict": "Pass with isolated implementation weaknesses; coherent personal gift, no verified category-interchangeable content defect.",
+  "score": 9,
+  "maxScore": 16,
+  "percent": 56.25,
+  "rating": "Acceptable, limited desktop audit",
+  "dimensions": [
+    {
+      "dimension": "Accessibility",
+      "score": 2,
+      "max": 4,
+      "reason": "Semantic controls, labels, keyboard alternatives and reduced state exist; non-text field contrast and signature focus need work."
+    },
+    {
+      "dimension": "Performance",
+      "score": 2,
+      "max": 4,
+      "reason": "Lazy gallery renderer, capped DPR and visibility gating help, but large eager art and a substantial landing bundle remain."
+    },
+    {
+      "dimension": "Theming",
+      "score": 2,
+      "max": 4,
+      "reason": "Partial local tokens with repeated semantic literal values; art-specific palettes are intentional. No dark-mode requirement."
+    },
+    {
+      "dimension": "Responsive Design",
+      "score": null,
+      "max": 0,
+      "reason": "N/A for this run: full mobile/touch QA excluded by user. Desktop 1440×900 and 1920×1080 plus static breakpoint/gesture inspection only; cannot justify an all-viewport score."
+    },
+    {
+      "dimension": "Implementation Integrity",
+      "score": 3,
+      "max": 4,
+      "reason": "Coherent authored private gift with functioning routes, local demo disclosure and graceful WebGL fallback; isolated storage/focus failures remain."
+    }
+  ],
+  "issueCounts": {
+    "P0": 0,
+    "P1": 2,
+    "P2": 3,
+    "P3": 1
+  },
+  "issues": [
+    {
+      "id": "B1",
+      "severity": "P1",
+      "title": "Signature field boundaries fall below 3:1 contrast",
+      "category": "Accessibility",
+      "location": "post-hero-preview/src/partner-pact.css:20",
+      "evidence": "Draw-pad border #c89b86 against #fae9e2 = 2.10:1; typed-input border #b99b83 against #fff9ee = 2.48:1. These low-contrast borders identify the otherwise similarly colored input areas.",
+      "impact": "Low-vision visitors can miss where to draw or type before they focus the field.",
+      "standard": "WCAG 2.1/2.2 SC 1.4.11 Non-text Contrast (AA), component identification at rest",
+      "recommendation": "Darken the two functional field borders to at least 3:1; preserve the approved paper/art colors.",
+      "command": "$impeccable harden"
+    },
+    {
+      "id": "B2",
+      "severity": "P1",
+      "title": "Denied browser storage leaves the feedback route blank",
+      "category": "Implementation Integrity",
+      "location": "src/app/FeedbackRoute.tsx:10",
+      "evidence": "In a fresh context with Storage.getItem throwing SecurityError, /feedback produced an empty body and uncaught page error \"Blocked in audit\". Both language and space-ID state initializers read localStorage without a guard, before refresh error recovery can render.",
+      "impact": "A visitor with blocked storage loses the entire ideas page and its navigation/retry UI.",
+      "standard": "Robustness/error recovery; no specific WCAG conformance claim",
+      "recommendation": "Guard initialization and language persistence; render a localized storage-unavailable state using existing feedback error handling.",
+      "command": "$impeccable harden"
+    },
+    {
+      "id": "B3",
+      "severity": "P2",
+      "title": "Signing removes the focused button and drops focus to BODY",
+      "category": "Accessibility",
+      "location": "post-hero-preview/src/PartnerPact.tsx:72",
+      "evidence": "After both typed and drawn acceptance, the answer button unmounts. Observed activeElement was BODY. Escape then reached the outer letter handler; the pact remained data-open=true. From a focused .pp-close button, Escape correctly closed the pact and restored focus to .pp-dolls.",
+      "impact": "Keyboard users lose their place after the emotional confirmation and Escape can act on the enclosing letter instead of the pact.",
+      "standard": "Focus-order/context concern related to WCAG SC 2.4.3; no complete conformance finding claimed",
+      "recommendation": "Move focus to the signed confirmation or another stable control on acceptance; keep Escape scoped to the active pact.",
+      "command": "$impeccable harden"
+    },
+    {
+      "id": "B4",
+      "severity": "P2",
+      "title": "Gallery arrival transfers large offscreen and miniature artwork",
+      "category": "Performance",
+      "location": "src/landing/gallery/studioObjects.ts:50",
+      "evidence": "Fresh /#games reduced-motion context transferred 39,917,571 bytes including dev runtime. Leonardo miniature alone transferred 5,329,269 bytes (source 5,328,969); city-windows PNG 2,852,599; two duel outcome PNGs about 2.02 MB each; several other PNGs 1–2 MB. Existing dist Landing bundle is 1,013,975 bytes / 300,760 gzip. These are measured asset sizes and local timings, not production Web Vitals.",
+      "impact": "The desktop gift can require substantial bandwidth before a visitor reaches or uses those details. Localhost timing hides network cost.",
+      "standard": "Performance budget / asset delivery",
+      "recommendation": "Serve appropriately sized compressed derivatives for miniature art and defer offscreen companions/outcomes until near view, retaining source assets and the approved art. Profile real hardware before making rendering claims.",
+      "command": "$impeccable optimize"
+    },
+    {
+      "id": "B5",
+      "severity": "P2",
+      "title": "The typed-signature minimum is unexplained",
+      "category": "Accessibility",
+      "location": "post-hero-preview/src/PartnerPact.tsx:54",
+      "evidence": "Typing A left the sign action disabled; Lisbeth enabled it. The label and described note explain that the name is stored as text, but do not explain the two-character minimum.",
+      "impact": "An initial or a valid one-character name appears to fail silently. This is a discoverability/validation issue, not a request to fabricate a signature.",
+      "standard": "Input instructions / error prevention; review SC 3.3.2 in product context",
+      "recommendation": "State the existing minimum beside the field, or intentionally permit a nonempty one-character name consistently in validation and persistence.",
+      "command": "$impeccable clarify"
+    },
+    {
+      "id": "B6",
+      "severity": "P3",
+      "title": "Shared semantic colors are repeated as literals",
+      "category": "Theming",
+      "location": "src/landing/across-hero.css:1",
+      "evidence": "Feedback and post-hero have local variables, but the bounded CSS contains 594 hex color occurrences across gallery, hero, story and feedback. The count includes intentional illustration/material colors, so it is not 594 defects. Shared ink, paper, muted text and focus colors are still repeatedly authored directly.",
+      "impact": "Future contrast or palette adjustments require several component edits and can drift.",
+      "standard": "Design-system maintainability",
+      "recommendation": "Extract only repeated semantic UI colors as future changes require them; preserve intentional art colors. No new dark mode is required by this gift brief.",
+      "command": "$impeccable extract"
+    }
+  ],
+  "detectorFalsePositives": [
+    {
+      "rule": "italic-serif-display",
+      "location": "#hero-title",
+      "reason": "The approved personal Baby display intentionally uses the serif accent; preserve the brief."
+    },
+    {
+      "rule": "kicker-above-heading",
+      "location": "p.folded-dedication",
+      "reason": "Real couple names/date act as a personal dedication, not fabricated product marketing."
+    },
+    {
+      "rule": "buried-raster",
+      "location": "body",
+      "reason": "Detector references legacy midnight-rose-sky background; current opaque landing sections and live universe are the visible composition. Not evidence that the approved universe artwork is buried."
+    }
+  ],
+  "positives": [
+    "All eight gallery choices updated title, aria-pressed and exact /play?game= route. Settled follow-up verified each route reached the local-demo lobby with that game selected, without creating rooms.",
+    "Bilingual KO/es-DO state and navigation rendered; hero primary focus outline and gallery End-key selection observed.",
+    "Typed and drawn signatures accepted; 13-point drawn stroke recorded; Escape from focused pact panel restored opener. Letter fold reached rose received and reread restored reading.",
+    "Empty feedback clearly discloses same-browser storage, disabled empty submit and useful empty state; corrupt local fixture gave localized alert and enabled Refresh. No posts submitted.",
+    "Reduced mode disabled intro and paused gallery motion. Simulated missing WebGL preserved eight choices, selected-game fallback image and play route.",
+    "No horizontal document overflow in nine captured desktop views. Breakpoints, pointer-cancel/lost-capture handling and native range are present in source, without claiming mobile validation.",
+    "InterPals, admitted rude start and 12-hour first conversation are explicit in both languages; 13-hour city time difference is a different, accurately labeled fact. No fake live chat was observed."
+  ],
+  "runNotes": {
+    "target": "src/landing/Landing.tsx",
+    "slug": "src-landing-landing-tsx",
+    "baseline": "921bac6 (provided frozen HEAD)",
+    "ignoreList": "No .impeccable/critique/ignore.md present; no new waivers or config changes.",
+    "independence": "B did not read A, prior reviews, or scores; findings withheld from parent until A-complete release.",
+    "context": "Not rerun: parent already ran once this session. Read AGENTS, Ponytail full, Impeccable SKILL, critique.md and audit.md in full.",
+    "cli": {
+      "command": ".agents/skills/impeccable/scripts/impeccable detect --json src/landing post-hero-preview/src src/app/FeedbackPage.tsx src/app/FeedbackRoute.tsx src/app/GameFeedback.tsx",
+      "output": "detector.json",
+      "count": 0,
+      "rules": [],
+      "locations": [],
+      "boundedMarkupCount": 37,
+      "rerun": false
+    },
+    "browser": {
+      "nativeAvailable": false,
+      "fallback": "No Browser js / CUA tools exposed after available-tool search and Browser skill read. Used user-authorized Sites portable local Playwright/Chromium SwiftShader QA in fresh disposable contexts.",
+      "visibility": "Headless only; no extension visibility.set/get, presentation surface, or user-visible Human tab was available.",
+      "preflight": "document.title mutation and appended inline script both succeeded in fresh context; preflight.json records proof.",
+      "overlay": "Official detect.js injection and detector execution succeeded on home, gallery-hash and feedback; an additional gallery viewport scan confirms actual gallery DOM. Local titles were labeled [Human], but these were never human-visible tabs.",
+      "uniqueBrowserRules": [
+        "italic-serif-display",
+        "kicker-above-heading",
+        "buried-raster"
+      ],
+      "console": [
+        "3 anti-patterns found (home)",
+        "1 anti-pattern found (gallery)",
+        "No anti-patterns found (feedback)"
+      ],
+      "cleanup": "Initial setup-only live-server PID 32766 was stopped before preflight; post-preflight background PID 33274 was stopped. Port 8400 verified closed. All Playwright contexts and browsers closed.",
+      "captureWait": "Hero readiness, entrance=1.000 and completed-frame/fence metadata observed; gallery awaited asset-ready; rose awaited received phase. SwiftShader frame metadata is not GPU FPS."
+    },
+    "tempCleanup": "Removed /tmp/audit-b-detect.js and accidental out/not-used.png; kept requested scripts/JSON/stills as evidence. Safe Python unlink completed after rm -f command rejection.",
+    "sourceChanges": "None. Only audit-owned output artifacts written.",
+    "skipped": [
+      "Full mobile viewport QA, synthesized touch and physical devices (user exclusion).",
+      "Video generation (user exclusion).",
+      "Hardware GPU FPS / real-device performance and production Web Vitals.",
+      "Live two-person posts, status mutations, Supabase production services and room creation/gameplay.",
+      "Screen-reader audio validation and complete raster-background contrast sampling.",
+      "Full 200% browser zoom: root font-size observation alone is not a reliable text-resize proof."
+    ],
+    "questions": "Parent synthesis owns targeted questions; B is evidence and audit only."
+  },
+  "evidenceFiles": [
+    "detector.json",
+    "browser-results.json",
+    "browser-supplement.json",
+    "preflight.json",
+    "source-metrics.json",
+    "contrast.json",
+    "browser-audit.mjs",
+    "browser-resume.mjs",
+    "browser-supplement.mjs"
+  ]
+}

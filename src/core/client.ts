@@ -1,19 +1,18 @@
-import { createClient, type SupabaseClient, type RealtimeChannel } from '@supabase/supabase-js';
+import { type SupabaseClient, type RealtimeChannel } from '@supabase/supabase-js';
 import { engines } from './registry';
 import { executeAction, RETENTION_MS, chatMessageForGame, reactionMessageForId } from './authority';
 import type { ReactionId } from './reactions';
 import type { GameId, GameAction, Language, PlayerId } from './types';
-import { isCorrectGuess, getCatchmindDrawDurationMs, getCatchmindHintStage } from '../games/catchmind';
+import { isCorrectGuess, getCatchmindDrawDurationMs } from '../games/catchmind';
 
 export interface RoomPlayer { id: PlayerId; nickname: string; language: Language; ready: boolean }
 export interface ChatMessage { id: string; playerId: PlayerId; text: string; translation?: string; targetLanguage?: Language; status: 'original'|'translated'|'limit'|'unavailable'|'correct'; createdAt:string }
 export interface RoomSnapshot { roomId:string|null; mode:'demo'|'online'; playerId:PlayerId; players:RoomPlayer[]; gameId:GameId|null; version:number; view:any|null; messages:ChatMessage[]; pendingGame:GameId|null; error:string|null; connection?:'local'|'connecting'|'connected'|'reconnecting'; syncEpoch?:number }
-const supabaseUrl = import.meta.env.VITE_SUPABASE_URL;
-const anonKey = import.meta.env.VITE_SUPABASE_ANON_KEY;
-export const isOnlineConfigured = Boolean(supabaseUrl && anonKey);
+import { onlineDb } from './supabase';
+export const isOnlineConfigured = Boolean(onlineDb);
 const emptySnapshot = (): RoomSnapshot => ({roomId:null,mode:isOnlineConfigured?'online':'demo',playerId:'p1',players:[],gameId:null,version:0,view:null,messages:[],pendingGame:null,error:null,connection:isOnlineConfigured?'connecting':'local',syncEpoch:0});
 class RoomClient {
-  private db:SupabaseClient|null = isOnlineConfigured ? createClient(supabaseUrl,anonKey) : null;
+  private db:SupabaseClient|null = onlineDb;
   private snapshot = emptySnapshot();
   private state:any=null;
   private listeners=new Set<(snapshot:RoomSnapshot)=>void>();
@@ -100,7 +99,7 @@ class RoomClient {
     const message=chatMessageForGame(this.snapshot.gameId,text);text=message.text;
     if(this.db){await this.invoke({chat:text});return;}
     this.checkLocal();await this.tick();let correct=false;
-    if(message.status==='pending' && this.snapshot.gameId==='catchmind' && this.state?.phase==='drawing' && this.state?.drawer!==this.snapshot.playerId){correct=isCorrectGuess(this.state,text);try{await this.sendAction({type:'guess',payload:{text}});}catch{/* Human chat remains available when guess not accepted. */}}
+    if(message.status==='pending' && this.snapshot.gameId==='catchmind' && this.state?.phase==='drawing' && this.state?.drawer!==this.snapshot.playerId){const matching=isCorrectGuess(this.state,text);try{await this.sendAction({type:'guess',payload:{text}});correct=matching;}catch{/* Human chat remains available when guess not accepted. */}}
     const saved:ChatMessage={id:crypto.randomUUID(),playerId:this.snapshot.playerId,text:correct?'':text,status:correct?'correct':message.status==='pending'?'unavailable':'original',createdAt:new Date().toISOString()};
     this.snapshot.messages=[...this.snapshot.messages,saved].filter(x=>Date.now()-Date.parse(x.createdAt)<RETENTION_MS);this.emit();
   }
@@ -113,25 +112,26 @@ class RoomClient {
   async tick() {
     if(this.snapshot.gameId!=='catchmind'||!this.snapshot.view?.deadlineAt)return;
     const now=Date.now(), expired=Date.parse(this.snapshot.view.deadlineAt)<=now;
-    if(this.db){if(expired||this.snapshot.view.phase==='drawing'&&this.snapshot.view.board?.hintStage<getCatchmindHintStage({settings:this.snapshot.view.board.settings,deadlineAt:this.snapshot.view.deadlineAt},now))await this.invoke({tick:true});return;}
+    if(this.db){if(expired)await this.invoke({tick:true});return;}
     if(this.state?.phase==='drawing'){
       let changed=false;
       if(expired){this.state=executeAction(engines.catchmind!,this.state,this.state.drawer,{type:'timeout'}).state;this.state.deadlineAt=null;changed=true;}
-      else while(this.state.hintStage<getCatchmindHintStage(this.state,now)){this.state=executeAction(engines.catchmind!,this.state,this.state.drawer,{type:'reveal-hint'}).state;changed=true;}
       if(changed){this.snapshot.version++;this.localView();this.emit();}
     }
   }
   private invoke(operation:Record<string,unknown>) {
     const roomId=this.snapshot.roomId;
-    const selectionVersion=operation.action && ['domino','jaipur','splendor'].includes(this.snapshot.gameId??'') ? this.snapshot.version : null;
-    const request=this.requestQueue.then(()=>this.invokeNow(operation,roomId,selectionVersion));
+    const selectionVersion=operation.action && (['domino','jaipur','splendor'].includes(this.snapshot.gameId??'') || this.snapshot.gameId==='catchmind'&&['choose','settings'].includes((operation.action as GameAction).type)) ? this.snapshot.version : null;
+    const drawingDeadline=this.snapshot.gameId==='catchmind'&&operation.action&&this.snapshot.view?.phase==='drawing'?this.snapshot.view.deadlineAt:null;
+    const request=this.requestQueue.then(()=>this.invokeNow(operation,roomId,selectionVersion,drawingDeadline));
     this.requestQueue=request.catch(()=>{});return request;
   }
-  private async invokeNow(operation:Record<string,unknown>,roomId:string|null,selectionVersion:number|null) {
+  private async invokeNow(operation:Record<string,unknown>,roomId:string|null,selectionVersion:number|null,drawingDeadline:string|null) {
     const requestId=crypto.randomUUID();
     for(let attempt=0;attempt<2;attempt++){
       if(!roomId || roomId!==this.snapshot.roomId)throw new Error('room_expired');
       if(selectionVersion!==null && selectionVersion!==this.snapshot.version)throw new Error('stale_state');
+      if(drawingDeadline && drawingDeadline!==this.snapshot.view?.deadlineAt)throw new Error('stale_state');
       const {error}=await this.db!.functions.invoke('action',{body:{roomId,version:this.snapshot.version,requestId,...operation}});
       if(!error){await this.refresh();return;}
       if(selectionVersion!==null && ['FunctionsFetchError','FunctionsRelayError'].includes(error.name)){
@@ -147,9 +147,9 @@ class RoomClient {
   }
   async closeRoom() {
     if(this.db){const {error}=await this.db.rpc('close_room',{p_room:this.snapshot.roomId});if(error)throw error;}
-    if(typeof localStorage !== 'undefined' && this.snapshot.roomId){
-      if(localStorage.getItem('dos-last-room')===this.snapshot.roomId)localStorage.removeItem('dos-last-room');
-    }
+    try {
+      if(this.snapshot.roomId && localStorage.getItem('dos-last-room')===this.snapshot.roomId)localStorage.removeItem('dos-last-room');
+    } catch {/* An optional room shortcut must not prevent closing a room. */}
     this.snapshot=emptySnapshot();this.state=null;this.expiresAt=0;this.emit();
   }
   async setLanguage(language:Language) {if(!['ko','es'].includes(language))throw new Error('invalid_language');if(this.db){const {error}=await this.db.rpc('set_language',{p_room:this.snapshot.roomId,p_language:language});if(error)throw error;await this.refresh();}else{this.snapshot.players=this.snapshot.players.map(p=>p.id===this.snapshot.playerId?{...p,language}:p);this.emit();}}

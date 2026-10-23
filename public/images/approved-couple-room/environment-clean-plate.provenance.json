@@ -1,0 +1,10 @@
+{
+  "role": "environment-only derivative for occlusion; not approved character source",
+  "tool": "image_gen edit",
+  "source": "approved-couple-gaming-room.png",
+  "sourceSha256": "a569e1a1ed8c21fffb7a11cc7065816a0882fdaaba3e1a4bcd65dc241681eb26",
+  "sha256": "322c0df008a39822b9198abfe7969b21e5e5cb688bce26abad98f8f898d8a6dc",
+  "originalPreserved": true,
+  "charactersRegenerated": false,
+  "limitations": "Generated hidden furniture/environment may differ; visible character and foreground pixel layers use unchanged approved source. Requires direct visual review."
+}

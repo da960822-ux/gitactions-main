@@ -1,6 +1,6 @@
 import { createElement } from 'react';
 import { renderToStaticMarkup } from 'react-dom/server';
-import { describe, expect, it, vi } from 'vitest';
+import { afterEach, describe, expect, it, vi } from 'vitest';
 import type { GameAction } from '../core/types';
 import { davinciEngine } from '../games/davinci';
 import DaVinciTable, { daVinciGuessButtonLabel, davinciSnapshotKey, deriveDaVinciVisualEvent, findDaVinciGuess, findDaVinciJokerPlacement } from './DaVinciTable';
@@ -8,11 +8,13 @@ import DaVinciTable, { daVinciGuessButtonLabel, davinciSnapshotKey, deriveDaVinc
 const guessActions = (index: number): { label: { ko: string; es: string }; action: GameAction }[] =>
   [...Array.from({ length: 12 }, (_, value) => ({ label: { ko: '추측', es: 'Adivinar' }, action: { type: 'guess', payload: { index, value } } as GameAction })), { label: { ko: '조커', es: 'Comodín' }, action: { type: 'guess', payload: { index, value: 'joker' } } }];
 
-function render(view: any, playerId: 'p1' | 'p2' = 'p1', language: 'ko' | 'es' = 'ko') {
-  return renderToStaticMarkup(createElement(DaVinciTable, { view, playerId, language, runAction: vi.fn() }));
+const privatePortraits = { black: '/private-game-art/black-joker.webp', white: '/private-game-art/white-joker.webp' };
+function render(view: any, playerId: 'p1' | 'p2' = 'p1', language: 'ko' | 'es' = 'ko', jokerPortraits = privatePortraits) {
+  return renderToStaticMarkup(createElement(DaVinciTable, { view, playerId, language, runAction: vi.fn(), jokerPortraits }));
 }
 
 describe('DaVinciTable', () => {
+  afterEach(() => vi.unstubAllEnvs());
   it('keeps rival hidden numbers out of content and attributes while showing public color and order', () => {
     const state = davinciEngine.createInitialState(23);
     const view = davinciEngine.getPlayerView(state, 'p1') as any;
@@ -99,6 +101,7 @@ describe('DaVinciTable', () => {
       opponentCount: 1, actions: [{ label: { ko: '뽑기', es: 'Robar' }, action: { type: 'draw' } }],
     };
     const html = render(view, 'p2', 'es');
+    expect(html).toContain('data-workbench-stage="draw"');
     expect(html).toContain('>7</b>');
     expect(html).toContain('Ficha 2:');
     expect(html).toContain('<strong>7</strong>');
@@ -140,12 +143,43 @@ describe('DaVinciTable', () => {
     expect(loss).not.toContain('모든 상대 타일을 공개했어요.');
   });
 
-  it('renders a visible own joker as a dash in the tile and accessible label, never as NaN', () => {
+  it('replaces waiting or guessing tools with the result once the game ends', () => {
+    for (const language of ['ko', 'es'] as const) for (const phase of ['waiting', 'guess']) {
+      const html = render({ turn: 'p2', phase, hand: [], board: { opponentTiles: [] }, actions: [], result: { winner: 'p2' } }, 'p1', language);
+      expect(html).not.toContain('dv-number-grid');
+      expect(html).not.toContain('class="dv-waiting"');
+      expect(html).toContain(language === 'ko' ? '<h3>결과</h3>' : '<h3>Resultado</h3>');
+    }
+  });
+
+  it('uses an injected private portrait on an own joker and falls back to the rule symbol without it', () => {
     const view = { game: 'davinci', turn: 'p1', phase: 'draw', hand: [{ color: 'black', value: 'joker', revealed: false }], board: { opponentTiles: [{ color: 'white', value: null, revealed: false }], deckCount: 12, turnNumber: 1, tileCount: 26, actionLog: [], lastEvent: null }, actions: [] };
     const html = render(view);
-    expect(html).toContain('<b>－</b>');
+    expect(html).toContain('class="dv-joker-portrait"');
+    expect(html).toContain(privatePortraits.black);
+    expect(html).not.toContain('yeonseok-lisbeth-cutout');
+    const fallback = render(view, 'p1', 'ko', {} as typeof privatePortraits);
+    expect(fallback).not.toContain('dv-joker-portrait');
+    expect(fallback).toContain('>－</b>');
     expect(html).toContain('숫자 －');
     expect(html).not.toContain('NaN');
+  });
+
+  it('uses separate injected couple portraits only on revealed rival jokers', () => {
+    vi.stubEnv('VITE_DAVINCI_BLACK_JOKER_IMAGE', '/private-assets/davinci/black-joker.webp');
+    vi.stubEnv('VITE_DAVINCI_WHITE_JOKER_IMAGE', '/private-assets/davinci/white-joker.png');
+    const view = { game: 'davinci', turn: 'p1', phase: 'waiting', hand: [], board: { opponentTiles: [{ color: 'black', value: 'joker', revealed: false }, { color: 'white', value: 'joker', revealed: false }], deckCount: 12, tileCount: 26 }, actions: [] };
+    for (const language of ['ko', 'es'] as const) {
+      const hidden = render(view, 'p1', language);
+      expect(hidden).not.toContain('dv-joker-portrait');
+      expect(hidden).not.toContain('yeonseok-lisbeth-cutout');
+      expect(hidden).not.toContain('private-game-art');
+      expect(hidden).not.toContain('635 70');
+      const visible = render({ ...view, board: { ...view.board, opponentTiles: view.board.opponentTiles.map(tile => ({ ...tile, revealed: true })) } }, 'p1', language);
+      expect(visible.match(/class="dv-joker-portrait"/g)).toHaveLength(2);
+      expect(visible).toContain(privatePortraits.black);
+      expect(visible).toContain(privatePortraits.white);
+    }
   });
 
   it('offers only server-provided gaps for the private joker and a finish-ready action after placement', () => {
@@ -192,5 +226,24 @@ describe('DaVinciTable', () => {
     expect(deriveDaVinciVisualEvent({ viewer: 'p1', view: before }, after, 'p1')).toMatchObject({ type: 'wrong', actor: 'p1', index: 0 });
     const event = { sequence: 1, type: 'draw', actor: 'p1', insertedIndex: 0 };
     expect(deriveDaVinciVisualEvent({ viewer: 'p1', view: { ...before, board: { ...before.board, lastEvent: event } } }, { ...after, board: { ...after.board, lastEvent: event } }, 'p1')).toBeNull();
+  });
+});
+
+
+describe('approved public joker artwork', () => {
+  it('shows the approved couple drawing for each joker and omits both from hidden rival tiles', () => {
+    const base = { game: 'davinci', turn: 'p1', phase: 'waiting', hand: [], board: { opponentTiles: [], deckCount: 12, tileCount: 26, turnNumber: 1, actionLog: [], lastEvent: null }, actions: [] };
+    for (const [color, name] of [['black', 'couple-waterfront'], ['white', 'couple-indoor']] as const) {
+      const html = renderToStaticMarkup(createElement(DaVinciTable, { view: { ...base, hand: [{ color, value: 'joker', revealed: false }] }, playerId: 'p1', language: 'ko', runAction: vi.fn() }));
+      expect(html).toContain(`/images/davinci/joker-${name}.webp`);
+    }
+    for (const playerId of ['p1', 'p2'] as const) for (const language of ['ko', 'es'] as const) {
+      const view = { ...base, board: { ...base.board, opponentTiles: [{ color: 'black', value: 'joker', revealed: false }, { color: 'white', value: 'joker', revealed: false }] } };
+      const html = renderToStaticMarkup(createElement(DaVinciTable, { view, playerId, language, runAction: vi.fn() }));
+      expect(html).not.toContain('joker-couple-waterfront');
+      expect(html).not.toContain('joker-couple-indoor');
+      expect(html).not.toContain('dv-joker-portrait');
+      expect(html).not.toContain('<img');
+    }
   });
 });

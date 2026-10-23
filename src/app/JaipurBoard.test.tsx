@@ -20,9 +20,19 @@ const view = (overrides: Record<string, any> = {}) => ({
   ...overrides,
 });
 
-const render = (data: any, language: 'ko' | 'es' = 'ko', playerId: 'p1' | 'p2' = 'p1') => renderToStaticMarkup(createElement(JaipurBoard, { view: data, language, playerId, runAction: vi.fn() }));
+const render = (data: any, language: 'ko' | 'es' = 'ko', playerId: 'p1' | 'p2' = 'p1', desktopDisplay = true) => renderToStaticMarkup(createElement(JaipurBoard, { view: data, language, playerId, desktopDisplay, runAction: vi.fn() }));
 
 describe('JaipurBoard', () => {
+  it('keeps the mobile board on the original interaction branch when desktop previews are disabled', () => {
+    const mobile = render(view(), 'ko', 'p1', false);
+    const desktop = render(view());
+    expect(mobile).not.toContain('has-desktop-preview');
+    expect(mobile).not.toContain('/images/game-premium-tokens/jaipur/');
+    expect(desktop).toContain('class="jaipur-board has-desktop-preview"');
+    expect(desktop).toContain('/images/game-premium-tokens/jaipur/diamond.webp');
+    expect(desktop).toContain('/images/game-premium-tokens/jaipur/bonus-token-back.webp');
+  });
+
   it('renders public market, own hand and opponent count without exposing opposing card faces', () => {
     const html = render(view({ opponentHand: ['secret-spice-card'], privateOpponentBonus: 9001 }));
     expect(html).toContain('data-jaipur-zone="market"');

@@ -1,0 +1,303 @@
+{
+  "base": "http://127.0.0.1:5174",
+  "browser": "/usr/bin/chromium",
+  "checks": [
+    {
+      "name": "initial header appearance 1440",
+      "pass": true,
+      "className": "landing-nav wrap",
+      "position": "absolute",
+      "width": 1252.796875,
+      "height": 96,
+      "rectTop": 0
+    },
+    {
+      "name": "compact fixed header 1440",
+      "pass": true,
+      "className": "landing-nav wrap is-past-hero",
+      "position": "fixed",
+      "width": 1440,
+      "height": 64,
+      "top": -0.37455201148986816,
+      "zIndex": "20",
+      "bg": "rgb(33, 21, 29)"
+    },
+    {
+      "name": "reverse scroll restores initial header 1440",
+      "pass": true,
+      "position": "absolute",
+      "height": 96
+    },
+    {
+      "name": "deep link #games restored after ready 1440",
+      "pass": true,
+      "hash": "#games",
+      "ready": "landing-world-host is-world-ready",
+      "targetFound": true,
+      "headingText": "Mami, 뭐부터 해볼래?",
+      "targetTop": 80,
+      "headingTop": 108,
+      "navBottom": 64,
+      "navPosition": "fixed",
+      "scrollY": 7630,
+      "pinSpacers": 1
+    },
+    {
+      "name": "deep link #papi-letter restored after ready 1440",
+      "pass": true,
+      "hash": "#papi-letter",
+      "ready": "landing-world-host is-world-ready",
+      "targetFound": true,
+      "headingText": "For my Mami ♡Baby, surprise!Baby, 이거 열어보고 어떤 표정을 지을까 생각하면서 만들었어. 그냥 게임만 할 수 있는 곳 말고, 들어오면 내가 너 생각하면서 만들었다는 게 느껴졌으면 좋겠어.네가 가족들이랑 하는 도미노도 나랑 같이 해보고 싶었어. 네가 이겼다고 나 놀리면 좀 억울하겠지만, 네가 신나하는 얼굴은 보고 싶거든. 대신 내가 이기면 박수 쳐줘야 해 ㅋㅋㅋ나는 광주에 있고 너는 산토도밍고에 있잖아. 13시간이나 차이 나고 바로 옆에 갈 수도 없어서 많이 보고 싶어. 이렇게라도 너랑 얘기하고 같이 웃을 시간이 조금 더 생겼으면 좋겠어.나중에는 화면 말고 바로 옆에서 같이 놀고 싶어. 게임하다가 네 얼굴도 보고, 손도 잡고. 그때까지는 여기서 한 판씩 하자, Baby. 하고 싶은 게 있으면 말해줘. 같이 해보고 싶어.이 페이지 보고 네가 한 번 웃어주면 좋겠다. 그리고 내가 너 많이 좋아하고, 많이 사랑한다는 것도 알아줬으면 좋겠어. 오래오래 내 편 해줘, Mami. 나도 네 편일게. 사랑해 ♡— Your Papi, Yeonseok ♡Y ♡ L우리의 약속평생 파트너 계약서접기Baby, 내일도 그다음 날도 나랑 한 팀 해줄래?13시간이나 시차가 나도, 네 하루에 함께하고 싶어. 내 하루도 너랑 나눌게.보고 싶을 땐 꼭 보고 싶다고 말해줘. 서운한 마음도 들려줘. 네 얘기, 잘 들을게.내가 게임에서 져도 언제나 네 편이야. 대신 다음 판은 꼭 같이 해줘 ㅋㅋㅋ여기에 직접 서명해줘톡 한 번은 서명이 되지 않아.직접 쓰기 어렵다면 이름으로 서명이름을 입력해 텍스트로 서명이름을 입력하면 손글씨 대신 텍스트로 저장돼.다시 쓰기서명하고 평생 한 팀 되기 ♡이 서명과 대답은 이 브라우저에만 저장돼.편지 접기봉투가 닫혀 있어요.편지 열기 ↗Baby,이건 너한테.마지막으로, 내 장미 한 송이.한 번 더 보기같이 놀자 ♡Mami의 아이디어우리 시작2025.04.04편지 다시 읽기Yeonseok ♡ Lisbeth처음으로",
+      "targetTop": 79.78125,
+      "headingTop": 79.78125,
+      "navBottom": 64,
+      "navPosition": "fixed",
+      "scrollY": 9365,
+      "pinSpacers": 1
+    },
+    {
+      "name": "Spanish switch works 1440",
+      "pass": true,
+      "lang": "es-DO",
+      "firstLink": "Juegos"
+    },
+    {
+      "name": "Korean switch works 1440",
+      "pass": true,
+      "lang": "ko",
+      "firstLink": "게임 목록"
+    },
+    {
+      "name": "nav 게임 목록 target visible 1440",
+      "pass": true,
+      "hash": "#games",
+      "headingTop": 108,
+      "navBottom": 64,
+      "navPosition": "fixed"
+    },
+    {
+      "name": "nav Papi의 편지 target visible 1440",
+      "pass": true,
+      "hash": "#papi-letter",
+      "headingTop": 79.78125,
+      "navBottom": 64,
+      "navPosition": "fixed"
+    },
+    {
+      "name": "feedback link 1440",
+      "pass": true,
+      "url": "http://127.0.0.1:5174/feedback"
+    },
+    {
+      "name": "initial header appearance 1920",
+      "pass": true,
+      "className": "landing-nav wrap",
+      "position": "absolute",
+      "width": 1670.390625,
+      "height": 96,
+      "rectTop": 0
+    },
+    {
+      "name": "compact fixed header 1920",
+      "pass": true,
+      "className": "landing-nav wrap is-past-hero",
+      "position": "fixed",
+      "width": 1920,
+      "height": 64,
+      "top": -0.3746764361858368,
+      "zIndex": "20",
+      "bg": "rgb(33, 21, 29)"
+    },
+    {
+      "name": "reverse scroll restores initial header 1920",
+      "pass": true,
+      "position": "absolute",
+      "height": 96
+    },
+    {
+      "name": "deep link #games restored after ready 1920",
+      "pass": true,
+      "hash": "#games",
+      "ready": "landing-world-host is-world-ready",
+      "targetFound": true,
+      "headingText": "Mami, 뭐부터 해볼래?",
+      "targetTop": 79.6875,
+      "headingTop": 107.6875,
+      "navBottom": 64,
+      "navPosition": "fixed",
+      "scrollY": 7742,
+      "pinSpacers": 1
+    },
+    {
+      "name": "deep link #papi-letter restored after ready 1920",
+      "pass": true,
+      "hash": "#papi-letter",
+      "ready": "landing-world-host is-world-ready",
+      "targetFound": true,
+      "headingText": "For my Mami ♡Baby, surprise!Baby, 이거 열어보고 어떤 표정을 지을까 생각하면서 만들었어. 그냥 게임만 할 수 있는 곳 말고, 들어오면 내가 너 생각하면서 만들었다는 게 느껴졌으면 좋겠어.네가 가족들이랑 하는 도미노도 나랑 같이 해보고 싶었어. 네가 이겼다고 나 놀리면 좀 억울하겠지만, 네가 신나하는 얼굴은 보고 싶거든. 대신 내가 이기면 박수 쳐줘야 해 ㅋㅋㅋ나는 광주에 있고 너는 산토도밍고에 있잖아. 13시간이나 차이 나고 바로 옆에 갈 수도 없어서 많이 보고 싶어. 이렇게라도 너랑 얘기하고 같이 웃을 시간이 조금 더 생겼으면 좋겠어.나중에는 화면 말고 바로 옆에서 같이 놀고 싶어. 게임하다가 네 얼굴도 보고, 손도 잡고. 그때까지는 여기서 한 판씩 하자, Baby. 하고 싶은 게 있으면 말해줘. 같이 해보고 싶어.이 페이지 보고 네가 한 번 웃어주면 좋겠다. 그리고 내가 너 많이 좋아하고, 많이 사랑한다는 것도 알아줬으면 좋겠어. 오래오래 내 편 해줘, Mami. 나도 네 편일게. 사랑해 ♡— Your Papi, Yeonseok ♡Y ♡ L우리의 약속평생 파트너 계약서접기Baby, 내일도 그다음 날도 나랑 한 팀 해줄래?13시간이나 시차가 나도, 네 하루에 함께하고 싶어. 내 하루도 너랑 나눌게.보고 싶을 땐 꼭 보고 싶다고 말해줘. 서운한 마음도 들려줘. 네 얘기, 잘 들을게.내가 게임에서 져도 언제나 네 편이야. 대신 다음 판은 꼭 같이 해줘 ㅋㅋㅋ여기에 직접 서명해줘톡 한 번은 서명이 되지 않아.직접 쓰기 어렵다면 이름으로 서명이름을 입력해 텍스트로 서명이름을 입력하면 손글씨 대신 텍스트로 저장돼.다시 쓰기서명하고 평생 한 팀 되기 ♡이 서명과 대답은 이 브라우저에만 저장돼.편지 접기봉투가 닫혀 있어요.편지 열기 ↗Baby,이건 너한테.마지막으로, 내 장미 한 송이.한 번 더 보기같이 놀자 ♡Mami의 아이디어우리 시작2025.04.04편지 다시 읽기Yeonseok ♡ Lisbeth처음으로",
+      "targetTop": 80.46875,
+      "headingTop": 80.46875,
+      "navBottom": 64,
+      "navPosition": "fixed",
+      "scrollY": 9476,
+      "pinSpacers": 1
+    },
+    {
+      "name": "Spanish switch works 1920",
+      "pass": true,
+      "lang": "es-DO",
+      "firstLink": "Juegos"
+    },
+    {
+      "name": "Korean switch works 1920",
+      "pass": true,
+      "lang": "ko",
+      "firstLink": "게임 목록"
+    },
+    {
+      "name": "nav 게임 목록 target visible 1920",
+      "pass": true,
+      "hash": "#games",
+      "headingTop": 107.6875,
+      "navBottom": 64,
+      "navPosition": "fixed"
+    },
+    {
+      "name": "nav Papi의 편지 target visible 1920",
+      "pass": true,
+      "hash": "#papi-letter",
+      "headingTop": 80.46875,
+      "navBottom": 64,
+      "navPosition": "fixed"
+    },
+    {
+      "name": "feedback link 1920",
+      "pass": true,
+      "url": "http://127.0.0.1:5174/feedback"
+    }
+  ],
+  "errors": [],
+  "viewports": [
+    {
+      "width": 1440,
+      "height": 900,
+      "initial": {
+        "className": "landing-nav wrap",
+        "position": "absolute",
+        "width": 1252.796875,
+        "height": 96,
+        "rectTop": 0
+      },
+      "deepLinks": {
+        "#games": {
+          "hash": "#games",
+          "ready": "landing-world-host is-world-ready",
+          "targetFound": true,
+          "headingText": "Mami, 뭐부터 해볼래?",
+          "targetTop": 80,
+          "headingTop": 108,
+          "navBottom": 64,
+          "navPosition": "fixed",
+          "scrollY": 7630,
+          "pinSpacers": 1
+        },
+        "#papi-letter": {
+          "hash": "#papi-letter",
+          "ready": "landing-world-host is-world-ready",
+          "targetFound": true,
+          "headingText": "For my Mami ♡Baby, surprise!Baby, 이거 열어보고 어떤 표정을 지을까 생각하면서 만들었어. 그냥 게임만 할 수 있는 곳 말고, 들어오면 내가 너 생각하면서 만들었다는 게 느껴졌으면 좋겠어.네가 가족들이랑 하는 도미노도 나랑 같이 해보고 싶었어. 네가 이겼다고 나 놀리면 좀 억울하겠지만, 네가 신나하는 얼굴은 보고 싶거든. 대신 내가 이기면 박수 쳐줘야 해 ㅋㅋㅋ나는 광주에 있고 너는 산토도밍고에 있잖아. 13시간이나 차이 나고 바로 옆에 갈 수도 없어서 많이 보고 싶어. 이렇게라도 너랑 얘기하고 같이 웃을 시간이 조금 더 생겼으면 좋겠어.나중에는 화면 말고 바로 옆에서 같이 놀고 싶어. 게임하다가 네 얼굴도 보고, 손도 잡고. 그때까지는 여기서 한 판씩 하자, Baby. 하고 싶은 게 있으면 말해줘. 같이 해보고 싶어.이 페이지 보고 네가 한 번 웃어주면 좋겠다. 그리고 내가 너 많이 좋아하고, 많이 사랑한다는 것도 알아줬으면 좋겠어. 오래오래 내 편 해줘, Mami. 나도 네 편일게. 사랑해 ♡— Your Papi, Yeonseok ♡Y ♡ L우리의 약속평생 파트너 계약서접기Baby, 내일도 그다음 날도 나랑 한 팀 해줄래?13시간이나 시차가 나도, 네 하루에 함께하고 싶어. 내 하루도 너랑 나눌게.보고 싶을 땐 꼭 보고 싶다고 말해줘. 서운한 마음도 들려줘. 네 얘기, 잘 들을게.내가 게임에서 져도 언제나 네 편이야. 대신 다음 판은 꼭 같이 해줘 ㅋㅋㅋ여기에 직접 서명해줘톡 한 번은 서명이 되지 않아.직접 쓰기 어렵다면 이름으로 서명이름을 입력해 텍스트로 서명이름을 입력하면 손글씨 대신 텍스트로 저장돼.다시 쓰기서명하고 평생 한 팀 되기 ♡이 서명과 대답은 이 브라우저에만 저장돼.편지 접기봉투가 닫혀 있어요.편지 열기 ↗Baby,이건 너한테.마지막으로, 내 장미 한 송이.한 번 더 보기같이 놀자 ♡Mami의 아이디어우리 시작2025.04.04편지 다시 읽기Yeonseok ♡ Lisbeth처음으로",
+          "targetTop": 79.78125,
+          "headingTop": 79.78125,
+          "navBottom": 64,
+          "navPosition": "fixed",
+          "scrollY": 9365,
+          "pinSpacers": 1
+        }
+      },
+      "navigation": {
+        "compact": {
+          "className": "landing-nav wrap is-past-hero",
+          "position": "fixed",
+          "width": 1440,
+          "height": 64,
+          "top": -0.37455201148986816,
+          "zIndex": "20",
+          "bg": "rgb(33, 21, 29)"
+        },
+        "게임 목록": {
+          "hash": "#games",
+          "headingTop": 108,
+          "navBottom": 64,
+          "navPosition": "fixed"
+        },
+        "Papi의 편지": {
+          "hash": "#papi-letter",
+          "headingTop": 79.78125,
+          "navBottom": 64,
+          "navPosition": "fixed"
+        }
+      }
+    },
+    {
+      "width": 1920,
+      "height": 900,
+      "initial": {
+        "className": "landing-nav wrap",
+        "position": "absolute",
+        "width": 1670.390625,
+        "height": 96,
+        "rectTop": 0
+      },
+      "deepLinks": {
+        "#games": {
+          "hash": "#games",
+          "ready": "landing-world-host is-world-ready",
+          "targetFound": true,
+          "headingText": "Mami, 뭐부터 해볼래?",
+          "targetTop": 79.6875,
+          "headingTop": 107.6875,
+          "navBottom": 64,
+          "navPosition": "fixed",
+          "scrollY": 7742,
+          "pinSpacers": 1
+        },
+        "#papi-letter": {
+          "hash": "#papi-letter",
+          "ready": "landing-world-host is-world-ready",
+          "targetFound": true,
+          "headingText": "For my Mami ♡Baby, surprise!Baby, 이거 열어보고 어떤 표정을 지을까 생각하면서 만들었어. 그냥 게임만 할 수 있는 곳 말고, 들어오면 내가 너 생각하면서 만들었다는 게 느껴졌으면 좋겠어.네가 가족들이랑 하는 도미노도 나랑 같이 해보고 싶었어. 네가 이겼다고 나 놀리면 좀 억울하겠지만, 네가 신나하는 얼굴은 보고 싶거든. 대신 내가 이기면 박수 쳐줘야 해 ㅋㅋㅋ나는 광주에 있고 너는 산토도밍고에 있잖아. 13시간이나 차이 나고 바로 옆에 갈 수도 없어서 많이 보고 싶어. 이렇게라도 너랑 얘기하고 같이 웃을 시간이 조금 더 생겼으면 좋겠어.나중에는 화면 말고 바로 옆에서 같이 놀고 싶어. 게임하다가 네 얼굴도 보고, 손도 잡고. 그때까지는 여기서 한 판씩 하자, Baby. 하고 싶은 게 있으면 말해줘. 같이 해보고 싶어.이 페이지 보고 네가 한 번 웃어주면 좋겠다. 그리고 내가 너 많이 좋아하고, 많이 사랑한다는 것도 알아줬으면 좋겠어. 오래오래 내 편 해줘, Mami. 나도 네 편일게. 사랑해 ♡— Your Papi, Yeonseok ♡Y ♡ L우리의 약속평생 파트너 계약서접기Baby, 내일도 그다음 날도 나랑 한 팀 해줄래?13시간이나 시차가 나도, 네 하루에 함께하고 싶어. 내 하루도 너랑 나눌게.보고 싶을 땐 꼭 보고 싶다고 말해줘. 서운한 마음도 들려줘. 네 얘기, 잘 들을게.내가 게임에서 져도 언제나 네 편이야. 대신 다음 판은 꼭 같이 해줘 ㅋㅋㅋ여기에 직접 서명해줘톡 한 번은 서명이 되지 않아.직접 쓰기 어렵다면 이름으로 서명이름을 입력해 텍스트로 서명이름을 입력하면 손글씨 대신 텍스트로 저장돼.다시 쓰기서명하고 평생 한 팀 되기 ♡이 서명과 대답은 이 브라우저에만 저장돼.편지 접기봉투가 닫혀 있어요.편지 열기 ↗Baby,이건 너한테.마지막으로, 내 장미 한 송이.한 번 더 보기같이 놀자 ♡Mami의 아이디어우리 시작2025.04.04편지 다시 읽기Yeonseok ♡ Lisbeth처음으로",
+          "targetTop": 80.46875,
+          "headingTop": 80.46875,
+          "navBottom": 64,
+          "navPosition": "fixed",
+          "scrollY": 9476,
+          "pinSpacers": 1
+        }
+      },
+      "navigation": {
+        "compact": {
+          "className": "landing-nav wrap is-past-hero",
+          "position": "fixed",
+          "width": 1920,
+          "height": 64,
+          "top": -0.3746764361858368,
+          "zIndex": "20",
+          "bg": "rgb(33, 21, 29)"
+        },
+        "게임 목록": {
+          "hash": "#games",
+          "headingTop": 107.6875,
+          "navBottom": 64,
+          "navPosition": "fixed"
+        },
+        "Papi의 편지": {
+          "hash": "#papi-letter",
+          "headingTop": 80.46875,
+          "navBottom": 64,
+          "navPosition": "fixed"
+        }
+      }
+    }
+  ]
+}

@@ -1,0 +1,23 @@
+{
+  "pose": {
+    "progress": 0.43,
+    "position": [
+      0,
+      0.3,
+      11.7
+    ],
+    "target": [
+      0.3,
+      -0.05,
+      0
+    ],
+    "fov": 38,
+    "weights": {
+      "aperture": 1,
+      "rail": 0
+    }
+  },
+  "destinationVisibleFraction": 0.43561342592592595,
+  "definition": "Actual visible room/canopy fragments deeper than Three world z=-12; excludes opened cove/wing, foreground bank, portrait and background. One-sample flat-emission diagnostic, not beauty image.",
+  "source": "chamber.blend"
+}

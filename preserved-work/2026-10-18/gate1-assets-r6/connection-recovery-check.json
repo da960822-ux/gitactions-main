@@ -1,0 +1,16 @@
+{
+  "checkedAtUTC": "2026-10-17T23:10:16.428040+00:00",
+  "bakePID": 25176,
+  "nativePID": 26136,
+  "continuationPID": 26093,
+  "restartPerformed": false,
+  "observedLoss": false,
+  "normalsCompleted": 5,
+  "diffuseCompleted": 7,
+  "nativeCompleted": [
+    "cycles-oidn-agx-0.png"
+  ],
+  "authorSourceSHA256": "8f0d5245c87da13497d0fb56f5930e1f25966ed88d788d4cac4c1faadbf0d5d9",
+  "firstNativeLibraryFile": "libfile_c7f65a39be24819196f0dca6e033eeeb",
+  "browserCapture": "waiting for versioned GLB and authored HDR probes; automatic continuation already running"
+}

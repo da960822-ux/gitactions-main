@@ -290,6 +290,7 @@
 @media (max-width: 560px) {
   .jp-action-tray { width: 100%; flex-basis: auto; }
   .jp-action-tray .jp-primary-action { margin-left: 0; }
+  .jp-exchange-controls .jp-primary-action { flex: 1 1 100%; width: 100%; white-space: normal; }
   .jp-sale-stepper { gap: .35rem; }
   .jp-sale-stepper > span { flex-basis: calc(100% - 130px); }
   .jp-sale-stepper > .jp-primary-action { flex-basis: 100%; order: 3; }
@@ -361,4 +362,147 @@
   .jp-sale-stepper > .jp-cancel-action { grid-column: 3 / -1; grid-row: 3; }
   .jp-sale-controls > .jp-cancel-action { align-self: flex-start; }
   .jp-history-content .jp-round-result { align-items: flex-start; }
+}
+
+/* Market, hand and confirmation form one trading surface. */
+@media (min-width: 1024px) {
+  .jaipur-board .jp-topline { min-height: 34px; }
+  .jaipur-board .jp-market-card { height: 132px; }
+  .jaipur-board .jp-action-tray { min-height: 64px; }
+  .jaipur-board .jp-market-footer { gap: 6px; margin-top: 6px; }
+  .jaipur-board .jp-hand-card { min-height: 110px; }
+  .jaipur-board .jp-player-hand .jp-section-heading { margin-bottom: 6px; }
+}
+@media (max-width: 1023px) {
+  .jaipur-board { gap: 7px; padding: 8px; }
+  .jaipur-board > .jp-topline { order: 0; }
+  .jaipur-board > .jp-scorebar { order: 1; }
+  .jaipur-board > .jp-market-section { order: 2; display: contents; }
+  .jaipur-board > .jp-market-section > .jp-section-heading { order: 2; margin: 0; }
+  .jaipur-board .jp-market { order: 3; gap: 5px; }
+  .jaipur-board > .jp-player-area { order: 4; flex-wrap: wrap; gap: 6px; }
+  .jaipur-board .jp-market-footer { order: 5; margin: 0; gap: 5px; }
+  .jaipur-board > .jp-opponent-row, .jaipur-board > .jp-rival-herd { order: 6; }
+  .jaipur-board > .jp-supply-area { order: 7; }
+  .jaipur-board > .jp-history-drawer { order: 8; }
+  .jaipur-board > .jp-round-result, .jaipur-board > .jp-final-result { order: 9; }
+  .jaipur-board .jp-market-card { height: 117px; min-height: 117px; }
+  .jaipur-board .jp-market-card .jp-good-illustration { min-height: 60px; height: 60px; flex: 0 0 60px; }
+  .jaipur-board .jp-card-name { font-size: 12px; line-height: 1.2; padding: 3px 1px; }
+  .jaipur-board .jp-card-prompt { font-size: 11px; line-height: 1.2; padding: 0 2px 3px; }
+  .jaipur-board .jp-hand-cards { display: flex; gap: 5px; overflow-x: auto; padding: 3px; scroll-snap-type: x proximity; }
+  .jaipur-board .jp-hand-card { flex: 0 0 65px; min-height: 88px; scroll-snap-align: start; }
+  .jaipur-board .jp-hand-card .jp-good-illustration { height: 58px; min-height: 58px; }
+  .jaipur-board .jp-player-hand { width: 100%; padding: 6px; }
+  .jaipur-board .jp-player-hand .jp-section-heading { margin-bottom: 2px; }
+  .jaipur-board .jp-player-hand .jp-section-heading p { display: none; }
+  .jaipur-board .jp-herd { flex: 1; display: flex; align-items: center; justify-content: space-between; padding: 5px 9px; min-height: 44px; }
+  .jaipur-board .jp-herd p { display: none; }
+  .jaipur-board .jp-herd strong { font-size: 20px; }
+  .jaipur-board .jp-herd .jaipur-camel-award { width: 28px; height: 28px; }
+  .jaipur-board .jp-score-seat { padding: 5px; gap: 5px; }
+  .jaipur-board .jp-score-main { min-width: 0; }
+  .jaipur-board .jp-score-side { font-size: 11px; gap: 2px 5px; }
+  .jaipur-board .jp-seat-mark { display: none; }
+  .jaipur-board .jp-action-tray { min-height: 0; padding: 7px; gap: 5px; }
+  .jaipur-board .jp-action-tray p { flex-basis: 100%; font-size: 12px; }
+  .jaipur-board .jp-primary-action { flex: 1; min-width: 0; min-height: 44px; font-size: 12px; }
+}
+@media (max-width:1023px) {
+ .jaipur-board { grid-template-columns:minmax(0,1fr); min-width:0; }
+ .jaipur-board > *, .jaipur-board .jp-player-hand, .jaipur-board .jp-player-area { min-width:0; max-width:100%; }
+ .jaipur-board .jp-topline { gap:6px; }
+ .jaipur-board .jp-topline > div { min-width:0; }
+ .jaipur-board .jp-topline p { display:none; }
+ .jaipur-board .jp-hand-cards { min-width:0; min-height:0; max-width:100%; }
+ .jaipur-board .jp-hand-card { height:88px; }
+ .jaipur-board .jp-market-card { min-width:0; }
+ .jaipur-board .jp-card-name { overflow-wrap:anywhere; }
+ .jaipur-board .jp-round-pill { min-width:0; white-space:nowrap; padding:4px 8px; }
+}
+@media (max-width:1023px) {
+ .jaipur-board .jp-topline { min-height:32px; padding:0; }
+ .jaipur-board .jp-topline h2 { font-size:21px; }
+ .jaipur-board .jp-score-seat { min-height:0; padding:4px; gap:3px; }
+ .jaipur-board .jp-score-main small,.jaipur-board .jp-score-side { font-size:11px; line-height:1.2; }
+ .jaipur-board .jp-score-main strong { font-size:18px; }
+ .jaipur-board .jp-hand-card { min-height:76px; height:76px; }
+ .jaipur-board .jp-hand-card .jp-good-illustration { height:47px; min-height:47px; }
+ .jaipur-board .jp-action-tray p { margin:0; line-height:1.2; }
+ .jaipur-board .jp-herd { flex-direction:row; }
+}
+
+@media (min-width: 1024px) and (hover: hover) and (pointer: fine) {
+  .jaipur-board.has-desktop-preview { grid-template-areas: 'title title' 'scores scores' 'notice notice' 'market supply' 'hand supply' 'history supply' 'round round' 'final final'; gap: .35rem .7rem; padding: .55rem; }
+  .jaipur-board.has-desktop-preview .jp-premium-token-wrap { position: relative; display: block; flex: 0 0 auto; overflow: hidden; }
+  .jaipur-board.has-desktop-preview .jp-premium-token-image { position: absolute; inset: 0; display: block; width: 100%; height: 100%; object-fit: contain; opacity: 0; transition: opacity 150ms ease; }
+  .jaipur-board.has-desktop-preview .jp-premium-token-wrap.is-loaded .jp-premium-token-image { opacity: 1; }
+  .jaipur-board.has-desktop-preview .jp-premium-token-wrap.is-loaded .jp-premium-token-fallback { opacity: 0; }
+  .jaipur-board.has-desktop-preview .jp-pile-name { display: flex; align-items: center; justify-content: space-between; gap: .25rem; }
+  .jaipur-board.has-desktop-preview .jp-product-token { width: 3.5rem; height: 3.5rem; border-radius: 50%; background: radial-gradient(circle,#fffdf8 43%,#e9e0cc 72%,#bda77b); }
+  .jaipur-board.has-desktop-preview .jp-product-token .jp-premium-token-fallback { width: 100%; height: 100%; }
+  .jaipur-board.has-desktop-preview .jp-bonus-token-back { width: 3.125rem; height: 3.625rem; }
+  .jaipur-board.has-desktop-preview .jp-bonus-token-back .jp-premium-token-fallback { width: 100%; height: 100%; }
+  .jaipur-board.has-desktop-preview .jp-bonus-token-back .jp-premium-token-image { border-radius: 50%; }
+  .jaipur-board.has-desktop-preview .jp-pile { position: relative; grid-template-columns: minmax(0,1fr); grid-template-rows: auto auto auto; min-height: 4.5rem; padding-left: 4rem; }
+  .jaipur-board.has-desktop-preview .jp-pile-name { grid-column: 1; grid-row: 1; min-height: 1rem; font-size: .75rem; }
+  .jaipur-board.has-desktop-preview .jp-product-token { position: absolute; left: .35rem; top: 50%; transform: translateY(-50%); }
+  .jaipur-board.has-desktop-preview .jp-pile-count { grid-column: 1; grid-row: 2; font-size: .75rem; }
+  .jaipur-board.has-desktop-preview .jp-pile-next { grid-column: 1; grid-row: 3; font-size: .75rem; }
+  .jaipur-board.has-desktop-preview .jp-bonus-row { grid-template-columns: repeat(3,minmax(0,1fr)); gap: .3rem; }
+  .jaipur-board.has-desktop-preview .jp-bonus-stack { display: grid; grid-template-columns: minmax(0,1fr); grid-template-rows: 3rem auto; justify-items: center; min-height: 3.2rem; gap: .2rem; padding: .25rem .3rem; text-align: center; }
+  .jaipur-board.has-desktop-preview .jp-bonus-token-back { flex: 0 0 3rem; width: 3rem; height: 3rem; }
+  .jaipur-board.has-desktop-preview .jp-bonus-stack > span { display: grid; grid-template-columns: minmax(0,1fr); grid-template-rows: repeat(3,auto); justify-items: center; gap: .05rem; min-width: 0; }
+  .jaipur-board.has-desktop-preview .jp-bonus-stack > span > small { font-size: .75rem; white-space: nowrap; }
+  .jaipur-board.has-desktop-preview .jp-bonus-stack > span > strong { font-size: .86rem; white-space: nowrap; }
+  .jaipur-board.has-desktop-preview .jp-bonus-stack small { font-size: .75rem; }
+  .jaipur-board.has-desktop-preview > .jp-opponent-row { grid-area: title; align-self: end; justify-self: center; z-index: 2; width: auto; min-height: 28px; padding: .12rem .45rem; transform: translateX(-150px); }
+  .jaipur-board.has-desktop-preview > .jp-opponent-row > div:first-child b { display: inline; }
+  .jaipur-board.has-desktop-preview > .jp-rival-herd { grid-area: title; align-self: end; justify-self: center; z-index: 2; width: auto; min-height: 28px; margin: 0; padding: .12rem .45rem; transform: translateX(155px); }
+  .jaipur-board.has-desktop-preview .jp-market-section { padding: .35rem; }
+  .jaipur-board.has-desktop-preview .jp-market-card { height: 150px; }
+  .jaipur-board.has-desktop-preview .jp-market-card .jp-card-name { padding-top: .52rem; font-size: 1rem; }
+  .jaipur-board.has-desktop-preview .jp-market-card .jp-card-prompt { padding-bottom: .55rem; font-size: .78rem; }
+  .jaipur-board.has-desktop-preview .jp-market-footer { display: grid; grid-template-columns: auto minmax(0,1fr); align-items: stretch; gap: .3rem .6rem; margin-top: .25rem; }
+  .jaipur-board.has-desktop-preview .jp-market-footer.is-mode-sell,.jaipur-board.has-desktop-preview .jp-market-footer.is-mode-exchange { grid-template-columns: minmax(0,1fr); }
+  .jaipur-board.has-desktop-preview .jp-market-footer:is(.is-mode-sell,.is-mode-exchange) .jp-mode-tabs { justify-self: start; }
+  .jaipur-board.has-desktop-preview .jp-market-section > .jp-section-heading { margin-bottom: .4rem; }
+  .jaipur-board.has-desktop-preview .jp-mode-tabs { align-self: flex-start; }
+  .jaipur-board.has-desktop-preview .jp-exchange-controls { align-items: center; gap: .35rem .55rem; padding: .35rem; border: 1px solid #d1bb96; border-radius: .8rem; background: linear-gradient(115deg,#fffaf0,#f4e9d5); }
+  .jaipur-board.has-desktop-preview .jp-exchange-controls > p { order: 1; flex: 1 1 18rem; }
+  .jaipur-board.has-desktop-preview .jp-exchange-counts { order: 2; flex: 0 0 auto; padding: .3rem .45rem; font-size: .82rem; }
+  .jaipur-board.has-desktop-preview .jp-exchange-controls .jp-primary-action { order: 3; margin-left: auto; }
+  .jaipur-board.has-desktop-preview .jp-exchange-controls .jp-cancel-action { order: 4; }
+  .jaipur-board.has-desktop-preview .jp-exchange-controls > p { color: #59483a; font-size: .9rem; }
+  .jaipur-board.has-desktop-preview .jp-exchange-counts { display: flex; align-items: center; gap: .5rem; padding: .4rem .65rem; border: 1px solid #d7c29f; border-radius: .65rem; background: #fffdf8; color: #443b32; font-size: .92rem; font-weight: 750; font-variant-numeric: tabular-nums; }
+  .jaipur-board.has-desktop-preview .jp-exchange-counts > strong { padding: .2rem .45rem; border-radius: 999px; background: #f7dfd3; color: #873f34; font-size: .78rem; }
+  .jaipur-board.has-desktop-preview .jp-trade-preview { display: grid; order: 5; grid-template-columns: minmax(0,1fr) auto minmax(0,1fr); align-items: center; gap: .65rem; flex: 1 1 100%; min-width: 0; padding: .55rem; border: 1px solid #cdb990; border-radius: .75rem; background: #efe3cc; }
+  .jaipur-board.has-desktop-preview .jp-trade-side { display: flex; align-items: center; flex-wrap: wrap; gap: .4rem; min-width: 0; min-height: 4rem; padding: .3rem .45rem; border: 1px solid #d9c7a8; border-radius: .6rem; background: #fffaf0; }
+  .jaipur-board.has-desktop-preview .jp-trade-side > small { flex-basis: 100%; color: #75614b; font-size: .75rem; font-weight: 750; }
+  .jaipur-board.has-desktop-preview .jp-trade-object { display: grid; justify-items: center; gap: .12rem; width: 3.6rem; color: #493c32; font-size: .68rem; font-weight: 700; }
+  .jaipur-board.has-desktop-preview .jp-trade-object .jaipur-art { width: 2.8rem; height: 2.8rem; filter: drop-shadow(0 2px 2px #49332128); }
+  .jaipur-board.has-desktop-preview .jp-trade-empty { color: #988b78; font-size: .8rem; }
+  .jaipur-board.has-desktop-preview .jp-trade-arrow { color: #704b36; font-size: 1.8rem; }
+  .jaipur-board.has-desktop-preview .jp-exchange-controls .jp-primary-action { margin-left: auto; }
+  .jaipur-board.has-desktop-preview .jp-sale-controls.jp-action-tray { min-height: 0; gap: .2rem .4rem; padding: .2rem .3rem; }
+  .jaipur-board.has-desktop-preview .jp-sale-stepper { display: grid; grid-template-columns: minmax(0,1fr) 44px 2.25rem 44px minmax(9rem,auto) minmax(5rem,auto); align-items: center; gap: .15rem; }
+  .jaipur-board.has-desktop-preview .jp-sale-stepper > .jp-sale-title-line { grid-column: 1; grid-row: 1; color: #493a30; font-size: 1rem; }
+  .jaipur-board.has-desktop-preview .jp-sale-stepper > button:nth-of-type(1) { grid-column: 2; grid-row: 1; }
+  .jaipur-board.has-desktop-preview .jp-sale-stepper > output { grid-column: 3; grid-row: 1; }
+  .jaipur-board.has-desktop-preview .jp-sale-stepper > button:nth-of-type(2) { grid-column: 4; grid-row: 1; }
+  .jaipur-board.has-desktop-preview .jp-sale-preview { display: grid; grid-column: 1 / -1; grid-template-columns: minmax(0,1fr) auto minmax(9rem,.7fr) minmax(11rem,.9fr); align-items: stretch; gap: .35rem; padding: .2rem; border: 1px solid #c9b48d; border-radius: .8rem; background: linear-gradient(110deg,#eee0c6,#fbf3e4); }
+  .jaipur-board.has-desktop-preview .jp-sale-cards,.jaipur-board.has-desktop-preview .jp-sale-reward { display: flex; align-items: center; justify-content: center; gap: .25rem; min-width: 0; padding: .2rem; border: 1px solid #dfceb0; border-radius: .65rem; background: #fffaf0; }
+  .jaipur-board.has-desktop-preview .jp-sale-cards { flex-wrap: wrap; }
+  .jaipur-board.has-desktop-preview .jp-sale-preview-card { width: 2.2rem; height: 2.2rem; filter: drop-shadow(0 2px 2px #49332128); }
+  .jaipur-board.has-desktop-preview .jp-sale-cards > span { color: #573d2e; font-size: .8rem; font-weight: 800; white-space: nowrap; }
+  .jaipur-board.has-desktop-preview .jp-sale-result-arrow { align-self: center; color: #75512e; font-size: 1.7rem; }
+  .jaipur-board.has-desktop-preview .jp-sale-reward { justify-content: flex-start; }
+  .jaipur-board.has-desktop-preview .jp-sale-reward > strong { color: #4f402e; font-size: .82rem; }
+  .jaipur-board.has-desktop-preview .jp-sale-reward > small { color: #76634e; font-size: .72rem; }
+  .jaipur-board.has-desktop-preview .jp-sale-reward .jaipur-coin { flex: 0 0 2rem; width: 2rem; height: 2rem; }
+  .jaipur-board.has-desktop-preview .jp-sale-bonus.is-available { border-color: #b89a61; background: #f7edcf; }
+  .jaipur-board.has-desktop-preview .jp-sale-bonus .jaipur-bonus-art { flex: 0 0 1.65rem; width: 1.65rem; height: 2.05rem; }
+  .jaipur-board.has-desktop-preview .jp-sale-preview-note { grid-column: 1 / -1; grid-row: 3; margin: 0; color: #5d4c3b; font-size: .72rem; line-height: 1.05; }
+  .jaipur-board.has-desktop-preview .jp-sale-stepper > .jp-primary-action { grid-column: 5; grid-row: 1; justify-self: stretch; min-width: 0; }
+  .jaipur-board.has-desktop-preview .jp-sale-stepper > .jp-cancel-action { grid-column: 6; grid-row: 1; }
 }

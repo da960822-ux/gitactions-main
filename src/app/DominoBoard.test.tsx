@@ -34,6 +34,14 @@ describe('DominoBoard', () => {
     expect(html).not.toContain('선택한 타일을 왼쪽 끝에 놓기');
   });
 
+  it('labels the central hand area as the opponent selecting a tile when it is not this viewer’s turn', () => {
+    const view = fixture({ turn: 'p2', status: 'opponent-turn' });
+    expect(render(view)).toContain('상대 차례 · 타일 선택');
+    expect(render(view)).toContain('상대가 타일을 고르고 있어요. 놓인 끝을 확인하세요.');
+    expect(render(view, 'es')).toContain('Rival juega ahora');
+    expect(render(view, 'es')).toContain('Rival elige una ficha. Revisa los extremos abiertos.');
+  });
+
   it('uses only engine-emitted legal endpoints for a selected hand index', () => {
     const choices = [
       { action: play(0, 'left') },

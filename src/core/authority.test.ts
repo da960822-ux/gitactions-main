@@ -10,7 +10,8 @@ describe('authority boundary',()=>{
   expect(state).toEqual(before);
  });
  it('only the drawing player sees the selected word and next choices stay private',()=>{
-  const initial=catchmindEngine.createInitialState(21);
+  const fresh=catchmindEngine.createInitialState(21);
+  const initial=catchmindEngine.applyAction(fresh,'p1',{type:'settings',payload:{settings:{...fresh.settings,category_id:'animals'}}});
   const {state,views}=executeAction(catchmindEngine,initial,'p1',{type:'choose',payload:{wordId:0}});
   expect(views.p1.hand.answer).toEqual(state.answer);
   expect(views.p2.hand).toBeNull();

@@ -6,7 +6,7 @@ export const marbleCreditRules: LocalizedRules = {
   ko: [
     '목표 — 자체 부동산 게임 규칙입니다. 상대가 파산하면 이기고, 120턴 뒤에는 현금+도시 매입가+건설 비용−미상환 대출을 합친 순자산을 비교합니다.',
     '말과 이동 — 첫 주사위를 굴리기 전에 원하는 말을 고릅니다. 상대와 같은 말은 선택할 수 없고 첫 이동 뒤에는 고정됩니다. 두 주사위 합만큼 40칸 보드를 이동하며 출발점을 지나면 200을 받습니다. 광주와 산토도밍고를 포함해 24개 도시가 있습니다.',
-    '도시와 건설 — 빈 도시를 구매하거나 지나갑니다. 내 도시에는 색상 도시군 완성 여부와 관계없이 별장→빌딩→랜드마크를 순서대로 지을 수 있습니다. 단계마다 100, 통행료는 기본의 2배→4배→8배입니다. 상대 도시의 통행료는 자동 지급됩니다.',
+    '도시와 건설 — 빈 도시를 구매하거나 지나갑니다. 내 도시에는 색상 도시군 완성 여부와 관계없이 단독주택→아파트→랜드마크를 순서대로 지을 수 있습니다. 단계마다 100, 통행료는 기본의 2배→4배→8배입니다. 상대 도시의 통행료는 자동 지급됩니다.',
     '대출 — 자기 차례에 미상환 대출이 없으면 300을 받을 수 있고, 상환액은 330입니다. 추가 이자나 만기는 없습니다. 지급 위기 외의 자기 차례에 330 전액을 상환합니다. 미상환액은 순자산에서 빼며, 상환 후 다시 빌려도 매번 30의 비용이 발생합니다.',
     '지급 위기 — 통행료·세금·카드 비용을 낼 현금이 부족하면 행동이 멈춥니다. 현재 현금+300으로 지급액을 충당할 수 있고 기존 대출이 없을 때만 대출로 해결할 수 있습니다. 대출을 선택하면 해당 지급을 한 번 처리하고 원래 차례로 돌아갑니다. 파산 인정은 경기 종료를 뜻하며 도시 자동 매각은 없습니다.',
     '황금열쇠 — 13종 카드는 상금(150·200·80), 여행비 100, 건설 단계당 수리비 40, 산토도밍고 방문, 출발 이동(+200), 세 칸 후퇴, 무인도 이동, 탈출권, 무료 열차표, 도시당 배당 30, 독점 경고입니다. 이동 카드의 도착 효과도 적용되며 세 칸 후퇴에는 출발 보너스가 없습니다.',
@@ -16,7 +16,7 @@ export const marbleCreditRules: LocalizedRules = {
   es: [
     'Objetivo — Usamos reglas propias de un juego de propiedades. Ganas si tu pareja quiebra; después de 120 turnos se compara el patrimonio neto: efectivo + precio de las ciudades + costo de construcción − deuda pendiente.',
     'Figura y movimiento — Elige una figura antes de lanzar tus primeros dados. No puede ser la misma de tu pareja y queda fija después. Avanza la suma de los dos dados por las 40 casillas. Al pasar por Salida recibes 200. Hay 24 ciudades, incluyendo Gwangju y Santo Domingo.',
-    'Ciudades y construcción — Puedes comprar una ciudad libre o pasar. En cualquier ciudad tuya puedes construir villa, edificio y monumento, sin completar un color. Cada nivel cuesta 100 y el alquiler pasa a 2, 4 y 8 veces el valor base. El alquiler rival se paga automáticamente.',
+    'Ciudades y construcción — Puedes comprar una ciudad libre o pasar. En cualquier ciudad tuya puedes construir casa unifamiliar, apartamentos y monumento, sin completar un color. Cada nivel cuesta 100 y el alquiler pasa a 2, 4 y 8 veces el valor base. El alquiler rival se paga automáticamente.',
     'Préstamo — En tu turno, si no tienes deuda pendiente, puedes recibir 300 y debes devolver 330. No hay intereses adicionales ni fecha de vencimiento. Pagas los 330 completos en tu turno, fuera de una crisis de pago. La deuda se resta del patrimonio; pedir otro préstamo después de pagarlo vuelve a costar 30.',
     'Crisis de pago — Si no tienes efectivo para un alquiler, impuesto o gasto de carta, el juego espera tu decisión. Solo puedes resolverlo con un préstamo si no debes otro y tu efectivo + 300 cubre el pago. Al pedirlo, el pago se procesa una sola vez y continúa el turno original. Declarar quiebra termina la partida; las ciudades no se venden automáticamente.',
     'Llave dorada — Las 13 cartas incluyen premios (150, 200 y 80), gasto de viaje 100, mantenimiento 40 por nivel construido, visita a Santo Domingo, viaje a Salida (+200), retroceso de tres casillas, isla, pase de salida, boleto gratis, dividendo 30 por ciudad y advertencia de monopolio. Se aplica también el efecto del destino; al retroceder no cobras Salida.',
@@ -27,10 +27,10 @@ export const marbleCreditRules: LocalizedRules = {
 
 export const marbleTieredRules: LocalizedRules = {
   ko: marbleCreditRules.ko.map((rule, index) => index === 2
-    ? '도시와 건설 — 빈 도시를 구매하거나 지나갑니다. 내 도시에는 색상 도시군 완성 여부와 관계없이 별장→빌딩→랜드마크를 순서대로 지을 수 있습니다. 건설비는 해당 도시 매입가의 40%→60%→80%이며, 10 단위로 반올림하고 최소 40입니다. 통행료는 기본의 2배→4배→8배가 됩니다. 상대 도시의 통행료는 자동 지급됩니다.'
+    ? '도시와 건설 — 빈 도시를 구매하거나 지나갑니다. 내 도시에는 색상 도시군 완성 여부와 관계없이 단독주택→아파트→랜드마크를 순서대로 지을 수 있습니다. 건설비는 해당 도시 매입가의 40%→60%→80%이며, 10 단위로 반올림하고 최소 40입니다. 통행료는 기본의 2배→4배→8배가 됩니다. 상대 도시의 통행료는 자동 지급됩니다.'
     : rule),
   es: marbleCreditRules.es.map((rule, index) => index === 2
-    ? 'Ciudades y construcción — Puedes comprar una ciudad libre o pasar. En cualquier ciudad tuya puedes construir villa, edificio y monumento, sin completar un color. Cada nivel cuesta el 40 %, 60 % y 80 % del precio de compra de la ciudad; se redondea a 10 y nunca baja de 40. El alquiler pasa a 2, 4 y 8 veces el valor base. El alquiler rival se paga automáticamente.'
+    ? 'Ciudades y construcción — Puedes comprar una ciudad libre o pasar. En cualquier ciudad tuya puedes construir casa unifamiliar, apartamentos y monumento, sin completar un color. Cada nivel cuesta el 40 %, 60 % y 80 % del precio de compra de la ciudad; se redondea a 10 y nunca baja de 40. El alquiler pasa a 2, 4 y 8 veces el valor base. El alquiler rival se paga automáticamente.'
     : rule),
 };
 
@@ -76,7 +76,7 @@ export const gameRules: Record<GameId, LocalizedRules> = {
   davinci: {
     ko: [
       '목표 — 상대의 가려진 숫자와 조커를 모두 맞혀 공개하면 이깁니다.',
-      '준비 — 조커 포함 규칙을 사용합니다. 흑백 각각 0~11 숫자 타일과 조커 － 한 장씩, 총 26장입니다. 각자 네 장을 받고 숫자 순서대로 놓습니다. 같은 숫자면 검정이 먼저예요. 처음 받은 조커는 원하는 위치를 고르고 두 사람 모두 «배치 완료»를 눌러 시작합니다.',
+      '준비 — 조커 포함 규칙을 사용합니다. 흑백 각각 0~11 숫자 타일과 조커 － 한 장씩, 총 26장입니다. 각자 네 장을 받고 숫자 순서대로 놓습니다. 같은 숫자면 검정이 먼저예요. 처음 받은 조커는 원하는 위치를 고르고 두 사람 모두 «초기 패 준비 완료»를 눌러 시작합니다.',
       '내 차례 — 더미에서 하나를 뽑습니다. 숫자 타일은 순서대로 자동 삽입되고, 조커는 앞·사이·뒤 중 원하는 자리를 클릭해 넣습니다. 배치한 조커는 다시 옮길 수 없습니다. 더미가 비면 뽑기 없이 추리합니다.',
       '추리 — 상대 타일을 클릭하면 색과 위치가 자동 선택됩니다. 0~11 또는 － 버튼을 선택하고 추리를 확정합니다. 정답이면 그 타일이 공개돼요. 아직 끝나지 않았다면 계속 추리하거나 차례를 마칠 수 있습니다.',
       '오답 — 방금 뽑은 내 타일이 공개되고 차례가 끝납니다. 조커를 뽑았다면 그 조커가 공개됩니다. 더미가 빈 뒤에는 새 타일 공개 없이 상대 차례가 됩니다.',
@@ -84,7 +84,7 @@ export const gameRules: Record<GameId, LocalizedRules> = {
     ],
     es: [
       'Objetivo — Ganas al revelar todos los números y comodines de las fichas rivales.',
-      'Preparación — Jugamos con comodines (variante avanzada). Hay 26 fichas: del 0 al 11 en blanco y negro, más un comodín － de cada color. Cada persona recibe cuatro y las ordena; si el número coincide, la negra va primero. Elige la posición de cualquier comodín inicial y ambos pulsen «Listo para jugar».',
+      'Preparación — Jugamos con comodines (variante avanzada). Hay 26 fichas: del 0 al 11 en blanco y negro, más un comodín － de cada color. Cada persona recibe cuatro y las ordena; si el número coincide, la negra va primero. Elige la posición de cualquier comodín inicial y ambos pulsen «Terminé de preparar mi mano».',
       'Tu turno — Roba una ficha. Los números se insertan automáticamente en orden; para un comodín, pulsa el espacio donde quieres colocarlo, al principio, entre fichas o al final. Después no puedes moverlo. Si el mazo está vacío, adivina sin robar.',
       'Adivina — Pulsa una ficha rival para seleccionar su color y posición. Elige un número del 0 al 11 o － y confirma. Si aciertas, la ficha se revela. Si la partida sigue, puedes volver a adivinar o terminar tu turno.',
       'Si fallas — Se revela la ficha que acabas de robar y termina tu turno. Si era un comodín, ese comodín queda visible. Con el mazo vacío, no se revela otra ficha y juega la otra persona.',
@@ -94,19 +94,19 @@ export const gameRules: Record<GameId, LocalizedRules> = {
   catchmind: {
     ko: [
       '목표 — 번갈아 출제자와 맞히는 사람이 되어 그림을 보고 단어를 맞히세요. 기본 설정은 6라운드이며 두 사람 모두 세 번씩 그립니다.',
-      '준비 — 출제자에게만 단어 세 개가 보입니다. 그중 하나를 고르면 제한 시간 80초가 시작되고, 상대에게는 정답 대신 글자 수와 단계별 힌트만 보여요.',
+      '준비 — 호스트가 주제 하나를 골라 설정을 저장하면 출제자에게만 단어 보기가 나와요. 기본은 3개 보기와 80초이며 시간은 30~180초로 바꿀 수 있어요. 맞히는 화면에는 한국어 □ / 스페인어 ? 마스크가 고정 표시되고 글자가 점차 드러나지 않아요.',
       '그리기 — 캔버스에 마우스나 손가락으로 그립니다. 펜 색·굵기, 지우개, 채우기, 실행 취소, 전체 지우기를 사용할 수 있어요. 출제자는 정답을 말하거나 글자로 쓰지 말고 그림으로 설명해 주세요.',
-      '맞히기 — 맞히는 사람은 방의 공유 채팅 입력란에 한국어나 스페인어로 답을 보내요. 정답으로 표시된 표기만 인정하며 스페인어 악센트와 ñ·ü도 맞아야 합니다. 별칭은 따로 등록되어 있지 않아요.',
+      '맞히기 — 맞히는 사람은 방의 공유 채팅 입력란에 한국어나 스페인어로 답을 보내요. 기본 표기와 사전에 등록된 별칭만 인정하며 대소문자와 양끝 공백은 무시해요. 등록된 별칭이 없는 악센트·ñ·ü를 임의로 바꾸거나 비슷한 단어를 쓰면 정답으로 처리하지 않아요.',
       '점수 — 정답을 맞히면 출제자에게 1점, 맞힌 사람에게 남은 시간에 따라 1~3점이 들어옵니다. 출제자는 ‘이 단어 건너뛰기’ 또는 ‘라운드 마치기’를 눌러 정답 공개와 다음 차례로 넘어갈 수 있어요.',
-      '끝내기 — 역할은 매 라운드 바뀝니다. 기본 6라운드 뒤 점수가 높은 사람이 이깁니다. 첫 라운드 전에 방 설정에서 라운드 수·시간·보기·힌트와 직접 입력한 단어를 바꿀 수 있어요.',
+      '끝내기 — 역할은 매 라운드 바뀝니다. 기본 6라운드 뒤 점수가 높은 사람이 이깁니다. 시작 전에 호스트만 주제·라운드 수·시간·보기·글자 수 표시와 직접 입력한 단어를 바꿀 수 있어요. 시작 후 설정은 잠기고, 다시 하기는 두 사람 모두 수락해야 해요.',
     ],
     es: [
       'Objetivo — Se turnan para dibujar y adivinar. La configuración inicial tiene 6 rondas: cada persona dibuja tres veces.',
-      'Preparación — Solo quien dibuja ve las tres palabras para escoger. Al elegir una, empieza el tiempo de 80 segundos. La otra persona ve cuántas letras tiene y recibe pistas graduales, pero no la respuesta.',
+      'Preparación — La persona anfitriona elige y guarda una categoría; solo quien dibuja ve las opciones. Por defecto hay 3 opciones y 80 segundos, ajustables entre 30 y 180. Quien adivina ve una máscara fija en coreano □ / español ?, sin revelar letras progresivamente.',
       'Dibujo — Dibuja en el lienzo con el mouse o el dedo. Puedes cambiar color y grosor, usar borrador, rellenar, deshacer o borrar todo. Explica con dibujos; quien dibuja no debe escribir ni decir la respuesta.',
-      'Adivinar — La persona que adivina responde en el chat compartido de la sala, en coreano o español. Debe escribir la forma exacta que aparece como respuesta: se respetan las tildes, la ñ y la ü; no hay sinónimos adicionales. Las respuestas incorrectas no revelan la palabra.',
+      'Adivinar — La persona que adivina responde en el chat compartido de la sala, en coreano o español. Se acepta la forma base o un alias registrado en el diccionario, ignorando mayúsculas y espacios al inicio o al final. No se eliminan tildes, ñ o ü ni se aceptan aproximaciones salvo un alias registrado. Las respuestas incorrectas no revelan la palabra.',
       'Puntos — Al acertar, quien dibuja recibe 1 punto y quien adivinó gana de 1 a 3 según el tiempo restante. Quien dibuja también puede pulsar «Pasar palabra» o «Terminar ronda» para revelar la respuesta y avanzar.',
-      'Final — Los papeles cambian en cada ronda. Tras las 6 rondas iniciales, gana quien tenga más puntos. Antes de empezar, los ajustes permiten cambiar rondas, tiempo, opciones, pistas y palabras propias.',
+      'Final — Los papeles cambian en cada ronda. Tras las 6 rondas iniciales, gana quien tenga más puntos. Antes de empezar, solo la persona anfitriona cambia categoría, rondas, tiempo, opciones, longitud visible y palabras propias. Los ajustes se bloquean al empezar y ambos deben aceptar una revancha.',
     ],
   },
   domino: {
@@ -183,7 +183,7 @@ export const gameRules: Record<GameId, LocalizedRules> = {
     ko: [
       '목표 — 현금을 모으거나 상대를 파산시키면 이깁니다. Marble은 고전 부동산 보드게임에서 영감을 받은 자체 규칙입니다.',
       '이동 — ‘주사위 굴리기’를 눌러 두 주사위의 합만큼 이동합니다. 출발점을 지나면 200을 받습니다. 40칸 보드에는 광주, 산토도밍고를 포함한 24개 도시가 있습니다.',
-      '부동산과 건물 — 빈 부동산에서는 ‘구매’를 누르거나 지나갈 수 있고, 상대 부동산의 임대료는 자동으로 냅니다. 소유한 부동산에는 별장→빌딩→호텔 순서로 건설할 수 있습니다. 단계마다 100이며 임대료는 기본의 2배→4배→8배가 됩니다.',
+      '부동산과 건물 — 빈 부동산에서는 ‘구매’를 누르거나 지나갈 수 있고, 상대 부동산의 임대료는 자동으로 냅니다. 소유한 부동산에는 단독주택→아파트→호텔 순서로 건설할 수 있습니다. 단계마다 100이며 임대료는 기본의 2배→4배→8배가 됩니다.',
       '황금열쇠와 기금 — 황금열쇠 칸에서는 공개 카드가 바로 적용됩니다. 카드에는 상금·비용·이동·탈출권·무료 열차표가 있습니다. 기금 납부 칸에 도착하면 150을 공동 기금에 내고, 사회복지기금 칸에서는 쌓인 기금을 모두 받습니다.',
       '무인도와 열차 — 무인도에 보내지면 세 번의 자기 차례를 쉽니다. 차례마다 쌍을 노려 탈출할 수 있고, 아니면 차례를 잃습니다. 또는 100을 내거나 탈출권을 써서 나온 뒤 주사위를 굴립니다. 역에 도착하면 다음 자기 차례에 운임 100으로 부동산을 골라 이동하거나 열차를 건너뛸 수 있습니다.',
       '승리 — 무료 열차표로는 운임 없이 부동산으로 이동합니다. 이동 경로가 출발점을 지나면 200을 받습니다. 임대료나 비용을 낼 수 없으면 파산하며, 120턴 뒤에는 현금+부동산 가격+건물 비용을 합친 총자산이 많은 사람이 이깁니다.',

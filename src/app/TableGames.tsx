@@ -1,10 +1,12 @@
-import { useEffect, useRef, useState, type CSSProperties } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import type { GameAction, Language, PlayerId } from '../core/types';
 import { GameValue } from './GameValue';
 import DaVinciTable from './DaVinciTable';
 import { JaipurBoard } from './JaipurBoard';
 import { SplendorGem as GemIcon } from './SplendorGem';
 import { SplendorMotion } from './SplendorMotion';
+import { SplendorArtwork } from './SplendorArtwork';
+import { getPrivateNoblePortrait } from './private-game-art';
 import splendorArt from '../../public/images/splendor/card-map.json';
 import '../styles/game-design-system.css';
 import '../styles/table-games.css';
@@ -12,7 +14,7 @@ import '../styles/splendor-premium.css';
 
 type TableGameId = 'jaipur' | 'splendor' | 'davinci';
 type Choice = { label: Record<Language, string>; action: GameAction };
-type Props = { game: TableGameId; view: any; language: Language; playerId: PlayerId; roomId?: string | null; version?: number; runAction: (action: GameAction) => void };
+type Props = { game: TableGameId; view: any; language: Language; playerId: PlayerId; roomId?: string | null; version?: number; desktopDisplay?: boolean; runAction: (action: GameAction) => void };
 type RecordValue = Record<string, any>;
 
 const gems = ['white', 'blue', 'green', 'red', 'black', 'gold'] as const;
@@ -20,7 +22,7 @@ const colors = ['white', 'blue', 'green', 'red', 'black'] as const;
 const splendorCardArtById = new Map(splendorArt.cards.map(card => [card.engineId, card.src]));
 const splendorNobleArtById = new Map(splendorArt.nobles.map(noble => [noble.engineId, noble.src]));
 export const splendorCardArtSrc = (id: unknown) => { const src = splendorCardArtById.get(String(id)); return src ? `/images/splendor/${src}` : null; };
-export const splendorNobleArtSrc = (id: unknown) => { const src = splendorNobleArtById.get(String(id)); return src ? `/images/splendor/${src}` : null; };
+export const splendorNobleArtSrc = (id: unknown) => { const src = splendorNobleArtById.get(String(id)); return src ? getPrivateNoblePortrait(id) ?? `/images/splendor/${src}` : null; };
 const copy = (language: Language, ko: string, es: string) => language === 'ko' ? ko : es;
 const record = (value: unknown): RecordValue => value && typeof value === 'object' && !Array.isArray(value) ? value as RecordValue : {};
 const array = (value: unknown): any[] => Array.isArray(value) ? value : [];
@@ -219,7 +221,7 @@ export function deriveSplendorVisualEvent(previous: any, next: any, viewer: Play
   return { key: `${viewer}:${signature}`, viewer, kind, marketArrivals, reservedArrivals, incomingTokens, incomingCounts, outgoingCounts, ...(reserveGoldCount ? { reserveGoldCount } : {}), bonusGem, turnChanged, ...(purchasedCard ? { purchasedCard } : {}), ...(nobleAwarded ? { nobleAwarded, nobleRecipient, ...(nobleId ? { nobleId, noblePoints: Number(nobleData.points ?? 3) } : {}) } : {}), ...(result ? { result } : {}) };
 }
 
-function SplendorTable({ view, language, playerId, roomId = null, version = 0, runAction }: Props) {
+function SplendorTable({ view, language, playerId, roomId = null, version = 0, desktopDisplay = true, runAction }: Props) {
   const board = record(view?.board), hand = record(view?.ownHand), choices: Choice[] = array(view?.actions);
   const bank = record(board.bank), market = record(board.market), nobles = record(board.nobles), scores = record(board.score);
   const publicBonuses = record(board.ownedBonuses);
@@ -227,12 +229,9 @@ function SplendorTable({ view, language, playerId, roomId = null, version = 0, r
   const [picked, setPicked] = useState<string[]>([]), [returnDraft, setReturnDraft] = useState<Record<string, number>>({}), [selectedDoubleGem, setSelectedDoubleGem] = useState<string | null>(null), [reserveChoices, setReserveChoices] = useState<Record<string, number>>({}), [selectedCard, setSelectedCard] = useState<{ id: string; source: 'market' | 'reserved' | 'deck'; tier?: number; viewer: PlayerId; roomId: string | null; version: number } | null>(null);
   const actionPanelRef = useRef<HTMLElement | null>(null), cardFocusReturnRef = useRef<HTMLElement | null>(null);
   const enterPanelFocusRef = useRef(false), returnCardFocusRef = useRef(false);
-  const previous = useRef<{ viewer: PlayerId; view: any } | null>(null);
+  const previous = useRef<{ viewer: PlayerId; view: any; version: number; roomId: string | null } | null>(null);
   const eventTimer = useRef<number | null>(null);
   const [visualEvent, setVisualEvent] = useState<SplendorVisualEvent | null>(null);
-  const bankNodes = useRef(new Map<string, HTMLButtonElement>()), treasuryNodes = useRef(new Map<string, HTMLDivElement>());
-  const bankGoldNode = useRef<HTMLSpanElement | null>(null), flightTimer = useRef<number | null>(null);
-  const [tokenFlights, setTokenFlights] = useState<Array<{ id: string; viewer: PlayerId; gem: string; left: number; top: number; dx: number; dy: number; delay: number }>>([]);
   const takeChoices = choices.filter(choice => choice.action.type === 'take');
   const distinctAvailable = colors.filter(gem => Number(bank[gem] ?? 0) > 0).length;
   const needed = Math.min(3, distinctAvailable);
@@ -295,46 +294,20 @@ function SplendorTable({ view, language, playerId, roomId = null, version = 0, r
   }, [selectedCard]);
   useEffect(() => {
     const before = previous.current;
-    previous.current = { viewer: playerId, view };
+    if (before && before.viewer === playerId && before.roomId === roomId && before.version === version) return;
+    previous.current = { viewer: playerId, view, version, roomId };
+    const reset = !before || before.viewer !== playerId || before.roomId !== roomId || version < before.version;
+    const derived = reset ? null : deriveSplendorVisualEvent(before, view, playerId);
+    if (!reset && !derived) return;
     if (eventTimer.current !== null) window.clearTimeout(eventTimer.current);
     eventTimer.current = null;
-    const derivedEvent = deriveSplendorVisualEvent(before, view, playerId);
-    const nextEvent = derivedEvent ? { ...derivedEvent, version } : null;
+    const nextEvent = derived ? { ...derived, version } : null;
     setVisualEvent(nextEvent);
     if (nextEvent) eventTimer.current = window.setTimeout(() => { eventTimer.current = null; setVisualEvent(null); }, 1800);
-    return () => { if (eventTimer.current !== null) window.clearTimeout(eventTimer.current); eventTimer.current = null; };
-  }, [view, playerId, version]);
-  useEffect(() => {
-    if (!visualEvent || visualEvent.viewer !== playerId || !visualEvent.incomingTokens.length || window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
-    const frame = window.requestAnimationFrame(() => {
-      const flights = visualEvent.incomingTokens.flatMap(gem => {
-        const source = (gem === 'gold' ? bankGoldNode.current : bankNodes.current.get(gem))?.querySelector('.sp-gem-icon')?.getBoundingClientRect();
-        const target = treasuryNodes.current.get(gem)?.querySelector('.sp-gem-icon')?.getBoundingClientRect();
-        if (!source || !target) return [];
-        const count = Math.min(visualEvent.incomingCounts[gem] ?? 1, 2);
-        return Array.from({ length: count }, (_, index) => ({
-          id: `${visualEvent.key}:${gem}:${index}`, viewer: playerId, gem,
-          left: source.left + source.width / 2 - 11 + (count > 1 ? index * 4 : 0), top: source.top + source.height / 2 - 11,
-          dx: target.left + target.width / 2 - source.left - source.width / 2,
-          dy: target.top + target.height / 2 - source.top - source.height / 2, delay: index * 70,
-        }));
-      });
-      const batch = flights.slice(0, 3);
-      if (batch.length) {
-        if (flightTimer.current !== null) window.clearTimeout(flightTimer.current);
-        setTokenFlights(current => [...current.filter(item => item.viewer === playerId), ...batch].slice(-3));
-        flightTimer.current = window.setTimeout(() => { setTokenFlights([]); flightTimer.current = null; }, 1000);
-      }
-    });
-    return () => window.cancelAnimationFrame(frame);
-  }, [visualEvent, playerId]);
-  useEffect(() => {
-    if (flightTimer.current !== null) window.clearTimeout(flightTimer.current);
-    flightTimer.current = null;
-    setTokenFlights([]);
-    return () => { if (flightTimer.current !== null) window.clearTimeout(flightTimer.current); };
-  }, [playerId]);
-  useEffect(() => () => { if (flightTimer.current !== null) window.clearTimeout(flightTimer.current); }, []);
+  }, [view, playerId, version, roomId]);
+  useEffect(() => () => {
+    if (eventTimer.current !== null) window.clearTimeout(eventTimer.current);
+  }, []);
   const finalRound = !view?.result && Math.max(Number(scores.p1 ?? 0), Number(scores.p2 ?? 0)) >= 15;
   const turnCounts = record(board.turns), rivalSeat: PlayerId = playerId === 'p1' ? 'p2' : 'p1';
   const lowerTurnSeat: PlayerId = Number(turnCounts.p1 ?? 0) < Number(turnCounts.p2 ?? 0) ? 'p1' : 'p2';
@@ -412,7 +385,7 @@ function SplendorTable({ view, language, playerId, roomId = null, version = 0, r
     <aside className="sp-sidebar">
       {(selectedCardData||selectedDeckTier)&&<section ref={actionPanelRef} tabIndex={-1} className="sp-action-panel" data-selected-card-id={selectedCardData?.id??selectedCard?.id} data-source-zone={selectedCard?.source} data-viewer={playerId} data-room-id={roomId??''} data-version={version} aria-label={copy(language,'선택한 카드 행동','Acciones de la carta seleccionada')}>
           <header className="sp-section-heading"><div><h2>{copy(language,selectedCard?.source==='deck'?'덱 카드 예약':selectedCard?.source==='reserved'?'예약 카드 행동':'선택한 카드',selectedCard?.source==='deck'?'Reservar del mazo':selectedCard?.source==='reserved'?'Acciones de reserva':'Carta seleccionada')}</h2><p>{splendorSelectedTierText(language,selectedTier,selectedCardData?Number(selectedCardData.points??0):undefined)}</p></div><button type="button" className="sp-action-cancel" aria-label={copy(language,'선택 취소','Cancelar selección')} onClick={()=>{returnCardFocusRef.current=true;setSelectedCard(null);}}>×</button></header>
-          {selectedCardData?<div className="sp-action-card"><span className="sp-action-art" aria-hidden="true">{splendorCardArtSrc(selectedCardData.id)&&<img src={splendorCardArtSrc(selectedCardData.id)!} alt=""/>}</span><div><b>{copy(language,`영구 보너스 +1 ${gemName(String(selectedCardData.bonus),language)}`,`Bono permanente +1 ${gemName(String(selectedCardData.bonus),language)}`)}</b></div></div>:<div className="sp-action-card sp-deck-preview"><span className={`sp-card-back sp-card-back-${selectedDeckTier}`} aria-hidden="true"/><b>{copy(language,'덱 맨 위 카드 한 장을 예약해요. 카드 내용은 예약 전까지 비공개예요.','Reservas la carta superior sin ver su contenido hasta confirmar.')}</b></div>}
+          {selectedCardData?<div className="sp-action-card"><span className="sp-action-art" aria-hidden="true">{splendorCardArtSrc(selectedCardData.id)&&<SplendorArtwork src={splendorCardArtSrc(selectedCardData.id)!}/>}</span><div><b>{copy(language,`영구 보너스 +1 ${gemName(String(selectedCardData.bonus),language)}`,`Bono permanente +1 ${gemName(String(selectedCardData.bonus),language)}`)}</b></div></div>:<div className="sp-action-card sp-deck-preview"><span className={`sp-card-back sp-card-back-${selectedDeckTier}`} aria-hidden="true"/><b>{copy(language,'덱 맨 위 카드 한 장을 예약해요. 카드 내용은 예약 전까지 비공개예요.','Reservas la carta superior sin ver su contenido hasta confirmar.')}</b></div>}
           {selectedCardData&&(()=>{const plan=splendorCardCostPlan(selectedCardData,tokens,owned);const projected={...owned,[String(selectedCardData.bonus)]:Number(owned[String(selectedCardData.bonus)]??0)+1};const visitors=Object.entries(nobles).filter(([,noble])=>colors.every(gem=>Number(projected[gem]??0)>=Number(record(noble?.requirement)[gem]??0)));return <>
             <div className="sp-payment-preview" aria-label={copy(language,'구매 예상 지불','Pago previsto')}>
               <b className="sp-payment-title">{copy(language,'예상 지불','Pago previsto')}</b>
@@ -422,6 +395,11 @@ function SplendorTable({ view, language, playerId, roomId = null, version = 0, r
               </div>:<span className="sp-pay-no-cost">{copy(language,'비용 없음','Sin coste')}</span>}
               <span className="sp-pay-gold" aria-label={`${copy(language,'황금 토큰 필요','Oro necesario')}: ${plan.gold}, ${copy(language,'보유','disponible')}: ${Number(tokens.gold??0)}`}><GemIcon gem="gold"/>{copy(language,`금 필요 ${plan.gold} · 보유 ${Number(tokens.gold??0)}`,`Oro: ${plan.gold} necesarios · ${Number(tokens.gold??0)} disponibles`)}</span>
             </div>
+            {desktopDisplay && <div className="sp-acquisition-preview" aria-label={copy(language,'구매로 얻는 카드와 영구 보너스','Carta y bonificación que obtienes al comprar')}>
+              <span><b>{copy(language,'카드 +1장','Carta +1')}</b><small>{copy(language,'내 개발 카드','Tu colección')}</small></span>
+              <span><GemIcon gem={String(selectedCardData.bonus)}/><b>+1</b><small>{copy(language,`영구 ${gemName(String(selectedCardData.bonus),language)}`,`${gemName(String(selectedCardData.bonus),language)} permanente`)}</small></span>
+              <span><b>+{Number(selectedCardData.points??0)}</b><small>{copy(language,`점수 ${Number(scores[playerId]??0)} → ${Number(scores[playerId]??0)+Number(selectedCardData.points??0)}`,`Puntos ${Number(scores[playerId]??0)} → ${Number(scores[playerId]??0)+Number(selectedCardData.points??0)}`)}</small></span>
+            </div>}
             <div className="sp-noble-preview"><b>{copy(language,'구매 후 귀족 진척','Progreso de nobles tras comprar')}</b>{Object.entries(nobles).map(([id,noble])=><span className="sp-noble-preview-line" key={id} aria-label={copy(language,`귀족 조건 ${id}`,`Requisitos del noble ${id}`)}>{colors.filter(gem=>Number(record(noble?.requirement)[gem]??0)>0).map(gem=><i className={`sp-noble-progress-chip sp-color-${gem}`} key={gem} title={gemName(gem,language)}><GemIcon gem={gem}/>{Number(projected[gem]??0)}/{Number(record(noble?.requirement)[gem])}</i>)}{visitors.some(([visitor])=>visitor===id)&&<strong>{copy(language,'방문 예상 +3점','Visita prevista +3 pts')}</strong>}</span>)}{!Object.keys(nobles).length&&<span>{copy(language,'남은 귀족 없음','No quedan nobles')}</span>}</div>
           </>})()}
           <div className="sp-reserve-preview" data-reserve-source={selectedCard?.source}><span>{panelMessages?.reserveLine}</span>{selectedCard?.source!=='reserved'&&selectedReserveOptions.length>0&&reserveControl(`selected-${selectedCard?.id}`,selectedReserveOptions)}</div>
@@ -434,12 +412,13 @@ function SplendorTable({ view, language, playerId, roomId = null, version = 0, r
           const double = bankTakeTwo(gem)[0];
           const pressed = picked.includes(gem), pile = Number(bank[gem] ?? 0), canPick = takeChoices.length > 0;
           return <div className={`sp-gem-option ${pressed ? 'is-picked' : ''}`} key={gem}>
-            <button ref={element=>{if(element)bankNodes.current.set(gem,element);else bankNodes.current.delete(gem);}} type="button" className={`sp-gem-pile sp-color-${gem}`} aria-label={`${gemName(gem, language)}: ${pile}`} aria-pressed={pressed} disabled={!active || !canPick || !pile || !needed} onClick={()=>clickGem(gem)}><GemIcon gem={gem}/><b>{pile}</b></button>
+            <button type="button" className={`sp-gem-pile sp-color-${gem}`} aria-label={`${gemName(gem, language)}: ${pile}`} aria-pressed={pressed} disabled={!active || !canPick || !pile || !needed} onClick={()=>clickGem(gem)}><GemIcon gem={gem}/><b>{pile}</b></button>
             <span className="sp-gem-name">{gemName(gem,language)}{pressed && <small>{copy(language,'선택됨','Elegida')}</small>}</span>
             {double&&<button type="button" className={`sp-double-take ${selectedDoubleGem===gem?'is-picked':''}`} disabled={!active} aria-pressed={selectedDoubleGem===gem} aria-label={copy(language,`${gemName(gem,language)} 2개 가져오기`,`Tomar 2 gemas del mismo color: ${gemName(gem,language)}`)} onClick={()=>{setSelectedCard(null);setPicked([]);setSelectedDoubleGem(current=>current===gem?null:gem);}}>{copy(language,'+2 선택','+2')}</button>}
           </div>;
-        })}<div className="sp-gem-option sp-gem-gold"><span ref={bankGoldNode} className="sp-gem-pile sp-color-gold"><GemIcon gem="gold"/><b>{Number(bank.gold??0)}</b></span><span className="sp-gem-name">{gemName('gold',language)}</span></div></div>
+        })}<div className="sp-gem-option sp-gem-gold"><span className="sp-gem-pile sp-color-gold"><GemIcon gem="gold"/><b>{Number(bank.gold??0)}</b></span><span className="sp-gem-name">{gemName('gold',language)}</span></div></div>
         {(picked.length > 0 || selectedDoubleGem) && <div className="sp-token-confirm" data-sp-zone="take-plan">
+          {desktopDisplay && <div className="sp-selected-token-tray" aria-label={copy(language,'가져올 보석 묶음','Gemas seleccionadas para tomar')}><small>{copy(language,'은행 → 내 토큰','Banco → tus fichas')}</small>{(selectedDoubleGem?[selectedDoubleGem,selectedDoubleGem]:picked).map((gem,index)=><span className={`sp-selected-token sp-color-${gem}`} key={`${gem}-${index}`}><GemIcon gem={gem}/><b>{gemName(gem,language)}</b></span>)}</div>}
           {(()=>{const count=selectedDoubleGem?2:picked.length, validAction=selectedDouble??selectedTake, returned=tokenReturnCount(returnDraft), after=splendorTotalAfterTake(tokens,count,returnDraft), requiredReturns=splendorRequiredReturns(tokens,count);return <>
             <p role="status">{selectedDoubleGem?copy(language,`${gemName(selectedDoubleGem,language)} 2개 선택` ,`2 gemas ${gemName(selectedDoubleGem,language)}`):copy(language,`서로 다른 색 ${picked.length}/${needed} 선택`,`Colores distintos ${picked.length}/${needed}`)} · {copy(language,`반환 ${returned}개 · 현재 ${handTokenTotal} + 획득 ${count} − 반환 ${returned} = ${after}/10`,`Devolver ${returned} · ahora ${handTokenTotal} + tomas ${count} − devuelves ${returned} = ${after}/10`)}</p>
             {requiredReturns>0&&<div className="sp-return-tray" aria-label={copy(language,'반환할 보석 선택','Elige las gemas que devuelves')}>{gems.map(gem=>{const max=Number(tokens[gem]??0)+(selectedDoubleGem?Number(selectedDoubleGem===gem?2:0):picked.filter(value=>value===gem).length),value=Number(returnDraft[gem]??0);return <div className="sp-return-stepper" data-gem={gem} key={gem}><GemIcon gem={gem}/><span>{gemName(gem,language)} <b>{value}</b></span><button type="button" aria-label={copy(language,`${gemName(gem,language)} 하나 더 반환`,`Devolver una ${gemName(gem,language)} más`)} disabled={value>=max} onClick={()=>adjustReturn(gem,1,max)}>+</button><button type="button" aria-label={copy(language,`${gemName(gem,language)} 하나 덜 반환`,`Devolver una ${gemName(gem,language)} menos`)} disabled={!value} onClick={()=>adjustReturn(gem,-1,max)}>−</button></div>;})}</div>}
@@ -449,34 +428,34 @@ function SplendorTable({ view, language, playerId, roomId = null, version = 0, r
       </section>
       <section className="sp-treasury" aria-label={copy(language, '내 보관함', 'Tus gemas y bonificaciones')}>
         <header className="sp-section-heading"><div><h2>{copy(language,'내 보관함','Tus gemas')}</h2><p>{copy(language,'토큰과 영구 보너스','Fichas y bonificaciones permanentes')}</p></div><span className="sp-capacity"><b>{handTokenTotal}</b> / 10</span></header>
-        <div className="sp-treasury-gems">{gems.map(gem=><div ref={element=>{if(element)treasuryNodes.current.set(gem,element);else treasuryNodes.current.delete(gem);}} className="sp-treasury-gem" key={gem}><GemIcon gem={gem}/><b><GameValue value={Number(tokens[gem]??0)} resetKey={`${playerId}:splendor:token:${gem}`}/></b><span>{gemName(gem,language)}</span></div>)}</div>
+        <div className="sp-treasury-gems">{gems.map(gem=><div className="sp-treasury-gem" key={gem}><GemIcon gem={gem}/><b><GameValue value={Number(tokens[gem]??0)} resetKey={`${playerId}:splendor:token:${gem}`}/></b><span>{gemName(gem,language)}</span></div>)}</div>
         <div className="sp-bonus-row" aria-label={copy(language,'영구 카드 보너스','Bonificaciones permanentes')}><small>{copy(language,'영구 보너스','Bonificaciones permanentes')}</small>{colors.map(gem=><span className={`sp-bonus sp-color-${gem} ${shownEvent?.bonusGem===gem?'is-gain':''}`} key={gem}><GemIcon gem={gem}/><b><GameValue value={Number(owned[gem]??0)} resetKey={`${playerId}:splendor:bonus:${gem}`}/></b></span>)}</div>
-        {shownEvent?.purchasedCard&&<div className="sp-acquired-card" data-card-id={shownEvent.purchasedCard.id}><span className="sp-acquired-art" aria-hidden="true">{splendorCardArtSrc(shownEvent.purchasedCard.id)&&<img src={splendorCardArtSrc(shownEvent.purchasedCard.id)!} alt=""/>}</span><span><b>{copy(language,'새 카드가 포트폴리오에 들어왔어요','Nueva carta añadida a tu colección')}</b></span></div>}
+        {shownEvent?.purchasedCard&&<div className="sp-acquired-card" data-card-id={shownEvent.purchasedCard.id}><span className="sp-acquired-art" aria-hidden="true">{splendorCardArtSrc(shownEvent.purchasedCard.id)&&<SplendorArtwork src={splendorCardArtSrc(shownEvent.purchasedCard.id)!}/>}</span><span><b>{copy(language,'새 카드가 포트폴리오에 들어왔어요','Nueva carta añadida a tu colección')}</b></span></div>}
       </section>
       <section className="sp-reserved" aria-label={copy(language,'예약 카드','Cartas reservadas')}>
         <header className="sp-section-heading"><div><h2>{copy(language,'예약 카드','Cartas reservadas')}</h2><p>{copy(language,'내가 볼 수 있는 카드','Solo tú ves estas cartas')}</p></div><span className="sp-capacity"><b>{reserved.length}</b> / 3</span></header>
         <div className="sp-reserved-list">{Array.from({length:3},(_,index)=>{
           const card=reserved[index]; if(!card)return <div className="sp-reserved-empty" key={`slot-${index}`}><span>{index+1}</span>{copy(language,'빈 슬롯','Espacio vacío')}</div>;
           const id=String(card.id??index), selected=selectedCard?.source==='reserved'&&selectedCard.id===id;
-          return <SplendorReservedCard key={id} card={{...record(card),id,index}} language={language} selected={selected} viewer={playerId} version={version} incoming={reservedArrivals.has(id)} onSelect={(target,keyboard)=>card.id!=null&&selectCard(String(card.id),'reserved',undefined,target,keyboard)}/>;
+          return <SplendorReservedCard key={id} card={{...record(card),id,index}} language={language} desktopDisplay={desktopDisplay} selected={selected} viewer={playerId} version={version} incoming={reservedArrivals.has(id)} onSelect={(target,keyboard)=>card.id!=null&&selectCard(String(card.id),'reserved',undefined,target,keyboard)}/>;
         })}</div>
         <p className="sp-opponent-reserved">{copy(language,'상대 예약 카드','Reservadas de la otra persona')} <b>{Number(board.reservedOpponentCount??0)} / 3</b> · {copy(language,`상대 토큰 ${Number(view?.opponentCount??0)}개`,`Fichas rivales: ${Number(view?.opponentCount??0)}`)}</p>
       </section>
     </aside>
       <section className={`sp-nobles ${choices.some(choice=>choice.action.type==='chooseNoble')?'is-choosing':''} ${shownEvent?.nobleAwarded?'is-visit':''}`} aria-label={copy(language,'공개 귀족','Nobles visibles')}>
         <header className="sp-section-heading"><div><h2>{choices.some(choice=>choice.action.type==='chooseNoble')?copy(language,'귀족을 선택하세요','Elige un noble'):copy(language,'귀족','Nobles')}</h2><p>{copy(language,'개발 보너스 조건','Requisitos de bonificación')}</p></div></header>
-        {shownEvent?.nobleAwarded&&<div className="sp-noble-event" role="status" data-recipient={shownEvent.nobleRecipient}><span className="sp-noble-event-art" aria-hidden="true">{splendorNobleArtSrc(shownEvent.nobleId)&&<img src={splendorNobleArtSrc(shownEvent.nobleId)!} alt=""/>}</span><b>{eventCopy({...shownEvent,kind:'noble'})}</b></div>}
+        {shownEvent?.nobleAwarded&&<div className="sp-noble-event" role="status" data-recipient={shownEvent.nobleRecipient}><span className="sp-noble-event-art" aria-hidden="true">{splendorNobleArtSrc(shownEvent.nobleId)&&<SplendorArtwork src={splendorNobleArtSrc(shownEvent.nobleId)!}/>}</span><b>{eventCopy({...shownEvent,kind:'noble'})}</b></div>}
         <div className="sp-noble-list">{Object.entries(nobles).map(([id,raw])=>{
           const noble=record(raw), choice=choices.find(item=>item.action.type==='chooseNoble'&&item.action.payload?.id===id), needs=colors.filter(gem=>Number(noble.requirement?.[gem]??0)>0);
           const artSrc = splendorNobleArtSrc(id);
           return <button type="button" className={`sp-noble ${choice?'is-selectable':''}`} data-sp-noble-id={id} key={id} disabled={!choice} aria-label={`${copy(language,'귀족','Noble')} · ${Number(noble.points??3)} ${copy(language,'점','pts')}${choice?` · ${copy(language,'선택 가능','disponible')}`:''}`} onClick={()=>choice&&runAction(choice.action)}>
-            <span className="sp-noble-art" aria-hidden="true">{artSrc&&<img src={artSrc} alt=""/>}</span><span className="sp-noble-info"><b>{copy(language,'귀족 방문','Visita noble')}</b><small>{Number(noble.points??3)} {copy(language,'점','pts')}</small><span className="sp-noble-cost">{needs.map(gem=><i className={`sp-cost sp-color-${gem}`} key={gem}><GemIcon gem={gem}/><b>{Number(noble.requirement[gem])}</b></i>)}</span><span className="sp-noble-progress" aria-label={copy(language,'내 영구 보너스 진척','Tu progreso de bonificaciones')}>{needs.map(gem=><small className={Number(owned[gem]??0)>=Number(noble.requirement[gem])?'is-met':''} key={gem}>{gemName(gem,language)} {Math.min(Number(owned[gem]??0),Number(noble.requirement[gem]))}/{Number(noble.requirement[gem])}</small>)}</span></span>
+            <span className="sp-noble-art" aria-hidden="true">{artSrc&&<SplendorArtwork src={artSrc}/>}</span><span className="sp-noble-info"><b>{copy(language,'귀족 방문','Visita noble')}</b><small>{Number(noble.points??3)} {copy(language,'점','pts')}</small><span className="sp-noble-cost">{needs.map(gem=><i className={`sp-cost sp-color-${gem}`} key={gem}><GemIcon gem={gem}/><b>{Number(noble.requirement[gem])}</b></i>)}</span><span className="sp-noble-progress" aria-label={copy(language,'내 영구 보너스 진척','Tu progreso de bonificaciones')}>{needs.map(gem=><small className={Number(owned[gem]??0)>=Number(noble.requirement[gem])?'is-met':''} key={gem}>{gemName(gem,language)} {Math.min(Number(owned[gem]??0),Number(noble.requirement[gem]))}/{Number(noble.requirement[gem])}</small>)}</span></span>
             {choice&&<span className="sp-noble-select-label">{copy(language,'선택','Elegir')}</span>}
           </button>;
         })}{!Object.keys(nobles).length&&<p className="sp-empty">{copy(language,'남은 귀족이 없어요','No quedan nobles')}</p>}</div>
       </section>
     <SplendorMotion scope={`${roomId??'demo'}:${playerId}`} version={version} viewer={playerId} event={shownEvent}/>
-    {tokenFlights.filter(flight=>flight.viewer===playerId).map(flight=><span key={flight.id} className={`sp-token-flight sp-color-${flight.gem}`} aria-hidden="true" style={{left:flight.left,top:flight.top,'--sp-dx':`${flight.dx}px`,'--sp-dy':`${flight.dy}px`,'--sp-delay':`${flight.delay}ms`} as CSSProperties} onAnimationEnd={()=>setTokenFlights(current=>current.filter(item=>item.id!==flight.id))}><GemIcon gem={flight.gem}/></span>)}
+
     {view?.result&&<ResultLine game="splendor" result={view.result} playerId={playerId} language={language}/>}
   </div>;
 }
@@ -488,18 +467,30 @@ function SplendorMarketCard({card,language,selected,viewer,version,incoming,defi
   const costState=deficit>0?copy(language,`토큰 ${deficit}개 부족`,`Faltan ${deficit} fichas`):legalBuy?copy(language,'구매 가능','Disponible para compra'):copy(language,'비용 충족','Coste cubierto');
   const choose=(event:React.KeyboardEvent<HTMLElement>)=>{if(event.key==='Enter'||event.key===' '){event.preventDefault();onSelect(event.currentTarget,true);}};
   return <article className={`sp-card ${selected?'is-selected':''} ${incoming?'is-arrival':''} ${legalBuy&&deficit===0?'is-buyable':''}`} data-card-id={card.id} data-source-zone="market" data-tier={tier} data-viewer={viewer} data-version={version} data-cost-deficit={deficit} aria-pressed={selected} aria-label={copy(language,`${tier}단계 카드 · 보너스 ${gemName(bonus,language)} +1 · ${Number(card.points??0)}점 · 비용 ${costDescription} · ${costState}`,`Carta de nivel ${tier} · bonificación ${gemName(bonus,language)} +1 · ${Number(card.points??0)} pts · costo ${costDescription} · ${costState}`)} role="button" tabIndex={0} onClick={event=>onSelect(event.currentTarget,event.detail===0)} onKeyDown={choose}>
-    <div className={`sp-card-art sp-color-${bonus}`} data-art-src={artSrc??''} aria-hidden="true">{artSrc?<img className="sp-card-face" src={artSrc} alt="" width="250" height="350" loading="lazy"/>:<span className="sp-card-fallback"><GemIcon gem={bonus}/>{copy(language,'카드 그림을 불러올 수 없어요','Imagen no disponible')}</span>}</div>
-    <div className="sp-card-details"><div className={`sp-bonus-label sp-color-${bonus}`} title={copy(language,`영구 보너스 ${gemName(bonus,language)}`,`Bonificación permanente ${gemName(bonus,language)}`)}><GemIcon gem={bonus}/><span>+1</span></div><b className="sp-card-prestige">{Number(card.points??0)} {copy(language,'점','pts')}</b><span className="sp-card-cost-summary" aria-hidden="true">{costColors.length?costColors.map(gem=><span className={`sp-card-cost-chip sp-color-${gem}`} key={gem} title={`${gemName(gem,language)} ${Number(card.cost[gem])}`}><GemIcon gem={gem}/><b>{Number(card.cost[gem])}</b></span>):<span className="sp-card-no-cost">{copy(language,'비용 없음','Sin costo')}</span>}</span><span className="sp-card-select-hint">{selected?copy(language,'선택됨 · Esc 취소','Seleccionada · Esc cancela'):copy(language,'선택해 비용 확인','Selecciona para ver el coste')}</span></div>
+    <div className={`sp-card-art sp-color-${bonus}`} data-art-src={artSrc??''} aria-hidden="true">{artSrc?<SplendorArtwork className="sp-card-face" src={artSrc}/>:<span className="sp-card-fallback"><GemIcon gem={bonus}/>{copy(language,'카드 그림을 불러올 수 없어요','Imagen no disponible')}</span>}</div>
+    <div className="sp-card-details"><div className={`sp-bonus-label sp-color-${bonus}`} title={copy(language,`영구 보너스 ${gemName(bonus,language)}`,`Bonificación permanente ${gemName(bonus,language)}`)}><GemIcon gem={bonus}/><span>+1</span></div><b className="sp-card-prestige">{Number(card.points??0)} {copy(language,'점','pts')}</b><span className="sp-card-cost-summary" aria-hidden="true"><small className="sp-card-cost-label">{copy(language,'비용','Coste')}</small>{costColors.length?costColors.map(gem=><span className={`sp-card-cost-chip sp-color-${gem}`} key={gem} title={`${gemName(gem,language)} ${Number(card.cost[gem])}`}><GemIcon gem={gem}/><b>{Number(card.cost[gem])}</b></span>):<span className="sp-card-no-cost">{copy(language,'비용 없음','Sin costo')}</span>}</span><span className="sp-card-select-hint">{selected?copy(language,'선택됨 · Esc 취소','Seleccionada · Esc cancela'):copy(language,'선택해 비용 확인','Selecciona para ver el coste')}</span></div>
   </article>;
 }
 
-function SplendorReservedCard({card,language,selected,viewer,version,incoming,onSelect}:{card:RecordValue;language:Language;selected:boolean;viewer:PlayerId;version:number;incoming:boolean;onSelect:(target:HTMLElement,keyboard:boolean)=>void}) {
+function SplendorReservedCard({card,language,desktopDisplay,selected,viewer,version,incoming,onSelect}:{card:RecordValue;language:Language;desktopDisplay:boolean;selected:boolean;viewer:PlayerId;version:number;incoming:boolean;onSelect:(target:HTMLElement,keyboard:boolean)=>void}) {
   const bonus=String(card.bonus??'white'),cost=colors.filter(gem=>Number(card.cost?.[gem]??0)>0);
   const artSrc=splendorCardArtSrc(card.id);
   const costDescription=cost.map(gem=>`${Number(card.cost[gem])} ${gemName(gem,language)}`).join(', ')||copy(language,'없음','ninguno');
   const accessibleName=copy(language,`예약 ${Number(card.tier)}단계 카드 · 보너스 ${gemName(bonus,language)} +1 · ${Number(card.points??0)}점 · 비용 ${costDescription}`,`Carta reservada de nivel ${Number(card.tier)} · bonificación ${gemName(bonus,language)} +1 · ${Number(card.points??0)} pts · coste ${costDescription}`);
   const choose=(event:React.KeyboardEvent<HTMLElement>)=>{if(event.key==='Enter'||event.key===' '){event.preventDefault();onSelect(event.currentTarget,true);}};
-  return <article className={`sp-reserved-card ${selected?'is-selected':''} ${incoming?'is-arrival':''}`} data-card-id={card.id} data-source-zone="reserved" data-viewer={viewer} data-version={version} aria-pressed={selected} aria-label={accessibleName} role="button" tabIndex={0} onClick={event=>onSelect(event.currentTarget,event.detail===0)} onKeyDown={choose}><span className="sp-reserved-art" aria-hidden="true">{artSrc&&<img src={artSrc} alt="" width="52" height="74" loading="lazy"/>}</span><div><b>{copy(language,'예약 카드','Carta reservada')} · {copy(language,`단계 ${Number(card.tier)}`,`Nivel ${Number(card.tier)}`)}</b><span className="sp-reserved-value">{Number(card.points??0)} {copy(language,'점','pts')} · {copy(language,`보너스 ${gemName(bonus,language)}`,`Bonificación ${gemName(bonus,language)}`)}</span><span className="sp-reserved-cost">{costDescription}</span></div></article>;
+  return <article className={`sp-reserved-card ${selected?'is-selected':''} ${incoming?'is-arrival':''}`} data-card-id={card.id} data-source-zone="reserved" data-viewer={viewer} data-version={version} aria-pressed={selected} aria-label={accessibleName} role="button" tabIndex={0} onClick={event=>onSelect(event.currentTarget,event.detail===0)} onKeyDown={choose}>
+    <span className="sp-reserved-art" aria-hidden="true">{artSrc&&<SplendorArtwork src={artSrc}/>}</span>
+    <div>
+      <b>{!desktopDisplay&&<>{copy(language,'예약 카드','Carta reservada')} · </>}{copy(language,`단계 ${Number(card.tier)}`,`Nivel ${Number(card.tier)}`)}</b>
+      <span className="sp-reserved-value">{desktopDisplay?<>
+        <span>{Number(card.points??0)} {copy(language,'점','pts')}</span>
+        <span className={`sp-reserved-bonus sp-color-${bonus}`} title={copy(language,`보너스 ${gemName(bonus,language)} +1`,`Bonificación ${gemName(bonus,language)} +1`)}><GemIcon gem={bonus}/> +1</span>
+      </>:<>{Number(card.points??0)} {copy(language,'점','pts')} · {copy(language,`보너스 ${gemName(bonus,language)}`,`Bonificación ${gemName(bonus,language)}`)}</>}</span>
+      <span className="sp-reserved-cost" title={costDescription}>{!desktopDisplay?costDescription:cost.length?cost.map(gem=>
+        <span className={`sp-reserved-cost-chip sp-color-${gem}`} key={gem} title={`${gemName(gem,language)} ${Number(card.cost[gem])}`}><GemIcon gem={gem}/><b>{Number(card.cost[gem])}</b></span>
+      ):copy(language,'비용 없음','Sin costo')}</span>
+    </div>
+  </article>;
 }
 
 function sameStrings(left: unknown, right: string[]) { return Array.isArray(left) && left.length === right.length && left.every(value => right.includes(value as string)); }
@@ -515,5 +506,6 @@ function ResultLine({game, result, playerId, language}: {game: TableGameId; resu
       : game === 'davinci'
         ? copy(language, '상대의 타일을 모두 공개했어요.', 'Se revelaron todas las fichas de la otra persona.')
         : '';
-  return <div className={`tg-result tg-result-${outcome}`} data-game={game} data-outcome={outcome} role="status"><b>{message}</b>{detail && <span>{detail}</span>}</div>;
+  const tiedScoreWinner = game === 'splendor' && scores.p1 !== undefined && Number(scores.p1) === Number(scores.p2) && result?.winner !== 'draw';
+  return <div className={`tg-result tg-result-${outcome}`} data-game={game} data-outcome={outcome} role="status"><b>{message}</b>{detail && <span>{detail}</span>}{tiedScoreWinner && <span>{copy(language, '같은 점수라 개발 카드가 적은 쪽이 이겼어요.', 'Con los mismos puntos, ganó quien tiene menos cartas de desarrollo.')}</span>}</div>;
 }

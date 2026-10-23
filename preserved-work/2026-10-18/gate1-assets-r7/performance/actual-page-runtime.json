@@ -1,0 +1,541 @@
+{
+  "errors": [],
+  "memory": [
+    {
+      "label": "fresh blank browser",
+      "processes": [
+        {
+          "pid": 35639,
+          "type": "browser",
+          "rssMiB": 123.09765625,
+          "pssMiB": 85.8115234375
+        },
+        {
+          "pid": 35726,
+          "type": "renderer",
+          "rssMiB": 33.50390625,
+          "pssMiB": 11.6591796875
+        },
+        {
+          "pid": 35728,
+          "type": "renderer",
+          "rssMiB": 48.9296875,
+          "pssMiB": 20.9208984375
+        },
+        {
+          "pid": 35719,
+          "type": "renderer",
+          "rssMiB": 56.2421875,
+          "pssMiB": 28.2841796875
+        },
+        {
+          "pid": 35678,
+          "type": "GPU",
+          "rssMiB": 43.328125,
+          "pssMiB": 27.0234375
+        },
+        {
+          "pid": 35688,
+          "type": "network.mojom.NetworkService",
+          "rssMiB": 59.5078125,
+          "pssMiB": 27.904296875
+        },
+        {
+          "pid": 35694,
+          "type": "storage.mojom.StorageService",
+          "rssMiB": 21.83984375,
+          "pssMiB": 5.53515625
+        }
+      ],
+      "totalRssMiB": 386.44921875,
+      "totalPssMiB": 207.138671875,
+      "metrics": {
+        "Timestamp": 24146.47958,
+        "AudioHandlers": 0,
+        "AudioWorkletProcessors": 0,
+        "Documents": 3,
+        "Frames": 1,
+        "JSEventListeners": 0,
+        "LayoutObjects": 7,
+        "MediaKeySessions": 0,
+        "MediaKeys": 0,
+        "Nodes": 12,
+        "Resources": 0,
+        "ContextLifecycleStateObservers": 7,
+        "V8PerContextDatas": 4,
+        "WorkerGlobalScopes": 0,
+        "UACSSResources": 0,
+        "RTCPeerConnections": 0,
+        "ResourceFetchers": 3,
+        "AdSubframes": 0,
+        "DetachedScriptStates": 2,
+        "ArrayBufferContents": 0,
+        "LayoutCount": 1,
+        "RecalcStyleCount": 1,
+        "LayoutDuration": 0.000062,
+        "RecalcStyleDuration": 0.000128,
+        "DevToolsCommandDuration": 0.000016,
+        "ScriptDuration": 0,
+        "V8CompileDuration": 0,
+        "TaskDuration": 0.005763,
+        "TaskOtherDuration": 0.005557,
+        "ThreadTime": 0.006031,
+        "ProcessTime": 0.09,
+        "JSHeapUsedSize": 978216,
+        "JSHeapTotalSize": 1572864,
+        "FirstMeaningfulPaint": 0,
+        "DomContentLoaded": 24146.446528,
+        "NavigationStart": 24146.440877
+      }
+    },
+    {
+      "label": "actual page Hero ready after GC",
+      "processes": [
+        {
+          "pid": 35639,
+          "type": "browser",
+          "rssMiB": 127.93359375,
+          "pssMiB": 88.55859375
+        },
+        {
+          "pid": 35726,
+          "type": "renderer",
+          "rssMiB": 33.16015625,
+          "pssMiB": 11.28125
+        },
+        {
+          "pid": 35728,
+          "type": "renderer",
+          "rssMiB": 638.546875,
+          "pssMiB": 579.466796875
+        },
+        {
+          "pid": 35719,
+          "type": "renderer",
+          "rssMiB": 87.80078125,
+          "pssMiB": 53.953125
+        },
+        {
+          "pid": 35678,
+          "type": "GPU",
+          "rssMiB": 688.72265625,
+          "pssMiB": 648.8369140625
+        },
+        {
+          "pid": 35688,
+          "type": "network.mojom.NetworkService",
+          "rssMiB": 82.984375,
+          "pssMiB": 50.80859375
+        },
+        {
+          "pid": 35694,
+          "type": "storage.mojom.StorageService",
+          "rssMiB": 22.43359375,
+          "pssMiB": 5.861328125
+        }
+      ],
+      "totalRssMiB": 1681.58203125,
+      "totalPssMiB": 1438.7666015625,
+      "metrics": {
+        "Timestamp": 24180.084211,
+        "AudioHandlers": 0,
+        "AudioWorkletProcessors": 0,
+        "Documents": 1,
+        "Frames": 1,
+        "JSEventListeners": 239,
+        "LayoutObjects": 260,
+        "MediaKeySessions": 0,
+        "MediaKeys": 0,
+        "Nodes": 431,
+        "Resources": 25,
+        "ContextLifecycleStateObservers": 11,
+        "V8PerContextDatas": 2,
+        "WorkerGlobalScopes": 0,
+        "UACSSResources": 0,
+        "RTCPeerConnections": 0,
+        "ResourceFetchers": 1,
+        "AdSubframes": 0,
+        "DetachedScriptStates": 0,
+        "ArrayBufferContents": 169,
+        "LayoutCount": 36,
+        "RecalcStyleCount": 54,
+        "LayoutDuration": 0.146826,
+        "RecalcStyleDuration": 0.051927,
+        "DevToolsCommandDuration": 0.015207,
+        "ScriptDuration": 0.20667,
+        "V8CompileDuration": 0,
+        "TaskDuration": 33.211377,
+        "TaskOtherDuration": 32.790747,
+        "ThreadTime": 10.788978,
+        "ProcessTime": 13.22,
+        "JSHeapUsedSize": 8229752,
+        "JSHeapTotalSize": 9277440,
+        "FirstMeaningfulPaint": 0,
+        "DomContentLoaded": 24146.890987,
+        "NavigationStart": 24146.491633
+      }
+    },
+    {
+      "label": "actual page after five scroll commands; actual progress recorded, no pose-settle assertion",
+      "processes": [
+        {
+          "pid": 35639,
+          "type": "browser",
+          "rssMiB": 128.484375,
+          "pssMiB": 89.0400390625
+        },
+        {
+          "pid": 35726,
+          "type": "renderer",
+          "rssMiB": 33.16796875,
+          "pssMiB": 11.2822265625
+        },
+        {
+          "pid": 35728,
+          "type": "renderer",
+          "rssMiB": 694.52734375,
+          "pssMiB": 633.2060546875
+        },
+        {
+          "pid": 35719,
+          "type": "renderer",
+          "rssMiB": 76.11328125,
+          "pssMiB": 41.60546875
+        },
+        {
+          "pid": 35678,
+          "type": "GPU",
+          "rssMiB": 747.21484375,
+          "pssMiB": 704.037109375
+        },
+        {
+          "pid": 35688,
+          "type": "network.mojom.NetworkService",
+          "rssMiB": 82.734375,
+          "pssMiB": 50.5302734375
+        },
+        {
+          "pid": 35694,
+          "type": "storage.mojom.StorageService",
+          "rssMiB": 22.375,
+          "pssMiB": 5.7998046875
+        }
+      ],
+      "totalRssMiB": 1784.6171875,
+      "totalPssMiB": 1535.5009765625,
+      "metrics": {
+        "Timestamp": 24244.376031,
+        "AudioHandlers": 0,
+        "AudioWorkletProcessors": 0,
+        "Documents": 4,
+        "Frames": 4,
+        "JSEventListeners": 246,
+        "LayoutObjects": 299,
+        "MediaKeySessions": 0,
+        "MediaKeys": 0,
+        "Nodes": 517,
+        "Resources": 28,
+        "ContextLifecycleStateObservers": 14,
+        "V8PerContextDatas": 2,
+        "WorkerGlobalScopes": 0,
+        "UACSSResources": 0,
+        "RTCPeerConnections": 0,
+        "ResourceFetchers": 4,
+        "AdSubframes": 0,
+        "DetachedScriptStates": 0,
+        "ArrayBufferContents": 435,
+        "LayoutCount": 41,
+        "RecalcStyleCount": 108,
+        "LayoutDuration": 0.148529,
+        "RecalcStyleDuration": 0.060787,
+        "DevToolsCommandDuration": 0.034429,
+        "ScriptDuration": 1.770768,
+        "V8CompileDuration": 0,
+        "TaskDuration": 96.868284,
+        "TaskOtherDuration": 94.853771,
+        "ThreadTime": 11.520092,
+        "ProcessTime": 15.44,
+        "JSHeapUsedSize": 10455108,
+        "JSHeapTotalSize": 11374592,
+        "FirstMeaningfulPaint": 24147.248366,
+        "DomContentLoaded": 24146.890987,
+        "NavigationStart": 24146.491633
+      }
+    },
+    {
+      "label": "actual page scripted scroll complete",
+      "processes": [
+        {
+          "pid": 35639,
+          "type": "browser",
+          "rssMiB": 128.48828125,
+          "pssMiB": 89.0126953125
+        },
+        {
+          "pid": 35726,
+          "type": "renderer",
+          "rssMiB": 33.16796875,
+          "pssMiB": 11.2822265625
+        },
+        {
+          "pid": 35728,
+          "type": "renderer",
+          "rssMiB": 691.98828125,
+          "pssMiB": 629.5712890625
+        },
+        {
+          "pid": 35719,
+          "type": "renderer",
+          "rssMiB": 76.078125,
+          "pssMiB": 41.4296875
+        },
+        {
+          "pid": 35678,
+          "type": "GPU",
+          "rssMiB": 745.8359375,
+          "pssMiB": 703.3916015625
+        },
+        {
+          "pid": 35688,
+          "type": "network.mojom.NetworkService",
+          "rssMiB": 82.734375,
+          "pssMiB": 50.5283203125
+        },
+        {
+          "pid": 35694,
+          "type": "storage.mojom.StorageService",
+          "rssMiB": 22.375,
+          "pssMiB": 5.7998046875
+        }
+      ],
+      "totalRssMiB": 1780.66796875,
+      "totalPssMiB": 1531.015625,
+      "metrics": {
+        "Timestamp": 24270.497117,
+        "AudioHandlers": 0,
+        "AudioWorkletProcessors": 0,
+        "Documents": 4,
+        "Frames": 4,
+        "JSEventListeners": 246,
+        "LayoutObjects": 299,
+        "MediaKeySessions": 0,
+        "MediaKeys": 0,
+        "Nodes": 519,
+        "Resources": 28,
+        "ContextLifecycleStateObservers": 14,
+        "V8PerContextDatas": 2,
+        "WorkerGlobalScopes": 0,
+        "UACSSResources": 0,
+        "RTCPeerConnections": 0,
+        "ResourceFetchers": 4,
+        "AdSubframes": 0,
+        "DetachedScriptStates": 0,
+        "ArrayBufferContents": 435,
+        "LayoutCount": 43,
+        "RecalcStyleCount": 112,
+        "LayoutDuration": 0.149089,
+        "RecalcStyleDuration": 0.06296,
+        "DevToolsCommandDuration": 0.041491,
+        "ScriptDuration": 1.79688,
+        "V8CompileDuration": 0,
+        "TaskDuration": 122.988132,
+        "TaskOtherDuration": 120.937712,
+        "ThreadTime": 11.581819,
+        "ProcessTime": 15.7,
+        "JSHeapUsedSize": 11184916,
+        "JSHeapTotalSize": 12161024,
+        "FirstMeaningfulPaint": 24147.248366,
+        "DomContentLoaded": 24146.890987,
+        "NavigationStart": 24146.491633
+      }
+    }
+  ],
+  "poses": [
+    {
+      "requestedProgress": 0,
+      "observedProgress": 0,
+      "settlingPolicy": "600ms observation; no stationary-pose or GPU-completion claim",
+      "frame": {
+        "engine": "three.js r186",
+        "progress": "0.0000",
+        "entrance": "1.0000",
+        "camera": "0.000,0.300,11.700",
+        "target": "0.300,-0.050,0.000",
+        "fold": "0.0000",
+        "renderer": "ANGLE (Google, Vulkan 1.3.0 (SwiftShader Device (Subzero) (0x0000C0DE)), SwiftShader driver)",
+        "drawCalls": "28",
+        "triangles": "758414",
+        "geometries": "17",
+        "textures": "36",
+        "filmTime": "0.000",
+        "filmReady": "4",
+        "cpuSubmitMs": "2.60",
+        "initMarks": "{\"model\":12176.599999997765,\"assets\":12177.699999999255}",
+        "bufferSize": "1920x1080",
+        "assetVersion": "chamber-v7.0",
+        "diffuse": "three pose Cycles bake; storage 1 × PI unit conversion; no runtime diffuse",
+        "normal": "Blender tangent bake, same TEXCOORD_0, no repeat",
+        "morphMeshes": "11",
+        "reflectionEmitters": "6",
+        "environmentMap": "same-scene HDR probes; specular only",
+        "reflection": "linear mirrored camera, floor BRDF integration",
+        "allocationNote": "VRAM and hardware GPU performance not measured"
+      },
+      "scrollY": 0,
+      "overflow": false
+    },
+    {
+      "requestedProgress": 0.43,
+      "observedProgress": 0.1914,
+      "settlingPolicy": "600ms observation; no stationary-pose or GPU-completion claim",
+      "frame": {
+        "engine": "three.js r186",
+        "progress": "0.1914",
+        "entrance": "1.0000",
+        "camera": "0.000,0.300,11.700",
+        "target": "0.300,-0.050,0.000",
+        "fold": "0.2393",
+        "renderer": "ANGLE (Google, Vulkan 1.3.0 (SwiftShader Device (Subzero) (0x0000C0DE)), SwiftShader driver)",
+        "drawCalls": "28",
+        "triangles": "758414",
+        "geometries": "17",
+        "textures": "36",
+        "filmTime": "0.000",
+        "filmReady": "4",
+        "cpuSubmitMs": "4.80",
+        "initMarks": "{\"model\":12176.599999997765,\"assets\":12177.699999999255}",
+        "bufferSize": "1920x1080",
+        "assetVersion": "chamber-v7.0",
+        "diffuse": "three pose Cycles bake; storage 1 × PI unit conversion; no runtime diffuse",
+        "normal": "Blender tangent bake, same TEXCOORD_0, no repeat",
+        "morphMeshes": "11",
+        "reflectionEmitters": "6",
+        "environmentMap": "same-scene HDR probes; specular only",
+        "reflection": "linear mirrored camera, floor BRDF integration",
+        "allocationNote": "VRAM and hardware GPU performance not measured"
+      },
+      "scrollY": 1207,
+      "overflow": false
+    },
+    {
+      "requestedProgress": 0.65,
+      "observedProgress": 0.3235,
+      "settlingPolicy": "600ms observation; no stationary-pose or GPU-completion claim",
+      "frame": {
+        "engine": "three.js r186",
+        "progress": "0.3235",
+        "entrance": "1.0000",
+        "camera": "0.000,0.300,11.700",
+        "target": "0.300,-0.050,0.000",
+        "fold": "0.7785",
+        "renderer": "ANGLE (Google, Vulkan 1.3.0 (SwiftShader Device (Subzero) (0x0000C0DE)), SwiftShader driver)",
+        "drawCalls": "28",
+        "triangles": "758414",
+        "geometries": "17",
+        "textures": "36",
+        "filmTime": "0.000",
+        "filmReady": "4",
+        "cpuSubmitMs": "4.30",
+        "initMarks": "{\"model\":12176.599999997765,\"assets\":12177.699999999255}",
+        "bufferSize": "1920x1080",
+        "assetVersion": "chamber-v7.0",
+        "diffuse": "three pose Cycles bake; storage 1 × PI unit conversion; no runtime diffuse",
+        "normal": "Blender tangent bake, same TEXCOORD_0, no repeat",
+        "morphMeshes": "11",
+        "reflectionEmitters": "6",
+        "environmentMap": "same-scene HDR probes; specular only",
+        "reflection": "linear mirrored camera, floor BRDF integration",
+        "allocationNote": "VRAM and hardware GPU performance not measured"
+      },
+      "scrollY": 1825,
+      "overflow": false
+    },
+    {
+      "requestedProgress": 1,
+      "observedProgress": 0.5607,
+      "settlingPolicy": "600ms observation; no stationary-pose or GPU-completion claim",
+      "frame": {
+        "engine": "three.js r186",
+        "progress": "0.5607",
+        "entrance": "1.0000",
+        "camera": "-2.100,0.533,1.725",
+        "target": "2.411,1.000,-26.946",
+        "fold": "1.0000",
+        "renderer": "ANGLE (Google, Vulkan 1.3.0 (SwiftShader Device (Subzero) (0x0000C0DE)), SwiftShader driver)",
+        "drawCalls": "26",
+        "triangles": "758410",
+        "geometries": "17",
+        "textures": "36",
+        "filmTime": "0.646",
+        "filmReady": "1",
+        "cpuSubmitMs": "3.40",
+        "initMarks": "{\"model\":12176.599999997765,\"assets\":12177.699999999255}",
+        "bufferSize": "1920x1080",
+        "assetVersion": "chamber-v7.0",
+        "diffuse": "three pose Cycles bake; storage 1 × PI unit conversion; no runtime diffuse",
+        "normal": "Blender tangent bake, same TEXCOORD_0, no repeat",
+        "morphMeshes": "11",
+        "reflectionEmitters": "6",
+        "environmentMap": "same-scene HDR probes; specular only",
+        "reflection": "linear mirrored camera, floor BRDF integration",
+        "allocationNote": "VRAM and hardware GPU performance not measured"
+      },
+      "scrollY": 2808,
+      "overflow": false
+    },
+    {
+      "requestedProgress": 0,
+      "observedProgress": 0.8799,
+      "settlingPolicy": "600ms observation; no stationary-pose or GPU-completion claim",
+      "frame": {
+        "engine": "three.js r186",
+        "progress": "0.8799",
+        "entrance": "1.0000",
+        "camera": "0.903,0.800,-7.361",
+        "target": "-1.207,1.000,-39.930",
+        "fold": "1.0000",
+        "renderer": "ANGLE (Google, Vulkan 1.3.0 (SwiftShader Device (Subzero) (0x0000C0DE)), SwiftShader driver)",
+        "drawCalls": "24",
+        "triangles": "758406",
+        "geometries": "17",
+        "textures": "36",
+        "filmTime": "3.656",
+        "filmReady": "1",
+        "cpuSubmitMs": "38.80",
+        "initMarks": "{\"model\":12176.599999997765,\"assets\":12177.699999999255}",
+        "bufferSize": "1920x1080",
+        "assetVersion": "chamber-v7.0",
+        "diffuse": "three pose Cycles bake; storage 1 × PI unit conversion; no runtime diffuse",
+        "normal": "Blender tangent bake, same TEXCOORD_0, no repeat",
+        "morphMeshes": "11",
+        "reflectionEmitters": "6",
+        "environmentMap": "same-scene HDR probes; specular only",
+        "reflection": "linear mirrored camera, floor BRDF integration",
+        "allocationNote": "VRAM and hardware GPU performance not measured"
+      },
+      "scrollY": 0,
+      "overflow": false
+    }
+  ],
+  "scope": "Fresh browser, actual product page, 1920x1080 DPR1. Intro intentionally skipped. No video export. rAF interval is browser callback cadence, not hardware display FPS.",
+  "motion": {
+    "durationMs": 12915.199999999255,
+    "rafIntervalsMs": [
+      -10.900000000750879,
+      6433.100000000006
+    ],
+    "observedProductFrameUpdates": [
+      {
+        "atMs": -10.900000000750879,
+        "progress": 0.0109,
+        "cpuSubmitMs": 2.6
+      },
+      {
+        "atMs": 6422.199999999255,
+        "progress": 0.004,
+        "cpuSubmitMs": 1.6
+      }
+    ],
+    "note": "Scripted forward/reverse scrolling, 100ms scroll commands. rAF callbacks and sampled data-progress changes are not direct completed GPU/display frame counts. Software renderer only if actual frame metadata says so."
+  }
+}

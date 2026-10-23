@@ -33,6 +33,24 @@
 .game-value-number { font: inherit; }
 .game-value-delta { font-size: 12px; font-weight: 700; color: var(--feedback-success,#28624e); animation: game-value-in var(--game-motion-event,420ms) var(--game-ease,ease-out) both; }
 .game-value-delta.is-negative { color: var(--feedback-danger,#a23638); }
+@media (min-width: 1024px) and (pointer: fine) {
+  .sp-card-cost-label { flex-basis: 100%; color: #173d39; font-size: 11px; font-weight: 800; text-align: left; }
+  .first-action-walkthrough { margin: 14px 0; padding: 14px; border: 1px solid #a18b5f; border-radius: 12px; background: #f4ead3; color: #283d39; }
+  .first-action-walkthrough h3 { margin: 0 0 10px; font-size: 17px; }
+  .app-shell .game-guide .first-action-walkthrough > ol { display: grid; grid-template-columns: repeat(3,minmax(0,1fr)); gap: 10px; max-width: none; margin: 0; padding: 0; list-style: none; }
+  .app-shell .game-guide .first-action-walkthrough > ol > li { display: grid; grid-template-columns: minmax(0,1fr); align-content: start; gap: 7px; margin: 0; padding: 12px; border: 1px solid #d6c6a1; border-radius: 8px; background: #fffaf0; }
+  .first-action-walkthrough li > b { color: #195e59; font-size: 15px; }
+  .app-shell .game-guide .first-action-walkthrough li > span { color: #42534a; font: 400 14px/1.55 'DM Sans',sans-serif; }
+  .app-shell .game-guide .sp-guide-action-steps { grid-template-columns: minmax(0,1fr); max-width: none; margin: 8px 0 12px; }
+  .app-shell .game-guide .sp-guide-action-steps > li { display: grid; grid-template-columns: 28px minmax(0,1fr); gap: 9px; padding: 8px 10px; }
+  .app-shell .game-guide .sp-guide-action-steps > li > span { display: grid; gap: 4px; min-width: 0; color: #294443; font: 400 13px/1.4 'DM Sans',sans-serif; }
+  .app-shell .game-guide .sp-guide-action-steps strong { color: #195e59; font-size: 14px; }
+  .app-shell .game-guide .sp-guide-action-steps small { color: #42534a; font-size: 13px; line-height: 1.4; }
+}
+.sp-card-cost-label { display: none; }
+@media (min-width: 1024px) and (pointer: fine) {
+  .sp-card-cost-label { display: block; }
+}
 @keyframes game-value-in { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: translateY(0); } }
 @media (prefers-reduced-motion: reduce) {
   .room-shell { --game-motion-fast: 0ms; --game-motion-enter: 0ms; --game-motion-event: 0ms; }

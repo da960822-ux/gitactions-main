@@ -1,3 +1,4 @@
+.game-rail-art-source{display:none}
 .game-rail-viewport{width:100%;min-width:0;max-width:100%;overflow:hidden}
 .game-rail-device-note{display:none}
 .game-rail-track{display:flex;gap:11px;width:100%;min-width:0;padding:9px 5px 18px;overflow-x:auto;overflow-y:hidden;overscroll-behavior-inline:contain;scroll-snap-type:x mandatory;scroll-padding-inline:5px;touch-action:auto;cursor:grab;scrollbar-width:thin;scrollbar-color:#bd8493 #2a202b}

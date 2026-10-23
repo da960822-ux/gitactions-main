@@ -5,4 +5,6 @@
 .desktop-game-copy h1{margin:22px 0 16px;font:400 clamp(28px,6vw,42px)/1.35 'Gowun Batang',serif;text-wrap:balance;word-break:keep-all}
 .desktop-game-copy p{margin:0 0 26px;color:#e0c5cd;text-wrap:pretty}
 .desktop-game-return{display:inline-flex;align-items:center;gap:12px;min-height:48px;padding:10px 20px;border:1px solid #fff9;border-radius:99px;background:linear-gradient(#edb6bb,#cc899b);color:#3c1829;font-weight:700;text-decoration:none}
+.feedback-storage-actions{display:flex;flex-wrap:wrap;gap:12px}
+.feedback-storage-actions button{font:inherit;cursor:pointer}
 .desktop-game-notice a:focus-visible{outline:3px solid #ffc8d4;outline-offset:5px}

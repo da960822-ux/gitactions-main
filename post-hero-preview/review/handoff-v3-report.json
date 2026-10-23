@@ -1,0 +1,138 @@
+{
+  "checks": [
+    {
+      "name": "0.705: no overflow",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "0.705: DOM tracks paper",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "0.705: projected bounds error under 2px",
+      "pass": true,
+      "detail": "0.09919922354788469"
+    },
+    {
+      "name": "0.705: duplicate mesh hidden",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "0.78: no overflow",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "0.78: DOM tracks paper",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "0.78: projected bounds error under 2px",
+      "pass": true,
+      "detail": "0.059233344058839066"
+    },
+    {
+      "name": "0.78: duplicate mesh hidden",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "0.85: no overflow",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "0.85: DOM tracks paper",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "0.85: projected bounds error under 2px",
+      "pass": true,
+      "detail": "0.062336098287573805"
+    },
+    {
+      "name": "0.85: duplicate mesh hidden",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "0.87: no overflow",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "Reading endpoint releases projected layout",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "No browser exceptions",
+      "pass": true,
+      "detail": ""
+    }
+  ],
+  "poses": [
+    {
+      "progress": 0.705,
+      "tracking": true,
+      "error": 0.09919922354788469,
+      "bounds": {
+        "x": 1012.6217651367188,
+        "y": 147.83409118652344,
+        "width": 478.94110107421875,
+        "height": 489.91650390625
+      },
+      "paperVisible": "false",
+      "paragraphs": 7,
+      "overflow": false
+    },
+    {
+      "progress": 0.78,
+      "tracking": true,
+      "error": 0.059233344058839066,
+      "bounds": {
+        "x": 598.2820434570312,
+        "y": 395.1856994628906,
+        "width": 588.2686157226562,
+        "height": 539.92529296875
+      },
+      "paperVisible": "false",
+      "paragraphs": 7,
+      "overflow": false
+    },
+    {
+      "progress": 0.85,
+      "tracking": true,
+      "error": 0.062336098287573805,
+      "bounds": {
+        "x": 431.96881103515625,
+        "y": 361.5886535644531,
+        "width": 736.5145874023438,
+        "height": 600.5645751953125
+      },
+      "paperVisible": "false",
+      "paragraphs": 7,
+      "overflow": false
+    },
+    {
+      "progress": 0.87,
+      "tracking": false,
+      "error": null,
+      "bounds": {
+        "x": 430,
+        "y": 264,
+        "width": 740,
+        "height": 601.9375
+      },
+      "paperVisible": "false",
+      "paragraphs": 7,
+      "overflow": false
+    }
+  ],
+  "errors": []
+}

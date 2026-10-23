@@ -228,6 +228,11 @@
 .dp-revealed-hand .dp-tile { width:53px; }
 .dp-seat:has(.dp-revealed-hand) { overflow:visible; }
 .dp-tile.is-flight-target { visibility:hidden; }
+@media (min-width: 1024px) and (pointer: fine) {
+  .dp-play-copy.is-waiting { min-height: 42px; padding: 5px 9px; border-left: 3px solid #a17b55; border-radius: 6px; background: #f2ecdf; }
+  .dp-play-copy.is-waiting .dp-turn-light { background: #a17b55; }
+  .dp-play-copy.is-waiting h3 { color: #5c4935; }
+}
 @media (min-width:1500px) { .domino-premium { gap:10px; padding:18px 22px; } .dp-felt { min-height:236px; } }
 @media (max-width:1150px) { .dp-seat-row { grid-template-columns:repeat(4,minmax(0,1fr)); } .dp-hand-tile { flex-basis:78px; width:78px; } }
 @media (max-width:700px) {
@@ -273,4 +278,55 @@ button.dp-settings-launcher { justify-content:center; min-height:44px; padding:7
   .dp-settings-readout { top:75px; right:12px; }
   .dp-round-chip { min-height:38px; padding:5px 10px; }
   .dp-scoreboard { margin-top:38px; }
+}
+
+@media (min-width:1024px) {
+ .domino-premium { gap:7px; padding:12px 16px; }
+ .dp-header { gap:8px; }
+ .dp-header p { margin:3px 0; }
+ .dp-seat-row { padding-bottom:3px; }
+ .dp-felt { min-height:192px; }
+ .dp-ledger { padding:6px 10px; }
+ .dp-hand { padding-top:6px; }
+}
+
+@media (min-width: 1024px) and (pointer: fine) {
+/* Keep the public chain and the player's legal hand at the center of play. */
+.domino-premium { gap: 11px; padding: clamp(14px, 1.8vw, 22px); }
+.dp-header { gap: 10px; }
+.dp-header h2 { font-size: clamp(22px, 2vw, 28px); }
+.dp-kicker { font-size: 10px; }
+.dp-status { margin-top: 3px; font-size: 12px; }
+.dp-scoreboard { gap: 7px; }
+.dp-score { min-height: 58px; padding: 7px 10px; border-radius: 11px; }
+.dp-score-heading { gap: 7px; }
+.dp-team-mark { height: 22px; }
+.dp-score-heading b { font-size: 12px; }
+.dp-score-heading small,.dp-score-note { font-size: 10px; }
+.dp-score-number { font-size: 16px; }
+.dp-seat-row { gap: 6px; }
+.dp-seat { min-height: 58px; padding: 7px 9px; border-radius: 10px; }
+.dp-seat-top b { font-size: 11px; }
+.dp-seat-top span,.dp-seat-count span,.dp-private-note { font-size: 9px; }
+.dp-seat-count { margin-top: 2px; }
+.dp-seat-count strong { font-size: 18px; }
+.dp-seat.is-turn { box-shadow: 0 0 0 2px #46896133, 0 3px 9px #225c4920; }
+.dp-backs { right: 8px; bottom: 8px; height: 20px; }
+.dp-back { width: 23px; margin-left: -11px; }
+.dp-felt { min-height: clamp(190px, 25vw, 270px); padding: 22px 18px 36px; }
+.dp-chain { min-height: 88px; }
+.dp-tile.is-chain { width: 84px; }
+.dp-tile.is-chain .domino-tile__art { width: 84px; }
+.dp-play-area { gap: 8px; padding: 10px 12px; border-radius: 13px; }
+.dp-play-copy h3 { font-size: 13px; }
+.dp-play-copy p { font-size: 11px; }
+.dp-hand { gap: 6px; padding: 4px 3px 7px; }
+.dp-hand-tile { flex-basis: 84px; width: 84px; }
+.dp-selection-help { font-size: 12px; }
+/* The surrounding game shell already names the game; keep this semantic heading available to assistive tech. */
+.dp-header h2 { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0,0,0,0); white-space: nowrap; border: 0; }
+}
+
+@media (min-width: 1024px) and (pointer: fine) {
+  .dp-hand { justify-content: safe center; }
 }

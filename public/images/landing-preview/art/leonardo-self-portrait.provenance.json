@@ -1,0 +1,24 @@
+{
+  "assetId": "leonardo-presumed-self-portrait-museo-galileo",
+  "path": "/images/landing-preview/art/leonardo-self-portrait.jpg",
+  "creator": "Leonardo da Vinci (attributed / presumed self-portrait)",
+  "work": "Head of a Bearded Man (so-called presumed self-portrait)",
+  "sourceInstitution": "Museo Galileo / Istituto e Museo di Storia della Scienza, Florence",
+  "sourceUrl": "https://brunelleschi.imss.fi.it/stampa_leonardo/images/autorit_bibreale_to.jpg",
+  "sourcePage": "https://brunelleschi.imss.fi.it/stampa_leonardo/pages/autorit_bibreale_to.html",
+  "sourceCaption": "Leonardo da Vinci, Autoritratto. Biblioteca Reale, Torino, 15571",
+  "acquired": "2026-10-18",
+  "width": 1932,
+  "height": 2953,
+  "bytes": 5328969,
+  "sha256": "5bb300a1a289d972d8625988357e190ddfc9fe306f90a0d0f3416cb0d6efc8ff",
+  "edits": "None. Original public museum JPEG copied byte-for-byte; native full image is contained in the runtime art panel.",
+  "historicalWorkRights": {
+    "status": "Public-domain historical artwork",
+    "reference": "https://commons.wikimedia.org/wiki/File:Leonardo_da_Vinci_-_presumed_self-portrait_-_WGA12798.jpg",
+    "mark": "https://creativecommons.org/publicdomain/mark/1.0/"
+  },
+  "museumReproductionRights": "The museum image page exposes no explicit separate reproduction reuse license; no claim of an explicit museum photo license is made.",
+  "representation": "Historical portrait used as requested Da Vinci game identity art; not claimed to be official Da Vinci Code board-game packaging.",
+  "approvalScope": "Two-image review candidate authorized by user direction; not final eight-game art approval."
+}

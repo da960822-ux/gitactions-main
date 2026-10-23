@@ -1,0 +1,16 @@
+from pathlib import Path
+r=Path('/workspace/yl-folded-playhouse-r8');d=r/'src/landing/cinematic/folded'
+s=(d/'arrivalCoveV14.ts').read_text();s=s.replace('out.x=-4+(x+4)*(1+spread*depth*side);',"const depthMeters=-z,axisT=Math.max(0,Math.min(1,(depthMeters-30)/68)),tail=Math.max(0,depthMeters-98),axis=-1-8*axisT*axisT*(3-2*axisT)-.00045*tail*tail,axisZ=(axisT>0&&axisT<1?48*axisT*(1-axisT)/68:0)+.0009*tail;\n out.x=axis+(x-axis)*(1+spread*depth*side);")
+s=s.replace('out.xy=(x+4)*spread*depth*sideY;out.xz=(x+4)*spread*depthZ*side;','out.xy=(x-axis)*spread*depth*sideY;out.xz=axisZ*(1-out.xx)+(x-axis)*spread*depthZ*side;')
+(d/'arrivalCoveV15.ts').write_text(s)
+s=(d/'arrivalCoveV14.test.ts').read_text().replace("from './arrivalCoveV14'","from './arrivalCoveV15'");(d/'arrivalCoveV15.test.ts').write_text(s)
+s=(d/'poseSpaceV11.ts').read_text().replace('[1,-3.8,.85,-40,-4,1,-69]','[1,-3.8,.25,-40,-12,.15,-69]');(d/'poseSpaceV15.ts').write_text(s)
+s=(d/'stageMotionV14.ts').read_text().replace("from './poseSpaceV11'","from './poseSpaceV15'")
+s=s.replace("const relativeX=", "const end=cameraPose(1,1,false),fx=end.target[0]-end.position[0],fz=end.target[2]-end.position[2],length=Math.hypot(fx,fz),forwardX=fx/length,forwardZ=fz/length,lateral=8.5*Math.tan(24*Math.PI/180)*(16/9)*.34,endX=forwardX*8.5-forwardZ*lateral,endZ=forwardZ*8.5+forwardX*lateral;\n const relativeX=")
+s=s.replace('+2.5*blend','+endX*blend').replace('-8.5*blend','+endZ*blend');(d/'stageMotionV15.ts').write_text(s)
+s=(d/'floorSupportV14.ts').read_text().replace("from './stageMotionV14'","from './stageMotionV15'");(d/'floorSupportV15.ts').write_text(s)
+s=(d/'floorSupportV14.test.ts').read_text().replace("from './stageMotionV14'","from './stageMotionV15'").replace("from './floorSupportV14'","from './floorSupportV15'").replace('support v14','support v15');(d/'floorSupportV15.test.ts').write_text(s)
+s=(d/'previewSpaceV14.ts').read_text().replace("from './arrivalCoveV14'","from './arrivalCoveV15'").replace("from './poseSpaceV11'","from './poseSpaceV15'").replace("from './floorSupportV14'","from './floorSupportV15'").replace("from './stageMotionV14'","from './stageMotionV15'").replace('chamber-r8.cosmic-v14','chamber-r8.cosmic-v15');(d/'previewSpaceV15.ts').write_text(s)
+p=r/'src/landing/AcrossHero.tsx';p.write_text(p.read_text().replace('previewSpaceV14','previewSpaceV15'))
+s=Path('/workspace/gate1-assets-r8/hero-cosmic-integration-v14/capture-quick.mjs').read_text().replace('hero-cosmic-integration-v14','hero-cosmic-integration-v15').replace('chamber-r8.cosmic-v14','chamber-r8.cosmic-v15').replace('cosmic V14','cosmic V15');Path('/workspace/gate1-assets-r8/hero-cosmic-integration-v15/capture-quick.mjs').write_text(s)
+print('V15 unfolds about the authored curved axis, and frames the same portrait inside the final camera')

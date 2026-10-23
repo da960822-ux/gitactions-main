@@ -1,0 +1,5 @@
+# These original asset bytes are checked against their provenance hashes.
+public/images/hwatu/*.svg text eol=lf
+public/images/splendor-gems/*.svg text eol=lf
+scripts/build-folded-chamber.py text eol=lf
+scripts/denoise-chamber-lightmaps.py text eol=lf

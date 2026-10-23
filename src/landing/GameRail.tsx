@@ -1,4 +1,4 @@
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { Link } from '../app/Router';
 import type { Language } from '../core/types';
 import { gameCatalog } from '../games/catalog';
@@ -9,6 +9,8 @@ export function GameRail({ language }: { language: Language }) {
   const dragRef = useRef<{ pointerId: number; startX: number; startY: number; scrollLeft: number; moved: boolean } | null>(null);
   const frames = useRef(new Map<number, number>());
   const timers = useRef(new Set<number>());
+  const [readyArt, setReadyArt] = useState<string[]>([]);
+  const revealArt = (id: string) => setReadyArt(current => current.includes(id) ? current : [...current, id]);
 
   useEffect(() => {
     const preference = window.matchMedia('(prefers-reduced-motion: reduce)');
@@ -114,7 +116,8 @@ export function GameRail({ language }: { language: Language }) {
         onPointerLeave={event => resetTilt(index, event.currentTarget)}
         onBlur={event => resetTilt(index, event.currentTarget)}
       >
-        <span className={`game-rail-art game-thumbnail art-${game.id}`} aria-hidden="true"/>
+        <img hidden className="game-rail-art-source" src={game.id === 'splendor' ? '/images/splendor/box-cover.jpg' : game.id === 'minhwatu' ? '/images/hwatu/01-01.svg' : '/images/rose-game-atlas.webp'} alt="" aria-hidden="true" onLoad={event => { void event.currentTarget.decode().then(() => revealArt(game.id), () => revealArt(game.id)); }} onError={() => revealArt(game.id)}/>
+        <span className={`game-rail-art game-thumbnail art-${game.id}`} data-image-ready={readyArt.includes(game.id)} aria-hidden="true"/>
         <span className="game-rail-meta">
           <span className="game-rail-label" id={`game-rail-title-${game.id}`}>{game.title[language]}</span>
           <span className="game-rail-description" id={`game-rail-description-${game.id}`}>{game.subtitle[language]}</span>

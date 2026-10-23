@@ -1,0 +1,94 @@
+.post-hero-preview .details-eggs{--ink:#f4e2da;--paper:#f4e8d2;--wine:#7b293d;--rose:#d7a18f;padding:24px 0;color:var(--ink);font:400 14px/1.7 'DM Sans','Apple SD Gothic Neo','Malgun Gothic',sans-serif}
+.post-hero-preview .local-event-controls{margin:0;padding:0;min-width:0;border:0;background:none;box-shadow:none}
+.post-hero-preview .local-event-title{display:flex;justify-content:space-between;align-items:flex-start;gap:20px;margin-bottom:14px}
+.post-hero-preview .local-event-title h3{margin:0;color:#f6e5d8;font:400 32px/1.35 'Gowun Batang',Georgia,serif;letter-spacing:-.025em;outline:none}
+.post-hero-preview .local-event-controls>p{color:#dec1c3;line-height:1.8;margin:0 0 22px;max-width:40ch}
+.post-hero-preview .detail-close{display:grid;place-items:center;min-width:44px;min-height:44px;margin-top:-4px;background:none;border:1px solid #d7a18f55;color:#efd2c5;font-size:25px}
+.post-hero-preview .egg-button{min-height:44px;padding:9px 12px;border:1px solid #b9838580;border-radius:2px;color:#edd0c5;background:#30202a;font:inherit;font-size:13px;cursor:pointer;touch-action:manipulation;transition:transform 160ms var(--ease),background 160ms var(--ease)}
+.post-hero-preview .egg-button:active{transform:scale(.97)}
+.post-hero-preview .egg-button[aria-pressed=true]{border-color:#e5b99e;background:#693246;color:#fff1e4}
+.post-hero-preview .egg-primary{background:#7b293d;border-color:#be7f87;color:#fff8e9}
+.post-hero-preview .egg-button:focus-visible,.post-hero-preview .rhythm-bar:focus-visible,.post-hero-preview .patch-piece:focus-visible{outline:2px solid #efbca8;outline-offset:3px}
+.post-hero-preview .egg-button:disabled{opacity:.45;cursor:default}
+.post-hero-preview .egg-actions,.post-hero-preview .domino-pickers,.post-hero-preview .pawn-pickers{display:flex;flex-wrap:wrap;align-items:center;gap:8px;margin-top:14px}
+.post-hero-preview .local-event-footer{border-top:1px solid #d7a18f44;margin-top:24px;padding-top:16px}
+.post-hero-preview .related-objects{margin-top:20px}
+.post-hero-preview .related-objects .egg-button{border:0;border-bottom:1px solid #ac7b8077;background:none;padding-inline:0;margin-right:12px;color:#d7b3b9}
+.post-hero-preview .shared-context-choice{margin-top:16px;background:none}
+.post-hero-preview .effects-setting{margin-top:24px;color:#caabb5;font-size:12px}
+.post-hero-preview .effects-setting summary{min-height:44px}
+.post-hero-preview .details-footnote{margin:12px 0 0;color:#bda0ad;font-size:11px;line-height:1.65}
+.post-hero-preview .egg-reward{color:#f3c5ad!important;font-size:14px}
+.post-hero-preview .domino-row{display:flex;align-items:center;min-height:110px;gap:12px;margin:20px 0;padding:15px;background:#291c26}
+.post-hero-preview .domino-tile{display:grid;grid-template-columns:1fr 1px 1fr;align-items:center;width:60px;height:82px;border:1px solid #baa288;border-radius:5px;color:#402935;background:#f4e8d2;text-align:center;box-shadow:0 5px 9px #08050b66;transform-origin:center bottom}
+.post-hero-preview .domino-tile i{height:70%;background:#baa288}
+.post-hero-preview .domino-tile.fallen{transform:rotate(60deg) translateY(4px)}
+.post-hero-preview .tray-window-left,.post-hero-preview .tray-window-right{transform:translateX(0)}
+.post-hero-preview .balance-tray.settled .tray-window-left{transform:translateX(-77px)}
+.post-hero-preview .balance-tray.settled .tray-window-right{transform:translateX(77px)}
+.post-hero-preview .balance-tray{display:block;width:min(100%,560px);height:auto;margin:16px auto;overflow:visible;transform-origin:50% 40%}
+.post-hero-preview .drawing-paper{display:block;width:100%;height:auto;aspect-ratio:5/3;margin:22px 0;border:1px solid #c5a88e;border-radius:2px;background:#f4e8d2;touch-action:none;cursor:crosshair;box-shadow:0 10px 30px #09050b4d}
+.post-hero-preview .rhythm-bars{position:relative;width:min(100%,560px);aspect-ratio:7/3;height:auto;margin:16px auto}
+.post-hero-preview .rhythm-bars>svg{position:absolute;inset:0;width:100%;height:100%;pointer-events:none}
+.post-hero-preview .rhythm-bar{position:absolute;top:12%;left:calc(25% - 4.2857%);display:grid;place-items:center;width:8.5714%;min-width:44px;min-height:44px;height:58.3333%;padding:0;border:1px solid #b67d79;border-radius:3px;background:#af7780;color:#23141e;cursor:pointer;box-shadow:inset 4px 0 #f4e8d24d,inset -4px 0 #7b293d33,0 5px 8px #09050b55;transform-origin:center}
+.post-hero-preview .rhythm-bar.bar-1{left:calc(50% - 4.2857%)}.post-hero-preview .rhythm-bar.bar-2{left:calc(75% - 4.2857%)}
+.post-hero-preview .rhythm-bar span{position:absolute;top:12px;left:calc(50% - 4px);width:8px;height:8px;border-radius:50%;background:#fff4df}
+.post-hero-preview .rhythm-bar b{font-weight:400}
+.post-hero-preview .rhythm-bars.solved .rhythm-bar{transform:translateY(38%) rotate(90deg)}
+.post-hero-preview .rhythm-bars.solved .rhythm-bar b{transform:rotate(-90deg)}
+.post-hero-preview .rhythm-bar.signal{background:#f0bf9b}.post-hero-preview .rhythm-bar.pressed{border-color:#e8c5b0;background:#e0a1a6}
+.post-hero-preview .paper-bridge{display:flex;justify-content:center;gap:16px;min-height:220px;padding:24px 20px;align-items:center}
+.post-hero-preview .patch-piece{display:block;flex:0 1 140px;width:140px;max-width:calc((100% - 32px)/3);min-height:44px;aspect-ratio:1;padding:0;border:0;border-radius:1px;background:#f4e8d2;overflow:hidden;cursor:pointer;box-shadow:0 8px 14px #09050b55}
+.post-hero-preview .patch-piece svg{display:block;width:100%;height:100%}
+.post-hero-preview .paper-bridge.complete{gap:0}
+.post-hero-preview .wax-sample{display:grid;place-items:center;width:90px;height:90px;margin:24px auto;border:6px solid #8a3949;border-radius:50%;color:#f0c5aa;background:#8e3e53;box-shadow:inset 0 0 0 2px #bc7981,0 10px 20px #09050a66;font-family:Georgia,serif;transition:transform 180ms var(--ease)}
+.post-hero-preview .wax-sample.pressed{transform:scale(.9)}
+.post-hero-preview .pocket-fold{display:flex;justify-content:space-around;align-items:center;height:65px;margin:24px 0;border:1px solid #d6b3a5;background:#f4e3d5;color:#7b293d;transform-origin:bottom;transition:transform 220ms var(--ease)}
+.post-hero-preview .pocket-fold.open{transform:perspective(400px) rotateX(-25deg)}
+.post-hero-preview .paper-gust{display:block;width:min(100%,360px);height:auto;margin:12px auto 20px;overflow:visible}
+.post-hero-preview .phrase-card{padding:25px;margin:24px 0;border:1px solid #d6b3a5;color:#7b293d;background:#f4e8d2;font:400 28px/1.4 'Gowun Batang',Georgia,serif;text-align:center}
+.post-hero-preview .asset-playground{margin-top:24px}.post-hero-preview .asset-playground img{object-fit:contain;max-width:100%}
+.post-hero-preview .pawn-shadow-stage{position:relative;height:250px;background:#e6d2b9;overflow:hidden;isolation:isolate}
+.post-hero-preview .pawn-original{position:absolute;bottom:8px;left:8%;width:120px;height:170px}
+.post-hero-preview .pawn-shadow{position:absolute;width:140px;height:190px;bottom:45px;left:45%;filter:brightness(0);opacity:.23;transform-origin:bottom center}
+.post-hero-preview .asset-range{display:flex;align-items:center;gap:14px;font-size:13px;margin:20px 0}.post-hero-preview .asset-range input{width:100%;min-height:44px}
+.post-hero-preview .pawn-rail{height:240px;overflow:hidden;position:relative;padding-top:25px;border-bottom:1px solid #bb9678;perspective:700px}
+.post-hero-preview .pawn-rail-track{margin-left:calc(50% - 60px);width:120px;transform-origin:bottom;transition:transform 260ms var(--ease)}
+.post-hero-preview .joker-pair{display:flex;gap:12px}
+.post-hero-preview .joker-shutter{position:relative;isolation:isolate;overflow:hidden;flex:1;padding:0;border:1px solid #bd9d85;background:#221a1e;min-height:250px;color:#fff1dc}
+.post-hero-preview .joker-shutter img{display:block;width:100%;height:250px;object-fit:contain}
+.post-hero-preview .joker-shutter>span{position:absolute;top:0;bottom:0;width:50%;background:repeating-linear-gradient(0deg,#49343c 0 14px,#62434d 15px 16px);transition:transform 260ms var(--ease)}
+.post-hero-preview .shutter-left{left:0}.post-hero-preview .shutter-right{right:0}.post-hero-preview .joker-shutter.is-revealed .shutter-left{transform:translateX(-101%)}.post-hero-preview .joker-shutter.is-revealed .shutter-right{transform:translateX(101%)}
+.post-hero-preview .joker-shutter b{position:absolute;bottom:8px;left:0;right:0;font-size:9px;font-weight:400;letter-spacing:.08em;pointer-events:none}
+.post-hero-preview .noble-theatre{position:relative;height:280px;perspective:700px;transform-style:preserve-3d}
+.post-hero-preview .noble-theatre img{display:block;width:160px;height:220px;position:absolute;bottom:28px;left:calc(50% - 80px);transform-origin:bottom;transform:rotateX(76deg);transition:transform 260ms var(--ease);box-shadow:4px 9px 16px #09050b55}
+.post-hero-preview .noble-theatre.is-raised img{transform:rotateX(0)}.post-hero-preview .noble-theatre.is-raised.side-view img{transform:rotateY(-25deg)}
+.post-hero-preview .noble-base{position:absolute;bottom:12px;left:10%;width:80%;height:100px;background:#d4b995;transform:rotateX(60deg);border:1px solid #ac8a6a}
+.post-hero-preview .pawn-flipbook{position:relative;min-height:250px;display:flex;align-items:flex-start;justify-content:center;padding:24px 15px 65px;background:#f4e8d2;color:#402935;box-shadow:0 8px 15px #09050b55;border:1px solid #cfb99b;perspective:500px}
+.post-hero-preview .pawn-flipbook>img{width:90px;height:150px;transition:transform 180ms var(--ease)}.post-hero-preview .pawn-flipbook.page-1>img:first-of-type{transform:translateX(20px) rotate(-8deg)}.post-hero-preview .pawn-flipbook.page-2>img:last-of-type{transform:translateX(-12px) rotate(8deg)}.post-hero-preview .pawn-flipbook.page-3>img{transform:translateY(-15px)}
+.post-hero-preview .book-spine{position:absolute;left:50%;top:0;bottom:0;width:1px;background:#c7b08f}.post-hero-preview .pawn-flipbook small{position:absolute;bottom:10px;right:12px}
+/* The scene owns the object; only its real controls remain in the reading field. */
+.post-hero-preview .has-world :is(.domino-row,.balance-tray,.pocket-fold,.asset-prism,.pawn-shadow-stage,.pawn-rail,.joker-pair,.noble-theatre,.pawn-flipbook,.asset-decor-preview,.wax-sample,.paper-gust,.phrase-card){display:none}
+.post-hero-preview .has-world .paper-bridge{background:none;min-height:90px;justify-content:flex-start}
+.post-hero-preview .has-world .asset-playground{margin-top:12px}
+.post-hero-preview .asset-motion-reduced *{transition:none!important}
+@media(hover:hover) and (pointer:fine){.post-hero-preview .egg-button:hover:not(:disabled){background:#6a3b4b}.post-hero-preview .related-objects .egg-button:hover{background:none;color:#fff0e5}}
+@media(max-width:760px){.post-hero-preview .details-eggs{padding-top:5px}.post-hero-preview .local-event-title h3{font-size:28px}.post-hero-preview .egg-button{font-size:12px;padding:9px 10px}.post-hero-preview .drawing-paper{max-width:500px}.post-hero-preview .context-workbench{padding:22px;background:#20151ef5;border:1px solid #9d6b735c}}
+@media(prefers-reduced-motion:reduce){.post-hero-preview .details-eggs *{transition:none!important}.post-hero-preview .egg-button:active{transform:none}}
+
+.post-hero-preview .drawing-surface.is-card{width:min(100%,520px);margin:22px auto;padding:26px 28px 20px;border:1px solid #c5a88e;border-radius:2px;background:#f4e8d2;color:#7b293d;box-shadow:0 12px 30px #09050b66}
+.post-hero-preview .drawing-surface.is-card .drawing-paper{margin:0;border:0;box-shadow:none;cursor:default;touch-action:auto}
+.post-hero-preview .drawing-card-signature{margin:16px 0 0;text-align:right;font:400 19px/1.5 'Gowun Batang',Georgia,serif;color:#7b293d}
+.post-hero-preview .drawing-card-note{margin-bottom:14px}
+.post-hero-preview .shutter-controls{display:none}
+.post-hero-preview .has-world .shutter-controls{display:flex}
+.post-hero-preview .object-options{margin-top:8px;color:#caabb5;font-size:12px}
+.post-hero-preview [data-active-local-event="L04"] .related-objects{padding-top:12px;border-top:1px solid #d7a18f33}
+
+.post-hero-preview .preference-status{display:block;margin-top:12px;color:#e3c4bb;line-height:1.7}
+@media(min-width:761px){.post-hero-preview [data-active-local-event="L04"] .asset-range{display:grid;grid-template-columns:max-content minmax(0,1fr);word-break:keep-all}}
+@media(prefers-reduced-motion:no-preference){
+ .post-hero-preview :is(.tray-window-left,.tray-window-right){transition:transform 220ms var(--ease)}
+ .post-hero-preview :is(.rhythm-bar,.rhythm-bar b){transition:transform 240ms var(--ease)}
+ .post-hero-preview .details-eggs:has(:focus-visible) :is(.tray-window-left,.tray-window-right,.rhythm-bar,.rhythm-bar b){transition:none}
+}

@@ -1,4 +1,4 @@
-import { useId } from 'react';
+import { useId, useState } from 'react';
 import type { Language } from '../core/types';
 import type { JaipurGood } from '../games/jaipur';
 import '../styles/jaipur-art.css';
@@ -26,6 +26,27 @@ const sceneNames: Record<JaipurGood, [string, string, string]> = {
 const atlasCells: Record<JaipurGood, number> = { diamond: 0, gold: 1, silver: 2, cloth: 3, spice: 4, leather: 5, camel: 6 };
 
 type GoodProps = { good: JaipurGood; variant?: number; language?: Language; decorative?: boolean; className?: string };
+
+const productTokenAsset: Record<Exclude<JaipurGood, 'camel'>, string> = {
+  diamond: 'diamond', gold: 'gold', silver: 'silver', cloth: 'cloth', spice: 'spice', leather: 'leather',
+};
+
+export function JaipurProductToken({ good }: { good: Exclude<JaipurGood, 'camel'> }) {
+  const [loaded, setLoaded] = useState(false), [failed, setFailed] = useState(false);
+  const src = `/images/game-premium-tokens/jaipur/${productTokenAsset[good]}.webp`;
+  return <span className={`jp-premium-token-wrap jp-product-token${loaded ? ' is-loaded' : ''}`} aria-hidden="true">
+    <JaipurGoodArt good={good} variant={0} decorative className="jp-premium-token-fallback"/>
+    {!failed && <img className="jp-premium-token-image" src={src} alt="" width="384" height="384" loading="lazy" decoding="async" onLoad={() => setLoaded(true)} onError={() => setFailed(true)}/>}
+  </span>;
+}
+
+export function JaipurBonusTokenBack({ count, language = 'ko', className = '' }: { count?: number; language?: Language; className?: string }) {
+  const [loaded, setLoaded] = useState(false), [failed, setFailed] = useState(false);
+  return <span className={`jp-premium-token-wrap jp-bonus-token-back ${className}${loaded ? ' is-loaded' : ''}`.trim()} aria-hidden="true">
+    <JaipurBonusArt count={count} language={language} className="jp-premium-token-fallback jp-bonus-art"/>
+    {!failed && <img className="jp-premium-token-image" src="/images/game-premium-tokens/jaipur/bonus-token-back.webp" alt="" width="384" height="384" loading="lazy" decoding="async" onLoad={() => setLoaded(true)} onError={() => setFailed(true)}/>}
+  </span>;
+}
 
 function defs(id: string, colors: string[]) {
   return <defs>

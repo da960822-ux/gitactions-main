@@ -5,22 +5,34 @@
   "type": "module",
   "scripts": {
     "dev": "vite --host 0.0.0.0",
-    "build": "tsc -b && vite build && node scripts/build-edge.mjs",
+    "build": "tsc -b && vite build && node scripts/build-static-routes.mjs && node scripts/build-edge.mjs",
     "test": "vitest run",
     "preview": "vite preview --host 0.0.0.0",
-    "build:edge": "node scripts/build-edge.mjs"
+    "build:edge": "node scripts/build-edge.mjs",
+    "dev:landing-preview": "vite --config vite.preview.config.ts --open /landing-preview.html",
+    "build:landing-preview": "tsc -b && vite build --config vite.preview.config.ts"
   },
   "dependencies": {
+    "@remotion/player": "^4.0.535",
     "@supabase/supabase-js": "^2.57.0",
+    "gsap": "^3.15.0",
+    "motion": "14.5.0",
     "react": "^19.1.1",
-    "react-dom": "^19.1.1"
+    "react-dom": "^19.1.1",
+    "remotion": "^4.0.535",
+    "three": "0.186.1"
   },
   "devDependencies": {
     "@electric-sql/pglite": "^0.5.8",
+    "@remotion/cli": "^4.0.535",
+    "@remotion/renderer": "^4.0.535",
     "@types/node": "^26.6.5",
     "@types/react": "^19.1.0",
     "@types/react-dom": "^19.1.0",
+    "@types/three": "0.186.0",
     "esbuild": "^0.28.2",
+    "hyperframes": "^0.8.149",
+    "playwright": "^1.64.0",
     "typescript": "^5.9.2",
     "vite": "^7.1.0",
     "vitest": "^3.2.4"

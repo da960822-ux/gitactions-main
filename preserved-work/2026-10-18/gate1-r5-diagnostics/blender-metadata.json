@@ -1,0 +1,153 @@
+{
+  "camera": {
+    "position": [
+      0,
+      0.3,
+      11.7
+    ],
+    "target": [
+      0.3,
+      -0.05,
+      0
+    ],
+    "verticalFovDegrees": 38,
+    "resolution": [
+      1920,
+      1080
+    ],
+    "lensMillimetres": 34.850528717041016
+  },
+  "display": {
+    "view": "AgX",
+    "look": "None",
+    "exposure": 0.0,
+    "gamma": 1.0
+  },
+  "lights": [
+    {
+      "name": "Warm broad key",
+      "type": "AREA",
+      "energy": 1400.0,
+      "color": [
+        1.0,
+        0.8799999952316284,
+        0.7599999904632568
+      ],
+      "positionBlender": [
+        -4.0,
+        -6.0,
+        6.0
+      ]
+    },
+    {
+      "name": "Cool ivory bounce",
+      "type": "AREA",
+      "energy": 200.0,
+      "color": [
+        0.7300000190734863,
+        0.8500000238418579,
+        1.0
+      ],
+      "positionBlender": [
+        7.0,
+        -2.0,
+        4.0
+      ]
+    },
+    {
+      "name": "Passage ceiling warm",
+      "type": "AREA",
+      "energy": 1000.0,
+      "color": [
+        1.0,
+        0.6899999976158142,
+        0.41999998688697815
+      ],
+      "positionBlender": [
+        -3.5,
+        15.0,
+        4.599999904632568
+      ]
+    },
+    {
+      "name": "Far room broad lamp",
+      "type": "AREA",
+      "energy": 1400.0,
+      "color": [
+        1.0,
+        0.7900000214576721,
+        0.550000011920929
+      ],
+      "positionBlender": [
+        -4.0,
+        24.0,
+        5.699999809265137
+      ]
+    },
+    {
+      "name": "Rear return edge",
+      "type": "AREA",
+      "energy": 600.0,
+      "color": [
+        1.0,
+        0.46000000834465027,
+        0.3199999928474426
+      ],
+      "positionBlender": [
+        1.0,
+        27.0,
+        2.0
+      ]
+    }
+  ],
+  "world": "0.18000000715255737",
+  "device": "CPU",
+  "samples": 128,
+  "denoising": "disabled: this Blender build has no OpenImageDenoise support",
+  "lightmaps": [
+    {
+      "name": "alcove",
+      "size": [
+        2048,
+        2048
+      ],
+      "linearRedMin": 0.0,
+      "linearRedMax": 0.615686297416687,
+      "nonzeroMean": 0.0741011034326467,
+      "clippedFraction": 0.0
+    },
+    {
+      "name": "canopy",
+      "size": [
+        1024,
+        1024
+      ],
+      "linearRedMin": 0.0,
+      "linearRedMax": 0.529411792755127,
+      "nonzeroMean": 0.043080110884494614,
+      "clippedFraction": 0.0
+    },
+    {
+      "name": "lip",
+      "size": [
+        1024,
+        1024
+      ],
+      "linearRedMin": 0.0,
+      "linearRedMax": 0.45098042488098145,
+      "nonzeroMean": 0.16222165885998505,
+      "clippedFraction": 0.0
+    },
+    {
+      "name": "room",
+      "size": [
+        2048,
+        2048
+      ],
+      "linearRedMin": 0.0,
+      "linearRedMax": 1.0,
+      "nonzeroMean": 0.07221579712727984,
+      "clippedFraction": 0.0012392997741699219
+    }
+  ]
+}

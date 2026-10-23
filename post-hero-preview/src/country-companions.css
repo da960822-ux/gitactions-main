@@ -1,0 +1,42 @@
+.post-hero-preview .story-distance>.country-companions{position:absolute;inset:0;width:100%;height:100%;overflow:clip;z-index:2;pointer-events:none;isolation:isolate}
+.post-hero-preview .companion-stage{position:relative;width:100%;height:100%;isolation:isolate}
+.post-hero-preview .bird-scroll{position:absolute;bottom:16svh;width:27vw;aspect-ratio:1;z-index:1;pointer-events:auto}
+.post-hero-preview .lovebird-left{left:38vw}
+.post-hero-preview .lovebird-right{right:3vw;bottom:20svh;width:22vw}
+.post-hero-preview button.lovebird{display:block;width:100%;height:100%;padding:0;border:0;background:none;color:inherit;transform-origin:62% 90%;cursor:pointer}
+.post-hero-preview .lovebird-art{display:block;width:100%;height:100%;overflow:visible;transform-origin:62% 90%;user-select:none}
+.post-hero-preview .lovebird-right .lovebird,.post-hero-preview .lovebird-right .lovebird-art{transform-origin:53% 43%}
+.post-hero-preview .lovebird:focus-visible{outline:1px solid #edc2a2;outline-offset:8px;border-radius:45%}
+.post-hero-preview .lovebird-greeting{position:absolute;bottom:7svh;left:64%;transform:translateX(-50%);white-space:nowrap;z-index:2;pointer-events:auto}
+.post-hero-preview .lovebird-greeting:active{transform:translateX(-50%) scale(.98)}
+.post-hero-preview .lovebird-error{position:absolute;bottom:12svh;left:45%;right:12%;text-align:center;color:#f0d9cd;font-size:14px}
+.post-hero-preview .companion-heart{position:absolute;inset:0;width:100%;height:100%;overflow:visible;pointer-events:none;z-index:0;opacity:0;transition:opacity 160ms var(--ease,cubic-bezier(.23,1,.32,1))}
+.post-hero-preview .country-companions[data-together=true] .companion-heart{opacity:.4}
+.post-hero-preview .country-companions[data-together=true][data-interaction-phase=greet] .companion-heart{transition-delay:.95s}
+.post-hero-preview .country-companions[data-interaction-phase=instant] .companion-heart,.post-hero-preview .country-companions[data-reduced=true] .companion-heart{transition:none}
+.post-hero-preview .companion-heart path{fill:none;stroke:#d7a18f;stroke-width:1.4;stroke-linecap:round}
+.post-hero-preview .hummingbird-wing{transform-box:view-box;animation:companion-wing-near 110ms linear infinite;transform-origin:675px 525px}
+.post-hero-preview .hummingbird-wing-far{transform-origin:635px 490px;opacity:.6;animation-name:companion-wing-far}
+.post-hero-preview .country-companions[data-visible=false] .hummingbird-wing{animation-play-state:paused}
+.post-hero-preview .country-companions[data-reduced=true] .hummingbird-wing{animation:none;transform:rotate(-8deg) scaleY(.6)}
+@keyframes companion-wing-near{0%,100%{transform:rotate(-25deg) scaleY(.8)}50%{transform:rotate(65deg) scaleY(.45)}}
+@keyframes companion-wing-far{0%,100%{transform:rotate(-25deg) scaleY(.8)}50%{transform:rotate(65deg) scaleY(.45)}}
+@media(hover:hover) and (pointer:fine){.post-hero-preview .lovebird-greeting:hover{color:#fff0e9;border-bottom-color:#edc2a2}}
+@media(prefers-reduced-motion:reduce){.post-hero-preview .hummingbird-wing{animation:none;transform:rotate(-8deg) scaleY(.6)}}
+.post-hero-preview .companion-meanings{position:absolute;top:18svh;left:43vw;right:7vw;display:grid;grid-template-columns:1fr 1fr;gap:clamp(24px,3vw,56px);color:#e7d1c6}
+.post-hero-preview .companion-meanings h3{margin:0 0 10px;color:#edc2a2;font:400 17px/1.5 'Gowun Batang',Georgia,serif}
+.post-hero-preview .companion-meanings p{margin:0;max-width:34ch;font-size:16px;line-height:1.75;word-break:keep-all;overflow-wrap:break-word;text-wrap:pretty}
+@media(max-width:1000px){
+ .post-hero-preview .story-distance>.country-companions{position:relative;inset:auto;height:auto;flex:none;overflow:visible}
+ .post-hero-preview .companion-stage{height:clamp(240px,60vw,520px)}
+ .post-hero-preview .bird-scroll{bottom:56px;width:48%}
+ .post-hero-preview .lovebird-left{left:0}
+ .post-hero-preview .lovebird-right{right:0;bottom:80px;width:40%}
+ .post-hero-preview .lovebird-greeting{bottom:0;left:50%;max-width:100%;white-space:normal;text-align:center}
+ .post-hero-preview .companion-meanings{position:static;grid-template-columns:1fr 1fr;gap:32px;margin-top:32px}
+ .post-hero-preview .companion-meanings p{max-width:42ch}
+ .post-hero-preview .lovebird-error{position:static;margin:24px 0 0}
+}
+@media(max-width:600px){
+ .post-hero-preview .companion-meanings{grid-template-columns:minmax(0,1fr);gap:24px}
+}

@@ -2,10 +2,15 @@ import { describe, expect, it, vi } from 'vitest';
 import { createElement } from 'react';
 import { renderToStaticMarkup } from 'react-dom/server';
 import { catchmindEngine } from '../games/catchmind';
-import CatchmindTable, { bucketFill, catchmindPersistedSettingsKey, composeDisplayedStrokes, findCatchmindDuplicateWord, restoreCatchmindPenColor, sendDrawQueue } from './CatchmindTable';
+import CatchmindTable, { bucketFill, sendDrawQueue, composeDisplayedStrokes } from './CatchmindTable';
+
+function configured(seed: number) {
+  const state = catchmindEngine.createInitialState(seed);
+  return catchmindEngine.applyAction(state, 'p1', { type: 'settings', payload: { settings: { ...state.settings, category_id: 'animals' } } });
+}
 
 function markup(player: 'p1' | 'p2', revealHint = false) {
-  let state = catchmindEngine.createInitialState(8);
+  let state = configured(8);
   const answer = state.wordChoices[0][0];
   state = catchmindEngine.applyAction(state, 'p1', { type: 'choose', payload: { wordId: 0 } });
   if (revealHint) state = catchmindEngine.applyAction(state, 'p1', { type: 'reveal-hint' });
@@ -33,45 +38,53 @@ function stateMarkup(state: ReturnType<typeof catchmindEngine.createInitialState
     strokeWidth: 5,
     setStrokeWidth: vi.fn(),
     runAction: vi.fn(async () => true),
+    onReplay: vi.fn(), replayPending: true,
   }));
 }
 
 describe('CatchmindTable', () => {
-  it('keeps settings drafts across fresh snapshot objects and failed saves, while accepting persisted changes', () => {
-    const identity = 'room-a:p1';
-    const saved = { drawTimeSeconds: 80, rounds: 6, choices: 3, hints: 2, customOnly: false };
-    const words = [{ ko: '고래', es: 'ballena' }];
-    const originalKey = catchmindPersistedSettingsKey(identity, saved, words);
-    const freshSnapshotKey = catchmindPersistedSettingsKey(identity, { ...saved }, words.map(word => ({ ...word })));
-    expect(freshSnapshotKey).toBe(originalKey);
-    const draft = { drawTimeSeconds: 30, rounds: 2, choices: 3, hints: 1, customOnly: true };
-    // A failed request leaves persisted state unchanged, so its next snapshot must preserve the draft.
-    expect(catchmindPersistedSettingsKey(identity, saved, words)).toBe(originalKey);
-    expect(freshSnapshotKey === originalKey ? draft : saved).toEqual(draft);
-    expect(catchmindPersistedSettingsKey(identity, { ...saved, rounds: 4 }, words)).not.toBe(originalKey);
-    expect(catchmindPersistedSettingsKey('room-b:p1', saved, words)).not.toBe(originalKey);
+  it('offers exactly six single-choice topics to the host before a new match starts', () => {
+    const state = catchmindEngine.createInitialState(23);
+    const host = stateMarkup(state, 'p1'), guest = stateMarkup(state, 'p2');
+    expect(host.match(/type="radio"/g)).toHaveLength(6);
+    expect(host).toContain('하나만 선택');
+    expect(host).toContain('호스트가 주제를 선택하고 설정을 저장해 주세요.');
+    expect(guest).not.toContain('type="radio"');
+    expect(markup('p1').html).not.toContain('type="radio"');
+  });
+  it('fills the entire blank canvas at a fractional pointer position, then treats the same color as a no-op', () => {
+    const image = { width: 1000, height: 600, data: new Uint8ClampedArray(1000 * 600 * 4) } as ImageData;
+    for (let at = 0; at < image.data.length; at += 4) image.data.set([255, 254, 250, 255], at);
+    const putImageData = vi.fn();
+    const context = { getImageData: () => image, putImageData } as unknown as CanvasRenderingContext2D;
+    expect(bucketFill(context, 307.37, 183.91, '#284f49')).toBe(true);
+    for (let at = 0; at < image.data.length; at += 4) {
+      if (image.data[at] !== 40 || image.data[at + 1] !== 79 || image.data[at + 2] !== 73 || image.data[at + 3] !== 255) throw new Error(`Unfilled pixel ${at / 4}`);
+    }
+    expect(bucketFill(context, 999.9, 600, '#284f49')).toBe(false);
+    expect(putImageData).toHaveBeenCalledOnce();
   });
 
-  it('identifies duplicate custom words in either language, including base dictionary conflicts', () => {
-    expect(findCatchmindDuplicateWord([{ ko: '산', es: 'montaña' }])).toContain('산|montaña');
-    expect(findCatchmindDuplicateWord([{ ko: '고양이', es: 'gato' }, { ko: '강아지', es: 'gato' }])).toContain('강아지|gato');
-    expect(findCatchmindDuplicateWord([{ ko: '달빛고래', es: 'ballena lunar' }])).toEqual([]);
-  });
-
-  it('restores a visible drawing color after using the paper-color eraser', () => {
-    expect(restoreCatchmindPenColor('#e57f6a')).toBe('#e57f6a');
-    expect(restoreCatchmindPenColor('#fffefa')).toBe('#284f49');
+  it('fills a closed region larger than the former 42 percent limit and preserves its border', () => {
+    const image = { width: 1000, height: 600, data: new Uint8ClampedArray(1000 * 600 * 4) } as ImageData;
+    for (let at = 0; at < image.data.length; at += 4) image.data.set([255, 255, 255, 255], at);
+    const pixel = (x: number, y: number) => (y * 1000 + x) * 4;
+    for (let x = 100; x <= 900; x++) for (const y of [80, 520]) image.data.set([0, 0, 0, 255], pixel(x, y));
+    for (let y = 80; y <= 520; y++) for (const x of [100, 900]) image.data.set([0, 0, 0, 255], pixel(x, y));
+    const context = { getImageData: () => image, putImageData: vi.fn() } as unknown as CanvasRenderingContext2D;
+    expect(bucketFill(context, 150.4, 100.2, '#284f49')).toBe(true);
+    let filled = 0;
+    for (let at = 0; at < image.data.length; at += 4) if (image.data[at] === 40 && image.data[at + 1] === 79 && image.data[at + 2] === 73) filled++;
+    expect(filled).toBe(799 * 439);
+    expect(Array.from(image.data.slice(pixel(100, 100), pixel(100, 100) + 4))).toEqual([0, 0, 0, 255]);
+    expect(image.data[pixel(99, 100)]).toBe(255);
   });
 
   it('shows the caller role and phase with public score values in both locales', () => {
     const drawer = markup('p1'), guesser = markup('p2');
     expect(drawer.html).toContain('출제자 · 그리는 중');
     expect(guesser.html).toContain('맞히는 사람 · 맞혀 보세요');
-    const choosingState = catchmindEngine.createInitialState(8);
-    expect(stateMarkup(choosingState, 'p1')).toContain('제시어 선택');
-    expect(stateMarkup(choosingState, 'p2')).toContain('상대가 제시어를 고르는 중');
-    expect(stateMarkup(choosingState, 'p2', 'es')).toContain('Tu pareja está eligiendo');
-    expect(stateMarkup(catchmindEngine.applyAction(catchmindEngine.createInitialState(8), 'p1', { type: 'choose', payload: { wordId: 0 } }), 'p1', 'es')).toContain('Dibujas');
+    expect(stateMarkup(catchmindEngine.applyAction(configured(8), 'p1', { type: 'choose', payload: { wordId: 0 } }), 'p1', 'es')).toContain('Dibujas');
     expect(drawer.html.match(/class="game-value"/g)).toHaveLength(2);
     expect(drawer.html).toContain('cm-phase-label');
   });
@@ -89,6 +102,10 @@ describe('CatchmindTable', () => {
     expect(guesser.html).not.toContain(drawer.answer.es);
     expect(guesser.html).not.toContain('cm-tools');
     expect(guesser.html).toContain('첫 선을 기다리고 있어요');
+    expect(guesser.html).toContain('cm-hint-word');
+    expect(guesser.html).toContain(' / ');
+    expect(guesser.html).toContain('□');
+    expect(guesser.html).toContain('?');
     const hinted = markup('p2', true);
     expect(hinted.html).toContain('cm-hint-word');
     expect(hinted.html).toContain('class="cm-hint-word"');
@@ -97,7 +114,7 @@ describe('CatchmindTable', () => {
   });
 
   it('describes timeout rounds and finished games without claiming a correct answer', () => {
-    let timedOut = catchmindEngine.createInitialState(13);
+    let timedOut = configured(13);
     timedOut = catchmindEngine.applyAction(timedOut, 'p1', { type: 'choose', payload: { wordId: 0 } });
     timedOut = catchmindEngine.applyAction(timedOut, 'p1', { type: 'timeout' });
     const timeoutHtml = stateMarkup(timedOut, 'p1');
@@ -106,7 +123,7 @@ describe('CatchmindTable', () => {
     expect(timeoutHtml).not.toContain('정답을 맞혀서 두 사람 모두 점수를 얻었어요.');
     expect(timeoutHtml).not.toContain('정답은 출제자만 볼 수 있어요.');
 
-    let solved = catchmindEngine.createInitialState(17);
+    let solved = configured(17);
     solved = catchmindEngine.applyAction(solved, 'p1', { type: 'settings', payload: { settings: { ...solved.settings, rounds: 2 } } });
     const firstAnswer = solved.wordChoices[0][0];
     solved = catchmindEngine.applyAction(solved, 'p1', { type: 'choose', payload: { wordId: 0 } });
@@ -117,10 +134,12 @@ describe('CatchmindTable', () => {
     solved = catchmindEngine.applyAction(solved, 'p1', { type: 'guess', payload: { text: secondAnswer.ko } });
     solved = catchmindEngine.applyAction(solved, 'p2', { type: 'end-round' });
     const finishedHtml = stateMarkup(solved, 'p1');
-    expect(finishedHtml).toContain('최종 결과');
+    expect(finishedHtml).toContain('게임 종료');
+    expect(finishedHtml).toContain('같이 다시 시작하기');
+    expect(finishedHtml).toContain('두 사람이 모두 수락하면 새 판을 시작해요.');
     expect(finishedHtml).not.toContain('내가 그리고 있어요');
     const finishedSpanishHtml = stateMarkup(solved, 'p1', 'es');
-    expect(finishedSpanishHtml).toContain('Resultado final');
+    expect(finishedSpanishHtml).toContain('Partida terminada');
     expect(finishedSpanishHtml).not.toContain('Tú dibujas');
   });
 
@@ -142,12 +161,11 @@ describe('CatchmindTable', () => {
     const putImageData = vi.fn();
     const context = { getImageData: () => imageData, putImageData } as unknown as CanvasRenderingContext2D;
 
-    expect(bucketFill(context, 10.2, 10.2, '#e57f6a')).toBe(true);
+    expect(bucketFill(context, 10, 10, '#e57f6a')).toBe(true);
     expect(Array.from(imageData.data.slice(pixel(10, 10), pixel(10, 10) + 4))).toEqual([229, 127, 106, 255]);
     expect(Array.from(imageData.data.slice(pixel(5, 10), pixel(5, 10) + 4))).toEqual([0, 0, 0, 255]);
     expect(Array.from(imageData.data.slice(pixel(20, 10), pixel(20, 10) + 4))).toEqual([255, 255, 255, 255]);
     expect(putImageData).toHaveBeenCalledOnce();
-    expect(bucketFill(context, 999.9, 599.9, '#e57f6a')).toBe(false);
   });
 
   it('keeps queued stroke snapshots in order and retains failed work for explicit retry', async () => {
@@ -183,5 +201,17 @@ describe('CatchmindTable', () => {
     const mergedAuthoritative = [{ strokeId: 'pending', segmentIndex: 1, points: [...queued[0].points, ...queued[1].points.slice(1)], color: '#111111', width: 4, order: 1 }];
     expect(composeDisplayedStrokes(mergedAuthoritative, queued, null)).toEqual(mergedAuthoritative);
     expect(composeDisplayedStrokes(mergedAuthoritative, [queued[1]], null)).toEqual(mergedAuthoritative);
+  });
+});
+
+
+describe('Catchmind queue acknowledgement races', () => {
+  it('keeps the next stroke when a refreshed snapshot removes the in-flight head', async () => {
+    const first = { points: [{ x: 0, y: 0 }, { x: .1, y: .1 }], color: '#111111', width: 4, strokeId: 'first', segmentIndex: 0, round: 1 };
+    const second = { ...first, color: '#222222', strokeId: 'second' };
+    const queue = [first, second], sent: string[] = [];
+    expect(await sendDrawQueue(queue, async batch => { sent.push(batch.strokeId); if (batch === first) queue.splice(0, 1); return true; })).toBe(true);
+    expect(sent).toEqual(['first', 'second']);
+    expect(queue).toEqual([]);
   });
 });

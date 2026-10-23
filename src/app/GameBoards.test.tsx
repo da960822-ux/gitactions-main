@@ -11,9 +11,9 @@ import { resolve } from 'node:path';
 import { engines } from '../core/registry';
 
 describe('public game boards', () => {
-  it('shows local country flags beside all modern Marble city names in both locales', () => {
+  it('keeps local country flags beside all saved route-v2 city names in both locales', () => {
     const engine = engines.marble!;
-    const state = engine.createInitialState(7) as any;
+    const state = { ...(engine.createInitialState(7) as any), cityRouteVersion: 2 };
     const view = engine.getPlayerView(state, 'p1') as any;
     const codes = ['ca','cl','cu','do','es','fr','gb','it','jp','kr','mx','nz','ph','pr','pt','us'];
     for (const language of ['ko', 'es'] as const) {
@@ -97,11 +97,35 @@ describe('original Splendor faces', () => {
       expect(face.signature.points).toBe(card.points);
       for(const gem of ['white','blue','green','red','black'] as const) expect((face.signature.cost as Partial<Record<string,number>>)[gem] ?? 0).toBe(card.cost[gem] ?? 0);
       expect(existsSync(resolve('public/images/splendor',face.src))).toBe(true);
-      const html = renderToStaticMarkup(<TableGames game="splendor" view={{ownHand:{tokens:{},reserved:[{...card,id}]},board:{},actions:[]}} language="ko" playerId="p1" runAction={() => {}}/>);
+      const html = renderToStaticMarkup(<TableGames game="splendor" view={{ownHand:{tokens:{},reserved:[{...card,id}]},board:{market:{[card.tier]:[{...card,id}]}},actions:[]}} language="ko" playerId="p1" runAction={() => {}}/>);
       expect(html).toContain(`/images/splendor/${face.src}`);
+      expect(html).toContain('data-artwork-only="card"');
+      expect(html).toContain('viewBox="85 90 165 260"');
+      expect(html).not.toContain(`<img src="/images/splendor/${face.src}`);
+      expect(html).toContain(`class="sp-card-prestige">${card.points} 점</b>`);
+      for (const [gem, amount] of Object.entries(card.cost)) {
+        const value = html.match(new RegExp(`class="sp-card-cost-chip sp-color-${gem}"[\\s\\S]*?<b>(\\d+)</b>`));
+        expect(Number(value?.[1])).toBe(amount);
+        const reservedValue = html.match(new RegExp(`class="sp-reserved-cost-chip sp-color-${gem}"[\\s\\S]*?<b>(\\d+)</b>`));
+        expect(Number(reservedValue?.[1])).toBe(amount);
+      }
     }
     expect(new Set(art.cards.map(item=>item.src)).size).toBe(90);
     expect(art.nobles).toHaveLength(10);
     for(const noble of art.nobles) expect(existsSync(resolve('public/images/splendor',noble.src))).toBe(true);
+  });
+});
+
+
+describe('Splendor equal-score result explanation', () => {
+  it('explains the existing fewer-card tiebreak in both players’ languages only when it determines the winner', () => {
+    for (const playerId of ['p1', 'p2'] as const) for (const language of ['ko', 'es'] as const) {
+      const expected = language === 'ko' ? '같은 점수라 개발 카드가 적은 쪽이 이겼어요.' : 'Con los mismos puntos, ganó quien tiene menos cartas de desarrollo.';
+      const view = { board: {}, ownHand: {}, actions: [], result: { winner: 'p1', scores: { p1: 15, p2: 15 } } };
+      const render = (result: typeof view.result) => renderToStaticMarkup(<TableGames game="splendor" view={{ ...view, result }} playerId={playerId} language={language} runAction={() => {}}/>);
+      expect(render(view.result)).toContain(expected);
+      expect(render({ winner: 'draw', scores: { p1: 15, p2: 15 } })).not.toContain(expected);
+      expect(render({ winner: 'p1', scores: { p1: 16, p2: 15 } })).not.toContain(expected);
+    }
   });
 });

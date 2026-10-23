@@ -1,0 +1,46 @@
+{
+  "scope": "read-only source inspection; no binary outputs, browser, build, or render accessed",
+  "evidence": {
+    "no_runtime_diffuse_lighting": {
+      "status": "supported by source",
+      "detail": "world.ts disables the built-in getIBLIrradiance contribution in lights_fragment_maps; diffuse lightMaps are loaded from offline EXRs and mixed by uBakeProgress. The author script sets Cycles CPU and bakes DIFFUSE with DIRECT and INDIRECT passes. Runtime retains authored HDR probes for specular env-map response."
+    },
+    "pi_separate_from_storage": {
+      "status": "supported by source",
+      "detail": "build script writes lightmapStorageScale=1 and lightmapUnitToIrradiance=math.pi; world.ts multiplies the two metadata values for lightMapIntensity. Storage remains 1 while the unit conversion is π."
+    },
+    "material_clone_and_seam_atlas": {
+      "status": "supported by source",
+      "detail": "world.ts clones each source material slot before mutation. Atlas lookup is conditional on owner.userData.lightmapStem. build script places Shared_Shell_Light seam in a standalone object with normalMap but no lightmapStem; it therefore loads a normal only and receives no diffuse atlas."
+    },
+    "uv0_preservation": {
+      "status": "confirmed",
+      "detail": "Three r186 Texture.channel defaults to 0, so the diffuse lightMap and normal texture use TEXCOORD_0. The builder creates the UVMap used for export and does not create an extra UV layer; runtime does not rewrite geometry UV attributes. R5 UV0/UV1 same-coordinate clone comparison matched all 2,073,600 pixels; R6 separate EXR/PNG GPU corner readback passed with UV0."
+    },
+    "normal_repeat_defaults": {
+      "status": "supported by source",
+      "detail": "loadNormal sets color space, mipmaps, and anisotropy but does not set wrap or repeat. TextureLoader defaults remain in effect; the inspected runtime does not request repeated normal coordinates."
+    },
+    "exr_png_flip_y": {
+      "status": "supported by source",
+      "detail": "CHAMBER_RENDER_CONTRACT and loaders set diffuseFlipY=true for EXR diffuse maps and normalFlipY=false for PNG normals. The denoiser manifest writes the same transfer values."
+    },
+    "derivative_tangent_y": {
+      "status": "supported by source",
+      "detail": "For normal-mapped materials, runtime sets normalScale.y to +1 when the geometry has tangent attributes and -1 when it does not, consistent with its declared normalYWithoutTangents=-1 rule."
+    },
+    "geometry_morph_identity": {
+      "status": "supported by source",
+      "detail": "Runtime keeps each loaded mesh geometry, adds the same mesh to moving when morph influences exist, and changes only the existing Space_Unfold and Gift_Entry weights. Material clones do not replace geometry. Builder creates these shape keys on authored mesh objects and exports morph targets."
+    },
+    "package_unchanged": {
+      "status": "confirmed",
+      "detail": "git diff HEAD -- package.json package-lock.json returned no changes."
+    }
+  },
+  "concrete_mismatch": null,
+  "supporting_evidence": [
+    "/workspace/gate1-r5-diagnostics/pixel-comparison.json",
+    "/workspace/gate1-assets-r6/canary/uv-format-results.json"
+  ]
+}

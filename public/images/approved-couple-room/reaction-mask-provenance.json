@@ -1,0 +1,46 @@
+{
+  "tool": "image_gen.imagegen",
+  "date": "2026-10-18",
+  "purpose": "New reaction pose segmentation only; approved RGB sources unchanged",
+  "encoding": "Opaque RGB grayscale: white selects reaction person/chair, black preserves base; SVG luminance/R channel (not semantic red)",
+  "outputs": [
+    {
+      "source": "result-yeonseok-wins.png",
+      "sourceSha256": "951df23e84b26cfb82432b4a784d7a9045d25729b8795cc303f0d1719d759f1e",
+      "sourceDimensions": [
+        1672,
+        941
+      ],
+      "mask": "result-yeonseok-mask.png",
+      "maskSha256": "a81db9592df51622be06e849c36e2874b66365738d50f8a994e208b85ba9927c",
+      "maskDimensions": [
+        1672,
+        941
+      ],
+      "mode": "RGB",
+      "generatedRaw": "/workspace/generated_images/exec-ef4cbb52-0b1d-4858-807a-dbeeb3c28e0c.png"
+    },
+    {
+      "source": "result-lisbeth-wins.png",
+      "sourceSha256": "09bf706f6528498167dfd02d09347afe8814cc0b7a649b66f1b94c4f184a180e",
+      "sourceDimensions": [
+        1672,
+        941
+      ],
+      "mask": "result-lisbeth-mask.png",
+      "maskSha256": "e9157a017ad8bce2d1c32821e47a10fac58723512f06bc28380005e9c1586e83",
+      "maskDimensions": [
+        1672,
+        941
+      ],
+      "mode": "RGB",
+      "generatedRaw": "/workspace/generated_images/exec-588e220c-37b3-499d-9a40-dc19c34d0e32.png"
+    }
+  ],
+  "visualReview": "Both original reaction RGB and masks opened directly. Final dimensions equal 1672x941. Girl laptop occluder corrected after initial generation over-completed her hidden arm. Rejected intermediate outputs remain in generated_images; final public paths refer only to chosen outputs.",
+  "limitations": [
+    "Generated masks retain some thin internal contour lines and edge uncertainty; not pixel-perfect segmentation approval. Game compositor unions the old semantic person/chair selection to remove old pose remnants and fill overlapping interior regions. Actual composite visual verification remains required.",
+    "No source RGB pixel editing, resizing, thresholding or recoloring performed.",
+    "Original-only old-arm/background regions are handled by game compositor union, not included in these new-pose masks."
+  ]
+}
