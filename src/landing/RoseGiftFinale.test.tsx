@@ -1,6 +1,7 @@
 import {renderToStaticMarkup} from 'react-dom/server';
-import {expect,it} from 'vitest';
+import {expect,it,vi} from 'vitest';
 import {RoseGiftFinale,roseGiftCanCelebrate,roseGiftClosingLine,roseGiftPose} from './story/RoseGiftFinale';
+import {ROSE_FIREWORK_PARTICLE_LIMIT,createRoseFireworks,roseFireworkSpark,roseFireworkPosition} from './story/rose-fireworks';
 
 it('gates fireworks on the fully settled handover while visible, never on initial contact or transfer',()=>{
  for(const seconds of [-1,0,1.2,1.65,2.85,2.999,NaN,Infinity])expect(roseGiftCanCelebrate(seconds,true)).toBe(false);
@@ -8,13 +9,49 @@ it('gates fireworks on the fully settled handover while visible, never on initia
  expect(roseGiftCanCelebrate(0,true)).toBe(false);expect(roseGiftCanCelebrate(3,true)).toBe(true);
 });
 
-it('registers three finite fireworks behind the unchanged single rose and uses a static reduced-motion glow',()=>{
+it('registers repeating canvas fireworks behind the unchanged single rose and uses borderless reduced-motion light clouds',()=>{
  const html=renderToStaticMarkup(<RoseGiftFinale language="ko"/>),reduced=renderToStaticMarkup(<RoseGiftFinale language="ko" reducedMotion/>);
  expect(html).toContain('data-celebration="idle"');expect(html).toContain('data-trigger="handover-complete"');
- expect(html.match(/class="rg-firework-launch"/g)).toHaveLength(3);expect(html.match(/class="rg-firework-ray"/g)).toHaveLength(84);
+ expect(html).toContain('<canvas class="rg-celebration"');expect(html).toContain('data-running="false"');expect(html).toContain('data-burst-count="0"');
+ expect(html).not.toContain('rg-firework-ray');expect(html).not.toContain('<ellipse');
  expect(html.indexOf('class="rg-celebration"')).toBeLessThan(html.indexOf('class="rg-live"'));
  expect(reduced).toContain('data-celebration="static"');expect(reduced).toContain('rg-celebration-glow');
  expect(html.match(/data-flower-instance="single"/g)).toHaveLength(1);
+});
+
+it('uses layered golden and rose sparks with gravity-curved tails instead of rigid sunburst rays',()=>{
+ const sparks=Array.from({length:64},(_,i)=>roseFireworkSpark(i,0,0));
+ expect(new Set(sparks.map(spark=>spark.color)).size).toBe(4);
+ expect(sparks.slice(0,44).every(spark=>spark.life>=3.7)).toBe(true);
+ expect(sparks.slice(44).every(spark=>spark.color===3)).toBe(true);
+ for(const spark of sparks){
+  expect(roseFireworkPosition(spark,0)).toEqual({x:spark.x,y:spark.y});
+  const end=roseFireworkPosition(spark,spark.life),late=roseFireworkPosition(spark,spark.life-.2);
+  expect([end.x,end.y,late.x,late.y].every(Number.isFinite)).toBe(true);expect(end.y).toBeGreaterThan(late.y);
+ }
+});
+
+it('keeps firing past ten seconds, pauses without backlog, bounds particles, and disposes its single frame loop',()=>{
+ let nextId=0,draws=0,maxDraws=0;const frames=new Map<number,FrameRequestCallback>();
+ const noop=()=>{},disconnect=vi.fn(),context={setTransform:noop,clearRect:noop,beginPath:noop,moveTo:noop,lineTo:noop,stroke:noop,drawImage:()=>{draws++;},fillRect:noop,createRadialGradient:()=>({addColorStop:noop})};
+ const canvas={width:0,height:0,dataset:{burstCount:'0'},parentElement:{getBoundingClientRect:()=>({left:0,top:0,width:600,height:656})},getBoundingClientRect:()=>({left:-150,top:-118.08,width:900,height:892.16}),getContext:()=>context} as unknown as HTMLCanvasElement;
+ class Observer{observe=noop;disconnect=disconnect;}
+ vi.stubGlobal('window',{devicePixelRatio:2});vi.stubGlobal('document',{createElement:()=>({width:0,height:0,getContext:()=>context})});vi.stubGlobal('ResizeObserver',Observer);
+ vi.stubGlobal('requestAnimationFrame',(callback:FrameRequestCallback)=>{frames.set(++nextId,callback);return nextId;});vi.stubGlobal('cancelAnimationFrame',(id:number)=>frames.delete(id));
+ const step=(time:number)=>{const scheduled=[...frames.values()];frames.clear();const before=draws;scheduled.forEach(callback=>callback(time));maxDraws=Math.max(maxDraws,draws-before);};
+ try{
+  const controller=createRoseFireworks(canvas);expect(frames.size).toBe(0);controller.setActive(true);
+  for(let frame=0;frame<720;frame++)step(frame*1000/60);
+  expect(Number(canvas.dataset.burstCount)).toBeGreaterThan(4);expect(maxDraws).toBeGreaterThan(64);expect(maxDraws).toBeLessThanOrEqual(ROSE_FIREWORK_PARTICLE_LIMIT);expect(canvas.width).toBe(1125);
+  const bursts=canvas.dataset.burstCount;controller.setActive(false);expect(frames.size).toBe(0);expect(canvas.dataset.running).toBe('false');step(90000);expect(canvas.dataset.burstCount).toBe(bursts);
+  controller.setActive(true);step(90016);expect(canvas.dataset.burstCount).toBe(bursts);expect(frames.size).toBe(1);
+  controller.reset();expect(canvas.dataset.burstCount).toBe('0');controller.dispose();expect(frames.size).toBe(0);expect(disconnect).toHaveBeenCalled();controller.setActive(true);expect(frames.size).toBe(0);
+ }finally{vi.unstubAllGlobals();}
+});
+
+it('keeps the static light-cloud fallback when a 2D canvas is unavailable',()=>{
+ const canvas={hidden:false,getContext:()=>null} as unknown as HTMLCanvasElement,controller=createRoseFireworks(canvas);
+ expect(canvas.hidden).toBe(true);expect(()=>{controller.setActive(true);controller.reset();controller.dispose();}).not.toThrow();
 });
 
 it('uses the playful lifetime-partner line only after receiving and an actual pact answer',()=>{
@@ -48,7 +85,7 @@ it('renders one live layered cutout and preserves semantics, loading and the app
  expect(html).not.toContain('data-rg-joint="recipient-reach"');
  expect(html).toMatch(/class="rg-replay" disabled=""/);
  expect(html).not.toContain('Ya firmaste');
- expect(html).not.toContain('<canvas');
+ expect(html.match(/<canvas /g)).toHaveLength(1);
  expect(html).not.toContain('<filter');
  expect(html).not.toContain('wrist-skin');
  expect(html).toMatch(/href="\/images\/rose-gift\/offer.png"[^>]*clip-path="url\(#[^"]+-recipient-upper\)"/);
