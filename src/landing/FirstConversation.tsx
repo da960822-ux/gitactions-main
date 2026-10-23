@@ -52,8 +52,8 @@ export function FirstConversation({language}:{language:'ko'|'es'}){
   if(matchMedia('(prefers-reduced-motion: reduce)').matches)return;
   if(event.pointerType==='mouse'&&!matchMedia('(hover: hover) and (pointer: fine)').matches)return;
   const bounds=event.currentTarget.getBoundingClientRect();
-  responseX.set(Math.max(-1,Math.min(1,(event.clientX-bounds.left)/bounds.width*2-1))*18);
-  responseY.set(Math.max(-1,Math.min(1,(event.clientY-bounds.top)/bounds.height*2-1))*14);
+  responseX.set(Math.max(-1,Math.min(1,(event.clientX-bounds.left)/bounds.width*2-1))*36);
+  responseY.set(Math.max(-1,Math.min(1,(event.clientY-bounds.top)/bounds.height*2-1))*28);
   intent.set(pressed.current?1:.45);
  };
  useEffect(()=>{
@@ -73,7 +73,7 @@ export function FirstConversation({language}:{language:'ko'|'es'}){
    timeline.fromTo('.fc-portrait-left',{svgOrigin:'190 275',x:-40,y:-8,scale:.94},{x:-20,y:10,scale:.97,duration:1},'contact')
     .to('.fc-portrait-left',{x:0,y:0,scale:1,duration:1},'awkward')
     .fromTo('.fc-portrait-right',{svgOrigin:'511 287',x:40,y:18,scale:.94},{x:0,y:0,scale:1,duration:2},'contact')
-    .fromTo('.fc-shared-surface',{opacity:.045},{opacity:.16,duration:2},'contact')
+    .fromTo('.fc-shared-surface',{opacity:.12},{opacity:.48,duration:2},'contact')
     .fromTo('.fc-daylight',{x:-240},{x:300,duration:2},'contact')
     .fromTo('.fc-thread',{opacity:.42},{opacity:.85,duration:1},'awkward')
     .fromTo('.fc-connection-duration',{opacity:0},{opacity:1,duration:.4},1.6);
@@ -118,6 +118,7 @@ export function FirstConversation({language}:{language:'ko'|'es'}){
      <g className="fc-portrait-left"><CutoutPortrait className="fc-face fc-face-yeonseok" side="yeonseok" x={40} y={124} width={300} height={302}/></g>
      <g className="fc-portrait-right"><CutoutPortrait className="fc-face fc-face-lisbeth" side="lisbeth" x={352} y={138} width={318} height={299}/></g>
      <g className="fc-thread"><path className="fc-heart-route fc-left-route" d={left.continuous}/><path className="fc-heart-route fc-right-route" d={right.continuous}/></g>
+     <g className="fc-messages"><path className="fc-heart-route fc-left-route" pathLength="100" d={left.continuous}/><path className="fc-heart-route fc-right-route" pathLength="100" d={right.continuous}/></g>
      <motion.g className="fc-thread-response" style={{opacity:responseOpacity,x:responseX,y:responseY,strokeWidth:responseWidth}}>
       <path className="fc-left-route" d={left.continuous}/><path className="fc-right-route" d={right.continuous}/>
      </motion.g>

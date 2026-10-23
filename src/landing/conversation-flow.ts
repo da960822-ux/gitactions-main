@@ -60,8 +60,8 @@ vec4 warpStep(vec2 p,float scale,float z,vec2 offA,vec2 offB,float reach,float s
 }
 void main(){
  float aspect=uResolution.x/max(uResolution.y,1.0);
- float t=uTime*0.075*0.5;
- float strength=0.6;
+ float t=uTime*0.16;
+ float strength=0.82;
  vec2 centred=vec2(vUv.x,1.0-vUv.y)-0.5;
  float angle=noise3(vec3(centred.x*0.8+t*0.4,centred.y*0.8-t*0.25,0.0))*12.566370614359172*strength;
  vec2 squashed=vec2(centred.x,centred.y/aspect);
@@ -78,7 +78,7 @@ void main(){
  float blendX=smoothstep(-edge,edge,zone),blendY=smoothstep(-edge,edge,level1.w);
  vec3 base=mix(mix(uColorA,uColorB,blendX),mix(uColorC,uColorD,blendX),blendY);
  float fold=max(1.0-abs(blendX*2.0-1.0),1.0-abs(blendY*2.0-1.0))*hardness;
- float light=((level2.z*0.5+0.5)*0.12+0.94)*(1.0+fold*0.35);
+ float light=((level2.z*0.5+0.5)*0.12+0.94)*(1.0+fold*0.65);
  outColor=linearToOutputTexel(vec4(clamp(base*light,0.0,1.0),1.0));
 }
 `;

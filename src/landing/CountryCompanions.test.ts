@@ -4,12 +4,28 @@ import {renderToStaticMarkup} from 'react-dom/server';
 import {describe,expect,it,vi} from 'vitest';
 import {cubicBezier,spring} from 'motion';
 import sharp from 'sharp';
-import {CountryCompanions,Companion,companionBodyMotion,companionBodyPose,companionWingPose,companionTailRotation,companionEncounterPose,companionEncounterAnchor,monitorCompanionArt} from './story/CountryCompanions';
+import {CountryCompanions,Companion,companionBodyMotion,companionBodyPose,companionWingPose,companionTailRotation,companionEncounterPose,companionEncounterAnchor,monitorCompanionArt,monitorCompanionArrival} from './story/CountryCompanions';
 
 const ease=cubicBezier(.23,1,.32,1);
 const rotate=(x:number,y:number,degrees:number)=>{const angle=degrees*Math.PI/180;return{x:x*Math.cos(angle)-y*Math.sin(angle),y:x*Math.sin(angle)+y*Math.cos(angle)};};
 
 describe('grounded companion greeting',()=>{
+ it('waits for the bird artwork to be visible and cancels a greeting when it leaves or unmounts',()=>{
+  vi.useFakeTimers();
+  let notify:((entries:{isIntersecting:boolean;intersectionRatio:number}[])=>void)|undefined;
+  const observe=vi.fn(),disconnect=vi.fn(),arrive=vi.fn();
+  class Observer{constructor(callback:typeof notify,options:{threshold:number}){notify=callback;expect(options.threshold).toBe(.75);}observe=observe;disconnect=disconnect;}
+  vi.stubGlobal('IntersectionObserver',Observer);
+  try{
+   const element={} as Element,cleanup=monitorCompanionArrival(element,arrive);
+   expect(observe).toHaveBeenCalledWith(element);
+   notify!([{isIntersecting:true,intersectionRatio:.4}]);vi.advanceTimersByTime(1000);expect(arrive).not.toHaveBeenCalled();
+   notify!([{isIntersecting:true,intersectionRatio:.8}]);vi.advanceTimersByTime(449);expect(arrive).not.toHaveBeenCalled();
+   notify!([{isIntersecting:false,intersectionRatio:0}]);vi.advanceTimersByTime(1000);expect(arrive).not.toHaveBeenCalled();
+   notify!([{isIntersecting:true,intersectionRatio:1}]);vi.advanceTimersByTime(450);expect(arrive).toHaveBeenCalledTimes(1);
+   notify!([{isIntersecting:true,intersectionRatio:1}]);cleanup();vi.advanceTimersByTime(1000);expect(arrive).toHaveBeenCalledTimes(1);expect(disconnect).toHaveBeenCalled();
+  }finally{vi.useRealTimers();vi.unstubAllGlobals();}
+ });
  it('keeps one monotonically paced flight with a readable bounded arc at different distances',()=>{
   for(const shift of [0,48,152,240,600]){
    let previous=companionBodyPose(0,shift,-1);
@@ -17,7 +33,7 @@ describe('grounded companion greeting',()=>{
     const pose=companionBodyPose(ease(frame/1000),shift,-1);
     expect(pose.x).toBeLessThanOrEqual(previous.x);expect(pose.x).toBeGreaterThanOrEqual(-shift);
     if(shift>0&&frame>5&&frame<995)expect(previous.x-pose.x).toBeGreaterThan(0);
-    expect(pose.y).toBeGreaterThanOrEqual(-78);expect(pose.y).toBeLessThanOrEqual(0);expect(Math.abs(pose.rotation)).toBeLessThanOrEqual(11);
+    expect(pose.y).toBeGreaterThanOrEqual(-112);expect(pose.y).toBeLessThanOrEqual(0);expect(Math.abs(pose.rotation)).toBeLessThanOrEqual(11);
     previous=pose;
    }
    expect(previous.x).toBe(-shift);expect(previous.y).toBe(-0);expect(previous.rotation).toBeCloseTo(-1.8);
@@ -26,11 +42,12 @@ describe('grounded companion greeting',()=>{
  it('keeps the duck at the foot plane and gives a readable bow after the approaching bird draws closer',()=>{
   for(let frame=0;frame<=100;frame++){
    const pose=companionBodyPose(frame/100,240,1);
-   expect(pose.x).toBe(0);expect(pose.y).toBe(0);expect(pose.rotation).toBeGreaterThanOrEqual(0);expect(pose.rotation).toBeLessThanOrEqual(4.7);
-   if(frame<=40)expect(pose.rotation).toBe(0);
+   expect(pose.x).toBe(0);expect(pose.y).toBe(0);expect(pose.rotation).toBeGreaterThanOrEqual(-4);expect(pose.rotation).toBeLessThanOrEqual(12.5);
    const contact=rotate((812-1254*.65),(1204-1254*.96),pose.rotation);
-   expect(Math.abs(contact.y-(1204-1254*.96))).toBeLessThan(.3);
+   expect(Math.abs(contact.y-(1204-1254*.96))).toBeLessThan(.8);
   }
+  expect(companionBodyPose(.16,240,1).rotation).toBeLessThan(-3.9);
+  expect(companionBodyPose(.72,240,1).rotation).toBeGreaterThan(10);
   expect(companionBodyPose(.72,240,1).rotation).toBeGreaterThan(companionBodyPose(1,240,1).rotation);
  });
  it('uses the same damped mass for approach and return, including interruption from a moving state',()=>{
@@ -71,13 +88,14 @@ describe('grounded companion greeting',()=>{
   }
  });
  it('blooms the encounter heart on arrival, ends its celebration, and can hide without resetting the bird pose',()=>{
-  for(const progress of [0,.4,.82])expect(companionEncounterPose(progress)).toEqual(companionEncounterPose(0));
-  const arrival=companionEncounterPose(.91),held=companionEncounterPose(1);
-  expect(arrival.fill).toBeGreaterThan(.16);expect(arrival.fill).toBeLessThan(1);expect(arrival.burst).toBeGreaterThan(.9);
-  expect(held).toEqual({opacity:1,scale:1,draw:1,fill:1,burst:0});
-  const hidden=companionEncounterPose(.91,0);
+  for(const progress of [0,.4,.65])expect(companionEncounterPose(progress)).toEqual(companionEncounterPose(0));
+  const arrival=companionEncounterPose(.825),held=companionEncounterPose(1);
+  expect(arrival.fill).toBeGreaterThan(.3);expect(arrival.fill).toBeLessThan(1);expect(arrival.burst).toBeGreaterThan(.9);
+  expect(arrival.scale).toBeGreaterThan(1);expect(arrival.y).toBeGreaterThan(0);
+  expect(held).toEqual({opacity:1,scale:1,draw:1,y:0,fill:1,burst:0});
+  const hidden=companionEncounterPose(.825,0);
   expect(hidden.opacity).toBe(0);expect(hidden.scale).toBe(arrival.scale);expect(hidden.fill).toBe(arrival.fill);
-  for(const [width,height,billX,billY,copyBottom] of [[1440,900,900,528,335],[1920,1080,1200,600,380]]){
+  for(const [width,height,billX,billY,copyBottom] of [[1280,720,791,428,234],[1440,900,900,528,335],[1920,1080,1200,600,380]]){
    const anchor=companionEncounterAnchor(billX,billY,width,height);
    // The full heart occupies y[-42,43]; its point clears the encounter bills and its lobes clear the copy.
    expect(anchor.y+43).toBeLessThan(billY-60);expect(anchor.y-42).toBeGreaterThan(copyBottom+20);
@@ -90,6 +108,22 @@ describe('grounded companion greeting',()=>{
   const sparks=markup.match(/class="companion-sparks"[^>]*>(.*?)<\/g>/)![1];
   expect((sparks.match(/<path /g)||[])).toHaveLength(4);
  });
+ it('keeps the full settled heart above the duck head on the narrow landing',()=>{
+  const width=390,height=360,duckSize=width*.48,hummingbirdSize=width*.4;
+  const duckTop=height-56-duckSize,hummingbirdTop=height-80-hummingbirdSize;
+  const billY=(duckTop+duckSize*.27+hummingbirdTop+hummingbirdSize*.195)/2;
+  const anchor=companionEncounterAnchor(duckSize*.91,billY,width,height);
+  expect(anchor.y+43).toBeLessThan(duckTop+duckSize*.06-20);
+  for(let frame=0;frame<=100;frame++){
+   const progress=frame/100,heart=companionEncounterPose(progress),duck=companionBodyPose(progress,0,1);
+   for(const x of [.58,.87]){
+    const head=rotate((x-.65)*duckSize,(.06-.96)*duckSize,duck.rotation);
+    expect(anchor.y+heart.y+43*heart.scale).toBeLessThan(duckTop+.96*duckSize+head.y-8);
+   }
+  }
+  expect(duckTop).toBeGreaterThan(0);expect(duckTop+duckSize).toBeLessThan(height);
+  expect(hummingbirdTop).toBeGreaterThan(0);expect(hummingbirdTop+hummingbirdSize).toBeLessThan(height);
+ });
  it('renders feather-root overlap within a depth-separated, body-relative wing rig',()=>{
   const markup=renderToStaticMarkup(createElement(CountryCompanions,{language:'ko'}));
   const rig=markup.slice(markup.indexOf('class="hummingbird-rig"'));
@@ -101,11 +135,11 @@ describe('grounded companion greeting',()=>{
   expect((rig.match(/mask="url\(/g)||[])).toHaveLength(2);
   expect(markup.indexOf('companion-contact')).toBeLessThan(markup.indexOf('mandarin-duck.png'));
  });
- it('keeps full feather fans through one finite following stroke and settles at either endpoint',()=>{
+ it('keeps full feather fans through three finite following strokes and settles at either endpoint',()=>{
   const rest=companionWingPose(0),held=companionWingPose(1);
   expect(held.rotation).toBeCloseTo(rest.rotation);expect(held.scaleY).toBeCloseTo(rest.scaleY);
-  expect(companionWingPose(.3).rotation).toBeGreaterThan(40);
-  expect(companionWingPose(.75).rotation).toBeLessThan(-55);
+  expect(companionWingPose(.42).rotation).toBeGreaterThan(55);
+  expect(companionWingPose(.58).rotation).toBeLessThan(-75);
   for(const far of [false,true])for(let frame=0;frame<=200;frame++){
    const pose=companionWingPose(frame/200,far);
    expect(pose.scaleY).toBeGreaterThanOrEqual(.82);expect(pose.scaleY).toBeLessThanOrEqual(1);

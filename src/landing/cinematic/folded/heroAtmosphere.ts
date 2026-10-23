@@ -5,7 +5,7 @@ type Projection = {halfWidthAtUnitZ:number;halfHeightAtUnitZ:number};
 const clamp=(value:number)=>T.MathUtils.clamp(value,0,1);
 export function heroAtmospherePresence(progress:number){const t=clamp((progress-.018)/.037);return 1-t*t*(3-2*t);}
 
-// Original GLSL: ThreeUI's layered-light treatment is a conceptual reference, with no copied source.
+// Original GLSL; Shaders/21st layered light and ThreeUI depth are conceptual references, not copied code.
 const skyFragment=`
 uniform float uTime,uPresence,uCharge,uRelease,uMotion;
 uniform vec2 uPointer,uOrigin;
@@ -14,49 +14,58 @@ float hash(vec2 p){return fract(sin(dot(p,vec2(127.1,311.7)))*43758.5453);}
 float noise(vec2 p){vec2 i=floor(p),f=fract(p);f=f*f*(3.-2.*f);return mix(mix(hash(i),hash(i+vec2(1,0)),f.x),mix(hash(i+vec2(0,1)),hash(i+1.),f.x),f.y);}
 float cloud(vec2 p){return .57*noise(p)+.29*noise(p*2.03+7.1)+.14*noise(p*4.07-3.2);}
 float meteorTrail(vec2 uv,float offset,float speed,float lane,float strength){
- float phase=mod(uTime+offset,5.4);
- float visible=smoothstep(0.,.12,phase)*(1.-smoothstep(1.9,2.35,phase))*uMotion;
+ float phase=mod(uTime+offset,7.2);
+ float visible=smoothstep(0.,.16,phase)*(1.-smoothstep(2.25,2.7,phase))*uMotion;
  float headX=1.12-phase*speed;
- float curve=.44+lane+(uv.x-.5)*.55+.025*sin(uv.x*7.);
+ float curve=.57+lane+(uv.x-.5)*.38+.022*sin(uv.x*7.);
  float behind=uv.x-headX;
- float tail=smoothstep(-.003,.003,behind)*exp(-max(behind,0.)*23.);
- float line=exp(-pow((uv.y-curve)/.0019,2.))*tail;
- float headY=.44+lane+(headX-.5)*.55+.025*sin(headX*7.);
+ float tail=smoothstep(-.004,.004,behind)*exp(-max(behind,0.)*9.);
+ float line=(exp(-pow((uv.y-curve)/.0024,2.))+.18*exp(-pow((uv.y-curve)/.009,2.)))*tail;
+ float headY=.57+lane+(headX-.5)*.38+.022*sin(headX*7.);
  vec2 head=(uv-vec2(headX,headY))*vec2(1.55,1.);
- float spark=exp(-dot(head,head)*52000.)*2.5;
- float bloom=exp(-dot(head,head)*6000.)*.4;
+ float spark=exp(-dot(head,head)*36000.)*3.;
+ float bloom=exp(-dot(head,head)*2600.)*.65;
  return (line+spark+bloom)*visible*strength;
 }
 float meteor(vec2 uv){
- return meteorTrail(uv,.8,.26,0.,1.)
-      +meteorTrail(uv,2.1,.29,.075,.78)
-      +meteorTrail(uv,3.3,.24,-.065,.88)
-      +meteorTrail(uv,4.4,.31,.14,.65);
+ return meteorTrail(uv,.85,.28,.03,1.25)
+      +meteorTrail(uv,3.25,.31,.18,1.)
+      +meteorTrail(uv,5.65,.26,.10,1.15);
+}
+float orbitLight(vec2 uv){
+ vec2 q=(uv-vec2(.78,.76))*vec2(1.,1.4);
+ float angle=atan(q.y,q.x);
+ float radius=length(q);
+ float arc=exp(-pow((radius-.275)/.0022,2.));
+ float travelling=pow(.5+.5*cos(angle-uTime*.85),24.);
+ float echo=pow(.5+.5*cos(angle+uTime*.55+2.),32.);
+ return arc*(.055+.95*travelling+.38*echo)*uMotion;
 }
 void main(){
  vec2 uv=vUv;
  float sky=smoothstep(.29,.37,uv.x)*smoothstep(.43,.59,uv.y);
  vec2 p=uv+uPointer*vec2(.008,.005);
- float flow=uTime*.022;
+ float flow=uTime*.065;
  float n=cloud(p*vec2(9.,12.)+vec2(-flow,flow*.4));
  // The light follows the diagonal galaxy already in the approved photograph.
  float path=.44+(p.x-.5)*.55;
  float vein=exp(-pow((p.y-path-(n-.5)*.18)/.058,2.));
- float filament=pow(max(0.,sin((p.y-path)*112.+n*9.-uTime*.18)),14.);
+ float filament=pow(max(0.,sin((p.y-path)*112.+n*9.-uTime*.7)),14.);
  float threads=exp(-pow((p.y-path-(n-.5)*.18)/.012,2.));
- float wisp=vein*(.13+.36*filament)*(.35+.65*n)+threads*.32;
+ float travelling=pow(.5+.5*sin(p.x*13.-uTime*1.1+n*3.),5.);
+ float wisp=vein*(.10+.48*filament+.22*travelling)*(.35+.65*n)+threads*.38;
  vec2 delta=(uv-uOrigin)*vec2(1.55,1.);
  float locality=exp(-dot(delta,delta)*32.);
- float gathered=uCharge*locality*(.30+.45*n);
- // Release illuminates existing filaments rather than drawing a ring over the artwork.
- float released=uRelease*exp(-dot(delta,delta)*9.)*(.15+.65*filament)*vein;
+ float gathered=uCharge*locality*(.45+.65*n);
+ float wave=exp(-pow((length(delta)-(1.-uRelease)*.55)/.032,2.));
+ float released=uRelease*(wave*.85+exp(-dot(delta,delta)*9.)*(.15+.65*filament))*vein;
  vec3 rose=vec3(.91,.25,.46),gold=vec3(1.,.64,.32),violet=vec3(.42,.25,.72);
  vec3 color=mix(violet,rose,smoothstep(.25,.8,n));
  color=mix(color,gold,filament*.65+gathered*.4);
  float alpha=sky*uPresence*(wisp+gathered+released)*1.25;
  float shooting=meteor(uv)*sky*uPresence*(1.+uCharge*.65);
  // Premultiply only here so the meteor can keep its warm source-star color.
- vec3 light=color*alpha+gold*shooting;
+ vec3 light=color*alpha+gold*(shooting+orbitLight(uv)*sky*uPresence);
  gl_FragColor=vec4(light,1.);
 }`;
 const starVertex=`
@@ -68,7 +77,7 @@ void main(){
  vec3 p=position;
  vec2 uv=p.xy/(uFrame*-p.z)*.5+.5;
  vec2 drift=uPointer*(.009+aLayer*.012);
- drift+=vec2(sin(uTime*.16+aSeed*31.),cos(uTime*.12+aSeed*27.))*(.0015+aLayer*.0015)*uMotion;
+ drift+=vec2(sin(uTime*.3+aSeed*31.),cos(uTime*.24+aSeed*27.))*(.002+aLayer*.004)*uMotion;
  vec2 pull=(uOrigin-uv)*uCharge*.045;
  p.xy+=(drift+pull)*uFrame*-p.z;
  vec4 view=modelViewMatrix*vec4(p,1.);

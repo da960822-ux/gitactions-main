@@ -8,7 +8,7 @@ import {useLiveReducedMotion} from './useLiveReducedMotion';
 
 gsap.registerPlugin(ScrollTrigger);
 export type CompanionPhase='greet'|'return'|'instant';
-const flightSpring={type:'spring' as const,mass:1,stiffness:100,damping:20,restDelta:.0001,restSpeed:.001};
+const flightSpring={type:'spring' as const,mass:1.2,stiffness:86,damping:21,restDelta:.0001,restSpeed:.001};
 const unit=(value:number)=>Number.isFinite(value)?Math.max(0,Math.min(1,value)):0;
 export function monitorCompanionArt(onError:()=>void){
  let active=true;
@@ -20,14 +20,23 @@ export function monitorCompanionArt(onError:()=>void){
  });
  return()=>{active=false;for(const image of images)image.onerror=null;};
 }
+export function monitorCompanionArrival(element:Element,onArrive:()=>void){
+ let arrival:ReturnType<typeof setTimeout>|undefined;
+ const observer=new IntersectionObserver(([entry])=>{
+  clearTimeout(arrival);
+  if(entry.isIntersecting&&entry.intersectionRatio>=.75)arrival=setTimeout(onArrive,450);
+ },{threshold:.75});
+ observer.observe(element);
+ return()=>{clearTimeout(arrival);observer.disconnect();};
+}
 export function companionBodyPose(progress:number,shift:number,side:1|-1,attention=0){
- const q=unit(progress),response=unit((q-.4)/.6),bow=response*response*(3-2*response);
- if(side===1)return{x:0,y:0,rotation:4*Math.sin(Math.PI*bow)+1.25*bow+.7*unit(attention)};
- const travel=Number.isFinite(shift)?Math.max(0,shift):0,lift=Math.min(78,Math.max(18,travel*.36+12));
+ const q=unit(progress),response=unit((q-.32)/.68),bow=response*response*(3-2*response);
+ if(side===1)return{x:0,y:0,rotation:-4*Math.sin(Math.PI*unit(q/.32))+11*Math.sin(Math.PI*bow)+1.5*bow+2.2*unit(attention)};
+ const travel=Number.isFinite(shift)?Math.max(0,shift):0,lift=Math.min(112,Math.max(30,travel*.48+24));
  return{x:-travel*q,y:-4*lift*q*(1-q)-6*unit(attention),rotation:-9*Math.sin(Math.PI*q)-1.8*q-1.8*unit(attention)};
 }
 export function companionWingPose(follow:number,far=false,attention=0){
- const q=unit(follow),spread=Math.sin(Math.PI*q),stroke=Math.sin(2*Math.PI*q)*spread;
+ const q=unit(follow),spread=Math.sin(Math.PI*q),stroke=Math.sin(6*Math.PI*q)*spread;
  return{rotation:(far?-18:-10)+(far?82:72)*stroke-3*unit(attention),scaleX:far?.84:1,scaleY:(far?.82:.9)+.08*spread};
 }
 export function companionTailRotation(progress:number,follow=progress){
@@ -80,8 +89,8 @@ export function Companion({side,together,phase,shift,reduced,interactive,failed,
 }
 
 export function companionEncounterPose(progress:number,presence=1){
- const arrival=unit((unit(progress)-.82)/.18),bloom=arrival*arrival*(3-2*arrival);
- return{opacity:unit(presence)*(.5+.5*bloom),scale:.72+.28*bloom,draw:.4+.6*bloom,fill:.16+.84*bloom,burst:4*bloom*(1-bloom)};
+ const arrival=unit((unit(progress)-.65)/.35),bloom=arrival*arrival*(3-2*arrival);
+ return{opacity:unit(presence)*(.3+.7*bloom),scale:.5+.5*bloom+.32*Math.sin(Math.PI*bloom),y:26*(1-bloom),draw:.4+.6*bloom,fill:.3+.7*bloom,burst:4*bloom*(1-bloom)};
 }
 export function companionEncounterAnchor(billX:number,billY:number,width:number,height:number){
  return{x:Math.max(78,Math.min(width-78,billX+21)),y:Math.max(60,Math.min(height-150,billY-108))};
@@ -95,23 +104,24 @@ function CompanionEncounter({progress,trace,together,noticed,interactive,instant
   return()=>movement.stop();
  },[together,noticed,interactive,instant,presence]);
  const opacity=useTransform(()=>companionEncounterPose(progress.get(),presence.get()).opacity);
- const transform=useTransform(()=>`scale(${companionEncounterPose(progress.get()).scale})`);
+ const transform=useTransform(()=>{const pose=companionEncounterPose(progress.get());return `translateY(${pose.y}px) scale(${pose.scale})`;});
  const fillOpacity=useTransform(()=>companionEncounterPose(progress.get()).fill);
  const dash=useTransform(()=>100*(1-companionEncounterPose(progress.get()).draw));
  const burst=useTransform(()=>companionEncounterPose(progress.get()).burst);
+ const sparkTransform=useTransform(()=>`scale(${.7+.8*unit((progress.get()-.65)/.35)})`);
  const trailDash=useTransform(()=>100*(1-unit((progress.get()-.7)/.3)));
  const rightTrail=useTransform(()=>{const start=22+trace.span*(1-unit(progress.get()));return `M${start} 105 C${start+18} 82 63 66 46 30`;});
  return <motion.svg className="companion-heart" aria-hidden="true" style={{opacity}}><defs><linearGradient id={`${id}-rose`} x1="0" y1="-42" x2="0" y2="43" gradientUnits="userSpaceOnUse"><stop stopColor="#ffb4ce"/><stop offset=".55" stopColor="#f071a0"/><stop offset="1" stopColor="#cc477c"/></linearGradient></defs>
   <g transform={`translate(${trace.x} ${trace.y})`}>
    <motion.g className="companion-light-trails" style={{opacity:burst}}><motion.path d="M-22 105 C-40 82 -63 66 -46 30" pathLength="100" strokeDasharray="100" style={{strokeDashoffset:trailDash}}/><motion.path d={rightTrail} pathLength="100" strokeDasharray="100" style={{strokeDashoffset:trailDash}}/></motion.g>
    <motion.g style={{transform,originX:0,originY:0,transformBox:'view-box'}}><motion.path data-companion-heart-body="true" d="M0 43C-63 9-49-42-24-42C-10-42-2-33 0-23C2-33 10-42 24-42C49-42 63 9 0 43Z" fill={`url(#${id}-rose)`} stroke="#ffe1ae" strokeWidth="2.4" pathLength="100" strokeDasharray="100" style={{fillOpacity,strokeDashoffset:dash}}/></motion.g>
-   <motion.g className="companion-sparks" style={{opacity:burst}}>{[[-63,-28],[62,-24],[-54,35],[57,39]].map(([x,y],index)=><path key={index} d={`M${x} ${y-5}l2 4 4 1-4 2-2 4-1-4-4-2 4-1Z`}/>)}</motion.g>
+   <motion.g className="companion-sparks" style={{opacity:burst,transform:sparkTransform,originX:0,originY:0,transformBox:'view-box'}}>{[[-63,-28],[62,-24],[-54,35],[57,39]].map(([x,y],index)=><path key={index} d={`M${x} ${y-8}l3 6 6 2-6 3-3 6-2-6-6-3 6-2Z`}/>)}</motion.g>
   </g>
  </motion.svg>;
 }
 
 export function CountryCompanions({language}:{language:'ko'|'es'}){
- const ko=language==='ko',root=useRef<HTMLDivElement>(null),reduced=useLiveReducedMotion(),duckNote=useId(),hummingbirdNote=useId(),encounter=useMotionValue(0);
+ const ko=language==='ko',root=useRef<HTMLDivElement>(null),greeted=useRef(false),reduced=useLiveReducedMotion(),duckNote=useId(),hummingbirdNote=useId(),encounter=useMotionValue(0);
  const [together,setTogether]=useState(false),[visible,setVisible]=useState(false),[phase,setPhase]=useState<CompanionPhase>('instant'),[shift,setShift]=useState(0),[failed,setFailed]=useState(false),[trace,setTrace]=useState({x:0,y:0,span:0}),[noticed,setNoticed]=useState(false);
  // SVG image failures are not reliably forwarded through React's onError in every browser.
  useEffect(()=>monitorCompanionArt(()=>setFailed(true)),[]);
@@ -126,7 +136,7 @@ export function CountryCompanions({language}:{language:'ko'|'es'}){
   const hidden=()=>{if(document.hidden){setVisible(false);reset();}else setVisible(distance.getBoundingClientRect().bottom>0&&distance.getBoundingClientRect().top<innerHeight);};document.addEventListener('visibilitychange',hidden);
   const mm=gsap.matchMedia();mm.add('(prefers-reduced-motion: no-preference)',()=>{
    const diagnose=(trigger:ScrollTrigger)=>{element.dataset.companionStart=String(trigger.start);element.dataset.companionEnd=String(trigger.end);element.dataset.companionProgress=String(trigger.progress);};
-   const timeline=gsap.timeline({scrollTrigger:{trigger:distance,start:'top 85%',end:'top 10%',scrub:true,refreshPriority:-1,invalidateOnRefresh:true,onRefresh:diagnose,onUpdate:trigger=>{diagnose(trigger);returnCurrent();}}});
+   const timeline=gsap.timeline({scrollTrigger:{trigger:distance,start:'top 85%',end:'top 10%',scrub:true,refreshPriority:-1,invalidateOnRefresh:true,onRefresh:diagnose,onUpdate:diagnose}});
    timeline.fromTo(element.querySelector('.lovebird-left')!,{xPercent:-4},{xPercent:0,ease:'none'},0).fromTo(element.querySelector('.lovebird-right')!,{xPercent:8},{xPercent:0,ease:'none'},0);
   });
   return()=>{observer.disconnect();resize.disconnect();document.removeEventListener('visibilitychange',hidden);mm.revert();};
@@ -140,10 +150,16 @@ export function CountryCompanions({language}:{language:'ko'|'es'}){
   setShift(distance);setTrace({...companionEncounterAnchor(duckBill-scene.left,billY,scene.width,scene.height),span:distance});
  };
  const notice=(active:boolean)=>{if(active&&!together)positionEncounter();setNoticed(active);};
- const greet=(pointer:boolean)=>{
+ useEffect(()=>{
+  const bird=root.current?.querySelector('.lovebird-left');
+  if(!visible||failed||greeted.current||!bird)return;
+  return monitorCompanionArrival(bird,()=>{if(greeted.current)return;greeted.current=true;positionEncounter();setPhase(reduced?'instant':'greet');setTogether(true);});
+ },[visible,failed,reduced]);
+ const greet=(_pointer:boolean)=>{
   if(failed)return;
+  greeted.current=true;
   if(!together)positionEncounter();
-  setNoticed(false);setPhase(pointer&&visible&&!reduced?(together?'return':'greet'):'instant');setTogether(value=>!value);
+  setNoticed(false);setPhase(visible&&!reduced?(together?'return':'greet'):'instant');setTogether(value=>!value);
  };
  return <div ref={root} inert={!visible} className="country-companions" data-together={together&&!failed} data-failed={failed} data-visible={visible} data-reduced={Boolean(reduced)} data-interaction-phase={phase} data-story-moment="distance" role="group" aria-labelledby="story-distance-title">
   <div className="companion-stage">
