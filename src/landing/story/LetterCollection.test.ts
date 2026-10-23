@@ -52,6 +52,9 @@ test('letter-only collection preserves room ownership, reversible folds, DOM han
  collection.update({...frame,opening:.8,progress:.86,onPaperPose});assert.equal(insert.visible,true);
  const desktopBack=collection.root.getObjectByName('letter-back') as THREE.Mesh;assert.ok(Array.isArray(desktopBack.material)&&desktopBack.material[4] instanceof THREE.MeshBasicMaterial);assert.equal(desktopBack.material[4],desktopBack.material[5],'front and back share the same cream reading surface while the original thickness material remains on the sides');
  collection.update({...frame,width:390,opening:1,progress:.84,onPaperPose});assert.equal(collection.root.rotation.y,0,'shared mobile camera contains the same flat envelope');assert.ok(desktopBack.material instanceof THREE.MeshStandardMaterial,'mobile retains the original lit paper');
+ const envelope=collection.root.getObjectByName('letter-envelope')!;
+ collection.update({...frame,onPaperPose,letterView:'sealed',time:3,pointer:{x:1,y:-1}});assert.notEqual(envelope.rotation.y,0);assert.ok(Math.abs(envelope.rotation.y)<.09);assert.ok(envelope.position.y>.014);
+ for(const variant of [{letterView:'reading' as const,opening:.12},{letterView:'folding' as const},{letterView:'rose' as const},{reducedMotion:true,letterView:'sealed' as const}]){collection.update({...frame,onPaperPose,time:3,...variant});assert.equal(envelope.rotation.y,0);assert.equal(envelope.rotation.z,0);assert.equal(envelope.position.length(),0);}
  collection.dispose();collection.dispose();assert.equal(collection.ready,false);assert.deepEqual(scene.children,[room]);assert.equal(roomDisposed,false);assert.equal(scene.fog,fog);assert.equal(scene.background,background);assert.equal(paper!.visible,false);
  room.geometry.dispose();(room.material as THREE.Material).dispose();
 });

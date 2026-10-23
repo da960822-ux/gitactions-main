@@ -1,7 +1,7 @@
 import {test,onTestFinished} from 'vitest';
 import assert from 'node:assert/strict';
 import * as THREE from 'three';
-import {createPostHeroComposition,type PostCompositionFrame} from '../PostHeroComposition';
+import {createPostHeroComposition,letterLightPose,type PostCompositionFrame} from '../PostHeroComposition';
 import {createLetterCollection} from './LetterCollection';
 import {createLocalEventState} from './LocalEventRig';
 
@@ -56,5 +56,17 @@ test('main letter stage omits DOM-owned ending copies and preserves letter, sess
  const returned=evaluate(.36);assert.deepEqual(returned.eye.toArray(),pose.eye);assert.deepEqual(returned.target.toArray(),pose.target);
  assert.deepEqual({position:tabletop.position.toArray(),scale:tabletop.scale.toArray(),vertices:Array.from(tabletop.geometry.getAttribute('position').array)},fixedDesk);
  const reverse=evaluate(.1).eye.toArray();evaluate(.8);assert.deepEqual(evaluate(.1).eye.toArray(),reverse);
+ const sealed=rig.update({...frame,progress:.663,reducedMotion:false,letterView:'sealed',time:3});assert.equal(sealed.story.letterAmbient,true);assert.equal(sealed.needsFrame,true);
+ for(const letterView of ['reading','folding','rose']as const)assert.equal(rig.update({...frame,progress:.663,reducedMotion:false,letterView,time:3}).story.letterAmbient,false);
+ assert.equal(rig.update({...frame,progress:.663,letterView:'sealed',time:3}).story.letterAmbient,false);
+ assert.equal(rig.update({...frame,progress:.45,reducedMotion:false,letterView:'sealed',time:3}).story.letterAmbient,false);
  rig.dispose();rig.dispose();assert.equal(scene.children.length,0);assert.equal(compositionTexture.disposals,1,'main texture is released exactly once');
+});
+
+
+test('sealed letter light moves within its existing stage and stays neutral when inactive',()=>{
+ assert.deepEqual(letterLightPose(12,false,{x:1,y:-1}),{x:-6,z:7,cool:.6});
+ assert.deepEqual(letterLightPose(NaN,true),letterLightPose(0,true));
+ assert.notDeepEqual(letterLightPose(0,true),letterLightPose(3,true));
+ for(let t=0;t<40;t+=.2){const light=letterLightPose(t,true,{x:1,y:-1});assert.ok(light.x>=-12&&light.x<=0);assert.ok(light.z>=-.5&&light.z<=8.5);assert.ok(light.cool>=.44&&light.cool<=.76);}
 });

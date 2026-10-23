@@ -39,6 +39,11 @@ it('presents imagined alternatives with a default choice and no actual result an
   expect(html).not.toContain('승!');
   expect(html).not.toContain('couple-result-moment');
   expect(html).toContain('data-animate="false"');
+  expect(html).toContain('data-ambient="false"');
+  expect(html).toContain('/images/approved-couple-room/environment-chair-vacancy-only.png');
+  expect(html).toContain('class="duel-illustration-depth-back"');expect(html).toContain('class="duel-illustration-depth-front"');
+  expect(html).toContain('class="duel-illustration-desk"');expect(html).toContain('0 1 1 0 0');
+  expect(html).toContain('class="duel-illustration-room-light"');
   expect(html).toContain('class="duel-illustration-celebration" viewBox="0 0 1672 941" aria-hidden="true"');
   expect(html.indexOf('duel-illustration-room')).toBeLessThan(html.indexOf('duel-illustration-celebration'));
   expect(html.indexOf('duel-illustration-celebration')).toBeLessThan(html.indexOf('duel-illustration-reactions'));

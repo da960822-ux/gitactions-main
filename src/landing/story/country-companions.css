@@ -1,5 +1,18 @@
 .post-hero-preview .story-distance>.country-companions{position:absolute;inset:0;width:100%;height:100%;overflow:clip;z-index:2;pointer-events:none;isolation:isolate}
 .post-hero-preview .companion-stage{position:relative;width:100%;height:100%;isolation:isolate}
+.post-hero-preview .companion-atmosphere-pair{position:absolute;inset:0;animation:companion-air-depth 9s ease-in-out infinite;animation-play-state:paused}
+.post-hero-preview .companion-air-surface{position:absolute;inset:35% 1% 14% 35%;background:linear-gradient(112deg,transparent 20%,#edb7c928 42%,#edc2b157 51%,#edb7c918 63%,transparent 78%);mask-image:radial-gradient(ellipse at center,#000 12%,transparent 70%);animation:companion-air-surface 12s ease-in-out infinite;animation-play-state:paused;pointer-events:none}
+.post-hero-preview .country-companions[data-ambient=true] .companion-air-surface{animation-play-state:running}
+.post-hero-preview .country-companions[data-ambient=false] .companion-air-surface{animation:none}
+.post-hero-preview .country-companions[data-ambient=true] .companion-atmosphere-pair,.post-hero-preview .country-companions[data-ambient=true] .hummingbird-air-feathers,.post-hero-preview .country-companions[data-ambient=true] .companion-contact{animation-play-state:running}
+.post-hero-preview .country-companions[data-ambient=false] .companion-atmosphere-pair,.post-hero-preview .country-companions[data-ambient=false] .hummingbird-air-feathers,.post-hero-preview .country-companions[data-ambient=false] .companion-contact{animation:none}
+.post-hero-preview .hummingbird-air-feathers{transform-box:view-box;transform-origin:0 0;animation:companion-feather-air 2.8s ease-in-out infinite;animation-play-state:paused}
+.post-hero-preview .hummingbird-wing-far .hummingbird-air-feathers{animation-delay:-1.1s;animation-direction:reverse}
+.post-hero-preview .companion-contact{transform-box:fill-box;transform-origin:50% 50%;animation:companion-shadow-depth 9s ease-in-out infinite;animation-play-state:paused}
+@keyframes companion-air-depth{0%,100%{transform:translate3d(-5px,2px,0)}50%{transform:translate3d(5px,-4px,0)}}
+@keyframes companion-feather-air{0%,100%{transform:rotate(-7deg)}50%{transform:rotate(9deg)}}
+@keyframes companion-shadow-depth{0%,100%{transform:scaleX(1.08);opacity:.36}50%{transform:scaleX(.9);opacity:.25}}
+@keyframes companion-air-surface{0%,100%{transform:translateX(-12%) skewY(-5deg);opacity:.5}50%{transform:translateX(12%) skewY(5deg);opacity:1}}
 .post-hero-preview .bird-scroll{position:absolute;bottom:16svh;width:27vw;aspect-ratio:1;z-index:1;pointer-events:auto}
 .post-hero-preview .lovebird-left{left:38vw}
 .post-hero-preview .lovebird-right{right:3vw;bottom:20svh;width:22vw}
@@ -31,6 +44,7 @@
 @media(max-width:1000px){
  .post-hero-preview .story-distance>.country-companions{position:relative;inset:auto;height:auto;flex:none;overflow:clip}
  .post-hero-preview .companion-stage{height:clamp(360px,60vw,520px)}
+ .post-hero-preview .companion-air-surface{inset:15% -8% 12%}
  .post-hero-preview .bird-scroll{bottom:56px;width:48%}
  .post-hero-preview .lovebird-left{left:0}
  .post-hero-preview .lovebird-right{right:0;bottom:80px;width:40%}

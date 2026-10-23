@@ -8,11 +8,13 @@ export function ConversationMaterial({charging=false,echo=0}:{charging?:boolean;
  useEffect(()=>{interaction.current={charging,echo};},[charging,echo]);
  useEffect(()=>{
   const element=host.current;if(!element)return;
-  const preference=matchMedia('(prefers-reduced-motion: reduce)');
+  const preference=matchMedia('(prefers-reduced-motion: reduce)'),figure=element.closest<HTMLElement>('.fc-connection'),pointer=new Vector2();
+  const resetPointer=()=>pointer.set(0,0);
+  const follow=(event:PointerEvent)=>{if(!active||event.pointerType!=='mouse'||!figure)return;const box=figure.getBoundingClientRect();pointer.set(Math.max(-1,Math.min(1,(event.clientX-box.left)/box.width*2-1)),Math.max(-1,Math.min(1,(event.clientY-box.top)/box.height*2-1)));};
   let renderer:WebGLRenderer|undefined,geometry:PlaneGeometry|undefined,material:ShaderMaterial|undefined;
   let visible=false,active=false,failed=false,elapsed=0,lastDraw=0,draws=0,lastEcho=echo,releasedAt=-Infinity;
   const scene=new Scene(),camera=new Camera();
-  const stop=()=>{active=false;lastDraw=0;releasedAt=-Infinity;lastEcho=interaction.current.echo;if(material){material.uniforms.uCharge.value=0;material.uniforms.uEcho.value=-1;}renderer?.setAnimationLoop(null);element.dataset.loopActive='false';};
+  const stop=()=>{resetPointer();active=false;lastDraw=0;releasedAt=-Infinity;lastEcho=interaction.current.echo;if(material){material.uniforms.uCharge.value=0;material.uniforms.uEcho.value=-1;}renderer?.setAnimationLoop(null);element.dataset.loopActive='false';};
   const fail=(reason:string)=>{failed=true;stop();element.dataset.state='fallback';element.dataset.unavailableReason=reason;if(renderer)renderer.domElement.hidden=true;};
   const contextLost=()=>fail('context-lost');
   const resize=()=>{
@@ -26,6 +28,8 @@ export function ConversationMaterial({charging=false,echo=0}:{charging?:boolean;
    if(lastDraw&&now-lastDraw<1000/30)return;
    const dt=lastDraw?Math.min((now-lastDraw)/1000,.1):0;elapsed+=dt;lastDraw=now;
    material.uniforms.uTime.value=elapsed;
+   material.uniforms.uPointer.value.lerp(pointer,1-Math.exp(-dt*6));
+   element.dataset.pointer=material.uniforms.uPointer.value.toArray().map((v:number)=>v.toFixed(3)).join(',');
    if(lastEcho!==interaction.current.echo){lastEcho=interaction.current.echo;releasedAt=elapsed;}
    material.uniforms.uCharge.value+=(Number(interaction.current.charging)-material.uniforms.uCharge.value)*(1-Math.exp(-dt*14));
    material.uniforms.uEcho.value=connectionEchoProgress(elapsed-releasedAt);
@@ -40,7 +44,7 @@ export function ConversationMaterial({charging=false,echo=0}:{charging?:boolean;
     renderer.domElement.className='fc-material-canvas';renderer.domElement.addEventListener('webglcontextlost',contextLost);
     geometry=new PlaneGeometry(2,2);
     material=new ShaderMaterial({glslVersion:GLSL3,vertexShader:flowVertex,fragmentShader:flowFragment,depthTest:false,depthWrite:false,
-     uniforms:{uTime:{value:0},uCharge:{value:0},uEcho:{value:-1},uResolution:{value:new Vector2(720,620)},uColorA:{value:new Color('#592c40')},uColorB:{value:new Color('#b75b7b')},uColorC:{value:new Color('#edc2b1')},uColorD:{value:new Color('#8f4c68')}}});
+     uniforms:{uTime:{value:0},uCharge:{value:0},uEcho:{value:-1},uResolution:{value:new Vector2(720,620)},uPointer:{value:new Vector2()},uColorA:{value:new Color('#592c40')},uColorB:{value:new Color('#b75b7b')},uColorC:{value:new Color('#edc2b1')},uColorD:{value:new Color('#8f4c68')}}});
     scene.add(new Mesh(geometry,material));element.append(renderer.domElement);resize();
    }catch{fail('renderer-unavailable');}
   };
@@ -57,9 +61,10 @@ export function ConversationMaterial({charging=false,echo=0}:{charging?:boolean;
   const observer=new IntersectionObserver(([entry])=>{visible=entry.isIntersecting;update();});
   const resizeObserver=new ResizeObserver(resize);
   observer.observe(element);resizeObserver.observe(element);update();
+  figure?.addEventListener('pointermove',follow);figure?.addEventListener('pointerleave',resetPointer);figure?.addEventListener('pointercancel',resetPointer);
   preference.addEventListener('change',update);document.addEventListener('visibilitychange',update);
   return()=>{
-   stop();observer.disconnect();resizeObserver.disconnect();preference.removeEventListener('change',update);document.removeEventListener('visibilitychange',update);
+   stop();observer.disconnect();resizeObserver.disconnect();figure?.removeEventListener('pointermove',follow);figure?.removeEventListener('pointerleave',resetPointer);figure?.removeEventListener('pointercancel',resetPointer);preference.removeEventListener('change',update);document.removeEventListener('visibilitychange',update);
    renderer?.domElement.removeEventListener('webglcontextlost',contextLost);
    geometry?.dispose();material?.dispose();renderer?.dispose();renderer?.forceContextLoss();renderer?.domElement.remove();
   };

@@ -72,7 +72,7 @@ export function LandingWorldHost({language,onLanguageChange,selected,onSelect}:P
   const postTransform=new THREE.Matrix4().makeTranslation(-6,-4.3,6).multiply(new THREE.Matrix4().makeRotationY(Math.PI)).multiply(new THREE.Matrix4().makeTranslation(-9,4.3,10));
   let disposed=false,assetsReady=false,frame=0,clockStart=0,last=0,elapsed=0,inIntro=first.current,lost=false;
   let trigger:ScrollTrigger|undefined,heroEnd=innerHeight*2.6,previousPost=false,postNeedsFrame=false;
-  let lastRenderSignature='';
+  let lastRenderSignature='',lastPostDraw=0;
   const pointer={x:0,y:0,pressed:false};let hiddenAt=0;
   const roomRay=new THREE.Raycaster(),roomHit=new THREE.Vector3(),roomPointer=new THREE.Vector2();
   const roomPlane=new THREE.Plane().setFromNormalAndCoplanarPoint(new THREE.Vector3(0,-Math.sin(ROOM_WORLD.tilt),Math.cos(ROOM_WORLD.tilt)),ROOM_TARGET);
@@ -183,6 +183,7 @@ export function LandingWorldHost({language,onLanguageChange,selected,onSelect}:P
    root.dataset.bridge=bridge.toFixed(4);
    const signature=[pose.progress,pose.entrance,pose.pointerX,pose.pointerY,pose.pointerPress??0,bridge,postState.current.progress,postState.current.opening,galleryWeight,selection.current.selected,scrollY,width,height].map(value=>typeof value==='number'?value.toFixed(4):value).join(':');
    const needsFrame=dirty.current||signature!==lastRenderSignature||postNeedsFrame||(!media.matches&&postState.current.effect.value!==0);
+   if(postActive&&postNeedsFrame&&!dirty.current&&signature===lastRenderSignature&&now-lastPostDraw<1000/30)return;
    if(!needsFrame){if(!postActive){world.render(pose);updateEditorial(Number(screen.dataset.progress??pose.progress),Number(screen.dataset.entrance??pose.entrance));projectRoomDiscoveries(Number(screen.dataset.progress??0)>.94);}return;}lastRenderSignature=signature;dirty.current=false;
    if(!postActive){
     if(previousPost){world.setPostActive(false);world.camera.clearViewOffset();lastRenderSignature='';}
@@ -191,7 +192,7 @@ export function LandingWorldHost({language,onLanguageChange,selected,onSelect}:P
     updateEditorial(Number(screen.dataset.progress??pose.progress),Number(screen.dataset.entrance??pose.entrance));
     projectRoomDiscoveries(Number(screen.dataset.progress??0)>.94);
    }else if(post&&composition){
-    projectRoomDiscoveries(false);
+    lastPostDraw=now;projectRoomDiscoveries(false);
     if(!previousPost){world.render({...pose,progress:1,entrance:1});if(Number(screen.dataset.progress??0)<.999||Number(screen.dataset.entrance??0)<.999){dirty.current=true;return;}world.setPostActive(true);}
     previousPost=true;
     world.camera.near=.1;world.camera.far=400;
@@ -204,7 +205,7 @@ export function LandingWorldHost({language,onLanguageChange,selected,onSelect}:P
     const closingRect=postState.current.letterClosingRect;
     const paperWidth=Number(originalPaper?.dataset.layoutWidth??0),paperHeight=Number(originalPaper?.dataset.layoutHeight??0);
     const paperAspect=postState.current.letterView==='folding'&&closingRect?closingRect.width/closingRect.height:paperWidth>0&&paperHeight>0?paperWidth/paperHeight:undefined;
-    post.update({...postState.current,width,height,ownCamera:false,paperAspect});postNeedsFrame=false;
+    post.update({...postState.current,width,height,ownCamera:false,paperAspect,time:elapsed,pointer:{x:pose.pointerX,y:pose.pointerY}});postNeedsFrame=false;
     roomEye.copy(ROOM_EYE);if(width>=760)roomEye.addScaledVector(ROOM_BACK,roomContain(width,height)-1);
     if(paperHeight>32)measuredPaperHeight=paperHeight;
     const composed=composition.update({progress,bridge,galleryWeight:0,opening:postState.current.opening,time:elapsed,reducedMotion:media.matches,width,height,roomEye,roomTarget:ROOM_TARGET,effect:postState.current.effect,localEvent:postState.current.localEvent,paperHeight:measuredPaperHeight,letterView:postState.current.letterView,letterClosingRect:closingRect,pointer:{x:pose.pointerX,y:pose.pointerY}});
