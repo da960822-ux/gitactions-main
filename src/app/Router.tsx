@@ -1,5 +1,13 @@
 import type { AnchorHTMLAttributes, MouseEvent } from 'react';
 
+export const roomHref = (roomId: string) => `/play?room=${encodeURIComponent(roomId)}`;
+
+export function currentPath() {
+  const { pathname, search } = window.location;
+  const room = pathname === '/play' ? new URLSearchParams(search).get('room') : null;
+  return room ? `/room/${encodeURIComponent(room)}` : pathname;
+}
+
 export function navigate(to: string) {
   window.history.pushState({}, '', to);
   window.dispatchEvent(new PopStateEvent('popstate'));

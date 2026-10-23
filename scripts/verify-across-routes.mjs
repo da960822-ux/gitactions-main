@@ -36,7 +36,7 @@ try {
       assert.match(await page.locator('.pick-item[aria-pressed="true"] .game-thumbnail').getAttribute('class'), new RegExp(`art-${game}`));
       await page.locator('#nickname').fill('Game launch check');
       await page.locator('.lobby-actions > button').click();
-      await page.waitForURL('**/room/**');
+      await page.waitForURL('**/play?room=*');
       await page.locator('.demo-banner select').selectOption('p2');
       await page.locator('.room-game-card').nth(games.indexOf(game)).click();
       await page.locator('.demo-banner select').selectOption('p1');

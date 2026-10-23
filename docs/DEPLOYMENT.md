@@ -26,6 +26,8 @@ After connecting, use two separate browser profiles to create and join an invite
 
 Build and deploy the **root application**, not the standalone `post-hero-preview` workspace. `npm run build` produces `dist`, including the `/play` and `/feedback` entry files and third-party notices. The game catalog, rooms and feedback routes all belong to this root application.
 
+Room invitations use `/play?room=<room-id>` so direct visits and refreshes work on static hosts without a dynamic `/room/<id>` rewrite. The app still accepts legacy room links on hosts that support SPA fallback.
+
 For the existing ChatGPT Site, update its registered source checkout and keep that checkout's `.openai/hosting.json` project ID and audience. Package the root application's `dist` as that Site's static directory and publish a saved version of that same Site. Supabase connection values are build inputs; adding runtime environment variables to an already-built static Site does not replace rebuilding `dist`. Keep the current owner-only access policy unless the owner separately requests a sharing change.
 
 ## Public build values
