@@ -351,3 +351,7 @@ reduced 초기 두 자동화 샘플은 B 위치가 아니므로 승인 근거에
 최종 L06 실제 재검수도 두 크기 통과했다. 단단한 quad/rim이 없어지고 lid 내부 부드러운 rose catchlight로 보이며, hover→held 변화는1440 18,758px /1920 30,639px, 남녀 얼굴 내부 표본은각0이다. source-laptop-freeze와 최종해시가 동일한 상태에서 확인했다. 독립 검수는 이 제한된 방 반응·유성 범위 Approve이며, 남은 차단 결함을 관측하지 않았다.
 
 [방 수정 전](assets/impeccable-landing/full-skill-review/motion-correction/room-interaction-before.webp) / [수정 후 실제 소품 반응](assets/impeccable-landing/full-skill-review/motion-correction/room-object-reactions.webp), [늘어난 유성 실제 프레임](assets/impeccable-landing/full-skill-review/motion-correction/hero-frequent-meteors.webp), [전후 브라우저·strict 입력 회귀검사·최종 소스 해시](assets/impeccable-landing/full-skill-review/motion-correction/room-interaction-browser.json). 기존 원격 Hero 브랜치에 통합하고 owner-private 확인 Site의 audience를 유지해 업데이트한다. 프로젝트 main을 대상으로 병합·push·배포하지 않는다.
+
+### 출판 직전 다른 세션 변경 보존
+
+Site 원격5325742의 source-checkpoint가 새 게임 UI 소스549ee3a로 전진한 것을 확인했다. 기준 b2facef 대비15파일은 게임 앱/규칙 안내/게임 CSS·검수 문서이고 landing 변경은0이었다. 이를 기존 Hero 브랜치에 정상 merge(9a480f4)하여 현재 사이트의 개선을 덮어쓰지 않았다. 이번 방 담당이 해당 게임 기능을 구현/검수했다고 주장하지 않는다. 최종 시각검수5파일 SHA256은 모두 동일하며, 다른 세션 CSS 변경도 room-shell/game-surface 범위라 landing에 새 전역 규칙을 추가하지 않는다. 통합 후 전체 **92파일/742테스트**와 production build가 다시 통과했다. 따라서 앞736테스트 이후의 최종 입력/셰이더 수정도 이 마지막 전체 실행에 포함된다.
