@@ -14,6 +14,7 @@ import type {RoomReactionTarget} from './cinematic/folded/roomReactions';
 import {ROOM_WORLD,roomWorldVertex,roomSourcePoint} from './cinematic/folded/approvedRoomGeometry';
 import {pointerDecay} from './cinematic/folded/pointerResponse';
 import {INTRO_SECONDS, introPose, smoothRange, type FoldPose} from './cinematic/folded/pose';
+import {createFinaleAudio} from './finale-audio';
 import './story/preview.css';
 import './landing-world.css';
 
@@ -39,6 +40,18 @@ export function LandingWorldHost({language,onLanguageChange,selected,onSelect}:P
  const [ready,setReady]=useState(false),[postReady,setPostReady]=useState(false),[failed,setFailed]=useState(false),[introActive,setIntroActive]=useState(first.current);
  const [roomActive,setRoomActive]=useState(false),roomVisible=useRef(false),discoveryNonce=useRef(0);
  const [roomDiscovery,setRoomDiscovery]=useState<{id:LocalEventId;trigger:HTMLButtonElement;nonce:number}>();
+ const finaleAudio=useRef<ReturnType<typeof createFinaleAudio>|null>(null);
+ const [finaleSound,setFinaleSound]=useState<'off'|'on'|'unavailable'>('off');
+ useEffect(()=>{
+  const audio=createFinaleAudio();finaleAudio.current=audio;
+  const finale=()=>audio.play();window.addEventListener('rose-gift-celebrate',finale);
+  return()=>{window.removeEventListener('rose-gift-celebrate',finale);audio.dispose();finaleAudio.current=null;};
+ },[]);
+ const toggleFinaleSound=async()=>{
+  const audio=finaleAudio.current;if(!audio)return;
+  if(finaleSound==='on'){audio.disable();setFinaleSound('off');return;}
+  const enabled=await audio.enable();setFinaleSound(enabled?'on':'unavailable');
+ };
  const roomReaction=useRef({hover:null as RoomReactionTarget|null,press:false,activation:0,keyboard:false});
  const roomAttention=(target:RoomReactionTarget|null,keyboard=false)=>{Object.assign(roomReaction.current,{hover:target,keyboard,press:false});dirty.current=true;};
  const selection=useRef({selected,onSelect});selection.current={selected,onSelect};
@@ -230,6 +243,10 @@ export function LandingWorldHost({language,onLanguageChange,selected,onSelect}:P
  return <div ref={host} className={`landing-world-host${ready?' is-world-ready':''}${failed?' world-unavailable':''}`}>
   <canvas ref={canvas} className="landing-world-canvas" role="img" aria-label={language==='ko'?'우주에서 게임방, 이야기와 게임 조각, 편지로 이어지는 우리 둘의 공간':'Nuestro espacio, desde el universo hasta la sala de juegos, las piezas y la carta'}/>
   <AcrossHero language={language} ready={ready} introActive={introActive} onSkip={()=>skip.current()}/>
+  <button type="button" className="finale-sound-toggle" aria-pressed={finaleSound==='on'} disabled={finaleSound==='unavailable'} onClick={()=>void toggleFinaleSound()}>
+   <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 9h4l5-4v14l-5-4H3ZM16 8q4 4 0 8M19 5q7 7 0 14"/>{finaleSound!=='on'&&<path d="m3 3 18 18"/>}</svg>
+   {language==='ko'?(finaleSound==='on'?'피날레 소리 끄기':finaleSound==='unavailable'?'소리를 켤 수 없어요':'피날레 소리 켜기'):(finaleSound==='on'?'Silenciar final':finaleSound==='unavailable'?'Sonido no disponible':'Activar sonido final')}
+  </button>
   <div className="room-discoveries" hidden={!roomActive}>{ROOM_TARGETS.map(object=><button key={object.id} type="button" data-room-object={object.id} aria-label={language==='ko'?object.ko:object.es}
    onPointerEnter={event=>{if(event.pointerType==='mouse'&&matchMedia('(hover:hover) and (pointer:fine)').matches)roomAttention(object.id);}}
    onPointerLeave={()=>{if(roomReaction.current.hover===object.id&&!roomReaction.current.keyboard)roomAttention(null);}}

@@ -1,8 +1,18 @@
 import {describe,it,expect} from 'vitest';
 import {renderToStaticMarkup} from 'react-dom/server';
-import {StoryTimeInteraction,storyCelestialPose} from './story/StoryTimeInteraction';
+import {StoryTimeInteraction,storyCelestialPose,storyCityDepthPose} from './story/StoryTimeInteraction';
 
 describe('shared story hour selection',()=>{
+ it('gives the cities distinct depth directions without exposing the photograph edges',()=>{
+  for(const side of [1,-1] as const)for(const x of [-1,0,1])for(const y of [-1,0,1])for(const progress of [-1,0,1]){
+   const pose=storyCityDepthPose(x,y,progress,side);
+   expect(Math.abs(parseFloat(pose.x))/100*1.2).toBeLessThan(.1);
+   expect(Math.abs(parseFloat(pose.y))/100*1.3).toBeLessThan(.15);
+  }
+  expect(storyCityDepthPose(0,0,1,1).y).toBe('4%');
+  expect(storyCityDepthPose(0,0,1,-1).y).toBe('-6%');
+  expect(storyCityDepthPose(0,0,0,1)).toEqual({x:'0%',y:'0%'});
+ });
  it('moves the sun and moon through bounded sky arcs while the hour dial follows the chosen hour',()=>{
   expect(storyCelestialPose(6)).toEqual({daylight:true,x:24,y:70,rotation:180});
   expect(storyCelestialPose(12)).toEqual({daylight:true,x:100,y:40,rotation:360});
@@ -25,5 +35,7 @@ describe('shared story hour selection',()=>{
   expect(midnight.match(/class="story-city-celestial"/g)).toHaveLength(2);
   expect(midnight).toContain('data-celestial="sun"');expect(midnight).toContain('data-celestial="moon"');
   expect(midnight).toContain('data-time-motion="instant"');
+  expect(midnight.match(/class="story-city-photograph"/g)).toHaveLength(2);
+  expect(midnight.match(/data-depth-active="false"/g)).toHaveLength(2);
  });
 });

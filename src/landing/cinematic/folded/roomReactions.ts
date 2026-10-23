@@ -9,7 +9,7 @@ const targets:RoomReactionTarget[]=['monitor','keyboard','L04','L09','L06'];
 const pixel=2*ROOM_REFERENCE.distance*Math.tan(ROOM_REFERENCE.fov*Math.PI/360)/ROOM_REFERENCE.height;
 const vertex=`varying vec2 vUv;varying vec3 vNormal;void main(){vUv=uv;vNormal=normalize(normalMatrix*normal);gl_Position=projectionMatrix*modelViewMatrix*vec4(position,1.);}`;
 const surfaceFragment=`
-uniform float uLevel,uPress,uPulse,uSweep,uKind;
+uniform float uLevel,uPress,uPulse,uSweep,uKind,uArrival,uArrivalSweep;
 uniform vec2 uPointer;
 varying vec2 vUv;
 void main(){
@@ -42,6 +42,12 @@ void main(){
   color=gold;
   alpha=uLevel*.08+ribbon*energy*.9+rim*(uPress*.3+motion*energy*.2);
  }
+ float reflection=exp(-pow((uv.x+uv.y*.32-(-.32+uArrivalSweep*1.7))/.19,2.));
+ float reflected=uArrival*reflection;
+ if(uKind>.5&&uKind<1.5){vec2 key=fract(uv*vec2(16.,4.));reflected*=smoothstep(.05,.17,min(min(key.x,1.-key.x),min(key.y,1.-key.y)));}
+ if(uKind>1.5&&uKind<2.5)reflected*=smoothstep(0.,.15,edge);
+ color=mix(color,mix(vec3(.65,.83,1.),gold,step(1.5,uKind)),reflected*.7);
+ alpha+=reflected*(uKind>2.5?.72:.95);
  gl_FragColor=vec4(color,clamp(alpha,0.,.82));
 }`;
 
@@ -58,7 +64,7 @@ export function createRoomReactions(roomRoot:T.Group){
   vertices.forEach(([x,y],i)=>{positions.push(...roomVertex(x,y,.08));const u=[0,1,1,0][i%4],v=[1,1,0,0][i%4];uvs.push(i<4?u:.08+u*.84,i<4?v:.06+v*.88);});
   const indices=frame?Array.from({length:4},(_,i)=>{const next=(i+1)%4;return[i,next,next+4,i,next+4,i+4];}).flat():[0,1,2,0,2,3];
   geometry.setAttribute('position',new T.Float32BufferAttribute(positions,3));geometry.setAttribute('uv',new T.Float32BufferAttribute(uvs,2));geometry.setIndex(indices);geometry.computeVertexNormals();geometries.push(geometry);
-  const uniforms={uLevel:{value:0},uPress:{value:0},uPulse:{value:0},uSweep:{value:0},uKind:{value:kind},uPointer:{value:new T.Vector2(.5,.5)}};
+  const uniforms={uLevel:{value:0},uPress:{value:0},uPulse:{value:0},uSweep:{value:0},uKind:{value:kind},uArrival:{value:0},uArrivalSweep:{value:0},uPointer:{value:new T.Vector2(.5,.5)}};
   const material=new T.ShaderMaterial({uniforms,vertexShader:vertex,fragmentShader:surfaceFragment,transparent:true,depthWrite:false,depthTest:true,blending:T.AdditiveBlending,side:T.DoubleSide,toneMapped:false});materials.push(material);
   const mesh=new T.Mesh(geometry,material);mesh.name='ROOM_LIGHT_'+target;mesh.visible=false;root.add(mesh);
   const xs=points.map(p=>p[0]),ys=points.map(p=>p[1]);surfaces.push({target,mesh,uniforms,bounds:{x:Math.min(...xs),y:Math.min(...ys),w:Math.max(...xs)-Math.min(...xs),h:Math.max(...ys)-Math.min(...ys)}});
@@ -75,15 +81,18 @@ export function createRoomReactions(roomRoot:T.Group){
  const heartMaterial=new T.ShaderMaterial({uniforms:heartUniforms,vertexShader:vertex,fragmentShader:'uniform float uOpacity;varying vec3 vNormal;void main(){float facing=.48+.52*max(0.,vNormal.z);gl_FragColor=vec4(vec3(1.,.29,.51)*facing,uOpacity);}',transparent:true,depthWrite:false,depthTest:true,toneMapped:false});materials.push(heartMaterial);
  const hearts=[{x:1480,y:377,size:17},{x:1593,y:350,size:12}].map((anchor,index)=>{const mesh=new T.Mesh(heartGeometry,heartMaterial);mesh.name='RABBIT_DEPTH_GREETING_'+index;mesh.scale.setScalar(pixel*anchor.size);mesh.position.set(...roomVertex(anchor.x,anchor.y,.18+index*.4));mesh.visible=false;root.add(mesh);return{mesh,anchor};});
  let previousTime:number|undefined,lastActivation:number|undefined,lastHover:RoomReactionTarget|null=null,pressedTarget:RoomReactionTarget|null=null,wasPressed=false,disposed=false;
- function cancelInteraction(){wasPressed=false;pressedTarget=null;lastHover=null;previousTime=undefined;for(const target of targets){values[target].pulse=0;values[target].press=0;}state.needsFrame=targets.some(target=>values[target].level>0);}
+ let arrivalAge=1.8,arrivalPlayed=false;
+ function cancelInteraction(){arrivalAge=1.8;wasPressed=false;pressedTarget=null;lastHover=null;previousTime=undefined;for(const target of targets){values[target].pulse=0;values[target].press=0;}state.needsFrame=targets.some(target=>values[target].level>0);}
  function reset(){for(const target of targets)Object.assign(values[target],{level:0,press:0,pulse:0,sweep:0});heartUniforms.uOpacity.value=0;state.needsFrame=false;wasPressed=false;lastHover=null;pressedTarget=null;}
  return{root,state,update(input:RoomReactionInput){
   if(disposed)return;
   const dt=previousTime===undefined?1/60:T.MathUtils.clamp(input.time-previousTime,0,.1);previousTime=input.time;
   const activated=lastActivation!==undefined&&input.activation!==lastActivation;lastActivation=input.activation;
   const entering=input.active&&!root.visible;root.visible=input.active;
-  if(!input.active){reset();return;}
+  if(!input.active){arrivalAge=1.8;reset();return;}
   const staticPose=input.reducedMotion||input.keyboard;
+  if(entering&&!arrivalPlayed){arrivalPlayed=true;arrivalAge=staticPose?1.8:0;}
+  arrivalAge=staticPose?1.8:Math.min(1.8,arrivalAge+dt);
   if(input.hover)lastHover=input.hover;
   const impacted=activated?input.hover??lastHover:null;
   if(entering&&!staticPose){values.L04.pulse=1;values.L04.sweep=0;}
@@ -92,7 +101,7 @@ export function createRoomReactions(roomRoot:T.Group){
   if(wasPressed&&!input.press&&pressedTarget&&!staticPose){values[pressedTarget].pulse=Math.min(1,values[pressedTarget].pulse+.7);values[pressedTarget].sweep=0;}
   if(!input.press)pressedTarget=null;
   wasPressed=input.press;
-  state.needsFrame=false;
+  state.needsFrame=!staticPose&&arrivalAge<1.8;
   for(const target of targets){
    const value=values[target],hovered=input.hover===target,level=Number(hovered),press=Number(hovered&&input.press&&pressedTarget===target);
    if(hovered&&value.level<.001)value.sweep=0;
@@ -109,8 +118,10 @@ export function createRoomReactions(roomRoot:T.Group){
     state.needsFrame||=value.level!==level||value.press!==press||value.pulse>0||(hovered&&value.sweep<1);
    }
   }
-  for(const surface of surfaces){
-   const value=values[surface.target];surface.mesh.visible=value.level+value.pulse>.001;
+  for(const [index,surface] of surfaces.entries()){
+   const arrivalSweep=T.MathUtils.clamp((arrivalAge-index*.16)/1.2,0,1),arrival=Math.sin(Math.PI*arrivalSweep)*.85;
+   const value=values[surface.target];surface.mesh.visible=value.level+value.pulse+arrival>.001;
+   surface.uniforms.uArrival.value=arrival;surface.uniforms.uArrivalSweep.value=arrivalSweep;
    surface.uniforms.uLevel.value=value.level;surface.uniforms.uPress.value=value.press;surface.uniforms.uPulse.value=value.pulse;surface.uniforms.uSweep.value=value.sweep;
    const {bounds}=surface;if(input.pointer&&!staticPose)surface.uniforms.uPointer.value.set(T.MathUtils.clamp((input.pointer.x-bounds.x)/bounds.w,0,1),1-T.MathUtils.clamp((input.pointer.y-bounds.y)/bounds.h,0,1));else surface.uniforms.uPointer.value.set(.5,.5);
   }

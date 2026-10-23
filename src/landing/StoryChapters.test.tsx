@@ -10,7 +10,10 @@ describe('personal post-room story content',()=>{
   expect(html).toContain(language==='ko'?'광주':'Gwangju');expect(html).toContain('Santo Domingo');
   expect(html).not.toMatch(/서울|Seúl|capitales|STORY_COUNTRY|<canvas|<dialog/);
   expect(html).toContain('type="range"');expect(html).toContain('data-korean-hour="20"');expect(html).toContain('data-dominican-hour="7"');expect(html).toContain('data-day-offset="0"');
-  expect(html).toContain('InterPals');expect(html).toContain(language==='ko'?'12시간':'12');
+  expect(html).toContain('InterPals');expect(html).toContain(language==='ko'?'첫날부터 12시간을 쉬지 않고 얘기했어.':'El primer día hablamos doce horas sin parar.');
+  expect(html).toContain(language==='ko'?'멀리 있어도, 너랑.':'Lejos, pero contigo.');
+  expect(html).toContain(language==='ko'?'시간은 달라도, 우리 같이.':'Horas distintas. Un ratito juntos.');
+  expect(html).toContain(language==='ko'?'한국이 13시간 빨라.':'Corea va trece horas por delante.');
   expect(html).toMatch(/class="story-light-river"[^>]*aria-hidden="true"[^>]*focusable="false"/);
   expect(html.match(/class="story-light-core"/g)).toHaveLength(1);
   expect(html.indexOf('id="first-conversation"')).toBeLessThan(html.indexOf('id="distance"'));

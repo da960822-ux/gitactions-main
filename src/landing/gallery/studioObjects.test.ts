@@ -8,7 +8,7 @@ import {createGalleryAttraction,createGameObject,normalizeSculpture,studioMateri
 afterEach(()=>{vi.restoreAllMocks();vi.unstubAllGlobals();});
 
 describe('landing game artwork',()=>{
- it('settles the gallery ingress and selection fan without changing layout transforms or game identity',()=>{
+ it('settles the weighted gallery ingress and reflective cradle without changing layout transforms or game identity',()=>{
   const objects=['domino','jaipur'].map((id,i)=>{const group=new T.Group();group.userData.game=id;group.position.set(i*4,1,-1);group.add(new T.Group());return group;});
   const layout=objects.map(group=>group.position.clone()),art=objects.map(group=>group.children[0]),effect=createGalleryAttraction(objects);
   const frame={entryAge:0,selectionAge:0,selected:'domino',paused:false,mobile:false};
@@ -16,14 +16,27 @@ describe('landing game artwork',()=>{
   expect(objects[0].children[0].position.length()).toBeGreaterThan(.5);
   expect(effect.update({...frame,entryAge:.6,selectionAge:.5})).toBe(true);expect(effect.root.visible).toBe(true);
   expect(objects[0].children[0].position.y).toBeGreaterThan(-.1);
-  expect(effect.update({...frame,entryAge:2,selectionAge:2})).toBe(false);expect(effect.root.visible).toBe(false);
+  expect(effect.update({...frame,entryAge:2,selectionAge:2})).toBe(false);expect(effect.root.visible).toBe(true);expect(effect.root.rotation.toArray().slice(0,3).map(value=>Math.abs(Number(value)))).toEqual([0,0,0]);
   objects.forEach((group,i)=>{const pivot=group.children[0];expect(group.position.equals(layout[i])).toBe(true);expect(group.userData.game).toBe(['domino','jaipur'][i]);expect(pivot.children[0]).toBe(art[i]);expect(pivot.position.length()).toBeLessThan(1e-8);expect(pivot.rotation.x).toBe(0);expect(pivot.scale.x).toBe(1);});
   expect(effect.update({...frame,entryAge:2,selectionAge:.4,selected:'jaipur'})).toBe(true);
   expect(objects[1].children[0].position.y).toBeGreaterThan(.1);
-  expect(effect.update({...frame,paused:true})).toBe(false);expect(effect.root.visible).toBe(false);
+  expect(effect.update({...frame,paused:true})).toBe(false);expect(effect.root.visible).toBe(true);
   for(const group of objects)expect(group.children[0].position.length()).toBe(0);
   const resources:T.BufferGeometry[]=[];effect.root.traverse(node=>{if(node instanceof T.Mesh||node instanceof T.Points)resources.push(node.geometry);});
   const spies=resources.map(geometry=>vi.spyOn(geometry,'dispose'));effect.dispose();effect.dispose();for(const spy of spies)expect(spy).toHaveBeenCalledTimes(1);
+ });
+ it('uses a large physical material stage instead of selection sparks and keeps reduced-motion geometry still',()=>{
+  const object=new T.Group();object.userData.game='domino';object.add(new T.Group());const effect=createGalleryAttraction([object]);
+  const frame={entryAge:2,selectionAge:.5,selected:'domino',paused:false,mobile:false};effect.update(frame);
+  expect(effect.root.rotation.y).toBeLessThan(-.2);expect(object.children[0].rotation.y).toBeGreaterThan(.2);
+  const meshes:T.Mesh[]=[];effect.root.traverse(node=>{expect(node).not.toBeInstanceOf(T.Points);if(node instanceof T.Mesh){meshes.push(node);expect(node.material).toBeInstanceOf(T.MeshPhysicalMaterial);}});
+  expect(meshes).toHaveLength(3);expect(meshes[0].name).toBe('SELECTED_GAME_REFLECTIVE_SURFACE');
+  expect((meshes[0].geometry as T.CircleGeometry).parameters.radius).toBeGreaterThan(3);
+  expect(effect.update({...frame,selectionAge:1.8})).toBe(false);expect(Math.abs(effect.root.rotation.y)).toBe(0);
+  effect.update({...frame,paused:true,mobile:true});const pose=effect.root.matrix.clone();effect.root.updateMatrix();pose.copy(effect.root.matrix);
+  effect.update({...frame,entryAge:99,selectionAge:99,paused:true,mobile:true});effect.root.updateMatrix();expect(effect.root.matrix.equals(pose)).toBe(true);
+  expect(effect.root.scale.x).toBe(.55);const materials=new Set(meshes.map(mesh=>mesh.material as T.Material)),spies=[...materials].map(material=>vi.spyOn(material,'dispose'));
+  effect.dispose();effect.dispose();for(const spy of spies)expect(spy).toHaveBeenCalledTimes(1);
  });
  it('retains the exact original portrait and user-supplied Splendor cover bytes',()=>{
   const sources={
