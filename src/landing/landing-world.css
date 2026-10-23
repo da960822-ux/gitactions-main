@@ -43,3 +43,6 @@
 @media(hover:hover) and (pointer:fine) and (prefers-reduced-motion:no-preference){.room-discoveries button span{transition:opacity 150ms var(--ease-out),transform 150ms var(--ease-out)}.room-discoveries button:focus-visible span{transition:none}}
 .room-discoveries button:focus-visible{outline:2px solid #efbca8;outline-offset:4px}
 @media(prefers-reduced-motion:reduce){.room-discoveries button span{transition:none}}
+
+.room-discoveries button[data-room-object="keyboard"] span{top:100%;bottom:auto}
+@media(max-width:759px){.room-discoveries button:is([data-room-object="monitor"],[data-room-object="keyboard"]){display:none}}

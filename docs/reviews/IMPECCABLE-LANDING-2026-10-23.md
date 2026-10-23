@@ -1,6 +1,6 @@
 # 공식 스킬 재점검·수정·재검수 — 2026-10-23 UTC (이전 검수 포함)
 
-> 최신 상태 — 2026-10-23 UTC: 이번 새·인터랙션·초기 Hero 재작업의 결과는 문서 끝 「초기 우주 Hero와 전체 인터랙션 재작업」에 기록한다. 과거 점수와 PASS는 현재 사이트 전체의 승인 점수가 아니다. 최신 실제 데스크톱 검수와 보존 범위, 미검수 범위를 구분한다.
+> 최신 상태 — 2026-10-23 UTC: 이번 승인 B 방 소품 인터랙션·유성 증량 결과는 문서 끝 「승인 B 공부방·게임방의 소품 반응과 유성 증량」에 기록한다. 과거 점수와 PASS는 현재 사이트 전체의 승인 점수가 아니다. 실제 데스크톱 검수와 보존 범위, 미검수 범위를 구분한다.
 
 시작 소스 `921bac645d99ab0d7f54e00211b220695b422fd0`, 기존 `redesign/folded-playhouse-depth-r8-20261018` 브랜치. 승인된 우주 Hero/B 게임방, 인물, 8개 게임, 원문 편지, 두 언어, 실제 서명·장미·건의사항을 보존했다. 원본 main 병합·공개 audience 전환·새 영상·모바일 전수 검수는 하지 않았다. 이 문서는 시점별 재점검 기록이다. 최신 상태는 맨 위와 문서 끝에 구분했다. [이전 체크포인트 기록](https://github.com/da960822-ux/gitactions-main/blob/921bac645d99ab0d7f54e00211b220695b422fd0/docs/reviews/IMPECCABLE-LANDING-2026-10-23.md)은 Git 이력에 남긴다.
 
@@ -310,3 +310,44 @@ keep-mounted HTML host로 수명을 수정한 뒤 software WebGPU의 visible sub
 실제 near-wing 요청 abort에서 SVG image onError가 failed 상태로 연결되지 않는 문제를 발견했다. 정상 모션 승인과 구분해 미통과로 남긴 뒤, 같은 새 담당자가 active5 이미지에 native Image 오류 감지와 cleanup을 추가했다. 정적 fallback 원본은 이 감시에서 제외한다. 동작값·모션 CSS·카메라 변경은 없다.
 
 수정 후 독립 Chromium fresh1440 context에서 같은 실제 URL을 abort: **data-failed=true / greeting disabled / 원본 hummingbird-body fallback 표시 / layered rig 제거 / 오류 안내 표시 / pageerror0**를 확인했다. 최종 새 소스 SHA256은 `0c42d10492d2c17a0073b56f6d31b7eab3df85ddeca06b5432157f782f98d234`, 정상 모션 검수 나머지20파일은 동일하다. 새 범위11테스트·TypeScript·최종 production build·diff 검사 통과. 앞 전체726테스트 이후 추가한 오류 경계1개는 이 좁은 검수로 확인했으며 전체727테스트 재실행으로 표시하지 않는다. 최종 정상 모션 및 이 실패 복구 범위에 남은 차단 결함은 관측하지 않았다. 사이트 전체 미술 최종 승인과는 다르다.
+
+
+## 승인 B 공부방·게임방의 소품 반응과 유성 증량 — 2026-10-23 UTC
+
+요청: 승인된 방에 실제 오브젝트 인터랙션을 늘리고, 초기 Hero 유성을 더 자주·여러 개 보이게 한다. 기준소스 b2facef. 루나는 설치된 스킬 목록과 현재 입력/발견물/공개 소스를 읽기 전용으로 매칭했고, Sol은 공간 반응 helper/테스트, 루트는 공유 host·입력 투영·유성·렌더 생명주기, 독립 Sol은 실제 브라우저 전후 검수를 맡았다.
+
+### 설계와 적용 지침
+
+- 기존 3개의 직접 공간 버튼은 L04 토끼, L09 사진, L06 노트북이다. 기존 16개 발견물이 전부 방의 직접 hit target인 것처럼 보고하지 않는다. 기존 작업영역·원문·게임·API를 새로 만들거나 단순화하지 않는다.
+- 방 원화는 계속 승인된 하나의 rigid illustration이다. 전체 방이나 인물을 새 3D 모델로 만들었다고 주장하지 않는다. 원화에 정합한 Three 셰이더 표면과 작은 실제 extruded heart 두 개를 기존 공유 renderer에 더했다. 카메라/원화/스케일/벽·바닥은 유지했다.
+- 실제 적용: 프로젝트 couple-games-landing-design, Ponytail, Three scene/material/shader, Impeccable bolder/animate/delight, Emil animate/review-animations와 STANDARDS, GSAP performance/ScrollTrigger. 기존 도구의 속성 소유권을 유지하고 별도 renderer·라이브러리·RAF를 추가하지 않았다. 새 방 반응은 현재 입력에서 이어지는 감쇠와 셰이더로 구현했고, 쓰지 않은 Motion/Remotion/HyperFrames를 사용했다고 기록하지 않는다.
+- 참고: Luna가 확인한 ThreeUI MIT glassToggle의 고정 비율·측정된 입력 면적과 hover/activation 분리 원리. 코드·환경맵·파랑 palette를 통째로 가져오지 않았고 Kexsio의 검증되지 않은 구현을 복사하지 않았다.
+
+| Before | After | Why |
+|---|---|---|
+|소품 hover에서 작은 검은 label만 표시|모니터 내부 cyan 빛/한 번 지나가는 광택, 눌렀다 놓는 잔광|원래 모니터면에 정확히 등록, 남자 얼굴·본문은 움직이지 않음|
+|키보드에 별도 반응 없음|손 아래 keystrip에 blue→rose 빛 물결, 눌렀다 놓을 때 짧은 pulse|원본 손 위로 재질을 덮지 않음. 실제 검수에서 label이 빛을 가려 아래로 옮김|
+|토끼·노트북·사진의 직접 반응이 빈약|토끼 위쪽에 작은 입체 하트 두 개가 인사, 노트북 lid의 rose catchlight, 사진의 나무 테두리 glint|토끼/인물의 표정·사진 내부 보존. 사진 frame mesh는 내부에 삼각형이 없는 구멍 구조라 사진 인물에 광택을 덮지 않음|
+|기존 발견물 클릭과 새 반응이 충돌할 위험|모니터·키보드는 순간 광반응 전용; 기존3버튼은 같은 발견물 창과 조작을 유지|native dialog open 동안 material 비활성화, Escape focus/스크롤 복귀 유지|
+|새 input footprint가 물건 모서리를 놓칠 위험|현재 카메라 ray→승인 source pixel 역투영, source bbox로 button 배치|실제 검수 후 monitor bbox를 화면 전체 x78..242/y323..621로 맞춤. 카메라를 움직여 오류를 감추지 않음|
+|방 반응이 계속 재생되거나 다음 장면까지 잔류할 위험|현재 hover/press/activation에만 반응, 유한 sweep 후 정지. .94 이후 방 범위/desktop/dialogclosed에만 활성|reduced/keyboard는 움직임 없는 정적 피드백, cancel에 새 release burst 없음, hidden 및 post bridge 이탈 시 정지. 신규 두 버튼은 검수하지 않은 좁은 화면에서 노출하지 않고 기존3개는 보존|
+|유성1줄기/11.8초|5.4초 주기4줄기, lane/속도/강도가 다른 짧은 경로|열린 하늘에서 더 자주 겹쳐 보임. 원본 인물보다 뒤, 기존 초기 Hero 종료/움직임 감소 보호 유지|
+
+### 실제 검수와 보존
+
+실제 `/usr/bin/chromium`, Playwright, Linux ANGLE Vulkan **SwiftShader**, DPR1, 1440×900 KO / 1920×1080 es-DO. 독립 담당이 수정 전 3개 소품의 hover/click/input/focus와 같은 조건에서 수정 후 5개의 반응을 직접 확인했다. 루트도 모니터·키보드·토끼·유성 실제 캡처를 열어 비교했다.
+
+- 정상 두 크기 idle B 전후 전체 픽셀 변화0. 5개 hover/held의 남녀 얼굴 내부 두 표본도 각크기 변화0. 이는 내부 샘플 검수이며 모든 인물 픽셀 전수 동일 주장과 구분한다.
+- 모니터/키보드 hover·press·cancel·키보드 입력, 3개의 기존 modal 입력/닫기/focus/scroll 복귀, modal 중 새 material 비활성, q.9→1→1.3 이탈과 역복귀를 확인했다. 기존 토끼 그림자 slider, 사진 shutter, 노트북 pointer drawing→card 흐름 유지.
+- 정착 뒤 idle frameSerial 고정, hidden에서도 고정. 원본 방 camera/행렬은 변함없다. 실제 검수는 정상 경로 page/console/network 오류0이며 SwiftShader ReadPixels warning은 하드웨어 성능이나 무경고 실행으로 해석하지 않는다.
+- 전체 **92파일/736테스트**, TypeScript, production build, diff 검사 통과. source 역등록과 정착/중단·사진 내부 raycast hole·reduced/keyboard·자원 해제에 의미 있는 검사를 포함했다. 최종 CSS와 monitor hitbox 조정 뒤 production build를 다시 실행했다. 기존 큰 chunk/Motion use-client 경고는 남는다.
+
+모바일·영상·전체 8게임 플레이·실제 GPU FPS/장시간 성능은 이번 검수에서 제외했다. 이번 승인 범위는 B 소품 반응과 유성 증량이며 전체 사이트 미술 최종 승인이나 새 전체 점수를 의미하지 않는다.
+
+최종 보충에서 두 문제를 관측해 같은 담당과 수정했다. 첫째, 이전 버튼의 blur가 새 버튼의 press를 지웠다. cleanup은 자기 target이 현재 target일 때만 수행하도록 고쳤고, 두 크기에서 **5개 연속 held의 target===id·press===true, cancel 후 press===false**를 strict assert했다. 둘째, 루트가 실제 L06 그림에서 작은 내부 사각판처럼 보이는 테두리를 거부했다. 담당자는 kind2 material만 테두리를 없애고 경계 alpha0인 부드러운 diagonal rose catchlight로 교정했다. 전체 구도나 조명으로 문제를 감추지 않았다.
+
+reduced 초기 두 자동화 샘플은 B 위치가 아니므로 승인 근거에서 제외했다. 실제 heroHeight−viewportHeight로 이동해 progress1/roomInteractionActive=true인 fresh reduced context에서 모니터·키보드·토끼의 정적 반응/Animating=false를 다시 확인했다. 이는 검수 위치 정정이며 제품 오류를 고쳤다고 표시하지 않는다. 앞 정상 모션/입력 근거와 최종 fragment 차이를 해시로 구분한다. 전체736테스트는 최종 입력 경계/재질 폴리시 전 실행이며, 그 뒤 변경은 해당 strict 브라우저 회귀검사·8개 helper 테스트·TypeScript·최종 production build·diff로 좁게 확인했다.
+
+최종 L06 실제 재검수도 두 크기 통과했다. 단단한 quad/rim이 없어지고 lid 내부 부드러운 rose catchlight로 보이며, hover→held 변화는1440 18,758px /1920 30,639px, 남녀 얼굴 내부 표본은각0이다. source-laptop-freeze와 최종해시가 동일한 상태에서 확인했다. 독립 검수는 이 제한된 방 반응·유성 범위 Approve이며, 남은 차단 결함을 관측하지 않았다.
+
+[방 수정 전](assets/impeccable-landing/full-skill-review/motion-correction/room-interaction-before.webp) / [수정 후 실제 소품 반응](assets/impeccable-landing/full-skill-review/motion-correction/room-object-reactions.webp), [늘어난 유성 실제 프레임](assets/impeccable-landing/full-skill-review/motion-correction/hero-frequent-meteors.webp), [전후 브라우저·strict 입력 회귀검사·최종 소스 해시](assets/impeccable-landing/full-skill-review/motion-correction/room-interaction-browser.json). 기존 원격 Hero 브랜치에 통합하고 owner-private 확인 Site의 audience를 유지해 업데이트한다. 프로젝트 main을 대상으로 병합·push·배포하지 않는다.

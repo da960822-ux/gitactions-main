@@ -13,19 +13,25 @@ varying vec2 vUv;
 float hash(vec2 p){return fract(sin(dot(p,vec2(127.1,311.7)))*43758.5453);}
 float noise(vec2 p){vec2 i=floor(p),f=fract(p);f=f*f*(3.-2.*f);return mix(mix(hash(i),hash(i+vec2(1,0)),f.x),mix(hash(i+vec2(0,1)),hash(i+1.),f.x),f.y);}
 float cloud(vec2 p){return .57*noise(p)+.29*noise(p*2.03+7.1)+.14*noise(p*4.07-3.2);}
-float meteor(vec2 uv){
- float phase=mod(uTime+.8,11.8);
- float visible=smoothstep(0.,.16,phase)*(1.-smoothstep(2.1,2.65,phase))*uMotion;
- float headX=1.09-phase*.19;
- float curve=.44+(uv.x-.5)*.55+.025*sin(uv.x*7.);
+float meteorTrail(vec2 uv,float offset,float speed,float lane,float strength){
+ float phase=mod(uTime+offset,5.4);
+ float visible=smoothstep(0.,.12,phase)*(1.-smoothstep(1.9,2.35,phase))*uMotion;
+ float headX=1.12-phase*speed;
+ float curve=.44+lane+(uv.x-.5)*.55+.025*sin(uv.x*7.);
  float behind=uv.x-headX;
  float tail=smoothstep(-.003,.003,behind)*exp(-max(behind,0.)*23.);
  float line=exp(-pow((uv.y-curve)/.0019,2.))*tail;
- float headY=.44+(headX-.5)*.55+.025*sin(headX*7.);
+ float headY=.44+lane+(headX-.5)*.55+.025*sin(headX*7.);
  vec2 head=(uv-vec2(headX,headY))*vec2(1.55,1.);
  float spark=exp(-dot(head,head)*52000.)*2.5;
  float bloom=exp(-dot(head,head)*6000.)*.4;
- return (line+spark+bloom)*visible;
+ return (line+spark+bloom)*visible*strength;
+}
+float meteor(vec2 uv){
+ return meteorTrail(uv,.8,.26,0.,1.)
+      +meteorTrail(uv,2.1,.29,.075,.78)
+      +meteorTrail(uv,3.3,.24,-.065,.88)
+      +meteorTrail(uv,4.4,.31,.14,.65);
 }
 void main(){
  vec2 uv=vUv;
