@@ -60,7 +60,7 @@ export default function StudioScene(props:Props){
     const entryAge=time-entryStarted,selectionAge=time-selectionStarted;
     needsFrame=attraction.update({entryAge,selectionAge,selected:controls.current.selected??'domino',paused:controls.current.paused,mobile})||needsFrame;
     collection!.root.updateMatrixWorld(true);
-    canvas.dataset.galleryEntry=controls.current.paused?'paused':entryAge<1.25?'entering':'settled';canvas.dataset.galleryBurst=controls.current.paused?'paused':selectionAge<1.12?'running':'settled';
+    canvas.dataset.galleryEntry=controls.current.paused?'paused':entryAge<1.25?'entering':'settled';canvas.dataset.galleryMaterial=controls.current.paused?'static':selectionAge<1.8?'turning':'settled';
    }
    canvas.dataset.hovered=hoverId??'';
    renderer.render(scene,camera);canvas.dataset.renderCount=String(++renderCount);

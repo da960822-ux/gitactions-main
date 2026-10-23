@@ -87,6 +87,11 @@ void main(){
  vec3 base=mix(mix(uColorA,uColorB,blendX),mix(uColorC,uColorD,blendX),blendY);
  float fold=max(1.0-abs(blendX*2.0-1.0),1.0-abs(blendY*2.0-1.0))*hardness;
  float light=((level2.z*0.5+0.5)*0.12+0.94)*(1.0+fold*0.65);
+ vec3 normal=normalize(vec3(-dFdx(zone)*160.0,-dFdy(zone)*160.0,1.0));
+ vec3 key=normalize(vec3(cos(t)*0.7,sin(t*0.8)*0.5,1.0));
+ float satin=pow(max(dot(reflect(-key,normal),vec3(0.0,0.0,1.0)),0.0),18.0);
+ light*=0.52+0.58*max(dot(normal,key),0.0);
+ base+=vec3(1.0,0.73,0.59)*satin*0.24;
  float echo=0.0;
  if(uEcho>=0.0)echo=exp(-pow((length(connection)-(0.03+uEcho*0.68))/0.025,2.0))*sin(uEcho*3.14159265);
  vec3 answer=vec3(1.0,0.68,0.72)*(gathering*0.3+echo*0.65);

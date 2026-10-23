@@ -17,6 +17,9 @@ export function preloadRoseGiftArt():Promise<void>{
  return roseGiftArtPreload;
 }
 const DURATION=3,TRANSFER=1.65,FLOWER_SCALE=.16;
+export function roseGiftCanCelebrate(seconds:number,active:boolean){return active&&Number.isFinite(seconds)&&seconds>=DURATION;}
+const fireworks=[{x:80,y:325,delay:0,radius:290},{x:1120,y:350,delay:.42,radius:280},{x:625,y:170,delay:.82,radius:250}];
+const fireworkRays=Array.from({length:28},(_,i)=>{const angle=i*Math.PI*2/28,reach=.72+(i%4)*.09;return{x:Math.cos(angle)*reach,y:Math.sin(angle)*reach};});
 type Point={x:number;y:number};
 const turn=(point:Point,pivot:Point,degrees:number):Point=>{const angle=degrees*Math.PI/180,c=Math.cos(angle),s=Math.sin(angle),x=point.x-pivot.x,y=point.y-pivot.y;return{x:pivot.x+x*c-y*s,y:pivot.y+x*s+y*c};};
 const range=(a:number,b:number,value:number)=>{const t=Math.max(0,Math.min(1,(value-a)/(b-a)));return t*t*(3-2*t);};
@@ -53,12 +56,13 @@ export function roseGiftClosingLine(language:'ko'|'es',received:boolean,pactAcce
 }
 export function RoseGiftFinale({language,reducedMotion=false,pactAccepted=false,onReceived}:{language:'ko'|'es';reducedMotion?:boolean;pactAccepted?:boolean;onReceived?:()=>void}){
  const ko=language==='ko',id=useId(),titleId='rose-gift-title',root=useRef<HTMLElement>(null),art=useRef<SVGSVGElement>(null);
- const timeline=useRef<gsap.core.Timeline|null>(null),score=useRef({time:0}),started=useRef(false),notified=useRef(false),receivedCallback=useRef(onReceived),replay=useRef<(instant:boolean)=>void>(()=>{});
+ const timeline=useRef<gsap.core.Timeline|null>(null),celebrationTimeline=useRef<gsap.core.Timeline|null>(null),celebrationArt=useRef<SVGSVGElement>(null),score=useRef({time:0}),started=useRef(false),notified=useRef(false),receivedCallback=useRef(onReceived),replay=useRef<(instant:boolean)=>void>(()=>{});
  receivedCallback.current=onReceived;
  const [loaded,setLoaded]=useState(0),[failed,setFailed]=useState(false),[visible,setVisible]=useState(false),[pageVisible,setPageVisible]=useState(()=>typeof document==='undefined'||!document.hidden),[phase,setPhase]=useState(reducedMotion?'received':'waiting');
+ const [celebration,setCelebration]=useState(0),celebrated=useRef(0);
  const ready=loaded===63&&!failed,staticArt=reducedMotion||failed,canPlay=useRef(false);
  canPlay.current=visible&&pageVisible&&!staticArt;
- const complete=useCallback(()=>{setPhase('received');if(!notified.current){notified.current=true;receivedCallback.current?.();}},[]);
+ const complete=useCallback((celebrate=false)=>{setPhase('received');if(celebrate&&roseGiftCanCelebrate(score.current.time,canPlay.current)){setCelebration(count=>count+1);window.dispatchEvent(new CustomEvent('rose-gift-celebrate'));}if(!notified.current){notified.current=true;receivedCallback.current?.();}},[]);
  useEffect(()=>{const el=root.current;if(!el)return;const observer=new IntersectionObserver(entries=>setVisible(entries[0].isIntersecting),{threshold:.25});observer.observe(el);return()=>observer.disconnect();},[]);
  useEffect(()=>{const update=()=>setPageVisible(!document.hidden);document.addEventListener('visibilitychange',update);return()=>document.removeEventListener('visibilitychange',update);},[]);
  useEffect(()=>{if(failed||reducedMotion&&(loaded&1)){score.current.time=DURATION;started.current=true;complete();}},[failed,reducedMotion,loaded,complete]);
@@ -90,9 +94,12 @@ export function RoseGiftFinale({language,reducedMotion=false,pactAccepted=false,
   };
   const play=(instant:boolean)=>{
    timeline.current?.kill();timeline.current=null;
+   celebrationTimeline.current?.kill();celebrationTimeline.current=null;
+   if(celebrationArt.current)gsap.set(celebrationArt.current.querySelectorAll('.rg-firework-launch,.rg-firework-burst'),{opacity:0});
+   if(root.current)root.current.dataset.celebration='idle';
    if(instant){score.current.time=DURATION;paint();complete();return;}
    score.current.time=0;paint();
-   const sequence=gsap.timeline({paused:true,onUpdate:paint,onComplete:complete});timeline.current=sequence;
+   const sequence=gsap.timeline({paused:true,onUpdate:paint,onComplete:()=>complete(true)});timeline.current=sequence;
    sequence.to(score.current,{time:DURATION,duration:DURATION,ease:'none'});started.current=true;if(canPlay.current)sequence.play();
   };
   replay.current=play;paint();
@@ -102,13 +109,40 @@ export function RoseGiftFinale({language,reducedMotion=false,pactAccepted=false,
   if(!ready||staticArt)return;
   if(visible&&pageVisible){if(!started.current)replay.current(false);else timeline.current?.resume();}else timeline.current?.pause();
  },[ready,staticArt,visible,pageVisible]);
+ useEffect(()=>{
+  const svg=celebrationArt.current,element=root.current;if(!svg||!element||!celebration||staticArt||celebrated.current===celebration)return;
+  celebrated.current=celebration;
+  const sequence=gsap.timeline({onUpdate:()=>{element.dataset.celebrationTime=sequence.time().toFixed(3);},onComplete:()=>{element.dataset.celebration='complete';}});celebrationTimeline.current=sequence;element.dataset.celebration='playing';
+  fireworks.forEach((burst,index)=>{
+   const shell=svg.querySelectorAll('.rg-firework-burst')[index],launch=svg.querySelectorAll('.rg-firework-launch')[index],rays=shell.querySelectorAll('.rg-firework-ray'),sparks=shell.querySelectorAll('.rg-firework-spark');
+   sequence.fromTo(launch,{opacity:0,strokeDashoffset:1},{opacity:1,strokeDashoffset:-.12,duration:.34,ease:'power2.out'},burst.delay)
+    .to(launch,{opacity:0,duration:.12},burst.delay+.3)
+    .fromTo(shell,{svgOrigin:`${burst.x} ${burst.y}`,scale:.06,y:0,opacity:0},{scale:1,opacity:1,duration:.48,ease:'power3.out'},burst.delay+.3)
+    .fromTo(rays,{strokeDashoffset:1,opacity:1},{strokeDashoffset:0,duration:.42,ease:'power2.out'},burst.delay+.3)
+    .to(rays,{strokeDashoffset:-1,opacity:0,duration:1.1,ease:'power2.in'},burst.delay+.68)
+    .fromTo(sparks,{opacity:1,scale:1},{opacity:0,scale:.3,duration:1.25,ease:'power2.in'},burst.delay+.66)
+    .to(shell,{y:85,scale:1.17,opacity:0,duration:1.25,ease:'power1.in'},burst.delay+.72);
+  });
+  return()=>{sequence.kill();if(celebrationTimeline.current===sequence)celebrationTimeline.current=null;};
+ },[celebration,staticArt]);
+ useEffect(()=>{if(visible&&pageVisible)return;celebrationTimeline.current?.kill();celebrationTimeline.current=null;if(celebrationArt.current)gsap.set(celebrationArt.current.querySelectorAll('.rg-firework-launch,.rg-firework-burst'),{opacity:0});if(root.current&&root.current.dataset.celebration==='playing')root.current.dataset.celebration='cancelled';},[visible,pageVisible]);
  const image=(clip:string)=><image href={original} width="1199" height="1312" clipPath={`url(#${id}-${clip})`} onLoad={()=>setLoaded(old=>old|1)} onError={()=>setFailed(true)}/>;
- return <section ref={root} id="rose-gift-finale" className="rose-gift-finale" data-phase={phase} aria-labelledby={titleId}>
+ return <section ref={root} id="rose-gift-finale" className="rose-gift-finale" data-phase={phase} data-celebration={staticArt&&phase==='received'?'static':'idle'} aria-labelledby={titleId}>
   <div className="rg-copy"><h3 id={titleId} tabIndex={-1}>{ko?<>Baby,<br/>이건 너한테.</>:<>Baby,<br/>esta es para ti.</>}</h3><p className="rg-last-word" aria-live="polite">{roseGiftClosingLine(language,phase==='received',pactAccepted)}</p>
    <button type="button" className="rg-replay" disabled={!ready||reducedMotion} onClick={event=>replay.current(event.detail===0)}><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 10a8 8 0 1 1 1 7M4 4v6h6"/></svg>{ko?'한 번 더 보기':'Ver otra vez'}</button>
    {failed&&<p className="rg-status" role="status">{ko?'그림을 불러오지 못했어. Baby, 이 장미는 너한테 주는 거야.':'La ilustración no cargó. Baby, esta rosa es para ti.'}</p>}
   </div>
   <div className="rg-art" data-ready={ready||staticArt} data-static={staticArt} role="img" aria-label={ko?'연석이 리스베스에게 빨간 장미 한 송이를 건네고, 리스베스가 웃으며 받아 드는 장면':'Yeonseok le ofrece una rosa roja a Lisbeth y ella la recibe sonriendo'}>
+   <svg ref={celebrationArt} className="rg-celebration" viewBox="0 0 1199 1312" preserveAspectRatio="xMidYMax meet" aria-hidden="true" data-trigger="handover-complete">
+    <defs><radialGradient id={`${id}-celebration-glow`}><stop className="rg-glow-core" stopColor="#ffd9a5"/><stop className="rg-glow-mid" offset=".5" stopColor="#ec8cae"/><stop className="rg-glow-edge" offset="1" stopColor="#ec8cae"/></radialGradient></defs>
+    <ellipse className="rg-celebration-glow" cx="735" cy="450" rx="450" ry="360" fill={`url(#${id}-celebration-glow)`}/>
+    {fireworks.map((burst,index)=><g key={index}>
+     <path className="rg-firework-launch" pathLength="1" d={`M735 485Q${burst.x} 550 ${burst.x} ${burst.y}`}/>
+     <g className="rg-firework-burst">
+      {fireworkRays.map((ray,i)=>{const x=burst.x+ray.x*burst.radius,y=burst.y+ray.y*burst.radius;return <g key={i} className={i%3?'rg-gold-spark':'rg-rose-spark'}><path className="rg-firework-ray" pathLength="1" d={`M${burst.x+ray.x*10} ${burst.y+ray.y*10}Q${burst.x+ray.x*burst.radius*.65} ${burst.y+ray.y*burst.radius*.65-12} ${x} ${y+18}`}/><circle className="rg-firework-spark" cx={x} cy={y+18} r={i%4===0?4:2.8}/></g>;})}
+     </g>
+    </g>)}
+   </svg>
    <img className="rg-static" src={original} alt="" aria-hidden="true" draggable="false" width="1199" height="1312" onLoad={()=>setLoaded(old=>old|1)} onError={()=>setFailed(true)}/>
    <svg ref={art} className="rg-live" viewBox="0 0 1199 1312" preserveAspectRatio="xMidYMax meet" aria-hidden="true" data-rig="complete-limb-handover" data-time="0" data-owner="donor">
     <defs>

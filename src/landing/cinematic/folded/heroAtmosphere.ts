@@ -99,6 +99,31 @@ void main(){
  vec3 color=mix(vec3(1.,.56,.36),vec3(.91,.77,1.),vSeed);
  gl_FragColor=vec4(color,alpha);
 }`;
+const orbitVertex=`
+uniform float uTime,uMotion;
+uniform vec2 uPointer,uFrame;
+attribute float aLane;
+varying vec2 vUv;varying vec3 vNormal,vView;varying float vLane;
+void main(){
+ vec3 p=position;
+ p.z+=sin(uv.x*6.2831853+uTime*.45+aLane)*.025*uMotion;
+ p.xy+=uPointer*uFrame*(.055+aLane*.035);
+ vec4 view=modelViewMatrix*vec4(p,1.);
+ vUv=uv;vLane=aLane;vNormal=normalize(normalMatrix*normal);vView=-view.xyz;
+ gl_Position=projectionMatrix*view;
+}`;
+const orbitFragment=`
+uniform float uTime,uPresence,uCharge;
+varying vec2 vUv;varying vec3 vNormal,vView;varying float vLane;
+void main(){
+ float edge=smoothstep(0.,.12,vUv.y)*smoothstep(0.,.12,1.-vUv.y);
+ float rim=pow(1.-abs(dot(normalize(vNormal),normalize(vView))),2.);
+ float sheen=pow(.5+.5*cos(vUv.x*6.2831853-uTime*(.62-vLane*.18)+vNormal.x*.8),8.);
+ vec3 metal=mix(vec3(.62,.22,.39),vec3(1.,.62,.33),vLane*.55+sheen*.45);
+ vec3 color=mix(metal,vec3(1.,.88,.72),sheen*.65+rim*.15);
+ float alpha=uPresence*edge*(.16+sheen*.48+rim*.2+uCharge*.12);
+ gl_FragColor=vec4(color*(.75+sheen*.45),alpha);
+}`;
 
 /** Camera-ray registered sky light; every draw stays behind the rigid approved portrait. */
 export function createHeroAtmosphere({halfWidthAtUnitZ:halfWidth,halfHeightAtUnitZ:halfHeight}:Projection){
@@ -117,6 +142,18 @@ export function createHeroAtmosphere({halfWidthAtUnitZ:halfWidth,halfHeightAtUni
  const starGeometry=new T.BufferGeometry();starGeometry.setAttribute('position',new T.Float32BufferAttribute(positions,3));starGeometry.setAttribute('aSeed',new T.Float32BufferAttribute(seeds,1));starGeometry.setAttribute('aSize',new T.Float32BufferAttribute(sizes,1));starGeometry.setAttribute('aLayer',new T.Float32BufferAttribute(layers,1));
  const starMaterial=new T.ShaderMaterial({uniforms,vertexShader:starVertex,fragmentShader:starFragment,transparent:true,depthWrite:false,depthTest:true,blending:T.AdditiveBlending,toneMapped:false});
  const stars=new T.Points(starGeometry,starMaterial);stars.name='THREE_DEPTH_STELLAR_FIELD';stars.frustumCulled=false;root.add(stars);
+ const orbitGeometry=new T.BufferGeometry(),orbitPositions:number[]=[],orbitUvs:number[]=[],orbitLanes:number[]=[],orbitIndices:number[]=[];
+ for(let lane=0;lane<2;lane++)for(let segment=0;segment<=128;segment++)for(let cross=0;cross<=6;cross++){
+  const angle=segment/128*Math.PI*2,across=cross/6-.5,band=lane?.011:.019;
+  const u=.77+Math.cos(angle)*(.30+lane*.035)+Math.cos(angle)*across*band;
+  const v=.77+lane*.065+Math.sin(angle)*(.17-lane*.055)+Math.sin(angle)*across*band;
+  const depth=4.45+Math.sin(angle+lane*1.7)*.11+Math.sin(across*Math.PI)*.055;
+  orbitPositions.push((u*2-1)*halfWidth*depth,(v*2-1)*halfHeight*depth,-depth);orbitUvs.push(segment/128,cross/6);orbitLanes.push(lane);
+  if(segment<128&&cross<6){const a=lane*129*7+segment*7+cross;orbitIndices.push(a,a+7,a+1,a+1,a+7,a+8);}
+ }
+ orbitGeometry.setAttribute('position',new T.Float32BufferAttribute(orbitPositions,3));orbitGeometry.setAttribute('uv',new T.Float32BufferAttribute(orbitUvs,2));orbitGeometry.setAttribute('aLane',new T.Float32BufferAttribute(orbitLanes,1));orbitGeometry.setIndex(orbitIndices);orbitGeometry.computeVertexNormals();
+ const orbitMaterial=new T.ShaderMaterial({uniforms,vertexShader:orbitVertex,fragmentShader:orbitFragment,transparent:true,depthWrite:false,depthTest:true,side:T.DoubleSide,toneMapped:false});
+ const orbits=new T.Mesh(orbitGeometry,orbitMaterial);orbits.name='SCULPTED_COSMIC_ORBITS';orbits.frustumCulled=false;root.add(orbits);
  const pointerTarget=new T.Vector2();
  let previousTime:number|undefined,wasPressed=false,disposed=false;
  return{root,update(frame:HeroAtmosphereInput){
@@ -135,5 +172,5 @@ export function createHeroAtmosphere({halfWidthAtUnitZ:halfWidth,halfHeightAtUni
   uniforms.uCharge.value+=(Number(pressed)-uniforms.uCharge.value)*(1-Math.exp(-delta*(pressed?4:12)));
   uniforms.uRelease.value*=Math.exp(-delta*3.4);
   wasPressed=pressed;
- },cancelInteraction(){wasPressed=false;uniforms.uRelease.value=0;},dispose(){if(disposed)return;disposed=true;root.removeFromParent();skyGeometry.dispose();skyMaterial.dispose();starGeometry.dispose();starMaterial.dispose();}};
+ },cancelInteraction(){wasPressed=false;uniforms.uRelease.value=0;},dispose(){if(disposed)return;disposed=true;root.removeFromParent();skyGeometry.dispose();skyMaterial.dispose();starGeometry.dispose();starMaterial.dispose();orbitGeometry.dispose();orbitMaterial.dispose();}};
 }

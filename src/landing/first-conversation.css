@@ -7,10 +7,10 @@
 .first-conversation .fc-beat .fc-afterthought{margin-top:20px;color:#edb7c9;font-size:16px}
 .first-conversation .fc-connection{position:sticky;top:96px;width:100%;max-width:760px;aspect-ratio:720/700;margin:0;align-self:start;justify-self:end;isolation:isolate}
 .first-conversation .fc-connection-art{display:block;width:100%;height:auto;overflow:visible}
-.first-conversation .fc-shared-surface{opacity:.48}
-.first-conversation .fc-material-surface{position:absolute;top:0;left:0;width:100%;aspect-ratio:720/620;z-index:-1;pointer-events:none}
+.first-conversation .fc-shared-surface{opacity:.22}
+.first-conversation .fc-material-surface{position:absolute;top:0;left:0;width:100%;aspect-ratio:720/620;z-index:-1;opacity:.9;pointer-events:none}
 .first-conversation .fc-material,.first-conversation .fc-material-canvas{width:100%;height:100%}
-.first-conversation .fc-material-canvas{display:block;opacity:.8}
+.first-conversation .fc-material-canvas{display:block;opacity:1}
 .first-conversation .fc-material-canvas[hidden]{display:none}
 .first-conversation .fc-face{overflow:visible}
 .first-conversation .fc-thread{opacity:.85}

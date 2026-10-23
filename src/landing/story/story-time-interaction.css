@@ -7,13 +7,18 @@
 .post-hero-preview .story-time-interaction .story-live-clocks small{font-size:13px;line-height:1.5;color:#c9aab4}
 .post-hero-preview .story-time-interaction .story-hour-picker{margin-top:32px}
 .post-hero-preview .story-time-interaction .story-hour-picker label{display:block;font-size:16px;line-height:1.6;color:#e9c9b9}
-.post-hero-preview .story-time-interaction .story-preview-skies{display:grid;grid-template-columns:1fr 1fr;gap:24px;margin:20px 0 12px}
+.post-hero-preview .story-time-interaction .story-preview-skies{display:grid;grid-template-columns:1fr 1fr;gap:24px;margin:20px 0 12px;perspective:1400px}
 .post-hero-preview .story-time-interaction .story-time-city{min-width:0;margin:0}
-.post-hero-preview .story-time-interaction .story-time-city-art{position:relative;aspect-ratio:1;background-image:url('/images/story/city-windows.webp');background-size:200% 100%;background-position:left center;overflow:clip}
-.post-hero-preview .story-time-interaction .story-time-city[data-city=santo-domingo] .story-time-city-art{background-position:right center}
+.post-hero-preview .story-time-interaction .story-time-city-art{position:relative;aspect-ratio:1;overflow:clip;background:#211728;box-shadow:0 20px 44px #0b061955}
+.post-hero-preview .story-city-photograph{position:absolute;inset:-15% -10%;background-image:url('/images/story/city-windows.webp');background-size:200% 100%;background-position:left center;pointer-events:none}
+.post-hero-preview .story-time-city[data-city=santo-domingo] .story-city-photograph{background-position:right center}
 .post-hero-preview .story-time-interaction .story-city-night,.post-hero-preview .story-time-interaction .story-city-day{position:absolute;inset:0;pointer-events:none}
 .post-hero-preview .story-time-interaction .story-city-night{background:#171324;mix-blend-mode:multiply}
 .post-hero-preview .story-time-interaction .story-city-day{background:#f1c594;mix-blend-mode:screen}
+.post-hero-preview .story-city-hourlight,.post-hero-preview .story-city-refraction{position:absolute;pointer-events:none;mix-blend-mode:screen}
+.post-hero-preview .story-city-hourlight{inset:-30%;background:linear-gradient(112deg,transparent 34%,#f6c08f44 45%,#ffe1b3aa 50%,#fff3d233 52%,transparent 67%)}
+.post-hero-preview .story-time-city[data-preview-day=false] .story-city-hourlight{background:linear-gradient(112deg,transparent 34%,#b9a2dc33 45%,#e8d5ff88 50%,#e8d5ff22 52%,transparent 67%)}
+.post-hero-preview .story-city-refraction{inset:-30% -50%;background:linear-gradient(105deg,transparent 44%,#fff8e227 48%,#fff8e247 50%,transparent 54%);opacity:.5}
 .post-hero-preview .story-city-celestial{position:absolute;inset:2% 8% auto;width:84%;height:54%;overflow:visible;pointer-events:none;color:#ffcf8e}
 .post-hero-preview .story-city-orbit{fill:none;stroke:currentColor;stroke-width:.6;stroke-dasharray:2 5;opacity:.35}
 .post-hero-preview .story-city-dial,.post-hero-preview .story-city-rays{fill:none;stroke:currentColor;stroke-width:1.6;stroke-linecap:round}
@@ -32,7 +37,8 @@
  .post-hero-preview .story-time .story-live-clocks time{margin:4px 0;font-size:36px}
  .post-hero-preview .story-time .story-hour-picker{margin-top:20px}
  .post-hero-preview .story-time .story-preview-skies{margin-top:16px}
- .post-hero-preview .story-time .story-time-city-art{aspect-ratio:auto;height:clamp(280px,24vw,420px);background-size:200% auto}
+ .post-hero-preview .story-time .story-time-city-art{aspect-ratio:auto;height:clamp(280px,24vw,420px)}
+ .post-hero-preview .story-time .story-city-photograph{background-size:200% auto}
 }
 @media(max-width:1000px){.post-hero-preview .story-time-interaction .story-live-clocks,.post-hero-preview .story-time-interaction .story-preview-skies,.post-hero-preview .story-time-interaction .story-hour-picker output{gap:20px}.post-hero-preview .story-time-interaction .story-live-clocks time{font-size:clamp(36px,5vw,60px)}}
 @media(max-width:600px){.post-hero-preview .story-time-interaction .story-live-clocks,.post-hero-preview .story-time-interaction .story-preview-skies,.post-hero-preview .story-time-interaction .story-hour-picker output{gap:16px}.post-hero-preview .story-time-interaction .story-live-clocks time{font-size:clamp(32px,8vw,48px)}.post-hero-preview .story-time-interaction .story-hour-picker output{font-size:15px}.post-hero-preview .story-time-interaction .story-time-city figcaption{font-size:13px}}

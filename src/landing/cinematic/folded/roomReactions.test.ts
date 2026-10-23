@@ -8,6 +8,18 @@ function fixture(){const room=new T.Group(),effect=createRoomReactions(room);ret
 function advance(effect:ReturnType<typeof createRoomReactions>,input:Partial<RoomReactionInput>,start=0,duration=2){for(let t=start;t<=start+duration+.0001;t+=1/60)effect.update({...frame,...input,time:t});}
 
 describe('approved B-room object reactions',()=>{
+ it('passes a finite material reflection across the room on first arrival without replaying after interruption',()=>{
+  const {effect,light}=fixture();effect.update(frame);advance(effect,{},0,.4);
+  expect(light('monitor').material.uniforms.uArrival.value).toBeGreaterThan(.6);
+  expect(light('keyboard').material.uniforms.uArrivalSweep.value).toBeLessThan(light('monitor').material.uniforms.uArrivalSweep.value);
+  expect(light('L06').visible).toBe(true);expect(effect.state.needsFrame).toBe(true);
+  advance(effect,{},.4,1.7);for(const id of ['monitor','keyboard','L06','L09']){expect(light(id).visible).toBe(false);expect(light(id).material.uniforms.uArrival.value).toBeLessThan(.001);}
+  effect.update({...frame,time:3,active:false});effect.update({...frame,time:4});
+  expect(light('monitor').visible).toBe(false);expect(light('monitor').material.uniforms.uArrival.value).toBeLessThan(.001);effect.dispose();
+  const interrupted=fixture();interrupted.effect.update(frame);advance(interrupted.effect,{},0,.3);
+  interrupted.effect.update({...frame,time:.4,active:false});interrupted.effect.update({...frame,time:.5});
+  expect(interrupted.light('monitor').visible).toBe(false);expect(interrupted.light('monitor').material.uniforms.uArrival.value).toBeLessThan(.001);interrupted.effect.dispose();
+ });
  it('leaves the original room intact and keeps the photo interior free of effect geometry',()=>{
   const {room,effect,light}=fixture(),approved=new T.Mesh(new T.PlaneGeometry(1,1),new T.MeshBasicMaterial());room.add(approved);
   const matrix=approved.matrix.clone(),position=Array.from(approved.geometry.getAttribute('position').array);

@@ -1,6 +1,21 @@
 import {renderToStaticMarkup} from 'react-dom/server';
 import {expect,it} from 'vitest';
-import {RoseGiftFinale,roseGiftClosingLine,roseGiftPose} from './story/RoseGiftFinale';
+import {RoseGiftFinale,roseGiftCanCelebrate,roseGiftClosingLine,roseGiftPose} from './story/RoseGiftFinale';
+
+it('gates fireworks on the fully settled handover while visible, never on initial contact or transfer',()=>{
+ for(const seconds of [-1,0,1.2,1.65,2.85,2.999,NaN,Infinity])expect(roseGiftCanCelebrate(seconds,true)).toBe(false);
+ expect(roseGiftCanCelebrate(3,true)).toBe(true);expect(roseGiftCanCelebrate(3,false)).toBe(false);
+ expect(roseGiftCanCelebrate(0,true)).toBe(false);expect(roseGiftCanCelebrate(3,true)).toBe(true);
+});
+
+it('registers three finite fireworks behind the unchanged single rose and uses a static reduced-motion glow',()=>{
+ const html=renderToStaticMarkup(<RoseGiftFinale language="ko"/>),reduced=renderToStaticMarkup(<RoseGiftFinale language="ko" reducedMotion/>);
+ expect(html).toContain('data-celebration="idle"');expect(html).toContain('data-trigger="handover-complete"');
+ expect(html.match(/class="rg-firework-launch"/g)).toHaveLength(3);expect(html.match(/class="rg-firework-ray"/g)).toHaveLength(84);
+ expect(html.indexOf('class="rg-celebration"')).toBeLessThan(html.indexOf('class="rg-live"'));
+ expect(reduced).toContain('data-celebration="static"');expect(reduced).toContain('rg-celebration-glow');
+ expect(html.match(/data-flower-instance="single"/g)).toHaveLength(1);
+});
 
 it('uses the playful lifetime-partner line only after receiving and an actual pact answer',()=>{
  for(const language of ['ko','es'] as const){

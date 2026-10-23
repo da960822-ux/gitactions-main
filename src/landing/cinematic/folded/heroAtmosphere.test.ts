@@ -30,6 +30,16 @@ describe('initial Hero cosmic atmosphere',()=>{
   expect((sky.material as ShaderMaterial).depthTest).toBe(true);
   expect((stars.material as ShaderMaterial).depthWrite).toBe(false);effect.dispose();
  });
+ it('uses substantial curved orbital surfaces behind the portrait rather than an added particle overlay',()=>{
+  const {effect}=fixture(),orbits=effect.root.getObjectByName('SCULPTED_COSMIC_ORBITS') as Mesh;
+  const position=orbits.geometry.getAttribute('position'),normal=orbits.geometry.getAttribute('normal');
+  expect(position.count).toBe(1806);expect(orbits.geometry.index?.count).toBe(9216);
+  let near=-Infinity,far=Infinity;
+  for(let i=0;i<position.count;i++){near=Math.max(near,position.getZ(i));far=Math.min(far,position.getZ(i));expect(Number.isFinite(normal.getZ(i))).toBe(true);}
+  expect(near).toBeLessThan(-4.25);expect(near-far).toBeGreaterThan(.3);
+  expect((orbits.material as ShaderMaterial).depthTest).toBe(true);expect((orbits.material as ShaderMaterial).depthWrite).toBe(false);
+  effect.dispose();
+ });
  it('retargets a press from the current charge and releases bounded light without restarting a timeline',()=>{
   const {effect,uniforms}=fixture();effect.update(frame);
   for(let i=1;i<=20;i++)effect.update({...frame,time:i*.02,press:true,pointerX:.6,pointerY:.4});
@@ -53,7 +63,8 @@ describe('initial Hero cosmic atmosphere',()=>{
   effect.update({...frame,time:2,press:true,pointerX:1,pointerY:1});
   effect.update({...frame,time:3,press:true,reducedMotion:true});
   expect(uniforms.uMotion.value).toBe(0);expect(uniforms.uTime.value).toBe(0);expect(uniforms.uPointer.value.length()).toBe(0);expect(uniforms.uCharge.value).toBe(0);expect(uniforms.uRelease.value).toBe(0);
-  const resources=[sky.geometry,sky.material as ShaderMaterial,stars.geometry,stars.material as ShaderMaterial],spies=resources.map(resource=>vi.spyOn(resource,'dispose'));
+  const orbits=effect.root.getObjectByName('SCULPTED_COSMIC_ORBITS') as Mesh;
+  const resources=[sky.geometry,sky.material as ShaderMaterial,stars.geometry,stars.material as ShaderMaterial,orbits.geometry,orbits.material as ShaderMaterial],spies=resources.map(resource=>vi.spyOn(resource,'dispose'));
   effect.dispose();effect.dispose();for(const spy of spies)expect(spy).toHaveBeenCalledTimes(1);
  });
 });

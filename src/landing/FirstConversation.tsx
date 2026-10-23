@@ -68,7 +68,7 @@ export function FirstConversation({language}:{language:'ko'|'es'}){
    const element=host.current;if(!element)return;
    const beats=element.querySelectorAll('.fc-beat');
    const updateBeat=(trigger:ScrollTrigger)=>{element.dataset.storyBeat=trigger.progress<.34?'contact':trigger.progress<.67?'awkward':'continuous';};
-   const timeline=gsap.timeline({defaults:{ease:'none'},scrollTrigger:{id:'first-conversation-thread',trigger:beats[0],start:'center center',endTrigger:beats[2],end:'center center',scrub:true,invalidateOnRefresh:true,onRefresh:updateBeat,onUpdate:updateBeat}});
+   const timeline=gsap.timeline({defaults:{ease:'none'},scrollTrigger:{id:'first-conversation-thread',trigger:beats[0],start:'center center',endTrigger:beats[1],end:'center center',scrub:true,invalidateOnRefresh:true,onRefresh:updateBeat,onUpdate:updateBeat}});
    timeline.addLabel('contact',0).addLabel('awkward',1).addLabel('continuous',2);
    for(const[side,paths]of[['left',left],['right',right]]as const){
     const targets=element.querySelectorAll(`.fc-${side}-route`);
@@ -78,7 +78,8 @@ export function FirstConversation({language}:{language:'ko'|'es'}){
    timeline.fromTo('.fc-portrait-left',{svgOrigin:'190 275',x:-80,y:18,scale:.9},{x:-30,y:8,scale:.96,duration:1},'contact')
     .to('.fc-portrait-left',{x:0,y:0,scale:1,duration:1},'awkward')
     .fromTo('.fc-portrait-right',{svgOrigin:'511 287',x:80,y:28,scale:.9},{x:0,y:0,scale:1,duration:2},'contact')
-    .fromTo('.fc-shared-surface',{opacity:.12},{opacity:.48,duration:2},'contact')
+    .fromTo('.fc-connection-art .fc-shared-surface',{opacity:.12},{opacity:.22,duration:2},'contact')
+    .fromTo('.fc-material-surface',{opacity:.42},{opacity:.9,duration:2},'contact')
     .fromTo('.fc-daylight',{x:-240},{x:300,duration:2},'contact')
     .fromTo('.fc-thread',{opacity:.42},{opacity:.85,duration:1},'awkward')
     .fromTo('.fc-thread .fc-heart-route',{strokeDasharray:100,strokeDashoffset:100},{strokeDashoffset:0,duration:.9},'contact')
@@ -103,9 +104,9 @@ export function FirstConversation({language}:{language:'ko'|'es'}){
      <p>{ko?'내가 좀 무례하게 시작했는데도, 우리 대화는 거기서 끝나지 않았어.':'Al principio fui un poco grosero contigo, pero seguimos hablando.'}</p>
     </div>
     <div className="fc-beat fc-continuous">
-     <h3>{ko?<>그런데도,<br/>대화는 계속됐어.</>:<>Y seguimos<br/>hablando.</>}</h3>
-     <p>{ko?'서로 다른 시간에 살면서도, 첫날부터 12시간을 쉬지 않고 연락했어.':'Aunque teníamos horarios distintos, ese primer día pasamos doce horas hablando sin parar.'}</p>
-     <p className="fc-afterthought">{ko?'Baby, 난 아직도 너랑 할 얘기가 많아.':'Baby, todavía tengo tanto que contarte.'}</p>
+     <h3>{ko?<>너랑은,<br/>시간도 잊었어.</>:<>Contigo,<br/>las horas volaban.</>}</h3>
+     <p>{ko?'첫날부터 12시간을 쉬지 않고 얘기했어. 그렇게, 네가 내 하루에 들어왔어.':'El primer día hablamos doce horas sin parar. Y así empezaste a ser parte de mi día.'}</p>
+     <p className="fc-afterthought">{ko?'Baby, 지금도 네 얘기라면 더 듣고 싶어.':'Baby, todavía me dan ganas de seguir hablando contigo.'}</p>
     </div>
    </div>
    <figure className="fc-connection" data-charging={charging} onPointerEnter={respond} onPointerMove={respond} onPointerDown={event=>{pressed.current=true;respond(event);}} onPointerUp={event=>{setCharging(false);pressed.current=false;if(event.pointerType==='mouse')respond(event);else reset();}} onPointerLeave={reset} onPointerCancel={reset} aria-label={ko?'InterPals에서 만난 연석과 리스벳. 서툰 첫인사를 지나 첫날 12시간 이어진 대화.':'Yeonseok y Lisbeth se conocieron en InterPals. Pasaron de un comienzo torpe a doce horas de conversación el primer día.'}>
@@ -136,9 +137,9 @@ export function FirstConversation({language}:{language:'ko'|'es'}){
     <button type="button" className="fc-send-heart" aria-label={ko?'대화에 하트 보내기':'Enviar un corazón a nuestra conversación'} title={ko?'눌렀다 놓으면 하트가 이어져':'Pulsa y suelta para enviar un corazón'} onPointerDown={()=>setCharging(true)} onPointerUp={()=>setCharging(false)} onPointerLeave={()=>setCharging(false)} onPointerCancel={()=>setCharging(false)} onBlur={()=>setCharging(false)} onKeyDown={event=>{if(event.key===' '||event.key==='Enter'){if(event.repeat)event.preventDefault();else setCharging(true);}}} onKeyUp={()=>setCharging(false)} onClick={sendHeart}>
      <svg viewBox="0 0 40 40" aria-hidden="true"><path d="M20 34C17 31 4 23 4 13C4 4 15 2 20 10C25 2 36 4 36 13C36 23 23 31 20 34Z"/></svg>
     </button>
-    <div className="fc-connection-duration" aria-hidden="true">{ko?<>첫날, <strong>12시간</strong>을 쉬지 않고.</>:<>Ese primer día, <strong>12 horas</strong> sin parar.</>}</div>
+    <div className="fc-connection-duration" aria-hidden="true">{ko?<>시간보다, <strong>네가 더 궁금했어.</strong></>:<>Y yo, <strong>quería seguir contigo.</strong></>}</div>
     <figcaption className="fc-connection-caption">
-     <span className="fc-caption-contact">{ko?'서로 다른 곳에서 시작된 인사.':'Un saludo desde lugares distintos.'}</span><span className="fc-caption-awkward">{ko?'첫인사는 서툴렀어도.':'Aunque mi comienzo fue torpe.'}</span><span className="fc-caption-continuous">{ko?'서로 다른 시간 속, 같은 대화.':'Distintas horas. Una misma conversación.'}</span>
+     <span className="fc-caption-contact">{ko?'멀리서 온 네 인사가, 내 하루에 닿았어.':'Y aun de lejos, te sentía cerquita.'}</span><span className="fc-caption-awkward">{ko?'서툰 시작에도, 이어진 우리.':'Un comienzo torpe. Y aun así, nosotros.'}</span><span className="fc-caption-continuous">{ko?'다른 시간 속에서도, 더 얘기하고 싶었어.':'Horas distintas. Yo quería seguir hablando.'}</span>
     </figcaption>
    </figure>
   </div>
