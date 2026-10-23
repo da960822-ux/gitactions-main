@@ -15,7 +15,13 @@
     "resolveJsonModule": true,
     "esModuleInterop": true,
     "noUnusedLocals": true,
-    "noUnusedParameters": true
+    "noUnusedParameters": true,
+    "baseUrl": ".",
+    "paths": {
+      "three": ["node_modules/@types/three/index.d.ts"],
+      "three/addons/*": ["node_modules/@types/three/examples/jsm/*"],
+      "three/*": ["node_modules/@types/three/*"]
+    }
   },
   "include": [
     "src"

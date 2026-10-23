@@ -1,8 +1,0 @@
-import {AbsoluteFill,Easing,interpolate,useCurrentFrame,useVideoConfig} from 'remotion';
-
-// The final ink positions match the existing HyperFrames surface film at t=0.
-export function GiftSurfaceEdge(){
- const f=useCurrentFrame(),{fps}=useVideoConfig(),ease=Easing.bezier(.22,1,.36,1);
- const reveal=interpolate(f,[.12*fps,2.7*fps],[0,1],{extrapolateLeft:'clamp',extrapolateRight:'clamp',easing:ease});
- return <AbsoluteFill style={{background:'#000'}}><svg viewBox="0 0 1024 1024" width="100%" height="100%" fill="none"><defs><radialGradient id="mask"><stop offset="10%" stopColor="white"/><stop offset="68%" stopColor="black"/></radialGradient><mask id="field"><rect width="1024" height="1024" fill="url(#mask)"/></mask><filter id="soft"><feGaussianBlur stdDeviation="8"/></filter><filter id="fine"><feGaussianBlur stdDeviation="2"/></filter></defs><g mask="url(#field)"><g transform="translate(-90 70) rotate(-8 512 512)" stroke="#e3f2ff" strokeDasharray="2200" strokeDashoffset={2200*(1-reveal)}><path d="M-200 590 C140 60 290 840 530 370 S960 660 1220 150" strokeWidth="27" opacity=".3" filter="url(#soft)"/><path d="M-200 590 C140 60 290 840 530 370 S960 660 1220 150" strokeWidth="4" opacity=".9" filter="url(#fine)"/></g><g transform="translate(70 -50) rotate(6 512 512)" stroke="#edc6b4" strokeDasharray="2400" strokeDashoffset={2400*(1-reveal)}><path d="M-180 260 C90 750 350 40 600 540 S1000 260 1210 820" strokeWidth="18" opacity=".25" filter="url(#soft)"/><path d="M-180 260 C90 750 350 40 600 540 S1000 260 1210 820" strokeWidth="3" opacity=".6" filter="url(#fine)"/></g></g></svg></AbsoluteFill>;
-}
