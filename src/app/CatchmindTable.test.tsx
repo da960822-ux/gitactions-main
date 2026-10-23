@@ -2,7 +2,7 @@ import { describe, expect, it, vi } from 'vitest';
 import { createElement } from 'react';
 import { renderToStaticMarkup } from 'react-dom/server';
 import { catchmindEngine } from '../games/catchmind';
-import CatchmindTable, { bucketFill, sendDrawQueue, composeDisplayedStrokes, catchmindChoicesNeedSettingsSave } from './CatchmindTable';
+import CatchmindTable, { bucketFill, sendDrawQueue, composeDisplayedStrokes, catchmindChoicesNeedSettingsSave, moveCatchmindCursor } from './CatchmindTable';
 
 function configured(seed: number) {
   const state = catchmindEngine.createInitialState(seed);
@@ -58,6 +58,19 @@ describe('CatchmindTable', () => {
     expect(catchmindChoicesNeedSettingsSave(true, 'animals', 'objects')).toBe(true);
     expect(catchmindChoicesNeedSettingsSave(true, 'animals', 'animals')).toBe(false);
     expect(catchmindChoicesNeedSettingsSave(false, 'animals', 'objects')).toBe(false);
+  });
+  it('moves the keyboard cursor in normalized steps and clamps it to the canvas', () => {
+    expect(moveCatchmindCursor({ x: .5, y: .5 }, 'ArrowRight')).toEqual({ x: .52, y: .5 });
+    expect(moveCatchmindCursor({ x: 0, y: 1 }, 'ArrowLeft')).toEqual({ x: 0, y: 1 });
+    expect(moveCatchmindCursor({ x: 1, y: 0 }, 'ArrowUp')).toEqual({ x: 1, y: 0 });
+  });
+  it('describes keyboard drawing controls in Korean and Spanish', () => {
+    const korean = markup('p1').html;
+    expect(korean).toContain('aria-describedby="cm-keyboard-instructions"');
+    expect(korean).toContain('키보드: 화살표 이동');
+    const spanish = stateMarkup(catchmindEngine.applyAction(configured(8), 'p1', { type: 'choose', payload: { wordId: 0 } }), 'p1', 'es');
+    expect(spanish).toContain('Teclado: flechas mueven');
+    expect(spanish).toContain('role="group"');
   });
   it('offers keyboard-selectable color targets and names swatches in Korean and Spanish', () => {
     const korean = markup('p1').html;

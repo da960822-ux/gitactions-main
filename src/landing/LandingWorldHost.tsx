@@ -10,7 +10,8 @@ import type {PostHeroState} from '../../post-hero-preview/src/Scene';
 import type {LocalEventId} from '../../post-hero-preview/src/LocalEventRig';
 import {createLetterCollection} from '../../post-hero-preview/src/LetterCollection';
 import {openingCameraPose,postConnectionPose} from './cinematic/folded/poseSpaceV19';
-import {ROOM_WORLD,roomWorldVertex} from './cinematic/folded/approvedRoomGeometry';
+import type {RoomReactionTarget} from './cinematic/folded/roomReactions';
+import {ROOM_WORLD,roomWorldVertex,roomSourcePoint} from './cinematic/folded/approvedRoomGeometry';
 import {pointerDecay} from './cinematic/folded/pointerResponse';
 import {INTRO_SECONDS, introPose, smoothRange, type FoldPose} from './cinematic/folded/pose';
 import '../../post-hero-preview/src/preview.css';
@@ -24,6 +25,8 @@ const ROOM_EYE=new THREE.Vector3(...roomWorldVertex(836,470.5,24));
 const ROOM_TARGET=new THREE.Vector3(ROOM_WORLD.x,ROOM_WORLD.y,ROOM_WORLD.z);
 const ROOM_BACK=ROOM_EYE.clone().sub(ROOM_TARGET);
 const ROOM_DISCOVERIES=[{id:'L04',x:1535,y:610,w:160,h:235,ko:'토끼에게 장난 걸기',es:'Tocar el conejito'},{id:'L09',x:109,y:713,w:126,h:168,ko:'우리 사진 가까이 보기',es:'Mirar nuestra foto'},{id:'L06',x:1320,y:656,w:190,h:145,ko:'노트북에 낙서해 보기',es:'Dejar un dibujito'}] as const;
+const ROOM_LIGHTS=[{id:'monitor',x:160,y:472,w:164,h:298,ko:'화면 반짝이기',es:'Iluminar la pantalla'},{id:'keyboard',x:465,y:694,w:360,h:60,ko:'키보드 빛으로 장난치기',es:'Jugar con las luces'}] as const;
+const ROOM_TARGETS=[...ROOM_DISCOVERIES,...ROOM_LIGHTS];
 
 type Props={language:'ko'|'es';onLanguageChange:(language:'ko'|'es')=>void;selected:string;onSelect:(game:string)=>void};
 function hasSeenIntro(){try{return sessionStorage.getItem('folded-playhouse-seen')==='1';}catch{return false;}}
@@ -36,6 +39,8 @@ export function LandingWorldHost({language,onLanguageChange,selected,onSelect}:P
  const [ready,setReady]=useState(false),[postReady,setPostReady]=useState(false),[failed,setFailed]=useState(false),[introActive,setIntroActive]=useState(first.current);
  const [roomActive,setRoomActive]=useState(false),roomVisible=useRef(false),discoveryNonce=useRef(0);
  const [roomDiscovery,setRoomDiscovery]=useState<{id:LocalEventId;trigger:HTMLButtonElement;nonce:number}>();
+ const roomReaction=useRef({hover:null as RoomReactionTarget|null,press:false,activation:0,keyboard:false});
+ const roomAttention=(target:RoomReactionTarget|null,keyboard=false)=>{Object.assign(roomReaction.current,{hover:target,keyboard,press:false});dirty.current=true;};
  const selection=useRef({selected,onSelect});selection.current={selected,onSelect};
  const skip=useRef<()=>void>(()=>{}),dirty=useRef(true);
  const postState=useRef<PostHeroState>({progress:0,opening:0,reducedMotion:matchMedia('(prefers-reduced-motion: reduce)').matches,effect:{name:'none',value:0,nonce:0},portraitSrc:PORTRAIT,portraitMaskSrc:PORTRAIT_MASK});
@@ -56,11 +61,14 @@ export function LandingWorldHost({language,onLanguageChange,selected,onSelect}:P
   let trigger:ScrollTrigger|undefined,heroEnd=innerHeight*2.6,previousPost=false,postNeedsFrame=false;
   let lastRenderSignature='';
   const pointer={x:0,y:0,pressed:false};let hiddenAt=0;
+  const roomRay=new THREE.Raycaster(),roomHit=new THREE.Vector3(),roomPointer=new THREE.Vector2();
+  const roomPlane=new THREE.Plane().setFromNormalAndCoplanarPoint(new THREE.Vector3(0,-Math.sin(ROOM_WORLD.tilt),Math.cos(ROOM_WORLD.tilt)),ROOM_TARGET);
+  const roomDialog=root.querySelector<HTMLDialogElement>('.room-discovery-dialog');
   const projectRoomDiscoveries=(active:boolean)=>{
    if(roomVisible.current!==active){roomVisible.current=active;setRoomActive(active);}
    if(!active||!world)return;
    const bounds=screen.getBoundingClientRect();
-   for(const object of ROOM_DISCOVERIES){
+   for(const object of ROOM_TARGETS){
     const button=root.querySelector<HTMLElement>(`[data-room-object="${object.id}"]`);if(!button)continue;
     const corners=[[-1,-1],[1,1]].map(([x,y])=>new THREE.Vector3(...roomWorldVertex(object.x+x*object.w/2,object.y+y*object.h/2,0)).project(world!.camera));
     const left=bounds.left+(corners[0].x+1)*bounds.width/2,top=bounds.top+(1-corners[0].y)*bounds.height/2;
@@ -97,7 +105,7 @@ export function LandingWorldHost({language,onLanguageChange,selected,onSelect}:P
   const titleLines=[...hero.querySelectorAll<HTMLElement>('.across-title-line')];
   const copy=hero.querySelector<HTMLElement>('.across-editorial')!,destination=hero.querySelector<HTMLElement>('.folded-destination')!;
   const endIntro=()=>{inIntro=false;pose.entrance=1;setIntroActive(false);rememberIntro();dirty.current=true;};skip.current=endIntro;
-  const resetPointer=()=>{pointer.x=pointer.y=0;pointer.pressed=false;world?.cancelHeroInteraction();};
+  const resetPointer=()=>{pointer.x=pointer.y=0;pointer.pressed=false;world?.cancelHeroInteraction();world?.cancelRoomInteraction();Object.assign(roomReaction.current,{hover:null,press:false,keyboard:false});dirty.current=true;};
   const invalidate=()=>{dirty.current=true;};
   const resize=()=>{
    frameFallback();
@@ -110,7 +118,7 @@ export function LandingWorldHost({language,onLanguageChange,selected,onSelect}:P
    pointer.x=Math.max(-1,Math.min(1,event.clientX/innerWidth*2-1));pointer.y=Math.max(-1,Math.min(1,event.clientY/innerHeight*2-1));
   };
   const press=(event:PointerEvent)=>{if(event.pointerType!=='mouse'||!finePointer.matches||media.matches||pose.progress>=.055||!(event.target instanceof Element)||event.target.closest('a,button,input,textarea,select,[role=button]'))return;pointer.pressed=true;dirty.current=true;};
-  const release=()=>{pointer.pressed=false;dirty.current=true;};
+  const release=()=>{pointer.pressed=false;roomReaction.current.press=false;dirty.current=true;};
   const contextLost=(event:Event)=>{event.preventDefault();lost=true;projectRoomDiscoveries(false);setReady(false);setPostReady(false);endIntro();};
   const contextRestored=()=>{lost=false;lastRenderSignature='';resize();setReady(true);setPostReady(true);};
   const visibility=()=>{last=0;dirty.current=true;if(document.hidden){hiddenAt=performance.now();resetPointer();cancelAnimationFrame(frame);frame=0;return;}if(hiddenAt&&inIntro)clockStart+=performance.now()-hiddenAt;hiddenAt=0;if(!frame)frame=requestAnimationFrame(tick);};
@@ -145,6 +153,13 @@ export function LandingWorldHost({language,onLanguageChange,selected,onSelect}:P
    pose.pointerX+=(pointer.x*input-pose.pointerX)*decay;pose.pointerY+=(pointer.y*input-pose.pointerY)*decay;
    pose.pointerPress=pointer.pressed?input:0;
    const bridge=smoothRange(heroEnd+height*.55,heroEnd+height*1.1,scrollY),postActive=bridge>0;
+   const roomEnabled=width>=760&&!postActive&&pose.progress>.94&&!roomDialog?.open;
+   let sourcePointer:{x:number;y:number}|null=null;
+   if(roomEnabled&&finePointer.matches&&!media.matches&&!roomReaction.current.keyboard){
+    roomRay.setFromCamera(roomPointer.set(pointer.x,-pointer.y),world.camera);
+    if(roomRay.ray.intersectPlane(roomPlane,roomHit)){const [x,y]=roomSourcePoint(roomHit.toArray());if(x>=0&&x<=1672&&y>=0&&y<=941)sourcePointer={x,y};}
+   }
+   world.setRoomInteraction({time:elapsed,active:roomEnabled,reducedMotion:media.matches,pointer:sourcePointer,...roomReaction.current});
    const section=root.querySelector<HTMLElement>('#games');
    const galleryBounds=section?.getBoundingClientRect();
    const reveal=galleryBounds?smoothRange(0,height*.75,height-galleryBounds.top):0;
@@ -215,7 +230,14 @@ export function LandingWorldHost({language,onLanguageChange,selected,onSelect}:P
  return <div ref={host} className={`landing-world-host${ready?' is-world-ready':''}${failed?' world-unavailable':''}`}>
   <canvas ref={canvas} className="landing-world-canvas" role="img" aria-label={language==='ko'?'우주에서 게임방, 이야기와 게임 조각, 편지로 이어지는 우리 둘의 공간':'Nuestro espacio, desde el universo hasta la sala de juegos, las piezas y la carta'}/>
   <AcrossHero language={language} ready={ready} introActive={introActive} onSkip={()=>skip.current()}/>
-  <div className="room-discoveries" hidden={!roomActive}>{ROOM_DISCOVERIES.map(object=><button key={object.id} type="button" data-room-object={object.id} aria-label={language==='ko'?object.ko:object.es} onClick={event=>setRoomDiscovery({id:object.id,trigger:event.currentTarget,nonce:++discoveryNonce.current})}><span>{language==='ko'?object.ko:object.es}</span></button>)}</div>
+  <div className="room-discoveries" hidden={!roomActive}>{ROOM_TARGETS.map(object=><button key={object.id} type="button" data-room-object={object.id} aria-label={language==='ko'?object.ko:object.es}
+   onPointerEnter={event=>{if(event.pointerType==='mouse'&&matchMedia('(hover:hover) and (pointer:fine)').matches)roomAttention(object.id);}}
+   onPointerLeave={()=>{if(roomReaction.current.hover===object.id&&!roomReaction.current.keyboard)roomAttention(null);}}
+   onPointerDown={()=>{roomReaction.current.hover=object.id;roomReaction.current.press=true;roomReaction.current.keyboard=false;dirty.current=true;}}
+   onFocus={event=>{if(event.currentTarget.matches(':focus-visible'))roomAttention(object.id,true);}}
+   onBlur={()=>{if(roomReaction.current.hover===object.id)roomAttention(null);}}
+   onClick={event=>{Object.assign(roomReaction.current,{hover:object.id,press:false,keyboard:event.detail===0,activation:roomReaction.current.activation+1});dirty.current=true;if(object.id!=='monitor'&&object.id!=='keyboard')setRoomDiscovery({id:object.id,trigger:event.currentTarget,nonce:++discoveryNonce.current});}}
+  ><span>{language==='ko'?object.ko:object.es}</span></button>)}</div>
   <PostHeroPreview embedded language={language} onLanguageChange={onLanguageChange} portraitSrc={PORTRAIT} portraitMaskSrc={PORTRAIT_MASK} renderScene={false} externalSceneReady={postReady} onSceneState={receivePostState} onRegisterFrame={registerFrame} roomDiscovery={roomDiscovery} roomActive={roomActive} playHref={`/play?game=${selected}`} gallery={<GameGallery language={language} selected={selected} onSelect={onSelect}/>}/>
  </div>;
 }

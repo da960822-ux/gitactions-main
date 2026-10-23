@@ -4,12 +4,39 @@ import { existsSync } from 'node:fs';
 import { resolve } from 'node:path';
 import { describe, expect, it, vi } from 'vitest';
 import splendorArt from '../../public/images/splendor/card-map.json';
-import { deriveSplendorVisualEvent, splendorActionPanelMessages, splendorCardAction, splendorCardArtSrc, splendorCardCostPlan, splendorCardPaymentRows, splendorGuidance, splendorNobleArtSrc, splendorRequiredReturns, splendorReserveChoices, splendorSelectedTier, splendorSelectedTierText, splendorTakeAction, splendorTotalAfterTake, TableGames } from './TableGames';
+import { deriveSplendorVisualEvent, restoreSplendorCardFocus, splendorActionPanelMessages, splendorCardAction, splendorCardArtSrc, splendorCardCostPlan, splendorCardPaymentRows, splendorGuidance, splendorNobleArtSrc, splendorRequiredReturns, splendorReserveChoices, splendorSelectedTier, splendorSelectedTierText, splendorTakeAction, splendorTotalAfterTake, TableGames } from './TableGames';
 import { jaipurSalePreview } from './JaipurBoard';
 import { splendorEngine } from '../games/splendor';
 import { SplendorQuickGuide } from './SplendorQuickGuide';
 
 const render = (game: 'jaipur' | 'splendor' | 'davinci', view: any, language: 'ko' | 'es' = 'ko', playerId: 'p1' | 'p2' = 'p1') => renderToStaticMarkup(createElement(TableGames, { game, view, language, playerId, runAction: () => {} }));
+
+describe('Splendor focus after a selected card moves or disappears', () => {
+  it('follows a reserved card and otherwise returns to the remaining market', () => {
+    const reserved = { dataset: { cardId: 'selected' }, focus: vi.fn() }, market = { focus: vi.fn() };
+    const body = {}, previous = { isConnected: false } as HTMLElement;
+    const root = { ownerDocument: { body, activeElement: body }, querySelectorAll: () => [reserved], querySelector: () => market } as unknown as HTMLElement;
+    restoreSplendorCardFocus(root, previous, 'selected');
+    expect(reserved.focus).toHaveBeenCalledOnce();
+    expect(market.focus).not.toHaveBeenCalled();
+    restoreSplendorCardFocus(root, previous, 'purchased-or-taken');
+    expect(market.focus).toHaveBeenCalledOnce();
+  });
+
+  it('leaves connected focus, outside focus and an empty market alone', () => {
+    const body = {}, focus = vi.fn();
+    const ownerDocument = { body, activeElement: body as object };
+    const root = { ownerDocument, querySelectorAll: () => [], querySelector: () => ({ focus }) } as unknown as HTMLElement;
+    restoreSplendorCardFocus(root, { isConnected: true } as HTMLElement, 'selected');
+    ownerDocument.activeElement = {};
+    restoreSplendorCardFocus(root, { isConnected: false } as HTMLElement, 'selected');
+    expect(focus).not.toHaveBeenCalled();
+    ownerDocument.activeElement = body;
+    expect(() => restoreSplendorCardFocus({ ...root, querySelector: () => null } as unknown as HTMLElement, { isConnected: false } as HTMLElement, 'selected')).not.toThrow();
+    restoreSplendorCardFocus(root, null, 'selected');
+    expect(focus).not.toHaveBeenCalled();
+  });
+});
 
 describe('TableGames public-state interaction guidance', () => {
   it('counts a gold token once in the visible post-take total', () => {

@@ -1,4 +1,5 @@
 import type { Language } from '../core/types';
+import { useState } from 'react';
 import '../styles/hwatu-card-premium.css';
 
 type Value = Record<string, any>;
@@ -13,6 +14,7 @@ const kinds: Record<string, { ko: string; es: string }> = {
   junk: { ko: '피', es: 'simple' }, pi: { ko: '피', es: 'simple' }, 피: { ko: '피', es: 'simple' }, plain: { ko: '피', es: 'simple' }, special: { ko: '특수', es: 'especial' },
 };
 export function HwatuCard({ card, language, compactMonth = false }: { card: Value; language: Language; compactMonth?: boolean }) {
+  const [failedFace, setFailedFace] = useState<string | null>(null);
   const month = Math.max(1, Math.min(12, Number(card.month ?? 1)));
   const flowerValue = safeRecord(card.flower);
   const flower = typeof card.flower === 'string'
@@ -25,8 +27,18 @@ export function HwatuCard({ card, language, compactMonth = false }: { card: Valu
   const id = /^(?:[1-9]|1[0-2])-[1-4]$/.test(String(card.id)) ? String(card.id) : null;
   const face = id ? `/images/hwatu/${id.split('-').map(part => part.padStart(2, '0')).join('-')}.svg` : null;
   const description = `${copy(language, `${month}월`, `Mes ${month}`)} · ${flower} · ${badge || label} · ${Number(card.points ?? 0)} ${copy(language, '점', 'pts')}`;
+  const faceFailed = face !== null && failedFace === face;
   return <article className={`gb-hwatu-card gb-hwatu-card-premium gb-hwatu-month-${month}`} title={description} aria-label={description} role="img">
-    {face && <img className="gb-hwatu-face gb-hwatu-face-premium" src={face} width="103" height="168" alt="" aria-hidden="true"/>}
+    {face && !faceFailed ? <img className="gb-hwatu-face gb-hwatu-face-premium" src={face} width="103" height="168" alt="" aria-hidden="true" onError={() => setFailedFace(face)}/> : face && <HwatuFaceFallback month={month} flower={flower} kind={badge || label} points={Number(card.points ?? 0)} language={language}/>}
     <span className="gb-hwatu-month-tag" aria-hidden="true">{compactMonth ? `${month}` : copy(language, `${month}월`, `Mes ${month}`)}</span>
   </article>;
+}
+
+export function HwatuFaceFallback({ month, flower, kind, points, language }: { month: number; flower: string; kind: string; points: number; language: Language }) {
+  return <span className="gb-hwatu-face-fallback" aria-hidden="true">
+    <b>{copy(language, `${month}월`, `Mes ${month}`)}</b>
+    <span>{flower}</span>
+    <strong>{kind}</strong>
+    <span>{points} {copy(language, '점', 'pts')}</span>
+  </span>;
 }

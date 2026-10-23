@@ -2,12 +2,37 @@ import { createElement } from 'react';
 import { renderToStaticMarkup } from 'react-dom/server';
 import { describe, expect, it, vi } from 'vitest';
 import { marbleEngine } from '../games/marble';
-import MarbleBoard from './MarbleBoard';
+import MarbleBoard, { focusMarbleAction } from './MarbleBoard';
 
 const render = (view: any, language: 'ko' | 'es' = 'ko', playerId: 'p1' | 'p2' = 'p1') =>
   renderToStaticMarkup(createElement(MarbleBoard, { view, language, playerId, runAction: vi.fn() }));
 
 describe('MarbleBoard', () => {
+  it('offers the action shortcut before all forty city controls in both languages', () => {
+    const state = marbleEngine.createInitialState(71);
+    for (const language of ['ko', 'es'] as const) for (const playerId of ['p1', 'p2'] as const) {
+      const html = render(marbleEngine.getPlayerView(state, playerId), language, playerId);
+      expect(html.indexOf('class="mp-action-skip"')).toBeLessThan(html.indexOf('class="mp-tile-select"'));
+      expect(html).toContain('href="#marble-current-action"');
+      expect(html).toContain('id="marble-current-action" tabindex="-1"');
+      expect(html).toContain(language === 'ko' ? '현재 행동으로 이동' : 'Ir a la acción actual');
+      expect((html.match(/class="mp-tile-select"/g) ?? []).length).toBe(40);
+    }
+  });
+
+  it('focuses an enabled primary action, another enabled control, or the waiting panel', () => {
+    const primary = { focus: vi.fn() }, secondary = { focus: vi.fn() }, focus = vi.fn();
+    const panel = (first: typeof primary | null, second: typeof secondary | null) => ({ focus, querySelector: (selector: string) => selector.startsWith('.mp-action-primary') ? first : second }) as unknown as HTMLElement;
+    focusMarbleAction(panel(primary, secondary));
+    expect(primary.focus).toHaveBeenCalledOnce();
+    expect(secondary.focus).not.toHaveBeenCalled();
+    focusMarbleAction(panel(null, secondary));
+    expect(secondary.focus).toHaveBeenCalledOnce();
+    focusMarbleAction(panel(null, null));
+    expect(focus).toHaveBeenCalledOnce();
+    expect(() => focusMarbleAction(null)).not.toThrow();
+  });
+
   it('uses the updated Korean and Spanish figure names for old saved pawn IDs', () => {
     const state = marbleEngine.createInitialState(71);
     state.pawns = { p1: 'fox', p2: 'penguin' };

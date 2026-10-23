@@ -98,6 +98,10 @@ function journeySpecialLine(tile: Record<string, any>, language: Language, fund:
   }
 }
 
+export function focusMarbleAction(panel: HTMLElement | null) {
+  (panel?.querySelector<HTMLElement>('.mp-action-primary:not(:disabled)') ?? panel?.querySelector<HTMLElement>('button:not(:disabled),select:not(:disabled)') ?? panel)?.focus();
+}
+
 export default function MarbleBoard({ view: rawView, language, playerId, runAction }: Props) {
   const view = record(rawView), board = record(view.board), tiles = list(board.tiles), choices: Choice[] = list(view.actions);
   const modern = tiles.length === 40 || num(board.version) >= 2;
@@ -168,6 +172,7 @@ export default function MarbleBoard({ view: rawView, language, playerId, runActi
   const latestMoneyReceipt = record(stageEvents.slice(Math.max(0, receiptBoundary)).filter(event => typeof event.moneyDelta?.[playerId] === 'number' && event.moneyDelta[playerId] !== 0).at(-1));
   const run = (choice?: Choice) => choice && void runAction(choice.action);
   const layoutRef = useRef<HTMLDivElement>(null);
+  const actionPanelRef = useRef<HTMLElement>(null);
 
   useLayoutEffect(() => {
     const layout = layoutRef.current;
@@ -276,6 +281,7 @@ export default function MarbleBoard({ view: rawView, language, playerId, runActi
   return <section className={`marble-premium ${isLegacy ? 'is-legacy' : 'is-modern'}`} aria-label={copy(language, '부루마블 경기판', 'Tablero de Marble')}>
     <header className="mp-header"><div className="mp-brand"><h2>{copy(language, '부루마블', 'Marble')}</h2><p>{copy(language, '도시를 사고, 임대료를 모아 세계를 여행해요.', 'Compra ciudades, cobra rentas y recorre el mundo.')}</p></div><div className={`mp-turn-badge ${active ? 'is-active' : ''}`}><span className="mp-turn-gem" aria-hidden="true"/><b>{statusCopy}</b><span>{phaseLabel}</span></div></header>
 
+    <a className="mp-action-skip" href="#marble-current-action" onClick={event => { event.preventDefault(); focusMarbleAction(actionPanelRef.current); }}>{copy(language, '현재 행동으로 이동', 'Ir a la acción actual')}</a>
     <div className="mp-layout" ref={layoutRef}>
       <section className="mp-board-panel" aria-label={copy(language, `${tiles.length}칸 순환 보드`, `Tablero de ${tiles.length} casillas`)}>
         <div className={`mp-board-grid ${isLegacy ? 'mp-board-grid--18' : 'mp-board-grid--40'}`} role="list" aria-label={copy(language, `총 ${tiles.length}칸 보드`, `Recorrido de ${tiles.length} casillas`)}>
@@ -369,7 +375,7 @@ export default function MarbleBoard({ view: rawView, language, playerId, runActi
 
         {pawnChoices.length > 0 && <section className="mp-pawn-picker-shell" aria-label={copy(language, '말 선택', 'Elige tu ficha')}><MarblePawnPicker view={view} playerId={playerId} language={language} runAction={runAction}/></section>}
 
-        <section className="mp-turn-panel" aria-label={copy(language, '주사위와 행동', 'Dados y acciones')}>
+        <section ref={actionPanelRef} id="marble-current-action" tabIndex={-1} className="mp-turn-panel" aria-label={copy(language, '주사위와 행동', 'Dados y acciones')}>
           <div className="mp-phase-title"><h3>{phaseLabel}</h3><span>{copy(language, `턴 ${currentTurn}`, `Turno ${currentTurn}`)} / 120</span></div>
           <div className={`mp-dice-row ${diceRolling ? 'is-rolling' : ''}`} aria-label={copy(language, '최근 주사위 결과', 'Último resultado de los dados')}>
             {[0, 1].map(index => <Die key={`${diceSequence}-${index}`} value={rollValues[index] ?? 0} language={language}/>)}

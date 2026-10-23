@@ -1,7 +1,7 @@
 import { createElement } from 'react';
 import { renderToStaticMarkup } from 'react-dom/server';
 import { describe, expect, it, vi } from 'vitest';
-import { MarblePawn, MarblePawnPicker, marblePawnCatalog } from './MarblePawn';
+import { isMarblePawnImageFailed, MarblePawn, MarblePawnPicker, marblePawnCatalog } from './MarblePawn';
 
 describe('Marble pawn selection', () => {
   it('preserves all six saved skin slots before adding the approved seventh pair', () => {
@@ -14,6 +14,13 @@ describe('Marble pawn selection', () => {
       expect(html).toContain('src="/images/marble/premium/pawns/sali-suli.webp"');
       expect(html).toContain(language === 'ko' ? 'alt="살리·술리"' : 'alt="Sali y Suli"');
     }
+  });
+  it('limits a failed image to the same pawn and source so another asset still renders', () => {
+    const failedSrc = '/images/marble/premium/pawns/sali-suli.webp';
+    const failedImage = `sali-suli:${failedSrc}`;
+    expect(isMarblePawnImageFailed(failedImage, 'sali-suli', failedSrc)).toBe(true);
+    expect(isMarblePawnImageFailed(failedImage, 'fox', '/images/marble/pawns/fox.webp')).toBe(false);
+    expect(isMarblePawnImageFailed(failedImage, 'sali-suli', '/images/marble/pawns/sali-suli.webp')).toBe(false);
   });
   it('shows the six original figures and the approved seventh pair but only enables engine-legal choices', () => {
     const html = renderToStaticMarkup(createElement(MarblePawnPicker, {

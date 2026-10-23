@@ -5,7 +5,7 @@ import { describe, expect, it } from 'vitest';
 import { renderToStaticMarkup } from 'react-dom/server';
 import { minhwatuEngine } from '../games/minhwatu';
 import type { MinhwatuCard } from '../games/minhwatu';
-import { HwatuCard } from './HwatuCard';
+import { HwatuCard, HwatuFaceFallback } from './HwatuCard';
 
 const assetId = (id: string) => id.split('-').map(part => part.padStart(2, '0')).join('-');
 
@@ -56,5 +56,14 @@ describe('Korean Hwatu face assets', () => {
     expect(compactEs).toContain('>12</span>');
     expect(compactEs).toContain('aria-label="Mes 12 · lluvia · hombre bajo la lluvia · 20 pts"');
     expect(ko).toContain('alt="" aria-hidden="true"');
+  });
+
+  it('shows the card identity as visible content when its face asset fails', () => {
+    const fallback = renderToStaticMarkup(<HwatuFaceFallback month={12} flower="비" kind="비광" points={20} language="ko"/>);
+    expect(fallback).toContain('class="gb-hwatu-face-fallback"');
+    expect(fallback).toContain('>12월</b>');
+    expect(fallback).toContain('>비</span>');
+    expect(fallback).toContain('>비광</strong>');
+    expect(fallback).toContain('>20 점</span>');
   });
 });
