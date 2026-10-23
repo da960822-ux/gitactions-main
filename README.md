@@ -20,7 +20,7 @@ npm run build
 
 ## 온라인 연결
 
-Supabase 프로젝트 `yeonseok-lisbeth-games`의 DB, 익명 로그인, Edge Function과 번역 비밀값은 설정되어 있습니다. 별도 두 브라우저에서 익명 사용자 방 생성/참가, 양측 캐치마인드 선택, 한국어↔스페인어 일반 채팅 번역과 원문 표시를 확인했습니다. 현재 ChatGPT Site revision 18은 이전 같은 브라우저 데모이며 backend 연결값으로 새로 빌드한 production Site는 아직 게시하지 않았습니다. 서비스 역할 키와 번역 API 키는 서버에만 보관합니다. 자세한 설정과 후속 CLI 이력 복구는 [배포 안내](docs/DEPLOYMENT.md)를 보세요.
+Supabase 프로젝트 `yeonseok-lisbeth-games`의 DB, 익명 로그인, Edge Function과 번역 비밀값은 설정되어 있습니다. 기존 ChatGPT Site production revision 19가 소유자 전용으로 배포되었습니다. 실제 Site 주소에서 별도 Supabase 익명 사용자 두 명의 방 생성/참가와 양측 캐치마인드 시작을 확인했습니다. 한국어 2건과 스페인어 2건의 일반 채팅 모두 Google 번역과 원문 표시가 통과했습니다. 해파리 그림 9획이 상대 Chrome에 실시간 동기화되고, 스페인어 `medusa` 정답과 양측 1점 반영도 통과했습니다. 서비스 역할 키와 번역 API 키는 서버에만 보관합니다. 자세한 설정과 후속 CLI 이력 복구는 [배포 안내](docs/DEPLOYMENT.md)를 보세요.
 
 ## 실제 기능
 
