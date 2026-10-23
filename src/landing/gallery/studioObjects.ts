@@ -13,33 +13,38 @@ export function studioMaterials(){return{
 export type Materials=ReturnType<typeof studioMaterials>;
 /** Sculpture motion leaves GalleryCollection's layout and raycast identity in charge. */
 export function createGalleryAttraction(objects:T.Group[]){
- const root=new T.Group();root.name='GALLERY_REFLECTIVE_CRADLE';
+ const root=new T.Group();root.name='GALLERY_PRODUCT_PLINTH';
  const pivots=objects.map(group=>{const pivot=new T.Group();pivot.name='GALLERY_INGRESS_PIVOT';pivot.add(...group.children);group.add(pivot);return pivot;});
  const metal=new T.MeshPhysicalMaterial({color:'#d7a18f',metalness:.9,roughness:.2,clearcoat:1,clearcoatRoughness:.16});
- const darkChrome=new T.MeshPhysicalMaterial({color:'#251e28',metalness:.92,roughness:.24,clearcoat:1,clearcoatRoughness:.12,side:T.DoubleSide});
- const plateGeometry=new T.CircleGeometry(3.25,64),rimGeometry=new T.TorusGeometry(3.32,.075,10,96,Math.PI*1.72),arcGeometry=new T.TorusGeometry(3.05,.055,10,96,Math.PI*1.25);
- const plate=new T.Mesh(plateGeometry,darkChrome);plate.name='SELECTED_GAME_REFLECTIVE_SURFACE';plate.scale.y=.22;plate.rotation.x=.2;root.add(plate);
- const rim=new T.Mesh(rimGeometry,metal);rim.name='SELECTED_GAME_CRADLE_RIM';rim.scale.y=.26;rim.rotation.z=-.08;rim.position.z=.035;root.add(rim);
- const arc=new T.Mesh(arcGeometry,metal);arc.name='SELECTED_GAME_SPATIAL_ARC';arc.scale.y=.48;arc.rotation.set(.6,0,.12);arc.position.set(0,.35,-.4);root.add(arc);
+ const surface=new T.MeshPhysicalMaterial({color:'#a38d87',metalness:.55,roughness:.38,clearcoat:.65,clearcoatRoughness:.22});
+ const plateGeometry=new T.CylinderGeometry(3.05,3,.16,96),rimGeometry=new T.TorusGeometry(3.035,.035,8,96),waveGeometry=new T.TorusGeometry(3.035,.039,8,96);
+ const plate=new T.Mesh(plateGeometry,surface);plate.name='SELECTED_GAME_PRODUCT_BASE';plate.scale.z=.42;root.add(plate);
+ const rim=new T.Mesh(rimGeometry,metal);rim.name='SELECTED_GAME_CLOSED_RIM';rim.rotation.x=-Math.PI/2;rim.scale.y=.42;rim.position.y=.082;root.add(rim);
+ const uniforms={uPhase:{value:0},uStrength:{value:0},uPulse:{value:0}};
+ const waveMaterial=new T.ShaderMaterial({uniforms,transparent:true,depthWrite:false,blending:T.AdditiveBlending,toneMapped:false,
+  vertexShader:'varying vec2 vUv;void main(){vUv=uv;gl_Position=projectionMatrix*modelViewMatrix*vec4(position,1.);}',
+  fragmentShader:'uniform float uPhase,uStrength,uPulse;varying vec2 vUv;void main(){float trail=fract(vUv.x-uPhase+1.);float head=exp(-pow(min(trail,1.-trail)/.035,2.));float alpha=(head*.7+exp(-trail*17.)*.35+uPulse*.16)*uStrength;gl_FragColor=vec4(1.,.76,.62,min(alpha,.85));}'});
+ const wave=new T.Mesh(waveGeometry,waveMaterial);wave.name='SELECTED_GAME_RIM_FLOW';wave.rotation.copy(rim.rotation);wave.scale.copy(rim.scale);wave.position.copy(rim.position);root.add(wave);
  let disposed=false;
  return{root,update({entryAge,selectionAge,selected,paused,mobile,time=0,ambient=false}:{entryAge:number;selectionAge:number;selected:string;paused:boolean;mobile:boolean;time?:number;ambient?:boolean}){
   if(disposed)return false;
   const entry=paused?1:T.MathUtils.clamp(entryAge/1.25,0,1),selection=paused?1:T.MathUtils.clamp(selectionAge/1.8,0,1),weight=selection<1?Math.sin(Math.PI*selection)*Math.pow(1-selection,.35):0;
   const breathing=ambient&&!paused?T.MathUtils.smoothstep(selection,0,.35)*entry:0,yaw=Math.sin(time*.48)*breathing,liftWave=Math.sin(time*.72)*breathing;
+  const beat=selected==='rhythm'?Math.pow(Math.max(0,Math.sin(time*4.4)),4)*breathing:0;
   pivots.forEach((pivot,i)=>{
    const phase=paused?1:T.MathUtils.clamp((entry*1.25-i*.035)/.98,0,1),remaining=Math.pow(1-phase,3),angle=i/objects.length*Math.PI*2;
    const chosen=objects[i].userData.game===selected;
    const peerWave=chosen?0:Math.sin(time*(.65+i*.035)+i*.83)*breathing;
    const lift=chosen&&!paused?weight*.25+liftWave*.075:peerWave*(.04+i%3*.008);
-   pivot.position.set(Math.cos(angle)*remaining*1.2,Math.sin(angle)*remaining*.65-remaining*.9+lift,-remaining*1.2);
-   pivot.rotation.set(remaining*.3+(chosen?weight*-.09+Math.sin(time*.36)*breathing*.045:0),remaining*(i%2?-.65:.65)+(chosen?weight*.38+yaw*.22:peerWave*(.085+i%2*.01)),remaining*Math.cos(angle)*.27+(chosen?weight*.045+liftWave*.018:0));
+   pivot.position.set(Math.cos(angle)*remaining*1.2,(chosen?remaining*.12:Math.sin(angle)*remaining*.65-remaining*.9)+lift,-remaining*1.2);
+   pivot.rotation.set(remaining*.3+(chosen?weight*-.09+Math.sin(time*.36)*breathing*.045-beat*.035:0),remaining*(i%2?-.65:.65)+(chosen?weight*.38+yaw*.22:peerWave*(.085+i%2*.01)),remaining*Math.cos(angle)*.27+(chosen?weight*.045+liftWave*.018+beat*.025:0));
    pivot.scale.setScalar(1-remaining*.22);
   });
-  root.position.set(0,mobile?-1.7:-2.25,-.65);root.scale.setScalar(mobile?.55:1);
-  root.rotation.set(weight*.16-liftWave*.05,weight*-.38-yaw*.24,weight*.035-liftWave*.02);root.visible=true;
-  darkChrome.roughness=.24-weight*.07-liftWave*.025;
+  root.position.set(0,mobile?-2:-2.7,-.65);root.scale.setScalar(mobile?.72:1);root.visible=true;
+  uniforms.uPhase.value=(time*.12+selection*.65)%1;uniforms.uPulse.value=weight;
+  uniforms.uStrength.value=paused?0:Math.min(1,weight*.9+(ambient?.32:0)+beat*.25);wave.visible=uniforms.uStrength.value>.001;
   return !paused&&(entry<1||selection<1||ambient);
- },dispose(){if(disposed)return;disposed=true;root.removeFromParent();plateGeometry.dispose();rimGeometry.dispose();arcGeometry.dispose();metal.dispose();darkChrome.dispose();}};
+ },dispose(){if(disposed)return;disposed=true;root.removeFromParent();plateGeometry.dispose();rimGeometry.dispose();waveGeometry.dispose();metal.dispose();surface.dispose();waveMaterial.dispose();}};
 }
 
 type Ready=()=>void;
@@ -94,9 +99,16 @@ export function createGameObject(id:string,m:Materials,onAssetReady=()=>{}){
   const dice=new T.Group();box(dice,m.ivory,.56,.56,.56,0,0,0,.09);pips(dice,m.ink,5,0,.287,.12);const side=new T.Group();pips(side,m.ink,3,0,.287,.12);side.rotation.y=Math.PI/2;dice.add(side);const top=new T.Group();pips(top,m.ink,1,0,.287,.12);top.rotation.x=-Math.PI/2;dice.add(top);dice.position.set(-.38,.32,.46);dice.rotation.set(.19,-.25,.16);g.add(dice);
   const house=new T.Group();box(house,m.ivory,.48,.42,.34);const roof=new T.Shape();roof.moveTo(-.31,.17);roof.lineTo(0,.48);roof.lineTo(.31,.17);roof.closePath();mesh(house,new T.ExtrudeGeometry(roof,{depth:.4,bevelEnabled:true,bevelSize:.025,bevelThickness:.025,bevelSegments:3}),m.red,0,0,-.2);box(house,m.ink,.1,.19,.015,0,-.105,.178,.012);box(house,m.gold,.08,.09,.015,.14,.04,.178,.01);house.position.set(.41,-.4,.41);house.rotation.y=-.15;g.add(house);g.rotation.z=-.1;
  }else{
-  mesh(g,new T.TorusGeometry(.77,.055,16,96,Math.PI),m.gold,0,.14,0);mesh(g,new T.TorusGeometry(.68,.073,16,96,Math.PI),m.ink,0,.14,.025);
-  for(const side of [-1,1]){line(g,m.gold,[[side*.77,.14,0],[side*.8,-.08,0],[side*.74,-.21,0]],.045);const cup=new T.Group();box(cup,m.chrome,.42,.72,.27,0,0,0,.12);const cushion=mesh(cup,new T.TorusGeometry(.25,.075,16,64),m.ink,0,0,.19);cushion.scale.set(.7,1.12,.85);box(cup,m.ink,.25,.43,.085,0,0,.19,.065);line(cup,m.gold,[[-.12,.28,.15],[.12,.28,.15],[.16,0,.15],[.12,-.28,.15],[-.12,-.28,.15]],.012);cup.position.set(side*.76,-.24,0);cup.rotation.y=-side*.27;g.add(cup);}
-  line(g,m.gold,[[.13,-.69,.08],[.13,-.13,.08],[.45,-.02,.08]],.035);const note=disc(g,m.gold,.12,.03,-.7,.1);note.scale.set(1,.7,1);
+  const band=(outer:number,inner:number,depth:number,material:T.Material,name:string)=>{const shape=new T.Shape();shape.absarc(0,.15,outer,0,Math.PI,false);shape.lineTo(-inner,.15);shape.absarc(0,.15,inner,Math.PI,0,true);shape.closePath();const geometry=new T.ExtrudeGeometry(shape,{depth,bevelEnabled:true,bevelSize:.018,bevelThickness:.018,bevelSegments:3,curveSegments:48});geometry.translate(0,0,-depth/2);mesh(g,geometry,material).name=name;};
+  band(.8,.69,.21,m.gold,'RHYTHM_HEADBAND_SHELL');band(.705,.61,.245,m.ink,'RHYTHM_HEADBAND_PADDING');
+  for(const side of [-1,1]){
+   box(g,m.gold,.12,.25,.14,side*.77,.06,0,.035).name='RHYTHM_HINGE_'+side;
+   disc(g,m.chrome,.055,side*.77,.11,.09).name='RHYTHM_HINGE_CAP_'+side;
+   const cup=new T.Group();cup.name='RHYTHM_EARCUP_'+side;
+   box(cup,m.chrome,.46,.76,.3,0,0,0,.12);box(cup,m.gold,.395,.66,.045,0,0,.158,.08);
+   const cushion=mesh(cup,new T.TorusGeometry(.25,.075,12,64),m.ink,0,0,.215);cushion.name='RHYTHM_CUSHION_'+side;cushion.scale.set(.7,1.12,.85);
+   box(cup,m.ink,.25,.43,.07,0,0,.19,.06);cup.position.set(side*.77,-.27,0);cup.rotation.y=-side*.18;g.add(cup);
+  }
  }
  return g;
 }

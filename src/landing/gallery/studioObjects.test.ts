@@ -8,7 +8,7 @@ import {createGalleryAttraction,createGameObject,normalizeSculpture,studioMateri
 afterEach(()=>{vi.restoreAllMocks();vi.unstubAllGlobals();});
 
 describe('landing game artwork',()=>{
- it('settles the weighted gallery ingress and reflective cradle without changing layout transforms or game identity',()=>{
+ it('settles the weighted gallery ingress above a stable product base without changing layout transforms or game identity',()=>{
   const objects=['domino','jaipur'].map((id,i)=>{const group=new T.Group();group.userData.game=id;group.position.set(i*4,1,-1);group.add(new T.Group());return group;});
   const layout=objects.map(group=>group.position.clone()),art=objects.map(group=>group.children[0]),effect=createGalleryAttraction(objects);
   const frame={entryAge:0,selectionAge:0,selected:'domino',paused:false,mobile:false};
@@ -25,26 +25,28 @@ describe('landing game artwork',()=>{
   const resources:T.BufferGeometry[]=[];effect.root.traverse(node=>{if(node instanceof T.Mesh||node instanceof T.Points)resources.push(node.geometry);});
   const spies=resources.map(geometry=>vi.spyOn(geometry,'dispose'));effect.dispose();effect.dispose();for(const spy of spies)expect(spy).toHaveBeenCalledTimes(1);
  });
- it('uses a large physical material stage instead of selection sparks and keeps reduced-motion geometry still',()=>{
+ it('uses a low solid base and fully closed rim with a finite selection flow and static reduced-motion pose',()=>{
   const object=new T.Group();object.userData.game='domino';object.add(new T.Group());const effect=createGalleryAttraction([object]);
   const frame={entryAge:2,selectionAge:.5,selected:'domino',paused:false,mobile:false};effect.update(frame);
-  expect(effect.root.rotation.y).toBeLessThan(-.2);expect(object.children[0].rotation.y).toBeGreaterThan(.2);
-  const meshes:T.Mesh[]=[];effect.root.traverse(node=>{expect(node).not.toBeInstanceOf(T.Points);if(node instanceof T.Mesh){meshes.push(node);expect(node.material).toBeInstanceOf(T.MeshPhysicalMaterial);}});
-  expect(meshes).toHaveLength(3);expect(meshes[0].name).toBe('SELECTED_GAME_REFLECTIVE_SURFACE');
-  expect((meshes[0].geometry as T.CircleGeometry).parameters.radius).toBeGreaterThan(3);
+  expect(effect.root.rotation.y).toBe(0);expect(object.children[0].rotation.y).toBeGreaterThan(.2);
+  const meshes:T.Mesh[]=[];effect.root.traverse(node=>{expect(node).not.toBeInstanceOf(T.Points);if(node instanceof T.Mesh)meshes.push(node);});
+  expect(meshes).toHaveLength(3);expect(meshes[0].name).toBe('SELECTED_GAME_PRODUCT_BASE');expect(meshes[0].material).toBeInstanceOf(T.MeshPhysicalMaterial);
+  expect((meshes[0].geometry as T.CylinderGeometry).parameters.height).toBeLessThan(.2);
+  for(const ring of meshes.slice(1))expect((ring.geometry as T.TorusGeometry).parameters.arc).toBe(Math.PI*2);
+  expect(meshes[2].visible).toBe(true);
   expect(effect.update({...frame,selectionAge:1.8})).toBe(false);expect(Math.abs(effect.root.rotation.y)).toBe(0);
   effect.update({...frame,paused:true,mobile:true});const pose=effect.root.matrix.clone();effect.root.updateMatrix();pose.copy(effect.root.matrix);
   effect.update({...frame,entryAge:99,selectionAge:99,paused:true,mobile:true});effect.root.updateMatrix();expect(effect.root.matrix.equals(pose)).toBe(true);
-  expect(effect.root.scale.x).toBe(.55);const materials=new Set(meshes.map(mesh=>mesh.material as T.Material)),spies=[...materials].map(material=>vi.spyOn(material,'dispose'));
+  expect(meshes[2].visible).toBe(false);expect(effect.root.scale.x).toBe(.72);const materials=new Set(meshes.map(mesh=>mesh.material as T.Material)),spies=[...materials].map(material=>vi.spyOn(material,'dispose'));
   effect.dispose();effect.dispose();for(const spy of spies)expect(spy).toHaveBeenCalledTimes(1);
  });
- it('keeps the visible sculpture alive within readable bounds and counter-rotates the material without moving game layout',()=>{
+ it('keeps the visible sculpture alive within readable bounds while the finished base stays still',()=>{
   const object=new T.Group();object.userData.game='domino';object.position.set(2,1,3);object.add(new T.Group());const effect=createGalleryAttraction([object]),pivot=object.children[0],layout=object.position.clone();
   const frame={entryAge:2,selectionAge:2,selected:'domino',paused:false,mobile:false,ambient:true};
   effect.update({...frame,time:1});const start=pivot.rotation.y;
   for(let time=0;time<=32;time+=.25){
    expect(effect.update({...frame,time})).toBe(true);expect(Math.abs(pivot.rotation.y)).toBeLessThanOrEqual(.22);expect(Math.abs(pivot.position.y)).toBeLessThanOrEqual(.095);expect(Math.abs(effect.root.rotation.y)).toBeLessThanOrEqual(.24);
-   expect(pivot.rotation.y*effect.root.rotation.y).toBeLessThanOrEqual(0);expect(object.position.equals(layout)).toBe(true);
+   expect(effect.root.rotation.y).toBe(0);expect(object.position.equals(layout)).toBe(true);
   }
   expect(pivot.rotation.y).not.toBe(start);
   expect(effect.update({...frame,time:33,ambient:false})).toBe(false);expect(pivot.position.length()).toBe(0);expect(Math.abs(pivot.rotation.y)).toBe(0);
@@ -59,6 +61,26 @@ describe('landing game artwork',()=>{
   for(let time=0;time<=20;time+=.25){effect.update({...frame,time});objects.forEach((group,i)=>{expect(group.position.equals(layout[i])).toBe(true);if(i){expect(Math.abs(group.children[0].position.y)).toBeLessThanOrEqual(.075);expect(Math.abs(group.children[0].rotation.y)).toBeLessThanOrEqual(.12);}});}
   expect(effect.update({...frame,time:21,ambient:false})).toBe(false);objects.forEach(group=>expect(group.children[0].position.length()).toBe(0));
   expect(effect.update({...frame,time:22,paused:true})).toBe(false);objects.forEach(group=>expect(group.children[0].position.length()).toBe(0));effect.dispose();
+ });
+ it('builds connected headset bands, hinges and cushions without the bent foreground note',()=>{
+  const materials=studioMaterials(),headset=createGameObject('rhythm',materials);headset.updateMatrixWorld(true);
+  const shell=headset.getObjectByName('RHYTHM_HEADBAND_SHELL') as T.Mesh<T.ExtrudeGeometry>;
+  expect(shell.geometry.type).toBe('ExtrudeGeometry');
+  const contour=(shell.geometry.parameters.shapes as T.Shape).getPoints();expect(contour[0].distanceTo(contour[contour.length-1])).toBeLessThan(.000001);
+  for(const side of [-1,1]){
+   const hinge=headset.getObjectByName('RHYTHM_HINGE_'+side)!,cup=headset.getObjectByName('RHYTHM_EARCUP_'+side)!,cushion=headset.getObjectByName('RHYTHM_CUSHION_'+side)!;
+   expect(new T.Box3().setFromObject(hinge).intersectsBox(new T.Box3().setFromObject(shell))).toBe(true);
+   expect(new T.Box3().setFromObject(hinge).intersectsBox(new T.Box3().setFromObject(cup))).toBe(true);expect(cushion.parent).toBe(cup);
+  }
+  headset.traverse(node=>{if(node instanceof T.Mesh)expect(node.geometry.type).not.toBe('TubeGeometry');});Object.values(materials).forEach(material=>material.dispose());
+ });
+ it('adds a low visual beat only to the selected rhythm sculpture and its complete rim',()=>{
+  const make=(game:string)=>{const object=new T.Group();object.userData.game=game;object.add(new T.Group());return{object,effect:createGalleryAttraction([object])};},rhythm=make('rhythm'),other=make('domino');
+  const frame={entryAge:2,selectionAge:2,paused:false,mobile:false,ambient:true,time:Math.PI/(2*4.4)};
+  rhythm.effect.update({...frame,selected:'rhythm'});other.effect.update({...frame,selected:'domino'});
+  expect(other.object.children[0].rotation.x-rhythm.object.children[0].rotation.x).toBeCloseTo(.035,8);
+  const strength=(effect:ReturnType<typeof createGalleryAttraction>)=>(effect.root.getObjectByName('SELECTED_GAME_RIM_FLOW') as T.Mesh<T.BufferGeometry,T.ShaderMaterial>).material.uniforms.uStrength.value;
+  expect(strength(rhythm.effect)).toBeGreaterThan(strength(other.effect));rhythm.effect.dispose();other.effect.dispose();
  });
  it('retains the exact original portrait and user-supplied Splendor cover bytes',()=>{
   const sources={
@@ -83,6 +105,12 @@ describe('landing game artwork',()=>{
    expect(sphere.radius).toBeCloseTo(1,6);
    expect(sphere.center.length()).toBeLessThan(.000001);
    expect(bounds.max.z-bounds.min.z).toBeGreaterThan(0);
+   group.userData.game=id;group.rotation.set(.15,-.2,-.1);const attraction=createGalleryAttraction([group]),scene=new T.Scene();scene.add(group,attraction.root);
+   for(const mobile of [false,true])for(const time of [0,2,6.5]){
+    group.scale.setScalar(mobile?1.9:2.6);attraction.update({entryAge:2,selectionAge:2,selected:id,paused:false,mobile,ambient:true,time});scene.updateMatrixWorld(true);
+    const base=new T.Box3().setFromObject(attraction.root.getObjectByName('SELECTED_GAME_PRODUCT_BASE')!);expect(new T.Box3().setFromObject(group).min.y-base.max.y).toBeGreaterThan(.02);
+   }
+   attraction.dispose();
    group.traverse(node=>{
     if(!(node instanceof T.Mesh))return;
     const material=node.material as T.MeshBasicMaterial;
