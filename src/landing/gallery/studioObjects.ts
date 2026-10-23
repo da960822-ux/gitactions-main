@@ -30,9 +30,9 @@ export function createGalleryAttraction(objects:T.Group[]){
    const phase=paused?1:T.MathUtils.clamp((entry*1.25-i*.035)/.98,0,1),remaining=Math.pow(1-phase,3),angle=i/objects.length*Math.PI*2;
    const chosen=objects[i].userData.game===selected;
    const peerWave=chosen?0:Math.sin(time*(.65+i*.035)+i*.83)*breathing;
-   const lift=chosen&&!paused?weight*.25+liftWave*.095:peerWave*(.05+i%3*.01);
+   const lift=chosen&&!paused?weight*.25+liftWave*.075:peerWave*(.04+i%3*.008);
    pivot.position.set(Math.cos(angle)*remaining*1.2,Math.sin(angle)*remaining*.65-remaining*.9+lift,-remaining*1.2);
-   pivot.rotation.set(remaining*.3+(chosen?weight*-.09+Math.sin(time*.36)*breathing*.055:0),remaining*(i%2?-.65:.65)+(chosen?weight*.38+yaw*.22:peerWave*(.1+i%2*.015)),remaining*Math.cos(angle)*.27+(chosen?weight*.045+liftWave*.018:0));
+   pivot.rotation.set(remaining*.3+(chosen?weight*-.09+Math.sin(time*.36)*breathing*.045:0),remaining*(i%2?-.65:.65)+(chosen?weight*.38+yaw*.22:peerWave*(.085+i%2*.01)),remaining*Math.cos(angle)*.27+(chosen?weight*.045+liftWave*.018:0));
    pivot.scale.setScalar(1-remaining*.22);
   });
   root.position.set(0,mobile?-1.7:-2.25,-.65);root.scale.setScalar(mobile?.55:1);

@@ -1,22 +1,27 @@
 .post-hero-preview .duel-illustration{width:100%;min-width:0;color:#f6e6dc}
-.post-hero-preview .duel-illustration-stage{position:relative;width:100%;aspect-ratio:1672/941;isolation:isolate;overflow:clip}
-.post-hero-preview .duel-illustration-depth-back{position:absolute;inset:-4%;overflow:clip}
-.post-hero-preview .duel-illustration-depth-front,.post-hero-preview .duel-illustration-depth-float{position:absolute;inset:0}
-.post-hero-preview .duel-illustration-room{animation:duel-room-air 12s ease-in-out infinite;animation-play-state:paused}
-.post-hero-preview .duel-illustration-depth-float{animation:duel-foreground-air 9s ease-in-out infinite;animation-play-state:paused}
-.post-hero-preview .duel-illustration-room-light{position:absolute;inset:-20% -60%;background:linear-gradient(105deg,transparent 40%,#ffd9aa44 47%,#ffd0a166 51%,transparent 60%);mix-blend-mode:screen;animation:duel-room-light 14s ease-in-out infinite;animation-play-state:paused;pointer-events:none}
-.post-hero-preview .duel-illustration[data-ambient=true] .duel-illustration-room,.post-hero-preview .duel-illustration[data-ambient=true] .duel-illustration-depth-float,.post-hero-preview .duel-illustration[data-ambient=true] .duel-illustration-room-light{animation-play-state:running}
-.post-hero-preview .duel-illustration[data-ambient=false] .duel-illustration-room,.post-hero-preview .duel-illustration[data-ambient=false] .duel-illustration-depth-float,.post-hero-preview .duel-illustration[data-ambient=false] .duel-illustration-room-light{animation:none}
-@keyframes duel-room-air{0%,100%{transform:scale(1.025) translate(-.7%,.4%)}50%{transform:scale(1.025) translate(.7%,-.4%)}}
-@keyframes duel-foreground-air{0%,100%{transform:translateY(4px)}50%{transform:translateY(-4px)}}
-@keyframes duel-room-light{0%,100%{transform:translateX(-20%) rotate(-3deg);opacity:.45}50%{transform:translateX(20%) rotate(3deg);opacity:.9}}
+.post-hero-preview .duel-illustration-stage{position:relative;width:100%;aspect-ratio:1672/941;isolation:isolate;overflow:clip;perspective:1000px;perspective-origin:50% 50%}
+.post-hero-preview .duel-illustration-camera{position:absolute;inset:0;transform-style:preserve-3d}
+.post-hero-preview .duel-illustration-depth-back{position:absolute;inset:0;transform:translateZ(-140px) scale(1.28)}
+.post-hero-preview .duel-illustration-depth-front{position:absolute;inset:0;transform:translateZ(60px) scale(.94)}
+.post-hero-preview .duel-illustration-energy{position:absolute;inset:0;z-index:2;pointer-events:none;overflow:visible}
+.post-hero-preview .duel-energy-flow,.post-hero-preview .duel-selection-streak{fill:none;stroke-linecap:round;stroke-linejoin:round}
+.post-hero-preview .duel-energy-flow path{stroke-dasharray:260 740;animation:duel-energy-flow 5.6s linear infinite;animation-play-state:paused}
+.post-hero-preview .duel-energy-flow path:nth-child(2){animation-delay:-2.8s;animation-direction:reverse}
+.post-hero-preview .duel-energy-glow{stroke-width:34;opacity:.26}
+.post-hero-preview .duel-energy-core{stroke-width:5;opacity:.82}
+.post-hero-preview .duel-illustration[data-ambient=true] .duel-energy-flow path{animation-play-state:running}
+.post-hero-preview .duel-illustration[data-ambient=false] .duel-illustration-energy{display:none}
+.post-hero-preview .duel-selection-streak path{stroke-dasharray:260 1740;stroke-dashoffset:1000;animation:duel-selection-sweep 1.2s cubic-bezier(.16,1,.3,1) forwards}
+.post-hero-preview .duel-selection-glow{stroke-width:64}
+.post-hero-preview .duel-selection-core{stroke-width:11}
+@keyframes duel-energy-flow{to{stroke-dashoffset:-1000}}
+@keyframes duel-selection-sweep{to{stroke-dashoffset:-1000}}
+.post-hero-preview .duel-illustration[data-ambient=true] .duel-illustration-camera{will-change:transform}
 .post-hero-preview .duel-illustration-room{position:absolute;inset:0;display:block;width:100%;height:100%;object-fit:contain;pointer-events:none}
-.post-hero-preview .duel-illustration-celebration{position:absolute;inset:0;pointer-events:none}
 .post-hero-preview .duel-illustration-reactions{position:absolute;inset:0;isolation:isolate}
 .post-hero-preview .duel-illustration-layer{position:absolute;inset:0;opacity:0;pointer-events:none}
 .post-hero-preview .duel-illustration-layer svg>image:not([mask]){visibility:hidden}
 .post-hero-preview .duel-illustration-layer[data-active=true]{opacity:1}
-.post-hero-preview .duel-illustration[data-animate=false] .duel-illustration-layer{transition:none}
 .post-hero-preview .duel-illustration-stage svg,.post-hero-preview .duel-illustration-fallback{display:block;width:100%;height:100%;max-height:none;border-radius:0;object-fit:contain}
 .post-hero-preview .duel-illustration-choices{display:flex;align-items:center;justify-content:center;gap:clamp(24px,3.2vw,56px);margin-top:20px}
 .post-hero-preview .duel-illustration-choices button{position:relative;min-height:48px;padding:8px 4px 12px;border:0;border-bottom:1px solid #d7a18f42;border-radius:0;background:transparent;color:#c7b2b6;font:400 clamp(15px,1.05vw,18px)/1.5 'DM Sans','Apple SD Gothic Neo','Malgun Gothic',sans-serif;cursor:pointer;transition:color 160ms var(--ease,cubic-bezier(.23,1,.32,1)),transform 160ms var(--ease,cubic-bezier(.23,1,.32,1))}
@@ -25,7 +30,6 @@
 .post-hero-preview .duel-illustration-choices button[aria-pressed=true]:after{opacity:1;transform:scaleX(1)}
 .post-hero-preview .duel-illustration-choices button:focus-visible{outline:2px solid #efbca8;outline-offset:5px;transition:none}
 .post-hero-preview .duel-illustration-choices button:active{color:#edc2a2;transform:scale(.97)}
-.post-hero-preview .duel-illustration[data-animate=false] .duel-illustration-choices button:after{transition:none}
 .post-hero-preview .duel-illustration-error{margin:14px 0 0;text-align:center;color:#efd1c7;font-size:14px;line-height:1.6}
 @media(hover:hover) and (pointer:fine){.post-hero-preview .duel-illustration-choices button:hover{color:#fff0e9;border-bottom-color:#edc2a2}}
 @media(prefers-reduced-motion:reduce){.post-hero-preview .duel-illustration-layer,.post-hero-preview .duel-illustration-choices button,.post-hero-preview .duel-illustration-choices button:after{transition:none}.post-hero-preview .duel-illustration-choices button:active{transform:none}}
