@@ -1,7 +1,7 @@
 import {renderToStaticMarkup} from 'react-dom/server';
 import {expect,it,vi} from 'vitest';
 import {RoseGiftFinale,roseGiftCanCelebrate,roseGiftClosingLine,roseGiftPose} from './story/RoseGiftFinale';
-import {ROSE_FIREWORK_PARTICLE_LIMIT,createRoseFireworks,roseFireworkSpark,roseFireworkPosition} from './story/rose-fireworks';
+import {ROSE_FIREWORK_PARTICLE_LIMIT,ROSE_DRONE_COUNT,createRoseFireworks,roseDronePosition,roseFireworkSpark,roseFireworkPosition} from './story/rose-fireworks';
 
 it('gates fireworks on the fully settled handover while visible, never on initial contact or transfer',()=>{
  for(const seconds of [-1,0,1.2,1.65,2.85,2.999,NaN,Infinity])expect(roseGiftCanCelebrate(seconds,true)).toBe(false);
@@ -13,6 +13,7 @@ it('registers repeating canvas fireworks behind the unchanged single rose and us
  const html=renderToStaticMarkup(<RoseGiftFinale language="ko"/>),reduced=renderToStaticMarkup(<RoseGiftFinale language="ko" reducedMotion/>);
  expect(html).toContain('data-celebration="idle"');expect(html).toContain('data-trigger="handover-complete"');
  expect(html).toContain('<canvas class="rg-celebration"');expect(html).toContain('data-running="false"');expect(html).toContain('data-burst-count="0"');
+ expect(html).toContain('data-drone-formation="idle"');expect(html).toContain('data-burst-shape="none"');
  expect(html).not.toContain('rg-firework-ray');expect(html).not.toContain('<ellipse');
  expect(html.indexOf('class="rg-celebration"')).toBeLessThan(html.indexOf('class="rg-live"'));
  expect(reduced).toContain('data-celebration="static"');expect(reduced).toContain('rg-celebration-glow');
@@ -42,11 +43,47 @@ it('keeps firing past ten seconds, pauses without backlog, bounds particles, and
  try{
   const controller=createRoseFireworks(canvas);expect(frames.size).toBe(0);controller.setActive(true);
   for(let frame=0;frame<720;frame++)step(frame*1000/60);
-  expect(Number(canvas.dataset.burstCount)).toBeGreaterThan(4);expect(maxDraws).toBeGreaterThan(64);expect(maxDraws).toBeLessThanOrEqual(ROSE_FIREWORK_PARTICLE_LIMIT);expect(canvas.width).toBe(1125);
-  const bursts=canvas.dataset.burstCount;controller.setActive(false);expect(frames.size).toBe(0);expect(canvas.dataset.running).toBe('false');step(90000);expect(canvas.dataset.burstCount).toBe(bursts);
+  expect(Number(canvas.dataset.burstCount)).toBeGreaterThan(4);expect(maxDraws).toBeGreaterThan(64+ROSE_DRONE_COUNT);expect(maxDraws).toBeLessThanOrEqual(ROSE_FIREWORK_PARTICLE_LIMIT+ROSE_DRONE_COUNT);expect(canvas.width).toBe(1125);
+  expect(canvas.dataset.droneFormation).toBe('heart');expect(['heart','saturn','chrysanthemum','willow']).toContain(canvas.dataset.burstShape);
+  const bursts=canvas.dataset.burstCount,formation=canvas.dataset.droneFormation;controller.setActive(false);expect(frames.size).toBe(0);expect(canvas.dataset.running).toBe('false');step(90000);expect(canvas.dataset.burstCount).toBe(bursts);expect(canvas.dataset.droneFormation).toBe(formation);
   controller.setActive(true);step(90016);expect(canvas.dataset.burstCount).toBe(bursts);expect(frames.size).toBe(1);
-  controller.reset();expect(canvas.dataset.burstCount).toBe('0');controller.dispose();expect(frames.size).toBe(0);expect(disconnect).toHaveBeenCalled();controller.setActive(true);expect(frames.size).toBe(0);
+  controller.reset();expect(canvas.dataset.burstCount).toBe('0');expect(canvas.dataset.droneFormation).toBe('idle');expect(canvas.dataset.burstShape).toBe('none');controller.dispose();expect(frames.size).toBe(0);expect(disconnect).toHaveBeenCalled();controller.setActive(true);expect(frames.size).toBe(0);
  }finally{vi.unstubAllGlobals();}
+});
+
+it('alternates a symmetric heart, tilted Saturn ring, chrysanthemum and long falling willow',()=>{
+ const heart=Array.from({length:44},(_,index)=>roseFireworkSpark(index,0,0));
+ expect(heart[0].vx).toBeCloseTo(0);expect(heart[0].vy).toBeLessThan(0);expect(heart[22].vy).toBeGreaterThan(300);
+ for(let index=1;index<22;index++){expect(heart[index].vx).toBeCloseTo(-heart[44-index].vx,8);expect(heart[index].vy).toBeCloseTo(heart[44-index].vy,8);}
+ const ring=Array.from({length:44},(_,index)=>roseFireworkSpark(index,1,0));
+ const axes=ring.map(p=>({x:p.vx*.94+p.vy*.34,y:-p.vx*.34+p.vy*.94}));
+ expect(Math.max(...axes.map(p=>Math.abs(p.x)))/Math.max(...axes.map(p=>Math.abs(p.y)))).toBeGreaterThan(4.7);
+ const flower=roseFireworkSpark(0,2,0),willow=roseFireworkSpark(0,3,0);
+ expect(new Set([heart[0].shape,ring[0].shape,flower.shape,willow.shape]).size).toBe(4);
+ expect(willow.life).toBeGreaterThan(5);expect(willow.life).toBeGreaterThan(flower.life);
+ expect(roseFireworkPosition(willow,4).y).toBeGreaterThan(roseFireworkPosition(willow,3).y);
+});
+
+it('flies 96 distinct lights into a large evenly spaced heart above the original heads, then smoothly morphs and returns',()=>{
+ expect(ROSE_DRONE_COUNT).toBe(96);
+ const heart=Array.from({length:ROSE_DRONE_COUNT},(_,index)=>roseDronePosition(index,8));
+ expect(Math.max(...heart.map(p=>p.x))-Math.min(...heart.map(p=>p.x))).toBeGreaterThan(570);
+ expect(Math.max(...heart.map(p=>p.y))-Math.min(...heart.map(p=>p.y))).toBeGreaterThan(260);
+ for(let index=0;index<heart.length;index++){
+  const p=heart[index],other=heart[(heart.length-index)%heart.length],next=heart[(index+1)%heart.length];
+  expect(p.formation).toBe('heart');expect(p.alpha).toBe(1);expect(p.y).toBeLessThan(-10);
+  expect(p.x+other.x).toBeCloseTo(1200,6);expect(p.y).toBeCloseTo(other.y,6);
+  expect(Math.hypot(p.x-next.x,p.y-next.y)).toBeGreaterThan(9);
+  const before=roseDronePosition(index,12-1e-4),after=roseDronePosition(index,12+1e-4);
+  expect(Math.hypot(before.x-after.x,before.y-after.y)).toBeLessThan(.01);
+  expect(roseDronePosition(index,18).formation).toBe('infinity');
+  const returned=roseDronePosition(index,27);expect(returned.x).toBeCloseTo(p.x,8);expect(Math.abs(returned.y-p.y)).toBeLessThan(4);
+  const departure=roseDronePosition(index,32-1e-5),arrival=roseDronePosition(index,32+1e-5);
+  expect(Math.hypot(departure.x-arrival.x,departure.y-arrival.y)).toBeLessThan(.01);expect(departure.alpha).toBeLessThan(.001);expect(arrival.alpha).toBeLessThan(.001);
+ }
+ const infinity=Array.from({length:ROSE_DRONE_COUNT},(_,index)=>roseDronePosition(index,18));
+ for(let a=0;a<infinity.length;a++)for(let b=a+1;b<infinity.length;b++)expect(Math.hypot(infinity[a].x-infinity[b].x,infinity[a].y-infinity[b].y)).toBeGreaterThan(4);
+ expect(roseDronePosition(0,1).formation).toBe('flight');expect(roseDronePosition(0,0).alpha).toBe(0);
 });
 
 it('keeps the static light-cloud fallback when a 2D canvas is unavailable',()=>{

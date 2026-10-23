@@ -120,7 +120,7 @@ export function RoseGiftFinale({language,reducedMotion=false,pactAccepted=false,
   </div>
   <div className="rg-art" data-ready={ready||staticArt} data-static={staticArt} role="img" aria-label={ko?'연석이 리스베스에게 빨간 장미 한 송이를 건네고, 리스베스가 웃으며 받아 드는 장면':'Yeonseok le ofrece una rosa roja a Lisbeth y ella la recibe sonriendo'}>
    <div className="rg-celebration-glow" aria-hidden="true"/>
-   <canvas ref={celebrationArt} className="rg-celebration" aria-hidden="true" data-trigger="handover-complete" data-running="false" data-burst-count="0"/>
+   <canvas ref={celebrationArt} className="rg-celebration" aria-hidden="true" data-trigger="handover-complete" data-running="false" data-burst-count="0" data-drone-formation="idle" data-burst-shape="none"/>
    <img className="rg-static" src={original} alt="" aria-hidden="true" draggable="false" width="1199" height="1312" onLoad={()=>setLoaded(old=>old|1)} onError={()=>setFailed(true)}/>
    <svg ref={art} className="rg-live" viewBox="0 0 1199 1312" preserveAspectRatio="xMidYMax meet" aria-hidden="true" data-rig="complete-limb-handover" data-time="0" data-owner="donor">
     <defs>
