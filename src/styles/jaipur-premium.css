@@ -311,27 +311,6 @@
   .jp-pile-count strong { line-height: 1; }
   .jp-pile-next > .jp-pile-next-label { display: none; }
 }
-@media (min-width: 1024px) and (max-height: 950px) {
-  .jp-market-card { height: 154px; }
-  .jp-action-tray, .jp-sale-controls.jp-action-tray { min-height: 92px; padding: .25rem .45rem; }
-  .jp-goods-piles .jp-section-heading p { display: none; }
-  .jp-pile-next .jaipur-coin { width: 1.5rem; height: 1.5rem; }
-  .jp-bonus-row { grid-template-columns: repeat(3,minmax(0,1fr)); gap: .3rem; }
-  .jp-bonus-stack { flex-direction: column; align-items: center; gap: .2rem; padding: .35rem .15rem; text-align: center; }
-  .jp-bonus-stack > span { display: flex; flex-direction: column; gap: .05rem; }
-  .jp-bonus-stack > span > b { font-size: 1.1rem; }
-  .jp-bonus-stack small { font-size: .75rem; white-space: nowrap; }
-
-  .jp-score-main small { font-size: .75rem; line-height: 1.2; }
-  .jp-score-main strong { line-height: 1.05; }
-  .jp-score-seat { min-height: 48px; }
-  .jp-opponent-row { min-height: 44px; }
-
-  .jaipur-board { padding: .55rem; row-gap: .1rem; }
-  .jp-topline { min-height: 44px; }
-  .jp-card-backs { padding: .05rem .1rem; }
-  .jp-card-backs i { height: 1.6rem; }
-}
 .jp-history-drawer { position: relative; min-width: 0; }
 .jp-history-drawer summary { display: flex; align-items: center; justify-content: space-between; gap: .5rem; min-height: 44px; padding: .4rem .65rem; border: 1px solid #cdb58e; border-radius: .6rem; background: #fff8e8; color: #65503e; font-size: .8rem; font-weight: 700; cursor: pointer; list-style: none; }
 .jp-history-drawer summary::-webkit-details-marker { display: none; }
@@ -367,10 +346,10 @@
 /* Market, hand and confirmation form one trading surface. */
 @media (min-width: 1024px) {
   .jaipur-board .jp-topline { min-height: 34px; }
-  .jaipur-board .jp-market-card { height: 132px; }
+  .jaipur-board .jp-market-card { height: clamp(154px, 19.4vh, 210px); }
   .jaipur-board .jp-action-tray { min-height: 64px; }
   .jaipur-board .jp-market-footer { gap: 6px; margin-top: 6px; }
-  .jaipur-board .jp-hand-card { min-height: 110px; }
+  .jaipur-board .jp-hand-card { min-height: clamp(110px, 14vh, 150px); }
   .jaipur-board .jp-player-hand .jp-section-heading { margin-bottom: 6px; }
 }
 @media (max-width: 1023px) {
@@ -433,7 +412,9 @@
 }
 
 @media (min-width: 1024px) and (hover: hover) and (pointer: fine) {
-  .jaipur-board.has-desktop-preview { grid-template-areas: 'title title' 'scores scores' 'notice notice' 'market supply' 'hand supply' 'history supply' 'round round' 'final final'; gap: .35rem .7rem; padding: .55rem; }
+  .jaipur-board.has-desktop-preview { grid-template-areas: 'title title' 'notice notice' 'opponent rival' 'market supply' 'hand supply' 'history supply' 'round round' 'final final'; gap: .35rem .7rem; padding: .55rem; }
+  .jaipur-board.has-desktop-preview > .jp-topline { width: min(30%, 320px); }
+  .jaipur-board.has-desktop-preview > .jp-scorebar { grid-area: title; align-self: center; justify-self: end; width: min(68%, 760px); }
   .jaipur-board.has-desktop-preview .jp-premium-token-wrap { position: relative; display: block; flex: 0 0 auto; overflow: hidden; }
   .jaipur-board.has-desktop-preview .jp-premium-token-image { position: absolute; inset: 0; display: block; width: 100%; height: 100%; object-fit: contain; opacity: 0; transition: opacity 150ms ease; }
   .jaipur-board.has-desktop-preview .jp-premium-token-wrap.is-loaded .jp-premium-token-image { opacity: 1; }
@@ -456,11 +437,11 @@
   .jaipur-board.has-desktop-preview .jp-bonus-stack > span > small { font-size: .75rem; white-space: nowrap; }
   .jaipur-board.has-desktop-preview .jp-bonus-stack > span > strong { font-size: .86rem; white-space: nowrap; }
   .jaipur-board.has-desktop-preview .jp-bonus-stack small { font-size: .75rem; }
-  .jaipur-board.has-desktop-preview > .jp-opponent-row { grid-area: title; align-self: end; justify-self: center; z-index: 2; width: auto; min-height: 28px; padding: .12rem .45rem; transform: translateX(-150px); }
+  .jaipur-board.has-desktop-preview > .jp-opponent-row { grid-area: opponent; align-self: stretch; width: auto; min-height: 28px; padding: .12rem .45rem; }
   .jaipur-board.has-desktop-preview > .jp-opponent-row > div:first-child b { display: inline; }
-  .jaipur-board.has-desktop-preview > .jp-rival-herd { grid-area: title; align-self: end; justify-self: center; z-index: 2; width: auto; min-height: 28px; margin: 0; padding: .12rem .45rem; transform: translateX(155px); }
+  .jaipur-board.has-desktop-preview > .jp-rival-herd { grid-area: rival; align-self: stretch; width: auto; min-height: 28px; margin: 0; padding: .12rem .45rem; }
   .jaipur-board.has-desktop-preview .jp-market-section { padding: .35rem; }
-  .jaipur-board.has-desktop-preview .jp-market-card { height: 150px; }
+  .jaipur-board.has-desktop-preview .jp-market-card { height: clamp(154px, 19.4vh, 210px); }
   .jaipur-board.has-desktop-preview .jp-market-card .jp-card-name { padding-top: .52rem; font-size: 1rem; }
   .jaipur-board.has-desktop-preview .jp-market-card .jp-card-prompt { padding-bottom: .55rem; font-size: .78rem; }
   .jaipur-board.has-desktop-preview .jp-market-footer { display: grid; grid-template-columns: auto minmax(0,1fr); align-items: stretch; gap: .3rem .6rem; margin-top: .25rem; }

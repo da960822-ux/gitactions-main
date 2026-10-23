@@ -22,7 +22,8 @@
 
 /* Reviewed cosmic composition: retain the portrait camera and the same live folded world. */
 .folded-playhouse .across-stage::after{content:"";position:absolute;inset:0;z-index:-1;pointer-events:none;background:radial-gradient(ellipse 32% 50% at 22% 55%,#100a13f7 8%,#100a13cf 52%,transparent 100%)}
-@media(min-width:1101px){.landing:has(.folded-playhouse)>.landing-nav{max-width:none;width:87%;margin:0 auto}.folded-playhouse .across-editorial{left:6.5104%;top:22.4074%;width:32.8125%;max-width:none}.folded-playhouse .folded-dedication{margin-bottom:35px}.folded-playhouse .across-editorial h1{font-size:clamp(62px,6.041667vw,116px);line-height:1.13}.folded-playhouse .across-editorial .folded-baby{font-size:clamp(104px,9.0625vw,174px);padding-bottom:25px;margin-left:-4px}.folded-playhouse .across-caption{margin:29px 0 28px}}
+@media(min-width:1101px){.landing:has(.folded-playhouse)>.landing-nav{max-width:none;width:87%;margin:0 auto}.folded-playhouse .across-editorial{left:6.5104%;top:22.4074%;width:32.8125%;max-width:none}.folded-playhouse .folded-dedication{margin-bottom:clamp(18px,3.240741svh,35px)}.folded-playhouse .across-editorial h1{font-size:clamp(62px,min(6.041667vw,10.740741svh),116px);line-height:1.13}.folded-playhouse .across-editorial .folded-baby{font-size:clamp(104px,min(9.0625vw,16.111112svh),174px);padding-bottom:clamp(12px,2.314815svh,25px);margin-left:-4px}.folded-playhouse .across-caption{font-size:clamp(15px,min(1.15vw,1.944445svh),21px);margin:clamp(18px,2.685186svh,29px) 0 clamp(18px,2.592593svh,28px)}}
+@media(min-width:1101px) and (max-height:800px){.folded-playhouse .across-editorial{top:17.5%}}
 
 .folded-playhouse .across-editorial{text-shadow:none}.folded-playhouse .folded-baby{font-synthesis:style}
 

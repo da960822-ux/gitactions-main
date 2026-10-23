@@ -145,7 +145,7 @@
 .hwatu-opponent-fan i { width:26px; height:38px; }
 .hwatu-event-overlay { margin-left:auto; }
 
-.hwatu-table-card { flex:0 0 min(var(--hw-field-card-width),48px); width:min(var(--hw-field-card-width),48px); }
+.hwatu-table-card { flex:0 0 min(var(--hw-field-card-width),64px); width:min(var(--hw-field-card-width),64px); }
 .hwatu-felt { padding:4px 10px; }
 .hwatu-felt:not(:has(.hwatu-table-card)):not(:has(.hwatu-drawn-card)):not(:has(.hwatu-table-landing-anchor)) { height:34px; }
 .hwatu-felt:has(.hwatu-drawn-card) { min-height:156px; }
@@ -198,7 +198,7 @@
 .hwatu-last-capture { color:#ead49b; }
 .hwatu-log-cards { display:flex; flex-wrap:wrap; gap:5px; margin:5px 0 10px; }
 .minhwatu-table .hwatu-log-cards .gb-hwatu-card-premium { flex:0 0 38px; width:38px; }
-@media (min-height:850px) { .minhwatu-table { --hw-hand-width:60px; --hw-capture-width:38px; } .hwatu-table-card { flex-basis:min(var(--hw-field-card-width),54px); width:min(var(--hw-field-card-width),54px); } }
+@media (min-height:850px) { .minhwatu-table { --hw-hand-width:60px; --hw-capture-width:38px; } .hwatu-table-card { flex-basis:min(var(--hw-field-card-width),64px); width:min(var(--hw-field-card-width),64px); } }
 @media (max-width:1000px) { .hwatu-hand-section { display:block; } .hwatu-felt-heading { position:static; } .hwatu-table-cards { width:calc(100% - 94px); margin:4px 94px 4px 0; } .hwatu-capture-categories { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); } .hwatu-choice-hand { justify-content:flex-start; } .hwatu-hand-choice { flex:0 0 54px; } }
 @media (prefers-reduced-motion:reduce) { .hwatu-hand-choice { transition:none; } }
 

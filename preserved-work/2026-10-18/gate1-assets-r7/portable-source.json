@@ -1,7 +1,0 @@
-{
-  "source": "/workspace/gate1-assets-r7/chamber.blend",
-  "sourceSha256": "ba0843975411b97684f264cbfbb9a4ed63fafbd6a7d5f1f168a741ef3042ba56",
-  "portable": "/workspace/gate1-assets-r7/chamber-source-portable.blend",
-  "portableSha256": "3a1aa18016774278b9b26ab3e3826ccbbfa8a9360a4229f9a8e2b13aa721806d",
-  "change": "Only packed the existing approved portrait into a separate compressed source copy. Original source unchanged."
-}

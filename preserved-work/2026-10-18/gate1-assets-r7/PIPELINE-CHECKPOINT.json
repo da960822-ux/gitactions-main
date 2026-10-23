@@ -1,9 +1,0 @@
-{
-  "stage": "PIPELINE_COMPLETE",
-  "checkedAtUTC": "2026-10-18T01:44:49.576Z",
-  "bakePID": 32763,
-  "nativePID": 32764,
-  "activePID": 34384,
-  "error": "AssertionError(('capture.log', 1))",
-  "recovery": "Only failed pointer/ES screenshot stage resumed; original renders/captures preserved"
-}

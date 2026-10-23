@@ -15,6 +15,8 @@ const feedbackMigration = readFileSync(resolve(process.cwd(), 'supabase/migratio
 const feedbackSpacesMigration = readFileSync(resolve(process.cwd(), 'supabase/migrations/202610100003_feedback_spaces.sql'), 'utf8')
   .replace(/select cron\.schedule\('feedback-seven-day-cleanup'[\s\S]*?\);\s*$/, '');
 const catchmindTranslationMigration = readFileSync(resolve(process.cwd(), 'supabase/migrations/202610100004_catchmind_translation.sql'), 'utf8');
+const feedbackSubmissionMigration = readFileSync(resolve(process.cwd(), 'supabase/migrations/202610110005_feedback_submission.sql'), 'utf8');
+const feedbackMemberSubmissionMigration = readFileSync(resolve(process.cwd(), 'supabase/migrations/202610230009_feedback_member_submission.sql'), 'utf8');
 
 let db: PGlite;
 
@@ -54,6 +56,8 @@ beforeAll(async () => {
   await db.exec(feedbackMigration);
   await db.exec(feedbackSpacesMigration);
   await db.exec(catchmindTranslationMigration);
+  await db.exec(feedbackSubmissionMigration);
+  await db.exec(feedbackMemberSubmissionMigration);
 });
 
 beforeEach(async () => {
@@ -123,7 +127,7 @@ describe('room database security and concurrency', () => {
     const space = await feedbackSpaceFor(alice);
     await asUser(bob);
     await db.query('select public.join_feedback_space($1)', [space]);
-    await db.query("insert into feedback_entries(space_id,category,title,body) values ($1,'message','Note','Keep this')", [space]);
+    await db.query("select public.submit_feedback($1,$2,'message','Note','Keep this')", [space, '40000000-0000-4000-8000-000000000009']);
     await service();
     await db.query("insert into chat_messages(id,room_id,seat,text,status) values ('40000000-0000-4000-8000-000000000001',$1,'p1','hi','original')", [room]);
     await db.query("insert into action_receipts values ($1,'40000000-0000-4000-8000-000000000002',$2,1)", [room, alice]);
@@ -142,16 +146,22 @@ describe('room database security and concurrency', () => {
     expect((await db.query('select id from feedback_entries where space_id=$1', [space])).rows).toHaveLength(1);
   });
 
-  it('shares feedback only with pair-space members; p2 writes and only p1 changes status', async () => {
+  it('allows both pair-space members to post while only p1 changes status', async () => {
     const space = await feedbackSpaceFor();
     await asUser(bob);
     await db.query('select public.join_feedback_space($1)', [space]);
     await asUser(alice);
     expect((await db.query('select id from feedback_entries where space_id=$1', [space])).rows).toHaveLength(0);
-    await expect(db.query("insert into feedback_entries(space_id,category,title,body) values ($1,'message','Note','Hi')", [space])).rejects.toThrow(/row-level security/);
+    await expect(db.query("insert into feedback_entries(space_id,category,title,body) values ($1,'message','Note','Hi')", [space])).rejects.toThrow(/permission denied/);
+
+    await asUser(alice);
+    const ownerPost = await db.query<{ id: string }>("select (public.submit_feedback($1,$2,'message','Owner note','From the owner')->>'id')::uuid as id", [space, '40000000-0000-4000-8000-000000000011']);
+    const ownerEntryId = ownerPost.rows[0].id;
+    expect((await db.query<{ status: string }>('select status from feedback_entries where id=$1', [ownerEntryId])).rows[0].status).toBe('new');
+    await db.query("update feedback_entries set status='planned' where id=$1 and space_id=$2", [ownerEntryId, space]);
 
     await asUser(bob);
-    const created = await db.query<{ id: string }>("insert into feedback_entries(space_id,category,title,body) values ($1,'game','Jaipur','Let us play again') returning id", [space]);
+    const created = await db.query<{ id: string }>("select (public.submit_feedback($1,$2,'game','Jaipur','Let us play again')->>'id')::uuid as id", [space, '40000000-0000-4000-8000-000000000012']);
     const entryId = created.rows[0].id;
     expect((await db.query("update feedback_entries set status='done' where id=$1", [entryId])).rowCount).toBe(0);
     expect((await db.query<{ status: string }>('select status from feedback_entries where id=$1', [entryId])).rows[0].status).toBe('new');
@@ -163,15 +173,16 @@ describe('room database security and concurrency', () => {
 
     await asUser(eve);
     expect((await db.query('select id from feedback_entries')).rows).toHaveLength(0);
-    await expect(db.query("insert into feedback_entries(space_id,category,title,body) values ($1,'feature','Other','No')", [space])).rejects.toThrow(/row-level security/);
+    await expect(db.query("select public.submit_feedback($1,$2,'feature','Other','No')", [space, '40000000-0000-4000-8000-000000000013'])).rejects.toThrow(/feedback_create_denied/);
+    await expect(db.query("insert into feedback_entries(space_id,category,title,body) values ($1,'feature','Other','No')", [space])).rejects.toThrow(/permission denied/);
   });
 
   it('validates feedback and expires each post seven days after creation', async () => {
     const space = await feedbackSpaceFor();
     await asUser(bob);
     await db.query('select public.join_feedback_space($1)', [space]);
-    await expect(db.query("insert into feedback_entries(space_id,category,title,body) values ($1,'other','Title','Body')", [space])).rejects.toThrow(/feedback_entries_category_check/);
-    await db.query("insert into feedback_entries(space_id,category,title,body) values ($1,'feature','A useful idea','A brief note')", [space]);
+    await expect(db.query("select public.submit_feedback($1,$2,'bogus','Title','Body')", [space, '40000000-0000-4000-8000-000000000014'])).rejects.toThrow(/feedback_invalid/);
+    await db.query("select public.submit_feedback($1,$2,'feature','A useful idea','A brief note')", [space, '40000000-0000-4000-8000-000000000015']);
     await service();
     await db.query("update feedback_entries set created_at=now()-interval '7 days 1 second' where space_id=$1", [space]);
     await asUser(alice);

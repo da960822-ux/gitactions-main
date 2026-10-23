@@ -2,7 +2,7 @@
 
 The landing page and app are a Vite static site. This section records the current project state as checked on 2026-10-23, then gives the safe next steps for the existing project and private Site.
 
-## Current production state — 2026-10-23
+## Connected baseline verified at Site revision 19 — 2026-10-23
 
 - Supabase project: `yeonseok-lisbeth-games`, ref `yqswgvqkqofxcfypvbbi`, URL `https://yqswgvqkqofxcfypvbbi.supabase.co`. The current plan is Free Nano in Singapore (`ap-southeast-1`). Anonymous sign-ins are enabled.
 - The eight checked-in migrations were applied in a Dashboard SQL Editor transaction. Remote checks confirmed 13 tables, RLS and grants, Realtime publication settings, the three cleanup jobs below, and the 400,000-character monthly translation cap. Dashboard application did not populate Supabase CLI migration history; repair that history before using `db push`.
@@ -11,18 +11,22 @@ The landing page and app are a Vite static site. This section records the curren
 - Ignored local `.env.local` and ChatGPT Site environment revision 1 contain the public project URL and publishable key under `VITE_SUPABASE_URL` and `VITE_SUPABASE_ANON_KEY`; neither key value belongs in source or docs. ChatGPT Site production revision 19 is deployed from source `63ac3a11d410141971cbd0c617d226731157c709`, with owner-only access, one user, zero external users, and a connected artifact containing 508 files (149,029,026 bytes). Revision 18 was the older same-browser demo.
 - Live verification at revision 19 passed with two distinct Supabase anonymous users: room create/join and mutual Catchmind start. Google translation and original-message display passed for two Korean→Spanish and two Spanish→Korean ordinary chat messages. A nine-stroke jellyfish drawing appeared live in the peer's Chrome; the Spanish answer `medusa` was accepted and one point was reflected for each player. Local image, answer and score checks also passed. Evidence is in the chat output artifacts `production-catchmind-running.png` and `production-catchmind-result.png` (outside this repository).
 
+## Current release update — 2026-10-23
+
+Migration 202610230009_feedback_member_submission.sql was applied in a Dashboard SQL Editor transaction after the eight baseline migrations. It permits existing p1 and p2 feedback-space members to submit entries, retains membership checks and p1-only status updates, and leaves direct table insertion revoked. The returned policies were feedback_members_create INSERT, feedback_p1_status UPDATE, and feedback_space_read SELECT. CLI history still needs reconciliation for all nine applied versions before db push; do not replay migration 009 against the updated database. See [the canonical main report](reviews/CANONICAL-MAIN-20261023.md) for the source/frontend update.
+
 ## Supabase
 
 1. Link the existing project with the Supabase CLI (`supabase login`, then `supabase link --project-ref yqswgvqkqofxcfypvbbi`). Do not create a replacement project.
 2. Anonymous sign-ins are enabled. Check the deployed Site URL in the Auth redirect allow-list when preparing the new build. Anonymous Auth gives each browser an identity; room IDs alone do not grant access.
-3. **Do not run `supabase db push` yet.** The eight migrations listed below already ran through the Dashboard, but CLI history is not recorded. After linking, inspect `supabase migration list` and confirm the remote schema still matches the applied state. Mark only versions missing from remote history as applied; the command below assumes all eight are missing:
+3. **Do not run `supabase db push` yet.** The nine migrations listed below already ran through the Dashboard, but CLI history is not recorded. After linking, inspect `supabase migration list` and confirm the remote schema still matches the applied state. Mark only versions missing from remote history as applied; the command below assumes all nine are missing:
 
    ```sh
-   supabase migration repair --status applied 202610100001 202610100002 202610100003 202610100004 202610110005 202610180006 202610180007 202610180008
+   supabase migration repair --status applied 202610100001 202610100002 202610100003 202610100004 202610110005 202610180006 202610180007 202610180008 202610230009
    supabase migration list
    ```
 
-   `migration repair` records history; it does not execute the SQL again. Verify the eight versions now match before any later `supabase db push`. See the [official migration history repair guide](https://supabase.com/docs/guides/deployment/database-migrations).
+   `migration repair` records history; it does not execute the SQL again. Verify the nine versions now match before any later `supabase db push`. See the [official migration history repair guide](https://supabase.com/docs/guides/deployment/database-migrations).
 
    The applied schema was remotely checked for 13 tables, RLS/grants, Realtime publication and these `pg_cron` jobs: `dos-seven-day-cleanup`, `feedback-seven-day-cleanup`, and `shared-event-session-five-minute-cleanup`. The database enforces a 400,000-character monthly translation reservation cap.
 4. When updating the deployed function code, build the game engine bundle, then deploy **both** functions from the repository root:
@@ -42,7 +46,7 @@ After connecting, use two separate browser profiles to create and join an invite
 
 ## Existing private Site
 
-Build and deploy the **root application**, not the standalone `post-hero-preview` workspace. `npm run build` produces `dist`, including the `/play` and `/feedback` entry files and third-party notices. The game catalog, rooms and feedback routes all belong to this root application.
+Build and deploy the **root application**, the only maintained landing and game application. `npm run build` produces `dist`, including the `/play` and `/feedback` entry files and third-party notices. The game catalog, rooms and feedback routes all belong to this root application.
 
 Room invitations use `/play?room=<room-id>` so direct visits and refreshes work on static hosts without a dynamic `/room/<id>` rewrite. The app still accepts legacy room links on hosts that support SPA fallback.
 

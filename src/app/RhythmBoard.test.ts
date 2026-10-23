@@ -2,6 +2,16 @@ import { afterEach, expect, it, vi } from 'vitest';
 
 afterEach(() => { vi.useRealTimers(); vi.unstubAllGlobals(); vi.resetModules(); });
 
+it('fits the original 11:9 game frame into the available viewport height', async () => {
+  const { rhythmFrameMaxWidth } = await import('./RhythmBoard');
+
+  expect(rhythmFrameMaxWidth(768, 160, 90, 40)).toBe(581);
+  expect(rhythmFrameMaxWidth(900, 120, 90, 40)).toBe(792);
+  expect(rhythmFrameMaxWidth(1080, 120, 90, 40)).toBe(1012);
+  expect(rhythmFrameMaxWidth(1400, 80, 70, 40)).toBe(1100);
+  expect(rhythmFrameMaxWidth(400, 300, 120, 50)).toBe(0);
+});
+
 it('waits for loadeddata after the Ruffle load promise resolves', async () => {
   const { waitForRuffleReady } = await import('./RhythmBoard');
   const player = new EventTarget() as unknown as HTMLElement;

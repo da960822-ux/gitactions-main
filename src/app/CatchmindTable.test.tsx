@@ -2,7 +2,7 @@ import { describe, expect, it, vi } from 'vitest';
 import { createElement } from 'react';
 import { renderToStaticMarkup } from 'react-dom/server';
 import { catchmindEngine } from '../games/catchmind';
-import CatchmindTable, { bucketFill, sendDrawQueue, composeDisplayedStrokes, catchmindChoicesNeedSettingsSave, moveCatchmindCursor } from './CatchmindTable';
+import CatchmindTable, { bucketFill, sendDrawQueue, composeDisplayedStrokes, catchmindChoicesNeedSettingsSave, catchmindCanvasMaxWidth, moveCatchmindCursor } from './CatchmindTable';
 
 function configured(seed: number) {
   const state = catchmindEngine.createInitialState(seed);
@@ -43,6 +43,12 @@ function stateMarkup(state: ReturnType<typeof catchmindEngine.createInitialState
 }
 
 describe('CatchmindTable', () => {
+  it('fits the 5:3 canvas into the remaining viewport while retaining its minimum and width cap', () => {
+    expect(catchmindCanvasMaxWidth(900, 265, 100)).toBe(891);
+    expect(catchmindCanvasMaxWidth(768, 265, 100)).toBe(671);
+    expect(catchmindCanvasMaxWidth(1200, 150, 100)).toBe(1100);
+    expect(catchmindCanvasMaxWidth(500, 300, 100)).toBe(584);
+  });
   it('offers exactly six single-choice topics to the host before a new match starts', () => {
     const state = catchmindEngine.createInitialState(23);
     const host = stateMarkup(state, 'p1'), guest = stateMarkup(state, 'p2');

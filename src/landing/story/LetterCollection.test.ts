@@ -1,0 +1,57 @@
+import {test,onTestFinished} from 'vitest';
+import assert from 'node:assert/strict';
+import * as THREE from 'three';
+import {createLetterCollection,type LetterPaperPose} from './LetterCollection';
+
+test('letter-only collection preserves room ownership, reversible folds, DOM handoff and camera ownership',()=>{
+ const originalDocument=Object.getOwnPropertyDescriptor(globalThis,'document');
+ Object.defineProperty(globalThis,'document',{configurable:true,value:{createElement:(tag:string)=>{assert.equal(tag,'canvas');return {width:0,height:0,getContext:()=>({clearRect(){},fillText(){}})};}}});
+ onTestFinished(()=>{if(originalDocument)Object.defineProperty(globalThis,'document',originalDocument);else Reflect.deleteProperty(globalThis,'document');});
+ const scene=new THREE.Scene();scene.background=new THREE.Color('#17131b');scene.fog=new THREE.Fog('#17131b',1,100);
+ const room=new THREE.Mesh(new THREE.BoxGeometry(1,1,1),new THREE.MeshBasicMaterial());scene.add(room);
+ let roomDisposed=false;room.geometry.addEventListener('dispose',()=>{roomDisposed=true;});
+ const camera=new THREE.PerspectiveCamera(38,1440/900,.05,100);camera.position.set(-11,1.3,-47.8);camera.lookAt(-11,1.3,-54);camera.updateProjectionMatrix();
+ const initialCamera=camera.position.clone();const fog=scene.fog,background=scene.background;
+ const collection=createLetterCollection({scene,camera});collection.root.position.set(-11,0,-54);
+ assert.equal(collection.ready,true);assert.equal(collection.root.children.length,1);assert.equal(collection.root.children[0].name,'letter-envelope');
+ assert.equal(scene.children.length,2);assert.equal(scene.fog,fog);assert.equal(scene.background,background);
+ const shell=collection.root.getObjectByName('letter-envelope-shell')!;
+ const flap=collection.root.getObjectByName('letter-flap')!;const insert=collection.root.getObjectByName('letter-insert')!;
+ const frame={opening:0,progress:.62,width:1440,height:900,ownCamera:false};
+ collection.update({...frame,progress:.45});assert.equal(collection.root.getObjectByName('letter-envelope')!.rotation.x,-Math.PI/2,'the same sealed envelope rests on the play surface before approach');
+ collection.update(frame);assert.equal(Math.abs(flap.rotation.x),0);assert.equal(insert.visible,false,'closed desktop paper stays inside its opaque envelope');
+ collection.update({...frame,opening:1});const openFlap=flap.rotation.x,openInsert=insert.position.clone();
+ assert.ok(openFlap<-2.8);assert.ok(openInsert.y>1.5);assert.ok(camera.position.equals(initialCamera));
+ const hinge=flap.position.clone();
+ for(const opening of [.13,.25,.35,.65]){collection.update({...frame,opening});assert.ok(flap.position.equals(hinge),'partial opening rotates about the attached hinge without translating it');}
+ assert.equal(flap.children[0].position.z,0,'the flap surface starts on its rotation axis rather than orbiting off the envelope');
+ collection.update({...frame,opening:.35});collection.update({...frame,opening:1});assert.equal(flap.rotation.x,openFlap);assert.ok(insert.position.equals(openInsert));
+ const bounds=new THREE.Box3().setFromObject(collection.root);assert.ok(bounds.max.y<=3,'rig stays below the room characters');assert.ok(bounds.getSize(new THREE.Vector3()).x<2.2,'no floor, architecture or play-table geometry');
+ let paper:LetterPaperPose|undefined;const onPaperPose=(pose:LetterPaperPose)=>{paper=pose;};
+ collection.update({...frame,opening:1,progress:.619,onPaperPose});collection.projectPaper();assert.equal(insert.visible,true);assert.equal(paper!.visible,false);
+ collection.update({...frame,opening:1,progress:.663,onPaperPose});collection.projectPaper();assert.equal(insert.visible,false,'the single original DOM owns the fully unfolded paper immediately after opening');assert.equal(paper!.visible,true);assert.equal(paper!.corners.length,4);assert.ok(paper!.corners.every(point=>Number.isFinite(point.x)&&Number.isFinite(point.y)));const earlyCorners=paper!.corners;assert.equal(new THREE.Box3().setFromObject(shell).intersectsBox(new THREE.Box3().setFromObject(insert)),false,'the retired envelope no longer intersects its unfolded insert');const extractedInsert=insert.position.clone();
+ collection.update({...frame,opening:.88,progress:.663,onPaperPose});collection.projectPaper();assert.equal(insert.visible,false);assert.equal(paper!.visible,true,'the original DOM keeps the flat physical sheet until an actual fold begins');
+ collection.update({...frame,opening:0,progress:.663,onPaperPose});collection.projectPaper();assert.equal(insert.visible,false);assert.equal(Math.abs(shell.position.y),0,'closing returns the same envelope shell');assert.equal(paper!.visible,false,'folding releases the DOM quad and returns the paper inside its envelope');
+ collection.update({...frame,opening:1,progress:.86,onPaperPose});collection.projectPaper();assert.equal(insert.visible,false);assert.equal(paper!.visible,false,'the same article returns to its normal reading flow');
+ collection.update({...frame,opening:1,progress:.663,onPaperPose});collection.projectPaper();assert.equal(insert.visible,false);assert.equal(paper!.visible,true);assert.deepEqual(paper!.corners,earlyCorners,'reverse scroll restores the exact physical quad');
+ collection.update({...frame,opening:1,progress:.663});assert.equal(insert.visible,true,'without the DOM callback the actual paper remains visible');assert.ok(insert.position.equals(extractedInsert),'shell retirement never moves the physical insert');
+ collection.update({...frame,opening:1,progress:.663,width:390,reducedMotion:true,onPaperPose});collection.projectPaper();assert.equal(insert.visible,false);assert.equal(paper!.visible,false,'reduced and narrow layouts retain one normal-flow DOM reading surface');
+ collection.update({...frame,opening:1,progress:.75,width:390,reducedMotion:true,onPaperPose});collection.projectPaper();assert.equal(insert.visible,false,'single DOM reading paper also owns reduced-motion and narrow layouts');assert.equal(paper!.visible,false);
+ collection.update({...frame,opening:1,progress:.86,width:390,reducedMotion:true,onPaperPose});assert.equal(insert.visible,false);
+ collection.update({...frame,opening:1,progress:.84,onPaperPose});const readingTurn=collection.root.rotation.y;assert.equal(readingTurn,0,'desktop paper stays on the near-overhead plane');assert.equal(collection.root.getObjectByName('letter-envelope')!.rotation.x,-Math.PI/2);
+ // Ending belongs to the rose pane; the one article stays in normal flow, never restaged in 3D.
+ for(const variant of [{width:1440},{width:1440,reducedMotion:true},{width:390}]){
+  collection.update({...frame,...variant,opening:1,progress:1,letterView:'rose',onPaperPose});collection.projectPaper();
+  assert.equal(paper!.visible,false,'the ending must not project a second copy of the letter');
+  assert.equal(insert.visible,false,'normal-flow DOM ownership also suppresses the physical duplicate');
+ }
+ collection.update({...frame,opening:1,progress:.86,letterView:'folding',paperAspect:1.2,onPaperPose});collection.projectPaper();
+ const closingCorners=[[-.88,.93],[.88,.93],[.88,-.93]].map(([x,y])=>insert.localToWorld(new THREE.Vector3(x,y,.015)));
+ assert.ok(Math.abs(closingCorners[0].distanceTo(closingCorners[1])/closingCorners[1].distanceTo(closingCorners[2])-1.2)<1e-9,'the closing paper matches the original article aspect without an ending restage');
+ collection.update({...frame,opening:1,progress:.84,onPaperPose});assert.equal(collection.root.rotation.y,readingTurn,'reverse scroll restores the reading orientation');assert.equal(insert.scale.y,1,'reverse scroll restores the original reading geometry');
+ collection.update({...frame,opening:.8,progress:.86,onPaperPose});assert.equal(insert.visible,true);
+ const desktopBack=collection.root.getObjectByName('letter-back') as THREE.Mesh;assert.ok(Array.isArray(desktopBack.material)&&desktopBack.material[4] instanceof THREE.MeshBasicMaterial);assert.equal(desktopBack.material[4],desktopBack.material[5],'front and back share the same cream reading surface while the original thickness material remains on the sides');
+ collection.update({...frame,width:390,opening:1,progress:.84,onPaperPose});assert.equal(collection.root.rotation.y,0,'shared mobile camera contains the same flat envelope');assert.ok(desktopBack.material instanceof THREE.MeshStandardMaterial,'mobile retains the original lit paper');
+ collection.dispose();collection.dispose();assert.equal(collection.ready,false);assert.deepEqual(scene.children,[room]);assert.equal(roomDisposed,false);assert.equal(scene.fog,fog);assert.equal(scene.background,background);assert.equal(paper!.visible,false);
+ room.geometry.dispose();(room.material as THREE.Material).dispose();
+});

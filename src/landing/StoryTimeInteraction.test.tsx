@@ -1,6 +1,6 @@
 import {describe,it,expect} from 'vitest';
 import {renderToStaticMarkup} from 'react-dom/server';
-import {StoryTimeInteraction} from '../../post-hero-preview/src/StoryTimeInteraction';
+import {StoryTimeInteraction} from './story/StoryTimeInteraction';
 
 describe('shared story hour selection',()=>{
  it.each(['ko','es'] as const)('keeps live clocks independent while a controlled preview crosses the previous day in %s',language=>{

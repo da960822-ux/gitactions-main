@@ -37,6 +37,11 @@ export function catchmindChoicesNeedSettingsSave(canEdit: boolean, draftCategory
   return canEdit && draftCategory !== savedCategory;
 }
 
+export function catchmindCanvasMaxWidth(viewportHeight: number, canvasDocumentTop: number, reservedHeight: number) {
+  const availableHeight = Math.floor(viewportHeight - canvasDocumentTop - reservedHeight);
+  return Math.max(584, Math.min(1100, Math.floor(availableHeight * 5 / 3)));
+}
+
 function paintStroke(ctx: CanvasRenderingContext2D, stroke: any) {
   const points = stroke.points as Point[];
   if (!points?.length) return;
@@ -106,6 +111,8 @@ export function bucketFill(ctx: CanvasRenderingContext2D, x: number, y: number, 
 
 export default function CatchmindTable({ roomId, view, playerId, language, now, palette, setPalette, strokeWidth, setStrokeWidth, runAction, onReplay, replayPending = false }: Props) {
   const board = view?.board ?? {};
+  const [canvasMaxWidth, setCanvasMaxWidth] = useState<number | null>(null);
+  const canvasFrameRef = useRef<HTMLDivElement>(null);
   const [activePoints, setActivePoints] = useState<Point[]>([]);
   const [pendingVisual, setPendingVisual] = useState<DrawBatch[]>([]);
   const [keyboardCursor, setKeyboardCursor] = useState<Point>({ x: .5, y: .5 });
@@ -173,6 +180,45 @@ export default function CatchmindTable({ roomId, view, playerId, language, now, 
     drawingRef.current && activePoints.length ? { by: playerId, points: activePoints, color: activeColorRef.current, width: activeWidthRef.current } : null,
   ), [strokes, pendingVisual, activePoints, activeColor, strokeWidth, playerId]);
   const allowed = (type: string) => Array.isArray(view?.actions) && view.actions.some((option: any) => option.action?.type === type);
+
+  useEffect(() => {
+    const canvasFrame = canvasFrameRef.current;
+    const boardCard = canvasFrame?.closest<HTMLElement>('.board-card');
+    if (!canvasFrame || !boardCard) return;
+
+    let frame = 0;
+    const measure = () => {
+      cancelAnimationFrame(frame);
+      frame = requestAnimationFrame(() => {
+        if (!window.matchMedia('(min-width: 1024px) and (pointer: fine)').matches) {
+          setCanvasMaxWidth(null);
+          return;
+        }
+        const footerHeight = boardCard.querySelector<HTMLElement>('.board-footer')?.getBoundingClientRect().height ?? 0;
+        const noteHeight = canvasFrame.closest('.cm-artboard')?.querySelector<HTMLElement>('.cm-bottom-note')?.getBoundingClientRect().height ?? 0;
+        const boardStyle = getComputedStyle(boardCard);
+        const boardBottomSpace = (Number.parseFloat(boardStyle.paddingBottom) || 0) + (Number.parseFloat(boardStyle.borderBottomWidth) || 0);
+        const reservedHeight = footerHeight + noteHeight + boardBottomSpace + 16;
+        const viewportHeight = window.visualViewport?.height ?? window.innerHeight;
+        const canvasDocumentTop = canvasFrame.getBoundingClientRect().top + window.scrollY;
+        const nextWidth = catchmindCanvasMaxWidth(viewportHeight, canvasDocumentTop, reservedHeight);
+        setCanvasMaxWidth(current => current === nextWidth ? current : nextWidth);
+      });
+    };
+
+    const observer = new ResizeObserver(measure);
+    observer.observe(canvasFrame);
+    observer.observe(boardCard);
+    window.addEventListener('resize', measure);
+    window.visualViewport?.addEventListener('resize', measure);
+    measure();
+    return () => {
+      cancelAnimationFrame(frame);
+      observer.disconnect();
+      window.removeEventListener('resize', measure);
+      window.visualViewport?.removeEventListener('resize', measure);
+    };
+  }, [drawing]);
 
   useEffect(() => {
     const key = catchmindPersistedSettingsKey(persistedIdentity, persistedSettings, persistedWords);
@@ -440,7 +486,7 @@ export default function CatchmindTable({ roomId, view, playerId, language, now, 
           <div className="cm-word-choices">{categoryChoicesLocked && <p className="cm-choice-lock-note" role="status">{copy(language, '주제 설정을 저장하면 단어를 고를 수 있어요.', 'Guarda la categoría para poder elegir una palabra.')}</p>}{(view.hand?.choices ?? []).map((word: any) => <button type="button" key={word.wordId} disabled={categoryChoicesLocked} onClick={() => void runAction({ type: 'choose', payload: { wordId: word.wordId } })}><span className="cm-choice-icon" aria-hidden="true">✦</span><span>{word[language]}</span><i aria-hidden="true">↗</i></button>)}{!view.hand?.choices?.length && <p>{copy(language, '호스트가 주제를 선택하고 설정을 저장해 주세요.', 'La persona anfitriona debe elegir y guardar una categoría.')}</p>}</div>
         </div>
         : view?.phase === 'choosing' ? <div className="cm-choice-wait"><span>♡</span><b>{copy(language, '상대가 단어를 고르고 있어요', 'Tu pareja está eligiendo una palabra')}</b><small>{copy(language, '정답은 비밀로 남아 있어요.', 'La respuesta sigue siendo secreta.')}</small></div>
-        : <div className={`cm-canvas ${drawing ? 'can-draw' : ''}`} data-testid="catchmind-canvas">
+        : <div ref={canvasFrameRef} className={`cm-canvas ${drawing ? 'can-draw' : ''}`} data-testid="catchmind-canvas" style={canvasMaxWidth === null ? undefined : { '--cm-canvas-max-width': `${canvasMaxWidth}px` } as CSSProperties}>
           <canvas ref={canvasRef} width={1000} height={600} role="group" tabIndex={drawing ? 0 : -1} aria-label={drawing ? copy(language, '그림 그리기 캔버스', 'Lienzo para dibujar') : copy(language, '상대가 그린 그림', 'Dibujo de tu pareja')} aria-describedby={drawing ? 'cm-keyboard-instructions' : undefined} aria-keyshortcuts={drawing ? 'ArrowLeft ArrowRight ArrowUp ArrowDown Space Enter Escape' : undefined} onKeyDown={onCanvasKeyDown} onFocus={() => { setKeyboardCursor(keyboardCursorRef.current); setKeyboardActive(true); }} onBlur={() => { finishStroke(); setKeyboardActive(false); }} onPointerDown={onCanvasPointerDown} onPointerMove={pointerMove} onPointerUp={pointerUp} onPointerCancel={pointerUp} onContextMenu={event => event.preventDefault()}/>
           {drawing && <><span className={`cm-keyboard-cursor${keyboardActive ? ' is-visible' : ''}${keyboardPenDown ? ' is-down' : ''}`} style={{ left: `${keyboardCursor.x * 100}%`, top: `${keyboardCursor.y * 100}%` }} aria-hidden="true"/><p id="cm-keyboard-instructions" className="cm-keyboard-hint">{copy(language, '키보드: 화살표 이동 · Space 펜 켜기/끄기 · Enter 채우기/색 선택/점 · Esc 선 마침', 'Teclado: flechas mueven · Espacio activa/desactiva el trazo · Enter rellena/elige color/punto · Esc termina el trazo')}</p></>}
           {activeDrawing && !displayedStrokes.length && !fills.length && <div className="cm-canvas-placeholder" aria-hidden="true"><span>＋</span><small>{drawing ? copy(language, '여기에 그려 보세요', 'Dibuja aquí') : copy(language, '첫 선을 기다리고 있어요', 'Esperando el primer trazo')}</small></div>}

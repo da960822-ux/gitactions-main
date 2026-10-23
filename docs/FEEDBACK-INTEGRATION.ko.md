@@ -10,7 +10,7 @@
 - 새 입력은 게임 제안(`game`), 불편한 점(`complaint`), 기타(`other`)와 내용(1–4000자)뿐이다. 기존 title 컬럼은 내용 앞부분으로 채운다. 기존 게시물의 독립 제목·message/feature 분류를 보존한다.
 - 상태는 접수(`new`), 진행(`planned`), 완료(`done`)다. 진행 배지에는 원래 친밀한 문구 `해볼게요 / Lo anoto`를 작은 보조문구로 보존한다. 이전 `read`는 접수로 표시하며 DB 값을 강제로 바꾸지 않는다.
 - 기존 Supabase Auth 세션과 익명 **인증된** 사용자 ID를 재사용한다. 미인증 `anon` 역할의 공개 쓰기를 허용하지 않는다. 서비스 역할 키를 클라이언트에 추가하지 않는다.
-- 권한은 기존 계약 그대로: 두 구성원만 조회, p2(Mami)가 작성, p1(Papi)이 status만 변경. 작성자나 상대방의 본문 수정/삭제 기능은 추가하지 않는다.
+- 권한: 초대된 두 구성원 p1(Papi)과 p2(Mami)가 모두 글을 작성하고 조회할 수 있다. p1만 status를 변경한다. 작성자나 상대방의 본문 수정/삭제 기능은 추가하지 않는다.
 - 초대는 기존 UUID 링크로 한 번만 두 번째 구성원을 받아 이후 닫힌다. 이는 이름/이메일로 두 실명을 확인하는 allowlist가 아니다. 아직 비어 있는 초대 링크를 가진 첫 인증 사용자가 p2를 차지할 수 있다. 사용자 신원을 고정하는 계정 전환은 별도 범위다.
 - 기존 7일 보관을 유지한다. RLS가 7일 지난 게시물을 즉시 숨기며 기존 hourly cron이 물리 삭제한다. 공간은 유지된다. 익명 인증의 브라우저 데이터가 삭제되면 기존 좌석 복구가 보장되지 않는다.
 - Supabase 값이 없으면 명시된 같은 브라우저 데모만 제공한다. 온라인 요청 실패를 로컬 저장 성공으로 바꾸지 않는다.
@@ -19,7 +19,7 @@
 
 ## 데이터 모델과 외부 조치
 
-기존 `feedback_spaces`, `feedback_space_members`(space/user 기본키와 space/seat unique), `feedback_entries`를 재사용한다. 새 테이블이나 공개 권한은 없다. `202610110005_feedback_submission.sql`은 기존 category CHECK에 complaint/other를 더하고 `submit_feedback(uuid,uuid,text,text,text)` RPC를 만든다. 이 함수는 Auth와 p2 구성원을 검사하고 DB 기본 상태/시간으로 insert한 뒤 동일 요청을 비교한다. JSONB 단일 행을 반환하므로 클라이언트 RPC 결과는 객체다. authenticated 직접 insert 권한은 회수하며 기존 SELECT RLS와 status 컬럼 UPDATE 권한은 유지한다.
+기존 `feedback_spaces`, `feedback_space_members`(space/user 기본키와 space/seat unique), `feedback_entries`를 재사용한다. 새 테이블이나 공개 권한은 없다. `202610110005_feedback_submission.sql`은 기존 category CHECK에 complaint/other를 더하고 `submit_feedback(uuid,uuid,text,text,text)` RPC를 만든다. 이 함수는 Auth와 초대된 p1 또는 p2 구성을 검사하고 DB 기본 상태/시간으로 insert한 뒤 동일 요청을 비교한다. JSONB 단일 행을 반환하므로 클라이언트 RPC 결과는 객체다. authenticated 직접 insert 권한은 회수하며 기존 SELECT RLS와 p1의 status 컬럼 UPDATE 권한은 유지한다.
 
 **이 세션은 원격 DB·Auth·보안 설정·배포를 실행하지 않았다.** `.env.example`만 있고 운영 연결값/연결 프로젝트가 제공되지 않았다. 다음 외부 단계가 완료돼야 운영 저장 완료로 보고할 수 있다.
 
@@ -38,7 +38,7 @@
 - 접근 복구 커밋 `0e27e94`의 검증: 전체 Vitest **442/442**, 빌드 통과, Chromium **39/39**, uncaught page errors **0**. KO/ES 800px·390px 터치 화면에서 기존 접근·가로 넘침 없음, 390px 작성 후 SQL-backed reload를 확인했다. 기존 종이 펼침 `feedback-paper-unfold / 0.68s`와 reduced-motion 시 `none`, 진행 배지의 `해볼게요 / Lo anoto`도 실제 브라우저에서 검사했다.
 - 접근 복구 당시 게임용 데스크톱 차단 제거와 진행 배지의 원래 보조문구만 변경했다. 이후 사용자 요청에 따라 현재 랜딩과 스타일을 조화시켰다. 기존 Mami/Papi KO/ES 제목·설명·placeholder·제출 문구, 랜딩/편지 파일은 계속 변경하지 않았다. RPC·RLS·7일 보관·중복 제출/응답 유실 보호를 그대로 유지했다.
 - 첫 커밋의 전체 Vitest 441/441와 `npm run build`가 통과했고, 아래 후속 변경의 최종 검증을 추가 기록한다.
-- 새 SQL/RLS 테스트는 **실제 PostgreSQL 역할을 실행하는 PGlite**로 최신 migration chain을 적용해 두 구성원, 제3자, 미인증 사용자, 직접 insert 차단, status-only 권한, 유효성, 요청 재사용/충돌, 7일 만료를 확인한다.
+- 새 SQL/RLS 테스트는 **실제 PostgreSQL 역할을 실행하는 PGlite**로 최신 migration chain을 적용해 두 구성원의 작성·조회, p1의 status 변경, p2의 status 변경 차단, 제3자·미인증 사용자·직접 insert 차단, 유효성, 요청 재사용/충돌, 7일 만료를 확인한다.
 - 첫 커밋의 Chromium KO/ES 1440×900 폼 검수는 29/29, uncaught page errors 0이었다. 당시 작은 화면 차단을 검사했으나 이것은 기존 접근의 퇴행이므로 후속 커밋에서 제거했다. 기존 독립 두 브라우저의 SQL-backed reload, 상태 공유(수동 조회), 연속 submit 한 요청, 저장 후 응답 유실/재시도 한 행, 오류 시 초안 보존, 빈 상태, 언어 변경, 세 번째 브라우저 거부 검사는 유지한다.
 - 브라우저 검수는 `scripts/online-fixture.mjs`의 로컬 HTTP/PGlite 계약을 사용했다. Supabase Auth/PostgREST/Realtime와 운영 cron 자체의 검증은 아니다. 저장소 `output/`에는 결과 JSON/KO/ES 캡처가 있고 Git에는 넣지 않는다.
 
