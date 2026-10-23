@@ -1,14 +1,12 @@
-import { createClient } from '@supabase/supabase-js';
+import { onlineDb } from './supabase';
 
 export type FeedbackCategory = 'message' | 'game' | 'feature' | 'complaint' | 'other';
 export type FeedbackStatus = 'new' | 'read' | 'planned' | 'done';
 export type FeedbackInput = { category: FeedbackCategory; title: string; body: string };
 export type FeedbackEntry = FeedbackInput & { id: string; status: FeedbackStatus; createdAt: string };
 
-const url = import.meta.env.VITE_SUPABASE_URL;
-const anonKey = import.meta.env.VITE_SUPABASE_ANON_KEY;
-export const isFeedbackOnline = Boolean(url && anonKey);
-const db = isFeedbackOnline ? createClient(url, anonKey) : null;
+export const isFeedbackOnline = Boolean(onlineDb);
+const db = onlineDb;
 const selected = 'id,category,title,body,status,created_at';
 const retentionMs = 7 * 24 * 60 * 60 * 1000;
 const entriesKey = (spaceId: string) => `couple-feedback:${spaceId}`;

@@ -71,3 +71,7 @@ So the model files are not all “gone”: several versions are still under `pub
 | **합계** | **8,145,395** | — |
 
 `git show cf907bc44a900dcdecac24ac4cf72285c311364b:public/motion/<filename>`에서 아홉 baseline blob을 읽어 표의 모든 SHA-256과 byte 수를 재확인했다. 따라서 파일 삭제는 Git history의 원본 export를 잃거나 설명 없이 폐기한 것이 아니며, 이후 필요한 파일은 해당 baseline commit에서 복구할 수 있다. Historical review records may still describe these exports as present or used at that time. They remain historical evidence and do not indicate that the deleted files are available in the current tree.
+
+## 보관 상태 업데이트 (baseline 7634634)
+
+위 표는 baseline 당시의 파일과 참조를 기록한다. 이후 cleanup에서 현재 제품이 사용하지 않는 `public/models/` 바이너리 내보내기와 `videos/` 소스·스냅샷을 제거했다. 런타임이 불러오는 `folded-chamber-r8-space-v6/arrival-environment.hdr`와 JSON asset manifests는 보존했다. 삭제 경로는 `output/cleanup-removals-models.json`에 기록했으며, 이전 파일과 제작 소스는 Git 이력에 남아 있다.

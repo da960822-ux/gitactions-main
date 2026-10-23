@@ -1,0 +1,724 @@
+{
+  "baseline": "7634634",
+  "note": "Duplicate archive paths were removed. Recover an earlier referenced path with git show 7634634:<path>.",
+  "sourceRemovals": [
+    "src/landing/cinematic/folded/poseSpaceV6.ts",
+    "src/landing/cinematic/folded/RoomThreshold.ts",
+    "src/landing/cinematic/folded/arrivalExteriorV19.ts",
+    "src/landing/cinematic/folded/curvedReflectionV19.ts",
+    "src/landing/cinematic/folded/floorSupportV19.ts",
+    "src/landing/cinematic/folded/mineralDetail.ts",
+    "src/landing/cinematic/folded/shellTwist.ts",
+    "src/landing/cinematic/folded/shellTwist.test.ts",
+    "src/landing/cinematic/folded/stageMotionV19.ts",
+    "post-hero-preview/src/LetterRoses.ts",
+    "post-hero-preview/src/LetterRoses.test.ts"
+  ],
+  "binaryDuplicateRemovals": [
+    {
+      "removedPath": "preserved-work/2026-10-18/generated_images/exec-e6d077e0-11da-4ddb-bf1a-5c7e43a0360c.png",
+      "canonicalPath": "preserved-work/2026-10-18/gate1-assets-r8/concept-review-3/A/assets/playroom.png",
+      "sha": "03733f2a527a39280667d4f34553597c526aaaeb"
+    },
+    {
+      "removedPath": "preserved-work/2026-10-18/gate1-rework-evidence/G1R2-P065-1920.png",
+      "canonicalPath": "preserved-work/2026-10-18/gate1-rework-evidence/architectural-v2/forward-p0.65.png",
+      "sha": "0b8e63e9d4c2186ecef57d76474d13a81e60f020"
+    },
+    {
+      "removedPath": "preserved-work/2026-10-18/gate1-assets-r6/native/cycles-oidn-agx-1.png",
+      "canonicalPath": "preserved-work/2026-10-18/gate1-assets-r6/delivery/G1R6-native-Arrival-Cycles64-OIDN.png",
+      "sha": "0c4f2671e1da70bffd7da428214779760eb0bad9"
+    },
+    {
+      "removedPath": "preserved-work/2026-10-18/gate1-assets-r8/space-v4-page/page-reverse-0_3.png",
+      "canonicalPath": "preserved-work/2026-10-18/gate1-assets-r8/space-v4-page/page-0_3.png",
+      "sha": "0d565a3f3679727eecdf86efa8ecd170373fe0c3"
+    },
+    {
+      "removedPath": "preserved-work/2026-10-18/gate1-evidence/final/hero-1920-reviewed/03-forward-0.72.png",
+      "canonicalPath": "preserved-work/2026-10-18/gate1-evidence/final/hero-1920-final/03-forward-0.72.png",
+      "sha": "0eb68618bc8935aed46b95e546967a69351549c1"
+    },
+    {
+      "removedPath": "preserved-work/2026-10-18/gate1-evidence/final/hero-1920-reviewed/03-reverse-0.72.png",
+      "canonicalPath": "preserved-work/2026-10-18/gate1-evidence/final/hero-1920-final/03-forward-0.72.png",
+      "sha": "0eb68618bc8935aed46b95e546967a69351549c1"
+    },
+    {
+      "removedPath": "preserved-work/2026-10-18/gate1-rework-evidence/r3-review/forward-p0.png",
+      "canonicalPath": "preserved-work/2026-10-18/gate1-rework-evidence/G1R3-STABLE-1920.png",
+      "sha": "0fbed499ccb9abfdf827ed2243fdb490f2f87e66"
+    },
+    {
+      "removedPath": "preserved-work/2026-10-18/gate1-assets-r7/preview-v1/preview-0_43.png",
+      "canonicalPath": "preserved-work/2026-10-18/gate1-assets-r7/preview-0_43.png",
+      "sha": "1010a8d8685589ab68f88be7edc7d7f62b740092"
+    },
+    {
+      "removedPath": "preserved-work/2026-10-18/gate1-assets-r8/hero-story-space-v18/raw-video/6db637a1878497b2946fcf691c8953a1.webm",
+      "canonicalPath": "preserved-work/2026-10-18/gate1-assets-r8/hero-story-space-v18/G1R8-V18-actual-intro-surface-scroll-raw.webm",
+      "sha": "1272cbfc46f9f7fca80b04366f9e5f2cf56d753a"
+    },
+    {
+      "removedPath": "preserved-work/2026-10-18/gate1-assets-r8/concept-review-3/A/assets/gowun.woff2",
+      "canonicalPath": "public/fonts/gowun-batang-display.woff2",
+      "sha": "13f3b7264b0cf8223513bcce268d90d2a540596b"
+    },
+    {
+      "removedPath": "preserved-work/2026-10-18/gate1-assets-r8/concept-review-3/C/gowun.woff2",
+      "canonicalPath": "public/fonts/gowun-batang-display.woff2",
+      "sha": "13f3b7264b0cf8223513bcce268d90d2a540596b"
+    },
+    {
+      "removedPath": "preserved-work/2026-10-18/gate1-evidence/final/hero-final-direct/actual-browser-raw.webm",
+      "canonicalPath": "preserved-work/2026-10-18/gate1-delivery/HERO-ACTUAL-UNEDITED.webm",
+      "sha": "19ed95aba0ea4d40a954a10ce930458c4d59c896"
+    },
+    {
+      "removedPath": "preserved-work/2026-10-18/gate1-evidence/final/hero-1920/03-forward-0.png",
+      "canonicalPath": "preserved-work/2026-10-18/gate1-evidence/final/hero-1920/01-stable.png",
+      "sha": "1e8a665cd770f9b0bea1a1cdf6e76cb3db23f1b1"
+    },
+    {
+      "removedPath": "preserved-work/2026-10-18/generated_images/exec-7c38f771-bfbe-43e1-ab63-d70920b002b8.png",
+      "canonicalPath": "preserved-work/2026-10-18/gate1-assets-r8/concept-review-3/C/arrival-environment.png",
+      "sha": "220dcfea47d2b09a4248e0f587755433707b87bd"
+    },
+    {
+      "removedPath": "preserved-work/2026-10-18/gate1-evidence/final/hero-390-reviewed/03-reverse-0.62.png",
+      "canonicalPath": "preserved-work/2026-10-18/gate1-evidence/final/hero-390-reviewed/03-forward-0.62.png",
+      "sha": "258086cb0b04f259347a58ca3393a0b77d45d6c2"
+    },
+    {
+      "removedPath": "preserved-work/2026-10-18/gate1-rework-evidence/r3-review/forward-p0.25.png",
+      "canonicalPath": "preserved-work/2026-10-18/gate1-rework-evidence/G1R3-P025-1920.png",
+      "sha": "25e6341ff80e2063adeea24c217ab0d84c535d48"
+    },
+    {
+      "removedPath": "preserved-work/2026-10-18/gate1-assets-r7/delivery/G1R7-web-Mid-1920.png",
+      "canonicalPath": "preserved-work/2026-10-18/gate1-assets-r7/browser/three-0_65.png",
+      "sha": "26297b803ff1b649bf125131fa7c65d758ac472d"
+    },
+    {
+      "removedPath": "preserved-work/2026-10-18/gate1-rework-evidence/G1R2-P100-1920.png",
+      "canonicalPath": "preserved-work/2026-10-18/gate1-rework-evidence/architectural-v2/forward-p1.png",
+      "sha": "287c8e1754cc2d66e7a1791104d72e2d06dc03a4"
+    },
+    {
+      "removedPath": "preserved-work/2026-10-18/gate1-assets-r8/concept-review-3/delivery/YL-Concept-A-hero-1920x1080.png",
+      "canonicalPath": "preserved-work/2026-10-18/gate1-assets-r8/concept-review-3/A/hero.png",
+      "sha": "29f5e80fa3eaf30dccf4b259dd0f983e0ec9f706"
+    },
+    {
+      "removedPath": "preserved-work/2026-10-18/gate1-assets-r8/space-v5-web/shape-reverse-0_3.png",
+      "canonicalPath": "preserved-work/2026-10-18/gate1-assets-r8/space-v5-web/shape-0_3.png",
+      "sha": "2ae26c816e323fb2bae943b6734a9a5093032a7a"
+    },
+    {
+      "removedPath": "preserved-work/2026-10-18/gate1-rework-evidence/G1R2-STABLE-1920.png",
+      "canonicalPath": "preserved-work/2026-10-18/gate1-rework-evidence/architectural-v2/forward-p0.png",
+      "sha": "2d0d052f552aab6f64ef22f17ccdcf1c7c5c894f"
+    },
+    {
+      "removedPath": "preserved-work/2026-10-18/gate1-assets-r7/browser/page-reverse.png",
+      "canonicalPath": "preserved-work/2026-10-18/gate1-assets-r7/browser/page-0.png",
+      "sha": "2e4af5bda9e2dc8bd97522d0d159547f9a789f5d"
+    },
+    {
+      "removedPath": "preserved-work/2026-10-18/gate1-evidence/final/hero-1920-reviewed/03-reverse-0.45.png",
+      "canonicalPath": "preserved-work/2026-10-18/gate1-evidence/final/hero-1920-reviewed/03-forward-0.45.png",
+      "sha": "380e93a8752f99b1ed90a59b65b4773cd000aa9a"
+    },
+    {
+      "removedPath": "preserved-work/2026-10-18/gate1-evidence/final/hero-1440-reviewed/03-forward-1.png",
+      "canonicalPath": "preserved-work/2026-10-18/gate1-evidence/final/hero-1440-es/03-forward-1.png",
+      "sha": "381adc2b2ec67e3691439aae1bc8f30a523ad3a0"
+    },
+    {
+      "removedPath": "preserved-work/2026-10-18/gate1-assets-r8/space-v6-annex-page/page-reverse-0.png",
+      "canonicalPath": "preserved-work/2026-10-18/gate1-assets-r8/space-v6-annex-page/page-0.png",
+      "sha": "389f0ae851a61db64db909a5133bfd70aba367eb"
+    },
+    {
+      "removedPath": "preserved-work/2026-10-18/gate1-assets-r8/concept-review-3/A/assets/couple.webp",
+      "canonicalPath": "public/images/yeonseok-lisbeth-cutout.webp",
+      "sha": "392b7aa1b8676945bb1584d3ffce2f3d5d23df60"
+    },
+    {
+      "removedPath": "preserved-work/2026-10-18/gate1-assets-r8/concept-review-3/C/couple.webp",
+      "canonicalPath": "public/images/yeonseok-lisbeth-cutout.webp",
+      "sha": "392b7aa1b8676945bb1584d3ffce2f3d5d23df60"
+    },
+    {
+      "removedPath": "preserved-work/2026-10-18/gate1-evidence/technical-v3/first-stable.png",
+      "canonicalPath": "preserved-work/2026-10-18/gate1-evidence/technical-v3/first-p0.png",
+      "sha": "409f3918180487e59204eb8a277f14e00b543729"
+    },
+    {
+      "removedPath": "preserved-work/2026-10-18/gate1-rework-evidence/G1R2-P050-1920.png",
+      "canonicalPath": "preserved-work/2026-10-18/gate1-rework-evidence/architectural-v2/forward-p0.5.png",
+      "sha": "423326d6e1986789859eaa6c14ceaa0a84ad08b5"
+    },
+    {
+      "removedPath": "preserved-work/2026-10-18/gate1-assets-r8/hero-cosmic-integration-v9/actual-arrival.png",
+      "canonicalPath": "preserved-work/2026-10-18/gate1-assets-r8/hero-cosmic-integration-v10/actual-arrival.png",
+      "sha": "42d887355872ad7b6d34f158fbc5bd86fb173c30"
+    },
+    {
+      "removedPath": "preserved-work/2026-10-18/gate1-rework-evidence/architectural-v1/reverse-p0.png",
+      "canonicalPath": "preserved-work/2026-10-18/gate1-rework-evidence/architectural-v1/forward-p0.png",
+      "sha": "42e8d017e68b32f0fb1ca66e190e73462f23643f"
+    },
+    {
+      "removedPath": "preserved-work/2026-10-18/gate1-assets-r8/space-v3-web/shape-reverse-0.png",
+      "canonicalPath": "preserved-work/2026-10-18/gate1-assets-r8/space-v3-web/shape-0.png",
+      "sha": "45fec6b83208b5f9b71c417d0cd5edd4cffa1608"
+    },
+    {
+      "removedPath": "preserved-work/2026-10-18/gate1-assets-r7/preview-v1/preview-0.png",
+      "canonicalPath": "preserved-work/2026-10-18/gate1-assets-r7/preview-0.png",
+      "sha": "4654fc96ee70a2a8ce808a53c761f4629556b717"
+    },
+    {
+      "removedPath": "preserved-work/2026-10-18/gate1-rework-evidence/r3-review/forward-p0.65.png",
+      "canonicalPath": "preserved-work/2026-10-18/gate1-rework-evidence/G1R3-P065-1920.png",
+      "sha": "4857b1391c5d15f9938e4b27e0c5913cbe2b9bd4"
+    },
+    {
+      "removedPath": "preserved-work/2026-10-18/gate1-assets-r8/concept-review-3/delivery/YL-Concept-C-hero-1920x1080.png",
+      "canonicalPath": "preserved-work/2026-10-18/gate1-assets-r8/concept-review-3/C/hero.png",
+      "sha": "4dfda3e40eeaa4fb909130dfdd8c0327d4bd4d40"
+    },
+    {
+      "removedPath": "preserved-work/2026-10-18/gate1-assets-r8/space-v6-refined-web/shape-reverse-0_3.png",
+      "canonicalPath": "preserved-work/2026-10-18/gate1-assets-r8/space-v6-refined-web/shape-0_3.png",
+      "sha": "509374176010c1efbd01ba1a73ac8db449c490b0"
+    },
+    {
+      "removedPath": "preserved-work/2026-10-18/gate1-rework-evidence/G1R2-P085-1920.png",
+      "canonicalPath": "preserved-work/2026-10-18/gate1-rework-evidence/architectural-v2/forward-p0.85.png",
+      "sha": "509c446192f0729a7500f3c873f6a645fd7f32d1"
+    },
+    {
+      "removedPath": "preserved-work/2026-10-18/gate1-assets-r6/same-camera-comparison.png",
+      "canonicalPath": "preserved-work/2026-10-18/gate1-assets-r6/delivery/G1R6-same-camera-comparison.png",
+      "sha": "58be58d2e0de32cf3b29b8af68f45c7724f7ffba"
+    },
+    {
+      "removedPath": "preserved-work/2026-10-18/generated_images/exec-e6b36e68-26c7-4ad5-9b3b-e7938b91b61e.png",
+      "canonicalPath": "preserved-work/2026-10-18/gate1-assets-r8/concept-review-3/B/hero-environment.png",
+      "sha": "5bf5e7d8f19a5d6b6ac36af9d6795163b744860e"
+    },
+    {
+      "removedPath": "preserved-work/2026-10-18/gate1-evidence/final/hero-1440-reviewed/03-reverse-0.62.png",
+      "canonicalPath": "preserved-work/2026-10-18/gate1-evidence/final/hero-1440-reviewed/03-forward-0.62.png",
+      "sha": "5d311cd72135131e2d87cc952e3767899625ea61"
+    },
+    {
+      "removedPath": "preserved-work/2026-10-18/gate1-rework-evidence/r3-review/forward-p0.85.png",
+      "canonicalPath": "preserved-work/2026-10-18/gate1-rework-evidence/G1R3-P085-1920.png",
+      "sha": "5e1a60afbd52e55f95850acf683488bb83fa1597"
+    },
+    {
+      "removedPath": "preserved-work/2026-10-18/gate1-assets-r8/space-v6-model/arrival-environment.hdr",
+      "canonicalPath": "public/models/folded-chamber-r8-space-v6/arrival-environment.hdr",
+      "sha": "5e40abd06429f82ecf6de84d5ef4316346ec8278"
+    },
+    {
+      "removedPath": "preserved-work/2026-10-18/gate1-evidence/final/hero-1920-reviewed/03-reverse-0.62.png",
+      "canonicalPath": "preserved-work/2026-10-18/gate1-evidence/final/hero-1920-reviewed/03-forward-0.62.png",
+      "sha": "5e5f777c64ea1181ec4834e21d4f4c40012d5bf3"
+    },
+    {
+      "removedPath": "preserved-work/2026-10-18/gate1-assets-r4/G1R4-MID065-1920.png",
+      "canonicalPath": "preserved-work/2026-10-18/gate1-assets-r4/delivery/p0.65.png",
+      "sha": "608bd7c6be93e132e857bcd09be7fe2ae44c647a"
+    },
+    {
+      "removedPath": "preserved-work/2026-10-18/gate1-assets-r8/hero-surface-integration-v16/actual-reverse-panel.png",
+      "canonicalPath": "preserved-work/2026-10-18/gate1-assets-r8/hero-surface-integration-v16/actual-panel-wall.png",
+      "sha": "6540e08d5361181cb242abc2b99e0c7a4157c7a7"
+    },
+    {
+      "removedPath": "preserved-work/2026-10-18/gate1-assets-r4/G1R4-ARRIVAL-1920.png",
+      "canonicalPath": "preserved-work/2026-10-18/gate1-assets-r4/delivery/p1.png",
+      "sha": "65c2abefe84f109076d073f89cd8fee77abcd48e"
+    },
+    {
+      "removedPath": "preserved-work/2026-10-18/gate1-assets-r7/native/cycles-oidn-agx-0_65.png",
+      "canonicalPath": "preserved-work/2026-10-18/gate1-assets-r7/delivery/G1R7-native-Mid-Cycles64-OIDN.png",
+      "sha": "6a2da78e5a592fbbb8189ea7b5defeda9ba1796e"
+    },
+    {
+      "removedPath": "preserved-work/2026-10-18/gate1-assets-r8/concept-review-3/A/assets/dm.ttf",
+      "canonicalPath": "public/fonts/dm-sans-regular.ttf",
+      "sha": "6c789eadb84764a2d7f75fc989ccb78873ec1540"
+    },
+    {
+      "removedPath": "preserved-work/2026-10-18/gate1-assets-r8/concept-review-3/C/dm.ttf",
+      "canonicalPath": "public/fonts/dm-sans-regular.ttf",
+      "sha": "6c789eadb84764a2d7f75fc989ccb78873ec1540"
+    },
+    {
+      "removedPath": "preserved-work/2026-10-18/gate1-rework-evidence/normal-pass/p0.5.png",
+      "canonicalPath": "preserved-work/2026-10-18/gate1-rework-evidence/G1R3-NORMAL-P050-1920.png",
+      "sha": "6e16a398ea4290ff8b458d93ddafcb847849c806"
+    },
+    {
+      "removedPath": "preserved-work/2026-10-18/gate1-assets-r6/browser/page-reverse.png",
+      "canonicalPath": "preserved-work/2026-10-18/gate1-assets-r6/browser/page-0.png",
+      "sha": "6fb6b3db9918361c4026fe3d308adb003c8567bb"
+    },
+    {
+      "removedPath": "preserved-work/2026-10-18/gate1-assets-r8/hero-surface-integration-v16/raw-video/c9130fa16c73da192ce8f678c73f7722.webm",
+      "canonicalPath": "preserved-work/2026-10-18/gate1-assets-r8/hero-surface-integration-v16/G1R8-V16-actual-intro-surface-scroll-raw.webm",
+      "sha": "732b02689b1dd5853e2f1f8dca67ebd7c18dbd52"
+    },
+    {
+      "removedPath": "preserved-work/2026-10-18/gate1-assets-r6/native/cycles-oidn-agx-0.png",
+      "canonicalPath": "preserved-work/2026-10-18/gate1-assets-r6/delivery/G1R6-native-Hero-Cycles64-OIDN.png",
+      "sha": "740330f12b396999e0eeed4f608e6b3df862bf2e"
+    },
+    {
+      "removedPath": "preserved-work/2026-10-18/gate1-assets-r8/review-packet-v8-20261018/screenshots/pointer-left.png",
+      "canonicalPath": "preserved-work/2026-10-18/gate1-assets-r8/review-packet-v7-20261018/screenshots/pointer-left.png",
+      "sha": "76ec4b6012241db3bb000d3bb5821fd232414544"
+    },
+    {
+      "removedPath": "preserved-work/2026-10-18/gate1-evidence/technical/first-stable.png",
+      "canonicalPath": "preserved-work/2026-10-18/gate1-evidence/technical/first-p0.png",
+      "sha": "7aef7e1663a6fa606b0c97697498b5ba695d09c7"
+    },
+    {
+      "removedPath": "preserved-work/2026-10-18/gate1-evidence/final/hero-1920-final/03-forward-0.png",
+      "canonicalPath": "preserved-work/2026-10-18/gate1-evidence/final/hero-1920-final/01-stable.png",
+      "sha": "7b24d1edfa4eb6ceda056456fee9be589442dce8"
+    },
+    {
+      "removedPath": "preserved-work/2026-10-18/gate1-rework-evidence/r3-review/forward-p0.5.png",
+      "canonicalPath": "preserved-work/2026-10-18/gate1-rework-evidence/G1R3-P050-1920.png",
+      "sha": "7badb9bd157292c8b96d7db24506342cf339d94e"
+    },
+    {
+      "removedPath": "preserved-work/2026-10-18/gate1-assets-r7/preview-v1/preview-0_65.png",
+      "canonicalPath": "preserved-work/2026-10-18/gate1-assets-r7/preview-0_65.png",
+      "sha": "7e18be243edf3128599873557ac22dc14c929651"
+    },
+    {
+      "removedPath": "preserved-work/2026-10-18/gate1-rework-evidence/normal-pass/p1.png",
+      "canonicalPath": "preserved-work/2026-10-18/gate1-rework-evidence/G1R3-NORMAL-P100-1920.png",
+      "sha": "81a72e4de6aad55aba0e4d92bc0379378205c97d"
+    },
+    {
+      "removedPath": "preserved-work/2026-10-18/gate1-evidence/final/hero-390-reviewed/01-stable.png",
+      "canonicalPath": "preserved-work/2026-10-18/gate1-delivery/hero-390-ko.png",
+      "sha": "8d513728512b0c2b535a86870e1a402d1b6d49ad"
+    },
+    {
+      "removedPath": "preserved-work/2026-10-18/gate1-evidence/final/hero-390-reviewed/03-forward-0.png",
+      "canonicalPath": "preserved-work/2026-10-18/gate1-delivery/hero-390-ko.png",
+      "sha": "8d513728512b0c2b535a86870e1a402d1b6d49ad"
+    },
+    {
+      "removedPath": "preserved-work/2026-10-18/gate1-assets-r8/space-v6-open-hero-page/page-reverse-0.png",
+      "canonicalPath": "preserved-work/2026-10-18/gate1-assets-r8/space-v6-open-hero-page/page-0.png",
+      "sha": "8e4da3b3f37160e1c1f4f8b7a747f8d355a0971c"
+    },
+    {
+      "removedPath": "preserved-work/2026-10-18/gate1-assets-r8/concept-review-3/delivery/YL-Concept-B-arrival-1920x1080.png",
+      "canonicalPath": "preserved-work/2026-10-18/gate1-assets-r8/concept-review-3/B/arrival.png",
+      "sha": "9ad229a5af805afa0e56826a4dc9ab16269c8225"
+    },
+    {
+      "removedPath": "preserved-work/2026-10-18/gate1-evidence/final/hero-1440-reviewed/03-reverse-0.45.png",
+      "canonicalPath": "preserved-work/2026-10-18/gate1-evidence/final/hero-1440-reviewed/03-forward-0.45.png",
+      "sha": "9de988cc15b34e00a1cc3dcb2f3af0f010c206eb"
+    },
+    {
+      "removedPath": "preserved-work/2026-10-18/gate1-assets-r6/delivery/G1R6-web-Hero-1920.png",
+      "canonicalPath": "preserved-work/2026-10-18/gate1-assets-r6/browser/three-0.png",
+      "sha": "a0108af55d176ce95cc4ad7379ab9cbe396368ea"
+    },
+    {
+      "removedPath": "preserved-work/2026-10-18/gate1-assets-r8/concept-review-3/delivery/YL-Concept-B-hero-1920x1080.png",
+      "canonicalPath": "preserved-work/2026-10-18/gate1-assets-r8/concept-review-3/B/hero.png",
+      "sha": "a1c7ccf52885f69db1a309a0b1de92ceae8d20cc"
+    },
+    {
+      "removedPath": "preserved-work/2026-10-18/gate1-assets-r8/hero-cosmic-integration-v12/actual-reverse.png",
+      "canonicalPath": "preserved-work/2026-10-18/gate1-assets-r8/hero-cosmic-integration-v12/actual-hero.png",
+      "sha": "a407875dc128befe944b2669305762645563441f"
+    },
+    {
+      "removedPath": "preserved-work/2026-10-18/gate1-assets-r8/hero-cosmic-integration-v13/G1R8-V13-universe-actual-Hero-quick-960.png",
+      "canonicalPath": "preserved-work/2026-10-18/gate1-assets-r8/hero-cosmic-integration-v12/actual-hero.png",
+      "sha": "a407875dc128befe944b2669305762645563441f"
+    },
+    {
+      "removedPath": "preserved-work/2026-10-18/gate1-assets-r8/hero-cosmic-integration-v13/actual-hero.png",
+      "canonicalPath": "preserved-work/2026-10-18/gate1-assets-r8/hero-cosmic-integration-v12/actual-hero.png",
+      "sha": "a407875dc128befe944b2669305762645563441f"
+    },
+    {
+      "removedPath": "preserved-work/2026-10-18/gate1-assets-r8/hero-cosmic-integration-v13/actual-reverse.png",
+      "canonicalPath": "preserved-work/2026-10-18/gate1-assets-r8/hero-cosmic-integration-v12/actual-hero.png",
+      "sha": "a407875dc128befe944b2669305762645563441f"
+    },
+    {
+      "removedPath": "preserved-work/2026-10-18/gate1-assets-r8/design-first-20261018/current.png",
+      "canonicalPath": "preserved-work/2026-10-18/gate1-assets-r8/design-first-20261018-v2/current.png",
+      "sha": "a4f408390518ecc22ee7f5db7a0c8ea02176d7a3"
+    },
+    {
+      "removedPath": "preserved-work/2026-10-18/gate1-assets-r8/review-packet-v7-20261018/screenshots/first-real-entry.png",
+      "canonicalPath": "preserved-work/2026-10-18/gate1-assets-r8/design-first-20261018-v2/current.png",
+      "sha": "a4f408390518ecc22ee7f5db7a0c8ea02176d7a3"
+    },
+    {
+      "removedPath": "preserved-work/2026-10-18/gate1-assets-r8/review-packet-v7-20261018/screenshots/stable-hero.png",
+      "canonicalPath": "preserved-work/2026-10-18/gate1-assets-r8/design-first-20261018-v2/current.png",
+      "sha": "a4f408390518ecc22ee7f5db7a0c8ea02176d7a3"
+    },
+    {
+      "removedPath": "preserved-work/2026-10-18/gate1-assets-r8/review-packet-v8-20261018/screenshots/first-real-entry.png",
+      "canonicalPath": "preserved-work/2026-10-18/gate1-assets-r8/design-first-20261018-v2/current.png",
+      "sha": "a4f408390518ecc22ee7f5db7a0c8ea02176d7a3"
+    },
+    {
+      "removedPath": "preserved-work/2026-10-18/gate1-assets-r8/review-packet-v8-20261018/screenshots/hero-return.png",
+      "canonicalPath": "preserved-work/2026-10-18/gate1-assets-r8/design-first-20261018-v2/current.png",
+      "sha": "a4f408390518ecc22ee7f5db7a0c8ea02176d7a3"
+    },
+    {
+      "removedPath": "preserved-work/2026-10-18/gate1-assets-r8/review-packet-v8-20261018/screenshots/stable-hero.png",
+      "canonicalPath": "preserved-work/2026-10-18/gate1-assets-r8/design-first-20261018-v2/current.png",
+      "sha": "a4f408390518ecc22ee7f5db7a0c8ea02176d7a3"
+    },
+    {
+      "removedPath": "preserved-work/2026-10-18/generated_images/exec-9fe5e518-0ad2-404d-88bf-89d5a698757c.png",
+      "canonicalPath": "preserved-work/2026-10-18/gate1-assets-r8/concept-review-3/C/hero-environment.png",
+      "sha": "a984e60af9cb47a60fc04e409f41da276eaaef08"
+    },
+    {
+      "removedPath": "preserved-work/2026-10-18/gate1-assets-r8/space-v5-page-staged/page-reverse-0.png",
+      "canonicalPath": "preserved-work/2026-10-18/gate1-assets-r8/space-v5-page-staged/page-0.png",
+      "sha": "aab52eb3ead90b3ef93ffefc0e1965cb5d9b97b6"
+    },
+    {
+      "removedPath": "preserved-work/2026-10-18/gate1-assets-r8/hero-cosmic-integration-v9/actual-reverse.png",
+      "canonicalPath": "preserved-work/2026-10-18/gate1-assets-r8/hero-cosmic-integration-v9/actual-hero.png",
+      "sha": "aba63513516593c7f3b83dfaae87baf900975514"
+    },
+    {
+      "removedPath": "preserved-work/2026-10-18/gate1-assets-r8/space-v4-web/shape-reverse-0.png",
+      "canonicalPath": "preserved-work/2026-10-18/gate1-assets-r8/space-v4-web/shape-0.png",
+      "sha": "acd82aeb9bf67300fd3cd9cd0f01727148908782"
+    },
+    {
+      "removedPath": "preserved-work/2026-10-18/gate1-assets-r6/delivery/G1R6-actual-page-three-poses.png",
+      "canonicalPath": "preserved-work/2026-10-18/gate1-assets-r6/actual-page-three-poses.png",
+      "sha": "ae05fe59e980c96cfd0a0f4768915c87c74022e1"
+    },
+    {
+      "removedPath": "preserved-work/2026-10-18/gate1-r5-diagnostics/three-current.png",
+      "canonicalPath": "preserved-work/2026-10-18/gate1-r5-diagnostics/delivery/G1R5-three-current-1920.png",
+      "sha": "ae2bd50df8608fd5d00283416a1ce26e14a6184b"
+    },
+    {
+      "removedPath": "preserved-work/2026-10-18/gate1-r5-diagnostics/three-uv1.png",
+      "canonicalPath": "preserved-work/2026-10-18/gate1-r5-diagnostics/delivery/G1R5-three-current-1920.png",
+      "sha": "ae2bd50df8608fd5d00283416a1ce26e14a6184b"
+    },
+    {
+      "removedPath": "preserved-work/2026-10-18/gate1-evidence/final/hero-390-reviewed/03-forward-1.png",
+      "canonicalPath": "preserved-work/2026-10-18/gate1-evidence/final/hero-390-ko/03-forward-1.png",
+      "sha": "ae93547c96fae39fed9e9bf595b738bbd8a3acde"
+    },
+    {
+      "removedPath": "preserved-work/2026-10-18/gate1-assets-r7/preview-v1/preview-1.png",
+      "canonicalPath": "preserved-work/2026-10-18/gate1-assets-r7/preview-1.png",
+      "sha": "ae9e9360963b3f3bfd4a21202231d2f65d26f131"
+    },
+    {
+      "removedPath": "preserved-work/2026-10-18/gate1-assets-r8/r7-repair/web-1920/shape-1.png",
+      "canonicalPath": "preserved-work/2026-10-18/gate1-assets-r8/r7-repair/delivery/G1R7-repair-arrival-1920.png",
+      "sha": "af723695f602f04f3dac8aac5cf3358e3f5c2413"
+    },
+    {
+      "removedPath": "preserved-work/2026-10-18/gate1-assets-r6/delivery/G1R6-web-Mid-1920.png",
+      "canonicalPath": "preserved-work/2026-10-18/gate1-assets-r6/browser/three-0_65.png",
+      "sha": "af890b0b2460c3b45d70a327b249d3261d0f4ccf"
+    },
+    {
+      "removedPath": "preserved-work/2026-10-18/gate1-assets-r6/native/cycles-oidn-agx-0_65.png",
+      "canonicalPath": "preserved-work/2026-10-18/gate1-assets-r6/delivery/G1R6-native-Mid-Cycles64-OIDN.png",
+      "sha": "afc059be77cc171f6ac614415ec73297bc205a5a"
+    },
+    {
+      "removedPath": "preserved-work/2026-10-18/gate1-assets-r8/space-v4-page/page-reverse-0.png",
+      "canonicalPath": "preserved-work/2026-10-18/gate1-assets-r8/space-v4-page/page-0.png",
+      "sha": "b31be3e4b7daa1f5344547deec401713279c0210"
+    },
+    {
+      "removedPath": "preserved-work/2026-10-18/gate1-assets-r7/native/cycles-oidn-agx-1.png",
+      "canonicalPath": "preserved-work/2026-10-18/gate1-assets-r7/delivery/G1R7-native-Arrival-Cycles64-OIDN.png",
+      "sha": "b3ffe7105e22c0f8050e8246902851dbeb3df37c"
+    },
+    {
+      "removedPath": "preserved-work/2026-10-18/gate1-assets-r8/space-v5-web/shape-reverse-0.png",
+      "canonicalPath": "preserved-work/2026-10-18/gate1-assets-r8/space-v5-web/shape-0.png",
+      "sha": "b50f71d32b1c23922e5fe0408ad80d45c21ced6d"
+    },
+    {
+      "removedPath": "preserved-work/2026-10-18/gate1-assets-r6/specular-diagnostic/environment-disabled-diagnostic.png",
+      "canonicalPath": "preserved-work/2026-10-18/gate1-assets-r6/specular-before-local-probe/environment-disabled-diagnostic.png",
+      "sha": "b6644c4d1e5181ab6023117df8e7a5d7f724af89"
+    },
+    {
+      "removedPath": "preserved-work/2026-10-18/gate1-delivery/before-1920.png",
+      "canonicalPath": "preserved-work/2026-10-18/gate0-deliverables/baseline/1920-stable.png",
+      "sha": "bc037244504d58f33191545684141fd6bf4be41a"
+    },
+    {
+      "removedPath": "preserved-work/2026-10-18/gate1-rework-evidence/normal-pass/p0.65.png",
+      "canonicalPath": "preserved-work/2026-10-18/gate1-rework-evidence/G1R3-NORMAL-P065-1920.png",
+      "sha": "bd5b4922041bd6d841d732cd7f19c6e395ddb2e9"
+    },
+    {
+      "removedPath": "preserved-work/2026-10-18/gate1-assets-r8/concept-review-3/delivery/YL-Concept-C-arrival-1920x1080.png",
+      "canonicalPath": "preserved-work/2026-10-18/gate1-assets-r8/concept-review-3/C/arrival.png",
+      "sha": "bedc3ecf3b339e3d6f2a2c825abe297bd7e3fb08"
+    },
+    {
+      "removedPath": "preserved-work/2026-10-18/generated_images/exec-82cdb550-c4af-4f33-80a2-88a49ddc40f1.png",
+      "canonicalPath": "preserved-work/2026-10-18/gate1-assets-r8/concept-review-3/B/arrival-environment.png",
+      "sha": "bf79e2da33a0dd7527def27539561efb82fa601d"
+    },
+    {
+      "removedPath": "preserved-work/2026-10-18/gate1-assets-r8/hero-cosmic-integration-v14/actual-reverse.png",
+      "canonicalPath": "preserved-work/2026-10-18/gate1-assets-r8/hero-cosmic-integration-v14/actual-hero.png",
+      "sha": "c12c62c158f89ab1aeeab2792bc1d4fe86e57a9d"
+    },
+    {
+      "removedPath": "preserved-work/2026-10-18/gate1-assets-r8/hero-cosmic-integration-v15/actual-hero.png",
+      "canonicalPath": "preserved-work/2026-10-18/gate1-assets-r8/hero-cosmic-integration-v14/actual-hero.png",
+      "sha": "c12c62c158f89ab1aeeab2792bc1d4fe86e57a9d"
+    },
+    {
+      "removedPath": "preserved-work/2026-10-18/gate1-assets-r8/hero-cosmic-integration-v15/actual-reverse.png",
+      "canonicalPath": "preserved-work/2026-10-18/gate1-assets-r8/hero-cosmic-integration-v14/actual-hero.png",
+      "sha": "c12c62c158f89ab1aeeab2792bc1d4fe86e57a9d"
+    },
+    {
+      "removedPath": "preserved-work/2026-10-18/gate1-assets-r8/r7-repair/web-1920/shape-0_65.png",
+      "canonicalPath": "preserved-work/2026-10-18/gate1-assets-r8/r7-repair/delivery/G1R7-repair-mid-1920.png",
+      "sha": "c3e37f7c3d1b94092ce6d58d5132f9d0ec9eed2b"
+    },
+    {
+      "removedPath": "preserved-work/2026-10-18/gate1-assets-r4/G1R4-STABLE-1920.png",
+      "canonicalPath": "preserved-work/2026-10-18/gate1-assets-r4/delivery/p0.png",
+      "sha": "c9ca6ea88b9a4fe4894685a13f4621a83d0c3887"
+    },
+    {
+      "removedPath": "preserved-work/2026-10-18/gate1-assets-r6/delivery/G1R6-web-Arrival-1920.png",
+      "canonicalPath": "preserved-work/2026-10-18/gate1-assets-r6/browser/three-1.png",
+      "sha": "ca63941dc9d3c0cdb2ca8f47589605caaf16534f"
+    },
+    {
+      "removedPath": "preserved-work/2026-10-18/gate1-evidence/final/hero-390-ko/03-forward-0.png",
+      "canonicalPath": "preserved-work/2026-10-18/gate1-evidence/final/hero-390-ko/01-stable.png",
+      "sha": "cc78e80277d8a8c39f327c71d2d109462ba82040"
+    },
+    {
+      "removedPath": "preserved-work/2026-10-18/gate1-assets-r8/hero-cosmic-integration-v11/actual-reverse.png",
+      "canonicalPath": "preserved-work/2026-10-18/gate1-assets-r8/hero-cosmic-integration-v11/actual-hero.png",
+      "sha": "cd558320836c62177b2b0dee4a800616b588d3df"
+    },
+    {
+      "removedPath": "preserved-work/2026-10-18/gate1-evidence/final/hero-1440-es/03-forward-0.png",
+      "canonicalPath": "preserved-work/2026-10-18/gate1-evidence/final/hero-1440-es/01-stable.png",
+      "sha": "cd5adc4b24e5fd6f62ca3ee0222488442604580f"
+    },
+    {
+      "removedPath": "preserved-work/2026-10-18/gate1-assets-r8/concept-review-3/A/assets/our-universe-scene.webp",
+      "canonicalPath": "public/images/our-universe-scene.webp",
+      "sha": "cda38bdb7bf504ce0926ed6c8ce3b26d3efd39f0"
+    },
+    {
+      "removedPath": "preserved-work/2026-10-18/gate1-assets-r8/review-packet-v8-20261018/screenshots/reverse-065.png",
+      "canonicalPath": "preserved-work/2026-10-18/gate1-assets-r8/review-packet-v8-20261018/screenshots/forward-065-space.png",
+      "sha": "cf0fc9ed4f7e1f178694d0370c91a7ef7436cca4"
+    },
+    {
+      "removedPath": "preserved-work/2026-10-18/gate1-r5-diagnostics/delivery/G1R5-blender-native-agx-1920.png",
+      "canonicalPath": "preserved-work/2026-10-18/gate1-r5-diagnostics/blender-native-agx.png",
+      "sha": "cf18533282de54f98794f74eceee442a3f20a68d"
+    },
+    {
+      "removedPath": "preserved-work/2026-10-18/gate1-assets-r7/browser/three-0.png",
+      "canonicalPath": "preserved-work/2026-10-18/gate1-assets-r7/browser/r6-camera-control-0.png",
+      "sha": "cf5d86cd896b3cfb9d69a922355b0022d927e9a7"
+    },
+    {
+      "removedPath": "preserved-work/2026-10-18/gate1-rework-evidence/G1R2-P025-1920.png",
+      "canonicalPath": "preserved-work/2026-10-18/gate1-rework-evidence/architectural-v2/forward-p0.25.png",
+      "sha": "cf7b2cd1e01619c329f937176df848268a015e16"
+    },
+    {
+      "removedPath": "preserved-work/2026-10-18/gate1-assets-r8/concept-review-3/delivery/YL-Concept-A-arrival-1920x1080.png",
+      "canonicalPath": "preserved-work/2026-10-18/gate1-assets-r8/concept-review-3/A/arrival.png",
+      "sha": "cff48e01eaedd91dea4762afb9a7e781af2c6261"
+    },
+    {
+      "removedPath": "preserved-work/2026-10-18/gate1-delivery/hero-1920-p0.png",
+      "canonicalPath": "preserved-work/2026-10-18/gate1-delivery/hero-1920-ko.png",
+      "sha": "d000385ead4c64633640fea5521c53ac7ab57615"
+    },
+    {
+      "removedPath": "preserved-work/2026-10-18/gate1-evidence/final/hero-1920-reviewed/01-stable.png",
+      "canonicalPath": "preserved-work/2026-10-18/gate1-delivery/hero-1920-ko.png",
+      "sha": "d000385ead4c64633640fea5521c53ac7ab57615"
+    },
+    {
+      "removedPath": "preserved-work/2026-10-18/gate1-evidence/final/hero-1920-reviewed/03-forward-0.png",
+      "canonicalPath": "preserved-work/2026-10-18/gate1-delivery/hero-1920-ko.png",
+      "sha": "d000385ead4c64633640fea5521c53ac7ab57615"
+    },
+    {
+      "removedPath": "preserved-work/2026-10-18/gate1-evidence/first-library-image.png",
+      "canonicalPath": "preserved-work/2026-10-18/gate1-delivery/hero-1920-ko.png",
+      "sha": "d000385ead4c64633640fea5521c53ac7ab57615"
+    },
+    {
+      "removedPath": "preserved-work/2026-10-18/gate1-evidence/final/hero-1440-reviewed/03-forward-0.72.png",
+      "canonicalPath": "preserved-work/2026-10-18/gate1-evidence/final/hero-1440-es/03-reverse-0.72.png",
+      "sha": "d175737916fbaf8513cfb33cf1a0e46765b46831"
+    },
+    {
+      "removedPath": "preserved-work/2026-10-18/gate1-evidence/final/hero-1440-reviewed/03-reverse-0.72.png",
+      "canonicalPath": "preserved-work/2026-10-18/gate1-evidence/final/hero-1440-es/03-reverse-0.72.png",
+      "sha": "d175737916fbaf8513cfb33cf1a0e46765b46831"
+    },
+    {
+      "removedPath": "preserved-work/2026-10-18/gate1-rework-evidence/r3-review/forward-p1.png",
+      "canonicalPath": "preserved-work/2026-10-18/gate1-rework-evidence/G1R3-P100-1920.png",
+      "sha": "d2e101150118018100da132532d6a21fded31498"
+    },
+    {
+      "removedPath": "preserved-work/2026-10-18/gate1-evidence/final/hero-390-ko/03-reverse-0.72.png",
+      "canonicalPath": "preserved-work/2026-10-18/gate1-evidence/final/hero-390-ko/03-forward-0.72.png",
+      "sha": "d320467dfecaabb799b1ec0c8f6a9efe003726a2"
+    },
+    {
+      "removedPath": "preserved-work/2026-10-18/gate1-evidence/final/hero-390-reviewed/03-reverse-0.72.png",
+      "canonicalPath": "preserved-work/2026-10-18/gate1-evidence/final/hero-390-ko/03-forward-0.72.png",
+      "sha": "d320467dfecaabb799b1ec0c8f6a9efe003726a2"
+    },
+    {
+      "removedPath": "preserved-work/2026-10-18/gate1-assets-r7/native/cycles-oidn-agx-0.png",
+      "canonicalPath": "preserved-work/2026-10-18/gate1-assets-r7/delivery/G1R7-native-Hero-Cycles64-OIDN.png",
+      "sha": "d522127ae36126bc52329ba0c8b2cb1faf400032"
+    },
+    {
+      "removedPath": "preserved-work/2026-10-18/gate1-assets-r8/r7-repair/actual-motion/G1R7-repair-actual-browser-draft.webm",
+      "canonicalPath": "preserved-work/2026-10-18/gate1-assets-r8/r7-repair/actual-motion/4fb6d4707bc16fbb8ffea3db27e17175.webm",
+      "sha": "d6aace54f89de228d4b71b2c2c0d18a656f0686e"
+    },
+    {
+      "removedPath": "preserved-work/2026-10-18/gate1-evidence/final/hero-1920-final/03-forward-1.png",
+      "canonicalPath": "preserved-work/2026-10-18/gate1-delivery/hero-1920-p1.png",
+      "sha": "dd38373767025dd13625a72ecf451374a222a757"
+    },
+    {
+      "removedPath": "preserved-work/2026-10-18/gate1-evidence/final/hero-1920-reviewed/03-forward-1.png",
+      "canonicalPath": "preserved-work/2026-10-18/gate1-delivery/hero-1920-p1.png",
+      "sha": "dd38373767025dd13625a72ecf451374a222a757"
+    },
+    {
+      "removedPath": "preserved-work/2026-10-18/gate1-evidence/final/hero-1920/03-forward-1.png",
+      "canonicalPath": "preserved-work/2026-10-18/gate1-delivery/hero-1920-p1.png",
+      "sha": "dd38373767025dd13625a72ecf451374a222a757"
+    },
+    {
+      "removedPath": "preserved-work/2026-10-18/gate1-evidence/technical-v3/first-p1.png",
+      "canonicalPath": "preserved-work/2026-10-18/gate1-delivery/hero-1920-p1.png",
+      "sha": "dd38373767025dd13625a72ecf451374a222a757"
+    },
+    {
+      "removedPath": "preserved-work/2026-10-18/gate1-assets-r8/r7-repair/actual-motion-v2/G1R7-repair-actual-browser-draft.webm",
+      "canonicalPath": "preserved-work/2026-10-18/gate1-assets-r8/r7-repair/actual-motion-v2/f7379f8f27d008278b0b5029cd5172f3.webm",
+      "sha": "def9c285aca678d7bedcda6dbf688b7895164f64"
+    },
+    {
+      "removedPath": "preserved-work/2026-10-18/gate1-assets-r8/space-v6-refined-web/shape-reverse-0.png",
+      "canonicalPath": "preserved-work/2026-10-18/gate1-assets-r8/space-v6-refined-web/shape-0.png",
+      "sha": "e2ba0e46db976cb528449ad35fbe0eaba5f17308"
+    },
+    {
+      "removedPath": "preserved-work/2026-10-18/gate1-assets-r8/space-v6-web/shape-reverse-0.png",
+      "canonicalPath": "preserved-work/2026-10-18/gate1-assets-r8/space-v6-web/shape-0.png",
+      "sha": "e2d59cbf24e126cad3a313200854b9ed3cdd9a49"
+    },
+    {
+      "removedPath": "preserved-work/2026-10-18/gate1-r5-diagnostics/same-camera-comparison.png",
+      "canonicalPath": "preserved-work/2026-10-18/gate1-r5-diagnostics/delivery/G1R5-same-camera-comparison.png",
+      "sha": "e5875f232fbb48737386c0ae74c9a5e754f0492a"
+    },
+    {
+      "removedPath": "preserved-work/2026-10-18/gate1-assets-r8/hero-cosmic-integration-v15/G1R8-V15-actual-scroll-bounded.webm",
+      "canonicalPath": "preserved-work/2026-10-18/gate1-assets-r8/hero-cosmic-integration-v15/bounded-video/6aad5376facb1cdfdec5883440fc3992.webm",
+      "sha": "ed19eb4706aaf8154cbef5716051025b076df919"
+    },
+    {
+      "removedPath": "preserved-work/2026-10-18/gate0-deliverables/references/codrops-local-reverse.png",
+      "canonicalPath": "preserved-work/2026-10-18/gate0-deliverables/references/codrops-local-p0.png",
+      "sha": "ef104f149bb3778787142e1fd08ec53f6c749101"
+    },
+    {
+      "removedPath": "preserved-work/2026-10-18/gate1-assets-r7/delivery/G1R7-web-Arrival-1920.png",
+      "canonicalPath": "preserved-work/2026-10-18/gate1-assets-r7/browser/three-1.png",
+      "sha": "f20037cbc6086be157c03cafb9fbf40299a27f77"
+    },
+    {
+      "removedPath": "preserved-work/2026-10-18/gate1-assets-r8/space-v6-page-staged/page-reverse-0.png",
+      "canonicalPath": "preserved-work/2026-10-18/gate1-assets-r8/space-v6-page-staged/page-0.png",
+      "sha": "f4bd59e1558bb972816fce8c08de4ca348831e17"
+    },
+    {
+      "removedPath": "preserved-work/2026-10-18/gate1-assets-r8/hero-cosmic-integration-v10/G1R8-cosmic-V10-actual-Hero-1920.png",
+      "canonicalPath": "preserved-work/2026-10-18/gate1-assets-r8/hero-cosmic-integration-v10/actual-hero.png",
+      "sha": "f7e86ffedb07c677a67131121960bdd804fb0e2a"
+    },
+    {
+      "removedPath": "preserved-work/2026-10-18/gate1-assets-r8/hero-cosmic-integration-v10/actual-reverse.png",
+      "canonicalPath": "preserved-work/2026-10-18/gate1-assets-r8/hero-cosmic-integration-v10/actual-hero.png",
+      "sha": "f7e86ffedb07c677a67131121960bdd804fb0e2a"
+    },
+    {
+      "removedPath": "preserved-work/2026-10-18/gate1-evidence/final/baseline-1920/actual-browser-raw.webm",
+      "canonicalPath": "preserved-work/2026-10-18/gate1-delivery/BEFORE-ACTUAL-UNEDITED.webm",
+      "sha": "fae52ccb4f084e7e17a41173f851b03e3c2e82c5"
+    },
+    {
+      "removedPath": "preserved-work/2026-10-18/gate1-evidence/final/hero-1440-reviewed/01-stable.png",
+      "canonicalPath": "preserved-work/2026-10-18/gate1-delivery/hero-1440-es.png",
+      "sha": "fe5d20b0979636aeb6fac4f3bc5d3327eb868efd"
+    },
+    {
+      "removedPath": "preserved-work/2026-10-18/gate1-evidence/final/hero-1440-reviewed/03-forward-0.png",
+      "canonicalPath": "preserved-work/2026-10-18/gate1-delivery/hero-1440-es.png",
+      "sha": "fe5d20b0979636aeb6fac4f3bc5d3327eb868efd"
+    },
+    {
+      "removedPath": "preserved-work/2026-10-18/gate1-assets-r8/hero-story-space-v18/G1R8-V18-actual-reverse-hero-1920-css.png",
+      "canonicalPath": "preserved-work/2026-10-18/gate1-assets-r8/hero-story-space-v18/G1R8-V18-actual-hero-1920-css.png",
+      "sha": "fed9c50282204a8bdac077db0d59ed7a59dccca6"
+    },
+    {
+      "removedPath": "preserved-work/2026-10-18/gate1-assets-r6/browser-before-local-probe/page-reverse.png",
+      "canonicalPath": "preserved-work/2026-10-18/gate1-assets-r6/browser-before-local-probe/page-0.png",
+      "sha": "ff8ac769f247e0c25499ba3c5a359c992d03bd26"
+    }
+  ]
+}
