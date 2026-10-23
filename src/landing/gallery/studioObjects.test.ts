@@ -38,6 +38,28 @@ describe('landing game artwork',()=>{
   expect(effect.root.scale.x).toBe(.55);const materials=new Set(meshes.map(mesh=>mesh.material as T.Material)),spies=[...materials].map(material=>vi.spyOn(material,'dispose'));
   effect.dispose();effect.dispose();for(const spy of spies)expect(spy).toHaveBeenCalledTimes(1);
  });
+ it('keeps the visible sculpture alive within readable bounds and counter-rotates the material without moving game layout',()=>{
+  const object=new T.Group();object.userData.game='domino';object.position.set(2,1,3);object.add(new T.Group());const effect=createGalleryAttraction([object]),pivot=object.children[0],layout=object.position.clone();
+  const frame={entryAge:2,selectionAge:2,selected:'domino',paused:false,mobile:false,ambient:true};
+  effect.update({...frame,time:1});const start=pivot.rotation.y;
+  for(let time=0;time<=32;time+=.25){
+   expect(effect.update({...frame,time})).toBe(true);expect(Math.abs(pivot.rotation.y)).toBeLessThanOrEqual(.22);expect(Math.abs(pivot.position.y)).toBeLessThanOrEqual(.095);expect(Math.abs(effect.root.rotation.y)).toBeLessThanOrEqual(.24);
+   expect(pivot.rotation.y*effect.root.rotation.y).toBeLessThanOrEqual(0);expect(object.position.equals(layout)).toBe(true);
+  }
+  expect(pivot.rotation.y).not.toBe(start);
+  expect(effect.update({...frame,time:33,ambient:false})).toBe(false);expect(pivot.position.length()).toBe(0);expect(Math.abs(pivot.rotation.y)).toBe(0);
+  expect(effect.update({...frame,time:34,paused:true})).toBe(false);expect(pivot.position.length()).toBe(0);expect(Math.abs(effect.root.rotation.y)).toBe(0);effect.dispose();
+ });
+ it('lets the seven surrounding pieces breathe in distinct phases without moving their layout or exceeding small readable bounds',()=>{
+  const objects=gameCatalog.map((game,i)=>{const group=new T.Group();group.userData.game=game.id;group.position.set(i*2,1,-2);group.add(new T.Group());return group;}),layout=objects.map(group=>group.position.clone()),effect=createGalleryAttraction(objects);
+  const frame={entryAge:2,selectionAge:2,selected:gameCatalog[0].id,paused:false,mobile:false,ambient:true};
+  effect.update({...frame,time:1});const first=objects.slice(1).map(group=>group.children[0].position.y);
+  effect.update({...frame,time:3});objects.slice(1).forEach((group,i)=>expect(group.children[0].position.y).not.toBe(first[i]));
+  expect(new Set(objects.slice(1).map(group=>group.children[0].position.y)).size).toBe(7);
+  for(let time=0;time<=20;time+=.25){effect.update({...frame,time});objects.forEach((group,i)=>{expect(group.position.equals(layout[i])).toBe(true);if(i){expect(Math.abs(group.children[0].position.y)).toBeLessThanOrEqual(.075);expect(Math.abs(group.children[0].rotation.y)).toBeLessThanOrEqual(.12);}});}
+  expect(effect.update({...frame,time:21,ambient:false})).toBe(false);objects.forEach(group=>expect(group.children[0].position.length()).toBe(0));
+  expect(effect.update({...frame,time:22,paused:true})).toBe(false);objects.forEach(group=>expect(group.children[0].position.length()).toBe(0));effect.dispose();
+ });
  it('retains the exact original portrait and user-supplied Splendor cover bytes',()=>{
   const sources={
    'public/images/landing-preview/art/leonardo-self-portrait.jpg':'5bb300a1a289d972d8625988357e190ddfc9fe306f90a0d0f3416cb0d6efc8ff',

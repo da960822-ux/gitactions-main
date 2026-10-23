@@ -11,7 +11,7 @@ export function studioMaterials(){return{
  jade:new T.MeshPhysicalMaterial({color:'#487e73',roughness:.25,metalness:.15,clearcoat:1}),
 };}
 export type Materials=ReturnType<typeof studioMaterials>;
-/** Finite visual pivots leave GalleryCollection's layout and raycast identity in charge. */
+/** Sculpture motion leaves GalleryCollection's layout and raycast identity in charge. */
 export function createGalleryAttraction(objects:T.Group[]){
  const root=new T.Group();root.name='GALLERY_REFLECTIVE_CRADLE';
  const pivots=objects.map(group=>{const pivot=new T.Group();pivot.name='GALLERY_INGRESS_PIVOT';pivot.add(...group.children);group.add(pivot);return pivot;});
@@ -22,21 +22,23 @@ export function createGalleryAttraction(objects:T.Group[]){
  const rim=new T.Mesh(rimGeometry,metal);rim.name='SELECTED_GAME_CRADLE_RIM';rim.scale.y=.26;rim.rotation.z=-.08;rim.position.z=.035;root.add(rim);
  const arc=new T.Mesh(arcGeometry,metal);arc.name='SELECTED_GAME_SPATIAL_ARC';arc.scale.y=.48;arc.rotation.set(.6,0,.12);arc.position.set(0,.35,-.4);root.add(arc);
  let disposed=false;
- return{root,update({entryAge,selectionAge,selected,paused,mobile}:{entryAge:number;selectionAge:number;selected:string;paused:boolean;mobile:boolean}){
+ return{root,update({entryAge,selectionAge,selected,paused,mobile,time=0,ambient=false}:{entryAge:number;selectionAge:number;selected:string;paused:boolean;mobile:boolean;time?:number;ambient?:boolean}){
   if(disposed)return false;
   const entry=paused?1:T.MathUtils.clamp(entryAge/1.25,0,1),selection=paused?1:T.MathUtils.clamp(selectionAge/1.8,0,1),weight=selection<1?Math.sin(Math.PI*selection)*Math.pow(1-selection,.35):0;
+  const breathing=ambient&&!paused?T.MathUtils.smoothstep(selection,0,.35)*entry:0,yaw=Math.sin(time*.48)*breathing,liftWave=Math.sin(time*.72)*breathing;
   pivots.forEach((pivot,i)=>{
    const phase=paused?1:T.MathUtils.clamp((entry*1.25-i*.035)/.98,0,1),remaining=Math.pow(1-phase,3),angle=i/objects.length*Math.PI*2;
    const chosen=objects[i].userData.game===selected;
-   const lift=chosen&&!paused?weight*.25:0;
+   const peerWave=chosen?0:Math.sin(time*(.65+i*.035)+i*.83)*breathing;
+   const lift=chosen&&!paused?weight*.25+liftWave*.095:peerWave*(.05+i%3*.01);
    pivot.position.set(Math.cos(angle)*remaining*1.2,Math.sin(angle)*remaining*.65-remaining*.9+lift,-remaining*1.2);
-   pivot.rotation.set(remaining*.3+(chosen?weight*-.09:0),remaining*(i%2?-.65:.65)+(chosen?weight*.38:0),remaining*Math.cos(angle)*.27+(chosen?weight*.045:0));
+   pivot.rotation.set(remaining*.3+(chosen?weight*-.09+Math.sin(time*.36)*breathing*.055:0),remaining*(i%2?-.65:.65)+(chosen?weight*.38+yaw*.22:peerWave*(.1+i%2*.015)),remaining*Math.cos(angle)*.27+(chosen?weight*.045+liftWave*.018:0));
    pivot.scale.setScalar(1-remaining*.22);
   });
   root.position.set(0,mobile?-1.7:-2.25,-.65);root.scale.setScalar(mobile?.55:1);
-  root.rotation.set(weight*.16,weight*-.38,weight*.035);root.visible=true;
-  darkChrome.roughness=.24-weight*.07;
-  return !paused&&(entry<1||selection<1);
+  root.rotation.set(weight*.16-liftWave*.05,weight*-.38-yaw*.24,weight*.035-liftWave*.02);root.visible=true;
+  darkChrome.roughness=.24-weight*.07-liftWave*.025;
+  return !paused&&(entry<1||selection<1||ambient);
  },dispose(){if(disposed)return;disposed=true;root.removeFromParent();plateGeometry.dispose();rimGeometry.dispose();arcGeometry.dispose();metal.dispose();darkChrome.dispose();}};
 }
 

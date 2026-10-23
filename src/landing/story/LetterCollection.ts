@@ -3,7 +3,7 @@ import {LETTER_UNFOLDED} from './interaction';
 import type {LetterFinalePhase} from '../letterFinaleState';
 
 export type LetterPaperPose = {corners:Array<{x:number;y:number}>;visible:boolean};
-export type LetterFrame = {opening:number;progress:number;width:number;height:number;paperAspect?:number;letterView?:LetterFinalePhase;ownCamera?:boolean;reducedMotion?:boolean;onPaperPose?:(pose:LetterPaperPose)=>void;effect?:{name:string;value:number;nonce:number}};
+export type LetterFrame = {time?:number;pointer?:{x:number;y:number};opening:number;progress:number;width:number;height:number;paperAspect?:number;letterView?:LetterFinalePhase;ownCamera?:boolean;reducedMotion?:boolean;onPaperPose?:(pose:LetterPaperPose)=>void;effect?:{name:string;value:number;nonce:number}};
 
 const ease=(a:number,b:number,value:number)=>{const t=THREE.MathUtils.clamp((value-a)/(b-a),0,1);return t*t*(3-2*t);};
 
@@ -109,6 +109,12 @@ export function createLetterCollection(options:{scene:THREE.Scene;camera:THREE.P
   if(desktop||frame.ownCamera===false){scene.rotation.y=0;envelope.rotation.x=-Math.PI/2;}
   for(const face of paperFaces)face.mesh.material=desktop?face.flat:face.original;
   const q=THREE.MathUtils.clamp(Number.isFinite(frame.opening)?frame.opening:0,0,1);
+  const idle=!frame.reducedMotion&&frame.progress>.58&&frame.progress<.73&&(frame.letterView==='sealed'||frame.letterView==='reading')&&Number.isFinite(frame.time)?1-ease(0,.12,q):0;
+  const time=Number.isFinite(frame.time)?frame.time!:0,px=frame.pointer?.x??0,py=frame.pointer?.y??0;
+  envelope.rotation.x+=idle*(Math.sin(time*.56)*.035+py*.045);
+  envelope.rotation.y=idle*(Math.cos(time*.43)*.035+px*.045);
+  envelope.rotation.z=idle*(Math.sin(time*.38)*.025+px*.025);
+  envelope.position.set(0,idle*(.035+Math.sin(time*.56)*.02),idle*Math.sin(time*.38)*.04);
   if(frame.effect?.name==='wax-stamp')heartSelected=frame.effect.value>0;
   heartStamp.visible=heartSelected;initialsStamp.visible=!heartSelected;
   seal.scale.setScalar(1);

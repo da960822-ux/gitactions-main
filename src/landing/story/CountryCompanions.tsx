@@ -72,7 +72,7 @@ export function Companion({side,together,phase,shift,reduced,interactive,failed,
  },[hovered,reduced,interactive,failed,attention]);
  const notice=(pointerType:string)=>{if(pointerType==='mouse'&&!reduced&&!failed&&interactive&&matchMedia('(hover: hover) and (pointer: fine)').matches){setHovered(true);onNotice?.(true);}};
  // Motion SVG defaults to a fill-box center; these children already sit at the shoulder or hip.
- const wing=(far:boolean)=><g transform={far?'translate(635 490)':'translate(675 525)'} data-shoulder={far?'far':'near'}><motion.g className={`hummingbird-wing ${far?'hummingbird-wing-far':'hummingbird-wing-near'}`} style={{transform:far?farTransform:nearTransform,originX:0,originY:0,transformBox:'view-box'}}><image href={`/images/story-companions/hummingbird-${far?'far':'near'}.png`} width="1254" height="1254" transform={`scale(${far?.28:.36}) translate(-${far?145:160} -950)`} mask={`url(#${shoulder}-mask)`} onError={onError}/></motion.g></g>;
+ const wing=(far:boolean)=><g transform={far?'translate(635 490)':'translate(675 525)'} data-shoulder={far?'far':'near'}><motion.g className={`hummingbird-wing ${far?'hummingbird-wing-far':'hummingbird-wing-near'}`} style={{transform:far?farTransform:nearTransform,originX:0,originY:0,transformBox:'view-box'}}><g className="hummingbird-air-feathers"><image href={`/images/story-companions/hummingbird-${far?'far':'near'}.png`} width="1254" height="1254" transform={`scale(${far?.28:.36}) translate(-${far?145:160} -950)`} mask={`url(#${shoulder}-mask)`} onError={onError}/></g></motion.g></g>;
  const body=<image href={side===1?'/images/story-companions/mandarin-duck.png':failed?'/images/story-companions/hummingbird-body.png':'/images/story-companions/hummingbird-torso.png'} width="1254" height="1254" onError={failed?undefined:onError}/>;
  return <div className={`bird-scroll lovebird-${side===1?'left':'right'}`} inert={!interactive} data-flight-state={flightState}>
   {side===1&&<svg className="companion-ledge" viewBox="0 0 1254 1254" aria-hidden="true"><path className="companion-ledge-face" d="M160 1205H3200V1221H160Z"/><path className="companion-ledge-edge" d="M160 1205H3200"/><ellipse className="companion-contact" cx="812" cy="1204" rx="274" ry="12"/></svg>}
@@ -144,7 +144,7 @@ export function CountryCompanions({language}:{language:'ko'|'es'}){
  useEffect(()=>{if(reduced||failed){setTogether(false);setPhase('instant');}},[reduced,failed]);
  const positionEncounter=()=>{
   if(!root.current)return;
-  const left=root.current.querySelector('.lovebird-left')!.getBoundingClientRect(),right=root.current.querySelector('.lovebird-right')!.getBoundingClientRect(),scene=root.current.getBoundingClientRect();
+  const left=root.current.querySelector('.lovebird-left')!.getBoundingClientRect(),right=root.current.querySelector('.lovebird-right')!.getBoundingClientRect(),scene=root.current.querySelector('.companion-atmosphere-pair')!.getBoundingClientRect();
   const duckBill=left.left+left.width*.91,hummingbirdBill=right.left+right.width*.044,distance=Math.max(0,hummingbirdBill-duckBill-42);
   const billY=(left.top+left.width*.27+right.top+right.width*.195)/2-scene.top;
   setShift(distance);setTrace({...companionEncounterAnchor(duckBill-scene.left,billY,scene.width,scene.height),span:distance});
@@ -161,11 +161,14 @@ export function CountryCompanions({language}:{language:'ko'|'es'}){
   if(!together)positionEncounter();
   setNoticed(false);setPhase(visible&&!reduced?(together?'return':'greet'):'instant');setTogether(value=>!value);
  };
- return <div ref={root} inert={!visible} className="country-companions" data-together={together&&!failed} data-failed={failed} data-visible={visible} data-reduced={Boolean(reduced)} data-interaction-phase={phase} data-story-moment="distance" role="group" aria-labelledby="story-distance-title">
+ return <div ref={root} inert={!visible} className="country-companions" data-together={together&&!failed} data-failed={failed} data-visible={visible} data-ambient={visible&&!reduced&&!failed} data-reduced={Boolean(reduced)} data-interaction-phase={phase} data-story-moment="distance" role="group" aria-labelledby="story-distance-title">
   <div className="companion-stage">
+   <div className="companion-atmosphere-pair">
+   <div className="companion-air-surface" aria-hidden="true"/>
    <Companion side={1} together={together} phase={phase} shift={0} reduced={Boolean(reduced)||!visible} interactive={visible} failed={failed} language={language} descriptionId={duckNote} onGreet={greet} onError={()=>setFailed(true)} onNotice={notice}/>
    <CompanionEncounter progress={encounter} trace={trace} together={together&&!failed} noticed={noticed&&!failed} interactive={visible&&!failed} instant={Boolean(reduced)||phase==='instant'}/>
    <Companion side={-1} together={together} phase={phase} shift={shift} reduced={Boolean(reduced)||!visible} interactive={visible} failed={failed} language={language} descriptionId={hummingbirdNote} onGreet={greet} onError={()=>setFailed(true)} encounter={encounter} onNotice={notice}/>
+   </div>
    <button type="button" className="lovebird-greeting text-button" disabled={failed} aria-pressed={together&&!failed} onClick={event=>greet(event.detail>0)}>{together?(ko?'다시 살짝 떨어져':'Un poquito de espacio'):(ko?'Baby, 가까이 와':'Acércate, Baby')}</button>
   </div>
   <div className="companion-meanings">

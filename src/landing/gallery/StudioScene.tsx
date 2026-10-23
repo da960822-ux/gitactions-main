@@ -58,9 +58,10 @@ export default function StudioScene(props:Props){
     if(controls.current.paused)entryStarted=selectionStarted=-Infinity;
     else if(!loaded)entryStarted=selectionStarted=time;
     const entryAge=time-entryStarted,selectionAge=time-selectionStarted;
-    needsFrame=attraction.update({entryAge,selectionAge,selected:controls.current.selected??'domino',paused:controls.current.paused,mobile})||needsFrame;
+    const ambient=active&&visible&&!controls.current.snapSelection;
+    needsFrame=attraction.update({entryAge,selectionAge,selected:controls.current.selected??'domino',paused:controls.current.paused,mobile,time,ambient})||needsFrame;
     collection!.root.updateMatrixWorld(true);
-    canvas.dataset.galleryEntry=controls.current.paused?'paused':entryAge<1.25?'entering':'settled';canvas.dataset.galleryMaterial=controls.current.paused?'static':selectionAge<1.8?'turning':'settled';
+    canvas.dataset.galleryEntry=controls.current.paused?'paused':entryAge<1.25?'entering':'settled';canvas.dataset.galleryMaterial=controls.current.paused||controls.current.snapSelection?'static':selectionAge<1.8?'turning':ambient?'breathing':'settled';canvas.dataset.galleryAmbient=String(ambient);
    }
    canvas.dataset.hovered=hoverId??'';
    renderer.render(scene,camera);canvas.dataset.renderCount=String(++renderCount);
@@ -85,9 +86,11 @@ export default function StudioScene(props:Props){
    }
    canvas.dataset.motion=!active||!visible?'paused':needsFrame?'running':'settled';
   };
-  const stop=()=>{renderer.setAnimationLoop(null);looping=false;last=0;};
-  const frame=(now:number)=>{const dt=last?Math.min((now-last)/1000,.25):0;last=now;
+  const stop=()=>{renderer.setAnimationLoop(null);looping=false;last=0;canvas.dataset.galleryAmbient='false';};
+  const frame=(now:number)=>{
    if(!visible||document.hidden||controls.current.paused||contextLost){stop();return;}
+   if(last&&now-last<1000/30)return;
+   const dt=last?Math.min((now-last)/1000,.25):0;last=now;
    if(dirty||needsFrame){dirty=false;time+=dt;energy*=Math.exp(-dt*2);render(false,dt);}
    if(!needsFrame&&!dirty)stop();
   };

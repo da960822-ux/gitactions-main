@@ -7,6 +7,10 @@ import type {LetterFinalePhase} from './letterFinaleState';
 
 export type PostCompositionFrame={progress:number;bridge:number;galleryWeight:number;opening:number;time:number;reducedMotion:boolean;width:number;height:number;roomEye:THREE.Vector3;roomTarget:THREE.Vector3;effect?:{name:string;value:number;nonce:number};localEvent?:LocalEventState;paperHeight?:number;letterView?:LetterFinalePhase;letterClosingRect?:LetterClosingRect;pointer?:{x:number;y:number}};
 const range=(a:number,b:number,p:number)=>THREE.MathUtils.smoothstep(p,a,b);
+export function letterLightPose(time:number,active:boolean,pointer={x:0,y:0}){
+ const t=active&&Number.isFinite(time)?time:0;
+ return{x:-6+(active?Math.sin(t*.38)*4+pointer.x*2:0),z:7+(active?(Math.cos(t*.38)-1)*3+pointer.y*1.5:0),cool:.6+(active?Math.sin(t*.38)*.16:0)};
+}
 // Stage-local poses; the room owner chooses the shared transform after room approval.
 const OFFSET=new THREE.Vector3(9,-4.3,-10);
 const GALLERY=new THREE.Vector3(-7,-.007,-4.3),LETTER=new THREE.Vector3(7.2,-.007,-1.2);
@@ -27,7 +31,7 @@ const poses=[
 /** Renderer-free, open studio stages: no foreground walls or ceiling between eye and content. */
 export function createPostHeroComposition(scene:THREE.Scene,onInvalidate:()=>void=()=>{}){
  const root=new THREE.Group();root.name='POST_HERO_ARCHITECTURE';root.position.copy(OFFSET);root.visible=false;scene.add(root);
- const story={endingReturn:0};
+ const story={endingReturn:0,letterAmbient:false,letterLightTime:0};
  const geometries=new Set<THREE.BufferGeometry>(),materials=new Set<THREE.Material>(),textures=new Set<THREE.Texture>();
  let disposed=false;
  const loader=new THREE.TextureLoader();
@@ -90,9 +94,11 @@ export function createPostHeroComposition(scene:THREE.Scene,onInvalidate:()=>voi
   if(frame.letterView==='folding'||frame.letterView==='rose')background.set('#13131c');
   eye.add(root.position);target.add(root.position);
   output.galleryAnchor.copy(GALLERY).add(root.position);output.galleryAnchor.x-=18*galleryDeparture;output.galleryAnchor.z-=4*galleryDeparture;output.galleryAnchor.y+=(4.5*settle-2.4*(1-settle));output.letterAnchor.copy(LETTER).add(root.position);output.letterAnchor.x=desk.position.x+root.position.x;
-  const letter=range(.55,.62,p);a.set(3,.3,0).lerp(LETTER,letter);key.target.position.copy(a);key.position.copy(a).add(b.set(-6,11,7));key.intensity=2.3*bridge;fill.intensity=.8*bridge;cool.intensity=.6*bridge;
+  const letterAmbient=!frame.reducedMotion&&frame.letterView==='sealed'&&p>.58&&p<.73&&frame.opening===0;
+  const lighting=letterLightPose(frame.time,letterAmbient,frame.pointer);story.letterAmbient=letterAmbient;story.letterLightTime=letterAmbient?frame.time:0;
+  const letter=range(.55,.62,p);a.set(3,.3,0).lerp(LETTER,letter);key.target.position.copy(a);key.position.copy(a).add(b.set(lighting.x,11,lighting.z));key.intensity=2.3*bridge;fill.intensity=.8*bridge;cool.intensity=lighting.cool*bridge;
   const layoutKey=`${frame.width}:${frame.height}:${frame.paperHeight}`;
-  output.needsFrame=Math.abs(eventWeight-eventTarget)>.0001||overhead>0&&layoutKey!==lastLayout;lastLayout=layoutKey;
+  output.needsFrame=letterAmbient||Math.abs(eventWeight-eventTarget)>.0001||overhead>0&&layoutKey!==lastLayout;lastLayout=layoutKey;
   output.fov=closing?.fov??THREE.MathUtils.lerp(38,30,overhead);output.roomDesk=bridge;output.roomExit=0;return output;
  },dispose(){if(disposed)return;disposed=true;root.removeFromParent();geometries.forEach(item=>item.dispose());materials.forEach(item=>item.dispose());textures.forEach(item=>item.dispose());key.shadow.map?.dispose();}};
 }

@@ -13,12 +13,24 @@ describe('approved B-room object reactions',()=>{
   expect(light('monitor').material.uniforms.uArrival.value).toBeGreaterThan(.6);
   expect(light('keyboard').material.uniforms.uArrivalSweep.value).toBeLessThan(light('monitor').material.uniforms.uArrivalSweep.value);
   expect(light('L06').visible).toBe(true);expect(effect.state.needsFrame).toBe(true);
-  advance(effect,{},.4,1.7);for(const id of ['monitor','keyboard','L06','L09']){expect(light(id).visible).toBe(false);expect(light(id).material.uniforms.uArrival.value).toBeLessThan(.001);}
+  advance(effect,{},.4,1.7);for(const id of ['monitor','keyboard','L06','L09']){expect(light(id).visible).toBe(true);expect(light(id).material.uniforms.uArrival.value).toBeLessThan(.001);}
   effect.update({...frame,time:3,active:false});effect.update({...frame,time:4});
-  expect(light('monitor').visible).toBe(false);expect(light('monitor').material.uniforms.uArrival.value).toBeLessThan(.001);effect.dispose();
+  expect(light('monitor').visible).toBe(true);expect(light('monitor').material.uniforms.uArrival.value).toBeLessThan(.001);effect.dispose();
   const interrupted=fixture();interrupted.effect.update(frame);advance(interrupted.effect,{},0,.3);
   interrupted.effect.update({...frame,time:.4,active:false});interrupted.effect.update({...frame,time:.5});
-  expect(interrupted.light('monitor').visible).toBe(false);expect(interrupted.light('monitor').material.uniforms.uArrival.value).toBeLessThan(.001);interrupted.effect.dispose();
+  expect(interrupted.light('monitor').visible).toBe(true);expect(interrupted.light('monitor').material.uniforms.uArrival.value).toBeLessThan(.001);interrupted.effect.dispose();
+ });
+ it('keeps one coherent material clock flowing after arrival and damps a shared pointer reflection',()=>{
+  const {effect,light}=fixture();advance(effect,{});
+  const initial=light('monitor').material.uniforms.uTime.value;
+  expect(initial).toBeGreaterThan(1.9);expect(effect.state.needsFrame).toBe(true);
+  effect.update({...frame,time:2.1,pointer:{x:1672,y:941}});
+  const shared=light('monitor').material.uniforms.uRoomPointer.value as T.Vector2;
+  expect(shared.x).toBeGreaterThan(.5);expect(shared.x).toBeLessThan(1);expect(shared.y).toBeGreaterThan(.5);
+  for(const id of ['monitor','keyboard','L06','L09']){const uniforms=light(id).material.uniforms;expect(uniforms.uTime.value).toBeGreaterThan(initial);expect(uniforms.uTime.value).toBe(light('monitor').material.uniforms.uTime.value);expect(uniforms.uRoomPointer.value.equals(shared)).toBe(true);expect(uniforms.uAmbient.value).toBe(.65);expect(light(id).visible).toBe(true);}
+  effect.update({...frame,time:3,active:false});const stopped=light('monitor').material.uniforms.uTime.value;
+  effect.update({...frame,time:30,active:false});expect(light('monitor').material.uniforms.uTime.value).toBe(stopped);expect(effect.state.needsFrame).toBe(false);expect(light('monitor').material.uniforms.uAmbient.value).toBe(0);
+  effect.update({...frame,time:31,reducedMotion:true});expect(effect.state.needsFrame).toBe(false);expect(light('monitor').material.uniforms.uTime.value).toBe(stopped);expect(light('monitor').material.uniforms.uAmbient.value).toBe(0);effect.dispose();
  });
  it('leaves the original room intact and keeps the photo interior free of effect geometry',()=>{
   const {room,effect,light}=fixture(),approved=new T.Mesh(new T.PlaneGeometry(1,1),new T.MeshBasicMaterial());room.add(approved);
@@ -29,11 +41,11 @@ describe('approved B-room object reactions',()=>{
   expect(approved.matrix.equals(matrix)).toBe(true);expect(Array.from(approved.geometry.getAttribute('position').array)).toEqual(position);
   effect.dispose();approved.geometry.dispose();(approved.material as T.Material).dispose();
  });
- it('shows hover feedback immediately, settles held input, and stops requesting frames after exit',()=>{
+ it('shows hover feedback immediately and settles held input while the visible material field continues',()=>{
   const {effect,light}=fixture();effect.update({...frame,hover:'monitor'});
   expect(light('monitor').visible).toBe(true);expect(effect.state.needsFrame).toBe(true);
-  advance(effect,{hover:'monitor'});expect(effect.state.needsFrame).toBe(false);expect(light('monitor').material.uniforms.uLevel.value).toBe(1);
-  advance(effect,{},2);expect(effect.state.needsFrame).toBe(false);expect(light('monitor').visible).toBe(false);effect.dispose();
+  advance(effect,{hover:'monitor'});expect(effect.state.needsFrame).toBe(true);expect(light('monitor').material.uniforms.uLevel.value).toBe(1);
+  advance(effect,{},2);expect(effect.state.needsFrame).toBe(true);expect(light('monitor').material.uniforms.uLevel.value).toBe(0);effect.update({...frame,time:5,active:false});expect(effect.state.needsFrame).toBe(false);effect.dispose();
  });
  it('retargets press feedback from its current value and releases on the originally pressed object',()=>{
   const {effect,light}=fixture();effect.update(frame);advance(effect,{hover:'keyboard',press:true},0,.1);
@@ -47,20 +59,20 @@ describe('approved B-room object reactions',()=>{
   for(let i=13;i<30;i++)effect.update({...frame,time:i/60,hover:'L06',activation:i});
   expect(light('L06').material.uniforms.uPulse.value).toBeGreaterThan(.5);expect(light('L06').material.uniforms.uPulse.value).toBeLessThanOrEqual(1);effect.dispose();
  });
- it('greets a room arrival with both original solid hearts, then settles without an ambient loop',()=>{
+ it('greets a room arrival with both original solid hearts that settle independently of the flowing material',()=>{
   const {effect}=fixture();effect.update(frame);
   const heart=effect.root.getObjectByName('RABBIT_DEPTH_GREETING_0') as T.Mesh<T.ExtrudeGeometry,T.ShaderMaterial>,second=effect.root.getObjectByName('RABBIT_DEPTH_GREETING_1') as T.Mesh;
   expect(heart.geometry.type).toBe('ExtrudeGeometry');expect(heart.visible&&second.visible).toBe(true);
   const restingScale=heart.scale.x;advance(effect,{},0,.3);
   expect(heart.position.y).toBeGreaterThan(roomVertex(1480,347,heart.position.z)[1]);
   expect(heart.scale.x).toBeGreaterThan(restingScale*1.15);expect(heart.material.uniforms.uOpacity.value).toBeGreaterThan(.7);
-  advance(effect,{},.3,2);expect(heart.visible||second.visible).toBe(false);expect(effect.state.needsFrame).toBe(false);
+  advance(effect,{},.3,2);expect(heart.visible||second.visible).toBe(false);expect(effect.state.needsFrame).toBe(true);
   effect.update({...frame,time:3,active:false});effect.update({...frame,time:4});expect(heart.visible&&second.visible).toBe(true);effect.dispose();
  });
  it('replays a complete surface sweep on activation after hover has settled',()=>{
   const {effect,light}=fixture();advance(effect,{hover:'keyboard'});expect(light('keyboard').material.uniforms.uSweep.value).toBe(1);
   effect.update({...frame,time:2.1,hover:'keyboard',activation:1});expect(light('keyboard').material.uniforms.uSweep.value).toBeLessThan(.1);
-  advance(effect,{hover:'keyboard',activation:1},2.1,2);expect(light('keyboard').material.uniforms.uSweep.value).toBe(1);expect(effect.state.needsFrame).toBe(false);effect.dispose();
+  advance(effect,{hover:'keyboard',activation:1},2.1,2);expect(light('keyboard').material.uniforms.uSweep.value).toBe(1);expect(effect.state.needsFrame).toBe(true);effect.dispose();
  });
  it.each([{reducedMotion:true},{keyboard:true}])('keeps reduced motion and keyboard feedback static: %o',preference=>{
   const {effect,light}=fixture();effect.update({...frame,...preference,hover:'L04',press:true,pointer:{x:1500,y:600}});
@@ -73,7 +85,7 @@ describe('approved B-room object reactions',()=>{
   const {effect,light}=fixture();advance(effect,{hover:'monitor',press:true},0,.1);effect.cancelInteraction();
   effect.update({...frame,time:1});expect(light('monitor').material.uniforms.uPulse.value).toBe(0);
   effect.update({...frame,time:2,active:false});expect(effect.root.visible).toBe(false);expect(effect.state.needsFrame).toBe(false);
-  effect.update({...frame,time:3});expect(light('monitor').visible).toBe(false);expect(light('monitor').material.uniforms.uPulse.value).toBe(0);effect.dispose();
+  effect.update({...frame,time:3});expect(light('monitor').visible).toBe(true);expect(light('monitor').material.uniforms.uPulse.value).toBe(0);effect.dispose();
  });
  it('disposes shared GPU resources once and removes only its own group',()=>{
   const {room,effect}=fixture(),resources=new Set<T.BufferGeometry|T.Material>();effect.root.traverse(node=>{if(node instanceof T.Mesh){resources.add(node.geometry);for(const material of Array.isArray(node.material)?node.material:[node.material])resources.add(material);}});

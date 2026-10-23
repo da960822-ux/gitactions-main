@@ -32,7 +32,7 @@ in vec2 vUv;
 out vec4 outColor;
 uniform float uTime;
 uniform float uCharge,uEcho;
-uniform vec2 uResolution;
+uniform vec2 uResolution,uPointer;
 uniform vec3 uColorA,uColorB,uColorC,uColorD;
 uint rotl(uint x,uint k){return (x<<k)|(x>>(32u-k));}
 uint hash3(ivec3 p){
@@ -70,7 +70,7 @@ void main(){
  float angle=noise3(vec3(centred.x*0.8+t*0.4,centred.y*0.8-t*0.25,0.0))*12.566370614359172*strength;
  vec2 squashed=vec2(centred.x,centred.y/aspect);
  vec2 spun=vec2(cos(angle)*squashed.x-sin(angle)*squashed.y,sin(angle)*squashed.x+cos(angle)*squashed.y);
- vec2 p=vec2(spun.x,spun.y*aspect);
+ vec2 p=vec2(spun.x,spun.y*aspect)+uPointer*0.12;
  vec2 connection=vec2(vUv.x,1.0-vUv.y)-vec2(0.5,510.0/620.0);
  connection.x*=aspect;
  float gathering=exp(-dot(connection,connection)*12.0)*uCharge;
@@ -88,7 +88,7 @@ void main(){
  float fold=max(1.0-abs(blendX*2.0-1.0),1.0-abs(blendY*2.0-1.0))*hardness;
  float light=((level2.z*0.5+0.5)*0.12+0.94)*(1.0+fold*0.65);
  vec3 normal=normalize(vec3(-dFdx(zone)*160.0,-dFdy(zone)*160.0,1.0));
- vec3 key=normalize(vec3(cos(t)*0.7,sin(t*0.8)*0.5,1.0));
+ vec3 key=normalize(vec3(cos(t)*0.7+uPointer.x*0.8,sin(t*0.8)*0.5-uPointer.y*0.6,1.0));
  float satin=pow(max(dot(reflect(-key,normal),vec3(0.0,0.0,1.0)),0.0),18.0);
  light*=0.52+0.58*max(dot(normal,key),0.0);
  base+=vec3(1.0,0.73,0.59)*satin*0.24;

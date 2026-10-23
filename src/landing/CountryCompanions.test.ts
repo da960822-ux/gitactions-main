@@ -216,6 +216,10 @@ describe('grounded companion greeting',()=>{
    expect((markup.match(/class="lovebird"/g)||[])).toHaveLength(2);
    expect((markup.match(/type="button"/g)||[])).toHaveLength(3);
    expect(markup).toContain('data-flight-state="idle"');
+   expect(markup).toContain('data-ambient="false"');
+   const pair=markup.slice(markup.indexOf('class="companion-atmosphere-pair"'),markup.indexOf('class="lovebird-greeting'));
+   expect(pair.match(/class="lovebird"/g)).toHaveLength(2);expect(pair).toContain('data-companion-heart-body="true"');
+   expect(markup.match(/class="hummingbird-air-feathers"/g)).toHaveLength(2);
    expect(markup).toContain(language==='ko'?'Baby의 분홍 벌새에게 인사하기':'Saludar al colibrí rosado de Baby');
    expect(markup).toContain(language==='ko'?'한국 혼례에서 원앙은':'En las bodas coreanas');
   }
