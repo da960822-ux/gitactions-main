@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState } from 'react';
+import type { CSSProperties } from 'react';
 import type { Language } from '../core/types';
 import '../styles/rhythm-board.css';
 
@@ -8,9 +9,14 @@ declare global { interface Window { RufflePlayer?: RuffleApi } }
 
 let ruffleLoad: Promise<void> | undefined;
 const RUFFLE_READY_TIMEOUT_MS = 15_000;
+export function rhythmFrameMaxWidth(viewportHeight: number, shellDocumentTop: number, reservedHeight: number, toolbarHeight: number): number {
+  const frameHeight = Math.max(0, Math.floor(viewportHeight - shellDocumentTop - reservedHeight - toolbarHeight - 2));
+  return Math.min(1100, Math.floor(frameHeight * 11 / 9));
+}
+
 const labels = {
   ko: {
-    title: '뮤직톡톡', intro: '화살표와 스페이스바로 박자를 맞춰 봐요.', controls: '먼저 ‘게임에 포커스’를 누르고 방향키와 스페이스바로 박자를 맞춰요.',
+    title: '뮤직톡톡', intro: '박자를 맞춰 봐요.', controls: '게임에 포커스한 뒤 화살표와 스페이스바를 사용해요.', notes: '원작 안내 · 문제 해결',
     known: '원작 안내에 따르면 ‘처음으로’ 버튼이 제대로 작동하지 않을 수 있어요.',
     unverified: '이 브라우저에서의 전체 플레이는 아직 확인되지 않았어요.', loading: '게임을 불러오는 중…',
     ready: '플레이 준비 완료', error: '게임을 불러오지 못했어요. 다시 시도해 주세요.', retry: '다시 불러오기',
@@ -19,7 +25,7 @@ const labels = {
     recovery: '화면이 비거나 크기 변경 뒤 멈추면 페이지를 새로고침해 주세요. 원작 게임이 처음부터 다시 시작돼요.', source: '원작 게시물',
   },
   es: {
-    title: 'Music Talk Talk', intro: 'Sigan el ritmo con las flechas y la barra espaciadora.', controls: 'Pulsa «Enfocar el juego» y luego sigue el ritmo con las flechas y la barra espaciadora.',
+    title: 'Music Talk Talk', intro: 'Sigan el ritmo.', controls: 'Enfoca el juego y usa las flechas y la barra espaciadora.', notes: 'Guía original · Solución de problemas',
     known: 'La página original avisa que el botón «Inicio» puede no funcionar bien.',
     unverified: 'Aún no hemos comprobado el juego completo en este navegador.', loading: 'Cargando el juego…',
     ready: 'Listo para jugar', error: 'No se pudo cargar el juego. Inténtalo de nuevo.', retry: 'Volver a cargar',
@@ -129,7 +135,54 @@ export function RhythmBoard({ language }: { language: Language }) {
   const [attempt, setAttempt] = useState(0);
   const [fullscreen, setFullscreen] = useState(false);
   const [controlError, setControlError] = useState(false);
+  const [frameMaxWidth, setFrameMaxWidth] = useState<number | null>(null);
   const copy = labels[language];
+
+  useEffect(() => {
+    const shellNode = shell.current;
+    const board = shellNode?.closest<HTMLElement>('.board-card');
+    const toolbar = shellNode?.querySelector<HTMLElement>('.rhythm-game-toolbar');
+    const notes = shellNode?.parentElement?.querySelector<HTMLElement>('.rhythm-board-notes');
+    if (!shellNode || !board || !toolbar || !notes) return;
+
+    let frame = 0;
+    const measure = () => {
+      cancelAnimationFrame(frame);
+      frame = requestAnimationFrame(() => {
+        if (document.fullscreenElement === shellNode) {
+          setFrameMaxWidth(null);
+          return;
+        }
+        if (!window.matchMedia('(min-width: 1024px) and (pointer: fine)').matches) {
+          setFrameMaxWidth(null);
+          return;
+        }
+        const footer = board.querySelector<HTMLElement>('.board-footer');
+        const boardGap = Number.parseFloat(getComputedStyle(shellNode.parentElement!).rowGap) || 0;
+        const viewportHeight = window.visualViewport?.height ?? window.innerHeight;
+        const reservedHeight = notes.getBoundingClientRect().height + boardGap + (footer?.getBoundingClientRect().height ?? 0) + 16;
+        const shellDocumentTop = shellNode.getBoundingClientRect().top + window.scrollY;
+        const nextWidth = rhythmFrameMaxWidth(viewportHeight, shellDocumentTop, reservedHeight, toolbar.getBoundingClientRect().height);
+        setFrameMaxWidth(current => current === nextWidth ? current : nextWidth);
+      });
+    };
+
+    const observer = new ResizeObserver(measure);
+    [shellNode, toolbar, notes, board.querySelector<HTMLElement>('.board-footer'), board.querySelector<HTMLElement>('.board-header')]
+      .filter((node): node is HTMLElement => Boolean(node))
+      .forEach(node => observer.observe(node));
+    window.addEventListener('resize', measure);
+    window.visualViewport?.addEventListener('resize', measure);
+    document.addEventListener('fullscreenchange', measure);
+    measure();
+    return () => {
+      cancelAnimationFrame(frame);
+      observer.disconnect();
+      window.removeEventListener('resize', measure);
+      window.visualViewport?.removeEventListener('resize', measure);
+      document.removeEventListener('fullscreenchange', measure);
+    };
+  }, []);
 
   useEffect(() => {
     let live = true;
@@ -190,7 +243,7 @@ export function RhythmBoard({ language }: { language: Language }) {
       </div>
       <span className="rhythm-key rhythm-key-space" ref={node => { keyRefs.current.Space = node; }}>SPACE</span>
     </div>
-    <div className="rhythm-game-shell" ref={shell}>
+    <div className="rhythm-game-shell" ref={shell} style={frameMaxWidth === null ? undefined : { '--rhythm-frame-max-width': `${frameMaxWidth}px` } as CSSProperties}>
       <div className="rhythm-game-toolbar">
         <span aria-live="polite"><i aria-hidden="true" className={`rhythm-status-dot is-${status}`} />{status === 'loading' ? copy.loading : status === 'error' ? copy.error : copy.ready}</span>
         <div className="rhythm-game-tools">
@@ -205,9 +258,14 @@ export function RhythmBoard({ language }: { language: Language }) {
       </div>
     </div>
     <div className="rhythm-board-notes">
-      <p className="rhythm-known-note">{copy.known}</p>
-      <p className="rhythm-recovery-note">{copy.recovery}</p>
-      <div className="rhythm-source-row"><small>{copy.unverified}</small><a href="https://vidkidz.tistory.com/431" target="_blank" rel="noreferrer">{copy.source}<span aria-hidden="true">↗</span></a></div>
+      <details className="rhythm-notes-details">
+        <summary>{copy.notes}</summary>
+        <div className="rhythm-notes-content">
+          <p className="rhythm-known-note">{copy.known}</p>
+          <p className="rhythm-recovery-note">{copy.recovery}</p>
+          <div className="rhythm-source-row"><small>{copy.unverified}</small><a href="https://vidkidz.tistory.com/431" target="_blank" rel="noreferrer">{copy.source}<span aria-hidden="true">↗</span></a></div>
+        </div>
+      </details>
       {controlError && <p className="rhythm-control-error" role="status">{copy.fullscreenError}</p>}
     </div>
   </section>;

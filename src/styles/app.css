@@ -675,3 +675,21 @@
 .match-replay p { margin: 0; font-size: .85rem; }
 .match-replay button { flex-shrink: 0; }
 @media (max-width: 600px) { .match-replay { align-items: stretch; flex-direction: column; } }
+
+/* Active desktop games use the viewport; the lobby keeps its reading width. */
+@media (min-width: 1024px) and (pointer: fine) {
+  .app-shell.room-shell.quality-table-room .room-main,
+  .app-shell.room-shell.quality-table-room .app-header.compact { width: min(1888px, calc(100% - 32px)); }
+  .app-shell.room-shell.quality-table-room .room-main { padding-top: 2px; }
+  .app-shell.room-shell.quality-table-room .app-header.compact { display: none; }
+  .app-shell.room-shell.quality-table-room .room-layout { margin-top: 4px; gap: 12px; }
+  .app-shell.room-shell.quality-table-room .room-layout:has(.catchmind-chat-panel):not(.chat-collapsed) { grid-template-columns: minmax(0, 1fr) clamp(260px, 18vw, 320px); }
+  .app-shell.room-shell.quality-table-room .board-header { flex-wrap: wrap; gap: 6px 14px; }
+  .app-shell.room-shell.quality-table-room .board-game { min-width: 0; }
+  .app-shell.room-shell.quality-table-room .board-game b { font-size: 18px; }
+  .app-shell.room-shell.quality-table-room .board-header-right { flex-wrap: wrap; justify-content: flex-end; gap: 4px 10px; }
+  .app-shell.room-shell.quality-table-room .board-header .plain-button { display: inline-flex; align-items: center; min-height: 36px; font-size: 14px; }
+  .app-shell.room-shell.quality-table-room .turn-tag { font-size: 13px; }
+  .app-shell.room-shell.quality-table-room .player-pill b { font-size: 13px; }
+  .app-shell.room-shell.quality-table-room .back-link { display: inline-flex; align-items: center; min-height: 32px; font-size: 13px; }
+}

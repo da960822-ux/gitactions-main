@@ -2,7 +2,7 @@ import {createElement,Fragment} from 'react';
 import {renderToStaticMarkup} from 'react-dom/server';
 import {expect,it} from 'vitest';
 import {CoupleReactionArt} from './CoupleReactionArt';
-import {DuelIllustration} from '../../post-hero-preview/src/DuelIllustration';
+import {DuelIllustration} from '../landing/story/DuelIllustration';
 
 it('keeps the exact full-room mask union for either presentation-only reaction',()=>{
  for(const reaction of ['lisbeth','yeonseok'] as const){

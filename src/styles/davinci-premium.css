@@ -266,3 +266,13 @@ button.dv-tile:disabled { opacity: .78; cursor: default; }
 /* Preserve both faces in the approved couple drawings without changing the source pixels. */
 .dv-tile > b:has(> .dv-joker-portrait[src*="/images/davinci/joker-couple-"]) { width: 100%; min-width: 0; }
 .dv-tile .dv-joker-portrait[src*="/images/davinci/joker-couple-"] { width: 100%; max-width: 72px; height: 64px; margin-inline: auto; object-fit: cover; object-position: 50% 10%; }
+
+@media (min-width: 1024px) and (pointer: fine) {
+  .table-game.dv-table { --dv-tile-width: clamp(96px, 6.25vw, 120px); grid-template-columns: minmax(0,1fr) clamp(340px, 28vw, 440px); }
+  .dv-rack .dv-tile { flex-basis: var(--dv-tile-width); min-height: calc(var(--dv-tile-width) * 1.35); }
+  .dv-rack .dv-tile > b { font-size: clamp(2.25rem, 2.3vw, 2.75rem); }
+  .dv-rack .dv-tile-color,.dv-rack .dv-tile-state { font-size: 12px; }
+  .dv-rack .dv-tile .dv-joker-portrait[src*="/images/davinci/joker-couple-"] { max-width: 104px; height: 72px; }
+  .dv-table .dv-number-grid button { min-height: 44px; font-size: 18px; }
+  .dv-table .dv-guess-submit,.dv-table .dv-confirm-row .dv-action-primary,.dv-table .dv-cancel { min-height: 44px; font-size: 14px; }
+}

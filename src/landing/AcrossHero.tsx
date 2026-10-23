@@ -13,7 +13,7 @@ export function AcrossHero({language,ready,introActive,onSkip}:Props){
     <p className="folded-dedication">YEONSEOK <span aria-hidden="true">♡</span> LISBETH <i>04.04.2025</i></p>
     <h1 id="hero-title"><span className="across-title-line folded-baby">Baby,</span><span className="across-title-line">{es?'¡lo hice':'이거 내가'}</span><span className="across-title-line">{es?'para ti!':'만들었어!'}</span></h1>
     <p className="across-caption">{es?<>Aunque estemos lejos,<br/>para que juguemos juntos.</>:<>멀리 있어도,<br/>우리 둘이 같이 놀 수 있게.</>}</p>
-    <div className="across-actions"><a className="across-play" href="#games"><span>{es?'Vamos a jugar':'같이 놀자'}</span><span aria-hidden="true">↗</span></a><a className="across-letter-link" href="#papi-letter">{es?'La carta de Papi':'Papi의 편지'}<span aria-hidden="true">↗</span></a></div>
+    <div className="across-actions"><a className="across-play" href="#games"><span>{es?'Vamos a jugar':'같이 놀자'}</span><span aria-hidden="true">↗</span></a></div>
    </div>
    <div className="folded-side-note" aria-hidden="true"><span>한국</span><i/> <span>República Dominicana</span></div>
    <div className="folded-destination" aria-labelledby="folded-destination-title" inert><h2 id="folded-destination-title">{es?'Baby, juguemos juntos.':'Baby, 같이 놀자.'}</h2><a href="#games">{es?'Vamos a jugar':'같이 놀자'} <span aria-hidden="true">↗</span></a></div>

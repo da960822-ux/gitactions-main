@@ -37,7 +37,7 @@
 .mp-turn-badge.is-active .mp-turn-gem { background:#2e9d89; box-shadow:0 0 0 4px #2e9d8920,inset -2px -2px 3px #174e49aa; }
 .mp-layout { display:grid; grid-template-columns:minmax(0,1fr) minmax(340px,360px); gap:14px; align-items:start; min-width:0; }
 .mp-board-panel { min-width:0; padding:9px; border:1px solid #a58a58; border-radius:17px; background:linear-gradient(145deg,#15596a,#0d4657 70%,#143f50); box-shadow:inset 0 2px 8px #061e2b55,0 7px 17px #293d4725; }
-.mp-board-grid { position:relative; display:grid; grid-template-columns:72px repeat(9,minmax(0,1fr)) 72px; grid-template-rows:72px repeat(9,minmax(0,1fr)) 72px; gap:4px; width:min(100%,560px,calc(100dvh - 220px)); aspect-ratio:1; margin-inline:auto; padding:4px; overflow:hidden; border:1px solid #c8ae76; border-radius:12px; background-color:#c7dfd8; background-image:radial-gradient(#fff9 .75px,transparent .8px),linear-gradient(145deg,#c7e0d9,#b7d7d3); background-size:13px 13px,auto; }
+.mp-board-grid { position:relative; display:grid; grid-template-columns:72px repeat(9,minmax(0,1fr)) 72px; grid-template-rows:72px repeat(9,minmax(0,1fr)) 72px; gap:4px; width:min(100%,820px); aspect-ratio:1; margin-inline:auto; padding:4px; overflow:hidden; border:1px solid #c8ae76; border-radius:12px; background-color:#c7dfd8; background-image:radial-gradient(#fff9 .75px,transparent .8px),linear-gradient(145deg,#c7e0d9,#b7d7d3); background-size:13px 13px,auto; }
 .mp-board-grid--18 { grid-template-columns:repeat(6,minmax(0,1fr)); grid-template-rows:repeat(5,minmax(0,1fr)); aspect-ratio:6/5; }
 .mp-tile { --mp-group-color:#78958a; position:relative; z-index:0; display:flex; flex-direction:column; min-width:0; min-height:0; width:auto; overflow:hidden; padding:5px 5px 4px; border:1px solid #d9c8a6; border-radius:8px; background:linear-gradient(145deg,#fffef9,#f4ead6); box-shadow:0 2px 5px #0d29301c,inset 0 1px 0 #fff; color:#233e47; font:inherit; text-align:left; transition:transform 160ms ease,border-color 180ms ease,box-shadow 180ms ease; }
 .mp-tile-content { position:relative; z-index:1; display:flex; flex:1; flex-direction:column; min-width:0; min-height:0; }
@@ -336,7 +336,8 @@
 .mp-city-effect { position:absolute; z-index:4; right:1px; top:18px; display:flex; align-items:center; padding:1px; background:#fff6dbed; border:1px solid #ba9453; border-radius:5px; font-size:8px; font-weight:900; pointer-events:none; }
 .mp-city-effect svg { width:19px; height:19px; }
 @media (min-width: 1100px) {
-  .mp-board-grid:not(.mp-board-grid--18) { width:min(100%,680px,calc(100dvh - 220px)); }
+  .mp-board-grid:not(.mp-board-grid--18) { width:min(100%,900px); }
+  .mp-board-grid--18 { width:min(100%,820px); }
   .mp-tile--horizontal .mp-property-tile-art { width:38px; height:25px; }
   .mp-tile--horizontal .mp-property-tile-copy .mp-tile-name { font-size:10px; line-height:1.1; }
   .mp-tile--west .mp-property-tile-art,.mp-tile--east .mp-property-tile-art { width:30px; height:32px; }
@@ -374,7 +375,7 @@
   .is-modern .mp-brand p { margin:0; font-size:10px; }
   .is-modern .mp-turn-badge { min-height:30px; padding:4px 9px; }
   .is-modern .mp-board-panel { padding:7px; }
-  .is-modern .mp-board-grid--40 { width:100%; height:min(900px,calc(var(--mp-available-height, 600px) - 16px)); grid-template-columns:clamp(118px,14.5%,148px) repeat(9,minmax(0,1fr)) clamp(118px,14.5%,148px); grid-template-rows:clamp(82px,13%,104px) repeat(9,minmax(0,1fr)) clamp(82px,13%,104px); aspect-ratio:auto; }
+  .is-modern .mp-board-grid--40 { width:min(100%,900px); height:min(900px,calc(var(--mp-available-height, 600px) - 16px)); grid-template-columns:clamp(110px,13.5%,132px) repeat(9,minmax(0,1fr)) clamp(110px,13.5%,132px); grid-template-rows:clamp(78px,12%,100px) repeat(9,minmax(0,1fr)) clamp(78px,12%,100px); aspect-ratio:auto; }
   .is-modern .mp-dashboard { align-content:start; }
   .is-modern .mp-dashboard > .mp-turn-panel { order:2; }
   .is-modern .mp-dashboard > .mp-pawn-picker-shell { order:3; }
@@ -386,13 +387,13 @@
   .is-modern .mp-tile--west .mp-property-tile-view,.is-modern .mp-tile--east .mp-property-tile-view { grid-template-columns:42px minmax(0,1fr); gap:3px; }
   .is-modern .mp-tile--west .mp-property-tile-copy,.is-modern .mp-tile--east .mp-property-tile-copy { grid-template-columns:minmax(0,1fr) auto; grid-template-rows:1fr; align-items:center; gap:1px; }
   .is-modern .mp-tile--west .mp-property-tile-art,.is-modern .mp-tile--east .mp-property-tile-art { width:40px; height:min(40px,100%); }
-  .is-modern .mp-tile--west .mp-property-tile-copy .mp-tile-name,.is-modern .mp-tile--east .mp-property-tile-copy .mp-tile-name { font-size:12px; line-height:1.05; white-space:normal; -webkit-line-clamp:2; }
+  .is-modern .mp-tile--west .mp-property-tile-copy .mp-tile-name,.is-modern .mp-tile--east .mp-property-tile-copy .mp-tile-name { font-size:13px; line-height:1.05; white-space:normal; -webkit-line-clamp:2; }
   .is-modern .mp-tile--west .mp-property-tile-copy .mp-tile-economy b,.is-modern .mp-tile--east .mp-property-tile-copy .mp-tile-economy b { width:fit-content; max-width:none; min-height:0; padding:1px 1px; font-size:11px; line-height:1; white-space:nowrap; }
   .is-modern .mp-tile--horizontal .mp-tile-top { position:absolute; top:2px; right:3px; min-height:0; font-size:8px; line-height:1; }
   .is-modern .mp-tile--horizontal .mp-property-tile-view { display:flex; flex-direction:column; align-items:center; justify-content:center; width:100%; height:100%; margin:0; }
   .is-modern .mp-tile--horizontal .mp-property-tile-art { width:min(64px,100%); height:clamp(34px,4.9vh,44px); }
   .is-modern .mp-tile--horizontal .mp-property-tile-copy { align-items:center; gap:1px; }
-  .is-modern .mp-tile--horizontal .mp-property-tile-copy .mp-tile-name { position:relative; left:0; width:100%; max-width:100%; flex:none; min-height:2.25em; font-size:12px; line-height:1.05; white-space:normal; overflow-wrap:normal; word-break:normal; text-wrap:wrap; text-overflow:clip; }
+  .is-modern .mp-tile--horizontal .mp-property-tile-copy .mp-tile-name { position:relative; left:0; width:100%; max-width:100%; flex:none; min-height:2.25em; font-size:13px; line-height:1.05; white-space:normal; overflow-wrap:normal; word-break:normal; text-wrap:wrap; text-overflow:clip; }
   .is-modern .mp-tile--west .mp-property-tile-copy .mp-tile-name,.is-modern .mp-tile--east .mp-property-tile-copy .mp-tile-name { min-height:2.25em; text-wrap:wrap; }
   .is-modern .mp-tile--horizontal .mp-property-tile-copy .mp-tile-economy b { font-size:11px; line-height:1.05; }
   .is-modern .mp-tile--west .mp-building-badge,.is-modern .mp-tile--east .mp-building-badge { right:auto; left:0; bottom:0; width:12px; height:12px; }

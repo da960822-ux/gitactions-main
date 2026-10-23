@@ -388,7 +388,7 @@ describe('MinhwatuTable public view', () => {
   it('allocates compact two-row geometry for fourteen public cards and bounded geometry for a dense field without regrouping identities', () => {
     const state = minhwatuEngine.createInitialState(94);
     const all = [...state.hands.p1, ...state.hands.p2, ...state.table, ...state.deck];
-    for (const [count, columns, width] of [[8, 4, 58], [14, 7, 54], [18, 6, 36], [36, 12, 36], [48, 12, 25]]) {
+    for (const [count, columns, width] of [[8, 4, 58], [14, 7, 56], [18, 6, 42], [36, 12, 42], [48, 12, 36]]) {
       // These larger public views stress layout; they do not introduce another game rule.
       const view = { ...minhwatuEngine.getPlayerView(state, 'p1'), board: { ...minhwatuEngine.getPlayerView(state, 'p1').board, table: all.slice(0, count) } };
       const html = renderToStaticMarkup(createElement(MinhwatuTable, { view, playerId: 'p1', language: 'es', runAction: vi.fn() }));

@@ -207,8 +207,9 @@
   .cm-table .cm-artboard-head { min-height: 48px; padding: 6px 12px; }
   .cm-table .cm-artboard-head p { display: none; }
   .cm-table .cm-play-area { min-height: 0; }
-  .cm-table .cm-canvas { flex: 0 0 auto; min-height: 0; aspect-ratio: 5/3; }
+  .cm-table .cm-canvas { flex: 0 0 auto; width: min(100%, var(--cm-canvas-max-width, 100%)); min-width: 584px; min-height: 0; aspect-ratio: 5/3; align-self: center; }
   .cm-table .cm-canvas canvas { min-height: 0; height: 100%; }
+  .cm-table .cm-guess-section { flex: 0 0 auto; }
   .cm-table .cm-guess-section { min-height: 44px; }
   .cm-table .cm-guess-list { max-height: 64px; }
   .cm-table .cm-tools { padding: 9px; }
@@ -281,3 +282,67 @@
 .cm-advanced-settings > summary { display: flex; align-items: center; justify-content: space-between; min-height: 44px; color: var(--ink-soft); font-size: 12px; font-weight: 650; cursor: pointer; }
 .cm-advanced-settings[open] > summary { padding-bottom: 7px; border-bottom: 1px solid #eeeae1; }
 .cm-advanced-content { display: grid; gap: 9px; padding-top: 9px; }
+
+@media (min-width: 1024px) and (pointer: fine) {
+  .cm-play-area { grid-template-columns: minmax(0, 1fr) clamp(250px, 24vw, 300px); }
+  .cm-artboard-head p { display: block; font-size: 12px; }
+  .cm-side-heading .cm-eyebrow,
+  .cm-player-row > span:nth-child(2) b,
+  .cm-player-row > span:nth-child(2) small,
+  .cm-player-row > strong small,
+  .cm-guess-title,
+  .cm-guess-list > p,
+  .cm-guess-row,
+  .cm-side-tip p,
+  .cm-finish-card > small { font-size: 12px; }
+  .cm-player-row { min-height: 44px; }
+  .cm-guess-list { max-height: 90px; }
+  .cm-side-tip { padding: 12px; }
+  .cm-color { width: 36px; height: 36px; }
+  .cm-tool-actions button { justify-content: center; min-width: 44px; }
+  .cm-canvas-tip { font-size: 14px; }
+  .cm-canvas-placeholder > small { font-size: 14px; }
+}
+
+@media (max-width: 760px) {
+  .cm-artboard-head p,
+  .cm-player-row > span:nth-child(2) b,
+  .cm-player-row > span:nth-child(2) small,
+  .cm-player-row > strong small,
+  .cm-guess-title,
+  .cm-guess-list > p,
+  .cm-guess-row,
+  .cm-side-tip p { font-size: 12px; }
+  .cm-color { width: 36px; height: 36px; }
+  .cm-word-choices button > span:nth-child(2) { font-size: 12px; overflow-wrap: anywhere; }
+  .cm-word-choices button { min-height: 44px; }
+}
+
+@media (min-width: 1024px) and (max-height: 850px) and (pointer: fine) {
+  .cm-table { gap: 4px; padding-top: 5px; padding-bottom: 5px; }
+  .cm-table .cm-topbar { min-height: 42px; padding: 3px 8px; }
+  .cm-table .cm-round-label { display: flex; align-items: baseline; gap: 7px; min-width: 0; white-space: nowrap; }
+  .cm-table .cm-round-label > span { font-size: 9px; letter-spacing: .05em; }
+  .cm-table .cm-round-label > strong { font-size: 16px; }
+  .cm-table .cm-round-label > small:not(.cm-phase-label) { display: none; }
+  .cm-table .cm-phase-label { max-width: 115px; min-height: 0; font-size: 10px; }
+  .cm-table .cm-score { padding: 3px 7px; }
+  .cm-table .cm-timer { min-height: 32px; padding: 4px 8px; }
+  .cm-table .cm-side-heading { gap: 2px; padding: 4px 10px; }
+  .cm-table .cm-side-heading > b { font-size: 13px; }
+  .cm-table .cm-guess-section { min-height: 0; grid-template-rows: auto auto; margin: 0 8px; }
+  .cm-table .cm-guess-title { padding: 3px 1px 2px; }
+  .cm-table .cm-guess-list { max-height: 48px; gap: 3px; padding: 0; }
+  .cm-table .cm-guess-list > p { margin: 0; line-height: 1.25; }
+  .cm-table .cm-tools { padding: 5px 8px; }
+  .cm-table .cm-tools-head { margin-bottom: 4px; padding-bottom: 3px; }
+  .cm-table .cm-tool-modes { gap: 4px; margin-bottom: 4px; }
+  .cm-table .cm-tool-modes button { padding: 2px; }
+  .cm-table .cm-color-target { gap: 4px; margin: 3px 0; }
+  .cm-table .cm-color-target button { padding: 3px; }
+  .cm-table .cm-color-grid { gap: 4px; padding: 4px; }
+  .cm-table .cm-secondary-row { margin-top: 3px; line-height: 1.2; }
+  .cm-table .cm-eraser { margin-top: 4px; padding-top: 2px; padding-bottom: 2px; }
+  .cm-table .cm-width-control { gap: 2px; margin-top: 4px; }
+  .cm-table .cm-tool-actions { margin-top: 3px; padding-top: 3px; }
+}

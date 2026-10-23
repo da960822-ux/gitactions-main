@@ -660,3 +660,14 @@
   .sp-splendor .sp-card-art,.sp-splendor .sp-card-details { min-height: 120px; }
   .sp-splendor .sp-card-details { gap: 2px; padding: 3px; }
 }
+
+@media (min-width: 1200px) and (hover: hover) and (pointer: fine) {
+  .sp-splendor { --sp-market-card-height: clamp(120px, calc(22dvh - 49px), 178px); }
+  .sp-splendor .sp-card { grid-template-columns: minmax(90px,44%) minmax(0,1fr); grid-template-rows: minmax(var(--sp-market-card-height),auto); min-height: calc(var(--sp-market-card-height) + 6px); }
+  .sp-splendor .sp-card-art,.sp-splendor .sp-card-details { min-height: var(--sp-market-card-height); }
+  .sp-splendor .sp-card-details > .sp-bonus-label { font-size: 14px; }
+  .sp-splendor .sp-card-details > .sp-card-prestige { font-size: 18px; }
+  .sp-splendor .sp-card-cost-chip,.sp-splendor .sp-card-cost-chip b { font-size: 14px; }
+  .sp-splendor .sp-card-cost-chip .sp-gem-icon { width: 18px; height: 18px; flex-basis: 18px; }
+  .sp-splendor .sp-card-cost-label,.sp-splendor .sp-card-select-hint { font-size: 11px; }
+}

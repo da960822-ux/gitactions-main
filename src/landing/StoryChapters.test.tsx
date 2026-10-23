@@ -1,6 +1,6 @@
 import {describe,it,expect} from 'vitest';
 import {renderToStaticMarkup} from 'react-dom/server';
-import {StoryChapters} from '../../post-hero-preview/src/StoryChapters';
+import {StoryChapters} from './story/StoryChapters';
 
 describe('personal post-room story content',()=>{
  it.each(['ko','es']as const)('connects actual cities, useful time choice and conditional couple reactions in %s',language=>{

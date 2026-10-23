@@ -1,8 +1,0 @@
-{
-  "inputMean": 0.5,
-  "outputMean": 0.49993905425071716,
-  "meanAbsoluteError": 0.0002782526717055589,
-  "maxAbsoluteError": 0.03177112340927124,
-  "interiorMaxAbsoluteError": 0.0005776584148406982,
-  "note": "Neural denoiser is not identity even on a noise-free constant. Raw data retained; actual visual comparison is required."
-}

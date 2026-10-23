@@ -1,7 +1,7 @@
 import {afterEach,describe,expect,it,vi} from 'vitest';
 import {renderToStaticMarkup} from 'react-dom/server';
 import {Landing} from './Landing';
-import {PostHeroPreview} from '../../post-hero-preview/src/PostHeroPreview';
+import {PostHeroPreview} from './story/PostHeroPreview';
 import {landingCopy} from '../copy/home';
 
 vi.mock('./LandingWorldHost',()=>({LandingWorldHost:()=>null}));
@@ -19,7 +19,7 @@ describe('landing navigation',()=>{
 describe('main narrative content remains present without opening optional discoveries',()=>{
  for(const language of ['ko','es'] as const)it(language,()=>{
   vi.stubGlobal('matchMedia',()=>({matches:false}));
-  const html=renderToStaticMarkup(<PostHeroPreview embedded renderScene={false} language={language}/>);
+  const html=renderToStaticMarkup(<PostHeroPreview embedded language={language}/>);
   for(const id of ['distance','time-difference','shared-place','letter-scene','papi-letter','letter-journey-end'])expect(html.match(new RegExp(`id="${id}"`,'g'))).toHaveLength(1);
   expect(html).not.toContain('id="together-again"');
   expect(html).not.toContain('id="rose-gift-finale"');
@@ -38,7 +38,7 @@ describe('letter entry points name the actual action',()=>{
   ['es','Abrir el sobre','Leerla directamente','Abrirla juntos en una sala'],
  ] as const)it(language,()=>{
   vi.stubGlobal('matchMedia',()=>({matches:false}));
-  const html=renderToStaticMarkup(<PostHeroPreview embedded renderScene={false} language={language}/>);
+  const html=renderToStaticMarkup(<PostHeroPreview embedded language={language}/>);
   expect(html).toContain(`>${envelope}<span aria-hidden="true">`);
   expect(html).toContain(`>${direct}</a>`);
   expect(html).toContain(`>${shared}</button>`);

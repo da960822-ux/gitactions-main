@@ -108,7 +108,7 @@ export function MinhwatuTable({ view, language, playerId, playerNames, runAction
     && (motionEvent?.type === 'play' && !presentation.step?.targetId || motionEvent?.type === 'draw' && presentation.step?.transfer && !presentation.step.targetId));
   const fieldCount = table.length + Number(needsTableLanding);
   const fieldColumns = fieldCount <= 8 ? 4 : fieldCount <= 12 ? 6 : fieldCount <= 14 ? 7 : fieldCount <= 18 ? 6 : fieldCount <= 24 ? 8 : fieldCount <= 30 ? 10 : 12;
-  const fieldCardWidth = fieldCount <= 8 ? 58 : fieldCount <= 14 ? 54 : fieldCount <= 36 ? 36 : 25;
+  const fieldCardWidth = fieldCount <= 8 ? 58 : fieldCount <= 14 ? 56 : fieldCount <= 36 ? 42 : 36;
   const fieldGap = fieldCount <= 14 ? 10 : 4;
 
   const instruction = displayBusy ? text(language, '패가 자리를 옮기고 있어요.', 'Las cartas se están moviendo.')
