@@ -3,7 +3,7 @@ import type { Language, PlayerId, GameId, GameAction } from '../core/types';
 import { gameCatalog, getGame } from '../games/catalog';
 import { gameRules, marbleLegacyRules, marbleCreditRules, marbleTieredRules, marbleExpandedRules, dominoPremiumRules } from '../games/rules';
 import { BrandHeader } from './App';
-import { Link, navigate } from './Router';
+import { Link, navigate, roomHref } from './Router';
 import DominoBoard from './DominoBoard';
 import MarbleBoard from './MarbleBoard';
 import CatchmindTable from './CatchmindTable';
@@ -98,7 +98,7 @@ function Lobby({ api, desktopDisplay }: { api: Api; desktopDisplay: boolean }) {
     event.preventDefault(); setError('');
     if (!nickname.trim()) { setError(text(language, '게임방에서 사용할 별명을 적어 주세요.', 'Escribe el nombre que usarás en el juego.')); return; }
     setBusy(true);
-    try { writeBrowserStorage('dos-nickname', nickname.trim()); const id = await api.createRoom(nickname.trim(), language); if (selected) await api.selectGame(selected); navigate(`/room/${encodeURIComponent(id)}`); }
+    try { writeBrowserStorage('dos-nickname', nickname.trim()); const id = await api.createRoom(nickname.trim(), language); if (selected) await api.selectGame(selected); navigate(roomHref(id)); }
     catch (cause) { setError(errorMessage(cause, language)); }
     finally { setBusy(false); }
   };
@@ -106,7 +106,7 @@ function Lobby({ api, desktopDisplay }: { api: Api; desktopDisplay: boolean }) {
     event.preventDefault(); setError('');
     if (!nickname.trim() || !roomCode.trim()) { setError(text(language, '별명과 초대 코드를 입력해 주세요.', 'Escribe tu nombre y el código de invitación.')); return; }
     setBusy(true);
-    try { writeBrowserStorage('dos-nickname', nickname.trim()); const id = roomIdentifier(roomCode); await api.joinRoom(id, nickname.trim(), language); navigate(`/room/${encodeURIComponent(id)}`); }
+    try { writeBrowserStorage('dos-nickname', nickname.trim()); const id = roomIdentifier(roomCode); await api.joinRoom(id, nickname.trim(), language); navigate(roomHref(id)); }
     catch (cause) { setError(errorMessage(cause, language)); }
     finally { setBusy(false); }
   };
@@ -447,9 +447,9 @@ export function statusLabel(view: any, player: PlayerId, language: Language, gam
 function languageLabel(language: Language) { return language === 'ko' ? '한국어' : 'Español · RD'; }
 function initial(name: string) { return [...name][0] || '?'; }
 function formatTime(value: string) { const date = new Date(value); return Number.isNaN(date.valueOf()) ? '' : date.toLocaleTimeString(undefined, { hour: '2-digit', minute: '2-digit' }); }
-function roomIdentifier(input: string) {
+export function roomIdentifier(input: string) {
   const value = input.trim();
-  try { const url = new URL(value, window.location.origin); const match = url.pathname.match(/^\/room\/([^/]+)\/?$/); if (match) return decodeURIComponent(match[1]); } catch { /* Keep the entered room code below. */ }
+  try { const url = new URL(value, window.location.origin); const room = url.pathname === '/play' ? url.searchParams.get('room') : null; if (room) return room; const match = url.pathname.match(/^\/room\/([^/]+)\/?$/); if (match) return decodeURIComponent(match[1]); } catch { /* Keep the entered room code below. */ }
   return value.replace(/^\/+|\/+$/g, '');
 }
 function errorMessage(cause: unknown, language: Language) {
