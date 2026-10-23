@@ -4,8 +4,22 @@ import { describe, expect, it } from 'vitest';
 import { MINHWATU_GODORI_BONUS } from '../games/minhwatu';
 import { GameGuide } from './PlayApp';
 import { MinhwatuGuide } from './MinhwatuGuide';
+import { existsSync, readFileSync } from 'node:fs';
 
 describe('Minhwatu illustrated guide', () => {
+  it.each(['ko', 'es'] as const)('connects the real attribution records from the %s guide', language => {
+    const html = renderToStaticMarkup(<MinhwatuGuide language={language}/>);
+    expect(html).toContain(language === 'ko' ? '카드 그림 출처' : 'Créditos de las cartas');
+    expect(html).toContain('Spenĉjo');
+    expect(html).toContain('Marcus Richert');
+    expect(html).toContain('Louie Mantia, Jr.');
+    expect(html).toContain('https://creativecommons.org/licenses/by-sa/4.0/');
+    for (const path of ['/images/hwatu/ATTRIBUTION.txt', '/images/hwatu/source-verification.json']) {
+      expect(html).toContain(`href="${path}"`);
+      expect(existsSync(`public${path}`)).toBe(true);
+    }
+    expect(readFileSync('public/images/hwatu/ATTRIBUTION.txt', 'utf8')).toContain('source-verification.json');
+  });
   it('explains the real 0–3 match outcomes with all pictured cards and localized turn steps', () => {
     const ko = renderToStaticMarkup(<MinhwatuGuide language="ko"/>);
     const es = renderToStaticMarkup(<MinhwatuGuide language="es"/>);

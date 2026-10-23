@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useLayoutEffect, useRef, useState } from 'react';
 import type { GameAction, Language, PlayerId } from '../core/types';
 import { GameValue } from './GameValue';
 import DaVinciTable from './DaVinciTable';
@@ -221,6 +221,12 @@ export function deriveSplendorVisualEvent(previous: any, next: any, viewer: Play
   return { key: `${viewer}:${signature}`, viewer, kind, marketArrivals, reservedArrivals, incomingTokens, incomingCounts, outgoingCounts, ...(reserveGoldCount ? { reserveGoldCount } : {}), bonusGem, turnChanged, ...(purchasedCard ? { purchasedCard } : {}), ...(nobleAwarded ? { nobleAwarded, nobleRecipient, ...(nobleId ? { nobleId, noblePoints: Number(nobleData.points ?? 3) } : {}) } : {}), ...(result ? { result } : {}) };
 }
 
+export function restoreSplendorCardFocus(root: HTMLElement | null, previous: HTMLElement | null, cardId?: string) {
+  if (!root || !previous || previous.isConnected || root.ownerDocument.activeElement !== root.ownerDocument.body) return;
+  const reservedCard = Array.from(root.querySelectorAll<HTMLElement>('[data-source-zone="reserved"][data-card-id]')).find(card => card.dataset.cardId === cardId);
+  (reservedCard ?? root.querySelector<HTMLElement>('[data-sp-zone="market"] [data-card-id]'))?.focus();
+}
+
 function SplendorTable({ view, language, playerId, roomId = null, version = 0, desktopDisplay = true, runAction }: Props) {
   const board = record(view?.board), hand = record(view?.ownHand), choices: Choice[] = array(view?.actions);
   const bank = record(board.bank), market = record(board.market), nobles = record(board.nobles), scores = record(board.score);
@@ -228,6 +234,7 @@ function SplendorTable({ view, language, playerId, roomId = null, version = 0, d
   const tokens = record(hand.tokens), owned = record(hand.bonuses), reserved = array(hand.reserved);
   const [picked, setPicked] = useState<string[]>([]), [returnDraft, setReturnDraft] = useState<Record<string, number>>({}), [selectedDoubleGem, setSelectedDoubleGem] = useState<string | null>(null), [reserveChoices, setReserveChoices] = useState<Record<string, number>>({}), [selectedCard, setSelectedCard] = useState<{ id: string; source: 'market' | 'reserved' | 'deck'; tier?: number; viewer: PlayerId; roomId: string | null; version: number } | null>(null);
   const actionPanelRef = useRef<HTMLElement | null>(null), cardFocusReturnRef = useRef<HTMLElement | null>(null);
+  const tableRef = useRef<HTMLDivElement | null>(null), cardInteractionFocusRef = useRef<HTMLElement | null>(null);
   const enterPanelFocusRef = useRef(false), returnCardFocusRef = useRef(false);
   const previous = useRef<{ viewer: PlayerId; view: any; version: number; roomId: string | null } | null>(null);
   const eventTimer = useRef<number | null>(null);
@@ -257,6 +264,7 @@ function SplendorTable({ view, language, playerId, roomId = null, version = 0, d
     takeChoices.length > 0, choices.some(choice => choice.action.type === 'takeTwo'), requiredTakeReturns);
   const resetKey = [view?.turn, ...gems.map(gem => Number(bank[gem] ?? 0)), ...gems.map(gem => Number(tokens[gem] ?? 0)), Number(tokens.gold ?? 0), scoreTotal, reserved.map((card: any) => card.id).join(',')].join(':');
   useEffect(() => { setPicked([]); setReturnDraft({}); setSelectedDoubleGem(null); setReserveChoices({}); }, [resetKey]);
+  useLayoutEffect(() => { if (!returnCardFocusRef.current) restoreSplendorCardFocus(tableRef.current, cardInteractionFocusRef.current, selectedCard?.id); }, [view, selectedCard?.id]);
   useEffect(() => {
     if (!selectedCard) {
       if (returnCardFocusRef.current) {
@@ -357,7 +365,10 @@ function SplendorTable({ view, language, playerId, roomId = null, version = 0, d
   const marketArrivals = new Set(shownEvent?.marketArrivals ?? []), reservedArrivals = new Set(shownEvent?.reservedArrivals ?? []);
   const scoreKey = `${playerId}:splendor`;
   const title = copy(language, '스플렌더', 'Splendor');
-  return <div className="table-game sp-splendor" aria-label={copy(language, '스플렌더 게임판', 'Mesa de Splendor')} onClick={event=>{if(event.target===event.currentTarget||(event.target instanceof Element&&event.target.closest('.sp-card-empty')))setSelectedCard(null);}}>
+  return <div ref={tableRef} className="table-game sp-splendor" aria-label={copy(language, '스플렌더 게임판', 'Mesa de Splendor')}
+    onFocusCapture={event => { cardInteractionFocusRef.current = event.target instanceof HTMLElement && event.target.closest('.sp-action-panel,[data-card-id]') ? event.target : null; }}
+    onBlurCapture={event => { if (!event.currentTarget.contains(event.relatedTarget)) cardInteractionFocusRef.current = null; }}
+    onClick={event=>{if(event.target===event.currentTarget||(event.target instanceof Element&&event.target.closest('.sp-card-empty')))setSelectedCard(null);}}>
     <header className="sp-scorebar">
       <div className="sp-title"><span>{title}</span><small>{copy(language, '보석을 모아 개발 카드를 얻고, 먼저 15점에 도달하세요.', 'Reúne gemas, compra desarrollos y alcanza 15 puntos.')}</small></div>
       {(['p1', 'p2'] as const).map((seat) => <div className={`sp-player-score ${seat === playerId ? 'is-you' : ''} ${view?.turn === seat ? 'is-active' : ''}`} data-sp-score-seat={seat} key={seat}>

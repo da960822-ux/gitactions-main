@@ -22,6 +22,8 @@
   font-variant-numeric: tabular-nums;
 }
 .marble-premium *, .marble-premium *::before, .marble-premium *::after { box-sizing: border-box; }
+.mp-action-skip { position:absolute; width:1px; height:1px; overflow:hidden; clip-path:inset(50%); white-space:nowrap; }
+.mp-action-skip:focus { position:relative; width:fit-content; height:auto; overflow:visible; clip-path:none; padding:8px 12px; border:1px solid var(--mp-teal); border-radius:7px; background:var(--mp-paper); color:var(--mp-teal-deep); font-weight:750; }
 .marble-premium button, .marble-premium select { font: inherit; touch-action: manipulation; }
 .marble-premium :is(button,select,summary):focus-visible { outline: 3px solid #b6772b; outline-offset: 3px; }
 .mp-header { display:flex; align-items:center; justify-content:space-between; gap:18px; min-width:0; }

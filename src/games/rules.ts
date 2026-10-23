@@ -133,7 +133,7 @@ export const gameRules: Record<GameId, LocalizedRules> = {
     ko: [
       '목표 — 번갈아 출제자와 맞히는 사람이 되어 그림을 보고 단어를 맞히세요. 기본 설정은 6라운드이며 두 사람 모두 세 번씩 그립니다.',
       '준비 — 호스트가 주제 하나를 골라 설정을 저장하면 출제자에게만 단어 보기가 나와요. 기본은 3개 보기와 80초이며 시간은 30~180초로 바꿀 수 있어요. 맞히는 화면에는 한국어 □ / 스페인어 ? 마스크가 고정 표시되고 글자가 점차 드러나지 않아요.',
-      '그리기 — 캔버스에 마우스나 손가락으로 그립니다. 펜 색·굵기, 지우개, 채우기, 실행 취소, 전체 지우기를 사용할 수 있어요. 기본 색·보조 색을 먼저 고른 뒤 색상을 선택해요. 색 바꾸기로 두 색을 바꿀 수 있어요. 출제자는 정답을 말하거나 글자로 쓰지 말고 그림으로 설명해 주세요.',
+      '그리기 — 캔버스에 마우스나 손가락으로 그립니다. 펜 색·굵기, 지우개, 채우기, 실행 취소, 전체 지우기를 사용할 수 있어요. 기본 색·보조 색을 먼저 고른 뒤 색상을 선택해요. 색 바꾸기로 두 색을 바꿀 수 있어요. 키보드: 화살표 이동, Space 그리기/멈춤, Enter 채우기·색 선택·점 찍기, Esc 선 마침, Tab 나가기. 출제자는 정답을 말하거나 글자로 쓰지 말고 그림으로 설명해 주세요.',
       '맞히기 — 맞히는 사람은 방의 공유 채팅 입력란에 한국어나 스페인어로 답을 보내요. 기본 표기와 사전에 등록된 별칭만 인정하며 대소문자와 양끝 공백은 무시해요. 등록된 별칭이 없는 악센트·ñ·ü를 임의로 바꾸거나 비슷한 단어를 쓰면 정답으로 처리하지 않아요.',
       '점수 — 정답을 맞히면 출제자에게 1점, 맞힌 사람에게 남은 시간에 따라 1~3점이 들어옵니다. 출제자는 ‘이 단어 건너뛰기’ 또는 ‘라운드 마치기’를 눌러 정답 공개와 다음 차례로 넘어갈 수 있어요.',
       '끝내기 — 역할은 매 라운드 바뀝니다. 기본 6라운드 뒤 점수가 높은 사람이 이깁니다. 시작 전에 호스트만 주제·라운드 수·시간·보기·글자 수 표시와 직접 입력한 단어를 바꿀 수 있어요. 시작 후 설정은 잠기고, 다시 하기는 두 사람 모두 수락해야 해요.',
@@ -141,7 +141,7 @@ export const gameRules: Record<GameId, LocalizedRules> = {
     es: [
       'Objetivo — Se turnan para dibujar y adivinar. La configuración inicial tiene 6 rondas: cada persona dibuja tres veces.',
       'Preparación — La persona anfitriona elige y guarda una categoría; solo quien dibuja ve las opciones. Por defecto hay 3 opciones y 80 segundos, ajustables entre 30 y 180. Quien adivina ve una máscara fija en coreano □ / español ?, sin revelar letras progresivamente.',
-      'Dibujo — Dibuja en el lienzo con el mouse o el dedo. Puedes cambiar color y grosor, usar borrador, rellenar, deshacer o borrar todo. Elige «Color principal» o «Color secundario» antes de escoger un color; «Intercambiar colores» los cambia entre sí. Explica con dibujos; quien dibuja no debe escribir ni decir la respuesta.',
+      'Dibujo — Dibuja en el lienzo con el mouse o el dedo. Puedes cambiar color y grosor, usar borrador, rellenar, deshacer o borrar todo. Elige «Color principal» o «Color secundario» antes de escoger un color; «Intercambiar colores» los cambia entre sí. Teclado: flechas mueven; Espacio dibuja/para; Enter rellena, elige color o dibuja un punto; Esc termina el trazo; Tab sale del lienzo. Explica con dibujos; quien dibuja no debe escribir ni decir la respuesta.',
       'Adivinar — La persona que adivina responde en el chat compartido de la sala, en coreano o español. Se acepta la forma base o un alias registrado en el diccionario, ignorando mayúsculas y espacios al inicio o al final. No se eliminan tildes, ñ o ü ni se aceptan aproximaciones salvo un alias registrado. Las respuestas incorrectas no revelan la palabra.',
       'Puntos — Al acertar, quien dibuja recibe 1 punto y quien adivinó gana de 1 a 3 según el tiempo restante. Quien dibuja también puede pulsar «Pasar palabra» o «Terminar ronda» para revelar la respuesta y avanzar.',
       'Final — Los papeles cambian en cada ronda. Tras las 6 rondas iniciales, gana quien tenga más puntos. Antes de empezar, solo la persona anfitriona cambia categoría, rondas, tiempo, opciones, longitud visible y palabras propias. Los ajustes se bloquean al empezar y ambos deben aceptar una revancha.',

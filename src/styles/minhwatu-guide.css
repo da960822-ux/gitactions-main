@@ -28,9 +28,12 @@
 .minhwatu-guide-face figcaption { color: #ddcbd3; font-size: 13px; font-variant-numeric: tabular-nums; line-height: 1.1; white-space: nowrap; }
 .minhwatu-match-case > p { margin-top: 6px; color: #eee2e3; font-size: 13px; line-height: 1.4; }
 .minhwatu-guide-end { color: #ddcbd3; font-size: 13px; line-height: 1.4; }
-.minhwatu-guide-details { border-top: 1px solid #50394a; padding-top: 8px; }
-.minhwatu-guide-details summary { width: fit-content; color: #f1d9d9; font-size: 13px; font-weight: 650; cursor: pointer; }
-.minhwatu-guide-details summary:focus-visible { outline: 2px solid #e5c674; outline-offset: 3px; border-radius: 2px; }
+.minhwatu-guide-details,.minhwatu-guide-credits { border-top: 1px solid #50394a; padding-top: 8px; }
+.minhwatu-guide :is(.minhwatu-guide-details,.minhwatu-guide-credits) summary { width: fit-content; color: #f1d9d9; font-size: 13px; font-weight: 650; cursor: pointer; }
+.minhwatu-guide :is(.minhwatu-guide-details,.minhwatu-guide-credits) summary:focus-visible { outline: 2px solid #e5c674; outline-offset: 3px; border-radius: 2px; }
+.minhwatu-guide-credits p { margin-top: 10px; color: #ddcbd3; font-size: 13px; line-height: 1.5; }
+.minhwatu-guide-credits nav { display: flex; flex-wrap: wrap; gap: 8px 16px; margin-top: 10px; }
+.minhwatu-guide-credits a { color: #f2d79d; font-size: 13px; line-height: 1.5; text-underline-offset: 3px; }
 .minhwatu-guide-detail-block { min-width: 0; margin-top: 12px; }
 .minhwatu-guide-detail-block h4 { margin: 0 0 7px; color: #f5e5df; font-size: 13px; }
 .minhwatu-category-grid { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 7px; }
@@ -78,4 +81,15 @@
 .minhwatu-match-outcome > b { color: #f2d79d; }
 .minhwatu-match-outcome > span { padding: 2px 6px; border: 1px solid #826b4e; border-radius: 999px; color: #fff0c0; background: #332b2a; font-size: 11px; font-weight: 700; }
 .minhwatu-guide-face.is-selected img { box-shadow: 0 0 0 2px #e5c674, 0 3px 7px #08060b78; }
+}
+
+.minhwatu-guide-face__fallback { display: block; width: 48px; }
+.minhwatu-guide-face__fallback .gb-hwatu-face-fallback { aspect-ratio: auto; min-height: 82px; gap: 2px; padding: 4px 2px; }
+.minhwatu-guide-face.is-selected .minhwatu-guide-face__fallback { outline: 2px solid #e5c674; outline-offset: 1px; }
+
+@media (max-width: 700px) {
+  .minhwatu-guide-face__fallback { width: 35px; }
+}
+@media (max-width: 420px) {
+  .minhwatu-guide-face__fallback { width: 40px; }
 }

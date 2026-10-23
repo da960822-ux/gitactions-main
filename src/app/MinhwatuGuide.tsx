@@ -1,5 +1,7 @@
 import type { Language } from '../core/types';
+import { useState } from 'react';
 import { MINHWATU_GODORI_BONUS } from '../games/minhwatu';
+import { HwatuFaceFallback } from './HwatuCard';
 import '../styles/minhwatu-guide.css';
 
 type FaceInfo = { name: Record<Language, string>; kind: Record<Language, string>; points: number };
@@ -22,13 +24,17 @@ const faces: Record<string, FaceInfo> = {
 };
 
 function Face({ id, language, selected = false }: { id: string; language: Language; selected?: boolean }) {
+  const [failedSrc, setFailedSrc] = useState<string | null>(null);
   const face = faces[id];
   if (!face) return null;
   const month = Number(id.slice(0, 2));
   const monthText = language === 'ko' ? `${month}월` : `Mes ${month}`;
   const description = `${monthText} · ${face.kind[language]} · ${face.name[language]} · ${face.points} ${language === 'ko' ? '점' : 'pts'}`;
+  const src = `/images/hwatu/${id}.svg`;
   return <figure className={`minhwatu-guide-face${selected ? ' is-selected' : ''}`}>
-    <img src={`/images/hwatu/${id}.svg`} width="103" height="168" alt={description}/>
+    {failedSrc === src
+      ? <span className="minhwatu-guide-face__fallback" role="img" aria-label={description}><HwatuFaceFallback month={month} flower={face.name[language]} kind={face.kind[language]} points={face.points} language={language}/></span>
+      : <img src={src} width="103" height="168" alt={description} onError={() => setFailedSrc(src)}/>}
     <figcaption>{monthText}</figcaption>
   </figure>;
 }
@@ -108,6 +114,17 @@ export function MinhwatuGuide({ language }: { language: Language }) {
         <p className="minhwatu-formula-example">{ko ? `예: 기본 30 + 내 고도리 ${MINHWATU_GODORI_BONUS} × 2 − 상대 보너스 0 = 130점. 상대 기본점수 20점에서 내 고도리 50점을 빼면 −30점이에요.` : `Ejemplo: base 30 + tu Godori de ${MINHWATU_GODORI_BONUS} × 2 − bono rival 0 = 130. Si la otra persona tiene 20 de base, tu Godori le resta 50: −30.`}</p>
         <p className="minhwatu-guide-note">{ko ? 'Go·Stop 없이 끝까지 진행해요. 이미 끝난 구버전 판은 당시 점수와 규칙을 유지해요.' : 'La partida va hasta el final, sin Go ni Stop. Las partidas antiguas terminadas conservan sus reglas y puntuación.'}</p>
       </section>
+    </details>
+    <details className="minhwatu-guide-credits">
+      <summary>{ko ? '카드 그림 출처' : 'Créditos de las cartas'}</summary>
+      <p>{ko ? '개별 SVG: Spenĉjo · 한국 화투 디자인: Marcus Richert · 일부 바탕 그림: Louie Mantia, Jr.' : 'SVG individuales: Spenĉjo · diseño coreano: Marcus Richert · parte de los gráficos originales: Louie Mantia, Jr.'}</p>
+      <p>{ko ? '그림은 수정하지 않고 게임의 카드 ID에 맞춰 파일명만 바꿨어요.' : 'Los dibujos no se modificaron; solo cambiamos los nombres de archivo para los identificadores del juego.'}</p>
+      <nav aria-label={ko ? '카드 그림 출처 링크' : 'Fuentes de los dibujos'}>
+        <a href="https://commons.wikimedia.org/wiki/Category:SVG_Hwatu" target="_blank" rel="noreferrer">Wikimedia Commons ↗</a>
+        <a href="https://creativecommons.org/licenses/by-sa/4.0/" target="_blank" rel="noreferrer">CC BY-SA 4.0 ↗</a>
+        <a href="/images/hwatu/ATTRIBUTION.txt" target="_blank" rel="noreferrer">{ko ? '출처 안내 전문 ↗' : 'Atribución completa ↗'}</a>
+        <a href="/images/hwatu/source-verification.json" target="_blank" rel="noreferrer">{ko ? '카드별 원본 기록 ↗' : 'Fuentes de cada carta ↗'}</a>
+      </nav>
     </details>
   </section>;
 }

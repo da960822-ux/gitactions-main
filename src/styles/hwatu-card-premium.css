@@ -22,6 +22,30 @@
   box-shadow: 0 2px 4px #211c1c70;
 }
 
+.gb-hwatu-face-fallback {
+  box-sizing: border-box;
+  display: flex;
+  width: 100%;
+  aspect-ratio: 103.2 / 168.2;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 2px;
+  padding: 3px 2px;
+  overflow-wrap: anywhere;
+  border: 1px solid #4c3a31;
+  border-radius: 3px;
+  background: #f4e8cd;
+  color: #352923;
+  font-size: 10px;
+  font-weight: 650;
+  line-height: 1.2;
+  text-align: center;
+}
+
+.gb-hwatu-face-fallback b,
+.gb-hwatu-face-fallback strong { font-size: 11px; }
+
 .gb-hwatu-card.gb-hwatu-card-premium .gb-hwatu-month-tag {
   display: grid;
   place-items: center;
