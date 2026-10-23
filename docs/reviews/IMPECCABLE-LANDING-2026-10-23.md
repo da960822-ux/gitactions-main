@@ -1,6 +1,6 @@
 # 공식 스킬 재점검·수정·재검수 — 2026-10-23 UTC (이전 검수 포함)
 
-> 최신 상태 — 2026-10-23 UTC: 이번 승인 B 방 소품 인터랙션·유성 증량 결과는 문서 끝 「승인 B 공부방·게임방의 소품 반응과 유성 증량」에 기록한다. 과거 점수와 PASS는 현재 사이트 전체의 승인 점수가 아니다. 실제 데스크톱 검수와 보존 범위, 미검수 범위를 구분한다.
+> 최신 상태 — 2026-10-23 UTC: 새 장면의 하트와 동작 강도에 대한 사용자 재지적은 문서 끝 「새 장면의 표현 강도 재작업」에서 따로 검수했다. 과거 무결함 판정과 현재 표현 강도 승인은 구분한다. 실제 데스크톱 검수와 보존 범위, 미검수 범위를 기록한다.
 
 시작 소스 `921bac645d99ab0d7f54e00211b220695b422fd0`, 기존 `redesign/folded-playhouse-depth-r8-20261018` 브랜치. 승인된 우주 Hero/B 게임방, 인물, 8개 게임, 원문 편지, 두 언어, 실제 서명·장미·건의사항을 보존했다. 원본 main 병합·공개 audience 전환·새 영상·모바일 전수 검수는 하지 않았다. 이 문서는 시점별 재점검 기록이다. 최신 상태는 맨 위와 문서 끝에 구분했다. [이전 체크포인트 기록](https://github.com/da960822-ux/gitactions-main/blob/921bac645d99ab0d7f54e00211b220695b422fd0/docs/reviews/IMPECCABLE-LANDING-2026-10-23.md)은 Git 이력에 남긴다.
 
@@ -355,3 +355,28 @@ reduced 초기 두 자동화 샘플은 B 위치가 아니므로 승인 근거에
 ### 출판 직전 다른 세션 변경 보존
 
 Site 원격5325742의 source-checkpoint가 새 게임 UI 소스549ee3a로 전진한 것을 확인했다. 기준 b2facef 대비15파일은 게임 앱/규칙 안내/게임 CSS·검수 문서이고 landing 변경은0이었다. 이를 기존 Hero 브랜치에 정상 merge(9a480f4)하여 현재 사이트의 개선을 덮어쓰지 않았다. 이번 방 담당이 해당 게임 기능을 구현/검수했다고 주장하지 않는다. 최종 시각검수5파일 SHA256은 모두 동일하며, 다른 세션 CSS 변경도 room-shell/game-surface 범위라 landing에 새 전역 규칙을 추가하지 않는다. 통합 후 전체 **92파일/742테스트**와 production build가 다시 통과했다. 따라서 앞736테스트 이후의 최종 입력/셰이더 수정도 이 마지막 전체 실행에 포함된다.
+
+
+## 새 장면의 표현 강도 재작업 — 2026-10-23 UTC
+
+기준5efc542. 사용자가 새 장면의 하트와 움직임이 여전히 약하다고 지적했다. 이전 검수는 가림·동작 정착·입력 복구를 중심으로 확인해 표현 강도 부족을 걸러내지 못했다. 이번에는 실제 화면에서 로맨틱한 만남이 읽히는지를 별도 기준으로 정했다. 같은 Sol 담당에게 관측치와 개선 프롬프트를 전달하고, 독립 Sol이 실제 전후 장면을 비교했다. 새 담당으로 교체하거나 무관한 자산을 더하지 않았다.
+
+적용 지침은 Ponytail/프로젝트 landing, Emil animate/review-animations·STANDARDS, Impeccable bolder/animate/delight/polish다. 설치된 Motion은 새 몸·날개·꼬리·하트의 현재 값과 입력을 연결하고, 기존 GSAP은 section 입장 좌표만 소유한다. 별도 renderer/라이브러리/새 인물·새 원화·전역 배치 변경은 없다. 원앙·연분홍 벌새의 원화와 의미 설명, 시차·게임·편지·서명·장미·공부방·유성을 보존했다.
+
+| Before — 실제 진단 | After — 실제 수정·관측 | Why |
+|---|---|---|
+|하트20.83×20.05px, 가는1.4px 선, fill없음, opacity.4|**90.216×85px**, 채워진 rose gradient와 gold 테두리, opacity1/fill1. bbox면적 약18.36배|큰 새 사이에서 상징이 선명하게 읽히도록 주된 초점으로 변경|
+|벌새의 실제 greet 상승−14.5/−16.7px, bank약3°, hover−.4°|같은 조건 실제 상승 **−64.3/−74.8px**, bank약9.6°. 원앙도 발 위치 중심의 더 읽히는 bow|수평 이동에 뚜렷한 접근·답인사 몸짓을 더함. 얼굴과 머리 원화를 변형하지 않음|
+|하트 출현이 고정 CSS .95초 delay|벌새의 실제 MotionValue 진행.82 이후에서 heart outline/fill 완성. 두 짧은 곡선과4개 작은 빛이 도착 중 반응한 뒤 정착|동작과 하트의 인과가 연결됨. 프레임마다 React state를 갱신하지 않고 안정된 MotionValue 구독으로 전달|
+|큰 하트가 부리 사이42px 간격을 가릴 위험|하트 중심을 계산된 부리 선보다108px 위에 두고 stage 안에 clamp|bill-gap/비행 거리를 줄이지 않으면서 두 부리·얼굴·설명 글을 보존|
+|반응 증량으로 끝없는 idle/hold 반복 또는 hidden ghost가 생길 위험|idle/hold 정착, rapid retarget·return은 현재 값 유지. 숨김/이탈/실패는 하트 표시만 즉시 가리고 새의 현재 pose는 보존|이전의 자연스러운 복귀·clip·키보드/움직임 감소·이미지 실패 복구를 유지|
+
+실제 Chromium 1440×900 KO /1920×1080 es-DO, Linux ANGLE Vulkan **SwiftShader**, DPR1. 수정 전 표현 강도 **Block**, 수정 후 관측한 이 새 장면 범위 **Approve**다. 전체 사이트 점수·GPU FPS·모든 장면 미술 승인으로 확대하지 않는다. 루트도 실제 전후 arrival과 비행 중 이미지를 열어 확인했다.
+
+두 크기에서 새 원화/wingfan/어깨 연결·heart focalpoint를 직접 확인했고 얼굴·부리·본문 침범을 관측하지 않았다. idle/hold/hidden/offscreen의 body·wing·tail 두 샘플은 동일하다. 빠른 역전환 후 idle복귀, 재진입, 키보드와 reduced의 완성된 정적 하트, 실제 near-wing PNG abort 시 원본 fallback/disabled/status를 재확인했다. 정상 page/console/request 오류0, 실패주입의 예상 abort는 분리했다. hidden은 visibility 이벤트 검수이며 실제 OS 최소화나 하드웨어 GPU 성능 측정이 아니다.
+
+최종 전체 **92파일/743테스트**, TypeScript, production build, diff 검사 통과. 변경은 CountryCompanions TSX/CSS와 해당 테스트3파일에 한정한다. 기존 큰 chunk/Motion use-client 경고는 남는다. 모바일·영상·전체 게임 플레이·실제 하드웨어 성능은 이번 범위에서 제외했다.
+
+[표현 수정 전](assets/impeccable-landing/full-skill-review/motion-correction/bird-heart-before.webp) / [하트 완성 후](assets/impeccable-landing/full-skill-review/motion-correction/bird-heart-after.webp), [강화된 비행 중 실제 프레임](assets/impeccable-landing/full-skill-review/motion-correction/bird-strong-flight.webp), [브라우저 측정·입력 복구·최종 해시](assets/impeccable-landing/full-skill-review/motion-correction/bird-expression-browser.json).
+
+추가 실제hold 확인: 1440 인사2200ms 후와400ms 뒤 부모group computed opacity가 모두 **heart1/trails0/sparks0**이었다. path 자체 opacity를 부모효과 가시성으로 혼동하지 않는다. 순간 spark 개수·최고광량·수십ms 타이밍은 몇 장의 keyframe만으로 전수 승인하지 않았으며, 실제 관측한 비행곡선·큰filledheart를 중심으로 표현을 승인했다.
