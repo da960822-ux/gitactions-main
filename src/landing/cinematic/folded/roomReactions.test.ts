@@ -35,6 +35,21 @@ describe('approved B-room object reactions',()=>{
   for(let i=13;i<30;i++)effect.update({...frame,time:i/60,hover:'L06',activation:i});
   expect(light('L06').material.uniforms.uPulse.value).toBeGreaterThan(.5);expect(light('L06').material.uniforms.uPulse.value).toBeLessThanOrEqual(1);effect.dispose();
  });
+ it('greets a room arrival with both original solid hearts, then settles without an ambient loop',()=>{
+  const {effect}=fixture();effect.update(frame);
+  const heart=effect.root.getObjectByName('RABBIT_DEPTH_GREETING_0') as T.Mesh<T.ExtrudeGeometry,T.ShaderMaterial>,second=effect.root.getObjectByName('RABBIT_DEPTH_GREETING_1') as T.Mesh;
+  expect(heart.geometry.type).toBe('ExtrudeGeometry');expect(heart.visible&&second.visible).toBe(true);
+  const restingScale=heart.scale.x;advance(effect,{},0,.3);
+  expect(heart.position.y).toBeGreaterThan(roomVertex(1480,347,heart.position.z)[1]);
+  expect(heart.scale.x).toBeGreaterThan(restingScale*1.15);expect(heart.material.uniforms.uOpacity.value).toBeGreaterThan(.7);
+  advance(effect,{},.3,2);expect(heart.visible||second.visible).toBe(false);expect(effect.state.needsFrame).toBe(false);
+  effect.update({...frame,time:3,active:false});effect.update({...frame,time:4});expect(heart.visible&&second.visible).toBe(true);effect.dispose();
+ });
+ it('replays a complete surface sweep on activation after hover has settled',()=>{
+  const {effect,light}=fixture();advance(effect,{hover:'keyboard'});expect(light('keyboard').material.uniforms.uSweep.value).toBe(1);
+  effect.update({...frame,time:2.1,hover:'keyboard',activation:1});expect(light('keyboard').material.uniforms.uSweep.value).toBeLessThan(.1);
+  advance(effect,{hover:'keyboard',activation:1},2.1,2);expect(light('keyboard').material.uniforms.uSweep.value).toBe(1);expect(effect.state.needsFrame).toBe(false);effect.dispose();
+ });
  it.each([{reducedMotion:true},{keyboard:true}])('keeps reduced motion and keyboard feedback static: %o',preference=>{
   const {effect,light}=fixture();effect.update({...frame,...preference,hover:'L04',press:true,pointer:{x:1500,y:600}});
   const hearts=effect.root.children.filter(child=>child.name.startsWith('RABBIT_DEPTH')),transforms=hearts.map(heart=>{heart.updateMatrix();return heart.matrix.toArray();});
