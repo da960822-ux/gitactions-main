@@ -93,6 +93,12 @@ describe('local practice client',()=>{
   ]);
   await expect(client.sendReaction('custom' as never)).rejects.toThrow('invalid_reaction');
  });
+ it.each(['getItem','removeItem'])('closes the room when browser storage %s is blocked',async operation=>{
+  const id=await client.createRoom('구름','ko');
+  vi.stubGlobal('localStorage',{getItem:()=>id,removeItem:()=>{},[operation]:()=>{throw new DOMException('Storage blocked','SecurityError');}});
+  await expect(client.closeRoom()).resolves.toBeUndefined();
+  expect(client.getSnapshot()).toMatchObject({roomId:null,gameId:null,players:[],view:null});
+ });
  it('cannot join a demo room from a different room or after seven days',async()=>{
   const room=await client.createRoom('구름','ko');await expect(client.joinRoom(crypto.randomUUID(),'Luna','es')).rejects.toThrow('demo_same_browser_only');
   const future=Date.now()+8*86400000;vi.spyOn(Date,'now').mockReturnValue(future);await expect(client.joinRoom(room,'Luna','es')).rejects.toThrow('demo_same_browser_only');

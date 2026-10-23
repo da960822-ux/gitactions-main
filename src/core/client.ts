@@ -147,9 +147,9 @@ class RoomClient {
   }
   async closeRoom() {
     if(this.db){const {error}=await this.db.rpc('close_room',{p_room:this.snapshot.roomId});if(error)throw error;}
-    if(typeof localStorage !== 'undefined' && this.snapshot.roomId){
-      if(localStorage.getItem('dos-last-room')===this.snapshot.roomId)localStorage.removeItem('dos-last-room');
-    }
+    try {
+      if(this.snapshot.roomId && localStorage.getItem('dos-last-room')===this.snapshot.roomId)localStorage.removeItem('dos-last-room');
+    } catch {/* An optional room shortcut must not prevent closing a room. */}
     this.snapshot=emptySnapshot();this.state=null;this.expiresAt=0;this.emit();
   }
   async setLanguage(language:Language) {if(!['ko','es'].includes(language))throw new Error('invalid_language');if(this.db){const {error}=await this.db.rpc('set_language',{p_room:this.snapshot.roomId,p_language:language});if(error)throw error;await this.refresh();}else{this.snapshot.players=this.snapshot.players.map(p=>p.id===this.snapshot.playerId?{...p,language}:p);this.emit();}}

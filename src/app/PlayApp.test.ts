@@ -43,6 +43,44 @@ it('keeps Jaipur transfer and reward sounds out of the immediate snapshot channe
 });
 
 describe('PlayApp client binding', () => {
+  it.skipIf(isOnlineConfigured).each(gameCatalog)('opens the $id board after both local seats agree', async game => {
+    const api = bindApi({ client, isOnlineConfigured });
+    const roomId = await api.createRoom('Game launch check', 'ko');
+    await api.selectGame(game.id);
+    expect(api.getSnapshot().gameId).toBeNull();
+    api.localSeat('p2');
+    await api.selectGame(game.id);
+
+    const snapshot = api.getSnapshot();
+    expect(snapshot.gameId).toBe(game.id);
+    expect(snapshot.pendingGame).toBeNull();
+    if (game.id !== 'rhythm') expect(snapshot.view).toBeTruthy();
+    const previousDocument = globalThis.document;
+    vi.stubGlobal('document', { fullscreenEnabled: false });
+    try {
+      const html = renderToStaticMarkup(createElement(Room, { api, roomId }));
+      expect(html).toContain('id="game-board"');
+      expect(html).toContain(game.title.ko);
+      if (game.id === 'rhythm') expect(html).toContain('rhythm-game-mount');
+    } finally {
+      vi.stubGlobal('document', previousDocument);
+    }
+  });
+
+  it('keeps room entry available when optional preferences cannot be read or saved', () => {
+    const previousStorage = globalThis.localStorage;
+    vi.stubGlobal('localStorage', {
+      getItem() { throw new DOMException('blocked', 'SecurityError'); },
+      setItem() { throw new DOMException('blocked', 'SecurityError'); },
+    });
+    const api = { getSnapshot: () => ({ roomId: null, mode: 'demo', playerId: 'p1', players: [], gameId: null, version: 0, view: null, messages: [], pendingGame: null, error: null }), isOnlineConfigured: false } as any;
+    try {
+      expect(renderToStaticMarkup(createElement(Room, { api, roomId: 'invited-room' }))).toContain('게임방 참여하기');
+    } finally {
+      vi.stubGlobal('localStorage', previousStorage);
+    }
+  });
+
   it.skipIf(isOnlineConfigured)('keeps prototype methods callable through the loaded API and starts an agreed game', async () => {
     const api = bindApi({ client, isOnlineConfigured });
     const roomId = await api.createRoom('Integration test', 'ko');

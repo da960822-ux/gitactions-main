@@ -1,10 +1,9 @@
 import { Suspense, lazy, useEffect, useState } from 'react';
-import { Link } from './Router';
+import { currentPath, Link } from './Router';
 import { canEnterPlayRoute, DESKTOP_GAME_QUERY } from '../core/display';
 import { DesktopGameNotice } from './DesktopGameNotice';
 import { readBrowserStorage } from './browserStorage';
 
-function currentPath() { return window.location.pathname; }
 const Landing = lazy(() => import('../landing/Landing').then(module => ({ default: module.Landing })));
 const FeedbackRoute = lazy(() => import('./FeedbackRoute').then(module => ({ default: module.FeedbackRoute })));
 const PlayApp = lazy(() => import('./PlayApp').then(module => ({ default: module.PlayApp })));
