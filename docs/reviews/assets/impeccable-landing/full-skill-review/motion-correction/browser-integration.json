@@ -1,0 +1,1284 @@
+{
+  "environment": {
+    "url": "http://localhost:5173/",
+    "browser": "/usr/bin/chromium headless via Playwright",
+    "renderer": "ANGLE Vulkan SwiftShader software",
+    "hardwareGpuPerformanceClaim": false
+  },
+  "sourceSha256": {
+    "src/landing/ConversationMaterial.tsx": "38abf0ca88f53dbea23d25cba0ada648b987f04ec7b0664345cc4e745faa6523",
+    "src/landing/conversation-flow.ts": "f8fef2659ea080fcc29d2d286ab724ff2fd224c70aa8fd8114f5f94f029cc984",
+    "src/landing/FirstConversation.tsx": "8a0b1dd7fee5cfa481a68182a14d12b42ecaf2ce2a32607cea7d5d2f3d7ec832",
+    "src/landing/first-conversation.css": "320530aa1ffa8c4b20fee14d47315e17254f9f884e1898dc4fc6b10312f806ee",
+    "src/landing/gallery/GameStartBeam.tsx": "f0151b4c9d2918054b80c1c95533597c7843b893bc616e7b25090c33510afcf2",
+    "src/landing/gallery/GameGallery.tsx": "5d9f2bbf3272d438510b156d9d4f62357cec2ac7f9530c1ef21452fc3a8f8929",
+    "src/landing/gallery/game-gallery.css": "8f94005a7eb22545fdfa335e43460d5234ef40854be848b26d0469533eba6757"
+  },
+  "finalIntegration": [
+    {
+      "width": 1440,
+      "height": 900,
+      "language": "ko",
+      "mode": "normal",
+      "errors": [],
+      "console": [
+        {
+          "type": "debug",
+          "text": "[vite] connecting..."
+        },
+        {
+          "type": "debug",
+          "text": "[vite] connected."
+        },
+        {
+          "type": "info",
+          "text": "%cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold"
+        },
+        {
+          "type": "warning",
+          "text": "[.WebGL-0x25dc00181400]GL Driver Message (OpenGL, Performance, GL_CLOSE_PATH_NV, High): GPU stall due to ReadPixels"
+        },
+        {
+          "type": "warning",
+          "text": "[.WebGL-0x25dc00181400]GL Driver Message (OpenGL, Performance, GL_CLOSE_PATH_NV, High): GPU stall due to ReadPixels"
+        },
+        {
+          "type": "warning",
+          "text": "[.WebGL-0x25dc00181400]GL Driver Message (OpenGL, Performance, GL_CLOSE_PATH_NV, High): GPU stall due to ReadPixels"
+        },
+        {
+          "type": "warning",
+          "text": "[.WebGL-0x25dc00181400]GL Driver Message (OpenGL, Performance, GL_CLOSE_PATH_NV, High): GPU stall due to ReadPixels (this message will no longer repeat)"
+        },
+        {
+          "type": "log",
+          "text": "THREE.WebGLRenderer: Context Lost."
+        }
+      ],
+      "failedRequests": [],
+      "httpErrors": [],
+      "states": {
+        "first": {
+          "state": "running",
+          "renderer": "three-flowing-gradient",
+          "renderCount": "5",
+          "loopActive": "true",
+          "canvas": {
+            "width": 651,
+            "height": 561,
+            "hidden": false,
+            "display": "block"
+          },
+          "worldContextLost": false,
+          "worldReady": "landing-world-host is-world-ready"
+        },
+        "later": {
+          "state": "running",
+          "renderer": "three-flowing-gradient",
+          "renderCount": "77",
+          "loopActive": "true",
+          "canvas": {
+            "width": 651,
+            "height": 561,
+            "hidden": false,
+            "display": "block"
+          },
+          "worldContextLost": false,
+          "worldReady": "landing-world-host is-world-ready"
+        },
+        "offscreen": {
+          "state": "suspended",
+          "renderer": "three-flowing-gradient",
+          "renderCount": "96",
+          "loopActive": "false",
+          "canvas": {
+            "width": 651,
+            "height": 561,
+            "hidden": true,
+            "display": "none"
+          },
+          "worldContextLost": false,
+          "worldReady": "landing-world-host is-world-ready"
+        },
+        "reentered": {
+          "state": "running",
+          "renderer": "three-flowing-gradient",
+          "renderCount": "108",
+          "loopActive": "true",
+          "canvas": {
+            "width": 651,
+            "height": 561,
+            "hidden": false,
+            "display": "block"
+          },
+          "worldContextLost": false,
+          "worldReady": "landing-world-host is-world-ready"
+        },
+        "hiddenSimulation": {
+          "state": "suspended",
+          "renderer": "three-flowing-gradient",
+          "renderCount": "109",
+          "loopActive": "false",
+          "canvas": {
+            "width": 651,
+            "height": 561,
+            "hidden": true,
+            "display": "none"
+          },
+          "worldContextLost": false,
+          "worldReady": "landing-world-host is-world-ready"
+        },
+        "restored": {
+          "state": "running",
+          "renderer": "three-flowing-gradient",
+          "renderCount": "118",
+          "loopActive": "true",
+          "canvas": {
+            "width": 651,
+            "height": 561,
+            "hidden": false,
+            "display": "block"
+          },
+          "worldContextLost": false,
+          "worldReady": "landing-world-host is-world-ready"
+        },
+        "reduced": {
+          "state": "fallback",
+          "renderer": "three-flowing-gradient",
+          "renderCount": "120",
+          "loopActive": "false",
+          "canvas": {
+            "width": 651,
+            "height": 561,
+            "hidden": true,
+            "display": "none"
+          },
+          "worldContextLost": false,
+          "worldReady": "landing-world-host is-world-ready"
+        },
+        "preferenceRestored": {
+          "state": "running",
+          "renderer": "three-flowing-gradient",
+          "renderCount": "125",
+          "loopActive": "true",
+          "canvas": {
+            "width": 651,
+            "height": 561,
+            "hidden": false,
+            "display": "block"
+          },
+          "worldContextLost": false,
+          "worldReady": "landing-world-host is-world-ready"
+        },
+        "lossFallback": {
+          "state": "fallback",
+          "renderer": "three-flowing-gradient",
+          "renderCount": "132",
+          "loopActive": "false",
+          "unavailableReason": "context-lost",
+          "canvas": {
+            "width": 651,
+            "height": 561,
+            "hidden": true,
+            "display": "none"
+          },
+          "worldContextLost": false,
+          "worldReady": "landing-world-host is-world-ready"
+        }
+      },
+      "visibleActivity": {
+        "before": 81,
+        "after": 88,
+        "delta": 7,
+        "note": "successful actual draws in this interval, not hardware GPU FPS"
+      },
+      "offscreenActivity": {
+        "before": 96,
+        "after": 96,
+        "delta": 0,
+        "note": "successful actual draws in this interval, not hardware GPU FPS"
+      },
+      "hiddenActivity": {
+        "before": 109,
+        "after": 109,
+        "delta": 0,
+        "note": "successful actual draws in this interval, not hardware GPU FPS"
+      },
+      "reducedActivity": {
+        "before": 120,
+        "after": 120,
+        "delta": 0,
+        "note": "successful actual draws in this interval, not hardware GPU FPS"
+      },
+      "lossActivity": {
+        "before": 132,
+        "after": 132,
+        "delta": 0,
+        "note": "successful actual draws in this interval, not hardware GPU FPS"
+      },
+      "ctaPointer": "true",
+      "ctaKeyboard": {
+        "play": "paused",
+        "opacity": "0"
+      },
+      "emptySignatureDisabled": true,
+      "signatureStatus": "signed",
+      "foldScrollDelta": 0,
+      "rereadVisible": true,
+      "status": "passed",
+      "contextEvents": [
+        {
+          "type": "webglcontextlost",
+          "canvasClass": "fc-material-canvas",
+          "time": 25026.5
+        }
+      ]
+    },
+    {
+      "width": 1920,
+      "height": 1080,
+      "language": "es",
+      "mode": "normal",
+      "errors": [],
+      "console": [
+        {
+          "type": "debug",
+          "text": "[vite] connecting..."
+        },
+        {
+          "type": "debug",
+          "text": "[vite] connected."
+        },
+        {
+          "type": "info",
+          "text": "%cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold"
+        },
+        {
+          "type": "warning",
+          "text": "[.WebGL-0x30e4009c5200]GL Driver Message (OpenGL, Performance, GL_CLOSE_PATH_NV, High): GPU stall due to ReadPixels"
+        },
+        {
+          "type": "warning",
+          "text": "[.WebGL-0x30e4009c5200]GL Driver Message (OpenGL, Performance, GL_CLOSE_PATH_NV, High): GPU stall due to ReadPixels"
+        },
+        {
+          "type": "warning",
+          "text": "[.WebGL-0x30e4009c5200]GL Driver Message (OpenGL, Performance, GL_CLOSE_PATH_NV, High): GPU stall due to ReadPixels"
+        },
+        {
+          "type": "warning",
+          "text": "[.WebGL-0x30e4009c5200]GL Driver Message (OpenGL, Performance, GL_CLOSE_PATH_NV, High): GPU stall due to ReadPixels (this message will no longer repeat)"
+        },
+        {
+          "type": "log",
+          "text": "THREE.WebGLRenderer: Context Lost."
+        }
+      ],
+      "failedRequests": [],
+      "httpErrors": [],
+      "states": {
+        "first": {
+          "state": "running",
+          "renderer": "three-flowing-gradient",
+          "renderCount": "4",
+          "loopActive": "true",
+          "canvas": {
+            "width": 720,
+            "height": 620,
+            "hidden": false,
+            "display": "block"
+          },
+          "worldContextLost": false,
+          "worldReady": "landing-world-host is-world-ready"
+        },
+        "later": {
+          "state": "running",
+          "renderer": "three-flowing-gradient",
+          "renderCount": "68",
+          "loopActive": "true",
+          "canvas": {
+            "width": 720,
+            "height": 620,
+            "hidden": false,
+            "display": "block"
+          },
+          "worldContextLost": false,
+          "worldReady": "landing-world-host is-world-ready"
+        },
+        "offscreen": {
+          "state": "suspended",
+          "renderer": "three-flowing-gradient",
+          "renderCount": "84",
+          "loopActive": "false",
+          "canvas": {
+            "width": 720,
+            "height": 620,
+            "hidden": true,
+            "display": "none"
+          },
+          "worldContextLost": false,
+          "worldReady": "landing-world-host is-world-ready"
+        },
+        "reentered": {
+          "state": "running",
+          "renderer": "three-flowing-gradient",
+          "renderCount": "94",
+          "loopActive": "true",
+          "canvas": {
+            "width": 720,
+            "height": 620,
+            "hidden": false,
+            "display": "block"
+          },
+          "worldContextLost": false,
+          "worldReady": "landing-world-host is-world-ready"
+        },
+        "hiddenSimulation": {
+          "state": "suspended",
+          "renderer": "three-flowing-gradient",
+          "renderCount": "95",
+          "loopActive": "false",
+          "canvas": {
+            "width": 720,
+            "height": 620,
+            "hidden": true,
+            "display": "none"
+          },
+          "worldContextLost": false,
+          "worldReady": "landing-world-host is-world-ready"
+        },
+        "restored": {
+          "state": "running",
+          "renderer": "three-flowing-gradient",
+          "renderCount": "102",
+          "loopActive": "true",
+          "canvas": {
+            "width": 720,
+            "height": 620,
+            "hidden": false,
+            "display": "block"
+          },
+          "worldContextLost": false,
+          "worldReady": "landing-world-host is-world-ready"
+        },
+        "reduced": {
+          "state": "fallback",
+          "renderer": "three-flowing-gradient",
+          "renderCount": "104",
+          "loopActive": "false",
+          "canvas": {
+            "width": 720,
+            "height": 620,
+            "hidden": true,
+            "display": "none"
+          },
+          "worldContextLost": false,
+          "worldReady": "landing-world-host is-world-ready"
+        },
+        "preferenceRestored": {
+          "state": "running",
+          "renderer": "three-flowing-gradient",
+          "renderCount": "107",
+          "loopActive": "true",
+          "canvas": {
+            "width": 720,
+            "height": 620,
+            "hidden": false,
+            "display": "block"
+          },
+          "worldContextLost": false,
+          "worldReady": "landing-world-host is-world-ready"
+        },
+        "lossFallback": {
+          "state": "fallback",
+          "renderer": "three-flowing-gradient",
+          "renderCount": "114",
+          "loopActive": "false",
+          "unavailableReason": "context-lost",
+          "canvas": {
+            "width": 720,
+            "height": 620,
+            "hidden": true,
+            "display": "none"
+          },
+          "worldContextLost": false,
+          "worldReady": "landing-world-host is-world-ready"
+        }
+      },
+      "visibleActivity": {
+        "before": 71,
+        "after": 77,
+        "delta": 6,
+        "note": "successful actual draws in this interval, not hardware GPU FPS"
+      },
+      "offscreenActivity": {
+        "before": 84,
+        "after": 84,
+        "delta": 0,
+        "note": "successful actual draws in this interval, not hardware GPU FPS"
+      },
+      "hiddenActivity": {
+        "before": 95,
+        "after": 95,
+        "delta": 0,
+        "note": "successful actual draws in this interval, not hardware GPU FPS"
+      },
+      "reducedActivity": {
+        "before": 104,
+        "after": 104,
+        "delta": 0,
+        "note": "successful actual draws in this interval, not hardware GPU FPS"
+      },
+      "lossActivity": {
+        "before": 114,
+        "after": 114,
+        "delta": 0,
+        "note": "successful actual draws in this interval, not hardware GPU FPS"
+      },
+      "ctaPointer": "true",
+      "ctaKeyboard": {
+        "play": "paused",
+        "opacity": "0"
+      },
+      "emptySignatureDisabled": true,
+      "signatureStatus": "signed",
+      "foldScrollDelta": 0,
+      "rereadVisible": true,
+      "status": "passed",
+      "contextEvents": [
+        {
+          "type": "webglcontextlost",
+          "canvasClass": "fc-material-canvas",
+          "time": 26480.80000000447
+        }
+      ]
+    },
+    {
+      "width": 1440,
+      "height": 900,
+      "language": "ko",
+      "mode": "cold-reduced",
+      "errors": [],
+      "console": [
+        {
+          "type": "debug",
+          "text": "[vite] connecting..."
+        },
+        {
+          "type": "debug",
+          "text": "[vite] connected."
+        },
+        {
+          "type": "info",
+          "text": "%cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold"
+        },
+        {
+          "type": "warning",
+          "text": "[.WebGL-0x64001b4800]GL Driver Message (OpenGL, Performance, GL_CLOSE_PATH_NV, High): GPU stall due to ReadPixels"
+        },
+        {
+          "type": "warning",
+          "text": "[.WebGL-0x64001b4800]GL Driver Message (OpenGL, Performance, GL_CLOSE_PATH_NV, High): GPU stall due to ReadPixels"
+        },
+        {
+          "type": "warning",
+          "text": "[.WebGL-0x64001b4800]GL Driver Message (OpenGL, Performance, GL_CLOSE_PATH_NV, High): GPU stall due to ReadPixels"
+        }
+      ],
+      "failedRequests": [],
+      "httpErrors": [],
+      "states": {
+        "fallback": {
+          "state": "fallback",
+          "renderer": "three-flowing-gradient",
+          "renderCount": "0",
+          "loopActive": "false",
+          "canvas": null,
+          "worldContextLost": false,
+          "worldReady": "landing-world-host is-world-ready"
+        }
+      },
+      "status": "passed",
+      "contextEvents": []
+    },
+    {
+      "width": 1440,
+      "height": 900,
+      "language": "ko",
+      "mode": "context-refusal",
+      "errors": [],
+      "console": [
+        {
+          "type": "debug",
+          "text": "[vite] connecting..."
+        },
+        {
+          "type": "debug",
+          "text": "[vite] connected."
+        },
+        {
+          "type": "info",
+          "text": "%cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold"
+        },
+        {
+          "type": "warning",
+          "text": "[.WebGL-0x2f3400bf1000]GL Driver Message (OpenGL, Performance, GL_CLOSE_PATH_NV, High): GPU stall due to ReadPixels"
+        },
+        {
+          "type": "warning",
+          "text": "[.WebGL-0x2f3400bf1000]GL Driver Message (OpenGL, Performance, GL_CLOSE_PATH_NV, High): GPU stall due to ReadPixels"
+        },
+        {
+          "type": "warning",
+          "text": "[.WebGL-0x2f3400bf1000]GL Driver Message (OpenGL, Performance, GL_CLOSE_PATH_NV, High): GPU stall due to ReadPixels"
+        },
+        {
+          "type": "warning",
+          "text": "[.WebGL-0x2f3400bf1000]GL Driver Message (OpenGL, Performance, GL_CLOSE_PATH_NV, High): GPU stall due to ReadPixels (this message will no longer repeat)"
+        },
+        {
+          "type": "error",
+          "text": "THREE.WebGLRenderer: THREE.WebGLRenderer: Error creating WebGL context."
+        }
+      ],
+      "failedRequests": [],
+      "httpErrors": [],
+      "states": {
+        "fallback": {
+          "state": "fallback",
+          "renderer": "three-flowing-gradient",
+          "renderCount": "0",
+          "loopActive": "false",
+          "unavailableReason": "renderer-unavailable",
+          "canvas": null,
+          "worldContextLost": false,
+          "worldReady": "landing-world-host is-world-ready"
+        }
+      },
+      "status": "passed",
+      "contextEvents": []
+    }
+  ],
+  "pixelGates": [
+    {
+      "width": 1440,
+      "pixelGate": {
+        "wholePageChangedPixelsAfterFiveSeconds": 105274,
+        "changeBounds": [
+          681,
+          179,
+          1332,
+          528
+        ],
+        "sameScrollNativeVisibilityFaceSamples": [
+          {
+            "box": [
+              840,
+              300,
+              880,
+              340
+            ],
+            "changedPixels": 0,
+            "maxChannelDelta": 0
+          },
+          {
+            "box": [
+              1120,
+              350,
+              1160,
+              390
+            ],
+            "changedPixels": 0,
+            "maxChannelDelta": 0
+          }
+        ]
+      }
+    },
+    {
+      "width": 1920,
+      "pixelGate": {
+        "wholePageChangedPixelsAfterFiveSeconds": 141017,
+        "changeBounds": [
+          1016,
+          193,
+          1776,
+          601
+        ],
+        "sameScrollNativeVisibilityFaceSamples": [
+          {
+            "box": [
+              1220,
+              330,
+              1260,
+              370
+            ],
+            "changedPixels": 0,
+            "maxChannelDelta": 0
+          },
+          {
+            "box": [
+              1515,
+              390,
+              1555,
+              430
+            ],
+            "changedPixels": 0,
+            "maxChannelDelta": 0
+          }
+        ]
+      }
+    }
+  ],
+  "cta": [
+    {
+      "width": 1440,
+      "height": 900,
+      "language": "ko",
+      "errors": [],
+      "consoleErrors": [],
+      "failedRequests": [],
+      "httpErrors": [],
+      "states": {
+        "initial": {
+          "active": "false",
+          "reduced": "false",
+          "moving": "paused",
+          "movingOpacity": "0",
+          "staticOpacity": "0",
+          "pointer": [
+            "75.5",
+            "24"
+          ],
+          "href": "/play?game=domino",
+          "label": "도미노 · 같이 놀기",
+          "focusVisible": false,
+          "svgPointerEvents": "none",
+          "box": {
+            "x": 972.78125,
+            "y": 425.921875,
+            "width": 151.21875,
+            "height": 48
+          }
+        },
+        "hover": {
+          "active": "true",
+          "reduced": "false",
+          "moving": "running",
+          "movingOpacity": "1",
+          "staticOpacity": "0",
+          "pointer": [
+            "75.5",
+            "24.0"
+          ],
+          "href": "/play?game=domino",
+          "label": "도미노 · 같이 놀기",
+          "focusVisible": false,
+          "svgPointerEvents": "none",
+          "box": {
+            "x": 972.78125,
+            "y": 425.921875,
+            "width": 151.21875,
+            "height": 48
+          }
+        },
+        "pointerMove": {
+          "active": "true",
+          "reduced": "false",
+          "moving": "running",
+          "movingOpacity": "1",
+          "staticOpacity": "0",
+          "pointer": [
+            "120.8",
+            "12.0"
+          ],
+          "href": "/play?game=domino",
+          "label": "도미노 · 같이 놀기",
+          "focusVisible": false,
+          "svgPointerEvents": "none",
+          "box": {
+            "x": 972.78125,
+            "y": 425.921875,
+            "width": 151.21875,
+            "height": 48
+          }
+        },
+        "leave": {
+          "active": "false",
+          "reduced": "false",
+          "moving": "paused",
+          "movingOpacity": "0.000681198",
+          "staticOpacity": "0",
+          "pointer": [
+            "75.5",
+            "24"
+          ],
+          "href": "/play?game=domino",
+          "label": "도미노 · 같이 놀기",
+          "focusVisible": false,
+          "svgPointerEvents": "none",
+          "box": {
+            "x": 972.78125,
+            "y": 425.921875,
+            "width": 151.21875,
+            "height": 48
+          }
+        },
+        "cancel": {
+          "active": "false",
+          "reduced": "false",
+          "moving": "paused",
+          "movingOpacity": "0",
+          "staticOpacity": "0",
+          "pointer": [
+            "75.5",
+            "24"
+          ],
+          "href": "/play?game=domino",
+          "label": "도미노 · 같이 놀기",
+          "focusVisible": false,
+          "svgPointerEvents": "none",
+          "box": {
+            "x": 972.78125,
+            "y": 425.921875,
+            "width": 151.21875,
+            "height": 48
+          }
+        },
+        "keyboard": {
+          "active": "false",
+          "reduced": "false",
+          "moving": "paused",
+          "movingOpacity": "0",
+          "staticOpacity": "1",
+          "pointer": [
+            "75.5",
+            "24"
+          ],
+          "href": "/play?game=domino",
+          "label": "도미노 · 같이 놀기",
+          "focusVisible": true,
+          "svgPointerEvents": "none",
+          "box": {
+            "x": 972.78125,
+            "y": 425.921875,
+            "width": 151.21875,
+            "height": 48
+          }
+        },
+        "hiddenSimulation": {
+          "active": "false",
+          "reduced": "false",
+          "moving": "paused",
+          "movingOpacity": "0",
+          "staticOpacity": "0",
+          "pointer": [
+            "75.5",
+            "24"
+          ],
+          "href": "/play?game=domino",
+          "label": "도미노 · 같이 놀기",
+          "focusVisible": false,
+          "svgPointerEvents": "none",
+          "box": {
+            "x": 972.78125,
+            "y": 425.921875,
+            "width": 151.21875,
+            "height": 48
+          }
+        },
+        "offscreen": {
+          "active": "false",
+          "reduced": "false",
+          "moving": "paused",
+          "movingOpacity": "0",
+          "staticOpacity": "0",
+          "pointer": [
+            "75.5",
+            "24"
+          ],
+          "href": "/play?game=domino",
+          "label": "도미노 · 같이 놀기",
+          "focusVisible": false,
+          "svgPointerEvents": "none",
+          "box": {
+            "x": 972.78125,
+            "y": 3439.921875,
+            "width": 151.21875,
+            "height": 48
+          }
+        },
+        "reduced": {
+          "active": "false",
+          "reduced": "true",
+          "moving": "running",
+          "movingOpacity": "0",
+          "staticOpacity": "1",
+          "pointer": [
+            "75.5",
+            "24"
+          ],
+          "href": "/play?game=domino",
+          "label": "도미노 · 같이 놀기",
+          "focusVisible": false,
+          "svgPointerEvents": "none",
+          "box": {
+            "x": 972.78125,
+            "y": 6097.4375,
+            "width": 151.21875,
+            "height": 48
+          }
+        }
+      },
+      "routes": [
+        {
+          "lang": "ko",
+          "id": "davinci",
+          "href": "/play?game=davinci",
+          "label": "다빈치 코드 · 같이 놀기",
+          "title": "다빈치 코드"
+        },
+        {
+          "lang": "ko",
+          "id": "catchmind",
+          "href": "/play?game=catchmind",
+          "label": "캐치마인드 · 같이 놀기",
+          "title": "캐치마인드"
+        },
+        {
+          "lang": "ko",
+          "id": "domino",
+          "href": "/play?game=domino",
+          "label": "도미노 · 같이 놀기",
+          "title": "도미노"
+        },
+        {
+          "lang": "ko",
+          "id": "jaipur",
+          "href": "/play?game=jaipur",
+          "label": "자이푸르 · 같이 놀기",
+          "title": "자이푸르"
+        },
+        {
+          "lang": "ko",
+          "id": "splendor",
+          "href": "/play?game=splendor",
+          "label": "스플렌더 · 같이 놀기",
+          "title": "스플렌더"
+        },
+        {
+          "lang": "ko",
+          "id": "minhwatu",
+          "href": "/play?game=minhwatu",
+          "label": "민화투 · 같이 놀기",
+          "title": "민화투"
+        },
+        {
+          "lang": "ko",
+          "id": "marble",
+          "href": "/play?game=marble",
+          "label": "부루마블 (우리 규칙) · 같이 놀기",
+          "title": "부루마블 (우리 규칙)"
+        },
+        {
+          "lang": "ko",
+          "id": "rhythm",
+          "href": "/play?game=rhythm",
+          "label": "뮤직톡톡 · 같이 놀기",
+          "title": "뮤직톡톡"
+        },
+        {
+          "lang": "es",
+          "id": "davinci",
+          "href": "/play?game=davinci",
+          "label": "El código Da Vinci · Jugar juntos",
+          "title": "El código Da Vinci"
+        },
+        {
+          "lang": "es",
+          "id": "catchmind",
+          "href": "/play?game=catchmind",
+          "label": "Adivina el dibujo · Jugar juntos",
+          "title": "Adivina el dibujo"
+        },
+        {
+          "lang": "es",
+          "id": "domino",
+          "href": "/play?game=domino",
+          "label": "Dominó · Jugar juntos",
+          "title": "Dominó"
+        },
+        {
+          "lang": "es",
+          "id": "jaipur",
+          "href": "/play?game=jaipur",
+          "label": "Jaipur · Jugar juntos",
+          "title": "Jaipur"
+        },
+        {
+          "lang": "es",
+          "id": "splendor",
+          "href": "/play?game=splendor",
+          "label": "Splendor · Jugar juntos",
+          "title": "Splendor"
+        },
+        {
+          "lang": "es",
+          "id": "minhwatu",
+          "href": "/play?game=minhwatu",
+          "label": "Minhwatu · Jugar juntos",
+          "title": "Minhwatu"
+        },
+        {
+          "lang": "es",
+          "id": "marble",
+          "href": "/play?game=marble",
+          "label": "Marble · juego de bienes raíces · Jugar juntos",
+          "title": "Marble · juego de bienes raíces"
+        },
+        {
+          "lang": "es",
+          "id": "rhythm",
+          "href": "/play?game=rhythm",
+          "label": "Music Talk Talk · Jugar juntos",
+          "title": "Music Talk Talk"
+        }
+      ],
+      "keyboardSelection": {
+        "id": "catchmind",
+        "href": "/play?game=catchmind"
+      },
+      "modifier": {
+        "original": "http://localhost:5173/",
+        "popup": "http://localhost:5173/play?game=catchmind",
+        "expected": "/play?game=catchmind"
+      },
+      "keyboardNavigation": "http://localhost:5173/play?game=catchmind",
+      "status": "passed"
+    },
+    {
+      "width": 1920,
+      "height": 1080,
+      "language": "es",
+      "errors": [],
+      "consoleErrors": [],
+      "failedRequests": [],
+      "httpErrors": [],
+      "states": {
+        "initial": {
+          "active": "false",
+          "reduced": "false",
+          "moving": "paused",
+          "movingOpacity": "0",
+          "staticOpacity": "0",
+          "pointer": [
+            "89.5",
+            "24"
+          ],
+          "href": "/play?game=domino",
+          "label": "Dominó · Jugar juntos",
+          "focusVisible": false,
+          "svgPointerEvents": "none",
+          "box": {
+            "x": 1185.109375,
+            "y": 516.140625,
+            "width": 178.890625,
+            "height": 48
+          }
+        },
+        "hover": {
+          "active": "true",
+          "reduced": "false",
+          "moving": "running",
+          "movingOpacity": "1",
+          "staticOpacity": "0",
+          "pointer": [
+            "89.5",
+            "24.0"
+          ],
+          "href": "/play?game=domino",
+          "label": "Dominó · Jugar juntos",
+          "focusVisible": false,
+          "svgPointerEvents": "none",
+          "box": {
+            "x": 1185.109375,
+            "y": 516.140625,
+            "width": 178.890625,
+            "height": 48
+          }
+        },
+        "pointerMove": {
+          "active": "true",
+          "reduced": "false",
+          "moving": "running",
+          "movingOpacity": "1",
+          "staticOpacity": "0",
+          "pointer": [
+            "143.2",
+            "12.0"
+          ],
+          "href": "/play?game=domino",
+          "label": "Dominó · Jugar juntos",
+          "focusVisible": false,
+          "svgPointerEvents": "none",
+          "box": {
+            "x": 1185.109375,
+            "y": 516.140625,
+            "width": 178.890625,
+            "height": 48
+          }
+        },
+        "leave": {
+          "active": "false",
+          "reduced": "false",
+          "moving": "paused",
+          "movingOpacity": "0",
+          "staticOpacity": "0",
+          "pointer": [
+            "89.5",
+            "24"
+          ],
+          "href": "/play?game=domino",
+          "label": "Dominó · Jugar juntos",
+          "focusVisible": false,
+          "svgPointerEvents": "none",
+          "box": {
+            "x": 1185.109375,
+            "y": 516.140625,
+            "width": 178.890625,
+            "height": 48
+          }
+        },
+        "cancel": {
+          "active": "false",
+          "reduced": "false",
+          "moving": "paused",
+          "movingOpacity": "0",
+          "staticOpacity": "0",
+          "pointer": [
+            "89.5",
+            "24"
+          ],
+          "href": "/play?game=domino",
+          "label": "Dominó · Jugar juntos",
+          "focusVisible": false,
+          "svgPointerEvents": "none",
+          "box": {
+            "x": 1185.109375,
+            "y": 516.140625,
+            "width": 178.890625,
+            "height": 48
+          }
+        },
+        "keyboard": {
+          "active": "false",
+          "reduced": "false",
+          "moving": "paused",
+          "movingOpacity": "0",
+          "staticOpacity": "1",
+          "pointer": [
+            "89.5",
+            "24"
+          ],
+          "href": "/play?game=domino",
+          "label": "Dominó · Jugar juntos",
+          "focusVisible": true,
+          "svgPointerEvents": "none",
+          "box": {
+            "x": 1185.109375,
+            "y": 516.140625,
+            "width": 178.890625,
+            "height": 48
+          }
+        },
+        "hiddenSimulation": {
+          "active": "false",
+          "reduced": "false",
+          "moving": "paused",
+          "movingOpacity": "0",
+          "staticOpacity": "0",
+          "pointer": [
+            "89.5",
+            "24"
+          ],
+          "href": "/play?game=domino",
+          "label": "Dominó · Jugar juntos",
+          "focusVisible": false,
+          "svgPointerEvents": "none",
+          "box": {
+            "x": 1185.109375,
+            "y": 516.140625,
+            "width": 178.890625,
+            "height": 48
+          }
+        },
+        "offscreen": {
+          "active": "false",
+          "reduced": "false",
+          "moving": "paused",
+          "movingOpacity": "0",
+          "staticOpacity": "0",
+          "pointer": [
+            "89.5",
+            "24"
+          ],
+          "href": "/play?game=domino",
+          "label": "Dominó · Jugar juntos",
+          "focusVisible": false,
+          "svgPointerEvents": "none",
+          "box": {
+            "x": 1185.109375,
+            "y": 4016.140625,
+            "width": 178.890625,
+            "height": 48
+          }
+        },
+        "reduced": {
+          "active": "false",
+          "reduced": "true",
+          "moving": "running",
+          "movingOpacity": "0",
+          "staticOpacity": "1",
+          "pointer": [
+            "89.5",
+            "24"
+          ],
+          "href": "/play?game=domino",
+          "label": "Dominó · Jugar juntos",
+          "focusVisible": false,
+          "svgPointerEvents": "none",
+          "box": {
+            "x": 1185.109375,
+            "y": 515.90625,
+            "width": 178.890625,
+            "height": 48
+          }
+        }
+      },
+      "routes": [
+        {
+          "lang": "ko",
+          "id": "davinci",
+          "href": "/play?game=davinci",
+          "label": "다빈치 코드 · 같이 놀기",
+          "title": "다빈치 코드"
+        },
+        {
+          "lang": "ko",
+          "id": "catchmind",
+          "href": "/play?game=catchmind",
+          "label": "캐치마인드 · 같이 놀기",
+          "title": "캐치마인드"
+        },
+        {
+          "lang": "ko",
+          "id": "domino",
+          "href": "/play?game=domino",
+          "label": "도미노 · 같이 놀기",
+          "title": "도미노"
+        },
+        {
+          "lang": "ko",
+          "id": "jaipur",
+          "href": "/play?game=jaipur",
+          "label": "자이푸르 · 같이 놀기",
+          "title": "자이푸르"
+        },
+        {
+          "lang": "ko",
+          "id": "splendor",
+          "href": "/play?game=splendor",
+          "label": "스플렌더 · 같이 놀기",
+          "title": "스플렌더"
+        },
+        {
+          "lang": "ko",
+          "id": "minhwatu",
+          "href": "/play?game=minhwatu",
+          "label": "민화투 · 같이 놀기",
+          "title": "민화투"
+        },
+        {
+          "lang": "ko",
+          "id": "marble",
+          "href": "/play?game=marble",
+          "label": "부루마블 (우리 규칙) · 같이 놀기",
+          "title": "부루마블 (우리 규칙)"
+        },
+        {
+          "lang": "ko",
+          "id": "rhythm",
+          "href": "/play?game=rhythm",
+          "label": "뮤직톡톡 · 같이 놀기",
+          "title": "뮤직톡톡"
+        },
+        {
+          "lang": "es",
+          "id": "davinci",
+          "href": "/play?game=davinci",
+          "label": "El código Da Vinci · Jugar juntos",
+          "title": "El código Da Vinci"
+        },
+        {
+          "lang": "es",
+          "id": "catchmind",
+          "href": "/play?game=catchmind",
+          "label": "Adivina el dibujo · Jugar juntos",
+          "title": "Adivina el dibujo"
+        },
+        {
+          "lang": "es",
+          "id": "domino",
+          "href": "/play?game=domino",
+          "label": "Dominó · Jugar juntos",
+          "title": "Dominó"
+        },
+        {
+          "lang": "es",
+          "id": "jaipur",
+          "href": "/play?game=jaipur",
+          "label": "Jaipur · Jugar juntos",
+          "title": "Jaipur"
+        },
+        {
+          "lang": "es",
+          "id": "splendor",
+          "href": "/play?game=splendor",
+          "label": "Splendor · Jugar juntos",
+          "title": "Splendor"
+        },
+        {
+          "lang": "es",
+          "id": "minhwatu",
+          "href": "/play?game=minhwatu",
+          "label": "Minhwatu · Jugar juntos",
+          "title": "Minhwatu"
+        },
+        {
+          "lang": "es",
+          "id": "marble",
+          "href": "/play?game=marble",
+          "label": "Marble · juego de bienes raíces · Jugar juntos",
+          "title": "Marble · juego de bienes raíces"
+        },
+        {
+          "lang": "es",
+          "id": "rhythm",
+          "href": "/play?game=rhythm",
+          "label": "Music Talk Talk · Jugar juntos",
+          "title": "Music Talk Talk"
+        }
+      ],
+      "keyboardSelection": {
+        "id": "catchmind",
+        "href": "/play?game=catchmind"
+      },
+      "modifier": {
+        "original": "http://localhost:5173/",
+        "popup": "http://localhost:5173/play?game=catchmind",
+        "expected": "/play?game=catchmind"
+      },
+      "keyboardNavigation": "http://localhost:5173/play?game=catchmind",
+      "status": "passed"
+    }
+  ]
+}

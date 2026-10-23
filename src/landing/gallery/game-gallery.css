@@ -22,3 +22,15 @@
 @media(max-width:750px){.cs-game-gallery .rd-main-action{font-size:13px;gap:18px}.cs-game-gallery.rd-games{padding:35px 5vw 45px}.cs-game-gallery.rd-games h2{font-size:33px}.cs-game-gallery.rd-games>header>p{font-size:14px}.cs-game-gallery .rd-game-sculptures{height:400px}.cs-game-gallery .rd-game-caption{flex-direction:column;gap:16px;text-align:center;min-height:0;padding:12px 12px 20px}.cs-game-gallery .rd-game-caption h3{font-size:27px}.cs-game-gallery .rd-game-caption p{font-size:14px}.cs-game-gallery .rd-game-choices{grid-template-columns:repeat(2,minmax(0,1fr));margin-top:16px}.cs-game-gallery .rd-game-choices button{font-size:13.5px;gap:8px;padding:10px 8px;min-height:62px}
 }
 @media(prefers-reduced-motion:reduce){.cs-game-gallery *,.cs-game-gallery *::before,.cs-game-gallery *::after{animation:none!important;transition:none!important}}
+
+@property --game-start-beam-offset{syntax:"<number>";inherits:true;initial-value:0}
+.cs-game-gallery .rd-game-start{position:relative;isolation:isolate}
+.cs-game-gallery .game-start-beam{position:absolute;inset:-1px;display:block;width:calc(100% + 2px);height:calc(100% + 2px);overflow:visible;pointer-events:none}
+.cs-game-gallery .game-start-beam-static{opacity:0}
+.cs-game-gallery .game-start-beam-moving{opacity:0;animation:game-start-beam-lap 3s linear infinite;animation-play-state:paused;transition:opacity 100ms cubic-bezier(.23,1,.32,1)}
+.cs-game-gallery .game-start-beam-layer{stroke-dashoffset:var(--game-start-beam-offset)}
+@keyframes game-start-beam-lap{from{--game-start-beam-offset:0}to{--game-start-beam-offset:-100}}
+@media(hover:hover) and (pointer:fine){.cs-game-gallery .game-start-beam[data-active=true] .game-start-beam-moving{opacity:1;animation-play-state:running}}
+.cs-game-gallery .rd-game-start:focus-visible .game-start-beam-static,.cs-game-gallery .game-start-beam[data-reduced=true] .game-start-beam-static{opacity:1}
+.cs-game-gallery .rd-game-start:focus-visible .game-start-beam-moving{opacity:0;animation-play-state:paused;transition:none}
+@media(prefers-reduced-motion:reduce){.cs-game-gallery .game-start-beam-static{opacity:1}.cs-game-gallery .game-start-beam-moving{opacity:0!important;animation:none!important;transition:none}}

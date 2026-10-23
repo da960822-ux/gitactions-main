@@ -1,6 +1,8 @@
-# 공식 스킬 재점검·수정·재검수 — 2026-10-22 UTC / 23 KST
+# 공식 스킬 재점검·수정·재검수 — 2026-10-23 UTC (이전 검수 포함)
 
-시작 소스 `921bac645d99ab0d7f54e00211b220695b422fd0`, 기존 `redesign/folded-playhouse-depth-r8-20261018` 브랜치. 승인된 우주 Hero/B 게임방, 인물, 8개 게임, 원문 편지, 두 언어, 실제 서명·장미·건의사항을 보존했다. 원본 main 병합·공개 audience 전환·새 영상·모바일 전수 검수는 하지 않았다. 이 문서는 현재 재점검 결과이며, [이전 체크포인트 기록](https://github.com/da960822-ux/gitactions-main/blob/921bac645d99ab0d7f54e00211b220695b422fd0/docs/reviews/IMPECCABLE-LANDING-2026-10-23.md)은 Git 이력에 남긴다.
+> 최신 상태 — 2026-10-23 UTC: 과거 점수·PASS·환경 차단 기록을 현재 판정으로 재사용하지 않는다. 실행 환경을 복구해 실제 Chromium 검수를 재개했으며 최신 결과는 문서 끝의 「후속 실제 브라우저 재개 · UpFork / Shaders 무료 소스 적용」부터 기록한다. native WebGPU 후보는 실제 그래픽 검수에 실패하여 배포에서 제외했고, 기존 Three.js 기반 공개 커널 이식의 실제 데스크톱 동작·픽셀·정지/복귀 검수를 통과했다. 전체 사이트 미술 최종 승인과 구분한다.
+
+시작 소스 `921bac645d99ab0d7f54e00211b220695b422fd0`, 기존 `redesign/folded-playhouse-depth-r8-20261018` 브랜치. 승인된 우주 Hero/B 게임방, 인물, 8개 게임, 원문 편지, 두 언어, 실제 서명·장미·건의사항을 보존했다. 원본 main 병합·공개 audience 전환·새 영상·모바일 전수 검수는 하지 않았다. 이 문서는 시점별 재점검 기록이다. 최신 상태는 맨 위와 문서 끝에 구분했다. [이전 체크포인트 기록](https://github.com/da960822-ux/gitactions-main/blob/921bac645d99ab0d7f54e00211b220695b422fd0/docs/reviews/IMPECCABLE-LANDING-2026-10-23.md)은 Git 이력에 남긴다.
 
 ## 무엇을 실제 실행했나
 
@@ -154,3 +156,96 @@ Sol은 Taste, Impeccable bolder/layout/animate/delight, GSAP React/ScrollTrigger
 독립 Sol은 최종 9개 손 확대 자세와 시작/끝 전체를 직접 열어 **M1 BLOCK 유지, M4 역재생 제거 확인**으로 판정했다. 받는 손은 시작부터 닫힌 원화이므로, 코드의 donor/recipient 소유 이름만으로 ‘건네기→받기’가 명확히 읽힌다고 단정할 수 없다. 이 의미 전달도 실제 재생에서 검증해야 한다. 새의 M2/M3은 기계적 교정 확인, 전체 모션의 자연스러움은 미승인이다.
 
 [이 배치의 독립 최종 검수](assets/impeccable-landing/full-skill-review/motion-correction/independent-after.md). 전체 판정은 **BLOCK / 미완료 후보**다.
+
+## 전체 수정 승인 후 병렬 교정 — 2026-10-23
+
+이 절은 위의 과거 버전 검수와 구분하는 후속 기록이다. 과거 브라우저 PASS와 31/40은 현재 변경본의 시각 승인으로 재사용하지 않는다. 이번에는 실제 소스에서 추출한 오프라인 렌더를 루트와 독립 Sol이 열어 교정했으며, 현재 실행 환경에서 새 브라우저 재생은 불가능하다. 사용자 요청대로 모바일 검수와 영상은 제외했다.
+
+역할은 Sol의 Hero 공간·새 관절·InterPals 구성·장미 전달, Luna의 공개 참고 자료 전달 및 자산 연결 대조, 독립 Sol의 소스/그림 재검수로 나눴다. 각 담당자는 Ponytail과 업무에 맞는 실제 설치 지침을 읽었다. Hero에는 Impeccable shape/layout/craft-floor, camera-systems/threejs-scene-setup, GSAP React/ScrollTrigger를 적용했다. 이야기에는 Taste와 Impeccable bolder/layout/animate, GSAP timeline/React/ScrollTrigger 및 Motion을 적용했다. 새·장미에는 Impeccable animate/delight와 Emil animate/review-animations를 적용했다. 스킬을 읽거나 테스트가 통과했다는 이유로 시각 합격을 선언하지 않는다. overdrive 정식 워크숍을 실행했다고 주장하지 않는다.
+
+Luna는 공개 ThreeUI Community의 MIT 소스(MengTo/threeui, 68802d5)에서 glassToggleScene의 카메라 거리 기반 구도 보존 원리를 Hero 담당에게, character-filmstrip의 깊이·초점·활성 상태 관계를 이야기 담당에게 전달했다. 후자는 이야기 장면을 캐러셀로 바꾸라는 의미가 아니다. Kexsio의 공개 카탈로그와 Jelly fish draft/Dot Creature는 시각 참고로만 확인했다. 내부 구현·재사용 허가를 확인하지 못한 유료 소스를 복사하지 않았고 새 라이브러리를 설치하지 않았다.
+
+### 직접 확인한 수정과 재작업 사유
+
+- InterPals: 게임방 사진 사각형을 없애고 승인 RGB와 실제 alpha matte로 두 인물을 분리했다. 광주·산토도밍고, 무례했던 시작, 첫날 12시간 연속 연락을 보존했다. 큰 하트 배경과 큰 12 지표를 제거하고 인물의 접근, 서툰 선, 마지막 작은 하트로 바꿨다. GSAP은 스크롤 형태와 구성을, Motion은 별도 포인터 응답 그룹만 소유한다. 독립 검수가 지적한 설명용 figure의 불필요한 Tab 정지점·focus 이동도 제거했다. 가짜 채팅·시각·날짜를 추가하지 않았다.
+- 새: 원래 머리·부리·눈 픽셀을 보존하고 새 clean torso, 근경/원경 날개, 꼬리 레이어를 사용한다. 고정 접힌 날개와 움직이는 날개가 겹치던 결함을 독립 검수에서 해소 확인했다. 원앙은 발 기준을 유지하며 짧게 답하고, 벌새는 현재 진행률에서 접근·복귀한다. 꼬리는 몸의 기울기에 반대로 움직인다. 확대 시 어깨 레이어 경계는 남으며 360ms 반복 리듬의 자연스러움은 실제 재생 전 미승인이다. 이미지 실패 시 원본 정적 새로 전환하고 인사 동작을 중지하도록 보완했다.
+- 장미: image_gen이 이번에는 정상 작동해 인물 전체가 아닌 팔·손만 새로 만들었다. 첫 atlas로 팔의 결손과 손가락 조각은 제거했지만, 독립 검수는 처음부터 여자가 꽃을 소유한 것처럼 보이는 문제와 팔꿈치/소매 접합을 지적했다. 이를 수학적인 owner 전환으로 덮지 않고 남자의 파지손·여자의 열린손 자산으로 교정했다. 남자는 원래 팔을 소매부터 손목까지 단일 부품으로 재사용하여 이중 전완·팔꿈치 틈을 제거했다. 여자 소매에 섞여 움직이던 navy 조각을 실제 피부/옷 경계로 분리했다. 시작에는 남자가 쥐고 여자는 열린 손으로 떨어져 있으며, 끝에는 여자가 쥐고 남자는 손을 연다. 손가락 배열을 섞던 가로 wipe·반투명 겹침을 없애고 파지한 손과 잎 뒤에서 한 개의 불투명 손 자세만 교체한다. 교체 직후 작은 손가락 가장자리는 드러나며 완전한 가림·연속 손가락 굽힘을 구현했다고 주장하지 않는다. 손목의 사각 경계는 제거했으나 작은 색차는 남는다. 원본 얼굴·의상 파일 보존과 최종 렌더의 RGB 동일성은 별개의 주장이다.
+- Hero: 수직 이동 후보는 쌓인 배너와 떠 있는 발, 첫 수평 후보는 이중 인물과 늘어난 전면판 때문에 제외했다. 해당 실험 코드는 통합 소스에 남기지 않았다. 정면 원화에는 옆으로 이동할 때 드러날 면이 없어 측면 이동을 폐기했다. 최종 소스는 기존 Hero의 실제 전경 alpha를 원본 RGB에 적용한 깊이 mesh와 짧은 카메라 이동으로 정면 B를 연결한다. 새 벽·장식 가림판은 없다. 시험 생성한 재질 atlas는 최종 구현에 쓰지 않아 public에서 제외했다. 교체는 원본 전경이 화면을 가리는 구간에만 있으며 인물을 휘거나 섞지 않는다. q.10의 밝은 조각은 alpha 경계와 B 뒤에 잘못 놓였던 cleanplate 깊이를 바로잡아 제거했다. 동작 줄이기는 정지 Universe→정지 B로 즉시 교체하며 live 변경도 반영한다. 승인 Universe와 B 원본·후반부 카메라 등록은 보존했다. 이는 완전한 3D 실내 모델이 아닌 실제 카메라/깊이 mesh를 이용한 2.5D 전환이다. 구조 통합은 허용됐으나 연속 리듬의 브라우저 승인은 남았다.
+
+중간 통합 검증은 88개 파일/688개 테스트와 TypeScript 포함 production build가 통과했다. 이후 진행 중인 손 자세·Hero 작업의 최종 검증은 이 숫자에 포함하지 않는다. 기존 Motion use-client 및 큰 chunk 경고는 남는다.
+
+GitHub 쓰기는 사용자 전체 승인 이후 정상 connector 호출에서도 `MCP tool call requires approval, but approval policy is never`로 차단됐다. 이는 자동 심사 반려라는 뜻이 아니라 실행 환경의 승인 정책 제한이다. 원격 ref를 옮기거나 main/공개 audience를 변경하지 않았다. 현재 Site의 기존 버전을 새 소스로 업데이트했다고 주장하지 않는다. 로컬 소스·생성 자산·오프라인 근거와 원격 보존·실제 배포를 구분한다.
+
+최신 오프라인 비교 근거: [Hero 8개 구도](assets/impeccable-landing/full-skill-review/motion-correction/hero-foreground-handoff.jpg), [새 자세](assets/impeccable-landing/full-skill-review/motion-correction/birds-repaired-poses.webp), [새 관절](assets/impeccable-landing/full-skill-review/motion-correction/birds-repaired-joints.webp), [InterPals 세 구도](assets/impeccable-landing/full-skill-review/motion-correction/story-cutout-after.webp). 실제 소스와 자산을 투영/래스터화한 그림이며 브라우저 캡처가 아니다. 비교 그림만 lossless WebP로 인코딩했고 원본 자산은 변경하지 않았다.
+
+[장미 최종 손 확대 비교](assets/impeccable-landing/full-skill-review/motion-correction/rose-handover-after.webp). 원본 팔 재사용·파지/열린손·접촉·보유의 소스 렌더다. 실제 재생에서 손 자세 교체의 느낌과 손목의 작은 색차는 열린 검수 항목이다.
+
+무손실 인코딩: Hero의 기존 마스크는 사용하는 alpha만 정확히 보존한 89,798byte PNG로, 기존 cleanplate는 디코딩 RGBA가 같은 1,845,442byte WebP로 참조한다. 원본 두 파일은 보존했다. 이 두 전환 텍스처의 원시 후보 합계4,580,740bytes →1,935,240bytes이며 실제 브라우저 전송량·FPS 비교가 아니다. 새의 활성 벌새 PNG 합계도1,619,859bytes로 기존 body/wing 합계보다21.3% 작다. 제작용 새 atlas와 미사용 Hero 재질 atlas는 public에서 제외했다.
+
+### 최종 소스 검증과 남은 판정
+
+전체 통합 검사 **88개 파일/690개 테스트**와 production build가 통과했다. 이후 마지막 손 자세 교체·무손실 참조 변경은 관련 **4개 파일/21개 테스트**, TypeScript 포함 production build, diff 검사로 다시 확인했다. 최종 dist에 제작용 벌새 atlas·미사용 Hero 연결부 atlas가 들어가지 않는 것도 확인했다. 게임/API/편지 원문을 수정하지 않았다. 기존 Motion use-client/큰 chunk 경고는 남아 있다.
+
+독립 Sol은 Hero의 큰 벽·옆면 패널·중복 인물·꽃의 밝은 틈 제거, 새의 고정 접힌 날개 중복 제거, 장미의 파지 의미·팔꿈치 틈·이중 팔·사각 소매·두 손가락 배열 혼합 교정을 실제 소스 렌더에서 확인했다. **장미 교체 직후 손가락 윗 윤곽이 나타나는 작은 포즈 전환과 손목의 색차는 남는다.** Hero 접사의 머무름, 새의 360ms 리듬과 이 손 교체가 실제 속도에서 자연스러운지는 새 브라우저 검수 전 미승인이다. 전체 사이트 점수나 4/5 합격을 새로 부여하지 않았다.
+
+최종 코드 파일 SHA256(커밋 SHA가 아님):
+
+- `src/landing/cinematic/folded/heroRoomJourney.ts`: `5c7406c27284aad3d351af40f852eeac4dfbd8242044b941419bf4493b795e35`
+- `src/landing/FirstConversation.tsx`: `a642b3b81081ecbb8baa1703221f4ed44168f9fcd3732ddc4095d65ae7a83aee`
+- `post-hero-preview/src/CountryCompanions.tsx`: `540bd64e58b9f9a4bfdc0d0065e5b245d4f06992eb5cd9b57ba4b951d91b1833`
+- `post-hero-preview/src/RoseGiftFinale.tsx`: `645740de40b1bb9657b247988afd5ccdb47c8d1f097fbf45b14cf936fba0a75b`
+
+로컬 HEAD는 c566a898이며 기존 원격 d070d48의 보존된 변경분과 이번 수정이 작업 트리에 있다. 원격 최신 ref는 d070d48로 재확인했다. 원격 쓰기 제한 때문에 새 커밋 계보를 임의로 만들거나 중복 브랜치를 생성하지 않았다. 사이트 v8은 기존 버전이며 이번 소스·빌드의 배포는 미실행이다. 새 브라우저·콘솔/네트워크·실제 GPU·8개 게임 전수 플레이는 확인하지 못했다. 모바일과 영상은 사용자 제외 범위다.
+
+
+## 후속 실제 브라우저 재개 · UpFork / Shaders 무료 소스 적용
+
+이 절부터는 위의 환경 차단 기록을 현재 상태로 사용하지 않는다. 2026-10-23 새 실행 환경에서 정상 네트워크·로컬 서버·Chromium 실행을 확인했다. 기존 원격 브랜치 d070d48을 fetch했고, 작업 파일의 바이트를 보존한 채 로컬 계보/인덱스를 해당 원격 HEAD와 동기화했다. main 변경·force push·중복 브랜치 생성은 없다. 기존 Site의 v9가 이미 성공 배포된 상태임도 확인했으며, 이번 소스의 배포 여부는 아래 후속 기록으로 구분한다.
+
+### 무료 범위와 실제 적용 결정
+
+- UpFork 공식 카탈로그/registry 19개를 대조했다. priceMicros=0만으로 무료로 판단하지 않았다. MIT 3개, Standard 16개이며, 공개 카탈로그의 Free/Pro와 무계정 설치 안내를 함께 확인했다. 무료 MIT Border Beam Button의 공개 원본을 직접 읽고 기존 게임 시작 링크 한 곳에만 적용한다. Crowdwall은 커뮤니티 사진 기능으로 목적에 맞지 않고, Interactive SaaS Hero는 승인 Hero를 대체하므로 제외한다. Perspective Cards 등 Pro/Standard 자산은 가져오지 않는다.
+- UpFork 원본 registry revision 1 SHA256: `9f9126b344e0f06d985ba902b43b6bd4c0fff647819e84dc2a0741deffb12527`. 실제 도입한 것은 SVG 실측 둘레/pathLength, 일정 속도 dash, 겹침을 보정한 tail opacity, pointer RAF 갱신이다. Next.js·아이콘·폼 상태·자석 이동·입자·깜박임은 필요 없으므로 도입하지 않았다. 별도 UI 의존성을 설치하지 않았다.
+- Shaders 엔진·200개 기본 컴포넌트와 React bindings는 MIT지만 완성 프리셋/섹션은 별도 Pro 조건이다. 기본 Satin/BrushedMetal/Heart/Paper/CursorRipples/FlowField를 현 화면과 대조했다. 인물을 왜곡하지 않는 첫 대화의 공유 표면에 기본 Satin만 선택했다. 새 하트·cursor ripples·foil 서명 canvas를 중복 추가하지 않는다. 실제 서명은 읽을 수 있는 SVG 잉크로 유지한다.
+- 공식 `npx --yes shaders connect --no-auth --yes`를 실제 실행했다. `shaders` 4.0.5, React 설정, 공식 로컬 skill이 설치됐다. 로그인·Pro·외부 편집기 연결은 하지 않았다. 참고 upstream commit `eb3df5cedc826008be8e1037c1182e649037c74a`. 라이선스는 THIRD_PARTY_NOTICES.md에 포함한다.
+- 역할: Luna는 무료/유료·라이선스·효과 적합성 대조, Sol은 각각 UpFork CTA와 Satin 재질 구현, 별도 Sol은 읽기 전용 실제 브라우저 재검수. Ponytail, 공식 Shaders SKILL, Impeccable animate/delight/optimize, Emil animate/review-animations의 관련 지침을 업무별 적용한다.
+
+### 이번 실제 검수와 범위
+
+실제 로컬 Chromium, 1440×900 KO / 1920×1080 es-DO. renderer는 ANGLE Vulkan SwiftShader(software)이며 실 GPU 성능 수치로 보고하지 않는다. Hero 정·역 전환과 B 도착, 새 포인터/키보드 인사 및 section 경계, 시간 키보드 입력, 편지→실제 서명→저장→접기→장미→다시읽기를 실제 실행했다. 초기 pageerror/console error/requestfailed/HTTP≥400은 모두 0이다. 새가 다음 시간 section에 누출되지 않음을 경계 재측정으로 확인했다. 편지 접기 scroll delta=0이다.
+
+독립 검수에서 발견한 InterPals 우측 인물 하단의 얇은 수평 절단선은 인물 원본 좌표 안에서 y500→640 알파를 부드럽게 끝내고, y660 crop 전에 투명한 여유를 남겨 수정했다. 같은 두 해상도에서 실제 절단선 제거를 확인했다. 보호 얼굴 crop은 baseline 대비 변경 0px이며 원본 RGB/matte 파일은 바꾸지 않았다. 이것은 사이트 전체 미술 최종 합격과 구분한다.
+
+원시 실행 근거·스크립트·전체 캡처는 `output/current-review/shader-integration/`에 있다. 대표 전후 캡처만 아래에 보존한다. 모바일·영상은 사용자 요청으로 제외한다. 실제 GPU 성능과 8개 게임 전체 플레이는 이번 디자인 배치의 검수 범위가 아니다.
+
+
+### 통합 중 발견하여 보류한 실패
+
+UpFork CTA는 1440 KO와 1920 es-DO에서 hover/leave/cancel·정적 keyboard focus·reduced toggle·offscreen·hidden 이벤트·선택 8개×양언어 href/label·Ctrl 새탭·Enter 라우팅을 실제 실행해 통과했다. 중간 HMR 실행 중 1920 언어 assertion이 한 번 실패했으므로 그 실행을 숨기지 않고 원시 보고서에 남겼으며, 소스 동결 후 같은 검사를 다시 실행해 통과했다.
+
+첫 native Satin 후보는 기본/adapter-null·cold reduced·WebGPU API 없음 조건의 두 해상도 6개 fallback 검사를 통과했지만, software WebGPU에서 **통합 실패**했다. 첫 1440에서는 ready와 canvas 생성이 확인돼도 5초 전후 화면이 동일했다. 재진입·탭 숨김 복귀에서 `device-lost`와 shared WebGL context loss가 나왔으며, 같은 브라우저의 다음 context에도 실패가 이어졌다. 오류 없는 콘솔이나 `onReady`만으로 실제 시각/수명 주기를 통과시킬 수 없다는 근거다.
+
+따라서 이 후보를 완성으로 게시하지 않고, SVG foreignObject 안의 canvas 합성과 offscreen/hidden마다 renderer를 정리·재생성하던 수명을 교정한다. 라이브러리 내부의 공유 기본 device를 직접 destroy한 것으로 단정하지 않으며, 실제 관측은 device-lost와 context loss다. 다음 검수는 HTML host 안에서 실제 소재 픽셀 변화, viewport별 fresh browser, 한 세션 안에서의 반복 진입, 숨김/복귀, reduced 변경, WebGPU queue activity와 기존 WebGL context 보존을 함께 확인한다. queue submit 수는 동작/정지 증거이며 FPS나 하드웨어 성능이 아니다.
+
+
+### Native 검수 결과와 최종 구현 방식 변경
+
+keep-mounted HTML host로 수명을 수정한 뒤 software WebGPU의 visible submit 증가·offscreen/hidden/reduced submit Δ0·재진입은 확인했지만, 두 해상도 모두 5초 간격 화면 픽셀 변화가 0이었다. 낮은 투명도 때문인지 배제하려고 테스트 CSS에서 소재/host opacity를 1로 올리고 SVG fallback을 숨겨도 단색/무변화였다. 다른 무료 기본 FlowingGradient 제어 실험도 같았고 1920에서 device-lost가 재현됐다. 따라서 queue 활동이나 ready 상태를 ‘소재 애니메이션 구현 성공’으로 보고하지 않는다. `in.uv` warning과 실패의 인과는 증명하지 못했으며 upstream 버그라고 단정하지 않는다.
+
+사용자 승인 콘셉트·기존 renderer와 실제 출력 품질을 우선하여, native runtime 후보는 배포에서 제거한다. `shaders`/TypeGPU 추가 의존성과 사용하지 않는 config를 삭제했고 공식 설치 스킬·skills-lock provenance는 유지한다. 최종 소재는 MIT 공개 FlowingGradient의 domain warp·quad blend·fold highlight 및 필요한 noise primitive를 기존 Three.js의 작은 2D ShaderMaterial로 이식한다. 새 Three/R3F나 별도 WebGPU 엔진 설치는 없다. 이는 native Shader 컴포넌트 적용과 구분되는 **공개 코드 이식**이며, 공식 스킬의 ‘기본 컴포넌트 우선’ 경로를 실제로 먼저 시도한 후 시각/안정성 실패 근거에 따라 선택한 프로젝트 통합 방식이다. 원본과 픽셀 동일한 복제라고 주장하지 않는다.
+
+소재의 noise primitive까지 확인하여 MaterialX/OSL 계보의 Sony Pictures Imageworks BSD 조건과 MaterialX Apache-2.0 전문도 THIRD_PARTY_NOTICES.md에 포함했다. 무료 공개 저장소의 최상위 MIT만 보고 하위 출처 표시를 생략하지 않는다. 설치·배포에 MaterialX runtime을 추가하지 않았다.
+
+
+### 최종 동결본 검수 결과
+
+- 실제 Chromium 1440×900 KO / 1920×1080 es-DO: default opacity에서 5초 간격 소재 변화 105,274 / 141,017px, 변화 bbox는 공유 표면 안이다. native 후보의 단색/0px 결과와 다르다. 같은 scroll/composition에서 효과 canvas만 숨긴 남녀 얼굴 내부 40×40 샘플은 두 해상도 모두 변화 0px/max RGB Δ0이다. 이는 샘플 검수이며 화면 전체 인물 RGB 동일성을 주장하는 것은 아니다.
+- 소재는 기존 Three.js만 사용하고 별도 runtime 의존성을 추가하지 않는다. 720px 폭/DPR1, 최대 초당 30 draw 제한을 둔다. visible에서 실제 renderCount 증가, offscreen·hidden 이벤트·reduced에서 Δ0, 재진입·복귀 정상. 이 수치는 scheduler 동작 확인이며 측정 FPS나 실제 GPU 성능이 아니다.
+- 소재 canvas에만 실제 context-loss를 주입하면 정적 fallback과 loop 정지를 유지했고 공유 Hero WebGL context는 정상이다. 별도 cold-reduced는 소재 canvas를 만들지 않았고, 소재 context 생성 거부에도 본문·원본 SVG·입력 흐름을 보존했다.
+- 두 해상도에서 CTA hover/정적 keyboard focus와 실제 서명→서류 표시→접기→장미→다시 읽기 재확인 통과. 8개 게임×두 언어의 선택 링크/문구, Ctrl 새탭과 Enter 라우팅은 앞선 동결 CTA 검사에서 통과했다. 모든 게임 전체 플레이를 다시 수행한 것은 아니다.
+- 일반 실행의 pageerror/console error/HTTP≥400/requestfailed=0. 소프트웨어 캡처의 ReadPixels stall 경고는 남았다. 강제 context-loss 테스트의 Context Lost 로그, 생성 거부 테스트의 예상 Three context error 1건을 정상 실행 오류와 혼동하지 않는다.
+- 최종 소스 전체 88파일/690테스트, production build, diff 검사를 통과했다. 빌드의 기존 Motion use-client/큰 chunk 경고는 남는다. Landing chunk 약 1,042.68KB / gzip312.65KB이며 native 후보의 별도 725KB gzip chunk는 제거됐다. 이 payload 기록을 실제 GPU/FPS 개선치로 보고하지 않는다.
+
+[실제 검수 JSON·소스 해시](assets/impeccable-landing/full-skill-review/motion-correction/browser-integration.json), [InterPals 전](assets/impeccable-landing/full-skill-review/motion-correction/baseline-1440-inter-twelve.webp) / [잘림선 교정 후](assets/impeccable-landing/full-skill-review/motion-correction/after-1440-intrinsic-fade.webp), [최종 소재 1440](assets/impeccable-landing/full-skill-review/motion-correction/final-1440-normal-material-later.webp) / [1920](assets/impeccable-landing/full-skill-review/motion-correction/final-1920-normal-material-later.webp), [게임 CTA hover](assets/impeccable-landing/full-skill-review/motion-correction/after-1920-cta-hover.webp) / [정적 키보드 포커스](assets/impeccable-landing/full-skill-review/motion-correction/after-1920-cta-keyboard.webp).
+
+남은 범위: 실제 하드웨어 GPU 성능, 전체 8게임 플레이, 모바일·영상은 이번 검수에 포함하지 않았다. Hero 접사의 긴 머무름·새의 반복 박자·장미 손 교체의 미세한 pose pop을 이번 소재 추가만으로 해결했다고 주장하지 않는다. 사이트 전체 4/5 또는 미술 최종 승인 점수를 새로 부여하지 않는다. 이 배치는 추가 무료 효과의 적합성·실제 출력·보호 기능·브라우저 통합 검수를 완료한 것이다.

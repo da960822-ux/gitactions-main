@@ -47,9 +47,10 @@
         0,
         255
       ],
-      "meaning": "Wingless-body animation source for a stylized blush-pink personal hummingbird on Baby’s side. Not an exact Hispaniolan emerald specimen, Dominican national bird, endemic species, or universal Latin love symbol.",
+      "meaning": "Original approved blush-pink personal hummingbird with painted folded-wing and fixed-tail contours. Retained intact as the static error fallback and original head/beak/eye source; not an exact species or national-bird claim.",
       "generator": "image_gen.imagegen",
-      "postprocessing": "None; original generated transparent PNG bytes copied unchanged."
+      "postprocessing": "None; original generated transparent PNG bytes copied unchanged.",
+      "runtimeUse": "Static error fallback; head identity source for repaired torso."
     },
     {
       "file": "hummingbird-wing.png",
@@ -64,9 +65,94 @@
         0,
         255
       ],
-      "meaning": "Single matching feathered wing asset, rendered twice with registered near/far shoulder pivots behind the body for hovering. No duplicate extended stationary wing in the body source.",
+      "meaning": "Original matching feathered wing generation reference. Replaced in the active articulated rig by separately generated matching near/far wing layers; original retained unchanged.",
       "generator": "image_gen.imagegen",
-      "postprocessing": "None; original generated transparent PNG bytes copied unchanged."
+      "postprocessing": "None; original generated transparent PNG bytes copied unchanged.",
+      "runtimeUse": "Art repair reference only; not requested by the active component."
+    },
+    {
+      "file": "hummingbird-torso.png",
+      "source": "/workspace/generated_images/exec-24f09b07-830f-4d2e-b2a3-e7dc9517a019.png",
+      "sourceAtlas": "output/current-review/bird-correction/hummingbird-rig-atlas.png",
+      "sha256": "c5c326af0ee0cefe90e234b0d77544981a95e13555c0bddd334228cd672cb527",
+      "bytes": 743744,
+      "size": [
+        1254,
+        1254
+      ],
+      "mode": "RGBA",
+      "alphaExtrema": [
+        0,
+        255
+      ],
+      "meaning": "Repaired soft-pink torso and feet without the original long folded-flight-wing/tail silhouette, composited with original approved head, eye and beak pixels. Short back contour feathers remain.",
+      "generator": "image_gen.imagegen",
+      "generationAttempts": 1,
+      "postprocessing": "Registered with output/current-review/bird-correction/repair-assets.py. Connected-alpha isolation removes neighboring atlas-cell fragments; normalized native 627 px tail/wing layers. Torso retains original head visible RGBA exactly above y=400 with a neck overlap below.",
+      "runtimeUse": "Active interactive rig; image error replaces the complete bird pair with original static cutouts and disables greeting controls."
+    },
+    {
+      "file": "hummingbird-tail.png",
+      "source": "/workspace/generated_images/exec-24f09b07-830f-4d2e-b2a3-e7dc9517a019.png",
+      "sourceAtlas": "output/current-review/bird-correction/hummingbird-rig-atlas.png",
+      "sha256": "7d83acfeea34b149fd17cb9d2405f7d9ad1010826d2b525231c2a3a2e15ab910",
+      "bytes": 194655,
+      "size": [
+        627,
+        627
+      ],
+      "mode": "RGBA",
+      "alphaExtrema": [
+        0,
+        255
+      ],
+      "meaning": "Separate matching pink/plum tail, registered beneath the torso at the hip for counterbalance.",
+      "generator": "image_gen.imagegen",
+      "generationAttempts": 1,
+      "postprocessing": "Registered with output/current-review/bird-correction/repair-assets.py. Connected-alpha isolation removes neighboring atlas-cell fragments; normalized native 627 px tail/wing layers. Torso retains original head visible RGBA exactly above y=400 with a neck overlap below.",
+      "runtimeUse": "Active interactive rig; image error replaces the complete bird pair with original static cutouts and disables greeting controls."
+    },
+    {
+      "file": "hummingbird-near.png",
+      "source": "/workspace/generated_images/exec-24f09b07-830f-4d2e-b2a3-e7dc9517a019.png",
+      "sourceAtlas": "output/current-review/bird-correction/hummingbird-rig-atlas.png",
+      "sha256": "2873e789b20d8fa681b25e5c1a97a7794f274e0ec2c78fca3eda0d87fd67ef0a",
+      "bytes": 360724,
+      "size": [
+        627,
+        627
+      ],
+      "mode": "RGBA",
+      "alphaExtrema": [
+        0,
+        255
+      ],
+      "meaning": "Complete matching near-wing feather layer, registered to the near shoulder.",
+      "generator": "image_gen.imagegen",
+      "generationAttempts": 1,
+      "postprocessing": "Registered with output/current-review/bird-correction/repair-assets.py. Connected-alpha isolation removes neighboring atlas-cell fragments; normalized native 627 px tail/wing layers. Torso retains original head visible RGBA exactly above y=400 with a neck overlap below.",
+      "runtimeUse": "Active interactive rig; image error replaces the complete bird pair with original static cutouts and disables greeting controls."
+    },
+    {
+      "file": "hummingbird-far.png",
+      "source": "/workspace/generated_images/exec-24f09b07-830f-4d2e-b2a3-e7dc9517a019.png",
+      "sourceAtlas": "output/current-review/bird-correction/hummingbird-rig-atlas.png",
+      "sha256": "1a14e98eb76a1450dce7593c20cff06222537f9fb09f25d14c5a64e3cf9791aa",
+      "bytes": 320736,
+      "size": [
+        627,
+        627
+      ],
+      "mode": "RGBA",
+      "alphaExtrema": [
+        0,
+        255
+      ],
+      "meaning": "Complete matching far-wing feather layer, registered behind the torso to the far shoulder.",
+      "generator": "image_gen.imagegen",
+      "generationAttempts": 1,
+      "postprocessing": "Registered with output/current-review/bird-correction/repair-assets.py. Connected-alpha isolation removes neighboring atlas-cell fragments; normalized native 627 px tail/wing layers. Torso retains original head visible RGBA exactly above y=400 with a neck overlap below.",
+      "runtimeUse": "Active interactive rig; image error replaces the complete bird pair with original static cutouts and disables greeting controls."
     }
   ],
   "references": [
@@ -74,7 +160,7 @@
     "https://www.nps.gov/articles/000/faceless-dolls-history.htm",
     "https://www.casadecampo.com.do/blog/2024/03/22/what-to-wear-to-a-wedding-in-casa-de-campo/"
   ],
-  "scope": "User-selected mandarin duck and softly blush-pink hummingbird, rendered only inside the clipped distance section. Warm rounded expressive storybook illustration; separate authored wings with registered 2.5D hover motion. Existing red-hanbok/ivory-chacabana dolls remain active and unchanged.",
+  "scope": "User-selected mandarin duck and softly blush-pink personal hummingbird, rendered only inside the clipped distance section. Original head identity and cultural meaning copy are preserved. Repaired separate torso/near-wing/far-wing/tail layers support bounded 2D hover and approach counterbalance. Original intact cutouts provide a static error fallback with disabled greeting controls. Existing red-hanbok/ivory-chacabana dolls remain unchanged.",
   "retiredAssets": [
     {
       "file": "lovebird.png",
@@ -112,5 +198,30 @@
       "postprocessing": "None; copied original PNG bytes.",
       "retiredReason": "Replaced by the user-selected mandarin duck and softly blush-pink personal hummingbird. Original generated source retained; obsolete public PNG removed."
     }
-  ]
+  ],
+  "sourceAtlases": [
+    {
+      "file": "output/current-review/bird-correction/hummingbird-rig-atlas.png",
+      "source": "/workspace/generated_images/exec-24f09b07-830f-4d2e-b2a3-e7dc9517a019.png",
+      "sha256": "bb79eb94b72e85938fea7ab37d0fefcb53d3e071406c7d2e5a0bc350946f47aa",
+      "size": [
+        1254,
+        1254
+      ],
+      "mode": "RGBA",
+      "alphaExtrema": [
+        0,
+        255
+      ],
+      "generator": "image_gen.imagegen",
+      "generationAttempts": 1,
+      "references": [
+        "hummingbird-body.png",
+        "hummingbird-wing.png"
+      ],
+      "runtimeUse": "Evidence/source only, outside public; not copied into a fresh production build.",
+      "postprocessing": "None; original generated transparent PNG bytes retained. Generated head discarded from runtime derivatives in favor of the original approved head."
+    }
+  ],
+  "reviewLimits": "Independent natural-scale review found the original folded-wing duplication resolved and no new anatomical BLOCK. Enlarged 0% and 50% shoulder-root crops still reveal a round layer seam. Runtime rhythm, browser/device interaction and performance remain unverified."
 }

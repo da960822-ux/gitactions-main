@@ -2,11 +2,11 @@ import {useCallback,useEffect,useId,useRef,useState} from 'react';
 import gsap from 'gsap';
 import './rose-gift-finale.css';
 
-const original='/images/rose-gift/received.png',body='/images/rose-gift/body-clean.png',flower='/images/rose-gift/rose-single.png';
+const original='/images/rose-gift/received.png',offerArt='/images/rose-gift/offer.png',body='/images/rose-gift/body-clean.png',flower='/images/rose-gift/rose-single.png',limbs='/images/rose-gift/limb-atlas.png',hands='/images/rose-gift/hand-pose-atlas.png';
 let roseGiftArtPreload:Promise<void>|null=null;
 export function preloadRoseGiftArt():Promise<void>{
  if(typeof Image==='undefined')return Promise.resolve();
- if(!roseGiftArtPreload)roseGiftArtPreload=Promise.all([original,body,flower].map(src=>new Promise<void>(resolve=>{
+ if(!roseGiftArtPreload)roseGiftArtPreload=Promise.all([original,offerArt,body,flower,limbs,hands].map(src=>new Promise<void>(resolve=>{
   try{
    const image=new Image(),finish=()=>resolve();
    image.onload=finish;image.onerror=finish;image.src=src;
@@ -21,24 +21,27 @@ type Point={x:number;y:number};
 const turn=(point:Point,pivot:Point,degrees:number):Point=>{const angle=degrees*Math.PI/180,c=Math.cos(angle),s=Math.sin(angle),x=point.x-pivot.x,y=point.y-pivot.y;return{x:pivot.x+x*c-y*s,y:pivot.y+x*s+y*c};};
 const range=(a:number,b:number,value:number)=>{const t=Math.max(0,Math.min(1,(value-a)/(b-a)));return t*t*(3-2*t);};
 const add=(a:Point,b:Point):Point=>({x:a.x+b.x,y:a.y+b.y});
-const origin={x:0,y:0},donorShoulder={x:522,y:620},donorElbow={x:535,y:663},donorWrist={x:616,y:656},recipientElbow={x:735,y:688},recipientWrist={x:735,y:610};
+const origin={x:0,y:0},donorShoulder={x:522,y:620},donorElbow={x:535,y:663},donorWrist={x:616,y:656},recipientShoulder={x:710,y:620},recipientElbow={x:735,y:688},recipientWrist={x:735,y:610};
 function donorArm(upper:number,lower:number){
  const elbow=turn(donorElbow,donorShoulder,upper);
- return{elbow,wrist:turn(turn(donorWrist,donorShoulder,upper),elbow,lower),grip:turn(turn({x:704,y:650},donorShoulder,upper),elbow,lower)};
+ return{elbow,wrist:turn(turn(donorWrist,donorShoulder,upper),elbow,lower),grip:turn(turn({x:656,y:652},donorShoulder,upper),elbow,lower)};
 }
-const contactDonor=donorArm(0,-14).grip,contactRecipient=turn({x:740,y:575},recipientElbow,-8);
+const contactRecipientElbow=turn(recipientElbow,recipientShoulder,52);
+const contactDonor=donorArm(-16,0).grip,contactRecipient=turn(turn({x:740,y:575},recipientShoulder,52),contactRecipientElbow,-62);
 const contactStemAngle=(Math.atan2(contactDonor.y-contactRecipient.y,contactDonor.x-contactRecipient.x)-Math.atan2(272,57))*180/Math.PI;
 const contactStemOffset=turn({x:contactDonor.x-contactRecipient.x,y:contactDonor.y-contactRecipient.y},origin,-contactStemAngle);
-/** Two separate contacts on one stem; intact source palms keep their original anatomy. */
+/** Two separate contacts on one stem; complete limb cutouts preserve each hand's silhouette. */
 export function roseGiftPose(seconds:number){
  const time=Math.max(0,Math.min(DURATION,Number.isFinite(seconds)?seconds:0));
  const offer=range(.15,1.2,time),receive=range(.55,1.2,time),lift=range(1.85,2.85,time),retreat=range(1.85,2.85,time);
- const donor=0,elbow=14-28*offer+14*retreat,donorPose=donorArm(donor,elbow);
- const recipient=-8*receive+8*lift,recipientGrip=turn({x:740,y:575},recipientElbow,recipient),recipientWristWorld=turn(recipientWrist,recipientElbow,recipient);
+ const donor=8-24*offer+16*retreat,elbow=0,donorPose=donorArm(donor,elbow);
+ const recipientUpper=52*receive-52*lift,recipient=20-82*receive+62*lift,recipientElbowWorld=turn(recipientElbow,recipientShoulder,recipientUpper);
+ const recipientGrip=turn(turn({x:740,y:575},recipientShoulder,recipientUpper),recipientElbowWorld,recipient),recipientWristWorld=turn(turn(recipientWrist,recipientShoulder,recipientUpper),recipientElbowWorld,recipient);
+ const handTurn=range(1.05,1.35,time),recipientTurn=30*handTurn,recipientForeshorten=1-.6*handTurn,recipientClosed=time>=1.38,recipientClosedTurn=10*(1-lift),recipientClosedForeshorten=.4+.6*range(1.6,1.95,time),donorOpen=range(1.6,1.9,time);
  const roseAngle=18+(contactStemAngle-18)*offer+(-8-contactStemAngle)*lift,stemOffset=turn(contactStemOffset,origin,roseAngle);
  const rose=time<TRANSFER?donorPose.grip:add(recipientGrip,stemOffset);
- return{time,donor,elbow,donorElbow:donorPose.elbow,donorWrist:donorPose.wrist,donorGrip:donorPose.grip,recipient,recipientElbow,recipientWristWorld,recipientGrip,
-  roseAngle,rose,stemOffset,
+ return{time,donor,elbow,donorElbow:donorPose.elbow,donorWrist:donorPose.wrist,donorGrip:donorPose.grip,recipientUpper,recipient,recipientElbow:recipientElbowWorld,recipientWristWorld,recipientGrip,
+  roseAngle,rose,stemOffset,recipientTurn,recipientForeshorten,recipientClosed,recipientClosedTurn,recipientClosedForeshorten,donorOpen,
   owner:time<TRANSFER?'donor':'recipient',phase:time<1.2?'offer':time<1.85?'contact':time<DURATION?'receiving':'received'};
 }
 // Contours follow the approved raster's skin/alpha boundary, never a rectangular body crop.
@@ -53,19 +56,32 @@ export function RoseGiftFinale({language,reducedMotion=false,pactAccepted=false,
  const timeline=useRef<gsap.core.Timeline|null>(null),score=useRef({time:0}),started=useRef(false),notified=useRef(false),receivedCallback=useRef(onReceived),replay=useRef<(instant:boolean)=>void>(()=>{});
  receivedCallback.current=onReceived;
  const [loaded,setLoaded]=useState(0),[failed,setFailed]=useState(false),[visible,setVisible]=useState(false),[pageVisible,setPageVisible]=useState(()=>typeof document==='undefined'||!document.hidden),[phase,setPhase]=useState(reducedMotion?'received':'waiting');
- const ready=loaded===7&&!failed,staticArt=reducedMotion||failed;
+ const ready=loaded===63&&!failed,staticArt=reducedMotion||failed;
  const complete=useCallback(()=>{setPhase('received');if(!notified.current){notified.current=true;receivedCallback.current?.();}},[]);
  useEffect(()=>{const el=root.current;if(!el)return;const observer=new IntersectionObserver(entries=>setVisible(entries[0].isIntersecting),{threshold:.25});observer.observe(el);return()=>observer.disconnect();},[]);
  useEffect(()=>{const update=()=>setPageVisible(!document.hidden);document.addEventListener('visibilitychange',update);return()=>document.removeEventListener('visibilitychange',update);},[]);
  useEffect(()=>{if(failed||reducedMotion&&(loaded&1)){score.current.time=DURATION;started.current=true;complete();}},[failed,reducedMotion,loaded,complete]);
  useEffect(()=>{
   const svg=art.current;if(!ready||!svg||reducedMotion)return;
-  const parts=Object.fromEntries([...svg.querySelectorAll<SVGGElement>('[data-rg-joint]')].map(node=>[node.dataset.rgJoint!,node]));
+   const parts=Object.fromEntries([...svg.querySelectorAll<SVGElement>('[data-rg-joint]')].map(node=>[node.dataset.rgJoint!,node]));
   const paint=()=>{
    const pose=roseGiftPose(score.current.time);
-   parts['donor-upper'].setAttribute('transform',`rotate(${pose.donor} 522 620)`);
-   parts['donor-lower'].setAttribute('transform',`rotate(${pose.elbow} 535 663)`);
+   parts['donor-arm'].setAttribute('transform',`rotate(${pose.donor} 522 620)`);
+   parts['donor-hands'].setAttribute('transform',`rotate(${pose.donor} 522 620)`);
+   parts['donor-closed'].setAttribute('transform',`rotate(${pose.donor} 522 620)`);
+   parts['recipient-upper'].setAttribute('transform',`rotate(${pose.recipientUpper} 710 620)`);
+   parts['recipient-upper-base'].setAttribute('transform',`rotate(${pose.recipientUpper} 710 620)`);
    parts['recipient-lower'].setAttribute('transform',`rotate(${pose.recipient} 735 688)`);
+   parts['recipient-open'].setAttribute('transform',`rotate(${pose.recipientUpper} 710 620) rotate(${pose.recipient} 735 688)`);
+   parts['recipient-closed'].setAttribute('transform',`rotate(${pose.recipientUpper} 710 620) rotate(${pose.recipient} 735 688)`);
+   parts['recipient-open-turn'].setAttribute('transform',`rotate(${pose.recipientTurn} 735 610) translate(735 610) scale(${pose.recipientForeshorten} 1) translate(-735 -610)`);
+   parts['recipient-closed-turn'].setAttribute('transform',`rotate(${pose.recipientClosedTurn} 735 610) translate(735 610) scale(${pose.recipientClosedForeshorten} 1) translate(-735 -610)`);
+   parts['recipient-open'].setAttribute('visibility',`${pose.recipientClosed?'hidden':'visible'}`);
+   parts['recipient-closed'].setAttribute('visibility',`${pose.recipientClosed?'visible':'hidden'}`);
+   parts['rose-contact-mask'].setAttribute('fill',`${pose.recipientClosed?'black':'white'}`);
+   parts['donor-open-window'].setAttribute('width',`${166*pose.donorOpen}`);
+   parts['donor-closed-window'].setAttribute('x',`${590+166*pose.donorOpen}`);
+   parts['donor-closed-window'].setAttribute('width',`${166*(1-pose.donorOpen)}`);
    parts.rose.setAttribute('transform',`translate(${pose.rose.x} ${pose.rose.y}) rotate(${pose.roseAngle})`);
    svg.dataset.time=pose.time.toFixed(4);svg.dataset.owner=pose.owner;svg.dataset.roseGrip=`${pose.rose.x.toFixed(3)},${pose.rose.y.toFixed(3)}`;
    setPhase(old=>old===pose.phase?old:pose.phase);
@@ -92,19 +108,49 @@ export function RoseGiftFinale({language,reducedMotion=false,pactAccepted=false,
   </div>
   <div className="rg-art" data-ready={ready||staticArt} data-static={staticArt} role="img" aria-label={ko?'연석이 리스베스에게 빨간 장미 한 송이를 건네고, 리스베스가 웃으며 받아 드는 장면':'Yeonseok le ofrece una rosa roja a Lisbeth y ella la recibe sonriendo'}>
    <img className="rg-static" src={original} alt="" aria-hidden="true" draggable="false" width="1199" height="1312" onLoad={()=>setLoaded(old=>old|1)} onError={()=>setFailed(true)}/>
-   <svg ref={art} className="rg-live" viewBox="0 0 1199 1312" preserveAspectRatio="xMidYMax meet" aria-hidden="true" data-rig="intact-contour-handover" data-time="0" data-owner="donor">
+   <svg ref={art} className="rg-live" viewBox="0 0 1199 1312" preserveAspectRatio="xMidYMax meet" aria-hidden="true" data-rig="complete-limb-handover" data-time="0" data-owner="donor">
     <defs>
      {Object.entries(armPaths).map(([name,path])=><clipPath key={name} id={`${id}-${name}`}><path d={path}/></clipPath>)}
      <mask id={`${id}-fixed`} maskUnits="userSpaceOnUse" x="0" y="0" width="1199" height="1312" style={{maskType:'luminance'}}><rect width="1199" height="1312" fill="white"/>{Object.values(armPaths).map((path,i)=><path key={i} d={path} fill="black" stroke="black" strokeWidth="7"/>)}<path d={roseHole} fill="black"/></mask>
+     <mask id={`${id}-body-underlay`} maskUnits="userSpaceOnUse" x="0" y="0" width="1199" height="1312" style={{maskType:'luminance'}}><rect width="1199" height="1312" fill="black"/>{Object.values(armPaths).map((path,i)=><path key={i} d={path} fill="white" stroke="white" strokeWidth="7"/>)}<path d={roseHole} fill="white"/></mask>
      <mask id={`${id}-support-without-stem`} maskUnits="userSpaceOnUse" x="0" y="0" width="1199" height="1312" style={{maskType:'luminance'}}><rect width="1199" height="1312" fill="white"/><path d="M790 657L796 657L800 658L801 660V668H791V660Z" fill="black"/></mask>
-     <clipPath id={`${id}-donor-proximal`}><path d="M478 578H556V704H478Z"/></clipPath>
-     <clipPath id={`${id}-donor-middle`}><path d="M526 640Q535 624 562 626L620 612L738 600V710H526Z"/></clipPath>
+     <mask id={`${id}-rose-held-contact`} maskUnits="userSpaceOnUse" x="-164" y="-220" width="328" height="400" style={{maskType:'luminance'}}><rect x="-164" y="-220" width="328" height="400" fill="white"/><rect data-rg-joint="rose-contact-mask" x={-contactStemOffset.x-8} y={-contactStemOffset.y-17} width="16" height="34" fill="white"/></mask>
+     <mask id={`${id}-sleeve-without-arm`} maskUnits="userSpaceOnUse" x="0" y="0" width="1199" height="1312" style={{maskType:'luminance'}}><rect width="1199" height="1312" fill="white"/>{Object.values(armPaths).map((path,i)=><path key={i} d={path} fill="black"/>)}<path d={roseHole} fill="black"/></mask>
+     <clipPath id={`${id}-donor-forearm`}><path d="M475 570H616V675Q606 679 596 680V730H475Z"/></clipPath>
+     <clipPath id={`${id}-donor-sleeve`}><path d="M475 550H585V589L550 610L490 640H475Z"/></clipPath>
+     <clipPath id={`${id}-donor-wrist`}><path d="M616 610H756V740H616V679Q600 672 602 650Q600 634 616 623Z"/></clipPath>
+     <clipPath id={`${id}-donor-hand-open`}><rect data-rg-joint="donor-open-window" x="590" y="590" width="0" height="150"/></clipPath>
+     <clipPath id={`${id}-donor-hand-closed`}><rect data-rg-joint="donor-closed-window" x="590" y="590" width="166" height="150"/></clipPath>
+     <clipPath id={`${id}-recipient-forearm`}><rect x="680" y="607" width="120" height="130"/></clipPath>
+     <clipPath id={`${id}-recipient-hand-open`}><path d="M660 500H825V627H660Z"/></clipPath>
+     <clipPath id={`${id}-recipient-hand-closed`}><path d="M680 510H800V627H680Z"/></clipPath>
+     <clipPath id={`${id}-recipient-sleeve`}><path d="M680 570L692 578L701 587L718 608L719 625Q697 618 674 609L669 606Z"/></clipPath>
+     <clipPath id={`${id}-recipient-upper`}><path d="M714 619L736 626Q748 639 754 655Q758 677 744 686Q736 692 729 684L731 665Q727 646 714 637Z"/></clipPath>
+     <clipPath id={`${id}-atlas-donor`}><rect width="1200" height="887"/></clipPath>
+     <clipPath id={`${id}-atlas-recipient`}><rect x="1200" width="574" height="887"/></clipPath>
+     <clipPath id={`${id}-hand-atlas-donor`}><rect width="1000" height="887"/></clipPath>
+     <clipPath id={`${id}-hand-atlas-recipient`}><rect x="1000" width="774" height="887"/></clipPath>
     </defs>
-    <image href={body} width="1199" height="1312" onLoad={()=>setLoaded(old=>old|2)} onError={()=>setFailed(true)}/>
+    <image href={body} width="1199" height="1312" mask={`url(#${id}-body-underlay)`} onLoad={()=>setLoaded(old=>old|2)} onError={()=>setFailed(true)}/>
     <image href={original} width="1199" height="1312" mask={`url(#${id}-fixed)`}/>
-    <g data-rg-joint="rose" data-flower-instance="single"><image href={flower} x={-633*FLOWER_SCALE} y={-1050*FLOWER_SCALE} width={1024*FLOWER_SCALE} height={1536*FLOWER_SCALE} onLoad={()=>setLoaded(old=>old|4)} onError={()=>setFailed(true)}/></g>
-    <g data-rg-joint="donor-upper"><g clipPath={`url(#${id}-donor)`}>{image('donor-proximal')}</g><g data-rg-joint="donor-lower"><g clipPath={`url(#${id}-donor)`}>{image('donor-middle')}</g></g></g>
-    <g data-rg-joint="recipient-lower">{image('receiver')}</g>
+    <g data-rg-joint="recipient-open" visibility="visible"><g data-rg-joint="recipient-open-turn"><g clipPath={`url(#${id}-recipient-hand-open)`}><g transform="translate(448 520) scale(.2 .15)" clipPath={`url(#${id}-hand-atlas-recipient)`}><image href={hands} width="1774" height="887"/></g></g></g></g>
+    <g data-rg-joint="recipient-closed" visibility="hidden"><g data-rg-joint="recipient-closed-turn"><g clipPath={`url(#${id}-recipient-hand-closed)`}><g transform="matrix(.27972 -.0379 .04548 .2331 306 570)" clipPath={`url(#${id}-atlas-recipient)`}><image href={limbs} width="1774" height="887"/></g></g></g></g>
+    <g data-rg-joint="donor-arm" clipPath={`url(#${id}-donor)`}>{image('donor-forearm')}</g>
+    <g data-rg-joint="recipient-upper-base">
+     <g transform="matrix(1.07902111 -.3607323 .3607323 1.07902111 -306.26433775 210.77171679)"><image href={offerArt} width="1199" height="1312" clipPath={`url(#${id}-recipient-upper)`} onLoad={()=>setLoaded(old=>old|32)} onError={()=>setFailed(true)}/></g>
+    </g>
+    <image href={original} width="1199" height="1312" clipPath={`url(#${id}-donor-sleeve)`} mask={`url(#${id}-sleeve-without-arm)`}/>
+    <image href={original} width="1199" height="1312" clipPath={`url(#${id}-recipient-sleeve)`}/>
+    <g data-rg-joint="rose" data-flower-instance="single"><image href={flower} x={-633*FLOWER_SCALE} y={-1050*FLOWER_SCALE} width={1024*FLOWER_SCALE} height={1536*FLOWER_SCALE} mask={`url(#${id}-rose-held-contact)`} onLoad={()=>setLoaded(old=>old|4)} onError={()=>setFailed(true)}/></g>
+    <g data-rg-joint="donor-hands">
+     <g data-rg-joint="donor-open" clipPath={`url(#${id}-donor-wrist)`}><g clipPath={`url(#${id}-donor-hand-open)`}><g transform="translate(472.08 482.6) scale(.22 .3)" clipPath={`url(#${id}-atlas-donor)`}><image href={limbs} width="1774" height="887"/></g></g></g>
+    </g>
+    <g data-rg-joint="recipient-upper">
+     <g data-rg-joint="recipient-lower">
+     <g clipPath={`url(#${id}-recipient-forearm)`}><g transform="matrix(.27972 -.0379 .04548 .2331 306 570)" clipPath={`url(#${id}-atlas-recipient)`}><image href={limbs} width="1774" height="887" onLoad={()=>setLoaded(old=>old|8)} onError={()=>setFailed(true)}/></g></g>
+     </g>
+    </g>
+    <g data-rg-joint="donor-closed" clipPath={`url(#${id}-donor-wrist)`}><g clipPath={`url(#${id}-donor-hand-closed)`}><g transform="translate(496 533.2) scale(.2 .24)" clipPath={`url(#${id}-hand-atlas-donor)`}><image href={hands} width="1774" height="887" onLoad={()=>setLoaded(old=>old|16)} onError={()=>setFailed(true)}/></g></g></g>
     <g mask={`url(#${id}-support-without-stem)`}>{image('support')}</g>
    </svg>
   </div>
