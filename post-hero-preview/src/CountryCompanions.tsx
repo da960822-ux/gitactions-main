@@ -9,31 +9,44 @@ gsap.registerPlugin(ScrollTrigger);
 export type CompanionPhase='greet'|'return'|'instant';
 export function companionBodyPose(progress:number,shift:number,side:1|-1){
  const q=Number.isFinite(progress)?Math.max(0,Math.min(1,progress)):0;
- if(side===1)return{x:0,y:0,rotation:2*q};
+ const response=Math.max(0,(q-.55)/.45);
+ if(side===1)return{x:0,y:0,rotation:.8*Math.sin(Math.PI*response)+.25*response};
  const travel=Number.isFinite(shift)?Math.max(0,shift):0,lift=Math.min(24,travel*.12);
  return{x:-travel*q,y:-4*lift*q*(1-q),rotation:q===0||q===1?0:-3*Math.sin(Math.PI*q)};
 }
+export function companionTailRotation(progress:number){
+ const q=Number.isFinite(progress)?Math.max(0,Math.min(1,progress)):0;
+ return 2.4*Math.sin(Math.PI*q);
+}
 export function companionBodyMotion(phase:CompanionPhase,together:boolean,reduced:boolean){
  const target=together&&phase!=='return'?1:0;
- const transition=reduced||phase==='instant'?{duration:0}:phase==='return'||!together?{duration:.22,ease:[.23,1,.32,1] as const}:{duration:1.15,ease:[.77,0,.175,1] as const};
+ const transition=reduced||phase==='instant'?{duration:0}:phase==='return'||!together?{duration:.22,ease:[.23,1,.32,1] as const}:{duration:.9,ease:[.23,1,.32,1] as const};
  return{target,transition};
 }
-function Companion({side,together,phase,shift,reduced,interactive,language,descriptionId,onGreet,onError}:{side:1|-1;together:boolean;phase:CompanionPhase;shift:number;reduced:boolean;interactive:boolean;language:'ko'|'es';descriptionId:string;onGreet:(pointer:boolean)=>void;onError:()=>void}){
- const ko=language==='ko',progress=useMotionValue(0);
+export function Companion({side,together,phase,shift,reduced,interactive,failed,language,descriptionId,onGreet,onError}:{side:1|-1;together:boolean;phase:CompanionPhase;shift:number;reduced:boolean;interactive:boolean;failed:boolean;language:'ko'|'es';descriptionId:string;onGreet:(pointer:boolean)=>void;onError:()=>void}){
+ const ko=language==='ko',progress=useMotionValue(0),shoulder=useId();
+ const tailTransform=useTransform(()=>`rotate(${companionTailRotation(progress.get())}deg)`);
+ const [flightState,setFlightState]=useState<'idle'|'approach'|'hold'|'return'>('idle');
  const transform=useTransform(()=>{const pose=companionBodyPose(progress.get(),shift,side);return `translateX(${pose.x}px) translateY(${pose.y}px) rotate(${pose.rotation}deg)`;});
  useEffect(()=>{
+  if(failed){progress.jump(0);setFlightState('idle');return;}
   const body=companionBodyMotion(phase,together,reduced||!interactive);
-  if(body.transition.duration===0){progress.jump(body.target);return;}
-  const movement=animate(progress,body.target,body.transition);
+  if(body.transition.duration===0){progress.jump(body.target);setFlightState(together?'hold':'idle');return;}
+  setFlightState(body.target?'approach':'return');
+  const movement=animate(progress,body.target,{...body.transition,onComplete:()=>setFlightState(body.target?'hold':'idle')});
   return()=>movement.stop();
- },[phase,together,reduced,interactive,progress]);
- const wing=(far:boolean)=><g className={`hummingbird-wing ${far?'hummingbird-wing-far':'hummingbird-wing-near'}`}><image href="/images/story-companions/hummingbird-wing.png" width="1254" height="1254" transform={far?'translate(635 490) scale(.34) translate(-250 -950)':'translate(675 525) scale(.42) translate(-250 -950)'} onError={onError}/></g>;
- return <div className={`bird-scroll lovebird-${side===1?'left':'right'}`} inert={!interactive}>
-  <motion.button type="button" className="lovebird" aria-describedby={interactive?descriptionId:undefined} aria-label={ko?(side===1?'내 쪽의 원앙에게 인사하기':'Baby의 분홍 벌새에게 인사하기'):(side===1?'Saludar al pato mandarín de mi lado':'Saludar al colibrí rosado de Baby')} aria-pressed={together} aria-hidden={!interactive} tabIndex={interactive?0:-1} style={{transform}} onClick={event=>onGreet(event.detail>0)}>
+ },[phase,together,reduced,interactive,failed,progress]);
+ const wing=(far:boolean)=><g transform={far?'translate(635 490)':'translate(675 525)'} data-shoulder={far?'far':'near'}><g className={`hummingbird-wing ${far?'hummingbird-wing-far':'hummingbird-wing-near'}`}><image href={`/images/story-companions/hummingbird-${far?'far':'near'}.png`} width="1254" height="1254" transform={`scale(${far?.28:.36}) translate(-${far?145:160} -950)`} mask={`url(#${shoulder}-mask)`} onError={onError}/></g></g>;
+ const body=<image href={side===1?'/images/story-companions/mandarin-duck.png':failed?'/images/story-companions/hummingbird-body.png':'/images/story-companions/hummingbird-torso.png'} width="1254" height="1254" onError={failed?undefined:onError}/>;
+ return <div className={`bird-scroll lovebird-${side===1?'left':'right'}`} inert={!interactive} data-flight-state={flightState}>
+  {side===1&&<svg className="companion-ledge" viewBox="0 0 1254 1254" aria-hidden="true"><path className="companion-ledge-face" d="M160 1205H3200V1221H160Z"/><path className="companion-ledge-edge" d="M160 1205H3200"/><ellipse className="companion-contact" cx="812" cy="1204" rx="274" ry="12"/></svg>}
+  <motion.button type="button" className="lovebird" aria-describedby={interactive?descriptionId:undefined} aria-label={ko?(side===1?'내 쪽의 원앙에게 인사하기':'Baby의 분홍 벌새에게 인사하기'):(side===1?'Saludar al pato mandarín de mi lado':'Saludar al colibrí rosado de Baby')} aria-pressed={together&&!failed} aria-hidden={!interactive} disabled={failed} tabIndex={interactive&&!failed?0:-1} style={{transform:failed?'none':transform}} onClick={event=>{if(!failed)onGreet(event.detail>0);}}>
    <svg className="lovebird-art" viewBox="0 0 1254 1254" aria-hidden="true">
-    {side===-1&&wing(true)}
-    <image href={side===1?'/images/story-companions/mandarin-duck.png':'/images/story-companions/hummingbird-body.png'} width="1254" height="1254" onError={onError}/>
-    {side===-1&&wing(false)}
+    {side===1||failed?body:<g className="hummingbird-rig">
+     <defs><radialGradient id={`${shoulder}-blend`} gradientUnits="userSpaceOnUse" cx="160" cy="950" r="170"><stop offset="0" stopColor="black"/><stop offset="1" stopColor="white"/></radialGradient><mask id={`${shoulder}-mask`} maskUnits="userSpaceOnUse" x="0" y="0" width="1254" height="1254"><rect width="1254" height="1254" fill={`url(#${shoulder}-blend)`}/></mask></defs>
+     <g transform="translate(830 770)" data-joint="hip"><motion.g style={{transform:tailTransform}}><g className="hummingbird-tail"><image href="/images/story-companions/hummingbird-tail.png" width="1254" height="1254" transform="scale(.55) translate(-380 -490)" onError={onError}/></g></motion.g></g>
+     {wing(true)}{body}{wing(false)}
+    </g>}
    </svg>
   </motion.button>
  </div>;
@@ -58,22 +71,23 @@ export function CountryCompanions({language}:{language:'ko'|'es'}){
   });
   return()=>{observer.disconnect();resize.disconnect();document.removeEventListener('visibilitychange',hidden);mm.revert();};
  },[]);
- useEffect(()=>{if(reduced){setTogether(false);setPhase('instant');}},[reduced]);
+ useEffect(()=>{if(reduced||failed){setTogether(false);setPhase('instant');}},[reduced,failed]);
  const greet=(pointer:boolean)=>{
+  if(failed)return;
   if(!together&&root.current){const left=root.current.querySelector('.lovebird-left')!.getBoundingClientRect(),right=root.current.querySelector('.lovebird-right')!.getBoundingClientRect(),scene=root.current.getBoundingClientRect();
    const duckBill=left.left+left.width*.91,hummingbirdBill=right.left+right.width*.044,distance=Math.max(0,hummingbirdBill-duckBill-42);
    setShift(distance);setTrace({x:duckBill-scene.left+26,y:(left.top+left.width*.27+right.top+right.width*.195)/2-scene.top-12});
   }
-  setPhase(pointer&&visible&&!reduced?'greet':'instant');setTogether(value=>!value);
+  setPhase(pointer&&visible&&!reduced?(together?'return':'greet'):'instant');setTogether(value=>!value);
  };
- return <div ref={root} inert={!visible} className="country-companions" data-together={together} data-visible={visible} data-reduced={Boolean(reduced)} data-interaction-phase={phase} data-story-moment="distance" role="group" aria-labelledby="story-distance-title">
+ return <div ref={root} inert={!visible} className="country-companions" data-together={together&&!failed} data-failed={failed} data-visible={visible} data-reduced={Boolean(reduced)} data-interaction-phase={phase} data-story-moment="distance" role="group" aria-labelledby="story-distance-title">
   <div className="companion-stage">
-   <Companion side={1} together={together} phase={phase} shift={0} reduced={Boolean(reduced)||!visible} interactive={visible} language={language} descriptionId={duckNote} onGreet={greet} onError={()=>setFailed(true)}/>
+   <Companion side={1} together={together} phase={phase} shift={0} reduced={Boolean(reduced)||!visible} interactive={visible} failed={failed} language={language} descriptionId={duckNote} onGreet={greet} onError={()=>setFailed(true)}/>
    <svg className="companion-heart" aria-hidden="true"><g transform={`translate(${trace.x} ${trace.y})`}>
     <path d="M0 7C-14-1-12-14-5-13C-2-13-1-10 0-8C1-10 2-13 5-13C12-14 14-1 0 7"/>
    </g></svg>
-   <Companion side={-1} together={together} phase={phase} shift={shift} reduced={Boolean(reduced)||!visible} interactive={visible} language={language} descriptionId={hummingbirdNote} onGreet={greet} onError={()=>setFailed(true)}/>
-   <button type="button" className="lovebird-greeting text-button" aria-pressed={together} onClick={event=>greet(event.detail>0)}>{together?(ko?'다시 살짝 떨어져':'Un poquito de espacio'):(ko?'Baby, 가까이 와':'Acércate, Baby')}</button>
+   <Companion side={-1} together={together} phase={phase} shift={shift} reduced={Boolean(reduced)||!visible} interactive={visible} failed={failed} language={language} descriptionId={hummingbirdNote} onGreet={greet} onError={()=>setFailed(true)}/>
+   <button type="button" className="lovebird-greeting text-button" disabled={failed} aria-pressed={together&&!failed} onClick={event=>greet(event.detail>0)}>{together?(ko?'다시 살짝 떨어져':'Un poquito de espacio'):(ko?'Baby, 가까이 와':'Acércate, Baby')}</button>
   </div>
   <div className="companion-meanings">
    <div id={duckNote}><h3>{ko?'원앙 · 내 쪽에서':'Pato mandarín · de mi lado'}</h3><p>{ko?'한국 혼례에서 원앙은 부부의 화목을 바라는 상징이야. 너랑 나도 그렇게 다정하게 지내고 싶어서, 내 쪽에 한 마리.':'En las bodas coreanas, los patos mandarines simbolizan el deseo de armonía en pareja. Puse uno de mi lado porque quiero eso contigo.'}</p></div>

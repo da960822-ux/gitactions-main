@@ -36,7 +36,7 @@ function EventArt({ type }: { type: string }) {
   if (type === 'turn') return <svg className="domino-event-art" viewBox="0 0 36 36" aria-hidden="true"><path d="M9 13a11 11 0 0 1 19-3l3 3M31 7v6h-6M27 23a11 11 0 0 1-19 3l-3-3M5 29v-6h6"/></svg>;
   if (type === 'tranque') return <svg className="domino-event-art domino-tranque-art" viewBox="0 0 36 36" aria-hidden="true"><rect x="4" y="9" width="28" height="18" rx="3"/><path d="M13 9v18m10-18v18M8 4l20 28"/></svg>;
   if (type === 'capicua') return <svg className="domino-event-art domino-capicua-art" viewBox="0 0 36 36" aria-hidden="true"><circle cx="18" cy="18" r="13"/><path d="m18 7 3 7 8 .5-6 5 2 8-7-4-7 4 2-8-6-5 8-.5z"/><path d="M6 10 4 8m26 0-2 2M6 26l-2 2m26 0-2-2"/></svg>;
-  if (type === 'paso-corrido') return <svg className="domino-event-art domino-paso-art" viewBox="0 0 38 36" aria-hidden="true"><path d="M5 9h28l-4 8 4 10H5l4-10z"/><path d="m14 13 5 4-5 4m6-8 5 4-5 4"/></svg>;
+  if (type === 'paso-corrido' || type === 'opening-pass') return <svg className="domino-event-art domino-paso-art" viewBox="0 0 38 36" aria-hidden="true"><path d="M5 9h28l-4 8 4 10H5l4-10z"/><path d="m14 13 5 4-5 4m6-8 5 4-5 4"/></svg>;
   if (type === 'round-end' || type === 'score') return <svg className="domino-event-art" viewBox="0 0 36 36" aria-hidden="true"><path d="M5 30h26M9 25V16h5v9m4 0V8h5v17m4 0v-6h4v6"/><path d="m8 11 7-5 6 2 8-5"/></svg>;
   if (type === 'win') return <svg className="domino-event-art domino-win-art" viewBox="0 0 36 36" aria-hidden="true"><path d="M18 4 21 12l9-4-4 9 8 3-8 3 4 9-9-4-3 8-3-8-9 4 4-9-8-3 8-3-4-9 9 4z"/></svg>;
   if (type === 'round-start') return <svg className="domino-event-art" viewBox="0 0 36 36" aria-hidden="true"><path d="M8 31V5m1 2h18l-5 6 5 6H9"/></svg>;
@@ -72,7 +72,7 @@ export function DominoEventStage({ events, language, playerId, ownTeam = playerI
   // The shared feedback announces titles and wins; this region adds public detail only.
   const eventDetail = (event: DominoActionEvent) => {
     if (event.type === 'pass') return [actorName(event.actor, playerId, language, mode), language === 'ko' ? `연속 패스 ${event.count ?? 0}회` : `Pases seguidos: ${event.count ?? 0}`].filter(Boolean).join(' · ');
-    if (!['tranque', 'capicua', 'paso-corrido', 'round-end', 'score'].includes(event.type ?? '')) return '';
+    if (!['tranque', 'capicua', 'paso-corrido', 'opening-pass', 'round-end', 'score'].includes(event.type ?? '')) return '';
     const score = Number(event.points) > 0 ? `${event.team ? event.team === ownTeam ? language === 'ko' ? '우리 팀' : 'Tu equipo' : language === 'ko' ? '상대 팀' : 'Equipo rival' : ''} +${event.points} ${language === 'ko' ? '점' : 'puntos'}`.trim() : '';
     return [event.text?.[language], score].filter(Boolean).join(' · ');
   };
@@ -261,6 +261,7 @@ export function DominoEventStage({ events, language, playerId, ownTeam = playerI
       {winner && type === 'win' && <span className="domino-event-winner">{winner}</span>}
     </div>
     {type === 'capicua' && <span className="domino-event-seal" aria-hidden="true">C</span>}
+    {type === 'opening-pass' && <span className="domino-event-ribbon">{language === 'ko' ? `첫 패스 보너스 +${points}` : `Bono de salida +${points}`}</span>}
     {type === 'paso-corrido' && <span className="domino-event-ribbon">{points
       ? (language === 'ko' ? `연속 패스 보너스 +${points}` : `Bono por pases seguidos +${points}`)
       : (language === 'ko' ? '파소 코리도' : 'Paso corrido')}</span>}
