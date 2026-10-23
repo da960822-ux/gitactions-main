@@ -18,6 +18,9 @@
  * DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
+export const connectionEchoDuration=1.4;
+export function connectionEchoProgress(age:number){return age>=0&&age<connectionEchoDuration?age/connectionEchoDuration:-1;}
+
 export const flowVertex=`
 out vec2 vUv;
 void main(){vUv=uv;gl_Position=vec4(position.xy,0.0,1.0);}
@@ -28,6 +31,7 @@ precision highp int;
 in vec2 vUv;
 out vec4 outColor;
 uniform float uTime;
+uniform float uCharge,uEcho;
 uniform vec2 uResolution;
 uniform vec3 uColorA,uColorB,uColorC,uColorD;
 uint rotl(uint x,uint k){return (x<<k)|(x>>(32u-k));}
@@ -67,6 +71,10 @@ void main(){
  vec2 squashed=vec2(centred.x,centred.y/aspect);
  vec2 spun=vec2(cos(angle)*squashed.x-sin(angle)*squashed.y,sin(angle)*squashed.x+cos(angle)*squashed.y);
  vec2 p=vec2(spun.x,spun.y*aspect);
+ vec2 connection=vec2(vUv.x,1.0-vUv.y)-vec2(0.5,510.0/620.0);
+ connection.x*=aspect;
+ float gathering=exp(-dot(connection,connection)*12.0)*uCharge;
+ p+=connection*gathering*0.22;
  p.x+=sin(p.y*5.0+t*2.0)/50.0*strength;
  p.y+=sin(p.x*7.5+t*2.0)/25.0*strength;
  vec4 level1=warpStep(p,2.0,t*0.5,vec2(5.2,1.3),vec2(1.7,9.2),0.25,strength);
@@ -79,6 +87,9 @@ void main(){
  vec3 base=mix(mix(uColorA,uColorB,blendX),mix(uColorC,uColorD,blendX),blendY);
  float fold=max(1.0-abs(blendX*2.0-1.0),1.0-abs(blendY*2.0-1.0))*hardness;
  float light=((level2.z*0.5+0.5)*0.12+0.94)*(1.0+fold*0.65);
- outColor=linearToOutputTexel(vec4(clamp(base*light,0.0,1.0),1.0));
+ float echo=0.0;
+ if(uEcho>=0.0)echo=exp(-pow((length(connection)-(0.03+uEcho*0.68))/0.025,2.0))*sin(uEcho*3.14159265);
+ vec3 answer=vec3(1.0,0.68,0.72)*(gathering*0.3+echo*0.65);
+ outColor=linearToOutputTexel(vec4(clamp(base*light+answer,0.0,1.0),1.0));
 }
 `;

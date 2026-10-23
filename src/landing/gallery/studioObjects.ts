@@ -11,6 +11,41 @@ export function studioMaterials(){return{
  jade:new T.MeshPhysicalMaterial({color:'#487e73',roughness:.25,metalness:.15,clearcoat:1}),
 };}
 export type Materials=ReturnType<typeof studioMaterials>;
+/** Finite visual pivots leave GalleryCollection's layout and raycast identity in charge. */
+export function createGalleryAttraction(objects:T.Group[]){
+ const root=new T.Group();root.name='GALLERY_SELECTION_SPARK_FAN';
+ const pivots=objects.map(group=>{const pivot=new T.Group();pivot.name='GALLERY_INGRESS_PIVOT';pivot.add(...group.children);group.add(pivot);return pivot;});
+ const uniforms={uProgress:{value:1},uStrength:{value:0}};
+ const ringGeometry=new T.PlaneGeometry(6,.85),ringMaterial=new T.ShaderMaterial({uniforms,transparent:true,depthWrite:false,blending:T.AdditiveBlending,toneMapped:false,
+  vertexShader:'varying vec2 vUv;void main(){vUv=uv;gl_Position=projectionMatrix*modelViewMatrix*vec4(position,1.);}',
+  fragmentShader:`uniform float uProgress,uStrength;varying vec2 vUv;void main(){float r=length(vUv-.5);float radius=.24+.19*uProgress;float ring=exp(-pow((r-radius)/.009,2.));float wake=exp(-pow((r-radius+.035)/.025,2.))*.22;gl_FragColor=vec4(1.,.61,.42,(ring+wake)*uStrength);}`});
+ const ring=new T.Mesh(ringGeometry,ringMaterial);ring.name='SELECTED_GAME_BASE_RIPPLE';root.add(ring);
+ const particles=new T.BufferGeometry(),positions:number[]=[],seeds:number[]=[];
+ for(let i=0;i<28;i++){positions.push(0,0,0);seeds.push(i/27);}
+ particles.setAttribute('position',new T.Float32BufferAttribute(positions,3));particles.setAttribute('aSeed',new T.Float32BufferAttribute(seeds,1));
+ const particleMaterial=new T.ShaderMaterial({uniforms,transparent:true,depthWrite:false,blending:T.AdditiveBlending,toneMapped:false,
+  vertexShader:`attribute float aSeed;uniform float uProgress,uStrength;varying float vAlpha;void main(){float a=.18+aSeed*2.78;float travel=1.-pow(1.-uProgress,2.);vec3 p=vec3(cos(a)*(.65+travel*2.25),sin(a)*travel*(1.5+mod(aSeed*7.,1.))-.45*travel*travel,.1+aSeed*.1);gl_Position=projectionMatrix*modelViewMatrix*vec4(p,1.);gl_PointSize=4.+mod(aSeed*19.,1.)*4.;vAlpha=uStrength*(.5+.5*sin(aSeed*39.));}`,
+  fragmentShader:'varying float vAlpha;void main(){vec2 p=gl_PointCoord-.5;float a=exp(-dot(p,p)*22.);gl_FragColor=vec4(1.,.75,.55,a*vAlpha);}'});
+ const sparks=new T.Points(particles,particleMaterial);sparks.name='SELECTED_GAME_SPARK_FAN';sparks.frustumCulled=false;root.add(sparks);
+ let disposed=false;
+ return{root,update({entryAge,selectionAge,selected,paused,mobile}:{entryAge:number;selectionAge:number;selected:string;paused:boolean;mobile:boolean}){
+  if(disposed)return false;
+  const entry=paused?1:T.MathUtils.clamp(entryAge/1.25,0,1),burst=paused?1:T.MathUtils.clamp((selectionAge-.18)/.94,0,1);
+  pivots.forEach((pivot,i)=>{
+   const phase=paused?1:T.MathUtils.clamp((entry*1.25-i*.035)/.98,0,1),remaining=Math.pow(1-phase,3),angle=i/objects.length*Math.PI*2;
+   const chosen=objects[i].userData.game===selected;
+   const lift=chosen&&!paused?Math.sin(Math.PI*T.MathUtils.clamp(selectionAge/.85,0,1))*.13:0;
+   pivot.position.set(Math.cos(angle)*remaining*.8,Math.sin(angle)*remaining*.45-remaining*.7+lift,-remaining*.8);
+   pivot.rotation.set(remaining*.3,remaining*(i%2?-.65:.65)+(chosen?lift*.8:0),remaining*Math.cos(angle)*.27);
+   pivot.scale.setScalar(1-remaining*.22);
+  });
+  root.position.set(0,mobile?-1.55:-2.1,.7);root.scale.setScalar(mobile?.74:1);
+  uniforms.uProgress.value=burst;uniforms.uStrength.value=Math.sin(Math.PI*burst)*.95;
+  root.visible=!paused&&burst>0&&burst<1;
+  return !paused&&(entry<1||selectionAge<1.12);
+ },dispose(){if(disposed)return;disposed=true;root.removeFromParent();ringGeometry.dispose();ringMaterial.dispose();particles.dispose();particleMaterial.dispose();}};
+}
+
 type Ready=()=>void;
 function flat(color:string){return new T.MeshBasicMaterial({color,toneMapped:false});}
 function image(g:T.Group,path:string,w:number,h:number,x:number,y:number,z:number,ready:Ready,crop?:[number,number,number,number]){

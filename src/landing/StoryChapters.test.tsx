@@ -11,6 +11,8 @@ describe('personal post-room story content',()=>{
   expect(html).not.toMatch(/서울|Seúl|capitales|STORY_COUNTRY|<canvas|<dialog/);
   expect(html).toContain('type="range"');expect(html).toContain('data-korean-hour="20"');expect(html).toContain('data-dominican-hour="7"');expect(html).toContain('data-day-offset="0"');
   expect(html).toContain('InterPals');expect(html).toContain(language==='ko'?'12시간':'12');
+  expect(html).toMatch(/class="story-light-river"[^>]*aria-hidden="true"[^>]*focusable="false"/);
+  expect(html.match(/class="story-light-core"/g)).toHaveLength(1);
   expect(html.indexOf('id="first-conversation"')).toBeLessThan(html.indexOf('id="distance"'));
   expect(html).toContain('2025.04.04');expect(html).toContain('href="#games"');
   expect(html).toContain(language==='ko'?'한국 리듬게임에 접속이 안 됐잖아':'no podías entrar al juego de ritmo de Corea');

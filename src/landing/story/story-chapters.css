@@ -1,4 +1,11 @@
 .post-hero-preview .story-connection{position:relative;background:#21151e}
+.post-hero-preview .story-light-river{position:absolute;inset:0;width:100%;height:100%;pointer-events:none;overflow:hidden;fill:none}
+.post-hero-preview .story-light-river path{vector-effect:non-scaling-stroke}
+.post-hero-preview .story-light-track{stroke:#edb7c9;stroke-width:1;opacity:.12}
+.post-hero-preview .story-light-wake{stroke-width:28;opacity:.09}
+.post-hero-preview .story-light-core{stroke-width:3;opacity:.8}
+@media(max-width:1000px){.post-hero-preview .story-light-track{opacity:.07}.post-hero-preview .story-light-core{stroke-width:2;opacity:.4}}
+@media(prefers-reduced-motion:reduce){.post-hero-preview .story-light-current{display:none}}
 .post-hero-preview .story-chapter{position:relative;z-index:1;min-height:100svh;padding:80px 7.5vw;background:transparent;color:#faeee6;overflow:clip}
 .post-hero-preview .story-chapter h2{margin:0;font:400 clamp(40px,3.6vw,68px)/1.2 'Gowun Batang',Georgia,serif;letter-spacing:-.035em;word-break:keep-all;text-wrap:balance}
 .post-hero-preview .story-chapter p{word-break:keep-all;text-wrap:pretty}
