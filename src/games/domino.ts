@@ -13,10 +13,7 @@ const DEFAULT_SETTINGS: Settings = { difficulty: 'normal', targetScore: 0, capic
 const LISBETH_SETTINGS: Settings = { difficulty: 'normal', targetScore: 200, capicuaBonus: 30, pasoCorridoBonus: 0, tranqueRule: 'trancador' };
 const matchRules = (s: DominoState) => s.rulesVersion === 1 || s.rulesVersion === 2;
 const label = (ko: string, es: string, action: GameAction) => ({ label: { ko, es }, action });
-export const dominoRules = {
-  ko: ['선택 규칙: 2인 더블 식스 블록 도미노입니다. 0-0부터 6-6까지 28개 타일 중 각자 7개를 받고, 나머지는 사용하지 않습니다. 가장 높은 더블이 먼저 놓으며, 더블이 없으면 합이 가장 높은 타일로 시작합니다.', '양 끝 숫자에 맞춰 타일을 놓고, 놓을 수 없으면 패스합니다. 1대1에서는 두 번 연속 패스하면 막히고, 손패 점수가 낮은 사람이 이깁니다. 먼저 손패를 비워도 승리합니다.', '선택 가능한 추가 모드: 사람 2명 대 봇 2명, 또는 사람-봇 짝 대 사람-봇 짝입니다. 이 모드에서는 네 명이 돌아가며 놓고, 네 번 연속 패스하면 막힙니다. 팀 손패의 합계가 낮은 팀이 이깁니다. 봇은 자기 손패와 공개된 보드만 사용합니다.'],
-  es: ['Variante elegida: dominó bloqueado doble-seis para dos personas. De las 28 fichas del 0-0 al 6-6, cada una recibe 7 y las demás no se usan. Empieza el doble más alto; si no hay dobles, empieza la ficha de mayor suma.', 'Coloca una ficha que coincida con un extremo o pasa si no puedes. En 1 contra 1, dos pases seguidos bloquean la partida y gana quien tenga menos puntos. También gana quien se queda sin fichas.', 'Modos opcionales: dos personas contra dos bots, o equipos mixtos de una persona y un bot. En estos modos juegan cuatro asientos y cuatro pases seguidos bloquean la partida. Gana el equipo con menos puntos restantes. Los bots solo usan su mano y el tablero público.'],
-};
+export { lisbethDominoRules as dominoRules } from './rules';
 const seats = (mode: Mode, rulesVersion = 1): Seat[] => mode === '1v1' ? ['p1', 'p2'] : mode === 'partners' && rulesVersion === 2 ? ['p1', 'p2', 'b1', 'b2'] : ['p1', 'b1', 'p2', 'b2'];
 const isBot = (seat: Seat) => seat === 'b1' || seat === 'b2';
 function score(hand: Domino[]) { return hand.reduce((n, t) => n + t.a + t.b, 0); }

@@ -4,18 +4,20 @@ type LocalizedRules = Record<Language, string[]>;
 
 export const lisbethDominoRules: LocalizedRules = {
   ko: [
-    '목표와 준비 — 1대1 또는 네 자리 팀전으로 100점이나 200점까지 경기합니다. 더블 식스 28장을 쓰며 각 자리에 7장씩 나눕니다. 첫 판은 6|6으로 열고, 이후 판은 직전 판 승자가 손패의 타일 아무거나 놓아 엽니다. 파트너 모드에서는 두 팀이 번갈아 앉습니다.',
-    '차례와 패스 — 열린 끝 숫자에 맞는 타일을 놓으세요. 놓을 타일이 없으면 패스합니다. 1대1은 첫 타일 다음 사람이 첫 차례에 패스하면 시작 타일이 더블일 때 +30점, 비더블일 때 +60점 보너스 대상이 됩니다. 네 자리에서는 두 번째 자리가 패스하고 세 번째 자리가 놓아야 보너스를 받으며, 세 번째 자리도 패스하면 보너스가 없습니다. 보너스는 라운드 정산 때 더합니다.',
-    '카피쿠아 — 손패를 비우는 마지막 타일이 더블이 아니고, 놓기 직전 양쪽의 서로 다른 열린 끝 모두에 맞았다면 카피쿠아입니다. 승리 팀은 +30점과 모든 손패의 남은 점수 합을 받습니다.',
-    '트랑케 — 모든 모드에서 양쪽 열린 끝 숫자에 각각 맞는 서로 다른 타일 7개가 모두 놓이면 즉시 판이 막힙니다. 그 밖에는 아무도 놓을 수 없을 때 막힙니다. 마지막으로 놓아 판을 막은 사람과 바로 다음 자리의 남은 점수를 비교해 낮은 쪽이 이깁니다. 같으면 판을 막은 사람이 이깁니다. 승리 팀 점수에는 본인과 팀원을 포함한 모든 손패의 남은 점수를 셉니다.',
-    '경기 점수 — 해당 보너스와 점수는 라운드 정산 때 더합니다. 먼저 목표 점수에 도달하면 매치가 끝납니다. 파소 코리도 보너스는 없습니다.',
+    '목표와 준비 — 200점까지 경기하며, 시작 전 목표를 100점으로 바꿀 수 있습니다. 더블 식스 28장을 쓰고 각 자리에 7장씩 나눕니다. 1대1에서 남은 14장은 사용하지 않고 뽑지 않습니다. 첫 판에는 6|6을 반드시 배분해 시작 타일로 놓습니다. 다음 판부터는 직전 판 승자가 손패에서 아무 타일이나 놓아 엽니다. 파트너 모드는 두 팀이 번갈아 앉습니다.',
+    '차례와 오프닝 패스 — 열린 끝에 맞는 타일을 놓고, 놓을 타일이 없으면 패스합니다. 첫 타일을 낸 쪽이 보너스를 받습니다. 오프닝이 더블이면 어느 판이든 +30점, 이후 판의 오프닝이 비더블이면 +60점입니다. 1대1에서는 다음 사람이 첫 차례에 패스하면 성립합니다. 네 자리에서는 두 번째 자리가 패스하고 세 번째 자리가 실제로 놓아야 성립하며, 세 번째 자리도 패스하면 취소됩니다. 보너스는 라운드 정산 때 더합니다.',
+    '손패 비우기 — 먼저 손패를 비우면 그 팀이 이깁니다. 승리 팀 점수에는 파트너를 포함해 모든 손패에 남은 숫자의 합이 들어갑니다.',
+    '카피쿠아 — 마지막 타일이 비더블이고 놓기 직전 서로 다른 양쪽 열린 끝 모두에 맞았다면 카피쿠아입니다. +30점과 모든 손패의 남은 숫자 합을 승리 팀에 더합니다.',
+    '트랑케 — 모든 모드에서 양쪽 열린 끝 숫자에 각각 맞는 서로 다른 타일 7개가 모두 놓이면 즉시 막힙니다. 그 전에 1대1은 두 번, 네 자리는 네 번 연속 패스해도 막힙니다. 마지막으로 놓은 사람(트랑카도르)과 다음 자리의 남은 점수만 비교해 낮은 쪽이 이깁니다. 동점이면 트랑카도르가 이깁니다. 정산 점수는 파트너를 포함해 모든 손패의 남은 숫자 합입니다.',
+    '경기 점수 — 보너스와 손패 점수는 라운드 정산 때 더하고, 목표 100점 또는 200점에 도달하면 경기가 끝납니다. 파소 코리도 보너스는 없습니다.',
   ],
   es: [
-    'Objetivo y reparto — Jueguen a 100 o 200 puntos, en uno contra uno o con cuatro asientos por equipos. Se usan las 28 fichas doble-seis y se reparten 7 por asiento. La primera mano abre con el 6|6; en las siguientes, quien ganó la mano anterior abre con cualquier ficha de su mano. En modo parejas, los equipos se sientan alternados.',
-    'Turnos y pases — Coloca una ficha que coincida con un extremo abierto. Si no puedes jugar, pasa. En uno contra uno, quien sigue a la apertura queda con un bono de +30 puntos si la ficha inicial fue doble o +60 si no lo fue, al pasar en su primer turno. Con cuatro asientos, el segundo debe pasar y el tercero jugar para recibir el bono; si el tercero también pasa, no hay bono. Los bonos se suman al cerrar la mano.',
-    'Capicúa — Hay capicúa si la última ficha que vacía tu mano no es doble y, antes de colocarla, servía en ambos extremos abiertos, que deben tener números distintos. El equipo ganador recibe +30 puntos y los puntos restantes de todas las manos.',
-    'Tranque — En todos los modos, la mano se bloquea de inmediato cuando ya se jugaron las 7 fichas distintas que conectan con cada extremo abierto. También se bloquea si nadie puede jugar. Se comparan los puntos de quien cerró la mano y del asiento siguiente; gana quien tenga menos. En empate gana quien la cerró. Para puntuar se cuentan todas las fichas restantes, incluidas las de quien ganó y su pareja.',
-    'Puntuación — Los bonos y puntos se suman al cerrar la mano. La partida termina al alcanzar la meta. No hay bono de paso corrido.',
+    'Objetivo y reparto — La meta predeterminada es 200 puntos; antes de empezar puedes elegir 100. Se usan las 28 fichas doble-seis y se reparten 7 por asiento. En uno contra uno, las otras 14 quedan fuera y no se roban. La primera mano garantiza el 6|6 y debe abrir con esa ficha. Después, quien ganó la mano anterior abre con cualquier ficha de su mano. En modo parejas, los equipos se sientan alternados.',
+    'Turnos y pase de salida — Coloca una ficha que coincida con un extremo abierto; si no puedes, pasa. El lado que hizo la salida recibe el bono. Si la apertura es doble, en cualquier mano, son +30 puntos; si es una apertura no doble en una mano posterior, son +60. En uno contra uno, se concede cuando pasa en su primer turno quien sigue a la apertura. Con cuatro asientos, deben pasar el segundo y jugar el tercero; si también pasa el tercero, se cancela. Los bonos se suman al cerrar la mano.',
+    'Vaciar la mano — Gana el equipo de quien se queda sin fichas primero. Para puntuar se suman los puntos restantes de todas las manos, incluida la de su pareja.',
+    'Capicúa — Hay capicúa si la última ficha no es doble y, antes de colocarla, servía en ambos extremos abiertos, que deben tener números distintos. El equipo ganador recibe +30 puntos y los puntos restantes de todas las manos.',
+    'Tranque — En todos los modos, la mano se bloquea de inmediato cuando ya se jugaron las 7 fichas distintas que coinciden con cada extremo abierto. Antes, también se bloquea tras dos pases seguidos en uno contra uno o cuatro con cuatro asientos. Se comparan solo los puntos de quien cerró la mano (trancador) y del asiento siguiente; gana quien tenga menos. En empate gana el trancador. Para puntuar se suman los puntos restantes de todas las manos, incluida la de su pareja.',
+    'Puntuación — Los bonos y puntos de las manos se suman al cerrar cada ronda. La partida termina al alcanzar 100 o 200 puntos. No hay bono de paso corrido.',
   ],
 };
 
@@ -89,6 +91,25 @@ export const dominoPremiumRules: LocalizedRules = {
   ],
 };
 
+export const dominoLegacyRules: LocalizedRules = {
+  ko: [
+    '목표 — 선택한 모드에서 손패를 먼저 비우거나, 막힌 판에서 우리 편의 남은 숫자 합을 상대보다 낮게 만드세요. 카피쿠아 보너스는 적용하지 않는 단판입니다.',
+    '준비 — 기본은 두 명이 더블 식스 28장 중 7장씩 받는 블록 도미노입니다. 남은 14장은 뽑지 않아요. 첫 타일은 가장 높은 더블, 더블이 없으면 합이 가장 높은 타일입니다.',
+    '모드 선택 — 첫 타일을 놓기 전 1대1, 사람 두 명 대 봇 두 명, 또는 사람-봇 혼합 팀전을 선택할 수 있어요. 네 자리 모드는 네 명이 각 7장씩 받고 봇은 자동으로 둡니다.',
+    '타일 놓기 — 손패에서 공개된 줄의 왼쪽이나 오른쪽 끝 숫자와 맞는 타일을 골라 놓습니다. 방향을 고르면 타일은 끝 숫자에 맞게 자동으로 뒤집힙니다.',
+    '둘 곳이 없으면 — 가능한 타일이 없을 때만 ‘패스’를 누를 수 있어요. 1대1에서 연속 두 번, 네 자리 모드에서 연속 네 번 패스하면 판이 막힙니다. 타일을 놓으면 패스 횟수는 초기화됩니다.',
+    '승리 — 먼저 손패를 다 내면 그 편이 즉시 이깁니다. 막히면 손에 남은 타일의 점(양 끝 숫자)을 더해 비교하고, 합이 낮은 편이 이깁니다. 사람-봇 팀전은 각 팀의 합계를 비교합니다.',
+  ],
+  es: [
+    'Objetivo — En el modo elegido, quédate sin fichas primero o, si se bloquea la mano, termina con menos puntos en tu lado. Es una sola mano y no se aplica bono de capicúa.',
+    'Preparación — El modo inicial es dominó bloqueado doble-seis para dos personas: cada quien recibe 7 de las 28 fichas. Las otras 14 no se roban. Abre el doble más alto; si nadie tiene doble, abre la ficha de mayor suma.',
+    'Modo — Antes de colocar la primera ficha puedes elegir 1 contra 1, dos personas contra dos bots o equipos mixtos de una persona y un bot. En los modos de cuatro asientos, cada asiento recibe 7 fichas y los bots juegan automáticamente.',
+    'Colocar — Elige una ficha de tu mano que coincida con el número del extremo izquierdo o derecho. Al escoger el lado, la ficha se orienta para que los números conecten.',
+    'Si no puedes jugar — Pulsa «Pasar» solo cuando ninguna ficha de tu mano coincida. Dos pases consecutivos bloquean el 1 contra 1; en los modos de cuatro asientos hacen falta cuatro. Colocar una ficha reinicia el conteo.',
+    'Victoria — Si un lado se queda sin fichas, gana de inmediato. Si se bloquea, se suman los números de las fichas restantes y gana el lado con menos puntos. En equipos mixtos se compara la suma de cada equipo.',
+  ],
+};
+
 export const gameRules: Record<GameId, LocalizedRules> = {
   davinci: {
     ko: [
@@ -126,24 +147,7 @@ export const gameRules: Record<GameId, LocalizedRules> = {
       'Final — Los papeles cambian en cada ronda. Tras las 6 rondas iniciales, gana quien tenga más puntos. Antes de empezar, solo la persona anfitriona cambia categoría, rondas, tiempo, opciones, longitud visible y palabras propias. Los ajustes se bloquean al empezar y ambos deben aceptar una revancha.',
     ],
   },
-  domino: {
-    ko: [
-      '목표 — 선택한 모드에서 손패를 먼저 비우거나, 막힌 판에서 우리 편의 남은 숫자 합을 상대보다 낮게 만드세요. 카피쿠아 보너스는 적용하지 않는 단판입니다.',
-      '준비 — 기본은 두 명이 더블 식스 28장 중 7장씩 받는 블록 도미노입니다. 남은 14장은 뽑지 않아요. 첫 타일은 가장 높은 더블, 더블이 없으면 합이 가장 높은 타일입니다.',
-      '모드 선택 — 첫 타일을 놓기 전 1대1, 사람 두 명 대 봇 두 명, 또는 사람-봇 혼합 팀전을 선택할 수 있어요. 네 자리 모드는 네 명이 각 7장씩 받고 봇은 자동으로 둡니다.',
-      '타일 놓기 — 손패에서 공개된 줄의 왼쪽이나 오른쪽 끝 숫자와 맞는 타일을 골라 놓습니다. 방향을 고르면 타일은 끝 숫자에 맞게 자동으로 뒤집힙니다.',
-      '둘 곳이 없으면 — 가능한 타일이 없을 때만 ‘패스’를 누를 수 있어요. 1대1에서 연속 두 번, 네 자리 모드에서 연속 네 번 패스하면 판이 막힙니다. 타일을 놓으면 패스 횟수는 초기화됩니다.',
-      '승리 — 먼저 손패를 다 내면 그 편이 즉시 이깁니다. 막히면 손에 남은 타일의 점(양 끝 숫자)을 더해 비교하고, 합이 낮은 편이 이깁니다. 사람-봇 팀전은 각 팀의 합계를 비교합니다.',
-    ],
-    es: [
-      'Objetivo — En el modo elegido, quédate sin fichas primero o, si se bloquea la mano, termina con menos puntos en tu lado. Es una sola mano y no se aplica bono de capicúa.',
-      'Preparación — El modo inicial es dominó bloqueado doble-seis para dos personas: cada quien recibe 7 de las 28 fichas. Las otras 14 no se roban. Abre el doble más alto; si nadie tiene doble, abre la ficha de mayor suma.',
-      'Modo — Antes de colocar la primera ficha puedes elegir 1 contra 1, dos personas contra dos bots o equipos mixtos de una persona y un bot. En los modos de cuatro asientos, cada asiento recibe 7 fichas y los bots juegan automáticamente.',
-      'Colocar — Elige una ficha de tu mano que coincida con el número del extremo izquierdo o derecho. Al escoger el lado, la ficha se orienta para que los números conecten.',
-      'Si no puedes jugar — Pulsa «Pasar» solo cuando ninguna ficha de tu mano coincida. Dos pases consecutivos bloquean el 1 contra 1; en los modos de cuatro asientos hacen falta cuatro. Colocar una ficha reinicia el conteo.',
-      'Victoria — Si un lado se queda sin fichas, gana de inmediato. Si se bloquea, se suman los números de las fichas restantes y gana el lado con menos puntos. En equipos mixtos se compara la suma de cada equipo.',
-    ],
-  },
+  domino: lisbethDominoRules,
   jaipur: {
     ko: [
       '목표 — 최대 세 라운드 중 두 라운드를 먼저 이기세요. 상품 토큰 점수에 낙타가 더 많은 사람의 보너스 5점을 더해 라운드 승자를 정합니다.',
