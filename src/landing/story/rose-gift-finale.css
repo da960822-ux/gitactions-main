@@ -3,7 +3,7 @@
 .post-hero-preview .rose-gift-finale h3{margin:0;font:400 clamp(38px,3.8vw,68px)/1.2 'Gowun Batang',Georgia,serif;letter-spacing:-.035em;text-wrap:balance}
 .post-hero-preview .rose-gift-finale h3:focus{outline:none}
 .post-hero-preview .rose-gift-finale .rg-copy>p{max-width:32ch;margin:24px 0 0;color:#e0beb0;font-size:15px;line-height:1.7}
-.post-hero-preview .rose-gift-finale .rg-art{position:relative;height:66svh;max-height:760px;min-height:420px;margin-top:96px;isolation:isolate}
+.post-hero-preview .rose-gift-finale .rg-art{position:relative;height:66svh;max-height:760px;min-height:420px;margin-top:160px;isolation:isolate}
 .post-hero-preview .rose-gift-finale .rg-art[data-ready=false]{visibility:hidden}
 .post-hero-preview .rose-gift-finale .rg-static,.post-hero-preview .rose-gift-finale .rg-live{position:absolute;inset:0;width:100%;height:100%;object-fit:contain;object-position:center bottom;pointer-events:none;user-select:none}
 .post-hero-preview .rose-gift-finale .rg-live{fill:none;stroke:none;stroke-width:0;overflow:visible}

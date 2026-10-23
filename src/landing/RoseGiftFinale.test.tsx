@@ -1,7 +1,9 @@
 import {renderToStaticMarkup} from 'react-dom/server';
+import {readFileSync} from 'node:fs';
 import {expect,it,vi} from 'vitest';
 import {RoseGiftFinale,roseGiftCanCelebrate,roseGiftClosingLine,roseGiftPose} from './story/RoseGiftFinale';
 import {ROSE_FIREWORK_PARTICLE_LIMIT,ROSE_DRONE_COUNT,createRoseFireworks,roseDronePosition,roseFireworkSpark,roseFireworkPosition} from './story/rose-fireworks';
+import {ROSE_DRONE_CYCLE,ROSE_DRONE_FORMATIONS,ROSE_DRONE_PALETTE,ROSE_DRONE_SOURCE_COUNTS,ROSE_DRONE_PROVENANCE,roseDroneFormations} from './story/rose-drone-formations';
 
 it('gates fireworks on the fully settled handover while visible, never on initial contact or transfer',()=>{
  for(const seconds of [-1,0,1.2,1.65,2.85,2.999,NaN,Infinity])expect(roseGiftCanCelebrate(seconds,true)).toBe(false);
@@ -42,11 +44,17 @@ it('keeps firing past ten seconds, pauses without backlog, bounds particles, and
  const step=(time:number)=>{const scheduled=[...frames.values()];frames.clear();const before=draws;scheduled.forEach(callback=>callback(time));maxDraws=Math.max(maxDraws,draws-before);};
  try{
   const controller=createRoseFireworks(canvas);expect(frames.size).toBe(0);controller.setActive(true);
-  for(let frame=0;frame<720;frame++)step(frame*1000/60);
-  expect(Number(canvas.dataset.burstCount)).toBeGreaterThan(4);expect(maxDraws).toBeGreaterThan(64+ROSE_DRONE_COUNT);expect(maxDraws).toBeLessThanOrEqual(ROSE_FIREWORK_PARTICLE_LIMIT+ROSE_DRONE_COUNT);expect(canvas.width).toBe(1125);
-  expect(canvas.dataset.droneFormation).toBe('heart');expect(['heart','saturn','chrysanthemum','willow']).toContain(canvas.dataset.burstShape);
+  const seen=new Set<string|undefined>();for(let frame=0;frame<3960;frame++){step(frame*1000/60);seen.add(canvas.dataset.droneFormation);}
+  for(const formation of [...ROSE_DRONE_FORMATIONS,'morph','flight'])expect(seen.has(formation)).toBe(true);
+  expect(Number(canvas.dataset.burstCount)).toBeGreaterThan(4);expect(maxDraws).toBeGreaterThan(64+ROSE_DRONE_COUNT);expect(maxDraws).toBeLessThanOrEqual(ROSE_FIREWORK_PARTICLE_LIMIT+2*ROSE_DRONE_COUNT);expect(canvas.width).toBe(1125);
+  expect(canvas.dataset.droneFormation).toBe('flight');expect(['heart','saturn','chrysanthemum','willow']).toContain(canvas.dataset.burstShape);
   const bursts=canvas.dataset.burstCount,formation=canvas.dataset.droneFormation;controller.setActive(false);expect(frames.size).toBe(0);expect(canvas.dataset.running).toBe('false');step(90000);expect(canvas.dataset.burstCount).toBe(bursts);expect(canvas.dataset.droneFormation).toBe(formation);
   controller.setActive(true);step(90016);expect(canvas.dataset.burstCount).toBe(bursts);expect(frames.size).toBe(1);
+  controller.reset();step(100000);
+  for(const [at,formation] of [[108000,'pokeball'],[120000,'magikarp'],[132000,'gyarados'],[144000,'pikachu'],[156000,'heart'],[164000,'flight']] as const){
+   const previous=Number(canvas.dataset.burstCount);step(at);expect(canvas.dataset.droneFormation).toBe(formation);expect(Number(canvas.dataset.burstCount)-previous).toBeLessThanOrEqual(1);expect(frames.size).toBe(1);
+  }
+  controller.setActive(false);const stopped=canvas.dataset.burstCount;controller.setActive(true);step(900000);expect(canvas.dataset.droneFormation).toBe('flight');expect(canvas.dataset.burstCount).toBe(stopped);
   controller.reset();expect(canvas.dataset.burstCount).toBe('0');expect(canvas.dataset.droneFormation).toBe('idle');expect(canvas.dataset.burstShape).toBe('none');controller.dispose();expect(frames.size).toBe(0);expect(disconnect).toHaveBeenCalled();controller.setActive(true);expect(frames.size).toBe(0);
  }finally{vi.unstubAllGlobals();}
 });
@@ -64,31 +72,66 @@ it('alternates a symmetric heart, tilted Saturn ring, chrysanthemum and long fal
  expect(roseFireworkPosition(willow,4).y).toBeGreaterThan(roseFireworkPosition(willow,3).y);
 });
 
-it('flies 96 distinct lights into a large evenly spaced heart above the original heads, then smoothly morphs and returns',()=>{
- expect(ROSE_DRONE_COUNT).toBe(96);
- const heart=Array.from({length:ROSE_DRONE_COUNT},(_,index)=>roseDronePosition(index,8));
- expect(Math.max(...heart.map(p=>p.x))-Math.min(...heart.map(p=>p.x))).toBeGreaterThan(570);
- expect(Math.max(...heart.map(p=>p.y))-Math.min(...heart.map(p=>p.y))).toBeGreaterThan(260);
- for(let index=0;index<heart.length;index++){
-  const p=heart[index],other=heart[(heart.length-index)%heart.length],next=heart[(index+1)%heart.length];
-  expect(p.formation).toBe('heart');expect(p.alpha).toBe(1);expect(p.y).toBeLessThan(-10);
-  expect(p.x+other.x).toBeCloseTo(1200,6);expect(p.y).toBeCloseTo(other.y,6);
-  expect(Math.hypot(p.x-next.x,p.y-next.y)).toBeGreaterThan(9);
-  const before=roseDronePosition(index,12-1e-4),after=roseDronePosition(index,12+1e-4);
-  expect(Math.hypot(before.x-after.x,before.y-after.y)).toBeLessThan(.01);
-  expect(roseDronePosition(index,18).formation).toBe('infinity');
-  const returned=roseDronePosition(index,27);expect(returned.x).toBeCloseTo(p.x,8);expect(Math.abs(returned.y-p.y)).toBeLessThan(4);
-  const departure=roseDronePosition(index,32-1e-5),arrival=roseDronePosition(index,32+1e-5);
-  expect(Math.hypot(departure.x-arrival.x,departure.y-arrival.y)).toBeLessThan(.01);expect(departure.alpha).toBeLessThan(.001);expect(arrival.alpha).toBeLessThan(.001);
+it('keeps the measured photographic dots, individual brightness and RGB palette, with invisible padding rather than invented lights',()=>{
+ expect(ROSE_DRONE_COUNT).toBe(1280);expect(ROSE_DRONE_CYCLE).toBe(64);
+ expect(ROSE_DRONE_FORMATIONS).toEqual(['pokeball','magikarp','gyarados','pikachu','heart']);
+ expect(ROSE_DRONE_SOURCE_COUNTS).toEqual([492,801,1049,795,256]);
+ expect(ROSE_DRONE_PALETTE.length).toBeGreaterThan(40);expect(ROSE_DRONE_PALETTE.length).toBeLessThan(128);
+ for(let scene=0;scene<roseDroneFormations.length;scene++){
+  const lights=roseDroneFormations[scene],visible=lights.filter(p=>p.alpha>0);
+  expect(lights).toHaveLength(ROSE_DRONE_COUNT);expect(visible).toHaveLength(ROSE_DRONE_SOURCE_COUNTS[scene]);
+  expect(new Set(visible.map(p=>`${p.x},${p.y}`)).size).toBe(visible.length);
+  for(const p of visible){expect(p.x).toBeGreaterThanOrEqual(290);expect(p.x).toBeLessThanOrEqual(910);expect(p.y).toBeGreaterThanOrEqual(-380);expect(p.y).toBeLessThanOrEqual(-20);expect(p.alpha).toBeGreaterThan(0);expect(p.alpha).toBeLessThanOrEqual(1);expect(ROSE_DRONE_PALETTE[p.color]).toMatch(/^#[0-9a-f]{6}$/);}
+  if(scene<4){
+   expect(visible.some(p=>p.alpha<.9)).toBe(true);
+   const source=ROSE_DRONE_PROVENANCE[scene],xs=visible.map(p=>p.x),ys=visible.map(p=>p.y),[x0,y0,x1,y1]=source.bounds;
+   expect(source.pointCount).toBe(visible.length);expect(source.sha256).toMatch(/^[0-9a-f]{64}$/);expect(source.crop).toHaveLength(4);
+   expect(Math.max(...xs)-Math.min(...xs)).toBeCloseTo((x1-x0)*source.normalization.scale,1);
+   expect(Math.max(...ys)-Math.min(...ys)).toBeCloseTo((y1-y0)*source.normalization.scale,1);
+   expect(source.url).toMatch(/^https:\/\//);
+  }
  }
- const infinity=Array.from({length:ROSE_DRONE_COUNT},(_,index)=>roseDronePosition(index,18));
- for(let a=0;a<infinity.length;a++)for(let b=a+1;b<infinity.length;b++)expect(Math.hypot(infinity[a].x-infinity[b].x,infinity[a].y-infinity[b].y)).toBeGreaterThan(4);
+ expect(ROSE_DRONE_PROVENANCE[0].url).toContain('Screenshot-2026-07-31-130136.png');
+ for(const source of ROSE_DRONE_PROVENANCE.slice(1))expect(source.url).toContain('youtube.com/watch?v=t-2KJGqc3OI');
+});
+
+it('preserves photographed position and premultiplied light color across eight-second holds, four-second morphs and the repeated flight',()=>{
+ const times=[8,20,32,44,56],rgb=(color:number)=>ROSE_DRONE_PALETTE[color].slice(1).match(/../g)!.map(hex=>parseInt(hex,16));
+ const colorAt=(p:ReturnType<typeof roseDronePosition>)=>rgb(p.fromColor).map((value,channel)=>(value+(rgb(p.color)[channel]-value)*p.colorMix)*p.alpha);
+ for(let scene=0;scene<times.length;scene++)for(let index=0;index<ROSE_DRONE_COUNT;index++){
+  const p=roseDronePosition(index,times[scene]),target=roseDroneFormations[scene][index];expect(p.formation).toBe(ROSE_DRONE_FORMATIONS[scene]);expect(p.alpha).toBe(target.alpha);expect(p.colorMix).toBe(0);
+  expect(p.x).toBeCloseTo(target.x,8);expect(Math.abs(p.y-target.y)).toBeLessThan(2.01);
+  expect(roseDronePosition(index,times[scene]-3).formation).toBe(ROSE_DRONE_FORMATIONS[scene]);expect(roseDronePosition(index,times[scene]+3).formation).toBe(ROSE_DRONE_FORMATIONS[scene]);
+ }
+ for(let index=0;index<ROSE_DRONE_COUNT;index+=7){
+  for(const boundary of [4,12,16,24,28,36,40,48,52,60,64]){
+   const before=roseDronePosition(index,boundary-1e-4),after=roseDronePosition(index,boundary+1e-4);
+   expect(Math.hypot(before.x-after.x,before.y-after.y)).toBeLessThan(.02);
+   colorAt(before).forEach((value,channel)=>expect(Math.abs(value-colorAt(after)[channel])).toBeLessThan(.01));
+  }
+  const middle=roseDronePosition(index,26);expect(middle.formation).toBe('morph');expect(middle.colorMix).toBeGreaterThanOrEqual(0);expect(middle.colorMix).toBeLessThanOrEqual(1);
+  expect(roseDronePosition(index,26+ROSE_DRONE_CYCLE)).toEqual(middle);
+  expect(roseDronePosition(index,64-1e-5).alpha).toBeLessThan(.001);expect(roseDronePosition(index,64+1e-5).alpha).toBeLessThan(.001);
+ }
  expect(roseDronePosition(0,1).formation).toBe('flight');expect(roseDronePosition(0,0).alpha).toBe(0);
 });
 
 it('keeps the static light-cloud fallback when a 2D canvas is unavailable',()=>{
  const canvas={hidden:false,getContext:()=>null} as unknown as HTMLCanvasElement,controller=createRoseFireworks(canvas);
  expect(canvas.hidden).toBe(true);expect(()=>{controller.setActive(true);controller.reset();controller.dispose();}).not.toThrow();
+});
+
+it('keeps the full photographed headroom and glow inside the desktop section and below mobile copy',()=>{
+ const css=readFileSync(new URL('./story/rose-gift-finale.css',import.meta.url),'utf8');
+ expect(css).toContain('min-height:420px;margin-top:160px');expect(css).toContain('min-height:380px;margin-top:32px');
+ for(const [width,height] of [[1440,900],[1920,1080],[1280,720]]){
+  const artHeight=Math.max(420,Math.min(760,height*.66)),artWidth=width*(.85-.04)*1.35/2,scale=Math.min(artWidth/1199,artHeight/1312);
+  expect(height*.06+160+artHeight-1312*scale-(380+4.75)*scale).toBeGreaterThan(0);
+ }
+ for(const [width,height] of [[390,844],[360,740]]){
+  const artHeight=Math.max(380,height*.65),scale=Math.min((width-48)/1199,artHeight/1312);
+  expect(28+32+artHeight-1312*scale-(380+4.75)*scale).toBeGreaterThan(0);
+ }
 });
 
 it('uses the playful lifetime-partner line only after receiving and an actual pact answer',()=>{
