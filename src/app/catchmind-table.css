@@ -31,6 +31,12 @@
 .cm-word-length small { margin-top: 3px; font-size: 12px; }
 .cm-canvas { position: relative; flex: 1; min-height: 350px; overflow: hidden; background: #fffefa; touch-action: none; }
 .cm-canvas canvas { display: block; width: 100%; height: 100%; min-height: 350px; touch-action: none; }
+.cm-canvas canvas:focus-visible { outline: 3px solid #1c554a; outline-offset: -4px; }
+.cm-keyboard-cursor { position: absolute; z-index: 2; display: none; width: 20px; height: 20px; border: 2px solid #173e38; border-radius: 50%; background: #fffefa88; box-shadow: 0 0 0 2px #fffefa, 0 1px 5px #173e3880; transform: translate(-50%, -50%); pointer-events: none; }
+.cm-keyboard-cursor.is-visible { display: block; }
+.cm-keyboard-cursor.is-down { background: #1c554a88; }
+.cm-keyboard-hint { position: absolute; z-index: 3; left: 12px; bottom: 12px; max-width: calc(100% - 24px); margin: 0; padding: 7px 10px; border-radius: 8px; background: #293431e8; color: white; font-size: 11px; line-height: 1.4; opacity: 0; pointer-events: none; }
+.cm-canvas:focus-within .cm-keyboard-hint { opacity: 1; }
 .cm-canvas.can-draw { cursor: crosshair; }
 .cm-canvas-placeholder { position: absolute; inset: 0; display: grid; place-content: center; justify-items: center; gap: 8px; color: #a6afa9; pointer-events: none; }
 .cm-canvas-placeholder > span { display: grid; place-items: center; width: 65px; height: 65px; border-radius: 50%; background: #f3f0e9; font-size: 28px; }

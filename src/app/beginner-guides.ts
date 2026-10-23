@@ -50,7 +50,7 @@ const guides: Record<BeginnerGameId, Record<Language, GuideCopy>> = {
       goal: '번갈아 그림을 그리고 맞혀 점수를 모아요.',
       steps: [
         { title: '단어 고르기', body: '호스트가 주제 하나를 고르고 ‘설정 저장’을 눌러요. 그리는 사람은 제시어 하나를 골라요. 맞히는 사람은 한국어 □ / 스페인어 ? 글자 수를 나란히 봐요. 시간에 따라 글자가 공개되지는 않아요.' },
-        { title: '그림과 답', body: '그리는 사람은 펜 색·굵기, 지우개, 실행 취소와 전체 지우기를 써요. 기본 색·보조 색 중 하나를 고른 뒤 색상을 선택하고, 색 바꾸기로 서로 바꿀 수 있어요. 맞히는 사람은 공유 채팅에 한국어나 스페인어로 답해요.' },
+        { title: '그림과 답', body: '그리는 사람은 펜 색·굵기, 지우개, 실행 취소와 전체 지우기를 써요. 기본 색·보조 색 중 하나를 고른 뒤 색상을 선택하고, 색 바꾸기로 서로 바꿀 수 있어요. 키보드: 화살표 이동, Space 그리기/멈춤, Enter 채우기·색 선택·점 찍기, Esc 선 마침, Tab 나가기. 맞히는 사람은 공유 채팅에 한국어나 스페인어로 답해요.' },
         { title: '점수와 차례', body: '정답이면 그리는 사람은 1점, 맞힌 사람은 남은 시간에 따라 1~3점을 얻어요. 시간이 끝나면 정답이 공개돼요. ‘다음 라운드’로 역할을 바꿔 계속하고, 마지막에 점수가 높으면 이겨요.' },
       ],
       tip: '스페인어 답은 악센트(á·é·í·ó·ú)와 ñ·ü까지 정확히 입력해요. 예: fútbol은 futbol로 쓰면 오답이에요.',
@@ -59,7 +59,7 @@ const guides: Record<BeginnerGameId, Record<Language, GuideCopy>> = {
       goal: 'Dibujen y adivinen por turnos para sumar puntos.',
       steps: [
         { title: 'Elige una palabra', body: 'La persona anfitriona elige una categoría y pulsa «Guardar ajustes». Quien dibuja escoge una palabra. Quien adivina ve las longitudes en coreano □ y español ?; no se revelan letras con el tiempo.' },
-        { title: 'Dibuja y responde', body: 'Quien dibuja usa color, grosor, borrador, deshacer y borrar todo. Elige «Color principal» o «Color secundario» y después un color; «Intercambiar colores» los cambia entre sí. Quien adivina responde en el chat compartido en coreano o español.' },
+        { title: 'Dibuja y responde', body: 'Quien dibuja usa color, grosor, borrador, deshacer y borrar todo. Elige «Color principal» o «Color secundario» y después un color; «Intercambiar colores» los cambia entre sí. Teclado: flechas mueven; Espacio dibuja/para; Enter rellena, elige color o dibuja un punto; Esc termina el trazo; Tab sale del lienzo. Quien adivina responde en el chat compartido en coreano o español.' },
         { title: 'Puntos y turnos', body: 'Si acierta, quien dibuja gana 1 punto y quien adivina recibe de 1 a 3 según el tiempo restante. Al acabarse el tiempo se revela la respuesta. Pulsa «Siguiente ronda» para cambiar de papel; al final gana quien tenga más puntos.' },
       ],
       tip: 'Respeta las tildes (á, é, í, ó, ú) y letras como ñ y ü. Por ejemplo, fútbol no se acepta como futbol.',

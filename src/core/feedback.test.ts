@@ -56,6 +56,7 @@ describe('feedback service', () => {
   it('creates and joins a standalone same-browser demo pair and keeps its entries for seven days', async () => {
     const first = await load(false);
     expect(first.isFeedbackOnline).toBe(false);
+    expect(mock.createClient).not.toHaveBeenCalled();
     const space = await first.feedback.createSpace();
     expect(await first.feedback.getRole(space)).toBe('p1');
     expect(await first.feedback.joinSpace(space)).toBe('p2');
@@ -72,6 +73,17 @@ describe('feedback service', () => {
     storage.set(`couple-feedback:${space}`, JSON.stringify([{ ...entry, id: 'old', createdAt: new Date(Date.now() - 8 * 86400000).toISOString() }]));
     expect(await next.feedback.list(space)).toEqual([]);
     expect(JSON.parse(storage.get(`couple-feedback:${space}`)!).length).toBe(0);
+  });
+
+  it('reuses the shared online client without creating another auth instance', async () => {
+    const api = await load(true);
+    const { onlineDb } = await import('./supabase');
+    expect(onlineDb).toBe(mock.db);
+    expect(mock.createClient).toHaveBeenCalledTimes(1);
+    expect(mock.createClient).toHaveBeenCalledWith('https://example.supabase.co', 'anon-test-key');
+    await api.feedback.list('space-1');
+    expect(mock.db.auth.getSession).toHaveBeenCalledOnce();
+    expect(mock.db.from).toHaveBeenCalledWith('feedback_entries');
   });
 
   it('uses authenticated standalone space RPCs and filters online posts by space and age', async () => {

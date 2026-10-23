@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useRef, useState, type CSSProperties, type FormEvent, type PointerEvent } from 'react';
+import { useEffect, useMemo, useRef, useState, type CSSProperties, type FormEvent, type KeyboardEvent, type PointerEvent } from 'react';
 import type { GameAction, Language, PlayerId } from '../core/types';
 import { GameValue } from './GameValue';
 import type { CatchmindCategoryId } from '../games/catchmindTopics';
@@ -28,6 +28,11 @@ const colors = [
   { value: '#5786a1', ko: '파랑', es: 'azul' }, { value: '#54a7a0', ko: '청록', es: 'turquesa' },
 ];
 const copy = (language: Language, ko: string, es: string) => language === 'ko' ? ko : es;
+export function moveCatchmindCursor(point: Point, key: string) {
+  const steps: Record<string, Point> = { ArrowLeft: { x: -.02, y: 0 }, ArrowRight: { x: .02, y: 0 }, ArrowUp: { x: 0, y: -.02 }, ArrowDown: { x: 0, y: .02 } };
+  const step = steps[key];
+  return step ? { x: Math.max(0, Math.min(1, point.x + step.x)), y: Math.max(0, Math.min(1, point.y + step.y)) } : point;
+}
 export function catchmindChoicesNeedSettingsSave(canEdit: boolean, draftCategory: CatchmindCategoryId | null, savedCategory: CatchmindCategoryId | null) {
   return canEdit && draftCategory !== savedCategory;
 }
@@ -103,6 +108,9 @@ export default function CatchmindTable({ roomId, view, playerId, language, now, 
   const board = view?.board ?? {};
   const [activePoints, setActivePoints] = useState<Point[]>([]);
   const [pendingVisual, setPendingVisual] = useState<DrawBatch[]>([]);
+  const [keyboardCursor, setKeyboardCursor] = useState<Point>({ x: .5, y: .5 });
+  const [keyboardActive, setKeyboardActive] = useState(false);
+  const [keyboardPenDown, setKeyboardPenDown] = useState(false);
   const [activeColor, setActiveColor] = useState(palette);
   const [secondaryColor, setSecondaryColor] = useState('#fffefa');
   const [colorTarget, setColorTarget] = useState<'primary' | 'secondary'>('primary');
@@ -119,6 +127,7 @@ export default function CatchmindTable({ roomId, view, playerId, language, now, 
   const [toolNotice, setToolNotice] = useState('');
   const fillBusy = useRef(false);
   const canvasRef = useRef<HTMLCanvasElement>(null);
+  const keyboardCursorRef = useRef<Point>({ x: .5, y: .5 });
   const drawingRef = useRef(false);
   const pointsRef = useRef<Point[]>([]);
   const sendQueue = useRef<DrawBatch[]>([]);
@@ -180,6 +189,7 @@ export default function CatchmindTable({ roomId, view, playerId, language, now, 
     observedIdentity.current = drawingIdentity;
     drawingRef.current = false; sendQueue.current = []; pointsRef.current = [];
     setPendingVisual([]); setActivePoints([]); sendErrorRef.current = false; setSendError(false);
+    setKeyboardPenDown(false); setKeyboardActive(false);
     setToolNotice('');
   }, [drawingIdentity]);
 
@@ -250,6 +260,71 @@ export default function CatchmindTable({ roomId, view, playerId, language, now, 
     if (!flushed) { sendErrorRef.current = true; setSendError(true); return false; }
     try { return await runAction(action); } catch { return false; }
   };
+  const beginStroke = (point: Point, color: string) => {
+    if (!drawing || fillBusy.current) return;
+    drawingRef.current = true;
+    strokeId.current = crypto.randomUUID(); nextSegment.current = 0;
+    activeColorRef.current = color; activeWidthRef.current = strokeWidth; setActiveColor(color);
+    pointsRef.current = [point]; setActivePoints([point]);
+  };
+  const appendStrokePoint = (point: Point) => {
+    if (!drawingRef.current) return;
+    const last = pointsRef.current.at(-1);
+    if (last && Math.hypot(point.x - last.x, point.y - last.y) < .003) return;
+    pointsRef.current.push(point); setActivePoints([...pointsRef.current]);
+    if (pointsRef.current.length >= 60) void flush();
+  };
+  const finishStroke = () => {
+    if (!drawingRef.current) return;
+    drawingRef.current = false;
+    if (pointsRef.current.length === 1) pointsRef.current.push(pointsRef.current[0]);
+    setKeyboardPenDown(false);
+    void flush();
+  };
+  const applyCanvasPoint = (point: Point, color: string) => {
+    if (!drawing || fillBusy.current) return;
+    const ctx = canvasRef.current?.getContext('2d'), x = point.x * 1000, y = point.y * 600;
+    if (tool === 'pick') {
+      const pixel = ctx?.getImageData(Math.min(999, Math.round(x)), Math.min(599, Math.round(y)), 1, 1).data;
+      if (pixel) { const picked = `#${[pixel[0], pixel[1], pixel[2]].map(value => value.toString(16).padStart(2, '0')).join('')}`; lastDrawingColor.current = restoreCatchmindPenColor(picked); setEraser(false); setPalette(picked); }
+      setTool('brush'); return;
+    }
+    if (tool === 'fill') {
+      if (!ctx) return;
+      const pixel = ctx.getImageData(Math.min(999, Math.round(x)), Math.min(599, Math.round(y)), 1, 1).data;
+      const channels = [1, 3, 5].map(offset => parseInt(color.slice(offset, offset + 2), 16));
+      if (channels.every((channel, index) => Math.abs(pixel[index] - channel) < 8) && pixel[3] === 255) {
+        setToolNotice(copy(language, '이미 같은 색이에요.', 'Ya tiene ese color.')); return;
+      }
+      fillBusy.current = true; setToolNotice(copy(language, '색을 채우는 중…', 'Aplicando el color…'));
+      void runAfterDraws({ type: 'fill', payload: { x: point.x, y: point.y, color } }).then(ok => {
+        setToolNotice(ok ? copy(language, '색을 채웠어요.', 'Color aplicado.') : copy(language, '색을 채우지 못했어요. 다시 시도해 주세요.', 'No se pudo aplicar el color. Inténtalo otra vez.'));
+      }).catch(() => setToolNotice(copy(language, '색을 채우지 못했어요. 다시 시도해 주세요.', 'No se pudo aplicar el color. Inténtalo otra vez.'))).finally(() => { fillBusy.current = false; });
+      return;
+    }
+    beginStroke(point, color);
+  };
+  const onCanvasKeyDown = (event: KeyboardEvent<HTMLCanvasElement>) => {
+    if (!drawing || fillBusy.current) return;
+    if (['ArrowLeft', 'ArrowRight', 'ArrowUp', 'ArrowDown'].includes(event.key)) {
+      event.preventDefault(); setKeyboardActive(true);
+      const next = moveCatchmindCursor(keyboardCursorRef.current, event.key);
+      keyboardCursorRef.current = next; setKeyboardCursor(next);
+      appendStrokePoint(next); return;
+    }
+    if (event.key === ' ' || event.key === 'Enter' || event.key === 'Escape') event.preventDefault();
+    if (event.repeat) return;
+    setKeyboardActive(true);
+    if (event.key === ' ') {
+      if (drawingRef.current) finishStroke();
+      else { beginStroke(keyboardCursorRef.current, palette); setKeyboardPenDown(true); }
+    } else if (event.key === 'Enter') {
+      if (tool === 'brush') {
+        if (!drawingRef.current) beginStroke(keyboardCursorRef.current, palette);
+        appendStrokePoint(keyboardCursorRef.current); finishStroke();
+      } else applyCanvasPoint(keyboardCursorRef.current, palette);
+    } else if (event.key === 'Escape') finishStroke();
+  };
   const clearDrawing = async () => {
     if (fillBusy.current) return;
     const identity = currentIdentity.current;
@@ -274,55 +349,20 @@ export default function CatchmindTable({ roomId, view, playerId, language, now, 
 
   const pointerDown = (event: PointerEvent<HTMLCanvasElement>) => {
     if (!drawing || fillBusy.current) return;
-    const point = coordinate(event);
-    const color = event.button === 2 ? secondaryColor : palette;
     event.currentTarget.setPointerCapture(event.pointerId);
-    drawingRef.current = true;
-    strokeId.current = crypto.randomUUID(); nextSegment.current = 0;
-    activeColorRef.current = color; activeWidthRef.current = strokeWidth; setActiveColor(color);
-    pointsRef.current = [point];
-    setActivePoints([point]);
+    beginStroke(coordinate(event), event.button === 2 ? secondaryColor : palette);
   };
   const pointerMove = (event: PointerEvent<HTMLCanvasElement>) => {
-    if (!drawingRef.current) return;
-    const next = coordinate(event), last = pointsRef.current[pointsRef.current.length - 1];
-    if (!last || Math.hypot(next.x - last.x, next.y - last.y) < .003) return;
-    pointsRef.current.push(next);
-    setActivePoints([...pointsRef.current]);
-    if (pointsRef.current.length >= 60) void flush();
+    if (!drawingRef.current || (event.buttons & 3) === 0) return;
+    appendStrokePoint(coordinate(event));
   };
-  const pointerUp = () => {
-    if (!drawingRef.current) return;
-    drawingRef.current = false;
-    if (pointsRef.current.length === 1) pointsRef.current.push(pointsRef.current[0]);
-    void flush();
-  };
+  const pointerUp = () => finishStroke();
   const onCanvasPointerDown = (event: PointerEvent<HTMLCanvasElement>) => {
     if (!drawing || fillBusy.current) return;
-    const point = coordinate(event), x = point.x * 1000, y = point.y * 600;
-    const color = event.button === 2 ? secondaryColor : palette;
-    const ctx = event.currentTarget.getContext('2d');
-    if (tool === 'pick') {
-      const pixel = ctx?.getImageData(Math.min(999, Math.round(x)), Math.min(599, Math.round(y)), 1, 1).data;
-      if (pixel) { const picked = `#${[pixel[0], pixel[1], pixel[2]].map(value => value.toString(16).padStart(2, '0')).join('')}`; lastDrawingColor.current = restoreCatchmindPenColor(picked); setEraser(false); setPalette(picked); }
-      setTool('brush');
-      return;
-    }
-    if (tool === 'fill') {
-      if (fillBusy.current || !ctx) return;
-      const pixel = ctx.getImageData(Math.min(999, Math.round(x)), Math.min(599, Math.round(y)), 1, 1).data;
-      const channels = [1, 3, 5].map(offset => parseInt(color.slice(offset, offset + 2), 16));
-      if (channels.every((channel, index) => Math.abs(pixel[index] - channel) < 8) && pixel[3] === 255) {
-        setToolNotice(copy(language, '이미 같은 색이에요.', 'Ya tiene ese color.')); return;
-      }
-      fillBusy.current = true;
-      setToolNotice(copy(language, '색을 채우는 중…', 'Aplicando el color…'));
-      void runAfterDraws({ type: 'fill', payload: { x: point.x, y: point.y, color } }).then(ok => {
-        setToolNotice(ok ? copy(language, '색을 채웠어요.', 'Color aplicado.') : copy(language, '색을 채우지 못했어요. 다시 시도해 주세요.', 'No se pudo aplicar el color. Inténtalo otra vez.'));
-      }).catch(() => { setToolNotice(copy(language, '색을 채우지 못했어요. 다시 시도해 주세요.', 'No se pudo aplicar el color. Inténtalo otra vez.')); }).finally(() => { fillBusy.current = false; });
-      return;
-    }
-    pointerDown(event);
+    if (drawingRef.current) finishStroke();
+    setKeyboardActive(false);
+    if (tool === 'brush') pointerDown(event);
+    else applyCanvasPoint(coordinate(event), event.button === 2 ? secondaryColor : palette);
   };
   const saveSettings = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault(); setSettingsNotice('');
@@ -401,7 +441,8 @@ export default function CatchmindTable({ roomId, view, playerId, language, now, 
         </div>
         : view?.phase === 'choosing' ? <div className="cm-choice-wait"><span>♡</span><b>{copy(language, '상대가 단어를 고르고 있어요', 'Tu pareja está eligiendo una palabra')}</b><small>{copy(language, '정답은 비밀로 남아 있어요.', 'La respuesta sigue siendo secreta.')}</small></div>
         : <div className={`cm-canvas ${drawing ? 'can-draw' : ''}`} data-testid="catchmind-canvas">
-          <canvas ref={canvasRef} width={1000} height={600} role="img" tabIndex={drawing ? 0 : -1} aria-label={drawing ? copy(language, '그림을 그리는 캔버스', 'Lienzo para dibujar') : copy(language, '상대가 그린 그림', 'Dibujo de tu pareja')} onPointerDown={onCanvasPointerDown} onPointerMove={pointerMove} onPointerUp={pointerUp} onPointerCancel={pointerUp} onContextMenu={event => event.preventDefault()}/>
+          <canvas ref={canvasRef} width={1000} height={600} role="group" tabIndex={drawing ? 0 : -1} aria-label={drawing ? copy(language, '그림 그리기 캔버스', 'Lienzo para dibujar') : copy(language, '상대가 그린 그림', 'Dibujo de tu pareja')} aria-describedby={drawing ? 'cm-keyboard-instructions' : undefined} aria-keyshortcuts={drawing ? 'ArrowLeft ArrowRight ArrowUp ArrowDown Space Enter Escape' : undefined} onKeyDown={onCanvasKeyDown} onFocus={() => { setKeyboardCursor(keyboardCursorRef.current); setKeyboardActive(true); }} onBlur={() => { finishStroke(); setKeyboardActive(false); }} onPointerDown={onCanvasPointerDown} onPointerMove={pointerMove} onPointerUp={pointerUp} onPointerCancel={pointerUp} onContextMenu={event => event.preventDefault()}/>
+          {drawing && <><span className={`cm-keyboard-cursor${keyboardActive ? ' is-visible' : ''}${keyboardPenDown ? ' is-down' : ''}`} style={{ left: `${keyboardCursor.x * 100}%`, top: `${keyboardCursor.y * 100}%` }} aria-hidden="true"/><p id="cm-keyboard-instructions" className="cm-keyboard-hint">{copy(language, '키보드: 화살표 이동 · Space 펜 켜기/끄기 · Enter 채우기/색 선택/점 · Esc 선 마침', 'Teclado: flechas mueven · Espacio activa/desactiva el trazo · Enter rellena/elige color/punto · Esc termina el trazo')}</p></>}
           {activeDrawing && !displayedStrokes.length && !fills.length && <div className="cm-canvas-placeholder" aria-hidden="true"><span>＋</span><small>{drawing ? copy(language, '여기에 그려 보세요', 'Dibuja aquí') : copy(language, '첫 선을 기다리고 있어요', 'Esperando el primer trazo')}</small></div>}
           {drawing && tool === 'fill' && <div className="cm-canvas-tip">{copy(language, '채울 영역을 눌러 주세요', 'Toca una región para rellenar')}</div>}
           {!drawing && !choosing && !roundOver && !finished && <div className="cm-wait-overlay" aria-live="polite"><span>♡</span><b>{copy(language, '천천히 살펴봐요', 'Mira con calma')}</b></div>}

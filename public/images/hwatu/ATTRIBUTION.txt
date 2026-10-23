@@ -15,5 +15,5 @@ developed application source code is licensed separately under the root LICENSE.
 
 The SVG contents are distributed without modification. Only local filenames were
 changed to the application's internal card IDs. Individual source description URLs
-and verified license metadata are recorded in verification.json and shown on the
-in-app card credits page.
+and verified license metadata are recorded in source-verification.json. Both this
+notice and the per-card record are linked in the Minhwatu guide's card artwork credits.

@@ -18,15 +18,19 @@ export const marblePawnCatalog: { id: MarblePawnId; name: Copy; color: string }[
 ];
 
 const copy = (language: Language, ko: string, es: string) => language === 'ko' ? ko : es;
+export function isMarblePawnImageFailed(failedImage: string | null, pawn: MarblePawnId, src: string) {
+  return failedImage === `${pawn}:${src}`;
+}
 
 export function MarblePawn({ pawn, language, label }: { pawn: MarblePawnId; language: Language; label?: string }) {
+  const [failedImage, setFailedImage] = useState<string | null>(null);
   const id = useId().replace(/:/g, '');
   const name = marblePawnCatalog.find(item => item.id === pawn)?.name[language] ?? pawn;
   const title = label ?? name;
   const g = (name: string) => `${id}-${name}`;
 
   const image = pawnAssets.assets.find(asset => asset.id === pawn)?.path;
-  if (image) return <img className={`marble-pawn marble-pawn--${pawn}`} src={image} alt={title} decoding="async"/>;
+  if (image && !isMarblePawnImageFailed(failedImage, pawn, image)) return <img className={`marble-pawn marble-pawn--${pawn}`} src={image} alt={title} decoding="async" onError={() => setFailedImage(`${pawn}:${image}`)}/>;
 
   return <svg className={`marble-pawn marble-pawn--${pawn}`} viewBox="0 0 120 150" role="img" aria-label={title} focusable="false">
     <defs>
