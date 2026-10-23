@@ -1,6 +1,10 @@
 # Domino readiness review — Assessment B
 
-This is the isolated mechanical, source, and browser review for Domino. Assessment A remains separate; this file contains no synthesis with A. The review used final source at the current workspace HEAD and made no application-source changes.
+This is the isolated mechanical, source, and browser review for Domino. Assessment A remains separate; this file contains no synthesis with A. The review used the final source at its review-time HEAD and made no application-source changes.
+
+## Rule-contract status
+
+This assessment predates Lisbeth v2 and records the v0/v1 rule contract observed at review time. Preserve its test and browser results as historical evidence; the rule descriptions below do not validate current new games. The current rules are in the [Lisbeth Domino manual](DOMINO-LISBETH.md); saved v0/v1 games retain their prior contract.
 
 ## Evidence and limits
 

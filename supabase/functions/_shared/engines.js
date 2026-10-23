@@ -4042,10 +4042,52 @@ var catchmindEngine = {
   getResult: (s) => s.result
 };
 
+// src/games/rules.ts
+var marbleCreditRules = {
+  ko: [
+    "\uBAA9\uD45C \u2014 \uC790\uCCB4 \uBD80\uB3D9\uC0B0 \uAC8C\uC784 \uADDC\uCE59\uC785\uB2C8\uB2E4. \uC0C1\uB300\uAC00 \uD30C\uC0B0\uD558\uBA74 \uC774\uAE30\uACE0, 120\uD134 \uB4A4\uC5D0\uB294 \uD604\uAE08+\uB3C4\uC2DC \uB9E4\uC785\uAC00+\uAC74\uC124 \uBE44\uC6A9\u2212\uBBF8\uC0C1\uD658 \uB300\uCD9C\uC744 \uD569\uCE5C \uC21C\uC790\uC0B0\uC744 \uBE44\uAD50\uD569\uB2C8\uB2E4.",
+    "\uB9D0\uACFC \uC774\uB3D9 \u2014 \uCCAB \uC8FC\uC0AC\uC704\uB97C \uAD74\uB9AC\uAE30 \uC804\uC5D0 \uC6D0\uD558\uB294 \uB9D0\uC744 \uACE0\uB985\uB2C8\uB2E4. \uC0C1\uB300\uC640 \uAC19\uC740 \uB9D0\uC740 \uC120\uD0DD\uD560 \uC218 \uC5C6\uACE0 \uCCAB \uC774\uB3D9 \uB4A4\uC5D0\uB294 \uACE0\uC815\uB429\uB2C8\uB2E4. \uB450 \uC8FC\uC0AC\uC704 \uD569\uB9CC\uD07C 40\uCE78 \uBCF4\uB4DC\uB97C \uC774\uB3D9\uD558\uBA70 \uCD9C\uBC1C\uC810\uC744 \uC9C0\uB098\uBA74 200\uC744 \uBC1B\uC2B5\uB2C8\uB2E4. \uAD11\uC8FC\uC640 \uC0B0\uD1A0\uB3C4\uBC0D\uACE0\uB97C \uD3EC\uD568\uD574 24\uAC1C \uB3C4\uC2DC\uAC00 \uC788\uC2B5\uB2C8\uB2E4.",
+    "\uB3C4\uC2DC\uC640 \uAC74\uC124 \u2014 \uBE48 \uB3C4\uC2DC\uB97C \uAD6C\uB9E4\uD558\uAC70\uB098 \uC9C0\uB098\uAC11\uB2C8\uB2E4. \uB0B4 \uB3C4\uC2DC\uC5D0\uB294 \uC0C9\uC0C1 \uB3C4\uC2DC\uAD70 \uC644\uC131 \uC5EC\uBD80\uC640 \uAD00\uACC4\uC5C6\uC774 \uB2E8\uB3C5\uC8FC\uD0DD\u2192\uC544\uD30C\uD2B8\u2192\uB79C\uB4DC\uB9C8\uD06C\uB97C \uC21C\uC11C\uB300\uB85C \uC9C0\uC744 \uC218 \uC788\uC2B5\uB2C8\uB2E4. \uB2E8\uACC4\uB9C8\uB2E4 100, \uD1B5\uD589\uB8CC\uB294 \uAE30\uBCF8\uC758 2\uBC30\u21924\uBC30\u21928\uBC30\uC785\uB2C8\uB2E4. \uC0C1\uB300 \uB3C4\uC2DC\uC758 \uD1B5\uD589\uB8CC\uB294 \uC790\uB3D9 \uC9C0\uAE09\uB429\uB2C8\uB2E4.",
+    "\uB300\uCD9C \u2014 \uC790\uAE30 \uCC28\uB840\uC5D0 \uBBF8\uC0C1\uD658 \uB300\uCD9C\uC774 \uC5C6\uC73C\uBA74 300\uC744 \uBC1B\uC744 \uC218 \uC788\uACE0, \uC0C1\uD658\uC561\uC740 330\uC785\uB2C8\uB2E4. \uCD94\uAC00 \uC774\uC790\uB098 \uB9CC\uAE30\uB294 \uC5C6\uC2B5\uB2C8\uB2E4. \uC9C0\uAE09 \uC704\uAE30 \uC678\uC758 \uC790\uAE30 \uCC28\uB840\uC5D0 330 \uC804\uC561\uC744 \uC0C1\uD658\uD569\uB2C8\uB2E4. \uBBF8\uC0C1\uD658\uC561\uC740 \uC21C\uC790\uC0B0\uC5D0\uC11C \uBE7C\uBA70, \uC0C1\uD658 \uD6C4 \uB2E4\uC2DC \uBE4C\uB824\uB3C4 \uB9E4\uBC88 30\uC758 \uBE44\uC6A9\uC774 \uBC1C\uC0DD\uD569\uB2C8\uB2E4.",
+    "\uC9C0\uAE09 \uC704\uAE30 \u2014 \uD1B5\uD589\uB8CC\xB7\uC138\uAE08\xB7\uCE74\uB4DC \uBE44\uC6A9\uC744 \uB0BC \uD604\uAE08\uC774 \uBD80\uC871\uD558\uBA74 \uD589\uB3D9\uC774 \uBA48\uCDA5\uB2C8\uB2E4. \uD604\uC7AC \uD604\uAE08+300\uC73C\uB85C \uC9C0\uAE09\uC561\uC744 \uCDA9\uB2F9\uD560 \uC218 \uC788\uACE0 \uAE30\uC874 \uB300\uCD9C\uC774 \uC5C6\uC744 \uB54C\uB9CC \uB300\uCD9C\uB85C \uD574\uACB0\uD560 \uC218 \uC788\uC2B5\uB2C8\uB2E4. \uB300\uCD9C\uC744 \uC120\uD0DD\uD558\uBA74 \uD574\uB2F9 \uC9C0\uAE09\uC744 \uD55C \uBC88 \uCC98\uB9AC\uD558\uACE0 \uC6D0\uB798 \uCC28\uB840\uB85C \uB3CC\uC544\uAC11\uB2C8\uB2E4. \uD30C\uC0B0 \uC778\uC815\uC740 \uACBD\uAE30 \uC885\uB8CC\uB97C \uB73B\uD558\uBA70 \uB3C4\uC2DC \uC790\uB3D9 \uB9E4\uAC01\uC740 \uC5C6\uC2B5\uB2C8\uB2E4.",
+    "\uD669\uAE08\uC5F4\uC1E0 \u2014 13\uC885 \uCE74\uB4DC\uB294 \uC0C1\uAE08(150\xB7200\xB780), \uC5EC\uD589\uBE44 100, \uAC74\uC124 \uB2E8\uACC4\uB2F9 \uC218\uB9AC\uBE44 40, \uC0B0\uD1A0\uB3C4\uBC0D\uACE0 \uBC29\uBB38, \uCD9C\uBC1C \uC774\uB3D9(+200), \uC138 \uCE78 \uD6C4\uD1F4, \uBB34\uC778\uB3C4 \uC774\uB3D9, \uD0C8\uCD9C\uAD8C, \uBB34\uB8CC \uC5F4\uCC28\uD45C, \uB3C4\uC2DC\uB2F9 \uBC30\uB2F9 30, \uB3C5\uC810 \uACBD\uACE0\uC785\uB2C8\uB2E4. \uC774\uB3D9 \uCE74\uB4DC\uC758 \uB3C4\uCC29 \uD6A8\uACFC\uB3C4 \uC801\uC6A9\uB418\uBA70 \uC138 \uCE78 \uD6C4\uD1F4\uC5D0\uB294 \uCD9C\uBC1C \uBCF4\uB108\uC2A4\uAC00 \uC5C6\uC2B5\uB2C8\uB2E4.",
+    "\uB3C5\uC810 \uACBD\uACE0 \u2014 \uAC19\uC740 \uC0C9\uC758 \uB3C4\uC2DC\uB97C \uBAA8\uB450 \uAC00\uC9C4 \uB3C4\uC2DC\uAD70\uC774 \uAC00\uC7A5 \uB9CE\uC740 \uC0AC\uB78C\uC774 \uB3C4\uC2DC\uAD70\uB2F9 100, \uCD5C\uB300 300\uC744 \uC740\uD589\uC5D0 \uB0C5\uB2C8\uB2E4. \uB3D9\uB960\uC774\uBA74 \uCE74\uB4DC\uB97C \uBF51\uC740 \uC0AC\uB78C\uC5D0\uAC8C \uC801\uC6A9\uB429\uB2C8\uB2E4. \uB204\uAD6C\uB3C4 \uC644\uC131\uD55C \uB3C4\uC2DC\uAD70\uC774 \uC5C6\uC73C\uBA74 \uBE44\uC6A9\uC774 \uC5C6\uC2B5\uB2C8\uB2E4. \uB3C4\uC2DC\uAD70 \uC644\uC131 \uC790\uCCB4\uB294 \uC989\uC2DC \uC2B9\uB9AC\uB098 \uD1B5\uD589\uB8CC \uCD94\uAC00 \uBC30\uC218\uAC00 \uC544\uB2D9\uB2C8\uB2E4.",
+    "\uBB34\uC778\uB3C4\xB7\uC5F4\uCC28\xB7\uAE30\uAE08 \u2014 \uBB34\uC778\uB3C4\uB294 \uC790\uAE30 \uCC28\uB840 \uC138 \uBC88 \uC815\uC9C0\uC785\uB2C8\uB2E4. \uC30D\uC774\uBA74 \uD0C8\uCD9C\uD574 \uC774\uB3D9\uD558\uACE0, \uC544\uB2C8\uBA74 \uD55C \uCC28\uB840 \uC27D\uB2C8\uB2E4. 100\uC774\uB098 \uD0C8\uCD9C\uAD8C\uC73C\uB85C \uB098\uC640 \uC8FC\uC0AC\uC704\uB97C \uAD74\uB9B4 \uC218\uB3C4 \uC788\uC2B5\uB2C8\uB2E4. \uC5ED\uC5D0\uC11C\uB294 \uB2E4\uC74C \uCC28\uB840\uC5D0 \uC6B4\uC784 100\uC73C\uB85C \uB3C4\uC2DC\uB97C \uACE0\uB974\uAC70\uB098 \uAC74\uB108\uB701\uB2C8\uB2E4. \uBB34\uB8CC \uD45C\uB294 \uC6B4\uC784 0\uC785\uB2C8\uB2E4. \uAE30\uAE08 \uB0A9\uBD80 \uCE78\uC5D0 150\uC744 \uB0B4\uBA70 \uC0AC\uD68C\uBCF5\uC9C0\uAE30\uAE08 \uCE78\uC5D0\uC11C \uC313\uC778 \uAE30\uAE08\uC744 \uBC1B\uC2B5\uB2C8\uB2E4."
+  ],
+  es: [
+    "Objetivo \u2014 Usamos reglas propias de un juego de propiedades. Ganas si tu pareja quiebra; despu\xE9s de 120 turnos se compara el patrimonio neto: efectivo + precio de las ciudades + costo de construcci\xF3n \u2212 deuda pendiente.",
+    "Figura y movimiento \u2014 Elige una figura antes de lanzar tus primeros dados. No puede ser la misma de tu pareja y queda fija despu\xE9s. Avanza la suma de los dos dados por las 40 casillas. Al pasar por Salida recibes 200. Hay 24 ciudades, incluyendo Gwangju y Santo Domingo.",
+    "Ciudades y construcci\xF3n \u2014 Puedes comprar una ciudad libre o pasar. En cualquier ciudad tuya puedes construir casa unifamiliar, apartamentos y monumento, sin completar un color. Cada nivel cuesta 100 y el alquiler pasa a 2, 4 y 8 veces el valor base. El alquiler rival se paga autom\xE1ticamente.",
+    "Pr\xE9stamo \u2014 En tu turno, si no tienes deuda pendiente, puedes recibir 300 y debes devolver 330. No hay intereses adicionales ni fecha de vencimiento. Pagas los 330 completos en tu turno, fuera de una crisis de pago. La deuda se resta del patrimonio; pedir otro pr\xE9stamo despu\xE9s de pagarlo vuelve a costar 30.",
+    "Crisis de pago \u2014 Si no tienes efectivo para un alquiler, impuesto o gasto de carta, el juego espera tu decisi\xF3n. Solo puedes resolverlo con un pr\xE9stamo si no debes otro y tu efectivo + 300 cubre el pago. Al pedirlo, el pago se procesa una sola vez y contin\xFAa el turno original. Declarar quiebra termina la partida; las ciudades no se venden autom\xE1ticamente.",
+    "Llave dorada \u2014 Las 13 cartas incluyen premios (150, 200 y 80), gasto de viaje 100, mantenimiento 40 por nivel construido, visita a Santo Domingo, viaje a Salida (+200), retroceso de tres casillas, isla, pase de salida, boleto gratis, dividendo 30 por ciudad y advertencia de monopolio. Se aplica tambi\xE9n el efecto del destino; al retroceder no cobras Salida.",
+    "Monopolio \u2014 Quien tenga m\xE1s grupos de color completos paga 100 por grupo al banco, hasta 300. En empate paga quien sac\xF3 la carta. Si nadie complet\xF3 un grupo, no se cobra. Completar un color no da una victoria inmediata ni otro multiplicador de alquiler.",
+    "Isla, tren y fondo \u2014 La isla te detiene tres turnos propios. Si sacas dobles, sales y avanzas; si no, pierdes un turno. Tambi\xE9n puedes pagar 100 o usar un pase y luego lanzar. La estaci\xF3n permite viajar a una ciudad por 100 en tu pr\xF3ximo turno o pasar el tren. El boleto gratis cuesta 0. El aporte al fondo es 150 y en Fondo Social recibes lo acumulado."
+  ]
+};
+var marbleTieredRules = {
+  ko: marbleCreditRules.ko.map((rule, index) => index === 2 ? "\uB3C4\uC2DC\uC640 \uAC74\uC124 \u2014 \uBE48 \uB3C4\uC2DC\uB97C \uAD6C\uB9E4\uD558\uAC70\uB098 \uC9C0\uB098\uAC11\uB2C8\uB2E4. \uB0B4 \uB3C4\uC2DC\uC5D0\uB294 \uC0C9\uC0C1 \uB3C4\uC2DC\uAD70 \uC644\uC131 \uC5EC\uBD80\uC640 \uAD00\uACC4\uC5C6\uC774 \uB2E8\uB3C5\uC8FC\uD0DD\u2192\uC544\uD30C\uD2B8\u2192\uB79C\uB4DC\uB9C8\uD06C\uB97C \uC21C\uC11C\uB300\uB85C \uC9C0\uC744 \uC218 \uC788\uC2B5\uB2C8\uB2E4. \uAC74\uC124\uBE44\uB294 \uD574\uB2F9 \uB3C4\uC2DC \uB9E4\uC785\uAC00\uC758 40%\u219260%\u219280%\uC774\uBA70, 10 \uB2E8\uC704\uB85C \uBC18\uC62C\uB9BC\uD558\uACE0 \uCD5C\uC18C 40\uC785\uB2C8\uB2E4. \uD1B5\uD589\uB8CC\uB294 \uAE30\uBCF8\uC758 2\uBC30\u21924\uBC30\u21928\uBC30\uAC00 \uB429\uB2C8\uB2E4. \uC0C1\uB300 \uB3C4\uC2DC\uC758 \uD1B5\uD589\uB8CC\uB294 \uC790\uB3D9 \uC9C0\uAE09\uB429\uB2C8\uB2E4." : rule),
+  es: marbleCreditRules.es.map((rule, index) => index === 2 ? "Ciudades y construcci\xF3n \u2014 Puedes comprar una ciudad libre o pasar. En cualquier ciudad tuya puedes construir casa unifamiliar, apartamentos y monumento, sin completar un color. Cada nivel cuesta el 40 %, 60 % y 80 % del precio de compra de la ciudad; se redondea a 10 y nunca baja de 40. El alquiler pasa a 2, 4 y 8 veces el valor base. El alquiler rival se paga autom\xE1ticamente." : rule)
+};
+var marbleExpandedRules = {
+  ko: [
+    ...marbleTieredRules.ko.map((rule, index) => index === 5 ? rule.replace("\uD669\uAE08\uC5F4\uC1E0 \u2014 13\uC885 \uCE74\uB4DC\uB294", "\uD669\uAE08\uC5F4\uC1E0 \u2014 \uC0C8 \uBC29\uC740 16\uC885\uC774\uBA70 \uC774\uC804 \uC800\uC7A5 \uBC29\uC740 \uAE30\uC874 \uB371\uC744 \uC720\uC9C0\uD569\uB2C8\uB2E4. \uAE30\uBCF8 13\uC885 \uCE74\uB4DC\uB294") : rule),
+    "\uB3C4\uC2DC \uCD95\uC81C\xB7\uC815\uC804 \u2014 \uCD95\uC81C\uB294 \uB0B4 \uB3C4\uC2DC \uD558\uB098\uB97C \uC120\uD0DD\uD574 \uB2E4\uC74C \uC0C1\uB300 \uCC29\uC9C0 1\uD68C \uD1B5\uD589\uB8CC\uB97C 2\uBC30\uB85C \uB9CC\uB4ED\uB2C8\uB2E4. \uC815\uC804\uC740 \uC0C1\uB300 \uB3C4\uC2DC \uD558\uB098\uB97C \uC120\uD0DD\uD574 \uB2E4\uC74C \uB0B4 \uCC29\uC9C0 1\uD68C \uD1B5\uD589\uB8CC\uB97C \uC808\uBC18\uC73C\uB85C \uB9CC\uB4ED\uB2C8\uB2E4(\uB0B4\uB9BC, \uCD5C\uC18C 1). \uB300\uC0C1 \uCC29\uC9C0\uAE4C\uC9C0 \uC720\uC9C0\uB418\uBA70 \uB2E4\uB978 \uB3C4\uC2DC\uB294 \uBC14\uB00C\uC9C0 \uC54A\uC2B5\uB2C8\uB2E4. \uB458 \uB2E4 \uAC78\uB9B0 \uB3C4\uC2DC\uB294 2\uBC30\xD7\uC808\uBC18\uC73C\uB85C \uAE30\uBCF8 \uD1B5\uD589\uB8CC\uAC00 \uB429\uB2C8\uB2E4. \uAC19\uC740 \uD6A8\uACFC\uB97C \uB2E4\uC2DC \uC120\uD0DD\uD558\uBA74 \uC911\uBCF5 \uBC30\uC218\uAC00 \uC544\uB2CC \uD574\uB2F9 \uD6A8\uACFC \uAC31\uC2E0\uC785\uB2C8\uB2E4. \uC120\uD0DD \uAC00\uB2A5\uD55C \uB3C4\uC2DC\uAC00 \uC5C6\uC73C\uBA74 \uD6A8\uACFC\uAC00 \uC5C6\uC2B5\uB2C8\uB2E4.",
+    "\uD1B5\uD589\uB8CC \uBA74\uC81C\uAD8C \u2014 \uD55C \uC7A5\uC744 \uBCF4\uAD00\uD558\uACE0 \uC55E\uC73C\uB85C \uD1B5\uD589\uB8CC\uAC00 \uBC1C\uC0DD\uD558\uBA74 \uC9C0\uAE09 \uC804\uC5D0 \uC9C1\uC811 \uC0AC\uC6A9\uD558\uAC70\uB098 \uC9C0\uAE09\uC744 \uC120\uD0DD\uD569\uB2C8\uB2E4. \uC790\uB3D9 \uC0AC\uC6A9\uB418\uC9C0 \uC54A\uC73C\uBA70 \uC138\uAE08\uC5D0\uB294 \uC4F8 \uC218 \uC5C6\uC2B5\uB2C8\uB2E4. \uC0AC\uC6A9\uD558\uBA74 \uD1B5\uD589\uB8CC 1\uD68C\uB9CC \uBA74\uC81C\uD558\uACE0 \uCE74\uB4DC\uB294 \uB371\uC73C\uB85C \uB3CC\uC544\uAC11\uB2C8\uB2E4. \uB300\uC0C1 \uB3C4\uC2DC \uCD95\uC81C\xB7\uC815\uC804\uC740 \uCC29\uC9C0 \uC21C\uAC04 \uC18C\uBAA8\uB418\uBBC0\uB85C \uBA74\uC81C\uAD8C\uC744 \uC368\uB3C4 \uB3C4\uC2DC \uD6A8\uACFC\uB294 \uC18C\uBAA8\uB429\uB2C8\uB2E4. \uC9C0\uAE09\uC744 \uC120\uD0DD\uD55C \uB4A4 \uD604\uAE08\uC774 \uBD80\uC871\uD558\uBA74 \uC77C\uBC18 \uC9C0\uAE09 \uC704\uAE30\uB85C \uB118\uC5B4\uAC11\uB2C8\uB2E4."
+  ],
+  es: [
+    ...marbleTieredRules.es.map((rule, index) => index === 5 ? rule.replace("Llave dorada \u2014 Las 13 cartas incluyen", "Llave dorada \u2014 Las salas nuevas usan 16 cartas; las guardadas conservan su mazo. Las 13 cartas b\xE1sicas incluyen") : rule),
+    "Festival y apag\xF3n \u2014 Festival elige una ciudad propia y duplica el alquiler en la pr\xF3xima llegada rival, una vez. Apag\xF3n elige una ciudad rival y reduce a la mitad el alquiler en tu pr\xF3xima llegada, una vez (redondeo hacia abajo, m\xEDnimo 1). Persisten hasta esa llegada y no cambian otras ciudades. Juntos dan el alquiler base: doble por mitad. Repetir el mismo efecto lo renueva, sin acumular multiplicadores. Sin ciudad elegible, no tienen efecto.",
+    "Pase de alquiler \u2014 Guarda un pase y elige usarlo o pagar antes de un futuro alquiler. No se usa autom\xE1ticamente ni sirve para impuestos. Exime un solo alquiler y vuelve al mazo. Festival y apag\xF3n se consumen al llegar, incluso si usas el pase. Si eliges pagar sin efectivo suficiente, se aplica la crisis de pago normal."
+  ]
+};
+
 // src/games/domino.ts
 var DEFAULT_SETTINGS = { difficulty: "normal", targetScore: 0, capicuaBonus: 0, pasoCorridoBonus: 0, tranqueRule: "team" };
+var LISBETH_SETTINGS = { difficulty: "normal", targetScore: 200, capicuaBonus: 30, pasoCorridoBonus: 0, tranqueRule: "trancador" };
+var matchRules = (s) => s.rulesVersion === 1 || s.rulesVersion === 2;
 var label3 = (ko, es, action) => ({ label: { ko, es }, action });
-var seats = (mode) => mode === "1v1" ? ["p1", "p2"] : ["p1", "b1", "p2", "b2"];
+var seats = (mode, rulesVersion = 1) => mode === "1v1" ? ["p1", "p2"] : mode === "partners" && rulesVersion === 2 ? ["p1", "p2", "b1", "b2"] : ["p1", "b1", "p2", "b2"];
 var isBot = (seat) => seat === "b1" || seat === "b2";
 function score(hand) {
   return hand.reduce((n, t) => n + t.a + t.b, 0);
@@ -4082,27 +4124,50 @@ function event(s, e) {
   return log.slice(-40);
 }
 function nextSeat(s, seat) {
-  const order = seats(s.mode);
+  const order = seats(s.mode, s.rulesVersion);
   return order[(order.indexOf(seat) + 1) % order.length];
+}
+function canOpen(s, seat, tile) {
+  return seat === s.opening.player && (s.rulesVersion === 2 && (s.round ?? 1) > 1 || tile.a === s.opening.tile.a && tile.b === s.opening.tile.b);
+}
+function openingPassBonus(s) {
+  const tile = s.board[0], points = tile.a === tile.b ? 30 : (s.round ?? 1) > 1 ? 60 : 0;
+  if (!points) return s;
+  const team = sideWinner(s.mode, tile.by), roundBonuses = { p1: s.roundBonuses?.p1 ?? 0, p2: s.roundBonuses?.p2 ?? 0 };
+  roundBonuses[team] += points;
+  return { ...s, roundBonuses, log: event(s, { type: "opening-pass", actor: tile.by, team, points, title: { ko: "\uCCAB \uD328\uC2A4 \uBCF4\uB108\uC2A4", es: "Bono de salida" }, text: { ko: "\uB450 \uBC88\uC9F8 \uC790\uB9AC\uC758 \uCCAB \uD328\uC2A4\uB85C \uCD9C\uBC1C \uBCF4\uB108\uC2A4\uB97C \uC5BB\uC5C8\uC2B5\uB2C8\uB2E4. \uB77C\uC6B4\uB4DC \uC885\uB8CC \uB54C \uD569\uC0B0\uD569\uB2C8\uB2E4.", es: "El segundo asiento pas\xF3 a la salida. El bono se suma al terminar la mano." } }) };
+}
+function finishTranque(s) {
+  if (s.rulesVersion === 2) {
+    const trancador = s.lastPlacer ?? s.board.at(-1).by, following2 = nextSeat(s, trancador);
+    const winnerSeat = score(s.hands[trancador]) <= score(s.hands[following2]) ? trancador : following2;
+    return finishRound(s, sideWinner(s.mode, winnerSeat), "Blocked game; trancador versus next seat, ties to trancador", s.hands, false, winnerSeat);
+  }
+  const sc = s.settings?.tranqueRule === "lowest-player" ? lowestPlayerScores(s) : teamScores(s);
+  const winner = sc.p1 === sc.p2 ? "draw" : sc.p1 < sc.p2 ? "p1" : "p2";
+  return finishRound(s, winner, winner === "draw" ? "Blocked game tied on remaining pips" : "Blocked game; lower team pip total wins", s.hands);
+}
+function exhaustedEnds(s) {
+  return !!s.ends && [s.ends.left, s.ends.right].every((pip) => new Set(s.board.filter((tile) => tile.a === pip || tile.b === pip).map((tile) => `${Math.min(tile.a, tile.b)}-${Math.max(tile.a, tile.b)}`)).size === 7);
 }
 function resultFor(s, winner, reason, pips) {
   return { winner, reason, scores: s.settings?.targetScore ? { ...s.matchScores ?? { p1: 0, p2: 0 } } : pips };
 }
-function finishRound(s, winner, reason, hands, capicua = false) {
+function finishRound(s, winner, reason, hands, capicua = false, winnerSeat) {
   const current = { ...s, hands }, pips = teamScores(current);
-  if (s.rulesVersion !== 1) return { ...current, result: { winner, reason, scores: pips } };
+  if (!matchRules(s)) return { ...current, result: { winner, reason, scores: pips } };
   const bonuses = { p1: s.roundBonuses?.p1 ?? 0, p2: s.roundBonuses?.p2 ?? 0 };
   const scoreDelta = { ...bonuses };
-  if (winner !== "draw") scoreDelta[winner] += pips[winner === "p1" ? "p2" : "p1"] + (capicua ? s.settings?.capicuaBonus ?? 0 : 0);
+  if (winner !== "draw") scoreDelta[winner] += (s.rulesVersion === 2 ? pips.p1 + pips.p2 : pips[winner === "p1" ? "p2" : "p1"]) + (capicua ? s.settings?.capicuaBonus ?? 0 : 0);
   const matchScores = { p1: (s.matchScores?.p1 ?? 0) + scoreDelta.p1, p2: (s.matchScores?.p2 ?? 0) + scoreDelta.p2 };
   const award = winner === "draw" ? 0 : scoreDelta[winner];
-  const rr = { winner, reason, pips, award, capicua, bonuses, scoreDelta, pasoCorrido: winner === "draw" ? bonuses.p1 + bonuses.p2 : bonuses[winner], round: s.round ?? 1 };
+  const rr = { winner, reason, pips, award, capicua, bonuses, scoreDelta, pasoCorrido: s.rulesVersion === 2 ? 0 : winner === "draw" ? bonuses.p1 + bonuses.p2 : bonuses[winner], ...s.rulesVersion === 2 ? { openingPass: bonuses.p1 + bonuses.p2 } : {}, round: s.round ?? 1 };
   const blocked = reason.startsWith("Blocked game");
-  let next = { ...current, roundResult: rr, matchScores };
+  let next = { ...current, roundResult: rr, matchScores, ...winnerSeat ? { roundWinnerSeat: winnerSeat } : {} };
   const append = (e) => {
     next = { ...next, log: event(next, { round: s.round ?? 1, ...e }) };
   };
-  if (blocked) append({ type: "tranque", title: { ko: "\uD2B8\uB791\uCF00 \xB7 \uD310\uC774 \uB9C9\uD614\uC5B4\uC694", es: "\xA1Tranque! Se cerr\xF3 la mano" }, text: { ko: winner === "draw" ? "\uB0A8\uC740 \uC22B\uC790 \uD569\uC774 \uAC19\uC544 \uBB34\uC2B9\uBD80\uC785\uB2C8\uB2E4." : s.settings?.tranqueRule === "lowest-player" ? "\uAC01 \uD300\uC5D0\uC11C \uC22B\uC790 \uD569\uC774 \uAC00\uC7A5 \uB0AE\uC740 \uD55C \uC0AC\uB78C\uC744 \uBE44\uAD50\uD588\uC2B5\uB2C8\uB2E4." : "\uB450 \uD300\uC758 \uB0A8\uC740 \uC22B\uC790 \uD569\uC744 \uBE44\uAD50\uD588\uC2B5\uB2C8\uB2E4.", es: winner === "draw" ? "Los puntos restantes quedaron empatados." : s.settings?.tranqueRule === "lowest-player" ? "Se compar\xF3 a la persona con menos puntos de cada equipo." : "Se compararon los puntos restantes de cada equipo." } });
+  if (blocked) append({ type: "tranque", title: { ko: "\uD2B8\uB791\uCF00 \xB7 \uD310\uC774 \uB9C9\uD614\uC5B4\uC694", es: "\xA1Tranque! Se cerr\xF3 la mano" }, text: { ko: s.rulesVersion === 2 ? "\uD2B8\uB791\uCE74\uB3C4\uB974\uC640 \uBC14\uB85C \uB2E4\uC74C \uC790\uB9AC\uC758 \uC190\uD328\uB97C \uBE44\uAD50\uD588\uC2B5\uB2C8\uB2E4. \uB3D9\uC810\uC774\uBA74 \uD2B8\uB791\uCE74\uB3C4\uB974\uAC00 \uC774\uAE41\uB2C8\uB2E4." : winner === "draw" ? "\uB0A8\uC740 \uC22B\uC790 \uD569\uC774 \uAC19\uC544 \uBB34\uC2B9\uBD80\uC785\uB2C8\uB2E4." : s.settings?.tranqueRule === "lowest-player" ? "\uAC01 \uD300\uC5D0\uC11C \uC22B\uC790 \uD569\uC774 \uAC00\uC7A5 \uB0AE\uC740 \uD55C \uC0AC\uB78C\uC744 \uBE44\uAD50\uD588\uC2B5\uB2C8\uB2E4." : "\uB450 \uD300\uC758 \uB0A8\uC740 \uC22B\uC790 \uD569\uC744 \uBE44\uAD50\uD588\uC2B5\uB2C8\uB2E4.", es: s.rulesVersion === 2 ? "Se compar\xF3 al trancador con el siguiente asiento. El empate favorece al trancador." : winner === "draw" ? "Los puntos restantes quedaron empatados." : s.settings?.tranqueRule === "lowest-player" ? "Se compar\xF3 a la persona con menos puntos de cada equipo." : "Se compararon los puntos restantes de cada equipo." } });
   if (capicua) append({ type: "capicua", title: { ko: "\uCE74\uD53C\uCFE0\uC544!", es: "\xA1Capic\xFAa!" }, text: { ko: "\uB9C8\uC9C0\uB9C9 \uBE44\uB354\uBE14 \uD0C0\uC77C\uC744 \uC591\uCABD \uB05D \uC5B4\uB514\uC5D0\uB4E0 \uB193\uC744 \uC218 \uC788\uC5C8\uC5B4\uC694.", es: "La \xFAltima ficha, sin ser doble, serv\xEDa en cualquiera de los dos extremos." }, points: s.settings?.capicuaBonus ?? 0, team: winner === "draw" ? void 0 : winner });
   append({ type: "round-end", title: { ko: "\uB77C\uC6B4\uB4DC \uC815\uC0B0", es: "Cuenta de la mano" }, text: { ko: blocked ? "\uB0A8\uC740 \uD328\uB97C \uACF5\uAC1C\uD558\uACE0 \uC810\uC218\uB97C \uC815\uC0B0\uD569\uB2C8\uB2E4." : "\uC190\uD328\uB97C \uBAA8\uB450 \uB193\uC558\uC2B5\uB2C8\uB2E4. \uB0A8\uC740 \uD328\uB97C \uACF5\uAC1C\uD569\uB2C8\uB2E4.", es: blocked ? "Se muestran las fichas restantes y se cuentan los puntos." : "Una persona se qued\xF3 sin fichas. Se muestran las manos restantes." }, team: winner === "draw" ? void 0 : winner, points: award });
   for (const team of ["p1", "p2"]) if (scoreDelta[team] > 0) append({ type: "score", title: { ko: "\uC810\uC218 \uD68D\uB4DD", es: "Puntos ganados" }, points: scoreDelta[team], team });
@@ -4116,21 +4181,18 @@ function finishRound(s, winner, reason, hands, capicua = false) {
   return next;
 }
 function play(state, seat, action) {
-  const threshold = seats(state.mode).length;
+  const threshold = seats(state.mode, state.rulesVersion).length;
   if (action.type === "pass") {
     const passes = state.passes + 1, turn = nextSeat(state, seat);
     let next2 = { ...state, passes, turn, log: event(state, { type: "pass", actor: seat, title: { ko: "\uD328\uC2A4", es: "Paso" }, ends: state.ends, count: passes }) };
-    if (state.lastPlacer && turn === state.lastPlacer && passes === threshold - 1 && !state.pasoAwarded) {
+    if (state.rulesVersion === 2 && state.mode === "1v1" && state.board.length === 1 && passes === 1 && seat === nextSeat(state, state.board[0].by)) next2 = openingPassBonus(next2);
+    if (state.rulesVersion !== 2 && state.lastPlacer && turn === state.lastPlacer && passes === threshold - 1 && !state.pasoAwarded) {
       const team = sideWinner(state.mode, state.lastPlacer), points = state.settings?.pasoCorridoBonus ?? 0;
       next2 = { ...next2, pasoAwarded: true, roundBonuses: { p1: state.roundBonuses?.p1 ?? 0, p2: state.roundBonuses?.p2 ?? 0 } };
       next2.roundBonuses[team] += points;
       next2.log = event(next2, { type: "paso-corrido", actor: state.lastPlacer, team, points, title: { ko: "\uD30C\uC18C \uCF54\uB9AC\uB3C4", es: "Paso corrido" }, text: { ko: "\uB2E4\uB978 \uC790\uB9AC\uB4E4\uC774 \uBAA8\uB450 \uD328\uC2A4\uD574 \uB9C8\uC9C0\uB9C9\uC73C\uB85C \uB193\uC740 \uC0AC\uB78C\uC5D0\uAC8C \uCC28\uB840\uAC00 \uB3CC\uC544\uC654\uC5B4\uC694. \uD310\uC740 \uACC4\uC18D\uB429\uB2C8\uB2E4.", es: "Los dem\xE1s asientos pasaron y volvi\xF3 el turno a quien jug\xF3 la \xFAltima ficha. La mano contin\xFAa." } });
     }
-    if (passes === threshold) {
-      const sc = state.settings?.tranqueRule === "lowest-player" ? lowestPlayerScores(state) : teamScores(state);
-      const winner = sc.p1 === sc.p2 ? "draw" : sc.p1 < sc.p2 ? "p1" : "p2";
-      return finishRound(next2, winner, winner === "draw" ? "Blocked game tied on remaining pips" : "Blocked game; lower team pip total wins", state.hands);
-    }
+    if (passes === threshold) return finishTranque(next2);
     next2.log = event(next2, { type: "turn", actor: turn, title: { ko: "\uB2E4\uC74C \uCC28\uB840", es: "Siguiente turno" } });
     return next2;
   }
@@ -4138,10 +4200,12 @@ function play(state, seat, action) {
   const placed = !state.ends ? tile : side === "left" ? tile.b === state.ends.left ? tile : { a: tile.b, b: tile.a } : tile.a === state.ends.right ? tile : { a: tile.b, b: tile.a };
   const ends = !state.ends ? { left: placed.a, right: placed.b } : side === "left" ? { left: placed.a, right: state.ends.right } : { left: state.ends.left, right: placed.b };
   const hands = { ...state.hands, [seat]: state.hands[seat].filter((_, i) => i !== index) };
+  if (state.rulesVersion === 2 && state.mode !== "1v1" && state.board.length === 1 && state.passes === 1 && seat === nextSeat(state, nextSeat(state, state.board[0].by))) state = openingPassBonus(state);
   const sequence = (state.log?.at(-1)?.sequence ?? 0) + 1;
   let next = { ...state, hands, board: [...state.board, { ...placed, by: seat, side, sequence }], ends, passes: 0, lastPlacer: seat, pasoAwarded: false, turn: nextSeat(state, seat), log: event(state, { type: "play", actor: seat, title: { ko: `${tile.a}|${tile.b} \uB193\uAE30`, es: `Ficha ${tile.a}|${tile.b}` }, tile: { ...placed }, side, ends, count: hands[seat].length }) };
   const capicua = tile.a !== tile.b && !!state.ends && (tile.a === state.ends.left && tile.b === state.ends.right || tile.b === state.ends.left && tile.a === state.ends.right);
-  if (!hands[seat].length) return finishRound(next, sideWinner(state.mode, seat), "A player played all dominoes", hands, capicua);
+  if (!hands[seat].length) return finishRound(next, sideWinner(state.mode, seat), "A player played all dominoes", hands, capicua, seat);
+  if (state.rulesVersion === 2 && exhaustedEnds(next)) return finishTranque(next);
   next.log = event(next, { type: "turn", actor: next.turn, title: { ko: "\uB2E4\uC74C \uCC28\uB840", es: "Siguiente turno" } });
   return next;
 }
@@ -4159,8 +4223,8 @@ function legalMoves(hand, ends) {
 function teamOf(mode, seat) {
   return mode === "partners" ? seat === "p1" || seat === "b1" ? "p1" : "p2" : mode === "humans-vs-bots" ? seat === "p1" || seat === "p2" ? "p1" : "p2" : seat === "p1" ? "p1" : "p2";
 }
-function following(mode, seat, offset) {
-  const order = seats(mode), i = order.indexOf(seat);
+function following(mode, seat, offset, rulesVersion = 1) {
+  const order = seats(mode, rulesVersion), i = order.indexOf(seat);
   return order[(i + offset) % order.length];
 }
 function currentRoundEvents(context, board) {
@@ -4224,8 +4288,8 @@ function rngFrom(publicText) {
     return state / 4294967296;
   };
 }
-function sampleUnknownHands(unseen, actor, mode, counts, voids, random) {
-  const originalSeats = seats(mode).filter((seat) => seat !== actor), needed = new Map(originalSeats.map((seat) => [seat, Math.max(0, counts[seat] ?? 7)]));
+function sampleUnknownHands(unseen, actor, mode, counts, voids, random, rulesVersion = 1) {
+  const originalSeats = seats(mode, rulesVersion).filter((seat) => seat !== actor), needed = new Map(originalSeats.map((seat) => [seat, Math.max(0, counts[seat] ?? 7)]));
   let workBudget = 64;
   const pick = (remaining, pending, result) => {
     if (!pending.length) return result;
@@ -4262,7 +4326,7 @@ function sampledRollout(move, hand, actor, mode, board, ends, context, sampled) 
   hands[actor] = hand.slice();
   for (const [seat, tiles] of sampled) hands[seat] = tiles.slice();
   const known = new Set([...hand, ...board, ...Array.from(sampled.values()).flat()].map(tileId));
-  let state = { seed: 0, turn: actor, mode, hands, stock: allTiles.filter((tile) => !known.has(tileId(tile))), board: board.map((tile) => ({ ...tile })), ends: ends ? { ...ends } : null, passes: context.passes ?? 0, opening: { player: actor, tile: move.tile }, result: null, rulesVersion: 1, settings: { ...DEFAULT_SETTINGS, tranqueRule: context.tranqueRule ?? "team" }, matchScores: { p1: 0, p2: 0 }, round: 1, roundResult: null, log: (context.log ?? []).slice(), lastPlacer: board.at(-1)?.by ?? null, pasoAwarded: currentRoundEvents(context, board).some((event2) => event2.type === "paso-corrido"), roundBonuses: { p1: 0, p2: 0 } };
+  let state = { seed: 0, turn: actor, mode, hands, stock: allTiles.filter((tile) => !known.has(tileId(tile))), board: board.map((tile) => ({ ...tile })), ends: ends ? { ...ends } : null, passes: context.passes ?? 0, opening: { player: board[0]?.by ?? actor, tile: board[0] ?? move.tile }, result: null, rulesVersion: context.rulesVersion ?? 1, settings: { ...context.rulesVersion === 2 ? LISBETH_SETTINGS : DEFAULT_SETTINGS, tranqueRule: context.tranqueRule ?? "team" }, matchScores: { p1: 0, p2: 0 }, round: context.round ?? 1, roundResult: null, log: (context.log ?? []).slice(), lastPlacer: board.at(-1)?.by ?? null, pasoAwarded: currentRoundEvents(context, board).some((event2) => event2.type === "paso-corrido"), roundBonuses: { p1: 0, p2: 0 } };
   state = play(state, actor, { type: "play", payload: { index: move.index, side: move.side } });
   for (let step2 = 0; step2 < 60 && !state.roundResult && !state.result; step2++) {
     const seat = state.turn, seatHand = state.hands[seat], moves = legalMoves(seatHand, state.ends);
@@ -4284,10 +4348,10 @@ function sampledRollout(move, hand, actor, mode, board, ends, context, sampled) 
   return result.winner === ownTeam ? 1 + margin : -1 - margin;
 }
 function hardRolloutWorlds(hand, actor, mode, board, context, unseen, voids) {
-  const text = JSON.stringify({ actor, mode, hand: hand.map(tileId).sort(), board: board.map((tile) => [tile.a, tile.b, tile.by, tile.sequence]), counts: context.counts, passes: context.passes, log: currentRoundEvents(context, board).map((event2) => [event2.sequence, event2.type, event2.actor, event2.ends]) });
+  const text = JSON.stringify({ actor, mode, rulesVersion: context.rulesVersion, round: context.round, hand: hand.map(tileId).sort(), board: board.map((tile) => [tile.a, tile.b, tile.by, tile.sequence]), counts: context.counts, passes: context.passes, log: currentRoundEvents(context, board).map((event2) => [event2.sequence, event2.type, event2.actor, event2.ends]) });
   const random = rngFrom(text), worlds = [];
   for (let i = 0; i < 16; i++) {
-    const world = sampleUnknownHands(unseen, actor, mode, context.counts ?? {}, voids, random);
+    const world = sampleUnknownHands(unseen, actor, mode, context.counts ?? {}, voids, random, context.rulesVersion);
     if (world) worlds.push(world);
   }
   return worlds;
@@ -4307,7 +4371,7 @@ function utility(move, hand, board, _ends, context, difficulty, unseen, voids) {
   if (!actor) return score2 + futureReach(rest, move.ends) * 0.55;
   const ownTeam = teamOf(mode, actor), near = Math.min(2, seats(mode).length - 1);
   for (let offset = 1; offset <= near; offset++) {
-    const next = following(mode, actor, offset), sameTeam = teamOf(mode, next) === ownTeam;
+    const next = following(mode, actor, offset, context.rulesVersion), sameTeam = teamOf(mode, next) === ownTeam;
     const canPlay = probabilityCanPlay(next, move.ends, unseen, voids, counts);
     const count2 = counts[next] ?? 7;
     const weight = count2 <= 1 ? 11 : count2 <= 2 ? 8 : count2 <= 3 ? 5 : 3;
@@ -4334,11 +4398,11 @@ function chooseDominoBotAction(hand, board, ends, difficulty = "normal", publicC
   return { type: "play", payload: { index: best.index, side: best.side } };
 }
 function botAction(s, seat) {
-  if (!s.board.length && seat === s.opening.player) {
+  if (!s.board.length && seat === s.opening.player && !(s.rulesVersion === 2 && (s.round ?? 1) > 1)) {
     const index = s.hands[seat].findIndex((t) => t.a === s.opening.tile.a && t.b === s.opening.tile.b);
     return { type: "play", payload: { index, side: "left" } };
   }
-  return chooseDominoBotAction(s.hands[seat], s.board, s.ends, s.settings?.difficulty ?? "normal", { actor: seat, mode: s.mode, passes: s.passes, counts: Object.fromEntries(seats(s.mode).map((x) => [x, s.hands[x].length])), log: s.log, tranqueRule: s.settings?.tranqueRule });
+  return chooseDominoBotAction(s.hands[seat], s.board, s.ends, s.settings?.difficulty ?? "normal", { actor: seat, mode: s.mode, passes: s.passes, rulesVersion: s.rulesVersion, round: s.round, counts: Object.fromEntries(seats(s.mode, s.rulesVersion).map((x) => [x, s.hands[x].length])), log: s.log, tranqueRule: s.settings?.tranqueRule });
 }
 function runBots(s) {
   let next = s;
@@ -4348,8 +4412,13 @@ function runBots(s) {
 function pack() {
   return Array.from({ length: 7 }, (_, a) => Array.from({ length: 7 - a }, (_2, j) => ({ a, b: a + j }))).flat();
 }
-function deal(seed, mode, round) {
-  const deck = shuffle(pack(), seededRandom(seed + (round - 1) * 7919)), hands = { p1: deck.slice(0, 7), p2: deck.slice(7, 14), b1: [], b2: [] };
+function deal(seed, mode, round, rulesVersion = 1) {
+  const deck = shuffle(pack(), seededRandom(seed + (round - 1) * 7919));
+  if (rulesVersion === 2 && mode === "1v1" && round === 1) {
+    const six = deck.findIndex((t) => t.a === 6 && t.b === 6);
+    if (six >= 14) [deck[six % 14], deck[six]] = [deck[six], deck[six % 14]];
+  }
+  const hands = { p1: deck.slice(0, 7), p2: deck.slice(7, 14), b1: [], b2: [] };
   if (mode !== "1v1") {
     hands.b1 = deck.slice(14, 21);
     hands.b2 = deck.slice(21, 28);
@@ -4357,28 +4426,29 @@ function deal(seed, mode, round) {
   const opening = Object.entries(hands).filter(([x]) => seats(mode).includes(x)).flatMap(([player, h]) => h.map((tile) => ({ player, tile, rank: openingRank(tile) }))).sort((x, y) => y.rank - x.rank)[0];
   return { hands, opening, stock: deck.slice(14, mode === "1v1" ? 28 : 14) };
 }
-function validSettings2(s) {
+function validSettings2(s, rulesVersion = 1) {
+  if (rulesVersion === 2) return (s.difficulty === void 0 || ["easy", "normal", "hard"].includes(s.difficulty)) && (s.targetScore === void 0 || [100, 200].includes(s.targetScore)) && (s.capicuaBonus === void 0 || s.capicuaBonus === 30) && (s.pasoCorridoBonus === void 0 || s.pasoCorridoBonus === 0) && (s.tranqueRule === void 0 || s.tranqueRule === "trancador");
   return (s.difficulty === void 0 || ["easy", "normal", "hard"].includes(s.difficulty)) && (s.targetScore === void 0 || [0, 100, 200].includes(s.targetScore)) && (s.capicuaBonus === void 0 || [0, 25].includes(s.capicuaBonus)) && (s.pasoCorridoBonus === void 0 || [0, 25].includes(s.pasoCorridoBonus)) && (s.tranqueRule === void 0 || ["team", "lowest-player"].includes(s.tranqueRule));
 }
 var dominoEngine = {
   id: "domino",
   createInitialState(seed) {
-    const d = deal(seed, "1v1", 1);
-    return { seed, turn: d.opening.player, mode: "1v1", hands: d.hands, stock: d.stock, board: [], ends: null, passes: 0, opening: { player: d.opening.player, tile: d.opening.tile }, result: null, rulesVersion: 1, settings: { ...DEFAULT_SETTINGS }, matchScores: { p1: 0, p2: 0 }, round: 1, roundResult: null, log: [], lastPlacer: null, pasoAwarded: false, roundBonuses: { p1: 0, p2: 0 } };
+    const d = deal(seed, "1v1", 1, 2);
+    return { seed, turn: d.opening.player, mode: "1v1", hands: d.hands, stock: d.stock, board: [], ends: null, passes: 0, opening: { player: d.opening.player, tile: d.opening.tile }, result: null, rulesVersion: 2, settings: { ...LISBETH_SETTINGS }, matchScores: { p1: 0, p2: 0 }, round: 1, roundResult: null, log: [], lastPlacer: null, pasoAwarded: false, roundBonuses: { p1: 0, p2: 0 } };
   },
   validateAction(s, p, a) {
     if (p !== "p1" && p !== "p2") return "Invalid player";
     if (!a || typeof a.type !== "string") return "Invalid action";
     if (s.result) return "Game is over";
     if (a.type === "set-mode" || a.type === "configure") {
-      if (a.type === "configure" && s.rulesVersion !== 1) return "Settings unavailable in this saved ruleset";
+      if (a.type === "configure" && !matchRules(s)) return "Settings unavailable in this saved ruleset";
       if (a.type === "set-mode" && s.mode !== "1v1") return "Mode already selected";
       if (p !== "p1" || s.board.length || (s.round ?? 1) !== 1 || s.roundResult) return "Settings can only be changed by player 1 before the first tile";
       const pl = a.payload ?? {};
       if (a.type === "set-mode") return pl.mode === "partners" || pl.mode === "humans-vs-bots" ? null : "Invalid mode";
-      return (pl.mode === void 0 || ["1v1", "partners", "humans-vs-bots"].includes(pl.mode)) && (pl.difficulty === void 0 || ["easy", "normal", "hard"].includes(pl.difficulty)) && validSettings2(pl) ? null : "Invalid configuration";
+      return (pl.mode === void 0 || ["1v1", "partners", "humans-vs-bots"].includes(pl.mode)) && (pl.difficulty === void 0 || ["easy", "normal", "hard"].includes(pl.difficulty)) && validSettings2(pl, s.rulesVersion) ? null : "Invalid configuration";
     }
-    if (a.type === "next-round") return s.rulesVersion === 1 && p === "p1" && !!s.roundResult && !s.result ? null : "Next round is unavailable";
+    if (a.type === "next-round") return matchRules(s) && p === "p1" && !!s.roundResult && !s.result ? null : "Next round is unavailable";
     if (s.roundResult) return "Round is over";
     if (p !== s.turn) return "Not your turn";
     if (a.type === "pass") return s.hands[p].every((t) => !legalOrient(t, "left", s.ends) && !legalOrient(t, "right", s.ends)) ? null : "A playable tile is available";
@@ -4387,38 +4457,43 @@ var dominoEngine = {
     if (!Number.isInteger(index) || index < 0 || index >= s.hands[p].length) return "Invalid tile index";
     if (side !== "left" && side !== "right") return "Invalid side";
     const tile = s.hands[p][index];
-    if (s.board.length === 0 && (p !== s.opening.player || tile.a !== s.opening.tile.a || tile.b !== s.opening.tile.b)) return "Must open with the highest-ranked tile";
+    if (s.board.length === 0 && !canOpen(s, p, tile)) return s.rulesVersion === 2 ? "Must open with double six in the first hand; the previous winner opens later hands" : "Must open with the highest-ranked tile";
     return legalOrient(tile, side, s.ends) ? null : "Tile does not match that end";
   },
   applyAction(s, p, a) {
     const error = this.validateAction(s, p, a);
     if (error) throw new Error(error);
     if (a.type === "configure") {
-      const mode = a.payload?.mode ?? s.mode, settings = { ...s.settings ?? DEFAULT_SETTINGS }, d = deal(s.seed, mode, 1);
+      const mode = a.payload?.mode ?? s.mode, settings = { ...s.settings ?? DEFAULT_SETTINGS }, d = deal(s.seed, mode, 1, s.rulesVersion);
       for (const key of ["difficulty", "targetScore", "capicuaBonus", "pasoCorridoBonus", "tranqueRule"]) if (a.payload?.[key] !== void 0) Object.assign(settings, { [key]: a.payload[key] });
       const next = { ...s, mode, settings, hands: d.hands, stock: d.stock, turn: d.opening.player, opening: { player: d.opening.player, tile: d.opening.tile }, log: event(s, { type: "configure", actor: p, title: { ko: "\uAC8C\uC784 \uC124\uC815 \uBCC0\uACBD", es: "Configuraci\xF3n actualizada" } }) };
       return runBots(next);
     }
     if (a.type === "set-mode") {
-      const mode = a.payload.mode, hands = { ...s.hands, b1: s.stock.slice(0, 7), b2: s.stock.slice(7, 14) }, opening = Object.entries(hands).flatMap(([player, hand]) => hand.map((tile) => ({ player, tile, rank: openingRank(tile) }))).sort((x, y) => y.rank - x.rank)[0];
+      const mode = a.payload.mode;
+      if (s.rulesVersion === 2) {
+        const d = deal(s.seed, mode, 1, 2);
+        return runBots({ ...s, mode, hands: d.hands, stock: d.stock, turn: d.opening.player, opening: { player: d.opening.player, tile: d.opening.tile } });
+      }
+      const hands = { ...s.hands, b1: s.stock.slice(0, 7), b2: s.stock.slice(7, 14) }, opening = Object.entries(hands).flatMap(([player, hand]) => hand.map((tile) => ({ player, tile, rank: openingRank(tile) }))).sort((x, y) => y.rank - x.rank)[0];
       return runBots({ ...s, mode, hands, stock: [], turn: opening.player, opening: { player: opening.player, tile: opening.tile } });
     }
     if (a.type === "next-round") {
-      const round = (s.round ?? 1) + 1, d = deal(s.seed, s.mode, round), log = event(s, { type: "round-start", title: { ko: `${round}\uB77C\uC6B4\uB4DC \uC2DC\uC791`, es: `Inicio de ronda ${round}` }, round });
-      return runBots({ ...s, round, roundResult: null, result: null, hands: d.hands, stock: d.stock, board: [], ends: null, passes: 0, opening: { player: d.opening.player, tile: d.opening.tile }, turn: d.opening.player, lastPlacer: null, pasoAwarded: false, roundBonuses: { p1: 0, p2: 0 }, log });
+      const round = (s.round ?? 1) + 1, d = deal(s.seed, s.mode, round, s.rulesVersion), starter = s.rulesVersion === 2 ? s.roundWinnerSeat : d.opening.player, log = event(s, { type: "round-start", title: { ko: `${round}\uB77C\uC6B4\uB4DC \uC2DC\uC791`, es: `Inicio de ronda ${round}` }, round });
+      return runBots({ ...s, round, roundResult: null, result: null, hands: d.hands, stock: d.stock, board: [], ends: null, passes: 0, opening: { player: starter, tile: d.opening.tile }, turn: starter, roundWinnerSeat: void 0, lastPlacer: null, pasoAwarded: false, roundBonuses: { p1: 0, p2: 0 }, log });
     }
     return runBots(play(s, p, a));
   },
   getPlayerView(s, p) {
-    const actions = [], order = seats(s.mode), teamsView = teams(s.mode);
-    if (s.rulesVersion === 1 && !s.result && !s.roundResult && p === "p1" && !s.board.length && (s.round ?? 1) === 1) actions.push(label3("\uC124\uC815 \uC800\uC7A5", "Guardar configuraci\xF3n", { type: "configure", payload: { mode: s.mode, ...s.settings ?? DEFAULT_SETTINGS } }));
+    const actions = [], order = seats(s.mode, s.rulesVersion), teamsView = teams(s.mode);
+    if (matchRules(s) && !s.result && !s.roundResult && p === "p1" && !s.board.length && (s.round ?? 1) === 1) actions.push(label3("\uC124\uC815 \uC800\uC7A5", "Guardar configuraci\xF3n", { type: "configure", payload: { mode: s.mode, ...s.settings ?? DEFAULT_SETTINGS } }));
     if (!s.result && !s.roundResult && s.mode === "1v1" && p === "p1" && !s.board.length && (s.round ?? 1) === 1) {
       actions.push(label3("\uC0AC\uB78C 2\uBA85 \uB300 \uBD07 2\uBA85", "Dos personas contra dos bots", { type: "set-mode", payload: { mode: "humans-vs-bots" } }), label3("\uC0AC\uB78C-\uBD07 \uD300\uC804", "Equipos mixtos", { type: "set-mode", payload: { mode: "partners" } }));
     }
     if (!s.result && s.roundResult && p === "p1") actions.push(label3("\uB2E4\uC74C \uB77C\uC6B4\uB4DC", "Siguiente ronda", { type: "next-round" }));
     if (!s.result && !s.roundResult && s.turn === p) {
       s.hands[p].forEach((t, index) => {
-        for (const side of ["left", "right"]) if (legalOrient(t, side, s.ends) && (s.board.length !== 0 || p === s.opening.player && t.a === s.opening.tile.a && t.b === s.opening.tile.b)) actions.push(label3(`\uB193\uAE30 ${t.a}|${t.b} (${side === "left" ? "\uC67C\uCABD" : "\uC624\uB978\uCABD"})`, `Jugar ${t.a}|${t.b} (${side === "left" ? "izquierda" : "derecha"})`, { type: "play", payload: { index, side } }));
+        for (const side of ["left", "right"]) if (legalOrient(t, side, s.ends) && (s.board.length !== 0 || canOpen(s, p, t))) actions.push(label3(`\uB193\uAE30 ${t.a}|${t.b} (${side === "left" ? "\uC67C\uCABD" : "\uC624\uB978\uCABD"})`, `Jugar ${t.a}|${t.b} (${side === "left" ? "izquierda" : "derecha"})`, { type: "play", payload: { index, side } }));
       });
       if (s.hands[p].every((t) => !legalOrient(t, "left", s.ends) && !legalOrient(t, "right", s.ends))) actions.push(label3("\uD328\uC2A4", "Pasar", { type: "pass" }));
     }
@@ -5935,46 +6010,6 @@ var minhwatuEngine = {
     return { game: "minhwatu", turn: s.turn, phase: s.phase, ownHand: hand, hand, opponentCount: s.hands[otherPlayer(p)].length, board: { table, captures, pendingCard: pending, deckCount: s.deck.length, remainingDeck: s.deck.length, scores, breakdown: minhwatuScoreBreakdown(s.captures, godoriBonus), rulesVersion: godoriBonus ? 2 : 1, actionLog: structuredClone(s.events ?? []) }, log: structuredClone(s.events ?? []), status: s.result ? "finished" : s.turn === p ? "your-turn" : "opponent-turn", result: s.result, actions };
   },
   getResult: (s) => s.result
-};
-
-// src/games/rules.ts
-var marbleCreditRules = {
-  ko: [
-    "\uBAA9\uD45C \u2014 \uC790\uCCB4 \uBD80\uB3D9\uC0B0 \uAC8C\uC784 \uADDC\uCE59\uC785\uB2C8\uB2E4. \uC0C1\uB300\uAC00 \uD30C\uC0B0\uD558\uBA74 \uC774\uAE30\uACE0, 120\uD134 \uB4A4\uC5D0\uB294 \uD604\uAE08+\uB3C4\uC2DC \uB9E4\uC785\uAC00+\uAC74\uC124 \uBE44\uC6A9\u2212\uBBF8\uC0C1\uD658 \uB300\uCD9C\uC744 \uD569\uCE5C \uC21C\uC790\uC0B0\uC744 \uBE44\uAD50\uD569\uB2C8\uB2E4.",
-    "\uB9D0\uACFC \uC774\uB3D9 \u2014 \uCCAB \uC8FC\uC0AC\uC704\uB97C \uAD74\uB9AC\uAE30 \uC804\uC5D0 \uC6D0\uD558\uB294 \uB9D0\uC744 \uACE0\uB985\uB2C8\uB2E4. \uC0C1\uB300\uC640 \uAC19\uC740 \uB9D0\uC740 \uC120\uD0DD\uD560 \uC218 \uC5C6\uACE0 \uCCAB \uC774\uB3D9 \uB4A4\uC5D0\uB294 \uACE0\uC815\uB429\uB2C8\uB2E4. \uB450 \uC8FC\uC0AC\uC704 \uD569\uB9CC\uD07C 40\uCE78 \uBCF4\uB4DC\uB97C \uC774\uB3D9\uD558\uBA70 \uCD9C\uBC1C\uC810\uC744 \uC9C0\uB098\uBA74 200\uC744 \uBC1B\uC2B5\uB2C8\uB2E4. \uAD11\uC8FC\uC640 \uC0B0\uD1A0\uB3C4\uBC0D\uACE0\uB97C \uD3EC\uD568\uD574 24\uAC1C \uB3C4\uC2DC\uAC00 \uC788\uC2B5\uB2C8\uB2E4.",
-    "\uB3C4\uC2DC\uC640 \uAC74\uC124 \u2014 \uBE48 \uB3C4\uC2DC\uB97C \uAD6C\uB9E4\uD558\uAC70\uB098 \uC9C0\uB098\uAC11\uB2C8\uB2E4. \uB0B4 \uB3C4\uC2DC\uC5D0\uB294 \uC0C9\uC0C1 \uB3C4\uC2DC\uAD70 \uC644\uC131 \uC5EC\uBD80\uC640 \uAD00\uACC4\uC5C6\uC774 \uB2E8\uB3C5\uC8FC\uD0DD\u2192\uC544\uD30C\uD2B8\u2192\uB79C\uB4DC\uB9C8\uD06C\uB97C \uC21C\uC11C\uB300\uB85C \uC9C0\uC744 \uC218 \uC788\uC2B5\uB2C8\uB2E4. \uB2E8\uACC4\uB9C8\uB2E4 100, \uD1B5\uD589\uB8CC\uB294 \uAE30\uBCF8\uC758 2\uBC30\u21924\uBC30\u21928\uBC30\uC785\uB2C8\uB2E4. \uC0C1\uB300 \uB3C4\uC2DC\uC758 \uD1B5\uD589\uB8CC\uB294 \uC790\uB3D9 \uC9C0\uAE09\uB429\uB2C8\uB2E4.",
-    "\uB300\uCD9C \u2014 \uC790\uAE30 \uCC28\uB840\uC5D0 \uBBF8\uC0C1\uD658 \uB300\uCD9C\uC774 \uC5C6\uC73C\uBA74 300\uC744 \uBC1B\uC744 \uC218 \uC788\uACE0, \uC0C1\uD658\uC561\uC740 330\uC785\uB2C8\uB2E4. \uCD94\uAC00 \uC774\uC790\uB098 \uB9CC\uAE30\uB294 \uC5C6\uC2B5\uB2C8\uB2E4. \uC9C0\uAE09 \uC704\uAE30 \uC678\uC758 \uC790\uAE30 \uCC28\uB840\uC5D0 330 \uC804\uC561\uC744 \uC0C1\uD658\uD569\uB2C8\uB2E4. \uBBF8\uC0C1\uD658\uC561\uC740 \uC21C\uC790\uC0B0\uC5D0\uC11C \uBE7C\uBA70, \uC0C1\uD658 \uD6C4 \uB2E4\uC2DC \uBE4C\uB824\uB3C4 \uB9E4\uBC88 30\uC758 \uBE44\uC6A9\uC774 \uBC1C\uC0DD\uD569\uB2C8\uB2E4.",
-    "\uC9C0\uAE09 \uC704\uAE30 \u2014 \uD1B5\uD589\uB8CC\xB7\uC138\uAE08\xB7\uCE74\uB4DC \uBE44\uC6A9\uC744 \uB0BC \uD604\uAE08\uC774 \uBD80\uC871\uD558\uBA74 \uD589\uB3D9\uC774 \uBA48\uCDA5\uB2C8\uB2E4. \uD604\uC7AC \uD604\uAE08+300\uC73C\uB85C \uC9C0\uAE09\uC561\uC744 \uCDA9\uB2F9\uD560 \uC218 \uC788\uACE0 \uAE30\uC874 \uB300\uCD9C\uC774 \uC5C6\uC744 \uB54C\uB9CC \uB300\uCD9C\uB85C \uD574\uACB0\uD560 \uC218 \uC788\uC2B5\uB2C8\uB2E4. \uB300\uCD9C\uC744 \uC120\uD0DD\uD558\uBA74 \uD574\uB2F9 \uC9C0\uAE09\uC744 \uD55C \uBC88 \uCC98\uB9AC\uD558\uACE0 \uC6D0\uB798 \uCC28\uB840\uB85C \uB3CC\uC544\uAC11\uB2C8\uB2E4. \uD30C\uC0B0 \uC778\uC815\uC740 \uACBD\uAE30 \uC885\uB8CC\uB97C \uB73B\uD558\uBA70 \uB3C4\uC2DC \uC790\uB3D9 \uB9E4\uAC01\uC740 \uC5C6\uC2B5\uB2C8\uB2E4.",
-    "\uD669\uAE08\uC5F4\uC1E0 \u2014 13\uC885 \uCE74\uB4DC\uB294 \uC0C1\uAE08(150\xB7200\xB780), \uC5EC\uD589\uBE44 100, \uAC74\uC124 \uB2E8\uACC4\uB2F9 \uC218\uB9AC\uBE44 40, \uC0B0\uD1A0\uB3C4\uBC0D\uACE0 \uBC29\uBB38, \uCD9C\uBC1C \uC774\uB3D9(+200), \uC138 \uCE78 \uD6C4\uD1F4, \uBB34\uC778\uB3C4 \uC774\uB3D9, \uD0C8\uCD9C\uAD8C, \uBB34\uB8CC \uC5F4\uCC28\uD45C, \uB3C4\uC2DC\uB2F9 \uBC30\uB2F9 30, \uB3C5\uC810 \uACBD\uACE0\uC785\uB2C8\uB2E4. \uC774\uB3D9 \uCE74\uB4DC\uC758 \uB3C4\uCC29 \uD6A8\uACFC\uB3C4 \uC801\uC6A9\uB418\uBA70 \uC138 \uCE78 \uD6C4\uD1F4\uC5D0\uB294 \uCD9C\uBC1C \uBCF4\uB108\uC2A4\uAC00 \uC5C6\uC2B5\uB2C8\uB2E4.",
-    "\uB3C5\uC810 \uACBD\uACE0 \u2014 \uAC19\uC740 \uC0C9\uC758 \uB3C4\uC2DC\uB97C \uBAA8\uB450 \uAC00\uC9C4 \uB3C4\uC2DC\uAD70\uC774 \uAC00\uC7A5 \uB9CE\uC740 \uC0AC\uB78C\uC774 \uB3C4\uC2DC\uAD70\uB2F9 100, \uCD5C\uB300 300\uC744 \uC740\uD589\uC5D0 \uB0C5\uB2C8\uB2E4. \uB3D9\uB960\uC774\uBA74 \uCE74\uB4DC\uB97C \uBF51\uC740 \uC0AC\uB78C\uC5D0\uAC8C \uC801\uC6A9\uB429\uB2C8\uB2E4. \uB204\uAD6C\uB3C4 \uC644\uC131\uD55C \uB3C4\uC2DC\uAD70\uC774 \uC5C6\uC73C\uBA74 \uBE44\uC6A9\uC774 \uC5C6\uC2B5\uB2C8\uB2E4. \uB3C4\uC2DC\uAD70 \uC644\uC131 \uC790\uCCB4\uB294 \uC989\uC2DC \uC2B9\uB9AC\uB098 \uD1B5\uD589\uB8CC \uCD94\uAC00 \uBC30\uC218\uAC00 \uC544\uB2D9\uB2C8\uB2E4.",
-    "\uBB34\uC778\uB3C4\xB7\uC5F4\uCC28\xB7\uAE30\uAE08 \u2014 \uBB34\uC778\uB3C4\uB294 \uC790\uAE30 \uCC28\uB840 \uC138 \uBC88 \uC815\uC9C0\uC785\uB2C8\uB2E4. \uC30D\uC774\uBA74 \uD0C8\uCD9C\uD574 \uC774\uB3D9\uD558\uACE0, \uC544\uB2C8\uBA74 \uD55C \uCC28\uB840 \uC27D\uB2C8\uB2E4. 100\uC774\uB098 \uD0C8\uCD9C\uAD8C\uC73C\uB85C \uB098\uC640 \uC8FC\uC0AC\uC704\uB97C \uAD74\uB9B4 \uC218\uB3C4 \uC788\uC2B5\uB2C8\uB2E4. \uC5ED\uC5D0\uC11C\uB294 \uB2E4\uC74C \uCC28\uB840\uC5D0 \uC6B4\uC784 100\uC73C\uB85C \uB3C4\uC2DC\uB97C \uACE0\uB974\uAC70\uB098 \uAC74\uB108\uB701\uB2C8\uB2E4. \uBB34\uB8CC \uD45C\uB294 \uC6B4\uC784 0\uC785\uB2C8\uB2E4. \uAE30\uAE08 \uB0A9\uBD80 \uCE78\uC5D0 150\uC744 \uB0B4\uBA70 \uC0AC\uD68C\uBCF5\uC9C0\uAE30\uAE08 \uCE78\uC5D0\uC11C \uC313\uC778 \uAE30\uAE08\uC744 \uBC1B\uC2B5\uB2C8\uB2E4."
-  ],
-  es: [
-    "Objetivo \u2014 Usamos reglas propias de un juego de propiedades. Ganas si tu pareja quiebra; despu\xE9s de 120 turnos se compara el patrimonio neto: efectivo + precio de las ciudades + costo de construcci\xF3n \u2212 deuda pendiente.",
-    "Figura y movimiento \u2014 Elige una figura antes de lanzar tus primeros dados. No puede ser la misma de tu pareja y queda fija despu\xE9s. Avanza la suma de los dos dados por las 40 casillas. Al pasar por Salida recibes 200. Hay 24 ciudades, incluyendo Gwangju y Santo Domingo.",
-    "Ciudades y construcci\xF3n \u2014 Puedes comprar una ciudad libre o pasar. En cualquier ciudad tuya puedes construir casa unifamiliar, apartamentos y monumento, sin completar un color. Cada nivel cuesta 100 y el alquiler pasa a 2, 4 y 8 veces el valor base. El alquiler rival se paga autom\xE1ticamente.",
-    "Pr\xE9stamo \u2014 En tu turno, si no tienes deuda pendiente, puedes recibir 300 y debes devolver 330. No hay intereses adicionales ni fecha de vencimiento. Pagas los 330 completos en tu turno, fuera de una crisis de pago. La deuda se resta del patrimonio; pedir otro pr\xE9stamo despu\xE9s de pagarlo vuelve a costar 30.",
-    "Crisis de pago \u2014 Si no tienes efectivo para un alquiler, impuesto o gasto de carta, el juego espera tu decisi\xF3n. Solo puedes resolverlo con un pr\xE9stamo si no debes otro y tu efectivo + 300 cubre el pago. Al pedirlo, el pago se procesa una sola vez y contin\xFAa el turno original. Declarar quiebra termina la partida; las ciudades no se venden autom\xE1ticamente.",
-    "Llave dorada \u2014 Las 13 cartas incluyen premios (150, 200 y 80), gasto de viaje 100, mantenimiento 40 por nivel construido, visita a Santo Domingo, viaje a Salida (+200), retroceso de tres casillas, isla, pase de salida, boleto gratis, dividendo 30 por ciudad y advertencia de monopolio. Se aplica tambi\xE9n el efecto del destino; al retroceder no cobras Salida.",
-    "Monopolio \u2014 Quien tenga m\xE1s grupos de color completos paga 100 por grupo al banco, hasta 300. En empate paga quien sac\xF3 la carta. Si nadie complet\xF3 un grupo, no se cobra. Completar un color no da una victoria inmediata ni otro multiplicador de alquiler.",
-    "Isla, tren y fondo \u2014 La isla te detiene tres turnos propios. Si sacas dobles, sales y avanzas; si no, pierdes un turno. Tambi\xE9n puedes pagar 100 o usar un pase y luego lanzar. La estaci\xF3n permite viajar a una ciudad por 100 en tu pr\xF3ximo turno o pasar el tren. El boleto gratis cuesta 0. El aporte al fondo es 150 y en Fondo Social recibes lo acumulado."
-  ]
-};
-var marbleTieredRules = {
-  ko: marbleCreditRules.ko.map((rule, index) => index === 2 ? "\uB3C4\uC2DC\uC640 \uAC74\uC124 \u2014 \uBE48 \uB3C4\uC2DC\uB97C \uAD6C\uB9E4\uD558\uAC70\uB098 \uC9C0\uB098\uAC11\uB2C8\uB2E4. \uB0B4 \uB3C4\uC2DC\uC5D0\uB294 \uC0C9\uC0C1 \uB3C4\uC2DC\uAD70 \uC644\uC131 \uC5EC\uBD80\uC640 \uAD00\uACC4\uC5C6\uC774 \uB2E8\uB3C5\uC8FC\uD0DD\u2192\uC544\uD30C\uD2B8\u2192\uB79C\uB4DC\uB9C8\uD06C\uB97C \uC21C\uC11C\uB300\uB85C \uC9C0\uC744 \uC218 \uC788\uC2B5\uB2C8\uB2E4. \uAC74\uC124\uBE44\uB294 \uD574\uB2F9 \uB3C4\uC2DC \uB9E4\uC785\uAC00\uC758 40%\u219260%\u219280%\uC774\uBA70, 10 \uB2E8\uC704\uB85C \uBC18\uC62C\uB9BC\uD558\uACE0 \uCD5C\uC18C 40\uC785\uB2C8\uB2E4. \uD1B5\uD589\uB8CC\uB294 \uAE30\uBCF8\uC758 2\uBC30\u21924\uBC30\u21928\uBC30\uAC00 \uB429\uB2C8\uB2E4. \uC0C1\uB300 \uB3C4\uC2DC\uC758 \uD1B5\uD589\uB8CC\uB294 \uC790\uB3D9 \uC9C0\uAE09\uB429\uB2C8\uB2E4." : rule),
-  es: marbleCreditRules.es.map((rule, index) => index === 2 ? "Ciudades y construcci\xF3n \u2014 Puedes comprar una ciudad libre o pasar. En cualquier ciudad tuya puedes construir casa unifamiliar, apartamentos y monumento, sin completar un color. Cada nivel cuesta el 40 %, 60 % y 80 % del precio de compra de la ciudad; se redondea a 10 y nunca baja de 40. El alquiler pasa a 2, 4 y 8 veces el valor base. El alquiler rival se paga autom\xE1ticamente." : rule)
-};
-var marbleExpandedRules = {
-  ko: [
-    ...marbleTieredRules.ko.map((rule, index) => index === 5 ? rule.replace("\uD669\uAE08\uC5F4\uC1E0 \u2014 13\uC885 \uCE74\uB4DC\uB294", "\uD669\uAE08\uC5F4\uC1E0 \u2014 \uC0C8 \uBC29\uC740 16\uC885\uC774\uBA70 \uC774\uC804 \uC800\uC7A5 \uBC29\uC740 \uAE30\uC874 \uB371\uC744 \uC720\uC9C0\uD569\uB2C8\uB2E4. \uAE30\uBCF8 13\uC885 \uCE74\uB4DC\uB294") : rule),
-    "\uB3C4\uC2DC \uCD95\uC81C\xB7\uC815\uC804 \u2014 \uCD95\uC81C\uB294 \uB0B4 \uB3C4\uC2DC \uD558\uB098\uB97C \uC120\uD0DD\uD574 \uB2E4\uC74C \uC0C1\uB300 \uCC29\uC9C0 1\uD68C \uD1B5\uD589\uB8CC\uB97C 2\uBC30\uB85C \uB9CC\uB4ED\uB2C8\uB2E4. \uC815\uC804\uC740 \uC0C1\uB300 \uB3C4\uC2DC \uD558\uB098\uB97C \uC120\uD0DD\uD574 \uB2E4\uC74C \uB0B4 \uCC29\uC9C0 1\uD68C \uD1B5\uD589\uB8CC\uB97C \uC808\uBC18\uC73C\uB85C \uB9CC\uB4ED\uB2C8\uB2E4(\uB0B4\uB9BC, \uCD5C\uC18C 1). \uB300\uC0C1 \uCC29\uC9C0\uAE4C\uC9C0 \uC720\uC9C0\uB418\uBA70 \uB2E4\uB978 \uB3C4\uC2DC\uB294 \uBC14\uB00C\uC9C0 \uC54A\uC2B5\uB2C8\uB2E4. \uB458 \uB2E4 \uAC78\uB9B0 \uB3C4\uC2DC\uB294 2\uBC30\xD7\uC808\uBC18\uC73C\uB85C \uAE30\uBCF8 \uD1B5\uD589\uB8CC\uAC00 \uB429\uB2C8\uB2E4. \uAC19\uC740 \uD6A8\uACFC\uB97C \uB2E4\uC2DC \uC120\uD0DD\uD558\uBA74 \uC911\uBCF5 \uBC30\uC218\uAC00 \uC544\uB2CC \uD574\uB2F9 \uD6A8\uACFC \uAC31\uC2E0\uC785\uB2C8\uB2E4. \uC120\uD0DD \uAC00\uB2A5\uD55C \uB3C4\uC2DC\uAC00 \uC5C6\uC73C\uBA74 \uD6A8\uACFC\uAC00 \uC5C6\uC2B5\uB2C8\uB2E4.",
-    "\uD1B5\uD589\uB8CC \uBA74\uC81C\uAD8C \u2014 \uD55C \uC7A5\uC744 \uBCF4\uAD00\uD558\uACE0 \uC55E\uC73C\uB85C \uD1B5\uD589\uB8CC\uAC00 \uBC1C\uC0DD\uD558\uBA74 \uC9C0\uAE09 \uC804\uC5D0 \uC9C1\uC811 \uC0AC\uC6A9\uD558\uAC70\uB098 \uC9C0\uAE09\uC744 \uC120\uD0DD\uD569\uB2C8\uB2E4. \uC790\uB3D9 \uC0AC\uC6A9\uB418\uC9C0 \uC54A\uC73C\uBA70 \uC138\uAE08\uC5D0\uB294 \uC4F8 \uC218 \uC5C6\uC2B5\uB2C8\uB2E4. \uC0AC\uC6A9\uD558\uBA74 \uD1B5\uD589\uB8CC 1\uD68C\uB9CC \uBA74\uC81C\uD558\uACE0 \uCE74\uB4DC\uB294 \uB371\uC73C\uB85C \uB3CC\uC544\uAC11\uB2C8\uB2E4. \uB300\uC0C1 \uB3C4\uC2DC \uCD95\uC81C\xB7\uC815\uC804\uC740 \uCC29\uC9C0 \uC21C\uAC04 \uC18C\uBAA8\uB418\uBBC0\uB85C \uBA74\uC81C\uAD8C\uC744 \uC368\uB3C4 \uB3C4\uC2DC \uD6A8\uACFC\uB294 \uC18C\uBAA8\uB429\uB2C8\uB2E4. \uC9C0\uAE09\uC744 \uC120\uD0DD\uD55C \uB4A4 \uD604\uAE08\uC774 \uBD80\uC871\uD558\uBA74 \uC77C\uBC18 \uC9C0\uAE09 \uC704\uAE30\uB85C \uB118\uC5B4\uAC11\uB2C8\uB2E4."
-  ],
-  es: [
-    ...marbleTieredRules.es.map((rule, index) => index === 5 ? rule.replace("Llave dorada \u2014 Las 13 cartas incluyen", "Llave dorada \u2014 Las salas nuevas usan 16 cartas; las guardadas conservan su mazo. Las 13 cartas b\xE1sicas incluyen") : rule),
-    "Festival y apag\xF3n \u2014 Festival elige una ciudad propia y duplica el alquiler en la pr\xF3xima llegada rival, una vez. Apag\xF3n elige una ciudad rival y reduce a la mitad el alquiler en tu pr\xF3xima llegada, una vez (redondeo hacia abajo, m\xEDnimo 1). Persisten hasta esa llegada y no cambian otras ciudades. Juntos dan el alquiler base: doble por mitad. Repetir el mismo efecto lo renueva, sin acumular multiplicadores. Sin ciudad elegible, no tienen efecto.",
-    "Pase de alquiler \u2014 Guarda un pase y elige usarlo o pagar antes de un futuro alquiler. No se usa autom\xE1ticamente ni sirve para impuestos. Exime un solo alquiler y vuelve al mazo. Festival y apag\xF3n se consumen al llegar, incluso si usas el pase. Si eliges pagar sin efectivo suficiente, se aplica la crisis de pago normal."
-  ]
 };
 
 // src/games/marble.ts

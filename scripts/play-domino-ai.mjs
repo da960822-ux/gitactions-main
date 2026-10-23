@@ -97,11 +97,11 @@ async function enterDominoRoom(scenario) {
   await pages[0].locator('#nickname').fill(`도미노 QA ${scenario}`);
   await pages[1].locator('#nickname').fill(`QA dominó ${scenario}`);
   await pages[0].locator('.lobby-actions > button').click();
-  await pages[0].waitForURL('**/room/**');
+  await pages[0].waitForURL('**/play?room=*');
   const invitation = pages[0].url();
   await pages[1].locator('.code-input').fill(invitation);
   await pages[1].locator('.code-input').press('Enter');
-  await pages[1].waitForURL('**/room/**');
+  await pages[1].waitForURL('**/play?room=*');
   let states = await Promise.all(pages.map(page => readSnapshot(page, true)));
   check(`${scenario}: two contexts joined distinct seats in one room`,
     states[0].playerId === 'p1' && states[1].playerId === 'p2' && states[0].roomId === states[1].roomId,
@@ -126,11 +126,11 @@ async function applyHardConfiguration(scenario) {
   const selects = pages[0].locator('.dp-setup-dialog .dp-config-grid select');
   await selects.nth(0).selectOption(scenario);
   await selects.nth(1).selectOption('hard');
-  await selects.nth(2).selectOption('0');
+  await selects.nth(2).selectOption('200');
   await pages[0].locator('.dp-setup-dialog .dp-primary').click();
   await pages[0].locator('.dp-setup-dialog').waitFor({ state: 'detached' });
   const states = await synchronizedSnapshots();
-  const expectedSeats = ['p1', 'b1', 'p2', 'b2'];
+  const expectedSeats = scenario === 'partners' ? ['p1', 'p2', 'b1', 'b2'] : ['p1', 'b1', 'p2', 'b2'];
   check(`${scenario}: UI configuration persisted exact mode and hard bot difficulty`,
     states.every(state => state.dominoMode === scenario && state.settings?.difficulty === 'hard' && state.board?.settings?.difficulty === 'hard' && state.board?.seats?.join(',') === expectedSeats.join(',')),
     states.map(state => ({ settings: state.settings, boardSettings: state.board?.settings, seats: state.board?.seats, turn: state.turn, tiles: state.board?.tiles?.length })));

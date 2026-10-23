@@ -2,19 +2,21 @@
 
 Domino is a two-team double-six block game. The engine builds 28 distinct tiles. Singles receive seven each and leave 14 unused; four-seat modes deal seven to every seat and have no draw pile. The engine remains authoritative for the deal, legal placements, turn order, scoring, and round result; the table displays the viewer's hand and public chain while offering only actions the engine allows.
 
+The current new-game contract is rules v2 (Lisbeth); see the bilingual [Lisbeth manual](DOMINO-LISBETH.md). Older verification details later in this file were recorded against earlier rules and remain historical evidence only. Saved v0/v1 games retain their contracts.
+
 ## Rule contract
 
 | Area | Contract |
 | --- | --- |
-| Modes | Singles: `p1` against `p2`. Partners: `p1 + b1` against `p2 + b2`. Human-versus-bots: `p1 + p2` against `b1 + b2`. A hand remains private to its owner. |
-| Opening | The highest double opens; when nobody holds a double, the highest-total tile opens. The chain has two open ends; a placement must match an end, and a double is displayed crosswise. |
-| Turns and blocking | A player with no legal placement passes. A blocked singles hand is recognized after two consecutive passes; a blocked partners hand after four. The lower remaining team pip total wins a blocked hand. |
-| Match length | Target zero finishes after one hand. Optional 100- or 200-point targets accumulate settled hand scores across rounds and finish when either team reaches its target. |
-| Default options | No Capicúa bonus, no Paso bonus, normal AI, and blocked-hand scoring by team pip total (“tranquete”). |
-| Optional target | A match may use 100 or 200 points. |
-| Capicúa | Optional 0 or 25 points. When a player empties their hand with a non-double that fits both ends as they stood immediately before that play, the hand is recorded as Capicúa. The 25-point bonus is added only when enabled. |
-| Paso corrido | Optional 0 or 25 points. After a play, when the other `N - 1` seats pass and the turn returns to the last placer (`N` is the number of seats), award that team 25 once for that tile and continue the hand. The bonus is held in round totals until hand settlement. A later tile starts a new eligibility cycle. |
-| Blocked-hand variant | Default “tranquete” compares remaining team pip totals. The optional `lowest-player` house variant compares the lowest individual hand total on each team. Name this as a configurable house rule; do not present it as a universal Dominican rule. |
+| Modes and deal | 1v1: `p1` vs `p2`, 7 tiles each; the other 14 are out of play and are not drawn. The first deal guarantees `6|6`, which opens the first hand. Partners: `p1 + b1` vs `p2 + b2`, seats alternate. Human-versus-bots: `p1 + p2` vs `b1 + b2`. Every four-seat position receives 7 tiles. |
+| Later opening | The actual winner of the preceding hand opens the next with any tile from their hand. A double opening earns +30 on any hand. A non-double opening on a later hand earns +60 if the first response passes. In four-seat play, the third seat must then play or the bonus is canceled; no third-seat condition applies in 1v1. |
+| Normal hand-out | The first player to empty their hand wins for their team. The winning team scores all pips remaining across all active hands, including its partner. |
+| Capicúa | Fixed +30. The final tile that empties the hand must be a non-double that fits both distinct open ends. The winning team adds all pips remaining across all active hands. |
+| Tranque | In every mode, block immediately once all seven distinct tiles matching each open-end number have been played. Otherwise, no legal play closes 1v1 after two consecutive passes and four-seat play after four. Compare only the trancador (last placer) with the next seat; lower pips wins and a tie goes to the trancador. Score all pips remaining across all active hands for the winning team. |
+| Match length and bonuses | The target is 200 by default, selectable as 100 or 200. Hand scores and bonuses settle at hand end. Paso corrido is disabled. |
+| Privacy | A hand remains private to its owner. |
+
+Saved v0/v1 states retain their original target, Capicúa, Paso corrido, and tranque settings. Those legacy contracts are not options in new v2 games.
 
 Settings must be explicit in the pre-game flow and readable during play. Defaults preserve the basic one-hand game. A bonus or alternate scoring rule must not be implied when it is disabled.
 
@@ -40,4 +42,4 @@ During a hand, aggregate scores are `null` in each viewer payload. The view cont
 | Regression | Existing variants, deterministic deal rules, blocked thresholds, and team scoring remain consistent with the contract above. | Focused engine, board, tile, event-stage, motion, audio, and app-feedback checks pass: 7 files / 68 tests. The full repository suite passed 251/251 tests, and the final production and edge build passed. |
 | Native browser QA | Capture final Korean and Spanish board states at the requested viewports, covering modes and isolated rare events without replaying full matches. | Three-mode HTTP-fixture report: `output/playwright/game-polish/domino-native/domino-native-qa.json`; final-motion report: `output/playwright/game-polish/domino-native/domino-final-motion-qa.json` with adjacent `final-motion-*` screenshots. Checks cover 1v1, humans-versus-bots, partners, hand completion, live score privacy, no overflow, quiet mount, real tile arrival, reduced motion, two actual placements, and no application errors. The actual DominoBoard rendered engine-derived rare states and passed 12/12 event checks; see `domino-event-motion-qa.json`. The 1920 double-tile check passed 2/2; the 100-point next-round flow passed 6/6. Fixture Realtime WebSocket 404s are expected and separated; this does not establish deployed Realtime behavior. |
 
-The engine audit confirms the rules and privacy contract above. Existing saved states without `rulesVersion: 1` retain legacy behavior and do not receive the new configuration or multi-round actions. Native Realtime remains unverified because the local fixture has no push socket. Final validation: repository tests 251/251; production and edge build passed. Browser reports total 32 passing assertions across three-mode rooms, target-100 progression, placement/reduced motion, wide-screen double sizing, and rare-event board fixtures. Rare-event inputs were controlled engine states, not naturally occurring networked matches. Physical audio playback and production Realtime were not verified.
+The implementation and validation counts in this file are a historical record of the pre-v2 rules contract. The current new-game rules are listed above and in [DOMINO-LISBETH.md](DOMINO-LISBETH.md); saved `rulesVersion` 0/1 games retain their legacy behavior. Native Realtime remains unverified because the local fixture has no push socket. The recorded historical validation was 251/251 repository tests and a passing production/edge build, with 32 browser assertions across three-mode rooms, target-100 progression, placement/reduced motion, wide-screen double sizing, and rare-event board fixtures. Rare-event inputs were controlled engine states, not naturally occurring networked matches. Physical audio playback and production Realtime were not verified. These historical results do not validate the v2 rules implementation.

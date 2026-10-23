@@ -28,7 +28,7 @@
 .domino-event-stage--tranque { border-color: #d7beb2; background: #fbf0eb; }
 .domino-event-stage--tranque .domino-event-art { color: #9c5048; }
 .domino-event-stage--capicua { border-color: #e1c881; background: linear-gradient(105deg, #fffaf0, #f5e8c7); }
-.domino-event-stage--paso-corrido { border-color: #cfdbc8; background: linear-gradient(105deg, #fbfff9, #e7f0e1); }
+.domino-event-stage--paso-corrido, .domino-event-stage--opening-pass { border-color: #cfdbc8; background: linear-gradient(105deg, #fbfff9, #e7f0e1); }
 .domino-event-stage--win { border-color: #e0c675; background: linear-gradient(110deg, #fff9e8, #f4e7bd); }
 
 .domino-event-stage.is-animating { animation: domino-event-enter 240ms cubic-bezier(.23, 1, .32, 1) both; }
@@ -38,7 +38,7 @@
 .domino-event-stage.is-animating.domino-event-stage--tranque { animation: domino-tranque-enter 260ms cubic-bezier(.23, 1, .32, 1) both; }
 .domino-premium:has(.domino-event-stage--tranque.is-animating) .dp-felt { animation: domino-tranque-table 260ms ease-out both; }
 .domino-event-stage.is-animating.domino-event-stage--capicua .domino-event-seal { animation: domino-seal-stamp 250ms cubic-bezier(.23, 1, .32, 1) both; }
-.domino-event-stage.is-animating.domino-event-stage--paso-corrido .domino-event-ribbon { animation: domino-ribbon-lift 240ms cubic-bezier(.23, 1, .32, 1) both; }
+.domino-event-stage.is-animating.domino-event-stage--paso-corrido .domino-event-ribbon, .domino-event-stage.is-animating.domino-event-stage--opening-pass .domino-event-ribbon { animation: domino-ribbon-lift 240ms cubic-bezier(.23, 1, .32, 1) both; }
 .domino-event-stage.is-animating.domino-event-stage--score .domino-event-points,
 .domino-event-stage.is-animating.domino-event-stage--round-end .domino-event-points { animation: domino-score-pop 240ms cubic-bezier(.23, 1, .32, 1) both; }
 .domino-event-stage.is-animating.domino-event-stage--win .domino-event-mark::before,

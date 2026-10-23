@@ -24,7 +24,7 @@ describe('Domino committed-event window', () => {
   it('maps each public Domino event to a game-specific cue and leaves configuration quiet', () => {
     const pairs = [
       ['play', 'place'], ['pass', 'pass'], ['turn', 'turn'], ['tranque', 'tranque'], ['capicua', 'capicua'],
-      ['paso-corrido', 'paso'], ['round-end', 'score'], ['score', 'score'], ['win', 'win'], ['round-start', 'event'],
+      ['paso-corrido', 'paso'], ['opening-pass', 'paso'], ['round-end', 'score'], ['score', 'score'], ['win', 'win'], ['round-start', 'event'],
     ] as const;
     for (const [type, cue] of pairs) expect(dominoCueForEvent({ type })).toBe(cue);
     expect(dominoCueForEvent({ type: 'configure' })).toBeNull();
