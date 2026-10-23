@@ -107,13 +107,13 @@
       "sourceBytesMatch": true
     }
   ],
-  "puppetSource": "received.png supplies approved fixed face/body/outfit artwork, the one intact donor arm from shoulder to wrist, original supporting arm, and original reduced-motion/error static fallback. offer.png supplies only the complete receiver upper-arm segment with its cut-root buried in the original sleeve. limb-atlas.png supplies receiver complete forearm/closed hand and donor open hand only. hand-pose-atlas.png supplies donor closed grip and receiver open hand only; generated donor forearm regions are not used. body-clean.png is restricted to removed arm/rose regions. Original navy cuff contours are restored before the flower. rose-single.png is the only flower image, in front of receiver hand poses but with its stem masked behind the receiving grip; the donor closed grip stays foreground. All six runtime image sources are preloaded and error fallback retains the approved original static image.",
+  "puppetSource": "received.png supplies approved fixed face/body/outfit artwork, the one intact donor arm from shoulder to wrist and the small original wrist foreground contour, original supporting arm, and original reduced-motion/error static fallback. offer.png supplies only the complete receiver upper-arm segment with its cut-root buried in the original sleeve. limb-atlas.png supplies receiver complete forearm/closed hand and donor open hand only. hand-pose-atlas.png supplies donor closed grip and receiver open hand only; generated donor forearm regions are not used. body-clean.png is restricted to removed arm/rose regions. Original navy cuff contours are restored before the flower. rose-single.png is the only flower image, in front of receiver hand poses but with its stem masked behind the receiving grip; the donor closed grip stays foreground. All six runtime image sources are preloaded and error fallback retains the approved original static image.",
   "rejectedGeneratedAssets": [
     "/workspace/generated_images/exec-a1be1f5e-97b3-44a4-8e58-0169e368fdd3.png",
     "/workspace/generated_images/exec-30656e4c-e171-4823-ad1c-392af3162fe3.png",
     "/workspace/generated_images/exec-f35968bc-7f36-40e8-87e2-6aae077f24bf.png"
   ],
-  "wristRepair": "The original donor arm remains one continuous raster piece. New hand pixels overlap only at the wrist with a curved source-crease boundary, leaving a small tone difference but no rectangular skin patch. Receiver open/closed fingers are never wiped together or alpha blended: the open palm rolls/foreshortens at its registered wrist and a single opaque pose swaps at 1.38s. Flower leaves and foreground donor fingers occlude most of that swap; a narrow closed fingertip edge remains visible above the leaf, so invisible pose replacement is not claimed. No synthetic skin, blur, color-key filter or duplicate forearm.",
+  "wristRepair": "The intact original donor arm is retained. An original received.png wrist contour is composited in front of the generated hand root, confined to its registered crease overlap; no synthetic skin or generated forearm is added. The final crease crop excludes the upper original-thumb intrusion; a small source-tone seam remains for visual review. Receiver open/closed poses share a registered wrist, 30-degree contact turn and uniform 0.35 contact projection. They switch opaquely behind the donor grip at 1.38s, then the received pose reveals during release. No mixed finger wipe, alpha crossfade, blur or duplicate forearm. A tiny open fingertip edge beside the donor grip may disappear at the switch; invisible replacement is not asserted.",
   "retiredAssets": [
     {
       "file": "contact.png",
@@ -202,7 +202,8 @@
       "visibility pause/resume",
       "forward-reset replay",
       "native button semantics",
-      "Korean and Spanish signed/neutral closing lines"
+      "Korean and Spanish signed/neutral closing lines",
+      "replay remains paused when hidden or offscreen"
     ],
     "recipientHandRollSeconds": [
       1.05,
@@ -211,20 +212,21 @@
     "recipientOpaquePoseSwapSeconds": 1.38,
     "recipientOpenForeshortening": [
       1,
-      0.4
+      0.35
     ],
     "recipientClosedRevealSeconds": [
       1.6,
       1.95
     ],
     "recipientClosedForeshortening": [
-      0.4,
+      0.35,
       1
     ],
     "recipientClosedWristTurnDegrees": [
-      10,
+      30,
       0
-    ]
+    ],
+    "recipientProjectionAxes": "uniform x/y at the same registered wrist"
   },
   "sourcePreservation": {
     "originalPNGs": "offer.png, received.png, body-clean.png and rose-single.png remain byte-for-byte unchanged.",
@@ -233,7 +235,7 @@
   },
   "reviewCandidate": {
     "date": "2026-10-23",
-    "sourceSHA256": "645740de40b1bb9657b247988afd5ccdb47c8d1f097fbf45b14cf936fba0a75b",
+    "sourceSHA256": "50f425c0e74611713b0ec9136f9f324585672ef40879cf1d5da0a82a3a035da0",
     "evidence": "output/current-review/rose-naturalness/offline-poses.json",
     "currentSourcePoseSeconds": [
       0,
@@ -243,11 +245,11 @@
       1.5,
       3
     ],
-    "status": "Frozen candidate awaiting final independent visual and browser gate.",
+    "status": "Frozen motion-rework source awaiting final integrated actual-browser epsilon-pair review.",
     "limits": [
-      "A narrow closed fingertip edge appears beside the stem at 1.38s; complete concealment of the opaque hand replacement is not established.",
-      "A small source/new-hand wrist tone difference remains.",
-      "No new browser/tempo/mobile/hardware validation; exact original-only rendered RGB equivalence is not proven."
+      "Tiny open fingertip points may disappear beside the donor grip at 1.38s; fully invisible opaque replacement is not asserted.",
+      "A small donor wrist source-tone seam remains; the upper angular original-thumb intrusion was removed by the final wrist-crease crop.",
+      "Reviewer confirmed previous candidate normal/offscreen pause at 0.633s/resume to received/reduced static at two viewports; final integrated browser epsilon pair and device performance remain pending."
     ]
   }
 }

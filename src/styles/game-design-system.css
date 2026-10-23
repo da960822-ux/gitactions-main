@@ -23,10 +23,17 @@
   --game-ease: cubic-bezier(.16,1,.3,1);
 }
 .room-shell .board-card { color: var(--board-ink); }
-.room-shell :is(button,a,input,select):focus-visible { outline: 3px solid #b64865; outline-offset: 3px; }
+.room-shell :is(button,a,input,select,textarea,summary):focus-visible { outline: 3px solid #b64865; outline-offset: 3px; }
 .room-shell :is(button,a) { touch-action: manipulation; }
 .room-shell button:not(:disabled):active { transform: translateY(1px); }
 .room-shell button:disabled { cursor: not-allowed; }
+.room-shell .game-switcher { display: grid; grid-template-columns: minmax(0,1fr); justify-content: stretch; align-items: stretch; gap: 16px; scroll-margin-top: 20px; }
+.room-shell .game-switcher:focus { outline: 3px solid #b64865; outline-offset: 3px; }
+.room-shell .switch-game-list { display: grid; grid-template-columns: repeat(auto-fit,minmax(150px,1fr)); gap: 8px; width: 100%; }
+.app-shell .game-switcher .switch-game-list button { grid-template-columns: 36px minmax(0,1fr); justify-items: start; align-content: center; gap: 4px 10px; width: auto; min-height: 58px; height: auto; padding: 8px 10px; border-radius: 10px; text-align: left; font-size: 13px; line-height: 1.35; }
+.room-shell .switch-game-list .game-thumbnail { grid-row: 1 / span 2; width: 36px; height: 36px; border-radius: 8px; }
+.room-shell .switch-game-list small { grid-column: 2; font-size: 12px; }
+.room-shell .game-switch-link { white-space: nowrap; }
 .room-shell :is(.board-header,.tg-section-head,.gb-board-heading,.bg-domino-head) { gap: var(--game-space-4); }
 .room-shell :is(.table-game,.game-surface,.gb-board) { font-variant-numeric: tabular-nums; }
 .game-value { display: inline-flex; align-items: baseline; gap: 6px; position: relative; font-variant-numeric: tabular-nums; }

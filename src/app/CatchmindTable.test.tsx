@@ -2,7 +2,7 @@ import { describe, expect, it, vi } from 'vitest';
 import { createElement } from 'react';
 import { renderToStaticMarkup } from 'react-dom/server';
 import { catchmindEngine } from '../games/catchmind';
-import CatchmindTable, { bucketFill, sendDrawQueue, composeDisplayedStrokes } from './CatchmindTable';
+import CatchmindTable, { bucketFill, sendDrawQueue, composeDisplayedStrokes, catchmindChoicesNeedSettingsSave } from './CatchmindTable';
 
 function configured(seed: number) {
   const state = catchmindEngine.createInitialState(seed);
@@ -51,6 +51,26 @@ describe('CatchmindTable', () => {
     expect(host).toContain('호스트가 주제를 선택하고 설정을 저장해 주세요.');
     expect(guest).not.toContain('type="radio"');
     expect(markup('p1').html).not.toContain('type="radio"');
+    expect(host).toContain('<details class="cm-advanced-settings">');
+    expect(host).toContain('</details><div class="cm-settings-foot"><button type="submit">설정 저장');
+  });
+  it('locks choices only for an editor with an unsaved category change', () => {
+    expect(catchmindChoicesNeedSettingsSave(true, 'animals', 'objects')).toBe(true);
+    expect(catchmindChoicesNeedSettingsSave(true, 'animals', 'animals')).toBe(false);
+    expect(catchmindChoicesNeedSettingsSave(false, 'animals', 'objects')).toBe(false);
+  });
+  it('offers keyboard-selectable color targets and names swatches in Korean and Spanish', () => {
+    const korean = markup('p1').html;
+    expect(korean).toContain('기본 색');
+    expect(korean).toContain('보조 색');
+    expect(korean).toContain('짙은 회색');
+    expect(korean).toContain('aria-pressed="true"');
+    let state = configured(8);
+    state = catchmindEngine.applyAction(state, 'p1', { type: 'choose', payload: { wordId: 0 } });
+    const spanish = stateMarkup(state, 'p1', 'es');
+    expect(spanish).toContain('Color principal');
+    expect(spanish).toContain('Color secundario');
+    expect(spanish).toContain('gris oscuro');
   });
   it('fills the entire blank canvas at a fractional pointer position, then treats the same color as a no-op', () => {
     const image = { width: 1000, height: 600, data: new Uint8ClampedArray(1000 * 600 * 4) } as ImageData;

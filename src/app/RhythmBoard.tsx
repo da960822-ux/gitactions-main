@@ -7,6 +7,7 @@ type RuffleApi = { newest?: () => { createPlayer: () => RufflePlayer }; config?:
 declare global { interface Window { RufflePlayer?: RuffleApi } }
 
 let ruffleLoad: Promise<void> | undefined;
+const RUFFLE_READY_TIMEOUT_MS = 15_000;
 const labels = {
   ko: {
     title: '뮤직톡톡', intro: '화살표와 스페이스바로 박자를 맞춰 봐요.', controls: '먼저 ‘게임에 포커스’를 누르고 방향키와 스페이스바로 박자를 맞춰요.',
@@ -46,6 +47,37 @@ export function loadRuffle(): Promise<void> {
     document.head.appendChild(script);
   }).catch(error => { ruffleLoad = undefined; throw error; });
   return ruffleLoad!;
+}
+
+export function waitForRuffleReady(player: HTMLElement, load: () => Promise<void>, signal: AbortSignal, timeoutMs = RUFFLE_READY_TIMEOUT_MS): Promise<void> {
+  return new Promise((resolve, reject) => {
+    let loaded = false;
+    let dataReady = false;
+    let timeout: ReturnType<typeof setTimeout> | undefined;
+    const cleanup = () => {
+      if (timeout) clearTimeout(timeout);
+      player.removeEventListener('loadeddata', onLoadedData);
+      signal.removeEventListener('abort', onAbort);
+    };
+    const fail = (error: Error) => { cleanup(); reject(error); };
+    const finish = () => {
+      if (!loaded || !dataReady) return;
+      cleanup();
+      resolve();
+    };
+    const onLoadedData = () => { dataReady = true; finish(); };
+    const onAbort = () => fail(new Error('Ruffle load cancelled'));
+
+    if (signal.aborted) return onAbort();
+    player.addEventListener('loadeddata', onLoadedData);
+    signal.addEventListener('abort', onAbort, { once: true });
+    timeout = setTimeout(() => fail(new Error('Ruffle did not load data in time')), timeoutMs);
+    try {
+      void load().then(() => { loaded = true; finish(); }, error => fail(error instanceof Error ? error : new Error(String(error))));
+    } catch (error) {
+      fail(error instanceof Error ? error : new Error(String(error)));
+    }
+  });
 }
 
 export function observeRhythmKeys(player: HTMLElement, findKey: (code: string) => Pick<HTMLElement, 'classList'> | null) {
@@ -102,6 +134,7 @@ export function RhythmBoard({ language }: { language: Language }) {
   useEffect(() => {
     let live = true;
     let player: RufflePlayer | undefined;
+    const readiness = new AbortController();
     let disposeKeyFeedback = () => {};
     setStatus('loading');
     void loadRuffle().then(() => {
@@ -116,9 +149,9 @@ export function RhythmBoard({ language }: { language: Language }) {
       playerRef.current = player;
       disposeKeyFeedback = observeRhythmKeys(player, code => keyRefs.current[code] ?? null);
       mount.current.replaceChildren(player);
-      return player.ruffle().load('/rhythm/Music14.swf');
+      return waitForRuffleReady(player, () => player!.ruffle().load('/rhythm/Music14.swf'), readiness.signal);
     }).then(() => { if (live) setStatus('ready'); }).catch(() => { if (live) setStatus('error'); });
-    return () => { live = false; disposeKeyFeedback(); player?.remove(); playerRef.current = undefined; };
+    return () => { live = false; readiness.abort(); disposeKeyFeedback(); player?.remove(); playerRef.current = undefined; };
   }, [attempt]);
 
   useEffect(() => { playerRef.current?.setAttribute('aria-label', copy.title); }, [copy.title]);

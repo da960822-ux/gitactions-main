@@ -1,6 +1,53 @@
 import { afterEach, expect, it, vi } from 'vitest';
 
-afterEach(() => { vi.unstubAllGlobals(); vi.resetModules(); });
+afterEach(() => { vi.useRealTimers(); vi.unstubAllGlobals(); vi.resetModules(); });
+
+it('waits for loadeddata after the Ruffle load promise resolves', async () => {
+  const { waitForRuffleReady } = await import('./RhythmBoard');
+  const player = new EventTarget() as unknown as HTMLElement;
+  let finishLoad!: () => void;
+  const load = vi.fn(() => new Promise<void>(resolve => { finishLoad = resolve; }));
+  let ready = false;
+  const promise = waitForRuffleReady(player, load, new AbortController().signal).then(() => { ready = true; });
+
+  expect(load).toHaveBeenCalledOnce();
+  finishLoad();
+  await Promise.resolve();
+  expect(ready).toBe(false);
+
+  player.dispatchEvent(new Event('loadeddata'));
+  await expect(promise).resolves.toBeUndefined();
+  expect(ready).toBe(true);
+});
+
+it('uses the error path when loadeddata never arrives', async () => {
+  vi.useFakeTimers();
+  const { waitForRuffleReady } = await import('./RhythmBoard');
+  const player = new EventTarget() as unknown as HTMLElement;
+  const promise = waitForRuffleReady(player, () => Promise.resolve(), new AbortController().signal);
+  const rejection = expect(promise).rejects.toThrow('Ruffle did not load data in time');
+
+  await vi.advanceTimersByTimeAsync(15_000);
+  await rejection;
+  expect(vi.getTimerCount()).toBe(0);
+});
+
+it('cleans up the listener and timeout when the effect is cancelled', async () => {
+  vi.useFakeTimers();
+  const { waitForRuffleReady } = await import('./RhythmBoard');
+  const player = new EventTarget() as unknown as HTMLElement;
+  const controller = new AbortController();
+  const promise = waitForRuffleReady(player, () => new Promise<void>(() => {}), controller.signal);
+  const rejection = expect(promise).rejects.toThrow('Ruffle load cancelled');
+
+  controller.abort();
+  await rejection;
+  expect(vi.getTimerCount()).toBe(0);
+
+  player.dispatchEvent(new Event('loadeddata'));
+  await vi.advanceTimersByTimeAsync(15_000);
+  expect(vi.getTimerCount()).toBe(0);
+});
 
 it('shares the pending Ruffle load across StrictMode mounts and maps the exact companion URL', async () => {
   const scripts: { src: string; onload: null | (() => void); onerror: null | (() => void) }[] = [];

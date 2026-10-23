@@ -21,40 +21,10 @@
 .post-hero-preview .companion-ledge-face{fill:#b17d70;opacity:.09}
 .post-hero-preview .companion-ledge-edge{fill:none;stroke:#d2a18c;stroke-width:2;opacity:.24}
 .post-hero-preview .companion-contact{fill:#120b12;opacity:.35}
-.post-hero-preview .hummingbird-rig{transform-box:view-box;transform-origin:675px 525px;animation:companion-hover 360ms linear infinite}
-.post-hero-preview .hummingbird-wing{transform-box:view-box;transform-origin:0 0;animation:companion-wing-near 360ms linear infinite}
-.post-hero-preview .hummingbird-tail{transform-box:view-box;transform-origin:0 0;animation:companion-tail 360ms linear infinite}
-.post-hero-preview .hummingbird-wing-far{opacity:.76;animation-name:companion-wing-far}
-.post-hero-preview .country-companions[data-visible=false] .hummingbird-wing,.post-hero-preview .country-companions[data-visible=false] .hummingbird-rig,.post-hero-preview .country-companions[data-visible=false] .hummingbird-tail{animation-play-state:paused}
-.post-hero-preview .country-companions[data-reduced=true] .hummingbird-wing{animation:none;transform:rotate(-12deg) scale(1,.68)}
-.post-hero-preview .country-companions[data-reduced=true] .hummingbird-rig,.post-hero-preview .country-companions[data-reduced=true] .hummingbird-tail{animation:none}
-/* The recovery stroke turns edge-on; the torso and both shoulder roots share the same recoil. */
-@keyframes companion-wing-near{
- 0%,100%{transform:rotate(-32deg) scale(1,.88)}
- 25%{transform:rotate(8deg) scale(1,.19)}
- 50%{transform:rotate(45deg) scale(1,.72)}
- 75%{transform:rotate(18deg) scale(.94,.24)}
-}
-@keyframes companion-wing-far{
- 0%,100%{transform:rotate(-43deg) scale(.88,.72)}
- 25%{transform:rotate(2deg) scale(.86,.14)}
- 50%{transform:rotate(37deg) scale(.88,.55)}
- 75%{transform:rotate(12deg) scale(.84,.18)}
-}
-@keyframes companion-hover{
- 0%,100%{transform:translateY(4px) rotate(.45deg)}
- 25%{transform:translateY(1px) rotate(0deg)}
- 50%{transform:translateY(-3px) rotate(-.45deg)}
- 75%{transform:translateY(0px) rotate(0deg)}
-}
-@keyframes companion-tail{
- 0%,100%{transform:rotate(-.45deg)}
- 25%{transform:rotate(0deg)}
- 50%{transform:rotate(.45deg)}
- 75%{transform:rotate(0deg)}
-}
+.post-hero-preview .hummingbird-wing,.post-hero-preview .hummingbird-tail{transform-box:view-box;transform-origin:0 0}
+.post-hero-preview .hummingbird-wing-far{opacity:.76}
 @media(hover:hover) and (pointer:fine){.post-hero-preview .lovebird-greeting:not(:disabled):hover{color:#fff0e9;border-bottom-color:#edc2a2}}
-@media(prefers-reduced-motion:reduce){.post-hero-preview .hummingbird-wing{animation:none;transform:rotate(-12deg) scale(1,.68)}.post-hero-preview .hummingbird-rig,.post-hero-preview .hummingbird-tail{animation:none}}
+
 .post-hero-preview .companion-meanings{position:absolute;top:18svh;left:43vw;right:7vw;display:grid;grid-template-columns:1fr 1fr;gap:clamp(24px,3vw,56px);color:#e7d1c6}
 .post-hero-preview .companion-meanings h3{margin:0 0 10px;color:#edc2a2;font:400 17px/1.5 'Gowun Batang',Georgia,serif}
 .post-hero-preview .companion-meanings p{margin:0;max-width:34ch;font-size:16px;line-height:1.75;word-break:keep-all;overflow-wrap:break-word;text-wrap:pretty}

@@ -34,8 +34,8 @@
 .post-hero-preview .text-button{display:inline-flex;align-items:center;gap:20px;min-height:44px;padding:6px 0;background:none;border:0;border-bottom:1px solid #d7a18f88;color:#eac2af;font-size:14px}
 .post-hero-preview .text-button span{font-size:20px}
 .post-hero-preview .primary-button{display:inline-flex;align-items:center;justify-content:space-between;gap:30px;min-height:52px;padding:14px 23px;border-radius:2px;border:1px solid #e4bba4;background:#e1b39e;color:#331c27;font-size:14px;box-shadow:none;transition:transform 160ms var(--ease),background 160ms var(--ease)}
-.post-hero-preview .primary-button:active{transform:scale(.97)}
-.post-hero-preview .primary-button:focus-visible{transition:none}
+.post-hero-preview .primary-button:active{transform:scale(.97);transition-duration:90ms}
+.post-hero-preview .primary-button:focus-visible{transform:none;transition:none}
 .post-hero-preview .country-labels{position:absolute;right:7vw;top:33%;display:flex;align-items:center;gap:24px;color:#f7e4d7;font-size:15px}
 .post-hero-preview .country-labels>span:not(.country-gap){display:flex;align-items:center;gap:10px}
 .post-hero-preview .country-labels img{width:28px;height:20px;object-fit:cover}
@@ -185,11 +185,11 @@
  .post-hero-preview .reading-roses:active:not(:focus-visible){transform:translateY(-50%) scale(.985)}
 }
 @media(hover:hover) and (pointer:fine) and (prefers-reduced-motion:no-preference){
- .post-hero-preview .primary-button:hover:not(:active):not(:disabled){transform:translateY(-2px)}
+ .post-hero-preview .primary-button:hover:not(:active):not(:disabled):not(:focus-visible){transform:translateY(-2px)}
 }
 @media(min-width:761px) and (hover:hover) and (pointer:fine) and (prefers-reduced-motion:no-preference){
- .post-hero-preview .reading-roses-left:hover:not(:active){transform:translateY(-50%) scale(1.02) rotate(-2deg)}
- .post-hero-preview .reading-roses-right:hover:not(:active){transform:translateY(-50%) scale(1.02) rotate(2deg)}
+ .post-hero-preview .reading-roses-left:hover:not(:active):not(:focus-visible){transform:translateY(-50%) scale(1.02) rotate(-2deg)}
+ .post-hero-preview .reading-roses-right:hover:not(:active):not(:focus-visible){transform:translateY(-50%) scale(1.02) rotate(2deg)}
 }
 
 .post-hero-preview .letter-paper p:not(.letter-address):not(.letter-signature){white-space:normal;word-break:keep-all;overflow-wrap:break-word;text-wrap:pretty}

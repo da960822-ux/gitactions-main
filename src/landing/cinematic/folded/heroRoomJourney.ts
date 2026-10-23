@@ -1,10 +1,11 @@
 import * as T from 'three';
 import type {createApprovedGamingRoom} from './ApprovedGamingRoom';
 import {heroContain,heroWorldProjection} from './initialCosmicHero';
+import {createHeroAtmosphere,type HeroAtmosphereInput} from './heroAtmosphere';
 
 type CanonicalRoom=ReturnType<typeof createApprovedGamingRoom>;
 type Options={width:number;height:number;portrait:string;portraitMask?:string};
-type Built={update:(progress:number,camera:T.PerspectiveCamera)=>void;syncView:(camera:T.PerspectiveCamera)=>void;setActive:(active:boolean)=>void;dispose:()=>void};
+type Built={update:(progress:number,camera:T.PerspectiveCamera,input?:Partial<HeroAtmosphereInput>)=>void;syncView:(camera:T.PerspectiveCamera)=>void;setActive:(active:boolean)=>void;cancelInteraction:()=>void;dispose:()=>void};
 
 export function createHeroRoomJourney(scene:T.Scene,canonicalRoom:CanonicalRoom,options:Options){
  let width=options.width,height=options.height,disposed=false,active=true,built:Built|undefined,loaded:T.Texture[]|undefined;
@@ -57,6 +58,7 @@ export function createHeroRoomJourney(scene:T.Scene,canonicalRoom:CanonicalRoom,
   const sky=surface('ORIGINAL_COSMIC_SKY',image,()=>4.8,'inverse');
   const near=surface('ORIGINAL_ARCH_TERRACE_SILHOUETTE',image,u=>T.MathUtils.lerp(1.75,4.35,smooth(.34,.39,u)),'core');
   const feather=surface('ORIGINAL_ARCH_TERRACE_FEATHER',image,u=>T.MathUtils.lerp(1.75,4.35,smooth(.34,.39,u)),'feather');
+  const atmosphere=createHeroAtmosphere({halfWidthAtUnitZ:startTan*aspect/rx,halfHeightAtUnitZ:startTan/ry});foreground.add(atmosphere.root);
   const portraitMaterial=new T.MeshBasicMaterial({map:portraitImage,alphaMap:portraitMask,transparent:true,alphaTest:.005,depthWrite:true,toneMapped:false,side:T.DoubleSide});materials.push(portraitMaterial);
   const portraitGeometry=new T.PlaneGeometry(6.2*1312/1199,6.2);geometries.push(portraitGeometry);
   const portrait=new T.Mesh(portraitGeometry,portraitMaterial);portrait.name='RIGID_APPROVED_PORTRAIT';portrait.matrixAutoUpdate=false;foreground.add(portrait);
@@ -65,8 +67,9 @@ export function createHeroRoomJourney(scene:T.Scene,canonicalRoom:CanonicalRoom,
   const portraitScale=4.2/-new T.Vector3().setFromMatrixPosition(originalPortrait).z;
   portrait.matrix.copy(new T.Matrix4().makeScale(portraitScale*lensRatio,portraitScale*lensRatio,portraitScale).multiply(originalPortrait));
   const eye=new T.Vector3(),state={vertices:near.geometry.getAttribute('position').count,indexed:!!near.geometry.index,transition:'source-foreground-occlusion',pose:'standing',foregroundMode:'full-terrace',portraitOpacity:1,reducedMotion:false,cameraTravel:0,roomDepth:endDistance+2.05};
-  return{update(progress,output){
+  return{update(progress,output,input={}){
    const p=T.MathUtils.clamp(progress,0,1),before=p<.21,reduced=!!reducedMotion?.matches,motion=reduced?(before?0:1):p;
+   atmosphere.update({time:input.time??0,progress:p,pointerX:input.pointerX??0,pointerY:input.pointerY??0,press:input.press??0,reducedMotion:reduced});
    const approach=smooth(.06,.18,motion),around=smooth(.24,.33,motion),arrival=smooth(.33,.42,motion);
    // Stop before the original jamb, pass its open edge, then move forward; the camera never crosses its solid silhouette.
    eye.copy(startEye);eye.x-=lateral*approach*(1-around);eye.z-=1.4*approach+.65*arrival;
@@ -77,7 +80,7 @@ export function createHeroRoomJourney(scene:T.Scene,canonicalRoom:CanonicalRoom,
    // The continuous dolly/lens pair keeps B's approved size; its camera and projection are exact at arrival.
    output.clearViewOffset();output.fov=T.MathUtils.radToDeg(2*Math.atan(tan*endDistance/state.roomDepth));output.aspect=aspect;output.near=.02*scale;output.far=120*scale;output.updateProjectionMatrix();output.updateMatrixWorld(true);
    output.userData.heroSurface=state;stage.updateMatrixWorld(true);
-  },syncView(){},setActive(value){stage.visible=value;},dispose(){stage.removeFromParent();geometries.forEach(geometry=>geometry.dispose());materials.forEach(material=>material.dispose());}};
+  },syncView(){},setActive(value){stage.visible=value;if(!value)atmosphere.cancelInteraction();},cancelInteraction(){atmosphere.cancelInteraction();},dispose(){stage.removeFromParent();atmosphere.dispose();geometries.forEach(geometry=>geometry.dispose());materials.forEach(material=>material.dispose());}};
  }
  function rebuild(){if(!loaded||disposed)return;built?.dispose();built=undefined;built=build(loaded);}
  function dispose(){if(disposed)return;disposed=true;built?.dispose();built=undefined;textures.forEach(texture=>texture.dispose());textures.clear();}
@@ -85,5 +88,5 @@ export function createHeroRoomJourney(scene:T.Scene,canonicalRoom:CanonicalRoom,
  const ready=Promise.all(['/images/our-universe-scene.webp',options.portrait,options.portraitMask??'/images/approved-couple-room/character-opacity-mask.png','/images/approved-couple-room/hero-near-source-opacity.png','/images/approved-couple-room/hero-cosmic-disocclusion-plate.webp'].map(path=>loader.loadAsync(path).then(texture=>{if(disposed)texture.dispose();else textures.add(texture);return texture;}))).then(async maps=>{
   await canonicalRoom.ready;if(disposed)return;maps[0].colorSpace=maps[1].colorSpace=maps[4].colorSpace=T.SRGBColorSpace;maps[2].colorSpace=maps[3].colorSpace=T.NoColorSpace;loaded=maps;rebuild();
  }).catch(error=>{dispose();throw error;});
- return{ready,update(progress:number,camera:T.PerspectiveCamera){if(!disposed&&active)built?.update(progress,camera);},syncView(camera:T.PerspectiveCamera){if(!disposed&&active)built?.syncView(camera);},resize(nextWidth:number,nextHeight:number){if(width===nextWidth&&height===nextHeight)return;width=nextWidth;height=nextHeight;rebuild();},setActive(value:boolean){if(disposed)return;active=value;built?.setActive(value);},dispose};
+ return{ready,update(progress:number,camera:T.PerspectiveCamera,input?:Partial<HeroAtmosphereInput>){if(!disposed&&active)built?.update(progress,camera,input);},syncView(camera:T.PerspectiveCamera){if(!disposed&&active)built?.syncView(camera);},resize(nextWidth:number,nextHeight:number){if(width===nextWidth&&height===nextHeight)return;width=nextWidth;height=nextHeight;rebuild();},setActive(value:boolean){if(disposed)return;active=value;built?.setActive(value);},cancelInteraction(){built?.cancelInteraction();},dispose};
 }

@@ -26,7 +26,7 @@ export function stepBalance(pose:BalancePose, tilt:number, dt:number):BalancePos
   return {position,velocity,settled:false};
 }
 export type LocalEventState = {
-  active:LocalEventId|null; effectsEnabled:boolean; hasSavedDecor:boolean; motionSerial:number; language:'ko'|'es';
+  active:LocalEventId|null; effectsEnabled:boolean; hasSavedDecor:boolean; motionSerial:number; motionInstant?:boolean; language:'ko'|'es';
   dominoTiles:ReadonlyArray<readonly[number,number]>; dominoFallen:boolean; drawerOpen:boolean;
   tilt:number; ball:BalancePose; pocketOpen:boolean; sideView:boolean; pawn:number; lightAngle:number;
   prism:0|1|2; strokes:DrawingPoint[][]; drawingFlipped:boolean; rhythmSignal:number|null; rhythmSolved:boolean;
@@ -137,7 +137,7 @@ export function createLocalEventRig(parent:THREE.Group,onInvalidate:()=>void=()=
     update(state:LocalEventState,now:number,reducedMotion:boolean,presentation:'focused'|'tabletop'|'ending'='focused'){
       if(disposed)return false;
       const activeChanged=lastActive!==state.active;const serialChanged=lastSerial!==state.motionSerial;if(serialChanged){start=now;lastSerial=state.motionSerial;}else if(activeChanged)start=now-850;if(activeChanged){pocketQ=Number(state.pocketOpen);popupQ=Number(state.nobleOpen);}lastActive=state.active;const dt=lastNow?Math.min(.05,Math.max(0,(now-lastNow)/1000)):1/60;lastNow=now;
-      const staticPose=reducedMotion||!state.effectsEnabled||state.active===null;
+      const staticPose=reducedMotion||Boolean(state.motionInstant)||!state.effectsEnabled||state.active===null;
       const phase=staticPose?1:THREE.MathUtils.clamp((now-start)/850,0,1),q=smooth(phase);
       const overview=presentation==='tabletop',ending=presentation==='ending';
       root.visible=overview||ending||state.active!==null||state.hasSavedDecor;const visibleEvent=state.active??'L15';

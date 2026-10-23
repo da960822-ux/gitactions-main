@@ -191,3 +191,17 @@ test('Ruixen-adapted paper gust stays finite, bounded and pinned, and settles to
  const snapshot=Array.from(sheet.geometry.getAttribute('position').array);rig.update({...state,windRaised:true},600,true);assert.deepEqual(Array.from(sheet.geometry.getAttribute('position').array),snapshot,'static result does not ripple');
  rig.update(state,700,true);sheet.geometry.computeBoundingBox();assert.equal(sheet.geometry.boundingBox!.max.y,0);assert.equal(reward.position.z,0);const gust={...state,windRaised:true,motionSerial:1};rig.update(gust,1000,false);rig.update(gust,1425,false);assert.ok(reward.position.z>.57);rig.update(gust,1850,false);assert.ok(Math.abs(reward.position.z)<1e-9,'the gem returns beneath the settled sheet');rig.dispose();
 });
+
+
+test('keyboard discovery actions settle the same mesh result without persisting input modality',()=>{
+ const rig=createLocalEventRig(new THREE.Group());
+ const state={...createLocalEventState(),active:'L03' as const,pocketOpen:false};
+ rig.update(state,100,false);
+ const opened={...state,pocketOpen:true,motionSerial:1,motionInstant:true};
+ assert.equal(rig.update(opened,116,false),false,'keyboard action schedules no hinge animation');
+ const instant=transforms(namedGroup(rig.root,'L03')).map(item=>({position:item.position,rotation:item.rotation}));
+ rig.update({...opened,motionInstant:false},1000,true);
+ assert.deepEqual(transforms(namedGroup(rig.root,'L03')).map(item=>({position:item.position,rotation:item.rotation})),instant,'the completed paper shape matches the static result');
+ assert.equal(JSON.parse(serializeLocalEventPreferences(opened)).motionInstant,undefined);
+ rig.dispose();
+});

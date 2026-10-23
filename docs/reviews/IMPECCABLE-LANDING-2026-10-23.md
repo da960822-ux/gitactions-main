@@ -1,6 +1,6 @@
 # 공식 스킬 재점검·수정·재검수 — 2026-10-23 UTC (이전 검수 포함)
 
-> 최신 상태 — 2026-10-23 UTC: 과거 점수·PASS·환경 차단 기록을 현재 판정으로 재사용하지 않는다. 실행 환경을 복구해 실제 Chromium 검수를 재개했으며 최신 결과는 문서 끝의 「후속 실제 브라우저 재개 · UpFork / Shaders 무료 소스 적용」부터 기록한다. native WebGPU 후보는 실제 그래픽 검수에 실패하여 배포에서 제외했고, 기존 Three.js 기반 공개 커널 이식의 실제 데스크톱 동작·픽셀·정지/복귀 검수를 통과했다. 전체 사이트 미술 최종 승인과 구분한다.
+> 최신 상태 — 2026-10-23 UTC: 이번 새·인터랙션·초기 Hero 재작업의 결과는 문서 끝 「초기 우주 Hero와 전체 인터랙션 재작업」에 기록한다. 과거 점수와 PASS는 현재 사이트 전체의 승인 점수가 아니다. 최신 실제 데스크톱 검수와 보존 범위, 미검수 범위를 구분한다.
 
 시작 소스 `921bac645d99ab0d7f54e00211b220695b422fd0`, 기존 `redesign/folded-playhouse-depth-r8-20261018` 브랜치. 승인된 우주 Hero/B 게임방, 인물, 8개 게임, 원문 편지, 두 언어, 실제 서명·장미·건의사항을 보존했다. 원본 main 병합·공개 audience 전환·새 영상·모바일 전수 검수는 하지 않았다. 이 문서는 시점별 재점검 기록이다. 최신 상태는 맨 위와 문서 끝에 구분했다. [이전 체크포인트 기록](https://github.com/da960822-ux/gitactions-main/blob/921bac645d99ab0d7f54e00211b220695b422fd0/docs/reviews/IMPECCABLE-LANDING-2026-10-23.md)은 Git 이력에 남긴다.
 
@@ -258,3 +258,55 @@ keep-mounted HTML host로 수명을 수정한 뒤 software WebGPU의 visible sub
 통합 소스의 전체 **89파일/704테스트**와 production build, diff 검사가 통과했다. 새 build-static-routes 단계와 라이선스 산출물도 포함한다. 앞서 검수한 시각 구현 7파일의 해시는 통합 후에도 동일하다. 선택 게임·언어·direct room·건의사항 경로는 독립 브라우저에서 좁게 재확인하며, 외부 방 생성/참여나 게임 전체 플레이로 범위를 부풀리지 않는다.
 
 통합 후 실제 경로 재확인 통과: 1440 KO Jaipur / 1920 es-DO Minhwatu 선택이 해당 `/play?game=...` lobby와 언어로 이어졌고, 두 viewport의 `/play?room=qa-route-only-20261023` 직접 접속은 landing 대신 정확한 room code의 join-card를 표시했다. 기존 메뉴의 `/feedback` 진입도 두 언어 정상이다. 외부 방 생성·참여·POST는 0, page/console/network 오류 0이다. 검수 JSON에 통합 후 경로 증거를 추가했다.
+
+
+## 초기 우주 Hero와 전체 인터랙션 재작업 — 2026-10-23 UTC
+
+기준 소스 ec0bc89, 구현 6c36f59. 사용자 요청은 초기 승인 우주 사진을 더 화려하고 입력에 반응하게 하고, 새와 랜딩의 어색한 모션을 다시 만드는 것이다. 승인된 인물·원화 RGB·B 도착 화면·게임방 카메라·8게임·언어·원문 편지·서명 문서·장미 흐름을 다른 콘셉트로 교체하지 않았다. 모바일과 녹화는 사용자 제외 범위다.
+
+### 실제 읽고 적용한 지침과 분담
+
+- Sol Hero: Impeccable bolder/overdrive/animate/delight, Emil animate/review-animations, shader-programming/Three scene·materials, GSAP performance. 루트가 기존 공유 렌더러·카메라 호스트에 통합했다. overdrive의 대담한 기존 콘셉트 개선 원리를 적용했으며 새 콘셉트 워크숍 전체를 수행한 것은 아니다.
+- Sol 새: Emil review-animations/STANDARDS/animate, Impeccable animate/delight/polish, Motion. 별도 프레임 반복을 몸 중심의 유한 인사 동작으로 대체했다.
+- Sol 후반 인터랙션/장미: Emil review-animations/animate, Impeccable animate/delight/polish, GSAP timeline/performance와 Motion의 역할 분리. 서명과 편지의 실제 focus/scroll/keyboard 계약을 유지했다.
+- Luna: 설치된 지침과 각 모션 소유자·호출 경로를 정리하고 ThreeUI MIT Community 소스를 확인해 Hero 담당에게 참고 위치를 전달했다. 루트는 Kexsio 공개 Components와 Interactive Aurora Nebula Background 페이지도 확인했다. 이번 Hero GLSL은 자체 구현이며 ThreeUI/Kexsio 코드를 복사하거나 라이선스 불명 자산을 가져오지 않았다. 기존 UpFork CTA와 Shaders 공개 커널의 라이선스·범위는 앞 절과 같다.
+- 독립 Sol 검수: 담당 구현 소스를 수정하지 않고 실제 Chromium의 전후 프레임·입력·시간·오류·소스 해시를 확인했다. 루트도 선택된 실제 결과 이미지를 열어 확인했다. 이번 범위에 새 전체 사이트 점수나 4/5 합격 점수를 만들지 않았다.
+
+### Before / After / Why
+
+| 대상 / 발견 | 실제 수정 | 수정 이유와 검수 |
+|---|---|---|
+|초기 Hero 사진이 입력에 충분히 반응하지 않음|원래 은하 방향을 따라 로즈골드·핑크 필라멘트, 세 깊이 별, 드문 유성. 포인터에 별/빛 반응, 누를 때 모이고 놓을 때 기존 빛이 퍼짐|별도 canvas/엔진/RAF가 아닌 기존 Three 렌더러. 원본 인물보다 뒤, 열린 오른쪽 하늘에 배치. 인물이나 텍스트를 빛으로 덮지 않음. 진입 progress .055까지 종료하여 게임방 전환에 추가 오브젝트가 남지 않음|
+|새의 독립 360ms 반복과 얇은 막대처럼 접히는 날개, 지나치게 빠른 복귀|몸의 이동·기울임이 먼저, 어깨 축의 넓은 날개와 꼬리가 지연 추종. 인사 후 정지. 왕복은 같은 질량감의 감쇠 운동, 재입력은 현재 속도/위치에서 전환|idle/hold 반복 제거, 빠른 재입력·역전환·hidden/재진입·즉시 keyboard/reduced 확인. 실제 인사 장면과 귀환 장면 비교|
+|InterPals 입력이 이진 반응에 가까움|실제 방향/압력에 따른 spring 반응 추가|기존 GSAP 스크롤/사진/편지 본문과 속성 소유권 분리. 얼굴·본문을 흔들지 않음|
+|CTA hover 해제 시 빛이 중앙으로 튐|현재 gradient 위치에서 사라짐, press/release 피드백|키보드 포커스는 정적. 기존 갤러리 선택/시차 슬라이더의 정상 retarget 동작은 유지|
+|편지 개폐가 느린 선형 동작, 키보드와 마우스 경로 불일치|현재 접힘 값에서 방향 전환, 비대칭 개폐, 완료값 보장; keyboard/Escape 즉시|실제 열기·중간 방향 전환·서명·접기·다시 읽기 흐름 보존. 접기 후 scroll 변화 0|
+|약속서 펼칠 때 위치가 약543px 튐|짧은 읽기 가능한 reveal, 읽기 중 기존 scroll-anchor 계약을 문서까지 확장|강제 scroll 호출/빈 공간 예약 없이 1440·1920 모두 opener와 문서 시작 위치 및 scroll 값 동일. 닫은 후 focus 복귀, keyboard CSS 애니메이션 0|
+|장미 접촉 순간 새 손가락이 위로 나타남|손목 중심 열린/쥔 손의 축과 투영 일치, 전달자 손에 가려질 때 pose 교체|GSAP 실제 1.379/1.38/1.65초의 grip 좌표 동일. 원화/얼굴·의상 재생성 없음. hidden/offscreen 정지·재개/즉시 replay 충돌도 수정|
+|hidden에서도 host RAF가 예약됨|hidden에서 실제 RAF 취소, visible에서 단일 재개. 취소/blur는 release burst를 만들지 않음|숨김 이벤트 동안 frameSerial 고정, 복귀 시 시간 점프 없음. visible 실제 경과 시간을 써 소프트웨어 렌더링에서 유성이 과도하게 느려지는 문제 방지|
+|발견물의 keyboard 입력에도 불필요한 장식 동작|16개 발견물 유지, 비영속 입력 분기로 즉시 결과 제공|기능·저장 계약 변경 없이 키보드/움직임 감소 경로를 보존|
+
+### 실제 화면 및 동작 검수
+
+환경: Linux `/usr/bin/chromium`, Playwright, WebGL **SwiftShader 소프트웨어 렌더링**, 1440×900 KO와 1920×1080 es-DO, DPR1. 이 검수는 프레임별 출력·수명주기 확인이며 하드웨어 GPU FPS 측정이 아니다. hidden은 visibilitychange 주입으로 확인했으며 실제 OS 최소화 시험을 가장하지 않는다.
+
+- 두 크기에서 초기 Hero 유성·idle·포인터·press/release/cancel, 정/역 스크롤, 새 idle→접근→인사→복귀·연속 입력·키보드·reduced, 갤러리 hover, 시차 키보드, 편지 개봉/서명 문서/접기/장미/다시 읽기를 확인했다.
+- Hero held→release 실제 변화는 1440 183,476px / 1920 313,117px이며 열린 하늘 안에 있다. 남녀 얼굴 내부 표본 max 채널 차이는 1(렌더 양자화 수준)이다. 원본 모든 픽셀을 전수 동일 비교했다는 뜻은 아니다.
+- 기존 Hero passage와 B 도착 캡처는 두 크기 모두 전후 **변화0px**. 승인 도착 구도와 카메라 경로는 바꾸지 않았다.
+- 새 idle/hold는 떨어진 두 샘플의 몸·날개·꼬리 transform이 동일. hidden 중 고정, 재입력 후 정상 복귀. Hero hidden frameSerial도 고정. reduced의 효과 시간은0이며 포인터 잔여 정착 때 일부 draw가 있어 ‘0프레임’이라고 주장하지 않는다.
+- 약속서 1440: opener/document top442.17, scroll9550 동일. 1920: top622.47, scroll11131 동일. 두 크기 Δscroll0. 1440 실제 장미 0/1.2/1.379/1.38/1.65/2.2/3초를 확인했고 contact grip659.629/613.825가 교체 전후 동일하다.
+- 정상 실행 pageerror/console error/HTTP오류/requestfailed/contextloss는0. Playwright가 GSAP thenable을 반환받아 대기한 초기 harness 문제와 의도적 near-wing 네트워크 실패주입의 fallback 대기 timeout은 정상 경로와 구분했다. 실제 SVG 오류 전달 경계가 드러나 단순 선택자 오류로 축소하지 않았으며 후속 수정·실패주입 결과는 아래에 기록한다.
+
+[Hero 전](assets/impeccable-landing/full-skill-review/motion-correction/before-1920-hero.webp) / [입력 중 후](assets/impeccable-landing/full-skill-review/motion-correction/after-1920-hero-held.webp), [새 전](assets/impeccable-landing/full-skill-review/motion-correction/before-1920-bird-together.webp) / [인사 후](assets/impeccable-landing/full-skill-review/motion-correction/after-1920-bird-hold.webp), [장미 접촉 연속 프레임](assets/impeccable-landing/full-skill-review/motion-correction/rose-contact-continuity.webp), [약속서 후](assets/impeccable-landing/full-skill-review/motion-correction/after-1920-pact-open.webp).
+
+이번 수정 전 동결 소스는 90파일/711테스트·production build·TypeScript·diff 검사를 통과했다. 출판 직전 Site 원격이 다른 세션의 도미노 수정 소스9a84896으로 전진하여, 같은 Hero 브랜치에 해당 커밋을 정상 통합했다. 기존 사이트의 규칙·설명 개선을 덮어쓰지 않았으며 main을 대상으로 병합·push·배포하지 않았다. 통합 후 시각 검수21파일의 SHA256은 모두 동일하다. 통합 최종 검사 결과는 아래에 덧붙인다.
+
+남은 한계: 새 어깨의 확대 접합선·장미 손목의 미세 색차와 접촉 순간 아주 작은 끝점 변화는 완전한 새 원화/관절 리깅 수준으로 해결됐다고 주장하지 않는다. 현재 관찰 크기에서 큰 pose pop은 없어졌다. 모바일·영상·전체8게임 플레이·실제 하드웨어 GPU 성능은 이번 검수 대상이 아니다.
+
+통합 최종 전체 검사는 **91파일/726테스트** 및 production build를 통과했다. 기존 큰 chunk/Motion use-client 경고는 남는다. [독립 브라우저 측정·전후 해시](assets/impeccable-landing/full-skill-review/motion-correction/landing-motion-browser.json).
+
+### 최종 이미지 실패 복구
+
+실제 near-wing 요청 abort에서 SVG image onError가 failed 상태로 연결되지 않는 문제를 발견했다. 정상 모션 승인과 구분해 미통과로 남긴 뒤, 같은 새 담당자가 active5 이미지에 native Image 오류 감지와 cleanup을 추가했다. 정적 fallback 원본은 이 감시에서 제외한다. 동작값·모션 CSS·카메라 변경은 없다.
+
+수정 후 독립 Chromium fresh1440 context에서 같은 실제 URL을 abort: **data-failed=true / greeting disabled / 원본 hummingbird-body fallback 표시 / layered rig 제거 / 오류 안내 표시 / pageerror0**를 확인했다. 최종 새 소스 SHA256은 `0c42d10492d2c17a0073b56f6d31b7eab3df85ddeca06b5432157f782f98d234`, 정상 모션 검수 나머지20파일은 동일하다. 새 범위11테스트·TypeScript·최종 production build·diff 검사 통과. 앞 전체726테스트 이후 추가한 오류 경계1개는 이 좁은 검수로 확인했으며 전체727테스트 재실행으로 표시하지 않는다. 최종 정상 모션 및 이 실패 복구 범위에 남은 차단 결함은 관측하지 않았다. 사이트 전체 미술 최종 승인과는 다르다.

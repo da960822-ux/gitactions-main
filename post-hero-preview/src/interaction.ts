@@ -16,6 +16,16 @@ export function letterOpenProgress(sceneP: number): number {
   return clamp01((p - LETTER_RANGE[0]) / (LETTER_RANGE[1] - LETTER_RANGE[0]));
 }
 
+// Retarget the current fold, so rapid reversals never restart a fixed-duration opening.
+export function advanceLetterOpening(current:number,target:number,seconds:number,instant=false):number {
+  const from=clamp01(current),to=clamp01(target);
+  if(instant)return to;
+  const dt=Number.isFinite(seconds)?Math.max(0,seconds):0;
+  if(dt===0)return from;
+  const next=to+(from-to)*Math.exp(-dt*(to>from?6.5:9));
+  return Math.abs(to-next)<.0005?to:next;
+}
+
 export type EnvelopeState = { manual: boolean | null; previousInRange: boolean; returning: boolean };
 
 export function createEnvelopeState(): EnvelopeState {
