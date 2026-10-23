@@ -18,11 +18,16 @@ it('renders one live layered cutout and preserves semantics, loading and the app
  expect(html).toContain('aria-labelledby="rose-gift-title"');
  expect(html).toContain('role="img"');
  expect(html).toContain('Yeonseok le ofrece una rosa roja a Lisbeth');
- for(const asset of ['received','body-clean','rose-single'])expect(html).toContain(`/images/rose-gift/${asset}.png`);
+ for(const asset of ['received','offer','body-clean','rose-single','limb-atlas','hand-pose-atlas'])expect(html).toContain(`/images/rose-gift/${asset}.png`);
  for(const retired of ['contact.png','rg-pose'])expect(html).not.toContain(retired);
  expect(html.match(/data-flower-instance="single"/g)).toHaveLength(1);
- expect(html).toContain('data-rig="intact-contour-handover"');
- expect(html).toContain('data-rg-joint="donor-lower"');
+ expect(html).toContain('data-rig="complete-limb-handover"');
+ expect(html).toMatch(/href="\/images\/rose-gift\/body-clean.png"[^>]*mask="url\(#[^"]+-body-underlay\)"/);
+ expect(html.match(/href="\/images\/rose-gift\/limb-atlas.png"/g)).toHaveLength(3);
+ expect(html.match(/href="\/images\/rose-gift\/hand-pose-atlas.png"/g)).toHaveLength(2);
+ for(const hand of ['donor-closed','donor-open','recipient-open','recipient-closed'])expect(html).toContain(`data-rg-joint="${hand}"`);
+ expect(html).toContain('data-rg-joint="donor-arm"');
+ expect(html).not.toContain('data-rg-joint="donor-lower"');
  expect(html).toContain('data-rg-joint="recipient-lower"');
  expect(html).not.toContain('data-rg-joint="donor-grip"');
  expect(html).not.toContain('data-rg-joint="recipient-reach"');
@@ -31,7 +36,13 @@ it('renders one live layered cutout and preserves semantics, loading and the app
  expect(html).not.toContain('<canvas');
  expect(html).not.toContain('<filter');
  expect(html).not.toContain('wrist-skin');
- expect(html).not.toContain('/images/rose-gift/offer.png');
+ expect(html).toMatch(/href="\/images\/rose-gift\/offer.png"[^>]*clip-path="url\(#[^"]+-recipient-upper\)"/);
+ expect(html).not.toContain('opacity=');
+ expect(html.indexOf('data-rg-joint="recipient-open"')).toBeLessThan(html.indexOf('data-flower-instance="single"'));
+ expect(html.indexOf('data-rg-joint="donor-hands"')).toBeGreaterThan(html.indexOf('data-flower-instance="single"'));
+ expect(html.indexOf('data-rg-joint="donor-closed"')).toBeGreaterThan(html.indexOf('data-rg-joint="recipient-closed"'));
+ expect(html).not.toContain('recipient-open-window');
+ expect(html).toContain('data-rg-joint="recipient-closed" visibility="hidden"');
  expect(html).toContain('data-rg-joint="recipient-lower"');
 });
 
@@ -45,6 +56,22 @@ it('holds distinct contacts before transfer, then retreats after acceptance',()=
  expect(roseGiftPose(1.6).owner).toBe('donor');
  expect(roseGiftPose(1.7).owner).toBe('recipient');
  expect(roseGiftPose(2.4).donorGrip).not.toEqual(contact.donorGrip);
+});
+
+it('starts with a gripping donor and separated open recipient, closes her hand before he releases',()=>{
+ const start=roseGiftPose(0);
+ expect(start.donorOpen).toBe(0);expect(start.recipientClosed).toBe(false);
+ expect(Math.hypot(start.donorGrip.x-start.recipientGrip.x,start.donorGrip.y-start.recipientGrip.y)).toBeGreaterThan(100);
+ expect(roseGiftPose(1.2).recipientTurn).toBeGreaterThan(0);
+ expect(roseGiftPose(1.35).recipientTurn).toBe(30);
+ expect(roseGiftPose(1.35).recipientClosed).toBe(false);
+ expect(roseGiftPose(1.379).recipientClosed).toBe(false);
+ expect(roseGiftPose(1.38).recipientClosed).toBe(true);
+ expect(roseGiftPose(1.5).recipientClosed).toBe(true);
+ expect(roseGiftPose(1.5).donorOpen).toBe(0);
+ expect(roseGiftPose(1.65).recipientClosed).toBe(true);
+ expect(roseGiftPose(1.65).donorOpen).toBeGreaterThan(0);
+ expect(roseGiftPose(3).donorOpen).toBe(1);expect(roseGiftPose(3).recipientClosed).toBe(true);
 });
 
 it('has continuous flower position and direction at the ownership change in both seek directions',()=>{

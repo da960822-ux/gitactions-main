@@ -4,6 +4,7 @@ import {gameCatalog} from '../../games/catalog';
 import {Link} from '../../app/Router';
 import {landingCopy} from '../../copy/home';
 import type {GameHover} from './StudioScene';
+import {GameStartBeam} from './GameStartBeam';
 import './game-gallery.css';
 
 const StudioScene = lazy(() => import('./StudioScene'));
@@ -32,7 +33,7 @@ export function GameGallery({language, selected: controlledSelected, onSelect}: 
     <header><h2 id="gallery-title">{copy.gamesTitle}</h2><p>{copy.gamesIntro[0]}<br/>{copy.gamesIntro[1]}</p></header>
     <div className="rd-game-stage">
       <div className="rd-game-sculptures" aria-label={language === 'ko' ? '게임 조각을 눌러 골라 봐' : 'Toca una pieza para elegir'}>{<Suspense fallback={<div className="rd-render-fallback" role="status">{language === 'ko' ? '게임을 준비하는 중…' : 'Preparando los juegos…'}</div>}><StudioScene mode="games" loadingLabel={language === 'ko' ? '게임을 준비하는 중…' : 'Preparando los juegos…'} selected={selected} focused={focused} paused={reduced} snapSelection={!selectionMotion} onSelect={select} onHover={setHovered}/></Suspense>}{hovered&&hoveredGame&&<span className="rd-game-hover-label" id="gallery-game-label" role="tooltip" style={{left:`clamp(132px, ${hovered.x}px, calc(100% - 132px))`,top:Math.max(60,hovered.y-14)}}>{hoveredGame.title[language]}</span>}</div>
-      <div className="rd-game-caption"><div aria-live="polite"><h3>{game.title[language]}</h3><p>{game.subtitle[language]}</p></div><Link className="rd-game-start rd-main-action" href={`/play?game=${selected}`} aria-label={`${game.title[language]} · ${language === 'ko' ? '같이 놀기' : 'Jugar juntos'}`}>{language === 'ko' ? '같이 놀기' : 'Jugar juntos'}<span aria-hidden="true">↗</span></Link></div>
+      <div className="rd-game-caption"><div aria-live="polite"><h3>{game.title[language]}</h3><p>{game.subtitle[language]}</p></div><Link className="rd-game-start rd-main-action" href={`/play?game=${selected}`} aria-label={`${game.title[language]} · ${language === 'ko' ? '같이 놀기' : 'Jugar juntos'}`}><GameStartBeam/>{language === 'ko' ? '같이 놀기' : 'Jugar juntos'}<span aria-hidden="true">↗</span></Link></div>
     </div>
     <div className="rd-game-choices" role="group" aria-label={copy.navGames} data-selection-motion={selectionMotion} onKeyDown={event => {
       const step = event.key === 'ArrowRight' || event.key === 'ArrowDown' ? 1 : event.key === 'ArrowLeft' || event.key === 'ArrowUp' ? -1 : 0;

@@ -12,6 +12,17 @@ import { client, isOnlineConfigured } from '../core/client';
 
 vi.mock('./App', () => ({ BrandHeader: () => null }));
 
+it.each(['ko', 'es'] as const)('renders Lisbeth rules in the %s game guide and lobby dialog', language => {
+  const guide = renderToStaticMarkup(createElement(GameGuide, { gameId: 'domino', language, dominoMode: '1v1', dominoRulesVersion: 2 }));
+  const dialog = renderToStaticMarkup(createElement(RulesDialog, { gameId: 'domino', language, onClose: () => {} }));
+  for (const html of [guide, dialog]) {
+    expect(html).toContain('6|6');
+    expect(html).toContain('+30');
+    expect(html).toContain('Lisbeth');
+    expect(html).not.toContain('+25');
+  }
+});
+
 it('limits the new Splendor purchase walkthrough to the desktop guide boundary', () => {
   const render = (desktopDisplay: boolean) => renderToStaticMarkup(createElement(GameGuide, { gameId: 'splendor', language: 'es', desktopDisplay }));
   expect(render(false)).not.toContain('sp-guide-purchase-flow');
@@ -105,11 +116,11 @@ describe('PlayApp client binding', () => {
     await api.selectGame('domino');
 
     let snapshot = api.getSnapshot();
-    for (let step = 0; step < 80 && !snapshot.view?.result; step += 1) {
-      const seat = snapshot.view?.turn as 'p1' | 'p2';
+    for (let step = 0; step < 2000 && !snapshot.view?.result; step += 1) {
+      const seat = snapshot.view?.phase === 'round-over' ? 'p1' : snapshot.view?.turn as 'p1' | 'p2';
       api.localSeat(seat);
       snapshot = api.getSnapshot();
-      const action = snapshot.view?.actions?.find((item: any) => ['play', 'pass'].includes(item.action.type))?.action;
+      const action = snapshot.view?.actions?.find((item: any) => ['play', 'pass', 'next-round'].includes(item.action.type))?.action;
       expect(action, `expected a legal Domino action at step ${step}`).toBeTruthy();
       await api.sendAction(action);
       snapshot = api.getSnapshot();

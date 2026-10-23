@@ -1,7 +1,7 @@
 import { FormEvent, useCallback, useEffect, useRef, useState } from 'react';
 import type { Language, PlayerId, GameId, GameAction } from '../core/types';
 import { gameCatalog, getGame } from '../games/catalog';
-import { gameRules, marbleLegacyRules, marbleCreditRules, marbleTieredRules, marbleExpandedRules, dominoPremiumRules } from '../games/rules';
+import { gameRules, marbleLegacyRules, marbleCreditRules, marbleTieredRules, marbleExpandedRules, dominoPremiumRules, lisbethDominoRules } from '../games/rules';
 import { BrandHeader } from './App';
 import { Link, navigate, roomHref } from './Router';
 import DominoBoard from './DominoBoard';
@@ -381,12 +381,12 @@ function useModalFocus(onEscape: () => void) {
   return dialogRef;
 }
 
-function GameInstructions({ gameId, language, rules, options, desktopDisplay = true }: { gameId: GameId; language: Language; rules: string[]; desktopDisplay?: boolean; options?: import('./beginner-guides').BeginnerGuideOptions }) {
+function GameInstructions({ gameId, language, rules, options, dominoMode, dominoRulesVersion, desktopDisplay = true }: { gameId: GameId; language: Language; rules: string[]; dominoMode?: string; dominoRulesVersion?: number; desktopDisplay?: boolean; options?: import('./beginner-guides').BeginnerGuideOptions }) {
   if (['davinci', 'catchmind', 'marble'].includes(gameId)) return <BeginnerGameInstructions desktopDisplay={desktopDisplay} gameId={gameId} language={language} rules={rules} options={options}/>;
   if (gameId === 'minhwatu') return <MinhwatuGuide language={language}/>;
   const QuickGuide = gameId === 'domino' ? DominoQuickGuide : gameId === 'jaipur' ? JaipurQuickGuide : gameId === 'splendor' ? SplendorQuickGuide : null;
   const fullRules = <ol>{rules.map((rule, i) => <li key={i}><span aria-hidden="true">{String(i + 1).padStart(2, '0')}</span><p>{rule}</p></li>)}</ol>;
-  return QuickGuide ? <><QuickGuide language={language} {...(['splendor', 'jaipur'].includes(gameId) ? { desktopDisplay } : {})}/><details className="guide-details"><summary>{text(language, '궁금할 때: 세부 규칙 보기', 'Ver reglas detalladas')}</summary>{fullRules}</details></> : fullRules;
+  return QuickGuide ? <><QuickGuide language={language} {...(gameId === 'domino' ? { mode: dominoMode, rulesVersion: dominoRulesVersion } : {})} {...(['splendor', 'jaipur'].includes(gameId) ? { desktopDisplay } : {})}/><details className="guide-details"><summary>{text(language, '궁금할 때: 세부 규칙 보기', 'Ver reglas detalladas')}</summary>{fullRules}</details></> : fullRules;
 }
 
 export function GameGuide({ gameId, language, desktopDisplay = true, dominoMode, dominoRulesVersion, marbleVersion, marbleEconomyVersion, marbleEventVersion, marbleCityRouteVersion }: { gameId: GameId; language: Language; desktopDisplay?: boolean; dominoMode?: string; dominoRulesVersion?: number; marbleVersion?: number; marbleEconomyVersion?: number; marbleEventVersion?: number; marbleCityRouteVersion?: number }) {
@@ -394,7 +394,7 @@ export function GameGuide({ gameId, language, desktopDisplay = true, dominoMode,
   const economyVersion = marbleEconomyVersion ?? (marbleVersion === undefined ? 2 : 0);
   const eventVersion = marbleEventVersion ?? (marbleVersion === undefined ? 3 : undefined);
   const cityRouteVersion = marbleCityRouteVersion ?? (marbleVersion === undefined ? 3 : 0);
-  const rules = gameId === 'domino' && dominoRulesVersion === 1 ? dominoPremiumRules : gameId === 'marble' ? marbleVersion === 1 ? marbleLegacyRules : eventVersion === 3 ? marbleExpandedRules : economyVersion === 2 ? marbleTieredRules : economyVersion === 1 ? marbleCreditRules : gameRules.marble : gameRules[gameId];
+  const rules = gameId === 'domino' && dominoRulesVersion === 2 ? lisbethDominoRules : gameId === 'domino' && dominoRulesVersion === 1 ? dominoPremiumRules : gameId === 'marble' ? marbleVersion === 1 ? marbleLegacyRules : eventVersion === 3 ? marbleExpandedRules : economyVersion === 2 ? marbleTieredRules : economyVersion === 1 ? marbleCreditRules : gameRules.marble : gameRules[gameId];
   const dominoModeLabel = dominoMode === 'partners'
     ? text(language, '현재 모드: 사람-봇 혼합 팀전', 'Modo actual: equipos mixtos de persona y bot')
     : dominoMode === 'humans-vs-bots'
@@ -407,8 +407,8 @@ export function GameGuide({ gameId, language, desktopDisplay = true, dominoMode,
       <h2 id="game-guide-title">{game.title[language]} · {text(language, '게임 방법', 'Cómo jugar')}</h2>
       {gameId !== 'minhwatu' && <p className="game-guide-subtitle">{game.subtitle[language]}</p>}
     </div><a className="guide-return" href="#game-board">{text(language, '게임으로 돌아가기 ↑', 'Volver al juego ↑')}</a></header>
-    <GameInstructions desktopDisplay={desktopDisplay} gameId={gameId} language={language} rules={rules[language]} options={{ marbleVersion, marbleEconomyVersion: economyVersion, marbleCityRouteVersion: cityRouteVersion }}/>
-    {game.id === 'domino' && <p className="variant-note">{dominoModeLabel}{' · '}{dominoRulesVersion === 1 ? text(language, '목표점수·보너스·막힘 판정은 테이블 설정을 확인하세요.', 'Revisa la meta, los bonos y el tranque en los ajustes.') : text(language, '기존 단판 규칙입니다. 카피쿠아 보너스는 적용하지 않습니다.', 'Esta sala conserva las reglas de una sola mano, sin bono de capicúa.')}</p>}
+    <GameInstructions desktopDisplay={desktopDisplay} gameId={gameId} language={language} rules={rules[language]} dominoMode={dominoMode} dominoRulesVersion={dominoRulesVersion} options={{ marbleVersion, marbleEconomyVersion: economyVersion, marbleCityRouteVersion: cityRouteVersion }}/>
+    {game.id === 'domino' && <p className="variant-note">{dominoModeLabel}{' · '}{dominoRulesVersion === 2 ? text(language, 'Lisbeth 규칙 · 100점 또는 200점 매치 · 카피쿠아 +30점.', 'Reglas de Lisbeth · partido a 100 o 200 · capicúa +30.') : dominoRulesVersion === 1 ? text(language, '목표점수·보너스·막힘 판정은 테이블 설정을 확인하세요.', 'Revisa la meta, los bonos y el tranque en los ajustes.') : text(language, '기존 단판 규칙입니다. 카피쿠아 보너스는 적용하지 않습니다.', 'Esta sala conserva las reglas de una sola mano, sin bono de capicúa.')}</p>}
   </section>;
 }
 
@@ -422,8 +422,8 @@ export function RulesDialog({ gameId, language, dominoMode, onClose }: { gameId:
       : dominoMode === '1v1'
         ? text(language, '현재 모드: 1대1', 'Modo actual: 1 contra 1')
         : text(language, '첫 타일 전에 모드를 선택할 수 있어요.', 'Pueden elegir el modo antes de colocar la primera ficha.');
-  const rules = gameId === 'domino' ? dominoPremiumRules : gameId === 'marble' ? marbleExpandedRules : gameRules[gameId];
-  return <div className="dialog-scrim" role="presentation" onMouseDown={event => { if (event.target === event.currentTarget) onClose(); }}><section ref={dialogRef} tabIndex={-1} className="rules-dialog" role="dialog" aria-modal="true" aria-labelledby="rules-title"><button className="dialog-close" aria-label={text(language, '닫기', 'Cerrar')} onClick={onClose}>×</button><span className="eyebrow">{text(language, '게임 방법', 'CÓMO JUGAR')} · {languageLabel(language).toUpperCase()}</span><div className={`rules-icon game-${game.color}`}><span className={`game-thumbnail art-${game.id}`} aria-hidden="true"/></div><h2 id="rules-title">{game.title[language]}</h2>{gameId !== 'minhwatu' && <p className="rules-subtitle">{game.subtitle[language]}</p>}<GameInstructions gameId={gameId} language={language} rules={rules[language]}/>{game.id === 'domino' && <p className="variant-note">{dominoModeLabel}{' · '}{text(language, '단판 또는 누적 경기를 선택하고, 보너스와 막힘 판정은 테이블 설정에서 함께 확인하세요.', 'Elijan una mano o un partido por puntos y revisen los bonos y el conteo del tranque en los ajustes de la mesa.')}</p>}<button className="button button-dark full-button" onClick={onClose}>{text(language, '확인했어요', 'Entendido')} <span>✓</span></button></section></div>;
+  const rules = gameId === 'domino' ? lisbethDominoRules : gameId === 'marble' ? marbleExpandedRules : gameRules[gameId];
+  return <div className="dialog-scrim" role="presentation" onMouseDown={event => { if (event.target === event.currentTarget) onClose(); }}><section ref={dialogRef} tabIndex={-1} className="rules-dialog" role="dialog" aria-modal="true" aria-labelledby="rules-title"><button className="dialog-close" aria-label={text(language, '닫기', 'Cerrar')} onClick={onClose}>×</button><span className="eyebrow">{text(language, '게임 방법', 'CÓMO JUGAR')} · {languageLabel(language).toUpperCase()}</span><div className={`rules-icon game-${game.color}`}><span className={`game-thumbnail art-${game.id}`} aria-hidden="true"/></div><h2 id="rules-title">{game.title[language]}</h2>{gameId !== 'minhwatu' && <p className="rules-subtitle">{game.subtitle[language]}</p>}<GameInstructions gameId={gameId} language={language} rules={rules[language]} dominoMode={dominoMode} dominoRulesVersion={gameId === 'domino' ? 2 : undefined}/>{game.id === 'domino' && <p className="variant-note">{dominoModeLabel}{' · '}{text(language, 'Lisbeth 규칙으로 100점 또는 200점 매치를 진행합니다.', 'Jueguen con las reglas de Lisbeth a 100 o 200 puntos.')}</p>}<button className="button button-dark full-button" onClick={onClose}>{text(language, '확인했어요', 'Entendido')} <span>✓</span></button></section></div>;
 }
 
 function ConfirmClose({ language, closing, onCancel, onConfirm }: { language: Language; closing: boolean; onCancel: () => void; onConfirm: () => void }) {

@@ -34,8 +34,8 @@
   "reference": "/images/approved-couple-room/approved-character-reference.png",
   "generator": "image_gen.imagegen",
   "postprocessing": "None; original transparent PNG bytes copied unchanged.",
-  "scope": "Continuous registered 2.5D cutout handover. Fixed approved bodies/faces/feet; articulated shoulder, elbow and wrist segments; one persistent rose; local finger-expression blending at contact. offer.png is a hand-only source atlas and received.png is the shared atlas/static fallback. Historical whole-scene contact pose is retired, not shipped.",
-  "continuity": "Original approved faces, clothing, headsets and fixed head/foot positions retained; no wedding/proposal/ring depiction.",
+  "scope": "Continuous 2.5D handover. One intact original donor arm rotates gently at its shoulder; one original receiver upper arm joins one complete receiver forearm. The receiver turns its open palm at the wrist, swaps to one opaque closed pose under the foreground donor grip/flower leaves, and reveals it during release. A complementary local mask opens the donor hand. One persistent rose has a stem-only grip occlusion; no full-scene pose swap, hand crossfade, synthetic skin or duplicate forearm.",
+  "continuity": "Original source PNG bytes and original face/body/outfit identity artwork are retained. No generated face/body/outfit pixels from the new isolated limb atlases are used. Rendered RGB equivalence to a flat original-only SVG is not proven; source-image preservation and rendered-pixel identity are separate claims. No wedding/proposal/ring depiction.",
   "puppetAssets": [
     {
       "file": "body-clean.png",
@@ -58,15 +58,62 @@
       ],
       "generator": "image_gen.imagegen",
       "postprocessing": "None; original PNG bytes copied unchanged."
+    },
+    {
+      "file": "limb-atlas.png",
+      "source": "/workspace/generated_images/exec-2e6b8d70-8837-4915-8702-05758913ca0e.png",
+      "role": "Complete receiver forearm/closed hand and donor open hand only. The generated donor forearm region is retained in the unchanged atlas but is not used by the current rig.",
+      "references": [
+        "received.png"
+      ],
+      "generationBrief": "Two isolated complete anatomy limb cutouts: donor open offering forearm/palm and receiver closed raised forearm/hand, rebuilding occluded skin/fingers. Transparent alpha; match original illustration tone and outline; no faces, bodies, clothing, flower, hair or other hands.",
+      "sha256": "ed06b75c2d1c880c827d62468fbf85ad278c8726808c8c8077015cd4269a0bd1",
+      "size": [
+        1774,
+        887
+      ],
+      "mode": "RGBA",
+      "alphaExtrema": [
+        0,
+        255
+      ],
+      "generator": "image_gen.imagegen",
+      "generatedAt": "2026-10-23",
+      "postprocessing": "None. Successful transparent image_gen output PNG copied byte-for-byte unchanged; crop/registration and pose windows occur only in runtime SVG.",
+      "sourceBytesMatch": true
+    },
+    {
+      "file": "hand-pose-atlas.png",
+      "source": "/workspace/generated_images/exec-f6e89ada-8541-47f5-aae3-ea2a6fe6b031.png",
+      "role": "Alternate donor gripping hand and receiver open hand with wrist overlap only. Its longer forearm pixels are retained in the unchanged atlas but do not supply the donor arm geometry.",
+      "references": [
+        "limb-atlas.png",
+        "offer.png"
+      ],
+      "generationBrief": "Two isolated alternate hand poses with wrist overlap: male right hand firmly gripping an imaginary near-vertical stem with forearm entering left; female left hand open, fingers upward, forearm entering below. Match references, keep anatomy complete, transparent alpha, no drawn stem/flower/faces/body/clothing.",
+      "sha256": "903bf298d962f1675492a7a166558734dda21da166b6d0ca043eb552cbd9a2bc",
+      "size": [
+        1774,
+        887
+      ],
+      "mode": "RGBA",
+      "alphaExtrema": [
+        0,
+        255
+      ],
+      "generator": "image_gen.imagegen",
+      "generatedAt": "2026-10-23",
+      "postprocessing": "None. Successful transparent image_gen output PNG copied byte-for-byte unchanged; crop/registration and pose windows occur only in runtime SVG.",
+      "sourceBytesMatch": true
     }
   ],
-  "puppetSource": "received.png supplies unchanged fixed identity pixels, skin-contour arm/hand segments and reduced-motion/error fallback. offer.png supplies only donor closed-grip and recipient open-reach hand pixels, registered to those same articulated wrists and blended locally at contact. body-clean.png covers removed moving-limb/flower regions. rose-single.png is the only animated flower. No whole-body image swap or ending crossfade.",
+  "puppetSource": "received.png supplies approved fixed face/body/outfit artwork, the one intact donor arm from shoulder to wrist, original supporting arm, and original reduced-motion/error static fallback. offer.png supplies only the complete receiver upper-arm segment with its cut-root buried in the original sleeve. limb-atlas.png supplies receiver complete forearm/closed hand and donor open hand only. hand-pose-atlas.png supplies donor closed grip and receiver open hand only; generated donor forearm regions are not used. body-clean.png is restricted to removed arm/rose regions. Original navy cuff contours are restored before the flower. rose-single.png is the only flower image, in front of receiver hand poses but with its stem masked behind the receiving grip; the donor closed grip stays foreground. All six runtime image sources are preloaded and error fallback retains the approved original static image.",
   "rejectedGeneratedAssets": [
     "/workspace/generated_images/exec-a1be1f5e-97b3-44a4-8e58-0169e368fdd3.png",
     "/workspace/generated_images/exec-30656e4c-e171-4823-ad1c-392af3162fe3.png",
     "/workspace/generated_images/exec-f35968bc-7f36-40e8-87e2-6aae077f24bf.png"
   ],
-  "wristRepair": "Curved overlapping recipient hand/forearm clip boundaries with a narrow sampled-skin-color SVG underlay close the rotating wrist seam. No raster files were edited.",
+  "wristRepair": "The original donor arm remains one continuous raster piece. New hand pixels overlap only at the wrist with a curved source-crease boundary, leaving a small tone difference but no rectangular skin patch. Receiver open/closed fingers are never wiped together or alpha blended: the open palm rolls/foreshortens at its registered wrist and a single opaque pose swaps at 1.38s. Flower leaves and foreground donor fingers occlude most of that swap; a narrow closed fingertip edge remains visible above the leaf, so invisible pose replacement is not claimed. No synthetic skin, blur, color-key filter or duplicate forearm.",
   "retiredAssets": [
     {
       "file": "contact.png",
@@ -84,5 +131,123 @@
       "pose": "contact",
       "reason": "Whole-scene contact pose retired after continuous cutout handover visual acceptance; original generated source retained outside public runtime assets."
     }
-  ]
+  ],
+  "retiredImplementationNotes": [
+    {
+      "field": "wristRepair",
+      "description": "Curved overlapping recipient hand/forearm clip boundaries with a narrow sampled-skin-color SVG underlay close the rotating wrist seam. No raster files were edited.",
+      "reason": "Retired: sampled skin underlay and hand-expression crossfade are not used by the current complete-limb candidate."
+    }
+  ],
+  "recovery": "Restore each unchanged PNG from its recorded source or SHA256-matching artifact. If source is unavailable, use the recorded reference assets and generation brief with image_gen.imagegen and transparent_background=true; inspect anatomy/style, then re-register actual joints and verify start/contact/final source frames before acceptance. Runtime SVG transforms and opaque pose masks live in post-hero-preview/src/RoseGiftFinale.tsx.",
+  "runtimeRig": {
+    "source": "post-hero-preview/src/RoseGiftFinale.tsx",
+    "durationSeconds": 3,
+    "heldContactSeconds": [
+      1.2,
+      1.85
+    ],
+    "transferSeconds": 1.65,
+    "donorReleaseSeconds": [
+      1.6,
+      1.9
+    ],
+    "heldContactSeparationSourcePixels": 44.48272323056059,
+    "donor": {
+      "armSource": "received.png",
+      "shoulder": [
+        522,
+        620
+      ],
+      "shoulderAngles": [
+        8,
+        -16,
+        0
+      ],
+      "independentElbow": false,
+      "wrist": [
+        616,
+        656
+      ],
+      "grip": [
+        656,
+        652
+      ]
+    },
+    "recipient": {
+      "upperArmSource": "offer.png",
+      "forearmSource": "limb-atlas.png",
+      "shoulder": [
+        710,
+        620
+      ],
+      "elbow": [
+        735,
+        688
+      ],
+      "wrist": [
+        735,
+        610
+      ],
+      "grip": [
+        740,
+        575
+      ],
+      "upperArmRegistration": "Similarity transform maps source cuff-root (722,616) to (695,615), buried inside the original sleeve, while source elbow (735,688) maps to the same elbow. Only skin contour from offer.png is used; original navy cuff contour restores the foreground edge before the flower."
+    },
+    "preservedBehavior": [
+      "once-only onReceived callback",
+      "keyboard-instant replay",
+      "reduced-motion original static image",
+      "visibility pause/resume",
+      "forward-reset replay",
+      "native button semantics",
+      "Korean and Spanish signed/neutral closing lines"
+    ],
+    "recipientHandRollSeconds": [
+      1.05,
+      1.35
+    ],
+    "recipientOpaquePoseSwapSeconds": 1.38,
+    "recipientOpenForeshortening": [
+      1,
+      0.4
+    ],
+    "recipientClosedRevealSeconds": [
+      1.6,
+      1.95
+    ],
+    "recipientClosedForeshortening": [
+      0.4,
+      1
+    ],
+    "recipientClosedWristTurnDegrees": [
+      10,
+      0
+    ]
+  },
+  "sourcePreservation": {
+    "originalPNGs": "offer.png, received.png, body-clean.png and rose-single.png remain byte-for-byte unchanged.",
+    "newAtlasPNGs": "Both successful image_gen outputs are copied byte-for-byte unchanged; no generated face/body/outfit pixels are used.",
+    "renderedPixelIdentity": "Source-image preservation is distinct from rendered RGB identity. Exact flat-original SVG RGB equivalence is not proven; offline cross-pose face checks and source SHA256 are recorded in the local review evidence."
+  },
+  "reviewCandidate": {
+    "date": "2026-10-23",
+    "sourceSHA256": "645740de40b1bb9657b247988afd5ccdb47c8d1f097fbf45b14cf936fba0a75b",
+    "evidence": "output/current-review/rose-naturalness/offline-poses.json",
+    "currentSourcePoseSeconds": [
+      0,
+      1.35,
+      1.379,
+      1.38,
+      1.5,
+      3
+    ],
+    "status": "Frozen candidate awaiting final independent visual and browser gate.",
+    "limits": [
+      "A narrow closed fingertip edge appears beside the stem at 1.38s; complete concealment of the opaque hand replacement is not established.",
+      "A small source/new-hand wrist tone difference remains.",
+      "No new browser/tempo/mobile/hardware validation; exact original-only rendered RGB equivalence is not proven."
+    ]
+  }
 }

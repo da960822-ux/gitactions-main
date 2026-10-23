@@ -5,3 +5,5 @@ User-approved source assets, supplied in Yeonseok-Lisbeth-approved-assets.zip on
 - lisyeon-pawn.png: existing approved rabbit artwork. Does not replace the game's current runtime mapping automatically.
 
 The room renderer may map original pixels to separate geometry. This does not establish a fully modeled or rigged three-dimensional character, nor approve new generated people. No image regeneration or retouching was performed during this import.
+
+Runtime encoding (2026-10-23): `hero-near-source-opacity.png` retains the exact alpha bytes of `hero-near-source-alpha.png` with constant white RGB, since the Hero shader samples only alpha. `hero-cosmic-disocclusion-plate.webp` is a lossless encoding of the existing PNG with identical decoded RGBA and sRGB/no-ICC metadata. The original source files remain unchanged. Combined referenced file bytes fall from 4,580,740 to 1,935,240; this is an asset-size comparison, not a browser transfer or GPU measurement.

@@ -2,6 +2,23 @@ import type { GameId, Language } from '../core/types';
 
 type LocalizedRules = Record<Language, string[]>;
 
+export const lisbethDominoRules: LocalizedRules = {
+  ko: [
+    '목표와 준비 — 1대1 또는 네 자리 팀전으로 100점이나 200점까지 경기합니다. 더블 식스 28장을 쓰며 각 자리에 7장씩 나눕니다. 첫 판은 6|6으로 열고, 이후 판은 직전 판 승자가 손패의 타일 아무거나 놓아 엽니다. 파트너 모드에서는 두 팀이 번갈아 앉습니다.',
+    '차례와 패스 — 열린 끝 숫자에 맞는 타일을 놓으세요. 놓을 타일이 없으면 패스합니다. 1대1은 첫 타일 다음 사람이 첫 차례에 패스하면 시작 타일이 더블일 때 +30점, 비더블일 때 +60점 보너스 대상이 됩니다. 네 자리에서는 두 번째 자리가 패스하고 세 번째 자리가 놓아야 보너스를 받으며, 세 번째 자리도 패스하면 보너스가 없습니다. 보너스는 라운드 정산 때 더합니다.',
+    '카피쿠아 — 손패를 비우는 마지막 타일이 더블이 아니고, 놓기 직전 양쪽의 서로 다른 열린 끝 모두에 맞았다면 카피쿠아입니다. 승리 팀은 +30점과 모든 손패의 남은 점수 합을 받습니다.',
+    '트랑케 — 모든 모드에서 양쪽 열린 끝 숫자에 각각 맞는 서로 다른 타일 7개가 모두 놓이면 즉시 판이 막힙니다. 그 밖에는 아무도 놓을 수 없을 때 막힙니다. 마지막으로 놓아 판을 막은 사람과 바로 다음 자리의 남은 점수를 비교해 낮은 쪽이 이깁니다. 같으면 판을 막은 사람이 이깁니다. 승리 팀 점수에는 본인과 팀원을 포함한 모든 손패의 남은 점수를 셉니다.',
+    '경기 점수 — 해당 보너스와 점수는 라운드 정산 때 더합니다. 먼저 목표 점수에 도달하면 매치가 끝납니다. 파소 코리도 보너스는 없습니다.',
+  ],
+  es: [
+    'Objetivo y reparto — Jueguen a 100 o 200 puntos, en uno contra uno o con cuatro asientos por equipos. Se usan las 28 fichas doble-seis y se reparten 7 por asiento. La primera mano abre con el 6|6; en las siguientes, quien ganó la mano anterior abre con cualquier ficha de su mano. En modo parejas, los equipos se sientan alternados.',
+    'Turnos y pases — Coloca una ficha que coincida con un extremo abierto. Si no puedes jugar, pasa. En uno contra uno, quien sigue a la apertura queda con un bono de +30 puntos si la ficha inicial fue doble o +60 si no lo fue, al pasar en su primer turno. Con cuatro asientos, el segundo debe pasar y el tercero jugar para recibir el bono; si el tercero también pasa, no hay bono. Los bonos se suman al cerrar la mano.',
+    'Capicúa — Hay capicúa si la última ficha que vacía tu mano no es doble y, antes de colocarla, servía en ambos extremos abiertos, que deben tener números distintos. El equipo ganador recibe +30 puntos y los puntos restantes de todas las manos.',
+    'Tranque — En todos los modos, la mano se bloquea de inmediato cuando ya se jugaron las 7 fichas distintas que conectan con cada extremo abierto. También se bloquea si nadie puede jugar. Se comparan los puntos de quien cerró la mano y del asiento siguiente; gana quien tenga menos. En empate gana quien la cerró. Para puntuar se cuentan todas las fichas restantes, incluidas las de quien ganó y su pareja.',
+    'Puntuación — Los bonos y puntos se suman al cerrar la mano. La partida termina al alcanzar la meta. No hay bono de paso corrido.',
+  ],
+};
+
 export const marbleCreditRules: LocalizedRules = {
   ko: [
     '목표 — 자체 부동산 게임 규칙입니다. 상대가 파산하면 이기고, 120턴 뒤에는 현금+도시 매입가+건설 비용−미상환 대출을 합친 순자산을 비교합니다.',

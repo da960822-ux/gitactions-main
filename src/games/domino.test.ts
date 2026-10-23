@@ -1,10 +1,12 @@
 import { describe, expect, it } from 'vitest';
 import { chooseDominoBotAction, dominoEngine } from './domino';
 
-describe('dominoEngine', () => {
+const legacyState = (seed: number): any => ({ ...dominoEngine.createInitialState(seed), rulesVersion: 1, settings: { difficulty: 'normal', targetScore: 0, capicuaBonus: 0, pasoCorridoBonus: 0, tranqueRule: 'team' } });
+
+describe('dominoEngine saved v1 rules', () => {
   it('deals a deterministic double-six set and exposes only the current hand', () => {
-    const s = dominoEngine.createInitialState(42);
-    expect(dominoEngine.createInitialState(42)).toEqual(s);
+    const s = legacyState(42);
+    expect(legacyState(42)).toEqual(s);
     expect(s.hands.p1).toHaveLength(7);
     expect(s.hands.p2).toHaveLength(7);
     expect(s.stock).toHaveLength(14);
@@ -21,7 +23,7 @@ describe('dominoEngine', () => {
   });
 
   it('requires the opening tile, enforces matching ends, alternates turns, and keeps state immutable', () => {
-    const s: any = dominoEngine.createInitialState(11), p = s.turn;
+    const s: any = legacyState(11), p = s.turn;
     const bad = dominoEngine.validateAction(s, p, { type: 'play', payload: { index: 0, side: 'center' } });
     expect(bad).toBeTruthy();
     const next = dominoEngine.applyAction(s, p, { type: 'play', payload: { index: s.hands[p].findIndex((t: any) => t === s.opening.tile), side: 'left' } });
@@ -32,7 +34,7 @@ describe('dominoEngine', () => {
   });
 
   it('awards a 1v1 hand-out win to player 2', () => {
-    const s: any = dominoEngine.createInitialState(9);
+    const s: any = legacyState(9);
     s.turn = 'p2';
     s.board = [{ a: 0, b: 1, by: 'p1' }];
     s.ends = { left: 0, right: 1 };
@@ -42,7 +44,7 @@ describe('dominoEngine', () => {
   });
 
   it('ends a blocked 1v1 after two legal passes and compares remaining pips', () => {
-    let s: any = dominoEngine.createInitialState(3);
+    let s: any = legacyState(3);
     s.board = [{ a: 0, b: 0, by: 'p1' }];
     s.ends = { left: 0, right: 0 };
     s.hands.p1 = [{ a: 6, b: 6 }, { a: 5, b: 5 }, { a: 4, b: 4 }, { a: 3, b: 3 }, { a: 2, b: 6 }, { a: 3, b: 6 }, { a: 4, b: 6 }];
@@ -55,7 +57,7 @@ describe('dominoEngine', () => {
   });
 
   it('does not allow passing when any tile fits an exposed end', () => {
-    const s: any = dominoEngine.createInitialState(10);
+    const s: any = legacyState(10);
     const p = s.turn;
     const tile = s.hands[p].find((t: any) => t.a === 0 || t.b === 0) ?? { a: 0, b: 1 };
     s.hands[p] = [tile]; s.board = [{ a: 0, b: 2, by: p === 'p1' ? 'p2' : 'p1' }];
@@ -64,7 +66,7 @@ describe('dominoEngine', () => {
   });
 
   it.each(['humans-vs-bots', 'partners'] as const)('runs deterministic bots in %s mode while hiding their hands', mode => {
-    let s: any = dominoEngine.createInitialState(23);
+    let s: any = legacyState(23);
     s = dominoEngine.applyAction(s, 'p1', { type: 'set-mode', payload: { mode } });
     expect(s.mode).toBe(mode);
     expect(s.hands.b1).toHaveLength(7);
@@ -87,7 +89,7 @@ describe('dominoEngine', () => {
   });
 
   it('locks configuration to p1 before the first play and rejects invalid values', () => {
-    const initial: any = dominoEngine.createInitialState(51);
+    const initial: any = legacyState(51);
     expect(dominoEngine.validateAction(initial, 'p2', { type: 'configure', payload: { difficulty: 'hard' } })).toBeTruthy();
     expect(dominoEngine.validateAction(initial, 'p1', { type: 'configure', payload: { mode: 'not-a-mode' } })).toBeTruthy();
     expect(dominoEngine.validateAction(initial, 'p1', { type: 'configure', payload: { difficulty: 'expert' } })).toBeTruthy();
@@ -101,7 +103,7 @@ describe('dominoEngine', () => {
   });
 
   it('does not offer new settings or match progression for a legacy saved state', () => {
-    const legacy: any = dominoEngine.createInitialState(57);
+    const legacy: any = legacyState(57);
     delete legacy.rulesVersion; delete legacy.settings; delete legacy.matchScores; delete legacy.roundBonuses;
     expect(dominoEngine.validateAction(legacy, 'p1', { type: 'configure', payload: { targetScore: 100 } })).toBeTruthy();
     expect(dominoEngine.validateAction(legacy, 'p1', { type: 'next-round' })).toBeTruthy();
@@ -111,7 +113,7 @@ describe('dominoEngine', () => {
   });
 
   it('keeps live pip totals and every opposing hand private until the round ends', () => {
-    const s: any = dominoEngine.createInitialState(61);
+    const s: any = legacyState(61);
     const foreign = s.turn === 'p1' ? 'p2' : 'p1';
     const live = dominoEngine.getPlayerView(s, s.turn);
     expect(live.board.scores).toBeNull();
@@ -133,11 +135,11 @@ describe('dominoEngine', () => {
   });
 
   it('deals 28 distinct tiles, leaves 14 unused in 1v1, and deals both four-seat teams', () => {
-    const one: any = dominoEngine.createInitialState(72);
+    const one: any = legacyState(72);
     expect(one.stock).toHaveLength(14);
     expect(new Set([...one.hands.p1, ...one.hands.p2, ...one.stock].map((t: any) => [t.a, t.b].join('-'))).size).toBe(28);
     for (const mode of ['humans-vs-bots', 'partners'] as const) {
-      const four: any = dominoEngine.applyAction(dominoEngine.createInitialState(72), 'p1', { type: 'configure', payload: { mode } });
+      const four: any = dominoEngine.applyAction(legacyState(72), 'p1', { type: 'configure', payload: { mode } });
       expect(four.stock).toHaveLength(0);
       expect(four.hands.p1).toHaveLength(7); expect(four.hands.p2).toHaveLength(7);
       expect(four.hands.b1.length).toBeLessThanOrEqual(7); expect(four.hands.b2.length).toBeLessThanOrEqual(7);
@@ -176,7 +178,7 @@ describe('dominoEngine', () => {
       [{ a: 5, b: 2 }, 'right', { left: 1, right: 2 }],
       [{ a: 2, b: 5 }, 'right', { left: 1, right: 2 }],
     ] as const) {
-      const state: any = dominoEngine.createInitialState(54);
+      const state: any = legacyState(54);
       state.turn = 'p1'; state.hands.p1 = [tile]; state.hands.p2 = [{ a: 0, b: 0 }];
       state.board = [{ a: 1, b: 5, by: 'p2', sequence: 1 }]; state.ends = { left: 1, right: 5 };
       const action = chooseDominoBotAction([tile], state.board, state.ends, 'normal');
@@ -220,7 +222,7 @@ describe('dominoEngine', () => {
   });
 
   it('awards capicua only for a non-double matching both prior ends', () => {
-    let s: any = dominoEngine.createInitialState(81);
+    let s: any = legacyState(81);
     s.settings.capicuaBonus = 25;
     s.board = [{ a: 1, b: 2, by: 'p2' }]; s.ends = { left: 1, right: 2 };
     s.turn = 'p1'; s.hands.p1 = [{ a: 1, b: 2 }]; s.hands.p2 = [{ a: 3, b: 3 }, { a: 4, b: 4 }];
@@ -230,7 +232,7 @@ describe('dominoEngine', () => {
   });
 
   it('keeps optional bonuses off by default', () => {
-    const s: any = dominoEngine.createInitialState(82);
+    const s: any = legacyState(82);
     expect(s.settings.capicuaBonus).toBe(0);
     expect(s.settings.pasoCorridoBonus).toBe(0);
     s.board = [{ a: 1, b: 2, by: 'p2' }]; s.ends = { left: 1, right: 2 };
@@ -241,7 +243,7 @@ describe('dominoEngine', () => {
   });
 
   it('awards paso corrido once per last-placed tile and settles it only when the hand ends', () => {
-    const s: any = dominoEngine.createInitialState(88);
+    const s: any = legacyState(88);
     s.settings.pasoCorridoBonus = 25;
     s.board = [{ a: 0, b: 3, by: 'p1' }]; s.ends = { left: 0, right: 3 };
     s.turn = 'p2'; s.lastPlacer = 'p1'; s.passes = 0;
@@ -261,7 +263,7 @@ describe('dominoEngine', () => {
   });
 
   it('does not award paso corrido without a last placer or when the option is off', () => {
-    const s: any = dominoEngine.createInitialState(89);
+    const s: any = legacyState(89);
     s.settings.pasoCorridoBonus = 25;
     s.board = [{ a: 0, b: 0, by: 'p1' }]; s.ends = { left: 0, right: 0 };
     s.turn = 'p2'; s.lastPlacer = null; s.hands.p1 = [{ a: 3, b: 3 }]; s.hands.p2 = [{ a: 4, b: 4 }];
@@ -279,7 +281,7 @@ describe('dominoEngine', () => {
     ['team', 'p1'],
     ['lowest-player', 'p2'],
   ] as const)('resolves a four-seat tranque by the %s rule', (tranqueRule, winner) => {
-    let s: any = dominoEngine.applyAction(dominoEngine.createInitialState(99), 'p1', { type: 'configure', payload: { mode: 'partners', tranqueRule } });
+    let s: any = dominoEngine.applyAction(legacyState(99), 'p1', { type: 'configure', payload: { mode: 'partners', tranqueRule } });
     s.turn = 'p1'; s.board = [{ a: 0, b: 0, by: 'p2' }]; s.ends = { left: 0, right: 0 };
     s.hands = { p1: [{ a: 3, b: 3 }], b1: [{ a: 3, b: 3 }], p2: [{ a: 1, b: 1 }], b2: [{ a: 6, b: 6 }] };
     const afterP1 = dominoEngine.applyAction(s, 'p1', { type: 'pass' });
@@ -290,7 +292,7 @@ describe('dominoEngine', () => {
   });
 
   it('returns a draw when lowest-player tranque scores tie', () => {
-    let s: any = dominoEngine.applyAction(dominoEngine.createInitialState(100), 'p1', { type: 'configure', payload: { mode: 'partners', tranqueRule: 'lowest-player' } });
+    let s: any = dominoEngine.applyAction(legacyState(100), 'p1', { type: 'configure', payload: { mode: 'partners', tranqueRule: 'lowest-player' } });
     s.turn = 'p1'; s.board = [{ a: 0, b: 0, by: 'p2' }]; s.ends = { left: 0, right: 0 };
     s.hands = { p1: [{ a: 3, b: 3 }], b1: [{ a: 6, b: 6 }], p2: [{ a: 2, b: 4 }], b2: [{ a: 6, b: 6 }] };
     const afterP1 = dominoEngine.applyAction(s, 'p1', { type: 'pass' });
@@ -301,7 +303,7 @@ describe('dominoEngine', () => {
   });
 
   it.each([100, 200] as const)('accumulates round awards until the %i match target', target => {
-    let s: any = dominoEngine.applyAction(dominoEngine.createInitialState(target), 'p1', { type: 'configure', payload: { targetScore: target } });
+    let s: any = dominoEngine.applyAction(legacyState(target), 'p1', { type: 'configure', payload: { targetScore: target } });
     const winHand = (state: any) => {
       state.board = [{ a: 0, b: 0, by: 'p2' }]; state.ends = { left: 0, right: 1 }; state.turn = 'p1';
       state.hands.p1 = [{ a: 1, b: 2 }];
@@ -317,7 +319,7 @@ describe('dominoEngine', () => {
     expect(p1View.actions.some((x: any) => x.action.type === 'next-round')).toBe(true);
     expect(p2View.actions.some((x: any) => x.action.type === 'next-round')).toBe(false);
     const nextRound = dominoEngine.applyAction(s, 'p1', { type: 'next-round' });
-    let repeat: any = dominoEngine.applyAction(dominoEngine.createInitialState(target), 'p1', { type: 'configure', payload: { targetScore: target } });
+    let repeat: any = dominoEngine.applyAction(legacyState(target), 'p1', { type: 'configure', payload: { targetScore: target } });
     repeat = winHand(repeat);
     repeat = dominoEngine.applyAction(repeat, 'p1', { type: 'next-round' });
     expect(nextRound.round).toBe(2);
@@ -339,7 +341,7 @@ describe('dominoEngine', () => {
   });
 
   it('keeps the public event log bounded and exposes only played tiles, never hidden hands or stock', () => {
-    const s: any = dominoEngine.createInitialState(108);
+    const s: any = legacyState(108);
     s.log = Array.from({ length: 50 }, (_, i) => ({ sequence: i + 1, type: 'pass', title: { ko: '패스', es: 'Pasar' } }));
     s.board = [{ a: 0, b: 1, by: 'p2' }]; s.ends = { left: 0, right: 1 }; s.turn = 'p1';
     s.hands.p1 = [{ a: 1, b: 1 }]; s.hands.p2 = [{ a: 2, b: 2 }];

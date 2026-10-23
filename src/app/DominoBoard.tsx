@@ -12,7 +12,7 @@ type Props = { view: any; language: Language; playerId: PlayerId; runAction: (ac
 type Side = 'left' | 'right';
 type Seat = PlayerId | 'b1' | 'b2';
 type Mode = '1v1' | 'partners' | 'humans-vs-bots';
-type Configuration = { mode: Mode; difficulty: 'easy' | 'normal' | 'hard'; targetScore: 0 | 100 | 200; capicuaBonus: 0 | 25; pasoCorridoBonus: 0 | 25; tranqueRule: 'team' | 'lowest-player' };
+type Configuration = { mode: Mode; difficulty: 'easy' | 'normal' | 'hard'; targetScore: 0 | 100 | 200; capicuaBonus: 0 | 25 | 30; pasoCorridoBonus: 0 | 25; tranqueRule: 'team' | 'lowest-player' | 'trancador' };
 
 const copy = (language: Language, ko: string, es: string) => language === 'ko' ? ko : es;
 const record = (value: unknown): AnyRecord => value && typeof value === 'object' && !Array.isArray(value) ? value as AnyRecord : {};
@@ -56,9 +56,12 @@ function Tile({ tile, className = '', label, sequence, previewSide }: { tile: An
 }
 
 export default function DominoBoard({ view: rawView, language, playerId, runAction }: Props) {
-  const view = record(rawView), board = record(view.board), settings = { ...DEFAULT_CONFIG, ...record(view.settings) } as Configuration;
+  const view = record(rawView), board = record(view.board), rulesVersion = number(board.rulesVersion);
+  const settings = { ...DEFAULT_CONFIG, ...record(view.settings) } as Configuration;
   const mode = (MODES.includes(view.mode) ? view.mode : settings.mode) as Mode;
   settings.mode = mode;
+  if (rulesVersion === 2) Object.assign(settings, { targetScore: [100, 200].includes(settings.targetScore) ? settings.targetScore : 200, capicuaBonus: 30, pasoCorridoBonus: 0, tranqueRule: 'trancador' });
+  const lisbeth = rulesVersion === 2;
   const ownTeam: PlayerId = mode === 'humans-vs-bots' ? 'p1' : playerId;
   const actions: Choice[] = list(view.actions), hand: AnyRecord[] = list(view.hand), tiles: AnyRecord[] = list(board.tiles);
   const seats: Seat[] = list(board.seats).filter((seat): seat is Seat => ['p1', 'p2', 'b1', 'b2'].includes(seat));
@@ -106,6 +109,8 @@ export default function DominoBoard({ view: rawView, language, playerId, runActi
     ? resultWinner === 'draw' ? copy(language, '판이 막혔고 남은 점수가 같아요.', 'El juego quedó bloqueado y los puntos restantes empataron.')
       : settings.tranqueRule === 'lowest-player'
         ? copy(language, '판이 막혔어요. 각 팀에서 손패 점수가 가장 낮은 사람을 비교했어요.', 'El juego quedó bloqueado. Se comparó a la persona con menos puntos de cada equipo.')
+        : settings.tranqueRule === 'trancador'
+          ? copy(language, '판이 막혔어요. 막은 사람과 다음 사람의 손패 점수를 비교했어요.', 'La mano se bloqueó. Se compararon los puntos de quien cerró y de quien seguía.')
         : copy(language, '판이 막혔어요. 남은 타일 점수가 낮은 팀이 이겨요.', 'El juego quedó bloqueado. Gana el equipo con menos puntos restantes.')
     : resultReason.toLowerCase().includes('target') ? copy(language, '매치 목표 점수에 도달했어요.', 'Se alcanzó la puntuación objetivo del partido.')
       : resultReason.toLowerCase().includes('all dominoes') || resultReason.toLowerCase().includes('played all') ? copy(language, '손패를 먼저 비워 이겼어요.', 'Ganó quien se quedó sin fichas primero.') : '';
@@ -224,6 +229,7 @@ export default function DominoBoard({ view: rawView, language, playerId, runActi
       : copy(language, '사람 2명 대 봇 2명', 'Dos personas contra dos bots');
   const moneyOrScore = (value: unknown) => number(value).toLocaleString(language === 'ko' ? 'ko-KR' : 'es-DO');
   const update = <K extends keyof Configuration>(key: K, value: Configuration[K]) => setConfig(current => ({ ...current, [key]: value }));
+  const updateMode = (value: Mode) => setConfig(current => ({ ...current, mode: value, ...(lisbeth ? { targetScore: 200, capicuaBonus: 30, pasoCorridoBonus: 0, tranqueRule: 'trancador' as const } : {}) }));
 
   return <section ref={boardRef} className="domino-premium" data-game="domino" data-mode={mode} data-domino-game-identity={gameIdentity} aria-label={copy(language, '도미노 게임 보드', 'Mesa de dominó')} onKeyDown={event => {
     const endpoint = event.target instanceof Element && event.target.closest('.dp-end-target, .dp-start-target');
@@ -264,9 +270,11 @@ export default function DominoBoard({ view: rawView, language, playerId, runActi
       <summary>{copy(language, '플레이 설정 보기', 'Ver ajustes de juego')}</summary>
       <div><span>{modeLabel(mode)}</span>{mode !== '1v1' && <span>{copy(language, '봇', 'IA')}: {settings.difficulty === 'easy' ? copy(language, '편안하게', 'Tranquilo') : settings.difficulty === 'hard' ? copy(language, '도전', 'Difícil') : copy(language, '보통', 'Normal')}</span>}
         <span>{copy(language, '매치 목표', 'Objetivo')}: {settings.targetScore ? settings.targetScore : copy(language, '한 라운드', 'Una ronda')}</span>
-        {settings.capicuaBonus > 0 && <span>{copy(language, '카피쿠아', 'Capicúa')} +{settings.capicuaBonus}</span>}
-        {settings.pasoCorridoBonus > 0 && <span>{copy(language, '파소 코리도', 'Paso corrido')} +{settings.pasoCorridoBonus}</span>}
-        {settings.tranqueRule === 'lowest-player' && <span>{copy(language, '막힌 판: 개인별 점수', 'Tranque: menor total individual')}</span>}
+        {lisbeth ? <span>{copy(language, '카피쿠아 +30 · 파소 코리도 없음 · 트랑카도르 규칙', 'Capicúa +30 · sin paso corrido · regla de trancador')}</span> : <>
+          {settings.capicuaBonus > 0 && <span>{copy(language, '카피쿠아', 'Capicúa')} +{settings.capicuaBonus}</span>}
+          {settings.pasoCorridoBonus > 0 && <span>{copy(language, '파소 코리도', 'Paso corrido')} +{settings.pasoCorridoBonus}</span>}
+          {settings.tranqueRule === 'lowest-player' && <span>{copy(language, '막힌 판: 개인별 점수', 'Tranque: menor total individual')}</span>}
+        </>}
       </div>
     </details>}
 
@@ -336,12 +344,14 @@ export default function DominoBoard({ view: rawView, language, playerId, runActi
       <section className="dp-setup" aria-label={copy(language, '게임 설정', 'Configuración de la partida')}>
       <div className="dp-section-heading"><div><p>{copy(language, '시작 전 설정', 'Antes de empezar')}</p><h3 id="dp-setup-title">{copy(language, '테이블 설정', 'Ajustes de mesa')}</h3></div><button type="button" className="dp-modal-close" onClick={() => setSetupOpen(false)}>{copy(language, '닫기', 'Cerrar')}</button></div>
       {configureChoice && <div className="dp-config-grid">
-        <label><span>{copy(language, '플레이 방식', 'Modo')}</span><select ref={setupFirstFieldRef} value={config.mode} onChange={event => update('mode', event.target.value as Mode)} disabled={busy}>{MODES.map(value => <option value={value} key={value}>{modeLabel(value)}</option>)}</select></label>
+        <label><span>{copy(language, '플레이 방식', 'Modo')}</span><select ref={setupFirstFieldRef} value={config.mode} onChange={event => updateMode(event.target.value as Mode)} disabled={busy}>{MODES.map(value => <option value={value} key={value}>{modeLabel(value)}</option>)}</select></label>
         <label><span>{copy(language, '봇 난이도', 'Nivel de IA')}</span><select value={config.difficulty} onChange={event => update('difficulty', event.target.value as Configuration['difficulty'])} disabled={busy}>{(['easy', 'normal', 'hard'] as const).map(value => <option key={value} value={value}>{value === 'easy' ? copy(language, '편안하게', 'Tranquilo') : value === 'normal' ? copy(language, '보통', 'Normal') : copy(language, '도전', 'Difícil')}</option>)}</select></label>
-        <label><span>{copy(language, '매치 목표 점수', 'Puntuación objetivo')}</span><select value={config.targetScore} onChange={event => update('targetScore', Number(event.target.value) as Configuration['targetScore'])} disabled={busy}>{([0, 100, 200] as const).map(value => <option key={value} value={value}>{value ? `${value}` : copy(language, '한 라운드', 'Una ronda')}</option>)}</select></label>
-        <label><span>{copy(language, '카피쿠아 보너스', 'Bono capicúa')}</span><select value={config.capicuaBonus} onChange={event => update('capicuaBonus', Number(event.target.value) as Configuration['capicuaBonus'])} disabled={busy}>{([0, 25] as const).map(value => <option key={value} value={value}>{value ? `+${value}` : copy(language, '사용 안 함', 'Sin bono')}</option>)}</select></label>
-        <label><span>{copy(language, '파소 코리도', 'Paso corrido')}</span><select value={config.pasoCorridoBonus} onChange={event => update('pasoCorridoBonus', Number(event.target.value) as Configuration['pasoCorridoBonus'])} disabled={busy}>{([0, 25] as const).map(value => <option key={value} value={value}>{value ? `+${value}` : copy(language, '사용 안 함', 'Sin bono')}</option>)}</select></label>
-        <label><span>{copy(language, '막힌 판 규칙', 'Desempate en tranque')}</span><select value={config.tranqueRule} onChange={event => update('tranqueRule', event.target.value as Configuration['tranqueRule'])} disabled={busy}><option value="team">{copy(language, '팀 손패 합계', 'Total del equipo')}</option><option value="lowest-player">{copy(language, '개인 손패 합계', 'Menor total individual')}</option></select></label>
+        <label><span>{copy(language, '매치 목표 점수', 'Puntuación objetivo')}</span><select value={config.targetScore} onChange={event => update('targetScore', Number(event.target.value) as Configuration['targetScore'])} disabled={busy}>{(lisbeth ? [100, 200] as const : [0, 100, 200] as const).map(value => <option key={value} value={value}>{value ? `${value}` : copy(language, '한 라운드', 'Una ronda')}</option>)}</select></label>
+        {lisbeth ? <p className="dp-config-note">{copy(language, 'Lisbeth 규칙 · 카피쿠아 +30 · 파소 코리도 없음 · 트랑카도르 판정', 'Reglas Lisbeth · capicúa +30 · sin paso corrido · tranque por trancador')}</p> : <>
+          <label><span>{copy(language, '카피쿠아 보너스', 'Bono capicúa')}</span><select value={config.capicuaBonus} onChange={event => update('capicuaBonus', Number(event.target.value) as Configuration['capicuaBonus'])} disabled={busy}>{([0, 25] as const).map(value => <option key={value} value={value}>{value ? `+${value}` : copy(language, '사용 안 함', 'Sin bono')}</option>)}</select></label>
+          <label><span>{copy(language, '파소 코리도', 'Paso corrido')}</span><select value={config.pasoCorridoBonus} onChange={event => update('pasoCorridoBonus', Number(event.target.value) as Configuration['pasoCorridoBonus'])} disabled={busy}>{([0, 25] as const).map(value => <option key={value} value={value}>{value ? `+${value}` : copy(language, '사용 안 함', 'Sin bono')}</option>)}</select></label>
+          <label><span>{copy(language, '막힌 판 규칙', 'Desempate en tranque')}</span><select value={config.tranqueRule} onChange={event => update('tranqueRule', event.target.value as Configuration['tranqueRule'])} disabled={busy}><option value="team">{copy(language, '팀 손패 합계', 'Total del equipo')}</option><option value="lowest-player">{copy(language, '개인 손패 합계', 'Menor total individual')}</option></select></label>
+        </>}
       </div>}
       {configureChoice ? <button type="button" className="dp-primary" disabled={busy} onClick={applyConfig}>{busy ? copy(language, '적용 중…', 'Aplicando…') : copy(language, '설정 적용', 'Aplicar ajustes')}</button> : <div className="dp-legacy-modes">{legacyModeChoices.map(choice => <button type="button" key={String(choice.action.payload?.mode)} disabled={busy} onClick={async () => { if (await submit(choice.action)) setSetupOpen(false); }}>{choice.action.payload?.mode === 'partners' ? modeLabel('partners') : modeLabel('humans-vs-bots')}</button>)}</div>}
       </section>
@@ -355,7 +365,8 @@ export default function DominoBoard({ view: rawView, language, playerId, runActi
         {record(roundResult.scoreDelta).p1 !== undefined && <p className="dp-settled-delta">{copy(language, `정산 점수: ${teamName('p1', mode, language, playerId)} +${moneyOrScore(record(roundResult.scoreDelta).p1)} · ${teamName('p2', mode, language, playerId)} +${moneyOrScore(record(roundResult.scoreDelta).p2)}`, `Puntos liquidados: ${teamName('p1', mode, language, playerId)} +${moneyOrScore(record(roundResult.scoreDelta).p1)} · ${teamName('p2', mode, language, playerId)} +${moneyOrScore(record(roundResult.scoreDelta).p2)}`)}</p>}
         {localizedReason && <p className="dp-result-reason">{localizedReason}</p>}
         {Boolean(roundResult.capicua) && <small>{copy(language, settings.capicuaBonus > 0 ? `카피쿠아 성립 · 보너스 +${settings.capicuaBonus}` : '카피쿠아 성립 · 추가 점수 없음', settings.capicuaBonus > 0 ? `Capicúa · bono +${settings.capicuaBonus}` : 'Capicúa sin bono')}</small>}
-        {number(roundResult.pasoCorrido) > 0 && <small>{copy(language, '파소 코리도 보너스 포함', 'Incluye bono de paso corrido')}</small>}
+        {lisbeth && number(roundResult.openingPass) > 0 && <small>{copy(language, `오프닝 패스 보너스 +${moneyOrScore(roundResult.openingPass)} 포함`, `Incluye bono de pase inicial +${moneyOrScore(roundResult.openingPass)}`)}</small>}
+        {!lisbeth && number(roundResult.pasoCorrido) > 0 && <small>{copy(language, '파소 코리도 보너스 포함', 'Incluye bono de paso corrido')}</small>}
         {nextRoundChoice && <button type="button" className="dp-primary" disabled={busy} onClick={() => void submit(nextRoundChoice.action)}>{copy(language, '다음 라운드', 'Siguiente ronda')}</button>}
       </section>}
     </div>

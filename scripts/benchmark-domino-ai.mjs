@@ -22,6 +22,8 @@ const [{ outputFiles }] = await Promise.all([build({
 const moduleUrl = `data:text/javascript;base64,${Buffer.from(outputFiles[0].contents).toString('base64')}`;
 const { chooseDominoBotAction, dominoEngine, benchmarkPlay } = await import(moduleUrl);
 
+// Keep the historical AI benchmark on its original single-hand v1 rules.
+const benchmarkInitialState = seed => ({ ...dominoEngine.createInitialState(seed), rulesVersion: 1, settings: { difficulty: 'normal', targetScore: 0, capicuaBonus: 0, pasoCorridoBonus: 0, tranqueRule: 'team' } });
 const seatsFor = mode => mode === '1v1' ? ['p1', 'p2'] : ['p1', 'b1', 'p2', 'b2'];
 const fits = (tile, pip) => tile.a === pip || tile.b === pip;
 
@@ -72,7 +74,7 @@ function decide(state, actor, difficulty, policy) {
 }
 
 function runOneVOne(seed, candidateSeat, candidateDifficulty, candidatePolicy, baselineDifficulty, baselinePolicy) {
-  let state = dominoEngine.createInitialState(seed);
+  let state = benchmarkInitialState(seed);
   let moves = 0, passes = 0;
   const candidateChooserMs = [], baselineChooserMs = [];
   while (!state.result && moves + passes < 80) {
@@ -90,7 +92,7 @@ function runOneVOne(seed, candidateSeat, candidateDifficulty, candidatePolicy, b
 }
 
 function runTeamSelfPlay(seed, mode, difficulty) {
-  let state = dominoEngine.createInitialState(seed);
+  let state = benchmarkInitialState(seed);
   state = dominoEngine.applyAction(state, 'p1', { type: 'configure', payload: { mode, difficulty, targetScore: 0 } });
   let humanActions = 0;
   const chooserTimes = [];
@@ -116,7 +118,7 @@ function teamOf(seat, mode) {
 }
 
 function fourSeatInitial(seed, mode) {
-  const state = dominoEngine.createInitialState(seed);
+  const state = benchmarkInitialState(seed);
   const hands = { ...state.hands, b1: state.stock.slice(0, 7), b2: state.stock.slice(7, 14) };
   const openingRank = tile => tile.a === tile.b ? 100 + tile.a : tile.a + tile.b;
   const opening = Object.entries(hands).flatMap(([seat, hand]) => hand.map(tile => ({ seat, tile, rank: openingRank(tile) })))

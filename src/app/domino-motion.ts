@@ -35,6 +35,7 @@ export function dominoCueForEvent(event: DominoActionEvent): AudioCue | null {
     case 'turn': return 'turn';
     case 'tranque': return 'tranque';
     case 'capicua': return 'capicua';
+    case 'opening-pass':
     case 'paso-corrido': return 'paso';
     case 'round-end': case 'score': return 'score';
     case 'win': return 'win';
