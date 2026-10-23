@@ -24,6 +24,7 @@ import { SplendorQuickGuide } from './SplendorQuickGuide';
 import { playCue } from '../audio/audio';
 import { canPlayGameOnDisplay, canViewRoomOnDisplay } from '../core/display';
 import { DesktopGameNotice } from './DesktopGameNotice';
+import { readBrowserStorage, writeBrowserStorage } from './browserStorage';
 import '../styles/rules-dialog.css';
 import '../styles/quick-guide.css';
 import '../styles/minhwatu-room.css';
@@ -58,8 +59,8 @@ export function sameGameReplayAvailable(gameId: GameId | null, view: any): gameI
   return !!gameId && sameGameReplayIds.includes(gameId) && view?.phase === 'finished' && view?.status === 'finished' && !!view?.result;
 }
 const ko = (language: Language) => language === 'ko';
-const preference = (): Language => localStorage.getItem('dos-language') === 'es' ? 'es' : 'ko';
-const nickPreference = () => localStorage.getItem('dos-nickname') || '';
+const preference = (): Language => readBrowserStorage('dos-language').value === 'es' ? 'es' : 'ko';
+const nickPreference = () => readBrowserStorage('dos-nickname').value || '';
 const text = (language: Language, korean: string, spanish: string) => ko(language) ? korean : spanish;
 const gameFromQuery = (): GameId | null => {
   const id = new URLSearchParams(window.location.search).get('game');
@@ -92,12 +93,12 @@ function Lobby({ api, desktopDisplay }: { api: Api; desktopDisplay: boolean }) {
   const [error, setError] = useState('');
   const [selected, setSelected] = useState<GameId | null>(() => { const queryGame = gameFromQuery(); return canPlayGameOnDisplay(desktopDisplay, queryGame) ? queryGame : null; });
   const [showRules, setShowRules] = useState(false);
-  const chooseLanguage = (value: Language) => { setLanguage(value); localStorage.setItem('dos-language', value); };
+  const chooseLanguage = (value: Language) => { setLanguage(value); writeBrowserStorage('dos-language', value); };
   const create = async (event: FormEvent) => {
     event.preventDefault(); setError('');
     if (!nickname.trim()) { setError(text(language, '게임방에서 사용할 별명을 적어 주세요.', 'Escribe el nombre que usarás en el juego.')); return; }
     setBusy(true);
-    try { localStorage.setItem('dos-nickname', nickname.trim()); const id = await api.createRoom(nickname.trim(), language); if (selected) await api.selectGame(selected); navigate(`/room/${encodeURIComponent(id)}`); }
+    try { writeBrowserStorage('dos-nickname', nickname.trim()); const id = await api.createRoom(nickname.trim(), language); if (selected) await api.selectGame(selected); navigate(`/room/${encodeURIComponent(id)}`); }
     catch (cause) { setError(errorMessage(cause, language)); }
     finally { setBusy(false); }
   };
@@ -105,7 +106,7 @@ function Lobby({ api, desktopDisplay }: { api: Api; desktopDisplay: boolean }) {
     event.preventDefault(); setError('');
     if (!nickname.trim() || !roomCode.trim()) { setError(text(language, '별명과 초대 코드를 입력해 주세요.', 'Escribe tu nombre y el código de invitación.')); return; }
     setBusy(true);
-    try { localStorage.setItem('dos-nickname', nickname.trim()); const id = roomIdentifier(roomCode); await api.joinRoom(id, nickname.trim(), language); navigate(`/room/${encodeURIComponent(id)}`); }
+    try { writeBrowserStorage('dos-nickname', nickname.trim()); const id = roomIdentifier(roomCode); await api.joinRoom(id, nickname.trim(), language); navigate(`/room/${encodeURIComponent(id)}`); }
     catch (cause) { setError(errorMessage(cause, language)); }
     finally { setBusy(false); }
   };
@@ -148,7 +149,7 @@ export function Room({ api, roomId, desktopDisplay = true }: { api: Api; roomId:
   const tickedDeadline = useRef('');
   const chatBottom = useRef<HTMLDivElement>(null);
   const active = snapshot.roomId === roomId && snapshot.players.some(player => player.id === snapshot.playerId);
-  useEffect(() => { if (active) localStorage.setItem('dos-last-room', roomId); }, [active, roomId]);
+  useEffect(() => { if (active) writeBrowserStorage('dos-last-room', roomId); }, [active, roomId]);
   const game = snapshot.gameId ? getGame(snapshot.gameId) : undefined;
   const view = snapshot.view;
   const isCatchmind = snapshot.gameId === 'catchmind';
@@ -172,7 +173,7 @@ export function Room({ api, roomId, desktopDisplay = true }: { api: Api; roomId:
     if (list) list.scrollTo({ top: list.scrollHeight, behavior: 'smooth' });
   }, [snapshot.messages.length, active]);
   const updateSnapshot = useCallback(() => setSnapshot(api.getSnapshot()), [api]);
-  useEffect(() => { const saved = snapshot.players.find(player => player.id === snapshot.playerId)?.language; if (active && saved && saved !== language) { setLanguage(saved); localStorage.setItem('dos-language', saved); } }, [active, language, snapshot.playerId, snapshot.players]);
+  useEffect(() => { const saved = snapshot.players.find(player => player.id === snapshot.playerId)?.language; if (active && saved && saved !== language) { setLanguage(saved); writeBrowserStorage('dos-language', saved); } }, [active, language, snapshot.playerId, snapshot.players]);
   useEffect(() => {
     if (!active || !isCatchmind || view?.phase !== 'drawing' || !view.deadlineAt) return;
     const deadline = String(view.deadlineAt);
@@ -205,7 +206,7 @@ export function Room({ api, roomId, desktopDisplay = true }: { api: Api; roomId:
   }, [active, snapshot.gameId, snapshot.playerId, view?.board?.tiles?.length]);
   const doJoin = async (event: FormEvent) => {
     event.preventDefault(); setJoinError(''); setBusy(true);
-    try { await api.joinRoom(roomId, nickname.trim(), language); localStorage.setItem('dos-nickname', nickname.trim()); localStorage.setItem('dos-language', language); updateSnapshot(); }
+    try { await api.joinRoom(roomId, nickname.trim(), language); writeBrowserStorage('dos-nickname', nickname.trim()); writeBrowserStorage('dos-language', language); updateSnapshot(); }
     catch (cause) { setJoinError(errorMessage(cause, language)); }
     finally { setBusy(false); }
   };
@@ -231,7 +232,7 @@ export function Room({ api, roomId, desktopDisplay = true }: { api: Api; roomId:
   };
   const send = async (event: FormEvent, body = chat, clear = true) => { event.preventDefault(); const value = body.trim(); if (!value || messageSending.current) return; messageSending.current = true; setMessageError(''); setSending(true); try { await api.sendChat(value); if (clear) setChat(''); updateSnapshot(); } catch (cause) { setMessageError(errorMessage(cause, language)); } finally { messageSending.current = false; setSending(false); } };
   const sendReaction = async (reaction: ReactionId) => { setMessageError(''); setSending(true); try { await api.sendReaction(reaction); updateSnapshot(); } catch (cause) { setMessageError(errorMessage(cause, language)); } finally { setSending(false); } };
-  const setMyLanguage = async (value: Language) => { setLanguage(value); localStorage.setItem('dos-language', value); try { await api.setLanguage(value); updateSnapshot(); } catch (cause) { setJoinError(errorMessage(cause, value)); } };
+  const setMyLanguage = async (value: Language) => { setLanguage(value); writeBrowserStorage('dos-language', value); try { await api.setLanguage(value); updateSnapshot(); } catch (cause) { setJoinError(errorMessage(cause, value)); } };
   const chooseGame = async (gameId: GameId) => { if (!canPlayGameOnDisplay(desktopDisplay, gameId)) return false; try { await api.selectGame(gameId); updateSnapshot(); return true; } catch (cause) { setActionError(errorMessage(cause, language)); return false; } };
   const closeRoom = async () => { setClosing(true); setActionError(''); try { await api.closeRoom(); navigate('/play'); } catch (cause) { setActionError(errorMessage(cause, language)); setClosing(false); setConfirmClose(false); } };
   const retryConnection = async () => {
@@ -254,7 +255,7 @@ export function Room({ api, roomId, desktopDisplay = true }: { api: Api; roomId:
   if (active && !canViewRoomOnDisplay(desktopDisplay, snapshot.gameId)) return <DesktopGameNotice language={language}/>;
 
   if (!active && api.isOnlineConfigured && !snapshot.error) return <div className="app-shell"><BrandHeader compact/><div className="loading-screen"><span className="loader"/><p>{text(language, '초대받은 게임방을 찾고 있어요…', 'Buscando la sala invitada…')}</p></div></div>;
-  if (!active) return <div className="app-shell"><BrandHeader compact/><main className="join-page"><Link className="back-link" href="/play">← {text(language, '게임방 목록', 'Lista de salas')}</Link><div className="join-card"><span className="eyebrow">{text(language, '게임방 초대', 'INVITACIÓN A LA SALA')}</span><div className="join-art">d<span>.</span></div><h1>{language === 'ko' ? <>게임방에<br/>참여할까요?</> : <>¿Te unes a<br/>esta partida?</>}</h1><p className="join-code">{roomId}</p><LanguageSwitch language={language} onChange={value => { setLanguage(value); localStorage.setItem('dos-language', value); }}/><form onSubmit={doJoin}><label className="field-label" htmlFor="join-nickname">{text(language, '사용할 별명', 'Tu nombre')}</label><input id="join-nickname" className="text-input" required maxLength={24} value={nickname} placeholder="Luna" onChange={event => setNickname(event.target.value)}/><button className="button button-dark full-button" disabled={busy}>{text(language, '게임방 참여하기', 'Unirse a la sala')} <span>↗</span></button></form>{joinError && <p role="alert" className="inline-error">{joinError}</p>}<p className="tiny-copy">{api.isOnlineConfigured ? text(language, '초대한 사람과 나만 입장할 수 있어요.', 'Solo tú y quien te invitó pueden entrar.') : text(language, '데모 방은 현재 열린 세션에서만 유지됩니다.', 'La sala demo solo dura durante esta sesión.')}</p></div></main></div>;
+  if (!active) return <div className="app-shell"><BrandHeader compact/><main className="join-page"><Link className="back-link" href="/play">← {text(language, '게임방 목록', 'Lista de salas')}</Link><div className="join-card"><span className="eyebrow">{text(language, '게임방 초대', 'INVITACIÓN A LA SALA')}</span><div className="join-art">d<span>.</span></div><h1>{language === 'ko' ? <>게임방에<br/>참여할까요?</> : <>¿Te unes a<br/>esta partida?</>}</h1><p className="join-code">{roomId}</p><LanguageSwitch language={language} onChange={value => { setLanguage(value); writeBrowserStorage('dos-language', value); }}/><form onSubmit={doJoin}><label className="field-label" htmlFor="join-nickname">{text(language, '사용할 별명', 'Tu nombre')}</label><input id="join-nickname" className="text-input" required maxLength={24} value={nickname} placeholder="Luna" onChange={event => setNickname(event.target.value)}/><button className="button button-dark full-button" disabled={busy}>{text(language, '게임방 참여하기', 'Unirse a la sala')} <span>↗</span></button></form>{joinError && <p role="alert" className="inline-error">{joinError}</p>}<p className="tiny-copy">{api.isOnlineConfigured ? text(language, '초대한 사람과 나만 입장할 수 있어요.', 'Solo tú y quien te invitó pueden entrar.') : text(language, '데모 방은 현재 열린 세션에서만 유지됩니다.', 'La sala demo solo dura durante esta sesión.')}</p></div></main></div>;
 
   // Catchmind guards its queue by room, seat, round and deadline; reconnecting must preserve unsent strokes.
   const boardIdentity = `${roomId}:${snapshot.playerId}:${snapshot.gameId}${snapshot.gameId === 'catchmind' ? '' : `:${snapshot.syncEpoch ?? 0}:${snapshot.connection === 'reconnecting' ? 'offline' : 'live'}`}`;

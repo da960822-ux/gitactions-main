@@ -5,7 +5,7 @@
   "type": "module",
   "scripts": {
     "dev": "vite --host 0.0.0.0",
-    "build": "tsc -b && vite build && node scripts/build-edge.mjs",
+    "build": "tsc -b && vite build && node scripts/build-static-routes.mjs && node scripts/build-edge.mjs",
     "test": "vitest run",
     "preview": "vite preview --host 0.0.0.0",
     "build:edge": "node scripts/build-edge.mjs",
