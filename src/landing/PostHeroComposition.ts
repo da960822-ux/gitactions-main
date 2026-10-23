@@ -1,6 +1,6 @@
 import * as THREE from 'three';
-import type {LocalEventState} from '../../post-hero-preview/src/LocalEventRig';
-import {letterOpeningLayout} from '../../post-hero-preview/src/paperProjection';
+import type {LocalEventState} from './story/LocalEventRig';
+import {letterOpeningLayout} from './story/paperProjection';
 import {RoundedBoxGeometry} from 'three/examples/jsm/geometries/RoundedBoxGeometry.js';
 import {letterFoldView,type LetterClosingRect} from './letterClosingView';
 import type {LetterFinalePhase} from './letterFinaleState';

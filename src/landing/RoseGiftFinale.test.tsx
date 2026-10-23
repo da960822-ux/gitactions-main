@@ -1,6 +1,6 @@
 import {renderToStaticMarkup} from 'react-dom/server';
 import {expect,it} from 'vitest';
-import {RoseGiftFinale,roseGiftClosingLine,roseGiftPose} from '../../post-hero-preview/src/RoseGiftFinale';
+import {RoseGiftFinale,roseGiftClosingLine,roseGiftPose} from './story/RoseGiftFinale';
 
 it('uses the playful lifetime-partner line only after receiving and an actual pact answer',()=>{
  for(const language of ['ko','es'] as const){

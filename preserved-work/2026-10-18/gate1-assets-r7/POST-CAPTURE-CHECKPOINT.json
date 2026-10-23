@@ -1,6 +1,0 @@
-{
-  "stage": "POST_CAPTURE_FAILED",
-  "checkedAtUTC": "2026-10-18T01:46:37.125261+00:00",
-  "activePID": 35359,
-  "error": "AssertionError(('final-record.log', 1))"
-}

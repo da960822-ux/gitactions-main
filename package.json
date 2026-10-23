@@ -8,9 +8,7 @@
     "build": "tsc -b && vite build && node scripts/build-static-routes.mjs && node scripts/build-edge.mjs",
     "test": "vitest run",
     "preview": "vite preview --host 0.0.0.0",
-    "build:edge": "node scripts/build-edge.mjs",
-    "dev:landing-preview": "vite --config vite.preview.config.ts --open /landing-preview.html",
-    "build:landing-preview": "tsc -b && vite build --config vite.preview.config.ts"
+    "build:edge": "node scripts/build-edge.mjs"
   },
   "dependencies": {
     "@supabase/supabase-js": "^2.57.0",

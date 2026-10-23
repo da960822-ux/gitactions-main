@@ -1,7 +1,7 @@
 import { describe, expect, it } from 'vitest';
 import { renderToStaticMarkup } from 'react-dom/server';
-import Details from '../../post-hero-preview/src/Details';
-import { approvedPawns, createLocalEventState, localEventIds, pawnSource, type LocalEventState } from '../../post-hero-preview/src/LocalEventRig';
+import Details from './story/Details';
+import { approvedPawns, createLocalEventState, localEventIds, pawnSource, type LocalEventState } from './story/LocalEventRig';
 
 function render(language:'ko'|'es',patch:Partial<LocalEventState>){
   return renderToStaticMarkup(<Details language={language} state={{...createLocalEventState(language),active:'L03',...patch}} setState={()=>{}} onClose={()=>{}} reducedMotion={false} onEffect={()=>{}}/>);

@@ -80,15 +80,20 @@ describe('Mami ideas page copy', () => {
     }
   });
 
-  it('keeps composing and status controls restricted to their existing role props', () => {
-    for (const canCreate of [true, false]) {
+  it('shows both controls to the owner, composing to the invited member, and status editing to no one else', () => {
+    for (const { canCreate, canAcknowledge } of [
+      { canCreate: true, canAcknowledge: true },
+      { canCreate: true, canAcknowledge: false },
+      { canCreate: false, canAcknowledge: true },
+      { canCreate: false, canAcknowledge: false },
+    ]) {
       const html = renderToStaticMarkup(createElement(FeedbackPage, {
-        language: 'es', mode: 'online', loading: false, canCreate, canAcknowledge: !canCreate,
+        language: 'es', mode: 'online', loading: false, canCreate, canAcknowledge,
         entries: [{ id: 'role-check', category: 'game', title: 'Una idea', body: 'Una idea', status: 'new', createdAt: '2026-10-21T12:00:00Z' }],
         onCreate: async () => undefined, onSetStatus: async () => undefined,
       }));
       assert.equal(html.includes('id="feedback-body"'), canCreate);
-      assert.equal(html.includes('<select'), !canCreate);
+      assert.equal(html.includes('<select'), canAcknowledge);
       assert.equal(html.includes('feedback-layout-readonly'), !canCreate);
     }
   });

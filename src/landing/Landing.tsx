@@ -74,7 +74,6 @@ export function Landing() {
       </Link>
       <nav aria-label={es ? 'Navegación' : '메뉴'}>
         <a href="#games">{es ? copy.navGames : '게임 목록'}</a>
-        <a href="#papi-letter">{copy.navLetter}</a>
         <Link href="/feedback">{es ? 'Sugerencias' : '건의사항'}</Link>
         <div className="landing-language" role="group" aria-label={es ? 'Idioma' : '언어'}>
           <button type="button" className={language === 'ko' ? 'active' : ''} aria-pressed={language === 'ko'} onClick={() => changeLanguage('ko')}>KO</button>

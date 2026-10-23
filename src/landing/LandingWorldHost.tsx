@@ -5,16 +5,16 @@ import {ScrollTrigger} from 'gsap/ScrollTrigger';
 import {AcrossHero} from './AcrossHero';
 import {GameGallery} from './gallery/GameGallery';
 import {createPostHeroComposition} from './PostHeroComposition';
-import {PostHeroPreview} from '../../post-hero-preview/src/PostHeroPreview';
-import type {PostHeroState} from '../../post-hero-preview/src/Scene';
-import type {LocalEventId} from '../../post-hero-preview/src/LocalEventRig';
-import {createLetterCollection} from '../../post-hero-preview/src/LetterCollection';
+import {PostHeroPreview} from './story/PostHeroPreview';
+import type {PostHeroState} from './story/Scene';
+import type {LocalEventId} from './story/LocalEventRig';
+import {createLetterCollection} from './story/LetterCollection';
 import {openingCameraPose,postConnectionPose} from './cinematic/folded/poseSpaceV19';
 import type {RoomReactionTarget} from './cinematic/folded/roomReactions';
 import {ROOM_WORLD,roomWorldVertex,roomSourcePoint} from './cinematic/folded/approvedRoomGeometry';
 import {pointerDecay} from './cinematic/folded/pointerResponse';
 import {INTRO_SECONDS, introPose, smoothRange, type FoldPose} from './cinematic/folded/pose';
-import '../../post-hero-preview/src/preview.css';
+import './story/preview.css';
 import './landing-world.css';
 
 gsap.registerPlugin(ScrollTrigger);
@@ -238,6 +238,6 @@ export function LandingWorldHost({language,onLanguageChange,selected,onSelect}:P
    onBlur={()=>{if(roomReaction.current.hover===object.id)roomAttention(null);}}
    onClick={event=>{Object.assign(roomReaction.current,{hover:object.id,press:false,keyboard:event.detail===0,activation:roomReaction.current.activation+1});dirty.current=true;if(object.id!=='monitor'&&object.id!=='keyboard')setRoomDiscovery({id:object.id,trigger:event.currentTarget,nonce:++discoveryNonce.current});}}
   ><span>{language==='ko'?object.ko:object.es}</span></button>)}</div>
-  <PostHeroPreview embedded language={language} onLanguageChange={onLanguageChange} portraitSrc={PORTRAIT} portraitMaskSrc={PORTRAIT_MASK} renderScene={false} externalSceneReady={postReady} onSceneState={receivePostState} onRegisterFrame={registerFrame} roomDiscovery={roomDiscovery} roomActive={roomActive} playHref={`/play?game=${selected}`} gallery={<GameGallery language={language} selected={selected} onSelect={onSelect}/>}/>
+  <PostHeroPreview embedded language={language} onLanguageChange={onLanguageChange} portraitSrc={PORTRAIT} portraitMaskSrc={PORTRAIT_MASK} externalSceneReady={postReady} onSceneState={receivePostState} onRegisterFrame={registerFrame} roomDiscovery={roomDiscovery} roomActive={roomActive} playHref={`/play?game=${selected}`} gallery={<GameGallery language={language} selected={selected} onSelect={onSelect}/>}/>
  </div>;
 }

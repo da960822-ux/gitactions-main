@@ -1,8 +1,8 @@
 import {renderToStaticMarkup} from 'react-dom/server';
 import {afterEach,expect,it,vi} from 'vitest';
-import {EndingChapter} from '../../post-hero-preview/src/EndingChapter';
-import {PartnerPact,isPactSignature,parsePactResponse,persistPactResponse} from '../../post-hero-preview/src/PartnerPact';
-import {createLocalEventState} from '../../post-hero-preview/src/LocalEventRig';
+import {EndingChapter} from './story/EndingChapter';
+import {PartnerPact,isPactSignature,parsePactResponse,persistPactResponse} from './story/PartnerPact';
+import {createLocalEventState} from './story/LocalEventRig';
 
 afterEach(()=>vi.unstubAllGlobals());
 
