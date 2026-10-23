@@ -245,3 +245,33 @@
 .cm-guess-section { min-height: 112px; }
 .cm-bottom-note { min-height: 40px; padding: 7px 13px; }
 }
+
+.cm-choice-lock-note { grid-column: 1 / -1; margin: 0; color: var(--ink-soft); font-size: 12px; line-height: 1.4; }
+.cm-settings > summary { font-size: 12px; }
+.cm-settings summary:focus-visible { outline: 3px solid #9a623d; outline-offset: 2px; }
+.cm-custom-only { font-size: 12px; }
+.cm-tools-head { font-size: 12px; }
+.cm-color-target { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 6px; margin: 7px 0; }
+.cm-color-target button { min-height: 44px; padding: 7px; border: 1px solid #d9d6ce; border-radius: 8px; background: #fffefa; color: var(--ink-soft); font-size: 12px; font-weight: 650; cursor: pointer; }
+.cm-color-target button[aria-pressed="true"] { border: 2px solid var(--teal); background: var(--teal-pale); color: var(--teal); }
+.cm-color-grid button:focus-visible,
+.cm-color-target button:focus-visible,
+.cm-tools :is(button, input):focus-visible { outline: 3px solid #9a623d; outline-offset: 2px; }
+.cm-secondary-row { flex-wrap: wrap; font-size: 12px; line-height: 1.35; }
+.cm-secondary-row span { min-width: 0; }
+.cm-secondary-row i { flex: 0 0 auto; }
+.cm-tool-modes button span { font-size: 12px; }
+.cm-eraser,.cm-tool-actions button,.cm-width-control span { font-size: 12px; }
+.cm-eraser,.cm-tool-actions button,.cm-swap-colors { min-height: 44px; }
+.cm-swap-colors { min-width: 44px; }
+.cm-setting-grid label,.cm-custom-label { font-size: 12px; }
+.cm-setting-grid input,.cm-custom-label textarea { font-size: 12px; }
+.cm-settings-foot small,.cm-custom-count { color: var(--ink-faint); font-size: 12px; }
+.cm-settings-foot button { min-height: 44px; font-size: 12px; }
+.cm-settings-error { font-size: 12px; }
+.cm-send-error { font-size: 12px; }
+.cm-send-error button { min-height: 44px; font-size: 12px; }
+.cm-advanced-settings { border-top: 1px solid #eeeae1; }
+.cm-advanced-settings > summary { display: flex; align-items: center; justify-content: space-between; min-height: 44px; color: var(--ink-soft); font-size: 12px; font-weight: 650; cursor: pointer; }
+.cm-advanced-settings[open] > summary { padding-bottom: 7px; border-bottom: 1px solid #eeeae1; }
+.cm-advanced-content { display: grid; gap: 9px; padding-top: 9px; }
