@@ -173,6 +173,12 @@
   max-height: calc(100vh - 48px);
 }
 
+@media (min-width: 1024px) and (max-height: 1000px) and (pointer: fine) {
+  .rhythm-board { gap: 10px; }
+  .rhythm-board-intro { min-height: 48px; }
+  .rhythm-game-shell:not(:fullscreen) { width: min(100%, 760px, calc((100dvh - 370px) * 11 / 9)); }
+}
+
 .rhythm-board-notes { display: grid; gap: 8px; width: min(100%, 760px); }
 .rhythm-known-note { margin: 0; padding: 10px 12px; border: 1px solid #eaded6; border-radius: 10px; background: #faf6f1; color: #635650; font-size: 13px; }
 .rhythm-recovery-note { margin: 0; color: var(--rhythm-muted); font-size: 12px; line-height: 1.5; }

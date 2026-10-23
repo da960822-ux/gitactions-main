@@ -20,8 +20,17 @@ type Props = {
   replayPending?: boolean;
 };
 
-const colors = ['#202522', '#2f655b', '#67a968', '#dca84b', '#e57f6a', '#b94f42', '#ce6990', '#875a9d', '#5786a1', '#54a7a0'];
+const colors = [
+  { value: '#202522', ko: '짙은 회색', es: 'gris oscuro' }, { value: '#2f655b', ko: '짙은 초록', es: 'verde oscuro' },
+  { value: '#67a968', ko: '초록', es: 'verde' }, { value: '#dca84b', ko: '노랑', es: 'amarillo' },
+  { value: '#e57f6a', ko: '산호색', es: 'coral' }, { value: '#b94f42', ko: '빨강', es: 'rojo' },
+  { value: '#ce6990', ko: '분홍', es: 'rosa' }, { value: '#875a9d', ko: '보라', es: 'morado' },
+  { value: '#5786a1', ko: '파랑', es: 'azul' }, { value: '#54a7a0', ko: '청록', es: 'turquesa' },
+];
 const copy = (language: Language, ko: string, es: string) => language === 'ko' ? ko : es;
+export function catchmindChoicesNeedSettingsSave(canEdit: boolean, draftCategory: CatchmindCategoryId | null, savedCategory: CatchmindCategoryId | null) {
+  return canEdit && draftCategory !== savedCategory;
+}
 
 function paintStroke(ctx: CanvasRenderingContext2D, stroke: any) {
   const points = stroke.points as Point[];
@@ -96,6 +105,7 @@ export default function CatchmindTable({ roomId, view, playerId, language, now, 
   const [pendingVisual, setPendingVisual] = useState<DrawBatch[]>([]);
   const [activeColor, setActiveColor] = useState(palette);
   const [secondaryColor, setSecondaryColor] = useState('#fffefa');
+  const [colorTarget, setColorTarget] = useState<'primary' | 'secondary'>('primary');
   const [eraser, setEraser] = useState(false);
   const lastDrawingColor = useRef(palette === '#fffefa' ? '#284f49' : palette);
   const [tool, setTool] = useState<'brush' | 'fill' | 'pick'>('brush');
@@ -336,6 +346,8 @@ export default function CatchmindTable({ roomId, view, playerId, language, now, 
   };
 
   const scores = board.scores ?? {};
+  const categoryChoicesLocked = catchmindChoicesNeedSettingsSave(allowed('settings'), settingsDraft.category_id, board.settings?.category_id ?? null);
+  const colorLabel = (color: string) => colors.find(option => option.value === color)?.[language] ?? (color === '#fffefa' ? copy(language, '흰색', 'blanco') : color === '#284f49' ? copy(language, '짙은 초록', 'verde oscuro') : copy(language, '직접 선택한 색', 'color elegido'));
   const scoresBySeat = (['p1', 'p2'] as const).map(seat => ({ seat, mine: seat === playerId, score: Number(scores[seat] ?? 0) }));
   const heading = choosing
     ? copy(language, '오늘의 제시어', 'ELIGE UNA PALABRA')
@@ -371,18 +383,21 @@ export default function CatchmindTable({ roomId, view, playerId, language, now, 
           <div className="cm-choice-intro"><span aria-hidden="true">✳</span><div><b>{copy(language, '그리고 싶은 단어를 골라 주세요', 'Elige qué quieres dibujar')}</b><small>{copy(language, '상대에게는 정답이 보이지 않아요.', 'La respuesta se mantiene oculta para tu pareja.')}</small></div></div>
           {allowed('settings') && <details className="cm-settings" open={!board.settings?.category_id}><summary>{copy(language, '주제 · 방 설정과 나만의 단어', 'Categoría · ajustes y palabras propias')} <span>⌄</span></summary><form onSubmit={saveSettings}>
             <fieldset className="cm-categories"><legend>{copy(language, '이번 판의 주제 · 하나만 선택', 'Categoría de la partida · elige una')}</legend>{(board.settings?.categoryOptions ?? []).map((category: any) => <label key={category.id}><input type="radio" name="catchmind-category" value={category.id} checked={settingsDraft.category_id === category.id} onChange={() => setSettingsDraft({ ...settingsDraft, category_id: category.id })}/><span>{category.label[language]}</span></label>)}</fieldset>
-            <div className="cm-setting-grid">
-              <label>{copy(language, '그림 시간 (초)', 'Tiempo (segundos)')}<input type="number" min="30" max="180" value={settingsDraft.drawTimeSeconds} onChange={event => setSettingsDraft({ ...settingsDraft, drawTimeSeconds: Number(event.target.value) })}/></label>
-              <label>{copy(language, '라운드', 'Rondas')}<input type="number" min="2" max="12" value={settingsDraft.rounds} onChange={event => setSettingsDraft({ ...settingsDraft, rounds: Number(event.target.value) })}/></label>
-              <label>{copy(language, '단어 보기', 'Opciones')}<input type="number" min="3" max="5" value={settingsDraft.choices} onChange={event => setSettingsDraft({ ...settingsDraft, choices: Number(event.target.value) })}/></label>
-              <label className="cm-mask-setting">{copy(language, '글자 수 표시', 'Mostrar longitud')}<input type="checkbox" checked={settingsDraft.hints > 0} onChange={event => setSettingsDraft({ ...settingsDraft, hints: event.target.checked ? 2 : 0 })}/></label>
-            </div>
-            <label className="cm-custom-only"><input type="checkbox" checked={settingsDraft.customOnly} onChange={event => setSettingsDraft({ ...settingsDraft, customOnly: event.target.checked })}/>{copy(language, '직접 입력한 단어만 사용', 'Usar solo mis palabras')}</label>
-            <label className="cm-custom-label">{copy(language, '한 줄에 한 쌍 · 한국어|Español', 'Una pareja por línea · 한국어|Español')}<textarea rows={4} maxLength={2400} value={customWordsText} onChange={event => setCustomWordsText(event.target.value)} placeholder={'고양이|gato\n바다|océano'}/></label>
-            <div className="cm-settings-foot"><small>{customWordsText.split('\n').filter(line => line.trim()).length}/30 · {copy(language, '각 단어 32자 이내', 'hasta 32 caracteres por palabra')}</small><button type="submit">{copy(language, '설정 저장', 'Guardar ajustes')} ↗</button></div>
+            <details className="cm-advanced-settings"><summary>{copy(language, '시간 · 라운드 · 나만의 단어', 'Tiempo · rondas · palabras propias')} <span>⌄</span></summary><div className="cm-advanced-content">
+              <div className="cm-setting-grid">
+                <label>{copy(language, '그림 시간 (초)', 'Tiempo (segundos)')}<input type="number" min="30" max="180" value={settingsDraft.drawTimeSeconds} onChange={event => setSettingsDraft({ ...settingsDraft, drawTimeSeconds: Number(event.target.value) })}/></label>
+                <label>{copy(language, '라운드', 'Rondas')}<input type="number" min="2" max="12" value={settingsDraft.rounds} onChange={event => setSettingsDraft({ ...settingsDraft, rounds: Number(event.target.value) })}/></label>
+                <label>{copy(language, '단어 보기', 'Opciones')}<input type="number" min="3" max="5" value={settingsDraft.choices} onChange={event => setSettingsDraft({ ...settingsDraft, choices: Number(event.target.value) })}/></label>
+                <label className="cm-mask-setting">{copy(language, '글자 수 표시', 'Mostrar longitud')}<input type="checkbox" checked={settingsDraft.hints > 0} onChange={event => setSettingsDraft({ ...settingsDraft, hints: event.target.checked ? 2 : 0 })}/></label>
+              </div>
+              <label className="cm-custom-only"><input type="checkbox" checked={settingsDraft.customOnly} onChange={event => setSettingsDraft({ ...settingsDraft, customOnly: event.target.checked })}/>{copy(language, '직접 입력한 단어만 사용', 'Usar solo mis palabras')}</label>
+              <label className="cm-custom-label">{copy(language, '한 줄에 한 쌍 · 한국어|Español', 'Una pareja por línea · 한국어|Español')}<textarea rows={4} maxLength={2400} value={customWordsText} onChange={event => setCustomWordsText(event.target.value)} placeholder={'고양이|gato\n바다|océano'}/></label>
+              <small className="cm-custom-count">{customWordsText.split('\n').filter(line => line.trim()).length}/30 · {copy(language, '각 단어 32자 이내', 'hasta 32 caracteres por palabra')}</small>
+            </div></details>
+            <div className="cm-settings-foot"><button type="submit">{copy(language, '설정 저장', 'Guardar ajustes')} ↗</button></div>
             {settingsNotice && <p className="cm-settings-error" role="alert">{settingsNotice}</p>}
           </form></details>}
-          <div className="cm-word-choices">{(view.hand?.choices ?? []).map((word: any) => <button type="button" key={word.wordId} disabled={allowed('settings') && settingsDraft.category_id !== board.settings?.category_id} onClick={() => void runAction({ type: 'choose', payload: { wordId: word.wordId } })}><span className="cm-choice-icon" aria-hidden="true">✦</span><span>{word[language]}</span><i aria-hidden="true">↗</i></button>)}{!view.hand?.choices?.length && <p>{copy(language, '호스트가 주제를 선택하고 설정을 저장해 주세요.', 'La persona anfitriona debe elegir y guardar una categoría.')}</p>}</div>
+          <div className="cm-word-choices">{categoryChoicesLocked && <p className="cm-choice-lock-note" role="status">{copy(language, '주제 설정을 저장하면 단어를 고를 수 있어요.', 'Guarda la categoría para poder elegir una palabra.')}</p>}{(view.hand?.choices ?? []).map((word: any) => <button type="button" key={word.wordId} disabled={categoryChoicesLocked} onClick={() => void runAction({ type: 'choose', payload: { wordId: word.wordId } })}><span className="cm-choice-icon" aria-hidden="true">✦</span><span>{word[language]}</span><i aria-hidden="true">↗</i></button>)}{!view.hand?.choices?.length && <p>{copy(language, '호스트가 주제를 선택하고 설정을 저장해 주세요.', 'La persona anfitriona debe elegir y guardar una categoría.')}</p>}</div>
         </div>
         : view?.phase === 'choosing' ? <div className="cm-choice-wait"><span>♡</span><b>{copy(language, '상대가 단어를 고르고 있어요', 'Tu pareja está eligiendo una palabra')}</b><small>{copy(language, '정답은 비밀로 남아 있어요.', 'La respuesta sigue siendo secreta.')}</small></div>
         : <div className={`cm-canvas ${drawing ? 'can-draw' : ''}`} data-testid="catchmind-canvas">
@@ -412,8 +427,19 @@ export default function CatchmindTable({ roomId, view, playerId, language, now, 
             <button type="button" className={tool === 'fill' ? 'active' : ''} aria-pressed={tool === 'fill'} onClick={() => setTool('fill')}><ToolIcon tool="fill"/> <span>{copy(language, '채우기', 'Rellenar')}</span></button>
             <button type="button" className={tool === 'pick' ? 'active' : ''} aria-pressed={tool === 'pick'} onClick={() => setTool('pick')}><ToolIcon tool="pick"/> <span>{copy(language, '색 선택', 'Elegir color')}</span></button>
           </div>
-          <div className="cm-color-grid" role="group" aria-label={copy(language, '펜 색상 · 오른쪽 클릭은 보조 색', 'Color · clic derecho para color secundario')}>{colors.map(color => <button type="button" key={color} className={`cm-color ${palette === color ? 'active' : ''} ${secondaryColor === color ? 'secondary' : ''}`} style={{ '--cm-color': color } as CSSProperties} aria-label={`${copy(language, '색상', 'Color')} ${color}`} aria-pressed={palette === color} onClick={() => { lastDrawingColor.current = color; setEraser(false); setPalette(color); }} onContextMenu={event => { event.preventDefault(); setSecondaryColor(color); }} />)}</div>
-          <div className="cm-secondary-row"><span><i style={{ backgroundColor: palette }} />{copy(language, '기본', 'Principal')}</span><button type="button" className="cm-swap-colors" aria-label={copy(language, '색 바꾸기', 'Intercambiar colores')} onClick={() => { setSecondaryColor(palette); setPalette(secondaryColor); }}><ToolIcon tool="swap"/></button><span><i style={{ backgroundColor: secondaryColor }} />{copy(language, '보조 · 오른쪽 클릭', 'Secundario · clic derecho')}</span></div>
+          <div className="cm-color-target" role="group" aria-label={copy(language, '색상 선택 대상', 'Color que vas a cambiar')}>
+            <button type="button" aria-pressed={colorTarget === 'primary'} onClick={() => setColorTarget('primary')}>{copy(language, '기본 색', 'Color principal')}</button>
+            <button type="button" aria-pressed={colorTarget === 'secondary'} onClick={() => setColorTarget('secondary')}>{copy(language, '보조 색', 'Color secundario')}</button>
+          </div>
+          <div className="cm-color-grid" role="group" aria-label={copy(language, colorTarget === 'primary' ? '기본 색 선택' : '보조 색 선택', colorTarget === 'primary' ? 'Elige el color principal' : 'Elige el color secundario')}>{colors.map(({ value, ko, es }) => {
+            const selected = colorTarget === 'primary' ? palette === value : secondaryColor === value;
+            return <button type="button" key={value} className={`cm-color ${palette === value ? 'active' : ''} ${secondaryColor === value ? 'secondary' : ''}`} style={{ '--cm-color': value } as CSSProperties} aria-label={`${language === 'ko' ? ko : es} · ${selected ? copy(language, '선택됨', 'seleccionado') : colorTarget === 'primary' ? copy(language, '기본 색으로 선택', 'Elegir como color principal') : copy(language, '보조 색으로 선택', 'Elegir como color secundario')}`} aria-pressed={selected} onClick={() => {
+              setEraser(false);
+              if (colorTarget === 'primary') { lastDrawingColor.current = value; setPalette(value); }
+              else setSecondaryColor(value);
+            }} />;
+          })}</div>
+          <div className="cm-secondary-row"><span><i style={{ backgroundColor: palette }} />{copy(language, '기본', 'Principal')}: {colorLabel(palette)}</span><button type="button" className="cm-swap-colors" aria-label={copy(language, '색 바꾸기', 'Intercambiar colores')} onClick={() => { setSecondaryColor(palette); setPalette(secondaryColor); }}><ToolIcon tool="swap"/></button><span><i style={{ backgroundColor: secondaryColor }} />{copy(language, '보조', 'Secundario')}: {colorLabel(secondaryColor)}</span></div>
           <button type="button" className={`cm-eraser ${eraser ? 'active' : ''}`} aria-pressed={eraser} onClick={() => { if (!eraser) { lastDrawingColor.current = restoreCatchmindPenColor(palette); setPalette('#fffefa'); } else setPalette(lastDrawingColor.current); setEraser(!eraser); setTool('brush'); }}><ToolIcon tool="eraser"/>{copy(language, '지우개', 'Borrador')}</button>
           <label className="cm-width-control"><span>{copy(language, '굵기', 'Grosor')} <b>{strokeWidth}</b></span><input type="range" min="2" max="18" value={strokeWidth} onChange={event => setStrokeWidth(Number(event.target.value))} aria-label={copy(language, '펜 굵기', 'Grosor del pincel')}/></label>
           <div className="cm-tool-actions">{allowed('undo') && <button type="button" onClick={() => void runAfterDraws({ type: 'undo' })}><ToolIcon tool="undo"/>{copy(language, '실행 취소', 'Deshacer')}</button>}{allowed('clear') && <button type="button" onClick={() => void clearDrawing()}><ToolIcon tool="clear"/>{copy(language, '모두 지우기', 'Borrar todo')}</button>}</div>

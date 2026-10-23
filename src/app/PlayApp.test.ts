@@ -51,6 +51,13 @@ it('does not invent an opponent turn for the independent rhythm player in either
   expect(statusLabel(null, 'p2', 'es', 'rhythm')).toBe('Juego original');
 });
 
+it('describes both Catchmind roles while choosing and drawing', () => {
+  expect(statusLabel({ phase: 'choosing', turn: 'p1' }, 'p1', 'ko', 'catchmind')).toBe('제시어를 골라 주세요');
+  expect(statusLabel({ phase: 'choosing', turn: 'p1' }, 'p2', 'es', 'catchmind')).toBe('Tu pareja elige una palabra');
+  expect(statusLabel({ phase: 'drawing', turn: 'p2' }, 'p2', 'es', 'catchmind')).toBe('Dibuja la palabra');
+  expect(statusLabel({ phase: 'drawing', turn: 'p2' }, 'p1', 'ko', 'catchmind')).toBe('그림을 맞혀 보세요');
+});
+
 it('keeps Jaipur transfer and reward sounds out of the immediate snapshot channel', () => {
   for (const type of ['take-single', 'exchange', 'take-camels', 'bonus'] as const) {
     expect(jaipurImmediateCues({ sequence: 1, round: 1, type, title: { ko: '', es: '' } })).toEqual([]);
@@ -77,6 +84,10 @@ describe('PlayApp client binding', () => {
     try {
       const html = renderToStaticMarkup(createElement(Room, { api, roomId }));
       expect(html).toContain('id="game-board"');
+      expect(html).toContain('href="#game-switcher"');
+      expect(html).toContain('id="game-switcher"');
+      expect(html).toContain('aria-labelledby="game-switcher-title"');
+      expect(html).toContain(`<span>${gameCatalog.find(item => item.id !== game.id)!.title.ko}</span>`);
       expect(html).toContain(game.title.ko);
       if (game.id === 'rhythm') expect(html).toContain('rhythm-game-mount');
     } finally {
