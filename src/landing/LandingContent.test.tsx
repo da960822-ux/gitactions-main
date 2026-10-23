@@ -40,7 +40,9 @@ describe('letter entry points name the actual action',()=>{
   vi.stubGlobal('matchMedia',()=>({matches:false}));
   const html=renderToStaticMarkup(<PostHeroPreview embedded language={language}/>);
   expect(html).toContain(`>${envelope}<span aria-hidden="true">`);
-  expect(html).toContain(`>${direct}</a>`);
+  expect(html).not.toContain(`>${direct}</a>`);
+  const standalone=renderToStaticMarkup(<PostHeroPreview language={language}/>);
+  expect(standalone).not.toContain(`>${direct}</a>`);
   expect(html).toContain(`>${shared}</button>`);
  });
 });

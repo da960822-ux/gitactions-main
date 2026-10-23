@@ -3,6 +3,7 @@ import * as T from 'three';
 import {createHeartGeometry} from './heartGeometry';
 import {createGalleryAttraction,studioMaterials} from './studioObjects';
 import {createGalleryCollection} from './GalleryCollection';
+import {nextRenderFrame} from '../framePacing';
 
 export type GameHover={id:string;x:number;y:number};
 type Props={mode:'hearts'|'games';selected?:string;focused?:string;paused:boolean;snapSelection?:boolean;loadingLabel?:string;impulse?:number;onSelect?:(id:string)=>void;onHover?:(hover:GameHover|null)=>void};
@@ -34,6 +35,7 @@ export default function StudioScene(props:Props){
   const canvas=renderer.domElement;node.appendChild(canvas);canvas.setAttribute('aria-hidden','true');
   let width=0,height=0,mobile=false,time=0,last=0,visible=true,disposed=false,loaded=false,impulse=props.impulse??0,energy=0,needsFrame=true,dirty=true,looping=false,contextLost=false,renderCount=0;
   let entryStarted=0,selectionStarted=0;
+  let scheduledFrame:number|null=null;
   const pointer=new T.Vector2(),ray=new T.Raycaster(),hoverCenter=new T.Vector3(),boundsBox=new T.Box3(),boundsPoint=new T.Vector3(),selectedMatrix=new T.Matrix4();
   let boundsSelection='',boundsWidth=0,boundsHeight=0;
   const hoverMedia=window.matchMedia('(hover: hover) and (pointer: fine)');
@@ -60,7 +62,6 @@ export default function StudioScene(props:Props){
     const entryAge=time-entryStarted,selectionAge=time-selectionStarted;
     const ambient=active&&visible&&!controls.current.snapSelection;
     needsFrame=attraction.update({entryAge,selectionAge,selected:controls.current.selected??'domino',paused:controls.current.paused,mobile,time,ambient})||needsFrame;
-    collection!.root.updateMatrixWorld(true);
     canvas.dataset.galleryEntry=controls.current.paused?'paused':entryAge<1.25?'entering':'settled';canvas.dataset.galleryMaterial=controls.current.paused||controls.current.snapSelection?'static':selectionAge<1.8?'turning':ambient?'breathing':'settled';canvas.dataset.galleryAmbient=String(ambient);
    }
    canvas.dataset.hovered=hoverId??'';
@@ -86,10 +87,10 @@ export default function StudioScene(props:Props){
    }
    canvas.dataset.motion=!active||!visible?'paused':needsFrame?'running':'settled';
   };
-  const stop=()=>{renderer.setAnimationLoop(null);looping=false;last=0;canvas.dataset.galleryAmbient='false';};
+  const stop=()=>{renderer.setAnimationLoop(null);looping=false;last=0;scheduledFrame=null;canvas.dataset.galleryAmbient='false';};
   const frame=(now:number)=>{
    if(!visible||document.hidden||controls.current.paused||contextLost){stop();return;}
-   if(last&&now-last<1000/30)return;
+   const next=nextRenderFrame(now,scheduledFrame,1000/60);if(next===null)return;scheduledFrame=next;
    const dt=last?Math.min((now-last)/1000,.25):0;last=now;
    if(dirty||needsFrame){dirty=false;time+=dt;energy*=Math.exp(-dt*2);render(false,dt);}
    if(!needsFrame&&!dirty)stop();

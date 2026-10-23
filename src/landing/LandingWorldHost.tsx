@@ -15,6 +15,7 @@ import {ROOM_WORLD,roomWorldVertex,roomSourcePoint} from './cinematic/folded/app
 import {pointerDecay} from './cinematic/folded/pointerResponse';
 import {INTRO_SECONDS, introPose, smoothRange, type FoldPose} from './cinematic/folded/pose';
 import {createFinaleAudio} from './finale-audio';
+import {nextRenderFrame} from './framePacing';
 import './story/preview.css';
 import './landing-world.css';
 
@@ -72,7 +73,7 @@ export function LandingWorldHost({language,onLanguageChange,selected,onSelect}:P
   const postTransform=new THREE.Matrix4().makeTranslation(-6,-4.3,6).multiply(new THREE.Matrix4().makeRotationY(Math.PI)).multiply(new THREE.Matrix4().makeTranslation(-9,4.3,10));
   let disposed=false,assetsReady=false,frame=0,clockStart=0,last=0,elapsed=0,inIntro=first.current,lost=false;
   let trigger:ScrollTrigger|undefined,heroEnd=innerHeight*2.6,previousPost=false,postNeedsFrame=false;
-  let lastRenderSignature='',lastPostDraw=0;
+  let lastRenderSignature='';let lastPostDraw:number|null=null;
   const pointer={x:0,y:0,pressed:false};let hiddenAt=0;
   const roomRay=new THREE.Raycaster(),roomHit=new THREE.Vector3(),roomPointer=new THREE.Vector2();
   const roomPlane=new THREE.Plane().setFromNormalAndCoplanarPoint(new THREE.Vector3(0,-Math.sin(ROOM_WORLD.tilt),Math.cos(ROOM_WORLD.tilt)),ROOM_TARGET);
@@ -134,7 +135,7 @@ export function LandingWorldHost({language,onLanguageChange,selected,onSelect}:P
   const release=()=>{pointer.pressed=false;roomReaction.current.press=false;dirty.current=true;};
   const contextLost=(event:Event)=>{event.preventDefault();lost=true;projectRoomDiscoveries(false);setReady(false);setPostReady(false);endIntro();};
   const contextRestored=()=>{lost=false;lastRenderSignature='';resize();setReady(true);setPostReady(true);};
-  const visibility=()=>{last=0;dirty.current=true;if(document.hidden){hiddenAt=performance.now();resetPointer();cancelAnimationFrame(frame);frame=0;return;}if(hiddenAt&&inIntro)clockStart+=performance.now()-hiddenAt;hiddenAt=0;if(!frame)frame=requestAnimationFrame(tick);};
+  const visibility=()=>{last=0;lastPostDraw=null;dirty.current=true;if(document.hidden){hiddenAt=performance.now();resetPointer();cancelAnimationFrame(frame);frame=0;return;}if(hiddenAt&&inIntro)clockStart+=performance.now()-hiddenAt;hiddenAt=0;if(!frame)frame=requestAnimationFrame(tick);};
   const mm=gsap.matchMedia();
   frameFallback();
   mm.add('(prefers-reduced-motion: no-preference)',()=>{
@@ -183,7 +184,8 @@ export function LandingWorldHost({language,onLanguageChange,selected,onSelect}:P
    root.dataset.bridge=bridge.toFixed(4);
    const signature=[pose.progress,pose.entrance,pose.pointerX,pose.pointerY,pose.pointerPress??0,bridge,postState.current.progress,postState.current.opening,galleryWeight,selection.current.selected,scrollY,width,height].map(value=>typeof value==='number'?value.toFixed(4):value).join(':');
    const needsFrame=dirty.current||signature!==lastRenderSignature||postNeedsFrame||(!media.matches&&postState.current.effect.value!==0);
-   if(postActive&&postNeedsFrame&&!dirty.current&&signature===lastRenderSignature&&now-lastPostDraw<1000/30)return;
+   const postDeadline=nextRenderFrame(now,lastPostDraw,1000/30);
+   if(postActive&&postNeedsFrame&&!dirty.current&&signature===lastRenderSignature&&postDeadline===null)return;
    if(!needsFrame){if(!postActive){world.render(pose);updateEditorial(Number(screen.dataset.progress??pose.progress),Number(screen.dataset.entrance??pose.entrance));projectRoomDiscoveries(Number(screen.dataset.progress??0)>.94);}return;}lastRenderSignature=signature;dirty.current=false;
    if(!postActive){
     if(previousPost){world.setPostActive(false);world.camera.clearViewOffset();lastRenderSignature='';}
@@ -192,7 +194,7 @@ export function LandingWorldHost({language,onLanguageChange,selected,onSelect}:P
     updateEditorial(Number(screen.dataset.progress??pose.progress),Number(screen.dataset.entrance??pose.entrance));
     projectRoomDiscoveries(Number(screen.dataset.progress??0)>.94);
    }else if(post&&composition){
-    lastPostDraw=now;projectRoomDiscoveries(false);
+    lastPostDraw=postDeadline??now;projectRoomDiscoveries(false);
     if(!previousPost){world.render({...pose,progress:1,entrance:1});if(Number(screen.dataset.progress??0)<.999||Number(screen.dataset.entrance??0)<.999){dirty.current=true;return;}world.setPostActive(true);}
     previousPost=true;
     world.camera.near=.1;world.camera.far=400;
