@@ -2,9 +2,9 @@ import {readFileSync} from 'node:fs';
 import {createElement} from 'react';
 import {renderToStaticMarkup} from 'react-dom/server';
 import {describe,expect,it} from 'vitest';
-import {cubicBezier} from 'motion';
+import {cubicBezier,spring} from 'motion';
 import sharp from 'sharp';
-import {CountryCompanions,Companion,companionBodyMotion,companionBodyPose,companionTailRotation} from '../../post-hero-preview/src/CountryCompanions';
+import {CountryCompanions,Companion,companionBodyMotion,companionBodyPose,companionWingPose,companionTailRotation} from '../../post-hero-preview/src/CountryCompanions';
 
 const ease=cubicBezier(.23,1,.32,1);
 const rotate=(x:number,y:number,degrees:number)=>{const angle=degrees*Math.PI/180;return{x:x*Math.cos(angle)-y*Math.sin(angle),y:x*Math.sin(angle)+y*Math.cos(angle)};};
@@ -17,37 +17,44 @@ describe('grounded companion greeting',()=>{
     const pose=companionBodyPose(ease(frame/1000),shift,-1);
     expect(pose.x).toBeLessThanOrEqual(previous.x);expect(pose.x).toBeGreaterThanOrEqual(-shift);
     if(shift>0&&frame>5&&frame<995)expect(previous.x-pose.x).toBeGreaterThan(0);
-    expect(pose.y).toBeGreaterThanOrEqual(-24);expect(pose.y).toBeLessThanOrEqual(0);expect(Math.abs(pose.rotation)).toBeLessThanOrEqual(3);
+    expect(pose.y).toBeGreaterThanOrEqual(-18);expect(pose.y).toBeLessThanOrEqual(0);expect(Math.abs(pose.rotation)).toBeLessThanOrEqual(3);
     previous=pose;
    }
-   expect(previous).toEqual({x:-shift,y:-0,rotation:0});
+   expect(previous.x).toBe(-shift);expect(previous.y).toBe(-0);expect(previous.rotation).toBeCloseTo(-.8);
   }
  });
- it('keeps the duck at the foot plane and answers after the approaching bird crosses halfway',()=>{
+ it('keeps the duck at the foot plane and gives a readable bow after the approaching bird draws closer',()=>{
   for(let frame=0;frame<=100;frame++){
    const pose=companionBodyPose(frame/100,240,1);
-   expect(pose.x).toBe(0);expect(pose.y).toBe(0);expect(pose.rotation).toBeGreaterThanOrEqual(0);expect(pose.rotation).toBeLessThanOrEqual(1);
-   if(frame<=55)expect(pose.rotation).toBe(0);
+   expect(pose.x).toBe(0);expect(pose.y).toBe(0);expect(pose.rotation).toBeGreaterThanOrEqual(0);expect(pose.rotation).toBeLessThanOrEqual(2.7);
+   if(frame<=40)expect(pose.rotation).toBe(0);
    const contact=rotate((812-1254*.65),(1204-1254*.96),pose.rotation);
-   expect(Math.abs(contact.y-(1204-1254*.96))).toBeLessThan(.1);
+   expect(Math.abs(contact.y-(1204-1254*.96))).toBeLessThan(.2);
   }
-  expect(companionBodyPose(.85,240,1).rotation).toBeGreaterThan(companionBodyPose(1,240,1).rotation);
+  expect(companionBodyPose(.72,240,1).rotation).toBeGreaterThan(companionBodyPose(1,240,1).rotation);
  });
- it('retargets either direction from the existing progress without a position jump or overshoot',()=>{
+ it('uses the same damped mass for approach and return, including interruption from a moving state',()=>{
+  const forward=companionBodyMotion('greet',true,false),back=companionBodyMotion('return',false,false);
+  expect(forward.target).toBe(1);expect(back.target).toBe(0);expect(back.transition).toEqual(forward.transition);
   for(const current of [.001,.24,.63,.99])for(const target of [0,1]){
-   const start=companionBodyPose(current,240,-1);let previous=start;
-   for(let frame=0;frame<=200;frame++){
-    const q=current+(target-current)*ease(frame/200),pose=companionBodyPose(q,240,-1);
-    if(frame===0)expect(pose).toEqual(start);
-    if(target===0)expect(pose.x).toBeGreaterThanOrEqual(previous.x);else expect(pose.x).toBeLessThanOrEqual(previous.x);
-    expect(q).toBeGreaterThanOrEqual(0);expect(q).toBeLessThanOrEqual(1);previous=pose;
+   const movement=spring({keyframes:[current,target],...forward.transition});
+   let previous=companionBodyPose(current,240,-1);
+   for(let ms=0;ms<=1500;ms+=10){
+    const pose=companionBodyPose(movement.next(ms).value,240,-1);
+    if(ms===0){expect(pose.x).toBeCloseTo(previous.x,10);expect(pose.y).toBeCloseTo(previous.y,10);expect(pose.rotation).toBeCloseTo(previous.rotation,10);}
+    if(target===0)expect(pose.x).toBeGreaterThanOrEqual(previous.x-1e-9);else expect(pose.x).toBeLessThanOrEqual(previous.x+1e-9);
+    expect(pose.x).toBeGreaterThanOrEqual(-240);expect(pose.x).toBeLessThanOrEqual(0);previous=pose;
    }
   }
-  expect(companionBodyMotion('return',true,false)).toMatchObject({target:0,transition:{duration:.22}});
-  expect(companionBodyMotion('greet',false,false)).toEqual({target:0,transition:{duration:.22,ease:[.23,1,.32,1]}});
-  expect(companionBodyMotion('greet',true,false)).toMatchObject({target:1,transition:{duration:.9}});
+  const approach=spring({keyframes:[0,1],...forward.transition});
+  const current=approach.next(180).value,velocity=(approach.next(181).value-current)*1000;
+  const reversal=spring({keyframes:[current,0],velocity,...back.transition});
+  expect(companionBodyPose(reversal.next(0).value,240,-1).x).toBeCloseTo(companionBodyPose(current,240,-1).x,10);
+  expect(Math.abs(reversal.next(1).value-current)).toBeLessThan(.004);
+  const halfwayHome=spring({keyframes:[1,0],...back.transition}).next(100).value;
+  expect(halfwayHome).toBeGreaterThan(.7);
   for(const reduced of [false,true])expect(companionBodyMotion('instant',true,reduced)).toMatchObject({target:1,transition:{duration:0}});
-  expect(companionBodyMotion('greet',true,true).transition.duration).toBe(0);
+  expect(companionBodyMotion('greet',true,true).transition).toEqual({duration:0});
  });
  it('keeps the entire posed bird rectangles inside the desktop section',()=>{
   for(const [width,height] of [[1440,900],[1920,1080]]){
@@ -74,25 +81,25 @@ describe('grounded companion greeting',()=>{
   expect((rig.match(/mask="url\(/g)||[])).toHaveLength(2);
   expect(markup.indexOf('companion-contact')).toBeLessThan(markup.indexOf('mandarin-duck.png'));
  });
- it('projects a readable downstroke and an edge-on recovery while both shoulder roots stay fixed',()=>{
-  const css=readFileSync(new URL('../../post-hero-preview/src/country-companions.css',import.meta.url),'utf8');
-  const profiles=['near','far'].map(name=>{
-   const rule=css.match(new RegExp('@keyframes companion-wing-'+name+'\\{([\\s\\S]+?)\\n\\}'))![1];
-   return [...rule.matchAll(/rotate\((-?[\d.]+)deg\) scale\(([\d.]+),([\d.]+)\)/g)].map(match=>({rotation:Number(match[1]),x:Number(match[2]),y:Number(match[3])}));
-  });
-  expect(profiles[0]).not.toEqual(profiles[1]);
-  for(const [index,profile] of profiles.entries()){
-   expect(profile).toHaveLength(4);
-   const tip=(stroke:typeof profile[number])=>rotate((1150-250)*stroke.x,(150-950)*stroke.y,stroke.rotation);
-   expect(tip(profile[0]).y).toBeLessThan(0);expect(tip(profile[2]).y).toBeGreaterThan(0);
-   expect(profile[1].y).toBeLessThan(profile[0].y*.3);
-   for(const stroke of profile)expect(rotate(0*stroke.x,0*stroke.y,stroke.rotation)).toEqual({x:0,y:0});
-   expect(css).toContain(index?'animation-name:companion-wing-far':'animation:companion-wing-near 360ms');
+ it('keeps full feather fans through one finite following stroke and settles at either endpoint',()=>{
+  const rest=companionWingPose(0),held=companionWingPose(1);
+  expect(held.rotation).toBeCloseTo(rest.rotation);expect(held.scaleY).toBeCloseTo(rest.scaleY);
+  expect(companionWingPose(.3).rotation).toBeGreaterThan(40);
+  expect(companionWingPose(.75).rotation).toBeLessThan(-55);
+  for(const far of [false,true])for(let frame=0;frame<=200;frame++){
+   const pose=companionWingPose(frame/200,far);
+   expect(pose.scaleY).toBeGreaterThanOrEqual(.82);expect(pose.scaleY).toBeLessThanOrEqual(1);
+   expect(pose.scaleX).toBeGreaterThanOrEqual(.84);
   }
-  expect(css).toContain('animation:companion-hover 360ms');
-  expect(css).toContain('[data-visible=false] .hummingbird-tail{animation-play-state:paused}');
-  expect(css).toContain('[data-reduced=true] .hummingbird-tail{animation:none}');
-  expect(css).not.toContain('animation-delay');
+  expect(companionWingPose(.3,true)).not.toEqual(companionWingPose(.3,false));
+  const markup=renderToStaticMarkup(createElement(Companion,{side:-1,together:false,phase:'greet',shift:240,reduced:false,interactive:true,failed:false,language:'ko',descriptionId:'bird-meaning',onGreet:()=>{},onError:()=>{}}));
+  const nearStyle=markup.match(/class="hummingbird-wing hummingbird-wing-near" style="([^"]+)"/)![1];
+  expect(nearStyle).toContain(`transform:rotate(${rest.rotation}deg) scale(${rest.scaleX},${rest.scaleY})`);
+  expect(nearStyle).toMatch(/transform-origin:0% 0%(?: 0(?:px)?)?(?:;|$)/);expect(nearStyle).toContain('transform-box:view-box');
+  expect(markup).not.toContain('transform-box:fill-box');expect(markup).not.toContain('transform-origin:50% 50%');
+  const lead=spring({keyframes:[0,1],mass:1,stiffness:100,damping:20}).next(150).value;
+  const delayed=spring({keyframes:[0,lead],mass:1,stiffness:100,damping:20}).next(50).value;
+  expect(companionBodyPose(lead,240,-1).x).toBeLessThan(companionBodyPose(delayed,240,-1).x);
  });
  it('uses the clean registered torso and separate tail while retaining the approved head pixels',async()=>{
   const markup=renderToStaticMarkup(createElement(CountryCompanions,{language:'ko'}));
@@ -110,16 +117,15 @@ describe('grounded companion greeting',()=>{
   }
   expect(changed).toBe(0);
  });
- it('counterbalances the actual separate tail during bank and at each hover cycle knot',()=>{
-  for(let frame=1;frame<100;frame++){
+ it('counterbalances the body bank and lets the separate tail trail through a reversal',()=>{
+  for(let frame=1;frame<=100;frame++){
    const q=frame/100,bank=companionBodyPose(q,240,-1).rotation,tail=companionTailRotation(q);
    expect(bank).toBeLessThan(0);expect(tail).toBeGreaterThan(0);expect(Math.abs(bank+tail)).toBeLessThan(Math.abs(bank));
   }
-  expect(companionTailRotation(0)).toBe(0);expect(companionTailRotation(1)).toBeCloseTo(0);
-  const css=readFileSync(new URL('../../post-hero-preview/src/country-companions.css',import.meta.url),'utf8');
-  const rotations=(name:string)=>[...css.match(new RegExp('@keyframes '+name+'\\{([\\s\\S]+?)\\n\\}'))![1].matchAll(/rotate\((-?[\d.]+)deg\)/g)].map(match=>Number(match[1]));
-  const torso=rotations('companion-hover'),tail=rotations('companion-tail');
-  expect(tail).toHaveLength(torso.length);for(let index=0;index<tail.length;index++)expect(torso[index]+tail[index]).toBe(0);
+  expect(companionTailRotation(0)).toBe(0);
+  expect(companionTailRotation(.5,.3)).toBeGreaterThan(companionTailRotation(.5,.5));
+  expect(companionTailRotation(.5,.7)).toBeLessThan(companionTailRotation(.5,.5));
+  expect(companionTailRotation(.5,.5+1e-6)).toBeCloseTo(companionTailRotation(.5,.5),4);
  });
  it('replaces a failed layered bird with the intact static original and disables the actual greeting buttons',()=>{
   for(const side of [1,-1] as const){

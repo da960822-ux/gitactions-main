@@ -46,8 +46,8 @@ export function LandingWorldHost({language,onLanguageChange,selected,onSelect}:P
  useEffect(()=>{
   setReady(false);setPostReady(false);
   const root=host.current!,screen=canvas.current!,hero=root.querySelector<HTMLElement>('.across-hero')!;
-  const media=matchMedia('(prefers-reduced-motion: reduce)'),coarsePointer=matchMedia('(pointer: coarse)');
-  const pose:FoldPose={progress:0,entrance:first.current?0:1,pointerX:0,pointerY:0,time:0};
+  const media=matchMedia('(prefers-reduced-motion: reduce)'),coarsePointer=matchMedia('(pointer: coarse)'),finePointer=matchMedia('(hover: hover) and (pointer: fine)');
+  const pose:FoldPose={progress:0,entrance:first.current?0:1,pointerX:0,pointerY:0,pointerPress:0,time:0};
   let world:ReturnType<typeof import('./cinematic/folded/previewSpaceV19')['createFoldedWorld']>|undefined;
   let post:ReturnType<typeof createLetterCollection>|undefined;
   let composition:ReturnType<typeof createPostHeroComposition>|undefined,postStage:THREE.Group|undefined;
@@ -55,7 +55,7 @@ export function LandingWorldHost({language,onLanguageChange,selected,onSelect}:P
   let disposed=false,assetsReady=false,frame=0,clockStart=0,last=0,elapsed=0,inIntro=first.current,lost=false;
   let trigger:ScrollTrigger|undefined,heroEnd=innerHeight*2.6,previousPost=false,postNeedsFrame=false;
   let lastRenderSignature='';
-  const pointer={x:0,y:0};
+  const pointer={x:0,y:0,pressed:false};let hiddenAt=0;
   const projectRoomDiscoveries=(active:boolean)=>{
    if(roomVisible.current!==active){roomVisible.current=active;setRoomActive(active);}
    if(!active||!world)return;
@@ -97,7 +97,7 @@ export function LandingWorldHost({language,onLanguageChange,selected,onSelect}:P
   const titleLines=[...hero.querySelectorAll<HTMLElement>('.across-title-line')];
   const copy=hero.querySelector<HTMLElement>('.across-editorial')!,destination=hero.querySelector<HTMLElement>('.folded-destination')!;
   const endIntro=()=>{inIntro=false;pose.entrance=1;setIntroActive(false);rememberIntro();dirty.current=true;};skip.current=endIntro;
-  const resetPointer=()=>{pointer.x=pointer.y=0;};
+  const resetPointer=()=>{pointer.x=pointer.y=0;pointer.pressed=false;world?.cancelHeroInteraction();};
   const invalidate=()=>{dirty.current=true;};
   const resize=()=>{
    frameFallback();
@@ -106,12 +106,14 @@ export function LandingWorldHost({language,onLanguageChange,selected,onSelect}:P
   };
   const preference=()=>{postState.current={...postState.current,reducedMotion:media.matches};if(media.matches){endIntro();resetPointer();}dirty.current=true;};
   const move=(event:PointerEvent)=>{
-   if(event.pointerType==='touch'||media.matches)return;
+   if(event.pointerType!=='mouse'||!finePointer.matches||media.matches)return;
    pointer.x=Math.max(-1,Math.min(1,event.clientX/innerWidth*2-1));pointer.y=Math.max(-1,Math.min(1,event.clientY/innerHeight*2-1));
   };
+  const press=(event:PointerEvent)=>{if(event.pointerType!=='mouse'||!finePointer.matches||media.matches||pose.progress>=.055||!(event.target instanceof Element)||event.target.closest('a,button,input,textarea,select,[role=button]'))return;pointer.pressed=true;dirty.current=true;};
+  const release=()=>{pointer.pressed=false;dirty.current=true;};
   const contextLost=(event:Event)=>{event.preventDefault();lost=true;projectRoomDiscoveries(false);setReady(false);setPostReady(false);endIntro();};
   const contextRestored=()=>{lost=false;lastRenderSignature='';resize();setReady(true);setPostReady(true);};
-  const visibility=()=>{last=0;dirty.current=true;};
+  const visibility=()=>{last=0;dirty.current=true;if(document.hidden){hiddenAt=performance.now();resetPointer();cancelAnimationFrame(frame);frame=0;return;}if(hiddenAt&&inIntro)clockStart+=performance.now()-hiddenAt;hiddenAt=0;if(!frame)frame=requestAnimationFrame(tick);};
   const mm=gsap.matchMedia();
   frameFallback();
   mm.add('(prefers-reduced-motion: no-preference)',()=>{
@@ -130,17 +132,18 @@ export function LandingWorldHost({language,onLanguageChange,selected,onSelect}:P
    hero.dataset.roomActive=String(p>.18);hero.dataset.introOwner='live-space';hero.dataset.introTime=pose.time.toFixed(3);
   };
   const tick=(now:number)=>{
-   if(disposed)return;frame=requestAnimationFrame(tick);
-   const actualDt=last?Math.max(0,(now-last)/1000):0,dt=Math.min(actualDt,.08);last=now;
+   if(disposed||document.hidden){frame=0;return;}frame=requestAnimationFrame(tick);
+   const actualDt=last?Math.max(0,(now-last)/1000):0;last=now;
    if(document.hidden)return;
    externalTick.current?.(now);
    if(lost||!world||!assetsReady)return;
-   elapsed+=dt;
+   elapsed+=actualDt;
    const width=screen.clientWidth,height=screen.clientHeight;
    if(media.matches)pose.progress=smoothRange(0,Math.max(1,hero.offsetHeight-height),scrollY);
    if(inIntro){pose.time=Math.max(0,(now-clockStart)/1000);pose.entrance=introPose(pose.time).entrance;if(pose.time>=INTRO_SECONDS-1/60&&Number(screen.dataset.entrance)>=.999)endIntro();}else pose.time=elapsed;
-   const decay=pointerDecay(actualDt),input=inIntro||media.matches?0:1;
+   const decay=pointerDecay(actualDt),input=media.matches||!finePointer.matches?0:1;
    pose.pointerX+=(pointer.x*input-pose.pointerX)*decay;pose.pointerY+=(pointer.y*input-pose.pointerY)*decay;
+   pose.pointerPress=pointer.pressed?input:0;
    const bridge=smoothRange(heroEnd+height*.55,heroEnd+height*1.1,scrollY),postActive=bridge>0;
    const section=root.querySelector<HTMLElement>('#games');
    const galleryBounds=section?.getBoundingClientRect();
@@ -150,7 +153,7 @@ export function LandingWorldHost({language,onLanguageChange,selected,onSelect}:P
    section?.style.setProperty('--gallery-presence',String(galleryWeight));
    root.dataset.scene=!postActive?'hero':galleryWeight>.5?'gallery':postState.current.letterView==='rose'?'ending':postState.current.progress<.56?'story':'letter';
    root.dataset.bridge=bridge.toFixed(4);
-   const signature=[pose.progress,pose.entrance,pose.pointerX,pose.pointerY,bridge,postState.current.progress,postState.current.opening,galleryWeight,selection.current.selected,scrollY,width,height].map(value=>typeof value==='number'?value.toFixed(4):value).join(':');
+   const signature=[pose.progress,pose.entrance,pose.pointerX,pose.pointerY,pose.pointerPress??0,bridge,postState.current.progress,postState.current.opening,galleryWeight,selection.current.selected,scrollY,width,height].map(value=>typeof value==='number'?value.toFixed(4):value).join(':');
    const needsFrame=dirty.current||signature!==lastRenderSignature||postNeedsFrame||(!media.matches&&postState.current.effect.value!==0);
    if(!needsFrame){if(!postActive){world.render(pose);updateEditorial(Number(screen.dataset.progress??pose.progress),Number(screen.dataset.entrance??pose.entrance));projectRoomDiscoveries(Number(screen.dataset.progress??0)>.94);}return;}lastRenderSignature=signature;dirty.current=false;
    if(!postActive){
@@ -205,8 +208,8 @@ export function LandingWorldHost({language,onLanguageChange,selected,onSelect}:P
    postStage=new THREE.Group();postStage.name='POST_SHARED_FOREGROUND_STAGE';postStage.matrix.copy(postTransform);postStage.matrixAutoUpdate=false;postStage.add(composition.root,post.root);world.scene.add(postStage);
    setPostReady(true);clockStart=performance.now();world.render(pose);resize();
   }).catch(error=>{if(disposed)return;console.error('Landing world:',error);endIntro();post?.dispose();composition?.dispose();world?.dispose();world=undefined;setReady(false);setFailed(true);});
-  root.addEventListener('pointermove',move);root.addEventListener('pointerleave',resetPointer);window.addEventListener('resize',resize);window.addEventListener('scroll',invalidate,{passive:true});media.addEventListener('change',preference);screen.addEventListener('webglcontextlost',contextLost);screen.addEventListener('webglcontextrestored',contextRestored);document.addEventListener('visibilitychange',visibility);
-  return()=>{disposed=true;cancelAnimationFrame(frame);mm.revert();resizeObserver.disconnect();post?.dispose();composition?.dispose();postStage?.removeFromParent();world?.dispose();root.removeEventListener('pointermove',move);root.removeEventListener('pointerleave',resetPointer);window.removeEventListener('resize',resize);window.removeEventListener('scroll',invalidate);media.removeEventListener('change',preference);screen.removeEventListener('webglcontextlost',contextLost);screen.removeEventListener('webglcontextrestored',contextRestored);document.removeEventListener('visibilitychange',visibility);};
+  root.addEventListener('pointermove',move);root.addEventListener('pointerdown',press);root.addEventListener('pointerleave',resetPointer);window.addEventListener('pointerup',release);window.addEventListener('pointercancel',resetPointer);window.addEventListener('blur',resetPointer);window.addEventListener('resize',resize);window.addEventListener('scroll',invalidate,{passive:true});media.addEventListener('change',preference);finePointer.addEventListener('change',resetPointer);screen.addEventListener('webglcontextlost',contextLost);screen.addEventListener('webglcontextrestored',contextRestored);document.addEventListener('visibilitychange',visibility);
+  return()=>{disposed=true;cancelAnimationFrame(frame);mm.revert();resizeObserver.disconnect();post?.dispose();composition?.dispose();postStage?.removeFromParent();world?.dispose();root.removeEventListener('pointermove',move);root.removeEventListener('pointerdown',press);root.removeEventListener('pointerleave',resetPointer);window.removeEventListener('pointerup',release);window.removeEventListener('pointercancel',resetPointer);window.removeEventListener('blur',resetPointer);window.removeEventListener('resize',resize);window.removeEventListener('scroll',invalidate);media.removeEventListener('change',preference);finePointer.removeEventListener('change',resetPointer);screen.removeEventListener('webglcontextlost',contextLost);screen.removeEventListener('webglcontextrestored',contextRestored);document.removeEventListener('visibilitychange',visibility);};
  },[]);
  useEffect(()=>{dirty.current=true;},[selected,language]);
  return <div ref={host} className={`landing-world-host${ready?' is-world-ready':''}${failed?' world-unavailable':''}`}>

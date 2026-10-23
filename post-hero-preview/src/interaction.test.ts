@@ -1,6 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import { clamp01, sceneProgress, letterOpenProgress, createEnvelopeState, updateEnvelopeFromScroll, toggleEnvelope, reopenEnvelope, envelopeTarget, closeEnvelope, LETTER_PAPER_HANDOFF, loadPreferences, savePreferences } from './interaction';
+import { advanceLetterOpening, clamp01, sceneProgress, letterOpenProgress, createEnvelopeState, updateEnvelopeFromScroll, toggleEnvelope, reopenEnvelope, envelopeTarget, closeEnvelope, LETTER_PAPER_HANDOFF, loadPreferences, savePreferences } from './interaction';
 
 test('normalized progress clamps finite values and maps letter range', () => {
   assert.equal(clamp01(Infinity), 0);
@@ -76,4 +76,19 @@ test('domino placements use the selected tile, orient its matching end, and requ
   assert.equal(isDominoChainComplete(state), true);
   assert.equal(placeDominoTile(state, [4, 6]), null);
   assert.equal(placeDominoTile(state, [3.5, 4]), null);
+});
+
+
+test('letter motion responds early, reverses from its current fold, and settles exactly',()=>{
+ const early=advanceLetterOpening(0,1,.18);
+ assert.ok(early>.65&&early<.8,'opening responds during the first 180ms');
+ const reversed=advanceLetterOpening(early,0,1/60);
+ assert.ok(reversed>0&&reversed<early,'reverse continues from the visible paper pose');
+ assert.ok(advanceLetterOpening(reversed,1,1/60)>reversed);
+ let closing=1;for(let i=0;i<90;i++)closing=advanceLetterOpening(closing,0,1/60);
+ assert.equal(closing,0,'fold completion is reachable exactly');
+ assert.equal(advanceLetterOpening(.7,0,0,true),0,'keyboard and reduced motion settle immediately');
+ assert.equal(advanceLetterOpening(.3,1,NaN),.3);
+ assert.equal(advanceLetterOpening(.3,1,-1),.3);
+ assert.equal(advanceLetterOpening(.3,1,60),1);
 });

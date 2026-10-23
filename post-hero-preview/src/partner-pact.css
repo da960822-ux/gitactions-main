@@ -1,3 +1,5 @@
+/* Keep footer anchoring from moving the reader when the inline pact changes height. */
+html:has(.letter-journey[data-view=reading] .partner-pact){overflow-anchor:none}
 .post-hero-preview .partner-pact{--pact-accent:#78414c;--pact-ink:#71364d;position:relative;z-index:3;perspective:1000px;min-height:190px;pointer-events:none}
 .post-hero-preview .partner-pact button{font:inherit;cursor:pointer;-webkit-tap-highlight-color:transparent}
 .post-hero-preview .pp-doll-caption svg,.post-hero-preview .pp-close svg{width:18px;height:18px;fill:none;stroke:currentColor;stroke-width:1.3;stroke-linecap:round;stroke-linejoin:round;flex:none}

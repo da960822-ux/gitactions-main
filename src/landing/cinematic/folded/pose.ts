@@ -1,6 +1,6 @@
 export const INTRO_SECONDS=3.2;
 export const FOLD_ANCHORS={hero:[0,-2.9,0],boundary:[0,0,-4],gallery:[0,0,-26]}as const;
-export type FoldPose={progress:number;entrance:number;pointerX:number;pointerY:number;time:number};
+export type FoldPose={progress:number;entrance:number;pointerX:number;pointerY:number;pointerPress?:number;time:number};
 export const clamp01=(v:number)=>Math.max(0,Math.min(1,v));
 export const smoothRange=(a:number,b:number,v:number)=>{const t=clamp01((v-a)/(b-a));return t*t*(3-2*t);};
 export function introPose(seconds:number):FoldPose{return{progress:0,entrance:smoothRange(.1,2.9,seconds),pointerX:0,pointerY:0,time:Math.min(seconds,INTRO_SECONDS)};}

@@ -17,7 +17,6 @@ export function GameStartBeam(){
     let frame=0,width=0,height=0,px=0,py=0,inView=false;
     const reset=()=>{
       cancelAnimationFrame(frame);frame=0;element.dataset.active='false';
-      pointer.current?.setAttribute('cx',String(width/2));pointer.current?.setAttribute('cy',String(height/2));
     };
     const preference=()=>{element.dataset.reduced=String(reduced.matches);reset();};
     const measure=()=>{

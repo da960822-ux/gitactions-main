@@ -12,7 +12,7 @@ import {useLiveReducedMotion} from './useLiveReducedMotion';
 import {createLetterFinaleState,reduceLetterFinale,type LetterFinaleEvent} from '../../src/landing/letterFinaleState';
 import type {SharedEventId,SharedEventRound} from '../../src/core/sharedEventsState';
 import {restoreLocalEventState,type LocalEventId,type LocalEventState} from './LocalEventRig';
-import { clamp01, LETTER_PAPER_HANDOFF, LETTER_UNFOLDED, closeEnvelope, createEnvelopeState, updateEnvelopeFromScroll, toggleEnvelope, reopenEnvelope, envelopeTarget } from './interaction';
+import { advanceLetterOpening, clamp01, LETTER_PAPER_HANDOFF, LETTER_UNFOLDED, closeEnvelope, createEnvelopeState, updateEnvelopeFromScroll, toggleEnvelope, reopenEnvelope, envelopeTarget } from './interaction';
 
 const progressBucket=(value:number)=>value<.35?0:value<.56?1:value<.86?2:value<.90?3:4;
 const openingBucket=(value:number)=>value<=.0005?0:value<=LETTER_UNFOLDED?1:2;
@@ -146,7 +146,7 @@ export function PostHeroPreview({embedded=false,language:externalLanguage,onLang
      const measure=pendingScroll.current;pendingScroll.current=null;measure?.();
      const dt=previous?Math.max(0,(time-previous)/1000):0;previous=time;
      const diff=target.current-q.current;
-     if(Math.abs(diff)>.0005){q.current=reduced.current?target.current:q.current+Math.sign(diff)*Math.min(Math.abs(diff),dt/1.8);updateOpening(q.current);publishScene();}
+     if(diff!==0){q.current=advanceLetterOpening(q.current,target.current,dt,reduced.current);updateOpening(q.current);publishScene();}
      if(finale.current.phase==='folding'&&q.current<.0005&&target.current===0){changeLetterView({type:'fold-complete',opening:q.current,target:target.current});}
    };
    if(onRegisterFrame){onRegisterFrame(tick);return()=>onRegisterFrame(null);}
@@ -158,17 +158,19 @@ export function PostHeroPreview({embedded=false,language:externalLanguage,onLang
    const scene=document.getElementById('letter-scene'),bounds=scene?.getBoundingClientRect();
    if(bounds&&bounds.top>1)scene?.scrollIntoView({behavior:instant||reduced.current?'instant':'smooth',block:'start'});
  }
- const closeLetter=()=>{
+ const settleLetter=()=>{q.current=target.current;updateOpening(q.current);publishScene();};
+ const closeLetter=(instant=false)=>{
    const rect=paper.current?.getBoundingClientRect();
    closingRect.current=rect&&rect.width>1&&rect.height>1?{left:rect.left,top:rect.top,width:rect.width,height:rect.height}:undefined;
    closingScrollY.current=scrollY;
    setLetterClosingRect(closingRect.current);
    const surface=readerSurface.current;if(surface){const offset=-surface.getBoundingClientRect().top;setSurfaceSnapshot({offset,height:Math.max(surface.offsetHeight,offset+innerHeight),paperHeight:paperSlot.current?.offsetHeight??0});}
-   changeLetterView({type:'close',opening:q.current});setRoseHintOpen(false);control.current={...closeEnvelope(control.current,p.current),returning:false};focusAfterFold.current=true;refreshTarget();
+   changeLetterView({type:'close',opening:q.current});setRoseHintOpen(false);control.current={...closeEnvelope(control.current,p.current),returning:false};focusAfterFold.current=true;refreshTarget();if(instant||reduced.current)settleLetter();
  };
- const toggleLetter=()=>{
-   if(!control.current.returning&&target.current>=.5){closeLetter();return;}
-   changeLetterView({type:'reopen'});stopLetterMotion();focusAfterFold.current=false;control.current=toggleEnvelope(control.current,p.current);if(control.current.manual===true&&q.current<LETTER_UNFOLDED)alignEnvelopeView();refreshTarget();
+ const toggleLetter=(event?:React.MouseEvent,instant=false)=>{
+   instant=instant||event?.detail===0;
+   if(!control.current.returning&&target.current>=.5){closeLetter(instant);return;}
+   changeLetterView({type:'reopen'});stopLetterMotion();focusAfterFold.current=false;control.current=toggleEnvelope(control.current,p.current);if(control.current.manual===true&&q.current<LETTER_UNFOLDED&&!instant)alignEnvelopeView();refreshTarget();if(instant||reduced.current)settleLetter();
  };
  useEffect(()=>{
    const interrupt=()=>{focusReader.current=false;stopLetterMotion();if(finale.current.phase==='folding'){changeLetterView({type:'interrupt'});focusAfterFold.current=false;}};
@@ -177,12 +179,12 @@ export function PostHeroPreview({embedded=false,language:externalLanguage,onLang
    return()=>{removeEventListener('wheel',interrupt);removeEventListener('pointerdown',interrupt,true);removeEventListener('keydown',scrollKey);};
  },[changeLetterView]);
  useEffect(()=>{
-   const closeOnEscape=(event:KeyboardEvent)=>{if(event.key!=='Escape'||detailRegion||sharedEvent)return;if(roseHintOpen){event.preventDefault();setRoseHintOpen(false);return;}if(finale.current.phase==='folding'){event.preventDefault();toggleLetter();return;}if(target.current<=.5)return;event.preventDefault();closeLetter();};
+   const closeOnEscape=(event:KeyboardEvent)=>{if(event.key!=='Escape'||detailRegion||sharedEvent)return;if(roseHintOpen){event.preventDefault();setRoseHintOpen(false);return;}if(finale.current.phase==='folding'){event.preventDefault();toggleLetter(undefined,true);return;}if(target.current<=.5)return;event.preventDefault();closeLetter(true);};
    addEventListener('keydown',closeOnEscape);return()=>removeEventListener('keydown',closeOnEscape);
  },[refreshTarget,roseHintOpen,detailRegion,sharedEvent]);
  const readLetter=(event?:React.MouseEvent)=>{event?.preventDefault();focusReader.current=Boolean(event);changeLetterView({type:'read'});stopLetterMotion();focusAfterFold.current=false;control.current=reopenEnvelope(control.current);q.current=1;updateOpening(1);publishScene();refreshTarget();document.getElementById('papi-letter')?.scrollIntoView({behavior:'instant',block:'start'});};
  useEffect(()=>{const onHash=()=>{if(location.hash==='#papi-letter')readLetter();};onHash();addEventListener('hashchange',onHash);return()=>removeEventListener('hashchange',onHash);},[]);
- const closeDetails=useCallback((restoreFocus=true)=>{setDetailRegion(null);setLocalEvent(old=>({...old,active:null,rhythmSignal:null,waxPressed:false}));if(restoreFocus)requestAnimationFrame(()=>detailsOpener.current?.focus({preventScroll:true}));},[]);
+ const closeDetails=useCallback((restoreFocus=true)=>{setDetailRegion(null);setLocalEvent(old=>({...old,active:null,rhythmSignal:null,waxPressed:false,motionInstant:false}));if(restoreFocus)requestAnimationFrame(()=>detailsOpener.current?.focus({preventScroll:true}));},[]);
 
  const openShared=(id:SharedEventId,region:NonNullable<typeof detailRegion>,trigger:HTMLButtonElement)=>{sharedOpener.current=trigger;setSharedEvent({id,region});};
  const closeShared=()=>{setSharedEvent(null);requestAnimationFrame(()=>sharedOpener.current?.focus({preventScroll:true}));};

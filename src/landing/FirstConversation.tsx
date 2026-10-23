@@ -41,14 +41,20 @@ function CutoutPortrait({className,side,x,y,width,height}:{className:string;side
 
 export function FirstConversation({language}:{language:'ko'|'es'}){
  const ko=language==='ko',host=useRef<HTMLElement>(null),id=useId().replace(/:/g,'');
- const intent=useSpring(0,{duration:.5,bounce:.2});
- const responseOpacity=useTransform(intent,[0,1],[0,.95]);
- const responseTransform=useTransform(intent,[0,1],['translateY(0px)','translateY(-12px)']);
- const reset=()=>intent.set(0);
- const acknowledge=()=>{if(!matchMedia('(prefers-reduced-motion: reduce)').matches)intent.set(1);};
- const touch=(event:PointerEvent<HTMLElement>)=>{
+ const pressed=useRef(false);
+ const intent=useSpring(0,{stiffness:460,damping:34,mass:.65});
+ const responseX=useSpring(0,{stiffness:360,damping:30,mass:.65});
+ const responseY=useSpring(0,{stiffness:360,damping:30,mass:.65});
+ const responseOpacity=useTransform(intent,[0,1],[0,.9]);
+ const responseWidth=useTransform(intent,[0,1],[2,4]);
+ const reset=()=>{pressed.current=false;intent.set(0);responseX.set(0);responseY.set(0);};
+ const respond=(event:PointerEvent<HTMLElement>)=>{
+  if(matchMedia('(prefers-reduced-motion: reduce)').matches)return;
   if(event.pointerType==='mouse'&&!matchMedia('(hover: hover) and (pointer: fine)').matches)return;
-  acknowledge();
+  const bounds=event.currentTarget.getBoundingClientRect();
+  responseX.set(Math.max(-1,Math.min(1,(event.clientX-bounds.left)/bounds.width*2-1))*18);
+  responseY.set(Math.max(-1,Math.min(1,(event.clientY-bounds.top)/bounds.height*2-1))*14);
+  intent.set(pressed.current?1:.45);
  };
  useEffect(()=>{
   gsap.registerPlugin(ScrollTrigger);
@@ -73,11 +79,11 @@ export function FirstConversation({language}:{language:'ko'|'es'}){
     .fromTo('.fc-connection-duration',{opacity:0},{opacity:1,duration:.4},1.6);
    return()=>{delete element.dataset.storyBeat;};
   },host);
-  const preference=()=>intent.jump(0);
+  const preference=()=>{pressed.current=false;intent.jump(0);responseX.jump(0);responseY.jump(0);};
   const reduced=matchMedia('(prefers-reduced-motion: reduce)');
-  reduced.addEventListener('change',preference);
-  return()=>{media.revert();reduced.removeEventListener('change',preference);intent.jump(0);};
- },[language,intent]);
+  reduced.addEventListener('change',preference);window.addEventListener('blur',preference);document.addEventListener('visibilitychange',preference);
+  return()=>{media.revert();reduced.removeEventListener('change',preference);window.removeEventListener('blur',preference);document.removeEventListener('visibilitychange',preference);preference();};
+ },[language,intent,responseX,responseY]);
 
  return <section ref={host} className="first-conversation" id="first-conversation" aria-labelledby="first-conversation-title">
   <div className="fc-layout">
@@ -96,7 +102,7 @@ export function FirstConversation({language}:{language:'ko'|'es'}){
      <p className="fc-afterthought">{ko?'Baby, 난 아직도 너랑 할 얘기가 많아.':'Baby, todavía tengo tanto que contarte.'}</p>
     </div>
    </div>
-   <figure className="fc-connection" onPointerEnter={touch} onPointerDown={touch} onPointerUp={reset} onPointerLeave={reset} onPointerCancel={reset} aria-label={ko?'InterPals에서 만난 연석과 리스벳. 서툰 첫인사를 지나 첫날 12시간 이어진 대화.':'Yeonseok y Lisbeth se conocieron en InterPals. Pasaron de un comienzo torpe a doce horas de conversación el primer día.'}>
+   <figure className="fc-connection" onPointerEnter={respond} onPointerMove={respond} onPointerDown={event=>{pressed.current=true;respond(event);}} onPointerUp={event=>{pressed.current=false;if(event.pointerType==='mouse')respond(event);else reset();}} onPointerLeave={reset} onPointerCancel={reset} aria-label={ko?'InterPals에서 만난 연석과 리스벳. 서툰 첫인사를 지나 첫날 12시간 이어진 대화.':'Yeonseok y Lisbeth se conocieron en InterPals. Pasaron de un comienzo torpe a doce horas de conversación el primer día.'}>
     <div className="fc-shared-surface fc-material-surface" style={{clipPath:`url(#${id}-material-clip)`}}><ConversationMaterial/></div>
     <div className="fc-connection-origin">InterPals</div>
     <div className="fc-person fc-yeonseok"><span>Yeonseok</span><small>{ko?'광주':'Gwangju'}</small></div>
@@ -112,7 +118,7 @@ export function FirstConversation({language}:{language:'ko'|'es'}){
      <g className="fc-portrait-left"><CutoutPortrait className="fc-face fc-face-yeonseok" side="yeonseok" x={40} y={124} width={300} height={302}/></g>
      <g className="fc-portrait-right"><CutoutPortrait className="fc-face fc-face-lisbeth" side="lisbeth" x={352} y={138} width={318} height={299}/></g>
      <g className="fc-thread"><path className="fc-heart-route fc-left-route" d={left.continuous}/><path className="fc-heart-route fc-right-route" d={right.continuous}/></g>
-     <motion.g className="fc-thread-response" style={{opacity:responseOpacity,transform:responseTransform}}>
+     <motion.g className="fc-thread-response" style={{opacity:responseOpacity,x:responseX,y:responseY,strokeWidth:responseWidth}}>
       <path className="fc-left-route" d={left.continuous}/><path className="fc-right-route" d={right.continuous}/>
      </motion.g>
     </svg>

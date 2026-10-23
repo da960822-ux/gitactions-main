@@ -74,6 +74,35 @@ it('starts with a gripping donor and separated open recipient, closes her hand b
  expect(roseGiftPose(3).donorOpen).toBe(1);expect(roseGiftPose(3).recipientClosed).toBe(true);
 });
 
+it('registers both receiving poses to the same wrist projection while the donor still covers the switch',()=>{
+ const before=roseGiftPose(1.38-1e-6),after=roseGiftPose(1.38+1e-6);
+ expect(before.recipientClosed).toBe(false);expect(after.recipientClosed).toBe(true);
+ expect(before.recipientWristWorld).toEqual(after.recipientWristWorld);
+ expect(before.recipientTurn).toBe(after.recipientClosedTurn);
+ expect(before.recipientForeshorten).toBeCloseTo(after.recipientClosedForeshorten,10);
+ expect(before.recipientForeshorten).toBeGreaterThan(0);
+ expect(before.recipientForeshorten).toBeLessThan(.4);
+ expect(before.donorOpen).toBe(0);expect(after.donorOpen).toBe(0);
+ for(const time of [1.6,1.75,1.85,1.95]){
+  const p=roseGiftPose(time),previous=roseGiftPose(time-.01);
+  expect(p.recipientClosedForeshorten).toBeGreaterThanOrEqual(previous.recipientClosedForeshorten);
+  expect(p.recipientClosedForeshorten).toBeLessThanOrEqual(1);
+ }
+ expect(roseGiftPose(3).recipientClosedForeshorten).toBe(1);
+});
+
+it('keeps the received original and localized replay semantics for reduced motion',()=>{
+ for(const language of ['ko','es'] as const){
+  const html=renderToStaticMarkup(<RoseGiftFinale language={language} reducedMotion pactAccepted/>);
+  expect(html).toContain('data-static="true"');
+  expect(html).toContain('data-phase="received"');
+  expect(html).toMatch(/class="rg-static" src="\/images\/rose-gift\/received.png"/);
+  expect(html).toMatch(/type="button" class="rg-replay" disabled=""/);
+  expect(html).toContain(language==='ko'?'한 번 더 보기':'Ver otra vez');
+  expect(html).toContain(roseGiftClosingLine(language,true,true));
+ }
+});
+
 it('has continuous flower position and direction at the ownership change in both seek directions',()=>{
  const before=roseGiftPose(1.65-1e-6),contact=roseGiftPose(1.65),after=roseGiftPose(1.65+1e-6);
  expect(before.owner).toBe('donor');expect(contact.owner).toBe('recipient');

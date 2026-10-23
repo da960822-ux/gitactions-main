@@ -92,3 +92,7 @@
  .post-hero-preview :is(.rhythm-bar,.rhythm-bar b){transition:transform 240ms var(--ease)}
  .post-hero-preview .details-eggs:has(:focus-visible) :is(.tray-window-left,.tray-window-right,.rhythm-bar,.rhythm-bar b){transition:none}
 }
+
+.post-hero-preview .egg-button:active:not(:disabled){transition-duration:90ms}
+.post-hero-preview .egg-button:focus-visible{transform:none;transition:none}
+.post-hero-preview .asset-motion-reduced .egg-button:active{transform:none}

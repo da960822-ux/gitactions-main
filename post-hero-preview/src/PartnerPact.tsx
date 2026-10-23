@@ -67,7 +67,7 @@ export function PartnerPact({language,onResponseChange}:{language:'ko'|'es';onRe
   if(!open||!paper.current)return;
   paper.current.scrollTop=0;
   if(reduced||!animateOpening.current)return;
-  const tween=gsap.fromTo(paper.current,{opacity:.65,rotationX:-9,y:12,clipPath:'inset(0 0 88% 0)'},{opacity:1,rotationX:0,y:0,clipPath:'inset(0 0 0% 0)',duration:.48,ease:'power3.out'});
+  const tween=gsap.fromTo(paper.current,{opacity:.8,rotationX:-2,y:8},{opacity:1,rotationX:0,y:0,duration:.24,ease:'power3.out'});
   return()=>{tween.revert();};
  },[open,reduced]);
  const close=()=>{drawing.current=null;setOpen(false);setPressed(false);};
@@ -81,7 +81,7 @@ export function PartnerPact({language,onResponseChange}:{language:'ko'|'es';onRe
  const clear=()=>{drawing.current=null;setStrokes([]);setName('');};
  const mode=signature?.mode??'empty';
  return <div className="partner-pact" data-open={open}>
-  <motion.button ref={opener} type="button" className="pp-dolls" hidden={open} aria-expanded={open} aria-controls={panelId} aria-label={ko?'인형과 우리의 약속 열기':'Abrir nuestro pacto con las figuras'} initial={false} animate={{transform:pressed&&!reduced?'scale(.97)':'scale(1)'}} transition={{type:'spring',stiffness:450,damping:32,mass:.6}} onPointerDown={event=>{if(event.pointerType==='mouse'&&!reduced)setPressed(true);}} onPointerUp={()=>setPressed(false)} onPointerLeave={()=>setPressed(false)} onPointerCancel={()=>setPressed(false)} onBlur={()=>setPressed(false)} onClick={event=>{animateOpening.current=event.detail>0;setPressed(false);setOpen(true);}}>
+  <motion.button ref={opener} type="button" className="pp-dolls" hidden={open} aria-expanded={open} aria-controls={panelId} aria-label={ko?'인형과 우리의 약속 열기':'Abrir nuestro pacto con las figuras'} initial={false} animate={{transform:pressed&&!reduced?'scale(.97)':'scale(1)'}} transition={reduced?{duration:0}:{type:'spring',stiffness:520,damping:36,mass:.6}} onPointerDown={()=>{if(!reduced)setPressed(true);}} onPointerUp={()=>setPressed(false)} onPointerLeave={()=>setPressed(false)} onPointerCancel={()=>setPressed(false)} onBlur={()=>setPressed(false)} onClick={event=>{animateOpening.current=event.detail>0;setPressed(false);setOpen(true);}}>
    <img src="/images/story-companions/hanbok-pact-dolls.png" width="1254" height="1254" alt={ko?'붉은 혼례 한복을 입은 신부와 아이보리 차카바나를 입은 신랑 인형':'Figuras de una novia con hanbok rojo y un novio con chacabana marfil'} hidden={imageFailed} draggable="false" onError={()=>setImageFailed(true)}/>
    <span className="pp-doll-caption">{ko?'우리의 약속':'Nuestro pacto'}<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 17 17 7M7 7h10v10"/></svg></span>
    {imageFailed&&<span className="pp-art-status" role="status">{ko?'인형 그림은 못 불러왔지만, 약속은 여기 있어.':'La figura no cargó, pero el pacto está aquí.'}</span>}
