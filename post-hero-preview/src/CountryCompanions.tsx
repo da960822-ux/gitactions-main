@@ -9,6 +9,16 @@ gsap.registerPlugin(ScrollTrigger);
 export type CompanionPhase='greet'|'return'|'instant';
 const flightSpring={type:'spring' as const,mass:1,stiffness:100,damping:20,restDelta:.0001,restSpeed:.001};
 const unit=(value:number)=>Number.isFinite(value)?Math.max(0,Math.min(1,value)):0;
+export function monitorCompanionArt(onError:()=>void){
+ let active=true;
+ const images=['mandarin-duck','hummingbird-torso','hummingbird-tail','hummingbird-near','hummingbird-far'].map(name=>{
+  const image=new Image();
+  image.onerror=()=>{if(active)onError();};
+  image.src=`/images/story-companions/${name}.png`;
+  return image;
+ });
+ return()=>{active=false;for(const image of images)image.onerror=null;};
+}
 export function companionBodyPose(progress:number,shift:number,side:1|-1,attention=0){
  const q=unit(progress),response=unit((q-.4)/.6),bow=response*response*(3-2*response);
  if(side===1)return{x:0,y:0,rotation:2.2*Math.sin(Math.PI*bow)+.8*bow+.2*unit(attention)};
@@ -70,6 +80,8 @@ export function Companion({side,together,phase,shift,reduced,interactive,failed,
 export function CountryCompanions({language}:{language:'ko'|'es'}){
  const ko=language==='ko',root=useRef<HTMLDivElement>(null),reduced=useLiveReducedMotion(),duckNote=useId(),hummingbirdNote=useId();
  const [together,setTogether]=useState(false),[visible,setVisible]=useState(false),[phase,setPhase]=useState<CompanionPhase>('instant'),[shift,setShift]=useState(0),[failed,setFailed]=useState(false),[trace,setTrace]=useState({x:0,y:0});
+ // SVG image failures are not reliably forwarded through React's onError in every browser.
+ useEffect(()=>monitorCompanionArt(()=>setFailed(true)),[]);
  useEffect(()=>{
   const element=root.current;if(!element)return;
   const distance=element.closest<HTMLElement>('#distance');if(!distance)return;

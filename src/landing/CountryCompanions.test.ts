@@ -1,10 +1,10 @@
 import {readFileSync} from 'node:fs';
 import {createElement} from 'react';
 import {renderToStaticMarkup} from 'react-dom/server';
-import {describe,expect,it} from 'vitest';
+import {describe,expect,it,vi} from 'vitest';
 import {cubicBezier,spring} from 'motion';
 import sharp from 'sharp';
-import {CountryCompanions,Companion,companionBodyMotion,companionBodyPose,companionWingPose,companionTailRotation} from '../../post-hero-preview/src/CountryCompanions';
+import {CountryCompanions,Companion,companionBodyMotion,companionBodyPose,companionWingPose,companionTailRotation,monitorCompanionArt} from '../../post-hero-preview/src/CountryCompanions';
 
 const ease=cubicBezier(.23,1,.32,1);
 const rotate=(x:number,y:number,degrees:number)=>{const angle=degrees*Math.PI/180;return{x:x*Math.cos(angle)-y*Math.sin(angle),y:x*Math.sin(angle)+y*Math.cos(angle)};};
@@ -126,6 +126,24 @@ describe('grounded companion greeting',()=>{
   expect(companionTailRotation(.5,.3)).toBeGreaterThan(companionTailRotation(.5,.5));
   expect(companionTailRotation(.5,.7)).toBeLessThan(companionTailRotation(.5,.5));
   expect(companionTailRotation(.5,.5+1e-6)).toBeCloseTo(companionTailRotation(.5,.5),4);
+ });
+ it('detects a native near-wing request error and stops delivery after cleanup without requesting fallback art',()=>{
+  const requests:NativeImage[]=[];
+  class NativeImage{src='';onerror:(()=>void)|null=null;constructor(){requests.push(this);}}
+  vi.stubGlobal('Image',NativeImage);
+  try{
+   let failed=false,errors=0;
+   const cleanup=monitorCompanionArt(()=>{failed=true;errors++;});
+   const near=requests.find(image=>image.src.endsWith('/hummingbird-near.png'))!;
+   expect(near).toBeDefined();expect(requests).toHaveLength(5);
+   expect(requests.some(image=>image.src.endsWith('/hummingbird-body.png'))).toBe(false);
+   const delayedError=near.onerror!;near.onerror!();
+   const markup=renderToStaticMarkup(createElement(Companion,{side:-1,together:true,phase:'greet',shift:240,reduced:false,interactive:true,failed,language:'ko',descriptionId:'bird-meaning',onGreet:()=>{},onError:()=>{}}));
+   expect(markup).toContain('hummingbird-body.png');expect(markup).toContain('disabled=""');
+   expect(markup).not.toContain('hummingbird-rig');expect(markup).toContain('aria-describedby="bird-meaning"');
+   cleanup();delayedError();
+   expect(errors).toBe(1);expect(requests.every(image=>image.onerror===null)).toBe(true);
+  }finally{vi.unstubAllGlobals();}
  });
  it('replaces a failed layered bird with the intact static original and disables the actual greeting buttons',()=>{
   for(const side of [1,-1] as const){
