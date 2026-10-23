@@ -4,11 +4,15 @@ export {ROSE_DRONE_COUNT,roseDronePosition} from './rose-drone-formations';
 
 export const ROSE_FIREWORK_PARTICLE_LIMIT=192;
 const colors=['#ffe7b3','#ffd08b','#fff5d9','#f6a1be'];
-const shells=[{x:20,y:210,scale:1.12},{x:1150,y:150,scale:1.08},{x:-45,y:480,scale:1.05},{x:1240,y:440,scale:1.1},{x:35,y:60,scale:.98},{x:1150,y:40,scale:1.04}];
+const shells=[{x:600,y:-200,scale:1.12},{x:1235,y:60,scale:1.08}];
 const intervals=[1.65,2.1,1.85,2.35,1.8,2.2];
 type Spark={x:number;y:number;vx:number;vy:number;life:number;color:number;born:number;shape:number};
 type Rocket={x:number;y:number;startX:number;born:number;index:number};
 function heart(angle:number){return{x:16*Math.sin(angle)**3,y:-(13*Math.cos(angle)-5*Math.cos(2*angle)-2*Math.cos(3*angle)-Math.cos(4*angle))};}
+export function roseDroneStage(section:{left:number;top:number;width:number},copyTop:number,artworkScale:number,navBottom=0){
+ const top=Math.max(section.top+16,navBottom+12),scale=Math.max(0,Math.min(artworkScale*1.8,section.width*.43/620,(copyTop-28-top)/360));
+ return{scale,left:section.left+section.width*.225-310*scale,top,width:620*scale,height:360*scale,padding:Math.ceil((18+2+4.75)*scale)+1};
+}
 export function roseFireworkSpark(index:number,shellIndex:number,born:number):Spark{
  const shell=shells[shellIndex%shells.length],shape=shellIndex%4,inner=index>=44,angle=(inner?index-44:index)*Math.PI*2/(inner?20:44);
  const speed=(inner?125:235)*( .78+((index*17+shellIndex*11)%29)/70)*shell.scale;
@@ -27,15 +31,24 @@ export function createRoseFireworks(canvas:HTMLCanvasElement){
  const ctx=canvas.getContext('2d',{alpha:true});
  if(!ctx){canvas.hidden=true;return{setActive:(_active:boolean)=>{},reset:()=>{},dispose:()=>{}};}
  const sprites=[...colors,...ROSE_DRONE_PALETTE].map((color,index)=>{const sprite=document.createElement('canvas');sprite.width=sprite.height=20;const brush=sprite.getContext('2d')!;const glow=brush.createRadialGradient(10,10,0,10,10,10);glow.addColorStop(0,index<colors.length?'#fff9e8':color);glow.addColorStop(.2,color);glow.addColorStop(1,`${color}00`);brush.fillStyle=glow;brush.fillRect(0,0,20,20);return sprite;});
- let active=false,disposed=false,frame=0,last:number|null=null,deadline:number|null=null,time=0,next=0,shellIndex=0,burstCount=0,ratio=1,scale=1,offsetX=0,offsetY=0;
+ let active=false,disposed=false,frame=0,last:number|null=null,deadline:number|null=null,time=0,next=0,shellIndex=0,burstCount=0,ratio=1,scale=1,offsetX=0,offsetY=0,droneScale=1,droneX=0,droneY=0;
+ let droneClip:{left:number;top:number;width:number;height:number}|null=null;
+ const section=canvas.closest?.('.rose-gift-finale'),copy=section?.querySelector('.rg-copy');
  const sparks:Spark[]=[],rockets:Rocket[]=[];
  const clear=()=>{ctx.setTransform(1,0,0,1,0,0);ctx.clearRect(0,0,canvas.width,canvas.height);};
  const resize=()=>{
   const scene=canvas.parentElement?.getBoundingClientRect(),box=canvas.getBoundingClientRect();if(!scene||!box.width||!box.height)return;
   ratio=Math.min(window.devicePixelRatio||1,1.25);canvas.width=Math.ceil(box.width*ratio);canvas.height=Math.ceil(box.height*ratio);
   scale=Math.min(scene.width/1199,scene.height/1312);offsetX=scene.left-box.left+(scene.width-1199*scale)/2;offsetY=scene.top-box.top+scene.height-1312*scale;
+  droneScale=scale;droneX=offsetX;droneY=offsetY;droneClip=null;
+  if(window.innerWidth>760&&section&&copy){
+   const nav=document.querySelector('.landing-nav'),navBox=nav?.getBoundingClientRect(),stage=roseDroneStage(section.getBoundingClientRect(),copy.getBoundingClientRect().top,scale,navBox?.height?navBox.bottom:0);
+   droneScale=stage.scale;droneX=stage.left+stage.width/2-box.left-600*droneScale;droneY=stage.top+stage.height/2-box.top+200*droneScale;
+   droneClip={left:stage.left-box.left-stage.padding,top:stage.top-box.top-stage.padding,width:stage.width+stage.padding*2,height:stage.height+stage.padding*2};
+  }
+  canvas.dataset.dronePlacement=droneClip?'left':'above';
  };
- const observer=new ResizeObserver(resize);observer.observe(canvas);resize();
+ const observer=new ResizeObserver(resize);observer.observe(canvas);if(copy)observer.observe(copy);resize();
  const tick=(now:number)=>{
   if(!active||disposed)return;
   frame=requestAnimationFrame(tick);const pacing=nextRenderFrame(now,deadline,1000/30);if(pacing===null)return;deadline=pacing;
@@ -55,6 +68,9 @@ export function createRoseFireworks(canvas:HTMLCanvasElement){
    for(let tail=tailLength;tail>=0;tail--){const point=roseFireworkPosition(spark,Math.max(0,age-tail*(spark.shape===3?.075:.045)));if(tail===tailLength)ctx.moveTo(point.x,point.y);else ctx.lineTo(point.x,point.y);}ctx.stroke();
    ctx.globalAlpha=fade;const size=spark.color===2?18:14;ctx.drawImage(sprites[spark.color],head.x-size/2,head.y-size/2,size,size);
   }
+  ctx.save();
+  if(droneClip){ctx.setTransform(ratio,0,0,ratio,0,0);ctx.beginPath();ctx.rect(droneClip.left,droneClip.top,droneClip.width,droneClip.height);ctx.clip();}
+  ctx.setTransform(ratio*droneScale,0,0,ratio*droneScale,ratio*droneX,ratio*droneY);
   for(let drone=0;drone<ROSE_DRONE_COUNT;drone++){
    const point=roseDronePosition(drone,time),size=9.5,changing=point.color!==point.fromColor,mix=changing?point.colorMix:0;
    if(drone===0&&canvas.dataset.droneFormation!==point.formation)canvas.dataset.droneFormation=point.formation;
@@ -63,6 +79,7 @@ export function createRoseFireworks(canvas:HTMLCanvasElement){
    if(mix>0){ctx.globalAlpha=point.alpha*mix;ctx.drawImage(sprites[colors.length+point.color],point.x-size/2,point.y-size/2,size,size);}
    ctx.globalAlpha=point.alpha*.45;ctx.fillStyle='#fff7eb';ctx.fillRect(point.x-.45,point.y-.45,.9,.9);
   }
+  ctx.restore();
   ctx.globalAlpha=1;ctx.globalCompositeOperation='source-over';
  };
  return{

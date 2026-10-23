@@ -2,8 +2,8 @@ import {renderToStaticMarkup} from 'react-dom/server';
 import {readFileSync} from 'node:fs';
 import {expect,it,vi} from 'vitest';
 import {RoseGiftFinale,roseGiftCanCelebrate,roseGiftClosingLine,roseGiftPose} from './story/RoseGiftFinale';
-import {ROSE_FIREWORK_PARTICLE_LIMIT,ROSE_DRONE_COUNT,createRoseFireworks,roseDronePosition,roseFireworkSpark,roseFireworkPosition} from './story/rose-fireworks';
-import {ROSE_DRONE_CYCLE,ROSE_DRONE_FORMATIONS,ROSE_DRONE_PALETTE,ROSE_DRONE_SOURCE_COUNTS,ROSE_DRONE_PROVENANCE,roseDroneFormations} from './story/rose-drone-formations';
+import {ROSE_FIREWORK_PARTICLE_LIMIT,ROSE_DRONE_COUNT,createRoseFireworks,roseDronePosition,roseFireworkSpark,roseFireworkPosition,roseDroneStage} from './story/rose-fireworks';
+import {ROSE_DRONE_CYCLE,ROSE_DRONE_FORMATIONS,ROSE_DRONE_PALETTE,ROSE_DRONE_SOURCE_COUNTS,ROSE_DRONE_FINAL_MESSAGE,ROSE_DRONE_PROVENANCE,roseDroneFormations} from './story/rose-drone-formations';
 
 it('gates fireworks on the fully settled handover while visible, never on initial contact or transfer',()=>{
  for(const seconds of [-1,0,1.2,1.65,2.85,2.999,NaN,Infinity])expect(roseGiftCanCelebrate(seconds,true)).toBe(false);
@@ -36,7 +36,7 @@ it('uses layered golden and rose sparks with gravity-curved tails instead of rig
 
 it('keeps firing past ten seconds, pauses without backlog, bounds particles, and disposes its single frame loop',()=>{
  let nextId=0,draws=0,maxDraws=0;const frames=new Map<number,FrameRequestCallback>();
- const noop=()=>{},disconnect=vi.fn(),context={setTransform:noop,clearRect:noop,beginPath:noop,moveTo:noop,lineTo:noop,stroke:noop,drawImage:()=>{draws++;},fillRect:noop,createRadialGradient:()=>({addColorStop:noop})};
+ const noop=()=>{},disconnect=vi.fn(),context={save:noop,restore:noop,rect:noop,clip:noop,setTransform:noop,clearRect:noop,beginPath:noop,moveTo:noop,lineTo:noop,stroke:noop,drawImage:()=>{draws++;},fillRect:noop,createRadialGradient:()=>({addColorStop:noop})};
  const canvas={width:0,height:0,dataset:{burstCount:'0'},parentElement:{getBoundingClientRect:()=>({left:0,top:0,width:600,height:656})},getBoundingClientRect:()=>({left:-150,top:-118.08,width:900,height:892.16}),getContext:()=>context} as unknown as HTMLCanvasElement;
  class Observer{observe=noop;disconnect=disconnect;}
  vi.stubGlobal('window',{devicePixelRatio:2});vi.stubGlobal('document',{createElement:()=>({width:0,height:0,getContext:()=>context})});vi.stubGlobal('ResizeObserver',Observer);
@@ -51,7 +51,7 @@ it('keeps firing past ten seconds, pauses without backlog, bounds particles, and
   const bursts=canvas.dataset.burstCount,formation=canvas.dataset.droneFormation;controller.setActive(false);expect(frames.size).toBe(0);expect(canvas.dataset.running).toBe('false');step(90000);expect(canvas.dataset.burstCount).toBe(bursts);expect(canvas.dataset.droneFormation).toBe(formation);
   controller.setActive(true);step(90016);expect(canvas.dataset.burstCount).toBe(bursts);expect(frames.size).toBe(1);
   controller.reset();step(100000);
-  for(const [at,formation] of [[108000,'pokeball'],[120000,'magikarp'],[132000,'gyarados'],[144000,'pikachu'],[156000,'heart'],[164000,'flight']] as const){
+  for(const [at,formation] of [[108000,'pokeball'],[120000,'magikarp'],[132000,'gyarados'],[144000,'pikachu'],[156000,'message'],[164000,'flight']] as const){
    const previous=Number(canvas.dataset.burstCount);step(at);expect(canvas.dataset.droneFormation).toBe(formation);expect(Number(canvas.dataset.burstCount)-previous).toBeLessThanOrEqual(1);expect(frames.size).toBe(1);
   }
   controller.setActive(false);const stopped=canvas.dataset.burstCount;controller.setActive(true);step(900000);expect(canvas.dataset.droneFormation).toBe('flight');expect(canvas.dataset.burstCount).toBe(stopped);
@@ -74,8 +74,8 @@ it('alternates a symmetric heart, tilted Saturn ring, chrysanthemum and long fal
 
 it('keeps the measured photographic dots, individual brightness and RGB palette, with invisible padding rather than invented lights',()=>{
  expect(ROSE_DRONE_COUNT).toBe(1280);expect(ROSE_DRONE_CYCLE).toBe(64);
- expect(ROSE_DRONE_FORMATIONS).toEqual(['pokeball','magikarp','gyarados','pikachu','heart']);
- expect(ROSE_DRONE_SOURCE_COUNTS).toEqual([492,801,1049,795,256]);
+ expect(ROSE_DRONE_FORMATIONS).toEqual(['pokeball','magikarp','gyarados','pikachu','message']);
+ expect(ROSE_DRONE_SOURCE_COUNTS).toEqual([492,801,1049,795,577]);
  expect(ROSE_DRONE_PALETTE.length).toBeGreaterThan(40);expect(ROSE_DRONE_PALETTE.length).toBeLessThan(128);
  for(let scene=0;scene<roseDroneFormations.length;scene++){
   const lights=roseDroneFormations[scene],visible=lights.filter(p=>p.alpha>0);
@@ -114,6 +114,27 @@ it('preserves photographed position and premultiplied light color across eight-s
   expect(roseDronePosition(index,64-1e-5).alpha).toBeLessThan(.001);expect(roseDronePosition(index,64+1e-5).alpha).toBeLessThan(.001);
  }
  expect(roseDronePosition(0,1).formation).toBe('flight');expect(roseDronePosition(0,0).alpha).toBe(0);
+});
+
+it('ends with the three-line I LOVE YOU / LISBETH / heart message and confines shots to the old center and right',()=>{
+ expect(ROSE_DRONE_FINAL_MESSAGE).toEqual(['I LOVE YOU','LISBETH']);
+ const message=roseDroneFormations[4].filter(p=>p.alpha>0),first=message.filter(p=>p.y<-280),second=message.filter(p=>p.y>-280&&p.y<-175),heart=message.filter(p=>p.y>-150);
+ expect(first.length).toBeGreaterThan(150);expect(second.length).toBeGreaterThan(150);expect(heart).toHaveLength(160);
+ for(const row of [first,second])expect(Math.max(...row.map(p=>p.x))-Math.min(...row.map(p=>p.x))).toBeGreaterThan(340);
+ expect(new Set(Array.from({length:12},(_,shell)=>{const p=roseFireworkSpark(0,shell,0);return `${p.x},${p.y}`;}))).toEqual(new Set(['600,-200','1235,60']));
+});
+
+it('contains the larger desktop show between the visible navigation and live copy with its expanded canvas, retaining the mobile footprint',()=>{
+ const css=readFileSync(new URL('./story/rose-gift-finale.css',import.meta.url),'utf8');
+ expect(css).toContain('inset:-36% -25% -18% -100%;width:225%');expect(css).toContain('.rg-celebration{left:-25%;width:150%}');
+ for(const [width,height,copyTop,navBottom] of [[1440,900,393,64],[1920,1080,530,96],[1280,720,320,96],[1440,900,340,96]]){
+  const artHeight=Math.max(420,Math.min(760,height*.66)),artWidth=width*(.85-.04)*1.35/2,scale=Math.min(artWidth/1199,artHeight/1312),stage=roseDroneStage({left:0,top:63,width:width-15},copyTop,scale,navBottom);
+  expect(stage.scale).toBeLessThanOrEqual(scale*1.8);expect(stage.top).toBeGreaterThanOrEqual(navBottom+12);expect(stage.top+stage.height).toBeLessThanOrEqual(copyTop-28+.001);
+  expect(stage.left).toBeGreaterThan(0);expect(stage.left+stage.width).toBeLessThan(width*.45);
+  expect(stage.padding).toBeGreaterThan((18+2+4.75)*stage.scale);expect(stage.top+stage.height+stage.padding).toBeLessThan(copyTop);
+  for(let step=0;step<=40;step++){const point=roseDronePosition(399,36+step/10);expect(stage.top+(point.y+380-4.75)*stage.scale).toBeGreaterThanOrEqual(stage.top-stage.padding);}
+ }
+ const large=roseDroneStage({left:0,top:63,width:1425},393,594/1312,64);expect(large.scale/(594/1312)).toBeGreaterThan(1.7);
 });
 
 it('keeps the static light-cloud fallback when a 2D canvas is unavailable',()=>{
