@@ -58,9 +58,10 @@ export function createRoseFireworks(canvas:HTMLCanvasElement){
   for(let drone=0;drone<ROSE_DRONE_COUNT;drone++){
    const point=roseDronePosition(drone,time),size=9.5,changing=point.color!==point.fromColor,mix=changing?point.colorMix:0;
    if(drone===0&&canvas.dataset.droneFormation!==point.formation)canvas.dataset.droneFormation=point.formation;
+   if(point.alpha<=0)continue;
    if(mix<1){ctx.globalAlpha=point.alpha*(1-mix);ctx.drawImage(sprites[colors.length+point.fromColor],point.x-size/2,point.y-size/2,size,size);}
    if(mix>0){ctx.globalAlpha=point.alpha*mix;ctx.drawImage(sprites[colors.length+point.color],point.x-size/2,point.y-size/2,size,size);}
-   ctx.globalAlpha=point.alpha*.65;ctx.fillStyle='#fff7eb';ctx.fillRect(point.x-.8,point.y-.8,1.6,1.6);
+   ctx.globalAlpha=point.alpha*.45;ctx.fillStyle='#fff7eb';ctx.fillRect(point.x-.45,point.y-.45,.9,.9);
   }
   ctx.globalAlpha=1;ctx.globalCompositeOperation='source-over';
  };
