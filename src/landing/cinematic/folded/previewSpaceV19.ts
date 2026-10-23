@@ -2,6 +2,7 @@ import * as T from 'three';
 import {HDRLoader} from 'three/addons/loaders/HDRLoader.js';
 import {ROOM_WORLD,roomWorldVertex} from './approvedRoomGeometry';
 import {createApprovedGamingRoom} from './ApprovedGamingRoom';
+import {createBirdEncounterField,type BirdEncounterFieldInput} from './birdEncounterField';
 import {createRoomReactions,type RoomReactionInput} from './roomReactions';
 import {createHeroRoomJourney} from './heroRoomJourney';
 import {createStorySurface} from './storySurfaceV19';
@@ -12,13 +13,23 @@ export function createFoldedWorld(canvas:HTMLCanvasElement,options:WorldOptions)
  let disposed=false,width=options.width,height=options.height,lastSignature='',stageProjectionKey='',renderSerial=0;
  const owned=new Set<{dispose:()=>void}>(),start=performance.now(),marks:Record<string,number>={};
  const keep=<A extends{dispose:()=>void}>(a:A)=>{if(disposed)a.dispose();else owned.add(a);return a;};
- const renderer=new T.WebGLRenderer({canvas,antialias:true,stencil:true,powerPreference:'high-performance'});
+ const renderer=new T.WebGLRenderer({canvas,alpha:true,antialias:true,stencil:true,powerPreference:'high-performance'});
  renderer.setPixelRatio(options.pixelRatio);renderer.setSize(width,height,false);renderer.outputColorSpace=T.SRGBColorSpace;renderer.toneMapping=T.AgXToneMapping;renderer.toneMappingExposure=1;renderer.info.autoReset=false;renderer.shadowMap.enabled=true;renderer.shadowMap.type=T.PCFShadowMap;renderer.shadowMap.autoUpdate=false;
  const gl=renderer.getContext()as WebGL2RenderingContext;let pendingFence:WebGLSync|null=null,pendingFrameData:Record<string,string>|null=null,skippedWhilePending=0;
  const resetFence=()=>{pendingFence=null;pendingFrameData=null;lastSignature='';};canvas.addEventListener('webglcontextlost',resetFence);canvas.addEventListener('webglcontextrestored',resetFence);
  const scene=new T.Scene();const heroBackground=new T.Color('#120c14');scene.background=heroBackground;const camera=new T.PerspectiveCamera(48,width/height,.1,400);
  const storySurface=createStorySurface(scene,keep),atrium=createApprovedGamingRoom(scene,keep);
  const roomReactions=createRoomReactions(atrium.root);
+ const birdField=createBirdEncounterField(),birdScene=new T.Scene();birdScene.add(birdField.root);
+ let birdInput:BirdEncounterFieldInput|null=null;
+ const setBirdInteraction=(input:BirdEncounterFieldInput|null)=>{
+  const previous=birdInput;birdInput=input;
+  if(!input?.active){
+   if(previous?.active)birdField.update(camera,{...previous,active:false});
+   canvas.style.zIndex='';canvas.dataset.birdSpatialOverlay='false';canvas.dataset.birdSpatialAnimating='false';
+  }
+ };
+ const cancelBirdInteraction=()=>setBirdInteraction(null);
  let roomInput:RoomReactionInput={time:0,active:false,reducedMotion:false,pointer:null,hover:null,press:false,activation:0,keyboard:false};
  const setRoomInteraction=(next:RoomReactionInput)=>{const leaving=roomInput.active&&!next.active;roomInput=next;if(leaving){roomReactions.update(next);lastSignature='';}};
  const journey=createHeroRoomJourney(scene,atrium,options);journey.setActive(width>=760);
@@ -37,9 +48,9 @@ export function createFoldedWorld(canvas:HTMLCanvasElement,options:WorldOptions)
   if(disposed){source.dispose();pmrem.dispose();return;}source.mapping=T.EquirectangularReflectionMapping;arrivalEnvironment=keep(pmrem.fromEquirectangular(source)).texture;source.dispose();pmrem.dispose();
  },error=>{pmrem.dispose();throw error;});
  const debug=gl.getExtension('WEBGL_debug_renderer_info'),rendererName=debug?String(gl.getParameter(debug.UNMASKED_RENDERER_WEBGL)):'unreported';
- function publish(){if(!pendingFrameData||disposed)return;pendingFrameData.fenceCompletedAtMs=performance.now().toFixed(3);options.onFrame?.(pendingFrameData);pendingFrameData=null;}
+ function publish(){if(!pendingFrameData||disposed)return;const overlay=pendingFrameData.birdSpatialOverlay==='true'&&Boolean(birdInput?.active);canvas.style.zIndex=overlay?'2':'';pendingFrameData.birdSpatialOverlay=String(overlay);if(!overlay)pendingFrameData.birdSpatialAnimating='false';pendingFrameData.fenceCompletedAtMs=performance.now().toFixed(3);options.onFrame?.(pendingFrameData);pendingFrameData=null;}
  function finishPending(){if(!pendingFence)return true;const status=gl.clientWaitSync(pendingFence,0,0);if(status===gl.TIMEOUT_EXPIRED){skippedWhilePending++;return false;}gl.deleteSync(pendingFence);pendingFence=null;publish();return true;}
- function submit(){renderer.info.reset();renderer.render(scene,camera);pendingFence=gl.fenceSync(gl.SYNC_GPU_COMMANDS_COMPLETE,0);gl.flush();}
+ function submit(target=scene){renderer.info.reset();renderer.render(target,camera);pendingFence=gl.fenceSync(gl.SYNC_GPU_COMMANDS_COMPLETE,0);gl.flush();}
  function render(pose:FoldPose){
   if(disposed||!finishPending())return;const ambient=pose.progress<.055&&width>=760&&!(typeof matchMedia==='function'&&matchMedia('(prefers-reduced-motion: reduce)').matches);const signature=[pose.progress,pose.entrance,pose.pointerX,pose.pointerY,pose.pointerPress??0,ambient||roomReactions.state.needsFrame?pose.time.toFixed(3):0,roomInput.active,roomInput.hover,roomInput.press,roomInput.activation,roomInput.keyboard,roomInput.reducedMotion,roomInput.pointer?.x.toFixed(2),roomInput.pointer?.y.toFixed(2),width,height].join(':');if(signature===lastSignature)return;lastSignature=signature;
   const p=clamp01(pose.progress),e=clamp01(pose.entrance),desktop=width>=760,pointer=1-smoothRange(.03,.06,p);
@@ -72,8 +83,15 @@ export function createFoldedWorld(canvas:HTMLCanvasElement,options:WorldOptions)
  });
  let postActive=false;
  function setPostActive(active:boolean){if(active===postActive)return;postActive=active;lastSignature='';heroStage.visible=storySurface.mesh.visible=!active&&width<760;journey.setActive(!active&&width>=760);atrium.setOpacity(1);scene.environment=active?arrivalEnvironment:null;scene.environmentIntensity=active?.8:0;if(!active)scene.background=heroBackground;}
- function renderExternal(){if(disposed||!finishPending())return false;lastSignature='';renderer.shadowMap.needsUpdate=true;const before=performance.now();submit();canvas.dataset.externalFrameSerial=String(++renderSerial);canvas.dataset.cpuSubmitMs=(performance.now()-before).toFixed(2);return true;}
- return{scene,camera,renderer,ready,render,setPostActive,renderExternal,setRoomInteraction,cancelRoomInteraction:roomReactions.cancelInteraction,cancelHeroInteraction:journey.cancelInteraction,updateRoomExit:atrium.updateExit,updateRoomDesk:atrium.updateDesk,resize(w:number,h:number,dpr:number){width=w;height=h;lastSignature='';renderer.setPixelRatio(dpr);renderer.setSize(w,h,false);journey.resize(w,h);camera.aspect=w/h;camera.updateProjectionMatrix();},dispose(){
-  disposed=true;canvas.removeEventListener('webglcontextlost',resetFence);canvas.removeEventListener('webglcontextrestored',resetFence);if(pendingFence&&!gl.isContextLost())gl.deleteSync(pendingFence);journey.dispose();roomReactions.dispose();owned.forEach(resource=>resource.dispose());renderer.dispose();
+ function renderExternal(){
+  if(disposed||!finishPending())return false;lastSignature='';renderer.shadowMap.needsUpdate=true;
+  const before=performance.now();camera.updateMatrixWorld(true);
+  if(birdInput?.active){birdField.update(camera,birdInput);submit(birdScene);}
+  else submit();
+  pendingFrameData={birdSpatialOverlay:String(Boolean(birdInput?.active)),birdSpatialAnimating:String(birdField.state.needsFrame),birdSpatialEncounter:String(birdInput?.encounter??0),birdSpatialBounds:JSON.stringify(birdInput?.bounds??null),externalFrameSerial:String(++renderSerial),cpuSubmitMs:(performance.now()-before).toFixed(2),entrance:'1'};
+  return true;
+ }
+ return{scene,camera,renderer,ready,render,finishPending,setPostActive,renderExternal,setBirdInteraction,cancelBirdInteraction,birdNeedsFrame:()=>birdField.state.needsFrame,setRoomInteraction,cancelRoomInteraction:roomReactions.cancelInteraction,cancelHeroInteraction:journey.cancelInteraction,updateRoomExit:atrium.updateExit,updateRoomDesk:atrium.updateDesk,resize(w:number,h:number,dpr:number){width=w;height=h;lastSignature='';renderer.setPixelRatio(dpr);renderer.setSize(w,h,false);journey.resize(w,h);camera.aspect=w/h;camera.updateProjectionMatrix();},dispose(){
+  disposed=true;canvas.removeEventListener('webglcontextlost',resetFence);canvas.removeEventListener('webglcontextrestored',resetFence);if(pendingFence&&!gl.isContextLost())gl.deleteSync(pendingFence);canvas.style.zIndex='';birdField.dispose();journey.dispose();roomReactions.dispose();owned.forEach(resource=>resource.dispose());renderer.dispose();
  }};
 }

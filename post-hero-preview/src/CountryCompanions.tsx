@@ -20,9 +20,25 @@ export function monitorCompanionArt(onError:()=>void){
  });
  return()=>{active=false;for(const image of images)image.onerror=null;};
 }
+export function companionClickHitsArt(side:1|-1,detail:number,clientX:number,clientY:number,svg:Pick<SVGSVGElement,'getScreenCTM'>|null){
+ if(detail===0)return true;
+ const inverse=svg?.getScreenCTM()?.inverse();if(!inverse)return false;
+ const x=(inverse.a*clientX+inverse.c*clientY+inverse.e)/1254,y=(inverse.b*clientX+inverse.d*clientY+inverse.f)/1254;
+ // Source-space silhouettes keep the transparent corners available to the spatial field.
+ const outline=side===1?[[.04,.66],[.18,.56],[.21,.42],[.37,.26],[.43,.35],[.46,.19],[.58,.09],[.69,.06],[.80,.07],[.86,.14],[.87,.22],[.91,.29],[.91,.33],[.86,.30],[.91,.41],[.93,.55],[.89,.68],[.80,.79],[.86,.86],[.85,.93],[.65,.94],[.60,.98],[.44,.95],[.43,.86],[.41,.80],[.25,.75],[.07,.71]]:[[.04,.18],[.28,.18],[.34,.14],[.43,.12],[.53,.14],[.60,.23],[.64,.33],[.79,.15],[.87,.06],[.88,.24],[.80,.45],[.78,.59],[.96,.86],[.96,.96],[.78,.84],[.65,.72],[.52,.74],[.38,.64],[.32,.48],[.29,.29],[.30,.23],[.04,.20]];
+ let inside=false;
+ for(let i=0,j=outline.length-1;i<outline.length;j=i++){
+  const [xi,yi]=outline[i],[xj,yj]=outline[j];
+  if((yi>y)!==(yj>y)&&x<(xj-xi)*(y-yi)/(yj-yi)+xi)inside=!inside;
+ }
+ return inside;
+}
 export function companionBodyPose(progress:number,shift:number,side:1|-1,attention=0){
- const q=unit(progress),response=unit((q-.4)/.6),bow=response*response*(3-2*response);
- if(side===1)return{x:0,y:0,rotation:4*Math.sin(Math.PI*bow)+1.25*bow+.7*unit(attention)};
+ const q=unit(progress);
+ if(side===1){
+  const prepare=-3.2*Math.sin(Math.PI*unit(q/.45)),response=unit((q-.28)/.72),bow=response*response*(3-2*response);
+  return{x:0,y:0,rotation:prepare+8.5*Math.sin(Math.PI*bow)+2.6*bow+3.5*unit(attention)};
+ }
  const travel=Number.isFinite(shift)?Math.max(0,shift):0,lift=Math.min(78,Math.max(18,travel*.36+12));
  return{x:-travel*q,y:-4*lift*q*(1-q)-6*unit(attention),rotation:-9*Math.sin(Math.PI*q)-1.8*q-1.8*unit(attention)};
 }
@@ -42,7 +58,7 @@ export function Companion({side,together,phase,shift,reduced,interactive,failed,
  const ko=language==='ko',progress=useMotionValue(0),attention=useMotionValue(0),shoulder=useId();
  const wingProgress=useSpring(progress,flightSpring),tailProgress=useSpring(wingProgress,flightSpring);
  const [hovered,setHovered]=useState(false),[flightState,setFlightState]=useState<'idle'|'approach'|'hold'|'return'>('idle');
- const transform=useTransform(()=>{const pose=companionBodyPose(progress.get(),shift,side,attention.get());return `translateX(${pose.x}px) translateY(${pose.y}px) rotate(${pose.rotation}deg)`;});
+ const transform=useTransform(()=>{const pose=companionBodyPose((side===1?wingProgress:progress).get(),shift,side,attention.get());return `translateX(${pose.x}px) translateY(${pose.y}px) rotate(${pose.rotation}deg)`;});
  const nearTransform=useTransform(()=>{const pose=companionWingPose(wingProgress.get(),false,attention.get());return `rotate(${pose.rotation}deg) scale(${pose.scaleX},${pose.scaleY})`;});
  const farTransform=useTransform(()=>{const pose=companionWingPose(wingProgress.get(),true,attention.get());return `rotate(${pose.rotation}deg) scale(${pose.scaleX},${pose.scaleY})`;});
  const tailTransform=useTransform(()=>`rotate(${companionTailRotation(progress.get(),tailProgress.get())}deg)`);
@@ -67,7 +83,7 @@ export function Companion({side,together,phase,shift,reduced,interactive,failed,
  const body=<image href={side===1?'/images/story-companions/mandarin-duck.png':failed?'/images/story-companions/hummingbird-body.png':'/images/story-companions/hummingbird-torso.png'} width="1254" height="1254" onError={failed?undefined:onError}/>;
  return <div className={`bird-scroll lovebird-${side===1?'left':'right'}`} inert={!interactive} data-flight-state={flightState}>
   {side===1&&<svg className="companion-ledge" viewBox="0 0 1254 1254" aria-hidden="true"><path className="companion-ledge-face" d="M160 1205H3200V1221H160Z"/><path className="companion-ledge-edge" d="M160 1205H3200"/><ellipse className="companion-contact" cx="812" cy="1204" rx="274" ry="12"/></svg>}
-  <motion.button type="button" className="lovebird" aria-describedby={interactive?descriptionId:undefined} aria-label={ko?(side===1?'내 쪽의 원앙에게 인사하기':'Baby의 분홍 벌새에게 인사하기'):(side===1?'Saludar al pato mandarín de mi lado':'Saludar al colibrí rosado de Baby')} aria-pressed={together&&!failed} aria-hidden={!interactive} disabled={failed} tabIndex={interactive&&!failed?0:-1} style={{transform:failed?'none':transform}} onPointerEnter={event=>notice(event.pointerType)} onPointerLeave={()=>{setHovered(false);onNotice?.(false);}} onPointerCancel={()=>{setHovered(false);onNotice?.(false);}} onFocus={event=>{if(event.currentTarget.matches(':focus-visible')){attention.jump(0);setHovered(false);onNotice?.(false);}}} onClick={event=>{if(event.detail===0)attention.jump(0);setHovered(false);onNotice?.(false);if(!failed)onGreet(event.detail>0);}}>
+  <motion.button type="button" className="lovebird" aria-describedby={interactive?descriptionId:undefined} aria-label={ko?(side===1?'내 쪽의 원앙에게 인사하기':'Baby의 분홍 벌새에게 인사하기'):(side===1?'Saludar al pato mandarín de mi lado':'Saludar al colibrí rosado de Baby')} aria-pressed={together&&!failed} aria-hidden={!interactive} disabled={failed} tabIndex={interactive&&!failed?0:-1} style={{transform:failed?'none':transform}} onPointerEnter={event=>notice(event.pointerType)} onPointerLeave={()=>{setHovered(false);onNotice?.(false);}} onPointerCancel={()=>{setHovered(false);onNotice?.(false);}} onFocus={event=>{if(event.currentTarget.matches(':focus-visible')){attention.jump(0);setHovered(false);onNotice?.(false);}}} onClick={event=>{if(!companionClickHitsArt(side,event.detail,event.clientX,event.clientY,event.currentTarget.querySelector('svg')))return;if(event.detail===0)attention.jump(0);setHovered(false);onNotice?.(false);if(!failed)onGreet(event.detail>0);}}>
    <svg className="lovebird-art" viewBox="0 0 1254 1254" aria-hidden="true">
     {side===1||failed?body:<g className="hummingbird-rig">
      <defs><radialGradient id={`${shoulder}-blend`} gradientUnits="userSpaceOnUse" cx="160" cy="950" r="170"><stop offset="0" stopColor="black"/><stop offset="1" stopColor="white"/></radialGradient><mask id={`${shoulder}-mask`} maskUnits="userSpaceOnUse" x="0" y="0" width="1254" height="1254"><rect width="1254" height="1254" fill={`url(#${shoulder}-blend)`}/></mask></defs>
@@ -79,42 +95,12 @@ export function Companion({side,together,phase,shift,reduced,interactive,failed,
  </div>;
 }
 
-export function companionEncounterPose(progress:number,presence=1){
- const arrival=unit((unit(progress)-.82)/.18),bloom=arrival*arrival*(3-2*arrival);
- return{opacity:unit(presence)*(.5+.5*bloom),scale:.72+.28*bloom,draw:.4+.6*bloom,fill:.16+.84*bloom,burst:4*bloom*(1-bloom)};
-}
-export function companionEncounterAnchor(billX:number,billY:number,width:number,height:number){
- return{x:Math.max(78,Math.min(width-78,billX+21)),y:Math.max(60,Math.min(height-150,billY-108))};
-}
-function CompanionEncounter({progress,trace,together,noticed,interactive,instant}:{progress:MotionValue<number>;trace:{x:number;y:number;span:number};together:boolean;noticed:boolean;interactive:boolean;instant:boolean}){
- const id=useId(),presence=useMotionValue(0);
- useEffect(()=>{
-  const target=interactive&&(together||noticed)?1:0;
-  if(instant||!interactive){presence.jump(target);return;}
-  const movement=animate(presence,target,{duration:target?.18:.14,ease:[.23,1,.32,1]});
-  return()=>movement.stop();
- },[together,noticed,interactive,instant,presence]);
- const opacity=useTransform(()=>companionEncounterPose(progress.get(),presence.get()).opacity);
- const transform=useTransform(()=>`scale(${companionEncounterPose(progress.get()).scale})`);
- const fillOpacity=useTransform(()=>companionEncounterPose(progress.get()).fill);
- const dash=useTransform(()=>100*(1-companionEncounterPose(progress.get()).draw));
- const burst=useTransform(()=>companionEncounterPose(progress.get()).burst);
- const trailDash=useTransform(()=>100*(1-unit((progress.get()-.7)/.3)));
- const rightTrail=useTransform(()=>{const start=22+trace.span*(1-unit(progress.get()));return `M${start} 105 C${start+18} 82 63 66 46 30`;});
- return <motion.svg className="companion-heart" aria-hidden="true" style={{opacity}}><defs><linearGradient id={`${id}-rose`} x1="0" y1="-42" x2="0" y2="43" gradientUnits="userSpaceOnUse"><stop stopColor="#ffb4ce"/><stop offset=".55" stopColor="#f071a0"/><stop offset="1" stopColor="#cc477c"/></linearGradient></defs>
-  <g transform={`translate(${trace.x} ${trace.y})`}>
-   <motion.g className="companion-light-trails" style={{opacity:burst}}><motion.path d="M-22 105 C-40 82 -63 66 -46 30" pathLength="100" strokeDasharray="100" style={{strokeDashoffset:trailDash}}/><motion.path d={rightTrail} pathLength="100" strokeDasharray="100" style={{strokeDashoffset:trailDash}}/></motion.g>
-   <motion.g style={{transform,originX:0,originY:0,transformBox:'view-box'}}><motion.path data-companion-heart-body="true" d="M0 43C-63 9-49-42-24-42C-10-42-2-33 0-23C2-33 10-42 24-42C49-42 63 9 0 43Z" fill={`url(#${id}-rose)`} stroke="#ffe1ae" strokeWidth="2.4" pathLength="100" strokeDasharray="100" style={{fillOpacity,strokeDashoffset:dash}}/></motion.g>
-   <motion.g className="companion-sparks" style={{opacity:burst}}>{[[-63,-28],[62,-24],[-54,35],[57,39]].map(([x,y],index)=><path key={index} d={`M${x} ${y-5}l2 4 4 1-4 2-2 4-1-4-4-2 4-1Z`}/>)}</motion.g>
-  </g>
- </motion.svg>;
-}
-
 export function CountryCompanions({language}:{language:'ko'|'es'}){
  const ko=language==='ko',root=useRef<HTMLDivElement>(null),reduced=useLiveReducedMotion(),duckNote=useId(),hummingbirdNote=useId(),encounter=useMotionValue(0);
- const [together,setTogether]=useState(false),[visible,setVisible]=useState(false),[phase,setPhase]=useState<CompanionPhase>('instant'),[shift,setShift]=useState(0),[failed,setFailed]=useState(false),[trace,setTrace]=useState({x:0,y:0,span:0}),[noticed,setNoticed]=useState(false);
+ const [together,setTogether]=useState(false),[visible,setVisible]=useState(false),[phase,setPhase]=useState<CompanionPhase>('instant'),[shift,setShift]=useState(0),[failed,setFailed]=useState(false),[noticed,setNoticed]=useState(false);
  // SVG image failures are not reliably forwarded through React's onError in every browser.
  useEffect(()=>monitorCompanionArt(()=>setFailed(true)),[]);
+ useEffect(()=>{const publish=(value:number)=>{if(root.current)root.current.dataset.spatialProgress=String(value);};publish(encounter.get());return encounter.on('change',publish);},[encounter]);
  useEffect(()=>{
   const element=root.current;if(!element)return;
   const distance=element.closest<HTMLElement>('#distance');if(!distance)return;
@@ -131,24 +117,22 @@ export function CountryCompanions({language}:{language:'ko'|'es'}){
   });
   return()=>{observer.disconnect();resize.disconnect();document.removeEventListener('visibilitychange',hidden);mm.revert();};
  },[]);
- useEffect(()=>{if(reduced||failed){setTogether(false);setPhase('instant');}},[reduced,failed]);
- const positionEncounter=()=>{
+ useEffect(()=>{if(reduced||failed){setNoticed(false);setTogether(false);setPhase('instant');}},[reduced,failed]);
+ const measureApproach=()=>{
   if(!root.current)return;
-  const left=root.current.querySelector('.lovebird-left')!.getBoundingClientRect(),right=root.current.querySelector('.lovebird-right')!.getBoundingClientRect(),scene=root.current.getBoundingClientRect();
+  const left=root.current.querySelector('.lovebird-left')!.getBoundingClientRect(),right=root.current.querySelector('.lovebird-right')!.getBoundingClientRect();
   const duckBill=left.left+left.width*.91,hummingbirdBill=right.left+right.width*.044,distance=Math.max(0,hummingbirdBill-duckBill-42);
-  const billY=(left.top+left.width*.27+right.top+right.width*.195)/2-scene.top;
-  setShift(distance);setTrace({...companionEncounterAnchor(duckBill-scene.left,billY,scene.width,scene.height),span:distance});
+  setShift(distance);
  };
- const notice=(active:boolean)=>{if(active&&!together)positionEncounter();setNoticed(active);};
+ const notice=(active:boolean)=>setNoticed(active);
  const greet=(pointer:boolean)=>{
   if(failed)return;
-  if(!together)positionEncounter();
+  if(!together)measureApproach();
   setNoticed(false);setPhase(pointer&&visible&&!reduced?(together?'return':'greet'):'instant');setTogether(value=>!value);
  };
- return <div ref={root} inert={!visible} className="country-companions" data-together={together&&!failed} data-failed={failed} data-visible={visible} data-reduced={Boolean(reduced)} data-interaction-phase={phase} data-story-moment="distance" role="group" aria-labelledby="story-distance-title">
+ return <div ref={root} inert={!visible} className="country-companions" data-spatial-progress="0" data-spatial-noticed={noticed&&visible&&!failed&&!reduced} data-together={together&&!failed} data-failed={failed} data-visible={visible} data-reduced={Boolean(reduced)} data-interaction-phase={phase} data-story-moment="distance" role="group" aria-labelledby="story-distance-title">
   <div className="companion-stage">
    <Companion side={1} together={together} phase={phase} shift={0} reduced={Boolean(reduced)||!visible} interactive={visible} failed={failed} language={language} descriptionId={duckNote} onGreet={greet} onError={()=>setFailed(true)} onNotice={notice}/>
-   <CompanionEncounter progress={encounter} trace={trace} together={together&&!failed} noticed={noticed&&!failed} interactive={visible&&!failed} instant={Boolean(reduced)||phase==='instant'}/>
    <Companion side={-1} together={together} phase={phase} shift={shift} reduced={Boolean(reduced)||!visible} interactive={visible} failed={failed} language={language} descriptionId={hummingbirdNote} onGreet={greet} onError={()=>setFailed(true)} encounter={encounter} onNotice={notice}/>
    <button type="button" className="lovebird-greeting text-button" disabled={failed} aria-pressed={together&&!failed} onClick={event=>greet(event.detail>0)}>{together?(ko?'다시 살짝 떨어져':'Un poquito de espacio'):(ko?'Baby, 가까이 와':'Acércate, Baby')}</button>
   </div>

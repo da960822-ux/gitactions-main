@@ -10,6 +10,7 @@ import type {PostHeroState} from '../../post-hero-preview/src/Scene';
 import type {LocalEventId} from '../../post-hero-preview/src/LocalEventRig';
 import {createLetterCollection} from '../../post-hero-preview/src/LetterCollection';
 import {openingCameraPose,postConnectionPose} from './cinematic/folded/poseSpaceV19';
+import type {BirdEncounterFieldInput} from './cinematic/folded/birdEncounterField';
 import type {RoomReactionTarget} from './cinematic/folded/roomReactions';
 import {ROOM_WORLD,roomWorldVertex,roomSourcePoint} from './cinematic/folded/approvedRoomGeometry';
 import {pointerDecay} from './cinematic/folded/pointerResponse';
@@ -60,9 +61,23 @@ export function LandingWorldHost({language,onLanguageChange,selected,onSelect}:P
   let disposed=false,assetsReady=false,frame=0,clockStart=0,last=0,elapsed=0,inIntro=first.current,lost=false;
   let trigger:ScrollTrigger|undefined,heroEnd=innerHeight*2.6,previousPost=false,postNeedsFrame=false;
   let lastRenderSignature='';
-  const pointer={x:0,y:0,pressed:false};let hiddenAt=0;
+  const pointer={x:0,y:0,pressed:false,present:false,birdPressed:false};let hiddenAt=0;
   const roomRay=new THREE.Raycaster(),roomHit=new THREE.Vector3(),roomPointer=new THREE.Vector2();
   const roomPlane=new THREE.Plane().setFromNormalAndCoplanarPoint(new THREE.Vector3(0,-Math.sin(ROOM_WORLD.tilt),Math.cos(ROOM_WORLD.tilt)),ROOM_TARGET);
+  let birdElements:{country:HTMLElement;distance:HTMLElement;left:SVGSVGElement;right:SVGSVGElement;meanings:HTMLElement;copy:HTMLElement;greeting:HTMLElement}|undefined;
+  let birdSampleKey='',birdSample:BirdEncounterFieldInput|null=null;
+  const sampleBird=(active:boolean,width:number,height:number):BirdEncounterFieldInput|null=>{
+   if(!birdElements){const country=root.querySelector<HTMLElement>('.country-companions'),distance=root.querySelector<HTMLElement>('#distance'),left=root.querySelector<SVGSVGElement>('.lovebird-left .lovebird-art'),right=root.querySelector<SVGSVGElement>('.lovebird-right .lovebird-art'),meanings=root.querySelector<HTMLElement>('.companion-meanings'),copy=root.querySelector<HTMLElement>('.story-distance-copy'),greeting=root.querySelector<HTMLElement>('.lovebird-greeting');if(country&&distance&&left&&right&&meanings&&copy&&greeting)birdElements={country,distance,left,right,meanings,copy,greeting};}
+   const el=birdElements;if(!el||!active||width<=1000||el.country.dataset.visible!=='true'||el.country.dataset.failed==='true')return null;
+   const q=Number(el.country.dataset.spatialProgress??0),key=[q,el.country.dataset.interactionPhase,el.country.dataset.spatialNoticed,pointer.x,pointer.y,pointer.present,pointer.birdPressed,scrollY,width,height,media.matches,el.left.closest('.lovebird')?.getAttribute('style'),el.right.closest('.lovebird')?.getAttribute('style')].join(':');
+   if(key===birdSampleKey&&birdSample&&!world?.birdNeedsFrame())return{...birdSample,time:elapsed};birdSampleKey=key;
+   const distance=el.distance.getBoundingClientRect(),copy=el.copy.getBoundingClientRect(),meaning=el.meanings.getBoundingClientRect(),greeting=el.greeting.getBoundingClientRect();
+   const left=Math.max(copy.right+28,distance.left+distance.width*.38),right=Math.min(width-24,distance.right-24),top=Math.max(82,meaning.bottom+18,distance.top),bottom=Math.min(height-16,greeting.top-14,distance.bottom);
+   const l=el.left.getScreenCTM(),r=el.right.getScreenCTM();if(!l||!r||bottom-top<100||right-left<180)return null;
+   const lb=new DOMPoint(1138,383).matrixTransform(l),rb=new DOMPoint(1254*.044,1254*.195).matrixTransform(r);
+   const point=pointer.present?{x:(pointer.x+1)*width/2,y:(pointer.y+1)*height/2}:null;
+   birdSample={width,height,time:elapsed,bounds:{left,top,width:right-left,height:bottom-top},bills:{left:{x:lb.x,y:lb.y},right:{x:rb.x,y:rb.y}},pointer:point,encounter:q,active:true,hover:Boolean(point&&point.x>=left&&point.x<=right&&point.y>=top&&point.y<=bottom),press:pointer.birdPressed,reducedMotion:media.matches,keyboard:el.country.dataset.interactionPhase==='instant'&&!pointer.present};return birdSample;
+  };
   const roomDialog=root.querySelector<HTMLDialogElement>('.room-discovery-dialog');
   const projectRoomDiscoveries=(active:boolean)=>{
    if(roomVisible.current!==active){roomVisible.current=active;setRoomActive(active);}
@@ -105,7 +120,7 @@ export function LandingWorldHost({language,onLanguageChange,selected,onSelect}:P
   const titleLines=[...hero.querySelectorAll<HTMLElement>('.across-title-line')];
   const copy=hero.querySelector<HTMLElement>('.across-editorial')!,destination=hero.querySelector<HTMLElement>('.folded-destination')!;
   const endIntro=()=>{inIntro=false;pose.entrance=1;setIntroActive(false);rememberIntro();dirty.current=true;};skip.current=endIntro;
-  const resetPointer=()=>{pointer.x=pointer.y=0;pointer.pressed=false;world?.cancelHeroInteraction();world?.cancelRoomInteraction();Object.assign(roomReaction.current,{hover:null,press:false,keyboard:false});dirty.current=true;};
+  const resetPointer=()=>{pointer.x=pointer.y=0;pointer.pressed=false;pointer.present=false;pointer.birdPressed=false;world?.cancelBirdInteraction();world?.cancelHeroInteraction();world?.cancelRoomInteraction();Object.assign(roomReaction.current,{hover:null,press:false,keyboard:false});dirty.current=true;};
   const invalidate=()=>{dirty.current=true;};
   const resize=()=>{
    frameFallback();
@@ -115,10 +130,11 @@ export function LandingWorldHost({language,onLanguageChange,selected,onSelect}:P
   const preference=()=>{postState.current={...postState.current,reducedMotion:media.matches};if(media.matches){endIntro();resetPointer();}dirty.current=true;};
   const move=(event:PointerEvent)=>{
    if(event.pointerType!=='mouse'||!finePointer.matches||media.matches)return;
-   pointer.x=Math.max(-1,Math.min(1,event.clientX/innerWidth*2-1));pointer.y=Math.max(-1,Math.min(1,event.clientY/innerHeight*2-1));
+   pointer.present=true;pointer.x=Math.max(-1,Math.min(1,event.clientX/innerWidth*2-1));pointer.y=Math.max(-1,Math.min(1,event.clientY/innerHeight*2-1));
   };
-  const press=(event:PointerEvent)=>{if(event.pointerType!=='mouse'||!finePointer.matches||media.matches||pose.progress>=.055||!(event.target instanceof Element)||event.target.closest('a,button,input,textarea,select,[role=button]'))return;pointer.pressed=true;dirty.current=true;};
-  const release=()=>{pointer.pressed=false;roomReaction.current.press=false;dirty.current=true;};
+  const press=(event:PointerEvent)=>{if(event.pointerType==='mouse'&&finePointer.matches&&!media.matches&&event.target instanceof Element&&event.target.closest('.companion-stage')){pointer.birdPressed=true;pointer.present=true;dirty.current=true;}if(event.pointerType!=='mouse'||!finePointer.matches||media.matches||pose.progress>=.055||!(event.target instanceof Element)||event.target.closest('a,button,input,textarea,select,[role=button]'))return;pointer.pressed=true;dirty.current=true;};
+  const keyboard=(event:KeyboardEvent)=>{if(['Tab','Enter',' '].includes(event.key)){pointer.present=false;pointer.birdPressed=false;dirty.current=true;}};
+  const release=()=>{pointer.birdPressed=false;pointer.pressed=false;roomReaction.current.press=false;dirty.current=true;};
   const contextLost=(event:Event)=>{event.preventDefault();lost=true;projectRoomDiscoveries(false);setReady(false);setPostReady(false);endIntro();};
   const contextRestored=()=>{lost=false;lastRenderSignature='';resize();setReady(true);setPostReady(true);};
   const visibility=()=>{last=0;dirty.current=true;if(document.hidden){hiddenAt=performance.now();resetPointer();cancelAnimationFrame(frame);frame=0;return;}if(hiddenAt&&inIntro)clockStart+=performance.now()-hiddenAt;hiddenAt=0;if(!frame)frame=requestAnimationFrame(tick);};
@@ -145,7 +161,7 @@ export function LandingWorldHost({language,onLanguageChange,selected,onSelect}:P
    if(document.hidden)return;
    externalTick.current?.(now);
    if(lost||!world||!assetsReady)return;
-   elapsed+=actualDt;
+   world.finishPending();elapsed+=actualDt;
    const width=screen.clientWidth,height=screen.clientHeight;
    if(media.matches)pose.progress=smoothRange(0,Math.max(1,hero.offsetHeight-height),scrollY);
    if(inIntro){pose.time=Math.max(0,(now-clockStart)/1000);pose.entrance=introPose(pose.time).entrance;if(pose.time>=INTRO_SECONDS-1/60&&Number(screen.dataset.entrance)>=.999)endIntro();}else pose.time=elapsed;
@@ -160,6 +176,7 @@ export function LandingWorldHost({language,onLanguageChange,selected,onSelect}:P
     if(roomRay.ray.intersectPlane(roomPlane,roomHit)){const [x,y]=roomSourcePoint(roomHit.toArray());if(x>=0&&x<=1672&&y>=0&&y<=941)sourcePointer={x,y};}
    }
    world.setRoomInteraction({time:elapsed,active:roomEnabled,reducedMotion:media.matches,pointer:sourcePointer,...roomReaction.current});
+   const birdInput=sampleBird(postActive,width,height);world.setBirdInteraction(birdInput);
    const section=root.querySelector<HTMLElement>('#games');
    const galleryBounds=section?.getBoundingClientRect();
    const reveal=galleryBounds?smoothRange(0,height*.75,height-galleryBounds.top):0;
@@ -168,8 +185,8 @@ export function LandingWorldHost({language,onLanguageChange,selected,onSelect}:P
    section?.style.setProperty('--gallery-presence',String(galleryWeight));
    root.dataset.scene=!postActive?'hero':galleryWeight>.5?'gallery':postState.current.letterView==='rose'?'ending':postState.current.progress<.56?'story':'letter';
    root.dataset.bridge=bridge.toFixed(4);
-   const signature=[pose.progress,pose.entrance,pose.pointerX,pose.pointerY,pose.pointerPress??0,bridge,postState.current.progress,postState.current.opening,galleryWeight,selection.current.selected,scrollY,width,height].map(value=>typeof value==='number'?value.toFixed(4):value).join(':');
-   const needsFrame=dirty.current||signature!==lastRenderSignature||postNeedsFrame||(!media.matches&&postState.current.effect.value!==0);
+   const signature=[pose.progress,pose.entrance,pose.pointerX,pose.pointerY,pose.pointerPress??0,bridge,postState.current.progress,postState.current.opening,galleryWeight,selection.current.selected,scrollY,width,height,birdInput?.encounter??0,birdInput?.hover??false,birdInput?.press??false,birdSampleKey].map(value=>typeof value==='number'?value.toFixed(4):value).join(':');
+   const needsFrame=dirty.current||signature!==lastRenderSignature||postNeedsFrame||world.birdNeedsFrame()||(!media.matches&&postState.current.effect.value!==0);
    if(!needsFrame){if(!postActive){world.render(pose);updateEditorial(Number(screen.dataset.progress??pose.progress),Number(screen.dataset.entrance??pose.entrance));projectRoomDiscoveries(Number(screen.dataset.progress??0)>.94);}return;}lastRenderSignature=signature;dirty.current=false;
    if(!postActive){
     if(previousPost){world.setPostActive(false);world.camera.clearViewOffset();lastRenderSignature='';}
@@ -223,8 +240,8 @@ export function LandingWorldHost({language,onLanguageChange,selected,onSelect}:P
    postStage=new THREE.Group();postStage.name='POST_SHARED_FOREGROUND_STAGE';postStage.matrix.copy(postTransform);postStage.matrixAutoUpdate=false;postStage.add(composition.root,post.root);world.scene.add(postStage);
    setPostReady(true);clockStart=performance.now();world.render(pose);resize();
   }).catch(error=>{if(disposed)return;console.error('Landing world:',error);endIntro();post?.dispose();composition?.dispose();world?.dispose();world=undefined;setReady(false);setFailed(true);});
-  root.addEventListener('pointermove',move);root.addEventListener('pointerdown',press);root.addEventListener('pointerleave',resetPointer);window.addEventListener('pointerup',release);window.addEventListener('pointercancel',resetPointer);window.addEventListener('blur',resetPointer);window.addEventListener('resize',resize);window.addEventListener('scroll',invalidate,{passive:true});media.addEventListener('change',preference);finePointer.addEventListener('change',resetPointer);screen.addEventListener('webglcontextlost',contextLost);screen.addEventListener('webglcontextrestored',contextRestored);document.addEventListener('visibilitychange',visibility);
-  return()=>{disposed=true;cancelAnimationFrame(frame);mm.revert();resizeObserver.disconnect();post?.dispose();composition?.dispose();postStage?.removeFromParent();world?.dispose();root.removeEventListener('pointermove',move);root.removeEventListener('pointerdown',press);root.removeEventListener('pointerleave',resetPointer);window.removeEventListener('pointerup',release);window.removeEventListener('pointercancel',resetPointer);window.removeEventListener('blur',resetPointer);window.removeEventListener('resize',resize);window.removeEventListener('scroll',invalidate);media.removeEventListener('change',preference);finePointer.removeEventListener('change',resetPointer);screen.removeEventListener('webglcontextlost',contextLost);screen.removeEventListener('webglcontextrestored',contextRestored);document.removeEventListener('visibilitychange',visibility);};
+  root.addEventListener('keydown',keyboard);root.addEventListener('pointermove',move);root.addEventListener('pointerdown',press);root.addEventListener('pointerleave',resetPointer);window.addEventListener('pointerup',release);window.addEventListener('pointercancel',resetPointer);window.addEventListener('blur',resetPointer);window.addEventListener('resize',resize);window.addEventListener('scroll',invalidate,{passive:true});media.addEventListener('change',preference);finePointer.addEventListener('change',resetPointer);screen.addEventListener('webglcontextlost',contextLost);screen.addEventListener('webglcontextrestored',contextRestored);document.addEventListener('visibilitychange',visibility);
+  return()=>{disposed=true;cancelAnimationFrame(frame);mm.revert();resizeObserver.disconnect();post?.dispose();composition?.dispose();postStage?.removeFromParent();world?.dispose();root.removeEventListener('keydown',keyboard);root.removeEventListener('pointermove',move);root.removeEventListener('pointerdown',press);root.removeEventListener('pointerleave',resetPointer);window.removeEventListener('pointerup',release);window.removeEventListener('pointercancel',resetPointer);window.removeEventListener('blur',resetPointer);window.removeEventListener('resize',resize);window.removeEventListener('scroll',invalidate);media.removeEventListener('change',preference);finePointer.removeEventListener('change',resetPointer);screen.removeEventListener('webglcontextlost',contextLost);screen.removeEventListener('webglcontextrestored',contextRestored);document.removeEventListener('visibilitychange',visibility);};
  },[]);
  useEffect(()=>{dirty.current=true;},[selected,language]);
  return <div ref={host} className={`landing-world-host${ready?' is-world-ready':''}${failed?' world-unavailable':''}`}>

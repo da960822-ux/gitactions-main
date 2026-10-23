@@ -4,7 +4,7 @@ import {renderToStaticMarkup} from 'react-dom/server';
 import {describe,expect,it,vi} from 'vitest';
 import {cubicBezier,spring} from 'motion';
 import sharp from 'sharp';
-import {CountryCompanions,Companion,companionBodyMotion,companionBodyPose,companionWingPose,companionTailRotation,companionEncounterPose,companionEncounterAnchor,monitorCompanionArt} from '../../post-hero-preview/src/CountryCompanions';
+import {CountryCompanions,Companion,companionBodyMotion,companionBodyPose,companionWingPose,companionTailRotation,companionClickHitsArt,monitorCompanionArt} from '../../post-hero-preview/src/CountryCompanions';
 
 const ease=cubicBezier(.23,1,.32,1);
 const rotate=(x:number,y:number,degrees:number)=>{const angle=degrees*Math.PI/180;return{x:x*Math.cos(angle)-y*Math.sin(angle),y:x*Math.sin(angle)+y*Math.cos(angle)};};
@@ -26,12 +26,30 @@ describe('grounded companion greeting',()=>{
  it('keeps the duck at the foot plane and gives a readable bow after the approaching bird draws closer',()=>{
   for(let frame=0;frame<=100;frame++){
    const pose=companionBodyPose(frame/100,240,1);
-   expect(pose.x).toBe(0);expect(pose.y).toBe(0);expect(pose.rotation).toBeGreaterThanOrEqual(0);expect(pose.rotation).toBeLessThanOrEqual(4.7);
-   if(frame<=40)expect(pose.rotation).toBe(0);
+   expect(pose.x).toBe(0);expect(pose.y).toBe(0);expect(pose.rotation).toBeGreaterThanOrEqual(-3.2);expect(pose.rotation).toBeLessThanOrEqual(10);
    const contact=rotate((812-1254*.65),(1204-1254*.96),pose.rotation);
-   expect(Math.abs(contact.y-(1204-1254*.96))).toBeLessThan(.3);
+   expect(Math.abs(contact.y-(1204-1254*.96))).toBeLessThan(.6);
   }
+  expect(companionBodyPose(.225,240,1).rotation).toBeLessThan(-3);
+  expect(companionBodyPose(.7,240,1).rotation).toBeGreaterThan(9);
+  expect(companionBodyPose(1,240,1).rotation).toBeCloseTo(2.6);
+  expect(companionBodyPose(0,240,1,1).rotation).toBeCloseTo(3.5);
   expect(companionBodyPose(.72,240,1).rotation).toBeGreaterThan(companionBodyPose(1,240,1).rotation);
+ });
+ it('accepts body and beak clicks through the current screen transform while leaving the transparent gap to the spatial field',()=>{
+  for(const [scale,angle,tx,ty] of [[.25,0,600,300],[.33,-10,950,400],[.4,9,730,380]]){
+   const radians=angle*Math.PI/180,c=Math.cos(radians),s=Math.sin(radians);
+   const svg={getScreenCTM:()=>({inverse:()=>({a:c/scale,b:-s/scale,c:s/scale,d:c/scale,e:-(c*tx+s*ty)/scale,f:(s*tx-c*ty)/scale})})} as unknown as SVGSVGElement;
+   const hit=(side:1|-1,x:number,y:number)=>companionClickHitsArt(side,1,scale*1254*(c*x-s*y)+tx,scale*1254*(s*x+c*y)+ty,svg);
+   for(const [x,y] of [[.6,.6],[.73,.2],[.89,.3],[.57,.91]])expect(hit(1,x,y)).toBe(true);
+   for(const [x,y] of [[.49,.44],[.42,.23],[.12,.19],[.8,.25],[.88,.85]])expect(hit(-1,x,y)).toBe(true);
+   for(const [x,y] of [[.95,.23],[.97,.3],[.99,.1],[.02,.1]])expect(hit(1,x,y)).toBe(false);
+   for(const [x,y] of [[.01,.19],[.12,.12],[.1,.32],[.1,.6]])expect(hit(-1,x,y)).toBe(false);
+  }
+  for(const side of [1,-1] as const){
+   expect(companionClickHitsArt(side,0,0,0,null)).toBe(true);
+   expect(companionClickHitsArt(side,1,0,0,null)).toBe(false);
+  }
  });
  it('uses the same damped mass for approach and return, including interruption from a moving state',()=>{
   const forward=companionBodyMotion('greet',true,false),back=companionBodyMotion('return',false,false);
@@ -69,26 +87,6 @@ describe('grounded companion greeting',()=>{
     }
    }
   }
- });
- it('blooms the encounter heart on arrival, ends its celebration, and can hide without resetting the bird pose',()=>{
-  for(const progress of [0,.4,.82])expect(companionEncounterPose(progress)).toEqual(companionEncounterPose(0));
-  const arrival=companionEncounterPose(.91),held=companionEncounterPose(1);
-  expect(arrival.fill).toBeGreaterThan(.16);expect(arrival.fill).toBeLessThan(1);expect(arrival.burst).toBeGreaterThan(.9);
-  expect(held).toEqual({opacity:1,scale:1,draw:1,fill:1,burst:0});
-  const hidden=companionEncounterPose(.91,0);
-  expect(hidden.opacity).toBe(0);expect(hidden.scale).toBe(arrival.scale);expect(hidden.fill).toBe(arrival.fill);
-  for(const [width,height,billX,billY,copyBottom] of [[1440,900,900,528,335],[1920,1080,1200,600,380]]){
-   const anchor=companionEncounterAnchor(billX,billY,width,height);
-   // The full heart occupies y[-42,43]; its point clears the encounter bills and its lobes clear the copy.
-   expect(anchor.y+43).toBeLessThan(billY-60);expect(anchor.y-42).toBeGreaterThan(copyBottom+20);
-   expect(anchor.x-70).toBeGreaterThan(0);expect(anchor.x+70).toBeLessThan(width);
-  }
-  const markup=renderToStaticMarkup(createElement(CountryCompanions,{language:'ko'}));
-  expect(markup).toMatch(/data-companion-heart-body="true"[^>]*fill="url\(/);
-  const trails=markup.match(/class="companion-light-trails"[^>]*>(.*?)<\/g>/)![1];
-  expect((trails.match(/<path /g)||[])).toHaveLength(2);
-  const sparks=markup.match(/class="companion-sparks"[^>]*>(.*?)<\/g>/)![1];
-  expect((sparks.match(/<path /g)||[])).toHaveLength(4);
  });
  it('renders feather-root overlap within a depth-separated, body-relative wing rig',()=>{
   const markup=renderToStaticMarkup(createElement(CountryCompanions,{language:'ko'}));
@@ -182,6 +180,8 @@ describe('grounded companion greeting',()=>{
    expect((markup.match(/class="lovebird"/g)||[])).toHaveLength(2);
    expect((markup.match(/type="button"/g)||[])).toHaveLength(3);
    expect(markup).toContain('data-flight-state="idle"');
+   expect(markup).toContain('data-spatial-progress="0"');expect(markup).toContain('data-spatial-noticed="false"');
+   expect(markup).not.toContain('companion-heart');expect(markup).not.toContain('companion-light-trails');expect(markup).not.toContain('companion-sparks');
    expect(markup).toContain(language==='ko'?'Baby의 분홍 벌새에게 인사하기':'Saludar al colibrí rosado de Baby');
    expect(markup).toContain(language==='ko'?'한국 혼례에서 원앙은':'En las bodas coreanas');
   }

@@ -1,7 +1,8 @@
 /*
  * GLSL adaptation of Shaders' FlowingGradient, chainedWarpStep and MaterialX noise port.
  * Source: https://github.com/shader-effects-inc/shaders/tree/eb3df5cedc826008be8e1037c1182e649037c74a/packages/core/src
- * shaders/FlowingGradient/index.ts; gpu/kit/fields.ts; gpu/kit/noise.ts; std/paint/fields.ts.
+ * shaders/FlowingGradient/index.ts; gpu/kit/fields.ts; gpu/kit/noise.ts; std/paint/fields.ts; shaders/CursorTrail/index.ts.
+ * CursorTrail's age-shrunk capsule-chain wake is adapted to 12 uniforms and this existing Three quad.
  * The two domain warps, four-color blend and fold lighting are retained; this is not native pixel equivalence.
  *
  * MIT License — Copyright (c) 2026 Shader Effects Inc.
@@ -27,7 +28,9 @@ precision highp float;
 precision highp int;
 in vec2 vUv;
 out vec4 outColor;
-uniform float uTime;
+uniform float uTime,uCharge;
+uniform int uTrailCount;
+uniform vec4 uTrail[12];
 uniform vec2 uResolution;
 uniform vec3 uColorA,uColorB,uColorC,uColorD;
 uint rotl(uint x,uint k){return (x<<k)|(x>>(32u-k));}
@@ -60,8 +63,8 @@ vec4 warpStep(vec2 p,float scale,float z,vec2 offA,vec2 offB,float reach,float s
 }
 void main(){
  float aspect=uResolution.x/max(uResolution.y,1.0);
- float t=uTime*0.075*0.5;
- float strength=0.6;
+ float t=uTime*0.13;
+ float strength=0.6+uCharge*0.25;
  vec2 centred=vec2(vUv.x,1.0-vUv.y)-0.5;
  float angle=noise3(vec3(centred.x*0.8+t*0.4,centred.y*0.8-t*0.25,0.0))*12.566370614359172*strength;
  vec2 squashed=vec2(centred.x,centred.y/aspect);
@@ -79,6 +82,19 @@ void main(){
  vec3 base=mix(mix(uColorA,uColorB,blendX),mix(uColorC,uColorD,blendX),blendY);
  float fold=max(1.0-abs(blendX*2.0-1.0),1.0-abs(blendY*2.0-1.0))*hardness;
  float light=((level2.z*0.5+0.5)*0.12+0.94)*(1.0+fold*0.35);
- outColor=linearToOutputTexel(vec4(clamp(base*light,0.0,1.0),1.0));
+ vec2 screen=vec2(vUv.x,1.0-vUv.y),metric=vec2(aspect,1.0);
+ float wake=0.0;
+ for(int i=1;i<12;i++){
+  if(i>=uTrailCount)break;
+  vec4 a=uTrail[i-1],b=uTrail[i];
+  vec2 delta=(b.xy-a.xy)*metric,from=(screen-a.xy)*metric;
+  float along=clamp(dot(from,delta)/max(dot(delta,delta),0.000001),0.0,1.0);
+  float age=mix(a.z,b.z,along),radius=mix(a.w,b.w,along)*0.027*(1.0-age);
+  float distance=length(from-delta*along);
+  wake=max(wake,(1.0-smoothstep(radius*0.3,radius+0.012,distance))*(1.0-age));
+ }
+ vec3 lit=base*light*(1.0+uCharge*0.45);
+ lit=mix(lit,uColorC*1.65,wake*0.95);
+ outColor=linearToOutputTexel(vec4(clamp(lit,0.0,1.0),1.0));
 }
 `;

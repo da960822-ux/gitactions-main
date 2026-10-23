@@ -12,10 +12,6 @@
 .post-hero-preview .lovebird-greeting:disabled{opacity:.55;cursor:default}
 .post-hero-preview .lovebird-greeting:not(:disabled):active{transform:translateX(-50%) scale(.98)}
 .post-hero-preview .lovebird-error{position:absolute;bottom:12svh;left:45%;right:12%;text-align:center;color:#f0d9cd;font-size:14px}
-.post-hero-preview .companion-heart{position:absolute;inset:0;width:100%;height:100%;overflow:visible;pointer-events:none;z-index:2}
-.post-hero-preview .country-companions[data-visible=false] .companion-heart,.post-hero-preview .country-companions[data-failed=true] .companion-heart{visibility:hidden}
-.post-hero-preview .companion-light-trails path{fill:none;stroke:#ffd9b1;stroke-width:2.8;stroke-linecap:round}
-.post-hero-preview .companion-sparks path{fill:#ffe3ae}
 .post-hero-preview .companion-ledge{position:absolute;inset:0;width:100%;height:100%;overflow:visible;pointer-events:none}
 .post-hero-preview .companion-ledge-face{fill:#b17d70;opacity:.09}
 .post-hero-preview .companion-ledge-edge{fill:none;stroke:#d2a18c;stroke-width:2;opacity:.24}
