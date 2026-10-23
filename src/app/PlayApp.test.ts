@@ -15,11 +15,17 @@ vi.mock('./App', () => ({ BrandHeader: () => null }));
 it.each(['ko', 'es'] as const)('renders Lisbeth rules in the %s game guide and lobby dialog', language => {
   const guide = renderToStaticMarkup(createElement(GameGuide, { gameId: 'domino', language, dominoMode: '1v1', dominoRulesVersion: 2 }));
   const dialog = renderToStaticMarkup(createElement(RulesDialog, { gameId: 'domino', language, onClose: () => {} }));
-  for (const html of [guide, dialog]) {
+  const defaultGuide = renderToStaticMarkup(createElement(GameGuide, { gameId: 'domino', language }));
+  for (const html of [guide, dialog, defaultGuide]) {
     expect(html).toContain('6|6');
     expect(html).toContain('+30');
     expect(html).toContain('Lisbeth');
+    expect(html).toMatch(language === 'es' ? /lado que hizo la salida recibe el bono/i : /첫 타일을 낸 쪽이 보너스를 받/);
     expect(html).not.toContain('+25');
+  }
+  for (const dominoRulesVersion of [0, 1]) {
+    const legacy = renderToStaticMarkup(createElement(GameGuide, { gameId: 'domino', language, dominoRulesVersion }));
+    expect(legacy).not.toContain('Lisbeth');
   }
 });
 

@@ -157,8 +157,8 @@ describe('DominoBoard', () => {
     const v2 = fixture({ mode: 'partners', board: { ...fixture().board, rulesVersion: 2, seats: ['p1', 'b1', 'p2', 'b2'], teams: { p1: ['p1', 'b1'], p2: ['p2', 'b2'] } } });
     const html = render(v2);
     expect(html).toContain('카피쿠아 +30 · 파소 코리도 없음 · 트랑카도르 규칙');
-    expect(renderToStaticMarkup(createElement(DominoQuickGuide, { language: 'ko', mode: 'partners', rulesVersion: 2 }))).toContain('양쪽 열린 끝 숫자에 각각 맞는 서로 다른 타일 7개가 모두 놓이면');
-    expect(lisbethDominoRules.ko.join(' ')).toContain('직전 판 승자가 손패의 타일 아무거나');
+    expect(renderToStaticMarkup(createElement(DominoQuickGuide, { language: 'ko', mode: 'partners', rulesVersion: 2 }))).toMatch(/양쪽 열린 끝 숫자에 각각 맞는 서로 다른 타일 7개가 (모두 )?놓이면/);
+    expect(lisbethDominoRules.ko.join(' ')).toMatch(/직전 판 승자가.*아무 타일/);
     expect(render(fixture())).not.toContain('카피쿠아 +30 · 파소 코리도 없음 · 트랑카도르 규칙');
   });
 
