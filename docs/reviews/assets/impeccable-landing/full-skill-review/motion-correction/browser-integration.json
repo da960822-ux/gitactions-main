@@ -1280,5 +1280,83 @@
       "keyboardNavigation": "http://localhost:5173/play?game=catchmind",
       "status": "passed"
     }
+  ],
+  "afterRemoteMergeRoutes": [
+    {
+      "width": 1440,
+      "height": 900,
+      "language": "ko",
+      "game": "jaipur",
+      "errors": [],
+      "consoleErrors": [],
+      "failedRequests": [],
+      "httpErrors": [],
+      "nonGetExternalRequests": [],
+      "landingSelection": {
+        "href": "/play?game=jaipur",
+        "label": "자이푸르 · 같이 놀기",
+        "title": "자이푸르",
+        "htmlLang": "ko"
+      },
+      "lobby": {
+        "url": "http://localhost:5173/play?game=jaipur",
+        "selectedTitle": "자이푸르",
+        "selectedCount": 1,
+        "htmlLang": "ko",
+        "createButton": "자이푸르 방 만들기\n↗"
+      },
+      "directRoom": {
+        "url": "http://localhost:5173/play?room=qa-route-only-20261023",
+        "code": "qa-route-only-20261023",
+        "landingCount": 0,
+        "joinNicknameCount": 1,
+        "savedLastRoom": null,
+        "htmlLang": "ko"
+      },
+      "feedback": {
+        "url": "http://localhost:5173/feedback",
+        "currentText": "건의사항",
+        "landingCount": 0
+      },
+      "status": "passed"
+    },
+    {
+      "width": 1920,
+      "height": 1080,
+      "language": "es",
+      "game": "minhwatu",
+      "errors": [],
+      "consoleErrors": [],
+      "failedRequests": [],
+      "httpErrors": [],
+      "nonGetExternalRequests": [],
+      "landingSelection": {
+        "href": "/play?game=minhwatu",
+        "label": "Minhwatu · Jugar juntos",
+        "title": "Minhwatu",
+        "htmlLang": "es-DO"
+      },
+      "lobby": {
+        "url": "http://localhost:5173/play?game=minhwatu",
+        "selectedTitle": "Minhwatu",
+        "selectedCount": 1,
+        "htmlLang": "es-DO",
+        "createButton": "Crear partida: Minhwatu\n↗"
+      },
+      "directRoom": {
+        "url": "http://localhost:5173/play?room=qa-route-only-20261023",
+        "code": "qa-route-only-20261023",
+        "landingCount": 0,
+        "joinNicknameCount": 1,
+        "savedLastRoom": null,
+        "htmlLang": "es-DO"
+      },
+      "feedback": {
+        "url": "http://localhost:5173/feedback",
+        "currentText": "Sugerencias",
+        "landingCount": 0
+      },
+      "status": "passed"
+    }
   ]
 }

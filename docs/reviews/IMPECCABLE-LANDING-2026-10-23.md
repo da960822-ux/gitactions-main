@@ -249,3 +249,12 @@ keep-mounted HTML host로 수명을 수정한 뒤 software WebGPU의 visible sub
 [실제 검수 JSON·소스 해시](assets/impeccable-landing/full-skill-review/motion-correction/browser-integration.json), [InterPals 전](assets/impeccable-landing/full-skill-review/motion-correction/baseline-1440-inter-twelve.webp) / [잘림선 교정 후](assets/impeccable-landing/full-skill-review/motion-correction/after-1440-intrinsic-fade.webp), [최종 소재 1440](assets/impeccable-landing/full-skill-review/motion-correction/final-1440-normal-material-later.webp) / [1920](assets/impeccable-landing/full-skill-review/motion-correction/final-1920-normal-material-later.webp), [게임 CTA hover](assets/impeccable-landing/full-skill-review/motion-correction/after-1920-cta-hover.webp) / [정적 키보드 포커스](assets/impeccable-landing/full-skill-review/motion-correction/after-1920-cta-keyboard.webp).
 
 남은 범위: 실제 하드웨어 GPU 성능, 전체 8게임 플레이, 모바일·영상은 이번 검수에 포함하지 않았다. Hero 접사의 긴 머무름·새의 반복 박자·장미 손 교체의 미세한 pose pop을 이번 소재 추가만으로 해결했다고 주장하지 않는다. 사이트 전체 4/5 또는 미술 최종 승인 점수를 새로 부여하지 않는다. 이 배치는 추가 무료 효과의 적합성·실제 출력·보호 기능·브라우저 통합 검수를 완료한 것이다.
+
+
+### 원격 동시 변경의 안전한 통합
+
+최종 fetch에서 같은 Hero 브랜치가 d070d48→23acf84로 전진한 것을 확인했다. 기존 원격에는 초대 링크를 `/play?room=...`로 만들고 static host에서 직접 새로고침을 처리하는 변경, 안전한 storage 접근, route tests가 추가돼 있었다. 내 시각 작업 커밋 0f8d937과 다른 파일의 변경이므로 원격 브랜치를 정상 merge(e82d0b1)하여 양쪽 이력을 보존했다. 프로젝트 main을 대상으로 merge/deploy하지 않았고 force push나 중복 브랜치를 만들지 않았다.
+
+통합 소스의 전체 **89파일/704테스트**와 production build, diff 검사가 통과했다. 새 build-static-routes 단계와 라이선스 산출물도 포함한다. 앞서 검수한 시각 구현 7파일의 해시는 통합 후에도 동일하다. 선택 게임·언어·direct room·건의사항 경로는 독립 브라우저에서 좁게 재확인하며, 외부 방 생성/참여나 게임 전체 플레이로 범위를 부풀리지 않는다.
+
+통합 후 실제 경로 재확인 통과: 1440 KO Jaipur / 1920 es-DO Minhwatu 선택이 해당 `/play?game=...` lobby와 언어로 이어졌고, 두 viewport의 `/play?room=qa-route-only-20261023` 직접 접속은 landing 대신 정확한 room code의 join-card를 표시했다. 기존 메뉴의 `/feedback` 진입도 두 언어 정상이다. 외부 방 생성·참여·POST는 0, page/console/network 오류 0이다. 검수 JSON에 통합 후 경로 증거를 추가했다.
