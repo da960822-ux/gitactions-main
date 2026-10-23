@@ -14,6 +14,13 @@
 .post-hero-preview .story-time-interaction .story-city-night,.post-hero-preview .story-time-interaction .story-city-day{position:absolute;inset:0;pointer-events:none}
 .post-hero-preview .story-time-interaction .story-city-night{background:#171324;mix-blend-mode:multiply}
 .post-hero-preview .story-time-interaction .story-city-day{background:#f1c594;mix-blend-mode:screen}
+.post-hero-preview .story-city-celestial{position:absolute;inset:2% 8% auto;width:84%;height:54%;overflow:visible;pointer-events:none;color:#ffcf8e}
+.post-hero-preview .story-city-orbit{fill:none;stroke:currentColor;stroke-width:.6;stroke-dasharray:2 5;opacity:.35}
+.post-hero-preview .story-city-dial,.post-hero-preview .story-city-rays{fill:none;stroke:currentColor;stroke-width:1.6;stroke-linecap:round}
+.post-hero-preview .story-city-dial{opacity:.65}
+.post-hero-preview .story-city-sun{fill:#ffcf8e;stroke:#fff1cf;stroke-width:1.2}
+.post-hero-preview .story-city-celestial[data-celestial=moon]{color:#e8d5ff}
+.post-hero-preview .story-city-moon{fill:#eadbff;stroke:#fff1ef;stroke-width:1.2}
 .post-hero-preview .story-time-interaction .story-time-city figcaption{display:flex;align-items:center;gap:8px;margin-top:12px;color:#e9c9b9;font-size:14px;line-height:1.6}
 .post-hero-preview .story-time-interaction .story-time-city figcaption svg{display:block;width:20px;height:20px;flex:none;fill:none;stroke:currentColor;stroke-width:1.4;stroke-linecap:round;stroke-linejoin:round}
 .post-hero-preview .story-time-interaction .story-hour-picker input{display:block;width:100%;height:44px;margin:4px 0 12px;accent-color:#c57d98;cursor:pointer}

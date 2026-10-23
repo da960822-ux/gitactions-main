@@ -1,4 +1,6 @@
-import {useEffect,useState} from 'react';
+import {useEffect,useId,useRef,useState} from 'react';
+import gsap from 'gsap';
+import {ScrollTrigger} from 'gsap/ScrollTrigger';
 import {STORY_START_DATE,storyDistanceKm,relationshipDays,previewPlayHour} from '../coupleStoryFacts';
 import {DuelIllustration} from './DuelIllustration';
 import {FirstConversation} from '../FirstConversation';
@@ -7,12 +9,37 @@ import {StoryTimeInteraction} from './StoryTimeInteraction';
 import './story-chapters.css';
 
 export function StoryChapters({language}:{language:'ko'|'es'}){
- const ko=language==='ko';
+ const ko=language==='ko',host=useRef<HTMLDivElement>(null),lightId=useId();
  const [now,setNow]=useState(()=>new Date()),[koreanHour,setKoreanHour]=useState(20),[choseTime,setChoseTime]=useState(false);
  useEffect(()=>{const timer=window.setInterval(()=>setNow(new Date()),30000);return()=>clearInterval(timer);},[]);
+ useEffect(()=>{
+  gsap.registerPlugin(ScrollTrigger);
+  const media=gsap.matchMedia();
+  media.add('(prefers-reduced-motion: no-preference)',()=>{
+   const element=host.current;if(!element)return;
+   element.dataset.storyMotion='true';
+   gsap.fromTo('.story-light-current',{strokeDashoffset:1000},{strokeDashoffset:0,ease:'none',scrollTrigger:{trigger:element,start:'top center',end:'bottom center',scrub:.6}});
+   for(const [selector,from]of[
+    ['.story-distance-copy',{x:-64,opacity:.55}],
+    ['.story-time-intro>h2',{y:48,opacity:.55}],
+    ['.story-couple-copy',{x:64,opacity:.55}],
+   ]as const){
+    const target=element.querySelector(selector);if(!target)continue;
+    gsap.fromTo(target,from,{x:0,y:0,opacity:1,ease:'power3.out',immediateRender:false,scrollTrigger:{trigger:target,start:'top 94%',end:'top 62%',scrub:.45}});
+   }
+   return()=>{delete element.dataset.storyMotion;};
+  },host);
+  return()=>media.revert();
+ },[]);
  const chosen=previewPlayHour(koreanHour),pad=(value:number)=>String(value).padStart(2,'0');
  const distance=new Intl.NumberFormat(ko?'ko-KR':'es-DO').format(Math.round(storyDistanceKm)),days=new Intl.NumberFormat(ko?'ko-KR':'es-DO').format(relationshipDays(now));
- return <div className="story-connection">
+ const river='M950 0C735 260 1100 580 885 900S40 1180 90 1500S1030 1800 925 2120S80 2460 110 2730S780 2910 960 3200';
+ return <div ref={host} className="story-connection">
+  <svg className="story-light-river" viewBox="0 0 1000 3200" preserveAspectRatio="none" aria-hidden="true" focusable="false">
+   <defs><linearGradient id={`${lightId}-river`} x1="0" y1="0" x2="1" y2="1"><stop stopColor="#edb7c9"/><stop offset=".5" stopColor="#ffe1ae"/><stop offset="1" stopColor="#f071a0"/></linearGradient></defs>
+   <path d={river} pathLength="1000" className="story-light-track"/>
+   <g className="story-light-current" stroke={`url(#${lightId}-river)`} strokeDasharray="52 948" strokeDashoffset="1000"><path d={river} pathLength="1000" className="story-light-wake"/><path d={river} pathLength="1000" className="story-light-core"/></g>
+  </svg>
   <div data-pose="0"><FirstConversation language={language}/></div>
   <section id="distance" className="story-chapter story-distance" data-pose=".08" aria-labelledby="story-distance-title">
    <div className="story-distance-copy"><h2 id="story-distance-title">{ko?'우리 사이, 이만큼.':'Entre tú y yo.'}</h2><div className="story-distance-facts"><p className="story-distance-number"><span>{ko?'약':'Unos'}</span>{distance}<small>km</small></p><p className="story-reference">{ko?'광주에서 산토도밍고까지, 도시 중심을 잇는 직선거리야.':'Distancia aproximada entre los centros de Gwangju y Santo Domingo.'}</p></div>

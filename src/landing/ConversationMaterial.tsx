@@ -1,16 +1,18 @@
 import {useEffect,useRef} from 'react';
 import {Camera,Color,GLSL3,Mesh,PlaneGeometry,Scene,ShaderMaterial,Vector2,WebGLRenderer} from 'three';
-import {flowFragment,flowVertex} from './conversation-flow';
+import {connectionEchoProgress,flowFragment,flowVertex} from './conversation-flow';
 
-export function ConversationMaterial(){
+export function ConversationMaterial({charging=false,echo=0}:{charging?:boolean;echo?:number}){
  const host=useRef<HTMLDivElement>(null);
+ const interaction=useRef({charging,echo});
+ useEffect(()=>{interaction.current={charging,echo};},[charging,echo]);
  useEffect(()=>{
   const element=host.current;if(!element)return;
   const preference=matchMedia('(prefers-reduced-motion: reduce)');
   let renderer:WebGLRenderer|undefined,geometry:PlaneGeometry|undefined,material:ShaderMaterial|undefined;
-  let visible=false,active=false,failed=false,elapsed=0,lastDraw=0,draws=0;
+  let visible=false,active=false,failed=false,elapsed=0,lastDraw=0,draws=0,lastEcho=echo,releasedAt=-Infinity;
   const scene=new Scene(),camera=new Camera();
-  const stop=()=>{active=false;lastDraw=0;renderer?.setAnimationLoop(null);element.dataset.loopActive='false';};
+  const stop=()=>{active=false;lastDraw=0;releasedAt=-Infinity;lastEcho=interaction.current.echo;if(material){material.uniforms.uCharge.value=0;material.uniforms.uEcho.value=-1;}renderer?.setAnimationLoop(null);element.dataset.loopActive='false';};
   const fail=(reason:string)=>{failed=true;stop();element.dataset.state='fallback';element.dataset.unavailableReason=reason;if(renderer)renderer.domElement.hidden=true;};
   const contextLost=()=>fail('context-lost');
   const resize=()=>{
@@ -22,8 +24,11 @@ export function ConversationMaterial(){
   const tick=(now:number)=>{
    if(!active||!renderer||!material||failed)return;
    if(lastDraw&&now-lastDraw<1000/30)return;
-   elapsed+=lastDraw?Math.min((now-lastDraw)/1000,.1):0;lastDraw=now;
+   const dt=lastDraw?Math.min((now-lastDraw)/1000,.1):0;elapsed+=dt;lastDraw=now;
    material.uniforms.uTime.value=elapsed;
+   if(lastEcho!==interaction.current.echo){lastEcho=interaction.current.echo;releasedAt=elapsed;}
+   material.uniforms.uCharge.value+=(Number(interaction.current.charging)-material.uniforms.uCharge.value)*(1-Math.exp(-dt*14));
+   material.uniforms.uEcho.value=connectionEchoProgress(elapsed-releasedAt);
    try{renderer.render(scene,camera);}catch{fail('render-failed');return;}
    if(failed)return;
    element.dataset.state='running';element.dataset.renderCount=String(++draws);
@@ -35,7 +40,7 @@ export function ConversationMaterial(){
     renderer.domElement.className='fc-material-canvas';renderer.domElement.addEventListener('webglcontextlost',contextLost);
     geometry=new PlaneGeometry(2,2);
     material=new ShaderMaterial({glslVersion:GLSL3,vertexShader:flowVertex,fragmentShader:flowFragment,depthTest:false,depthWrite:false,
-     uniforms:{uTime:{value:0},uResolution:{value:new Vector2(720,620)},uColorA:{value:new Color('#592c40')},uColorB:{value:new Color('#b75b7b')},uColorC:{value:new Color('#edc2b1')},uColorD:{value:new Color('#8f4c68')}}});
+     uniforms:{uTime:{value:0},uCharge:{value:0},uEcho:{value:-1},uResolution:{value:new Vector2(720,620)},uColorA:{value:new Color('#592c40')},uColorB:{value:new Color('#b75b7b')},uColorC:{value:new Color('#edc2b1')},uColorD:{value:new Color('#8f4c68')}}});
     scene.add(new Mesh(geometry,material));element.append(renderer.domElement);resize();
    }catch{fail('renderer-unavailable');}
   };

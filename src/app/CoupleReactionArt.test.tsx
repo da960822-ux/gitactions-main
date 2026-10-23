@@ -38,5 +38,9 @@ it('presents imagined alternatives with a default choice and no actual result an
   expect(html).not.toContain('Ganó');
   expect(html).not.toContain('승!');
   expect(html).not.toContain('couple-result-moment');
+  expect(html).toContain('data-animate="false"');
+  expect(html).toContain('class="duel-illustration-celebration" viewBox="0 0 1672 941" aria-hidden="true"');
+  expect(html.indexOf('duel-illustration-room')).toBeLessThan(html.indexOf('duel-illustration-celebration'));
+  expect(html.indexOf('duel-illustration-celebration')).toBeLessThan(html.indexOf('duel-illustration-reactions'));
  }
 });

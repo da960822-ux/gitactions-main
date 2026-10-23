@@ -20,9 +20,23 @@
 .first-conversation .fc-messages{pointer-events:none;filter:drop-shadow(0 0 5px #edb7c9)}
 .first-conversation .fc-messages path{stroke:#fff1d9;stroke-width:6;stroke-dasharray:14 86;animation:fc-message-travel 3.2s linear infinite;animation-play-state:paused}
 .first-conversation .fc-messages .fc-right-route{animation-delay:-1.6s;stroke:#ffbbd5}
+.first-conversation .fc-connection[data-charging=true] .fc-messages path{animation-duration:.8s;stroke-width:9;filter:drop-shadow(0 0 5px #fff1d9)}
 .first-conversation:has([data-loop-active=true]) .fc-messages path{animation-play-state:running}
 @keyframes fc-message-travel{from{stroke-dashoffset:100}to{stroke-dashoffset:0}}
 .first-conversation .fc-thread-response path{stroke:#faeee6;stroke-width:inherit}
+.first-conversation .fc-send-heart{position:absolute;left:50%;top:0;margin-top:70.833333%;transform:translate(-50%,-50%);display:grid;place-items:center;width:44px;height:44px;padding:6px;border:0;background:transparent;color:#f4a8c2;cursor:pointer;touch-action:manipulation;-webkit-tap-highlight-color:transparent}
+.first-conversation .fc-send-heart svg{width:100%;height:100%;fill:currentColor;filter:drop-shadow(0 3px 4px #160b16);transition:transform .2s cubic-bezier(.16,1,.3,1),color .2s}
+.first-conversation .fc-send-heart:hover{color:#fff1d9}
+.first-conversation .fc-send-heart:focus-visible{outline:2px solid #fff1d9;outline-offset:5px;border-radius:50%}
+.first-conversation .fc-connection[data-charging=true] .fc-send-heart svg{transform:scale(.76);color:#fff1d9}
+.first-conversation .fc-echo{pointer-events:none}
+.first-conversation .fc-echo-route{fill:none;stroke:#fff1d9;stroke-width:8;stroke-linecap:round;stroke-dasharray:16 84;filter:drop-shadow(0 0 5px #edb7c9);animation:fc-reply-travel 1.4s cubic-bezier(.16,1,.3,1) both}
+.first-conversation .fc-echo-right{stroke:#ffbbd5}
+.first-conversation .fc-echo-ring{fill:none;stroke:#edc2b1;stroke-width:2;transform-box:fill-box;transform-origin:center;animation:fc-reply-ring 1.2s cubic-bezier(.16,1,.3,1) both}
+.first-conversation .fc-echo-ring-late{stroke:#ffbbd5;animation-delay:.16s}
+@keyframes fc-reply-travel{0%{stroke-dashoffset:16;opacity:0}12%{opacity:1}75%{opacity:1}100%{stroke-dashoffset:100;opacity:0}}
+@keyframes fc-reply-ring{from{transform:scale(.35);opacity:.9}to{transform:scale(5.5);opacity:0}}
+@keyframes fc-reply-ack{from{opacity:.9}to{opacity:0}}
 .first-conversation .fc-connection-origin{position:absolute;top:0;left:50%;transform:translateX(-50%);font:400 clamp(28px,2.4vw,42px)/1.3 'Gowun Batang',Georgia,serif}
 .first-conversation .fc-person{position:absolute;top:8%;width:43%;display:flex;flex-direction:column;gap:4px;text-align:center}
 .first-conversation .fc-yeonseok{left:4%}
@@ -39,5 +53,6 @@
 .first-conversation ::selection{background:#edc2b1;color:#291922}
 @media(min-width:1600px){.first-conversation .fc-beat p{max-width:40ch;font-size:20px}}
 @media(max-width:1000px){.first-conversation{padding:64px 6vw}.first-conversation .fc-layout{grid-template-columns:minmax(0,1fr);gap:48px}.first-conversation .fc-story{display:grid;gap:56px;padding-bottom:0}.first-conversation .fc-beat{min-height:0;padding:0}.first-conversation .fc-beat h2,.first-conversation .fc-beat h3{font-size:clamp(34px,5.6vw,52px)}.first-conversation .fc-beat p{max-width:48ch;margin-top:20px;font-size:17px}.first-conversation .fc-connection{position:relative;top:auto;max-width:640px;justify-self:center}.first-conversation .fc-connection-origin{font-size:36px}.first-conversation .fc-person>span{font-size:24px}.first-conversation .fc-connection-duration{font-size:26px}}
-@media(max-width:500px){.first-conversation .fc-connection{aspect-ratio:720/760}.first-conversation .fc-connection-origin{font-size:28px}.first-conversation .fc-person{top:7%}.first-conversation .fc-person>span{font-size:18px}.first-conversation .fc-person>small{font-size:11px}.first-conversation .fc-heart-route{stroke-width:4}.first-conversation .fc-connection-duration{top:72%;font-size:19px}.first-conversation .fc-connection-caption{top:81%;font-size:14px}}
+@media(max-width:500px){.first-conversation .fc-connection{aspect-ratio:720/800}.first-conversation .fc-connection-origin{font-size:28px}.first-conversation .fc-person{top:7%}.first-conversation .fc-person>span{font-size:18px}.first-conversation .fc-person>small{font-size:11px}.first-conversation .fc-heart-route{stroke-width:4}.first-conversation .fc-connection-duration{top:72%;font-size:19px}.first-conversation .fc-connection-caption{top:85%;font-size:14px}}
 @media(prefers-reduced-motion:reduce){.first-conversation .fc-story{padding-bottom:0}.first-conversation .fc-beat{min-height:0;padding:32px 0}.first-conversation .fc-connection{position:relative;top:auto;align-self:center}.first-conversation .fc-thread-response{transform:none!important}.first-conversation .fc-messages{display:none}}
+@media(prefers-reduced-motion:reduce){.first-conversation .fc-send-heart svg{transition:none;transform:none!important}.first-conversation .fc-echo-ring{display:none}.first-conversation .fc-echo-route{stroke-dasharray:none;animation:fc-reply-ack .7s ease-out both}}

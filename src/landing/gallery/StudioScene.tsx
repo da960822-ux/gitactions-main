@@ -1,7 +1,7 @@
 import {useEffect,useRef,useState} from 'react';
 import * as T from 'three';
 import {createHeartGeometry} from './heartGeometry';
-import {studioMaterials} from './studioObjects';
+import {createGalleryAttraction,studioMaterials} from './studioObjects';
 import {createGalleryCollection} from './GalleryCollection';
 
 export type GameHover={id:string;x:number;y:number};
@@ -29,8 +29,11 @@ export default function StudioScene(props:Props){
   if(props.mode==='hearts')heartLayout.forEach((_,i)=>{const g=new T.Group();g.add(new T.Mesh(createHeartGeometry(),i===1||i===3?materials.gold:materials.chrome));scene.add(g);objects.push(g);});
   const collection=props.mode==='games'?createGalleryCollection(()=>redraw.current()):null;
   if(collection){scene.add(collection.root);objects.push(...collection.root.children as T.Group[]);}
+  const attraction=collection?createGalleryAttraction(objects):null;
+  if(attraction)scene.add(attraction.root);
   const canvas=renderer.domElement;node.appendChild(canvas);canvas.setAttribute('aria-hidden','true');
   let width=0,height=0,mobile=false,time=0,last=0,visible=true,disposed=false,loaded=false,impulse=props.impulse??0,energy=0,needsFrame=true,dirty=true,looping=false,contextLost=false,renderCount=0;
+  let entryStarted=0,selectionStarted=0;
   const pointer=new T.Vector2(),ray=new T.Raycaster(),hoverCenter=new T.Vector3(),boundsBox=new T.Box3(),boundsPoint=new T.Vector3(),selectedMatrix=new T.Matrix4();
   let boundsSelection='',boundsWidth=0,boundsHeight=0;
   const hoverMedia=window.matchMedia('(hover: hover) and (pointer: fine)');
@@ -51,6 +54,14 @@ export default function StudioScene(props:Props){
     g.rotation.x+= (rx-g.rotation.x)*lerp;g.rotation.y+=(ry-g.rotation.y)*lerp;g.rotation.z+=(rz-g.rotation.z)*lerp;
    });
    needsFrame=collection?.update({selected:controls.current.selected??'domino',time,paused:controls.current.paused,dt,snap,mobile,hovered})??active;
+   if(attraction){
+    if(controls.current.paused)entryStarted=selectionStarted=-Infinity;
+    else if(!loaded)entryStarted=selectionStarted=time;
+    const entryAge=time-entryStarted,selectionAge=time-selectionStarted;
+    needsFrame=attraction.update({entryAge,selectionAge,selected:controls.current.selected??'domino',paused:controls.current.paused,mobile})||needsFrame;
+    collection!.root.updateMatrixWorld(true);
+    canvas.dataset.galleryEntry=controls.current.paused?'paused':entryAge<1.25?'entering':'settled';canvas.dataset.galleryBurst=controls.current.paused?'paused':selectionAge<1.12?'running':'settled';
+   }
    canvas.dataset.hovered=hoverId??'';
    renderer.render(scene,camera);canvas.dataset.renderCount=String(++renderCount);
    if(!loaded){let assetsReady=true;scene.traverse(o=>{if(o instanceof T.Mesh){for(const m of Array.isArray(o.material)?o.material:[o.material]){const image=(m as T.MeshStandardMaterial).map?.image;if((m as T.MeshStandardMaterial).map?.userData.pending||(image instanceof HTMLImageElement&&!image.complete))assetsReady=false;}}});if(assetsReady){loaded=true;setReady(true);}canvas.dataset.ready=String(loaded);}
@@ -85,7 +96,7 @@ export default function StudioScene(props:Props){
    dirty=true;if(disposed||!visible||document.hidden||contextLost)return;
    if(snap||controls.current.paused){dirty=false;render(true);if(needsFrame&&!controls.current.paused)start();else stop();}else start();
   };
-  const sync=()=>{if(controls.current.paused||selection!==controls.current.selected)clearHover();selection=controls.current.selected;if(impulse!==(controls.current.impulse??0)){impulse=controls.current.impulse??0;energy=.85;}invalidate(controls.current.paused||controls.current.snapSelection);};redraw.current=sync;
+  const sync=()=>{if(controls.current.paused||selection!==controls.current.selected)clearHover();if(selection!==controls.current.selected)selectionStarted=controls.current.paused||controls.current.snapSelection?-Infinity:time;selection=controls.current.selected;if(impulse!==(controls.current.impulse??0)){impulse=controls.current.impulse??0;energy=.85;}invalidate(controls.current.paused||controls.current.snapSelection);};redraw.current=sync;
   const move=(event:PointerEvent)=>{
    const box=canvas.getBoundingClientRect();pointer.set((event.clientX-box.left)/box.width*2-1,-(event.clientY-box.top)/box.height*2+1);
    if(collection){
@@ -114,7 +125,7 @@ export default function StudioScene(props:Props){
   canvas.addEventListener('pointermove',move);canvas.addEventListener('pointerdown',down);canvas.addEventListener('pointerup',click);canvas.addEventListener('pointercancel',cancel);canvas.addEventListener('pointerleave',leave);canvas.addEventListener('webglcontextlost',lost);canvas.addEventListener('webglcontextrestored',restored);
   resize();
   return()=>{disposed=true;clearHover();redraw.current=()=>{};renderer.setAnimationLoop(null);observer.disconnect();intersection.disconnect();document.removeEventListener('visibilitychange',reset);window.removeEventListener('blur',reset);window.removeEventListener('resize',reset);hoverMedia.removeEventListener('change',reset);canvas.removeEventListener('pointermove',move);canvas.removeEventListener('pointerdown',down);canvas.removeEventListener('pointerup',click);canvas.removeEventListener('pointercancel',cancel);canvas.removeEventListener('pointerleave',leave);canvas.removeEventListener('webglcontextlost',lost);canvas.removeEventListener('webglcontextrestored',restored);canvas.remove();
-   collection?.dispose();
+   attraction?.dispose();collection?.dispose();
    const geometries=new Set<T.BufferGeometry>(),mats=new Set<T.Material>();scene.traverse(o=>{if(o instanceof T.Mesh){geometries.add(o.geometry);(Array.isArray(o.material)?o.material:[o.material]).forEach(m=>mats.add(m));}});geometries.forEach(g=>g.dispose());Object.values(materials).forEach(m=>m.dispose());mats.forEach(m=>{const map=(m as T.MeshStandardMaterial).map;map?.dispose();m.dispose();});environment.dispose();environmentScene.traverse(o=>{if(o instanceof T.Mesh){o.geometry.dispose();o.material.dispose();}});renderer.dispose();renderer.forceContextLoss();};
  },[props.mode,mounted]);
  return <div ref={host} className={`rd-studio rd-studio-${props.mode}`} data-ready={ready||failed}>{failed&&props.mode==='games'?<img className="rd-gallery-fallback" src={`/images/landing-preview/games/${props.selected||'domino'}.png`} alt="" aria-hidden="true"/>:!ready&&<span className="rd-render-fallback" role="status">{props.loadingLabel??'PREPARING YOUR GIFT'}</span>}</div>;
