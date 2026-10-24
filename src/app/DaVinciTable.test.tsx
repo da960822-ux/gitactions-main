@@ -16,16 +16,18 @@ function render(view: any, playerId: 'p1' | 'p2' = 'p1', language: 'ko' | 'es' =
 describe('DaVinciTable', () => {
   afterEach(() => vi.unstubAllEnvs());
   it('offers only hidden own tiles for the no-draw miss in both languages', () => {
-    const view = { game: 'davinci', turn: 'p1', phase: 'reveal-own', hand: [{ color: 'black', value: 2, revealed: true }, { color: 'white', value: 5, revealed: false }, { color: 'black', value: 8, revealed: false }],
+    const view = { game: 'davinci', turn: 'p1', phase: 'reveal-own', hand: [{ color: 'black', value: 2, revealed: true }, { color: 'white', value: 5, revealed: false }, { color: 'black', value: 8, revealed: false }, { color: 'white', value: 'joker', revealed: false }],
       board: { opponentTiles: [{ color: 'white', value: null, revealed: false }], deckCount: 0, tileCount: 26, actionLog: [], lastEvent: null },
-      actions: [1, 2].map(index => ({ label: { ko: '내 타일 공개', es: 'Revelar ficha' }, action: { type: 'reveal-own', payload: { index } } })) };
+      actions: [1, 2, 3].map(index => ({ label: { ko: '내 타일 공개', es: 'Revelar ficha' }, action: { type: 'reveal-own', payload: { index } } })) };
     const ko = render(view), es = render(view, 'p1', 'es');
     expect(ko).toContain('공개할 내 타일 선택');
-    expect(ko).toContain('aria-label="2번째 내 타일 공개"');
-    expect(ko).toContain('aria-label="3번째 내 타일 공개"');
-    expect(ko).not.toContain('aria-label="1번째 내 타일 공개"');
+    expect(ko).toContain('aria-label="2번째 내 흰색 타일 숫자 5 공개"');
+    expect(ko).toContain('aria-label="3번째 내 검정 타일 숫자 8 공개"');
+    expect(ko).toContain('aria-label="4번째 내 흰색 타일 조커 공개"');
+    expect(ko).not.toContain('aria-label="1번째 내 검정 타일');
     expect(ko).not.toContain('타일과 숫자를 선택하세요');
-    expect(es).toContain('Revelar mi ficha 2');
+    expect(es).toContain('Revelar mi ficha 2 Blanca, número 5');
+    expect(es).toContain('Revelar mi ficha 4 Blanca, comodín');
   });
   it('keeps rival hidden numbers out of content and attributes while showing public color and order', () => {
     const state = davinciEngine.createInitialState(23);

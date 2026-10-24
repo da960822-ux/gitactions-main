@@ -167,6 +167,13 @@ export default function DaVinciTable({ view, language, playerId, runAction, joke
     catch { /* Keep the selection for retry; the room displays the action error. */ }
     finally { submissionLock.current = false; if (mounted.current) setSubmitting(false); }
   };
+  const revealOwn = async (action: GameAction) => {
+    if (submissionLock.current || submitting || !active || view?.phase !== 'reveal-own') return;
+    submissionLock.current = true; setSubmitting(true);
+    try { await runAction(action); }
+    catch { /* The room displays the action error. */ }
+    finally { submissionLock.current = false; if (mounted.current) setSubmitting(false); }
+  };
   const visibleEvent = visualEvent?.viewer === playerId && visualEvent.snapshot === snapshotKey ? visualEvent : null;
   const statusText = (event: VisualEvent) => {
     if (event.type === 'result') return copy(language, '다빈치 코드 대국이 끝났어요.', 'La partida de Código Da Vinci terminó.');
@@ -200,9 +207,9 @@ export default function DaVinciTable({ view, language, playerId, runAction, joke
       || visibleEvent?.type === 'arrange' && visibleEvent.actor === playerId && !hasOwnJokerToPlace && tile.value === 'joker' && visibleEvent.index === index;
     const choice = revealOwnChoices.find(item => item.action.payload?.index === index);
     const className = `dv-tile dv-own-tile dv-tile-${tile?.color === 'white' ? 'white' : 'black'} ${tile?.revealed ? 'is-revealed' : ''} ${flipsOwnTile ? 'is-flipping' : ''} ${arrivesOwnTile ? 'is-arriving' : ''}`;
-    const label = choice ? copy(language, `${index + 1}번째 내 타일 공개`, `Revelar mi ficha ${index + 1}`) : copy(language, `${index + 1}번째 ${colorLabel(tile?.color ?? 'black', language)} 타일, 숫자 ${tileValueLabel(tile?.value)}${tile?.revealed ? ', 공개됨' : ''}`, `Ficha propia ${index + 1} ${colorLabel(tile?.color ?? 'black', language)}, número ${tileValueLabel(tile?.value)}${tile?.revealed ? ', revelada' : ''}`);
+    const label = choice ? copy(language, `${index + 1}번째 내 ${colorLabel(tile.color, language)} 타일 ${tile.value === 'joker' ? '조커' : `숫자 ${tile.value}`} 공개`, `Revelar mi ficha ${index + 1} ${colorLabel(tile.color, language)}, ${tile.value === 'joker' ? 'comodín' : `número ${tile.value}`}`) : copy(language, `${index + 1}번째 ${colorLabel(tile?.color ?? 'black', language)} 타일, 숫자 ${tileValueLabel(tile?.value)}${tile?.revealed ? ', 공개됨' : ''}`, `Ficha propia ${index + 1} ${colorLabel(tile?.color ?? 'black', language)}, número ${tileValueLabel(tile?.value)}${tile?.revealed ? ', revelada' : ''}`);
     const content = <><span className="dv-tile-order">{index + 1}</span><b>{tile.value === 'joker' ? <JokerPortrait src={jokerPortraits[tile.color]}/> : tileValueLabel(tile?.value)}</b><span className="dv-tile-color">{colorLabel(tile?.color ?? 'black', language)}</span>{tile?.revealed && <small className="dv-tile-state"><svg aria-hidden="true"><use href="/images/davinci/state-icons.svg#revealed"/></svg>{copy(language, '공개', 'Visible')}</small>}</>;
-    return choice ? <button type="button" className={className} key={`${tile?.color}-${tile?.value}`} aria-label={label} disabled={submitting} onClick={() => void runAction(choice.action)}>{content}</button> : <div role="img" className={className} key={`${tile?.color}-${tile?.value}`} aria-label={label}>{content}</div>;
+    return choice ? <button type="button" className={className} key={`${tile?.color}-${tile?.value}`} aria-label={label} disabled={submitting} onClick={() => void revealOwn(choice.action)}>{content}</button> : <div role="img" className={className} key={`${tile?.color}-${tile?.value}`} aria-label={label}>{content}</div>;
   };
   const actionLog = list(board.actionLog).filter((event: any) => event?.type === 'correct-guess' || event?.type === 'wrong-guess').slice(-12);
 

@@ -19,7 +19,7 @@ describe('native four-seat Da Vinci table',()=>{
     state=engine.applyAction(state,'p1',{type:'guess',payload:{target:'p2',index:0,value:wrong}});
     const html=render(viewFor(state));
     expect(html).toContain('공개할 내 비공개 타일을 고르세요');
-    expect(html.match(/aria-label="내 \d+번 타일 공개"/g)).toHaveLength(state.hands.p1.filter(tile=>!tile.revealed).length);
+    for (const [index,tile] of state.hands.p1.entries()) if(!tile.revealed) expect(html).toContain(`aria-label="내 ${index+1}번 ${tile.color==='black'?'검정':'흰색'} 타일 ${tile.value==='joker'?'조커':`숫자 ${tile.value}`} 공개"`);
     expect(html).not.toContain('선택한 타일을 추측하세요');
   });
   it('renders four physical racks with its own title, actions and score instead of a two-player board',()=>{
