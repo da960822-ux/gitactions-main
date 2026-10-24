@@ -1,5 +1,5 @@
 import {createClient} from 'npm:@supabase/supabase-js@2';
-import {engines as bundledEngines,executeAction,chatMessageForGame,reactionMessageForId,isCorrectGuess,getCatchmindDrawDurationMs} from '../_shared/engines.js';
+import {engines as bundledEngines,createMatchState,executeAction,chatMessageForGame,reactionMessageForId,isCorrectGuess,getCatchmindDrawDurationMs} from '../_shared/engines.js';
 const engines:Record<string,any>=bundledEngines;
 
 const cors={'Access-Control-Allow-Origin':'*','Access-Control-Allow-Headers':'authorization, x-client-info, apikey, content-type','Access-Control-Allow-Methods':'POST, OPTIONS'};
@@ -35,7 +35,7 @@ Deno.serve(async req=>{
   if(input.selectGame!==undefined){
    if(!['davinci','catchmind','domino','jaipur','splendor','minhwatu','marble','rhythm'].includes(input.selectGame))return json({error:'invalid_game'},400);
    if(members.length!==2||!(pending===input.selectGame&&pendingBy!==identity.user.id)){pending=input.selectGame;pendingBy=identity.user.id;}
-   else{gameId=input.selectGame;pending=null;pendingBy=null;state=engines[gameId]?.createInitialState(crypto.getRandomValues(new Uint32Array(1))[0])??null;}
+   else{state=createMatchState(input.selectGame,crypto.getRandomValues(new Uint32Array(1))[0],gameId,state);gameId=input.selectGame;pending=null;pendingBy=null;}
   }else if(input.reaction!==undefined){
    chat=reactionMessageForId(input.reaction);
   }else if(input.chat!==undefined){

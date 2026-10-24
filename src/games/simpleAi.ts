@@ -64,14 +64,16 @@ export function chooseSimpleAiAction(game: GameId, view: any, player: PlayerId, 
     if (game === 'marble') {
       const money = view.ownHand.money;
       const tiles = view.board.tiles as any[], opponent = player === 'p1' ? 'p2' : 'p1';
-      const rent = (tile: any) => (tile.rent ?? 0) * [1,2,4,8][tile.houses ?? 0];
+      const rent = (tile: any) => (tile.rent ?? 0) * [1,2,4,8][tile.houses ?? 0] * (tile.monopolyMultiplier ?? 1);
       const risk = tiles.reduce((total, tile, index) => {
         const distance = (index - view.ownHand.position + tiles.length) % tiles.length;
         return total + (tile.owner === opponent && distance >= 2 && distance <= 12 ? rent(tile) * (6-Math.abs(7-distance))/36 : 0);
       }, 0);
       const reserve = Math.max(200, risk * 2 + 100);
       if (action.type === 'buy') { const tile = tiles[view.ownHand.position], group = tiles.filter(t => t.group === tile.group && t.kind === 'property'); return money - tile.price >= reserve ? 30 + group.filter(t=>t.owner===player).length * 5 : -1; }
+      if (action.type === 'takeover') { const tile = tiles[Number(x.tile)], cost = view.board.takeoverOffer?.price; return cost != null && money - cost >= reserve ? 15 + tile.houses * 3 : -5; }
       if (action.type === 'build') { const tile = tiles[Number(x.tile)], distance = (Number(x.tile)-view.board.positions[opponent]+tiles.length)%tiles.length; const chance = distance>=2&&distance<=12 ? (6-Math.abs(7-distance))/36 : .02; return money - tile.nextBuildCost >= reserve ? 10 + (tile.nextRent-rent(tile)) / tile.nextBuildCost * (1+chance*10) : -1; }
+      if (action.type === 'sell-property') { const tile = tiles[Number(x.tile)]; return -20 - rent(tile) - (view.board.monopolies[player].includes(tile.group) ? 200 : 0); }
       if (action.type === 'borrow') return view.phase === 'debt' ? 10 : -10;
       if (action.type === 'repay') return money > 700 ? 12 : -5;
       if (action.type === 'choose-pawn') return -20;

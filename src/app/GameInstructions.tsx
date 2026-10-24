@@ -1,10 +1,12 @@
 import type { GameId, Language } from '../core/types';
 import { getBeginnerGuide, type BeginnerGuideOptions } from './beginner-guides';
 import { MarblePropertyArt } from './MarblePropertyArt';
+import { MarbleRuleGuide } from './MarbleRuleGuide';
 
 export function GameInstructions({ gameId, language, options, rules, desktopDisplay = true }: {
   gameId: GameId; language: Language; options?: BeginnerGuideOptions; rules: string[]; desktopDisplay?: boolean;
 }) {
+  if (gameId === 'marble' && options?.marbleVersion !== 1 && options?.marblePropertyRulesVersion === 1) return <MarbleRuleGuide language={language} rules={rules} options={options}/>;
   const guide = getBeginnerGuide(gameId, language, options);
   const legacyMarble = gameId === 'marble' && options?.marbleVersion === 1;
   const fullRules = <ol className="guide-full-rules">{rules.map((rule, i) => <li key={i}><span aria-hidden="true">{String(i + 1).padStart(2, '0')}</span><p>{rule}</p></li>)}</ol>;

@@ -47,7 +47,7 @@ describe('native four-player Marble screen',()=>{
   const s=state();s.phase='debt';s.money.p1=30;s.pendingPayment={amount:120,creditor:'p4',resumeActive:'p1'};
   const html=render(s);
   expect(html).toContain('지급 필요 120');expect(html).toContain('대출 300으로 지급 해결');
-  expect(html).toContain('받기 300 · 상환 330');expect(html).toContain('파산 검토');
+  expect(html).toContain('받기 300 · 상환 330');expect(html).not.toContain('파산 검토');
   expect(html).not.toContain('class="mt-loan"');
  });
  it('keeps actual history, team settlement, and owned-city building available',()=>{
@@ -67,4 +67,31 @@ describe('native four-player Marble screen',()=>{
   expect(frames.at(-1)?.positions).toEqual(to);
   expect(marbleMovementPath(12,9,0,{sequence:1,playerId:'p3',effect:'roll',from:12,to:9,steps:-3},true,'p3',40)).toEqual([11,10,9]);
  });
+});
+
+it('shows acquisition price, available funds and complete stage costs while keeping only one finished replay control',()=>{
+ const s=state();s.phase='main';s.positions.p1=4;s.pendingTile=4;s.takeoverTile=4;s.properties[4]={owner:'p4',houses:2};
+ const html=render(s);
+ expect(html).toContain('도시 인수 · 560');expect(html).toContain('인수 후 현금 940');expect(html).toContain('단계별 금액');expect(html).toContain('추가비');expect(html).toContain('누적');expect(html).toContain('불가');
+ s.result={winner:'A',scores:{A:3000,B:2000},reason:{ko:'정산',es:'Balance'}};s.phase='finished';
+ const done=render(s);expect(done).not.toContain('>새 판</button>');expect((done.match(/>다시 여행하기<\/button>/g)??[])).toHaveLength(1);
+});
+
+it('opens the illustrated new rules only for versioned team matches and preserves saved help',()=>{
+ const s=state();const current=render(s);expect(current).toContain('marble-rule-guide');expect(current).toContain('marble-rule-stages');
+ s.propertyRulesVersion=undefined;expect(render(s)).not.toContain('marble-rule-guide');expect(render(s)).toContain('두 팀의 세계 여행');
+ const es=render(state(),'es');expect(es).toContain('Costo extra');expect(es).toContain('Terreno');expect(es).toContain('Protegido');
+});
+
+it('keeps each owner number, shared pawn/bank color key and approved property images in both languages',()=>{
+ const s=state();s.properties={1:{owner:'p1',houses:0},3:{owner:'p2',houses:1},4:{owner:'p3',houses:2},5:{owner:'p4',houses:3}};
+ for(const language of ['ko','es'] as const){
+  const html=render(s,language);
+  expect((html.match(/class="mp-property-tile-art mp-property-art-frame"/g)??[])).toHaveLength(24);
+  for(const seat of ['p1','p2','p3','p4']){expect(html).toContain(`data-marble-owner="${seat}"`);expect(html).toContain(`data-marble-pawn-seat="${seat}"`);}
+  expect(html).toContain('data-marble-owner="bank"');expect(html).toContain('mp-building-plinth');
+  expect(html).not.toContain('aria-label="단독주택">1</span>');expect(html).not.toContain('aria-label="아파트">2</span>');
+  expect(html).toContain('data-marble-price-kind="rent" title="'+(language==='ko'?'현재 통행료 12':'Alquiler actual 12')+'">12</b>');
+  expect(html).toContain('data-marble-price-kind="purchase"');
+ }
 });

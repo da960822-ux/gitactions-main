@@ -178,8 +178,9 @@ describe('CatchmindTable', () => {
     solved = catchmindEngine.applyAction(solved, 'p2', { type: 'end-round' });
     const finishedHtml = stateMarkup(solved, 'p1');
     expect(finishedHtml).toContain('최종 결과');
-    expect(finishedHtml).toContain('같이 다시 시작하기');
-    expect(finishedHtml).toContain('두 사람이 모두 수락하면 새 판을 시작해요.');
+    expect(finishedHtml).toContain('동의하고 다시 하기');
+    expect(finishedHtml).toContain('상대가 새 판을 요청했어요.');
+    expect(finishedHtml.match(/class="match-replay"/g)).toHaveLength(1);
     expect(finishedHtml).not.toContain('내가 그리고 있어요');
     const finishedSpanishHtml = stateMarkup(solved, 'p1', 'es');
     expect(finishedSpanishHtml).toContain('Resultado final');

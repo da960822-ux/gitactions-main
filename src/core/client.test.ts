@@ -62,7 +62,7 @@ describe('local practice client',()=>{
   expect(client.getSnapshot().view).toEqual(solved);
   expect(solved.board.scores).toEqual({p1:1,p2:1});
  });
- it('keeps the same match until both seats accept, then resets category, drawing, answer, score and deadline',async()=>{
+ it('keeps the same match until both seats accept, then preserves settings while resetting drawing, answer, score and deadline',async()=>{
   await startDrawing();const answer=client.getSnapshot().view.hand.answer.ko;
   await client.sendAction({type:'draw',payload:{strokes:[{points:[{x:.1,y:.1},{x:.3,y:.3}]}]}});
   client.localSeat('p2');await client.sendChat(answer);client.localSeat('p1');await client.sendAction({type:'end-round'});
@@ -71,8 +71,8 @@ describe('local practice client',()=>{
   await client.selectGame('catchmind');await client.selectGame('catchmind');
   expect(client.getSnapshot().view).toEqual(finished);expect(client.getSnapshot().version).toBe(version);
   client.localSeat('p1');await client.selectGame('catchmind');
-  expect(client.getSnapshot()).toMatchObject({version:version+1,pendingGame:null,view:{phase:'choosing',deadlineAt:null,result:null,hand:{choices:[],answer:null},board:{round:1,strokes:[],fills:[],guesses:[],hintStage:0,answer:null,scores:{p1:0,p2:0},settings:{category_id:null}}}});
-  expect(client.getSnapshot().view.actions.filter((option:any)=>option.action.type==='choose')).toHaveLength(0);
+  expect(client.getSnapshot()).toMatchObject({version:version+1,pendingGame:null,view:{phase:'choosing',deadlineAt:null,result:null,hand:{answer:null},board:{round:1,strokes:[],fills:[],guesses:[],hintStage:0,answer:null,scores:{p1:0,p2:0},settings:{category_id:'animals',rounds:2,drawTimeSeconds:80,choices:3,hints:2}}}});
+  expect(client.getSnapshot().view.actions.filter((option:any)=>option.action.type==='choose')).toHaveLength(3);
  });
  it('keeps original chat when translation is not configured and validates length',async()=>{
   await client.createRoom('구름','ko');await client.selectGame('catchmind');client.localSeat('p2');await client.selectGame('catchmind');await client.sendChat('Hola, ¿cómo estás?');expect(client.getSnapshot().messages[0]).toMatchObject({text:'Hola, ¿cómo estás?',status:'unavailable'});

@@ -1,0 +1,21 @@
+{
+  "generatedAt": "2026-10-24",
+  "source": "OpenAI image generation",
+  "purpose": "Original wordless rule illustrations; all rules, amounts and translations are rendered in HTML.",
+  "assets": [
+    {
+      "path": "/images/marble/guides/takeover-protection.webp",
+      "width": 1536,
+      "height": 1024,
+      "bytes": 290524,
+      "sha256": "54fb07296e230dc665a2b98d7d726812bb8673c5fb4058618a03225f5d52744f"
+    },
+    {
+      "path": "/images/marble/guides/doubles-island.webp",
+      "width": 1536,
+      "height": 1024,
+      "bytes": 227298,
+      "sha256": "0a4034f0fc836bccefe92cfe0ccf41e2ad10efac164f32073c5377ec5b751628"
+    }
+  ]
+}

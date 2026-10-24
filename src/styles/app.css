@@ -52,15 +52,6 @@
 .panel-heading h2 { font: 23px var(--serif); margin: 8px 0 0; }
 .lobby-actions { margin-top: 15px; }
 .lobby-actions > .button { width: 100%; justify-content: space-between; padding: 0 20px; }
-.or-divider { display: flex; align-items: center; gap: 10px; margin: 15px 0; color: #9ca19a; font-size: 10px; }
-.or-divider::before, .or-divider::after { content: ''; flex: 1; height: 1px; background: #ece8e0; }
-.join-form { display: grid; grid-template-columns: 1fr auto; gap: 8px; }
-.code-input { text-transform: uppercase; letter-spacing: .08em; }
-.privacy-note { border-top: 1px solid #eeebe4; margin-top: 19px; padding-top: 17px; display: flex; align-items: center; gap: 11px; }
-.lock-icon { display: grid; place-items: center; background: var(--teal-pale); color: var(--teal); width: 34px; height: 34px; border-radius: 50%; font-size: 19px; }
-.privacy-note b, .privacy-note small { display: block; }
-.privacy-note b { font-size: 11px; }
-.privacy-note small { margin-top: 3px; color: var(--ink-faint); font-size: 10px; }
 .lobby-picks { grid-column: 1 / -1; margin-top: 75px; }
 .pick-heading { display: flex; align-items: center; justify-content: space-between; border-bottom: 1px solid var(--line); padding-bottom: 11px; }
 .pick-list { display: grid; grid-template-columns: repeat(2, 1fr); column-gap: 35px; }
@@ -74,7 +65,6 @@
 .pick-time { color: #9aa19a; font-size: 9px; }
 .pick-check { color: var(--teal); font-size: 15px; width: 18px; text-align: center; }
 .pick-hint { color: var(--ink-faint); font-size: 10px; margin-top: 12px; }
-.retention-foot { grid-column: 1 / -1; text-align: center; color: #929991; font-size: 10px; margin: 32px 0 0; }
 .game-blue { background: #e4eced; color: #476c73; }
 .game-coral { background: #f7e5dd; color: #b96751; }
 .game-green { background: #e4eddf; color: #618358; }
@@ -344,10 +334,7 @@
 .join-page { min-height: calc(100vh - 72px); display: grid; align-content: start; justify-items: center; padding: 28px 20px 70px; }
 .join-page .back-link { justify-self: start; width: min(500px, 100%); margin: 0 auto 19px; }
 .join-card { width: min(440px, 100%); padding: 33px 38px; border: 1px solid var(--line); border-radius: var(--round); background: var(--white); box-shadow: var(--shadow); text-align: center; }
-.join-art { margin: 20px auto 13px; display: grid; place-items: center; width: 61px; height: 61px; border-radius: 50%; background: var(--teal); color: white; font: 39px var(--serif); padding-bottom: 5px; }
-.join-art span { color: #f2a28c; display: inline; }
 .join-card h1 { margin: 0; font: 27px/1.2 var(--serif); }
-.join-code { margin: 13px 0 15px; letter-spacing: .14em; color: var(--teal); font-size: 11px; font-weight: 700; }
 .join-card .language-switch { margin-bottom: 5px; }
 .join-card form { text-align: left; }
 .tiny-copy { margin: 14px 0 0; color: #9ba098; font-size: 9px; }
@@ -370,7 +357,6 @@
   .lobby-picks { grid-column: 1; margin-top: 26px; }
   .pick-list { grid-template-columns: 1fr; }
   .pick-item { padding: 10px 3px; }
-  .retention-foot { grid-column: 1; line-height: 1.6; }
   .room-main { width: calc(100% - 30px); padding-top: 15px; }
   .demo-banner { width: calc(100% - 30px); }
   .room-topline { margin-bottom: 21px; }
@@ -418,8 +404,6 @@
 @media (max-width: 420px) {
   .panel-heading { align-items: flex-start; flex-direction: column; }
   .panel-heading .language-switch { align-self: stretch; justify-content: center; }
-  .join-form { grid-template-columns: 1fr; }
-  .join-form .button { width: 100%; }
   .room-id-label { font-size: 8px; }
   .room-game-grid { grid-template-columns: 1fr; }
   .guess-row { flex-wrap: wrap; }
@@ -450,17 +434,11 @@
 .app-shell .lobby-intro h1,.app-shell .room-heading h1 { color:var(--ink); }
 .app-shell .lobby-intro p { color:var(--ink-soft); }
 .app-shell .lobby-panel,.app-shell .game-select-card,.app-shell .chat-panel,.app-shell .error-card,.app-shell .join-card { background:#241a27; border-color:#51394a; box-shadow:0 18px 45px #09060d55; }
-.app-shell .panel-heading,.app-shell .privacy-note,.app-shell .chat-panel > header,.app-shell .chat-compose { border-color:#493545; }
-.app-shell .panel-heading h2,.app-shell .pick-name b,.app-shell .select-intro h2,.app-shell .chat-panel h2 { color:var(--ink); }
+.app-shell .panel-heading,.app-shell .app-shell .panel-heading h2,.app-shell .pick-name b,.app-shell .select-intro h2,.app-shell .chat-panel h2 { color:var(--ink); }
 .app-shell .pick-list { column-gap:28px; }
 .app-shell .lobby-picks { margin-top:48px; }
 .app-shell .pick-item:hover,.app-shell .pick-item.selected { background:#2b202f; }
-.app-shell .pick-time,.app-shell .retention-foot { color:#b49eaa; }
-.app-shell .pick-name small,.app-shell .pick-hint,.app-shell .privacy-note small,.app-shell .field-label { color:#c2aab5; }
-.app-shell .privacy-note b { color:#f3e7eb; }
-.app-shell .or-divider,.app-shell .pick-time { color:#b49eaa; }
-.app-shell .or-divider::before,.app-shell .or-divider::after { background:#493545; }
-.app-shell .button-dark { color:#281720; background:#e7a0ae; box-shadow:0 5px 18px #bc758b33; }
+.app-shell .pick-time,.app-shell .app-shell .pick-name small,.app-shell .pick-hint,.app-shell .app-shell .app-shell .app-shell .app-shell .button-dark { color:#281720; background:#e7a0ae; box-shadow:0 5px 18px #bc758b33; }
 .app-shell .button-dark:hover:not(:disabled) { color:#281720; background:#f2b6c0; box-shadow:0 9px 22px #bc758b44; }
 .app-shell .button-outline { border-color:#8a6376; color:#f0bdc7; }
 .app-shell .button-outline:hover:not(:disabled) { background:#402a39; }
@@ -641,11 +619,6 @@
 }
 
 /* Active games keep invitations available without repeating a full room header. */
-.room-invite-details { position: relative; }
-.room-invite-details summary { min-height: 32px; display: flex; align-items: center; gap: 6px; cursor: pointer; padding: 3px 8px; border: 1px solid #796573; border-radius: 8px; list-style: none; }
-.room-invite-content { position: absolute; top: 100%; right: 0; z-index: 20; display: flex; flex-wrap: wrap; gap: 8px; width: min(480px,calc(100vw - 40px)); padding: 12px; border: 1px solid #9c7f91; border-radius: 10px; background: #2e2230; box-shadow: 0 8px 24px #0005; }
-.room-invite-content b { overflow-wrap: anywhere; }
-.room-invite-content button { min-width: 44px; min-height: 44px; }
 .room-shell.quality-table-room .room-main .room-heading { min-height: 28px; margin: 0; padding: 0; border: 0; justify-content: flex-end; }
 .room-shell.quality-table-room .room-main .room-heading > .sr-only { position: absolute; width: 1px; height: 1px; clip-path: inset(50%); overflow: hidden; }
 .room-shell.quality-table-room .room-main .room-player-pills { gap: 8px; }

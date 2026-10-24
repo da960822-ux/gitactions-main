@@ -1,3 +1,4 @@
+import { MatchReplay } from './MatchReplay';
 import { useEffect, useMemo, useRef, useState, type CSSProperties, type FormEvent, type KeyboardEvent, type PointerEvent } from 'react';
 import type { GameAction, Language, PlayerId } from '../core/types';
 import { GameValue } from './GameValue';
@@ -16,7 +17,7 @@ type Props = {
   strokeWidth: number;
   setStrokeWidth: (width: number) => void;
   runAction: (action: GameAction) => Promise<boolean>;
-  onReplay?: () => void | Promise<void>;
+  onReplay?: () => unknown | Promise<unknown>;
   replayPending?: boolean;
 };
 
@@ -491,7 +492,7 @@ export default function CatchmindTable({ roomId, view, playerId, language, now, 
         </div>}
         <span className="sr-only" role="status">{activeDrawing && board.guesses?.length > 0 ? copy(language, `${board.guesses.length}번째 시도 · 오답`, `Intento ${board.guesses.length} · incorrecto`) : ''}</span>
         {(board.guesses ?? []).length > 0 && <details className="cm-attempts"><summary>{copy(language, '시도', 'Intentos')} · {board.guesses.length}{board.guesses.some((guess: any) => guess.correct) ? ' · ✓' : ''}</summary><div className="cm-guess-list">{board.guesses.map((guess: any, index: number) => <p className={`cm-guess-row ${guess.correct ? 'is-correct' : ''}`} key={`${guess.by}-${index}`}>{guess.correct ? copy(language, '정답', 'Correcto') : copy(language, '오답', 'Incorrecto')}</p>)}</div></details>}
-        {finished && <div className="cm-finish-card"><span aria-hidden="true">✦</span><b>{copy(language, view.result?.winner === 'draw' ? '같은 점수예요' : view.result?.winner === playerId ? '오늘의 승리' : '다음 판을 노려봐요', view.result?.winner === 'draw' ? 'Mismo puntaje' : view.result?.winner === playerId ? 'Victoria de hoy' : 'Habrá revancha')}</b>{onReplay && <><button type="button" onClick={() => void onReplay()}>{copy(language, replayPending ? '같이 다시 시작하기' : '다시 하기', replayPending ? 'Aceptar revancha' : 'Volver a jugar')}</button><small role="status">{copy(language, replayPending ? '두 사람이 모두 수락하면 새 판을 시작해요.' : '다시 하기는 두 사람의 동의가 필요해요.', replayPending ? 'La nueva partida comienza cuando ambos aceptan.' : 'La revancha necesita el acuerdo de ambos.')}</small></>}</div>}
+        {finished && <div className="cm-finish-card"><span aria-hidden="true">✦</span><b>{copy(language, view.result?.winner === 'draw' ? '같은 점수예요' : view.result?.winner === playerId ? '오늘의 승리' : '다음 판을 노려봐요', view.result?.winner === 'draw' ? 'Mismo puntaje' : view.result?.winner === playerId ? 'Victoria de hoy' : 'Habrá revancha')}</b>{onReplay && <MatchReplay language={language} pending={replayPending} onReplay={onReplay}/>}</div>}
       </div>
 
       {drawing && <aside className="cm-side-panel" aria-label={copy(language, '그리기 도구', 'Herramientas de dibujo')}>

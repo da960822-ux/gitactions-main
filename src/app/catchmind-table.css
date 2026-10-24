@@ -109,7 +109,8 @@
 .cm-guess-row.is-correct { color: var(--teal); background: var(--teal-pale); }
 .cm-finish-card { display: flex; flex-wrap: wrap; align-items: center; justify-content: center; gap: 12px; padding: 16px; background: var(--teal-pale); color: var(--teal); }
 .cm-finish-card > b { font-size: 18px; }
-.cm-finish-card small { color: var(--ink-soft); font-size: 12px; }
+.cm-finish-card .match-replay { justify-content: center; flex-wrap: wrap; gap: 8px; padding: 0; border: 0; }
+.cm-finish-card .match-replay p { color: var(--ink-soft); font-size: 12px; }
 .cm-finish-card > span { display: none; }
 .cm-table :is(button,input,textarea,summary):focus-visible, .cm-categories label:focus-within { outline: 3px solid #9a623d; outline-offset: 2px; }
 .cm-table textarea { caret-color: var(--teal); }

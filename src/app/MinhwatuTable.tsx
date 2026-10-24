@@ -8,7 +8,7 @@ import '../styles/minhwatu-table.css';
 import '../styles/table-playability.css';
 
 type Choice = { label: Record<Language, string>; action: GameAction };
-type Props = { view: any; language: Language; playerId: PlayerId; playerNames?: Partial<Record<PlayerId, string>>; runAction: (action: GameAction) => void | Promise<unknown>; onReplay?: () => boolean | void | Promise<boolean | void>; replayPending?: boolean; sceneKey?: string };
+type Props = { view: any; language: Language; playerId: PlayerId; playerNames?: Partial<Record<PlayerId, string>>; runAction: (action: GameAction) => void | Promise<unknown>; onReplay?: () => boolean | void | Promise<boolean | void>; replayPending?: boolean; requiresAgreement?: boolean; sceneKey?: string };
 type AnyRecord = Record<string, any>;
 const text = (language: Language, ko: string, es: string) => language === 'ko' ? ko : es;
 const record = (value: unknown): AnyRecord => value && typeof value === 'object' ? value as AnyRecord : {};
@@ -34,7 +34,7 @@ export function runWithActionLock<T>(lock: { current: boolean }, action: () => T
   return Promise.resolve().then(action).finally(() => { lock.current = false; });
 }
 
-export function MinhwatuTable({ view, language, playerId, playerNames, runAction, onReplay, replayPending = false, sceneKey = '' }: Props) {
+export function MinhwatuTable({ view, language, playerId, playerNames, runAction, onReplay, replayPending = false, requiresAgreement = true, sceneKey = '' }: Props) {
   const presentation = useMinhwatuPresentation(view, playerId, sceneKey);
   const shownView = presentation.view, displayBusy = presentation.busy;
   const board: AnyRecord = record(shownView?.board), hand: MinhwatuCard[] = array(shownView?.ownHand), table: MinhwatuCard[] = array(board.table);
@@ -43,7 +43,7 @@ export function MinhwatuTable({ view, language, playerId, playerNames, runAction
   const pending: MinhwatuCard | null = board.pendingCard ?? null, capturePhase = view?.phase === 'capture-draw';
   const [selected, setSelected] = useState<string | null>(null), [actionBusy, setActionBusy] = useState(false), [replayBusy, setReplayBusy] = useState(false), [error, setError] = useState('');
   const [localReplayIdentity, setLocalReplayIdentity] = useState<string | null>(null);
-  const replayIdentity = `${playerId}:${sceneKey}`, localReplayPending = localReplayIdentity === replayIdentity;
+  const replayIdentity = `${playerId}:${sceneKey}`, localReplayPending = requiresAgreement && localReplayIdentity === replayIdentity;
   const busy = actionBusy || displayBusy;
   const actionLock = useRef(false);
   const resultRef = useRef<HTMLElement>(null);
@@ -136,7 +136,7 @@ export function MinhwatuTable({ view, language, playerId, playerNames, runAction
     if (!onReplay || replayLock.current || replayBusy || replayPending && localReplayPending) return;
     replayLock.current = true;
     setReplayBusy(true);
-    try { const accepted = await onReplay(); if (accepted !== false) setLocalReplayIdentity(replayIdentity); }
+    try { const accepted = await onReplay(); if (accepted !== false && requiresAgreement) setLocalReplayIdentity(replayIdentity); }
     catch { setError(text(language, '재경기 요청을 보내지 못했어요. 다시 시도하세요.', 'No se pudo enviar la solicitud. Inténtalo de nuevo.')); }
     finally { replayLock.current = false; setReplayBusy(false); }
   };
@@ -172,9 +172,9 @@ export function MinhwatuTable({ view, language, playerId, playerNames, runAction
       <b>{result.winner === 'draw' ? text(language, '무승부', 'Empate') : result.winner === playerId ? text(language, '이겼어요!', '¡Ganaste!') : text(language, '상대가 이겼어요.', 'Ganó la otra persona.')}</b>
       <span>{ownName} {finalOwnScore} : {finalRivalScore} {rivalName}</span>
       <small>{text(language, `내 점수 ${ownBase} + 내 족보 ${ownBonus} × 2 − 상대 족보 ${rivalBonus} = ${finalOwnScore}`, `Tus puntos ${ownBase} + tus yakus ${ownBonus} × 2 − yakus rivales ${rivalBonus} = ${finalOwnScore}`)}</small>
-      {onReplay && <div className="hwatu-replay"><button type="button" disabled={busy || replayBusy || localReplayPending} aria-busy={replayPending || replayBusy || localReplayPending} onClick={() => void requestReplay()}>{replayBusy ? text(language, '요청 중…', 'Enviando…') : replayPending && !localReplayPending ? text(language, '동의하고 한 판 더', 'Aceptar y jugar otra') : localReplayPending ? text(language, '동의 대기 중…', 'Esperando aceptación…') : text(language, '한 판 더 요청', 'Pedir otra partida')}</button>
+      {onReplay && <div className="hwatu-replay"><button type="button" disabled={busy || replayBusy || localReplayPending} aria-busy={replayBusy} onClick={() => void requestReplay()}>{replayBusy ? text(language, '요청 중…', 'Enviando…') : !requiresAgreement ? text(language, '다시 하기', 'Jugar otra vez') : replayPending && !localReplayPending ? text(language, '동의하고 한 판 더', 'Aceptar y jugar otra') : localReplayPending ? text(language, '동의 대기 중…', 'Esperando aceptación…') : text(language, '한 판 더 요청', 'Pedir otra partida')}</button>
         {localReplayPending && <small role="status">{text(language, '상대 동의를 기다리고 있어요.', 'Esperando a la otra persona.')}</small>}
-        {replayPending && !localReplayPending && <small role="status">{text(language, '상대가 새 판을 요청했어요.', 'La otra persona pidió otra partida.')}</small>}</div>}
+        {requiresAgreement && replayPending && !localReplayPending && <small role="status">{text(language, '상대가 새 판을 요청했어요.', 'La otra persona pidió otra partida.')}</small>}</div>}
     </section>}
 
     <div className="hwatu-tabletop-stage">

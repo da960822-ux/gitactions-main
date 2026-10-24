@@ -9,7 +9,7 @@ import '../styles/marble-events.css';
 
 const labels: Record<string, Record<Language, string>> = {
   roll: { ko: '주사위', es: 'Dados' }, move: { ko: '이동', es: 'Movimiento' }, pawn: { ko: '이동', es: 'Movimiento' },
-  arrival: { ko: '도착', es: 'Llegada' }, 'event-card': { ko: '이벤트 카드', es: 'Carta de evento' }, buy: { ko: '구매', es: 'Compra' },
+  arrival: { ko: '도착', es: 'Llegada' }, 'event-card': { ko: '이벤트 카드', es: 'Carta de evento' }, buy: { ko: '구매', es: 'Compra' }, takeover: { ko: '인수', es: 'Adquisición' }, sell: { ko: '매각', es: 'Venta' },
   build: { ko: '건설', es: 'Construcción' }, rent: { ko: '임대료', es: 'Alquiler' }, tax: { ko: '세금', es: 'Impuesto' },
   bonus: { ko: '보너스', es: 'Bono' }, loan: { ko: '대출', es: 'Préstamo' }, repay: { ko: '상환', es: 'Pago' }, crisis: { ko: '위기', es: 'Dificultad' },
   bankruptcy: { ko: '파산', es: 'Bancarrota' }, 'monopoly-warning': { ko: '독점 경고', es: 'Aviso de monopolio' }, island: { ko: '무인도', es: 'Isla' },
@@ -52,7 +52,7 @@ function EventMark({ type, event }: { type: string; event: MarbleActionEvent }) 
   if (symbol) return <svg className="marble-event-symbol" viewBox="0 0 32 32" aria-hidden="true"><use href={`/images/marble/tile-symbols.svg#${symbol}`} width="32" height="32"/></svg>;
 
   if (type === 'arrival' || type === 'monopoly-warning') return <svg className="marble-event-symbol marble-event-card-symbol" viewBox="0 0 32 32" aria-hidden="true"><g className="marble-event-card-face"><rect x="5" y="4" width="22" height="24" rx="3"/><path d="M10 10h12M10 15h9M10 21l4-3 4 3 4-3"/></g>{type === 'monopoly-warning' && <path className="marble-event-alert" d="M25 4v8m0 4v.1"/>}</svg>;
-  if (type === 'buy') return <svg className="marble-event-symbol" viewBox="0 0 32 32" aria-hidden="true"><circle cx="16" cy="16" r="8"/><path d="M16 11v10m3-8c-1-2-6-2-6 1s6 1 6 4-5 3-7 1M16 3v3M16 26v3M3 16h3m20 0h3"/></svg>;
+  if (type === 'buy' || type === 'takeover' || type === 'sell') return <svg className="marble-event-symbol" viewBox="0 0 32 32" aria-hidden="true"><circle cx="16" cy="16" r="8"/><path d="M16 11v10m3-8c-1-2-6-2-6 1s6 1 6 4-5 3-7 1M16 3v3M16 26v3M3 16h3m20 0h3"/></svg>;
   if (type === 'build') return <svg className="marble-event-symbol marble-event-build-symbol" viewBox="0 0 32 32" aria-hidden="true"><path d="M5 27h22"/><rect x="7" y="18" width="6" height="9" rx="1"/><rect x="14" y="12" width="6" height="15" rx="1"/><rect x="21" y="6" width="5" height="21" rx="1"/><path d="M16 8V4m0 0-2 2m2-2 2 2"/></svg>;
   if (type === 'rent') return <svg className="marble-event-symbol" viewBox="0 0 32 32" aria-hidden="true"><circle cx="10" cy="16" r="6"/><circle cx="23" cy="16" r="6"/><path d="M12 16h9m-3-3 3 3-3 3M8 14h4m-4 4h4m9-4h4m-4 4h4"/></svg>;
   if (type === 'loan' || type === 'repay') return <svg className="marble-event-symbol marble-event-contract-symbol" viewBox="0 0 32 32" aria-hidden="true"><path d="M8 4h12l5 5v19H8zM20 4v6h5M12 15h9m-9 4h9m-9 4h5"/><path className="marble-contract-stamp" d="m20 22 2 2 4-5"/></svg>;
@@ -111,7 +111,7 @@ export function MarbleEventStage({ events, event, animating = false, language, p
   const fund = language === 'ko' ? '공동 기금' : 'Fondo común';
   const recipient = presented.creditor === 'fund' ? fund : presented.creditor === 'bank' || ['buy', 'build', 'repay', 'loan'].includes(type) ? bank : language === 'ko' ? '납부처' : 'Destinatario';
   const source = presented.source === 'fund' ? fund : bank;
-  const hasTransfer = ['rent', 'tax', 'buy', 'build', 'loan', 'repay', 'bonus', 'monopoly-warning', 'crisis', 'train'].includes(type) && (amount !== 0 && (fromId !== undefined || toId !== undefined || amount !== null || assessed));
+  const hasTransfer = ['rent', 'tax', 'buy', 'takeover', 'sell', 'build', 'loan', 'repay', 'bonus', 'monopoly-warning', 'crisis', 'train'].includes(type) && (amount !== 0 && (fromId !== undefined || toId !== undefined || amount !== null || assessed));
   const incoming = amount !== null && amount > 0;
   const transferFrom = from || (incoming || toId !== undefined ? source : actor);
   const transferTo = to || (incoming || toId !== undefined ? actor : recipient);

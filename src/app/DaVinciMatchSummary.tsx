@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from 'react';
 import type { GameResult, Language, PlayerId } from '../core/types';
+import { MatchReplay } from './MatchReplay';
 import '../styles/davinci-match-summary.css';
 
 type SessionRecord = { roomId: string; p1: number; p2: number; draws: number };
@@ -25,24 +26,17 @@ type Props = {
   language: Language;
   view: any;
   pendingGame: string | null;
-  onReplay: () => Promise<void> | void;
+  requiresAgreement?: boolean;
+  onReplay: () => unknown | Promise<unknown>;
 };
 const text = (language: Language, ko: string, es: string) => language === 'ko' ? ko : es;
 
-export function DaVinciMatchSummary({ roomId, playerId, language, view, pendingGame, onReplay }: Props) {
+export function DaVinciMatchSummary({ roomId, playerId, language, view, pendingGame, onReplay, requiresAgreement = true }: Props) {
   const [record, setRecord] = useState(() => emptyRecord(roomId));
-  const [replayBusy, setReplayBusy] = useState(false);
-  const replayBusyRef = useRef(false);
-  const mountedRef = useRef(true);
   const recordRef = useRef(record);
   const tracker = useRef<ResultTracker>({ roomId, complete: false });
   const result: GameResult | null = view?.result ?? null;
   const progress = advanceDaVinciRecord(record, tracker.current, roomId, result);
-
-  useEffect(() => {
-    mountedRef.current = true;
-    return () => { mountedRef.current = false; };
-  }, []);
 
   useEffect(() => {
     const next = advanceDaVinciRecord(recordRef.current, tracker.current, roomId, result);
@@ -55,17 +49,6 @@ export function DaVinciMatchSummary({ roomId, playerId, language, view, pendingG
   const p1Label = text(language, '1번 자리', 'Jugador 1');
   const p2Label = text(language, '2번 자리', 'Jugador 2');
   const replayPending = pendingGame === 'davinci';
-  const requestReplay = async () => {
-    if (replayBusyRef.current) return;
-    replayBusyRef.current = true;
-    setReplayBusy(true);
-    try { await onReplay(); }
-    catch { /* The room owner reports selection failures. */ }
-    finally {
-      replayBusyRef.current = false;
-      if (mountedRef.current) setReplayBusy(false);
-    }
-  };
 
   return <section className="davinci-session-summary" aria-label={text(language, '이 접속의 다빈치 전적', 'Récord de Da Vinci en esta sesión')} data-viewer={playerId}>
     <div className="davinci-session-record">
@@ -77,10 +60,6 @@ export function DaVinciMatchSummary({ roomId, playerId, language, view, pendingG
       </div>
       <small className="davinci-session-scope">{text(language, '이 브라우저 접속 중 확인된 결과만 보여 줘.', 'Cuenta solo resultados vistos durante esta sesión del navegador.')}</small>
     </div>
-    <div className="davinci-replay">
-      {replayPending && <p role="status">{text(language, '다빈치 새 판 선택이 진행 중이야. 두 사람 모두 선택하면 시작돼.', 'Da Vinci está pendiente. La partida comienza cuando ambas personas lo elijan.')}</p>}
-      <button type="button" disabled={replayBusy} aria-busy={replayBusy} onClick={() => void requestReplay()}>{replayBusy ? text(language, '요청 중…', 'Enviando…') : replayPending ? text(language, '다빈치 선택', 'Elegir Da Vinci') : text(language, '새 판 요청', 'Pedir otra partida')}</button>
-      <small>{text(language, '새 판은 두 사람의 선택이 모두 모이면 시작돼.', 'La nueva partida comienza cuando ambas personas la elijan.')}</small>
-    </div>
+    <div className="davinci-replay"><MatchReplay language={language} pending={replayPending} requiresAgreement={requiresAgreement} onReplay={onReplay}/></div>
   </section>;
 }

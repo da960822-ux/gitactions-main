@@ -43,8 +43,19 @@ describe('DaVinciMatchSummary', () => {
 
     expect(html).toContain('Récord de esta sesión');
     expect(html).toContain('Jugador 1');
-    expect(html).toContain('Da Vinci está pendiente');
-    expect(html).toContain('ambas personas lo elijan');
+    expect(html).toContain('La otra persona pidió otra partida.');
+    expect(html).toContain('Aceptar otra partida');
+    expect(html.match(/<button/g)).toHaveLength(1);
     expect(html).toContain('<strong>1</strong>');
   });
+  it('starts an AI rematch directly without suggesting another player must consent', () => {
+    const html = renderToStaticMarkup(createElement(DaVinciMatchSummary, {
+      roomId: 'solo-a', playerId: 'p1', language: 'ko', view: { result: win('p1') }, pendingGame: null, onReplay: vi.fn(), requiresAgreement: false,
+    }));
+    expect(html).toContain('>다시 하기</button>');
+    expect(html).not.toContain('동의');
+    expect(html).not.toContain('새 판 요청');
+    expect(html).toContain('<strong>1</strong>');
+  });
+
 });

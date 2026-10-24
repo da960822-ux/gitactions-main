@@ -4,6 +4,7 @@ import { runInNewContext } from 'node:vm';
 import { webcrypto } from 'node:crypto';
 import { afterEach, beforeAll, describe, expect, it, vi } from 'vitest';
 import { catchmindEngine } from '../games/catchmind';
+import { dominoEngine } from '../games/domino';
 
 // Runs the actual Edge handler with a CAS database double; real SQL/RLS is covered in database.test.ts.
 let code: string;
@@ -17,13 +18,14 @@ beforeAll(async () => {
 });
 afterEach(() => vi.restoreAllMocks());
 
-function fixture() {
+function fixture(gameId:'catchmind'|'domino'='catchmind') {
   const fresh = catchmindEngine.createInitialState(27);
   const configured = catchmindEngine.applyAction(fresh, 'p1', { type: 'settings', payload: { settings: { ...fresh.settings, category_id: 'food' } } });
-  let state = catchmindEngine.applyAction(configured, 'p1', { type: 'choose', payload: { wordId: 0 } });
+  let state:any = catchmindEngine.applyAction(configured, 'p1', { type: 'choose', payload: { wordId: 0 } });
   const deadline = Date.now() + 80_000;
   state.deadlineAt = new Date(deadline).toISOString();
-  const room = { id: crypto.randomUUID(), version: 1, game_id: 'catchmind', pending_game: null, pending_by: null, expires_at: new Date(deadline + 86400000).toISOString() };
+  if(gameId==='domino')state=dominoEngine.applyAction(dominoEngine.createInitialState(27),'p1',{type:'configure',payload:{mode:'partners',difficulty:'hard',targetScore:100}});
+  const room = { id: crypto.randomUUID(), version: 1, game_id: gameId, pending_game: null, pending_by: null, expires_at: new Date(deadline + 86400000).toISOString() };
   const receipts = new Map<string, { version: number; user_id: string }>();
   const commits: any[] = [];
   const members = [{ seat: 'p1', user_id: 'alice', language: 'ko' }, { seat: 'p2', user_id: 'bob', language: 'es' }];
@@ -75,7 +77,17 @@ describe('Catchmind Edge clock and consent', () => {
     expect(f.state.phase).toBe('drawing'); expect(f.state.deadlineAt).not.toBeNull();
     await f.send('p1', { selectGame: 'catchmind' }); expect(f.state.phase).toBe('drawing');
     await f.send('p2', { selectGame: 'catchmind' });
-    expect(f.state).toMatchObject({ phase: 'choosing', deadlineAt: null, answer: null, strokes: [], fills: [], guesses: [], score: { p1: 0, p2: 0 }, settings: { category_id: null } });
-    expect(f.state.wordChoices).toEqual([]); expect(f.room.pending_game).toBeNull();
+    expect(f.state).toMatchObject({ phase: 'choosing', deadlineAt: null, answer: null, strokes: [], fills: [], guesses: [], score: { p1: 0, p2: 0 }, settings: { category_id: 'food' } });
+    expect(f.state.wordChoices).toHaveLength(6); expect(f.state.wordChoices[0]).toHaveLength(3); expect(f.room.pending_game).toBeNull();
+  });
+
+  it('preserves online Domino team settings only after both seats agree to replay',async()=>{
+    const f=fixture('domino'),before=structuredClone(f.state);
+    expect((await f.send('p1',{selectGame:'domino'})).status).toBe(200);
+    expect(f.state).toEqual(before);
+    expect((await f.send('p2',{selectGame:'domino'})).status).toBe(200);
+    expect(f.state).toMatchObject({mode:'partners',round:1,roundResult:null,result:null,matchScores:{p1:0,p2:0},settings:{difficulty:'hard',targetScore:100}});
+    expect(dominoEngine.getPlayerView(f.state,'p1').board.seats).toHaveLength(4);
+    expect(f.room.pending_game).toBeNull();
   });
 });

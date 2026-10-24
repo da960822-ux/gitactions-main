@@ -395,3 +395,21 @@ describe('MarbleBoard', () => {
     expect(waiting).not.toContain('El pasaje cuesta');
   });
 });
+
+it('renders a legal post-rent acquisition with complete stage costs on the two-player screen',()=>{
+ const s=marbleEngine.createInitialState(5);s.phase='main';s.positions.p1=4;s.pendingTile=4;s.takeoverTile=4;s.properties[4]={owner:'p2',houses:2};
+ const html=render(marbleEngine.getPlayerView(s,'p1'));
+ expect(html).toContain('도시 인수 · 560');expect(html).toContain('인수 후 현금 940');expect(html).toContain('단계별 금액');expect(html).toContain('추가비');expect(html).toContain('누적');expect(html).toContain('불가');
+});
+
+it('preserves player ownership and images in Spanish and legacy two-player views',()=>{
+ const state=marbleEngine.createInitialState(1);state.properties={1:{owner:'p1',houses:1},3:{owner:'p2',houses:2}};
+ for(const language of ['ko','es'] as const){
+  const html=render(marbleEngine.getPlayerView(state,'p1'),language);
+  expect((html.match(/class="mp-property-tile-art mp-property-art-frame"/g)??[])).toHaveLength(24);
+  expect(html).toContain('data-marble-seat="p1"');expect(html).toContain('data-marble-seat="p2"');expect(html).toContain('data-marble-owner="bank"');
+  expect(html).toContain('data-marble-price-kind="rent"');expect(html).toContain('mp-building-plinth');
+ }
+ const legacy={...state,boardVersion:undefined,cityRouteVersion:undefined,economicVersion:undefined,propertyRulesVersion:undefined} as typeof state;
+ expect(render(marbleEngine.getPlayerView(legacy,'p1'))).toContain('data-marble-owner="p1"');
+});

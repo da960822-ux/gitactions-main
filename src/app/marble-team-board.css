@@ -1,9 +1,5 @@
-.marble-team-board .mp-owner-p3 { background:#dcefe6; color:#205f50; }
-.marble-team-board .mp-owner-p4 { background:#e8e4f4; color:#514178; }
 .marble-team-board .mp-pawns { flex-wrap:wrap; max-width:82px; }
 .marble-team-board .mp-owner { max-width:100%; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
-.marble-team-board .mp-pawn-marker[data-seat-number="3"]::after { background:#dcefe6; }
-.marble-team-board .mp-pawn-marker[data-seat-number="4"]::after { background:#e8e4f4; }
 .marble-native-team { height:100svh; min-height:0; display:grid; grid-template-rows:54px minmax(0,1fr); gap:8px; padding:10px 14px; background:#f0e7d5; color:#284b4d; box-sizing:border-box; }
 .marble-native-team * { box-sizing:border-box; }
 .marble-native-team .mt-top { display:flex; justify-content:space-between; align-items:center; gap:16px; }
@@ -13,7 +9,7 @@
 .marble-native-team .mt-top nav { display:flex; align-items:center; gap:14px; }
 .marble-native-team .mt-top nav details { position:relative; }
 .marble-native-team .mt-top nav summary { min-height:38px; display:flex; align-items:center; cursor:pointer; font-size:14px; }
-.marble-native-team .mt-top nav details > div { position:absolute; z-index:40; top:100%; right:0; width:min(460px,80vw); max-height:75vh; overflow:auto; padding:18px; border:1px solid #bfa981; border-radius:10px; background:#fffaf0; box-shadow:0 8px 22px #43371e33; }
+.marble-native-team .mt-top nav > details > div { position:absolute; z-index:40; top:100%; right:0; width:min(460px,80vw); max-height:75vh; overflow:auto; padding:18px; border:1px solid #bfa981; border-radius:10px; background:#fffaf0; box-shadow:0 8px 22px #43371e33; }
 .marble-native-team .mt-top nav h2 { margin:0 0 12px; font-size:20px; }
 .marble-native-team .mt-top nav p { font-size:14px; line-height:1.55; }
 .marble-native-team .mt-menu label { display:flex; align-items:center; justify-content:space-between; gap:12px; margin:10px 0; font-size:14px; }
@@ -115,3 +111,5 @@
   .marble-team-board.is-modern .mp-tile--horizontal .mp-tile-economy b { display:block; font-size:13px; line-height:14px; }
   .marble-team-board.is-modern .mp-tile--horizontal .mp-tile-economy span { display:none; }
 }
+
+.marble-native-team .mt-top nav > .mt-help > div { width:min(780px,calc(100vw - 28px)); }

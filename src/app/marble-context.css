@@ -40,3 +40,5 @@
   .distilled-marble.is-modern .mp-tile--horizontal .mp-tile-economy span { display:none; }
   .distilled-marble.is-modern :is(.mp-tile--west,.mp-tile--east) .mp-property-tile-copy .mp-tile-economy b { font-size:13px; }
 }
+
+.marble-property-ledger{width:100%;border-collapse:collapse;font-size:13px;font-variant-numeric:tabular-nums;margin:12px 0}.marble-property-ledger caption{text-align:left;font-weight:700;margin-bottom:6px}.marble-property-ledger th,.marble-property-ledger td{text-align:right;padding:6px 2px;border-bottom:1px solid #ffffff26}.marble-property-ledger th:first-child{text-align:left}.marble-property-sale{display:grid;gap:8px;width:100%;margin:10px 0}.marble-property-sale label{display:grid;gap:5px}.marble-property-sale select{max-width:100%;width:100%;font:inherit}.marble-property-sale button{font:inherit;padding:10px;border:1px solid #d1b27d;border-radius:8px;background:#173d3b;color:#fff}

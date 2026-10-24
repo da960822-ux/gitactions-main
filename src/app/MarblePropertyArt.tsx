@@ -13,7 +13,12 @@ const cityColors: Record<string, string> = {
   berlin: '#d49c66', istanbul: '#75aaa3', agra: '#b78269', athens: '#cba357', sydney: '#96aab7',
 };
 
-export function MarblePropertyArt({ city, level = 0, className = '', routeVersion = 2, language = 'ko' }: { city: string; level?: number; className?: string; routeVersion?: number; language?: Language }) {
+type PropertyArtProps = { city: string; level?: number; className?: string; routeVersion?: number; language?: Language; owner?: 'p1'|'p2'|'p3'|'p4'|null; ownerLabel?: string };
+export function MarblePropertyArt({owner, ownerLabel, className = '', ...props}: PropertyArtProps) {
+  if (owner === undefined) return <MarblePropertyImage {...props} className={className}/>;
+  return <span className={`${className} mp-property-art-frame`} data-marble-owner={owner ?? 'bank'} title={ownerLabel} data-building-level={props.level ?? 0} aria-hidden="true"><MarblePropertyImage {...props} className="mp-property-art-image"/><span className="mp-building-plinth"/></span>;
+}
+function MarblePropertyImage({ city, level = 0, className = '', routeVersion = 2, language = 'ko' }: { city: string; level?: number; className?: string; routeVersion?: number; language?: Language }) {
   const tintId = `mp-building-${useId().replace(/:/g, '')}`;
   if (routeVersion >= 3 && level > 0) {
     const asset = level === 1 ? dioramas.commonStages.house : level === 2 ? dioramas.commonStages.apartment : dioramas.assets.find(asset => asset.slug === city);

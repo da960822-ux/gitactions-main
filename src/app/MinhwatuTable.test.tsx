@@ -344,6 +344,16 @@ describe('MinhwatuTable public view', () => {
     expect(html).toContain('Aceptar y jugar otra');
     expect(html).toContain('La otra persona pidió otra partida.');
   });
+  it('offers a direct AI rematch without another player consent copy', () => {
+    const state = minhwatuEngine.createInitialState(89);
+    state.phase = 'finished';state.result = { winner: 'p1', reason: 'test', scores: { p1: 10, p2: 5 } };
+    const view = minhwatuEngine.getPlayerView(state, 'p1');
+    const html = renderToStaticMarkup(createElement(MinhwatuTable, { view, playerId: 'p1', language: 'ko', runAction: vi.fn(), onReplay: vi.fn(), requiresAgreement: false }));
+    expect(html).toContain('>다시 하기</button>');
+    expect(html).not.toContain('한 판 더 요청');
+    expect(html).not.toContain('동의 대기');
+  });
+
   it('keeps every captured face visible in its category bank with all combination counters for either viewer and language', () => {
     const state = minhwatuEngine.createInitialState(174);
     state.captures = { p1: state.deck.slice(0, 5), p2: state.deck.slice(5, 10) };

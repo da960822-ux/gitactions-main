@@ -20,6 +20,8 @@ export interface BeginnerGuideOptions {
   /** Economy 0 has no credit; 1 uses fixed construction costs; 2 uses tiered costs. */
   marbleEconomyVersion?: number;
   marbleCityRouteVersion?: number;
+  /** 1 enables acquisition, color bonuses, doubles and emergency asset sales. */
+  marblePropertyRulesVersion?: number;
 }
 
 type BeginnerGameId = Extract<GameId, 'davinci' | 'catchmind' | 'marble'>;
@@ -108,6 +110,27 @@ const marbleLegacyGuide: Record<Language, GuideCopy> = {
   },
 };
 
+const marblePropertyGuide: Record<Language, GuideCopy> = {
+  ko: {
+    goal: '도시를 사고 건설해 자산을 모으거나 상대를 파산시키세요.',
+    steps: [
+      { title: '굴리고 구매하기', body: '두 주사위를 굴려요. 원하면 첫 굴림 전에 말을 바꿀 수 있어요. 빈 도시는 구매하거나 지나가요. 출발을 통과하면 200을 받아요. 더블이면 도착 행동을 마친 뒤 한 번 더 굴리고, 3연속 더블이면 바로 무인도로 가요.' },
+      { title: '건설하고 인수하기', body: '내 도시는 단독주택→아파트→랜드마크로 올려요. 상대 도시에 도착하면 통행료부터 처리한 뒤 누적 투자액의 2배로 인수할 수 있어요. 랜드마크는 인수와 정전에서 보호돼요. 한 사람이 같은 색을 전부 모으면 통행료가 2배예요.' },
+      { title: '현금을 지키기', body: '의무 지급액이 부족하면 내 도시와 건물을 은행에 팔아 누적 투자액의 절반을 받아요. 300을 빌리면 330을 갚아요. 매각과 대출로도 해결할 수 없을 때만 파산해요. 120개 완료 차례 뒤에는 대출을 뺀 순자산을 비교해요.' },
+    ],
+    tip: '건설비 40%·60%·80%는 각 단계의 추가 비용이에요. 인수는 선택이며, 최종 3단계 랜드마크는 인수할 수 없어요.',
+  },
+  es: {
+    goal: 'Compra ciudades, construye y reúne patrimonio o lleva a la otra persona a la quiebra.',
+    steps: [
+      { title: 'Lanza y compra', body: 'Lanza los dos dados. Si quieres, cambia de ficha antes del primer lanzamiento. Si la ciudad está libre, puedes comprarla o rechazar la compra. Al pasar por Salida cobras 200. Si los dos dados muestran el mismo número, son dobles: resuelve la llegada y vuelve a lanzar; con tres dobles seguidos vas directo a la isla.' },
+      { title: 'Construye y adquiere', body: 'Mejora tus ciudades: casa, apartamentos y monumento. Al llegar a una ciudad rival, resuelve primero el alquiler; después puedes adquirirla por el doble de la inversión acumulada. El monumento no se puede adquirir ni recibe apagón. Completar un color tú solo duplica sus alquileres.' },
+      { title: 'Cuida tu efectivo', body: 'Si no te alcanza para un pago obligatorio, vende al banco una ciudad con sus edificios por la mitad de su inversión. Puedes pedir 300 y devolver 330. Solo quiebras si vender y pedir crédito tampoco basta. Tras 120 turnos completos se compara el patrimonio, restando la deuda.' },
+    ],
+    tip: 'El 40 %, 60 % y 80 % son costos adicionales de cada nivel. Adquirir es opcional; el monumento de nivel 3 está protegido.',
+  },
+};
+
 const imageAlts: Record<BeginnerGameId, Record<Language, string>> = {
   davinci: { ko: '숫자와 조커 타일을 비교하며 추리하는 다빈치 게임판', es: 'Tablero de Da Vinci con fichas numeradas y comodines para adivinar' },
   catchmind: { ko: '한 사람이 단어를 그림으로 그리고 다른 사람이 맞히는 화면', es: 'Una persona dibuja una palabra y la otra intenta adivinarla' },
@@ -122,6 +145,7 @@ export function getBeginnerGuide(
   if (gameId !== 'davinci' && gameId !== 'catchmind' && gameId !== 'marble') return null;
   let guide: GuideCopy;
   if (gameId === 'marble' && (options.marbleVersion ?? 2) === 1) guide = marbleLegacyGuide[language];
+  else if (gameId === 'marble' && options.marblePropertyRulesVersion === 1) guide = marblePropertyGuide[language];
   else if (gameId === 'marble' && (options.marbleEconomyVersion ?? 2) === 0) {
     const current = guides.marble[language];
     guide = {

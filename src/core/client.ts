@@ -1,5 +1,6 @@
 import { type SupabaseClient, type RealtimeChannel } from '@supabase/supabase-js';
 import { engines } from './registry';
+import { createMatchState } from './newMatch';
 import { aiTurnDelay, chooseSimpleAiAction, supportsAi } from '../games/simpleAi';
 import { executeAction, RETENTION_MS, chatMessageForGame, reactionMessageForId } from './authority';
 import type { ReactionId } from './reactions';
@@ -8,7 +9,7 @@ import { isCorrectGuess, getCatchmindDrawDurationMs } from '../games/catchmind';
 
 export interface RoomPlayer { id: PlayerId; nickname: string; language: Language; ready: boolean }
 export interface ChatMessage { id: string; playerId: PlayerId; text: string; translation?: string; targetLanguage?: Language; status: 'original'|'translated'|'limit'|'unavailable'|'correct'; createdAt:string }
-export interface RoomSnapshot { roomId:string|null; mode:'demo'|'online'|'solo'; playerId:PlayerId; players:RoomPlayer[]; gameId:GameId|null; version:number; view:any|null; messages:ChatMessage[]; pendingGame:GameId|null; error:string|null; connection?:'local'|'connecting'|'connected'|'reconnecting'; syncEpoch?:number }
+export interface RoomSnapshot { roomId:string|null; mode:'demo'|'online'|'solo'; playerId:PlayerId; players:RoomPlayer[]; gameId:GameId|null; version:number; view:any|null; messages:ChatMessage[]; pendingGame:GameId|null; error:string|null; connection?:'local'|'connecting'|'connected'|'reconnecting'; syncEpoch?:number; invitationNotice?:'invitation_changed'|'invitation_acceptance_failed'|null }
 import { onlineDb } from './supabase';
 export const isOnlineConfigured = Boolean(onlineDb);
 const emptySnapshot = (): RoomSnapshot => ({roomId:null,mode:isOnlineConfigured?'online':'demo',playerId:'p1',players:[],gameId:null,version:0,view:null,messages:[],pendingGame:null,error:null,connection:isOnlineConfigured?'connecting':'local',syncEpoch:0});
@@ -46,13 +47,31 @@ class RoomClient {
   async createRoom(nickname:string,language:Language):Promise<string> {
     nickname=this.name(nickname);
     if(!this.db){this.snapshot={...emptySnapshot(),roomId:(this.solo?'solo-':'')+crypto.randomUUID(),mode:this.solo?'solo':'demo',connection:'local',players:[{id:'p1',nickname,language,ready:true},{id:'p2',nickname:this.solo?(language==='ko'?'컴퓨터':'Computadora'):(language==='ko'?'로컬 플레이어 2':'Jugador local 2'),language:this.solo?language:(language==='ko'?'es':'ko'),ready:true}]};this.state=null;this.expiresAt=Date.now()+RETENTION_MS;this.emit();return this.snapshot.roomId!;}
-    await this.session();const {data,error}=await this.db.rpc('create_room',{p_nickname:nickname,p_language:language});if(error)throw error;this.snapshot.roomId=data;await this.refresh();return data;
+    await this.session();const {data,error}=await this.db.rpc('create_room',{p_nickname:nickname,p_language:language});if(error)throw error;this.refreshId++;this.resyncRequired=false;this.snapshot={...emptySnapshot(),roomId:data};await this.refresh();return data;
   }
-  async joinRoom(roomId:string,nickname:string,language:Language):Promise<void> {
+  async joinRoom(roomId:string,nickname:string,language:Language,acceptInvitation=false):Promise<void> {
     if(this.solo)throw new Error('solo_session_only');
     nickname=this.name(nickname);
     if(!this.db){if(this.snapshot.roomId!==roomId || this.expiresAt<Date.now())throw new Error('demo_same_browser_only');this.localSeat('p2');return;}
-    await this.session();const {error}=await this.db.rpc('join_room',{p_room:roomId,p_nickname:nickname,p_language:language});if(error)throw error;this.snapshot.roomId=roomId;await this.refresh();
+    await this.session();
+    let newMember=false, membershipCheckFailed=false;
+    if(acceptInvitation){
+      try { const before=await this.db.rpc('room_snapshot',{p_room:roomId});newMember=!before.error&&!before.data;membershipCheckFailed=!!before.error; }
+      catch { membershipCheckFailed=true; }
+    }
+    const {error}=await this.db.rpc('join_room',{p_room:roomId,p_nickname:nickname,p_language:language});if(error)throw error;
+    if(this.snapshot.roomId!==roomId){this.refreshId++;this.resyncRequired=false;this.snapshot={...emptySnapshot(),roomId};}
+    else this.snapshot.invitationNotice=null;
+    await this.refresh();
+    if(!acceptInvitation || this.snapshot.roomId!==roomId || this.snapshot.playerId!=='p2' || this.snapshot.gameId || !this.snapshot.pendingGame)return;
+    if(membershipCheckFailed){this.snapshot.invitationNotice='invitation_acceptance_failed';this.emit();return;}
+    if(!newMember)return;
+    const invitedGame=this.snapshot.pendingGame;
+    try { await this.invoke({selectGame:invitedGame}); }
+    catch(cause) {
+      // Joining succeeded. A changed proposal needs a fresh manual choice, never another acceptance.
+      if(this.snapshot.roomId===roomId){this.snapshot.invitationNotice=this.snapshot.gameId?null:cause instanceof Error&&cause.message==='stale_state'?'invitation_changed':'invitation_acceptance_failed';this.emit();}
+    }
   }
   subscribeRoom(roomId:string,onChange:(snapshot:RoomSnapshot)=>void) {
     if(this.db && this.snapshot.roomId!==roomId){this.refreshId++;this.resyncRequired=false;this.snapshot={...emptySnapshot(),roomId};}
@@ -96,7 +115,7 @@ class RoomClient {
     if(data.room.version<this.snapshot.version)return;
     const syncEpoch=(this.snapshot.syncEpoch??0)+(this.resyncRequired && this.snapshot.view!==null?1:0);
     this.resyncRequired=false;
-    this.snapshot={roomId:this.snapshot.roomId,mode:'online',playerId:data.seat,players:data.members.map((x:any)=>({id:x.seat,nickname:x.nickname,language:x.language,ready:true})),gameId:data.room.game_id,version:data.room.version,view:data.view,pendingGame:data.room.pending_game,error:null,connection:this.snapshot.connection,syncEpoch,messages:data.messages.map((x:any)=>({id:x.id,playerId:x.seat,text:x.text,translation:x.translation||undefined,targetLanguage:x.target_language||undefined,status:x.status==='pending'||x.status==='processing'?'original':x.status,createdAt:x.created_at}))};this.emit();
+    this.snapshot={roomId:this.snapshot.roomId,mode:'online',playerId:data.seat,players:data.members.map((x:any)=>({id:x.seat,nickname:x.nickname,language:x.language,ready:true})),gameId:data.room.game_id,version:data.room.version,view:data.view,pendingGame:data.room.pending_game,error:null,connection:this.snapshot.connection,syncEpoch,invitationNotice:data.room.game_id?null:this.snapshot.invitationNotice??null,messages:data.messages.map((x:any)=>({id:x.id,playerId:x.seat,text:x.text,translation:x.translation||undefined,targetLanguage:x.target_language||undefined,status:x.status==='pending'||x.status==='processing'?'original':x.status,createdAt:x.created_at}))};this.emit();
   }
   async sendAction(action:GameAction) {
     if(this.db){await this.invoke({action});return;}
@@ -108,9 +127,10 @@ class RoomClient {
   }
   private checkLocal() {if(!this.snapshot.roomId || this.expiresAt<Date.now())throw new Error('room_expired');}
   async selectGame(gameId:GameId) {
-    if(this.db){await this.invoke({selectGame:gameId});return;}
+    if(this.db){await this.invoke({selectGame:gameId});this.snapshot.invitationNotice=null;this.emit();return;}
     this.checkLocal();if(this.solo&&!supportsAi(gameId))throw new Error('solo_game_unavailable');if(!this.solo&&!(this.snapshot.pendingGame===gameId && this.pendingBy!==this.snapshot.playerId)){this.snapshot.pendingGame=gameId;this.pendingBy=this.snapshot.playerId;this.emit();return;}
-    this.snapshot.gameId=gameId;this.snapshot.pendingGame=null;this.pendingBy=null;this.state=engines[gameId]?.createInitialState(crypto.getRandomValues(new Uint32Array(1))[0])||null;if(this.solo&&gameId==='domino')this.state=executeAction(engines.domino!,this.state,'p1',{type:'configure',payload:{difficulty:'hard'}}).state;this.snapshot.version++;this.localView();this.emit();
+    const previousGameId=this.snapshot.gameId,previousState=this.state;
+    this.snapshot.gameId=gameId;this.snapshot.pendingGame=null;this.pendingBy=null;this.state=createMatchState(gameId,crypto.getRandomValues(new Uint32Array(1))[0],previousGameId,previousState);if(this.solo&&gameId==='domino'&&(previousGameId!=='domino'||!previousState))this.state=executeAction(engines.domino!,this.state,'p1',{type:'configure',payload:{difficulty:'hard'}}).state;this.snapshot.version++;this.localView();this.emit();
   }
   async sendChat(text:string) {
     const message=chatMessageForGame(this.snapshot.gameId,text);text=message.text;
@@ -138,7 +158,7 @@ class RoomClient {
   }
   private invoke(operation:Record<string,unknown>) {
     const roomId=this.snapshot.roomId;
-    const selectionVersion=operation.action && (['domino','jaipur','splendor'].includes(this.snapshot.gameId??'') || this.snapshot.gameId==='catchmind'&&['choose','settings'].includes((operation.action as GameAction).type)) ? this.snapshot.version : null;
+    const selectionVersion=operation.selectGame!==undefined || operation.action && (['domino','jaipur','splendor'].includes(this.snapshot.gameId??'') || this.snapshot.gameId==='catchmind'&&['choose','settings'].includes((operation.action as GameAction).type)) ? this.snapshot.version : null;
     const drawingDeadline=this.snapshot.gameId==='catchmind'&&operation.action&&this.snapshot.view?.phase==='drawing'?this.snapshot.view.deadlineAt:null;
     const request=this.requestQueue.then(()=>this.invokeNow(operation,roomId,selectionVersion,drawingDeadline));
     this.requestQueue=request.catch(()=>{});return request;

@@ -14,7 +14,7 @@ const seedForSum = (sum: number) => seedForDice((a, b) => a + b === sum);
 const seedForDoubles = () => seedForDice((a, b) => a === b);
 const seedForMiss = () => seedForDice((a, b) => a !== b);
 // Regression fixtures for saved forty-space rooms before the personalized route.
-const initial = (seed = 15): MarbleState => ({ ...marbleEngine.createInitialState(seed), cityRouteVersion: undefined });
+const initial = (seed = 15): MarbleState => ({ ...marbleEngine.createInitialState(seed), cityRouteVersion: undefined, propertyRulesVersion: undefined });
 function eventState(id: MarbleEventId, target = 2): MarbleState {
   const seed = seedForSum(target);
   return { ...initial(seed), eventDeck: [id], positions: { p1: 0, p2: 0 } };

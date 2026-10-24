@@ -1,0 +1,56 @@
+.marble-rule-guide { --marble-guide-ink: #253f39; --marble-guide-line: #c7cbb8; color: var(--marble-guide-ink); font-size: 14px; line-height: 1.5; }
+.marble-rule-guide h3 { margin: 0 0 10px; color: inherit; font-family: inherit; font-size: 17px; font-weight: 700; line-height: 1.35; }
+.marble-rule-guide p { margin: 8px 0; }
+.marble-rule-goal { font-weight: 650; font-size: 16px; }
+.marble-rule-start { display: flex; flex-wrap: wrap; gap: 8px 18px; margin: 15px 0 20px; padding: 0; list-style: none; }
+.marble-rule-start li { display: flex; align-items: center; gap: 7px; margin: 0; padding: 0; }
+.marble-rule-start b { display: grid; place-items: center; width: 26px; height: 26px; border-radius: 50%; color: #fffbed; background: #395b50; }
+.marble-rule-building { padding: 16px; border: 1px solid var(--marble-guide-line); border-radius: 12px; background: #f7f5e9; }
+.marble-rule-stages { display: grid; grid-template-columns: repeat(4,minmax(0,1fr)); gap: 8px; }
+.marble-rule-stages figure { margin: 0; min-width: 0; }
+.marble-rule-building-art { display: block; width: 100%; height: 116px; object-fit: contain; }
+.marble-rule-stages figcaption { display: flex; flex-wrap: wrap; align-items: center; justify-content: center; gap: 6px; text-align: center; font-size: 12px; }
+.marble-rule-stages figcaption > span { display: grid; place-items: center; width: 21px; height: 21px; border: 1px solid #a2b09a; border-radius: 50%; }
+.marble-rule-example { color: #59675b; font-size: 12px; }
+.marble-rule-guide .marble-property-ledger { width: 100%; margin: 12px 0; border-collapse: collapse; color: var(--marble-guide-ink); font-size: 13px; font-variant-numeric: tabular-nums; }
+.marble-rule-guide .marble-property-ledger caption { padding: 5px 0; text-align: left; font-weight: 700; }
+.marble-rule-guide .marble-property-ledger :is(th,td) { padding: 7px 4px; text-align: center; border-bottom: 1px solid #d4d8c9; white-space: normal; }
+.marble-rule-guide .marble-property-ledger thead { background: #e5eadb; }
+.marble-rule-color { font-size: 13px; font-weight: 700; }
+.marble-rule-pair { display: grid; grid-template-columns: repeat(2,minmax(0,1fr)); gap: 16px; margin: 20px 0; }
+.marble-rule-pair section { min-width: 0; padding-bottom: 12px; border-bottom: 1px solid var(--marble-guide-line); }
+.marble-rule-pair img { display: block; width: 100%; height: 170px; object-fit: contain; background: #f4f1e6; border-radius: 10px; }
+.marble-rule-pair h3 { margin-top: 12px; }
+.marble-rule-key { display: inline-block; margin-top: 4px; padding: 5px 8px; background: #e5ebdc; font-size: 12px; border-radius: 5px; }
+.marble-rule-events > div { display: grid; grid-template-columns: repeat(4,minmax(0,1fr)); gap: 10px; }
+.marble-rule-events figure { min-width: 0; margin: 0; }
+.marble-rule-events img { display: block; width: 100%; height: 100px; object-fit: contain; }
+.marble-rule-events figcaption { display: grid; gap: 3px; font-size: 12px; text-align: center; }
+.marble-rule-events figcaption span { color: #59675b; }
+.marble-rule-rescue { margin-top: 18px; padding: 13px 15px; border: 1px solid #c7b98d; background: #f5f0df; }
+.marble-rule-details .marble-rule-variant { font-size: 12px; color: #59675b; }
+.marble-rule-details .guide-full-rules { padding-left: 0; }
+.marble-rule-details .guide-full-rules li { display: flex; gap: 10px; padding: 8px 0; }
+.marble-rule-details .guide-full-rules li > span { flex: 0 0 24px; color: #6c765d; }
+.marble-rule-details .guide-full-rules p { margin: 0; }
+@media (max-width: 600px) {
+  .marble-rule-pair { grid-template-columns: 1fr; }
+  .marble-rule-building { padding: 10px; }
+  .marble-rule-building-art { height: 86px; }
+  .marble-rule-events > div { grid-template-columns: repeat(2,minmax(0,1fr)); gap: 12px; }
+}
+.marble-rule-opening { color: #59675b; font-size: 12px; }
+.marble-rule-card-list ul { display: grid; grid-template-columns: repeat(2,minmax(0,1fr)); gap: 10px 18px; padding: 0; list-style: none; }
+.marble-rule-card-list li { display: flex; gap: 9px; margin: 0; padding: 8px 0; border-bottom: 1px solid var(--marble-guide-line); }
+.marble-rule-card-list li > b { flex: 0 0 42px; font-size: 15px; color: #715b26; }
+.marble-rule-card-list li strong { font-size: 13px; }
+.marble-rule-card-list li p { margin: 3px 0; font-size: 12px; }
+@media (max-width: 600px) { .marble-rule-card-list ul { grid-template-columns: 1fr; } }
+.marble-rule-guide { padding: 18px; border-radius: 12px; background: #fcfaef; }
+.marble-rule-guide .marble-rule-start li { display: flex; padding: 0; border: 0; font-size: 13px; }
+.rules-dialog:has(.marble-rule-guide) { width: min(920px, 100%); }
+@media (min-width: 701px) { .marble-rule-pair img { height: 210px; } }
+.marble-rule-dice-labels { display: grid; grid-template-columns: 1fr 1.6fr; gap: 8px; margin-top: 6px; text-align: center; font-size: 12px; font-weight: 700; }
+@media (max-width: 480px) { .marble-rule-stages { grid-template-columns: repeat(2,minmax(0,1fr)); gap: 12px; } .marble-rule-building-art { height: 110px; } }
+.app-shell :is(.game-guide, .rules-dialog) .marble-rule-guide .guide-details > summary,
+.mt-help .marble-rule-guide .guide-details > summary { color: #253f39; }

@@ -18,11 +18,11 @@
 .davinci-session-scores small { color: #d3c9ac; font-size: 12px; }
 .davinci-session-scope { display: block; margin-top: 7px; color: #d0d3c8; font-size: 12px; }
 .davinci-replay { display: grid; justify-items: start; gap: 5px; }
+.davinci-replay .match-replay { display: grid; justify-items: start; gap: 7px; padding: 0; border: 0; }
 .davinci-replay p { margin: 0 0 2px; color: #f5dda0; font-size: 12px; line-height: 1.45; }
 .davinci-replay button { min-height: 42px; padding: 9px 14px; border: 1px solid #d3b66a; border-radius: 7px; color: #29251d; background: #edcf80; font: inherit; font-size: 13px; font-weight: 750; cursor: pointer; }
 .davinci-replay button:hover { background: #f6dda0; }
 .davinci-replay button:focus-visible { outline: 3px solid #fff2c6; outline-offset: 3px; }
-.davinci-replay small { color: #d0d3c8; font-size: 12px; line-height: 1.4; }
 .davinci-replay button:disabled { opacity: .72; cursor: wait; }
 .davinci-start-brief {
   display: grid;

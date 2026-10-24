@@ -48,7 +48,7 @@ export function marbleCueForEvent(event: MarbleActionEvent): AudioCue | null {
     case 'roll': return 'dice';
     case 'move': case 'pawn': case 'train': return 'move';
     case 'arrival': case 'event-card': case 'island': case 'escape': case 'bonus': return 'event';
-    case 'buy': return 'buy';
+    case 'takeover': case 'sell': case 'buy': return 'buy';
     case 'build': return 'build';
     case 'rent': case 'tax': return 'toll';
     case 'loan': case 'repay': return 'loan';

@@ -98,7 +98,7 @@ describe('native four-seat Da Vinci table',()=>{
     state.hands.p4=state.hands.p4.map(tile=>({...tile,revealed:true}));state.hands.p2=state.hands.p2.map((tile,index)=>({...tile,revealed:index!==1}));
     const next=engine.applyAction(state,'p3',{type:'guess',payload:{target:'p2',index:1,value:state.hands.p2[1].value}}),view=viewFor(next),event=view.policy.log.at(-1)!;
     expect(fourDaVinciTileFeedback(view,event,'p2',1).winning).toBe(true);
-    expect(render(view)).toContain('is-winning-reveal');expect(render(view)).toContain('우리 팀 승리!');expect(render(view)).toContain('>다시 하기</button>');
+    expect(render(view)).toContain('is-winning-reveal');expect(render(view)).toContain('우리 팀 승리!');expect(render(view)).toContain('>다시 하기</button>');expect(render(view)).not.toContain('>새 판</button>');
     expect(daVinciTeamAction(view,'p2',{type:'draw'})).toBeNull();
   });
 });

@@ -16,4 +16,14 @@ describe('same-game replay agreement', () => {
     expect(markup).toContain('role="status"');
     expect(markup).toContain('Aceptar otra partida');
   });
+  it('offers one direct replay action for a solo game without consent or request copy', () => {
+    for (const language of ['ko', 'es'] as const) {
+      const markup = renderToStaticMarkup(createElement(MatchReplay, { language, pending: false, requiresAgreement: false, onReplay: async () => true }));
+      expect(markup.match(/<button/g)).toHaveLength(1);
+      expect(markup).toContain(language === 'ko' ? '>다시 하기</button>' : '>Jugar otra vez</button>');
+      expect(markup).not.toContain('<p');
+      expect(markup).not.toContain('disabled=');
+    }
+  });
+
 });

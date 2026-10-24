@@ -1,0 +1,67 @@
+.app-shell .lobby-main.lobby-flow { width:min(1100px,calc(100% - 48px)); padding:36px 0 48px; grid-template-columns:minmax(0,1fr) 320px; gap:28px 46px; }
+.lobby-flow .lobby-intro { grid-column:1 / -1; padding:0; display:flex; justify-content:space-between; align-items:center; gap:24px; }
+.lobby-flow .lobby-intro h1 { font-size:40px; margin:0 0 10px; }
+.lobby-flow .lobby-intro p { margin:0; font-size:14px; }
+.app-shell .lobby-flow .lobby-picks { grid-column:1; margin:0; }
+.lobby-flow .pick-list { column-gap:24px; }
+.lobby-flow .pick-item { min-height:100px; padding:16px 10px; }
+.lobby-flow .pick-name b { font-size:19px; }
+.lobby-flow .pick-name small { font-size:12px; line-height:1.45; }
+.lobby-flow .pick-time { display:none; }
+.lobby-flow .pick-check { color:var(--teal); font-size:21px; }
+.lobby-flow .lobby-start { padding:24px; box-shadow:none; }
+.lobby-start h2 { font:28px/1.25 var(--serif); margin:0 0 10px; }
+.lobby-rules { padding:0; font-size:13px; text-decoration:underline; text-underline-offset:4px; }
+.lobby-start .lobby-actions { display:grid; gap:12px; margin-top:22px; }
+.lobby-start .lobby-actions > .button { justify-content:center; min-height:48px; }
+.lobby-mode-note { margin:0 0 8px; color:var(--ink-soft); font-size:13px; line-height:1.6; }
+.lobby-ai-actions { display:grid; gap:10px; }
+.lobby-ai-actions .button { width:100%; justify-content:center; min-height:44px; }
+.lobby-ai-actions small { font-size:12px; line-height:1.5; color:var(--ink-soft); }
+.lobby-profile { border-top:1px solid var(--line); padding-top:16px; margin-top:8px; }
+.lobby-profile summary { cursor:pointer; font-size:14px; color:var(--ink-soft); }
+.lobby-profile .field-label { margin-top:16px; }
+.lobby-resume { display:block; margin-top:24px; font-size:13px; text-underline-offset:4px; }
+.invitation-entry .join-card { text-align:left; max-width:420px; padding:32px; }
+.invitation-entry h1 { font:34px/1.2 var(--serif); margin:0 0 12px; }
+.invitation-entry .invitation-description { color:var(--ink-soft); font-size:14px; line-height:1.65; margin-bottom:24px; }
+.invitation-entry .language-switch { margin:20px 0; }
+.invitation-entry details { margin:20px 0; }
+.invitation-entry summary { cursor:pointer; font-size:14px; }
+.invitation-entry .field-label { margin-top:12px; }
+.invite-link-fallback { margin:12px 0; }
+.invite-link-fallback label { display:block; margin-bottom:6px; font-size:13px; }
+.invite-link-fallback input { width:100%; min-height:44px; font-size:13px; }
+.invitation-notice { display:flex; flex-wrap:wrap; align-items:center; gap:12px; padding:12px; font-size:14px; }
+.game-select-card .pending-invitation { margin-bottom:20px; }
+.game-select-card .pending-invitation h2 { margin:0 0 16px; }
+.game-select-card .pending-invitation .button { min-height:48px; }
+.game-select-card .other-game-choices > summary { cursor:pointer; font-size:14px; margin:18px 0; }
+@media(max-width:800px) {
+ .app-shell .lobby-main.lobby-flow { grid-template-columns:minmax(0,1fr); gap:24px; width:calc(100% - 32px); padding-top:28px; }
+ .lobby-flow .lobby-intro { align-items:flex-start; flex-wrap:wrap; }
+ .lobby-flow .lobby-intro h1 { font-size:32px; }
+ .lobby-flow .lobby-picks { grid-column:1; }
+ .lobby-flow .lobby-start { grid-row:2; }
+
+ .lobby-flow .pick-list { column-gap:12px; }
+ .lobby-flow .pick-item { min-height:86px; gap:8px; padding:12px 2px; }
+ .lobby-flow .pick-name b { font-size:16px; }
+ .lobby-flow .pick-name small { font-size:11px; }
+ .lobby-flow .pick-icon { width:30px; flex-basis:30px; height:30px; }
+ .lobby-flow .pick-check { width:12px; }
+ .invitation-entry .join-card { padding:24px; }
+}
+
+.waiting-card { flex-wrap:wrap; gap:16px; }
+.waiting-card b { font-size:17px; }
+.waiting-card p { font-size:14px; line-height:1.6; }
+.waiting-card .button { min-height:46px; font-size:14px; }
+.game-select-card:has(.pending-invitation) { padding:20px 26px; }
+.game-select-card .pending-invitation:empty { display:none; }
+
+.room-shell details.game-switcher { display:block; padding:12px 16px; }
+.room-shell details.game-switcher > summary { cursor:pointer; font-size:14px; }
+.room-shell details.game-switcher:not([open]) > :not(summary) { display:none; }
+.room-shell details.game-switcher[open] .switch-game-list { margin-top:12px; }
+.board-card > .same-game-replay .match-replay { margin:8px 0; }

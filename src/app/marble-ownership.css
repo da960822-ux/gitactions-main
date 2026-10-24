@@ -1,0 +1,49 @@
+/* Seat color identifies the owner; the separate thin top band identifies the city group. */
+:root { --marble-owner-p1:#b66f79; --marble-owner-p2:#3e8576; --marble-owner-p3:#724653; --marble-owner-p4:#245a51; }
+:is(.marble-premium,.marble-native-team) { --mp-owner-color:#7c8780; --mp-owner-wash:#e8ece7; }
+:is([data-marble-owner="p1"],[data-marble-seat="p1"],[data-marble-pawn-seat="p1"]) { --mp-owner-color:var(--marble-owner-p1); --mp-owner-wash:#f4e3e5; }
+:is([data-marble-owner="p2"],[data-marble-seat="p2"],[data-marble-pawn-seat="p2"]) { --mp-owner-color:var(--marble-owner-p2); --mp-owner-wash:#e0f0e9; }
+:is([data-marble-owner="p3"],[data-marble-seat="p3"],[data-marble-pawn-seat="p3"]) { --mp-owner-color:var(--marble-owner-p3); --mp-owner-wash:#e5d5dc; }
+:is([data-marble-owner="p4"],[data-marble-seat="p4"],[data-marble-pawn-seat="p4"]) { --mp-owner-color:var(--marble-owner-p4); --mp-owner-wash:#c9e1d9; }
+[data-marble-owner="bank"] { --mp-owner-color:#7c8780; --mp-owner-wash:#e8ece7; }
+:is(.marble-premium,.marble-native-team) .mp-tile[data-marble-owner] { border:2px solid var(--mp-owner-color); background:linear-gradient(145deg,#fffefa,var(--mp-owner-wash)); }
+:is(.marble-premium,.marble-native-team) .mp-tile[data-marble-owner="bank"] { border-color:#aeb5a9; background:linear-gradient(145deg,#fffefa,#eceee7); }
+:is(.marble-premium,.marble-native-team) .mp-tile[data-marble-owner]::before { left:1px; right:1px; width:auto; height:3px; background:var(--mp-group-color); }
+:is(.marble-premium,.marble-native-team) .mp-tile .mp-owner { display:grid; place-items:center; flex:none; width:18px; min-width:18px; max-width:18px; height:18px; padding:0; border:1px solid var(--mp-owner-color); border-radius:5px; background:var(--mp-owner-wash); color:#243f3a; font:800 13px/1 system-ui,sans-serif; overflow:visible; }
+:is(.marble-premium,.marble-native-team) .mp-tile .mp-building-badge { border:1px solid var(--mp-owner-color); background:var(--mp-owner-wash); color:#243f3a; }
+.mp-property-art-frame { position:relative; display:inline-block; isolation:isolate; vertical-align:middle; }
+.mp-property-art-frame > .mp-property-art-image { display:block; width:100%; height:100%; object-fit:contain; object-position:center bottom; }
+.mp-building-plinth { position:absolute; z-index:-1; left:9%; right:9%; bottom:0; height:max(4px,12%); border:1px solid var(--mp-owner-color,#7c8780); border-radius:50%; background:var(--mp-owner-color,#7c8780); box-shadow:0 1px 0 #fff9; }
+:is(.marble-premium,.marble-native-team) .mp-player[data-marble-seat],.marble-native-team .mt-bank[data-marble-seat] { border:1px solid var(--mp-owner-color); border-left:5px solid var(--mp-owner-color); background:linear-gradient(100deg,var(--mp-owner-wash),#fffaf0 65%); }
+:is(.marble-premium,.marble-native-team) .mp-seat-key { display:inline-grid; place-items:center; width:20px; height:20px; flex:none; margin-right:3px; border:1px solid var(--mp-owner-color); border-radius:5px; background:var(--mp-owner-wash); color:#243f3a; font:800 13px/1 system-ui,sans-serif; }
+.marble-native-team .mt-bank[data-marble-seat] > .marble-pawn { padding-bottom:3px; border-bottom:3px solid var(--mp-owner-color); border-radius:0 0 50% 50%; }
+:is(.marble-premium,.marble-native-team) .mp-pawn-marker[data-marble-pawn-seat] { border-bottom:3px solid var(--mp-owner-color); border-radius:0 0 45% 45%; }
+:is(.marble-premium,.marble-native-team) .mp-pawn-marker[data-marble-pawn-seat]::after { border-color:var(--mp-owner-color); background:var(--mp-owner-wash); color:#243f3a; }
+:is(.marble-premium,.marble-native-team) .mp-owner-mark,.mp-journey-owner[class*="mp-owner-"] { padding:4px 6px; border:1px solid var(--mp-owner-color); border-radius:6px; background:var(--mp-owner-wash); color:#243f3a; }
+.mp-ownership-key { position:absolute; z-index:2; left:8px; right:8px; bottom:8px; display:flex; align-items:center; justify-content:center; flex-wrap:wrap; gap:4px 7px; padding:5px 8px; border:1px solid #c8bfaa; border-radius:7px; background:#fffbf0ee; color:#36534b; font-size:13px; line-height:1.3; }
+.mp-key-group { width:24px; height:4px; background:linear-gradient(90deg,#4e9070 33%,#4d85b1 33% 66%,#bd665d 66%); }
+.mp-key-owner { width:15px; height:12px; border:2px solid var(--marble-owner-p1); border-radius:3px; background:#f4e3e5; }
+:is(.marble-premium,.marble-native-team) .mp-property-card[data-marble-owner] { border:2px solid var(--mp-owner-color); }
+:is(.marble-premium,.marble-native-team) .mp-property-card-art > .mp-property-art-frame { width:100%; height:100%; }
+.marble-native-team .mt-city-sheet > .mp-property-art-frame { display:block; width:100%; height:120px; margin:12px auto; }
+.marble-native-team .mt-portfolio .mp-property-art-frame { width:40px; height:42px; }
+
+.mp-ownership-key .mp-money-key { flex-basis:100%; font-size:13px; color:#36534b; }
+:is(.marble-premium,.marble-native-team) .mp-tile-economy b[data-marble-price-kind="rent"] { border:1px solid var(--mp-owner-color); background:var(--mp-owner-wash); color:#243f3a; }
+:is(.marble-premium,.marble-native-team) .mp-tile-economy b[data-marble-price-kind="purchase"] { background:#e7ebe2; color:#36473e; }
+.marble-premium .mp-property-art-frame > [data-building-level] { transform:none; padding:0; }
+
+@media (prefers-reduced-motion:reduce) { :is(.marble-premium,.marble-native-team) .mp-tile { transition:none; animation:none; } }
+:is(.marble-premium,.marble-native-team) .mp-tile[data-marble-owner] { transition:transform 160ms ease,box-shadow 180ms ease; }
+.mp-property-art-frame { min-width:0; min-height:0; }
+.mp-property-art-frame > .mp-property-art-image { max-width:100%; max-height:100%; min-height:0; }
+@media (min-width:981px) {
+  :is(.marble-premium,.marble-native-team).is-modern :is(.mp-tile--west,.mp-tile--east) .mp-property-tile-view { grid-template-rows:minmax(0,1fr); }
+}
+@media (prefers-reduced-motion:reduce) { :is(.marble-premium,.marble-native-team) .mp-tile[data-marble-owner] { transition:none; } }
+
+.marble-premium .mp-portfolio-city > .mp-property-art-frame { width:28px; height:32px; flex:none; }
+@media (min-width:981px) {
+  :is(.marble-premium,.marble-native-team).is-modern :is(.mp-tile--west,.mp-tile--east) .mp-tile-top { left:0; right:0; width:100%; justify-content:flex-end; }
+  :is(.marble-premium,.marble-native-team).is-modern :is(.mp-tile--west,.mp-tile--east) .mp-owner { position:absolute; top:0; left:0; right:auto; }
+}
