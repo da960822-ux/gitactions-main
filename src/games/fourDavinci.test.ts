@@ -59,6 +59,25 @@ describe('four-player advanced Da Vinci team variant', () => {
     expect(engine.validateAction(state,'p2',{type:'draw'})).toBe('not_your_turn');
   });
 
+  it('lets a stock-empty player choose an unrevealed own tile before advancing', () => {
+    let state = ready(91);
+    state = { ...state, deck: [], phase: 'guess', drawnIndex: null };
+    const wrong = state.hands.p2[0].value === 0 ? 1 : 0;
+    state = engine.applyAction(state, 'p1', { type: 'guess', payload: { target: 'p2', index: 0, value: wrong } });
+    expect(state.phase).toBe('reveal-own');
+    expect(state.turn).toBe('p1');
+    expect(engine.validateAction(state, 'p1', { type: 'guess', payload: { target: 'p2', index: 0, value: wrong } })).not.toBeNull();
+    expect(engine.validateAction(state, 'p2', { type: 'reveal-own', payload: { index: 0 } })).toBe('not_your_turn');
+    const actions = engine.getPlayerView(state, 'p1').actions.filter(choice => choice.action.type === 'reveal-own');
+    expect(actions.length).toBe(state.hands.p1.filter(tile => !tile.revealed).length);
+    const chosen = actions.at(-1)!.action.payload!.index as number;
+    state = engine.applyAction(state, 'p1', { type: 'reveal-own', payload: { index: chosen } });
+    expect(state.hands.p1[chosen].revealed).toBe(true);
+    expect(state.log.at(-1)).toMatchObject({ type: 'wrong-guess', actor: 'p1', revealedOwnIndex: chosen });
+    expect(state.turn).toBe('p2');
+    expect(engine.chooseAiAction(engine.getPlayerView({ ...state, turn: 'p1', phase: 'reveal-own', pendingGuess: { target: 'p2', index: 0, value: wrong } }, 'p1'), 'p1', () => .9)?.type).toBe('reveal-own');
+  });
+
   it('finishes when both opposing racks are exposed, preserving a surviving teammate', () => {
     let state=ready(17);
     state.phase='guess';

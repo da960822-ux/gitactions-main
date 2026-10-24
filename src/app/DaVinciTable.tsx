@@ -110,11 +110,12 @@ export default function DaVinciTable({ view, language, playerId, runAction, joke
   const setupPhase = view?.phase === 'setup' || (ownReady && setupIncomplete);
   const placementPhase = view?.phase === 'place-joker';
   const active = view?.turn === playerId && !view?.result && !(setupPhase && ownReady) && view?.phase !== 'waiting';
-  const gameInteractionPhase = !view?.result && !setupPhase && !placementPhase && view?.phase !== 'waiting';
+  const gameInteractionPhase = !view?.result && !setupPhase && !placementPhase && view?.phase !== 'waiting' && view?.phase !== 'reveal-own';
   const initialDeal = setupPhase && !list(board.actionLog).length && board.lastEvent == null && !board.setupReady?.p1 && !board.setupReady?.p2 && Number(board.turnNumber ?? 1) === 1;
   const drawChoice = choices.find(choice => choice.action.type === 'draw');
   const skipDrawChoice = choices.find(choice => choice.action.type === 'skip-draw');
   const stopChoice = choices.find(choice => choice.action.type === 'stop');
+  const revealOwnChoices = choices.filter(choice => choice.action.type === 'reveal-own');
   const ownHandWithoutMovingJoker = hasOwnJokerToPlace ? own.filter((_, index) => index !== Number(ownJokerToPlace.index)) : own;
   const [colorFilter, setColorFilter] = useState<'all' | 'white' | 'black'>('all');
   const [targetIndex, setTargetIndex] = useState<number | null>(null);
@@ -174,10 +175,10 @@ export default function DaVinciTable({ view, language, playerId, runAction, joke
     if (event.type === 'wrong') {
       if (event.actor === playerId) return event.index === undefined
         ? copy(language, '틀려서 차례를 넘겼어요. 이번 차례에는 새로 뽑은 타일이 없어 공개될 타일도 없어요.', 'Fallaste y termina tu turno. Como no robaste una ficha, no hay una ficha nueva que revelar.')
-        : copy(language, `틀린 추측으로 방금 뽑은 내 타일이 공개됐어요${event.value === undefined ? '' : `: ${tileValueLabel(event.value)}`}.`, `Tu ficha recién robada quedó revelada tras fallar${event.value === undefined ? '' : `: ${tileValueLabel(event.value)}`}.`);
+        : board.lastEvent?.fromStockEmpty ? copy(language, '틀려서 내가 고른 타일이 공개됐어요.', 'Fallaste y se reveló la ficha que elegiste.') : copy(language, `틀린 추측으로 방금 뽑은 내 타일이 공개됐어요${event.value === undefined ? '' : `: ${tileValueLabel(event.value)}`}.`, `Tu ficha recién robada quedó revelada tras fallar${event.value === undefined ? '' : `: ${tileValueLabel(event.value)}`}.`);
       return event.index === undefined
         ? copy(language, '상대가 틀려 차례를 넘겼어요.', 'La otra persona falló y terminó su turno.')
-        : copy(language, '상대가 틀려 방금 뽑은 타일이 공개됐어요.', 'La otra persona falló y se reveló la ficha que acababa de robar.');
+        : board.lastEvent?.fromStockEmpty ? copy(language, '상대가 틀려 자기 타일을 골라 공개했어요.', 'La otra persona falló y eligió una ficha propia para revelarla.') : copy(language, '상대가 틀려 방금 뽑은 타일이 공개됐어요.', 'La otra persona falló y se reveló la ficha que acababa de robar.');
     }
     if (event.type === 'draw') return event.value === 'joker' ? copy(language, '조커를 뽑았어요. 원하는 위치에 배치하세요.', 'Robaste el comodín. Elige dónde colocarlo.') : copy(language, '새 타일을 정렬된 손패에 넣었어요.', 'Añadiste una ficha a tu mano ordenada.');
     if (event.type === 'rival-draw') return copy(language, '상대가 타일을 뽑았어요.', 'La otra persona robó una ficha.');
@@ -191,17 +192,21 @@ export default function DaVinciTable({ view, language, playerId, runAction, joke
   const phaseLabel = view?.result ? copy(language, '결과', 'Resultado')
     : setupPhase ? ownReady ? copy(language, '상대가 패를 준비 중이에요', 'La otra persona prepara sus fichas') : hasOwnJokerToPlace ? copy(language, '조커를 손패에 배치', 'Colocar el comodín') : copy(language, '패를 확인하고 준비 완료', 'Revisa tus fichas y confirma')
       : placementPhase ? copy(language, '조커를 손패에 배치', 'Colocar el comodín')
-        : view?.phase === 'waiting' ? copy(language, '상대 차례', 'Turno rival')
+        : view?.phase === 'waiting' ? copy(language, '상대 차례', 'Turno rival') : revealOwnChoices.length ? copy(language, '공개할 내 타일 선택', 'Elige una ficha propia para revelar')
           : drawChoice ? copy(language, '타일 뽑기', 'Robar ficha') : skipDrawChoice ? copy(language, '더미 없음 · 추측 계속', 'Mazo vacío · adivina') : guessChoices.length ? targetIndex === null ? copy(language, '상대 타일 선택', 'Elige una ficha rival') : number === null ? copy(language, '숫자 선택', 'Elige un número') : copy(language, '추측하기', 'Adivinar') : stopChoice ? copy(language, '차례 마치기', 'Terminar turno') : copy(language, '상대 차례', 'Turno rival');
   const ownTileNode = (tile: Tile, index: number) => {
     const flipsOwnTile = visibleEvent?.index === index && ((visibleEvent.type === 'wrong' && visibleEvent.actor === playerId) || (visibleEvent.type === 'correct' && visibleEvent.actor !== playerId));
     const arrivesOwnTile = visibleEvent?.type === 'draw' && visibleEvent.actor === playerId && visibleEvent.index === index
       || visibleEvent?.type === 'arrange' && visibleEvent.actor === playerId && !hasOwnJokerToPlace && tile.value === 'joker' && visibleEvent.index === index;
-    return <div role="img" className={`dv-tile dv-own-tile dv-tile-${tile?.color === 'white' ? 'white' : 'black'} ${tile?.revealed ? 'is-revealed' : ''} ${flipsOwnTile ? 'is-flipping' : ''} ${arrivesOwnTile ? 'is-arriving' : ''}`} key={`${tile?.color}-${tile?.value}`} aria-label={copy(language, `${index + 1}번째 ${colorLabel(tile?.color ?? 'black', language)} 타일, 숫자 ${tileValueLabel(tile?.value)}${tile?.revealed ? ', 공개됨' : ''}`, `Ficha propia ${index + 1} ${colorLabel(tile?.color ?? 'black', language)}, número ${tileValueLabel(tile?.value)}${tile?.revealed ? ', revelada' : ''}`)}><span className="dv-tile-order">{index + 1}</span><b>{tile.value === 'joker' ? <JokerPortrait src={jokerPortraits[tile.color]}/> : tileValueLabel(tile?.value)}</b><span className="dv-tile-color">{colorLabel(tile?.color ?? 'black', language)}</span>{tile?.revealed && <small className="dv-tile-state"><svg aria-hidden="true"><use href="/images/davinci/state-icons.svg#revealed"/></svg>{copy(language, '공개', 'Visible')}</small>}</div>;
+    const choice = revealOwnChoices.find(item => item.action.payload?.index === index);
+    const className = `dv-tile dv-own-tile dv-tile-${tile?.color === 'white' ? 'white' : 'black'} ${tile?.revealed ? 'is-revealed' : ''} ${flipsOwnTile ? 'is-flipping' : ''} ${arrivesOwnTile ? 'is-arriving' : ''}`;
+    const label = choice ? copy(language, `${index + 1}번째 내 타일 공개`, `Revelar mi ficha ${index + 1}`) : copy(language, `${index + 1}번째 ${colorLabel(tile?.color ?? 'black', language)} 타일, 숫자 ${tileValueLabel(tile?.value)}${tile?.revealed ? ', 공개됨' : ''}`, `Ficha propia ${index + 1} ${colorLabel(tile?.color ?? 'black', language)}, número ${tileValueLabel(tile?.value)}${tile?.revealed ? ', revelada' : ''}`);
+    const content = <><span className="dv-tile-order">{index + 1}</span><b>{tile.value === 'joker' ? <JokerPortrait src={jokerPortraits[tile.color]}/> : tileValueLabel(tile?.value)}</b><span className="dv-tile-color">{colorLabel(tile?.color ?? 'black', language)}</span>{tile?.revealed && <small className="dv-tile-state"><svg aria-hidden="true"><use href="/images/davinci/state-icons.svg#revealed"/></svg>{copy(language, '공개', 'Visible')}</small>}</>;
+    return choice ? <button type="button" className={className} key={`${tile?.color}-${tile?.value}`} aria-label={label} disabled={submitting} onClick={() => void runAction(choice.action)}>{content}</button> : <div role="img" className={className} key={`${tile?.color}-${tile?.value}`} aria-label={label}>{content}</div>;
   };
   const actionLog = list(board.actionLog).filter((event: any) => event?.type === 'correct-guess' || event?.type === 'wrong-guess').slice(-12);
 
-  const workbenchStage = view?.result ? 'result' : setupPhase ? 'setup' : placementPhase ? 'joker' : drawChoice ? 'draw' : skipDrawChoice ? 'guess' : guessChoices.length ? 'guess' : stopChoice ? 'stop' : 'waiting';
+  const workbenchStage = view?.result ? 'result' : setupPhase ? 'setup' : placementPhase ? 'joker' : revealOwnChoices.length ? 'reveal-own' : drawChoice ? 'draw' : skipDrawChoice ? 'guess' : guessChoices.length ? 'guess' : stopChoice ? 'stop' : 'waiting';
   return <div ref={tableRef} className="table-game dv-table" data-workbench-stage={workbenchStage} aria-label={copy(language, '다빈치 코드 게임판', 'Mesa de Código Da Vinci')} onKeyDown={event => { if (event.key === 'Escape' && number !== null && !submitting) { event.preventDefault(); cancelGuess(); } }}>
     <div className="dv-phasebar"><b>{phaseLabel}</b><span className="dv-deck-count">{copy(language, `더미 ${Number(board.deckCount ?? 0)}개`, `Mazo: ${Number(board.deckCount ?? 0)} fichas`)}</span></div>
     {actionLog.length > 0 && <section className="dv-history" aria-label={copy(language, '최근 공개 추측', 'Adivinanzas recientes')}><span>{copy(language, '최근 공개 추측', 'Adivinanzas recientes')}</span>{actionLog.slice(-4).map((event: any, index: number) => <p key={`${event.sequence ?? index}-${event.actor}-${event.type}`} className={event.type === 'correct-guess' ? 'is-correct' : 'is-wrong'}><b>{event.actor === playerId ? copy(language, '나', 'Tú') : copy(language, '상대', 'Rival')}</b><span>{copy(language, `${Number(event.targetIndex ?? 0) + 1}번째 타일에`, `Ficha ${Number(event.targetIndex ?? 0) + 1}:`)}</span><strong>{tileValueLabel(event.guess)}</strong><small>{event.type === 'correct-guess' ? copy(language, '정답', 'Acierto') : copy(language, '오답', 'Fallo')}</small></p>)}</section>}

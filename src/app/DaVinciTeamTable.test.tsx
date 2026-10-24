@@ -13,6 +13,15 @@ const viewFor=(state:FourDavinciState)=>engine.getPlayerView(state,'p1') as Four
 const render=(view:FourDavinciView)=>renderToStaticMarkup(createElement(DaVinciTeamTable,{view,language:'ko',runAction:vi.fn(),nickname:'구름',roomId:'native-four',onReplay:vi.fn(),onExit:vi.fn(),onSelectGame:vi.fn()}));
 
 describe('native four-seat Da Vinci table',()=>{
+  it('turns only hidden own tiles into reveal choices after a stock-empty miss',()=>{
+    let state=ready(17);state={...state,deck:[],phase:'guess',drawnIndex:null};
+    const wrong=state.hands.p2[0].value===0?1:0;
+    state=engine.applyAction(state,'p1',{type:'guess',payload:{target:'p2',index:0,value:wrong}});
+    const html=render(viewFor(state));
+    expect(html).toContain('공개할 내 비공개 타일을 고르세요');
+    expect(html.match(/aria-label="내 \d+번 타일 공개"/g)).toHaveLength(state.hands.p1.filter(tile=>!tile.revealed).length);
+    expect(html).not.toContain('선택한 타일을 추측하세요');
+  });
   it('renders four physical racks with its own title, actions and score instead of a two-player board',()=>{
     const html=render(viewFor(ready(17)));
     for(const seat of ['p1','p2','p3','p4'])expect(html).toContain(`dv4-rack-${seat}`);

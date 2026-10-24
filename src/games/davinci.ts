@@ -8,11 +8,13 @@ export type DavinciEvent = {
   targetIndex?: number;
   guess?: number | 'joker';
   revealedOwnIndex?: number;
+  fromStockEmpty?: boolean;
   insertedIndex?: number;
 };
 type DavinciState = {
   seed: number; turn: PlayerId; hands: Record<PlayerId, Tile[]>; deck: Tile[];
-  phase: 'setup' | 'draw' | 'place-joker' | 'guess'; drawnIndex: number | null; mayStop: boolean; result: GameResult | null;
+  phase: 'setup' | 'draw' | 'place-joker' | 'guess' | 'reveal-own'; drawnIndex: number | null; mayStop: boolean; result: GameResult | null;
+  pendingGuess?: { targetIndex: number; guess: number | 'joker' };
   actionLog?: DavinciEvent[]; turnNumber?: number;
   rulesVersion?: 2;
   setupReady?: Record<PlayerId, boolean>;
@@ -25,8 +27,8 @@ function recordEvent(before: DavinciState, next: DavinciState, event: Omit<Davin
 }
 const label = (ko: string, es: string, action: GameAction) => ({ label: { ko, es }, action });
 export const davinciRules = {
-  ko: ['흑백 각각 0~11 숫자 타일과 조커 － 한 장씩, 총 26장을 사용합니다. 각자 네 장을 받고 숫자 순서대로 놓으며, 같은 숫자면 검정이 먼저입니다. 처음 받은 조커는 원하는 자리에 넣고 둘 다 배치 완료를 누르면 시작합니다.', '자기 차례에 타일을 하나 뽑습니다. 숫자는 자동 정렬되고, 조커는 놓을 위치를 직접 고릅니다. 한 번 배치한 조커는 다시 옮길 수 없습니다. 상대 타일을 클릭하고 0~11 또는 －를 추리합니다.', '맞히면 상대 타일이 공개되고 계속 추리하거나 차례를 마칠 수 있습니다. 틀리면 방금 뽑은 내 타일이 공개됩니다. 더미가 빈 뒤 틀리면 새 타일 공개 없이 차례를 넘깁니다. 상대 타일을 모두 공개하면 승리합니다.'],
-  es: ['Se usan 26 fichas: números del 0 al 11 en blanco y negro, más un comodín － de cada color. Cada persona recibe cuatro; se ordenan por número y, si empatan, la negra va primero. Coloca cualquier comodín inicial donde quieras y ambos pulsen «Listo para jugar».', 'En tu turno robas una ficha. Los números se ordenan automáticamente; si robas un comodín, eliges su posición. Una vez colocado, no puedes moverlo. Pulsa una ficha rival y adivina un número del 0 al 11 o －.', 'Si aciertas, la ficha rival se revela y puedes seguir o terminar el turno. Si fallas, se revela la ficha que acabas de robar. Con el mazo vacío, un fallo termina el turno sin revelar otra ficha. Ganas al revelar todas las fichas rivales.'],
+  ko: ['흑백 각각 0~11 숫자 타일과 조커 － 한 장씩, 총 26장을 사용합니다. 각자 네 장을 받고 숫자 순서대로 놓으며, 같은 숫자면 검정이 먼저입니다. 처음 받은 조커는 원하는 자리에 넣고 둘 다 배치 완료를 누르면 시작합니다.', '자기 차례에 타일을 하나 뽑습니다. 숫자는 자동 정렬되고, 조커는 놓을 위치를 직접 고릅니다. 한 번 배치한 조커는 다시 옮길 수 없습니다. 상대 타일을 클릭하고 0~11 또는 －를 추리합니다.', '맞히면 상대 타일이 공개되고 계속 추리하거나 차례를 마칠 수 있습니다. 틀리면 방금 뽑은 내 타일이 공개됩니다. 더미가 빈 뒤 틀리면 내 비공개 타일 하나를 골라 공개합니다. 상대 타일을 모두 공개하면 승리합니다.'],
+  es: ['Se usan 26 fichas: números del 0 al 11 en blanco y negro, más un comodín － de cada color. Cada persona recibe cuatro; se ordenan por número y, si empatan, la negra va primero. Coloca cualquier comodín inicial donde quieras y ambos pulsen «Listo para jugar».', 'En tu turno robas una ficha. Los números se ordenan automáticamente; si robas un comodín, eliges su posición. Una vez colocado, no puedes moverlo. Pulsa una ficha rival y adivina un número del 0 al 11 o －.', 'Si aciertas, la ficha rival se revela y puedes seguir o terminar el turno. Si fallas, se revela la ficha que acabas de robar. Con el mazo vacío, tras fallar eliges una de tus fichas ocultas para revelarla. Ganas al revelar todas las fichas rivales.'],
 };
 function isPlayer(p: unknown): p is PlayerId { return p === 'p1' || p === 'p2'; }
 function sortedInsert(hand: Tile[], tile: Tile): Tile[] {
@@ -61,6 +63,7 @@ export const davinciEngine: GameEngine<DavinciState> = {
     if (a.type === 'place-joker') return p === s.turn && s.phase === 'place-joker' && s.drawnIndex !== null && s.hands[p][s.drawnIndex]?.value === 'joker' && Number.isInteger(payload.index) && (payload.index as number) >= 0 && (payload.index as number) < s.hands[p].length ? null : 'Cannot place a joker now';
     if (a.type === 'draw') return p === s.turn && s.phase === 'draw' && s.deck.length > 0 ? null : 'Cannot draw now';
     if (a.type === 'skip-draw') return p === s.turn && s.phase === 'draw' && s.deck.length === 0 ? null : 'Cannot skip the draw now';
+    if (a.type === 'reveal-own') return p === s.turn && s.phase === 'reveal-own' && !!s.pendingGuess && Number.isInteger(payload.index) && (payload.index as number) >= 0 && (payload.index as number) < s.hands[p].length && !s.hands[p][payload.index as number].revealed ? null : 'Choose a hidden own tile';
     if (a.type === 'guess') {
       if (s.phase !== 'guess' || p !== s.turn) return 'Not your guessing turn';
       const index = payload.index, value = payload.value;
@@ -87,6 +90,12 @@ export const davinciEngine: GameEngine<DavinciState> = {
       return recordEvent(s, { ...s, hands, setupPending, phase: s.phase === 'setup' ? 'setup' : 'guess', drawnIndex: s.phase === 'setup' ? null : index }, { type: 'arrange', actor: p, insertedIndex: index });
     }
     if (a.type === 'skip-draw') return recordEvent(s, { ...s, phase: 'guess', drawnIndex: null, mayStop: false }, { type: 'skip-draw', actor: p });
+    if (a.type === 'reveal-own') {
+      const index = a.payload!.index as number, opponent = otherPlayer(p);
+      const hands = { ...s.hands, [p]: s.hands[p].map((tile, i) => i === index ? { ...tile, revealed: true } : tile) };
+      const result = hands[p].every(tile => tile.revealed) ? { winner: opponent, reason: 'All own tiles were revealed' } as GameResult : null;
+      return recordEvent(s, { ...s, hands, result, turn: opponent, phase: s.deck.length ? 'draw' : 'guess', drawnIndex: null, mayStop: false, pendingGuess: undefined }, { type: 'wrong-guess', actor: p, targetIndex: s.pendingGuess!.targetIndex, guess: s.pendingGuess!.guess, revealedOwnIndex: index, fromStockEmpty: true });
+    }
     if (a.type === 'draw') {
       const hands = { ...s.hands, [p]: sortedInsert(s.hands[p], s.deck[s.deck.length - 1]) };
       const drawnIndex = hands[p].findIndex(t => t === s.deck[s.deck.length - 1]);
@@ -99,8 +108,10 @@ export const davinciEngine: GameEngine<DavinciState> = {
       const result = hands[opponent].every(t => t.revealed) ? { winner: p, reason: 'All opposing tiles were revealed' } as GameResult : null;
       return recordEvent(s, { ...s, hands, mayStop: true, result }, { type: 'correct-guess', actor: p, targetIndex: i, guess: a.payload!.value as number | 'joker' });
     }
-    const hands = s.drawnIndex === null ? s.hands : { ...s.hands, [p]: s.hands[p].map((t, j) => j === s.drawnIndex ? { ...t, revealed: true } : t) };
-    return recordEvent(s, { ...s, hands, turn: opponent, phase: s.deck.length ? 'draw' : 'guess', drawnIndex: null, mayStop: false }, { type: 'wrong-guess', actor: p, targetIndex: i, guess: a.payload!.value as number | 'joker', ...(s.drawnIndex !== null ? { revealedOwnIndex: s.drawnIndex } : {}) });
+    if (s.drawnIndex == null && s.hands[p].some(tile => !tile.revealed)) return { ...s, phase: 'reveal-own', mayStop: false, pendingGuess: { targetIndex: i, guess: a.payload!.value as number | 'joker' } };
+    const hands = s.drawnIndex == null ? s.hands : { ...s.hands, [p]: s.hands[p].map((t, j) => j === s.drawnIndex ? { ...t, revealed: true } : t) };
+    const result = hands[p].every(tile => tile.revealed) ? { winner: opponent, reason: 'All own tiles were revealed' } as GameResult : null;
+    return recordEvent(s, { ...s, hands, result, turn: opponent, phase: s.deck.length ? 'draw' : 'guess', drawnIndex: null, mayStop: false }, { type: 'wrong-guess', actor: p, targetIndex: i, guess: a.payload!.value as number | 'joker', ...(s.drawnIndex != null ? { revealedOwnIndex: s.drawnIndex } : {}) });
   },
   getPlayerView(s, p) {
     const own = s.hands[p].map(t => ({ ...t })), rival = s.hands[otherPlayer(p)].map(t => t.revealed ? { ...t } : { revealed: false, color: t.color, value: null });
@@ -114,6 +125,7 @@ export const davinciEngine: GameEngine<DavinciState> = {
       for (let i = 0; i < rival.length; i++) if (!rival[i].revealed) for (const value of [...Array.from({ length: 12 }, (_, n) => n), ...(s.rulesVersion === 2 ? ['joker' as const] : [])]) actions.push(label(`${i + 1}번 ${rival[i].color === 'black' ? '검정' : '흰색'} 타일: ${value === 'joker' ? '－' : value} 추측`, `Ficha ${i + 1} ${rival[i].color === 'black' ? 'negra' : 'blanca'}: adivinar ${value === 'joker' ? '－' : value}`, { type: 'guess', payload: { index: i, value } }));
       if (s.mayStop) actions.push(label('차례 마치기', 'Terminar turno', { type: 'stop' }));
     }
+    if (!s.result && s.turn === p && s.phase === 'reveal-own') for (let index = 0; index < own.length; index++) if (!own[index].revealed) actions.push(label(`${index + 1}번째 내 타일 공개`, `Revelar mi ficha ${index + 1}`, { type: 'reveal-own', payload: { index } }));
     // A placement event would identify the rival's hidden joker and its exact position.
     const actionLog = (s.actionLog ?? []).filter(event => event.type !== 'arrange' || event.actor === p).map(event => ({ ...event }));
     const turn = s.phase === 'setup' ? s.setupReady?.[p] ? otherPlayer(p) : p : s.turn;

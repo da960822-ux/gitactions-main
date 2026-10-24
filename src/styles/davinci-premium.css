@@ -247,6 +247,7 @@ button.dv-tile:disabled { opacity: .78; cursor: default; }
 .dv-table[data-workbench-stage="guess"] .dv-rival-rack { border-color: #d2b469; box-shadow: inset 0 0 0 1px #d2b46933; }
 .dv-table[data-workbench-stage="joker"] .dv-own-rack { border-color: #d2b469; box-shadow: 0 0 0 2px #d2b46935; }
 .dv-table[data-workbench-stage="setup"] .dv-own-rack { border-color: #d2b469; }
+.dv-table[data-workbench-stage="reveal-own"] .dv-own-rack { border-color: #d2b469; box-shadow: 0 0 0 2px #d2b46935; }
 .dv-tile .dv-joker-portrait { display: block; width: 42px; height: 42px; object-fit: contain; }
 .dv-joker-preview .dv-joker-portrait { width: 58px; height: 58px; }
 @media (min-width: 1024px) and (pointer: fine) {

@@ -203,7 +203,7 @@ describe('davinciEngine', () => {
     expect(davinciEngine.getPlayerView(state, 'p1').board.lastEvent).toMatchObject({ type: 'correct-guess', targetIndex: index, guess: 'joker' });
   });
 
-  it('continues guessing after the stock is exhausted without exposing a new tile', () => {
+  it('requires choosing a hidden own tile after a wrong guess without a draw', () => {
     let state: any = finishSetup(davinciEngine.createInitialState(4));
     state.deck = [];
     expect(davinciEngine.getPlayerView(state, 'p1').actions[0].action.type).toBe('skip-draw');
@@ -211,11 +211,46 @@ describe('davinciEngine', () => {
     const count = state.hands.p1.length;
     const target = state.hands.p2[0];
     state = davinciEngine.applyAction(state, 'p1', { type: 'guess', payload: { index: 0, value: wrongGuess(target.value) } });
-    expect(state.turn).toBe('p2');
-    expect(state.phase).toBe('guess');
+    expect(state.turn).toBe('p1');
+    expect(state.phase).toBe('reveal-own');
     expect(state.hands.p1).toHaveLength(count);
     expect(state.hands.p1.every((tile: any) => !tile.revealed)).toBe(true);
+    expect(davinciEngine.validateAction(state, 'p1', { type: 'guess', payload: { index: 0, value: 0 } })).toBe('Not your guessing turn');
+    expect(davinciEngine.validateAction(state, 'p2', { type: 'reveal-own', payload: { index: 0 } })).not.toBeNull();
+    expect(davinciEngine.validateAction(state, 'p1', { type: 'reveal-own', payload: { index: 99 } })).not.toBeNull();
+    expect(davinciEngine.getPlayerView(state, 'p1').actions.filter((choice: any) => choice.action.type === 'reveal-own')).toHaveLength(count);
+    state = davinciEngine.applyAction(state, 'p1', { type: 'reveal-own', payload: { index: 2 } });
+    expect(state.turn).toBe('p2');
+    expect(state.phase).toBe('guess');
+    expect(state.hands.p1[2].revealed).toBe(true);
+    expect(state.hands.p1[0].revealed).toBe(false);
+    expect(state.actionLog.at(-1)).toMatchObject({ type: 'wrong-guess', revealedOwnIndex: 2, fromStockEmpty: true });
+    expect(davinciEngine.validateAction({ ...state, turn: 'p1', phase: 'reveal-own' }, 'p1', { type: 'reveal-own', payload: { index: 2 } })).not.toBeNull();
     expect(davinciEngine.getPlayerView(state, 'p1').board.opponentTiles[0]).toMatchObject({ value: null, revealed: false });
+  });
+
+  it('still reveals the last drawn tile when that draw empties the deck', () => {
+    let state: any = finishSetup(davinciEngine.createInitialState(4));
+    state.deck = [state.deck.at(-1)];
+    state = davinciEngine.applyAction(state, 'p1', { type: 'draw' });
+    if (state.phase === 'place-joker') state = davinciEngine.applyAction(state, 'p1', { type: 'place-joker', payload: { index: 0 } });
+    expect(state.deck).toHaveLength(0);
+    const drawnIndex = state.drawnIndex;
+    state = davinciEngine.applyAction(state, 'p1', { type: 'guess', payload: { index: 0, value: wrongGuess(state.hands.p2[0].value) } });
+    expect(state.phase).toBe('guess');
+    expect(state.hands.p1[drawnIndex].revealed).toBe(true);
+    expect(state.actionLog.at(-1)).toMatchObject({ type: 'wrong-guess', revealedOwnIndex: drawnIndex });
+  });
+
+  it('ends the match when a stock-empty miss reveals the last hidden own tile', () => {
+    let state: any = finishSetup(davinciEngine.createInitialState(4));
+    state = { ...state, deck: [], phase: 'guess', drawnIndex: null, hands: { ...state.hands, p1: state.hands.p1.map((tile: any, index: number) => ({ ...tile, revealed: index !== 1 })) } };
+    state = davinciEngine.applyAction(state, 'p1', { type: 'guess', payload: { index: 0, value: wrongGuess(state.hands.p2[0].value) } });
+    expect(state.phase).toBe('reveal-own');
+    expect(davinciEngine.getPlayerView(state, 'p1').actions.filter((choice: any) => choice.action.type === 'reveal-own').map((choice: any) => choice.action.payload.index)).toEqual([1]);
+    state = davinciEngine.applyAction(state, 'p1', { type: 'reveal-own', payload: { index: 1 } });
+    expect(state.result?.winner).toBe('p2');
+    expect(davinciEngine.getPlayerView(state, 'p1').actions).toEqual([]);
   });
 
   it('inserts equal numbered values with black before white while preserving existing numbers around jokers', () => {

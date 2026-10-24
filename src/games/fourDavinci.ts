@@ -7,9 +7,10 @@ type Tile = { color: Color; value: number | 'joker'; revealed: boolean };
 export type FourDavinciVisibleTile = Omit<Tile, 'value'> & { value: Tile['value'] | null };
 type Event = { sequence: number; type: 'draw' | 'wrong-guess' | 'correct-guess' | 'arrange' | 'stop' | 'skip-draw' | 'ready'; actor: FourSeat; target?: FourSeat; index?: number; value?: Tile['value']; insertedIndex?: number; revealedOwnIndex?: number };
 export interface FourDavinciState {
-  seed: number; turn: FourSeat; phase: 'setup' | 'draw' | 'place-joker' | 'guess' | 'finished';
+  seed: number; turn: FourSeat; phase: 'setup' | 'draw' | 'place-joker' | 'guess' | 'reveal-own' | 'finished';
   hands: Record<FourSeat, Tile[]>; deck: Tile[]; ready: Record<FourSeat, boolean>; pendingJokers: Record<FourSeat, Color[]>;
   drawnIndex: number | null; mayStop: boolean; score: Record<FourSeat, number>; log: Event[]; eventSequence: number; result: FourResult | null;
+  pendingGuess?: { target: FourSeat; index: number; value: Tile['value'] };
 }
 export interface FourDavinciView extends FourView {
   policy: { own: Tile[]; racks: Record<FourSeat, FourDavinciVisibleTile[]>; deckCount: number; log: Event[]; ready: Record<FourSeat, boolean>; ownJokerToPlace?: { color: Color; index: number } };
@@ -58,6 +59,7 @@ function validate(state: FourDavinciState, player: FourSeat, action: GameAction)
   if (!live(state, player)) return 'player_eliminated';
   if (action.type === 'draw') return state.phase === 'draw' && state.deck.length ? null : 'cannot_draw';
   if (action.type === 'skip-draw') return state.phase === 'draw' && !state.deck.length ? null : 'cannot_skip_draw';
+  if (action.type === 'reveal-own') return state.phase === 'reveal-own' && state.pendingGuess && Number.isInteger(x.index) && Number(x.index) >= 0 && Number(x.index) < state.hands[player].length && !state.hands[player][Number(x.index)].revealed ? null : 'choose_hidden_own_tile';
   if (action.type === 'place-joker') return state.phase === 'place-joker' && state.drawnIndex !== null &&
     state.hands[player][state.drawnIndex]?.value === 'joker' && Number.isInteger(x.index) && Number(x.index) >= 0 && Number(x.index) < state.hands[player].length ? null : 'invalid_joker_position';
   if (action.type === 'stop') return state.phase === 'guess' && state.mayStop ? null : 'cannot_stop';
@@ -86,12 +88,18 @@ function apply(state: FourDavinciState, player: FourSeat, action: GameAction): F
       phase: tile.value === 'joker' ? 'place-joker' : 'guess', ...appendEvent(state, { type: 'draw', actor: player, insertedIndex: hand.indexOf(tile) }) };
   }
   if (action.type === 'skip-draw') return { ...state, ...appendEvent(state, { type: 'skip-draw', actor: player }), phase: 'guess', drawnIndex: null, mayStop: false };
+  if (action.type === 'reveal-own') {
+    const index = Number(x.index), hands = { ...state.hands, [player]: state.hands[player].map((tile, i) => i === index ? { ...tile, revealed: true } : tile) };
+    const next = finish({ ...state, hands, pendingGuess: undefined, ...appendEvent(state, { type: 'wrong-guess', actor: player, ...state.pendingGuess!, revealedOwnIndex: index }) });
+    return next.result ? next : advance(next);
+  }
   if (action.type === 'stop') return advance({ ...state, ...appendEvent(state, { type: 'stop', actor: player }) });
   const target = x.target as FourSeat, index = Number(x.index), correct = state.hands[target][index].value === x.value;
-  const recorded = appendEvent(state, { type: correct ? 'correct-guess' : 'wrong-guess', actor: player, target, index, value: x.value as Tile['value'], ...(!correct && state.drawnIndex !== null ? { revealedOwnIndex: state.drawnIndex } : {}) });
+  if (!correct && state.drawnIndex == null && live(state, player)) return { ...state, phase: 'reveal-own', mayStop: false, pendingGuess: { target, index, value: x.value as Tile['value'] } };
+  const recorded = appendEvent(state, { type: correct ? 'correct-guess' : 'wrong-guess', actor: player, target, index, value: x.value as Tile['value'], ...(!correct && state.drawnIndex != null ? { revealedOwnIndex: state.drawnIndex } : {}) });
   if (correct) return finish({ ...state, mayStop: true, ...recorded, score: { ...state.score, [player]: state.score[player] + 1 },
     hands: { ...state.hands, [target]: state.hands[target].map((tile, i) => i === index ? { ...tile, revealed: true } : tile) } });
-  const hands = state.drawnIndex === null ? state.hands : { ...state.hands, [player]: state.hands[player].map((tile, i) => i === state.drawnIndex ? { ...tile, revealed: true } : tile) };
+  const hands = state.drawnIndex == null ? state.hands : { ...state.hands, [player]: state.hands[player].map((tile, i) => i === state.drawnIndex ? { ...tile, revealed: true } : tile) };
   const next = finish({ ...state, hands, ...recorded });
   return next.result ? next : advance(next);
 }
@@ -116,6 +124,7 @@ function view(state: FourDavinciState, player: FourSeat): FourDavinciView {
       });
       if (state.mayStop) add('차례 마치기', 'Terminar turno', { type: 'stop' });
     }
+    if (state.phase === 'reveal-own') state.hands[player].forEach((tile, index) => { if (!tile.revealed) add(`내 ${index + 1}번 타일 공개`, `Revelar mi ficha ${index + 1}`, { type: 'reveal-own', payload: { index } }); });
   }
   const card = (tile: FourDavinciVisibleTile, seat: FourSeat, index: number): FourCard => ({ id: `${seat}-${index}`, title: tileLabel(tile, index),
     detail: localized(tile.revealed ? '공개됨' : seat === player ? '나만 볼 수 있어요' : '비공개', tile.revealed ? 'Revelada' : seat === player ? 'Solo tú puedes verla' : 'Oculta'),

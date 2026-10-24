@@ -25,7 +25,7 @@ export function chooseSimpleAiAction(game: GameId, view: any, player: PlayerId, 
   }
   if (game === 'davinci') {
     const guesses = actions.filter(a => a.type === 'guess');
-    if (!guesses.length) return actions[0];
+    if (!guesses.length) return actions[0].type === 'reveal-own' ? pick(actions) : actions[0];
     return chooseDavinciGuess(view, player, guesses, random);
   }
   const score = (action: GameAction): number => {

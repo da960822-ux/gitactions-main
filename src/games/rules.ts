@@ -167,7 +167,7 @@ export const gameRules: Record<GameId, LocalizedRules> = {
       '준비 — 조커 포함 규칙을 사용합니다. 흑백 각각 0~11 숫자 타일과 조커 － 한 장씩, 총 26장입니다. 각자 네 장을 받고 숫자 순서대로 놓습니다. 같은 숫자면 검정이 먼저예요. 처음 받은 조커는 원하는 위치를 고르고 두 사람 모두 «초기 패 준비 완료»를 눌러 시작합니다.',
       '내 차례 — 더미에서 하나를 뽑습니다. 숫자 타일은 순서대로 자동 삽입되고, 조커는 앞·사이·뒤 중 원하는 자리를 클릭해 넣습니다. 배치한 조커는 다시 옮길 수 없습니다. 더미가 비면 뽑기 없이 추리합니다.',
       '추리 — 상대 타일을 클릭하면 색과 위치가 자동 선택됩니다. 0~11 또는 － 버튼을 선택하고 추리를 확정합니다. 정답이면 그 타일이 공개돼요. 아직 끝나지 않았다면 계속 추리하거나 차례를 마칠 수 있습니다.',
-      '오답 — 방금 뽑은 내 타일이 공개되고 차례가 끝납니다. 조커를 뽑았다면 그 조커가 공개됩니다. 더미가 빈 뒤에는 새 타일 공개 없이 상대 차례가 됩니다.',
+      '오답 — 방금 뽑은 내 타일이 공개되고 차례가 끝납니다. 조커를 뽑았다면 그 조커가 공개됩니다. 더미가 빈 뒤에는 오답을 내면 내 비공개 타일 하나를 골라 공개하고 차례를 넘깁니다.',
       '승리 — 상대의 숫자 타일과 조커가 모두 공개되면 끝납니다. 새 판 요청은 두 사람이 모두 선택해야 시작됩니다.',
     ],
     es: [
@@ -175,7 +175,7 @@ export const gameRules: Record<GameId, LocalizedRules> = {
       'Preparación — Jugamos con comodines (variante avanzada). Hay 26 fichas: del 0 al 11 en blanco y negro, más un comodín － de cada color. Cada persona recibe cuatro y las ordena; si el número coincide, la negra va primero. Elige la posición de cualquier comodín inicial y ambos pulsen «Terminé de preparar mi mano».',
       'Tu turno — Roba una ficha. Los números se insertan automáticamente en orden; para un comodín, pulsa el espacio donde quieres colocarlo, al principio, entre fichas o al final. Después no puedes moverlo. Si el mazo está vacío, adivina sin robar.',
       'Adivina — Pulsa una ficha rival para seleccionar su color y posición. Elige un número del 0 al 11 o － y confirma. Si aciertas, la ficha se revela. Si la partida sigue, puedes volver a adivinar o terminar tu turno.',
-      'Si fallas — Se revela la ficha que acabas de robar y termina tu turno. Si era un comodín, ese comodín queda visible. Con el mazo vacío, no se revela otra ficha y juega la otra persona.',
+      'Si fallas — Se revela la ficha que acabas de robar y termina tu turno. Si era un comodín, ese comodín queda visible. Con el mazo vacío, si fallas eliges una de tus fichas ocultas para revelarla y termina tu turno.',
       'Victoria — Termina cuando todas las fichas rivales, incluidos los comodines, están visibles. Una nueva partida requiere que ambas personas la elijan.',
     ],
   },

@@ -61,6 +61,7 @@ var davinciEngine = {
     if (a.type === "place-joker") return p === s.turn && s.phase === "place-joker" && s.drawnIndex !== null && s.hands[p][s.drawnIndex]?.value === "joker" && Number.isInteger(payload.index) && payload.index >= 0 && payload.index < s.hands[p].length ? null : "Cannot place a joker now";
     if (a.type === "draw") return p === s.turn && s.phase === "draw" && s.deck.length > 0 ? null : "Cannot draw now";
     if (a.type === "skip-draw") return p === s.turn && s.phase === "draw" && s.deck.length === 0 ? null : "Cannot skip the draw now";
+    if (a.type === "reveal-own") return p === s.turn && s.phase === "reveal-own" && !!s.pendingGuess && Number.isInteger(payload.index) && payload.index >= 0 && payload.index < s.hands[p].length && !s.hands[p][payload.index].revealed ? null : "Choose a hidden own tile";
     if (a.type === "guess") {
       if (s.phase !== "guess" || p !== s.turn) return "Not your guessing turn";
       const index = payload.index, value = payload.value;
@@ -88,6 +89,12 @@ var davinciEngine = {
       return recordEvent(s, { ...s, hands: hands2, setupPending, phase: s.phase === "setup" ? "setup" : "guess", drawnIndex: s.phase === "setup" ? null : index }, { type: "arrange", actor: p, insertedIndex: index });
     }
     if (a.type === "skip-draw") return recordEvent(s, { ...s, phase: "guess", drawnIndex: null, mayStop: false }, { type: "skip-draw", actor: p });
+    if (a.type === "reveal-own") {
+      const index = a.payload.index, opponent2 = otherPlayer(p);
+      const hands2 = { ...s.hands, [p]: s.hands[p].map((tile, i2) => i2 === index ? { ...tile, revealed: true } : tile) };
+      const result2 = hands2[p].every((tile) => tile.revealed) ? { winner: opponent2, reason: "All own tiles were revealed" } : null;
+      return recordEvent(s, { ...s, hands: hands2, result: result2, turn: opponent2, phase: s.deck.length ? "draw" : "guess", drawnIndex: null, mayStop: false, pendingGuess: void 0 }, { type: "wrong-guess", actor: p, targetIndex: s.pendingGuess.targetIndex, guess: s.pendingGuess.guess, revealedOwnIndex: index, fromStockEmpty: true });
+    }
     if (a.type === "draw") {
       const hands2 = { ...s.hands, [p]: sortedInsert(s.hands[p], s.deck[s.deck.length - 1]) };
       const drawnIndex = hands2[p].findIndex((t) => t === s.deck[s.deck.length - 1]);
@@ -97,11 +104,13 @@ var davinciEngine = {
     const opponent = otherPlayer(p), i = a.payload.index, target = s.hands[opponent][i];
     if (target.value === a.payload.value) {
       const hands2 = { ...s.hands, [opponent]: s.hands[opponent].map((t, j) => j === i ? { ...t, revealed: true } : t) };
-      const result = hands2[opponent].every((t) => t.revealed) ? { winner: p, reason: "All opposing tiles were revealed" } : null;
-      return recordEvent(s, { ...s, hands: hands2, mayStop: true, result }, { type: "correct-guess", actor: p, targetIndex: i, guess: a.payload.value });
+      const result2 = hands2[opponent].every((t) => t.revealed) ? { winner: p, reason: "All opposing tiles were revealed" } : null;
+      return recordEvent(s, { ...s, hands: hands2, mayStop: true, result: result2 }, { type: "correct-guess", actor: p, targetIndex: i, guess: a.payload.value });
     }
-    const hands = s.drawnIndex === null ? s.hands : { ...s.hands, [p]: s.hands[p].map((t, j) => j === s.drawnIndex ? { ...t, revealed: true } : t) };
-    return recordEvent(s, { ...s, hands, turn: opponent, phase: s.deck.length ? "draw" : "guess", drawnIndex: null, mayStop: false }, { type: "wrong-guess", actor: p, targetIndex: i, guess: a.payload.value, ...s.drawnIndex !== null ? { revealedOwnIndex: s.drawnIndex } : {} });
+    if (s.drawnIndex == null && s.hands[p].some((tile) => !tile.revealed)) return { ...s, phase: "reveal-own", mayStop: false, pendingGuess: { targetIndex: i, guess: a.payload.value } };
+    const hands = s.drawnIndex == null ? s.hands : { ...s.hands, [p]: s.hands[p].map((t, j) => j === s.drawnIndex ? { ...t, revealed: true } : t) };
+    const result = hands[p].every((tile) => tile.revealed) ? { winner: opponent, reason: "All own tiles were revealed" } : null;
+    return recordEvent(s, { ...s, hands, result, turn: opponent, phase: s.deck.length ? "draw" : "guess", drawnIndex: null, mayStop: false }, { type: "wrong-guess", actor: p, targetIndex: i, guess: a.payload.value, ...s.drawnIndex != null ? { revealedOwnIndex: s.drawnIndex } : {} });
   },
   getPlayerView(s, p) {
     const own = s.hands[p].map((t) => ({ ...t })), rival = s.hands[otherPlayer(p)].map((t) => t.revealed ? { ...t } : { revealed: false, color: t.color, value: null });
@@ -114,6 +123,9 @@ var davinciEngine = {
     if (!s.result && s.turn === p && s.phase === "guess") {
       for (let i = 0; i < rival.length; i++) if (!rival[i].revealed) for (const value of [...Array.from({ length: 12 }, (_, n) => n), ...s.rulesVersion === 2 ? ["joker"] : []]) actions.push(label(`${i + 1}\uBC88 ${rival[i].color === "black" ? "\uAC80\uC815" : "\uD770\uC0C9"} \uD0C0\uC77C: ${value === "joker" ? "\uFF0D" : value} \uCD94\uCE21`, `Ficha ${i + 1} ${rival[i].color === "black" ? "negra" : "blanca"}: adivinar ${value === "joker" ? "\uFF0D" : value}`, { type: "guess", payload: { index: i, value } }));
       if (s.mayStop) actions.push(label("\uCC28\uB840 \uB9C8\uCE58\uAE30", "Terminar turno", { type: "stop" }));
+    }
+    if (!s.result && s.turn === p && s.phase === "reveal-own") {
+      for (let index = 0; index < own.length; index++) if (!own[index].revealed) actions.push(label(`${index + 1}\uBC88\uC9F8 \uB0B4 \uD0C0\uC77C \uACF5\uAC1C`, `Revelar mi ficha ${index + 1}`, { type: "reveal-own", payload: { index } }));
     }
     const actionLog = (s.actionLog ?? []).filter((event2) => event2.type !== "arrange" || event2.actor === p).map((event2) => ({ ...event2 }));
     const turn = s.phase === "setup" ? s.setupReady?.[p] ? otherPlayer(p) : p : s.turn;

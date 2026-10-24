@@ -35,7 +35,7 @@ const guides: Record<BeginnerGameId, Record<Language, GuideCopy>> = {
       steps: [
         { title: '준비하기', body: '아래는 내 손패, 위는 상대의 숨은 패예요. 숫자는 자동 정렬돼요. 조커가 있으면 손패 사이의 +를 눌러 놓고, 둘 다 ‘초기 패 준비 완료’를 눌러요.' },
         { title: '뽑고 추리하기', body: '‘타일 뽑기’ 뒤 상대의 가려진 타일과 숫자 0~11 또는 －(조커)를 골라요. ‘이 숫자로 추측하기’(조커는 ‘조커로 추측하기’)를 누르고 ‘추측 확정’으로 보내요. 확정 전에는 ‘취소’할 수 있어요.' },
-        { title: '오답과 승리', body: '맞히면 타일이 공개되니 계속 추리하거나 ‘차례 마치기’를 눌러요. 틀리면 뽑은 내 타일이 공개되고 차례가 끝나요; 더미가 비면 공개할 타일은 없어요.' },
+        { title: '오답과 승리', body: '맞히면 타일이 공개되니 계속 추리하거나 ‘차례 마치기’를 눌러요. 틀리면 뽑은 내 타일이 공개되고 차례가 끝나요; 더미가 비면 내 비공개 타일 하나를 골라 공개해요.' },
       ],
       tip: '숫자 타일은 작은 수부터 놓고, 같은 수는 검정 타일이 먼저예요. 조커는 원하는 빈칸에 놓으면 옮길 수 없어요.',
     },
@@ -44,7 +44,7 @@ const guides: Record<BeginnerGameId, Record<Language, GuideCopy>> = {
       steps: [
         { title: 'Preparación', body: 'Abajo está tu mano; arriba, las fichas rivales ocultas. Los números se ordenan solos. Si tienes un comodín, pulsa un + para colocarlo. Ambos pulsen «Terminé de preparar mi mano».' },
         { title: 'Roba y adivina', body: 'Pulsa «Robar ficha», elige una ficha rival oculta y marca 0–11 o －. Pulsa «Adivinar este número» o «Adivinar el comodín» y después «Confirmar». Antes de enviar puedes pulsar «Cancelar».' },
-        { title: 'Acierto y victoria', body: 'Si aciertas, la ficha queda visible y puedes seguir adivinando o pulsar «Terminar turno». Si fallas, se revela tu ficha recién robada y termina tu turno; con el mazo vacío, no se revela otra.' },
+        { title: 'Acierto y victoria', body: 'Si aciertas, la ficha queda visible y puedes seguir adivinando o pulsar «Terminar turno». Si fallas, se revela tu ficha recién robada y termina tu turno; con el mazo vacío, eliges una ficha propia oculta para revelarla.' },
       ],
       tip: 'Las fichas van de menor a mayor; si coinciden, la negra va primero. El comodín puede ir en cualquier hueco y luego no se mueve.',
     },
