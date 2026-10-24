@@ -124,17 +124,32 @@ it('ends with the three-line I LOVE YOU / LISBETH / heart message and confines s
  expect(new Set(Array.from({length:12},(_,shell)=>{const p=roseFireworkSpark(0,shell,0);return `${p.x},${p.y}`;}))).toEqual(new Set(['600,-200','1235,60']));
 });
 
-it('contains the larger desktop show between the visible navigation and live copy with its expanded canvas, retaining the mobile footprint',()=>{
+it('gives the actual desktop formations a prominent uniform scale above the copy without changing mobile',()=>{
  const css=readFileSync(new URL('./story/rose-gift-finale.css',import.meta.url),'utf8');
  expect(css).toContain('inset:-36% -25% -18% -100%;width:225%');expect(css).toContain('.rg-celebration{left:-25%;width:150%}');
- for(const [width,height,copyTop,navBottom] of [[1440,900,393,64],[1920,1080,530,96],[1280,720,320,96],[1440,900,340,96]]){
-  const artHeight=Math.max(420,Math.min(760,height*.66)),artWidth=width*(.85-.04)*1.35/2,scale=Math.min(artWidth/1199,artHeight/1312),stage=roseDroneStage({left:0,top:63,width:width-15},copyTop,scale,navBottom);
-  expect(stage.scale).toBeLessThanOrEqual(scale*1.8);expect(stage.top).toBeGreaterThanOrEqual(navBottom+12);expect(stage.top+stage.height).toBeLessThanOrEqual(copyTop-28+.001);
-  expect(stage.left).toBeGreaterThan(0);expect(stage.left+stage.width).toBeLessThan(width*.45);
-  expect(stage.padding).toBeGreaterThan((18+2+4.75)*stage.scale);expect(stage.top+stage.height+stage.padding).toBeLessThan(copyTop);
-  for(let step=0;step<=40;step++){const point=roseDronePosition(399,36+step/10);expect(stage.top+(point.y+380-4.75)*stage.scale).toBeGreaterThanOrEqual(stage.top-stage.padding);}
+ expect(css).toContain('@media(min-width:761px)');expect(css).toContain('.rose-gift-finale:not([data-celebration=static]) .rg-copy');expect(css).toContain('margin-top:clamp(400px,34vw,480px)');
+ for(const [width,height,navBottom] of [[1180,757,64],[1440,900,64],[1920,1080,96],[1280,720,96],[761,740,64]]){
+  const section={left:0,top:63,width:width-15},stage=roseDroneStage(section,navBottom);
+  const copyTop=section.top+height*.06+Math.max(400,Math.min(width*.34,480));
+  const artHeight=Math.max(420,Math.min(760,height*.66)),canvasTop=section.top+height*.06+160-artHeight*.36;
+  expect(stage.top-stage.padding).toBeGreaterThanOrEqual(navBottom+12);
+  expect(stage.top-stage.padding).toBeGreaterThanOrEqual(canvasTop);
+  expect(stage.top+stage.height+stage.padding).toBeLessThan(copyTop);
+  expect(stage.left-stage.padding).toBeGreaterThan(0);
+  expect(stage.left+stage.width+4.75*stage.scale).toBeLessThan(width*.5);
+  // Every held formation and morph, including the Gyarados tail, stays inside the padded stage.
+  let minX=Infinity,maxX=-Infinity,minY=Infinity,maxY=-Infinity;
+  for(let tick=8;tick<120;tick++)for(let index=0;index<ROSE_DRONE_COUNT;index++){
+   const point=roseDronePosition(index,tick/2);if(point.alpha<=0)continue;
+   const x=stage.left+(point.x-400)*stage.scale,y=stage.top+(point.y+380)*stage.scale,r=4.75*stage.scale;
+   minX=Math.min(minX,x-r);maxX=Math.max(maxX,x+r);minY=Math.min(minY,y-r);maxY=Math.max(maxY,y+r);
+  }
+  expect(minX).toBeGreaterThanOrEqual(stage.left-stage.padding);expect(maxX).toBeLessThanOrEqual(stage.left+stage.width+stage.padding);
+  expect(minY).toBeGreaterThanOrEqual(stage.top-stage.padding);expect(maxY).toBeLessThanOrEqual(stage.top+stage.height+stage.padding);
+  if(width>=1180){expect(367.48*stage.scale).toBeGreaterThan(300);expect(367.48*stage.scale).toBeLessThanOrEqual(370);}
  }
- const large=roseDroneStage({left:0,top:63,width:1425},393,594/1312,64);expect(large.scale/(594/1312)).toBeGreaterThan(1.7);
+ const reference=roseDroneStage({left:0,top:63,width:1165},64);
+ expect(reference.left+reference.width/2).toBeCloseTo(396.1);expect(reference.top+reference.height/2).toBeCloseTo(296.275);
 });
 
 it('keeps the static light-cloud fallback when a 2D canvas is unavailable',()=>{
@@ -160,9 +175,10 @@ it('uses the playful lifetime-partner line only after receiving and an actual pa
   const normal=roseGiftClosingLine(language,true,false);
   expect(roseGiftClosingLine(language,false,true)).toBe(normal);
   const signed=roseGiftClosingLine(language,true,true);
-  expect(signed.startsWith(language==='ko'?'네가 사인했으니까, 이제 우리는 평생 함께야, Baby.':'Como firmaste, ahora vamos a estar juntos toda la vida, Baby.')).toBe(true);
-  expect(signed).toContain(language==='ko'?'내가 제일 좋아하는 내 편':'Mi persona favorita');
-  expect(normal).not.toContain(language==='ko'?'네가 사인했으니까':'Como firmaste');
+  expect(signed.startsWith(language==='ko'?'사인했지? 이제 내 평생 파트너니까 책임져, Baby ㅋㅋㅋ':'Ya firmaste, ¿eh? Ahora eres mi compañera para toda la vida,')).toBe(true);
+  expect(signed).toContain(language==='ko'?'사랑도 해주고, 게임도 같이 해줘 ♡':'te toca quererme y jugar conmigo');
+  expect(normal).not.toContain(language==='ko'?'사인했지':'Ya firmaste');
+  expect(normal).toBe(language==='ko'?'Baby, 내 평생 파트너 해줄래? 사랑도 해주고, 게임도 같이 해줘 ♡':'Baby, ¿quieres ser mi compañera para toda la vida? Dame cariño y juega conmigo ♡');
  }
 });
 

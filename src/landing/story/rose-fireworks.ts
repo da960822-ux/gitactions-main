@@ -9,9 +9,11 @@ const intervals=[1.65,2.1,1.85,2.35,1.8,2.2];
 type Spark={x:number;y:number;vx:number;vy:number;life:number;color:number;born:number;shape:number};
 type Rocket={x:number;y:number;startX:number;born:number;index:number};
 function heart(angle:number){return{x:16*Math.sin(angle)**3,y:-(13*Math.cos(angle)-5*Math.cos(2*angle)-2*Math.cos(3*angle)-Math.cos(4*angle))};}
-export function roseDroneStage(section:{left:number;top:number;width:number},copyTop:number,artworkScale:number,navBottom=0){
- const top=Math.max(section.top+16,navBottom+12),scale=Math.max(0,Math.min(artworkScale*1.8,section.width*.43/620,(copyTop-28-top)/360));
- return{scale,left:section.left+section.width*.225-310*scale,top,width:620*scale,height:360*scale,padding:Math.ceil((18+2+4.75)*scale)+1};
+export function roseDroneStage(section:{left:number;top:number;width:number},navBottom=0){
+ // The copy sits below the show; size the actual 395px-wide formations, not their empty stage.
+ const scale=Math.max(0,Math.min(1,section.width*.3/400)),padding=Math.ceil((18+2+4.75)*scale)+1;
+ const top=Math.max(section.top+76,navBottom+padding+12);
+ return{scale,left:section.left+section.width*.34-200*scale,top,width:400*scale,height:360*scale,padding};
 }
 export function roseFireworkSpark(index:number,shellIndex:number,born:number):Spark{
  const shell=shells[shellIndex%shells.length],shape=shellIndex%4,inner=index>=44,angle=(inner?index-44:index)*Math.PI*2/(inner?20:44);
@@ -42,7 +44,7 @@ export function createRoseFireworks(canvas:HTMLCanvasElement){
   scale=Math.min(scene.width/1199,scene.height/1312);offsetX=scene.left-box.left+(scene.width-1199*scale)/2;offsetY=scene.top-box.top+scene.height-1312*scale;
   droneScale=scale;droneX=offsetX;droneY=offsetY;droneClip=null;
   if(window.innerWidth>760&&section&&copy){
-   const nav=document.querySelector('.landing-nav'),navBox=nav?.getBoundingClientRect(),stage=roseDroneStage(section.getBoundingClientRect(),copy.getBoundingClientRect().top,scale,navBox?.height?navBox.bottom:0);
+   const nav=document.querySelector('.landing-nav'),navBox=nav?.getBoundingClientRect(),stage=roseDroneStage(section.getBoundingClientRect(),navBox?.height?navBox.bottom:0);
    droneScale=stage.scale;droneX=stage.left+stage.width/2-box.left-600*droneScale;droneY=stage.top+stage.height/2-box.top+200*droneScale;
    droneClip={left:stage.left-box.left-stage.padding,top:stage.top-box.top-stage.padding,width:stage.width+stage.padding*2,height:stage.height+stage.padding*2};
   }

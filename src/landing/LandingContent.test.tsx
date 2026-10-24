@@ -60,7 +60,7 @@ describe('selected Catchmind caption',()=>{
  });
 });
 
-it('keeps game mechanics first and leaves the competitive rent joke out of the generic Marble caption',()=>{
+it('keeps game mechanics first and includes banter for every game',()=>{
  vi.stubGlobal('window',{matchMedia:()=>({matches:false,addEventListener:()=>{},removeEventListener:()=>{}})});
  for(const [game,description] of [
   ['davinci','숨겨진 숫자와 조커를 하나씩 맞혀 봐요.'],
@@ -73,7 +73,15 @@ it('keeps game mechanics first and leaves the competitive rent joke out of the g
  ] as const){
   const html=renderToStaticMarkup(<GameGallery language="ko" selected={game}/>);
   expect(html).toContain(description);
-  if(game==='marble')expect(html).not.toContain('통행료는 따로야');
-  else expect(html).toContain('class="rd-game-tease"');
+  expect(html).toContain('class="rd-game-tease"');
  }
+});
+
+for (const [language, line] of [
+ ['ko', '같이 여행은 가도, 통행료는 따로야.'],
+ ['es', 'Viajamos juntos, pero el alquiler va por separado.'],
+] as const) it(`shows the common Marble intro in ${language} without selecting a mode`, () => {
+ vi.stubGlobal('window', {matchMedia: () => ({matches: false, addEventListener: () => {}, removeEventListener: () => {}})});
+ const html = renderToStaticMarkup(<GameGallery language={language} selected="marble"/>);
+ expect(html).toContain(line);
 });

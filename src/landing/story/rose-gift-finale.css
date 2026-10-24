@@ -21,6 +21,7 @@
 .post-hero-preview .rose-gift-finale .rg-replay:disabled{color:#bd9c94;cursor:default}
 .post-hero-preview .rose-gift-finale .rg-replay:focus-visible{outline:2px solid #edc2a2;outline-offset:6px}
 .post-hero-preview .rose-gift-finale .rg-status{font-size:13px;color:#edc2a2}
+@media(min-width:761px){.post-hero-preview .rose-gift-finale:not([data-celebration=static]) .rg-copy{align-self:start;margin-top:clamp(400px,34vw,480px)}.post-hero-preview .rose-gift-finale .rg-art{align-self:start}}
 @media(hover:hover) and (pointer:fine){.post-hero-preview .rose-gift-finale .rg-replay:not(:disabled):hover{color:#fff3e8}}
 @media(max-width:760px){.post-hero-preview .rose-gift-finale{grid-template-columns:1fr;padding:60px 24px 20px;gap:28px}.post-hero-preview .rose-gift-finale h3{font-size:38px}.post-hero-preview .rose-gift-finale .rg-art{height:65svh;min-height:380px;margin-top:32px}.post-hero-preview .rose-gift-finale .rg-celebration{left:-25%;width:150%}.post-hero-preview .rose-gift-finale .rg-copy>p{margin-top:16px}.post-hero-preview .rose-gift-finale .rg-replay{margin-top:12px}}
 @media(prefers-reduced-motion:reduce){.post-hero-preview .rose-gift-finale .rg-replay,.post-hero-preview .rose-gift-finale .rg-celebration-glow{transition:none}.post-hero-preview .rose-gift-finale .rg-celebration{display:none}}

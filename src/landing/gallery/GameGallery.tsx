@@ -16,6 +16,7 @@ const galleryTease: Partial<Record<GameId, Record<Language, string>>> = {
   jaipur: {ko: '너랑은 잘 지내고 싶은데, 좋은 거래는 놓칠 수 없지.', es: 'Contigo, mucho cariño. En el mercado, buen ojo.'},
   splendor: {ko: '반짝이는 건 다 탐나지만, 네가 제일이야.', es: 'Me gusta todo lo que brilla, pero tú más.'},
   minhwatu: {ko: '우리도 잘 맞지만, 이 패들도 꽤 잘 맞네.', es: 'Estas cartas hacen buena pareja. Nosotros también.'},
+  marble: {ko: '같이 여행은 가도, 통행료는 따로야.', es: 'Viajamos juntos, pero el alquiler va por separado.'},
   rhythm: {ko: '박자는 놓쳐도, 너랑 노는 시간은 놓치기 싫어.', es: 'Si pierdo el ritmo, al menos no me pierdo este rato contigo.'},
 };
 
