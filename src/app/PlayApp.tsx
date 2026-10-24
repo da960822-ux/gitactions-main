@@ -80,6 +80,11 @@ function useLocalizedDocument(language: Language) {
 }
 
 export function PlayApp({ path, desktopDisplay = true }: { path: string; desktopDisplay?: boolean }) {
+  if (path === '/play/rhythm') return <SoloRhythm/>;
+  return <ConnectedPlayApp path={path} desktopDisplay={desktopDisplay}/>;
+}
+
+function ConnectedPlayApp({ path, desktopDisplay }: { path: string; desktopDisplay: boolean }) {
   const [onlineApi, setApi] = useState<Api | null>(null);
   const [soloApi, setSoloApi] = useState<Api | null>(null);
   const api = path.startsWith('/room/solo-') ? soloApi : onlineApi;
@@ -90,6 +95,22 @@ export function PlayApp({ path, desktopDisplay = true }: { path: string; desktop
   const roomMatch = path.match(/^\/room\/([^/]+)\/?$/);
   if (roomMatch) { const roomId = decodeURIComponent(roomMatch[1]); if(roomId.startsWith('solo-team-')) return <FourPlayerRoom key={roomId} roomId={roomId} desktopDisplay={desktopDisplay}/>; return <Room key={roomId} api={api} roomId={roomId} desktopDisplay={desktopDisplay} />; }
   return <Lobby api={api} desktopDisplay={desktopDisplay} />;
+}
+
+export function SoloRhythm() {
+  const [language, setLanguage] = useState<Language>(preference);
+  const [run, setRun] = useState(0);
+  useLocalizedDocument(language);
+  const game = getGame('rhythm')!;
+  const chooseLanguage = (value: Language) => { setLanguage(value); writeBrowserStorage('dos-language', value); };
+  return <div className="app-shell room-shell room-game-rhythm quality-table-room"><BrandHeader compact/><main className="room-main">
+    <h1 className="sr-only">{game.title[language]}</h1>
+    <div className="room-topline"><Link href="/play" className="back-link">← {text(language, '게임 고르기', 'Elegir juego')}</Link><LanguageSwitch language={language} onChange={chooseLanguage}/></div>
+    <section className="room-layout"><div className="play-column"><section className="board-card" id="game-board">
+      <header className="board-header"><div className="board-game"><span className={`board-game-icon game-${game.color}`}><span className="game-thumbnail art-rhythm" aria-hidden="true"/></span><span><b>{game.title[language]}</b><small>{game.subtitle[language]}</small></span></div><div className="board-header-right"><button className="plain-button" onClick={() => setRun(value => value + 1)}>{text(language, '처음부터 다시 하기', 'Empezar de nuevo')}</button><Link href="/play" className="plain-button">{text(language, '게임 나가기', 'Salir del juego')}</Link></div></header>
+      <RhythmBoard key={run} language={language}/>
+    </section><GameGuide gameId="rhythm" language={language} desktopDisplay/></div></section>
+  </main></div>;
 }
 
 export function Lobby({ api, desktopDisplay }: { api: Api; desktopDisplay: boolean }) {
@@ -138,7 +159,8 @@ export function Lobby({ api, desktopDisplay }: { api: Api; desktopDisplay: boole
       <h2>{selectedGame ? selectedGame.title[language] : text(language, '게임을 골라 주세요', 'Elige un juego')}</h2>
       {selectedGame && <button className="plain-button lobby-rules" onClick={() => setShowRules(true)}>{text(language, '게임 방법', 'Cómo jugar')}</button>}
       <div className="lobby-actions"><button className="button button-dark" disabled={busy || !selected} onClick={() => void start('friends')}>{busy ? text(language, '준비 중…', 'Preparando…') : text(language, '함께 플레이', 'Jugar juntos')}</button>
-      <p className="lobby-mode-note">{api.isOnlineConfigured ? text(language, '방이 열리면 링크를 보내 주세요. 같이 놀 자리는 준비됐어요.', 'Cuando se abra la sala, comparte el enlace. Ya hay sitio para los dos.') : text(language, '지금은 같은 브라우저에서 두 자리를 번갈아 플레이해요.', 'Ahora se juega cambiando de asiento en este navegador.')}</p>
+      {selected === 'rhythm' && <button className="button button-outline" disabled={busy} onClick={() => navigate('/play?solo=rhythm')}>{text(language, '혼자 바로 플레이', 'Jugar solo ahora')} →</button>}
+      <p className="lobby-mode-note">{selected === 'rhythm' ? text(language, '혼자 플레이는 초대 없이 바로 시작해요.', 'La partida individual empieza sin invitación.') : api.isOnlineConfigured ? text(language, '방이 열리면 링크를 보내 주세요. 같이 놀 자리는 준비됐어요.', 'Cuando se abra la sala, comparte el enlace. Ya hay sitio para los dos.') : text(language, '지금은 같은 브라우저에서 두 자리를 번갈아 플레이해요.', 'Ahora se juega cambiando de asiento en este navegador.')}</p>
       {selected && supportsAi(selected) && <div className="lobby-ai-actions"><button className="button button-outline" disabled={busy} onClick={() => void start('solo')}>{text(language, 'AI와 1대1', 'IA: 1 contra 1')} →</button>{selected !== 'jaipur' && <button className="button button-outline" disabled={busy} onClick={() => void start('team')}>{text(language, 'AI와 2대2 팀전', 'IA: equipos 2 contra 2')} →</button>}<small>{text(language, 'AI 게임은 이 창에서만 유지돼요. 새로고침하면 초기화돼요.', 'Las partidas con IA solo se mantienen en esta ventana y se reinician al recargar.')}</small></div>}
       <details className="lobby-profile"><summary>{text(language, '별명', 'Nombre')} · {nickname.trim() || text(language, '플레이어', 'Jugador')}</summary><label className="field-label" htmlFor="nickname">{text(language, '내 별명 (선택)', 'Tu nombre (opcional)')}</label><input id="nickname" className="text-input" value={nickname} maxLength={24} placeholder={text(language, '플레이어', 'Jugador')} autoComplete="nickname" onChange={event => setNickname(event.target.value)}/></details>
       {error && <p className="inline-error" role="alert">{error}</p>}</div>

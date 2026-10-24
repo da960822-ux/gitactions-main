@@ -270,14 +270,14 @@ export const gameRules: Record<GameId, LocalizedRules> = {
   },
   rhythm: {
     ko: [
-      '목표 — Music Talk Talk의 독립 리듬 게임을 플레이어에서 실행해 화면의 음악 입력에 맞춰 진행합니다. 방의 대화나 점수 기록과는 별개입니다.',
+      '목표 — Music Talk Talk의 독립 리듬 게임을 플레이어에서 실행해 화면의 음악 입력에 맞춰 진행합니다. 이 사이트는 원작 게임의 점수나 승자를 기록하지 않습니다.',
       '준비 — 게임을 불러올 때까지 기다립니다. 불러오지 못하면 ‘다시 불러오기’를 누를 수 있고, 계속 실패하면 원작 제공처를 열어 보세요.',
       '조작 — 게임 안내에 표시된 방향키로 움직이고 스페이스바로 입력합니다. 화면에 나온 박자와 방향을 따라 누르세요.',
       '화면 — 필요하면 ‘전체 화면’을 눌러 크게 볼 수 있습니다. 다시 누르면 전체 화면에서 나옵니다.',
       '알아둘 점 — 원작 안내에는 ‘처음으로’ 버튼이 작동하지 않을 수 있다고 적혀 있습니다. 전체 플레이는 브라우저에서 아직 검증되지 않았습니다.',
     ],
     es: [
-      'Objetivo — Ejecuta el juego de ritmo independiente Music Talk Talk y sigue las indicaciones musicales en pantalla. Su puntuación y final, si aparecen, pertenecen al juego original; la sala no registra un ganador.',
+      'Objetivo — Ejecuta el juego de ritmo independiente Music Talk Talk y sigue las indicaciones musicales en pantalla. Su puntuación y final, si aparecen, pertenecen al juego original; este sitio no registra el resultado.',
       'Preparación — Espera a que cargue el juego. Si no carga, pulsa «Volver a cargar»; si sigue fallando, puedes abrir la página original.',
       'Controles — Usa las flechas que indica el juego para moverte y la barra espaciadora para tocar. Sigue el ritmo y las direcciones que aparecen en pantalla.',
       'Pantalla — Si lo necesitas, pulsa «Pantalla completa» para ampliar el juego y vuelve a pulsarlo para salir.',

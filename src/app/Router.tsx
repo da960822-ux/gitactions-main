@@ -4,8 +4,9 @@ export const roomHref = (roomId: string) => `/play?room=${encodeURIComponent(roo
 
 export function currentPath() {
   const { pathname, search } = window.location;
-  const room = pathname === '/play' ? new URLSearchParams(search).get('room') : null;
-  return room ? `/room/${encodeURIComponent(room)}` : pathname;
+  const params = new URLSearchParams(search);
+  const room = pathname === '/play' ? params.get('room') : null;
+  return room ? `/room/${encodeURIComponent(room)}` : pathname === '/play' && params.get('solo') === 'rhythm' ? '/play/rhythm' : pathname;
 }
 
 export function navigate(to: string) {

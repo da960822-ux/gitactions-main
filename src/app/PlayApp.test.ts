@@ -2,8 +2,9 @@ import { afterEach, describe, expect, it } from 'vitest';
 import { vi } from 'vitest';
 import { createElement } from 'react';
 import { renderToStaticMarkup } from 'react-dom/server';
-import { bindApi, catchmindEnterSubmits, CatchmindChatComposer, GameGuide, Lobby, Room, RulesDialog, rulesButtonLabel, SameGameReplay, sameGameReplayAvailable, statusLabel } from './PlayApp';
+import { bindApi, catchmindEnterSubmits, CatchmindChatComposer, GameGuide, Lobby, PlayApp, Room, RulesDialog, rulesButtonLabel, SameGameReplay, sameGameReplayAvailable, statusLabel } from './PlayApp';
 import { getBeginnerGuide } from './beginner-guides';
+import { currentPath } from './Router';
 
 it('shows current Catchmind timing and points while saved version-one rooms keep their rules', () => {
   for (const language of ['ko', 'es'] as const) {
@@ -65,6 +66,31 @@ it('announces a settled round instead of an inactive player turn', () => {
 it('does not invent an opponent turn for the independent rhythm player in either locale', () => {
   expect(statusLabel(null, 'p1', 'ko', 'rhythm')).toBe('원작 플레이어');
   expect(statusLabel(null, 'p2', 'es', 'rhythm')).toBe('Juego original');
+});
+
+it.each([['ko', '혼자 바로 플레이', '처음부터 다시 하기', '게임 나가기'], ['es', 'Jugar solo ahora', 'Empezar de nuevo', 'Salir del juego']] as const)('opens standalone rhythm without a room in %s and keeps the shared option', (language, start, restart, leave) => {
+  vi.stubGlobal('window', { location: new URL('https://games.example/play?game=rhythm') });
+  vi.stubGlobal('localStorage', { getItem: (key: string) => key === 'dos-language' ? language : null, setItem: () => {} });
+  vi.stubGlobal('document', { fullscreenEnabled: false });
+  try {
+    const api = { isOnlineConfigured: true } as any;
+    const lobby = renderToStaticMarkup(createElement(Lobby, { api, desktopDisplay: true }));
+    expect(lobby).toContain(start);
+    expect(lobby).toContain(language === 'ko' ? '함께 플레이' : 'Jugar juntos');
+    window.location.href = 'https://games.example/play?solo=rhythm';
+    expect(currentPath()).toBe('/play/rhythm');
+    const solo = renderToStaticMarkup(createElement(PlayApp, { path: currentPath() }));
+    expect(solo).toContain('rhythm-game-mount');
+    expect(solo).toContain(restart);
+    expect(solo).toContain(leave);
+    expect(solo).toContain('href="/play"');
+    expect(solo).not.toContain('초대 링크');
+    expect(solo).not.toContain('Copiar invitación');
+    window.location.href = 'https://games.example/play?room=shared-room&solo=rhythm';
+    expect(currentPath()).toBe('/room/shared-room');
+  } finally {
+    vi.unstubAllGlobals();
+  }
 });
 
 it('describes both Catchmind roles while choosing and drawing', () => {
