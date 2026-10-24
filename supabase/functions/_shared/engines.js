@@ -1734,10 +1734,10 @@ var catchmind_topic_dictionary_default = {
       source_index: 97,
       category_id: "places",
       ko: "\uBC84\uC2A4 \uC815\uB958\uC7A5",
-      es: "parada de autob\xFAs",
+      es: "parada de guagua",
       aliases: {
         ko: [],
-        es: []
+        es: ["parada de autob\xFAs"]
       },
       provenance: "existing"
     },
@@ -1833,10 +1833,10 @@ var catchmind_topic_dictionary_default = {
       source_index: 105,
       category_id: "transport",
       ko: "\uC624\uD1A0\uBC14\uC774",
-      es: "motocicleta",
+      es: "motor",
       aliases: {
         ko: [],
-        es: []
+        es: ["motocicleta", "moto"]
       },
       provenance: "existing"
     },
@@ -2025,10 +2025,10 @@ var catchmind_topic_dictionary_default = {
       source_index: 121,
       category_id: "life_hobbies",
       ko: "\uD5E4\uB4DC\uD3F0",
-      es: "auriculares",
+      es: "aud\xEDfonos",
       aliases: {
         ko: [],
-        es: []
+        es: ["auriculares", "cascos"]
       },
       provenance: "existing"
     },
@@ -2472,10 +2472,10 @@ var catchmind_topic_dictionary_default = {
       source_index: 158,
       category_id: "food",
       ko: "\uCF00\uC774\uD06C",
-      es: "pastel",
+      es: "bizcocho",
       aliases: {
         ko: [],
-        es: []
+        es: ["pastel"]
       },
       provenance: "existing"
     },
@@ -2706,7 +2706,7 @@ var catchmind_topic_dictionary_default = {
       id: "legacy-177",
       source_index: 177,
       category_id: "food",
-      ko: "\uCF54\uCF54\uB11B",
+      ko: "\uAC08\uC740 \uCF54\uCF54\uB11B",
       es: "coco rallado",
       aliases: {
         ko: [],
@@ -2841,10 +2841,10 @@ var catchmind_topic_dictionary_default = {
       source_index: 188,
       category_id: "life_hobbies",
       ko: "\uC0DD\uC77C \uCF00\uC774\uD06C",
-      es: "pastel de cumplea\xF1os",
+      es: "bizcocho de cumplea\xF1os",
       aliases: {
         ko: [],
-        es: []
+        es: ["pastel de cumplea\xF1os"]
       },
       provenance: "existing"
     },
@@ -3019,10 +3019,12 @@ var catchmind_topic_dictionary_default = {
       id: "food-extra-003",
       category_id: "food",
       ko: "\uD31D\uCF58",
-      es: "palomitas",
+      es: "cocalecas",
       aliases: {
         ko: [],
         es: [
+          "palomitas",
+          "palomitas de ma\xEDz",
           "rosetas de ma\xEDz",
           "popcorn"
         ]
@@ -3378,11 +3380,13 @@ var catchmind_topic_dictionary_default = {
       id: "places-extra-003",
       category_id: "places",
       ko: "\uACBD\uCC30\uC11C",
-      es: "comisar\xEDa",
+      es: "destacamento policial",
       aliases: {
         ko: [],
         es: [
-          "cuartel de polic\xEDa"
+          "comisar\xEDa",
+          "cuartel de polic\xEDa",
+          "estaci\xF3n de polic\xEDa"
         ]
       },
       provenance: "added"
@@ -3854,6 +3858,9 @@ function isPlayer2(p) {
 function norm(v) {
   return v.normalize("NFC").toLowerCase().trim();
 }
+function answerKey(v) {
+  return norm(v).replace(/\s+/gu, " ").normalize("NFD").replace(/[\u0300-\u0301\u0303-\u0308]/gu, (mark) => mark === "\u0303" ? mark : "").normalize("NFC");
+}
 function answers(c) {
   return [c.ko, c.es, ...c.aliases?.ko ?? [], ...c.aliases?.es ?? []].map(norm);
 }
@@ -3861,29 +3868,30 @@ function localeAnswers(c, locale) {
   return [c[locale], ...c.aliases?.[locale] ?? []].map(norm);
 }
 var defaultSettings = () => ({ category_id: null, drawTimeSeconds: 80, rounds: 6, choices: 3, hints: 2, customWords: [], customOnly: false });
-function uniqueConcepts(concepts) {
+function uniqueConcepts(concepts, key = norm) {
   const seen = { ko: /* @__PURE__ */ new Set(), es: /* @__PURE__ */ new Set() };
   return concepts.filter((concept) => {
-    const keys = { ko: localeAnswers(concept, "ko"), es: localeAnswers(concept, "es") };
-    if (keys.ko.some((key) => !key || seen.ko.has(key)) || keys.es.some((key) => !key || seen.es.has(key))) return false;
-    keys.ko.forEach((key) => seen.ko.add(key));
-    keys.es.forEach((key) => seen.es.add(key));
+    const keys = { ko: localeAnswers(concept, "ko").map(key), es: localeAnswers(concept, "es").map(key) };
+    if (keys.ko.some((key2) => !key2 || seen.ko.has(key2)) || keys.es.some((key2) => !key2 || seen.es.has(key2))) return false;
+    keys.ko.forEach((key2) => seen.ko.add(key2));
+    keys.es.forEach((key2) => seen.es.add(key2));
     return true;
   });
 }
-function dealWords(seed, settings) {
+function dealWords(seed, settings, rulesVersion = 1) {
   if (!settings.category_id) return [];
   const categoryWords = catchmindTopicWords.filter((word) => word.category_id === settings.category_id).map(({ ko, es, aliases }) => aliases && (aliases.ko?.length || aliases.es?.length) ? { ko, es, aliases } : { ko, es });
   const source = settings.customOnly ? settings.customWords : [...settings.customWords, ...categoryWords];
-  const concepts = shuffle(uniqueConcepts(source), seededRandom(seed));
+  const concepts = shuffle(uniqueConcepts(source, rulesVersion === 2 ? answerKey : norm), seededRandom(seed));
   return Array.from({ length: settings.rounds }, (_, round) => Array.from({ length: settings.choices }, (_2, choice) => concepts[(round * settings.choices + choice) % concepts.length]));
 }
-function validSettings(value) {
+function validSettings(value, rulesVersion = 1) {
   if (!value || typeof value !== "object") return false;
   const settings = value;
   if (!catchmindCategories.some((category) => category.id === settings.category_id)) return false;
   if (!Number.isInteger(settings.drawTimeSeconds) || settings.drawTimeSeconds < 30 || settings.drawTimeSeconds > 180) return false;
   if (!Number.isInteger(settings.rounds) || settings.rounds < 2 || settings.rounds > 12) return false;
+  if (rulesVersion === 2 && settings.rounds % 2 !== 0) return false;
   if (!Number.isInteger(settings.choices) || settings.choices < 3 || settings.choices > 5) return false;
   if (!Number.isInteger(settings.hints) || settings.hints < 0 || settings.hints > 3 || typeof settings.customOnly !== "boolean") return false;
   if (!Array.isArray(settings.customWords) || settings.customWords.length > 30) return false;
@@ -3894,8 +3902,9 @@ function validSettings(value) {
     if (!ko || !es || [...ko].length > 32 || [...es].length > 32) return false;
     customWords.push({ ko, es });
   }
-  const base = uniqueConcepts(catchmindTopicWords.filter((word) => word.category_id === settings.category_id));
-  const all = uniqueConcepts([...customWords, ...base]);
+  const key = rulesVersion === 2 ? answerKey : norm;
+  const base = uniqueConcepts(catchmindTopicWords.filter((word) => word.category_id === settings.category_id), key);
+  const all = uniqueConcepts([...customWords, ...base], key);
   if (all.length !== customWords.length + base.length) return false;
   return !settings.customOnly || customWords.length >= settings.rounds * settings.choices;
 }
@@ -3905,20 +3914,47 @@ function getCatchmindDrawDurationMs(state) {
   return typeof seconds === "number" && Number.isInteger(seconds) ? seconds * 1e3 : catchmindDrawDurationMs;
 }
 function getCatchmindHintStage(state, now) {
-  const hints = state.settings.hints, duration = getCatchmindDrawDurationMs(state);
+  const hints = "rulesVersion" in state && state.rulesVersion === 2 ? Math.min(2, state.settings.hints) : state.settings.hints, duration = getCatchmindDrawDurationMs(state);
   if (hints < 1 || !state.deadlineAt) return 0;
   const elapsed = Math.max(0, duration - Math.max(0, Date.parse(state.deadlineAt) - now));
+  if ("rulesVersion" in state && state.rulesVersion === 2) return Math.min(hints, elapsed >= duration * 0.75 ? 2 : elapsed >= duration * 0.5 ? 1 : 0);
   return Math.min(hints, Math.floor(elapsed * (hints + 1) / duration));
 }
-function guessPoints(s) {
-  const remaining = s.deadlineAt ? Math.max(0, Date.parse(s.deadlineAt) - Date.now()) : 0;
+function guessPoints(s, now = Date.now()) {
+  const remaining = s.deadlineAt ? Math.max(0, Date.parse(s.deadlineAt) - now) : 0;
+  if (s.rulesVersion === 2) return Math.max(50, 100 + Math.floor(100 * remaining / getCatchmindDrawDurationMs(s)) - 20 * Math.max(s.hintStage, getCatchmindHintStage(s, now)));
   return Math.max(1, Math.ceil(3 * remaining / getCatchmindDrawDurationMs(s)));
+}
+var graphemes = (word) => [...new Intl.Segmenter("ko", { granularity: "grapheme" }).segment(word)].map((part) => part.segment);
+function timedMask(word, locale, stage, seed) {
+  const chars = graphemes(word), positions = chars.flatMap((char, index) => /\s/u.test(char) ? [] : [index]);
+  const random = seededRandom(seed ^ (locale === "ko" ? 19279 : 17747));
+  for (let i = positions.length - 1; i > 0; i--) {
+    const j = Math.floor(random() * (i + 1));
+    [positions[i], positions[j]] = [positions[j], positions[i]];
+  }
+  const revealed = new Set(positions.slice(0, Math.min(stage, positions.length - 1)));
+  return chars.map((char, index) => /\s/u.test(char) || revealed.has(index) ? char : locale === "ko" ? "\u25A1" : "?").join("");
 }
 function maskedHint(word, locale) {
   return [...word].map((char) => /\s/u.test(char) ? char : locale === "ko" ? "\u25A1" : /\p{L}/u.test(char) ? "?" : char).join("");
 }
 function isCorrectGuess(s, text) {
-  return s.phase === "drawing" && s.answer !== null && typeof text === "string" && answers(s.answer).includes(norm(text));
+  return s.phase === "drawing" && s.answer !== null && typeof text === "string" && (s.rulesVersion === 2 ? [s.answer.ko, s.answer.es, ...s.answer.aliases?.ko ?? [], ...s.answer.aliases?.es ?? []].map(answerKey).includes(answerKey(text)) : answers(s.answer).includes(norm(text)));
+}
+function advanceCatchmind(s, now = Date.now()) {
+  if (s.rulesVersion !== 2 || s.phase === "finished") return s;
+  if (s.phase === "choosing" && s.choosingDeadlineAt && now >= Date.parse(s.choosingDeadlineAt) && s.wordChoices[s.round]?.length) {
+    const choice = Math.floor(seededRandom(s.seed ^ s.round)() * s.wordChoices[s.round].length);
+    return catchmindEngine.applyAction(s, s.drawer, { type: "choose", payload: { wordId: choice } });
+  }
+  if (s.phase === "drawing") {
+    if (s.deadlineAt && now >= Date.parse(s.deadlineAt)) return { ...s, phase: "round-over", deadlineAt: null, roundOverAt: new Date(now + 5e3).toISOString(), roundAward: { guesserPoints: 0, drawerPoints: 0, revealedHintCount: s.hintStage, remainingSeconds: 0 } };
+    const hintStage = Math.max(s.hintStage, getCatchmindHintStage(s, now));
+    return hintStage === s.hintStage ? s : { ...s, hintStage };
+  }
+  if (s.phase === "round-over" && s.roundOverAt && now >= Date.parse(s.roundOverAt)) return catchmindEngine.applyAction(s, s.drawer, { type: "end-round" });
+  return s;
 }
 function makeResult(s) {
   if (s.round < s.settings.rounds - 1) return null;
@@ -3929,14 +3965,14 @@ var catchmindEngine = {
   id: "catchmind",
   createInitialState(seed) {
     const settings = defaultSettings();
-    return { seed, round: 0, drawer: "p1", wordChoices: [], answer: null, strokes: [], fills: [], nextOrder: 0, guesses: [], score: { p1: 0, p2: 0 }, deadlineAt: null, hintStage: 0, settings, phase: "choosing", result: null };
+    return { seed, round: 0, drawer: "p1", wordChoices: [], answer: null, strokes: [], fills: [], nextOrder: 0, guesses: [], score: { p1: 0, p2: 0 }, deadlineAt: null, hintStage: 0, settings, phase: "choosing", result: null, rulesVersion: 2, roundId: crypto.randomUUID(), choosingDeadlineAt: null, roundOverAt: null, roundAward: null };
   },
   validateAction(s, p, a) {
     if (!isPlayer2(p)) return "Invalid player";
     if (s.result) return "Game is over";
     if (!a || typeof a.type !== "string") return "Invalid action";
     const payload = a.payload ?? {};
-    if (a.type === "settings") return p === "p1" && s.round === 0 && s.phase === "choosing" && Object.hasOwn(s.settings, "category_id") && validSettings(payload.settings) ? null : "Room settings are invalid or locked";
+    if (a.type === "settings") return p === "p1" && s.round === 0 && s.phase === "choosing" && Object.hasOwn(s.settings, "category_id") && validSettings(payload.settings, s.rulesVersion) ? null : "Room settings are invalid or locked";
     if (a.type === "choose") return s.phase === "choosing" && p === s.drawer && Number.isInteger(payload.wordId) && payload.wordId >= 0 && payload.wordId < (s.wordChoices[s.round]?.length ?? 0) ? null : "Choose one of the offered words as the drawer";
     if (a.type === "draw") {
       if (s.phase !== "drawing" || p !== s.drawer) return "Only the drawer can draw during an active round";
@@ -3972,14 +4008,14 @@ var catchmindEngine = {
       return null;
     }
     if (a.type === "fill") return s.phase === "drawing" && p === s.drawer && Number.isFinite(payload.x) && Number.isFinite(payload.y) && payload.x >= 0 && payload.x <= 1 && payload.y >= 0 && payload.y <= 1 && typeof payload.color === "string" && /^#[0-9a-f]{6}$/i.test(payload.color) && s.fills.length < 60 ? null : "Invalid fill operation";
-    if (a.type === "reveal-hint") return s.phase === "drawing" && p === s.drawer && s.hintStage < s.settings.hints ? null : "No hint is due";
+    if (a.type === "reveal-hint") return s.rulesVersion === 2 ? "Hints follow the server clock" : s.phase === "drawing" && p === s.drawer && s.hintStage < s.settings.hints ? null : "No hint is due";
     if (a.type === "guess") {
       if (s.phase !== "drawing" || p === s.drawer) return "Only the guesser can guess during an active round";
       if (typeof payload.text !== "string" || payload.text.trim().length < 1 || payload.text.trim().length > 60 || s.guesses.length >= 200) return "Guess must contain 1 to 60 characters; round guess limit is 200";
       return null;
     }
     if (a.type === "undo" || a.type === "clear") return p === s.drawer && s.phase === "drawing" ? null : "Only the drawer may edit the active drawing";
-    if (a.type === "end-round" || a.type === "pass" || a.type === "timeout") return p === s.drawer && s.phase !== "finished" && s.phase !== "choosing" ? null : "Only the drawer can finish or pass the active round";
+    if (a.type === "end-round" || a.type === "pass" || a.type === "timeout") return p === s.drawer && (a.type === "end-round" ? s.phase === "drawing" || s.phase === "round-over" : s.phase === "drawing") ? null : "Only the drawer can finish or pass the active round";
     return "Unknown action";
   },
   applyAction(s, p, a) {
@@ -3988,9 +4024,9 @@ var catchmindEngine = {
     if (a.type === "settings") {
       const settings = structuredClone(a.payload.settings);
       settings.customWords = settings.customWords.map(({ ko, es }) => ({ ko: ko.trim(), es: es.trim() }));
-      return { ...s, settings, wordChoices: dealWords(s.seed, settings) };
+      return { ...s, settings, wordChoices: dealWords(s.seed, settings, s.rulesVersion), ...s.rulesVersion === 2 ? { choosingDeadlineAt: new Date(Date.now() + 15e3).toISOString() } : {} };
     }
-    if (a.type === "choose") return { ...s, answer: s.wordChoices[s.round][a.payload.wordId], strokes: [], fills: [], guesses: [], hintStage: 0, phase: "drawing" };
+    if (a.type === "choose") return { ...s, answer: s.wordChoices[s.round][a.payload.wordId], strokes: [], fills: [], guesses: [], hintStage: 0, phase: "drawing", ...s.rulesVersion === 2 ? { deadlineAt: new Date(Date.now() + getCatchmindDrawDurationMs(s)).toISOString(), choosingDeadlineAt: null, roundAward: null } : {} };
     if (a.type === "draw") {
       let nextOrder = s.nextOrder;
       const nextStrokes = [...s.strokes];
@@ -4016,13 +4052,13 @@ var catchmindEngine = {
     if (a.type === "reveal-hint") return { ...s, hintStage: s.hintStage + 1 };
     if (a.type === "guess") {
       const text = a.payload.text.trim(), correct = isCorrectGuess(s, text);
-      const guesserPoints = guessPoints(s);
-      const score2 = correct ? { ...s.score, [p]: s.score[p] + guesserPoints, [s.drawer]: s.score[s.drawer] + 1 } : s.score;
-      return { ...s, score: score2, guesses: [...s.guesses, { by: p, text, correct }], phase: correct ? "round-over" : "drawing" };
+      const now = Date.now(), guesserPoints = correct ? guessPoints(s, now) : 0;
+      const score2 = correct ? { ...s.score, [p]: s.score[p] + guesserPoints, [s.drawer]: s.score[s.drawer] + (s.rulesVersion === 2 ? 100 : 1) } : s.score;
+      return { ...s, score: score2, guesses: [...s.guesses, { by: p, text, correct }], phase: correct ? "round-over" : "drawing", ...correct && s.rulesVersion === 2 ? { roundOverAt: new Date(now + 5e3).toISOString(), roundAward: { guesserPoints, drawerPoints: 100, revealedHintCount: Math.max(s.hintStage, getCatchmindHintStage(s, now)), remainingSeconds: s.deadlineAt ? Math.ceil(Math.max(0, Date.parse(s.deadlineAt) - now) / 1e3) : 0 } } : {} };
     }
-    if (s.phase !== "round-over") return { ...s, phase: "round-over" };
+    if (s.phase !== "round-over") return { ...s, phase: "round-over", ...s.rulesVersion === 2 ? { roundOverAt: new Date(Date.now() + 5e3).toISOString(), roundAward: { guesserPoints: 0, drawerPoints: 0, revealedHintCount: s.hintStage, remainingSeconds: 0 } } : {} };
     const result = makeResult(s);
-    return result ? { ...s, phase: "finished", result } : { ...s, round: s.round + 1, drawer: otherPlayer(s.drawer), answer: null, strokes: [], fills: [], nextOrder: 0, guesses: [], hintStage: 0, phase: "choosing" };
+    return result ? { ...s, phase: "finished", result } : { ...s, round: s.round + 1, drawer: otherPlayer(s.drawer), answer: null, strokes: [], fills: [], nextOrder: 0, guesses: [], hintStage: 0, phase: "choosing", ...s.rulesVersion === 2 ? { deadlineAt: null, roundOverAt: null, roundId: crypto.randomUUID(), choosingDeadlineAt: new Date(Date.now() + 15e3).toISOString(), roundAward: null } : {} };
   },
   getPlayerView(s, p) {
     const guesser = otherPlayer(s.drawer), active = s.phase === "drawing";
@@ -4035,9 +4071,9 @@ var catchmindEngine = {
     const visibleGuesses = s.guesses.map((g) => ({ by: g.by, correct: g.correct, text: g.correct ? g.text : "\u2026" }));
     const ownAnswer = p === s.drawer && s.phase === "drawing" ? s.answer : null;
     const visibleSettings = { category_id: s.settings.category_id, categoryOptions: catchmindCategories, drawTimeSeconds: s.settings.drawTimeSeconds, rounds: s.settings.rounds, choices: s.settings.choices, hints: s.settings.hints, customWordCount: s.settings.customWords.length, customOnly: s.settings.customOnly };
-    const hintLength = active && s.answer ? { ko: [...s.answer.ko].length, es: [...s.answer.es].length } : null;
-    const hintWord = active && p !== s.drawer && s.answer && s.settings.hints ? { ko: maskedHint(s.answer.ko, "ko"), es: maskedHint(s.answer.es, "es") } : null;
-    return { game: "catchmind", turn: s.drawer, phase: s.phase, hand: p === s.drawer ? { choices: s.phase === "choosing" ? (s.wordChoices[s.round] ?? []).map((c, wordId) => ({ wordId, ko: c.ko, es: c.es })) : [], answer: ownAnswer, settingsCustomWords: p === "p1" ? structuredClone(s.settings.customWords) : [] } : null, board: { strokes: s.strokes.map((st) => ({ ...st, points: st.points.map((pt) => ({ ...pt })) })), fills: s.fills.map((fill) => ({ ...fill })), guesses: visibleGuesses, round: s.round + 1, totalRounds: s.settings.rounds, drawer: s.drawer, answer: s.phase === "round-over" || s.phase === "finished" ? s.answer : null, hintLength, hintWord, hintStage: s.hintStage, settings: visibleSettings, scores: { ...s.score } }, opponentCount: 0, status: s.result ? "finished" : s.phase === "choosing" ? p === s.drawer ? "choose-word" : "waiting" : active ? p === s.drawer ? "drawing" : "guessing" : "round-over", result: s.result, actions };
+    const hintLength = active && s.answer && (s.rulesVersion !== 2 || s.settings.hints) ? { ko: s.rulesVersion === 2 ? graphemes(s.answer.ko).length : [...s.answer.ko].length, es: s.rulesVersion === 2 ? graphemes(s.answer.es).length : [...s.answer.es].length } : null;
+    const hintWord = active && p !== s.drawer && s.answer && s.settings.hints ? { ko: s.rulesVersion === 2 ? timedMask(s.answer.ko, "ko", s.hintStage, s.seed ^ s.round) : maskedHint(s.answer.ko, "ko"), es: s.rulesVersion === 2 ? timedMask(s.answer.es, "es", s.hintStage, s.seed ^ s.round) : maskedHint(s.answer.es, "es") } : null;
+    return { game: "catchmind", turn: s.drawer, phase: s.phase, hand: p === s.drawer ? { choices: s.phase === "choosing" ? (s.wordChoices[s.round] ?? []).map((c, wordId) => ({ wordId, ko: c.ko, es: c.es })) : [], answer: ownAnswer, settingsCustomWords: p === "p1" ? structuredClone(s.settings.customWords) : [] } : null, board: { strokes: s.strokes.map((st) => ({ ...st, points: st.points.map((pt) => ({ ...pt })) })), fills: s.fills.map((fill) => ({ ...fill })), guesses: visibleGuesses, round: s.round + 1, totalRounds: s.settings.rounds, drawer: s.drawer, answer: s.phase === "round-over" || s.phase === "finished" ? s.answer : null, hintLength, hintWord, hintStage: s.hintStage, roundId: s.roundId ?? null, choosingDeadlineAt: s.choosingDeadlineAt ?? null, roundOverAt: s.roundOverAt ?? null, roundAward: s.roundAward ?? null, rulesVersion: s.rulesVersion ?? 1, settings: visibleSettings, scores: { ...s.score } }, opponentCount: 0, status: s.result ? "finished" : s.phase === "choosing" ? p === s.drawer ? "choose-word" : "waiting" : active ? p === s.drawer ? "drawing" : "guessing" : "round-over", result: s.result, actions };
   },
   getResult: (s) => s.result
 };
@@ -7024,6 +7060,7 @@ async function executeSharedEventRequest(store, verifiedActor, input, now) {
   return store.commit(request.sessionId, verifiedActor, request.action, { ...next, receipts: [] });
 }
 export {
+  advanceCatchmind,
   catchmindDrawDurationMs,
   chatMessageForGame,
   createMatchState,

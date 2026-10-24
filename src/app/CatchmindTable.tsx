@@ -164,7 +164,8 @@ export default function CatchmindTable({ roomId, view, playerId, language, now, 
   const roundOver = view?.phase === 'round-over';
   const finished = view?.phase === 'finished' || !!view?.result;
   const roundSolved = roundOver && (board.guesses ?? []).some((guess: any) => guess.correct);
-  const secondsLeft = view?.deadlineAt ? Math.max(0, Math.ceil((Date.parse(view.deadlineAt) - now) / 1000)) : 80;
+  const timerDeadline = activeDrawing ? view?.deadlineAt : choosingPhase ? board.choosingDeadlineAt : roundOver ? board.roundOverAt : null;
+  const secondsLeft = timerDeadline ? Math.max(0, Math.ceil((Date.parse(timerDeadline) - now) / 1000)) : 0;
   const category = board.settings?.categoryOptions?.find((option: any) => option.id === board.settings?.category_id);
   const phaseLabel = choosingPhase
     ? copy(language, isDrawer ? '제시어 선택' : '상대가 제시어를 고르는 중', isDrawer ? 'Elige una palabra' : 'Tu pareja está eligiendo')
@@ -440,11 +441,11 @@ export default function CatchmindTable({ roomId, view, playerId, language, now, 
 
   return <section className={`cm-table ${drawing ? 'is-drawing' : 'is-viewing'}`} aria-label={copy(language, '캐치마인드 그림 게임', 'Juego de dibujo Catchmind')}>
     <header className="cm-topbar">
-      <div className="cm-round-label"><span>{copy(language, '라운드', 'RONDA')}</span><strong>{board.round ?? 1}<i> / {board.totalRounds ?? 6}</i></strong><small>{category?.label[language]}</small><small key={`${board.round}:${view?.phase}:${view?.status}`} className="cm-phase-label" aria-live="polite">{phaseLabel}</small></div>
+      <div className="cm-round-label"><span>{copy(language, board.rulesVersion === 2 ? '개별 턴' : '라운드', board.rulesVersion === 2 ? 'TURNO' : 'RONDA')}</span><strong>{board.round ?? 1}<i> / {board.totalRounds ?? 6}</i></strong><small>{category?.label[language]}</small><small key={`${board.round}:${view?.phase}:${view?.status}`} className="cm-phase-label" aria-live="polite">{phaseLabel}</small></div>
       <div className="cm-scoreboard" aria-label={copy(language, '점수', 'Puntuación')}>
         {scoresBySeat.map(({ seat, mine, score }) => <div key={seat} className={`cm-score ${mine ? 'is-you' : ''}`}><span className="cm-score-mark" aria-hidden="true">{mine ? '✦' : '♡'}</span><span><small>{mine ? copy(language, '나', 'Tú') : copy(language, '상대', 'Pareja')}</small><strong><GameValue value={score} resetKey={`catchmind:${playerId}:${seat}`} /></strong></span></div>)}
       </div>
-      {view?.deadlineAt && !roundOver && !finished && <div className={`cm-timer ${secondsLeft <= 10 ? 'is-low' : ''}`} aria-label={`${secondsLeft} ${copy(language, '초 남음', 'segundos restantes')}`}><span aria-hidden="true">◷</span><b>{secondsLeft}</b><small>{copy(language, '초 남음', 's restantes')}</small></div>}
+      {timerDeadline && !finished && <div className={`cm-timer ${secondsLeft <= 10 ? 'is-low' : ''}`} aria-label={`${secondsLeft} ${copy(language, '초 남음', 'segundos restantes')}`}><span aria-hidden="true">◷</span><b>{secondsLeft}</b><small>{copy(language, '초 남음', 's restantes')}</small></div>}
     </header>
 
     <div className={`cm-play-area ${drawing ? 'has-tools' : 'canvas-only'}`}>
@@ -453,8 +454,9 @@ export default function CatchmindTable({ roomId, view, playerId, language, now, 
           <span className="cm-word-label">{copy(language, drawing ? '제시어' : roundOver || finished ? '정답' : activeDrawing ? '그림을 보고 채팅에 답해요' : '제시어 선택', drawing ? 'Tu palabra' : roundOver || finished ? 'Respuesta' : activeDrawing ? 'Adivina en el chat' : 'Elegir palabra')}</span>
           {drawing && view?.hand?.answer && <strong className="cm-secret-word">{view.hand.answer[language]}</strong>}
           {(roundOver || finished) && board.answer && <strong className="cm-secret-word">{board.answer[language]}</strong>}
-          {!isDrawer && activeDrawing && board.hintWord && <b key={board.round} className="cm-hint-word" aria-label={copy(language, '한국어 / Español 글자 수', 'Longitud en 한국어 / Español')}><span>{board.hintWord.ko}</span><i aria-hidden="true"> / </i><span>{board.hintWord.es}</span></b>}
+          {!isDrawer && activeDrawing && board.hintWord && <b key={board.round} className="cm-hint-word" aria-label={copy(language, '한국어 / Español 글자 수와 단계별 힌트', 'Longitud y pistas progresivas en 한국어 / Español')}><span>{board.hintWord.ko}</span><i aria-hidden="true"> / </i><span>{board.hintWord.es}</span></b>}
         </div>}
+        {board.rulesVersion === 2 && activeDrawing && <p className="cm-tool-notice" role="status">{copy(language, board.settings?.hints ? `정답 점수: 남은 시간에 따라 100~200점, 공개된 글자 힌트마다 20점 감점 (최소 50점) · 출제자 정답 시 100점 · 힌트 ${board.hintStage ?? 0}/2` : '정답 점수: 남은 시간에 따라 100~200점 (최소 50점) · 출제자 정답 시 100점 · 힌트 없음', board.settings?.hints ? `Acierto: 100–200 puntos según el tiempo, −20 por pista revelada (mínimo 50) · quien dibuja suma 100 al acertar · pistas ${board.hintStage ?? 0}/2` : 'Acierto: 100–200 puntos según el tiempo (mínimo 50) · quien dibuja suma 100 al acertar · sin pistas')}</p>}
 
         {choosing ? <div className="cm-choice-panel">
 
@@ -463,9 +465,9 @@ export default function CatchmindTable({ roomId, view, playerId, language, now, 
             <details className="cm-advanced-settings"><summary>{copy(language, '시간 · 라운드 · 나만의 단어', 'Tiempo · rondas · palabras propias')} <span>⌄</span></summary><div className="cm-advanced-content">
               <div className="cm-setting-grid">
                 <label>{copy(language, '그림 시간 (초)', 'Tiempo (segundos)')}<input type="number" min="30" max="180" value={settingsDraft.drawTimeSeconds} onChange={event => setSettingsDraft({ ...settingsDraft, drawTimeSeconds: Number(event.target.value) })}/></label>
-                <label>{copy(language, '라운드', 'Rondas')}<input type="number" min="2" max="12" value={settingsDraft.rounds} onChange={event => setSettingsDraft({ ...settingsDraft, rounds: Number(event.target.value) })}/></label>
+                <label>{copy(language, board.rulesVersion === 2 ? '개별 턴 (짝수)' : '라운드', board.rulesVersion === 2 ? 'Turnos individuales (pares)' : 'Rondas')}<input type="number" min="2" max="12" step={board.rulesVersion === 2 ? 2 : 1} value={settingsDraft.rounds} onChange={event => setSettingsDraft({ ...settingsDraft, rounds: Number(event.target.value) })}/></label>
                 <label>{copy(language, '단어 보기', 'Opciones')}<input type="number" min="3" max="5" value={settingsDraft.choices} onChange={event => setSettingsDraft({ ...settingsDraft, choices: Number(event.target.value) })}/></label>
-                <label className="cm-mask-setting">{copy(language, '글자 수 표시', 'Mostrar longitud')}<input type="checkbox" checked={settingsDraft.hints > 0} onChange={event => setSettingsDraft({ ...settingsDraft, hints: event.target.checked ? 2 : 0 })}/></label>
+                <label className="cm-mask-setting">{copy(language, board.rulesVersion === 2 ? '글자 수와 단계별 힌트' : '글자 수 표시', board.rulesVersion === 2 ? 'Longitud y pistas progresivas' : 'Mostrar longitud')}<input type="checkbox" checked={settingsDraft.hints > 0} onChange={event => setSettingsDraft({ ...settingsDraft, hints: event.target.checked ? 2 : 0 })}/></label>
               </div>
               <label className="cm-custom-only"><input type="checkbox" checked={settingsDraft.customOnly} onChange={event => setSettingsDraft({ ...settingsDraft, customOnly: event.target.checked })}/>{copy(language, '직접 입력한 단어만 사용', 'Usar solo mis palabras')}</label>
               <label className="cm-custom-label">{copy(language, '한 줄에 한 쌍 · 한국어|Español', 'Una pareja por línea · 한국어|Español')}<textarea rows={4} maxLength={2400} value={customWordsText} onChange={event => setCustomWordsText(event.target.value)} placeholder={'고양이|gato\n바다|océano'}/></label>
@@ -486,7 +488,7 @@ export default function CatchmindTable({ roomId, view, playerId, language, now, 
         </div>}
 
         {(allowed('pass') || allowed('end-round') || roundOver) && <div key={`${board.round}:${view?.phase}`} className="cm-bottom-note" aria-live="polite">
-          {roundOver && <span>{copy(language, roundSolved ? '정답! 두 사람 모두 점수 획득' : '라운드 종료', roundSolved ? '¡Correcto! Ambos suman puntos' : 'Ronda terminada')}</span>}
+          {roundOver && <span>{board.rulesVersion === 2 && board.roundAward ? copy(language, roundSolved ? `정답자 +${board.roundAward.guesserPoints}점 (남은 ${board.roundAward.remainingSeconds}초 · 공개 힌트 ${board.roundAward.revealedHintCount}개 × −20점) · 출제자 +${board.roundAward.drawerPoints}점` : '시간초과 또는 패스 · 두 사람 모두 +0점', roundSolved ? `Adivinante +${board.roundAward.guesserPoints} puntos (${board.roundAward.remainingSeconds} s restantes · ${board.roundAward.revealedHintCount} pistas × −20) · dibujante +${board.roundAward.drawerPoints}` : 'Tiempo agotado o pase · ambos +0 puntos') : copy(language, roundSolved ? '정답! 두 사람 모두 점수 획득' : '라운드 종료', roundSolved ? '¡Correcto! Ambos suman puntos' : 'Ronda terminada')}{board.rulesVersion === 2 && board.roundOverAt ? copy(language, ` · ${secondsLeft}초 후 자동 진행`, ` · continúa automáticamente en ${secondsLeft} s`) : ''}</span>}
           {allowed('pass') && <button type="button" className="cm-text-action" onClick={() => void runAction({ type: 'pass' })}><ToolIcon tool="skip"/>{copy(language, '이 단어 건너뛰기', 'Pasar palabra')} <span>→</span></button>}
           {allowed('end-round') && <button type="button" className="cm-text-action" onClick={() => void runAction({ type: 'end-round' })}><ToolIcon tool="round-end"/>{roundOver ? copy(language, '다음 라운드', 'Siguiente ronda') : finished ? copy(language, '한 판이 끝났어요', 'Partida finalizada') : copy(language, '라운드 마치기', 'Terminar ronda')} <span>→</span></button>}
         </div>}

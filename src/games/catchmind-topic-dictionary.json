@@ -1608,10 +1608,10 @@
       "source_index": 97,
       "category_id": "places",
       "ko": "버스 정류장",
-      "es": "parada de autobús",
+      "es": "parada de guagua",
       "aliases": {
         "ko": [],
-        "es": []
+        "es": ["parada de autobús"]
       },
       "provenance": "existing"
     },
@@ -1707,10 +1707,10 @@
       "source_index": 105,
       "category_id": "transport",
       "ko": "오토바이",
-      "es": "motocicleta",
+      "es": "motor",
       "aliases": {
         "ko": [],
-        "es": []
+        "es": ["motocicleta", "moto"]
       },
       "provenance": "existing"
     },
@@ -1899,10 +1899,10 @@
       "source_index": 121,
       "category_id": "life_hobbies",
       "ko": "헤드폰",
-      "es": "auriculares",
+      "es": "audífonos",
       "aliases": {
         "ko": [],
-        "es": []
+        "es": ["auriculares", "cascos"]
       },
       "provenance": "existing"
     },
@@ -2346,10 +2346,10 @@
       "source_index": 158,
       "category_id": "food",
       "ko": "케이크",
-      "es": "pastel",
+      "es": "bizcocho",
       "aliases": {
         "ko": [],
-        "es": []
+        "es": ["pastel"]
       },
       "provenance": "existing"
     },
@@ -2580,7 +2580,7 @@
       "id": "legacy-177",
       "source_index": 177,
       "category_id": "food",
-      "ko": "코코넛",
+      "ko": "갈은 코코넛",
       "es": "coco rallado",
       "aliases": {
         "ko": [],
@@ -2715,10 +2715,10 @@
       "source_index": 188,
       "category_id": "life_hobbies",
       "ko": "생일 케이크",
-      "es": "pastel de cumpleaños",
+      "es": "bizcocho de cumpleaños",
       "aliases": {
         "ko": [],
-        "es": []
+        "es": ["pastel de cumpleaños"]
       },
       "provenance": "existing"
     },
@@ -2893,10 +2893,12 @@
       "id": "food-extra-003",
       "category_id": "food",
       "ko": "팝콘",
-      "es": "palomitas",
+      "es": "cocalecas",
       "aliases": {
         "ko": [],
         "es": [
+          "palomitas",
+          "palomitas de maíz",
           "rosetas de maíz",
           "popcorn"
         ]
@@ -3252,11 +3254,13 @@
       "id": "places-extra-003",
       "category_id": "places",
       "ko": "경찰서",
-      "es": "comisaría",
+      "es": "destacamento policial",
       "aliases": {
         "ko": [],
         "es": [
-          "cuartel de policía"
+          "comisaría",
+          "cuartel de policía",
+          "estación de policía"
         ]
       },
       "provenance": "added"

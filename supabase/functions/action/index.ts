@@ -1,5 +1,5 @@
 import {createClient} from 'npm:@supabase/supabase-js@2';
-import {engines as bundledEngines,createMatchState,executeAction,chatMessageForGame,reactionMessageForId,isCorrectGuess,getCatchmindDrawDurationMs} from '../_shared/engines.js';
+import {engines as bundledEngines,createMatchState,executeAction,chatMessageForGame,reactionMessageForId,isCorrectGuess,getCatchmindDrawDurationMs,advanceCatchmind} from '../_shared/engines.js';
 const engines:Record<string,any>=bundledEngines;
 
 const cors={'Access-Control-Allow-Origin':'*','Access-Control-Allow-Headers':'authorization, x-client-info, apikey, content-type','Access-Control-Allow-Methods':'POST, OPTIONS'};
@@ -27,12 +27,20 @@ Deno.serve(async req=>{
   if(operations!==1)return json({error:'invalid_operation'},400);
   // Expiration is computed from the trusted server clock.
   const now=Date.now();
-  let timedOut=false;
-  if(gameId==='catchmind'&&state?.phase==='drawing'&&state.deadlineAt&&Date.parse(state.deadlineAt)<=now){
+  let clockAdvanced=false;
+  if(gameId==='catchmind'&&state?.rulesVersion===2){
+   const next=advanceCatchmind(state,now);clockAdvanced=next!==state;state=next;
+  }else if(gameId==='catchmind'&&state?.phase==='drawing'&&state.deadlineAt&&Date.parse(state.deadlineAt)<=now){
    state=executeAction(engines.catchmind,state,state.drawer,{type:'timeout'}).state;state.deadlineAt=null;
-   timedOut=true;
+   clockAdvanced=true;
   }
-  if(input.selectGame!==undefined){
+  // Match actions and chat to the round the sender actually saw. A due clock
+  // transition may still be committed, but the old operation must not follow it.
+  const staleRound=gameId==='catchmind'&&state?.rulesVersion===2&&(input.action!==undefined||input.chat!==undefined)&&
+   (input.roundId!==state.roundId||input.expectedPhase!==state.phase||input.chat!==undefined&&state.phase!=='drawing');
+  if(staleRound&&!clockAdvanced)return json({error:'stale_state'},409);
+  if(staleRound){/* Persist the clock transition without applying the stale operation. */}
+  else if(input.selectGame!==undefined){
    if(!['davinci','catchmind','domino','jaipur','splendor','minhwatu','marble','rhythm'].includes(input.selectGame))return json({error:'invalid_game'},400);
    if(members.length!==2||!(pending===input.selectGame&&pendingBy!==identity.user.id)){pending=input.selectGame;pendingBy=identity.user.id;}
    else{state=createMatchState(input.selectGame,crypto.getRandomValues(new Uint32Array(1))[0],gameId,state);gameId=input.selectGame;pending=null;pendingBy=null;}
@@ -46,10 +54,13 @@ Deno.serve(async req=>{
    const engine=engines[gameId];if(!engine)return json({error:'no_game'},400);
    if(input.action.type==='timeout'||gameId==='catchmind'&&(input.action.type==='guess'||input.action.type==='reveal-hint'))return json({error:'use_chat_or_server_clock'},400);
    state=executeAction(engine,state,member.seat,input.action).state;
-   if(gameId==='catchmind'){if(input.action.type==='choose')state.deadlineAt=new Date(Date.now()+getCatchmindDrawDurationMs(state)).toISOString();else if(state.phase!=='drawing')state.deadlineAt=null;}
-  }else if(input.tick){if(gameId!=='catchmind'||!timedOut)return json({version:room.version});}
-  const {data:version,error}=await db.rpc('commit_action',{p_room:room.id,p_user:identity.user.id,p_version:input.version,p_request:input.requestId,p_state:state,p_views:playerViews(gameId,state),p_game:gameId,p_pending:pending,p_pending_by:pendingBy,p_chat:chat});
+   if(gameId==='catchmind'&&state.rulesVersion!==2){if(input.action.type==='choose')state.deadlineAt=new Date(Date.now()+getCatchmindDrawDurationMs(state)).toISOString();else if(state.phase!=='drawing')state.deadlineAt=null;}
+  }else if(input.tick){if(gameId!=='catchmind'||!clockAdvanced)return json({version:room.version});}
+  // A stale client request is not a successful action receipt. Use a distinct
+  // receipt for the server-only transition so retries stay rejected as stale.
+  const {data:version,error}=await db.rpc('commit_action',{p_room:room.id,p_user:identity.user.id,p_version:input.version,p_request:staleRound?crypto.randomUUID():input.requestId,p_state:state,p_views:playerViews(gameId,state),p_game:gameId,p_pending:pending,p_pending_by:pendingBy,p_chat:chat});
   if(error)return json({error:error.message},error.message.includes('stale_state')?409:400);
+  if(staleRound)return json({error:'stale_state'},409);
   if(chat?.status==='pending'&&gameId==='catchmind'){
    const recipient=members.find(m=>m.seat!==member.seat);
    if(!recipient||recipient.language===member.language){await db.from('chat_messages').update({status:'original'}).eq('id',input.requestId);}

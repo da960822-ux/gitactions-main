@@ -1,7 +1,7 @@
 import { describe, expect, it, vi } from 'vitest';
 import { createElement } from 'react';
 import { renderToStaticMarkup } from 'react-dom/server';
-import { catchmindEngine } from '../games/catchmind';
+import { advanceCatchmind, catchmindEngine } from '../games/catchmind';
 import CatchmindTable, { bucketFill, sendDrawQueue, composeDisplayedStrokes, catchmindChoicesNeedSettingsSave, catchmindCanvasMaxWidth, moveCatchmindCursor } from './CatchmindTable';
 
 function configured(seed: number) {
@@ -13,7 +13,7 @@ function markup(player: 'p1' | 'p2', revealHint = false) {
   let state = configured(8);
   const answer = state.wordChoices[0][0];
   state = catchmindEngine.applyAction(state, 'p1', { type: 'choose', payload: { wordId: 0 } });
-  if (revealHint) state = catchmindEngine.applyAction(state, 'p1', { type: 'reveal-hint' });
+  if (revealHint) state = advanceCatchmind(state, Date.parse(state.deadlineAt!) - state.settings.drawTimeSeconds * 500);
   return { answer, html: renderToStaticMarkup(createElement(CatchmindTable, {
     view: { ...catchmindEngine.getPlayerView(state, player), deadlineAt: new Date(Date.now() + 40_000).toISOString() },
     playerId: player,
@@ -162,7 +162,8 @@ describe('CatchmindTable', () => {
     timedOut = catchmindEngine.applyAction(timedOut, 'p1', { type: 'timeout' });
     const timeoutHtml = stateMarkup(timedOut, 'p1');
     expect(timeoutHtml).toContain('라운드 결과');
-    expect(timeoutHtml).toContain('라운드 종료');
+    expect(timeoutHtml).toContain('시간초과 또는 패스 · 두 사람 모두 +0점');
+    expect(timeoutHtml).toContain('자동 진행');
     expect(timeoutHtml).not.toContain('정답을 맞혀서 두 사람 모두 점수를 얻었어요.');
     expect(timeoutHtml).not.toContain('정답은 출제자만 볼 수 있어요.');
 

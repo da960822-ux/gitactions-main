@@ -201,23 +201,18 @@ export function Room({ api, roomId, desktopDisplay = true }: { api: Api; roomId:
   const updateSnapshot = useCallback(() => setSnapshot(api.getSnapshot()), [api]);
   useEffect(() => { const saved = snapshot.players.find(player => player.id === snapshot.playerId)?.language; if (active && saved && saved !== language) { setLanguage(saved); writeBrowserStorage('dos-language', saved); } }, [active, language, snapshot.playerId, snapshot.players]);
   useEffect(() => {
-    if (!active || !isCatchmind || view?.phase !== 'drawing' || !view.deadlineAt) return;
-    const deadline = String(view.deadlineAt);
+    if (!active || !isCatchmind) return;
     const update = () => {
-      const current = Date.now(); setNow(current);
-      const expired = Date.parse(deadline) <= current;
-      const requestKey = `${deadline}:timeout`;
-      if (!expired || tickedDeadline.current === requestKey) return;
-      tickedDeadline.current = requestKey;
+      setNow(Date.now());
+      if (tickedDeadline.current) return;
+      tickedDeadline.current = 'pending';
       void api.tick().then(() => {
         updateSnapshot();
-        const latest = api.getSnapshot().view;
-        if (latest?.phase === 'drawing' && latest.deadlineAt === deadline) tickedDeadline.current = '';
-      }).catch(cause => { tickedDeadline.current = ''; setActionError(errorMessage(cause, language)); });
+      }).catch(cause => { setActionError(errorMessage(cause, language)); }).finally(() => { tickedDeadline.current = ''; });
     };
     update(); const timer = window.setInterval(update, 1000);
     return () => window.clearInterval(timer);
-  }, [active, api, isCatchmind, language, updateSnapshot, view?.deadlineAt, view?.phase]);
+  }, [active, api, isCatchmind, language, updateSnapshot]);
   useEffect(() => {
     if (!active || snapshot.gameId !== 'marble' || view?.board?.tiles?.length !== 40) return;
     const frame = window.requestAnimationFrame(() => {

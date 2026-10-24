@@ -5,7 +5,7 @@ import { aiTurnDelay, chooseSimpleAiAction, supportsAi } from '../games/simpleAi
 import { executeAction, RETENTION_MS, chatMessageForGame, reactionMessageForId } from './authority';
 import type { ReactionId } from './reactions';
 import type { GameId, GameAction, Language, PlayerId } from './types';
-import { isCorrectGuess, getCatchmindDrawDurationMs } from '../games/catchmind';
+import { advanceCatchmind, getCatchmindHintStage, isCorrectGuess, getCatchmindDrawDurationMs } from '../games/catchmind';
 
 export interface RoomPlayer { id: PlayerId; nickname: string; language: Language; ready: boolean }
 export interface ChatMessage { id: string; playerId: PlayerId; text: string; translation?: string; targetLanguage?: Language; status: 'original'|'translated'|'limit'|'unavailable'|'correct'; createdAt:string }
@@ -122,7 +122,7 @@ class RoomClient {
     this.checkLocal();const engine=this.snapshot.gameId?engines[this.snapshot.gameId]:null;if(!engine)throw new Error('no_game');
     if(action.type==='timeout')throw new Error('server_clock_only');
     await this.tick();this.state=executeAction(engine,this.state,this.snapshot.playerId,action).state;
-    if(this.snapshot.gameId==='catchmind'){if(action.type==='choose')this.state.deadlineAt=new Date(Date.now()+getCatchmindDrawDurationMs(this.state)).toISOString();else if(this.state.phase!=='drawing')this.state.deadlineAt=null;}
+    if(this.snapshot.gameId==='catchmind'&&this.state.rulesVersion!==2){if(action.type==='choose')this.state.deadlineAt=new Date(Date.now()+getCatchmindDrawDurationMs(this.state)).toISOString();else if(this.state.phase!=='drawing')this.state.deadlineAt=null;}
     this.snapshot.version++;this.localView();this.emit();
   }
   private checkLocal() {if(!this.snapshot.roomId || this.expiresAt<Date.now())throw new Error('room_expired');}
@@ -147,8 +147,20 @@ class RoomClient {
     this.snapshot.messages=[...this.snapshot.messages,{id:crypto.randomUUID(),playerId:this.snapshot.playerId,text:message.text,status:message.status,createdAt:new Date().toISOString()}].filter(x=>Date.now()-Date.parse(x.createdAt)<RETENTION_MS);this.emit();
   }
   async tick() {
-    if(this.snapshot.gameId!=='catchmind'||!this.snapshot.view?.deadlineAt)return;
-    const now=Date.now(), expired=Date.parse(this.snapshot.view.deadlineAt)<=now;
+    if(this.snapshot.gameId!=='catchmind'||!this.snapshot.view)return;
+    const now=Date.now(), view=this.snapshot.view, board=view.board;
+    if(board?.rulesVersion===2){
+      const due=view.phase==='choosing'&&board.choosingDeadlineAt&&Date.parse(board.choosingDeadlineAt)<=now
+        ||view.phase==='round-over'&&board.roundOverAt&&Date.parse(board.roundOverAt)<=now
+        ||view.phase==='drawing'&&view.deadlineAt&&(Date.parse(view.deadlineAt)<=now||getCatchmindHintStage({settings:board.settings,deadlineAt:view.deadlineAt,rulesVersion:2} as any,now)>board.hintStage);
+      if(!due)return;
+      if(this.db){await this.invoke({tick:true});return;}
+      const next=advanceCatchmind(this.state,now);
+      if(next!==this.state){this.state=next;this.snapshot.version++;this.localView();this.emit();}
+      return;
+    }
+    if(!view.deadlineAt)return;
+    const expired=Date.parse(view.deadlineAt)<=now;
     if(this.db){if(expired)await this.invoke({tick:true});return;}
     if(this.state?.phase==='drawing'){
       let changed=false;
@@ -160,16 +172,17 @@ class RoomClient {
     const roomId=this.snapshot.roomId;
     const selectionVersion=operation.selectGame!==undefined || operation.action && (['domino','jaipur','splendor'].includes(this.snapshot.gameId??'') || this.snapshot.gameId==='catchmind'&&['choose','settings'].includes((operation.action as GameAction).type)) ? this.snapshot.version : null;
     const drawingDeadline=this.snapshot.gameId==='catchmind'&&operation.action&&this.snapshot.view?.phase==='drawing'?this.snapshot.view.deadlineAt:null;
-    const request=this.requestQueue.then(()=>this.invokeNow(operation,roomId,selectionVersion,drawingDeadline));
+    const catchmindIdentity=this.snapshot.gameId==='catchmind'&&this.snapshot.view?.board?.rulesVersion===2&& (operation.action||operation.chat) ? {roundId:this.snapshot.view.board.roundId,expectedPhase:this.snapshot.view.phase}:null;
+    const request=this.requestQueue.then(()=>this.invokeNow(operation,roomId,selectionVersion,drawingDeadline,catchmindIdentity));
     this.requestQueue=request.catch(()=>{});return request;
   }
-  private async invokeNow(operation:Record<string,unknown>,roomId:string|null,selectionVersion:number|null,drawingDeadline:string|null) {
+  private async invokeNow(operation:Record<string,unknown>,roomId:string|null,selectionVersion:number|null,drawingDeadline:string|null,catchmindIdentity:{roundId:string;expectedPhase:string}|null) {
     const requestId=crypto.randomUUID();
     for(let attempt=0;attempt<2;attempt++){
       if(!roomId || roomId!==this.snapshot.roomId)throw new Error('room_expired');
       if(selectionVersion!==null && selectionVersion!==this.snapshot.version)throw new Error('stale_state');
       if(drawingDeadline && drawingDeadline!==this.snapshot.view?.deadlineAt)throw new Error('stale_state');
-      const {error}=await this.db!.functions.invoke('action',{body:{roomId,version:this.snapshot.version,requestId,...operation}});
+      const {error}=await this.db!.functions.invoke('action',{body:{roomId,version:this.snapshot.version,requestId,...operation,...catchmindIdentity}});
       if(!error){await this.refresh();return;}
       if(selectionVersion!==null && ['FunctionsFetchError','FunctionsRelayError'].includes(error.name)){
         if(roomId===this.snapshot.roomId){
@@ -179,7 +192,7 @@ class RoomClient {
         throw new Error('action_confirmation_unknown');
       }
       let code=error.message;try{const body=await error.context?.json();code=body?.error||code;}catch{/* Transport errors have no JSON response. */}
-      if(code==='stale_state'&&attempt===0){await this.refresh();if(selectionVersion!==null)throw new Error('stale_state');continue;}throw new Error(code);
+      if(code==='stale_state'&&attempt===0){await this.refresh();if(selectionVersion!==null || catchmindIdentity && (this.snapshot.view?.board?.roundId!==catchmindIdentity.roundId || this.snapshot.view?.phase!==catchmindIdentity.expectedPhase))throw new Error('stale_state');continue;}throw new Error(code);
     }
   }
   async closeRoom() {

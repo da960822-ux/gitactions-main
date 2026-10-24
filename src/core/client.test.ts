@@ -54,13 +54,15 @@ describe('local practice client',()=>{
   expect(client.getSnapshot().messages.at(-1)?.status).toBe('unavailable');
   expect(client.getSnapshot().view.board.scores).toEqual({p1:0,p2:0});
  });
- it('accepts an answer just before expiration and ignores a later timeout',async()=>{
+ it('accepts an answer just before expiration, then automatically advances after five seconds without a later timeout',async()=>{
   await startDrawing();const answer=client.getSnapshot().view.hand.answer.es,deadline=Date.parse(client.getSnapshot().view.deadlineAt);
   client.localSeat('p2');const clock=vi.spyOn(Date,'now').mockReturnValue(deadline-1);
   await client.sendChat(answer);const solved=structuredClone(client.getSnapshot().view);
+  expect(solved.phase).toBe('round-over');
+  expect(solved.board.scores).toEqual({p1:100,p2:60});
   clock.mockReturnValue(deadline+60_000);await client.tick();
-  expect(client.getSnapshot().view).toEqual(solved);
-  expect(solved.board.scores).toEqual({p1:1,p2:1});
+  expect(client.getSnapshot().view).toMatchObject({phase:'choosing',board:{round:2,drawer:'p2',scores:solved.board.scores}});
+  expect(client.getSnapshot().view.board.roundId).not.toBe(solved.board.roundId);
  });
  it('keeps the same match until both seats accept, then preserves settings while resetting drawing, answer, score and deadline',async()=>{
   await startDrawing();const answer=client.getSnapshot().view.hand.answer.ko;

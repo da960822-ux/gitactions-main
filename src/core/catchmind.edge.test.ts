@@ -18,10 +18,11 @@ beforeAll(async () => {
 });
 afterEach(() => vi.restoreAllMocks());
 
-function fixture(gameId:'catchmind'|'domino'='catchmind') {
+function fixture(gameId:'catchmind'|'domino'='catchmind', modern=false) {
   const fresh = catchmindEngine.createInitialState(27);
   const configured = catchmindEngine.applyAction(fresh, 'p1', { type: 'settings', payload: { settings: { ...fresh.settings, category_id: 'food' } } });
   let state:any = catchmindEngine.applyAction(configured, 'p1', { type: 'choose', payload: { wordId: 0 } });
+  if (!modern) { delete state.rulesVersion; delete state.roundId; delete state.choosingDeadlineAt; delete state.roundOverAt; }
   const deadline = Date.now() + 80_000;
   state.deadlineAt = new Date(deadline).toISOString();
   if(gameId==='domino')state=dominoEngine.applyAction(dominoEngine.createInitialState(27),'p1',{type:'configure',payload:{mode:'partners',difficulty:'hard',targetScore:100}});
@@ -89,5 +90,54 @@ describe('Catchmind Edge clock and consent', () => {
     expect(f.state).toMatchObject({mode:'partners',round:1,roundResult:null,result:null,matchScores:{p1:0,p2:0},settings:{difficulty:'hard',targetScore:100}});
     expect(dominoEngine.getPlayerView(f.state,'p1').board.seats).toHaveLength(4);
     expect(f.room.pending_game).toBeNull();
+  });
+});
+
+describe('Catchmind v2 Edge authority', () => {
+  it('commits a hint only at its server-clock boundary and scores from that hint', async () => {
+    const f=fixture('catchmind',true), roundId=f.state.roundId;
+    vi.spyOn(Date,'now').mockReturnValue(f.deadline-40_001);
+    expect((await f.send('p2',{tick:true})).status).toBe(200);
+    expect(f.commits).toHaveLength(0);
+    vi.spyOn(Date,'now').mockReturnValue(f.deadline-40_000);
+    expect((await f.send('p2',{tick:true})).status).toBe(200);
+    expect(f.commits).toHaveLength(1);
+    expect(f.state.hintStage).toBe(1);
+    expect(f.state.roundId).toBe(roundId);
+    const answer=f.state.answer!.ko;
+    expect((await f.send('p2',{chat:answer,roundId,expectedPhase:'drawing'})).status).toBe(200);
+    expect(f.state.score).toEqual({p1:100,p2:130});
+    expect(f.state.phase).toBe('round-over');
+    expect(f.state.roundOverAt).not.toBeNull();
+  });
+
+  it('commits expiration without applying a stale answer or retry receipt', async () => {
+    const f=fixture('catchmind',true), answer=f.state.answer!.es, roundId=f.state.roundId;
+    vi.spyOn(Date,'now').mockReturnValue(f.deadline);
+    const requestId=crypto.randomUUID();
+    const stale={chat:answer,roundId,expectedPhase:'drawing'};
+    expect((await f.send('p2',stale,1,requestId)).status).toBe(409);
+    expect(f.state.phase).toBe('round-over');
+    expect(f.state.score).toEqual({p1:0,p2:0});
+    expect(f.commits).toHaveLength(1);
+    expect(f.commits[0].p_chat).toBeNull();
+    expect(f.commits[0].p_request).not.toBe(requestId);
+    expect((await f.send('p2',stale,1,requestId)).status).toBe(409);
+  });
+
+  it('automatically chooses and advances after the display delay without replaying an old action', async () => {
+    const f=fixture('catchmind',true);
+    f.state.phase='choosing';f.state.answer=null;f.state.deadlineAt=null;
+    f.state.choosingDeadlineAt=new Date(f.deadline-15_000).toISOString();
+    vi.spyOn(Date,'now').mockReturnValue(f.deadline);
+    expect((await f.send('p2',{tick:true})).status).toBe(200);
+    expect(f.state.phase).toBe('drawing');
+    expect(f.state.deadlineAt).toBe(new Date(f.deadline+80_000).toISOString());
+    const oldRoundId=f.state.roundId;
+    f.state.phase='round-over';f.state.roundOverAt=new Date(f.deadline).toISOString();f.state.deadlineAt=null;
+    expect((await f.send('p1',{action:{type:'end-round'},roundId:oldRoundId,expectedPhase:'round-over'})).status).toBe(409);
+    expect(f.state.phase).toBe('choosing');
+    expect(f.state.roundId).not.toBe(oldRoundId);
+    expect(f.state.round).toBe(1);
   });
 });

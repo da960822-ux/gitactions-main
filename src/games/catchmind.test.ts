@@ -1,5 +1,5 @@
 import { afterEach, describe, expect, it, vi } from 'vitest';
-import { catchmindDrawDurationMs, catchmindEngine, catchmindDictionary, catchmindCategories, catchmindTopicWords, getCatchmindHintStage, isCorrectGuess } from './catchmind';
+import { advanceCatchmind, catchmindDrawDurationMs, catchmindEngine, catchmindDictionary, catchmindCategories, catchmindTopicWords, getCatchmindHintStage, isCorrectGuess } from './catchmind';
 
 const configure = (state: any, category_id = 'animals', overrides: Record<string, unknown> = {}) => catchmindEngine.applyAction(state, 'p1', { type: 'settings', payload: { settings: { ...state.settings, category_id, ...overrides } } });
 
@@ -38,8 +38,9 @@ describe('catchmindEngine', () => {
     const before = s.strokes;
     expect(s.strokes[0]).toMatchObject({ color: '#e57f6a', width: 7 });
     s = catchmindEngine.applyAction(s, 'p2', { type: 'guess', payload: { text: answer.es } });
-    expect(s.score.p1).toBe(1);
-    expect(s.score.p2).toBe(3);
+    expect(s.score.p1).toBe(100);
+    expect(s.score.p2).toBeGreaterThanOrEqual(199);
+    expect(s.score.p2).toBeLessThanOrEqual(200);
     expect(s.phase).toBe('round-over');
     expect(before).toHaveLength(1);
     expect(catchmindEngine.getPlayerView(s, 'p2').board.answer).toEqual({ ko: answer.ko, es: answer.es });
@@ -67,7 +68,7 @@ describe('catchmindEngine', () => {
     expect(s.result.winner).toBe('draw');
   });
 
-  it('accepts only canonical words with accents intact, case folding, and outer whitespace', () => {
+  it('matches canonical words with optional vowel accents, case folding, and collapsed spaces while preserving ñ', () => {
     const s = configure(catchmindEngine.createInitialState(4));
     s.phase = 'drawing';
     s.answer = catchmindDictionary.find(word => word.es === 'gato')!;
@@ -77,10 +78,10 @@ describe('catchmindEngine', () => {
     expect(isCorrectGuess(s, 'chivo')).toBe(false);
     s.answer = catchmindDictionary.find(word => word.es === 'arcoíris')!;
     expect(isCorrectGuess(s, 'arcoíris')).toBe(true);
-    expect(isCorrectGuess(s, 'arcoiris')).toBe(false);
+    expect(isCorrectGuess(s, 'arcoiris')).toBe(true);
     s.answer = catchmindDictionary.find(word => word.es === 'pavo real')!;
     expect(isCorrectGuess(s, 'pavo real')).toBe(true);
-    expect(isCorrectGuess(s, 'pavo  real')).toBe(false);
+    expect(isCorrectGuess(s, 'pavo  real')).toBe(true);
     s.answer = catchmindDictionary.find(word => word.es === 'araña')!;
     expect(isCorrectGuess(s, 'araña')).toBe(true);
     expect(isCorrectGuess(s, 'ARAÑA')).toBe(true);
@@ -90,7 +91,7 @@ describe('catchmindEngine', () => {
   it('scores correct guesses from trusted server time remaining', () => {
     vi.useFakeTimers();
     vi.setSystemTime(new Date('2026-01-01T00:00:00.000Z'));
-    for (const [elapsed, expected] of [[0, 3], [27_000, 2], [54_000, 1], [79_000, 1]]) {
+    for (const [elapsed, expected] of [[0, 200], [27_000, 166], [54_000, 112], [79_000, 61]]) {
       let s = configure(catchmindEngine.createInitialState(100 + elapsed));
       s = catchmindEngine.applyAction(s, 'p1', { type: 'choose', payload: { wordId: 0 } });
       const answer = s.answer!;
@@ -98,7 +99,7 @@ describe('catchmindEngine', () => {
       vi.setSystemTime(Date.now() + elapsed);
       s = catchmindEngine.applyAction(s, 'p2', { type: 'guess', payload: { text: answer.ko } });
       expect(s.score.p2).toBe(expected);
-      expect(s.score.p1).toBe(1);
+      expect(s.score.p1).toBe(100);
       vi.setSystemTime(new Date('2026-01-01T00:00:00.000Z'));
     }
   });
@@ -113,6 +114,19 @@ describe('catchmindEngine', () => {
     expect(catchmindDictionary).toContainEqual(expect.objectContaining({ ko: '컴퓨터', es: 'computadora' }));
     expect(catchmindDictionary).toContainEqual(expect.objectContaining({ ko: '버스', es: 'guagua' }));
     expect(catchmindDictionary).toContainEqual(expect.objectContaining({ ko: '연', es: 'chichigua' }));
+    expect(catchmindDictionary).toContainEqual(expect.objectContaining({ ko: '오토바이', es: 'motor' }));
+    expect(catchmindDictionary).toContainEqual(expect.objectContaining({ ko: '버스 정류장', es: 'parada de guagua' }));
+    expect(catchmindDictionary).toContainEqual(expect.objectContaining({ ko: '헤드폰', es: 'audífonos' }));
+    for (const [id, spanish, oldAnswer] of [
+      ['legacy-105', 'motor', 'motocicleta'], ['legacy-097', 'parada de guagua', 'parada de autobús'],
+      ['legacy-158', 'bizcocho', 'pastel'], ['legacy-188', 'bizcocho de cumpleaños', 'pastel de cumpleaños'],
+      ['food-extra-003', 'cocalecas', 'palomitas'], ['legacy-121', 'audífonos', 'auriculares'],
+      ['places-extra-003', 'destacamento policial', 'comisaría'],
+    ]) {
+      const concept = catchmindTopicWords.find(word => word.id === id)!;
+      expect(concept.es).toBe(spanish);
+      expect(concept.aliases?.es).toContain(oldAnswer);
+    }
     const owner = new Map<string, number>();
     catchmindDictionary.forEach((concept, id) => {
       for (const word of [concept.ko, concept.es]) {
@@ -203,9 +217,9 @@ describe('catchmindEngine', () => {
     s = catchmindEngine.applyAction(s, 'p1', { type: 'choose', payload: { wordId: 0 } });
     const answer = s.answer;
     s.deadlineAt = new Date(60_000).toISOString();
-    expect(getCatchmindHintStage(s, 19_999)).toBe(0);
-    expect(getCatchmindHintStage(s, 20_000)).toBe(1);
-    expect(getCatchmindHintStage(s, 40_000)).toBe(2);
+    expect(getCatchmindHintStage(s, 29_999)).toBe(0);
+    expect(getCatchmindHintStage(s, 30_000)).toBe(1);
+    expect(getCatchmindHintStage(s, 45_000)).toBe(2);
     expect(JSON.stringify(catchmindEngine.getPlayerView(s, 'p2'))).not.toContain(answer.ko);
     s = catchmindEngine.applyAction(s, 'p1', { type: 'draw', payload: { strokes: [{ points: [{ x: 0.1, y: 0.1 }, { x: 0.9, y: 0.1 }], color: '#000000', width: 4 }] } });
     s = catchmindEngine.applyAction(s, 'p1', { type: 'fill', payload: { x: 0.5, y: 0.5, color: '#ff0000' } });
@@ -236,14 +250,14 @@ describe('catchmindEngine', () => {
     expect(catchmindEngine.validateAction(s, 'p1', { type: 'settings', payload: { settings: { ...s.settings, category_id: 'food' } } })).toBeTruthy();
   });
 
-  it('matches explicit aliases with exact NFC, case, and trim normalization only', () => {
+  it('matches explicit aliases with NFC, case, space, and vowel accent normalization', () => {
     const s: any = configure(catchmindEngine.createInitialState(9), 'food');
     s.phase = 'drawing';
     s.answer = catchmindTopicWords.find(word => word.id === 'food-extra-009');
     expect(isCorrectGuess(s, ' MANGU ')).toBe(true);
     expect(isCorrectGuess(s, 'mangú')).toBe(true);
     expect(isCorrectGuess(s, 'mang u')).toBe(false);
-    expect(isCorrectGuess(s, 'mángu')).toBe(false);
+    expect(isCorrectGuess(s, 'mángu')).toBe(true);
     s.answer = catchmindTopicWords.find(word => word.id === 'food-extra-015');
     expect(isCorrectGuess(s, 'cafe')).toBe(true);
   });
@@ -267,7 +281,7 @@ describe('catchmindEngine', () => {
     expect(catchmindEngine.validateAction(legacy, 'p1', { type: 'choose', payload: { wordId: 0 } })).toBeNull();
   });
 
-  it('uses static language masks and carries no answer text to the guesser', () => {
+  it('uses private language masks and carries no answer text to the guesser', () => {
     let s: any = configure(catchmindEngine.createInitialState(81), 'food');
     s.phase = 'drawing'; s.answer = catchmindTopicWords.find(word => word.id === 'food-extra-015');
     const guesser = catchmindEngine.getPlayerView(s, 'p2');
@@ -277,7 +291,126 @@ describe('catchmindEngine', () => {
     s.answer = { ko: '불가사리', es: 'estrella de mar' };
     const spaced = catchmindEngine.getPlayerView(s, 'p2').board.hintWord;
     expect(spaced).toEqual({ ko: '□□□□', es: '???????? ?? ???' });
-    s = catchmindEngine.applyAction(s, 'p1', { type: 'reveal-hint' });
+    expect(catchmindEngine.validateAction(s, 'p1', { type: 'reveal-hint' })).toBe('Hints follow the server clock');
     expect(catchmindEngine.getPlayerView(s, 'p2').board.hintWord).toEqual(spaced);
+  });
+});
+
+describe('catchmind timed two-player rules', () => {
+  const start = new Date('2026-01-01T00:00:00.000Z');
+  const begin = (overrides: Record<string, unknown> = {}) => {
+    vi.useFakeTimers();
+    vi.setSystemTime(start);
+    return configure(catchmindEngine.createInitialState(42), 'animals', overrides);
+  };
+
+  it('offers three words and selects one from the server after 15 seconds', () => {
+    const choosing = begin();
+    expect(choosing.rulesVersion).toBe(2);
+    expect(choosing.wordChoices[0]).toHaveLength(3);
+    expect(advanceCatchmind(choosing, start.getTime() + 14_999)).toBe(choosing);
+    vi.setSystemTime(start.getTime() + 15_000);
+    const drawing = advanceCatchmind(choosing, Date.now());
+    expect(drawing.phase).toBe('drawing');
+    expect(drawing.answer).toBeTruthy();
+    expect(drawing.deadlineAt).toBe(new Date(Date.now() + 80_000).toISOString());
+    expect(drawing.choosingDeadlineAt).toBeNull();
+  });
+
+  it('reveals hints only at 50% and 75%, then transitions on the server clock', () => {
+    let s = begin({ drawTimeSeconds: 60, hints: 2 });
+    s = catchmindEngine.applyAction(s, 'p1', { type: 'choose', payload: { wordId: 0 } });
+    expect(getCatchmindHintStage(s, start.getTime() + 29_999)).toBe(0);
+    s = advanceCatchmind(s, start.getTime() + 30_000);
+    expect(s.hintStage).toBe(1);
+    expect(getCatchmindHintStage(s, start.getTime() + 44_999)).toBe(1);
+    s = advanceCatchmind(s, start.getTime() + 45_000);
+    expect(s.hintStage).toBe(2);
+    expect(advanceCatchmind(s, start.getTime() + 59_999)).toBe(s);
+    s = advanceCatchmind(s, start.getTime() + 60_000);
+    expect(s.phase).toBe('round-over');
+    expect(s.roundOverAt).toBe(new Date(start.getTime() + 65_000).toISOString());
+    expect(s.score).toEqual({ p1: 0, p2: 0 });
+    expect(advanceCatchmind(s, start.getTime() + 64_999)).toBe(s);
+    vi.setSystemTime(start.getTime() + 65_000);
+    s = advanceCatchmind(s, Date.now());
+    expect(s.round).toBe(1);
+    expect(s.drawer).toBe('p2');
+    expect(s.phase).toBe('choosing');
+  });
+
+  it('never leaks a whole short, numeric, or emoji answer in a hint mask', () => {
+    const base = begin();
+    const drawing = catchmindEngine.applyAction(base, 'p1', { type: 'choose', payload: { wordId: 0 } });
+    for (const answer of [{ ko: '가', es: '7' }, { ko: '🎨', es: '🥑' }, { ko: '가나', es: '8🎨' }]) {
+      const s = { ...drawing, answer, hintStage: 2 };
+      const view = catchmindEngine.getPlayerView(s, 'p2');
+      expect(view.board.hintWord!.ko).not.toBe(answer.ko);
+      expect(view.board.hintWord!.es).not.toBe(answer.es);
+      expect(JSON.stringify(view)).not.toContain(`"ko":"${answer.ko}"`);
+    }
+  });
+
+  it('uses only actually enabled hints when awarding points and gives the drawer 100', () => {
+    let s = begin({ hints: 0 });
+    s = catchmindEngine.applyAction(s, 'p1', { type: 'choose', payload: { wordId: 0 } });
+    expect(catchmindEngine.getPlayerView(s, 'p2').board.hintLength).toBeNull();
+    expect(catchmindEngine.getPlayerView(s, 'p2').board.hintWord).toBeNull();
+    vi.setSystemTime(start.getTime() + 60_000);
+    s = advanceCatchmind(s, Date.now());
+    expect(s.hintStage).toBe(0);
+    s = catchmindEngine.applyAction(s, 'p2', { type: 'guess', payload: { text: s.answer!.ko } });
+    expect(s.score).toEqual({ p1: 100, p2: 125 });
+    expect(s.roundOverAt).toBe(new Date(Date.now() + 5000).toISOString());
+    expect(catchmindEngine.validateAction(s, 'p2', { type: 'guess', payload: { text: s.answer!.ko } })).toBeTruthy();
+    expect(s.score).toEqual({ p1: 100, p2: 125 });
+  });
+
+  it('counts Unicode graphemes and keeps complete answers hidden after both hints', () => {
+    const base = begin();
+    const drawing = catchmindEngine.applyAction(base, 'p1', { type: 'choose', payload: { wordId: 0 } });
+    const s = { ...drawing, answer: { ko: '한글👩‍🎨', es: 'cáfe☕' }, hintStage: 2 };
+    const view = catchmindEngine.getPlayerView(s, 'p2');
+    expect(view.board.hintLength).toEqual({ ko: 3, es: 5 });
+    expect(view.board.hintWord!.ko).not.toBe(s.answer.ko);
+    expect(view.board.hintWord!.es).not.toBe(s.answer.es);
+  });
+
+  it('enforces even round settings for a new match and preserves legacy odd-round state', () => {
+    const fresh = begin();
+    expect(catchmindEngine.validateAction(fresh, 'p1', { type: 'settings', payload: { settings: { ...fresh.settings, category_id: 'animals', rounds: 3 } } })).toBeTruthy();
+    expect(catchmindEngine.validateAction(fresh, 'p1', { type: 'settings', payload: { settings: { ...fresh.settings, category_id: 'animals', rounds: 2 } } })).toBeNull();
+    const legacy = { ...fresh, rulesVersion: undefined, roundId: undefined, settings: { ...fresh.settings, rounds: 3 }, score: { p1: 5, p2: 2 }, deadlineAt: '2026-01-01T00:02:00.000Z' };
+    expect(advanceCatchmind(legacy, start.getTime() + 121_000)).toBe(legacy);
+    expect(legacy.settings.rounds).toBe(3);
+    expect(legacy.score).toEqual({ p1: 5, p2: 2 });
+    expect(legacy.deadlineAt).toBe('2026-01-01T00:02:00.000Z');
+  });
+
+  it('keeps a legacy live round on its original scoring and normalization rules', () => {
+    const fresh = begin();
+    const legacy = { ...fresh, rulesVersion: undefined, roundId: undefined, phase: 'drawing' as const, answer: { ko: '무지개', es: 'arcoíris' }, deadlineAt: new Date(start.getTime() + 80_000).toISOString() };
+    expect(isCorrectGuess(legacy, 'arcoiris')).toBe(false);
+    expect(isCorrectGuess(legacy, 'arcoíris')).toBe(true);
+    const scored = catchmindEngine.applyAction(legacy, 'p2', { type: 'guess', payload: { text: 'arcoíris' } });
+    expect(scored.score).toEqual({ p1: 1, p2: 3 });
+    expect(scored.rulesVersion).toBeUndefined();
+  });
+
+  it('collapses spaces and optional vowel accents but never merges n and ñ or matches substrings', () => {
+    const s = begin();
+    s.phase = 'drawing';
+    s.answer = { ko: '  별 빛  ', es: 'piñata azul', aliases: { es: ['canción'] } };
+    expect(isCorrectGuess(s, '  별   빛 ')).toBe(true);
+    expect(isCorrectGuess(s, ' PIÑATA    AZUL ')).toBe(true);
+    expect(isCorrectGuess(s, 'pinata azul')).toBe(false);
+    expect(isCorrectGuess(s, 'cancion')).toBe(true);
+    expect(isCorrectGuess(s, 'piñata')).toBe(false);
+  });
+
+  it('rejects custom answer collisions after the same accent and space normalization', () => {
+    const fresh = begin();
+    const conflicting = { ...fresh.settings, category_id: 'animals', customWords: [{ ko: '작은 별', es: 'canción' }, { ko: '작은   별', es: 'cancion' }] };
+    expect(catchmindEngine.validateAction(fresh, 'p1', { type: 'settings', payload: { settings: conflicting } })).toBeTruthy();
   });
 });
