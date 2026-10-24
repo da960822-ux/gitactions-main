@@ -1,6 +1,8 @@
 import { createElement } from 'react';
 import { renderToStaticMarkup } from 'react-dom/server';
 import { describe, expect, it, vi } from 'vitest';
+import { readFileSync } from 'node:fs';
+import { resolve } from 'node:path';
 import type { GameAction } from '../core/types';
 import { dominoEngine } from '../games/domino';
 import { lisbethDominoRules } from '../games/rules';
@@ -119,6 +121,17 @@ describe('DominoBoard', () => {
     expect(html.indexOf('class="dp-end-docks"')).toBeGreaterThan(html.indexOf('class="dp-chain-scroll"'));
     expect(html).toContain('data-domino-tile-key="2:6:0"');
     expect(html).toContain('class="dp-chain-scroll" tabindex="-1"');
+  });
+
+  it('reserves the end-control lanes even when a four-seat chain grows beyond the table', () => {
+    const tiles = Array.from({ length: 18 }, (_, index) => ({ a: index % 7, b: (index + 1) % 7, by: 'p2', side: 'right', sequence: index + 1 }));
+    const view = fixture({ mode: 'partners', board: { ...fixture().board, tiles, seats: ['p1', 'b1', 'p2', 'b2'] } });
+    const html = render(view);
+    expect(html.match(/class="dp-tile is-chain/g)).toHaveLength(18);
+    expect(html.indexOf('class="dp-end-docks"')).toBeGreaterThan(html.indexOf('class="dp-chain-scroll"'));
+    const css = readFileSync(resolve('src/styles/domino-premium.css'), 'utf8');
+    expect(css).toMatch(/min-height: clamp\(190px, 25vw, 270px\); padding: 22px 104px 36px/);
+    expect(css).toMatch(/min-height: clamp\(150px, 22dvh, 180px\); padding: 12px 104px 22px/);
   });
 
   it('shows all four seats and team roles in partner mode without revealing bot pip faces', () => {

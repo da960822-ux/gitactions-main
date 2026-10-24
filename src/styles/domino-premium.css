@@ -304,7 +304,8 @@ button.dp-settings-launcher { justify-content:center; min-height:44px; padding:7
 .dp-seat.is-turn { box-shadow: 0 0 0 2px #46896133, 0 3px 9px #225c4920; }
 .dp-backs { right: 8px; bottom: 8px; height: 20px; }
 .dp-back { width: 23px; margin-left: -11px; }
-.dp-felt { min-height: clamp(190px, 25vw, 270px); padding: 22px 18px 36px; }
+/* Keep the scrollable chain clear of the fixed 76px end controls. */
+.dp-felt { min-height: clamp(190px, 25vw, 270px); padding: 22px 104px 36px; }
 .dp-chain { min-height: 88px; }
 .dp-tile.is-chain { width: 84px; }
 .dp-tile.is-chain .domino-tile__art { width: 84px; }
@@ -339,5 +340,5 @@ button.dp-settings-launcher { justify-content:center; min-height:44px; padding:7
 }
 
 @media (min-width: 1024px) and (max-height: 850px) and (pointer: fine) {
-  .dp-felt { min-height: clamp(150px, 22dvh, 180px); padding: 12px 16px 22px; }
+  .dp-felt { min-height: clamp(150px, 22dvh, 180px); padding: 12px 104px 22px; }
 }
