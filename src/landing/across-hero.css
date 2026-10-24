@@ -39,3 +39,8 @@
 .folded-playhouse .folded-portrait-fallback{height:auto;max-height:none;aspect-ratio:1312/1199;object-fit:fill}
 
 @media(max-width:760px){.landing:has(.folded-playhouse) .landing-nav nav>a{font-size:12px;min-height:44px;display:inline-flex;align-items:center}.landing:has(.folded-playhouse) .landing-language button{min-width:44px;min-height:44px}.across-letter-link{font-size:12px}.across-bottom a{font-size:11px;min-height:44px}}
+
+/* The approved Spanish headline remains one line within its three-line layout. */
+.across-editorial .across-title-line.is-long-es{white-space:nowrap;font-size:.7em}
+@media(min-width:761px) and (max-width:1100px){.across-editorial .across-title-line.is-long-es{font-size:.74em}}
+@media(max-width:760px){.across-editorial .across-title-line.is-long-es{font-size:.72em}}

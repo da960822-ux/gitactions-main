@@ -11,6 +11,15 @@ import { resolve } from 'node:path';
 import { engines } from '../core/registry';
 
 describe('public game boards', () => {
+  it('shows the Marble couple joke only in two-person matches', () => {
+    const view = engines.marble!.getPlayerView(engines.marble!.createInitialState(7), 'p1') as any;
+    for (const [language, line] of [['ko', '같이 여행은 가도, 통행료는 따로야.'], ['es', 'Viajamos juntos, pero el alquiler va por separado.']] as const) {
+      const render = (solo: boolean) => renderToStaticMarkup(<MarbleBoard view={view} playerId="p1" language={language} runAction={() => {}} solo={solo}/>);
+      expect(render(false)).toContain(line);
+      expect(render(true)).not.toContain(line);
+    }
+  });
+
   it('keeps local country flags beside all saved route-v2 city names in both locales', () => {
     const engine = engines.marble!;
     const state = { ...(engine.createInitialState(7) as any), cityRouteVersion: 2 };

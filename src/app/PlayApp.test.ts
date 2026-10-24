@@ -559,7 +559,7 @@ it('offers selected-game entry without required profiles or manual invitation co
   vi.stubGlobal('window', { location: new URL('https://games.example/play?game=jaipur') });
   const api = bindApi({ client, isOnlineConfigured: false });
   const html = renderToStaticMarkup(createElement(Lobby, { api, desktopDisplay: true }));
-  expect(html).toContain('친구와 플레이');
+  expect(html).toContain('함께 플레이');
   expect(html).toContain('AI와 1대1');
   expect(html).not.toContain('AI와 2대2');
   expect(html).toContain('내 별명 (선택)');

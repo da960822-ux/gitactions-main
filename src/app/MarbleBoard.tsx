@@ -16,7 +16,7 @@ import './marble-ownership.css';
 
 type Choice = { label: Record<Language, string>; action: GameAction };
 type Seat = PlayerId;
-type Props = { view: any; language: Language; playerId: PlayerId; runAction: (action: GameAction) => void | Promise<unknown> };
+type Props = { view: any; language: Language; playerId: PlayerId; runAction: (action: GameAction) => void | Promise<unknown>; solo?: boolean };
 const copy = (language: Language, ko: string, es: string) => language === 'ko' ? ko : es;
 const record = (value: unknown): Record<string, any> => value && typeof value === 'object' && !Array.isArray(value) ? value as Record<string, any> : {};
 const list = (value: unknown): any[] => Array.isArray(value) ? value : [];
@@ -63,7 +63,7 @@ export function focusMarbleAction(panel: HTMLElement | null) {
   (panel?.querySelector<HTMLElement>('.mp-action-primary:not(:disabled)') ?? panel?.querySelector<HTMLElement>('button:not(:disabled),select:not(:disabled)') ?? panel)?.focus();
 }
 
-export default function MarbleBoard({ view: rawView, language, playerId, runAction }: Props) {
+export default function MarbleBoard({ view: rawView, language, playerId, runAction, solo = false }: Props) {
   const view = record(rawView), board = record(view.board), tiles = list(board.tiles), choices: Choice[] = list(view.actions);
   const players: Seat[] = ['p1', 'p2'];
   const seatLabel = (seat: Seat) => seatName(seat, playerId, language);
@@ -252,7 +252,7 @@ export default function MarbleBoard({ view: rawView, language, playerId, runActi
   const outcome = view.result?.winner === 'draw' ? 'draw' : view.result?.winner === playerId ? 'win' : view.result ? 'lose' : '';
 
   return <section className={`marble-premium distilled-marble ${isLegacy ? 'is-legacy' : 'is-modern'}`} aria-label={copy(language, '부루마블 경기판', 'Tablero de Marble')}>
-    <header className="mp-header"><div className="mp-brand"><h2>{copy(language, '부루마블', 'Marble')}</h2><p>{copy(language, '도시를 사고 건물을 지으며 여행해요. 네 도시에 들를 땐 지갑도 챙겨야겠네.', 'Compra ciudades, construye y recorre el mundo. Para visitarte, tendré que llevar la cartera.')}</p></div><div className={`mp-turn-badge ${active ? 'is-active' : ''}`}><span className="mp-turn-gem" aria-hidden="true"/><b>{statusCopy}</b><span>{phaseLabel}</span></div></header>
+    <header className="mp-header"><div className="mp-brand"><h2>{copy(language, '부루마블', 'Marble')}</h2><p>{solo ? copy(language, '도시를 사고 건물을 지으며 여행해요.', 'Compra ciudades, construye y recorre el mundo.') : copy(language, '도시를 사고 건물을 지으며 여행해요. 같이 여행은 가도, 통행료는 따로야.', 'Compra ciudades, construye y recorre el mundo. Viajamos juntos, pero el alquiler va por separado.')}</p></div><div className={`mp-turn-badge ${active ? 'is-active' : ''}`}><span className="mp-turn-gem" aria-hidden="true"/><b>{statusCopy}</b><span>{phaseLabel}</span></div></header>
 
     <a className="mp-action-skip" href="#marble-current-action" onClick={event => { event.preventDefault(); focusMarbleAction(actionPanelRef.current); }}>{copy(language, '현재 행동으로 이동', 'Ir a la acción actual')}</a>
     <div className="mp-layout" ref={layoutRef}>

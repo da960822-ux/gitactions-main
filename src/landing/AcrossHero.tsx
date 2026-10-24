@@ -11,7 +11,7 @@ export function AcrossHero({language,ready,introActive,onSkip}:Props){
    <img className={`folded-portrait-fallback${ready?' is-ready':''}`} src="/images/approved-couple-room/approved-character-reference.png" alt="" aria-hidden="true" fetchPriority="high"/>
    <div className="across-editorial">
     <p className="folded-dedication">YEONSEOK <span aria-hidden="true">♡</span> LISBETH <i>04.04.2025</i></p>
-    <h1 id="hero-title"><span className="across-title-line folded-baby">Baby,</span><span className="across-title-line">{es?'contigo':'너랑 놀 때가'}</span><span className="across-title-line">{es?'me divierto más.':'제일 좋아.'}</span></h1>
+    <h1 id="hero-title"><span className="across-title-line folded-baby">Baby,</span><span className="across-title-line">{es?'contigo':'너랑 놀 때가'}</span><span className={`across-title-line${es?' is-long-es':''}`}>{es?'me divierto más.':'제일 좋아.'}</span></h1>
     <p className="across-caption">{es?<>Aunque estemos lejos, riámonos juntos.<br/>Eso sí, no dije que te iba a dejar ganar, haha.</>:<>멀리 있어도 같이 웃자.<br/>봐주겠다는 말은 안 했어 ㅋㅋㅋ</>}</p>
     <div className="across-actions"><a className="across-play" href="#games"><span>{es?'Vamos a jugar':'같이 놀자'}</span><span aria-hidden="true">↗</span></a></div>
    </div>

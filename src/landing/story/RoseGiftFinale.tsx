@@ -51,7 +51,7 @@ const armPaths={"donor": "M544,590 L550,594 L556,621 L587,634 L600,636 L618,635 
 const roseHole='M658 420L781 420L797 519L819 575L843 742L794 748L762 644L707 565L663 527Z';
 export function roseGiftClosingLine(language:'ko'|'es',received:boolean,pactAccepted:boolean){
  if(received&&pactAccepted)return language==='ko'?'네가 사인했으니까, 이제 우리는 평생 함께야, Baby. 내가 제일 좋아하는 내 편, 오래오래 나랑 함께해줘 ♡':'Como firmaste, ahora vamos a estar juntos toda la vida, Baby. Mi persona favorita, quédate conmigo por muchos, muchos años ♡';
- return language==='ko'?'마지막으로, 내 장미 한 송이.':'Y para terminar, una rosa de mi parte.';
+ return language==='ko'?'장미 한 송이랑, 사랑한다는 말 한 번 더.':'Una rosa y un «te amo» más.';
 }
 export function RoseGiftFinale({language,reducedMotion=false,pactAccepted=false,onReceived}:{language:'ko'|'es';reducedMotion?:boolean;pactAccepted?:boolean;onReceived?:()=>void}){
  const ko=language==='ko',id=useId(),titleId='rose-gift-title',root=useRef<HTMLElement>(null),art=useRef<SVGSVGElement>(null);

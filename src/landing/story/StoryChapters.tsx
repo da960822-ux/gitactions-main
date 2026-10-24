@@ -45,7 +45,7 @@ export function StoryChapters({language}:{language:'ko'|'es'}){
    <div className="story-distance-copy"><h2 id="story-distance-title">{ko?'멀리 있어도, 너랑.':'Lejos, pero contigo.'}</h2><div className="story-distance-facts"><p className="story-distance-number"><span>{ko?'약':'Unos'}</span>{distance}<small>km</small></p><p className="story-reference">{ko?'광주에서 산토도밍고까지, 도시 중심을 잇는 직선거리야.':'Distancia aproximada entre los centros de Gwangju y Santo Domingo.'}</p></div>
    <p className="story-distance-reason">{ko?'한국 리듬게임에 접속이 안 됐잖아. 그래도 너랑 놀고 싶은 마음은 그대로였어. 그럼 여기서 같이 놀자, Baby.':'No podías entrar al juego de ritmo de Corea desde República Dominicana. Pero yo seguía con ganas de jugar contigo. Así que juguemos aquí, Baby.'}</p></div>
    <CountryCompanions language={language}/>
-   <a className="text-button story-next" href="#time-difference">{ko?'같이 놀 시간도 골라볼까?':'Busquemos nuestra hora para jugar'}<span aria-hidden="true">↓</span></a>
+   <a className="text-button story-next" href="#time-difference">{ko?'같이 놀 시간도 골라볼까?':'¿Buscamos una hora para jugar?'}<span aria-hidden="true">↓</span></a>
   </section>
   <section id="time-difference" className="story-chapter story-time" data-pose=".16" aria-labelledby="story-time-title">
    <div className="story-time-intro"><h2 id="story-time-title">{ko?'시간은 달라도, 우리 같이.':'Horas distintas. Un ratito juntos.'}</h2><p>{ko?'한국이 13시간 빨라. 우리 둘 다 눈 뜨고 있을 만한 시간을 찾아보자, Baby.':'Corea va trece horas por delante. Busquemos una hora en que los dos estemos despiertos, Baby.'}</p></div>

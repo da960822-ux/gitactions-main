@@ -10,8 +10,8 @@ type Props = {
 };
 
 const words = {
-  ko: { you: '나', other: '상대', sender: '보내는 쪽', recipient: '받는 쪽', sent: '장식 말이 상대에게 도착했어.', waiting: '두 사람이 확인하면 이 길로 보내.', joined: '두 반쪽이 하나의 카드가 됐어.', halves: '각자 그린 반쪽 · 함께 확인하면 접어서 합쳐.', left: '왼쪽 반쪽', right: '오른쪽 반쪽' },
-  es: { you: 'Yo', other: 'La otra persona', sender: 'Envía', recipient: 'Recibe', sent: 'La figura llegó a la otra persona.', waiting: 'Cuando ambos confirmen, la figura irá por este camino.', joined: 'Las dos mitades forman una tarjeta.', halves: 'Una mitad de cada persona. Al confirmar, se pliegan para unirse.', left: 'Mitad izquierda', right: 'Mitad derecha' },
+  ko: { you: '나', other: '상대', sender: '보내는 쪽', recipient: '받는 쪽', sent: '장식 말이 상대에게 도착했어.', waiting: '두 사람이 확인하면 이 길로 보내.', joined: '반쪽씩 그렸는데, 같이 보니 한 장이네 ♡', halves: '각자 그린 반쪽 · 함께 확인하면 접어서 합쳐.', left: '왼쪽 반쪽', right: '오른쪽 반쪽' },
+  es: { you: 'Yo', other: 'La otra persona', sender: 'Envía', recipient: 'Recibe', sent: 'La figura llegó a la otra persona.', waiting: 'Cuando ambos confirmen, la figura irá por este camino.', joined: 'Una mitad de cada uno, una tarjeta de los dos ♡', halves: 'Una mitad de cada persona. Al confirmar, se pliegan para unirse.', left: 'Mitad izquierda', right: 'Mitad derecha' },
 };
 
 export default function SharedEventsOutcome({ round, seat, language, animate }: Props) {
