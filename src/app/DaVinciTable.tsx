@@ -189,7 +189,7 @@ export default function DaVinciTable({ view, language, playerId, runAction, joke
   const resultOutcome = !view?.result ? undefined : view.result.winner === 'draw' ? 'draw' : view.result.winner === playerId ? 'win' : 'lose';
   const resultMessage = !view?.result ? '' : resultOutcome === 'win' ? copy(language, '상대 타일을 모두 공개했어요. 승리!', 'Revelaste todas las fichas rivales. ¡Ganaste!') : resultOutcome === 'draw' ? copy(language, '무승부', 'Empate') : copy(language, '내 타일이 모두 공개됐어요.', 'Se revelaron todas tus fichas.');
   const phaseLabel = view?.result ? copy(language, '결과', 'Resultado')
-    : setupPhase ? ownReady ? copy(language, '상대 준비 중', 'Preparando rivales') : hasOwnJokerToPlace ? copy(language, '조커를 손패에 배치', 'Colocar el comodín') : copy(language, '패를 확인하고 준비 완료', 'Revisa tus fichas y confirma')
+    : setupPhase ? ownReady ? copy(language, '상대가 패를 준비 중이에요', 'La otra persona prepara sus fichas') : hasOwnJokerToPlace ? copy(language, '조커를 손패에 배치', 'Colocar el comodín') : copy(language, '패를 확인하고 준비 완료', 'Revisa tus fichas y confirma')
       : placementPhase ? copy(language, '조커를 손패에 배치', 'Colocar el comodín')
         : view?.phase === 'waiting' ? copy(language, '상대 차례', 'Turno rival')
           : drawChoice ? copy(language, '타일 뽑기', 'Robar ficha') : skipDrawChoice ? copy(language, '더미 없음 · 추측 계속', 'Mazo vacío · adivina') : guessChoices.length ? targetIndex === null ? copy(language, '상대 타일 선택', 'Elige una ficha rival') : number === null ? copy(language, '숫자 선택', 'Elige un número') : copy(language, '추측하기', 'Adivinar') : stopChoice ? copy(language, '차례 마치기', 'Terminar turno') : copy(language, '상대 차례', 'Turno rival');

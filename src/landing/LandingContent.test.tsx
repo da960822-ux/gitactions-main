@@ -2,6 +2,7 @@ import {afterEach,describe,expect,it,vi} from 'vitest';
 import {renderToStaticMarkup} from 'react-dom/server';
 import {Landing} from './Landing';
 import {PostHeroPreview} from './story/PostHeroPreview';
+import {GameGallery} from './gallery/GameGallery';
 import {landingCopy} from '../copy/home';
 
 vi.mock('./LandingWorldHost',()=>({LandingWorldHost:()=>null}));
@@ -12,7 +13,7 @@ describe('landing navigation',()=>{
   vi.stubGlobal('localStorage',{getItem:()=>language});
   const html=renderToStaticMarkup(<Landing/>);
   expect(html).toContain(`<a href="#games">${label}</a>`);
-  expect(html).toContain(`<a href="/feedback">${language === 'ko' ? '건의사항' : 'Sugerencias'}</a>`);
+  expect(html).toContain(`<a href="/feedback">${language === 'ko' ? '아이디어 보내기' : 'Enviar una idea'}</a>`);
  });
 });
 
@@ -45,4 +46,34 @@ describe('letter entry points name the actual action',()=>{
   expect(standalone).not.toContain(`>${direct}</a>`);
   expect(html).toContain(`>${shared}</button>`);
  });
+});
+
+describe('selected Catchmind caption',()=>{
+ for(const [language,joke] of [
+  ['ko','우리 화가님, 실력 좀 볼까? 못 맞히면 내 탓은 아닌 걸로 ㅋㅋㅋ'],
+  ['es','A ver qué tal dibuja mi artista… Si no adivino, no me eches la culpa, haha.'],
+ ] as const)it(language,()=>{
+  vi.stubGlobal('window',{matchMedia:()=>({matches:false,addEventListener:()=>{},removeEventListener:()=>{}})});
+  const html=renderToStaticMarkup(<GameGallery language={language} selected="catchmind"/>);
+  expect(html).toContain(joke);
+  expect(html).toContain('class="rd-game-tease"');
+ });
+});
+
+it('keeps game mechanics first and leaves the competitive rent joke out of the generic Marble caption',()=>{
+ vi.stubGlobal('window',{matchMedia:()=>({matches:false,addEventListener:()=>{},removeEventListener:()=>{}})});
+ for(const [game,description] of [
+  ['davinci','숨겨진 숫자와 조커를 하나씩 맞혀 봐요.'],
+  ['domino','같은 숫자를 잇고 손패를 먼저 비워 봐요.'],
+  ['jaipur','상품을 모아 팔고, 먼저 두 라운드를 이겨 봐요.'],
+  ['splendor','보석으로 카드를 사고 점수를 모아요.'],
+  ['minhwatu','같은 달의 패를 맞춰 점수를 모아요.'],
+  ['marble','주사위를 굴려 도시를 사고 건물을 지어요.'],
+  ['rhythm','음악에 맞춰 방향키와 스페이스바를 눌러요.'],
+ ] as const){
+  const html=renderToStaticMarkup(<GameGallery language="ko" selected={game}/>);
+  expect(html).toContain(description);
+  if(game==='marble')expect(html).not.toContain('통행료는 따로야');
+  else expect(html).toContain('class="rd-game-tease"');
+ }
 });

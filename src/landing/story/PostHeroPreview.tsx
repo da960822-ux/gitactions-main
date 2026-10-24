@@ -19,8 +19,8 @@ const openingBucket=(value:number)=>value<=.0005?0:value<=LETTER_UNFOLDED?1:2;
 
 type Language = 'ko' | 'es';
 const story = {
- ko: { title:<>멀리 있어도,<br/>우리 둘이 같이.</>, body:'Baby, 너랑 같이 게임하려고 만들었어.', next:'조금 내려봐', letter:'Baby, 이번엔 이거 열어봐.', letterBody:'게임은 잠깐만. 이건 네가 꼭 읽어줬으면 좋겠어.', open:'봉투 열어보기', continueOpen:'계속 열기', cancelClose:'접기 취소', close:'편지 접기', play:'게임 고르기', sealed:'봉투가 닫혀 있어요.', },
- es: { title:<>Aunque estemos lejos,<br/>juguemos juntos.</>, body:'Baby, hice esto para que juguemos juntos.', next:'Baja un poquito', letter:'Baby, ahora abre esto.', letterBody:'Dejemos el juego un momentito. Esto sí quiero que lo leas.', open:'Abrir el sobre', continueOpen:'Seguir abriendo', cancelClose:'Cancelar el cierre', close:'Doblar la carta', play:'Elegir un juego', sealed:'El sobre está cerrado.', }
+ ko: { title:<>멀리 있어도,<br/>우리 둘이 같이.</>, body:'Baby, 너랑 같이 게임하려고 만들었어.', next:'조금 내려봐', letter:'Baby, 이번엔 이거 열어봐.', letterBody:'잠깐, 너한테 하고 싶은 말이 있어.', open:'봉투 열어보기', continueOpen:'계속 열기', cancelClose:'접기 취소', close:'편지 접기', play:'게임 고르기', sealed:'봉투가 닫혀 있어.', },
+ es: { title:<>Aunque estemos lejos,<br/>juguemos juntos.</>, body:'Baby, hice esto para que juguemos juntos.', next:'Baja un poquito', letter:'Baby, ahora abre esto.', letterBody:'Espera un momentito. Hay algo que quiero decirte.', open:'Abrir el sobre', continueOpen:'Seguir abriendo', cancelClose:'Cancelar el cierre', close:'Doblar la carta', play:'Elegir un juego', sealed:'El sobre está cerrado.', }
 };
 function storedLanguage():Language { try { return localStorage.getItem('dos-language')==='es'?'es':'ko'; } catch { return 'ko'; } }
 
@@ -238,7 +238,7 @@ export function PostHeroPreview({embedded=false,language:externalLanguage,onLang
     <div className="letter-paper-slot" ref={paperSlot} style={surfaceSnapshot?{minHeight:surfaceSnapshot.paperHeight}:undefined}><article ref={paper} className={`letter-paper ${!letterVisible&&letterPublic?'is-visually-sealed':''}`} id="moment-letter-copy" hidden={!letterPublic}>
      <div className="paper-rule"/><p className="letter-address">{copy.letterAddress}</p><h2 id="letter-title" tabIndex={-1}>{copy.letterTitle}</h2>{copy.letterBody.map(paragraph=><p key={paragraph}>{paragraph}</p>)}<p className="letter-signature">{copy.letterSignature}</p><div className="paper-bottom-mark">Y <span>♡</span> L</div>
     </article></div>
-    {(letterVisible||letterFinale.phase==='folding')&&progress>=.86&&<p id={roseHintId} className="rose-meaning" role="status" aria-live="polite" aria-atomic="true">{roseHintOpen?(ko?'4송이, 그리고 4송이. 우리 시작한 날 ♡':'Cuatro rosas y otras cuatro. El día que empezamos: 4 de abril ♡'):''}</p>}
+    {(letterVisible||letterFinale.phase==='folding')&&progress>=.86&&<p id={roseHintId} className="rose-meaning" role="status" aria-live="polite" aria-atomic="true">{roseHintOpen?(ko?'4송이, 그리고 4송이. 4월 4일, 우리 시작한 날 ♡':'Cuatro rosas y otras cuatro. El día que empezamos: 4 de abril ♡'):''}</p>}
     <div id="letter-reading-end" className="letter-reading-end" hidden={letterFinale.phase==='sealed'||letterFinale.phase==='reading'&&!letterVisible}>
      <div className="letter-optional-pact" data-active={letterFinale.phase==='reading'} inert={letterFinale.phase!=='reading'}><PartnerPact language={language} onResponseChange={setPactAccepted}/></div>
      <div className="letter-bottom-controls"><button type="button" className="text-button" onClick={toggleLetter} aria-controls="moment-letter-copy">{readingAction}<svg viewBox="0 0 24 24" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg></button></div>

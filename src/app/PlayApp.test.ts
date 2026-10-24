@@ -4,6 +4,22 @@ import { createElement } from 'react';
 import { renderToStaticMarkup } from 'react-dom/server';
 import { bindApi, catchmindEnterSubmits, CatchmindChatComposer, GameGuide, Lobby, Room, RulesDialog, rulesButtonLabel, SameGameReplay, sameGameReplayAvailable, statusLabel } from './PlayApp';
 import { getBeginnerGuide } from './beginner-guides';
+
+it('shows current Catchmind timing and points while saved version-one rooms keep their rules', () => {
+  for (const language of ['ko', 'es'] as const) {
+    const current = renderToStaticMarkup(createElement(GameGuide, { gameId: 'catchmind', language, catchmindRulesVersion: 2 }));
+    const legacy = renderToStaticMarkup(createElement(GameGuide, { gameId: 'catchmind', language, catchmindRulesVersion: 1 }));
+    const lobby = renderToStaticMarkup(createElement(RulesDialog, { gameId: 'catchmind', language, onClose: () => {} }));
+    expect(current).toContain(language === 'ko' ? '15초' : '15 segundos');
+    expect(current).toContain(language === 'ko' ? '100점' : '100 puntos');
+    expect(current).toContain(language === 'ko' ? '50%' : '50 %');
+    expect(legacy).toContain(language === 'ko' ? '1~3점' : '1 a 3');
+    expect(legacy).not.toContain(language === 'ko' ? '자동으로 역할을' : 'automáticamente');
+    expect(lobby).toContain(language === 'ko' ? '15초' : '15 segundos');
+    expect(getBeginnerGuide('catchmind', language, { catchmindRulesVersion: 1 })!.tip).toContain(language === 'ko' ? 'fútbol' : 'fútbol');
+    expect(getBeginnerGuide('catchmind', language, { catchmindRulesVersion: 2 })!.tip).not.toContain('fútbol');
+  }
+});
 import { ActionFlightGuard, announcementForContext, cueForAction, GameFeedback, jaipurImmediateCues, publicViewAnnouncement, publicViewCue } from './GameFeedback';
 import { gameCatalog } from '../games/catalog';
 import { marbleLegacyRules } from '../games/rules';
@@ -103,7 +119,7 @@ describe('PlayApp client binding', () => {
     });
     const api = { getSnapshot: () => ({ roomId: null, mode: 'demo', playerId: 'p1', players: [], gameId: null, version: 0, view: null, messages: [], pendingGame: null, error: null }), isOnlineConfigured: false } as any;
     try {
-      expect(renderToStaticMarkup(createElement(Room, { api, roomId: 'invited-room' }))).toContain('초대한 게임에 참여');
+      expect(renderToStaticMarkup(createElement(Room, { api, roomId: 'invited-room' }))).toContain('초대받은 게임에 참여');
     } finally {
       vi.stubGlobal('localStorage', previousStorage);
     }
@@ -151,7 +167,7 @@ describe('PlayApp client binding', () => {
     try {
       const html = renderToStaticMarkup(createElement(Room, { api, roomId: snapshot.roomId! }));
       expect(html.match(/class="match-replay"/g)).toHaveLength(1);
-      expect(html).toContain('새 판 요청');
+      expect(html).toContain('한 판 더 요청');
     } finally {
       vi.stubGlobal('localStorage', previousStorage);
     }
@@ -191,10 +207,10 @@ describe('same-game replay availability', () => {
     const es = renderToStaticMarkup(createElement(SameGameReplay, { ...props, language: 'es' }));
     expect(ko).toContain('class="button button-dark"');
     expect(ko).toContain('동의하고 다시 하기');
-    expect(ko).toContain('상대가 새 판을 요청했어요.');
+    expect(ko).toContain('상대가 한 판 더 하자고 해요.');
     expect(ko).not.toContain('disabled=""');
     expect(es).toContain('Aceptar otra partida');
-    expect(es).toContain('La otra persona pidió otra partida.');
+    expect(es).toContain('La otra persona propone otra partida.');
   });
 });
 
@@ -377,10 +393,10 @@ describe('shared game feedback', () => {
     expect(publicViewCue('marble', marbleBefore, { ...marbleBatch, result: { winner: 'p1', reason: 'complete' } }, 'p1')).toBe('win');
     const previousMarble = { board: { lastEvent: { sequence: 4, title: { ko: '카드', es: 'Tarjeta' }, text: { ko: '이동', es: 'Avanza' } } } };
     const marbleDraw = { ...previousMarble, board: { lastEvent: { sequence: 5, title: { ko: '이전 카드', es: 'Tarjeta anterior' }, text: { ko: '이전 이동', es: 'Avance anterior' } } }, result: { winner: 'draw', reason: 'asset limit' } };
-    expect(publicViewAnnouncement('marble', previousMarble, marbleDraw, 'p1', 'ko')?.message).toBe('무승부로 게임이 끝났어요.');
+    expect(publicViewAnnouncement('marble', previousMarble, marbleDraw, 'p1', 'ko')?.message).toBe('무승부예요. 팽팽한 한 판이었어요!');
     const teamWin = { board: { teams: { p1: ['p1', 'p2'], p2: ['b1', 'b2'] } }, result: { winner: 'p1', reason: 'empty team' } };
     expect(publicViewCue('domino', { turn: 'p1' }, teamWin, 'p2')).toBe('win');
-    expect(publicViewAnnouncement('domino', { turn: 'p1' }, teamWin, 'p2', 'es')?.message).toBe('Ganaste la partida.');
+    expect(publicViewAnnouncement('domino', { turn: 'p1' }, teamWin, 'p2', 'es')?.message).toBe('¡Ganaste! Buena partida.');
     expect(publicViewCue('jaipur', { turn: 'p2' }, { turn: 'p1' }, 'p1')).toBe('turn');
     expect(publicViewCue('jaipur', { turn: 'p1' }, { turn: 'p1', result: { winner: 'p1', reason: 'complete' } }, 'p1')).toBe('win');
     const jaipurBefore = { turn: 'p1', log: [{ sequence: 2, type: 'turn' }] };
@@ -419,10 +435,10 @@ describe('shared game feedback', () => {
     expect(publicViewAnnouncement('domino', before, roundEnd, 'p1', 'es')?.message).toBe('Puntuación acumulada');
     const match = { ...roundEnd, result: { winner: 'p1', reason: 'Match target reached' }, board: { ...roundEnd.board, settings: { targetScore: 100 } }, log: [...roundEnd.log, { sequence: 15, type: 'win', team: 'p1', title: { ko: '매치 종료', es: 'Fin del partido' } }] };
     expect(publicViewCue('domino', before, match, 'p2')).toBe('win');
-    expect(publicViewAnnouncement('domino', before, match, 'p2', 'es')?.message).toBe('Ganaste la partida.');
+    expect(publicViewAnnouncement('domino', before, match, 'p2', 'es')?.message).toBe('¡Ganaste! Buena partida.');
     const singleRoundWin = { ...roundEnd, result: { winner: 'p1', reason: 'Single round finished' }, board: { ...roundEnd.board, settings: { targetScore: 0 } } };
     expect(publicViewCue('domino', before, singleRoundWin, 'p2')).toBe('win');
-    expect(publicViewAnnouncement('domino', before, singleRoundWin, 'p2', 'es')?.message).toBe('Ganaste la partida.');
+    expect(publicViewAnnouncement('domino', before, singleRoundWin, 'p2', 'es')?.message).toBe('¡Ganaste! Buena partida.');
     const singleRoundLoss = { ...singleRoundWin, board: { ...singleRoundWin.board, teams: { p1: ['p1'], p2: ['p2'] } } };
     expect(publicViewCue('domino', before, singleRoundLoss, 'p2')).toBe('lose');
     const reset = { ...before, log: [{ sequence: 1, type: 'play', title: { ko: '새 라운드', es: 'Nueva ronda' } }] };

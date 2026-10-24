@@ -150,9 +150,9 @@ export function publicViewAnnouncement(game: GameId, previous: any, next: any, p
   if (resultChanged) {
     const outcome = resultForPlayer(game, next, player);
     message = outcome === 'draw'
-      ? copy(language, '무승부로 게임이 끝났어요.', 'La partida terminó en empate.')
-      : outcome === 'win' ? copy(language, '게임에서 이겼어요.', 'Ganaste la partida.')
-        : copy(language, '게임이 끝났어요. 상대가 이겼어요.', 'La partida terminó. Ganó la otra persona.');
+      ? copy(language, '무승부예요. 팽팽한 한 판이었어요!', '¡Empate! Una partida muy reñida.')
+      : outcome === 'win' ? copy(language, '이겼어요! 멋진 한 판이었어요.', '¡Ganaste! Buena partida.')
+        : copy(language, '이번 판은 상대가 이겼어요. 수고했어요!', 'Esta vez ganó la otra persona. ¡Buena partida!');
   } else if (game === 'jaipur') {
     const beforeEvents = jaipurEvents(previous);
     const sequence = beforeEvents.reduce((max, event) => Math.max(max, jaipurSequence(event)), 0);

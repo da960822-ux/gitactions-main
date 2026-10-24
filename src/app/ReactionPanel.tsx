@@ -32,7 +32,7 @@ export function ReactionPanel({ language, playerId, players, messages, sending, 
     </div>
     {error && <p className="reaction-error" role="alert">{error}</p>}
     <div className="reaction-history" aria-live="polite" aria-label={language === 'ko' ? '최근 반응' : 'Reacciones recientes'}>
-      {recent.length === 0 ? <p className="reaction-empty">{language === 'ko' ? '반응을 골라 보내 보세요.' : 'Elige una reacción para enviarla.'}</p> : recent.map(message => {
+      {recent.length === 0 ? <p className="reaction-empty">{language === 'ko' ? '말 대신 표정 하나 보내 볼까요?' : '¿Y si lo dices con una reacción?'}</p> : recent.map(message => {
         const id = reactionForText(message.text)!;
         const reaction = reactions.find(item => item.id === id)!;
         const sender = players.find(player => player.id === message.playerId);

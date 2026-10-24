@@ -211,7 +211,7 @@ describe('DaVinciTable', () => {
       opponentCount: 1, actions: [],
     };
     const setupWait = render(base, 'p1');
-    expect(setupWait).toContain('상대 준비 중');
+    expect(setupWait).toContain('상대가 패를 준비 중이에요');
     expect(setupWait).not.toContain('상대가 행동하고 있어요.');
 
     const inGameWait = render({ ...base, board: { ...base.board, setupReady: { p1: true, p2: true }, turnNumber: 2 } }, 'p1');

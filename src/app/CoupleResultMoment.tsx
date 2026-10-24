@@ -52,7 +52,7 @@ function ResultPicture({ winner, language }: { winner: CoupleIdentity; language:
     ? es ? 'Lisbeth celebra sacando la lengua; Yeonseok está cabizbajo en su escritorio.' : '리스벳이 메롱하며 기뻐하고 연석은 책상에서 풀이 죽어 있어요.'
     : es ? 'Yeonseok celebra aplaudiendo; Lisbeth está frustrada frente a su laptop.' : '연석이 박수치며 기뻐하고 리스벳은 노트북 앞에서 답답해하고 있어요.';
   return <aside className="couple-result-moment" aria-label={es ? 'Después de la partida' : '한 판 끝나고'}>
-    <div className="couple-result-moment-heading"><p>{es ? `Ganó ${name}. Baby, ¿otra partida? haha` : `${name} 승! Baby, 한 판 더 할까? ㅋㅋㅋ`}</p><button type="button" onClick={() => setDismissed(true)}>{es ? 'Ocultar imagen' : '그림 접기'}</button></div>
+    <div className="couple-result-moment-heading"><p>{es ? `Ganó ${name}. Te felicito con cariño. La próxima partida ya es otra historia ♡` : `${name} 승! 축하는 해줄게. 다음 판은 별개야 ♡`}</p><button type="button" onClick={() => setDismissed(true)}>{es ? 'Ocultar imagen' : '그림 접기'}</button></div>
     <CoupleReactionArt reaction={winner} alt={alt} onError={() => setDismissed(true)}/>
   </aside>;
 }

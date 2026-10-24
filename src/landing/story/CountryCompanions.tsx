@@ -172,8 +172,8 @@ export function CountryCompanions({language}:{language:'ko'|'es'}){
    <button type="button" className="lovebird-greeting text-button" disabled={failed} aria-pressed={together&&!failed} onClick={event=>greet(event.detail>0)}>{together?(ko?'다시 살짝 떨어져':'Un poquito de espacio'):(ko?'Baby, 가까이 와':'Acércate, Baby')}</button>
   </div>
   <div className="companion-meanings">
-   <div id={duckNote}><h3>{ko?'원앙 · 내 쪽에서':'Pato mandarín · de mi lado'}</h3><p>{ko?'한국 혼례에서 원앙은 부부의 화목을 바라는 상징이야. 너랑 나도 그렇게 다정하게 지내고 싶어서, 내 쪽에 한 마리.':'En las bodas coreanas, los patos mandarines simbolizan el deseo de armonía en pareja. Puse uno de mi lado porque quiero eso contigo.'}</p></div>
-   <div id={hummingbirdNote}><h3>{ko?'벌새 · 네 쪽에서':'Colibrí · de tu lado'}</h3><p>{ko?'네가 좋아하는 연분홍을 살짝 입혔어. 원앙 쪽으로 날아오는 건 우리만의 작은 장면이야, Baby. ㅋㅋㅋ':'Le puse un poquito del rosa suave que te gusta. Volando hacia mi pato: una escenita solo nuestra, Baby, haha.'}</p></div>
+   <div id={duckNote}><h3>{ko?'원앙 · 내 쪽에서':'Pato mandarín · de mi lado'}</h3><p>{ko?'내 쪽엔 원앙 한 마리. 네 쪽을 보고 있으니까, 조금 나 같지? ㅋㅋㅋ':'De mi lado hay un pato mandarín. Está mirando hacia ti… se parece un poquito a mí, haha.'}</p></div>
+   <div id={hummingbirdNote}><h3>{ko?'벌새 · 네 쪽에서':'Colibrí · de tu lado'}</h3><p>{ko?'네 쪽엔 네가 좋아하는 연분홍 벌새. 여기서는 조금 더 가까이 와도 돼, Baby.':'De tu lado, un colibrí del rosa suave que te gusta. Aquí puedes acercarte un poquito más, Baby.'}</p></div>
   </div>
   {failed&&<p className="lovebird-error" role="status">{ko?'새 그림을 불러오지 못했어. 페이지를 다시 열어줘.':'No se cargaron las aves. Vuelve a abrir la página.'}</p>}
  </div>;

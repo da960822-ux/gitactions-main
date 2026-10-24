@@ -342,7 +342,7 @@ describe('MinhwatuTable public view', () => {
     expect(html).toContain('Sol -30 : 75 Luz');
     expect(html).toContain('Tus puntos 0 + tus yakus 0 × 2 − yakus rivales 30 = -30');
     expect(html).toContain('Aceptar y jugar otra');
-    expect(html).toContain('La otra persona pidió otra partida.');
+    expect(html).toContain('La otra persona propone otra partida.');
   });
   it('offers a direct AI rematch without another player consent copy', () => {
     const state = minhwatuEngine.createInitialState(89);

@@ -15,6 +15,8 @@ export interface BeginnerGuide {
 type GuideCopy = Omit<BeginnerGuide, 'imageAlt'>;
 
 export interface BeginnerGuideOptions {
+  /** Catchmind 2 uses timed hints and 100-point scoring; older saved rooms keep version 1. */
+  catchmindRulesVersion?: number;
   /** Board version 1 is the saved 18-space board; 2 is the current 40-space board. */
   marbleVersion?: number;
   /** Economy 0 has no credit; 1 uses fixed construction costs; 2 uses tiered costs. */
@@ -86,6 +88,27 @@ const guides: Record<BeginnerGameId, Record<Language, GuideCopy>> = {
       ],
       tip: 'En el tablero actual construir cuesta 40 %, 60 % y 80 % del precio de compra. Recibes 300 y debes 330; paga la deuda antes de pedir otro préstamo.',
     },
+  },
+};
+
+const catchmindCurrentGuide: Record<Language, GuideCopy> = {
+  ko: {
+    goal: '번갈아 그림을 그리고 맞혀 점수를 모아요. 기본 6개 개별 턴으로 각자 세 번 그려요.',
+    steps: [
+      { title: '단어 고르기', body: '호스트가 주제를 고르고 설정을 저장해요. 그리는 사람은 세 보기 중 하나를 15초 안에 골라요. 시간이 지나면 자동으로 골라 줘요. 기본 그림 시간은 80초예요.' },
+      { title: '그림과 답', body: '그리는 사람은 펜 색·굵기, 지우개, 실행 취소와 전체 지우기를 써요. 기본 색·보조 색 중 하나를 고른 뒤 색상을 선택하고, 색 바꾸기로 서로 바꿀 수 있어요. 키보드: 화살표 이동, Space 그리기/멈춤, Enter 채우기·색 선택·점 찍기, Esc 선 마침, Tab 나가기. 맞히는 사람은 공유 채팅에 한국어나 스페인어로 답해요. 힌트를 켜면 시작 언어로 글자 수가 보이고 50%, 75% 시점에 한 글자씩 공개돼요.' },
+      { title: '점수와 차례', body: '정답이면 그린 사람은 100점, 맞힌 사람은 남은 시간에 따라 100~200점에서 실제 공개된 글자마다 20점을 뺀 점수(최소 50점)를 얻어요. 시간초과나 건너뛰기는 둘 다 0점이에요. 정답과 점수를 5초 보여 주고 자동으로 다음 사람에게 넘어가요.' },
+    ],
+    tip: '한국어나 스페인어 정답 또는 등록된 별칭을 입력해요. 대소문자·연속 공백과 스페인어 모음 악센트·ü 차이는 무시하지만, ñ와 n은 구분해요.',
+  },
+  es: {
+    goal: 'Dibujen y adivinen por turnos para sumar puntos. Hay seis turnos individuales, tres por persona.',
+    steps: [
+      { title: 'Elige una palabra', body: 'Quien creó la sala elige una categoría y guarda los ajustes. Quien dibuja tiene 15 segundos para elegir una de tres palabras; después se elige automáticamente. Hay 80 segundos para dibujar por defecto.' },
+      { title: 'Dibuja y responde', body: 'Quien dibuja usa color, grosor, borrador, deshacer y borrar todo. Elige «Color principal» o «Color secundario» y después un color; «Intercambiar colores» los cambia entre sí. Teclado: flechas mueven; Espacio dibuja/para; Enter rellena, elige color o dibuja un punto; Esc termina el trazo; Tab sale del lienzo. Quien adivina responde en el chat compartido en coreano o español. Con pistas se muestra la longitud en su idioma inicial y se revela un carácter al 50 % y otro al 75 % del tiempo.' },
+      { title: 'Puntos y turnos', body: 'Al acertar, quien dibuja suma 100 puntos y quien adivina recibe entre 100 y 200 según el tiempo, menos 20 por cada carácter realmente revelado (mínimo 50). Al agotarse el tiempo o pasar, ambos reciben 0. La respuesta y los puntos aparecen cinco segundos antes del siguiente turno automático.' },
+    ],
+    tip: 'Responde con la palabra en coreano o español o un alias registrado. No se distinguen mayúsculas, espacios repetidos ni los acentos de las vocales y ü; ñ y n sí se distinguen.',
   },
 };
 
@@ -170,7 +193,7 @@ export function getBeginnerGuide(
         : 'Cada nivel de construcción cuesta 100. Recibes 300 y debes 330; paga la deuda antes de pedir otro préstamo.',
     };
   }
-  else guide = guides[gameId][language];
+  else guide = gameId === 'catchmind' && options.catchmindRulesVersion !== 1 ? catchmindCurrentGuide[language] : guides[gameId][language];
   if (gameId === 'marble' && (options.marbleVersion ?? 2) !== 1 && (options.marbleEconomyVersion ?? 2) < 2) {
     guide = { ...guide, steps: [guide.steps[0], { ...guide.steps[1], body: guide.steps[1].body.replace('첫 건설 40', '첫 건설 100').replace('construir primero cuesta 40', 'construir primero cuesta 100') }, guide.steps[2]] };
   }

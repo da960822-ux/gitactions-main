@@ -13,7 +13,7 @@ describe('InterPals connection reply',()=>{
   expect(html).toContain(language==='ko'?'너랑은,<br/>시간도 잊었어.':'Contigo,<br/>las horas volaban.');
   expect(html).toContain(language==='ko'?'첫날부터 12시간을 쉬지 않고 얘기했어.':'El primer día hablamos doce horas sin parar.');
   const duration=html.match(/class="fc-connection-duration"[^>]*>(.*?)<\/div>/)![1];
-  expect(duration).toContain(language==='ko'?'네가 더 궁금했어.':'quería seguir contigo.');
+  expect(duration).toContain(language==='ko'?'네가 더 궁금했어.':'quería seguir conociéndote.');
   expect(duration).not.toMatch(/12|doce|<br/);
  });
  it('bounds the material echo to a finite release and ignores inactive or stale time',()=>{

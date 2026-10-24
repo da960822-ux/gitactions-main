@@ -30,7 +30,7 @@ describe('confirmed couple result picture', () => {
   it('uses the matched approved asset, localized readable copy and an ordinary dismiss button', () => {
     const html = renderToStaticMarkup(createElement(CoupleResultMoment, { ...props, language: 'es' }));
     expect(html).toContain('/images/approved-couple-room/result-lisbeth-wins.png');
-    expect(html).toContain('Ganó Lisbeth. Baby, ¿otra partida? haha');
+    expect(html).toContain('Ganó Lisbeth. Te felicito con cariño. La próxima partida ya es otra historia ♡');
     expect(html).toContain('Ocultar imagen');
     expect(html).toContain('role="img"');
     expect(html).toContain('/images/approved-couple-room/approved-couple-gaming-room.png');

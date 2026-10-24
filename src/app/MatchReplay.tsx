@@ -17,8 +17,8 @@ export function MatchReplay({ language, pending, requiresAgreement = true, onRep
     finally { inFlight.current = false;setBusy(false); }
   };
   return <section className="match-replay" aria-label={ko ? '같은 게임 재경기' : 'Otra partida del mismo juego'}>
-    {requiresAgreement && <p role={pending || waiting ? 'status' : undefined}>{ko ? waiting ? '상대의 동의를 기다리고 있어요.' : pending ? '상대가 새 판을 요청했어요.' : '두 사람 모두 동의하면 새 판을 시작해요.' : waiting ? 'Esperando a la otra persona.' : pending ? 'La otra persona pidió otra partida.' : 'La nueva partida empieza cuando ambos estén de acuerdo.'}</p>}
-    <button type="button" className="button button-dark" disabled={busy || waiting} aria-busy={busy} onClick={() => void request()}>{ko ? busy ? '시작 중…' : waiting ? '동의 대기 중…' : requiresAgreement ? pending ? '동의하고 다시 하기' : '새 판 요청' : '다시 하기' : busy ? 'Iniciando…' : waiting ? 'Esperando aceptación…' : requiresAgreement ? pending ? 'Aceptar otra partida' : 'Pedir otra partida' : 'Jugar otra vez'}</button>
+    {requiresAgreement && <p role={pending || waiting ? 'status' : undefined}>{ko ? waiting ? '한 판 더 할지 상대의 답을 기다리고 있어요.' : pending ? '상대가 한 판 더 하자고 해요.' : '한 판 더 할까요? 두 사람 모두 동의하면 시작해요.' : waiting ? 'Esperando a que la otra persona acepte otra partida.' : pending ? 'La otra persona propone otra partida.' : '¿Otra partida? Empezamos cuando ambos estén de acuerdo.'}</p>}
+    <button type="button" className="button button-dark" disabled={busy || waiting} aria-busy={busy} onClick={() => void request()}>{ko ? busy ? '시작 중…' : waiting ? '동의 대기 중…' : requiresAgreement ? pending ? '동의하고 다시 하기' : '한 판 더 요청' : '다시 하기' : busy ? 'Iniciando…' : waiting ? 'Esperando aceptación…' : requiresAgreement ? pending ? 'Aceptar otra partida' : 'Pedir otra partida' : 'Jugar otra vez'}</button>
     {error && <p role="alert">{ko ? '새 판을 시작하지 못했어요. 다시 눌러 주세요.' : 'No se pudo iniciar otra partida. Inténtalo de nuevo.'}</p>}
   </section>;
 }

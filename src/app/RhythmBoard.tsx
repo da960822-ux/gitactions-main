@@ -16,7 +16,7 @@ export function rhythmFrameMaxWidth(viewportHeight: number, shellDocumentTop: nu
 
 const labels = {
   ko: {
-    title: '뮤직톡톡', intro: '박자를 맞춰 봐요.', controls: '게임에 포커스한 뒤 화살표와 스페이스바를 사용해요.', notes: '원작 안내 · 문제 해결',
+    title: '뮤직톡톡', intro: '박자를 맞춰 봐요. 조금 엇나가도 즐겁게!', controls: '게임에 포커스한 뒤 화살표와 스페이스바를 사용해요.', notes: '원작 안내 · 문제 해결',
     known: '원작 안내에 따르면 ‘처음으로’ 버튼이 제대로 작동하지 않을 수 있어요.',
     unverified: '이 브라우저에서의 전체 플레이는 아직 확인되지 않았어요.', loading: '게임을 불러오는 중…',
     ready: '플레이 준비 완료', error: '게임을 불러오지 못했어요. 다시 시도해 주세요.', retry: '다시 불러오기',
@@ -25,7 +25,7 @@ const labels = {
     recovery: '화면이 비거나 크기 변경 뒤 멈추면 페이지를 새로고침해 주세요. 원작 게임이 처음부터 다시 시작돼요.', source: '원작 게시물',
   },
   es: {
-    title: 'Music Talk Talk', intro: 'Sigan el ritmo.', controls: 'Enfoca el juego y usa las flechas y la barra espaciadora.', notes: 'Guía original · Solución de problemas',
+    title: 'Music Talk Talk', intro: 'Sigue el ritmo. ¡Y disfruta aunque se te escape alguna nota!', controls: 'Enfoca el juego y usa las flechas y la barra espaciadora.', notes: 'Guía original · Solución de problemas',
     known: 'La página original avisa que el botón «Inicio» puede no funcionar bien.',
     unverified: 'Aún no hemos comprobado el juego completo en este navegador.', loading: 'Cargando el juego…',
     ready: 'Listo para jugar', error: 'No se pudo cargar el juego. Inténtalo de nuevo.', retry: 'Volver a cargar',

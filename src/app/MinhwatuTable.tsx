@@ -158,7 +158,7 @@ export function MinhwatuTable({ view, language, playerId, playerNames, runAction
     if (event.key === 'Escape' && selected && !busy) { event.preventDefault(); cancelSelection(); }
   }}>
     <header className="hwatu-header">
-      <div className="hwatu-title"><h2>{text(language, '민화투', 'Minhwatu')}</h2><p>{text(language, '48장으로 한 판 겨뤄요.', 'Jueguen una mano con 48 cartas.')}</p></div>
+      <div className="hwatu-title"><h2>{text(language, '민화투', 'Minhwatu')}</h2><p>{text(language, '48장으로 겨루는 한 판. 오늘은 누구 패가 더 잘 맞을까?', 'Una partida con 48 cartas. ¿A quién le tocarán las mejores parejas?')}</p></div>
       <div className="hwatu-seat-strip" aria-label={text(language, '현재 점수와 차례', 'Puntos y turno')}>
         {(['p1', 'p2'] as PlayerId[]).map((seat, index) => <div className={`hwatu-seat-score ${seat === playerId ? 'is-own' : ''} ${shownView?.turn === seat && !shownView?.result ? 'is-turn' : ''}`} data-hwatu-zone={`score-${seat}`} data-player={seat} aria-current={shownView?.turn === seat && !shownView?.result ? 'true' : undefined} key={seat}>
           <span className={`hwatu-seat-dot seat-${index + 1}`} aria-hidden="true"/>
@@ -173,8 +173,8 @@ export function MinhwatuTable({ view, language, playerId, playerNames, runAction
       <span>{ownName} {finalOwnScore} : {finalRivalScore} {rivalName}</span>
       <small>{text(language, `내 점수 ${ownBase} + 내 족보 ${ownBonus} × 2 − 상대 족보 ${rivalBonus} = ${finalOwnScore}`, `Tus puntos ${ownBase} + tus yakus ${ownBonus} × 2 − yakus rivales ${rivalBonus} = ${finalOwnScore}`)}</small>
       {onReplay && <div className="hwatu-replay"><button type="button" disabled={busy || replayBusy || localReplayPending} aria-busy={replayBusy} onClick={() => void requestReplay()}>{replayBusy ? text(language, '요청 중…', 'Enviando…') : !requiresAgreement ? text(language, '다시 하기', 'Jugar otra vez') : replayPending && !localReplayPending ? text(language, '동의하고 한 판 더', 'Aceptar y jugar otra') : localReplayPending ? text(language, '동의 대기 중…', 'Esperando aceptación…') : text(language, '한 판 더 요청', 'Pedir otra partida')}</button>
-        {localReplayPending && <small role="status">{text(language, '상대 동의를 기다리고 있어요.', 'Esperando a la otra persona.')}</small>}
-        {requiresAgreement && replayPending && !localReplayPending && <small role="status">{text(language, '상대가 새 판을 요청했어요.', 'La otra persona pidió otra partida.')}</small>}</div>}
+        {localReplayPending && <small role="status">{text(language, '한 판 더 할지 상대의 답을 기다리고 있어요.', 'Esperando a que la otra persona acepte otra partida.')}</small>}
+        {requiresAgreement && replayPending && !localReplayPending && <small role="status">{text(language, '상대가 한 판 더 하자고 해요.', 'La otra persona propone otra partida.')}</small>}</div>}
     </section>}
 
     <div className="hwatu-tabletop-stage">

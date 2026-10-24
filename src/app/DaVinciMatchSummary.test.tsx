@@ -43,7 +43,7 @@ describe('DaVinciMatchSummary', () => {
 
     expect(html).toContain('Récord de esta sesión');
     expect(html).toContain('Jugador 1');
-    expect(html).toContain('La otra persona pidió otra partida.');
+    expect(html).toContain('La otra persona propone otra partida.');
     expect(html).toContain('Aceptar otra partida');
     expect(html.match(/<button/g)).toHaveLength(1);
     expect(html).toContain('<strong>1</strong>');

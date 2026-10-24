@@ -16,14 +16,15 @@ const render = (language: 'ko' | 'es') => renderToStaticMarkup(createElement(Fee
 }));
 
 describe('Mami ideas page copy', () => {
-  it('keeps the original affectionate phrase as a progress note without adding a fourth status', () => {
+  it('shows one progress badge without implying an idea has been read', () => {
     for (const language of ['ko', 'es'] as const) {
       const html = renderToStaticMarkup(createElement(FeedbackPage, {
         language, mode: 'online', loading: false, canCreate: false, canAcknowledge: true,
         entries: [{ id: 'planned', category: 'game', title: 'Idea', body: 'An idea', status: 'planned', createdAt: '2026-10-11T12:00:00Z' }],
         onCreate: async () => undefined, onSetStatus: async () => undefined,
       }));
-      assert.match(html, language === 'ko' ? /진행<small> · 해볼게요<\/small>/ : /En curso<small> · Lo anoto<\/small>/);
+      assert.match(html, language === 'ko' ? /status-planned">진행<\/span>/ : /status-planned">En curso<\/span>/);
+      assert.doesNotMatch(html, /해볼게요|Lo anoto/);
       assert.equal((html.match(/<option /g) || []).length, 3);
     }
   });
@@ -116,26 +117,26 @@ describe('Mami ideas page copy', () => {
 
   it('shows the requested Korean Mami and Papi copy', () => {
     const html = render('ko');
-    assert.match(html, /Mami, 다음엔 뭐 만들까\?/);
-    assert.match(html, /해보고 싶은 게임이나 추가했으면 하는 거 있으면 여기 적어줘\./);
-    assert.match(html, /불편한 게 있거나 마음에 안 드는 것도 말해줘\. Papi가 보고 고쳐볼게\./);
-    assert.match(html, /Mami, 편하게 적어줘/);
-    assert.match(html, /Papi가 읽어볼게\./);
-    assert.match(html, /Mami, 생각난 걸 언제든 남겨줘\./);
-    assert.match(html, /placeholder="Baby, 여기 적어줘 ♡"/);
+    assert.match(html, /Mami, 다음엔 뭐 하고 놀까\?/);
+    assert.match(html, /같이 해보고 싶은 게임이나 있으면 좋겠는 걸 적어줘/);
+    assert.match(html, /불편한 것도 편하게 말해줘/);
+    assert.match(html, /무슨 생각 했어\?/);
+    assert.match(html, /편하게 적어줘\. 읽어볼게 ♡/);
+    assert.match(html, /생각나면 한 줄만 남겨줘/);
+    assert.match(html, /placeholder="같이 해보고 싶은 건…"/);
     assert.match(html, />Papi한테 보내기</);
     assert.doesNotMatch(html, /남편에게|Para mi esposo/);
   });
 
   it('keeps the Spanish copy in the same affectionate voice', () => {
     const html = render('es');
-    assert.match(html, /Mami, ¿qué hacemos después\?/);
-    assert.match(html, /Si hay algún juego que quieras probar o algo que te gustaría añadir, escríbelo aquí\./);
-    assert.match(html, /Dime también si algo te incomoda o no te gusta\. Papi lo revisa y lo arregla\./);
+    assert.match(html, /Mami, ¿a qué jugamos después\?/);
+    assert.match(html, /Cuéntame qué juego te gustaría probar conmigo/);
+    assert.match(html, /Aquí no hace falta decir solo cosas bonitas/);
     assert.match(html, /Algo que molesta/);
-    assert.match(html, /Mami, cuéntame tu idea cuando quieras\./);
-    assert.match(html, /Papi va a leerlo con cariño\./);
-    assert.match(html, /placeholder="Baby, escríbelo aquí ♡"/);
+    assert.match(html, /Cuando se te ocurra algo, déjame una línea/);
+    assert.match(html, /Escríbeme con confianza\. Lo leeré con cariño ♡/);
+    assert.match(html, /placeholder="Me gustaría que probáramos…"/);
     assert.match(html, />Enviar a Papi</);
     assert.doesNotMatch(html, /Para mi esposo/);
   });

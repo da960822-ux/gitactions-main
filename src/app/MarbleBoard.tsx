@@ -252,7 +252,7 @@ export default function MarbleBoard({ view: rawView, language, playerId, runActi
   const outcome = view.result?.winner === 'draw' ? 'draw' : view.result?.winner === playerId ? 'win' : view.result ? 'lose' : '';
 
   return <section className={`marble-premium distilled-marble ${isLegacy ? 'is-legacy' : 'is-modern'}`} aria-label={copy(language, '부루마블 경기판', 'Tablero de Marble')}>
-    <header className="mp-header"><div className="mp-brand"><h2>{copy(language, '부루마블', 'Marble')}</h2><p>{copy(language, '도시를 사고, 임대료를 모아 세계를 여행해요.', 'Compra ciudades, cobra rentas y recorre el mundo.')}</p></div><div className={`mp-turn-badge ${active ? 'is-active' : ''}`}><span className="mp-turn-gem" aria-hidden="true"/><b>{statusCopy}</b><span>{phaseLabel}</span></div></header>
+    <header className="mp-header"><div className="mp-brand"><h2>{copy(language, '부루마블', 'Marble')}</h2><p>{copy(language, '도시를 사고 건물을 지으며 여행해요. 네 도시에 들를 땐 지갑도 챙겨야겠네.', 'Compra ciudades, construye y recorre el mundo. Para visitarte, tendré que llevar la cartera.')}</p></div><div className={`mp-turn-badge ${active ? 'is-active' : ''}`}><span className="mp-turn-gem" aria-hidden="true"/><b>{statusCopy}</b><span>{phaseLabel}</span></div></header>
 
     <a className="mp-action-skip" href="#marble-current-action" onClick={event => { event.preventDefault(); focusMarbleAction(actionPanelRef.current); }}>{copy(language, '현재 행동으로 이동', 'Ir a la acción actual')}</a>
     <div className="mp-layout" ref={layoutRef}>

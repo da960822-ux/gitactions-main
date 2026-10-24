@@ -2,6 +2,28 @@ import type { GameId, Language } from '../core/types';
 
 type LocalizedRules = Record<Language, string[]>;
 
+// Saved Catchmind rooms without rulesVersion keep gameRules.catchmind below.
+export const catchmindCurrentRules: LocalizedRules = {
+  ko: [
+    '목표 — 두 사람이 번갈아 그림을 그리고 맞혀 점수를 모아요. 기본은 6개 개별 턴으로 각자 세 번 그려요.',
+    '준비 — 호스트가 주제를 고르고 설정을 저장해요. 기본은 단어 보기 3개와 그림 시간 80초예요. 그리는 사람은 15초 안에 단어를 고르고, 고르지 않으면 자동 선택돼요. 그림 시간은 30~180초, 보기는 3~5개로 바꿀 수 있어요.',
+    '힌트 — 힌트를 켜면 맞히는 사람의 매치 시작 언어로 글자 수를 보여 줘요. 제한 시간의 50%와 75%가 지나면 글자를 하나씩 더 공개하되, 적어도 한 글자는 숨겨 둬요. 힌트를 끄면 글자 수와 글자 힌트가 나오지 않아요.',
+    '그리기 — 캔버스에 마우스나 손가락으로 그립니다. 펜 색·굵기, 지우개, 채우기, 실행 취소, 전체 지우기를 사용할 수 있어요. 기본 색·보조 색을 먼저 고른 뒤 색상을 선택해요. 색 바꾸기로 두 색을 바꿀 수 있어요. 키보드: 화살표 이동, Space 그리기/멈춤, Enter 채우기·색 선택·점 찍기, Esc 선 마침, Tab 나가기. 출제자는 정답을 말하거나 글자로 쓰지 말고 그림으로 설명해 주세요.',
+    '맞히기 — 공유 채팅에 한국어나 스페인어의 정답 또는 등록된 별칭을 입력해요. 대소문자·양끝/연속 공백 차이와 스페인어 모음 악센트·ü 표시는 정답 판정에서 무시하지만, ñ와 n은 구분해요. 비슷한 뜻의 임의 단어는 정답이 아니에요.',
+    '점수 — 맞히면 그린 사람은 100점을 얻어요. 맞힌 사람은 남은 시간에 따른 100~200점에서 실제 공개된 글자마다 20점을 뺀 점수, 최소 50점을 얻어요. 시간초과나 건너뛰기는 두 사람 모두 0점이에요.',
+    '끝내기 — 정답·시간초과·건너뛰기 뒤에는 정답과 점수를 5초 동안 보여 주고 자동으로 역할을 바꿔요. 호스트는 시작 전에 2~12개의 짝수 턴과 나머지 설정을 정할 수 있어요. 마지막 합계가 높으면 이기고 같으면 무승부예요. 다시 하기는 두 사람 모두 동의해야 해요.',
+  ],
+  es: [
+    'Objetivo — Se turnan para dibujar y adivinar. Hay seis turnos individuales por defecto: tres dibujos por persona.',
+    'Preparación — Quien creó la sala elige y guarda una categoría. Por defecto hay tres palabras para elegir y 80 segundos para dibujar. Quien dibuja tiene 15 segundos para elegir; después se selecciona una automáticamente. Puedes ajustar el tiempo entre 30 y 180 segundos y las opciones entre tres y cinco.',
+    'Pistas — Con pistas activadas, se muestra la longitud en el idioma que tenía quien adivina al empezar la partida. Al pasar el 50 % y el 75 % del tiempo se revela un carácter más, dejando al menos uno oculto. Sin pistas, no se muestra la longitud ni se revelan caracteres.',
+    'Dibujo — Dibuja en el lienzo con el mouse o el dedo. Puedes cambiar color y grosor, usar borrador, rellenar, deshacer o borrar todo. Elige «Color principal» o «Color secundario» antes de escoger un color; «Intercambiar colores» los cambia entre sí. Teclado: flechas mueven; Espacio dibuja/para; Enter rellena, elige color o dibuja un punto; Esc termina el trazo; Tab sale del lienzo. Explica con dibujos; quien dibuja no debe escribir ni decir la respuesta.',
+    'Adivinar — Responde en el chat compartido con la palabra en coreano o español o un alias registrado. No se distinguen mayúsculas, espacios repetidos ni los acentos de las vocales y ü; ñ y n sí se distinguen. No se acepta cualquier palabra de significado parecido.',
+    'Puntos — Cuando se acierta, quien dibuja suma 100 puntos. Quien adivina recibe entre 100 y 200 según el tiempo restante, menos 20 por cada carácter realmente revelado, con un mínimo de 50. Al agotarse el tiempo o pasar la palabra, ambos reciben 0.',
+    'Final — Tras acertar, agotar el tiempo o pasar, se muestran la respuesta y los puntos durante cinco segundos y los papeles cambian automáticamente. Antes de empezar, quien creó la sala puede elegir entre dos y doce turnos pares y ajustar las demás opciones. Gana la suma más alta; si es igual, hay empate. Ambos deben aceptar otra partida.',
+  ],
+};
+
 export const lisbethDominoRules: LocalizedRules = {
   ko: [
     '목표와 준비 — 200점까지 경기하며, 시작 전 목표를 100점으로 바꿀 수 있습니다. 더블 식스 28장을 쓰고 각 자리에 7장씩 나눕니다. 1대1에서 남은 14장은 사용하지 않고 뽑지 않습니다. 첫 판에는 6|6을 반드시 배분해 시작 타일로 놓습니다. 다음 판부터는 직전 판 승자가 손패에서 아무 타일이나 놓아 엽니다. 파트너 모드는 두 팀이 번갈아 앉습니다.',

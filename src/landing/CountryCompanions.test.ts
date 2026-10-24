@@ -221,7 +221,7 @@ describe('grounded companion greeting',()=>{
    expect(pair.match(/class="lovebird"/g)).toHaveLength(2);expect(pair).toContain('data-companion-heart-body="true"');
    expect(markup.match(/class="hummingbird-air-feathers"/g)).toHaveLength(2);
    expect(markup).toContain(language==='ko'?'Baby의 분홍 벌새에게 인사하기':'Saludar al colibrí rosado de Baby');
-   expect(markup).toContain(language==='ko'?'한국 혼례에서 원앙은':'En las bodas coreanas');
+   expect(markup).toContain(language==='ko'?'내 쪽엔 원앙 한 마리.':'De mi lado hay un pato mandarín.');
   }
 
  });
