@@ -2,7 +2,7 @@ import { renderToStaticMarkup } from 'react-dom/server';
 import { describe, expect, it } from 'vitest';
 import MarbleBoard from './MarbleBoard';
 import { HwatuCard } from './HwatuCard';
-import { TableGames } from './TableGames';
+import { SplendorTable } from './SplendorTable';
 import DaVinciTable from './DaVinciTable';
 import { JaipurBoard } from './JaipurBoard';
 import { MinhwatuTable } from './MinhwatuTable';
@@ -97,7 +97,7 @@ describe('original Splendor faces', () => {
       expect(face.signature.points).toBe(card.points);
       for(const gem of ['white','blue','green','red','black'] as const) expect((face.signature.cost as Partial<Record<string,number>>)[gem] ?? 0).toBe(card.cost[gem] ?? 0);
       expect(existsSync(resolve('public/images/splendor',face.src))).toBe(true);
-      const html = renderToStaticMarkup(<TableGames game="splendor" view={{ownHand:{tokens:{},reserved:[{...card,id}]},board:{market:{[card.tier]:[{...card,id}]}},actions:[]}} language="ko" playerId="p1" runAction={() => {}}/>);
+      const html = renderToStaticMarkup(<SplendorTable view={{ownHand:{tokens:{},reserved:[{...card,id}]},board:{market:{[card.tier]:[{...card,id}]}},actions:[]}} language="ko" playerId="p1" runAction={() => {}}/>);
       expect(html).toContain(`/images/splendor/${face.src}`);
       expect(html).toContain('data-artwork-only="card"');
       expect(html).toContain('viewBox="85 90 165 260"');
@@ -122,7 +122,7 @@ describe('Splendor equal-score result explanation', () => {
     for (const playerId of ['p1', 'p2'] as const) for (const language of ['ko', 'es'] as const) {
       const expected = language === 'ko' ? '같은 점수라 개발 카드가 적은 쪽이 이겼어요.' : 'Con los mismos puntos, ganó quien tiene menos cartas de desarrollo.';
       const view = { board: {}, ownHand: {}, actions: [], result: { winner: 'p1', scores: { p1: 15, p2: 15 } } };
-      const render = (result: typeof view.result) => renderToStaticMarkup(<TableGames game="splendor" view={{ ...view, result }} playerId={playerId} language={language} runAction={() => {}}/>);
+      const render = (result: typeof view.result) => renderToStaticMarkup(<SplendorTable view={{ ...view, result }} playerId={playerId} language={language} runAction={() => {}}/>);
       expect(render(view.result)).toContain(expected);
       expect(render({ winner: 'draw', scores: { p1: 15, p2: 15 } })).not.toContain(expected);
       expect(render({ winner: 'p1', scores: { p1: 16, p2: 15 } })).not.toContain(expected);

@@ -130,10 +130,11 @@ const marblePath18: readonly [number, number][] = [
   [3, 1], [2, 1], [1, 1], [1, 2], [1, 3], [1, 4],
 ];
 
+export type MarbleMotionSeat = 'p1' | 'p2' | 'p3' | 'p4';
 export type MarblePresentationFrame = {
   at: number; event: MarbleActionEvent; dice: boolean;
-  positions: Record<'p1' | 'p2', number>;
-  traveler: { seat: 'p1' | 'p2'; tile: number; seq: number } | null;
+  positions: Record<string, number>;
+  traveler: { seat: MarbleMotionSeat; tile: number; seq: number } | null;
 };
 
 export type MarbleJourneyDisplay = 'inspect' | 'moving' | 'arrived';
@@ -143,8 +144,8 @@ export function marbleJourneyDisplay(input: {
   selectedTile: number;
   actionTile: number;
   displayedTile: number;
-  traveler: { seat: 'p1' | 'p2' } | null;
-  playerId: 'p1' | 'p2';
+  traveler: { seat: MarbleMotionSeat } | null;
+  playerId: MarbleMotionSeat;
   diceRolling: boolean;
 }): MarbleJourneyDisplay {
   if (input.selectedTile !== input.actionTile) return 'inspect';
@@ -154,11 +155,11 @@ export function marbleJourneyDisplay(input: {
 
 // One clock orders confirmed dice, movement and arrival feedback. Long catch-up
 // batches are shown through the persistent history instead of replaying old turns.
-export function marblePresentationFrames(events: MarbleActionEvent[], from: Record<'p1' | 'p2', number>, to: Record<'p1' | 'p2', number>, size: number) {
+export function marblePresentationFrames(events: MarbleActionEvent[], from: Record<string, number>, to: Record<string, number>, size: number) {
   const frames: MarblePresentationFrame[] = [];
   let at = 0, positions = { ...from };
   for (const event of events) {
-    const type = marbleEventType(event), seat = event.actor === 'p2' ? 'p2' : 'p1';
+    const type = marbleEventType(event), seat = (event.actor && event.actor in positions ? event.actor : 'p1') as MarbleMotionSeat;
     frames.push({ at, event, dice: type === 'roll', positions: { ...positions }, traveler: null });
     if (type === 'move') {
       const start = Number.isInteger(event.from) ? Number(event.from) : positions[seat];
@@ -173,7 +174,7 @@ export function marblePresentationFrames(events: MarbleActionEvent[], from: Reco
   }
   // If the event window missed the end of a displacement, append from one stable
   // origin. Updating the origin inside the loop skips cells (3,5,8 instead of 3,4,5).
-  for (const seat of ['p1', 'p2'] as const) {
+  for (const seat of Object.keys(to) as MarbleMotionSeat[]) {
     if (positions[seat] === to[seat] || !events.length) continue;
     const origin = positions[seat], gap = (to[seat] - origin + size) % size;
     const event = events.at(-1)!;

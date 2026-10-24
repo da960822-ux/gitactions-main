@@ -1,0 +1,117 @@
+.marble-team-board .mp-owner-p3 { background:#dcefe6; color:#205f50; }
+.marble-team-board .mp-owner-p4 { background:#e8e4f4; color:#514178; }
+.marble-team-board .mp-pawns { flex-wrap:wrap; max-width:82px; }
+.marble-team-board .mp-owner { max-width:100%; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
+.marble-team-board .mp-pawn-marker[data-seat-number="3"]::after { background:#dcefe6; }
+.marble-team-board .mp-pawn-marker[data-seat-number="4"]::after { background:#e8e4f4; }
+.marble-native-team { height:100svh; min-height:0; display:grid; grid-template-rows:54px minmax(0,1fr); gap:8px; padding:10px 14px; background:#f0e7d5; color:#284b4d; box-sizing:border-box; }
+.marble-native-team * { box-sizing:border-box; }
+.marble-native-team .mt-top { display:flex; justify-content:space-between; align-items:center; gap:16px; }
+.marble-native-team .mt-top h1 { margin:0; font:700 24px/1.15 Georgia,'Noto Serif KR',serif; }
+.marble-native-team .mt-top h1 span { margin-left:8px; font:700 14px/1.1 sans-serif; color:#976c39; }
+.marble-native-team .mt-top small { font-size:13px; }
+.marble-native-team .mt-top nav { display:flex; align-items:center; gap:14px; }
+.marble-native-team .mt-top nav details { position:relative; }
+.marble-native-team .mt-top nav summary { min-height:38px; display:flex; align-items:center; cursor:pointer; font-size:14px; }
+.marble-native-team .mt-top nav details > div { position:absolute; z-index:40; top:100%; right:0; width:min(460px,80vw); max-height:75vh; overflow:auto; padding:18px; border:1px solid #bfa981; border-radius:10px; background:#fffaf0; box-shadow:0 8px 22px #43371e33; }
+.marble-native-team .mt-top nav h2 { margin:0 0 12px; font-size:20px; }
+.marble-native-team .mt-top nav p { font-size:14px; line-height:1.55; }
+.marble-native-team .mt-menu label { display:flex; align-items:center; justify-content:space-between; gap:12px; margin:10px 0; font-size:14px; }
+.marble-native-team .mt-menu label:has(select) { display:grid; }
+.marble-native-team .mt-skip { position:absolute; left:15px; top:-100px; z-index:60; padding:10px; background:#fffaf0; color:#154f52; }
+.marble-native-team .mt-skip:focus { top:10px; }
+.marble-native-team .mt-play-surface { min-height:0; display:grid; grid-template-columns:minmax(0,1fr) 330px; gap:14px; }
+.marble-native-team .mt-four-board { min-height:0; display:grid; grid-template-rows:54px minmax(0,1fr) 54px; gap:6px; }
+.marble-native-team .mt-banks { width:100%; max-width:930px; justify-self:center; display:grid; grid-template-columns:1fr 1fr; gap:12px; }
+.marble-native-team .mt-bank { min-width:0; position:relative; display:flex; align-items:center; gap:10px; padding:4px 10px; border:1px solid #c5b696; border-radius:8px; background:#fff9ec; }
+.marble-native-team .mt-bank-A { border-color:#5b9b8c; }
+.marble-native-team .mt-bank-B { border-color:#bd8d99; }
+.marble-native-team .mt-bank.is-current { outline:2px solid #b58b35; outline-offset:0; background:#fff3c9; }
+.marble-native-team .mt-bank.is-bankrupt { opacity:.55; }
+.marble-native-team .mt-bank > .marble-pawn { width:33px; height:42px; flex:none; object-fit:contain; }
+.marble-native-team .mt-bank > div { min-width:0; display:grid; gap:3px; }
+.marble-native-team .mt-bank strong { font-size:13px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+.marble-native-team .mt-bank > div > span { font-size:15px; font-weight:750; white-space:nowrap; }
+.marble-native-team .mt-bank dl { margin:0 0 0 auto; display:flex; gap:14px; text-align:right; }
+.marble-native-team .mt-bank dt { font-size:13px; }
+.marble-native-team .mt-bank dd { margin:0; font-size:14px; font-weight:750; }
+.marble-native-team .mt-turn-dot { display:inline-block; width:7px; height:7px; border-radius:50%; background:#ad7923; }
+.marble-native-team .mp-board-panel { min-height:0; height:100%; width:100%; max-width:930px; justify-self:center; padding:7px; }
+.marble-native-team .mt-four-board .mp-board-grid--40 { width:100%; max-width:900px; height:100%; aspect-ratio:auto; grid-template-columns:120px repeat(9,minmax(0,1fr)) 120px; grid-template-rows:78px repeat(9,minmax(0,1fr)) 78px; }
+.marble-native-team .mp-property-tile-copy .mp-tile-name { font-size:13px; }
+.marble-native-team .mp-tile--west .mp-property-tile-copy .mp-tile-economy b,.marble-native-team .mp-tile--east .mp-property-tile-copy .mp-tile-economy b { font-size:13px; }
+.marble-native-team .mt-captain-panel { min-height:0; overflow:auto; padding:15px; border:1px solid #c8b795; border-radius:12px; background:#fffbf2; }
+.marble-native-team .mt-captain-panel > details { margin-top:12px; padding-top:10px; border-top:1px solid #d8cdb6; }
+.marble-native-team summary { cursor:pointer; font-size:14px; }
+.marble-native-team button:not(.mp-tile-select),.marble-native-team select { min-height:38px; max-width:100%; padding:7px 10px; border:1px solid #bca57a; border-radius:7px; background:#fffdf7; color:#284b4d; font-family:inherit; font-size:14px; font-weight:600; line-height:1.2; cursor:pointer; }
+.marble-native-team button:disabled { cursor:wait; opacity:.55; }
+.marble-native-team button:focus-visible,.marble-native-team summary:focus-visible,.marble-native-team select:focus-visible { outline:3px solid #986630; outline-offset:2px; }
+.marble-native-team button.mt-primary { background:#197479; border-color:#197479; color:#fff; box-shadow:0 3px 6px #264e4b25; }
+.marble-native-team button.mt-danger { color:#943e3c; border-color:#ae7770; }
+.marble-native-team .mt-dice-status { display:flex; align-items:center; justify-content:space-between; gap:12px; }
+.marble-native-team .mt-dice-status h2 { margin:0; font-size:14px; line-height:1.4; }
+.marble-native-team .mt-dice { display:flex; gap:6px; flex:none; }
+.marble-native-team .mt-dice > span { display:grid; place-items:center; width:34px; height:34px; border:1px solid #bb9f69; border-radius:8px; background:#fffdf6; font:700 20px/1 Georgia,serif; box-shadow:0 3px 6px #56402120; }
+.marble-native-team .mt-dice.is-rolling { animation:mp-dice-roll 620ms ease-out; }
+.marble-native-team .mt-landing { margin:18px 0 12px; }
+.marble-native-team .mt-landing h3 { margin:0 0 6px; font:700 23px/1.15 Georgia,'Noto Serif KR',serif; }
+.marble-native-team .mt-landing p { margin:0; font-size:14px; line-height:1.5; }
+.marble-native-team .mt-cash-after { display:block; margin:10px 0; font-size:15px; }
+.marble-native-team .mt-main-actions { display:flex; flex-wrap:wrap; gap:8px; margin:12px 0; }
+.marble-native-team .mt-main-actions > button { flex:1 1 110px; }
+.marble-native-team .mt-captain-panel p { font-size:14px; line-height:1.5; }
+.marble-native-team .mt-captain-panel select { display:block; width:100%; margin:10px 0; }
+.marble-native-team .mt-captain-panel details > button { margin-top:8px; }
+.marble-native-team .mt-debt-alert { display:grid; gap:6px; margin:12px 0; padding:10px; border:1px solid #b77a63; color:#7b342d; border-radius:8px; }
+.marble-native-team .mt-city-sheet > :is(img,svg) { display:block; width:100%; height:120px; object-fit:contain; margin:12px auto; }
+.marble-native-team .mt-city-sheet h3 { margin:8px 0; font-size:18px; }
+.marble-native-team .mt-rent-table { display:grid; grid-template-columns:repeat(4,1fr); gap:4px; margin:12px 0; }
+.marble-native-team .mt-rent-table dt { font-size:13px; }
+.marble-native-team .mt-rent-table dd { margin:3px 0 0; font-size:15px; font-weight:700; }
+.marble-native-team .mt-portfolio > div { display:grid; grid-template-columns:1fr 1fr; gap:6px; padding-top:8px; }
+.marble-native-team .mt-portfolio button { display:grid; gap:4px; }
+.marble-native-team .mt-portfolio :is(img,svg) { width:100%; height:50px; object-fit:contain; }
+.marble-native-team .mt-portfolio span { font-size:13px; }
+.marble-native-team .mt-history ol { list-style:none; padding:0; display:grid; gap:10px; }
+.marble-native-team .mt-history li { display:grid; gap:3px; font-size:13px; }
+.marble-native-team .mt-history li span { color:#546960; }
+.marble-native-team .mt-error { padding:8px; color:#963b3b; border:1px solid #bd8a7d; }
+.marble-native-team .marble-event-stage { display:flex; flex-wrap:wrap; margin:12px 0; padding:10px; border-color:#d6bd93; background:#fff8e7; }
+.marble-native-team .marble-event-copy { flex:1; min-width:120px; }
+.marble-native-team .marble-event-heading strong { color:#284b4d; }
+.marble-native-team .marble-event-heading span,.marble-native-team .marble-event-copy p,.marble-native-team .marble-event-transfer { color:#50665d; }
+.marble-native-team .marble-event-transfer { flex-basis:100%; }
+.marble-native-team .mt-result { border-top:2px solid #ad8841; margin-top:15px; padding-top:15px; }
+.marble-native-team .mt-result h2 { font-size:22px; }
+.marble-native-team .mt-exit-dialog { width:min(440px,90vw); padding:24px; border:1px solid #bda47d; border-radius:12px; background:#fffaf0; color:#284b4d; box-shadow:0 12px 35px #2d332f55; }
+.marble-native-team .mt-exit-dialog::backdrop { background:#102c34aa; }
+.marble-native-team .mt-exit-dialog h2 { margin:0 0 12px; font-size:22px; }
+.marble-native-team .mt-exit-dialog p { font-size:14px; line-height:1.5; }
+.marble-native-team .mt-exit-dialog > div { display:flex; gap:10px; justify-content:flex-end; margin-top:20px; }
+.marble-native-team .marble-pawn-picker { margin:10px 0; padding:10px; }
+.marble-native-team .marble-pawn-picker__grid { grid-template-columns:repeat(3,minmax(0,1fr)); }
+.marble-native-team .marble-pawn-choice { min-height:110px; padding:4px; }
+.marble-native-team .marble-pawn-choice__art { width:54px; height:65px; }
+@media (max-width:1150px) { .marble-native-team .mt-play-surface { grid-template-columns:minmax(0,1fr) 290px; gap:10px; }.marble-native-team .mt-bank dl { gap:7px; }.marble-native-team .mt-bank > .marble-pawn { width:25px; } }
+@media (prefers-reduced-motion:reduce) { .marble-native-team *, .marble-native-team *::before,.marble-native-team *::after { animation:none!important; transition:none!important; } }
+@media (min-width:981px) {
+  .marble-team-board.is-modern .mp-board-grid--40 .mp-pawns { display:grid; grid-template-columns:repeat(2,18px); gap:0; max-width:none; padding:2px; border:1px solid #a89979; border-radius:5px; background:#fffaf0f2; }
+  .marble-team-board.is-modern .mp-board-grid--40 .mp-pawn-marker { width:18px; height:22px; }
+  .marble-team-board.is-modern .mp-board-grid--40 .mp-pawn-marker::after { width:9px; height:9px; font-size:7px; right:-1px; }
+  .marble-team-board.is-modern :is([data-mp-edge="bottom"],[data-mp-edge="top"]) .mp-pawns::before { content:""; position:absolute; left:50%; height:5px; border-left:1px solid #607c70; }
+  .marble-team-board.is-modern [data-mp-edge="bottom"] .mp-pawns::before { top:100%; }
+  .marble-team-board.is-modern [data-mp-edge="top"] .mp-pawns::before { bottom:100%; }
+  .marble-team-board.is-modern :is([data-mp-edge="left"],[data-mp-edge="right"]) .mp-pawns::before { content:""; position:absolute; top:50%; width:5px; border-top:1px solid #607c70; }
+  .marble-team-board.is-modern [data-mp-edge="left"] .mp-pawns::before { right:100%; }
+  .marble-team-board.is-modern [data-mp-edge="right"] .mp-pawns::before { left:100%; }
+  .marble-team-board.is-modern .mp-board-grid--40 :is([data-mp-edge="rightbottom"],[data-mp-edge="leftbottom"],[data-mp-edge="righttop"],[data-mp-edge="lefttop"]) .mp-pawns { right:3px; left:auto; top:50%; bottom:auto; transform:translateY(-50%); grid-template-columns:repeat(2,24px); }
+  .marble-team-board.is-modern .mp-board-grid--40 :is([data-mp-edge="rightbottom"],[data-mp-edge="leftbottom"],[data-mp-edge="righttop"],[data-mp-edge="lefttop"]) .mp-pawn-marker { width:24px; height:30px; }
+  .marble-team-board.is-modern .mp-board-grid--40 :is([data-mp-edge="rightbottom"],[data-mp-edge="leftbottom"],[data-mp-edge="righttop"],[data-mp-edge="lefttop"]).has-player .mp-tile-content { padding-right:56px; }
+  .marble-team-board.is-modern .mp-tile--horizontal.mp-kind-property .mp-property-tile-view { display:grid; grid-template-columns:minmax(0,1fr); grid-template-rows:22px minmax(0,1fr); align-content:start; justify-content:stretch; gap:1px; }
+  .marble-team-board.is-modern .mp-tile--horizontal.mp-kind-property .mp-property-tile-art { grid-row:1; grid-column:1; width:100%; height:22px; padding-top:0; }
+  .marble-team-board.is-modern .mp-tile--horizontal .mp-property-tile-copy { grid-row:2; grid-column:1; display:grid; grid-template-rows:minmax(26px,1fr) 14px; height:100%; min-height:0; gap:1px; }
+  .marble-team-board.is-modern .mp-tile--horizontal .mp-property-tile-copy .mp-tile-name { min-height:0; margin:0; font-size:13px; line-height:1; }
+  .marble-team-board.is-modern .mp-tile--horizontal .mp-tile-economy { display:block; height:14px; margin:0; line-height:14px; }
+  .marble-team-board.is-modern .mp-tile--horizontal .mp-tile-economy b { display:block; font-size:13px; line-height:14px; }
+  .marble-team-board.is-modern .mp-tile--horizontal .mp-tile-economy span { display:none; }
+}

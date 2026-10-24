@@ -1,15 +1,17 @@
+import DaVinciTable from './DaVinciTable';
+import { JaipurBoard } from './JaipurBoard';
 import { createElement } from 'react';
 import { renderToStaticMarkup } from 'react-dom/server';
 import { existsSync } from 'node:fs';
 import { resolve } from 'node:path';
 import { describe, expect, it, vi } from 'vitest';
 import splendorArt from '../../public/images/splendor/card-map.json';
-import { deriveSplendorVisualEvent, restoreSplendorCardFocus, splendorActionPanelMessages, splendorCardAction, splendorCardArtSrc, splendorCardCostPlan, splendorCardPaymentRows, splendorGuidance, splendorNobleArtSrc, splendorRequiredReturns, splendorReserveChoices, splendorSelectedTier, splendorSelectedTierText, splendorTakeAction, splendorTotalAfterTake, TableGames } from './TableGames';
+import { deriveSplendorVisualEvent, restoreSplendorCardFocus, splendorActionPanelMessages, splendorCardAction, splendorCardArtSrc, splendorCardCostPlan, splendorCardPaymentRows, splendorGuidance, splendorNobleArtSrc, splendorRequiredReturns, splendorReserveChoices, splendorSelectedTier, splendorSelectedTierText, splendorTakeAction, splendorTotalAfterTake, SplendorTable } from './SplendorTable';
 import { jaipurSalePreview } from './JaipurBoard';
 import { splendorEngine } from '../games/splendor';
 import { SplendorQuickGuide } from './SplendorQuickGuide';
 
-const render = (game: 'jaipur' | 'splendor' | 'davinci', view: any, language: 'ko' | 'es' = 'ko', playerId: 'p1' | 'p2' = 'p1') => renderToStaticMarkup(createElement(TableGames, { game, view, language, playerId, runAction: () => {} }));
+const render = (game: 'jaipur' | 'splendor' | 'davinci', view: any, language: 'ko' | 'es' = 'ko', playerId: 'p1' | 'p2' = 'p1') => renderToStaticMarkup(game === 'davinci' ? createElement(DaVinciTable,{view,language,playerId,runAction:()=>{}}) : game === 'jaipur' ? createElement(JaipurBoard,{view,language,playerId,runAction:()=>{}}) : createElement(SplendorTable,{view,language,playerId,runAction:()=>{}}));
 
 describe('Splendor focus after a selected card moves or disappears', () => {
   it('follows a reserved card and otherwise returns to the remaining market', () => {
@@ -38,7 +40,7 @@ describe('Splendor focus after a selected card moves or disappears', () => {
   });
 });
 
-describe('TableGames public-state interaction guidance', () => {
+describe('Game-specific public-state interaction guidance', () => {
   it('counts a gold token once in the visible post-take total', () => {
     expect(splendorTotalAfterTake({ white: 0, blue: 0, green: 0, red: 0, black: 0, gold: 1 }, 3, {})).toBe(4);
   });
@@ -212,7 +214,7 @@ describe('TableGames public-state interaction guidance', () => {
     expect(html).toContain('class="sp-reserved-cost-chip sp-color-green"');
     expect(html).toContain('Fichas rivales: 7');
     expect(html).toContain('No quedan gemas disponibles para tomar');
-    const originalDisplay = renderToStaticMarkup(createElement(TableGames, { game: 'splendor', view, language: 'es', playerId: 'p1', desktopDisplay: false, runAction: () => {} }));
+    const originalDisplay = renderToStaticMarkup(createElement(SplendorTable, { view, language: 'es', playerId: 'p1', desktopDisplay: false, runAction: () => {} }));
     expect(originalDisplay).toContain('Carta reservada · Nivel 1');
     expect(originalDisplay).not.toContain('sp-reserved-cost-chip');
     expect(originalDisplay).toContain('title="4 Verde">4 Verde');
@@ -371,8 +373,9 @@ describe('TableGames public-state interaction guidance', () => {
       ],
     }, 'ko');
 
-    expect(html).toContain('1번째 검정 타일 · 0 추측');
-    expect(html).toContain('더미가 비었어요. 틀려도 새로 공개될 내 타일은 없고 차례가 끝나요.');
+    expect(html).toContain('타일과 숫자를 선택하세요');
+    expect(html).toMatch(/class="dv-guess-submit" disabled/);
+    expect(html).toContain('1번째 검정 상대 타일, 숫자 숨김');
     expect(html).not.toContain('<b>11</b>');
     expect(html).toContain('dv-own-tile dv-tile-white is-revealed');
     expect(html).toContain('disabled=""');

@@ -111,10 +111,23 @@ describe('JaipurBoard', () => {
     const html = render(view());
     expect(html).toContain('data-jaipur-card-id="m-d1"');
     expect(html).toContain('class="jp-action-tray jp-take-controls"');
-    expect(html).toContain('가져오기 선택');
+    expect(html).toContain('가져오기 확정');
     expect(html).toContain('class="jp-primary-action" disabled=""');
     expect(html).toContain('취소');
     expect(html).toContain('class="jp-cancel-action" disabled=""');
+  });
+
+  it('keeps hand capacity and named herds without repeating the same static rules', () => {
+    for (const language of ['ko', 'es'] as const) {
+      const html = render(view(), language);
+      expect(html).toContain('3 / 7');
+      expect(html).toContain(language === 'ko' ? '낙타 무리' : 'Tu manada');
+      expect(html).toContain(language === 'ko' ? '시장 카드나 낙타 무리를 선택하세요.' : 'Elige una mercancía o los camellos del mercado.');
+      expect(html).not.toContain(language === 'ko' ? '손패 제한에 포함되지 않아요.' : 'No cuenta para el límite de cartas.');
+      expect(html).not.toContain(language === 'ko' ? '상대 손패는 뒷면으로 표시돼요.' : 'Las cartas rivales se muestran boca abajo.');
+      expect(html).not.toContain('jp-eyebrow');
+      expect(html.match(/class="jp-primary-action"/g)).toHaveLength(1);
+    }
   });
 
   it('toggles the same take selection off while replacing a different selection', () => {

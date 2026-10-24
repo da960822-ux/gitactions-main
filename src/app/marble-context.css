@@ -1,0 +1,42 @@
+.distilled-marble .mp-brand p { display:none; }
+.distilled-marble .mp-current-tile { border:0; border-radius:0; background:transparent; padding:4px 0; }
+.distilled-marble .mp-current-tile > div { gap:4px; }
+.distilled-marble .mp-current-tile > div > b { font-size:20px; line-height:1.2; }
+.distilled-marble .mp-current-tile > div > span { font-size:13px; line-height:1.4; }
+.distilled-marble .mp-purchase-recap { padding:0 0 8px; border:0; border-radius:0; background:transparent; color:#234d50; font-size:14px; font-weight:700; }
+.distilled-marble .mp-build-shortcut { padding:8px 0; border:0; border-top:1px solid #d8cdb6; border-radius:0; background:transparent; font-size:13px; }
+.distilled-marble .mp-build-shortcut > summary { cursor:pointer; font-size:13px; }
+.distilled-marble .mp-build-shortcut > span { display:block; margin:6px 0; font-size:13px; }
+.distilled-marble .mp-actions { gap:8px; }
+.distilled-marble .mp-action { font-size:14px; }
+.distilled-marble .mp-phase-title h3 { font-size:14px; }
+.distilled-marble .mp-loan-options { margin-top:4px; border-top:1px solid #d8cdb6; padding-top:6px; }
+.distilled-marble .mp-loan-options > summary,.distilled-marble .mp-city-detail > summary,.distilled-marble .mp-history > summary,.distilled-marble .mp-portfolio > summary { font-size:13px; cursor:pointer; }
+.distilled-marble .mp-loan-options > summary:focus-visible { outline:3px solid #9b5522; outline-offset:3px; }
+.distilled-marble .mp-loan-note { font-size:13px; }
+.distilled-marble .mp-city-detail > .mp-journey-hud { position:static; display:grid; min-height:0; margin:8px 0; padding:0; border:0; border-radius:0; background:transparent; box-shadow:none; }
+.distilled-marble .mp-city-detail .mp-journey-copy > small { display:none; }
+.distilled-marble .mp-city-detail .mp-journey-copy h3 { font-size:18px; }
+.distilled-marble .mp-city-detail .mp-journey-copy p,.distilled-marble .mp-city-detail .mp-journey-stops button { font-size:13px; }
+.distilled-marble .mp-city-detail .mp-journey-arrival { grid-template-columns:70px minmax(0,1fr); gap:10px; }
+.distilled-marble .mp-city-detail .mp-journey-landmark { grid-column:1/-1; }
+.distilled-marble .mp-city-detail .mp-journey-stops { grid-template-columns:repeat(2,minmax(0,1fr)); }
+.distilled-marble .mp-event-theater { border:0; background:transparent; box-shadow:none; }
+.distilled-marble .mp-event-theater .marble-event-stage { font-size:13px; }
+.distilled-marble .marble-event-heading strong { color:#23474c; }
+.distilled-marble .marble-event-heading span,.distilled-marble .marble-event-copy p,.distilled-marble .marble-event-transfer { color:#4a625d; }
+.distilled-marble .marble-event-stage { flex-wrap:wrap; }
+.distilled-marble .marble-event-copy { flex:1; min-width:120px; }
+.distilled-marble .marble-event-transfer { order:3; flex-basis:100%; justify-content:flex-end; }
+.distilled-marble .mp-latest-receipt { border:0; background:transparent; padding:6px 0; font-size:13px; }
+.distilled-marble .mp-dashboard > details { min-height:0; margin:0; padding:8px 0; border:0; border-top:1px solid #d8cdb6; border-radius:0; background:transparent; box-shadow:none; }
+@media (min-width:1100px) and (pointer:fine) {
+  .distilled-marble.is-modern .mp-tile--horizontal.mp-kind-property .mp-property-tile-view { display:grid; grid-template-columns:minmax(0,1fr); grid-template-rows:22px minmax(0,1fr); gap:1px; align-content:start; }
+  .distilled-marble.is-modern .mp-tile--horizontal.mp-kind-property .mp-property-tile-art { grid-column:1; grid-row:1; width:100%; height:22px; padding-top:0; }
+  .distilled-marble.is-modern .mp-tile--horizontal .mp-property-tile-copy { grid-column:1; grid-row:2; display:grid; grid-template-rows:minmax(26px,1fr) 14px; height:100%; min-height:0; gap:1px; }
+  .distilled-marble.is-modern .mp-tile--horizontal .mp-property-tile-copy .mp-tile-name { min-height:0; margin:0; font-size:13px; line-height:1; }
+  .distilled-marble.is-modern .mp-tile--horizontal .mp-tile-economy { display:block; height:14px; margin:0; line-height:14px; }
+  .distilled-marble.is-modern .mp-tile--horizontal .mp-tile-economy b { display:block; font-size:13px; line-height:14px; }
+  .distilled-marble.is-modern .mp-tile--horizontal .mp-tile-economy span { display:none; }
+  .distilled-marble.is-modern :is(.mp-tile--west,.mp-tile--east) .mp-property-tile-copy .mp-tile-economy b { font-size:13px; }
+}

@@ -70,7 +70,8 @@ describe('MarbleBoard', () => {
     expect(ko).toContain('mp-board-panel');
     expect(ko).toContain('mp-pawn-picker-shell');
     expect(ko.indexOf('mp-pawn-picker-shell')).toBeLessThan(ko.indexOf('mp-turn-panel'));
-    expect(ko.indexOf('mp-turn-panel')).toBeLessThan(ko.indexOf('mp-city-detail'));
+    expect(ko.indexOf('mp-turn-panel')).toBeLessThan(ko.indexOf('<details class="mp-city-detail"'));
+    expect(ko).toContain('<details class="mp-pawn-picker-shell mp-city-detail"><summary>말 선택</summary>');
     expect(ko).toContain('/images/marble/building-stages.svg#land');
     expect(es).toContain('Gwangju');
     expect(es).toContain('Santo Domingo');
@@ -122,7 +123,9 @@ describe('MarbleBoard', () => {
     const view = marbleEngine.getPlayerView({ ...marbleEngine.createInitialState(11), cityRouteVersion: 2 }, 'p1');
     view.board.positions.p1 = 1;
     const html = render(view);
-    const arrival = html.slice(html.indexOf('<section class="mp-journey-hud"'), html.indexOf('</section>') + 10);
+    const start = html.indexOf('<section class="mp-journey-hud"');
+    const arrival = html.slice(start, html.indexOf('</section>', start) + 10);
+    expect(start).toBeGreaterThan(html.indexOf('<details class="mp-city-detail"'));
     expect(arrival).toContain('현재 도착 · 행동 위치');
     expect(arrival).toContain('data-building-level="0"');
     expect(arrival).toContain('현재 미건설');
@@ -158,7 +161,7 @@ describe('MarbleBoard', () => {
     const html = render(marbleEngine.getPlayerView(state, 'p2'), 'es', 'p2');
     expect(html).toContain('<h3>Puerto Plata</h3>');
     expect(html).toContain('Llegada actual · ubicación de acción');
-    expect(html).toContain('Ubicación de acción</small>');
+    expect(html).toContain('Compra 180 · renta 26');
     expect(html).toContain('Puerto Plata');
   });
 
@@ -172,7 +175,7 @@ describe('MarbleBoard', () => {
     expect(render(view)).toContain('디에고 콜론의 거주지');
   });
 
-  it('shows the latest receipt immediately beside actions before animated history', () => {
+  it('retains exact financial receipts in the closed history without repeating the current action panel', () => {
     const view = marbleEngine.getPlayerView(marbleEngine.createInitialState(12), 'p1');
     view.board.actionLog = [
       { sequence: 1, title: { ko: '옛 탈출', es: 'Salida anterior' }, text: { ko: '100 납부', es: 'Pago 100' } },
@@ -180,7 +183,8 @@ describe('MarbleBoard', () => {
     ];
     const html = render(view);
     expect(html.indexOf('mp-latest-receipt')).toBeGreaterThan(html.indexOf('mp-turn-panel'));
-    expect(html.indexOf('mp-latest-receipt')).toBeLessThan(html.indexOf('mp-event-theater'));
+    expect(html.indexOf('mp-latest-receipt')).toBeGreaterThan(html.indexOf('<details class="mp-history"'));
+    expect(html.indexOf('mp-latest-receipt')).toBeGreaterThan(html.indexOf('mp-event-theater'));
     expect(html).toContain('내 현금 -60');
     view.board.actionLog.push({ sequence: 3, type: 'monopoly-warning', title: { ko: '독점 경고', es: 'Aviso' } });
     expect(render(view)).toContain('건설 완료 · 내 현금 -60');
@@ -244,9 +248,8 @@ describe('MarbleBoard', () => {
     const html = render(view);
     const spanish = render(view, 'es');
     expect(html).toContain('산토도밍고');
-    expect(html).toContain('도시 구매 · 120');
-    expect(html).toContain('매입 120 · 매입 후 현금 1,380');
-    expect(html).toContain('기본 통행료 15');
+    expect(html).toContain('>구매<span aria-hidden="true">');
+    expect(html).toContain('구매 120 · 기본 통행료 15');
     expect(html.indexOf('mp-purchase-recap')).toBeLessThan(html.indexOf('mp-actions'));
     expect(html).toContain('구매 120 · 기본 통행료 15');
     expect(html).toContain('구매 후 현금 1,380');
@@ -295,8 +298,9 @@ describe('MarbleBoard', () => {
     expect(ko).toContain('결제가 필요해요');
     expect(ko).toContain('상대 임대료를 내야 합니다.');
     expect(ko).toContain('파산 선택 검토');
-    expect(ko).toContain('나중에 330을 갚아요');
+    expect(ko).toContain('상환 330');
     expect(ko).not.toContain('파산 인정</button>');
+    expect(ko).not.toContain('class="mp-loan-options"');
     expect(es).toContain('Hay un pago pendiente');
     expect(es).toContain('Debes pagar el alquiler rival.');
     expect(es).toContain('devuelves 330');
@@ -315,6 +319,7 @@ describe('MarbleBoard', () => {
     expect(ko).toContain('대출은 300을 받고 나중에 330을 갚아요');
     expect(es).toContain('Patrimonio neto');
     expect(es).toContain('Recibes 300 y luego devuelves 330');
+    expect(ko).toContain('<details class="mp-loan-options"><summary>대출·상환</summary>');
   });
 
   it('shows each player’s landmark count beside city and debt totals', () => {

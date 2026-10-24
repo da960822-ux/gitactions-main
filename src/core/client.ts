@@ -1,5 +1,6 @@
 import { type SupabaseClient, type RealtimeChannel } from '@supabase/supabase-js';
 import { engines } from './registry';
+import { aiTurnDelay, chooseSimpleAiAction, supportsAi } from '../games/simpleAi';
 import { executeAction, RETENTION_MS, chatMessageForGame, reactionMessageForId } from './authority';
 import type { ReactionId } from './reactions';
 import type { GameId, GameAction, Language, PlayerId } from './types';
@@ -7,12 +8,13 @@ import { isCorrectGuess, getCatchmindDrawDurationMs } from '../games/catchmind';
 
 export interface RoomPlayer { id: PlayerId; nickname: string; language: Language; ready: boolean }
 export interface ChatMessage { id: string; playerId: PlayerId; text: string; translation?: string; targetLanguage?: Language; status: 'original'|'translated'|'limit'|'unavailable'|'correct'; createdAt:string }
-export interface RoomSnapshot { roomId:string|null; mode:'demo'|'online'; playerId:PlayerId; players:RoomPlayer[]; gameId:GameId|null; version:number; view:any|null; messages:ChatMessage[]; pendingGame:GameId|null; error:string|null; connection?:'local'|'connecting'|'connected'|'reconnecting'; syncEpoch?:number }
+export interface RoomSnapshot { roomId:string|null; mode:'demo'|'online'|'solo'; playerId:PlayerId; players:RoomPlayer[]; gameId:GameId|null; version:number; view:any|null; messages:ChatMessage[]; pendingGame:GameId|null; error:string|null; connection?:'local'|'connecting'|'connected'|'reconnecting'; syncEpoch?:number }
 import { onlineDb } from './supabase';
 export const isOnlineConfigured = Boolean(onlineDb);
 const emptySnapshot = (): RoomSnapshot => ({roomId:null,mode:isOnlineConfigured?'online':'demo',playerId:'p1',players:[],gameId:null,version:0,view:null,messages:[],pendingGame:null,error:null,connection:isOnlineConfigured?'connecting':'local',syncEpoch:0});
 class RoomClient {
-  private db:SupabaseClient|null = onlineDb;
+  constructor(private db:SupabaseClient|null = onlineDb, private solo = false) {}
+  private botTimer:ReturnType<typeof setTimeout>|null=null;
   private snapshot = emptySnapshot();
   private state:any=null;
   private listeners=new Set<(snapshot:RoomSnapshot)=>void>();
@@ -23,16 +25,31 @@ class RoomClient {
   private resyncRequired=false;
   private requestQueue:Promise<void>=Promise.resolve();
   getSnapshot = () => this.snapshot;
-  private emit() { this.snapshot={...this.snapshot}; for(const cb of this.listeners) cb(this.snapshot); }
+  private emit() { this.snapshot={...this.snapshot}; for(const cb of this.listeners) cb(this.snapshot); this.scheduleBot(); }
+  private cancelBot() { if(this.botTimer!==null)clearTimeout(this.botTimer);this.botTimer=null; }
+  private scheduleBot() {
+    this.cancelBot();
+    if(!this.solo || !this.listeners.size || !this.state || !this.snapshot.gameId || this.state.result)return;
+    const game=this.snapshot.gameId,engine=engines[game]!;
+    const action=chooseSimpleAiAction(game,engine.getPlayerView(this.state,'p2'),'p2');
+    if(!action)return;
+    this.botTimer=setTimeout(()=>{
+      this.botTimer=null;
+      try { this.state=executeAction(engine,this.state,'p2',action).state;this.snapshot.version++;this.localView();this.emit(); }
+      catch(error) { this.snapshot.error=error instanceof Error?error.message:'ai_action_failed';this.emitWithoutBot(); }
+    },aiTurnDelay(game));
+  }
+  private emitWithoutBot() { this.snapshot={...this.snapshot};for(const cb of this.listeners)cb(this.snapshot); }
   private localView() { const engine=this.snapshot.gameId?engines[this.snapshot.gameId]:null; this.snapshot.view=engine&&this.state?{...engine.getPlayerView(this.state,this.snapshot.playerId),deadlineAt:this.state.deadlineAt??null}:null; }
   private async session() { if(!this.db)return; const {data}=await this.db.auth.getSession(); if(!data.session){const {error}=await this.db.auth.signInAnonymously();if(error)throw error;} }
   private name(value:string) { const name=value.trim(); if(!name || name.length>24)throw new Error('nickname_required'); return name; }
   async createRoom(nickname:string,language:Language):Promise<string> {
     nickname=this.name(nickname);
-    if(!this.db){this.snapshot={...emptySnapshot(),roomId:crypto.randomUUID(),players:[{id:'p1',nickname,language,ready:true},{id:'p2',nickname:language==='ko'?'로컬 플레이어 2':'Jugador local 2',language:language==='ko'?'es':'ko',ready:true}]};this.state=null;this.expiresAt=Date.now()+RETENTION_MS;this.emit();return this.snapshot.roomId!;}
+    if(!this.db){this.snapshot={...emptySnapshot(),roomId:(this.solo?'solo-':'')+crypto.randomUUID(),mode:this.solo?'solo':'demo',connection:'local',players:[{id:'p1',nickname,language,ready:true},{id:'p2',nickname:this.solo?(language==='ko'?'컴퓨터':'Computadora'):(language==='ko'?'로컬 플레이어 2':'Jugador local 2'),language:this.solo?language:(language==='ko'?'es':'ko'),ready:true}]};this.state=null;this.expiresAt=Date.now()+RETENTION_MS;this.emit();return this.snapshot.roomId!;}
     await this.session();const {data,error}=await this.db.rpc('create_room',{p_nickname:nickname,p_language:language});if(error)throw error;this.snapshot.roomId=data;await this.refresh();return data;
   }
   async joinRoom(roomId:string,nickname:string,language:Language):Promise<void> {
+    if(this.solo)throw new Error('solo_session_only');
     nickname=this.name(nickname);
     if(!this.db){if(this.snapshot.roomId!==roomId || this.expiresAt<Date.now())throw new Error('demo_same_browser_only');this.localSeat('p2');return;}
     await this.session();const {error}=await this.db.rpc('join_room',{p_room:roomId,p_nickname:nickname,p_language:language});if(error)throw error;this.snapshot.roomId=roomId;await this.refresh();
@@ -60,7 +77,7 @@ class RoomClient {
       const resume=()=>{if(current() && (typeof document==='undefined' || document.visibilityState!=='hidden'))void this.reconnectRoom().catch(failed);};
       if(typeof window!=='undefined'){window.addEventListener('online',resume);window.addEventListener('focus',resume);document.addEventListener('visibilitychange',resume);}
       return ()=>{live=false;if(this.snapshot.roomId===roomId)this.refreshId++;this.listeners.delete(onChange);if(typeof window!=='undefined'){window.removeEventListener('online',resume);window.removeEventListener('focus',resume);document.removeEventListener('visibilitychange',resume);}void this.db?.removeChannel(ch);this.channels=this.channels.filter(x=>x!==ch);};
-    }return ()=>{this.listeners.delete(onChange);};
+    }this.scheduleBot();return ()=>{this.listeners.delete(onChange);if(!this.listeners.size)this.cancelBot();};
   }
   async reconnectRoom() {
     if(!this.db || !this.snapshot.roomId)return;
@@ -92,8 +109,8 @@ class RoomClient {
   private checkLocal() {if(!this.snapshot.roomId || this.expiresAt<Date.now())throw new Error('room_expired');}
   async selectGame(gameId:GameId) {
     if(this.db){await this.invoke({selectGame:gameId});return;}
-    this.checkLocal();if(!(this.snapshot.pendingGame===gameId && this.pendingBy!==this.snapshot.playerId)){this.snapshot.pendingGame=gameId;this.pendingBy=this.snapshot.playerId;this.emit();return;}
-    this.snapshot.gameId=gameId;this.snapshot.pendingGame=null;this.pendingBy=null;this.state=engines[gameId]?.createInitialState(crypto.getRandomValues(new Uint32Array(1))[0])||null;this.snapshot.version++;this.localView();this.emit();
+    this.checkLocal();if(this.solo&&!supportsAi(gameId))throw new Error('solo_game_unavailable');if(!this.solo&&!(this.snapshot.pendingGame===gameId && this.pendingBy!==this.snapshot.playerId)){this.snapshot.pendingGame=gameId;this.pendingBy=this.snapshot.playerId;this.emit();return;}
+    this.snapshot.gameId=gameId;this.snapshot.pendingGame=null;this.pendingBy=null;this.state=engines[gameId]?.createInitialState(crypto.getRandomValues(new Uint32Array(1))[0])||null;if(this.solo&&gameId==='domino')this.state=executeAction(engines.domino!,this.state,'p1',{type:'configure',payload:{difficulty:'hard'}}).state;this.snapshot.version++;this.localView();this.emit();
   }
   async sendChat(text:string) {
     const message=chatMessageForGame(this.snapshot.gameId,text);text=message.text;
@@ -150,9 +167,11 @@ class RoomClient {
     try {
       if(this.snapshot.roomId && localStorage.getItem('dos-last-room')===this.snapshot.roomId)localStorage.removeItem('dos-last-room');
     } catch {/* An optional room shortcut must not prevent closing a room. */}
-    this.snapshot=emptySnapshot();this.state=null;this.expiresAt=0;this.emit();
+    this.cancelBot();this.snapshot=emptySnapshot();this.state=null;this.expiresAt=0;this.emit();
   }
   async setLanguage(language:Language) {if(!['ko','es'].includes(language))throw new Error('invalid_language');if(this.db){const {error}=await this.db.rpc('set_language',{p_room:this.snapshot.roomId,p_language:language});if(error)throw error;await this.refresh();}else{this.snapshot.players=this.snapshot.players.map(p=>p.id===this.snapshot.playerId?{...p,language}:p);this.emit();}}
-  localSeat(player:PlayerId) {if(this.db)throw new Error('online_seat_fixed');this.snapshot.playerId=player;this.localView();this.emit();}
+  localSeat(player:PlayerId) {if(this.solo)throw new Error('solo_seat_fixed');if(this.db)throw new Error('online_seat_fixed');this.snapshot.playerId=player;this.localView();this.emit();}
 }
 export const client = new RoomClient();
+
+export const soloClient = new RoomClient(null, true);

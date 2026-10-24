@@ -19,6 +19,20 @@ function markup(state: ReturnType<typeof minhwatuEngine.createInitialState>, pla
 }
 
 describe('MinhwatuTable public view', () => {
+  it('shows one actionable cue and marks capturable cards with a symbol as well as color', () => {
+    const state = minhwatuEngine.createInitialState(76), { html } = markup(state);
+    expect(html.match(/>패를 고르세요</g)).toHaveLength(1);
+    expect(html).not.toContain('내 차례');
+    expect(html).not.toContain('금색 테두리 패는');
+    const capturable = state.hands.p1.filter(card => state.table.some(other => other.month === card.month));
+    expect(capturable.length).toBeGreaterThan(0);
+    expect(html.match(/class="hwatu-hand-capture-marker"/g)).toHaveLength(capturable.length);
+    expect(html).toContain('가져올 수 있음');
+    const ownRack = html.slice(html.indexOf('aria-label="내가 모은 패'), html.indexOf('class="hwatu-hand-section'));
+    expect(ownRack.match(/<li /g)).toHaveLength(8);
+    for (const label of ['홍단', '청단', '초단', '고도리', '11월 완성', '5월 완성', '10월 완성', '12월 완성']) expect(ownRack).toContain(label);
+  });
+
   it('blocks a second distinct click while an action is pending and releases the lock for retry', async () => {
     const lock = { current: false };
     const calls: string[] = [];
@@ -224,6 +238,8 @@ describe('MinhwatuTable public view', () => {
     ]);
     expect(active.html).toContain('hwatu-table-card is-legal is-target');
     expect(active.html.match(/class="hwatu-table-card is-legal is-target"/g)).toHaveLength(2);
+    expect(active.html.match(/>바닥 패를 고르세요</g)).toHaveLength(1);
+    expect(active.html).not.toContain('바닥에서 같은 달 패를 선택하세요.');
     expect(active.html).not.toContain('is-match');
     expect(waiting.view.actions).toEqual([]);
     expect(waiting.html).toContain('상대 차례');

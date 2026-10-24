@@ -115,7 +115,13 @@ export function MinhwatuGuide({ language }: { language: Language }) {
         <p className="minhwatu-guide-note">{ko ? 'Go·Stop 없이 끝까지 진행해요. 이미 끝난 구버전 판은 당시 점수와 규칙을 유지해요.' : 'La partida va hasta el final, sin Go ni Stop. Las partidas antiguas terminadas conservan sus reglas y puntuación.'}</p>
       </section>
     </details>
-    <details className="minhwatu-guide-credits">
+    <MinhwatuCredits language={language}/>
+  </section>;
+}
+
+export function MinhwatuCredits({ language }: { language: Language }) {
+  const ko = language === 'ko';
+  return <details className="minhwatu-guide-credits">
       <summary>{ko ? '카드 그림 출처' : 'Créditos de las cartas'}</summary>
       <p>{ko ? '개별 SVG: Spenĉjo · 한국 화투 디자인: Marcus Richert · 일부 바탕 그림: Louie Mantia, Jr.' : 'SVG individuales: Spenĉjo · diseño coreano: Marcus Richert · parte de los gráficos originales: Louie Mantia, Jr.'}</p>
       <p>{ko ? '그림은 수정하지 않고 게임의 카드 ID에 맞춰 파일명만 바꿨어요.' : 'Los dibujos no se modificaron; solo cambiamos los nombres de archivo para los identificadores del juego.'}</p>
@@ -125,6 +131,5 @@ export function MinhwatuGuide({ language }: { language: Language }) {
         <a href="/images/hwatu/ATTRIBUTION.txt" target="_blank" rel="noreferrer">{ko ? '출처 안내 전문 ↗' : 'Atribución completa ↗'}</a>
         <a href="/images/hwatu/source-verification.json" target="_blank" rel="noreferrer">{ko ? '카드별 원본 기록 ↗' : 'Fuentes de cada carta ↗'}</a>
       </nav>
-    </details>
-  </section>;
+    </details>;
 }

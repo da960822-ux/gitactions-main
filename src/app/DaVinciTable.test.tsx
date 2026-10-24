@@ -37,17 +37,20 @@ describe('DaVinciTable', () => {
     };
     const ko = render(view);
     expect(ko.match(/class="dv-tile dv-tile-(?:white|black)[^"]*" aria-pressed=/g)).toHaveLength(2);
-    expect(ko.match(/class="(?:is-selected)?"?[^>]*disabled=""/g) ?? []).toHaveLength(0);
+    expect(ko.match(/<button[^>]*disabled=""[^>]*>(?:\d+|－)<\/button>/g) ?? []).toHaveLength(13);
     expect(ko.match(/<button[^>]*>(?:\d+|－)<\/button>/g)).toHaveLength(13);
     expect(ko).toContain('>－</button>');
-    expect(ko).toContain('이 숫자로 추측하기');
-    expect(ko).not.toContain('class="dv-guess-submit" disabled=""');
-    expect(ko).toContain('남은 더미 4개');
-    expect(ko).toContain('3번째 차례');
+    expect(ko).toContain('타일과 숫자를 선택하세요');
+    expect(ko).not.toContain('추측 확정');
+    expect(ko).not.toContain('dv-confirm-row');
+    expect(ko).toContain('class="dv-guess-submit" disabled=""');
+    expect(ko).toContain('더미 4개');
+    expect(ko).not.toContain('3번째 차례');
+    expect(ko).not.toContain('dv-score-strip');
     const es = render(view, 'p1', 'es');
-    expect(es).toContain('Adivina el número oculto');
+    expect(es).toContain('Elige una ficha rival');
     expect(es).toContain('Ficha rival 1 Blanca, número oculto');
-    expect(es).toContain('Adivinar este número');
+    expect(es).toContain('Elige una ficha y un número');
   });
 
   it('keeps both larger racks, the selected target, and public reveals explicit', () => {
@@ -60,7 +63,7 @@ describe('DaVinciTable', () => {
     const html = render(view);
     expect(html.match(/class="dv-tile dv-own-tile/g)).toHaveLength(6);
     expect(html.match(/class="dv-tile dv-tile-(?:white|black)[^"]*" aria-pressed=/g)).toHaveLength(8);
-    expect(html).toContain('>목표</em>');
+    expect(html).not.toContain('>목표</em>');
     expect(html).toContain('state-icons.svg#revealed');
     expect(html).toContain('>11</b>');
     expect(html).toContain('숫자 숨김');
@@ -74,20 +77,21 @@ describe('DaVinciTable', () => {
   });
 
   it('localizes the joker guess CTA while preserving the numeric CTA', () => {
-    expect(daVinciGuessButtonLabel('ko', 'joker')).toBe('조커로 추측하기');
-    expect(daVinciGuessButtonLabel('es', 'joker')).toBe('Adivinar el comodín');
-    expect(daVinciGuessButtonLabel('ko', 8)).toBe('이 숫자로 추측하기');
-    expect(daVinciGuessButtonLabel('es', 8)).toBe('Adivinar este número');
+    expect(daVinciGuessButtonLabel('ko', 2, 'black', 'joker')).toBe('3번 검정 = 조커 추측');
+    expect(daVinciGuessButtonLabel('es', 2, 'black', 'joker')).toBe('Adivinar ficha 3 Negra = comodín');
+    expect(daVinciGuessButtonLabel('ko', 2, 'black', 8)).toBe('3번 검정 = 8 추측');
+    expect(daVinciGuessButtonLabel('es', 2, 'white', 8)).toBe('Adivinar ficha 3 Blanca = 8');
   });
 
-  it('clarifies that a failed guess reveals no new tile once the deck is empty', () => {
+  it('shows an empty deck without repeating the full penalty rule', () => {
     const view = {
       game: 'davinci', turn: 'p1', phase: 'guess', hand: [{ color: 'black', value: 3, revealed: false }],
       board: { opponentTiles: [{ color: 'white', value: null, revealed: false }], deckCount: 0, turnNumber: 6, tileCount: 26, actionLog: [], lastEvent: null },
       opponentCount: 1, actions: [...guessActions(0), { label: { ko: '차례 마치기', es: 'Terminar turno' }, action: { type: 'stop' } }],
     };
     const ko = render(view);
-    expect(ko).toContain('더미가 비었어요. 틀려도 새로 공개될 내 타일은 없고 차례가 끝나요.');
+    expect(ko).toContain('더미 0개');
+    expect(ko).not.toContain('dv-rule-note');
     expect(ko).not.toContain('방금 뽑은 타일이 공개되고 차례가 끝나요.');
     expect(ko).toContain('추측할 숫자 또는 조커');
     expect(render(view, 'p1', 'es')).toContain('Número o comodín que quieres adivinar');
@@ -105,7 +109,7 @@ describe('DaVinciTable', () => {
     expect(html).toContain('>7</b>');
     expect(html).toContain('Ficha 2:');
     expect(html).toContain('<strong>7</strong>');
-    expect(html).toContain('Tú puedes ver tus números');
+    expect(html).not.toContain('Tú puedes ver tus números');
     expect(html).not.toContain('value="null"');
   });
 
@@ -148,7 +152,7 @@ describe('DaVinciTable', () => {
       const html = render({ turn: 'p2', phase, hand: [], board: { opponentTiles: [] }, actions: [], result: { winner: 'p2' } }, 'p1', language);
       expect(html).not.toContain('dv-number-grid');
       expect(html).not.toContain('class="dv-waiting"');
-      expect(html).toContain(language === 'ko' ? '<h3>결과</h3>' : '<h3>Resultado</h3>');
+      expect(html).toContain(language === 'ko' ? '<b>결과</b>' : '<b>Resultado</b>');
     }
   });
 
@@ -196,7 +200,7 @@ describe('DaVinciTable', () => {
     expect(findDaVinciJokerPlacement(setup.actions, 2)?.action).toEqual({ type: 'place-joker', payload: { index: 2 } });
 
     const ready = { ...setup, hand: [{ color: 'white', value: 2, revealed: false }, { color: 'black', value: 'joker', revealed: false }, { color: 'black', value: 8, revealed: false }], ownJokerToPlace: undefined, actions: [{ label: { ko: '완료', es: 'Listo' }, action: { type: 'finish-setup' } }] };
-    expect(render(ready)).toContain('초기 패 준비 완료');
+    expect(render(ready)).toContain('>준비 완료</button>');
     expect(render(ready)).not.toContain('dv-gap-button');
   });
 
@@ -207,15 +211,15 @@ describe('DaVinciTable', () => {
       opponentCount: 1, actions: [],
     };
     const setupWait = render(base, 'p1');
-    expect(setupWait).toContain('준비가 끝났어요. 상대가 준비를 마치면 대국이 시작돼요.');
+    expect(setupWait).toContain('상대 준비 중');
     expect(setupWait).not.toContain('상대가 행동하고 있어요.');
 
     const inGameWait = render({ ...base, board: { ...base.board, setupReady: { p1: true, p2: true }, turnNumber: 2 } }, 'p1');
     expect(inGameWait).not.toContain('준비가 끝났어요. 상대가 준비를 마치면 대국이 시작돼요.');
-    expect(inGameWait).toContain('상대가 행동하고 있어요.');
+    expect(inGameWait).toContain('상대 차례');
 
     const liveTurn = { ...base, turn: 'p1', phase: 'draw', board: { ...base.board, setupReady: { p1: true, p2: true }, turnNumber: 2 }, actions: [{ label: { ko: '뽑기', es: 'Robar' }, action: { type: 'draw' } }] };
-    expect(render(liveTurn, 'p1')).toContain('내 차례');
+    expect(render(liveTurn, 'p1')).toContain('타일 뽑기');
     expect(render({ ...liveTurn, phase: 'waiting' }, 'p2')).toContain('상대 차례');
     expect(render(liveTurn, 'p1')).not.toContain('준비 완료');
   });

@@ -95,17 +95,6 @@
 .sp-section-heading h2 { margin: 0; color: #253e40; font: 700 1rem/1.2 Georgia,serif; }
 .sp-section-heading p { margin: 3px 0 0; color: #5b6d6b; font-size: 12px; }
 .sp-gem-piles { display: grid; grid-template-columns: repeat(2,minmax(0,1fr)); gap: 5px; }
-.sp-gem-option { display: grid; grid-template-columns: 44px minmax(0,1fr) 44px; align-items: center; gap: 5px 8px; min-width: 0; }
-.sp-gem-pile { position: relative; display: grid; grid-template-columns: 1fr auto; align-items: center; justify-items: center; width: 44px; min-width: 44px; height: 44px; padding: 2px; border: 3px double #76877c; border-radius: 50%; background: #e6e8dd; color: #233a3d; text-align: center; cursor: pointer; box-shadow: inset 0 0 0 3px #fffdf6, 0 2px 4px #1c342c30; }
-.sp-gem-pile > .sp-gem-icon { width: 30px; height: 30px; }
-.sp-gem-pile > b { display: grid; min-width: 20px; min-height: 20px; place-items: center; padding: 0 3px; border: 1px solid #647870; border-radius: 50%; background: #fffdf6; color: #233a3d; font-size: 13px; font-variant-numeric: tabular-nums; }
-.sp-gem-name { display: grid; gap: 2px; color: #314c4a; font-size: 13px; font-weight: 700; }
-.sp-gem-name small { color: #176965; font-size: 12px; }
-.sp-gem-gold .sp-gem-pile { cursor: default; }
-.sp-gem-pile.is-picked { border-color: #166961; background: #dcebe2; box-shadow: inset 0 0 0 3px #f5fff8, 0 0 0 2px #16696166; }
-.sp-gem-pile:disabled { opacity: .78; cursor: not-allowed; }
-.sp-gem-pile:disabled.is-picked { opacity: 1; }
-.sp-double-take { display: grid; width: 44px; min-width: 44px; min-height: 44px; place-items: center; padding: 4px; border: 1px solid #a58b4d; border-radius: 999px; background: #d9c581; color: #213b39; font-size: 12px; font-weight: 800; line-height: 1.1; text-align: center; cursor: pointer; }
 .sp-double-plan { grid-column: 1 / -1; display: grid; gap: 3px; min-width: 0; padding: 4px; border: 1px solid #d5ccb5; border-radius: 6px; background: #f7f3e8; color: #465b58; font-size: 12px; line-height: 1.2; }
 .sp-double-plan label { display: grid; gap: 3px; }
 .sp-double-plan select { width: 100%; min-height: 44px; padding: 4px; border: 1px solid #8c9b91; border-radius: 5px; background: #fffdf6; color: #1e393b; font-size: 12px; }
@@ -195,8 +184,6 @@
   .sp-splendor { grid-template-columns: minmax(0,1fr); grid-template-areas: "score" "feedback" "nobles" "market" "sidebar" "result"; }
   .sp-card-grid { grid-template-columns: repeat(4,minmax(0,1fr)); }
   .sp-gem-piles { grid-template-columns: repeat(3,minmax(0,1fr)); }
-  .sp-gem-option { grid-template-columns: 56px minmax(0,1fr); }
-  .sp-double-take { grid-column: 1 / -1; width: 100%; }
 }
 @media (max-width: 720px) {
   .sp-splendor { padding: 8px; }
@@ -220,12 +207,6 @@
 .sp-splendor [role="button"]:focus-visible { outline: 3px solid #e7c475; outline-offset: 2px; }
 .sp-card[aria-pressed="true"] .sp-bonus-label::after { content: '✓'; margin-left: auto; color: #176965; font-size: 14px; }
 .sp-card:hover { border-color: #9a8759; }
-.sp-gem-pile { grid-template-columns: 1fr; }
-.sp-gem-pile > b { position: absolute; right: -4px; bottom: -2px; min-width: 20px; min-height: 20px; box-shadow: 0 1px 2px #12393630; }
-.sp-gem-option { grid-template-columns: 44px minmax(0,1fr); gap: 2px 5px; }
-.sp-gem-name { font-size: 11px; overflow-wrap: anywhere; }
-.sp-double-take { grid-column: 2; grid-row: 2; width: 100%; min-width: 44px; min-height: 44px; border-radius: 7px; }
-.sp-gem-option:has(.sp-double-take) .sp-gem-pile { grid-row: span 2; }
 .sp-action-panel { border-color: #bba06a !important; background: #fbf6e8 !important; }
 .sp-action-panel .sp-section-heading { gap: 4px; }
 .sp-action-panel h2 { font-size: 14px; }
@@ -307,13 +288,6 @@
 .sp-treasury-gem > .sp-gem-icon { grid-column: 1; }
 .sp-treasury-gem { grid-template-columns: 18px minmax(0,1fr); }
 .sp-treasury-gem .sp-gem-icon { width: 18px; height: 18px; }
-.sp-gem-pile > .sp-gem-icon { grid-row: auto; }
-.sp-gem-option { grid-template-columns: 44px minmax(0,1fr) 44px; }
-.sp-double-take { grid-column: 3; grid-row: 1; }
-.sp-gem-option:has(.sp-double-take) .sp-gem-pile { grid-row: 1; }
-.sp-sidebar:has(.sp-action-panel) .sp-gem-option { grid-template-columns: 44px minmax(0,1fr); }
-.sp-sidebar:has(.sp-action-panel) .sp-double-take { grid-column: 2; grid-row: 2; }
-.sp-sidebar:has(.sp-action-panel) .sp-gem-option:has(.sp-double-take) .sp-gem-pile { grid-row: span 2; }
 .sp-noble-progress { font-size: 10px; line-height: 1.1; }
 .sp-player-public-bonuses { display: flex; align-items: center; gap: 2px; grid-column: 1 / -1; font-size: 10px; }
 .sp-player-public-bonuses .sp-gem-icon { width: 13px; height: 13px; }
@@ -351,9 +325,6 @@
   .sp-reserved-art { width: 44px; height: 62px; min-height: 62px; }
   .sp-reserved-cost { display: none; }
   .sp-sidebar:has(.sp-action-panel) .sp-gem-piles { gap: 3px; }
-  .sp-sidebar:has(.sp-action-panel) .sp-gem-option { grid-template-columns: 44px minmax(0,1fr) 44px; }
-  .sp-sidebar:has(.sp-action-panel) .sp-double-take { grid-column: 3; grid-row: 1; }
-  .sp-sidebar:has(.sp-action-panel) .sp-gem-option:has(.sp-double-take) .sp-gem-pile { grid-row: 1; }
   .sp-sidebar:has(.sp-action-panel) .sp-action-buttons { grid-template-columns: 1fr 1fr; }
   .sp-sidebar:has(.sp-action-panel) .sp-payment-preview { grid-template-columns: repeat(3,minmax(0,1fr)); }
 }
@@ -491,7 +462,7 @@
 .sp-card-details .sp-card-cost { min-height:20px; gap:2px; }
 .sp-card-details .sp-cost { min-height:20px; padding:0 3px; font-size:12px; }
 .sp-card-details .sp-cost .sp-gem-icon { width:14px; height:14px; }
-.sp-guide-purchase-flow,.sp-guide-action-steps,.sp-acquisition-preview,.sp-selected-token-tray { display: none; }
+.sp-guide-purchase-flow,.sp-guide-action-steps,.sp-selected-token-tray { display: none; }
 
 @media (min-width: 1200px) and (hover: hover) and (pointer: fine) {
   .sp-splendor .sp-card { grid-template-columns: 90px minmax(0,1fr); grid-template-rows: minmax(126px,auto); min-height: 132px; }
@@ -501,7 +472,6 @@
   .sp-splendor .sp-card-details > .sp-bonus-label { min-height: 23px; gap: 3px; padding: 2px 4px; border: 1px solid #d8cfb8; border-radius: 5px; background: #f5f0e2; font-size: 12px; font-weight: 800; white-space: nowrap; }
   .sp-splendor .sp-card-details > .sp-bonus-label .sp-gem-icon { width: 19px; height: 19px; }
   .sp-splendor .sp-card-cost-summary { justify-content: flex-start; flex-wrap: wrap; gap: 2px; min-width: 0; max-width: 100%; }
-  .sp-splendor .sp-card-cost-label { flex: 0 0 100%; color: #625844; font-size: 10px; font-weight: 800; line-height: 1.1; white-space: nowrap; }
   .sp-splendor .sp-card-cost-chip { gap: 1px; padding: 1px 2px; border: 1px solid #ded5c0; border-radius: 5px; background: #fffdf7; font-size: 13px; }
   .sp-splendor .sp-card-cost-chip .sp-gem-icon { width: 16px; height: 16px; flex-basis: 16px; }
   .sp-splendor .sp-card-cost-chip b { font-size: 13px; }
@@ -511,45 +481,21 @@
   .sp-splendor .sp-sidebar > .sp-treasury,.sp-splendor .sp-sidebar:has(.sp-action-panel) > .sp-treasury { grid-column: 1 / 8; }
   .sp-splendor .sp-sidebar > .sp-reserved,.sp-splendor .sp-sidebar:has(.sp-action-panel) > .sp-reserved { grid-column: 8 / -1; }
   .sp-splendor .sp-sidebar:has(.sp-action-panel) .sp-gem-piles { grid-template-columns: repeat(3,minmax(0,1fr)); gap: 5px; }
-  .sp-splendor .sp-gem-option { grid-template-columns: 54px minmax(0,1fr); justify-items: start; gap: 3px 6px; padding: 4px; border: 1px solid #d3c8af; border-radius: 9px; background: linear-gradient(145deg,#fffdf7,#eee7d5); }
-  .sp-splendor .sp-gem-pile { width: 52px; min-width: 52px; height: 52px; border-width: 4px; box-shadow: inset 0 0 0 3px #fffdf6, 0 3px 0 #8b806b, 0 5px 8px #1c342c30; }
-  .sp-splendor .sp-gem-pile > .sp-gem-icon { width: 36px; height: 36px; filter: drop-shadow(0 2px 2px #122d3045); }
-  .sp-splendor .sp-gem-pile > b { right: -5px; bottom: -4px; min-width: 22px; min-height: 22px; border-width: 2px; font-size: 13px; }
-  .sp-splendor .sp-gem-name { align-self: center; font-size: 12px; line-height: 1.15; }
-  .sp-splendor .sp-double-take { grid-column: 1 / -1; grid-row: 2; width: 100%; min-height: 36px; border-radius: 6px; box-shadow: inset 0 1px #fff8,0 2px 3px #614d2722; }
-  .sp-splendor .sp-gem-option:has(.sp-double-take) .sp-gem-pile { grid-row: auto; }
-  .sp-splendor .sp-gem-option.sp-gem-gold { grid-template-columns: 54px minmax(0,1fr); }
   .sp-splendor .sp-noble { grid-template-columns: 58px minmax(0,1fr) auto; min-height: 64px; gap: 7px; }
   .sp-splendor .sp-noble-art { width: 56px; height: 56px; border-radius: 8px; background: linear-gradient(145deg,#ded9c8,#c6c2b2); box-shadow: inset 0 1px #fff9,0 2px 4px #31342c25; }
   .sp-splendor .sp-reserved-list { gap: 6px; }
   .sp-splendor .sp-reserved-empty { min-height: 62px; border-color: #b8ad94; background: repeating-linear-gradient(135deg,#f7f3e7 0 8px,#f0eadb 8px 16px); }
   .sp-splendor .sp-reserved-art { height: 76px; min-height: 76px; border: 1px solid #d6c9ad; background: linear-gradient(145deg,#ece5d4,#d8d6c8); }
-  .sp-splendor .sp-acquisition-preview { display: grid; grid-template-columns: minmax(0,1fr) repeat(2,minmax(0,1.1fr)); align-items: stretch; gap: 4px; margin: 3px 0; padding: 4px; border: 1px solid #c9b987; border-radius: 7px; background: linear-gradient(110deg,#f1e8d0,#faf4e4); }
-  .sp-splendor .sp-acquisition-preview > span { display: grid; grid-template-columns: auto minmax(0,1fr); align-content: center; align-items: center; gap: 1px 4px; min-width: 0; padding: 3px 4px; border: 1px solid #ddd1b2; border-radius: 5px; background: #fffdf7; }
-  .sp-splendor .sp-acquisition-preview > span > b { color: #263f3f; font-size: 12px; font-variant-numeric: tabular-nums; }
-  .sp-splendor .sp-acquisition-preview > span > small { grid-column: 1 / -1; color: #625844; font-size: 10px; line-height: 1.15; }
-  .sp-splendor .sp-acquisition-preview .sp-gem-icon { width: 20px; height: 20px; }
   .sp-splendor .sp-selected-token-tray { display: flex; align-items: center; flex-wrap: wrap; gap: 4px; margin-bottom: 4px; padding: 4px 5px; border: 1px solid #c9b987; border-radius: 7px; background: #f0e7d2; }
   .sp-splendor .sp-selected-token-tray > small { margin-right: auto; color: #53605a; font-size: 10px; font-weight: 700; }
   .sp-splendor .sp-selected-token { display: inline-flex; align-items: center; gap: 3px; padding: 2px 5px; border: 1px solid #d4c8ad; border-radius: 999px; background: #fffdf7; color: #344847; font-size: 10px; font-weight: 700; }
   .sp-splendor .sp-selected-token .sp-gem-icon { width: 19px; height: 19px; }
   .sp-splendor .sp-sidebar:has(.sp-action-panel) .sp-bank .sp-gem-piles { grid-template-columns: repeat(3,minmax(0,1fr)); gap: 3px; }
-  .sp-splendor .sp-sidebar:has(.sp-action-panel) .sp-bank .sp-gem-option,.sp-splendor .sp-sidebar:has(.sp-action-panel) .sp-bank .sp-gem-option.sp-gem-gold { grid-template-columns: minmax(0,1fr); grid-template-rows: 52px auto 44px; align-content: start; justify-items: center; gap: 2px; min-width: 0; padding: 2px; }
-  .sp-splendor .sp-sidebar:has(.sp-action-panel) .sp-bank .sp-gem-pile { grid-column: 1; grid-row: 1; justify-self: center; }
-  .sp-splendor .sp-sidebar:has(.sp-action-panel) .sp-bank .sp-gem-name { grid-column: 2; grid-row: 1; min-width: 0; max-width: 100%; overflow-wrap: anywhere; font-size: 12px; line-height: 1.2; text-align: left; }
-  .sp-splendor .sp-sidebar:has(.sp-action-panel) .sp-bank .sp-double-take { grid-column: 1; grid-row: 3; width: 100%; min-width: 44px; min-height: 44px; padding: 2px; font-size: 10px; }
-  .sp-splendor .sp-sidebar:has(.sp-action-panel) .sp-bank .sp-double-take { white-space: nowrap; word-break: keep-all; }
-  .sp-splendor .sp-action-panel:has(.sp-payment-preview) > .sp-acquisition-preview { grid-column: 1 / -1; }
   .sp-splendor .sp-sidebar:has(.sp-action-panel) > .sp-action-panel { grid-column: 1 / 8; grid-row: 1; }
   .sp-splendor .sp-sidebar:has(.sp-action-panel) > .sp-bank { grid-column: 8 / -1; grid-row: 1; }
   .sp-splendor .sp-sidebar:has(.sp-action-panel) > .sp-treasury { grid-column: 1 / -1; grid-row: 3; }
   .sp-splendor .sp-sidebar:has(.sp-action-panel) > .sp-reserved { grid-column: 1 / -1; grid-row: 2; }
   .sp-splendor .sp-sidebar:has(.sp-action-panel) > .sp-bank .sp-gem-piles { grid-template-columns: repeat(3,minmax(0,1fr)); gap: 3px; }
-  .sp-splendor .sp-sidebar:has(.sp-action-panel) > .sp-bank .sp-gem-option,
-  .sp-splendor .sp-sidebar:has(.sp-action-panel) > .sp-bank .sp-gem-option.sp-gem-gold { grid-template-columns: minmax(0,1fr); grid-template-rows: 52px auto 44px; align-content: start; justify-items: center; gap: 2px; min-width: 0; padding: 2px; }
-  .sp-splendor .sp-sidebar:has(.sp-action-panel) > .sp-bank .sp-gem-pile { grid-column: 1; grid-row: 1; justify-self: center; }
-  .sp-splendor .sp-sidebar:has(.sp-action-panel) > .sp-bank .sp-gem-name { grid-column: 1; grid-row: 2; min-width: 0; max-width: 100%; overflow-wrap: normal; font-size: 12px; line-height: 1.2; text-align: center; white-space: nowrap; }
-  .sp-splendor .sp-sidebar:has(.sp-action-panel) > .sp-bank .sp-double-take { grid-column: 1; grid-row: 3; width: 100%; min-width: 44px; min-height: 44px; padding: 2px; font-size: 12px; white-space: nowrap; word-break: keep-all; }
   .sp-splendor .sp-sidebar:has(.sp-action-panel) > .sp-reserved .sp-reserved-list { grid-template-columns: repeat(3,minmax(0,1fr)); gap: 4px; }
   .sp-splendor .sp-sidebar:has(.sp-action-panel) > .sp-reserved .sp-reserved-card { grid-column: auto; }
   .sp-splendor .sp-sidebar:has(.sp-action-panel) > .sp-reserved:has(.sp-reserved-card) .sp-reserved-empty { display: none; }
@@ -622,11 +568,6 @@
   .sp-splendor .sp-player-score > .sp-public-card-count { grid-column: 4; grid-row: 1; font-size: 12px; white-space: nowrap; }
   .sp-splendor .sp-player-score > i { position: static; grid-column: 5; grid-row: 1; font-size: 12px; }
   .sp-splendor .sp-player-score > .sp-public-bonuses { grid-column: 1 / -1; grid-row: 2; }
-  .sp-splendor .sp-sidebar:has(.sp-action-panel) > .sp-bank .sp-gem-option,
-  .sp-splendor .sp-sidebar:has(.sp-action-panel) > .sp-bank .sp-gem-option.sp-gem-gold { grid-template-columns: minmax(0,1fr); grid-template-rows: 52px auto 44px; align-content: start; justify-items: center; gap: 2px; min-width: 0; padding: 2px; }
-  .sp-splendor .sp-sidebar:has(.sp-action-panel) > .sp-bank .sp-gem-pile { grid-column: 1; grid-row: 1; justify-self: center; }
-  .sp-splendor .sp-sidebar:has(.sp-action-panel) > .sp-bank .sp-gem-name { grid-column: 1; grid-row: 2; align-self: center; min-width: 0; max-width: 100%; overflow-wrap: normal; font-size: 12px; line-height: 1.2; text-align: center; white-space: nowrap; }
-  .sp-splendor .sp-sidebar:has(.sp-action-panel) > .sp-bank .sp-double-take { grid-column: 1; grid-row: 3; width: 100%; min-width: 44px; min-height: 44px; padding: 2px; font-size: 12px; white-space: nowrap; word-break: keep-all; }
   .sp-splendor .sp-sidebar:has(.sp-action-panel) > .sp-reserved .sp-reserved-list { grid-template-columns: repeat(3,minmax(0,1fr)); gap: 4px; }
   .sp-splendor .sp-sidebar:has(.sp-action-panel) > .sp-reserved .sp-reserved-card { grid-column: auto; grid-template-columns: 60px minmax(0,1fr); grid-template-rows: minmax(76px,auto); align-items: center; gap: 4px; }
   .sp-splendor .sp-sidebar:has(.sp-action-panel) > .sp-reserved:has(.sp-reserved-card) .sp-reserved-empty { display: none; }
@@ -648,7 +589,53 @@
 }
 
 .sp-artwork { display: block; width: 100%; height: 100%; overflow: hidden; }
+
+/* Image selection is primary; the attached +2 is a secondary legal alternative. */
+.sp-splendor .sp-gem-piles { grid-template-columns: repeat(3,minmax(0,1fr)); gap: 8px; }
+.sp-gem-option { position: relative; display: grid; grid-template-columns: minmax(0,1fr); grid-template-rows: 60px auto; justify-items: center; align-content: start; gap: 5px; min-width: 0; padding: 4px 2px; }
+.sp-gem-pile { position: relative; display: grid; grid-column: 1; grid-row: 1; align-items: center; justify-items: center; width: min(60px,100%); min-width: 44px; height: 60px; padding: 4px; border: 2px solid #8f9e91; border-radius: 50%; background: #f9f7ed; color: #233a3d; cursor: pointer; box-shadow: inset 0 0 0 3px #fffdf6,0 3px 6px #1738322b; transition: transform 140ms ease,border-color 140ms ease; }
+.sp-gem-pile > .sp-gem-icon { width: 48px; height: 48px; }
+.sp-gem-pile > b { position: absolute; display: grid; right: -3px; bottom: -3px; min-width: 23px; min-height: 23px; place-items: center; padding: 1px 4px; border: 1px solid #85978c; border-radius: 50%; background: #fffdf6; color: #233a3d; font-size: 13px; font-variant-numeric: tabular-nums; }
+.sp-gem-name { grid-column: 1; grid-row: 2; color: #314c4a; font-size: 12px; font-weight: 700; line-height: 1.3; text-align: center; }
+.sp-gem-pile.is-picked { border-color: #176965; background: #e2f0e7; outline: 2px solid #176965; outline-offset: 2px; transform: translateY(-2px); }
+.sp-gem-pile:hover:not(:disabled) { transform: translateY(-2px); border-color: #176965; }
+.sp-gem-pile:disabled { opacity: .65; cursor: not-allowed; }
+.sp-gem-gold .sp-gem-pile { cursor: default; }
+.sp-double-take { position: absolute; top: 0; right: 0; z-index: 1; display: grid; width: 32px; min-width: 32px; min-height: 30px; padding: 3px; place-items: center; border: 1px solid #9aab9e; border-radius: 7px; background: #f8f6ee; color: #31524d; font-size: 12px; font-weight: 700; line-height: 1.1; cursor: pointer; box-shadow: 0 2px 4px #183c3221; }
+.sp-double-take:hover:not(:disabled),.sp-double-take.is-picked { border-color: #176965; background: #dfede4; color: #164e48; }
+.sp-double-take:disabled { opacity: .55; cursor: not-allowed; }
+.sp-bank-help { position: relative; color: #31524d; font-size: 12px; }
+.sp-bank-help > summary { display: grid; width: 28px; height: 28px; place-items: center; border: 1px solid #b3bfb2; border-radius: 50%; cursor: pointer; list-style: none; font-weight: 700; }
+.sp-bank-help > summary::-webkit-details-marker { display: none; }
+.sp-bank-help[open] > p { position: absolute; top: 30px; right: 0; z-index: 4; width: min(250px,60vw); margin: 0; padding: 10px; border: 1px solid #aebbad; border-radius: 9px; background: #fffdf5; color: #253e3c; box-shadow: 0 6px 16px #173a3433; line-height: 1.45; }
+.sp-splendor .sp-selected-token-tray { display: flex; flex-wrap: wrap; align-items: center; gap: 5px; margin: 0; padding: 0; border: 0; background: none; }
+.sp-splendor .sp-selected-token { display: inline-flex; align-items: center; padding: 3px; border: 1px solid #a7b8aa; border-radius: 50%; background: #e3eee5; }
+.sp-splendor .sp-selected-token .sp-gem-icon { width: 26px; height: 26px; }
+.sp-splendor .sp-token-confirm { grid-template-columns: minmax(0,1fr) auto; align-items: center; gap: 6px; }
+.sp-splendor .sp-token-confirm > .sp-take-total { grid-column: 2; font-size: 12px; line-height: 1.35; }
+.sp-splendor .sp-token-confirm > .sp-return-tray,.sp-splendor .sp-token-confirm > .sp-button { grid-column: 1 / -1; }
+.sp-splendor .sp-treasury-gem > span:not(.sp-gem-icon),.sp-splendor .sp-treasury .sp-bonus-row > small { font-size: 12px; }
+.sp-splendor .sp-card-select-hint { color: #315e52; font-size: 12px; white-space: normal; }
+.sp-splendor .sp-card.is-selected { outline: 3px solid #be913d; outline-offset: -3px; border-color: #b8862c; }
+.sp-splendor .sp-sidebar > .sp-action-panel.sp-action-compact { display: flex; flex-direction: column; gap: 7px; }
+.sp-splendor .sp-action-panel.sp-action-compact .sp-action-card { display: grid; grid-template-columns: 64px minmax(0,1fr); align-items: center; gap: 8px; }
+.sp-splendor .sp-action-panel.sp-action-compact .sp-action-art { grid-column: 1; grid-row: 1; width: 64px; height: 86px; }
+.sp-splendor .sp-action-panel.sp-action-compact .sp-action-card > div { grid-column: 2; grid-row: 1; font-size: 12px; line-height: 1.4; }
+.sp-payment-summary { display: flex; flex-wrap: wrap; align-items: center; gap: 5px 8px; color: #294b46; font-size: 13px; }
+.sp-payment-summary > span { display: inline-flex; align-items: center; gap: 3px; }
+.sp-payment-summary > strong { color: #8c3d2f; font-size: 12px; }
+.sp-purchase-details { width: 100%; color: #3a5650; font-size: 12px; }
+.sp-purchase-details > summary { padding: 6px 0; cursor: pointer; text-underline-offset: 3px; }
+.sp-purchase-details .sp-payment-preview { display: block; }
+.sp-purchase-details .sp-pay-grid { margin-top: 6px; }
+.sp-purchase-details .sp-pay-head,.sp-purchase-details .sp-pay-cell,.sp-purchase-details .sp-pay-gold { font-size: 12px; }
+.sp-purchase-details .sp-noble-preview { margin-top: 6px; }
+@media (hover: none) { .sp-double-take { min-width: 44px; min-height: 44px; } }
 .sp-confirmed-flight > .sp-artwork { border-radius: 5px; box-shadow: 0 5px 12px #0c283960; }
+.sp-splendor .sp-treasury { border-color:#baa774; background:#fff7e0; }
+.sp-splendor .sp-treasury .sp-treasury-gem { grid-template-columns:24px minmax(0,1fr); }
+.sp-splendor .sp-treasury .sp-treasury-gem .sp-gem-icon { width:24px; height:24px; }
+.sp-splendor .sp-treasury .sp-treasury-gem>b { font-size:16px; }
 .sp-splendor .sp-reserved-card > div > b { display: block; }
 .sp-splendor .sp-reserved-card .sp-reserved-value,
 .sp-splendor .sp-reserved-card .sp-reserved-cost { display: flex; flex-wrap: wrap; align-items: center; gap: 2px; font-size: 12px; }
@@ -669,5 +656,5 @@
   .sp-splendor .sp-card-details > .sp-card-prestige { font-size: 18px; }
   .sp-splendor .sp-card-cost-chip,.sp-splendor .sp-card-cost-chip b { font-size: 14px; }
   .sp-splendor .sp-card-cost-chip .sp-gem-icon { width: 18px; height: 18px; flex-basis: 18px; }
-  .sp-splendor .sp-card-cost-label,.sp-splendor .sp-card-select-hint { font-size: 11px; }
+  .sp-splendor .sp-card-select-hint { font-size: 11px; }
 }

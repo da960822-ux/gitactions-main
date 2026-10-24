@@ -36,12 +36,23 @@ describe('DominoBoard', () => {
     expect(html).not.toContain('선택한 타일을 왼쪽 끝에 놓기');
   });
 
-  it('labels the central hand area as the opponent selecting a tile when it is not this viewer’s turn', () => {
+  it('keeps the hand identity stable and announces one waiting cue when it is not the viewer’s turn', () => {
     const view = fixture({ turn: 'p2', status: 'opponent-turn' });
-    expect(render(view)).toContain('상대 차례 · 타일 선택');
-    expect(render(view)).toContain('상대가 타일을 고르고 있어요. 놓인 끝을 확인하세요.');
-    expect(render(view, 'es')).toContain('Rival juega ahora');
-    expect(render(view, 'es')).toContain('Rival elige una ficha. Revisa los extremos abiertos.');
+    expect(render(view)).toContain('<h3>내 손패</h3>');
+    expect(render(view).match(/상대의 차례예요/g)).toHaveLength(1);
+    expect(render(view, 'es').match(/Turno de tu rival/g)).toHaveLength(1);
+    expect(render(view)).not.toContain('타일을 고르고 있어요. 놓인 끝을 확인하세요.');
+  });
+
+  it('uses one local play cue instead of repeating instructions above and below the hand', () => {
+    const html = render(fixture());
+    expect(html.match(/밝은 타일을 고른 뒤 열린 끝에 놓으세요./g)).toHaveLength(1);
+    expect(html).not.toContain('dp-selection-help');
+    expect(html).not.toContain('dp-status');
+    expect(html).not.toContain('놓을 타일을 선택하세요');
+    expect(html).toContain('aria-live="polite"');
+    expect(html).toContain('data-domino-side="left"');
+    expect(html).toContain('data-domino-side="right"');
   });
 
   it('uses only engine-emitted legal endpoints for a selected hand index', () => {
@@ -63,7 +74,9 @@ describe('DominoBoard', () => {
     expect(dominoOpeningChoice([{ action: play(1, 'right') }])).toBeNull();
     const view = fixture({ board: { ...fixture().board, tiles: [], ends: null }, hand: [{ a: 2, b: 6 }, { a: 6, b: 6 }], actions: [opening] });
     const html = render(view);
-    expect(html).toContain('시작 타일을 손패에서 선택해 주세요.');
+    expect(html.match(/밝은 시작 타일을 선택하세요./g)).toHaveLength(1);
+    expect(html).not.toContain('시작 타일을 손패에서 선택해 주세요.');
+    expect(html).not.toContain('dp-empty-seal');
     expect(html).not.toContain('시작 타일 6|6 놓기');
   });
 
@@ -80,7 +93,7 @@ describe('DominoBoard', () => {
     expect(dominoOpeningChoice(view.actions)?.action).toEqual(legalOpening);
     const html = renderToStaticMarkup(createElement(DominoBoard, { view, language: 'es', playerId: activeSeat, runAction: vi.fn() }));
     const tile = view.hand[Number(legalOpening.payload?.index)];
-    expect(html).toContain('Elige la ficha inicial en tu mano.');
+    expect(html.match(/Elige la ficha inicial iluminada./g)).toHaveLength(1);
     expect(html).not.toContain(`Jugar ficha inicial ${tile.a}|${tile.b}`);
   });
 

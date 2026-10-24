@@ -693,3 +693,13 @@
   .app-shell.room-shell.quality-table-room .player-pill b { font-size: 13px; }
   .app-shell.room-shell.quality-table-room .back-link { display: inline-flex; align-items: center; min-height: 32px; font-size: 13px; }
 }
+/* Session navigation stays outside each game's own play surface. */
+.room-session-label { font-size:12px; line-height:1.5; color:var(--muted); text-align:right; }
+.room-guide { margin-top:10px; }
+.room-guide > summary { cursor:pointer; padding:10px 0; font-size:14px; }
+.room-sound-menu { position:relative; }
+.room-sound-menu > summary { cursor:pointer; font-size:13px; }
+.room-sound-menu[open] > .game-feedback { position:absolute; z-index:40; top:100%; right:0; min-width:240px; padding:12px; border:1px solid var(--line); border-radius:10px; background:var(--paper,#fffaf1); }
+.room-sound-menu .game-feedback-status { position:absolute; width:1px; height:1px; overflow:hidden; clip-path:inset(50%); }
+.room-game-splendor .board-header .board-game,.room-game-jaipur .board-header .board-game,.room-game-marble .board-header .board-game,.room-game-domino .board-header .board-game { position:absolute; width:1px; height:1px; overflow:hidden; clip-path:inset(50%); }
+.room-shell:not(.room-game-rhythm) .player-pill small { display:none; }

@@ -8,7 +8,7 @@ import '../styles/domino-premium.css';
 
 type AnyRecord = Record<string, any>;
 type Choice = { label?: Record<Language, string>; action: GameAction };
-type Props = { view: any; language: Language; playerId: PlayerId; runAction: (action: GameAction) => void | Promise<unknown> };
+type Props = { solo?: boolean; view: any; language: Language; playerId: PlayerId; runAction: (action: GameAction) => void | Promise<unknown> };
 type Side = 'left' | 'right';
 type Seat = PlayerId | 'b1' | 'b2';
 type Mode = '1v1' | 'partners' | 'humans-vs-bots';
@@ -33,16 +33,17 @@ export function dominoOpeningChoice(choices: readonly Choice[]): Choice | null {
 export function dominoUnavailableEndReason(language: Language, end: number): string {
   return copy(language, `선택한 타일은 ${end}에 맞지 않아요`, `La ficha seleccionada no coincide con ${end}`);
 }
-function seatLabel(seat: Seat, playerId: PlayerId, mode: Mode, language: Language) {
+function seatLabel(seat: Seat, playerId: PlayerId, mode: Mode, language: Language, solo = false) {
   if (seat === playerId) return copy(language, '나', 'Tú');
+  if (solo && seat === 'p2') return copy(language, mode === 'humans-vs-bots' ? 'AI 팀원' : 'AI 상대', mode === 'humans-vs-bots' ? 'Compañero IA' : 'Rival IA');
   if (seat === 'b1' || seat === 'b2') return copy(language, 'AI 봇', 'IA');
   if (mode === 'humans-vs-bots') return copy(language, '사람 팀원', 'Compañero');
   return copy(language, '상대', 'Rival');
 }
-function teamName(team: PlayerId, mode: Mode, language: Language, playerId: PlayerId) {
+function teamName(team: PlayerId, mode: Mode, language: Language, playerId: PlayerId, solo = false) {
   if (mode === 'humans-vs-bots') {
     const humanTeam: PlayerId = playerId === 'p1' || playerId === 'p2' ? 'p1' : 'p1';
-    return team === humanTeam ? copy(language, '사람 팀', 'Equipo humano') : copy(language, '봇 팀', 'Equipo de IA');
+    return team === humanTeam ? copy(language, solo ? '나와 AI 팀원' : '사람 팀', solo ? 'Tú y la IA' : 'Equipo humano') : copy(language, '봇 팀', 'Equipo de IA');
   }
   if (team === playerId) return copy(language, '내 팀', 'Tu equipo');
   return copy(language, mode === 'partners' ? '상대 팀' : '상대', mode === 'partners' ? 'Rivales' : 'Rival');
@@ -55,7 +56,7 @@ function Tile({ tile, className = '', label, sequence, previewSide }: { tile: An
   </span>;
 }
 
-export default function DominoBoard({ view: rawView, language, playerId, runAction }: Props) {
+export default function DominoBoard({ view: rawView, language, playerId, runAction, solo = false }: Props) {
   const view = record(rawView), board = record(view.board), rulesVersion = number(board.rulesVersion);
   const settings = { ...DEFAULT_CONFIG, ...record(view.settings) } as Configuration;
   const mode = (MODES.includes(view.mode) ? view.mode : settings.mode) as Mode;
@@ -127,9 +128,10 @@ export default function DominoBoard({ view: rawView, language, playerId, runActi
           : mode === 'humans-vs-bots' && (view.turn === 'p1' || view.turn === 'p2')
             ? copy(language, '팀원 차례예요', 'Turno de tu compañero')
             : copy(language, '상대의 차례예요', 'Turno de tu rival');
-  const waitingOnSeat = !active && !roundOver && seats.includes(view.turn as Seat)
-    ? seatLabel(view.turn as Seat, playerId, mode, language)
-    : '';
+  const handCue = !active ? statusText
+    : passChoice ? copy(language, '놓을 수 있는 타일이 없어요.', 'No tienes fichas disponibles para jugar.')
+    : selectedKey !== null ? copy(language, tiles.length ? '놓을 끝을 선택하세요. Esc로 취소해요.' : '가운데에 시작 타일을 놓으세요. Esc로 취소해요.', tiles.length ? 'Elige un extremo. Esc para cancelar.' : 'Coloca la ficha inicial en el centro. Esc para cancelar.')
+    : copy(language, tiles.length ? '밝은 타일을 고른 뒤 열린 끝에 놓으세요.' : '밝은 시작 타일을 선택하세요.', tiles.length ? 'Elige una ficha iluminada y colócala en un extremo.' : 'Elige la ficha inicial iluminada.');
 
   useEffect(() => { setConfig(settings); }, [settings.mode, settings.difficulty, settings.targetScore, settings.capicuaBonus, settings.pasoCorridoBonus, settings.tranqueRule]);
   const gameIdentity = `${view.roomId ?? view.room ?? ''}:${playerId}:${number(view.round) || 1}:${mode}`;
@@ -225,8 +227,8 @@ export default function DominoBoard({ view: rawView, language, playerId, runActi
   const modeLabel = (value: Mode) => value === '1v1'
     ? copy(language, '1대1', '1 contra 1')
     : value === 'partners'
-      ? copy(language, '사람-봇 팀전', 'Equipos mixtos')
-      : copy(language, '사람 2명 대 봇 2명', 'Dos personas contra dos bots');
+      ? copy(language, solo ? '나+AI 대 AI+AI' : '사람-봇 팀전', solo ? 'Tú + IA contra IA + IA' : 'Equipos mixtos')
+      : copy(language, solo ? '나+AI 팀원 대 봇 2명' : '사람 2명 대 봇 2명', solo ? 'Tú + compañero IA contra dos bots' : 'Dos personas contra dos bots');
   const moneyOrScore = (value: unknown) => number(value).toLocaleString(language === 'ko' ? 'ko-KR' : 'es-DO');
   const update = <K extends keyof Configuration>(key: K, value: Configuration[K]) => setConfig(current => ({ ...current, [key]: value }));
   const updateMode = (value: Mode) => setConfig(current => ({ ...current, mode: value, ...(lisbeth ? { targetScore: 200, capicuaBonus: 30, pasoCorridoBonus: 0, tranqueRule: 'trancador' as const } : {}) }));
@@ -243,9 +245,7 @@ export default function DominoBoard({ view: rawView, language, playerId, runActi
   }}>
     <header className="dp-header">
       <div>
-        <p className="dp-kicker">{copy(language, '더블 식스 · 블록 도미노', 'Doble seis · dominó bloqueado')}</p>
         <h2>{copy(language, '도미노', 'Dominó')}</h2>
-        <p className="dp-status" aria-live="polite">{statusText}</p>
       </div>
       <div className="dp-round-chip"><span>{copy(language, '라운드', 'Ronda')}</span><b>{number(view.round) || 1}</b></div>
       {canConfigure && <button ref={setupButtonRef} type="button" className="dp-settings-launcher" aria-haspopup="dialog" aria-expanded={setupOpen} onClick={() => setSetupOpen(true)}>{copy(language, '게임 설정', 'Ajustes de juego')}</button>}
@@ -256,14 +256,14 @@ export default function DominoBoard({ view: rawView, language, playerId, runActi
         const teamSeats = seatsForTeam(team);
         const side = team === playerId || teamSeats.includes(playerId) ? 'own' : 'other';
         return <article className={`dp-score ${side === 'own' ? 'is-own' : ''}`} key={team}>
-          <div className="dp-score-heading"><span className={`dp-team-mark dp-mark-${team}`} aria-hidden="true"/><div><b>{teamName(team, mode, language, playerId)}</b><small>{teamSeats.map(seat => seatLabel(seat, playerId, mode, language)).join(' · ')}</small></div></div>
+          <div className="dp-score-heading"><span className={`dp-team-mark dp-mark-${team}`} aria-hidden="true"/><div><b>{teamName(team, mode, language, playerId, solo)}</b><small>{teamSeats.map(seat => seatLabel(seat, playerId, mode, language, solo)).join(' · ')}</small></div></div>
           {targetScore > 0 ? <strong className="dp-score-number">{moneyOrScore(matchScores[team])}<small> / {targetScore}</small></strong> : <span className="dp-score-note">{revealed || hasResult ? copy(language, '이번 판 점수 공개', 'Puntos de la ronda visibles') : copy(language, '라운드 종료 후 공개', 'Se muestran al final')}</span>}
         </article>;
       })}
     </section>
     {pendingBonusTeams.length > 0 && !roundOver && <div className="dp-pending-bonuses" aria-label={copy(language, '아직 정산되지 않은 보너스', 'Bonos pendientes de liquidar')}>
       <span>{copy(language, '라운드 종료 때 정산', 'Se suman al cerrar la ronda')}</span>
-      {pendingBonusTeams.map(team => <b key={team}>{teamName(team, mode, language, playerId)} +{moneyOrScore(roundBonuses[team])}</b>)}
+      {pendingBonusTeams.map(team => <b key={team}>{teamName(team, mode, language, playerId, solo)} +{moneyOrScore(roundBonuses[team])}</b>)}
     </div>}
 
     {!canConfigure && <details className="dp-settings-readout">
@@ -286,9 +286,9 @@ export default function DominoBoard({ view: rawView, language, playerId, runActi
         const seatTeam = (['p1', 'p2'] as const).find(team => seatsForTeam(team).includes(seat));
         const seatTiles: AnyRecord[] | undefined = revealed ? list(revealedHands[seat]) : undefined;
         return <article key={seat} className={`dp-seat ${isTurn ? 'is-turn' : ''} ${ownSeat ? 'is-you' : ''}`} data-domino-seat={seat} aria-current={isTurn ? 'step' : undefined}>
-          <div className="dp-seat-top"><b>{seatLabel(seat, playerId, mode, language)}</b><span>{seatTeam ? teamName(seatTeam, mode, language, playerId) : ''}</span></div>
+          <div className="dp-seat-top"><b>{seatLabel(seat, playerId, mode, language, solo)}</b><span>{seatTeam ? teamName(seatTeam, mode, language, playerId, solo) : ''}</span></div>
           <div className="dp-seat-count"><strong>{seatTiles ? seatTiles.length : number(counts[seat])}</strong><span>{copy(language, '타일', 'fichas')}</span></div>
-          {seatTiles ? <div className="dp-revealed-hand" data-domino-revealed-seat={seat} aria-label={copy(language, `${seatLabel(seat, playerId, mode, language)}의 공개된 손패`, `Mano revelada de ${seatLabel(seat, playerId, mode, language)}`)}>{seatTiles.map((tile, index) => <Tile key={`${tile.a}-${tile.b}-${index}`} tile={tile} className="is-mini"/>)}</div> : !ownSeat && <div className="dp-backs" aria-label={copy(language, `${number(counts[seat])}개의 숨겨진 타일`, `${number(counts[seat])} fichas ocultas`)}>{Array.from({ length: Math.min(number(counts[seat]), 5) }, (_, index) => <span className="dp-back" key={index}><DominoTile left={0} right={0} back label={copy(language, '숨겨진 도미노 타일', 'Ficha de dominó oculta')}/></span>)}</div>}
+          {seatTiles ? <div className="dp-revealed-hand" data-domino-revealed-seat={seat} aria-label={copy(language, `${seatLabel(seat, playerId, mode, language, solo)}의 공개된 손패`, `Mano revelada de ${seatLabel(seat, playerId, mode, language, solo)}`)}>{seatTiles.map((tile, index) => <Tile key={`${tile.a}-${tile.b}-${index}`} tile={tile} className="is-mini"/>)}</div> : !ownSeat && <div className="dp-backs" aria-label={copy(language, `${number(counts[seat])}개의 숨겨진 타일`, `${number(counts[seat])} fichas ocultas`)}>{Array.from({ length: Math.min(number(counts[seat]), 5) }, (_, index) => <span className="dp-back" key={index}><DominoTile left={0} right={0} back label={copy(language, '숨겨진 도미노 타일', 'Ficha de dominó oculta')}/></span>)}</div>}
           {ownSeat && !revealed && <small className="dp-private-note">{copy(language, '내 손패', 'Tu mano')}</small>}
         </article>;
       })}
@@ -296,7 +296,7 @@ export default function DominoBoard({ view: rawView, language, playerId, runActi
 
     <section className="dp-felt" aria-label={copy(language, '공개된 도미노 줄', 'Cadena pública de dominó')}>
       <div className="dp-felt-inset" aria-hidden="true"/>
-      {tiles.length === 0 ? <div className="dp-chain-empty"><span className="dp-empty-seal">28</span><b>{copy(language, '첫 타일을 놓으면 줄이 시작돼요', 'La cadena empieza con la primera ficha')}</b><small>{copy(language, '시작 타일을 손패에서 선택해 주세요.', 'Elige la ficha inicial en tu mano.')}</small>{openingChoice && selectedIndex === number(openingChoice.action.payload?.index) && <><Tile tile={hand[selectedIndex]} className={`is-preview ${hand[selectedIndex]?.a === hand[selectedIndex]?.b ? 'is-double' : ''}`} label={`${hand[selectedIndex]?.a} | ${hand[selectedIndex]?.b}`} /><button className="dp-start-target" type="button" disabled={busy} onClick={event => void submit(openingChoice.action, event.detail === 0)} aria-label={copy(language, `첫 타일 ${hand[selectedIndex]?.a}|${hand[selectedIndex]?.b} 놓기`, `Jugar la ficha inicial ${hand[selectedIndex]?.a}|${hand[selectedIndex]?.b}`)}>{copy(language, `시작 타일 ${hand[selectedIndex]?.a}|${hand[selectedIndex]?.b} 놓기`, `Jugar ficha inicial ${hand[selectedIndex]?.a}|${hand[selectedIndex]?.b}`)}</button></>}</div> : <div className="dp-chain-scroll" ref={chainScrollRef} tabIndex={-1} role="list" aria-label={copy(language, '도미노 줄 · 가로로 이동할 수 있어요', 'Cadena de dominó · desplázate horizontalmente')}>
+      {tiles.length === 0 ? <div className="dp-chain-empty">{selectedIndex < 0 && <b>{copy(language, '시작 위치', 'Inicio de la cadena')}</b>}{openingChoice && selectedIndex === number(openingChoice.action.payload?.index) && <><Tile tile={hand[selectedIndex]} className={`is-preview ${hand[selectedIndex]?.a === hand[selectedIndex]?.b ? 'is-double' : ''}`} label={`${hand[selectedIndex]?.a} | ${hand[selectedIndex]?.b}`} /><button className="dp-start-target" type="button" disabled={busy} onClick={event => void submit(openingChoice.action, event.detail === 0)} aria-label={copy(language, `첫 타일 ${hand[selectedIndex]?.a}|${hand[selectedIndex]?.b} 놓기`, `Jugar la ficha inicial ${hand[selectedIndex]?.a}|${hand[selectedIndex]?.b}`)}>{copy(language, `시작 타일 ${hand[selectedIndex]?.a}|${hand[selectedIndex]?.b} 놓기`, `Jugar ficha inicial ${hand[selectedIndex]?.a}|${hand[selectedIndex]?.b}`)}</button></>}</div> : <div className="dp-chain-scroll" ref={chainScrollRef} tabIndex={-1} role="list" aria-label={copy(language, '도미노 줄 · 가로로 이동할 수 있어요', 'Cadena de dominó · desplázate horizontalmente')}>
         <div className="dp-chain" role="presentation">
           {ordered.map(({ tile, index }) => {
             const eventSequence = number(tile.sequence) || (index + 1);
@@ -322,7 +322,7 @@ export default function DominoBoard({ view: rawView, language, playerId, runActi
     </section>
 
     <section className="dp-play-area">
-      <div className={`dp-play-copy ${active ? 'is-active' : 'is-waiting'}`}><span className={`dp-turn-light ${active ? 'is-active' : ''}`} aria-hidden="true"/><div><h3>{active ? copy(language, '내 손패', 'Tu mano') : waitingOnSeat ? copy(language, `${waitingOnSeat} 차례 · 타일 선택`, `${waitingOnSeat} juega ahora`) : copy(language, '도미노 테이블', 'Mesa de dominó')}</h3><p>{active ? copy(language, '타일을 고른 다음 열린 끝을 확인하세요.', 'Elige una ficha y revisa los extremos disponibles.') : waitingOnSeat ? copy(language, `${waitingOnSeat}가 타일을 고르고 있어요. 놓인 끝을 확인하세요.`, `${waitingOnSeat} elige una ficha. Revisa los extremos abiertos.`) : statusText}</p></div></div>
+      <div className={`dp-play-copy ${active ? 'is-active' : 'is-waiting'}`}><span className={`dp-turn-light ${active ? 'is-active' : ''}`} aria-hidden="true"/><div><h3>{copy(language, '내 손패', 'Tu mano')}</h3><p aria-live="polite">{handCue}</p></div></div>
       <div className="dp-hand" aria-label={copy(language, '내 도미노 타일', 'Tus fichas de dominó')}>
         {hand.map((tile, index) => {
           const legal = playChoices.some(choice => number(choice.action.payload?.index) === index);
@@ -333,7 +333,6 @@ export default function DominoBoard({ view: rawView, language, playerId, runActi
         })}
       </div>
       {active && !selectedLegal.length && passChoice && <button type="button" className="dp-pass" disabled={busy} onClick={() => void submit(passChoice.action)}>{busy ? copy(language, '전달 중…', 'Enviando…') : copy(language, '놓을 수 없어요 · 패스', 'No puedes jugar · pasar')}</button>}
-      {active && selectedKey !== null && <p className="dp-selection-help" aria-live="polite">{selectedLegal.length ? copy(language, '끝의 미리보기를 확인하고 놓을 위치를 선택하세요. Esc로 취소할 수 있어요.', 'Revisa la ficha previa y elige dónde colocarla. Pulsa Esc para cancelar.') : copy(language, '이 타일은 지금 놓을 수 없어요.', 'Esta ficha no se puede jugar ahora.')}</p>}
       {actionError && <p className="dp-error" role="alert">{actionError}</p>}
     </section>
     </div>
@@ -358,11 +357,11 @@ export default function DominoBoard({ view: rawView, language, playerId, runActi
     </div>}
 
     <div className="dp-ledger-row">
-      <section className="dp-ledger"><h3>{copy(language, targetScore ? '매치 점수' : '이번 라운드', targetScore ? 'Marcador del partido' : 'Esta ronda')}</h3><div className="dp-ledger-values">{(['p1', 'p2'] as const).map(team => <div key={team}><span>{teamName(team, mode, language, playerId)}</span><b>{targetScore ? moneyOrScore(matchScores[team]) : revealed || hasResult ? moneyOrScore(resultPips[team]) : '—'}</b></div>)}</div>{!revealed && !hasResult && !targetScore && <small>{copy(language, '손패 점수는 라운드가 끝날 때 공개돼요.', 'Los puntos de las manos se revelan al terminar la ronda.')}</small>}</section>
+      <section className="dp-ledger"><h3>{copy(language, targetScore ? '매치 점수' : '이번 라운드', targetScore ? 'Marcador del partido' : 'Esta ronda')}</h3><div className="dp-ledger-values">{(['p1', 'p2'] as const).map(team => <div key={team}><span>{teamName(team, mode, language, playerId, solo)}</span><b>{targetScore ? moneyOrScore(matchScores[team]) : revealed || hasResult ? moneyOrScore(resultPips[team]) : '—'}</b></div>)}</div>{!revealed && !hasResult && !targetScore && <small>{copy(language, '손패 점수는 라운드가 끝날 때 공개돼요.', 'Los puntos de las manos se revelan al terminar la ronda.')}</small>}</section>
       {showResult && <section className="dp-round-result" data-outcome={resultWinner === ownTeam ? 'win' : resultWinner === 'draw' ? 'draw' : 'lose'}>
         <div><span>{copy(language, hasResult ? '매치 결과' : `라운드 ${number(roundResult.round) || number(view.round) || 1} 결과`, hasResult ? 'Resultado del partido' : `Resultado de la ronda ${number(roundResult.round) || number(view.round) || 1}`)}</span><b>{resultWinner === 'draw' ? copy(language, '무승부', 'Empate') : resultWinner === ownTeam ? copy(language, '내 팀 승리', '¡Ganó tu equipo!') : copy(language, '상대 팀 승리', 'Ganó el otro equipo')}</b></div>
         {Object.keys(resultPips).length > 0 && <p>{copy(language, `남은 점수 ${moneyOrScore(resultPips.p1)} 대 ${moneyOrScore(resultPips.p2)}${roundResult.award !== undefined ? ` · 이번 점수 ${moneyOrScore(roundResult.award)}` : ''}`, `Puntos restantes ${moneyOrScore(resultPips.p1)} a ${moneyOrScore(resultPips.p2)}${roundResult.award !== undefined ? ` · premio ${moneyOrScore(roundResult.award)}` : ''}`)}</p>}
-        {record(roundResult.scoreDelta).p1 !== undefined && <p className="dp-settled-delta">{copy(language, `정산 점수: ${teamName('p1', mode, language, playerId)} +${moneyOrScore(record(roundResult.scoreDelta).p1)} · ${teamName('p2', mode, language, playerId)} +${moneyOrScore(record(roundResult.scoreDelta).p2)}`, `Puntos liquidados: ${teamName('p1', mode, language, playerId)} +${moneyOrScore(record(roundResult.scoreDelta).p1)} · ${teamName('p2', mode, language, playerId)} +${moneyOrScore(record(roundResult.scoreDelta).p2)}`)}</p>}
+        {record(roundResult.scoreDelta).p1 !== undefined && <p className="dp-settled-delta">{copy(language, `정산 점수: ${teamName('p1', mode, language, playerId, solo)} +${moneyOrScore(record(roundResult.scoreDelta).p1)} · ${teamName('p2', mode, language, playerId, solo)} +${moneyOrScore(record(roundResult.scoreDelta).p2)}`, `Puntos liquidados: ${teamName('p1', mode, language, playerId, solo)} +${moneyOrScore(record(roundResult.scoreDelta).p1)} · ${teamName('p2', mode, language, playerId, solo)} +${moneyOrScore(record(roundResult.scoreDelta).p2)}`)}</p>}
         {localizedReason && <p className="dp-result-reason">{localizedReason}</p>}
         {Boolean(roundResult.capicua) && <small>{copy(language, settings.capicuaBonus > 0 ? `카피쿠아 성립 · 보너스 +${settings.capicuaBonus}` : '카피쿠아 성립 · 추가 점수 없음', settings.capicuaBonus > 0 ? `Capicúa · bono +${settings.capicuaBonus}` : 'Capicúa sin bono')}</small>}
         {lisbeth && number(roundResult.openingPass) > 0 && <small>{copy(language, `오프닝 패스 보너스 +${moneyOrScore(roundResult.openingPass)} 포함`, `Incluye bono de pase inicial +${moneyOrScore(roundResult.openingPass)}`)}</small>}

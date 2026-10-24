@@ -1,0 +1,129 @@
+/* A four-seat Minhwatu table: opponents flank the field, teammate opposite, human hand nearest. */
+.mh4-table.minhwatu-table { position:relative; --mh4-ivory:#f4ecd9; --mh4-gold:#e2c987; --mh4-muted:#bdd2c5; box-sizing:border-box; width:100%; height:100svh; min-height:0; max-height:100svh; display:grid; grid-template-rows:auto minmax(0,1fr) auto; gap:8px; padding:10px; border:1px solid #a59670; border-radius:12px; color:var(--mh4-ivory); background:#132e30; font:13px/1.3 'DM Sans',sans-serif; font-variant-numeric:tabular-nums; overflow:hidden; }
+.mh4-table * { box-sizing:border-box; }
+.mh4-table h1,.mh4-table h2,.mh4-table h3,.mh4-table p { margin:0; }
+.mh4-table h1 { font:500 24px/1.1 'Gowun Batang',Georgia,serif; white-space:nowrap; }
+.mh4-table h1 small { font:500 12px 'DM Sans',sans-serif; color:var(--mh4-muted); }
+.mh4-table button { min-height:32px; padding:5px 9px; border:1px solid #8fa99a; border-radius:5px; color:var(--mh4-ivory); background:#183b36; font:inherit; cursor:pointer; }
+.mh4-table button:disabled { cursor:default; }
+.mh4-table button:focus-visible,.mh4-table a:focus-visible,.mh4-table summary:focus-visible { outline:2px solid #ffe4a0; outline-offset:3px; }
+.mh4-header { display:flex; align-items:center; gap:16px; min-height:38px; }
+.mh4-header > nav { display:flex; align-items:center; justify-content:flex-end; gap:5px; margin-left:auto; }
+.mh4-team-score { display:flex; align-items:center; gap:14px; }
+.mh4-team-score span { display:flex; align-items:baseline; gap:6px; color:var(--mh4-muted); font-size:11px; white-space:nowrap; }
+.mh4-team-score b { color:var(--mh4-ivory); font-size:21px; }
+.mh4-table .game-feedback { position:relative; }
+.mh4-table .game-feedback-status { position:absolute; width:1px; height:1px; overflow:hidden; clip-path:inset(50%); }
+.mh4-table .game-sound-trigger { min-height:32px; font-size:12px; padding:5px 8px; }
+.mh4-table .game-sound-settings { z-index:40; color:#f4ecd9; background:#183b36; }
+.mh4-switch { position:relative; }
+.mh4-switch > div { position:absolute; z-index:40; top:calc(100% + 5px); right:0; display:grid; gap:4px; min-width:140px; padding:6px; border:1px solid #8fa99a; border-radius:6px; background:#132e30; box-shadow:0 5px 14px #071e2c70; }
+.mh4-error { position:absolute; top:48px; left:12px; right:12px; z-index:30; padding:4px 8px; color:#ffdfc5; background:#57382f; }
+.mh4-arena { min-height:0; min-width:0; display:grid; grid-template-columns:190px minmax(0,1fr) 190px; grid-template-rows:124px minmax(0,1fr); gap:8px; }
+.mh4-bank { min-width:0; min-height:0; display:flex; flex-direction:column; gap:7px; padding:8px; border:1px solid #718e7e; border-radius:7px; background:#1b3a34 url(/images/hwatu-support/rack.webp) repeat; overflow:hidden; }
+.mh4-bank.team-A { border-color:#c4b476; }
+.mh4-bank.is-turn { outline:2px solid #ead49b; outline-offset:-3px; }
+.mh4-bank-p2 { grid-column:1; grid-row:1/-1; }
+.mh4-bank-p3 { grid-column:2; grid-row:1; }
+.mh4-bank-p4 { grid-column:3; grid-row:1/-1; }
+.mh4-bank > header { display:flex; align-items:center; justify-content:space-between; gap:7px; flex:0 0 auto; }
+.mh4-bank > header > div { display:grid; gap:2px; min-width:0; }
+.mh4-bank header b { overflow:hidden; text-overflow:ellipsis; white-space:nowrap; font-size:13px; }
+.mh4-bank header small { color:var(--mh4-muted); font-size:10px; font-weight:400; }
+.mh4-bank output { position:relative; flex:0 0 auto; display:flex; flex-wrap:wrap; align-items:baseline; gap:3px; max-width:90px; font-size:23px; font-weight:700; line-height:1.1; }
+.mh4-hidden-hand { flex:0 0 auto; height:26px; display:flex; justify-content:center; gap:3px; }
+.mh4-hidden-hand i { width:16px; height:24px; border:1px solid #c6af79; border-radius:3px; background:#842824 url(/images/hwatu-support/lacquer-back.svg) center/100% 100%; }
+.mh4-capture-groups { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:10px 6px; min-height:0; }
+.mh4-capture-kind { position:relative; min-width:0; }
+.mh4-capture-kind h3 { display:flex; align-items:center; gap:3px; margin-bottom:3px; font-size:10px; font-weight:400; color:var(--mh4-muted); }
+.mh4-capture-kind h3 img { width:15px; height:15px; }
+.mh4-capture-kind h3 b { font-size:11px; color:var(--mh4-gold); }
+.mh4-capture-cards { display:flex; align-items:flex-start; gap:3px; min-height:0; overflow-x:auto; scrollbar-width:thin; scrollbar-color:#b8a474 #214b42; padding-bottom:3px; }
+.mh4-table button.mh4-captured-card { flex:0 0 34px; width:34px; min-height:0; padding:0; border:0; background:transparent; cursor:zoom-in; }
+.mh4-capture-anchor { display:block; position:absolute; top:20px; left:0; width:34px; height:55px; pointer-events:none; opacity:0; }
+.mh4-yakus { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:4px 8px; margin:0; padding:5px 0 0; border-top:1px solid #87a38a55; list-style:none; }
+.mh4-yakus li { display:flex; align-items:baseline; justify-content:space-between; gap:3px; min-width:0; color:var(--mh4-muted); font-size:11px; white-space:nowrap; flex-wrap:wrap; }
+.mh4-yakus li b { color:#ead49b; font-size:12px; }
+.mh4-yakus .is-complete { color:#fff1bd; }
+.mh4-bank-p2 .mh4-yakus,.mh4-bank-p4 .mh4-yakus { margin-top:auto; }
+.mh4-bank-p3 { display:grid; grid-template-columns:145px minmax(0,1fr); grid-template-rows:minmax(0,1fr) auto; gap:4px 12px; padding:5px 8px; }
+.mh4-bank-p3 > header { grid-column:1; grid-row:1; align-items:flex-start; padding-top:2px; }
+.mh4-bank-p3 .mh4-hidden-hand { display:none; }
+.mh4-bank-p3 .mh4-capture-groups { grid-column:2; grid-row:1; grid-template-columns:repeat(4,minmax(0,1fr)); gap:6px; align-content:start; }
+.mh4-bank-p3 .mh4-yakus { grid-column:1/-1; grid-row:2; display:grid; grid-template-columns:repeat(8,minmax(0,1fr)); gap:7px; padding-top:3px; }
+.mh4-bank-p3 .mh4-yakus li { flex:0 0 auto; gap:4px; }
+.mh4-table.minhwatu-table .gb-hwatu-card.gb-hwatu-card-premium { width:100%; gap:1px; padding:1px; border:0; border-radius:3px; color:#203b36; background:#f2e7d1; box-shadow:1px 2px 2px #071e2c80; }
+.mh4-table.minhwatu-table .gb-hwatu-card-premium .gb-hwatu-month-tag { min-height:15px; font-size:11px; }
+.mh4-field { position:relative; grid-column:2; grid-row:2; min-width:0; min-height:0; display:grid; grid-template-rows:auto minmax(0,1fr); gap:5px; padding:8px 72px 8px 8px; border:3px solid #526f57; border-radius:9px; background:#28574c url(/images/hwatu-support/felt.webp) repeat; box-shadow:inset 0 3px 9px #071e2c50; }
+.mh4-field > header { grid-column:1/-1; display:flex; align-items:center; gap:10px; min-height:25px; }
+.mh4-field h2,.mh4-hand h2 { font-size:13px; font-weight:500; white-space:nowrap; }
+.mh4-field h2 small,.mh4-hand h2 small { color:var(--mh4-muted); font-size:11px; font-weight:400; margin-left:4px; }
+.mh4-phase { margin:auto; color:#fff0b7; font-size:13px; font-weight:500; text-align:center; }
+.mh4-stock { position:absolute; top:8px; right:9px; display:flex; align-items:center; gap:5px; }
+.mh4-stock > i { width:23px; height:32px; border:1px solid #c6af79; border-radius:3px; background:#842824 url(/images/hwatu-support/lacquer-back.svg) center/100% 100%; box-shadow:2px 2px 0 #18352d; }
+.mh4-stock b { font-size:16px; }
+.mh4-field-cards { display:flex; align-content:center; justify-content:center; flex-wrap:wrap; gap:5px 6px; min-height:0; overflow:auto; padding:4px; scrollbar-width:thin; scrollbar-color:#b8a474 #214b42; }
+.mh4-table button.mh4-field-card { position:relative; flex:0 0 var(--mh4-field-width); width:var(--mh4-field-width); align-self:center; min-height:0; padding:0; border:0; background:transparent; cursor:default; }
+.mh4-field-card:disabled { opacity:1; }
+.mh4-table .mh4-field-card.is-target { outline:2px solid #f5d37b; outline-offset:3px; cursor:pointer; }
+.mh4-target-mark { position:absolute; right:0; bottom:15px; left:0; padding:2px; background:#e7ce8e; color:#19362c; font-size:10px; }
+.mh4-draw { position:absolute; right:7px; top:56px; bottom:8px; width:56px; display:flex; flex-direction:column; align-items:center; justify-content:center; gap:4px; border-left:1px solid #b7cbc044; font-size:10px; color:var(--mh4-muted); }
+.mh4-drawn-card { width:50px; }
+.mh4-draw-anchor { position:absolute; top:50%; left:5px; width:48px; height:80px; opacity:0; pointer-events:none; }
+.mh4-motion { position:absolute; left:8px; right:72px; bottom:5px; display:flex; justify-content:center; pointer-events:none; z-index:4; }
+.mh4-table .mh4-motion .hwatu-motion-note { max-width:100%; }
+.mh4-human { display:grid; grid-template-columns:minmax(0,1fr) minmax(0,1.35fr); gap:8px; min-height:0; }
+.mh4-bank-p1 { grid-template-columns:100px minmax(0,1fr); grid-template-rows:auto auto; display:grid; gap:4px 8px; padding:5px 7px; }
+.mh4-bank-p1 > header { grid-column:1; grid-row:1; display:grid; align-content:start; gap:5px; }
+.mh4-bank-p1 .mh4-capture-groups { grid-column:2; grid-row:1; grid-template-columns:repeat(4,minmax(0,1fr)); gap:5px; }
+.mh4-bank-p1 .mh4-yakus { grid-column:1/-1; grid-row:2; display:grid; grid-template-columns:repeat(4,minmax(0,1fr)); gap:3px 10px; }
+.mh4-bank-p1 .mh4-yakus li { flex:0 0 auto; gap:4px; }
+.mh4-hand { min-width:0; min-height:0; padding:5px 9px; border-top:1px solid #7d9581; border-radius:5px; }
+.mh4-hand.is-active { border-color:#e7ce8e; background:#f5d37b0a; }
+.mh4-hand > header { display:flex; justify-content:space-between; align-items:center; gap:8px; min-height:22px; }
+.mh4-hand > header > strong { color:#f2d992; font-size:13px; }
+.mh4-hand-row { display:flex; align-items:center; gap:12px; }
+.mh4-hand-cards { flex:1; min-width:0; display:flex; gap:8px; align-items:flex-end; justify-content:center; overflow-x:auto; padding:7px 4px 5px; scrollbar-width:thin; scrollbar-color:#b8a474 #214b42; }
+.mh4-table button.mh4-hand-card { position:relative; flex:0 0 64px; width:64px; min-height:0; padding:0; border:0; background:transparent; transition:transform 140ms ease-out; }
+.mh4-hand-card:disabled { opacity:.75; cursor:default; }
+.mh4-hand-card.is-capturable { outline:1px solid #f5d37b; outline-offset:2px; }
+.mh4-table .mh4-hand-card.is-selected { transform:translateY(-4px); outline:2px solid #f5d37b; outline-offset:3px; }
+.mh4-capture-mark { position:absolute; top:-5px; right:-4px; width:19px; height:19px; padding:2px; border:1px solid #f4df9e; border-radius:4px; background:#203c35; pointer-events:none; }
+.mh4-hand-actions > button { min-height:44px; min-width:50px; }
+.mh4-hand-actions { display:flex; gap:5px; min-width:105px; flex:0 0 auto; }
+.mh4-table button.mh4-confirm { color:#18362e; background:#ead6a1; border-color:#e5d2a1; font-weight:700; }
+.mh4-score-change { position:static; display:inline-block; flex:0 0 auto; padding:2px 5px; background:#163d31; border:1px solid #d3b674; border-radius:3px; font-size:11px; animation:mh4-score-rise 900ms ease-out both; pointer-events:none; }
+@keyframes mh4-score-rise { 0% { opacity:1; } 100% { opacity:0; } }
+.mh4-preview { position:fixed; z-index:10001; display:grid; gap:5px; width:152px; padding:7px; border:1px solid #d4bd7f; border-radius:6px; background:#132e30; color:var(--mh4-ivory); box-shadow:0 7px 18px #071e2c80; pointer-events:none; }
+.mh4-table .mh4-preview .gb-hwatu-card.gb-hwatu-card-premium { width:136px; }
+.mh4-preview > span { font-size:12px; }
+.mh4-dialog-overlay { position:fixed; inset:0; z-index:1000; display:grid; place-items:center; padding:24px; background:#061b1ce0; }
+.mh4-dialog { position:relative; width:min(720px,100%); max-height:85svh; overflow:auto; padding:24px; border:1px solid #b6a372; border-radius:10px; background:#173832; color:#f4ecd9; box-shadow:0 10px 30px #071e2c80; }
+.mh4-dialog h2 { margin:0 70px 18px 0; font-size:22px; }
+.mh4-dialog p,.mh4-dialog li { margin-bottom:14px; font-size:14px; line-height:1.6; }
+.mh4-dialog-close { float:right; }
+.mh4-dialog a { color:#f0dba6; }
+.mh4-dialog .minhwatu-guide-credits { margin-top:20px; }
+.mh4-dialog .minhwatu-guide-credits p { font-size:12px; }
+.mh4-dialog .minhwatu-guide-credits nav { display:flex; gap:12px; flex-wrap:wrap; }
+.mh4-history { padding-left:22px; }
+.mh4-history li > div { display:flex; flex-wrap:wrap; gap:5px; margin-top:6px; }
+.mh4-table .mh4-history .gb-hwatu-card.gb-hwatu-card-premium { width:40px; }
+@media (max-height:800px) and (min-width:1100px) {
+  .mh4-table.minhwatu-table { padding:7px; gap:6px; }
+  .mh4-header { min-height:34px; }
+  .mh4-header h1 { font-size:21px; }
+  .mh4-arena { grid-template-columns:190px minmax(0,1fr) 190px; grid-template-rows:124px minmax(0,1fr); gap:6px; }
+  .mh4-bank { padding:6px; gap:5px; }
+  .mh4-hand-card { flex-basis:60px; width:60px; }
+  .mh4-bank-p1 .mh4-capture-groups,.mh4-bank-p3 .mh4-capture-groups { gap:4px; }
+}
+@media (max-width:1100px) {
+  .mh4-table.minhwatu-table { height:auto; max-height:none; overflow:visible; }
+  .mh4-header { flex-wrap:wrap; }
+  .mh4-header > nav { margin-left:0; flex-wrap:wrap; }
+  .mh4-arena { grid-template-columns:145px minmax(0,1fr) 145px; grid-template-rows:108px minmax(240px,1fr); }
+  .mh4-human { grid-template-columns:1fr; }
+  .mh4-bank-p1 .mh4-yakus { flex-wrap:wrap; }
+}
+@media (prefers-reduced-motion:reduce) { .mh4-hand-card { transition:none; } .mh4-table .mh4-score-change { animation:none; } }

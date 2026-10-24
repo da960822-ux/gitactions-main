@@ -140,6 +140,10 @@ describe('CatchmindTable', () => {
     expect(guesser.html).not.toContain(drawer.answer.ko);
     expect(guesser.html).not.toContain(drawer.answer.es);
     expect(guesser.html).not.toContain('cm-tools');
+    expect(guesser.html).toContain('canvas-only');
+    expect(drawer.html).toContain('has-tools');
+    expect(drawer.html).not.toContain('cm-side-heading');
+    expect(drawer.html).not.toContain('그림은 두 사람에게 실시간으로 보여요.');
     expect(guesser.html).toContain('첫 선을 기다리고 있어요');
     expect(guesser.html).toContain('cm-hint-word');
     expect(guesser.html).toContain(' / ');
@@ -157,8 +161,8 @@ describe('CatchmindTable', () => {
     timedOut = catchmindEngine.applyAction(timedOut, 'p1', { type: 'choose', payload: { wordId: 0 } });
     timedOut = catchmindEngine.applyAction(timedOut, 'p1', { type: 'timeout' });
     const timeoutHtml = stateMarkup(timedOut, 'p1');
+    expect(timeoutHtml).toContain('라운드 결과');
     expect(timeoutHtml).toContain('라운드 종료');
-    expect(timeoutHtml).toContain('라운드가 끝났어요. 정답을 확인하고 다음 그림으로 넘어가요.');
     expect(timeoutHtml).not.toContain('정답을 맞혀서 두 사람 모두 점수를 얻었어요.');
     expect(timeoutHtml).not.toContain('정답은 출제자만 볼 수 있어요.');
 
@@ -173,12 +177,12 @@ describe('CatchmindTable', () => {
     solved = catchmindEngine.applyAction(solved, 'p1', { type: 'guess', payload: { text: secondAnswer.ko } });
     solved = catchmindEngine.applyAction(solved, 'p2', { type: 'end-round' });
     const finishedHtml = stateMarkup(solved, 'p1');
-    expect(finishedHtml).toContain('게임 종료');
+    expect(finishedHtml).toContain('최종 결과');
     expect(finishedHtml).toContain('같이 다시 시작하기');
     expect(finishedHtml).toContain('두 사람이 모두 수락하면 새 판을 시작해요.');
     expect(finishedHtml).not.toContain('내가 그리고 있어요');
     const finishedSpanishHtml = stateMarkup(solved, 'p1', 'es');
-    expect(finishedSpanishHtml).toContain('Partida terminada');
+    expect(finishedSpanishHtml).toContain('Resultado final');
     expect(finishedSpanishHtml).not.toContain('Tú dibujas');
   });
 

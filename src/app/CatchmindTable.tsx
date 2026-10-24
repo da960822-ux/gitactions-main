@@ -195,7 +195,8 @@ export default function CatchmindTable({ roomId, view, playerId, language, now, 
           return;
         }
         const footerHeight = boardCard.querySelector<HTMLElement>('.board-footer')?.getBoundingClientRect().height ?? 0;
-        const noteHeight = canvasFrame.closest('.cm-artboard')?.querySelector<HTMLElement>('.cm-bottom-note')?.getBoundingClientRect().height ?? 0;
+        const artboard = canvasFrame.closest('.cm-artboard');
+        const noteHeight = [...(artboard?.querySelectorAll<HTMLElement>('.cm-bottom-note, .cm-attempts, .cm-finish-card') ?? [])].reduce((height, element) => height + element.getBoundingClientRect().height, 0);
         const boardStyle = getComputedStyle(boardCard);
         const boardBottomSpace = (Number.parseFloat(boardStyle.paddingBottom) || 0) + (Number.parseFloat(boardStyle.borderBottomWidth) || 0);
         const reservedHeight = footerHeight + noteHeight + boardBottomSpace + 16;
@@ -435,19 +436,8 @@ export default function CatchmindTable({ roomId, view, playerId, language, now, 
   const categoryChoicesLocked = catchmindChoicesNeedSettingsSave(allowed('settings'), settingsDraft.category_id, board.settings?.category_id ?? null);
   const colorLabel = (color: string) => colors.find(option => option.value === color)?.[language] ?? (color === '#fffefa' ? copy(language, '흰색', 'blanco') : color === '#284f49' ? copy(language, '짙은 초록', 'verde oscuro') : copy(language, '직접 선택한 색', 'color elegido'));
   const scoresBySeat = (['p1', 'p2'] as const).map(seat => ({ seat, mine: seat === playerId, score: Number(scores[seat] ?? 0) }));
-  const heading = choosing
-    ? copy(language, '오늘의 제시어', 'ELIGE UNA PALABRA')
-    : drawing
-      ? copy(language, '이 그림을 완성해 보세요', 'DIBUJA LA PALABRA')
-      : activeDrawing
-        ? copy(language, '그림을 보고 맞혀 보세요', 'MIRA Y ADIVINA')
-      : roundOver
-        ? copy(language, roundSolved ? '정답을 맞혔어요' : '라운드 종료', roundSolved ? '¡RESPUESTA CORRECTA!' : 'RONDA TERMINADA')
-        : finished
-          ? copy(language, `${board.totalRounds ?? 6}라운드 완료`, `${board.totalRounds ?? 6} RONDAS COMPLETADAS`)
-          : copy(language, '그림을 보고 맞혀 보세요', 'MIRA Y ADIVINA');
 
-  return <section className="cm-table" aria-label={copy(language, '캐치마인드 그림 게임', 'Juego de dibujo Catchmind')}>
+  return <section className={`cm-table ${drawing ? 'is-drawing' : 'is-viewing'}`} aria-label={copy(language, '캐치마인드 그림 게임', 'Juego de dibujo Catchmind')}>
     <header className="cm-topbar">
       <div className="cm-round-label"><span>{copy(language, '라운드', 'RONDA')}</span><strong>{board.round ?? 1}<i> / {board.totalRounds ?? 6}</i></strong><small>{category?.label[language]}</small><small key={`${board.round}:${view?.phase}:${view?.status}`} className="cm-phase-label" aria-live="polite">{phaseLabel}</small></div>
       <div className="cm-scoreboard" aria-label={copy(language, '점수', 'Puntuación')}>
@@ -456,18 +446,18 @@ export default function CatchmindTable({ roomId, view, playerId, language, now, 
       {view?.deadlineAt && !roundOver && !finished && <div className={`cm-timer ${secondsLeft <= 10 ? 'is-low' : ''}`} aria-label={`${secondsLeft} ${copy(language, '초 남음', 'segundos restantes')}`}><span aria-hidden="true">◷</span><b>{secondsLeft}</b><small>{copy(language, '초 남음', 's restantes')}</small></div>}
     </header>
 
-    <div className="cm-play-area">
+    <div className={`cm-play-area ${drawing ? 'has-tools' : 'canvas-only'}`}>
       <div className={`cm-artboard ${drawing ? 'can-draw' : ''}`}>
-        <div className="cm-artboard-head">
-          <div><span className="cm-eyebrow">{heading}</span><p>{isDrawer && view?.hand?.answer && drawing ? copy(language, '정답은', 'La palabra es') : roundOver || finished ? copy(language, '이번 제시어', 'La palabra era') : activeDrawing ? copy(language, '상대가 그리고 있어요', 'Tu pareja está dibujando') : copy(language, '함께 맞혀 보세요', 'Adivinen juntos')}</p></div>
+        {(activeDrawing || roundOver || finished) && <div className="cm-artboard-head">
+          <span className="cm-word-label">{copy(language, drawing ? '제시어' : roundOver || finished ? '정답' : activeDrawing ? '그림을 보고 채팅에 답해요' : '제시어 선택', drawing ? 'Tu palabra' : roundOver || finished ? 'Respuesta' : activeDrawing ? 'Adivina en el chat' : 'Elegir palabra')}</span>
           {drawing && view?.hand?.answer && <strong className="cm-secret-word">{view.hand.answer[language]}</strong>}
           {(roundOver || finished) && board.answer && <strong className="cm-secret-word">{board.answer[language]}</strong>}
           {!isDrawer && activeDrawing && board.hintWord && <b key={board.round} className="cm-hint-word" aria-label={copy(language, '한국어 / Español 글자 수', 'Longitud en 한국어 / Español')}><span>{board.hintWord.ko}</span><i aria-hidden="true"> / </i><span>{board.hintWord.es}</span></b>}
-        </div>
+        </div>}
 
         {choosing ? <div className="cm-choice-panel">
-          <div className="cm-choice-intro"><span aria-hidden="true">✳</span><div><b>{copy(language, '그리고 싶은 단어를 골라 주세요', 'Elige qué quieres dibujar')}</b><small>{copy(language, '상대에게는 정답이 보이지 않아요.', 'La respuesta se mantiene oculta para tu pareja.')}</small></div></div>
-          {allowed('settings') && <details className="cm-settings" open={!board.settings?.category_id}><summary>{copy(language, '주제 · 방 설정과 나만의 단어', 'Categoría · ajustes y palabras propias')} <span>⌄</span></summary><form onSubmit={saveSettings}>
+
+          {allowed('settings') && <details className="cm-settings" open={!board.settings?.category_id}><summary>{copy(language, '주제 · 설정', 'Categoría · ajustes')} <span>⌄</span></summary><form onSubmit={saveSettings}>
             <fieldset className="cm-categories"><legend>{copy(language, '이번 판의 주제 · 하나만 선택', 'Categoría de la partida · elige una')}</legend>{(board.settings?.categoryOptions ?? []).map((category: any) => <label key={category.id}><input type="radio" name="catchmind-category" value={category.id} checked={settingsDraft.category_id === category.id} onChange={() => setSettingsDraft({ ...settingsDraft, category_id: category.id })}/><span>{category.label[language]}</span></label>)}</fieldset>
             <details className="cm-advanced-settings"><summary>{copy(language, '시간 · 라운드 · 나만의 단어', 'Tiempo · rondas · palabras propias')} <span>⌄</span></summary><div className="cm-advanced-content">
               <div className="cm-setting-grid">
@@ -491,32 +481,33 @@ export default function CatchmindTable({ roomId, view, playerId, language, now, 
           {drawing && <><span className={`cm-keyboard-cursor${keyboardActive ? ' is-visible' : ''}${keyboardPenDown ? ' is-down' : ''}`} style={{ left: `${keyboardCursor.x * 100}%`, top: `${keyboardCursor.y * 100}%` }} aria-hidden="true"/><p id="cm-keyboard-instructions" className="cm-keyboard-hint">{copy(language, '키보드: 화살표 이동 · Space 펜 켜기/끄기 · Enter 채우기/색 선택/점 · Esc 선 마침', 'Teclado: flechas mueven · Espacio activa/desactiva el trazo · Enter rellena/elige color/punto · Esc termina el trazo')}</p></>}
           {activeDrawing && !displayedStrokes.length && !fills.length && <div className="cm-canvas-placeholder" aria-hidden="true"><span>＋</span><small>{drawing ? copy(language, '여기에 그려 보세요', 'Dibuja aquí') : copy(language, '첫 선을 기다리고 있어요', 'Esperando el primer trazo')}</small></div>}
           {drawing && tool === 'fill' && <div className="cm-canvas-tip">{copy(language, '채울 영역을 눌러 주세요', 'Toca una región para rellenar')}</div>}
-          {!drawing && !choosing && !roundOver && !finished && <div className="cm-wait-overlay" aria-live="polite"><span>♡</span><b>{copy(language, '천천히 살펴봐요', 'Mira con calma')}</b></div>}
+
         </div>}
 
-        {(activeDrawing || choosing || roundOver || finished) && <div key={`${board.round}:${view?.phase}`} className="cm-bottom-note" aria-live="polite">
-          <span>{roundOver ? roundSolved ? copy(language, '정답을 맞혀서 두 사람 모두 점수를 얻었어요.', 'Respuesta correcta: ambos suman puntos.') : copy(language, '라운드가 끝났어요. 정답을 확인하고 다음 그림으로 넘어가요.', 'Terminó la ronda. Mira la respuesta y pasa al siguiente dibujo.') : finished ? copy(language, view.result?.winner === 'draw' ? '멋진 무승부예요.' : view.result?.winner === playerId ? '이번 판에서 이겼어요!' : '상대가 이번 판에서 이겼어요.', view.result?.winner === 'draw' ? 'Un empate estupendo.' : view.result?.winner === playerId ? '¡Ganaste la partida!' : 'Tu pareja ganó esta partida.') : activeDrawing ? copy(language, '그림은 두 사람에게 실시간으로 보여요.', 'El dibujo se comparte en tiempo real.') : choosing ? !view.hand?.choices?.length ? copy(language, '주제를 하나 선택하고 설정을 저장해요.', 'Elige una categoría y guarda los ajustes.') : copy(language, `${board.settings?.choices ?? 3}개 보기 중 하나를 선택해요.`, `Elige una de ${board.settings?.choices ?? 3} palabras.`) : copy(language, '그림이 끝나면 답이 공개돼요.', 'La respuesta se revela al terminar la ronda.')}</span>
+        {(allowed('pass') || allowed('end-round') || roundOver) && <div key={`${board.round}:${view?.phase}`} className="cm-bottom-note" aria-live="polite">
+          {roundOver && <span>{copy(language, roundSolved ? '정답! 두 사람 모두 점수 획득' : '라운드 종료', roundSolved ? '¡Correcto! Ambos suman puntos' : 'Ronda terminada')}</span>}
           {allowed('pass') && <button type="button" className="cm-text-action" onClick={() => void runAction({ type: 'pass' })}><ToolIcon tool="skip"/>{copy(language, '이 단어 건너뛰기', 'Pasar palabra')} <span>→</span></button>}
           {allowed('end-round') && <button type="button" className="cm-text-action" onClick={() => void runAction({ type: 'end-round' })}><ToolIcon tool="round-end"/>{roundOver ? copy(language, '다음 라운드', 'Siguiente ronda') : finished ? copy(language, '한 판이 끝났어요', 'Partida finalizada') : copy(language, '라운드 마치기', 'Terminar ronda')} <span>→</span></button>}
         </div>}
+        <span className="sr-only" role="status">{activeDrawing && board.guesses?.length > 0 ? copy(language, `${board.guesses.length}번째 시도 · 오답`, `Intento ${board.guesses.length} · incorrecto`) : ''}</span>
+        {(board.guesses ?? []).length > 0 && <details className="cm-attempts"><summary>{copy(language, '시도', 'Intentos')} · {board.guesses.length}{board.guesses.some((guess: any) => guess.correct) ? ' · ✓' : ''}</summary><div className="cm-guess-list">{board.guesses.map((guess: any, index: number) => <p className={`cm-guess-row ${guess.correct ? 'is-correct' : ''}`} key={`${guess.by}-${index}`}>{guess.correct ? copy(language, '정답', 'Correcto') : copy(language, '오답', 'Incorrecto')}</p>)}</div></details>}
+        {finished && <div className="cm-finish-card"><span aria-hidden="true">✦</span><b>{copy(language, view.result?.winner === 'draw' ? '같은 점수예요' : view.result?.winner === playerId ? '오늘의 승리' : '다음 판을 노려봐요', view.result?.winner === 'draw' ? 'Mismo puntaje' : view.result?.winner === playerId ? 'Victoria de hoy' : 'Habrá revancha')}</b>{onReplay && <><button type="button" onClick={() => void onReplay()}>{copy(language, replayPending ? '같이 다시 시작하기' : '다시 하기', replayPending ? 'Aceptar revancha' : 'Volver a jugar')}</button><small role="status">{copy(language, replayPending ? '두 사람이 모두 수락하면 새 판을 시작해요.' : '다시 하기는 두 사람의 동의가 필요해요.', replayPending ? 'La nueva partida comienza cuando ambos aceptan.' : 'La revancha necesita el acuerdo de ambos.')}</small></>}</div>}
       </div>
 
-      <aside className="cm-side-panel">
-        <div className="cm-side-heading"><span className="cm-eyebrow">{copy(language, '라운드 상태', 'ESTADO DE RONDA')}</span><b>{finished ? copy(language, '게임 종료', 'Partida terminada') : roundOver ? copy(language, '라운드 종료', 'Ronda terminada') : view?.phase === 'choosing' ? copy(language, '제시어 선택', 'Eligiendo palabra') : isDrawer ? copy(language, '내가 그리고 있어요', 'Tú dibujas') : copy(language, '상대가 그리고 있어요', 'Tu pareja dibuja')}</b></div>
-        <div className="cm-player-list">{scoresBySeat.map(({ seat, mine, score }) => <div key={seat} className={`cm-player-row ${mine ? 'is-you' : ''}`}><span className="cm-player-avatar">{mine ? '✦' : '♡'}</span><span><b>{mine ? copy(language, '나', 'Tú') : copy(language, '상대', 'Pareja')}</b><small>{mine === isDrawer ? copy(language, '출제자', 'Dibuja') : copy(language, '맞히는 사람', 'Adivina')}</small></span><strong>{score}<small> {copy(language, '점', 'pts')}</small></strong></div>)}</div>
-        <div className="cm-guess-section"><div className="cm-guess-title"><span>{copy(language, '시도', 'INTENTOS')}</span><b>{(board.guesses ?? []).filter((guess: any) => !guess.correct).length}</b></div><div className="cm-guess-list" aria-live="polite">{(board.guesses ?? []).length ? board.guesses.map((guess: any, index: number) => <div className={`cm-guess-row ${guess.correct ? 'is-correct' : ''}`} key={`${guess.by}-${index}`}><span>{guess.correct ? '✓' : '·'}</span><b>{guess.correct ? copy(language, '정답을 맞혔어요!', '¡Respuesta correcta!') : copy(language, '다시 한번 생각해 보세요', 'Prueba otra vez')}</b></div>) : <p>{copy(language, '첫 답을 기다리고 있어요.', 'Esperando la primera respuesta.')}</p>}</div></div>
-        {drawing && <div className="cm-tools">
+      {drawing && <aside className="cm-side-panel" aria-label={copy(language, '그리기 도구', 'Herramientas de dibujo')}>
+        <div className="cm-tools">
           {sendError && <div className="cm-send-error" role="alert"><span>{copy(language, '그림 전송에 실패했어요. 선은 보존돼 있어요.', 'No se pudo enviar el dibujo. Tus trazos se conservaron.')}</span><button type="button" onClick={retryDraws}>{copy(language, '그림 다시 보내기', 'Reintentar dibujo')}</button></div>}
           {staleDrawNotice && <p className="cm-tool-notice" role="status">{copy(language, '지난 그림의 미전송 선은 새 라운드에 보내지 않아요.', 'Los trazos pendientes anteriores no se envían a la nueva ronda.')}</p>}
-          <p className="cm-tool-notice" role="status">{toolNotice}</p><div className="cm-tools-head"><span className="cm-eyebrow">{copy(language, '그리기 도구', 'HERRAMIENTAS')}</span><span>{copy(language, tool === 'brush' ? '펜' : tool === 'fill' ? '채우기' : '색 선택', tool === 'brush' ? 'PINCEL' : tool === 'fill' ? 'RELLENAR' : 'COLOR')}</span></div>
+          <p className="cm-tool-notice" role="status">{toolNotice}</p>
           <div className="cm-tool-modes" role="group" aria-label={copy(language, '도구 선택', 'Herramientas')}>
             <button type="button" className={tool === 'brush' ? 'active' : ''} aria-pressed={tool === 'brush'} onClick={() => { setEraser(false); setPalette(lastDrawingColor.current); setTool('brush'); }}><ToolIcon tool="brush"/> <span>{copy(language, '펜', 'Pincel')}</span></button>
             <button type="button" className={tool === 'fill' ? 'active' : ''} aria-pressed={tool === 'fill'} onClick={() => setTool('fill')}><ToolIcon tool="fill"/> <span>{copy(language, '채우기', 'Rellenar')}</span></button>
             <button type="button" className={tool === 'pick' ? 'active' : ''} aria-pressed={tool === 'pick'} onClick={() => setTool('pick')}><ToolIcon tool="pick"/> <span>{copy(language, '색 선택', 'Elegir color')}</span></button>
           </div>
           <div className="cm-color-target" role="group" aria-label={copy(language, '색상 선택 대상', 'Color que vas a cambiar')}>
-            <button type="button" aria-pressed={colorTarget === 'primary'} onClick={() => setColorTarget('primary')}>{copy(language, '기본 색', 'Color principal')}</button>
-            <button type="button" aria-pressed={colorTarget === 'secondary'} onClick={() => setColorTarget('secondary')}>{copy(language, '보조 색', 'Color secundario')}</button>
+            <button type="button" aria-pressed={colorTarget === 'primary'} aria-label={`${copy(language, '기본 색', 'Color principal')}: ${colorLabel(palette)}`} onClick={() => setColorTarget('primary')}><i className="cm-color-preview" style={{ backgroundColor: palette }} aria-hidden="true"/>{copy(language, '기본 색', 'Color principal')}</button>
+            <button type="button" aria-pressed={colorTarget === 'secondary'} aria-label={`${copy(language, '보조 색', 'Color secundario')}: ${colorLabel(secondaryColor)}`} onClick={() => setColorTarget('secondary')}><i className="cm-color-preview" style={{ backgroundColor: secondaryColor }} aria-hidden="true"/>{copy(language, '보조 색', 'Color secundario')}</button>
+            <button type="button" className="cm-swap-colors" aria-label={copy(language, '색 바꾸기', 'Intercambiar colores')} onClick={() => { setSecondaryColor(palette); setPalette(secondaryColor); }}><ToolIcon tool="swap"/></button>
           </div>
           <div className="cm-color-grid" role="group" aria-label={copy(language, colorTarget === 'primary' ? '기본 색 선택' : '보조 색 선택', colorTarget === 'primary' ? 'Elige el color principal' : 'Elige el color secundario')}>{colors.map(({ value, ko, es }) => {
             const selected = colorTarget === 'primary' ? palette === value : secondaryColor === value;
@@ -526,14 +517,12 @@ export default function CatchmindTable({ roomId, view, playerId, language, now, 
               else setSecondaryColor(value);
             }} />;
           })}</div>
-          <div className="cm-secondary-row"><span><i style={{ backgroundColor: palette }} />{copy(language, '기본', 'Principal')}: {colorLabel(palette)}</span><button type="button" className="cm-swap-colors" aria-label={copy(language, '색 바꾸기', 'Intercambiar colores')} onClick={() => { setSecondaryColor(palette); setPalette(secondaryColor); }}><ToolIcon tool="swap"/></button><span><i style={{ backgroundColor: secondaryColor }} />{copy(language, '보조', 'Secundario')}: {colorLabel(secondaryColor)}</span></div>
+
           <button type="button" className={`cm-eraser ${eraser ? 'active' : ''}`} aria-pressed={eraser} onClick={() => { if (!eraser) { lastDrawingColor.current = restoreCatchmindPenColor(palette); setPalette('#fffefa'); } else setPalette(lastDrawingColor.current); setEraser(!eraser); setTool('brush'); }}><ToolIcon tool="eraser"/>{copy(language, '지우개', 'Borrador')}</button>
           <label className="cm-width-control"><span>{copy(language, '굵기', 'Grosor')} <b>{strokeWidth}</b></span><input type="range" min="2" max="18" value={strokeWidth} onChange={event => setStrokeWidth(Number(event.target.value))} aria-label={copy(language, '펜 굵기', 'Grosor del pincel')}/></label>
           <div className="cm-tool-actions">{allowed('undo') && <button type="button" onClick={() => void runAfterDraws({ type: 'undo' })}><ToolIcon tool="undo"/>{copy(language, '실행 취소', 'Deshacer')}</button>}{allowed('clear') && <button type="button" onClick={() => void clearDrawing()}><ToolIcon tool="clear"/>{copy(language, '모두 지우기', 'Borrar todo')}</button>}</div>
-        </div>}
-        {!drawing && !choosing && !roundOver && !finished && <div className="cm-side-tip"><span>✳</span><p>{copy(language, '정답은 출제자만 볼 수 있어요. 답이 맞으면 자동으로 공개돼요.', 'Solo quien dibuja ve la respuesta. Se revela al acertar.')}</p></div>}
-        {finished && <div className="cm-finish-card"><span aria-hidden="true">✦</span><b>{copy(language, view.result?.winner === 'draw' ? '같은 점수예요' : view.result?.winner === playerId ? '오늘의 승리' : '다음 판을 노려봐요', view.result?.winner === 'draw' ? 'Mismo puntaje' : view.result?.winner === playerId ? 'Victoria de hoy' : 'Habrá revancha')}</b><small>{copy(language, `${Number(scores.p1 ?? 0)}점 · ${Number(scores.p2 ?? 0)}점`, `${Number(scores.p1 ?? 0)} pts · ${Number(scores.p2 ?? 0)} pts`)}</small>{onReplay && <><button type="button" onClick={() => void onReplay()}>{copy(language, replayPending ? '같이 다시 시작하기' : '다시 하기', replayPending ? 'Aceptar revancha' : 'Volver a jugar')}</button><small role="status">{copy(language, replayPending ? '두 사람이 모두 수락하면 새 판을 시작해요.' : '다시 하기는 두 사람의 동의가 필요해요.', replayPending ? 'La nueva partida comienza cuando ambos aceptan.' : 'La revancha necesita el acuerdo de ambos.')}</small></>}</div>}
-      </aside>
+        </div>
+      </aside>}
     </div>
   </section>;
 }

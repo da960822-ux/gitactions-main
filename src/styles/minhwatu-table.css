@@ -83,10 +83,12 @@
 .hwatu-choice-hand { display:flex; justify-content:center; align-items:flex-end; gap:5px; min-height:0; padding:7px 4px 5px; overflow-x:auto; scrollbar-width:thin; scrollbar-color:#b8a474 #214b42; }
 .hwatu-hand-choice { position:relative; flex:0 1 var(--hw-hand-width); min-width:0; padding:0; border:0; border-radius:4px; background:transparent; cursor:pointer; transition:transform 140ms ease-out; }
 .hwatu-hand-choice:disabled { cursor:default; filter:saturate(.65); }
-.minhwatu-table:has(.hwatu-turn-chip.is-active) .hwatu-hand-section { border-top-color:#f5d37b; background:#f5d37b0a; }
+.minhwatu-table .hwatu-hand-section.is-active { border-top-color:#f5d37b; background:#f5d37b0a; }
 .hwatu-hand-choice.is-capturable:not(:disabled) { outline:1px solid #f5d37b; outline-offset:2px; }
 .hwatu-hand-choice.is-selected { z-index: 2; transform: translateY(-5px); outline: 2px solid #f0d587; outline-offset: 3px; }
 .hwatu-hand-choice.is-capturable::after { position: absolute; top: -5px; right: 4px; width: 7px; height: 7px; border: 1px solid #203c35; border-radius: 50%; background: #f6d889; content: ''; }
+.hwatu-hand-capture-marker { position:absolute; top:-5px; right:-4px; z-index:1; box-sizing:border-box; width:19px; height:19px; padding:2px; border:1px solid #f4df9e; border-radius:4px; background:#203c35; pointer-events:none; }
+.hwatu-hand-choice:has(.hwatu-hand-capture-marker)::after { display:none; }
 .hwatu-hand-choice:not(:disabled):hover { transform: translateY(-3px); }
 .hwatu-hand-actions { min-height: 34px; }
 .hwatu-confirm-row { display: flex; align-items: center; justify-content: center; gap: 9px; min-height: 32px; margin: 0; color: #e1e7d6; font-size: 12px; }

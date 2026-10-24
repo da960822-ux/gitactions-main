@@ -276,3 +276,6 @@ button.dv-tile:disabled { opacity: .78; cursor: default; }
   .dv-table .dv-number-grid button { min-height: 44px; font-size: 18px; }
   .dv-table .dv-guess-submit,.dv-table .dv-confirm-row .dv-action-primary,.dv-table .dv-cancel { min-height: 44px; font-size: 14px; }
 }
+
+/* Placement gaps name the action without adding another instruction paragraph. */
+.dv-table .dv-gap-button { font-size: 12px; line-height: 1.2; word-break: keep-all; }

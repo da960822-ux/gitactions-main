@@ -149,6 +149,8 @@ export function MarblePawnPicker({
   const validChoices = new Map<MarblePawnId, MarblePawnChoice>();
   const choices = Array.isArray(view?.actions) ? view.actions as MarblePawnChoice[] : [];
   const selectedPawn = view?.board?.pawns?.[playerId] as string | undefined;
+  const seats: string[] = Array.isArray(view?.board?.seats) ? view.board.seats : ['p1', 'p2'];
+  const teamMode = seats.length === 4;
   for (const choice of choices) {
     const pawn = choice.action?.type === 'choose-pawn' ? choice.action.payload?.pawn : null;
     if (typeof pawn === 'string' && marblePawnCatalog.some(item => item.id === pawn)) validChoices.set(pawn as MarblePawnId, choice);
@@ -172,18 +174,18 @@ export function MarblePawnPicker({
   return <section className="marble-pawn-picker" aria-labelledby="marble-pawn-title">
     <header className="marble-pawn-picker__head">
       <div><h3 id="marble-pawn-title">{copy(language, '어떤 말로 출발할까요?', '¿Con qué ficha quieres jugar?')}</h3></div>
-      <span className="marble-pawn-picker__hint">{copy(language, '두 사람은 서로 다른 말을 사용해요.', 'Cada persona usa una ficha diferente.')}</span>
+      <span className="marble-pawn-picker__hint">{teamMode ? copy(language, '네 명은 서로 다른 말을 사용해요.', 'Los cuatro usan fichas diferentes.') : copy(language, '두 사람은 서로 다른 말을 사용해요.', 'Cada persona usa una ficha diferente.')}</span>
     </header>
     <div className="marble-pawn-picker__grid">
       {marblePawnCatalog.map(({ id, name, color }) => {
         const choice = validChoices.get(id);
         const isSelected = selectedPawn === id;
         const isPending = pending === id;
-        const isTaken = view?.board?.pawns?.[playerId === 'p1' ? 'p2' : 'p1'] === id;
+        const isTaken = seats.some(seat => seat !== playerId && view?.board?.pawns?.[seat] === id);
         return <button className={`marble-pawn-choice${isSelected ? ' is-selected' : ''}${isPending ? ' is-pending' : ''}`} style={{ '--pawn-color': color } as CSSProperties} type="button" key={id} disabled={!choice || pending !== null} aria-pressed={isSelected} onClick={() => void choose(id)}>
           <span className="marble-pawn-choice__art"><MarblePawn pawn={id} language={language}/></span>
           <span className="marble-pawn-choice__name">{name[language]}</span>
-          <span className="marble-pawn-choice__state">{isPending ? copy(language, '선택 중…', 'Eligiendo…') : isSelected ? copy(language, '내 말', 'Tu ficha') : isTaken ? copy(language, '상대 말', 'De tu pareja') : choice ? copy(language, '선택', 'Elegir') : copy(language, '선택 불가', 'No disponible')}</span>
+          <span className="marble-pawn-choice__state">{isPending ? copy(language, '선택 중…', 'Eligiendo…') : isSelected ? copy(language, '내 말', 'Tu ficha') : isTaken ? teamMode ? copy(language, '사용 중', 'En uso') : copy(language, '상대 말', 'De tu pareja') : choice ? copy(language, '선택', 'Elegir') : copy(language, '선택 불가', 'No disponible')}</span>
         </button>;
       })}
     </div>

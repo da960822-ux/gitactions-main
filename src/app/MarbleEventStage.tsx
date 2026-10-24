@@ -16,16 +16,18 @@ const labels: Record<string, Record<Language, string>> = {
   escape: { ko: '탈출', es: 'Salida' }, train: { ko: '열차', es: 'Tren' }, rest: { ko: '휴식', es: 'Descanso' }, turn: { ko: '차례', es: 'Turno' }, win: { ko: '승리', es: 'Victoria' },
 };
 
-function actorLabel(event: MarbleActionEvent, playerId: PlayerId, language: Language) {
+function actorLabel(event: MarbleActionEvent, playerId: PlayerId, language: Language, playerNames?: Record<string, Record<Language, string>>) {
   const actor = event.actor ?? event.playerId;
   if (!actor) return '';
+  if (playerNames?.[String(actor)]) return playerNames[String(actor)][language];
   if (actor === playerId) return language === 'ko' ? '나' : 'Tú';
   return language === 'ko' ? '상대' : 'Tu pareja';
 }
 
-function playerLabel(id: unknown, playerId: PlayerId, language: Language) {
+function playerLabel(id: unknown, playerId: PlayerId, language: Language, playerNames?: Record<string, Record<Language, string>>) {
   if (id === 'bank') return language === 'ko' ? '은행' : 'Banco';
   if (id === 'fund') return language === 'ko' ? '공동 기금' : 'Fondo común';
+  if (playerNames?.[String(id)]) return playerNames[String(id)][language];
   if (id === 'p1' || id === 'p2') return id === playerId ? (language === 'ko' ? '나' : 'Tú') : (language === 'ko' ? '상대' : 'Tu pareja');
   return '';
 }
@@ -61,7 +63,7 @@ function EventMark({ type, event }: { type: string; event: MarbleActionEvent }) 
   return <svg className="marble-event-symbol" viewBox="0 0 32 32" aria-hidden="true"><path d="M7 24 24 7M12 7h12v12"/></svg>;
 }
 
-export function MarbleEventStage({ events, event, animating = false, language, playerId, result }: { event?: MarbleActionEvent | null; animating?: boolean; events: readonly (MarbleActionEvent | null | undefined)[]; language: Language; playerId: PlayerId; result?: unknown }) {
+export function MarbleEventStage({ events, event, animating = false, language, playerId, result, playerNames }: { playerNames?: Record<string, Record<Language, string>>; event?: MarbleActionEvent | null; animating?: boolean; events: readonly (MarbleActionEvent | null | undefined)[]; language: Language; playerId: PlayerId; result?: unknown }) {
   const [presentation, setPresentation] = useState(() => ({ event: latestEvent(events), animate: false, audible: false }));
   const presented = event === undefined ? presentation.event : event;
   const sounded = useRef<typeof presentation | null>(null);
@@ -95,15 +97,15 @@ export function MarbleEventStage({ events, event, animating = false, language, p
   const type = marbleEventType(presented);
   const heading = presented.title?.[language] || labels[type]?.[language] || (language === 'ko' ? '게임 기록' : 'Movimiento');
   const detail = presented.text?.[language];
-  const actor = actorLabel(presented, playerId, language);
+  const actor = actorLabel(presented, playerId, language, playerNames);
   const actorId = String(presented.actor ?? presented.playerId ?? playerId);
   const hasCardArt = Boolean(marbleEventArtFamily(presented.cardId ?? presented.id));
   const amount = marbleMoneyDelta(presented, actorId);
   const warningAmount = amount === null && (type === 'crisis' || type === 'monopoly-warning') && typeof presented.amount === 'number' ? presented.amount : null;
   const fromId = presented.fromAccount ?? presented.fromPlayer;
   const toId = presented.toAccount ?? presented.toPlayer;
-  const from = playerLabel(fromId, playerId, language);
-  const to = playerLabel(toId, playerId, language);
+  const from = playerLabel(fromId, playerId, language, playerNames);
+  const to = playerLabel(toId, playerId, language, playerNames);
   const bank = language === 'ko' ? '은행' : 'Banco';
   const assessed = warningAmount !== null;
   const fund = language === 'ko' ? '공동 기금' : 'Fondo común';

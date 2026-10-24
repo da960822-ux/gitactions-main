@@ -1,0 +1,145 @@
+.spt-room.sp-splendor { --board-ink:#f6f1de; --feedback-success:#dbedcb; --feedback-warning:#ffe0a5; display:grid; position:relative; grid-template-columns:minmax(0,1fr); grid-template-areas:none; grid-template-rows:auto auto auto minmax(0,1fr) auto; gap:8px; width:100%; min-width:0; min-height:0; margin:0; padding:10px 14px; border:1px solid #4b655b; border-radius:12px; background:#17372e; color:#f8f2e3; box-shadow:none; font:400 13px/1.35 system-ui,sans-serif; }
+.spt-room :is(button,summary,a) { -webkit-tap-highlight-color:transparent; }
+.spt-room button { font:inherit; cursor:pointer; }
+.spt-room button:disabled { cursor:default; }
+.spt-room :is(button,summary,a):focus-visible { outline:3px solid #f3cb73; outline-offset:3px; }
+.spt-room button { min-height:32px; border:1px solid #aeab8e; border-radius:7px; background:#f5f0df; color:#24463b; }
+.spt-room :is(h1,h2,p) { margin:0; }
+.spt-room h2 { font-size:13px; }
+.spt-room .sp-gem-icon { width:19px; height:19px; flex:0 0 19px; }
+.spt-room .sp-artwork { display:block; width:100%; height:100%; }
+.spt-header,.spt-header>div,.spt-header nav,.spt-team-totals { display:flex; align-items:center; gap:16px; }
+.spt-header { justify-content:space-between; min-width:0; }
+.spt-header h1 { font:700 24px/1.2 Georgia,serif; white-space:nowrap; }
+.spt-header h1 small { margin-left:8px; color:#d2daca; font:600 12px/1.2 system-ui,sans-serif; }
+.spt-team-totals { gap:18px; }
+.spt-team-totals>span { display:inline-flex; align-items:baseline; gap:6px; white-space:nowrap; }
+.spt-team-totals b { color:#f4cd79; font-size:24px; line-height:1; }
+.spt-team-totals small { color:#d9decf; font-size:12px; }
+.spt-header nav { gap:7px; }
+.spt-header nav>button,.spt-header nav summary { min-height:32px; padding:5px 9px; border:1px solid #8d9f88; border-radius:6px; background:#274b3e; color:#f9f4e5; list-style:none; cursor:pointer; }
+.spt-header nav details { position:relative; }
+.spt-header nav summary::-webkit-details-marker { display:none; }
+.spt-header nav details>div { position:absolute; right:0; top:38px; z-index:15; width:310px; max-width:80vw; padding:14px; border:1px solid #a7b39a; border-radius:9px; background:#fbf7e9; color:#24463b; box-shadow:0 7px 24px #061e18a6; }
+.spt-header nav details p { margin:8px 0; line-height:1.5; }
+.spt-header nav details a { color:#1c6555; text-underline-offset:3px; }
+.spt-games>div { display:grid; gap:6px; }
+.spt-header .game-feedback { font-size:12px; }
+.spt-players { display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:8px; }
+.spt-player { display:grid; gap:4px; min-width:0; padding:6px 9px; border:1px solid #638373; border-radius:9px; background:#214637; }
+.spt-player.spt-team-B { background:#324538; border-color:#7d8269; }
+.spt-player.is-active { outline:2px solid #efc568; outline-offset:-2px; }
+.spt-player>header { display:flex; align-items:center; justify-content:space-between; gap:5px; font-size:12px; white-space:nowrap; }
+.spt-player>header>b { min-width:0; max-width:42%; overflow:hidden; color:#fff8e6; font-size:13px; text-overflow:ellipsis; }
+.spt-player>header>span { color:#e3e4d1; font-size:12px; }
+.spt-wallet { display:flex; align-items:center; justify-content:space-between; gap:4px; }
+.spt-wallet>small { flex:0 0 40px; color:#d0dcca; font-size:12px; }
+.spt-wallet>span,.spt-wallet .spt-own-token.sp-treasury-gem,.spt-wallet .sp-bonus { display:inline-flex; grid-template:none; align-items:center; justify-content:center; gap:3px; min-width:0; min-height:0; margin:0; padding:0; border:0; border-radius:0; background:none; color:#fff8e5; }
+.spt-wallet b { min-width:9px; color:#fff8e5; font-size:13px; font-variant-numeric:tabular-nums; }
+.spt-wallet .sp-gem-icon { width:17px; height:17px; flex-basis:17px; }
+.spt-bonuses { padding-top:3px; border-top:1px solid #587866; }
+.spt-bonuses .sp-gem-icon { width:15px; height:15px; flex-basis:15px; }
+.spt-phase { display:flex; align-items:center; justify-content:space-between; gap:8px; min-height:28px; padding:2px 5px; color:#fff2cd; font-size:13px; }
+.spt-phase>[role=alert] { color:#ffe0cf; }
+.spt-play-surface { display:grid; grid-template-columns:minmax(0,1fr) 300px; gap:12px; align-items:start; min-height:0; }
+.spt-market { display:grid; gap:7px; min-width:0; }
+.spt-nobles { display:grid; grid-template-columns:repeat(5,minmax(0,1fr)); gap:7px; min-height:68px; }
+.spt-room .spt-noble { display:flex; align-items:center; gap:6px; min-width:0; min-height:68px; padding:4px; border:1px solid #b9a875; border-radius:8px; background:#eee7d1; color:#344b3c; opacity:1; text-align:left; }
+.spt-noble-art.sp-noble-art { display:block; width:42px; height:58px; flex:0 0 42px; overflow:hidden; background:#d9d8c6; border-radius:4px; }
+.spt-noble>span:last-child { display:grid; gap:4px; min-width:0; }
+.spt-noble strong { color:#665022; font-size:19px; }
+.spt-noble strong small { padding-left:3px; font-size:12px; }
+.spt-noble.is-selectable { outline:3px solid #dfb65e; outline-offset:1px; }
+.spt-tier { display:grid; grid-template-columns:54px minmax(0,1fr); gap:7px; min-width:0; }
+.spt-room .spt-deck { display:grid; align-content:center; justify-items:center; gap:7px; min-height:88px; border:1px solid #82957d; background:#36573d; color:#fff6dc; }
+.spt-tier-3 .spt-deck { background:#37586a; }
+.spt-tier-2 .spt-deck { background:#836a35; }
+.spt-deck strong { font:700 24px/1 Georgia,serif; }
+.spt-deck span { font-size:12px; }
+.spt-deck:disabled { opacity:.8; }
+.spt-development-row { display:grid; grid-template-columns:repeat(4,minmax(0,1fr)); gap:7px; min-width:0; }
+.spt-room .spt-development { display:grid; grid-template-columns:57px minmax(0,1fr); align-items:center; gap:5px; min-width:0; min-height:88px; padding:4px; border:1px solid #c5b890; border-radius:8px; background:#f9f3e3; text-align:left; color:#2c493b; transition:border-color 120ms ease,transform 120ms ease; }
+.spt-development:hover { border-color:#dfb461; transform:translateY(-1px); }
+.spt-development.is-selected,.spt-deck.is-selected { outline:3px solid #e8bc62; outline-offset:-3px; border-color:#bc8d36; }
+.spt-development-art { display:block; width:57px; height:80px; overflow:hidden; border-radius:4px; background:#e2deca; }
+.spt-development-values { display:grid; align-content:center; gap:8px; min-width:0; }
+.spt-card-reward { display:flex; align-items:center; justify-content:space-between; gap:5px; }
+.spt-card-reward>strong { color:#58471e; font-size:23px; line-height:1; }
+.spt-card-reward small { margin-left:3px; font-size:12px; }
+.spt-card-reward>span { display:inline-flex; align-items:center; gap:3px; font-size:13px; font-weight:700; }
+.spt-card-costs { display:flex; flex-wrap:wrap; align-items:center; gap:3px 5px; }
+.spt-card-costs>span { display:inline-flex; align-items:center; gap:2px; font-size:13px; }
+.spt-card-costs .sp-gem-icon { width:16px; height:16px; flex-basis:16px; }
+.spt-actions { display:grid; align-content:start; gap:8px; min-width:0; }
+.spt-bank,.spt-card-actions { position:relative; display:grid; gap:7px; padding:10px; border:1px solid #b0ab8e; border-radius:9px; background:#f3edda; color:#294b3f; }
+.spt-bank>header,.spt-card-actions>header { display:flex; justify-content:space-between; align-items:center; gap:8px; }
+.spt-bank>header>small { font-size:12px; }
+.spt-bank-gems { display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:5px 12px; }
+.spt-bank-gem { position:relative; display:grid; justify-items:center; gap:5px; padding:3px; min-width:0; }
+.spt-bank .spt-gem-pick.sp-gem-pile { position:relative; display:grid; align-items:center; justify-items:center; width:52px; min-width:52px; height:52px; padding:3px; border:1px solid #9ea890; border-radius:50%; background:#fffbee; color:#284b3e; box-shadow:0 3px 5px #18392a26; }
+.spt-bank .spt-gem-pick.sp-gem-pile>.sp-gem-icon { width:42px; height:42px; flex-basis:42px; }
+.spt-bank .spt-gem-pick.sp-gem-pile>b { position:absolute; right:-4px; bottom:-3px; display:grid; align-items:center; justify-items:center; width:22px; height:22px; min-width:22px; min-height:22px; border:1px solid #9ca88e; border-radius:50%; background:#fffbee; color:#27473a; font-size:13px; }
+.spt-bank-gem>small { color:#3d5c4a; font-size:12px; }
+.spt-bank-gem.is-picked .spt-gem-pick { outline:3px solid #247855; outline-offset:1px; }
+.spt-bank .spt-double { position:absolute; top:0; right:-1px; width:29px; min-width:29px; min-height:27px; padding:2px; border:1px solid #a1b29b; border-radius:6px; background:#f7f6e8; color:#315b45; font-size:12px; }
+.spt-double[aria-pressed=true] { background:#d7e9d6; outline:2px solid #4a8358; }
+.spt-take-confirm { display:grid; gap:7px; padding-top:6px; border-top:1px solid #c8c4a9; }
+.spt-selected-gems { display:flex; justify-content:center; gap:7px; }
+.spt-selected-gems .sp-gem-icon { width:28px; height:28px; }
+.spt-room .spt-primary { min-height:36px; background:#246b4d; color:#fffbea; border-color:#246b4d; font-weight:700; }
+.spt-room .spt-primary:disabled { background:#d2d7c3; color:#526450; border-color:#b8c2ad; }
+.spt-returns { display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:4px; }
+.spt-returns>b { grid-column:1/-1; font-size:12px; }
+.spt-returns>div { display:flex; align-items:center; justify-content:space-between; gap:3px; }
+.spt-returns button { width:24px; min-height:30px; padding:1px; }
+.spt-returns .sp-gem-icon { width:17px; height:17px; flex-basis:17px; }
+.spt-card-actions { outline:none; }
+.spt-card-actions:focus-visible { outline:3px solid #e4bb61; }
+.spt-card-actions>p { color:#4a6552; font-size:12px; }
+.spt-card-actions>header>button { width:28px; min-height:28px; }
+.spt-selected-card { display:grid; grid-template-columns:52px minmax(0,1fr); gap:8px; align-items:center; }
+.spt-selected-card>span { display:block; width:52px; height:74px; }
+.spt-selected-card>div { display:grid; gap:5px; }
+.spt-selected-card>div>strong { font-size:18px; }
+.spt-selected-card>div>span,.spt-payment,.spt-payment>span { display:flex; align-items:center; gap:4px; font-size:12px; }
+.spt-payment { flex-wrap:wrap; }
+.spt-payment-details { position:relative; font-size:12px; }
+.spt-payment-details>summary { padding:3px 0; cursor:pointer; }
+.spt-payment-details>div { position:absolute; z-index:12; top:28px; right:0; width:360px; max-width:70vw; max-height:220px; overflow:auto; padding:10px; border:1px solid #9eaf95; border-radius:8px; background:#fcf8e9; color:#294b3e; box-shadow:0 6px 18px #183c2b4a; }
+.spt-payment-details p { display:flex; align-items:center; gap:5px; margin:5px 0; font-size:12px; }
+.spt-reserve-note { color:#54694e; font-size:12px; }
+.spt-context-buttons { display:grid; grid-template-columns:1fr 1fr; gap:7px; }
+.spt-reservations { display:grid; grid-template-columns:80px minmax(0,1fr); align-items:stretch; gap:8px; min-height:70px; padding:6px; border:1px solid #66836a; border-radius:9px; background:#234b38; }
+.spt-reservations>header { display:grid; align-content:center; justify-items:center; gap:5px; }
+.spt-reservations>header>span { font-size:14px; }
+.spt-reservations>div { display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:8px; }
+.spt-reservations .spt-development { grid-template-columns:40px minmax(0,1fr); min-height:62px; }
+.spt-reservations .spt-development-art { width:40px; height:56px; }
+.spt-reservations .spt-development-values { grid-template-columns:minmax(0,1fr) minmax(0,1fr); align-items:center; gap:8px; }
+.spt-reservations .spt-card-reward { justify-content:start; gap:12px; }
+.spt-reservations .spt-card-reward>strong { font-size:19px; }
+.spt-empty-reserve { display:grid; min-height:62px; place-items:center; border:1px dashed #7c9476; border-radius:7px; color:#bdcdb6; font-size:12px; }
+.spt-personal-area { display:grid; grid-template-columns:minmax(0,1.1fr) minmax(0,1fr); gap:10px; align-items:stretch; }
+.spt-own-resources { position:relative; display:grid; align-content:center; gap:5px; min-width:0; padding:8px 12px; border:2px solid #cdbd83; border-radius:9px; background:#faf2db; color:#284a38; }
+.spt-own-resources>header { display:flex; align-items:center; justify-content:space-between; gap:10px; }
+.spt-own-resources h2 { color:#244735; font-size:16px; }
+.spt-own-resources>header>span { color:#496143; font-size:12px; }
+.spt-own-resources>header strong { color:#244735; font-size:15px; }
+.spt-own-score { position:absolute; top:9px; right:116px; max-width:32%; overflow:hidden; color:#496143; font-size:12px; text-overflow:ellipsis; white-space:nowrap; }
+.spt-own-tokens { display:grid; grid-template-columns:repeat(6,minmax(0,1fr)); align-items:center; gap:7px; }
+.spt-own-tokens>.sp-treasury-gem { display:flex; align-items:center; justify-content:center; gap:6px; padding:3px 0; border:0; background:none; color:#284a38; }
+.spt-own-tokens .sp-gem-icon { width:30px; height:30px; flex-basis:30px; }
+.spt-own-tokens b { color:#244735; font-size:20px; font-variant-numeric:tabular-nums; }
+.spt-own-discounts { display:flex; align-items:center; justify-content:space-between; gap:6px; padding-top:4px; border-top:1px solid #d7ceb2; }
+.spt-own-discounts>b { color:#5a6548; font-size:12px; }
+.spt-own-discounts>.sp-bonus { display:inline-flex; align-items:center; gap:4px; min-width:0; min-height:0; padding:0; border:0; border-radius:0; background:none; color:#456043; font-size:13px; }
+.spt-own-discounts .sp-gem-icon { width:18px; height:18px; flex-basis:18px; }
+.spt-personal-area .spt-reservations { grid-template-columns:minmax(0,1fr); align-content:start; gap:4px; min-height:0; }
+.spt-personal-area .spt-reservations>header { display:flex; align-items:center; justify-content:space-between; }
+.spt-personal-area .spt-reservations .spt-development-values { grid-template-columns:minmax(0,1fr); gap:3px; }
+.spt-personal-area .spt-reservations .spt-card-reward { gap:7px; }
+.spt-personal-area .spt-empty-reserve { min-height:26px; border:0; color:#ced9c1; }
+@media(min-width:1200px) { .spt-actions:has(.spt-card-actions.has-selection) .spt-bank-gems { grid-template-columns:repeat(6,minmax(0,1fr)); gap:2px; }.spt-actions:has(.spt-card-actions.has-selection) .spt-bank-gem { padding:1px 0; }.spt-actions:has(.spt-card-actions.has-selection) .spt-gem-pick.sp-gem-pile { width:42px; min-width:42px; height:42px; }.spt-actions:has(.spt-card-actions.has-selection) .spt-gem-pick.sp-gem-pile>.sp-gem-icon { width:32px; height:32px; flex-basis:32px; }.spt-actions:has(.spt-card-actions.has-selection) .spt-bank .spt-double { display:none; } }
+@media(min-width:1600px) { .spt-room.sp-splendor { padding:14px 22px; gap:10px; }.spt-play-surface { grid-template-columns:minmax(0,1fr) 330px; gap:18px; }.spt-development-row { gap:12px; }.spt-room .spt-development { min-height:108px; grid-template-columns:72px minmax(0,1fr); padding:6px; }.spt-development-art { width:72px; height:98px; }.spt-nobles { min-height:80px; }.spt-noble-art.sp-noble-art { width:50px; height:68px; flex-basis:50px; }.spt-player { padding:8px 12px; }.spt-wallet { gap:9px; }.spt-wallet .sp-gem-icon { width:21px; height:21px; flex-basis:21px; }.spt-reservations .spt-development { min-height:70px; grid-template-columns:46px minmax(0,1fr); }.spt-reservations .spt-development-art { width:46px; height:64px; } }
+@media(max-width:1199px) { .spt-header,.spt-header>div { flex-wrap:wrap; gap:8px; }.spt-players { grid-template-columns:repeat(2,minmax(0,1fr)); }.spt-play-surface { grid-template-columns:minmax(0,1fr) 270px; gap:8px; }.spt-room .spt-development { grid-template-columns:45px minmax(0,1fr); }.spt-development-art { width:45px; height:72px; }.spt-reservations .spt-development-values { grid-template-columns:minmax(0,1fr); gap:4px; } }
+@media(prefers-reduced-motion:reduce) { .spt-room *, .spt-room *::before, .spt-room *::after { animation:none!important; transition:none!important; scroll-behavior:auto!important; } }
