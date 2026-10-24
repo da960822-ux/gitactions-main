@@ -37,13 +37,14 @@ Deno.serve(async req=>{
   // Match actions and chat to the round the sender actually saw. A due clock
   // transition may still be committed, but the old operation must not follow it.
   const staleRound=gameId==='catchmind'&&state?.rulesVersion===2&&(input.action!==undefined||input.chat!==undefined)&&
-   (input.roundId!==state.roundId||input.expectedPhase!==state.phase||input.chat!==undefined&&state.phase!=='drawing');
+   (input.roundId!==state.roundId||input.expectedPhase!==state.phase);
   if(staleRound&&!clockAdvanced)return json({error:'stale_state'},409);
   if(staleRound){/* Persist the clock transition without applying the stale operation. */}
   else if(input.selectGame!==undefined){
    if(!['davinci','catchmind','domino','jaipur','splendor','minhwatu','marble','rhythm'].includes(input.selectGame))return json({error:'invalid_game'},400);
    if(members.length!==2||!(pending===input.selectGame&&pendingBy!==identity.user.id)){pending=input.selectGame;pendingBy=identity.user.id;}
-   else{state=createMatchState(input.selectGame,crypto.getRandomValues(new Uint32Array(1))[0],gameId,state);gameId=input.selectGame;pending=null;pendingBy=null;}
+   else{state=createMatchState(input.selectGame,crypto.getRandomValues(new Uint32Array(1))[0],gameId,state);gameId=input.selectGame;pending=null;pendingBy=null;
+    if(gameId==='catchmind'&&state?.rulesVersion===2)state.playerLanguages=Object.fromEntries(members.map(m=>[m.seat,m.language]));}
   }else if(input.reaction!==undefined){
    chat=reactionMessageForId(input.reaction);
   }else if(input.chat!==undefined){

@@ -130,7 +130,7 @@ class RoomClient {
     if(this.db){await this.invoke({selectGame:gameId});this.snapshot.invitationNotice=null;this.emit();return;}
     this.checkLocal();if(this.solo&&!supportsAi(gameId))throw new Error('solo_game_unavailable');if(!this.solo&&!(this.snapshot.pendingGame===gameId && this.pendingBy!==this.snapshot.playerId)){this.snapshot.pendingGame=gameId;this.pendingBy=this.snapshot.playerId;this.emit();return;}
     const previousGameId=this.snapshot.gameId,previousState=this.state;
-    this.snapshot.gameId=gameId;this.snapshot.pendingGame=null;this.pendingBy=null;this.state=createMatchState(gameId,crypto.getRandomValues(new Uint32Array(1))[0],previousGameId,previousState);if(this.solo&&gameId==='domino'&&(previousGameId!=='domino'||!previousState))this.state=executeAction(engines.domino!,this.state,'p1',{type:'configure',payload:{difficulty:'hard'}}).state;this.snapshot.version++;this.localView();this.emit();
+    this.snapshot.gameId=gameId;this.snapshot.pendingGame=null;this.pendingBy=null;this.state=createMatchState(gameId,crypto.getRandomValues(new Uint32Array(1))[0],previousGameId,previousState);if(gameId==='catchmind'&&this.state.rulesVersion===2)this.state.playerLanguages={p1:this.snapshot.players.find(player=>player.id==='p1')?.language??'ko',p2:this.snapshot.players.find(player=>player.id==='p2')?.language??'es'};if(this.solo&&gameId==='domino'&&(previousGameId!=='domino'||!previousState))this.state=executeAction(engines.domino!,this.state,'p1',{type:'configure',payload:{difficulty:'hard'}}).state;this.snapshot.version++;this.localView();this.emit();
   }
   async sendChat(text:string) {
     const message=chatMessageForGame(this.snapshot.gameId,text);text=message.text;

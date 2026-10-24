@@ -79,6 +79,7 @@ describe('Catchmind Edge clock and consent', () => {
     await f.send('p1', { selectGame: 'catchmind' }); expect(f.state.phase).toBe('drawing');
     await f.send('p2', { selectGame: 'catchmind' });
     expect(f.state).toMatchObject({ phase: 'choosing', deadlineAt: null, answer: null, strokes: [], fills: [], guesses: [], score: { p1: 0, p2: 0 }, settings: { category_id: 'food' } });
+    expect(f.state.playerLanguages).toEqual({p1:'ko',p2:'es'});
     expect(f.state.wordChoices).toHaveLength(6); expect(f.state.wordChoices[0]).toHaveLength(3); expect(f.room.pending_game).toBeNull();
   });
 
@@ -94,6 +95,21 @@ describe('Catchmind Edge clock and consent', () => {
 });
 
 describe('Catchmind v2 Edge authority', () => {
+  it.each(['choosing','round-over','finished'] as const)('allows ordinary chat during %s while preserving round identity', async phase => {
+    const f=fixture('catchmind',true), roundId=f.state.roundId;
+    f.state.phase=phase;
+    if(phase==='choosing'){f.state.answer=null;f.state.deadlineAt=null;f.state.choosingDeadlineAt=new Date(f.deadline).toISOString();}
+    if(phase==='round-over'){f.state.deadlineAt=null;f.state.roundOverAt=new Date(f.deadline).toISOString();}
+    if(phase==='finished'){f.state.deadlineAt=null;f.state.result={winner:'draw',reason:'finished',scores:{p1:0,p2:0}};}
+    const message='안녕';
+    expect((await f.send('p2',{chat:message,roundId,expectedPhase:phase})).status).toBe(200);
+    expect(f.commits).toHaveLength(1);
+    expect(f.commits[0].p_chat).toMatchObject({text:message,status:'pending'});
+    expect(f.state.phase).toBe(phase);
+    expect((await f.send('p2',{chat:'stale',roundId:crypto.randomUUID(),expectedPhase:phase})).status).toBe(409);
+    expect(f.commits).toHaveLength(1);
+  });
+
   it('commits a hint only at its server-clock boundary and scores from that hint', async () => {
     const f=fixture('catchmind',true), roundId=f.state.roundId;
     vi.spyOn(Date,'now').mockReturnValue(f.deadline-40_001);

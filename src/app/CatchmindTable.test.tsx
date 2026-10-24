@@ -146,8 +146,7 @@ describe('CatchmindTable', () => {
     expect(drawer.html).not.toContain('그림은 두 사람에게 실시간으로 보여요.');
     expect(guesser.html).toContain('첫 선을 기다리고 있어요');
     expect(guesser.html).toContain('cm-hint-word');
-    expect(guesser.html).toContain(' / ');
-    expect(guesser.html).toContain('□');
+    expect(guesser.html).not.toContain('□');
     expect(guesser.html).toContain('?');
     const hinted = markup('p2', true);
     expect(hinted.html).toContain('cm-hint-word');

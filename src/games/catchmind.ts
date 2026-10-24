@@ -1,4 +1,4 @@
-import { otherPlayer, seededRandom, shuffle, type GameAction, type GameEngine, type GameResult, type PlayerId } from '../core/types';
+import { otherPlayer, seededRandom, shuffle, type GameAction, type GameEngine, type GameResult, type Language, type PlayerId } from '../core/types';
 import { type Concept } from './catchmindWords';
 import { catchmindCategories, catchmindTopicWords, type CatchmindCategoryId } from './catchmindTopics';
 export { catchmindCategories, catchmindTopicWords } from './catchmindTopics';
@@ -10,7 +10,7 @@ type Stroke = { by: PlayerId; points: Point[]; color: string; width: number; ord
 type Guess = { by: PlayerId; text: string; correct: boolean };
 type Fill = { x: number; y: number; color: string; order: number };
 export type CatchmindSettings = { category_id: CatchmindCategoryId | null; drawTimeSeconds: number; rounds: number; choices: number; hints: number; customWords: Concept[]; customOnly: boolean };
-export type CatchmindState = { seed: number; round: number; drawer: PlayerId; wordChoices: Concept[][]; answer: Concept | null; strokes: Stroke[]; fills: Fill[]; nextOrder: number; guesses: Guess[]; score: Record<PlayerId, number>; deadlineAt: string | null; hintStage: number; settings: CatchmindSettings; phase: 'choosing'|'drawing'|'round-over'|'finished'; result: GameResult|null; rulesVersion?: number; roundId?: string; choosingDeadlineAt?: string | null; roundOverAt?: string | null; roundAward?: { guesserPoints: number; drawerPoints: number; revealedHintCount: number; remainingSeconds: number } | null };
+export type CatchmindState = { seed: number; round: number; drawer: PlayerId; wordChoices: Concept[][]; answer: Concept | null; strokes: Stroke[]; fills: Fill[]; nextOrder: number; guesses: Guess[]; score: Record<PlayerId, number>; deadlineAt: string | null; hintStage: number; settings: CatchmindSettings; phase: 'choosing'|'drawing'|'round-over'|'finished'; result: GameResult|null; rulesVersion?: number; roundId?: string; choosingDeadlineAt?: string | null; roundOverAt?: string | null; roundAward?: { guesserPoints: number; drawerPoints: number; revealedHintCount: number; remainingSeconds: number } | null; playerLanguages?: Record<PlayerId, Language> };
 const label = (ko: string, es: string, action: GameAction) => ({ label: { ko, es }, action });
 export const catchmindRules = {
   ko: ['두 사람이 번갈아 제시어 3개 중 하나를 골라 그립니다. 15초 동안 고르지 않으면 자동 선택되고, 상대는 채팅으로 맞힙니다. 기본 제한 시간은 문제당 80초입니다.', '힌트를 켜면 처음에 글자 수가 보이고 제한 시간의 50%, 75%가 지날 때 글자가 한 개씩 더 공개됩니다. 정답자는 남은 시간에 따라 100~200점에서 공개된 힌트마다 20점을 빼고 최소 50점을 얻습니다. 정답 시 출제자는 100점, 시간초과·패스 시 두 사람 모두 0점입니다.', '정답·시간초과·패스 뒤 5초 동안 정답과 점수를 보여주고 자동으로 교대합니다. 기본 6개 개별 턴으로 각자 3번 그리며, 호스트는 시작 전에 2~12개 짝수 턴과 제한 시간·힌트를 설정할 수 있습니다. 최종 합계가 높은 사람이 승리합니다.'],
@@ -75,10 +75,16 @@ export function getCatchmindHintStage(state: Pick<CatchmindState, 'settings' | '
 }
 function guessPoints(s: CatchmindState, now = Date.now()) {
   const remaining = s.deadlineAt ? Math.max(0, Date.parse(s.deadlineAt) - now) : 0;
-  if (s.rulesVersion === 2) return Math.max(50, 100 + Math.floor(100 * remaining / getCatchmindDrawDurationMs(s)) - 20 * Math.max(s.hintStage, getCatchmindHintStage(s, now)));
+  if (s.rulesVersion === 2) return Math.max(50, 100 + Math.floor(100 * remaining / getCatchmindDrawDurationMs(s)) - 20 * revealedHintCount(s, Math.max(s.hintStage, getCatchmindHintStage(s, now))));
   return Math.max(1, Math.ceil(3 * remaining / getCatchmindDrawDurationMs(s)));
 }
 const graphemes = (word: string) => [...new Intl.Segmenter('ko', { granularity: 'grapheme' }).segment(word)].map(part => part.segment);
+function guesserLanguage(s: CatchmindState): Language { return s.playerLanguages?.[otherPlayer(s.drawer)] ?? 'es'; }
+function revealedHintCount(s: CatchmindState, stage: number): number {
+  if (!s.answer || !s.settings.hints) return 0;
+  const units = graphemes(s.answer[guesserLanguage(s)]).filter(char => !/\s/u.test(char));
+  return Math.min(stage, Math.max(0, units.length - 1));
+}
 function timedMask(word: string, locale: 'ko' | 'es', stage: number, seed: number) {
   const chars = graphemes(word), positions = chars.flatMap((char, index) => /\s/u.test(char) ? [] : [index]);
   const random = seededRandom(seed ^ (locale === 'ko' ? 0x4b4f : 0x4553));
@@ -99,7 +105,7 @@ export function advanceCatchmind(s: CatchmindState, now = Date.now()): Catchmind
     return catchmindEngine.applyAction(s, s.drawer, { type: 'choose', payload: { wordId: choice } });
   }
   if (s.phase === 'drawing') {
-    if (s.deadlineAt && now >= Date.parse(s.deadlineAt)) return { ...s, phase: 'round-over', deadlineAt: null, roundOverAt: new Date(now + 5000).toISOString(), roundAward: { guesserPoints: 0, drawerPoints: 0, revealedHintCount: s.hintStage, remainingSeconds: 0 } };
+    if (s.deadlineAt && now >= Date.parse(s.deadlineAt)) return { ...s, phase: 'round-over', deadlineAt: null, roundOverAt: new Date(now + 5000).toISOString(), roundAward: { guesserPoints: 0, drawerPoints: 0, revealedHintCount: revealedHintCount(s, s.hintStage), remainingSeconds: 0 } };
     const hintStage = Math.max(s.hintStage, getCatchmindHintStage(s, now));
     return hintStage === s.hintStage ? s : { ...s, hintStage };
   }
@@ -115,7 +121,7 @@ export const catchmindEngine: GameEngine<CatchmindState> = {
   id: 'catchmind',
   createInitialState(seed) {
     const settings = defaultSettings();
-    return { seed, round: 0, drawer: 'p1', wordChoices: [], answer: null, strokes: [], fills: [], nextOrder: 0, guesses: [], score: { p1: 0, p2: 0 }, deadlineAt: null, hintStage: 0, settings, phase: 'choosing', result: null, rulesVersion: 2, roundId: crypto.randomUUID(), choosingDeadlineAt: null, roundOverAt: null, roundAward: null };
+    return { seed, round: 0, drawer: 'p1', wordChoices: [], answer: null, strokes: [], fills: [], nextOrder: 0, guesses: [], score: { p1: 0, p2: 0 }, deadlineAt: null, hintStage: 0, settings, phase: 'choosing', result: null, rulesVersion: 2, roundId: crypto.randomUUID(), choosingDeadlineAt: null, roundOverAt: null, roundAward: null, playerLanguages: { p1: 'ko', p2: 'es' } };
   },
   validateAction(s, p, a) {
     if (!isPlayer(p)) return 'Invalid player';
@@ -205,9 +211,9 @@ export const catchmindEngine: GameEngine<CatchmindState> = {
       const text = (a.payload!.text as string).trim(), correct = isCorrectGuess(s, text);
       const now = Date.now(), guesserPoints = correct ? guessPoints(s, now) : 0;
       const score = correct ? { ...s.score, [p]: s.score[p] + guesserPoints, [s.drawer]: s.score[s.drawer] + (s.rulesVersion === 2 ? 100 : 1) } : s.score;
-      return { ...s, score, guesses: [...s.guesses, { by: p, text, correct }], phase: correct ? 'round-over' : 'drawing', ...(correct && s.rulesVersion === 2 ? { roundOverAt: new Date(now + 5000).toISOString(), roundAward: { guesserPoints, drawerPoints: 100, revealedHintCount: Math.max(s.hintStage, getCatchmindHintStage(s, now)), remainingSeconds: s.deadlineAt ? Math.ceil(Math.max(0, Date.parse(s.deadlineAt) - now) / 1000) : 0 } } : {}) };
+      return { ...s, score, guesses: [...s.guesses, { by: p, text, correct }], phase: correct ? 'round-over' : 'drawing', ...(correct && s.rulesVersion === 2 ? { roundOverAt: new Date(now + 5000).toISOString(), roundAward: { guesserPoints, drawerPoints: 100, revealedHintCount: revealedHintCount(s, Math.max(s.hintStage, getCatchmindHintStage(s, now))), remainingSeconds: s.deadlineAt ? Math.ceil(Math.max(0, Date.parse(s.deadlineAt) - now) / 1000) : 0 } } : {}) };
     }
-    if (s.phase !== 'round-over') return { ...s, phase: 'round-over', ...(s.rulesVersion === 2 ? { roundOverAt: new Date(Date.now() + 5000).toISOString(), roundAward: { guesserPoints: 0, drawerPoints: 0, revealedHintCount: s.hintStage, remainingSeconds: 0 } } : {}) };
+    if (s.phase !== 'round-over') return { ...s, phase: 'round-over', ...(s.rulesVersion === 2 ? { roundOverAt: new Date(Date.now() + 5000).toISOString(), roundAward: { guesserPoints: 0, drawerPoints: 0, revealedHintCount: revealedHintCount(s, s.hintStage), remainingSeconds: 0 } } : {}) };
     const result = makeResult(s);
     return result ? { ...s, phase: 'finished', result } : { ...s, round: s.round + 1, drawer: otherPlayer(s.drawer), answer: null, strokes: [], fills: [], nextOrder: 0, guesses: [], hintStage: 0, phase: 'choosing', ...(s.rulesVersion === 2 ? { deadlineAt: null, roundOverAt: null, roundId: crypto.randomUUID(), choosingDeadlineAt: new Date(Date.now() + 15000).toISOString(), roundAward: null } : {}) };
   },
@@ -222,9 +228,10 @@ export const catchmindEngine: GameEngine<CatchmindState> = {
     const visibleGuesses = s.guesses.map(g => ({ by: g.by, correct: g.correct, text: g.correct ? g.text : '…' }));
     const ownAnswer = p === s.drawer && s.phase === 'drawing' ? s.answer : null;
     const visibleSettings = { category_id: s.settings.category_id, categoryOptions: catchmindCategories, drawTimeSeconds: s.settings.drawTimeSeconds, rounds: s.settings.rounds, choices: s.settings.choices, hints: s.settings.hints, customWordCount: s.settings.customWords.length, customOnly: s.settings.customOnly };
-    const hintLength = active && s.answer && (s.rulesVersion !== 2 || s.settings.hints) ? { ko: s.rulesVersion === 2 ? graphemes(s.answer.ko).length : [...s.answer.ko].length, es: s.rulesVersion === 2 ? graphemes(s.answer.es).length : [...s.answer.es].length } : null;
-    const hintWord = active && p !== s.drawer && s.answer && s.settings.hints ? { ko: s.rulesVersion === 2 ? timedMask(s.answer.ko, 'ko', s.hintStage, s.seed ^ s.round) : maskedHint(s.answer.ko, 'ko'), es: s.rulesVersion === 2 ? timedMask(s.answer.es, 'es', s.hintStage, s.seed ^ s.round) : maskedHint(s.answer.es, 'es') } : null;
-    return { game: 'catchmind', turn: s.drawer, phase: s.phase, hand: p === s.drawer ? { choices: s.phase === 'choosing' ? (s.wordChoices[s.round] ?? []).map((c, wordId) => ({ wordId, ko: c.ko, es: c.es })) : [], answer: ownAnswer, settingsCustomWords: p === 'p1' ? structuredClone(s.settings.customWords) : [] } : null, board: { strokes: s.strokes.map(st => ({ ...st, points: st.points.map(pt => ({ ...pt })) })), fills: s.fills.map(fill => ({ ...fill })), guesses: visibleGuesses, round: s.round + 1, totalRounds: s.settings.rounds, drawer: s.drawer, answer: s.phase === 'round-over' || s.phase === 'finished' ? s.answer : null, hintLength, hintWord, hintStage: s.hintStage, roundId: s.roundId ?? null, choosingDeadlineAt: s.choosingDeadlineAt ?? null, roundOverAt: s.roundOverAt ?? null, roundAward: s.roundAward ?? null, rulesVersion: s.rulesVersion ?? 1, settings: visibleSettings, scores: { ...s.score } }, opponentCount: 0, status: s.result ? 'finished' : s.phase === 'choosing' ? (p === s.drawer ? 'choose-word' : 'waiting') : active ? (p === s.drawer ? 'drawing' : 'guessing') : 'round-over', result: s.result, actions };
+    const hintLocale = s.rulesVersion === 2 ? guesserLanguage(s) : null;
+    const hintLength = active && s.answer && (s.rulesVersion !== 2 || s.settings.hints) ? { ko: hintLocale === 'es' ? null : s.rulesVersion === 2 ? graphemes(s.answer.ko).length : [...s.answer.ko].length, es: hintLocale === 'ko' ? null : s.rulesVersion === 2 ? graphemes(s.answer.es).length : [...s.answer.es].length } : null;
+    const hintWord = active && p !== s.drawer && s.answer && s.settings.hints ? { ko: hintLocale === 'es' ? null : s.rulesVersion === 2 ? timedMask(s.answer.ko, 'ko', s.hintStage, s.seed ^ s.round) : maskedHint(s.answer.ko, 'ko'), es: hintLocale === 'ko' ? null : s.rulesVersion === 2 ? timedMask(s.answer.es, 'es', s.hintStage, s.seed ^ s.round) : maskedHint(s.answer.es, 'es') } : null;
+    return { game: 'catchmind', turn: s.drawer, phase: s.phase, hand: p === s.drawer ? { choices: s.phase === 'choosing' ? (s.wordChoices[s.round] ?? []).map((c, wordId) => ({ wordId, ko: c.ko, es: c.es })) : [], answer: ownAnswer, settingsCustomWords: p === 'p1' ? structuredClone(s.settings.customWords) : [] } : null, board: { strokes: s.strokes.map(st => ({ ...st, points: st.points.map(pt => ({ ...pt })) })), fills: s.fills.map(fill => ({ ...fill })), guesses: visibleGuesses, round: s.round + 1, totalRounds: s.settings.rounds, drawer: s.drawer, answer: s.phase === 'round-over' || s.phase === 'finished' ? s.answer : null, hintLength, hintWord, hintLocale, hintStage: s.hintStage, hintCount: s.rulesVersion === 2 ? revealedHintCount(s, s.hintStage) : s.hintStage, roundId: s.roundId ?? null, choosingDeadlineAt: s.choosingDeadlineAt ?? null, roundOverAt: s.roundOverAt ?? null, roundAward: s.roundAward ?? null, rulesVersion: s.rulesVersion ?? 1, settings: visibleSettings, scores: { ...s.score } }, opponentCount: 0, status: s.result ? 'finished' : s.phase === 'choosing' ? (p === s.drawer ? 'choose-word' : 'waiting') : active ? (p === s.drawer ? 'drawing' : 'guessing') : 'round-over', result: s.result, actions };
   },
   getResult: s => s.result,
 };

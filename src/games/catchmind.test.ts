@@ -14,7 +14,7 @@ describe('catchmindEngine', () => {
     state.answer = { ko: '뜨거운 커피', es: 'café caliente' };
     state.settings.hints = 2;
     const view = catchmindEngine.getPlayerView(state, 'p2');
-    expect(view.board.hintWord).toEqual({ ko: '□□□ □□', es: '???? ????????' });
+    expect(view.board.hintWord).toEqual({ ko: null, es: '???? ????????' });
     expect(view.board.answer).toBeNull();
     expect(view.hand).toBeNull();
   });
@@ -31,7 +31,7 @@ describe('catchmindEngine', () => {
     s = catchmindEngine.applyAction(s, 'p1', { type: 'choose', payload: { wordId: 0 } });
     s.deadlineAt = new Date(Date.now() + catchmindDrawDurationMs).toISOString();
     expect(catchmindEngine.getPlayerView(s, 'p2').board.answer).toBeNull();
-    expect(catchmindEngine.getPlayerView(s, 'p2').board.hintLength).toEqual({ ko: [...answer.ko].length, es: [...answer.es].length });
+    expect(catchmindEngine.getPlayerView(s, 'p2').board.hintLength).toEqual({ ko: null, es: [...answer.es].length });
     expect(isCorrectGuess(s, answer.es)).toBe(true);
     expect(isCorrectGuess(s, 'not the answer')).toBe(false);
     s = catchmindEngine.applyAction(s, 'p1', { type: 'draw', payload: { strokes: [{ points: [{ x: 0.1, y: 0.2 }, { x: 0.9, y: 0.8 }], color: '#e57f6a', width: 7 }] } });
@@ -285,12 +285,12 @@ describe('catchmindEngine', () => {
     let s: any = configure(catchmindEngine.createInitialState(81), 'food');
     s.phase = 'drawing'; s.answer = catchmindTopicWords.find(word => word.id === 'food-extra-015');
     const guesser = catchmindEngine.getPlayerView(s, 'p2');
-    expect(guesser.board.hintWord).toEqual({ ko: '□□', es: '????' });
+    expect(guesser.board.hintWord).toEqual({ ko: null, es: '????' });
     expect(JSON.stringify(guesser)).not.toContain('café');
     expect(JSON.stringify(guesser)).not.toContain('커피');
     s.answer = { ko: '불가사리', es: 'estrella de mar' };
     const spaced = catchmindEngine.getPlayerView(s, 'p2').board.hintWord;
-    expect(spaced).toEqual({ ko: '□□□□', es: '???????? ?? ???' });
+    expect(spaced).toEqual({ ko: null, es: '???????? ?? ???' });
     expect(catchmindEngine.validateAction(s, 'p1', { type: 'reveal-hint' })).toBe('Hints follow the server clock');
     expect(catchmindEngine.getPlayerView(s, 'p2').board.hintWord).toEqual(spaced);
   });
@@ -371,9 +371,36 @@ describe('catchmind timed two-player rules', () => {
     const drawing = catchmindEngine.applyAction(base, 'p1', { type: 'choose', payload: { wordId: 0 } });
     const s = { ...drawing, answer: { ko: '한글👩‍🎨', es: 'cáfe☕' }, hintStage: 2 };
     const view = catchmindEngine.getPlayerView(s, 'p2');
-    expect(view.board.hintLength).toEqual({ ko: 3, es: 5 });
+    expect(view.board.hintLength).toEqual({ ko: null, es: 5 });
     expect(view.board.hintWord!.ko).not.toBe(s.answer.ko);
     expect(view.board.hintWord!.es).not.toBe(s.answer.es);
+    const koreanView = catchmindEngine.getPlayerView({ ...s, playerLanguages: { p1: 'es', p2: 'ko' } }, 'p2');
+    expect(koreanView.board.hintLength).toEqual({ ko: 3, es: null });
+    expect(koreanView.board.hintWord!.es).toBeNull();
+  });
+
+  it('deducts only letters actually revealed in the guesser’s starting language', () => {
+    const base = begin();
+    const drawing = catchmindEngine.applyAction(base, 'p1', { type: 'choose', payload: { wordId: 0 } });
+    vi.setSystemTime(start.getTime() + 60_000);
+    const shortSpanish = { ...advanceCatchmind(drawing, Date.now()), answer: { ko: '고래', es: 'x' }, playerLanguages: { p1: 'ko' as const, p2: 'es' as const } };
+    const spanishView = catchmindEngine.getPlayerView(shortSpanish, 'p2');
+    expect(spanishView.board.hintStage).toBe(2);
+    expect(spanishView.board.hintCount).toBe(0);
+    expect(spanishView.board.hintWord).toEqual({ ko: null, es: '?' });
+    const spanishScore = catchmindEngine.applyAction(shortSpanish, 'p2', { type: 'guess', payload: { text: 'x' } });
+    expect(spanishScore.roundAward).toMatchObject({ revealedHintCount: 0, guesserPoints: 125 });
+
+    const korean = { ...shortSpanish, playerLanguages: { p1: 'es' as const, p2: 'ko' as const } };
+    const koreanView = catchmindEngine.getPlayerView(korean, 'p2');
+    expect(koreanView.board.hintCount).toBe(1);
+    expect(koreanView.board.hintWord).toEqual({ ko: expect.stringMatching(/^□.$|^.□$/u), es: null });
+    const koreanScore = catchmindEngine.applyAction(korean, 'p2', { type: 'guess', payload: { text: '고래' } });
+    expect(koreanScore.roundAward).toMatchObject({ revealedHintCount: 1, guesserPoints: 105 });
+
+    const longerSpanish = { ...shortSpanish, answer: { ko: '가', es: 'mesa' } };
+    const longScore = catchmindEngine.applyAction(longerSpanish, 'p2', { type: 'guess', payload: { text: 'mesa' } });
+    expect(longScore.roundAward).toMatchObject({ revealedHintCount: 2, guesserPoints: 85 });
   });
 
   it('enforces even round settings for a new match and preserves legacy odd-round state', () => {
