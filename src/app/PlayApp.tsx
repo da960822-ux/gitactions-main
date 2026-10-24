@@ -103,7 +103,7 @@ export function SoloRhythm() {
   useLocalizedDocument(language);
   const game = getGame('rhythm')!;
   const chooseLanguage = (value: Language) => { setLanguage(value); writeBrowserStorage('dos-language', value); };
-  return <div className="app-shell room-shell room-game-rhythm quality-table-room"><BrandHeader compact/><main className="room-main">
+  return <div className="app-shell room-shell room-game-rhythm quality-table-room rhythm-solo-room"><BrandHeader compact/><main className="room-main">
     <h1 className="sr-only">{game.title[language]}</h1>
     <div className="room-topline"><Link href="/play" className="back-link">← {text(language, '게임 고르기', 'Elegir juego')}</Link><LanguageSwitch language={language} onChange={chooseLanguage}/></div>
     <section className="room-layout"><div className="play-column"><section className="board-card" id="game-board">

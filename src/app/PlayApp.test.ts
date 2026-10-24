@@ -80,6 +80,7 @@ it.each([['ko', '혼자 바로 플레이', '처음부터 다시 하기', '게임
     window.location.href = 'https://games.example/play?solo=rhythm';
     expect(currentPath()).toBe('/play/rhythm');
     const solo = renderToStaticMarkup(createElement(PlayApp, { path: currentPath() }));
+    expect(solo).toContain('rhythm-solo-room');
     expect(solo).toContain('rhythm-game-mount');
     expect(solo).toContain(restart);
     expect(solo).toContain(leave);

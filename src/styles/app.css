@@ -504,6 +504,7 @@
 .app-shell .game-switcher .switch-game-list button:hover,.app-shell .game-switcher .switch-game-list button.pending { color:#214b43; border-color:#2f655b; background:#e2ece6; }
 .room-main:has(.board-card):not(:has(.game-board-minhwatu)) .chat-panel:not(.reaction-chat-panel) { min-height:min(500px,68vh); height:min(calc(100vh - 240px),68vh); max-height:min(680px,68vh); }
 .room-layout:has(.reaction-chat-panel) { grid-template-columns:minmax(0,1fr); }
+.rhythm-solo-room .room-layout { grid-template-columns:minmax(0,1fr); }
 .room-main .chat-panel.reaction-chat-panel { min-height:0; height:auto; max-height:none; margin:12px 0 0; overflow:visible; }
 .reaction-chat-panel > header { min-height:44px; padding:6px 13px; }
 .reaction-chat-panel h2 { margin:0; color:#f3e7eb; font:600 14px 'DM Sans',sans-serif; }
