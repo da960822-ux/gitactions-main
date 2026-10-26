@@ -82,7 +82,7 @@ describe('private shared feedback API', () => {
     expect((await api('/api/feedback', 'POST', partner, { id, ...generic })).status).toBe(201);
     sqlite.prepare('UPDATE feedback_entries SET created_at = ?').run(new Date(Date.now() - 8 * 86400000).toISOString());
     expect((await (await api('/api/feedback')).json()).entries).toEqual([]);
-    expect(sqlite.prepare('SELECT count(*) AS count FROM feedback_entries').get()).toMatchObject({ count: 0 });
+    expect(sqlite.prepare('SELECT count(*) AS count FROM feedback_entries').get()).toMatchObject({ count: 1 });
   });
 
   it('imports only through the owner endpoint, preserves source time and unknown author, and skips duplicate source IDs', async () => {
@@ -98,5 +98,13 @@ describe('private shared feedback API', () => {
     expect((await api('/api/feedback/import', 'POST', owner, { ...legacy, body: 'Wrong copy' })).status).toBe(409);
     expect(sqlite.prepare('SELECT count(*) AS count FROM feedback_entries').get()).toMatchObject({ count: 1 });
     expect((await (await api('/api/feedback', 'GET', partner)).json()).entries[0].body).toBe(generic.body);
+  });
+
+  it('keeps imported originals in D1 after their seven-day display window', async () => {
+    const legacy = { legacySourceId: sourceId, ...generic, status: 'new', createdAt: new Date(Date.now() - 8 * 86400000).toISOString() };
+    expect((await api('/api/feedback/import', 'POST', owner, legacy)).status).toBe(200);
+    expect((await (await api('/api/feedback', 'GET', partner)).json()).entries).toEqual([]);
+    expect(sqlite.prepare('SELECT legacy_source_id, body FROM feedback_entries').get()).toMatchObject({ legacy_source_id: sourceId, body: generic.body });
+    expect((await api('/api/feedback/import', 'POST', owner, legacy)).status).toBe(200);
   });
 });

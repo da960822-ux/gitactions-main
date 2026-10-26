@@ -63,7 +63,6 @@ export async function handleFeedbackRequest(request: Request, env: FeedbackEnv):
   try {
     if (url.pathname === '/api/feedback' && request.method === 'GET') {
       const cutoff = new Date(Date.now() - sevenDays).toISOString();
-      await db.prepare('DELETE FROM feedback_entries WHERE created_at <= ?').bind(cutoff).run();
       const rows = await db.prepare('SELECT * FROM feedback_entries WHERE created_at > ? ORDER BY created_at DESC, id DESC').bind(cutoff).all<Row>();
       return json({ entries: rows.results.map(entry), canAcknowledge: owner, siteUserId: userId });
     }

@@ -14,3 +14,6 @@ assert.ok(worker.assets.run_worker_first.includes('/api/*'));
 for (const path of ['dist/server/index.js', 'dist/client/index.html', 'dist/client/feedback.html', 'dist/client/play.html', 'dist/.openai/drizzle/0000_kind_deadpool.sql']) {
   assert.ok(statSync(path).size > 0, `${path} missing or empty`);
 }
+const source = readFileSync('dist/server/index.js');
+const workerModule = await import(`data:text/javascript;base64,${source.toString('base64')}`);
+assert.equal(typeof workerModule.default?.fetch, 'function');
