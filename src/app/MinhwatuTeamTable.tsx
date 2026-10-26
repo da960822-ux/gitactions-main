@@ -101,6 +101,7 @@ export function MinhwatuTeamTable({view,language,runAction,nickname,roomId='',ve
   const chooseHand=(card:MinhwatuCard,index:number)=>{
     if(busy||!active||capturePhase)return;
     const options=view.actions.filter(option=>option.action.type==='play'&&Number(option.action.payload?.index)===index);
+    if(!options.length)return;
     if(options.length===1){void submit(options[0].action);return;}
     const next=selected===card.id?null:card.id;setSelected(next);setError('');
     if(next&&options.length>1)requestAnimationFrame(()=>targetButtons.current.get(Number(options[0].action.payload?.targetIndex))?.focus({preventScroll:true}));

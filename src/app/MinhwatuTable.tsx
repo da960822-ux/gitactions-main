@@ -221,7 +221,7 @@ export function MinhwatuTable({ view, language, playerId, playerNames, runAction
             const matches = table.filter(item => item.month === card.month).length;
             const capturable = active && !capturePhase && matches > 0;
             return <button ref={node => { if (node) handButtons.current.set(card.id, node); else handButtons.current.delete(card.id); }} className={`hwatu-hand-choice ${isSelected ? 'is-selected' : ''} ${canPlay ? 'is-playable' : ''} ${capturable ? 'is-capturable' : ''}`} type="button" key={card.id} data-hwatu-card-id={card.id} disabled={!active || !legalChoices.length || capturePhase || busy} aria-pressed={isSelected} aria-label={`${text(language, `${card.month}월 ${card.flower.ko} ${card.badge.ko}`, `Mes ${card.month}, ${card.flower.es}, ${card.badge.es}`)}, ${Number(card.points ?? 0)} ${text(language, '점', 'pts')}${capturable ? ` · ${text(language, '가져올 수 있음', 'Se puede capturar')}` : ''}`} onClick={() => {
-              if (busy || !active) return;
+              if (busy || !active || capturePhase || !legalChoices.length) return;
               setError('');
               if (legalChoices.length === 1) { void run(legalChoices[0]); return; }
               focusTarget.current = legalChoices.length > 1 && !isSelected;
