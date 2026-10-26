@@ -1,0 +1,161 @@
+{
+  "startingSeat": "seed-rotated",
+  "invariance": [
+    {
+      "mode": "2p",
+      "hiddenHandDeckSeedSwapCases": 2000,
+      "publicViewAndAction": "identical"
+    },
+    {
+      "mode": "4p",
+      "hiddenHandDeckSeedSwapCases": 4000,
+      "publicViewAndAction": "identical"
+    }
+  ],
+  "simulations": [
+    {
+      "mode": "2p",
+      "policy": "uniform",
+      "seeds": 1000,
+      "uniqueLayouts": 1000,
+      "initialAndStepConservation": "pass",
+      "stateMutations": 0,
+      "seats": {
+        "p1": {
+          "hand": "5875/10000",
+          "draw": "6013/10000",
+          "drawRate": 0.6013,
+          "perfectDrawGames": "2/1000",
+          "maxDrawHits": 10
+        },
+        "p2": {
+          "hand": "5928/10000",
+          "draw": "6041/10000",
+          "drawRate": 0.6041,
+          "perfectDrawGames": "1/1000",
+          "maxDrawHits": 10
+        }
+      },
+      "humanMinusAiDrawRate": -0.0028000000000000026,
+      "paired95CI": [
+        -0.017206491483107655,
+        0.011606491483107651
+      ]
+    },
+    {
+      "mode": "2p",
+      "policy": "ai",
+      "seeds": 1000,
+      "uniqueLayouts": 1000,
+      "initialAndStepConservation": "pass",
+      "stateMutations": 0,
+      "seats": {
+        "p1": {
+          "hand": "7457/10000",
+          "draw": "4477/10000",
+          "drawRate": 0.4477,
+          "perfectDrawGames": "0/1000",
+          "maxDrawHits": 9
+        },
+        "p2": {
+          "hand": "7476/10000",
+          "draw": "4447/10000",
+          "drawRate": 0.4447,
+          "perfectDrawGames": "0/1000",
+          "maxDrawHits": 9
+        }
+      },
+      "humanMinusAiDrawRate": 0.0030000000000000005,
+      "paired95CI": [
+        -0.010074169017398205,
+        0.016074169017398207
+      ]
+    },
+    {
+      "mode": "4p",
+      "policy": "uniform",
+      "seeds": 1000,
+      "uniqueLayouts": 1000,
+      "initialAndStepConservation": "pass",
+      "stateMutations": 0,
+      "seats": {
+        "p1": {
+          "hand": "2914/5000",
+          "draw": "3048/5000",
+          "drawRate": 0.6096,
+          "perfectDrawGames": "64/1000",
+          "maxDrawHits": 5
+        },
+        "p2": {
+          "hand": "2953/5000",
+          "draw": "3054/5000",
+          "drawRate": 0.6108,
+          "perfectDrawGames": "65/1000",
+          "maxDrawHits": 5
+        },
+        "p3": {
+          "hand": "2956/5000",
+          "draw": "2976/5000",
+          "drawRate": 0.5952,
+          "perfectDrawGames": "71/1000",
+          "maxDrawHits": 5
+        },
+        "p4": {
+          "hand": "2939/5000",
+          "draw": "3017/5000",
+          "drawRate": 0.6034,
+          "perfectDrawGames": "59/1000",
+          "maxDrawHits": 5
+        }
+      },
+      "humanMinusAiDrawRate": 0.006466666666666667,
+      "paired95CI": [
+        -0.00888953128133086,
+        0.021822864614664192
+      ]
+    },
+    {
+      "mode": "4p",
+      "policy": "ai",
+      "seeds": 1000,
+      "uniqueLayouts": 1000,
+      "initialAndStepConservation": "pass",
+      "stateMutations": 0,
+      "seats": {
+        "p1": {
+          "hand": "3520/5000",
+          "draw": "2513/5000",
+          "drawRate": 0.5026,
+          "perfectDrawGames": "21/1000",
+          "maxDrawHits": 5
+        },
+        "p2": {
+          "hand": "3472/5000",
+          "draw": "2524/5000",
+          "drawRate": 0.5048,
+          "perfectDrawGames": "26/1000",
+          "maxDrawHits": 5
+        },
+        "p3": {
+          "hand": "3460/5000",
+          "draw": "2445/5000",
+          "drawRate": 0.489,
+          "perfectDrawGames": "20/1000",
+          "maxDrawHits": 5
+        },
+        "p4": {
+          "hand": "3472/5000",
+          "draw": "2451/5000",
+          "drawRate": 0.4902,
+          "perfectDrawGames": "16/1000",
+          "maxDrawHits": 5
+        }
+      },
+      "humanMinusAiDrawRate": 0.007933333333333336,
+      "paired95CI": [
+        -0.0075763805443811675,
+        0.02344304721104784
+      ]
+    }
+  ]
+}

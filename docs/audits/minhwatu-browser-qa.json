@@ -1,0 +1,79 @@
+{
+  "checks": [
+    {
+      "mode": "solo",
+      "firstSeed": 2147483648,
+      "initial": {
+        "turn": "p2",
+        "phase": "play",
+        "version": 1,
+        "matchId": null,
+        "error": null,
+        "stock": 20
+      },
+      "afterAi": {
+        "turn": "p1",
+        "phase": "play",
+        "version": 2,
+        "matchId": null,
+        "error": null,
+        "stock": 19
+      },
+      "afterCapture": null,
+      "motion": {
+        "step": true,
+        "flight": true
+      },
+      "replay": {
+        "turn": "p1",
+        "phase": "play",
+        "version": 4,
+        "matchId": null,
+        "error": null,
+        "stock": 20
+      },
+      "errors": []
+    },
+    {
+      "mode": "team",
+      "firstSeed": 3221225472,
+      "initial": {
+        "turn": "p4",
+        "phase": "play",
+        "version": 2,
+        "matchId": 1,
+        "error": null,
+        "stock": 20
+      },
+      "afterAi": {
+        "turn": "p4",
+        "phase": "capture-draw",
+        "version": 3,
+        "matchId": 1,
+        "error": null,
+        "stock": 19
+      },
+      "afterCapture": {
+        "turn": "p1",
+        "phase": "play",
+        "version": 4,
+        "matchId": 1,
+        "error": null,
+        "stock": 19
+      },
+      "motion": {
+        "step": true,
+        "flight": true
+      },
+      "replay": {
+        "turn": "p1",
+        "phase": "play",
+        "version": 6,
+        "matchId": 2,
+        "error": null,
+        "stock": 20
+      },
+      "errors": []
+    }
+  ]
+}

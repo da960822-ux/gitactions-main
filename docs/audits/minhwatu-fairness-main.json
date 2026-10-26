@@ -1,0 +1,161 @@
+{
+  "startingSeat": "fixed-p1",
+  "invariance": [
+    {
+      "mode": "2p",
+      "hiddenHandDeckSeedSwapCases": 2000,
+      "publicViewAndAction": "identical"
+    },
+    {
+      "mode": "4p",
+      "hiddenHandDeckSeedSwapCases": 4000,
+      "publicViewAndAction": "identical"
+    }
+  ],
+  "simulations": [
+    {
+      "mode": "2p",
+      "policy": "uniform",
+      "seeds": 1000,
+      "uniqueLayouts": 1000,
+      "initialAndStepConservation": "pass",
+      "stateMutations": 0,
+      "seats": {
+        "p1": {
+          "hand": "5743/10000",
+          "draw": "5896/10000",
+          "drawRate": 0.5896,
+          "perfectDrawGames": "6/1000",
+          "maxDrawHits": 10
+        },
+        "p2": {
+          "hand": "6051/10000",
+          "draw": "6167/10000",
+          "drawRate": 0.6167,
+          "perfectDrawGames": "4/1000",
+          "maxDrawHits": 10
+        }
+      },
+      "humanMinusAiDrawRate": -0.027099999999999944,
+      "paired95CI": [
+        -0.04095451833237875,
+        -0.013245481667621134
+      ]
+    },
+    {
+      "mode": "2p",
+      "policy": "ai",
+      "seeds": 1000,
+      "uniqueLayouts": 1000,
+      "initialAndStepConservation": "pass",
+      "stateMutations": 0,
+      "seats": {
+        "p1": {
+          "hand": "7213/10000",
+          "draw": "4317/10000",
+          "drawRate": 0.4317,
+          "perfectDrawGames": "0/1000",
+          "maxDrawHits": 8
+        },
+        "p2": {
+          "hand": "7721/10000",
+          "draw": "4606/10000",
+          "drawRate": 0.4606,
+          "perfectDrawGames": "0/1000",
+          "maxDrawHits": 9
+        }
+      },
+      "humanMinusAiDrawRate": -0.02889999999999998,
+      "paired95CI": [
+        -0.041995298091150726,
+        -0.015804701908849236
+      ]
+    },
+    {
+      "mode": "4p",
+      "policy": "uniform",
+      "seeds": 1000,
+      "uniqueLayouts": 1000,
+      "initialAndStepConservation": "pass",
+      "stateMutations": 0,
+      "seats": {
+        "p1": {
+          "hand": "2769/5000",
+          "draw": "2824/5000",
+          "drawRate": 0.5648,
+          "perfectDrawGames": "44/1000",
+          "maxDrawHits": 5
+        },
+        "p2": {
+          "hand": "2805/5000",
+          "draw": "2920/5000",
+          "drawRate": 0.584,
+          "perfectDrawGames": "54/1000",
+          "maxDrawHits": 5
+        },
+        "p3": {
+          "hand": "3056/5000",
+          "draw": "3078/5000",
+          "drawRate": 0.6156,
+          "perfectDrawGames": "76/1000",
+          "maxDrawHits": 5
+        },
+        "p4": {
+          "hand": "3178/5000",
+          "draw": "3227/5000",
+          "drawRate": 0.6454,
+          "perfectDrawGames": "84/1000",
+          "maxDrawHits": 5
+        }
+      },
+      "humanMinusAiDrawRate": -0.0502,
+      "paired95CI": [
+        -0.06613858581376124,
+        -0.034261414186238764
+      ]
+    },
+    {
+      "mode": "4p",
+      "policy": "ai",
+      "seeds": 1000,
+      "uniqueLayouts": 1000,
+      "initialAndStepConservation": "pass",
+      "stateMutations": 0,
+      "seats": {
+        "p1": {
+          "hand": "3297/5000",
+          "draw": "2246/5000",
+          "drawRate": 0.4492,
+          "perfectDrawGames": "13/1000",
+          "maxDrawHits": 5
+        },
+        "p2": {
+          "hand": "3410/5000",
+          "draw": "2381/5000",
+          "drawRate": 0.4762,
+          "perfectDrawGames": "28/1000",
+          "maxDrawHits": 5
+        },
+        "p3": {
+          "hand": "3513/5000",
+          "draw": "2565/5000",
+          "drawRate": 0.513,
+          "perfectDrawGames": "20/1000",
+          "maxDrawHits": 5
+        },
+        "p4": {
+          "hand": "3743/5000",
+          "draw": "2702/5000",
+          "drawRate": 0.5404,
+          "perfectDrawGames": "35/1000",
+          "maxDrawHits": 5
+        }
+      },
+      "humanMinusAiDrawRate": -0.06066666666666673,
+      "paired95CI": [
+        -0.07688898112332719,
+        -0.04444435221000627
+      ]
+    }
+  ]
+}
