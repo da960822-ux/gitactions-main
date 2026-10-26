@@ -260,7 +260,7 @@ async function handAndCaptureMatrix(language, width, height) {
           categories: seat.categories.map(({ kind, ids, clipped, bankClipped, overlaps, labelFont, scroll }) => ({ kind, count: ids.length, clipped, bankClipped, overlaps, labelFont, scroll })) })) }));
     await screenshot(page, `worst-hand-${language}-${width}x${height}`, true);
 
-    // Select a hand card with no month match so both action buttons are visible at once.
+    // A legal hand card now commits with one click, without a confirmation control.
     await page.evaluate(lang => window.__minhwatuProof.mount(window.__minhwatuProof.field14State(), lang), language);
     await waitFaces(); await idle(page);
     const field14 = await auditVisibleCards(), field14Bank = await auditCaptureBanks(page);
@@ -268,29 +268,19 @@ async function handAndCaptureMatrix(language, width, height) {
       field14.state.hands.p1 === 10 && field14.state.hands.p2 === 10 && field14.state.table === 14 && field14.state.deck === 0 &&
       field14Bank.expectedCount === 14 && field14Bank.conserved && safeLayout(field14) && bankPass(field14Bank),
       JSON.stringify({ ...field14, bankCount: field14Bank.shownCount, bankPass: bankPass(field14Bank), bankOverlap: field14Bank.allBankOverlaps }));
-    await page.locator('.hwatu-hand-choice[data-hwatu-card-id="1-1"]').click();
-    const confirm = page.locator('.hwatu-confirm'), cancel = page.locator('.hwatu-cancel');
-    await confirm.waitFor({ state: 'visible', timeout: 3000 }); await cancel.waitFor({ state: 'visible', timeout: 3000 });
-    const controls = await page.evaluate(() => Object.fromEntries(['.hwatu-confirm', '.hwatu-cancel'].map(selector => {
-      const element = document.querySelector(selector), rect = element?.getBoundingClientRect();
-      return [selector, rect && { x: rect.x, y: rect.y, right: rect.right, bottom: rect.bottom, visible: rect.width > 0 && rect.height > 0 && getComputedStyle(element).visibility !== 'hidden' }];
-    })));
-    check(`${language} ${width}×${height}: selected-card confirm and cancel controls are both inside the viewport`,
-      [controls['.hwatu-confirm'], controls['.hwatu-cancel']].every(rect => rect?.visible && rect.x >= -1 && rect.right <= width + 1 && rect.y >= -1 && rect.bottom <= height + 1), JSON.stringify(controls));
-    await cancel.click();
-    await page.waitForFunction(() => !document.querySelector('.hwatu-confirm') && window.__minhwatuProof.state().hands.p1.length === 10, null, { timeout: 2000 });
-    check(`${language} ${width}×${height}: cancel restores an unselected hand without changing game state`,
-      await page.locator('.hwatu-hand-choice').count() === 10 && await page.locator('.hwatu-confirm').count() === 0 &&
-      await page.evaluate(() => window.__minhwatuProof.state().table.length === 14 && window.__minhwatuProof.state().captures.p1.length === 8));
     await screenshot(page, `field14-${language}-${width}x${height}`, true);
+    await page.locator('.hwatu-hand-choice[data-hwatu-card-id="1-1"]').click();
+    await page.waitForFunction(() => window.__minhwatuProof.state().hands.p1.length === 9, null, { timeout: 3000 });
+    check(`${language} ${width}×${height}: one hand click commits without a confirm button`,
+      await page.locator('.hwatu-confirm').count() === 0 && await page.evaluate(() => window.__minhwatuProof.state().events.filter(event => event.type === 'play').length === 1));
+    await idle(page);
+    await screenshot(page, `one-click-${language}-${width}x${height}`, true);
 
     // Play a real match from the deterministic engine fixture and compare the sorted per-card ghost to its settled face.
     await page.evaluate(lang => window.__minhwatuProof.mount(window.__minhwatuProof.worstHandState(), lang), language);
     await idle(page);
     const beforeIds = await page.evaluate(() => window.__minhwatuProof.state().captures.p1.map(card => card.id));
     await page.locator('.hwatu-hand-choice[data-hwatu-card-id="2-1"]').click();
-    const playConfirm = page.locator('.hwatu-confirm'); await playConfirm.waitFor({ state: 'visible', timeout: 3000 });
-    await playConfirm.click();
     await page.waitForFunction(() => window.__minhwatuCues.some(item => item.event.type === 'capture' && item.event.actor === 'p1'), null, { timeout: 5000 });
     const gained = await page.evaluate(before => window.__minhwatuProof.state().captures.p1.map(card => card.id).filter(id => !before.includes(id)), beforeIds);
     await page.waitForFunction(ids => ids.some(id => document.querySelector(`.hwatu-capture-landing[data-hwatu-landing-card-id="${id}"]`)), gained, { timeout: 2500 });
@@ -317,7 +307,6 @@ async function handAndCaptureMatrix(language, width, height) {
     check(`${language} ${width}×${height}: empty field fixture conserves 48 cards with 10-card hands and 8-card deck`,
       emptyState.state.table === 0 && emptyState.state.hands.p1 === 10 && emptyState.state.hands.p2 === 10 && emptyState.state.deck === 8 && safeLayout(emptyState), JSON.stringify(emptyState));
     await page.locator('.hwatu-hand-choice[data-hwatu-card-id="1-1"]').click();
-    await page.locator('.hwatu-confirm').click();
     await page.waitForFunction(() => document.querySelector('.hwatu-flight[data-hwatu-flight-card="1-1"]') &&
       document.querySelector('[data-hwatu-zone="table"] [data-hwatu-landing-anchor]'), null, { timeout: 3000 });
     const emptyLanding = await page.evaluate(() => {
@@ -343,6 +332,7 @@ async function targetCases(language, width, height) {
   try {
     const runHand = async count => {
       await page.evaluate(({language,count})=>window.__minhwatuProof.mount(window.__minhwatuProof.stateWithMatches(count,0),language),{language,count}); await idle(page);
+      const source=count===0?await page.locator('.hwatu-hand-choice[data-hwatu-card-id="1-1"]').boundingBox():null;
       await page.locator('.hwatu-hand-choice[data-hwatu-card-id="1-1"]').click();
       if(count===2){
         const targets=page.locator('.hwatu-table-card.is-target'); await targets.first().waitFor({state:'visible',timeout:4000});
@@ -353,8 +343,6 @@ async function targetCases(language, width, height) {
         check(`${language}: selecting two-match hand card focuses the first legal target`,automaticFocus.target&&automaticFocus.id===await targets.first().getAttribute('data-hwatu-card-id'),JSON.stringify(automaticFocus));
         await page.keyboard.press('Enter');
       } else {
-        const source=count===0?await page.locator('.hwatu-hand-choice[data-hwatu-card-id="1-1"]').boundingBox():null;
-        await page.locator('.hwatu-confirm').click();
         if(count===0){
           await page.waitForFunction(()=>document.querySelector('.hwatu-motion-note--play.is-fresh'),null,{timeout:3000});
           const landing=await page.locator('[data-hwatu-zone="table"] [data-hwatu-landing-anchor]').boundingBox();
@@ -369,7 +357,7 @@ async function targetCases(language, width, height) {
     for(const count of [0,1,2,3]) await runHand(count);
     const runDraw = async count => {
       await page.evaluate(({language,count})=>window.__minhwatuProof.mount(window.__minhwatuProof.stateWithMatches(0,count),language),{language,count}); await idle(page);
-      await page.locator('.hwatu-hand-choice[data-hwatu-card-id="1-1"]').click(); await page.locator('.hwatu-confirm').click();
+      await page.locator('.hwatu-hand-choice[data-hwatu-card-id="1-1"]').click();
       await page.waitForFunction(()=>window.__minhwatuProof.view('p1').log.some(event=>event.type==='draw'),null,{timeout:5000});
       if(count===0){
         await page.waitForFunction(()=>window.__minhwatuCues.some(item=>item.event.type==='draw'&&item.transfer),null,{timeout:5000});
@@ -406,7 +394,7 @@ async function denseResultAndReplay(language) {
     await page.evaluate(lang=>window.__minhwatuProof.mount(window.__minhwatuProof.godoriState(),lang),language); await idle(page);
     const oldScore=await page.evaluate(()=>window.__minhwatuProof.view('p1').board.scores.p1);
     await page.evaluate(()=>{window.__minhwatuScoreSamples=[];window.addEventListener('minhwatu-presentation-cue',function sampleCapture(event){if(event.detail?.event?.type!=='capture')return;window.removeEventListener('minhwatu-presentation-cue',sampleCapture);const offsets=event.detail.impactOffsets??[];for(const [label,offset] of [['first',offsets[0]+4],['last',offsets.at(-1)+10]])setTimeout(()=>window.__minhwatuScoreSamples.push({label,shown:Number(document.querySelector('[data-hwatu-zone="score-p1"] strong')?.textContent?.match(/-?\d+/)?.[0]),turn:document.querySelector('.hwatu-seat-score.is-turn')?.getAttribute('data-player')??null}),Math.max(0,offset));});});
-    await page.locator('.hwatu-hand-choice[data-hwatu-card-id="8-1"]').click(); await page.locator('.hwatu-confirm').click();
+    await page.locator('.hwatu-hand-choice[data-hwatu-card-id="8-1"]').click();
     await page.waitForFunction(()=>window.__minhwatuCues.some(item=>item.event.type==='capture'),null,{timeout:5000});
     const captureCue=await page.evaluate(()=>window.__minhwatuCues.filter(item=>item.event.type==='capture').at(-1));
     await page.waitForFunction(()=>window.__minhwatuScoreSamples?.length===2,null,{timeout:3000});
@@ -419,7 +407,7 @@ async function denseResultAndReplay(language) {
     check(`${language}: public score waits for the last captured card to land`,scoreSamples[0]?.label==='first'&&scoreSamples[0].shown===oldScore&&scoreSamples[1]?.label==='last'&&scoreSamples[1].shown===scoreAfterLast.authoritative&&scoreAfterLast.delta>0,JSON.stringify({oldScore,scoreSamples,...scoreAfterLast,offsets:captureCue.impactOffsets}));
     await page.waitForFunction(()=>window.__minhwatuProof.view('p1').log.some(e=>e.type==='special'&&e.yaku?.id==='godori'),null,{timeout:5000}); await idle(page);
     await page.evaluate(()=>window.__minhwatuProof.setViewer('p2')); await idle(page);
-    await page.locator('.hwatu-hand-choice[data-hwatu-card-id="12-4"]').click(); await page.locator('.hwatu-confirm').click();
+    await page.locator('.hwatu-hand-choice[data-hwatu-card-id="12-4"]').click();
     const immediateAnnouncement=await page.locator('.game-feedback-status').innerText();
     check(`${language}: final result announcement waits for the public win event`,!(/민화투 최종 정산|Resultado de Minhwatu/.test(immediateAnnouncement))&&!(await page.evaluate(()=>window.__minhwatuCues.some(item=>item.event.type==='win'))),immediateAnnouncement);
     await page.waitForFunction(()=>window.__minhwatuCues.some(item=>item.event.type==='win'),null,{timeout:6000});
@@ -442,7 +430,7 @@ async function lifecycle(language) {
   const {context,page}=await open(language,1440,900);
   try {
     await page.evaluate(lang=>window.__minhwatuProof.mount(window.__minhwatuProof.normalState(),lang),language); await idle(page);
-    await page.locator('.hwatu-hand-choice[data-hwatu-card-id="2-1"]').click(); await page.locator('.hwatu-confirm').click();
+    await page.locator('.hwatu-hand-choice[data-hwatu-card-id="2-1"]').click();
     await page.waitForFunction(()=>document.querySelector('.hwatu-flight[data-hwatu-flight-card="2-1"]'),null,{timeout:3000});
     await page.evaluate(lang=>window.__minhwatuProof.mount(window.__minhwatuProof.normalState(),lang),language);
     await page.waitForFunction(()=>!document.querySelector('.hwatu-flight')&&!document.querySelector('.hwatu-score-flight')&&!document.querySelector('.hwatu-earned-faces'),null,{timeout:2000});

@@ -48,7 +48,6 @@ export function MinhwatuTable({ view, language, playerId, playerNames, runAction
   const actionLock = useRef(false);
   const resultRef = useRef<HTMLElement>(null);
   const handButtons = useRef(new Map<string, HTMLButtonElement>()), tableButtons = useRef(new Map<number, HTMLButtonElement>());
-  const handActions = useRef<HTMLDivElement>(null);
   const focusAfterTurn = useRef(false), focusTarget = useRef(false), replayLock = useRef(false);
   const publicEvents = array<MinhwatuEvent>(shownView?.log ?? board.actionLog);
   const handIds = hand.map(card => card.id).join('|');
@@ -65,7 +64,6 @@ export function MinhwatuTable({ view, language, playerId, playerNames, runAction
   }, [handIds, view?.turn, view?.phase, playerId]);
 
   const selectedIndex = hand.findIndex(card => card.id === selected);
-  const plays = choices.filter(choice => choice.action.type === 'play' && Number(choice.action.payload?.index) === selectedIndex);
   const selectedCard = selectedIndex >= 0 ? hand[selectedIndex] : undefined;
   const actionForTarget = (index: number) => minhwatuTargetAction(choices, index, selectedIndex, capturePhase);
   const scoreBreakdown = record(board.breakdown), stockCount = Number(board.deckCount ?? board.remainingDeck ?? 0);
@@ -92,11 +90,6 @@ export function MinhwatuTable({ view, language, playerId, playerNames, runAction
       if (firstTarget >= 0) tableButtons.current.get(firstTarget)?.focus();
     }
   }, [selected, active, capturePhase, selectedMonthCount, busy, table, choices]);
-  useEffect(() => {
-    if (!active || busy || capturePhase || !selectedCard || plays.length !== 1 || plays[0].action.payload?.targetIndex !== undefined) return;
-    const bounds = handActions.current?.getBoundingClientRect();
-    if (bounds && (bounds.bottom > window.innerHeight || bounds.top < 0)) handActions.current?.scrollIntoView({ block: 'nearest' });
-  }, [selected, active, busy, capturePhase, plays.length]);
   const motionEvent = presentation.step?.events[0];
   const landingEvent = motionEvent?.type === 'capture' && motionEvent.actor ? motionEvent : undefined;
   const captureLandingCards = (seat: PlayerId) => landingEvent?.actor === seat
@@ -114,7 +107,6 @@ export function MinhwatuTable({ view, language, playerId, playerNames, runAction
     : shownView?.result ? text(language, '정산 완료', 'Partida terminada')
     : shownView?.turn !== playerId ? text(language, '상대 차례', 'Turno rival')
     : capturePhase || selectedCard && selectedMonthCount === 2 ? text(language, '바닥 패를 고르세요', 'Elige una carta de la mesa')
-    : selectedCard ? text(language, '내기를 확정하세요', 'Confirma la carta')
     : text(language, '패를 고르세요', 'Elige una carta');
 
   const run = async (choice?: { action: GameAction }) => {
@@ -228,12 +220,17 @@ export function MinhwatuTable({ view, language, playerId, playerNames, runAction
             const isSelected = selected === card.id, canPlay = legalChoices.length > 0 && active && !capturePhase;
             const matches = table.filter(item => item.month === card.month).length;
             const capturable = active && !capturePhase && matches > 0;
-            return <button ref={node => { if (node) handButtons.current.set(card.id, node); else handButtons.current.delete(card.id); }} className={`hwatu-hand-choice ${isSelected ? 'is-selected' : ''} ${canPlay ? 'is-playable' : ''} ${capturable ? 'is-capturable' : ''}`} type="button" key={card.id} data-hwatu-card-id={card.id} disabled={!active || !legalChoices.length || capturePhase || busy} aria-pressed={isSelected} aria-label={`${text(language, `${card.month}월 ${card.flower.ko} ${card.badge.ko}`, `Mes ${card.month}, ${card.flower.es}, ${card.badge.es}`)}, ${Number(card.points ?? 0)} ${text(language, '점', 'pts')}${capturable ? ` · ${text(language, '가져올 수 있음', 'Se puede capturar')}` : ''}`} onClick={() => { setError(''); focusTarget.current = matches === 2 && !isSelected; setSelected(isSelected ? null : card.id); }}>
+            return <button ref={node => { if (node) handButtons.current.set(card.id, node); else handButtons.current.delete(card.id); }} className={`hwatu-hand-choice ${isSelected ? 'is-selected' : ''} ${canPlay ? 'is-playable' : ''} ${capturable ? 'is-capturable' : ''}`} type="button" key={card.id} data-hwatu-card-id={card.id} disabled={!active || !legalChoices.length || capturePhase || busy} aria-pressed={isSelected} aria-label={`${text(language, `${card.month}월 ${card.flower.ko} ${card.badge.ko}`, `Mes ${card.month}, ${card.flower.es}, ${card.badge.es}`)}, ${Number(card.points ?? 0)} ${text(language, '점', 'pts')}${capturable ? ` · ${text(language, '가져올 수 있음', 'Se puede capturar')}` : ''}`} onClick={() => {
+              if (busy || !active) return;
+              setError('');
+              if (legalChoices.length === 1) { void run(legalChoices[0]); return; }
+              focusTarget.current = legalChoices.length > 1 && !isSelected;
+              setSelected(isSelected ? null : card.id);
+            }}>
               <HwatuCard card={card} language={language}/>{capturable && <img className="hwatu-hand-capture-marker" src="/images/hwatu-support/capture.svg" alt="" aria-hidden="true"/>}
             </button>;
           })}</div>
-          <div className="hwatu-hand-actions" ref={handActions}>{active && !capturePhase && selectedCard && <div className="hwatu-confirm-row">
-            {plays.length === 1 && plays[0].action.payload?.targetIndex === undefined ? <button className="hwatu-confirm" type="button" disabled={busy} aria-label={text(language, `${selectedCard.month}월 패 내기`, `Jugar la carta del mes ${selectedCard.month}`)} onClick={() => void run(plays[0])}>{text(language, '내기', 'Jugar')}</button> : null}
+          <div className="hwatu-hand-actions">{active && !capturePhase && selectedCard && <div className="hwatu-confirm-row">
             <button className="hwatu-cancel" type="button" disabled={busy} onClick={cancelSelection}>{text(language, '선택 취소', 'Cancelar')}</button>
           </div>}
 </div>
