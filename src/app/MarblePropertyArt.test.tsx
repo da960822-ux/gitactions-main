@@ -70,16 +70,6 @@ describe('Marble property shapes', () => {
       }
     }
   });
-  it('draws distinct owner-colored building silhouettes at board size', () => {
-    const house = renderToStaticMarkup(createElement(MarblePropertyArt, { city:'new-york', level:1, routeVersion:3, owner:'p1', compact:true }));
-    const apartment = renderToStaticMarkup(createElement(MarblePropertyArt, { city:'new-york', level:2, routeVersion:3, owner:'p2', compact:true }));
-    expect(house).toContain('mp-compact-building');
-    expect(house).toContain('viewBox="0 0 80 60"');
-    expect(apartment).toContain('viewBox="0 0 80 72"');
-    expect(house).toContain('var(--mp-owner-color)');
-    expect(apartment).toContain('var(--mp-owner-color)');
-    expect(house).not.toBe(apartment);
-  });
   it('keeps every unbuilt city as land, separate from its final landmark', () => {
     for (const asset of journeyManifest.assets) {
       expect(render(asset.slug, 0)).toContain('building-stages.svg#land');

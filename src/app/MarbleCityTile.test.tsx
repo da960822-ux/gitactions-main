@@ -3,6 +3,7 @@ import { renderToStaticMarkup } from 'react-dom/server';
 import { describe, expect, it, vi } from 'vitest';
 import { MarbleCityTile } from './MarbleCityTile';
 import { marbleEngine } from '../games/marble';
+import dioramas from '../../public/images/marble/dioramas/manifest.json';
 
 describe('MarbleCityTile', () => {
   const board = marbleEngine.getPlayerView(marbleEngine.createInitialState(3), 'p1').board;
@@ -21,5 +22,9 @@ describe('MarbleCityTile', () => {
     expect(built).toContain('data-marble-price-kind="rent"');
     expect(built).toContain('data-building-level="3"');
     expect(built).toContain('premium/cities/new-york');
+  });
+  it('uses the same house and apartment assets as the enlarged city card', () => {
+    expect(render(3,'p1',1)).toContain(dioramas.commonStages.house.path!);
+    expect(render(3,'p1',2)).toContain(dioramas.commonStages.apartment.path!);
   });
 });

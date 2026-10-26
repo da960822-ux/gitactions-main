@@ -40,9 +40,20 @@ async function capture(mode, scenario, width, height) {
   const filename = `${mode}-${scenario}-${width}x${height}.png`;
   await page.screenshot({path:path.join(folder,filename)});
   const board = await page.locator('.mp-board-grid--40').boundingBox();
+  const rowHeights = await page.locator('.mp-board-grid--40 .mp-tile').evaluateAll(tiles => tiles.map(tile => tile.getBoundingClientRect().height));
   const sideArt = scenario === 'levels' ? await page.locator('.mp-tile--west.mp-kind-property[data-marble-owner]:not([data-marble-owner="bank"]) .mp-property-tile-art').first().boundingBox() : null;
-  console.log(filename, JSON.stringify({cells,board,sideArt,errors}));
+  const geometry = await page.locator('.mp-board-grid--40 .mp-kind-property').evaluateAll(tiles => tiles.map(tile => {
+    const name = tile.querySelector('.mp-tile-name');
+    const art = tile.querySelector('.mp-property-tile-art');
+    const price = tile.querySelector('.mp-tile-economy');
+    const tier = tile.querySelector('.mp-building-badge');
+    const a = name.getBoundingClientRect(), b = art.getBoundingClientRect(), c = price.getBoundingClientRect(), d = tier?.getBoundingClientRect(), outer = tile.getBoundingClientRect();
+    return {name:name.textContent, clipped:name.scrollWidth > name.clientWidth + 1, overlap:a.bottom > b.top + 1 || b.bottom > c.top + 1, tierClipped:!!d && (d.top < outer.top || d.bottom > outer.bottom)};
+  }));
+  console.log(filename, JSON.stringify({cells,board,sideArt,rowHeightRange:[Math.min(...rowHeights),Math.max(...rowHeights)],clippedNames:geometry.filter(tile => tile.clipped).map(tile => tile.name),errors}));
   if (cells !== 40 || errors.length || !board || board.width < width * .94 || board.y + board.height > height) throw Error(`Invalid board: ${filename}`);
+  if (Math.max(...rowHeights) - Math.min(...rowHeights) > 1) throw Error(`Uneven edge rows: ${filename}`);
+  if (geometry.some(tile => tile.clipped || tile.overlap || tile.tierClipped)) throw Error(`Tile geometry failed: ${filename}`);
   if (scenario === 'levels') {
     if (!sideArt || sideArt.height < 24) throw Error(`Side building too small: ${filename}`);
     await page.locator('.mp-tile').nth(4).locator('.mp-tile-select').click();
