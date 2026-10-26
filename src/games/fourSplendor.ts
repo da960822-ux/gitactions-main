@@ -6,20 +6,21 @@ import art from '../../public/images/splendor/card-map.json';
 
 const colors: Gem[] = ['white', 'blue', 'green', 'red', 'black'];
 const colorNames = { white: localized('흰색', 'Blanco'), blue: localized('파랑', 'Azul'), green: localized('초록', 'Verde'), red: localized('빨강', 'Rojo'), black: localized('검정', 'Negro'), gold: localized('금', 'Oro') };
-const walletFields = ['hands', 'bonuses', 'reserved', 'nobles', 'turns', 'cardPoints'] as const;
+const walletFields = ['hands', 'bonuses', 'reserved', 'acquiredCards', 'acquiredCardHistoryComplete', 'nobles', 'turns', 'cardPoints'] as const;
 const cardArt = new Map(art.cards.map(card => [card.engineId, `/images/splendor/${card.src}`]));
 const nobleArt = new Map(art.nobles.map(noble => [noble.engineId, `/images/splendor/${noble.src}`]));
 type WalletField = typeof walletFields[number];
-type FourWallets = { [K in WalletField]: Record<FourSeat, SplendorState[K]['p1']> };
+type FourWallets = { [K in WalletField]: Record<FourSeat, NonNullable<SplendorState[K]>['p1']> };
 export type FourSplendorState = Omit<SplendorState, WalletField | 'active' | 'result'> & FourWallets & { active: FourSeat; result: FourResult | null };
-export type FourSplendorView = FourView & { economy: ReturnType<typeof splendorEngine.getPlayerView> };
+export type FourSplendorView = Omit<FourView, 'players'> & { players: (FourView['players'][number] & { cardPoints: number; acquiredCards: SplendorCard[]; acquiredCardHistoryComplete: boolean })[]; economy: ReturnType<typeof splendorEngine.getPlayerView> };
 const points = (s: FourSplendorState, p: FourSeat) => s.cardPoints[p] + s.nobles[p];
 const teamScore = (s: FourSplendorState, team: 'A' | 'B') => fourSeats.filter(p => fourTeam(p) === team).reduce((n, p) => n + points(s, p), 0);
 
 // Reuse the existing engine's single-turn rules; four-player rotation and team scoring stay here.
 function project(s: FourSplendorState, p: FourSeat): SplendorState {
   const next = nextFourSeat(p);
-  const records = Object.fromEntries(walletFields.map(key => [key, { p1: s[key][p], p2: s[key][next] }])) as Pick<SplendorState, WalletField>;
+  const value = (key: WalletField, seat: FourSeat) => (s[key] as FourWallets[WalletField] | undefined)?.[seat] ?? (key === 'acquiredCards' ? [] : key === 'acquiredCardHistoryComplete' ? false : undefined);
+  const records = Object.fromEntries(walletFields.map(key => [key, { p1: value(key, p), p2: value(key, next) }])) as Pick<SplendorState, WalletField>;
   return { ...s, ...records, active: s.active === p ? 'p1' : 'p2', result: null, pendingEnd: false };
 }
 function valid(s: FourSplendorState, p: FourSeat, action: GameAction) {
@@ -39,7 +40,7 @@ function finish(s: FourSplendorState): FourSplendorState {
 function apply(s: FourSplendorState, p: FourSeat, action: GameAction): FourSplendorState {
   const error = valid(s, p, action); if (error) throw new Error(error);
   const after = splendorEngine.applyAction(project(s, p), 'p1', action);
-  const records = Object.fromEntries(walletFields.map(key => [key, { ...s[key], [p]: after[key].p1 }])) as FourWallets;
+  const records = Object.fromEntries(walletFields.map(key => [key, { ...(s[key] as FourWallets[WalletField] | undefined), [p]: (after[key] as FourWallets[WalletField] | undefined)?.p1 ?? (key === 'acquiredCards' ? [] : key === 'acquiredCardHistoryComplete' ? false : undefined) }])) as FourWallets;
   let next: FourSplendorState = { ...s, ...records, bank: after.bank, market: after.market, decks: after.decks, availableNobles: after.availableNobles, pendingNobles: after.pendingNobles, active: after.active === 'p1' ? p : nextFourSeat(p), result: null };
   // A still-eligible noble can visit after any action, including a later take/reserve turn.
   if (action.type !== 'chooseNoble' && !next.pendingNobles.length && next.nobles[p] === s.nobles[p]) {
@@ -79,7 +80,7 @@ function view(s: FourSplendorState, p: FourSeat): FourSplendorView {
     }
     return choice;
   });
-  const players = fourSeats.map(id => ({ id, score: points(s, id), count: s.reserved[id].length, tokens: { ...s.hands[id] }, bonuses: { ...s.bonuses[id] }, detail: localized(`보석 ${gemText(s.hands[id], 'ko')} / 보너스 ${gemText(s.bonuses[id], 'ko')} / 차례 ${s.turns[id]}`, `Gemas ${gemText(s.hands[id], 'es')} / Bonos ${gemText(s.bonuses[id], 'es')} / Turnos ${s.turns[id]}`) }));
+  const players = fourSeats.map(id => ({ id, score: points(s, id), cardPoints: s.cardPoints[id], acquiredCards: (s.acquiredCards?.[id] ?? []).map(card => ({ ...card, cost: { ...card.cost } })), acquiredCardHistoryComplete: s.acquiredCardHistoryComplete?.[id] ?? false, count: s.reserved[id].length, tokens: { ...s.hands[id] }, bonuses: { ...s.bonuses[id] }, detail: localized(`보석 ${gemText(s.hands[id], 'ko')} / 보너스 ${gemText(s.bonuses[id], 'ko')} / 차례 ${s.turns[id]}`, `Gemas ${gemText(s.hands[id], 'es')} / Bonos ${gemText(s.bonuses[id], 'es')} / Turnos ${s.turns[id]}`) }));
   return { game: 'splendor', turn: s.active, phase: s.result ? 'finished' : s.pendingNobles.length ? 'chooseNoble' : 'action', players, hand: s.reserved[p].map(cardView), panels: [
     { id: 'bank', title: localized('공용 보석 은행', 'Reserva de gemas'), cards: Object.entries(s.bank).map(([gem, count]) => ({ id: gem, title: localized(`${colorNames[gem as Gem | 'gold'].ko} ${count}`, `${colorNames[gem as Gem | 'gold'].es} ${count}`), color: gem })) },
     ...([1, 2, 3] as const).map(tier => ({ id: `tier-${tier}`, title: localized(`${tier}단계 · 더미 ${s.decks[tier].length}장`, `Nivel ${tier} · Mazo ${s.decks[tier].length}`), cards: s.market[tier].map(cardView) })),
@@ -92,7 +93,7 @@ export const fourSplendorEngine: FourEngine = {
   id: 'splendor',
   createInitialState(seed): FourSplendorState {
     const base = splendorEngine.createInitialState(seed);
-    const records = Object.fromEntries(walletFields.map(key => [key, Object.fromEntries(fourSeats.map(p => [p, structuredClone(base[key].p1)]))])) as FourWallets;
+    const records = Object.fromEntries(walletFields.map(key => [key, Object.fromEntries(fourSeats.map(p => [p, structuredClone((base[key] as FourWallets[WalletField])['p1'])]))])) as FourWallets;
     const nobles = shuffle(splendorNobles.map((n, i) => ({ id: `n${i}`, ...n })), seededRandom(seed ^ 0x731f)).slice(0, 5);
     return { ...base, ...records, active: 'p1', bank: { white: 7, blue: 7, green: 7, red: 7, black: 7, gold: 5 }, availableNobles: Object.fromEntries(nobles.map(n => [n.id, { points: n.points, requirement: { ...n.requirement } }])), result: null };
   },

@@ -56,6 +56,16 @@ describe('dedicated four-player Splendor table', () => {
     expect(html).toContain('aria-label="Tus cartas reservadas"');
   });
 
+  it('adds accessible public opponent detail controls without revealing reserved card identities', () => {
+    let state = fourSplendorEngine.createInitialState(27);
+    const hidden = state.market[2][0].id;
+    state = fourSplendorEngine.applyAction(state, 'p1', { type: 'take', payload: { gems: ['white', 'blue', 'green'] } });
+    state = fourSplendorEngine.applyAction(state, 'p2', { type: 'reserve', payload: { tier: 2, index: 0 } });
+    const html = renderToStaticMarkup(<SplendorTeamTable view={fourSplendorEngine.getPlayerView(state, 'p1')} language="es" runAction={async () => true}/>);
+    expect(html.match(/aria-haspopup="dialog"/g)).toHaveLength(3);
+    expect(html).not.toContain(`data-card-id="${hidden}"`);
+  });
+
   it('keeps the same game-specific table for waiting, final equal-turn play and team results', () => {
     const state = fourSplendorEngine.createInitialState(17);
     state.active = 'p3'; state.pendingEnd = true;
