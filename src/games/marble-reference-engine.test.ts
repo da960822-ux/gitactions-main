@@ -1,7 +1,7 @@
 import { describe, expect, it } from 'vitest';
 import { seededRandom } from '../core/types';
 import { fourMarbleEngine, type FourMarbleState, type MarbleView as TeamMarbleView } from './fourMarble';
-import { marbleEngine, type MarbleEventId, type MarbleState } from './marble';
+import { marbleBuildCost, marbleEngine, type MarbleEventId, type MarbleState } from './marble';
 import { classicMarbleCityToll, classicMarbleReferenceProfile } from './marble-reference-profile';
 
 function seedForSum(sum: number) {
@@ -66,6 +66,74 @@ describe('active Kakao World / Business engine profile', () => {
     expect(classicMarbleCityToll('방콕', teamCity.buildings)).toBe(teamCity.currentToll);
   });
 
+  it('matches first-two-lap cash, build cost, toll, and asset value between both routes', () => {
+    const two = marbleEngine.createInitialState(seedForSum(2));
+    two.positions.p1 = 31;
+    let twoNext = step2(two, 'roll');
+    twoNext = step2(twoNext, 'buy');
+    twoNext = step2(twoNext, 'build', { tile: 1, structure: 'villa' });
+    expect(twoNext.money.p1).toBe(5_675_000);
+    expect(marbleEngine.getPlayerView(twoNext, 'p1').board.tiles[1].currentToll).toBe(20_000);
+    expect(marbleEngine.getPlayerView(twoNext, 'p1').actions.map((item: any) => item.action.payload?.structure)).toContain('building');
+    twoNext.active = 'p1'; twoNext.phase = 'roll'; twoNext.positions.p1 = 31; twoNext.rng = seedForSum(2);
+    twoNext = step2(twoNext, 'roll');
+    expect(twoNext.money.p1).toBe(6_425_000);
+    expect(twoNext.completedLaps?.p1).toBe(2);
+    twoNext = step2(twoNext, 'build', { tile: 1, structure: 'building' });
+    expect(twoNext.money.p1).toBe(6_350_000);
+    expect(marbleEngine.getPlayerView(twoNext, 'p1').board.tiles[1].currentToll).toBe(70_000);
+    expect(marbleEngine.getPlayerView(twoNext, 'p1').actions.map((item: any) => item.action.payload?.structure)).toContain('hotel');
+
+    const team = fourMarbleEngine.createInitialState(seedForSum(2));
+    team.positions.p1 = 31;
+    let teamNext = step4(team, 'roll');
+    teamNext = step4(teamNext, 'buy');
+    teamNext = step4(teamNext, 'build', { tile: 1, structure: 'villa' });
+    expect(teamNext.money.p1).toBe(5_675_000);
+    expect((fourMarbleEngine.getPlayerView(teamNext, 'p1') as TeamMarbleView).publicBoard[1].currentToll).toBe(20_000);
+    expect(fourMarbleEngine.getPlayerView(teamNext, 'p1').actions.map((item: any) => item.action.payload?.structure)).toContain('building');
+    teamNext.active = 'p1'; teamNext.phase = 'roll'; teamNext.positions.p1 = 31; teamNext.rng = seedForSum(2);
+    teamNext = step4(teamNext, 'roll');
+    expect(teamNext.money.p1).toBe(6_425_000);
+    expect(teamNext.completedLaps?.p1).toBe(2);
+    teamNext = step4(teamNext, 'build', { tile: 1, structure: 'building' });
+    expect(teamNext.money.p1).toBe(6_350_000);
+    expect((fourMarbleEngine.getPlayerView(teamNext, 'p1') as TeamMarbleView).publicBoard[1].currentToll).toBe(70_000);
+    expect(fourMarbleEngine.getPlayerView(teamNext, 'p1').actions.map((item: any) => item.action.payload?.structure)).toContain('hotel');
+
+    const mask = { villa: true, building: true, hotel: true, landmark: true };
+    const twoAssetState = { ...marbleEngine.createInitialState(2), properties: { '1': { owner: 'p1' as const, houses: 3, buildings: mask } } };
+    const teamAssetState = { ...fourMarbleEngine.createInitialState(2), properties: { '1': { owner: 'p1' as const, houses: 3, buildings: mask } } };
+    const twoAssets = marbleEngine.getPlayerView(twoAssetState, 'p1').ownHand.assets;
+    const teamAssets = (fourMarbleEngine.getPlayerView(teamAssetState, 'p1') as TeamMarbleView).players.find(player => player.id === 'p1')!.score;
+    expect(twoAssets).toBe(5_400_000);
+    expect(teamAssets).toBe(twoAssets);
+  });
+
+  it('matches every valid city building mask and individual construction cost in both engine views', () => {
+    const base2 = marbleEngine.createInitialState(6), base4 = fourMarbleEngine.createInitialState(6);
+    const cityIndices: number[] = marbleEngine.getPlayerView(base2, 'p1').board.tiles.flatMap((tile: any, index: number) => tile.kind === 'property' && tile.referenceCity ? [index] : []);
+    for (let bits = 0; bits < 16; bits++) {
+      const buildings = { villa: !!(bits & 1), building: !!(bits & 2), hotel: !!(bits & 4), landmark: !!(bits & 8) };
+      if (buildings.landmark && !(buildings.villa && buildings.building && buildings.hotel)) continue;
+      const houses = [buildings.villa, buildings.building, buildings.hotel].filter(Boolean).length;
+      const properties = Object.fromEntries(cityIndices.map(index => [index, { owner: 'p1' as const, houses, buildings }]));
+      const view2 = marbleEngine.getPlayerView({ ...base2, properties }, 'p1');
+      const view4 = fourMarbleEngine.getPlayerView({ ...base4, properties }, 'p1') as TeamMarbleView;
+      for (const index of cityIndices) {
+        const city2: any = view2.board.tiles[index], city4 = view4.publicBoard[index];
+        const expected = classicMarbleCityToll(city2.referenceCity, buildings);
+        expect(city2.currentToll).toBe(expected);
+        expect(city4.currentToll).toBe(expected);
+        for (const structure of ['villa', 'building', 'hotel', 'landmark'] as const) {
+          const expectedCost = classicMarbleReferenceProfile.cities.find(city => city.name === city2.referenceCity)!.construction[structure];
+          expect(marbleBuildCost(city2, houses, 4, structure)).toBe(expectedCost);
+          expect(marbleBuildCost(city4, houses, 4, structure)).toBe(expectedCost);
+        }
+      }
+    }
+  });
+
   it('applies the own-arrival rule and lap gates, while keeping salary marked as inferred', () => {
     const state = marbleEngine.createInitialState(seedForSum(2));
     state.phase = 'main'; state.pendingTile = 1; state.positions.p1 = 1; state.buildArrivalTile = null; state.properties['1'] = { owner: 'p1', houses: 0, buildings: {} };
@@ -108,6 +176,81 @@ describe('active Kakao World / Business engine profile', () => {
     expect(fourMarbleEngine.chooseAiAction(teamView, 'p1', () => 0)?.type).toBe('endTurn');
   });
 
+  it('settles each island toll by owner count and advances beach rent only after the prior toll is paid', () => {
+    const islandIndices = [4, 14, 18], tolls = [200_000, 400_000, 800_000];
+    for (let count = 1; count <= 3; count++) {
+      const two = marbleEngine.createInitialState(seedForSum(2)); two.positions.p1 = 2;
+      for (const index of islandIndices.slice(0, count)) two.properties[String(index)] = { owner: 'p2', houses: 0, buildings: {} };
+      const twoPaid = step2(two, 'roll');
+      expect(twoPaid.money.p1).toBe(5_000_000 - tolls[count - 1]);
+      expect(twoPaid.money.p2).toBe(5_000_000 + tolls[count - 1]);
+      expect(marbleEngine.validateAction(twoPaid, 'p1', { type: 'takeover', payload: { tile: 4 } })).toBeTruthy();
+
+      const team = fourMarbleEngine.createInitialState(seedForSum(2)); team.positions.p1 = 2;
+      for (const index of islandIndices.slice(0, count)) team.properties[String(index)] = { owner: 'p2', houses: 0, buildings: {} };
+      const teamPaid = step4(team, 'roll');
+      expect(teamPaid.money.p1).toBe(5_000_000 - tolls[count - 1]);
+      expect(teamPaid.money.p2).toBe(5_000_000 + tolls[count - 1]);
+      expect(fourMarbleEngine.validateAction(teamPaid, 'p1', { type: 'takeover', payload: { tile: 4 } })).toBeTruthy();
+    }
+
+    let beach = marbleEngine.createInitialState(seedForSum(2)); beach.positions.p1 = 7;
+    beach.properties['9'] = { owner: 'p2', houses: 0, buildings: {} };
+    beach = step2(beach, 'roll');
+    expect(beach.money.p1).toBe(4_800_000);
+    expect(beach.tourismVisitStages?.['9']).toBe(2);
+    beach.phase = 'roll'; beach.positions.p1 = 7; beach.rng = seedForSum(2);
+    beach = step2(beach, 'roll');
+    expect(beach.money.p1).toBe(4_400_000);
+    expect(beach.money.p2).toBe(5_600_000);
+    expect(beach.tourismVisitStages?.['9']).toBe(3);
+
+    let teamBeach = fourMarbleEngine.createInitialState(seedForSum(2)); teamBeach.positions.p1 = 7;
+    teamBeach.properties['9'] = { owner: 'p2', houses: 0, buildings: {} };
+    teamBeach = step4(teamBeach, 'roll');
+    expect(teamBeach.money.p1).toBe(4_800_000);
+    expect(teamBeach.tourismVisitStages?.['9']).toBe(2);
+    teamBeach.phase = 'roll'; teamBeach.positions.p1 = 7; teamBeach.rng = seedForSum(2);
+    teamBeach = step4(teamBeach, 'roll');
+    expect(teamBeach.money.p1).toBe(4_400_000);
+    expect(teamBeach.money.p2).toBe(5_600_000);
+    expect(teamBeach.tourismVisitStages?.['9']).toBe(3);
+
+    let twoDebt = marbleEngine.createInitialState(seedForSum(2)); twoDebt.positions.p1 = 7; twoDebt.money.p1 = 180_000;
+    twoDebt.properties['9'] = { owner: 'p2', houses: 0, buildings: {} };
+    twoDebt.properties['1'] = { owner: 'p1', houses: 0, buildings: {} };
+    twoDebt = step2(twoDebt, 'roll');
+    expect(twoDebt.phase).toBe('debt');
+    expect(twoDebt.tourismVisitStages?.['9']).toBe(1);
+    twoDebt = step2(twoDebt, 'sell-property', { tile: 1 });
+    expect(twoDebt.money.p1).toBe(5_000);
+    expect(twoDebt.tourismVisitStages?.['9']).toBe(2);
+
+    let twoBankrupt = marbleEngine.createInitialState(seedForSum(2)); twoBankrupt.positions.p1 = 7; twoBankrupt.money.p1 = 0;
+    twoBankrupt.properties['9'] = { owner: 'p2', houses: 0, buildings: {} };
+    twoBankrupt = step2(twoBankrupt, 'roll');
+    expect(twoBankrupt.phase).toBe('debt');
+    twoBankrupt = step2(twoBankrupt, 'declare-bankruptcy');
+    expect(twoBankrupt.tourismVisitStages?.['9']).toBe(1);
+
+    let teamDebt = fourMarbleEngine.createInitialState(seedForSum(2)); teamDebt.positions.p1 = 7; teamDebt.money.p1 = 180_000;
+    teamDebt.properties['9'] = { owner: 'p2', houses: 0, buildings: {} };
+    teamDebt.properties['1'] = { owner: 'p1', houses: 0, buildings: {} };
+    teamDebt = step4(teamDebt, 'roll');
+    expect(teamDebt.phase).toBe('debt');
+    expect(teamDebt.tourismVisitStages?.['9']).toBe(1);
+    teamDebt = step4(teamDebt, 'sell-property', { tile: 1 });
+    expect(teamDebt.money.p1).toBe(5_000);
+    expect(teamDebt.tourismVisitStages?.['9']).toBe(2);
+
+    let teamBankrupt = fourMarbleEngine.createInitialState(seedForSum(2)); teamBankrupt.positions.p1 = 7; teamBankrupt.money.p1 = 0;
+    teamBankrupt.properties['9'] = { owner: 'p2', houses: 0, buildings: {} };
+    teamBankrupt = step4(teamBankrupt, 'roll');
+    expect(teamBankrupt.phase).toBe('debt');
+    teamBankrupt = step4(teamBankrupt, 'declare-bankruptcy');
+    expect(teamBankrupt.tourismVisitStages?.['9']).toBe(1);
+  });
+
   it('does not apply undocumented special effects as taxes or random cards', () => {
     const s = { ...marbleEngine.createInitialState(seedForSum(2)), eventDeck: ['lottery'] as MarbleEventId[] };
     const atBonus = step2(s, 'roll');
@@ -127,5 +270,27 @@ describe('active Kakao World / Business engine profile', () => {
     expect(marbleEngine.validateAction(state, 'p1', { type: 'declare-bankruptcy' })).toBeNull();
     const finished = marbleEngine.applyAction(state, 'p1', { type: 'declare-bankruptcy' });
     expect(finished.result?.winner).toBe('p2');
+
+    const team = fourMarbleEngine.createInitialState(31);
+    team.phase = 'debt'; team.money.p1 = 0;
+    team.pendingPayment = { amount: 100_000, creditor: 'bank', resumeActive: 'p1' };
+    expect(fourMarbleEngine.validateAction(team, 'p1', { type: 'declare-bankruptcy' })).toBeNull();
+    expect(step4(team, 'declare-bankruptcy').eliminated.p1).toBe(true);
+  });
+
+  it('preserves old-route salaries and state values instead of upgrading saved games', () => {
+    const newTwo = marbleEngine.createInitialState(seedForSum(2));
+    const oldTwo = { ...newTwo, referenceProfileId: undefined, cityRouteVersion: 3 as const, economicVersion: 3 as const, money: { p1: 1500, p2: 1500 }, positions: { p1: 39, p2: 0 } };
+    const afterTwo = step2(oldTwo, 'roll');
+    expect(marbleEngine.getPlayerView(afterTwo, 'p1').board.tiles).toHaveLength(40);
+    expect(afterTwo.money.p1).toBe(1700);
+    expect(afterTwo.completedLaps).toEqual(newTwo.completedLaps);
+
+    const newTeam = fourMarbleEngine.createInitialState(seedForSum(2));
+    const oldTeam = { ...newTeam, referenceProfileId: undefined, cityRouteVersion: undefined, economicVersion: undefined, completedLaps: undefined, money: { p1: 1500, p2: 1500, p3: 1500, p4: 1500 }, positions: { p1: 39, p2: 0, p3: 0, p4: 0 } };
+    const afterTeam = step4(oldTeam, 'roll');
+    expect((fourMarbleEngine.getPlayerView(afterTeam, 'p1') as TeamMarbleView).publicBoard).toHaveLength(40);
+    expect(afterTeam.money.p1).toBe(1700);
+    expect(afterTeam.completedLaps).toBeUndefined();
   });
 });

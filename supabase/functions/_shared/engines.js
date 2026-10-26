@@ -6259,6 +6259,11 @@ function classicMarbleInvestment(cityName, buildings = {}) {
   if (!city) return null;
   return city.land + ["villa", "building", "hotel"].reduce((total, structure) => total + (buildings[structure] ? city.construction[structure] : 0), 0);
 }
+function classicMarbleAssetValue(cityName, buildings = {}) {
+  const investment = classicMarbleInvestment(cityName, buildings);
+  const city = cityByName.get(cityName);
+  return investment === null || !city ? null : investment + (buildings.landmark ? city.construction.landmark : 0);
+}
 function classicMarbleConstructionCost(cityName, structure) {
   return cityByName.get(cityName)?.construction[structure] ?? null;
 }
@@ -6441,6 +6446,12 @@ var boardFor = (s) => {
   const board = s.referenceProfileId === classicMarbleReferenceProfile.id || s.cityRouteVersion === 4 ? referenceBoard : s.boardVersion === 2 ? s.cityRouteVersion === 3 ? landmarkJourneyBoard : s.cityRouteVersion === 2 ? journeyBoard : modernBoard : legacyBoard;
   return s.economicVersion === 3 ? board.map((tile) => tile.kind === "property" ? { ...tile, rent: marbleBaseRent(tile) } : tile) : board;
 };
+function advanceReferenceBeachStage(s, index) {
+  const tile = boardFor(s)[index];
+  if (tile?.kind !== "tourism" || classicMarbleReferenceProfile.tourism.find((site) => site.name === tile.name.ko)?.rentMode !== "visit-stage") return;
+  s.tourismVisitStages ??= {};
+  s.tourismVisitStages[String(index)] = Math.min(3, (s.tourismVisitStages[String(index)] ?? 1) + 1);
+}
 var legacyIds = ["festival", "lottery", "rent-rebate", "travel-cost", "maintenance", "visit-santo-domingo", "advance-start", "retreat"];
 var modernIds = [...legacyIds, "go-to-island", "escape-pass", "train-ticket", "city-dividend"];
 var expandedIds = [...modernIds, "monopoly-warning", "city-festival", "blackout", "rent-pass"];
@@ -6491,6 +6502,7 @@ function takeoverOffer(s, p) {
 var assetsFor = (s, p, board) => s.money[p] - (s.debt?.[p] ?? 0) + Object.entries(s.properties).reduce((sum2, [index, record2]) => {
   if (record2.owner !== p) return sum2;
   const tile = board[Number(index)];
+  if (tile?.referenceProfileId === classicMarbleReferenceProfile.id && tile.referenceCity) return sum2 + (classicMarbleAssetValue(tile.referenceCity, record2.buildings) ?? 0);
   const buildingCost = tile?.referenceProfileId === classicMarbleReferenceProfile.id && tile.referenceCity ? ["villa", "building", "hotel"].reduce((total, structure) => total + (record2.buildings?.[structure] ? classicMarbleConstructionCost(tile.referenceCity, structure) ?? 0 : 0), 0) + (record2.buildings?.landmark ? classicMarbleConstructionCost(tile.referenceCity, "landmark") ?? 0 : 0) : tile ? Array.from({ length: record2.houses }, (_, level) => marbleBuildCost(tile, level, s.economicVersion)).reduce((total, cost) => total + cost, 0) : 0;
   return sum2 + (tile?.price ?? 0) + buildingCost;
 }, 0);
@@ -6810,8 +6822,11 @@ function resolveLanding(s, p, index, drawEvent) {
     if (owner.owner !== p && tile.kind === "tourism") {
       const ownerTourismCount = Object.entries(s.properties).filter(([ownedIndex, property]) => property.owner === owner.owner && board[Number(ownedIndex)]?.kind === "tourism").length;
       const toll = classicMarbleTourismRent(tile.name.ko, { ownerTourismCount, beachVisitStage: beachStage, visitorPosition: s.positions[p], landingIndex: index });
-      if (toll.amount !== null) s = pay(s, p, toll.amount, owner.owner, { ko: `${tile.name.ko} \uAD00\uAD11 \uD1B5\uD589\uB8CC`, es: `Alquiler tur\xEDstico en ${tile.name.es}` }, "rent");
-      advanceBeach();
+      if (toll.amount !== null) {
+        s = pay(s, p, toll.amount, owner.owner, { ko: `${tile.name.ko} \uAD00\uAD11 \uD1B5\uD589\uB8CC`, es: `Alquiler tur\xEDstico en ${tile.name.es}` }, "rent");
+        if (s.phase === "debt" && s.pendingPayment) s.pendingPayment.beachAdvanceTile = index;
+        else advanceBeach();
+      }
     } else if (owner.owner !== p) {
       if (s.propertyRulesVersion === 1) s.takeoverTile = index;
       let rent = propertyRent(tile, owner, s.boardVersion === 2, s);
@@ -7096,6 +7111,7 @@ function step(s, p, a) {
       n.pendingPayment = null;
       n.phase = pending.resumePhase;
       n.active = pending.resumeActive;
+      if (pending.beachAdvanceTile !== void 0) advanceReferenceBeachStage(n, pending.beachAdvanceTile);
     }
     return n;
   }

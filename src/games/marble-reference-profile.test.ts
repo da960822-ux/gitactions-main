@@ -2,6 +2,7 @@ import { describe, expect, it } from 'vitest';
 import {
   classicMarbleAcquisitionPrice,
   classicMarbleAvailableStructures,
+  classicMarbleAssetValue,
   classicMarbleBankPurchasePrice,
   classicMarbleCityToll,
   classicMarbleCityTollEvidence,
@@ -37,6 +38,8 @@ describe('historical Kakao World / Business reference profile', () => {
     expect(classicMarbleInvestment('방콕', selected)).toBe(200_000);
     expect(classicMarbleAcquisitionPrice('방콕', selected)).toBe(400_000);
     expect(classicMarbleSaleValue('방콕', selected)).toBe(100_000);
+    expect(classicMarbleAssetValue('방콕', { villa: true, building: true, hotel: true, landmark: true })).toBe(400_000);
+    expect(classicMarbleSaleValue('방콕', { villa: true, building: true, hotel: true, landmark: true })).toBe(137_500);
     expect(classicMarbleBankPurchasePrice('city', '서울')).toBe(500_000);
     expect(classicMarbleBankPurchasePrice('tourism', '독도')).toBe(250_000);
     expect(classicMarbleAcquisitionPrice('독도')).toBeNull();
