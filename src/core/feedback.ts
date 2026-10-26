@@ -101,6 +101,15 @@ export const feedback = {
     return data?.seat === 'p1' || data?.seat === 'p2' ? data.seat : null;
   },
 
+  async memberCount(spaceId: string): Promise<number> {
+    if (!spaceId) throw new Error('feedback_space_required');
+    if (!db) return readSpace(spaceId).members.length;
+    await session();
+    const { data, error } = await db.from('feedback_space_members').select('seat').eq('space_id', spaceId);
+    if (error) throw error;
+    return data?.length ?? 0;
+  },
+
   async list(spaceId: string): Promise<FeedbackEntry[]> {
     if (!spaceId) throw new Error('feedback_space_required');
     if (!db) {

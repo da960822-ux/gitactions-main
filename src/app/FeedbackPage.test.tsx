@@ -124,7 +124,9 @@ describe('Mami ideas page copy', () => {
     assert.match(html, /편하게 적어줘\. 읽어볼게 ♡/);
     assert.match(html, /생각나면 한 줄만 남겨줘/);
     assert.match(html, /placeholder="같이 해보고 싶은 건…"/);
-    assert.match(html, />Papi한테 보내기</);
+    assert.match(html, />아이디어 저장하기</);
+    assert.match(html, /다른 사람은 참여한 뒤 볼 수 있어요/);
+    assert.doesNotMatch(html, /Papi한테 보내기|우리 둘의 비공개 공간에 저장돼요/);
     assert.doesNotMatch(html, /남편에게|Para mi esposo/);
   });
 
@@ -137,7 +139,9 @@ describe('Mami ideas page copy', () => {
     assert.match(html, /Cuando se te ocurra algo, déjame una línea/);
     assert.match(html, /Escríbeme con confianza\. Lo leeré con cariño ♡/);
     assert.match(html, /placeholder="Me gustaría que probáramos…"/);
-    assert.match(html, />Enviar a Papi</);
+    assert.match(html, />Guardar idea</);
+    assert.match(html, /Otra persona podrá verlo cuando se una/);
+    assert.doesNotMatch(html, /Enviar a Papi|Se guarda en nuestro espacio privado/);
     assert.doesNotMatch(html, /Para mi esposo/);
   });
 });
