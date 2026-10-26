@@ -56,8 +56,8 @@ describe('Marble property shapes', () => {
         expect(html).not.toContain('building-stages.svg');
       }
       const unbuilt = renderToStaticMarkup(createElement(MarblePropertyArt, { city: slug, level: 0, routeVersion: 3 }));
-      expect(unbuilt).toContain('building-stages.svg#land');
-      expect(unbuilt).not.toContain('.webp');
+      expect(unbuilt).toContain(dioramas.assets.find(asset => asset.slug === slug)!.path!);
+      expect(unbuilt).toContain('data-building-level="0"');
     }
   });
   it('keeps every unbuilt city as land, separate from its final landmark', () => {

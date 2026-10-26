@@ -20,6 +20,10 @@ export function MarblePropertyArt({owner, ownerLabel, className = '', ...props}:
 }
 function MarblePropertyImage({ city, level = 0, className = '', routeVersion = 2, language = 'ko' }: { city: string; level?: number; className?: string; routeVersion?: number; language?: Language }) {
   const tintId = `mp-building-${useId().replace(/:/g, '')}`;
+  if (routeVersion >= 3 && level === 0) {
+    const asset = dioramas.assets.find(item => item.slug === city);
+    if (asset?.path) return <img className={className} data-building-level={0} src={asset.path} alt="" aria-hidden="true" loading="lazy" decoding="async"/>;
+  }
   if (routeVersion >= 3 && level > 0) {
     const asset = level === 1 ? dioramas.commonStages.house : level === 2 ? dioramas.commonStages.apartment : dioramas.assets.find(asset => asset.slug === city);
     if (asset?.path && level < 3) return <svg className={className} data-building-level={level} data-city-color={cityColors[city] ?? '#a7b7aa'} viewBox={`0 0 ${asset.width} ${asset.height}`} preserveAspectRatio="xMidYMax meet" aria-hidden="true" focusable="false">

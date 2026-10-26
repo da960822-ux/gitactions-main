@@ -7,10 +7,10 @@ import MarbleTeamBoard from './MarbleTeamBoard';
 const state=()=>fourMarbleEngine.createInitialState(71) as FourMarbleState;
 const render=(s:FourMarbleState,language:'ko'|'es'='ko')=>renderToStaticMarkup(createElement(MarbleTeamBoard,{view:fourMarbleEngine.getPlayerView(s,'p1'),language,nickname:'연석',runAction:vi.fn(),onReplay:vi.fn(),onExit:vi.fn(),onSelectGame:vi.fn()}));
 describe('native four-player Marble screen',()=>{
- it('puts the legal phase action ahead of optional loans in the center card',()=>{
+ it('puts the legal phase action ahead of optional loans in the central dice stage',()=>{
   const html=render(state());
-  const center=html.slice(html.indexOf('class="mp-center-action mt-center-action"'),html.indexOf('</section>',html.indexOf('class="mp-center-action mt-center-action"')));
-  expect(center).toContain('주사위 굴리기');expect(center).not.toContain('대출 받기');
+  const center=html.slice(html.indexOf('class="mp-center-stage mt-center-stage'),html.indexOf('</section>',html.indexOf('class="mp-center-stage mt-center-stage')));
+  expect(center).toContain('주사위 굴리기');expect(center).toContain('class="mt-dice mp-stage-dice');expect(center).not.toContain('대출 받기');
  });
  it('owns its four-seat banks and controls without mounting the two-player board',()=>{
   for(const language of ['ko','es'] as const){
@@ -44,7 +44,7 @@ describe('native four-player Marble screen',()=>{
   expect(render(s)).toContain('marble-pawn--dragon');
   s.positions.p1=1;s.pendingTile=1;s.phase='decision';
   const purchase=render(s);
-  expect(purchase).toContain('매입 100 · 통행료 20');expect(purchase).toContain('구매 후 현금 1,400');
+  expect(purchase).toContain('매입 100 · 기본 통행료 20');expect(purchase).toContain('구매 후 현금 1,400');
   expect(purchase).toContain('도시 구매 · 100');expect(purchase).toContain('구매 안 함');
   expect(purchase).toContain('300을 받고 330을 갚습니다.');
  });
