@@ -24,6 +24,13 @@ async function scene(mode,scenario,language,width,height,{motion=false}={}) {
   if(scenario==='levels') {
    for(const [index,buildings] of [[1,{}],[3,{villa:true}],[5,{building:true}],[6,{hotel:true}],[7,{villa:true,building:true,hotel:true,landmark:true}]])snapshot.properties[index]={owner:index===5?'p2':'p1',houses:Object.keys(buildings).filter(name=>name!=='landmark').length,buildings};
   }
+  if(scenario==='olympics'||scenario==='olympics-empty'){
+   snapshot.positions.p1=16;snapshot.pendingTile=16;snapshot.phase='olympic-decision';
+   if(scenario==='olympics'){
+    snapshot.properties[1]={owner:'p1',houses:0,buildings:{}};
+    snapshot.properties[4]={owner:'p1',houses:0,buildings:{}};
+   }
+  }
   if(scenario==='rent'||scenario==='rent-pass') {
    const {classicMarbleCityToll}=await import('/src/games/marble-reference-profile.ts');
    const amount=classicMarbleCityToll('뉴욕',{villa:true});
@@ -61,6 +68,19 @@ async function scene(mode,scenario,language,width,height,{motion=false}={}) {
   if(after.cash!==before.cash||after.passes!==0||after.phase==='rent-decision')throw Error(`${mode} rent pass outcome incorrect: ${JSON.stringify({before,after})}`);
   console.log('RENT PASS',mode,JSON.stringify({before,after,payBox,passBox}));
   await page.screenshot({path:path.join(output,`live32-${mode}-rent-pass-resolved-${language}-${width}x${height}.png`)});
+ }
+ if(scenario==='olympics'||scenario==='olympics-empty'){
+  const actions=await page.evaluate(()=>window.__marbleEngine.getPlayerView(window.__marbleState,'p1').actions.map(item=>item.action));
+  if(scenario==='olympics'){
+   if(actions.filter(item=>item.type==='choose-olympic-target').length!==2||!actions.some(item=>item.type==='skip-olympics'))throw Error(`${mode} Olympics actions incorrect`);
+   await page.locator('.mp-stage-destination select').selectOption(JSON.stringify({type:'choose-olympic-target',payload:{tile:4}}));
+   await page.screenshot({path:path.join(output,`live32-${mode}-olympics-selected-${language}-${width}x${height}.png`)});
+  }else if(actions.length!==1||actions[0].type!=='skip-olympics')throw Error(`${mode} empty Olympics must offer skip`);
+  await page.locator('#mp-action-primary,#mt-action-primary').first().click();await page.waitForTimeout(200);
+  const after=await page.evaluate(()=>({phase:window.__marbleState.phase,cash:window.__marbleState.money.p1,olympics:window.__marbleState.activeOlympics,hostings:window.__marbleState.olympicHostings}));
+  if(after.phase!=='main'||after.cash!==5000000||scenario==='olympics'&&(after.olympics?.tile!==4||after.olympics?.multiplier!==2)||scenario==='olympics-empty'&&after.olympics)throw Error(`${mode} Olympics action not applied: ${JSON.stringify(after)}`);
+  console.log('OLYMPICS',mode,scenario,JSON.stringify(after));
+  await page.screenshot({path:path.join(output,`live32-${mode}-${scenario}-resolved-${language}-${width}x${height}.png`)});
  }
  if(['purchase','build','rent','tourism'].includes(scenario)) {
   if(scenario==='build'){
@@ -106,7 +126,7 @@ async function scene(mode,scenario,language,width,height,{motion=false}={}) {
  await page.close();await context.close();
 
 }
-for(const spec of [['2p','roll','ko',1280,800,{motion:true}],['4p','roll','ko',1280,800,{motion:true}],['2p','roll','ko',1440,900,{}],['4p','roll','ko',1440,900,{}],['2p','purchase','ko',1280,800,{}],['4p','purchase','ko',1280,800,{}],['2p','tourism','ko',1280,800,{}],['4p','tourism','ko',1280,800,{}],['2p','shortfall','ko',1280,800,{}],['4p','shortfall','ko',1280,800,{}],['2p','build','ko',1280,800,{}],['4p','build','ko',1280,800,{}],['2p','levels','ko',1280,800,{}],['4p','levels','ko',1280,800,{}],['2p','rent','ko',1280,800,{}],['4p','rent','ko',1280,800,{}],['2p','rent-pass','ko',1280,800,{}],['4p','rent-pass','ko',1280,800,{}],['2p','purchase','es',1280,800,{}],['4p','purchase','es',1280,800,{}]]){
+for(const spec of [['2p','roll','ko',1280,800,{motion:true}],['4p','roll','ko',1280,800,{motion:true}],['2p','roll','ko',1440,900,{}],['4p','roll','ko',1440,900,{}],['2p','purchase','ko',1280,800,{}],['4p','purchase','ko',1280,800,{}],['2p','tourism','ko',1280,800,{}],['4p','tourism','ko',1280,800,{}],['2p','shortfall','ko',1280,800,{}],['4p','shortfall','ko',1280,800,{}],['2p','build','ko',1280,800,{}],['4p','build','ko',1280,800,{}],['2p','levels','ko',1280,800,{}],['4p','levels','ko',1280,800,{}],['2p','rent','ko',1280,800,{}],['4p','rent','ko',1280,800,{}],['2p','rent-pass','ko',1280,800,{}],['4p','rent-pass','ko',1280,800,{}],['2p','olympics','ko',1280,800,{}],['4p','olympics','ko',1280,800,{}],['2p','olympics-empty','ko',1280,800,{}],['4p','olympics-empty','ko',1280,800,{}],['2p','purchase','es',1280,800,{}],['4p','purchase','es',1280,800,{}]]){
  if(process.env.MARBLE_CAPTURE_FILTER&&!`${spec[0]}-${spec[1]}-${spec[2]}-${spec[3]}x${spec[4]}`.includes(process.env.MARBLE_CAPTURE_FILTER))continue;
  await scene(...spec);
 }

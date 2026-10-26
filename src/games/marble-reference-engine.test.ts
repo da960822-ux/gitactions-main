@@ -17,6 +17,19 @@ const step2 = (state: MarbleState, type: string, payload?: Record<string, unknow
 const step4 = (state: FourMarbleState, type: string, payload?: Record<string, unknown>) => fourMarbleEngine.applyAction(state, state.active, { type, payload }) as FourMarbleState;
 
 describe('active Kakao World / Business engine profile', () => {
+  it('values a purchased tourism site equally in two-player and four-player net assets',()=>{
+    const duel=marbleEngine.createInitialState(71),team=fourMarbleEngine.createInitialState(71);
+    duel.properties[4]={owner:'p1',houses:0};team.properties[4]={owner:'p1',houses:0};
+    expect(marbleEngine.getPlayerView(duel,'p1').board.assets.p1).toBe(5_250_000);
+    expect(fourMarbleEngine.getPlayerView(team,'p1').players.find(player=>player.id==='p1')?.score).toBe(5_250_000);
+  });
+  it('publishes the Olympics adjusted tourism toll in both player views',()=>{
+    const duel=marbleEngine.createInitialState(71),team=fourMarbleEngine.createInitialState(71);
+    duel.properties[4]={owner:'p1',houses:0};team.properties[4]={owner:'p1',houses:0};
+    duel.activeOlympics={tile:4,multiplier:2,host:'p1'};team.activeOlympics={tile:4,multiplier:2,host:'p1'};
+    expect(marbleEngine.getPlayerView(duel,'p2').board.tiles[4].currentToll).toBe(400_000);
+    expect((fourMarbleEngine.getPlayerView(team,'p2') as TeamMarbleView).publicBoard[4].currentToll).toBe(400_000);
+  });
   it('only offers a team rent pass when one is held', () => {
     const state=fourMarbleEngine.createInitialState(71);
     state.phase='rent-decision';state.pendingRent={amount:55_000,creditor:'p4'};

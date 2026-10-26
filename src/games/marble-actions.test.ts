@@ -28,6 +28,9 @@ describe('Marble primary action selection', () => {
     expect(selectMarblePrimaryAction({ phase: 'train-decision', choices: train, position: 0, selectedAction: selected })?.action.payload?.tile).toBe(7);
     expect(selectMarblePrimaryAction({ phase: 'train-decision', choices: choices(['skip-train']), position: 0 })?.action.type).toBe('skip-train');
     expect(selectMarblePrimaryAction({ phase: 'event-decision', choices: choices(['choose-event-city', 4], ['choose-event-city', 7]), position: 0, selectedAction: { type: 'choose-event-city', payload: { tile: 4 } } })?.action.payload?.tile).toBe(4);
+    const olympics=choices(['choose-olympic-target',1],['choose-olympic-target',7],['skip-olympics']);
+    expect(selectMarblePrimaryAction({phase:'olympic-decision',choices:olympics,position:16,selectedAction:{type:'choose-olympic-target',payload:{tile:7}}})?.action.payload?.tile).toBe(7);
+    expect(selectMarblePrimaryAction({phase:'olympic-decision',choices:choices(['skip-olympics']),position:16})?.action.type).toBe('skip-olympics');
   });
 
   it('prioritizes legal rent/debt resolution and binds a sale offer to its selected tile', () => {

@@ -73,6 +73,7 @@ export function rentValue(tile: Record<string, any>, modern: boolean) {
   // A versioned board can supply its already resolved toll. Presentation must not
   // reconstruct the historical component toll table from the old level formula.
   if (Number.isFinite(tile.currentRent)) return tile.currentRent;
+  if (tile.referenceProfileId === classicMarbleReferenceProfile.id && Number.isFinite(tile.currentToll)) return tile.currentToll;
   if (tile.referenceProfileId === classicMarbleReferenceProfile.id) {
     if (tile.kind === 'tourism') return num(tile.currentToll);
     const stage = num(tile.houses), buildings = tile.buildings as Record<string, boolean> | undefined, ordinaryCount = buildings ? ['villa', 'building', 'hotel'].filter(key => buildings[key]).length : -1, selected = buildings && ordinaryCount === Math.min(3, stage) ? buildings : stage === 1 ? { villa: true } : stage === 2 ? { villa: true, building: true } : stage >= 3 ? { villa: true, building: true, hotel: true } : {};

@@ -144,7 +144,7 @@ const referenceBoard: MarbleTile[] = classicMarbleReferenceProfile.map.map(cell 
   }
   if (cell.kind === 'tourism') return { kind: 'tourism', name, price: cell.purchasableFromBank ? classicMarbleReferenceProfile.rules.tourismBankPurchasePrice : undefined, rent: 0, referenceProfileId: classicMarbleReferenceProfile.id, referenceCity: cell.name, unresolvedRule: 'tourism-rent-step-selector' };
   const kind = cell.effect === 'island' ? 'island' : cell.effect === 'world-travel' ? 'train' : cell.effect === 'tax' ? 'tax' : cell.effect === 'card' || cell.effect === 'bonus-game' || cell.effect === 'olympic' ? 'event' : 'rest';
-  return { kind, name, referenceProfileId: classicMarbleReferenceProfile.id, referenceEffect: cell.effect, ...(cell.effect !== 'island' ? { unresolvedRule: `${cell.effect}-effect` } : {}) };
+  return { kind, name, referenceProfileId: classicMarbleReferenceProfile.id, referenceEffect: cell.effect, ...(cell.effect !== 'island' && cell.effect !== 'olympic' ? { unresolvedRule: `${cell.effect}-effect` } : {}) };
 });
 const boardFor = (s: MarbleState) => {
   const board = s.referenceProfileId === classicMarbleReferenceProfile.id || s.cityRouteVersion === 4
@@ -218,6 +218,7 @@ function takeoverOffer(s: MarbleState, p: PlayerId) {
 const assetsFor = (s: MarbleState, p: PlayerId, board: MarbleTile[]) => s.money[p] - (s.debt?.[p] ?? 0) + Object.entries(s.properties).reduce((sum, [index, record]) => {
   if (record.owner !== p) return sum;
   const tile = board[Number(index)];
+  if (tile?.referenceProfileId === classicMarbleReferenceProfile.id && tile.kind === 'tourism') return sum + (tile.price ?? 0);
   if (tile?.referenceProfileId === classicMarbleReferenceProfile.id && tile.referenceCity) return sum + (classicMarbleAssetValue(tile.referenceCity, record.buildings) ?? 0);
   const buildingCost = tile?.referenceProfileId === classicMarbleReferenceProfile.id && tile.referenceCity
     ? (['villa', 'building', 'hotel'] as const).reduce((total, structure) => total + (record.buildings?.[structure] ? classicMarbleConstructionCost(tile.referenceCity!, structure) ?? 0 : 0), 0)

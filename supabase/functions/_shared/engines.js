@@ -6455,7 +6455,7 @@ var referenceBoard = classicMarbleReferenceProfile.map.map((cell) => {
   }
   if (cell.kind === "tourism") return { kind: "tourism", name, price: cell.purchasableFromBank ? classicMarbleReferenceProfile.rules.tourismBankPurchasePrice : void 0, rent: 0, referenceProfileId: classicMarbleReferenceProfile.id, referenceCity: cell.name, unresolvedRule: "tourism-rent-step-selector" };
   const kind = cell.effect === "island" ? "island" : cell.effect === "world-travel" ? "train" : cell.effect === "tax" ? "tax" : cell.effect === "card" || cell.effect === "bonus-game" || cell.effect === "olympic" ? "event" : "rest";
-  return { kind, name, referenceProfileId: classicMarbleReferenceProfile.id, referenceEffect: cell.effect, ...cell.effect !== "island" ? { unresolvedRule: `${cell.effect}-effect` } : {} };
+  return { kind, name, referenceProfileId: classicMarbleReferenceProfile.id, referenceEffect: cell.effect, ...cell.effect !== "island" && cell.effect !== "olympic" ? { unresolvedRule: `${cell.effect}-effect` } : {} };
 });
 var boardFor = (s) => {
   const board = s.referenceProfileId === classicMarbleReferenceProfile.id || s.cityRouteVersion === 4 ? referenceBoard : s.boardVersion === 2 ? s.cityRouteVersion === 3 ? landmarkJourneyBoard : s.cityRouteVersion === 2 ? journeyBoard : modernBoard : legacyBoard;
@@ -6522,6 +6522,7 @@ function takeoverOffer(s, p) {
 var assetsFor = (s, p, board) => s.money[p] - (s.debt?.[p] ?? 0) + Object.entries(s.properties).reduce((sum2, [index, record2]) => {
   if (record2.owner !== p) return sum2;
   const tile = board[Number(index)];
+  if (tile?.referenceProfileId === classicMarbleReferenceProfile.id && tile.kind === "tourism") return sum2 + (tile.price ?? 0);
   if (tile?.referenceProfileId === classicMarbleReferenceProfile.id && tile.referenceCity) return sum2 + (classicMarbleAssetValue(tile.referenceCity, record2.buildings) ?? 0);
   const buildingCost = tile?.referenceProfileId === classicMarbleReferenceProfile.id && tile.referenceCity ? ["villa", "building", "hotel"].reduce((total, structure) => total + (record2.buildings?.[structure] ? classicMarbleConstructionCost(tile.referenceCity, structure) ?? 0 : 0), 0) + (record2.buildings?.landmark ? classicMarbleConstructionCost(tile.referenceCity, "landmark") ?? 0 : 0) : tile ? Array.from({ length: record2.houses }, (_, level) => marbleBuildCost(tile, level, s.economicVersion)).reduce((total, cost) => total + cost, 0) : 0;
   return sum2 + (tile?.price ?? 0) + buildingCost;

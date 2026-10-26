@@ -8,6 +8,17 @@ import MarbleTeamBoard from './MarbleTeamBoard';
 const state=()=>savedFourMarbleState(71) as FourMarbleState;
 const render=(s:FourMarbleState,language:'ko'|'es'='ko')=>renderToStaticMarkup(createElement(MarbleTeamBoard,{view:fourMarbleEngine.getPlayerView(s,'p1'),language,nickname:'연석',runAction:vi.fn(),onReplay:vi.fn(),onExit:vi.fn(),onSelectGame:vi.fn()}));
 describe('native four-player Marble screen',()=>{
+ it('renders Olympics target selection and skip in the four-seat decision stage',()=>{
+  const s=fourMarbleEngine.createInitialState(71);
+  s.phase='olympic-decision';s.positions.p1=16;s.pendingTile=16;
+  s.properties[1]={owner:'p1',houses:0,buildings:{}};
+  s.properties[4]={owner:'p1',houses:0,buildings:{}};
+  const html=renderToStaticMarkup(createElement(MarbleTeamBoard,{view:fourMarbleEngine.getPlayerView(s,'p1'),language:'ko',runAction:vi.fn()}));
+  const stage=html.slice(html.indexOf('class="mp-center-stage mt-center-stage'),html.indexOf('</section>',html.indexOf('class="mp-center-stage mt-center-stage')));
+  expect(stage).toContain('올림픽 개최지 선택');expect(stage).toContain('방콕 개최');expect(stage).toContain('독도 개최');
+  expect(stage).toContain('이곳에서 개최 · ×2');expect(stage).toContain('올림픽 개최 건너뛰기');
+  expect(stage).not.toContain('운임 100');
+ });
  it('keeps both legal rent payment choices in the central decision when a pass is held',()=>{
   const s=fourMarbleEngine.createInitialState(71);
   s.active='p1';s.phase='rent-decision';s.positions.p1=29;

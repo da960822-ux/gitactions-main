@@ -10,6 +10,18 @@ const render = (view: any, language: 'ko' | 'es' = 'ko', playerId: 'p1' | 'p2' =
   renderToStaticMarkup(createElement(MarbleBoard, { view, language, playerId, runAction: vi.fn() }));
 
 describe('MarbleBoard', () => {
+  it('renders the legal Olympics target and skip choice in the central stage',()=>{
+    const state=marbleEngine.createInitialState(71);
+    state.phase='olympic-decision';state.positions.p1=16;state.pendingTile=16;
+    state.properties[1]={owner:'p1',houses:0,buildings:{}};
+    state.properties[4]={owner:'p1',houses:0,buildings:{}};
+    const html=render(marbleEngine.getPlayerView(state,'p1'));
+    const stage=html.slice(html.indexOf('class="mp-center-stage'),html.indexOf('</section>',html.indexOf('class="mp-center-stage')));
+    expect(stage).toContain('올림픽 개최지 선택');
+    expect(stage).toContain('방콕 개최');expect(stage).toContain('독도 개최');
+    expect(stage).toContain('이곳에서 개최 · ×2');expect(stage).toContain('올림픽 개최 건너뛰기');
+    expect(stage).not.toContain('운임 100');
+  });
   it('puts the legal phase action ahead of optional loans in the central dice stage', () => {
     const html = render(marbleEngine.getPlayerView(savedMarbleState(71), 'p1'));
     const center = html.slice(html.indexOf('class="mp-center-stage'), html.indexOf('</section>', html.indexOf('class="mp-center-stage')));

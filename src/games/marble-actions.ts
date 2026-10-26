@@ -30,6 +30,7 @@ export function selectMarblePrimaryAction<T extends MarbleActionChoice>({ phase,
   if (phase === 'island') return first('attempt-doubles') ?? first('pay-escape') ?? first('use-escape-pass');
   if (phase === 'train-decision') return targeted('choose-train') ?? first('choose-train') ?? first('skip-train');
   if (phase === 'event-decision') return targeted('choose-event-city') ?? first('choose-event-city');
+  if (phase === 'olympic-decision') return targeted('choose-olympic-target') ?? first('choose-olympic-target') ?? first('skip-olympics');
   if (phase === 'rent-decision') return first('pay-rent') ?? first('use-rent-pass');
   if (phase === 'debt') return first('borrow') ?? selectMarblePropertySale(ofType('sell-property'), selectedSaleTile ?? null) ?? first('repay');
   return undefined;
