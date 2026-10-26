@@ -1,7 +1,6 @@
 /**
- * Versioned reference profile. Confirmed price/construction rules are usable by
- * the profile adapter; this is not yet an active route because the 18-city rent
- * table and some selector semantics remain outstanding.
+ * Versioned historical profile for the newly started 2013 Kakao World/Business route.
+ * Unverified mechanics stay marked here rather than inheriting unrelated modern rules.
  */
 export type ClassicMarbleStructure = 'villa' | 'building' | 'hotel' | 'landmark';
 export type ClassicMarbleBuildings = Readonly<Partial<Record<ClassicMarbleStructure, boolean>>>;
@@ -37,24 +36,29 @@ export const classicMarbleReferenceProfile = {
     constructionTable: 'https://appdata.hungryapp.co.kr/data_file/data_img/201312/01/Wjg761F138583142696648188.png',
     startingCash: 'https://m.hungryapp.co.kr/bbs/bbs_view.php?durl=YmNvZGU9ZXZlcm1hcnZlbCZwaWQ9MzUwOTg2JnVzZXI9',
     mapOrder: 'https://tcatmon.com/wiki/모두의마블_for_Kakao',
-    tourismRules: 'Supplied verified reference notes; direct source URL not included in this handoff.',
+    tourismRules: '2013 XLS supplied in audit: https://cafe.naver.com/momakakao/124693',
     launchCashScreenshot: 'Supplied verified launch-day class-selection screenshot; direct URL not included in this handoff.',
-    cityTolls: '2013-12-01 public XLS supplied in audit: https://cafe.naver.com/momakakao/124693',
+    cityTolls: 'https://cafe.naver.com/momakakao/124693',
     partialBuildingMaskObservation: 'https://upload2.inven.co.kr/upload/2015/03/27/bbs/i12866364001.png',
+    tourismRentRules: '2013-12-01 XLS: https://cafe.naver.com/momakakao/124693; clarifying modern community description: https://www.namu.moe/w/모두의마블%20for%20kakao/규칙',
+    tourismVictory: 'https://www.inven.co.kr/board/mogong/4222/402',
   },
   provenance: {
     constructionTable: 'Secondary community calculator screenshot; transcribed from image; zero construction discount; source author notes possible minor error.',
     startingCash: 'Independent 2014-12-14 community post reporting historical 5,000,000 starting cash.',
     mapOrder: 'Secondary map listing; 32-cell World map order.',
     partialBuildingMaskObservation: 'Inven community screenshot of Cairo, Economy class: villa unchecked, building selected, hotel locked; observed toll 56,000. This corroborates this one partial mask only.',
-    limitations: 'Historical Korean Kakao mobile edition only. Community documents are not official current specifications. Salary is inferred, not observed. Tourism rent-step selection and some noncanonical building-mask tolls remain unverified; this profile is not a claim of complete rule reproduction.',
+    tourismRentRules: 'XLS class rows separate blue islands by owned count and pink beaches by visit count. Modern community write-up says the visitor pays the old amount before a beach tier advances; treated as secondary explanation, not direct 2013 screenshot proof.',
+    tourismVisitDefaults: 'Beach stage starts at 1 and unowned visits advance it by default for implementation; these two details were not directly verified in the supplied source.',
+    tourismVictory: '2015 mobile community explanation says owning all five tourism sites wins immediately.',
+    limitations: 'Historical Korean Kakao mobile edition only. Community documents are not official current specifications. Salary is inferred, not observed. Some noncanonical building-mask tolls remain additive inference; tourism beach initial/unowned visit defaults remain assumptions. This is not a claim of complete rule reproduction.',
   },
   readiness: {
-    activation: 'versioned-data-profile-not-yet-routed-to-live-match',
+    activation: 'active-for-new-route-v4-and-solo-team-route; legacy-saves-retain-old-profile',
     salary: 'inferred-not-authoritative',
     cityRent: 'verified-business-canonical-build-stages',
     partialMaskCityRent: 'direct-observation-for-cairo-building-only; additive-inference-for-other-noncanonical-masks',
-    tourismRentSchedule: 'verified-values-selector-unresolved',
+    tourismRentSchedule: 'verified-with-distinct-island-and-beach-selectors',
     pricesAndConstruction: 'verified-for-this-historical-edition',
     class: 'business',
     constructionDiscount: 0,
@@ -77,7 +81,11 @@ export const classicMarbleReferenceProfile = {
     tourismAcquirableFromPlayer: false,
     tourismRentSchedule: [200_000, 400_000, 800_000],
     tourismGroupMonopolyMultiplier: 1,
-    tourismRentStepSelector: 'unresolved-do-not-infer',
+    tourismIslandRentSelector: 'same-owner-island-count-1-to-3',
+    tourismBeachRentSelector: 'per-site-visit-stage-1-to-3; increase-after-visitor-payment',
+    tourismBeachInitialStage: 1,
+    tourismUnownedVisitAdvancesBeach: 'assumed',
+    tourismAllFiveImmediateWin: true,
     ownArrivalRequiredForConstruction: true,
     constructionMinimumOwnLaps: { villa: 0, building: 1, hotel: 2, landmark: 3 },
     buildingSelection: 'independent-set-villa-building-hotel',
@@ -104,11 +112,11 @@ export const classicMarbleReferenceProfile = {
     { name: '서울', land: 500000, construction: { villa: 200000, building: 600000, hotel: 1000000, landmark: 1000000 }, tollByCanonicalStage: [200000, 600000, 1450000, 3200000, 4700000] },
   ] satisfies readonly ClassicMarbleCity[],
   tourism: [
-    { name: '독도', bankPurchasePrice: 250000, playerAcquisitionAllowed: false, rentSchedule: [200000, 400000, 800000] },
-    { name: '하와이', bankPurchasePrice: 250000, playerAcquisitionAllowed: false, rentSchedule: [200000, 400000, 800000] },
-    { name: '푸켓', bankPurchasePrice: 250000, playerAcquisitionAllowed: false, rentSchedule: [200000, 400000, 800000] },
-    { name: '발리', bankPurchasePrice: 250000, playerAcquisitionAllowed: false, rentSchedule: [200000, 400000, 800000] },
-    { name: '타히티', bankPurchasePrice: 250000, playerAcquisitionAllowed: false, rentSchedule: [200000, 400000, 800000] },
+    { name: '독도', group: 'island', rentMode: 'owner-count', bankPurchasePrice: 250000, playerAcquisitionAllowed: false, rentSchedule: [200000, 400000, 800000] },
+    { name: '하와이', group: 'island', rentMode: 'owner-count', bankPurchasePrice: 250000, playerAcquisitionAllowed: false, rentSchedule: [200000, 400000, 800000] },
+    { name: '푸켓', group: 'island', rentMode: 'owner-count', bankPurchasePrice: 250000, playerAcquisitionAllowed: false, rentSchedule: [200000, 400000, 800000] },
+    { name: '발리', group: 'beach', rentMode: 'visit-stage', bankPurchasePrice: 250000, playerAcquisitionAllowed: false, initialVisitStage: 1, rentSchedule: [200000, 400000, 800000] },
+    { name: '타히티', group: 'beach', rentMode: 'visit-stage', bankPurchasePrice: 250000, playerAcquisitionAllowed: false, initialVisitStage: 1, rentSchedule: [200000, 400000, 800000] },
   ] as const,
   map: [
     { kind: 'start', name: '출발' },

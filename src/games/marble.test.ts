@@ -1,6 +1,7 @@
 import { describe, it, expect } from 'vitest';
 import { marbleBuildCost, marbleEngine, MarbleEventId, MarbleState } from './marble';
 import { seededRandom } from '../core/types';
+import { classicMarbleCityToll } from './marble-reference-profile';
 
 const increment = 0x6d2b79f5;
 function seedForDice(test: (a: number, b: number) => boolean) {
@@ -16,48 +17,33 @@ const seedForMiss = () => seedForDice((a, b) => a !== b);
 // Regression fixtures for saved forty-space rooms before the personalized route.
 // Most cases in this file exercise pre-v3 saved-room behavior. Current v3 economy
 // assertions use createInitialState directly so their fixtures stay explicit.
-const initial = (seed = 15): MarbleState => ({ ...marbleEngine.createInitialState(seed), economicVersion: 2, cityRouteVersion: undefined, propertyRulesVersion: undefined });
+const initial = (seed = 15): MarbleState => ({ ...marbleEngine.createInitialState(seed), referenceProfileId: undefined, money: { p1: 1500, p2: 1500 }, economicVersion: 2, cityRouteVersion: undefined, propertyRulesVersion: undefined });
 function eventState(id: MarbleEventId, target = 2): MarbleState {
   const seed = seedForSum(target);
   return { ...initial(seed), eventDeck: [id], positions: { p1: 0, p2: 0 } };
 }
 const act = (s: MarbleState, type: string, payload?: Record<string, unknown>) => marbleEngine.applyAction(s, 'p1', { type, payload });
 
-describe('Marble 40-space house-rule engine', () => {
-  it('keeps 24 cities and all economics while ordering the new journey and preserving saved boards', () => {
+describe('Marble versioned routes', () => {
+  it('starts new games on the 32-cell Kakao profile and preserves saved 40-cell route data', () => {
     const fresh = marbleEngine.createInitialState(15);
     const tiles = marbleEngine.getPlayerView(fresh, 'p1').board.tiles;
-    const saved = marbleEngine.getPlayerView({ ...fresh, cityRouteVersion: undefined }, 'p1').board.tiles;
+    const savedState = { ...fresh, referenceProfileId: undefined, money: { p1: 1500, p2: 1500 }, cityRouteVersion: 3 as const, economicVersion: 3 as const };
+    const saved = marbleEngine.getPlayerView(savedState, 'p1').board.tiles;
     expect(fresh.boardVersion).toBe(2);
-    expect(fresh.cityRouteVersion).toBe(3);
-    expect(tiles).toHaveLength(40);
-    expect(tiles.filter((tile: any) => tile.kind === 'property')).toHaveLength(24);
-    expect([1, 3, 15, 31, 38].map(i => tiles[i].name.ko)).toEqual(['광주', '뉴욕', '산토도밍고', '뉴어크', '서울']);
-    const savedV2 = marbleEngine.getPlayerView({ ...fresh, cityRouteVersion: 2 }, 'p1').board.tiles;
-    const changes = [[11, '베를린', '라베가'], [13, '마이애미', '푼타카나'], [21, '이스탄불', '사마나'], [32, '아그라', '발파라이소'], [33, '아테네', '세부'], [36, '시드니', '오클랜드']] as const;
-    for (const [index, name, previousName] of changes) {
-      expect(tiles[index].name.ko).toBe(name);
-      expect(savedV2[index].name.ko).toBe(previousName);
-    }
-    for (const [index, tile] of tiles.entries()) {
-      const { name, ...values } = tile;
-      const { name: previousName, ...previousValues } = savedV2[index];
-      expect(values).toEqual(previousValues);
-      if (!changes.some(([changed]) => changed === index)) expect(name).toEqual(previousName);
-    }
-    const economy = (board: any[]) => board.map(tile => `${tile.kind}:${tile.price}:${tile.rent}:${tile.group}`).sort();
-    expect(economy(tiles)).toEqual(economy(saved));
-    expect(tiles[3]).toMatchObject({ price: saved[15].price, rent: saved[15].rent, group: saved[15].group });
-    expect(tiles[15]).toMatchObject({ price: saved[3].price, rent: saved[3].rent, group: saved[3].group });
-    expect(saved[3].name.ko).toBe('산토도밍고');
-    expect(saved[15].name.ko).toBe('뉴욕');
-    expect(saved[31].name.ko).toBe('마이애미');
-    expect(saved[38].name.ko).toBe('밴쿠버');
-    for (const index of [0, 2, 6, 7, 10, 12, 14, 18, 20, 23, 26, 27, 30, 34, 37, 39]) expect(tiles[index]).toEqual(saved[index]);
+    expect(fresh.cityRouteVersion).toBe(4);
+    expect(fresh.economicVersion).toBe(4);
+    expect(tiles).toHaveLength(32);
+    expect(tiles.filter((tile: any) => tile.kind === 'property')).toHaveLength(18);
+    expect(tiles.filter((tile: any) => tile.kind === 'tourism')).toHaveLength(5);
+    expect([1, 3, 31].map(i => tiles[i].name.ko)).toEqual(['방콕', '베이징', '서울']);
+    expect(saved).toHaveLength(40);
+    expect(saved[38].name.ko).toBe('서울');
+    expect(savedState.money.p1).toBe(1500);
   });
 
   it('resolves the Santo Domingo card at the correct city in new, saved forty-space and legacy rooms', () => {
-    const fresh = { ...marbleEngine.createInitialState(seedForSum(2)), eventDeck: ['visit-santo-domingo'] as MarbleEventId[] };
+    const fresh = { ...marbleEngine.createInitialState(seedForSum(2)), referenceProfileId: undefined, cityRouteVersion: 3 as const, economicVersion: 3 as const, money: { p1: 1500, p2: 1500 }, eventDeck: ['visit-santo-domingo'] as MarbleEventId[] };
     for (const [state, destination] of [[fresh, 15], [{ ...fresh, cityRouteVersion: undefined }, 3], [{ ...fresh, boardVersion: undefined }, 2]] as const) {
       const moved = act(state, 'roll');
       expect(moved.positions.p1).toBe(destination);
@@ -271,16 +257,20 @@ describe('Marble 40-space house-rule engine', () => {
     expect(act(savedRules, 'build', { tile: 1 }).money.p1).toBe(900);
   });
 
-  it('uses the v3 yield and building ladder on the active route without changing saved v2 values', () => {
+  it('uses historical price and toll tables on the new route without changing saved v3 values', () => {
     const state = marbleEngine.createInitialState(9);
     const tiles = marbleEngine.getPlayerView(state, 'p1').board.tiles;
-    expect(state.economicVersion).toBe(3);
-    expect([1, 4, 3, 38].map(index => [tiles[index].name.ko, tiles[index].price, tiles[index].rent]))
-      .toEqual([['광주', 100, 20], ['마드리드', 140, 30], ['뉴욕', 260, 60], ['서울', 560, 140]]);
-    expect([0, 1, 2].map(level => marbleBuildCost(tiles[38], level, 3))).toEqual([220, 340, 450]);
-    expect([0, 1, 2, 3].map(level => tiles[38].rent! * [1, 2, 3, 4][level] * 2))
-      .toEqual([280, 560, 840, 1120]);
-    expect(marbleEngine.getPlayerView({ ...state, economicVersion: 2 }, 'p1').board.tiles[38].rent).toBe(112);
+    expect(state.economicVersion).toBe(4);
+    expect([1, 3, 7, 31].map(index => [tiles[index].name.ko, tiles[index].price, tiles[index].rent]))
+      .toEqual([['방콕', 50_000, 5_000], ['베이징', 65_000, 5_000], ['카이로', 135_000, 20_000], ['서울', 500_000, 200_000]]);
+    expect([0, 1, 2, 3].map(level => marbleBuildCost(tiles[31], level, 4))).toEqual([200_000, 600_000, 1_000_000, 1_000_000]);
+    expect([
+      classicMarbleCityToll('서울'),
+      classicMarbleCityToll('서울', { villa: true }),
+      classicMarbleCityToll('서울', { villa: true, building: true }),
+      classicMarbleCityToll('서울', { villa: true, building: true, hotel: true }),
+    ]).toEqual([200_000, 600_000, 1_450_000, 3_200_000]);
+    expect(marbleEngine.getPlayerView({ ...state, referenceProfileId: undefined, cityRouteVersion: 3, economicVersion: 3 }, 'p1').board.tiles[38].rent).toBe(140);
   });
 
   it('rejects wrong player, wrong phase, invalid target, and malformed actions', () => {

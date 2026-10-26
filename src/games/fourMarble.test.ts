@@ -3,7 +3,7 @@ import { fourSeats, fourTeam } from '../core/fourPlayer';
 import { seededRandom, type GameAction } from '../core/types';
 import { fourMarbleEngine as engine, type FourMarbleState } from './fourMarble';
 
-const state = (seed = 1) => ({ ...engine.createInitialState(seed), propertyRulesVersion: undefined }) as FourMarbleState;
+const state = (seed = 1) => ({ ...engine.createInitialState(seed), propertyRulesVersion: undefined, referenceProfileId: undefined, cityRouteVersion: undefined, economicVersion: undefined, money: { p1: 1500, p2: 1500, p3: 1500, p4: 1500 } }) as FourMarbleState;
 function rollFor(total: number) {
   for (let seed = 0; seed < 10000; seed++) {
     const random = seededRandom(seed);
@@ -149,7 +149,7 @@ describe('four-seat Marble team variant', () => {
 });
 
 it('charges the first tied leader when the golden-card drawer is outside the leading monopoly tie',()=>{
- const s=engine.createInitialState(rollFor(2)) as FourMarbleState;
+ const s=state(rollFor(2));
  s.eventDeck=['monopoly-warning'];s.properties={1:{owner:'p2',houses:0},15:{owner:'p2',houses:0},4:{owner:'p4',houses:0},5:{owner:'p4',houses:0}};
  const outside=step(s,{type:'roll'});
  expect(outside.money).toEqual({p1:1500,p2:1400,p3:1500,p4:1500});

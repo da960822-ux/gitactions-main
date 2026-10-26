@@ -9,7 +9,12 @@ function dice(a: number, b: number) {
   throw new Error('Missing dice seed');
 }
 for (const [name, engine, four] of [['1v1', marbleEngine, false], ['2v2', fourMarbleEngine, true]] as const) describe(`Marble property rules v1 · ${name}`, () => {
-  const fresh=()=>engine.createInitialState(1) as any;
+  const fresh=()=>{
+    const state=engine.createInitialState(1) as any;
+    state.referenceProfileId=undefined;state.cityRouteVersion=3;state.economicVersion=3;
+    state.money=four?{p1:1500,p2:1500,p3:1500,p4:1500}:{p1:1500,p2:1500};
+    return state;
+  };
   const act=(s:any,type:string,payload?:Record<string,unknown>)=>engine.applyAction(s,s.active,{type,payload}) as any;
   const view=(s:any)=>engine.getPlayerView(s,s.active) as any;
   const choices=(s:any)=>view(s).actions.map((x:any)=>x.action);

@@ -21,7 +21,7 @@ describe('historical Kakao World / Business reference profile', () => {
     expect(classicMarbleReferenceProfile.map.filter(cell => cell.kind === 'city')).toHaveLength(18);
     expect(classicMarbleReferenceProfile.map.filter(cell => cell.kind === 'tourism')).toHaveLength(5);
     expect(classicMarbleReferenceProfile.readiness).toMatchObject({
-      activation: 'versioned-data-profile-not-yet-routed-to-live-match',
+      activation: 'active-for-new-route-v4-and-solo-team-route; legacy-saves-retain-old-profile',
       salary: 'inferred-not-authoritative',
       cityRent: 'verified-business-canonical-build-stages',
     });

@@ -135,10 +135,12 @@ export default function MarbleBoard({ view: rawView, language, playerId, runActi
   const isPrimary = (choice?: Choice) => modern && sameMarbleAction(choice?.action, primaryChoice?.action);
   const primaryIndex = primaryChoice ? num(primaryChoice.action.payload?.tile ?? primaryChoice.action.payload?.destination ?? pos) : pos;
   const primaryTile = tiles[primaryIndex] ?? currentTile;
-  const primaryCost = primaryChoice?.action.type === 'buy' ? num(primaryTile.price) : primaryChoice?.action.type === 'build' ? num(primaryTile.nextBuildCost) : primaryChoice?.action.type === 'pay-rent' ? num(board.pendingRent?.amount) : 0;
+  const primaryStructure = primaryChoice?.action.type === 'build' ? String(primaryChoice.action.payload?.structure ?? '') : '';
+  const primaryBuildOption = list(primaryTile.nextBuildOptions).find(option => record(option).structure === primaryStructure);
+  const primaryCost = primaryChoice?.action.type === 'buy' ? num(primaryTile.price) : primaryChoice?.action.type === 'build' ? num(primaryBuildOption?.cost ?? primaryTile.nextBuildCost) : primaryChoice?.action.type === 'pay-rent' ? num(board.pendingRent?.amount) : 0;
   const primaryAfterCash = num(money[playerId]) - primaryCost;
-  const primaryBuildRent = rentValue(primaryTile, modern);
-  const primaryNextBuildRent = primaryTile.nextRent != null ? num(primaryTile.nextRent) : rentValue({ ...primaryTile, houses: num(primaryTile.houses) + 1 }, modern);
+  const primaryBuildRent = primaryTile.referenceProfileId === 'kakao-world-business-2013-zero-discount' ? num(primaryTile.currentToll) : rentValue(primaryTile, modern);
+  const primaryNextBuildRent = primaryBuildOption ? num(primaryBuildOption.tollAfter) : primaryTile.nextRent != null ? num(primaryTile.nextRent) : rentValue({ ...primaryTile, houses: num(primaryTile.houses) + 1 }, modern);
   const needsCityChoice = active && ['train-decision', 'event-decision'].includes(phase) && destinations.length > 0;
   const pendingPurchasePrice = phase === 'decision' && primaryTile.kind === 'property' ? num(primaryTile.price) : null;
   const pendingPurchaseShortfall = pendingPurchasePrice === null ? 0 : Math.max(0, pendingPurchasePrice - num(money[playerId]));
@@ -397,7 +399,7 @@ export default function MarbleBoard({ view: rawView, language, playerId, runActi
           {buildActions.some(choice => !isPrimary(choice)) && <section className="mp-build-shortcut" aria-label={copy(language, '건설 가능한 도시', 'Ciudades disponibles para construir')}>
             <strong>{copy(language, `건설 가능한 도시 ${buildActions.length}곳`, `${buildActions.length} ciudades disponibles`)}</strong>
             {buildActions.filter(choice => !isPrimary(choice)).map(choice => {
-              const index = num(choice.action.payload?.tile), city = tiles[index] ?? {}, cost = num(city.nextBuildCost), next = num(city.nextRent), current = rentValue(city, modern);
+              const index = num(choice.action.payload?.tile), city = tiles[index] ?? {}, structure = String(choice.action.payload?.structure ?? ''), option = list(city.nextBuildOptions).find(item => record(item).structure === structure), cost = num(option?.cost ?? city.nextBuildCost), next = num(option?.tollAfter ?? city.nextRent), current = city.referenceProfileId === 'kakao-world-business-2013-zero-discount' ? num(city.currentToll) : rentValue(city, modern);
               return <div className="mp-build-option" key={index}>
                 <span><b>{choice.label[language]}</b><small>{copy(language, `건설 후 현금 ${moneyText(num(money[playerId]) - cost, language)} · 통행료 ${moneyText(current, language)} → ${moneyText(next, language)}`, `Efectivo después ${moneyText(num(money[playerId]) - cost, language)} · renta ${moneyText(current, language)} → ${moneyText(next, language)}`)}</small></span>
                 <button className="mp-action mp-action-primary" type="button" disabled={interactionLocked} onClick={() => run(choice)}>{copy(language, '건설', 'Construir')}<span aria-hidden="true">↗</span></button>
