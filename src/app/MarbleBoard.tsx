@@ -1,4 +1,4 @@
-import { MarblePropertyLedger, MarblePropertySale } from './MarblePropertyLedger';
+import { MarblePropertyLedger, MarblePropertySale, selectedPropertySaleChoice } from './MarblePropertyLedger';
 import { MarblePropertyArt } from './MarblePropertyArt';
 import dioramas from '../../public/images/marble/dioramas/manifest.json';
 import { useEffect, useLayoutEffect, useRef, useState } from 'react';
@@ -84,6 +84,7 @@ export default function MarbleBoard({ view: rawView, language, playerId, runActi
   const activeSeat: Seat = validSeat(board.turn) ? board.turn : 'p1';
   const pos = Number.isInteger(positions[activeSeat]) ? num(positions[activeSeat]) : 0;
   const [selectedTile, setSelectedTile] = useState(pos);
+  const [selectedSaleTile, setSelectedSaleTile] = useState<number | null>(null);
   const selectedCity = tiles[selectedTile] ?? {};
   const selectedName = String(record(selectedCity.name)[language] ?? record(selectedCity.name).ko ?? '');
   const selectedCityArt = cityArtNames[selectedName] ?? null;
@@ -129,6 +130,8 @@ export default function MarbleBoard({ view: rawView, language, playerId, runActi
   const [target, setTarget] = useState('');
   const destinations = phase === 'event-decision' ? eventCityActions : phase === 'train-decision' ? trainActions : [];
   const selectedDestination = destinations.find(choice => JSON.stringify(choice.action) === target) ?? destinations[0];
+  const saleActions = actionsOf('sell-property');
+  const selectedSale = selectedPropertySaleChoice(saleActions, selectedSaleTile);
   const primaryChoice = phase === 'roll' ? roll
     : phase === 'decision' ? buy ?? decline
     : phase === 'main' ? selectedBuild ?? buildActions.find(choice => num(choice.action.payload?.tile) === pos) ?? buildActions[0] ?? actionsOf('takeover')[0] ?? endTurn
@@ -136,9 +139,9 @@ export default function MarbleBoard({ view: rawView, language, playerId, runActi
     : phase === 'train-decision' ? trainActions.length ? selectedDestination : actionOf('skip-train')
     : phase === 'event-decision' ? selectedDestination
     : phase === 'rent-decision' ? actionOf('pay-rent') ?? actionOf('use-rent-pass')
-    : phase === 'debt' ? actionOf('borrow') ?? actionsOf('sell-property')[0] ?? actionOf('repay')
+    : phase === 'debt' ? actionOf('borrow') ?? selectedSale ?? actionOf('repay')
     : undefined;
-  const isPrimary = (choice?: Choice) => !!choice && !!primaryChoice && choice.action.type === primaryChoice.action.type && JSON.stringify(choice.action.payload ?? {}) === JSON.stringify(primaryChoice.action.payload ?? {});
+  const isPrimary = (choice?: Choice) => modern && !!choice && !!primaryChoice && choice.action.type === primaryChoice.action.type && JSON.stringify(choice.action.payload ?? {}) === JSON.stringify(primaryChoice.action.payload ?? {});
   const primaryIndex = primaryChoice ? num(primaryChoice.action.payload?.tile ?? primaryChoice.action.payload?.destination ?? pos) : pos;
   const primaryTile = tiles[primaryIndex] ?? currentTile;
   const primaryCost = primaryChoice?.action.type === 'buy' ? num(primaryTile.price) : primaryChoice?.action.type === 'build' ? num(primaryTile.nextBuildCost) : primaryChoice?.action.type === 'pay-rent' ? num(board.pendingRent?.amount) : 0;
@@ -175,7 +178,7 @@ export default function MarbleBoard({ view: rawView, language, playerId, runActi
   const cityDetailsRef = useRef<HTMLDetailsElement>(null);
   const [feedbackVisible, setFeedbackVisible] = useState(stageEvents.length > 0);
   const inspectTile = (index: number) => { setSelectedTile(index); if (cityDetailsRef.current) cityDetailsRef.current.open = true; };
-  useEffect(() => setTarget(''), [phase]);
+  useEffect(() => { setTarget(''); setSelectedSaleTile(null); }, [phase, playerId]);
   useEffect(() => {
     if (!actionSequence) return;
     setFeedbackVisible(true);
@@ -374,7 +377,7 @@ export default function MarbleBoard({ view: rawView, language, playerId, runActi
             const pawn = pawnId(record(board.pawns)[seat]) ?? (seat === 'p1' ? 'fox' : 'cat');
             return <div className={`mp-player ${seat === playerId ? 'is-you' : ''} ${board.turn === seat ? 'is-turn' : ''}`} key={seat} data-marble-seat={seat}>
               <div className="mp-player-name"><span className="mp-seat-key" aria-label={copy(language, `${seat.slice(1)}번`, `Asiento ${seat.slice(1)}`)}>{seat.slice(1)}</span><MarblePawn pawn={pawn} language={language} label={seatLabel(seat)}/><b>{seatLabel(seat)}</b>{board.turn === seat && <span>{copy(language, '차례', 'Turno')}</span>}</div>
-              <div className="mp-player-value" data-marble-value="cash"><small>{copy(language, '현금', 'Efectivo')}</small><b><GameValue value={num(money[seat])} resetKey={`${playerId}:marble:cash:${seat}`} format={value => moneyText(value, language)}/></b></div>
+              <div className="mp-player-value" data-marble-value="cash"><small>{copy(language, '현금', 'Efectivo')}</small><b>{typeof money[seat] === 'number' && Number.isFinite(money[seat]) ? <GameValue value={money[seat]} resetKey={`${playerId}:marble:cash:${seat}`} format={value => moneyText(value, language)}/> : <span aria-label={copy(language, '현금 정보를 불러오는 중', 'Cargando efectivo')}>—</span>}</b></div>
               <div className="mp-player-value" data-marble-value="assets"><small>{scoreLabel}</small><b><GameValue value={playerAssets} resetKey={`${playerId}:marble:assets:${seat}`} format={value => moneyText(value, language)}/></b></div>
               {num(record(board.rentPasses)[seat]) > 0 && <span className="mp-held-rent-pass"><svg viewBox="0 0 128 128" aria-hidden="true"><use href="/images/marble/golden-key-cards.svg#rent-pass-mark"/></svg>{copy(language, `통행료 면제권 ${num(record(board.rentPasses)[seat])}장`, `Pases de renta ${num(record(board.rentPasses)[seat])}`)}</span>}
               {(playerDebt > 0 || own.length > 0 || groupsOwned.length > 0) && <div className="mp-player-meta">{playerDebt > 0 && <span className="has-debt">{copy(language, `대출 ${moneyText(playerDebt, language)}`, `Préstamo ${moneyText(playerDebt, language)}`)}</span>}{own.length > 0 && <span>{copy(language, `도시 ${own.length}`, `Ciudades ${own.length}`)}</span>}{landmarkCount > 0 && <span>{copy(language, `랜드마크 ${landmarkCount}`, `Monumentos ${landmarkCount}`)}</span>}{groupsOwned.length > 0 && <span>{copy(language, `완성 그룹 ${groupsOwned.length}`, `Grupos completos ${groupsOwned.length}`)}</span>}</div>}
@@ -430,7 +433,7 @@ export default function MarbleBoard({ view: rawView, language, playerId, runActi
               <p className="mp-loan-note">{copy(language, '대출은 300을 받고 나중에 330을 갚아요. 한 번에 하나만 이용할 수 있어요.', 'Recibes 300 y luego devuelves 330. Solo puedes tener un préstamo pendiente.')}</p>
               {['borrow', 'repay'].flatMap(type => actionsOf(type)).map(choice => <button className="mp-action mp-action-secondary" key={choice.action.type} type="button" onClick={() => run(choice)}>{choice.label[language]}</button>)}
             </details>)}
-            <MarblePropertySale choices={actionsOf('sell-property')} language={language} runAction={dispatch} disabled={interactionLocked}/>
+            <MarblePropertySale choices={saleActions} language={language} runAction={dispatch} selectedTile={selectedSaleTile} onSelectTile={setSelectedSaleTile} disabled={interactionLocked}/>
             {actionsOf('declare-bankruptcy').map(choice => <div className="mp-bankruptcy-confirm" key={String(choice.action.type)}>
               {!confirmBankruptcy ? <button className="mp-action mp-action-danger" type="button" onClick={() => setConfirmBankruptcy(true)}>{copy(language, '파산 선택 검토', 'Revisar opción de quiebra')}</button> : <>
                 <p role="alert">{copy(language, '파산을 인정하면 경기가 즉시 끝나요. 계속할까요?', 'Si declaras la quiebra, la partida termina de inmediato. ¿Quieres continuar?')}</p>

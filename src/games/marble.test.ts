@@ -261,6 +261,7 @@ describe('Marble 40-space house-rule engine', () => {
     expect(view.actions.find((item: any) => item.action.type === 'build')?.label.ko).toContain('(40)');
     const built = act(ready, 'build', { tile: 1 });
     expect(built.money.p1).toBe(960);
+    expect(built.money.p2).toBe(1500);
     expect(built.actionLog?.at(-1)).toMatchObject({ type: 'build', amount: 40, fromAccount: 'p1', toAccount: 'bank', moneyDelta: { p1: -40 } });
     expect(marbleEngine.getPlayerView(built, 'p1').board.assets.p1).toBe(1100);
 

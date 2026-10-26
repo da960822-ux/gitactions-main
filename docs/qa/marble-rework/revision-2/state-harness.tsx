@@ -5,13 +5,14 @@ import MarbleBoard from '/src/app/MarbleBoard';
 import { marbleEngine, type MarbleState } from '/src/games/marble';
 import type { GameAction } from '/src/core/types';
 
-type Scenario = 'levels' | 'shortfall' | 'rent' | 'train' | 'bankruptcy' | 'buy-race' | 'motion';
+type Scenario = 'levels' | 'shortfall' | 'rent' | 'train' | 'bankruptcy' | 'sale' | 'buy-race' | 'motion';
 const labels: Record<Scenario, string> = {
   levels: 'Level artwork: 0 / 1 / 2 / 3',
   shortfall: 'Unaffordable purchase',
   rent: 'Rent transfer',
   train: 'Train destination',
   bankruptcy: 'Bankruptcy confirmation',
+  sale: 'Debt: selected property sale',
   'buy-race': 'Competing purchase actions',
   motion: 'Reduced-motion roll',
 };
@@ -48,6 +49,12 @@ function makeState(scenario: Scenario): MarbleState {
     state.phase = 'decision';
     state.positions.p1 = 1;
     state.pendingTile = 1;
+  } else if (scenario === 'sale') {
+    state.phase = 'debt';
+    state.money.p1 = 0;
+    state.debt.p1 = 300;
+    state.properties = { '1': { owner: 'p1', houses: 0 }, '4': { owner: 'p1', houses: 1 } };
+    state.pendingPayment = { amount: 1000, creditor: 'bank', reason: { ko: '납부금', es: 'Pago' }, resumePhase: 'main', resumeActive: 'p1', type: 'tax' };
   } else if (scenario === 'motion') {
     state.phase = 'roll';
     state.positions.p1 = 0;

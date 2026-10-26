@@ -44,6 +44,16 @@ describe('four-seat Marble team variant', () => {
     expect(engine.validateAction(s, 'p1', { type: 'roll', payload: { amount: 9999 } })).toBeTruthy();
   });
 
+  it('debits only the builder account and records the bank transfer once', () => {
+    const s = state();
+    s.phase = 'main';
+    s.money.p1 = 1000;
+    s.properties['1'] = { owner: 'p1', houses: 0 };
+    const built = step(s, { type: 'build', payload: { tile: 1 } });
+    expect(built.money).toEqual({ p1: 960, p2: 1500, p3: 1500, p4: 1500 });
+    expect(built.actionLog.at(-1)).toMatchObject({ type: 'build', amount: 40, fromAccount: 'p1', toAccount: 'bank', moneyDelta: { p1: -40 } });
+  });
+
   it('pays rent to the actual fourth seat, without touching another opponent', () => {
     const s = state(); s.rng = rollFor(2); s.positions.p1 = 39; s.properties[1] = { owner: 'p4', houses: 2 };
     const next = step(s, { type: 'roll' });

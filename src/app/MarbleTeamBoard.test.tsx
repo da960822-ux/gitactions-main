@@ -55,6 +55,14 @@ describe('native four-player Marble screen',()=>{
   expect(html).toContain('받기 300 · 상환 330');expect(html).not.toContain('파산 검토');
   expect(html).not.toContain('class="mt-loan"');
  });
+ it('uses the selected property offer for the team debt-stage central action',()=>{
+  const s=state();s.phase='debt';s.money.p1=0;s.debt.p1=300;s.pendingPayment={amount:500,creditor:'bank',resumeActive:'p1'};
+  const view=fourMarbleEngine.getPlayerView(s,'p1');
+  view.actions=[1,7].map(tile=>({label:{ko:`도시 ${tile} 은행 매각`,es:`Vender ciudad ${tile} al banco`},action:{type:'sell-property',payload:{tile}}})) as any;
+  const html=renderToStaticMarkup(createElement(MarbleTeamBoard,{view,language:'ko',nickname:'연석',runAction:vi.fn(),onReplay:vi.fn(),onExit:vi.fn(),onSelectGame:vi.fn()}));
+  expect(html).toContain('>도시 1 은행 매각</button>');
+  expect(html).toContain('도시 7 은행 매각');
+ });
  it('keeps actual history, team settlement, and owned-city building available',()=>{
   const s=state();s.phase='main';s.properties[1]={owner:'p1',houses:1};s.actionLog=[{sequence:1,type:'event-card',actor:'p4',title:{ko:'정전',es:'Apagón'},text:{ko:'도시 선택',es:'Elegir ciudad'},cardId:'blackout'}];s.actionSequence=1;
   const html=render(s);

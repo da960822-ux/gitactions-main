@@ -2,6 +2,7 @@ import { createElement } from 'react';
 import { renderToStaticMarkup } from 'react-dom/server';
 import { describe, expect, it, vi } from 'vitest';
 import { marbleEngine } from '../games/marble';
+import { selectedPropertySaleChoice } from './MarblePropertyLedger';
 import MarbleBoard, { focusMarbleAction } from './MarbleBoard';
 
 const render = (view: any, language: 'ko' | 'es' = 'ko', playerId: 'p1' | 'p2' = 'p1') =>
@@ -242,6 +243,63 @@ describe('MarbleBoard', () => {
     expect(html).toContain('Santo Domingo');
     expect(html).toContain('Efectivo');
     expect(html).not.toContain('Lanzar los dados</button>');
+  });
+
+  it('uses the selected city for the central sale action and falls back if that offer expires', () => {
+    const choices = [1, 7].map(tile => ({ label: { ko: `도시 ${tile} 매각`, es: `Vender ciudad ${tile}` }, action: { type: 'sell-property', payload: { tile } } }));
+    expect(selectedPropertySaleChoice(choices, 7)).toBe(choices[1]);
+    expect(selectedPropertySaleChoice(choices, 999)).toBe(choices[0]);
+  });
+
+  it('starts the debt-stage primary action from the same sale offer as the selector', () => {
+    const state = marbleEngine.createInitialState(41);
+    const view = marbleEngine.getPlayerView(state, 'p1');
+    view.phase = 'debt';
+    view.board.money.p1 = 0;
+    view.board.debt.p1 = 300;
+    view.board.pendingPayment = { amount: 500, creditor: 'bank', reason: { ko: '납부', es: 'Pago' } };
+    view.actions = [1, 7].map(tile => ({ label: { ko: `도시 ${tile} 은행 매각`, es: `Vender ciudad ${tile} al banco` }, action: { type: 'sell-property', payload: { tile } } })) as any;
+    const html = render(view);
+    expect(html).toContain('>도시 1 은행 매각</button>');
+    expect(html).toContain('도시 7 은행 매각');
+    expect(selectedPropertySaleChoice(view.actions, 7)?.action.payload?.tile).toBe(7);
+  });
+
+  it('keeps a legacy roll, purchase, and end-turn action in the side panel', () => {
+    const state = marbleEngine.createInitialState(41);
+    const view = marbleEngine.getPlayerView(state, 'p1');
+    view.board.tiles = view.board.tiles.slice(0, 18);
+    view.board.version = 1;
+    const cases = [
+      { phase: 'roll', actions: [{ label: { ko: '주사위 굴리기', es: 'Lanzar los dados' }, action: { type: 'roll' } }], result: 'Lanzar los dados' },
+      { phase: 'decision', actions: [{ label: { ko: '구매', es: 'Comprar' }, action: { type: 'buy' } }, { label: { ko: '지나가기', es: 'Pasar' }, action: { type: 'decline' } }], result: 'Comprar ·' },
+      { phase: 'main', actions: [{ label: { ko: '차례 마치기', es: 'Terminar turno' }, action: { type: 'endTurn' } }], result: 'Terminar turno' },
+    ] as const;
+    for (const item of cases) {
+      view.phase = item.phase;
+      view.actions = [...item.actions] as any;
+      const html = render(view, 'es');
+      expect(html).not.toContain('class="mp-center-stage');
+      expect(html).toContain(item.result);
+    }
+  });
+
+  it('does not render a missing opponent balance as a real zero', () => {
+    const view = marbleEngine.getPlayerView(marbleEngine.createInitialState(41), 'p1');
+    view.board.money.p2 = undefined as any;
+    const html = render(view);
+    const opponentStart = html.indexOf('data-marble-seat="p2"');
+    const opponent = html.slice(opponentStart, html.indexOf('data-marble-value="assets"', opponentStart));
+    expect(opponent).toContain('현금 정보를 불러오는 중');
+    expect(opponent).toContain('>—</span>');
+    expect(opponent).not.toContain('game-value-number">0');
+
+    const bankrupt = marbleEngine.getPlayerView(marbleEngine.createInitialState(41), 'p1');
+    bankrupt.board.money.p2 = 0;
+    const zeroHtml = render(bankrupt);
+    const zeroStart = zeroHtml.indexOf('data-marble-seat="p2"');
+    const zeroCash = zeroHtml.slice(zeroStart, zeroHtml.indexOf('data-marble-value="assets"', zeroStart));
+    expect(zeroCash).toContain('game-value-number">0');
   });
 
   it('renders only legal purchase controls and describes the current property', () => {
