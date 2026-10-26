@@ -3,6 +3,7 @@ import { seededRandom } from '../core/types';
 import { fourMarbleEngine, type FourMarbleState, type MarbleView as TeamMarbleView } from './fourMarble';
 import { marbleBuildCost, marbleEngine, type MarbleEventId, type MarbleState } from './marble';
 import { classicMarbleCityToll, classicMarbleReferenceProfile } from './marble-reference-profile';
+import { classicOlympicsMultiplier } from './marble-classic-specials';
 
 function seedForSum(sum: number) {
   for (let seed = 0; seed < 10_000; seed++) {
@@ -205,6 +206,22 @@ describe('active Kakao World / Business engine profile', () => {
       expect(fourMarbleEngine.validateAction(teamPaid, 'p1', { type: 'takeover', payload: { tile: 4 } })).toBeTruthy();
     }
 
+    const twoWithBeachSites = marbleEngine.createInitialState(seedForSum(2));
+    twoWithBeachSites.positions.p1 = 2;
+    twoWithBeachSites.properties['4'] = { owner: 'p2', houses: 0, buildings: {} };
+    twoWithBeachSites.properties['9'] = { owner: 'p2', houses: 0, buildings: {} };
+    twoWithBeachSites.properties['25'] = { owner: 'p2', houses: 0, buildings: {} };
+    const twoPaid = step2(twoWithBeachSites, 'roll');
+    expect(twoPaid.money.p1).toBe(4_800_000);
+
+    const teamWithBeachSites = fourMarbleEngine.createInitialState(seedForSum(2));
+    teamWithBeachSites.positions.p1 = 2;
+    teamWithBeachSites.properties['4'] = { owner: 'p2', houses: 0, buildings: {} };
+    teamWithBeachSites.properties['9'] = { owner: 'p2', houses: 0, buildings: {} };
+    teamWithBeachSites.properties['25'] = { owner: 'p2', houses: 0, buildings: {} };
+    const teamPaid = step4(teamWithBeachSites, 'roll');
+    expect(teamPaid.money.p1).toBe(4_800_000);
+
     let beach = marbleEngine.createInitialState(seedForSum(2)); beach.positions.p1 = 7;
     beach.properties['9'] = { owner: 'p2', houses: 0, buildings: {} };
     beach = step2(beach, 'roll');
@@ -260,6 +277,95 @@ describe('active Kakao World / Business engine profile', () => {
     expect(teamBankrupt.phase).toBe('debt');
     teamBankrupt = step4(teamBankrupt, 'declare-bankruptcy');
     expect(teamBankrupt.tourismVisitStages?.['9']).toBe(1);
+  });
+
+  it('sends third doubles to the mapped island in both fresh 32-cell routes', () => {
+    const landOnEvent = (state: MarbleState) => {
+      let next = step2(state, 'roll');
+      if (next.phase === 'decision') next = step2(next, 'decline');
+      return step2(next, 'endTurn');
+    };
+    const landOnEventTeam = (state: FourMarbleState) => {
+      let next = step4(state, 'roll');
+      if (next.phase === 'decision') next = step4(next, 'decline');
+      return step4(next, 'endTurn');
+    };
+    let two = marbleEngine.createInitialState(seedForSum(2));
+    two = landOnEvent(two); two.rng = seedForSum(2);
+    two = landOnEvent(two); two.rng = seedForSum(2);
+    two = step2(two, 'roll');
+    expect(two.positions.p1).toBe(8);
+    expect(two.pendingTile).toBe(8);
+    expect(two.islandTurns?.p1).toBe(3);
+    expect(marbleEngine.getPlayerView(two, 'p1').board.tiles[8].kind).toBe('island');
+
+    let team = fourMarbleEngine.createInitialState(seedForSum(2));
+    team = landOnEventTeam(team); team.rng = seedForSum(2);
+    team = landOnEventTeam(team); team.rng = seedForSum(2);
+    team = step4(team, 'roll');
+    expect(team.positions.p1).toBe(8);
+    expect(team.pendingTile).toBe(8);
+    expect(team.islandTurns.p1).toBe(3);
+    expect((fourMarbleEngine.getPlayerView(team, 'p1') as TeamMarbleView).publicBoard[8].kind).toBe('island');
+  });
+
+  it('does not offer the unverified legacy 100 escape fee in the new million-unit profile', () => {
+    expect(classicMarbleReferenceProfile.rules.islandEscapeFee).toEqual({ amount: 500_000, status: 'inferred-class-proportional-not-enabled' });
+    const two = { ...marbleEngine.createInitialState(1), phase: 'island' as const, islandTurns: { p1: 3, p2: 0 } };
+    expect(marbleEngine.getPlayerView(two, 'p1').actions.some((item: any) => item.action.type === 'pay-escape')).toBe(false);
+    expect(marbleEngine.validateAction(two, 'p1', { type: 'pay-escape' })).toBe('Escape fee is unverified for this ruleset');
+
+    const team = { ...fourMarbleEngine.createInitialState(1), phase: 'island' as const, islandTurns: { p1: 3, p2: 0, p3: 0, p4: 0 } };
+    expect(fourMarbleEngine.getPlayerView(team, 'p1').actions.some((item: any) => item.action.type === 'pay-escape')).toBe(false);
+    expect(fourMarbleEngine.validateAction(team, 'p1', { type: 'pay-escape' })).toBe('Action unavailable');
+
+    const legacy = { ...two, referenceProfileId: undefined, cityRouteVersion: 3 as const, economicVersion: 3 as const, money: { p1: 1500, p2: 1500 } };
+    expect(marbleEngine.getPlayerView(legacy, 'p1').actions.some((item: any) => item.action.type === 'pay-escape')).toBe(true);
+    const legacyTeam = { ...team, referenceProfileId: undefined, cityRouteVersion: undefined, economicVersion: undefined, money: { p1: 1500, p2: 1500, p3: 1500, p4: 1500 } };
+    expect(fourMarbleEngine.getPlayerView(legacyTeam, 'p1').actions.some((item: any) => item.action.type === 'pay-escape')).toBe(true);
+  });
+
+  it('hosts one global Olympics, increases its multiplier, and charges it in both engines', () => {
+    expect([0, 1, 2, 3, 4, 8].map(classicOlympicsMultiplier)).toEqual([2, 3, 4, 5, 5, 5]);
+
+    let two = marbleEngine.createInitialState(seedForSum(2));
+    two.positions.p1 = 14;
+    two.properties['1'] = { owner: 'p1', houses: 0, buildings: {} };
+    two = step2(two, 'roll');
+    expect(two.phase).toBe('olympic-decision');
+    expect(marbleEngine.getPlayerView(two, 'p1').actions.map((action: any) => action.action)).toContainEqual({ type: 'choose-olympic-target', payload: { tile: 1 } });
+    two = step2(two, 'choose-olympic-target', { tile: 1 });
+    expect(two.activeOlympics).toEqual({ tile: 1, multiplier: 2, host: 'p1' });
+    two.active = 'p2'; two.phase = 'roll'; two.positions.p2 = 31; two.rng = seedForSum(2);
+    const twoPaid = step2(two, 'roll');
+    expect(twoPaid.money.p2).toBe(5_740_000);
+
+    const twoTourism = { ...marbleEngine.createInitialState(seedForSum(2)), active: 'p2' as const, positions: { p1: 0, p2: 2 }, properties: { '4': { owner: 'p1' as const, houses: 0, buildings: {} } }, activeOlympics: { tile: 4, multiplier: 2, host: 'p1' as const } };
+    expect(step2(twoTourism, 'roll').money.p2).toBe(4_600_000);
+
+    let team = fourMarbleEngine.createInitialState(seedForSum(2));
+    team.positions.p1 = 14;
+    team.properties['1'] = { owner: 'p1', houses: 0, buildings: {} };
+    team = step4(team, 'roll');
+    expect(team.phase).toBe('olympic-decision');
+    team = step4(team, 'choose-olympic-target', { tile: 1 });
+    expect(team.activeOlympics).toEqual({ tile: 1, multiplier: 2, host: 'p1' });
+    team.active = 'p2'; team.phase = 'roll'; team.positions.p2 = 31; team.rng = seedForSum(2);
+    const teamPaid = step4(team, 'roll');
+    expect(teamPaid.money.p2).toBe(5_740_000);
+
+    const teamTourism = { ...fourMarbleEngine.createInitialState(seedForSum(2)), active: 'p2' as const, positions: { p1: 0, p2: 2, p3: 0, p4: 0 }, properties: { '4': { owner: 'p1' as const, houses: 0, buildings: {} } }, activeOlympics: { tile: 4, multiplier: 2, host: 'p1' as const } };
+    expect(step4(teamTourism, 'roll').money.p2).toBe(4_600_000);
+
+    two.properties['3'] = { owner: 'p2', houses: 0, buildings: {} };
+    two.active = 'p2'; two.phase = 'roll'; two.positions.p2 = 14; two.rng = seedForSum(2);
+    two = step2(two, 'roll'); two = step2(two, 'choose-olympic-target', { tile: 3 });
+    expect(two.activeOlympics).toEqual({ tile: 3, multiplier: 3, host: 'p2' });
+    expect(marbleEngine.getPlayerView(two, 'p1').board.tiles[1].currentToll).toBe(5_000);
+    team.properties['3'] = { owner: 'p2', houses: 0, buildings: {} };
+    team.active = 'p2'; team.phase = 'roll'; team.positions.p2 = 14; team.rng = seedForSum(2);
+    team = step4(team, 'roll'); team = step4(team, 'choose-olympic-target', { tile: 3 });
+    expect(team.activeOlympics).toEqual({ tile: 3, multiplier: 3, host: 'p2' });
   });
 
   it('does not apply undocumented special effects as taxes or random cards', () => {

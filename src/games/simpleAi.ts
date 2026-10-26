@@ -3,7 +3,7 @@ import { chooseDominoBotAction } from './domino';
 import { chooseDavinciGuess } from './davinciAi';
 import { minhwatuYakuProgress } from './minhwatu';
 import { classicMarbleCityToll, classicMarbleReferenceProfile } from './marble-reference-profile';
-import { classicMarbleTourismRent } from './marble-tourism-selector';
+import { classicMarbleIslandCount, classicMarbleTourismRent } from './marble-tourism-selector';
 import { marbleRentAtStage } from './marble-economy';
 
 export const aiGameIds = ['davinci', 'domino', 'jaipur', 'splendor', 'minhwatu', 'marble'] as const;
@@ -75,7 +75,7 @@ export function chooseSimpleAiAction(game: GameId, view: any, player: PlayerId, 
         return total + (tile.owner === opponent && distance >= 2 && distance <= 12 ? rent(tile) * (6-Math.abs(7-distance))/36 : 0);
       }, 0);
       const reserve = Math.max(200, risk * 2 + 100);
-      if (action.type === 'buy') { const tile = tiles[view.ownHand.position], group = tiles.filter(t => t.group === tile.group && t.kind === 'property'), expectedRent = tile.kind === 'tourism' ? classicMarbleTourismRent(tile.name?.ko, { ownerTourismCount: tiles.filter(t => t.kind === 'tourism' && t.owner === player).length + 1, beachVisitStage: Number(view.board.tourismVisitStages?.[String(view.ownHand.position)] ?? 1), visitorPosition: view.ownHand.position, landingIndex: view.ownHand.position }).amount ?? 0 : rent(tile); return money - tile.price >= reserve ? 30 + (tile.group ? group.filter(t=>t.owner===player).length * 5 : 0) + expectedRent / Math.max(1, Number(tile.price)) * 20 : -1; }
+      if (action.type === 'buy') { const tile = tiles[view.ownHand.position], group = tiles.filter(t => t.group === tile.group && t.kind === 'property'), expectedRent = tile.kind === 'tourism' ? classicMarbleTourismRent(tile.name?.ko, { ownerTourismCount: classicMarbleIslandCount(tiles.filter(t => t.kind === 'tourism' && t.owner === player).map(t => t.name?.ko)), beachVisitStage: Number(view.board.tourismVisitStages?.[String(view.ownHand.position)] ?? 1), visitorPosition: view.ownHand.position, landingIndex: view.ownHand.position }).amount ?? 0 : rent(tile); return money - tile.price >= reserve ? 30 + (tile.group ? group.filter(t=>t.owner===player).length * 5 : 0) + expectedRent / Math.max(1, Number(tile.price)) * 20 : -1; }
       if (action.type === 'takeover') { const tile = tiles[Number(x.tile)], cost = view.board.takeoverOffer?.price; return cost != null && money - cost >= reserve ? 15 + tile.houses * 3 : -5; }
       if (action.type === 'build') { const tile = tiles[Number(x.tile)], distance = (Number(x.tile)-view.board.positions[opponent]+tiles.length)%tiles.length; const chance = distance>=2&&distance<=12 ? (6-Math.abs(7-distance))/36 : .02;
         if (tile.referenceProfileId === classicMarbleReferenceProfile.id) {
@@ -93,6 +93,7 @@ export function chooseSimpleAiAction(game: GameId, view: any, player: PlayerId, 
       if (action.type === 'choose-train') { const tile = view.board.tiles[Number(x.destination)]; return !tile.owner && money > (tile.price ?? 0) + 400 ? 8 : -2; }
       if (action.type === 'use-rent-pass') return view.board.pendingRent.amount > 100 || money-view.board.pendingRent.amount < reserve ? 40 : -1;
       if (action.type === 'use-escape-pass') return 40;
+      if (action.type === 'choose-olympic-target') { const index = Number(x.tile), tile = tiles[index], multiplier = Math.min(5, Number(view.board.olympicHostings ?? 0) + 2), currentMultiplier = Number(tile.olympicMultiplier ?? 1), base = (tile.kind === 'property' ? classicMarbleCityToll(tile.referenceCity ?? tile.name?.ko, tile.buildings) ?? 0 : Number(tile.currentToll ?? 0)) / currentMultiplier, distance = (index - Number(view.board.positions[opponent]) + tiles.length) % tiles.length, chance = distance >= 2 && distance <= 12 ? (6-Math.abs(7-distance))/36 : .02; return base * multiplier * chance; }
       if (action.type === 'choose-event-city') { const tile = view.board.tiles[Number(x.tile)]; return (tile.nextRent ?? tile.rent ?? 0) + tile.houses * 100; }
       return 0;
     }
