@@ -86,14 +86,14 @@
 .mp-property-tile-copy .mp-tile-economy { display:grid; gap:2px; margin:0; white-space:normal; font-size:9px; line-height:1.05; }
 .mp-property-tile-copy .mp-tile-economy b { width:fit-content; padding:1px 4px; border-radius:4px; background:#f0dfb5; color:#6f4c1b; font-size:10px; font-weight:900; }
 .mp-property-tile-copy .mp-tile-economy span { color:#526a64; font-size:8px; }
-.mp-building-badge { position:absolute; right:-1px; bottom:0; width:19px; height:19px; padding:1px; border:1px solid #ccb680; border-radius:50%; background:#fff9e8; object-fit:contain; }
+.mp-building-badge { position:absolute; right:-1px; bottom:0; display:grid; place-items:center; width:17px; height:17px; padding:0; border:1px solid #69542b; border-radius:50%; background:#fff0b9; color:#312710; font-size:10px; font-weight:950; line-height:1; box-shadow:0 1px 2px #263a3550; }
 .mp-tile--west .mp-property-tile-view,.mp-tile--east .mp-property-tile-view { display:grid; grid-template-columns:22px minmax(0,1fr); align-items:center; gap:2px 3px; width:100%; height:calc(100% - 10px); margin-top:1px; }
 .mp-tile--west .mp-property-tile-art,.mp-tile--east .mp-property-tile-art { grid-row:1; width:22px; height:28px; }
 .mp-tile--west .mp-property-tile-copy,.mp-tile--east .mp-property-tile-copy { display:grid; grid-template-rows:auto auto; align-content:center; gap:2px; width:100%; }
 .mp-tile--west .mp-property-tile-copy .mp-tile-name,.mp-tile--east .mp-property-tile-copy .mp-tile-name { display:-webkit-box; width:100%; min-height:0; margin:0; font-size:9px; line-height:1; text-align:left; white-space:nowrap; text-overflow:ellipsis; -webkit-line-clamp:1; }
 .mp-tile--west .mp-property-tile-copy .mp-tile-economy,.mp-tile--east .mp-property-tile-copy .mp-tile-economy { display:block; margin:0; font-size:8px; line-height:1; }
 .mp-tile--west .mp-property-tile-copy .mp-tile-economy b,.mp-tile--east .mp-property-tile-copy .mp-tile-economy b { display:block; width:fit-content; padding:1px 3px; font-size:10px; }
-.mp-tile--west .mp-property-tile-copy .mp-tile-economy span,.mp-tile--east .mp-property-tile-copy .mp-tile-economy span { display:none; }
+.mp-tile--west .mp-property-tile-copy .mp-tile-economy span,.mp-tile--east .mp-property-tile-copy .mp-tile-economy span { display:block; overflow:hidden; color:#364d48; font-size:7px; line-height:1; white-space:nowrap; text-overflow:clip; }
 .mp-tile--west .mp-building-badge,.mp-tile--east .mp-building-badge { right:0; bottom:0; width:12px; height:12px; }
 .mp-tile--horizontal { padding:2px; }
 .mp-tile--horizontal .mp-tile-top { min-height:9px; font-size:8px; }
@@ -104,7 +104,7 @@
 .mp-tile--horizontal .mp-property-tile-copy .mp-tile-name { display:-webkit-box; width:100%; min-height:0; margin:0; font-size:8px; line-height:1; text-align:center; -webkit-line-clamp:2; }
 .mp-tile--horizontal .mp-property-tile-copy .mp-tile-economy { display:block; margin:0; line-height:1; }
 .mp-tile--horizontal .mp-property-tile-copy .mp-tile-economy b { display:block; padding:0 3px; font-size:9px; line-height:1.05; }
-.mp-tile--horizontal .mp-property-tile-copy .mp-tile-economy span { display:none; }
+.mp-tile--horizontal .mp-property-tile-copy .mp-tile-economy span { display:block; max-width:100%; overflow:hidden; color:#364d48; font-size:7px; line-height:1; white-space:nowrap; }
 .mp-tile--horizontal .mp-building-badge { width:16px; height:16px; }
 .mp-pawns { position:absolute; z-index:2; right:2px; bottom:22px; display:flex; align-items:flex-end; gap:0; }
 .mp-pawn-marker { display:block; width:21px; height:27px; margin-left:-4px; filter:drop-shadow(0 2px 2px #102a2e55); }
@@ -112,12 +112,24 @@
 .mp-pawn-marker .marble-pawn { width:100%; height:100%; }
 .mp-board-center { grid-column:2/11; grid-row:2/11; display:flex; flex-direction:column; align-items:center; justify-content:center; min-width:0; min-height:0; padding:clamp(12px,2.5vw,28px); overflow:hidden; border:1px solid #e4d3ac; border-radius:16px; background:radial-gradient(ellipse at 50% 0%,#fffdf7 0,#f7efdf 56%,#eee4d0 100%); box-shadow:inset 0 2px 5px #fff,0 4px 12px #164a4b20; text-align:center; }
 .mp-board-center { position:relative; padding:0; border-color:#d2c49e; background:#f2ead7; box-shadow:inset 0 1px 0 #fff,0 4px 12px #164a4b20; }
-.mp-world-map { position:absolute; inset:0; width:100%; height:100%; object-fit:contain; opacity:.42; filter:saturate(.72); pointer-events:none; }
+.mp-world-map { position:absolute; inset:0; width:100%; height:100%; object-fit:contain; opacity:.22; filter:saturate(.62); pointer-events:none; }
+.mp-board-center:not(.mp-board-center--18) > .mp-ownership-key { display:none; }
 .mp-center-route { position:absolute; z-index:2; top:8px; left:50%; width:max-content; min-height:0; margin:0; padding:5px 9px; transform:translateX(-50%); border:1px solid #c7b587; border-radius:999px; background:#fffaf0e8; box-shadow:0 2px 5px #394b3b24; color:#37565a; font-size:10px; }
 .mp-route-line { font-size:15px; }
 .mp-map-hud { position:absolute; z-index:2; right:10px; bottom:10px; left:10px; display:flex; justify-content:center; gap:8px; pointer-events:none; }
 .mp-map-hud span { display:flex; gap:5px; padding:5px 8px; border:1px solid #cbb98b; border-radius:999px; background:#fffaf0ed; color:#526a61; font-size:9px; }
 .mp-map-hud b { color:#264d53; }
+.mp-center-action { position:relative; z-index:3; display:grid; gap:7px; width:min(88%,440px); max-height:calc(100% - 90px); margin:20px auto 0; padding:clamp(12px,2vw,20px); overflow:auto; border:1px solid #bda879; border-radius:16px; background:linear-gradient(145deg,#fffdf4f5,#f3e9d6f2); box-shadow:0 12px 28px #243d3440,inset 0 1px 0 #fff; text-align:left; backdrop-filter:blur(5px); }
+.mp-center-action-phase { color:#8a6533; font-size:11px; font-weight:850; letter-spacing:.04em; }
+.mp-center-action h3 { margin:0; color:#173d4b; font:800 clamp(20px,2.3vw,28px)/1.1 Georgia,'Noto Serif KR',serif; }
+.mp-center-action > p { margin:0; color:#50665f; font-size:13px; line-height:1.45; }
+.mp-center-action-choice { display:grid; gap:6px; padding-top:4px; border-top:1px solid #d7c9aa; }
+.mp-center-action-choice > span { color:#536963; font-size:12px; font-weight:750; }
+.mp-center-action-choice .mp-action { min-height:48px; font-size:14px; }
+.mp-build-count-note { display:block; color:#715b34; font-size:11px; font-weight:800; letter-spacing:.01em; }
+.mp-center-receipt { display:grid; gap:2px; padding:7px 9px; border-left:3px solid #2e8983; border-radius:7px; background:#eaf3eb; color:#425d56; font-size:11px; line-height:1.35; }
+.mp-center-receipt b { color:#234e53; font-size:12px; }
+.mp-center-receipt strong { color:#176b71; }
 .mp-board-center .mp-event-theater { position:relative; z-index:2; width:min(92%,440px); min-height:0; max-height:78px; margin:0 0 8px; padding:5px 7px; overflow:auto; border-color:#cbbd99; background:#fffaf0eF; box-shadow:0 3px 8px #293d3320; }
 .mp-board-center .mp-event-theater h4 { font-size:9px; }
 .mp-board-center .mp-event-empty { min-height:0; padding:4px 6px; font-size:9px; }
@@ -465,3 +477,13 @@
 .guide-marble-stages .guide-marble-art { width:100%; height:110px; object-fit:contain; object-position:center bottom; }
 .guide-marble-stages [data-building-level="1"] { transform:scale(.54); transform-origin:center bottom; }
 .guide-marble-stages [data-building-level="2"] { transform:scale(.73); transform-origin:center bottom; }
+
+.mp-player-value[data-marble-value="cash"] b { color:#153f46; font-size:18px; font-weight:950; letter-spacing:-.02em; }
+.mp-player-value[data-marble-value="assets"] b { color:#61756f; font-size:12px; font-weight:700; }
+.mp-center-action .mt-primary { width:100%; min-height:48px; font-size:14px; }
+@media (min-width:1100px) and (max-height:850px) and (pointer:fine) {
+  .is-modern .mp-tile--west .mp-property-tile-view,.is-modern .mp-tile--east .mp-property-tile-view { grid-template-columns:24px minmax(0,1fr); gap:2px; }
+  .is-modern .mp-tile--west .mp-property-tile-art,.is-modern .mp-tile--east .mp-property-tile-art { width:23px; height:26px; }
+  .is-modern .mp-tile--west .mp-property-tile-copy .mp-tile-name,.is-modern .mp-tile--east .mp-property-tile-copy .mp-tile-name { min-height:0; font-size:10px; line-height:1.05; white-space:nowrap; text-overflow:ellipsis; -webkit-line-clamp:1; }
+  .is-modern .mp-tile--west .mp-property-tile-copy .mp-tile-economy span,.is-modern .mp-tile--east .mp-property-tile-copy .mp-tile-economy span { display:block; font-size:7px; line-height:1; white-space:nowrap; }
+}

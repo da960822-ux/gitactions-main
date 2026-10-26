@@ -12,7 +12,7 @@ const options = { marbleVersion: 2, marbleEconomyVersion: 2, marbleCityRouteVers
 describe('Marble property-rule illustrated guide', () => {
   it('uses current property helpers for every illustrated ledger amount', () => {
     const html = renderToStaticMarkup(createElement(MarbleRuleGuide, { language: 'es', rules: marblePropertyRules.es, options }));
-    const tile = marbleEngine.getPlayerView(marbleEngine.createInitialState(1), 'p1').board.tiles.find((tile: MarbleTile) => tile.name.es === 'Santo Domingo') as MarbleTile;
+    const tile = marbleEngine.getPlayerView({ ...marbleEngine.createInitialState(1), economicVersion: 2 }, 'p1').board.tiles.find((tile: MarbleTile) => tile.name.es === 'Santo Domingo') as MarbleTile;
     const rows = html.match(/<tbody>(.*?)<\/tbody>/)?.[1].match(/<tr>.*?<\/tr>/g) ?? [];
     expect(rows).toHaveLength(4);
     rows.forEach((row, level) => {

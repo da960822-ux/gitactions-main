@@ -7,6 +7,11 @@ import MarbleTeamBoard from './MarbleTeamBoard';
 const state=()=>fourMarbleEngine.createInitialState(71) as FourMarbleState;
 const render=(s:FourMarbleState,language:'ko'|'es'='ko')=>renderToStaticMarkup(createElement(MarbleTeamBoard,{view:fourMarbleEngine.getPlayerView(s,'p1'),language,nickname:'연석',runAction:vi.fn(),onReplay:vi.fn(),onExit:vi.fn(),onSelectGame:vi.fn()}));
 describe('native four-player Marble screen',()=>{
+ it('puts the legal phase action ahead of optional loans in the center card',()=>{
+  const html=render(state());
+  const center=html.slice(html.indexOf('class="mp-center-action mt-center-action"'),html.indexOf('</section>',html.indexOf('class="mp-center-action mt-center-action"')));
+  expect(center).toContain('주사위 굴리기');expect(center).not.toContain('대출 받기');
+ });
  it('owns its four-seat banks and controls without mounting the two-player board',()=>{
   for(const language of ['ko','es'] as const){
    const html=render(state(),language);
@@ -39,7 +44,7 @@ describe('native four-player Marble screen',()=>{
   expect(render(s)).toContain('marble-pawn--dragon');
   s.positions.p1=1;s.pendingTile=1;s.phase='decision';
   const purchase=render(s);
-  expect(purchase).toContain('매입 100 · 통행료 12');expect(purchase).toContain('구매 후 현금 1,400');
+  expect(purchase).toContain('매입 100 · 통행료 20');expect(purchase).toContain('구매 후 현금 1,400');
   expect(purchase).toContain('도시 구매 · 100');expect(purchase).toContain('구매 안 함');
   expect(purchase).toContain('300을 받고 330을 갚습니다.');
  });
@@ -53,7 +58,7 @@ describe('native four-player Marble screen',()=>{
  it('keeps actual history, team settlement, and owned-city building available',()=>{
   const s=state();s.phase='main';s.properties[1]={owner:'p1',houses:1};s.actionLog=[{sequence:1,type:'event-card',actor:'p4',title:{ko:'정전',es:'Apagón'},text:{ko:'도시 선택',es:'Elegir ciudad'},cardId:'blackout'}];s.actionSequence=1;
   const html=render(s);
-  expect(html).toContain('건설 1곳');expect(html).toContain('내 도시 1');expect(html).toContain('정전');
+  expect(html).toContain('건설 가능한 도시 1곳');expect(html).toContain('내 도시 1');expect(html).toContain('정전');
   s.result={winner:'A',scores:{A:4000,B:3000},reason:{ko:'팀 정산',es:'Balance por equipos'}};s.phase='finished';
   const finished=render(s);
   expect(finished).toContain('우리 팀 승리');expect(finished).toContain('4000');expect(finished).toContain('다시 여행하기');
@@ -91,7 +96,7 @@ it('keeps each owner number, shared pawn/bank color key and approved property im
   for(const seat of ['p1','p2','p3','p4']){expect(html).toContain(`data-marble-owner="${seat}"`);expect(html).toContain(`data-marble-pawn-seat="${seat}"`);}
   expect(html).toContain('data-marble-owner="bank"');expect(html).toContain('mp-building-plinth');
   expect(html).not.toContain('aria-label="단독주택">1</span>');expect(html).not.toContain('aria-label="아파트">2</span>');
-  expect(html).toContain('data-marble-price-kind="rent" title="'+(language==='ko'?'현재 통행료 12':'Alquiler actual 12')+'">12</b>');
+  expect(html).toContain('data-marble-price-kind="rent" title="'+(language==='ko'?'현재 통행료 20':'Alquiler actual 20')+'">20</b>');
   expect(html).toContain('data-marble-price-kind="purchase"');
  }
 });

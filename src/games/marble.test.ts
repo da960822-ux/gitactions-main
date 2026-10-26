@@ -14,7 +14,9 @@ const seedForSum = (sum: number) => seedForDice((a, b) => a + b === sum);
 const seedForDoubles = () => seedForDice((a, b) => a === b);
 const seedForMiss = () => seedForDice((a, b) => a !== b);
 // Regression fixtures for saved forty-space rooms before the personalized route.
-const initial = (seed = 15): MarbleState => ({ ...marbleEngine.createInitialState(seed), cityRouteVersion: undefined, propertyRulesVersion: undefined });
+// Most cases in this file exercise pre-v3 saved-room behavior. Current v3 economy
+// assertions use createInitialState directly so their fixtures stay explicit.
+const initial = (seed = 15): MarbleState => ({ ...marbleEngine.createInitialState(seed), economicVersion: 2, cityRouteVersion: undefined, propertyRulesVersion: undefined });
 function eventState(id: MarbleEventId, target = 2): MarbleState {
   const seed = seedForSum(target);
   return { ...initial(seed), eventDeck: [id], positions: { p1: 0, p2: 0 } };
@@ -25,7 +27,7 @@ describe('Marble 40-space house-rule engine', () => {
   it('keeps 24 cities and all economics while ordering the new journey and preserving saved boards', () => {
     const fresh = marbleEngine.createInitialState(15);
     const tiles = marbleEngine.getPlayerView(fresh, 'p1').board.tiles;
-    const saved = marbleEngine.getPlayerView(initial(15), 'p1').board.tiles;
+    const saved = marbleEngine.getPlayerView({ ...fresh, cityRouteVersion: undefined }, 'p1').board.tiles;
     expect(fresh.boardVersion).toBe(2);
     expect(fresh.cityRouteVersion).toBe(3);
     expect(tiles).toHaveLength(40);
@@ -61,7 +63,8 @@ describe('Marble 40-space house-rule engine', () => {
       expect(moved.positions.p1).toBe(destination);
       expect(moved.phase).toBe('decision');
       expect(moved.money.p1).toBe(1500);
-      expect(marbleEngine.getPlayerView(moved, 'p1').board.tiles[destination]).toMatchObject({ name: { ko: '산토도밍고' }, price: 120, rent: 15 });
+      const expectedRent = 20;
+      expect(marbleEngine.getPlayerView(moved, 'p1').board.tiles[destination]).toMatchObject({ name: { ko: '산토도밍고' }, price: 120, rent: expectedRent });
     }
   });
   it('creates the classic-size adapted map and hides deck/RNG state from both views', () => {
@@ -265,6 +268,18 @@ describe('Marble 40-space house-rule engine', () => {
     expect(marbleEngine.getPlayerView(savedRules, 'p1').board.tiles[1]).toMatchObject({ nextBuildCost: 100, nextRent: 24 });
     expect(marbleEngine.getPlayerView(savedRules, 'p1').actions.find((item: any) => item.action.type === 'build')?.label.ko).toContain('(100)');
     expect(act(savedRules, 'build', { tile: 1 }).money.p1).toBe(900);
+  });
+
+  it('uses the v3 yield and building ladder on the active route without changing saved v2 values', () => {
+    const state = marbleEngine.createInitialState(9);
+    const tiles = marbleEngine.getPlayerView(state, 'p1').board.tiles;
+    expect(state.economicVersion).toBe(3);
+    expect([1, 4, 3, 38].map(index => [tiles[index].name.ko, tiles[index].price, tiles[index].rent]))
+      .toEqual([['광주', 100, 20], ['마드리드', 140, 30], ['뉴욕', 260, 60], ['서울', 560, 140]]);
+    expect([0, 1, 2].map(level => marbleBuildCost(tiles[38], level, 3))).toEqual([220, 340, 450]);
+    expect([0, 1, 2, 3].map(level => tiles[38].rent! * [1, 2, 3, 4][level] * 2))
+      .toEqual([280, 560, 840, 1120]);
+    expect(marbleEngine.getPlayerView({ ...state, economicVersion: 2 }, 'p1').board.tiles[38].rent).toBe(112);
   });
 
   it('rejects wrong player, wrong phase, invalid target, and malformed actions', () => {

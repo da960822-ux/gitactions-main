@@ -17,11 +17,11 @@ for (const [name, engine, four] of [['1v1', marbleEngine, false], ['2v2', fourMa
   const land=(s:any)=>act({...s,rng:dice(1,2),phase:'roll',positions:{...s.positions,p1:1}},'roll');
   it('pays rent once before acquisition, preserves buildings and pays the actual owner',()=>{
     const s=fresh(),owner=four?'p4':'p2';s.properties[4]={owner,houses:2};
-    let n=land(s);expect(n.money.p1).toBe(1428);expect(n.money[owner]).toBe(1572);
+    let n=land(s);expect(n.money.p1).toBe(1410);expect(n.money[owner]).toBe(1590);
     expect(choices(n)).toContainEqual({type:'takeover',payload:{tile:4}});
     expect(engine.validateAction(n,'p1',{type:'takeover',payload:{tile:5}})).toBeTruthy();
     n=four?{...n,modifiers:{4:{festival:owner,blackout:'p1'}}}:{...n,rentModifiers:{4:{festival:{owner,playerId:owner,source:'city-festival'}}}};
-    n=act(n,'takeover',{tile:4});expect(n.properties[4]).toEqual({owner:'p1',houses:2});expect(n.money.p1).toBe(868);expect(n.money[owner]).toBe(2132);
+    n=act(n,'takeover',{tile:4});expect(n.properties[4]).toEqual({owner:'p1',houses:2});expect(n.money.p1).toBe(850);expect(n.money[owner]).toBe(2150);
     expect((four?n.modifiers:n.rentModifiers)[4]).toBeUndefined();expect(n.takeoverTile).toBeNull();
     expect(engine.validateAction(n,'p1',{type:'takeover',payload:{tile:4}})).toBeTruthy();
     expect(s.properties[4].owner).toBe(owner);
@@ -35,7 +35,7 @@ for (const [name, engine, four] of [['1v1', marbleEngine, false], ['2v2', fourMa
   });
   it('doubles personal complete-group rent and updates it immediately after selling or acquisition',()=>{
     const s=fresh();s.properties[4]={owner:'p2',houses:0};s.properties[5]={owner:'p2',houses:0};
-    let n=land(s);expect(n.money.p1).toBe(1464);expect(board(n)[4].monopolyMultiplier).toBe(2);
+    let n=land(s);expect(n.money.p1).toBe(1440);expect(board(n)[4].monopolyMultiplier).toBe(2);
     n=act(n,'takeover',{tile:4});expect(board(n)[5].monopolyMultiplier).toBe(1);expect(board(n)[4].monopolyMultiplier).toBe(1);
     if(four){const allied=fresh();allied.properties[4]={owner:'p3',houses:3};allied.properties[5]={owner:'p3',houses:0};const a=land(allied);expect(a.money.p1).toBe(1500);expect(choices(a).some((x:any)=>x.type==='takeover')).toBe(false);}
   });
@@ -43,7 +43,7 @@ for (const [name, engine, four] of [['1v1', marbleEngine, false], ['2v2', fourMa
     const s=fresh();s.money.p1=30;s.debt.p1=330;s.properties[4]={owner:'p2',houses:2};s.properties[1]={owner:'p1',houses:1};
     let n=land(s);expect(n.phase).toBe('debt');expect(choices(n)).toContainEqual({type:'sell-property',payload:{tile:1}});expect(choices(n).some((a:any)=>a.type==='declare-bankruptcy')).toBe(false);
     expect(engine.validateAction(n,'p1',{type:'sell-property',payload:{tile:4}})).toBeTruthy();
-    n=act(n,'sell-property',{tile:1});expect(n.phase).toBe('main');expect(n.money.p1).toBe(28);expect(n.money.p2).toBe(1572);expect(n.pendingPayment).toBeNull();expect(n.properties[1]).toBeUndefined();
+    n=act(n,'sell-property',{tile:1});expect(n.phase).toBe('main');expect(n.money.p1).toBe(10);expect(n.money.p2).toBe(1590);expect(n.pendingPayment).toBeNull();expect(n.properties[1]).toBeUndefined();
     expect(engine.validateAction(n,'p1',{type:'sell-property',payload:{tile:1}})).toBeTruthy();
     expect(n.actionLog.filter((e:any)=>e.type==='rent')).toHaveLength(1);
   });
@@ -93,7 +93,7 @@ for (const [name, engine, four] of [['1v1', marbleEngine, false], ['2v2', fourMa
   });
   it('leaves saved games without the version flag on their original rent and turn rules',()=>{
     const s=fresh();delete s.propertyRulesVersion;s.properties[4]={owner:'p2',houses:0};s.properties[5]={owner:'p2',houses:0};
-    let n=land(s);expect(n.money.p1).toBe(1482);expect(choices(n).some((a:any)=>a.type==='takeover')).toBe(false);
+    let n=land(s);expect(n.money.p1).toBe(1470);expect(choices(n).some((a:any)=>a.type==='takeover')).toBe(false);
     n=act({...s,positions:{...s.positions,p1:21},rng:dice(1,1)},'roll');expect(n.extraRoll).not.toBe(true);n=act(n,'endTurn');expect(n.active).toBe('p2');
   });
 });

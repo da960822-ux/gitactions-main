@@ -42,5 +42,6 @@ export function buildingName(level: number, language: Language, modern: boolean)
 }
 export function rentValue(tile: Record<string, any>, modern: boolean) {
   const level = num(tile.houses);
-  return num(tile.rent) * (modern ? ([1, 2, 4, 8][level] ?? 1) : level + 1) * (num(tile.monopolyMultiplier) || 1);
+  const multipliers = Array.isArray(tile.rentMultipliers) ? tile.rentMultipliers : [1, 2, 4, 8];
+  return num(tile.rent) * (modern ? (multipliers[level] ?? 1) : level + 1) * (num(tile.monopolyMultiplier) || 1);
 }

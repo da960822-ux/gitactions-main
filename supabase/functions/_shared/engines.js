@@ -6146,7 +6146,10 @@ var landmarkJourneyBoard = journeyBoard.map((tile, index) => {
   };
   return names[index] ? { ...tile, name: names[index] } : tile;
 });
-var boardFor = (s) => s.boardVersion === 2 ? s.cityRouteVersion === 3 ? landmarkJourneyBoard : s.cityRouteVersion === 2 ? journeyBoard : modernBoard : legacyBoard;
+var boardFor = (s) => {
+  const board = s.boardVersion === 2 ? s.cityRouteVersion === 3 ? landmarkJourneyBoard : s.cityRouteVersion === 2 ? journeyBoard : modernBoard : legacyBoard;
+  return s.economicVersion === 3 ? board.map((tile) => tile.kind === "property" ? { ...tile, rent: marbleBaseRent(tile) } : tile) : board;
+};
 var legacyIds = ["festival", "lottery", "rent-rebate", "travel-cost", "maintenance", "visit-santo-domingo", "advance-start", "retreat"];
 var modernIds = [...legacyIds, "go-to-island", "escape-pass", "train-ticket", "city-dividend"];
 var expandedIds = [...modernIds, "monopoly-warning", "city-festival", "blackout", "rent-pass"];
@@ -6168,10 +6171,16 @@ var cards = {
   blackout: { title: { ko: "\uC815\uC804", es: "Apag\xF3n" }, text: { ko: "\uC0C1\uB300 \uB3C4\uC2DC \uD558\uB098\uB97C \uC120\uD0DD\uD569\uB2C8\uB2E4. \uADF8 \uB3C4\uC2DC\uC758 \uB2E4\uC74C \uB0B4 \uCC29\uC9C0 1\uD68C \uD1B5\uD589\uB8CC\uAC00 \uC808\uBC18\uC774 \uB429\uB2C8\uB2E4(\uB0B4\uB9BC, \uCD5C\uC18C 1). \uB300\uC0C1 \uCC29\uC9C0\uAE4C\uC9C0 \uC720\uC9C0\uB429\uB2C8\uB2E4.", es: "Elige una ciudad rival. En tu pr\xF3xima llegada a ella pagas la mitad una vez (redondeo hacia abajo, m\xEDnimo 1). Permanece hasta esa llegada." }, effect: "cash" },
   "rent-pass": { title: { ko: "\uD1B5\uD589\uB8CC \uBA74\uC81C\uAD8C", es: "Pase de alquiler" }, text: { ko: "\uD1B5\uD589\uB8CC \uBA74\uC81C\uAD8C \uD55C \uC7A5\uC744 \uBCF4\uAD00\uD569\uB2C8\uB2E4. \uC55E\uC73C\uB85C \uD1B5\uD589\uB8CC\uB97C \uB0B4\uAE30 \uC804\uC5D0 \uC9C1\uC811 \uC120\uD0DD\uD574 1\uD68C \uBA74\uC81C\uD560 \uC218 \uC788\uC2B5\uB2C8\uB2E4. \uC790\uB3D9 \uC0AC\uC6A9\uB418\uC9C0 \uC54A\uC73C\uBA70 \uC138\uAE08\uC5D0\uB294 \uC4F8 \uC218 \uC5C6\uC2B5\uB2C8\uB2E4.", es: "Guarda un pase. Antes de un futuro alquiler puedes elegir usarlo para eximir un solo pago. No se usa autom\xE1ticamente ni sirve para impuestos." }, effect: "pass" }
 };
-var propertyRent = (tile, record2, modern, s) => (tile.rent ?? 0) * (modern ? [1, 2, 4, 8][record2.houses] ?? 1 : record2.houses + 1) * (s?.propertyRulesVersion === 1 && completedGroups(s, record2.owner).includes(tile.group) ? 2 : 1);
+var marbleRentMultipliers = [1, 2, 3, 4];
+function marbleBaseRent(tile) {
+  const price = Math.max(0, tile.price ?? 0);
+  const yieldRate = 0.2 + 0.05 * Math.max(0, Math.min(1, (price - 100) / 460));
+  return Math.max(10, Math.round(price * yieldRate / 10) * 10);
+}
+var propertyRent = (tile, record2, modern, s) => (tile.rent ?? 0) * (modern ? s?.economicVersion === 3 ? marbleRentMultipliers[record2.houses] ?? 1 : [1, 2, 4, 8][record2.houses] ?? 1 : record2.houses + 1) * (s?.propertyRulesVersion === 1 && completedGroups(s, record2.owner).includes(tile.group) ? 2 : 1);
 function marbleBuildCost(tile, level, economicVersion) {
-  if (economicVersion !== 2) return 100;
-  const factor = [0.4, 0.6, 0.8][Math.max(0, Math.min(2, Math.trunc(level)))] ?? 0.4;
+  if (economicVersion !== 2 && economicVersion !== 3) return 100;
+  const factor = [0.4, 0.6, 0.8][Math.max(0, Math.min(2, Math.trunc(level)))] ?? 0.2;
   return Math.max(40, Math.round(Math.max(0, tile.price ?? 0) * factor / 10) * 10);
 }
 function marbleCityValue(tile, houses, economicVersion) {
@@ -6215,7 +6224,7 @@ function view2(s, p) {
       add(`\uD1B5\uD589\uB8CC \uC9C0\uAE09 \xB7 ${s.pendingRent.amount}`, `Pagar alquiler \xB7 ${s.pendingRent.amount}`, { type: "pay-rent" });
       if ((s.rentPasses?.[p] ?? 0) > 0) add("\uBA74\uC81C\uAD8C \uC0AC\uC6A9 \xB7 \uC774\uBC88 \uD1B5\uD589\uB8CC 1\uD68C", "Usar pase \xB7 este alquiler", { type: "use-rent-pass" });
     }
-    if ((s.economicVersion === 1 || s.economicVersion === 2) && s.phase !== "event-decision" && s.phase !== "rent-decision") {
+    if ((s.economicVersion === 1 || s.economicVersion === 2 || s.economicVersion === 3) && s.phase !== "event-decision" && s.phase !== "rent-decision") {
       const debt = s.debt?.[p] ?? 0;
       if (debt === 0 && (s.phase !== "debt" || s.money[p] + 300 >= (s.pendingPayment?.amount ?? Infinity))) add("\uB300\uCD9C \uBC1B\uAE30 \xB7 300 / \uC0C1\uD658 330", "Pedir pr\xE9stamo \xB7 300 / devolver 330", { type: "borrow" });
       if (debt > 0 && s.money[p] >= debt && s.phase !== "debt") add(`\uB300\uCD9C \uC0C1\uD658 \xB7 ${debt}`, `Pagar pr\xE9stamo \xB7 ${debt}`, { type: "repay" });
@@ -6257,7 +6266,7 @@ function view2(s, p) {
         const cost = marbleBuildCost(tile, record2.houses, s.economicVersion);
         if (canBuild && record2.houses < levels && s.money[p] >= cost) {
           const tier = s.boardVersion === 2 ? [["\uB2E8\uB3C5\uC8FC\uD0DD", "Casa unifamiliar"], ["\uC544\uD30C\uD2B8", "Apartamentos"], "landmark"][record2.houses] : ["\uC9D1", "Casa"];
-          const name = Array.isArray(tier) ? tier : s.economicVersion === 1 || s.economicVersion === 2 ? ["\uB79C\uB4DC\uB9C8\uD06C", "Monumento"] : ["\uD638\uD154", "Hotel"];
+          const name = Array.isArray(tier) ? tier : s.economicVersion === 1 || s.economicVersion === 2 || s.economicVersion === 3 ? ["\uB79C\uB4DC\uB9C8\uD06C", "Monumento"] : ["\uD638\uD154", "Hotel"];
           add(`${name[0]}: ${tile.name.ko} (${cost})`, `${name[1]}: ${tile.name.es} (${cost})`, { type: "build", payload: { tile: index } });
         }
       }
@@ -6281,6 +6290,7 @@ function view2(s, p) {
         return {
           ...tile,
           name: { ...tile.name },
+          rentMultipliers: s.economicVersion === 3 ? marbleRentMultipliers : [1, 2, 4, 8],
           monopolyMultiplier: s.propertyRulesVersion === 1 && s.properties[index] && completedGroups(s, s.properties[index].owner).includes(tile.group) ? 2 : 1,
           index,
           owner: s.properties[String(index)]?.owner ?? null,
@@ -6346,7 +6356,7 @@ function validation(s, p, a) {
   }
   if (["choose-event-city", "pay-rent", "use-rent-pass"].includes(a.type)) return "No matching decision";
   if (["borrow", "repay", "declare-bankruptcy", "choose-pawn"].includes(a.type)) {
-    if (s.economicVersion !== 1 && s.economicVersion !== 2) return "Credit and figure selection unavailable in this saved ruleset";
+    if (s.economicVersion !== 1 && s.economicVersion !== 2 && s.economicVersion !== 3) return "Credit and figure selection unavailable in this saved ruleset";
     if (s.phase === "finished") return "Game is finished";
     if (a.type === "borrow") return (s.debt?.[p] ?? 0) !== 0 ? "Repay the existing loan first" : a.payload?.amount !== void 0 ? "Loan amount is fixed" : s.phase === "debt" && s.money[p] + 300 < (s.pendingPayment?.amount ?? Infinity) ? "Loan cannot cover this payment" : null;
     if (a.type === "repay") return a.payload?.amount !== void 0 ? "Repayment amount is fixed" : s.phase === "debt" || !s.debt?.[p] || s.money[p] < s.debt[p] ? "Cannot repay now" : null;
@@ -6400,7 +6410,7 @@ function bankrupt(s, loser, winner) {
 }
 function pay(s, p, amount, creditor = "bank", reason = { ko: "\uBE44\uC6A9 \uC9C0\uAE09", es: "Pago de gastos" }, type = "tax") {
   if (s.money[p] < amount) {
-    if (s.economicVersion !== 1 && s.economicVersion !== 2) return bankrupt(s, p, otherPlayer(p));
+    if (s.economicVersion !== 1 && s.economicVersion !== 2 && s.economicVersion !== 3) return bankrupt(s, p, otherPlayer(p));
     s.pendingPayment = { amount, creditor, reason, type, tile: s.positions[p], resumePhase: "main", resumeActive: s.active };
     s.active = p;
     s.phase = "debt";
@@ -6487,7 +6497,7 @@ function noteMove(s, p, from, to, steps, source) {
   emit(s, "move", p, "\uB9D0 \uC774\uB3D9", "Movimiento", `${from + 1}\uBC88\uC5D0\uC11C ${to + 1}\uBC88 \uCE78\uC73C\uB85C \uC774\uB3D9\uD569\uB2C8\uB2E4.`, `Avanzas de la casilla ${from + 1} a la ${to + 1}.`, { from, to, steps: steps ?? void 0 });
 }
 function resolveEvent(s, p) {
-  const board = boardFor(s), isModern = s.boardVersion === 2, ids = isModern ? s.eventVersion === 3 ? expandedIds : s.economicVersion === 1 || s.economicVersion === 2 ? [...modernIds, "monopoly-warning"] : modernIds : legacyIds;
+  const board = boardFor(s), isModern = s.boardVersion === 2, ids = isModern ? s.eventVersion === 3 ? expandedIds : s.economicVersion === 1 || s.economicVersion === 2 || s.economicVersion === 3 ? [...modernIds, "monopoly-warning"] : modernIds : legacyIds;
   s.phase = "main";
   let deck = s.eventDeck ? [...s.eventDeck] : [];
   if (!deck.length) {
@@ -6858,7 +6868,7 @@ var marbleEngine = {
       pendingRent: null,
       rentPasses: { p1: 0, p2: 0 },
       rentModifiers: {},
-      economicVersion: 2,
+      economicVersion: 3,
       debt: { p1: 0, p2: 0 },
       pendingPayment: null,
       actionLog: [],

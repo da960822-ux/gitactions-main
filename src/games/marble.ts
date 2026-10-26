@@ -6,6 +6,7 @@ export interface MarbleTile {
   kind: 'start' | 'property' | 'tax' | 'rest' | 'event' | 'island' | 'train' | 'fund' | 'fund-deposit';
   price?: number;
   rent?: number;
+  rentMultipliers?: readonly number[];
   group?: string;
 }
 export type MarbleEventId = 'festival' | 'lottery' | 'rent-rebate' | 'travel-cost' | 'maintenance' | 'visit-santo-domingo' | 'advance-start' | 'retreat' | 'go-to-island' | 'escape-pass' | 'train-ticket' | 'city-dividend' | 'monopoly-warning' | 'city-festival' | 'blackout' | 'rent-pass';
@@ -40,7 +41,7 @@ export interface MarbleState {
   pendingRent?: PendingRent | null; rentPasses?: Record<PlayerId, number>;
   rentModifiers?: Record<string, { festival?: RentModifier; blackout?: RentModifier }>;
   propertyRulesVersion?: 1; takeoverTile?: number | null; doublesCount?: number; extraRoll?: boolean;
-  economicVersion?: 1 | 2; debt?: Record<PlayerId, number>; pendingPayment?: PendingPayment | null;
+  economicVersion?: 1 | 2 | 3; debt?: Record<PlayerId, number>; pendingPayment?: PendingPayment | null;
   actionLog?: MarbleActionEvent[]; actionSequence?: number;
   pawns?: Record<PlayerId, MarblePawnId>; pawnLocked?: Record<PlayerId, boolean>;
 }
@@ -119,8 +120,14 @@ const landmarkJourneyBoard = journeyBoard.map((tile, index) => {
   };
   return names[index] ? { ...tile, name: names[index] } : tile;
 });
-const boardFor = (s: MarbleState) => s.boardVersion === 2
-  ? s.cityRouteVersion === 3 ? landmarkJourneyBoard : s.cityRouteVersion === 2 ? journeyBoard : modernBoard : legacyBoard;
+const boardFor = (s: MarbleState) => {
+  const board = s.boardVersion === 2
+    ? s.cityRouteVersion === 3 ? landmarkJourneyBoard : s.cityRouteVersion === 2 ? journeyBoard : modernBoard
+    : legacyBoard;
+  return s.economicVersion === 3
+    ? board.map(tile => tile.kind === 'property' ? { ...tile, rent: marbleBaseRent(tile) } : tile)
+    : board;
+};
 const legacyIds: MarbleEventId[] = ['festival', 'lottery', 'rent-rebate', 'travel-cost', 'maintenance', 'visit-santo-domingo', 'advance-start', 'retreat'];
 const modernIds: MarbleEventId[] = [...legacyIds, 'go-to-island', 'escape-pass', 'train-ticket', 'city-dividend'];
 const expandedIds: MarbleEventId[] = [...modernIds, 'monopoly-warning', 'city-festival', 'blackout', 'rent-pass'];
@@ -142,10 +149,16 @@ const cards: Record<MarbleEventId, CardData> = {
   blackout: { title: { ko: '정전', es: 'Apagón' }, text: { ko: '상대 도시 하나를 선택합니다. 그 도시의 다음 내 착지 1회 통행료가 절반이 됩니다(내림, 최소 1). 대상 착지까지 유지됩니다.', es: 'Elige una ciudad rival. En tu próxima llegada a ella pagas la mitad una vez (redondeo hacia abajo, mínimo 1). Permanece hasta esa llegada.' }, effect: 'cash' },
   'rent-pass': { title: { ko: '통행료 면제권', es: 'Pase de alquiler' }, text: { ko: '통행료 면제권 한 장을 보관합니다. 앞으로 통행료를 내기 전에 직접 선택해 1회 면제할 수 있습니다. 자동 사용되지 않으며 세금에는 쓸 수 없습니다.', es: 'Guarda un pase. Antes de un futuro alquiler puedes elegir usarlo para eximir un solo pago. No se usa automáticamente ni sirve para impuestos.' }, effect: 'pass' },
 };
-const propertyRent = (tile: MarbleTile, record: { owner: PlayerId; houses: number }, modern: boolean, s?: MarbleState) => (tile.rent ?? 0) * (modern ? [1, 2, 4, 8][record.houses] ?? 1 : record.houses + 1) * (s?.propertyRulesVersion === 1 && completedGroups(s, record.owner).includes(tile.group!) ? 2 : 1);
+export const marbleRentMultipliers = [1, 2, 3, 4] as const;
+export function marbleBaseRent(tile: MarbleTile) {
+  const price = Math.max(0, tile.price ?? 0);
+  const yieldRate = 0.2 + 0.05 * Math.max(0, Math.min(1, (price - 100) / 460));
+  return Math.max(10, Math.round((price * yieldRate) / 10) * 10);
+}
+const propertyRent = (tile: MarbleTile, record: { owner: PlayerId; houses: number }, modern: boolean, s?: MarbleState) => (tile.rent ?? 0) * (modern ? (s?.economicVersion === 3 ? marbleRentMultipliers[record.houses] ?? 1 : [1, 2, 4, 8][record.houses] ?? 1) : record.houses + 1) * (s?.propertyRulesVersion === 1 && completedGroups(s, record.owner).includes(tile.group!) ? 2 : 1);
 export function marbleBuildCost(tile: MarbleTile, level: number, economicVersion?: number) {
-  if (economicVersion !== 2) return 100;
-  const factor = [0.4, 0.6, 0.8][Math.max(0, Math.min(2, Math.trunc(level)))] ?? 0.4;
+  if (economicVersion !== 2 && economicVersion !== 3) return 100;
+  const factor = [0.4, 0.6, 0.8][Math.max(0, Math.min(2, Math.trunc(level)))] ?? 0.2;
   return Math.max(40, Math.round((Math.max(0, tile.price ?? 0) * factor) / 10) * 10);
 }
 export function marbleCityValue(tile: MarbleTile, houses: number, economicVersion?: number) {
@@ -189,7 +202,7 @@ function view(s: MarbleState, p: PlayerId) {
       add(`통행료 지급 · ${s.pendingRent.amount}`, `Pagar alquiler · ${s.pendingRent.amount}`, { type: 'pay-rent' });
       if ((s.rentPasses?.[p] ?? 0) > 0) add('면제권 사용 · 이번 통행료 1회', 'Usar pase · este alquiler', { type: 'use-rent-pass' });
     }
-    if ((s.economicVersion === 1 || s.economicVersion === 2) && s.phase !== 'event-decision' && s.phase !== 'rent-decision') {
+    if ((s.economicVersion === 1 || s.economicVersion === 2 || s.economicVersion === 3) && s.phase !== 'event-decision' && s.phase !== 'rent-decision') {
       const debt = s.debt?.[p] ?? 0;
       if (debt === 0 && (s.phase !== 'debt' || s.money[p] + 300 >= (s.pendingPayment?.amount ?? Infinity))) add('대출 받기 · 300 / 상환 330', 'Pedir préstamo · 300 / devolver 330', { type: 'borrow' });
       if (debt > 0 && s.money[p] >= debt && s.phase !== 'debt') add(`대출 상환 · ${debt}`, `Pagar préstamo · ${debt}`, { type: 'repay' });
@@ -229,7 +242,7 @@ function view(s: MarbleState, p: PlayerId) {
         const cost = marbleBuildCost(tile, record.houses, s.economicVersion);
         if (canBuild && record.houses < levels && s.money[p] >= cost) {
           const tier = s.boardVersion === 2 ? [['단독주택', 'Casa unifamiliar'], ['아파트', 'Apartamentos'], 'landmark'][record.houses] : ['집', 'Casa'];
-          const name = Array.isArray(tier) ? tier : (s.economicVersion === 1 || s.economicVersion === 2 ? ['랜드마크', 'Monumento'] : ['호텔', 'Hotel']);
+          const name = Array.isArray(tier) ? tier : (s.economicVersion === 1 || s.economicVersion === 2 || s.economicVersion === 3 ? ['랜드마크', 'Monumento'] : ['호텔', 'Hotel']);
           add(`${name[0]}: ${tile.name.ko} (${cost})`, `${name[1]}: ${tile.name.es} (${cost})`, { type: 'build', payload: { tile: index } });
         }
       }
@@ -245,7 +258,7 @@ function view(s: MarbleState, p: PlayerId) {
         const houses = s.properties[String(index)]?.houses ?? 0;
         const maxLevels = s.boardVersion === 2 ? 3 : 2;
         const canUpgrade = tile.kind === 'property' && houses < maxLevels;
-        return { ...tile, name: { ...tile.name }, monopolyMultiplier: s.propertyRulesVersion === 1 && s.properties[index] && completedGroups(s, s.properties[index].owner).includes(tile.group!) ? 2 : 1, index, owner: s.properties[String(index)]?.owner ?? null, houses,
+        return { ...tile, name: { ...tile.name }, rentMultipliers: s.economicVersion === 3 ? marbleRentMultipliers : [1, 2, 4, 8], monopolyMultiplier: s.propertyRulesVersion === 1 && s.properties[index] && completedGroups(s, s.properties[index].owner).includes(tile.group!) ? 2 : 1, index, owner: s.properties[String(index)]?.owner ?? null, houses,
           rentModifiers: s.rentModifiers?.[String(index)] ? { ...(s.rentModifiers[String(index)].festival ? { festival: { ...s.rentModifiers[String(index)].festival! } } : {}), ...(s.rentModifiers[String(index)].blackout ? { blackout: { ...s.rentModifiers[String(index)].blackout! } } : {}) } : null,
           nextBuildCost: canUpgrade ? marbleBuildCost(tile, houses, s.economicVersion) : null,
           nextRent: canUpgrade ? propertyRent(tile, { owner: s.properties[String(index)]?.owner ?? p, houses: houses + 1 }, s.boardVersion === 2, s) : null };
@@ -290,7 +303,7 @@ function validation(s: MarbleState, p: PlayerId, a: GameAction): string | null {
   }
   if (['choose-event-city', 'pay-rent', 'use-rent-pass'].includes(a.type)) return 'No matching decision';
   if (['borrow', 'repay', 'declare-bankruptcy', 'choose-pawn'].includes(a.type)) {
-    if (s.economicVersion !== 1 && s.economicVersion !== 2) return 'Credit and figure selection unavailable in this saved ruleset';
+    if (s.economicVersion !== 1 && s.economicVersion !== 2 && s.economicVersion !== 3) return 'Credit and figure selection unavailable in this saved ruleset';
     if (s.phase === 'finished') return 'Game is finished';
     if (a.type === 'borrow') return (s.debt?.[p] ?? 0) !== 0 ? 'Repay the existing loan first' : a.payload?.amount !== undefined ? 'Loan amount is fixed' : s.phase === 'debt' && s.money[p] + 300 < (s.pendingPayment?.amount ?? Infinity) ? 'Loan cannot cover this payment' : null;
     if (a.type === 'repay') return a.payload?.amount !== undefined ? 'Repayment amount is fixed' : s.phase === 'debt' || !(s.debt?.[p]) || s.money[p] < s.debt[p] ? 'Cannot repay now' : null;
@@ -344,7 +357,7 @@ function bankrupt(s: MarbleState, loser: PlayerId, winner: PlayerId): MarbleStat
 }
 function pay(s: MarbleState, p: PlayerId, amount: number, creditor: PlayerId | 'bank' | 'fund' = 'bank', reason = { ko: '비용 지급', es: 'Pago de gastos' }, type: 'rent' | 'tax' | 'monopoly-warning' = 'tax'): MarbleState {
   if (s.money[p] < amount) {
-    if (s.economicVersion !== 1 && s.economicVersion !== 2) return bankrupt(s, p, otherPlayer(p));
+    if (s.economicVersion !== 1 && s.economicVersion !== 2 && s.economicVersion !== 3) return bankrupt(s, p, otherPlayer(p));
     s.pendingPayment = { amount, creditor, reason, type, tile: s.positions[p], resumePhase: 'main', resumeActive: s.active };
     s.active = p; s.phase = 'debt';
     emit(s, 'crisis', p, '파산 위기', 'Riesgo de quiebra', `${reason.ko}: ${amount} 지급에 ${amount - s.money[p]}이 부족합니다. 대출 조건을 확인하거나 파산을 인정하세요.`, `${reason.es}: te faltan ${amount - s.money[p]} para pagar ${amount}. Revisa el préstamo o declara la quiebra.`, { amount, fromPlayer: p, fromAccount: p, toAccount: creditor, ...(creditor === 'p1' || creditor === 'p2' ? { toPlayer: creditor } : {}) });
@@ -413,7 +426,7 @@ function noteMove(s: MarbleState, p: PlayerId, from: number, to: number, steps: 
   emit(s, 'move', p, '말 이동', 'Movimiento', `${from + 1}번에서 ${to + 1}번 칸으로 이동합니다.`, `Avanzas de la casilla ${from + 1} a la ${to + 1}.`, { from, to, steps: steps ?? undefined });
 }
 function resolveEvent(s: MarbleState, p: PlayerId): MarbleState {
-  const board = boardFor(s), isModern = s.boardVersion === 2, ids = isModern ? s.eventVersion === 3 ? expandedIds : s.economicVersion === 1 || s.economicVersion === 2 ? [...modernIds, 'monopoly-warning' as const] : modernIds : legacyIds;
+  const board = boardFor(s), isModern = s.boardVersion === 2, ids = isModern ? s.eventVersion === 3 ? expandedIds : s.economicVersion === 1 || s.economicVersion === 2 || s.economicVersion === 3 ? [...modernIds, 'monopoly-warning' as const] : modernIds : legacyIds;
   s.phase = 'main';
   let deck = s.eventDeck ? [...s.eventDeck] : [];
   if (!deck.length) {
@@ -634,7 +647,7 @@ export const marbleEngine: GameEngine<MarbleState> = {
     return { rng, active: 'p1', positions: { p1: 0, p2: 0 }, money: { p1: 1500, p2: 1500 }, properties: {}, boardVersion: 2, cityRouteVersion: 3,
       phase: 'roll', pendingTile: null, lastRoll: [], turns: 0, result: null, eventRng: (eventRng + (expandedIds.length - 1) * 0x6d2b79f5) >>> 0,
       eventDeck: shuffle(expandedIds, seededRandom(eventRng)), eventSequence: 0, lastEvent: null, fundPool: 0,
-      propertyRulesVersion: 1, takeoverTile: null, doublesCount: 0, extraRoll: false, eventVersion: 3, pendingEvent: null, pendingRent: null, rentPasses: { p1: 0, p2: 0 }, rentModifiers: {}, economicVersion: 2, debt: { p1: 0, p2: 0 }, pendingPayment: null, actionLog: [], actionSequence: 0, pawns: { p1: 'fox', p2: 'cat' }, pawnLocked: { p1: false, p2: false },
+      propertyRulesVersion: 1, takeoverTile: null, doublesCount: 0, extraRoll: false, eventVersion: 3, pendingEvent: null, pendingRent: null, rentPasses: { p1: 0, p2: 0 }, rentModifiers: {}, economicVersion: 3, debt: { p1: 0, p2: 0 }, pendingPayment: null, actionLog: [], actionSequence: 0, pawns: { p1: 'fox', p2: 'cat' }, pawnLocked: { p1: false, p2: false },
       islandTurns: { p1: 0, p2: 0 }, escapePasses: { p1: 0, p2: 0 }, trainReady: { p1: false, p2: false }, pendingTrainFare: null, pendingTrainSource: null, lastMove: null, moveSequence: 0, diceSequence: 0 };
   },
   validateAction: validation, applyAction: step, getPlayerView: view, getResult: state => state.result,

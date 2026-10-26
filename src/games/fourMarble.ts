@@ -1,8 +1,8 @@
 import { seededRandom, shuffle, type GameAction } from '../core/types';
 import { fourSeats, fourTeam, nextFourSeat, localized as l, type FourEngine, type FourSeat, type FourResult, type FourView } from '../core/fourPlayer';
-import { marbleEngine, marbleBuildCost, marbleCityValue, marbleTakeoverPrice, marblePawnIds, type MarblePawnId, type MarbleTile, type MarbleEventId } from './marble';
+import { marbleEngine, marbleBuildCost, marbleCityValue, marbleRentMultipliers, marbleTakeoverPrice, marblePawnIds, type MarblePawnId, type MarbleTile, type MarbleEventId } from './marble';
 
-const board: MarbleTile[] = marbleEngine.getPlayerView(marbleEngine.createInitialState(0), 'p1').board.tiles.map((tile: MarbleTile) => ({ name: { ...tile.name }, kind: tile.kind, ...(tile.price !== undefined ? { price: tile.price } : {}), ...(tile.rent !== undefined ? { rent: tile.rent } : {}), ...(tile.group ? { group: tile.group } : {}) }));
+const board: MarbleTile[] = marbleEngine.getPlayerView(marbleEngine.createInitialState(0), 'p1').board.tiles.map((tile: MarbleTile) => ({ name: { ...tile.name }, kind: tile.kind, rentMultipliers: marbleRentMultipliers, ...(tile.price !== undefined ? { price: tile.price } : {}), ...(tile.rent !== undefined ? { rent: tile.rent } : {}), ...(tile.group ? { group: tile.group } : {}) }));
 const eventIds: MarbleEventId[] = ['festival', 'lottery', 'rent-rebate', 'travel-cost', 'maintenance', 'visit-santo-domingo', 'advance-start', 'retreat', 'go-to-island', 'escape-pass', 'train-ticket', 'city-dividend', 'monopoly-warning', 'city-festival', 'blackout', 'rent-pass'];
 const pawnNames: Record<MarblePawnId, ReturnType<typeof l>> = { fox: l('말티푸', 'Maltipoo'), cat: l('랙돌', 'Ragdoll'), penguin: l('판다', 'Panda'), astronaut: l('우주인', 'Astronauta'), robot: l('리스연', 'Lisyeon'), dragon: l('친칠라', 'Chinchilla'), 'sali-suli': l('살리·술리', 'Sali y Suli') };
 const eventNames: Record<MarbleEventId, ReturnType<typeof l>> = {
@@ -31,16 +31,21 @@ export interface FourMarbleState {
 }
 export type MarbleView = FourView & { publicBoard: MarbleTile[]; publicState: Omit<FourMarbleState, 'rng' | 'eventDeck'> };
 const seatMap = <T>(value: T): Record<FourSeat, T> => Object.fromEntries(fourSeats.map(p => [p, value])) as Record<FourSeat, T>;
-const rent = (tile: MarbleTile, prop: Property, s?: Pick<FourMarbleState, 'properties' | 'propertyRulesVersion'>) => (tile.rent ?? 0) * [1, 2, 4, 8][prop.houses] * (s?.propertyRulesVersion === 1 && groups(s, prop.owner).includes(tile.group!) ? 2 : 1);
+const rent = (tile: MarbleTile, prop: Property, s?: Pick<FourMarbleState, 'properties' | 'propertyRulesVersion'>) => (tile.rent ?? 0) * (marbleRentMultipliers[prop.houses] ?? 1) * (s?.propertyRulesVersion === 1 && groups(s, prop.owner).includes(tile.group!) ? 2 : 1);
 const owned = (s: FourMarbleState, p: FourSeat) => Object.entries(s.properties).filter(([, property]) => property.owner === p);
 const groups = (s: Pick<FourMarbleState, 'properties'>, p: FourSeat) => [...new Set(board.filter(t => t.group).map(t => t.group!))].filter(group => board.every((t, index) => t.group !== group || s.properties[index]?.owner === p));
-const assets = (s: FourMarbleState, p: FourSeat) => s.money[p] - s.debt[p] + owned(s, p).reduce((sum, [index, property]) => sum + board[Number(index)].price! + Array.from({ length: property.houses }, (_, level) => marbleBuildCost(board[Number(index)], level, 2)).reduce((a, b) => a + b, 0), 0);
-const liquidation = (s: FourMarbleState, p: FourSeat) => owned(s, p).map(([index, prop]) => ({ index: Number(index), value: Math.floor(marbleCityValue(board[Number(index)], prop.houses, 2) / 2) }));
+const assets = (s: FourMarbleState, p: FourSeat) => s.money[p] - s.debt[p] + owned(s, p).reduce((sum, [index, property]) => sum + board[Number(index)].price! + Array.from({ length: property.houses }, (_, level) => marbleBuildCost(board[Number(index)], level, 3)).reduce((a, b) => a + b, 0), 0);
+const liquidation = (s: FourMarbleState, p: FourSeat) => owned(s, p).map(([index, prop]) => ({ index: Number(index), value: Math.floor(marbleCityValue(board[Number(index)], prop.houses, 3) / 2) }));
 const canRescue = (s: FourMarbleState, p: FourSeat) => s.money[p] + liquidation(s, p).reduce((sum, item) => sum + item.value, 0) + (s.debt[p] === 0 ? 300 : 0) >= (s.pendingPayment?.amount ?? Infinity);
 const log = (s: FourMarbleState, ko: string, es: string) => { s.log = [...s.log, l(ko, es)].slice(-8); };
 function emit(s: FourMarbleState, type: string, actor: FourSeat, title: ReturnType<typeof l>, text = title, extra: Record<string, unknown> = {}) {
   s.actionSequence = (s.actionSequence ?? 0) + 1;
   s.actionLog = [...(s.actionLog ?? []), { sequence: s.actionSequence, type, actor, title, text, ...extra }].slice(-40);
+}
+function bonus(s: FourMarbleState, p: FourSeat, amount: number, title: ReturnType<typeof l>, source: 'bank' | 'fund' = 'bank') {
+  if (!amount) return;
+  s.money[p] += amount;
+  emit(s, 'bonus', p, title, l(`${amount} 받음`, `Recibes ${amount}`), { amount, fromAccount: source, toAccount: p, moneyDelta: { [p]: amount } });
 }
 function settle(s: FourMarbleState, bankruptcy = false) {
   const scores = { A: assets(s, 'p1') + assets(s, 'p3'), B: assets(s, 'p2') + assets(s, 'p4') };
@@ -79,7 +84,7 @@ function pay(s: FourMarbleState, p: FourSeat, amount: number, creditor: Creditor
 }
 function move(s: FourMarbleState, p: FourSeat, to: number, salary: boolean, source = 'card', steps = (to - s.positions[p] + board.length) % board.length) {
   const from = s.positions[p];
-  if (salary && to < s.positions[p]) s.money[p] += 200;
+  if (salary && to < s.positions[p]) bonus(s, p, 200, l('출발 보너스', 'Bono de Salida'));
   s.positions[p] = to;
   s.moveSequence = (s.moveSequence ?? 0) + 1;
   s.lastMove = { sequence: s.moveSequence, playerId: p, from, to, steps, source };
@@ -102,7 +107,7 @@ function land(s: FourMarbleState, p: FourSeat, drawEvent: boolean) {
     }
   } else if (tile.kind === 'tax') pay(s, p, tile.price ?? 0, 'bank');
   else if (tile.kind === 'fund-deposit') pay(s, p, tile.price ?? 150, 'fund');
-  else if (tile.kind === 'fund') { s.money[p] += s.fundPool; s.fundPool = 0; }
+  else if (tile.kind === 'fund') { bonus(s, p, s.fundPool, l('공동 기금 수령', 'Fondo común recibido'), 'fund'); s.fundPool = 0; }
   else if (tile.kind === 'island') { s.islandTurns[p] = 3; s.extraRoll = false; s.doublesCount = 0; }
   else if (tile.kind === 'train') s.trainReady[p] = true;
   else if (tile.kind === 'event' && drawEvent) resolveEvent(s, p);
@@ -112,19 +117,19 @@ function resolveEvent(s: FourMarbleState, p: FourSeat) {
   log(s, `${p} · ${eventNames[id].ko}`, `${p} · ${eventNames[id].es}`);
   emit(s, 'event-card', p, eventNames[id], eventNames[id], { cardId: id, tile: s.positions[p] });
   const cardEvent = s.actionLog.at(-1)!, beforeCash = s.money[p];
-  if (id === 'festival') s.money[p] += 150;
-  else if (id === 'lottery') s.money[p] += 200;
-  else if (id === 'rent-rebate') s.money[p] += 80;
+  if (id === 'festival') bonus(s, p, 150, l('동네 축제 상금', 'Premio de la fiesta'));
+  else if (id === 'lottery') bonus(s, p, 200, l('복권 당첨', 'Premio de lotería'));
+  else if (id === 'rent-rebate') bonus(s, p, 80, l('임대료 환급', 'Reembolso de alquiler'));
   else if (id === 'travel-cost') pay(s, p, 100, 'bank');
   else if (id === 'maintenance') pay(s, p, owned(s, p).reduce((sum, [, prop]) => sum + prop.houses * 40, 0), 'bank');
   else if (id === 'visit-santo-domingo') { move(s, p, board.findIndex(t => t.name.ko === '산토도밍고'), true); land(s, p, false); }
-  else if (id === 'advance-start') { move(s, p, 0, false); s.money[p] += 200; s.pendingTile = 0; }
+  else if (id === 'advance-start') { move(s, p, 0, false); bonus(s, p, 200, l('출발 이동 보너스', 'Bono por ir a Salida')); s.pendingTile = 0; }
   else if (id === 'retreat') { move(s, p, (s.positions[p] + board.length - 3) % board.length, false, 'card', -3); land(s, p, false); }
   else if (id === 'go-to-island') { move(s, p, 10, false, 'island'); s.islandTurns[p] = 3; s.pendingTile = 10; s.extraRoll = false; s.doublesCount = 0; }
   else if (id === 'escape-pass') s.escapePasses[p]++;
   else if (id === 'rent-pass') s.rentPasses[p]++;
   else if (id === 'train-ticket') { s.phase = 'train-decision'; s.trainFare = 0; s.trainFromCard = true; }
-  else if (id === 'city-dividend') s.money[p] += owned(s, p).length * 30;
+  else if (id === 'city-dividend') bonus(s, p, owned(s, p).length * 30, l('도시 배당금', 'Dividendo de ciudades'));
   else if (id === 'city-festival' || id === 'blackout') {
     if (Object.values(s.properties).some(prop => id === 'city-festival' ? prop.owner === p : fourTeam(prop.owner) !== fourTeam(p) && !(s.propertyRulesVersion === 1 && prop.houses === 3))) { s.pendingEvent = id; s.phase = 'event-decision'; }
   } else if (id === 'monopoly-warning') {
@@ -172,11 +177,11 @@ function actions(s: FourMarbleState, p: FourSeat): FourView['actions'] {
   if (s.phase === 'main') {
     const index = s.takeoverTile, prop = index == null ? undefined : s.properties[index];
     if (s.propertyRulesVersion === 1 && index === s.positions[p] && prop && fourTeam(prop.owner) !== fourTeam(p)) {
-      const cost = marbleTakeoverPrice(board[index!], prop.houses, 2);
+      const cost = marbleTakeoverPrice(board[index!], prop.houses, 3);
       if (cost != null && s.money[p] >= cost) add(`도시 인수 · ${cost}`, `Adquirir ciudad · ${cost}`, 'takeover', { tile: index });
     }
     for (const [index, prop] of owned(s, p)) {
-      const tile = board[Number(index)], cost = marbleBuildCost(tile, prop.houses, 2);
+      const tile = board[Number(index)], cost = marbleBuildCost(tile, prop.houses, 3);
       if (prop.houses < 3 && s.money[p] >= cost) add(`${tile.name.ko} ${prop.houses + 1}단계 건설 · ${cost}`, `Construir nivel ${prop.houses + 1} en ${tile.name.es} · ${cost}`, 'build', { tile: Number(index) });
     }
     add(s.extraRoll ? '더블 · 한 번 더 굴리기' : '차례 마치기', s.extraRoll ? 'Dobles · lanzar otra vez' : 'Terminar turno', 'endTurn');
@@ -206,7 +211,7 @@ export const fourMarbleEngine: FourEngine = {
       if (s.pendingPayment) { const pending = s.pendingPayment; s.pendingPayment = null; s.phase = 'main'; pay(s, p, pending.amount, pending.creditor); s.active = pending.resumeActive; }
     } else if (a.type === 'repay') { const amount = s.debt[p]; s.money[p] -= amount; s.debt[p] = 0; emit(s, 'repay', p, l('대출 상환', 'Préstamo pagado'), undefined, { amount, fromAccount: p, toAccount: 'bank', moneyDelta: { [p]: -amount } }); }
     else if (a.type === 'sell-property') {
-      const index = Number(x.tile), price = Math.floor(marbleCityValue(board[index], s.properties[index].houses, 2) / 2);
+      const index = Number(x.tile), price = Math.floor(marbleCityValue(board[index], s.properties[index].houses, 3) / 2);
       delete s.properties[index]; delete s.modifiers[index]; s.money[p] += price;
       emit(s, 'sell', p, l('도시 은행 매각', 'Ciudad vendida al banco'), board[index].name, { tile: index, amount: price, fromAccount: 'bank', toAccount: p, moneyDelta: { [p]: price } });
       const pending = s.pendingPayment!;
@@ -230,7 +235,7 @@ export const fourMarbleEngine: FourEngine = {
         if (s.doublesCount === 3) { move(s, p, 10, false, 'island'); s.islandTurns[p] = 3; s.extraRoll = false; s.doublesCount = 0; s.phase = 'main'; s.pendingTile = 10; s.takeoverTile = null; emit(s, 'island', p, l('3연속 더블 · 무인도', 'Tres dobles seguidos · a la isla')); return s; }
       }
       if (a.type === 'attempt-doubles' && d1 !== d2) { s.islandTurns[p]--; finishTurn(s, p); }
-      else { s.islandTurns[p] = 0; if (s.positions[p] + d1 + d2 >= board.length) s.money[p] += 200; move(s, p, (s.positions[p] + d1 + d2) % board.length, false, a.type === 'attempt-doubles' ? 'island' : 'dice', d1 + d2); land(s, p, true); }
+      else { s.islandTurns[p] = 0; move(s, p, (s.positions[p] + d1 + d2) % board.length, true, a.type === 'attempt-doubles' ? 'island' : 'dice', d1 + d2); land(s, p, true); }
     } else if (a.type === 'pay-escape' || a.type === 'use-escape-pass') {
       if (a.type === 'pay-escape') s.money[p] -= 100; else { s.escapePasses[p]--; s.eventDeck.push('escape-pass'); }
       s.islandTurns[p] = 0; s.phase = 'roll';
@@ -238,12 +243,12 @@ export const fourMarbleEngine: FourEngine = {
     else if (a.type === 'skip-train') { s.trainReady[p] = false; s.phase = s.trainFromCard ? 'main' : 'roll'; }
     else if (a.type === 'buy') { const index = s.pendingTile!; s.money[p] -= board[index].price!; s.properties[index] = { owner: p, houses: 0 }; s.phase = 'main'; emit(s, 'buy', p, l('도시 구매 완료', 'Ciudad comprada'), board[index].name, {tile:index, amount:board[index].price, fromAccount:p, toAccount:'bank', moneyDelta:{[p]:-board[index].price!}}); }
     else if (a.type === 'takeover') {
-      const index = Number(x.tile), prop = s.properties[index], owner = prop.owner, cost = marbleTakeoverPrice(board[index], prop.houses, 2)!;
+      const index = Number(x.tile), prop = s.properties[index], owner = prop.owner, cost = marbleTakeoverPrice(board[index], prop.houses, 3)!;
       s.money[p] -= cost; s.money[owner] += cost; prop.owner = p; s.takeoverTile = null; delete s.modifiers[index];
       emit(s, 'takeover', p, l('도시 인수 완료', 'Ciudad adquirida'), l('건설 단계 유지 · 이전 도시 효과 해제', 'Conserva su nivel · se eliminan los efectos anteriores'), { tile: index, amount: cost, fromAccount: p, toAccount: owner, moneyDelta: { [p]: -cost, [owner]: cost } });
     }
     else if (a.type === 'decline') s.phase = 'main';
-    else if (a.type === 'build') { const prop = s.properties[Number(x.tile)]; const cost = marbleBuildCost(board[Number(x.tile)], prop.houses, 2); s.money[p] -= cost; prop.houses++; if (s.propertyRulesVersion === 1 && prop.houses === 3 && s.modifiers[Number(x.tile)]) delete s.modifiers[Number(x.tile)].blackout; emit(s, 'build', p, l('건설 완료', 'Construcción terminada'), board[Number(x.tile)].name, {tile:Number(x.tile),amount:cost,fromAccount:p,toAccount:'bank',moneyDelta:{[p]:-cost}}); }
+    else if (a.type === 'build') { const prop = s.properties[Number(x.tile)]; const cost = marbleBuildCost(board[Number(x.tile)], prop.houses, 3); s.money[p] -= cost; prop.houses++; if (s.propertyRulesVersion === 1 && prop.houses === 3 && s.modifiers[Number(x.tile)]) delete s.modifiers[Number(x.tile)].blackout; emit(s, 'build', p, l('건설 완료', 'Construcción terminada'), board[Number(x.tile)].name, {tile:Number(x.tile),amount:cost,fromAccount:p,toAccount:'bank',moneyDelta:{[p]:-cost}}); }
     else if (a.type === 'pay-rent' || a.type === 'use-rent-pass') {
       const pending = s.pendingRent!; s.pendingRent = null; s.phase = 'main';
       if (a.type === 'pay-rent') pay(s, p, pending.amount, pending.creditor); else { s.rentPasses[p]--; s.eventDeck.push('rent-pass'); emit(s, 'rent', p, l('통행료 면제권 사용', 'Pase de alquiler usado'), undefined, { tile:s.positions[p], amount:0, cardId:'rent-pass', fromAccount:p, toAccount:pending.creditor, moneyDelta:{[p]:0,[pending.creditor]:0} }); }
@@ -271,8 +276,8 @@ export const fourMarbleEngine: FourEngine = {
       if (a.type === 'sell-property') { const index = Number(x.tile), prop = s.properties[index]; return -20 - rent(board[index], prop, s) - (groups(s, p).includes(board[index].group!) ? 200 : 0); }
       if (a.type === 'repay') return cash - s.debt[p] > reserve ? 10 : -50;
       if (a.type === 'buy') { const tile = board[s.pendingTile!], alliedGroup = Object.entries(s.properties).filter(([index, prop]) => board[Number(index)].group === tile.group && fourTeam(prop.owner) === fourTeam(p)).length; return cash - tile.price! >= reserve ? 20 + alliedGroup * 5 + (tile.rent! / tile.price!) * 20 : -1; }
-      if (a.type === 'takeover') { const index = Number(x.tile), prop = s.properties[index], cost = marbleTakeoverPrice(board[index], prop.houses, 2)!; return cash - cost >= reserve ? 12 + prop.houses * 3 + exposure(index) * 20 : -5; }
-      if (a.type === 'build') { const index = Number(x.tile), prop = s.properties[index], cost = marbleBuildCost(board[index], prop.houses, 2); return cash - cost >= reserve ? 5 + (rent(board[index], { ...prop, houses: prop.houses + 1 }, s) - rent(board[index], prop, s)) / cost * 8 + exposure(index) * 10 : -5; }
+      if (a.type === 'takeover') { const index = Number(x.tile), prop = s.properties[index], cost = marbleTakeoverPrice(board[index], prop.houses, 3)!; return cash - cost >= reserve ? 12 + prop.houses * 3 + exposure(index) * 20 : -5; }
+      if (a.type === 'build') { const index = Number(x.tile), prop = s.properties[index], cost = marbleBuildCost(board[index], prop.houses, 3); return cash - cost >= reserve ? 5 + (rent(board[index], { ...prop, houses: prop.houses + 1 }, s) - rent(board[index], prop, s)) / cost * 8 + exposure(index) * 10 : -5; }
       if (a.type === 'use-escape-pass') return 20;
       if (a.type === 'pay-escape') return cash > reserve + 300 && s.islandTurns[p] > 1 ? 10 : -5;
       if (a.type === 'use-rent-pass') return s.pendingRent!.amount > 80 || cash < s.pendingRent!.amount + reserve ? 20 : -1;

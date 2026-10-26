@@ -8,6 +8,13 @@ const render = (view: any, language: 'ko' | 'es' = 'ko', playerId: 'p1' | 'p2' =
   renderToStaticMarkup(createElement(MarbleBoard, { view, language, playerId, runAction: vi.fn() }));
 
 describe('MarbleBoard', () => {
+  it('puts the legal phase action ahead of optional loans in the center card', () => {
+    const html = render(marbleEngine.getPlayerView(marbleEngine.createInitialState(71), 'p1'));
+    const center = html.slice(html.indexOf('class="mp-center-action"'), html.indexOf('</section>', html.indexOf('class="mp-center-action"')));
+    expect(center).toContain('주사위 굴리기');
+    expect(center).not.toContain('대출 받기');
+  });
+
   it('offers the action shortcut before all forty city controls in both languages', () => {
     const state = marbleEngine.createInitialState(71);
     for (const language of ['ko', 'es'] as const) for (const playerId of ['p1', 'p2'] as const) {
@@ -161,7 +168,7 @@ describe('MarbleBoard', () => {
     const html = render(marbleEngine.getPlayerView(state, 'p2'), 'es', 'p2');
     expect(html).toContain('<h3>Puerto Plata</h3>');
     expect(html).toContain('Llegada actual · ubicación de acción');
-    expect(html).toContain('Compra 180 · renta 26');
+    expect(html).toContain('Compra 180 · renta 40');
     expect(html).toContain('Puerto Plata');
   });
 
@@ -249,13 +256,13 @@ describe('MarbleBoard', () => {
     const spanish = render(view, 'es');
     expect(html).toContain('산토도밍고');
     expect(html).toContain('>구매<span aria-hidden="true">');
-    expect(html).toContain('구매 120 · 기본 통행료 15');
+    expect(html).toContain('구매 120 · 기본 통행료 20');
     expect(html.indexOf('mp-purchase-recap')).toBeLessThan(html.indexOf('mp-actions'));
-    expect(html).toContain('구매 120 · 기본 통행료 15');
+    expect(html).toContain('구매 120 · 기본 통행료 20');
     expect(html).toContain('구매 후 현금 1,380');
     expect(html).toContain('선택한 칸');
     expect(html).toContain('aria-pressed="true"');
-    expect(spanish).toContain('Compra 120 · renta 15');
+    expect(spanish).toContain('Compra 120 · renta 20');
     expect(html).toContain('구매하지 않고 지나가기');
     expect(html).not.toContain('탈출권 사용');
   });
@@ -272,8 +279,8 @@ describe('MarbleBoard', () => {
     view.board.tiles[1].nextRent = 48;
     view.actions = [{ label: { ko: '별장: 광주 (40)', es: 'Villa: Gwangju (40)' }, action: { type: 'build', payload: { tile: 1 } } }];
     const html = render(view);
-    expect(html).toContain('건설 후 현금 20');
-    expect(html).toContain('통행료 24 → 48 (+24)');
+    expect(html).toContain('실행 후 현금 20');
+    expect(html).toContain('통행료 40 → 48 (+8)');
     expect(html).toContain('비용 40');
     expect(html).not.toContain('/images/marble/cities/gwangju.svg');
     expect(html).toContain('/images/marble/ownership-card-frame.svg');

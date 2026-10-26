@@ -38,6 +38,13 @@
 .marble-native-team .mp-tile--west .mp-property-tile-copy .mp-tile-economy b,.marble-native-team .mp-tile--east .mp-property-tile-copy .mp-tile-economy b { font-size:13px; }
 .marble-native-team .mt-captain-panel { min-height:0; overflow:auto; padding:15px; border:1px solid #c8b795; border-radius:12px; background:#fffbf2; }
 .marble-native-team .mt-captain-panel > details { margin-top:12px; padding-top:10px; border-top:1px solid #d8cdb6; }
+.marble-native-team .mt-build,.marble-native-team .mt-latest-transaction { margin-top:12px; padding:12px; border:1px solid #c9b78e; border-radius:10px; background:#fff9ec; }
+.marble-native-team .mt-build h3,.marble-native-team .mt-latest-transaction h3 { margin:0 0 8px; color:#284b4d; font-size:15px; }
+.marble-native-team .mt-build-option { display:flex; align-items:center; justify-content:space-between; gap:10px; padding:8px 0; border-top:1px solid #e3d8c1; }
+.marble-native-team .mt-build-option > div { display:grid; gap:3px; }
+.marble-native-team .mt-build-option strong { font-size:13px; }
+.marble-native-team .mt-build-option span { color:#596f65; font-size:12px; line-height:1.35; }
+.marble-native-team .mt-latest-transaction .marble-event-stage { margin:0; }
 .marble-native-team summary { cursor:pointer; font-size:14px; }
 .marble-native-team button:not(.mp-tile-select),.marble-native-team select { min-height:38px; max-width:100%; padding:7px 10px; border:1px solid #bca57a; border-radius:7px; background:#fffdf7; color:#284b4d; font-family:inherit; font-size:14px; font-weight:600; line-height:1.2; cursor:pointer; }
 .marble-native-team button:disabled { cursor:wait; opacity:.55; }

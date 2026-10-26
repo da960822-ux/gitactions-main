@@ -108,7 +108,7 @@ describe('MarbleBoard presentation', () => {
   it('renders the existing event transaction and phase action without exposing a board-changing affordance', () => {
     const html = makeView('es');
     expect(html).toContain('Gastos de viaje');
-    expect(html).toContain('Lanzar los dados');
+    expect(html).toContain('Lanza los dados');
     expect(html).toContain('role="list" aria-label="Recorrido de 40 casillas"');
     expect(html).not.toContain('eventDeck');
     expect(html).not.toContain('rng');

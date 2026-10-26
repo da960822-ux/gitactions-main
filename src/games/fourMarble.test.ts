@@ -48,7 +48,7 @@ describe('four-seat Marble team variant', () => {
     const s = state(); s.rng = rollFor(2); s.positions.p1 = 39; s.properties[1] = { owner: 'p4', houses: 2 };
     const next = step(s, { type: 'roll' });
     expect(next.positions.p1).toBe(1);
-    expect(next.money).toEqual({ p1: 1500 + 200 - 48, p2: 1500, p3: 1500, p4: 1548 });
+    expect(next.money).toEqual({ p1: 1500 + 200 - 60, p2: 1500, p3: 1500, p4: 1560 });
     expect(s.money.p1).toBe(1500);
   });
 
@@ -56,9 +56,9 @@ describe('four-seat Marble team variant', () => {
     const s = state(); s.active = 'p4'; s.rng = rollFor(2); s.positions.p4 = 39;
     const next = step(s, { type: 'roll' });
     expect(next.lastMove).toMatchObject({ playerId: 'p4', from: 39, to: 1, steps: 2, source: 'dice' });
-    expect(next.actionLog.map(event => event.type)).toEqual(['roll', 'move', 'arrival']);
-    expect(next.actionLog.map(event => event.actor)).toEqual(['p4', 'p4', 'p4']);
-    expect(next.actionLog.map(event => event.sequence)).toEqual([1, 2, 3]);
+    expect(next.actionLog.map(event => event.type)).toEqual(['roll', 'bonus', 'move', 'arrival']);
+    expect(next.actionLog.map(event => event.actor)).toEqual(['p4', 'p4', 'p4', 'p4']);
+    expect(next.actionLog.map(event => event.sequence)).toEqual([1, 2, 3, 4]);
     expect(next.diceSequence).toBe(1);
   });
 

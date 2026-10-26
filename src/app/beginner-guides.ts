@@ -73,20 +73,20 @@ const guides: Record<BeginnerGameId, Record<Language, GuideCopy>> = {
     ko: {
       goal: '도시를 사고 건설해 자산을 모으거나 상대를 파산시키세요.',
       steps: [
-        { title: '이동하고 구매하기', body: '보드의 말이 현재 위치이고 오른쪽은 현금·행동 버튼이에요. 첫 주사위 전에 말을 고른 뒤 ‘주사위 굴리기’를 눌러요. 빈 도시는 ‘도시 구매’ 또는 지나가기를 선택해요. 출발점을 지나면 200을 받아요.' },
-        { title: '건설과 임대료', body: '내 도시를 눌러 단독주택→아파트→랜드마크를 건설하고 ‘차례 마치기’를 눌러요. 예: 광주 100, 첫 건설 40, 통행료 12→24. 통행료는 자동 지급되지만 면제권 선택창이 나오면 지급/사용을 먼저 골라요.' },
+      { title: '이동하고 구매하기', body: '보드의 말이 현재 위치이고 오른쪽은 현금·행동 버튼이에요. 첫 주사위 전에 말을 고른 뒤 ‘주사위 굴리기’를 눌러요. 빈 도시는 ‘도시 구매’ 또는 지나가기를 선택해요. 구매하면 중앙 행동 카드에서 바로 다음 행동을 확인해요. 출발점을 지나면 200을 받아요.' },
+        { title: '건설과 임대료', body: '내 도시를 선택하면 현재 단계와 통행료를 확인할 수 있어요. 중앙 건설 버튼이나 다른 도시 건설 목록에서 단독주택→아파트→랜드마크를 올리고, 비용과 건설 뒤 통행료를 비교해요. 예: 광주 100, 기본 통행료 20, 첫 건설 40, 통행료 20→40. 통행료는 자동 지급되지만 면제권 선택창이 나오면 지급/사용을 먼저 골라요.' },
         { title: '위기와 승리', body: '돈이 부족하면 빌릴 수 있는지 확인하고, 해결하지 못하면 파산해요. 현재판은 120턴 뒤 대출을 뺀 순자산으로 승자를 정해요.' },
       ],
-      tip: '현재판 건설비는 매입가의 40%→60%→80%예요. 대출은 300을 받고 330을 갚으며, 기존 대출을 먼저 상환해야 다시 빌릴 수 있어요.',
+      tip: '기본 통행료는 땅값의 약 20~25%이고, 건설비는 매입가의 40%→60%→80%예요. 단계별 통행료는 기본의 1·2·3·4배예요. 대출은 300을 받고 330을 갚아요.',
     },
     es: {
       goal: 'Compra ciudades, construye y reúne patrimonio o lleva a la otra persona a la quiebra.',
       steps: [
-        { title: 'Avanza y compra', body: 'La ficha marca tu posición; a la derecha están tu efectivo y las acciones. Antes del primer lanzamiento elige una ficha; pulsa «Lanzar los dados». En una ciudad libre, elige «Comprar ciudad» o pasa. Al cruzar Salida recibes 200.' },
-        { title: 'Construye y cobra', body: 'Pulsa una ciudad tuya para construir casa unifamiliar, apartamentos y monumento; luego «Terminar turno». Ejemplo: Gwangju cuesta 100, construir primero cuesta 40 y su renta pasa de 12 a 24. La renta es automática, salvo que aparezca la elección de pagar o usar un pase.' },
+      { title: 'Avanza y compra', body: 'La ficha marca tu posición; a la derecha están tu efectivo y las acciones. Antes del primer lanzamiento elige una ficha; pulsa «Lanzar los dados». En una ciudad libre, elige «Comprar ciudad» o pasa. Después de comprar, la tarjeta central muestra la siguiente acción. Al cruzar Salida recibes 200.' },
+      { title: 'Construye y cobra', body: 'Selecciona una ciudad propia para ver su nivel y alquiler. Usa la acción central o la lista de otras ciudades para construir una casa, apartamentos o monumento; compara el costo y el nuevo alquiler. Ejemplo: Gwangju cuesta 100, alquiler base 20 y primera construcción 40; el alquiler pasa de 20 a 40. La renta es automática, salvo que aparezca la elección de pagar o usar un pase.' },
         { title: 'Deuda y victoria', body: 'Si te falta dinero, revisa si puedes pedir un préstamo; si no resuelves el pago, quiebras. En el tablero actual, tras 120 turnos gana el mayor patrimonio neto.' },
       ],
-      tip: 'En el tablero actual construir cuesta 40 %, 60 % y 80 % del precio de compra. Recibes 300 y debes 330; paga la deuda antes de pedir otro préstamo.',
+      tip: 'El alquiler base equivale aproximadamente al 20–25% del terreno; construir cuesta 40%, 60% y 80%. El alquiler por nivel es ×1, ×2, ×3 y ×4. Recibes 300 y devuelves 330.',
     },
   },
 };
@@ -194,8 +194,23 @@ export function getBeginnerGuide(
     };
   }
   else guide = gameId === 'catchmind' && options.catchmindRulesVersion !== 1 ? catchmindCurrentGuide[language] : guides[gameId][language];
-  if (gameId === 'marble' && (options.marbleVersion ?? 2) !== 1 && (options.marbleEconomyVersion ?? 2) < 2) {
-    guide = { ...guide, steps: [guide.steps[0], { ...guide.steps[1], body: guide.steps[1].body.replace('첫 건설 40', '첫 건설 100').replace('construir primero cuesta 40', 'construir primero cuesta 100') }, guide.steps[2]] };
+  if (gameId === 'marble' && (options.marbleVersion ?? 2) !== 1 && options.marblePropertyRulesVersion !== 1) {
+    const economy = options.marbleEconomyVersion ?? 2;
+    if (economy < 2) {
+      const historicBuild = language === 'ko'
+        ? '내 도시를 선택해 단독주택→아파트→랜드마크를 차례로 지어요. 예: 광주 100, 첫 건설 100, 통행료 12→24. 통행료는 자동 지급되지만 면제권 선택창에서는 먼저 선택해요.'
+        : 'Selecciona una ciudad tuya para construir una casa, apartamentos o monumento. Ejemplo: Gwangju cuesta 100, construir primero cuesta 100 y su renta pasa de 12 a 24. La renta es automática, salvo que aparezca la elección de usar un pase.';
+      guide = { ...guide, steps: [guide.steps[0], { ...guide.steps[1], body: historicBuild }, guide.steps[2]], tip: economy === 0
+        ? (language === 'ko' ? '이 규칙은 단계별 건설비가 100이고 대출 기능이 없어요.' : 'Esta versión cobra 100 por cada nivel de construcción y no tiene préstamos.')
+        : (language === 'ko' ? '건설비는 단계마다 100이에요. 대출은 300을 받고 330을 갚으며, 기존 대출을 먼저 상환해야 다시 빌릴 수 있어요.' : 'Cada nivel de construcción cuesta 100. Recibes 300 y debes 330; paga la deuda antes de pedir otro préstamo.') };
+    } else if (economy === 2) {
+      const historicBuild = language === 'ko'
+        ? '내 도시를 선택해 단독주택→아파트→랜드마크를 차례로 지어요. 예: 광주 100, 첫 건설 40, 통행료 12→24. 단계별 통행료는 기본의 1·2·4·8배예요.'
+        : 'Selecciona una ciudad tuya para construir una casa, apartamentos o monumento. Ejemplo: Gwangju cuesta 100, construir primero cuesta 40 y su renta pasa de 12 a 24. Los niveles cobran ×1, ×2, ×4 y ×8.';
+      guide = { ...guide, steps: [guide.steps[0], { ...guide.steps[1], body: historicBuild }, guide.steps[2]], tip: language === 'ko'
+        ? '건설비는 단계마다 땅값의 40%·60%·80%예요. 단계별 통행료는 1·2·4·8배이며, 대출은 300을 받고 330을 갚아요.'
+        : 'Construir cuesta 40 %, 60 % y 80 % del precio del terreno. El alquiler por nivel es ×1, ×2, ×4 y ×8; recibes 300 y devuelves 330.' };
+    }
   }
   return { ...guide, imageAlt: imageAlts[gameId][language] };
 }

@@ -5,7 +5,6 @@ import { MarblePropertyArt } from './MarblePropertyArt';
 import { MarblePropertyLedger } from './MarblePropertyLedger';
 import './marble-rule-guide.css';
 
-const currentCities: MarbleTile[] = marbleEngine.getPlayerView(marbleEngine.createInitialState(1), 'p1').board.tiles;
 const words = (language: Language, ko: string, es: string) => language === 'ko' ? ko : es;
 const eventCategories = [
   ['cash-dividend', '돈과 비용', 'Dinero y gastos', '상금·배당·여행비·수리비', 'Premios, dividendos, viajes y reparaciones'],
@@ -36,7 +35,10 @@ export function MarbleRuleGuide({ language, rules, options = {}, teamMode = fals
   language: Language; rules: string[]; options?: BeginnerGuideOptions; teamMode?: boolean;
 }) {
   const t = (ko: string, es: string) => words(language, ko, es);
-  const exampleCity = currentCities.find(tile => tile.name.es === (language === 'es' ? 'Santo Domingo' : 'Gwangju'))!;
+  const exampleState = marbleEngine.createInitialState(1);
+  exampleState.economicVersion = (options.marbleEconomyVersion ?? 3) as 1 | 2 | 3;
+  exampleState.cityRouteVersion = (options.marbleCityRouteVersion ?? 3) as 2 | 3;
+  const exampleCity: MarbleTile = marbleEngine.getPlayerView(exampleState, 'p1').board.tiles.find((tile: MarbleTile) => tile.name.es === (language === 'es' ? 'Santo Domingo' : 'Gwangju'))!;
   const guide = getBeginnerGuide('marble', language, { ...options, marblePropertyRulesVersion: 1 })!;
   const detailedRules = teamMode ? rules.map((rule, index) => index === 0
     ? t('목표와 준비 — 우리 40칸·3단계 건설 팀전입니다. 각자 1500으로 출발하고 팀원과 번갈아 앉아요. 돈과 도시·대출은 개인별이며, 같은 팀 두 명이 모두 파산하면 패배합니다.', 'Objetivo y preparación — Nuestra variante por equipos tiene 40 casillas y tres niveles. Cada persona empieza con 1500 y los equipos se sientan alternados. El dinero, las ciudades y las deudas son individuales; el equipo pierde cuando ambos quiebran.')
@@ -57,8 +59,9 @@ export function MarbleRuleGuide({ language, rules, options = {}, teamMode = fals
         <MarblePropertyArt city={language === 'es' ? 'santo-domingo' : 'gwangju'} level={level} routeVersion={options.marbleCityRouteVersion ?? 3} className="marble-rule-building-art" language={language}/>
         <figcaption><span>{level}</span><strong>{name}</strong></figcaption>
       </figure>)}</div>
+      {((options.marbleEconomyVersion ?? 3) >= 3) && <p className="marble-rule-example">{t('기본 통행료는 땅값의 약 20~25%예요. 건설비는 땅값의 40%·60%·80%(10 단위 반올림, 최소 40), 단계별 통행료는 ×1·×2·×3·×4예요.', 'El alquiler base equivale aproximadamente al 20–25% del terreno. Construir cuesta 40%, 60% y 80% del precio (redondeo a decenas, mínimo 40); el alquiler por nivel es ×1, ×2, ×3 y ×4.')}</p>}
       <p className="marble-rule-example">{t(`${exampleCity.name.ko} 예시 · 추가비는 그 단계에서 더 내는 돈, 누적은 땅값과 지금까지 지은 건설비의 합이에요.`, `Ejemplo: ${exampleCity.name.es}. «Costo extra» es lo que pagas por ese nivel; «Invertido» suma el terreno y todos los niveles construidos.`)}</p>
-      <MarblePropertyLedger tile={exampleCity} language={language} economicVersion={options.marbleEconomyVersion ?? 2} propertyRulesVersion={1}/>
+      <MarblePropertyLedger tile={exampleCity} language={language} economicVersion={options.marbleEconomyVersion ?? 3} propertyRulesVersion={1}/>
       <p className="marble-rule-color">{t('한 사람이 같은 색을 전부 소유하면 그 도시들의 통행료 ×2', 'Si tú solo completas un color, cobras el doble de alquiler en esas ciudades.')}</p>
     </section>
     <div className="marble-rule-pair">
