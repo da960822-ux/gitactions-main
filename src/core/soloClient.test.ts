@@ -29,6 +29,19 @@ async function pendingOpponent() {
 }
 
 describe('solo client with an online database configured', () => {
+  it('lets the computer start a Minhwatu game when the deal selects p2', async () => {
+    vi.spyOn(crypto, 'getRandomValues').mockImplementation((array: any) => { array[0] = 0x80000000; return array; });
+    const roomId = await solo.createRoom('검수 플레이어', 'ko');
+    const off = solo.subscribeRoom(roomId, () => {});
+    await solo.selectGame('minhwatu');
+    expect(solo.getSnapshot().view.turn).toBe('p2');
+    expect(vi.getTimerCount()).toBe(1);
+    const version = solo.getSnapshot().version;
+    await vi.advanceTimersByTimeAsync(aiTurnDelay('minhwatu'));
+    expect(solo.getSnapshot().version).toBe(version + 1);
+    expect(solo.getSnapshot().error).toBeNull();
+    off();
+  });
   it('stays entirely local, creates an immediately playable game and protects the computer seat', async () => {
     await pendingOpponent();
     const snapshot = solo.getSnapshot();

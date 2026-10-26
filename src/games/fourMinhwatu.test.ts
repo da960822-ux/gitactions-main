@@ -12,6 +12,14 @@ function deck(seed = 1): MinhwatuCard[] { return allCards(engine.createInitialSt
 const card = (id: string) => deck().find(c => c.id === id)!;
 
 describe('four-player Minhwatu house team rules', () => {
+  it('uses every starting seat across independent seed values without changing the 48-card deal', () => {
+    for(const [index,seat] of fourSeats.entries()){
+      const state=engine.createInitialState(index * 0x40000000);
+      expect(state.turn).toBe(seat);
+      expect(allCards(state)).toHaveLength(48);expect(new Set(allCards(state).map(card=>card.id)).size).toBe(48);
+      expect(engine.getPlayerView(state,seat).actions.length).toBeGreaterThan(0);
+    }
+  });
   it('deals four hands of five, eight face-up cards and twenty in the deck', () => {
     const state: FourMinhwatuState = engine.createInitialState(23);
     expect(fourSeats.map(seat => state.hands[seat].length)).toEqual([5,5,5,5]);

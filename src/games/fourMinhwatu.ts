@@ -126,7 +126,7 @@ export const fourMinhwatuEngine: FourEngine = {
   id: 'minhwatu',
   createInitialState(seed): FourMinhwatuState {
     const deck = cards(seed);
-    return { seed: seed >>> 0, turn: 'p1', hands: { p1: deck.slice(0, 5), p2: deck.slice(5, 10), p3: deck.slice(10, 15), p4: deck.slice(15, 20) },
+    return { seed: seed >>> 0, turn: fourSeats[seed >>> 30], hands: { p1: deck.slice(0, 5), p2: deck.slice(5, 10), p3: deck.slice(10, 15), p4: deck.slice(15, 20) },
       captures: { p1: [], p2: [], p3: [], p4: [] }, table: deck.slice(20, 28), deck: deck.slice(28), pending: null, phase: 'play', result: null,
       events: [{ sequence: 1, type: 'deal', title: localized('네 자리의 패를 나눴어요', 'Se reparten las cuatro manos'), cards: deck.slice(20, 28) }] };
   },

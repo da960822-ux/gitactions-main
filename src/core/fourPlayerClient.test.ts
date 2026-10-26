@@ -22,6 +22,19 @@ async function pendingComputer() {
 }
 
 describe('four-player solo integration', () => {
+  it('schedules the actual first computer seat for a Minhwatu deal', async () => {
+    vi.spyOn(crypto, 'getRandomValues').mockImplementation((array: any) => { array[0] = 0xc0000000; return array; });
+    const client = new FourPlayerClient(), roomId = await client.createRoom('검수 플레이어', 'ko');
+    const off = client.subscribeRoom(roomId, () => {});
+    await client.selectGame('minhwatu');
+    expect(client.getSnapshot().view?.turn).toBe('p4');
+    expect(vi.getTimerCount()).toBe(1);
+    const version = client.getSnapshot().version;
+    await vi.advanceTimersByTimeAsync(aiTurnDelay('minhwatu'));
+    expect(client.getSnapshot().version).toBe(version + 1);
+    expect(client.getSnapshot().error).toBeNull();
+    off();
+  });
   for (const game of ['davinci', 'splendor', 'minhwatu', 'marble'] as const) it(`${game}: rotates through human and all computer seats to a legal final result`, async () => {
     const client = new FourPlayerClient(), engine = fourEngines[game]!;
     const roomId = await client.createRoom('검수 플레이어', 'ko');

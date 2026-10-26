@@ -16,6 +16,13 @@ function stateWithMonth(s:MinhwatuState,tableSameMonth:number,drawSameMonth=fals
   return {...s,hands:{p1:hand,p2},table,deck,captures:{p1:[],p2:available},turn:'p1',phase:'play',pending:null,result:null};
 }
 describe('minhwatuEngine',()=>{
+  it('uses both starting seats across independent seed values without changing the 48-card deal',()=>{
+    for(const [seed,starter] of [[0,'p1'],[0x80000000,'p2']] as const){
+      const state=minhwatuEngine.createInitialState(seed);
+      expect(state.turn).toBe(starter);expectCardConservation(state);
+      expect(minhwatuEngine.getPlayerView(state,starter).actions.length).toBeGreaterThan(0);
+    }
+  });
   it('deals all 48 standard Korean hwatu cards as 10/10/8/20 and hides stock and seed',()=>{
     const s=minhwatuEngine.createInitialState(7),again=minhwatuEngine.createInitialState(7),view=minhwatuEngine.getPlayerView(s,'p1'),all=cardsIn(s);
     expect(again).toEqual(s);expect(s.hands.p1).toHaveLength(10);expect(s.hands.p2).toHaveLength(10);expect(s.table).toHaveLength(8);expect(s.deck).toHaveLength(20);

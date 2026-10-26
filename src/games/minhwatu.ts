@@ -199,7 +199,7 @@ export const minhwatuEngine:GameEngine<MinhwatuState>={
   id:'minhwatu',
   createInitialState(seed){
     const cards=shuffle(makeDeck(),seededRandom(seed));
-    return {seed:seed>>>0,rulesVersion:2,turn:'p1',hands:{p1:cards.slice(0,10),p2:cards.slice(10,20)},table:cards.slice(20,28),deck:cards.slice(28),captures:{p1:[],p2:[]},pending:null,phase:'play',result:null,events:[{sequence:1,type:'deal',title:{ko:'화투패를 나눴어요',es:'Las cartas están repartidas'},cards:cards.slice(20,28).map(cloneCard)}]};
+    return {seed:seed>>>0,rulesVersion:2,turn:seed>>>31?'p2':'p1',hands:{p1:cards.slice(0,10),p2:cards.slice(10,20)},table:cards.slice(20,28),deck:cards.slice(28),captures:{p1:[],p2:[]},pending:null,phase:'play',result:null,events:[{sequence:1,type:'deal',title:{ko:'화투패를 나눴어요',es:'Las cartas están repartidas'},cards:cards.slice(20,28).map(cloneCard)}]};
   },
   validateAction:validate,
   applyAction:apply,
