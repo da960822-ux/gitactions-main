@@ -24,6 +24,19 @@ At 1280 × 800, the 2p board is 1040 × 679 px; 4p is 1040 × 635 px. Every edge
 
 [Two player motion recording](live32-2p-motion-ko-1280x800.mp4) and [four player motion recording](live32-4p-motion-ko-1280x800.mp4) use Chromium screencast frames sampled during actual roll actions and encoded with the system ffmpeg. A browser mutation trace confirmed six successive cells (Bangkok, Bonus Game, Beijing, Dokdo, Taipei, Dubai) in both modes. The [early moving frame](live32-2p-motion-first-ko-1280x800.jpg) and [landed frame](live32-2p-motion-landed-ko-1280x800.jpg) illustrate dice, per tile movement, and arrival. This samples the specific seeded roll, not every possible event timing. Reduced motion turns off intermediate animation in the components; engine actions still reach the same result.
 
+### Reference special tiles: current behavior
+
+| Map cell | Two player | Four player | Reference fidelity |
+| --- | --- | --- | --- |
+| Fortune Card (three cells) | Landing logs an unresolved effect; no card is drawn or applied. | Same. | No operation pending verified card rules. |
+| Bonus Game | Landing logs an unresolved effect; no game or payout starts. | Same. | No operation pending verified rules. |
+| Olympics | Landing logs an unresolved effect; no city effect starts. | Same. | No operation pending verified rules. |
+| World Travel | **Currently activates the older train rule**: a destination choice becomes available next turn with a 100 fare. | Logs an unresolved effect; no destination choice. | Modes differ. The two player train behavior is inherited, not verified for this reference map. |
+| National Tax Office | Logs an unresolved effect and charges nothing. | Same. | No operation pending verified amount/rule. |
+| Desert Island | Applies a three turn stop with doubles, escape pass, or a 100 payment as exit options. | Same. | The behavior works, but the 100 exit cost is inherited and unverified for this reference edition. |
+
+The start pass bonus is currently 75만 in both engines and marked as an inferred reference amount. These unverified rules and no operation cells are **not** presented as complete reproduction of the historical game.
+
 ### Provenance and legacy
 
 `classic-world-32-fixture.json` was exported from `marble-reference-profile.ts` at logic QA commit `993b587`. The older `classic32-*` images and `capture-classic32.mjs` are isolated component presentation fixtures; they are superseded by the live engine captures above. The earlier `2p-*` / `4p-*` screenshots are 40 cell saved-game visual baselines, not evidence of the new profile. Saved 40 cell games keep their own versioned route and economic display. The test suite now creates explicit saved-match states for their visual regression checks instead of assuming a new match still starts on 40 cells.
