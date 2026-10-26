@@ -41,7 +41,7 @@ export default function MarbleTeamBoard({view:raw,language,runAction,nickname,ro
   const hudMoney=journeyInFlight?settledHud.current.money:s.money,hudScores=journeyInFlight?settledHud.current.scores:Object.fromEntries(view.players.map(player=>[player.id,player.score]));
   const [selected,setSelected]=useState(pos),[selectedSaleTile,setSelectedSaleTile]=useState<number|null>(null),[selectedBuildAction,setSelectedBuildAction]=useState<GameAction|null>(null),[pending,setPending]=useState(false),[failure,setFailure]=useState(''),[bankrupt,setBankrupt]=useState(false),[prefs,setPrefs]=useState(()=>getPreferences('marble')),[exiting,setExiting]=useState<'exit'|'restart'|null>(null),[target,setTarget]=useState('');
   const exitDialog=useRef<HTMLDialogElement>(null);
-  const citySheet=useRef<HTMLDetailsElement>(null),actionPanel=useRef<HTMLElement>(null),actionLock=useRef(false);
+  const citySheet=useRef<HTMLDetailsElement>(null),actionPanel=useRef<HTMLElement>(null),actionLock=useRef(false),actionLockedUntil=useRef(0);
   const human=view.turn==='p1'&&!s.eliminated.p1&&!view.result,disabled=busy||pending||motion.rolling||!!motion.traveler;
   const choices=human?view.actions:[],by=(type:string)=>choices.filter(option=>option.action.type===type),first=(type:string)=>by(type)[0];
   const owned=Object.entries(s.properties).filter(([,p])=>p.owner==='p1');
@@ -72,7 +72,8 @@ export default function MarbleTeamBoard({view:raw,language,runAction,nickname,ro
   useEffect(()=>{setScene('marble');return()=>setScene(null);},[]);
   useEffect(()=>{setSelected(pos);setSelectedSaleTile(null);setSelectedBuildAction(null);setBankrupt(false);setFailure('');setTarget('');},[pos,view.phase]);
   const act=async(action:GameAction)=>{
-    if(disabled||actionLock.current||!choices.some(option=>option.action.type===action.type&&JSON.stringify(option.action.payload??{})===JSON.stringify(action.payload??{})))return;
+    if(disabled||actionLock.current||Date.now()<actionLockedUntil.current||!choices.some(option=>option.action.type===action.type&&JSON.stringify(option.action.payload??{})===JSON.stringify(action.payload??{})))return;
+    actionLockedUntil.current=Date.now()+400;
     actionLock.current=true;setPending(true);setFailure('');
     try{await unlock();if(await runAction(action)===false)setFailure(text(language,'행동을 완료하지 못했어요. 다시 선택해 주세요.','No se pudo completar. Vuelve a elegir.'));}
     catch(cause){setFailure(cause instanceof Error?cause.message:text(language,'다시 시도해 주세요.','Inténtalo de nuevo.'));playCue('marble','error');}

@@ -171,6 +171,7 @@ export default function MarbleBoard({ view: rawView, language, playerId, runActi
   const accountLabel = (account: unknown) => account === 'bank' ? copy(language, '은행', 'Banco') : account === 'fund' ? copy(language, '공동 기금', 'Fondo común') : validSeat(account) ? seatLabel(account) : '';
   const [actionPending, setActionPending] = useState(false);
   const actionPendingRef = useRef(false);
+  const actionLockedUntil = useRef(0);
   const interactionLocked = actionPending || diceRolling || !!traveler;
   const journeyInFlight = diceRolling || !!traveler || num(displayPositions[activeSeat]) !== pos;
   const settledHud = useRef({ money: { ...money }, assets: { ...assets } });
@@ -179,7 +180,8 @@ export default function MarbleBoard({ view: rawView, language, playerId, runActi
   const hudAssets = journeyInFlight ? settledHud.current.assets : assets;
   const dispatch = async (action: GameAction) => {
     const choice = choices.find(item => item.action.type === action.type && JSON.stringify(item.action.payload ?? {}) === JSON.stringify(action.payload ?? {}));
-    if (!choice || interactionLocked || actionPendingRef.current) return false;
+    if (!choice || interactionLocked || actionPendingRef.current || Date.now()<actionLockedUntil.current) return false;
+    actionLockedUntil.current=Date.now()+400;
     actionPendingRef.current = true; setActionPending(true);
     try { return await dispatchAction(action); }
     finally { actionPendingRef.current = false; setActionPending(false); }
