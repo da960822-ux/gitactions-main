@@ -1,3 +1,4 @@
+import { savedMarbleState } from './marble-legacy-test-fixture';
 import { createElement } from 'react';
 import { renderToStaticMarkup } from 'react-dom/server';
 import { describe, expect, it, vi } from 'vitest';
@@ -10,14 +11,14 @@ const render = (view: any, language: 'ko' | 'es' = 'ko', playerId: 'p1' | 'p2' =
 
 describe('MarbleBoard', () => {
   it('puts the legal phase action ahead of optional loans in the central dice stage', () => {
-    const html = render(marbleEngine.getPlayerView(marbleEngine.createInitialState(71), 'p1'));
+    const html = render(marbleEngine.getPlayerView(savedMarbleState(71), 'p1'));
     const center = html.slice(html.indexOf('class="mp-center-stage'), html.indexOf('</section>', html.indexOf('class="mp-center-stage')));
     expect(center).toContain('주사위 굴리기');
     expect(center).not.toContain('대출 받기');
   });
 
   it('offers the action shortcut before all forty city controls in both languages', () => {
-    const state = marbleEngine.createInitialState(71);
+    const state = savedMarbleState(71);
     for (const language of ['ko', 'es'] as const) for (const playerId of ['p1', 'p2'] as const) {
       const html = render(marbleEngine.getPlayerView(state, playerId), language, playerId);
       expect(html.indexOf('class="mp-action-skip"')).toBeLessThan(html.indexOf('class="mp-tile-select"'));
@@ -42,7 +43,7 @@ describe('MarbleBoard', () => {
   });
 
   it('uses the updated Korean and Spanish figure names for old saved pawn IDs', () => {
-    const state = marbleEngine.createInitialState(71);
+    const state = savedMarbleState(71);
     state.pawns = { p1: 'fox', p2: 'penguin' };
     const view = marbleEngine.getPlayerView(state, 'p1');
     expect(render(view)).toContain('말티푸');
@@ -52,7 +53,7 @@ describe('MarbleBoard', () => {
     expect(view.actions.some((choice: any) => choice.label.ko.includes('친칠라') && choice.label.es.includes('Chinchilla'))).toBe(true);
   });
   it('shows only a confirmed world-travel arrival as an imagined airline trip', () => {
-    const view = marbleEngine.getPlayerView(marbleEngine.createInitialState(12), 'p1');
+    const view = marbleEngine.getPlayerView(savedMarbleState(12), 'p1');
     expect(render(view)).not.toContain('mp-flight');
     view.board.lastMove = { sequence: 1, from: 30, to: 15, steps: 25, source: 'train', playerId: 'p1' };
     expect(render(view)).toContain('아시아나');
@@ -65,7 +66,7 @@ describe('MarbleBoard', () => {
     expect(render(view)).not.toContain('mp-flight');
   });
   it('renders the current forty-space route with Gwangju and Santo Domingo in both languages', () => {
-    const state = marbleEngine.createInitialState(733);
+    const state = savedMarbleState(733);
     const view = marbleEngine.getPlayerView(state, 'p1');
     const ko = render(view);
     const es = render(view, 'es');
@@ -82,7 +83,7 @@ describe('MarbleBoard', () => {
     expect(ko).toContain('<details class="mp-pawn-picker-shell mp-city-detail"><summary>말 선택</summary>');
     expect(ko).toContain('viewBox="0 40 128 80"');
     expect(ko).not.toContain('/images/marble/premium/cities/gwangju-chosun-university.webp');
-    expect(ko).toContain('미건설 0단계');
+    expect(ko).toContain('data-building-level="0" aria-label="미건설"');
     expect(es).toContain('Gwangju');
     expect(es).toContain('Santo Domingo');
     expect(es).toContain('<h2>Marble</h2>');
@@ -91,7 +92,7 @@ describe('MarbleBoard', () => {
   });
 
   it('preserves full Spanish city names for visual wrapping and hover inspection', () => {
-    const view = marbleEngine.getPlayerView(marbleEngine.createInitialState(733), 'p1');
+    const view = marbleEngine.getPlayerView(savedMarbleState(733), 'p1');
     const es = render(view, 'es');
     for (const name of ['Ciudad de México', 'Barcelona', 'Santo Domingo']) {
       expect(es).toContain(`title="${name}"`);
@@ -102,7 +103,7 @@ describe('MarbleBoard', () => {
   });
 
   it('uses the same current turn in the map and actions, capped at 120 including final settlement', () => {
-    const view = marbleEngine.getPlayerView(marbleEngine.createInitialState(11), 'p1');
+    const view = marbleEngine.getPlayerView(savedMarbleState(11), 'p1');
     for (const turns of [0, 28, 119, 120]) {
       view.board.turns = turns;
       const html = render(view);
@@ -116,7 +117,7 @@ describe('MarbleBoard', () => {
   });
 
   it('resolves the same saved-v2 final art in the board and portfolio for Newark and Seoul', () => {
-    const view = marbleEngine.getPlayerView({ ...marbleEngine.createInitialState(11), cityRouteVersion: 2 }, 'p1');
+    const view = marbleEngine.getPlayerView({ ...savedMarbleState(11), cityRouteVersion: 2 }, 'p1');
     for (const index of [31, 38]) {
       view.board.tiles[index].owner = 'p1';
       view.board.tiles[index].houses = 3;
@@ -130,7 +131,7 @@ describe('MarbleBoard', () => {
   });
 
   it('shows the selected arrival with its actual build stage instead of a false landmark preview', () => {
-    const view = marbleEngine.getPlayerView({ ...marbleEngine.createInitialState(11), cityRouteVersion: 2 }, 'p1');
+    const view = marbleEngine.getPlayerView({ ...savedMarbleState(11), cityRouteVersion: 2 }, 'p1');
     view.board.positions.p1 = 1;
     const html = render(view);
     const start = html.indexOf('<section class="mp-journey-hud"');
@@ -147,7 +148,7 @@ describe('MarbleBoard', () => {
   });
 
   it('shows one special-tile title and one accurate effect line in the journey panel', () => {
-    const state = marbleEngine.createInitialState(31);
+    const state = savedMarbleState(31);
     const view = marbleEngine.getPlayerView(state, 'p1');
     const journey = () => {
       const html = render(view);
@@ -165,7 +166,7 @@ describe('MarbleBoard', () => {
   });
 
   it('keeps the arrival and action location focused on the active seat in the counterpart view', () => {
-    const state = marbleEngine.createInitialState(21);
+    const state = savedMarbleState(21);
     state.positions.p1 = 8;
     state.active = 'p1';
     const html = render(marbleEngine.getPlayerView(state, 'p2'), 'es', 'p2');
@@ -176,7 +177,7 @@ describe('MarbleBoard', () => {
   });
 
   it('shows connected route-v3 landmark attribution and its verified image', () => {
-    const view = marbleEngine.getPlayerView(marbleEngine.createInitialState(11), 'p1');
+    const view = marbleEngine.getPlayerView(savedMarbleState(11), 'p1');
     view.board.positions.p1 = 13;
     view.board.tiles[13].houses = 3;
     expect(render(view, 'es')).toContain('situado en Miami Beach');
@@ -186,7 +187,7 @@ describe('MarbleBoard', () => {
   });
 
   it('retains exact financial receipts in the closed history without repeating the current action panel', () => {
-    const view = marbleEngine.getPlayerView(marbleEngine.createInitialState(12), 'p1');
+    const view = marbleEngine.getPlayerView(savedMarbleState(12), 'p1');
     view.board.actionLog = [
       { sequence: 1, title: { ko: '옛 탈출', es: 'Salida anterior' }, text: { ko: '100 납부', es: 'Pago 100' } },
       { sequence: 2, title: { ko: '건설 완료', es: 'Construcción lista' }, text: { ko: '빌딩 건설', es: 'Edificio construido' }, moneyDelta: { p1: -60 } },
@@ -204,7 +205,7 @@ describe('MarbleBoard', () => {
   });
 
   it('offers only legal strategic city and rent choices and shows held passes and one-use effects', () => {
-    const view = marbleEngine.getPlayerView(marbleEngine.createInitialState(13), 'p1');
+    const view = marbleEngine.getPlayerView(savedMarbleState(13), 'p1');
     view.phase = 'event-decision';
     view.board.pendingEvent = { id: 'city-festival', playerId: 'p1' };
     view.board.rentPasses = { p1: 1, p2: 0 };
@@ -234,7 +235,7 @@ describe('MarbleBoard', () => {
   });
 
   it('keeps eighteen-space saved boards renderable and does not invent a roll action', () => {
-    const state = marbleEngine.createInitialState(41);
+    const state = savedMarbleState(41);
     const view = marbleEngine.getPlayerView(state, 'p1');
     view.board.tiles = view.board.tiles.slice(0, 18);
     view.board.version = 1;
@@ -253,7 +254,7 @@ describe('MarbleBoard', () => {
   });
 
   it('starts the debt-stage primary action from the same sale offer as the selector', () => {
-    const state = marbleEngine.createInitialState(41);
+    const state = savedMarbleState(41);
     const view = marbleEngine.getPlayerView(state, 'p1');
     view.phase = 'debt';
     view.board.money.p1 = 0;
@@ -267,7 +268,7 @@ describe('MarbleBoard', () => {
   });
 
   it('keeps a legacy roll, purchase, and end-turn action in the side panel', () => {
-    const state = marbleEngine.createInitialState(41);
+    const state = savedMarbleState(41);
     const view = marbleEngine.getPlayerView(state, 'p1');
     view.board.tiles = view.board.tiles.slice(0, 18);
     view.board.version = 1;
@@ -286,7 +287,7 @@ describe('MarbleBoard', () => {
   });
 
   it('does not render a missing opponent balance as a real zero', () => {
-    const view = marbleEngine.getPlayerView(marbleEngine.createInitialState(41), 'p1');
+    const view = marbleEngine.getPlayerView(savedMarbleState(41), 'p1');
     view.board.money.p2 = undefined as any;
     const html = render(view);
     const opponentStart = html.indexOf('data-marble-seat="p2"');
@@ -295,7 +296,7 @@ describe('MarbleBoard', () => {
     expect(opponent).toContain('>—</span>');
     expect(opponent).not.toContain('game-value-number">0');
 
-    const bankrupt = marbleEngine.getPlayerView(marbleEngine.createInitialState(41), 'p1');
+    const bankrupt = marbleEngine.getPlayerView(savedMarbleState(41), 'p1');
     bankrupt.board.money.p2 = 0;
     const zeroHtml = render(bankrupt);
     const zeroStart = zeroHtml.indexOf('data-marble-seat="p2"');
@@ -304,7 +305,7 @@ describe('MarbleBoard', () => {
   });
 
   it('renders only legal purchase controls and describes the current property', () => {
-    const state = marbleEngine.createInitialState(5);
+    const state = savedMarbleState(5);
     const view = marbleEngine.getPlayerView(state, 'p1');
     view.phase = 'decision';
     view.board.positions.p1 = 15;
@@ -328,7 +329,7 @@ describe('MarbleBoard', () => {
   });
 
   it('shows the server-priced build cost, cash after building, and next rent', () => {
-    const state = marbleEngine.createInitialState(27);
+    const state = savedMarbleState(27);
     const view = marbleEngine.getPlayerView(state, 'p1');
     view.phase = 'main';
     view.board.positions.p1 = 1;
@@ -351,7 +352,7 @@ describe('MarbleBoard', () => {
   });
 
   it('shows the public payment reason and only server-returned loan or bankruptcy actions', () => {
-    const state = marbleEngine.createInitialState(19);
+    const state = savedMarbleState(19);
     const view = marbleEngine.getPlayerView(state, 'p1');
     view.phase = 'debt';
     view.board.pendingPayment = { amount: 180, creditor: 'p2', reason: { ko: '상대 임대료를 내야 합니다.', es: 'Debes pagar el alquiler rival.' } };
@@ -375,7 +376,7 @@ describe('MarbleBoard', () => {
   });
 
   it('labels debt-adjusted value as net worth and states fixed loan terms before the choice', () => {
-    const state = marbleEngine.createInitialState(21);
+    const state = savedMarbleState(21);
     const view = marbleEngine.getPlayerView(state, 'p1');
     view.board.economicVersion = 1;
     view.board.debt.p1 = 0;
@@ -390,7 +391,7 @@ describe('MarbleBoard', () => {
   });
 
   it('shows each player’s landmark count beside city and debt totals', () => {
-    const state = marbleEngine.createInitialState(23);
+    const state = savedMarbleState(23);
     const view = marbleEngine.getPlayerView(state, 'p1');
     view.board.tiles[3].owner = 'p1';
     view.board.tiles[3].houses = 3;
@@ -399,7 +400,7 @@ describe('MarbleBoard', () => {
   });
 
   it('labels final economic-version scores as net worth and preserves older asset scoring', () => {
-    const state = marbleEngine.createInitialState(24);
+    const state = savedMarbleState(24);
     const view = marbleEngine.getPlayerView(state, 'p1');
     view.result = { winner: 'p1', reason: 'asset turn limit', scores: { p1: 1200, p2: 900 } };
     expect(render(view)).toContain('순자산');
@@ -410,7 +411,7 @@ describe('MarbleBoard', () => {
   });
 
   it('explains remaining island turns, fixed escape cost, and available passes', () => {
-    const state = marbleEngine.createInitialState(22);
+    const state = savedMarbleState(22);
     const view = marbleEngine.getPlayerView(state, 'p1');
     view.phase = 'island';
     view.board.islandTurns.p1 = 2;
@@ -432,7 +433,7 @@ describe('MarbleBoard', () => {
   });
 
   it('uses engine-issued train destinations and shows the recent public action log', () => {
-    const state = marbleEngine.createInitialState(29);
+    const state = savedMarbleState(29);
     const view = marbleEngine.getPlayerView(state, 'p1');
     view.phase = 'train-decision';
     view.board.pendingTrainFare = 100;
@@ -464,13 +465,13 @@ describe('MarbleBoard', () => {
 });
 
 it('renders a legal post-rent acquisition with complete stage costs on the two-player screen',()=>{
- const s=marbleEngine.createInitialState(5);s.phase='main';s.positions.p1=4;s.pendingTile=4;s.takeoverTile=4;s.properties[4]={owner:'p2',houses:2};
+ const s=savedMarbleState(5);s.phase='main';s.positions.p1=4;s.pendingTile=4;s.takeoverTile=4;s.properties[4]={owner:'p2',houses:2};
  const html=render(marbleEngine.getPlayerView(s,'p1'));
  expect(html).toContain('도시 인수 · 560');expect(html).toContain('인수 후 현금 940');expect(html).toContain('단계별 금액');expect(html).toContain('추가비');expect(html).toContain('누적');expect(html).toContain('불가');
 });
 
 it('preserves player ownership and images in Spanish and legacy two-player views',()=>{
- const state=marbleEngine.createInitialState(1);state.properties={1:{owner:'p1',houses:1},3:{owner:'p2',houses:2}};
+ const state=savedMarbleState(1);state.properties={1:{owner:'p1',houses:1},3:{owner:'p2',houses:2}};
  for(const language of ['ko','es'] as const){
   const html=render(marbleEngine.getPlayerView(state,'p1'),language);
   expect((html.match(/class="mp-property-tile-art mp-property-art-frame"/g)??[])).toHaveLength(24);

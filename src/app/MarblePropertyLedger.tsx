@@ -3,6 +3,7 @@ import { marbleBuildCost, marbleCityValue, marbleTakeoverPrice, type MarbleTile 
 import { marbleRentAtStage } from '../games/marble-economy';
 import { selectMarblePropertySale } from '../games/marble-actions';
 import { classicMarbleAcquisitionPrice, classicMarbleCityToll, classicMarbleConstructionCost, classicMarbleReferenceProfile, type ClassicMarbleBuildings, type ClassicMarbleStructure } from '../games/marble-reference-profile';
+import { moneyText } from './marble-visuals';
 
 const t = (language: Language, ko: string, es: string) => language === 'ko' ? ko : es;
 export function MarblePropertyLedger({ tile, language, economicVersion, propertyRulesVersion, multiplier = 1 }: { tile: MarbleTile; language: Language; economicVersion?: number; propertyRulesVersion?: number; multiplier?: number }) {
@@ -11,12 +12,14 @@ export function MarblePropertyLedger({ tile, language, economicVersion, property
     if (city) {
       const structures: readonly ClassicMarbleStructure[] = ['villa', 'building', 'hotel', 'landmark'];
       const activeBuildings = (tile as MarbleTile & { buildings?: ClassicMarbleBuildings }).buildings ?? {};
-      const masks = [{}, { villa: true }, { villa: true, building: true }, { villa: true, building: true, hotel: true }, { villa: true, building: true, hotel: true, landmark: true }];
-      return <table className="marble-property-ledger"><caption>{t(language, '단계별 금액 · 원본 비즈니스 클래스', 'Importes por etapa · clase Business de referencia')}</caption><thead><tr><th>{t(language, '단계', 'Nivel')}</th><th>{t(language, '추가비', 'Costo extra')}</th><th>{t(language, '누적 투자', 'Invertido')}</th><th>{t(language, '통행료', 'Alquiler')}</th><th>{t(language, '인수', 'Adquirir')}</th></tr></thead><tbody>{masks.map((buildings, level) => {
-        const extra = level === 0 ? city.land : classicMarbleConstructionCost(city.name, structures[level - 1]);
-        const investment = city.land + structures.slice(0, level).reduce((sum, structure) => sum + classicMarbleConstructionCost(city.name, structure)!, 0);
-        const current = structures.every(structure => Boolean(buildings[structure]) === Boolean(activeBuildings[structure]));
-        return <tr key={level} data-current-stage={current ? 'true' : undefined}><th>{level === 0 ? t(language, '대지', 'Terreno') : [t(language, '빌라', 'Villa'), t(language, '빌딩', 'Edificio'), t(language, '호텔', 'Hotel'), t(language, '랜드마크', 'Monumento')][level - 1]}</th><td>{extra}</td><td>{investment}</td><td>{classicMarbleCityToll(city.name, buildings)}</td><td>{classicMarbleAcquisitionPrice(city.name, buildings)}</td></tr>;
+      const masks: ClassicMarbleBuildings[] = [{}, { villa: true }, { building: true }, { hotel: true }, { villa: true, building: true, hotel: true }, { villa: true, building: true, hotel: true, landmark: true }];
+      const investment = (buildings: ClassicMarbleBuildings) => city.land + structures.filter(structure=>buildings[structure]).reduce((sum,structure)=>sum+(classicMarbleConstructionCost(city.name,structure)??0),0);
+      const owned = structures.some(structure=>activeBuildings[structure]);
+      const exampleNames = [t(language,'대지','Terreno'),t(language,'빌라만','Solo villa'),t(language,'빌딩만','Solo edificio'),t(language,'호텔만','Solo hotel'),t(language,'빌라+빌딩+호텔','Villa+edificio+hotel'),t(language,'랜드마크','Monumento')];
+      const price=(value:number|null)=>value===null?t(language,'불가','Protegido'):moneyText(value,language);
+      return <table className="marble-property-ledger"><caption>{t(language, '독립 건설 조합 · 대표 금액', 'Edificios independientes · importes de ejemplo')}</caption><thead><tr><th>{t(language, '건물 조합', 'Edificios')}</th><th>{t(language, '추가비', 'Costo extra')}</th><th>{t(language, '투자액', 'Invertido')}</th><th>{t(language, '통행료', 'Alquiler')}</th><th>{t(language, '인수', 'Adquirir')}</th></tr></thead><tbody>{owned&&<tr data-current-stage="true"><th>{t(language,'현재 보유','Actual')}</th><td>—</td><td>{price(investment(activeBuildings))}</td><td>{price(classicMarbleCityToll(city.name,activeBuildings))}</td><td>{price(classicMarbleAcquisitionPrice(city.name,activeBuildings))}</td></tr>}{masks.map((buildings, level) => {
+        const extra = level === 0 ? city.land : level===4 ? classicMarbleConstructionCost(city.name,'hotel') : level===5 ? classicMarbleConstructionCost(city.name,'landmark') : classicMarbleConstructionCost(city.name,structures[level-1]);
+        return <tr key={level} data-current-stage={!owned&&level===0?'true':undefined}><th>{exampleNames[level]}</th><td>{price(extra)}</td><td>{price(investment(buildings))}</td><td>{price(classicMarbleCityToll(city.name,buildings))}</td><td>{price(classicMarbleAcquisitionPrice(city.name,buildings))}</td></tr>;
       })}</tbody></table>;
     }
   }

@@ -1,3 +1,4 @@
+import { savedMarbleState } from './marble-legacy-test-fixture';
 import { describe, expect, it, vi } from 'vitest';
 import { renderToStaticMarkup } from 'react-dom/server';
 import DominoBoard from './DominoBoard';
@@ -73,7 +74,7 @@ describe('DominoBoard presentation', () => {
 
 describe('MarbleBoard presentation', () => {
   const makeView = (language: 'ko' | 'es') => {
-    const state = marbleEngine.createInitialState(728);
+    const state = savedMarbleState(728);
     delete state.economicVersion;
     const view = marbleEngine.getPlayerView(state, 'p1');
     const property = view.board.tiles.find((tile: any) => tile.kind === 'property');

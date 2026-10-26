@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from 'react';
 
 /** Use a seat/game/round key so reconnects and round resets never fake a gain. */
-export function GameValue({ value, resetKey, format }: { value: number; resetKey: string; format?: (value: number) => string }) {
+export function GameValue({ value, resetKey, format, showDelta = true }: { value: number; resetKey: string; format?: (value: number) => string; showDelta?: boolean }) {
   const previous = useRef({ value, resetKey });
   const [change, setChange] = useState({ value, resetKey, delta: 0 });
   const delta = change.value === value && change.resetKey === resetKey ? change.delta : 0;
@@ -14,5 +14,5 @@ export function GameValue({ value, resetKey, format }: { value: number; resetKey
     const timer = window.setTimeout(() => setChange({ value, resetKey, delta: 0 }), 1600);
     return () => window.clearTimeout(timer);
   }, [value, resetKey]);
-  return <span className="game-value"><span className="game-value-number">{format ? format(value) : value}</span>{delta !== 0 && <span key={`${resetKey}:${value}`} className={`game-value-delta ${delta < 0 ? 'is-negative' : ''}`} aria-hidden="true">{delta > 0 ? '+' : '−'}{format ? format(Math.abs(delta)) : Math.abs(delta)}</span>}</span>;
+  return <span className="game-value"><span className="game-value-number">{format ? format(value) : value}</span>{showDelta && delta !== 0 && <span key={`${resetKey}:${value}`} className={`game-value-delta ${delta < 0 ? 'is-negative' : ''}`} aria-hidden="true">{delta > 0 ? '+' : '−'}{format ? format(Math.abs(delta)) : Math.abs(delta)}</span>}</span>;
 }

@@ -23,7 +23,7 @@ export function useMarbleTeamMotion(view: MarbleView) {
     return()=>{timers.current.forEach(clearTimeout);query.removeEventListener('change',update);document.removeEventListener('visibilitychange',snap);};
   },[]);
   useEffect(()=>{
-    const props=view.publicBoard.map((_,i)=>`${s.properties[i]?.owner??''}:${s.properties[i]?.houses??0}`);
+    const props=view.publicBoard.map((_,i)=>`${s.properties[i]?.owner??''}:${s.properties[i]?.houses??0}:${JSON.stringify(s.properties[i]?.buildings??{})}`);
     const before=previous.current;previous.current={sequence:s.actionSequence,positions:s.positions,properties:props};
     const interrupted=busy.current;busy.current=false;timers.current.forEach(clearTimeout);timers.current=[];
     const fresh=(s.actionLog??[]).filter(e=>e.sequence>(before?.sequence??s.actionSequence));
@@ -33,7 +33,7 @@ export function useMarbleTeamMotion(view: MarbleView) {
       if(before&&fresh.length&&!document.hidden){const latest=fresh.at(-1)!;setEvent(latest);const cue=latest.type==='win'&&view.result?.winner==='B'?'lose':marbleCueForEvent(latest);if(cue)playCue('marble',cue);timers.current.push(setTimeout(()=>setEvent(null),3000));}
       return;
     }
-    const frames=marblePresentationFrames(fresh,before.positions,s.positions,40);busy.current=true;let sounded=0;
+    const frames=marblePresentationFrames(fresh,before.positions,s.positions,view.publicBoard.length);busy.current=true;let sounded=0;
     for(const frame of frames)timers.current.push(setTimeout(()=>{
       setPositions(frame.positions);setTraveler(frame.traveler);setRolling(frame.dice);setEvent(frame.event);
       if(frame.event.sequence&&frame.event.sequence>sounded&&!document.hidden){sounded=frame.event.sequence;const cue=frame.event.type==='win'&&view.result?.winner==='B'?'lose':marbleCueForEvent(frame.event);if(cue)playCue('marble',cue);}

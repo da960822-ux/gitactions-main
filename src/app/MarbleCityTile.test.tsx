@@ -1,3 +1,4 @@
+import { savedMarbleState } from './marble-legacy-test-fixture';
 import { createElement } from 'react';
 import { renderToStaticMarkup } from 'react-dom/server';
 import { describe, expect, it, vi } from 'vitest';
@@ -5,7 +6,7 @@ import { MarbleCityTile } from './MarbleCityTile';
 import { marbleEngine } from '../games/marble';
 
 describe('MarbleCityTile', () => {
-  const board = marbleEngine.getPlayerView(marbleEngine.createInitialState(3), 'p1').board;
+  const board = marbleEngine.getPlayerView(savedMarbleState(3), 'p1').board;
   const render = (index:number, owner:null|'p1', level:number, language:'ko'|'es'='ko', tileCount=40) => {
     const tile = { ...board.tiles[index], owner, houses:level };
     return renderToStaticMarkup(createElement(MarbleCityTile, { tile, index, tileCount, position:[1,2], language, routeVersion:3, modern:true, selected:false, pending:false, changed:false, atSeats:[], movingSeat:null, playerId:'p1', pawnForSeat:()=> 'fox' as const, seatLabel:()=>language==='ko'?'나':'Tú', onInspect:vi.fn() }));

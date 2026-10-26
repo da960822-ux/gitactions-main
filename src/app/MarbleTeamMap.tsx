@@ -6,7 +6,7 @@ import { MarbleCityTile } from './MarbleCityTile';
 import { MarbleBoardShell } from './MarbleBoardShell';
 import { MarbleMobileSpotlight } from './MarbleMobileSpotlight';
 import { marbleGridPosition } from './marble-motion';
-import { cityArtNames, rentValue } from './marble-visuals';
+import { cityArtNames, rentValue, visualBuildingLevel } from './marble-visuals';
 import '../styles/marble-premium.css';
 const copy = (language: Language, ko: string, es: string) => language === 'ko' ? ko : es;
 const record = (value: unknown): Record<string, any> => value && typeof value === 'object' ? value as Record<string, any> : {};
@@ -35,7 +35,7 @@ export function MarbleTeamMap({view, language, seatNames, selectedTile, onInspec
           })}
           <div className="mp-board-center"><div className="mp-ownership-key"><span className="mp-key-group"/>{copy(language, '윗띠 · 색상군', 'Franja · grupo')}<span className="mp-key-owner"/>{copy(language, '테두리·기단 · 소유자 번호', 'Borde y base · número del dueño')}<span className="mp-money-key">{copy(language, '미소유 숫자 = 매입 · 소유 숫자 = 통행료', 'Sin dueño: compra · Con dueño: alquiler')}</span></div>
             <img className="mp-world-map" src="/images/marble/world-map-board.webp" alt="" aria-hidden="true" decoding="async"/>
-            {tileCount===32&&selectedCity&&<MarbleMobileSpotlight name={selectedCity.name[language]} city={cityArtNames[selectedCity.name.ko]??null} level={selectedCity.houses} owner={validSeat(selectedCity.owner)?selectedCity.owner:null} ownerLabel={validSeat(selectedCity.owner)?seatLabel(selectedCity.owner):copy(language,'은행','Banco')} price={['property','tourism'].includes(selectedCity.kind)?Number(selectedCity.price??0):null} toll={['property','tourism'].includes(selectedCity.kind)?rentValue(selectedCity,true):null} language={language} routeVersion={tileCount===32?4:3}/>}
+            {tileCount===32&&selectedCity&&<MarbleMobileSpotlight name={selectedCity.name[language]} city={cityArtNames[selectedCity.name.ko]??null} level={visualBuildingLevel(selectedCity,4)} owner={validSeat(selectedCity.owner)?selectedCity.owner:null} ownerLabel={validSeat(selectedCity.owner)?seatLabel(selectedCity.owner):copy(language,'은행','Banco')} price={['property','tourism'].includes(selectedCity.kind)?Number(selectedCity.price??0):null} toll={['property','tourism'].includes(selectedCity.kind)?rentValue(selectedCity,true):null} language={language} routeVersion={tileCount===32?4:3}/>}
             <div className="mp-center-route"><span>{tileCount===32?copy(language, '방콕 → 도쿄 → 베를린 → 뉴욕 → 서울 → 출발', 'Bangkok → Tokio → Berlín → Nueva York → Seúl → Salida'):copy(language, '광주 → 뉴욕 → 산토도밍고 → 뉴어크 → 서울 → 광주', 'Gwangju → Nueva York → Santo Domingo → Newark → Seúl → Gwangju')}</span></div>
             {centerContent}
 

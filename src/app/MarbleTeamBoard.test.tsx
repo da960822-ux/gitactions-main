@@ -1,10 +1,11 @@
+import { savedFourMarbleState } from './marble-legacy-test-fixture';
 import { createElement } from 'react';
 import { renderToStaticMarkup } from 'react-dom/server';
 import { describe, expect, it, vi } from 'vitest';
 import { fourMarbleEngine, type FourMarbleState } from '../games/fourMarble';
 import { marbleMovementPath, marblePresentationFrames } from './marble-motion';
 import MarbleTeamBoard from './MarbleTeamBoard';
-const state=()=>fourMarbleEngine.createInitialState(71) as FourMarbleState;
+const state=()=>savedFourMarbleState(71) as FourMarbleState;
 const render=(s:FourMarbleState,language:'ko'|'es'='ko')=>renderToStaticMarkup(createElement(MarbleTeamBoard,{view:fourMarbleEngine.getPlayerView(s,'p1'),language,nickname:'연석',runAction:vi.fn(),onReplay:vi.fn(),onExit:vi.fn(),onSelectGame:vi.fn()}));
 describe('native four-player Marble screen',()=>{
  it('puts the legal phase action ahead of optional loans in the central dice stage',()=>{
@@ -44,7 +45,7 @@ describe('native four-player Marble screen',()=>{
   expect(render(s)).toContain('marble-pawn--dragon');
   s.positions.p1=1;s.pendingTile=1;s.phase='decision';
   const purchase=render(s);
-  expect(purchase).toContain('매입 100 · 기본 통행료 20');expect(purchase).toContain('구매 후 현금 1,400');
+  expect(purchase).toContain('구매 100');expect(purchase).toContain('통행료 20');expect(purchase).toContain('구매 후 현금 1,400');
   expect(purchase).toContain('도시 구매 · 100');expect(purchase).toContain('이번에는 지나가기');
   expect(purchase).toContain('300을 받고 330을 갚습니다.');
  });
@@ -103,7 +104,7 @@ it('keeps each owner number, shared pawn/bank color key and approved property im
   expect((html.match(/class="mp-property-tile-art mp-property-art-frame"/g)??[])).toHaveLength(24);
   for(const seat of ['p1','p2','p3','p4']){expect(html).toContain(`data-marble-owner="${seat}"`);expect(html).toContain(`data-marble-pawn-seat="${seat}"`);}
   expect(html).toContain('data-marble-owner="bank"');expect(html).toContain('mp-building-plinth');
-  expect(html).not.toContain('aria-label="단독주택">1</span>');expect(html).not.toContain('aria-label="아파트">2</span>');
+  expect(html).toContain(language==='ko'?'aria-label="단독주택">1</span>':'aria-label="Casa unifamiliar">1</span>');expect(html).toContain(language==='ko'?'aria-label="아파트">2</span>':'aria-label="Apartamentos">2</span>');
   expect(html).toContain('data-marble-price-kind="rent" title="'+(language==='ko'?'현재 통행료 20':'Alquiler actual 20')+'">20</b>');
   expect(html).toContain('data-marble-price-kind="purchase"');
  }

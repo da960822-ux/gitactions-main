@@ -1,3 +1,4 @@
+import { savedMarbleState } from './marble-legacy-test-fixture';
 import { renderToStaticMarkup } from 'react-dom/server';
 import { describe, expect, it } from 'vitest';
 import MarbleBoard from './MarbleBoard';
@@ -22,7 +23,7 @@ describe('public game boards', () => {
 
   it('keeps local country flags beside all saved route-v2 city names in both locales', () => {
     const engine = engines.marble!;
-    const state = { ...(engine.createInitialState(7) as any), cityRouteVersion: 2 };
+    const state = { ...savedMarbleState(7), cityRouteVersion: 2 as const };
     const view = engine.getPlayerView(state, 'p1') as any;
     const codes = ['ca','cl','cu','do','es','fr','gb','it','jp','kr','mx','nz','ph','pr','pt','us'];
     for (const language of ['ko', 'es'] as const) {

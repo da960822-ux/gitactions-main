@@ -157,6 +157,9 @@
 .marble-native-team.marble-team-board .mp-world-map { opacity:.35; }
 .marble-native-team.marble-team-board .mt-center-stage .mp-stage-art { width:125px; height:150px; }
 .marble-native-team.marble-team-board .mt-center-stage .mp-stage-details h2 { font-size:clamp(22px,2vw,30px); }
+.marble-native-team.marble-team-board .mt-center-stage.mp-stage--main:has(.mp-structure-choices) { bottom:5%; max-height:90%; }
+.marble-premium.is-modern .mp-brand h2 { color:#fff8e8; }
+.marble-premium.is-modern .mp-brand p { color:#d5e8df; }
 @media (max-width:1099px) {
   .marble-native-team.marble-team-board { height:auto; min-height:100svh; }
   .marble-native-team.marble-team-board .mt-play-surface { min-width:0; }
