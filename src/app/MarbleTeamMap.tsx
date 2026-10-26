@@ -16,18 +16,19 @@ export function MarbleTeamMap({view, language, seatNames, selectedTile, onInspec
 }) {
  const state=view.publicState;
  const tiles=view.publicBoard.map((tile,index)=>({...tile,index,owner:state.properties[index]?.owner??null,houses:state.properties[index]?.houses??0,rentModifiers:state.modifiers[index]}));
+ const tileCount=tiles.length;
  const players=fourSeats,playerId='p1',phase=view.phase;
  const pos=state.positions[view.turn],lastMove=record(state.lastMove),lastMoveSequence=state.lastMove?.sequence??0;
  const seatLabel=(seat:FourSeat)=>seatNames[seat][language];
  const validSeat=(value:unknown):value is FourSeat=>fourSeats.includes(value as FourSeat);
  return (
-      <MarbleBoardShell tileCount={40} language={language}>
+      <MarbleBoardShell tileCount={tileCount} language={language}>
           {tiles.map((tile, index) => {
-            const position = marbleGridPosition(index, 40);
+            const position = marbleGridPosition(index, tileCount);
             if (!position) return null;
             const atSeats = players.filter(seat => !state.eliminated[seat] && num(displayPositions[seat]) === index);
             const movingSeat = traveler?.tile === index ? traveler.seat : null;
-            return <MarbleCityTile key={tile.index ?? index} tile={tile} index={index} tileCount={40} position={position} language={language} routeVersion={3} modern selected={selectedTile === index} pending={pos === index && phase === 'decision'} changed={changedProperties.includes(index)} atSeats={atSeats} movingSeat={movingSeat} travelerSequence={traveler?.seq} playerId={playerId} pawnForSeat={seat => state.pawns[seat]} seatLabel={seatLabel} onInspect={onInspect}/>;
+            return <MarbleCityTile key={tile.index ?? index} tile={tile} index={index} tileCount={tileCount} position={position} language={language} routeVersion={3} modern selected={selectedTile === index} pending={pos === index && phase === 'decision'} changed={changedProperties.includes(index)} atSeats={atSeats} travelerSequence={traveler?.seq} movingSeat={movingSeat} playerId={playerId} pawnForSeat={seat => state.pawns[seat]} seatLabel={seatLabel} onInspect={onInspect}/>;
           })}
           <div className="mp-board-center"><div className="mp-ownership-key"><span className="mp-key-group"/>{copy(language, '윗띠 · 색상군', 'Franja · grupo')}<span className="mp-key-owner"/>{copy(language, '테두리·기단 · 소유자 번호', 'Borde y base · número del dueño')}<span className="mp-money-key">{copy(language, '미소유 숫자 = 매입 · 소유 숫자 = 통행료', 'Sin dueño: compra · Con dueño: alquiler')}</span></div>
             <img className="mp-world-map" src="/images/marble/world-map-board.webp" alt="" aria-hidden="true" decoding="async"/>

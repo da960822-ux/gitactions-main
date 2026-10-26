@@ -6,9 +6,9 @@ import { marbleEngine } from '../games/marble';
 
 describe('MarbleCityTile', () => {
   const board = marbleEngine.getPlayerView(marbleEngine.createInitialState(3), 'p1').board;
-  const render = (index:number, owner:null|'p1', level:number, language:'ko'|'es'='ko') => {
+  const render = (index:number, owner:null|'p1', level:number, language:'ko'|'es'='ko', tileCount=40) => {
     const tile = { ...board.tiles[index], owner, houses:level };
-    return renderToStaticMarkup(createElement(MarbleCityTile, { tile, index, tileCount:40, position:[1,2], language, routeVersion:3, modern:true, selected:false, pending:false, changed:false, atSeats:[], movingSeat:null, playerId:'p1', pawnForSeat:()=> 'fox' as const, seatLabel:()=>language==='ko'?'나':'Tú', onInspect:vi.fn() }));
+    return renderToStaticMarkup(createElement(MarbleCityTile, { tile, index, tileCount, position:[1,2], language, routeVersion:3, modern:true, selected:false, pending:false, changed:false, atSeats:[], movingSeat:null, playerId:'p1', pawnForSeat:()=> 'fox' as const, seatLabel:()=>language==='ko'?'나':'Tú', onInspect:vi.fn() }));
   };
   it('keeps title, price, owner, tier and artwork as separate readable data', () => {
     const bare = render(3,null,0);
@@ -21,5 +21,9 @@ describe('MarbleCityTile', () => {
     expect(built).toContain('data-marble-price-kind="rent"');
     expect(built).toContain('data-building-level="3"');
     expect(built).toContain('premium/cities/new-york');
+  });
+  it('uses the same edge zones for the 32 cell route',()=>{
+    expect(render(3,null,0,'ko',32)).toContain('mp-tile--west');
+    expect(render(3,null,0,'ko',32)).toContain('data-mp-edge="left"');
   });
 });

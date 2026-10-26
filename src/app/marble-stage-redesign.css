@@ -35,6 +35,16 @@
   background:#99b7aa url('/images/marble/backing-board.svg') center/cover;
   border-color:#d4bd81;
 }
+:is(.marble-premium,.marble-native-team).is-modern .mp-board-grid--32 {
+  width:min(100%,calc(100svh * 1.39),1220px); max-width:none;
+  height:clamp(560px,calc(var(--mp-available-height,650px) - 61px),710px);
+  margin:auto; aspect-ratio:auto; gap:3px; padding:4px;
+  grid-template-columns:clamp(105px,12%,135px) repeat(7,minmax(0,1fr)) clamp(105px,12%,135px);
+  grid-template-rows:clamp(68px,11%,88px) repeat(7,minmax(0,1fr)) clamp(68px,11%,88px);
+  background:#99b7aa url('/images/marble/backing-board.svg') center/cover;
+  border-color:#d4bd81;
+}
+:is(.marble-premium,.marble-native-team).is-modern .mp-board-grid--32 .mp-board-center { grid-column:2/9; grid-row:2/9; }
 :is(.marble-premium,.marble-native-team).is-modern .mp-tile { border-radius:5px; padding:2px 4px; box-shadow:inset 0 1px #fff,0 2px 4px #0c273343; }
 :is(.marble-premium,.marble-native-team).is-modern .mp-tile[data-marble-owner] { border-width:1px; }
 :is(.marble-premium,.marble-native-team).is-modern .mp-tile[data-marble-owner]:not([data-marble-owner="bank"]) { box-shadow:inset 0 -4px var(--mp-owner-color),0 2px 4px #0c273343; }
@@ -92,6 +102,7 @@
 }
 @media (max-width:1099px) {
   .marble-premium.is-modern .mp-board-grid--40 { min-width:780px; }
+  .marble-premium.is-modern .mp-board-grid--32 { min-width:780px; }
   .marble-premium.is-modern .mp-board-panel { overflow:auto; }
 }
 @media (max-width:680px) {
@@ -128,6 +139,7 @@
 .marble-native-team.marble-team-board .mt-bank dd { font-size:12px; }
 .marble-native-team.marble-team-board .mt-banks { width:100%; max-width:none; gap:6px; }
 .marble-native-team.marble-team-board .mp-board-grid--40 { width:100%; max-width:none; height:clamp(440px,calc(100svh - 235px),680px); grid-template-columns:clamp(105px,13%,140px) repeat(9,minmax(0,1fr)) clamp(105px,13%,140px); grid-template-rows:clamp(70px,13%,92px) repeat(9,minmax(0,1fr)) clamp(70px,13%,92px); gap:3px; padding:4px; background:#99b7aa url('/images/marble/backing-board.svg') center/cover; border-color:#d4bd81; }
+.marble-native-team.marble-team-board .mp-board-grid--32 { height:clamp(520px,calc(100svh - 195px),710px); }
 .marble-native-team.marble-team-board .mp-center-stage { bottom:13%; }
 .marble-native-team.marble-team-board .mp-center-stage.mp-stage--roll { bottom:25%; }
 .marble-native-team.marble-team-board .mp-board-center .mp-ownership-key { display:none; }
@@ -139,6 +151,7 @@
   .marble-native-team.marble-team-board .mt-play-surface { min-width:0; }
   .marble-native-team.marble-team-board .mp-board-panel { min-width:0; max-width:100%; box-sizing:border-box; overflow:auto; }
   .marble-native-team.marble-team-board .mp-board-grid--40 { min-width:780px; }
+  .marble-native-team.marble-team-board .mp-board-grid--32 { min-width:780px; }
 }
 @media (max-width:680px) {
   .marble-native-team.marble-team-board .mt-banks { grid-template-columns:1fr 1fr; }
@@ -178,8 +191,8 @@
 .marble-native-team.marble-team-board .mt-bank.is-current { background:#fff0c8; }
 .marble-native-team.marble-team-board .mt-bank-A { background:#e6f2e9; }
 .marble-native-team.marble-team-board .mt-bank-B { background:#f5e8eb; }
-.marble-native-team.marble-team-board .mp-board-grid--40 { grid-template-rows:90px repeat(9,minmax(0,1fr)) 90px; }
-.marble-premium.is-modern .mp-board-grid--40 { grid-template-rows:90px repeat(9,minmax(0,1fr)) 90px; }
+.marble-native-team.marble-team-board .mp-board-grid--40 { grid-template-rows:72px repeat(9,minmax(0,1fr)) 72px; }
+.marble-premium.is-modern .mp-board-grid--40 { grid-template-rows:72px repeat(9,minmax(0,1fr)) 72px; }
 :is(.marble-premium,.marble-native-team).is-modern .mp-property-tile-copy .mp-tile-name { overflow-wrap:anywhere; word-break:normal; }
 :is(.marble-premium,.marble-native-team).is-modern .mp-tile--horizontal .mp-property-tile-copy .mp-tile-name { max-height:2.15em; overflow:hidden; }
 /* On the narrow edges, the name owns its own full-width row. */
@@ -195,6 +208,11 @@
 :is(.marble-premium,.marble-native-team).is-modern .mp-tile--horizontal .mp-property-tile-art { max-height:48%; }
 :is(.marble-premium,.marble-native-team).is-modern .mp-property-tile-art .mp-property-art-image { transform:scale(1.22); transform-origin:center bottom; }
 :is(.marble-premium,.marble-native-team).is-modern .mp-tile--horizontal .mp-property-tile-art .mp-property-art-image { transform:scale(1.72); }
+:is(.marble-premium,.marble-native-team).is-modern .mp-tile--horizontal.mp-kind-property .mp-property-tile-view { display:flex; flex-direction:column; align-items:stretch; justify-content:center; gap:1px; }
+:is(.marble-premium,.marble-native-team).is-modern .mp-tile--horizontal.mp-kind-property .mp-property-tile-art { flex:0 0 20px; height:20px; max-height:20px; }
+:is(.marble-premium,.marble-native-team).is-modern .mp-tile--horizontal.mp-kind-property .mp-property-tile-copy { display:flex; flex-direction:column; align-items:center; justify-content:flex-end; flex:0 0 auto; height:auto; min-height:0; gap:1px; }
+:is(.marble-premium,.marble-native-team).is-modern .mp-tile--horizontal.mp-kind-property .mp-property-tile-copy .mp-tile-name { flex:none; max-height:23px; line-height:1.05; }
+:is(.marble-premium,.marble-native-team).is-modern .mp-tile--horizontal.mp-kind-property .mp-property-tile-copy .mp-tile-economy { flex:none; height:14px; line-height:14px; }
 :is(.marble-premium,.marble-native-team).is-modern :is(.mp-tile--west,.mp-tile--east) .mp-property-tile-art .mp-property-art-image { transform:scale(1.4); }
 :is(.marble-premium,.marble-native-team).is-modern .mp-center-stage.mp-stage--moving { bottom:28%; display:flex; justify-content:center; width:min(52%,360px); padding:12px; border:0; background:#fff9ebdb; box-shadow:0 9px 20px #16383f35; text-align:center; }
 :is(.marble-premium,.marble-native-team).is-modern .mp-moving-status { display:grid; justify-items:center; gap:8px; }
@@ -215,4 +233,16 @@
 @media (max-width:680px) {
   :is(.marble-premium,.marble-native-team).is-modern .mp-center-stage.mp-stage--roll,
   :is(.marble-premium,.marble-native-team).is-modern .mp-center-stage.mp-stage--moving { right:10px; bottom:10px; left:10px; width:auto; }
+}
+@media (min-width:681px) {
+  :is(.marble-premium,.marble-native-team).is-modern .mp-center-stage.mp-stage--roll {
+    right:6%; bottom:12%; left:auto; width:230px; max-width:36%; min-height:190px; gap:7px;
+    padding:14px; transform:none; border:1px solid #ac925f; border-radius:15px;
+    background:linear-gradient(145deg,#fffdf5ef,#e6f0e7e8); box-shadow:0 14px 30px #143b4255,inset 0 1px #fff;
+  }
+  :is(.marble-premium,.marble-native-team).is-modern .mp-center-stage.mp-stage--roll > h2 { max-width:none; font-size:21px; }
+  :is(.marble-premium,.marble-native-team).is-modern .mp-center-stage.mp-stage--roll .mp-die { width:47px; height:47px; }
+  :is(.marble-premium,.marble-native-team).is-modern .mp-center-stage.mp-stage--roll .mp-action-primary,
+  .marble-native-team.marble-team-board .mp-center-stage.mp-stage--roll .mt-primary { min-width:0; width:100%; min-height:43px; font-size:14px; }
+  :is(.marble-premium,.marble-native-team).is-modern .mp-map-hud { right:auto; left:10px; }
 }

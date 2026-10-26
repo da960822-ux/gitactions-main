@@ -17,8 +17,9 @@ export function MarbleCityTile({ tile, index, tileCount, position, language, rou
 }) {
   const kind=String(tile.kind??'rest'), name=String(record(tile.name)[language]??record(tile.name).ko??''), group=String(tile.group??'');
   const owner=isSeat(tile.owner)?tile.owner:null;
-  const edge=tileCount===40?(position[1]===1||position[1]===11?'mp-tile--horizontal':position[0]===1?'mp-tile--west':'mp-tile--east'):'';
-  const isKey=modern&&[2,7,12,18,27,34].includes(index);
+  const boardSide=tileCount===32||tileCount===40?tileCount/4+1:0;
+  const edge=boardSide?(position[1]===1||position[1]===boardSide?'mp-tile--horizontal':position[0]===1?'mp-tile--west':'mp-tile--east'):'';
+  const isKey=modern&&kind==='event';
   const symbol=isKey||kind==='event'?'key':kind==='fund-deposit'?'fund-pay':kind;
   const art=cityArtNames[String(record(tile.name).ko??'')],flag=kind==='property'?cityFlag(record(tile.name)):null;
   const building=buildingName(num(tile.houses),language,modern);
@@ -26,7 +27,7 @@ export function MarbleCityTile({ tile, index, tileCount, position, language, rou
     ? `${name}, ${owner?copy(language,`소유자 ${seatLabel(owner)}`,`Dueño ${seatLabel(owner)}`):copy(language,'미소유','Sin dueño')}, ${copy(language,`매입 ${num(tile.price)}, 임대 ${rentValue(tile,modern)}`,`compra ${num(tile.price)}, renta ${rentValue(tile,modern)}`)}${building?`, ${building}`:''}${record(tile.rentModifiers).festival?copy(language,', 도시 축제: 다음 상대 방문 통행료 2배, 1회',', Festival: próxima visita rival, renta doble, un uso'):''}${record(tile.rentModifiers).blackout?copy(language,', 정전: 다음 카드 소유자 방문 통행료 절반, 1회',', Apagón: próxima visita del titular, media renta, un uso'):''}`
     : `${name}, ${specialNames[kind]?.[language]??''}`;
   const seats=atSeats.filter(seat=>seat!==movingSeat);
-  return <article className={`mp-tile ${edge} mp-kind-${kind} ${isKey?'is-key':''} ${group?`mp-group-${group}`:''} ${owner?`is-owned-${owner}`:''} ${atSeats.length||movingSeat?'has-player':''} ${movingSeat?'is-moving':''} ${changed?'is-changed':''} ${pending?'is-pending':''} ${selected?'is-selected':''}`} style={{gridColumn:position[0],gridRow:position[1]} as CSSProperties} role="listitem" aria-label={aria} data-marble-owner={kind==='property'?owner??'bank':undefined} data-mp-edge={tileCount===40?`${position[0]===1?'left':position[0]===11?'right':''}${position[1]===1?'top':position[1]===11?'bottom':''}`:undefined}>
+  return <article className={`mp-tile ${edge} mp-kind-${kind} ${isKey?'is-key':''} ${group?`mp-group-${group}`:''} ${owner?`is-owned-${owner}`:''} ${atSeats.length||movingSeat?'has-player':''} ${movingSeat?'is-moving':''} ${changed?'is-changed':''} ${pending?'is-pending':''} ${selected?'is-selected':''}`} style={{gridColumn:position[0],gridRow:position[1]} as CSSProperties} role="listitem" aria-label={aria} data-marble-owner={kind==='property'?owner??'bank':undefined} data-mp-edge={boardSide?`${position[0]===1?'left':position[0]===boardSide?'right':''}${position[1]===1?'top':position[1]===boardSide?'bottom':''}`:undefined}>
     <div className="mp-tile-content">
       <div className="mp-tile-top"><span>{String(index+1).padStart(2,'0')}</span>{flag&&<img src={`/images/marble/flags/${flag}.svg`} alt="" aria-hidden="true" loading="lazy" decoding="async"/>}{owner&&<b className={`mp-owner mp-owner-${owner}`} title={seatLabel(owner)} aria-label={seatLabel(owner)}>{owner.slice(1)}</b>}</div>
       {kind==='property'?<div className="mp-property-tile-view">
