@@ -4,15 +4,20 @@ import dioramas from '../../public/images/marble/dioramas/manifest.json';
 import { useEffect, useLayoutEffect, useRef, useState } from 'react';
 import type { CSSProperties } from 'react';
 import type { GameAction, Language, PlayerId } from '../core/types';
-import { GameValue } from './GameValue';
 import { playCue } from '../audio/audio';
 import { MarbleEventStage } from './MarbleEventStage';
+import { MarbleTransactionReceipt } from './MarbleTransactionReceipt';
+import { MarbleDecisionPreview } from './MarbleDecisionPreview';
+import { MarblePlayerHud } from './MarblePlayerHud';
+import { MarbleBoardShell } from './MarbleBoardShell';
+import { MarbleCityTile } from './MarbleCityTile';
 import { MarblePawn, MarblePawnPicker } from './MarblePawn';
 import { groups, specialNames, cityArtNames, cityFlag, pawnId, buildingName, rentValue, moneyText } from './marble-visuals';
 import { marbleGridPosition, marblePresentationFrames, marbleCueForEvent, marbleJourneyDisplay, type MarbleActionEvent } from './marble-motion';
 import '../styles/marble-premium.css';
 import './marble-context.css';
 import './marble-ownership.css';
+import './marble-stage-redesign.css';
 
 type Choice = { label: Record<Language, string>; action: GameAction };
 type Seat = PlayerId;
@@ -34,7 +39,7 @@ function phaseName(phase: string, language: Language) {
 export function MarbleDie({ value, language }: { value: number; language: Language }) {
   const dots: Record<number, string[]> = { 1: ['m'], 2: ['tl', 'br'], 3: ['tl', 'm', 'br'], 4: ['tl', 'tr', 'bl', 'br'], 5: ['tl', 'tr', 'm', 'bl', 'br'], 6: ['tl', 'ml', 'bl', 'tr', 'mr', 'br'] };
   return <span className={`mp-die ${value ? 'has-value' : ''}`} role="img" aria-label={value ? String(value) : copy(language, '아직 굴리지 않음', 'Sin lanzar')}>
-    <svg viewBox="0 0 48 48" aria-hidden="true"><rect x="3" y="3" width="42" height="42" rx="12"/>{(dots[value] ?? []).map(point => <circle key={point} cx={point.includes('l') ? 15 : point.includes('r') ? 33 : 24} cy={point.includes('t') ? 15 : point.includes('b') ? 33 : 24} r="3.1"/>)}</svg>
+    <svg viewBox="0 0 48 48" aria-hidden="true"><rect x="3" y="3" width="42" height="42" rx="12"/>{value ? (dots[value] ?? []).map(point => <circle key={point} cx={point.includes('l') ? 15 : point.includes('r') ? 33 : 24} cy={point.includes('t') ? 15 : point.includes('b') ? 33 : 24} r="3.1"/>) : <path className="mp-die-unrolled" d="m24 12 2.8 8.2L35 23l-8.2 2.8L24 34l-2.8-8.2L13 23l8.2-2.8Z"/>}</svg>
   </span>;
 }
 
@@ -162,6 +167,11 @@ export default function MarbleBoard({ view: rawView, language, playerId, runActi
   const [actionPending, setActionPending] = useState(false);
   const actionPendingRef = useRef(false);
   const interactionLocked = actionPending || diceRolling || !!traveler;
+  const journeyInFlight = diceRolling || !!traveler || num(displayPositions[activeSeat]) !== pos;
+  const settledHud = useRef({ money: { ...money }, assets: { ...assets } });
+  useEffect(() => { if (!journeyInFlight) settledHud.current = { money: { ...money }, assets: { ...assets } }; }, [journeyInFlight, money.p1, money.p2, assets.p1, assets.p2]);
+  const hudMoney = journeyInFlight ? settledHud.current.money : money;
+  const hudAssets = journeyInFlight ? settledHud.current.assets : assets;
   const dispatch = async (action: GameAction) => {
     const choice = choices.find(item => item.action.type === action.type && JSON.stringify(item.action.payload ?? {}) === JSON.stringify(action.payload ?? {}));
     if (!choice || interactionLocked || actionPendingRef.current) return false;
@@ -292,67 +302,39 @@ export default function MarbleBoard({ view: rawView, language, playerId, runActi
 
     <a className="mp-action-skip" href="#marble-current-action" onClick={event => { event.preventDefault(); focusMarbleAction(actionPanelRef.current); }}>{copy(language, '현재 행동으로 이동', 'Ir a la acción actual')}</a>
     <div className="mp-layout" ref={layoutRef}>
-      <section className="mp-board-panel" aria-label={copy(language, `${tiles.length}칸 순환 보드`, `Tablero de ${tiles.length} casillas`)}>
-        <div className={`mp-board-grid ${isLegacy ? 'mp-board-grid--18' : 'mp-board-grid--40'}`} role="list" aria-label={copy(language, `총 ${tiles.length}칸 보드`, `Recorrido de ${tiles.length} casillas`)}>
+      <MarbleBoardShell tileCount={tiles.length} language={language}>
           {tiles.map((tile, index) => {
-            const kind = String(tile.kind ?? 'rest'), name = String(record(tile.name)[language] ?? record(tile.name).ko ?? ''), group = String(tile.group ?? '');
             const position = marbleGridPosition(index, tiles.length);
+            if (!position) return null;
             const atSeats = players.filter(seat => !record(board.eliminated)[seat] && num(displayPositions[seat]) === index);
             const movingSeat = traveler?.tile === index ? traveler.seat : null;
-            const seats = atSeats.filter(seat => traveler?.seat !== seat);
-            if (!position) return null;
-            const tileOwner = validSeat(tile.owner) ? tile.owner as Seat : null;
-            const edge = tiles.length === 40 ? (position[1] === 1 || position[1] === 11 ? 'mp-tile--horizontal' : position[0] === 1 ? 'mp-tile--west' : 'mp-tile--east') : '';
-            const isKey = modern && [2, 7, 12, 18, 27, 34].includes(index);
-            const tileSymbol = isKey || kind === 'event' ? 'key' : kind === 'fund-deposit' ? 'fund-pay' : kind;
-            const cityArt = cityArtNames[String(record(tile.name).ko ?? '')];
-            const flag = kind === 'property' ? cityFlag(record(tile.name)) : null;
-            const building = buildingName(num(tile.houses), language, modern);
-            const aria = kind === 'property'
-              ? `${name}, ${tileOwner ? copy(language, `소유자 ${seatLabel(tileOwner)}`, `Dueño ${seatLabel(tileOwner)}`) : copy(language, '미소유', 'Sin dueño')}, ${copy(language, `매입 ${num(tile.price)}, 임대 ${rentValue(tile, modern)}`, `compra ${num(tile.price)}, renta ${rentValue(tile, modern)}`)}${building ? `, ${building}` : ''}${record(tile.rentModifiers).festival ? copy(language, ', 도시 축제: 다음 상대 방문 통행료 2배, 1회', ', Festival: próxima visita rival, renta doble, un uso') : ''}${record(tile.rentModifiers).blackout ? copy(language, ', 정전: 다음 카드 소유자 방문 통행료 절반, 1회', ', Apagón: próxima visita del titular, media renta, un uso') : ''}`
-              : `${name}, ${specialNames[kind]?.[language] ?? ''}`;
-            return <article className={`mp-tile ${edge} mp-kind-${kind} ${isKey ? 'is-key' : ''} ${group ? `mp-group-${group}` : ''} ${tileOwner ? `is-owned-${tileOwner}` : ''} ${atSeats.length || movingSeat ? 'has-player' : ''} ${movingSeat ? 'is-moving' : ''} ${changedProperties.includes(index) ? 'is-changed' : ''} ${pos === index && phase === 'decision' ? 'is-pending' : ''} ${selectedTile === index ? 'is-selected' : ''}`} style={{ gridColumn: position[0], gridRow: position[1] } as CSSProperties} role="listitem" aria-label={aria} data-marble-owner={kind === 'property' ? tileOwner ?? 'bank' : undefined} data-mp-edge={tiles.length === 40 ? `${position[0] === 1 ? 'left' : position[0] === 11 ? 'right' : ''}${position[1] === 1 ? 'top' : position[1] === 11 ? 'bottom' : ''}` : undefined} key={tile.index ?? index}>
-              <div className="mp-tile-content">
-                <div className="mp-tile-top"><span>{String(index + 1).padStart(2, '0')}</span>{flag && <img src={`/images/marble/flags/${flag}.svg`} alt="" aria-hidden="true" loading="lazy" decoding="async"/>}{tileOwner && <b className={`mp-owner mp-owner-${tileOwner}`} title={seatLabel(tileOwner)} aria-label={seatLabel(tileOwner)}>{tileOwner.slice(1)}</b>}</div>
-                {kind === 'property' ? <div className="mp-property-tile-view">
-                  {cityArt && <MarblePropertyArt routeVersion={num(board.cityRouteVersion)} language={language} className="mp-property-tile-art" city={cityArt} level={modern ? num(tile.houses) : 0} owner={tileOwner} ownerLabel={tileOwner ? seatLabel(tileOwner) : copy(language, '은행', 'Banco')}/>}
-                  <div className="mp-property-tile-copy"><strong className="mp-tile-name" title={name}>{name}</strong><small className="mp-tile-economy"><b data-marble-price-kind={tileOwner ? 'rent' : 'purchase'} title={tileOwner ? copy(language, `현재 통행료 ${rentValue(tile, modern)}`, `Alquiler actual ${rentValue(tile, modern)}`) : copy(language, `매입가 ${num(tile.price)}`, `Precio de compra ${num(tile.price)}`)}>{moneyText(tileOwner ? rentValue(tile, modern) : num(tile.price), language)}</b><span>{tileOwner ? copy(language, `통행료 ${moneyText(rentValue(tile, modern), language)}`, `Renta ${moneyText(rentValue(tile, modern), language)}`) : copy(language, `기본 통행료 ${moneyText(num(tile.rent), language)}`, `Renta base ${moneyText(num(tile.rent), language)}`)}</span></small></div>
-                  {(modern || num(tile.houses) > 0) && <span className="mp-building-badge" aria-label={copy(language, `${building || '미건설'} ${num(tile.houses)}단계`, `${building || 'sin construir'}, nivel ${num(tile.houses)}`)}>{num(tile.houses)}</span>}
-                </div> : <><strong className="mp-tile-name" title={name}>{name}</strong>{['start', 'key', 'island', 'train', 'rest', 'fund', 'fund-pay', 'tax'].includes(tileSymbol) && <svg className="mp-tile-symbol" aria-hidden="true" viewBox="0 0 32 32"><use href={`/images/marble/tile-symbols.svg#${tileSymbol}`}/></svg>}<small className="mp-tile-kind">{specialNames[kind]?.[language] ?? ''}{['tax', 'fund-deposit'].includes(kind) && num(tile.price) ? ` · ${copy(language, `납부 ${moneyText(num(tile.price), language)}`, `Pago ${moneyText(num(tile.price), language)}`)}` : ''}</small></>}
-              </div>
-              {['festival', 'blackout'].filter(effect => record(tile.rentModifiers)[effect]).map(effect => <span className="mp-city-effect" key={effect} title={effect === 'festival' ? copy(language, '도시 축제 · 다음 상대 방문 통행료 2배 · 1회', 'Festival · próxima visita rival: renta doble · un uso') : copy(language, '정전 · 다음 카드 소유자 방문 통행료 절반 · 1회', 'Apagón · próxima visita del titular: media renta · un uso')}><svg viewBox="0 0 128 128" aria-hidden="true"><use href={`/images/marble/golden-key-cards.svg#${effect === 'festival' ? 'city-festival' : 'blackout'}-mark`}/></svg><span>{effect === 'festival' ? '×2' : '½'}</span></span>)}
-              {(seats.length > 0 || movingSeat) && <div className={`mp-pawns${seats.length > 1 ? ' has-two-pawns' : ''}`} aria-label={copy(language, '이 칸의 말', 'Fichas en esta casilla')}>
-                {seats.map(seat => { const id = pawnId(record(board.pawns)[seat]) ?? (seat === 'p1' ? 'fox' : 'cat'); return <span className={`mp-pawn-marker ${seat === playerId ? 'is-you' : ''}`} key={seat} data-seat-number={Number(seat.slice(1))} data-marble-pawn-seat={seat} title={seatLabel(seat)}><MarblePawn pawn={id} language={language} label={seatLabel(seat)}/></span>; })}
-                {movingSeat && <span className={`mp-pawn-marker is-moving-pawn ${movingSeat === playerId ? 'is-you' : ''}`} key={`${movingSeat}-${traveler?.seq}`} data-seat-number={Number(movingSeat.slice(1))} data-marble-pawn-seat={movingSeat}><MarblePawn pawn={pawnId(record(board.pawns)[movingSeat]) ?? (movingSeat === 'p1' ? 'fox' : 'cat')} language={language} label={seatLabel(movingSeat)}/></span>}
-              </div>}
-              <button className="mp-tile-select" type="button" aria-label={copy(language, `선택 ${aria}`, `Seleccionar ${aria}`)} aria-pressed={selectedTile === index} onClick={() => inspectTile(index)}/>
-            </article>;
+            return <MarbleCityTile key={tile.index ?? index} tile={tile} index={index} tileCount={tiles.length} position={position} language={language} routeVersion={num(board.cityRouteVersion)} modern={modern} selected={selectedTile === index} pending={pos === index && phase === 'decision'} changed={changedProperties.includes(index)} atSeats={atSeats} movingSeat={movingSeat} travelerSequence={traveler?.seq} playerId={playerId} pawnForSeat={seat => pawnId(record(board.pawns)[seat]) ?? (seat === 'p1' ? 'fox' : 'cat')} seatLabel={seat => seatName(seat as PlayerId, playerId, language)} onInspect={inspectTile}/>;
           })}
           <div className={`mp-board-center ${isLegacy ? 'mp-board-center--18' : ''}`}>
             <div className="mp-ownership-key"><span className="mp-key-group"/>{copy(language, '윗띠 · 색상군', 'Franja · grupo')}<span className="mp-key-owner"/>{copy(language, '테두리·기단 · 소유자 번호', 'Borde y base · número del dueño')}<span className="mp-money-key">{copy(language, '미소유 숫자 = 매입 · 소유 숫자 = 통행료', 'Sin dueño: compra · Con dueño: alquiler')}</span></div>
             {tiles.length === 40 && <img className="mp-world-map" src="/images/marble/world-map-board.webp" alt="" aria-hidden="true" decoding="async"/>}
             <div className="mp-center-route">{num(board.cityRouteVersion) >= 2 ? <span>{copy(language, '광주 → 뉴욕 → 산토도밍고 → 뉴어크 → 서울 → 광주', 'Gwangju → Nueva York → Santo Domingo → Newark → Seúl → Gwangju')}</span> : <><span>{copy(language, '광주 출발', 'Desde Gwangju')}</span><span className="mp-route-line" aria-hidden="true">↗</span><span>{copy(language, '세계 여행', 'Viaje mundial')}</span></>}</div>
             <div className="mp-map-hud"><span>{copy(language, '턴', 'Turno')} <b>{currentTurn} / 120</b></span>{modern && <span>{copy(language, '공동 기금', 'Fondo común')} <b>{moneyText(fund, language)}</b></span>}</div>
-            {modern && <section className={`mp-center-stage mp-stage--${phase}`} aria-label={copy(language, '현재 도착과 다음 행동', 'Llegada y acción actual')}>
-              {phase === 'roll' ? <>
+            {modern && <section className={`mp-center-stage mp-stage--${journeyInFlight ? 'moving' : phase}`} aria-label={copy(language, '현재 도착과 다음 행동', 'Llegada y acción actual')}>
+              {journeyInFlight ? <div className="mp-moving-status" aria-live="polite"><h2>{copy(language, '여행 중', 'En camino')}</h2><div className="mp-stage-dice">{[0, 1].map(index => <MarbleDie key={`${diceSequence}-moving-${index}`} value={rollValues[index] ?? 0} language={language}/>)}</div><p>{copy(language, '말이 한 칸씩 이동하고 있어요', 'La ficha avanza casilla por casilla')}</p></div> : phase === 'roll' ? <>
                 <h2>{active ? copy(language, '다음 여행을 시작하세요', 'Empieza el próximo viaje') : phaseLabel}</h2>
                 <div className={`mp-stage-dice ${diceRolling ? 'is-rolling' : ''}`}>{[0, 1].map(index => <MarbleDie key={`${diceSequence}-center-${index}`} value={rollValues[index] ?? 0} language={language}/>)}</div>
                 {active && roll && <button id="mp-action-primary" className="mp-action mp-action-primary" type="button" disabled={interactionLocked} onClick={() => run(roll)}>{copy(language, '주사위 굴리기', 'Lanzar los dados')}</button>}
               </> : <>
                 {primaryTile.kind === 'property' && primaryCityArt ? <figure className={`mp-stage-art ${changedProperties.includes(primaryIndex) ? 'is-upgrading' : ''}`} key={`${primaryCityArt}-${num(primaryTile.houses)}`}><MarblePropertyArt routeVersion={num(board.cityRouteVersion)} language={language} city={primaryCityArt} level={num(primaryTile.houses)} owner={validSeat(primaryTile.owner) ? primaryTile.owner : null} ownerLabel={validSeat(primaryTile.owner) ? seatLabel(primaryTile.owner) : copy(language, '은행', 'Banco')}/></figure> : <span className="mp-stage-special" aria-hidden="true"><svg viewBox="0 0 32 32"><use href={`/images/marble/tile-symbols.svg#${primaryTile.kind === 'fund-deposit' ? 'fund-pay' : primaryTile.kind === 'event' ? 'key' : String(primaryTile.kind ?? 'rest')}`}/></svg></span>}
                 <div className="mp-stage-details">
-                  <small className="mp-center-action-phase">{phaseLabel}</small>
+                  <small className="mp-center-action-phase">{primaryChoice?.action.type === 'build' ? copy(language, '도시 건설', 'Construir ciudad') : phaseLabel}</small>
                   <h2>{String(record(primaryTile.name)[language] ?? record(primaryTile.name).ko ?? copy(language, '여행', 'Viaje'))}</h2>
                   {primaryTile.kind === 'property' ? <p className="mp-stage-property-line">{validSeat(primaryTile.owner) ? seatLabel(primaryTile.owner) : copy(language, '은행 소유 · 구매 가능', 'Del banco · disponible')} · {buildingName(num(primaryTile.houses), language, true) || copy(language, '미건설', 'Sin construir')} · {copy(language, `현재 통행료 ${moneyText(primaryBuildRent, language)}`, `Alquiler actual ${moneyText(primaryBuildRent, language)}`)}</p> : <p className="mp-stage-property-line"><ImpactText tile={primaryTile} language={language} fund={fund} modern={modern}/></p>}
-                  {phase === 'decision' && primaryTile.kind === 'property' && <div className="mp-stage-preview"><span>{copy(language, `구매 ${moneyText(num(primaryTile.price), language)}`, `Compra ${moneyText(num(primaryTile.price), language)}`)}</span><b>{copy(language, `구매 후 현금 ${moneyText(Math.max(0, num(money[playerId]) - num(primaryTile.price)), language)}`, `Efectivo después ${moneyText(Math.max(0, num(money[playerId]) - num(primaryTile.price)), language)}`)}</b>{pendingPurchaseShortfall > 0 && <strong role="alert">{copy(language, `현금 ${moneyText(pendingPurchaseShortfall, language)} 부족`, `Faltan ${moneyText(pendingPurchaseShortfall, language)}`)}</strong>}</div>}
-                  {primaryChoice?.action.type === 'build' && <div className="mp-stage-preview"><span>{copy(language, `${num(primaryTile.houses)} → ${num(primaryTile.houses) + 1}단계 · 건설 ${moneyText(primaryCost, language)}`, `Nivel ${num(primaryTile.houses)} → ${num(primaryTile.houses) + 1} · costo ${moneyText(primaryCost, language)}`)}</span><b>{copy(language, `통행료 ${moneyText(primaryBuildRent, language)} → ${moneyText(primaryNextBuildRent, language)}`, `Alquiler ${moneyText(primaryBuildRent, language)} → ${moneyText(primaryNextBuildRent, language)}`)}</b><small>{copy(language, `건설 후 현금 ${moneyText(primaryAfterCash, language)}`, `Efectivo después ${moneyText(primaryAfterCash, language)}`)}</small></div>}
+                  {phase === 'decision' && primaryTile.kind === 'property' && <MarbleDecisionPreview kind="buy" cost={num(primaryTile.price)} cashAfter={num(money[playerId])-num(primaryTile.price)} tollBefore={0} tollAfter={primaryBuildRent} shortfall={pendingPurchaseShortfall} language={language}/>}
+                  {primaryChoice?.action.type === 'build' && <MarbleDecisionPreview kind="build" cost={primaryCost} cashAfter={primaryAfterCash} tollBefore={primaryBuildRent} tollAfter={primaryNextBuildRent} levelBefore={num(primaryTile.houses)} language={language}/>}
                   {unaffordableBuild && <p className="mp-stage-shortfall" role="status">{copy(language, `${String(record(unaffordableBuild.tile.name)[language] ?? '')} 다음 건설 ${moneyText(num(unaffordableBuild.tile.nextBuildCost), language)} · ${moneyText(num(unaffordableBuild.tile.nextBuildCost) - num(money[playerId]), language)} 부족`, `${String(record(unaffordableBuild.tile.name).es ?? '')} próximo nivel ${moneyText(num(unaffordableBuild.tile.nextBuildCost), language)} · faltan ${moneyText(num(unaffordableBuild.tile.nextBuildCost) - num(money[playerId]), language)}`)}</p>}
                   {needsCityChoice && <label className="mp-stage-destination">{phase === 'event-decision' ? copy(language, '효과를 적용할 도시', 'Ciudad para el efecto') : copy(language, `목적지 · 운임 ${num(board.pendingTrainFare ?? 100)}`, `Destino · pasaje ${num(board.pendingTrainFare ?? 100)}`)}<select value={JSON.stringify(selectedDestination?.action ?? {})} disabled={interactionLocked} onChange={event => setTarget(event.target.value)}>{destinations.map(option => <option key={JSON.stringify(option.action)} value={JSON.stringify(option.action)}>{option.label[language]}</option>)}</select></label>}
                   {primaryChoice && active && <button id="mp-action-primary" className="mp-action mp-action-primary" type="button" disabled={interactionLocked || (primaryChoice.action.type === 'buy' && pendingPurchaseShortfall > 0)} onClick={() => run(primaryChoice)}>{needsCityChoice ? phase === 'event-decision' ? copy(language, '이 도시 선택', 'Aplicar a esta ciudad') : copy(language, '이 도시로 이동', 'Viajar a esta ciudad') : primaryChoice.action.type === 'buy' ? copy(language, `구매 · ${moneyText(primaryCost, language)}`, `Comprar · ${moneyText(primaryCost, language)}`) : primaryChoice.action.type === 'build' ? copy(language, `이 도시에 건설 · ${moneyText(primaryCost, language)}`, `Construir aquí · ${moneyText(primaryCost, language)}`) : primaryChoice.label[language]}</button>}
                   {phase === 'decision' && decline && active && <button className="mp-action mp-action-secondary" type="button" disabled={interactionLocked} onClick={() => run(decline)}>{copy(language, '이번에는 지나가기', 'Pasar esta vez')}</button>}
                 </div>
               </>}
-              {latestTransaction && !feedbackVisible && !diceRolling && !traveler && <div className="mp-center-receipt" aria-live="polite" aria-atomic="true"><b>{String(record(latestTransaction.title)[language] ?? '')}</b>{latestTransaction.fromAccount && latestTransaction.toAccount && num(latestTransaction.amount) > 0 && <span>{accountLabel(latestTransaction.fromAccount)} → {accountLabel(latestTransaction.toAccount)} · {moneyText(num(latestTransaction.amount), language)}</span>}<span>{String(record(latestTransaction.text)[language] ?? '')}</span>{typeof record(latestTransaction.moneyDelta)[playerId] === 'number' && <strong>{copy(language, '내 현금', 'Tu efectivo')} {num(record(latestTransaction.moneyDelta)[playerId]) > 0 ? '+' : ''}{moneyText(num(record(latestTransaction.moneyDelta)[playerId]), language)}</strong>}</div>}
+              {latestTransaction && !feedbackVisible && !diceRolling && !traveler && <MarbleTransactionReceipt title={String(record(latestTransaction.title)[language] ?? '')} detail={String(record(latestTransaction.text)[language] ?? '')} flow={latestTransaction.fromAccount && latestTransaction.toAccount && num(latestTransaction.amount) > 0 ? `${accountLabel(latestTransaction.fromAccount)} → ${accountLabel(latestTransaction.toAccount)} · ${moneyText(num(latestTransaction.amount), language)}` : undefined} delta={typeof record(latestTransaction.moneyDelta)[playerId] === 'number' ? num(record(latestTransaction.moneyDelta)[playerId]) : undefined} language={language}/>}
             </section>}
 
             {lastMove.source === 'train' && lastMove.from === 30 && <div className={`mp-flight ${traveler?.seq === lastMoveSequence ? 'is-flying' : ''}`} style={{ color: lastMove.playerId === 'p1' ? '#a54e69' : '#356896' } as CSSProperties}>
@@ -361,24 +343,13 @@ export default function MarbleBoard({ view: rawView, language, playerId, runActi
               <small>{String(record(tiles[num(lastMove.to)]?.name)[language] ?? '')}</small>
             </div>}
           </div>
-        </div>
-
-      </section>
+      </MarbleBoardShell>
 
       <aside className="mp-dashboard" aria-label={copy(language, '게임 현황과 행동', 'Estado y acciones')}>
         <section className="mp-scoreboard" aria-label={copy(language, '현금과 총 자산', 'Efectivo y activos totales')}>
           {players.map(seat => {
-            const own = ownedBy(seat), playerDebt = num(debt[seat]), playerAssets = num(assets[seat]);
-            const landmarkCount = modern ? own.filter(({ tile }) => num(tile.houses) >= 3).length : 0;
-            const groupsOwned = list(record(board.monopolies)[seat]);
-            const pawn = pawnId(record(board.pawns)[seat]) ?? (seat === 'p1' ? 'fox' : 'cat');
-            return <div className={`mp-player ${seat === playerId ? 'is-you' : ''} ${board.turn === seat ? 'is-turn' : ''}`} key={seat} data-marble-seat={seat}>
-              <div className="mp-player-name"><span className="mp-seat-key" aria-label={copy(language, `${seat.slice(1)}번`, `Asiento ${seat.slice(1)}`)}>{seat.slice(1)}</span><MarblePawn pawn={pawn} language={language} label={seatLabel(seat)}/><b>{seatLabel(seat)}</b>{board.turn === seat && <span>{copy(language, '차례', 'Turno')}</span>}</div>
-              <div className="mp-player-value" data-marble-value="cash"><small>{copy(language, '현금', 'Efectivo')}</small><b><GameValue value={num(money[seat])} resetKey={`${playerId}:marble:cash:${seat}`} format={value => moneyText(value, language)}/></b></div>
-              <div className="mp-player-value" data-marble-value="assets"><small>{scoreLabel}</small><b><GameValue value={playerAssets} resetKey={`${playerId}:marble:assets:${seat}`} format={value => moneyText(value, language)}/></b></div>
-              {num(record(board.rentPasses)[seat]) > 0 && <span className="mp-held-rent-pass"><svg viewBox="0 0 128 128" aria-hidden="true"><use href="/images/marble/golden-key-cards.svg#rent-pass-mark"/></svg>{copy(language, `통행료 면제권 ${num(record(board.rentPasses)[seat])}장`, `Pases de renta ${num(record(board.rentPasses)[seat])}`)}</span>}
-              {(playerDebt > 0 || own.length > 0 || groupsOwned.length > 0) && <div className="mp-player-meta">{playerDebt > 0 && <span className="has-debt">{copy(language, `대출 ${moneyText(playerDebt, language)}`, `Préstamo ${moneyText(playerDebt, language)}`)}</span>}{own.length > 0 && <span>{copy(language, `도시 ${own.length}`, `Ciudades ${own.length}`)}</span>}{landmarkCount > 0 && <span>{copy(language, `랜드마크 ${landmarkCount}`, `Monumentos ${landmarkCount}`)}</span>}{groupsOwned.length > 0 && <span>{copy(language, `완성 그룹 ${groupsOwned.length}`, `Grupos completos ${groupsOwned.length}`)}</span>}</div>}
-            </div>;
+            const own = ownedBy(seat);
+            return <MarblePlayerHud key={seat} seat={seat} name={seatLabel(seat)} pawn={pawnId(record(board.pawns)[seat]) ?? (seat === 'p1' ? 'fox' : 'cat')} cash={num(hudMoney[seat])} assets={num(hudAssets[seat])} scoreLabel={scoreLabel} active={board.turn===seat} self={seat===playerId} language={language} resetKey={`${playerId}:marble`} meta={{debt:num(debt[seat]),cities:own.length,landmarks:modern?own.filter(({tile})=>num(tile.houses)>=3).length:0,groups:list(record(board.monopolies)[seat]).length,rentPasses:num(record(board.rentPasses)[seat])}}/>;
           })}
         </section>
 
@@ -461,10 +432,6 @@ export default function MarbleBoard({ view: rawView, language, playerId, runActi
                   {selectedCity.kind === 'property' ? <p className="mp-journey-impact"><span><strong>{selectedOwner ? copy(language, '현재 통행료', 'Renta actual') : copy(language, '매입가', 'Compra')}</strong> {moneyText(selectedOwner ? selectedRent : num(selectedCity.price), language)}</span><span><strong>{selectedOwner ? copy(language, '기본 통행료', 'Renta base') : copy(language, '예상 통행료', 'Renta')}</strong> {moneyText(selectedOwner ? num(selectedCity.rent) : selectedRent, language)}</span></p> : <p className="mp-journey-special-line">{journeySpecialLine(selectedCity, language, fund)}</p>}
                   {selectedOwner && <span className={`mp-journey-owner mp-owner-${selectedOwner}`}>{copy(language, `소유 · ${seatLabel(selectedOwner)}`, `Dueño · ${seatLabel(selectedOwner)}`)} · {buildingName(num(selectedCity.houses), language, modern) || copy(language, '미건설', 'Sin construir')}</span>}
                 </div>
-                {selectedCityArt && <figure className="mp-journey-landmark" aria-label={copy(language, '랜드마크 모습 미리보기', 'Vista del monumento')}>
-                  <MarblePropertyArt routeVersion={num(board.cityRouteVersion)} language={language} city={selectedCityArt} level={3}/>
-                  <figcaption>{num(selectedCity.houses) >= 3 ? buildingName(num(selectedCity.houses), language, true) : copy(language, '랜드마크 모습 · 미건설', 'Monumento · sin construir')}</figcaption>
-                </figure>}
               </div>
               {modern && num(board.cityRouteVersion) >= 2 && <nav className="mp-journey-stops" aria-label={copy(language, '24개 도시 중 대표 도시 빠른 바로가기', 'Accesos rápidos entre las 24 ciudades')}>
                 {[1, 3, 15, 31, 38].map(index => {

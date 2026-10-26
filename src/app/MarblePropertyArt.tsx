@@ -20,10 +20,18 @@ export function MarblePropertyArt({owner, ownerLabel, className = '', ...props}:
 }
 function MarblePropertyImage({ city, level = 0, className = '', routeVersion = 2, language = 'ko' }: { city: string; level?: number; className?: string; routeVersion?: number; language?: Language }) {
   const tintId = `mp-building-${useId().replace(/:/g, '')}`;
-  if (routeVersion >= 3 && level === 0) {
-    const asset = dioramas.assets.find(item => item.slug === city);
-    if (asset?.path) return <img className={className} data-building-level={0} src={asset.path} alt="" aria-hidden="true" loading="lazy" decoding="async"/>;
-  }
+  // A vacant city is surveyed land; its completed landmark only appears at level three.
+  if (routeVersion >= 3 && level === 0) return <svg className={className} viewBox="0 34 128 80" style={{ color: cityColors[city] ?? '#a7b7aa' } as CSSProperties} data-building-level={0} aria-hidden="true" focusable="false">
+    <ellipse cx="65" cy="108" rx="50" ry="11" fill="#193f43" opacity=".18"/>
+    <path d="M10 77 66 49l52 28-54 30Z" fill="#f5e3b9" stroke="#6b7a6c" strokeWidth="3"/>
+    <path d="M19 76 66 53l44 24-46 24Z" fill="currentColor" opacity=".74"/>
+    <path d="M28 79 66 61l36 18-38 18Z" fill="#dce6d1" stroke="#86a996" strokeWidth="2"/>
+    <path d="m28 79 36 18m2-36 36 18" stroke="#b8cbb9" strokeWidth="2" strokeDasharray="3 4"/>
+    <path d="M22 76V56m84 21V57M64 97V78" stroke="#765b3e" strokeWidth="4" strokeLinecap="round"/>
+    <path d="m18 57 4-6 4 6Zm84 1 4-6 4 6ZM60 79l4-6 4 6Z" fill="#bd9860" stroke="#765b3e" strokeWidth="2"/>
+    <path d="M48 63V39m1 1 23 5-23 8Z" fill="#f4efdd" stroke="#626b5d" strokeWidth="2"/>
+    <path d="m10 77 54 30 54-30" fill="none" stroke="#9a7c52" strokeWidth="4" strokeLinejoin="round"/>
+  </svg>;
   if (routeVersion >= 3 && level > 0) {
     const asset = level === 1 ? dioramas.commonStages.house : level === 2 ? dioramas.commonStages.apartment : dioramas.assets.find(asset => asset.slug === city);
     if (asset?.path && level < 3) return <svg className={className} data-building-level={level} data-city-color={cityColors[city] ?? '#a7b7aa'} viewBox={`0 0 ${asset.width} ${asset.height}`} preserveAspectRatio="xMidYMax meet" aria-hidden="true" focusable="false">

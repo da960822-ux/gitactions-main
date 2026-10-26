@@ -56,7 +56,8 @@ describe('Marble property shapes', () => {
         expect(html).not.toContain('building-stages.svg');
       }
       const unbuilt = renderToStaticMarkup(createElement(MarblePropertyArt, { city: slug, level: 0, routeVersion: 3 }));
-      expect(unbuilt).toContain(dioramas.assets.find(asset => asset.slug === slug)!.path!);
+      expect(unbuilt).toContain('viewBox="0 34 128 80"');
+      expect(unbuilt).not.toContain(dioramas.assets.find(asset => asset.slug === slug)!.path!);
       expect(unbuilt).toContain('data-building-level="0"');
     }
   });

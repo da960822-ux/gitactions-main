@@ -79,7 +79,8 @@ describe('MarbleBoard', () => {
     expect(ko.indexOf('mp-pawn-picker-shell')).toBeLessThan(ko.indexOf('mp-turn-panel'));
     expect(ko.indexOf('mp-turn-panel')).toBeLessThan(ko.indexOf('<details class="mp-city-detail"'));
     expect(ko).toContain('<details class="mp-pawn-picker-shell mp-city-detail"><summary>말 선택</summary>');
-    expect(ko).toContain('/images/marble/premium/cities/gwangju-chosun-university.webp');
+    expect(ko).toContain('viewBox="0 34 128 80"');
+    expect(ko).not.toContain('/images/marble/premium/cities/gwangju-chosun-university.webp');
     expect(ko).toContain('미건설 0단계');
     expect(es).toContain('Gwangju');
     expect(es).toContain('Santo Domingo');
@@ -137,8 +138,8 @@ describe('MarbleBoard', () => {
     expect(arrival).toContain('현재 도착 · 행동 위치');
     expect(arrival).toContain('data-building-level="0"');
     expect(arrival).toContain('현재 미건설');
-    expect(arrival).toContain('/images/marble/landmarks/gwangju.svg');
-    expect(arrival).toContain('랜드마크 모습 · 미건설');
+    expect(arrival).toContain('viewBox="0 0 128 128"');
+    expect(arrival).not.toContain('/images/marble/landmarks/gwangju.svg');
     expect(arrival).toContain('24개 도시 중 대표 도시 빠른 바로가기');
     expect((arrival.match(/빠른 바로가기/g) ?? []).length).toBeGreaterThanOrEqual(5);
     expect(html).not.toContain('aria-label="랜드마크"');
