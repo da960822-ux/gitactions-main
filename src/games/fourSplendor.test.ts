@@ -1,7 +1,7 @@
 import { describe, expect, it } from 'vitest';
 import { fourSeats, type FourSeat, type FourView } from '../core/fourPlayer';
 import { seededRandom } from '../core/types';
-import { fourSplendorEngine as engine, type FourSplendorState } from './fourSplendor';
+import { fourSplendorEngine as engine, type FourSplendorState, type FourSplendorView } from './fourSplendor';
 
 const colors = ['white', 'blue', 'green', 'red', 'black', 'gold'] as const;
 function conserved(state: FourSplendorState) {
@@ -72,6 +72,32 @@ describe('four-player Splendor team variant', () => {
     expect(engine.getPlayerView(hiddenState, 'p3')).toEqual(engine.getPlayerView(state, 'p3'));
     expect(engine.getPlayerView(state, 'p1').hand[0].id).toBe(reservedId);
     conserved(state);
+  });
+
+  it('publishes bought faces to all seats, keeps reservations hidden, and marks legacy history incomplete', () => {
+    let state: any = engine.createInitialState(26);
+    const purchased = { ...state.market[1][0], cost: { white: 0, blue: 0, green: 0, red: 0, black: 0 } };
+    state.market[1] = [purchased, ...state.market[1].slice(1)];
+    state = engine.applyAction(state, 'p1', { type: 'buy', payload: { source: 'market', tier: 1, index: 0 } });
+    expect(state.acquiredCards.p1[0]).toMatchObject({ id: purchased.id, points: purchased.points, bonus: purchased.bonus });
+    expect((engine.getPlayerView(state, 'p3') as FourSplendorView).players.find(player => player.id === 'p1')?.acquiredCards[0].id).toBe(purchased.id);
+    const hidden = state.market[2][0].id;
+    state = engine.applyAction(state, 'p2', { type: 'reserve', payload: { tier: 2, index: 0 } });
+    const publicView = engine.getPlayerView(state, 'p3') as FourSplendorView;
+    expect(publicView.players.find(player => player.id === 'p2')?.count).toBe(1);
+    expect(JSON.stringify(publicView)).not.toContain(hidden);
+
+    const legacy: any = structuredClone(engine.createInitialState(27));
+    delete legacy.acquiredCards; delete legacy.acquiredCardHistoryComplete;
+    legacy.cardPoints.p1 = 6; legacy.bonuses.p1.white = 2;
+    const legacyCard = { ...legacy.market[1][0], cost: { white: 0, blue: 0, green: 0, red: 0, black: 0 } };
+    legacy.market[1] = [legacyCard, ...legacy.market[1].slice(1)];
+    const upgraded = engine.applyAction(legacy, 'p1', { type: 'buy', payload: { source: 'market', tier: 1, index: 0 } });
+    const legacyView = engine.getPlayerView(upgraded, 'p2') as FourSplendorView;
+    const legacyPlayer = legacyView.players.find(player => player.id === 'p1')!;
+    expect(legacyPlayer.acquiredCards.map(card => card.id)).toEqual([legacyCard.id]);
+    expect(legacyPlayer.acquiredCardHistoryComplete).toBe(false);
+    expect(legacyPlayer.cardPoints).toBe(6 + legacyCard.points);
   });
 
   it('allows choosing any legal token return plan and conserves the common supply', () => {

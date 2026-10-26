@@ -5654,7 +5654,7 @@ function creates(seed) {
   const rnd = seededRandom(seed), decks = { 1: shuffle(createDeck(1), rnd), 2: shuffle(createDeck(2), rnd), 3: shuffle(createDeck(3), rnd) };
   const market = { 1: decks[1].splice(0, 4), 2: decks[2].splice(0, 4), 3: decks[3].splice(0, 4) };
   const ns = shuffle(splendorNobles.map((n, i) => ({ ...n, id: `n${i}` })), rnd).slice(0, 3);
-  return { seed: seed >>> 0, active: "p1", bank: { white: 4, blue: 4, green: 4, red: 4, black: 4, gold: 5 }, market, decks, hands: { p1: { ...blank(), gold: 0 }, p2: { ...blank(), gold: 0 } }, bonuses: { p1: blank(), p2: blank() }, reserved: { p1: [], p2: [] }, nobles: { p1: 0, p2: 0 }, availableNobles: Object.fromEntries(ns.map((n) => [n.id, { points: n.points, requirement: n.requirement }])), turns: { p1: 0, p2: 0 }, pendingNobles: [], cardPoints: { p1: 0, p2: 0 }, pendingEnd: false, result: null };
+  return { seed: seed >>> 0, active: "p1", bank: { white: 4, blue: 4, green: 4, red: 4, black: 4, gold: 5 }, market, decks, hands: { p1: { ...blank(), gold: 0 }, p2: { ...blank(), gold: 0 } }, bonuses: { p1: blank(), p2: blank() }, reserved: { p1: [], p2: [] }, acquiredCards: { p1: [], p2: [] }, acquiredCardHistoryComplete: { p1: true, p2: true }, nobles: { p1: 0, p2: 0 }, availableNobles: Object.fromEntries(ns.map((n) => [n.id, { points: n.points, requirement: n.requirement }])), turns: { p1: 0, p2: 0 }, pendingNobles: [], cardPoints: { p1: 0, p2: 0 }, pendingEnd: false, result: null };
 }
 var sum = (x) => colors.reduce((a, c) => a + x[c], 0);
 var tokenTypes = [...colors, "gold"];
@@ -5758,7 +5758,7 @@ function apply2(s, p, a) {
   const e = valid(s, p, a);
   if (e) throw new Error(e);
   const x = a.payload ?? {};
-  let n = { ...s, bank: { ...s.bank }, market: { 1: [...s.market[1]], 2: [...s.market[2]], 3: [...s.market[3]] }, decks: { 1: [...s.decks[1]], 2: [...s.decks[2]], 3: [...s.decks[3]] }, hands: { ...s.hands, [p]: { ...s.hands[p] } }, bonuses: { ...s.bonuses, [p]: { ...s.bonuses[p] } }, reserved: { ...s.reserved, [p]: [...s.reserved[p]] }, nobles: { ...s.nobles }, availableNobles: { ...s.availableNobles }, turns: { ...s.turns, [p]: s.turns[p] + 1 }, active: otherPlayer(p) };
+  let n = { ...s, bank: { ...s.bank }, market: { 1: [...s.market[1]], 2: [...s.market[2]], 3: [...s.market[3]] }, decks: { 1: [...s.decks[1]], 2: [...s.decks[2]], 3: [...s.decks[3]] }, hands: { ...s.hands, [p]: { ...s.hands[p] } }, bonuses: { ...s.bonuses, [p]: { ...s.bonuses[p] } }, reserved: { ...s.reserved, [p]: [...s.reserved[p]] }, acquiredCards: { p1: [...s.acquiredCards?.p1 ?? []], p2: [...s.acquiredCards?.p2 ?? []] }, acquiredCardHistoryComplete: { p1: s.acquiredCardHistoryComplete?.p1 ?? false, p2: s.acquiredCardHistoryComplete?.p2 ?? false }, nobles: { ...s.nobles }, availableNobles: { ...s.availableNobles }, turns: { ...s.turns, [p]: s.turns[p] + 1 }, active: otherPlayer(p) };
   if (a.type === "take") {
     for (const g of x.gems) {
       n.bank[g]--;
@@ -5805,6 +5805,7 @@ function apply2(s, p, a) {
     n.bank.gold += gold;
     n.bonuses[p][c.bonus]++;
     n.cardPoints = { ...s.cardPoints, [p]: s.cardPoints[p] + c.points };
+    n.acquiredCards[p].push({ ...c, cost: { ...c.cost } });
     const qualified = Object.entries(n.availableNobles).filter(([, noble]) => colors.every((g) => n.bonuses[p][g] >= (noble.requirement[g] ?? 0))).map(([id]) => id);
     if (qualified.length === 1) {
       const id = qualified[0];
@@ -5875,7 +5876,7 @@ function view(s, p) {
     }
   }
   const points = (q) => s.cardPoints[q] + s.nobles[q];
-  return { turn: s.active, phase: s.result ? "finished" : s.pendingNobles.length ? "chooseNoble" : s.active === p ? "action" : "waiting", board: { bank: { ...s.bank }, market: { 1: s.market[1].map((c) => ({ ...c, cost: { ...c.cost } })), 2: s.market[2].map((c) => ({ ...c, cost: { ...c.cost } })), 3: s.market[3].map((c) => ({ ...c, cost: { ...c.cost } })) }, reservedOpponentCount: s.reserved[otherPlayer(p)].length, nobles: Object.fromEntries(Object.entries(s.availableNobles).map(([id, n]) => [id, { points: n.points, requirement: { ...n.requirement } }])), score: { p1: points("p1"), p2: points("p2") }, ownedBonuses: { p1: { ...s.bonuses.p1 }, p2: { ...s.bonuses.p2 } }, ownedNobles: { ...s.nobles }, turns: { ...s.turns } }, ownHand: { tokens: { ...s.hands[p] }, bonuses: { ...s.bonuses[p] }, reserved: s.reserved[p].map((c) => ({ ...c, cost: { ...c.cost } })), points: s.cardPoints[p], nobles: s.nobles[p] }, opponentCount: sum(s.hands[otherPlayer(p)]) + s.hands[otherPlayer(p)].gold, status: s.result ? "finished" : s.active === p ? "Your turn" : "Opponent turn", result: s.result, actions };
+  return { turn: s.active, phase: s.result ? "finished" : s.pendingNobles.length ? "chooseNoble" : s.active === p ? "action" : "waiting", board: { bank: { ...s.bank }, market: { 1: s.market[1].map((c) => ({ ...c, cost: { ...c.cost } })), 2: s.market[2].map((c) => ({ ...c, cost: { ...c.cost } })), 3: s.market[3].map((c) => ({ ...c, cost: { ...c.cost } })) }, reservedOpponentCount: s.reserved[otherPlayer(p)].length, nobles: Object.fromEntries(Object.entries(s.availableNobles).map(([id, n]) => [id, { points: n.points, requirement: { ...n.requirement } }])), score: { p1: points("p1"), p2: points("p2") }, cardPoints: { ...s.cardPoints }, acquiredCards: { p1: (s.acquiredCards?.p1 ?? []).map((c) => ({ ...c, cost: { ...c.cost } })), p2: (s.acquiredCards?.p2 ?? []).map((c) => ({ ...c, cost: { ...c.cost } })) }, acquiredCardHistoryComplete: { p1: s.acquiredCardHistoryComplete?.p1 ?? false, p2: s.acquiredCardHistoryComplete?.p2 ?? false }, ownedBonuses: { p1: { ...s.bonuses.p1 }, p2: { ...s.bonuses.p2 } }, ownedNobles: { ...s.nobles }, turns: { ...s.turns } }, ownHand: { tokens: { ...s.hands[p] }, bonuses: { ...s.bonuses[p] }, reserved: s.reserved[p].map((c) => ({ ...c, cost: { ...c.cost } })), points: s.cardPoints[p], nobles: s.nobles[p] }, opponentCount: sum(s.hands[otherPlayer(p)]) + s.hands[otherPlayer(p)].gold, status: s.result ? "finished" : s.active === p ? "Your turn" : "Opponent turn", result: s.result, actions };
 }
 var splendorEngine = { id: "splendor", createInitialState: creates, validateAction: valid, applyAction: apply2, getPlayerView: view, getResult: (s) => s.result };
 
