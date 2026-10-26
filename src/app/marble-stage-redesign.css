@@ -314,6 +314,15 @@
 :is(.marble-premium,.marble-native-team).is-modern .mp-board-grid--32 .mp-tile .mp-olympic-host svg { width:12px; height:12px; }
 :is(.marble-premium,.marble-native-team).is-modern .mp-board-grid--32 .mp-tile .mp-pawn-marker.is-moving-pawn { animation:mp-pawn-step 80ms ease-out both; }
 @keyframes mp-pawn-step { from { transform:translateY(-4px) scale(.94); opacity:1; } to { transform:none; opacity:1; } }
+@media (min-width:769px) and (max-width:1360px) {
+  .marble-native-team.marble-team-board .mp-board-grid--32 .mp-tile:not(.mp-kind-property) .mp-tile-content {
+    display:grid; grid-template-columns:20px minmax(0,1fr); grid-template-rows:11px minmax(0,1fr) 10px; align-items:center; gap:0 2px;
+  }
+  .marble-native-team.marble-team-board .mp-board-grid--32 .mp-tile:not(.mp-kind-property) .mp-tile-top { grid-column:1/-1; grid-row:1; min-height:0; height:11px; }
+  .marble-native-team.marble-team-board .mp-board-grid--32 .mp-tile:not(.mp-kind-property) .mp-tile-symbol { grid-column:1; grid-row:2/4; width:18px; height:18px; margin:auto; }
+  .marble-native-team.marble-team-board .mp-board-grid--32 .mp-tile:not(.mp-kind-property) .mp-tile-name { grid-column:2; grid-row:2; min-height:0; max-height:23px; margin:0; line-height:1.05; }
+  .marble-native-team.marble-team-board .mp-board-grid--32 .mp-tile:not(.mp-kind-property) .mp-tile-kind { grid-column:2; grid-row:3; min-height:0; margin:0; line-height:1; }
+}
 .marble-native-team.marble-team-board .mt-stage-skip { display:block; width:100%; margin-top:5px; background:#fff9ed; color:#34535a; border-color:#c5ae7b; }
 :is(.marble-premium,.marble-native-team).is-modern .mp-stage-cash-before { display:none; }
 :is(.marble-premium,.marble-native-team).is-modern .mp-mobile-spotlight { display:none; }
