@@ -90,7 +90,7 @@ export function MarbleRuleGuide({ language, rules, options = {}, teamMode = fals
       </figure>)}</div>
       <p>{t('보관 패는 직접 사용해요. 이동 카드는 도착한 칸의 효과까지 적용해요.', 'Tú decides cuándo usar un pase. Las cartas de viaje también aplican el efecto de la casilla de llegada.')}</p>
       <details className="guide-details marble-rule-card-list"><summary>{t('16종 카드 한 장씩 보기', 'Ver el efecto de cada una de las 16 cartas')}</summary>
-        <ul>{eventEffects.map(([ko, es, amount, detailKo, detailEs]) => <li key={es}><b>{amount}</b><div><strong>{t(ko, es)}</strong><p>{t(detailKo.replace('출발 통과 시 +200',`출발 통과 시 +${passSalary}`), detailEs.replace('Cruzar Salida paga 200',`Cruzar Salida paga ${passSalary}`).replace('cobras 200',`cobras ${passSalary}`))}</p></div></li>)}</ul>
+        <ul>{eventEffects.map(([ko, es, amount, detailKo, detailEs]) => <li key={es}><b>{ko === '출발점으로 이동' ? `+${passSalary}` : amount}</b><div><strong>{t(ko, es)}</strong><p>{t(ko === '출발점으로 이동' ? `출발로 가서 ${passSalary}을 한 번 받아요.` : detailKo.replace('출발 통과 시 +200',`출발 통과 시 +${passSalary}`), ko === '출발점으로 이동' ? `Ve a Salida y cobra ${passSalary} una sola vez.` : detailEs.replace('Cruzar Salida paga 200',`Cruzar Salida paga ${passSalary}`))}</p></div></li>)}</ul>
         <p>{t('독점 경고 공동 선두는 카드를 뽑은 사람이 포함되면 그 사람, 아니면 시작 좌석부터 차례순으로 첫 공동 선두에게 부과해요.', 'Si hay empate en la advertencia de monopolio, paga quien sacó la carta si está entre quienes lideran. Si no, paga la primera persona empatada en el orden desde el asiento inicial.')}</p>
       </details>
     </section>

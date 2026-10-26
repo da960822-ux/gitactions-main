@@ -50,6 +50,14 @@ describe('native four-player Marble screen',()=>{
   expect(html).toContain('매입 80');expect(html).toContain('통행료 20');
   expect(html).toContain('구매 후 현금 2,920');
  });
+ it('uses one economy version for the build decision and city ledger',()=>{
+  const s=state();s.phase='main';s.positions.p1=1;s.pendingTile=1;s.properties[1]={owner:'p1',houses:1};
+  const html=render(s);
+  expect(html).toContain('광주 2단계 건설 · 50');
+  expect(html).toContain('40 → 60');
+  expect(html).toContain('<td>50</td>');
+  expect(html).not.toContain('광주 2단계 건설 · 100');
+ });
  it('retains mandatory debt controls and all player-specific bankruptcy rules',()=>{
   const s=state();s.phase='debt';s.money.p1=30;s.pendingPayment={amount:120,creditor:'p4',resumeActive:'p1'};
   const html=render(s);

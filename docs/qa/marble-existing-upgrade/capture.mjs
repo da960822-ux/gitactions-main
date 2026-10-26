@@ -55,7 +55,9 @@ async function capture(mode, scenario, width = 1280, height = 800) {
     document.body.innerHTML = '<div id="fixture"></div>';
     ReactDOM.createRoot(document.querySelector('#fixture')).render(React.createElement(Live));
     const view = engine.getPlayerView(initial, 'p1');
-    return { cells: mode === '2p' ? view.board.tiles.length : view.publicBoard.length, actions: view.actions.map(item => item.action) };
+    const city = mode === '2p' ? view.board.tiles[1] : view.publicBoard[1];
+    const economy = await import('/src/games/marbleEconomy.ts');
+    return { cells: mode === '2p' ? view.board.tiles.length : view.publicBoard.length, actions: view.actions.map(item => item.action), buyCost: city.price, buildCost: economy.marbleBuildCostAtPrice(city.price, 1, initial.economicVersion) };
   }, { mode, scenario });
   await page.locator('.mp-board-grid--40').waitFor();
   await page.waitForTimeout(170);
@@ -86,8 +88,8 @@ async function capture(mode, scenario, width = 1280, height = 800) {
     await action.click();
     await page.waitForTimeout(200);
     const after = await page.evaluate(scenario => ({ cash: window.__marbleState.money.p1, owner: window.__marbleState.properties[scenario === 'takeover' ? 4 : 1]?.owner, houses: window.__marbleState.properties[1]?.houses ?? 0, event: window.__marbleState.actionLog?.at(-1)?.type, passes: window.__marbleState.rentPasses.p1 }), scenario);
-    if (scenario === 'purchase' && (after.cash !== before.cash - 100 || after.owner !== 'p1')) throw Error(`${file}: purchase mismatch`);
-    if (scenario === 'build' && (after.cash !== before.cash - 60 || after.houses !== before.houses + 1)) throw Error(`${file}: build mismatch`);
+    if (scenario === 'purchase' && (after.cash !== before.cash - setup.buyCost || after.owner !== 'p1')) throw Error(`${file}: purchase mismatch`);
+    if (scenario === 'build' && (after.cash !== before.cash - setup.buildCost || after.houses !== before.houses + 1)) throw Error(`${file}: build mismatch`);
     if (scenario === 'rent' && after.cash !== before.cash - before.rent) throw Error(`${file}: rent mismatch`);
     if (scenario === 'rent-pass' && (after.cash !== before.cash || after.passes !== 0)) throw Error(`${file}: rent pass mismatch`);
     if (scenario === 'takeover' && (after.cash >= before.cash || after.owner !== 'p1')) throw Error(`${file}: takeover mismatch`);
