@@ -16,6 +16,11 @@ describe('Marble primary action selection', () => {
     expect(selectMarblePrimaryAction({ phase: 'main', choices: choices(['takeover', 1], ['endTurn']), position: 8 })?.action.type).toBe('takeover');
     expect(selectMarblePrimaryAction({ phase: 'main', choices: choices(['endTurn']), position: 8 })?.action.type).toBe('endTurn');
   });
+  it('uses the exact selected structure action on a city with independent building choices',()=>{
+    const villa={action:{type:'build',payload:{tile:31,structure:'villa'}}};
+    const building={action:{type:'build',payload:{tile:31,structure:'building'}}};
+    expect(selectMarblePrimaryAction({phase:'main',choices:[villa,building],position:31,selectedTile:31,selectedAction:building.action})).toBe(building);
+  });
 
   it('uses the selected train/event target and falls back to the phase alternative', () => {
     const train = choices(['choose-train', 4], ['choose-train', 7], ['skip-train']);

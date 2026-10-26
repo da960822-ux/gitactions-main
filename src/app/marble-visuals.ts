@@ -52,6 +52,23 @@ export function buildingName(level: number, language: Language, modern: boolean,
   if (modern) return level >= 3 ? copy(language, '랜드마크', 'Monumento') : level === 2 ? copy(language, '아파트', 'Apartamentos') : level === 1 ? copy(language, '단독주택', 'Casa unifamiliar') : '';
   return level ? copy(language, '집', 'Casa') : '';
 }
+/** The old `houses` count cannot identify an independently chosen building mask. */
+export function visualBuildingLevel(tile: Record<string, any>, routeVersion: number) {
+  if (routeVersion < 4) return num(tile.houses);
+  const buildings = tile.buildings as Record<string, boolean> | undefined;
+  if (buildings?.landmark) return 4;
+  if (buildings?.hotel) return 3;
+  if (buildings?.building) return 2;
+  if (buildings?.villa) return 1;
+  return num(tile.houses);
+}
+export function buildingSummary(tile: Record<string, any>, language: Language, routeVersion: number) {
+  if (routeVersion < 4) return buildingName(num(tile.houses), language, true, routeVersion);
+  const names = { villa: copy(language,'빌라','Villa'), building: copy(language,'빌딩','Edificio'), hotel: copy(language,'호텔','Hotel'), landmark: copy(language,'랜드마크','Monumento') };
+  const buildings = tile.buildings as Record<string, boolean> | undefined;
+  const selected = (['villa','building','hotel','landmark'] as const).filter(key => buildings?.[key]);
+  return selected.length ? selected.map(key => names[key]).join(' + ') : buildingName(num(tile.houses), language, true, routeVersion);
+}
 export function rentValue(tile: Record<string, any>, modern: boolean) {
   // A versioned board can supply its already resolved toll. Presentation must not
   // reconstruct the historical component toll table from the old level formula.

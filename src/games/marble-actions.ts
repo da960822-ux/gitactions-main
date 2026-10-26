@@ -26,7 +26,7 @@ export function selectMarblePrimaryAction<T extends MarbleActionChoice>({ phase,
 
   if (phase === 'roll') return first('roll');
   if (phase === 'decision') return first('buy') ?? first('decline');
-  if (phase === 'main') return buildAt(selectedTile) ?? buildAt(position) ?? first('build') ?? first('takeover') ?? first('endTurn');
+  if (phase === 'main') return targeted('build') ?? buildAt(selectedTile) ?? buildAt(position) ?? first('build') ?? first('takeover') ?? first('endTurn');
   if (phase === 'island') return first('attempt-doubles') ?? first('pay-escape') ?? first('use-escape-pass');
   if (phase === 'train-decision') return targeted('choose-train') ?? first('choose-train') ?? first('skip-train');
   if (phase === 'event-decision') return targeted('choose-event-city') ?? first('choose-event-city');

@@ -3,7 +3,7 @@ import type { Language } from '../core/types';
 import { MarblePawn, type MarblePawnId } from './MarblePawn';
 import { MarblePropertyArt } from './MarblePropertyArt';
 import { MarbleTourismArt } from './MarbleTourismArt';
-import { buildingName, cityArtNames, cityFlag, moneyText, rentValue, specialNames } from './marble-visuals';
+import { buildingName, buildingSummary, cityArtNames, cityFlag, moneyText, rentValue, specialNames, visualBuildingLevel } from './marble-visuals';
 
 type Seat = 'p1' | 'p2' | 'p3' | 'p4';
 const copy = (language:Language, ko:string, es:string) => language === 'ko' ? ko : es;
@@ -24,7 +24,7 @@ export function MarbleCityTile({ tile, index, tileCount, position, language, rou
   const isKey=modern&&(kind==='event'||kind==='card');
   const symbol=isKey?'key':kind==='fund-deposit'?'fund-pay':kind==='world-travel'?'train':kind;
   const art=cityArtNames[String(record(tile.name).ko??'')],flag=isProperty?cityFlag(record(tile.name)):null;
-  const building=buildingName(num(tile.houses),language,modern,routeVersion);
+  const level=visualBuildingLevel(tile,routeVersion),building=buildingSummary(tile,language,routeVersion);
   const aria=isProperty
     ? `${name}, ${owner?copy(language,`소유자 ${seatLabel(owner)}`,`Dueño ${seatLabel(owner)}`):copy(language,'미소유','Sin dueño')}, ${copy(language,`매입 ${num(tile.price)}, 임대 ${rentValue(tile,modern)}`,`compra ${num(tile.price)}, renta ${rentValue(tile,modern)}`)}${isTourism?copy(language,', 관광지: 은행에서 구매 가능, 상대에게 인수 불가',', turismo: se compra al banco, no se adquiere de otro jugador'):building?`, ${building}`:''}${record(tile.rentModifiers).festival?copy(language,', 도시 축제: 다음 상대 방문 통행료 2배, 1회',', Festival: próxima visita rival, renta doble, un uso'):''}${record(tile.rentModifiers).blackout?copy(language,', 정전: 다음 카드 소유자 방문 통행료 절반, 1회',', Apagón: próxima visita del titular, media renta, un uso'):''}`
     : `${name}, ${specialNames[kind]?.[language]??''}`;
@@ -33,9 +33,9 @@ export function MarbleCityTile({ tile, index, tileCount, position, language, rou
     <div className="mp-tile-content">
       <div className="mp-tile-top"><span>{String(index+1).padStart(2,'0')}</span>{flag&&<img src={`/images/marble/flags/${flag}.svg`} alt="" aria-hidden="true" loading="lazy" decoding="async"/>}{owner&&<b className={`mp-owner mp-owner-${owner}`} title={seatLabel(owner)} aria-label={seatLabel(owner)}>{owner.slice(1)}</b>}</div>
       {isProperty?<div className="mp-property-tile-view">
-        {isTourism?<MarbleTourismArt name={String(record(tile.name).ko??name)} className="mp-property-tile-art"/>:art&&<MarblePropertyArt routeVersion={routeVersion} language={language} className="mp-property-tile-art" city={art} level={modern?num(tile.houses):0} owner={owner} ownerLabel={owner?seatLabel(owner):copy(language,'은행','Banco')}/>}
+        {isTourism?<MarbleTourismArt name={String(record(tile.name).ko??name)} className="mp-property-tile-art"/>:art&&<MarblePropertyArt routeVersion={routeVersion} language={language} className="mp-property-tile-art" city={art} level={modern?level:0} owner={owner} ownerLabel={owner?seatLabel(owner):copy(language,'은행','Banco')}/>}
         <div className="mp-property-tile-copy"><strong className="mp-tile-name" title={name}>{name}</strong><small className="mp-tile-economy"><b data-marble-price-kind={owner?'rent':'purchase'} title={owner?copy(language,`현재 통행료 ${rentValue(tile,modern)}`,`Alquiler actual ${rentValue(tile,modern)}`):copy(language,`매입가 ${num(tile.price)}`,`Precio de compra ${num(tile.price)}`)}>{moneyText(owner?rentValue(tile,modern):num(tile.price),language)}</b><span>{owner?copy(language,`통행료 ${moneyText(rentValue(tile,modern),language)}`,`Renta ${moneyText(rentValue(tile,modern),language)}`):copy(language,`기본 통행료 ${moneyText(num(tile.rent),language)}`,`Renta base ${moneyText(num(tile.rent),language)}`)}</span></small></div>
-        {!isTourism&&(modern||num(tile.houses)>0)&&<span className="mp-building-badge" data-building-level={num(tile.houses)} aria-label={copy(language,`${building||'미건설'} ${num(tile.houses)}단계`,`${building||'sin construir'}, nivel ${num(tile.houses)}`)}>{tileCount===32&&num(tile.houses)>0?building:num(tile.houses)}</span>}
+        {!isTourism&&(modern||level>0)&&<span className="mp-building-badge" data-building-level={level} aria-label={building||copy(language,'미건설','Sin construir')}>{tileCount===32&&level>0?buildingName(level,language,modern,routeVersion):level}</span>}
       </div>:<><strong className="mp-tile-name" title={name}>{name}</strong>{['start','key','island','train','rest','fund','fund-pay','tax'].includes(symbol)&&<svg className="mp-tile-symbol" aria-hidden="true" viewBox="0 0 32 32"><use href={`/images/marble/tile-symbols.svg#${symbol}`}/></svg>}<small className="mp-tile-kind">{specialNames[kind]?.[language]??''}{['tax','fund-deposit'].includes(kind)&&num(tile.price)?` · ${copy(language,`납부 ${moneyText(num(tile.price),language)}`,`Pago ${moneyText(num(tile.price),language)}`)}`:''}</small></>}
     </div>
     {['festival','blackout'].filter(effect=>record(tile.rentModifiers)[effect]).map(effect=><span className="mp-city-effect" key={effect} title={effect==='festival'?copy(language,'도시 축제 · 다음 상대 방문 통행료 2배 · 1회','Festival · próxima visita rival: renta doble · un uso'):copy(language,'정전 · 다음 카드 소유자 방문 통행료 절반 · 1회','Apagón · próxima visita del titular: media renta · un uso')}><svg viewBox="0 0 128 128" aria-hidden="true"><use href={`/images/marble/golden-key-cards.svg#${effect==='festival'?'city-festival':'blackout'}-mark`}/></svg><span>{effect==='festival'?'×2':'½'}</span></span>)}
