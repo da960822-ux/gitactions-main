@@ -4,6 +4,8 @@
 
 `capture-live32.mjs` starts new matches with the production two and four player engines (`createInitialState`), builds their public views with `getPlayerView`, renders the production React boards in Chromium, and submits clicked actions through `applyAction`. It places the initial state at named positions to reach otherwise rare purchase, rent, and build situations. The profile, legal actions, prices, public ownership masks, tolls, and resulting money are supplied by the engines. No visual fixture tile list is substituted. To reproduce: run `npm run dev -- --port 5174`, then `node docs/qa/marble-stage-redesign/capture-live32.mjs`. The script uses the installed `/usr/bin/chromium` and `/usr/bin/ffmpeg`; it does not download a browser.
 
+The actual `/play?game=marble` navigation was also opened in Chromium without replacing the app root. Both AI choices started a 32 cell match with 500만 cash: [2p app stage](live-app-2p-1280x800.png), [4p app stage](live-app-4p-1280x800.png). Real app roll examples: [2p](live-app-2p-after-roll-1280x800.png), [4p](live-app-4p-after-roll-1280x800.png). Separate real app purchases updated cash and tile owner in [2p](live-app-2p-tourism-purchased-1280x800.png) and [4p](live-app-4p-purchased-1280x800.png). Live app dice outcomes vary; the controlled engine captures below cover repeatable specific decisions.
+
 | PC check | Two player | Four player |
 | --- | --- | --- |
 | Live board, 1280 × 800 | [stage](live32-2p-roll-ko-1280x800.png) | [stage](live32-4p-roll-ko-1280x800.png) |
