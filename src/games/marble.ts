@@ -2,7 +2,7 @@ import { marblePropertyRules } from './rules';
 import { GameAction, GameEngine, GameResult, PlayerId, otherPlayer, seededRandom, shuffle } from '../core/types';
 import { marbleBaseRentForPrice, marbleBuildCostForPrice, marbleCityValueForPrice, marbleRentAtStage, marbleRentMultipliers, marbleTakeoverPriceForValue } from './marble-economy';
 import { classicMarbleAcquisitionPrice, classicMarbleAssetValue, classicMarbleAvailableStructures, classicMarbleCityToll, classicMarbleConstructionCost, classicMarbleReferenceProfile, classicMarbleSaleValue, type ClassicMarbleBuildings, type ClassicMarbleStructure } from './marble-reference-profile';
-import { classicMarbleTourismRent } from './marble-tourism-selector';
+import { classicMarbleIslandCount, classicMarbleTourismRent } from './marble-tourism-selector';
 
 export { marbleRentMultipliers };
 
@@ -160,6 +160,7 @@ function advanceReferenceBeachStage(s: MarbleState, index: number) {
   s.tourismVisitStages ??= {};
   s.tourismVisitStages[String(index)] = Math.min(3, (s.tourismVisitStages[String(index)] ?? 1) + 1);
 }
+const islandIndexFor = (s: MarbleState) => s.referenceProfileId === classicMarbleReferenceProfile.id ? boardFor(s).findIndex(tile => tile.kind === 'island') : 10;
 const legacyIds: MarbleEventId[] = ['festival', 'lottery', 'rent-rebate', 'travel-cost', 'maintenance', 'visit-santo-domingo', 'advance-start', 'retreat'];
 const modernIds: MarbleEventId[] = [...legacyIds, 'go-to-island', 'escape-pass', 'train-ticket', 'city-dividend'];
 const expandedIds: MarbleEventId[] = [...modernIds, 'monopoly-warning', 'city-festival', 'blackout', 'rent-pass'];
@@ -266,7 +267,7 @@ function view(s: MarbleState, p: PlayerId) {
     if (s.phase === 'roll') add('주사위 굴리기', 'Lanzar dados', { type: 'roll' });
     if (s.phase === 'island') {
       add('쌍이 나오는지 굴리기', 'Intentar sacar dobles', { type: 'attempt-doubles' });
-      if (s.money[p] >= 100) add('100을 내고 탈출', 'Pagar 100 para salir', { type: 'pay-escape' });
+      if (s.referenceProfileId !== classicMarbleReferenceProfile.id && s.money[p] >= 100) add('100을 내고 탈출', 'Pagar 100 para salir', { type: 'pay-escape' });
       if ((s.escapePasses?.[p] ?? 0) > 0) add('탈출권 사용', 'Usar pase de salida', { type: 'use-escape-pass' });
     }
     if (s.phase === 'train-decision') {
@@ -332,7 +333,7 @@ function view(s: MarbleState, p: PlayerId) {
         const currentToll = tile.referenceProfileId === classicMarbleReferenceProfile.id && tile.kind === 'property' && property
           ? propertyRent(tile, property, true, s)
           : tile.kind === 'tourism' && property
-            ? classicMarbleTourismRent(tile.name.ko, { ownerTourismCount: Object.entries(s.properties).filter(([ownedIndex, item]) => item.owner === property.owner && board[Number(ownedIndex)]?.kind === 'tourism').length, beachVisitStage: s.tourismVisitStages?.[String(index)] ?? 1, visitorPosition: s.positions[p], landingIndex: index }).amount
+            ? classicMarbleTourismRent(tile.name.ko, { ownerTourismCount: classicMarbleIslandCount(Object.entries(s.properties).filter(([ownedIndex, item]) => item.owner === property.owner && board[Number(ownedIndex)]?.kind === 'tourism').map(([ownedIndex]) => board[Number(ownedIndex)].name.ko)), beachVisitStage: s.tourismVisitStages?.[String(index)] ?? 1, visitorPosition: s.positions[p], landingIndex: index }).amount
             : tile.rent ?? null;
         const nextBuildOptions = tile.referenceProfileId === classicMarbleReferenceProfile.id && property?.owner === p
           ? classicMarbleAvailableStructures(property.buildings ?? {}, s.completedLaps?.[p] ?? 0, s.buildArrivalTile === index).map(structure => ({ structure, cost: marbleBuildCost(tile, houses, 4, structure), tollAfter: classicMarbleCityToll(tile.referenceCity!, { ...(property.buildings ?? {}), [structure]: true }, 'business') }))
@@ -394,7 +395,7 @@ function validation(s: MarbleState, p: PlayerId, a: GameAction): string | null {
   if (s.phase === 'debt') return 'Resolve the compulsory payment first';
   if (a.type === 'roll') return s.phase === 'roll' ? null : 'Cannot roll now';
   if (a.type === 'attempt-doubles') return s.phase === 'island' ? null : 'Not on the island';
-  if (a.type === 'pay-escape') return s.phase !== 'island' ? 'Not on the island' : s.money[p] < 100 ? 'Insufficient funds' : null;
+  if (a.type === 'pay-escape') return s.referenceProfileId === classicMarbleReferenceProfile.id ? 'Escape fee is unverified for this ruleset' : s.phase !== 'island' ? 'Not on the island' : s.money[p] < 100 ? 'Insufficient funds' : null;
   if (a.type === 'use-escape-pass') return s.phase !== 'island' ? 'Not on the island' : (s.escapePasses?.[p] ?? 0) < 1 ? 'No escape pass' : null;
   if (a.type === 'choose-train') {
     if (s.phase !== 'train-decision') return 'No train decision';
@@ -490,7 +491,7 @@ function resolveLanding(s: MarbleState, p: PlayerId, index: number, drawEvent: b
     if (!owner) { advanceBeach(); s.buildArrivalTile = s.referenceProfileId === classicMarbleReferenceProfile.id ? index : null; s.phase = 'decision'; return s; }
     if (s.referenceProfileId === classicMarbleReferenceProfile.id && tile.kind === 'property' && owner.owner === p) s.buildArrivalTile = index;
     if (owner.owner !== p && tile.kind === 'tourism') {
-      const ownerTourismCount = Object.entries(s.properties).filter(([ownedIndex, property]) => property.owner === owner.owner && board[Number(ownedIndex)]?.kind === 'tourism').length;
+      const ownerTourismCount = classicMarbleIslandCount(Object.entries(s.properties).filter(([ownedIndex, property]) => property.owner === owner.owner && board[Number(ownedIndex)]?.kind === 'tourism').map(([ownedIndex]) => board[Number(ownedIndex)].name.ko));
       const toll = classicMarbleTourismRent(tile.name.ko, { ownerTourismCount, beachVisitStage: beachStage, visitorPosition: s.positions[p], landingIndex: index });
       if (toll.amount !== null) {
         s = pay(s, p, toll.amount, owner.owner, { ko: `${tile.name.ko} 관광 통행료`, es: `Alquiler turístico en ${tile.name.es}` }, 'rent');
@@ -574,7 +575,7 @@ function resolveEvent(s: MarbleState, p: PlayerId): MarbleState {
   } else if (id === 'retreat') {
     movement = 'move'; steps = -3; const to = (from - 3 + board.length) % board.length; s.positions[p] = to; noteMove(s, p, from, to, steps, 'card'); s = resolveLanding(s, p, to, false);
   } else if (id === 'go-to-island') {
-    const to = isModern ? 10 : from; movement = 'move'; steps = isModern ? (to - from + board.length) % board.length : 0;
+    const to = s.referenceProfileId === classicMarbleReferenceProfile.id ? board.findIndex(tile => tile.kind === 'island') : isModern ? 10 : from; movement = 'move'; steps = isModern ? (to - from + board.length) % board.length : 0;
     if (isModern) s.positions[p] = to;
     s.extraRoll = false; s.doublesCount = 0; s.islandTurns ??= { p1: 0, p2: 0 }; s.islandTurns[p] = 3; s.pendingTile = to;
     noteMove(s, p, from, to, steps, 'card'); emit(s, 'island', p, card.title.ko, card.title.es, card.text.ko, card.text.es, { tile: to, cardId: id });
@@ -707,8 +708,8 @@ function step(s: MarbleState, p: PlayerId, a: GameAction): MarbleState {
       n.doublesCount = a.type === 'roll' && d1 === d2 ? (n.doublesCount ?? 0) + 1 : 0;
       n.extraRoll = a.type === 'roll' && d1 === d2;
       if (n.doublesCount === 3) {
-        const from = n.positions[p]; n.positions[p] = 10; n.islandTurns ??= { p1: 0, p2: 0 }; n.islandTurns[p] = 3; n.extraRoll = false; n.doublesCount = 0; n.pendingTile = 10; n.takeoverTile = null; n.phase = 'main';
-        noteMove(n, p, from, 10, null, 'island'); emit(n, 'island', p, '3연속 더블 · 무인도', 'Tres dobles seguidos · a la isla', '출발 보너스 없이 즉시 무인도로 이동합니다.', 'Ve directamente a la isla, sin bono de Salida.'); return n;
+        const from = n.positions[p], to = islandIndexFor(n); n.positions[p] = to; n.islandTurns ??= { p1: 0, p2: 0 }; n.islandTurns[p] = 3; n.extraRoll = false; n.doublesCount = 0; n.pendingTile = to; n.takeoverTile = null; n.phase = 'main';
+        noteMove(n, p, from, to, null, 'island'); emit(n, 'island', p, '3연속 더블 · 무인도', 'Tres dobles seguidos · a la isla', '출발 보너스 없이 즉시 무인도로 이동합니다.', 'Ve directamente a la isla, sin bono de Salida.'); return n;
       }
     }
     if (a.type === 'attempt-doubles' && d1 !== d2) {

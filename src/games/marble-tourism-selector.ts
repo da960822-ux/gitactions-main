@@ -2,6 +2,11 @@ import { classicMarbleReferenceProfile, classicMarbleTourismToll } from './marbl
 import type { ClassicMarbleClass } from './marble-reference-profile';
 
 export type TourismRentContext = { ownerTourismCount: number; beachVisitStage: number; visitorPosition: number; landingIndex: number };
+const islandNames = new Set<string>(classicMarbleReferenceProfile.tourism.filter(site => site.rentMode === 'owner-count').map(site => site.name));
+
+export function classicMarbleIslandCount(ownedTourismNames: readonly string[]) {
+  return ownedTourismNames.filter(name => islandNames.has(name)).length;
+}
 
 /**
  * Values for the three tourism toll steps are known, but the original selector

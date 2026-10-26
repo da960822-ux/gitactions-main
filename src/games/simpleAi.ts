@@ -3,7 +3,7 @@ import { chooseDominoBotAction } from './domino';
 import { chooseDavinciGuess } from './davinciAi';
 import { minhwatuYakuProgress } from './minhwatu';
 import { classicMarbleCityToll, classicMarbleReferenceProfile } from './marble-reference-profile';
-import { classicMarbleTourismRent } from './marble-tourism-selector';
+import { classicMarbleIslandCount, classicMarbleTourismRent } from './marble-tourism-selector';
 import { marbleRentAtStage } from './marble-economy';
 
 export const aiGameIds = ['davinci', 'domino', 'jaipur', 'splendor', 'minhwatu', 'marble'] as const;
@@ -75,7 +75,7 @@ export function chooseSimpleAiAction(game: GameId, view: any, player: PlayerId, 
         return total + (tile.owner === opponent && distance >= 2 && distance <= 12 ? rent(tile) * (6-Math.abs(7-distance))/36 : 0);
       }, 0);
       const reserve = Math.max(200, risk * 2 + 100);
-      if (action.type === 'buy') { const tile = tiles[view.ownHand.position], group = tiles.filter(t => t.group === tile.group && t.kind === 'property'), expectedRent = tile.kind === 'tourism' ? classicMarbleTourismRent(tile.name?.ko, { ownerTourismCount: tiles.filter(t => t.kind === 'tourism' && t.owner === player).length + 1, beachVisitStage: Number(view.board.tourismVisitStages?.[String(view.ownHand.position)] ?? 1), visitorPosition: view.ownHand.position, landingIndex: view.ownHand.position }).amount ?? 0 : rent(tile); return money - tile.price >= reserve ? 30 + (tile.group ? group.filter(t=>t.owner===player).length * 5 : 0) + expectedRent / Math.max(1, Number(tile.price)) * 20 : -1; }
+      if (action.type === 'buy') { const tile = tiles[view.ownHand.position], group = tiles.filter(t => t.group === tile.group && t.kind === 'property'), expectedRent = tile.kind === 'tourism' ? classicMarbleTourismRent(tile.name?.ko, { ownerTourismCount: classicMarbleIslandCount(tiles.filter(t => t.kind === 'tourism' && t.owner === player).map(t => t.name?.ko)), beachVisitStage: Number(view.board.tourismVisitStages?.[String(view.ownHand.position)] ?? 1), visitorPosition: view.ownHand.position, landingIndex: view.ownHand.position }).amount ?? 0 : rent(tile); return money - tile.price >= reserve ? 30 + (tile.group ? group.filter(t=>t.owner===player).length * 5 : 0) + expectedRent / Math.max(1, Number(tile.price)) * 20 : -1; }
       if (action.type === 'takeover') { const tile = tiles[Number(x.tile)], cost = view.board.takeoverOffer?.price; return cost != null && money - cost >= reserve ? 15 + tile.houses * 3 : -5; }
       if (action.type === 'build') { const tile = tiles[Number(x.tile)], distance = (Number(x.tile)-view.board.positions[opponent]+tiles.length)%tiles.length; const chance = distance>=2&&distance<=12 ? (6-Math.abs(7-distance))/36 : .02;
         if (tile.referenceProfileId === classicMarbleReferenceProfile.id) {

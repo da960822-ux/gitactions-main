@@ -85,6 +85,7 @@ export const classicMarbleReferenceProfile = {
     tourismBeachRentSelector: 'per-site-visit-stage-1-to-3; increase-after-visitor-payment',
     tourismBeachInitialStage: 1,
     tourismUnownedVisitAdvancesBeach: 'assumed',
+    islandEscapeFee: 'unverified-not-offered',
     tourismAllFiveImmediateWin: true,
     ownArrivalRequiredForConstruction: true,
     constructionMinimumOwnLaps: { villa: 0, building: 1, hotel: 2, landmark: 3 },

@@ -6181,6 +6181,7 @@ var classicMarbleReferenceProfile = {
     tourismBeachRentSelector: "per-site-visit-stage-1-to-3; increase-after-visitor-payment",
     tourismBeachInitialStage: 1,
     tourismUnownedVisitAdvancesBeach: "assumed",
+    islandEscapeFee: "unverified-not-offered",
     tourismAllFiveImmediateWin: true,
     ownArrivalRequiredForConstruction: true,
     constructionMinimumOwnLaps: { villa: 0, building: 1, hotel: 2, landmark: 3 },
@@ -6310,6 +6311,10 @@ function classicMarbleAvailableStructures(buildings, completedOwnLaps, isOwnArri
 }
 
 // src/games/marble-tourism-selector.ts
+var islandNames = new Set(classicMarbleReferenceProfile.tourism.filter((site) => site.rentMode === "owner-count").map((site) => site.name));
+function classicMarbleIslandCount(ownedTourismNames) {
+  return ownedTourismNames.filter((name) => islandNames.has(name)).length;
+}
 function classicMarbleTourismRent(name, context, playerClass = "business") {
   const step2 = selectClassicMarbleTourismStep(name, context);
   return step2 === null ? { amount: null, step: null, status: "selector-unverified" } : { amount: classicMarbleTourismToll(name, step2, playerClass), step: step2, status: "resolved" };
@@ -6452,6 +6457,7 @@ function advanceReferenceBeachStage(s, index) {
   s.tourismVisitStages ??= {};
   s.tourismVisitStages[String(index)] = Math.min(3, (s.tourismVisitStages[String(index)] ?? 1) + 1);
 }
+var islandIndexFor = (s) => s.referenceProfileId === classicMarbleReferenceProfile.id ? boardFor(s).findIndex((tile) => tile.kind === "island") : 10;
 var legacyIds = ["festival", "lottery", "rent-rebate", "travel-cost", "maintenance", "visit-santo-domingo", "advance-start", "retreat"];
 var modernIds = [...legacyIds, "go-to-island", "escape-pass", "train-ticket", "city-dividend"];
 var expandedIds = [...modernIds, "monopoly-warning", "city-festival", "blackout", "rent-pass"];
@@ -6558,7 +6564,7 @@ function view2(s, p) {
     if (s.phase === "roll") add("\uC8FC\uC0AC\uC704 \uAD74\uB9AC\uAE30", "Lanzar dados", { type: "roll" });
     if (s.phase === "island") {
       add("\uC30D\uC774 \uB098\uC624\uB294\uC9C0 \uAD74\uB9AC\uAE30", "Intentar sacar dobles", { type: "attempt-doubles" });
-      if (s.money[p] >= 100) add("100\uC744 \uB0B4\uACE0 \uD0C8\uCD9C", "Pagar 100 para salir", { type: "pay-escape" });
+      if (s.referenceProfileId !== classicMarbleReferenceProfile.id && s.money[p] >= 100) add("100\uC744 \uB0B4\uACE0 \uD0C8\uCD9C", "Pagar 100 para salir", { type: "pay-escape" });
       if ((s.escapePasses?.[p] ?? 0) > 0) add("\uD0C8\uCD9C\uAD8C \uC0AC\uC6A9", "Usar pase de salida", { type: "use-escape-pass" });
     }
     if (s.phase === "train-decision") {
@@ -6626,7 +6632,7 @@ function view2(s, p) {
         const houses = property?.houses ?? 0;
         const maxLevels = s.boardVersion === 2 ? 3 : 2;
         const canUpgrade = tile.kind === "property" && houses < maxLevels;
-        const currentToll = tile.referenceProfileId === classicMarbleReferenceProfile.id && tile.kind === "property" && property ? propertyRent(tile, property, true, s) : tile.kind === "tourism" && property ? classicMarbleTourismRent(tile.name.ko, { ownerTourismCount: Object.entries(s.properties).filter(([ownedIndex, item]) => item.owner === property.owner && board[Number(ownedIndex)]?.kind === "tourism").length, beachVisitStage: s.tourismVisitStages?.[String(index)] ?? 1, visitorPosition: s.positions[p], landingIndex: index }).amount : tile.rent ?? null;
+        const currentToll = tile.referenceProfileId === classicMarbleReferenceProfile.id && tile.kind === "property" && property ? propertyRent(tile, property, true, s) : tile.kind === "tourism" && property ? classicMarbleTourismRent(tile.name.ko, { ownerTourismCount: classicMarbleIslandCount(Object.entries(s.properties).filter(([ownedIndex, item]) => item.owner === property.owner && board[Number(ownedIndex)]?.kind === "tourism").map(([ownedIndex]) => board[Number(ownedIndex)].name.ko)), beachVisitStage: s.tourismVisitStages?.[String(index)] ?? 1, visitorPosition: s.positions[p], landingIndex: index }).amount : tile.rent ?? null;
         const nextBuildOptions = tile.referenceProfileId === classicMarbleReferenceProfile.id && property?.owner === p ? classicMarbleAvailableStructures(property.buildings ?? {}, s.completedLaps?.[p] ?? 0, s.buildArrivalTile === index).map((structure) => ({ structure, cost: marbleBuildCost(tile, houses, 4, structure), tollAfter: classicMarbleCityToll(tile.referenceCity, { ...property.buildings ?? {}, [structure]: true }, "business") })) : [];
         return {
           ...tile,
@@ -6712,7 +6718,7 @@ function validation(s, p, a) {
   if (s.phase === "debt") return "Resolve the compulsory payment first";
   if (a.type === "roll") return s.phase === "roll" ? null : "Cannot roll now";
   if (a.type === "attempt-doubles") return s.phase === "island" ? null : "Not on the island";
-  if (a.type === "pay-escape") return s.phase !== "island" ? "Not on the island" : s.money[p] < 100 ? "Insufficient funds" : null;
+  if (a.type === "pay-escape") return s.referenceProfileId === classicMarbleReferenceProfile.id ? "Escape fee is unverified for this ruleset" : s.phase !== "island" ? "Not on the island" : s.money[p] < 100 ? "Insufficient funds" : null;
   if (a.type === "use-escape-pass") return s.phase !== "island" ? "Not on the island" : (s.escapePasses?.[p] ?? 0) < 1 ? "No escape pass" : null;
   if (a.type === "choose-train") {
     if (s.phase !== "train-decision") return "No train decision";
@@ -6820,7 +6826,7 @@ function resolveLanding(s, p, index, drawEvent) {
     }
     if (s.referenceProfileId === classicMarbleReferenceProfile.id && tile.kind === "property" && owner.owner === p) s.buildArrivalTile = index;
     if (owner.owner !== p && tile.kind === "tourism") {
-      const ownerTourismCount = Object.entries(s.properties).filter(([ownedIndex, property]) => property.owner === owner.owner && board[Number(ownedIndex)]?.kind === "tourism").length;
+      const ownerTourismCount = classicMarbleIslandCount(Object.entries(s.properties).filter(([ownedIndex, property]) => property.owner === owner.owner && board[Number(ownedIndex)]?.kind === "tourism").map(([ownedIndex]) => board[Number(ownedIndex)].name.ko));
       const toll = classicMarbleTourismRent(tile.name.ko, { ownerTourismCount, beachVisitStage: beachStage, visitorPosition: s.positions[p], landingIndex: index });
       if (toll.amount !== null) {
         s = pay(s, p, toll.amount, owner.owner, { ko: `${tile.name.ko} \uAD00\uAD11 \uD1B5\uD589\uB8CC`, es: `Alquiler tur\xEDstico en ${tile.name.es}` }, "rent");
@@ -6930,7 +6936,7 @@ function resolveEvent(s, p) {
     noteMove(s, p, from, to, steps, "card");
     s = resolveLanding(s, p, to, false);
   } else if (id === "go-to-island") {
-    const to = isModern ? 10 : from;
+    const to = s.referenceProfileId === classicMarbleReferenceProfile.id ? board.findIndex((tile) => tile.kind === "island") : isModern ? 10 : from;
     movement = "move";
     steps = isModern ? (to - from + board.length) % board.length : 0;
     if (isModern) s.positions[p] = to;
@@ -7127,16 +7133,16 @@ function step(s, p, a) {
       n.doublesCount = a.type === "roll" && d1 === d2 ? (n.doublesCount ?? 0) + 1 : 0;
       n.extraRoll = a.type === "roll" && d1 === d2;
       if (n.doublesCount === 3) {
-        const from2 = n.positions[p];
-        n.positions[p] = 10;
+        const from2 = n.positions[p], to2 = islandIndexFor(n);
+        n.positions[p] = to2;
         n.islandTurns ??= { p1: 0, p2: 0 };
         n.islandTurns[p] = 3;
         n.extraRoll = false;
         n.doublesCount = 0;
-        n.pendingTile = 10;
+        n.pendingTile = to2;
         n.takeoverTile = null;
         n.phase = "main";
-        noteMove(n, p, from2, 10, null, "island");
+        noteMove(n, p, from2, to2, null, "island");
         emit(n, "island", p, "3\uC5F0\uC18D \uB354\uBE14 \xB7 \uBB34\uC778\uB3C4", "Tres dobles seguidos \xB7 a la isla", "\uCD9C\uBC1C \uBCF4\uB108\uC2A4 \uC5C6\uC774 \uC989\uC2DC \uBB34\uC778\uB3C4\uB85C \uC774\uB3D9\uD569\uB2C8\uB2E4.", "Ve directamente a la isla, sin bono de Salida.");
         return n;
       }
