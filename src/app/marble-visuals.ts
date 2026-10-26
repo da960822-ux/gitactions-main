@@ -1,5 +1,7 @@
 import type { Language } from '../core/types';
 import { marblePawnCatalog, type MarblePawnId } from './MarblePawn';
+import { marbleRentAtStage } from '../games/marble-economy';
+import { classicMarbleCityToll, classicMarbleReferenceProfile } from '../games/marble-reference-profile';
 const copy = (language: Language, ko: string, es: string) => language === 'ko' ? ko : es;
 const num = (value: unknown) => Number.isFinite(Number(value)) ? Number(value) : 0;
 export const moneyText = (value: number, language: Language) => {
@@ -54,7 +56,12 @@ export function rentValue(tile: Record<string, any>, modern: boolean) {
   // A versioned board can supply its already resolved toll. Presentation must not
   // reconstruct the historical component toll table from the old level formula.
   if (Number.isFinite(tile.currentRent)) return tile.currentRent;
+  if (tile.referenceProfileId === classicMarbleReferenceProfile.id) {
+    if (tile.kind === 'tourism') return num(tile.currentToll);
+    const stage = num(tile.houses), buildings = tile.buildings as Record<string, boolean> | undefined, ordinaryCount = buildings ? ['villa', 'building', 'hotel'].filter(key => buildings[key]).length : -1, selected = buildings && ordinaryCount === Math.min(3, stage) ? buildings : stage === 1 ? { villa: true } : stage === 2 ? { villa: true, building: true } : stage >= 3 ? { villa: true, building: true, hotel: true } : {};
+    return classicMarbleCityToll(String(tile.referenceCity ?? tile.name?.ko ?? ''), selected) ?? 0;
+  }
   const level = num(tile.houses);
-  const multipliers = Array.isArray(tile.rentMultipliers) ? tile.rentMultipliers : [1, 2, 4, 8];
-  return num(tile.rent) * (modern ? (multipliers[level] ?? 1) : level + 1) * (num(tile.monopolyMultiplier) || 1);
+  const multipliers = Array.isArray(tile.rentMultipliers) ? tile.rentMultipliers as number[] : undefined;
+  return marbleRentAtStage(num(tile.rent), level, undefined, modern, multipliers, num(tile.monopolyMultiplier) || 1);
 }

@@ -30,6 +30,19 @@
 .spt-player.spt-team-B { background:#324538; border-color:#7d8269; }
 .spt-player.is-active { outline:2px solid #efc568; outline-offset:-2px; }
 .spt-player>header { display:flex; align-items:center; justify-content:space-between; gap:5px; font-size:12px; white-space:nowrap; }
+.spt-player-status-button { display:grid; gap:4px; width:100%; min-height:0!important; padding:3px 4px; border:1px solid transparent!important; border-radius:6px!important; background:transparent!important; color:inherit!important; text-align:left; cursor:pointer; transition:border-color 120ms ease,background-color 120ms ease; }
+.spt-player-status-button:hover { border-color:#9bb19e!important; background:#2b5546!important; }
+.spt-player-status-button:focus-visible { outline:3px solid #f3cb73; outline-offset:2px; }
+.spt-player-status-button .spt-wallet { pointer-events:none; }
+.spt-status-hint { justify-self:end; color:#c7d5c5; font-size:10px; text-decoration:underline; text-underline-offset:2px; }
+.spt-profile-dialog { width:min(420px,calc(100vw - 32px)); max-height:min(80vh,620px); overflow:auto; padding:20px; border:1px solid #a99a6f; border-radius:12px; background:#faf4e4; color:#26483b; box-shadow:0 16px 48px #071d1eb0; }
+.spt-profile-dialog::backdrop { background:#071d1ecc; }
+.spt-profile-dialog>header { display:flex; align-items:center; justify-content:space-between; gap:12px; margin-bottom:16px; }
+.spt-profile-dialog h2 { font-size:20px; }
+.spt-profile-dialog>header button { min-width:36px; min-height:36px; border:1px solid #859386; border-radius:7px; background:#fffbee; color:#26483b; font-size:22px; }
+.spt-profile-dialog p { margin:10px 0; line-height:1.5; }
+.spt-profile-dialog ul { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:6px 16px; margin:8px 0 16px; padding-left:20px; }
+.spt-profile-note { padding-top:10px; border-top:1px solid #d4ccb2; color:#526858; font-size:13px; }
 .spt-player>header>b { min-width:0; max-width:42%; overflow:hidden; color:#fff8e6; font-size:13px; text-overflow:ellipsis; }
 .spt-player>header>span { color:#e3e4d1; font-size:12px; }
 .spt-wallet { display:flex; align-items:center; justify-content:space-between; gap:4px; }

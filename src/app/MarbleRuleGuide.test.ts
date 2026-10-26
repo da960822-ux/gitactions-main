@@ -10,9 +10,23 @@ import { MarbleRuleGuide } from './MarbleRuleGuide';
 const options = { marbleVersion: 2, marbleEconomyVersion: 2, marbleCityRouteVersion: 3, marblePropertyRulesVersion: 1 };
 
 describe('Marble property-rule illustrated guide', () => {
+  it('renders the active historical profile guide without legacy city or economy values', () => {
+    const html = renderToStaticMarkup(createElement(MarbleRuleGuide, {
+      language: 'ko', rules: marblePropertyRules.ko,
+      options: { marbleEconomyVersion: 4, marbleCityRouteVersion: 4, marblePropertyRulesVersion: 1 },
+    }));
+    expect(html).toContain('32칸');
+    expect(html).toContain('5,000,000');
+    expect(html).toContain('750,000은 클래스 비례 추정치');
+    expect(html).toContain('방콕 예시');
+    expect(html).toContain('5,000 → 20,000 → 70,000 → 210,000 → 835,000');
+    expect(html).not.toContain('Gwangju');
+    expect(html).not.toContain('same color monopoly');
+  });
+
   it('uses current property helpers for every illustrated ledger amount', () => {
     const html = renderToStaticMarkup(createElement(MarbleRuleGuide, { language: 'es', rules: marblePropertyRules.es, options }));
-    const tile = marbleEngine.getPlayerView({ ...marbleEngine.createInitialState(1), economicVersion: 2 }, 'p1').board.tiles.find((tile: MarbleTile) => tile.name.es === 'Santo Domingo') as MarbleTile;
+    const tile = marbleEngine.getPlayerView({ ...marbleEngine.createInitialState(1), economicVersion: 2, cityRouteVersion: 3, referenceProfileId: undefined }, 'p1').board.tiles.find((tile: MarbleTile) => tile.name.es === 'Santo Domingo') as MarbleTile;
     const rows = html.match(/<tbody>(.*?)<\/tbody>/)?.[1].match(/<tr>.*?<\/tr>/g) ?? [];
     expect(rows).toHaveLength(4);
     rows.forEach((row, level) => {

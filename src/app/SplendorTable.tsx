@@ -223,6 +223,7 @@ export function SplendorTable({ view, language, playerId, roomId = null, version
   const board = record(view?.board), hand = record(view?.ownHand), choices: Choice[] = array(view?.actions);
   const bank = record(board.bank), market = record(board.market), nobles = record(board.nobles), scores = record(board.score);
   const publicBonuses = record(board.ownedBonuses);
+  const opponentSeat: PlayerId = playerId === 'p1' ? 'p2' : 'p1';
   const tokens = record(hand.tokens), owned = record(hand.bonuses), reserved = array(hand.reserved);
   const [picked, setPicked] = useState<string[]>([]), [returnDraft, setReturnDraft] = useState<Record<string, number>>({}), [selectedDoubleGem, setSelectedDoubleGem] = useState<string | null>(null), [reserveChoices, setReserveChoices] = useState<Record<string, number>>({}), [selectedCard, setSelectedCard] = useState<{ id: string; source: 'market' | 'reserved' | 'deck'; tier?: number; viewer: PlayerId; roomId: string | null; version: number } | null>(null);
   const actionPanelRef = useRef<HTMLElement | null>(null), cardFocusReturnRef = useRef<HTMLElement | null>(null);
@@ -231,6 +232,8 @@ export function SplendorTable({ view, language, playerId, roomId = null, version
   const previous = useRef<{ viewer: PlayerId; view: any; version: number; roomId: string | null } | null>(null);
   const eventTimer = useRef<number | null>(null);
   const [visualEvent, setVisualEvent] = useState<SplendorVisualEvent | null>(null);
+  const [profileOpen, setProfileOpen] = useState(false);
+  const profileDialog = useRef<HTMLDialogElement | null>(null);
   const takeChoices = choices.filter(choice => choice.action.type === 'take');
   const distinctAvailable = colors.filter(gem => Number(bank[gem] ?? 0) > 0).length;
   const needed = Math.min(3, distinctAvailable);
@@ -357,16 +360,32 @@ export function SplendorTable({ view, language, playerId, roomId = null, version
   const marketArrivals = new Set(shownEvent?.marketArrivals ?? []), reservedArrivals = new Set(shownEvent?.reservedArrivals ?? []);
   const scoreKey = `${playerId}:splendor`;
   const title = copy(language, '스플렌더', 'Splendor');
+  useEffect(() => {
+    const dialog = profileDialog.current;
+    if (profileOpen && dialog && !dialog.open) dialog.showModal();
+    else if (!profileOpen && dialog?.open) dialog.close();
+  }, [profileOpen]);
   return <div ref={tableRef} className="table-game sp-splendor" aria-label={copy(language, '스플렌더 게임판', 'Mesa de Splendor')}
     onFocusCapture={event => { cardInteractionFocusRef.current = event.target instanceof HTMLElement && event.target.closest('.sp-action-panel,[data-card-id]') ? event.target : null; }}
     onBlurCapture={event => { if (!event.currentTarget.contains(event.relatedTarget)) cardInteractionFocusRef.current = null; }}
     onClick={event=>{if(event.target===event.currentTarget||(event.target instanceof Element&&event.target.closest('.sp-card-empty')))setSelectedCard(null);}}>
     <header className="sp-scorebar">
       <div className="sp-title"><span>{title}</span></div>
-      {(['p1', 'p2'] as const).map((seat) => <div className={`sp-player-score ${seat === playerId ? 'is-you' : ''} ${view?.turn === seat ? 'is-active' : ''}`} data-sp-score-seat={seat} key={seat}>
-        <span>{seat === playerId ? copy(language, '나', 'Tú') : copy(language, '상대', 'Rival')}</span><b><GameValue value={Number(scores[seat] ?? 0)} resetKey={`${scoreKey}:${seat}`}/></b><small>{copy(language, '점', 'pts')}</small><small className="sp-public-card-count">{colors.reduce((total, gem) => total + Number(record(publicBonuses[seat])[gem] ?? 0), 0)} {copy(language, '개발 카드', 'cartas')}</small>{view?.turn === seat && !view?.result && <i>{copy(language, '차례', 'Turno')}</i>}<span className="sp-public-bonuses" aria-label={copy(language,'공개 영구 보너스','Bonificaciones permanentes públicas')}>{colors.map(gem=><span className={`sp-public-bonus sp-color-${gem}`} key={gem} title={gemName(gem,language)}><GemIcon gem={gem}/><b>{Number(record(record(board.ownedBonuses)[seat])[gem]??0)}</b></span>)}</span>
-      </div>)}
+      {(['p1', 'p2'] as const).map((seat) => { const isOpponent = seat !== playerId, ScoreArea = isOpponent ? 'button' : 'div'; return <ScoreArea className={`sp-player-score ${seat === playerId ? 'is-you' : ''} ${view?.turn === seat ? 'is-active' : ''}`} data-sp-score-seat={seat} key={seat} {...(isOpponent ? { type: 'button' as const, 'aria-haspopup': 'dialog' as const, 'aria-label': copy(language, '상대 보석과 보너스 자세히 보기', 'Ver las gemas y bonificaciones del rival'), onClick: () => setProfileOpen(true) } : {})}>
+        <span>{seat === playerId ? copy(language, '나', 'Tú') : copy(language, '상대', 'Rival')}</span><b><GameValue value={Number(scores[seat] ?? 0)} resetKey={`${scoreKey}:${seat}`}/></b><small>{copy(language, '점', 'pts')}</small><small className="sp-public-card-count">{colors.reduce((total, gem) => total + Number(record(publicBonuses[seat])[gem] ?? 0), 0)} {copy(language, '개발 카드', 'cartas')}</small>{view?.turn === seat && !view?.result && <i>{copy(language, '차례', 'Turno')}</i>}<span className="sp-public-bonuses" aria-label={copy(language,'공개 영구 보너스','Bonificaciones permanentes públicas')}>{colors.map(gem=><span className={`sp-public-bonus sp-color-${gem}`} key={gem} title={gemName(gem,language)}><GemIcon gem={gem}/><b>{Number(record(record(board.ownedBonuses)[seat])[gem]??0)}</b></span>)}</span>{isOpponent&&<span className="sp-player-detail-hint">{copy(language, '자세히 보기', 'Ver detalles')}</span>}
+      </ScoreArea>; })}
     </header>
+    <dialog ref={profileDialog} className="sp-profile-dialog" aria-labelledby="sp-profile-title" onClose={() => setProfileOpen(false)} onCancel={() => setProfileOpen(false)}>
+      <header><h2 id="sp-profile-title">{copy(language, '상대 공개 정보', 'Información pública rival')}</h2><button type="button" aria-label={copy(language, '닫기', 'Cerrar')} onClick={() => setProfileOpen(false)}>×</button></header>
+      <p><b>{copy(language, '점수', 'Puntos')}</b> · {Number(scores[opponentSeat] ?? 0)} {copy(language, '점', 'pts')}</p>
+      <p><b>{copy(language, '보유 토큰', 'Fichas')}</b> · {Number(view?.opponentCount ?? 0)}</p>
+      <SplendorPublicBonuses bonuses={record(publicBonuses[opponentSeat])} language={language}/>
+      {Number.isFinite(Number(record(board.cardPoints)[opponentSeat])) && <p><b>{copy(language, '개발 카드 점수', 'Puntos de desarrollo')}</b> · {Number(record(board.cardPoints)[opponentSeat])} {copy(language, '점', 'pts')}</p>}
+      <p><b>{copy(language, '구매한 개발 카드', 'Cartas de desarrollo adquiridas')}</b></p>
+      <SplendorAcquiredCards cards={array(record(board.acquiredCards)[opponentSeat])} historyComplete={record(board.acquiredCardHistoryComplete)[opponentSeat] === true} language={language}/>
+      <p><b>{copy(language, '예약 카드', 'Reservas')}</b> · {Number(board.reservedOpponentCount ?? 0)} / 3</p>
+      <div className="sp-profile-reserved" aria-label={copy(language, `상대 예약 카드 뒷면 ${Number(board.reservedOpponentCount ?? 0)}장`, `${Number(board.reservedOpponentCount ?? 0)} cartas reservadas boca abajo`)}>{Array.from({ length: Math.max(0, Math.min(3, Number(board.reservedOpponentCount ?? 0))) }, (_, index) => <span className="sp-card-back" aria-hidden="true" key={index}/>)}</div>
+    </dialog>
     <div className="sp-feedback-slot">{finalRound ? <p className="sp-turn-guide sp-final-turn" data-phase={guidance.phase} role="status">{finalTurnSeat === playerId ? copy(language, '15점에 도달했어요. 이번 차례가 마지막이에요.', 'Se alcanzaron 15 puntos. Este es el último turno.') : copy(language, '15점에 도달했어요. 상대의 마지막 차례예요.', 'Se alcanzaron 15 puntos. La otra persona tiene su último turno.')}</p> : guidance.phase === 'own-turn' && shownEvent && !selectedCard
       ? <p className={`sp-event sp-event-${shownEvent.kind}`} key={shownEvent.key} role="status">{eventCopy(shownEvent)}</p>
       : <p className="sp-turn-guide" data-phase={guidance.phase} role="status">{active&&selectedCard&&guidancePhase==='own-turn'?copy(language,'선택한 카드를 구매하거나 예약하세요.','Compra o reserva la carta seleccionada.'):active&&picked.length>0&&picked.length<needed?copy(language,`서로 다른 색 보석 ${needed}개를 고르세요 · ${picked.length}/${needed}`,`Elige ${needed} colores distintos · ${picked.length}/${needed}`):guidancePhase==='own-turn'&&takeChoices.length?copy(language,`보석 그림 ${needed}색 또는 카드를 고르세요.`,`Elige ${needed} colores de gemas o una carta.`):guidance.status}</p>}</div>
@@ -468,6 +487,17 @@ function SplendorMarketCard({card,language,selected,viewer,version,incoming,defi
     <div className={`sp-card-art sp-color-${bonus}`} data-art-src={artSrc??''} aria-hidden="true">{artSrc?<SplendorArtwork className="sp-card-face" src={artSrc}/>:<span className="sp-card-fallback"><GemIcon gem={bonus}/>{copy(language,'카드 그림을 불러올 수 없어요','Imagen no disponible')}</span>}</div>
     <div className="sp-card-details"><div className={`sp-bonus-label sp-color-${bonus}`} title={copy(language,`영구 보너스 ${gemName(bonus,language)}`,`Bonificación permanente ${gemName(bonus,language)}`)}><GemIcon gem={bonus}/><span>+1</span></div><b className="sp-card-prestige">{Number(card.points??0)} {copy(language,'점','pts')}</b><span className="sp-card-cost-summary" aria-hidden="true">{costColors.length?costColors.map(gem=><span className={`sp-card-cost-chip sp-color-${gem}`} key={gem} title={`${gemName(gem,language)} ${Number(card.cost[gem])}`}><GemIcon gem={gem}/><b>{Number(card.cost[gem])}</b></span>):<span className="sp-card-no-cost">{copy(language,'비용 없음','Sin costo')}</span>}</span>{selected&&<span className="sp-card-select-hint">{copy(language,'선택됨 · Esc 취소','Seleccionada · Esc cancela')}</span>}</div>
   </article>;
+}
+
+export function SplendorAcquiredCards({cards,historyComplete,language}:{cards:any[];historyComplete:boolean;language:Language}) {
+  return <>
+    <div className="sp-profile-acquired-cards">{cards.map((raw,index)=>{const card=record(raw),id=String(card.id??index),bonus=String(card.bonus??'white'),cost=colors.filter(gem=>Number(record(card.cost)[gem]??0)>0),artSrc=splendorCardArtSrc(id);return <article key={id} data-card-id={id} aria-label={copy(language,`${Number(card.tier)}단계 ${Number(card.points)}점 · ${gemName(bonus,language)} 보너스`, `Nivel ${Number(card.tier)}, ${Number(card.points)} pts · bono ${gemName(bonus,language)}`)}><span className="sp-profile-acquired-art" aria-hidden="true">{artSrc&&<SplendorArtwork src={artSrc}/>}</span><span className="sp-profile-acquired-info"><b>{copy(language,`${Number(card.tier)}단계 · ${Number(card.points)}점`,`Nivel ${Number(card.tier)} · ${Number(card.points)} pts`)}</b><span><GemIcon gem={bonus}/>{copy(language,`+1 ${gemName(bonus,language)} 보너스`,`+1 bono ${gemName(bonus,language)}`)}</span><small>{copy(language,'비용','Coste')} · {cost.map(gem=>`${Number(record(card.cost)[gem])} ${gemName(gem,language)}`).join(' · ')||copy(language,'없음','ninguno')}</small></span></article>;})}{!cards.length&&historyComplete&&<p>{copy(language,'아직 구매한 개발 카드가 없어요.','Aún no ha comprado cartas de desarrollo.')}</p>}</div>
+    {!historyComplete&&<p className="sp-profile-note">{copy(language,'이전 구매 카드 기록이 없어 목록이 일부일 수 있어요. 업데이트 뒤 구매한 카드만 표시합니다.','No hay registro de compras anteriores; la lista puede estar incompleta. Se muestran las cartas compradas desde la actualización.')}</p>}
+  </>;
+}
+
+export function SplendorPublicBonuses({bonuses,language}:{bonuses:Record<string,number>|undefined;language:Language}) {
+  return <p><b>{copy(language, '색별 영구 보너스', 'Bonificaciones permanentes por color')}</b> · {colors.map(gem => `${gemName(gem, language)} +${Number(bonuses?.[gem] ?? 0)}`).join(' · ')}</p>;
 }
 
 function SplendorReservedCard({card,language,desktopDisplay,selected,viewer,version,incoming,onSelect}:{card:RecordValue;language:Language;desktopDisplay:boolean;selected:boolean;viewer:PlayerId;version:number;incoming:boolean;onSelect:(target:HTMLElement,keyboard:boolean)=>void}) {

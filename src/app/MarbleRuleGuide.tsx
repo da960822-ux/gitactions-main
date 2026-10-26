@@ -3,6 +3,7 @@ import { marbleEngine, type MarbleTile } from '../games/marble';
 import { getBeginnerGuide, type BeginnerGuideOptions } from './beginner-guides';
 import { MarblePropertyArt } from './MarblePropertyArt';
 import { MarblePropertyLedger } from './MarblePropertyLedger';
+import { classicMarbleReferenceProfile } from '../games/marble-reference-profile';
 import './marble-rule-guide.css';
 
 const words = (language: Language, ko: string, es: string) => language === 'ko' ? ko : es;
@@ -38,8 +39,35 @@ export function MarbleRuleGuide({ language, rules, options = {}, teamMode = fals
   const exampleState = marbleEngine.createInitialState(1);
   exampleState.economicVersion = (options.marbleEconomyVersion ?? 3) as 1 | 2 | 3;
   exampleState.cityRouteVersion = (options.marbleCityRouteVersion ?? 3) as 2 | 3;
+  if (options.marbleEconomyVersion !== 4) exampleState.referenceProfileId = undefined;
   const exampleCity: MarbleTile = marbleEngine.getPlayerView(exampleState, 'p1').board.tiles.find((tile: MarbleTile) => tile.name.es === (language === 'es' ? 'Santo Domingo' : 'Gwangju'))!;
   const guide = getBeginnerGuide('marble', language, { ...options, marblePropertyRulesVersion: 1 })!;
+  if (options.marbleEconomyVersion === 4) {
+    const bangkok = classicMarbleReferenceProfile.cities[0];
+    const fmt = (amount: number) => new Intl.NumberFormat(language === 'ko' ? 'ko-KR' : 'es-DO').format(amount);
+    const ruleText = language === 'ko'
+      ? `2013년 카카오 모바일 월드맵·비즈니스 클래스 자료를 기준으로 합니다. 32칸(도시 18곳·관광지 5곳)이며 시작 현금은 ${fmt(classicMarbleReferenceProfile.startingCash.amount)}입니다. 출발 급여 ${fmt(classicMarbleReferenceProfile.salaryReference.amount)}은 클래스 비례 추정치라 원본 확인값이 아닙니다.`
+      : `Basado en una referencia histórica de 2013: mapa Mundial móvil de Kakao, clase Business. Tiene 32 casillas, 18 ciudades y 5 destinos turísticos. El efectivo inicial es ${fmt(classicMarbleReferenceProfile.startingCash.amount)}. El sueldo de Salida (${fmt(classicMarbleReferenceProfile.salaryReference.amount)}) es una estimación proporcional, no un dato confirmado.`;
+    return <div className="marble-rule-guide" lang={language === 'ko' ? 'ko' : 'es-DO'}>
+      <p className="marble-rule-goal">{t('도시와 관광지를 모으고, 건물을 지어 통행료를 받아요.', 'Compra ciudades y destinos; construye para cobrar alquiler.')}</p>
+      <p className="marble-rule-opening">{ruleText}</p>
+      <section className="marble-rule-building">
+        <h3>{t('도시 가격과 건설 단계', 'Precio de ciudades y etapas de construcción')}</h3>
+        <p>{t(`${bangkok.name} 예시 · 땅 ${fmt(bangkok.land)} · 빌라 ${fmt(bangkok.construction.villa)} · 빌딩 ${fmt(bangkok.construction.building)} · 호텔 ${fmt(bangkok.construction.hotel)} · 랜드마크 추가 ${fmt(bangkok.construction.landmark)}`, `Ejemplo, ${bangkok.name}: terreno ${fmt(bangkok.land)} · villa ${fmt(bangkok.construction.villa)} · edificio ${fmt(bangkok.construction.building)} · hotel ${fmt(bangkok.construction.hotel)} · suplemento de monumento ${fmt(bangkok.construction.landmark)}.`)}</p>
+        <p>{t(`통행료: ${bangkok.tollByCanonicalStage.map(fmt).join(' → ')}. 건설은 내 도시 도착 시 가능해요. 빌라는 처음부터, 빌딩은 내 주회 1회 완료 뒤, 호텔은 2회, 랜드마크는 3회 뒤 열려요. 빌라·빌딩·호텔은 각각 선택해 지을 수 있고 랜드마크는 세 종류를 모두 지어야 해요.`, `Alquiler: ${bangkok.tollByCanonicalStage.map(fmt).join(' → ')}. Solo puedes construir al caer en tu ciudad: villa desde el inicio, edificio tras 1 vuelta propia, hotel tras 2 y monumento tras 3. Villa, edificio y hotel se eligen por separado; el monumento requiere los tres.`)}</p>
+        <p>{t('도시 인수가는 땅과 일반 건물 투자액의 2배예요. 은행 매각은 일반 투자액의 절반이며 랜드마크 추가비는 포함되지 않아요. 같은 색 독점 추가 배수는 적용하지 않습니다.', 'Adquirir una ciudad cuesta el doble del terreno y los edificios normales. La venta al banco devuelve la mitad de esa inversión; no recupera el suplemento del monumento. No hay multiplicador adicional por monopolio de color.')}</p>
+      </section>
+      <section className="marble-rule-building">
+        <h3>{t('관광지', 'Destinos turísticos')}</h3>
+        <p>{t('은행 구매가 250,000 · 통행료 200,000 / 400,000 / 800,000. 섬 3곳은 같은 소유자의 섬 개수, 해변 2곳은 각 해변의 방문 단계로 통행료가 정해져요. 해변은 방문자가 기존 통행료를 낸 뒤 단계가 올라갑니다.', 'Compra al banco: 250.000 · alquiler: 200.000 / 400.000 / 800.000. Las tres islas dependen de cuántas posee una persona; las dos playas dependen de las visitas a cada playa. La etapa de playa sube después de cobrar el alquiler anterior.')}</p>
+        <p>{t('관광지 다섯 곳을 모두 소유하면 즉시 승리해요. 해변의 초기 단계와 소유자 없는 방문 때 단계가 오르는 규칙은 직접 자료가 없어 가정으로 처리합니다.', 'Poseer los cinco destinos da la victoria inmediata. La etapa inicial de playa y el avance cuando no tiene dueño son supuestos por falta de evidencia directa.')}</p>
+      </section>
+      <details className="guide-details marble-rule-details"><summary>{t('확인되지 않은 규칙과 자료 출처', 'Reglas pendientes y fuentes')}</summary>
+        <p>{t('세금·카드·올림픽·보너스 게임·세계 여행 효과는 이 자료로 확인되지 않아 임의의 금액이나 카드 효과를 적용하지 않아요. 월급 750,000은 추정값이며, 비정형 건물 조합의 통행료는 카이로의 빌딩 단독 사례 외에는 가산 규칙 추론입니다.', 'Los impuestos, cartas, Olimpiadas, bonificación y viaje mundial no están confirmados y no aplican importes inventados. El sueldo 750.000 es una estimación; salvo el caso observado de edificio solo en El Cairo, las combinaciones atípicas de edificios usan una suma inferida.')}</p>
+        <p><a href={classicMarbleReferenceProfile.source.constructionTable} target="_blank" rel="noreferrer">{t('표시된 건설비 자료', 'Tabla de construcción')}</a> · <a href={classicMarbleReferenceProfile.source.cityTolls} target="_blank" rel="noreferrer">{t('통행료 자료', 'Tabla de alquileres')}</a></p>
+      </details>
+    </div>;
+  }
   const detailedRules = teamMode ? rules.map((rule, index) => index === 0
     ? t('목표와 준비 — 우리 40칸·3단계 건설 팀전입니다. 각자 1500으로 출발하고 팀원과 번갈아 앉아요. 돈과 도시·대출은 개인별이며, 같은 팀 두 명이 모두 파산하면 패배합니다.', 'Objetivo y preparación — Nuestra variante por equipos tiene 40 casillas y tres niveles. Cada persona empieza con 1500 y los equipos se sientan alternados. El dinero, las ciudades y las deudas son individuales; el equipo pierde cuando ambos quiebran.')
     : index === 9

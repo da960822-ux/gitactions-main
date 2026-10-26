@@ -3,7 +3,7 @@ import { fourSeats, fourTeam } from '../core/fourPlayer';
 import { seededRandom, type GameAction } from '../core/types';
 import { fourMarbleEngine as engine, type FourMarbleState } from './fourMarble';
 
-const state = (seed = 1) => ({ ...engine.createInitialState(seed), propertyRulesVersion: undefined }) as FourMarbleState;
+const state = (seed = 1) => ({ ...engine.createInitialState(seed), propertyRulesVersion: undefined, referenceProfileId: undefined, cityRouteVersion: undefined, economicVersion: undefined, money: { p1: 1500, p2: 1500, p3: 1500, p4: 1500 } }) as FourMarbleState;
 function rollFor(total: number) {
   for (let seed = 0; seed < 10000; seed++) {
     const random = seededRandom(seed);
@@ -42,6 +42,16 @@ describe('four-seat Marble team variant', () => {
     expect(JSON.stringify(view)).not.toContain('"rng"');
     expect(engine.validateAction(s, 'p2', { type: 'roll' })).toBeTruthy();
     expect(engine.validateAction(s, 'p1', { type: 'roll', payload: { amount: 9999 } })).toBeTruthy();
+  });
+
+  it('debits only the builder account and records the bank transfer once', () => {
+    const s = state();
+    s.phase = 'main';
+    s.money.p1 = 1000;
+    s.properties['1'] = { owner: 'p1', houses: 0 };
+    const built = step(s, { type: 'build', payload: { tile: 1 } });
+    expect(built.money).toEqual({ p1: 960, p2: 1500, p3: 1500, p4: 1500 });
+    expect(built.actionLog.at(-1)).toMatchObject({ type: 'build', amount: 40, fromAccount: 'p1', toAccount: 'bank', moneyDelta: { p1: -40 } });
   });
 
   it('pays rent to the actual fourth seat, without touching another opponent', () => {
@@ -139,7 +149,7 @@ describe('four-seat Marble team variant', () => {
 });
 
 it('charges the first tied leader when the golden-card drawer is outside the leading monopoly tie',()=>{
- const s=engine.createInitialState(rollFor(2)) as FourMarbleState;
+ const s=state(rollFor(2));
  s.eventDeck=['monopoly-warning'];s.properties={1:{owner:'p2',houses:0},15:{owner:'p2',houses:0},4:{owner:'p4',houses:0},5:{owner:'p4',houses:0}};
  const outside=step(s,{type:'roll'});
  expect(outside.money).toEqual({p1:1500,p2:1400,p3:1500,p4:1500});
