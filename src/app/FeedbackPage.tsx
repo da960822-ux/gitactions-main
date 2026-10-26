@@ -53,7 +53,8 @@ export function FeedbackPage({ language, mode, entries, loading, error, canCreat
     submission.current = true;
     setSaving(true); setActionError(''); setSaved(false);
     try {
-      await onCreate({ category, title: Array.from(cleanBody.replace(/\s+/g, ' ')).slice(0, 60).join(''), body: cleanBody }, request.current.id);
+      const entry = await onCreate({ category, title: Array.from(cleanBody.replace(/\s+/g, ' ')).slice(0, 60).join(''), body: cleanBody }, request.current.id);
+      if (!entry) return;
       setBody(''); setCategory('game'); request.current = null; setSaved(true);
     } catch {
       setActionError(copy(language, '아이디어를 보내지 못했어요. 다시 시도해 주세요.', 'No se pudo enviar la idea. Inténtalo de nuevo.'));

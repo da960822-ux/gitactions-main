@@ -31,6 +31,7 @@ export function FeedbackRoute() {
   const [joinError, setJoinError] = useState<string | null>(null);
   const refreshGeneration = useRef(0);
   const initialization = useRef<Promise<string> | null>(null);
+  const activeSpace = useRef(spaceId);
   const es = language === 'es';
 
   const refresh = useCallback(async () => {
@@ -41,12 +42,11 @@ export function FeedbackRoute() {
       if (!id) {
         if (inviteSpace) return;
         // The storage scope is an internal detail, never a setup step for writing.
-        initialization.current ??= feedback.createSpace().then(created => {
-          if (!writeBrowserStorage('dos-feedback-space', created)) setStorageIssue('space');
-          return created;
-        }).catch(reason => { initialization.current = null; throw reason; });
+        initialization.current ??= feedback.createSpace().catch(reason => { initialization.current = null; throw reason; });
         id = await initialization.current;
         if (!isCurrent()) return;
+        activeSpace.current = id;
+        if (!writeBrowserStorage('dos-feedback-space', id)) setStorageIssue('space');
         setSpaceId(id);
       }
       const seat = await feedback.getRole(id);
@@ -79,10 +79,13 @@ export function FeedbackRoute() {
     event.preventDefault();
     const id = joinCode.trim();
     if (!id || joining) return;
+    if (document.querySelector<HTMLTextAreaElement>('#feedback-body')?.value.trim()
+      && !window.confirm(copy(language, '공간을 바꾸면 작성 중인 글이 이 화면에서 사라져요. 계속할까요?', 'Si cambias de espacio, el borrador desaparecerá de esta pantalla. ¿Continuar?'))) return;
     setJoining(true); setJoinError(null);
     try {
       const seat = await feedback.joinSpace(id);
       refreshGeneration.current += 1;
+      activeSpace.current = id;
       if (!writeBrowserStorage('dos-feedback-space', id)) setStorageIssue('space');
       history.replaceState(null, '', '/feedback');
       setInviteSpace(''); setJoinCode(''); setSpaceId(id); setEntries([]); setRole(seat); setMemberCount(null); setLoading(true); setError(null);
@@ -106,8 +109,8 @@ export function FeedbackRoute() {
       </nav>
     </header>
     <div className="wrap feedback-access-note"><div><b>{copy(language, '아이디어 공간', 'Espacio de ideas')}</b>{memberCount !== null && <p role="status">{memberCount === 1 ? copy(language, '현재 이 공간에 참여한 계정은 1개예요. 다른 사람에게 참여 링크를 보내야 함께 볼 수 있어요.', 'Hay una cuenta en este espacio. Comparte la invitación para que otra persona pueda verlo.') : copy(language, '현재 이 공간에 참여한 계정은 2개예요.', 'Hay dos cuentas en este espacio.')}</p>}{role && memberCount === 1 && <p>{copy(language, '이 링크를 가진 사람이 참여할 수 있어요. 원하는 상대에게만 비공개로 공유하세요.', 'Quien tenga este enlace puede unirse. Compártelo en privado solo con la persona prevista.')}</p>}{storageIssue && <p className="feedback-storage-note" role="status">{storageIssue === 'language' ? copy(language, '언어를 바꿨지만 다음 방문을 위해 저장하지 못했어요.', 'Cambiamos el idioma, pero no pudimos guardarlo para la próxima visita.') : copy(language, '브라우저 저장소를 사용할 수 없어 이 공간이나 언어를 다음 방문을 위해 기억하지 못할 수 있어요.', 'El almacenamiento del navegador no está disponible; quizá no podamos recordar este espacio o idioma en tu próxima visita.')}</p>}</div><div className="feedback-space-actions"><button className="secondary-action" onClick={() => void refresh()}>{copy(language, '새로고침', 'Actualizar')}</button>{role && isFeedbackOnline && <button className="secondary-action" onClick={() => void copyInvite()}>{copy(language, '이 공간 링크 복사', 'Copiar enlace de este espacio')}</button>}</div></div>
-    {isFeedbackOnline && <form className="wrap feedback-join-form" onSubmit={joinSpace}><label htmlFor="feedback-invite-code">{copy(language, '다른 아이디어 공간에 참여하기', 'Entrar en otro espacio de ideas')}</label>{inviteSpace && <p>{copy(language, '참여 링크가 열렸어요. 아래에서 참여를 눌러 연결하세요.', 'Abriste una invitación. Pulsa Entrar para conectarte.')}</p>}{spaceId && <p>{copy(language, '참여하면 이 브라우저에 표시되는 공간이 바뀌어요. 기존 아이디어는 이전 공간에 남으니, 돌아오려면 먼저 그 공간의 링크를 보관하세요.', 'Al entrar, este navegador mostrará otro espacio. Tus ideas anteriores seguirán en el espacio previo; guarda su enlace si quieres volver.')}</p>}<input id="feedback-invite-code" value={joinCode} onChange={event => setJoinCode(event.target.value)} placeholder={copy(language, '참여 코드 붙여넣기', 'Pega el código de invitación')} autoComplete="off"/><button className="secondary-action" disabled={joining || !joinCode.trim()}>{joining ? copy(language, '연결 중…', 'Conectando…') : copy(language, '참여하기', 'Entrar')}</button>{inviteSpace && <button type="button" className="secondary-action" onClick={() => { history.replaceState(null, '', '/feedback'); setInviteSpace(''); setJoinCode(''); }}>{copy(language, '초대 닫기', 'Cerrar invitación')}</button>}{joinError && <p className="feedback-error" role="alert">{joinError}</p>}</form>}
-    {!inviteSpace && <FeedbackPage language={language} mode={isFeedbackOnline ? 'online' : 'demo'} entries={entries} loading={loading} error={error} canCreate={Boolean(spaceId) && (!isFeedbackOnline || role === 'p1' || role === 'p2')} canAcknowledge={!isFeedbackOnline || role === 'p1'} onCreate={async (input,requestId) => { const entry = await feedback.create(spaceId,input,requestId); refreshGeneration.current += 1; setEntries(items => [entry, ...items.filter(item => item.id !== entry.id)]); }} onSetStatus={async (id,status) => { await feedback.updateStatus(spaceId,id,status); refreshGeneration.current += 1; setEntries(items => items.map(item => item.id === id ? { ...item, status } : item)); }}/>
+    {isFeedbackOnline && <form className="wrap feedback-join-form" onSubmit={joinSpace}><label htmlFor="feedback-invite-code">{copy(language, '다른 아이디어 공간에 참여하기', 'Entrar en otro espacio de ideas')}</label>{inviteSpace && <p>{copy(language, '참여 링크가 열렸어요. 아래에서 참여를 눌러 연결하세요.', 'Abriste una invitación. Pulsa Entrar para conectarte.')}</p>}{spaceId && <p>{copy(language, '참여하면 이 브라우저에 표시되는 공간이 바뀌어요. 기존 아이디어는 이전 공간에 남으니, 돌아오려면 먼저 그 공간의 링크를 보관하세요.', 'Al entrar, este navegador mostrará otro espacio. Tus ideas anteriores seguirán en el espacio previo; guarda su enlace si quieres volver.')}</p>}<input id="feedback-invite-code" value={joinCode} onChange={event => setJoinCode(event.target.value)} placeholder={copy(language, '참여 코드 붙여넣기', 'Pega el código de invitación')} autoComplete="off" disabled={joining}/><button className="secondary-action" disabled={joining || !joinCode.trim()}>{joining ? copy(language, '연결 중…', 'Conectando…') : copy(language, '참여하기', 'Entrar')}</button>{inviteSpace && <button type="button" className="secondary-action" disabled={joining} onClick={() => { history.replaceState(null, '', '/feedback'); setInviteSpace(''); setJoinCode(''); }}>{copy(language, '초대 닫기', 'Cerrar invitación')}</button>}{joinError && <p className="feedback-error" role="alert">{joinError}</p>}</form>}
+    {!inviteSpace && <FeedbackPage key={spaceId} language={language} mode={isFeedbackOnline ? 'online' : 'demo'} entries={entries} loading={loading} error={error} canCreate={Boolean(spaceId) && (!isFeedbackOnline || role === 'p1' || role === 'p2')} canAcknowledge={!isFeedbackOnline || role === 'p1'} onCreate={async (input,requestId) => { const id = spaceId; const entry = await feedback.create(id,input,requestId); if (activeSpace.current !== id) return; refreshGeneration.current += 1; setEntries(items => [entry, ...items.filter(item => item.id !== entry.id)]); return entry; }} onSetStatus={async (id,status) => { const currentSpace = spaceId; await feedback.updateStatus(currentSpace,id,status); if (activeSpace.current !== currentSpace) return; refreshGeneration.current += 1; setEntries(items => items.map(item => item.id === id ? { ...item, status } : item)); }}/>
     }
   </div>;
 }
