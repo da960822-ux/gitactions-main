@@ -4,6 +4,7 @@ import { marbleEngine, marbleBuildCost, marbleCityValue, marbleRentMultipliers, 
 import { marbleRentAtStage } from './marble-economy';
 import { classicMarbleAssetValue, classicMarbleAvailableStructures, classicMarbleCityToll, classicMarbleConstructionCost, classicMarbleReferenceProfile, classicMarbleSaleValue, type ClassicMarbleBuildings, type ClassicMarbleStructure } from './marble-reference-profile';
 import { classicMarbleIslandCount, classicMarbleTourismRent } from './marble-tourism-selector';
+import { classicOlympicToll, classicOlympicsMultiplier, type ClassicOlympics } from './marble-classic-specials';
 
 const freshMarbleState = marbleEngine.createInitialState(0);
 const board: MarbleTile[] = marbleEngine.getPlayerView(freshMarbleState, 'p1').board.tiles.map((tile: MarbleTile) => ({ ...tile, name: { ...tile.name }, rentMultipliers: marbleRentMultipliers }));
@@ -21,7 +22,7 @@ const eventNames: Record<MarbleEventId, ReturnType<typeof l>> = {
   'city-dividend': l('도시당 배당금 30', 'Dividendo de 30 por ciudad'), 'monopoly-warning': l('독점 경고', 'Advertencia de monopolio'),
   'city-festival': l('내 도시 다음 적 착지 통행료 2배', 'Alquiler doble en la próxima llegada rival'), blackout: l('적 도시 다음 내 착지 통행료 절반', 'Mitad del alquiler en tu próxima llegada rival'), 'rent-pass': l('통행료 면제권 획득', 'Pase de alquiler recibido'),
 };
-type Phase = 'roll' | 'main' | 'decision' | 'island' | 'train-decision' | 'rent-decision' | 'event-decision' | 'debt' | 'finished';
+type Phase = 'roll' | 'main' | 'decision' | 'island' | 'train-decision' | 'rent-decision' | 'event-decision' | 'olympic-decision' | 'debt' | 'finished';
 type Property = { owner: FourSeat; houses: number; buildings?: ClassicMarbleBuildings };
 type Creditor = FourSeat | 'bank' | 'fund';
 type FourMarbleEvent = { sequence: number; type: string; actor: FourSeat; title: ReturnType<typeof l>; text: ReturnType<typeof l>; [key: string]: unknown };
@@ -36,19 +37,20 @@ export interface FourMarbleState {
   lastMove: { sequence: number; playerId: FourSeat; from: number; to: number; steps: number; source: string } | null;
   propertyRulesVersion?: 1; takeoverTile?: number | null; doublesCount?: number; extraRoll?: boolean;
   referenceProfileId?: string; cityRouteVersion?: 4; economicVersion?: 4; completedLaps?: Record<FourSeat, number>; salaryAmount?: number; salaryStatus?: 'verified' | 'inferred'; buildArrivalTile?: number | null; tourismVisitStages?: Record<string, number>;
+  activeOlympics?: ClassicOlympics; olympicHostings?: number;
   pawns: Record<FourSeat, MarblePawnId>; pawnLocked: Record<FourSeat, boolean>;
 }
-type TeamMarbleTileView = MarbleTile & { owner: FourSeat | null; houses: number; buildings: ClassicMarbleBuildings; currentToll: number | null; nextBuildOptions: { structure: ClassicMarbleStructure; cost: number | null; tollAfter: number | null }[]; monopolyMultiplier: number };
+type TeamMarbleTileView = MarbleTile & { owner: FourSeat | null; houses: number; buildings: ClassicMarbleBuildings; currentToll: number | null; nextBuildOptions: { structure: ClassicMarbleStructure; cost: number | null; tollAfter: number | null }[]; monopolyMultiplier: number; olympicMultiplier: number };
 export type MarbleView = FourView & { publicBoard: TeamMarbleTileView[]; publicState: Omit<FourMarbleState, 'rng' | 'eventDeck'> };
 const seatMap = <T>(value: T): Record<FourSeat, T> => Object.fromEntries(fourSeats.map(p => [p, value])) as Record<FourSeat, T>;
-const rent = (tile: MarbleTile, prop: Property, s?: Pick<FourMarbleState, 'properties' | 'propertyRulesVersion' | 'referenceProfileId' | 'tourismVisitStages'>) => {
-  if (tile.referenceProfileId === classicMarbleReferenceProfile.id && tile.kind === 'property') return classicMarbleCityToll(tile.referenceCity ?? tile.name.ko, prop.buildings) ?? 0;
-  if (tile.referenceProfileId === classicMarbleReferenceProfile.id && tile.kind === 'tourism') {
-    const spaces = s ? boardFor(s) : board, index = spaces.findIndex(space => space.name.ko === tile.name.ko);
-    const ownerTourismCount = s ? classicMarbleIslandCount(Object.entries(s.properties).filter(([ownedIndex, item]) => item.owner === prop.owner && spaces[Number(ownedIndex)].kind === 'tourism').map(([ownedIndex]) => spaces[Number(ownedIndex)].name.ko)) : 1;
-    return classicMarbleTourismRent(tile.name.ko, { ownerTourismCount, beachVisitStage: s?.tourismVisitStages?.[String(index)] ?? 1, visitorPosition: 0, landingIndex: index }).amount ?? 0;
-  }
-  return marbleRentAtStage(tile.rent ?? 0, prop.houses, 3, true, tile.rentMultipliers ?? marbleRentMultipliers, s?.propertyRulesVersion === 1 && groups(s, prop.owner).includes(tile.group!) ? 2 : 1);
+const rent = (tile: MarbleTile, prop: Property, s?: Pick<FourMarbleState, 'properties' | 'propertyRulesVersion' | 'referenceProfileId' | 'tourismVisitStages' | 'activeOlympics'>) => {
+  const spaces = s ? boardFor(s) : board, index = spaces.findIndex(space => space.name.ko === tile.name.ko);
+  const base = tile.referenceProfileId === classicMarbleReferenceProfile.id && tile.kind === 'property'
+    ? classicMarbleCityToll(tile.referenceCity ?? tile.name.ko, prop.buildings) ?? 0
+    : tile.referenceProfileId === classicMarbleReferenceProfile.id && tile.kind === 'tourism'
+      ? classicMarbleTourismRent(tile.name.ko, { ownerTourismCount: s ? classicMarbleIslandCount(Object.entries(s.properties).filter(([ownedIndex, item]) => item.owner === prop.owner && spaces[Number(ownedIndex)].kind === 'tourism').map(([ownedIndex]) => spaces[Number(ownedIndex)].name.ko)) : 1, beachVisitStage: s?.tourismVisitStages?.[String(index)] ?? 1, visitorPosition: 0, landingIndex: index }).amount ?? 0
+      : marbleRentAtStage(tile.rent ?? 0, prop.houses, 3, true, tile.rentMultipliers ?? marbleRentMultipliers, s?.propertyRulesVersion === 1 && groups(s, prop.owner).includes(tile.group!) ? 2 : 1);
+  return classicOlympicToll(s?.activeOlympics, index, base);
 };
 const owned = (s: FourMarbleState, p: FourSeat) => Object.entries(s.properties).filter(([, property]) => property.owner === p);
 const groups = (s: Pick<FourMarbleState, 'properties' | 'referenceProfileId'>, p: FourSeat) => { const spaces = boardFor(s); return [...new Set(spaces.filter(t => t.group).map(t => t.group!))].filter(group => spaces.every((t, index) => t.group !== group || s.properties[index]?.owner === p)); };
@@ -132,6 +134,11 @@ function land(s: FourMarbleState, p: FourSeat, drawEvent: boolean) {
   if (s.referenceProfileId === classicMarbleReferenceProfile.id) s.buildArrivalTile = null;
   log(s, `${p} · ${tile.name.ko} 도착`, `${p} · llegada a ${tile.name.es}`);
   emit(s, 'arrival', p, l(`${tile.name.ko} 도착`, `Llegada a ${tile.name.es}`), tile.name, { tile: index });
+  if (tile.referenceEffect === 'olympic') {
+    s.phase = 'olympic-decision';
+    emit(s, 'event-card', p, l('올림픽 개최지 선택', 'Elige la sede olímpica'), l('내 도시나 관광지 한 곳을 개최지로 지정합니다. 개최 배수는 2배부터 5배까지 순차 상승합니다.', 'Elige una ciudad o destino propio. El multiplicador de sede avanza de ×2 a ×5.'), { tile: index });
+    return;
+  }
   if (tile.kind === 'property' || tile.kind === 'tourism') {
     const property = s.properties[index];
     const tourism = tile.kind === 'tourism' ? classicMarbleReferenceProfile.tourism.find(site => site.name === tile.name.ko) : undefined;
@@ -142,7 +149,8 @@ function land(s: FourMarbleState, p: FourSeat, drawEvent: boolean) {
       s.phase = 'decision'; advanceBeach();
     } else if (property.owner !== p && fourTeam(property.owner) !== fourTeam(p) && tile.kind === 'tourism') {
       const ownerTourismCount = classicMarbleIslandCount(owned(s, property.owner).filter(([ownedIndex]) => spaces[Number(ownedIndex)].kind === 'tourism').map(([ownedIndex]) => spaces[Number(ownedIndex)].name.ko));
-      const toll = classicMarbleTourismRent(tile.name.ko, { ownerTourismCount, beachVisitStage: visitStage, visitorPosition: s.positions[p], landingIndex: index });
+      const rawToll = classicMarbleTourismRent(tile.name.ko, { ownerTourismCount, beachVisitStage: visitStage, visitorPosition: s.positions[p], landingIndex: index });
+      const toll = rawToll.amount === null ? rawToll : { ...rawToll, amount: classicOlympicToll(s.activeOlympics, index, rawToll.amount) };
       if (toll.amount !== null) {
         const paymentPending = s.money[p] < toll.amount;
         pay(s, p, toll.amount, property.owner);
@@ -220,6 +228,11 @@ function actions(s: FourMarbleState, p: FourSeat): FourView['actions'] {
     add(`통행료 ${s.pendingRent!.amount} 지급`, `Pagar alquiler de ${s.pendingRent!.amount}`, 'pay-rent');
     add('통행료 면제권 사용', 'Usar pase de alquiler', 'use-rent-pass'); return choices;
   }
+  if (s.phase === 'olympic-decision') {
+    for (const [index] of owned(s, p)) if (board[Number(index)]?.kind === 'property' || board[Number(index)]?.kind === 'tourism') add(`${board[Number(index)].name.ko} 개최`, `Celebrar en ${board[Number(index)].name.es}`, 'choose-olympic-target', { tile: Number(index) });
+    add('올림픽 개최 건너뛰기', 'Pasar los Juegos Olímpicos', 'skip-olympics');
+    return choices;
+  }
   if (s.phase === 'event-decision') {
     for (const [index, prop] of Object.entries(s.properties)) if (s.pendingEvent === 'city-festival' ? prop.owner === p : fourTeam(prop.owner) !== fourTeam(p) && !(s.propertyRulesVersion === 1 && prop.houses === 3)) add(`${board[Number(index)].name.ko} 선택`, `Elegir ${board[Number(index)].name.es}`, 'choose-event-city', { tile: Number(index) });
     return choices;
@@ -230,7 +243,8 @@ function actions(s: FourMarbleState, p: FourSeat): FourView['actions'] {
   }
   if (s.phase === 'island') {
     add('쌍으로 탈출 시도', 'Intentar salir con dobles', 'attempt-doubles');
-    if (s.referenceProfileId !== classicMarbleReferenceProfile.id && s.money[p] >= 100) add('100을 내고 탈출', 'Pagar 100 para salir', 'pay-escape');
+    const escapeFee = s.referenceProfileId === classicMarbleReferenceProfile.id ? classicMarbleReferenceProfile.rules.islandEscapeFee : { amount: 100, status: 'verified' };
+    if (escapeFee.status === 'verified' && s.money[p] >= escapeFee.amount) add(`탈출 비용 ${escapeFee.amount}`, `Pagar ${escapeFee.amount} para salir`, 'pay-escape');
     if (s.escapePasses[p]) add('탈출권 사용', 'Usar pase de salida', 'use-escape-pass');
   }
   if (s.phase === 'train-decision') {
@@ -274,14 +288,16 @@ function validation(s: FourMarbleState, p: FourSeat, a: GameAction): string | nu
 export const fourMarbleEngine: FourEngine = {
   id: 'marble',
   createInitialState(seed): FourMarbleState {
-    return { propertyRulesVersion: 1, takeoverTile: null, doublesCount: 0, extraRoll: false, rng: seed >>> 0, active: 'p1', phase: 'roll', positions: seatMap(0), money: seatMap(classicMarbleReferenceProfile.startingCash.amount), debt: seatMap(0), properties: {}, eliminated: seatMap(false), islandTurns: seatMap(0), trainReady: seatMap(false), escapePasses: seatMap(0), rentPasses: seatMap(0), eventDeck: shuffle(eventIds, seededRandom(seed ^ 0xa5a5a5a5)), fundPool: 0, turns: 0, result: null, pendingTile: null, trainFare: 100, trainFromCard: false, pendingRent: null, pendingEvent: null, pendingPayment: null, modifiers: {}, lastRoll: [], log: [], actionLog: [], actionSequence: 0, diceSequence: 0, moveSequence: 0, lastMove: null, pawns: { p1: 'fox', p2: 'cat', p3: 'penguin', p4: 'astronaut' }, pawnLocked: seatMap(false), referenceProfileId: classicMarbleReferenceProfile.id, cityRouteVersion: 4, economicVersion: 4, completedLaps: seatMap(0), salaryAmount: classicMarbleReferenceProfile.salaryReference.amount, salaryStatus: 'inferred', buildArrivalTile: null, tourismVisitStages: Object.fromEntries(board.flatMap((tile, index) => tile.kind === 'tourism' ? [[index, 1]] : [])) };
+    return { propertyRulesVersion: 1, takeoverTile: null, doublesCount: 0, extraRoll: false, rng: seed >>> 0, active: 'p1', phase: 'roll', positions: seatMap(0), money: seatMap(classicMarbleReferenceProfile.startingCash.amount), debt: seatMap(0), properties: {}, eliminated: seatMap(false), islandTurns: seatMap(0), trainReady: seatMap(false), escapePasses: seatMap(0), rentPasses: seatMap(0), eventDeck: shuffle(eventIds, seededRandom(seed ^ 0xa5a5a5a5)), fundPool: 0, turns: 0, result: null, pendingTile: null, trainFare: 100, trainFromCard: false, pendingRent: null, pendingEvent: null, pendingPayment: null, modifiers: {}, lastRoll: [], log: [], actionLog: [], actionSequence: 0, diceSequence: 0, moveSequence: 0, lastMove: null, pawns: { p1: 'fox', p2: 'cat', p3: 'penguin', p4: 'astronaut' }, pawnLocked: seatMap(false), referenceProfileId: classicMarbleReferenceProfile.id, cityRouteVersion: 4, economicVersion: 4, completedLaps: seatMap(0), salaryAmount: classicMarbleReferenceProfile.salaryReference.amount, salaryStatus: 'inferred', buildArrivalTile: null, tourismVisitStages: Object.fromEntries(board.flatMap((tile, index) => tile.kind === 'tourism' ? [[index, 1]] : [])), activeOlympics: null, olympicHostings: 0 };
   },
   validateAction: validation,
   applyAction(state: FourMarbleState, p, a): FourMarbleState {
     const error = validation(state, p, a); if (error) throw new Error(error);
     const board = boardFor(state);
     const s: FourMarbleState = structuredClone(state), x = a.payload ?? {};
-    if (a.type === 'choose-pawn') {
+    if (a.type === 'choose-olympic-target') { const index = Number(x.tile), multiplier = classicOlympicsMultiplier(s.olympicHostings ?? 0); s.activeOlympics = { tile: index, multiplier, host: p }; s.olympicHostings = (s.olympicHostings ?? 0) + 1; s.phase = 'main'; emit(s, 'event-card', p, l('올림픽 개최', 'Juegos Olímpicos'), l(`${board[index].name.ko} · 통행료 ${multiplier}배`, `${board[index].name.es} · alquiler ×${multiplier}`), { tile: index, amount: multiplier }); }
+    else if (a.type === 'skip-olympics') s.phase = 'main';
+    else if (a.type === 'choose-pawn') {
       s.pawns[p] = x.pawn as MarblePawnId;
       emit(s, 'pawn', p, l('말 선택', 'Figura elegida'), pawnNames[s.pawns[p]]);
     } else if (a.type === 'borrow') {
@@ -315,7 +331,7 @@ export const fourMarbleEngine: FourEngine = {
       if (a.type === 'attempt-doubles' && d1 !== d2) { s.islandTurns[p]--; finishTurn(s, p); }
       else { s.islandTurns[p] = 0; move(s, p, (s.positions[p] + d1 + d2) % board.length, true, a.type === 'attempt-doubles' ? 'island' : 'dice', d1 + d2); land(s, p, true); }
     } else if (a.type === 'pay-escape' || a.type === 'use-escape-pass') {
-      if (a.type === 'pay-escape') s.money[p] -= 100; else { s.escapePasses[p]--; s.eventDeck.push('escape-pass'); }
+      if (a.type === 'pay-escape') s.money[p] -= s.referenceProfileId === classicMarbleReferenceProfile.id ? classicMarbleReferenceProfile.rules.islandEscapeFee.amount : 100; else { s.escapePasses[p]--; s.eventDeck.push('escape-pass'); }
       s.islandTurns[p] = 0; s.phase = 'roll';
     } else if (a.type === 'choose-train') { s.money[p] -= s.trainFare; s.trainReady[p] = false; emit(s, 'train', p, l('열차 출발', 'El tren sale')); move(s, p, Number(x.destination), true, 'train'); land(s, p, false); }
     else if (a.type === 'skip-train') { s.trainReady[p] = false; s.phase = s.trainFromCard ? 'main' : 'roll'; }
@@ -350,9 +366,9 @@ export const fourMarbleEngine: FourEngine = {
         ? classicMarbleTourismRent(tile.name.ko, { ownerTourismCount: tourismCount, beachVisitStage: s.tourismVisitStages?.[String(index)] ?? 1, visitorPosition: s.positions[p], landingIndex: index }).amount
         : rent(tile, property, s);
       const nextBuildOptions = property?.owner === p && tile.kind === 'property' && s.referenceProfileId === classicMarbleReferenceProfile.id
-        ? classicMarbleAvailableStructures(property.buildings ?? {}, s.completedLaps?.[p] ?? 0, s.buildArrivalTile === index).map(structure => ({ structure, cost: classicMarbleConstructionCost(tile.referenceCity ?? tile.name.ko, structure), tollAfter: classicMarbleCityToll(tile.referenceCity ?? tile.name.ko, { ...(property.buildings ?? {}), [structure]: true }) }))
+        ? classicMarbleAvailableStructures(property.buildings ?? {}, s.completedLaps?.[p] ?? 0, s.buildArrivalTile === index).map(structure => ({ structure, cost: classicMarbleConstructionCost(tile.referenceCity ?? tile.name.ko, structure), tollAfter: classicOlympicToll(s.activeOlympics, index, classicMarbleCityToll(tile.referenceCity ?? tile.name.ko, { ...(property.buildings ?? {}), [structure]: true }) ?? 0) }))
         : [];
-      return { ...structuredClone(tile), owner: property?.owner ?? null, houses: property?.houses ?? 0, buildings: property?.buildings ?? {}, currentToll, nextBuildOptions, monopolyMultiplier: s.propertyRulesVersion === 1 && property && tile.group && groups(s, property.owner).includes(tile.group) ? 2 : 1 };
+      return { ...structuredClone(tile), owner: property?.owner ?? null, houses: property?.houses ?? 0, buildings: property?.buildings ?? {}, currentToll, nextBuildOptions, monopolyMultiplier: s.propertyRulesVersion === 1 && property && tile.group && groups(s, property.owner).includes(tile.group) ? 2 : 1, olympicMultiplier: s.activeOlympics?.tile === index ? s.activeOlympics.multiplier : 1 };
     }), publicState: visible };
   },
   chooseAiAction(rawView, p, random = Math.random) {
@@ -373,6 +389,7 @@ export const fourMarbleEngine: FourEngine = {
         const cost = marbleBuildCost(tile, prop.houses, 3); return cash - cost >= reserve ? 5 + (rent(tile, { ...prop, houses: prop.houses + 1 }, s) - rent(tile, prop, s)) / cost * 8 + exposure(index) * 10 : -5; }
       if (a.type === 'use-escape-pass') return 20;
       if (a.type === 'pay-escape') return cash > reserve + 300 && s.islandTurns[p] > 1 ? 10 : -5;
+      if (a.type === 'choose-olympic-target') { const index = Number(x.tile), prop = s.properties[index], currentMultiplier = s.activeOlympics?.tile === index ? s.activeOlympics.multiplier : 1; return rent(board[index], prop, s) / currentMultiplier * classicOlympicsMultiplier(s.olympicHostings ?? 0) * exposure(index); }
       if (a.type === 'use-rent-pass') return s.pendingRent!.amount > 80 || cash < s.pendingRent!.amount + reserve ? 20 : -1;
       if (a.type === 'choose-train') { const index = Number(x.destination), tile = board[index], prop = s.properties[index]; if (prop && fourTeam(prop.owner) !== fourTeam(p)) return -20; return !prop && cash > s.trainFare + tile.price! + reserve ? 10 + (tile.rent ?? 0) / tile.price! + (index < s.positions[p] ? 3 : 0) : (prop && fourTeam(prop.owner) === fourTeam(p) && index < s.positions[p] ? 4 : -1); }
       if (a.type === 'choose-event-city') { const index = Number(x.tile), property = s.properties[index]; return rent(board[index], property, s) * (s.pendingEvent === 'city-festival' ? exposure(index) : .1 + ((index - s.positions[p] + board.length) % board.length <= 12 ? 1 : 0)); }

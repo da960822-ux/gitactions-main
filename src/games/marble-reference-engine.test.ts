@@ -3,6 +3,7 @@ import { seededRandom } from '../core/types';
 import { fourMarbleEngine, type FourMarbleState, type MarbleView as TeamMarbleView } from './fourMarble';
 import { marbleBuildCost, marbleEngine, type MarbleEventId, type MarbleState } from './marble';
 import { classicMarbleCityToll, classicMarbleReferenceProfile } from './marble-reference-profile';
+import { classicOlympicsMultiplier } from './marble-classic-specials';
 
 function seedForSum(sum: number) {
   for (let seed = 0; seed < 10_000; seed++) {
@@ -298,6 +299,7 @@ describe('active Kakao World / Business engine profile', () => {
   });
 
   it('does not offer the unverified legacy 100 escape fee in the new million-unit profile', () => {
+    expect(classicMarbleReferenceProfile.rules.islandEscapeFee).toEqual({ amount: 500_000, status: 'inferred-class-proportional-not-enabled' });
     const two = { ...marbleEngine.createInitialState(1), phase: 'island' as const, islandTurns: { p1: 3, p2: 0 } };
     expect(marbleEngine.getPlayerView(two, 'p1').actions.some((item: any) => item.action.type === 'pay-escape')).toBe(false);
     expect(marbleEngine.validateAction(two, 'p1', { type: 'pay-escape' })).toBe('Escape fee is unverified for this ruleset');
@@ -310,6 +312,49 @@ describe('active Kakao World / Business engine profile', () => {
     expect(marbleEngine.getPlayerView(legacy, 'p1').actions.some((item: any) => item.action.type === 'pay-escape')).toBe(true);
     const legacyTeam = { ...team, referenceProfileId: undefined, cityRouteVersion: undefined, economicVersion: undefined, money: { p1: 1500, p2: 1500, p3: 1500, p4: 1500 } };
     expect(fourMarbleEngine.getPlayerView(legacyTeam, 'p1').actions.some((item: any) => item.action.type === 'pay-escape')).toBe(true);
+  });
+
+  it('hosts one global Olympics, increases its multiplier, and charges it in both engines', () => {
+    expect([0, 1, 2, 3, 4, 8].map(classicOlympicsMultiplier)).toEqual([2, 3, 4, 5, 5, 5]);
+
+    let two = marbleEngine.createInitialState(seedForSum(2));
+    two.positions.p1 = 14;
+    two.properties['1'] = { owner: 'p1', houses: 0, buildings: {} };
+    two = step2(two, 'roll');
+    expect(two.phase).toBe('olympic-decision');
+    expect(marbleEngine.getPlayerView(two, 'p1').actions.map((action: any) => action.action)).toContainEqual({ type: 'choose-olympic-target', payload: { tile: 1 } });
+    two = step2(two, 'choose-olympic-target', { tile: 1 });
+    expect(two.activeOlympics).toEqual({ tile: 1, multiplier: 2, host: 'p1' });
+    two.active = 'p2'; two.phase = 'roll'; two.positions.p2 = 31; two.rng = seedForSum(2);
+    const twoPaid = step2(two, 'roll');
+    expect(twoPaid.money.p2).toBe(5_740_000);
+
+    const twoTourism = { ...marbleEngine.createInitialState(seedForSum(2)), active: 'p2' as const, positions: { p1: 0, p2: 2 }, properties: { '4': { owner: 'p1' as const, houses: 0, buildings: {} } }, activeOlympics: { tile: 4, multiplier: 2, host: 'p1' as const } };
+    expect(step2(twoTourism, 'roll').money.p2).toBe(4_600_000);
+
+    let team = fourMarbleEngine.createInitialState(seedForSum(2));
+    team.positions.p1 = 14;
+    team.properties['1'] = { owner: 'p1', houses: 0, buildings: {} };
+    team = step4(team, 'roll');
+    expect(team.phase).toBe('olympic-decision');
+    team = step4(team, 'choose-olympic-target', { tile: 1 });
+    expect(team.activeOlympics).toEqual({ tile: 1, multiplier: 2, host: 'p1' });
+    team.active = 'p2'; team.phase = 'roll'; team.positions.p2 = 31; team.rng = seedForSum(2);
+    const teamPaid = step4(team, 'roll');
+    expect(teamPaid.money.p2).toBe(5_740_000);
+
+    const teamTourism = { ...fourMarbleEngine.createInitialState(seedForSum(2)), active: 'p2' as const, positions: { p1: 0, p2: 2, p3: 0, p4: 0 }, properties: { '4': { owner: 'p1' as const, houses: 0, buildings: {} } }, activeOlympics: { tile: 4, multiplier: 2, host: 'p1' as const } };
+    expect(step4(teamTourism, 'roll').money.p2).toBe(4_600_000);
+
+    two.properties['3'] = { owner: 'p2', houses: 0, buildings: {} };
+    two.active = 'p2'; two.phase = 'roll'; two.positions.p2 = 14; two.rng = seedForSum(2);
+    two = step2(two, 'roll'); two = step2(two, 'choose-olympic-target', { tile: 3 });
+    expect(two.activeOlympics).toEqual({ tile: 3, multiplier: 3, host: 'p2' });
+    expect(marbleEngine.getPlayerView(two, 'p1').board.tiles[1].currentToll).toBe(5_000);
+    team.properties['3'] = { owner: 'p2', houses: 0, buildings: {} };
+    team.active = 'p2'; team.phase = 'roll'; team.positions.p2 = 14; team.rng = seedForSum(2);
+    team = step4(team, 'roll'); team = step4(team, 'choose-olympic-target', { tile: 3 });
+    expect(team.activeOlympics).toEqual({ tile: 3, multiplier: 3, host: 'p2' });
   });
 
   it('does not apply undocumented special effects as taxes or random cards', () => {

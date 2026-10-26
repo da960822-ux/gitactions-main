@@ -93,6 +93,7 @@ export function chooseSimpleAiAction(game: GameId, view: any, player: PlayerId, 
       if (action.type === 'choose-train') { const tile = view.board.tiles[Number(x.destination)]; return !tile.owner && money > (tile.price ?? 0) + 400 ? 8 : -2; }
       if (action.type === 'use-rent-pass') return view.board.pendingRent.amount > 100 || money-view.board.pendingRent.amount < reserve ? 40 : -1;
       if (action.type === 'use-escape-pass') return 40;
+      if (action.type === 'choose-olympic-target') { const index = Number(x.tile), tile = tiles[index], multiplier = Math.min(5, Number(view.board.olympicHostings ?? 0) + 2), currentMultiplier = Number(tile.olympicMultiplier ?? 1), base = (tile.kind === 'property' ? classicMarbleCityToll(tile.referenceCity ?? tile.name?.ko, tile.buildings) ?? 0 : Number(tile.currentToll ?? 0)) / currentMultiplier, distance = (index - Number(view.board.positions[opponent]) + tiles.length) % tiles.length, chance = distance >= 2 && distance <= 12 ? (6-Math.abs(7-distance))/36 : .02; return base * multiplier * chance; }
       if (action.type === 'choose-event-city') { const tile = view.board.tiles[Number(x.tile)]; return (tile.nextRent ?? tile.rent ?? 0) + tile.houses * 100; }
       return 0;
     }
