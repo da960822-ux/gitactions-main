@@ -29,6 +29,9 @@
 .sp-title > span { font: 700 1.35rem/1.1 Georgia,serif; letter-spacing: -.02em; }
 .sp-title small { color: #d4dfd8; font-size: 12px; }
 .sp-player-score { position: relative; display: grid; grid-template-columns: auto auto auto; align-items: baseline; justify-content: start; gap: 1px 7px; min-width: 9rem; padding: 4px 10px; border: 1px solid #597276; border-radius: 10px; background: #102a30; color: #e9eee7; }
+.sp-player-score[aria-haspopup="dialog"] { width: 100%; min-height: 0; appearance: none; text-align: left; font: inherit; cursor: pointer; transition: border-color 120ms ease, background-color 120ms ease; }
+.sp-player-score[aria-haspopup="dialog"]:hover { border-color: #a1c1a9; background: #173a3d; }
+.sp-player-detail-hint { justify-self: end; color: #c7d5c5 !important; font-size: 10px !important; text-decoration: underline; text-underline-offset: 2px; }
 .sp-player-score > span { grid-column: 1 / -1; color: #b9cbc5; font-size: 12px; }
 .sp-player-score > b { color: #f4d58e; font-size: 1.35rem; line-height: 1; }
 .sp-player-score > small { color: #d5ded8; font-size: 12px; }
@@ -658,7 +661,6 @@
   .sp-splendor .sp-card-cost-chip .sp-gem-icon { width: 18px; height: 18px; flex-basis: 18px; }
   .sp-splendor .sp-card-select-hint { font-size: 11px; }
 }
-.sp-player-details-button { grid-column: 1 / -1; justify-self: end; min-height: 24px; padding: 2px 8px; border: 1px solid #80968d; border-radius: 6px; background: #1d4546; color: #f7f3e8; font: inherit; cursor: pointer; }
 .sp-profile-dialog,.spt-profile-dialog { width: min(420px, calc(100vw - 32px)); max-height: min(80vh, 620px); overflow: auto; padding: 20px; border: 1px solid #a99a6f; border-radius: 12px; background: #faf4e4; color: #26483b; box-shadow: 0 16px 48px #071d1eb0; }
 .sp-profile-dialog::backdrop,.spt-profile-dialog::backdrop { background: #071d1ecc; }
 .sp-profile-dialog header,.spt-profile-dialog header { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin-bottom: 16px; }
@@ -675,3 +677,4 @@
 .sp-profile-acquired-info>span { display: flex; align-items: center; gap: 4px; }
 .sp-profile-acquired-info small { color: #53675a; }
 .sp-profile-reserved,.spt-profile-reserved { display: flex; flex-wrap: wrap; gap: 6px; min-height: 48px; }
+.sp-profile-reserved > .sp-card-back,.spt-profile-reserved > .sp-card-back { display: block; flex: 0 0 34px; width: 34px; height: 44px; box-sizing: border-box; }

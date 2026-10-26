@@ -2,6 +2,7 @@ import { renderToStaticMarkup } from 'react-dom/server';
 import { describe, expect, it } from 'vitest';
 import { fourSplendorEngine } from '../games/fourSplendor';
 import SplendorTeamTable from './SplendorTeamTable';
+import { SplendorPublicBonuses } from './SplendorTable';
 
 describe('dedicated four-player Splendor table', () => {
   it('renders four independent public wallets, both team totals, five nobles and twelve market cards', () => {
@@ -63,6 +64,13 @@ describe('dedicated four-player Splendor table', () => {
     state = fourSplendorEngine.applyAction(state, 'p2', { type: 'reserve', payload: { tier: 2, index: 0 } });
     const html = renderToStaticMarkup(<SplendorTeamTable view={fourSplendorEngine.getPlayerView(state, 'p1')} language="es" runAction={async () => true}/>);
     expect(html.match(/aria-haspopup="dialog"/g)).toHaveLength(3);
+    expect(html.match(/class="spt-player-status-button"/g)).toHaveLength(3);
+    expect(html).toContain('aria-label="Ver las gemas y bonificaciones públicas de Rival IA 1"');
+    const bonusSummary = renderToStaticMarkup(<SplendorPublicBonuses language="es" bonuses={{ white: 2, blue: 1, green: 0, red: 0, black: 0 }}/>);
+    expect(bonusSummary).toContain('Blanca +2 · Azul +1 · Verde +0 · Roja +0 · Negra +0');
+    const statusButton = html.match(/<button[^>]*class="spt-player-status-button"[^>]*>[\s\S]*?<\/button>/)?.[0] ?? '';
+    expect(statusButton).toBeTruthy();
+    expect(statusButton.match(/<button\b/g)).toHaveLength(1);
     expect(html).not.toContain(`data-card-id="${hidden}"`);
   });
 
