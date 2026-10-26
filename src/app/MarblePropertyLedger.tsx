@@ -1,10 +1,16 @@
 import { useState } from 'react';
 import type { GameAction, Language } from '../core/types';
 import { marbleBuildCost, marbleCityValue, marbleTakeoverPrice, type MarbleTile } from '../games/marble';
+import { marbleBaseRent, marbleBuildCostAtPrice, marbleCityValueAtPrice, marbleLandPrice, marbleRentAtBase, marbleTakeoverPriceAtPrice } from '../games/marbleEconomy';
 
 const t = (language: Language, ko: string, es: string) => language === 'ko' ? ko : es;
-export function MarblePropertyLedger({ tile, language, economicVersion, propertyRulesVersion, multiplier = 1 }: { tile: MarbleTile; language: Language; economicVersion?: number; propertyRulesVersion?: number; multiplier?: number }) {
-  return <table className="marble-property-ledger"><caption>{t(language, '단계별 금액', 'Importes por nivel')}</caption><thead><tr><th>{t(language, '단계', 'Nivel')}</th><th>{t(language, '추가비', 'Costo extra')}</th><th>{t(language, '누적', 'Invertido')}</th><th>{t(language, '통행료', 'Alquiler')}</th>{propertyRulesVersion === 1 && <th>{t(language, '인수', 'Adquirir')}</th>}</tr></thead><tbody>{[0,1,2,3].map(level => <tr key={level}><th>{level === 0 ? t(language, '대지', 'Terreno') : level === 3 ? t(language, '랜드마크', 'Monumento') : `${level}`}</th><td>{level === 0 ? tile.price : marbleBuildCost(tile, level - 1, economicVersion)}</td><td>{marbleCityValue(tile, level, economicVersion)}</td><td>{(tile.rent ?? 0) * [1,2,4,8][level] * multiplier}</td>{propertyRulesVersion === 1 && <td>{marbleTakeoverPrice(tile, level, economicVersion) ?? t(language, '불가', 'Protegido')}</td>}</tr>)}</tbody></table>;
+export function MarblePropertyLedger({ tile, language, economicVersion, propertyRulesVersion, multiplier = 1, effectiveValues = false }: { tile: MarbleTile; language: Language; economicVersion?: number; propertyRulesVersion?: number; multiplier?: number; effectiveValues?: boolean }) {
+  const land = effectiveValues ? tile.price ?? 0 : marbleLandPrice(tile, economicVersion);
+  const baseRent = effectiveValues ? tile.rent ?? 0 : marbleBaseRent(tile, economicVersion);
+  const buildCost = (level: number) => effectiveValues ? marbleBuildCostAtPrice(land, level, economicVersion) : marbleBuildCost(tile, level, economicVersion);
+  const invested = (level: number) => effectiveValues ? marbleCityValueAtPrice(land, level, economicVersion) : marbleCityValue(tile, level, economicVersion);
+  const takeover = (level: number) => effectiveValues ? marbleTakeoverPriceAtPrice(land, level, economicVersion) : marbleTakeoverPrice(tile, level, economicVersion);
+  return <table className="marble-property-ledger"><caption>{t(language, '단계별 금액', 'Importes por nivel')}</caption><thead><tr><th>{t(language, '단계', 'Nivel')}</th><th>{t(language, '추가비', 'Costo extra')}</th><th>{t(language, '누적', 'Invertido')}</th><th>{t(language, '통행료', 'Alquiler')}</th>{propertyRulesVersion === 1 && <th>{t(language, '인수', 'Adquirir')}</th>}</tr></thead><tbody>{[0,1,2,3].map(level => <tr key={level}><th>{level === 0 ? t(language, '대지', 'Terreno') : level === 3 ? t(language, '랜드마크', 'Monumento') : `${level}`}</th><td>{level === 0 ? land : buildCost(level - 1)}</td><td>{invested(level)}</td><td>{marbleRentAtBase(baseRent, level, economicVersion, multiplier)}</td>{propertyRulesVersion === 1 && <td>{takeover(level) ?? t(language, '불가', 'Protegido')}</td>}</tr>)}</tbody></table>;
 }
 export function MarblePropertySale({ choices, language, runAction, disabled = false }: { choices: { label: Record<Language, string>; action: GameAction }[]; language: Language; runAction: (action: GameAction) => unknown; disabled?: boolean }) {
   const [selected, setSelected] = useState('');

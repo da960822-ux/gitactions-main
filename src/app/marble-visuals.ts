@@ -1,4 +1,5 @@
 import type { Language } from '../core/types';
+import { marbleRentAtBase } from '../games/marbleEconomy';
 import { marblePawnCatalog, type MarblePawnId } from './MarblePawn';
 const copy = (language: Language, ko: string, es: string) => language === 'ko' ? ko : es;
 const num = (value: unknown) => Number.isFinite(Number(value)) ? Number(value) : 0;
@@ -40,7 +41,7 @@ export function buildingName(level: number, language: Language, modern: boolean)
   if (modern) return level >= 3 ? copy(language, '랜드마크', 'Monumento') : level === 2 ? copy(language, '아파트', 'Apartamentos') : level === 1 ? copy(language, '단독주택', 'Casa unifamiliar') : '';
   return level ? copy(language, '집', 'Casa') : '';
 }
-export function rentValue(tile: Record<string, any>, modern: boolean) {
+export function rentValue(tile: Record<string, any>, modern: boolean, economicVersion?: number) {
   const level = num(tile.houses);
-  return num(tile.rent) * (modern ? ([1, 2, 4, 8][level] ?? 1) : level + 1) * (num(tile.monopolyMultiplier) || 1);
+  return marbleRentAtBase(num(tile.rent), level, economicVersion, num(tile.monopolyMultiplier) || 1, modern);
 }

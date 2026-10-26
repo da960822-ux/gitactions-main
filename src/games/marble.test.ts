@@ -14,7 +14,7 @@ const seedForSum = (sum: number) => seedForDice((a, b) => a + b === sum);
 const seedForDoubles = () => seedForDice((a, b) => a === b);
 const seedForMiss = () => seedForDice((a, b) => a !== b);
 // Regression fixtures for saved forty-space rooms before the personalized route.
-const initial = (seed = 15): MarbleState => ({ ...marbleEngine.createInitialState(seed), cityRouteVersion: undefined, propertyRulesVersion: undefined });
+const initial = (seed = 15): MarbleState => ({ ...marbleEngine.createInitialState(seed), economicVersion: 2, money: { p1: 1500, p2: 1500 }, cityRouteVersion: undefined, propertyRulesVersion: undefined });
 function eventState(id: MarbleEventId, target = 2): MarbleState {
   const seed = seedForSum(target);
   return { ...initial(seed), eventDeck: [id], positions: { p1: 0, p2: 0 } };
@@ -44,18 +44,21 @@ describe('Marble 40-space house-rule engine', () => {
       if (!changes.some(([changed]) => changed === index)) expect(name).toEqual(previousName);
     }
     const economy = (board: any[]) => board.map(tile => `${tile.kind}:${tile.price}:${tile.rent}:${tile.group}`).sort();
-    expect(economy(tiles)).toEqual(economy(saved));
-    expect(tiles[3]).toMatchObject({ price: saved[15].price, rent: saved[15].rent, group: saved[15].group });
-    expect(tiles[15]).toMatchObject({ price: saved[3].price, rent: saved[3].rent, group: saved[3].group });
+    expect(economy(tiles)).toEqual(economy(savedV2));
+    expect(tiles[3]).toMatchObject({ price: savedV2[3].price, rent: savedV2[3].rent, group: savedV2[3].group });
+    expect(tiles[15]).toMatchObject({ price: savedV2[15].price, rent: savedV2[15].rent, group: savedV2[15].group });
+    expect(fresh).toMatchObject({ economicVersion: 3, money: { p1: 3000, p2: 3000 } });
+    expect(tiles[1]).toMatchObject({ price: 80, rent: 20 });
+    expect(saved[1]).toMatchObject({ price: 100, rent: 12 });
     expect(saved[3].name.ko).toBe('산토도밍고');
     expect(saved[15].name.ko).toBe('뉴욕');
     expect(saved[31].name.ko).toBe('마이애미');
     expect(saved[38].name.ko).toBe('밴쿠버');
-    for (const index of [0, 2, 6, 7, 10, 12, 14, 18, 20, 23, 26, 27, 30, 34, 37, 39]) expect(tiles[index]).toEqual(saved[index]);
+    for (const index of [0, 2, 6, 7, 10, 12, 14, 18, 20, 23, 26, 27, 30, 34, 37, 39]) expect(tiles[index]).toEqual(savedV2[index]);
   });
 
   it('resolves the Santo Domingo card at the correct city in new, saved forty-space and legacy rooms', () => {
-    const fresh = { ...marbleEngine.createInitialState(seedForSum(2)), eventDeck: ['visit-santo-domingo'] as MarbleEventId[] };
+    const fresh = { ...marbleEngine.createInitialState(seedForSum(2)), economicVersion: 2 as const, money: { p1: 1500, p2: 1500 }, eventDeck: ['visit-santo-domingo'] as MarbleEventId[] };
     for (const [state, destination] of [[fresh, 15], [{ ...fresh, cityRouteVersion: undefined }, 3], [{ ...fresh, boardVersion: undefined }, 2]] as const) {
       const moved = act(state, 'roll');
       expect(moved.positions.p1).toBe(destination);
