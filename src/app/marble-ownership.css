@@ -1,5 +1,5 @@
 /* Seat color identifies the owner; the separate thin top band identifies the city group. */
-:root { --marble-owner-p1:#b66f79; --marble-owner-p2:#3e8576; --marble-owner-p3:#724653; --marble-owner-p4:#245a51; }
+:root { --marble-owner-p1:#cf6473; --marble-owner-p2:#398d80; --marble-owner-p3:#92596b; --marble-owner-p4:#2b6b62; }
 :is(.marble-premium,.marble-native-team) { --mp-owner-color:#7c8780; --mp-owner-wash:#e8ece7; }
 :is([data-marble-owner="p1"],[data-marble-seat="p1"],[data-marble-pawn-seat="p1"]) { --mp-owner-color:var(--marble-owner-p1); --mp-owner-wash:#f4e3e5; }
 :is([data-marble-owner="p2"],[data-marble-seat="p2"],[data-marble-pawn-seat="p2"]) { --mp-owner-color:var(--marble-owner-p2); --mp-owner-wash:#e0f0e9; }

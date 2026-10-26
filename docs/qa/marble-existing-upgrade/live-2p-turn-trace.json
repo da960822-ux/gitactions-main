@@ -1,0 +1,755 @@
+{
+  "initial": {
+    "seed": 1,
+    "boardSize": 40
+  },
+  "rolled": {
+    "phase": "decision",
+    "position": 5,
+    "cash": 1500
+  },
+  "final": {
+    "phase": "main",
+    "position": 5,
+    "cash": 1280,
+    "property": {
+      "owner": "p1",
+      "houses": 1
+    }
+  },
+  "errors": [],
+  "trace": [
+    {
+      "frame": 0,
+      "label": "before-roll",
+      "phase": "roll",
+      "position": 0,
+      "cash": 1500,
+      "houses": 0,
+      "movingCell": null,
+      "movingPawn": false,
+      "status": "다음 여행을 시작하세요"
+    },
+    {
+      "frame": 1,
+      "label": "roll-move",
+      "phase": "decision",
+      "position": 5,
+      "cash": 1500,
+      "houses": 0,
+      "movingCell": null,
+      "movingPawn": false,
+      "status": "여행 중"
+    },
+    {
+      "frame": 2,
+      "label": "roll-move",
+      "phase": "decision",
+      "position": 5,
+      "cash": 1500,
+      "houses": 0,
+      "movingCell": null,
+      "movingPawn": false,
+      "status": "여행 중"
+    },
+    {
+      "frame": 3,
+      "label": "roll-move",
+      "phase": "decision",
+      "position": 5,
+      "cash": 1500,
+      "houses": 0,
+      "movingCell": null,
+      "movingPawn": false,
+      "status": "여행 중"
+    },
+    {
+      "frame": 4,
+      "label": "roll-move",
+      "phase": "decision",
+      "position": 5,
+      "cash": 1500,
+      "houses": 0,
+      "movingCell": "4",
+      "movingPawn": true,
+      "status": "여행 중"
+    },
+    {
+      "frame": 5,
+      "label": "roll-move",
+      "phase": "decision",
+      "position": 5,
+      "cash": 1500,
+      "houses": 0,
+      "movingCell": null,
+      "movingPawn": false,
+      "status": "산티아고"
+    },
+    {
+      "frame": 6,
+      "label": "roll-move",
+      "phase": "decision",
+      "position": 5,
+      "cash": 1500,
+      "houses": 0,
+      "movingCell": null,
+      "movingPawn": false,
+      "status": "산티아고"
+    },
+    {
+      "frame": 7,
+      "label": "roll-move",
+      "phase": "decision",
+      "position": 5,
+      "cash": 1500,
+      "houses": 0,
+      "movingCell": null,
+      "movingPawn": false,
+      "status": "산티아고"
+    },
+    {
+      "frame": 8,
+      "label": "roll-move",
+      "phase": "decision",
+      "position": 5,
+      "cash": 1500,
+      "houses": 0,
+      "movingCell": null,
+      "movingPawn": false,
+      "status": "산티아고"
+    },
+    {
+      "frame": 9,
+      "label": "roll-move",
+      "phase": "decision",
+      "position": 5,
+      "cash": 1500,
+      "houses": 0,
+      "movingCell": null,
+      "movingPawn": false,
+      "status": "산티아고"
+    },
+    {
+      "frame": 10,
+      "label": "roll-move",
+      "phase": "decision",
+      "position": 5,
+      "cash": 1500,
+      "houses": 0,
+      "movingCell": null,
+      "movingPawn": false,
+      "status": "산티아고"
+    },
+    {
+      "frame": 11,
+      "label": "roll-move",
+      "phase": "decision",
+      "position": 5,
+      "cash": 1500,
+      "houses": 0,
+      "movingCell": null,
+      "movingPawn": false,
+      "status": "산티아고"
+    },
+    {
+      "frame": 12,
+      "label": "roll-move",
+      "phase": "decision",
+      "position": 5,
+      "cash": 1500,
+      "houses": 0,
+      "movingCell": null,
+      "movingPawn": false,
+      "status": "산티아고"
+    },
+    {
+      "frame": 13,
+      "label": "roll-move",
+      "phase": "decision",
+      "position": 5,
+      "cash": 1500,
+      "houses": 0,
+      "movingCell": null,
+      "movingPawn": false,
+      "status": "산티아고"
+    },
+    {
+      "frame": 14,
+      "label": "roll-move",
+      "phase": "decision",
+      "position": 5,
+      "cash": 1500,
+      "houses": 0,
+      "movingCell": null,
+      "movingPawn": false,
+      "status": "산티아고"
+    },
+    {
+      "frame": 15,
+      "label": "roll-move",
+      "phase": "decision",
+      "position": 5,
+      "cash": 1500,
+      "houses": 0,
+      "movingCell": null,
+      "movingPawn": false,
+      "status": "산티아고"
+    },
+    {
+      "frame": 16,
+      "label": "roll-move",
+      "phase": "decision",
+      "position": 5,
+      "cash": 1500,
+      "houses": 0,
+      "movingCell": null,
+      "movingPawn": false,
+      "status": "산티아고"
+    },
+    {
+      "frame": 17,
+      "label": "roll-move",
+      "phase": "decision",
+      "position": 5,
+      "cash": 1500,
+      "houses": 0,
+      "movingCell": null,
+      "movingPawn": false,
+      "status": "산티아고"
+    },
+    {
+      "frame": 18,
+      "label": "roll-move",
+      "phase": "decision",
+      "position": 5,
+      "cash": 1500,
+      "houses": 0,
+      "movingCell": null,
+      "movingPawn": false,
+      "status": "산티아고"
+    },
+    {
+      "frame": 19,
+      "label": "roll-move",
+      "phase": "decision",
+      "position": 5,
+      "cash": 1500,
+      "houses": 0,
+      "movingCell": null,
+      "movingPawn": false,
+      "status": "산티아고"
+    },
+    {
+      "frame": 20,
+      "label": "roll-move",
+      "phase": "decision",
+      "position": 5,
+      "cash": 1500,
+      "houses": 0,
+      "movingCell": null,
+      "movingPawn": false,
+      "status": "산티아고"
+    },
+    {
+      "frame": 21,
+      "label": "roll-move",
+      "phase": "decision",
+      "position": 5,
+      "cash": 1500,
+      "houses": 0,
+      "movingCell": null,
+      "movingPawn": false,
+      "status": "산티아고"
+    },
+    {
+      "frame": 22,
+      "label": "roll-move",
+      "phase": "decision",
+      "position": 5,
+      "cash": 1500,
+      "houses": 0,
+      "movingCell": null,
+      "movingPawn": false,
+      "status": "산티아고"
+    },
+    {
+      "frame": 23,
+      "label": "roll-move",
+      "phase": "decision",
+      "position": 5,
+      "cash": 1500,
+      "houses": 0,
+      "movingCell": null,
+      "movingPawn": false,
+      "status": "산티아고"
+    },
+    {
+      "frame": 24,
+      "label": "roll-move",
+      "phase": "decision",
+      "position": 5,
+      "cash": 1500,
+      "houses": 0,
+      "movingCell": null,
+      "movingPawn": false,
+      "status": "산티아고"
+    },
+    {
+      "frame": 25,
+      "label": "roll-move",
+      "phase": "decision",
+      "position": 5,
+      "cash": 1500,
+      "houses": 0,
+      "movingCell": null,
+      "movingPawn": false,
+      "status": "산티아고"
+    },
+    {
+      "frame": 26,
+      "label": "roll-move",
+      "phase": "decision",
+      "position": 5,
+      "cash": 1500,
+      "houses": 0,
+      "movingCell": null,
+      "movingPawn": false,
+      "status": "산티아고"
+    },
+    {
+      "frame": 27,
+      "label": "roll-move",
+      "phase": "decision",
+      "position": 5,
+      "cash": 1500,
+      "houses": 0,
+      "movingCell": null,
+      "movingPawn": false,
+      "status": "산티아고"
+    },
+    {
+      "frame": 28,
+      "label": "roll-move",
+      "phase": "decision",
+      "position": 5,
+      "cash": 1500,
+      "houses": 0,
+      "movingCell": null,
+      "movingPawn": false,
+      "status": "산티아고"
+    },
+    {
+      "frame": 29,
+      "label": "roll-move",
+      "phase": "decision",
+      "position": 5,
+      "cash": 1500,
+      "houses": 0,
+      "movingCell": null,
+      "movingPawn": false,
+      "status": "산티아고"
+    },
+    {
+      "frame": 30,
+      "label": "roll-move",
+      "phase": "decision",
+      "position": 5,
+      "cash": 1500,
+      "houses": 0,
+      "movingCell": null,
+      "movingPawn": false,
+      "status": "산티아고"
+    },
+    {
+      "frame": 31,
+      "label": "roll-move",
+      "phase": "decision",
+      "position": 5,
+      "cash": 1500,
+      "houses": 0,
+      "movingCell": null,
+      "movingPawn": false,
+      "status": "산티아고"
+    },
+    {
+      "frame": 32,
+      "label": "roll-move",
+      "phase": "decision",
+      "position": 5,
+      "cash": 1500,
+      "houses": 0,
+      "movingCell": null,
+      "movingPawn": false,
+      "status": "산티아고"
+    },
+    {
+      "frame": 33,
+      "label": "roll-move",
+      "phase": "decision",
+      "position": 5,
+      "cash": 1500,
+      "houses": 0,
+      "movingCell": null,
+      "movingPawn": false,
+      "status": "산티아고"
+    },
+    {
+      "frame": 34,
+      "label": "roll-move",
+      "phase": "decision",
+      "position": 5,
+      "cash": 1500,
+      "houses": 0,
+      "movingCell": null,
+      "movingPawn": false,
+      "status": "산티아고"
+    },
+    {
+      "frame": 35,
+      "label": "roll-move",
+      "phase": "decision",
+      "position": 5,
+      "cash": 1500,
+      "houses": 0,
+      "movingCell": null,
+      "movingPawn": false,
+      "status": "산티아고"
+    },
+    {
+      "frame": 36,
+      "label": "roll-move",
+      "phase": "decision",
+      "position": 5,
+      "cash": 1500,
+      "houses": 0,
+      "movingCell": null,
+      "movingPawn": false,
+      "status": "산티아고"
+    },
+    {
+      "frame": 37,
+      "label": "roll-move",
+      "phase": "decision",
+      "position": 5,
+      "cash": 1500,
+      "houses": 0,
+      "movingCell": null,
+      "movingPawn": false,
+      "status": "산티아고"
+    },
+    {
+      "frame": 38,
+      "label": "roll-move",
+      "phase": "decision",
+      "position": 5,
+      "cash": 1500,
+      "houses": 0,
+      "movingCell": null,
+      "movingPawn": false,
+      "status": "산티아고"
+    },
+    {
+      "frame": 39,
+      "label": "roll-move",
+      "phase": "decision",
+      "position": 5,
+      "cash": 1500,
+      "houses": 0,
+      "movingCell": null,
+      "movingPawn": false,
+      "status": "산티아고"
+    },
+    {
+      "frame": 40,
+      "label": "roll-move",
+      "phase": "decision",
+      "position": 5,
+      "cash": 1500,
+      "houses": 0,
+      "movingCell": null,
+      "movingPawn": false,
+      "status": "산티아고"
+    },
+    {
+      "frame": 41,
+      "label": "roll-move",
+      "phase": "decision",
+      "position": 5,
+      "cash": 1500,
+      "houses": 0,
+      "movingCell": null,
+      "movingPawn": false,
+      "status": "산티아고"
+    },
+    {
+      "frame": 42,
+      "label": "roll-move",
+      "phase": "decision",
+      "position": 5,
+      "cash": 1500,
+      "houses": 0,
+      "movingCell": null,
+      "movingPawn": false,
+      "status": "산티아고"
+    },
+    {
+      "frame": 43,
+      "label": "roll-move",
+      "phase": "decision",
+      "position": 5,
+      "cash": 1500,
+      "houses": 0,
+      "movingCell": null,
+      "movingPawn": false,
+      "status": "산티아고"
+    },
+    {
+      "frame": 44,
+      "label": "purchase",
+      "phase": "main",
+      "position": 5,
+      "cash": 1340,
+      "houses": 0,
+      "movingCell": null,
+      "movingPawn": false,
+      "status": "산티아고"
+    },
+    {
+      "frame": 45,
+      "label": "purchase",
+      "phase": "main",
+      "position": 5,
+      "cash": 1340,
+      "houses": 0,
+      "movingCell": null,
+      "movingPawn": false,
+      "status": "산티아고"
+    },
+    {
+      "frame": 46,
+      "label": "purchase",
+      "phase": "main",
+      "position": 5,
+      "cash": 1340,
+      "houses": 0,
+      "movingCell": null,
+      "movingPawn": false,
+      "status": "산티아고"
+    },
+    {
+      "frame": 47,
+      "label": "purchase",
+      "phase": "main",
+      "position": 5,
+      "cash": 1340,
+      "houses": 0,
+      "movingCell": null,
+      "movingPawn": false,
+      "status": "산티아고"
+    },
+    {
+      "frame": 48,
+      "label": "purchase",
+      "phase": "main",
+      "position": 5,
+      "cash": 1340,
+      "houses": 0,
+      "movingCell": null,
+      "movingPawn": false,
+      "status": "산티아고"
+    },
+    {
+      "frame": 49,
+      "label": "purchase",
+      "phase": "main",
+      "position": 5,
+      "cash": 1340,
+      "houses": 0,
+      "movingCell": null,
+      "movingPawn": false,
+      "status": "산티아고"
+    },
+    {
+      "frame": 50,
+      "label": "purchase",
+      "phase": "main",
+      "position": 5,
+      "cash": 1340,
+      "houses": 0,
+      "movingCell": null,
+      "movingPawn": false,
+      "status": "산티아고"
+    },
+    {
+      "frame": 51,
+      "label": "purchase",
+      "phase": "main",
+      "position": 5,
+      "cash": 1340,
+      "houses": 0,
+      "movingCell": null,
+      "movingPawn": false,
+      "status": "산티아고"
+    },
+    {
+      "frame": 52,
+      "label": "purchase",
+      "phase": "main",
+      "position": 5,
+      "cash": 1340,
+      "houses": 0,
+      "movingCell": null,
+      "movingPawn": false,
+      "status": "산티아고"
+    },
+    {
+      "frame": 53,
+      "label": "build",
+      "phase": "main",
+      "position": 5,
+      "cash": 1280,
+      "houses": 1,
+      "movingCell": null,
+      "movingPawn": false,
+      "status": "산티아고"
+    },
+    {
+      "frame": 54,
+      "label": "build",
+      "phase": "main",
+      "position": 5,
+      "cash": 1280,
+      "houses": 1,
+      "movingCell": null,
+      "movingPawn": false,
+      "status": "산티아고"
+    },
+    {
+      "frame": 55,
+      "label": "build",
+      "phase": "main",
+      "position": 5,
+      "cash": 1280,
+      "houses": 1,
+      "movingCell": null,
+      "movingPawn": false,
+      "status": "산티아고"
+    },
+    {
+      "frame": 56,
+      "label": "build",
+      "phase": "main",
+      "position": 5,
+      "cash": 1280,
+      "houses": 1,
+      "movingCell": null,
+      "movingPawn": false,
+      "status": "산티아고"
+    },
+    {
+      "frame": 57,
+      "label": "build",
+      "phase": "main",
+      "position": 5,
+      "cash": 1280,
+      "houses": 1,
+      "movingCell": null,
+      "movingPawn": false,
+      "status": "산티아고"
+    },
+    {
+      "frame": 58,
+      "label": "build",
+      "phase": "main",
+      "position": 5,
+      "cash": 1280,
+      "houses": 1,
+      "movingCell": null,
+      "movingPawn": false,
+      "status": "산티아고"
+    },
+    {
+      "frame": 59,
+      "label": "build",
+      "phase": "main",
+      "position": 5,
+      "cash": 1280,
+      "houses": 1,
+      "movingCell": null,
+      "movingPawn": false,
+      "status": "산티아고"
+    },
+    {
+      "frame": 60,
+      "label": "build",
+      "phase": "main",
+      "position": 5,
+      "cash": 1280,
+      "houses": 1,
+      "movingCell": null,
+      "movingPawn": false,
+      "status": "산티아고"
+    },
+    {
+      "frame": 61,
+      "label": "build",
+      "phase": "main",
+      "position": 5,
+      "cash": 1280,
+      "houses": 1,
+      "movingCell": null,
+      "movingPawn": false,
+      "status": "산티아고"
+    },
+    {
+      "frame": 62,
+      "label": "build",
+      "phase": "main",
+      "position": 5,
+      "cash": 1280,
+      "houses": 1,
+      "movingCell": null,
+      "movingPawn": false,
+      "status": "산티아고"
+    },
+    {
+      "frame": 63,
+      "label": "build",
+      "phase": "main",
+      "position": 5,
+      "cash": 1280,
+      "houses": 1,
+      "movingCell": null,
+      "movingPawn": false,
+      "status": "산티아고"
+    }
+  ],
+  "observed": [
+    {
+      "cell": "2",
+      "pawn": true,
+      "visible": true
+    },
+    {
+      "cell": "3",
+      "pawn": true,
+      "visible": true
+    },
+    {
+      "cell": "4",
+      "pawn": true,
+      "visible": true
+    },
+    {
+      "cell": "5",
+      "pawn": true,
+      "visible": true
+    },
+    {
+      "cell": "6",
+      "pawn": true,
+      "visible": true
+    }
+  ],
+  "videoFrames": 147
+}

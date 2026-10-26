@@ -137,12 +137,13 @@ function PawnFigure({ pawn, id }: { pawn: MarblePawnId; id: string }) {
 
 export type MarblePawnChoice = { action: GameAction };
 export function MarblePawnPicker({
-  view, playerId, language, runAction,
+  view, playerId, language, runAction, disabled = false,
 }: {
   view: any;
   playerId: PlayerId;
   language: Language;
   runAction: (action: GameAction) => void | Promise<unknown>;
+  disabled?: boolean;
 }) {
   const [pending, setPending] = useState<MarblePawnId | null>(null);
   const [failed, setFailed] = useState(false);
@@ -159,7 +160,7 @@ export function MarblePawnPicker({
 
   const choose = async (pawn: MarblePawnId) => {
     const choice = validChoices.get(pawn);
-    if (!choice || pending) return;
+    if (!choice || pending || disabled) return;
     setPending(pawn);
     setFailed(false);
     try {
@@ -182,7 +183,7 @@ export function MarblePawnPicker({
         const isSelected = selectedPawn === id;
         const isPending = pending === id;
         const isTaken = seats.some(seat => seat !== playerId && view?.board?.pawns?.[seat] === id);
-        return <button className={`marble-pawn-choice${isSelected ? ' is-selected' : ''}${isPending ? ' is-pending' : ''}`} style={{ '--pawn-color': color } as CSSProperties} type="button" key={id} disabled={!choice || pending !== null} aria-pressed={isSelected} onClick={() => void choose(id)}>
+        return <button className={`marble-pawn-choice${isSelected ? ' is-selected' : ''}${isPending ? ' is-pending' : ''}`} style={{ '--pawn-color': color } as CSSProperties} type="button" key={id} disabled={!choice || pending !== null || disabled} aria-pressed={isSelected} onClick={() => void choose(id)}>
           <span className="marble-pawn-choice__art"><MarblePawn pawn={id} language={language}/></span>
           <span className="marble-pawn-choice__name">{name[language]}</span>
           <span className="marble-pawn-choice__state">{isPending ? copy(language, '선택 중…', 'Eligiendo…') : isSelected ? copy(language, '내 말', 'Tu ficha') : isTaken ? teamMode ? copy(language, '사용 중', 'En uso') : copy(language, '상대 말', 'De tu pareja') : choice ? copy(language, '선택', 'Elegir') : copy(language, '선택 불가', 'No disponible')}</span>

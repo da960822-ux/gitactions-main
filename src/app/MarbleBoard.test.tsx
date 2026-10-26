@@ -8,6 +8,13 @@ const render = (view: any, language: 'ko' | 'es' = 'ko', playerId: 'p1' | 'p2' =
   renderToStaticMarkup(createElement(MarbleBoard, { view, language, playerId, runAction: vi.fn() }));
 
 describe('MarbleBoard', () => {
+  it('puts the legal phase action ahead of optional loans in the central dice stage', () => {
+    const html = render(marbleEngine.getPlayerView(marbleEngine.createInitialState(71), 'p1'));
+    const center = html.slice(html.indexOf('class="mp-center-stage'), html.indexOf('</section>', html.indexOf('class="mp-center-stage')));
+    expect(center).toContain('주사위 굴리기');
+    expect(center).not.toContain('대출 받기');
+  });
+
   it('offers the action shortcut before all forty city controls in both languages', () => {
     const state = marbleEngine.createInitialState(71);
     for (const language of ['ko', 'es'] as const) for (const playerId of ['p1', 'p2'] as const) {
@@ -72,7 +79,10 @@ describe('MarbleBoard', () => {
     expect(ko.indexOf('mp-pawn-picker-shell')).toBeLessThan(ko.indexOf('mp-turn-panel'));
     expect(ko.indexOf('mp-turn-panel')).toBeLessThan(ko.indexOf('<details class="mp-city-detail"'));
     expect(ko).toContain('<details class="mp-pawn-picker-shell mp-city-detail"><summary>말 선택</summary>');
-    expect(ko).toContain('/images/marble/building-stages.svg#land');
+    expect(ko).toContain('viewBox="0 34 128 80"');
+    expect(ko).not.toContain('/images/marble/premium/cities/gwangju-chosun-university.webp');
+    expect(ko).toContain('data-building-level="0"');
+    expect(ko).not.toContain('class="mp-building-badge" data-building-level="0"');
     expect(es).toContain('Gwangju');
     expect(es).toContain('Santo Domingo');
     expect(es).toContain('<h2>Marble</h2>');
@@ -129,8 +139,8 @@ describe('MarbleBoard', () => {
     expect(arrival).toContain('현재 도착 · 행동 위치');
     expect(arrival).toContain('data-building-level="0"');
     expect(arrival).toContain('현재 미건설');
-    expect(arrival).toContain('/images/marble/landmarks/gwangju.svg');
-    expect(arrival).toContain('랜드마크 모습 · 미건설');
+    expect(arrival).toContain('viewBox="0 0 128 128"');
+    expect(arrival).not.toContain('/images/marble/landmarks/gwangju.svg');
     expect(arrival).toContain('24개 도시 중 대표 도시 빠른 바로가기');
     expect((arrival.match(/빠른 바로가기/g) ?? []).length).toBeGreaterThanOrEqual(5);
     expect(html).not.toContain('aria-label="랜드마크"');
@@ -203,7 +213,7 @@ describe('MarbleBoard', () => {
     view.actions = [{ label: { ko: '광주', es: 'Gwangju' }, action: { type: 'choose-event-city', payload: { tile: 1 } } }];
     const html = render(view);
     expect(html).toContain('내 도시 하나를 선택하세요');
-    expect(html).toContain('이 도시에 적용');
+    expect(html).toContain('이 도시 선택');
     expect(html).toContain('통행료 면제권 1장');
     expect(html).toContain('#city-festival-mark');
     expect(html).toContain('#blackout-mark');
@@ -248,11 +258,12 @@ describe('MarbleBoard', () => {
     const html = render(view);
     const spanish = render(view, 'es');
     expect(html).toContain('산토도밍고');
-    expect(html).toContain('>구매<span aria-hidden="true">');
+    expect(html).toContain('구매 · 120');
     expect(html).toContain('구매 120 · 기본 통행료 15');
     expect(html.indexOf('mp-purchase-recap')).toBeLessThan(html.indexOf('mp-actions'));
     expect(html).toContain('구매 120 · 기본 통행료 15');
-    expect(html).toContain('구매 후 현금 1,380');
+    expect(html).toContain('구매 후 현금');
+    expect(html).toContain('>1,380</b>');
     expect(html).toContain('선택한 칸');
     expect(html).toContain('aria-pressed="true"');
     expect(spanish).toContain('Compra 120 · renta 15');
@@ -272,15 +283,16 @@ describe('MarbleBoard', () => {
     view.board.tiles[1].nextRent = 48;
     view.actions = [{ label: { ko: '별장: 광주 (40)', es: 'Villa: Gwangju (40)' }, action: { type: 'build', payload: { tile: 1 } } }];
     const html = render(view);
-    expect(html).toContain('건설 후 현금 20');
-    expect(html).toContain('통행료 24 → 48 (+24)');
-    expect(html).toContain('비용 40');
+    expect(html).toContain('실행 후 현금');
+    expect(html).toContain('>20</b>');
+    expect(html).toContain('24 → 48');
+    expect(html).toContain('이 도시에 건설 · 40');
     expect(html).not.toContain('/images/marble/cities/gwangju.svg');
     expect(html).toContain('/images/marble/ownership-card-frame.svg');
     expect(html).toContain('/images/marble/premium/buildings/stage1-house.webp');
     expect(html).toContain('건설 단계별 통행료');
     expect(html.indexOf('mp-build-shortcut')).toBeLessThan(html.indexOf('mp-city-detail'));
-    expect((html.match(/>별장: 광주 \(40\)/g) ?? []).length).toBe(1);
+    expect(html).toContain('이 도시에 건설 · 40');
   });
 
   it('shows the public payment reason and only server-returned loan or bankruptcy actions', () => {

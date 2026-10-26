@@ -52,12 +52,22 @@ describe('Marble property shapes', () => {
         const html = renderToStaticMarkup(createElement(MarblePropertyArt, { city: slug, level, routeVersion: 3 }));
         expect(html).toContain(level === 1 ? dioramas.commonStages.house.path! : dioramas.commonStages.apartment.path!);
         expect(html).toContain('data-city-color="#');
-        expect(html).toContain('mode="multiply"');
+        expect(html).toContain('slope="0.8"');
         expect(html).not.toContain('building-stages.svg');
       }
       const unbuilt = renderToStaticMarkup(createElement(MarblePropertyArt, { city: slug, level: 0, routeVersion: 3 }));
-      expect(unbuilt).toContain('building-stages.svg#land');
-      expect(unbuilt).not.toContain('.webp');
+      expect(unbuilt).toContain('viewBox="0 34 128 80"');
+      expect(unbuilt).not.toContain(dioramas.assets.find(asset => asset.slug === slug)!.path!);
+      expect(unbuilt).toContain('data-building-level="0"');
+    }
+  });
+  it('colors the house roof and apartment facade with the actual owner palette', () => {
+    for (const [owner, color] of Object.entries({ p1: '#cf6473', p2: '#398d80', p3: '#92596b', p4: '#2b6b62' })) {
+      for (const level of [1, 2]) {
+        const html = renderToStaticMarkup(createElement(MarblePropertyArt, { city: 'gwangju', level, routeVersion: 3, owner: owner as 'p1'|'p2'|'p3'|'p4' }));
+        expect(html).toContain(`data-marble-owner="${owner}"`);
+        expect(html).toContain(`flood-color="${color}"`);
+      }
     }
   });
   it('keeps every unbuilt city as land, separate from its final landmark', () => {

@@ -39,7 +39,7 @@ describe('native four-player Marble screen',()=>{
   expect(render(s)).toContain('marble-pawn--dragon');
   s.positions.p1=1;s.pendingTile=1;s.phase='decision';
   const purchase=render(s);
-  expect(purchase).toContain('매입 100 · 통행료 12');expect(purchase).toContain('구매 후 현금 1,400');
+  expect(purchase).toContain('매입 100 · 기본 통행료 12');expect(purchase).toContain('구매 후 현금');expect(purchase).toContain('>1,400</b>');
   expect(purchase).toContain('도시 구매 · 100');expect(purchase).toContain('구매 안 함');
   expect(purchase).toContain('300을 받고 330을 갚습니다.');
  });
@@ -53,7 +53,7 @@ describe('native four-player Marble screen',()=>{
  it('keeps actual history, team settlement, and owned-city building available',()=>{
   const s=state();s.phase='main';s.properties[1]={owner:'p1',houses:1};s.actionLog=[{sequence:1,type:'event-card',actor:'p4',title:{ko:'정전',es:'Apagón'},text:{ko:'도시 선택',es:'Elegir ciudad'},cardId:'blackout'}];s.actionSequence=1;
   const html=render(s);
-  expect(html).toContain('건설 1곳');expect(html).toContain('내 도시 1');expect(html).toContain('정전');
+  expect(html).toContain('건설 가능한 도시 1곳');expect(html).toContain('내 도시 1');expect(html).toContain('정전');
   s.result={winner:'A',scores:{A:4000,B:3000},reason:{ko:'팀 정산',es:'Balance por equipos'}};s.phase='finished';
   const finished=render(s);
   expect(finished).toContain('우리 팀 승리');expect(finished).toContain('4000');expect(finished).toContain('다시 여행하기');
