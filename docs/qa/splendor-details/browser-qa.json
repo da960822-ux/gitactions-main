@@ -1,0 +1,138 @@
+{
+  "branch": "codex/splendor-opponent-details-qa",
+  "sourceRevision": "QA branch working tree after clickable-status follow-up",
+  "baseUrl": "http://127.0.0.1:5197/qa-splendor.html",
+  "browser": {
+    "executable": "/usr/bin/chromium",
+    "playwright": "1.64.0"
+  },
+  "scenarios": [
+    {
+      "players": 2,
+      "language": "ko",
+      "trigger": "button.sp-player-score[aria-haspopup=\"dialog\"]",
+      "keyboardOpen": true,
+      "focusEnteredDialog": true,
+      "escapeClosesAndRestoresFocus": true,
+      "clickAndCloseButton": true,
+      "acquiredCardId": "t3-08",
+      "acquiredCardArtwork": {
+        "href": "/images/splendor/cards/78.jpg",
+        "status": 200
+      },
+      "reservedCards": [
+        {
+          "display": "block",
+          "width": 34,
+          "height": 44,
+          "visible": true
+        }
+      ],
+      "hiddenReservedIdentityAbsent": true,
+      "bonusSummary": true,
+      "dialogHeadingColor": "rgb(38, 72, 59)",
+      "viewport": {
+        "width": 1440,
+        "height": 1000
+      },
+      "pageScrollWidth": 1440,
+      "screenshot": "splendor-2p-ko-dialog.png"
+    },
+    {
+      "players": 2,
+      "language": "es",
+      "trigger": "button.sp-player-score[aria-haspopup=\"dialog\"]",
+      "keyboardOpen": true,
+      "focusEnteredDialog": true,
+      "escapeClosesAndRestoresFocus": true,
+      "clickAndCloseButton": true,
+      "acquiredCardId": "t3-08",
+      "acquiredCardArtwork": {
+        "href": "/images/splendor/cards/78.jpg",
+        "status": 200
+      },
+      "reservedCards": [
+        {
+          "display": "block",
+          "width": 34,
+          "height": 44,
+          "visible": true
+        }
+      ],
+      "hiddenReservedIdentityAbsent": true,
+      "bonusSummary": true,
+      "dialogHeadingColor": "rgb(38, 72, 59)",
+      "viewport": {
+        "width": 1440,
+        "height": 1000
+      },
+      "pageScrollWidth": 1440,
+      "screenshot": "splendor-2p-es-dialog.png"
+    },
+    {
+      "players": 4,
+      "language": "ko",
+      "trigger": "button.spt-player-status-button[aria-haspopup=\"dialog\"]",
+      "keyboardOpen": true,
+      "focusEnteredDialog": true,
+      "escapeClosesAndRestoresFocus": true,
+      "clickAndCloseButton": true,
+      "acquiredCardId": "t3-10",
+      "acquiredCardArtwork": {
+        "href": "/images/splendor/cards/80.jpg",
+        "status": 200
+      },
+      "reservedCards": [
+        {
+          "display": "block",
+          "width": 34,
+          "height": 44,
+          "visible": true
+        }
+      ],
+      "hiddenReservedIdentityAbsent": true,
+      "bonusSummary": true,
+      "dialogHeadingColor": "rgb(38, 72, 59)",
+      "viewport": {
+        "width": 1440,
+        "height": 1000
+      },
+      "pageScrollWidth": 1440,
+      "screenshot": "splendor-4p-ko-dialog.png"
+    },
+    {
+      "players": 4,
+      "language": "es",
+      "trigger": "button.spt-player-status-button[aria-haspopup=\"dialog\"]",
+      "keyboardOpen": true,
+      "focusEnteredDialog": true,
+      "escapeClosesAndRestoresFocus": true,
+      "clickAndCloseButton": true,
+      "acquiredCardId": "t3-10",
+      "acquiredCardArtwork": {
+        "href": "/images/splendor/cards/80.jpg",
+        "status": 200
+      },
+      "reservedCards": [
+        {
+          "display": "block",
+          "width": 34,
+          "height": 44,
+          "visible": true
+        }
+      ],
+      "hiddenReservedIdentityAbsent": true,
+      "bonusSummary": true,
+      "dialogHeadingColor": "rgb(38, 72, 59)",
+      "viewport": {
+        "width": 1440,
+        "height": 1000
+      },
+      "pageScrollWidth": 1440,
+      "screenshot": "splendor-4p-es-dialog.png"
+    }
+  ],
+  "errors": [],
+  "httpErrors": [],
+  "result": "PASS"
+}
