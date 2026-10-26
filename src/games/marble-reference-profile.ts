@@ -174,6 +174,12 @@ export function classicMarbleInvestment(cityName: string, buildings: ClassicMarb
   return city.land + (['villa', 'building', 'hotel'] as const).reduce((total, structure) => total + (buildings[structure] ? city.construction[structure] : 0), 0);
 }
 
+export function classicMarbleAssetValue(cityName: string, buildings: ClassicMarbleBuildings = {}) {
+  const investment = classicMarbleInvestment(cityName, buildings);
+  const city = cityByName.get(cityName);
+  return investment === null || !city ? null : investment + (buildings.landmark ? city.construction.landmark : 0);
+}
+
 export function classicMarbleConstructionCost(cityName: string, structure: ClassicMarbleStructure) {
   return cityByName.get(cityName)?.construction[structure] ?? null;
 }
