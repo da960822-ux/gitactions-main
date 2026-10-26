@@ -50,6 +50,14 @@ describe('native four-player Marble screen',()=>{
   expect(html).toContain('받기 300 · 상환 330');expect(html).not.toContain('파산 검토');
   expect(html).not.toContain('class="mt-loan"');
  });
+ it('uses the sale selector as the only execution control when multiple cities can be sold',()=>{
+  const s=state();s.phase='debt';s.money.p1=0;s.debt.p1=330;s.pendingPayment={amount:120,creditor:'p4',resumeActive:'p1'};
+  s.properties[1]={owner:'p1',houses:1};s.properties[3]={owner:'p1',houses:0};
+  const html=render(s);
+  expect(html).toContain('marble-property-sale');
+  expect((html.match(/<option value="(?:1|3)"/g)??[])).toHaveLength(2);
+  expect(html).not.toContain('id="mt-action-primary"');
+ });
  it('keeps actual history, team settlement, and owned-city building available',()=>{
   const s=state();s.phase='main';s.properties[1]={owner:'p1',houses:1};s.actionLog=[{sequence:1,type:'event-card',actor:'p4',title:{ko:'정전',es:'Apagón'},text:{ko:'도시 선택',es:'Elegir ciudad'},cardId:'blackout'}];s.actionSequence=1;
   const html=render(s);

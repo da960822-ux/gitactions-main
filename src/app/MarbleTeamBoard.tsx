@@ -13,6 +13,7 @@ import { MarblePropertyArt } from './MarblePropertyArt';
 import { MarbleDie } from './MarbleBoard';
 import { MarbleEventStage } from './MarbleEventStage';
 import { MarbleTransactionReceipt } from './MarbleTransactionReceipt';
+import { MarbleMoneyFlight } from './MarbleMoneyFlight';
 import { MarbleDecisionPreview } from './MarbleDecisionPreview';
 import { MarbleTeamBank } from './MarblePlayerHud';
 import { useMarbleTeamMotion } from './useMarbleTeamMotion';
@@ -54,7 +55,7 @@ export default function MarbleTeamBoard({view:raw,language,runAction,nickname,ro
    :view.phase==='train-decision'?destinations.length?selectedDestination:first('skip-train')
    :view.phase==='event-decision'?selectedDestination
    :view.phase==='rent-decision'?first('pay-rent')??first('use-rent-pass')
-   :view.phase==='debt'?first('borrow')??first('sell-property')
+   :view.phase==='debt'?first('borrow')
    :undefined;
   const sameAction=(a:GameAction,b?:GameAction)=>!!b&&a.type===b.type&&JSON.stringify(a.payload??{})===JSON.stringify(b.payload??{});
   const latestTransaction=[...(s.actionLog??[])].reverse().find(event=>Object.values(event.moneyDelta??{}).some(delta=>typeof delta==='number'&&delta!==0)) as MarbleActionEvent|undefined;
@@ -82,6 +83,7 @@ export default function MarbleTeamBoard({view:raw,language,runAction,nickname,ro
   const button=(type:string,primary=false)=>{const choice=first(type);return choice&&!sameAction(choice.action,primaryAction?.action)?<button key={type} className={primary?'mt-primary':'mt-secondary'} disabled={disabled} onClick={()=>void act(choice.action)}>{choice.label[language]}</button>:null;};
   const bank=(seat:FourSeat)=><MarbleTeamBank key={seat} seat={seat} name={names[seat][language]} pawn={s.pawns[seat]} cash={hudMoney[seat]} assets={Number(hudScores[seat])} debt={s.debt[seat]} position={motion.positions[seat]} active={view.turn===seat&&!view.result} eliminated={s.eliminated[seat]} team={fourTeam(seat)} language={language}/>;
   return <section className="marble-native-team marble-team-board is-modern" data-marble-player-count="4" aria-label={text(language,'도시 여행 4인 팀전','Marble por equipos de cuatro')}>
+    <MarbleMoneyFlight event={latestTransaction} cash={s.money} language={language}/>
     <header className="mt-top"><div><h1>{text(language,'부루마블','Marble')} <span>2 × 2</span></h1><small>{text(language,`여행 ${Math.min(120,s.turns+1)} / 120 · 기금 ${s.fundPool}`,`Turno ${Math.min(120,s.turns+1)} / 120 · fondo ${s.fundPool}`)}</small></div><nav aria-label={text(language,'도시 여행 메뉴','Menú de Marble')}>
       <details className="mt-help"><summary>{text(language,'게임 방법','Cómo jugar')}</summary><div>{s.propertyRulesVersion===1?<MarbleRuleGuide language={language} rules={marblePropertyRules[language]} options={{marbleEconomyVersion:3,marbleCityRouteVersion:3,marblePropertyRulesVersion:1}} teamMode/>:<><h2>{text(language,'두 팀의 세계 여행','Un viaje entre dos equipos')}</h2><p>{text(language,'나와 팀원 AI가 한 팀입니다. 같은 팀 도시에서는 통행료를 내지 않으며, 돈과 도시는 개인별입니다.','Tú y tu compañero IA forman un equipo. Sin alquiler entre aliados; dinero y propiedades individuales.')}</p><p>{text(language,'각자 1500으로 출발하고 출발 통과 시 200을 받습니다. 도시를 사고 최대 3단계로 건설합니다. 16종 열쇠 카드, 열차, 기금, 무인도 효과가 적용됩니다.','Empiezan con 1500 y reciben 200 al pasar la salida. Compra ciudades y construye hasta tres niveles. Hay 16 cartas, tren, fondo e isla.')}</p><p>{text(language,'대출은 300을 받고 330을 갚습니다. 같은 팀 두 명 모두 파산하면 패배하며, 120차례 뒤에는 두 팀원의 순자산 합계를 비교합니다.','El préstamo da 300 y se devuelven 330. Pierde el equipo si quiebran ambos; tras 120 turnos se compara la suma del patrimonio neto.')}</p><p>{text(language,'지도에서 도시를 누르면 가격·단계별 통행료·소유권을 확인할 수 있습니다.','Pulsa una ciudad del mapa para ver precio, alquileres y propietario.')}</p></>}</div></details>
       <details className="mt-menu"><summary>{text(language,'설정·메뉴','Ajustes y menú')}</summary><div>

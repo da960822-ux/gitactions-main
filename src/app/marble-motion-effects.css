@@ -1,0 +1,17 @@
+.mp-money-flight { position:fixed; z-index:70; inset:0; pointer-events:none; color:#103d45; }
+.mp-money-token { position:absolute; display:grid; place-items:center; min-width:54px; height:34px; padding:0 9px; border:2px solid #fff0bc; border-radius:18px; background:linear-gradient(145deg,#ffe8a4,#d7a547); box-shadow:0 5px 14px #102f3970,inset 0 2px #fff7cf; font-size:12px; font-weight:900; white-space:nowrap; transform:translate(-50%,-50%); animation:mp-money-travel 750ms cubic-bezier(.24,.72,.25,1) both; }
+.mp-money-endpoint { position:absolute; display:grid; justify-items:center; gap:1px; min-width:88px; padding:4px 8px; border:1px solid #e6cf98; border-radius:7px; background:#fffbecf2; box-shadow:0 3px 10px #183c4542; font-size:12px; line-height:1.12; transform:translate(-50%,-112%); animation:mp-money-label 790ms ease-out both; }
+.mp-money-endpoint--send { color:#9f3749; }
+.mp-money-endpoint--receive { color:#147467; animation-delay:180ms; }
+.mp-money-endpoint small { color:#365b61; font-size:10px; white-space:nowrap; }
+@keyframes mp-money-travel { 0% { opacity:0; transform:translate(-50%,-50%) scale(.6); } 12% { opacity:1; } 56% { transform:translate(calc(-50% + var(--money-dx-mid)),calc(-50% + var(--money-dy-mid) - 24px)) scale(1.12); } 90% { opacity:1; } 100% { opacity:0; transform:translate(calc(-50% + var(--money-dx)),calc(-50% + var(--money-dy))) scale(.72); } }
+@keyframes mp-money-label { 0%,12% { opacity:0; transform:translate(-50%,-90%) scale(.85); } 28%,78% { opacity:1; transform:translate(-50%,-112%) scale(1); } 100% { opacity:0; transform:translate(-50%,-130%); } }
+@media (prefers-reduced-motion:reduce) { .mp-money-flight { display:none; } }
+@media (min-width:1100px) and (prefers-reduced-motion:no-preference) {
+  :is(.marble-premium,.marble-native-team).is-modern .mp-board-panel .mp-board-grid--40 .mp-tile.is-growing .mp-property-tile-art { animation:mp-owner-building-rise 670ms cubic-bezier(.16,1,.3,1) both; }
+  :is(.marble-premium,.marble-native-team).is-modern .mp-board-panel .mp-board-grid--40 .mp-tile.is-growing .mp-property-tile-view::after { animation:mp-owner-build-dust 650ms ease-out both; }
+  :is(.marble-premium,.marble-native-team).is-modern .mp-board-panel .mp-board-grid--40 .mp-tile.is-growing .mp-growth-previous { display:block; animation:mp-owner-old-building 440ms ease-in both; }
+}
+@keyframes mp-owner-building-rise { 0%,20% { opacity:0; transform:translateY(13px) scale(.58,.35); filter:brightness(1.7); } 63% { opacity:1; transform:translateY(-3px) scale(1.06,1.04); filter:brightness(1.18); } 100% { transform:none; filter:none; } }
+@keyframes mp-owner-old-building { 0%,28% { opacity:1; transform:none; } 100% { opacity:0; transform:translateY(5px) scaleY(.7); } }
+@keyframes mp-owner-build-dust { 0%,22% { opacity:0; transform:scale(.4) translateY(4px); } 45% { opacity:.95; } 100% { opacity:0; transform:scale(1.55) translateY(-6px); } }

@@ -7,6 +7,7 @@ import type { GameAction, Language, PlayerId } from '../core/types';
 import { playCue } from '../audio/audio';
 import { MarbleEventStage } from './MarbleEventStage';
 import { MarbleTransactionReceipt } from './MarbleTransactionReceipt';
+import { MarbleMoneyFlight } from './MarbleMoneyFlight';
 import { MarbleDecisionPreview } from './MarbleDecisionPreview';
 import { MarblePlayerHud } from './MarblePlayerHud';
 import { MarbleBoardShell } from './MarbleBoardShell';
@@ -141,9 +142,9 @@ export default function MarbleBoard({ view: rawView, language, playerId, runActi
     : phase === 'train-decision' ? trainActions.length ? selectedDestination : actionOf('skip-train')
     : phase === 'event-decision' ? selectedDestination
     : phase === 'rent-decision' ? actionOf('pay-rent') ?? actionOf('use-rent-pass')
-    : phase === 'debt' ? actionOf('borrow') ?? actionsOf('sell-property')[0] ?? actionOf('repay')
+    : phase === 'debt' ? actionOf('borrow') ?? actionOf('repay')
     : undefined;
-  const isPrimary = (choice?: Choice) => !!choice && !!primaryChoice && choice.action.type === primaryChoice.action.type && JSON.stringify(choice.action.payload ?? {}) === JSON.stringify(primaryChoice.action.payload ?? {});
+  const isPrimary = (choice?: Choice) => modern && !!choice && !!primaryChoice && choice.action.type === primaryChoice.action.type && JSON.stringify(choice.action.payload ?? {}) === JSON.stringify(primaryChoice.action.payload ?? {});
   const primaryIndex = primaryChoice ? num(primaryChoice.action.payload?.tile ?? primaryChoice.action.payload?.destination ?? pos) : pos;
   const primaryTile = tiles[primaryIndex] ?? currentTile;
   const primaryCost = primaryChoice?.action.type === 'buy' ? num(primaryTile.price) : primaryChoice?.action.type === 'build' ? num(primaryTile.nextBuildCost) : primaryChoice?.action.type === 'takeover' ? num(board.takeoverOffer?.price) : primaryChoice?.action.type === 'pay-rent' ? num(board.pendingRent?.amount) : 0;
@@ -298,6 +299,7 @@ export default function MarbleBoard({ view: rawView, language, playerId, runActi
   const outcome = view.result?.winner === 'draw' ? 'draw' : view.result?.winner === playerId ? 'win' : view.result ? 'lose' : '';
 
   return <section className={`marble-premium distilled-marble ${isLegacy ? 'is-legacy' : 'is-modern'}`} aria-label={copy(language, '부루마블 경기판', 'Tablero de Marble')}>
+    {modern&&<MarbleMoneyFlight event={latestTransaction as MarbleActionEvent|undefined} cash={money} language={language}/>}
     <header className="mp-header"><div className="mp-brand"><h2>{copy(language, '부루마블', 'Marble')}</h2><p>{copy(language, '도시를 사고 건물을 지으며 여행해요. 같이 여행은 가도, 통행료는 따로야.', 'Compra ciudades, construye y recorre el mundo. Viajamos juntos, pero el alquiler va por separado.')}</p></div><div className={`mp-turn-badge ${active ? 'is-active' : ''}`}><span className="mp-turn-gem" aria-hidden="true"/><b>{statusCopy}</b><span>{phaseLabel}</span></div></header>
 
     <a className="mp-action-skip" href="#marble-current-action" onClick={event => { event.preventDefault(); focusMarbleAction(actionPanelRef.current); }}>{copy(language, '현재 행동으로 이동', 'Ir a la acción actual')}</a>

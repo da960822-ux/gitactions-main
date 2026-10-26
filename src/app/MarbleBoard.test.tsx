@@ -319,6 +319,28 @@ describe('MarbleBoard', () => {
     expect(es).not.toContain('Declarar quiebra</button>');
   });
 
+  it('keeps legacy 18-cell roll, buy, and end-turn controls outside the modern center stage', () => {
+    const legacy = { ...marbleEngine.createInitialState(3), boardVersion: undefined, cityRouteVersion: undefined, economicVersion: undefined, propertyRulesVersion: undefined } as ReturnType<typeof marbleEngine.createInitialState>;
+    const roll = marbleEngine.getPlayerView(legacy, 'p1');
+    expect(roll.board.tiles).toHaveLength(18);
+    expect(render(roll)).toContain('주사위 굴리기<span aria-hidden="true">↗</span></button>');
+    legacy.positions.p1 = 1; legacy.pendingTile = 1; legacy.phase = 'decision';
+    expect(render(marbleEngine.getPlayerView(legacy, 'p1'))).toContain('구매 · 100');
+    legacy.properties[1] = { owner: 'p1', houses: 0 }; legacy.phase = 'main';
+    expect(render(marbleEngine.getPlayerView(legacy, 'p1'))).toContain('차례 마치기');
+  });
+
+  it('shows each legal property sale in debt without a fixed first-city primary action', () => {
+    const state = marbleEngine.createInitialState(7);
+    state.phase = 'debt'; state.money.p1 = 0; state.debt!.p1 = 330;
+    state.properties[1] = { owner: 'p1', houses: 1 }; state.properties[3] = { owner: 'p1', houses: 0 };
+    state.pendingPayment = { amount: 120, creditor: 'bank', reason: { ko: '도시세', es: 'Impuesto' }, type: 'tax', tile: 5, resumePhase: 'main', resumeActive: 'p1' };
+    const html = render(marbleEngine.getPlayerView(state, 'p1'));
+    expect(html).toContain('marble-property-sale');
+    expect((html.match(/<option value="(?:1|3)"/g)??[])).toHaveLength(2);
+    expect(html).not.toContain('id="mp-action-primary"');
+  });
+
   it('labels debt-adjusted value as net worth and states fixed loan terms before the choice', () => {
     const state = marbleEngine.createInitialState(21);
     const view = marbleEngine.getPlayerView(state, 'p1');
