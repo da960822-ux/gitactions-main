@@ -69,7 +69,7 @@ Rebuild after changing either variable. Never put the Supabase service-role key 
 
 ## Cloudflare Pages alternative
 
-For a separately configured Cloudflare Pages host, use the repository root, build command `npm run build`, and output directory `dist`. The checked-in `public/_redirects` is copied to `dist` and sends deep links such as `/room/<id>` to the SPA entry point. Set the two public build values for production, and for preview only if those deployments should use the backend. Cloudflare serves the static application; rooms still depend on the configured Supabase backend.
+For a separately configured Cloudflare Pages host, use the repository root, build command `npm run build`, and output directory `dist`. The checked-in `public/_redirects` is copied to `dist` and sends deep links such as `/room/<id>` to the SPA entry point. Set the two public build values for production, and for preview only if those deployments should use the backend. Cloudflare serves the static application; rooms still depend on the configured Supabase backend. `/feedback` requires the protected same-origin Worker and D1; a static-only host will show a connection error there.
 
 ## Optional chat translation
 
