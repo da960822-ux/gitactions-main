@@ -35,4 +35,12 @@ describe('MarbleCityTile', () => {
     expect(html).toContain('25만');
     expect(html).not.toContain('mp-building-badge');
   });
+  it('uses historical special space art instead of the legacy key and station symbols',()=>{
+    const view=marbleEngine.getPlayerView(marbleEngine.createInitialState(71),'p1');
+    for(const [index,kind,symbol] of [[2,'bonus-game','bonus-game'],[16,'olympic','olympic'],[24,'world-travel','world-travel'],[12,'card','key']] as const){
+      const html=renderToStaticMarkup(createElement(MarbleCityTile,{tile:view.board.tiles[index],index,tileCount:32,position:[1,2],language:'ko',routeVersion:4,modern:true,selected:false,pending:false,changed:false,atSeats:[],movingSeat:null,playerId:'p1',pawnForSeat:()=> 'fox' as const,seatLabel:()=> '나',onInspect:vi.fn()}));
+      expect(html).toContain(`mp-kind-${kind}`);
+      expect(html).toContain(`tile-symbols.svg#${symbol}`);
+    }
+  });
 });

@@ -8,6 +8,17 @@ import MarbleTeamBoard from './MarbleTeamBoard';
 const state=()=>savedFourMarbleState(71) as FourMarbleState;
 const render=(s:FourMarbleState,language:'ko'|'es'='ko')=>renderToStaticMarkup(createElement(MarbleTeamBoard,{view:fourMarbleEngine.getPlayerView(s,'p1'),language,nickname:'연석',runAction:vi.fn(),onReplay:vi.fn(),onExit:vi.fn(),onSelectGame:vi.fn()}));
 describe('native four-player Marble screen',()=>{
+ it('keeps both legal rent payment choices in the central decision when a pass is held',()=>{
+  const s=fourMarbleEngine.createInitialState(71);
+  s.active='p1';s.phase='rent-decision';s.positions.p1=29;
+  s.properties[29]={owner:'p4',houses:1,buildings:{villa:true}};
+  s.pendingRent={amount:550000,creditor:'p4'};s.rentPasses.p1=1;
+  const html=renderToStaticMarkup(createElement(MarbleTeamBoard,{view:fourMarbleEngine.getPlayerView(s,'p1'),language:'ko',runAction:vi.fn()}));
+  const stage=html.slice(html.indexOf('class="mp-center-stage mt-center-stage'),html.indexOf('</section>',html.indexOf('class="mp-center-stage mt-center-stage')));
+  expect(stage).toContain('통행료 지급 · 55만');
+  expect(stage).toContain('통행료 면제권 사용');
+  expect((html.match(/>통행료 면제권 사용</g)??[]).length).toBe(1);
+ });
  it('puts the legal phase action ahead of optional loans in the central dice stage',()=>{
   const html=render(state());
   const center=html.slice(html.indexOf('class="mp-center-stage mt-center-stage'),html.indexOf('</section>',html.indexOf('class="mp-center-stage mt-center-stage')));

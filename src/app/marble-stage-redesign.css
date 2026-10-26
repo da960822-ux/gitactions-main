@@ -37,7 +37,7 @@
 }
 :is(.marble-premium,.marble-native-team).is-modern .mp-board-grid--32 {
   width:min(100%,calc(100svh * 1.3),1040px); max-width:none;
-  height:clamp(560px,calc(var(--mp-available-height,650px) - 61px),710px);
+  height:clamp(500px,calc(var(--mp-available-height,650px) - 130px),680px);
   margin:auto; aspect-ratio:auto; gap:3px; padding:4px;
   grid-template-columns:repeat(9,minmax(0,1fr));
   grid-template-rows:repeat(9,minmax(0,1fr));
@@ -89,6 +89,8 @@
 .marble-premium.is-modern .mp-turn-panel { display:none; margin:0; padding:8px 12px; border:0; border-radius:8px; background:#fffbf1; color:#213c43; box-shadow:0 3px 10px #0c263542; }
 .marble-premium.is-modern .mp-turn-panel:has(.mp-actions button,.mp-build-shortcut,.mp-payment-alert,.marble-property-sale,.mp-bankruptcy-confirm) { display:block; }
 .marble-premium.is-modern:has(.mp-board-grid--32 .mp-stage--decision) .mp-turn-panel { display:none; }
+.marble-premium.is-modern:has(.mp-board-grid--32 .mp-stage--rent-decision) .mp-turn-panel { display:none; }
+.marble-premium.is-modern:has(.mp-board-grid--32 .mp-stage--moving) .mp-turn-panel { display:none; }
 .marble-premium.is-modern .mp-turn-panel .mp-phase-title,.marble-premium.is-modern .mp-turn-panel .mp-dice-row,.marble-premium.is-modern .mp-turn-panel .mp-current-tile,.marble-premium.is-modern .mp-turn-panel .mp-purchase-recap { display:none; }
 .marble-premium.is-modern .mp-actions fieldset { display:flex; align-items:center; gap:8px; flex-wrap:wrap; }
 .marble-premium.is-modern .mp-actions button { width:auto; }
@@ -150,7 +152,7 @@
 .marble-native-team.marble-team-board .mt-bank dd { font-size:12px; }
 .marble-native-team.marble-team-board .mt-banks { width:100%; max-width:none; gap:6px; }
 .marble-native-team.marble-team-board .mp-board-grid--40 { width:100%; max-width:none; height:clamp(440px,calc(100svh - 235px),680px); grid-template-columns:clamp(105px,13%,140px) repeat(9,minmax(0,1fr)) clamp(105px,13%,140px); grid-template-rows:clamp(70px,13%,92px) repeat(9,minmax(0,1fr)) clamp(70px,13%,92px); gap:3px; padding:4px; background:#99b7aa url('/images/marble/backing-board.svg') center/cover; border-color:#d4bd81; }
-.marble-native-team.marble-team-board .mp-board-grid--32 { height:clamp(560px,calc(100svh - 165px),735px); }
+.marble-native-team.marble-team-board .mp-board-grid--32 { height:clamp(510px,calc(100svh - 232px),680px); }
 .marble-native-team.marble-team-board .mp-center-stage { bottom:13%; }
 .marble-native-team.marble-team-board .mp-center-stage.mp-stage--roll { bottom:25%; }
 .marble-native-team.marble-team-board .mp-board-center .mp-ownership-key { display:none; }
@@ -158,6 +160,8 @@
 .marble-native-team.marble-team-board .mt-center-stage .mp-stage-art { width:125px; height:150px; }
 .marble-native-team.marble-team-board .mt-center-stage .mp-stage-details h2 { font-size:clamp(22px,2vw,30px); }
 .marble-native-team.marble-team-board .mt-center-stage.mp-stage--main:has(.mp-structure-choices) { bottom:5%; max-height:90%; }
+.marble-premium.is-modern .mp-board-grid--32 .mp-center-stage.mp-stage--main:has(.mp-structure-choices),
+:is(.marble-premium,.marble-native-team).is-modern .mp-board-grid--32 .mp-center-stage.mp-stage--rent-decision { bottom:5%; max-height:90%; }
 .marble-premium.is-modern .mp-brand h2 { color:#fff8e8; }
 .marble-premium.is-modern .mp-brand p { color:#d5e8df; }
 @media (max-width:1099px) {
@@ -235,6 +239,7 @@
 :is(.marble-premium,.marble-native-team).is-modern .mp-moving-status .mp-die { width:42px; height:42px; }
 :is(.marble-premium,.marble-native-team).is-modern .mp-moving-status p { margin:0; font-size:12px; }
 .marble-native-team.marble-team-board:has(.mt-center-stage.mp-stage--decision) .mt-captain-panel .mt-cash-after { display:none; }
+.marble-native-team.marble-team-board:has(.mt-center-stage.mp-stage--moving) .mt-captain-panel .mt-cash-after { display:none; }
 .marble-native-team.marble-team-board .mt-captain-panel > .marble-event-stage { flex:1 1 290px; min-width:260px; max-width:460px; height:50px; min-height:50px; max-height:50px; margin:0; padding:3px 8px; gap:7px; overflow:hidden; border:0; border-radius:7px; background:#fff5df; }
 .marble-native-team.marble-team-board .mt-captain-panel > .marble-event-stage .marble-event-mark,
 .marble-native-team.marble-team-board .mt-captain-panel > .marble-event-stage.has-card-art .marble-event-mark { flex:0 0 35px; width:35px; height:38px; }
@@ -293,6 +298,19 @@
 :is(.marble-premium,.marble-native-team).is-modern .mp-board-grid--32 .mp-tile.mp-kind-tourism { background:linear-gradient(145deg,#fffdf1,#d7ebeb); border-color:#80adb2; }
 :is(.marble-premium,.marble-native-team).is-modern .mp-board-grid--32 .mp-tile.mp-kind-tourism .mp-tile-top::after { content:attr(data-tourism-label); position:absolute; left:17px; top:0; color:#0a6470; font-size:8px; font-weight:800; }
 :is(.marble-premium,.marble-native-team).is-modern .mp-board-grid--32 .mp-tile.mp-kind-tourism .mp-tile-economy { padding-right:0; }
+/* The 40-cell pawn rules put pieces outside the edge tiles. The 32-cell
+   route keeps each animal visibly inside its current cell during every step. */
+:is(.marble-premium,.marble-native-team).is-modern .mp-board-grid--32 .mp-tile .mp-pawns {
+  position:absolute; inset:auto 3px 13px auto; z-index:8; display:flex; align-items:flex-end;
+  max-width:calc(100% - 6px); gap:0; transform:none; pointer-events:none;
+}
+:is(.marble-premium,.marble-native-team).is-modern .mp-board-grid--32 .mp-tile .mp-pawn-marker {
+  position:relative; flex:0 0 26px; width:26px; height:34px; margin-left:-4px;
+  filter:drop-shadow(0 1px 2px #102a2ecc);
+}
+:is(.marble-premium,.marble-native-team).is-modern .mp-board-grid--32 .mp-tile .mp-pawn-marker .marble-pawn { display:block; width:100%; height:100%; }
+:is(.marble-premium,.marble-native-team).is-modern .mp-board-grid--32 .mp-tile .mp-pawn-marker.is-moving-pawn { animation:mp-pawn-step 80ms ease-out both; }
+@keyframes mp-pawn-step { from { transform:translateY(-4px) scale(.94); opacity:1; } to { transform:none; opacity:1; } }
 .marble-native-team.marble-team-board .mt-stage-skip { display:block; width:100%; margin-top:5px; background:#fff9ed; color:#34535a; border-color:#c5ae7b; }
 :is(.marble-premium,.marble-native-team).is-modern .mp-stage-cash-before { display:none; }
 :is(.marble-premium,.marble-native-team).is-modern .mp-mobile-spotlight { display:none; }

@@ -24,12 +24,13 @@ async function scene(mode,scenario,language,width,height,{motion=false}={}) {
   if(scenario==='levels') {
    for(const [index,buildings] of [[1,{}],[3,{villa:true}],[5,{building:true}],[6,{hotel:true}],[7,{villa:true,building:true,hotel:true,landmark:true}]])snapshot.properties[index]={owner:index===5?'p2':'p1',houses:Object.keys(buildings).filter(name=>name!=='landmark').length,buildings};
   }
-  if(scenario==='rent') {
+  if(scenario==='rent'||scenario==='rent-pass') {
    const {classicMarbleCityToll}=await import('/src/games/marble-reference-profile.ts');
    const amount=classicMarbleCityToll('뉴욕',{villa:true});
    snapshot.properties[29]={owner:mode==='2p'?'p2':'p4',houses:1,buildings:{villa:true}};
    snapshot.positions.p1=29;snapshot.pendingTile=29;snapshot.takeoverTile=29;snapshot.phase='rent-decision';
    snapshot.pendingRent=mode==='2p'?{amount,creditor:'p2',playerId:'p1',tile:29,reason:{ko:'뉴욕 통행료',es:'Alquiler de Nueva York'}}:{amount,creditor:'p4'};
+   if(scenario==='rent-pass')snapshot.rentPasses.p1=1;
   }
   window.__marbleEngine=engine;
   window.__marbleState=snapshot;
@@ -43,9 +44,24 @@ async function scene(mode,scenario,language,width,height,{motion=false}={}) {
  await page.waitForTimeout(120);
  const file=`live32-${mode}-${scenario}-${language}-${width}x${height}.png`;
  await page.screenshot({path:path.join(output,file)});
- const metric=await page.evaluate(()=>{const board=document.querySelector('.mp-board-grid--32');const stage=document.querySelector('.mp-center-stage');const rect=node=>node?.getBoundingClientRect().toJSON();return {board:rect(board),stage:rect(stage),tiles:board?.querySelectorAll('.mp-tile').length,cash:document.querySelector('.mp-bank[data-marble-seat="p1"],.mt-bank[data-marble-seat="p1"],.mp-player-hud[data-marble-seat="p1"]')?.textContent?.slice(0,100),action:document.querySelector('#mp-action-primary,#mt-action-primary')?.textContent,choices:[...document.querySelectorAll('.mp-structure-option')].map(node=>node.textContent),overflow:document.documentElement.scrollWidth>innerWidth};});
+ const metric=await page.evaluate(()=>{const board=document.querySelector('.mp-board-grid--32');const stage=document.querySelector('.mp-center-stage');const rect=node=>node?.getBoundingClientRect().toJSON();return {board:rect(board),stage:rect(stage),footer:rect(document.querySelector('.mt-captain-panel,.mp-dashboard > details')),tiles:board?.querySelectorAll('.mp-tile').length,cash:document.querySelector('.mp-player[data-marble-seat="p1"] [data-marble-value="cash"],.mt-bank[data-marble-seat="p1"] > div > span')?.textContent,assets:document.querySelector('.mp-player[data-marble-seat="p1"] [data-marble-value="assets"],.mt-bank[data-marble-seat="p1"] dd')?.textContent,action:document.querySelector('#mp-action-primary,#mt-action-primary')?.textContent,choices:[...document.querySelectorAll('.mp-structure-option')].map(node=>node.textContent),overflow:document.documentElement.scrollWidth>innerWidth};});
  console.log(file,JSON.stringify({state,metric,errors}));
  if(errors.length||state.tiles!==32||metric.tiles!==32)throw Error(`Live ${mode} ${scenario} invalid`);
+ if(scenario==='build'&&!metric.assets?.includes('505만'))throw Error(`${mode} Bangkok land asset does not show 505만: ${metric.assets}`);
+ if(scenario==='rent-pass'){
+  const stage=page.locator('.mp-center-stage');
+  const before=await page.evaluate(()=>({cash:window.__marbleState.money.p1,passes:window.__marbleState.rentPasses.p1}));
+  const pay=stage.locator('#mp-action-primary,#mt-action-primary');
+  const pass=stage.getByRole('button',{name:/면제권|pase/i});
+  if(!await pay.isVisible()||!await pass.isVisible())throw Error(`${mode} rent choices not both visible`);
+  const payBox=await pay.boundingBox(),passBox=await pass.boundingBox();
+  if(!payBox||!passBox||payBox.y+payBox.height>height||passBox.y+passBox.height>height)throw Error(`${mode} rent choice clipped at ${height}`);
+  await pass.click();await page.waitForTimeout(180);
+  const after=await page.evaluate(()=>({cash:window.__marbleState.money.p1,passes:window.__marbleState.rentPasses.p1,phase:window.__marbleState.phase}));
+  if(after.cash!==before.cash||after.passes!==0||after.phase==='rent-decision')throw Error(`${mode} rent pass outcome incorrect: ${JSON.stringify({before,after})}`);
+  console.log('RENT PASS',mode,JSON.stringify({before,after,payBox,passBox}));
+  await page.screenshot({path:path.join(output,`live32-${mode}-rent-pass-resolved-${language}-${width}x${height}.png`)});
+ }
  if(['purchase','build','rent','tourism'].includes(scenario)) {
   if(scenario==='build'){
    if(metric.choices.length<3)throw Error(`${mode} build choices missing: ${JSON.stringify(metric.choices)}`);
@@ -69,14 +85,17 @@ async function scene(mode,scenario,language,width,height,{motion=false}={}) {
   const cdp=await context.newCDPSession(page);
   const pending=[];let frameCount=0;
   cdp.on('Page.screencastFrame',packet=>{const file=path.join(frames,`frame-${String(frameCount++).padStart(3,'0')}.jpg`);pending.push(fs.writeFile(file,Buffer.from(packet.data,'base64')));void cdp.send('Page.screencastFrameAck',{sessionId:packet.sessionId});});
-  await page.evaluate(()=>{window.__motionTrace=[];const board=document.querySelector('.mp-board-grid--32');const record=()=>{const tile=board?.querySelector('.mp-tile.is-moving');if(tile)window.__motionTrace.push(tile.getAttribute('aria-label'));};new MutationObserver(record).observe(board,{attributes:true,attributeFilter:['class'],subtree:true});});
+  await page.evaluate(()=>{window.__motionTrace=[];window.__motionVisible=[];const board=document.querySelector('.mp-board-grid--32');const record=()=>{const tile=board?.querySelector('.mp-tile.is-moving');if(tile){window.__motionTrace.push(tile.getAttribute('aria-label'));requestAnimationFrame(()=>{const marker=tile.querySelector('.mp-pawn-marker.is-moving-pawn'),pawn=marker?.querySelector('.marble-pawn'),box=marker?.getBoundingClientRect(),cell=tile.getBoundingClientRect();window.__motionVisible.push({tile:tile.getAttribute('aria-label'),visible:!!box&&!!pawn&&box.width>=20&&box.height>=25&&box.right>cell.left&&box.left<cell.right&&box.bottom>cell.top&&box.top<cell.bottom&&Number(getComputedStyle(marker).opacity)>=.9});});}};new MutationObserver(record).observe(board,{attributes:true,attributeFilter:['class'],subtree:true});});
   await cdp.send('Page.startScreencast',{format:'jpeg',quality:86,maxWidth:width,maxHeight:height,everyNthFrame:1});
   await page.locator('#mp-action-primary,#mt-action-primary').first().click();
+  await page.locator('.mp-tile.is-moving .mp-pawn-marker.is-moving-pawn').first().waitFor({state:'visible'});
+  await page.screenshot({path:path.join(output,`live32-${mode}-motion-step-${language}-${width}x${height}.jpg`),type:'jpeg',quality:90});
   await page.waitForTimeout(2400);
   await cdp.send('Page.stopScreencast');await Promise.all(pending);
-  const trace=await page.evaluate(()=>window.__motionTrace);
-  console.log('MOTION',mode,JSON.stringify({frames:frameCount,visited:[...new Set(trace)]}));
+  const {trace,visible}=await page.evaluate(()=>({trace:window.__motionTrace,visible:window.__motionVisible}));
+  console.log('MOTION',mode,JSON.stringify({frames:frameCount,visited:[...new Set(trace)],visible:visible.filter(item=>item.visible).length,samples:visible.length}));
   if(frameCount<2||new Set(trace).size<2)throw Error(`Motion was not observed tile by tile: ${mode}`);
+  if(visible.filter(item=>item.visible).length<4)throw Error(`Moving pawn was not visibly painted on the board: ${mode}`);
   const video=path.join(output,`live32-${mode}-motion-${language}-${width}x${height}.mp4`);
   execFileSync('/usr/bin/ffmpeg',['-y','-loglevel','error','-framerate','12','-i',path.join(frames,'frame-%03d.jpg'),'-c:v','libx264','-pix_fmt','yuv420p',video]);
   const first=Math.min(1,frameCount-1),last=frameCount-1;
@@ -87,7 +106,7 @@ async function scene(mode,scenario,language,width,height,{motion=false}={}) {
  await page.close();await context.close();
 
 }
-for(const spec of [['2p','roll','ko',1280,800,{motion:true}],['4p','roll','ko',1280,800,{motion:true}],['2p','roll','ko',1440,900,{}],['4p','roll','ko',1440,900,{}],['2p','purchase','ko',1280,800,{}],['4p','purchase','ko',1280,800,{}],['2p','tourism','ko',1280,800,{}],['4p','tourism','ko',1280,800,{}],['2p','shortfall','ko',1280,800,{}],['4p','shortfall','ko',1280,800,{}],['2p','build','ko',1280,800,{}],['4p','build','ko',1280,800,{}],['2p','levels','ko',1280,800,{}],['4p','levels','ko',1280,800,{}],['2p','rent','ko',1280,800,{}],['4p','rent','ko',1280,800,{}],['2p','purchase','es',1280,800,{}],['4p','purchase','es',1280,800,{}]]){
+for(const spec of [['2p','roll','ko',1280,800,{motion:true}],['4p','roll','ko',1280,800,{motion:true}],['2p','roll','ko',1440,900,{}],['4p','roll','ko',1440,900,{}],['2p','purchase','ko',1280,800,{}],['4p','purchase','ko',1280,800,{}],['2p','tourism','ko',1280,800,{}],['4p','tourism','ko',1280,800,{}],['2p','shortfall','ko',1280,800,{}],['4p','shortfall','ko',1280,800,{}],['2p','build','ko',1280,800,{}],['4p','build','ko',1280,800,{}],['2p','levels','ko',1280,800,{}],['4p','levels','ko',1280,800,{}],['2p','rent','ko',1280,800,{}],['4p','rent','ko',1280,800,{}],['2p','rent-pass','ko',1280,800,{}],['4p','rent-pass','ko',1280,800,{}],['2p','purchase','es',1280,800,{}],['4p','purchase','es',1280,800,{}]]){
  if(process.env.MARBLE_CAPTURE_FILTER&&!`${spec[0]}-${spec[1]}-${spec[2]}-${spec[3]}x${spec[4]}`.includes(process.env.MARBLE_CAPTURE_FILTER))continue;
  await scene(...spec);
 }
