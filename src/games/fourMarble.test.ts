@@ -14,6 +14,18 @@ function rollFor(total: number) {
 const step = (s: FourMarbleState, action: GameAction) => engine.applyAction(s, s.active, action) as FourMarbleState;
 
 describe('four-seat Marble team variant', () => {
+  it('offers and validates a rent pass only while the active seat owns one', () => {
+    const s = state();
+    s.active = 'p1'; s.phase = 'rent-decision'; s.pendingRent = { amount: 200, creditor: 'p2' };
+    const withoutPass = engine.getPlayerView(s, 'p1').actions.map(option => option.action.type);
+    expect(withoutPass).toContain('pay-rent');
+    expect(withoutPass).not.toContain('use-rent-pass');
+    expect(engine.validateAction(s, 'p1', { type: 'use-rent-pass' })).not.toBeNull();
+    s.rentPasses.p1 = 1;
+    const withPass = engine.getPlayerView(s, 'p1').actions.map(option => option.action.type);
+    expect(withPass).toContain('use-rent-pass');
+    expect(engine.validateAction(s, 'p1', { type: 'use-rent-pass' })).toBeNull();
+  });
   it('allows all seven pawn skins only when unoccupied and locks each seat after its first roll', () => {
     const s = state();
     expect(new Set(Object.values(s.pawns)).size).toBe(4);
@@ -56,9 +68,10 @@ describe('four-seat Marble team variant', () => {
     const s = state(); s.active = 'p4'; s.rng = rollFor(2); s.positions.p4 = 39;
     const next = step(s, { type: 'roll' });
     expect(next.lastMove).toMatchObject({ playerId: 'p4', from: 39, to: 1, steps: 2, source: 'dice' });
-    expect(next.actionLog.map(event => event.type)).toEqual(['roll', 'move', 'arrival']);
-    expect(next.actionLog.map(event => event.actor)).toEqual(['p4', 'p4', 'p4']);
-    expect(next.actionLog.map(event => event.sequence)).toEqual([1, 2, 3]);
+    expect(next.actionLog.map(event => event.type)).toEqual(['roll', 'salary', 'move', 'arrival']);
+    expect(next.actionLog.map(event => event.actor)).toEqual(['p4', 'p4', 'p4', 'p4']);
+    expect(next.actionLog.map(event => event.sequence)).toEqual([1, 2, 3, 4]);
+    expect(next.actionLog[1]).toMatchObject({ amount: 200, fromAccount: 'bank', toAccount: 'p4', moneyDelta: { p4: 200 } });
     expect(next.diceSequence).toBe(1);
   });
 

@@ -16,7 +16,7 @@ export const MARBLE_ECONOMY_V3 = {
 const round10 = (value: number) => Math.round(value / 10) * 10;
 export const marbleStartingCash = (version?: number) => version === 3 ? MARBLE_ECONOMY_V3.startingCash : 1500;
 export const marblePassStartSalary = (version?: number) => version === 3 ? MARBLE_ECONOMY_V3.passStartSalary : 200;
-export const marbleLandPrice = (tile: MarbleTile, version?: number) => version === 3 ? Math.max(50, round10((tile.price ?? 0) * MARBLE_ECONOMY_V3.landPriceFactor)) : tile.price ?? 0;
+export const marbleLandPrice = (tile: MarbleTile, version?: number) => version === 3 && tile.kind === 'property' ? Math.max(50, round10((tile.price ?? 0) * MARBLE_ECONOMY_V3.landPriceFactor)) : tile.price ?? 0;
 
 export function marbleBaseRent(tile: MarbleTile, version?: number) {
   if (version !== 3) return tile.rent ?? 0;

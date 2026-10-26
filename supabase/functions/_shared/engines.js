@@ -6083,7 +6083,7 @@ var MARBLE_ECONOMY_V3 = {
 var round10 = (value) => Math.round(value / 10) * 10;
 var marbleStartingCash = (version) => version === 3 ? MARBLE_ECONOMY_V3.startingCash : 1500;
 var marblePassStartSalary = (version) => version === 3 ? MARBLE_ECONOMY_V3.passStartSalary : 200;
-var marbleLandPrice = (tile, version) => version === 3 ? Math.max(50, round10((tile.price ?? 0) * MARBLE_ECONOMY_V3.landPriceFactor)) : tile.price ?? 0;
+var marbleLandPrice = (tile, version) => version === 3 && tile.kind === "property" ? Math.max(50, round10((tile.price ?? 0) * MARBLE_ECONOMY_V3.landPriceFactor)) : tile.price ?? 0;
 function marbleBaseRent(tile, version) {
   if (version !== 3) return tile.rent ?? 0;
   const originalPrice = tile.price ?? 0;
@@ -6228,7 +6228,7 @@ var assetsFor = (s, p, board) => s.money[p] - (s.debt?.[p] ?? 0) + Object.entrie
   if (record2.owner !== p) return sum2;
   const tile = board[Number(index)];
   const buildingCost = tile ? Array.from({ length: record2.houses }, (_, level) => marbleBuildCost(tile, level, s.economicVersion)).reduce((total, cost) => total + cost, 0) : 0;
-  return sum2 + (tile?.price ?? 0) + buildingCost;
+  return sum2 + (tile ? marbleLandPrice(tile, s.economicVersion) : 0) + buildingCost;
 }, 0);
 var completedGroups = (s, p) => {
   const board = boardFor(s);

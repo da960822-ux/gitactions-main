@@ -38,6 +38,33 @@ describe('Marble versioned economy profile', () => {
     expect(marbleRentAmount({ ...tile, price: 100, rent: 12 }, 3, 2)).toBe(96);
   });
 
+  it('scales only property land prices and keeps 2p/team net worth equal after purchase and build', () => {
+    const two = marbleEngine.createInitialState(9);
+    const four = fourMarbleEngine.createInitialState(9);
+    two.money.p1 = 2920;
+    two.properties['1'] = { owner: 'p1', houses: 0 };
+    four.money.p1 = 2920;
+    four.properties['1'] = { owner: 'p1', houses: 0 };
+    expect(marbleEngine.getPlayerView(two, 'p1').board.assets.p1).toBe(3000);
+    expect(fourMarbleEngine.getPlayerView(four, 'p1').players.find(player => player.id === 'p1')?.score).toBe(3000);
+    expect(marbleEngine.getPlayerView(two, 'p1').board.tiles[6].price).toBe(100);
+    expect((fourMarbleEngine.getPlayerView(four, 'p1') as any).publicBoard[6].price).toBe(100);
+
+    two.money.p1 = 2890;
+    two.properties['1'] = { owner: 'p1', houses: 1 };
+    four.money.p1 = 2890;
+    four.properties['1'] = { owner: 'p1', houses: 1 };
+    expect(marbleEngine.getPlayerView(two, 'p1').board.assets.p1).toBe(3000);
+    expect(fourMarbleEngine.getPlayerView(four, 'p1').players.find(player => player.id === 'p1')?.score).toBe(3000);
+  });
+
+  it('uses the adjusted land value for the 120-turn settlement winner', () => {
+    let state: MarbleState = { ...marbleEngine.createInitialState(11), active: 'p1', phase: 'main', turns: 119,
+      money: { p1: 2920, p2: 3010 }, properties: { '1': { owner: 'p1', houses: 0 } } };
+    state = marbleEngine.applyAction(state, 'p1', { type: 'endTurn' });
+    expect(state.result).toMatchObject({ winner: 'p2', scores: { p1: 3000, p2: 3010 } });
+  });
+
   it('keeps the live adjusted-price ledger preview aligned with engine values', () => {
     // The public views already contain v3-adjusted values. Preview helpers must not scale them a second time.
     const price = 80, baseRent = 20;
@@ -55,6 +82,7 @@ describe('Marble versioned economy profile', () => {
     four = fourMarbleEngine.applyAction(four, 'p1', { type: 'roll' });
     expect(two.money.p1).toBe(3300);
     expect(four.money.p1).toBe(3300);
+    expect(four.actionLog.find((event: any) => event.type === 'salary')).toMatchObject({ amount: 300, fromAccount: 'bank', toAccount: 'p1', moneyDelta: { p1: 300 } });
   });
 
   it('debits and previews the same first build after purchase on both routes', () => {

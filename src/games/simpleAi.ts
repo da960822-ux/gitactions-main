@@ -10,7 +10,7 @@ export const aiTurnDelay = (game: GameId) => game === 'minhwatu' ? 2800 : game =
 export const supportsAi = (id: GameId) => (aiGameIds as readonly GameId[]).includes(id);
 
 // Only the player's filtered view enters the policy; hidden hands and decks never do.
-export function chooseSimpleAiAction(game: GameId, view: any, player: PlayerId, random = Math.random): GameAction | null {
+export function chooseSimpleAiAction(game: GameId, view: any, player: PlayerId, random = Math.random, reserveOverride?: number): GameAction | null {
   if (!supportsAi(game) || view?.result) return null;
   const actions: GameAction[] = (view?.actions ?? []).map((option: any) => option.action)
     .filter((action: GameAction) => !['configure', 'set-mode', 'next-round'].includes(action.type))
@@ -71,7 +71,8 @@ export function chooseSimpleAiAction(game: GameId, view: any, player: PlayerId, 
         const distance = (index - view.ownHand.position + tiles.length) % tiles.length;
         return total + (tile.owner === opponent && distance >= 2 && distance <= 12 ? rent(tile) * (6-Math.abs(7-distance))/36 : 0);
       }, 0);
-      const reserve = Math.max(marbleAiReserve(economicVersion), risk * 2 + marbleAiReserve(economicVersion) / 2);
+      const minimumReserve = reserveOverride ?? marbleAiReserve(economicVersion);
+      const reserve = Math.max(minimumReserve, risk * 2 + minimumReserve / 2);
       if (action.type === 'buy') { const tile = tiles[view.ownHand.position], group = tiles.filter(t => t.group === tile.group && t.kind === 'property'); return money - tile.price >= reserve ? 30 + group.filter(t=>t.owner===player).length * 5 : -1; }
       if (action.type === 'takeover') { const tile = tiles[Number(x.tile)], cost = view.board.takeoverOffer?.price; return cost != null && money - cost >= reserve ? 15 + tile.houses * 3 : -5; }
       if (action.type === 'build') { const tile = tiles[Number(x.tile)], distance = (Number(x.tile)-view.board.positions[opponent]+tiles.length)%tiles.length; const chance = distance>=2&&distance<=12 ? (6-Math.abs(7-distance))/36 : .02; return money - tile.nextBuildCost >= reserve ? 10 + (tile.nextRent-rent(tile)) / tile.nextBuildCost * (1+chance*10) : -1; }

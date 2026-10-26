@@ -24,5 +24,5 @@ export interface FourEngine {
   validateAction(state: any, player: FourSeat, action: GameAction): string | null;
   applyAction(state: any, player: FourSeat, action: GameAction): any;
   getPlayerView(state: any, player: FourSeat): FourView;
-  chooseAiAction(view: FourView, player: FourSeat, random?: () => number): GameAction | null;
+  chooseAiAction(view: FourView, player: FourSeat, random?: () => number, reserveOverride?: number): GameAction | null;
 }

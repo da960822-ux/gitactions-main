@@ -80,7 +80,11 @@ function pay(s: FourMarbleState, p: FourSeat, amount: number, creditor: Creditor
 }
 function move(s: FourMarbleState, p: FourSeat, to: number, salary: boolean, source = 'card', steps = (to - s.positions[p] + board.length) % board.length) {
   const from = s.positions[p];
-  if (salary && to < s.positions[p]) s.money[p] += marblePassStartSalary(s.economicVersion);
+  if (salary && to < s.positions[p]) {
+    const amount = marblePassStartSalary(s.economicVersion);
+    s.money[p] += amount;
+    emit(s, 'salary', p, l('출발 급여', 'Bono de salida'), l(`출발을 지나 ${amount}을 받았습니다.`, `Al pasar por Salida recibes ${amount}.`), { amount, fromAccount: 'bank', toAccount: p, moneyDelta: { [p]: amount } });
+  }
   s.positions[p] = to;
   s.moveSequence = (s.moveSequence ?? 0) + 1;
   s.lastMove = { sequence: s.moveSequence, playerId: p, from, to, steps, source };
@@ -147,7 +151,7 @@ function actions(s: FourMarbleState, p: FourSeat): FourView['actions'] {
   }
   if (s.phase === 'rent-decision') {
     add(`통행료 ${s.pendingRent!.amount} 지급`, `Pagar alquiler de ${s.pendingRent!.amount}`, 'pay-rent');
-    add('통행료 면제권 사용', 'Usar pase de alquiler', 'use-rent-pass'); return choices;
+    if (s.rentPasses[p] > 0) add('통행료 면제권 사용', 'Usar pase de alquiler', 'use-rent-pass'); return choices;
   }
   if (s.phase === 'event-decision') {
     for (const [index, prop] of Object.entries(s.properties)) if (s.pendingEvent === 'city-festival' ? prop.owner === p : fourTeam(prop.owner) !== fourTeam(p) && !(s.propertyRulesVersion === 1 && prop.houses === 3)) add(`${board[Number(index)].name.ko} 선택`, `Elegir ${board[Number(index)].name.es}`, 'choose-event-city', { tile: Number(index) });
@@ -232,7 +236,7 @@ export const fourMarbleEngine: FourEngine = {
         if (s.doublesCount === 3) { move(s, p, 10, false, 'island'); s.islandTurns[p] = 3; s.extraRoll = false; s.doublesCount = 0; s.phase = 'main'; s.pendingTile = 10; s.takeoverTile = null; emit(s, 'island', p, l('3연속 더블 · 무인도', 'Tres dobles seguidos · a la isla')); return s; }
       }
       if (a.type === 'attempt-doubles' && d1 !== d2) { s.islandTurns[p]--; finishTurn(s, p); }
-      else { s.islandTurns[p] = 0; if (s.positions[p] + d1 + d2 >= board.length) s.money[p] += marblePassStartSalary(s.economicVersion); move(s, p, (s.positions[p] + d1 + d2) % board.length, false, a.type === 'attempt-doubles' ? 'island' : 'dice', d1 + d2); land(s, p, true); }
+      else { s.islandTurns[p] = 0; move(s, p, (s.positions[p] + d1 + d2) % board.length, a.type !== 'attempt-doubles', a.type === 'attempt-doubles' ? 'island' : 'dice', d1 + d2); land(s, p, true); }
     } else if (a.type === 'pay-escape' || a.type === 'use-escape-pass') {
       if (a.type === 'pay-escape') s.money[p] -= 100; else { s.escapePasses[p]--; s.eventDeck.push('escape-pass'); }
       s.islandTurns[p] = 0; s.phase = 'roll';
@@ -262,11 +266,11 @@ export const fourMarbleEngine: FourEngine = {
     });
     return { game: 'marble', turn: s.active, phase: s.phase, players: fourSeats.map(seat => ({ id: seat, score: assets(s, seat), count: owned(s, seat).length, eliminated: s.eliminated[seat], detail: l(`현금 ${s.money[seat]} · 대출 ${s.debt[seat]} · ${s.positions[seat] + 1}번 칸`, `Efectivo ${s.money[seat]} · deuda ${s.debt[seat]} · casilla ${s.positions[seat] + 1}`) })), hand: cityCards.filter((_, index) => s.properties[index]?.owner === p), panels: [{ id: 'board', title: l(`도시 여행 · ${s.turns}/120차례 · 기금 ${s.fundPool}${s.lastRoll.length ? ` · 주사위 ${s.lastRoll.join('+')}` : ''}`, `Viaje · ${s.turns}/120 turnos · fondo ${s.fundPool}${s.lastRoll.length ? ` · dados ${s.lastRoll.join('+')}` : ''}`), cards: cityCards }, { id: 'log', title: l('최근 소식', 'Últimas noticias'), cards: s.log.map((item, index) => ({ id: `event-${index}`, title: item })) }], actions: actions(s, p), result: s.result ? structuredClone(s.result) : null, note: l('독립 2대2 규칙 · 같은 팀 통행료 면제 · 개인 자금과 자산 · 두 명 모두 파산 시 팀 패배', 'Variante propia 2 contra 2 · sin alquiler entre aliados · fondos individuales · pierde el equipo si quiebran ambos'), publicBoard: board.map((tile, index) => ({ ...structuredClone(tile), ...(tile.price !== undefined ? { price: marbleLandPrice(tile, s.economicVersion ?? 2) } : {}), ...(tile.rent !== undefined ? { rent: marbleBaseRent(tile, s.economicVersion ?? 2) } : {}), monopolyMultiplier: s.propertyRulesVersion === 1 && s.properties[index] && groups(s, s.properties[index].owner).includes(tile.group!) ? 2 : 1 })), publicState: visible };
   },
-  chooseAiAction(rawView, p, random = Math.random) {
+  chooseAiAction(rawView, p, random = Math.random, reserveOverride?: number) {
     const view = rawView as MarbleView, s = view.publicState, choices = view.actions.map(option => option.action).filter(action => action.type !== 'choose-pawn');
     if (!choices.length) return null;
     const exposure = (tileIndex: number) => fourSeats.filter(seat => !s.eliminated[seat] && fourTeam(seat) !== fourTeam(p)).reduce((sum, seat) => { const distance = (tileIndex - s.positions[seat] + board.length) % board.length; return sum + (distance >= 2 && distance <= 12 ? (6 - Math.abs(7 - distance)) / 36 : .025); }, 0);
-    const reserve = Math.max(marbleAiReserve(s.economicVersion), ...Object.entries(s.properties).filter(([, prop]) => fourTeam(prop.owner) !== fourTeam(p)).map(([index, prop]) => rent(board[Number(index)], prop, s) * .7));
+    const reserve = Math.max(reserveOverride ?? marbleAiReserve(s.economicVersion), ...Object.entries(s.properties).filter(([, prop]) => fourTeam(prop.owner) !== fourTeam(p)).map(([index, prop]) => rent(board[Number(index)], prop, s) * .7));
     const score = (a: GameAction) => {
       const x = a.payload ?? {}, cash = s.money[p];
       if (a.type === 'borrow') return view.phase === 'debt' ? 100 : -100;

@@ -17,7 +17,7 @@ New games use economy version 3. Saved version 1/2 games continue to use their s
 | Rent by building stage | ×1 / ×2 / ×4 / ×8 | ×1 / ×2 / ×3 / ×4 |
 | Completed color group | ×2 | ×2 |
 
-The highest effective city price is 450, or 15% of new starting cash (versus 37.3% in saved v2). A 4,500/450 candidate matched a 10% highest-city ratio but produced 100/100 team turn-cap settlements and 23.75 mean cities owned at settlement; the selected 3,000/300 profile reduces that saturation while keeping first builds affordable. The 10% reference is an affordability comparison, not an official price claim. The event-card amounts and existing tax, fund, train, and island fees are unchanged. New economy version 3 now follows the existing loan/liquidation debt flow instead of immediately declaring bankruptcy when a payment exceeds cash.
+The highest effective city price is 450, or 15% of new starting cash (versus 37.3% in saved v2). A 4,500/450 candidate matched a 10% highest-city ratio but produced 100/100 team turn-cap settlements, 24.74 average purchase actions, and 23.75 final owned cities; the selected 3,000/300 profile reduces that saturation while keeping first builds affordable. The 10% reference is an affordability comparison, not an official price claim. The event-card amounts and existing tax, fund, train, and island fees are unchanged. New economy version 3 now follows the existing loan/liquidation debt flow instead of immediately declaring bankruptcy when a payment exceeds cash.
 
 ## City examples
 
@@ -31,32 +31,40 @@ Active route display names and route positions are used below. Rent columns are 
 | New York | 260 / 42 / 100 | 42 / 84 / 168 / 336 | 210 / 60 / 80 | 60 / 120 / 180 / 240 |
 | Seoul (route index 38; legacy row is Vancouver) | 560 / 112 / 220 | 112 / 224 / 448 / 896 | 450 / 140 / 180 | 140 / 280 / 420 / 560 |
 
-The existing completed-group multiplier doubles these rents. A one-use city-festival effect can double a rent once more. Thus Seoul's max v3 rent is 1,120 with a completed group, or 2,240 if the festival also applies, versus 3,584 for the old stage-3/group/festival stack. The 2-player AI simulation's 90th-percentile match maximum rent fell from 1,408 to 1,120; that metric is an AI run outcome, not a hard maximum.
+The existing completed-group multiplier doubles these rents. A one-use city-festival effect can double a rent once more. Thus Seoul's max v3 rent is 1,120 with a completed group, or 2,240 if the festival also applies, versus 3,584 for the old stage-3/group/festival stack. In the controlled 2-player AI run, the 90th-percentile match maximum rent was 1,408 in v2 and 1,040 in v3; that metric is an AI run outcome, not a hard maximum.
 
 The fixed five-city low/mid/high example (Gwangju, Madrid, Puerto Plata, New York, Seoul) costs 1,240 in v2 land plus 490 for one first build on each. At the 1,500 start, that is a 230 shortfall. In v3 the same five cost 990 in land plus 390 for those builds, leaving 1,620 from the 3,000 start. This is the specific early-build liquidity target.
 
 ## Paired simulation
 
-`src/games/marbleEconomy.simulation.test.ts` runs seeds 1–100 for each economy in 2-player and team modes: 400 deterministic AI matches total. It uses the same board, action policy, dice/event seed per paired match, and the existing 120-personal-turn settlement cap. The 2-player route uses `chooseSimpleAiAction`; the team route uses `fourMarbleEngine.chooseAiAction`. These bots are useful for consistency checks, not substitutes for human playtests.
+`src/games/marbleEconomy.simulation.test.ts` runs seeds 1–100 in each economy in 2-player and team modes: 400 deterministic matches. The board, dice/event seed, and AI reserve are held constant across versions; the simulation passes a fixed reserve of 200 to both AI policies so the comparison isolates the economy rather than the production v3 reserve override. This controlled AI run is a measurement aid, not a prediction of human play. A turn is one completed personal turn; total actions count each engine action separately (rolls, builds, buys, debt actions, and so on).
 
-| Metric (per match unless noted) | 2p v2 | 2p v3 | Team v2 | Team v3 |
+The fifth-purchase samples count players, not matches. “Build affordable” means the engine exposes at least one legal build immediately after that player's fifth successful bank purchase. “Cash after immediate build” includes only the sample where their very next action was a build. Purchase actions count rebuys after a city was sold; distinct cities count unique board indices ever bought, and final owned cities count unique property entries still owned at settlement. Rent-debt crises count only a transition into debt caused by rent, once per episode. Paid-rent averages exclude zero-cost rent-pass events. First-bankruptcy turn is the first failed player's current completed-turn index (reported only in games with bankruptcy). The maximum-rent cash ratio uses cash immediately before the largest paid/attempted toll; if that balance is zero, the denominator is floored to one game unit.
+
+| Metric | 2p v2 | 2p v3 | Team v2 | Team v3 |
 | --- | ---: | ---: | ---: | ---: |
-| Average turns | 98.2 | 106.3 | 118.5 | 119.6 |
+| Average completed personal turns | 98.2 | 106.6 | 118.5 | 119.6 |
 | Median / P90 turns | 112 / 120 | 120 / 120 | 120 / 120 | 120 / 120 |
-| Turn-cap settlements / 100 | 45 | 58 | 93 | 98 |
-| Bankruptcy outcomes / 100 | 55 | 42 | 7 | 2 |
-| Average city buys | 11.8 | 21.0 | 14.7 | 24.6 |
-| Average build actions | 31.0 | 59.9 | 39.6 | 72.1 |
-| Average paid rent event | 270 | 302 | 272 | 295 |
-| P90 per-match highest rent | 1,408 | 960 | 1,024 | 1,040 |
-| Average rent-debt crises | 5.4 | 9.2 | 0 | 0 |
-| Average loans / bank sales | 2.1 / 4.2 | 3.6 / 7.8 | 2.7 / 2.3 | 3.0 / 3.5 |
-| Combined buys before each player's second Start crossing | 4.9 | 8.2 | 8.4 | 13.5 |
-| Combined builds before each player's second Start crossing | 11.8 | 23.2 | 20.6 | 38.6 |
-| Median cash immediately after a player's 5th buy | 352 | 480 | 556 | 790 |
-| 5th-buy samples with a legal build still available | 100% | 100% | 99.0% | 100% |
+| Average engine actions per match | 334.0 | 375.9 | 370.9 | 397.1 |
+| Turn-cap settlements / 100 | 45 | 55 | 93 | 98 |
+| Matches ending in bankruptcy / 100 | 55 | 45 | 7 | 2 |
+| Average buy actions / distinct cities ever bought / repeat buys | 11.8 / 10.6 / 1.2 | 20.5 / 17.6 / 2.9 | 14.7 / 14.0 / 0.7 | 24.6 / 22.7 / 2.0 |
+| Average distinct cities still owned at finish | 7.6 | 13.3 | 12.4 | 21.1 |
+| Average build actions | 31.0 | 58.3 | 39.6 | 72.2 |
+| Average positive paid-rent amount | 293 | 315 | 287 | 306 |
+| P90 largest rent per match | 1,408 | 1,040 | 1,120 | 1,040 |
+| Median cash before match's largest rent | 260 | 280 | 428 | 610 |
+| Median / P90 largest-rent-to-cash ratio | 2.52 / 12.00 | 2.40 / 14.67 | 1.43 / 6.00 | 1.21 / 4.63 |
+| Average rent-debt episodes / loans / bank sales | 3.66 / 2.07 / 4.15 | 5.95 / 3.29 / 7.14 | 3.71 / 2.66 / 2.30 | 4.31 / 3.02 / 3.50 |
+| Combined buys / builds before each player's second salary receipt | 5.1 / 12.1 | 8.5 / 23.8 | 8.8 / 21.4 | 14.4 / 40.9 |
+| Fifth-buy matches / player samples | 96 / 154 | 100 / 194 | 82 / 105 | 100 / 332 |
+| Median cash immediately after fifth buy | 352 | 540 | 556 | 790 |
+| Fifth-buy samples with a legal build available | 100% | 100% | 99.0% | 100% |
+| Immediate next-action builds after fifth buy; median remaining cash | 100; 342 | 165; 510 | 80; 498 | 293; 740 |
+| Median / P90 cash at settlement (per player) | 317 / 581 | 350 / 800 | 396 / 804 | 600 / 1,520 |
+| Median first-bankruptcy turn (bankrupt games only) | 85 (55 games) | 96 (45 games) | 90 (31 games) | 100 (14 games) |
 
-There are tradeoffs to retain in review: 2-player rent-debt crises and liquidations increased even as bankruptcies fell; and team AI still averages 21.1 of 24 cities at settlement, with 98/100 reaching the turn cap. Reaching the cap is the existing win condition, not a failure. A 4,500/450 sensitivity run was even more saturated (24.7 mean team cities, 100 turn-cap games); lowering to 3,000/300 cuts the 2-player fifth-purchase median cash from that candidate's 1,880 to 480 while every sampled fifth buyer still had a legal build affordable. The simulations support improved early purchase/build liquidity and higher average collected rent, but they do not establish human match pacing or final balance.
+The candidate improves fifth-buy liquidity and increases unique acquisitions/builds in both routes. It also increases 2-player rent-debt episodes, loans, and sales despite fewer bankruptcies. Team games remain close to the existing settlement cap, and v3 ends with an average 21.1 of 24 distinct cities owned. A separate 4,500/450 sensitivity run averaged 24.74 buy actions and 23.75 distinct final city holdings (not 24.7 unique cities); all 100 team games reached the cap. These results justify review of the liquidity loop, not a claim that pacing or balance is finished.
 
 ## Test and scope notes
 

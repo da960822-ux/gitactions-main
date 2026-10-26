@@ -164,7 +164,7 @@ const assetsFor = (s: MarbleState, p: PlayerId, board: MarbleTile[]) => s.money[
   if (record.owner !== p) return sum;
   const tile = board[Number(index)];
   const buildingCost = tile ? Array.from({ length: record.houses }, (_, level) => marbleBuildCost(tile, level, s.economicVersion)).reduce((total, cost) => total + cost, 0) : 0;
-  return sum + (tile?.price ?? 0) + buildingCost;
+  return sum + (tile ? marbleLandPrice(tile, s.economicVersion) : 0) + buildingCost;
 }, 0);
 const completedGroups = (s: MarbleState, p: PlayerId) => {
   const board = boardFor(s);

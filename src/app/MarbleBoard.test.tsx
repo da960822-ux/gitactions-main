@@ -6,6 +6,12 @@ import MarbleBoard, { focusMarbleAction } from './MarbleBoard';
 
 const render = (view: any, language: 'ko' | 'es' = 'ko', playerId: 'p1' | 'p2' = 'p1') =>
   renderToStaticMarkup(createElement(MarbleBoard, { view, language, playerId, runAction: vi.fn() }));
+const legacyState = (seed: number) => {
+  const state = marbleEngine.createInitialState(seed);
+  state.economicVersion = 2;
+  state.money = { p1: 1500, p2: 1500 };
+  return state;
+};
 
 describe('MarbleBoard', () => {
   it('offers the action shortcut before all forty city controls in both languages', () => {
@@ -155,7 +161,7 @@ describe('MarbleBoard', () => {
   });
 
   it('keeps the arrival and action location focused on the active seat in the counterpart view', () => {
-    const state = marbleEngine.createInitialState(21);
+    const state = legacyState(21);
     state.positions.p1 = 8;
     state.active = 'p1';
     const html = render(marbleEngine.getPlayerView(state, 'p2'), 'es', 'p2');
@@ -237,7 +243,7 @@ describe('MarbleBoard', () => {
   });
 
   it('renders only legal purchase controls and describes the current property', () => {
-    const state = marbleEngine.createInitialState(5);
+    const state = legacyState(5);
     const view = marbleEngine.getPlayerView(state, 'p1');
     view.phase = 'decision';
     view.board.positions.p1 = 15;
@@ -260,8 +266,18 @@ describe('MarbleBoard', () => {
     expect(html).not.toContain('탈출권 사용');
   });
 
+  it('shows the new economy values in a fresh purchase decision', () => {
+    const state = marbleEngine.createInitialState(73);
+    state.positions.p1 = 1;
+    state.pendingTile = 1;
+    state.phase = 'decision';
+    const html = render(marbleEngine.getPlayerView(state, 'p1'));
+    expect(html).toContain('구매 80 · 기본 통행료 20');
+    expect(html).toContain('구매 후 현금 2,920');
+  });
+
   it('shows the server-priced build cost, cash after building, and next rent', () => {
-    const state = marbleEngine.createInitialState(27);
+    const state = legacyState(27);
     const view = marbleEngine.getPlayerView(state, 'p1');
     view.phase = 'main';
     view.board.positions.p1 = 1;
@@ -397,7 +413,7 @@ describe('MarbleBoard', () => {
 });
 
 it('renders a legal post-rent acquisition with complete stage costs on the two-player screen',()=>{
- const s=marbleEngine.createInitialState(5);s.phase='main';s.positions.p1=4;s.pendingTile=4;s.takeoverTile=4;s.properties[4]={owner:'p2',houses:2};
+ const s=legacyState(5);s.phase='main';s.positions.p1=4;s.pendingTile=4;s.takeoverTile=4;s.properties[4]={owner:'p2',houses:2};
  const html=render(marbleEngine.getPlayerView(s,'p1'));
  expect(html).toContain('도시 인수 · 560');expect(html).toContain('인수 후 현금 940');expect(html).toContain('단계별 금액');expect(html).toContain('추가비');expect(html).toContain('누적');expect(html).toContain('불가');
 });
