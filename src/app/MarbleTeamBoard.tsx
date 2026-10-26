@@ -1,10 +1,11 @@
 import { MarbleRuleGuide } from './MarbleRuleGuide';
 import { marblePropertyRules } from '../games/rules';
-import { MarblePropertyLedger, MarblePropertySale, selectedPropertySaleChoice } from './MarblePropertyLedger';
+import { MarblePropertyLedger, MarblePropertySale } from './MarblePropertyLedger';
 import { marbleTakeoverPrice } from '../games/marble';
 import type { GameAction, GameId, Language } from '../core/types';
 import { fourSeats, fourTeam, localized as l, type FourSeat, type FourView, type Localized } from '../core/fourPlayer';
 import { marbleBuildCost, type MarbleActionEvent } from '../games/marble';
+import { sameMarbleAction, selectMarblePrimaryAction } from '../games/marble-actions';
 import type { MarbleView } from '../games/fourMarble';
 import { useEffect, useRef, useState } from 'react';
 import { MarbleTeamMap } from './MarbleTeamMap';
@@ -39,17 +40,8 @@ export default function MarbleTeamBoard({view:raw,language,runAction,nickname,ro
   const unaffordableBuild=view.phase==='main'&&builds.length===0?owned.find(([index,prop])=>prop.houses<3&&marbleBuildCost(view.publicBoard[Number(index)],prop.houses,3)>s.money.p1):undefined;
   const destinations=by(view.phase==='event-decision'?'choose-event-city':'choose-train');
   const selectedDestination=destinations.find(option=>JSON.stringify(option.action)===target)??destinations[0];
-  const saleActions=by('sell-property'),selectedSale=selectedPropertySaleChoice(saleActions,selectedSaleTile);
-  const primaryAction=view.phase==='roll'?first('roll')
-   :view.phase==='decision'?first('buy')??first('decline')
-   :view.phase==='main'?selectedBuild??builds.find(option=>Number(option.action.payload?.tile)===pos)??builds[0]??first('takeover')??first('endTurn')
-   :view.phase==='island'?first('attempt-doubles')??first('pay-escape')??first('use-escape-pass')
-   :view.phase==='train-decision'?destinations.length?selectedDestination:first('skip-train')
-   :view.phase==='event-decision'?selectedDestination
-   :view.phase==='rent-decision'?first('pay-rent')??first('use-rent-pass')
-   :view.phase==='debt'?first('borrow')??selectedSale
-   :undefined;
-  const sameAction=(a:GameAction,b?:GameAction)=>!!b&&a.type===b.type&&JSON.stringify(a.payload??{})===JSON.stringify(b.payload??{});
+  const primaryAction=selectMarblePrimaryAction({phase:view.phase,choices,position:pos,selectedTile:selected,selectedSaleTile,selectedAction:selectedDestination?.action});
+  const sameAction=sameMarbleAction;
   const latestTransaction=[...(s.actionLog??[])].reverse().find(event=>Object.values(event.moneyDelta??{}).some(delta=>typeof delta==='number'&&delta!==0)) as MarbleActionEvent|undefined;
   const transactionDelta=Number(latestTransaction?.moneyDelta?.p1??0);
   const accountLabel=(account:unknown)=>account==='bank'?text(language,'은행','Banco'):account==='fund'?text(language,'공동 기금','Fondo común'):fourSeats.includes(account as FourSeat)?names[account as FourSeat][language]:'';
@@ -123,7 +115,7 @@ export default function MarbleTeamBoard({view:raw,language,runAction,nickname,ro
         {human&&view.phase==='rent-decision'&&<strong className="mt-cash-after">{text(language,`통행료 ${s.pendingRent?.amount}`,`Alquiler ${s.pendingRent?.amount}`)}</strong>}
         <div className="mt-main-actions">{button('roll',true)}{button('buy',true)}{button('takeover',true)}{button('decline')}{button('endTurn',builds.length===0)}{button('attempt-doubles',true)}{button('pay-escape')}{button('use-escape-pass')}{button('pay-rent',true)}{button('use-rent-pass')}</div>
 
-        {human&&view.phase==='debt'&&<><MarblePropertySale choices={saleActions} language={language} runAction={act} selectedTile={selectedSaleTile} onSelectTile={setSelectedSaleTile} disabled={disabled}/><p>{text(language,'대출: 받기 300 · 상환 330','Préstamo: recibes 300 · devuelves 330')}</p>{button('borrow',true)}{first('declare-bankruptcy')&&(!bankrupt?<button className="mt-danger" disabled={disabled} onClick={()=>setBankrupt(true)}>{text(language,'파산 검토','Revisar quiebra')}</button>:<div className="mt-debt-alert"><p>{text(language,'내 도시·건물은 은행에 반환되고 나는 탈락합니다. 팀원은 계속합니다.','Tus propiedades vuelven al banco y quedas eliminado. Tu compañero continúa.')}</p>{button('declare-bankruptcy')}<button onClick={()=>setBankrupt(false)}>{text(language,'취소','Cancelar')}</button></div>)}</>}
+        {human&&view.phase==='debt'&&<><MarblePropertySale choices={by('sell-property')} language={language} runAction={act} selectedTile={selectedSaleTile} onSelectTile={setSelectedSaleTile} disabled={disabled}/><p>{text(language,'대출: 받기 300 · 상환 330','Préstamo: recibes 300 · devuelves 330')}</p>{button('borrow',true)}{first('declare-bankruptcy')&&(!bankrupt?<button className="mt-danger" disabled={disabled} onClick={()=>setBankrupt(true)}>{text(language,'파산 검토','Revisar quiebra')}</button>:<div className="mt-debt-alert"><p>{text(language,'내 도시·건물은 은행에 반환되고 나는 탈락합니다. 팀원은 계속합니다.','Tus propiedades vuelven al banco y quedas eliminado. Tu compañero continúa.')}</p>{button('declare-bankruptcy')}<button onClick={()=>setBankrupt(false)}>{text(language,'취소','Cancelar')}</button></div>)}</>}
         {(error||failure)&&<p className="mt-error" role="alert">{error||failure}</p>}
       </section>
       {human&&builds.some(option=>!sameAction(option.action,primaryAction?.action))&&<section className="mt-build" aria-label={text(language,'건설 가능한 도시','Ciudades disponibles para construir')}><h3>{text(language,`다른 도시 건설 · ${builds.length}곳`,`Construir en otras ciudades · ${builds.length}`)}</h3>{builds.filter(option=>!sameAction(option.action,primaryAction?.action)).map(option=>{const index=Number(option.action.payload!.tile),city=view.publicBoard[index],prop=s.properties[index],cost=marbleBuildCost(city,prop.houses,3),before=rentValue({...city,houses:prop.houses},true),after=rentValue({...city,houses:prop.houses+1},true);return <article className="mt-build-option" key={index}><div><strong>{city.name[language]} · {prop.houses} → {prop.houses+1}단계</strong><span>{text(language,`건설 ${cost} · 현금 ${Math.max(0,s.money.p1-cost)} · 통행료 ${before} → ${after}`,`Costo ${cost} · efectivo ${Math.max(0,s.money.p1-cost)} · alquiler ${before} → ${after}`)}</span></div><button className="mt-primary" disabled={disabled} onClick={()=>void act(option.action)}>{text(language,'여기에 건설','Construir aquí')}</button></article>;})}</section>}

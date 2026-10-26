@@ -1,6 +1,7 @@
 import { seededRandom, shuffle, type GameAction } from '../core/types';
 import { fourSeats, fourTeam, nextFourSeat, localized as l, type FourEngine, type FourSeat, type FourResult, type FourView } from '../core/fourPlayer';
 import { marbleEngine, marbleBuildCost, marbleCityValue, marbleRentMultipliers, marbleTakeoverPrice, marblePawnIds, type MarblePawnId, type MarbleTile, type MarbleEventId } from './marble';
+import { marbleRentAtStage } from './marble-economy';
 
 const board: MarbleTile[] = marbleEngine.getPlayerView(marbleEngine.createInitialState(0), 'p1').board.tiles.map((tile: MarbleTile) => ({ name: { ...tile.name }, kind: tile.kind, rentMultipliers: marbleRentMultipliers, ...(tile.price !== undefined ? { price: tile.price } : {}), ...(tile.rent !== undefined ? { rent: tile.rent } : {}), ...(tile.group ? { group: tile.group } : {}) }));
 const eventIds: MarbleEventId[] = ['festival', 'lottery', 'rent-rebate', 'travel-cost', 'maintenance', 'visit-santo-domingo', 'advance-start', 'retreat', 'go-to-island', 'escape-pass', 'train-ticket', 'city-dividend', 'monopoly-warning', 'city-festival', 'blackout', 'rent-pass'];
@@ -31,7 +32,7 @@ export interface FourMarbleState {
 }
 export type MarbleView = FourView & { publicBoard: MarbleTile[]; publicState: Omit<FourMarbleState, 'rng' | 'eventDeck'> };
 const seatMap = <T>(value: T): Record<FourSeat, T> => Object.fromEntries(fourSeats.map(p => [p, value])) as Record<FourSeat, T>;
-const rent = (tile: MarbleTile, prop: Property, s?: Pick<FourMarbleState, 'properties' | 'propertyRulesVersion'>) => (tile.rent ?? 0) * (marbleRentMultipliers[prop.houses] ?? 1) * (s?.propertyRulesVersion === 1 && groups(s, prop.owner).includes(tile.group!) ? 2 : 1);
+const rent = (tile: MarbleTile, prop: Property, s?: Pick<FourMarbleState, 'properties' | 'propertyRulesVersion'>) => marbleRentAtStage(tile.rent ?? 0, prop.houses, 3, true, tile.rentMultipliers ?? marbleRentMultipliers, s?.propertyRulesVersion === 1 && groups(s, prop.owner).includes(tile.group!) ? 2 : 1);
 const owned = (s: FourMarbleState, p: FourSeat) => Object.entries(s.properties).filter(([, property]) => property.owner === p);
 const groups = (s: Pick<FourMarbleState, 'properties'>, p: FourSeat) => [...new Set(board.filter(t => t.group).map(t => t.group!))].filter(group => board.every((t, index) => t.group !== group || s.properties[index]?.owner === p));
 const assets = (s: FourMarbleState, p: FourSeat) => s.money[p] - s.debt[p] + owned(s, p).reduce((sum, [index, property]) => sum + board[Number(index)].price! + Array.from({ length: property.houses }, (_, level) => marbleBuildCost(board[Number(index)], level, 3)).reduce((a, b) => a + b, 0), 0);

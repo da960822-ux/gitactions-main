@@ -1,4 +1,5 @@
-import { MarblePropertyLedger, MarblePropertySale, selectedPropertySaleChoice } from './MarblePropertyLedger';
+import { MarblePropertyLedger, MarblePropertySale } from './MarblePropertyLedger';
+import { sameMarbleAction, selectMarblePrimaryAction } from '../games/marble-actions';
 import { MarblePropertyArt } from './MarblePropertyArt';
 import dioramas from '../../public/images/marble/dioramas/manifest.json';
 import { useEffect, useLayoutEffect, useRef, useState } from 'react';
@@ -130,18 +131,8 @@ export default function MarbleBoard({ view: rawView, language, playerId, runActi
   const [target, setTarget] = useState('');
   const destinations = phase === 'event-decision' ? eventCityActions : phase === 'train-decision' ? trainActions : [];
   const selectedDestination = destinations.find(choice => JSON.stringify(choice.action) === target) ?? destinations[0];
-  const saleActions = actionsOf('sell-property');
-  const selectedSale = selectedPropertySaleChoice(saleActions, selectedSaleTile);
-  const primaryChoice = phase === 'roll' ? roll
-    : phase === 'decision' ? buy ?? decline
-    : phase === 'main' ? selectedBuild ?? buildActions.find(choice => num(choice.action.payload?.tile) === pos) ?? buildActions[0] ?? actionsOf('takeover')[0] ?? endTurn
-    : phase === 'island' ? actionOf('attempt-doubles') ?? actionOf('pay-escape') ?? actionOf('use-escape-pass')
-    : phase === 'train-decision' ? trainActions.length ? selectedDestination : actionOf('skip-train')
-    : phase === 'event-decision' ? selectedDestination
-    : phase === 'rent-decision' ? actionOf('pay-rent') ?? actionOf('use-rent-pass')
-    : phase === 'debt' ? actionOf('borrow') ?? selectedSale ?? actionOf('repay')
-    : undefined;
-  const isPrimary = (choice?: Choice) => modern && !!choice && !!primaryChoice && choice.action.type === primaryChoice.action.type && JSON.stringify(choice.action.payload ?? {}) === JSON.stringify(primaryChoice.action.payload ?? {});
+  const primaryChoice = selectMarblePrimaryAction({ phase, choices, position: pos, selectedTile, selectedSaleTile, selectedAction: selectedDestination?.action });
+  const isPrimary = (choice?: Choice) => modern && sameMarbleAction(choice?.action, primaryChoice?.action);
   const primaryIndex = primaryChoice ? num(primaryChoice.action.payload?.tile ?? primaryChoice.action.payload?.destination ?? pos) : pos;
   const primaryTile = tiles[primaryIndex] ?? currentTile;
   const primaryCost = primaryChoice?.action.type === 'buy' ? num(primaryTile.price) : primaryChoice?.action.type === 'build' ? num(primaryTile.nextBuildCost) : primaryChoice?.action.type === 'pay-rent' ? num(board.pendingRent?.amount) : 0;
@@ -433,7 +424,7 @@ export default function MarbleBoard({ view: rawView, language, playerId, runActi
               <p className="mp-loan-note">{copy(language, '대출은 300을 받고 나중에 330을 갚아요. 한 번에 하나만 이용할 수 있어요.', 'Recibes 300 y luego devuelves 330. Solo puedes tener un préstamo pendiente.')}</p>
               {['borrow', 'repay'].flatMap(type => actionsOf(type)).map(choice => <button className="mp-action mp-action-secondary" key={choice.action.type} type="button" onClick={() => run(choice)}>{choice.label[language]}</button>)}
             </details>)}
-            <MarblePropertySale choices={saleActions} language={language} runAction={dispatch} selectedTile={selectedSaleTile} onSelectTile={setSelectedSaleTile} disabled={interactionLocked}/>
+            <MarblePropertySale choices={actionsOf('sell-property')} language={language} runAction={dispatch} selectedTile={selectedSaleTile} onSelectTile={setSelectedSaleTile} disabled={interactionLocked}/>
             {actionsOf('declare-bankruptcy').map(choice => <div className="mp-bankruptcy-confirm" key={String(choice.action.type)}>
               {!confirmBankruptcy ? <button className="mp-action mp-action-danger" type="button" onClick={() => setConfirmBankruptcy(true)}>{copy(language, '파산 선택 검토', 'Revisar opción de quiebra')}</button> : <>
                 <p role="alert">{copy(language, '파산을 인정하면 경기가 즉시 끝나요. 계속할까요?', 'Si declaras la quiebra, la partida termina de inmediato. ¿Quieres continuar?')}</p>

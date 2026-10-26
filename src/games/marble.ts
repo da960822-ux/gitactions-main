@@ -1,5 +1,8 @@
 import { marblePropertyRules } from './rules';
 import { GameAction, GameEngine, GameResult, PlayerId, otherPlayer, seededRandom, shuffle } from '../core/types';
+import { marbleBaseRentForPrice, marbleBuildCostForPrice, marbleCityValueForPrice, marbleRentAtStage, marbleRentMultipliers, marbleTakeoverPriceForValue } from './marble-economy';
+
+export { marbleRentMultipliers };
 
 export interface MarbleTile {
   name: { ko: string; es: string };
@@ -149,23 +152,18 @@ const cards: Record<MarbleEventId, CardData> = {
   blackout: { title: { ko: '정전', es: 'Apagón' }, text: { ko: '상대 도시 하나를 선택합니다. 그 도시의 다음 내 착지 1회 통행료가 절반이 됩니다(내림, 최소 1). 대상 착지까지 유지됩니다.', es: 'Elige una ciudad rival. En tu próxima llegada a ella pagas la mitad una vez (redondeo hacia abajo, mínimo 1). Permanece hasta esa llegada.' }, effect: 'cash' },
   'rent-pass': { title: { ko: '통행료 면제권', es: 'Pase de alquiler' }, text: { ko: '통행료 면제권 한 장을 보관합니다. 앞으로 통행료를 내기 전에 직접 선택해 1회 면제할 수 있습니다. 자동 사용되지 않으며 세금에는 쓸 수 없습니다.', es: 'Guarda un pase. Antes de un futuro alquiler puedes elegir usarlo para eximir un solo pago. No se usa automáticamente ni sirve para impuestos.' }, effect: 'pass' },
 };
-export const marbleRentMultipliers = [1, 2, 3, 4] as const;
 export function marbleBaseRent(tile: MarbleTile) {
-  const price = Math.max(0, tile.price ?? 0);
-  const yieldRate = 0.2 + 0.05 * Math.max(0, Math.min(1, (price - 100) / 460));
-  return Math.max(10, Math.round((price * yieldRate) / 10) * 10);
+  return marbleBaseRentForPrice(tile.price ?? 0);
 }
-const propertyRent = (tile: MarbleTile, record: { owner: PlayerId; houses: number }, modern: boolean, s?: MarbleState) => (tile.rent ?? 0) * (modern ? (s?.economicVersion === 3 ? marbleRentMultipliers[record.houses] ?? 1 : [1, 2, 4, 8][record.houses] ?? 1) : record.houses + 1) * (s?.propertyRulesVersion === 1 && completedGroups(s, record.owner).includes(tile.group!) ? 2 : 1);
+const propertyRent = (tile: MarbleTile, record: { owner: PlayerId; houses: number }, modern: boolean, s?: MarbleState) => marbleRentAtStage(tile.rent ?? 0, record.houses, s?.economicVersion, modern, undefined, s?.propertyRulesVersion === 1 && completedGroups(s, record.owner).includes(tile.group!) ? 2 : 1);
 export function marbleBuildCost(tile: MarbleTile, level: number, economicVersion?: number) {
-  if (economicVersion !== 2 && economicVersion !== 3) return 100;
-  const factor = [0.4, 0.6, 0.8][Math.max(0, Math.min(2, Math.trunc(level)))] ?? 0.2;
-  return Math.max(40, Math.round((Math.max(0, tile.price ?? 0) * factor) / 10) * 10);
+  return marbleBuildCostForPrice(tile.price ?? 0, level, economicVersion);
 }
 export function marbleCityValue(tile: MarbleTile, houses: number, economicVersion?: number) {
-  return (tile.price ?? 0) + Array.from({ length: houses }, (_, level) => marbleBuildCost(tile, level, economicVersion)).reduce((sum, cost) => sum + cost, 0);
+  return marbleCityValueForPrice(tile.price ?? 0, houses, economicVersion);
 }
 export function marbleTakeoverPrice(tile: MarbleTile, houses: number, economicVersion?: number): number | null {
-  return tile.kind === 'property' && houses < 3 ? 2 * marbleCityValue(tile, houses, economicVersion) : null;
+  return marbleTakeoverPriceForValue(tile.kind, marbleCityValue(tile, houses, economicVersion), houses);
 }
 const liquidation = (s: MarbleState, p: PlayerId) => Object.entries(s.properties).filter(([, prop]) => prop.owner === p).map(([index, prop]) => ({ index: Number(index), value: Math.floor(marbleCityValue(boardFor(s)[Number(index)], prop.houses, s.economicVersion) / 2) }));
 const canRescue = (s: MarbleState, p: PlayerId) => s.money[p] + liquidation(s, p).reduce((sum, item) => sum + item.value, 0) + ((s.debt?.[p] ?? 0) === 0 ? 300 : 0) >= (s.pendingPayment?.amount ?? Infinity);

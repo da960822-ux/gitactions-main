@@ -1,5 +1,6 @@
 import type { Language } from '../core/types';
 import { marblePawnCatalog, type MarblePawnId } from './MarblePawn';
+import { marbleRentAtStage } from '../games/marble-economy';
 const copy = (language: Language, ko: string, es: string) => language === 'ko' ? ko : es;
 const num = (value: unknown) => Number.isFinite(Number(value)) ? Number(value) : 0;
 export const moneyText = (value: number, language: Language) => value.toLocaleString(language === 'ko' ? 'ko-KR' : 'es-DO');
@@ -42,6 +43,6 @@ export function buildingName(level: number, language: Language, modern: boolean)
 }
 export function rentValue(tile: Record<string, any>, modern: boolean) {
   const level = num(tile.houses);
-  const multipliers = Array.isArray(tile.rentMultipliers) ? tile.rentMultipliers : [1, 2, 4, 8];
-  return num(tile.rent) * (modern ? (multipliers[level] ?? 1) : level + 1) * (num(tile.monopolyMultiplier) || 1);
+  const multipliers = Array.isArray(tile.rentMultipliers) ? tile.rentMultipliers as number[] : undefined;
+  return marbleRentAtStage(num(tile.rent), level, undefined, modern, multipliers, num(tile.monopolyMultiplier) || 1);
 }

@@ -2,7 +2,7 @@ import { createElement } from 'react';
 import { renderToStaticMarkup } from 'react-dom/server';
 import { describe, expect, it, vi } from 'vitest';
 import { marbleEngine } from '../games/marble';
-import { selectedPropertySaleChoice } from './MarblePropertyLedger';
+import { selectMarblePropertySale } from '../games/marble-actions';
 import MarbleBoard, { focusMarbleAction } from './MarbleBoard';
 
 const render = (view: any, language: 'ko' | 'es' = 'ko', playerId: 'p1' | 'p2' = 'p1') =>
@@ -247,8 +247,8 @@ describe('MarbleBoard', () => {
 
   it('uses the selected city for the central sale action and falls back if that offer expires', () => {
     const choices = [1, 7].map(tile => ({ label: { ko: `도시 ${tile} 매각`, es: `Vender ciudad ${tile}` }, action: { type: 'sell-property', payload: { tile } } }));
-    expect(selectedPropertySaleChoice(choices, 7)).toBe(choices[1]);
-    expect(selectedPropertySaleChoice(choices, 999)).toBe(choices[0]);
+    expect(selectMarblePropertySale(choices, 7)).toBe(choices[1]);
+    expect(selectMarblePropertySale(choices, 999)).toBe(choices[0]);
   });
 
   it('starts the debt-stage primary action from the same sale offer as the selector', () => {
@@ -262,7 +262,7 @@ describe('MarbleBoard', () => {
     const html = render(view);
     expect(html).toContain('>도시 1 은행 매각</button>');
     expect(html).toContain('도시 7 은행 매각');
-    expect(selectedPropertySaleChoice(view.actions, 7)?.action.payload?.tile).toBe(7);
+    expect(selectMarblePropertySale(view.actions, 7)?.action.payload?.tile).toBe(7);
   });
 
   it('keeps a legacy roll, purchase, and end-turn action in the side panel', () => {
