@@ -57,6 +57,10 @@ describe('native four-player Marble screen',()=>{
   expect(html).toContain('40 → 60');
   expect(html).toContain('<td>50</td>');
   expect(html).not.toContain('광주 2단계 건설 · 100');
+  const saved=legacyState();saved.phase='main';saved.positions.p1=1;saved.pendingTile=1;saved.properties[1]={owner:'p1',houses:1};
+  const savedHtml=render(saved);
+  expect(savedHtml).toContain('광주 2단계 건설 · 60');
+  expect(savedHtml).toContain('<td>60</td>');
  });
  it('retains mandatory debt controls and all player-specific bankruptcy rules',()=>{
   const s=state();s.phase='debt';s.money.p1=30;s.pendingPayment={amount:120,creditor:'p4',resumeActive:'p1'};
