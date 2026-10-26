@@ -30,7 +30,11 @@
 .spt-player.spt-team-B { background:#324538; border-color:#7d8269; }
 .spt-player.is-active { outline:2px solid #efc568; outline-offset:-2px; }
 .spt-player>header { display:flex; align-items:center; justify-content:space-between; gap:5px; font-size:12px; white-space:nowrap; }
-.spt-player-details-button { flex:0 0 auto; min-height:24px!important; padding:2px 6px; border:1px solid #9ba891!important; border-radius:5px!important; background:#31533f!important; color:#fff7e3!important; font-size:11px!important; }
+.spt-player-status-button { display:grid; gap:4px; width:100%; min-height:0!important; padding:3px 4px; border:1px solid transparent!important; border-radius:6px!important; background:transparent!important; color:inherit!important; text-align:left; cursor:pointer; transition:border-color 120ms ease,background-color 120ms ease; }
+.spt-player-status-button:hover { border-color:#9bb19e!important; background:#2b5546!important; }
+.spt-player-status-button:focus-visible { outline:3px solid #f3cb73; outline-offset:2px; }
+.spt-player-status-button .spt-wallet { pointer-events:none; }
+.spt-status-hint { justify-self:end; color:#c7d5c5; font-size:10px; text-decoration:underline; text-underline-offset:2px; }
 .spt-profile-dialog { width:min(420px,calc(100vw - 32px)); max-height:min(80vh,620px); overflow:auto; padding:20px; border:1px solid #a99a6f; border-radius:12px; background:#faf4e4; color:#26483b; box-shadow:0 16px 48px #071d1eb0; }
 .spt-profile-dialog::backdrop { background:#071d1ecc; }
 .spt-profile-dialog>header { display:flex; align-items:center; justify-content:space-between; gap:12px; margin-bottom:16px; }
