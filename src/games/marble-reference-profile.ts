@@ -1,7 +1,7 @@
 /**
- * Research-only reference profile. This is not wired into marbleEngine: rent and
- * salary tables are still incomplete, and this community-sourced 2013 mobile
- * edition must not be blended into the existing 40-space PC-like routes.
+ * Versioned reference profile. Confirmed price/construction rules are usable by
+ * the profile adapter; this is not yet an active route because the 18-city rent
+ * table and some selector semantics remain outstanding.
  */
 export type ClassicMarbleStructure = 'villa' | 'building' | 'hotel' | 'landmark';
 export type ClassicMarbleBuildings = Readonly<Partial<Record<ClassicMarbleStructure, boolean>>>;
@@ -15,12 +15,16 @@ export type ClassicMarbleCity = {
   name: string;
   land: number;
   construction: Readonly<Record<ClassicMarbleStructure, number>>;
+  /** Business-class tolls: bare land, villa, building, hotel, landmark. */
+  tollByCanonicalStage: readonly [number, number, number, number, number];
 };
+
+export type ClassicMarbleClass = 'economy' | 'business' | 'first';
 
 export type ClassicMarbleCell =
   | { kind: 'start'; name: string }
   | { kind: 'city'; name: string; city: string }
-  | { kind: 'tourism'; name: string; purchasable: false }
+  | { kind: 'tourism'; name: string; purchasableFromBank: true; acquirableFromPlayer: false }
   | { kind: 'special'; name: string; effect: 'bonus-game' | 'island' | 'card' | 'olympic' | 'world-travel' | 'tax' };
 
 export const classicMarbleReferenceProfile = {
@@ -33,87 +37,106 @@ export const classicMarbleReferenceProfile = {
     constructionTable: 'https://appdata.hungryapp.co.kr/data_file/data_img/201312/01/Wjg761F138583142696648188.png',
     startingCash: 'https://m.hungryapp.co.kr/bbs/bbs_view.php?durl=YmNvZGU9ZXZlcm1hcnZlbCZwaWQ9MzUwOTg2JnVzZXI9',
     mapOrder: 'https://tcatmon.com/wiki/모두의마블_for_Kakao',
+    tourismRules: 'Supplied verified reference notes; direct source URL not included in this handoff.',
+    launchCashScreenshot: 'Supplied verified launch-day class-selection screenshot; direct URL not included in this handoff.',
+    cityTolls: '2013-12-01 public XLS supplied in audit: https://cafe.naver.com/momakakao/124693',
+    partialBuildingMaskObservation: 'https://upload2.inven.co.kr/upload/2015/03/27/bbs/i12866364001.png',
   },
   provenance: {
     constructionTable: 'Secondary community calculator screenshot; transcribed from image; zero construction discount; source author notes possible minor error.',
     startingCash: 'Independent 2014-12-14 community post reporting historical 5,000,000 starting cash.',
     mapOrder: 'Secondary map listing; 32-cell World map order.',
-    limitations: 'Historical Korean Kakao mobile edition only. Not an official current-price table. No verified salary schedule or class-normalized rent/toll table yet.',
+    partialBuildingMaskObservation: 'Inven community screenshot of Cairo, Economy class: villa unchecked, building selected, hotel locked; observed toll 56,000. This corroborates this one partial mask only.',
+    limitations: 'Historical Korean Kakao mobile edition only. Community documents are not official current specifications. Salary is inferred, not observed. Tourism rent-step selection and some noncanonical building-mask tolls remain unverified; this profile is not a claim of complete rule reproduction.',
   },
   readiness: {
-    activation: 'blocked-pending-rent-and-salary-reference',
-    salary: 'missing',
-    rent: 'missing',
+    activation: 'versioned-data-profile-not-yet-routed-to-live-match',
+    salary: 'inferred-not-authoritative',
+    cityRent: 'verified-business-canonical-build-stages',
+    partialMaskCityRent: 'direct-observation-for-cairo-building-only; additive-inference-for-other-noncanonical-masks',
+    tourismRentSchedule: 'verified-values-selector-unresolved',
+    pricesAndConstruction: 'verified-for-this-historical-edition',
     class: 'business',
     constructionDiscount: 0,
   },
-  startingCashHistorical: { amount: 5_000_000, sourceDate: '2014-12-14' },
+  startingCash: { amount: 5_000_000, status: 'confirmed-by-launch-screenshot-and-2014-community-post', sourceDate: '2014-12-14' },
+  salaryReference: { amount: 750_000, status: 'inferred-only', basis: 'class-proportional estimate; not direct evidence' },
   rules: {
+    classTollMultipliers: { economy: 1, business: 2.5, first: 5 },
+    tollBaseClass: 'business',
+    cityTollStageNames: ['land', 'villa', 'building', 'hotel', 'landmark'],
+    cityTollBuildingMasks: [[], ['villa'], ['villa', 'building'], ['villa', 'building', 'hotel'], ['villa', 'building', 'hotel', 'landmark']],
+    partialMaskTollRule: 'sum-per-building-increments-derived-from-canonical-table',
+    cityGroupMonopolyMultiplier: 1,
     ordinaryPropertyAcquisitionMultiplier: 2,
     saleRecoveryNumerator: 1,
     saleRecoveryDenominator: 2,
     landmarkSurchargeRecoveredOnSale: false,
     landmarkSurchargeIncludedInAcquisitionBasis: false,
-    tourismPurchasable: false,
+    tourismBankPurchasePrice: 250_000,
+    tourismAcquirableFromPlayer: false,
+    tourismRentSchedule: [200_000, 400_000, 800_000],
+    tourismGroupMonopolyMultiplier: 1,
+    tourismRentStepSelector: 'unresolved-do-not-infer',
     ownArrivalRequiredForConstruction: true,
     constructionMinimumOwnLaps: { villa: 0, building: 1, hotel: 2, landmark: 3 },
     buildingSelection: 'independent-set-villa-building-hotel',
     landmarkRequiresAllOrdinaryBuildings: true,
   },
   cities: [
-    { name: '방콕', land: 50000, construction: { villa: 25000, building: 75000, hotel: 125000, landmark: 125000 } },
-    { name: '베이징', land: 65000, construction: { villa: 25000, building: 75000, hotel: 125000, landmark: 125000 } },
-    { name: '타이페이', land: 120000, construction: { villa: 50000, building: 150000, hotel: 250000, landmark: 250000 } },
-    { name: '두바이', land: 120000, construction: { villa: 50000, building: 150000, hotel: 250000, landmark: 250000 } },
-    { name: '카이로', land: 135000, construction: { villa: 50000, building: 150000, hotel: 250000, landmark: 250000 } },
-    { name: '도쿄', land: 180000, construction: { villa: 75000, building: 225000, hotel: 375000, landmark: 375000 } },
-    { name: '시드니', land: 180000, construction: { villa: 75000, building: 225000, hotel: 375000, landmark: 375000 } },
-    { name: '퀘벡', land: 235000, construction: { villa: 100000, building: 300000, hotel: 500000, landmark: 500000 } },
-    { name: '상파울루', land: 250000, construction: { villa: 100000, building: 300000, hotel: 500000, landmark: 500000 } },
-    { name: '프라하', land: 295000, construction: { villa: 125000, building: 375000, hotel: 625000, landmark: 625000 } },
-    { name: '베를린', land: 310000, construction: { villa: 125000, building: 375000, hotel: 625000, landmark: 625000 } },
-    { name: '모스크바', land: 350000, construction: { villa: 150000, building: 450000, hotel: 750000, landmark: 750000 } },
-    { name: '제네바', land: 365000, construction: { villa: 150000, building: 450000, hotel: 750000, landmark: 750000 } },
-    { name: '로마', land: 365000, construction: { villa: 150000, building: 450000, hotel: 750000, landmark: 750000 } },
-    { name: '런던', land: 410000, construction: { villa: 175000, building: 525000, hotel: 875000, landmark: 875000 } },
-    { name: '파리', land: 425000, construction: { villa: 175000, building: 525000, hotel: 875000, landmark: 875000 } },
-    { name: '뉴욕', land: 480000, construction: { villa: 200000, building: 600000, hotel: 1000000, landmark: 1000000 } },
-    { name: '서울', land: 500000, construction: { villa: 200000, building: 600000, hotel: 1000000, landmark: 1000000 } },
+    { name: '방콕', land: 50000, construction: { villa: 25000, building: 75000, hotel: 125000, landmark: 125000 }, tollByCanonicalStage: [5000, 20000, 70000, 210000, 835000] },
+    { name: '베이징', land: 65000, construction: { villa: 25000, building: 75000, hotel: 125000, landmark: 125000 }, tollByCanonicalStage: [5000, 25000, 80000, 230000, 855000] },
+    { name: '타이페이', land: 120000, construction: { villa: 50000, building: 150000, hotel: 250000, landmark: 250000 }, tollByCanonicalStage: [15000, 60000, 175000, 475000, 1600000] },
+    { name: '두바이', land: 120000, construction: { villa: 50000, building: 150000, hotel: 250000, landmark: 250000 }, tollByCanonicalStage: [15000, 60000, 175000, 475000, 1600000] },
+    { name: '카이로', land: 135000, construction: { villa: 50000, building: 150000, hotel: 250000, landmark: 250000 }, tollByCanonicalStage: [20000, 70000, 190000, 500000, 1625000] },
+    { name: '도쿄', land: 180000, construction: { villa: 75000, building: 225000, hotel: 375000, landmark: 375000 }, tollByCanonicalStage: [35000, 115000, 325000, 875000, 2375000] },
+    { name: '시드니', land: 180000, construction: { villa: 75000, building: 225000, hotel: 375000, landmark: 375000 }, tollByCanonicalStage: [35000, 115000, 325000, 875000, 2375000] },
+    { name: '퀘벡', land: 235000, construction: { villa: 100000, building: 300000, hotel: 500000, landmark: 500000 }, tollByCanonicalStage: [50000, 165000, 450000, 1125000, 2875000] },
+    { name: '상파울루', land: 250000, construction: { villa: 100000, building: 300000, hotel: 500000, landmark: 500000 }, tollByCanonicalStage: [60000, 180000, 475000, 1175000, 2925000] },
+    { name: '프라하', land: 295000, construction: { villa: 125000, building: 375000, hotel: 625000, landmark: 625000 }, tollByCanonicalStage: [80000, 255000, 700000, 1625000, 3500000] },
+    { name: '베를린', land: 310000, construction: { villa: 125000, building: 375000, hotel: 625000, landmark: 625000 }, tollByCanonicalStage: [85000, 270000, 700000, 1675000, 3550000] },
+    { name: '모스크바', land: 350000, construction: { villa: 150000, building: 450000, hotel: 750000, landmark: 750000 }, tollByCanonicalStage: [110000, 325000, 825000, 1975000, 3850000] },
+    { name: '제네바', land: 365000, construction: { villa: 150000, building: 450000, hotel: 750000, landmark: 750000 }, tollByCanonicalStage: [120000, 350000, 900000, 2075000, 3950000] },
+    { name: '로마', land: 365000, construction: { villa: 150000, building: 450000, hotel: 750000, landmark: 750000 }, tollByCanonicalStage: [120000, 350000, 900000, 2075000, 3950000] },
+    { name: '런던', land: 410000, construction: { villa: 175000, building: 525000, hotel: 875000, landmark: 875000 }, tollByCanonicalStage: [140000, 450000, 1150000, 2650000, 4400000] },
+    { name: '파리', land: 425000, construction: { villa: 175000, building: 525000, hotel: 875000, landmark: 875000 }, tollByCanonicalStage: [150000, 475000, 1200000, 2750000, 4500000] },
+    { name: '뉴욕', land: 480000, construction: { villa: 200000, building: 600000, hotel: 1000000, landmark: 1000000 }, tollByCanonicalStage: [180000, 550000, 1350000, 3050000, 4550000] },
+    { name: '서울', land: 500000, construction: { villa: 200000, building: 600000, hotel: 1000000, landmark: 1000000 }, tollByCanonicalStage: [200000, 600000, 1450000, 3200000, 4700000] },
   ] satisfies readonly ClassicMarbleCity[],
   tourism: [
-    { name: '독도', land: 250000 },
-    { name: '하와이', land: 250000 },
-    { name: '푸켓', land: 250000 },
-    { name: '발리', land: 250000 },
-    { name: '타히티', land: 250000 },
+    { name: '독도', bankPurchasePrice: 250000, playerAcquisitionAllowed: false, rentSchedule: [200000, 400000, 800000] },
+    { name: '하와이', bankPurchasePrice: 250000, playerAcquisitionAllowed: false, rentSchedule: [200000, 400000, 800000] },
+    { name: '푸켓', bankPurchasePrice: 250000, playerAcquisitionAllowed: false, rentSchedule: [200000, 400000, 800000] },
+    { name: '발리', bankPurchasePrice: 250000, playerAcquisitionAllowed: false, rentSchedule: [200000, 400000, 800000] },
+    { name: '타히티', bankPurchasePrice: 250000, playerAcquisitionAllowed: false, rentSchedule: [200000, 400000, 800000] },
   ] as const,
   map: [
     { kind: 'start', name: '출발' },
     { kind: 'city', name: '방콕', city: '방콕' },
     { kind: 'special', name: '보너스게임', effect: 'bonus-game' },
     { kind: 'city', name: '베이징', city: '베이징' },
-    { kind: 'tourism', name: '독도', purchasable: false },
+    { kind: 'tourism', name: '독도', purchasableFromBank: true, acquirableFromPlayer: false },
     { kind: 'city', name: '타이페이', city: '타이페이' },
     { kind: 'city', name: '두바이', city: '두바이' },
     { kind: 'city', name: '카이로', city: '카이로' },
     { kind: 'special', name: '무인도', effect: 'island' },
-    { kind: 'tourism', name: '발리', purchasable: false },
+    { kind: 'tourism', name: '발리', purchasableFromBank: true, acquirableFromPlayer: false },
     { kind: 'city', name: '도쿄', city: '도쿄' },
     { kind: 'city', name: '시드니', city: '시드니' },
     { kind: 'special', name: '포츈카드', effect: 'card' },
     { kind: 'city', name: '퀘벡', city: '퀘벡' },
-    { kind: 'tourism', name: '하와이', purchasable: false },
+    { kind: 'tourism', name: '하와이', purchasableFromBank: true, acquirableFromPlayer: false },
     { kind: 'city', name: '상파울루', city: '상파울루' },
     { kind: 'special', name: '올림픽', effect: 'olympic' },
     { kind: 'city', name: '프라하', city: '프라하' },
-    { kind: 'tourism', name: '푸켓', purchasable: false },
+    { kind: 'tourism', name: '푸켓', purchasableFromBank: true, acquirableFromPlayer: false },
     { kind: 'city', name: '베를린', city: '베를린' },
     { kind: 'special', name: '포츈카드', effect: 'card' },
     { kind: 'city', name: '모스크바', city: '모스크바' },
     { kind: 'city', name: '제네바', city: '제네바' },
     { kind: 'city', name: '로마', city: '로마' },
     { kind: 'special', name: '세계여행', effect: 'world-travel' },
-    { kind: 'tourism', name: '타히티', purchasable: false },
+    { kind: 'tourism', name: '타히티', purchasableFromBank: true, acquirableFromPlayer: false },
     { kind: 'city', name: '런던', city: '런던' },
     { kind: 'city', name: '파리', city: '파리' },
     { kind: 'special', name: '포츈카드', effect: 'card' },
@@ -124,6 +147,17 @@ export const classicMarbleReferenceProfile = {
 } as const;
 
 const cityByName = new Map(classicMarbleReferenceProfile.cities.map(city => [city.name, city]));
+const tourismByName = new Map<string, (typeof classicMarbleReferenceProfile.tourism)[number]>(classicMarbleReferenceProfile.tourism.map(tile => [tile.name, tile]));
+
+function classScale(targetClass: ClassicMarbleClass) {
+  return classicMarbleReferenceProfile.rules.classTollMultipliers[targetClass] /
+    classicMarbleReferenceProfile.rules.classTollMultipliers.business;
+}
+
+export function classicMarbleBankPurchasePrice(kind: 'city' | 'tourism', name: string) {
+  if (kind === 'city') return cityByName.get(name)?.land ?? null;
+  return tourismByName.get(name)?.bankPurchasePrice ?? null;
+}
 
 /** Costs are independent set members; for example a hotel can coexist with a villa. */
 export function classicMarbleInvestment(cityName: string, buildings: ClassicMarbleBuildings = {}) {
@@ -148,6 +182,49 @@ export function classicMarbleAcquisitionPrice(cityName: string, buildings: Class
 export function classicMarbleSaleValue(cityName: string, buildings: ClassicMarbleBuildings = {}) {
   const investment = classicMarbleInvestment(cityName, buildings);
   return investment === null ? null : Math.floor(investment * classicMarbleReferenceProfile.rules.saleRecoveryNumerator / classicMarbleReferenceProfile.rules.saleRecoveryDenominator);
+}
+
+export function classicMarbleCityToll(cityName: string, buildings: ClassicMarbleBuildings = {}, playerClass: ClassicMarbleClass = 'business') {
+  const city = cityByName.get(cityName);
+  if (!city) return null;
+  if (buildings.landmark && !(['villa', 'building', 'hotel'] as const).every(structure => buildings[structure])) return null;
+  const canonicalStages = [
+    !buildings.villa && !buildings.building && !buildings.hotel && !buildings.landmark,
+    !!buildings.villa && !buildings.building && !buildings.hotel && !buildings.landmark,
+    !!buildings.villa && !!buildings.building && !buildings.hotel && !buildings.landmark,
+    !!buildings.villa && !!buildings.building && !!buildings.hotel && !buildings.landmark,
+    !!buildings.villa && !!buildings.building && !!buildings.hotel && !!buildings.landmark,
+  ];
+  const stage = canonicalStages.indexOf(true);
+  if (stage >= 0) return city.tollByCanonicalStage[stage] * classScale(playerClass);
+  const [land, villa, building, hotel, landmark] = city.tollByCanonicalStage;
+  const economyToll = land
+    + (buildings.villa ? villa - land : 0)
+    + (buildings.building ? building - villa : 0)
+    + (buildings.hotel ? hotel - building : 0)
+    + (buildings.landmark ? landmark - hotel : 0);
+  return economyToll * classScale(playerClass);
+}
+
+export function classicMarbleCityTollEvidence(cityName: string, buildings: ClassicMarbleBuildings = {}) {
+  if (!cityByName.has(cityName)) return 'missing-city' as const;
+  if (buildings.landmark && !(['villa', 'building', 'hotel'] as const).every(structure => buildings[structure])) return 'unsupported-mask' as const;
+  if (cityName === '카이로' && !!buildings.building && !buildings.villa && !buildings.hotel && !buildings.landmark) return 'direct-partial-mask-observation' as const;
+  const canonical = [
+    !buildings.villa && !buildings.building && !buildings.hotel && !buildings.landmark,
+    !!buildings.villa && !buildings.building && !buildings.hotel && !buildings.landmark,
+    !!buildings.villa && !!buildings.building && !buildings.hotel && !buildings.landmark,
+    !!buildings.villa && !!buildings.building && !!buildings.hotel && !buildings.landmark,
+    !!buildings.villa && !!buildings.building && !!buildings.hotel && !!buildings.landmark,
+  ].some(Boolean);
+  return canonical ? 'source-table-canonical-stage' as const : 'additive-inference-only' as const;
+}
+
+/** The tier is accepted explicitly; the reference selector (e.g. tourism ownership count) is still unresolved. */
+export function classicMarbleTourismToll(name: string, verifiedStep: number, playerClass: ClassicMarbleClass = 'business') {
+  const tile = tourismByName.get(name);
+  if (!tile || !Number.isInteger(verifiedStep) || verifiedStep < 0 || verifiedStep >= tile.rentSchedule.length) return null;
+  return tile.rentSchedule[verifiedStep] * classScale(playerClass);
 }
 
 export function classicMarbleAvailableStructures(buildings: ClassicMarbleBuildings, completedOwnLaps: number, isOwnArrival: boolean): ClassicMarbleStructure[] {
