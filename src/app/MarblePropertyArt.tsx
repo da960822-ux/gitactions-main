@@ -14,10 +14,33 @@ const cityColors: Record<string, string> = {
 };
 const ownerColors = { p1: '#cf6473', p2: '#398d80', p3: '#92596b', p4: '#2b6b62' };
 
-type PropertyArtProps = { city: string; level?: number; className?: string; routeVersion?: number; language?: Language; owner?: 'p1'|'p2'|'p3'|'p4'|null; ownerLabel?: string };
-export function MarblePropertyArt({owner, ownerLabel, className = '', ...props}: PropertyArtProps) {
+type PropertyArtProps = { city: string; level?: number; className?: string; routeVersion?: number; language?: Language; owner?: 'p1'|'p2'|'p3'|'p4'|null; ownerLabel?: string; compact?: boolean };
+export function MarblePropertyArt({owner, ownerLabel, className = '', compact = false, ...props}: PropertyArtProps) {
   if (owner === undefined) return <MarblePropertyImage {...props} className={className}/>;
-  return <span className={`${className} mp-property-art-frame`} data-marble-owner={owner ?? 'bank'} title={ownerLabel} data-building-level={props.level ?? 0} aria-hidden="true"><MarblePropertyImage {...props} owner={owner} className="mp-property-art-image"/><span className="mp-building-plinth"/></span>;
+  const compactLevel = compact && (props.routeVersion ?? 2) >= 3 && (props.level === 1 || props.level === 2) ? props.level : null;
+  return <span className={`${className} mp-property-art-frame`} data-marble-owner={owner ?? 'bank'} title={ownerLabel} data-building-level={props.level ?? 0} aria-hidden="true">
+    {compactLevel ? <MarbleCompactBuilding level={compactLevel}/> : <MarblePropertyImage {...props} owner={owner} className="mp-property-art-image"/>}
+    <span className="mp-building-plinth"/>
+  </span>;
+}
+function MarbleCompactBuilding({level}:{level:1|2}) {
+  if (level === 1) return <svg className="mp-property-art-image mp-compact-building" viewBox="0 0 80 60" aria-hidden="true">
+    <ellipse cx="40" cy="54" rx="32" ry="5" fill="#274f4d" opacity=".2"/>
+    <path d="M13 28 40 9l28 19-28 9Z" fill="var(--mp-owner-color)" stroke="#375058" strokeWidth="2"/>
+    <path d="M13 28v21l27 9V37Z" fill="#ead5ad" stroke="#586661" strokeWidth="2"/>
+    <path d="M40 37 68 28v21L40 58Z" fill="#d2bd98" stroke="#586661" strokeWidth="2"/>
+    <path d="M24 35v10l9 3V38Zm25 4v10l9-3V36Z" fill="#87abb0" stroke="#416466" strokeWidth="2"/>
+    <path d="M37 45v12" stroke="#6a533e" strokeWidth="4"/>
+  </svg>;
+  return <svg className="mp-property-art-image mp-compact-building" viewBox="0 0 80 72" aria-hidden="true">
+    <ellipse cx="40" cy="66" rx="30" ry="5" fill="#274f4d" opacity=".2"/>
+    <path d="M17 16 48 8l17 8-31 9Z" fill="var(--mp-owner-color)" stroke="#354d54" strokeWidth="2"/>
+    <path d="M17 16v44l17 7V25Z" fill="var(--mp-owner-color)" stroke="#354d54" strokeWidth="2"/>
+    <path d="M34 25 65 16v44l-31 7Z" fill="var(--mp-owner-color)" stroke="#354d54" strokeWidth="2"/>
+    <path d="M22 27l7 2v6l-7-2Zm0 13 7 2v6l-7-2Zm17-10 8-2v7l-8 2Zm15-4 7-2v7l-7 2ZM39 44l8-2v7l-8 2Zm15-4 7-2v7l-7 2Z" fill="#d7edf0" stroke="#3f6470" strokeWidth="1.5"/>
+    <path d="M44 64V53l10-3v12" fill="#f6dfa6" stroke="#4b615e" strokeWidth="2"/>
+    <path d="M17 55 34 62l31-8" fill="none" stroke="#e6d6ad" strokeWidth="2"/>
+  </svg>;
 }
 function MarblePropertyImage({ city, level = 0, className = '', routeVersion = 2, language = 'ko', owner }: { city: string; level?: number; className?: string; routeVersion?: number; language?: Language; owner?: 'p1'|'p2'|'p3'|'p4'|null }) {
   const tintId = `mp-building-${useId().replace(/:/g, '')}`;
