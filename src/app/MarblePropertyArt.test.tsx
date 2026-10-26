@@ -56,7 +56,7 @@ describe('Marble property shapes', () => {
         expect(html).not.toContain('building-stages.svg');
       }
       const unbuilt = renderToStaticMarkup(createElement(MarblePropertyArt, { city: slug, level: 0, routeVersion: 3 }));
-      expect(unbuilt).toContain('viewBox="0 34 128 80"');
+      expect(unbuilt).toContain('viewBox="0 40 128 80"');
       expect(unbuilt).not.toContain(dioramas.assets.find(asset => asset.slug === slug)!.path!);
       expect(unbuilt).toContain('data-building-level="0"');
     }
@@ -67,5 +67,13 @@ describe('Marble property shapes', () => {
       expect(render(asset.slug, 0)).not.toContain(asset.path);
       expect(render(asset.slug, 3)).toContain(asset.path);
     }
+  });
+  it('keeps the historical hotel distinct from the completed city landmark',()=>{
+    const art=(level:number)=>renderToStaticMarkup(createElement(MarblePropertyArt,{city:'bangkok',level,routeVersion:4}));
+    expect(art(0)).toContain('data-building-level="0"');
+    expect(art(3)).toContain('data-building-level="3"');
+    expect(art(3)).not.toContain('landmark illustration');
+    expect(art(4)).toContain('data-building-level="4"');
+    expect(art(4)).toContain('bangkok landmark illustration');
   });
 });

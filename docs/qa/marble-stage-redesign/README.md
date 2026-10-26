@@ -1,19 +1,32 @@
-# Marble stage visual QA
+# Marble visual QA
 
-These are Chromium captures of the actual React game screens at device scale 1. The live route captures use `/play?game=marble` and its AI match controls. Controlled state captures mount the same production components with states produced by `marbleEngine` or `fourMarbleEngine`; the rent capture applies an actual engine `roll` and waits for the transient event to become the retained receipt. Controlled states let all four building levels and both languages be inspected without relying on random dice rolls.
+## Canonical 32 cell World/Business presentation fixture
 
-| Check | Evidence |
+The [fixture data](classic-world-32-fixture.json) was exported directly from `src/games/marble-reference-profile.ts` at QA commit `993b587` (`kakao-world-business-2013-zero-discount`). It contains the ordered 32 cells, 18 cities, five tourism sites, starting cash of 5,000,000, and verified city purchase and toll values. The captures mount the production React board components in Chromium with those exact data. They demonstrate presentation and layout; the profile has **not yet been activated in a live match**, and the fixture's purchase action is a visual action placeholder, not proof of the new engine's legality. Tourism rent stages are shown from the profile, but the selection rule is still pending in the logic branch. [Capture script](capture-classic32.mjs) can be rerun with `npm run dev -- --port 5174` and `node docs/qa/marble-stage-redesign/capture-classic32.mjs`.
+
+| Check | Browser image |
 | --- | --- |
-| Live 2 player and 4 player roll stages | [2p 1280 × 800](2p-stage-1280x800.png), [4p 1280 × 800](4p-stage-1280x800.png), [2p 1440 × 900](2p-stage-1440x900.png), [4p 1440 × 900](4p-stage-1440x900.png) |
-| Purchase and build choices, 1280 × 800 | [2p purchase](2p-purchase-ko-1280x800.png), [2p build](2p-build-ko-1280x800.png), [4p purchase](4p-purchase-ko-1280x800.png), [4p build](4p-build-ko-1280x800.png) |
-| Vacant lot, house, apartment, landmark together | [Four stages](2p-levels-ko-1280x800.png) |
-| Real 120 rent transfer, settled receipt | [Rent](2p-rent-ko-1280x800.png) |
-| Spanish | [2p purchase](2p-purchase-es-1280x800.png), [4p build](4p-build-es-1280x800.png) |
-| Narrow screens | [2p 768](2p-purchase-ko-768x900.png), [4p 768](4p-build-ko-768x900.png), [2p 390](2p-purchase-ko-390x844.png), [4p 390](4p-build-ko-390x844.png) |
-| Live dice movement | [450 ms moving](motion-move-450ms.png), [2650 ms landed](motion-landed-2650ms.png) |
+| Two player stage | [1280 × 800](classic32-2p-roll-ko-1280x800.png), [1440 × 900](classic32-2p-roll-ko-1440x900.png) |
+| Four player stage | [1280 × 800](classic32-4p-roll-ko-1280x800.png), [1440 × 900](classic32-4p-roll-ko-1440x900.png) |
+| Vacant plot, villa, building, hotel and landmark | [Five stages at once](classic32-2p-levels-ko-1280x800.png) |
+| Seoul bank purchase, 500만 cash and 50만 land | [Korean 1280 × 800](classic32-2p-purchase-ko-1280x800.png), [Spanish 1280 × 800](classic32-2p-purchase-es-1280x800.png) |
+| Full map, own cash, selected city and both purchase choices | [Two player 390 × 844](classic32-2p-purchase-ko-390x844.png), [four player 390 × 844](classic32-4p-purchase-ko-390x844.png) |
+| Other widths | [Four player 390 roll](classic32-4p-roll-ko-390x844.png), [four player 768 roll](classic32-4p-roll-ko-768x900.png) |
 
-The 1280 × 800 live boards occupy x=23–1257, y=161–786 in 2 player mode and x=10–1270, y=103–705 in 4 player mode. At 1440 × 900 the 2 player map artwork spans 1082 × 549 px. The dice dock sits at the map's right edge and the top/bottom tile heights have been reduced to give the map more height and bring all four edge rows closer in size. The narrow captures have no document-level horizontal overflow; the board itself scrolls horizontally, while the contextual action sheet stays in view at 390 px. During one live 9 second movement probe, both player cash displays remained at 1,500; no false zero occurred. At 450 ms the moving pawn and travel status were visible; at 2650 ms the pawn had landed and the purchase decision was visible. These observations verify the sampled frames, not all animation timing or every random outcome.
+At 1280 × 800, a two player 32 cell board is 1040 × 679 pixels and each edge tile is about 111 × 72 pixels. The four player board uses the same column width; all four edges share the same cell grid within each layout. The 390 pixel view fits the complete board, own cash, selected tile enlargement, and purchase/skip in the viewport. At 768 pixels the board stays inside the viewport without horizontal clipping. Vacant land, villa, building, hotel, and landmark use different original drawings; the stage label sits in the tile header and owner marker has its own slot.
 
-The controlled captures reflect the current checked-in 40-cell economy. Historical mobile rule research and a separate logic implementation are pending integration, so these images are visual and interaction checkpoints rather than evidence of final historical prices or board count.
+## Current live 40 cell game behavior
 
-Validation at this checkpoint: `npm test -- --reporter=dot` passed 113 files and 998 tests; `npm run build` passed. The browser used the repository Playwright dependency and `/usr/bin/chromium`; no browser download was needed.
+The following captures use the currently routed 40 cell engine. They validate existing interaction, movement, rent and transition behavior until the 32 cell economy branch is integrated; their prices are not historical profile prices.
+
+| Check | Browser image |
+| --- | --- |
+| Live two and four player stage | [2p 1280 × 800](2p-stage-1280x800.png), [4p 1280 × 800](4p-stage-1280x800.png) |
+| Purchase and build | [2p purchase](2p-purchase-ko-1280x800.png), [2p build](2p-build-ko-1280x800.png), [4p purchase](4p-purchase-ko-1280x800.png), [4p build](4p-build-ko-1280x800.png) |
+| Rent transfer and retained receipt | [2p rent](2p-rent-ko-1280x800.png) |
+| Spanish and narrow | [Spanish purchase](2p-purchase-es-1280x800.png), [4p mobile build](4p-build-ko-390x844.png) |
+| Real sampled movement | [450 ms moving](motion-move-450ms.png), [2650 ms landed](motion-landed-2650ms.png) |
+
+The 40 cell build and takeover screens show an explicit end turn alternative in the same decision area. The takeover sheet displays recipient, exact cost, after cash, and acquired stage. During the sampled live movement, both cash HUDs held their settled 1,500 value. The two captured movement frames verify those moments, not every animation timing or random outcome.
+
+All screenshots used the repository Playwright dependency and `/usr/bin/chromium`; no browser download was needed.

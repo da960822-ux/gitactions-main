@@ -1,0 +1,532 @@
+{
+  "sourceCommit": "993b587",
+  "profileId": "kakao-world-business-2013-zero-discount",
+  "activation": "versioned-data-profile-not-yet-routed-to-live-match",
+  "startingCash": 5000000,
+  "cities": [
+    {
+      "name": "방콕",
+      "land": 50000,
+      "construction": {
+        "villa": 25000,
+        "building": 75000,
+        "hotel": 125000,
+        "landmark": 125000
+      },
+      "tollByCanonicalStage": [
+        5000,
+        20000,
+        70000,
+        210000,
+        835000
+      ]
+    },
+    {
+      "name": "베이징",
+      "land": 65000,
+      "construction": {
+        "villa": 25000,
+        "building": 75000,
+        "hotel": 125000,
+        "landmark": 125000
+      },
+      "tollByCanonicalStage": [
+        5000,
+        25000,
+        80000,
+        230000,
+        855000
+      ]
+    },
+    {
+      "name": "타이페이",
+      "land": 120000,
+      "construction": {
+        "villa": 50000,
+        "building": 150000,
+        "hotel": 250000,
+        "landmark": 250000
+      },
+      "tollByCanonicalStage": [
+        15000,
+        60000,
+        175000,
+        475000,
+        1600000
+      ]
+    },
+    {
+      "name": "두바이",
+      "land": 120000,
+      "construction": {
+        "villa": 50000,
+        "building": 150000,
+        "hotel": 250000,
+        "landmark": 250000
+      },
+      "tollByCanonicalStage": [
+        15000,
+        60000,
+        175000,
+        475000,
+        1600000
+      ]
+    },
+    {
+      "name": "카이로",
+      "land": 135000,
+      "construction": {
+        "villa": 50000,
+        "building": 150000,
+        "hotel": 250000,
+        "landmark": 250000
+      },
+      "tollByCanonicalStage": [
+        20000,
+        70000,
+        190000,
+        500000,
+        1625000
+      ]
+    },
+    {
+      "name": "도쿄",
+      "land": 180000,
+      "construction": {
+        "villa": 75000,
+        "building": 225000,
+        "hotel": 375000,
+        "landmark": 375000
+      },
+      "tollByCanonicalStage": [
+        35000,
+        115000,
+        325000,
+        875000,
+        2375000
+      ]
+    },
+    {
+      "name": "시드니",
+      "land": 180000,
+      "construction": {
+        "villa": 75000,
+        "building": 225000,
+        "hotel": 375000,
+        "landmark": 375000
+      },
+      "tollByCanonicalStage": [
+        35000,
+        115000,
+        325000,
+        875000,
+        2375000
+      ]
+    },
+    {
+      "name": "퀘벡",
+      "land": 235000,
+      "construction": {
+        "villa": 100000,
+        "building": 300000,
+        "hotel": 500000,
+        "landmark": 500000
+      },
+      "tollByCanonicalStage": [
+        50000,
+        165000,
+        450000,
+        1125000,
+        2875000
+      ]
+    },
+    {
+      "name": "상파울루",
+      "land": 250000,
+      "construction": {
+        "villa": 100000,
+        "building": 300000,
+        "hotel": 500000,
+        "landmark": 500000
+      },
+      "tollByCanonicalStage": [
+        60000,
+        180000,
+        475000,
+        1175000,
+        2925000
+      ]
+    },
+    {
+      "name": "프라하",
+      "land": 295000,
+      "construction": {
+        "villa": 125000,
+        "building": 375000,
+        "hotel": 625000,
+        "landmark": 625000
+      },
+      "tollByCanonicalStage": [
+        80000,
+        255000,
+        700000,
+        1625000,
+        3500000
+      ]
+    },
+    {
+      "name": "베를린",
+      "land": 310000,
+      "construction": {
+        "villa": 125000,
+        "building": 375000,
+        "hotel": 625000,
+        "landmark": 625000
+      },
+      "tollByCanonicalStage": [
+        85000,
+        270000,
+        700000,
+        1675000,
+        3550000
+      ]
+    },
+    {
+      "name": "모스크바",
+      "land": 350000,
+      "construction": {
+        "villa": 150000,
+        "building": 450000,
+        "hotel": 750000,
+        "landmark": 750000
+      },
+      "tollByCanonicalStage": [
+        110000,
+        325000,
+        825000,
+        1975000,
+        3850000
+      ]
+    },
+    {
+      "name": "제네바",
+      "land": 365000,
+      "construction": {
+        "villa": 150000,
+        "building": 450000,
+        "hotel": 750000,
+        "landmark": 750000
+      },
+      "tollByCanonicalStage": [
+        120000,
+        350000,
+        900000,
+        2075000,
+        3950000
+      ]
+    },
+    {
+      "name": "로마",
+      "land": 365000,
+      "construction": {
+        "villa": 150000,
+        "building": 450000,
+        "hotel": 750000,
+        "landmark": 750000
+      },
+      "tollByCanonicalStage": [
+        120000,
+        350000,
+        900000,
+        2075000,
+        3950000
+      ]
+    },
+    {
+      "name": "런던",
+      "land": 410000,
+      "construction": {
+        "villa": 175000,
+        "building": 525000,
+        "hotel": 875000,
+        "landmark": 875000
+      },
+      "tollByCanonicalStage": [
+        140000,
+        450000,
+        1150000,
+        2650000,
+        4400000
+      ]
+    },
+    {
+      "name": "파리",
+      "land": 425000,
+      "construction": {
+        "villa": 175000,
+        "building": 525000,
+        "hotel": 875000,
+        "landmark": 875000
+      },
+      "tollByCanonicalStage": [
+        150000,
+        475000,
+        1200000,
+        2750000,
+        4500000
+      ]
+    },
+    {
+      "name": "뉴욕",
+      "land": 480000,
+      "construction": {
+        "villa": 200000,
+        "building": 600000,
+        "hotel": 1000000,
+        "landmark": 1000000
+      },
+      "tollByCanonicalStage": [
+        180000,
+        550000,
+        1350000,
+        3050000,
+        4550000
+      ]
+    },
+    {
+      "name": "서울",
+      "land": 500000,
+      "construction": {
+        "villa": 200000,
+        "building": 600000,
+        "hotel": 1000000,
+        "landmark": 1000000
+      },
+      "tollByCanonicalStage": [
+        200000,
+        600000,
+        1450000,
+        3200000,
+        4700000
+      ]
+    }
+  ],
+  "tourism": [
+    {
+      "name": "독도",
+      "bankPurchasePrice": 250000,
+      "playerAcquisitionAllowed": false,
+      "rentSchedule": [
+        200000,
+        400000,
+        800000
+      ]
+    },
+    {
+      "name": "하와이",
+      "bankPurchasePrice": 250000,
+      "playerAcquisitionAllowed": false,
+      "rentSchedule": [
+        200000,
+        400000,
+        800000
+      ]
+    },
+    {
+      "name": "푸켓",
+      "bankPurchasePrice": 250000,
+      "playerAcquisitionAllowed": false,
+      "rentSchedule": [
+        200000,
+        400000,
+        800000
+      ]
+    },
+    {
+      "name": "발리",
+      "bankPurchasePrice": 250000,
+      "playerAcquisitionAllowed": false,
+      "rentSchedule": [
+        200000,
+        400000,
+        800000
+      ]
+    },
+    {
+      "name": "타히티",
+      "bankPurchasePrice": 250000,
+      "playerAcquisitionAllowed": false,
+      "rentSchedule": [
+        200000,
+        400000,
+        800000
+      ]
+    }
+  ],
+  "map": [
+    {
+      "kind": "start",
+      "name": "출발"
+    },
+    {
+      "kind": "city",
+      "name": "방콕",
+      "city": "방콕"
+    },
+    {
+      "kind": "special",
+      "name": "보너스게임",
+      "effect": "bonus-game"
+    },
+    {
+      "kind": "city",
+      "name": "베이징",
+      "city": "베이징"
+    },
+    {
+      "kind": "tourism",
+      "name": "독도",
+      "purchasableFromBank": true,
+      "acquirableFromPlayer": false
+    },
+    {
+      "kind": "city",
+      "name": "타이페이",
+      "city": "타이페이"
+    },
+    {
+      "kind": "city",
+      "name": "두바이",
+      "city": "두바이"
+    },
+    {
+      "kind": "city",
+      "name": "카이로",
+      "city": "카이로"
+    },
+    {
+      "kind": "special",
+      "name": "무인도",
+      "effect": "island"
+    },
+    {
+      "kind": "tourism",
+      "name": "발리",
+      "purchasableFromBank": true,
+      "acquirableFromPlayer": false
+    },
+    {
+      "kind": "city",
+      "name": "도쿄",
+      "city": "도쿄"
+    },
+    {
+      "kind": "city",
+      "name": "시드니",
+      "city": "시드니"
+    },
+    {
+      "kind": "special",
+      "name": "포츈카드",
+      "effect": "card"
+    },
+    {
+      "kind": "city",
+      "name": "퀘벡",
+      "city": "퀘벡"
+    },
+    {
+      "kind": "tourism",
+      "name": "하와이",
+      "purchasableFromBank": true,
+      "acquirableFromPlayer": false
+    },
+    {
+      "kind": "city",
+      "name": "상파울루",
+      "city": "상파울루"
+    },
+    {
+      "kind": "special",
+      "name": "올림픽",
+      "effect": "olympic"
+    },
+    {
+      "kind": "city",
+      "name": "프라하",
+      "city": "프라하"
+    },
+    {
+      "kind": "tourism",
+      "name": "푸켓",
+      "purchasableFromBank": true,
+      "acquirableFromPlayer": false
+    },
+    {
+      "kind": "city",
+      "name": "베를린",
+      "city": "베를린"
+    },
+    {
+      "kind": "special",
+      "name": "포츈카드",
+      "effect": "card"
+    },
+    {
+      "kind": "city",
+      "name": "모스크바",
+      "city": "모스크바"
+    },
+    {
+      "kind": "city",
+      "name": "제네바",
+      "city": "제네바"
+    },
+    {
+      "kind": "city",
+      "name": "로마",
+      "city": "로마"
+    },
+    {
+      "kind": "special",
+      "name": "세계여행",
+      "effect": "world-travel"
+    },
+    {
+      "kind": "tourism",
+      "name": "타히티",
+      "purchasableFromBank": true,
+      "acquirableFromPlayer": false
+    },
+    {
+      "kind": "city",
+      "name": "런던",
+      "city": "런던"
+    },
+    {
+      "kind": "city",
+      "name": "파리",
+      "city": "파리"
+    },
+    {
+      "kind": "special",
+      "name": "포츈카드",
+      "effect": "card"
+    },
+    {
+      "kind": "city",
+      "name": "뉴욕",
+      "city": "뉴욕"
+    },
+    {
+      "kind": "special",
+      "name": "국세청",
+      "effect": "tax"
+    },
+    {
+      "kind": "city",
+      "name": "서울",
+      "city": "서울"
+    }
+  ]
+}

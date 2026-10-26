@@ -2,6 +2,7 @@ import type { CSSProperties } from 'react';
 import { useId } from 'react';
 import type { Language } from '../core/types';
 import dioramas from '../../public/images/marble/dioramas/manifest.json';
+import { MarbleWorldHotelArt, MarbleWorldLandmarkArt } from './MarbleWorldLandmarkArt';
 
 const cityColors: Record<string, string> = {
   gwangju: '#70a689', 'santo-domingo': '#d1ad74', madrid: '#c88779', santiago: '#b88378',
@@ -11,6 +12,7 @@ const cityColors: Record<string, string> = {
   miami: '#b08f76', valparaiso: '#b78269', cebu: '#cba357', toronto: '#bca871', auckland: '#96aab7',
   vancouver: '#8b9fab', newark: '#a67965', seoul: '#7898b0',
   berlin: '#d49c66', istanbul: '#75aaa3', agra: '#b78269', athens: '#cba357', sydney: '#96aab7',
+  bangkok:'#c7a06c',beijing:'#b97566',taipei:'#82a9aa',dubai:'#8db7bd',cairo:'#d6ad76',quebec:'#8ca4a2','sao-paulo':'#83a4a4',prague:'#b77964',moscow:'#b68181',geneva:'#87aebb',
 };
 
 type PropertyArtProps = { city: string; level?: number; className?: string; routeVersion?: number; language?: Language; owner?: 'p1'|'p2'|'p3'|'p4'|null; ownerLabel?: string };
@@ -20,19 +22,19 @@ export function MarblePropertyArt({owner, ownerLabel, className = '', ...props}:
 }
 function MarblePropertyImage({ city, level = 0, className = '', routeVersion = 2, language = 'ko' }: { city: string; level?: number; className?: string; routeVersion?: number; language?: Language }) {
   const tintId = `mp-building-${useId().replace(/:/g, '')}`;
-  // A vacant city is surveyed land; its completed landmark only appears at level three.
-  if (routeVersion >= 3 && level === 0) return <svg className={className} viewBox="0 34 128 80" style={{ color: cityColors[city] ?? '#a7b7aa' } as CSSProperties} data-building-level={0} aria-hidden="true" focusable="false">
-    <ellipse cx="65" cy="108" rx="50" ry="11" fill="#193f43" opacity=".18"/>
-    <path d="M10 77 66 49l52 28-54 30Z" fill="#f5e3b9" stroke="#6b7a6c" strokeWidth="3"/>
-    <path d="M19 76 66 53l44 24-46 24Z" fill="currentColor" opacity=".74"/>
-    <path d="M28 79 66 61l36 18-38 18Z" fill="#dce6d1" stroke="#86a996" strokeWidth="2"/>
-    <path d="m28 79 36 18m2-36 36 18" stroke="#b8cbb9" strokeWidth="2" strokeDasharray="3 4"/>
-    <path d="M22 76V56m84 21V57M64 97V78" stroke="#765b3e" strokeWidth="4" strokeLinecap="round"/>
-    <path d="m18 57 4-6 4 6Zm84 1 4-6 4 6ZM60 79l4-6 4 6Z" fill="#bd9860" stroke="#765b3e" strokeWidth="2"/>
-    <path d="M48 63V39m1 1 23 5-23 8Z" fill="#f4efdd" stroke="#626b5d" strokeWidth="2"/>
-    <path d="m10 77 54 30 54-30" fill="none" stroke="#9a7c52" strokeWidth="4" strokeLinejoin="round"/>
+  // A vacant city is open land; the completed landmark appears only at the route's final stage.
+  if (routeVersion >= 3 && level === 0) return <svg className={className} viewBox="0 40 128 80" style={{ color: cityColors[city] ?? '#a7b7aa' } as CSSProperties} data-building-level={0} aria-hidden="true" focusable="false">
+    <ellipse cx="65" cy="106" rx="52" ry="8" fill="#193f43" opacity=".18"/>
+    <path d="m12 81 61-18 44 20-61 20Z" fill="#a7ba91" stroke="#5f806f" strokeWidth="3"/>
+    <path d="m25 81 47-13 31 14-47 15Z" fill="#ccb687" stroke="#8e7651" strokeWidth="2"/>
+    <path d="m39 82 30-8 20 9-30 9Z" fill="currentColor" opacity=".32"/>
+    <path d="m25 80 47-13 31 15-47 15Z" fill="none" stroke="#f8edc9" strokeWidth="1.8" strokeDasharray="3 4"/>
+    <path d="M26 82v-10m78 11V73" stroke="#735e46" strokeWidth="3" strokeLinecap="round"/>
+    <path d="m20 72 6-6 6 6zm78 1 6-6 6 6Z" fill="#f0c875" stroke="#7b6348" strokeWidth="1.5"/>
+    <path d="m38 91 3-5 4 4m36-6 4-5 4 4" fill="none" stroke="#4c8b65" strokeWidth="3" strokeLinecap="round"/>
   </svg>;
   if (routeVersion >= 3 && level > 0) {
+    if (routeVersion >= 4 && level === 3) return <MarbleWorldHotelArt className={className} color={cityColors[city] ?? '#a7b7aa'}/>;
     const asset = level === 1 ? dioramas.commonStages.house : level === 2 ? dioramas.commonStages.apartment : dioramas.assets.find(asset => asset.slug === city);
     if (asset?.path && level < 3) return <svg className={className} data-building-level={level} data-city-color={cityColors[city] ?? '#a7b7aa'} viewBox={`0 0 ${asset.width} ${asset.height}`} preserveAspectRatio="xMidYMax meet" aria-hidden="true" focusable="false">
       <defs><filter id={tintId} colorInterpolationFilters="sRGB">
@@ -45,7 +47,8 @@ function MarblePropertyImage({ city, level = 0, className = '', routeVersion = 2
       </filter></defs>
       <image href={asset.path} width={asset.width} height={asset.height} filter={`url(#${tintId})`}/>
     </svg>;
-    if (asset?.path) return <img className={className} data-building-level={Math.min(3, level)} src={asset.path} alt="" aria-hidden="true" loading="lazy" decoding="async"/>;
+    if (asset?.path) return <img className={className} data-building-level={Math.min(routeVersion>=4?4:3, level)} src={asset.path} alt="" aria-hidden="true" loading="lazy" decoding="async"/>;
+    if (routeVersion >= 4 && level >= 4) return <MarbleWorldLandmarkArt className={className} city={city} color={cityColors[city] ?? '#a7b7aa'}/>;
     return <span className={`${className} mp-art-pending`} data-building-level={Math.min(3, level)} data-art-pending={city} aria-hidden="true">{language === 'ko' ? '그림 준비 중' : 'Imagen pendiente'}</span>;
   }
   if (level >= 3) {

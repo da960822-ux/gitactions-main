@@ -45,7 +45,7 @@ describe('native four-player Marble screen',()=>{
   s.positions.p1=1;s.pendingTile=1;s.phase='decision';
   const purchase=render(s);
   expect(purchase).toContain('매입 100 · 기본 통행료 20');expect(purchase).toContain('구매 후 현금 1,400');
-  expect(purchase).toContain('도시 구매 · 100');expect(purchase).toContain('구매 안 함');
+  expect(purchase).toContain('도시 구매 · 100');expect(purchase).toContain('이번에는 지나가기');
   expect(purchase).toContain('300을 받고 330을 갚습니다.');
  });
  it('retains mandatory debt controls and all player-specific bankruptcy rules',()=>{

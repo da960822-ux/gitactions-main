@@ -26,4 +26,12 @@ describe('MarbleCityTile', () => {
     expect(render(3,null,0,'ko',32)).toContain('mp-tile--west');
     expect(render(3,null,0,'ko',32)).toContain('data-mp-edge="left"');
   });
+  it('marks a bank-purchasable tourism tile without a building level',()=>{
+    const tile={kind:'tourism',name:{ko:'독도',es:'Dokdo'},price:250000,rent:200000,owner:null,houses:0};
+    const html=renderToStaticMarkup(createElement(MarbleCityTile,{tile,index:4,tileCount:32,position:[5,9],language:'ko',routeVersion:4,modern:true,selected:false,pending:false,changed:false,atSeats:[],movingSeat:null,playerId:'p1',pawnForSeat:()=> 'fox' as const,seatLabel:()=> '나',onInspect:vi.fn()}));
+    expect(html).toContain('data-tourism-label="관광"');
+    expect(html).toContain('은행에서 구매 가능, 상대에게 인수 불가');
+    expect(html).toContain('25만');
+    expect(html).not.toContain('mp-building-badge');
+  });
 });

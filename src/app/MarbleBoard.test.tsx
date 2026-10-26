@@ -79,7 +79,7 @@ describe('MarbleBoard', () => {
     expect(ko.indexOf('mp-pawn-picker-shell')).toBeLessThan(ko.indexOf('mp-turn-panel'));
     expect(ko.indexOf('mp-turn-panel')).toBeLessThan(ko.indexOf('<details class="mp-city-detail"'));
     expect(ko).toContain('<details class="mp-pawn-picker-shell mp-city-detail"><summary>말 선택</summary>');
-    expect(ko).toContain('viewBox="0 34 128 80"');
+    expect(ko).toContain('viewBox="0 40 128 80"');
     expect(ko).not.toContain('/images/marble/premium/cities/gwangju-chosun-university.webp');
     expect(ko).toContain('미건설 0단계');
     expect(es).toContain('Gwangju');

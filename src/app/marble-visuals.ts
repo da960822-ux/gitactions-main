@@ -2,7 +2,14 @@ import type { Language } from '../core/types';
 import { marblePawnCatalog, type MarblePawnId } from './MarblePawn';
 const copy = (language: Language, ko: string, es: string) => language === 'ko' ? ko : es;
 const num = (value: unknown) => Number.isFinite(Number(value)) ? Number(value) : 0;
-export const moneyText = (value: number, language: Language) => value.toLocaleString(language === 'ko' ? 'ko-KR' : 'es-DO');
+export const moneyText = (value: number, language: Language) => {
+  if (language === 'ko' && Math.abs(value) >= 10000) return `${new Intl.NumberFormat('ko-KR', { maximumFractionDigits: 4 }).format(value / 10000)}만`;
+  if (language === 'es' && Math.abs(value) >= 10000) {
+    const unit = Math.abs(value) >= 1000000 ? 1000000 : 1000;
+    return `${new Intl.NumberFormat('es-DO', { maximumFractionDigits: unit === 1000000 ? 6 : 3 }).format(value / unit)} ${unit === 1000000 ? 'M' : 'mil'}`;
+  }
+  return value.toLocaleString(language === 'ko' ? 'ko-KR' : 'es-DO');
+};
 export const groups: Record<string, Record<Language, string>> = {
   green: { ko: '숲', es: 'Bosque' }, blue: { ko: '바다', es: 'Mar' }, purple: { ko: '보랏빛', es: 'Violeta' }, orange: { ko: '노을', es: 'Atardecer' },
   red: { ko: '정원', es: 'Jardín' }, yellow: { ko: '햇살', es: 'Sol' }, teal: { ko: '청록', es: 'Turquesa' }, dark: { ko: '밤', es: 'Noche' },
@@ -11,6 +18,7 @@ export const groups: Record<string, Record<Language, string>> = {
 export const specialNames: Record<string, Record<Language, string>> = {
   start: { ko: '출발', es: 'Salida' }, tax: { ko: '세금', es: 'Impuesto' }, rest: { ko: '휴식', es: 'Descanso' }, event: { ko: '황금 열쇠', es: 'Llave dorada' },
   island: { ko: '무인도', es: 'Isla desierta' }, train: { ko: '열차역', es: 'Estación de tren' }, fund: { ko: '사회복지기금', es: 'Fondo social' }, 'fund-deposit': { ko: '기금 납부', es: 'Aporte al fondo' },
+  'bonus-game': { ko: '보너스게임', es: 'Juego extra' }, olympic: { ko: '올림픽', es: 'Olimpiadas' }, 'world-travel': { ko: '세계여행', es: 'Viaje mundial' }, card: { ko: '포츈카드', es: 'Carta fortuna' },
 };
 export const cityArtNames: Record<string, string> = {
   베를린: 'berlin', 'Berlín': 'berlin', 마이애미: 'miami', Miami: 'miami', 이스탄불: 'istanbul', Estambul: 'istanbul', 아그라: 'agra', Agra: 'agra', 아테네: 'athens', Atenas: 'athens', 시드니: 'sydney', 'Sídney': 'sydney',
@@ -19,6 +27,7 @@ export const cityArtNames: Record<string, string> = {
   뉴욕: 'new-york', 'Nueva York': 'new-york', 파리: 'paris', 'París': 'paris', 도쿄: 'tokyo', Tokio: 'tokyo', 바르셀로나: 'barcelona', Barcelona: 'barcelona', 사마나: 'samana', 'Samaná': 'samana',
   아바나: 'havana', 'La Habana': 'havana', 멕시코시티: 'mexico-city', 'Ciudad de México': 'mexico-city', 리스본: 'lisbon', Lisboa: 'lisbon', 런던: 'london', Londres: 'london', 로마: 'rome', Roma: 'rome',
   뉴어크: 'newark', Newark: 'newark', 서울: 'seoul', 'Seúl': 'seoul', 발파라이소: 'valparaiso', 'Valparaíso': 'valparaiso', 세부: 'cebu', Cebú: 'cebu', 토론토: 'toronto', Toronto: 'toronto', 오클랜드: 'auckland', Auckland: 'auckland', 밴쿠버: 'vancouver', Vancouver: 'vancouver',
+  방콕:'bangkok',Bangkok:'bangkok',베이징:'beijing',Pekín:'beijing',타이페이:'taipei',Taipéi:'taipei',두바이:'dubai',Dubái:'dubai',카이로:'cairo','El Cairo':'cairo',퀘벡:'quebec',Quebec:'quebec',상파울루:'sao-paulo','São Paulo':'sao-paulo',프라하:'prague',Praga:'prague',모스크바:'moscow',Moscú:'moscow',제네바:'geneva',Ginebra:'geneva',
 };
 
 export function cityFlag(names: Record<string, unknown>): string | null {
@@ -36,11 +45,15 @@ export function cityFlag(names: Record<string, unknown>): string | null {
 export function pawnId(value: unknown): MarblePawnId | null {
   return marblePawnCatalog.some(item => item.id === value) ? value as MarblePawnId : null;
 }
-export function buildingName(level: number, language: Language, modern: boolean) {
+export function buildingName(level: number, language: Language, modern: boolean, routeVersion = 3) {
+  if (routeVersion >= 4) return level >= 4 ? copy(language,'랜드마크','Monumento') : level === 3 ? copy(language,'호텔','Hotel') : level === 2 ? copy(language,'빌딩','Edificio') : level === 1 ? copy(language,'빌라','Villa') : '';
   if (modern) return level >= 3 ? copy(language, '랜드마크', 'Monumento') : level === 2 ? copy(language, '아파트', 'Apartamentos') : level === 1 ? copy(language, '단독주택', 'Casa unifamiliar') : '';
   return level ? copy(language, '집', 'Casa') : '';
 }
 export function rentValue(tile: Record<string, any>, modern: boolean) {
+  // A versioned board can supply its already resolved toll. Presentation must not
+  // reconstruct the historical component toll table from the old level formula.
+  if (Number.isFinite(tile.currentRent)) return tile.currentRent;
   const level = num(tile.houses);
   const multipliers = Array.isArray(tile.rentMultipliers) ? tile.rentMultipliers : [1, 2, 4, 8];
   return num(tile.rent) * (modern ? (multipliers[level] ?? 1) : level + 1) * (num(tile.monopolyMultiplier) || 1);
