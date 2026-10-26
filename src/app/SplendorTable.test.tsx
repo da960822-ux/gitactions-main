@@ -30,6 +30,7 @@ describe('opponent Splendor details', () => {
     expect(html).not.toContain(hiddenReserveId);
     const profileCss = readFileSync(new URL('../styles/splendor-premium.css', import.meta.url), 'utf8');
     expect(profileCss).toMatch(/\.sp-profile-reserved > \.sp-card-back[^}]*display: block;[^}]*width: 34px;[^}]*height: 44px;/);
+    expect(profileCss).toMatch(/\.sp-profile-dialog h2,[^{]*\.spt-profile-dialog h2[^}]*color: #26483b;/);
   });
 
   it('shows legacy acquisition history as incomplete without inventing cards from bonus totals', () => {

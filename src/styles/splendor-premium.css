@@ -664,7 +664,7 @@
 .sp-profile-dialog,.spt-profile-dialog { width: min(420px, calc(100vw - 32px)); max-height: min(80vh, 620px); overflow: auto; padding: 20px; border: 1px solid #a99a6f; border-radius: 12px; background: #faf4e4; color: #26483b; box-shadow: 0 16px 48px #071d1eb0; }
 .sp-profile-dialog::backdrop,.spt-profile-dialog::backdrop { background: #071d1ecc; }
 .sp-profile-dialog header,.spt-profile-dialog header { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin-bottom: 16px; }
-.sp-profile-dialog h2,.spt-profile-dialog h2 { margin: 0; font-size: 20px; }
+.sp-profile-dialog h2,.spt-profile-dialog h2 { margin: 0; color: #26483b; font-size: 20px; }
 .sp-profile-dialog header button,.spt-profile-dialog header button { min-width: 36px; min-height: 36px; border: 1px solid #859386; border-radius: 7px; background: #fffbee; color: #26483b; font-size: 22px; }
 .sp-profile-dialog p,.spt-profile-dialog p { margin: 10px 0; line-height: 1.5; }
 .sp-profile-dialog ul,.spt-profile-dialog ul { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 6px 16px; margin: 8px 0 16px; padding-left: 20px; }
