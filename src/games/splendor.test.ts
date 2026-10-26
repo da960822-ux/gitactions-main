@@ -39,6 +39,21 @@ describe('Splendor engine',()=>{
  it('pays a purchase using bonuses before tokens and claims a newly qualified noble',()=>{
   const base=splendorEngine.createInitialState(8),target=base.market[1][0];let s:SplendorState={...base,bonuses:{...base.bonuses,p1:{white:3,blue:3,green:3,red:0,black:0}},availableNobles:{patron:{points:3,requirement:{white:3,blue:3,green:3}}},market:{...base.market,1:[{...target,cost:{white:2,blue:0,green:0,red:0,black:0},points:1,bonus:'red'},...base.market[1].slice(1)]}};const n=splendorEngine.applyAction(s,'p1',{type:'buy',payload:{source:'market',tier:1,index:0}});expect(n.cardPoints.p1).toBe(1);expect(n.nobles.p1).toBe(3);expect(n.availableNobles).toEqual({});expect(n.hands.p1.white).toBe(0);expect(n.bank.white).toBe(4);expect(s.nobles.p1).toBe(0);
  });
+ it('publishes purchased card identities but never opponent reservation identities, including legacy saves',()=>{
+  const base=splendorEngine.createInitialState(18),target=base.market[1][0],free={...target,cost:{white:0,blue:0,green:0,red:0,black:0}};
+  const legacy:any={...base,acquiredCards:undefined,acquiredCardHistoryComplete:undefined,cardPoints:{p1:5,p2:0},market:{...base.market,1:[free,...base.market[1].slice(1)]}};
+  const bought=splendorEngine.applyAction(legacy,'p1',{type:'buy',payload:{source:'market',tier:1,index:0}});
+  expect(bought.acquiredCards?.p1).toEqual([expect.objectContaining({id:target.id,points:target.points,bonus:target.bonus})]);
+  expect(bought.acquiredCardHistoryComplete?.p1).toBe(false);
+  expect(bought.cardPoints.p1).toBe(5+target.points);
+  const hiddenId=bought.market[2][0].id;
+  const withReserve=splendorEngine.applyAction(bought,'p2',{type:'reserve',payload:{tier:2,index:0}});
+  const view=splendorEngine.getPlayerView(withReserve,'p1');
+  expect(view.board.acquiredCards.p1[0]).toMatchObject({id:target.id,points:target.points,bonus:target.bonus});
+  expect(view.board.acquiredCardHistoryComplete.p1).toBe(false);
+  expect(JSON.stringify(view)).not.toContain(hiddenId);
+  expect(view.board.reservedOpponentCount).toBe(1);
+ });
  it('lets the active player choose one when several nobles qualify without ending their turn early',()=>{
   const base=splendorEngine.createInitialState(21),target=base.market[1][0];const s:SplendorState={...base,cardPoints:{p1:14,p2:0},turns:{p1:14,p2:14},bonuses:{...base.bonuses,p1:{white:3,blue:3,green:3,red:3,black:0}},availableNobles:{n1:{points:3,requirement:{white:3,blue:3,green:3}},n2:{points:3,requirement:{white:3,blue:3,red:3}}},market:{...base.market,1:[{...target,cost:{white:0,blue:0,green:0,red:0,black:0},points:1}]}};const bought=splendorEngine.applyAction(s,'p1',{type:'buy',payload:{source:'market',tier:1,index:0}});expect(bought.result).toBeNull();expect(bought.active).toBe('p1');expect(bought.turns.p1).toBe(14);expect(bought.pendingNobles).toHaveLength(2);const actions=splendorEngine.getPlayerView(bought,'p1').actions;expect(actions.map((x:any)=>x.action.type)).toEqual(['chooseNoble','chooseNoble']);const chosen=splendorEngine.applyAction(bought,'p1',actions[0].action);expect(chosen.active).toBe('p2');expect(chosen.turns.p1).toBe(15);expect(chosen.nobles.p1).toBe(3);expect(chosen.pendingNobles).toEqual([]);expect(chosen.result).toBeNull();const ended=splendorEngine.applyAction(chosen,'p2',{type:'take',payload:{gems:['white','blue','green']}});expect(ended.result?.winner).toBe('p1');
  });
