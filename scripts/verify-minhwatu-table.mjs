@@ -42,13 +42,13 @@ async function open(language, width, height, reduced = false) {
     document.querySelector('#root')?.setAttribute('hidden', '');
     const host = document.createElement('main'); host.id = 'minhwatu-native-proof';
     host.style.cssText = 'width:100%;padding:8px 12px 24px;box-sizing:border-box;min-height:100vh'; document.body.append(host);
-    let root = createRoot(host), state, language = 'ko', viewer = 'p1', scene = 0, revision = 0, replayPending = false, replayCalls = 0;
+    let root = createRoot(host), state, language = 'ko', viewer = 'p1', scene = 0, revision = 0, replayPending = false, replayCalls = 0, actionCalls = 0, rejectNext = false;
     const render = () => root.render(React.createElement(NativeApp, { revision: ++revision }));
     function NativeApp() {
       const view = minhwatuEngine.getPlayerView(state, viewer);
       window.__minhwatuView = view;
       return React.createElement(React.Fragment, null,
-        React.createElement(MinhwatuTable, { view, language, playerId: viewer, playerNames: { p1: 'Yeonseok', p2: 'Lisbeth' }, runAction: async action => { state = minhwatuEngine.applyAction(state, viewer, action); render(); return true; }, sceneKey: String(scene), replayPending, onReplay: async () => { replayCalls++; replayPending = true; render(); } }),
+        React.createElement(MinhwatuTable, { view, language, playerId: viewer, playerNames: { p1: 'Yeonseok', p2: 'Lisbeth' }, runAction: async action => { actionCalls++; if (rejectNext) { rejectNext = false; return false; } state = minhwatuEngine.applyAction(state, viewer, action); render(); return true; }, sceneKey: String(scene), replayPending, onReplay: async () => { replayCalls++; replayPending = true; render(); } }),
         React.createElement(GameFeedback, { gameId: 'minhwatu', language, playerId: viewer, view }));
     }
     const initial = minhwatuEngine.createInitialState(20261011);
@@ -133,7 +133,9 @@ async function open(language, width, height, reduced = false) {
     };
     window.__minhwatuProof = {
       engine: minhwatuEngine,
-      mount(next, lang = language, seat = 'p1', nextScene = true) { state = structuredClone(next); language = lang; viewer = seat; replayPending = false; window.__minhwatuCues = []; if (nextScene) scene++; render(); },
+      mount(next, lang = language, seat = 'p1', nextScene = true) { state = structuredClone(next); language = lang; viewer = seat; replayPending = false; actionCalls = 0; rejectNext = false; window.__minhwatuCues = []; if (nextScene) scene++; render(); },
+      rejectNextAction() { rejectNext = true; },
+      actionCalls() { return actionCalls; },
       setViewer(seat) { viewer = seat; scene++; render(); },
       setReplayPending(value) { replayPending = value; render(); },
       view(seat = viewer) { return minhwatuEngine.getPlayerView(state, seat); },
@@ -479,6 +481,30 @@ async function privacyAndMotion(language) {
   } finally { await context.close(); }
 }
 
+async function directKeyboardAndRetry() {
+  const { context, page } = await open('ko', 1440, 900);
+  try {
+    const hand = page.locator('.hwatu-hand-choice[data-hwatu-card-id="1-1"]');
+    await page.evaluate(() => window.__minhwatuProof.mount(window.__minhwatuProof.stateWithMatches(0, 0), 'ko'));
+    await idle(page);
+    await hand.focus(); await page.keyboard.press('Space');
+    await page.waitForFunction(() => window.__minhwatuProof.state().hands.p1.length === 9);
+    check('Keyboard Space plays an unambiguous hand card in one activation',
+      await page.evaluate(() => window.__minhwatuProof.actionCalls() === 1 && window.__minhwatuProof.state().events.filter(event => event.type === 'play').length === 1));
+
+    await page.evaluate(() => { window.__minhwatuProof.mount(window.__minhwatuProof.stateWithMatches(0, 0), 'ko'); window.__minhwatuProof.rejectNextAction(); });
+    await idle(page);
+    await hand.click();
+    await page.getByRole('alert').waitFor();
+    check('Rejected hand play retains the card and reports the failure',
+      await page.evaluate(() => window.__minhwatuProof.actionCalls() === 1 && window.__minhwatuProof.state().hands.p1.length === 10) && await hand.isEnabled());
+    await hand.click();
+    await page.waitForFunction(() => window.__minhwatuProof.state().hands.p1.length === 9);
+    check('A second hand click retries once after rejection',
+      await page.evaluate(() => window.__minhwatuProof.actionCalls() === 2 && window.__minhwatuProof.state().events.filter(event => event.type === 'play').length === 1));
+  } finally { await context.close(); }
+}
+
 try {
   for(const [language,width,height] of [['ko',1366,768],['ko',1440,900],['ko',1920,1080],['es',1366,768],['es',1440,900],['es',1920,1080]]) await initialMatrix(language,width,height);
   for(const [language,width,height] of [['ko',1366,768],['ko',1440,900],['es',1366,768],['es',1440,900]]) await handAndCaptureMatrix(language,width,height);
@@ -486,6 +512,7 @@ try {
   await privacyAndMotion('ko'); await privacyAndMotion('es');
   await lifecycle('ko'); await lifecycle('es');
   await denseResultAndReplay('ko'); await denseResultAndReplay('es');
+  await directKeyboardAndRetry();
 } catch(error) { report.errors.push(error instanceof Error ? error.stack||error.message : String(error)); }
 finally { await browser.close(); }
 report.summary={total:report.checks.length,passed:report.checks.filter(item=>item.pass).length,failed:report.checks.filter(item=>!item.pass).length};
