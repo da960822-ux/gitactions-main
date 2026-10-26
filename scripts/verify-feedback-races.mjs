@@ -17,9 +17,7 @@ const createStarted = deferred();
 const releaseCreate = deferred();
 const submitStarted = deferred();
 const releaseSubmit = deferred();
-const joinStarted = deferred();
-const releaseJoin = deferred();
-let delayJoin = false;
+let joinGate = null;
 const posts = new Map([[oldSpace, []], [joined, []]]);
 const calls = { create: 0, join: 0, submit: [] };
 const server = spawn(process.execPath, ['node_modules/vite/bin/vite.js', '--host', '127.0.0.1', '--port', '5199', '--strictPort'], {
@@ -58,7 +56,7 @@ try {
       } else if (url.pathname.endsWith('/rpc/join_feedback_space')) {
         if (request.postDataJSON().p_space !== joined) throw new Error('Unexpected join target');
         calls.join++;
-        if (delayJoin) { joinStarted.resolve(); await releaseJoin.promise; }
+        if (joinGate) { joinGate.started.resolve(); await joinGate.release.promise; }
         body = 'p2';
       } else if (url.pathname.endsWith('/rpc/submit_feedback')) {
         const input = request.postDataJSON();
@@ -124,21 +122,39 @@ try {
   if (await second.page.getByText('Old space idea').count()) throw new Error('Reload mixed entries from separate spaces');
   await second.ctx.close();
 
-  delayJoin = true;
+  joinGate = { started: deferred(), release: deferred() };
   const third = await context(oldSpace);
   await third.page.goto(`${base}/feedback?space=${joined}`);
   await third.page.getByRole('button', { name: '참여하기' }).click();
-  await joinStarted.promise;
+  await joinGate.started.promise;
   if (!await third.page.getByRole('button', { name: '초대 닫기' }).isDisabled()
     || !await third.page.locator('#feedback-invite-code').isDisabled()) throw new Error('Invitation can be dismissed or edited during join');
-  releaseJoin.resolve();
+  joinGate.release.resolve();
   await third.page.getByText('현재 이 공간에 참여한 계정은 2개예요.').waitFor();
   saved = await third.page.evaluate(() => localStorage.getItem('dos-feedback-space'));
   if (saved !== joined) throw new Error('Completed join was not reflected in storage');
   await third.ctx.close();
-  console.log(JSON.stringify({ passed: true, lateCreate: true, lateSubmit: true, requestIdsDistinct: true, pendingJoinLocked: true }));
+
+  joinGate = { started: deferred(), release: deferred() };
+  const fourth = await context(oldSpace);
+  await fourth.page.goto(`${base}/feedback?space=${joined}`);
+  await fourth.page.getByRole('button', { name: '참여하기' }).click();
+  await joinGate.started.promise;
+  await fourth.page.locator('.couple-brand').click();
+  await fourth.page.waitForURL(`${base}/`);
+  await fourth.page.evaluate(() => { history.pushState({}, '', '/feedback'); dispatchEvent(new PopStateEvent('popstate')); });
+  await fourth.page.getByText('현재 이 공간에 참여한 계정은 1개예요.').waitFor();
+  joinGate.release.resolve();
+  await fourth.page.waitForTimeout(150);
+  saved = await fourth.page.evaluate(() => localStorage.getItem('dos-feedback-space'));
+  if (saved !== oldSpace || fourth.page.url() !== `${base}/feedback`
+    || await fourth.page.getByText('현재 이 공간에 참여한 계정은 2개예요.').count()) throw new Error('Late join from a prior route changed the active page');
+  await fourth.page.reload();
+  await fourth.page.getByText('현재 이 공간에 참여한 계정은 1개예요.').waitFor();
+  await fourth.ctx.close();
+  console.log(JSON.stringify({ passed: true, lateCreate: true, lateSubmit: true, requestIdsDistinct: true, pendingJoinLocked: true, staleRouteJoinIgnored: true }));
 } finally {
-  releaseCreate.resolve(); releaseSubmit.resolve(); releaseJoin.resolve();
+  releaseCreate.resolve(); releaseSubmit.resolve(); joinGate?.release.resolve();
   await browser?.close();
   server.kill('SIGTERM');
 }

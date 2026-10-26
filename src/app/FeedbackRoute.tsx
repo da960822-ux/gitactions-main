@@ -30,6 +30,7 @@ export function FeedbackRoute() {
   const [error, setError] = useState<string | null>(null);
   const [joinError, setJoinError] = useState<string | null>(null);
   const refreshGeneration = useRef(0);
+  const joinGeneration = useRef(0);
   const initialization = useRef<Promise<string> | null>(null);
   const activeSpace = useRef(spaceId);
   const es = language === 'es';
@@ -74,6 +75,7 @@ export function FeedbackRoute() {
     window.addEventListener('focus', refresh);
     return () => { refreshGeneration.current += 1; clearInterval(interval); window.removeEventListener('focus', refresh); };
   }, [refresh, language, es]);
+  useEffect(() => () => { joinGeneration.current += 1; }, []);
 
   const joinSpace = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -81,17 +83,19 @@ export function FeedbackRoute() {
     if (!id || joining) return;
     if (document.querySelector<HTMLTextAreaElement>('#feedback-body')?.value.trim()
       && !window.confirm(copy(language, '공간을 바꾸면 작성 중인 글이 이 화면에서 사라져요. 계속할까요?', 'Si cambias de espacio, el borrador desaparecerá de esta pantalla. ¿Continuar?'))) return;
+    const generation = joinGeneration.current;
     setJoining(true); setJoinError(null);
     try {
       const seat = await feedback.joinSpace(id);
+      if (joinGeneration.current !== generation) return;
       refreshGeneration.current += 1;
       activeSpace.current = id;
       if (!writeBrowserStorage('dos-feedback-space', id)) setStorageIssue('space');
       history.replaceState(null, '', '/feedback');
       setInviteSpace(''); setJoinCode(''); setSpaceId(id); setEntries([]); setRole(seat); setMemberCount(null); setLoading(true); setError(null);
     } catch {
-      setJoinError(copy(language, '이 공간에 참여하지 못했어요. 링크를 확인하거나 새 초대를 요청해 주세요.', 'No se pudo entrar en este espacio. Revisa el enlace o pide otra invitación.'));
-    } finally { setJoining(false); }
+      if (joinGeneration.current === generation) setJoinError(copy(language, '이 공간에 참여하지 못했어요. 링크를 확인하거나 새 초대를 요청해 주세요.', 'No se pudo entrar en este espacio. Revisa el enlace o pide otra invitación.'));
+    } finally { if (joinGeneration.current === generation) setJoining(false); }
   };
 
   const copyInvite = async () => {
