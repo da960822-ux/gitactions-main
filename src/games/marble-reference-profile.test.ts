@@ -53,9 +53,12 @@ describe('historical Kakao World / Business reference profile', () => {
     expect(classicMarbleCityToll('카이로', { building: true }, 'economy')).toBe(56_000);
     expect(classicMarbleCityTollEvidence('카이로', { building: true })).toBe('direct-partial-mask-observation');
     expect(classicMarbleCityToll('카이로', { building: true })).toBe(140_000);
+    expect(classicMarbleCityToll('카이로', { villa: true })).toBe(70_000);
+    expect(classicMarbleCityToll('카이로', { villa: true, building: true })).toBe(190_000);
     expect(classicMarbleCityToll('카이로', { hotel: true })).toBe(330_000);
     expect(classicMarbleCityToll('카이로', { villa: true, hotel: true })).toBe(380_000);
     expect(classicMarbleCityToll('카이로', { building: true, hotel: true })).toBe(450_000);
+    expect(classicMarbleCityToll('카이로', { villa: true, building: true, hotel: true })).toBe(500_000);
     expect(classicMarbleCityTollEvidence('카이로', { hotel: true })).toBe('additive-inference-only');
     expect(classicMarbleCityToll('방콕', {}, 'economy')).toBe(2_000);
     expect(classicMarbleCityToll('방콕', {}, 'first')).toBe(10_000);
