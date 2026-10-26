@@ -15,7 +15,7 @@ export function MarbleTeamMap({view, language, seatNames, selectedTile, onInspec
  centerContent?: ReactNode;
 }) {
  const state=view.publicState;
- const tiles=view.publicBoard.map((tile,index)=>({...tile,index,owner:state.properties[index]?.owner??null,houses:state.properties[index]?.houses??0,rentModifiers:state.modifiers[index]}));
+ const tiles=view.publicBoard.map((tile,index)=>({...tile,index,economicVersion:state.economicVersion??2,owner:state.properties[index]?.owner??null,houses:state.properties[index]?.houses??0,rentModifiers:state.modifiers[index]}));
  const players=fourSeats,playerId='p1',phase=view.phase;
  const pos=state.positions[view.turn],lastMove=record(state.lastMove),lastMoveSequence=state.lastMove?.sequence??0;
  const seatLabel=(seat:FourSeat)=>seatNames[seat][language];

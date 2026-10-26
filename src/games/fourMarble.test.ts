@@ -3,7 +3,7 @@ import { fourSeats, fourTeam } from '../core/fourPlayer';
 import { seededRandom, type GameAction } from '../core/types';
 import { fourMarbleEngine as engine, type FourMarbleState } from './fourMarble';
 
-const state = (seed = 1) => ({ ...engine.createInitialState(seed), propertyRulesVersion: undefined }) as FourMarbleState;
+const state = (seed = 1) => ({ ...engine.createInitialState(seed), economicVersion: 2, money: { p1: 1500, p2: 1500, p3: 1500, p4: 1500 }, propertyRulesVersion: undefined }) as FourMarbleState;
 function rollFor(total: number) {
   for (let seed = 0; seed < 10000; seed++) {
     const random = seededRandom(seed);
@@ -14,6 +14,18 @@ function rollFor(total: number) {
 const step = (s: FourMarbleState, action: GameAction) => engine.applyAction(s, s.active, action) as FourMarbleState;
 
 describe('four-seat Marble team variant', () => {
+  it('offers and validates a rent pass only while the active seat owns one', () => {
+    const s = state();
+    s.active = 'p1'; s.phase = 'rent-decision'; s.pendingRent = { amount: 200, creditor: 'p2' };
+    const withoutPass = engine.getPlayerView(s, 'p1').actions.map(option => option.action.type);
+    expect(withoutPass).toContain('pay-rent');
+    expect(withoutPass).not.toContain('use-rent-pass');
+    expect(engine.validateAction(s, 'p1', { type: 'use-rent-pass' })).not.toBeNull();
+    s.rentPasses.p1 = 1;
+    const withPass = engine.getPlayerView(s, 'p1').actions.map(option => option.action.type);
+    expect(withPass).toContain('use-rent-pass');
+    expect(engine.validateAction(s, 'p1', { type: 'use-rent-pass' })).toBeNull();
+  });
   it('allows all seven pawn skins only when unoccupied and locks each seat after its first roll', () => {
     const s = state();
     expect(new Set(Object.values(s.pawns)).size).toBe(4);
@@ -56,9 +68,10 @@ describe('four-seat Marble team variant', () => {
     const s = state(); s.active = 'p4'; s.rng = rollFor(2); s.positions.p4 = 39;
     const next = step(s, { type: 'roll' });
     expect(next.lastMove).toMatchObject({ playerId: 'p4', from: 39, to: 1, steps: 2, source: 'dice' });
-    expect(next.actionLog.map(event => event.type)).toEqual(['roll', 'move', 'arrival']);
-    expect(next.actionLog.map(event => event.actor)).toEqual(['p4', 'p4', 'p4']);
-    expect(next.actionLog.map(event => event.sequence)).toEqual([1, 2, 3]);
+    expect(next.actionLog.map(event => event.type)).toEqual(['roll', 'salary', 'move', 'arrival']);
+    expect(next.actionLog.map(event => event.actor)).toEqual(['p4', 'p4', 'p4', 'p4']);
+    expect(next.actionLog.map(event => event.sequence)).toEqual([1, 2, 3, 4]);
+    expect(next.actionLog[1]).toMatchObject({ amount: 200, fromAccount: 'bank', toAccount: 'p4', moneyDelta: { p4: 200 } });
     expect(next.diceSequence).toBe(1);
   });
 
@@ -139,7 +152,7 @@ describe('four-seat Marble team variant', () => {
 });
 
 it('charges the first tied leader when the golden-card drawer is outside the leading monopoly tie',()=>{
- const s=engine.createInitialState(rollFor(2)) as FourMarbleState;
+ const s=state(rollFor(2));
  s.eventDeck=['monopoly-warning'];s.properties={1:{owner:'p2',houses:0},15:{owner:'p2',houses:0},4:{owner:'p4',houses:0},5:{owner:'p4',houses:0}};
  const outside=step(s,{type:'roll'});
  expect(outside.money).toEqual({p1:1500,p2:1400,p3:1500,p4:1500});

@@ -3,9 +3,9 @@ import { marbleEngine, type MarbleTile } from '../games/marble';
 import { getBeginnerGuide, type BeginnerGuideOptions } from './beginner-guides';
 import { MarblePropertyArt } from './MarblePropertyArt';
 import { MarblePropertyLedger } from './MarblePropertyLedger';
+import { marblePassStartSalary, marbleStartingCash } from '../games/marbleEconomy';
 import './marble-rule-guide.css';
 
-const currentCities: MarbleTile[] = marbleEngine.getPlayerView(marbleEngine.createInitialState(1), 'p1').board.tiles;
 const words = (language: Language, ko: string, es: string) => language === 'ko' ? ko : es;
 const eventCategories = [
   ['cash-dividend', '돈과 비용', 'Dinero y gastos', '상금·배당·여행비·수리비', 'Premios, dividendos, viajes y reparaciones'],
@@ -36,13 +36,18 @@ export function MarbleRuleGuide({ language, rules, options = {}, teamMode = fals
   language: Language; rules: string[]; options?: BeginnerGuideOptions; teamMode?: boolean;
 }) {
   const t = (ko: string, es: string) => words(language, ko, es);
+  const economicVersion = options.marbleEconomyVersion === 3 ? 3 : options.marbleEconomyVersion === 1 ? 1 : 2;
+  const openingCash = marbleStartingCash(economicVersion), passSalary = marblePassStartSalary(economicVersion);
+  const guideState = marbleEngine.createInitialState(1); guideState.economicVersion = economicVersion;
+  const currentCities: MarbleTile[] = marbleEngine.getPlayerView(guideState, 'p1').board.tiles;
   const exampleCity = currentCities.find(tile => tile.name.es === (language === 'es' ? 'Santo Domingo' : 'Gwangju'))!;
   const guide = getBeginnerGuide('marble', language, { ...options, marblePropertyRulesVersion: 1 })!;
-  const detailedRules = teamMode ? rules.map((rule, index) => index === 0
-    ? t('목표와 준비 — 우리 40칸·3단계 건설 팀전입니다. 각자 1500으로 출발하고 팀원과 번갈아 앉아요. 돈과 도시·대출은 개인별이며, 같은 팀 두 명이 모두 파산하면 패배합니다.', 'Objetivo y preparación — Nuestra variante por equipos tiene 40 casillas y tres niveles. Cada persona empieza con 1500 y los equipos se sientan alternados. El dinero, las ciudades y las deudas son individuales; el equipo pierde cuando ambos quiebran.')
+  const baseRules = teamMode ? rules.map((rule, index) => index === 0
+    ? t(`목표와 준비 — 우리 40칸·3단계 건설 팀전입니다. 각자 ${openingCash}으로 출발하고 팀원과 번갈아 앉아요. 돈과 도시·대출은 개인별이며, 같은 팀 두 명이 모두 파산하면 패배합니다.`, `Objetivo y preparación — Nuestra variante por equipos tiene 40 casillas y tres niveles. Cada persona empieza con ${openingCash} y los equipos se sientan alternados. El dinero, las ciudades y las deudas son individuales; el equipo pierde cuando ambos quiebran.`)
     : index === 9
       ? t('팀 정산 — 120개 완료 차례 뒤 두 팀원의 순자산을 합산합니다. 순자산은 현금+도시 원래 매입가+각 실제 건설비−미상환 대출이며 인수 웃돈은 포함하지 않습니다. 더블 재굴림·탈락 좌석은 완료 차례로 세지 않습니다. 팀 합계가 같으면 무승부입니다. 경매·저당·협의 거래는 없습니다.', 'Cuenta del equipo — Tras 120 turnos completos se suma el patrimonio neto de ambos compañeros: efectivo + precio original de las ciudades + construcción − deudas. El dinero extra de una adquisición no aumenta ese valor. Los lanzamientos extra y los asientos eliminados no cuentan como turnos completos. Si los equipos empatan, hay empate. No hay subastas, hipotecas ni intercambios negociados.')
       : rule) : rules;
+  const detailedRules = economicVersion === 3 ? baseRules.map((rule,index) => index === 0 && !teamMode ? rule.replace('1500',String(openingCash)) : index === 1 ? rule.replace('통과하면 200',`통과하면 ${passSalary}`).replace('pasar por Salida cobras 200',`pasar por Salida cobras ${passSalary}`) : index === 2 ? t('도시와 건설 — 빈 도시를 사거나 거절합니다. 땅값은 기존 40칸 도시표의 80%를 10 단위 반올림합니다. 주택→아파트→랜드마크 비용은 조정 땅값의 40%·60%·80%(최소 30)이며, 통행료 단계 배수는 1·2·3·4배입니다.', 'Ciudades y construcción — Compra una ciudad libre o recházala. El terreno vale el 80 % de la tabla actual, redondeado a 10. Construir casa→apartamentos→monumento cuesta el 40 %, 60 % y 80 % del precio ajustado (mínimo 30); el alquiler multiplica por 1, 2, 3 y 4.') : index === 8 ? rule.replace('통과해도 200',`통과해도 ${passSalary}`).replace('también paga 200',`también paga ${passSalary}`) : rule) : baseRules;
   const stageNames = language === 'ko' ? ['대지', '단독주택', '아파트', '랜드마크'] : ['Terreno', 'Casa', 'Apartamentos', 'Monumento'];
   return <div className="marble-rule-guide" lang={language === 'ko' ? 'ko' : 'es-DO'}>
     <p className="marble-rule-goal">{teamMode ? t('내 도시를 키우고 팀의 순자산을 모아요.', 'Desarrolla tus ciudades y suma patrimonio para tu equipo.') : guide.goal}</p>
@@ -50,7 +55,7 @@ export function MarbleRuleGuide({ language, rules, options = {}, teamMode = fals
       {[t('두 주사위 굴리기', 'Lanza los dos dados'), t('도착한 칸 확인', 'Revisa dónde caíste'), t('구매·지급 등 도착 행동', 'Compra o paga, según la casilla')].map((step, index) => <li key={step}><b>{index + 1}</b>{step}</li>)}
     </ol>
     <p className="marble-rule-opening">{t('원하면 첫 주사위를 굴리기 전에 말을 바꿀 수 있어요.', 'Si quieres, puedes cambiar de ficha antes de tu primer lanzamiento.')}</p>
-    <p className="marble-rule-opening">{t('시작 현금 1,500 · 출발 통과 +200 · 40칸 보드', 'Empiezas con 1,500 · pasar por Salida +200 · tablero de 40 casillas')}</p>
+    <p className="marble-rule-opening">{t(`시작 현금 ${openingCash.toLocaleString()} · 출발 통과 +${passSalary} · 40칸 보드`, `Empiezas con ${openingCash.toLocaleString()} · pasar por Salida +${passSalary} · tablero de 40 casillas`)}</p>
     <section className="marble-rule-building" aria-labelledby="marble-rule-building-title">
       <h3 id="marble-rule-building-title">{t('내 도시를 키우면 통행료도 올라가요', 'Construye y cobra más alquiler')}</h3>
       <div className="marble-rule-stages">{stageNames.map((name, level) => <figure key={level}>
@@ -58,7 +63,7 @@ export function MarbleRuleGuide({ language, rules, options = {}, teamMode = fals
         <figcaption><span>{level}</span><strong>{name}</strong></figcaption>
       </figure>)}</div>
       <p className="marble-rule-example">{t(`${exampleCity.name.ko} 예시 · 추가비는 그 단계에서 더 내는 돈, 누적은 땅값과 지금까지 지은 건설비의 합이에요.`, `Ejemplo: ${exampleCity.name.es}. «Costo extra» es lo que pagas por ese nivel; «Invertido» suma el terreno y todos los niveles construidos.`)}</p>
-      <MarblePropertyLedger tile={exampleCity} language={language} economicVersion={options.marbleEconomyVersion ?? 2} propertyRulesVersion={1}/>
+      <MarblePropertyLedger tile={exampleCity} language={language} economicVersion={economicVersion} propertyRulesVersion={1} effectiveValues/>
       <p className="marble-rule-color">{t('한 사람이 같은 색을 전부 소유하면 그 도시들의 통행료 ×2', 'Si tú solo completas un color, cobras el doble de alquiler en esas ciudades.')}</p>
     </section>
     <div className="marble-rule-pair">
@@ -85,7 +90,7 @@ export function MarbleRuleGuide({ language, rules, options = {}, teamMode = fals
       </figure>)}</div>
       <p>{t('보관 패는 직접 사용해요. 이동 카드는 도착한 칸의 효과까지 적용해요.', 'Tú decides cuándo usar un pase. Las cartas de viaje también aplican el efecto de la casilla de llegada.')}</p>
       <details className="guide-details marble-rule-card-list"><summary>{t('16종 카드 한 장씩 보기', 'Ver el efecto de cada una de las 16 cartas')}</summary>
-        <ul>{eventEffects.map(([ko, es, amount, detailKo, detailEs]) => <li key={es}><b>{amount}</b><div><strong>{t(ko, es)}</strong><p>{t(detailKo, detailEs)}</p></div></li>)}</ul>
+        <ul>{eventEffects.map(([ko, es, amount, detailKo, detailEs]) => <li key={es}><b>{amount}</b><div><strong>{t(ko, es)}</strong><p>{t(detailKo.replace('출발 통과 시 +200',`출발 통과 시 +${passSalary}`), detailEs.replace('Cruzar Salida paga 200',`Cruzar Salida paga ${passSalary}`).replace('cobras 200',`cobras ${passSalary}`))}</p></div></li>)}</ul>
         <p>{t('독점 경고 공동 선두는 카드를 뽑은 사람이 포함되면 그 사람, 아니면 시작 좌석부터 차례순으로 첫 공동 선두에게 부과해요.', 'Si hay empate en la advertencia de monopolio, paga quien sacó la carta si está entre quienes lideran. Si no, paga la primera persona empatada en el orden desde el asiento inicial.')}</p>
       </details>
     </section>

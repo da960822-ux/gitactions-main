@@ -6070,6 +6070,44 @@ var minhwatuEngine = {
   getResult: (s) => s.result
 };
 
+// src/games/marbleEconomy.ts
+var MARBLE_ECONOMY_V3 = {
+  startingCash: 3e3,
+  passStartSalary: 300,
+  landPriceFactor: 0.8,
+  buildFactors: [0.4, 0.6, 0.8],
+  lowRentYield: 0.25,
+  highRentYield: 0.3,
+  stageMultipliers: [1, 2, 3, 4]
+};
+var round10 = (value) => Math.round(value / 10) * 10;
+var marbleStartingCash = (version) => version === 3 ? MARBLE_ECONOMY_V3.startingCash : 1500;
+var marblePassStartSalary = (version) => version === 3 ? MARBLE_ECONOMY_V3.passStartSalary : 200;
+var marbleLandPrice = (tile, version) => version === 3 && tile.kind === "property" ? Math.max(50, round10((tile.price ?? 0) * MARBLE_ECONOMY_V3.landPriceFactor)) : tile.price ?? 0;
+function marbleBaseRent(tile, version) {
+  if (version !== 3) return tile.rent ?? 0;
+  const originalPrice = tile.price ?? 0;
+  const yieldAtPrice = MARBLE_ECONOMY_V3.lowRentYield + Math.max(0, Math.min(1, (originalPrice - 100) / (560 - 100))) * (MARBLE_ECONOMY_V3.highRentYield - MARBLE_ECONOMY_V3.lowRentYield);
+  return Math.max(10, round10(marbleLandPrice(tile, version) * yieldAtPrice));
+}
+function marbleRentAtBase(baseRent, houses, version, monopolyMultiplier = 1, modern = true) {
+  const levelMultiplier = version === 3 && modern ? MARBLE_ECONOMY_V3.stageMultipliers[Math.max(0, Math.min(3, Math.trunc(houses)))] : modern ? [1, 2, 4, 8][houses] ?? 1 : houses + 1;
+  return baseRent * levelMultiplier * monopolyMultiplier;
+}
+var marbleRentAmount = (tile, houses, version, monopolyMultiplier = 1, modern = true) => marbleRentAtBase(marbleBaseRent(tile, version), houses, version, monopolyMultiplier, modern);
+function marbleBuildCostAtPrice(price, level, version) {
+  if (version === 3) {
+    const factor2 = MARBLE_ECONOMY_V3.buildFactors[Math.max(0, Math.min(2, Math.trunc(level)))];
+    return Math.max(30, round10(Math.max(0, price) * factor2));
+  }
+  if (version !== 2) return 100;
+  const factor = [0.4, 0.6, 0.8][Math.max(0, Math.min(2, Math.trunc(level)))] ?? 0.4;
+  return Math.max(40, round10(Math.max(0, price) * factor));
+}
+function marbleBuildCostForVersion(tile, level, version) {
+  return marbleBuildCostAtPrice(marbleLandPrice(tile, version), level, version);
+}
+
 // src/games/marble.ts
 var marblePawnIds = ["fox", "cat", "penguin", "astronaut", "robot", "dragon", "sali-suli"];
 var pawnNames = { fox: { ko: "\uB9D0\uD2F0\uD478", es: "Maltipoo" }, cat: { ko: "\uB799\uB3CC", es: "Ragdoll" }, penguin: { ko: "\uD310\uB2E4", es: "Panda" }, astronaut: { ko: "\uC6B0\uC8FC\uC778", es: "Astronauta" }, robot: { ko: "\uB9AC\uC2A4\uC5F0", es: "Lisyeon" }, dragon: { ko: "\uCE5C\uCE60\uB77C", es: "Chinchilla" }, "sali-suli": { ko: "\uC0B4\uB9AC\xB7\uC220\uB9AC", es: "Sali y Suli" } };
@@ -6169,14 +6207,12 @@ var cards = {
   blackout: { title: { ko: "\uC815\uC804", es: "Apag\xF3n" }, text: { ko: "\uC0C1\uB300 \uB3C4\uC2DC \uD558\uB098\uB97C \uC120\uD0DD\uD569\uB2C8\uB2E4. \uADF8 \uB3C4\uC2DC\uC758 \uB2E4\uC74C \uB0B4 \uCC29\uC9C0 1\uD68C \uD1B5\uD589\uB8CC\uAC00 \uC808\uBC18\uC774 \uB429\uB2C8\uB2E4(\uB0B4\uB9BC, \uCD5C\uC18C 1). \uB300\uC0C1 \uCC29\uC9C0\uAE4C\uC9C0 \uC720\uC9C0\uB429\uB2C8\uB2E4.", es: "Elige una ciudad rival. En tu pr\xF3xima llegada a ella pagas la mitad una vez (redondeo hacia abajo, m\xEDnimo 1). Permanece hasta esa llegada." }, effect: "cash" },
   "rent-pass": { title: { ko: "\uD1B5\uD589\uB8CC \uBA74\uC81C\uAD8C", es: "Pase de alquiler" }, text: { ko: "\uD1B5\uD589\uB8CC \uBA74\uC81C\uAD8C \uD55C \uC7A5\uC744 \uBCF4\uAD00\uD569\uB2C8\uB2E4. \uC55E\uC73C\uB85C \uD1B5\uD589\uB8CC\uB97C \uB0B4\uAE30 \uC804\uC5D0 \uC9C1\uC811 \uC120\uD0DD\uD574 1\uD68C \uBA74\uC81C\uD560 \uC218 \uC788\uC2B5\uB2C8\uB2E4. \uC790\uB3D9 \uC0AC\uC6A9\uB418\uC9C0 \uC54A\uC73C\uBA70 \uC138\uAE08\uC5D0\uB294 \uC4F8 \uC218 \uC5C6\uC2B5\uB2C8\uB2E4.", es: "Guarda un pase. Antes de un futuro alquiler puedes elegir usarlo para eximir un solo pago. No se usa autom\xE1ticamente ni sirve para impuestos." }, effect: "pass" }
 };
-var propertyRent = (tile, record2, modern, s) => (tile.rent ?? 0) * (modern ? [1, 2, 4, 8][record2.houses] ?? 1 : record2.houses + 1) * (s?.propertyRulesVersion === 1 && completedGroups(s, record2.owner).includes(tile.group) ? 2 : 1);
+var propertyRent = (tile, record2, modern, s) => marbleRentAmount(tile, record2.houses, s?.economicVersion, s?.propertyRulesVersion === 1 && completedGroups(s, record2.owner).includes(tile.group) ? 2 : 1, modern);
 function marbleBuildCost(tile, level, economicVersion) {
-  if (economicVersion !== 2) return 100;
-  const factor = [0.4, 0.6, 0.8][Math.max(0, Math.min(2, Math.trunc(level)))] ?? 0.4;
-  return Math.max(40, Math.round(Math.max(0, tile.price ?? 0) * factor / 10) * 10);
+  return marbleBuildCostForVersion(tile, level, economicVersion);
 }
 function marbleCityValue(tile, houses, economicVersion) {
-  return (tile.price ?? 0) + Array.from({ length: houses }, (_, level) => marbleBuildCost(tile, level, economicVersion)).reduce((sum2, cost) => sum2 + cost, 0);
+  return marbleLandPrice(tile, economicVersion) + Array.from({ length: houses }, (_, level) => marbleBuildCost(tile, level, economicVersion)).reduce((sum2, cost) => sum2 + cost, 0);
 }
 function marbleTakeoverPrice(tile, houses, economicVersion) {
   return tile.kind === "property" && houses < 3 ? 2 * marbleCityValue(tile, houses, economicVersion) : null;
@@ -6192,7 +6228,7 @@ var assetsFor = (s, p, board) => s.money[p] - (s.debt?.[p] ?? 0) + Object.entrie
   if (record2.owner !== p) return sum2;
   const tile = board[Number(index)];
   const buildingCost = tile ? Array.from({ length: record2.houses }, (_, level) => marbleBuildCost(tile, level, s.economicVersion)).reduce((total, cost) => total + cost, 0) : 0;
-  return sum2 + (tile?.price ?? 0) + buildingCost;
+  return sum2 + (tile ? marbleLandPrice(tile, s.economicVersion) : 0) + buildingCost;
 }, 0);
 var completedGroups = (s, p) => {
   const board = boardFor(s);
@@ -6216,7 +6252,7 @@ function view2(s, p) {
       add(`\uD1B5\uD589\uB8CC \uC9C0\uAE09 \xB7 ${s.pendingRent.amount}`, `Pagar alquiler \xB7 ${s.pendingRent.amount}`, { type: "pay-rent" });
       if ((s.rentPasses?.[p] ?? 0) > 0) add("\uBA74\uC81C\uAD8C \uC0AC\uC6A9 \xB7 \uC774\uBC88 \uD1B5\uD589\uB8CC 1\uD68C", "Usar pase \xB7 este alquiler", { type: "use-rent-pass" });
     }
-    if ((s.economicVersion === 1 || s.economicVersion === 2) && s.phase !== "event-decision" && s.phase !== "rent-decision") {
+    if ((s.economicVersion === 1 || s.economicVersion === 2 || s.economicVersion === 3) && s.phase !== "event-decision" && s.phase !== "rent-decision") {
       const debt = s.debt?.[p] ?? 0;
       if (debt === 0 && (s.phase !== "debt" || s.money[p] + 300 >= (s.pendingPayment?.amount ?? Infinity))) add("\uB300\uCD9C \uBC1B\uAE30 \xB7 300 / \uC0C1\uD658 330", "Pedir pr\xE9stamo \xB7 300 / devolver 330", { type: "borrow" });
       if (debt > 0 && s.money[p] >= debt && s.phase !== "debt") add(`\uB300\uCD9C \uC0C1\uD658 \xB7 ${debt}`, `Pagar pr\xE9stamo \xB7 ${debt}`, { type: "repay" });
@@ -6242,7 +6278,8 @@ function view2(s, p) {
     }
     if (s.phase === "decision" && s.pendingTile !== null) {
       const tile = board[s.pendingTile];
-      if (tile?.kind === "property" && !s.properties[String(s.pendingTile)] && s.money[p] >= (tile.price ?? Infinity)) add(`\uAD6C\uB9E4 (${tile.price})`, `Comprar (${tile.price})`, { type: "buy" });
+      const price = marbleLandPrice(tile, s.economicVersion);
+      if (tile?.kind === "property" && !s.properties[String(s.pendingTile)] && s.money[p] >= price) add(`\uAD6C\uB9E4 (${price})`, `Comprar (${price})`, { type: "buy" });
       add("\uAD6C\uB9E4 \uAC70\uC808 / \uACC4\uC18D", "Pasar / continuar", { type: "decline" });
     }
     if (s.phase === "main") {
@@ -6281,6 +6318,8 @@ function view2(s, p) {
         const canUpgrade = tile.kind === "property" && houses < maxLevels;
         return {
           ...tile,
+          ...tile.price !== void 0 ? { price: marbleLandPrice(tile, s.economicVersion) } : {},
+          ...tile.rent !== void 0 ? { rent: marbleBaseRent(tile, s.economicVersion) } : {},
           name: { ...tile.name },
           monopolyMultiplier: s.propertyRulesVersion === 1 && s.properties[index] && completedGroups(s, s.properties[index].owner).includes(tile.group) ? 2 : 1,
           index,
@@ -6347,7 +6386,7 @@ function validation(s, p, a) {
   }
   if (["choose-event-city", "pay-rent", "use-rent-pass"].includes(a.type)) return "No matching decision";
   if (["borrow", "repay", "declare-bankruptcy", "choose-pawn"].includes(a.type)) {
-    if (s.economicVersion !== 1 && s.economicVersion !== 2) return "Credit and figure selection unavailable in this saved ruleset";
+    if (s.economicVersion !== 1 && s.economicVersion !== 2 && s.economicVersion !== 3) return "Credit and figure selection unavailable in this saved ruleset";
     if (s.phase === "finished") return "Game is finished";
     if (a.type === "borrow") return (s.debt?.[p] ?? 0) !== 0 ? "Repay the existing loan first" : a.payload?.amount !== void 0 ? "Loan amount is fixed" : s.phase === "debt" && s.money[p] + 300 < (s.pendingPayment?.amount ?? Infinity) ? "Loan cannot cover this payment" : null;
     if (a.type === "repay") return a.payload?.amount !== void 0 ? "Repayment amount is fixed" : s.phase === "debt" || !s.debt?.[p] || s.money[p] < s.debt[p] ? "Cannot repay now" : null;
@@ -6373,7 +6412,7 @@ function validation(s, p, a) {
     if (s.phase !== "decision" || !Number.isInteger(s.pendingTile) || s.pendingTile !== s.positions[p]) return "No purchase decision";
     const tile = board[s.pendingTile];
     if (tile.kind !== "property" || s.properties[String(s.pendingTile)]) return "No property to decide";
-    if (a.type === "buy" && s.money[p] < (tile.price ?? Infinity)) return "Insufficient funds";
+    if (a.type === "buy" && s.money[p] < marbleLandPrice(tile, s.economicVersion)) return "Insufficient funds";
     return null;
   }
   if (a.type === "takeover") {
@@ -6401,7 +6440,7 @@ function bankrupt(s, loser, winner) {
 }
 function pay(s, p, amount, creditor = "bank", reason = { ko: "\uBE44\uC6A9 \uC9C0\uAE09", es: "Pago de gastos" }, type = "tax") {
   if (s.money[p] < amount) {
-    if (s.economicVersion !== 1 && s.economicVersion !== 2) return bankrupt(s, p, otherPlayer(p));
+    if (s.economicVersion !== 1 && s.economicVersion !== 2 && s.economicVersion !== 3) return bankrupt(s, p, otherPlayer(p));
     s.pendingPayment = { amount, creditor, reason, type, tile: s.positions[p], resumePhase: "main", resumeActive: s.active };
     s.active = p;
     s.phase = "debt";
@@ -6420,7 +6459,7 @@ function bonus(s, p, amount, ko, es, source = "bank") {
 }
 function moveForward(s, p, to, _board) {
   const from = s.positions[p];
-  if (to < from) bonus(s, p, 200, "\uCD9C\uBC1C \uBCF4\uB108\uC2A4", "Bono de Salida");
+  if (to < from) bonus(s, p, marblePassStartSalary(s.economicVersion), "\uCD9C\uBC1C \uBCF4\uB108\uC2A4", "Bono de Salida");
   s.positions[p] = to;
 }
 function resolveLanding(s, p, index, drawEvent) {
@@ -6749,7 +6788,7 @@ function step(s, p, a) {
       n.islandTurns[p] = 0;
     }
     const from = n.positions[p], distance = d1 + d2, to = (from + distance) % board.length;
-    if (from + distance >= board.length) bonus(n, p, 200, "\uCD9C\uBC1C \uBCF4\uB108\uC2A4", "Bono de Salida");
+    if (from + distance >= board.length) bonus(n, p, marblePassStartSalary(n.economicVersion), "\uCD9C\uBC1C \uBCF4\uB108\uC2A4", "Bono de Salida");
     n.positions[p] = to;
     noteMove(n, p, from, to, distance, a.type === "attempt-doubles" ? "island" : "dice");
     return resolveLanding(n, p, to, true);
@@ -6802,7 +6841,7 @@ function step(s, p, a) {
     return n;
   }
   if (a.type === "buy") {
-    const index = n.pendingTile, price = board[index].price;
+    const index = n.pendingTile, price = marbleLandPrice(board[index], n.economicVersion);
     n.money[p] -= price;
     n.properties[String(index)] = { owner: p, houses: 0 };
     n.phase = "main";
@@ -6836,7 +6875,7 @@ var marbleEngine = {
       rng,
       active: "p1",
       positions: { p1: 0, p2: 0 },
-      money: { p1: 1500, p2: 1500 },
+      money: { p1: marbleStartingCash(3), p2: marbleStartingCash(3) },
       properties: {},
       boardVersion: 2,
       cityRouteVersion: 3,
@@ -6859,7 +6898,7 @@ var marbleEngine = {
       pendingRent: null,
       rentPasses: { p1: 0, p2: 0 },
       rentModifiers: {},
-      economicVersion: 2,
+      economicVersion: 3,
       debt: { p1: 0, p2: 0 },
       pendingPayment: null,
       actionLog: [],

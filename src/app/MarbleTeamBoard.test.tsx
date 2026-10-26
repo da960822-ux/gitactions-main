@@ -5,6 +5,7 @@ import { fourMarbleEngine, type FourMarbleState } from '../games/fourMarble';
 import { marbleMovementPath, marblePresentationFrames } from './marble-motion';
 import MarbleTeamBoard from './MarbleTeamBoard';
 const state=()=>fourMarbleEngine.createInitialState(71) as FourMarbleState;
+const legacyState=()=>{const s=state();s.economicVersion=2;s.money={p1:1500,p2:1500,p3:1500,p4:1500};return s;};
 const render=(s:FourMarbleState,language:'ko'|'es'='ko')=>renderToStaticMarkup(createElement(MarbleTeamBoard,{view:fourMarbleEngine.getPlayerView(s,'p1'),language,nickname:'연석',runAction:vi.fn(),onReplay:vi.fn(),onExit:vi.fn(),onSelectGame:vi.fn()}));
 describe('native four-player Marble screen',()=>{
  it('owns its four-seat banks and controls without mounting the two-player board',()=>{
@@ -31,7 +32,7 @@ describe('native four-player Marble screen',()=>{
   expect(html).not.toContain('mt-pawn-picker');
  });
  it('keeps exact purchase decisions, own loans, and seven-skin selection',()=>{
-  let s=state();const initial=render(s);
+  let s=legacyState();const initial=render(s);
   expect(initial).toContain('내 말 선택');expect(initial).toContain('네 명은 서로 다른 말을 사용해요.');
   expect((initial.match(/사용 중<\/span>/g)??[]).length).toBe(3);
   expect(initial).toContain('살리·술리');
@@ -42,6 +43,12 @@ describe('native four-player Marble screen',()=>{
   expect(purchase).toContain('매입 100 · 기본 통행료 12');expect(purchase).toContain('구매 후 현금');expect(purchase).toContain('>1,400</b>');
   expect(purchase).toContain('도시 구매 · 100');expect(purchase).toContain('구매 안 함');
   expect(purchase).toContain('300을 받고 330을 갚습니다.');
+ });
+ it('shows the new economy values on a fresh team purchase decision',()=>{
+  const s=state();s.positions.p1=1;s.pendingTile=1;s.phase='decision';
+  const html=render(s);
+  expect(html).toContain('매입 80');expect(html).toContain('통행료 20');
+  expect(html).toContain('구매 후 현금 2,920');
  });
  it('retains mandatory debt controls and all player-specific bankruptcy rules',()=>{
   const s=state();s.phase='debt';s.money.p1=30;s.pendingPayment={amount:120,creditor:'p4',resumeActive:'p1'};
@@ -78,7 +85,7 @@ describe('native four-player Marble screen',()=>{
 });
 
 it('shows acquisition price, available funds and complete stage costs while keeping only one finished replay control',()=>{
- const s=state();s.phase='main';s.positions.p1=4;s.pendingTile=4;s.takeoverTile=4;s.properties[4]={owner:'p4',houses:2};
+ const s=legacyState();s.phase='main';s.positions.p1=4;s.pendingTile=4;s.takeoverTile=4;s.properties[4]={owner:'p4',houses:2};
  const html=render(s);
  expect(html).toContain('도시 인수 · 560');expect(html).toContain('인수 후 현금 940');expect(html).toContain('단계별 금액');expect(html).toContain('추가비');expect(html).toContain('누적');expect(html).toContain('불가');
  s.result={winner:'A',scores:{A:3000,B:2000},reason:{ko:'정산',es:'Balance'}};s.phase='finished';
@@ -92,7 +99,7 @@ it('opens the illustrated new rules only for versioned team matches and preserve
 });
 
 it('keeps each owner number, shared pawn/bank color key and approved property images in both languages',()=>{
- const s=state();s.properties={1:{owner:'p1',houses:0},3:{owner:'p2',houses:1},4:{owner:'p3',houses:2},5:{owner:'p4',houses:3}};
+ const s=legacyState();s.properties={1:{owner:'p1',houses:0},3:{owner:'p2',houses:1},4:{owner:'p3',houses:2},5:{owner:'p4',houses:3}};
  for(const language of ['ko','es'] as const){
   const html=render(s,language);
   expect((html.match(/class="mp-property-tile-art mp-property-art-frame"/g)??[])).toHaveLength(24);
