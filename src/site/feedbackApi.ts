@@ -8,6 +8,8 @@ const uuid = /^[0-9a-f]{8}-[0-9a-f]{4}-[1-8][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-
 const categories = ['message', 'game', 'feature', 'complaint', 'other'];
 const statuses = ['new', 'read', 'planned', 'done'];
 const sevenDays = 7 * 24 * 60 * 60 * 1000;
+// JSON escapes can use six bytes per character before title and import metadata.
+const maxJsonBytes = 32 * 1024;
 
 function json(value: unknown, status = 200) {
   return Response.json(value, { status, headers: { 'Cache-Control': 'no-store', 'X-Content-Type-Options': 'nosniff' } });
@@ -26,7 +28,7 @@ function input(body: unknown, preserve = false): { category: FeedbackCategory; t
 }
 async function parseBody(request: Request): Promise<Record<string, unknown> | null> {
   if (!request.headers.get('Content-Type')?.toLowerCase().startsWith('application/json')) return null;
-  if (Number(request.headers.get('Content-Length') || 0) > 8192) return null;
+  if (Number(request.headers.get('Content-Length') || 0) > maxJsonBytes) return null;
   const reader = request.body?.getReader();
   if (!reader) return null;
   const decoder = new TextDecoder();
@@ -36,7 +38,7 @@ async function parseBody(request: Request): Promise<Record<string, unknown> | nu
     const { done, value } = await reader.read();
     if (done) break;
     bytes += value.byteLength;
-    if (bytes > 8192) { await reader.cancel(); return null; }
+    if (bytes > maxJsonBytes) { await reader.cancel(); return null; }
     text += decoder.decode(value, { stream: true });
   }
   text += decoder.decode();

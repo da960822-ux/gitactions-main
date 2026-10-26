@@ -85,6 +85,25 @@ describe('private shared feedback API', () => {
     expect(sqlite.prepare('SELECT count(*) AS count FROM feedback_entries').get()).toMatchObject({ count: 1 });
   });
 
+  it('accepts a full 4000-character Korean post and import', async () => {
+    const body = '한'.repeat(4000);
+    expect(new TextEncoder().encode(JSON.stringify({ id, ...generic, body })).length).toBeGreaterThan(8192);
+    expect((await api('/api/feedback', 'POST', partner, { id, ...generic, body })).status).toBe(201);
+    const originalTime = new Date(Date.now() - 60000).toISOString();
+    expect((await api('/api/feedback/import', 'POST', owner, { legacySourceId: sourceId, ...generic, body, status: 'new', createdAt: originalTime })).status).toBe(200);
+    expect(sqlite.prepare('SELECT body FROM feedback_entries WHERE legacy_source_id = ?').get(sourceId)).toMatchObject({ body });
+    expect((await (await api('/api/feedback', 'GET', partner)).json()).entries).toHaveLength(2);
+  });
+
+  it('accepts the largest escaped JSON fields within the character limits and rejects oversized padding', async () => {
+    const escaped = { legacySourceId: sourceId, category: 'other', title: '\u0002'.repeat(120), body: '\u0001'.repeat(4000), status: 'new', createdAt: new Date().toISOString() };
+    const byteLength = new TextEncoder().encode(JSON.stringify(escaped)).length;
+    expect(byteLength).toBeGreaterThan(24_000);
+    expect(byteLength).toBeLessThan(32 * 1024);
+    expect((await api('/api/feedback/import', 'POST', owner, escaped)).status).toBe(200);
+    expect((await api('/api/feedback/import', 'POST', owner, { ...escaped, padding: 'x'.repeat(33_000) })).status).toBe(400);
+  });
+
   it('imports only through the owner endpoint, preserves source time and unknown author, and skips duplicate source IDs', async () => {
     const createdAt = new Date(Date.now() - 60000).toISOString();
     const legacy = { legacySourceId: sourceId, ...generic, status: 'new', createdAt };
