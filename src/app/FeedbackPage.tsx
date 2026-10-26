@@ -5,7 +5,6 @@ import '../styles/feedback.css';
 
 type FeedbackPageProps = {
   language: Language;
-  mode: 'demo' | 'online';
   entries: FeedbackEntry[];
   loading: boolean;
   error?: string | null;
@@ -32,7 +31,7 @@ const statusText = (status: FeedbackStatus, language: Language) => ({
 const statusChoices: FeedbackStatus[] = ['new', 'planned', 'done'];
 const feedbackPageSize = 25;
 
-export function FeedbackPage({ language, mode, entries, loading, error, canCreate, canAcknowledge, onCreate, onSetStatus }: FeedbackPageProps) {
+export function FeedbackPage({ language, entries, loading, error, canCreate, canAcknowledge, onCreate, onSetStatus }: FeedbackPageProps) {
   const [category, setCategory] = useState<FeedbackCategory>('game');
   const [body, setBody] = useState('');
   const [saving, setSaving] = useState(false);
@@ -83,15 +82,14 @@ export function FeedbackPage({ language, mode, entries, loading, error, canCreat
           <p>{copy(language, '같이 해보고 싶은 게임이나 있으면 좋겠는 걸 적어줘. 엉뚱한 아이디어도 환영이야.', 'Cuéntame qué juego te gustaría probar conmigo o qué añadirías. Las ideas un poco locas también valen.')}</p>
           <p>{copy(language, '불편한 것도 편하게 말해줘. 예쁜 말만 적는 곳은 아니니까. 읽고 어떻게 고칠지 생각해 볼게.', 'Dime también lo que no te guste. Aquí no hace falta decir solo cosas bonitas. Lo leeré y veré cómo mejorarlo.')}</p>
         </div>
-        {mode === 'online' && <span className="feedback-mode">{copy(language, '비공개 보관함', 'Espacio privado')}</span>}
+        <span className="feedback-mode">{copy(language, '공용 비공개 보관함', 'Buzón privado compartido')}</span>
       </header>
 
-      {mode === 'demo' && <p className="feedback-demo-note">{copy(language, '이 브라우저에만 저장돼요. 다른 기기와 공유되지 않고, 7일 뒤 삭제돼요.', 'Solo se guarda en este navegador, no se comparte con otros dispositivos y se elimina a los siete días.')}</p>}
 
       <div className={`feedback-layout${canCreate ? '' : ' feedback-layout-readonly'}`}>
         <section className="feedback-list-section" aria-labelledby="feedback-list-title">
           <div className="feedback-list-head">
-            <div><h2 id="feedback-list-title">{copy(language, '네가 남긴 아이디어', 'Tus ideas')}</h2></div>
+            <div><h2 id="feedback-list-title">{copy(language, '우리의 아이디어', 'Nuestras ideas')}</h2></div>
             <span className="feedback-count">{entries.length.toLocaleString(language === 'ko' ? 'ko-KR' : 'es-DO')} <small>{copy(language, '개', 'total')}</small></span>
           </div>
 
@@ -119,11 +117,11 @@ export function FeedbackPage({ language, mode, entries, loading, error, canCreat
             <textarea id="feedback-body" className="feedback-input feedback-textarea" required maxLength={4000} rows={5} disabled={saving || loading || Boolean(error)} value={body} onChange={event => { setBody(event.target.value); setSaved(false); }} placeholder={copy(language, '같이 해보고 싶은 건…', 'Me gustaría que probáramos…')} />
             {(error || actionError) && <p className="feedback-error" role="alert">{error || actionError}</p>}
             {saved && <p className="feedback-saved" role="status">{copy(language, '아이디어를 저장했어요. 남겨줘서 고마워요 ♡', 'Tu idea quedó guardada. Gracias por dejarla aquí ♡')}</p>}
-            <div className="feedback-compose-bottom">{mode === 'online' && <small>{copy(language, '현재 아이디어 공간에 저장돼요. 다른 사람은 참여한 뒤 볼 수 있어요.', 'Se guarda en este espacio. Otra persona podrá verlo cuando se una.')}</small>}<button className="feedback-submit" disabled={saving || loading || Boolean(error) || !body.trim()}>{saving ? copy(language, '저장하는 중…', 'Guardando…') : (mode === 'online' ? copy(language, '아이디어 저장하기', 'Guardar idea') : copy(language, '메모 남기기', 'Guardar mi idea'))}</button></div>
+            <div className="feedback-compose-bottom"><small>{copy(language, '저장하면 이 비공개 사이트에 접속하는 두 사람이 함께 볼 수 있어요.', 'Al guardar, las dos personas con acceso a este sitio privado podrán verlo.')}</small><button className="feedback-submit" disabled={saving || loading || Boolean(error) || !body.trim()}>{saving ? copy(language, '저장하는 중…', 'Guardando…') : copy(language, '아이디어 저장하기', 'Guardar idea')}</button></div>
           </form>
         </aside>}
       </div>
-      {mode === 'online' && <p className="feedback-retention">{copy(language, '각 아이디어는 작성한 지 7일이 지나면 자동 삭제돼요. 비공개 공간은 계속 유지돼요.', 'Cada idea se elimina automáticamente siete días después de publicarse.')}</p>}
+      <p className="feedback-retention">{copy(language, '각 아이디어는 작성한 지 7일 동안 표시돼요.', 'Cada idea se muestra durante siete días desde su publicación.')}</p>
     </div>
   </main>;
 }
