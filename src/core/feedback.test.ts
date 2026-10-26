@@ -61,6 +61,7 @@ describe('feedback service', () => {
     expect(await first.feedback.getRole(space)).toBe('p1');
     expect(await first.feedback.joinSpace(space)).toBe('p2');
     expect(await first.feedback.getRole(space)).toBe('p2');
+    expect(await first.feedback.memberCount(space)).toBe(2);
     const entry = await first.feedback.create(space, { category: 'game', title: 'Jaipur', body: 'Play again soon' });
     const otherSpace = await first.feedback.createSpace();
     expect(await first.feedback.list(otherSpace)).toEqual([]);
@@ -104,6 +105,9 @@ describe('feedback service', () => {
     expect(mock.db.from).toHaveBeenCalledWith('feedback_space_members');
     expect(mock.calls).toContainEqual({ method: 'eq', args: ['space_id', 'space-1'] });
     expect(mock.calls).toContainEqual({ method: 'eq', args: ['user_id', 'user-1'] });
+
+    mock.setResult({ data: [{ seat: 'p1' }, { seat: 'p2' }], error: null });
+    expect(await api.feedback.memberCount('space-1')).toBe(2);
 
     mock.setResult({ data: [row], error: null });
     expect(await api.feedback.list('space-1')).toEqual([{ id: row.id, category: row.category, title: row.title, body: row.body, status: row.status, createdAt: row.created_at }]);

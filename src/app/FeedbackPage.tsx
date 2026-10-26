@@ -118,7 +118,7 @@ export function FeedbackPage({ language, mode, entries, loading, error, canCreat
             <textarea id="feedback-body" className="feedback-input feedback-textarea" required maxLength={4000} rows={5} disabled={saving || loading || Boolean(error)} value={body} onChange={event => { setBody(event.target.value); setSaved(false); }} placeholder={copy(language, '같이 해보고 싶은 건…', 'Me gustaría que probáramos…')} />
             {(error || actionError) && <p className="feedback-error" role="alert">{error || actionError}</p>}
             {saved && <p className="feedback-saved" role="status">{copy(language, '아이디어를 저장했어요. 남겨줘서 고마워요 ♡', 'Tu idea quedó guardada. Gracias por dejarla aquí ♡')}</p>}
-            <div className="feedback-compose-bottom">{mode === 'online' && <small>{copy(language, '우리 둘의 비공개 공간에 저장돼요.', 'Se guarda en nuestro espacio privado.')}</small>}<button className="feedback-submit" disabled={saving || loading || Boolean(error) || !body.trim()}>{saving ? (mode === 'online' ? copy(language, '보내는 중…', 'Enviando…') : copy(language, '저장하는 중…', 'Guardando…')) : (mode === 'online' ? copy(language, 'Papi한테 보내기', 'Enviar a Papi') : copy(language, '메모 남기기', 'Guardar mi idea'))}</button></div>
+            <div className="feedback-compose-bottom">{mode === 'online' && <small>{copy(language, '현재 아이디어 공간에 저장돼요. 다른 사람은 참여한 뒤 볼 수 있어요.', 'Se guarda en este espacio. Otra persona podrá verlo cuando se una.')}</small>}<button className="feedback-submit" disabled={saving || loading || Boolean(error) || !body.trim()}>{saving ? copy(language, '저장하는 중…', 'Guardando…') : (mode === 'online' ? copy(language, '아이디어 저장하기', 'Guardar idea') : copy(language, '메모 남기기', 'Guardar mi idea'))}</button></div>
           </form>
         </aside>}
       </div>
