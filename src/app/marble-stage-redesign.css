@@ -117,6 +117,7 @@
 
 /* Four seats use the same board, with paired banks wrapped around the travel stage. */
 .marble-native-team.marble-team-board { background:#123c4b; color:#f8f1dd; padding:6px 10px; grid-template-rows:38px minmax(0,1fr); }
+.marble-native-team.marble-team-board:has(.mp-board-grid--32) { height:auto; min-height:100svh; overflow:visible; }
 .marble-native-team.marble-team-board .mt-top { color:#f8f1dd; }
 .marble-native-team.marble-team-board .mt-top h1 { color:#fff3d8; font-size:20px; }
 .marble-native-team.marble-team-board .mt-top small { color:#c6e2d8; }
@@ -128,6 +129,7 @@
 .marble-native-team.marble-team-board .mp-board-panel:has(.mp-board-grid--32) { flex:none; }
 .marble-native-team.marble-team-board .mt-allies { order:2; }
 .marble-native-team.marble-team-board .mt-captain-panel { order:3; display:flex; flex-wrap:wrap; align-items:center; gap:8px; max-height:90px; padding:5px 10px; overflow:auto; border:0; border-radius:8px; background:#fffaf0; color:#284b4d; box-shadow:0 3px 10px #0c263542; }
+.marble-native-team.marble-team-board:has(.mp-board-grid--32) .mt-captain-panel { max-height:none; overflow:visible; }
 .marble-native-team.marble-team-board .mt-captain-panel .mt-action-panel { display:contents; }
 .marble-native-team.marble-team-board .mt-captain-panel .mt-dice-status { display:none; }
 .marble-native-team.marble-team-board .mt-captain-panel .mt-main-actions { display:flex; flex-wrap:wrap; gap:5px; }
@@ -142,7 +144,7 @@
 .marble-native-team.marble-team-board .mt-bank dd { font-size:12px; }
 .marble-native-team.marble-team-board .mt-banks { width:100%; max-width:none; gap:6px; }
 .marble-native-team.marble-team-board .mp-board-grid--40 { width:100%; max-width:none; height:clamp(440px,calc(100svh - 235px),680px); grid-template-columns:clamp(105px,13%,140px) repeat(9,minmax(0,1fr)) clamp(105px,13%,140px); grid-template-rows:clamp(70px,13%,92px) repeat(9,minmax(0,1fr)) clamp(70px,13%,92px); gap:3px; padding:4px; background:#99b7aa url('/images/marble/backing-board.svg') center/cover; border-color:#d4bd81; }
-.marble-native-team.marble-team-board .mp-board-grid--32 { height:clamp(520px,calc(100svh - 195px),710px); }
+.marble-native-team.marble-team-board .mp-board-grid--32 { height:clamp(560px,calc(100svh - 165px),735px); }
 .marble-native-team.marble-team-board .mp-center-stage { bottom:13%; }
 .marble-native-team.marble-team-board .mp-center-stage.mp-stage--roll { bottom:25%; }
 .marble-native-team.marble-team-board .mp-board-center .mp-ownership-key { display:none; }
@@ -256,26 +258,27 @@
 }
 /* A 32-cell route uses one tile template on every side: heading, art, then price or toll. */
 :is(.marble-premium,.marble-native-team).is-modern .mp-board-grid--32 .mp-tile.mp-kind-property .mp-tile-content { position:relative; inset:auto; width:100%; height:100%; transform:none; }
-:is(.marble-premium,.marble-native-team).is-modern .mp-board-grid--32 .mp-tile.mp-kind-property .mp-tile-top { position:relative; inset:auto; width:100%; height:14px; min-height:14px; }
+:is(.marble-premium,.marble-native-team).is-modern .mp-board-grid--32 .mp-tile.mp-kind-property .mp-tile-top { position:relative; inset:auto; width:100%; height:11px; min-height:11px; }
 :is(.marble-premium,.marble-native-team).is-modern .mp-board-grid--32 .mp-tile.mp-kind-property .mp-property-tile-view {
-  display:grid; grid-template-columns:minmax(0,1fr); grid-template-rows:19px minmax(0,1fr) 14px;
-  width:100%; height:calc(100% - 14px); min-height:0; margin:0; gap:0; align-items:stretch;
+  display:grid; grid-template-columns:minmax(0,1fr); grid-template-rows:13px minmax(0,1fr) 11px;
+  width:100%; height:calc(100% - 11px); min-height:0; margin:0; gap:0; align-items:stretch;
 }
 :is(.marble-premium,.marble-native-team).is-modern .mp-board-grid--32 .mp-tile.mp-kind-property .mp-property-tile-copy { display:contents; }
 :is(.marble-premium,.marble-native-team).is-modern .mp-board-grid--32 .mp-tile.mp-kind-property .mp-property-tile-copy .mp-tile-name {
-  grid-column:1; grid-row:1; align-self:center; display:block; width:100%; height:auto; max-height:19px;
+  grid-column:1; grid-row:1; align-self:center; display:block; width:100%; height:auto; max-height:13px;
   margin:0; overflow:hidden; color:#173a42; font-size:11px; line-height:1.05; font-weight:850;
   text-align:center; white-space:normal; word-break:keep-all; overflow-wrap:anywhere; text-overflow:clip;
 }
 :is(.marble-premium,.marble-native-team).is-modern .mp-board-grid--32 .mp-tile.mp-kind-property .mp-property-tile-art {
-  grid-column:1; grid-row:2; display:block; width:100%; height:100%; min-height:0; max-height:none; margin:0;
+  grid-column:1; grid-row:2; display:block; width:100%; height:100%; min-height:0; max-height:none; margin:0; overflow:hidden;
 }
 :is(.marble-premium,.marble-native-team).is-modern .mp-board-grid--32 .mp-tile.mp-kind-property .mp-property-tile-art .mp-property-art-image { transform:scale(1.22); transform-origin:center bottom; }
 :is(.marble-premium,.marble-native-team).is-modern .mp-board-grid--32 .mp-tile.mp-kind-property .mp-property-tile-copy .mp-tile-economy {
-  grid-column:1; grid-row:3; display:block; width:100%; height:14px; margin:0; padding:0 17px 0 0; line-height:14px; text-align:center;
+  grid-column:1; grid-row:3; display:block; width:100%; height:11px; margin:0; padding:0 17px 0 0; line-height:11px; text-align:center;
 }
-:is(.marble-premium,.marble-native-team).is-modern .mp-board-grid--32 .mp-tile.mp-kind-property .mp-property-tile-copy .mp-tile-economy b { display:inline-block; min-width:0; height:14px; max-width:100%; padding:0 2px; font-size:10px; line-height:14px; white-space:nowrap; }
-:is(.marble-premium,.marble-native-team).is-modern .mp-board-grid--32 .mp-tile.mp-kind-property .mp-building-badge { top:-12px; left:19px; right:auto; bottom:auto; height:11px; min-width:0; max-width:calc(100% - 40px); padding:0 3px; overflow:hidden; font-size:9px; line-height:11px; white-space:nowrap; text-overflow:ellipsis; }
+:is(.marble-premium,.marble-native-team).is-modern .mp-board-grid--32 .mp-tile.mp-kind-property .mp-property-tile-copy .mp-tile-economy b { display:inline-block; min-width:0; height:11px; max-width:100%; padding:0 2px; font-size:10px; line-height:11px; white-space:nowrap; }
+:is(.marble-premium,.marble-native-team).is-modern .mp-board-grid--32 .mp-tile.mp-kind-property .mp-building-badge { top:-10px; left:19px; right:auto; bottom:auto; height:10px; min-width:0; max-width:calc(100% - 40px); padding:0 3px; overflow:hidden; font-size:8px; line-height:10px; white-space:nowrap; text-overflow:ellipsis; }
+:is(.marble-premium,.marble-native-team).is-modern .mp-board-grid--32 .mp-tile.mp-kind-property :is(.mp-property-art-image[data-building-level="3"],.mp-property-art-image[data-building-level="4"]) { transform:scale(1.45); transform-origin:center bottom; }
 :is(.marble-premium,.marble-native-team).is-modern .mp-board-grid--32 .mp-tile.mp-kind-property .mp-building-badge::before { content:none; }
 :is(.marble-premium,.marble-native-team).is-modern .mp-board-grid--32 .mp-tile.mp-kind-property .mp-building-badge[data-building-level="0"] { display:none; }
 :is(.marble-premium,.marble-native-team).is-modern .mp-board-grid--32 .mp-tile.mp-kind-tourism { background:linear-gradient(145deg,#fffdf1,#d7ebeb); border-color:#80adb2; }
@@ -302,6 +305,12 @@
   :is(.marble-premium,.marble-native-team).is-modern .mp-board-grid--32 .mp-tile.mp-kind-property .mp-property-tile-art { display:block; width:100%; height:100%; }
   :is(.marble-premium,.marble-native-team).is-modern .mp-board-grid--32 .mp-tile .mp-building-badge { font-size:8px; }
   :is(.marble-premium,.marble-native-team).is-modern .mp-board-grid--32 .mp-tile.mp-kind-property .mp-building-badge { display:none; }
+  :is(.marble-premium,.marble-native-team).is-modern .mp-board-grid--32 .mp-tile .mp-pawns { position:absolute; z-index:8; inset:auto 0 0 auto; display:flex; flex-wrap:nowrap; justify-content:flex-end; align-items:center; gap:0; width:100%; max-width:none; height:11px; padding:0 1px; transform:none; background:linear-gradient(90deg,transparent,#fffaf0eb); pointer-events:none; }
+  :is(.marble-premium,.marble-native-team).is-modern .mp-board-grid--32 .mp-tile .mp-pawns::before { content:none; }
+  :is(.marble-premium,.marble-native-team).is-modern .mp-board-grid--32 .mp-tile .mp-pawn-marker { position:relative; flex:0 0 8px; width:8px; height:10px; margin:0; filter:none; }
+  :is(.marble-premium,.marble-native-team).is-modern .mp-board-grid--32 .mp-tile .mp-pawn-marker .marble-pawn { display:none; }
+  :is(.marble-premium,.marble-native-team).is-modern .mp-board-grid--32 .mp-tile .mp-pawn-marker::after { content:attr(data-seat-number); position:absolute; inset:0; display:grid; place-items:center; width:8px; height:10px; border:1px solid #34585d; border-radius:3px; background:#fff5df; color:#183c44; font:800 7px/1 sans-serif; }
+  :is(.marble-premium,.marble-native-team).is-modern .mp-board-grid--32 .mp-tile .mp-pawn-marker.is-you::after { background:#ffe0a5; border-color:#8e5e32; }
   :is(.marble-premium,.marble-native-team).is-modern .mp-board-grid--32 .mp-board-center { overflow:hidden; }
   :is(.marble-premium,.marble-native-team).is-modern .mp-board-grid--32 .mp-center-route { display:none; }
   :is(.marble-premium,.marble-native-team).is-modern .mp-board-grid--32 .mp-world-map { width:100%; height:100%; object-fit:cover; }
@@ -321,7 +330,7 @@
   :is(.marble-premium,.marble-native-team).is-modern .mp-center-stage.mp-stage--roll,
   :is(.marble-premium,.marble-native-team).is-modern .mp-center-stage.mp-stage--moving {
     display:flex; flex-direction:column; justify-content:center; min-height:145px;
-    border:1px solid #b69d67; border-radius:12px; background:#fffaf0f4; color:#24454a;
+    border:1px solid #b69d67; border-radius:12px; background:#fffaf0; color:#24454a;
     box-shadow:0 8px 25px #12353a66;
   }
   :is(.marble-premium,.marble-native-team).is-modern .mp-center-stage.mp-stage--roll > h2 { font-size:19px; }

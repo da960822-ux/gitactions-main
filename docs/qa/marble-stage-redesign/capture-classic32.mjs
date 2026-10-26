@@ -18,8 +18,8 @@ async function capture(mode,scene,language,width,height) {
   const stages={1:0,3:1,5:2,6:3,7:4};
   const owner={1:'p1',3:'p1',5:'p2',6:'p2',7:'p1'};
   const tiles=profile.map.map((cell,index)=>{
-   const city=cities[cell.name],site=tourism[cell.name],level=scene==='levels'?stages[index]??0:0;
-   const tile={index,kind:city?'property':site?'tourism':cell.kind==='special'?cell.effect:cell.kind,name:{ko:cell.name,es:spanish[cell.name]??cell.name},owner:scene==='levels'?owner[index]??null:null,houses:level};
+   const city=cities[cell.name],site=tourism[cell.name],level=scene==='levels'?stages[index]??0:scene==='crowded'?({27:1,29:2,31:4}[index]??0):0;
+   const tile={index,kind:city?'property':site?'tourism':cell.kind==='special'?cell.effect:cell.kind,name:{ko:cell.name,es:spanish[cell.name]??cell.name},owner:scene==='levels'?owner[index]??null:scene==='crowded'?({27:'p3',29:'p1',31:'p2'}[index]??null):null,houses:level};
    if(city) Object.assign(tile,{price:city.land,rent:city.tollByCanonicalStage[0],currentRent:city.tollByCanonicalStage[level],nextBuildCost:city.construction.villa,nextRent:city.tollByCanonicalStage[Math.min(level+1,4)]});
    if(site) Object.assign(tile,{price:site.bankPurchasePrice,rent:site.rentSchedule[0],currentRent:site.rentSchedule[0],playerAcquisitionAllowed:false});
    return tile;
@@ -38,7 +38,7 @@ async function capture(mode,scene,language,width,height) {
    component=(await import('/src/app/MarbleTeamBoard.tsx')).default;
    view=fourMarbleEngine.getPlayerView(fourMarbleEngine.createInitialState(71),'p1');
    view.publicBoard=tiles;
-   view.publicState={...view.publicState,money:{p1:profile.startingCash,p2:profile.startingCash,p3:profile.startingCash,p4:profile.startingCash},positions:{p1:scene==='purchase'?31:scene==='levels'?1:0,p2:0,p3:0,p4:0},properties:scene==='levels'?Object.fromEntries(Object.entries(stages).map(([i,houses])=>[i,{owner:owner[i],houses}])):{}};
+   view.publicState={...view.publicState,money:{p1:profile.startingCash,p2:profile.startingCash,p3:profile.startingCash,p4:profile.startingCash},positions:scene==='crowded'?{p1:29,p2:29,p3:29,p4:29}:{p1:scene==='purchase'?31:scene==='levels'?1:0,p2:0,p3:0,p4:0},properties:scene==='levels'?Object.fromEntries(Object.entries(stages).map(([i,houses])=>[i,{owner:owner[i],houses}])):scene==='crowded'?{27:{owner:'p3',houses:1},29:{owner:'p1',houses:2},31:{owner:'p2',houses:4}}:{}};
    view.players=view.players.map(player=>({...player,score:profile.startingCash}));
    view.phase=scene==='purchase'?'decision':'roll';
    if(scene==='purchase') view.actions=[{label:{ko:'구매',es:'Comprar'},action:{type:'buy'}},{label:{ko:'지나가기',es:'Pasar'},action:{type:'decline'}}];
@@ -52,14 +52,32 @@ async function capture(mode,scene,language,width,height) {
  const metrics=await page.evaluate(()=>{
   const rect=e=>e?.getBoundingClientRect().toJSON();
   const cells=[...document.querySelectorAll('.mp-board-grid--32 .mp-tile')];
-  return {viewport:[innerWidth,innerHeight],scrollW:document.documentElement.scrollWidth,scrollH:document.documentElement.scrollHeight,board:rect(document.querySelector('.mp-board-grid--32')),panel:rect(document.querySelector('.mp-board-panel')),first:rect(cells[0]),side:rect(cells[10]),bottom:rect(cells[25]),names:cells.map(e=>e.querySelector('.mp-tile-name')?.textContent),cash:[...document.querySelectorAll('[data-marble-value="cash"],.mt-bank')].map(e=>e.textContent?.slice(0,70)),action:rect(document.querySelector('#mp-action-primary,#mt-action-primary'))};
+  return {viewport:[innerWidth,innerHeight],scrollW:document.documentElement.scrollWidth,scrollH:document.documentElement.scrollHeight,board:rect(document.querySelector('.mp-board-grid--32')),panel:rect(document.querySelector('.mp-board-panel')),first:rect(cells[0]),side:rect(cells[10]),bottom:rect(cells[25]),artHeights:[1,3,5,6,7].map(index=>Math.round(cells[index]?.querySelector('.mp-property-tile-art')?.getBoundingClientRect().height??0)),names:cells.map(e=>e.querySelector('.mp-tile-name')?.textContent),cash:[...document.querySelectorAll('[data-marble-value="cash"],.mt-bank')].map(e=>e.textContent?.slice(0,70)),action:rect(document.querySelector('#mp-action-primary,#mt-action-primary'))};
  });
  const name=`classic32-${mode}-${scene}-${language}-${width}x${height}.png`;
  await page.screenshot({path:`${out}/${name}`});
  console.log(name,rendered,JSON.stringify(metrics));
+ if(scene==='crowded') {
+  const before=await page.locator('.mp-mobile-spotlight strong').innerText();
+  await page.locator('.mp-board-grid--32 .mp-tile').nth(31).locator('.mp-tile-select').click();
+  const after=await page.locator('.mp-mobile-spotlight strong').innerText();
+  if(before===after||after!=='서울') throw new Error(`Tile selection failed: ${before} -> ${after}`);
+  const selectedName=`classic32-${mode}-${scene}-selected-${language}-${width}x${height}.png`;
+  await page.screenshot({path:`${out}/${selectedName}`});
+  const selectionMetrics=await page.evaluate(()=>{const stage=document.querySelector('.mp-center-stage');const button=stage?.querySelector('button');const rect=stage?.getBoundingClientRect();const buttonRect=button?.getBoundingClientRect();return {stage:rect?.toJSON(),button:buttonRect?.toJSON(),stageZ:stage?getComputedStyle(stage).zIndex:null,hit:buttonRect?document.elementFromPoint(buttonRect.x+buttonRect.width/2,buttonRect.y+buttonRect.height/2)?.className:null,menu:document.querySelector('.mt-captain-panel')?.getBoundingClientRect().toJSON()};});
+  console.log(selectedName,JSON.stringify({before,after,ownCash:await page.locator('[data-marble-seat="p1"]').first().innerText(),selectionMetrics}));
+ }
+ if(mode==='4p'&&scene==='roll'&&width>=768) {
+  await page.locator('.mt-captain-panel').scrollIntoViewIfNeeded();
+  const menu=await page.locator('.mt-captain-panel').boundingBox();
+  if(!menu||menu.y>=height) throw new Error('Auxiliary menu inaccessible');
+  const menuName=`classic32-${mode}-${scene}-${language}-${width}x${height}-menu.png`;
+  await page.screenshot({path:`${out}/${menuName}`});
+  console.log(menuName,JSON.stringify({scrollY:await page.evaluate(()=>scrollY),menu}));
+ }
  await page.close();
 }
-for(const [mode,scene,lang,w,h] of [['2p','roll','ko',1280,800],['2p','roll','ko',1440,900],['4p','roll','ko',1280,800],['4p','roll','ko',1440,900],['2p','levels','ko',1280,800],['2p','purchase','ko',1280,800],['2p','purchase','es',1280,800],['2p','purchase','ko',390,844],['4p','roll','ko',390,844],['4p','purchase','ko',390,844],['4p','roll','ko',768,900]]) {
+for(const [mode,scene,lang,w,h] of [['2p','roll','ko',1280,800],['2p','roll','ko',1440,900],['4p','roll','ko',1280,800],['4p','roll','ko',1440,900],['2p','levels','ko',1280,800],['2p','purchase','ko',1280,800],['2p','purchase','es',1280,800],['2p','purchase','ko',390,844],['4p','roll','ko',390,844],['4p','purchase','ko',390,844],['4p','crowded','ko',390,844],['4p','roll','ko',768,900]]) {
  if(process.env.MARBLE_CAPTURE_FILTER && !`${mode}-${scene}-${lang}-${w}x${h}`.includes(process.env.MARBLE_CAPTURE_FILTER)) continue;
  await capture(mode,scene,lang,w,h);
 }

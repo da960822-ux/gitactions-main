@@ -185,7 +185,7 @@ export default function MarbleBoard({ view: rawView, language, playerId, runActi
   const actionPanelRef = useRef<HTMLElement>(null);
   const cityDetailsRef = useRef<HTMLDetailsElement>(null);
   const [feedbackVisible, setFeedbackVisible] = useState(stageEvents.length > 0);
-  const inspectTile = (index: number) => { setSelectedTile(index); if (cityDetailsRef.current) cityDetailsRef.current.open = true; };
+  const inspectTile = (index: number) => { setSelectedTile(index); if ((tiles.length !== 32 || window.innerWidth > 680) && cityDetailsRef.current) cityDetailsRef.current.open = true; };
   useEffect(() => setTarget(''), [phase]);
   useEffect(() => {
     if (!actionSequence) return;
