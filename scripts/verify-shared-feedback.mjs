@@ -4,6 +4,7 @@ import { launchChromium } from './playwright-browser.mjs';
 
 const base = 'http://127.0.0.1:5199';
 const posts = [];
+const imported = new Set();
 const server = spawn(process.execPath, ['node_modules/vite/bin/vite.js', '--host', '127.0.0.1', '--port', '5199', '--strictPort'], { cwd: process.cwd(), stdio: 'ignore' });
 let browser;
 try {
@@ -22,6 +23,14 @@ try {
       const headers = { 'content-type': 'application/json', 'cache-control': 'no-store' };
       if (unauthorized) return route.fulfill({ status: 401, headers, body: JSON.stringify({ error: 'authentication_required' }) });
       if (request.method() === 'GET') return route.fulfill({ status: 200, headers, body: JSON.stringify({ entries: posts, canAcknowledge }) });
+      if (request.method() === 'POST' && url.pathname === '/api/feedback/import' && canAcknowledge) {
+        const data = JSON.parse(request.postData());
+        if (!data.legacySourceId || !data.body) return route.fulfill({ status: 400, headers, body: '{}' });
+        const isNew = !imported.has(data.legacySourceId);
+        imported.add(data.legacySourceId);
+        if (isNew) posts.unshift({ ...data, id: data.legacySourceId });
+        return route.fulfill({ status: 200, headers, body: JSON.stringify({ id: data.legacySourceId, legacySourceId: data.legacySourceId, imported: isNew }) });
+      }
       if (request.method() === 'POST' && url.pathname === '/api/feedback') {
         const data = JSON.parse(request.postData());
         const entry = { ...data, status: 'new', createdAt: new Date().toISOString() };
@@ -43,6 +52,7 @@ try {
   const partner = await visit(false);
   const owner = await visit(true);
   await partner.page.locator('#feedback-body').waitFor();
+  if (await owner.page.getByTestId('feedback-import').count()) throw new Error('Import UI appears on ordinary route');
   if (await partner.page.locator('#feedback-invite-code').count() || await partner.page.getByText('참여하기', { exact: true }).count()) throw new Error('Invite UI remains');
   if (await partner.page.evaluate(() => localStorage.getItem('dos-feedback-space'))) throw new Error('Browser space was created');
   await partner.page.locator('#feedback-body').fill('A shared idea');
@@ -56,11 +66,25 @@ try {
   await partner.page.locator('.feedback-entry .status-done').waitFor();
   await partner.page.reload();
   await partner.page.getByText('A shared idea', { exact: true }).waitFor();
+  await partner.page.goto(`${base}/feedback?import=legacy`);
+  await partner.page.waitForFunction(() => document.querySelector('#feedback-body')?.disabled === false);
+  if (await partner.page.getByTestId('feedback-import').count()) throw new Error('Import UI appears for partner');
+  await owner.page.goto(`${base}/feedback?import=legacy`);
+  const importPanel = owner.page.getByTestId('feedback-import');
+  await importPanel.waitFor();
+  await importPanel.locator('summary').click();
+  const sample = { legacySourceId: '11111111-1111-4111-8111-111111111111', category: 'other', title: 'Sample', body: 'Generic test content', status: 'new', createdAt: new Date().toISOString() };
+  await owner.page.locator('#feedback-import-file').setInputFiles({ name: 'sample.json', mimeType: 'application/json', buffer: Buffer.from(JSON.stringify([sample, { ...sample, legacySourceId: '22222222-2222-4222-8222-222222222222', body: '' }])) });
+  await owner.page.getByRole('button', { name: '가져오기', exact: true }).click();
+  await owner.page.getByTestId('feedback-import-counts').getByText('전체 2건 · 새로 저장 1건 · 이미 있음 0건 · 실패 1건').waitFor();
+  await owner.page.getByRole('button', { name: '가져오기', exact: true }).click();
+  await owner.page.getByTestId('feedback-import-counts').getByText('전체 2건 · 새로 저장 0건 · 이미 있음 1건 · 실패 1건').waitFor();
+  if (imported.size !== 1) throw new Error('Retry made duplicate imported rows');
   const guest = await visit(false, true);
   await guest.page.getByText('공용 아이디어 보관함을 불러오지 못했어요.').waitFor();
   if (await guest.page.locator('.feedback-saved').count() || await guest.page.locator('#feedback-body').isEnabled()) throw new Error('Unauthenticated page appears writable');
   await Promise.all([partner.context.close(), owner.context.close(), guest.context.close()]);
-  console.log(JSON.stringify({ passed: true, sharedReadWrite: true, ownerStatusOnly: true, noInvite: true, unauthenticatedDenied: true }));
+  console.log(JSON.stringify({ passed: true, sharedReadWrite: true, ownerStatusOnly: true, ownerImportOnly: true, retryDeduplicated: true, noInvite: true, unauthenticatedDenied: true }));
 } finally {
   await browser?.close();
   server.kill('SIGTERM');

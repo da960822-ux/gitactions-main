@@ -108,12 +108,12 @@ describe('private shared feedback API', () => {
     const createdAt = new Date(Date.now() - 60000).toISOString();
     const legacy = { legacySourceId: sourceId, ...generic, status: 'new', createdAt };
     expect((await api('/api/feedback/import', 'POST', partner, legacy)).status).toBe(403);
-    expect((await api('/api/feedback/import', 'POST', owner, legacy)).status).toBe(200);
+    expect(await (await api('/api/feedback/import', 'POST', owner, legacy)).json()).toMatchObject({ legacySourceId: sourceId, imported: true });
     const first = sqlite.prepare('SELECT * FROM feedback_entries').get() as Record<string, unknown>;
     expect(first).toMatchObject({ legacy_source_id: sourceId, author_site_user_id: null, created_at: createdAt, body: generic.body });
-    expect((await api('/api/feedback/import', 'POST', owner, legacy)).status).toBe(200);
+    expect(await (await api('/api/feedback/import', 'POST', owner, legacy)).json()).toMatchObject({ legacySourceId: sourceId, imported: false });
     expect((await api(`/api/feedback/${first.id}/status`, 'PATCH', owner, { status: 'done' })).status).toBe(200);
-    expect((await api('/api/feedback/import', 'POST', owner, legacy)).status).toBe(200);
+    expect(await (await api('/api/feedback/import', 'POST', owner, legacy)).json()).toMatchObject({ legacySourceId: sourceId, imported: false });
     expect((await api('/api/feedback/import', 'POST', owner, { ...legacy, body: 'Wrong copy' })).status).toBe(409);
     expect(sqlite.prepare('SELECT count(*) AS count FROM feedback_entries').get()).toMatchObject({ count: 1 });
     expect((await (await api('/api/feedback', 'GET', partner)).json()).entries[0].body).toBe(generic.body);
@@ -121,9 +121,9 @@ describe('private shared feedback API', () => {
 
   it('keeps imported originals in D1 after their seven-day display window', async () => {
     const legacy = { legacySourceId: sourceId, ...generic, status: 'new', createdAt: new Date(Date.now() - 8 * 86400000).toISOString() };
-    expect((await api('/api/feedback/import', 'POST', owner, legacy)).status).toBe(200);
+    expect(await (await api('/api/feedback/import', 'POST', owner, legacy)).json()).toMatchObject({ legacySourceId: sourceId, imported: true });
     expect((await (await api('/api/feedback', 'GET', partner)).json()).entries).toEqual([]);
     expect(sqlite.prepare('SELECT legacy_source_id, body FROM feedback_entries').get()).toMatchObject({ legacy_source_id: sourceId, body: generic.body });
-    expect((await api('/api/feedback/import', 'POST', owner, legacy)).status).toBe(200);
+    expect(await (await api('/api/feedback/import', 'POST', owner, legacy)).json()).toMatchObject({ legacySourceId: sourceId, imported: false });
   });
 });

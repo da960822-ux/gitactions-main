@@ -37,6 +37,13 @@
 .feedback-access-note p { margin: 6px 0 0; color: var(--fb-muted); font-size: 12px; line-height: 1.6; }
 .feedback-access-note .secondary-action { min-height: 44px; padding: 0 15px; border: 1px solid #b18d81; border-radius: 3px; background: transparent; color: var(--fb-ink); font-size: 12px; font-weight: 500; box-shadow: none; cursor: pointer; }
 .feedback-refresh-action { display: flex; flex-wrap: wrap; gap: 9px; }
+.feedback-import { margin-top: 18px; padding: 16px 20px; border: 1px solid var(--fb-line); background: var(--fb-paper); color: var(--fb-ink); }
+.feedback-import summary { cursor: pointer; font-size: 13px; font-weight: 600; }
+.feedback-import-content { display: grid; justify-items: start; gap: 10px; padding-top: 14px; font-size: 13px; }
+.feedback-import-content p { margin: 0; color: var(--fb-muted); }
+.feedback-import-content input { max-width: 100%; }
+.feedback-import-content .secondary-action { min-height: 40px; padding: 0 15px; border: 1px solid #b18d81; background: transparent; color: var(--fb-ink); cursor: pointer; }
+.feedback-import-content .secondary-action:disabled { opacity: .6; cursor: not-allowed; }
 .feedback-layout { display: grid; grid-template-columns: minmax(0,1.2fr) minmax(390px,.8fr); align-items: start; gap: 40px; margin-top: 30px; }
 .feedback-layout-readonly { grid-template-columns: minmax(0,1fr); }
 .feedback-list-section,.feedback-compose { min-width: 0; }

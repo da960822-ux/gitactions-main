@@ -96,11 +96,11 @@ export async function handleFeedbackRequest(request: Request, env: FeedbackEnv):
       const status = body?.status;
       if (!values || typeof sourceId !== 'string' || !uuid.test(sourceId) || typeof createdAt !== 'string' || !/^\d{4}-\d\d-\d\dT\d\d:\d\d:\d\d(?:\.\d+)?Z$/.test(createdAt) || !Number.isFinite(Date.parse(createdAt)) || Date.parse(createdAt) > Date.now() || typeof status !== 'string' || !statuses.includes(status)) return json({ error: 'feedback_invalid' }, 400);
       const originalTime = new Date(createdAt).toISOString();
-      await db.prepare('INSERT INTO feedback_entries (id, category, title, body, status, created_at, author_site_user_id, legacy_source_id) VALUES (?, ?, ?, ?, ?, ?, NULL, ?) ON CONFLICT(legacy_source_id) DO NOTHING')
+      const result = await db.prepare('INSERT INTO feedback_entries (id, category, title, body, status, created_at, author_site_user_id, legacy_source_id) VALUES (?, ?, ?, ?, ?, ?, NULL, ?) ON CONFLICT(legacy_source_id) DO NOTHING')
         .bind(crypto.randomUUID(), values.category, values.title, values.body, status, originalTime, sourceId).run();
       const saved = await db.prepare('SELECT * FROM feedback_entries WHERE legacy_source_id = ?').bind(sourceId).first<Row>();
       if (!saved || saved.category !== values.category || saved.title !== values.title || saved.body !== values.body || saved.created_at !== originalTime || saved.author_site_user_id) return json({ error: 'feedback_import_conflict' }, 409);
-      return json({ id: saved.id, legacySourceId: sourceId, imported: true });
+      return json({ id: saved.id, legacySourceId: sourceId, imported: result.meta.changes > 0 });
     }
     return json({ error: 'not_found' }, 404);
   } catch {
