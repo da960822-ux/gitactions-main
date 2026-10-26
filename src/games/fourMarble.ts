@@ -217,7 +217,7 @@ function actions(s: FourMarbleState, p: FourSeat): FourView['actions'] {
   }
   if (s.phase === 'rent-decision') {
     add(`통행료 ${s.pendingRent!.amount} 지급`, `Pagar alquiler de ${s.pendingRent!.amount}`, 'pay-rent');
-    add('통행료 면제권 사용', 'Usar pase de alquiler', 'use-rent-pass'); return choices;
+    if (s.rentPasses[p] > 0) add('통행료 면제권 사용', 'Usar pase de alquiler', 'use-rent-pass'); return choices;
   }
   if (s.phase === 'event-decision') {
     for (const [index, prop] of Object.entries(s.properties)) if (s.pendingEvent === 'city-festival' ? prop.owner === p : fourTeam(prop.owner) !== fourTeam(p) && !(s.propertyRulesVersion === 1 && prop.houses === 3)) add(`${board[Number(index)].name.ko} 선택`, `Elegir ${board[Number(index)].name.es}`, 'choose-event-city', { tile: Number(index) });

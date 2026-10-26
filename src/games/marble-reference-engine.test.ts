@@ -16,6 +16,17 @@ const step2 = (state: MarbleState, type: string, payload?: Record<string, unknow
 const step4 = (state: FourMarbleState, type: string, payload?: Record<string, unknown>) => fourMarbleEngine.applyAction(state, state.active, { type, payload }) as FourMarbleState;
 
 describe('active Kakao World / Business engine profile', () => {
+  it('only offers a team rent pass when one is held', () => {
+    const state=fourMarbleEngine.createInitialState(71);
+    state.phase='rent-decision';state.pendingRent={amount:55_000,creditor:'p4'};
+    const choices=()=>fourMarbleEngine.getPlayerView(state,'p1').actions.map(choice=>choice.action.type);
+    expect(choices()).toEqual(['pay-rent']);
+    state.rentPasses.p1=1;
+    expect(choices()).toEqual(['pay-rent','use-rent-pass']);
+    const resolved=step4(state,'use-rent-pass');
+    expect(resolved.rentPasses.p1).toBe(0);
+    expect(resolved.money.p1).toBe(5_000_000);
+  });
   it('uses 32-cell data for new 2p/team games while retaining old serialized routes', () => {
     const two = marbleEngine.createInitialState(4), team = fourMarbleEngine.createInitialState(4);
     const twoView = marbleEngine.getPlayerView(two, 'p1'), teamView = fourMarbleEngine.getPlayerView(team, 'p1') as TeamMarbleView;
