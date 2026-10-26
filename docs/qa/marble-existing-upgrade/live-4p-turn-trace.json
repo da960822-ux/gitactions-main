@@ -59,7 +59,7 @@
       "position": 5,
       "cash": 3000,
       "houses": 0,
-      "movingCell": "4",
+      "movingCell": "3",
       "movingPawn": true,
       "status": "여행 중"
     },
