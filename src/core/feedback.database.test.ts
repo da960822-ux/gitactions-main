@@ -42,6 +42,24 @@ beforeEach(async () => {
 afterAll(async () => db.close());
 
 describe('suggestions migration with real SQL roles and RLS', () => {
+  it('rejects missing, malformed, closed, and full invite spaces without changing membership', async () => {
+    await user(outsider);
+    await expect(db.query('select public.join_feedback_space($1)', ['99999999-9999-4999-8999-999999999999'])).rejects.toThrow(/feedback_space_not_found/);
+    await expect(db.query('select public.join_feedback_space($1)', ['not-a-uuid'])).rejects.toThrow(/invalid input syntax for type uuid/);
+    await db.exec('reset role; reset request.jwt.claim.sub;');
+    await db.query('update public.feedback_spaces set invite_open=true where id=$1', [space]);
+    await user(outsider);
+    await expect(db.query('select public.join_feedback_space($1)', [space])).rejects.toThrow(/feedback_space_full/);
+    await user(p1);
+    const closed = (await db.query<{ id: string }>('select public.create_feedback_space() as id')).rows[0].id;
+    await db.exec('reset role; reset request.jwt.claim.sub;');
+    await db.query('update public.feedback_spaces set invite_open=false where id=$1', [closed]);
+    await user(outsider);
+    await expect(db.query('select public.join_feedback_space($1)', [closed])).rejects.toThrow(/feedback_invite_closed/);
+    await db.exec('reset role; reset request.jwt.claim.sub;');
+    expect((await db.query('select space_id,user_id from public.feedback_space_members')).rows).toHaveLength(3);
+  });
+
   it('admits exactly two identities and prevents outsiders and unauthenticated callers reading or writing', async () => {
     await submit();
     await user(outsider);

@@ -19,4 +19,12 @@ describe('feedback invitation', () => {
     expect(html).toContain('참여하기');
     expect(html).not.toContain('Papi한테 보내기');
   });
+
+  it('warns that existing ideas stay in the prior space before joining another', () => {
+    vi.stubGlobal('window', { location: { search: '?space=11111111-1111-4111-8111-111111111111' } });
+    vi.stubGlobal('localStorage', { getItem: (key: string) => key === 'dos-feedback-space' ? '22222222-2222-4222-8222-222222222222' : null });
+    const html = renderToStaticMarkup(createElement(FeedbackRoute));
+    expect(html).toContain('기존 아이디어는 이전 공간에 남으니');
+    expect(html).not.toContain('첫 아이디어를 기다리고 있어요');
+  });
 });
