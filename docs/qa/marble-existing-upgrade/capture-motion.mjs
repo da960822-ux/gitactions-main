@@ -4,6 +4,7 @@ import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { execFile } from 'node:child_process';
 import { promisify } from 'node:util';
+import { tmpdir } from 'node:os';
 
 const folder = path.dirname(fileURLToPath(import.meta.url));
 const run = promisify(execFile);
@@ -44,8 +45,7 @@ try {
       return { seed, boardSize: mode === '2p' ? engine.getPlayerView(state, 'p1').board.tiles.length : engine.getPlayerView(state, 'p1').publicBoard.length };
     }, mode);
     await page.locator('.mp-board-grid--40').waitFor();
-    const frameDir = path.join('/tmp', `marble-existing-motion-${mode}`);
-    await fs.mkdir(frameDir, { recursive: true });
+    const frameDir = await fs.mkdtemp(path.join(tmpdir(), `marble-existing-motion-${mode}-`));
     const cdp = await page.context().newCDPSession(page);
     const encoded = [];
     let videoFrames = 0;
@@ -88,11 +88,16 @@ try {
       }
     }
     const final = await page.evaluate(() => ({ phase: window.__marbleState.phase, position: window.__marbleState.positions.p1, cash: window.__marbleState.money.p1, property: window.__marbleState.properties[window.__marbleState.positions.p1] }));
+    await page.waitForTimeout(160);
     await cdp.send('Page.stopScreencast');
     await Promise.all(encoded);
+    if (videoFrames < 30) throw Error(`${mode}: too few frames (${videoFrames})`);
+    await fs.copyFile(path.join(frameDir, 'video-000.jpg'), path.join(folder, `live-${mode}-turn-first.jpg`));
+    await fs.copyFile(path.join(frameDir, `video-${String(videoFrames - 1).padStart(3, '0')}.jpg`), path.join(folder, `live-${mode}-turn-last.jpg`));
     const observed = await page.evaluate(() => window.__marbleMotionTrace);
     await fs.writeFile(path.join(folder, `live-${mode}-turn-trace.json`), JSON.stringify({ initial, rolled, final, errors, trace, observed, videoFrames }, null, 2));
-    await run('/usr/bin/ffmpeg', ['-y', '-loglevel', 'error', '-framerate', '12', '-i', path.join(frameDir, 'video-%03d.jpg'), '-c:v', 'libx264', '-pix_fmt', 'yuv420p', '-crf', '27', path.join(folder, `live-${mode}-turn-1280x800.mp4`)]);
+    await run('/usr/bin/ffmpeg', ['-y', '-loglevel', 'error', '-framerate', '12', '-i', path.join(frameDir, 'video-%03d.jpg'), '-frames:v', String(videoFrames), '-c:v', 'libx264', '-pix_fmt', 'yuv420p', '-crf', '27', path.join(folder, `live-${mode}-turn-1280x800.mp4`)]);
+    await fs.rm(frameDir, { recursive: true, force: true });
     const movingCells = [...new Set(observed.filter(item => item.pawn && item.visible).map(item => item.cell).filter(Boolean))];
     if (errors.length || movingCells.length < 2 || final.cash >= rolled.cash) throw Error(`${mode}: failed live sequence ${JSON.stringify({errors,rolled,final,movingCells})}`);
     console.log(mode, JSON.stringify({ seed: initial.seed, rolled, final, movingCells, frames: videoFrames, errors }));

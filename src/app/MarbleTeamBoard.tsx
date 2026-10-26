@@ -17,6 +17,7 @@ import { MarbleMoneyFlight } from './MarbleMoneyFlight';
 import { MarbleDecisionPreview } from './MarbleDecisionPreview';
 import { MarbleTeamBank } from './MarblePlayerHud';
 import { useMarbleTeamMotion } from './useMarbleTeamMotion';
+import { useMarbleSettlementLock } from './useMarbleSettlementLock';
 import { cityArtNames, moneyText, rentValue, buildingName } from './marble-visuals';
 import { getPreferences, setPreferences, setScene, unlock, playCue } from '../audio/audio';
 import { gameCatalog } from '../games/catalog';
@@ -44,7 +45,9 @@ export default function MarbleTeamBoard({view:raw,language,runAction,nickname,ro
   const [selected,setSelected]=useState(pos),[pending,setPending]=useState(false),[failure,setFailure]=useState(''),[bankrupt,setBankrupt]=useState(false),[prefs,setPrefs]=useState(()=>getPreferences('marble')),[exiting,setExiting]=useState<'exit'|'restart'|null>(null),[target,setTarget]=useState('');
   const exitDialog=useRef<HTMLDialogElement>(null);
   const citySheet=useRef<HTMLDetailsElement>(null),actionPanel=useRef<HTMLElement>(null),actionLock=useRef(false);
-  const human=view.turn==='p1'&&!s.eliminated.p1&&!view.result,disabled=busy||pending||motion.rolling||!!motion.traveler;
+  const latestTransaction=[...(s.actionLog??[])].reverse().find(event=>Object.values(event.moneyDelta??{}).some(delta=>typeof delta==='number'&&delta!==0)) as MarbleActionEvent|undefined;
+  const settlementLock=useMarbleSettlementLock(latestTransaction?.sequence);
+  const human=view.turn==='p1'&&!s.eliminated.p1&&!view.result,disabled=busy||pending||motion.rolling||!!motion.traveler||settlementLock.locked;
   const choices=human?view.actions:[],by=(type:string)=>choices.filter(option=>option.action.type===type),first=(type:string)=>by(type)[0];
   const owned=Object.entries(s.properties).filter(([,p])=>p.owner==='p1');
   const selectedCity=view.publicBoard[selected],selectedProperty=s.properties[selected];
@@ -62,7 +65,6 @@ export default function MarbleTeamBoard({view:raw,language,runAction,nickname,ro
    :view.phase==='debt'?first('borrow')
    :undefined;
   const sameAction=(a:GameAction,b?:GameAction)=>!!b&&a.type===b.type&&JSON.stringify(a.payload??{})===JSON.stringify(b.payload??{});
-  const latestTransaction=[...(s.actionLog??[])].reverse().find(event=>Object.values(event.moneyDelta??{}).some(delta=>typeof delta==='number'&&delta!==0)) as MarbleActionEvent|undefined;
   const transactionDelta=Number(latestTransaction?.moneyDelta?.p1??0);
   const accountLabel=(account:unknown)=>account==='bank'?text(language,'은행','Banco'):account==='fund'?text(language,'공동 기금','Fondo común'):fourSeats.includes(account as FourSeat)?names[account as FourSeat][language]:'';
   const latestFlow=latestTransaction?.fromAccount&&latestTransaction?.toAccount&&Number(latestTransaction.amount)>0?`${accountLabel(latestTransaction.fromAccount)} → ${accountLabel(latestTransaction.toAccount)} · ${moneyText(Number(latestTransaction.amount),language)}`:'';
@@ -77,9 +79,9 @@ export default function MarbleTeamBoard({view:raw,language,runAction,nickname,ro
   useEffect(()=>{setScene('marble');return()=>setScene(null);},[]);
   useEffect(()=>{setSelected(pos);setBankrupt(false);setFailure('');setTarget('');},[pos,view.phase]);
   const act=async(action:GameAction)=>{
-    if(disabled||actionLock.current||!choices.some(option=>option.action.type===action.type&&JSON.stringify(option.action.payload??{})===JSON.stringify(action.payload??{})))return;
+    if(disabled||actionLock.current||settlementLock.held.current||!choices.some(option=>option.action.type===action.type&&JSON.stringify(option.action.payload??{})===JSON.stringify(action.payload??{})))return;
     actionLock.current=true;setPending(true);setFailure('');
-    try{await unlock();if(await runAction(action)===false)setFailure(text(language,'행동을 완료하지 못했어요. 다시 선택해 주세요.','No se pudo completar. Vuelve a elegir.'));}
+    try{await unlock();const accepted=await runAction(action);if(accepted===false)setFailure(text(language,'행동을 완료하지 못했어요. 다시 선택해 주세요.','No se pudo completar. Vuelve a elegir.'));else settlementLock.holdAfterAction(action.type,accepted);}
     catch(cause){setFailure(cause instanceof Error?cause.message:text(language,'다시 시도해 주세요.','Inténtalo de nuevo.'));playCue('marble','error');}
     finally{actionLock.current=false;setPending(false);}
   };

@@ -13,6 +13,7 @@ import { MarblePlayerHud } from './MarblePlayerHud';
 import { MarbleBoardShell } from './MarbleBoardShell';
 import { MarbleCityTile } from './MarbleCityTile';
 import { marblePassStartSalary } from '../games/marbleEconomy';
+import { useMarbleSettlementLock } from './useMarbleSettlementLock';
 import { MarblePawn, MarblePawnPicker } from './MarblePawn';
 import { groups, specialNames, cityArtNames, cityFlag, pawnId, buildingName, rentValue, moneyText } from './marble-visuals';
 import { marbleGridPosition, marblePresentationFrames, marbleCueForEvent, marbleJourneyDisplay, type MarbleActionEvent } from './marble-motion';
@@ -166,10 +167,11 @@ export default function MarbleBoard({ view: rawView, language, playerId, runActi
   const receiptBoundary = stageEvents.map(event => event.type).map(type => type === 'turn' || type === 'roll').lastIndexOf(true);
   const latestMoneyReceipt = record(stageEvents.slice(Math.max(0, receiptBoundary)).filter(event => typeof event.moneyDelta?.[playerId] === 'number' && event.moneyDelta[playerId] !== 0).at(-1));
   const latestTransaction = [...eventLog].reverse().find(event => Object.values(record(event.moneyDelta)).some(delta => typeof delta === 'number' && delta !== 0));
+  const settlementLock = useMarbleSettlementLock(num(latestTransaction?.sequence));
   const accountLabel = (account: unknown) => account === 'bank' ? copy(language, '은행', 'Banco') : account === 'fund' ? copy(language, '공동 기금', 'Fondo común') : validSeat(account) ? seatLabel(account) : '';
   const [actionPending, setActionPending] = useState(false);
   const actionPendingRef = useRef(false);
-  const interactionLocked = actionPending || diceRolling || !!traveler;
+  const interactionLocked = actionPending || diceRolling || !!traveler || settlementLock.locked;
   const journeyInFlight = diceRolling || !!traveler || num(displayPositions[activeSeat]) !== pos;
   const settledHud = useRef({ money: { ...money }, assets: { ...assets } });
   useEffect(() => { if (!journeyInFlight) settledHud.current = { money: { ...money }, assets: { ...assets } }; }, [journeyInFlight, money.p1, money.p2, assets.p1, assets.p2]);
@@ -177,9 +179,9 @@ export default function MarbleBoard({ view: rawView, language, playerId, runActi
   const hudAssets = journeyInFlight ? settledHud.current.assets : assets;
   const dispatch = async (action: GameAction) => {
     const choice = choices.find(item => item.action.type === action.type && JSON.stringify(item.action.payload ?? {}) === JSON.stringify(action.payload ?? {}));
-    if (!choice || interactionLocked || actionPendingRef.current) return false;
+    if (!choice || interactionLocked || actionPendingRef.current || settlementLock.held.current) return false;
     actionPendingRef.current = true; setActionPending(true);
-    try { return await dispatchAction(action); }
+    try { const accepted = await dispatchAction(action); settlementLock.holdAfterAction(action.type, accepted); return accepted; }
     finally { actionPendingRef.current = false; setActionPending(false); }
   };
   const run = (choice?: Choice) => choice && void dispatch(choice.action);
