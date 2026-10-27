@@ -59,7 +59,7 @@ var davinciEngine = {
       return "Finish the starting arrangement first";
     }
     if (a.type === "place-joker") return p === s.turn && s.phase === "place-joker" && s.drawnIndex !== null && s.hands[p][s.drawnIndex]?.value === "joker" && Number.isInteger(payload.index) && payload.index >= 0 && payload.index < s.hands[p].length ? null : "Cannot place a joker now";
-    if (a.type === "draw") return p === s.turn && s.phase === "draw" && s.deck.length > 0 ? null : "Cannot draw now";
+    if (a.type === "draw") return p === s.turn && s.phase === "draw" && (payload.color === "black" || payload.color === "white") && s.deck.some((tile) => tile.color === payload.color) ? null : "Cannot draw this color now";
     if (a.type === "skip-draw") return p === s.turn && s.phase === "draw" && s.deck.length === 0 ? null : "Cannot skip the draw now";
     if (a.type === "reveal-own") return p === s.turn && s.phase === "reveal-own" && !!s.pendingGuess && Number.isInteger(payload.index) && payload.index >= 0 && payload.index < s.hands[p].length && !s.hands[p][payload.index].revealed ? null : "Choose a hidden own tile";
     if (a.type === "guess") {
@@ -96,9 +96,10 @@ var davinciEngine = {
       return recordEvent(s, { ...s, hands: hands2, result: result2, turn: opponent2, phase: s.deck.length ? "draw" : "guess", drawnIndex: null, mayStop: false, pendingGuess: void 0 }, { type: "wrong-guess", actor: p, targetIndex: s.pendingGuess.targetIndex, guess: s.pendingGuess.guess, revealedOwnIndex: index, fromStockEmpty: true });
     }
     if (a.type === "draw") {
-      const hands2 = { ...s.hands, [p]: sortedInsert(s.hands[p], s.deck[s.deck.length - 1]) };
-      const drawnIndex = hands2[p].findIndex((t) => t === s.deck[s.deck.length - 1]);
-      return recordEvent(s, { ...s, hands: hands2, deck: s.deck.slice(0, -1), phase: s.deck[s.deck.length - 1].value === "joker" ? "place-joker" : "guess", drawnIndex, mayStop: false }, { type: "draw", actor: p, insertedIndex: drawnIndex });
+      const deckIndex = s.deck.map((tile2) => tile2.color).lastIndexOf(a.payload.color);
+      const tile = s.deck[deckIndex], hands2 = { ...s.hands, [p]: sortedInsert(s.hands[p], tile) };
+      const drawnIndex = hands2[p].indexOf(tile);
+      return recordEvent(s, { ...s, hands: hands2, deck: s.deck.filter((_, index) => index !== deckIndex), phase: tile.value === "joker" ? "place-joker" : "guess", drawnIndex, mayStop: false }, { type: "draw", actor: p, insertedIndex: drawnIndex });
     }
     if (a.type === "stop") return recordEvent(s, { ...s, turn: otherPlayer(p), phase: s.deck.length ? "draw" : "guess", drawnIndex: null, mayStop: false }, { type: "stop", actor: p });
     const opponent = otherPlayer(p), i = a.payload.index, target = s.hands[opponent][i];
@@ -118,7 +119,9 @@ var davinciEngine = {
     const jokerIndex = s.phase === "setup" ? s.hands[p].findIndex((t) => t.value === "joker" && t.color === s.setupPending?.[p]?.[0]) : s.turn === p && s.phase === "place-joker" ? s.drawnIndex ?? -1 : -1;
     if (!s.result && jokerIndex >= 0) for (let index = 0; index < own.length; index++) actions.push(label(`\uC870\uCEE4\uB97C ${index + 1}\uBC88\uC9F8 \uC790\uB9AC\uC5D0 \uB193\uAE30`, `Colocar el comod\xEDn en la posici\xF3n ${index + 1}`, { type: "place-joker", payload: { index } }));
     if (!s.result && s.phase === "setup" && !s.setupReady?.[p] && !s.setupPending?.[p]?.length) actions.push(label("\uBC30\uCE58 \uC644\uB8CC", "Listo para jugar", { type: "finish-setup" }));
-    if (!s.result && s.turn === p && s.phase === "draw" && s.deck.length) actions.push(label("\uD0C0\uC77C \uBF51\uAE30", "Robar ficha", { type: "draw" }));
+    if (!s.result && s.turn === p && s.phase === "draw") {
+      for (const color of ["black", "white"]) if (s.deck.some((tile) => tile.color === color)) actions.push(label(color === "black" ? "\uAC80\uC815 \uBF51\uAE30" : "\uD770\uC0C9 \uBF51\uAE30", color === "black" ? "Robar negra" : "Robar blanca", { type: "draw", payload: { color } }));
+    }
     if (!s.result && s.turn === p && s.phase === "draw" && !s.deck.length) actions.push(label("\uCD94\uCE21 \uACC4\uC18D\uD558\uAE30", "Seguir adivinando", { type: "skip-draw" }));
     if (!s.result && s.turn === p && s.phase === "guess") {
       for (let i = 0; i < rival.length; i++) if (!rival[i].revealed) for (const value of [...Array.from({ length: 12 }, (_, n) => n), ...s.rulesVersion === 2 ? ["joker"] : []]) actions.push(label(`${i + 1}\uBC88 ${rival[i].color === "black" ? "\uAC80\uC815" : "\uD770\uC0C9"} \uD0C0\uC77C: ${value === "joker" ? "\uFF0D" : value} \uCD94\uCE21`, `Ficha ${i + 1} ${rival[i].color === "black" ? "negra" : "blanca"}: adivinar ${value === "joker" ? "\uFF0D" : value}`, { type: "guess", payload: { index: i, value } }));
@@ -130,7 +133,7 @@ var davinciEngine = {
     const actionLog = (s.actionLog ?? []).filter((event2) => event2.type !== "arrange" || event2.actor === p).map((event2) => ({ ...event2 }));
     const turn = s.phase === "setup" ? s.setupReady?.[p] ? otherPlayer(p) : p : s.turn;
     const phase = s.phase === "setup" ? s.setupReady?.[p] ? "waiting" : "setup" : s.turn === p ? s.phase : "waiting";
-    return { game: "davinci", turn, phase, hand: own, ...jokerIndex >= 0 ? { ownJokerToPlace: { color: own[jokerIndex].color, index: jokerIndex } } : {}, board: { opponentTiles: rival, deckCount: s.deck.length, turnNumber: s.turnNumber ?? 1, setupReady: s.setupReady ? { ...s.setupReady } : void 0, tileCount: s.rulesVersion === 2 ? 26 : 24, actionLog, lastEvent: actionLog.at(-1) ?? null }, opponentCount: rival.filter((t) => !t.revealed).length, status: s.result ? "finished" : turn === p ? "your-turn" : "opponent-turn", result: s.result, actions };
+    return { game: "davinci", turn, phase, hand: own, ...jokerIndex >= 0 ? { ownJokerToPlace: { color: own[jokerIndex].color, index: jokerIndex } } : {}, board: { opponentTiles: rival, deckCount: s.deck.length, deckColors: { black: s.deck.filter((tile) => tile.color === "black").length, white: s.deck.filter((tile) => tile.color === "white").length }, turnNumber: s.turnNumber ?? 1, setupReady: s.setupReady ? { ...s.setupReady } : void 0, tileCount: s.rulesVersion === 2 ? 26 : 24, actionLog, lastEvent: actionLog.at(-1) ?? null }, opponentCount: rival.filter((t) => !t.revealed).length, status: s.result ? "finished" : turn === p ? "your-turn" : "opponent-turn", result: s.result, actions };
   },
   getResult: (s) => s.result
 };

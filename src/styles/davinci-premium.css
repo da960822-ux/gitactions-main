@@ -28,6 +28,7 @@
   font-size: 14px;
 }
 .table-game.dv-table { --tg-ink: var(--dv-ivory); --tg-muted: #c2c8bd; --tg-panel: #252b2c; --tg-panel-raised: #343b3c; --tg-line: #59605e; --tg-gold: #d2b469; color: var(--dv-ivory); background: radial-gradient(ellipse at 50% 0%, #3a4140 0, var(--dv-felt) 52%, #1d2223 100%); border-color: #59605e; }
+.table-game.dv-table { width: 100%; }
 .dv-table :is(button, select) { font: inherit; }
 .dv-table :is(button, select):focus-visible { outline: 3px solid #e7cb7c; outline-offset: 3px; }
 .dv-header { grid-area: header; display: flex; align-items: center; justify-content: space-between; gap: 18px; padding: 12px 15px; border: 1px solid #59615d; border-radius: 12px; background: linear-gradient(100deg,#222a2b,#343a37); }
@@ -105,6 +106,14 @@ button.dv-tile:disabled { opacity: .78; cursor: default; }
 .dv-action-primary:hover { background: #e7d391; }
 .dv-action-secondary { border-color: #8f958e; background: #e8e6dc; color: #293233; }
 .dv-action-secondary:hover { background: #f5f1e4; }
+.dv-draw-choice { display: grid; grid-template-columns: repeat(2,minmax(0,1fr)); gap: 8px; padding: 10px; border: 1px solid #d1b96e; border-radius: 11px; background: #192323; }
+.dv-draw-choice > strong { grid-column: 1 / -1; color: #f1e3ad; font-size: 14px; }
+.dv-draw-color { display: grid; justify-items: start; align-content: center; gap: 3px; min-height: 76px; padding: 10px; border: 2px solid #e1c778; border-radius: 9px; font-size: 17px; font-weight: 800; text-align: left; cursor: pointer; box-shadow: 0 5px 15px #0006; }
+.dv-draw-color small { font-size: 12px; font-weight: 600; }
+.dv-draw-black { background: #273231; color: #f8f2df; }
+.dv-draw-white { background: #f5efdf; color: #273231; }
+.dv-draw-color:hover:not(:disabled) { transform: translateY(-2px); border-color: #ffe6a0; }
+.dv-draw-color:disabled { opacity: .38; cursor: not-allowed; box-shadow: none; }
 .dv-waiting { margin: 0; padding: 12px; border: 1px solid #5c6963; border-radius: 9px; background: #252d2e; color: #d6d9ce; font-size: 13px; line-height: 1.5; }
 .dv-guess-box { min-width: 0; padding: 12px; border: 1px solid #8d8059; border-radius: 12px; background: #e8e3d3; color: var(--dv-ink); }
 .dv-guess-box .dv-section-title h3 { color: #293233; }
@@ -126,6 +135,7 @@ button.dv-tile:disabled { opacity: .78; cursor: default; }
 .dv-guess-submit:disabled { border-color: #a9aca1; background: #d1d0c7; color: #69716d; cursor: not-allowed; }
 .dv-confirm-row { display: grid; grid-template-columns: minmax(0,1fr) auto auto; align-items: center; gap: 6px; padding: 8px; border: 1px solid #a38d50; border-radius: 8px; background: #f4ecd5; color: #34403e; font-size: 13px; font-weight: 700; }
 .dv-cancel { border-color: #a4a398; background: #f7f4ea; color: #394441; }
+.dv-guess-footer .dv-cancel { min-height: 32px; border: 0; background: transparent; color: #52605a; font-size: 12px; font-weight: 600; text-decoration: underline; }
 .dv-confirm-row :disabled { opacity: .62; cursor: wait; }
 .dv-rule-note { margin: 0; color: #5d6761; font-size: 12px; line-height: 1.45; }
 .dv-history { grid-area: history; display: grid; grid-template-columns: auto repeat(4,minmax(0,1fr)); align-items: center; gap: 6px; padding: 8px 10px; border: 1px solid #626d68; border-radius: 9px; background: #202829; color: #d9ddd2; }
@@ -216,7 +226,7 @@ button.dv-tile:disabled { opacity: .78; cursor: default; }
 }
 
 @media (min-width: 1024px) {
-  .table-game.dv-table { grid-template-columns: minmax(0,1.6fr) minmax(340px,1fr); grid-template-areas: "header header" "rival controls" "own controls" "phase phase" "history history" "event event" "result result"; gap: 7px; padding: 9px; }
+  .table-game.dv-table { grid-template-columns: minmax(0,1.6fr) minmax(340px,1fr); grid-template-areas: "phase phase" "rival controls" "own controls" "history history" "event event" "result result"; gap: 7px; padding: 9px; }
   .dv-table .dv-header { padding: 6px 10px; }
   .dv-table .dv-header h2 { font-size: 21px; }
   .dv-table .dv-header p { display: none; }

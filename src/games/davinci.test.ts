@@ -1,5 +1,6 @@
 import { describe, expect, it } from 'vitest';
 import { davinciEngine } from './davinci';
+import { chooseSimpleAiAction } from './simpleAi';
 
 type Seat = 'p1' | 'p2';
 
@@ -25,6 +26,30 @@ function wrongGuess(value: number | 'joker') {
 }
 
 describe('davinciEngine', () => {
+  it('draws the chosen color, rejects unavailable or missing colors, and keeps values private', () => {
+    const state: any = finishSetup(davinciEngine.createInitialState(31));
+    const color = state.deck.at(-1).color === 'black' ? 'white' : 'black';
+    const expected = [...state.deck].reverse().find((tile: any) => tile.color === color);
+    const before = davinciEngine.getPlayerView(state, 'p1') as any;
+    expect(before.actions.filter((choice: any) => choice.action.type === 'draw').map((choice: any) => choice.action.payload.color)).toEqual(['black', 'white']);
+    expect(chooseSimpleAiAction('davinci', before, 'p1', () => 0)).toEqual({ type: 'draw', payload: { color: 'black' } });
+    expect(chooseSimpleAiAction('davinci', before, 'p1', () => .99)).toEqual({ type: 'draw', payload: { color: 'white' } });
+    expect(before.board.deckColors.black + before.board.deckColors.white).toBe(before.board.deckCount);
+    expect(JSON.stringify(before)).not.toContain(`"deck":`);
+    expect(davinciEngine.validateAction(state, 'p1', { type: 'draw' })).not.toBeNull();
+    expect(davinciEngine.validateAction(state, 'p1', { type: 'draw', payload: { color: 'red' } })).not.toBeNull();
+    const next = davinciEngine.applyAction(state, 'p1', { type: 'draw', payload: { color } });
+    expect(next.hands.p1[next.drawnIndex!]).toBe(expected);
+    expect(next.deck).toHaveLength(state.deck.length - 1);
+    expect(next.phase).toBe(expected.value === 'joker' ? 'place-joker' : 'guess');
+    expect((davinciEngine.getPlayerView(next, 'p2') as any).board.opponentTiles.every((tile: any) => !tile.revealed && tile.value === null)).toBe(true);
+
+    const oneColor = { ...state, deck: state.deck.filter((tile: any) => tile.color === 'white') };
+    expect(davinciEngine.validateAction(oneColor, 'p1', { type: 'draw', payload: { color: 'black' } })).not.toBeNull();
+    expect((davinciEngine.getPlayerView(oneColor, 'p1') as any).actions.filter((choice: any) => choice.action.type === 'draw').map((choice: any) => choice.action.payload.color)).toEqual(['white']);
+    const empty = { ...state, deck: [] };
+    expect((davinciEngine.getPlayerView(empty, 'p1') as any).actions.map((choice: any) => choice.action.type)).toEqual(['skip-draw']);
+  });
   it('deals 26 tiles, hides rival values, and privately exposes only the caller’s setup joker', () => {
     const state: any = davinciEngine.createInitialState(31);
     expect(davinciEngine.createInitialState(31)).toEqual(state);
@@ -49,7 +74,7 @@ describe('davinciEngine', () => {
 
     const ready = finishSetup(state);
     expect(ready.phase).toBe('draw');
-    const drawn = davinciEngine.applyAction(ready, 'p1', { type: 'draw' });
+    const drawn = davinciEngine.applyAction(ready, 'p1', { type: 'draw', payload: { color: ready.deck.at(-1).color } });
     const guesses = davinciEngine.getPlayerView(drawn, 'p1').actions.filter((item: any) => item.action.type === 'guess');
     expect(guesses).toHaveLength(52);
     expect(guesses.filter((item: any) => item.action.payload.index === 0).map((item: any) => item.action.payload.value)).toEqual([...Array.from({ length: 12 }, (_, n) => n), 'joker']);
@@ -103,7 +128,7 @@ describe('davinciEngine', () => {
 
   it('reveals a correct answer and ends when all rival tiles are exposed', () => {
     let state: any = finishSetup(davinciEngine.createInitialState(8));
-    state = davinciEngine.applyAction(state, 'p1', { type: 'draw' });
+    state = davinciEngine.applyAction(state, 'p1', { type: 'draw', payload: { color: state.deck.at(-1).color } });
     while (!state.result) {
       const index = state.hands.p2.findIndex((tile: any) => !tile.revealed);
       state = davinciEngine.applyAction(state, 'p1', { type: 'guess', payload: { index, value: state.hands.p2[index].value } });
@@ -116,7 +141,7 @@ describe('davinciEngine', () => {
 
   it('allows correct guesses to continue or stop while keeping hidden values private', () => {
     let state: any = finishSetup(davinciEngine.createInitialState(18));
-    state = davinciEngine.applyAction(state, 'p1', { type: 'draw' });
+    state = davinciEngine.applyAction(state, 'p1', { type: 'draw', payload: { color: state.deck.at(-1).color } });
     if (state.phase === 'place-joker') state = davinciEngine.applyAction(state, 'p1', { type: 'place-joker', payload: { index: state.hands.p1.length - 1 } });
     const first = state.hands.p2.findIndex((tile: any) => !tile.revealed);
     state = davinciEngine.applyAction(state, 'p1', { type: 'guess', payload: { index: first, value: state.hands.p2[first].value } });
@@ -138,7 +163,7 @@ describe('davinciEngine', () => {
 
   it('reveals only the newly drawn tile after a wrong guess and records no answer', () => {
     let state: any = finishSetup(davinciEngine.createInitialState(91));
-    state = davinciEngine.applyAction(state, 'p1', { type: 'draw' });
+    state = davinciEngine.applyAction(state, 'p1', { type: 'draw', payload: { color: state.deck.at(-1).color } });
     if (state.phase === 'place-joker') state = davinciEngine.applyAction(state, 'p1', { type: 'place-joker', payload: { index: state.hands.p1.length - 1 } });
     const drawn = state.hands.p1[state.drawnIndex];
     const index = state.hands.p2.findIndex((tile: any) => !tile.revealed);
@@ -161,7 +186,7 @@ describe('davinciEngine', () => {
   it('forces a drawn joker to be placed before guessing and does not disclose its location to the rival', () => {
     let state: any = finishSetup(davinciEngine.createInitialState(1));
     state.deck = [...state.deck.filter((tile: any) => tile.value !== 'joker'), { color: 'black', value: 'joker', revealed: false }];
-    state = davinciEngine.applyAction(state, 'p1', { type: 'draw' });
+    state = davinciEngine.applyAction(state, 'p1', { type: 'draw', payload: { color: state.deck.at(-1).color } });
     expect(state.phase).toBe('place-joker');
     expect(davinciEngine.getPlayerView(state, 'p1').ownJokerToPlace).toMatchObject({ color: 'black', index: expect.any(Number) });
     expect(davinciEngine.getPlayerView(state, 'p2')).not.toHaveProperty('ownJokerToPlace');
@@ -195,7 +220,7 @@ describe('davinciEngine', () => {
     const before: any = davinciEngine.getPlayerView(state, 'p1');
     expect(before.board.opponentTiles[index]).toMatchObject({ value: null, revealed: false });
     expect(before.board.opponentTiles[index]).not.toHaveProperty('joker');
-    state = davinciEngine.applyAction(state, 'p1', { type: 'draw' });
+    state = davinciEngine.applyAction(state, 'p1', { type: 'draw', payload: { color: state.deck.at(-1).color } });
     if (state.phase === 'place-joker') state = davinciEngine.applyAction(state, 'p1', { type: 'place-joker', payload: { index: state.hands.p1.length - 1 } });
     expect(davinciEngine.validateAction(state, 'p1', { type: 'guess', payload: { index, value: 'joker' } })).toBeNull();
     state = davinciEngine.applyAction(state, 'p1', { type: 'guess', payload: { index, value: 'joker' } });
@@ -232,7 +257,7 @@ describe('davinciEngine', () => {
   it('still reveals the last drawn tile when that draw empties the deck', () => {
     let state: any = finishSetup(davinciEngine.createInitialState(4));
     state.deck = [state.deck.at(-1)];
-    state = davinciEngine.applyAction(state, 'p1', { type: 'draw' });
+    state = davinciEngine.applyAction(state, 'p1', { type: 'draw', payload: { color: state.deck.at(-1).color } });
     if (state.phase === 'place-joker') state = davinciEngine.applyAction(state, 'p1', { type: 'place-joker', payload: { index: 0 } });
     expect(state.deck).toHaveLength(0);
     const drawnIndex = state.drawnIndex;
@@ -257,11 +282,11 @@ describe('davinciEngine', () => {
     let state: any = finishSetup(davinciEngine.createInitialState(7));
     const hand = [{ color: 'black', value: 2, revealed: false }, { color: 'white', value: 5, revealed: false }, { color: 'black', value: 9, revealed: false }];
     state = { ...state, phase: 'draw', turn: 'p1', hands: { ...state.hands, p1: hand }, deck: [{ color: 'black', value: 5, revealed: false }] };
-    state = davinciEngine.applyAction(state, 'p1', { type: 'draw' });
+    state = davinciEngine.applyAction(state, 'p1', { type: 'draw', payload: { color: state.deck.at(-1).color } });
     expect(state.hands.p1.map((tile: any) => [tile.value, tile.color])).toEqual([[2, 'black'], [5, 'black'], [5, 'white'], [9, 'black']]);
     state.phase = 'draw';
     state.deck = [{ color: 'white', value: 'joker', revealed: false }];
-    state = davinciEngine.applyAction(state, 'p1', { type: 'draw' });
+    state = davinciEngine.applyAction(state, 'p1', { type: 'draw', payload: { color: state.deck.at(-1).color } });
     expect(state.hands.p1.map((tile: any) => tile.value)).toEqual([2, 5, 5, 9, 'joker']);
     state = davinciEngine.applyAction(state, 'p1', { type: 'place-joker', payload: { index: 2 } });
     expect(state.hands.p1.map((tile: any) => tile.value)).toEqual([2, 5, 'joker', 5, 9]);
@@ -271,7 +296,7 @@ describe('davinciEngine', () => {
     let state: any = finishSetup(davinciEngine.createInitialState(22));
     const index = 1;
     const value = state.hands.p2[index].value;
-    state = davinciEngine.applyAction(state, 'p1', { type: 'draw' });
+    state = davinciEngine.applyAction(state, 'p1', { type: 'draw', payload: { color: state.deck.at(-1).color } });
     if (state.phase === 'place-joker') state = davinciEngine.applyAction(state, 'p1', { type: 'place-joker', payload: { index: state.hands.p1.length - 1 } });
     state = davinciEngine.applyAction(state, 'p1', { type: 'guess', payload: { index, value } });
     const view: any = davinciEngine.getPlayerView(state, 'p1');
@@ -300,7 +325,7 @@ describe('davinciEngine', () => {
     delete legacy.setupPending;
     delete legacy.actionLog;
     delete legacy.turnNumber;
-    const next = davinciEngine.applyAction(legacy, 'p1', { type: 'draw' });
+    const next = davinciEngine.applyAction(legacy, 'p1', { type: 'draw', payload: { color: legacy.deck.at(-1).color } });
     expect(legacy.hands.p1).toHaveLength(4);
     expect(legacy.hands.p2).toHaveLength(4);
     expect(legacy.deck).toHaveLength(16);
@@ -312,7 +337,7 @@ describe('davinciEngine', () => {
     let state: any = finishSetup(davinciEngine.createInitialState(50));
     for (let turn = 0; turn < 7; turn++) {
       const actor: Seat = state.turn;
-      state = davinciEngine.applyAction(state, actor, { type: 'draw' });
+      state = davinciEngine.applyAction(state, actor, { type: 'draw', payload: { color: state.deck.at(-1).color } });
       if (state.phase === 'place-joker') state = davinciEngine.applyAction(state, actor, { type: 'place-joker', payload: { index: state.hands[actor].length - 1 } });
       const opponent = actor === 'p1' ? 'p2' : 'p1';
       const index = state.hands[opponent].findIndex((tile: any) => !tile.revealed);

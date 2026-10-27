@@ -112,7 +112,7 @@ export default function DaVinciTable({ view, language, playerId, runAction, joke
   const active = view?.turn === playerId && !view?.result && !(setupPhase && ownReady) && view?.phase !== 'waiting';
   const gameInteractionPhase = !view?.result && !setupPhase && !placementPhase && view?.phase !== 'waiting' && view?.phase !== 'reveal-own';
   const initialDeal = setupPhase && !list(board.actionLog).length && board.lastEvent == null && !board.setupReady?.p1 && !board.setupReady?.p2 && Number(board.turnNumber ?? 1) === 1;
-  const drawChoice = choices.find(choice => choice.action.type === 'draw');
+  const drawChoices = choices.filter(choice => choice.action.type === 'draw');
   const skipDrawChoice = choices.find(choice => choice.action.type === 'skip-draw');
   const stopChoice = choices.find(choice => choice.action.type === 'stop');
   const revealOwnChoices = choices.filter(choice => choice.action.type === 'reveal-own');
@@ -174,6 +174,13 @@ export default function DaVinciTable({ view, language, playerId, runAction, joke
     catch { /* The room displays the action error. */ }
     finally { submissionLock.current = false; if (mounted.current) setSubmitting(false); }
   };
+  const runTurnAction = async (action: GameAction) => {
+    if (submissionLock.current || submitting || !active) return;
+    submissionLock.current = true; setSubmitting(true);
+    try { await runAction(action); }
+    catch { /* The room displays the action error. */ }
+    finally { submissionLock.current = false; if (mounted.current) setSubmitting(false); }
+  };
   const visibleEvent = visualEvent?.viewer === playerId && visualEvent.snapshot === snapshotKey ? visualEvent : null;
   const statusText = (event: VisualEvent) => {
     if (event.type === 'result') return copy(language, '다빈치 코드 대국이 끝났어요.', 'La partida de Código Da Vinci terminó.');
@@ -200,7 +207,7 @@ export default function DaVinciTable({ view, language, playerId, runAction, joke
     : setupPhase ? ownReady ? copy(language, '상대가 패를 준비 중이에요', 'La otra persona prepara sus fichas') : hasOwnJokerToPlace ? copy(language, '조커를 손패에 배치', 'Colocar el comodín') : copy(language, '패를 확인하고 준비 완료', 'Revisa tus fichas y confirma')
       : placementPhase ? copy(language, '조커를 손패에 배치', 'Colocar el comodín')
         : view?.phase === 'waiting' ? copy(language, '상대 차례', 'Turno rival') : revealOwnChoices.length ? copy(language, '공개할 내 타일 선택', 'Elige una ficha propia para revelar')
-          : drawChoice ? copy(language, '타일 뽑기', 'Robar ficha') : skipDrawChoice ? copy(language, '더미 없음 · 추측 계속', 'Mazo vacío · adivina') : guessChoices.length ? targetIndex === null ? copy(language, '상대 타일 선택', 'Elige una ficha rival') : number === null ? copy(language, '숫자 선택', 'Elige un número') : copy(language, '추측하기', 'Adivinar') : stopChoice ? copy(language, '차례 마치기', 'Terminar turno') : copy(language, '상대 차례', 'Turno rival');
+          : drawChoices.length ? copy(language, '뽑을 타일 색 선택', 'Elige el color que robas') : skipDrawChoice ? copy(language, '더미 없음 · 추측 계속', 'Mazo vacío · adivina') : guessChoices.length ? targetIndex === null ? copy(language, '상대 타일 선택', 'Elige una ficha rival') : number === null ? copy(language, '숫자 선택', 'Elige un número') : copy(language, '추측하기', 'Adivinar') : stopChoice ? copy(language, '차례 마치기', 'Terminar turno') : copy(language, '상대 차례', 'Turno rival');
   const ownTileNode = (tile: Tile, index: number) => {
     const flipsOwnTile = visibleEvent?.index === index && ((visibleEvent.type === 'wrong' && visibleEvent.actor === playerId) || (visibleEvent.type === 'correct' && visibleEvent.actor !== playerId));
     const arrivesOwnTile = visibleEvent?.type === 'draw' && visibleEvent.actor === playerId && visibleEvent.index === index
@@ -213,7 +220,7 @@ export default function DaVinciTable({ view, language, playerId, runAction, joke
   };
   const actionLog = list(board.actionLog).filter((event: any) => event?.type === 'correct-guess' || event?.type === 'wrong-guess').slice(-12);
 
-  const workbenchStage = view?.result ? 'result' : setupPhase ? 'setup' : placementPhase ? 'joker' : revealOwnChoices.length ? 'reveal-own' : drawChoice ? 'draw' : skipDrawChoice ? 'guess' : guessChoices.length ? 'guess' : stopChoice ? 'stop' : 'waiting';
+  const workbenchStage = view?.result ? 'result' : setupPhase ? 'setup' : placementPhase ? 'joker' : revealOwnChoices.length ? 'reveal-own' : drawChoices.length ? 'draw' : skipDrawChoice ? 'guess' : guessChoices.length ? 'guess' : stopChoice ? 'stop' : 'waiting';
   return <div ref={tableRef} className="table-game dv-table" data-workbench-stage={workbenchStage} aria-label={copy(language, '다빈치 코드 게임판', 'Mesa de Código Da Vinci')} onKeyDown={event => { if (event.key === 'Escape' && number !== null && !submitting) { event.preventDefault(); cancelGuess(); } }}>
     <div className="dv-phasebar"><b>{phaseLabel}</b><span className="dv-deck-count">{copy(language, `더미 ${Number(board.deckCount ?? 0)}개`, `Mazo: ${Number(board.deckCount ?? 0)} fichas`)}</span></div>
     {actionLog.length > 0 && <section className="dv-history" aria-label={copy(language, '최근 공개 추측', 'Adivinanzas recientes')}><span>{copy(language, '최근 공개 추측', 'Adivinanzas recientes')}</span>{actionLog.slice(-4).map((event: any, index: number) => <p key={`${event.sequence ?? index}-${event.actor}-${event.type}`} className={event.type === 'correct-guess' ? 'is-correct' : 'is-wrong'}><b>{event.actor === playerId ? copy(language, '나', 'Tú') : copy(language, '상대', 'Rival')}</b><span>{copy(language, `${Number(event.targetIndex ?? 0) + 1}번째 타일에`, `Ficha ${Number(event.targetIndex ?? 0) + 1}:`)}</span><strong>{tileValueLabel(event.guess)}</strong><small>{event.type === 'correct-guess' ? copy(language, '정답', 'Acierto') : copy(language, '오답', 'Fallo')}</small></p>)}</section>}
@@ -232,12 +239,12 @@ export default function DaVinciTable({ view, language, playerId, runAction, joke
     </section>
     <section className="dv-controls" aria-label={copy(language, '차례와 추측 도구', 'Acciones y herramientas de adivinanza')}>
       <div className="dv-actions">
-        {drawChoice && <button type="button" className="dv-action dv-action-primary" disabled={submitting} onClick={() => void runAction(drawChoice.action)}>{copy(language, '타일 뽑기', 'Robar ficha')}</button>}
-        {skipDrawChoice && <button type="button" className="dv-action dv-action-primary" disabled={submitting} onClick={() => void runAction(skipDrawChoice.action)}>{copy(language, '추측 계속하기', 'Seguir adivinando')}</button>}
-        {stopChoice && <button type="button" className="dv-action dv-action-secondary" disabled={submitting} onClick={() => void runAction(stopChoice.action)}>{copy(language, '차례 마치기', 'Terminar turno')}</button>}
-        {finishSetupChoice && <button type="button" className="dv-action dv-action-primary" disabled={submitting} onClick={() => void runAction(finishSetupChoice.action)}>{copy(language, '준비 완료', 'Listo')}</button>}
+        {drawChoices.length > 0 && <div className="dv-draw-choice" role="group" aria-label={copy(language, '뽑을 타일 색', 'Color de la ficha que robas')}><strong>{copy(language, '색을 골라 한 장 뽑기', 'Elige un color y roba una ficha')}</strong>{(['black', 'white'] as const).map(color => { const choice = drawChoices.find(item => item.action.payload?.color === color); return <button type="button" key={color} className={`dv-draw-color dv-draw-${color}`} disabled={submitting || !choice} onClick={() => choice && void runTurnAction(choice.action)}>{colorLabel(color, language)} <small>{copy(language, `${Number(board.deckColors?.[color] ?? 0)}장 남음`, `${Number(board.deckColors?.[color] ?? 0)} restantes`)}</small></button>; })}</div>}
+        {skipDrawChoice && <button type="button" className="dv-action dv-action-primary" disabled={submitting} onClick={() => void runTurnAction(skipDrawChoice.action)}>{copy(language, '추리 시작', 'Empezar a adivinar')}</button>}
+        {stopChoice && <button type="button" className="dv-action dv-action-secondary" disabled={submitting} onClick={() => void runTurnAction(stopChoice.action)}>{copy(language, '여기서 멈추고 차례 마치기', 'Terminar turno aquí')}</button>}
+        {finishSetupChoice && <button type="button" className="dv-action dv-action-primary" disabled={submitting} onClick={() => void runTurnAction(finishSetupChoice.action)}>{copy(language, '준비 완료', 'Listo')}</button>}
       </div>
-      {gameInteractionPhase && <div className="dv-guess-box">
+      {gameInteractionPhase && view?.phase === 'guess' && <div className="dv-guess-box">
         <div className="dv-color-filter" role="group" aria-label={copy(language, '상대 타일 색 필터', 'Filtrar fichas por color')}>
           {(['all', 'black', 'white'] as const).map(color => <button type="button" key={color} className={colorFilter === color ? 'is-selected' : ''} aria-pressed={colorFilter === color} onClick={() => { setColorFilter(color); const next = hidden.find(item => color === 'all' || item.tile.color === color); if (next) setTargetIndex(next.index); setNumber(null); }} disabled={submitting || color !== 'all' && !hidden.some(item => item.tile.color === color)}>{color === 'all' ? copy(language, '전체', 'Todas') : colorLabel(color, language)}</button>)}
         </div>

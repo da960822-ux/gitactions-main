@@ -13,6 +13,14 @@ const viewFor=(state:FourDavinciState)=>engine.getPlayerView(state,'p1') as Four
 const render=(view:FourDavinciView)=>renderToStaticMarkup(createElement(DaVinciTeamTable,{view,language:'ko',runAction:vi.fn(),nickname:'구름',roomId:'native-four',onReplay:vi.fn(),onExit:vi.fn(),onSelectGame:vi.fn()}));
 
 describe('native four-seat Da Vinci table',()=>{
+  it('shows two color choices and a disabled empty color without exposing hidden values',()=>{
+    const state=ready(17);state.deck=state.deck.filter(tile=>tile.color==='white');
+    const html=render(viewFor(state));
+    expect(html).toContain('뽑을 타일 색을 고르세요');
+    expect(html).toMatch(/is-draw-black" disabled=""/);
+    expect(html).toMatch(/is-draw-white"[^>]*>흰색 뽑기/);
+    expect(html).not.toContain('dv4-numbers');
+  });
   it('turns only hidden own tiles into reveal choices after a stock-empty miss',()=>{
     let state=ready(17);state={...state,deck:[],phase:'guess',drawnIndex:null};
     const wrong=state.hands.p2[0].value===0?1:0;
@@ -85,7 +93,7 @@ describe('native four-seat Da Vinci table',()=>{
     expect(fourDaVinciTileFeedback(teamView,teamEvent,'p3',0).flipping).toBe(false);
   });
   it('flips the actor drawn tile on a miss, rather than the guessed target, for all four seats',()=>{
-    let state=ready(17);state.turn='p2';state.phase='draw';state=engine.applyAction(state,'p2',{type:'draw'});
+    let state=ready(17);state.turn='p2';state.phase='draw';state=engine.applyAction(state,'p2',{type:'draw',payload:{color:state.deck.at(-1)!.color}});
     if(state.phase==='place-joker')state=engine.applyAction(state,'p2',{type:'place-joker',payload:{index:1}});
     const drawn=state.drawnIndex!;
     const next=engine.applyAction(state,'p2',{type:'guess',payload:{target:'p3',index:0,value:state.hands.p3[0].value===0?1:0}}),view=viewFor(next),event=view.policy.log.at(-1)!;
@@ -108,6 +116,6 @@ describe('native four-seat Da Vinci table',()=>{
     const next=engine.applyAction(state,'p3',{type:'guess',payload:{target:'p2',index:1,value:state.hands.p2[1].value}}),view=viewFor(next),event=view.policy.log.at(-1)!;
     expect(fourDaVinciTileFeedback(view,event,'p2',1).winning).toBe(true);
     expect(render(view)).toContain('is-winning-reveal');expect(render(view)).toContain('우리 팀 승리!');expect(render(view)).toContain('>다시 하기</button>');expect(render(view)).not.toContain('>새 판</button>');
-    expect(daVinciTeamAction(view,'p2',{type:'draw'})).toBeNull();
+    expect(daVinciTeamAction(view,'p2',{type:'draw',payload:{color:state.deck.at(-1)!.color}})).toBeNull();
   });
 });

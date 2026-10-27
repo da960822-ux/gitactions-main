@@ -12,6 +12,26 @@ function ready(seed: number): FourDavinciState {
   return state;
 }
 describe('four-player advanced Da Vinci team variant', () => {
+  it('honors a chosen color in the team game and excludes exhausted colors', () => {
+    const state = ready(31);
+    const color = state.deck.at(-1)!.color === 'black' ? 'white' : 'black';
+    const expected = [...state.deck].reverse().find(tile => tile.color === color)!;
+    const before = engine.getPlayerView(state, 'p1') as any;
+    expect(before.actions.filter((choice: any) => choice.action.type === 'draw').map((choice: any) => choice.action.payload.color)).toEqual(['black', 'white']);
+    expect(engine.chooseAiAction(before, 'p1', () => 0)).toEqual({ type: 'draw', payload: { color: 'black' } });
+    expect(engine.chooseAiAction(before, 'p1', () => .99)).toEqual({ type: 'draw', payload: { color: 'white' } });
+    expect(before.policy.deckColors.black + before.policy.deckColors.white).toBe(before.policy.deckCount);
+    expect(before.policy.deck).toBeUndefined();
+    expect(engine.validateAction(state, 'p1', { type: 'draw' })).not.toBeNull();
+    const next = engine.applyAction(state, 'p1', { type: 'draw', payload: { color } });
+    expect(next.hands.p1[next.drawnIndex!]).toBe(expected);
+    expect(next.phase).toBe(expected.value === 'joker' ? 'place-joker' : 'guess');
+    expect((engine.getPlayerView(next, 'p2') as any).policy.racks.p1.every((tile: any) => tile.value === null)).toBe(true);
+    const oneColor = { ...state, deck: state.deck.filter(tile => tile.color === 'white') };
+    expect(engine.validateAction(oneColor, 'p1', { type: 'draw', payload: { color: 'black' } })).not.toBeNull();
+    expect((engine.getPlayerView(oneColor, 'p1') as any).actions.filter((choice: any) => choice.action.type === 'draw').map((choice: any) => choice.action.payload.color)).toEqual(['white']);
+    expect((engine.getPlayerView({ ...state, deck: [] }, 'p1') as any).actions[0].action.type).toBe('skip-draw');
+  });
   it('deals three per seat, preserves all 26 distinct tiles, and requires four ready confirmations', () => {
     let state = engine.createInitialState(91) as FourDavinciState;
     expect(state.deck).toHaveLength(14);
@@ -29,7 +49,7 @@ describe('four-player advanced Da Vinci team variant', () => {
 
   it('never exposes hidden enemy or teammate values, deck order, or joker placement', () => {
     let state = ready(31);
-    state = engine.applyAction(state, 'p1', { type: 'draw' });
+    state = engine.applyAction(state, 'p1', { type: 'draw', payload: { color: state.deck.at(-1)!.color } });
     if(state.phase==='place-joker')state=engine.applyAction(state,'p1',{type:'place-joker',payload:{index:0}});
     const ownView = engine.getPlayerView(state, 'p1') as any;
     for(const seat of ['p2','p3','p4']) {
@@ -49,14 +69,14 @@ describe('four-player advanced Da Vinci team variant', () => {
   it('reveals the drawn tile on a miss and skips eliminated seats', () => {
     let state = ready(91);
     state.hands.p2 = state.hands.p2.map(tile=>({...tile,revealed:true}));
-    state = engine.applyAction(state,'p1',{type:'draw'});
+    state = engine.applyAction(state,'p1',{type:'draw',payload:{color:state.deck.at(-1)!.color}});
     if(state.phase==='place-joker')state=engine.applyAction(state,'p1',{type:'place-joker',payload:{index:0}});
     const index = state.hands.p4.findIndex(tile=>!tile.revealed), value = state.hands.p4[index].value === 0 ? 1 : 0;
     const drawnIndex=state.drawnIndex!;
     state = engine.applyAction(state,'p1',{type:'guess',payload:{target:'p4',index,value}});
     expect(state.turn).toBe('p3');
     expect(state.hands.p1[drawnIndex].revealed).toBe(true);
-    expect(engine.validateAction(state,'p2',{type:'draw'})).toBe('not_your_turn');
+    expect(engine.validateAction(state,'p2',{type:'draw',payload:{color:state.deck.at(-1)!.color}})).toBe('not_your_turn');
   });
 
   it('lets a stock-empty player choose an unrevealed own tile before advancing', () => {
