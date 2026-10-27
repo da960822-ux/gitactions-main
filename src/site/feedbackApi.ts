@@ -7,7 +7,6 @@ export type FeedbackEnv = { DB?: FeedbackDb; FEEDBACK_OWNER_USER_ID?: string; AS
 const uuid = /^[0-9a-f]{8}-[0-9a-f]{4}-[1-8][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i;
 const categories = ['message', 'game', 'feature', 'complaint', 'other'];
 const statuses = ['new', 'read', 'planned', 'done'];
-const sevenDays = 7 * 24 * 60 * 60 * 1000;
 // JSON escapes can use six bytes per character before title and import metadata.
 const maxJsonBytes = 32 * 1024;
 
@@ -64,8 +63,7 @@ export async function handleFeedbackRequest(request: Request, env: FeedbackEnv):
   const db = env.DB;
   try {
     if (url.pathname === '/api/feedback' && request.method === 'GET') {
-      const cutoff = new Date(Date.now() - sevenDays).toISOString();
-      const rows = await db.prepare('SELECT * FROM feedback_entries WHERE created_at > ? ORDER BY created_at DESC, id DESC').bind(cutoff).all<Row>();
+      const rows = await db.prepare('SELECT * FROM feedback_entries ORDER BY created_at DESC, id DESC').all<Row>();
       return json({ entries: rows.results.map(entry), canAcknowledge: owner, siteUserId: userId });
     }
     if (url.pathname === '/api/feedback' && request.method === 'POST') {
@@ -83,8 +81,8 @@ export async function handleFeedbackRequest(request: Request, env: FeedbackEnv):
       if (!owner) return json({ error: 'owner_required' }, 403);
       const body = await parseBody(request);
       if (!uuid.test(statusMatch[1]) || !body || typeof body.status !== 'string' || !statuses.includes(body.status)) return json({ error: 'feedback_invalid' }, 400);
-      const changed = await db.prepare('UPDATE feedback_entries SET status = ? WHERE id = ? AND created_at > ?')
-        .bind(body.status, statusMatch[1], new Date(Date.now() - sevenDays).toISOString()).run();
+      const changed = await db.prepare('UPDATE feedback_entries SET status = ? WHERE id = ?')
+        .bind(body.status, statusMatch[1]).run();
       return changed.meta.changes ? json({ ok: true }) : json({ error: 'feedback_not_found' }, 404);
     }
     if (url.pathname === '/api/feedback/import' && request.method === 'POST') {

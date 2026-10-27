@@ -121,7 +121,6 @@ export function FeedbackPage({ language, entries, loading, error, canCreate, can
           </form>
         </aside>}
       </div>
-      <p className="feedback-retention">{copy(language, '각 아이디어는 작성한 지 7일 동안 표시돼요.', 'Cada idea se muestra durante siete días desde su publicación.')}</p>
     </div>
   </main>;
 }

@@ -77,6 +77,7 @@ try {
   await owner.page.locator('#feedback-import-file').setInputFiles({ name: 'sample.json', mimeType: 'application/json', buffer: Buffer.from(JSON.stringify([sample, { ...sample, legacySourceId: '22222222-2222-4222-8222-222222222222', body: '' }])) });
   await owner.page.getByRole('button', { name: '가져오기', exact: true }).click();
   await owner.page.getByTestId('feedback-import-counts').getByText('전체 2건 · 새로 저장 1건 · 이미 있음 0건 · 실패 1건').waitFor();
+  await owner.page.getByText('Generic test content', { exact: true }).waitFor();
   await owner.page.getByRole('button', { name: '가져오기', exact: true }).click();
   await owner.page.getByTestId('feedback-import-counts').getByText('전체 2건 · 새로 저장 0건 · 이미 있음 1건 · 실패 1건').waitFor();
   if (imported.size !== 1) throw new Error('Retry made duplicate imported rows');
