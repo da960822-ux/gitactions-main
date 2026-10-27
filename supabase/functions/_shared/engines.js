@@ -5650,8 +5650,8 @@ var splendorNobles = [
   { points: 3, requirement: { green: 3, red: 3, black: 3 } },
   { points: 3, requirement: { white: 3, red: 3, black: 3 } },
   { points: 3, requirement: { white: 4, green: 4 } },
-  { points: 3, requirement: { blue: 4, red: 4 } },
-  { points: 3, requirement: { green: 4, black: 4 } },
+  { points: 3, requirement: { white: 4, red: 4 } },
+  { points: 3, requirement: { blue: 4, black: 4 } },
   { points: 3, requirement: { white: 3, green: 3, red: 3 } },
   { points: 3, requirement: { blue: 3, green: 3, black: 3 } },
   { points: 3, requirement: { blue: 3, red: 3, black: 3 } }

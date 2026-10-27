@@ -12,6 +12,11 @@ describe('Splendor engine',()=>{
   expect(pairs.every(n=>Object.values(n.requirement).every(cost=>cost===4))).toBe(true);expect(triples.every(n=>Object.values(n.requirement).every(cost=>cost===3))).toBe(true);
   expect(splendorNobles.every(n=>n.points===3)).toBe(true);
   expect(new Set(splendorNobles.map(n=>JSON.stringify(n.requirement))).size).toBe(16);
+  expect(splendorNobles.slice(10).map(n=>n.requirement)).toEqual([
+   {white:4,green:4},{white:4,red:4},{blue:4,black:4},
+   {white:3,green:3,red:3},{blue:3,green:3,black:3},{blue:3,red:3,black:3},
+  ]);
+  expect(Object.fromEntries(['white','blue','green','red','black'].map(color=>[color,splendorNobles.slice(10).filter(n=>color in n.requirement).length]))).toEqual({white:3,blue:3,green:3,red:3,black:3});
   expect(pairs.slice(0,5).map(n=>Object.keys(n.requirement))).toEqual([['white','blue'],['blue','green'],['green','red'],['red','black'],['white','black']]);
   expect(triples.slice(0,5).map(n=>Object.keys(n.requirement))).toEqual([['white','blue','black'],['white','blue','green'],['blue','green','red'],['green','red','black'],['white','red','black']]);
  });
