@@ -157,3 +157,27 @@
 @media(min-width:1600px) { .spt-room.sp-splendor { padding:14px 22px; gap:10px; }.spt-play-surface { grid-template-columns:minmax(0,1fr) 330px; gap:18px; }.spt-development-row { gap:12px; }.spt-room .spt-development { min-height:108px; grid-template-columns:72px minmax(0,1fr); padding:6px; }.spt-development-art { width:72px; height:98px; }.spt-nobles { min-height:80px; }.spt-noble-art.sp-noble-art { width:50px; height:68px; flex-basis:50px; }.spt-player { padding:8px 12px; }.spt-wallet { gap:9px; }.spt-wallet .sp-gem-icon { width:21px; height:21px; flex-basis:21px; }.spt-reservations .spt-development { min-height:70px; grid-template-columns:46px minmax(0,1fr); }.spt-reservations .spt-development-art { width:46px; height:64px; } }
 @media(max-width:1199px) { .spt-header,.spt-header>div { flex-wrap:wrap; gap:8px; }.spt-players { grid-template-columns:repeat(2,minmax(0,1fr)); }.spt-play-surface { grid-template-columns:minmax(0,1fr) 270px; gap:8px; }.spt-room .spt-development { grid-template-columns:45px minmax(0,1fr); }.spt-development-art { width:45px; height:72px; }.spt-reservations .spt-development-values { grid-template-columns:minmax(0,1fr); gap:4px; } }
 @media(prefers-reduced-motion:reduce) { .spt-room *, .spt-room *::before, .spt-room *::after { animation:none!important; transition:none!important; scroll-behavior:auto!important; } }
+
+.spt-room .spt-card-actions.sp-card-detail-overlay { display:grid; grid-template-columns:minmax(250px,46%) minmax(0,1fr); grid-auto-rows:min-content; align-content:start; gap:9px 18px; }
+.spt-room .spt-card-actions.sp-card-detail-overlay>header { grid-column:1/-1; grid-row:1; }
+.spt-room .spt-card-actions.sp-card-detail-overlay .spt-selected-card { display:contents; }
+.spt-room .spt-card-actions.sp-card-detail-overlay .spt-selected-card>span { grid-column:1; grid-row:2/7; display:block; align-self:start; width:100%; height:min(50vh,390px); }
+.spt-room .spt-card-actions.sp-card-detail-overlay .spt-selected-card>div,
+.spt-room .spt-card-actions.sp-card-detail-overlay>:is(.spt-payment-details,.spt-reserve-note,.spt-returns,.spt-context-buttons) { grid-column:2; }
+.spt-room .spt-card-actions.sp-card-detail-overlay .spt-selected-card>div { grid-row:2; }
+.spt-room .spt-card-actions.sp-card-detail-overlay>.spt-payment-details { grid-row:3; }
+.spt-room .spt-card-actions.sp-card-detail-overlay>.spt-reserve-note { grid-row:4; }
+.spt-room .spt-card-actions.sp-card-detail-overlay>.spt-returns { grid-row:5; }
+.spt-room .spt-card-actions.sp-card-detail-overlay>.spt-context-buttons { grid-row:6; }
+.spt-room .spt-card-actions.sp-card-detail-overlay .spt-selected-card>div { display:grid; align-content:start; gap:9px; }
+.spt-room .spt-card-actions.sp-card-detail-overlay .spt-detail-cost { display:block; font-size:13px; line-height:1.5; }
+.spt-room .spt-card-actions.sp-card-detail-overlay .spt-payment-details>div { right:auto; left:0; max-width:min(320px,75vw); }
+.spt-room .spt-card-actions.sp-card-detail-overlay .spt-context-buttons { align-self:start; }
+@media(max-width:720px) {
+  .spt-room .spt-card-actions.sp-card-detail-overlay { grid-template-columns:minmax(0,1fr); }
+  .spt-room .spt-card-actions.sp-card-detail-overlay .spt-selected-card>span { grid-column:1; grid-row:auto; height:min(42vh,340px); }
+  .spt-room .spt-card-actions.sp-card-detail-overlay .spt-selected-card>div,
+  .spt-room .spt-card-actions.sp-card-detail-overlay>:is(.spt-payment-details,.spt-reserve-note,.spt-returns,.spt-context-buttons) { grid-column:1; }
+  .spt-room .spt-card-actions.sp-card-detail-overlay .spt-selected-card>div,
+  .spt-room .spt-card-actions.sp-card-detail-overlay>:is(.spt-payment-details,.spt-reserve-note,.spt-returns,.spt-context-buttons) { grid-row:auto; }
+}

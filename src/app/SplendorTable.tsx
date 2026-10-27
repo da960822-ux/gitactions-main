@@ -4,6 +4,7 @@ import { GameValue } from './GameValue';
 import { SplendorGem as GemIcon } from './SplendorGem';
 import { SplendorMotion } from './SplendorMotion';
 import { SplendorArtwork } from './SplendorArtwork';
+import { SplendorDetailArtwork, SplendorNobleViewer } from './SplendorDetailViewer';
 import { getPrivateNoblePortrait } from './private-game-art';
 import { splendorNobleName } from '../games/splendorNobleNames';
 import splendorArt from '../../public/images/splendor/card-map.json';
@@ -227,6 +228,7 @@ export function SplendorTable({ view, language, playerId, roomId = null, version
   const opponentSeat: PlayerId = playerId === 'p1' ? 'p2' : 'p1';
   const tokens = record(hand.tokens), owned = record(hand.bonuses), reserved = array(hand.reserved);
   const [picked, setPicked] = useState<string[]>([]), [returnDraft, setReturnDraft] = useState<Record<string, number>>({}), [selectedDoubleGem, setSelectedDoubleGem] = useState<string | null>(null), [reserveChoices, setReserveChoices] = useState<Record<string, number>>({}), [selectedCard, setSelectedCard] = useState<{ id: string; source: 'market' | 'reserved' | 'deck'; tier?: number; viewer: PlayerId; roomId: string | null; version: number } | null>(null);
+  const [viewedNoble, setViewedNoble] = useState<string | null>(null), nobleFocusReturnRef = useRef<HTMLElement | null>(null);
   const actionPanelRef = useRef<HTMLElement | null>(null), cardFocusReturnRef = useRef<HTMLElement | null>(null);
   const tableRef = useRef<HTMLDivElement | null>(null), cardInteractionFocusRef = useRef<HTMLElement | null>(null);
   const enterPanelFocusRef = useRef(false), returnCardFocusRef = useRef(false);
@@ -296,6 +298,7 @@ export function SplendorTable({ view, language, playerId, roomId = null, version
     window.addEventListener('keydown', onKeyDown);
     return () => window.removeEventListener('keydown', onKeyDown);
   }, [selectedCard]);
+  useEffect(() => { if (viewedNoble && !nobles[viewedNoble]) setViewedNoble(null); }, [view, viewedNoble]);
   useEffect(() => {
     const before = previous.current;
     if (before && before.viewer === playerId && before.roomId === roomId && before.version === version) return;
@@ -343,7 +346,8 @@ export function SplendorTable({ view, language, playerId, roomId = null, version
   const selectedReserve = selectedCard ? chooseReserve(`selected-${selectedCard.id}`, selectedReserveOptions) : undefined;
   const reserveSummary = copy(language,`예약 ${reserved.length}/3 · 금 ${Number(bank.gold)>0?'+1':'없음'} · 반환 ${returnLabel(selectedReserve?.action.payload?.returnTokens,language)}`,`Reserva ${reserved.length}/3 · ${Number(bank.gold)>0?'+1 oro':'sin oro'} · devuelve ${returnLabel(selectedReserve?.action.payload?.returnTokens,language)}`);
   const panelMessages = selectedCard ? splendorActionPanelMessages(language, selectedCard.source, guidance.phase, guidance.status, reserveSummary) : null;
-  const selectCard = (id: string, source: 'market' | 'reserved' | 'deck', tier?: number, target?: HTMLElement, keyboard = false) => { cardFocusReturnRef.current = target ?? null; enterPanelFocusRef.current = keyboard; returnCardFocusRef.current = false; setPicked([]); setReturnDraft({}); setSelectedDoubleGem(null); setSelectedCard({ id, source, ...(tier ? { tier } : {}), viewer: playerId, roomId, version }); };
+  const selectCard = (id: string, source: 'market' | 'reserved' | 'deck', tier?: number, target?: HTMLElement, keyboard = false) => { setViewedNoble(null); cardFocusReturnRef.current = target ?? null; enterPanelFocusRef.current = keyboard; returnCardFocusRef.current = false; setPicked([]); setReturnDraft({}); setSelectedDoubleGem(null); setSelectedCard({ id, source, ...(tier ? { tier } : {}), viewer: playerId, roomId, version }); };
+  const closeNoble = () => { setViewedNoble(null); requestAnimationFrame(() => nobleFocusReturnRef.current?.isConnected && nobleFocusReturnRef.current.focus()); };
   const adjustReturn = (gem: string, amount: number, max: number) => setReturnDraft(current => {
     const next = Math.max(0, Math.min(max, Number(current[gem] ?? 0) + amount));
     return { ...current, [gem]: next };
@@ -405,9 +409,10 @@ export function SplendorTable({ view, language, playerId, roomId = null, version
       </section>)}
     </section>
     <aside className="sp-sidebar">
-      {(selectedCardData||selectedDeckTier)&&<section ref={actionPanelRef} tabIndex={-1} className="sp-action-panel sp-action-compact" data-selected-card-id={selectedCardData?.id??selectedCard?.id} data-source-zone={selectedCard?.source} data-viewer={playerId} data-room-id={roomId??''} data-version={version} aria-label={copy(language,'선택한 카드 행동','Acciones de la carta seleccionada')}>
+      {selectedCardData&&<div className="sp-card-detail-scrim" aria-hidden="true"/>}
+      {(selectedCardData||selectedDeckTier)&&<section ref={actionPanelRef} tabIndex={-1} className={`sp-action-panel sp-action-compact ${selectedCardData?'sp-card-detail-overlay':''}`} data-selected-card-id={selectedCardData?.id??selectedCard?.id} data-source-zone={selectedCard?.source} data-viewer={playerId} data-room-id={roomId??''} data-version={version} aria-label={copy(language,'선택한 카드 행동','Acciones de la carta seleccionada')}>
           <header className="sp-section-heading"><div><h2>{copy(language,selectedCard?.source==='deck'?'덱 카드 예약':selectedCard?.source==='reserved'?'예약 카드 행동':'선택한 카드',selectedCard?.source==='deck'?'Reservar del mazo':selectedCard?.source==='reserved'?'Acciones de reserva':'Carta seleccionada')}</h2><p>{splendorSelectedTierText(language,selectedTier,selectedCardData?Number(selectedCardData.points??0):undefined)}</p></div><button type="button" className="sp-action-cancel" aria-label={copy(language,'선택 취소','Cancelar selección')} onClick={()=>{returnCardFocusRef.current=true;setSelectedCard(null);}}>×</button></header>
-          {selectedCardData?<div className="sp-action-card"><span className="sp-action-art" aria-hidden="true">{splendorCardArtSrc(selectedCardData.id)&&<SplendorArtwork src={splendorCardArtSrc(selectedCardData.id)!}/>}</span><div><b>{copy(language,`영구 보너스 +1 ${gemName(String(selectedCardData.bonus),language)}`,`Bono permanente +1 ${gemName(String(selectedCardData.bonus),language)}`)}</b></div></div>:<div className="sp-action-card sp-deck-preview"><span className={`sp-card-back sp-card-back-${selectedDeckTier}`} aria-hidden="true"/><b>{copy(language,'덱 맨 위 카드 한 장을 예약해요. 카드 내용은 예약 전까지 비공개예요.','Reservas la carta superior sin ver su contenido hasta confirmar.')}</b></div>}
+          {selectedCardData?<div className="sp-action-card"><span className="sp-action-art" aria-hidden="true"><SplendorDetailArtwork src={splendorCardArtSrc(selectedCardData.id)}/></span><div><b>{copy(language,`영구 보너스 +1 ${gemName(String(selectedCardData.bonus),language)}`,`Bono permanente +1 ${gemName(String(selectedCardData.bonus),language)}`)}</b><span className="sp-detail-cost">{copy(language,'비용','Coste')}: {colors.filter(gem=>Number(record(selectedCardData.cost)[gem]??0)>0).map(gem=>`${gemName(gem,language)} ${Number(record(selectedCardData.cost)[gem])}`).join(' · ')||copy(language,'없음','ninguno')}</span></div></div>:<div className="sp-action-card sp-deck-preview"><span className={`sp-card-back sp-card-back-${selectedDeckTier}`} aria-hidden="true"/><b>{copy(language,'덱 맨 위 카드 한 장을 예약해요. 카드 내용은 예약 전까지 비공개예요.','Reservas la carta superior sin ver su contenido hasta confirmar.')}</b></div>}
           {selectedCardData&&(()=>{const plan=splendorCardCostPlan(selectedCardData,tokens,owned);const projected={...owned,[String(selectedCardData.bonus)]:Number(owned[String(selectedCardData.bonus)]??0)+1};const visitors=Object.entries(nobles).filter(([,noble])=>colors.every(gem=>Number(projected[gem]??0)>=Number(record(noble?.requirement)[gem]??0)));return <>
             <div className="sp-payment-summary" aria-label={copy(language,'낼 보석','Gemas que pagarás')}><b>{copy(language,'지불','Pagar')}</b>{colors.filter(gem=>Number(plan.colored[gem])>0).map(gem=><span key={gem} title={gemName(gem,language)}><GemIcon gem={gem}/><b>{Number(plan.colored[gem])}</b></span>)}{plan.gold>0&&<span><GemIcon gem="gold"/><b>{plan.gold}</b></span>}{!colors.some(gem=>Number(plan.colored[gem])>0)&&!plan.gold&&<span>{copy(language,'무료','Gratis')}</span>}{plan.deficit>0&&<strong>{copy(language,`${plan.deficit}개 부족`,`Faltan ${plan.deficit}`)}</strong>}</div>
             <details className="sp-purchase-details"><summary>{copy(language,'지불 상세 · 귀족 진척','Detalle del pago · nobles')}</summary>
@@ -466,12 +471,13 @@ export function SplendorTable({ view, language, playerId, roomId = null, version
         <div className="sp-noble-list">{Object.entries(nobles).map(([id,raw])=>{
           const noble=record(raw), choice=choices.find(item=>item.action.type==='chooseNoble'&&item.action.payload?.id===id), needs=colors.filter(gem=>Number(noble.requirement?.[gem]??0)>0);
           const artSrc = splendorNobleArtSrc(id);
-          return <button type="button" className={`sp-noble ${choice?'is-selectable':''}`} data-sp-noble-id={id} key={id} disabled={!choice} aria-label={`${splendorNobleName(id,language)} · ${Number(noble.points??3)} ${copy(language,'점','pts')} · ${needs.map(gem=>`${gemName(gem,language)} ${Number(noble.requirement[gem])}`).join(', ')}${choice?` · ${copy(language,'선택 가능','disponible')}`:''}`} onClick={()=>choice&&runAction(choice.action)}>
+          return <button type="button" className={`sp-noble ${choice?'is-selectable':''}`} data-sp-noble-id={id} key={id} aria-label={`${splendorNobleName(id,language)} · ${Number(noble.points??3)} ${copy(language,'점','pts')} · ${needs.map(gem=>`${gemName(gem,language)} ${Number(noble.requirement[gem])}`).join(', ')} · ${copy(language,'그림과 조건 보기','Ver ilustración y requisitos')}${choice?` · ${copy(language,'방문 가능','visita disponible')}`:''}`} onClick={event=>{nobleFocusReturnRef.current=event.currentTarget;setSelectedCard(null);setViewedNoble(id)}}>
             <span className="sp-noble-art" aria-hidden="true">{artSrc&&<SplendorArtwork src={artSrc}/>}</span><span className="sp-noble-info"><b>{splendorNobleName(id,language)}</b><small>{Number(noble.points??3)} {copy(language,'점','pts')}</small><span className="sp-noble-cost">{needs.map(gem=><i className={`sp-cost sp-color-${gem}`} key={gem}><GemIcon gem={gem}/><b>{Number(noble.requirement[gem])}</b></i>)}</span><span className="sp-noble-progress" aria-label={copy(language,'내 영구 보너스 진척','Tu progreso de bonificaciones')}>{needs.map(gem=><small className={Number(owned[gem]??0)>=Number(noble.requirement[gem])?'is-met':''} key={gem}>{gemName(gem,language)} {Math.min(Number(owned[gem]??0),Number(noble.requirement[gem]))}/{Number(noble.requirement[gem])}</small>)}</span></span>
-            {choice&&<span className="sp-noble-select-label">{copy(language,'선택','Elegir')}</span>}
+            {choice&&<span className="sp-noble-select-label">{copy(language,'방문 가능','Visita disponible')}</span>}
           </button>;
         })}{!Object.keys(nobles).length&&<p className="sp-empty">{copy(language,'남은 귀족이 없어요','No quedan nobles')}</p>}</div>
       </section>
+    {viewedNoble && nobles[viewedNoble] && <SplendorNobleViewer id={viewedNoble} src={splendorNobleArtSrc(viewedNoble)} points={Number(record(nobles[viewedNoble]).points??3)} requirement={record(record(nobles[viewedNoble]).requirement)} bonuses={owned} language={language} canAcquire={choices.some(choice=>choice.action.type==='chooseNoble'&&choice.action.payload?.id===viewedNoble)} onAcquire={()=>{const choice=choices.find(item=>item.action.type==='chooseNoble'&&item.action.payload?.id===viewedNoble);if(choice){setViewedNoble(null);runAction(choice.action)}}} onClose={closeNoble}/>}
     <SplendorMotion scope={`${roomId??'demo'}:${playerId}`} version={version} viewer={playerId} event={shownEvent}/>
 
     {view?.result&&<SplendorResult result={view.result} playerId={playerId} language={language}/>}

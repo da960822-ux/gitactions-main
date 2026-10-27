@@ -661,6 +661,73 @@
   .sp-splendor .sp-card-cost-chip .sp-gem-icon { width: 18px; height: 18px; flex-basis: 18px; }
   .sp-splendor .sp-card-select-hint { font-size: 11px; }
 }
+
+/* Selected art uses the empty space beside and below the compact bank. */
+.sp-card-detail-scrim { position: fixed; inset: 0; z-index: 60; background: #071d1bb8; }
+.sp-splendor:has(.sp-action-panel.sp-card-detail-overlay) .sp-market,
+.spt-room:has(.spt-card-actions.sp-card-detail-overlay) .spt-market { position: relative; z-index: 61; }
+.sp-splendor .sp-action-panel.sp-card-detail-overlay,
+.spt-room .spt-card-actions.sp-card-detail-overlay,
+.sp-noble-detail-overlay.sp-card-detail-overlay {
+  position: fixed !important; top: clamp(72px, 12vh, 130px) !important; right: 18px !important;
+  left: auto !important; bottom: auto !important; z-index: 62;
+  box-sizing: border-box; width: min(690px, calc(100vw - 36px)) !important;
+  max-height: calc(100dvh - clamp(88px, 15vh, 148px)); overflow: auto;
+  padding: 16px !important; border: 2px solid #bba06a !important; border-radius: 13px;
+  background: #fbf6e8 !important; box-shadow: 0 20px 60px #061913b8;
+  color: #294b3f;
+}
+.sp-splendor .sp-action-panel.sp-card-detail-overlay {
+  display: grid !important; grid-template-columns: minmax(250px, 46%) minmax(0, 1fr) !important;
+  grid-auto-rows: min-content !important; align-content: start; gap: 9px 18px;
+}
+.sp-splendor .sp-action-panel.sp-card-detail-overlay > .sp-section-heading { grid-column: 1 / -1; grid-row: 1; }
+.sp-splendor .sp-action-panel.sp-card-detail-overlay .sp-action-card { display: contents !important; }
+.sp-splendor .sp-action-panel.sp-card-detail-overlay .sp-action-art {
+  grid-column: 1 !important; grid-row: 2 / 7 !important; align-self: start;
+  display: block; width: 100% !important; height: min(50vh, 390px) !important;
+}
+.sp-splendor .sp-action-panel.sp-card-detail-overlay .sp-action-card > div,
+.sp-splendor .sp-action-panel.sp-card-detail-overlay > :is(.sp-payment-summary,.sp-purchase-details,.sp-reserve-preview,.sp-action-buttons) { grid-column: 2 !important; }
+.sp-splendor .sp-action-panel.sp-card-detail-overlay .sp-action-card > div { grid-row: 2 !important; }
+.sp-splendor .sp-action-panel.sp-card-detail-overlay > .sp-payment-summary { grid-row: 3 !important; }
+.sp-splendor .sp-action-panel.sp-card-detail-overlay > .sp-purchase-details { grid-row: 4 !important; }
+.sp-splendor .sp-action-panel.sp-card-detail-overlay > .sp-reserve-preview { grid-row: 5 !important; }
+.sp-splendor .sp-action-panel.sp-card-detail-overlay > .sp-action-buttons { grid-row: 6 !important; }
+.sp-splendor .sp-action-panel.sp-card-detail-overlay .sp-action-card > div { display: grid; gap: 6px; }
+.sp-detail-cost { display: block !important; line-height: 1.5; }
+.sp-splendor .sp-action-panel.sp-card-detail-overlay .sp-action-buttons { display: flex; flex-wrap: wrap; gap: 8px; }
+.sp-splendor .sp-action-panel.sp-card-detail-overlay .sp-action-buttons > button { flex: 1 1 110px; }
+.sp-detail-artwork { display: block; width: 100%; height: 100%; overflow: hidden; border-radius: 9px; background: #e9e1cf; }
+.sp-detail-artwork .sp-artwork { display: block; width: 100%; height: 100%; object-fit: contain; }
+.sp-splendor .sp-action-panel.sp-card-detail-overlay .sp-detail-artwork .sp-artwork { width: 100%; height: 100%; }
+.sp-noble-detail-overlay.sp-card-detail-overlay { display: grid; grid-template-columns: minmax(250px, 46%) minmax(0, 1fr); align-content: start; gap: 12px 18px; }
+.sp-noble-detail-overlay > header { grid-column: 1 / -1; display: flex; justify-content: space-between; align-items: start; gap: 12px; }
+.sp-noble-detail-overlay h2 { margin: 0 0 4px; color: #294b3f; font-size: 22px; }
+.sp-noble-detail-overlay header p { margin: 0; font-weight: 700; }
+.sp-noble-detail-overlay header button { min-width: 36px; min-height: 36px; border: 1px solid #afa383; border-radius: 7px; background: #fffaf0; font-size: 24px; cursor: pointer; }
+.sp-noble-detail-overlay > .sp-detail-artwork { height: min(50vh, 390px); }
+.sp-noble-detail-info { display: grid; align-content: start; gap: 10px; }
+.sp-noble-detail-info > b { font-size: 16px; }
+.sp-noble-detail-info > p { display: flex; align-items: center; gap: 8px; margin: 0; padding: 5px; border: 1px solid #d8cdb5; border-radius: 7px; background: #fffdf6; }
+.sp-noble-detail-info > p strong { margin-left: auto; font-variant-numeric: tabular-nums; }
+.sp-noble-detail-info .sp-gem-icon { width: 23px; height: 23px; }
+.sp-noble-detail-info > small { color: #536b5b; line-height: 1.5; }
+.sp-noble { cursor: pointer; }
+@media (max-width: 720px) {
+  .sp-splendor .sp-action-panel.sp-card-detail-overlay,
+  .spt-room .spt-card-actions.sp-card-detail-overlay,
+  .sp-noble-detail-overlay.sp-card-detail-overlay { top: 12px !important; right: 12px !important; width: calc(100vw - 24px) !important; max-height: calc(100dvh - 24px); }
+  .sp-splendor .sp-action-panel.sp-card-detail-overlay,
+  .sp-noble-detail-overlay.sp-card-detail-overlay { grid-template-columns: minmax(0, 1fr) !important; }
+  .sp-splendor .sp-action-panel.sp-card-detail-overlay .sp-action-art,
+  .sp-noble-detail-overlay > .sp-detail-artwork { grid-column: 1 !important; grid-row: auto !important; height: min(42vh, 340px) !important; }
+  .sp-splendor .sp-action-panel.sp-card-detail-overlay .sp-action-card > div,
+  .sp-splendor .sp-action-panel.sp-card-detail-overlay > :is(.sp-payment-summary,.sp-purchase-details,.sp-reserve-preview,.sp-action-buttons),
+  .sp-noble-detail-info { grid-column: 1 !important; }
+  .sp-splendor .sp-action-panel.sp-card-detail-overlay .sp-action-card > div,
+  .sp-splendor .sp-action-panel.sp-card-detail-overlay > :is(.sp-payment-summary,.sp-purchase-details,.sp-reserve-preview,.sp-action-buttons) { grid-row: auto !important; }
+}
 .sp-profile-dialog,.spt-profile-dialog { width: min(420px, calc(100vw - 32px)); max-height: min(80vh, 620px); overflow: auto; padding: 20px; border: 1px solid #a99a6f; border-radius: 12px; background: #faf4e4; color: #26483b; box-shadow: 0 16px 48px #071d1eb0; }
 .sp-profile-dialog::backdrop,.spt-profile-dialog::backdrop { background: #071d1ecc; }
 .sp-profile-dialog header,.spt-profile-dialog header { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin-bottom: 16px; }
