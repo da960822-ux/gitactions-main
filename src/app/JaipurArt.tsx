@@ -25,7 +25,7 @@ const sceneNames: Record<JaipurGood, [string, string, string]> = {
 
 const atlasCells: Record<JaipurGood, number> = { diamond: 0, gold: 1, silver: 2, cloth: 3, spice: 4, leather: 5, camel: 6 };
 
-type GoodProps = { good: JaipurGood; variant?: number; language?: Language; decorative?: boolean; className?: string };
+type GoodProps = { good: JaipurGood; variant?: number; language?: Language; decorative?: boolean; className?: string; showWholeArt?: boolean };
 
 const productTokenAsset: Record<Exclude<JaipurGood, 'camel'>, string> = {
   diamond: 'diamond', gold: 'gold', silver: 'silver', cloth: 'cloth', spice: 'spice', leather: 'leather',
@@ -116,7 +116,7 @@ function GoodScene({ good, variant, id }: { good: JaipurGood; variant: Variant; 
   return <LeatherScene v={variant} id={id}/>;
 }
 
-export function JaipurGoodArt({ good, variant = 0, language = 'ko', decorative = false, className = '' }: GoodProps) {
+export function JaipurGoodArt({ good, variant = 0, language = 'ko', decorative = false, className = '', showWholeArt = false }: GoodProps) {
   const id = useId().replace(/:/g, '');
   const scene = (((Math.floor(variant) % 3) + 3) % 3) as Variant;
   const colors: Record<JaipurGood, string[]> = {
@@ -124,7 +124,7 @@ export function JaipurGoodArt({ good, variant = 0, language = 'ko', decorative =
     cloth: ['#f5d5b1', '#aa5262', '#513953'], spice: ['#ffd886', '#d17a3d', '#863d2e'], leather: ['#e3b681', '#985c3e', '#4c322d'], camel: ['#f1d095', '#bd8751', '#704630'],
   };
   const cell = atlasCells[good];
-  return <svg className={`jaipur-art jaipur-art--${good} ${className}`.trim()} viewBox="0 0 100 100" preserveAspectRatio={good === 'camel' ? 'xMidYMin slice' : 'xMidYMid slice'} role={decorative ? undefined : 'img'} aria-hidden={decorative || undefined} aria-label={decorative ? undefined : goodsNames[good][language]} data-good={good} data-variant={scene} data-composition={sceneNames[good][scene]} data-atlas-cell={cell}>
+  return <svg className={`jaipur-art jaipur-art--${good} ${className}`.trim()} viewBox="0 0 100 100" preserveAspectRatio={showWholeArt ? 'xMidYMid meet' : 'xMidYMin slice'} role={decorative ? undefined : 'img'} aria-hidden={decorative || undefined} aria-label={decorative ? undefined : goodsNames[good][language]} data-good={good} data-variant={scene} data-composition={sceneNames[good][scene]} data-atlas-cell={cell}>
     {defs(id, colors[good])}
     <defs><clipPath id={`${id}-scene`}><rect width="100" height="100"/></clipPath></defs>
     <ellipse className="jaipur-art__ground" cx="50" cy="83" rx="38" ry="8" fill="#482c34" opacity=".12" filter={`url(#${id}-drop)`}/>

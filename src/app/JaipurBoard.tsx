@@ -6,6 +6,8 @@ import { GameValue } from './GameValue';
 import { JaipurBonusArt, JaipurBonusTokenBack, JaipurCamelAward, JaipurCoin, JaipurGoodArt, JaipurProductToken, jaipurCardVariant } from './JaipurArt';
 import { JaipurMotion } from './JaipurMotion';
 import '../styles/jaipur-premium.css';
+import '../styles/jaipur-layout.css';
+import '../styles/jaipur-feedback.css';
 
 type Choice = { label: Record<Language, string>; action: GameAction };
 type Props = { view: any; language: Language; playerId: PlayerId; desktopDisplay?: boolean; runAction: (action: GameAction) => void | Promise<unknown> };
@@ -141,7 +143,7 @@ export function JaipurBoard({ view, language, playerId, runAction, desktopDispla
               setMarketSelection(toggleJaipurTakeSelection(marketSelection, [stableId])); setHandSelection([]); playCue('jaipur', 'select');
             }
           }}>
-            <JaipurGoodArt good={good} variant={jaipurCardVariant(stableId)} className="jp-good-illustration" decorative/><span className="jp-card-name">{names[good][language]}</span><span className="jp-card-prompt">{prompt}</span>
+            <JaipurGoodArt good={good} variant={jaipurCardVariant(stableId)} className="jp-good-illustration" decorative showWholeArt/><span className="jp-card-name">{names[good][language]}</span><span className="jp-card-prompt">{prompt}</span>
           </button>;
         })}
         {market.length === 0 && <p className="jp-empty">{text(language, '시장이 비었어요.', 'El mercado está vacío.')}</p>}
@@ -187,7 +189,7 @@ export function JaipurBoard({ view, language, playerId, runAction, desktopDispla
 
     <section className="jp-supply-area">
       <div className="jp-goods-piles" data-jaipur-zone="tokens"><div className="jp-section-heading"><div><h3>{text(language, '상품 토큰', 'Fichas de mercancía')}</h3></div><p>{text(language, '가장 위의 점수가 먼저 지급돼요.', 'Se toma primero la ficha de mayor valor.')}</p></div>
-        <div className="jp-pile-grid" data-jaipur-zone="sale">{goods.map(good => { const pile = list(piles[good]), rawTop = pile[0], top = rawTop !== null && rawTop !== undefined && Number.isFinite(Number(rawTop)) ? Number(rawTop) : null; return <div className={`jp-pile is-${good}`} key={good}><span className="jp-pile-name">{names[good][language]}{desktopDisplay && <JaipurProductToken good={good}/>}</span><div className="jp-pile-count" aria-label={language === 'ko' ? `남음 ${pile.length}개` : `Quedan ${pile.length}`}><small>{text(language, '남음', 'Quedan')}</small><strong>{pile.length}</strong>{language === 'ko' && <small>개</small>}</div><div className="jp-pile-next">{top === null ? <span className="jp-pile-next-label">—</span> : <><span className="jp-pile-next-label">{text(language, '다음', 'Siguiente:')}</span><span className="jp-pile-next-value"><JaipurCoin good={good} value={top} language={language}/><b>{top}{text(language, '점', ' pts')}</b></span></>}</div></div>; })}</div>
+        <div className="jp-pile-grid" data-jaipur-zone="sale">{goods.map(good => { const pile = list(piles[good]), rawTop = pile[0], top = rawTop !== null && rawTop !== undefined && Number.isFinite(Number(rawTop)) ? Number(rawTop) : null; return <div className={`jp-pile is-${good}`} key={good}><span className="jp-pile-name">{names[good][language]}{desktopDisplay && <JaipurProductToken good={good}/>}</span><div className="jp-pile-count" aria-label={language === 'ko' ? `남음 ${pile.length}개` : `Quedan ${pile.length}`}><small>{text(language, '남음', 'Quedan')}</small><strong><GameValue value={pile.length} resetKey={`${roundKey}:pile:${good}`}/></strong>{language === 'ko' && <small>개</small>}</div><div className="jp-pile-next">{top === null ? <span className="jp-pile-next-label">—</span> : <><span className="jp-pile-next-label">{text(language, '다음', 'Siguiente:')}</span><span className="jp-pile-next-value"><JaipurCoin good={good} value={top} language={language}/><b>{top}{text(language, '점', ' pts')}</b></span></>}</div></div>; })}</div>
       </div>
       <div className="jp-bonus-piles" data-jaipur-zone="bonus"><div className="jp-section-heading"><div><h3>{text(language, '판매 보너스', 'Bonos por venta')}</h3></div></div>
         <div className="jp-bonus-row">{([3, 4, 5] as const).filter(count => Number(bonusCounts[count] ?? 0) > 0).map(count => <div className="jp-bonus-stack" key={count}>{desktopDisplay ? <JaipurBonusTokenBack count={Number(bonusCounts[count] ?? 0)} language={language}/> : <JaipurBonusArt revealed={false} count={Number(bonusCounts[count] ?? 0)} language={language} className="jp-bonus-art"/>}<span><b>{count === 5 ? '5+' : count}</b><small>{text(language, '장 판매', 'cartas vendidas')}</small><strong>{Number(bonusCounts[count] ?? 0)} <small>{text(language, '남음', 'quedan')}</small></strong></span></div>)}</div>

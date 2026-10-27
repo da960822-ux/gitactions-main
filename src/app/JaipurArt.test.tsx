@@ -25,6 +25,11 @@ describe('Jaipur illustrated assets', () => {
     }
   });
 
+  it('shows the complete square artwork in a wide market slot', () => {
+    expect(renderToStaticMarkup(<JaipurGoodArt good="camel" showWholeArt/>)).toContain('preserveAspectRatio="xMidYMid meet"');
+    expect(renderToStaticMarkup(<JaipurGoodArt good="camel"/>)).toContain('preserveAspectRatio="xMidYMin slice"');
+  });
+
   it('keeps card art stable by card id and gives each commodity coin its own mark', () => {
     expect(jaipurCardVariant('market-a')).toBe(jaipurCardVariant('market-a'));
     expect(jaipurCardVariant('market-a')).not.toBe(jaipurCardVariant('market-b'));

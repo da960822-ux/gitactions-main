@@ -1,0 +1,111 @@
+/* Desktop trading table: activity uses its own row and never floats above controls. */
+@media (min-width: 1024px) {
+  .jaipur-board,
+  .jaipur-board.has-desktop-preview {
+    grid-template-areas:
+      'title title'
+      'scores scores'
+      'notice notice'
+      'history history'
+      'opponent rival'
+      'market supply'
+      'hand supply'
+      'round round'
+      'final final';
+  }
+
+  .jaipur-board.has-desktop-preview > .jp-topline,
+  .jaipur-board.has-desktop-preview > .jp-scorebar {
+    width: auto;
+    justify-self: stretch;
+  }
+  .jaipur-board.has-desktop-preview > .jp-scorebar { grid-area: scores; }
+  .jaipur-board > .jp-history-drawer,
+  .jaipur-board.has-desktop-preview > .jp-history-drawer {
+    grid-area: history;
+    align-self: stretch;
+    justify-self: stretch;
+    width: auto;
+    z-index: auto;
+  }
+  .jaipur-board .jp-history-drawer summary {
+    min-height: 36px;
+    padding: .35rem .7rem;
+    font-size: .86rem;
+  }
+  .jaipur-board .jp-history-content {
+    position: static;
+    display: flex;
+    align-items: center;
+    min-width: 0;
+    height: 36px;
+    max-height: none;
+    overflow-x: auto;
+    overflow-y: hidden;
+    margin: 0;
+    padding: 0 .25rem;
+    box-shadow: none;
+  }
+  .jaipur-board .jp-history-drawer[open] {
+    display: grid;
+    grid-template-columns: 8.5rem minmax(0, 1fr);
+    align-items: center;
+    gap: .4rem;
+  }
+  .jaipur-board .jp-history-content .jp-history {
+    display: flex;
+    flex: 1 0 auto;
+    gap: .15rem;
+    max-height: none;
+    padding: .1rem;
+    border: 0;
+    background: none;
+  }
+  .jaipur-board .jp-history li { flex: 1 0 9rem; gap: 0; padding: .08rem .28rem; }
+  .jaipur-board .jp-history-title { font-size: .76rem; }
+  .jaipur-board .jp-history li > span:last-child { font-size: .72rem; }
+  .jaipur-board .jp-history-content .jp-round-result { flex: 0 0 auto; gap: .4rem; padding: .15rem .35rem; white-space: nowrap; }
+  .jaipur-board .jp-history-content .jp-round-breakdown { flex-wrap: nowrap; }
+  .jaipur-board .jp-history-content .jp-round-breakdown > span { display: flex; gap: .2rem; }
+  .jaipur-board .jp-history-drawer .jp-history-title { white-space: normal; }
+
+  .jaipur-board .jp-market-card,
+  .jaipur-board.has-desktop-preview .jp-market-card {
+    height: clamp(178px, 21vh, 198px);
+  }
+  .jaipur-board .jp-market-card .jp-good-illustration {
+    flex: 1 1 0;
+    width: 100%;
+    height: 0;
+    min-height: 0;
+    object-fit: contain;
+    background: #eee0c8;
+  }
+  .jaipur-board .jp-market-card .jp-card-name,
+  .jaipur-board .jp-market-card .jp-card-prompt {
+    flex: 0 0 auto;
+    line-height: 1.2;
+  }
+  .jaipur-board .jp-market-card .jp-card-name { padding: .32rem .3rem .08rem; font-size: .95rem; }
+  .jaipur-board .jp-market-card .jp-card-prompt { min-height: 1.8rem; padding: .08rem .3rem .38rem; font-size: .78rem; }
+  .jaipur-board.has-desktop-preview .jp-trade-preview { gap: .3rem; padding: .2rem; }
+  .jaipur-board.has-desktop-preview .jp-trade-side { flex-wrap: nowrap; min-height: 0; gap: .15rem; padding: .15rem; overflow-x: auto; }
+  .jaipur-board.has-desktop-preview .jp-trade-side > small { flex: 0 0 auto; line-height: 1; }
+  .jaipur-board.has-desktop-preview .jp-trade-object { display: flex; align-items: center; width: auto; }
+  .jaipur-board.has-desktop-preview .jp-trade-object .jaipur-art { width: 2rem; height: 2rem; }
+}
+
+@media (min-width: 1024px) and (max-height: 820px) {
+  .jaipur-board.has-desktop-preview { gap: .25rem .55rem; padding: .4rem; }
+  .jaipur-board.has-desktop-preview .jp-market-card { height: 162px; }
+  .jaipur-board.has-desktop-preview .jp-trade-preview { gap: .3rem; padding: .2rem; }
+  .jaipur-board.has-desktop-preview .jp-trade-side { flex-wrap: nowrap; min-height: 0; gap: .15rem; padding: .15rem; overflow-x: auto; }
+  .jaipur-board.has-desktop-preview .jp-trade-side > small { flex: 0 0 auto; line-height: 1; }
+  .jaipur-board.has-desktop-preview .jp-trade-object { display: flex; align-items: center; width: auto; }
+  .jaipur-board.has-desktop-preview .jp-trade-object .jaipur-art { display: none; }
+  .jaipur-board.has-desktop-preview .jp-sale-preview { gap: .2rem; padding: .1rem; }
+  .jaipur-board.has-desktop-preview .jp-sale-cards,
+  .jaipur-board.has-desktop-preview .jp-sale-reward { padding: .1rem; }
+  .jaipur-board.has-desktop-preview .jp-sale-preview-card { width: 1.75rem; height: 1.75rem; }
+  .jaipur-board.has-desktop-preview .jp-sale-bonus .jaipur-bonus-art { height: 1.7rem; }
+}
