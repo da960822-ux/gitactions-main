@@ -3,8 +3,21 @@ import { describe, expect, it } from 'vitest';
 import { fourSplendorEngine } from '../games/fourSplendor';
 import SplendorTeamTable from './SplendorTeamTable';
 import { SplendorPublicBonuses } from './SplendorTable';
+import { splendorNobleName } from '../games/splendorNobleNames';
 
 describe('dedicated four-player Splendor table', () => {
+  it('shows a named noble in the card, accessibility label and panel details', () => {
+    const state = fourSplendorEngine.createInitialState(17);
+    state.availableNobles = { n11: { points: 3, requirement: { white: 4, red: 4 } } };
+    const view = fourSplendorEngine.getPlayerView(state, 'p1');
+    for (const language of ['ko', 'es'] as const) {
+      const name = splendorNobleName('n11', language);
+      const html = renderToStaticMarkup(<SplendorTeamTable view={view} language={language} runAction={async () => true}/>);
+      expect(html).toContain(`<b class="spt-noble-name">${name}</b>`);
+      expect(html).toContain(`aria-label="${name} · 3 ${language === 'ko' ? '점' : 'pts'}`);
+      expect(view.panels.find(panel => panel.id === 'nobles')?.cards[0].title[language]).toContain(name);
+    }
+  });
   it('renders four independent public wallets, both team totals, five nobles and twelve market cards', () => {
     const state = fourSplendorEngine.createInitialState(17);
     state.hands.p1.blue = 1; state.hands.p2.blue = 2; state.hands.p3.blue = 3; state.hands.p4.blue = 4;

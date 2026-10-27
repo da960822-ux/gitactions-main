@@ -9,9 +9,21 @@ import splendorArt from '../../public/images/splendor/card-map.json';
 import { deriveSplendorVisualEvent, restoreSplendorCardFocus, splendorActionPanelMessages, splendorCardAction, splendorCardArtSrc, splendorCardCostPlan, splendorCardPaymentRows, splendorGuidance, splendorNobleArtSrc, splendorRequiredReturns, splendorReserveChoices, splendorSelectedTier, splendorSelectedTierText, splendorTakeAction, splendorTotalAfterTake, SplendorTable } from './SplendorTable';
 import { jaipurSalePreview } from './JaipurBoard';
 import { splendorEngine } from '../games/splendor';
+import { splendorNobleName } from '../games/splendorNobleNames';
 import { SplendorQuickGuide } from './SplendorQuickGuide';
 
 const render = (game: 'jaipur' | 'splendor' | 'davinci', view: any, language: 'ko' | 'es' = 'ko', playerId: 'p1' | 'p2' = 'p1') => renderToStaticMarkup(game === 'davinci' ? createElement(DaVinciTable,{view,language,playerId,runAction:()=>{}}) : game === 'jaipur' ? createElement(JaipurBoard,{view,language,playerId,runAction:()=>{}}) : createElement(SplendorTable,{view,language,playerId,runAction:()=>{}}));
+
+describe('named Splendor nobles', () => {
+  it('shows each public title in the two-player card and its accessibility label', () => {
+    const view = { turn: 'p1', ownHand: { tokens: {}, bonuses: {}, reserved: [], points: 0, nobles: 0 }, board: { bank: {}, market: { 1: [], 2: [], 3: [] }, score: { p1: 0, p2: 0 }, nobles: { n0: { points: 3, requirement: { white: 4, blue: 4 } }, n15: { points: 3, requirement: { blue: 3, red: 3, black: 3 } } } }, actions: [] };
+    for (const language of ['ko', 'es'] as const) {
+      const html = render('splendor', view, language);
+      for (const id of ['n0', 'n15']) expect(html).toContain(`<b>${splendorNobleName(id, language)}</b>`);
+      expect(html).toContain(`aria-label="${splendorNobleName('n0', language)} · 3 ${language === 'ko' ? '점' : 'pts'}`);
+    }
+  });
+});
 
 describe('Splendor focus after a selected card moves or disappears', () => {
   it('follows a reserved card and otherwise returns to the remaining market', () => {

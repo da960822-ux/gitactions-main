@@ -5628,6 +5628,30 @@ var canonicalCards = [
   }
 ];
 
+// src/games/splendorNobleNames.ts
+var names = [
+  ["\uB300\uC591\uC758 \uC5EC\uC655 \uB9AC\uC2A4\uBCB3", "Lisbeth, reina de los oc\xE9anos"],
+  ["\uB8E8\uBE44 \uC5EC\uC81C \uB9AC\uC2A4\uBCB3", "Lisbeth, emperatriz del rub\xED"],
+  ["\uCE74\uB9AC\uBE0C\uC758 \uC9C0\uB3C4\uC790 \uB9AC\uC2A4\uBCB3", "Lisbeth, l\xEDder del Caribe"],
+  ["\uC5D0\uBA54\uB784\uB4DC \uC5EC\uC655 \uB9AC\uC2A4\uBCB3", "Lisbeth, reina de la esmeralda"],
+  ["\uC9C0\uD61C\uC758 \uC655 \uC5F0\uC11D", "Yeonseok, rey de la sabidur\xEDa"],
+  ["\uBA54\uB514\uCE58 \uACF5\uC791 \uC5F0\uC11D", "Yeonseok, duque de M\xE9dici"],
+  ["\uD669\uAE08\uC758 \uC220\uD0C4 \uC5F0\uC11D", "Yeonseok, sult\xE1n de oro"],
+  ["\uD0DC\uC591\uC655 \uC5F0\uC11D", "Yeonseok, el Rey Sol"],
+  ["\uD669\uAE08 \uC81C\uAD6D\uC758 \uB450 \uAD70\uC8FC", "Los dos soberanos del Imperio Dorado"],
+  ["\uB450 \uC655\uAD6D\uC758 \uACF5\uB3D9 \uD1B5\uCE58\uC790", "Los corregentes de dos reinos"],
+  ["\uAC80\uC740 \uB108\uC6B8\uC758 \uD669\uC9C4\uC774", "Hwang Jin-yi del velo negro"],
+  ["\uD669\uAE08 \uBE44\uB2E8\uC758 \uD669\uC9C4\uC774", "Hwang Jin-yi de seda dorada"],
+  ["\uBD89\uC740 \uC5F0\uD68C\uC758 \uD669\uC9C4\uC774", "Hwang Jin-yi del banquete rojo"],
+  ["\uBC14\uCC28\uD0C0\uC758 \uC5EC\uC655 \uB9AC\uC2A4\uBCB3", "Lisbeth, reina de la bachata"],
+  ["\uCE74\uB9AC\uBE0C \uCD95\uC81C\uC758 \uC5EC\uC655", "La reina del festival caribe\xF1o"],
+  ["\uC0B0\uD1A0\uB3C4\uBC0D\uACE0\uC758 \uC7A5\uBBF8", "La rosa de Santo Domingo"]
+];
+function splendorNobleName(id, language) {
+  const index = /^n(0|[1-9]\d*)$/.exec(String(id))?.[1];
+  return (index === void 0 ? void 0 : names[Number(index)]?.[language === "ko" ? 0 : 1]) ?? (language === "ko" ? "\uADC0\uC871" : "Noble");
+}
+
 // src/games/splendor.ts
 var colors = ["white", "blue", "green", "red", "black"];
 var titles = { white: { ko: "\uD770\uC0C9", es: "blanco" }, blue: { ko: "\uD30C\uB791", es: "azul" }, green: { ko: "\uCD08\uB85D", es: "verde" }, red: { ko: "\uBE68\uAC15", es: "rojo" }, black: { ko: "\uAC80\uC815", es: "negro" } };
@@ -5840,7 +5864,7 @@ function view(s, p) {
     if (s.pendingNobles.length) {
       for (const id of s.pendingNobles) {
         const noble = s.availableNobles[id];
-        add(`\uADC0\uC871 \uC120\uD0DD (${noble.points}\uC810)`, `Elegir noble (${noble.points} puntos)`, { type: "chooseNoble", payload: { id } });
+        add(`${splendorNobleName(id, "ko")} \uC120\uD0DD (${noble.points}\uC810)`, `Elegir a ${splendorNobleName(id, "es")} (${noble.points} puntos)`, { type: "chooseNoble", payload: { id } });
       }
     } else {
       const available = colors.filter((g) => s.bank[g] > 0), takeCount = Math.min(3, available.length);
@@ -6181,7 +6205,7 @@ var modernBoard = [
 ];
 var journeyBoard = modernBoard.map((tile, index) => index === 3 ? modernBoard[15] : index === 15 ? modernBoard[3] : index === 31 ? { ...tile, name: { ko: "\uB274\uC5B4\uD06C", es: "Newark" } } : index === 38 ? { ...tile, name: { ko: "\uC11C\uC6B8", es: "Se\xFAl" } } : tile);
 var landmarkJourneyBoard = journeyBoard.map((tile, index) => {
-  const names = {
+  const names2 = {
     11: { ko: "\uBCA0\uB97C\uB9B0", es: "Berl\xEDn" },
     13: { ko: "\uB9C8\uC774\uC560\uBBF8", es: "Miami" },
     21: { ko: "\uC774\uC2A4\uD0C4\uBD88", es: "Estambul" },
@@ -6189,7 +6213,7 @@ var landmarkJourneyBoard = journeyBoard.map((tile, index) => {
     33: { ko: "\uC544\uD14C\uB124", es: "Atenas" },
     36: { ko: "\uC2DC\uB4DC\uB2C8", es: "S\xEDdney" }
   };
-  return names[index] ? { ...tile, name: names[index] } : tile;
+  return names2[index] ? { ...tile, name: names2[index] } : tile;
 });
 var boardFor = (s) => s.boardVersion === 2 ? s.cityRouteVersion === 3 ? landmarkJourneyBoard : s.cityRouteVersion === 2 ? journeyBoard : modernBoard : legacyBoard;
 var legacyIds = ["festival", "lottery", "rent-rebate", "travel-cost", "maintenance", "visit-santo-domingo", "advance-start", "retreat"];
