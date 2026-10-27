@@ -1,4 +1,8 @@
 .mp-money-flight { position:fixed; z-index:70; inset:0; pointer-events:none; color:#103d45; }
+.mp-money-summary { position:absolute; top:clamp(300px,38svh,330px); left:50%; display:grid; justify-items:center; gap:1px; min-width:210px; padding:7px 14px; border:1px solid #e6cf98; border-radius:9px; background:#fffbecf2; box-shadow:0 3px 10px #183c4542; font-size:12px; line-height:1.2; white-space:nowrap; transform:translateX(-50%); animation:mp-money-label 790ms ease-out both; }
+.mp-money-summary b { font-size:17px; }
+.mp-money-summary small { color:#365b61; font-size:11px; }
+.marble-premium:has(.mp-money-flight) .mp-player-value .game-value-delta { display:none; }
 .mp-money-token { position:absolute; display:grid; place-items:center; min-width:54px; height:34px; padding:0 9px; border:2px solid #fff0bc; border-radius:18px; background:linear-gradient(145deg,#ffe8a4,#d7a547); box-shadow:0 5px 14px #102f3970,inset 0 2px #fff7cf; font-size:12px; font-weight:900; white-space:nowrap; transform:translate(-50%,-50%); animation:mp-money-travel 750ms cubic-bezier(.24,.72,.25,1) both; }
 .mp-money-endpoint { position:absolute; display:grid; justify-items:center; gap:1px; min-width:88px; padding:4px 8px; border:1px solid #e6cf98; border-radius:7px; background:#fffbecf2; box-shadow:0 3px 10px #183c4542; font-size:12px; line-height:1.12; transform:translate(-50%,-112%); animation:mp-money-label 790ms ease-out both; }
 .mp-money-endpoint--send { color:#9f3749; }

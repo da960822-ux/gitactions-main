@@ -118,10 +118,10 @@ export function marbleGridPosition(index: number, tileCount: number): [number, n
     return [9, index - 23];
   }
   if (tileCount !== 40) return undefined;
-  if (index < 11) return [11 - index, 11];
+  if (index < 12) return [12 - index, 10];
   if (index < 20) return [1, 21 - index];
-  if (index < 31) return [index - 19, 1];
-  return [11, index - 29];
+  if (index < 32) return [index - 19, 1];
+  return [12, index - 30];
 }
 
 const marblePath18: readonly [number, number][] = [

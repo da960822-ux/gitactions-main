@@ -112,6 +112,24 @@ for (const [name, engine, four] of [['1v1', marbleEngine, false], ['2v2', fourMa
     const paid=act(current,'roll');expect(paid.money.p1).toBe(3300);expect(paid.positions.p1).toBe(0);
     expect(choices(paid)).toContainEqual({type:'build',payload:{tile:4}});
   });
+  for(const economicVersion of [1,2,3]) it(`keeps saved economy ${economicVersion} rooms on their original remote build contract`,()=>{
+    const saved=fresh();saved.economicVersion=economicVersion;saved.phase='main';saved.properties[4]={owner:'p1',houses:2};saved.properties[5]={owner:'p1',houses:1};
+    delete saved.constructionRulesVersion;delete saved.buildSite;delete saved.landmarkOptions;
+    expect(choices(saved)).toContainEqual({type:'build',payload:{tile:4}});
+    expect(engine.validateAction(saved,'p1',{type:'build',payload:{tile:4}})).toBeNull();
+    const landed=land({...saved,phase:'roll'});
+    expect(landed.buildSite).toBe(4);
+    expect(choices(landed)).toContainEqual({type:'build',payload:{tile:4}});
+    expect(choices(landed)).toContainEqual({type:'build',payload:{tile:5}});
+    expect(landed.constructionRulesVersion).toBeUndefined();
+  });
+  for(const level of [0,1,2]) it(`permits the next ordinary build after taking over level ${level}, but no immediate landmark`,()=>{
+    const s=fresh(),owner=four?'p4':'p2';s.properties[4]={owner,houses:level};
+    const landed=land(s),acquired=act(landed,'takeover',{tile:4});
+    expect(acquired.buildSite).toBe(4);expect(acquired.landmarkOptions).toEqual([]);
+    expect(choices(acquired).some((a:any)=>a.type==='build'&&a.payload?.tile===4)).toBe(level<2);
+    expect(engine.validateAction(acquired,'p1',{type:'build',payload:{tile:4}})===null).toBe(level<2);
+  });
   it('completes new-version AI matches without illegal actions, negative cash or unbounded extra rolls',()=>{
     for(const seed of [7,29,71]){
       let n=engine.createInitialState(seed) as any;

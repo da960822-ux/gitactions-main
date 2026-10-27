@@ -6293,8 +6293,8 @@ function view2(s, p) {
         const canBuild = s.boardVersion === 2 || ownedCount === groupSize;
         const levels = s.boardVersion === 2 ? 3 : 2;
         const cost = marbleBuildCost(tile, record2.houses, s.economicVersion);
-        const eligibleSite = s.boardVersion !== 2 || s.propertyRulesVersion !== 1 || s.buildSite === "start" || s.buildSite === index;
-        const eligibleLevel = record2.houses < 2 || s.boardVersion !== 2 || s.propertyRulesVersion !== 1 || !!s.landmarkOptions?.includes(index);
+        const eligibleSite = s.boardVersion !== 2 || s.constructionRulesVersion !== 1 || s.buildSite === "start" || s.buildSite === index;
+        const eligibleLevel = record2.houses < 2 || s.boardVersion !== 2 || s.constructionRulesVersion !== 1 || !!s.landmarkOptions?.includes(index);
         if (canBuild && eligibleSite && eligibleLevel && record2.houses < levels && s.money[p] >= cost) {
           const tier = s.boardVersion === 2 ? [["\uB2E8\uB3C5\uC8FC\uD0DD", "Casa unifamiliar"], ["\uC544\uD30C\uD2B8", "Apartamentos"], "landmark"][record2.houses] : ["\uC9D1", "Casa"];
           const name = Array.isArray(tier) ? tier : s.economicVersion === 1 || s.economicVersion === 2 ? ["\uB79C\uB4DC\uB9C8\uD06C", "Monumento"] : ["\uD638\uD154", "Hotel"];
@@ -6310,6 +6310,7 @@ function view2(s, p) {
     board: {
       version: s.boardVersion ?? 1,
       propertyRulesVersion: s.propertyRulesVersion ?? 0,
+      constructionRulesVersion: s.constructionRulesVersion ?? 0,
       takeoverOffer: takeoverOffer(s, p),
       extraRoll: !!s.extraRoll,
       doublesCount: s.doublesCount ?? 0,
@@ -6430,7 +6431,7 @@ function validation(s, p, a) {
     const groupSize = board.filter((space) => space.kind === "property" && space.group === tile.group).length;
     const ownedCount = Object.entries(s.properties).filter(([ownedIndex, owned]) => owned.owner === p && board[Number(ownedIndex)]?.group === tile.group).length;
     const currentLevel = s.properties[String(index)].houses;
-    const canBuild = s.boardVersion === 2 ? currentLevel < 3 && (s.propertyRulesVersion !== 1 || (s.buildSite === "start" || s.buildSite === index) && (currentLevel < 2 || !!s.landmarkOptions?.includes(index))) : ownedCount === groupSize && currentLevel < 2;
+    const canBuild = s.boardVersion === 2 ? currentLevel < 3 && (s.constructionRulesVersion !== 1 || (s.buildSite === "start" || s.buildSite === index) && (currentLevel < 2 || !!s.landmarkOptions?.includes(index))) : ownedCount === groupSize && currentLevel < 2;
     if (!canBuild || s.money[p] < marbleBuildCost(tile, s.properties[String(index)].houses, s.economicVersion)) return "Cannot build here";
     return null;
   }
@@ -6867,6 +6868,8 @@ function step(s, p, a) {
     n.money[owner] += price;
     n.properties[index] = { ...prop, owner: p };
     n.takeoverTile = null;
+    n.buildSite = index;
+    n.landmarkOptions = [];
     if (n.rentModifiers) delete n.rentModifiers[index];
     emit(n, "takeover", p, "\uB3C4\uC2DC \uC778\uC218 \uC644\uB8CC", "Ciudad adquirida", `${board[index].name.ko} \xB7 \uAC74\uC124 \uB2E8\uACC4 \uC720\uC9C0 \xB7 \uC774\uC804 \uB3C4\uC2DC \uD6A8\uACFC \uD574\uC81C`, `${board[index].name.es} \xB7 conserva su nivel \xB7 se eliminan los efectos anteriores`, { tile: index, amount: price, fromAccount: p, toAccount: owner, moneyDelta: { [p]: -price, [owner]: price } });
   } else if (a.type === "decline") n.phase = "main";
@@ -6908,6 +6911,7 @@ var marbleEngine = {
       lastEvent: null,
       fundPool: 0,
       propertyRulesVersion: 1,
+      constructionRulesVersion: 1,
       takeoverTile: null,
       doublesCount: 0,
       extraRoll: false,

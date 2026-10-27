@@ -39,10 +39,11 @@ export function MarbleMoneyFlight({event,cash,language}:{event:MoneyEvent|undefi
   if(!flight)return null;
   const {from,to,amount,sender,receiver}=flight;
   const variables={'--money-dx':`${to.x-from.x}px`,'--money-dy':`${to.y-from.y}px`,'--money-dx-mid':`${(to.x-from.x)*.56}px`,'--money-dy-mid':`${(to.y-from.y)*.56}px`,left:from.x,top:from.y} as CSSProperties;
-  const finish=(seat:Account,sign:string,point:Point)=>seat.startsWith('p')&&<span className={`mp-money-endpoint mp-money-endpoint--${sign==='+'?'receive':'send'}`} style={{left:point.x,top:point.y}}><b>{sign}{moneyText(amount,language)}</b><small>{language==='ko'?'잔액':'Saldo'} {moneyText(cash[seat as Seat]??0,language)}</small></span>;
+  const accountLabel=(account:Account)=>account.startsWith('p')?`${language==='ko'?'플레이어':'Jugador'} ${account.slice(1)}`:account==='bank'?language==='ko'?'은행':'Banco':language==='ko'?'공동 기금':'Fondo';
+  const balanceSeat=sender.startsWith('p')?sender:receiver.startsWith('p')?receiver:null;
+  const signedAmount=`${sender.startsWith('p')?'−':'+'}${moneyText(amount,language)}`;
   return <div className="mp-money-flight" aria-hidden="true" data-money-sequence={flight.key}>
-    {finish(sender,'−',from)}
-    <span className="mp-money-token" style={variables}><b>{moneyText(amount,language)}</b></span>
-    {finish(receiver,'+',to)}
+    <span className="mp-money-summary"><span>{accountLabel(sender)} → {accountLabel(receiver)}</span><b>{signedAmount}</b>{balanceSeat&&<small>{language==='ko'?'잔액':'Saldo'} {moneyText(cash[balanceSeat as Seat]??0,language)}</small>}</span>
+    <span className="mp-money-token" style={variables}><b>₩</b></span>
   </div>;
 }

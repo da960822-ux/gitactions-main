@@ -46,6 +46,7 @@ export interface MarbleState {
   pawns?: Record<PlayerId, MarblePawnId>; pawnLocked?: Record<PlayerId, boolean>;
   landmarkOptions?: number[];
   buildSite?: 'start' | number | null;
+  constructionRulesVersion?: 1;
 }
 
 const legacyBoard: MarbleTile[] = [
@@ -229,8 +230,8 @@ function view(s: MarbleState, p: PlayerId) {
         const canBuild = s.boardVersion === 2 || ownedCount === groupSize;
         const levels = s.boardVersion === 2 ? 3 : 2;
         const cost = marbleBuildCost(tile, record.houses, s.economicVersion);
-        const eligibleSite = s.boardVersion !== 2 || s.propertyRulesVersion !== 1 || s.buildSite === 'start' || s.buildSite === index;
-        const eligibleLevel = record.houses < 2 || s.boardVersion !== 2 || s.propertyRulesVersion !== 1 || !!s.landmarkOptions?.includes(index);
+        const eligibleSite = s.boardVersion !== 2 || s.constructionRulesVersion !== 1 || s.buildSite === 'start' || s.buildSite === index;
+        const eligibleLevel = record.houses < 2 || s.boardVersion !== 2 || s.constructionRulesVersion !== 1 || !!s.landmarkOptions?.includes(index);
         if (canBuild && eligibleSite && eligibleLevel && record.houses < levels && s.money[p] >= cost) {
           const tier = s.boardVersion === 2 ? [['단독주택', 'Casa unifamiliar'], ['아파트', 'Apartamentos'], 'landmark'][record.houses] : ['집', 'Casa'];
           const name = Array.isArray(tier) ? tier : (s.economicVersion === 1 || s.economicVersion === 2 ? ['랜드마크', 'Monumento'] : ['호텔', 'Hotel']);
@@ -243,7 +244,7 @@ function view(s: MarbleState, p: PlayerId) {
   return {
     turn: s.active, phase: s.result ? 'finished' : s.phase,
     board: {
-      version: s.boardVersion ?? 1, propertyRulesVersion: s.propertyRulesVersion ?? 0, takeoverOffer: takeoverOffer(s, p), extraRoll: !!s.extraRoll, doublesCount: s.doublesCount ?? 0, landmarkOptions: [...(s.landmarkOptions ?? [])], buildSite: s.buildSite ?? null,
+      version: s.boardVersion ?? 1, propertyRulesVersion: s.propertyRulesVersion ?? 0, constructionRulesVersion: s.constructionRulesVersion ?? 0, takeoverOffer: takeoverOffer(s, p), extraRoll: !!s.extraRoll, doublesCount: s.doublesCount ?? 0, landmarkOptions: [...(s.landmarkOptions ?? [])], buildSite: s.buildSite ?? null,
       cityRouteVersion: s.cityRouteVersion ?? 1,
       tiles: board.map((tile, index) => {
         const houses = s.properties[String(index)]?.houses ?? 0;
@@ -334,7 +335,7 @@ function validation(s: MarbleState, p: PlayerId, a: GameAction): string | null {
     const groupSize = board.filter(space => space.kind === 'property' && space.group === tile.group).length;
     const ownedCount = Object.entries(s.properties).filter(([ownedIndex, owned]) => owned.owner === p && board[Number(ownedIndex)]?.group === tile.group).length;
     const currentLevel = s.properties[String(index)].houses;
-    const canBuild = s.boardVersion === 2 ? currentLevel < 3 && (s.propertyRulesVersion !== 1 || (s.buildSite === 'start' || s.buildSite === index) && (currentLevel < 2 || !!s.landmarkOptions?.includes(index as number))) : ownedCount === groupSize && currentLevel < 2;
+    const canBuild = s.boardVersion === 2 ? currentLevel < 3 && (s.constructionRulesVersion !== 1 || (s.buildSite === 'start' || s.buildSite === index) && (currentLevel < 2 || !!s.landmarkOptions?.includes(index as number))) : ownedCount === groupSize && currentLevel < 2;
     if (!canBuild || s.money[p] < marbleBuildCost(tile, s.properties[String(index)].houses, s.economicVersion)) return 'Cannot build here';
     return null;
   }
@@ -629,7 +630,7 @@ function step(s: MarbleState, p: PlayerId, a: GameAction): MarbleState {
     if (completedGroups(n, p).includes(group)) emit(n, 'monopoly-warning', p, '색상 도시군 완성', 'Grupo de color completo', '이 도시군을 모두 소유했습니다. 독점 경고 카드가 나오면 부담금 대상이 될 수 있습니다.', 'Ya tienes todas las ciudades de este color. Una carta de monopolio puede cobrarte un cargo.', { group, tile: index });
   } else if (a.type === 'takeover') {
     const index = n.takeoverTile!, prop = n.properties[index], owner = prop.owner, price = marbleTakeoverPrice(board[index], prop.houses, n.economicVersion)!;
-    n.money[p] -= price; n.money[owner] += price; n.properties[index] = { ...prop, owner: p }; n.takeoverTile = null;
+    n.money[p] -= price; n.money[owner] += price; n.properties[index] = { ...prop, owner: p }; n.takeoverTile = null; n.buildSite = index; n.landmarkOptions = [];
     if (n.rentModifiers) delete n.rentModifiers[index];
     emit(n, 'takeover', p, '도시 인수 완료', 'Ciudad adquirida', `${board[index].name.ko} · 건설 단계 유지 · 이전 도시 효과 해제`, `${board[index].name.es} · conserva su nivel · se eliminan los efectos anteriores`, { tile: index, amount: price, fromAccount: p, toAccount: owner, moneyDelta: { [p]: -price, [owner]: price } });
   } else if (a.type === 'decline') n.phase = 'main';
@@ -651,7 +652,7 @@ export const marbleEngine: GameEngine<MarbleState> = {
     return { rng, active: 'p1', positions: { p1: 0, p2: 0 }, money: { p1: marbleStartingCash(3), p2: marbleStartingCash(3) }, properties: {}, boardVersion: 2, cityRouteVersion: 3,
       phase: 'roll', pendingTile: null, lastRoll: [], turns: 0, result: null, eventRng: (eventRng + (expandedIds.length - 1) * 0x6d2b79f5) >>> 0,
       eventDeck: shuffle(expandedIds, seededRandom(eventRng)), eventSequence: 0, lastEvent: null, fundPool: 0,
-      propertyRulesVersion: 1, takeoverTile: null, doublesCount: 0, extraRoll: false, landmarkOptions: [], buildSite: null, eventVersion: 3, pendingEvent: null, pendingRent: null, rentPasses: { p1: 0, p2: 0 }, rentModifiers: {}, economicVersion: 3, debt: { p1: 0, p2: 0 }, pendingPayment: null, actionLog: [], actionSequence: 0, pawns: { p1: 'fox', p2: 'cat' }, pawnLocked: { p1: false, p2: false },
+      propertyRulesVersion: 1, constructionRulesVersion: 1, takeoverTile: null, doublesCount: 0, extraRoll: false, landmarkOptions: [], buildSite: null, eventVersion: 3, pendingEvent: null, pendingRent: null, rentPasses: { p1: 0, p2: 0 }, rentModifiers: {}, economicVersion: 3, debt: { p1: 0, p2: 0 }, pendingPayment: null, actionLog: [], actionSequence: 0, pawns: { p1: 'fox', p2: 'cat' }, pawnLocked: { p1: false, p2: false },
       islandTurns: { p1: 0, p2: 0 }, escapePasses: { p1: 0, p2: 0 }, trainReady: { p1: false, p2: false }, pendingTrainFare: null, pendingTrainSource: null, lastMove: null, moveSequence: 0, diceSequence: 0 };
   },
   validateAction: validation, applyAction: step, getPlayerView: view, getResult: state => state.result,

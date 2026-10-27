@@ -31,6 +31,7 @@ export interface FourMarbleState {
   pawns: Record<FourSeat, MarblePawnId>; pawnLocked: Record<FourSeat, boolean>;
   landmarkOptions?: number[];
   buildSite?: 'start' | number | null;
+  constructionRulesVersion?: 1;
 }
 export type MarbleView = FourView & { publicBoard: MarbleTile[]; publicState: Omit<FourMarbleState, 'rng' | 'eventDeck'> };
 const seatMap = <T>(value: T): Record<FourSeat, T> => Object.fromEntries(fourSeats.map(p => [p, value])) as Record<FourSeat, T>;
@@ -192,7 +193,7 @@ function actions(s: FourMarbleState, p: FourSeat): FourView['actions'] {
     }
     for (const [index, prop] of owned(s, p)) {
       const tile = board[Number(index)], cost = marbleBuildCost(tile, prop.houses, s.economicVersion ?? 2);
-      if (prop.houses < 3 && (s.propertyRulesVersion !== 1 || (s.buildSite === 'start' || s.buildSite === Number(index)) && (prop.houses < 2 || !!s.landmarkOptions?.includes(Number(index)))) && s.money[p] >= cost) add(`${tile.name.ko} ${prop.houses + 1}단계 건설 · ${cost}`, `Construir nivel ${prop.houses + 1} en ${tile.name.es} · ${cost}`, 'build', { tile: Number(index) });
+      if (prop.houses < 3 && (s.constructionRulesVersion !== 1 || (s.buildSite === 'start' || s.buildSite === Number(index)) && (prop.houses < 2 || !!s.landmarkOptions?.includes(Number(index)))) && s.money[p] >= cost) add(`${tile.name.ko} ${prop.houses + 1}단계 건설 · ${cost}`, `Construir nivel ${prop.houses + 1} en ${tile.name.es} · ${cost}`, 'build', { tile: Number(index) });
     }
     add(s.extraRoll ? '더블 · 한 번 더 굴리기' : '차례 마치기', s.extraRoll ? 'Dobles · lanzar otra vez' : 'Terminar turno', 'endTurn');
   }
@@ -207,7 +208,7 @@ function validation(s: FourMarbleState, p: FourSeat, a: GameAction): string | nu
 export const fourMarbleEngine: FourEngine = {
   id: 'marble',
   createInitialState(seed): FourMarbleState {
-    return { propertyRulesVersion: 1, economicVersion: 3, takeoverTile: null, doublesCount: 0, extraRoll: false, landmarkOptions: [], buildSite: null, rng: seed >>> 0, active: 'p1', phase: 'roll', positions: seatMap(0), money: seatMap(marbleStartingCash(3)), debt: seatMap(0), properties: {}, eliminated: seatMap(false), islandTurns: seatMap(0), trainReady: seatMap(false), escapePasses: seatMap(0), rentPasses: seatMap(0), eventDeck: shuffle(eventIds, seededRandom(seed ^ 0xa5a5a5a5)), fundPool: 0, turns: 0, result: null, pendingTile: null, trainFare: 100, trainFromCard: false, pendingRent: null, pendingEvent: null, pendingPayment: null, modifiers: {}, lastRoll: [], log: [], actionLog: [], actionSequence: 0, diceSequence: 0, moveSequence: 0, lastMove: null, pawns: { p1: 'fox', p2: 'cat', p3: 'penguin', p4: 'astronaut' }, pawnLocked: seatMap(false) };
+    return { propertyRulesVersion: 1, constructionRulesVersion: 1, economicVersion: 3, takeoverTile: null, doublesCount: 0, extraRoll: false, landmarkOptions: [], buildSite: null, rng: seed >>> 0, active: 'p1', phase: 'roll', positions: seatMap(0), money: seatMap(marbleStartingCash(3)), debt: seatMap(0), properties: {}, eliminated: seatMap(false), islandTurns: seatMap(0), trainReady: seatMap(false), escapePasses: seatMap(0), rentPasses: seatMap(0), eventDeck: shuffle(eventIds, seededRandom(seed ^ 0xa5a5a5a5)), fundPool: 0, turns: 0, result: null, pendingTile: null, trainFare: 100, trainFromCard: false, pendingRent: null, pendingEvent: null, pendingPayment: null, modifiers: {}, lastRoll: [], log: [], actionLog: [], actionSequence: 0, diceSequence: 0, moveSequence: 0, lastMove: null, pawns: { p1: 'fox', p2: 'cat', p3: 'penguin', p4: 'astronaut' }, pawnLocked: seatMap(false) };
   },
   validateAction: validation,
   applyAction(state: FourMarbleState, p, a): FourMarbleState {
@@ -254,7 +255,7 @@ export const fourMarbleEngine: FourEngine = {
     else if (a.type === 'buy') { const index = s.pendingTile!, price = marbleLandPrice(board[index], s.economicVersion); s.money[p] -= price; s.properties[index] = { owner: p, houses: 0 }; s.phase = 'main'; emit(s, 'buy', p, l('도시 구매 완료', 'Ciudad comprada'), board[index].name, {tile:index, amount:price, fromAccount:p, toAccount:'bank', moneyDelta:{[p]:-price}}); }
     else if (a.type === 'takeover') {
       const index = Number(x.tile), prop = s.properties[index], owner = prop.owner, cost = marbleTakeoverPrice(board[index], prop.houses, s.economicVersion ?? 2)!;
-      s.money[p] -= cost; s.money[owner] += cost; prop.owner = p; s.takeoverTile = null; delete s.modifiers[index];
+      s.money[p] -= cost; s.money[owner] += cost; prop.owner = p; s.takeoverTile = null; s.buildSite = index; s.landmarkOptions = []; delete s.modifiers[index];
       emit(s, 'takeover', p, l('도시 인수 완료', 'Ciudad adquirida'), l('건설 단계 유지 · 이전 도시 효과 해제', 'Conserva su nivel · se eliminan los efectos anteriores'), { tile: index, amount: cost, fromAccount: p, toAccount: owner, moneyDelta: { [p]: -cost, [owner]: cost } });
     }
     else if (a.type === 'decline') s.phase = 'main';

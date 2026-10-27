@@ -101,11 +101,12 @@ describe('Marble board movement path', () => {
   it('maps all 32- and 40-space boards to unique perimeter cells and rejects invalid cells', () => {
     for (const size of [32, 40]) {
       const positions = Array.from({ length: size }, (_, index) => marbleGridPosition(index, size)!);
-      expect(positions.every(([x, y]) => x >= 1 && x <= (size === 32 ? 9 : 11) && y >= 1 && y <= (size === 32 ? 9 : 11))).toBe(true);
+      expect(positions.every(([x, y]) => x >= 1 && x <= (size === 32 ? 9 : 12) && y >= 1 && y <= (size === 32 ? 9 : 10))).toBe(true);
       expect(new Set(positions.map(position => position.join(','))).size).toBe(size);
       expect(marbleGridPosition(-1, size)).toBeUndefined();
       expect(marbleGridPosition(size, size)).toBeUndefined();
     }
+    expect([0, 12, 20, 32, 39].map(index => marbleGridPosition(index, 40))).toEqual([[12, 10], [1, 9], [1, 1], [12, 2], [12, 9]]);
     expect(marbleGridPosition(0, 24)).toBeUndefined();
   });
 });

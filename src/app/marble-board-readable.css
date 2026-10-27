@@ -1,0 +1,107 @@
+/* Desktop route: give every city a legible building, name and price band. */
+@media (max-width:1099px) {
+  :is(.marble-premium,.marble-native-team).is-modern .mp-board-grid--40 {
+    grid-template-columns:repeat(12,minmax(0,1fr));
+    grid-template-rows:repeat(10,minmax(0,1fr));
+  }
+  :is(.marble-premium,.marble-native-team).is-modern .mp-board-grid--40 .mp-board-center { grid-column:2/12; grid-row:2/10; }
+}
+@media (min-width:1100px) {
+  .marble-premium.is-modern .mp-header { display:none; }
+  :is(.marble-premium,.marble-native-team).is-modern .mp-board-grid--40,
+  .marble-native-team.marble-team-board .mt-four-board .mp-board-grid--40 {
+    height:clamp(640px,calc(100svh - 160px),700px); min-height:0; max-height:none;
+    grid-template-columns:clamp(175px,15.5vw,270px) repeat(10,minmax(0,1fr)) clamp(175px,15.5vw,270px);
+    grid-template-rows:100px repeat(8,minmax(0,1fr)) 100px;
+  }
+  .marble-native-team.marble-team-board .mt-four-board .mp-board-grid--40 {
+    height:clamp(650px,calc(100svh - 120px),740px);
+  }
+  :is(.marble-premium,.marble-native-team).is-modern .mp-board-grid--40 .mp-board-center { grid-column:2/12; grid-row:2/10; }
+  :is(.marble-premium,.marble-native-team).is-modern .mp-board-grid--40 .mp-kind-property .mp-property-tile-view {
+    grid-template-rows:16px minmax(0,1fr) 16px;
+  }
+  :is(.marble-premium,.marble-native-team).is-modern .mp-board-grid--40 .mp-kind-property .mp-property-tile-copy .mp-tile-name {
+    height:16px; min-height:16px; max-height:16px; padding:0 2px 0 13px;
+    font-size:12px; line-height:16px;
+  }
+  :is(.marble-premium,.marble-native-team).is-modern .mp-board-grid--40 .mp-tile--horizontal.mp-kind-property .mp-property-tile-copy .mp-tile-name {
+    padding:0 1px; font-size:12px; line-height:16px; letter-spacing:-.065em;
+  }
+  :is(.marble-premium,.marble-native-team).is-modern .mp-board-grid--40 .mp-tile--horizontal.mp-kind-property .mp-tile-top { top:18px; }
+  :is(.marble-premium,.marble-native-team).is-modern .mp-board-grid--40 .mp-kind-property .mp-property-tile-copy .mp-tile-economy,
+  :is(.marble-premium,.marble-native-team).is-modern .mp-board-grid--40 .mp-kind-property .mp-property-tile-copy .mp-tile-economy b {
+    height:16px; font-size:12px; line-height:16px;
+  }
+  :is(.marble-premium,.marble-native-team).is-modern .mp-board-grid--40 .mp-kind-property .mp-owner {
+    width:17px; min-width:17px; height:17px; font-size:10px;
+  }
+  :is(.marble-premium,.marble-native-team).is-modern .mp-board-grid--40 .mp-kind-property .mp-building-badge {
+    top:20px; right:3px; min-width:23px; height:18px; font-size:11px; line-height:18px;
+  }
+  :is(.marble-premium,.marble-native-team).is-modern .mp-board-grid--40 .mp-kind-property .mp-building-badge::before {
+    font-size:9px; line-height:18px;
+  }
+  :is(.marble-premium,.marble-native-team).is-modern .mp-board-grid--40 .mp-tile--horizontal.mp-kind-property .mp-building-badge { top:38px; }
+  :is(.marble-premium,.marble-native-team).is-modern .mp-board-grid--40 .mp-kind-property .mp-property-tile-art:is([data-building-level="1"],[data-building-level="2"],[data-building-level="3"]) {
+    width:100%; height:calc(100% - 32px); top:16px; bottom:auto; overflow:hidden;
+  }
+  :is(.marble-premium,.marble-native-team).is-modern .mp-board-grid--40 :is([data-mp-edge="top"],[data-mp-edge="lefttop"],[data-mp-edge="righttop"]) .mp-property-tile-art:is([data-building-level="1"],[data-building-level="2"],[data-building-level="3"]) {
+    top:16px; bottom:auto;
+  }
+  :is(.marble-premium,.marble-native-team).is-modern .mp-board-grid--40 :is([data-mp-edge="left"],[data-mp-edge="right"]) .mp-property-tile-art:is([data-building-level="1"],[data-building-level="2"],[data-building-level="3"]) {
+    width:clamp(104px,9vw,140px); height:calc(100% - 4px); top:2px; bottom:auto; overflow:hidden;
+  }
+  :is(.marble-premium,.marble-native-team).is-modern .mp-board-grid--40 [data-mp-edge="left"] .mp-property-tile-art:is([data-building-level="1"],[data-building-level="2"],[data-building-level="3"]) { left:auto; right:3px; }
+  :is(.marble-premium,.marble-native-team).is-modern .mp-board-grid--40 [data-mp-edge="right"] .mp-property-tile-art:is([data-building-level="1"],[data-building-level="2"],[data-building-level="3"]) { left:3px; right:auto; }
+  :is(.marble-premium,.marble-native-team).is-modern .mp-board-grid--40 :is([data-mp-edge="left"],[data-mp-edge="right"]).mp-kind-property .mp-property-tile-view { position:relative; display:block; padding:0; }
+  :is(.marble-premium,.marble-native-team).is-modern .mp-board-grid--40 [data-mp-edge="left"].mp-kind-property .mp-property-tile-copy :is(.mp-tile-name,.mp-tile-economy) { position:absolute; left:3px; right:auto; width:clamp(90px,7vw,115px); padding:0; text-align:center; }
+  :is(.marble-premium,.marble-native-team).is-modern .mp-board-grid--40 [data-mp-edge="right"].mp-kind-property .mp-property-tile-copy :is(.mp-tile-name,.mp-tile-economy) { position:absolute; right:3px; left:auto; width:clamp(90px,7vw,115px); padding:0; text-align:center; }
+  :is(.marble-premium,.marble-native-team).is-modern .mp-board-grid--40 :is(.mp-tile--west,.mp-tile--east).mp-kind-property .mp-property-tile-copy .mp-tile-name { font-size:12px; line-height:16px; letter-spacing:-.06em; }
+  :is(.marble-premium,.marble-native-team).is-modern .mp-board-grid--40 :is([data-mp-edge="left"],[data-mp-edge="right"]).mp-kind-property .mp-property-tile-copy .mp-tile-name { top:3px; }
+  :is(.marble-premium,.marble-native-team).is-modern .mp-board-grid--40 :is([data-mp-edge="left"],[data-mp-edge="right"]).mp-kind-property .mp-property-tile-copy .mp-tile-economy { bottom:3px; }
+  :is(.marble-premium,.marble-native-team).is-modern .mp-board-grid--40 :is([data-mp-edge="left"],[data-mp-edge="right"]).mp-kind-property .mp-property-tile-art { top:2px; bottom:auto; width:clamp(104px,9vw,140px); height:calc(100% - 4px); overflow:hidden; }
+  :is(.marble-premium,.marble-native-team).is-modern .mp-board-grid--40 [data-mp-edge="left"].mp-kind-property .mp-property-tile-art { right:2px; left:auto; }
+  :is(.marble-premium,.marble-native-team).is-modern .mp-board-grid--40 [data-mp-edge="right"].mp-kind-property .mp-property-tile-art { left:2px; right:auto; }
+  :is(.marble-premium,.marble-native-team).is-modern .mp-board-grid--40 .mp-tile .mp-pawns {
+    min-height:68px; height:auto; padding:3px 6px; gap:4px;
+  }
+  :is(.marble-premium,.marble-native-team).is-modern .mp-board-grid--40 .mp-tile .mp-pawn-marker,
+  .marble-native-team.marble-team-board.is-modern .mp-board-grid--40 .mp-tile .mp-pawn-marker,
+  .marble-native-team.marble-team-board.is-modern .mp-board-grid--40 .mp-tile:is([data-mp-edge="rightbottom"],[data-mp-edge="leftbottom"],[data-mp-edge="righttop"],[data-mp-edge="lefttop"]) .mp-pawn-marker {
+    flex:0 0 50px; width:50px; height:60px;
+  }
+  :is(.marble-premium,.marble-native-team).is-modern .mp-board-grid--40 .mp-tile .mp-pawn-marker .marble-pawn { width:50px; height:56px; }
+  :is(.marble-premium,.marble-native-team).is-modern .mp-board-grid--40 .mp-tile .mp-pawn-marker::after { width:19px; height:19px; font-size:12px; }
+  :is(.marble-premium,.marble-native-team).is-modern .mp-board-grid--40 :is([data-mp-edge="bottom"],[data-mp-edge="rightbottom"],[data-mp-edge="leftbottom"]) .mp-pawns { bottom:calc(100% + 5px); }
+  :is(.marble-premium,.marble-native-team).is-modern .mp-board-grid--40 :is([data-mp-edge="top"],[data-mp-edge="righttop"],[data-mp-edge="lefttop"]) .mp-pawns { top:calc(100% + 5px); }
+  :is(.marble-premium,.marble-native-team).is-modern .mp-board-grid--40 [data-mp-edge="left"] .mp-pawns { left:calc(100% + 22px); }
+  :is(.marble-premium,.marble-native-team).is-modern .mp-board-grid--40 [data-mp-edge="right"] .mp-pawns { right:calc(100% + 22px); }
+  :is(.marble-premium,.marble-native-team).is-modern .mp-board-grid--40 :is([data-mp-edge="rightbottom"],[data-mp-edge="righttop"]) .mp-pawns {
+    right:calc(100% - 25px); left:auto;
+  }
+  :is(.marble-premium,.marble-native-team).is-modern .mp-board-grid--40 :is([data-mp-edge="leftbottom"],[data-mp-edge="lefttop"]) .mp-pawns {
+    left:calc(100% - 25px); right:auto;
+  }
+  :is(.marble-premium,.marble-native-team).is-modern .mp-board-grid--40 :is([data-mp-edge="rightbottom"],[data-mp-edge="leftbottom"]) .mp-pawns { bottom:calc(100% + 5px); }
+  :is(.marble-premium,.marble-native-team).is-modern .mp-board-grid--40 :is([data-mp-edge="righttop"],[data-mp-edge="lefttop"]) .mp-pawns { top:calc(100% + 5px); }
+  .marble-native-team.marble-team-board.is-modern .mp-board-grid--40 .mp-tile:is([data-mp-edge="rightbottom"],[data-mp-edge="leftbottom"]) .mp-pawns { bottom:calc(100% + 5px); }
+  .marble-native-team.marble-team-board.is-modern .mp-board-grid--40 .mp-tile:is([data-mp-edge="righttop"],[data-mp-edge="lefttop"]) .mp-pawns { top:calc(100% + 5px); }
+  .marble-native-team.marble-team-board.is-modern .mp-board-grid--40 .mp-tile[data-mp-edge="rightbottom"] .mp-pawns,
+  .marble-native-team.marble-team-board.is-modern .mp-board-grid--40 .mp-tile[data-mp-edge="righttop"] .mp-pawns { right:calc(100% - 25px); left:auto; }
+  .marble-native-team.marble-team-board.is-modern .mp-board-grid--40 .mp-tile[data-mp-edge="leftbottom"] .mp-pawns,
+  .marble-native-team.marble-team-board.is-modern .mp-board-grid--40 .mp-tile[data-mp-edge="lefttop"] .mp-pawns { left:calc(100% - 25px); right:auto; }
+  .marble-native-team.marble-team-board.is-modern .mp-board-grid--40 .mp-tile:is([data-mp-edge="rightbottom"],[data-mp-edge="leftbottom"]) .mp-pawns { bottom:calc(100% + 5px); }
+  .marble-native-team.marble-team-board.is-modern .mp-board-grid--40 .mp-tile:is([data-mp-edge="righttop"],[data-mp-edge="lefttop"]) .mp-pawns { top:calc(100% + 5px); }
+  :is(.marble-premium,.marble-native-team).is-modern .mp-map-hud { top:8px; right:8px; bottom:auto; }
+  :is(.marble-premium,.marble-native-team).is-modern .mp-board-center { background:#d1dfd2; }
+  :is(.marble-premium,.marble-native-team).is-modern .mp-world-map { opacity:.14; }
+  :is(.marble-premium,.marble-native-team).is-modern .mp-board-center .mp-center-stage { width:min(760px,80%); }
+  :is(.marble-premium,.marble-native-team).is-modern .mp-board-center .mp-center-stage.mp-stage--secondary {
+    width:min(465px,65%); grid-template-columns:70px minmax(0,1fr); gap:9px; padding:10px 12px;
+  }
+  :is(.marble-premium,.marble-native-team).is-modern .mp-center-stage.mp-stage--secondary .mp-stage-art { width:70px; height:86px; }
+  :is(.marble-premium,.marble-native-team).is-modern .mp-center-stage.mp-stage--secondary .mp-stage-details h2 { font-size:18px; margin:2px 0; }
+  :is(.marble-premium,.marble-native-team).is-modern .mp-center-stage.mp-stage--secondary .mp-stage-details .mp-landmark-rule { display:none; }
+
+}

@@ -25,6 +25,7 @@ export interface BeginnerGuideOptions {
   marbleCityRouteVersion?: number;
   /** 1 enables acquisition, color bonuses, doubles and emergency asset sales. */
   marblePropertyRulesVersion?: number;
+  marbleConstructionRulesVersion?: number;
 }
 
 type BeginnerGameId = Extract<GameId, 'davinci' | 'catchmind' | 'marble'>;
@@ -201,7 +202,7 @@ export function getBeginnerGuide(
   if (gameId === 'marble' && options.marblePropertyRulesVersion === 1 && options.marbleEconomyVersion === 3) {
     guide = { ...guide, steps: [
       { ...guide.steps[0], body: guide.steps[0].body.replace('출발을 통과하면 200', `출발을 통과하면 ${marblePassStartSalary(3)}`).replace('Al pasar por Salida cobras 200', `Al pasar por Salida cobras ${marblePassStartSalary(3)}`) },
-      { ...guide.steps[1], body: guide.steps[1].body + (language === 'ko' ? ' 처음 구매한 도시에서는 2단계까지, 랜드마크는 기존 2단계 도시 재방문이나 출발 정확 도착 때 건설해요.' : ' En la primera compra puedes construir hasta nivel 2; el monumento exige volver a una ciudad propia de nivel 2 o llegar exactamente a Salida.') },
+      { ...guide.steps[1], body: guide.steps[1].body + (options.marbleConstructionRulesVersion === 1 ? (language === 'ko' ? ' 처음 구매한 도시에서는 2단계까지, 랜드마크는 기존 2단계 도시 재방문이나 출발 정확 도착 때 건설해요.' : ' En la primera compra puedes construir hasta nivel 2; el monumento exige volver a una ciudad propia de nivel 2 o llegar exactamente a Salida.') : '') },
       guide.steps[2],
     ] };
   }
