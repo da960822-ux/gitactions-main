@@ -234,7 +234,7 @@ describe('Marble 40-space house-rule engine', () => {
     expect(purchased.boardVersion).toBe(2);
   });
 
-  it('allows three upgrades on one owned city and scales rent x1/x2/x4/x8', () => {
+  it('allows three upgrades in saved rooms and scales rent x1/x2/x4/x8', () => {
     let s: MarbleState = { ...initial(), phase: 'main', properties: { '1': { owner: 'p1', houses: 0 } }, money: { p1: 1000, p2: 1500 } };
     for (const tier of [1, 2, 3]) {
       expect(marbleEngine.validateAction(s, 'p1', { type: 'build', payload: { tile: 1 } })).toBeNull();

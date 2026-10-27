@@ -51,13 +51,13 @@ describe('native four-player Marble screen',()=>{
   expect(html).toContain('구매 후 현금 2,920');
  });
  it('uses one economy version for the build decision and city ledger',()=>{
-  const s=state();s.phase='main';s.positions.p1=1;s.pendingTile=1;s.properties[1]={owner:'p1',houses:1};
+  const s=state();s.phase='main';s.positions.p1=1;s.pendingTile=1;s.buildSite=1;s.properties[1]={owner:'p1',houses:1};
   const html=render(s);
   expect(html).toContain('광주 2단계 건설 · 50');
   expect(html).toContain('40 → 60');
   expect(html).toContain('<td>50</td>');
   expect(html).not.toContain('광주 2단계 건설 · 100');
-  const saved=legacyState();saved.phase='main';saved.positions.p1=1;saved.pendingTile=1;saved.properties[1]={owner:'p1',houses:1};
+  const saved=legacyState();saved.phase='main';saved.positions.p1=1;saved.pendingTile=1;saved.buildSite=1;saved.properties[1]={owner:'p1',houses:1};
   const savedHtml=render(saved);
   expect(savedHtml).toContain('광주 2단계 건설 · 60');
   expect(savedHtml).toContain('<td>60</td>');
@@ -78,7 +78,7 @@ describe('native four-player Marble screen',()=>{
   expect(html).not.toContain('id="mt-action-primary"');
  });
  it('keeps actual history, team settlement, and owned-city building available',()=>{
-  const s=state();s.phase='main';s.properties[1]={owner:'p1',houses:1};s.actionLog=[{sequence:1,type:'event-card',actor:'p4',title:{ko:'정전',es:'Apagón'},text:{ko:'도시 선택',es:'Elegir ciudad'},cardId:'blackout'}];s.actionSequence=1;
+  const s=state();s.phase='main';s.buildSite=1;s.properties[1]={owner:'p1',houses:1};s.actionLog=[{sequence:1,type:'event-card',actor:'p4',title:{ko:'정전',es:'Apagón'},text:{ko:'도시 선택',es:'Elegir ciudad'},cardId:'blackout'}];s.actionSequence=1;
   const html=render(s);
   expect(html).toContain('건설 가능한 도시 1곳');expect(html).toContain('내 도시 1');expect(html).toContain('정전');
   s.result={winner:'A',scores:{A:4000,B:3000},reason:{ko:'팀 정산',es:'Balance por equipos'}};s.phase='finished';

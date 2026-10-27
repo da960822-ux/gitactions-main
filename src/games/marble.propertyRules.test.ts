@@ -74,9 +74,43 @@ for (const [name, engine, four] of [['1v1', marbleEngine, false], ['2v2', fourMa
     n=act(n,'endTurn');expect(n.active).toBe('p1');expect(n.phase).toBe('roll');
   });
   it('removes a previously applied blackout when upgrading its city into a landmark',()=>{
-    const s=fresh();s.phase='main';s.properties[4]={owner:'p1',houses:2};
+    const s=fresh();s.phase='main';s.positions.p1=4;s.pendingTile=4;s.buildSite=4;s.properties[4]={owner:'p1',houses:2};s.landmarkOptions=[4];
     if(four)s.modifiers[4]={blackout:'p2'};else s.rentModifiers[4]={blackout:{owner:'p1',playerId:'p2',source:'blackout'}};
     const n=act(s,'build',{tile:4});expect(n.properties[4].houses).toBe(3);expect((four?n.modifiers:n.rentModifiers)[4]?.blackout).toBeUndefined();
+  });
+  it('permits at most level two on purchase, then one landmark only after exact Start or a revisit',()=>{
+    const s=fresh();s.phase='decision';s.pendingTile=4;s.positions.p1=4;s.buildSite=4;
+    let n=act(s,'buy');n=act(n,'build',{tile:4});n=act(n,'build',{tile:4});
+    expect(n.properties[4].houses).toBe(2);
+    expect(choices(n)).not.toContainEqual({type:'build',payload:{tile:4}});
+    expect(engine.validateAction(n,'p1',{type:'build',payload:{tile:4}})).toBeTruthy();
+    expect(choices({...n,buildSite:null,properties:{...n.properties,5:{owner:'p1',houses:0}}})).not.toContainEqual({type:'build',payload:{tile:5}});
+    const passed={...n,phase:'roll',rng:dice(1,1),positions:{...n.positions,p1:39}};
+    const afterPass=act(passed,'roll');expect(afterPass.positions.p1).toBe(1);
+    expect(choices(act(afterPass,'decline'))).not.toContainEqual({type:'build',payload:{tile:4}});
+    const exact={...n,phase:'roll',rng:dice(1,1),positions:{...n.positions,p1:38},properties:{...n.properties,5:{owner:'p1',houses:2}}};
+    const atStart=act(exact,'roll');expect(atStart.positions.p1).toBe(0);
+    expect(choices(atStart)).toContainEqual({type:'build',payload:{tile:4}});
+    expect(choices(atStart)).toContainEqual({type:'build',payload:{tile:5}});
+    const landmark=act(atStart,'build',{tile:5});expect(landmark.properties[5].houses).toBe(3);
+    expect(choices(landmark)).not.toContainEqual({type:'build',payload:{tile:4}});
+    const revisit=act({...n,phase:'roll',rng:dice(1,2),positions:{...n.positions,p1:1}},'roll');
+    expect(revisit.positions.p1).toBe(4);
+    expect(choices(revisit)).toContainEqual({type:'build',payload:{tile:4}});
+    expect(engine.validateAction(revisit,'p1',{type:'build',payload:{tile:5}})).toBeTruthy();
+    const ai=four?fourMarbleEngine.chooseAiAction(view(revisit),'p1',()=>.5):chooseSimpleAiAction('marble',view(revisit),'p1',()=>.5);
+    expect(ai).toBeTruthy();expect(engine.validateAction(revisit,'p1',ai!)).toBeNull();
+  });
+  it('treats the Move to Start card as exact arrival and expires its one landmark choice after the turn',()=>{
+    const s=fresh();s.rng=dice(1,1);s.eventDeck=['advance-start'];s.properties[4]={owner:'p1',houses:2};
+    const arrived=act(s,'roll');expect(arrived.positions.p1).toBe(0);
+    expect(choices(arrived)).toContainEqual({type:'build',payload:{tile:4}});
+    const finished=act(arrived,'endTurn');
+    expect(finished.landmarkOptions).toEqual([]);
+    expect(choices({...finished,active:'p1',phase:'main'})).not.toContainEqual({type:'build',payload:{tile:4}});
+    const current=engine.createInitialState(1) as any;current.rng=dice(1,1);current.eventDeck=['advance-start'];current.properties[4]={owner:'p1',houses:2};
+    const paid=act(current,'roll');expect(paid.money.p1).toBe(3300);expect(paid.positions.p1).toBe(0);
+    expect(choices(paid)).toContainEqual({type:'build',payload:{tile:4}});
   });
   it('completes new-version AI matches without illegal actions, negative cash or unbounded extra rolls',()=>{
     for(const seed of [7,29,71]){

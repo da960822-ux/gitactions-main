@@ -86,8 +86,8 @@ describe('Marble versioned economy profile', () => {
   });
 
   it('debits and previews the same first build after purchase on both routes', () => {
-    let two: MarbleState = { ...marbleEngine.createInitialState(5), phase: 'decision', positions: { p1: 1, p2: 0 }, pendingTile: 1 };
-    let four = { ...fourMarbleEngine.createInitialState(5), phase: 'decision' as const, positions: { ...fourMarbleEngine.createInitialState(5).positions, p1: 1 }, pendingTile: 1 };
+    let two: MarbleState = { ...marbleEngine.createInitialState(5), phase: 'decision', positions: { p1: 1, p2: 0 }, pendingTile: 1, buildSite: 1 };
+    let four = { ...fourMarbleEngine.createInitialState(5), phase: 'decision' as const, positions: { ...fourMarbleEngine.createInitialState(5).positions, p1: 1 }, pendingTile: 1, buildSite: 1 };
     two = marbleEngine.applyAction(two, 'p1', { type: 'buy' });
     four = fourMarbleEngine.applyAction(four, 'p1', { type: 'buy' });
     expect(two.actionLog?.at(-1)).toMatchObject({ type: 'buy', amount: 80 });

@@ -1,0 +1,992 @@
+[
+  {
+    "filename": "2p-start-1280x800.png",
+    "board": {
+      "x": 12,
+      "y": 106,
+      "width": 1256,
+      "height": 618
+    },
+    "pawnCount": 2,
+    "pawns": [
+      {
+        "seat": "p1",
+        "rect": {
+          "x": 1190,
+          "y": 620,
+          "width": 32,
+          "height": 39
+        }
+      },
+      {
+        "seat": "p2",
+        "rect": {
+          "x": 1225,
+          "y": 620,
+          "width": 32,
+          "height": 39
+        }
+      }
+    ],
+    "occupiedTile": {
+      "x": 1152,
+      "y": 666,
+      "width": 113,
+      "height": 55
+    },
+    "stage": {
+      "x": 445,
+      "y": 335,
+      "width": 390,
+      "height": 160
+    },
+    "bodyHeight": 800,
+    "errors": []
+  },
+  {
+    "filename": "2p-start-1440x900.png",
+    "board": {
+      "x": 12,
+      "y": 106,
+      "width": 1416,
+      "height": 710
+    },
+    "pawnCount": 2,
+    "pawns": [
+      {
+        "seat": "p1",
+        "rect": {
+          "x": 1350,
+          "y": 704,
+          "width": 32,
+          "height": 39
+        }
+      },
+      {
+        "seat": "p2",
+        "rect": {
+          "x": 1385,
+          "y": 704,
+          "width": 32,
+          "height": 39
+        }
+      }
+    ],
+    "occupiedTile": {
+      "x": 1298,
+      "y": 750,
+      "width": 127,
+      "height": 63
+    },
+    "stage": {
+      "x": 525,
+      "y": 381,
+      "width": 390,
+      "height": 160
+    },
+    "bodyHeight": 900,
+    "errors": []
+  },
+  {
+    "filename": "2p-start-1847x872.png",
+    "board": {
+      "x": 12,
+      "y": 106,
+      "width": 1823,
+      "height": 690
+    },
+    "pawnCount": 2,
+    "pawns": [
+      {
+        "seat": "p1",
+        "rect": {
+          "x": 1757,
+          "y": 686,
+          "width": 32,
+          "height": 39
+        }
+      },
+      {
+        "seat": "p2",
+        "rect": {
+          "x": 1792,
+          "y": 686,
+          "width": 32,
+          "height": 39
+        }
+      }
+    ],
+    "occupiedTile": {
+      "x": 1668,
+      "y": 732,
+      "width": 164,
+      "height": 61
+    },
+    "stage": {
+      "x": 728,
+      "y": 371,
+      "width": 390,
+      "height": 160
+    },
+    "bodyHeight": 872,
+    "errors": []
+  },
+  {
+    "filename": "2p-built-1280x800.png",
+    "board": {
+      "x": 12,
+      "y": 106,
+      "width": 1256,
+      "height": 618
+    },
+    "pawnCount": 2,
+    "pawns": [
+      {
+        "seat": "p1",
+        "rect": {
+          "x": 1111,
+          "y": 620,
+          "width": 32,
+          "height": 39
+        }
+      },
+      {
+        "seat": "p2",
+        "rect": {
+          "x": 770,
+          "y": 620,
+          "width": 32,
+          "height": 39
+        }
+      }
+    ],
+    "occupiedTile": {
+      "x": 1039,
+      "y": 666,
+      "width": 113,
+      "height": 55
+    },
+    "stage": {
+      "x": 360,
+      "y": 295,
+      "width": 560,
+      "height": 239
+    },
+    "bodyHeight": 800,
+    "errors": [],
+    "selectedPanel": {
+      "x": 380,
+      "y": 32,
+      "width": 520,
+      "height": 736
+    }
+  },
+  {
+    "filename": "2p-built-1440x900.png",
+    "board": {
+      "x": 12,
+      "y": 106,
+      "width": 1416,
+      "height": 710
+    },
+    "pawnCount": 2,
+    "pawns": [
+      {
+        "seat": "p1",
+        "rect": {
+          "x": 1257,
+          "y": 704,
+          "width": 32,
+          "height": 39
+        }
+      },
+      {
+        "seat": "p2",
+        "rect": {
+          "x": 872,
+          "y": 704,
+          "width": 32,
+          "height": 39
+        }
+      }
+    ],
+    "occupiedTile": {
+      "x": 1169,
+      "y": 750,
+      "width": 127,
+      "height": 63
+    },
+    "stage": {
+      "x": 440,
+      "y": 337,
+      "width": 560,
+      "height": 248
+    },
+    "bodyHeight": 900,
+    "errors": [],
+    "selectedPanel": {
+      "x": 460,
+      "y": 32,
+      "width": 520,
+      "height": 836
+    }
+  },
+  {
+    "filename": "2p-built-1847x872.png",
+    "board": {
+      "x": 12,
+      "y": 106,
+      "width": 1823,
+      "height": 690
+    },
+    "pawnCount": 2,
+    "pawns": [
+      {
+        "seat": "p1",
+        "rect": {
+          "x": 1627,
+          "y": 686,
+          "width": 32,
+          "height": 39
+        }
+      },
+      {
+        "seat": "p2",
+        "rect": {
+          "x": 1131,
+          "y": 686,
+          "width": 32,
+          "height": 39
+        }
+      }
+    ],
+    "occupiedTile": {
+      "x": 1502,
+      "y": 732,
+      "width": 164,
+      "height": 61
+    },
+    "stage": {
+      "x": 643,
+      "y": 324,
+      "width": 560,
+      "height": 253
+    },
+    "bodyHeight": 872,
+    "errors": [],
+    "selectedPanel": {
+      "x": 664,
+      "y": 32,
+      "width": 520,
+      "height": 808
+    }
+  },
+  {
+    "filename": "2p-landmark-1280x800.png",
+    "board": {
+      "x": 12,
+      "y": 106,
+      "width": 1256,
+      "height": 618
+    },
+    "pawnCount": 2,
+    "pawns": [
+      {
+        "seat": "p1",
+        "rect": {
+          "x": 1190,
+          "y": 620,
+          "width": 32,
+          "height": 39
+        }
+      },
+      {
+        "seat": "p2",
+        "rect": {
+          "x": 1225,
+          "y": 620,
+          "width": 32,
+          "height": 39
+        }
+      }
+    ],
+    "occupiedTile": {
+      "x": 1152,
+      "y": 666,
+      "width": 113,
+      "height": 55
+    },
+    "stage": {
+      "x": 360,
+      "y": 221,
+      "width": 560,
+      "height": 388
+    },
+    "bodyHeight": 800,
+    "errors": []
+  },
+  {
+    "filename": "2p-landmark-1440x900.png",
+    "board": {
+      "x": 12,
+      "y": 106,
+      "width": 1416,
+      "height": 710
+    },
+    "pawnCount": 2,
+    "pawns": [
+      {
+        "seat": "p1",
+        "rect": {
+          "x": 1350,
+          "y": 704,
+          "width": 32,
+          "height": 39
+        }
+      },
+      {
+        "seat": "p2",
+        "rect": {
+          "x": 1385,
+          "y": 704,
+          "width": 32,
+          "height": 39
+        }
+      }
+    ],
+    "occupiedTile": {
+      "x": 1298,
+      "y": 750,
+      "width": 127,
+      "height": 63
+    },
+    "stage": {
+      "x": 440,
+      "y": 262,
+      "width": 560,
+      "height": 397
+    },
+    "bodyHeight": 900,
+    "errors": []
+  },
+  {
+    "filename": "2p-landmark-1847x872.png",
+    "board": {
+      "x": 12,
+      "y": 106,
+      "width": 1823,
+      "height": 690
+    },
+    "pawnCount": 2,
+    "pawns": [
+      {
+        "seat": "p1",
+        "rect": {
+          "x": 1757,
+          "y": 686,
+          "width": 32,
+          "height": 39
+        }
+      },
+      {
+        "seat": "p2",
+        "rect": {
+          "x": 1792,
+          "y": 686,
+          "width": 32,
+          "height": 39
+        }
+      }
+    ],
+    "occupiedTile": {
+      "x": 1668,
+      "y": 732,
+      "width": 164,
+      "height": 61
+    },
+    "stage": {
+      "x": 643,
+      "y": 250,
+      "width": 560,
+      "height": 402
+    },
+    "bodyHeight": 872,
+    "errors": []
+  },
+  {
+    "filename": "4p-start-1280x800.png",
+    "board": {
+      "x": 16,
+      "y": 119,
+      "width": 1248,
+      "height": 620
+    },
+    "pawnCount": 4,
+    "pawns": [
+      {
+        "seat": "p1",
+        "rect": {
+          "x": 1116,
+          "y": 635,
+          "width": 32,
+          "height": 39
+        }
+      },
+      {
+        "seat": "p2",
+        "rect": {
+          "x": 1151,
+          "y": 635,
+          "width": 32,
+          "height": 39
+        }
+      },
+      {
+        "seat": "p3",
+        "rect": {
+          "x": 1186,
+          "y": 635,
+          "width": 32,
+          "height": 39
+        }
+      },
+      {
+        "seat": "p4",
+        "rect": {
+          "x": 1221,
+          "y": 635,
+          "width": 32,
+          "height": 39
+        }
+      }
+    ],
+    "occupiedTile": {
+      "x": 1149,
+      "y": 681,
+      "width": 112,
+      "height": 55
+    },
+    "stage": {
+      "x": 445,
+      "y": 351,
+      "width": 390,
+      "height": 155
+    },
+    "bodyHeight": 800,
+    "errors": []
+  },
+  {
+    "filename": "4p-start-1440x900.png",
+    "board": {
+      "x": 16,
+      "y": 119,
+      "width": 1408,
+      "height": 710
+    },
+    "pawnCount": 4,
+    "pawns": [
+      {
+        "seat": "p1",
+        "rect": {
+          "x": 1276,
+          "y": 717,
+          "width": 32,
+          "height": 39
+        }
+      },
+      {
+        "seat": "p2",
+        "rect": {
+          "x": 1311,
+          "y": 717,
+          "width": 32,
+          "height": 39
+        }
+      },
+      {
+        "seat": "p3",
+        "rect": {
+          "x": 1346,
+          "y": 717,
+          "width": 32,
+          "height": 39
+        }
+      },
+      {
+        "seat": "p4",
+        "rect": {
+          "x": 1381,
+          "y": 717,
+          "width": 32,
+          "height": 39
+        }
+      }
+    ],
+    "occupiedTile": {
+      "x": 1294,
+      "y": 763,
+      "width": 127,
+      "height": 63
+    },
+    "stage": {
+      "x": 525,
+      "y": 396,
+      "width": 390,
+      "height": 155
+    },
+    "bodyHeight": 900,
+    "errors": []
+  },
+  {
+    "filename": "4p-start-1847x872.png",
+    "board": {
+      "x": 16,
+      "y": 119,
+      "width": 1815,
+      "height": 692
+    },
+    "pawnCount": 4,
+    "pawns": [
+      {
+        "seat": "p1",
+        "rect": {
+          "x": 1683,
+          "y": 701,
+          "width": 32,
+          "height": 39
+        }
+      },
+      {
+        "seat": "p2",
+        "rect": {
+          "x": 1718,
+          "y": 701,
+          "width": 32,
+          "height": 39
+        }
+      },
+      {
+        "seat": "p3",
+        "rect": {
+          "x": 1753,
+          "y": 701,
+          "width": 32,
+          "height": 39
+        }
+      },
+      {
+        "seat": "p4",
+        "rect": {
+          "x": 1788,
+          "y": 701,
+          "width": 32,
+          "height": 39
+        }
+      }
+    ],
+    "occupiedTile": {
+      "x": 1664,
+      "y": 747,
+      "width": 164,
+      "height": 61
+    },
+    "stage": {
+      "x": 728,
+      "y": 387,
+      "width": 390,
+      "height": 155
+    },
+    "bodyHeight": 872,
+    "errors": []
+  },
+  {
+    "filename": "4p-built-1280x800.png",
+    "board": {
+      "x": 16,
+      "y": 119,
+      "width": 1248,
+      "height": 620
+    },
+    "pawnCount": 4,
+    "pawns": [
+      {
+        "seat": "p1",
+        "rect": {
+          "x": 1073,
+          "y": 635,
+          "width": 32,
+          "height": 39
+        }
+      },
+      {
+        "seat": "p3",
+        "rect": {
+          "x": 1108,
+          "y": 635,
+          "width": 32,
+          "height": 39
+        }
+      },
+      {
+        "seat": "p2",
+        "rect": {
+          "x": 769,
+          "y": 635,
+          "width": 32,
+          "height": 39
+        }
+      },
+      {
+        "seat": "p4",
+        "rect": {
+          "x": 656,
+          "y": 635,
+          "width": 32,
+          "height": 39
+        }
+      }
+    ],
+    "occupiedTile": {
+      "x": 1036,
+      "y": 681,
+      "width": 112,
+      "height": 55
+    },
+    "stage": {
+      "x": 360,
+      "y": 294,
+      "width": 560,
+      "height": 269
+    },
+    "bodyHeight": 800,
+    "errors": [],
+    "selectedPanel": {
+      "x": 380,
+      "y": 151,
+      "width": 520,
+      "height": 499
+    }
+  },
+  {
+    "filename": "4p-built-1440x900.png",
+    "board": {
+      "x": 16,
+      "y": 119,
+      "width": 1408,
+      "height": 710
+    },
+    "pawnCount": 4,
+    "pawns": [
+      {
+        "seat": "p1",
+        "rect": {
+          "x": 1218,
+          "y": 717,
+          "width": 32,
+          "height": 39
+        }
+      },
+      {
+        "seat": "p3",
+        "rect": {
+          "x": 1253,
+          "y": 717,
+          "width": 32,
+          "height": 39
+        }
+      },
+      {
+        "seat": "p2",
+        "rect": {
+          "x": 871,
+          "y": 717,
+          "width": 32,
+          "height": 39
+        }
+      },
+      {
+        "seat": "p4",
+        "rect": {
+          "x": 743,
+          "y": 717,
+          "width": 32,
+          "height": 39
+        }
+      }
+    ],
+    "occupiedTile": {
+      "x": 1167,
+      "y": 763,
+      "width": 127,
+      "height": 63
+    },
+    "stage": {
+      "x": 440,
+      "y": 335,
+      "width": 560,
+      "height": 278
+    },
+    "bodyHeight": 900,
+    "errors": [],
+    "selectedPanel": {
+      "x": 460,
+      "y": 201,
+      "width": 520,
+      "height": 499
+    }
+  },
+  {
+    "filename": "4p-built-1847x872.png",
+    "board": {
+      "x": 16,
+      "y": 119,
+      "width": 1815,
+      "height": 692
+    },
+    "pawnCount": 4,
+    "pawns": [
+      {
+        "seat": "p1",
+        "rect": {
+          "x": 1588,
+          "y": 701,
+          "width": 32,
+          "height": 39
+        }
+      },
+      {
+        "seat": "p3",
+        "rect": {
+          "x": 1623,
+          "y": 701,
+          "width": 32,
+          "height": 39
+        }
+      },
+      {
+        "seat": "p2",
+        "rect": {
+          "x": 1130,
+          "y": 701,
+          "width": 32,
+          "height": 39
+        }
+      },
+      {
+        "seat": "p4",
+        "rect": {
+          "x": 965,
+          "y": 701,
+          "width": 32,
+          "height": 39
+        }
+      }
+    ],
+    "occupiedTile": {
+      "x": 1500,
+      "y": 747,
+      "width": 164,
+      "height": 61
+    },
+    "stage": {
+      "x": 643,
+      "y": 323,
+      "width": 560,
+      "height": 283
+    },
+    "bodyHeight": 872,
+    "errors": [],
+    "selectedPanel": {
+      "x": 664,
+      "y": 187,
+      "width": 520,
+      "height": 499
+    }
+  },
+  {
+    "filename": "4p-landmark-1280x800.png",
+    "board": {
+      "x": 16,
+      "y": 119,
+      "width": 1248,
+      "height": 620
+    },
+    "pawnCount": 4,
+    "pawns": [
+      {
+        "seat": "p1",
+        "rect": {
+          "x": 1116,
+          "y": 635,
+          "width": 32,
+          "height": 39
+        }
+      },
+      {
+        "seat": "p2",
+        "rect": {
+          "x": 1151,
+          "y": 635,
+          "width": 32,
+          "height": 39
+        }
+      },
+      {
+        "seat": "p3",
+        "rect": {
+          "x": 1186,
+          "y": 635,
+          "width": 32,
+          "height": 39
+        }
+      },
+      {
+        "seat": "p4",
+        "rect": {
+          "x": 1221,
+          "y": 635,
+          "width": 32,
+          "height": 39
+        }
+      }
+    ],
+    "occupiedTile": {
+      "x": 1149,
+      "y": 681,
+      "width": 112,
+      "height": 55
+    },
+    "stage": {
+      "x": 360,
+      "y": 221,
+      "width": 560,
+      "height": 416
+    },
+    "bodyHeight": 800,
+    "errors": []
+  },
+  {
+    "filename": "4p-landmark-1440x900.png",
+    "board": {
+      "x": 16,
+      "y": 119,
+      "width": 1408,
+      "height": 710
+    },
+    "pawnCount": 4,
+    "pawns": [
+      {
+        "seat": "p1",
+        "rect": {
+          "x": 1276,
+          "y": 717,
+          "width": 32,
+          "height": 39
+        }
+      },
+      {
+        "seat": "p2",
+        "rect": {
+          "x": 1311,
+          "y": 717,
+          "width": 32,
+          "height": 39
+        }
+      },
+      {
+        "seat": "p3",
+        "rect": {
+          "x": 1346,
+          "y": 717,
+          "width": 32,
+          "height": 39
+        }
+      },
+      {
+        "seat": "p4",
+        "rect": {
+          "x": 1381,
+          "y": 717,
+          "width": 32,
+          "height": 39
+        }
+      }
+    ],
+    "occupiedTile": {
+      "x": 1294,
+      "y": 763,
+      "width": 127,
+      "height": 63
+    },
+    "stage": {
+      "x": 440,
+      "y": 261,
+      "width": 560,
+      "height": 425
+    },
+    "bodyHeight": 900,
+    "errors": []
+  },
+  {
+    "filename": "4p-landmark-1847x872.png",
+    "board": {
+      "x": 16,
+      "y": 119,
+      "width": 1815,
+      "height": 692
+    },
+    "pawnCount": 4,
+    "pawns": [
+      {
+        "seat": "p1",
+        "rect": {
+          "x": 1683,
+          "y": 701,
+          "width": 32,
+          "height": 39
+        }
+      },
+      {
+        "seat": "p2",
+        "rect": {
+          "x": 1718,
+          "y": 701,
+          "width": 32,
+          "height": 39
+        }
+      },
+      {
+        "seat": "p3",
+        "rect": {
+          "x": 1753,
+          "y": 701,
+          "width": 32,
+          "height": 39
+        }
+      },
+      {
+        "seat": "p4",
+        "rect": {
+          "x": 1788,
+          "y": 701,
+          "width": 32,
+          "height": 39
+        }
+      }
+    ],
+    "occupiedTile": {
+      "x": 1664,
+      "y": 747,
+      "width": 164,
+      "height": 61
+    },
+    "stage": {
+      "x": 643,
+      "y": 250,
+      "width": 560,
+      "height": 430
+    },
+    "bodyHeight": 872,
+    "errors": []
+  }
+]

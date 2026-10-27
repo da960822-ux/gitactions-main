@@ -6293,7 +6293,9 @@ function view2(s, p) {
         const canBuild = s.boardVersion === 2 || ownedCount === groupSize;
         const levels = s.boardVersion === 2 ? 3 : 2;
         const cost = marbleBuildCost(tile, record2.houses, s.economicVersion);
-        if (canBuild && record2.houses < levels && s.money[p] >= cost) {
+        const eligibleSite = s.boardVersion !== 2 || s.propertyRulesVersion !== 1 || s.buildSite === "start" || s.buildSite === index;
+        const eligibleLevel = record2.houses < 2 || s.boardVersion !== 2 || s.propertyRulesVersion !== 1 || !!s.landmarkOptions?.includes(index);
+        if (canBuild && eligibleSite && eligibleLevel && record2.houses < levels && s.money[p] >= cost) {
           const tier = s.boardVersion === 2 ? [["\uB2E8\uB3C5\uC8FC\uD0DD", "Casa unifamiliar"], ["\uC544\uD30C\uD2B8", "Apartamentos"], "landmark"][record2.houses] : ["\uC9D1", "Casa"];
           const name = Array.isArray(tier) ? tier : s.economicVersion === 1 || s.economicVersion === 2 ? ["\uB79C\uB4DC\uB9C8\uD06C", "Monumento"] : ["\uD638\uD154", "Hotel"];
           add(`${name[0]}: ${tile.name.ko} (${cost})`, `${name[1]}: ${tile.name.es} (${cost})`, { type: "build", payload: { tile: index } });
@@ -6311,6 +6313,8 @@ function view2(s, p) {
       takeoverOffer: takeoverOffer(s, p),
       extraRoll: !!s.extraRoll,
       doublesCount: s.doublesCount ?? 0,
+      landmarkOptions: [...s.landmarkOptions ?? []],
+      buildSite: s.buildSite ?? null,
       cityRouteVersion: s.cityRouteVersion ?? 1,
       tiles: board.map((tile, index) => {
         const houses = s.properties[String(index)]?.houses ?? 0;
@@ -6425,7 +6429,8 @@ function validation(s, p, a) {
     const tile = board[index];
     const groupSize = board.filter((space) => space.kind === "property" && space.group === tile.group).length;
     const ownedCount = Object.entries(s.properties).filter(([ownedIndex, owned]) => owned.owner === p && board[Number(ownedIndex)]?.group === tile.group).length;
-    const canBuild = s.boardVersion === 2 ? s.properties[String(index)].houses < 3 : ownedCount === groupSize && s.properties[String(index)].houses < 2;
+    const currentLevel = s.properties[String(index)].houses;
+    const canBuild = s.boardVersion === 2 ? currentLevel < 3 && (s.propertyRulesVersion !== 1 || (s.buildSite === "start" || s.buildSite === index) && (currentLevel < 2 || !!s.landmarkOptions?.includes(index))) : ownedCount === groupSize && currentLevel < 2;
     if (!canBuild || s.money[p] < marbleBuildCost(tile, s.properties[String(index)].houses, s.economicVersion)) return "Cannot build here";
     return null;
   }
@@ -6466,6 +6471,8 @@ function resolveLanding(s, p, index, drawEvent) {
   const board = boardFor(s), tile = board[index];
   s.pendingTile = index;
   s.takeoverTile = null;
+  s.buildSite = s.boardVersion === 2 && tile.kind === "start" ? "start" : s.boardVersion === 2 && tile.kind === "property" && (!s.properties[index] || s.properties[index].owner === p) ? index : null;
+  s.landmarkOptions = s.boardVersion === 2 ? index === 0 ? Object.entries(s.properties).filter(([, property]) => property.owner === p && property.houses === 2).map(([tile2]) => Number(tile2)) : s.properties[String(index)]?.owner === p && s.properties[String(index)].houses === 2 ? [index] : [] : [];
   emit(s, "arrival", p, `${tile.name.ko} \uB3C4\uCC29`, `Llegaste a ${tile.name.es}`, `${tile.name.ko} \uCE78\uC758 \uD6A8\uACFC\uB97C \uD655\uC778\uD558\uC138\uC694.`, `Revisa el efecto de ${tile.name.es}.`, { tile: index });
   if (tile.kind === "property") {
     const owner = s.properties[String(index)];
@@ -6539,6 +6546,7 @@ function resolveEvent(s, p) {
   if (isModern && id !== "escape-pass" && id !== "rent-pass") deck.push(id);
   s.eventDeck = deck;
   let card2 = cards[id];
+  if (id === "advance-start") card2 = { ...card2, text: { ko: `\uCD9C\uBC1C\uC810\uC73C\uB85C \uC774\uB3D9\uD558\uACE0 ${marblePassStartSalary(s.economicVersion)}\uC744 \uBC1B\uC2B5\uB2C8\uB2E4.`, es: `Ve a Salida y recibe ${marblePassStartSalary(s.economicVersion)}.` } };
   const from = s.positions[p], beforeCash = s.money[p];
   emit(s, "event-card", p, card2.title.ko, card2.title.es, card2.text.ko, card2.text.es, { cardId: id, tile: from });
   let movement = null, steps = null;
@@ -6561,8 +6569,10 @@ function resolveEvent(s, p) {
     steps = (board.length - from) % board.length;
     s.positions[p] = 0;
     noteMove(s, p, from, 0, steps, "card");
-    bonus(s, p, 200, card2.title.ko, card2.title.es);
+    bonus(s, p, marblePassStartSalary(s.economicVersion), card2.title.ko, card2.title.es);
     s.pendingTile = 0;
+    s.buildSite = "start";
+    s.landmarkOptions = Object.entries(s.properties).filter(([, property]) => property.owner === p && property.houses === 2).map(([tile]) => Number(tile));
   } else if (id === "retreat") {
     movement = "move";
     steps = -3;
@@ -6630,6 +6640,8 @@ function resolveEvent(s, p) {
   return s;
 }
 function finishTurn2(s, p) {
+  s.landmarkOptions = [];
+  s.buildSite = null;
   if (s.propertyRulesVersion === 1 && s.extraRoll && !s.islandTurns?.[p]) {
     s.extraRoll = false;
     s.phase = "roll";
@@ -6671,6 +6683,7 @@ function step(s, p, a) {
     money: { ...s.money },
     positions: { ...s.positions },
     properties: { ...s.properties },
+    landmarkOptions: [...s.landmarkOptions ?? []],
     lastRoll: [...s.lastRoll],
     eventDeck: s.eventDeck ? [...s.eventDeck] : void 0,
     islandTurns: s.islandTurns ? { ...s.islandTurns } : void 0,
@@ -6863,6 +6876,11 @@ function step(s, p, a) {
     n.properties[String(index)] = { ...n.properties[String(index)], houses: n.properties[String(index)].houses + 1 };
     const level = n.properties[String(index)].houses;
     if (n.propertyRulesVersion === 1 && level === 3 && n.rentModifiers[index]) delete n.rentModifiers[index].blackout;
+    if (level === 3) n.landmarkOptions = [];
+    if (n.buildSite === "start") {
+      n.buildSite = null;
+      n.landmarkOptions = [];
+    }
     emit(n, "build", p, "\uAC74\uC124 \uC644\uB8CC", "Construcci\xF3n terminada", `${board[index].name.ko}: ${level === 3 ? "\uB79C\uB4DC\uB9C8\uD06C" : level === 2 ? "\uC544\uD30C\uD2B8" : "\uB2E8\uB3C5\uC8FC\uD0DD"} \xB7 \uD1B5\uD589\uB8CC ${propertyRent(board[index], n.properties[String(index)], n.boardVersion === 2, n)}`, `${board[index].name.es}: ${level === 3 ? "monumento" : level === 2 ? "apartamentos" : "casa unifamiliar"} \xB7 alquiler ${propertyRent(board[index], n.properties[String(index)], n.boardVersion === 2, n)}`, { tile: index, amount: cost, fromAccount: p, toAccount: "bank", moneyDelta: { [p]: -cost } });
   } else if (a.type === "endTurn") return finishTurn2(n, p);
   return n;
@@ -6893,6 +6911,8 @@ var marbleEngine = {
       takeoverTile: null,
       doublesCount: 0,
       extraRoll: false,
+      landmarkOptions: [],
+      buildSite: null,
       eventVersion: 3,
       pendingEvent: null,
       pendingRent: null,

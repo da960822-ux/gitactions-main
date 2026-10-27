@@ -6,6 +6,13 @@ import { bindApi, catchmindEnterSubmits, CatchmindChatComposer, GameGuide, Lobby
 import { getBeginnerGuide } from './beginner-guides';
 import { currentPath } from './Router';
 
+it('shows the new Marble economy in lobby rules', () => {
+  const html = renderToStaticMarkup(createElement(RulesDialog, { gameId: 'marble', language: 'ko', onClose: () => {} }));
+  expect(html).toContain('시작 현금 3,000');
+  expect(html).toContain('출발 통과 +300');
+  expect(html).toContain('첫 구매는 최대 2단계');
+});
+
 it('shows current Catchmind timing and points while saved version-one rooms keep their rules', () => {
   for (const language of ['ko', 'es'] as const) {
     const current = renderToStaticMarkup(createElement(GameGuide, { gameId: 'catchmind', language, catchmindRulesVersion: 2 }));

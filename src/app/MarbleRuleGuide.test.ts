@@ -54,6 +54,17 @@ describe('Marble property-rule illustrated guide', () => {
     expect(getBeginnerGuide('marble', 'es', options)!.steps[1].body).toContain('adquirirla');
   });
 
+  it('uses current salary and build chances only for new economy rooms', () => {
+    const fresh = getBeginnerGuide('marble', 'ko', { ...options, marbleEconomyVersion: 3 })!;
+    expect(fresh.steps[0].body).toContain('통과하면 300');
+    expect(fresh.steps[1].body).toContain('출발 정확 도착');
+    expect(getBeginnerGuide('marble', 'ko', options)!.steps[0].body).toContain('통과하면 200');
+    const current = renderToStaticMarkup(createElement(MarbleRuleGuide, { language: 'ko', rules: marblePropertyRules.ko, options: { ...options, marbleEconomyVersion: 3 } }));
+    expect(current).toContain('출발 이동 +300');
+    expect(current).toContain('첫 구매는 최대 2단계');
+    expect(current).not.toContain('인수 뒤 추가 건설도 가능합니다');
+  });
+
   it('explains team resources and elimination only when rendering the team guide', () => {
     const solo = renderToStaticMarkup(createElement(MarbleRuleGuide, { language: 'es', rules: marblePropertyRules.es, options }));
     const team = renderToStaticMarkup(createElement(MarbleRuleGuide, { language: 'es', rules: marblePropertyRules.es, options, teamMode: true }));
