@@ -5648,7 +5648,13 @@ var splendorNobles = [
   { points: 3, requirement: { white: 3, blue: 3, green: 3 } },
   { points: 3, requirement: { blue: 3, green: 3, red: 3 } },
   { points: 3, requirement: { green: 3, red: 3, black: 3 } },
-  { points: 3, requirement: { white: 3, red: 3, black: 3 } }
+  { points: 3, requirement: { white: 3, red: 3, black: 3 } },
+  { points: 3, requirement: { white: 4, green: 4 } },
+  { points: 3, requirement: { blue: 4, red: 4 } },
+  { points: 3, requirement: { green: 4, black: 4 } },
+  { points: 3, requirement: { white: 3, green: 3, red: 3 } },
+  { points: 3, requirement: { blue: 3, green: 3, black: 3 } },
+  { points: 3, requirement: { blue: 3, red: 3, black: 3 } }
 ];
 function creates(seed) {
   const rnd = seededRandom(seed), decks = { 1: shuffle(createDeck(1), rnd), 2: shuffle(createDeck(2), rnd), 3: shuffle(createDeck(3), rnd) };

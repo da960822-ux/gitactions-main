@@ -6,12 +6,22 @@ describe('Splendor engine',()=>{
   const s=splendorEngine.createInitialState(10),v=splendorEngine.getPlayerView(s,'p1');expect(splendorEngine.createInitialState(10)).toEqual(s);
   expect(s.market[1]).toHaveLength(4);expect(Object.keys(s.availableNobles)).toHaveLength(3);expect([1,2,3].map(t=>s.market[t as 1|2|3].length+s.decks[t as 1|2|3].length)).toEqual([40,30,20]);expect(canonicalCards).toHaveLength(90);expect(canonicalCards[1]).toEqual({tier:1,bonus:'blue',points:1,cost:{red:4}});expect(v).not.toHaveProperty('seed');expect(v).not.toHaveProperty('hands');expect(v.ownHand.tokens).toEqual(s.hands.p1);expect(v.opponentCount).toBe(0);
  });
- it('uses the base game noble requirements: five adjacent-color pairs and five three-color sets',()=>{
+ it('keeps the ten base nobles and adds six balanced candidates with the same requirement patterns',()=>{
   const pairs=splendorNobles.filter(n=>Object.keys(n.requirement).length===2),triples=splendorNobles.filter(n=>Object.keys(n.requirement).length===3);
-  expect(splendorNobles).toHaveLength(10);expect(pairs).toHaveLength(5);expect(triples).toHaveLength(5);
+  expect(splendorNobles).toHaveLength(16);expect(pairs).toHaveLength(8);expect(triples).toHaveLength(8);
   expect(pairs.every(n=>Object.values(n.requirement).every(cost=>cost===4))).toBe(true);expect(triples.every(n=>Object.values(n.requirement).every(cost=>cost===3))).toBe(true);
-  expect(pairs.map(n=>Object.keys(n.requirement))).toEqual([['white','blue'],['blue','green'],['green','red'],['red','black'],['white','black']]);
-  expect(triples.map(n=>Object.keys(n.requirement))).toEqual([['white','blue','black'],['white','blue','green'],['blue','green','red'],['green','red','black'],['white','red','black']]);
+  expect(splendorNobles.every(n=>n.points===3)).toBe(true);
+  expect(new Set(splendorNobles.map(n=>JSON.stringify(n.requirement))).size).toBe(16);
+  expect(pairs.slice(0,5).map(n=>Object.keys(n.requirement))).toEqual([['white','blue'],['blue','green'],['green','red'],['red','black'],['white','black']]);
+  expect(triples.slice(0,5).map(n=>Object.keys(n.requirement))).toEqual([['white','blue','black'],['white','blue','green'],['blue','green','red'],['green','red','black'],['white','red','black']]);
+ });
+ it('continues an existing saved game with its original noble IDs and public count',()=>{
+  const original=splendorEngine.createInitialState(10);
+  const saved=JSON.parse(JSON.stringify({...original,availableNobles:Object.fromEntries([0,1,2].map(i=>[`n${i}`,splendorNobles[i]]))})) as SplendorState;
+  const next=splendorEngine.applyAction(saved,'p1',{type:'take',payload:{gems:['white','blue','green']}});
+  expect(Object.keys(next.availableNobles)).toEqual(['n0','n1','n2']);
+  expect(next.availableNobles.n0).toEqual(splendorNobles[0]);
+  expect(next.hands.p1.white).toBe(1);
  });
  it('keeps each public bonus display separate from the canonical player state',()=>{
   const s=splendorEngine.createInitialState(10),before=structuredClone(s);
