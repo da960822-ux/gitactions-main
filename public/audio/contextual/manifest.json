@@ -1,0 +1,555 @@
+{
+  "license": "CC0-1.0",
+  "author": "Kenney",
+  "verifiedOn": "2026-10-27",
+  "sources": [
+    {
+      "id": "casino",
+      "title": "Kenney Casino Audio 1.1",
+      "sourceUrl": "https://kenney.nl/assets/casino-audio",
+      "archiveUrl": "https://kenney.nl/media/pages/assets/casino-audio/2472606a04-1721639069/kenney_casino-audio.zip",
+      "archiveSha256": "f36250766ac5bc378c13708ddf12a23a8e54a3251f8d482c7536e51b5dbafa18",
+      "licenseFile": "source/casino/LICENSE.txt"
+    },
+    {
+      "id": "impact",
+      "title": "Kenney Impact Sounds 1.0",
+      "sourceUrl": "https://kenney.nl/assets/impact-sounds",
+      "archiveUrl": "https://kenney.nl/media/pages/assets/impact-sounds/87b4ddecda-1677589768/kenney_impact-sounds.zip",
+      "archiveSha256": "029d734af1582474edf3a694d1b0cebc97c1c152f2f39fa34d4c2bafc5de77f8",
+      "licenseFile": "source/impact/LICENSE.txt"
+    },
+    {
+      "id": "interface",
+      "title": "Kenney Interface Sounds 1.0",
+      "sourceUrl": "https://kenney.nl/assets/interface-sounds",
+      "archiveUrl": "https://kenney.nl/media/pages/assets/interface-sounds/fa43c1dd4d-1677589452/kenney_interface-sounds.zip",
+      "archiveSha256": "f2193d072726d6758a5f7871b2dcc54dcce0d5c35c6f0a62f92549b327c81232",
+      "licenseFile": "source/interface/LICENSE.txt"
+    }
+  ],
+  "files": [
+    {
+      "file": "dice-1.wav",
+      "family": "dice",
+      "source": "source/casino/dice-shake-1.ogg",
+      "sourceSha256": "ba603441c857204dbe3ff3345902c7e1c3f523bf1bd314acf088609bc6c1e4e5",
+      "sourceFiles": [
+        "source/casino/dice-shake-1.ogg",
+        "source/casino/dice-throw-1.ogg"
+      ],
+      "sourceFileHashes": {
+        "source/casino/dice-shake-1.ogg": "ba603441c857204dbe3ff3345902c7e1c3f523bf1bd314acf088609bc6c1e4e5",
+        "source/casino/dice-throw-1.ogg": "4e6581c73465cdd7ec32e86a709b4ea5c682e819c9bdb7989d1df1880ba67886"
+      },
+      "durationMs": 620,
+      "sampleRate": 48000,
+      "channels": 1,
+      "peakDbFS": -6.1005,
+      "sha256": "756ef46acef69885e4ae1340b3c6ba750fb7b61340e19ff0e925363eabaea320",
+      "material": "Real dice shake followed by a dice throw",
+      "processing": "Decode mono 48kHz; trim to >0.002 onset with 1ms lead; recipe crop/offset; 1ms attack and 10ms release fades; composite; normalize to -6.1dBFS; PCM16 WAV",
+      "components": [
+        {
+          "source": "source/casino/dice-shake-1.ogg",
+          "offsetMs": 0,
+          "cropMs": 390,
+          "gain": 0.75
+        },
+        {
+          "source": "source/casino/dice-throw-1.ogg",
+          "offsetMs": 365,
+          "cropMs": 255,
+          "gain": 1
+        }
+      ]
+    },
+    {
+      "file": "dice-2.wav",
+      "family": "dice",
+      "source": "source/casino/dice-shake-2.ogg",
+      "sourceSha256": "47e8e2cb0adb95bcd7348b58db8dc2bbfe3c553e50a4e9ef007e67891ed51ca2",
+      "sourceFiles": [
+        "source/casino/dice-shake-2.ogg",
+        "source/casino/dice-throw-2.ogg"
+      ],
+      "sourceFileHashes": {
+        "source/casino/dice-shake-2.ogg": "47e8e2cb0adb95bcd7348b58db8dc2bbfe3c553e50a4e9ef007e67891ed51ca2",
+        "source/casino/dice-throw-2.ogg": "e0b8c370503b2c5c2a72d311cccae30fe63a6afd48f2be32e771fcf1a98585d6"
+      },
+      "durationMs": 620,
+      "sampleRate": 48000,
+      "channels": 1,
+      "peakDbFS": -6.1005,
+      "sha256": "4cf3e83e4659892cf3ffd8b1381d5abea860d194116c7136ef73ba2eee723e62",
+      "material": "Alternate real dice shake and throw",
+      "processing": "Decode mono 48kHz; trim to >0.002 onset with 1ms lead; recipe crop/offset; 1ms attack and 10ms release fades; composite; normalize to -6.1dBFS; PCM16 WAV",
+      "components": [
+        {
+          "source": "source/casino/dice-shake-2.ogg",
+          "offsetMs": 0,
+          "cropMs": 390,
+          "gain": 0.75
+        },
+        {
+          "source": "source/casino/dice-throw-2.ogg",
+          "offsetMs": 365,
+          "cropMs": 255,
+          "gain": 1
+        }
+      ]
+    },
+    {
+      "file": "step-1.wav",
+      "family": "step",
+      "source": "source/impact/impactWood_light_000.ogg",
+      "sourceSha256": "eb45e35b4bed784d3f120de4afec4b0d6ac09d9e143cce8cfcb7d739e1b1f3c3",
+      "sourceFiles": [
+        "source/impact/impactWood_light_000.ogg"
+      ],
+      "sourceFileHashes": {
+        "source/impact/impactWood_light_000.ogg": "eb45e35b4bed784d3f120de4afec4b0d6ac09d9e143cce8cfcb7d739e1b1f3c3"
+      },
+      "durationMs": 110,
+      "sampleRate": 48000,
+      "channels": 1,
+      "peakDbFS": -6.1005,
+      "sha256": "44dff71d08f116ae16adb6b5e8a229c10f03186c858f71ae1e880c963d0338df",
+      "material": "Light wood contact for a board pawn step",
+      "processing": "Decode mono 48kHz; trim to >0.002 onset with 1ms lead; recipe crop/offset; 1ms attack and 10ms release fades; composite; normalize to -6.1dBFS; PCM16 WAV",
+      "components": [
+        {
+          "source": "source/impact/impactWood_light_000.ogg",
+          "offsetMs": 0,
+          "cropMs": 110,
+          "gain": 1
+        }
+      ]
+    },
+    {
+      "file": "step-2.wav",
+      "family": "step",
+      "source": "source/impact/impactWood_light_001.ogg",
+      "sourceSha256": "4b76bf3ccc8e60d19188f3165b778a7817786faa6887c55d9049bcbeef3b425f",
+      "sourceFiles": [
+        "source/impact/impactWood_light_001.ogg"
+      ],
+      "sourceFileHashes": {
+        "source/impact/impactWood_light_001.ogg": "4b76bf3ccc8e60d19188f3165b778a7817786faa6887c55d9049bcbeef3b425f"
+      },
+      "durationMs": 110,
+      "sampleRate": 48000,
+      "channels": 1,
+      "peakDbFS": -6.1005,
+      "sha256": "303e60c295489845410135d09a5bbe7a40143b7974cf62b266ee2965aad9e3a3",
+      "material": "Alternate light wood contact for a board pawn step",
+      "processing": "Decode mono 48kHz; trim to >0.002 onset with 1ms lead; recipe crop/offset; 1ms attack and 10ms release fades; composite; normalize to -6.1dBFS; PCM16 WAV",
+      "components": [
+        {
+          "source": "source/impact/impactWood_light_001.ogg",
+          "offsetMs": 0,
+          "cropMs": 110,
+          "gain": 1
+        }
+      ]
+    },
+    {
+      "file": "tile-1.wav",
+      "family": "tile",
+      "source": "source/impact/impactWood_medium_000.ogg",
+      "sourceSha256": "1723a9fd25103ed41af06054814e84e65f4a772bac86ab2dc927da93d9592ff5",
+      "sourceFiles": [
+        "source/impact/impactWood_medium_000.ogg"
+      ],
+      "sourceFileHashes": {
+        "source/impact/impactWood_medium_000.ogg": "1723a9fd25103ed41af06054814e84e65f4a772bac86ab2dc927da93d9592ff5"
+      },
+      "durationMs": 155,
+      "sampleRate": 48000,
+      "channels": 1,
+      "peakDbFS": -6.1005,
+      "sha256": "2837e7e79cd3073308c71cea96f6dd6b743fffa17224a03f52841ec7b5fc28a4",
+      "material": "Medium wooden tile contact",
+      "processing": "Decode mono 48kHz; trim to >0.002 onset with 1ms lead; recipe crop/offset; 1ms attack and 10ms release fades; composite; normalize to -6.1dBFS; PCM16 WAV",
+      "components": [
+        {
+          "source": "source/impact/impactWood_medium_000.ogg",
+          "offsetMs": 0,
+          "cropMs": 155,
+          "gain": 1
+        }
+      ]
+    },
+    {
+      "file": "tile-2.wav",
+      "family": "tile",
+      "source": "source/impact/impactWood_medium_001.ogg",
+      "sourceSha256": "15271dbe8e2872dbb0ff1aeb7b12b2d2b92b7c1951c88532b9ab9158c36dfc73",
+      "sourceFiles": [
+        "source/impact/impactWood_medium_001.ogg"
+      ],
+      "sourceFileHashes": {
+        "source/impact/impactWood_medium_001.ogg": "15271dbe8e2872dbb0ff1aeb7b12b2d2b92b7c1951c88532b9ab9158c36dfc73"
+      },
+      "durationMs": 155,
+      "sampleRate": 48000,
+      "channels": 1,
+      "peakDbFS": -6.1005,
+      "sha256": "d501e6412b7a39a3936a6dea72cb94da3842b1bb6d4a0478017635fdab3d613a",
+      "material": "Alternate medium wooden tile contact",
+      "processing": "Decode mono 48kHz; trim to >0.002 onset with 1ms lead; recipe crop/offset; 1ms attack and 10ms release fades; composite; normalize to -6.1dBFS; PCM16 WAV",
+      "components": [
+        {
+          "source": "source/impact/impactWood_medium_001.ogg",
+          "offsetMs": 0,
+          "cropMs": 155,
+          "gain": 1
+        }
+      ]
+    },
+    {
+      "file": "card-1.wav",
+      "family": "card",
+      "source": "source/casino/card-slide-1.ogg",
+      "sourceSha256": "006cf9822d15d7063f8899e56041f41646df30adb6fbd8b974ee5d5420012690",
+      "sourceFiles": [
+        "source/casino/card-slide-1.ogg"
+      ],
+      "sourceFileHashes": {
+        "source/casino/card-slide-1.ogg": "006cf9822d15d7063f8899e56041f41646df30adb6fbd8b974ee5d5420012690"
+      },
+      "durationMs": 150,
+      "sampleRate": 48000,
+      "channels": 1,
+      "peakDbFS": -6.1005,
+      "sha256": "7461afe58b9210f221c24dece6ec5f2d5ece76b80b7dd98684adf9ca88f3cd0f",
+      "material": "Real card slide",
+      "processing": "Decode mono 48kHz; trim to >0.002 onset with 1ms lead; recipe crop/offset; 1ms attack and 10ms release fades; composite; normalize to -6.1dBFS; PCM16 WAV",
+      "components": [
+        {
+          "source": "source/casino/card-slide-1.ogg",
+          "offsetMs": 0,
+          "cropMs": 150,
+          "gain": 1
+        }
+      ]
+    },
+    {
+      "file": "card-2.wav",
+      "family": "card",
+      "source": "source/casino/card-slide-2.ogg",
+      "sourceSha256": "e674a1679ec87b507047fe012d068ad2c412125f56186f0e732684705c2a6888",
+      "sourceFiles": [
+        "source/casino/card-slide-2.ogg"
+      ],
+      "sourceFileHashes": {
+        "source/casino/card-slide-2.ogg": "e674a1679ec87b507047fe012d068ad2c412125f56186f0e732684705c2a6888"
+      },
+      "durationMs": 150,
+      "sampleRate": 48000,
+      "channels": 1,
+      "peakDbFS": -6.1005,
+      "sha256": "44b82968ca6dde986ae5df45ad4a5c30e52dc7ce1839914ab76b14c0dda4b55e",
+      "material": "Alternate real card slide",
+      "processing": "Decode mono 48kHz; trim to >0.002 onset with 1ms lead; recipe crop/offset; 1ms attack and 10ms release fades; composite; normalize to -6.1dBFS; PCM16 WAV",
+      "components": [
+        {
+          "source": "source/casino/card-slide-2.ogg",
+          "offsetMs": 0,
+          "cropMs": 150,
+          "gain": 1
+        }
+      ]
+    },
+    {
+      "file": "coin-1.wav",
+      "family": "coin",
+      "source": "source/casino/chips-collide-1.ogg",
+      "sourceSha256": "f41b3d106360fc68ebc061a211d4265b4cb5fa1fbe86e4d57d3673510e2c3784",
+      "sourceFiles": [
+        "source/casino/chips-collide-1.ogg"
+      ],
+      "sourceFileHashes": {
+        "source/casino/chips-collide-1.ogg": "f41b3d106360fc68ebc061a211d4265b4cb5fa1fbe86e4d57d3673510e2c3784"
+      },
+      "durationMs": 180,
+      "sampleRate": 48000,
+      "channels": 1,
+      "peakDbFS": -6.1005,
+      "sha256": "6523d00cf40eb33c7550a1ca5c22a8ff810c2a71d9db8837ffa4f7033b49b73d",
+      "material": "Casino chip collisions as a stylized money-token proxy",
+      "processing": "Decode mono 48kHz; trim to >0.002 onset with 1ms lead; recipe crop/offset; 1ms attack and 10ms release fades; composite; normalize to -6.1dBFS; PCM16 WAV",
+      "components": [
+        {
+          "source": "source/casino/chips-collide-1.ogg",
+          "offsetMs": 0,
+          "cropMs": 180,
+          "gain": 1
+        }
+      ]
+    },
+    {
+      "file": "coin-2.wav",
+      "family": "coin",
+      "source": "source/casino/chips-collide-2.ogg",
+      "sourceSha256": "2a10c5ff4b2fbaa55a317fc258ddce3fec85bd26db2d3c2ad298b3b33ce23bc6",
+      "sourceFiles": [
+        "source/casino/chips-collide-2.ogg"
+      ],
+      "sourceFileHashes": {
+        "source/casino/chips-collide-2.ogg": "2a10c5ff4b2fbaa55a317fc258ddce3fec85bd26db2d3c2ad298b3b33ce23bc6"
+      },
+      "durationMs": 180,
+      "sampleRate": 48000,
+      "channels": 1,
+      "peakDbFS": -6.1005,
+      "sha256": "ea7f4804c8b9ecb076e8d0a6725a10fc352d71705605e62d7f6dbd9bb21eea13",
+      "material": "Alternate casino chip collisions as a money-token proxy",
+      "processing": "Decode mono 48kHz; trim to >0.002 onset with 1ms lead; recipe crop/offset; 1ms attack and 10ms release fades; composite; normalize to -6.1dBFS; PCM16 WAV",
+      "components": [
+        {
+          "source": "source/casino/chips-collide-2.ogg",
+          "offsetMs": 0,
+          "cropMs": 180,
+          "gain": 1
+        }
+      ]
+    },
+    {
+      "file": "build-1.wav",
+      "family": "build",
+      "source": "source/impact/impactWood_heavy_000.ogg",
+      "sourceSha256": "15ff82332f342c30e469215539e1cc57e11b221aa2cf7e11e811d313a9927f3d",
+      "sourceFiles": [
+        "source/impact/impactWood_heavy_000.ogg",
+        "source/impact/impactWood_heavy_001.ogg"
+      ],
+      "sourceFileHashes": {
+        "source/impact/impactWood_heavy_000.ogg": "15ff82332f342c30e469215539e1cc57e11b221aa2cf7e11e811d313a9927f3d",
+        "source/impact/impactWood_heavy_001.ogg": "f1b07a53ac10c615fff9ba470511fdeb722b5902e1a8520759fc20ad6f546015"
+      },
+      "durationMs": 330,
+      "sampleRate": 48000,
+      "channels": 1,
+      "peakDbFS": -6.1005,
+      "sha256": "e3001fd4ed80e1de5b4a72f4b03550f71dac8f1f55a344e9a9768126750dfadc",
+      "material": "Two wood impacts for construction, not a building recording",
+      "processing": "Decode mono 48kHz; trim to >0.002 onset with 1ms lead; recipe crop/offset; 1ms attack and 10ms release fades; composite; normalize to -6.1dBFS; PCM16 WAV",
+      "components": [
+        {
+          "source": "source/impact/impactWood_heavy_000.ogg",
+          "offsetMs": 0,
+          "cropMs": 190,
+          "gain": 0.8
+        },
+        {
+          "source": "source/impact/impactWood_heavy_001.ogg",
+          "offsetMs": 130,
+          "cropMs": 200,
+          "gain": 1
+        }
+      ]
+    },
+    {
+      "file": "key-1.wav",
+      "family": "key",
+      "source": "source/impact/impactMetal_light_000.ogg",
+      "sourceSha256": "33b5e6e37c6e9d54e07bf5a89b12c76e879f40c1ea83cdd82714df1d6f9fec6d",
+      "sourceFiles": [
+        "source/impact/impactMetal_light_000.ogg"
+      ],
+      "sourceFileHashes": {
+        "source/impact/impactMetal_light_000.ogg": "33b5e6e37c6e9d54e07bf5a89b12c76e879f40c1ea83cdd82714df1d6f9fec6d"
+      },
+      "durationMs": 320,
+      "sampleRate": 48000,
+      "channels": 1,
+      "peakDbFS": -6.1005,
+      "sha256": "4a9f3cf4a32af2db6f6656cd42c9509c628f651bd6c52c992bab8f1cd59739cd",
+      "material": "Light metallic contact as a golden-key proxy",
+      "processing": "Decode mono 48kHz; trim to >0.002 onset with 1ms lead; recipe crop/offset; 1ms attack and 10ms release fades; composite; normalize to -6.1dBFS; PCM16 WAV",
+      "components": [
+        {
+          "source": "source/impact/impactMetal_light_000.ogg",
+          "offsetMs": 0,
+          "cropMs": 320,
+          "gain": 1
+        }
+      ]
+    },
+    {
+      "file": "blackout-1.wav",
+      "family": "blackout",
+      "source": "source/interface/switch_001.ogg",
+      "sourceSha256": "3b74efad87f1e69dbd1d05c5ad952ab90859b5a3d11da6ec5bd79b4f03b42afa",
+      "sourceFiles": [
+        "source/interface/switch_001.ogg",
+        "source/interface/glitch_001.ogg"
+      ],
+      "sourceFileHashes": {
+        "source/interface/switch_001.ogg": "3b74efad87f1e69dbd1d05c5ad952ab90859b5a3d11da6ec5bd79b4f03b42afa",
+        "source/interface/glitch_001.ogg": "da78c642bbd95da2c364ed0e991ebbfc5a4c0d281165d932b5819e0dd31a39d2"
+      },
+      "durationMs": 275,
+      "sampleRate": 48000,
+      "channels": 1,
+      "peakDbFS": -6.1005,
+      "sha256": "dd88dafe964618799bf5628c3e47bb364fa8d9eda7735a7018e8a35d566a8710",
+      "material": "Switch click with short electrical glitch",
+      "processing": "Decode mono 48kHz; trim to >0.002 onset with 1ms lead; recipe crop/offset; 1ms attack and 10ms release fades; composite; normalize to -6.1dBFS; PCM16 WAV",
+      "components": [
+        {
+          "source": "source/interface/switch_001.ogg",
+          "offsetMs": 0,
+          "cropMs": 120,
+          "gain": 0.8
+        },
+        {
+          "source": "source/interface/glitch_001.ogg",
+          "offsetMs": 65,
+          "cropMs": 210,
+          "gain": 1
+        }
+      ]
+    },
+    {
+      "file": "jail-1.wav",
+      "family": "jail",
+      "source": "source/impact/impactMetal_heavy_000.ogg",
+      "sourceSha256": "e07045693e4a2b3d165c424e3dab4c781d9ff8880a386880ac89a51315d7f831",
+      "sourceFiles": [
+        "source/impact/impactMetal_heavy_000.ogg"
+      ],
+      "sourceFileHashes": {
+        "source/impact/impactMetal_heavy_000.ogg": "e07045693e4a2b3d165c424e3dab4c781d9ff8880a386880ac89a51315d7f831"
+      },
+      "durationMs": 300,
+      "sampleRate": 48000,
+      "channels": 1,
+      "peakDbFS": -6.1005,
+      "sha256": "56e1c582bc02af0b9664c4e3a8dcc2871de1716a0a332c9c9b1e2c5a6968d3a4",
+      "material": "Heavy metal contact as a barred-door proxy",
+      "processing": "Decode mono 48kHz; trim to >0.002 onset with 1ms lead; recipe crop/offset; 1ms attack and 10ms release fades; composite; normalize to -6.1dBFS; PCM16 WAV",
+      "components": [
+        {
+          "source": "source/impact/impactMetal_heavy_000.ogg",
+          "offsetMs": 0,
+          "cropMs": 300,
+          "gain": 1
+        }
+      ]
+    },
+    {
+      "file": "arrival-1.wav",
+      "family": "arrival",
+      "source": "source/impact/impactBell_heavy_004.ogg",
+      "sourceSha256": "49fe4fafa2001bd0d312976796824571ca8429851f285997e1327d17bb34fd00",
+      "sourceFiles": [
+        "source/impact/impactBell_heavy_004.ogg"
+      ],
+      "sourceFileHashes": {
+        "source/impact/impactBell_heavy_004.ogg": "49fe4fafa2001bd0d312976796824571ca8429851f285997e1327d17bb34fd00"
+      },
+      "durationMs": 420,
+      "sampleRate": 48000,
+      "channels": 1,
+      "peakDbFS": -6.1005,
+      "sha256": "825bff85174d94fceb551726002fba55bbf67fcc49a898869d72cfa0040c3780",
+      "material": "Small arrival bell, cropped and faded",
+      "processing": "Decode mono 48kHz; trim to >0.002 onset with 1ms lead; recipe crop/offset; 1ms attack and 10ms release fades; composite; normalize to -6.1dBFS; PCM16 WAV",
+      "components": [
+        {
+          "source": "source/impact/impactBell_heavy_004.ogg",
+          "offsetMs": 0,
+          "cropMs": 420,
+          "gain": 1
+        }
+      ]
+    },
+    {
+      "file": "pass-1.wav",
+      "family": "pass",
+      "source": "source/casino/card-shove-1.ogg",
+      "sourceSha256": "1ea667aa6795d5f14239192116ebcbd8f3f47eb1c7faaf2ec56844b9067b8b06",
+      "sourceFiles": [
+        "source/casino/card-shove-1.ogg"
+      ],
+      "sourceFileHashes": {
+        "source/casino/card-shove-1.ogg": "1ea667aa6795d5f14239192116ebcbd8f3f47eb1c7faaf2ec56844b9067b8b06"
+      },
+      "durationMs": 140,
+      "sampleRate": 48000,
+      "channels": 1,
+      "peakDbFS": -6.1005,
+      "sha256": "7f378c25b402b2b8e88cebcba05f75de1888c1e804a11df75485e51b2b648007",
+      "material": "Card shove as a deliberate pass gesture",
+      "processing": "Decode mono 48kHz; trim to >0.002 onset with 1ms lead; recipe crop/offset; 1ms attack and 10ms release fades; composite; normalize to -6.1dBFS; PCM16 WAV",
+      "components": [
+        {
+          "source": "source/casino/card-shove-1.ogg",
+          "offsetMs": 0,
+          "cropMs": 140,
+          "gain": 1
+        }
+      ]
+    },
+    {
+      "file": "travel-1.wav",
+      "family": "travel",
+      "source": "source/interface/maximize_001.ogg",
+      "sourceSha256": "fd3e75e1de2f2fda90aceeacaeb0427ac8bddd3b07a6ce2a8f9ba923df3771f9",
+      "sourceFiles": [
+        "source/interface/maximize_001.ogg"
+      ],
+      "sourceFileHashes": {
+        "source/interface/maximize_001.ogg": "fd3e75e1de2f2fda90aceeacaeb0427ac8bddd3b07a6ce2a8f9ba923df3771f9"
+      },
+      "durationMs": 460,
+      "sampleRate": 48000,
+      "channels": 1,
+      "peakDbFS": -6.1005,
+      "sha256": "bf685c8110b81a3a99157775472e91e5c18bd93a0b815f65c6c3ffcc542dd838",
+      "material": "Interface rising swoosh as a world-travel transition",
+      "processing": "Decode mono 48kHz; trim to >0.002 onset with 1ms lead; recipe crop/offset; 1ms attack and 10ms release fades; composite; normalize to -6.1dBFS; PCM16 WAV",
+      "components": [
+        {
+          "source": "source/interface/maximize_001.ogg",
+          "offsetMs": 0,
+          "cropMs": 460,
+          "gain": 1
+        }
+      ]
+    },
+    {
+      "file": "gem-1.wav",
+      "family": "gem",
+      "source": "source/impact/impactGlass_light_000.ogg",
+      "sourceSha256": "d750cf88097d0c3e69920e6e14496e1444e1a9da01aa4cca8f5ec8cb44c57b4f",
+      "sourceFiles": [
+        "source/impact/impactGlass_light_000.ogg"
+      ],
+      "sourceFileHashes": {
+        "source/impact/impactGlass_light_000.ogg": "d750cf88097d0c3e69920e6e14496e1444e1a9da01aa4cca8f5ec8cb44c57b4f"
+      },
+      "durationMs": 210,
+      "sampleRate": 48000,
+      "channels": 1,
+      "peakDbFS": -6.1005,
+      "sha256": "6c140a127b6aa222c0eebec69f869fab0b0b258a4fdf67728fb98d9c90965c96",
+      "material": "Light glass contact for a gem token",
+      "processing": "Decode mono 48kHz; trim to >0.002 onset with 1ms lead; recipe crop/offset; 1ms attack and 10ms release fades; composite; normalize to -6.1dBFS; PCM16 WAV",
+      "components": [
+        {
+          "source": "source/impact/impactGlass_light_000.ogg",
+          "offsetMs": 0,
+          "cropMs": 210,
+          "gain": 1
+        }
+      ]
+    }
+  ],
+  "verification": {
+    "decoded": "ffmpeg PCM decode and WAV header/peak assertions",
+    "listening": "Not auditioned by a human; no listening approval claimed"
+  }
+}

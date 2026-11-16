@@ -37,7 +37,7 @@ function installAudioMocks() {
   };
   class FakeAudioContext { constructor() { return context as unknown as FakeAudioContext; } }
   const storage = new Map<string, string>();
-  vi.stubGlobal('fetch', vi.fn(async () => ({ ok: true, arrayBuffer: async () => new ArrayBuffer(2) })));
+  vi.stubGlobal('fetch', vi.fn(async (url: string) => ({ ok: url.includes('/minhwatu/'), arrayBuffer: async () => new ArrayBuffer(2) })));
   vi.stubGlobal('window', { AudioContext: FakeAudioContext });
   vi.stubGlobal('document', {
     hidden: false,
@@ -54,6 +54,18 @@ function installAudioMocks() {
 afterEach(() => { vi.unstubAllGlobals(); vi.resetModules(); });
 
 describe('game-specific sound effects', () => {
+  it('preserves excluded Catchmind original tone levels and never loads new samples', async () => {
+    const { gains } = installAudioMocks();
+    const audio = await import('./audio');
+    audio.setPreferences('catchmind', { sfxEnabled: true, sfxVolume: 1 });
+    audio.setScene('catchmind');
+    await audio.unlock();
+    audio.playCue('catchmind', 'correct');
+    const levels = gains.flatMap(node => node.gain.linearRampToValueAtTime.mock.calls.map((call: number[]) => call[0]));
+    expect(levels).toContain(0.18);
+    expect(fetch).not.toHaveBeenCalled();
+    audio.dispose();
+  });
   it('defaults every game off and loads/clamps each saved preference independently', async () => {
     const { storage } = installAudioMocks();
     storage.set('dos-sfx-v1', JSON.stringify({ davinci: { sfxEnabled: true, sfxVolume: 2 }, marble: { sfxEnabled: 'yes', sfxVolume: -1 } }));
@@ -343,6 +355,44 @@ describe('game-specific sound effects', () => {
     expect(sources).toHaveLength(0);
     audio.dispose();
 
+  });
+
+  it('uses decoded contextual materials, varies repeats and never modifies excluded-game synthesis', async () => {
+    const { sources, oscillators } = installAudioMocks();
+    vi.stubGlobal('fetch', vi.fn(async () => ({ ok: true, arrayBuffer: async () => new ArrayBuffer(2) })));
+    const audio = await import('./audio');
+    audio.setPreferences('marble', { sfxEnabled: true, sfxVolume: 1 });
+    audio.setScene('marble'); await audio.unlock();
+    audio.playCue('marble', 'dice'); audio.playCue('marble', 'dice');
+    expect(sources).toHaveLength(2); expect(oscillators).toHaveLength(0);
+    expect(sources[0].buffer).not.toBe(sources[1].buffer);
+    audio.playCue('marble', 'step');
+    for (let i = 0; i < 40; i++) audio.playCue('marble', 'landmark');
+    expect(sources.length).toBeLessThanOrEqual(8);
+    audio.setPreferences('marble', { sfxEnabled: false });
+    const count = sources.length; audio.playCue('marble', 'dice');
+    expect(sources).toHaveLength(count); expect(sources.every(source => source.stop.mock.calls.length > 0)).toBe(true);
+    audio.dispose();
+  });
+
+  it('contains suspended or rejected autoplay without late effects', async () => {
+    const { context, sources } = installAudioMocks();
+    context.resume.mockRejectedValue(new Error('gesture required'));
+    const audio = await import('./audio');
+    audio.setPreferences('marble', { sfxEnabled: true }); audio.setScene('marble');
+    await expect(audio.unlock()).resolves.toBeUndefined();
+    audio.playCue('marble', 'blackout'); expect(sources).toHaveLength(0);
+    audio.dispose();
+  });
+
+  it('renders Hwatu round draws and specials instead of dropping them', async () => {
+    const { sources } = installAudioMocks();
+    const audio = await import('./audio');
+    audio.setPreferences('minhwatu', { sfxEnabled: true }); audio.setScene('minhwatu'); await audio.unlock();
+    audio.playMinhwatuCue('score'); expect(sources).toHaveLength(1);
+    audio.playMinhwatuCue('special'); expect(sources).toHaveLength(4);
+    expect(sources.slice(1).map(source => source.start.mock.calls[0][0])).toEqual([0, .09, .18]);
+    audio.dispose();
   });
 
   it('ships 21 real-source mono PCM Foley files with headroom and documented provenance', () => {

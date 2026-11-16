@@ -13,7 +13,7 @@ export interface FourDavinciState {
   pendingGuess?: { target: FourSeat; index: number; value: Tile['value'] };
 }
 export interface FourDavinciView extends FourView {
-  policy: { own: Tile[]; racks: Record<FourSeat, FourDavinciVisibleTile[]>; deckCount: number; log: Event[]; ready: Record<FourSeat, boolean>; ownJokerToPlace?: { color: Color; index: number } };
+  policy: { own: Tile[]; racks: Record<FourSeat, FourDavinciVisibleTile[]>; deckCount: number; deckColors: Record<Color, number>; log: Event[]; ready: Record<FourSeat, boolean>; ownJokerToPlace?: { color: Color; index: number } };
 }
 function appendEvent(state: FourDavinciState, event: Omit<Event, 'sequence'>) {
   const eventSequence = (state.eventSequence ?? 0) + 1;
@@ -57,7 +57,7 @@ function validate(state: FourDavinciState, player: FourSeat, action: GameAction)
     return action.type === 'place-joker' && state.pendingJokers[player].length && Number.isInteger(x.index) && Number(x.index) >= 0 && Number(x.index) < state.hands[player].length ? null : 'invalid_setup';
   }
   if (!live(state, player)) return 'player_eliminated';
-  if (action.type === 'draw') return state.phase === 'draw' && state.deck.length ? null : 'cannot_draw';
+  if (action.type === 'draw') return state.phase === 'draw' && (x.color === 'black' || x.color === 'white') && state.deck.some(tile => tile.color === x.color) ? null : 'cannot_draw_color';
   if (action.type === 'skip-draw') return state.phase === 'draw' && !state.deck.length ? null : 'cannot_skip_draw';
   if (action.type === 'reveal-own') return state.phase === 'reveal-own' && state.pendingGuess && Number.isInteger(x.index) && Number(x.index) >= 0 && Number(x.index) < state.hands[player].length && !state.hands[player][Number(x.index)].revealed ? null : 'choose_hidden_own_tile';
   if (action.type === 'place-joker') return state.phase === 'place-joker' && state.drawnIndex !== null &&
@@ -83,8 +83,9 @@ function apply(state: FourDavinciState, player: FourSeat, action: GameAction): F
       phase: setup ? 'setup' : 'guess', pendingJokers: setup ? { ...state.pendingJokers, [player]: state.pendingJokers[player].slice(1) } : state.pendingJokers };
   }
   if (action.type === 'draw') {
-    const tile = state.deck[state.deck.length - 1], hand = insert(state.hands[player], tile);
-    return { ...state, hands: { ...state.hands, [player]: hand }, deck: state.deck.slice(0, -1), drawnIndex: hand.indexOf(tile), mayStop: false,
+    const deckIndex = state.deck.map(tile => tile.color).lastIndexOf(x.color as Color);
+    const tile = state.deck[deckIndex], hand = insert(state.hands[player], tile);
+    return { ...state, hands: { ...state.hands, [player]: hand }, deck: state.deck.filter((_, index) => index !== deckIndex), drawnIndex: hand.indexOf(tile), mayStop: false,
       phase: tile.value === 'joker' ? 'place-joker' : 'guess', ...appendEvent(state, { type: 'draw', actor: player, insertedIndex: hand.indexOf(tile) }) };
   }
   if (action.type === 'skip-draw') return { ...state, ...appendEvent(state, { type: 'skip-draw', actor: player }), phase: 'guess', drawnIndex: null, mayStop: false };
@@ -112,7 +113,10 @@ function view(state: FourDavinciState, player: FourSeat): FourDavinciView {
     if (state.phase === 'place-joker' || state.phase === 'setup' && state.pendingJokers[player].length) {
       state.hands[player].forEach((_, index) => add(`조커를 ${index + 1}번째 자리에 놓기`, `Colocar comodín en posición ${index + 1}`, { type: 'place-joker', payload: { index } }));
     }
-    if (state.phase === 'draw') add(state.deck.length ? '타일 뽑기' : '추리 시작', state.deck.length ? 'Robar ficha' : 'Adivinar', { type: state.deck.length ? 'draw' : 'skip-draw' });
+    if (state.phase === 'draw') {
+      for (const color of ['black', 'white'] as const) if (state.deck.some(tile => tile.color === color)) add(color === 'black' ? '검정 뽑기' : '흰색 뽑기', color === 'black' ? 'Robar negra' : 'Robar blanca', { type: 'draw', payload: { color } });
+      if (!state.deck.length) add('추리 시작', 'Adivinar', { type: 'skip-draw' });
+    }
     if (state.phase === 'guess') {
       for (const target of fourSeats.filter(seat => fourTeam(seat) !== fourTeam(player))) racks[target].forEach((tile, index) => {
         if (tile.revealed) return;
@@ -138,7 +142,7 @@ function view(state: FourDavinciState, player: FourSeat): FourDavinciView {
     hand: racks[player].map((tile, index) => card(tile, player, index)),
     panels: fourSeats.filter(seat => seat !== player).map(seat => ({ id: seat, title: localized(`${seat.toUpperCase()} · ${fourTeam(seat)}팀`, `${seat.toUpperCase()} · Equipo ${fourTeam(seat)}`), cards: racks[seat].map((tile, index) => card(tile, seat, index)) })),
     note: localized(`4인·조커 팀 변형 · 각 3장 · 남은 더미 ${state.deck.length}장 · 팀원 패 공유 없음`, `Variante por equipos con comodines · 3 fichas iniciales · Mazo: ${state.deck.length} · Sin compartir fichas`),
-    policy: { own: state.hands[player].map(tile => ({ ...tile })), racks, deckCount: state.deck.length, log: visibleLog, ready: { ...state.ready }, ...(ownJokerIndex >= 0 ? { ownJokerToPlace: { color: state.hands[player][ownJokerIndex].color, index: ownJokerIndex } } : {}) },
+    policy: { own: state.hands[player].map(tile => ({ ...tile })), racks, deckCount: state.deck.length, deckColors: { black: state.deck.filter(tile => tile.color === 'black').length, white: state.deck.filter(tile => tile.color === 'white').length }, log: visibleLog, ready: { ...state.ready }, ...(ownJokerIndex >= 0 ? { ownJokerToPlace: { color: state.hands[player][ownJokerIndex].color, index: ownJokerIndex } } : {}) },
   };
 }
 function ai(rawView: FourView, player: FourSeat, random = Math.random): GameAction | null {

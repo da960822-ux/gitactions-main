@@ -6,7 +6,6 @@ import { FeedbackPage } from './FeedbackPage';
 
 const render = (language: 'ko' | 'es') => renderToStaticMarkup(createElement(FeedbackPage, {
   language,
-  mode: 'online',
   entries: [],
   loading: false,
   canCreate: true,
@@ -19,7 +18,7 @@ describe('Mami ideas page copy', () => {
   it('shows one progress badge without implying an idea has been read', () => {
     for (const language of ['ko', 'es'] as const) {
       const html = renderToStaticMarkup(createElement(FeedbackPage, {
-        language, mode: 'online', loading: false, canCreate: false, canAcknowledge: true,
+        language, loading: false, canCreate: false, canAcknowledge: true,
         entries: [{ id: 'planned', category: 'game', title: 'Idea', body: 'An idea', status: 'planned', createdAt: '2026-10-11T12:00:00Z' }],
         onCreate: async () => undefined, onSetStatus: async () => undefined,
       }));
@@ -31,7 +30,7 @@ describe('Mami ideas page copy', () => {
 
   it('keeps legacy game titles and maps the legacy read status to received', () => {
     const html = renderToStaticMarkup(createElement(FeedbackPage, {
-      language: 'ko', mode: 'online', loading: false, canCreate: false, canAcknowledge: true,
+      language: 'ko', loading: false, canCreate: false, canAcknowledge: true,
       entries: [{ id: 'legacy', category: 'game', title: '기존 제목', body: '<script>unsafe</script>', status: 'read', createdAt: '2026-10-11T12:00:00Z' }],
       onCreate: async () => undefined, onSetStatus: async () => undefined,
     }));
@@ -46,7 +45,7 @@ describe('Mami ideas page copy', () => {
 
   it('does not repeat an automatically generated title above a multiline idea', () => {
     const html = renderToStaticMarkup(createElement(FeedbackPage, {
-      language: 'ko', mode: 'demo', loading: false, canCreate: true, canAcknowledge: true,
+      language: 'ko', loading: false, canCreate: true, canAcknowledge: true,
       entries: [{ id: 'multiline', category: 'game', title: '같이 도미노 해보자 다음 주말에', body: '같이 도미노 해보자\n다음 주말에', status: 'new', createdAt: '2026-10-21T12:00:00Z' }],
       onCreate: async () => undefined, onSetStatus: async () => undefined,
     }));
@@ -57,7 +56,7 @@ describe('Mami ideas page copy', () => {
   it('blocks composing while loading or failing and does not show a false empty state on error', () => {
     for (const state of [{ loading: true }, { loading: false, error: 'Connection failed' }]) {
       const html = renderToStaticMarkup(createElement(FeedbackPage, {
-        language: 'es', mode: 'online', entries: [], canCreate: true, canAcknowledge: false,
+        language: 'es', entries: [], canCreate: true, canAcknowledge: false,
         onCreate: async () => undefined, onSetStatus: async () => undefined, ...state,
       }));
       assert.match(html, /<textarea[^>]+disabled/);
@@ -68,16 +67,12 @@ describe('Mami ideas page copy', () => {
     }
   });
 
-  it('explains demo storage once and labels saving without implying delivery', () => {
+  it('describes the same private board for both people without an invite', () => {
     for (const language of ['ko', 'es'] as const) {
-      const html = renderToStaticMarkup(createElement(FeedbackPage, {
-        language, mode: 'demo', entries: [], loading: false, canCreate: true, canAcknowledge: true,
-        onCreate: async () => undefined, onSetStatus: async () => undefined,
-      }));
-      assert.equal((html.match(/class="feedback-demo-note"/g) || []).length, 1);
-      assert.doesNotMatch(html, /feedback-mode|feedback-retention|Papi한테 보내기|Enviar a Papi/);
-      assert.match(html, language === 'ko' ? /메모 남기기/ : /Guardar mi idea/);
-      assert.match(html, language === 'ko' ? /다른 기기와 공유되지 않고, 7일 뒤 삭제돼요/ : /no se comparte con otros dispositivos y se elimina a los siete días/);
+      const html = render(language);
+      assert.match(html, language === 'ko' ? /공용 비공개 보관함/ : /Buzón privado compartido/);
+      assert.doesNotMatch(html, /초대|참여|invitación|unirse|feedback-demo-note/);
+      assert.match(html, language === 'ko' ? /아이디어 저장하기/ : /Guardar idea/);
     }
   });
 
@@ -89,7 +84,7 @@ describe('Mami ideas page copy', () => {
       { canCreate: false, canAcknowledge: false },
     ]) {
       const html = renderToStaticMarkup(createElement(FeedbackPage, {
-        language: 'es', mode: 'online', loading: false, canCreate, canAcknowledge,
+        language: 'es', loading: false, canCreate, canAcknowledge,
         entries: [{ id: 'role-check', category: 'game', title: 'Una idea', body: 'Una idea', status: 'new', createdAt: '2026-10-21T12:00:00Z' }],
         onCreate: async () => undefined, onSetStatus: async () => undefined,
       }));
@@ -105,7 +100,7 @@ describe('Mami ideas page copy', () => {
       status: 'new' as const, createdAt: '2026-10-21T12:00:00Z',
     }));
     const html = renderToStaticMarkup(createElement(FeedbackPage, {
-      language: 'ko', mode: 'online', loading: false, canCreate: false, canAcknowledge: false,
+      language: 'ko', loading: false, canCreate: false, canAcknowledge: false,
       entries, onCreate: async () => undefined, onSetStatus: async () => undefined,
     }));
     assert.equal((html.match(/class="feedback-entry"/g) || []).length, 25);
@@ -125,7 +120,7 @@ describe('Mami ideas page copy', () => {
     assert.match(html, /생각나면 한 줄만 남겨줘/);
     assert.match(html, /placeholder="같이 해보고 싶은 건…"/);
     assert.match(html, />아이디어 저장하기</);
-    assert.match(html, /다른 사람은 참여한 뒤 볼 수 있어요/);
+    assert.match(html, /두 사람이 함께 볼 수 있어요/);
     assert.doesNotMatch(html, /Papi한테 보내기|우리 둘의 비공개 공간에 저장돼요/);
     assert.doesNotMatch(html, /남편에게|Para mi esposo/);
   });
@@ -140,7 +135,7 @@ describe('Mami ideas page copy', () => {
     assert.match(html, /Escríbeme con confianza\. Lo leeré con cariño ♡/);
     assert.match(html, /placeholder="Me gustaría que probáramos…"/);
     assert.match(html, />Guardar idea</);
-    assert.match(html, /Otra persona podrá verlo cuando se una/);
+    assert.match(html, /las dos personas con acceso a este sitio privado podrán verlo/);
     assert.doesNotMatch(html, /Enviar a Papi|Se guarda en nuestro espacio privado/);
     assert.doesNotMatch(html, /Para mi esposo/);
   });

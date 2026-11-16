@@ -1,0 +1,28 @@
+/* Marble alone uses the gameplay viewport; other games keep their existing room shell. */
+@media(min-width:1000px){
+ .app-shell.room-game-marble { position:fixed; inset:0; width:100%; max-width:none; height:100svh; min-height:0; overflow:hidden; padding:0; }
+ .room-game-marble > header,.room-game-marble .room-session-label { display:none; }
+ .room-game-marble .room-main { width:100%; max-width:none; height:100%; margin:0; padding:38px 6px 4px; overflow:hidden; }
+ .room-game-marble .room-layout { display:block; margin:0; height:100%; }
+ .room-game-marble .room-topline { position:absolute; z-index:80; top:0; left:8px; right:340px; min-height:32px; margin:0; gap:8px; font-size:12px; }
+ .room-game-marble .room-player-pills { display:none; }
+ .room-game-marble .room-guide,.room-game-marble .game-switcher { position:fixed; z-index:90; top:3px; right:175px; margin:0; padding:5px 8px; width:auto; min-height:0; border-radius:6px; background:#f7f1e3; color:#173c46; font-size:12px; }
+ .room-game-marble .game-switcher { right:8px; }
+ .room-game-marble :is(.room-guide,.game-switcher)[open] { top:3px; width:min(620px,calc(100vw - 24px)); max-height:calc(100svh - 16px); overflow:auto; box-shadow:0 12px 40px #102e3699; }
+ .room-game-marble .board-card { margin:0; padding:0; border:0; max-width:none; }
+ .room-game-marble .marble-premium { margin:0; }
+ .room-game-marble .demo-banner { position:absolute; bottom:4px; left:8px; z-index:70; max-width:320px; font-size:10px; padding:3px; }
+}
+@media(min-width:1000px){
+ .app-shell.room-shell.room-game-marble .room-main { padding:38px 6px 4px; width:100%; max-width:none; }
+ .app-shell.room-shell.room-game-marble .room-layout { margin:0; width:100%; max-width:none; }
+ .app-shell.room-shell.room-game-marble .board-header { display:none; }
+ .app-shell.room-shell.room-game-marble .room-guide>summary,.app-shell.room-shell.room-game-marble .game-switcher>summary { padding:2px; min-height:24px; line-height:24px; }
+ .app-shell.room-shell.room-game-marble .room-topline { min-height:32px; height:32px; color:#eff7ed; }
+ .app-shell.room-shell.room-game-marble .room-topline a,.app-shell.room-shell.room-game-marble .room-topline button { color:#eff7ed; }
+ .app-shell.room-shell.room-game-marble .game-column { width:100%; max-width:none; min-width:0; }
+}
+@media(min-width:1000px){
+ .app-shell.room-shell.room-game-marble :is(.room-guide,.game-switcher):not([open]) { height:30px; min-height:0; padding:0 8px; box-sizing:border-box; }
+ .app-shell.room-shell.room-game-marble :is(.room-guide,.game-switcher)>summary { display:list-item; margin:0; padding:2px 0; height:28px; min-height:0; line-height:24px; box-sizing:border-box; }
+}

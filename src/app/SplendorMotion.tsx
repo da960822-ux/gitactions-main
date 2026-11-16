@@ -7,7 +7,7 @@ import { playCue, type AudioCue } from '../audio/audio';
 
 type Box = { left: number; top: number; width: number; height: number };
 type MotionEvent = {
-  key: string; version?: number; outgoingCounts?: Record<string, number>; incomingCounts?: Record<string, number>; reserveGoldCount?: number;
+  key: string; version?: number; reservedArrivals?: string[]; outgoingCounts?: Record<string, number>; incomingCounts?: Record<string, number>; reserveGoldCount?: number;
   purchasedCard?: { id: string; bonus: string }; nobleId?: string;
   nobleAwarded?: boolean; nobleRecipient?: 'you' | 'rival' | 'unknown';
   result?: string;
@@ -96,6 +96,9 @@ export function SplendorMotion({ scope, version, viewer, event }: { scope: strin
     }
     if (!event.result) {
       const cues: Array<{ key: string; cue: AudioCue; delay: number }> = [];
+      if (Object.values(event.incomingCounts ?? {}).some(count => count > 0) || (event.reserveGoldCount ?? 0) > 0) cues.push({ key: `${event.key}:tokens-in`, cue: 'select', delay: 650 });
+      if (Object.values(event.outgoingCounts ?? {}).some(count => count > 0)) cues.push({ key: `${event.key}:tokens-out`, cue: 'return-tokens', delay: 650 });
+      if (event.reservedArrivals?.length) cues.push({ key: `${event.key}:reserve`, cue: 'place', delay: 650 });
       if (event.purchasedCard) cues.push({ key: `${event.key}:card`, cue: 'buy', delay: 910 });
       if (event.nobleAwarded) cues.push({ key: `${event.key}:noble`, cue: 'noble', delay: event.purchasedCard ? 1410 : 650 });
       for (const cue of cues) {

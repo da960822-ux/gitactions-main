@@ -5,6 +5,7 @@ import { marbleCueForEvent, marbleEventSequence, marbleEventsAfter, type MarbleA
 import { dominoCueForEvent, dominoSequence, dominoWindow, type DominoActionEvent } from './domino-motion';
 import { jaipurCueForEvent, jaipurCuesForEvent, jaipurEventWindow, jaipurSequence, type JaipurEvent } from './jaipur-motion';
 import { hwatuCueForEvent, hwatuEventWindow, hwatuEvents, hwatuSequence } from './hwatu-motion';
+import { splendorOpponentCues, splendorZeroNetReturnCue } from '../audio/public-audio';
 import './game-feedback.css';
 
 const copy = (language: Language, ko: string, es: string) => language === 'ko' ? ko : es;
@@ -15,11 +16,14 @@ function readPreferences(gameId: GameId): AudioPreferences {
 }
 
 export function cueForAction(game: GameId, action: GameAction): AudioCue | null {
-  if (game === 'rhythm' || game === 'minhwatu') return null;
+  if (game === 'splendor') return splendorZeroNetReturnCue(action);
+  // These accepted actions change phase/settings without emitting a public event.
+  if (game === 'marble' && ['decline', 'skip-train'].includes(action.type)) return 'pass';
+  if (game === 'domino' && action.type === 'set-mode') return 'ready';
+  if (game === 'rhythm' || game === 'minhwatu' || game === 'davinci') return null;
   if (game === 'domino' || game === 'jaipur') return null;
   if (game === 'marble') return null;
   const type = action.type.toLowerCase();
-  if (game === 'davinci' && (type === 'draw' || type === 'skip-draw' || type === 'place-joker' || type === 'finish-setup')) return null;
   if (type === 'guess' || type === 'end-round' || type === 'endturn' || type === 'stop' || type === 'pass' || type === 'tick') return null;
   if (game === 'catchmind' && type === 'draw') return null;
   if (type.includes('roll') || type === 'dice' || type === 'attempt-doubles') return 'dice';
@@ -29,9 +33,6 @@ export function cueForAction(game: GameId, action: GameAction): AudioCue | null 
   if (type.includes('reveal')) return 'reveal';
   if (type.includes('correct')) return 'correct';
   if (type === 'draw') return 'draw';
-  if (game === 'splendor' && type === 'choosenoble') return null;
-  if (game === 'splendor' && type === 'reserve') return 'place';
-  if (game === 'splendor' && (type === 'take' || type === 'taketwo')) return 'select';
   if (type.includes('place') || type.includes('capture') || type.includes('choose') || type.includes('select')) return 'select';
   return 'select';
 }
@@ -83,6 +84,8 @@ export function publicViewCue(game: GameId, previous: any, next: any, player: Pl
     if (Number.isSafeInteger(after?.sequence) && after.sequence > (Number.isSafeInteger(before?.sequence) ? before.sequence : 0)) {
       if (after.type === 'draw') return 'draw';
       if (after.type === 'arrange') return 'place';
+      if (after.type === 'ready') return 'ready';
+      if (after.type === 'skip-draw') return 'turn';
       if (after.type === 'correct-guess') return 'correct';
       if (after.type === 'wrong-guess') return 'error';
       if (after.type === 'stop' && previous.turn !== next.turn) return 'turn';
@@ -271,6 +274,14 @@ export function GameFeedback({ language, gameId, playerId, view, pending = false
     };
   }, [gameId, language, playerId]);
 
+  useEffect(() => {
+    if (gameId === 'rhythm' || gameId === 'catchmind') return;
+    const gesture = () => { if (getPreferences(gameId).sfxEnabled) void unlock(); };
+    window.addEventListener('pointerdown', gesture, true);
+    window.addEventListener('keydown', gesture, true);
+    return () => { window.removeEventListener('pointerdown', gesture, true); window.removeEventListener('keydown', gesture, true); };
+  }, [gameId]);
+
   useEffect(() => { setScene(gameId); setPreferenceState({ gameId, value: readPreferences(gameId) }); }, [gameId]);
   useEffect(() => () => {
     if (clearTimer.current !== null) window.clearTimeout(clearTimer.current);
@@ -329,49 +340,21 @@ export function GameFeedback({ language, gameId, playerId, view, pending = false
       if (clearTimer.current !== null) window.clearTimeout(clearTimer.current);
       clearTimer.current = window.setTimeout(() => { clearTimer.current = null; setAnnouncementState(null); }, 2600);
     }
-    if (gameId === 'jaipur') {
-      const previousResult = resultSignature(previous.view.result), nextResult = resultSignature(view.result);
-      if (!previousResult && nextResult) {
-        cueTimers.current.forEach(window.clearTimeout);
-        cueTimers.current = [];
-        if (transition) playCue(gameId, transition.cue);
-        else playCue(gameId, resultForPlayer(gameId, view, playerId) === 'win' ? 'win' : 'lose');
-        return;
-      }
-      const before = jaipurEvents(previous.view);
-      const sequence = before.reduce((max, event) => Math.max(max, jaipurSequence(event)), 0);
-      const cues = jaipurEventWindow(jaipurEvents(view), sequence).fresh.flatMap(jaipurImmediateCues);
-      cues.forEach((cue, index) => {
-        if (index === 0) playCue(gameId, cue);
-        else cueTimers.current.push(window.setTimeout(() => playCue(gameId, cue), index * 115));
-      });
+    // These boards own their confirmed presentation and landing clocks.
+    if (gameId === 'jaipur' || gameId === 'domino') {
+      // Legacy Domino has no result event; its visible result panel is the clock.
+      if (gameId === 'domino' && !previous.view.result && view.result && !dominoEvents(view).some(event => event.type === 'win') && transition) playCue(gameId, transition.cue);
       return;
     }
-    if (gameId === 'domino') {
-      const previousResult = resultSignature(previous.view.result), nextResult = resultSignature(view.result);
-      if (!previousResult && nextResult) {
-        cueTimers.current.forEach(window.clearTimeout);
-        cueTimers.current = [];
-        if (transition) playCue(gameId, transition.cue);
-        else playCue(gameId, resultForPlayer(gameId, view, playerId) === 'win' ? 'win' : 'lose');
-        return;
-      }
-      const before = dominoEvents(previous.view);
-      const beforeSequence = before.reduce((max, event) => Math.max(max, dominoSequence(event)), 0);
-      // Placement audio belongs to DominoEventStage's confirmed landing.
-      const cues = dominoWindow(dominoEvents(view), beforeSequence).fresh.filter(event => event.type !== 'play').map(dominoCueForEvent).filter((cue): cue is AudioCue => cue !== null);
-      cues.forEach((cue, index) => {
-        if (index === 0) playCue(gameId, cue);
-        else cueTimers.current.push(window.setTimeout(() => playCue(gameId, cue), index * 150));
-      });
-      return;
-    }
+    if (gameId === 'splendor') splendorOpponentCues(previous.view, view, playerId).forEach(cue => playCue(gameId, cue));
     if (transition && !(gameId === 'splendor' && transition.cue === 'noble')) playCue(gameId, transition.cue);
+    else if (gameId === 'davinci') { const cue = publicViewCue(gameId, previous.view, view, playerId); if (cue) playCue(gameId, cue); }
   }, [gameId, language, playerId, view, identity]);
 
   const updatePreference = (change: Partial<AudioPreferences>) => {
     const next = setPreferences(gameId, change);
     setPreferenceState({ gameId, value: next });
+    if (next.sfxEnabled) void unlock();
   };
   const openSettings = () => {
     setSettingsOpen(value => !value);
@@ -390,7 +373,7 @@ export function GameFeedback({ language, gameId, playerId, view, pending = false
     <section className="game-sound-settings" id="game-sound-settings" aria-label={copy(language, '게임 효과음', 'Efectos del juego')} hidden={!settingsOpen}>
       {rhythm ? <p className="game-sound-note">{copy(language, '리듬게임은 원작 플레이어의 음악을 사용해요. 앱 효과음은 재생되지 않아요.', 'Rhythm usa la música del reproductor original. La app no añade efectos.')}</p> : <>
         <label className="game-sound-toggle"><input type="checkbox" checked={preferences.sfxEnabled} onChange={event => updatePreference({ sfxEnabled: event.currentTarget.checked })}/><span>{copy(language, '효과음 사용', 'Activar efectos')}</span></label>
-        <label className="game-sound-range"><span>{copy(language, '효과음 크기', 'Volumen de efectos')} <output>{Math.round(preferences.sfxVolume * 100)}%</output></span><input type="range" min="0" max="1" step="0.05" value={preferences.sfxVolume} disabled={!preferences.sfxEnabled} onChange={event => updatePreference({ sfxVolume: Number(event.currentTarget.value) })}/></label>
+        <label className="game-sound-range"><span>{copy(language, '효과음 크기', 'Volumen de efectos')} <output>{Math.round(preferences.sfxVolume * 100)}%</output></span><input type="range" aria-label={copy(language, '효과음 크기', 'Volumen de efectos')} aria-valuetext={`${Math.round(preferences.sfxVolume * 100)}%`} min="0" max="1" step="0.01" value={preferences.sfxVolume} disabled={!preferences.sfxEnabled} onChange={event => updatePreference({ sfxVolume: Number(event.currentTarget.value) })}/></label>
         <p className="game-sound-note">{copy(language, '효과음은 게임별로 이 브라우저에 저장돼요. 기본 설정은 꺼짐이에요.', 'Los efectos se guardan por juego en este navegador. Empiezan apagados.')}</p>
       </>}
     </section>

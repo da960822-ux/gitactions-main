@@ -1,0 +1,80 @@
+{
+  "ko": {
+    "goal": "같은 숫자를 이어 손패를 먼저 비우세요. 한 판을 이길 때 점수를 받고, 여러 판의 누적 점수로 승부해요. 기본 목표는 200점이며 시작 전에 100점으로 바꿀 수 있어요.",
+    "setup": [
+      "아래는 내가 낼 수 있는 손패, 중앙은 함께 보는 도미노 줄이에요. 타일 4|6은 한쪽에 4, 다른 쪽에 6이 있다는 뜻이고 빈 면은 0이에요.",
+      "각자 7장으로 시작해요. 1대1에서 배분하지 않은 14장은 이번 판에 쓰지 않아요. 놓을 패가 없어도 더미에서 뽑지 않아요.",
+      "첫 판은 6|6을 가진 사람이 그 타일로 시작해요. 다음 판부터는 직전 판의 승자가 자기 손패 아무 타일로 시작해요.",
+      "4자리 팀전도 각자 7장이며 같은 숫자 잇기는 같아요. 선택한 모드의 팀 표시를 확인하세요. 파트너전은 사람마다 AI 팀원이 있고, 사람 대 봇은 두 사람이 한 팀이에요."
+    ],
+    "turnSteps": [
+      { "title": "내 차례와 양쪽 끝을 확인해요", "body": "중앙 줄의 맨 왼쪽과 맨 오른쪽 숫자만 연결할 수 있어요. 내 차례에 둘 중 하나와 같은 숫자가 있는 손패가 활성화돼요. 줄 중간에는 놓지 않아요.", "control": "중앙의 ‘열린 끝’과 아래 ‘내 손패’ 확인" },
+      { "title": "타일을 고르고, 놓을 끝을 눌러요", "body": "손패를 한 번 누르는 것은 선택이에요. 이어 빛나는 왼쪽 또는 오른쪽 끝을 누르면 실제로 놓아요. 방향은 자동으로 맞춰집니다. 아직 줄이 비었다면 손패 선택 뒤 중앙 시작 버튼을 누르세요.", "control": "손패 → ‘왼쪽 · 숫자’/‘오른쪽 · 숫자’, 첫 수는 ‘시작 타일 6|6 놓기’" },
+      { "title": "놓을 수 없을 때만 패스해요", "body": "어느 끝에도 맞는 손패가 하나도 없으면 패스 버튼이 나타나요. 뽑기나 임의 패스는 없어요. 타일을 놓거나 패스하면 다음 자리로 차례가 넘어갑니다.", "control": "‘놓을 수 없어요 · 패스’" },
+      { "title": "판 정산 뒤 다음 판으로 가요", "body": "누군가 손패를 비우거나 판이 막히면 남은 패와 점수가 공개돼요. 목표 점수에 도달하지 않았다면 방을 만든 사람이 다음 판을 시작해요. 선택만 잘못했다면 놓기 전에 Esc로 취소할 수 있어요.", "control": "‘다음 라운드’ · 놓기 전 선택 취소는 Esc" }
+    ],
+    "example": {
+      "title": "첫 응수 예시 · 상대가 6|6으로 시작했을 때",
+      "steps": [
+        "상대가 첫 타일 6|6을 놓았어요. 열린 끝은 왼쪽 6, 오른쪽 6이에요.",
+        "내 손패에 4|6이 있다면 그 타일을 눌러요. 아직 손패에서 나가지는 않아요.",
+        "빛나는 ‘오른쪽 · 6’을 누르세요. 타일이 6|4 방향으로 자동으로 놓여요.",
+        "열린 끝은 6과 4가 되고, 내 손패는 7장에서 6장으로 줄어요. 이제 상대 차례예요."
+      ],
+      "result": "6끼리 맞닿았으므로 올바른 수예요. 이번 수에서 점수를 바로 받는 것은 아니며, 판이 끝날 때 정산해요. 실제 배분은 매번 달라요."
+    },
+    "mistakes": [
+      { "question": "타일을 눌렀는데 왜 안 놓아지나요?", "answer": "선택 뒤 중앙의 빛나는 끝을 한 번 더 눌러야 확정돼요. 첫 수는 ‘시작 타일 X|Y 놓기’를 누르세요. 양쪽 끝이 모두 맞으면 어느 쪽에 놓을지도 내가 고릅니다." },
+      { "question": "같은 숫자가 줄 중간에 있는데 왜 못 놓나요?", "answer": "줄의 맨 바깥 두 끝만 사용할 수 있어요. 더블도 가지를 뻗지 않아요. 4|4는 양쪽 숫자가 같은 타일일 뿐이에요." },
+      { "question": "못 놓으면 새 타일을 뽑나요?", "answer": "아니요. 이 버전은 뽑기가 없는 규칙이에요. 맞는 타일이 없을 때만 표시되는 패스 버튼을 누르세요." },
+      { "question": "아무도 못 놓으면 누가 이기나요?", "answer": "1대1은 2번, 네 자리는 4번 연속 패스하면 막혀요. 양쪽 열린 숫자 각각에 해당하는 서로 다른 7장이 이미 놓여도 즉시 막혀요. 마지막으로 놓은 사람과 바로 다음 자리의 남은 숫자 합만 비교하고, 적은 쪽이 이겨요. 동점은 마지막으로 놓은 사람의 승리예요." },
+      { "question": "점수는 언제, 어떻게 얻나요?", "answer": "판 승자는 모든 사람의 남은 손패 숫자 합을 받아요. 마지막 비더블 타일이 놓기 전 서로 다른 양쪽 끝 모두에 맞으면 카피쿠아로 +30점이에요. 오프닝 패스 보너스도 판 종료 때 합산하므로, 점수와 상세 규칙에서 따로 확인하세요. 파소 코리도 보너스는 없어요." }
+    ],
+    "win": "한 판 승리와 경기 승리는 달라요. 판마다 점수를 더하고, 어느 쪽이 목표 100점 또는 200점에 도달한 정산에서 누적 점수가 더 높은 쪽이 경기 승리예요. 그때 누적 점수가 같으면 무승부예요.",
+    "glossary": [
+      { "term": "열린 끝", "meaning": "새 타일을 붙일 수 있는 도미노 줄 맨 왼쪽·오른쪽 숫자." },
+      { "term": "더블", "meaning": "6|6처럼 양쪽 숫자가 같은 타일." },
+      { "term": "트랑케 / 트랑카도르", "meaning": "막힌 판 / 그 판에서 마지막으로 타일을 놓은 사람." },
+      { "term": "카피쿠아", "meaning": "마지막 비더블 타일이 서로 다른 양쪽 끝 어디든 맞는 마무리. +30점." }
+    ]
+  },
+  "es": {
+    "goal": "Une números iguales para quedarte sin fichas. Ganar una mano te da puntos; la partida se decide con el total de varias manos. La meta inicial es 200 puntos y puedes cambiarla a 100 antes de empezar.",
+    "setup": [
+      "Abajo está tu mano y en el centro la cadena que todos ven. Una ficha 4|6 tiene un 4 en una mitad y un 6 en la otra; una mitad vacía vale 0.",
+      "Cada persona recibe 7 fichas. En uno contra uno, las 14 que no se reparten quedan fuera de esa mano. No robas fichas si no puedes jugar.",
+      "Quien tiene el 6|6 abre la primera mano con esa ficha. Desde la segunda, quien ganó la mano anterior abre con cualquier ficha de su mano.",
+      "Con cuatro asientos también reciben 7 fichas y unen números iguales. Revisa los equipos del modo elegido: en parejas cada persona tiene una IA compañera; en humanos contra bots, las dos personas forman equipo."
+    ],
+    "turnSteps": [
+      { "title": "Revisa tu turno y los dos extremos", "body": "Solo puedes conectar con el número del extremo izquierdo o derecho de la cadena. En tu turno se habilitan las fichas que coinciden con alguno. No se juega en medio de la cadena.", "control": "Revisa «Extremos» en el centro y «Tu mano» abajo" },
+      { "title": "Elige una ficha y pulsa un extremo", "body": "Pulsar una ficha solo la selecciona. Después pulsa el extremo izquierdo o derecho iluminado para jugarla; se orienta automáticamente. Si la cadena está vacía, selecciona la ficha y pulsa el botón de inicio en el centro.", "control": "Ficha → «Izq. · número»/«Der. · número»; para abrir: «Jugar ficha inicial 6|6»" },
+      { "title": "Pasa solo si no puedes jugar", "body": "El botón para pasar aparece cuando ninguna ficha de tu mano coincide con los extremos. No se roba ni se pasa por elección. Después de jugar o pasar, sigue el asiento siguiente.", "control": "«No puedes jugar · pasar»" },
+      { "title": "Revisa los puntos y continúa", "body": "Cuando alguien se queda sin fichas o la mano se bloquea, se revelan las manos y los puntos. Si aún no alcanzan la meta, quien creó la sala inicia la siguiente mano. Si solo seleccionaste una ficha por error, Esc cancela antes de jugarla.", "control": "«Siguiente ronda» · Esc cancela una selección sin jugar" }
+    ],
+    "example": {
+      "title": "Tu primera respuesta · la otra persona abrió con 6|6",
+      "steps": [
+        "La otra persona juega el 6|6 inicial. Los extremos abiertos son 6 a la izquierda y 6 a la derecha.",
+        "Si tienes el 4|6, pulsa esa ficha. Todavía no sale de tu mano.",
+        "Pulsa «Der. · 6», que está iluminado. La ficha se coloca automáticamente como 6|4.",
+        "Ahora quedan abiertos el 6 y el 4; tu mano baja de 7 a 6 fichas. Le toca a la otra persona."
+      ],
+      "result": "La jugada es válida porque los dos 6 se tocan. No ganas puntos inmediatamente por colocarla: se cuentan al terminar la mano. Las fichas repartidas varían en cada partida."
+    },
+    "mistakes": [
+      { "question": "¿Por qué no se juega la ficha al pulsarla?", "answer": "Primero la seleccionas y luego confirmas pulsando un extremo iluminado. Para abrir, pulsa «Jugar ficha inicial X|Y». Si la ficha sirve en ambos extremos, tú eliges dónde colocarla." },
+      { "question": "Hay un número igual en medio. ¿Por qué no puedo unirlo?", "answer": "Solo se usan los dos extremos exteriores. Los dobles tampoco abren ramificaciones: 4|4 es simplemente una ficha con dos números iguales." },
+      { "question": "¿Robo otra ficha si no puedo jugar?", "answer": "No. Esta versión no permite robar. Pulsa el botón para pasar, que aparece solo cuando no tienes una ficha válida." },
+      { "question": "¿Quién gana si nadie puede jugar?", "answer": "Hay tranque tras 2 pases seguidos en uno contra uno o 4 con cuatro asientos. También se cierra de inmediato si ya se jugaron las 7 fichas distintas de cada número abierto. Se comparan solo los puntos que les quedan a quien jugó la última ficha y al asiento siguiente. Gana el menor total; un empate favorece a quien puso la última ficha." },
+      { "question": "¿Cuándo y cómo se ganan puntos?", "answer": "Quien gana la mano recibe la suma de los puntos que quedan en las manos de todos. Si su última ficha no es doble y servía en los dos extremos distintos antes de jugarla, suma 30 por capicúa. Los bonos de pase inicial también se liquidan al terminar; revísalos en el marcador y las reglas detalladas. No hay bono de paso corrido." }
+    ],
+    "win": "Ganar una mano no es ganar la partida. Los puntos se acumulan; cuando alguno alcanza la meta de 100 o 200 al cerrar una mano, gana quien tenga el total más alto. Si los totales quedan iguales en ese momento, hay empate.",
+    "glossary": [
+      { "term": "Extremos abiertos", "meaning": "Los números de la izquierda y la derecha donde puedes unir una ficha." },
+      { "term": "Doble", "meaning": "Ficha con el mismo número en ambas mitades, como 6|6." },
+      { "term": "Tranque / trancador", "meaning": "Mano bloqueada / persona que jugó la última ficha de esa mano." },
+      { "term": "Capicúa", "meaning": "Final con una ficha no doble que servía en cualquiera de los dos extremos distintos. Da 30 puntos extra." }
+    ]
+  }
+}

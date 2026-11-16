@@ -1,3 +1,5 @@
+import {marbleEventText} from './marble-event-text';
+import { marbleCardCopy } from './marble-card-copy';
 import { useEffect, useRef, useState } from 'react';
 import type { Language, PlayerId } from '../core/types';
 import type { MarbleEventId } from '../games/marble';
@@ -9,6 +11,7 @@ import '../styles/marble-events.css';
 
 const labels: Record<string, Record<Language, string>> = {
   roll: { ko: '주사위', es: 'Dados' }, move: { ko: '이동', es: 'Movimiento' }, pawn: { ko: '이동', es: 'Movimiento' },
+  'festival-site': { ko: '축제개최', es: 'Festival' },
   arrival: { ko: '도착', es: 'Llegada' }, 'event-card': { ko: '이벤트 카드', es: 'Carta de evento' }, buy: { ko: '구매', es: 'Compra' }, takeover: { ko: '인수', es: 'Adquisición' }, sell: { ko: '매각', es: 'Venta' },
   build: { ko: '건설', es: 'Construcción' }, rent: { ko: '임대료', es: 'Alquiler' }, tax: { ko: '세금', es: 'Impuesto' },
   bonus: { ko: '보너스', es: 'Bono' }, loan: { ko: '대출', es: 'Préstamo' }, repay: { ko: '상환', es: 'Pago' }, crisis: { ko: '위기', es: 'Dificultad' },
@@ -36,7 +39,7 @@ function latestEvent(events: readonly (MarbleActionEvent | null | undefined)[]) 
   return events.filter((event): event is MarbleActionEvent => Boolean(event) && marbleEventSequence(event) > 0).slice().sort((a, b) => marbleEventSequence(a) - marbleEventSequence(b)).at(-1) ?? null;
 }
 
-const goldenKeyArt: Record<MarbleEventId, string> = {
+const goldenKeyArt: Partial<Record<MarbleEventId, string>> = {
   festival: 'festival', lottery: 'festival', 'rent-rebate': 'festival',
   'travel-cost': 'tax', maintenance: 'tax', 'monopoly-warning': 'tax',
   'visit-santo-domingo': 'cities', 'city-dividend': 'cities',
@@ -63,7 +66,7 @@ function EventMark({ type, event }: { type: string; event: MarbleActionEvent }) 
   return <svg className="marble-event-symbol" viewBox="0 0 32 32" aria-hidden="true"><path d="M7 24 24 7M12 7h12v12"/></svg>;
 }
 
-export function MarbleEventStage({ events, event, animating = false, language, playerId, result, playerNames }: { playerNames?: Record<string, Record<Language, string>>; event?: MarbleActionEvent | null; animating?: boolean; events: readonly (MarbleActionEvent | null | undefined)[]; language: Language; playerId: PlayerId; result?: unknown }) {
+export function MarbleEventStage({ events, event, animating = false, language, playerId, result, playerNames, economicVersion=3, constructionRulesVersion=2,passSalary }: { passSalary?:number; economicVersion?:number; constructionRulesVersion?:number; playerNames?: Record<string, Record<Language, string>>; event?: MarbleActionEvent | null; animating?: boolean; events: readonly (MarbleActionEvent | null | undefined)[]; language: Language; playerId: PlayerId; result?: unknown }) {
   const [presentation, setPresentation] = useState(() => ({ event: latestEvent(events), animate: false, audible: false }));
   const presented = event === undefined ? presentation.event : event;
   const sounded = useRef<typeof presentation | null>(null);
@@ -95,8 +98,9 @@ export function MarbleEventStage({ events, event, animating = false, language, p
 
   if (!presented) return null;
   const type = marbleEventType(presented);
-  const heading = presented.title?.[language] || labels[type]?.[language] || (language === 'ko' ? '게임 기록' : 'Movimiento');
-  const detail = presented.text?.[language];
+  const card=type==='event-card'&&marbleEventArtFamily(presented.cardId??presented.id)?marbleCardCopy((presented.cardId??presented.id) as MarbleEventId,language,economicVersion,constructionRulesVersion===2,passSalary):null;
+  const heading = card?.name || presented.title?.[language] || labels[type]?.[language] || (language === 'ko' ? '게임 기록' : 'Movimiento');
+  const detail = marbleEventText(presented.text?.[language],language,{p1:playerLabel('p1',playerId,language,playerNames),p2:playerLabel('p2',playerId,language,playerNames),...Object.fromEntries(Object.entries(playerNames??{}).map(([seat,name])=>[seat,name[language]]))});
   const actor = actorLabel(presented, playerId, language, playerNames);
   const actorId = String(presented.actor ?? presented.playerId ?? playerId);
   const hasCardArt = Boolean(marbleEventArtFamily(presented.cardId ?? presented.id));
@@ -127,7 +131,7 @@ export function MarbleEventStage({ events, event, animating = false, language, p
     <div className="marble-event-copy">
       <div className="marble-event-heading"><strong>{heading}</strong>{actor && <span>{actor}</span>}</div>
       {status && <span className={`marble-event-status${assessed ? ' is-pending' : ''}`}>{status}</span>}
-      {detail && <p>{detail}</p>}
+      {card?<div className="mp-card-reveal-copy"><p>{card.effect}</p><p><b>{language==='ko'?'대상: ':'Objetivo: '}</b>{card.target}</p><p><b>{language==='ko'?'기간: ':'Duración: '}</b>{card.duration}</p>{detail&&(/없|불가|sin |no hay|ningun|ningún/i.test(detail)||presented.tile!==undefined)&&<p className="mp-card-result"><b>{language==='ko'?'처리 결과: ':'Resultado: '}</b>{detail}</p>}</div>:detail&&<p>{detail}</p>}
       {route && <small className="marble-event-route">{route}</small>}
     </div>
     {hasTransfer && <span className="marble-event-transfer">{transferFrom}<i aria-hidden="true">→</i>{transferTo}</span>}

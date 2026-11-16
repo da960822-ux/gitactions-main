@@ -59,7 +59,7 @@ var davinciEngine = {
       return "Finish the starting arrangement first";
     }
     if (a.type === "place-joker") return p === s.turn && s.phase === "place-joker" && s.drawnIndex !== null && s.hands[p][s.drawnIndex]?.value === "joker" && Number.isInteger(payload.index) && payload.index >= 0 && payload.index < s.hands[p].length ? null : "Cannot place a joker now";
-    if (a.type === "draw") return p === s.turn && s.phase === "draw" && s.deck.length > 0 ? null : "Cannot draw now";
+    if (a.type === "draw") return p === s.turn && s.phase === "draw" && (payload.color === "black" || payload.color === "white") && s.deck.some((tile) => tile.color === payload.color) ? null : "Cannot draw this color now";
     if (a.type === "skip-draw") return p === s.turn && s.phase === "draw" && s.deck.length === 0 ? null : "Cannot skip the draw now";
     if (a.type === "reveal-own") return p === s.turn && s.phase === "reveal-own" && !!s.pendingGuess && Number.isInteger(payload.index) && payload.index >= 0 && payload.index < s.hands[p].length && !s.hands[p][payload.index].revealed ? null : "Choose a hidden own tile";
     if (a.type === "guess") {
@@ -96,9 +96,10 @@ var davinciEngine = {
       return recordEvent(s, { ...s, hands: hands2, result: result2, turn: opponent2, phase: s.deck.length ? "draw" : "guess", drawnIndex: null, mayStop: false, pendingGuess: void 0 }, { type: "wrong-guess", actor: p, targetIndex: s.pendingGuess.targetIndex, guess: s.pendingGuess.guess, revealedOwnIndex: index, fromStockEmpty: true });
     }
     if (a.type === "draw") {
-      const hands2 = { ...s.hands, [p]: sortedInsert(s.hands[p], s.deck[s.deck.length - 1]) };
-      const drawnIndex = hands2[p].findIndex((t) => t === s.deck[s.deck.length - 1]);
-      return recordEvent(s, { ...s, hands: hands2, deck: s.deck.slice(0, -1), phase: s.deck[s.deck.length - 1].value === "joker" ? "place-joker" : "guess", drawnIndex, mayStop: false }, { type: "draw", actor: p, insertedIndex: drawnIndex });
+      const deckIndex = s.deck.map((tile2) => tile2.color).lastIndexOf(a.payload.color);
+      const tile = s.deck[deckIndex], hands2 = { ...s.hands, [p]: sortedInsert(s.hands[p], tile) };
+      const drawnIndex = hands2[p].indexOf(tile);
+      return recordEvent(s, { ...s, hands: hands2, deck: s.deck.filter((_, index) => index !== deckIndex), phase: tile.value === "joker" ? "place-joker" : "guess", drawnIndex, mayStop: false }, { type: "draw", actor: p, insertedIndex: drawnIndex });
     }
     if (a.type === "stop") return recordEvent(s, { ...s, turn: otherPlayer(p), phase: s.deck.length ? "draw" : "guess", drawnIndex: null, mayStop: false }, { type: "stop", actor: p });
     const opponent = otherPlayer(p), i = a.payload.index, target = s.hands[opponent][i];
@@ -118,7 +119,9 @@ var davinciEngine = {
     const jokerIndex = s.phase === "setup" ? s.hands[p].findIndex((t) => t.value === "joker" && t.color === s.setupPending?.[p]?.[0]) : s.turn === p && s.phase === "place-joker" ? s.drawnIndex ?? -1 : -1;
     if (!s.result && jokerIndex >= 0) for (let index = 0; index < own.length; index++) actions.push(label(`\uC870\uCEE4\uB97C ${index + 1}\uBC88\uC9F8 \uC790\uB9AC\uC5D0 \uB193\uAE30`, `Colocar el comod\xEDn en la posici\xF3n ${index + 1}`, { type: "place-joker", payload: { index } }));
     if (!s.result && s.phase === "setup" && !s.setupReady?.[p] && !s.setupPending?.[p]?.length) actions.push(label("\uBC30\uCE58 \uC644\uB8CC", "Listo para jugar", { type: "finish-setup" }));
-    if (!s.result && s.turn === p && s.phase === "draw" && s.deck.length) actions.push(label("\uD0C0\uC77C \uBF51\uAE30", "Robar ficha", { type: "draw" }));
+    if (!s.result && s.turn === p && s.phase === "draw") {
+      for (const color of ["black", "white"]) if (s.deck.some((tile) => tile.color === color)) actions.push(label(color === "black" ? "\uAC80\uC815 \uBF51\uAE30" : "\uD770\uC0C9 \uBF51\uAE30", color === "black" ? "Robar negra" : "Robar blanca", { type: "draw", payload: { color } }));
+    }
     if (!s.result && s.turn === p && s.phase === "draw" && !s.deck.length) actions.push(label("\uCD94\uCE21 \uACC4\uC18D\uD558\uAE30", "Seguir adivinando", { type: "skip-draw" }));
     if (!s.result && s.turn === p && s.phase === "guess") {
       for (let i = 0; i < rival.length; i++) if (!rival[i].revealed) for (const value of [...Array.from({ length: 12 }, (_, n) => n), ...s.rulesVersion === 2 ? ["joker"] : []]) actions.push(label(`${i + 1}\uBC88 ${rival[i].color === "black" ? "\uAC80\uC815" : "\uD770\uC0C9"} \uD0C0\uC77C: ${value === "joker" ? "\uFF0D" : value} \uCD94\uCE21`, `Ficha ${i + 1} ${rival[i].color === "black" ? "negra" : "blanca"}: adivinar ${value === "joker" ? "\uFF0D" : value}`, { type: "guess", payload: { index: i, value } }));
@@ -130,7 +133,7 @@ var davinciEngine = {
     const actionLog = (s.actionLog ?? []).filter((event2) => event2.type !== "arrange" || event2.actor === p).map((event2) => ({ ...event2 }));
     const turn = s.phase === "setup" ? s.setupReady?.[p] ? otherPlayer(p) : p : s.turn;
     const phase = s.phase === "setup" ? s.setupReady?.[p] ? "waiting" : "setup" : s.turn === p ? s.phase : "waiting";
-    return { game: "davinci", turn, phase, hand: own, ...jokerIndex >= 0 ? { ownJokerToPlace: { color: own[jokerIndex].color, index: jokerIndex } } : {}, board: { opponentTiles: rival, deckCount: s.deck.length, turnNumber: s.turnNumber ?? 1, setupReady: s.setupReady ? { ...s.setupReady } : void 0, tileCount: s.rulesVersion === 2 ? 26 : 24, actionLog, lastEvent: actionLog.at(-1) ?? null }, opponentCount: rival.filter((t) => !t.revealed).length, status: s.result ? "finished" : turn === p ? "your-turn" : "opponent-turn", result: s.result, actions };
+    return { game: "davinci", turn, phase, hand: own, ...jokerIndex >= 0 ? { ownJokerToPlace: { color: own[jokerIndex].color, index: jokerIndex } } : {}, board: { opponentTiles: rival, deckCount: s.deck.length, deckColors: { black: s.deck.filter((tile) => tile.color === "black").length, white: s.deck.filter((tile) => tile.color === "white").length }, turnNumber: s.turnNumber ?? 1, setupReady: s.setupReady ? { ...s.setupReady } : void 0, tileCount: s.rulesVersion === 2 ? 26 : 24, actionLog, lastEvent: actionLog.at(-1) ?? null }, opponentCount: rival.filter((t) => !t.revealed).length, status: s.result ? "finished" : turn === p ? "your-turn" : "opponent-turn", result: s.result, actions };
   },
   getResult: (s) => s.result
 };
@@ -4106,7 +4109,7 @@ var marbleCreditRules = {
     "\uB9D0\uACFC \uC774\uB3D9 \u2014 \uCCAB \uC8FC\uC0AC\uC704\uB97C \uAD74\uB9AC\uAE30 \uC804\uC5D0 \uC6D0\uD558\uB294 \uB9D0\uC744 \uACE0\uB985\uB2C8\uB2E4. \uC0C1\uB300\uC640 \uAC19\uC740 \uB9D0\uC740 \uC120\uD0DD\uD560 \uC218 \uC5C6\uACE0 \uCCAB \uC774\uB3D9 \uB4A4\uC5D0\uB294 \uACE0\uC815\uB429\uB2C8\uB2E4. \uB450 \uC8FC\uC0AC\uC704 \uD569\uB9CC\uD07C 40\uCE78 \uBCF4\uB4DC\uB97C \uC774\uB3D9\uD558\uBA70 \uCD9C\uBC1C\uC810\uC744 \uC9C0\uB098\uBA74 200\uC744 \uBC1B\uC2B5\uB2C8\uB2E4. \uAD11\uC8FC\uC640 \uC0B0\uD1A0\uB3C4\uBC0D\uACE0\uB97C \uD3EC\uD568\uD574 24\uAC1C \uB3C4\uC2DC\uAC00 \uC788\uC2B5\uB2C8\uB2E4.",
     "\uB3C4\uC2DC\uC640 \uAC74\uC124 \u2014 \uBE48 \uB3C4\uC2DC\uB97C \uAD6C\uB9E4\uD558\uAC70\uB098 \uC9C0\uB098\uAC11\uB2C8\uB2E4. \uB0B4 \uB3C4\uC2DC\uC5D0\uB294 \uC0C9\uC0C1 \uB3C4\uC2DC\uAD70 \uC644\uC131 \uC5EC\uBD80\uC640 \uAD00\uACC4\uC5C6\uC774 \uB2E8\uB3C5\uC8FC\uD0DD\u2192\uC544\uD30C\uD2B8\u2192\uB79C\uB4DC\uB9C8\uD06C\uB97C \uC21C\uC11C\uB300\uB85C \uC9C0\uC744 \uC218 \uC788\uC2B5\uB2C8\uB2E4. \uB2E8\uACC4\uB9C8\uB2E4 100, \uD1B5\uD589\uB8CC\uB294 \uAE30\uBCF8\uC758 2\uBC30\u21924\uBC30\u21928\uBC30\uC785\uB2C8\uB2E4. \uC0C1\uB300 \uB3C4\uC2DC\uC758 \uD1B5\uD589\uB8CC\uB294 \uC790\uB3D9 \uC9C0\uAE09\uB429\uB2C8\uB2E4.",
     "\uB300\uCD9C \u2014 \uC790\uAE30 \uCC28\uB840\uC5D0 \uBBF8\uC0C1\uD658 \uB300\uCD9C\uC774 \uC5C6\uC73C\uBA74 300\uC744 \uBC1B\uC744 \uC218 \uC788\uACE0, \uC0C1\uD658\uC561\uC740 330\uC785\uB2C8\uB2E4. \uCD94\uAC00 \uC774\uC790\uB098 \uB9CC\uAE30\uB294 \uC5C6\uC2B5\uB2C8\uB2E4. \uC9C0\uAE09 \uC704\uAE30 \uC678\uC758 \uC790\uAE30 \uCC28\uB840\uC5D0 330 \uC804\uC561\uC744 \uC0C1\uD658\uD569\uB2C8\uB2E4. \uBBF8\uC0C1\uD658\uC561\uC740 \uC21C\uC790\uC0B0\uC5D0\uC11C \uBE7C\uBA70, \uC0C1\uD658 \uD6C4 \uB2E4\uC2DC \uBE4C\uB824\uB3C4 \uB9E4\uBC88 30\uC758 \uBE44\uC6A9\uC774 \uBC1C\uC0DD\uD569\uB2C8\uB2E4.",
-    "\uC9C0\uAE09 \uC704\uAE30 \u2014 \uD1B5\uD589\uB8CC\xB7\uC138\uAE08\xB7\uCE74\uB4DC \uBE44\uC6A9\uC744 \uB0BC \uD604\uAE08\uC774 \uBD80\uC871\uD558\uBA74 \uD589\uB3D9\uC774 \uBA48\uCDA5\uB2C8\uB2E4. \uD604\uC7AC \uD604\uAE08+300\uC73C\uB85C \uC9C0\uAE09\uC561\uC744 \uCDA9\uB2F9\uD560 \uC218 \uC788\uACE0 \uAE30\uC874 \uB300\uCD9C\uC774 \uC5C6\uC744 \uB54C\uB9CC \uB300\uCD9C\uB85C \uD574\uACB0\uD560 \uC218 \uC788\uC2B5\uB2C8\uB2E4. \uB300\uCD9C\uC744 \uC120\uD0DD\uD558\uBA74 \uD574\uB2F9 \uC9C0\uAE09\uC744 \uD55C \uBC88 \uCC98\uB9AC\uD558\uACE0 \uC6D0\uB798 \uCC28\uB840\uB85C \uB3CC\uC544\uAC11\uB2C8\uB2E4. \uD30C\uC0B0 \uC778\uC815\uC740 \uACBD\uAE30 \uC885\uB8CC\uB97C \uB73B\uD558\uBA70 \uB3C4\uC2DC \uC790\uB3D9 \uB9E4\uAC01\uC740 \uC5C6\uC2B5\uB2C8\uB2E4.",
+    "\uC9C0\uAE09 \uC704\uAE30 \u2014 \uD1B5\uD589\uB8CC\xB7\uC138\uAE08\xB7\uCE74\uB4DC \uBE44\uC6A9\uC744 \uB0BC \uD604\uAE08\uC774 \uBD80\uC871\uD558\uBA74 \uD589\uB3D9\uC774 \uBA48\uCDA5\uB2C8\uB2E4. \uAE30\uC874 \uB300\uCD9C\uC774 \uC5C6\uC73C\uBA74 \uBA3C\uC800 \uB300\uCD9C\uBC1B\uC744 \uC218 \uC788\uC2B5\uB2C8\uB2E4. \uD604\uAE08\uC774 \uC9C0\uAE09\uC561\uC5D0 \uB3C4\uB2EC\uD558\uBA74 \uD574\uB2F9 \uC9C0\uAE09\uC744 \uD55C \uBC88 \uCC98\uB9AC\uD558\uACE0 \uC6D0\uB798 \uCC28\uB840\uB85C \uB3CC\uC544\uAC00\uBA70, \uBD80\uC871\uD558\uBA74 \uC9C0\uAE09 \uC704\uAE30\uAC00 \uACC4\uC18D\uB429\uB2C8\uB2E4. \uD30C\uC0B0 \uC778\uC815\uC740 \uACBD\uAE30 \uC885\uB8CC\uB97C \uB73B\uD558\uBA70 \uB3C4\uC2DC \uC790\uB3D9 \uB9E4\uAC01\uC740 \uC5C6\uC2B5\uB2C8\uB2E4.",
     "\uD669\uAE08\uC5F4\uC1E0 \u2014 13\uC885 \uCE74\uB4DC\uB294 \uC0C1\uAE08(150\xB7200\xB780), \uC5EC\uD589\uBE44 100, \uAC74\uC124 \uB2E8\uACC4\uB2F9 \uC218\uB9AC\uBE44 40, \uC0B0\uD1A0\uB3C4\uBC0D\uACE0 \uBC29\uBB38, \uCD9C\uBC1C \uC774\uB3D9(+200), \uC138 \uCE78 \uD6C4\uD1F4, \uBB34\uC778\uB3C4 \uC774\uB3D9, \uD0C8\uCD9C\uAD8C, \uBB34\uB8CC \uC5F4\uCC28\uD45C, \uB3C4\uC2DC\uB2F9 \uBC30\uB2F9 30, \uB3C5\uC810 \uACBD\uACE0\uC785\uB2C8\uB2E4. \uC774\uB3D9 \uCE74\uB4DC\uC758 \uB3C4\uCC29 \uD6A8\uACFC\uB3C4 \uC801\uC6A9\uB418\uBA70 \uC138 \uCE78 \uD6C4\uD1F4\uC5D0\uB294 \uCD9C\uBC1C \uBCF4\uB108\uC2A4\uAC00 \uC5C6\uC2B5\uB2C8\uB2E4.",
     "\uB3C5\uC810 \uACBD\uACE0 \u2014 \uAC19\uC740 \uC0C9\uC758 \uB3C4\uC2DC\uB97C \uBAA8\uB450 \uAC00\uC9C4 \uB3C4\uC2DC\uAD70\uC774 \uAC00\uC7A5 \uB9CE\uC740 \uC0AC\uB78C\uC774 \uB3C4\uC2DC\uAD70\uB2F9 100, \uCD5C\uB300 300\uC744 \uC740\uD589\uC5D0 \uB0C5\uB2C8\uB2E4. \uB3D9\uB960\uC774\uBA74 \uCE74\uB4DC\uB97C \uBF51\uC740 \uC0AC\uB78C\uC5D0\uAC8C \uC801\uC6A9\uB429\uB2C8\uB2E4. \uB204\uAD6C\uB3C4 \uC644\uC131\uD55C \uB3C4\uC2DC\uAD70\uC774 \uC5C6\uC73C\uBA74 \uBE44\uC6A9\uC774 \uC5C6\uC2B5\uB2C8\uB2E4. \uB3C4\uC2DC\uAD70 \uC644\uC131 \uC790\uCCB4\uB294 \uC989\uC2DC \uC2B9\uB9AC\uB098 \uD1B5\uD589\uB8CC \uCD94\uAC00 \uBC30\uC218\uAC00 \uC544\uB2D9\uB2C8\uB2E4.",
     "\uBB34\uC778\uB3C4\xB7\uC5F4\uCC28\xB7\uAE30\uAE08 \u2014 \uBB34\uC778\uB3C4\uB294 \uC790\uAE30 \uCC28\uB840 \uC138 \uBC88 \uC815\uC9C0\uC785\uB2C8\uB2E4. \uC30D\uC774\uBA74 \uD0C8\uCD9C\uD574 \uC774\uB3D9\uD558\uACE0, \uC544\uB2C8\uBA74 \uD55C \uCC28\uB840 \uC27D\uB2C8\uB2E4. 100\uC774\uB098 \uD0C8\uCD9C\uAD8C\uC73C\uB85C \uB098\uC640 \uC8FC\uC0AC\uC704\uB97C \uAD74\uB9B4 \uC218\uB3C4 \uC788\uC2B5\uB2C8\uB2E4. \uC5ED\uC5D0\uC11C\uB294 \uB2E4\uC74C \uCC28\uB840\uC5D0 \uC6B4\uC784 100\uC73C\uB85C \uB3C4\uC2DC\uB97C \uACE0\uB974\uAC70\uB098 \uAC74\uB108\uB701\uB2C8\uB2E4. \uBB34\uB8CC \uD45C\uB294 \uC6B4\uC784 0\uC785\uB2C8\uB2E4. \uAE30\uAE08 \uB0A9\uBD80 \uCE78\uC5D0 150\uC744 \uB0B4\uBA70 \uC0AC\uD68C\uBCF5\uC9C0\uAE30\uAE08 \uCE78\uC5D0\uC11C \uC313\uC778 \uAE30\uAE08\uC744 \uBC1B\uC2B5\uB2C8\uB2E4."
@@ -4116,7 +4119,7 @@ var marbleCreditRules = {
     "Figura y movimiento \u2014 Elige una figura antes de lanzar tus primeros dados. No puede ser la misma de tu pareja y queda fija despu\xE9s. Avanza la suma de los dos dados por las 40 casillas. Al pasar por Salida recibes 200. Hay 24 ciudades, incluyendo Gwangju y Santo Domingo.",
     "Ciudades y construcci\xF3n \u2014 Puedes comprar una ciudad libre o pasar. En cualquier ciudad tuya puedes construir casa unifamiliar, apartamentos y monumento, sin completar un color. Cada nivel cuesta 100 y el alquiler pasa a 2, 4 y 8 veces el valor base. El alquiler rival se paga autom\xE1ticamente.",
     "Pr\xE9stamo \u2014 En tu turno, si no tienes deuda pendiente, puedes recibir 300 y debes devolver 330. No hay intereses adicionales ni fecha de vencimiento. Pagas los 330 completos en tu turno, fuera de una crisis de pago. La deuda se resta del patrimonio; pedir otro pr\xE9stamo despu\xE9s de pagarlo vuelve a costar 30.",
-    "Crisis de pago \u2014 Si no tienes efectivo para un alquiler, impuesto o gasto de carta, el juego espera tu decisi\xF3n. Solo puedes resolverlo con un pr\xE9stamo si no debes otro y tu efectivo + 300 cubre el pago. Al pedirlo, el pago se procesa una sola vez y contin\xFAa el turno original. Declarar quiebra termina la partida; las ciudades no se venden autom\xE1ticamente.",
+    "Crisis de pago \u2014 Si no tienes efectivo para un alquiler, impuesto o gasto de carta, el juego espera tu decisi\xF3n. Puedes pedir un pr\xE9stamo si no debes otro. Solo al reunir efectivo suficiente se procesa el pago una vez y contin\xFAa el turno original; si falta dinero, la crisis contin\xFAa. Declarar quiebra termina la partida; las ciudades no se venden autom\xE1ticamente.",
     "Llave dorada \u2014 Las 13 cartas incluyen premios (150, 200 y 80), gasto de viaje 100, mantenimiento 40 por nivel construido, visita a Santo Domingo, viaje a Salida (+200), retroceso de tres casillas, isla, pase de salida, boleto gratis, dividendo 30 por ciudad y advertencia de monopolio. Se aplica tambi\xE9n el efecto del destino; al retroceder no cobras Salida.",
     "Monopolio \u2014 Quien tenga m\xE1s grupos de color completos paga 100 por grupo al banco, hasta 300. En empate paga quien sac\xF3 la carta. Si nadie complet\xF3 un grupo, no se cobra. Completar un color no da una victoria inmediata ni otro multiplicador de alquiler.",
     "Isla, tren y fondo \u2014 La isla te detiene tres turnos propios. Si sacas dobles, sales y avanzas; si no, pierdes un turno. Tambi\xE9n puedes pagar 100 o usar un pase y luego lanzar. La estaci\xF3n permite viajar a una ciudad por 100 en tu pr\xF3ximo turno o pasar el tren. El boleto gratis cuesta 0. El aporte al fondo es 150 y en Fondo Social recibes lo acumulado."
@@ -5628,6 +5631,30 @@ var canonicalCards = [
   }
 ];
 
+// src/games/splendorNobleNames.ts
+var names = [
+  ["\uB300\uC591\uC758 \uC5EC\uC655 \uB9AC\uC2A4\uBCB3", "Lisbeth, reina de los oc\xE9anos"],
+  ["\uB8E8\uBE44 \uC5EC\uC81C \uB9AC\uC2A4\uBCB3", "Lisbeth, emperatriz del rub\xED"],
+  ["\uCE74\uB9AC\uBE0C\uC758 \uC9C0\uB3C4\uC790 \uB9AC\uC2A4\uBCB3", "Lisbeth, l\xEDder del Caribe"],
+  ["\uC5D0\uBA54\uB784\uB4DC \uC5EC\uC655 \uB9AC\uC2A4\uBCB3", "Lisbeth, reina de la esmeralda"],
+  ["\uC9C0\uD61C\uC758 \uC655 \uC5F0\uC11D", "Yeonseok, rey de la sabidur\xEDa"],
+  ["\uBA54\uB514\uCE58 \uACF5\uC791 \uC5F0\uC11D", "Yeonseok, duque de M\xE9dici"],
+  ["\uD669\uAE08\uC758 \uC220\uD0C4 \uC5F0\uC11D", "Yeonseok, sult\xE1n de oro"],
+  ["\uD0DC\uC591\uC655 \uC5F0\uC11D", "Yeonseok, el Rey Sol"],
+  ["\uD669\uAE08 \uC81C\uAD6D\uC758 \uB450 \uAD70\uC8FC", "Los dos soberanos del Imperio Dorado"],
+  ["\uB450 \uC655\uAD6D\uC758 \uACF5\uB3D9 \uD1B5\uCE58\uC790", "Los corregentes de dos reinos"],
+  ["\uAC80\uC740 \uB108\uC6B8\uC758 \uD669\uC9C4\uC774", "Hwang Jin-yi del velo negro"],
+  ["\uD669\uAE08 \uBE44\uB2E8\uC758 \uD669\uC9C4\uC774", "Hwang Jin-yi de seda dorada"],
+  ["\uBD89\uC740 \uC5F0\uD68C\uC758 \uD669\uC9C4\uC774", "Hwang Jin-yi del banquete rojo"],
+  ["\uBC14\uCC28\uD0C0\uC758 \uC5EC\uC655 \uB9AC\uC2A4\uBCB3", "Lisbeth, reina de la bachata"],
+  ["\uCE74\uB9AC\uBE0C \uCD95\uC81C\uC758 \uC5EC\uC655", "La reina del festival caribe\xF1o"],
+  ["\uC0B0\uD1A0\uB3C4\uBC0D\uACE0\uC758 \uC7A5\uBBF8", "La rosa de Santo Domingo"]
+];
+function splendorNobleName(id, language) {
+  const index = /^n(0|[1-9]\d*)$/.exec(String(id))?.[1];
+  return (index === void 0 ? void 0 : names[Number(index)]?.[language === "ko" ? 0 : 1]) ?? (language === "ko" ? "\uADC0\uC871" : "Noble");
+}
+
 // src/games/splendor.ts
 var colors = ["white", "blue", "green", "red", "black"];
 var titles = { white: { ko: "\uD770\uC0C9", es: "blanco" }, blue: { ko: "\uD30C\uB791", es: "azul" }, green: { ko: "\uCD08\uB85D", es: "verde" }, red: { ko: "\uBE68\uAC15", es: "rojo" }, black: { ko: "\uAC80\uC815", es: "negro" } };
@@ -5648,7 +5675,13 @@ var splendorNobles = [
   { points: 3, requirement: { white: 3, blue: 3, green: 3 } },
   { points: 3, requirement: { blue: 3, green: 3, red: 3 } },
   { points: 3, requirement: { green: 3, red: 3, black: 3 } },
-  { points: 3, requirement: { white: 3, red: 3, black: 3 } }
+  { points: 3, requirement: { white: 3, red: 3, black: 3 } },
+  { points: 3, requirement: { white: 4, green: 4 } },
+  { points: 3, requirement: { white: 4, red: 4 } },
+  { points: 3, requirement: { blue: 4, black: 4 } },
+  { points: 3, requirement: { white: 3, green: 3, red: 3 } },
+  { points: 3, requirement: { blue: 3, green: 3, black: 3 } },
+  { points: 3, requirement: { blue: 3, red: 3, black: 3 } }
 ];
 function creates(seed) {
   const rnd = seededRandom(seed), decks = { 1: shuffle(createDeck(1), rnd), 2: shuffle(createDeck(2), rnd), 3: shuffle(createDeck(3), rnd) };
@@ -5834,7 +5867,7 @@ function view(s, p) {
     if (s.pendingNobles.length) {
       for (const id of s.pendingNobles) {
         const noble = s.availableNobles[id];
-        add(`\uADC0\uC871 \uC120\uD0DD (${noble.points}\uC810)`, `Elegir noble (${noble.points} puntos)`, { type: "chooseNoble", payload: { id } });
+        add(`${splendorNobleName(id, "ko")} \uC120\uD0DD (${noble.points}\uC810)`, `Elegir a ${splendorNobleName(id, "es")} (${noble.points} puntos)`, { type: "chooseNoble", payload: { id } });
       }
     } else {
       const available = colors.filter((g) => s.bank[g] > 0), takeCount = Math.min(3, available.length);
@@ -6070,7 +6103,308 @@ var minhwatuEngine = {
   getResult: (s) => s.result
 };
 
+// src/games/marbleCardCause.ts
+var pendingPhases = ["event-decision", "train-decision", "rent-decision", "debt"];
+function beginCardResolution(before, next, action) {
+  const resolvesChoice = ["choose-event-city", "choose-train", "skip-train", "pay-rent", "use-rent-pass"].includes(action.type);
+  const resolvesDebt = before.phase === "debt" && ["borrow", "sell-property", "declare-bankruptcy"].includes(action.type);
+  if (before.pendingCardDrawSequence !== void 0 && (resolvesChoice || resolvesDebt)) next.resolvingCardDrawSequence = before.pendingCardDrawSequence;
+}
+function finishCardResolution(state) {
+  if (pendingPhases.includes(state.phase) && state.resolvingCardDrawSequence !== void 0) state.pendingCardDrawSequence = state.resolvingCardDrawSequence;
+  if (!pendingPhases.includes(state.phase)) delete state.pendingCardDrawSequence;
+  delete state.resolvingCardDrawSequence;
+}
+function cardEventCause(state, sequence, type, moneyDelta) {
+  if (state.resolvingCardDrawSequence === void 0) return {};
+  const cardPhase = sequence === state.resolvingCardDrawSequence ? "draw" : "resolution";
+  const cardOutcome = cardPhase === "draw" ? "information" : type === "crisis" ? "pending-payment" : moneyDelta && Object.values(moneyDelta).some((value) => typeof value === "number" && value !== 0) ? "paid" : type === "monopoly-warning" ? "information" : "applied";
+  return { cardDrawSequence: state.resolvingCardDrawSequence, cardPhase, cardOutcome };
+}
+
+// src/games/marbleClassicEconomyData.ts
+var classicEconomyProvenance = {
+  "file": "original-calculator-ver4.xls",
+  "sha256": "4fef32669739e3434b96aa0577e6fb32761d70d8958d4db3b95bbe4ca3cda5ef",
+  "source": "https://cafe.naver.com/ca-fe/cafes/26203446/articles/124693",
+  "date": "2013-12-01",
+  "author": "\uB098\uBE44\uB791",
+  "status": "Exact extraction of community calculator formulas; not official game code"
+};
+var classicSourceCities = [
+  ["\uAC15\uB989", 18, 22, [2e4, 1e4, 3e4, 5e4, 5e4], [2e3, 8e3, 28e3, 84e3, 334e3]],
+  ["\uCD98\uCC9C", 19, 23, [26e3, 1e4, 3e4, 5e4, 5e4], [2e3, 1e4, 32e3, 92e3, 342e3]],
+  ["\uACBD\uC8FC", 20, 24, [48e3, 2e4, 6e4, 1e5, 1e5], [6e3, 24e3, 7e4, 19e4, 64e4]],
+  ["\uC548\uB3D9", 21, 25, [48e3, 2e4, 6e4, 1e5, 1e5], [6e3, 24e3, 7e4, 19e4, 64e4]],
+  ["\uCC9C\uC548", 22, 26, [54e3, 2e4, 6e4, 1e5, 1e5], [8e3, 28e3, 76e3, 2e5, 65e4]],
+  ["\uC778\uCC9C", 24, 28, [72e3, 3e4, 9e4, 15e4, 15e4], [14e3, 46e3, 13e4, 35e4, 95e4]],
+  ["\uB300\uC804", 25, 29, [72e3, 3e4, 9e4, 15e4, 15e4], [14e3, 46e3, 13e4, 35e4, 95e4]],
+  ["\uCCAD\uC8FC", 26, 30, [94e3, 4e4, 12e4, 2e5, 2e5], [2e4, 66e3, 18e4, 45e4, 115e4]],
+  ["\uC138\uC885", 27, 31, [1e5, 4e4, 12e4, 2e5, 2e5], [24e3, 72e3, 19e4, 47e4, 117e4]],
+  ["\uC5EC\uC218", 29, 33, [118e3, 5e4, 15e4, 25e4, 25e4], [32e3, 102e3, 28e4, 65e4, 14e5]],
+  ["\uC81C\uC8FC", 30, 34, [124e3, 5e4, 15e4, 25e4, 25e4], [34e3, 108e3, 28e4, 67e4, 142e4]],
+  ["\uD3EC\uD56D", 31, 35, [14e4, 6e4, 18e4, 3e5, 3e5], [44e3, 13e4, 33e4, 79e4, 154e4]],
+  ["\uC6B8\uC0B0", 32, 36, [146e3, 6e4, 18e4, 3e5, 3e5], [48e3, 14e4, 36e4, 83e4, 158e4]],
+  ["\uB300\uAD6C", 33, 37, [146e3, 6e4, 18e4, 3e5, 3e5], [48e3, 14e4, 36e4, 83e4, 158e4]],
+  ["\uC804\uC8FC", 35, 39, [164e3, 7e4, 21e4, 35e4, 35e4], [56e3, 18e4, 46e4, 106e4, 176e4]],
+  ["\uAD11\uC8FC", 36, 40, [17e4, 7e4, 21e4, 35e4, 35e4], [6e4, 19e4, 48e4, 11e5, 18e5]],
+  ["\uBD80\uC0B0", 37, 41, [192e3, 8e4, 24e4, 4e5, 4e5], [72e3, 22e4, 54e4, 122e4, 182e4]],
+  ["\uC11C\uC6B8", 38, 42, [2e5, 8e4, 24e4, 4e5, 4e5], [8e4, 24e4, 58e4, 128e4, 188e4]]
+];
+var classicSourceTourism = { "purchase": 1e5, "tollStages": [8e4, 16e4, 32e4] };
+
+// src/games/marbleClassicEconomy.ts
+var CLASSIC_ECONOMY_PROFILE = "mobile-2013-first-x3-v1";
+var classicEconomyConfig = {
+  id: CLASSIC_ECONOMY_PROFILE,
+  sourceClass: "first",
+  classMultiplier: 5,
+  rawPerMan: 1e4,
+  displayPerMan: 3,
+  startingCash: 3e3,
+  passStartSalary: 450,
+  // Fees are not in the extracted workbook. Null is not a free action.
+  travelFare: null,
+  jailEscapeFee: null,
+  expoFee: null,
+  provenance: classicEconomyProvenance
+};
+var scaleRaw = (raw) => raw * classicEconomyConfig.displayPerMan / classicEconomyConfig.rawPerMan;
+var scaleBase = (base) => scaleRaw(base * classicEconomyConfig.classMultiplier);
+var classicCityEconomies = Object.fromEntries(classicSourceCities.map(([city2, sourceCostRow, sourceTollRow, costs, tolls]) => {
+  const [land, villa, building, hotel, landmark] = costs;
+  const tollByMask = Array(8).fill(null);
+  [0, 1, 3, 7].forEach((mask, index) => {
+    tollByMask[mask] = scaleBase(tolls[index]);
+  });
+  for (const mask of [2, 4, 5, 6]) tollByMask[mask] = scaleBase(tolls[0] + (mask & 1 ? tolls[1] - tolls[0] : 0) + (mask & 2 ? tolls[2] - tolls[1] : 0) + (mask & 4 ? tolls[3] - tolls[2] : 0));
+  const saleByMask = Array.from({ length: 8 }, (_, mask) => scaleRaw(Math.floor((land + (mask & 1 ? villa : 0) + (mask & 2 ? building : 0) + (mask & 4 ? hotel : 0)) * 5 / 2)));
+  return [city2, {
+    profile: CLASSIC_ECONOMY_PROFILE,
+    city: city2,
+    sourceCostRow,
+    sourceTollRow,
+    landCost: scaleBase(land),
+    buildCosts: { villa: scaleBase(villa), building: scaleBase(building), hotel: scaleBase(hotel) },
+    landmarkCost: scaleBase(landmark),
+    tollByMask,
+    inferredTollMasks: [2, 4, 5, 6],
+    landmarkToll: scaleBase(tolls[4]),
+    saleByMask,
+    landmarkSale: saleByMask[7]
+  }];
+}));
+var classicTourismEconomy = {
+  profile: CLASSIC_ECONOMY_PROFILE,
+  purchaseCost: scaleBase(classicSourceTourism.purchase),
+  tollStages: classicSourceTourism.tollStages.map(scaleBase),
+  colorMultiplierApplies: false
+};
+function classicBuildingMask(property) {
+  return (property.buildings ?? []).reduce((mask, type) => mask | { villa: 1, building: 2, hotel: 4 }[type], 0);
+}
+function classicConstructionCost(economy, selection) {
+  return selection.landmark ? economy.landmarkCost : selection.buildings.reduce((sum2, type) => sum2 + economy.buildCosts[type], 0);
+}
+var classicInvestment = (economy, property) => economy.landCost + classicConstructionCost(economy, { buildings: property.buildings ?? [] }) + (property.landmark ? economy.landmarkCost : 0);
+function classicToll(economy, property, multiplier = 1) {
+  const base = property.landmark ? economy.landmarkToll : economy.tollByMask[classicBuildingMask(property)];
+  return base == null ? null : base * multiplier;
+}
+var classicSaleValue = (economy, property) => property.landmark ? economy.landmarkSale : economy.saleByMask[classicBuildingMask(property)];
+function marbleRentBoard(board, rentVersion, constructionPriceVersion) {
+  if (rentVersion !== 2 && constructionPriceVersion !== 2) return board;
+  return board.map((tile) => {
+    if (tile.cityEconomy) {
+      const source = tile.cityEconomy;
+      const buildCosts = constructionPriceVersion === 2 ? { villa: Math.round(source.buildCosts.villa * 0.8), building: Math.round(source.buildCosts.building * 0.8), hotel: Math.round(source.buildCosts.hotel * 0.8) } : source.buildCosts;
+      const saleByMask = constructionPriceVersion === 2 ? Array.from({ length: 8 }, (_, mask) => (source.landCost + (mask & 1 ? buildCosts.villa : 0) + (mask & 2 ? buildCosts.building : 0) + (mask & 4 ? buildCosts.hotel : 0)) / 2) : source.saleByMask;
+      const cityEconomy = {
+        ...source,
+        buildCosts,
+        saleByMask,
+        landmarkSale: saleByMask[7],
+        landmarkCost: constructionPriceVersion === 2 ? Math.round(source.landmarkCost * 0.8) : source.landmarkCost,
+        tollByMask: rentVersion === 2 ? source.tollByMask.map((toll) => toll == null ? null : Math.round(toll * 0.8)) : source.tollByMask,
+        landmarkToll: rentVersion === 2 ? Math.round(source.landmarkToll * 0.7) : source.landmarkToll
+      };
+      return { ...tile, cityEconomy, rent: cityEconomy.tollByMask[0] };
+    }
+    if (tile.tourismEconomy && rentVersion === 2) {
+      const tourismEconomy = { ...tile.tourismEconomy, tollStages: tile.tourismEconomy.tollStages.map((toll) => Math.round(toll * 0.8)) };
+      return { ...tile, tourismEconomy, rent: tourismEconomy.tollStages[0] };
+    }
+    return tile;
+  });
+}
+
+// src/games/marbleWorldIslands.ts
+var WORLD_ISLANDS_PROFILE = "world-islands-32-v1";
+var worldIslandsProfile = {
+  id: WORLD_ISLANDS_PROFILE,
+  routeVersion: 5,
+  size: 32,
+  status: "playable-custom",
+  ruleBasis: "Source-priced cities with custom world names, fixed islands, existing card/loan/travel rules and island-inclusive line victory.",
+  startingCash: 3e3,
+  salary: 450,
+  travelFare: 100,
+  jailEscapeFee: 100,
+  tourismPrice: 150,
+  tourismToll: 120,
+  tourismGrowth: false,
+  victory: ["line-monopoly", "triple-monopoly", "tourism-monopoly", "bankruptcy", "120-turn-net-assets"]
+};
+var roster = [
+  ["\uAD11\uC8FC", "Gwangju"],
+  ["\uC0B0\uD1A0\uB3C4\uBC0D\uACE0", "Santo Domingo"],
+  ["\uAE30\uC790", "Guiza"],
+  ["\uB9AC\uC6B0", "R\xEDo"],
+  ["\uC2F1\uAC00\uD3EC\uB974", "Singapur"],
+  ["\uBCA0\uB97C\uB9B0", "Berl\xEDn"],
+  ["\uD30C\uB9AC", "Par\xEDs"],
+  ["\uB3C4\uCFC4", "Tokio"],
+  ["\uC774\uC2A4\uD0C4\uBD88", "Estambul"],
+  ["\uC544\uADF8\uB77C", "Agra"],
+  ["\uC544\uD14C\uB124", "Atenas"],
+  ["\uC2DC\uB4DC\uB2C8", "S\xEDdney"],
+  ["\uB274\uC695", "Nueva York"],
+  ["\uB7F0\uB358", "Londres"],
+  ["\uBC14\uB974\uC140\uB85C\uB098", "Barcelona"],
+  ["\uBCA0\uC774\uC9D5", "Pek\xEDn"],
+  ["\uB450\uBC14\uC774", "Dub\xE1i"],
+  ["\uC11C\uC6B8", "Se\xFAl"]
+];
+var citySlots = [1, 3, 5, 6, 7, 10, 11, 13, 15, 17, 19, 21, 22, 23, 26, 27, 29, 31];
+var groupNumbers = [1, 1, 2, 2, 2, 3, 3, 4, 4, 5, 5, 6, 6, 6, 7, 7, 8, 8];
+var islands = {
+  2: ["\uBAB0\uB514\uBE0C", "Maldivas"],
+  4: ["\uBCF4\uB77C\uBCF4\uB77C", "Bora Bora"],
+  9: ["\uBC1C\uB9AC", "Bali"],
+  14: ["\uD558\uC640\uC774", "Haw\xE1i"],
+  16: ["\uC774\uBE44\uC0AC", "Ibiza"],
+  18: ["\uC0B0\uD1A0\uB9AC\uB2C8", "Santorini"],
+  25: ["\uC138\uC774\uC178", "Seychelles"],
+  30: ["\uC81C\uC8FC\uB3C4", "Isla de Jeju"]
+};
+var sourceRows = Object.values(classicCityEconomies);
+var worldIslandsBoard = Array.from({ length: 32 }, (_, index) => {
+  const row = citySlots.indexOf(index);
+  if (row >= 0) {
+    const economy = sourceRows[row];
+    return { kind: "property", name: { ko: roster[row][0], es: roster[row][1] }, group: `world-g${groupNumbers[row]}`, cityEconomy: economy, price: economy.landCost, rent: economy.tollByMask[0] };
+  }
+  if (islands[index]) return { kind: "tourism", name: { ko: islands[index][0], es: islands[index][1] }, tourismEconomy: classicTourismEconomy, price: 150, rent: 120 };
+  if (index === 0) return { kind: "start", name: { ko: "\uCD9C\uBC1C", es: "Salida" } };
+  if (index === 8) return { kind: "island", name: { ko: "\uBB34\uC778\uB3C4", es: "Isla desierta" } };
+  if (index === 24) return { kind: "train", name: { ko: "\uC138\uACC4\uC5EC\uD589", es: "Viaje por el mundo" } };
+  return { kind: "event", name: { ko: "\uD669\uAE08\uC5F4\uC1E0", es: "Llave dorada" } };
+});
+var worldFestivalBoard = worldIslandsBoard.map((tile, index) => index === 16 ? { kind: "festival-site", name: { ko: "\uCD95\uC81C \uAC1C\uCD5C", es: "Celebrar un festival" } } : tile);
+var travelRoster = [
+  ["\uAD11\uC8FC", "Gwangju"],
+  ["\uC778\uCC9C", "Incheon"],
+  ["\uAE30\uC790", "Guiza"],
+  ["\uB9AC\uC6B0", "R\xEDo"],
+  ["\uC2F1\uAC00\uD3EC\uB974", "Singapur"],
+  ["\uB274\uC695", "Nueva York"],
+  ["\uBCA0\uB97C\uB9B0", "Berl\xEDn"],
+  ["\uD30C\uB9AC", "Par\xEDs"],
+  ["\uC0B0\uD1A0\uB3C4\uBC0D\uACE0", "Santo Domingo"],
+  ["\uB3C4\uCFC4", "Tokio"],
+  ["\uC774\uC2A4\uD0C4\uBD88", "Estambul"],
+  ["\uC2DC\uB4DC\uB2C8", "S\xEDdney"],
+  ["\uB7F0\uB358", "Londres"],
+  ["\uBC14\uB974\uC140\uB85C\uB098", "Barcelona"],
+  ["\uBCA0\uC774\uC9D5", "Pek\xEDn"],
+  ["\uB450\uBC14\uC774", "Dub\xE1i"],
+  ["\uB274\uC5B4\uD06C", "Newark"],
+  ["\uC11C\uC6B8", "Se\xFAl"]
+];
+var worldTravelBoard = worldFestivalBoard.map((tile, index) => {
+  const row = citySlots.indexOf(index);
+  return row < 0 ? tile : { ...tile, name: { ko: travelRoster[row][0], es: travelRoster[row][1] } };
+});
+var worldGoldenKeyBoard = worldTravelBoard.map((tile, index) => index === 4 ? { kind: "event", name: { ko: "\uD669\uAE08\uC5F4\uC1E0", es: "Llave dorada" } } : tile);
+var worldIslandsBoardFor = (revision) => revision === 4 ? worldGoldenKeyBoard : revision === 3 ? worldTravelBoard : revision === 2 ? worldFestivalBoard : worldIslandsBoard;
+var worldIslandsMetadata = (revision) => ({ ...worldIslandsProfile, boardRevision: revision === 4 ? 4 : revision === 3 ? 3 : revision === 2 ? 2 : 1, tourismCount: worldIslandsBoardFor(revision).filter((tile) => tile.kind === "tourism").length, festivalSites: worldIslandsBoardFor(revision).flatMap((tile, index) => tile.kind === "festival-site" ? [index] : []), ...revision === 3 || revision === 4 ? { travelMilestones: [1, 3, 10, 15, 29, 31, 0, 1] } : {} });
+var isPurchasableMarbleTile = (tile) => tile?.kind === "property" || tile?.kind === "tourism";
+function completedPropertyLines(board, properties, owner) {
+  if (board.length !== 32) return [];
+  return [0, 1, 2, 3].filter((side) => {
+    const required = board.flatMap((tile, index) => index >= side * 8 && index < (side + 1) * 8 && isPurchasableMarbleTile(tile) ? [index] : []);
+    return required.length > 0 && required.every((index) => properties[index]?.owner === owner);
+  });
+}
+function worldOwnershipVictory(board, properties, owner) {
+  if (completedPropertyLines(board, properties, owner).length) return "line-monopoly";
+  const groups = [...new Set(board.filter((tile) => tile.kind === "property" && tile.group).map((tile) => tile.group))];
+  if (groups.filter((group) => board.every((tile, index) => tile.kind !== "property" || tile.group !== group || properties[index]?.owner === owner)).length >= 3) return "triple-monopoly";
+  const islands2 = board.flatMap((tile, index) => tile.kind === "tourism" ? [index] : []);
+  return islands2.length > 0 && islands2.every((index) => properties[index]?.owner === owner) ? "tourism-monopoly" : null;
+}
+
+// src/games/marbleBoardProfiles.ts
+var classicKoreaProfile = {
+  id: "classic-korea-2015",
+  routeVersion: 4,
+  size: 32,
+  status: "research-pending",
+  source: "https://www.inven.co.kr/board/mogong/4222/618",
+  observedDate: "2015-05-02",
+  pendingRules: ["korea-city-economy", "tourism-growth-and-tolls", "expo", "bonus-game", "random-event", "fortune-deck", "team-rules", "victory-and-settlement"]
+};
+var city = (ko, es, group) => {
+  const cityEconomy = classicCityEconomies[ko];
+  if (!cityEconomy) throw new Error(`Missing classic city economy: ${ko}`);
+  return { kind: "property", name: { ko, es }, group, cityEconomy, price: cityEconomy.landCost, rent: cityEconomy.tollByMask[0] };
+};
+var special = (kind, ko, es) => ({ kind, name: { ko, es } });
+var tourism = (ko, es, tourismGroup) => ({ kind: "tourism", name: { ko, es }, tourismGroup, tourismEconomy: classicTourismEconomy, price: classicTourismEconomy.purchaseCost, rent: classicTourismEconomy.tollStages[0] });
+var classicKoreaBoard = [
+  special("start", "\uC2DC\uC791", "Salida"),
+  city("\uAC15\uB989", "Gangneung", "korea-g1"),
+  special("bonus-game", "\uC624\uB77D\uC2E4", "Sala de juegos"),
+  city("\uCD98\uCC9C", "Chuncheon", "korea-g1"),
+  tourism("\uBD81\uD55C\uC0B0", "Bukhansan", "mountain"),
+  city("\uACBD\uC8FC", "Gyeongju", "korea-g2"),
+  city("\uC548\uB3D9", "Andong", "korea-g2"),
+  city("\uCC9C\uC548", "Cheonan", "korea-g2"),
+  special("island", "\uAC10\uC625", "C\xE1rcel"),
+  tourism("\uC11C\uC6B8\uB300\uACF5\uC6D0", "Gran Parque de Se\xFAl", "park"),
+  city("\uC778\uCC9C", "Incheon", "korea-g3"),
+  city("\uB300\uC804", "Daejeon", "korea-g3"),
+  special("event", "\uD3EC\uCE08\uCE74\uB4DC", "Carta de fortuna"),
+  city("\uCCAD\uC8FC", "Cheongju", "korea-g4"),
+  tourism("\uC124\uC545\uC0B0", "Seoraksan", "mountain"),
+  city("\uC138\uC885", "Sejong", "korea-g4"),
+  special("expo", "\uC5D1\uC2A4\uD3EC", "Expo"),
+  city("\uC5EC\uC218", "Yeosu", "korea-g5"),
+  tourism("\uC9C0\uB9AC\uC0B0", "Jirisan", "mountain"),
+  city("\uC81C\uC8FC", "Jeju", "korea-g5"),
+  special("event", "\uD3EC\uCE08\uCE74\uB4DC", "Carta de fortuna"),
+  city("\uD3EC\uD56D", "Pohang", "korea-g6"),
+  city("\uC6B8\uC0B0", "Ulsan", "korea-g6"),
+  city("\uB300\uAD6C", "Daegu", "korea-g6"),
+  special("train", "\uAE30\uCC28\uC5EC\uD589", "Viaje en tren"),
+  tourism("\uC5B4\uB9B0\uC774\uB300\uACF5\uC6D0", "Gran Parque Infantil", "park"),
+  city("\uC804\uC8FC", "Jeonju", "korea-g7"),
+  city("\uAD11\uC8FC", "Gwangju", "korea-g7"),
+  special("event", "\uD3EC\uCE08\uCE74\uB4DC", "Carta de fortuna"),
+  city("\uBD80\uC0B0", "Busan", "korea-g8"),
+  special("random-event", "\uBCF5\uBD88\uBCF5", "Suerte o mala suerte"),
+  city("\uC11C\uC6B8", "Se\xFAl", "korea-g8")
+];
+function marbleBoardProfileMetadata(profile, revision, board) {
+  const metadata = profile === "classic-korea-2015" ? structuredClone(classicKoreaProfile) : profile === WORLD_ISLANDS_PROFILE ? structuredClone(worldIslandsMetadata(revision)) : null;
+  const tourism2 = board?.find((tile) => tile.kind === "tourism");
+  return metadata && "tourismToll" in metadata && tourism2 ? { ...metadata, tourismToll: tourism2.rent ?? metadata.tourismToll } : metadata;
+}
+var marbleProfilePending = (profile) => profile === "classic-korea-2015";
+
 // src/games/marbleEconomy.ts
+var marbleColorTollBonus = (state) => state?.propertyRulesVersion === 1 && !(state.boardProfile === "world-islands-32-v1" && (state.boardRevision === 3 || state.boardRevision === 4));
+var marbleLoanTerms = (version) => version === 2 ? { amount: 600, repayment: 660 } : { amount: 300, repayment: 330 };
 var MARBLE_ECONOMY_V3 = {
   startingCash: 3e3,
   passStartSalary: 300,
@@ -6081,10 +6415,12 @@ var MARBLE_ECONOMY_V3 = {
   stageMultipliers: [1, 2, 3, 4]
 };
 var round10 = (value) => Math.round(value / 10) * 10;
-var marbleStartingCash = (version) => version === 3 ? MARBLE_ECONOMY_V3.startingCash : 1500;
-var marblePassStartSalary = (version) => version === 3 ? MARBLE_ECONOMY_V3.passStartSalary : 200;
-var marbleLandPrice = (tile, version) => version === 3 && tile.kind === "property" ? Math.max(50, round10((tile.price ?? 0) * MARBLE_ECONOMY_V3.landPriceFactor)) : tile.price ?? 0;
+var marbleStartingCash = (version, profile) => profile === CLASSIC_ECONOMY_PROFILE ? classicEconomyConfig.startingCash : version === 3 ? MARBLE_ECONOMY_V3.startingCash : 1500;
+var marblePassStartSalary = (version, profile) => profile === CLASSIC_ECONOMY_PROFILE ? classicEconomyConfig.passStartSalary : version === 3 ? MARBLE_ECONOMY_V3.passStartSalary : 200;
+var marbleLandPrice = (tile, version) => tile.cityEconomy ? tile.cityEconomy.landCost : tile.tourismEconomy ? tile.tourismEconomy.purchaseCost : version === 3 && tile.kind === "property" ? Math.max(50, round10((tile.price ?? 0) * MARBLE_ECONOMY_V3.landPriceFactor)) : tile.price ?? 0;
 function marbleBaseRent(tile, version) {
+  if (tile.cityEconomy) return tile.cityEconomy.tollByMask[0];
+  if (tile.tourismEconomy) return tile.tourismEconomy.tollStages[0];
   if (version !== 3) return tile.rent ?? 0;
   const originalPrice = tile.price ?? 0;
   const yieldAtPrice = MARBLE_ECONOMY_V3.lowRentYield + Math.max(0, Math.min(1, (originalPrice - 100) / (560 - 100))) * (MARBLE_ECONOMY_V3.highRentYield - MARBLE_ECONOMY_V3.lowRentYield);
@@ -6104,8 +6440,48 @@ function marbleBuildCostAtPrice(price, level, version) {
   const factor = [0.4, 0.6, 0.8][Math.max(0, Math.min(2, Math.trunc(level)))] ?? 0.4;
   return Math.max(40, round10(Math.max(0, price) * factor));
 }
+function marbleBuildToCostAtPrice(price, fromLevel, targetLevel, version) {
+  let total = 0;
+  for (let level = fromLevel; level < targetLevel; level++) total += marbleBuildCostAtPrice(price, level, version);
+  return total;
+}
 function marbleBuildCostForVersion(tile, level, version) {
   return marbleBuildCostAtPrice(marbleLandPrice(tile, version), level, version);
+}
+
+// src/games/marbleConstruction.ts
+var MARBLE_CONSTRUCTION_ECONOMY = { costFactors: { villa: 0.4, building: 0.6, hotel: 0.8, landmark: 0.8 }, rentIncrements: { villa: 0.5, building: 1, hotel: 1.5 }, landmarkRentMultiplier: 5 };
+var marbleBuildingTypes = ["villa", "building", "hotel"];
+var constructionReady = (p) => !!p && !p.landmark && marbleBuildingTypes.every((type) => p.buildings?.includes(type));
+var isLandmark = (p, version) => version === 2 ? !!p.landmark : p.houses === 3;
+function constructionOptions(p, laps, landmarkEligible) {
+  if (p?.landmark) return [];
+  if (constructionReady(p)) return landmarkEligible ? [{ landmark: true }] : [];
+  const available = marbleBuildingTypes.filter((type) => !p?.buildings?.includes(type) && (type !== "hotel" || laps >= 1));
+  return Array.from({ length: (1 << available.length) - 1 }, (_, i) => ({ buildings: available.filter((_2, bit) => (i + 1 & 1 << bit) !== 0) }));
+}
+function constructionSelectionMatches(selection, option) {
+  if (option.landmark) return selection.landmark === true && selection.buildings === void 0;
+  return selection.landmark === void 0 && Array.isArray(selection.buildings) && selection.buildings.length === option.buildings.length && new Set(selection.buildings).size === selection.buildings.length && option.buildings.every((type) => selection.buildings.includes(type));
+}
+var constructionCostAtPrice = (price, selection, _version) => {
+  const cost = (type) => Math.max(30, Math.round(price * MARBLE_CONSTRUCTION_ECONOMY.costFactors[type] / 10) * 10);
+  return selection.landmark ? cost("landmark") : selection.buildings.reduce((sum2, type) => sum2 + cost(type), 0);
+};
+var constructionCost = (tile, selection, version) => tile.cityEconomy ? classicConstructionCost(tile.cityEconomy, selection) : constructionCostAtPrice(marbleLandPrice(tile, version), selection, version);
+function applyConstruction(property, selection) {
+  const buildings = marbleBuildingTypes.filter((type) => property.buildings?.includes(type) || selection.buildings?.includes(type));
+  const landmark = !!property.landmark || !!selection.landmark;
+  return { ...property, buildings, landmark, houses: landmark ? 3 : buildings.length === 3 ? 2 : buildings.length ? 1 : 0 };
+}
+var constructionValueAtPrice = (price, p, version) => price + constructionCostAtPrice(price, { buildings: p.buildings ?? [] }, version) + (p.landmark ? constructionCostAtPrice(price, { landmark: true }, version) : 0);
+var constructionValue = (tile, p, version) => tile.cityEconomy ? classicInvestment(tile.cityEconomy, p) : constructionValueAtPrice(marbleLandPrice(tile, version), p, version);
+var constructionRentAtBase = (base, p, multiplier = 1) => Math.round(base * (p.landmark ? MARBLE_CONSTRUCTION_ECONOMY.landmarkRentMultiplier : 1 + (p.buildings ?? []).reduce((sum2, type) => sum2 + MARBLE_CONSTRUCTION_ECONOMY.rentIncrements[type], 0)) * multiplier);
+function constructionRent(tile, p, version, multiplier = 1) {
+  if (!tile.cityEconomy) return constructionRentAtBase(marbleBaseRent(tile, version), p, multiplier);
+  const toll = classicToll(tile.cityEconomy, p, multiplier);
+  if (toll == null) throw new Error("Unverified classic building combination toll");
+  return toll;
 }
 
 // src/games/marble.ts
@@ -6146,7 +6522,7 @@ var modernBoard = [
   { kind: "property", name: { ko: "\uB77C\uBCA0\uAC00", es: "La Vega" }, price: 220, rent: 34, group: "orange" },
   { kind: "event", name: { ko: "\uD669\uAE08\uC5F4\uC1E0", es: "Llave dorada" } },
   { kind: "property", name: { ko: "\uD47C\uD0C0\uCE74\uB098", es: "Punta Cana" }, price: 240, rent: 38, group: "orange" },
-  { kind: "train", name: { ko: "\uC5F4\uCC28\uC5ED", es: "Estaci\xF3n de tren" } },
+  { kind: "train", name: { ko: "\uC138\uACC4\uC5EC\uD589", es: "Viaje por el mundo" } },
   { kind: "property", name: { ko: "\uB274\uC695", es: "Nueva York" }, price: 260, rent: 42, group: "red" },
   { kind: "property", name: { ko: "\uD30C\uB9AC", es: "Par\xEDs" }, price: 280, rent: 48, group: "red" },
   { kind: "property", name: { ko: "\uB3C4\uCFC4", es: "Tokio" }, price: 300, rent: 55, group: "yellow" },
@@ -6158,7 +6534,7 @@ var modernBoard = [
   { kind: "rest", name: { ko: "\uD734\uC2DD \uAD11\uC7A5", es: "Plaza de descanso" } },
   { kind: "property", name: { ko: "\uBA55\uC2DC\uCF54\uC2DC\uD2F0", es: "Ciudad de M\xE9xico" }, price: 380, rent: 75, group: "dark" },
   { kind: "property", name: { ko: "\uB9AC\uC2A4\uBCF8", es: "Lisboa" }, price: 400, rent: 80, group: "dark" },
-  { kind: "train", name: { ko: "\uC5F4\uCC28\uC5ED", es: "Estaci\xF3n de tren" } },
+  { kind: "train", name: { ko: "\uC138\uACC4\uC5EC\uD589", es: "Viaje por el mundo" } },
   { kind: "event", name: { ko: "\uD669\uAE08\uC5F4\uC1E0", es: "Llave dorada" } },
   { kind: "property", name: { ko: "\uB7F0\uB358", es: "Londres" }, price: 420, rent: 84, group: "pink" },
   { kind: "property", name: { ko: "\uB85C\uB9C8", es: "Roma" }, price: 440, rent: 88, group: "pink" },
@@ -6175,21 +6551,33 @@ var modernBoard = [
 ];
 var journeyBoard = modernBoard.map((tile, index) => index === 3 ? modernBoard[15] : index === 15 ? modernBoard[3] : index === 31 ? { ...tile, name: { ko: "\uB274\uC5B4\uD06C", es: "Newark" } } : index === 38 ? { ...tile, name: { ko: "\uC11C\uC6B8", es: "Se\xFAl" } } : tile);
 var landmarkJourneyBoard = journeyBoard.map((tile, index) => {
-  const names = {
+  const names2 = {
+    8: { ko: "\uAE30\uC790", es: "Guiza" },
+    9: { ko: "\uB9AC\uC6B0", es: "R\xEDo" },
     11: { ko: "\uBCA0\uB97C\uB9B0", es: "Berl\xEDn" },
-    13: { ko: "\uB9C8\uC774\uC560\uBBF8", es: "Miami" },
+    13: { ko: "\uC2F1\uAC00\uD3EC\uB974", es: "Singapur" },
+    31: { ko: "\uB450\uBC14\uC774", es: "Dub\xE1i" },
+    35: { ko: "\uBCA0\uC774\uC9D5", es: "Pek\xEDn" },
     21: { ko: "\uC774\uC2A4\uD0C4\uBD88", es: "Estambul" },
     32: { ko: "\uC544\uADF8\uB77C", es: "Agra" },
     33: { ko: "\uC544\uD14C\uB124", es: "Atenas" },
     36: { ko: "\uC2DC\uB4DC\uB2C8", es: "S\xEDdney" }
   };
-  return names[index] ? { ...tile, name: names[index] } : tile;
+  return names2[index] ? { ...tile, name: names2[index] } : tile;
 });
-var boardFor = (s) => s.boardVersion === 2 ? s.cityRouteVersion === 3 ? landmarkJourneyBoard : s.cityRouteVersion === 2 ? journeyBoard : modernBoard : legacyBoard;
+var boardFor = (s) => marbleRentBoard(s.boardProfile === "world-islands-32-v1" ? worldIslandsBoardFor(s.boardRevision) : s.boardProfile === "classic-korea-2015" ? classicKoreaBoard : s.boardVersion === 2 ? s.cityRouteVersion === 3 ? landmarkJourneyBoard : s.cityRouteVersion === 2 ? journeyBoard : modernBoard : legacyBoard, s.rentRulesVersion, s.constructionPriceRulesVersion);
 var legacyIds = ["festival", "lottery", "rent-rebate", "travel-cost", "maintenance", "visit-santo-domingo", "advance-start", "retreat"];
 var modernIds = [...legacyIds, "go-to-island", "escape-pass", "train-ticket", "city-dividend"];
 var expandedIds = [...modernIds, "monopoly-warning", "city-festival", "blackout", "rent-pass"];
+var diverseMarbleEventIds = [...expandedIds, "forced-sale", "earthquake", "city-shield", "construction-grant", "property-hunt", "birthday", "takeover-discount-pass"];
 var cards = {
+  "takeover-discount-pass": { title: { ko: "\uC778\uC218 \uD560\uC778\uAD8C", es: "Cup\xF3n de adquisici\xF3n" }, text: { ko: "1\uC7A5 \uBCF4\uAD00 \uD6C4 \uC9C1\uC811 \uC120\uD0DD\uD574 \uC778\uC218\uBE44\uB9CC 50% \uD560\uC778\uD569\uB2C8\uB2E4. \uC0C1\uB300 \uAD00\uAD11\uC9C0\uB3C4 \uC778\uC218 \uAC00\uB2A5(\uAE30\uC900 300 \u2192 150). \uB79C\uB4DC\uB9C8\uD06C \uBD88\uAC00\xB7\uD1B5\uD589\uB8CC \uBCC4\uB3C4. \uC2E4\uC81C \uACB0\uC81C\uC561\uC740 \uAE30\uC874 \uC18C\uC720\uC790\uC5D0\uAC8C \uC9C0\uAE09\uD569\uB2C8\uB2E4.", es: "Guarda un cup\xF3n y \xFAsalo manualmente para pagar el 50 % de la adquisici\xF3n. Permite adquirir turismo rival (base 300 \u2192 150). Sin monumentos; alquiler aparte. El due\xF1o cobra solo lo pagado." }, effect: "pass" },
+  "forced-sale": { title: { ko: "\uAC15\uC81C \uCCAD\uC0B0", es: "Venta forzosa" }, text: { ko: "\uC0C1\uB300 \uC77C\uBC18 \uB3C4\uC2DC \uD558\uB098\uB97C \uC740\uD589\uC5D0 \uB9E4\uAC01\uD569\uB2C8\uB2E4. \uD604\uC7AC \uC18C\uC720\uC790\uAC00 \uC740\uD589 \uB9E4\uAC01\uB300\uAE08\uC744 \uBC1B\uACE0 \uAC74\uBB3C\uACFC \uD6A8\uACFC\uB294 \uC0AC\uB77C\uC9D1\uB2C8\uB2E4. \uAD00\uAD11\uC12C\xB7\uB79C\uB4DC\uB9C8\uD06C \uC81C\uC678.", es: "Vende una ciudad rival al banco: su due\xF1o cobra su valor de venta; se retiran edificios y efectos. No afecta islas ni monumentos." }, effect: "cash" },
+  earthquake: { title: { ko: "\uC9C0\uC9C4", es: "Terremoto" }, text: { ko: "\uC0C1\uB300 \uC77C\uBC18 \uB3C4\uC2DC\uC758 \uAC00\uC7A5 \uB192\uC740 \uC77C\uBC18 \uAC74\uBB3C \uD558\uB098\uB97C \uCCA0\uAC70\uD569\uB2C8\uB2E4. \uC18C\uC720\uAD8C\uACFC \uB2E4\uB978 \uD6A8\uACFC\uB294 \uC720\uC9C0\uB418\uBA70 \uBCF4\uC0C1\uC740 \uC5C6\uC2B5\uB2C8\uB2E4. \uB79C\uB4DC\uB9C8\uD06C \uC81C\uC678.", es: "Retira el edificio ordinario m\xE1s alto de una ciudad rival, sin compensaci\xF3n. Conserva due\xF1o y efectos; no afecta monumentos." }, effect: "build" },
+  "city-shield": { title: { ko: "\uB3C4\uC2DC \uBC29\uC5B4\uAD8C", es: "Escudo urbano" }, text: { ko: "\uBC29\uC5B4\uAD8C\uC744 \uCD5C\uB300 1\uC7A5 \uBCF4\uAD00\uD569\uB2C8\uB2E4. \uB2E4\uC74C \uAC15\uC81C \uCCAD\uC0B0\xB7\uC9C0\uC9C4\xB7\uC815\uC804 \uACF5\uACA9\uC744 \uC790\uB3D9\uC73C\uB85C \uD55C \uBC88 \uB9C9\uC2B5\uB2C8\uB2E4.", es: "Guarda como m\xE1ximo un escudo. Bloquea autom\xE1ticamente una venta forzosa, terremoto o apag\xF3n." }, effect: "pass" },
+  "construction-grant": { title: { ko: "\uAC74\uC124 \uC9C0\uC6D0\uAE08", es: "Ayuda de construcci\xF3n" }, text: { ko: "\uB0B4 \uC77C\uBC18 \uB3C4\uC2DC\uC758 \uAC74\uC124 \uAC00\uB2A5\uD55C \uAC00\uC7A5 \uB0AE\uC740 \uBBF8\uBCF4\uC720 \uC77C\uBC18 \uAC74\uBB3C \uD558\uB098\uB97C \uBB34\uB8CC\uB85C \uAC74\uC124\uD569\uB2C8\uB2E4. \uD638\uD154\uC740 1\uBC14\uD034 \uC774\uD6C4, \uB79C\uB4DC\uB9C8\uD06C \uC81C\uC678.", es: "Construye gratis el edificio ordinario permitido m\xE1s bajo que falte en una ciudad propia. Hotel tras una vuelta; sin monumentos." }, effect: "build" },
+  "property-hunt": { title: { ko: "\uBE48 \uB3C4\uC2DC \uD0D0\uC0C9", es: "Busca una ciudad libre" }, text: { ko: "\uC55E\uC73C\uB85C \uAC00\uC7A5 \uAC00\uAE4C\uC6B4 \uC8FC\uC778 \uC5C6\uB294 \uC77C\uBC18 \uB3C4\uC2DC\uB85C \uC774\uB3D9\uD569\uB2C8\uB2E4. \uCD9C\uBC1C \uD1B5\uACFC \uBCF4\uB108\uC2A4\uC640 \uC77C\uBC18 \uAD6C\uB9E4 \uADDC\uCE59\uC744 \uC801\uC6A9\uD569\uB2C8\uB2E4.", es: "Avanza a la ciudad normal libre m\xE1s cercana. Aplica el bono de Salida y la compra normal." }, effect: "move" },
+  birthday: { title: { ko: "\uC0DD\uC77C \uCD95\uD558\uAE08", es: "Regalo de cumplea\xF1os" }, text: { ko: "\uC0C1\uB300\uB9C8\uB2E4 \uBCF4\uC720 \uD604\uAE08 \uB0B4\uC5D0\uC11C \uCD5C\uB300 40\uC744 \uBC1B\uC2B5\uB2C8\uB2E4. \uAC19\uC740 \uD300\uC740 \uB0B4\uC9C0 \uC54A\uC73C\uBA70 \uB300\uCD9C\uC774\uB098 \uAC15\uC81C \uB9E4\uAC01\uC740 \uC5C6\uC2B5\uB2C8\uB2E4.", es: "Cada rival te da hasta 40 de su efectivo disponible. Tu equipo no paga; sin pr\xE9stamos ni ventas." }, effect: "cash" },
   festival: { title: { ko: "\uB3D9\uB124 \uCD95\uC81C", es: "Fiesta del barrio" }, text: { ko: "\uCD95\uC81C \uC900\uBE44\uB97C \uB3C4\uC640 150\uC744 \uBC1B\uC2B5\uB2C8\uB2E4.", es: "Ayudas con la fiesta del barrio y recibes 150." }, effect: "cash" },
   lottery: { title: { ko: "\uC791\uC740 \uBCF5\uAD8C \uB2F9\uCCA8", es: "Premio de loter\xEDa" }, text: { ko: "\uBCF5\uAD8C\uC5D0 \uB2F9\uCCA8\uB418\uC5B4 200\uC744 \uBC1B\uC2B5\uB2C8\uB2E4.", es: "Te ganas un premio de loter\xEDa y recibes 200." }, effect: "cash" },
   "rent-rebate": { title: { ko: "\uC784\uB300\uB8CC \uD658\uAE09", es: "Reembolso de alquiler" }, text: { ko: "\uC784\uB300\uB8CC \uC77C\uBD80\uB97C \uB3CC\uB824\uBC1B\uC544 80\uC744 \uBC1B\uC2B5\uB2C8\uB2E4.", es: "Te devuelven parte del alquiler: recibes 80." }, effect: "cash" },
@@ -6200,35 +6588,45 @@ var cards = {
   retreat: { title: { ko: "\uC138 \uCE78 \uB4A4\uB85C", es: "Retrocede tres casillas" }, text: { ko: "\uC138 \uCE78 \uB4A4\uB85C \uC774\uB3D9\uD569\uB2C8\uB2E4. \uCD9C\uBC1C \uBCF4\uB108\uC2A4\uB294 \uBC1B\uC9C0 \uC54A\uC2B5\uB2C8\uB2E4.", es: "Retrocede tres casillas. No cobras al pasar por Salida." }, effect: "move" },
   "go-to-island": { title: { ko: "\uBB34\uC778\uB3C4\uB85C \uC774\uB3D9", es: "Ve a la isla desierta" }, text: { ko: "\uBB34\uC778\uB3C4\uB85C \uAC11\uB2C8\uB2E4. \uB2E4\uC74C \uC138 \uBC88\uC758 \uCC28\uB840\uB97C \uC27D\uB2C8\uB2E4.", es: "Ve a la isla desierta y pierde tus pr\xF3ximos tres turnos." }, effect: "island" },
   "escape-pass": { title: { ko: "\uD0C8\uCD9C\uAD8C", es: "Pase de salida" }, text: { ko: "\uBB34\uC778\uB3C4\uC5D0\uC11C \uB098\uC62C \uB54C \uC4F8 \uD0C8\uCD9C\uAD8C\uC744 \uBC1B\uC2B5\uB2C8\uB2E4.", es: "Recibes un pase para salir de la isla." }, effect: "pass" },
-  "train-ticket": { title: { ko: "\uBB34\uB8CC \uC5F4\uCC28\uD45C", es: "Boleto de tren gratis" }, text: { ko: "\uC6B4\uC784 \uC5C6\uC774 \uBD80\uB3D9\uC0B0 \uD55C \uACF3\uC73C\uB85C \uC774\uB3D9\uD560 \uC218 \uC788\uC2B5\uB2C8\uB2E4.", es: "Puedes viajar a una propiedad sin pagar el pasaje." }, effect: "train" },
+  "train-ticket": { title: { ko: "\uBB34\uB8CC \uC138\uACC4\uC5EC\uD589\uAD8C", es: "Pase de viaje por el mundo gratis" }, text: { ko: "\uC6B4\uC784 \uC5C6\uC774 \uC6D0\uD558\uB294 \uBCF4\uB4DC \uCE78\uC73C\uB85C \uC774\uB3D9\uD558\uACE0 \uADF8 \uCE78\uC758 \uD6A8\uACFC\uB97C \uC801\uC6A9\uD569\uB2C8\uB2E4.", es: "Puedes viajar a cualquier casilla sin pagar el pasaje y aplicar su efecto." }, effect: "train" },
   "city-dividend": { title: { ko: "\uB3C4\uC2DC \uBC30\uB2F9\uAE08", es: "Dividendo de la ciudad" }, text: { ko: "\uC18C\uC720\uD55C \uBD80\uB3D9\uC0B0\uB9C8\uB2E4 30\uC744 \uBC1B\uC2B5\uB2C8\uB2E4.", es: "Recibes 30 por cada propiedad que tengas." }, effect: "cash" },
   "monopoly-warning": { title: { ko: "\uB3C5\uC810 \uACBD\uACE0", es: "Advertencia de monopolio" }, text: { ko: "\uC644\uC131\uD55C \uC0C9\uC0C1 \uB3C4\uC2DC\uAD70\uC774 \uAC00\uC7A5 \uB9CE\uC740 \uC0AC\uB78C\uC5D0\uAC8C \uB3C4\uC2DC\uAD70\uB2F9 100, \uCD5C\uB300 300\uC758 \uB3C5\uC810 \uBD80\uB2F4\uAE08\uC744 \uBD80\uACFC\uD569\uB2C8\uB2E4. \uB3D9\uB960\uC774\uBA74 \uCE74\uB4DC\uB97C \uBF51\uC740 \uC0AC\uB78C, \uC644\uC131\uD55C \uB3C4\uC2DC\uAD70\uC774 \uC5C6\uC73C\uBA74 \uBD80\uB2F4\uAE08\uC774 \uC5C6\uC2B5\uB2C8\uB2E4.", es: "Quien tenga m\xE1s grupos de color completos paga 100 por grupo, hasta 300. En empate paga quien sac\xF3 la carta; si nadie complet\xF3 un grupo, no se cobra." }, effect: "cash" },
   "city-festival": { title: { ko: "\uB3C4\uC2DC \uCD95\uC81C", es: "Festival de ciudad" }, text: { ko: "\uB0B4 \uB3C4\uC2DC \uD558\uB098\uB97C \uC120\uD0DD\uD569\uB2C8\uB2E4. \uADF8 \uB3C4\uC2DC\uC758 \uB2E4\uC74C \uC0C1\uB300 \uCC29\uC9C0 1\uD68C \uD1B5\uD589\uB8CC\uAC00 2\uBC30\uAC00 \uB429\uB2C8\uB2E4. \uB300\uC0C1 \uCC29\uC9C0\uAE4C\uC9C0 \uC720\uC9C0\uB429\uB2C8\uB2E4.", es: "Elige una ciudad propia. Su alquiler se duplica una vez, en la pr\xF3xima llegada rival. Permanece hasta esa llegada." }, effect: "cash" },
   blackout: { title: { ko: "\uC815\uC804", es: "Apag\xF3n" }, text: { ko: "\uC0C1\uB300 \uB3C4\uC2DC \uD558\uB098\uB97C \uC120\uD0DD\uD569\uB2C8\uB2E4. \uADF8 \uB3C4\uC2DC\uC758 \uB2E4\uC74C \uB0B4 \uCC29\uC9C0 1\uD68C \uD1B5\uD589\uB8CC\uAC00 \uC808\uBC18\uC774 \uB429\uB2C8\uB2E4(\uB0B4\uB9BC, \uCD5C\uC18C 1). \uB300\uC0C1 \uCC29\uC9C0\uAE4C\uC9C0 \uC720\uC9C0\uB429\uB2C8\uB2E4.", es: "Elige una ciudad rival. En tu pr\xF3xima llegada a ella pagas la mitad una vez (redondeo hacia abajo, m\xEDnimo 1). Permanece hasta esa llegada." }, effect: "cash" },
   "rent-pass": { title: { ko: "\uD1B5\uD589\uB8CC \uBA74\uC81C\uAD8C", es: "Pase de alquiler" }, text: { ko: "\uD1B5\uD589\uB8CC \uBA74\uC81C\uAD8C \uD55C \uC7A5\uC744 \uBCF4\uAD00\uD569\uB2C8\uB2E4. \uC55E\uC73C\uB85C \uD1B5\uD589\uB8CC\uB97C \uB0B4\uAE30 \uC804\uC5D0 \uC9C1\uC811 \uC120\uD0DD\uD574 1\uD68C \uBA74\uC81C\uD560 \uC218 \uC788\uC2B5\uB2C8\uB2E4. \uC790\uB3D9 \uC0AC\uC6A9\uB418\uC9C0 \uC54A\uC73C\uBA70 \uC138\uAE08\uC5D0\uB294 \uC4F8 \uC218 \uC5C6\uC2B5\uB2C8\uB2E4.", es: "Guarda un pase. Antes de un futuro alquiler puedes elegir usarlo para eximir un solo pago. No se usa autom\xE1ticamente ni sirve para impuestos." }, effect: "pass" }
 };
-var propertyRent = (tile, record2, modern, s) => marbleRentAmount(tile, record2.houses, s?.economicVersion, s?.propertyRulesVersion === 1 && completedGroups(s, record2.owner).includes(tile.group) ? 2 : 1, modern);
+var propertyRent = (tile, record2, modern, s) => tile.kind === "tourism" ? tile.tourismEconomy?.tollStages[0] ?? tile.rent ?? 0 : s?.constructionRulesVersion === 2 ? constructionRent(tile, record2, s.economicVersion, marbleColorTollBonus(s) && completedGroups(s, record2.owner).includes(tile.group) ? 2 : 1) : marbleRentAmount(tile, record2.houses, s?.economicVersion, s && marbleColorTollBonus(s) && completedGroups(s, record2.owner).includes(tile.group) ? 2 : 1, modern);
 function marbleBuildCost(tile, level, economicVersion) {
   return marbleBuildCostForVersion(tile, level, economicVersion);
+}
+function marbleBuildToCost(tile, fromLevel, targetLevel, economicVersion) {
+  return marbleBuildToCostAtPrice(marbleLandPrice(tile, economicVersion), fromLevel, targetLevel, economicVersion);
 }
 function marbleCityValue(tile, houses, economicVersion) {
   return marbleLandPrice(tile, economicVersion) + Array.from({ length: houses }, (_, level) => marbleBuildCost(tile, level, economicVersion)).reduce((sum2, cost) => sum2 + cost, 0);
 }
-function marbleTakeoverPrice(tile, houses, economicVersion) {
-  return tile.kind === "property" && houses < 3 ? 2 * marbleCityValue(tile, houses, economicVersion) : null;
+var cityValue = (s, tile, prop) => tile.kind === "tourism" ? marbleLandPrice(tile, s.economicVersion) : s.constructionRulesVersion === 2 ? constructionValue(tile, prop, s.economicVersion) : marbleCityValue(tile, prop.houses, s.economicVersion);
+var takeoverPrice = (s, tile, prop) => tile.kind !== "property" || isLandmark(prop, s.constructionRulesVersion) ? null : 2 * cityValue(s, tile, prop);
+var landmarkReady = (s, prop) => s.constructionRulesVersion === 2 ? constructionReady(prop) : prop.houses === 2;
+function completeLap(s, p) {
+  if (s.constructionRulesVersion === 2) {
+    s.completedLaps ??= { p1: 0, p2: 0 };
+    s.completedLaps[p]++;
+  }
 }
-var liquidation = (s, p) => Object.entries(s.properties).filter(([, prop]) => prop.owner === p).map(([index, prop]) => ({ index: Number(index), value: Math.floor(marbleCityValue(boardFor(s)[Number(index)], prop.houses, s.economicVersion) / 2) }));
-var canRescue = (s, p) => s.money[p] + liquidation(s, p).reduce((sum2, item) => sum2 + item.value, 0) + ((s.debt?.[p] ?? 0) === 0 ? 300 : 0) >= (s.pendingPayment?.amount ?? Infinity);
+var liquidation = (s, p) => Object.entries(s.properties).filter(([, prop]) => prop.owner === p).map(([index, prop]) => ({ index: Number(index), value: boardFor(s)[Number(index)].cityEconomy ? classicSaleValue(boardFor(s)[Number(index)].cityEconomy, prop) : Math.floor(cityValue(s, boardFor(s)[Number(index)], prop) / 2) }));
+var canRescue = (s, p) => s.money[p] + liquidation(s, p).reduce((sum2, item) => sum2 + item.value, 0) + ((s.debt?.[p] ?? 0) === 0 ? marbleLoanTerms(s.loanRulesVersion).amount : 0) >= (s.pendingPayment?.amount ?? Infinity);
 function takeoverOffer(s, p) {
   const index = s.takeoverTile, tile = index == null ? void 0 : boardFor(s)[index], prop = index == null ? void 0 : s.properties[index];
   if (s.propertyRulesVersion !== 1 || s.phase !== "main" || index !== s.positions[p] || !tile || !prop || prop.owner === p) return null;
-  return { tile: index, owner: prop.owner, price: marbleTakeoverPrice(tile, prop.houses, s.economicVersion) };
+  const price = tile.kind === "tourism" ? 2 * cityValue(s, tile, prop) : takeoverPrice(s, tile, prop);
+  if (tile.kind === "tourism" && !(s.takeoverDiscountPasses?.[p] ?? 0)) return null;
+  return { tile: index, owner: prop.owner, price, couponOnly: tile.kind === "tourism", discountPrice: price != null && (s.takeoverDiscountPasses?.[p] ?? 0) > 0 ? Math.ceil(price / 2) : null };
 }
 var assetsFor = (s, p, board) => s.money[p] - (s.debt?.[p] ?? 0) + Object.entries(s.properties).reduce((sum2, [index, record2]) => {
   if (record2.owner !== p) return sum2;
   const tile = board[Number(index)];
-  const buildingCost = tile ? Array.from({ length: record2.houses }, (_, level) => marbleBuildCost(tile, level, s.economicVersion)).reduce((total, cost) => total + cost, 0) : 0;
-  return sum2 + (tile ? marbleLandPrice(tile, s.economicVersion) : 0) + buildingCost;
+  return sum2 + (tile ? cityValue(s, tile, record2) : 0);
 }, 0);
 var completedGroups = (s, p) => {
   const board = boardFor(s);
@@ -6237,26 +6635,38 @@ var completedGroups = (s, p) => {
 function emit(s, type, actor, ko, es, textKo, textEs, extra = {}) {
   const sequence = (s.actionSequence ?? 0) + 1;
   s.actionSequence = sequence;
-  s.actionLog = [...s.actionLog ?? [], { sequence, type, actor, title: { ko, es }, text: { ko: textKo, es: textEs }, ...extra }].slice(-40);
+  s.actionLog = [...s.actionLog ?? [], { sequence, type, actor, title: { ko, es }, text: { ko: textKo, es: textEs }, ...cardEventCause(s, sequence, type, extra.moneyDelta), ...extra }].slice(-40);
 }
 var propIndices = (board) => board.flatMap((tile, index) => tile.kind === "property" ? [index] : []);
+function grantBuilding(s, p, prop) {
+  return marbleBuildingTypes.find((type) => !prop.buildings?.includes(type) && (type !== "hotel" || (s.completedLaps?.[p] ?? 0) >= 1));
+}
+function eventCityEligible(s, p, id, index) {
+  const prop = s.properties[index];
+  if (boardFor(s)[index]?.kind !== "property" || !prop || prop.owner !== (id === "city-festival" || id === "construction-grant" ? p : otherPlayer(p))) return false;
+  if (id === "forced-sale" || id === "earthquake" || id === "construction-grant") {
+    if (isLandmark(prop, s.constructionRulesVersion)) return false;
+    if (id === "earthquake") return s.constructionRulesVersion === 2 ? !!prop.buildings?.length : prop.houses > 0;
+    if (id === "construction-grant") return s.constructionRulesVersion === 2 ? !!grantBuilding(s, p, prop) : prop.houses < 2;
+  }
+  return true;
+}
 function view2(s, p) {
   const board = boardFor(s);
   const actions = [];
   const add = (ko, es, action) => actions.push({ label: { ko, es }, action });
-  if (!s.result && s.active === p) {
+  if (!s.result && s.active === p && !marbleProfilePending(s.boardProfile)) {
     if (s.phase === "event-decision" && s.pendingEvent) {
-      const owner = s.pendingEvent.id === "city-festival" ? p : otherPlayer(p);
-      for (const index of propIndices(board)) if (s.properties[String(index)]?.owner === owner && !(s.propertyRulesVersion === 1 && s.pendingEvent.id === "blackout" && s.properties[String(index)].houses === 3)) add(`${board[index].name.ko} \uC120\uD0DD`, `Elegir ${board[index].name.es}`, { type: "choose-event-city", payload: { tile: index } });
+      for (const index of propIndices(board)) if (eventCityEligible(s, p, s.pendingEvent.id, index)) add(`${board[index].name.ko} \uC120\uD0DD`, `Elegir ${board[index].name.es}`, { type: "choose-event-city", payload: { tile: index } });
     } else if (s.phase === "rent-decision" && s.pendingRent) {
       add(`\uD1B5\uD589\uB8CC \uC9C0\uAE09 \xB7 ${s.pendingRent.amount}`, `Pagar alquiler \xB7 ${s.pendingRent.amount}`, { type: "pay-rent" });
       if ((s.rentPasses?.[p] ?? 0) > 0) add("\uBA74\uC81C\uAD8C \uC0AC\uC6A9 \xB7 \uC774\uBC88 \uD1B5\uD589\uB8CC 1\uD68C", "Usar pase \xB7 este alquiler", { type: "use-rent-pass" });
     }
     if ((s.economicVersion === 1 || s.economicVersion === 2 || s.economicVersion === 3) && s.phase !== "event-decision" && s.phase !== "rent-decision") {
       const debt = s.debt?.[p] ?? 0;
-      if (debt === 0 && (s.phase !== "debt" || s.money[p] + 300 >= (s.pendingPayment?.amount ?? Infinity))) add("\uB300\uCD9C \uBC1B\uAE30 \xB7 300 / \uC0C1\uD658 330", "Pedir pr\xE9stamo \xB7 300 / devolver 330", { type: "borrow" });
+      if (debt === 0) add(`\uB300\uCD9C \uBC1B\uAE30 \xB7 ${marbleLoanTerms(s.loanRulesVersion).amount} / \uC0C1\uD658 ${marbleLoanTerms(s.loanRulesVersion).repayment}`, `Pedir pr\xE9stamo \xB7 ${marbleLoanTerms(s.loanRulesVersion).amount} / devolver ${marbleLoanTerms(s.loanRulesVersion).repayment}`, { type: "borrow" });
       if (debt > 0 && s.money[p] >= debt && s.phase !== "debt") add(`\uB300\uCD9C \uC0C1\uD658 \xB7 ${debt}`, `Pagar pr\xE9stamo \xB7 ${debt}`, { type: "repay" });
-      if (s.phase === "debt" && (s.propertyRulesVersion !== 1 || !canRescue(s, p))) add("\uD30C\uC0B0 \uC778\uC815 \xB7 \uACBD\uAE30 \uC885\uB8CC", "Declarar quiebra \xB7 terminar partida", { type: "declare-bankruptcy" });
+      if (s.phase === "debt" && s.pendingPayment) add("\uD30C\uC0B0\uD558\uAE30", "Declararse en quiebra", { type: "declare-bankruptcy", ...s.propertyRulesVersion === 1 && canRescue(s, p) ? { payload: { voluntary: true } } : {} });
       if (s.phase === "roll" && !s.pawnLocked?.[p]) {
         for (const pawn of marblePawnIds) if (pawn !== s.pawns?.[otherPlayer(p)]) add(`\uB9D0 \uC120\uD0DD \xB7 ${pawnNames[pawn].ko}`, `Elegir figura \xB7 ${pawnNames[pawn].es}`, { type: "choose-pawn", payload: { pawn } });
       }
@@ -6270,33 +6680,55 @@ function view2(s, p) {
     }
     if (s.phase === "train-decision") {
       const fare = s.pendingTrainFare ?? 100;
-      for (const index of propIndices(board)) if (s.money[p] >= fare) {
+      for (let index = 0; index < board.length; index++) if (s.money[p] >= fare) {
         const name = board[index].name;
-        add(`\uC5F4\uCC28: ${name.ko} (${fare})`, `Tren: ${name.es} (${fare})`, { type: "choose-train", payload: { destination: index } });
+        add(`\uC138\uACC4\uC5EC\uD589: ${name.ko} (${fare})`, `Viaje: ${name.es} (${fare})`, { type: "choose-train", payload: { destination: index } });
       }
-      add(s.pendingTrainSource === "card" ? "\uC5F4\uCC28\uB97C \uAC74\uB108\uB6F0\uACE0 \uCC28\uB840 \uB9C8\uCE58\uAE30" : "\uC5F4\uCC28\uB97C \uAC74\uB108\uB6F0\uACE0 \uC8FC\uC0AC\uC704 \uAD74\uB9AC\uAE30", s.pendingTrainSource === "card" ? "Pasar el tren y terminar turno" : "Pasar el tren y lanzar dados", { type: "skip-train" });
+      add(s.pendingTrainSource === "card" ? "\uC138\uACC4\uC5EC\uD589\uB97C \uAC74\uB108\uB6F0\uACE0 \uCC28\uB840 \uB9C8\uCE58\uAE30" : "\uC138\uACC4\uC5EC\uD589\uB97C \uAC74\uB108\uB6F0\uACE0 \uC8FC\uC0AC\uC704 \uAD74\uB9AC\uAE30", s.pendingTrainSource === "card" ? "Omitir el viaje y terminar turno" : "Omitir el viaje y lanzar dados", { type: "skip-train" });
     }
     if (s.phase === "decision" && s.pendingTile !== null) {
       const tile = board[s.pendingTile];
       const price = marbleLandPrice(tile, s.economicVersion);
-      if (tile?.kind === "property" && !s.properties[String(s.pendingTile)] && s.money[p] >= price) add(`\uAD6C\uB9E4 (${price})`, `Comprar (${price})`, { type: "buy" });
+      if (isPurchasableMarbleTile(tile) && !s.properties[String(s.pendingTile)] && s.money[p] >= price) add(`\uAD6C\uB9E4 (${price})`, `Comprar (${price})`, { type: "buy" });
+      if (s.constructionRulesVersion === 2 && tile?.kind === "property" && !s.properties[s.pendingTile]) for (const selection of constructionOptions(void 0, s.completedLaps?.[p] ?? 0, false)) {
+        const cost = price + constructionCost(tile, selection, s.economicVersion);
+        if (s.money[p] >= cost) add(`\uB3C4\uC2DC\uC640 \uAC74\uBB3C \uAD6C\uB9E4 \xB7 ${cost}`, `Comprar terreno y edificios \xB7 ${cost}`, { type: "buy", payload: { ...selection } });
+      }
+      if (s.constructionRulesVersion === 1 && tile?.kind === "property" && !s.properties[s.pendingTile]) for (const targetLevel of [0, 1, 2]) {
+        const cost = price + marbleBuildToCost(tile, 0, targetLevel, s.economicVersion);
+        if (s.money[p] >= cost) add(`\uB3C4\uC2DC\xB7${targetLevel}\uB2E8\uACC4 \uAD6C\uB9E4 \xB7 ${cost}`, `Comprar ciudad y nivel ${targetLevel} \xB7 ${cost}`, { type: "buy", payload: { targetLevel } });
+      }
       add("\uAD6C\uB9E4 \uAC70\uC808 / \uACC4\uC18D", "Pasar / continuar", { type: "decline" });
     }
     if (s.phase === "main") {
       const offer = takeoverOffer(s, p);
-      if (offer?.price != null && s.money[p] >= offer.price) add(`\uB3C4\uC2DC \uC778\uC218 \xB7 ${offer.price}`, `Adquirir ciudad \xB7 ${offer.price}`, { type: "takeover", payload: { tile: offer.tile } });
+      if (offer?.price != null && !offer.couponOnly && s.money[p] >= offer.price) add(`\uB3C4\uC2DC \uC778\uC218 \xB7 ${offer.price}`, `Adquirir ciudad \xB7 ${offer.price}`, { type: "takeover", payload: { tile: offer.tile } });
+      if (offer?.discountPrice != null && s.money[p] >= offer.discountPrice) add(`\uD560\uC778\uAD8C \uC0AC\uC6A9\uD558\uACE0 \uC778\uC218 \xB7 ${offer.discountPrice}`, `Adquirir con cup\xF3n \xB7 ${offer.discountPrice}`, { type: "takeover", payload: { tile: offer.tile, useDiscountPass: true } });
       for (const [indexText, record2] of Object.entries(s.properties)) {
         const index = Number(indexText), tile = board[index];
         if (record2.owner !== p || tile?.kind !== "property") continue;
+        if (s.constructionRulesVersion === 2) {
+          if (s.buildSite === "start" || s.buildSite === index) for (const selection of constructionOptions(record2, s.completedLaps?.[p] ?? 0, !!s.landmarkOptions?.includes(index))) {
+            const cost2 = constructionCost(tile, selection, s.economicVersion);
+            if (s.money[p] >= cost2) add(`${selection.landmark ? "\uB79C\uB4DC\uB9C8\uD06C" : "\uAC74\uBB3C"}: ${tile.name.ko} \xB7 ${cost2}`, `${selection.landmark ? "Monumento" : "Edificios"}: ${tile.name.es} \xB7 ${cost2}`, { type: "build", payload: { tile: index, ...selection } });
+          }
+          continue;
+        }
         const groupSize = board.filter((space) => space.kind === "property" && space.group === tile.group).length;
         const ownedCount = Object.entries(s.properties).filter(([ownedIndex, owned]) => owned.owner === p && board[Number(ownedIndex)]?.group === tile.group).length;
         const canBuild = s.boardVersion === 2 || ownedCount === groupSize;
         const levels = s.boardVersion === 2 ? 3 : 2;
         const cost = marbleBuildCost(tile, record2.houses, s.economicVersion);
-        if (canBuild && record2.houses < levels && s.money[p] >= cost) {
+        const eligibleSite = s.boardVersion !== 2 || s.constructionRulesVersion !== 1 || s.buildSite === "start" || s.buildSite === index;
+        const eligibleLevel = record2.houses < 2 || s.boardVersion !== 2 || s.constructionRulesVersion !== 1 || !!s.landmarkOptions?.includes(index);
+        if (canBuild && eligibleSite && eligibleLevel && record2.houses < levels && s.money[p] >= cost) {
           const tier = s.boardVersion === 2 ? [["\uB2E8\uB3C5\uC8FC\uD0DD", "Casa unifamiliar"], ["\uC544\uD30C\uD2B8", "Apartamentos"], "landmark"][record2.houses] : ["\uC9D1", "Casa"];
-          const name = Array.isArray(tier) ? tier : s.economicVersion === 1 || s.economicVersion === 2 ? ["\uB79C\uB4DC\uB9C8\uD06C", "Monumento"] : ["\uD638\uD154", "Hotel"];
+          const name = Array.isArray(tier) ? tier : s.economicVersion === 1 || s.economicVersion === 2 || s.economicVersion === 3 ? ["\uB79C\uB4DC\uB9C8\uD06C", "Monumento"] : ["\uD638\uD154", "Hotel"];
           add(`${name[0]}: ${tile.name.ko} (${cost})`, `${name[1]}: ${tile.name.es} (${cost})`, { type: "build", payload: { tile: index } });
+          if (s.constructionRulesVersion === 1) for (let targetLevel = record2.houses + 1; targetLevel <= (record2.houses === 2 ? 3 : 2); targetLevel++) {
+            const total = marbleBuildToCost(tile, record2.houses, targetLevel, s.economicVersion);
+            if (s.money[p] >= total) add(`${tile.name.ko} ${targetLevel}\uB2E8\uACC4\uAE4C\uC9C0 \uAC74\uC124 \xB7 ${total}`, `Construir hasta nivel ${targetLevel} \xB7 ${total}`, { type: "build", payload: { tile: index, targetLevel } });
+          }
         }
       }
       add(s.extraRoll ? "\uB354\uBE14 \xB7 \uD55C \uBC88 \uB354 \uAD74\uB9AC\uAE30" : "\uCC28\uB840 \uB9C8\uCE58\uAE30", s.extraRoll ? "Dobles \xB7 lanzar otra vez" : "Terminar turno", { type: "endTurn" });
@@ -6307,27 +6739,38 @@ function view2(s, p) {
     phase: s.result ? "finished" : s.phase,
     board: {
       version: s.boardVersion ?? 1,
+      boardRevision: s.boardProfile === "world-islands-32-v1" ? s.boardRevision ?? 1 : null,
+      boardProfile: s.boardProfile ?? null,
+      economyProfile: s.economyProfile ?? null,
+      passStartSalary: marblePassStartSalary(s.economicVersion, s.economyProfile),
+      boardSize: board.length,
+      profileMetadata: marbleBoardProfileMetadata(s.boardProfile, s.boardRevision, board),
       propertyRulesVersion: s.propertyRulesVersion ?? 0,
+      constructionRulesVersion: s.constructionRulesVersion ?? 0,
+      completedLaps: { p1: s.completedLaps?.p1 ?? 0, p2: s.completedLaps?.p2 ?? 0 },
       takeoverOffer: takeoverOffer(s, p),
       extraRoll: !!s.extraRoll,
       doublesCount: s.doublesCount ?? 0,
+      landmarkOptions: [...s.landmarkOptions ?? []],
+      buildSite: s.buildSite ?? null,
       cityRouteVersion: s.cityRouteVersion ?? 1,
       tiles: board.map((tile, index) => {
         const houses = s.properties[String(index)]?.houses ?? 0;
         const maxLevels = s.boardVersion === 2 ? 3 : 2;
         const canUpgrade = tile.kind === "property" && houses < maxLevels;
         return {
-          ...tile,
+          ...structuredClone(tile),
           ...tile.price !== void 0 ? { price: marbleLandPrice(tile, s.economicVersion) } : {},
           ...tile.rent !== void 0 ? { rent: marbleBaseRent(tile, s.economicVersion) } : {},
           name: { ...tile.name },
-          monopolyMultiplier: s.propertyRulesVersion === 1 && s.properties[index] && completedGroups(s, s.properties[index].owner).includes(tile.group) ? 2 : 1,
+          monopolyMultiplier: marbleColorTollBonus(s) && s.properties[index] && completedGroups(s, s.properties[index].owner).includes(tile.group) ? 2 : 1,
           index,
           owner: s.properties[String(index)]?.owner ?? null,
           houses,
+          ...s.constructionRulesVersion === 2 ? { buildings: [...s.properties[index]?.buildings ?? []], landmark: !!s.properties[index]?.landmark } : {},
           rentModifiers: s.rentModifiers?.[String(index)] ? { ...s.rentModifiers[String(index)].festival ? { festival: { ...s.rentModifiers[String(index)].festival } } : {}, ...s.rentModifiers[String(index)].blackout ? { blackout: { ...s.rentModifiers[String(index)].blackout } } : {} } : null,
-          nextBuildCost: canUpgrade ? marbleBuildCost(tile, houses, s.economicVersion) : null,
-          nextRent: canUpgrade ? propertyRent(tile, { owner: s.properties[String(index)]?.owner ?? p, houses: houses + 1 }, s.boardVersion === 2, s) : null
+          nextBuildCost: s.constructionRulesVersion === 2 ? null : canUpgrade ? marbleBuildCost(tile, houses, s.economicVersion) : null,
+          nextRent: s.constructionRulesVersion === 2 ? null : canUpgrade ? propertyRent(tile, { owner: s.properties[String(index)]?.owner ?? p, houses: houses + 1 }, s.boardVersion === 2, s) : null
         };
       }),
       positions: { ...s.positions },
@@ -6345,11 +6788,18 @@ function view2(s, p) {
       lastEvent: s.lastEvent ? { ...s.lastEvent, title: { ...s.lastEvent.title }, text: { ...s.lastEvent.text } } : null,
       lastMove: s.lastMove ? { ...s.lastMove } : null,
       pendingEvent: s.pendingEvent ? { ...s.pendingEvent } : null,
+      pendingEventSource: s.pendingEventSource ?? null,
       pendingRent: s.pendingRent ? { ...s.pendingRent, reason: { ...s.pendingRent.reason } } : null,
+      cityShields: { p1: s.cityShields?.p1 ?? 0, p2: s.cityShields?.p2 ?? 0 },
+      takeoverDiscountPasses: { p1: s.takeoverDiscountPasses?.p1 ?? 0, p2: s.takeoverDiscountPasses?.p2 ?? 0 },
       rentPasses: { p1: s.rentPasses?.p1 ?? 0, p2: s.rentPasses?.p2 ?? 0 },
       rentModifiers: Object.fromEntries(Object.entries(s.rentModifiers ?? {}).map(([tile, effects]) => [tile, { ...effects.festival ? { festival: { ...effects.festival } } : {}, ...effects.blackout ? { blackout: { ...effects.blackout } } : {} }])),
+      rentRulesVersion: s.rentRulesVersion ?? 1,
+      constructionPriceRulesVersion: s.constructionPriceRulesVersion ?? 1,
+      festivalRulesVersion: s.festivalRulesVersion ?? 1,
+      loanRulesVersion: s.loanRulesVersion ?? 1,
       eventVersion: s.eventVersion ?? 0,
-      eventCardCount: s.boardVersion !== 2 ? 8 : s.eventVersion === 3 ? 16 : s.economicVersion ? 13 : 12,
+      eventCardCount: s.boardVersion !== 2 ? 8 : s.eventVersion === 4 ? 23 : s.eventVersion === 3 ? 16 : s.economicVersion ? 13 : 12,
       economicVersion: s.economicVersion ?? 0,
       debt: { p1: s.debt?.p1 ?? 0, p2: s.debt?.p2 ?? 0 },
       pendingPayment: s.pendingPayment ? { ...s.pendingPayment, reason: { ...s.pendingPayment.reason } } : null,
@@ -6371,12 +6821,12 @@ function validation(s, p, a) {
   if (p !== "p1" && p !== "p2") return "Invalid player";
   if (!a || typeof a.type !== "string") return "Invalid action";
   if (s.result) return "Game is finished";
+  if (marbleProfilePending(s.boardProfile)) return "Classic Korea rules are still under research; play is not enabled";
   if (p !== s.active) return "Not your turn";
   if (s.phase === "event-decision") {
     const index = a.payload?.tile, pending = s.pendingEvent;
     if (a.type !== "choose-event-city" || !pending || pending.playerId !== p) return "Choose an event city first";
-    const owner = pending.id === "city-festival" ? p : otherPlayer(p);
-    return !Number.isInteger(index) || board[index]?.kind !== "property" || (s.properties[String(index)]?.owner !== owner || s.propertyRulesVersion === 1 && pending.id === "blackout" && s.properties[String(index)].houses === 3) ? "Invalid event city" : null;
+    return !Number.isInteger(index) || !eventCityEligible(s, p, pending.id, index) ? "Invalid event city" : null;
   }
   if (s.phase === "rent-decision") {
     if (!s.pendingRent || s.pendingRent.playerId !== p) return "No rent decision";
@@ -6388,9 +6838,9 @@ function validation(s, p, a) {
   if (["borrow", "repay", "declare-bankruptcy", "choose-pawn"].includes(a.type)) {
     if (s.economicVersion !== 1 && s.economicVersion !== 2 && s.economicVersion !== 3) return "Credit and figure selection unavailable in this saved ruleset";
     if (s.phase === "finished") return "Game is finished";
-    if (a.type === "borrow") return (s.debt?.[p] ?? 0) !== 0 ? "Repay the existing loan first" : a.payload?.amount !== void 0 ? "Loan amount is fixed" : s.phase === "debt" && s.money[p] + 300 < (s.pendingPayment?.amount ?? Infinity) ? "Loan cannot cover this payment" : null;
+    if (a.type === "borrow") return (s.debt?.[p] ?? 0) !== 0 ? "Repay the existing loan first" : a.payload?.amount !== void 0 ? "Loan amount is fixed" : null;
     if (a.type === "repay") return a.payload?.amount !== void 0 ? "Repayment amount is fixed" : s.phase === "debt" || !s.debt?.[p] || s.money[p] < s.debt[p] ? "Cannot repay now" : null;
-    if (a.type === "declare-bankruptcy") return s.phase === "debt" && s.pendingPayment && (s.propertyRulesVersion !== 1 || !canRescue(s, p)) ? null : "Liquidate available assets or use credit first";
+    if (a.type === "declare-bankruptcy") return s.phase === "debt" && s.pendingPayment && (a.payload?.voluntary === true || s.propertyRulesVersion !== 1 || !canRescue(s, p)) ? null : "Liquidate available assets or use credit first";
     const pawn = a.payload?.pawn;
     return s.phase !== "roll" || s.pawnLocked?.[p] ? "Figure is locked after your first roll" : !marblePawnIds.includes(pawn) || pawn === s.pawns?.[otherPlayer(p)] ? "Invalid or occupied figure" : null;
   }
@@ -6403,7 +6853,7 @@ function validation(s, p, a) {
   if (a.type === "choose-train") {
     if (s.phase !== "train-decision") return "No train decision";
     const destination = a.payload?.destination;
-    if (!Number.isInteger(destination) || board[destination]?.kind !== "property") return "Invalid destination";
+    if (!Number.isInteger(destination) || destination < 0 || destination >= board.length) return "Invalid destination";
     if (s.money[p] < (s.pendingTrainFare ?? 100)) return "Insufficient funds";
     return null;
   }
@@ -6411,21 +6861,47 @@ function validation(s, p, a) {
   if (a.type === "buy" || a.type === "decline") {
     if (s.phase !== "decision" || !Number.isInteger(s.pendingTile) || s.pendingTile !== s.positions[p]) return "No purchase decision";
     const tile = board[s.pendingTile];
-    if (tile.kind !== "property" || s.properties[String(s.pendingTile)]) return "No property to decide";
+    if (!isPurchasableMarbleTile(tile) || s.properties[String(s.pendingTile)]) return "No property to decide";
     if (a.type === "buy" && s.money[p] < marbleLandPrice(tile, s.economicVersion)) return "Insufficient funds";
+    if (a.type === "buy" && a.payload && "targetLevel" in a.payload) {
+      const target = a.payload.targetLevel;
+      if (s.constructionRulesVersion !== 1 || !Number.isInteger(target) || target < 0 || target > 2 || Object.keys(a.payload).some((key) => key !== "targetLevel")) return "Invalid construction target";
+      if (s.money[p] < marbleLandPrice(tile, s.economicVersion) + marbleBuildToCost(tile, 0, target, s.economicVersion)) return "Insufficient funds";
+    }
+    if (a.type === "buy" && s.constructionRulesVersion === 2) {
+      const selection = a.payload ?? { buildings: [] };
+      if (tile.kind === "tourism") return constructionSelectionMatches(selection, { buildings: [] }) && Object.keys(selection).every((key) => key === "buildings") ? null : "Tourism cannot have buildings";
+      const option = [{ buildings: [] }, ...constructionOptions(void 0, s.completedLaps?.[p] ?? 0, false)].find((option2) => constructionSelectionMatches(selection, option2));
+      if (!option || Object.keys(selection).some((key) => key !== "buildings")) return "Invalid construction selection";
+      if (s.money[p] < marbleLandPrice(tile, s.economicVersion) + constructionCost(tile, option, s.economicVersion)) return "Insufficient funds";
+    }
     return null;
   }
   if (a.type === "takeover") {
     const offer = takeoverOffer(s, p);
-    return !offer || a.payload?.tile !== offer.tile || offer.price === null ? "No eligible takeover" : s.money[p] < offer.price ? "Insufficient funds" : null;
+    if (a.payload && Object.keys(a.payload).some((key) => !["tile", "useDiscountPass"].includes(key)) || a.payload?.useDiscountPass !== void 0 && a.payload.useDiscountPass !== true) return "Invalid takeover selection";
+    const price = a.payload?.useDiscountPass === true ? offer?.discountPrice : offer?.couponOnly ? null : offer?.price;
+    return !offer || a.payload?.tile !== offer.tile || price == null ? "No eligible takeover" : s.money[p] < price ? "Insufficient funds" : null;
   }
   if (a.type === "build") {
     const index = a.payload?.tile;
     if (s.phase !== "main" || !Number.isInteger(index) || index < 0 || index >= board.length || board[index]?.kind !== "property" || !s.properties[String(index)] || s.properties[String(index)].owner !== p) return "Invalid property";
     const tile = board[index];
+    if (a.payload && "targetLevel" in a.payload) {
+      const target = a.payload.targetLevel, current = s.properties[String(index)].houses;
+      if (s.constructionRulesVersion !== 1 || !Number.isInteger(target) || target <= current || target > (current === 2 ? 3 : 2) || Object.keys(a.payload).some((key) => !["tile", "targetLevel"].includes(key))) return "Invalid construction target";
+      if (s.money[p] < marbleBuildToCost(tile, current, target, s.economicVersion)) return "Insufficient funds";
+    }
+    if (s.constructionRulesVersion === 2) {
+      if (s.buildSite !== "start" && s.buildSite !== index) return "Cannot build here";
+      const selection = a.payload ?? {};
+      const option = constructionOptions(s.properties[String(index)], s.completedLaps?.[p] ?? 0, !!s.landmarkOptions?.includes(index)).find((option2) => constructionSelectionMatches(selection, option2));
+      return !option || Object.keys(selection).some((key) => !["tile", "buildings", "landmark"].includes(key)) ? "Invalid construction selection" : s.money[p] < constructionCost(tile, option, s.economicVersion) ? "Insufficient funds" : null;
+    }
     const groupSize = board.filter((space) => space.kind === "property" && space.group === tile.group).length;
     const ownedCount = Object.entries(s.properties).filter(([ownedIndex, owned]) => owned.owner === p && board[Number(ownedIndex)]?.group === tile.group).length;
-    const canBuild = s.boardVersion === 2 ? s.properties[String(index)].houses < 3 : ownedCount === groupSize && s.properties[String(index)].houses < 2;
+    const currentLevel = s.properties[String(index)].houses;
+    const canBuild = s.boardVersion === 2 ? currentLevel < 3 && (s.constructionRulesVersion !== 1 || (s.buildSite === "start" || s.buildSite === index) && (currentLevel < 2 || !!s.landmarkOptions?.includes(index))) : ownedCount === groupSize && currentLevel < 2;
     if (!canBuild || s.money[p] < marbleBuildCost(tile, s.properties[String(index)].houses, s.economicVersion)) return "Cannot build here";
     return null;
   }
@@ -6459,24 +6935,29 @@ function bonus(s, p, amount, ko, es, source = "bank") {
 }
 function moveForward(s, p, to, _board) {
   const from = s.positions[p];
-  if (to < from) bonus(s, p, marblePassStartSalary(s.economicVersion), "\uCD9C\uBC1C \uBCF4\uB108\uC2A4", "Bono de Salida");
+  if (to < from) {
+    completeLap(s, p);
+    bonus(s, p, marblePassStartSalary(s.economicVersion, s.economyProfile), "\uCD9C\uBC1C \uBCF4\uB108\uC2A4", "Bono de Salida");
+  }
   s.positions[p] = to;
 }
 function resolveLanding(s, p, index, drawEvent) {
   const board = boardFor(s), tile = board[index];
   s.pendingTile = index;
   s.takeoverTile = null;
+  s.buildSite = s.boardVersion === 2 && tile.kind === "start" ? "start" : s.boardVersion === 2 && tile.kind === "property" && (!s.properties[index] || s.properties[index].owner === p) ? index : null;
+  s.landmarkOptions = s.boardVersion === 2 ? index === 0 ? Object.entries(s.properties).filter(([, property]) => property.owner === p && landmarkReady(s, property)).map(([tile2]) => Number(tile2)) : s.properties[String(index)]?.owner === p && landmarkReady(s, s.properties[String(index)]) ? [index] : [] : [];
   emit(s, "arrival", p, `${tile.name.ko} \uB3C4\uCC29`, `Llegaste a ${tile.name.es}`, `${tile.name.ko} \uCE78\uC758 \uD6A8\uACFC\uB97C \uD655\uC778\uD558\uC138\uC694.`, `Revisa el efecto de ${tile.name.es}.`, { tile: index });
-  if (tile.kind === "property") {
+  if (isPurchasableMarbleTile(tile)) {
     const owner = s.properties[String(index)];
     if (!owner) {
       s.phase = "decision";
       return s;
     }
     if (owner.owner !== p) {
-      if (s.propertyRulesVersion === 1) s.takeoverTile = index;
+      if (s.propertyRulesVersion === 1 && (tile.kind === "property" || tile.kind === "tourism" && (s.takeoverDiscountPasses?.[p] ?? 0) > 0)) s.takeoverTile = index;
       let rent = propertyRent(tile, owner, s.boardVersion === 2, s);
-      const effects = s.eventVersion === 3 ? s.rentModifiers?.[String(index)] : void 0;
+      const effects = tile.kind === "property" && (s.eventVersion ?? 0) >= 3 ? s.rentModifiers?.[String(index)] : void 0;
       const festival = effects?.festival?.owner === owner.owner && effects.festival.playerId === owner.owner;
       const blackout = effects?.blackout?.owner === owner.owner && effects.blackout.playerId === p;
       if (festival) rent *= 2;
@@ -6491,7 +6972,7 @@ function resolveLanding(s, p, index, drawEvent) {
         emit(s, "event-card", p, "\uB3C4\uC2DC \uD6A8\uACFC \uC801\uC6A9", "Efecto de ciudad aplicado", "\uB300\uC0C1 \uB3C4\uC2DC \uCC29\uC9C0\uB85C \uD1B5\uD589\uB8CC \uD6A8\uACFC 1\uD68C\uB97C \uC18C\uBAA8\uD588\uC2B5\uB2C8\uB2E4. \uBA74\uC81C\uAD8C\uC744 \uC368\uB3C4 \uB3C4\uC2DC \uD6A8\uACFC\uB294 \uC18C\uBAA8\uB429\uB2C8\uB2E4.", "La llegada consume el efecto de alquiler de una vez, incluso si usas un pase.", { tile: index, amount: rent });
       }
       const reason = { ko: `${tile.name.ko} \uD1B5\uD589\uB8CC`, es: `Alquiler en ${tile.name.es}` };
-      if (s.eventVersion === 3 && (s.rentPasses?.[p] ?? 0) > 0) {
+      if ((s.eventVersion ?? 0) >= 3 && (s.rentPasses?.[p] ?? 0) > 0) {
         s.pendingRent = { amount: rent, creditor: owner.owner, playerId: p, tile: index, reason };
         s.phase = "rent-decision";
         return s;
@@ -6514,9 +6995,20 @@ function resolveLanding(s, p, index, drawEvent) {
   } else if (tile.kind === "train") {
     s.trainReady ??= { p1: false, p2: false };
     s.trainReady[p] = true;
-    emit(s, "train", p, "\uC5F4\uCC28 \uD0D1\uC2B9 \uC900\uBE44", "Tren disponible", "\uB2E4\uC74C \uC790\uAE30 \uCC28\uB840\uC5D0 \uBAA9\uC801\uC9C0\uB97C \uACE0\uB97C \uC218 \uC788\uC2B5\uB2C8\uB2E4.", "Podr\xE1s elegir un destino en tu pr\xF3ximo turno.", { tile: index });
+    emit(s, "train", p, "\uC138\uACC4\uC5EC\uD589 \uD0D1\uC2B9 \uC900\uBE44", "Viaje disponible", "\uB2E4\uC74C \uC790\uAE30 \uCC28\uB840\uC5D0 \uBAA9\uC801\uC9C0\uB97C \uACE0\uB97C \uC218 \uC788\uC2B5\uB2C8\uB2E4.", "Podr\xE1s elegir un destino en tu pr\xF3ximo turno.", { tile: index });
   } else if (tile.kind === "rest") emit(s, "rest", p, "\uC7A0\uAE50 \uC26C\uC5B4\uAC00\uC694", "Un descanso", "\uC774 \uCE78\uC5D0\uC11C\uB294 \uCD94\uAC00 \uBE44\uC6A9\uC774 \uC5C6\uC2B5\uB2C8\uB2E4.", "Esta casilla no tiene un costo adicional.", { tile: index });
-  else if (tile.kind === "event" && drawEvent) return resolveEvent(s, p);
+  else if (tile.kind === "festival-site") {
+    if (propIndices(board).some((city2) => s.properties[city2]?.owner === p)) {
+      s.pendingEvent = { id: "city-festival", playerId: p };
+      s.pendingEventSource = "festival-site";
+      s.phase = "event-decision";
+      emit(s, "festival-site", p, "\uBB34\uB8CC \uCD95\uC81C \uAC1C\uCD5C", "Festival sin coste", "\uB0B4 \uB3C4\uC2DC \uD558\uB098\uB97C \uC120\uD0DD\uD558\uC138\uC694. \uB2E4\uC74C \uC0C1\uB300 \uBC29\uBB38 \uD1B5\uD589\uB8CC\uAC00 \uD55C \uBC88 2\uBC30\uAC00 \uB429\uB2C8\uB2E4.", "Elige una ciudad propia: alquiler doble una vez en la pr\xF3xima visita rival.", { tile: index, amount: 0, moneyDelta: { [p]: 0 }, cardOutcome: "pending-choice" });
+      return s;
+    }
+    s.pendingEvent = null;
+    s.pendingEventSource = null;
+    emit(s, "festival-site", p, "\uCD95\uC81C\uB97C \uAC1C\uCD5C\uD560 \uB3C4\uC2DC\uAC00 \uC5C6\uC5B4\uC694", "No hay ciudad para celebrar", "\uC18C\uC720\uD55C \uB3C4\uC2DC\uAC00 \uC5C6\uC5B4 \uBE44\uC6A9\uACFC \uD6A8\uACFC \uC5C6\uC774 \uACC4\uC18D\uD569\uB2C8\uB2E4. \uAD00\uAD11\uC12C\uC740 \uB300\uC0C1\uC774 \uC544\uB2D9\uB2C8\uB2E4.", "No posees ciudades: contin\xFAa sin coste ni efecto. Las islas tur\xEDsticas no son elegibles.", { tile: index, amount: 0, moneyDelta: { [p]: 0 }, cardOutcome: "no-effect" });
+  } else if (tile.kind === "event" && drawEvent) return resolveEvent(s, p);
   if (!s.result && s.phase !== "debt") s.phase = "main";
   return s;
 }
@@ -6524,22 +7016,25 @@ function noteMove(s, p, from, to, steps, source) {
   const sequence = (s.moveSequence ?? 0) + 1;
   s.moveSequence = sequence;
   s.lastMove = { sequence, playerId: p, from, to, steps, source };
-  emit(s, "move", p, "\uB9D0 \uC774\uB3D9", "Movimiento", `${from + 1}\uBC88\uC5D0\uC11C ${to + 1}\uBC88 \uCE78\uC73C\uB85C \uC774\uB3D9\uD569\uB2C8\uB2E4.`, `Avanzas de la casilla ${from + 1} a la ${to + 1}.`, { from, to, steps: steps ?? void 0 });
+  emit(s, "move", p, "\uB9D0 \uC774\uB3D9", "Movimiento", `${from + 1}\uBC88\uC5D0\uC11C ${to + 1}\uBC88 \uCE78\uC73C\uB85C \uC774\uB3D9\uD569\uB2C8\uB2E4.`, `Avanzas de la casilla ${from + 1} a la ${to + 1}.`, { from, to, steps: steps ?? void 0, source });
 }
 function resolveEvent(s, p) {
-  const board = boardFor(s), isModern = s.boardVersion === 2, ids = isModern ? s.eventVersion === 3 ? expandedIds : s.economicVersion === 1 || s.economicVersion === 2 ? [...modernIds, "monopoly-warning"] : modernIds : legacyIds;
+  s.pendingEventSource = null;
+  const board = boardFor(s), isModern = s.boardVersion === 2, ids = isModern ? s.eventVersion === 4 ? diverseMarbleEventIds : s.eventVersion === 3 ? expandedIds : s.economicVersion === 1 || s.economicVersion === 2 ? [...modernIds, "monopoly-warning"] : modernIds : legacyIds;
   s.phase = "main";
   let deck = s.eventDeck ? [...s.eventDeck] : [];
   if (!deck.length) {
     const rng = s.eventRng ?? (s.rng ^ 2779096485) >>> 0;
-    deck = shuffle(ids.filter((id2) => !(s.eventVersion === 3 && (id2 === "escape-pass" && (s.escapePasses?.p1 ?? 0) + (s.escapePasses?.p2 ?? 0) > 0 || id2 === "rent-pass" && (s.rentPasses?.p1 ?? 0) + (s.rentPasses?.p2 ?? 0) > 0))), seededRandom(rng));
+    deck = shuffle(ids.filter((id2) => !(id2 === "takeover-discount-pass" && Object.values(s.takeoverDiscountPasses ?? {}).some((count2) => count2 > 0)) && !((s.eventVersion ?? 0) >= 3 && (id2 === "escape-pass" && (s.escapePasses?.p1 ?? 0) + (s.escapePasses?.p2 ?? 0) > 0 || id2 === "rent-pass" && (s.rentPasses?.p1 ?? 0) + (s.rentPasses?.p2 ?? 0) > 0))), seededRandom(rng));
     s.eventRng = rng + (deck.length - 1) * 1831565813 >>> 0;
   }
   const id = deck.shift();
-  if (isModern && id !== "escape-pass" && id !== "rent-pass") deck.push(id);
+  if (isModern && id !== "escape-pass" && id !== "rent-pass" && id !== "takeover-discount-pass") deck.push(id);
   s.eventDeck = deck;
   let card2 = cards[id];
+  if (id === "advance-start") card2 = { ...card2, text: { ko: `\uCD9C\uBC1C\uC810\uC73C\uB85C \uC774\uB3D9\uD558\uACE0 ${marblePassStartSalary(s.economicVersion, s.economyProfile)}\uC744 \uBC1B\uC2B5\uB2C8\uB2E4.`, es: `Ve a Salida y recibe ${marblePassStartSalary(s.economicVersion, s.economyProfile)}.` } };
   const from = s.positions[p], beforeCash = s.money[p];
+  s.resolvingCardDrawSequence = (s.actionSequence ?? 0) + 1;
   emit(s, "event-card", p, card2.title.ko, card2.title.es, card2.text.ko, card2.text.es, { cardId: id, tile: from });
   let movement = null, steps = null;
   if (id === "festival") bonus(s, p, 150, card2.title.ko, card2.title.es);
@@ -6547,22 +7042,26 @@ function resolveEvent(s, p) {
   else if (id === "rent-rebate") bonus(s, p, 80, card2.title.ko, card2.title.es);
   else if (id === "travel-cost") s = pay(s, p, 100, "bank", card2.title);
   else if (id === "maintenance") {
-    const houses = Object.values(s.properties).filter((property) => property.owner === p).reduce((count2, property) => count2 + property.houses, 0);
+    const houses = Object.values(s.properties).filter((property) => property.owner === p).reduce((count2, property) => count2 + (s.constructionRulesVersion === 2 ? property.landmark ? 4 : property.buildings?.length ?? 0 : property.houses), 0);
     s = pay(s, p, houses * 40, "bank", card2.title);
   } else if (id === "visit-santo-domingo") {
     const destination = board.findIndex((tile) => tile.name.ko === "\uC0B0\uD1A0\uB3C4\uBC0D\uACE0");
+    if (destination < 0) throw new Error("Event destination does not exist in this board profile");
     movement = "visit";
     steps = (destination - from + board.length) % board.length;
-    moveForward(s, p, destination, board);
     noteMove(s, p, from, destination, steps, "card");
+    moveForward(s, p, destination, board);
     s = resolveLanding(s, p, destination, false);
   } else if (id === "advance-start") {
     movement = "move";
+    if (from > 0) completeLap(s, p);
     steps = (board.length - from) % board.length;
     s.positions[p] = 0;
     noteMove(s, p, from, 0, steps, "card");
-    bonus(s, p, 200, card2.title.ko, card2.title.es);
+    bonus(s, p, marblePassStartSalary(s.economicVersion, s.economyProfile), card2.title.ko, card2.title.es);
     s.pendingTile = 0;
+    s.buildSite = "start";
+    s.landmarkOptions = Object.entries(s.properties).filter(([, property]) => property.owner === p && landmarkReady(s, property)).map(([tile]) => Number(tile));
   } else if (id === "retreat") {
     movement = "move";
     steps = -3;
@@ -6571,7 +7070,7 @@ function resolveEvent(s, p) {
     noteMove(s, p, from, to, steps, "card");
     s = resolveLanding(s, p, to, false);
   } else if (id === "go-to-island") {
-    const to = isModern ? 10 : from;
+    const to = isModern ? board.findIndex((tile) => tile.kind === "island") : from;
     movement = "move";
     steps = isModern ? (to - from + board.length) % board.length : 0;
     if (isModern) s.positions[p] = to;
@@ -6590,18 +7089,45 @@ function resolveEvent(s, p) {
     s.pendingTrainFare = 0;
     s.pendingTrainSource = "card";
     s.phase = "train-decision";
-    emit(s, "train", p, card2.title.ko, card2.title.es, card2.text.ko, card2.text.es, { amount: 0, cardId: id });
+    emit(s, "train", p, card2.title.ko, card2.title.es, card2.text.ko, card2.text.es, { amount: 0, cardId: id, cardOutcome: "pending-choice" });
   } else if (id === "city-dividend") {
-    bonus(s, p, 30 * Object.values(s.properties).filter((property) => property.owner === p).length, card2.title.ko, card2.title.es);
-  } else if (id === "city-festival" || id === "blackout") {
-    const owner = id === "city-festival" ? p : otherPlayer(p);
-    if (propIndices(board).some((index) => s.properties[String(index)]?.owner === owner && !(s.propertyRulesVersion === 1 && id === "blackout" && s.properties[String(index)].houses === 3))) {
+    bonus(s, p, 30 * Object.entries(s.properties).filter(([index, property]) => property.owner === p && board[Number(index)].kind === "property").length, card2.title.ko, card2.title.es);
+  } else if (id === "city-festival" || id === "blackout" || id === "forced-sale" || id === "earthquake" || id === "construction-grant") {
+    if (propIndices(board).some((index) => eventCityEligible(s, p, id, index))) {
       s.pendingEvent = { id, playerId: p };
       s.phase = "event-decision";
+      emit(s, "event-card", p, card2.title.ko, card2.title.es, card2.text.ko, card2.text.es, { cardId: id, cardOutcome: "pending-choice" });
     } else {
       card2 = { ...card2, text: { ko: "\uC120\uD0DD \uAC00\uB2A5\uD55C \uB3C4\uC2DC\uAC00 \uC5C6\uC5B4 \uD6A8\uACFC\uAC00 \uC5C6\uC2B5\uB2C8\uB2E4.", es: "No hay ninguna ciudad elegible; la carta no tiene efecto." } };
-      emit(s, "event-card", p, card2.title.ko, card2.title.es, card2.text.ko, card2.text.es, { cardId: id, moneyDelta: { [p]: 0 } });
+      emit(s, "event-card", p, card2.title.ko, card2.title.es, card2.text.ko, card2.text.es, { cardId: id, moneyDelta: { [p]: 0 }, cardOutcome: "no-effect" });
     }
+  } else if (id === "city-shield") {
+    s.cityShields ??= { p1: 0, p2: 0 };
+    const held = s.cityShields[p] > 0;
+    s.cityShields[p] = 1;
+    emit(s, "event-card", p, card2.title.ko, card2.title.es, held ? "\uC774\uBBF8 \uBC29\uC5B4\uAD8C 1\uC7A5\uC744 \uBCF4\uAD00 \uC911\uC785\uB2C8\uB2E4." : card2.text.ko, held ? "Ya tienes un escudo." : card2.text.es, { cardId: id, cardOutcome: held ? "no-effect" : "applied", moneyDelta: { [p]: 0 } });
+  } else if (id === "birthday") {
+    const rival = otherPlayer(p), amount = Math.min(40, Math.max(0, s.money[rival]));
+    s.money[rival] -= amount;
+    s.money[p] += amount;
+    emit(s, "bonus", p, card2.title.ko, card2.title.es, `\uC0C1\uB300\uC5D0\uAC8C\uC11C ${amount}\uC744 \uBC1B\uC558\uC2B5\uB2C8\uB2E4.`, `Recibiste ${amount} del rival.`, { cardId: id, amount, fromAccount: rival, toAccount: p, fromPlayer: rival, toPlayer: p, moneyDelta: { [rival]: -amount, [p]: amount }, cardOutcome: amount ? "paid" : "no-effect" });
+  } else if (id === "property-hunt") {
+    const distance = Array.from({ length: board.length }, (_, i) => i + 1).find((d) => board[(from + d) % board.length].kind === "property" && !s.properties[(from + d) % board.length]);
+    if (distance) {
+      const destination = (from + distance) % board.length;
+      movement = "move";
+      steps = distance;
+      noteMove(s, p, from, destination, steps, "card");
+      moveForward(s, p, destination, board);
+      s = resolveLanding(s, p, destination, false);
+    } else {
+      card2 = { ...card2, text: { ko: "\uC8FC\uC778 \uC5C6\uB294 \uC77C\uBC18 \uB3C4\uC2DC\uAC00 \uC5C6\uC5B4 \uC774\uB3D9\uD558\uC9C0 \uC54A\uC2B5\uB2C8\uB2E4.", es: "No hay ciudades normales libres; no te mueves." } };
+      emit(s, "event-card", p, card2.title.ko, card2.title.es, card2.text.ko, card2.text.es, { cardId: id, cardOutcome: "no-effect", moneyDelta: { [p]: 0 } });
+    }
+  } else if (id === "takeover-discount-pass") {
+    s.takeoverDiscountPasses ??= { p1: 0, p2: 0 };
+    s.takeoverDiscountPasses[p]++;
+    emit(s, "event-card", p, card2.title.ko, card2.title.es, card2.text.ko, card2.text.es, { cardId: id, moneyDelta: { [p]: 0 }, cardOutcome: "applied" });
   } else if (id === "rent-pass") {
     s.rentPasses ??= { p1: 0, p2: 0 };
     s.rentPasses[p] = 1;
@@ -6612,7 +7138,7 @@ function resolveEvent(s, p) {
     const count2 = groups[target].length, amount = Math.min(300, count2 * 100);
     const text = { ko: count2 ? `${target === p ? "\uCE74\uB4DC\uB97C \uBF51\uC740 \uC0AC\uB78C" : "\uC0C1\uB300"}\uC758 \uC644\uC131 \uB3C4\uC2DC\uAD70 ${count2}\uAC1C: \uB3C5\uC810 \uBD80\uB2F4\uAE08 ${amount}\uC744 \uC740\uD589\uC5D0 \uB0C5\uB2C8\uB2E4.` : "\uC644\uC131\uD55C \uC0C9\uC0C1 \uB3C4\uC2DC\uAD70\uC774 \uC5C6\uC5B4 \uBD80\uB2F4\uAE08\uC774 \uC5C6\uC2B5\uB2C8\uB2E4.", es: count2 ? `${target === p ? "Quien sac\xF3 la carta" : "La otra persona"} tiene ${count2} grupos completos y paga ${amount} al banco.` : "Nadie tiene un grupo de color completo. No se cobra." };
     card2 = { ...card2, text };
-    emit(s, "monopoly-warning", target, card2.title.ko, card2.title.es, text.ko, text.es, { amount, fromAccount: target, toAccount: "bank", cardId: id, group: groups[target].join(", ") });
+    emit(s, "monopoly-warning", target, card2.title.ko, card2.title.es, text.ko, text.es, { amount, fromAccount: target, toAccount: "bank", cardId: id, group: groups[target].join(", "), cardOutcome: amount ? "information" : "no-effect" });
     if (amount) s = pay(s, target, amount, "bank", card2.title, "monopoly-warning");
   }
   const sequence = (s.eventSequence ?? 0) + 1;
@@ -6630,6 +7156,8 @@ function resolveEvent(s, p) {
   return s;
 }
 function finishTurn2(s, p) {
+  s.landmarkOptions = [];
+  s.buildSite = null;
   if (s.propertyRulesVersion === 1 && s.extraRoll && !s.islandTurns?.[p]) {
     s.extraRoll = false;
     s.phase = "roll";
@@ -6671,31 +7199,84 @@ function step(s, p, a) {
     money: { ...s.money },
     positions: { ...s.positions },
     properties: { ...s.properties },
+    landmarkOptions: [...s.landmarkOptions ?? []],
     lastRoll: [...s.lastRoll],
     eventDeck: s.eventDeck ? [...s.eventDeck] : void 0,
     islandTurns: s.islandTurns ? { ...s.islandTurns } : void 0,
     escapePasses: s.escapePasses ? { ...s.escapePasses } : void 0,
     trainReady: s.trainReady ? { ...s.trainReady } : void 0,
     lastEvent: s.lastEvent ? { ...s.lastEvent, title: { ...s.lastEvent.title }, text: { ...s.lastEvent.text } } : s.lastEvent,
-    lastMove: s.lastMove ? { ...s.lastMove } : s.lastMove
+    lastMove: s.lastMove ? { ...s.lastMove } : s.lastMove,
+    completedLaps: s.completedLaps ? { ...s.completedLaps } : void 0
   };
+  beginCardResolution(s, n, a);
   n.debt = { p1: s.debt?.p1 ?? 0, p2: s.debt?.p2 ?? 0 };
   n.pawns = { p1: s.pawns?.p1 ?? "fox", p2: s.pawns?.p2 ?? "cat" };
   n.pawnLocked = { p1: s.pawnLocked?.p1 ?? true, p2: s.pawnLocked?.p2 ?? true };
   n.pendingPayment = s.pendingPayment ? { ...s.pendingPayment, reason: { ...s.pendingPayment.reason } } : null;
   n.pendingEvent = s.pendingEvent ? { ...s.pendingEvent } : null;
   n.pendingRent = s.pendingRent ? { ...s.pendingRent, reason: { ...s.pendingRent.reason } } : null;
+  n.cityShields = { p1: s.cityShields?.p1 ?? 0, p2: s.cityShields?.p2 ?? 0 };
+  n.takeoverDiscountPasses = { p1: s.takeoverDiscountPasses?.p1 ?? 0, p2: s.takeoverDiscountPasses?.p2 ?? 0 };
   n.rentPasses = { p1: s.rentPasses?.p1 ?? 0, p2: s.rentPasses?.p2 ?? 0 };
   n.rentModifiers = Object.fromEntries(Object.entries(s.rentModifiers ?? {}).map(([tile, effects]) => [tile, { ...effects.festival ? { festival: { ...effects.festival } } : {}, ...effects.blackout ? { blackout: { ...effects.blackout } } : {} }]));
   const board = boardFor(n), payload = a.payload ?? {};
   if (a.type === "choose-event-city") {
+    const fromSite = n.pendingEventSource === "festival-site";
     const index = payload.tile, id = n.pendingEvent.id, key = id === "city-festival" ? "festival" : "blackout";
+    const prop = n.properties[index], owner = prop.owner;
+    const blocked = ["forced-sale", "earthquake", "blackout"].includes(id) && (n.cityShields[owner] ?? 0) > 0;
+    if (blocked || id === "forced-sale" || id === "earthquake" || id === "construction-grant") {
+      let amount = 0;
+      const before = { ...prop, buildings: prop.buildings ? [...prop.buildings] : void 0 };
+      let text2 = { ko: `${board[index].name.ko}: `, es: `${board[index].name.es}: ` };
+      if (blocked) {
+        n.cityShields[owner] = 0;
+        text2.ko += "\uB3C4\uC2DC \uBC29\uC5B4\uAD8C 1\uC7A5\uC73C\uB85C \uACF5\uACA9\uC744 \uB9C9\uC558\uC2B5\uB2C8\uB2E4. \uB3C4\uC2DC \uBCC0\uD654 \uC5C6\uC74C.";
+        text2.es += "Un escudo bloque\xF3 el ataque. Sin cambios en la ciudad.";
+      } else if (id === "forced-sale") {
+        amount = liquidation(n, owner).find((item) => item.index === index).value;
+        n.money[owner] += amount;
+        delete n.properties[index];
+        delete n.rentModifiers[index];
+        text2.ko += `\uC740\uD589 \uAC15\uC81C \uB9E4\uAC01 \xB7 \uC18C\uC720\uC790\uC5D0\uAC8C ${amount} \uC9C0\uAE09 \xB7 \uACF5\uACA9\uC790 \uC218\uC785 0 \xB7 \uAC74\uBB3C\xB7\uD6A8\uACFC \uC81C\uAC70.`;
+        text2.es += `Venta al banco: el due\xF1o recibe ${amount}; atacante 0. Edificios y efectos retirados.`;
+      } else if (id === "earthquake") {
+        const buildings = marbleBuildingTypes.filter((type) => prop.buildings?.includes(type));
+        buildings.pop();
+        n.properties[index] = n.constructionRulesVersion === 2 ? applyConstruction({ ...prop, buildings, houses: 0 }, { buildings: [] }) : { ...prop, houses: prop.houses - 1 };
+        text2.ko += "\uAC00\uC7A5 \uB192\uC740 \uC77C\uBC18 \uAC74\uBB3C 1\uAC1C \uCCA0\uAC70 \xB7 \uBCF4\uC0C1 0 \xB7 \uC18C\uC720\uAD8C\xB7\uB2E4\uB978 \uD6A8\uACFC \uC720\uC9C0.";
+        text2.es += "Edificio m\xE1s alto retirado; compensaci\xF3n 0. Due\xF1o y otros efectos conservados.";
+      } else {
+        n.properties[index] = n.constructionRulesVersion === 2 ? applyConstruction(prop, { buildings: [grantBuilding(n, p, prop)] }) : { ...prop, houses: prop.houses + 1 };
+        text2.ko += "\uAC00\uC7A5 \uB0AE\uC740 \uAC74\uC124 \uAC00\uB2A5 \uC77C\uBC18 \uAC74\uBB3C 1\uAC1C \uBB34\uB8CC \uAC74\uC124.";
+        text2.es += "Construcci\xF3n gratis del edificio permitido m\xE1s bajo que faltaba.";
+      }
+      n.pendingEvent = null;
+      n.pendingEventSource = null;
+      n.phase = "main";
+      if (n.lastEvent?.id === id) n.lastEvent = { ...n.lastEvent, text: text2, cashDelta: 0 };
+      const after = n.properties[index];
+      emit(n, blocked ? "event-card" : id === "forced-sale" ? "sell" : "build", p, cards[id].title.ko, cards[id].title.es, text2.ko, text2.es, { cardId: id, tile: index, amount, blockedByShield: blocked, cardOutcome: blocked ? "no-effect" : amount ? "paid" : "applied", constructionBefore: before, ...after ? { constructionAfter: { ...after, buildings: after.buildings ? [...after.buildings] : void 0 }, houses: after.houses, buildings: after.buildings, landmark: isLandmark(after, n.constructionRulesVersion) } : { constructionAfter: null }, moneyDelta: { [p]: 0, ...owner !== p ? { [owner]: amount } : {} }, ...!blocked && id === "forced-sale" ? { fromAccount: "bank", toAccount: owner, toPlayer: owner } : {} });
+      return n;
+    }
+    if (key === "festival" && n.festivalRulesVersion === 2) {
+      for (const [city2, effects] of Object.entries(n.rentModifiers)) if (effects.festival?.playerId === p) {
+        delete effects.festival;
+        if (!effects.blackout) delete n.rentModifiers[city2];
+      }
+    }
     n.rentModifiers[String(index)] = { ...n.rentModifiers[String(index)], [key]: { source: id, playerId: p, owner: n.properties[String(index)].owner } };
     n.pendingEvent = null;
+    n.pendingEventSource = null;
     n.phase = "main";
     const text = { ko: `${board[index].name.ko}: ${id === "city-festival" ? "\uB2E4\uC74C \uC0C1\uB300 \uCC29\uC9C0 1\uD68C \uD1B5\uD589\uB8CC 2\uBC30" : "\uB2E4\uC74C \uB0B4 \uCC29\uC9C0 1\uD68C \uD1B5\uD589\uB8CC \uC808\uBC18"}. \uB300\uC0C1 \uCC29\uC9C0\uAE4C\uC9C0 \uC720\uC9C0\uB429\uB2C8\uB2E4.`, es: `${board[index].name.es}: ${id === "city-festival" ? "alquiler doble en la pr\xF3xima llegada rival, una vez" : "mitad del alquiler en tu pr\xF3xima llegada, una vez"}. Permanece hasta esa llegada.` };
-    if (n.lastEvent?.id === id) n.lastEvent = { ...n.lastEvent, text };
-    emit(n, "event-card", p, cards[id].title.ko, cards[id].title.es, text.ko, text.es, { cardId: id, tile: index, moneyDelta: { [p]: 0 } });
+    if (id === "city-festival" && n.festivalRulesVersion === 2) {
+      text.ko += " \uD50C\uB808\uC774\uC5B4\uB2F9 \uCD95\uC81C 1\uAC1C: \uB2E4\uB978 \uB0B4 \uB3C4\uC2DC\uC758 \uCD95\uC81C\uB294 \uD574\uC81C\uB429\uB2C8\uB2E4.";
+      text.es += " Un festival por jugador: se elimina el de tu otra ciudad.";
+    }
+    if (!fromSite && n.lastEvent?.id === id) n.lastEvent = { ...n.lastEvent, text };
+    emit(n, fromSite ? "festival-site" : "event-card", p, fromSite ? "\uCD95\uC81C \uAC1C\uCD5C \uC644\uB8CC" : cards[id].title.ko, fromSite ? "Festival preparado" : cards[id].title.es, text.ko, text.es, { ...fromSite ? {} : { cardId: id }, tile: index, moneyDelta: { [p]: 0 }, ...fromSite ? { cardOutcome: "applied" } : {} });
     return n;
   }
   if (a.type === "pay-rent" || a.type === "use-rent-pass") {
@@ -6715,10 +7296,11 @@ function step(s, p, a) {
     return n;
   }
   if (a.type === "borrow") {
-    n.money[p] += 300;
-    n.debt[p] = 330;
-    emit(n, "loan", p, "\uB300\uCD9C \uC2E4\uD589", "Pr\xE9stamo recibido", "300\uC744 \uBC1B\uACE0 330\uC758 \uC0C1\uD658 \uC758\uBB34\uAC00 \uC0DD\uACBC\uC2B5\uB2C8\uB2E4. \uCD94\uAC00 \uC774\uC790\uB098 \uB9CC\uAE30 \uC5C6\uC774 \uC804\uC561 \uC0C1\uD658\uD558\uBA70, \uBBF8\uC0C1\uD658\uC561\uC740 \uCD5C\uC885 \uC790\uC0B0\uC5D0\uC11C \uBE8D\uB2C8\uB2E4.", "Recibes 300 y debes devolver 330. No hay intereses adicionales ni plazo; se paga completo y la deuda se resta del patrimonio final.", { amount: 300, debtAfter: 330, fromAccount: "bank", toAccount: p, moneyDelta: { [p]: 300 } });
-    if (n.phase === "debt" && n.pendingPayment) {
+    const { amount, repayment } = marbleLoanTerms(n.loanRulesVersion);
+    n.money[p] += amount;
+    n.debt[p] = repayment;
+    emit(n, "loan", p, "\uB300\uCD9C \uC2E4\uD589", "Pr\xE9stamo recibido", `${amount}\uC744 \uBC1B\uACE0 ${repayment}\uC758 \uC0C1\uD658 \uC758\uBB34\uAC00 \uC0DD\uACBC\uC2B5\uB2C8\uB2E4. \uCD94\uAC00 \uC774\uC790\uB098 \uB9CC\uAE30 \uC5C6\uC774 \uC804\uC561 \uC0C1\uD658\uD558\uBA70, \uBBF8\uC0C1\uD658\uC561\uC740 \uCD5C\uC885 \uC790\uC0B0\uC5D0\uC11C \uBE8D\uB2C8\uB2E4.`, `Recibes ${amount} y debes devolver ${repayment}. No hay intereses adicionales ni plazo; se paga completo y la deuda se resta del patrimonio final.`, { amount, debtAfter: repayment, fromAccount: "bank", toAccount: p, moneyDelta: { [p]: amount } });
+    if (n.phase === "debt" && n.pendingPayment && n.money[p] >= n.pendingPayment.amount) {
       const pending = n.pendingPayment;
       n = pay(n, p, pending.amount, pending.creditor, pending.reason, pending.type);
       if (!n.result && n.phase !== "finished") {
@@ -6737,7 +7319,7 @@ function step(s, p, a) {
     return n;
   }
   if (a.type === "sell-property") {
-    const index = payload.tile, price = Math.floor(marbleCityValue(board[index], n.properties[index].houses, n.economicVersion) / 2);
+    const index = payload.tile, price = board[index].cityEconomy ? classicSaleValue(board[index].cityEconomy, n.properties[index]) : Math.floor(cityValue(n, board[index], n.properties[index]) / 2);
     delete n.properties[index];
     delete n.rentModifiers[index];
     n.money[p] += price;
@@ -6763,16 +7345,16 @@ function step(s, p, a) {
       n.doublesCount = a.type === "roll" && d1 === d2 ? (n.doublesCount ?? 0) + 1 : 0;
       n.extraRoll = a.type === "roll" && d1 === d2;
       if (n.doublesCount === 3) {
-        const from2 = n.positions[p];
-        n.positions[p] = 10;
+        const from2 = n.positions[p], island = board.findIndex((tile) => tile.kind === "island");
+        n.positions[p] = island;
         n.islandTurns ??= { p1: 0, p2: 0 };
         n.islandTurns[p] = 3;
         n.extraRoll = false;
         n.doublesCount = 0;
-        n.pendingTile = 10;
+        n.pendingTile = island;
         n.takeoverTile = null;
         n.phase = "main";
-        noteMove(n, p, from2, 10, null, "island");
+        noteMove(n, p, from2, island, null, "island");
         emit(n, "island", p, "3\uC5F0\uC18D \uB354\uBE14 \xB7 \uBB34\uC778\uB3C4", "Tres dobles seguidos \xB7 a la isla", "\uCD9C\uBC1C \uBCF4\uB108\uC2A4 \uC5C6\uC774 \uC989\uC2DC \uBB34\uC778\uB3C4\uB85C \uC774\uB3D9\uD569\uB2C8\uB2E4.", "Ve directamente a la isla, sin bono de Salida.");
         return n;
       }
@@ -6788,9 +7370,12 @@ function step(s, p, a) {
       n.islandTurns[p] = 0;
     }
     const from = n.positions[p], distance = d1 + d2, to = (from + distance) % board.length;
-    if (from + distance >= board.length) bonus(n, p, marblePassStartSalary(n.economicVersion), "\uCD9C\uBC1C \uBCF4\uB108\uC2A4", "Bono de Salida");
-    n.positions[p] = to;
     noteMove(n, p, from, to, distance, a.type === "attempt-doubles" ? "island" : "dice");
+    if (from + distance >= board.length) {
+      completeLap(n, p);
+      bonus(n, p, marblePassStartSalary(n.economicVersion, n.economyProfile), "\uCD9C\uBC1C \uBCF4\uB108\uC2A4", "Bono de Salida");
+    }
+    n.positions[p] = to;
     return resolveLanding(n, p, to, true);
   }
   if (a.type === "pay-escape") {
@@ -6823,11 +7408,11 @@ function step(s, p, a) {
     n.trainReady[p] = false;
     n.pendingTrainFare = null;
     n.pendingTrainSource = null;
-    emit(n, "train", p, "\uC5F4\uCC28 \uCD9C\uBC1C", "El tren sale", `${board[to].name.ko}\uD589 \xB7 \uC6B4\uC784 ${fare}`, `Destino: ${board[to].name.es} \xB7 pasaje ${fare}`, { amount: fare, fromAccount: p, toAccount: "bank", moneyDelta: { [p]: -fare }, from, to });
+    emit(n, "train", p, "\uC138\uACC4\uC5EC\uD589 \uCD9C\uBC1C", "Comienza el viaje", `${board[to].name.ko}\uD589 \xB7 \uC6B4\uC784 ${fare}`, `Destino: ${board[to].name.es} \xB7 pasaje ${fare}`, { amount: fare, fromAccount: p, toAccount: "bank", moneyDelta: { [p]: -fare }, from, to });
     const distance = (to - from + board.length) % board.length;
-    moveForward(n, p, to, board);
     noteMove(n, p, from, to, distance, "train");
-    n = resolveLanding(n, p, to, false);
+    moveForward(n, p, to, board);
+    n = resolveLanding(n, p, to, true);
     return n;
   }
   if (a.type === "skip-train") {
@@ -6841,82 +7426,123 @@ function step(s, p, a) {
     return n;
   }
   if (a.type === "buy") {
-    const index = n.pendingTile, price = marbleLandPrice(board[index], n.economicVersion);
+    const index = n.pendingTile, price = marbleLandPrice(board[index], n.economicVersion) + (n.constructionRulesVersion === 2 ? constructionCost(board[index], a.payload ?? { buildings: [] }, n.economicVersion) : marbleBuildToCost(board[index], 0, Number(a.payload?.targetLevel ?? 0), n.economicVersion));
     n.money[p] -= price;
-    n.properties[String(index)] = { owner: p, houses: 0 };
+    n.properties[String(index)] = n.constructionRulesVersion === 2 ? applyConstruction({ owner: p, houses: 0 }, a.payload ?? { buildings: [] }) : { owner: p, houses: Number(a.payload?.targetLevel ?? 0) };
     n.phase = "main";
-    emit(n, "buy", p, "\uB3C4\uC2DC \uAD6C\uB9E4 \uC644\uB8CC", "Ciudad comprada", `${board[index].name.ko}\uC744 \uC18C\uC720\uD588\uC2B5\uB2C8\uB2E4.`, `Compraste ${board[index].name.es}.`, { tile: index, amount: price, fromAccount: p, toAccount: "bank", moneyDelta: { [p]: -price } });
+    emit(n, "buy", p, board[index].kind === "tourism" ? "\uAD00\uAD11\uC12C \uAD6C\uB9E4 \uC644\uB8CC" : "\uB3C4\uC2DC \uAD6C\uB9E4 \uC644\uB8CC", board[index].kind === "tourism" ? "Isla tur\xEDstica comprada" : "Ciudad comprada", `${board[index].name.ko}\uC744 \uC18C\uC720\uD588\uC2B5\uB2C8\uB2E4.`, `Compraste ${board[index].name.es}.`, { tile: index, houses: n.properties[index].houses, landmark: isLandmark(n.properties[index], n.constructionRulesVersion), buildings: [...n.properties[index].buildings ?? []], amount: price, fromAccount: p, toAccount: "bank", moneyDelta: { [p]: -price } });
     const group = board[index].group;
     if (completedGroups(n, p).includes(group)) emit(n, "monopoly-warning", p, "\uC0C9\uC0C1 \uB3C4\uC2DC\uAD70 \uC644\uC131", "Grupo de color completo", "\uC774 \uB3C4\uC2DC\uAD70\uC744 \uBAA8\uB450 \uC18C\uC720\uD588\uC2B5\uB2C8\uB2E4. \uB3C5\uC810 \uACBD\uACE0 \uCE74\uB4DC\uAC00 \uB098\uC624\uBA74 \uBD80\uB2F4\uAE08 \uB300\uC0C1\uC774 \uB420 \uC218 \uC788\uC2B5\uB2C8\uB2E4.", "Ya tienes todas las ciudades de este color. Una carta de monopolio puede cobrarte un cargo.", { group, tile: index });
   } else if (a.type === "takeover") {
-    const index = n.takeoverTile, prop = n.properties[index], owner = prop.owner, price = marbleTakeoverPrice(board[index], prop.houses, n.economicVersion);
+    const index = n.takeoverTile, prop = n.properties[index], owner = prop.owner, price = payload.useDiscountPass === true ? takeoverOffer(n, p).discountPrice : takeoverPrice(n, board[index], prop);
+    if (payload.useDiscountPass === true) {
+      n.takeoverDiscountPasses[p]--;
+      n.eventDeck ??= [];
+      n.eventDeck.push("takeover-discount-pass");
+    }
     n.money[p] -= price;
     n.money[owner] += price;
     n.properties[index] = { ...prop, owner: p };
     n.takeoverTile = null;
+    n.buildSite = board[index].kind === "property" ? index : null;
+    n.landmarkOptions = n.constructionRulesVersion === 2 && constructionReady(prop) || n.constructionRulesVersion === 1 && prop.houses === 2 ? [index] : [];
     if (n.rentModifiers) delete n.rentModifiers[index];
-    emit(n, "takeover", p, "\uB3C4\uC2DC \uC778\uC218 \uC644\uB8CC", "Ciudad adquirida", `${board[index].name.ko} \xB7 \uAC74\uC124 \uB2E8\uACC4 \uC720\uC9C0 \xB7 \uC774\uC804 \uB3C4\uC2DC \uD6A8\uACFC \uD574\uC81C`, `${board[index].name.es} \xB7 conserva su nivel \xB7 se eliminan los efectos anteriores`, { tile: index, amount: price, fromAccount: p, toAccount: owner, moneyDelta: { [p]: -price, [owner]: price } });
+    emit(n, "takeover", p, payload.useDiscountPass ? "\uD560\uC778\uAD8C \uC778\uC218 \uC644\uB8CC" : "\uB3C4\uC2DC \uC778\uC218 \uC644\uB8CC", payload.useDiscountPass ? "Adquisici\xF3n con cup\xF3n" : "Ciudad adquirida", `${board[index].name.ko} \xB7 \uAC74\uC124 \uB2E8\uACC4 \uC720\uC9C0 \xB7 \uC774\uC804 \uB3C4\uC2DC \uD6A8\uACFC \uD574\uC81C`, `${board[index].name.es} \xB7 conserva su nivel \xB7 se eliminan los efectos anteriores`, { tile: index, amount: price, fromAccount: p, toAccount: owner, moneyDelta: { [p]: -price, [owner]: price } });
   } else if (a.type === "decline") n.phase = "main";
   else if (a.type === "build") {
-    const index = payload.tile, cost = marbleBuildCost(board[index], n.properties[String(index)].houses, n.economicVersion);
+    if (n.constructionRulesVersion === 2) {
+      const index2 = payload.tile, selection = payload, cost2 = constructionCost(board[index2], selection, n.economicVersion);
+      n.money[p] -= cost2;
+      n.properties[index2] = applyConstruction(n.properties[index2], selection);
+      if (n.properties[index2].landmark) n.landmarkOptions = [];
+      if (n.buildSite === "start") {
+        n.buildSite = null;
+        n.landmarkOptions = [];
+      }
+      emit(n, "build", p, "\uAC74\uC124 \uC644\uB8CC", "Construcci\xF3n terminada", board[index2].name.ko, board[index2].name.es, { tile: index2, houses: n.properties[index2].houses, landmark: isLandmark(n.properties[index2], n.constructionRulesVersion), buildings: [...n.properties[index2].buildings ?? []], amount: cost2, fromAccount: p, toAccount: "bank", moneyDelta: { [p]: -cost2 } });
+      return n;
+    }
+    const index = payload.tile, targetLevel = Number(payload.targetLevel ?? n.properties[String(index)].houses + 1), cost = marbleBuildToCost(board[index], n.properties[String(index)].houses, targetLevel, n.economicVersion);
     n.money[p] -= cost;
-    n.properties[String(index)] = { ...n.properties[String(index)], houses: n.properties[String(index)].houses + 1 };
+    n.properties[String(index)] = { ...n.properties[String(index)], houses: targetLevel };
     const level = n.properties[String(index)].houses;
-    if (n.propertyRulesVersion === 1 && level === 3 && n.rentModifiers[index]) delete n.rentModifiers[index].blackout;
-    emit(n, "build", p, "\uAC74\uC124 \uC644\uB8CC", "Construcci\xF3n terminada", `${board[index].name.ko}: ${level === 3 ? "\uB79C\uB4DC\uB9C8\uD06C" : level === 2 ? "\uC544\uD30C\uD2B8" : "\uB2E8\uB3C5\uC8FC\uD0DD"} \xB7 \uD1B5\uD589\uB8CC ${propertyRent(board[index], n.properties[String(index)], n.boardVersion === 2, n)}`, `${board[index].name.es}: ${level === 3 ? "monumento" : level === 2 ? "apartamentos" : "casa unifamiliar"} \xB7 alquiler ${propertyRent(board[index], n.properties[String(index)], n.boardVersion === 2, n)}`, { tile: index, amount: cost, fromAccount: p, toAccount: "bank", moneyDelta: { [p]: -cost } });
+    if (level === 3) n.landmarkOptions = [];
+    if (n.buildSite === "start") {
+      n.buildSite = null;
+      n.landmarkOptions = [];
+    }
+    emit(n, "build", p, "\uAC74\uC124 \uC644\uB8CC", "Construcci\xF3n terminada", `${board[index].name.ko}: ${level === 3 ? "\uB79C\uB4DC\uB9C8\uD06C" : level === 2 ? "\uC544\uD30C\uD2B8" : "\uB2E8\uB3C5\uC8FC\uD0DD"} \xB7 \uD1B5\uD589\uB8CC ${propertyRent(board[index], n.properties[String(index)], n.boardVersion === 2, n)}`, `${board[index].name.es}: ${level === 3 ? "monumento" : level === 2 ? "apartamentos" : "casa unifamiliar"} \xB7 alquiler ${propertyRent(board[index], n.properties[String(index)], n.boardVersion === 2, n)}`, { tile: index, houses: n.properties[index].houses, landmark: isLandmark(n.properties[index], n.constructionRulesVersion), buildings: [...n.properties[index].buildings ?? []], amount: cost, fromAccount: p, toAccount: "bank", moneyDelta: { [p]: -cost } });
   } else if (a.type === "endTurn") return finishTurn2(n, p);
   return n;
+}
+function createLegacyMarbleState(seed = 1) {
+  const rng = seed >>> 0, eventRng = (rng ^ 2779096485) >>> 0;
+  return {
+    rng,
+    active: "p1",
+    positions: { p1: 0, p2: 0 },
+    money: { p1: marbleStartingCash(3), p2: marbleStartingCash(3) },
+    properties: {},
+    boardVersion: 2,
+    cityRouteVersion: 3,
+    phase: "roll",
+    pendingTile: null,
+    lastRoll: [],
+    turns: 0,
+    result: null,
+    eventRng: eventRng + (expandedIds.length - 1) * 1831565813 >>> 0,
+    eventDeck: shuffle(expandedIds, seededRandom(eventRng)),
+    eventSequence: 0,
+    lastEvent: null,
+    fundPool: 0,
+    propertyRulesVersion: 1,
+    constructionRulesVersion: 1,
+    takeoverTile: null,
+    doublesCount: 0,
+    extraRoll: false,
+    landmarkOptions: [],
+    buildSite: null,
+    eventVersion: 3,
+    pendingEvent: null,
+    pendingRent: null,
+    rentPasses: { p1: 0, p2: 0 },
+    rentModifiers: {},
+    economicVersion: 3,
+    debt: { p1: 0, p2: 0 },
+    pendingPayment: null,
+    actionLog: [],
+    actionSequence: 0,
+    pawns: { p1: "fox", p2: "cat" },
+    pawnLocked: { p1: false, p2: false },
+    islandTurns: { p1: 0, p2: 0 },
+    escapePasses: { p1: 0, p2: 0 },
+    trainReady: { p1: false, p2: false },
+    pendingTrainFare: null,
+    pendingTrainSource: null,
+    lastMove: null,
+    moveSequence: 0,
+    diceSequence: 0
+  };
 }
 var marbleEngine = {
   id: "marble",
   createInitialState(seed) {
-    const rng = seed >>> 0, eventRng = (rng ^ 2779096485) >>> 0;
-    return {
-      rng,
-      active: "p1",
-      positions: { p1: 0, p2: 0 },
-      money: { p1: marbleStartingCash(3), p2: marbleStartingCash(3) },
-      properties: {},
-      boardVersion: 2,
-      cityRouteVersion: 3,
-      phase: "roll",
-      pendingTile: null,
-      lastRoll: [],
-      turns: 0,
-      result: null,
-      eventRng: eventRng + (expandedIds.length - 1) * 1831565813 >>> 0,
-      eventDeck: shuffle(expandedIds, seededRandom(eventRng)),
-      eventSequence: 0,
-      lastEvent: null,
-      fundPool: 0,
-      propertyRulesVersion: 1,
-      takeoverTile: null,
-      doublesCount: 0,
-      extraRoll: false,
-      eventVersion: 3,
-      pendingEvent: null,
-      pendingRent: null,
-      rentPasses: { p1: 0, p2: 0 },
-      rentModifiers: {},
-      economicVersion: 3,
-      debt: { p1: 0, p2: 0 },
-      pendingPayment: null,
-      actionLog: [],
-      actionSequence: 0,
-      pawns: { p1: "fox", p2: "cat" },
-      pawnLocked: { p1: false, p2: false },
-      islandTurns: { p1: 0, p2: 0 },
-      escapePasses: { p1: 0, p2: 0 },
-      trainReady: { p1: false, p2: false },
-      pendingTrainFare: null,
-      pendingTrainSource: null,
-      lastMove: null,
-      moveSequence: 0,
-      diceSequence: 0
-    };
+    return { ...createLegacyMarbleState(seed), eventVersion: 4, takeoverDiscountPasses: { p1: 0, p2: 0 }, eventDeck: shuffle(diverseMarbleEventIds, seededRandom((seed ^ 2779096485) >>> 0)), eventRng: ((seed ^ 2779096485) >>> 0) + (diverseMarbleEventIds.length - 1) * 1831565813 >>> 0, cityShields: { p1: 0, p2: 0 }, loanRulesVersion: 2, rentRulesVersion: 2, constructionPriceRulesVersion: 2, festivalRulesVersion: 2, boardProfile: "world-islands-32-v1", boardRevision: 4, cityRouteVersion: 5, constructionRulesVersion: 2, completedLaps: { p1: 0, p2: 0 }, economyProfile: CLASSIC_ECONOMY_PROFILE };
   },
   validateAction: validation,
-  applyAction: step,
+  applyAction: (state, player, action) => {
+    const next = step(state, player, action);
+    finishCardResolution(next);
+    const victory = !next.result && next.boardProfile === "world-islands-32-v1" && ["buy", "takeover"].includes(action.type) ? worldOwnershipVictory(boardFor(next), next.properties, player) : null;
+    if (victory) {
+      next.result = { winner: player, reason: victory, scores: { p1: assetsFor(next, "p1", boardFor(next)), p2: assetsFor(next, "p2", boardFor(next)) } };
+      next.phase = "finished";
+      next.extraRoll = false;
+      const title = victory === "line-monopoly" ? ["\uB77C\uC778 \uB3C5\uC810 \uC2B9\uB9AC", "Victoria por monopolio de l\xEDnea"] : victory === "triple-monopoly" ? ["\uD2B8\uB9AC\uD50C \uB3C5\uC810 \uC2B9\uB9AC", "Victoria por tres grupos de color"] : ["\uAD00\uAD11 \uB3C5\uC810 \uC2B9\uB9AC", "Victoria por todas las islas tur\xEDsticas"];
+      emit(next, "win", player, title[0], title[1], victory === "line-monopoly" ? "\uD55C \uB77C\uC778\uC758 \uB3C4\uC2DC\uC640 \uAD00\uAD11\uC12C\uC744 \uBAA8\uB450 \uC18C\uC720\uD588\uC2B5\uB2C8\uB2E4." : victory === "triple-monopoly" ? "\uC138 \uAC1C\uC758 \uCEEC\uB7EC \uB3C4\uC2DC\uAD70\uC744 \uC644\uC131\uD588\uC2B5\uB2C8\uB2E4." : `\uBCF4\uB4DC\uC758 \uAD00\uAD11\uC12C ${boardFor(next).filter((tile) => tile.kind === "tourism").length}\uAC1C\uB97C \uBAA8\uB450 \uC18C\uC720\uD588\uC2B5\uB2C8\uB2E4.`, victory === "line-monopoly" ? "Posees todas las ciudades e islas tur\xEDsticas de una l\xEDnea." : victory === "triple-monopoly" ? "Completaste tres grupos de color." : `Posees todas las ${boardFor(next).filter((tile) => tile.kind === "tourism").length} islas tur\xEDsticas del tablero.`);
+    }
+    return next;
+  },
   getPlayerView: view2,
   getResult: (state) => state.result
 };

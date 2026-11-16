@@ -1,9 +1,10 @@
+import { legacyInitial } from './marble.effectFixtures';
 import { describe, expect, it } from 'vitest';
 import { fourSeats, fourTeam } from '../core/fourPlayer';
 import { seededRandom, type GameAction } from '../core/types';
 import { fourMarbleEngine as engine, type FourMarbleState } from './fourMarble';
 
-const state = (seed = 1) => ({ ...engine.createInitialState(seed), economicVersion: 2, money: { p1: 1500, p2: 1500, p3: 1500, p4: 1500 }, propertyRulesVersion: undefined }) as FourMarbleState;
+const state = (seed = 1) => ({ ...legacyInitial(engine, seed), economicVersion: 2, constructionRulesVersion: 1, money: { p1: 1500, p2: 1500, p3: 1500, p4: 1500 }, propertyRulesVersion: undefined }) as FourMarbleState;
 function rollFor(total: number) {
   for (let seed = 0; seed < 10000; seed++) {
     const random = seededRandom(seed);
@@ -68,10 +69,10 @@ describe('four-seat Marble team variant', () => {
     const s = state(); s.active = 'p4'; s.rng = rollFor(2); s.positions.p4 = 39;
     const next = step(s, { type: 'roll' });
     expect(next.lastMove).toMatchObject({ playerId: 'p4', from: 39, to: 1, steps: 2, source: 'dice' });
-    expect(next.actionLog.map(event => event.type)).toEqual(['roll', 'salary', 'move', 'arrival']);
+    expect(next.actionLog.map(event => event.type)).toEqual(['roll', 'move', 'salary', 'arrival']);
     expect(next.actionLog.map(event => event.actor)).toEqual(['p4', 'p4', 'p4', 'p4']);
     expect(next.actionLog.map(event => event.sequence)).toEqual([1, 2, 3, 4]);
-    expect(next.actionLog[1]).toMatchObject({ amount: 200, fromAccount: 'bank', toAccount: 'p4', moneyDelta: { p4: 200 } });
+    expect(next.actionLog.find(event => event.type === 'salary')).toMatchObject({ amount: 200, fromAccount: 'bank', toAccount: 'p4', moneyDelta: { p4: 200 } });
     expect(next.diceSequence).toBe(1);
   });
 

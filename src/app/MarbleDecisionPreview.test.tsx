@@ -4,6 +4,10 @@ import { describe, expect, it } from 'vitest';
 import { MarbleDecisionPreview } from './MarbleDecisionPreview';
 
 describe('MarbleDecisionPreview', () => {
+  it('keeps changed rent visible alongside the previous owner on takeover',()=>{
+    const html=renderToStaticMarkup(createElement(MarbleDecisionPreview,{kind:'takeover',cost:200,cashAfter:500,tollBefore:80,tollAfter:40,recipient:'상대',groupChange:'색상군 해제',language:'ko'}));
+    expect(html).toContain('80 → 40');expect(html).toContain('상대');expect(html).toContain('색상군 해제');
+  });
   it('shows cost, signed after-cash, toll change and shortfall in both languages', () => {
     const buy=renderToStaticMarkup(createElement(MarbleDecisionPreview,{kind:'buy',cost:180,cashAfter:-20,tollBefore:0,tollAfter:40,shortfall:20,language:'ko'}));
     expect(buy).toContain('매입 비용</small><b>180'); expect(buy).toContain('실행 후 현금</small><b>-20'); expect(buy).toContain('통행료</small><b>0 → 40'); expect(buy).toContain('현금 20 부족');

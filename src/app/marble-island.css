@@ -1,0 +1,7 @@
+.mp-island-decision { display:grid; gap:12px; width:100%; grid-column:1/-1; }
+.mp-island-decision h2,.mp-island-decision p { margin:0; }
+.mp-island-decision p { font-size:14px; line-height:1.4; }
+.mp-island-options { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:10px; }
+.mp-island-options button { min-width:0; min-height:64px; flex-direction:column; white-space:normal; }
+.mp-island-options button small { display:block; font-size:12px; }
+:is(.marble-premium,.marble-native-team).is-modern .mp-board-center .mp-center-stage:has(>.mp-island-decision) { display:block!important; width:90%!important; max-height:none!important; overflow:visible!important; padding:16px!important; }

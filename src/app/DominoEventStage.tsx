@@ -1,9 +1,9 @@
 import { useEffect, useLayoutEffect, useRef, useState, type CSSProperties } from 'react';
 import { createPortal } from 'react-dom';
 import { DominoTile } from './DominoTile';
-import { playCue } from '../audio/audio';
+import { cancelSceneAudio, playCue } from '../audio/audio';
 import type { Language, PlayerId } from '../core/types';
-import { dominoSequence, dominoWindow, type DominoActionEvent } from './domino-motion';
+import { dominoCueForEvent, dominoSequence, dominoWindow, type DominoActionEvent } from './domino-motion';
 import '../styles/domino-events.css';
 
 function latestEvent(events: readonly (DominoActionEvent | null | undefined)[]) {
@@ -70,6 +70,11 @@ export function DominoEventStage({ events, language, playerId, ownTeam = playerI
   const [announcement, setAnnouncement] = useState('');
   const root = () => stageRef.current?.closest<HTMLElement>('.domino-premium');
   // The shared feedback announces titles and wins; this region adds public detail only.
+  const soundEvent = (event: DominoActionEvent) => {
+    if (document.hidden) return;
+    const cue = event.type === 'win' ? !event.team ? 'score' : event.team === ownTeam ? 'win' : 'lose' : event.type === 'configure' ? 'ready' : dominoCueForEvent(event);
+    if (cue) playCue('domino', cue);
+  };
   const eventDetail = (event: DominoActionEvent) => {
     if (event.type === 'pass') return [actorName(event.actor, playerId, language, mode), language === 'ko' ? `연속 패스 ${event.count ?? 0}회` : `Pases seguidos: ${event.count ?? 0}`].filter(Boolean).join(' · ');
     if (!['tranque', 'capicua', 'paso-corrido', 'opening-pass', 'round-end', 'score'].includes(event.type ?? '')) return '';
@@ -144,21 +149,22 @@ export function DominoEventStage({ events, language, playerId, ownTeam = playerI
       return;
     }
     if (!update.fresh.length) return;
-    const backlog = update.fresh.filter(event => event.type === 'play').length > 4;
-    if (document.hidden || update.fresh.some(event => event.type === 'round-end' || event.type === 'win') || backlog) {
+    const backlog = update.fresh.filter(event => event.type === 'play').length > 4 || dominoSequence(update.fresh[0]) !== sequence.current + 1;
+    if (document.hidden || backlog) {
       sequence.current = update.latest;
       setQueue([]);
       clearTargets();
       setFlight(null);
       setAnnouncement(document.hidden || backlog ? '' : update.fresh.map(eventDetail).filter(Boolean).at(-1) ?? '');
-      setPresented(ordered.at(-1) ?? null);
+      const last = ordered.at(-1);
+      setPresented(last ?? null);
       return;
     }
     sequence.current = update.latest;
     if (reduced) {
       setPresented(update.fresh.at(-1) ?? null);
       setAnnouncement(update.fresh.map(eventDetail).filter(Boolean).at(-1) ?? '');
-      if (update.fresh.some(event => event.type === 'play')) playCue('domino', 'place');
+      update.fresh.forEach(soundEvent);
       setQueue([]);
     } else {
       for (const event of update.fresh) {
@@ -166,7 +172,8 @@ export function DominoEventStage({ events, language, playerId, ownTeam = playerI
         const target = root()?.querySelector<HTMLElement>(`.dp-tile.is-chain[data-sequence="${dominoSequence(event)}"]`);
         if (target) { target.classList.add('is-flight-target'); pendingTargets.current.set(dominoSequence(event), target); }
       }
-      setQueue(current => [...current, ...update.fresh]);
+      const restart = update.fresh.find(event => event.type === 'round-start');
+      setQueue(current => restart ? update.fresh.filter(event => dominoSequence(event) >= dominoSequence(restart)) : [...current, ...update.fresh]);
     }
   }, [events, playerId, identity, reduced]);
 
@@ -174,6 +181,7 @@ export function DominoEventStage({ events, language, playerId, ownTeam = playerI
     if (reduced || !queue.length) { clearTargets(); setFlight(null); return; }
     const event = queue[0];
     setPresented(event);
+    if (event.type !== 'play') soundEvent(event);
     const detail = eventDetail(event);
     if (detail) setAnnouncement(detail);
     const table = root();
@@ -204,7 +212,7 @@ export function DominoEventStage({ events, language, playerId, ownTeam = playerI
       target?.classList.remove('is-flight-target');
       pendingTargets.current.delete(dominoSequence(event));
       sources.current.delete(dominoSequence(event));
-      if (event.type === 'play' && !document.hidden) playCue('domino', 'place');
+      if (event.type === 'play') soundEvent(event);
       setFlight(null);
       setQueue(current => current.slice(1));
     }, event.type === 'play' ? 340 : 180);
@@ -237,7 +245,7 @@ export function DominoEventStage({ events, language, playerId, ownTeam = playerI
     }
   }, [queue, reduced]);
 
-  useEffect(() => () => { if (timer.current !== null) window.clearTimeout(timer.current); clearTargets(); }, []);
+  useEffect(() => () => { cancelSceneAudio('domino'); if (timer.current !== null) window.clearTimeout(timer.current); clearTargets(); }, []);
 
   if (!presented) return <span ref={stageRef} hidden/>;
   const type = presented.type ?? '';

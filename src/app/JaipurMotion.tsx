@@ -1,8 +1,8 @@
 import { useEffect, useLayoutEffect, useRef, useState } from 'react';
 import type { Language, PlayerId } from '../core/types';
 import type { JaipurGood } from '../games/jaipur';
-import { playCue } from '../audio/audio';
-import { JAIPUR_FLIGHT_MS, jaipurEventWindow, jaipurFlights, jaipurLandingFeedback, jaipurSequence, type JaipurEvent, type JaipurFlight } from './jaipur-motion';
+import { cancelSceneAudio, playCue } from '../audio/audio';
+import { JAIPUR_FLIGHT_MS, jaipurCueForEvent, jaipurEventWindow, jaipurFlights, jaipurLandingFeedback, jaipurSequence, type JaipurEvent, type JaipurFlight } from './jaipur-motion';
 import { JaipurBonusArt, JaipurCoin, JaipurGoodArt, jaipurCardVariant } from './JaipurArt';
 import '../styles/jaipur-motion.css';
 
@@ -54,6 +54,11 @@ function formatSummary(event: JaipurEvent, language: Language, playerId: PlayerI
 }
 
 export function JaipurMotion({ events, language, playerId }: { events: readonly (JaipurEvent | null | undefined)[]; language: Language; playerId: PlayerId }) {
+  const immediateSound = (event: JaipurEvent) => {
+    if (document.hidden || ['take-single', 'exchange', 'take-camels', 'bonus'].includes(event.type)) return;
+    const cue = event.type === 'win' ? event.winner === 'draw' ? 'score' : event.winner === playerId ? 'win' : 'lose' : jaipurCueForEvent(event);
+    if (cue) playCue('jaipur', cue);
+  };
   const sequence = useRef<number | null>(null);
   const player = useRef(playerId);
   const queuedPlayer = useRef(playerId);
@@ -121,6 +126,7 @@ export function JaipurMotion({ events, language, playerId }: { events: readonly 
       return;
     }
     if (!update.fresh.length) return;
+    if (jaipurSequence(update.fresh[0]) !== sequence.current + 1 || update.fresh.length > 16) { sequence.current = update.latestSequence; setQueue([]); setFlights([]); setPresented(ordered.at(-1) ?? null); return; }
     sequence.current = update.latestSequence;
     if (update.fresh.at(-1)?.type === 'round-start') {
       setNotice([...update.fresh].reverse().find(event => event.type === 'round-end') ?? null);
@@ -134,6 +140,7 @@ export function JaipurMotion({ events, language, playerId }: { events: readonly 
       else if (freshNotice) setNotice(freshNotice);
       setNoticeMotionSequence(null); setQueue([]); setFlights([]);
       if (!document.hidden) update.fresh.forEach(event => {
+        immediateSound(event);
         const landing = jaipurLandingFeedback(event, jaipurFlights(event, playerId));
         if (landing) playCue('jaipur', landing.cue);
       });
@@ -154,6 +161,7 @@ export function JaipurMotion({ events, language, playerId }: { events: readonly 
     if (!queue.length) return;
     const event = queue[0];
     setPresented(event);
+    immediateSound(event);
     if (['round-end', 'win', 'bonus'].includes(event.type)) {
       setNotice(event);
       setNoticeMotionSequence(jaipurSequence(event));
@@ -188,6 +196,7 @@ export function JaipurMotion({ events, language, playerId }: { events: readonly 
     });
     setFlights(placed);
     const landing = jaipurLandingFeedback(event, placed);
+    if (!landing) { const staticLanding = jaipurLandingFeedback(event, jaipurFlights(event, playerId)); if (staticLanding) playCue('jaipur', staticLanding.cue); }
     if (landing) arrivalTimers.current.push(window.setTimeout(() => playCue('jaipur', landing.cue), landing.delay));
     const duration = Math.max(260, ...placed.map(flight => flight.delay + JAIPUR_FLIGHT_MS));
     timer.current = window.setTimeout(() => {
@@ -207,7 +216,7 @@ export function JaipurMotion({ events, language, playerId }: { events: readonly 
     return () => window.clearTimeout(expiry);
   }, [noticeSequence, notice?.type]);
 
-  useEffect(() => () => { if (timer.current !== null) window.clearTimeout(timer.current); }, []);
+  useEffect(() => () => { cancelSceneAudio('jaipur'); if (timer.current !== null) window.clearTimeout(timer.current); }, []);
 
   const detail = presented?.text?.[language] ?? '';
   const won = notice?.type === 'win' && notice.winner === playerId;

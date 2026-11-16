@@ -124,24 +124,23 @@ try {
     report.captures.push({ language, screen: 'home', file: homeCapture, dimensions: await page.evaluate(() => ({ width: innerWidth, height: innerHeight, fullPageHeight: document.documentElement.scrollHeight })) });
 
     await page.locator('.landing-nav nav a[href="/feedback"]').click();
-    await page.locator('.feedback-setup').waitFor({ state: 'visible', timeout: 7000 });
+    await page.locator('.feedback-page').waitFor({ state: 'visible', timeout: 7000 });
     const feedback = await page.evaluate(() => ({
-      heading: document.querySelector('.feedback-setup h1')?.textContent.trim(),
-      placeholder: document.querySelector('#feedback-invite-code')?.getAttribute('placeholder'),
-      primary: document.querySelector('.feedback-setup > .primary-action')?.textContent.trim(),
-      join: document.querySelector('.feedback-join-form button')?.textContent.trim(),
+      heading: document.querySelector('.feedback-page h1')?.textContent.trim(),
+      board: document.querySelector('.feedback-access-note b')?.textContent.trim(),
+      invite: Boolean(document.querySelector('#feedback-invite-code,.feedback-join-form')),
       navLinks: [...document.querySelectorAll('.feedback-route .landing-nav nav a')].map(a => ({ text: a.textContent.trim(), href: a.getAttribute('href') })),
     }));
     const expectedFeedback = language === 'ko'
-      ? { heading: 'Mami, 다음엔 뭐 만들까?', placeholder: '초대 코드 붙여넣기', primary: '우리 공간 만들기', join: '참여하기' }
-      : { heading: 'Mami, ¿qué hacemos después?', placeholder: 'Pega el código', primary: 'Crear nuestro espacio', join: 'Entrar' };
-    check(`${language}: feedback Mami heading, invite placeholder and buttons match copy`, feedback.heading === expectedFeedback.heading && feedback.placeholder === expectedFeedback.placeholder && (feedback.primary || '').startsWith(expectedFeedback.primary) && feedback.join === expectedFeedback.join, JSON.stringify({ feedback, expectedFeedback }));
-    check(`${language}: feedback header has exact SPA home anchors`, JSON.stringify(feedback.navLinks.map(link => link.href)) === JSON.stringify(['/#games', '/#papi-letter', '/feedback']), JSON.stringify(feedback.navLinks));
-    const expectedFeedbackNav = expectedLandingNav;
+      ? { heading: 'Mami, 다음엔 뭐 하고 놀까?', board: '우리의 아이디어 보관함' }
+      : { heading: 'Mami, ¿a qué jugamos después?', board: 'Nuestro buzón de ideas' };
+    check(`${language}: shared feedback heading and board match copy`, feedback.heading === expectedFeedback.heading && feedback.board === expectedFeedback.board && !feedback.invite, JSON.stringify({ feedback, expectedFeedback }));
+    check(`${language}: feedback header has exact SPA home anchors`, JSON.stringify(feedback.navLinks.map(link => link.href)) === JSON.stringify(['/#games', '/feedback']), JSON.stringify(feedback.navLinks));
+    const expectedFeedbackNav = language === 'ko' ? ['게임 목록', '건의사항'] : ['Ver los juegos', 'Sugerencias'];
     check(`${language}: feedback header nav labels stay localized`, JSON.stringify(feedback.navLinks.map(link => link.text)) === JSON.stringify(expectedFeedbackNav), JSON.stringify(feedback.navLinks));
     const feedbackCapture = path.join(externalOut, `mami-papi-feedback-${language}.png`);
     await page.screenshot({ path: feedbackCapture, fullPage: true, animations: 'disabled' });
-    report.captures.push({ language, screen: 'feedback setup', file: feedbackCapture, details: feedback });
+    report.captures.push({ language, screen: 'shared feedback', file: feedbackCapture, details: feedback });
 
     await page.locator('.feedback-route .landing-nav nav a[href="/#games"]').click();
     await page.waitForFunction(() => location.pathname === '/' && location.hash === '#games', null, { timeout: 7000 });
@@ -149,14 +148,6 @@ try {
     await page.waitForTimeout(240);
     const routedGames = await page.locator('#games').evaluate(el => ({ top: Math.round(el.getBoundingClientRect().top), bottom: Math.round(el.getBoundingClientRect().bottom) }));
     check(`${language}: feedback header SPA Games link returns and scrolls`, routedGames.top < 900 && routedGames.bottom > 0, JSON.stringify({ url: page.url(), routedGames }));
-    await page.goto(`${new URL(url).origin}/feedback`, { waitUntil: 'domcontentloaded' });
-    await page.locator('.feedback-setup').waitFor({ state: 'visible', timeout: 7000 });
-    await page.locator('.feedback-route .landing-nav nav a[href="/#papi-letter"]').click();
-    await page.waitForFunction(() => location.pathname === '/' && location.hash === '#papi-letter', null, { timeout: 7000 });
-    await page.waitForTimeout(240);
-    const routedLetter = await page.locator('#papi-letter').evaluate(el => ({ top: Math.round(el.getBoundingClientRect().top), bottom: Math.round(el.getBoundingClientRect().bottom) }));
-    check(`${language}: feedback header SPA Papi link returns and scrolls`, routedLetter.top < 900 && routedLetter.bottom > 0, JSON.stringify({ url: page.url(), routedLetter }));
-
     await page.setViewportSize({ width: 1920, height: 1080 });
     await page.goto(url, { waitUntil: 'domcontentloaded' });
     await page.locator('.landing').waitFor({ state: 'visible', timeout: 10000 });

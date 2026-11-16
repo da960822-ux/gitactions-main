@@ -1,0 +1,21 @@
+/* Persistent status: group hue is secondary to the existing owner floor and P-number. */
+.mp-monopoly-halo { position:absolute; inset:2px; z-index:1; border-radius:inherit; border:1px solid var(--mp-group-color,#d3b66d); box-shadow:inset 0 0 8px color-mix(in srgb,var(--mp-group-color,#d3b66d) 45%,transparent); pointer-events:none; }
+.mp-monopoly-badge { display:inline-block; margin-left:3px; padding:0 3px; border-radius:3px; background:#fff4c9; border:1px solid #b39544; color:#493b13; font-weight:900; font-size:9px; line-height:12px; white-space:nowrap; }
+.mp-monopoly-status { max-height:150px; overflow:auto; flex-shrink:0; padding:7px 9px; border:1px solid #d9bd82; border-radius:7px; background:#fff8e9; color:#4d432f; font-size:11px; line-height:1.4; }
+.mp-monopoly-status p { margin:0; overflow-wrap:anywhere; }
+.mp-monopoly-status p+p { margin-top:3px; }
+.mp-monopoly-danger b { color:#9d3934; }
+.mp-monopoly-complete { color:#526335; }
+@media (prefers-reduced-motion:reduce) { .mp-monopoly-halo,.mp-monopoly-badge,.mp-monopoly-status { animation:none!important; transition:none!important; } }
+
+.mp-monopoly-progress summary { cursor:pointer; padding:2px 0; font-size:10px; }
+.mp-monopoly-progress[open] { border-bottom:1px solid #dbcba9; padding-bottom:4px; }
+.mp-monopoly-status .mp-monopoly-progress > summary { font-size:11px; line-height:1.4; padding:2px 0; }
+/* Names and localized goal metrics wrap within the sidebar, never a second column. */
+.mp-monopoly-status { min-width:0; max-width:100%; box-sizing:border-box; overflow-x:hidden; overflow-wrap:anywhere; }
+.mp-monopoly-status .mp-monopoly-progress { min-width:0; max-width:100%; }
+.mp-monopoly-status .mp-monopoly-progress > summary { white-space:normal; overflow-wrap:anywhere; }
+.mp-monopoly-status .mp-monopoly-progress > summary > b { display:block; }
+.mp-monopoly-status .mp-monopoly-progress > summary { display:block; list-style:none; }
+.mp-monopoly-progress > summary > b::before { content:'▸ '; }
+.mp-monopoly-progress[open] > summary > b::before { content:'▾ '; }

@@ -1,3 +1,4 @@
+import { legacyInitial } from './marble.effectFixtures';
 import { describe, expect, it } from 'vitest';
 import { seededRandom } from '../core/types';
 import { fourMarbleEngine } from './fourMarble';
@@ -14,7 +15,7 @@ function seedForSum(sum: number) {
 
 describe('Marble versioned economy profile', () => {
   it('makes five mixed-price land purchases plus one first build on each affordable at game start', () => {
-    const fresh = marbleEngine.createInitialState(1);
+    const fresh = legacyInitial(marbleEngine, 1);
     const tiles = marbleEngine.getPlayerView(fresh, 'p1').board.tiles;
     const rawTiles = marbleEngine.getPlayerView({ ...fresh, economicVersion: 2 }, 'p1').board.tiles;
     const indices = [1, 4, 8, 3, 38];
@@ -26,7 +27,7 @@ describe('Marble versioned economy profile', () => {
   });
 
   it('uses one price, construction and rent schedule in the 2p and team engines', () => {
-    const two = marbleEngine.createInitialState(3), four = fourMarbleEngine.createInitialState(3);
+    const two = legacyInitial(marbleEngine, 3), four = legacyInitial(fourMarbleEngine, 3);
     const twoView = marbleEngine.getPlayerView(two, 'p1'), fourView: any = fourMarbleEngine.getPlayerView(four, 'p1');
     expect(twoView.board.tiles[1]).toMatchObject({ price: 80, rent: 20 });
     expect(fourView.publicBoard[1]).toMatchObject({ price: 80, rent: 20 });
@@ -39,8 +40,9 @@ describe('Marble versioned economy profile', () => {
   });
 
   it('scales only property land prices and keeps 2p/team net worth equal after purchase and build', () => {
-    const two = marbleEngine.createInitialState(9);
-    const four = fourMarbleEngine.createInitialState(9);
+    const two = legacyInitial(marbleEngine, 9);
+    const four = legacyInitial(fourMarbleEngine, 9);
+    two.constructionRulesVersion = 1; four.constructionRulesVersion = 1;
     two.money.p1 = 2920;
     two.properties['1'] = { owner: 'p1', houses: 0 };
     four.money.p1 = 2920;
@@ -59,7 +61,7 @@ describe('Marble versioned economy profile', () => {
   });
 
   it('uses the adjusted land value for the 120-turn settlement winner', () => {
-    let state: MarbleState = { ...marbleEngine.createInitialState(11), active: 'p1', phase: 'main', turns: 119,
+    let state: MarbleState = { ...legacyInitial(marbleEngine, 11), active: 'p1', phase: 'main', turns: 119,
       money: { p1: 2920, p2: 3010 }, properties: { '1': { owner: 'p1', houses: 0 } } };
     state = marbleEngine.applyAction(state, 'p1', { type: 'endTurn' });
     expect(state.result).toMatchObject({ winner: 'p2', scores: { p1: 3000, p2: 3010 } });
@@ -76,8 +78,8 @@ describe('Marble versioned economy profile', () => {
 
   it('charges the same 300 salary on pass-start crossings for both engines', () => {
     const seed = seedForSum(2);
-    let two: MarbleState = { ...marbleEngine.createInitialState(seed), positions: { p1: 39, p2: 0 } };
-    let four = { ...fourMarbleEngine.createInitialState(seed), positions: { ...fourMarbleEngine.createInitialState(seed).positions, p1: 39 } };
+    let two: MarbleState = { ...legacyInitial(marbleEngine, seed), positions: { p1: 39, p2: 0 } };
+    let four = { ...legacyInitial(fourMarbleEngine, seed), positions: { ...legacyInitial(fourMarbleEngine, seed).positions, p1: 39 } };
     two = marbleEngine.applyAction(two, 'p1', { type: 'roll' });
     four = fourMarbleEngine.applyAction(four, 'p1', { type: 'roll' });
     expect(two.money.p1).toBe(3300);
@@ -86,8 +88,8 @@ describe('Marble versioned economy profile', () => {
   });
 
   it('debits and previews the same first build after purchase on both routes', () => {
-    let two: MarbleState = { ...marbleEngine.createInitialState(5), phase: 'decision', positions: { p1: 1, p2: 0 }, pendingTile: 1 };
-    let four = { ...fourMarbleEngine.createInitialState(5), phase: 'decision' as const, positions: { ...fourMarbleEngine.createInitialState(5).positions, p1: 1 }, pendingTile: 1 };
+    let two: MarbleState = { ...legacyInitial(marbleEngine, 5), constructionRulesVersion: 1, phase: 'decision', positions: { p1: 1, p2: 0 }, pendingTile: 1, buildSite: 1 };
+    let four = { ...legacyInitial(fourMarbleEngine, 5), constructionRulesVersion: 1 as const, phase: 'decision' as const, positions: { ...legacyInitial(fourMarbleEngine, 5).positions, p1: 1 }, pendingTile: 1, buildSite: 1 };
     two = marbleEngine.applyAction(two, 'p1', { type: 'buy' });
     four = fourMarbleEngine.applyAction(four, 'p1', { type: 'buy' });
     expect(two.actionLog?.at(-1)).toMatchObject({ type: 'buy', amount: 80 });
@@ -102,7 +104,7 @@ describe('Marble versioned economy profile', () => {
 
   it('keeps the new economy on the existing loan/liquidation debt path', () => {
     const seed = seedForSum(4);
-    let s: MarbleState = { ...marbleEngine.createInitialState(seed), positions: { p1: 39, p2: 0 }, money: { p1: 0, p2: 4500 }, properties: { '3': { owner: 'p2', houses: 3 }, '16': { owner: 'p2', houses: 0 } } };
+    let s: MarbleState = { ...legacyInitial(marbleEngine, seed), constructionRulesVersion: 1, positions: { p1: 39, p2: 0 }, money: { p1: 0, p2: 4500 }, properties: { '3': { owner: 'p2', houses: 3 }, '16': { owner: 'p2', houses: 0 } } };
     s = marbleEngine.applyAction(s, 'p1', { type: 'roll' });
     expect(s).toMatchObject({ phase: 'debt', pendingPayment: { amount: 480, type: 'rent' }, result: null });
     expect(marbleEngine.validateAction(s, 'p1', { type: 'borrow' })).toBeNull();
@@ -111,8 +113,8 @@ describe('Marble versioned economy profile', () => {
   });
 
   it('keeps saved v2 cash, prices, rents, build costs and salary unchanged', () => {
-    const two = { ...marbleEngine.createInitialState(2), economicVersion: 2 as const, money: { p1: 1500, p2: 1500 } };
-    const four = { ...fourMarbleEngine.createInitialState(2), economicVersion: 2 as const, money: { p1: 1500, p2: 1500, p3: 1500, p4: 1500 } };
+    const two = { ...legacyInitial(marbleEngine, 2), economicVersion: 2 as const, money: { p1: 1500, p2: 1500 } };
+    const four = { ...legacyInitial(fourMarbleEngine, 2), economicVersion: 2 as const, money: { p1: 1500, p2: 1500, p3: 1500, p4: 1500 } };
     expect(marbleEngine.getPlayerView(two, 'p1').board.tiles[1]).toMatchObject({ price: 100, rent: 12 });
     expect((fourMarbleEngine.getPlayerView(four, 'p1') as any).publicBoard[1]).toMatchObject({ price: 100, rent: 12 });
     expect(marbleBuildCost(marbleEngine.getPlayerView(two, 'p1').board.tiles[1], 0, 2)).toBe(40);

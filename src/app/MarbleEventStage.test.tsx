@@ -21,7 +21,7 @@ describe('Marble event stage server rendering', () => {
     }));
     expect(html).toContain('Gastos de viaje');
     expect(html).toContain('−100');
-    expect(html).toContain('/images/marble/events/city-intervention.webp');
+    expect(html).toContain('/images/marble/events/semantic-v2/expense.webp');
     expect(html).not.toContain('is-animating');
   });
 
@@ -50,9 +50,9 @@ describe('Marble public event meaning', () => {
   const renderEvent = (event: Record<string, unknown>) => renderToStaticMarkup(createElement(MarbleEventStage, { language: 'ko', playerId: 'p1', events: [{ sequence: 10, ...event }] }));
   it('distinguishes an exposed penalty card from a settled payment without inventing a debit', () => {
     const card = renderEvent({ type: 'event-card', cardId: 'travel-cost', text: { ko: '100을 냅니다.' } });
-    expect(card).toContain('/images/marble/events/city-intervention.webp');
+    expect(card).toContain('/images/marble/events/semantic-v2/expense.webp');
     expect(card).toContain('카드 공개');
-    expect(card).toContain('100을 냅니다.');
+    expect(card).toContain('은행에 100을 지급합니다.');
     expect(card).not.toContain('marble-event-amount');
     const paid = renderEvent({ type: 'tax', actor: 'p1', fromAccount: 'p1', toAccount: 'fund', moneyDelta: { p1: -100 } });
     expect(paid).toContain('나<i aria-hidden="true">→</i>공동 기금');
@@ -66,7 +66,7 @@ describe('Marble public event meaning', () => {
     expect(html).toContain('has-card-art');
     expect(html).toContain(`data-event-art-family="${family}"`);
     expect(html).toContain(`data-event-family="${family}"`);
-    expect(html).toContain(`/images/marble/events/${family === 'city' ? 'city-intervention' : 'protection-exemption'}.webp`);
+    expect(html).toContain(`/images/marble/events/semantic-v2/${cardId==='city-festival'?'festival':cardId==='blackout'?'blackout':'protection'}.webp`);
     expect(html).not.toContain('tile-symbols.svg');
   });
   it('marks every approved card family as a shared portrait-art stage, including special event types', () => {
@@ -103,7 +103,7 @@ describe('Marble public event meaning', () => {
     expect(renderEvent({ type: 'island', cardId: 'go-to-island' })).toContain('/images/marble/events/movement-travel.webp');
     expect(renderEvent({ type: 'escape', cardId: 'escape-pass' })).toContain('/images/marble/events/protection-exemption.webp');
     expect(renderEvent({ type: 'train', cardId: 'train-ticket' })).toContain('/images/marble/events/movement-travel.webp');
-    expect(renderEvent({ type: 'monopoly-warning', cardId: 'monopoly-warning' })).toContain('/images/marble/events/city-intervention.webp');
+    expect(renderEvent({ type: 'monopoly-warning', cardId: 'monopoly-warning' })).toContain('/images/marble/events/semantic-v2/expense.webp');
     expect(renderEvent({ type: 'train', from: 5, to: 15 })).toContain('6번 → 16번 칸');
   });
 });

@@ -1,3 +1,4 @@
+import { TeamGameGuide } from './guides/TeamGameGuide';
 import { useEffect, useMemo, useRef, useState, type CSSProperties, type ReactNode } from 'react';
 import { fourSeats, fourTeam, type FourSeat, type FourView } from '../core/fourPlayer';
 import type { GameAction, GameId, Language } from '../core/types';
@@ -79,7 +80,7 @@ export function MinhwatuTeamTable({view,language,runAction,nickname,roomId='',ve
   useEffect(()=>{
     if(!dialog)return;
     const previous=document.activeElement as HTMLElement|null;
-    const focusables=()=>[...(dialogRef.current?.querySelectorAll<HTMLElement>('button:not([disabled]),a[href],summary,[tabindex="0"]')??[])];
+    const focusables=()=>[...(dialogRef.current?.querySelectorAll<HTMLElement>('button:not([disabled]),a[href],summary,[tabindex="0"]')??[])].filter(node=>node.getClientRects().length>0);
     focusables()[0]?.focus();
     const key=(event:KeyboardEvent)=>{
       if(event.key==='Escape'){setDialog(null);return;}
@@ -125,7 +126,7 @@ export function MinhwatuTeamTable({view,language,runAction,nickname,roomId='',ve
   const fieldCount=table.length;
   const fieldWidth=fieldCount<=8?58:fieldCount<=14?56:fieldCount<=36?42:36;
   let modal:ReactNode=null;
-  if(dialog==='help')modal=<><h2>{text(language,'민화투 · 네 자리 팀전','Minhwatu · cuatro jugadores')}</h2><ol><li>{text(language,'각자 5장, 바닥 8장, 더미 20장. 나와 맞은편 AI가 한 팀이에요.','5 cartas por persona, 8 en mesa y 20 en el mazo. Tú y la IA de enfrente forman equipo.')}</li><li>{text(language,'손패를 누르면 바로 냅니다. 같은 월 바닥 패가 두 장이면 하나를 고릅니다. 이어 더미 한 장을 공개해요.','Toca una carta de tu mano para jugarla. Si hay dos cartas del mismo mes en la mesa, elige una. Después se revela una del mazo.')}</li><li>{text(language,'같은 월 세 장은 전부 가져옵니다. 손패와 더미가 모두 비면 끝나요. 고·스톱은 없어요.','Con tres cartas del mismo mes se toman todas. Termina al vaciar manos y mazo. No hay Go ni Stop.')}</li><li>{text(language,'기본 20/10/5/0점 + 개인 족보의 2배 − 상대팀 두 사람의 족보. 두 팀원의 점수를 합쳐 승패를 정해요.','Base 20/10/5/0 + doble de yakus propios − yakus de ambos rivales. Se suman los dos compañeros.')}</li><li>{text(language,'족보는 개인별입니다. 홍단·청단·초단 30점, 고도리 50점, 11월 40점, 5·10·12월 각각 20점. 팀원 패는 볼 수 없어요.','Yakus individuales: cintas 30, Godori 50, mes 11 completo 40 y meses 5/10/12 completos 20. No se ve la mano del compañero.')}</li></ol><MinhwatuCredits language={language}/></>;
+  if(dialog==='help')modal=<TeamGameGuide gameId="minhwatu" language={language}>{language => <><h2>{text(language,'민화투 · 네 자리 팀전','Minhwatu · cuatro jugadores')}</h2><ol><li>{text(language,'각자 5장, 바닥 8장, 더미 20장. 나와 맞은편 AI가 한 팀이에요.','5 cartas por persona, 8 en mesa y 20 en el mazo. Tú y la IA de enfrente forman equipo.')}</li><li>{text(language,'손패를 누르면 바로 냅니다. 같은 월 바닥 패가 두 장이면 하나를 고릅니다. 이어 더미 한 장을 공개해요.','Toca una carta de tu mano para jugarla. Si hay dos cartas del mismo mes en la mesa, elige una. Después se revela una del mazo.')}</li><li>{text(language,'같은 월 세 장은 전부 가져옵니다. 손패와 더미가 모두 비면 끝나요. 고·스톱은 없어요.','Con tres cartas del mismo mes se toman todas. Termina al vaciar manos y mazo. No hay Go ni Stop.')}</li><li>{text(language,'기본 20/10/5/0점 + 개인 족보의 2배 − 상대팀 두 사람의 족보. 두 팀원의 점수를 합쳐 승패를 정해요.','Base 20/10/5/0 + doble de yakus propios − yakus de ambos rivales. Se suman los dos compañeros.')}</li><li>{text(language,'족보는 개인별입니다. 홍단·청단·초단 30점, 고도리 50점, 11월 40점, 5·10·12월 각각 20점. 팀원 패는 볼 수 없어요.','Yakus individuales: cintas 30, Godori 50, mes 11 completo 40 y meses 5/10/12 completos 20. No se ve la mano del compañero.')}</li></ol><MinhwatuCredits language={language}/></>}</TeamGameGuide>;
   if(dialog==='events')modal=<><h2>{text(language,'민화투 최근 행동','Actividad de Minhwatu')}</h2><ol className="mh4-history">{source.events.filter(event=>event.type!=='turn').slice().reverse().map(event=><li key={event.sequence}><b>{event.actor?name(event.actor):''}</b> {event.title[language].replace(/^P[1-4] · /,'')}<div>{event.cards?.map(card=><HwatuCard card={card} language={language} key={card.id}/>)}</div></li>)}</ol></>;
   if(dialog==='exit')modal=<><h2>{text(language,'민화투를 끝낼까요?','¿Terminar Minhwatu?')}</h2><p>{text(language,'현재 판은 저장되지 않아요.','La partida actual no se guarda.')}</p><button type="button" onClick={()=>{setDialog(null);onExit?.();}}>{text(language,'게임 끝내기','Terminar partida')}</button></>;
   return <section className="mh4-table minhwatu-table" aria-label={text(language,'민화투 4인 2대2 게임판','Mesa Minhwatu de cuatro jugadores, 2 contra 2')} onKeyDown={event=>{if(dialog)return;if(event.key==='Escape'){setPreview(null);setMenu(false);if(selected){event.preventDefault();cancel();}}}}>

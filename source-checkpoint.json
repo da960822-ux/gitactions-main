@@ -1,0 +1,155 @@
+{
+  "sourceRepository": "https://github.com/da960822-ux/gitactions-main",
+  "sourceCommit": "dac135c766813612f4e7badfbd26f30930aa3b70",
+  "preservedPublishedSource": "5d07977b58b47295afe1eb8f328804ada561d2dc",
+  "backend": {
+    "supabaseProjectRef": "yqswgvqkqofxcfypvbbi",
+    "publicBuildVariables": [
+      "VITE_SUPABASE_URL",
+      "VITE_SUPABASE_ANON_KEY"
+    ],
+    "translationSecretLocation": "Supabase Edge Function environment only",
+    "siteEnvRevision": 1
+  },
+  "buildArtifact": {
+    "sha256": "91b548615c5124fb0bb17d551f24a19bd7de264c8ed27f9b384469bf611836c3",
+    "files": 475,
+    "sizeBytes": 125781720
+  },
+  "preparedStaticCopy": {
+    "sha256": "1dbc73c3490ee1b875a0d7f6a7d04702486c881cbd3a32fca869197cc4a9ca2c",
+    "files": 510,
+    "sizeBytes": 134728991
+  },
+  "modelClosure": [
+    "/models/folded-chamber-r8-space-v6/arrival-environment.hdr"
+  ],
+  "hostingCompatibility": {
+    "routeFiles": [
+      "dist/feedback.html",
+      "dist/play.html"
+    ],
+    "spaRedirects": "dist/_redirects",
+    "licenseNotice": "dist/THIRD_PARTY_NOTICES.txt"
+  },
+  "verification": {
+    "baselineSiteVersion": 29,
+    "baselineTestFiles": 93,
+    "baselineTests": 805,
+    "focusedTestFiles": 1,
+    "focusedTests": 21,
+    "productionBuild": true,
+    "approvedArtAndRabbitHeartsPreserved": true,
+    "fireworksFinalHandoverOnly": true,
+    "fireworkShapes": [
+      "heart",
+      "saturn",
+      "chrysanthemum",
+      "willow"
+    ],
+    "droneLights": 1280,
+    "droneFormations": [
+      "pokeball",
+      "magikarp",
+      "gyarados",
+      "pikachu",
+      "message"
+    ],
+    "singleCanvasAndFrameLoop": true,
+    "fireworksContinuousWhileFinalVisible": true,
+    "pauseResumeBrowserVerified": true,
+    "desktopViewport": [
+      1440,
+      900
+    ],
+    "mobileViewport": [
+      390,
+      844
+    ],
+    "visualReviewComplete": true,
+    "browserScreenshotCaptureUnavailable": false,
+    "noHorizontalOverflowDomVerified": true,
+    "realDevicePerformanceMeasured": false,
+    "oldBuildCleanupBlockedByAutomaticReview": true,
+    "droneMeasuredLights": [
+      492,
+      801,
+      1049,
+      795
+    ],
+    "photoMeasuredFormations": true,
+    "photoSources": "official Suyeong-gu video 0:43/0:46/1:31 and clean Gwangalli on-site ball frame",
+    "rawWholePageReferencesPublished": false,
+    "desktopPhotoReviewComplete": true,
+    "desktopViewports": [
+      [
+        1440,
+        900
+      ]
+    ],
+    "mobilePhotoReviewComplete": true,
+    "mobilePhotoReviewPending": false,
+    "droneSourceCounts": [
+      492,
+      801,
+      1049,
+      795,
+      577
+    ],
+    "droneFinalMessage": [
+      "I LOVE YOU",
+      "LISBETH",
+      "heart"
+    ],
+    "desktopDronePlacement": "left; up to 1.8x with navigation/copy containment",
+    "mobileDronePlacement": "above; retained footprint",
+    "fireworkLaunchCenters": [
+      [
+        600,
+        -200
+      ],
+      [
+        1235,
+        60
+      ]
+    ],
+    "readOnlyReviewComplete": true
+  },
+  "retainedUnreferencedBuildFiles": [
+    "assets/client-B8-MKYUM.js",
+    "assets/client-C_fbcy4-.js",
+    "assets/client-DubHhBGp.js",
+    "assets/client-VDelDiXx.js",
+    "assets/CoupleReactionArt-BSIXypvF.js",
+    "assets/CoupleReactionArt-BsXRn_es.js",
+    "assets/CoupleReactionArt-CN_bNU-a.js",
+    "assets/CoupleReactionArt-DY1KG1At.js",
+    "assets/FeedbackRoute-BblE7iWL.js",
+    "assets/FeedbackRoute-CDexaQ9W.js",
+    "assets/FeedbackRoute-DgIv4m9L.js",
+    "assets/FeedbackRoute-MNGF2G4t.js",
+    "assets/index-D4kl61wp.js",
+    "assets/index-Deav0p_3.js",
+    "assets/index-Eu7Ibj0Z.js",
+    "assets/index-SovqN0Yi.js",
+    "assets/Landing-BnOS7Q5g.css",
+    "assets/Landing-BX3wD8L4.js",
+    "assets/Landing-CnoqJehS.css",
+    "assets/Landing-CQomXa6e.js",
+    "assets/Landing-DE7M3AiU.js",
+    "assets/Landing-DURyDr3i.css",
+    "assets/Landing-DWU-U82L.js",
+    "assets/PlayApp--w0mAJlL.js",
+    "assets/PlayApp-BbQUsVjb.js",
+    "assets/PlayApp-BwmYryQE.js",
+    "assets/PlayApp-DlkI_arj.js",
+    "assets/previewSpaceV19-BMM6XtML.js",
+    "assets/previewSpaceV19-BugSyBGZ.js",
+    "assets/previewSpaceV19-CsZfOZDT.js",
+    "assets/previewSpaceV19-DrKRQa2x.js",
+    "assets/StudioScene-BAu26-qW.js",
+    "assets/StudioScene-BmhxWshV.js",
+    "assets/StudioScene-BXEA5Jc6.js",
+    "assets/StudioScene-DTnDYQP5.js"
+  ]
+}

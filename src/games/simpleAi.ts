@@ -1,8 +1,10 @@
+import { classicConstructionCost, classicToll } from './marbleClassicEconomy';
+import { applyConstruction, constructionCostAtPrice, constructionRentAtBase, type MarbleConstructionSelection } from './marbleConstruction';
 import type { GameAction, GameId, PlayerId } from '../core/types';
 import { chooseDominoBotAction } from './domino';
 import { chooseDavinciGuess } from './davinciAi';
 import { minhwatuYakuProgress } from './minhwatu';
-import { marbleAiReserve, marbleRentAtBase } from './marbleEconomy';
+import { marbleAiReserve, marbleBuildToCostAtPrice, marbleRentAtBase } from './marbleEconomy';
 
 export const aiGameIds = ['davinci', 'domino', 'jaipur', 'splendor', 'minhwatu', 'marble'] as const;
 // Leave time for the existing capture and dice sequences before the next computer action.
@@ -13,6 +15,7 @@ export const supportsAi = (id: GameId) => (aiGameIds as readonly GameId[]).inclu
 export function chooseSimpleAiAction(game: GameId, view: any, player: PlayerId, random = Math.random, reserveOverride?: number): GameAction | null {
   if (!supportsAi(game) || view?.result) return null;
   const actions: GameAction[] = (view?.actions ?? []).map((option: any) => option.action)
+    .filter((action: GameAction) => !(game === 'marble' && action.type === 'declare-bankruptcy' && action.payload?.voluntary === true))
     .filter((action: GameAction) => !['configure', 'set-mode', 'next-round'].includes(action.type))
     .filter((action: GameAction) => game !== 'jaipur' || action.payload?.mode !== 'exchange' || !(action.payload.handIndices as number[]).some(i => (action.payload!.marketIndices as number[]).some(j => view.ownHand[i] === view.board.market[j])));
   if (!actions.length) return null;
@@ -26,7 +29,7 @@ export function chooseSimpleAiAction(game: GameId, view: any, player: PlayerId, 
   }
   if (game === 'davinci') {
     const guesses = actions.filter(a => a.type === 'guess');
-    if (!guesses.length) return actions[0].type === 'reveal-own' ? pick(actions) : actions[0];
+    if (!guesses.length) return actions[0].type === 'reveal-own' || actions[0].type === 'draw' ? pick(actions) : actions[0];
     return chooseDavinciGuess(view, player, guesses, random);
   }
   const score = (action: GameAction): number => {
@@ -66,22 +69,23 @@ export function chooseSimpleAiAction(game: GameId, view: any, player: PlayerId, 
       const money = view.ownHand.money;
       const tiles = view.board.tiles as any[], opponent = player === 'p1' ? 'p2' : 'p1';
       const economicVersion = view.board.economicVersion;
-      const rent = (tile: any) => marbleRentAtBase(tile.rent ?? 0, tile.houses ?? 0, economicVersion, tile.monopolyMultiplier ?? 1);
+      const independent = view.board.constructionRulesVersion === 2;
+      const rent = (tile: any) => tile.cityEconomy ? classicToll(tile.cityEconomy, tile, tile.monopolyMultiplier ?? 1)! : independent ? constructionRentAtBase(tile.rent ?? 0, tile, tile.monopolyMultiplier ?? 1) : marbleRentAtBase(tile.rent ?? 0, tile.houses ?? 0, economicVersion, tile.monopolyMultiplier ?? 1);
       const risk = tiles.reduce((total, tile, index) => {
         const distance = (index - view.ownHand.position + tiles.length) % tiles.length;
         return total + (tile.owner === opponent && distance >= 2 && distance <= 12 ? rent(tile) * (6-Math.abs(7-distance))/36 : 0);
       }, 0);
       const minimumReserve = reserveOverride ?? marbleAiReserve(economicVersion);
       const reserve = Math.max(minimumReserve, risk * 2 + minimumReserve / 2);
-      if (action.type === 'buy') { const tile = tiles[view.ownHand.position], group = tiles.filter(t => t.group === tile.group && t.kind === 'property'); return money - tile.price >= reserve ? 30 + group.filter(t=>t.owner===player).length * 5 : -1; }
-      if (action.type === 'takeover') { const tile = tiles[Number(x.tile)], cost = view.board.takeoverOffer?.price; return cost != null && money - cost >= reserve ? 15 + tile.houses * 3 : -5; }
-      if (action.type === 'build') { const tile = tiles[Number(x.tile)], distance = (Number(x.tile)-view.board.positions[opponent]+tiles.length)%tiles.length; const chance = distance>=2&&distance<=12 ? (6-Math.abs(7-distance))/36 : .02; return money - tile.nextBuildCost >= reserve ? 10 + (tile.nextRent-rent(tile)) / tile.nextBuildCost * (1+chance*10) : -1; }
+      if (action.type === 'buy') { const tile = tiles[view.ownHand.position], group = tiles.filter(t => t.group === tile.group && t.kind === 'property'), selection = (action.payload ?? { buildings: [] }) as MarbleConstructionSelection, cost = tile.price + (independent ? (tile.cityEconomy ? classicConstructionCost(tile.cityEconomy, selection) : constructionCostAtPrice(tile.price, selection, economicVersion)) : marbleBuildToCostAtPrice(tile.price, 0, Number(x.targetLevel ?? 0), economicVersion)), after = independent ? applyConstruction(tile, selection) : { ...tile, houses: Number(x.targetLevel ?? 0) }; return money - cost >= reserve ? 30 + group.filter(t=>t.owner===player).length * 5 + ((rent(after) - rent(tile)) / Math.max(1, cost) * 20) : -1; }
+      if (action.type === 'takeover') { const tile = tiles[Number(x.tile)], cost = x.useDiscountPass ? view.board.takeoverOffer?.discountPrice : view.board.takeoverOffer?.price; return cost != null && money - cost >= reserve ? 15 + tile.houses * 3 : -5; }
+      if (action.type === 'build') { const tile = tiles[Number(x.tile)], distance = (Number(x.tile)-view.board.positions[opponent]+tiles.length)%tiles.length; const chance = distance>=2&&distance<=12 ? (6-Math.abs(7-distance))/36 : .02; const selection = x as unknown as MarbleConstructionSelection, cost = independent ? (tile.cityEconomy ? classicConstructionCost(tile.cityEconomy, selection) : constructionCostAtPrice(tile.price, selection, economicVersion)) : marbleBuildToCostAtPrice(tile.price, tile.houses, Number(x.targetLevel ?? tile.houses + 1), economicVersion), nextRent = independent ? rent(applyConstruction(tile, selection)) : rent({ ...tile, houses: Number(x.targetLevel ?? tile.houses + 1) }); return money - cost >= reserve ? 10 + (nextRent-rent(tile)) / Math.max(1, cost) * (1+chance*10) : -1; }
       if (action.type === 'sell-property') { const tile = tiles[Number(x.tile)]; return -20 - rent(tile) - (view.board.monopolies[player].includes(tile.group) ? 200 : 0); }
       if (action.type === 'declare-bankruptcy') return -1000;
       if (action.type === 'borrow') return view.phase === 'debt' ? 10 : -10;
       if (action.type === 'repay') return money > 700 ? 12 : -5;
       if (action.type === 'choose-pawn') return -20;
-      if (action.type === 'choose-train') { const tile = view.board.tiles[Number(x.destination)]; return !tile.owner && money > (tile.price ?? 0) + 400 ? 8 : -2; }
+      if (action.type === 'choose-train') { const tile = view.board.tiles[Number(x.destination)]; if (tile.kind === 'island' || tile.kind === 'tax' || tile.kind === 'fund-deposit') return -10; if (tile.kind !== 'property') return tile.kind === 'fund' ? 2 : 0; return !tile.owner && money > (tile.price ?? 0) + 400 ? 8 : -2; }
       if (action.type === 'use-rent-pass') return view.board.pendingRent.amount > 100 || money-view.board.pendingRent.amount < reserve ? 40 : -1;
       if (action.type === 'use-escape-pass') return 40;
       if (action.type === 'choose-event-city') { const tile = view.board.tiles[Number(x.tile)]; return (tile.nextRent ?? tile.rent ?? 0) + tile.houses * 100; }

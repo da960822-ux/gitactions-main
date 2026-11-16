@@ -1,0 +1,56 @@
+.guide-language { display:flex; flex-wrap:wrap; align-items:center; gap:8px; margin:12px 0 18px; }
+.guide-language > span { margin-right:auto; font-size:13px; font-weight:600; }
+.guide-language button { min-height:42px; padding:8px 16px; border:1px solid #958392; border-radius:9px; background:transparent; color:inherit; font:inherit; cursor:pointer; }
+.guide-language button[aria-pressed=true] { background:#f6df9d; color:#30241b; border-color:#f6df9d; font-weight:800; }
+.guide-language button:focus-visible,.game-tutorial summary:focus-visible { outline:3px solid #dca44c; outline-offset:3px; }
+.game-tutorial { max-width:76ch; margin:0 auto; font-size:16px; line-height:1.65; overflow-wrap:anywhere; }
+.game-tutorial > section { margin:22px 0; }
+.game-tutorial h3 { margin:0 0 10px; font-family:inherit; font-size:20px; line-height:1.4; font-weight:700; }
+.game-tutorial h4 { margin:0 0 6px; font-size:17px; line-height:1.4; }
+.game-tutorial p { margin:6px 0 12px; }
+.game-tutorial .tutorial-goal { padding:18px 20px; border-radius:12px; background:#94734618; border:1px solid #a98d5f70; }
+.game-tutorial .tutorial-goal p { margin-bottom:0; font-size:18px; }
+.game-tutorial .tutorial-setup ul { padding-left:22px; }
+.game-tutorial .tutorial-setup li { display:list-item; margin:6px 0; padding:0; border:0; }
+:is(.app-shell,.team-game-guide) .game-tutorial .tutorial-steps { display:grid; grid-template-columns:1fr; gap:12px; margin:0; padding:0; }
+:is(.app-shell,.team-game-guide) .game-tutorial .tutorial-steps > li { display:grid; grid-template-columns:32px minmax(0,1fr); gap:12px; margin:0; padding:16px; border:1px solid #99859665; border-radius:12px; }
+:is(.app-shell,.team-game-guide) .game-tutorial li p { font-size:16px; line-height:1.65; color:inherit; }
+.game-tutorial .tutorial-step-number { display:grid; place-items:center; align-self:start; width:30px; height:30px; border-radius:50%; background:#7f625329; font-family:inherit; font-size:16px; line-height:1; font-weight:700; }
+.game-tutorial .tutorial-control { padding:8px 10px; border-radius:7px; background:#98857e16; }
+.game-tutorial .tutorial-control b { margin-right:8px; }
+.game-tutorial .tutorial-example { padding:18px 20px; border-left:4px solid #b38d57; background:#b5965910; }
+.game-tutorial .tutorial-example ol { margin:10px 0; padding:0; list-style:none; }
+.game-tutorial .tutorial-example li { display:grid; grid-template-columns:22px minmax(0,1fr); gap:10px; padding:7px 0; border:0; }
+.game-tutorial .tutorial-example li p { margin:0; }
+.game-tutorial .tutorial-result { border-top:1px solid #99859665; padding-top:12px; margin-bottom:0; }
+.game-tutorial details { border-top:1px solid #99859665; }
+.game-tutorial summary { padding:13px 0; min-height:44px; cursor:pointer; font-weight:700; }
+.game-tutorial details p { padding:0 0 12px; margin:0; }
+.game-tutorial dl > div { margin:12px 0; }
+.game-tutorial dt { font-weight:800; }
+.game-tutorial dd { margin:2px 0 0; }
+.app-shell .rules-dialog.guide-dialog { display:flex; flex-direction:column; width:min(850px,100%); max-height:calc(100svh - 40px); padding:22px 28px; overflow:hidden; }
+.app-shell .rules-dialog.guide-dialog > .rules-icon,.app-shell .rules-dialog.guide-dialog > .rules-subtitle { display:none; }
+.app-shell .rules-dialog.guide-dialog > h2 { margin:0 48px 4px 0; font-size:26px; }
+.app-shell .rules-dialog.guide-dialog > .dialog-close { position:absolute; top:12px; right:12px; margin:0; flex:none; }
+.guide-dialog > .guide-language { flex:none; margin-bottom:12px; }
+.guide-dialog-body { min-height:0; overflow-y:auto; overscroll-behavior:contain; scrollbar-gutter:stable; padding-right:12px; }
+.guide-dialog > .full-button { flex:none; margin-top:14px; min-height:44px; }
+@media(max-width:600px) { .app-shell .rules-dialog.guide-dialog { padding:18px; } .game-tutorial { font-size:15px; } :is(.app-shell,.team-game-guide) .game-tutorial li p { font-size:15px; } .game-tutorial .tutorial-example { padding:14px; } }
+
+.team-game-guide { min-width:0; color:inherit; }
+.team-game-guide .game-tutorial { font-size:15px; }
+.team-game-guide .game-tutorial li { font-size:15px; line-height:1.65; }
+.team-guide-close { position:sticky; top:0; z-index:2; display:block; margin-left:auto; min-height:44px; }
+.mh4-dialog:has(.team-game-guide) .mh4-dialog-close { position:sticky; top:0; z-index:2; }
+.spt-help > div:has(.team-game-guide),.mt-help > div:has(.team-game-guide) { width:min(760px,calc(100vw - 32px))!important; max-height:calc(100svh - 100px); overflow:auto; overscroll-behavior:contain; }
+:is(.spt-header,.mt-top) nav .team-game-guide .game-tutorial p { font-size:16px; line-height:1.65; }
+:is(.spt-header,.mt-top) nav .team-game-guide .game-tutorial summary { display:list-item; padding:12px 0; min-height:44px; border:0; border-radius:0; background:transparent; color:inherit; }
+:is(.spt-header,.mt-top) nav .team-game-guide .guide-language button { min-height:42px; padding:8px 16px; }
+
+.room-guide[open] > summary { position:sticky; top:0; z-index:2; background:inherit; }
+.tutorial-actual-control { display:block; padding:7px 10px; border-left:3px solid #ad8b56; font-size:13px; line-height:1.5; }
+.tutorial-actual-control b { display:block; margin-bottom:2px; }
+.game-tutorial .tutorial-board-version { padding:10px 12px; border:1px solid #a48d7460; border-radius:8px; font-size:14px; line-height:1.5; }
+.marble-native-team .mt-top nav > .mt-help > div { color:#25494b; }
+.marble-native-team .mt-top nav .team-game-guide .game-tutorial :is(h3,h4,p,li,dt,dd,summary,small) { color:inherit; }

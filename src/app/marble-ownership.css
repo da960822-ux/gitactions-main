@@ -47,3 +47,8 @@
   :is(.marble-premium,.marble-native-team).is-modern :is(.mp-tile--west,.mp-tile--east) .mp-tile-top { left:0; right:0; width:100%; justify-content:flex-end; }
   :is(.marble-premium,.marble-native-team).is-modern :is(.mp-tile--west,.mp-tile--east) .mp-owner { position:absolute; top:0; left:0; right:auto; }
 }
+
+:is(.marble-premium,.marble-native-team) .mp-inspector-summary { display:grid; grid-template-columns:72px minmax(0,1fr); gap:12px; align-items:center; margin:12px 0; }
+:is(.marble-premium,.marble-native-team) .mp-inspector-summary > .mp-property-art-frame { width:72px; height:80px; }
+:is(.marble-premium,.marble-native-team) .mp-inspector-summary h3 { margin:0 0 4px; font-size:18px; }
+:is(.marble-premium,.marble-native-team) .mp-inspector-summary p { margin:3px 0; font-size:13px; line-height:1.4; }

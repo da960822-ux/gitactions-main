@@ -1,0 +1,596 @@
+[
+  {
+    "artId": "2-B01",
+    "engineId": "t2-02",
+    "src": "custom-v2/t2-02.webp",
+    "sha256": "6abc334dc94bae3357f00f8975f833277737c94d8f322d6f77cd8dd590a19643",
+    "width": 683,
+    "height": 1024,
+    "originalStyleKept": false
+  },
+  {
+    "artId": "2-B02",
+    "engineId": "t2-07",
+    "src": "custom-v2/t2-07.webp",
+    "sha256": "fdb3743ec38aa7b92934e3cb3cff029cafc51cb2c246a3435dd10d447d005fa6",
+    "width": 683,
+    "height": 1024,
+    "originalStyleKept": false
+  },
+  {
+    "artId": "2-B03",
+    "engineId": "t2-12",
+    "src": "custom-v2/t2-12.webp",
+    "sha256": "17463c77cd6889ef101c5cb4a970b3f40e1764212cb9d122f7f4b0fd175b1d85",
+    "width": 683,
+    "height": 1024,
+    "originalStyleKept": false
+  },
+  {
+    "artId": "2-B04",
+    "engineId": "t2-17",
+    "src": "custom-v2/t2-17.webp",
+    "sha256": "e1656ce484ae0ee3a93f924c1b54afbce41536899bb0414bd3a8dec0381b38b7",
+    "width": 683,
+    "height": 1024,
+    "originalStyleKept": false
+  },
+  {
+    "artId": "2-B05",
+    "engineId": "t2-22",
+    "src": "custom-v2/t2-22.webp",
+    "sha256": "8bccb6626d4f5b1b05704421e1bc7d42aaa00d31ee0a639ca5f4c2bb1d61ac5b",
+    "width": 683,
+    "height": 1024,
+    "originalStyleKept": false
+  },
+  {
+    "artId": "2-B06",
+    "engineId": "t2-27",
+    "src": "custom-v2/t2-27.webp",
+    "sha256": "c94f56888b9f452b2c324f4e0679aed678c7a7255228a5e00f7f54906acd2c0a",
+    "width": 683,
+    "height": 1024,
+    "originalStyleKept": false
+  },
+  {
+    "artId": "2-G01",
+    "engineId": "t2-03",
+    "src": "custom-v2/t2-03.webp",
+    "sha256": "cf1ce9f4d0d539e5e78e5c7c0f57d0b985af5d5cde40b38e632f1a92794d19fa",
+    "width": 683,
+    "height": 1024,
+    "originalStyleKept": false
+  },
+  {
+    "artId": "2-G02",
+    "engineId": "t2-08",
+    "src": "custom-v2/t2-08.webp",
+    "sha256": "dba20bfff37b6084fb8c42235e4417067d279946ebc0a0b9d9e6e47cb480596e",
+    "width": 683,
+    "height": 1024,
+    "originalStyleKept": false
+  },
+  {
+    "artId": "2-G03",
+    "engineId": "t2-13",
+    "src": "custom-v2/t2-13.webp",
+    "sha256": "41a7f113daa7173cec822700af2fffc69df0c57d2987c5a0dbcfc400d9495e7e",
+    "width": 683,
+    "height": 1024,
+    "originalStyleKept": false
+  },
+  {
+    "artId": "2-G04",
+    "engineId": "t2-18",
+    "src": "custom-v2/t2-18.webp",
+    "sha256": "77b02057a8cd0250235bcb5355122a267b27dac21b488355b1b7b5f2632205f3",
+    "width": 683,
+    "height": 1024,
+    "originalStyleKept": false
+  },
+  {
+    "artId": "2-G05",
+    "engineId": "t2-23",
+    "src": "custom-v2/t2-23.webp",
+    "sha256": "0f69fc14afbb7db22df3a71617d7550c041350059310ec5151e08296c7cc9a83",
+    "width": 683,
+    "height": 1024,
+    "originalStyleKept": false
+  },
+  {
+    "artId": "2-G06",
+    "engineId": "t2-28",
+    "src": "custom-v2/t2-28.webp",
+    "sha256": "75bda0cd42bb30ad2e9dd2f0591960f8e016062d8528c8492e219de33077d728",
+    "width": 683,
+    "height": 1024,
+    "originalStyleKept": false
+  },
+  {
+    "artId": "2-K01",
+    "engineId": "t2-05",
+    "src": "custom-v2/t2-05.webp",
+    "sha256": "7bd85aab29e268b877d163d7f8024e2d725dfb2865e90be23a1fd5be2ff46099",
+    "width": 683,
+    "height": 1024,
+    "originalStyleKept": false
+  },
+  {
+    "artId": "2-K02",
+    "engineId": "t2-10",
+    "src": "custom-v2/t2-10.webp",
+    "sha256": "303801771a9d68dcee602ce7918799737ddf60dda354cf5959282cc1cb57bff1",
+    "width": 683,
+    "height": 1024,
+    "originalStyleKept": false
+  },
+  {
+    "artId": "2-K03",
+    "engineId": "t2-15",
+    "src": "custom-v2/t2-15.webp",
+    "sha256": "edf0aada3b4a5e4071729c6f748c69049162b966a59b1dd987437b8cd185657e",
+    "width": 683,
+    "height": 1024,
+    "originalStyleKept": false
+  },
+  {
+    "artId": "2-K04",
+    "engineId": "t2-20",
+    "src": "custom-v2/t2-20.webp",
+    "sha256": "82c215ec6f63ed5606d88142c498fb5f7222f6d70ac3d8aec13cf785d98c1cee",
+    "width": 683,
+    "height": 1024,
+    "originalStyleKept": false
+  },
+  {
+    "artId": "2-K05",
+    "engineId": "t2-25",
+    "src": "custom-v2/t2-25.webp",
+    "sha256": "a0c7ed60fc9f3c9ef602c32a5189517b021051bea285a29b11f0e344313da16f",
+    "width": 683,
+    "height": 1024,
+    "originalStyleKept": false
+  },
+  {
+    "artId": "2-K06",
+    "engineId": "t2-30",
+    "src": "custom-v2/t2-30.webp",
+    "sha256": "eae01edfb4583ca63551c4201ad299e1ea1ded55c490d8e1470bc66521df9795",
+    "width": 683,
+    "height": 1024,
+    "originalStyleKept": false
+  },
+  {
+    "artId": "2-R01",
+    "engineId": "t2-04",
+    "src": "custom-v2/t2-04.webp",
+    "sha256": "88456bd9419aa5f30a9805c9b926a79fa17f0b55432495e76c4fbd67e538df2f",
+    "width": 683,
+    "height": 1024,
+    "originalStyleKept": false
+  },
+  {
+    "artId": "2-R02",
+    "engineId": "t2-09",
+    "src": "custom-v2/t2-09.webp",
+    "sha256": "ee69f94e7f50b8bba4bea71053fde890ef6785d7b94f685bfbaedf6441e14be5",
+    "width": 683,
+    "height": 1024,
+    "originalStyleKept": false
+  },
+  {
+    "artId": "2-R03",
+    "engineId": "t2-14",
+    "src": "custom-v2/t2-14.webp",
+    "sha256": "bc5e9c5984b3720b0b04c8841561e33ed56edc8fe2ecfdb4423f79d5e65f7fef",
+    "width": 683,
+    "height": 1024,
+    "originalStyleKept": false
+  },
+  {
+    "artId": "2-R04",
+    "engineId": "t2-19",
+    "src": "custom-v2/t2-19.webp",
+    "sha256": "73e52bc77b46146242be0782243125e753b3bd9efa282ff3fbaa019995863f36",
+    "width": 683,
+    "height": 1024,
+    "originalStyleKept": false
+  },
+  {
+    "artId": "2-R05",
+    "engineId": "t2-24",
+    "src": "custom-v2/t2-24.webp",
+    "sha256": "9d26a5217c95f12aca5d672218126044e8321157d2f5d49d764288f58ffaeb0e",
+    "width": 683,
+    "height": 1024,
+    "originalStyleKept": true
+  },
+  {
+    "artId": "2-R06",
+    "engineId": "t2-29",
+    "src": "custom-v2/t2-29.webp",
+    "sha256": "daeee7c41931581296429c4428a68f69d2fd6f4ebb0bb8c281c78c00f9cca000",
+    "width": 683,
+    "height": 1024,
+    "originalStyleKept": false
+  },
+  {
+    "artId": "2-W01",
+    "engineId": "t2-01",
+    "src": "custom-v2/t2-01.webp",
+    "sha256": "68afbd41b8513f39b0bb943c849670320024b53a708cc52b221626dd781d8600",
+    "width": 683,
+    "height": 1024,
+    "originalStyleKept": false
+  },
+  {
+    "artId": "2-W02",
+    "engineId": "t2-06",
+    "src": "custom-v2/t2-06.webp",
+    "sha256": "2eac75e2406e97dfaaf13218edc30ab530ba59c6c80e7c76c8a66d29f27826f7",
+    "width": 683,
+    "height": 1024,
+    "originalStyleKept": false
+  },
+  {
+    "artId": "2-W03",
+    "engineId": "t2-11",
+    "src": "custom-v2/t2-11.webp",
+    "sha256": "a143d84f24ef55a1b2b02801f4ffac321d0e2b76dba2eaeeb569e72b9f742341",
+    "width": 683,
+    "height": 1024,
+    "originalStyleKept": false
+  },
+  {
+    "artId": "2-W04",
+    "engineId": "t2-16",
+    "src": "custom-v2/t2-16.webp",
+    "sha256": "1fd3563bc9d96c32f3235ae5476fddb5fdaf585ecb6cc18309323148045b7ddc",
+    "width": 683,
+    "height": 1024,
+    "originalStyleKept": true
+  },
+  {
+    "artId": "2-W05",
+    "engineId": "t2-21",
+    "src": "custom-v2/t2-21.webp",
+    "sha256": "904c9b89c8f3e6ea253573ac13eb5c403f18a3e05e6d67a76e0afec3b5a09e8e",
+    "width": 683,
+    "height": 1024,
+    "originalStyleKept": false
+  },
+  {
+    "artId": "2-W06",
+    "engineId": "t2-26",
+    "src": "custom-v2/t2-26.webp",
+    "sha256": "e2fd4a10e18ccf939897dd2262bbd3479a46375378720d0ed0ddd1a4e07eb803",
+    "width": 683,
+    "height": 1024,
+    "originalStyleKept": false
+  },
+  {
+    "artId": "3-B01",
+    "engineId": "t3-02",
+    "src": "custom-v2/t3-02.webp",
+    "sha256": "e0c54754f111ad8f4c30aa58936f62ff9a4ca70e954cc5fa0ac83800ca384375",
+    "width": 683,
+    "height": 1024,
+    "originalStyleKept": false
+  },
+  {
+    "artId": "3-B02",
+    "engineId": "t3-07",
+    "src": "custom-v2/t3-07.webp",
+    "sha256": "0a0ec5a14af68a9b4e553e8ef27de3781e5cd9027c3b49479a1fea4ef5fc0efe",
+    "width": 683,
+    "height": 1024,
+    "originalStyleKept": false
+  },
+  {
+    "artId": "3-B03",
+    "engineId": "t3-12",
+    "src": "custom-v2/t3-12.webp",
+    "sha256": "6b72651985348b5e54a7a5ebe83480241eb60889dc22ca7da125eecd044ada7d",
+    "width": 683,
+    "height": 1024,
+    "originalStyleKept": false
+  },
+  {
+    "artId": "3-B04",
+    "engineId": "t3-17",
+    "src": "custom-v2/t3-17.webp",
+    "sha256": "99a0baa9c8c500f821501a1d893b66eb15b03ae80a6402023342bcc6f030c23d",
+    "width": 683,
+    "height": 1024,
+    "originalStyleKept": false
+  },
+  {
+    "artId": "3-G01",
+    "engineId": "t3-03",
+    "src": "custom-v2/t3-03.webp",
+    "sha256": "31addc3e11700f94d0b7310f54360043dec6a4da28234bc820b9d6aaade5d9aa",
+    "width": 683,
+    "height": 1024,
+    "originalStyleKept": false
+  },
+  {
+    "artId": "3-G02",
+    "engineId": "t3-08",
+    "src": "custom-v2/t3-08.webp",
+    "sha256": "32be0f9d5623d83c1a2ae8564a1e32fe8c19b5cfd07a716ff93ecf8119005897",
+    "width": 683,
+    "height": 1024,
+    "originalStyleKept": false
+  },
+  {
+    "artId": "3-G03",
+    "engineId": "t3-13",
+    "src": "custom-v2/t3-13.webp",
+    "sha256": "82c2e86e100f6761a1fdef707418cefa6146960ff592164053831ef6a8e2ea46",
+    "width": 683,
+    "height": 1024,
+    "originalStyleKept": false
+  },
+  {
+    "artId": "3-G04",
+    "engineId": "t3-18",
+    "src": "custom-v2/t3-18.webp",
+    "sha256": "dc283d11c6758fbe6c1a9195db1e54e45a6b262590019b6550ef6bb0781d97d2",
+    "width": 683,
+    "height": 1024,
+    "originalStyleKept": false
+  },
+  {
+    "artId": "3-K01",
+    "engineId": "t3-05",
+    "src": "custom-v2/t3-05.webp",
+    "sha256": "fa2ea9a04f7f285653390fed1c5b446ac8ca2d883f8762642fe2e48250ad871d",
+    "width": 683,
+    "height": 1024,
+    "originalStyleKept": false
+  },
+  {
+    "artId": "3-K02",
+    "engineId": "t3-10",
+    "src": "custom-v2/t3-10.webp",
+    "sha256": "d3def0c5589d2ffe5bf96c8851308fce7eb7cabd5caa50c8fb6565f126c25609",
+    "width": 683,
+    "height": 1024,
+    "originalStyleKept": true
+  },
+  {
+    "artId": "3-K03",
+    "engineId": "t3-15",
+    "src": "custom-v2/t3-15.webp",
+    "sha256": "ec614c727533691d168ad2e227cfb70287c5258dc4c8cd1f5827824828c0f5f5",
+    "width": 683,
+    "height": 1024,
+    "originalStyleKept": false
+  },
+  {
+    "artId": "3-K04",
+    "engineId": "t3-20",
+    "src": "custom-v2/t3-20.webp",
+    "sha256": "5e4c37d4843a70a63b46e47e7c2b83d3e77367703bae87c1a3ba2a5df8f80953",
+    "width": 683,
+    "height": 1024,
+    "originalStyleKept": false
+  },
+  {
+    "artId": "3-R01",
+    "engineId": "t3-04",
+    "src": "custom-v2/t3-04.webp",
+    "sha256": "a9ee39f2bf62fc72d0ea802c92667a37b20fd6a73f871f5c5b52a8452be0e895",
+    "width": 683,
+    "height": 1024,
+    "originalStyleKept": false
+  },
+  {
+    "artId": "3-R02",
+    "engineId": "t3-09",
+    "src": "custom-v2/t3-09.webp",
+    "sha256": "b400390b46f8416c0034ae9952f9ea3b1c68490511c2b1112a2d724c6986e6d3",
+    "width": 683,
+    "height": 1024,
+    "originalStyleKept": false
+  },
+  {
+    "artId": "3-R03",
+    "engineId": "t3-14",
+    "src": "custom-v2/t3-14.webp",
+    "sha256": "95a5197fbe00bc9b82101258b5e73c6b2157f9003c16d93c9d73a7a4820d7ce5",
+    "width": 683,
+    "height": 1024,
+    "originalStyleKept": false
+  },
+  {
+    "artId": "3-R04",
+    "engineId": "t3-19",
+    "src": "custom-v2/t3-19.webp",
+    "sha256": "dd5398c0bdd2c5f7c91bead020f6228c26d9d3d3004c643d1130acd468864bd0",
+    "width": 683,
+    "height": 1024,
+    "originalStyleKept": false
+  },
+  {
+    "artId": "3-W01",
+    "engineId": "t3-01",
+    "src": "custom-v2/t3-01.webp",
+    "sha256": "fc0bbf30d175194098a3c2f50a7b5788744b25953b058764e035f479a815f266",
+    "width": 683,
+    "height": 1024,
+    "originalStyleKept": false
+  },
+  {
+    "artId": "3-W02",
+    "engineId": "t3-06",
+    "src": "custom-v2/t3-06.webp",
+    "sha256": "35c5eb1b20de990306541216d5ee89b824ffb4b7f4062284123a88967854bfc9",
+    "width": 683,
+    "height": 1024,
+    "originalStyleKept": false
+  },
+  {
+    "artId": "3-W03",
+    "engineId": "t3-11",
+    "src": "custom-v2/t3-11.webp",
+    "sha256": "2d44007b487ab11a9d4c5f6d57d1b25ff04cdb674e7ae1467e566955bac659c4",
+    "width": 683,
+    "height": 1024,
+    "originalStyleKept": false
+  },
+  {
+    "artId": "3-W04",
+    "engineId": "t3-16",
+    "src": "custom-v2/t3-16.webp",
+    "sha256": "9741e190b3539c986c08120d772fa97f1d7a2b044371ba8ce8bcc524025bf8e0",
+    "width": 683,
+    "height": 1024,
+    "originalStyleKept": false
+  },
+  {
+    "artId": "N01",
+    "engineId": "n0",
+    "src": "custom-v2/n0.webp",
+    "sha256": "5448861bb677f2f8106a9ae18c601fb246b6bcfefa3f9550a14b3584db8be252",
+    "width": 1024,
+    "height": 1024,
+    "originalStyleKept": false
+  },
+  {
+    "artId": "N02",
+    "engineId": "n1",
+    "src": "custom-v2/n1.webp",
+    "sha256": "bfe97f2cc1b6fd1307193902adae046dbc03291d4a3e9fad6fc7997f1a78b26c",
+    "width": 1024,
+    "height": 1024,
+    "originalStyleKept": false
+  },
+  {
+    "artId": "N03",
+    "engineId": "n2",
+    "src": "custom-v2/n2.webp",
+    "sha256": "85f7eca56e7752d9c8aabc16360a34d6a4632bdbaf0d3e5be72a43c8c2dec63d",
+    "width": 1024,
+    "height": 1024,
+    "originalStyleKept": false
+  },
+  {
+    "artId": "N04",
+    "engineId": "n3",
+    "src": "custom-v2/n3.webp",
+    "sha256": "8794f6afa11f7b7b7c6803428980c8fa86f6e200d55ad867b6d37eeb1bd8a7fd",
+    "width": 1024,
+    "height": 1024,
+    "originalStyleKept": false
+  },
+  {
+    "artId": "N05",
+    "engineId": "n4",
+    "src": "custom-v2/n4.webp",
+    "sha256": "0890501da4aa394429632e3246ee92063288ac2482bd594ab3790e1ddac87800",
+    "width": 1024,
+    "height": 1024,
+    "originalStyleKept": false
+  },
+  {
+    "artId": "N06",
+    "engineId": "n5",
+    "src": "custom-v2/n5.webp",
+    "sha256": "55bf1925c58f2ed32daabca4348aa3d2757365aac0f4abd8cd45cbe0162bd94c",
+    "width": 1024,
+    "height": 1024,
+    "originalStyleKept": false
+  },
+  {
+    "artId": "N07",
+    "engineId": "n6",
+    "src": "custom-v2/n6.webp",
+    "sha256": "6d781c6b17f1b454d4cd95526d31b6488d9cc6928a866298062a82ed3c00ff16",
+    "width": 1024,
+    "height": 1024,
+    "originalStyleKept": false
+  },
+  {
+    "artId": "N08",
+    "engineId": "n7",
+    "src": "custom-v2/n7.webp",
+    "sha256": "da4acafda19e1003aed71e3291e412318ece580c2328280af5167261174dd049",
+    "width": 1024,
+    "height": 1024,
+    "originalStyleKept": false
+  },
+  {
+    "artId": "N09",
+    "engineId": "n8",
+    "src": "custom-v2/n8.webp",
+    "sha256": "26299cd963d379a6dfee10e0d6cfc5e59908516f2ac9032f77f8adebae7c1746",
+    "width": 1024,
+    "height": 1024,
+    "originalStyleKept": false
+  },
+  {
+    "artId": "N10",
+    "engineId": "n9",
+    "src": "custom-v2/n9.webp",
+    "sha256": "85ef035821a865c98ab80d08b1492c6fc794d499b41190d4e7c00fd7bdb94fe8",
+    "width": 1024,
+    "height": 1024,
+    "originalStyleKept": false
+  },
+  {
+    "artId": "EX-HJ-BLACK-VEIL",
+    "engineId": "n10",
+    "src": "custom-v2/n10.webp",
+    "sha256": "1d885a228cb43e1568ae473fb3c0d142ba756b1e6ea619fe19295890bb04b222",
+    "width": 819,
+    "height": 1024,
+    "originalStyleKept": false
+  },
+  {
+    "artId": "EX-HJ-GOLD",
+    "engineId": "n11",
+    "src": "custom-v2/n11.webp",
+    "sha256": "b170e1e0cdb018f025726e3c35935df300c4163a396654237fc230a29a4f90fd",
+    "width": 819,
+    "height": 1024,
+    "originalStyleKept": false
+  },
+  {
+    "artId": "EX-HJ-RED",
+    "engineId": "n12",
+    "src": "custom-v2/n12.webp",
+    "sha256": "c0594ae8bbe8850add44090e0deaafe9967a833fc46c91b1ed3480c8208166ef",
+    "width": 819,
+    "height": 1024,
+    "originalStyleKept": false
+  },
+  {
+    "artId": "EX-LATIN-BACHATA",
+    "engineId": "n13",
+    "src": "custom-v2/n13.webp",
+    "sha256": "c1c4d9916e986aea21afc26c055b5dc3e82d2455c7d2772c72ffe08955cf3ad0",
+    "width": 683,
+    "height": 1024,
+    "originalStyleKept": false
+  },
+  {
+    "artId": "EX-LATIN-FESTIVAL",
+    "engineId": "n14",
+    "src": "custom-v2/n14.webp",
+    "sha256": "10d03c71dfa27deba3fdcaa664c1a0d12aa1730c9d3f5b33e84ec0b6bd9ae375",
+    "width": 819,
+    "height": 1024,
+    "originalStyleKept": false
+  },
+  {
+    "artId": "EX-LATIN-STREET",
+    "engineId": "n15",
+    "src": "custom-v2/n15.webp",
+    "sha256": "5aace7ead26c2dc845b0dd8e0760a1124956c54df45ee4dcf66ce5d95312aad1",
+    "width": 683,
+    "height": 1024,
+    "originalStyleKept": false
+  }
+]

@@ -1,0 +1,2871 @@
+{
+  "baseline": "24eaea9",
+  "cases": {
+    "fourMarbleEngine:festival": {
+      "active": "p1",
+      "phase": "main",
+      "positions": {
+        "p1": 2,
+        "p2": 0,
+        "p3": 0,
+        "p4": 0
+      },
+      "money": {
+        "p1": 10150,
+        "p2": 10000,
+        "p3": 10000,
+        "p4": 10000
+      },
+      "properties": {
+        "1": {
+          "owner": "p1",
+          "houses": 1
+        },
+        "4": {
+          "owner": "p2",
+          "houses": 1
+        },
+        "5": {
+          "owner": "p2",
+          "houses": 0
+        },
+        "15": {
+          "owner": "p2",
+          "houses": 0
+        }
+      },
+      "eventDeck": [
+        "festival"
+      ],
+      "islandTurns": {
+        "p1": 0,
+        "p2": 0,
+        "p3": 0,
+        "p4": 0
+      },
+      "escapePasses": {
+        "p1": 0,
+        "p2": 0,
+        "p3": 0,
+        "p4": 0
+      },
+      "rentPasses": {
+        "p1": 0,
+        "p2": 0,
+        "p3": 0,
+        "p4": 0
+      },
+      "trainReady": {
+        "p1": false,
+        "p2": false,
+        "p3": false,
+        "p4": false
+      },
+      "pendingTile": 2,
+      "trainFare": 100,
+      "trainFromCard": false,
+      "pendingEvent": null,
+      "pendingRent": null,
+      "pendingPayment": null,
+      "debt": {
+        "p1": 0,
+        "p2": 0,
+        "p3": 0,
+        "p4": 0
+      },
+      "fundPool": 0,
+      "takeoverTile": null,
+      "extraRoll": true,
+      "doublesCount": 1,
+      "buildSite": null,
+      "landmarkOptions": [],
+      "eliminated": {
+        "p1": false,
+        "p2": false,
+        "p3": false,
+        "p4": false
+      },
+      "turns": 0,
+      "result": null,
+      "modifiers": {}
+    },
+    "fourMarbleEngine:lottery": {
+      "active": "p1",
+      "phase": "main",
+      "positions": {
+        "p1": 2,
+        "p2": 0,
+        "p3": 0,
+        "p4": 0
+      },
+      "money": {
+        "p1": 10200,
+        "p2": 10000,
+        "p3": 10000,
+        "p4": 10000
+      },
+      "properties": {
+        "1": {
+          "owner": "p1",
+          "houses": 1
+        },
+        "4": {
+          "owner": "p2",
+          "houses": 1
+        },
+        "5": {
+          "owner": "p2",
+          "houses": 0
+        },
+        "15": {
+          "owner": "p2",
+          "houses": 0
+        }
+      },
+      "eventDeck": [
+        "lottery"
+      ],
+      "islandTurns": {
+        "p1": 0,
+        "p2": 0,
+        "p3": 0,
+        "p4": 0
+      },
+      "escapePasses": {
+        "p1": 0,
+        "p2": 0,
+        "p3": 0,
+        "p4": 0
+      },
+      "rentPasses": {
+        "p1": 0,
+        "p2": 0,
+        "p3": 0,
+        "p4": 0
+      },
+      "trainReady": {
+        "p1": false,
+        "p2": false,
+        "p3": false,
+        "p4": false
+      },
+      "pendingTile": 2,
+      "trainFare": 100,
+      "trainFromCard": false,
+      "pendingEvent": null,
+      "pendingRent": null,
+      "pendingPayment": null,
+      "debt": {
+        "p1": 0,
+        "p2": 0,
+        "p3": 0,
+        "p4": 0
+      },
+      "fundPool": 0,
+      "takeoverTile": null,
+      "extraRoll": true,
+      "doublesCount": 1,
+      "buildSite": null,
+      "landmarkOptions": [],
+      "eliminated": {
+        "p1": false,
+        "p2": false,
+        "p3": false,
+        "p4": false
+      },
+      "turns": 0,
+      "result": null,
+      "modifiers": {}
+    },
+    "fourMarbleEngine:rent-rebate": {
+      "active": "p1",
+      "phase": "main",
+      "positions": {
+        "p1": 2,
+        "p2": 0,
+        "p3": 0,
+        "p4": 0
+      },
+      "money": {
+        "p1": 10080,
+        "p2": 10000,
+        "p3": 10000,
+        "p4": 10000
+      },
+      "properties": {
+        "1": {
+          "owner": "p1",
+          "houses": 1
+        },
+        "4": {
+          "owner": "p2",
+          "houses": 1
+        },
+        "5": {
+          "owner": "p2",
+          "houses": 0
+        },
+        "15": {
+          "owner": "p2",
+          "houses": 0
+        }
+      },
+      "eventDeck": [
+        "rent-rebate"
+      ],
+      "islandTurns": {
+        "p1": 0,
+        "p2": 0,
+        "p3": 0,
+        "p4": 0
+      },
+      "escapePasses": {
+        "p1": 0,
+        "p2": 0,
+        "p3": 0,
+        "p4": 0
+      },
+      "rentPasses": {
+        "p1": 0,
+        "p2": 0,
+        "p3": 0,
+        "p4": 0
+      },
+      "trainReady": {
+        "p1": false,
+        "p2": false,
+        "p3": false,
+        "p4": false
+      },
+      "pendingTile": 2,
+      "trainFare": 100,
+      "trainFromCard": false,
+      "pendingEvent": null,
+      "pendingRent": null,
+      "pendingPayment": null,
+      "debt": {
+        "p1": 0,
+        "p2": 0,
+        "p3": 0,
+        "p4": 0
+      },
+      "fundPool": 0,
+      "takeoverTile": null,
+      "extraRoll": true,
+      "doublesCount": 1,
+      "buildSite": null,
+      "landmarkOptions": [],
+      "eliminated": {
+        "p1": false,
+        "p2": false,
+        "p3": false,
+        "p4": false
+      },
+      "turns": 0,
+      "result": null,
+      "modifiers": {}
+    },
+    "fourMarbleEngine:travel-cost": {
+      "active": "p1",
+      "phase": "main",
+      "positions": {
+        "p1": 2,
+        "p2": 0,
+        "p3": 0,
+        "p4": 0
+      },
+      "money": {
+        "p1": 9900,
+        "p2": 10000,
+        "p3": 10000,
+        "p4": 10000
+      },
+      "properties": {
+        "1": {
+          "owner": "p1",
+          "houses": 1
+        },
+        "4": {
+          "owner": "p2",
+          "houses": 1
+        },
+        "5": {
+          "owner": "p2",
+          "houses": 0
+        },
+        "15": {
+          "owner": "p2",
+          "houses": 0
+        }
+      },
+      "eventDeck": [
+        "travel-cost"
+      ],
+      "islandTurns": {
+        "p1": 0,
+        "p2": 0,
+        "p3": 0,
+        "p4": 0
+      },
+      "escapePasses": {
+        "p1": 0,
+        "p2": 0,
+        "p3": 0,
+        "p4": 0
+      },
+      "rentPasses": {
+        "p1": 0,
+        "p2": 0,
+        "p3": 0,
+        "p4": 0
+      },
+      "trainReady": {
+        "p1": false,
+        "p2": false,
+        "p3": false,
+        "p4": false
+      },
+      "pendingTile": 2,
+      "trainFare": 100,
+      "trainFromCard": false,
+      "pendingEvent": null,
+      "pendingRent": null,
+      "pendingPayment": null,
+      "debt": {
+        "p1": 0,
+        "p2": 0,
+        "p3": 0,
+        "p4": 0
+      },
+      "fundPool": 0,
+      "takeoverTile": null,
+      "extraRoll": true,
+      "doublesCount": 1,
+      "buildSite": null,
+      "landmarkOptions": [],
+      "eliminated": {
+        "p1": false,
+        "p2": false,
+        "p3": false,
+        "p4": false
+      },
+      "turns": 0,
+      "result": null,
+      "modifiers": {}
+    },
+    "fourMarbleEngine:maintenance": {
+      "active": "p1",
+      "phase": "main",
+      "positions": {
+        "p1": 2,
+        "p2": 0,
+        "p3": 0,
+        "p4": 0
+      },
+      "money": {
+        "p1": 9960,
+        "p2": 10000,
+        "p3": 10000,
+        "p4": 10000
+      },
+      "properties": {
+        "1": {
+          "owner": "p1",
+          "houses": 1
+        },
+        "4": {
+          "owner": "p2",
+          "houses": 1
+        },
+        "5": {
+          "owner": "p2",
+          "houses": 0
+        },
+        "15": {
+          "owner": "p2",
+          "houses": 0
+        }
+      },
+      "eventDeck": [
+        "maintenance"
+      ],
+      "islandTurns": {
+        "p1": 0,
+        "p2": 0,
+        "p3": 0,
+        "p4": 0
+      },
+      "escapePasses": {
+        "p1": 0,
+        "p2": 0,
+        "p3": 0,
+        "p4": 0
+      },
+      "rentPasses": {
+        "p1": 0,
+        "p2": 0,
+        "p3": 0,
+        "p4": 0
+      },
+      "trainReady": {
+        "p1": false,
+        "p2": false,
+        "p3": false,
+        "p4": false
+      },
+      "pendingTile": 2,
+      "trainFare": 100,
+      "trainFromCard": false,
+      "pendingEvent": null,
+      "pendingRent": null,
+      "pendingPayment": null,
+      "debt": {
+        "p1": 0,
+        "p2": 0,
+        "p3": 0,
+        "p4": 0
+      },
+      "fundPool": 0,
+      "takeoverTile": null,
+      "extraRoll": true,
+      "doublesCount": 1,
+      "buildSite": null,
+      "landmarkOptions": [],
+      "eliminated": {
+        "p1": false,
+        "p2": false,
+        "p3": false,
+        "p4": false
+      },
+      "turns": 0,
+      "result": null,
+      "modifiers": {}
+    },
+    "fourMarbleEngine:visit-santo-domingo": {
+      "active": "p1",
+      "phase": "main",
+      "positions": {
+        "p1": 15,
+        "p2": 0,
+        "p3": 0,
+        "p4": 0
+      },
+      "money": {
+        "p1": 9970,
+        "p2": 10030,
+        "p3": 10000,
+        "p4": 10000
+      },
+      "properties": {
+        "1": {
+          "owner": "p1",
+          "houses": 1
+        },
+        "4": {
+          "owner": "p2",
+          "houses": 1
+        },
+        "5": {
+          "owner": "p2",
+          "houses": 0
+        },
+        "15": {
+          "owner": "p2",
+          "houses": 0
+        }
+      },
+      "eventDeck": [
+        "visit-santo-domingo"
+      ],
+      "islandTurns": {
+        "p1": 0,
+        "p2": 0,
+        "p3": 0,
+        "p4": 0
+      },
+      "escapePasses": {
+        "p1": 0,
+        "p2": 0,
+        "p3": 0,
+        "p4": 0
+      },
+      "rentPasses": {
+        "p1": 0,
+        "p2": 0,
+        "p3": 0,
+        "p4": 0
+      },
+      "trainReady": {
+        "p1": false,
+        "p2": false,
+        "p3": false,
+        "p4": false
+      },
+      "pendingTile": 15,
+      "trainFare": 100,
+      "trainFromCard": false,
+      "pendingEvent": null,
+      "pendingRent": null,
+      "pendingPayment": null,
+      "debt": {
+        "p1": 0,
+        "p2": 0,
+        "p3": 0,
+        "p4": 0
+      },
+      "fundPool": 0,
+      "takeoverTile": 15,
+      "extraRoll": true,
+      "doublesCount": 1,
+      "buildSite": null,
+      "landmarkOptions": [],
+      "eliminated": {
+        "p1": false,
+        "p2": false,
+        "p3": false,
+        "p4": false
+      },
+      "turns": 0,
+      "result": null,
+      "modifiers": {}
+    },
+    "fourMarbleEngine:advance-start": {
+      "active": "p1",
+      "phase": "main",
+      "positions": {
+        "p1": 0,
+        "p2": 0,
+        "p3": 0,
+        "p4": 0
+      },
+      "money": {
+        "p1": 10300,
+        "p2": 10000,
+        "p3": 10000,
+        "p4": 10000
+      },
+      "properties": {
+        "1": {
+          "owner": "p1",
+          "houses": 1
+        },
+        "4": {
+          "owner": "p2",
+          "houses": 1
+        },
+        "5": {
+          "owner": "p2",
+          "houses": 0
+        },
+        "15": {
+          "owner": "p2",
+          "houses": 0
+        }
+      },
+      "eventDeck": [
+        "advance-start"
+      ],
+      "islandTurns": {
+        "p1": 0,
+        "p2": 0,
+        "p3": 0,
+        "p4": 0
+      },
+      "escapePasses": {
+        "p1": 0,
+        "p2": 0,
+        "p3": 0,
+        "p4": 0
+      },
+      "rentPasses": {
+        "p1": 0,
+        "p2": 0,
+        "p3": 0,
+        "p4": 0
+      },
+      "trainReady": {
+        "p1": false,
+        "p2": false,
+        "p3": false,
+        "p4": false
+      },
+      "pendingTile": 0,
+      "trainFare": 100,
+      "trainFromCard": false,
+      "pendingEvent": null,
+      "pendingRent": null,
+      "pendingPayment": null,
+      "debt": {
+        "p1": 0,
+        "p2": 0,
+        "p3": 0,
+        "p4": 0
+      },
+      "fundPool": 0,
+      "takeoverTile": null,
+      "extraRoll": true,
+      "doublesCount": 1,
+      "buildSite": "start",
+      "landmarkOptions": [],
+      "eliminated": {
+        "p1": false,
+        "p2": false,
+        "p3": false,
+        "p4": false
+      },
+      "turns": 0,
+      "result": null,
+      "modifiers": {}
+    },
+    "fourMarbleEngine:retreat": {
+      "active": "p1",
+      "phase": "main",
+      "positions": {
+        "p1": 39,
+        "p2": 0,
+        "p3": 0,
+        "p4": 0
+      },
+      "money": {
+        "p1": 10000,
+        "p2": 10000,
+        "p3": 10000,
+        "p4": 10000
+      },
+      "properties": {
+        "1": {
+          "owner": "p1",
+          "houses": 1
+        },
+        "4": {
+          "owner": "p2",
+          "houses": 1
+        },
+        "5": {
+          "owner": "p2",
+          "houses": 0
+        },
+        "15": {
+          "owner": "p2",
+          "houses": 0
+        }
+      },
+      "eventDeck": [
+        "retreat"
+      ],
+      "islandTurns": {
+        "p1": 0,
+        "p2": 0,
+        "p3": 0,
+        "p4": 0
+      },
+      "escapePasses": {
+        "p1": 0,
+        "p2": 0,
+        "p3": 0,
+        "p4": 0
+      },
+      "rentPasses": {
+        "p1": 0,
+        "p2": 0,
+        "p3": 0,
+        "p4": 0
+      },
+      "trainReady": {
+        "p1": false,
+        "p2": false,
+        "p3": false,
+        "p4": false
+      },
+      "pendingTile": 39,
+      "trainFare": 100,
+      "trainFromCard": false,
+      "pendingEvent": null,
+      "pendingRent": null,
+      "pendingPayment": null,
+      "debt": {
+        "p1": 0,
+        "p2": 0,
+        "p3": 0,
+        "p4": 0
+      },
+      "fundPool": 0,
+      "takeoverTile": null,
+      "extraRoll": true,
+      "doublesCount": 1,
+      "buildSite": null,
+      "landmarkOptions": [],
+      "eliminated": {
+        "p1": false,
+        "p2": false,
+        "p3": false,
+        "p4": false
+      },
+      "turns": 0,
+      "result": null,
+      "modifiers": {}
+    },
+    "fourMarbleEngine:go-to-island": {
+      "active": "p1",
+      "phase": "main",
+      "positions": {
+        "p1": 10,
+        "p2": 0,
+        "p3": 0,
+        "p4": 0
+      },
+      "money": {
+        "p1": 10000,
+        "p2": 10000,
+        "p3": 10000,
+        "p4": 10000
+      },
+      "properties": {
+        "1": {
+          "owner": "p1",
+          "houses": 1
+        },
+        "4": {
+          "owner": "p2",
+          "houses": 1
+        },
+        "5": {
+          "owner": "p2",
+          "houses": 0
+        },
+        "15": {
+          "owner": "p2",
+          "houses": 0
+        }
+      },
+      "eventDeck": [
+        "go-to-island"
+      ],
+      "islandTurns": {
+        "p1": 3,
+        "p2": 0,
+        "p3": 0,
+        "p4": 0
+      },
+      "escapePasses": {
+        "p1": 0,
+        "p2": 0,
+        "p3": 0,
+        "p4": 0
+      },
+      "rentPasses": {
+        "p1": 0,
+        "p2": 0,
+        "p3": 0,
+        "p4": 0
+      },
+      "trainReady": {
+        "p1": false,
+        "p2": false,
+        "p3": false,
+        "p4": false
+      },
+      "pendingTile": 10,
+      "trainFare": 100,
+      "trainFromCard": false,
+      "pendingEvent": null,
+      "pendingRent": null,
+      "pendingPayment": null,
+      "debt": {
+        "p1": 0,
+        "p2": 0,
+        "p3": 0,
+        "p4": 0
+      },
+      "fundPool": 0,
+      "takeoverTile": null,
+      "extraRoll": false,
+      "doublesCount": 0,
+      "buildSite": null,
+      "landmarkOptions": [],
+      "eliminated": {
+        "p1": false,
+        "p2": false,
+        "p3": false,
+        "p4": false
+      },
+      "turns": 0,
+      "result": null,
+      "modifiers": {}
+    },
+    "fourMarbleEngine:escape-pass": {
+      "active": "p1",
+      "phase": "main",
+      "positions": {
+        "p1": 2,
+        "p2": 0,
+        "p3": 0,
+        "p4": 0
+      },
+      "money": {
+        "p1": 10000,
+        "p2": 10000,
+        "p3": 10000,
+        "p4": 10000
+      },
+      "properties": {
+        "1": {
+          "owner": "p1",
+          "houses": 1
+        },
+        "4": {
+          "owner": "p2",
+          "houses": 1
+        },
+        "5": {
+          "owner": "p2",
+          "houses": 0
+        },
+        "15": {
+          "owner": "p2",
+          "houses": 0
+        }
+      },
+      "eventDeck": [],
+      "islandTurns": {
+        "p1": 0,
+        "p2": 0,
+        "p3": 0,
+        "p4": 0
+      },
+      "escapePasses": {
+        "p1": 1,
+        "p2": 0,
+        "p3": 0,
+        "p4": 0
+      },
+      "rentPasses": {
+        "p1": 0,
+        "p2": 0,
+        "p3": 0,
+        "p4": 0
+      },
+      "trainReady": {
+        "p1": false,
+        "p2": false,
+        "p3": false,
+        "p4": false
+      },
+      "pendingTile": 2,
+      "trainFare": 100,
+      "trainFromCard": false,
+      "pendingEvent": null,
+      "pendingRent": null,
+      "pendingPayment": null,
+      "debt": {
+        "p1": 0,
+        "p2": 0,
+        "p3": 0,
+        "p4": 0
+      },
+      "fundPool": 0,
+      "takeoverTile": null,
+      "extraRoll": true,
+      "doublesCount": 1,
+      "buildSite": null,
+      "landmarkOptions": [],
+      "eliminated": {
+        "p1": false,
+        "p2": false,
+        "p3": false,
+        "p4": false
+      },
+      "turns": 0,
+      "result": null,
+      "modifiers": {}
+    },
+    "fourMarbleEngine:train-ticket": {
+      "active": "p1",
+      "phase": "train-decision",
+      "positions": {
+        "p1": 2,
+        "p2": 0,
+        "p3": 0,
+        "p4": 0
+      },
+      "money": {
+        "p1": 10000,
+        "p2": 10000,
+        "p3": 10000,
+        "p4": 10000
+      },
+      "properties": {
+        "1": {
+          "owner": "p1",
+          "houses": 1
+        },
+        "4": {
+          "owner": "p2",
+          "houses": 1
+        },
+        "5": {
+          "owner": "p2",
+          "houses": 0
+        },
+        "15": {
+          "owner": "p2",
+          "houses": 0
+        }
+      },
+      "eventDeck": [
+        "train-ticket"
+      ],
+      "islandTurns": {
+        "p1": 0,
+        "p2": 0,
+        "p3": 0,
+        "p4": 0
+      },
+      "escapePasses": {
+        "p1": 0,
+        "p2": 0,
+        "p3": 0,
+        "p4": 0
+      },
+      "rentPasses": {
+        "p1": 0,
+        "p2": 0,
+        "p3": 0,
+        "p4": 0
+      },
+      "trainReady": {
+        "p1": false,
+        "p2": false,
+        "p3": false,
+        "p4": false
+      },
+      "pendingTile": 2,
+      "trainFare": 0,
+      "trainFromCard": true,
+      "pendingEvent": null,
+      "pendingRent": null,
+      "pendingPayment": null,
+      "debt": {
+        "p1": 0,
+        "p2": 0,
+        "p3": 0,
+        "p4": 0
+      },
+      "fundPool": 0,
+      "takeoverTile": null,
+      "extraRoll": true,
+      "doublesCount": 1,
+      "buildSite": null,
+      "landmarkOptions": [],
+      "eliminated": {
+        "p1": false,
+        "p2": false,
+        "p3": false,
+        "p4": false
+      },
+      "turns": 0,
+      "result": null,
+      "modifiers": {}
+    },
+    "fourMarbleEngine:city-dividend": {
+      "active": "p1",
+      "phase": "main",
+      "positions": {
+        "p1": 2,
+        "p2": 0,
+        "p3": 0,
+        "p4": 0
+      },
+      "money": {
+        "p1": 10030,
+        "p2": 10000,
+        "p3": 10000,
+        "p4": 10000
+      },
+      "properties": {
+        "1": {
+          "owner": "p1",
+          "houses": 1
+        },
+        "4": {
+          "owner": "p2",
+          "houses": 1
+        },
+        "5": {
+          "owner": "p2",
+          "houses": 0
+        },
+        "15": {
+          "owner": "p2",
+          "houses": 0
+        }
+      },
+      "eventDeck": [
+        "city-dividend"
+      ],
+      "islandTurns": {
+        "p1": 0,
+        "p2": 0,
+        "p3": 0,
+        "p4": 0
+      },
+      "escapePasses": {
+        "p1": 0,
+        "p2": 0,
+        "p3": 0,
+        "p4": 0
+      },
+      "rentPasses": {
+        "p1": 0,
+        "p2": 0,
+        "p3": 0,
+        "p4": 0
+      },
+      "trainReady": {
+        "p1": false,
+        "p2": false,
+        "p3": false,
+        "p4": false
+      },
+      "pendingTile": 2,
+      "trainFare": 100,
+      "trainFromCard": false,
+      "pendingEvent": null,
+      "pendingRent": null,
+      "pendingPayment": null,
+      "debt": {
+        "p1": 0,
+        "p2": 0,
+        "p3": 0,
+        "p4": 0
+      },
+      "fundPool": 0,
+      "takeoverTile": null,
+      "extraRoll": true,
+      "doublesCount": 1,
+      "buildSite": null,
+      "landmarkOptions": [],
+      "eliminated": {
+        "p1": false,
+        "p2": false,
+        "p3": false,
+        "p4": false
+      },
+      "turns": 0,
+      "result": null,
+      "modifiers": {}
+    },
+    "fourMarbleEngine:monopoly-warning": {
+      "active": "p1",
+      "phase": "main",
+      "positions": {
+        "p1": 2,
+        "p2": 0,
+        "p3": 0,
+        "p4": 0
+      },
+      "money": {
+        "p1": 10000,
+        "p2": 9900,
+        "p3": 10000,
+        "p4": 10000
+      },
+      "properties": {
+        "1": {
+          "owner": "p1",
+          "houses": 1
+        },
+        "4": {
+          "owner": "p2",
+          "houses": 1
+        },
+        "5": {
+          "owner": "p2",
+          "houses": 0
+        },
+        "15": {
+          "owner": "p2",
+          "houses": 0
+        }
+      },
+      "eventDeck": [
+        "monopoly-warning"
+      ],
+      "islandTurns": {
+        "p1": 0,
+        "p2": 0,
+        "p3": 0,
+        "p4": 0
+      },
+      "escapePasses": {
+        "p1": 0,
+        "p2": 0,
+        "p3": 0,
+        "p4": 0
+      },
+      "rentPasses": {
+        "p1": 0,
+        "p2": 0,
+        "p3": 0,
+        "p4": 0
+      },
+      "trainReady": {
+        "p1": false,
+        "p2": false,
+        "p3": false,
+        "p4": false
+      },
+      "pendingTile": 2,
+      "trainFare": 100,
+      "trainFromCard": false,
+      "pendingEvent": null,
+      "pendingRent": null,
+      "pendingPayment": null,
+      "debt": {
+        "p1": 0,
+        "p2": 0,
+        "p3": 0,
+        "p4": 0
+      },
+      "fundPool": 0,
+      "takeoverTile": null,
+      "extraRoll": true,
+      "doublesCount": 1,
+      "buildSite": null,
+      "landmarkOptions": [],
+      "eliminated": {
+        "p1": false,
+        "p2": false,
+        "p3": false,
+        "p4": false
+      },
+      "turns": 0,
+      "result": null,
+      "modifiers": {}
+    },
+    "fourMarbleEngine:city-festival": {
+      "active": "p1",
+      "phase": "event-decision",
+      "positions": {
+        "p1": 2,
+        "p2": 0,
+        "p3": 0,
+        "p4": 0
+      },
+      "money": {
+        "p1": 10000,
+        "p2": 10000,
+        "p3": 10000,
+        "p4": 10000
+      },
+      "properties": {
+        "1": {
+          "owner": "p1",
+          "houses": 1
+        },
+        "4": {
+          "owner": "p2",
+          "houses": 1
+        },
+        "5": {
+          "owner": "p2",
+          "houses": 0
+        },
+        "15": {
+          "owner": "p2",
+          "houses": 0
+        }
+      },
+      "eventDeck": [
+        "city-festival"
+      ],
+      "islandTurns": {
+        "p1": 0,
+        "p2": 0,
+        "p3": 0,
+        "p4": 0
+      },
+      "escapePasses": {
+        "p1": 0,
+        "p2": 0,
+        "p3": 0,
+        "p4": 0
+      },
+      "rentPasses": {
+        "p1": 0,
+        "p2": 0,
+        "p3": 0,
+        "p4": 0
+      },
+      "trainReady": {
+        "p1": false,
+        "p2": false,
+        "p3": false,
+        "p4": false
+      },
+      "pendingTile": 2,
+      "trainFare": 100,
+      "trainFromCard": false,
+      "pendingEvent": "city-festival",
+      "pendingRent": null,
+      "pendingPayment": null,
+      "debt": {
+        "p1": 0,
+        "p2": 0,
+        "p3": 0,
+        "p4": 0
+      },
+      "fundPool": 0,
+      "takeoverTile": null,
+      "extraRoll": true,
+      "doublesCount": 1,
+      "buildSite": null,
+      "landmarkOptions": [],
+      "eliminated": {
+        "p1": false,
+        "p2": false,
+        "p3": false,
+        "p4": false
+      },
+      "turns": 0,
+      "result": null,
+      "modifiers": {}
+    },
+    "fourMarbleEngine:blackout": {
+      "active": "p1",
+      "phase": "event-decision",
+      "positions": {
+        "p1": 2,
+        "p2": 0,
+        "p3": 0,
+        "p4": 0
+      },
+      "money": {
+        "p1": 10000,
+        "p2": 10000,
+        "p3": 10000,
+        "p4": 10000
+      },
+      "properties": {
+        "1": {
+          "owner": "p1",
+          "houses": 1
+        },
+        "4": {
+          "owner": "p2",
+          "houses": 1
+        },
+        "5": {
+          "owner": "p2",
+          "houses": 0
+        },
+        "15": {
+          "owner": "p2",
+          "houses": 0
+        }
+      },
+      "eventDeck": [
+        "blackout"
+      ],
+      "islandTurns": {
+        "p1": 0,
+        "p2": 0,
+        "p3": 0,
+        "p4": 0
+      },
+      "escapePasses": {
+        "p1": 0,
+        "p2": 0,
+        "p3": 0,
+        "p4": 0
+      },
+      "rentPasses": {
+        "p1": 0,
+        "p2": 0,
+        "p3": 0,
+        "p4": 0
+      },
+      "trainReady": {
+        "p1": false,
+        "p2": false,
+        "p3": false,
+        "p4": false
+      },
+      "pendingTile": 2,
+      "trainFare": 100,
+      "trainFromCard": false,
+      "pendingEvent": "blackout",
+      "pendingRent": null,
+      "pendingPayment": null,
+      "debt": {
+        "p1": 0,
+        "p2": 0,
+        "p3": 0,
+        "p4": 0
+      },
+      "fundPool": 0,
+      "takeoverTile": null,
+      "extraRoll": true,
+      "doublesCount": 1,
+      "buildSite": null,
+      "landmarkOptions": [],
+      "eliminated": {
+        "p1": false,
+        "p2": false,
+        "p3": false,
+        "p4": false
+      },
+      "turns": 0,
+      "result": null,
+      "modifiers": {}
+    },
+    "fourMarbleEngine:rent-pass": {
+      "active": "p1",
+      "phase": "main",
+      "positions": {
+        "p1": 2,
+        "p2": 0,
+        "p3": 0,
+        "p4": 0
+      },
+      "money": {
+        "p1": 10000,
+        "p2": 10000,
+        "p3": 10000,
+        "p4": 10000
+      },
+      "properties": {
+        "1": {
+          "owner": "p1",
+          "houses": 1
+        },
+        "4": {
+          "owner": "p2",
+          "houses": 1
+        },
+        "5": {
+          "owner": "p2",
+          "houses": 0
+        },
+        "15": {
+          "owner": "p2",
+          "houses": 0
+        }
+      },
+      "eventDeck": [],
+      "islandTurns": {
+        "p1": 0,
+        "p2": 0,
+        "p3": 0,
+        "p4": 0
+      },
+      "escapePasses": {
+        "p1": 0,
+        "p2": 0,
+        "p3": 0,
+        "p4": 0
+      },
+      "rentPasses": {
+        "p1": 1,
+        "p2": 0,
+        "p3": 0,
+        "p4": 0
+      },
+      "trainReady": {
+        "p1": false,
+        "p2": false,
+        "p3": false,
+        "p4": false
+      },
+      "pendingTile": 2,
+      "trainFare": 100,
+      "trainFromCard": false,
+      "pendingEvent": null,
+      "pendingRent": null,
+      "pendingPayment": null,
+      "debt": {
+        "p1": 0,
+        "p2": 0,
+        "p3": 0,
+        "p4": 0
+      },
+      "fundPool": 0,
+      "takeoverTile": null,
+      "extraRoll": true,
+      "doublesCount": 1,
+      "buildSite": null,
+      "landmarkOptions": [],
+      "eliminated": {
+        "p1": false,
+        "p2": false,
+        "p3": false,
+        "p4": false
+      },
+      "turns": 0,
+      "result": null,
+      "modifiers": {}
+    },
+    "fourMarbleEngine:takeover-before": {
+      "active": "p1",
+      "phase": "main",
+      "positions": {
+        "p1": 4,
+        "p2": 0,
+        "p3": 0,
+        "p4": 0
+      },
+      "money": {
+        "p1": 9880,
+        "p2": 10120,
+        "p3": 10000,
+        "p4": 10000
+      },
+      "properties": {
+        "1": {
+          "owner": "p1",
+          "houses": 1
+        },
+        "4": {
+          "owner": "p2",
+          "houses": 1
+        },
+        "5": {
+          "owner": "p2",
+          "houses": 0
+        },
+        "15": {
+          "owner": "p2",
+          "houses": 0
+        }
+      },
+      "eventDeck": [
+        "visit-santo-domingo",
+        "train-ticket",
+        "travel-cost",
+        "go-to-island",
+        "festival",
+        "monopoly-warning",
+        "rent-pass",
+        "rent-rebate",
+        "blackout",
+        "maintenance",
+        "lottery",
+        "city-dividend",
+        "city-festival",
+        "retreat",
+        "escape-pass",
+        "advance-start"
+      ],
+      "islandTurns": {
+        "p1": 0,
+        "p2": 0,
+        "p3": 0,
+        "p4": 0
+      },
+      "escapePasses": {
+        "p1": 0,
+        "p2": 0,
+        "p3": 0,
+        "p4": 0
+      },
+      "rentPasses": {
+        "p1": 0,
+        "p2": 0,
+        "p3": 0,
+        "p4": 0
+      },
+      "trainReady": {
+        "p1": false,
+        "p2": false,
+        "p3": false,
+        "p4": false
+      },
+      "pendingTile": 4,
+      "trainFare": 100,
+      "trainFromCard": false,
+      "pendingEvent": null,
+      "pendingRent": null,
+      "pendingPayment": null,
+      "debt": {
+        "p1": 0,
+        "p2": 0,
+        "p3": 0,
+        "p4": 0
+      },
+      "fundPool": 0,
+      "takeoverTile": 4,
+      "extraRoll": false,
+      "doublesCount": 0,
+      "buildSite": null,
+      "landmarkOptions": [],
+      "eliminated": {
+        "p1": false,
+        "p2": false,
+        "p3": false,
+        "p4": false
+      },
+      "turns": 0,
+      "result": null,
+      "modifiers": {}
+    },
+    "fourMarbleEngine:takeover-after": {
+      "active": "p1",
+      "phase": "main",
+      "positions": {
+        "p1": 4,
+        "p2": 0,
+        "p3": 0,
+        "p4": 0
+      },
+      "money": {
+        "p1": 9580,
+        "p2": 10420,
+        "p3": 10000,
+        "p4": 10000
+      },
+      "properties": {
+        "1": {
+          "owner": "p1",
+          "houses": 1
+        },
+        "4": {
+          "owner": "p1",
+          "houses": 1
+        },
+        "5": {
+          "owner": "p2",
+          "houses": 0
+        },
+        "15": {
+          "owner": "p2",
+          "houses": 0
+        }
+      },
+      "eventDeck": [
+        "visit-santo-domingo",
+        "train-ticket",
+        "travel-cost",
+        "go-to-island",
+        "festival",
+        "monopoly-warning",
+        "rent-pass",
+        "rent-rebate",
+        "blackout",
+        "maintenance",
+        "lottery",
+        "city-dividend",
+        "city-festival",
+        "retreat",
+        "escape-pass",
+        "advance-start"
+      ],
+      "islandTurns": {
+        "p1": 0,
+        "p2": 0,
+        "p3": 0,
+        "p4": 0
+      },
+      "escapePasses": {
+        "p1": 0,
+        "p2": 0,
+        "p3": 0,
+        "p4": 0
+      },
+      "rentPasses": {
+        "p1": 0,
+        "p2": 0,
+        "p3": 0,
+        "p4": 0
+      },
+      "trainReady": {
+        "p1": false,
+        "p2": false,
+        "p3": false,
+        "p4": false
+      },
+      "pendingTile": 4,
+      "trainFare": 100,
+      "trainFromCard": false,
+      "pendingEvent": null,
+      "pendingRent": null,
+      "pendingPayment": null,
+      "debt": {
+        "p1": 0,
+        "p2": 0,
+        "p3": 0,
+        "p4": 0
+      },
+      "fundPool": 0,
+      "takeoverTile": null,
+      "extraRoll": false,
+      "doublesCount": 0,
+      "buildSite": 4,
+      "landmarkOptions": [],
+      "eliminated": {
+        "p1": false,
+        "p2": false,
+        "p3": false,
+        "p4": false
+      },
+      "turns": 0,
+      "result": null,
+      "modifiers": {}
+    },
+    "marbleEngine:festival": {
+      "active": "p1",
+      "phase": "main",
+      "positions": {
+        "p1": 2,
+        "p2": 0
+      },
+      "money": {
+        "p1": 10150,
+        "p2": 10000
+      },
+      "properties": {
+        "1": {
+          "owner": "p1",
+          "houses": 1
+        },
+        "4": {
+          "owner": "p2",
+          "houses": 1
+        },
+        "5": {
+          "owner": "p2",
+          "houses": 0
+        },
+        "15": {
+          "owner": "p2",
+          "houses": 0
+        }
+      },
+      "eventDeck": [
+        "festival"
+      ],
+      "islandTurns": {
+        "p1": 0,
+        "p2": 0
+      },
+      "escapePasses": {
+        "p1": 0,
+        "p2": 0
+      },
+      "rentPasses": {
+        "p1": 0,
+        "p2": 0
+      },
+      "trainReady": {
+        "p1": false,
+        "p2": false
+      },
+      "pendingTile": 2,
+      "pendingTrainFare": null,
+      "pendingTrainSource": null,
+      "pendingEvent": null,
+      "pendingRent": null,
+      "pendingPayment": null,
+      "debt": {
+        "p1": 0,
+        "p2": 0
+      },
+      "fundPool": 0,
+      "takeoverTile": null,
+      "extraRoll": true,
+      "doublesCount": 1,
+      "buildSite": null,
+      "landmarkOptions": [],
+      "turns": 0,
+      "result": null,
+      "rentModifiers": {}
+    },
+    "marbleEngine:lottery": {
+      "active": "p1",
+      "phase": "main",
+      "positions": {
+        "p1": 2,
+        "p2": 0
+      },
+      "money": {
+        "p1": 10200,
+        "p2": 10000
+      },
+      "properties": {
+        "1": {
+          "owner": "p1",
+          "houses": 1
+        },
+        "4": {
+          "owner": "p2",
+          "houses": 1
+        },
+        "5": {
+          "owner": "p2",
+          "houses": 0
+        },
+        "15": {
+          "owner": "p2",
+          "houses": 0
+        }
+      },
+      "eventDeck": [
+        "lottery"
+      ],
+      "islandTurns": {
+        "p1": 0,
+        "p2": 0
+      },
+      "escapePasses": {
+        "p1": 0,
+        "p2": 0
+      },
+      "rentPasses": {
+        "p1": 0,
+        "p2": 0
+      },
+      "trainReady": {
+        "p1": false,
+        "p2": false
+      },
+      "pendingTile": 2,
+      "pendingTrainFare": null,
+      "pendingTrainSource": null,
+      "pendingEvent": null,
+      "pendingRent": null,
+      "pendingPayment": null,
+      "debt": {
+        "p1": 0,
+        "p2": 0
+      },
+      "fundPool": 0,
+      "takeoverTile": null,
+      "extraRoll": true,
+      "doublesCount": 1,
+      "buildSite": null,
+      "landmarkOptions": [],
+      "turns": 0,
+      "result": null,
+      "rentModifiers": {}
+    },
+    "marbleEngine:rent-rebate": {
+      "active": "p1",
+      "phase": "main",
+      "positions": {
+        "p1": 2,
+        "p2": 0
+      },
+      "money": {
+        "p1": 10080,
+        "p2": 10000
+      },
+      "properties": {
+        "1": {
+          "owner": "p1",
+          "houses": 1
+        },
+        "4": {
+          "owner": "p2",
+          "houses": 1
+        },
+        "5": {
+          "owner": "p2",
+          "houses": 0
+        },
+        "15": {
+          "owner": "p2",
+          "houses": 0
+        }
+      },
+      "eventDeck": [
+        "rent-rebate"
+      ],
+      "islandTurns": {
+        "p1": 0,
+        "p2": 0
+      },
+      "escapePasses": {
+        "p1": 0,
+        "p2": 0
+      },
+      "rentPasses": {
+        "p1": 0,
+        "p2": 0
+      },
+      "trainReady": {
+        "p1": false,
+        "p2": false
+      },
+      "pendingTile": 2,
+      "pendingTrainFare": null,
+      "pendingTrainSource": null,
+      "pendingEvent": null,
+      "pendingRent": null,
+      "pendingPayment": null,
+      "debt": {
+        "p1": 0,
+        "p2": 0
+      },
+      "fundPool": 0,
+      "takeoverTile": null,
+      "extraRoll": true,
+      "doublesCount": 1,
+      "buildSite": null,
+      "landmarkOptions": [],
+      "turns": 0,
+      "result": null,
+      "rentModifiers": {}
+    },
+    "marbleEngine:travel-cost": {
+      "active": "p1",
+      "phase": "main",
+      "positions": {
+        "p1": 2,
+        "p2": 0
+      },
+      "money": {
+        "p1": 9900,
+        "p2": 10000
+      },
+      "properties": {
+        "1": {
+          "owner": "p1",
+          "houses": 1
+        },
+        "4": {
+          "owner": "p2",
+          "houses": 1
+        },
+        "5": {
+          "owner": "p2",
+          "houses": 0
+        },
+        "15": {
+          "owner": "p2",
+          "houses": 0
+        }
+      },
+      "eventDeck": [
+        "travel-cost"
+      ],
+      "islandTurns": {
+        "p1": 0,
+        "p2": 0
+      },
+      "escapePasses": {
+        "p1": 0,
+        "p2": 0
+      },
+      "rentPasses": {
+        "p1": 0,
+        "p2": 0
+      },
+      "trainReady": {
+        "p1": false,
+        "p2": false
+      },
+      "pendingTile": 2,
+      "pendingTrainFare": null,
+      "pendingTrainSource": null,
+      "pendingEvent": null,
+      "pendingRent": null,
+      "pendingPayment": null,
+      "debt": {
+        "p1": 0,
+        "p2": 0
+      },
+      "fundPool": 0,
+      "takeoverTile": null,
+      "extraRoll": true,
+      "doublesCount": 1,
+      "buildSite": null,
+      "landmarkOptions": [],
+      "turns": 0,
+      "result": null,
+      "rentModifiers": {}
+    },
+    "marbleEngine:maintenance": {
+      "active": "p1",
+      "phase": "main",
+      "positions": {
+        "p1": 2,
+        "p2": 0
+      },
+      "money": {
+        "p1": 9960,
+        "p2": 10000
+      },
+      "properties": {
+        "1": {
+          "owner": "p1",
+          "houses": 1
+        },
+        "4": {
+          "owner": "p2",
+          "houses": 1
+        },
+        "5": {
+          "owner": "p2",
+          "houses": 0
+        },
+        "15": {
+          "owner": "p2",
+          "houses": 0
+        }
+      },
+      "eventDeck": [
+        "maintenance"
+      ],
+      "islandTurns": {
+        "p1": 0,
+        "p2": 0
+      },
+      "escapePasses": {
+        "p1": 0,
+        "p2": 0
+      },
+      "rentPasses": {
+        "p1": 0,
+        "p2": 0
+      },
+      "trainReady": {
+        "p1": false,
+        "p2": false
+      },
+      "pendingTile": 2,
+      "pendingTrainFare": null,
+      "pendingTrainSource": null,
+      "pendingEvent": null,
+      "pendingRent": null,
+      "pendingPayment": null,
+      "debt": {
+        "p1": 0,
+        "p2": 0
+      },
+      "fundPool": 0,
+      "takeoverTile": null,
+      "extraRoll": true,
+      "doublesCount": 1,
+      "buildSite": null,
+      "landmarkOptions": [],
+      "turns": 0,
+      "result": null,
+      "rentModifiers": {}
+    },
+    "marbleEngine:visit-santo-domingo": {
+      "active": "p1",
+      "phase": "main",
+      "positions": {
+        "p1": 15,
+        "p2": 0
+      },
+      "money": {
+        "p1": 9970,
+        "p2": 10030
+      },
+      "properties": {
+        "1": {
+          "owner": "p1",
+          "houses": 1
+        },
+        "4": {
+          "owner": "p2",
+          "houses": 1
+        },
+        "5": {
+          "owner": "p2",
+          "houses": 0
+        },
+        "15": {
+          "owner": "p2",
+          "houses": 0
+        }
+      },
+      "eventDeck": [
+        "visit-santo-domingo"
+      ],
+      "islandTurns": {
+        "p1": 0,
+        "p2": 0
+      },
+      "escapePasses": {
+        "p1": 0,
+        "p2": 0
+      },
+      "rentPasses": {
+        "p1": 0,
+        "p2": 0
+      },
+      "trainReady": {
+        "p1": false,
+        "p2": false
+      },
+      "pendingTile": 15,
+      "pendingTrainFare": null,
+      "pendingTrainSource": null,
+      "pendingEvent": null,
+      "pendingRent": null,
+      "pendingPayment": null,
+      "debt": {
+        "p1": 0,
+        "p2": 0
+      },
+      "fundPool": 0,
+      "takeoverTile": 15,
+      "extraRoll": true,
+      "doublesCount": 1,
+      "buildSite": null,
+      "landmarkOptions": [],
+      "turns": 0,
+      "result": null,
+      "rentModifiers": {}
+    },
+    "marbleEngine:advance-start": {
+      "active": "p1",
+      "phase": "main",
+      "positions": {
+        "p1": 0,
+        "p2": 0
+      },
+      "money": {
+        "p1": 10300,
+        "p2": 10000
+      },
+      "properties": {
+        "1": {
+          "owner": "p1",
+          "houses": 1
+        },
+        "4": {
+          "owner": "p2",
+          "houses": 1
+        },
+        "5": {
+          "owner": "p2",
+          "houses": 0
+        },
+        "15": {
+          "owner": "p2",
+          "houses": 0
+        }
+      },
+      "eventDeck": [
+        "advance-start"
+      ],
+      "islandTurns": {
+        "p1": 0,
+        "p2": 0
+      },
+      "escapePasses": {
+        "p1": 0,
+        "p2": 0
+      },
+      "rentPasses": {
+        "p1": 0,
+        "p2": 0
+      },
+      "trainReady": {
+        "p1": false,
+        "p2": false
+      },
+      "pendingTile": 0,
+      "pendingTrainFare": null,
+      "pendingTrainSource": null,
+      "pendingEvent": null,
+      "pendingRent": null,
+      "pendingPayment": null,
+      "debt": {
+        "p1": 0,
+        "p2": 0
+      },
+      "fundPool": 0,
+      "takeoverTile": null,
+      "extraRoll": true,
+      "doublesCount": 1,
+      "buildSite": "start",
+      "landmarkOptions": [],
+      "turns": 0,
+      "result": null,
+      "rentModifiers": {}
+    },
+    "marbleEngine:retreat": {
+      "active": "p1",
+      "phase": "main",
+      "positions": {
+        "p1": 39,
+        "p2": 0
+      },
+      "money": {
+        "p1": 10000,
+        "p2": 10000
+      },
+      "properties": {
+        "1": {
+          "owner": "p1",
+          "houses": 1
+        },
+        "4": {
+          "owner": "p2",
+          "houses": 1
+        },
+        "5": {
+          "owner": "p2",
+          "houses": 0
+        },
+        "15": {
+          "owner": "p2",
+          "houses": 0
+        }
+      },
+      "eventDeck": [
+        "retreat"
+      ],
+      "islandTurns": {
+        "p1": 0,
+        "p2": 0
+      },
+      "escapePasses": {
+        "p1": 0,
+        "p2": 0
+      },
+      "rentPasses": {
+        "p1": 0,
+        "p2": 0
+      },
+      "trainReady": {
+        "p1": false,
+        "p2": false
+      },
+      "pendingTile": 39,
+      "pendingTrainFare": null,
+      "pendingTrainSource": null,
+      "pendingEvent": null,
+      "pendingRent": null,
+      "pendingPayment": null,
+      "debt": {
+        "p1": 0,
+        "p2": 0
+      },
+      "fundPool": 0,
+      "takeoverTile": null,
+      "extraRoll": true,
+      "doublesCount": 1,
+      "buildSite": null,
+      "landmarkOptions": [],
+      "turns": 0,
+      "result": null,
+      "rentModifiers": {}
+    },
+    "marbleEngine:go-to-island": {
+      "active": "p1",
+      "phase": "main",
+      "positions": {
+        "p1": 10,
+        "p2": 0
+      },
+      "money": {
+        "p1": 10000,
+        "p2": 10000
+      },
+      "properties": {
+        "1": {
+          "owner": "p1",
+          "houses": 1
+        },
+        "4": {
+          "owner": "p2",
+          "houses": 1
+        },
+        "5": {
+          "owner": "p2",
+          "houses": 0
+        },
+        "15": {
+          "owner": "p2",
+          "houses": 0
+        }
+      },
+      "eventDeck": [
+        "go-to-island"
+      ],
+      "islandTurns": {
+        "p1": 3,
+        "p2": 0
+      },
+      "escapePasses": {
+        "p1": 0,
+        "p2": 0
+      },
+      "rentPasses": {
+        "p1": 0,
+        "p2": 0
+      },
+      "trainReady": {
+        "p1": false,
+        "p2": false
+      },
+      "pendingTile": 10,
+      "pendingTrainFare": null,
+      "pendingTrainSource": null,
+      "pendingEvent": null,
+      "pendingRent": null,
+      "pendingPayment": null,
+      "debt": {
+        "p1": 0,
+        "p2": 0
+      },
+      "fundPool": 0,
+      "takeoverTile": null,
+      "extraRoll": false,
+      "doublesCount": 0,
+      "buildSite": null,
+      "landmarkOptions": [],
+      "turns": 0,
+      "result": null,
+      "rentModifiers": {}
+    },
+    "marbleEngine:escape-pass": {
+      "active": "p1",
+      "phase": "main",
+      "positions": {
+        "p1": 2,
+        "p2": 0
+      },
+      "money": {
+        "p1": 10000,
+        "p2": 10000
+      },
+      "properties": {
+        "1": {
+          "owner": "p1",
+          "houses": 1
+        },
+        "4": {
+          "owner": "p2",
+          "houses": 1
+        },
+        "5": {
+          "owner": "p2",
+          "houses": 0
+        },
+        "15": {
+          "owner": "p2",
+          "houses": 0
+        }
+      },
+      "eventDeck": [],
+      "islandTurns": {
+        "p1": 0,
+        "p2": 0
+      },
+      "escapePasses": {
+        "p1": 1,
+        "p2": 0
+      },
+      "rentPasses": {
+        "p1": 0,
+        "p2": 0
+      },
+      "trainReady": {
+        "p1": false,
+        "p2": false
+      },
+      "pendingTile": 2,
+      "pendingTrainFare": null,
+      "pendingTrainSource": null,
+      "pendingEvent": null,
+      "pendingRent": null,
+      "pendingPayment": null,
+      "debt": {
+        "p1": 0,
+        "p2": 0
+      },
+      "fundPool": 0,
+      "takeoverTile": null,
+      "extraRoll": true,
+      "doublesCount": 1,
+      "buildSite": null,
+      "landmarkOptions": [],
+      "turns": 0,
+      "result": null,
+      "rentModifiers": {}
+    },
+    "marbleEngine:train-ticket": {
+      "active": "p1",
+      "phase": "train-decision",
+      "positions": {
+        "p1": 2,
+        "p2": 0
+      },
+      "money": {
+        "p1": 10000,
+        "p2": 10000
+      },
+      "properties": {
+        "1": {
+          "owner": "p1",
+          "houses": 1
+        },
+        "4": {
+          "owner": "p2",
+          "houses": 1
+        },
+        "5": {
+          "owner": "p2",
+          "houses": 0
+        },
+        "15": {
+          "owner": "p2",
+          "houses": 0
+        }
+      },
+      "eventDeck": [
+        "train-ticket"
+      ],
+      "islandTurns": {
+        "p1": 0,
+        "p2": 0
+      },
+      "escapePasses": {
+        "p1": 0,
+        "p2": 0
+      },
+      "rentPasses": {
+        "p1": 0,
+        "p2": 0
+      },
+      "trainReady": {
+        "p1": false,
+        "p2": false
+      },
+      "pendingTile": 2,
+      "pendingTrainFare": 0,
+      "pendingTrainSource": "card",
+      "pendingEvent": null,
+      "pendingRent": null,
+      "pendingPayment": null,
+      "debt": {
+        "p1": 0,
+        "p2": 0
+      },
+      "fundPool": 0,
+      "takeoverTile": null,
+      "extraRoll": true,
+      "doublesCount": 1,
+      "buildSite": null,
+      "landmarkOptions": [],
+      "turns": 0,
+      "result": null,
+      "rentModifiers": {}
+    },
+    "marbleEngine:city-dividend": {
+      "active": "p1",
+      "phase": "main",
+      "positions": {
+        "p1": 2,
+        "p2": 0
+      },
+      "money": {
+        "p1": 10030,
+        "p2": 10000
+      },
+      "properties": {
+        "1": {
+          "owner": "p1",
+          "houses": 1
+        },
+        "4": {
+          "owner": "p2",
+          "houses": 1
+        },
+        "5": {
+          "owner": "p2",
+          "houses": 0
+        },
+        "15": {
+          "owner": "p2",
+          "houses": 0
+        }
+      },
+      "eventDeck": [
+        "city-dividend"
+      ],
+      "islandTurns": {
+        "p1": 0,
+        "p2": 0
+      },
+      "escapePasses": {
+        "p1": 0,
+        "p2": 0
+      },
+      "rentPasses": {
+        "p1": 0,
+        "p2": 0
+      },
+      "trainReady": {
+        "p1": false,
+        "p2": false
+      },
+      "pendingTile": 2,
+      "pendingTrainFare": null,
+      "pendingTrainSource": null,
+      "pendingEvent": null,
+      "pendingRent": null,
+      "pendingPayment": null,
+      "debt": {
+        "p1": 0,
+        "p2": 0
+      },
+      "fundPool": 0,
+      "takeoverTile": null,
+      "extraRoll": true,
+      "doublesCount": 1,
+      "buildSite": null,
+      "landmarkOptions": [],
+      "turns": 0,
+      "result": null,
+      "rentModifiers": {}
+    },
+    "marbleEngine:monopoly-warning": {
+      "active": "p1",
+      "phase": "main",
+      "positions": {
+        "p1": 2,
+        "p2": 0
+      },
+      "money": {
+        "p1": 10000,
+        "p2": 9900
+      },
+      "properties": {
+        "1": {
+          "owner": "p1",
+          "houses": 1
+        },
+        "4": {
+          "owner": "p2",
+          "houses": 1
+        },
+        "5": {
+          "owner": "p2",
+          "houses": 0
+        },
+        "15": {
+          "owner": "p2",
+          "houses": 0
+        }
+      },
+      "eventDeck": [
+        "monopoly-warning"
+      ],
+      "islandTurns": {
+        "p1": 0,
+        "p2": 0
+      },
+      "escapePasses": {
+        "p1": 0,
+        "p2": 0
+      },
+      "rentPasses": {
+        "p1": 0,
+        "p2": 0
+      },
+      "trainReady": {
+        "p1": false,
+        "p2": false
+      },
+      "pendingTile": 2,
+      "pendingTrainFare": null,
+      "pendingTrainSource": null,
+      "pendingEvent": null,
+      "pendingRent": null,
+      "pendingPayment": null,
+      "debt": {
+        "p1": 0,
+        "p2": 0
+      },
+      "fundPool": 0,
+      "takeoverTile": null,
+      "extraRoll": true,
+      "doublesCount": 1,
+      "buildSite": null,
+      "landmarkOptions": [],
+      "turns": 0,
+      "result": null,
+      "rentModifiers": {}
+    },
+    "marbleEngine:city-festival": {
+      "active": "p1",
+      "phase": "event-decision",
+      "positions": {
+        "p1": 2,
+        "p2": 0
+      },
+      "money": {
+        "p1": 10000,
+        "p2": 10000
+      },
+      "properties": {
+        "1": {
+          "owner": "p1",
+          "houses": 1
+        },
+        "4": {
+          "owner": "p2",
+          "houses": 1
+        },
+        "5": {
+          "owner": "p2",
+          "houses": 0
+        },
+        "15": {
+          "owner": "p2",
+          "houses": 0
+        }
+      },
+      "eventDeck": [
+        "city-festival"
+      ],
+      "islandTurns": {
+        "p1": 0,
+        "p2": 0
+      },
+      "escapePasses": {
+        "p1": 0,
+        "p2": 0
+      },
+      "rentPasses": {
+        "p1": 0,
+        "p2": 0
+      },
+      "trainReady": {
+        "p1": false,
+        "p2": false
+      },
+      "pendingTile": 2,
+      "pendingTrainFare": null,
+      "pendingTrainSource": null,
+      "pendingEvent": {
+        "id": "city-festival",
+        "playerId": "p1"
+      },
+      "pendingRent": null,
+      "pendingPayment": null,
+      "debt": {
+        "p1": 0,
+        "p2": 0
+      },
+      "fundPool": 0,
+      "takeoverTile": null,
+      "extraRoll": true,
+      "doublesCount": 1,
+      "buildSite": null,
+      "landmarkOptions": [],
+      "turns": 0,
+      "result": null,
+      "rentModifiers": {}
+    },
+    "marbleEngine:blackout": {
+      "active": "p1",
+      "phase": "event-decision",
+      "positions": {
+        "p1": 2,
+        "p2": 0
+      },
+      "money": {
+        "p1": 10000,
+        "p2": 10000
+      },
+      "properties": {
+        "1": {
+          "owner": "p1",
+          "houses": 1
+        },
+        "4": {
+          "owner": "p2",
+          "houses": 1
+        },
+        "5": {
+          "owner": "p2",
+          "houses": 0
+        },
+        "15": {
+          "owner": "p2",
+          "houses": 0
+        }
+      },
+      "eventDeck": [
+        "blackout"
+      ],
+      "islandTurns": {
+        "p1": 0,
+        "p2": 0
+      },
+      "escapePasses": {
+        "p1": 0,
+        "p2": 0
+      },
+      "rentPasses": {
+        "p1": 0,
+        "p2": 0
+      },
+      "trainReady": {
+        "p1": false,
+        "p2": false
+      },
+      "pendingTile": 2,
+      "pendingTrainFare": null,
+      "pendingTrainSource": null,
+      "pendingEvent": {
+        "id": "blackout",
+        "playerId": "p1"
+      },
+      "pendingRent": null,
+      "pendingPayment": null,
+      "debt": {
+        "p1": 0,
+        "p2": 0
+      },
+      "fundPool": 0,
+      "takeoverTile": null,
+      "extraRoll": true,
+      "doublesCount": 1,
+      "buildSite": null,
+      "landmarkOptions": [],
+      "turns": 0,
+      "result": null,
+      "rentModifiers": {}
+    },
+    "marbleEngine:rent-pass": {
+      "active": "p1",
+      "phase": "main",
+      "positions": {
+        "p1": 2,
+        "p2": 0
+      },
+      "money": {
+        "p1": 10000,
+        "p2": 10000
+      },
+      "properties": {
+        "1": {
+          "owner": "p1",
+          "houses": 1
+        },
+        "4": {
+          "owner": "p2",
+          "houses": 1
+        },
+        "5": {
+          "owner": "p2",
+          "houses": 0
+        },
+        "15": {
+          "owner": "p2",
+          "houses": 0
+        }
+      },
+      "eventDeck": [],
+      "islandTurns": {
+        "p1": 0,
+        "p2": 0
+      },
+      "escapePasses": {
+        "p1": 0,
+        "p2": 0
+      },
+      "rentPasses": {
+        "p1": 1,
+        "p2": 0
+      },
+      "trainReady": {
+        "p1": false,
+        "p2": false
+      },
+      "pendingTile": 2,
+      "pendingTrainFare": null,
+      "pendingTrainSource": null,
+      "pendingEvent": null,
+      "pendingRent": null,
+      "pendingPayment": null,
+      "debt": {
+        "p1": 0,
+        "p2": 0
+      },
+      "fundPool": 0,
+      "takeoverTile": null,
+      "extraRoll": true,
+      "doublesCount": 1,
+      "buildSite": null,
+      "landmarkOptions": [],
+      "turns": 0,
+      "result": null,
+      "rentModifiers": {}
+    },
+    "marbleEngine:takeover-before": {
+      "active": "p1",
+      "phase": "main",
+      "positions": {
+        "p1": 4,
+        "p2": 0
+      },
+      "money": {
+        "p1": 9880,
+        "p2": 10120
+      },
+      "properties": {
+        "1": {
+          "owner": "p1",
+          "houses": 1
+        },
+        "4": {
+          "owner": "p2",
+          "houses": 1
+        },
+        "5": {
+          "owner": "p2",
+          "houses": 0
+        },
+        "15": {
+          "owner": "p2",
+          "houses": 0
+        }
+      },
+      "eventDeck": [
+        "visit-santo-domingo",
+        "train-ticket",
+        "travel-cost",
+        "go-to-island",
+        "festival",
+        "monopoly-warning",
+        "rent-pass",
+        "rent-rebate",
+        "blackout",
+        "maintenance",
+        "lottery",
+        "city-dividend",
+        "city-festival",
+        "retreat",
+        "escape-pass",
+        "advance-start"
+      ],
+      "islandTurns": {
+        "p1": 0,
+        "p2": 0
+      },
+      "escapePasses": {
+        "p1": 0,
+        "p2": 0
+      },
+      "rentPasses": {
+        "p1": 0,
+        "p2": 0
+      },
+      "trainReady": {
+        "p1": false,
+        "p2": false
+      },
+      "pendingTile": 4,
+      "pendingTrainFare": null,
+      "pendingTrainSource": null,
+      "pendingEvent": null,
+      "pendingRent": null,
+      "pendingPayment": null,
+      "debt": {
+        "p1": 0,
+        "p2": 0
+      },
+      "fundPool": 0,
+      "takeoverTile": 4,
+      "extraRoll": false,
+      "doublesCount": 0,
+      "buildSite": null,
+      "landmarkOptions": [],
+      "turns": 0,
+      "result": null,
+      "rentModifiers": {}
+    },
+    "marbleEngine:takeover-after": {
+      "active": "p1",
+      "phase": "main",
+      "positions": {
+        "p1": 4,
+        "p2": 0
+      },
+      "money": {
+        "p1": 9580,
+        "p2": 10420
+      },
+      "properties": {
+        "1": {
+          "owner": "p1",
+          "houses": 1
+        },
+        "4": {
+          "owner": "p1",
+          "houses": 1
+        },
+        "5": {
+          "owner": "p2",
+          "houses": 0
+        },
+        "15": {
+          "owner": "p2",
+          "houses": 0
+        }
+      },
+      "eventDeck": [
+        "visit-santo-domingo",
+        "train-ticket",
+        "travel-cost",
+        "go-to-island",
+        "festival",
+        "monopoly-warning",
+        "rent-pass",
+        "rent-rebate",
+        "blackout",
+        "maintenance",
+        "lottery",
+        "city-dividend",
+        "city-festival",
+        "retreat",
+        "escape-pass",
+        "advance-start"
+      ],
+      "islandTurns": {
+        "p1": 0,
+        "p2": 0
+      },
+      "escapePasses": {
+        "p1": 0,
+        "p2": 0
+      },
+      "rentPasses": {
+        "p1": 0,
+        "p2": 0
+      },
+      "trainReady": {
+        "p1": false,
+        "p2": false
+      },
+      "pendingTile": 4,
+      "pendingTrainFare": null,
+      "pendingTrainSource": null,
+      "pendingEvent": null,
+      "pendingRent": null,
+      "pendingPayment": null,
+      "debt": {
+        "p1": 0,
+        "p2": 0
+      },
+      "fundPool": 0,
+      "takeoverTile": null,
+      "extraRoll": false,
+      "doublesCount": 0,
+      "buildSite": 4,
+      "landmarkOptions": [],
+      "turns": 0,
+      "result": null,
+      "rentModifiers": {}
+    }
+  }
+}

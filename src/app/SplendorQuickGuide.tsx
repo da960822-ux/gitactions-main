@@ -3,6 +3,7 @@ import type { Language } from '../core/types';
 import { SplendorGem } from './SplendorGem';
 import { SplendorArtwork } from './SplendorArtwork';
 import { getPrivateNoblePortrait } from './private-game-art';
+import { splendorNobleName } from '../games/splendorNobleNames';
 
 const exampleCard = art.cards.find(card => card.engineId === 't1-01')!;
 const exampleNoble = art.nobles.find(noble => noble.engineId === 'n0')!;
@@ -45,7 +46,7 @@ export function SplendorQuickGuide({ language, desktopDisplay = true }: { langua
       </li>
       <li>
         <figure className="quick-guide-image">
-          <SplendorArtwork src={getPrivateNoblePortrait(exampleNoble.engineId) ?? `/images/splendor/${exampleNoble.src}`} label={text('흰색 4개와 파랑 4개 보너스로 방문하는 귀족','Noble que requiere 4 bonificaciones blancas y 4 azules')}/>
+          <SplendorArtwork src={getPrivateNoblePortrait(exampleNoble.engineId) ?? `/images/splendor/${exampleNoble.src}`} label={`${splendorNobleName(exampleNoble.engineId,language)} · ${text('흰색 4개와 파랑 4개 보너스로 방문','Requiere 4 bonificaciones blancas y 4 azules')}`}/>
           <figcaption className="quick-guide-gems" aria-hidden="true"><SplendorGem gem="white"/> 4 + <SplendorGem gem="blue"/> 4 → 3 {text('점','pts')}</figcaption>
         </figure>
         <h3>{text('귀족과 마지막 차례','Nobles y final')}</h3>

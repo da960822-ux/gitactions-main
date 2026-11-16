@@ -1,0 +1,156 @@
+[
+  {
+    "mode": "2p",
+    "scenario": "roll",
+    "before": {
+      "cash": 3000,
+      "position": 0
+    },
+    "after": {
+      "cash": 2900,
+      "position": 6,
+      "buildSite": null,
+      "dice": false,
+      "traveler": false,
+      "event": true,
+      "flight": false,
+      "building": false
+    },
+    "motion": {
+      "diceFrames": 4,
+      "travelerFrames": 4,
+      "eventFrames": 16,
+      "flightFrames": 6,
+      "buildingFrames": 0
+    }
+  },
+  {
+    "mode": "2p",
+    "scenario": "build",
+    "before": {
+      "cash": 3000,
+      "position": 1
+    },
+    "after": {
+      "cash": 2950,
+      "position": 1,
+      "buildSite": 1,
+      "dice": false,
+      "traveler": false,
+      "event": true,
+      "flight": false,
+      "building": false
+    },
+    "motion": {
+      "diceFrames": 0,
+      "travelerFrames": 0,
+      "eventFrames": 16,
+      "flightFrames": 5,
+      "buildingFrames": 4
+    }
+  },
+  {
+    "mode": "2p",
+    "scenario": "landmark",
+    "before": {
+      "cash": 3000,
+      "position": 0
+    },
+    "after": {
+      "cash": 2900,
+      "position": 0,
+      "level4": 2,
+      "level5": 3,
+      "buildSite": null,
+      "dice": false,
+      "traveler": false,
+      "event": true,
+      "flight": false,
+      "building": false
+    },
+    "motion": {
+      "diceFrames": 0,
+      "travelerFrames": 0,
+      "eventFrames": 16,
+      "flightFrames": 6,
+      "buildingFrames": 4
+    }
+  },
+  {
+    "mode": "4p",
+    "scenario": "roll",
+    "before": {
+      "cash": 3000,
+      "position": 0
+    },
+    "after": {
+      "cash": 2900,
+      "position": 6,
+      "buildSite": null,
+      "dice": false,
+      "traveler": false,
+      "event": false,
+      "flight": false,
+      "building": false
+    },
+    "motion": {
+      "diceFrames": 4,
+      "travelerFrames": 4,
+      "eventFrames": 0,
+      "flightFrames": 5,
+      "buildingFrames": 0
+    }
+  },
+  {
+    "mode": "4p",
+    "scenario": "build",
+    "before": {
+      "cash": 3000,
+      "position": 1
+    },
+    "after": {
+      "cash": 2950,
+      "position": 1,
+      "buildSite": 1,
+      "dice": false,
+      "traveler": false,
+      "event": false,
+      "flight": false,
+      "building": true
+    },
+    "motion": {
+      "diceFrames": 0,
+      "travelerFrames": 0,
+      "eventFrames": 0,
+      "flightFrames": 5,
+      "buildingFrames": 16
+    }
+  },
+  {
+    "mode": "4p",
+    "scenario": "landmark",
+    "before": {
+      "cash": 3000,
+      "position": 0
+    },
+    "after": {
+      "cash": 2900,
+      "position": 0,
+      "level4": 2,
+      "level5": 3,
+      "buildSite": null,
+      "dice": false,
+      "traveler": false,
+      "event": false,
+      "flight": false,
+      "building": true
+    },
+    "motion": {
+      "diceFrames": 0,
+      "travelerFrames": 0,
+      "eventFrames": 0,
+      "flightFrames": 6,
+      "buildingFrames": 16
+    }
+  }
+]

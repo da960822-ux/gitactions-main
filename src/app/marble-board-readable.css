@@ -1,0 +1,233 @@
+/* One table, with city streets around its edge. Buildings and pawns are separate layers. */
+.mp-center-portfolio { display:none; }
+.mp-building-cluster { display:block; position:relative; width:100%; height:100%; overflow:visible; isolation:isolate; }
+.mp-city-ground { position:absolute; left:5%; right:5%; height:24%; bottom:3%; background:linear-gradient(155deg,#edf0cd,#bacbb0); border:1px solid #789483; border-radius:22% 18% 20% 22%; transform:skewY(-7deg); box-shadow:0 4px 0 #839586,0 7px 6px #133b363d; z-index:-1; }
+.mp-cluster-building { position:absolute; display:block; bottom:7%; filter:drop-shadow(2px 4px 2px #193b3b55); transform-origin:50% 100%; }
+.mp-cluster-villa { left:-3%; width:51%; height:65%; z-index:3; }
+.mp-cluster-building.mp-cluster-building:not(.mp-cluster-villa):not(.mp-cluster-hotel) { left:27%; width:49%; height:86%; z-index:2; }
+.mp-cluster-hotel { right:-4%; width:43%; height:110%; z-index:1; }
+.mp-cluster-asset { display:block; width:100%; height:100%; max-height:none; object-fit:contain; overflow:visible; }
+.mp-cluster-landmark { position:absolute; inset:-18% -8% 0; width:116%; height:118%; object-fit:contain; object-position:center bottom; filter:drop-shadow(2px 6px 3px #193b3b66); }
+.mp-cluster-land { position:absolute; inset:0; width:100%; height:100%; }
+.mp-city-owner-flag { position:absolute; z-index:5; right:0; bottom:8%; width:18px; height:18px; display:grid; place-items:center; background:var(--mp-owner-color); color:white; border:1px solid white; border-radius:2px 5px 5px 0; font:bold 11px/1 system-ui; box-shadow:-2px 7px 0 -1px #506258,0 2px 3px #173c4655; }
+:is(.marble-premium,.marble-native-team).is-modern :is(.mp-board-grid--40,.mp-board-grid--32) { width:100%; max-width:none; min-height:0; height:clamp(470px,calc(100svh - 180px),780px); grid-template-columns:repeat(11,minmax(0,1fr)); grid-template-rows:repeat(11,minmax(0,1fr)); gap:3px; }
+:is(.marble-premium,.marble-native-team).is-modern :is(.mp-board-grid--40,.mp-board-grid--32) .mp-board-center { grid-column:2/11; grid-row:2/11; background:radial-gradient(ellipse,#d6e3ce,#8dac99); }
+:is(.marble-premium,.marble-native-team).is-modern :is(.mp-board-grid--40,.mp-board-grid--32) .mp-world-map { opacity:.22; }
+:is(.marble-premium,.marble-native-team).is-modern :is(.mp-board-grid--40,.mp-board-grid--32) .mp-tile.mp-city-scene { padding:0; overflow:visible; border:1px solid #899b8b; background:linear-gradient(160deg,#fffde7 0%,color-mix(in srgb,var(--mp-group-color,#b0c3ad) 48%,#f3efce) 100%); box-shadow:0 4px 0 #6f877b,0 6px 4px #183e3f50,inset 0 1px #fff; }
+:is(.marble-premium,.marble-native-team).is-modern :is(.mp-board-grid--40,.mp-board-grid--32) .mp-tile.mp-city-scene::before { height:5px; background:var(--mp-group-color); }
+:is(.marble-premium,.marble-native-team).is-modern :is(.mp-board-grid--40,.mp-board-grid--32) .mp-tile.mp-city-scene .mp-tile-content { position:relative; inset:auto; transform:none; width:100%; height:100%; overflow:visible; }
+:is(.marble-premium,.marble-native-team).is-modern :is(.mp-board-grid--40,.mp-board-grid--32) .mp-tile.mp-city-scene .mp-tile-top { position:absolute; z-index:5; top:4px; left:4px; right:4px; height:13px; min-height:0; font-size:8px; pointer-events:none; }
+:is(.marble-premium,.marble-native-team).is-modern :is(.mp-board-grid--40,.mp-board-grid--32) .mp-tile.mp-city-scene .mp-owner { position:static; width:14px; min-width:14px; height:14px; font-size:9px; }
+:is(.marble-premium,.marble-native-team).is-modern :is(.mp-board-grid--40,.mp-board-grid--32) .mp-tile.mp-city-scene .mp-property-tile-view { display:block; position:absolute; inset:0; width:100%; height:100%; margin:0; }
+:is(.marble-premium,.marble-native-team).is-modern :is(.mp-board-grid--40,.mp-board-grid--32) .mp-tile.mp-city-scene .mp-property-tile-art[data-building-level] { position:absolute; inset:9px 0 auto; width:100%; height:calc(100% - 43px); min-height:0; max-height:none; overflow:visible; }
+:is(.marble-premium,.marble-native-team).is-modern :is(.mp-board-grid--40,.mp-board-grid--32) .mp-tile.mp-city-scene .mp-property-tile-copy { position:absolute; left:0; right:0; bottom:0; height:35px; display:flex; flex-direction:column; align-items:center; justify-content:center; gap:0; background:#fffce6df; border-top:1px solid #ffffffab; border-radius:0 0 4px 4px; }
+:is(.marble-premium,.marble-native-team).is-modern :is(.mp-board-grid--40,.mp-board-grid--32) .mp-tile.mp-city-scene .mp-property-tile-copy .mp-tile-name { position:static; display:block; width:100%; height:auto; min-height:0; max-height:none; margin:0; padding:0 2px; color:#203b3a; text-align:center; font-size:clamp(10px,.85vw,13px); line-height:15px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+:is(.marble-premium,.marble-native-team).is-modern :is(.mp-board-grid--40,.mp-board-grid--32) .mp-tile.mp-city-scene .mp-property-tile-copy .mp-tile-economy { position:static; height:17px; width:100%; text-align:center; margin:0; }
+:is(.marble-premium,.marble-native-team).is-modern :is(.mp-board-grid--40,.mp-board-grid--32) .mp-tile.mp-city-scene .mp-tile-economy b { font-size:11px; line-height:14px; padding:0 4px; border:0; background:transparent; }
+:is(.marble-premium,.marble-native-team).is-modern :is(.mp-board-grid--40,.mp-board-grid--32) .mp-tile.mp-city-scene .mp-building-badge { display:none; }
+/* Bases sit on their own street edge, never inside the building silhouette. */
+:is(.marble-premium,.marble-native-team).is-modern :is(.mp-board-grid--40,.mp-board-grid--32) .mp-tile.mp-city-scene .mp-pawns { display:flex; flex-wrap:wrap; justify-content:center; align-items:flex-end; width:max-content; max-width:130px; min-height:0; height:auto; gap:0; padding:0; border:0; background:none; box-shadow:none; z-index:15; pointer-events:none; }
+:is(.marble-premium,.marble-native-team).is-modern :is(.mp-board-grid--40,.mp-board-grid--32) .mp-tile.mp-city-scene .mp-pawns::before,:is(.marble-premium,.marble-native-team).is-modern :is(.mp-board-grid--40,.mp-board-grid--32) .mp-tile.mp-city-scene .mp-pawns::after { display:none; }
+:is(.marble-premium,.marble-native-team).is-modern :is(.mp-board-grid--40,.mp-board-grid--32) .mp-tile.mp-city-scene .mp-pawn-marker { position:relative; flex:0 0 52px; width:52px; height:66px; border:0; margin:0; filter:drop-shadow(0 5px 2px #123c4670); }
+:is(.marble-premium,.marble-native-team).is-modern :is(.mp-board-grid--40,.mp-board-grid--32) .mp-tile.mp-city-scene .mp-pawn-marker::before { content:''; position:absolute; z-index:-1; bottom:0; left:5px; right:5px; height:15px; border:2px solid #fff4c6; border-radius:50%; background:var(--mp-owner-color); box-shadow:0 4px 0 color-mix(in srgb,var(--mp-owner-color),#193c46 35%); }
+:is(.marble-premium,.marble-native-team).is-modern :is(.mp-board-grid--40,.mp-board-grid--32) .mp-tile.mp-city-scene .mp-pawn-marker .marble-pawn { display:block; width:52px; height:63px; object-fit:contain; }
+:is(.marble-premium,.marble-native-team).is-modern :is(.mp-board-grid--40,.mp-board-grid--32) .mp-tile.mp-city-scene .mp-pawn-marker::after { width:17px; height:17px; font-size:11px; bottom:0; right:0; }
+:is(.marble-premium,.marble-native-team).is-modern :is(.mp-board-grid--40,.mp-board-grid--32) .mp-tile.mp-city-scene .mp-pawns[data-pawn-count="4"] { width:104px; gap:0; }
+:is(.marble-premium,.marble-native-team).is-modern :is(.mp-board-grid--40,.mp-board-grid--32) .mp-tile.mp-city-scene .mp-pawns[data-pawn-count="4"] .mp-pawn-marker:nth-child(-n+2) { margin-bottom:-20px; z-index:-1; }
+:is(.marble-premium,.marble-native-team).is-modern :is(.mp-board-grid--40,.mp-board-grid--32) .mp-tile.mp-city-scene.is-growing .mp-cluster-building { animation:mp-city-build 650ms cubic-bezier(.18,.8,.25,1.2) both; }
+:is(.marble-premium,.marble-native-team).is-modern :is(.mp-board-grid--40,.mp-board-grid--32) .mp-tile.mp-city-scene.is-growing .mp-cluster-building:nth-child(3) { animation-delay:90ms; }
+:is(.marble-premium,.marble-native-team).is-modern :is(.mp-board-grid--40,.mp-board-grid--32) .mp-tile.mp-city-scene.is-growing .mp-cluster-building:nth-child(4) { animation-delay:180ms; }
+@keyframes mp-city-build { 0% { transform:translateY(-24px) scale(.6); opacity:0; filter:brightness(2); } 65% { transform:translateY(3px) scale(1.05,.95); opacity:1; } 100% { transform:none; opacity:1; } }
+@media(min-width:1100px) { .marble-premium.is-modern .mp-header { display:none; } }
+@media(max-width:800px) {
+ :is(.marble-premium,.marble-native-team).is-modern :is(.mp-board-grid--40,.mp-board-grid--32) .mp-tile.mp-city-scene .mp-property-tile-copy .mp-tile-name { font-size:9px; }
+}
+@media(prefers-reduced-motion:reduce) { :is(.marble-premium,.marble-native-team).is-modern :is(.mp-board-grid--40,.mp-board-grid--32) .mp-tile.mp-city-scene.is-growing .mp-cluster-building { animation:none; } }
+
+/* Same dimensions and same city composition on all four sides. */
+:is(.marble-premium,.marble-native-team).is-modern :is(.mp-board-grid--40,.mp-board-grid--32) .mp-tile.mp-city-scene .mp-property-tile-art[data-building-level] { inset:auto -2% 4px auto; width:68%; height:calc(100% + 12px); }
+:is(.marble-premium,.marble-native-team).is-modern :is(.mp-board-grid--40,.mp-board-grid--32) .mp-tile.mp-city-scene .mp-property-tile-copy { left:0; right:auto; bottom:0; width:39%; height:100%; padding:3px 0; background:#fffce6c9; border:0; justify-content:center; }
+:is(.marble-premium,.marble-native-team).is-modern :is(.mp-board-grid--40,.mp-board-grid--32) .mp-tile.mp-city-scene .mp-property-tile-copy .mp-tile-name { white-space:normal; overflow:visible; text-overflow:clip; overflow-wrap:anywhere; font-size:clamp(9px,.8vw,12px); line-height:1.15; padding:0 2px; }
+:is(.marble-premium,.marble-native-team).is-modern :is(.mp-board-grid--40,.mp-board-grid--32) .mp-tile.mp-city-scene .mp-tile-top { display:none; }
+:is(.marble-premium,.marble-native-team).is-modern :is(.mp-board-grid--40,.mp-board-grid--32) .mp-tile.mp-city-scene .mp-property-tile-copy .mp-tile-economy b { font-size:clamp(9px,.75vw,11px); padding:0; white-space:nowrap; }
+.marble-native-team.marble-team-board .mt-four-board :is(.mp-board-grid--40,.mp-board-grid--32) { width:100%; max-width:none; min-height:0; height:clamp(470px,calc(100svh - 180px),780px); grid-template-columns:repeat(11,minmax(0,1fr)); grid-template-rows:repeat(11,minmax(0,1fr)); }
+@media(min-width:1100px) { :is(.marble-premium,.marble-native-team).is-modern :is(.mp-board-grid--40,.mp-board-grid--32) .mp-tile.mp-city-scene .mp-property-tile-copy .mp-tile-name { font-size:12px; line-height:13px; } }
+
+/* Height-fit square table: never stretch the same cities into short side rectangles. */
+:is(.marble-premium,.marble-native-team).is-modern :is(.mp-board-grid--40,.mp-board-grid--32),
+.marble-native-team.marble-team-board .mt-four-board :is(.mp-board-grid--40,.mp-board-grid--32) { width:min(100%,calc(100svh - 150px),780px); height:auto; aspect-ratio:1; margin-inline:auto; }
+:is(.marble-premium,.marble-native-team).is-modern :is(.mp-board-grid--40,.mp-board-grid--32) .mp-tile.mp-city-scene .mp-property-tile-art[data-building-level] { inset:0 0 auto; width:100%; height:72%; overflow:hidden; }
+:is(.marble-premium,.marble-native-team).is-modern :is(.mp-board-grid--40,.mp-board-grid--32) .mp-tile.mp-city-scene .mp-property-tile-copy { left:0; right:0; bottom:0; width:100%; height:29%; padding:0; justify-content:center; background:#fffce6ee; }
+:is(.marble-premium,.marble-native-team).is-modern :is(.mp-board-grid--40,.mp-board-grid--32) .mp-tile.mp-city-scene .mp-property-tile-copy .mp-tile-name { font-size:10px; line-height:11px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+:is(.marble-premium,.marble-native-team).is-modern :is(.mp-board-grid--40,.mp-board-grid--32) .mp-tile.mp-city-scene .mp-property-tile-copy .mp-tile-economy { height:11px; line-height:11px; }
+:is(.marble-premium,.marble-native-team).is-modern :is(.mp-board-grid--40,.mp-board-grid--32) .mp-tile.mp-city-scene .mp-property-tile-copy .mp-tile-economy b { font-size:9px; line-height:10px; }
+.mp-building-cluster .mp-cluster-hotel { height:94%; right:0; }
+.mp-building-cluster .mp-cluster-landmark { inset:0; width:100%; height:100%; }
+.mp-building-cluster .mp-city-owner-flag { right:0; bottom:4%; width:18px; height:12px; font-size:8px; }
+:is(.marble-premium,.marble-native-team).is-modern :is(.mp-board-grid--40,.mp-board-grid--32) .mp-tile.mp-city-scene .mp-property-tile-copy { z-index:6; overflow:hidden; }
+:is(.marble-premium,.marble-native-team).is-modern :is(.mp-board-grid--40,.mp-board-grid--32) .mp-tile.mp-city-scene .mp-property-tile-art { z-index:1; }
+
+/* 32-cell research profile: a CSS-projected board; no alternate renderer. */
+.mp-table-projection { position:relative; width:100%; aspect-ratio:1.5625; isolation:isolate; margin-block:24px; }
+:is(.marble-premium,.marble-native-team).is-modern .mp-table-projection :is(.mp-board-grid--32,.mp-board-grid--40) { position:absolute; left:50%; top:50%; width:70.7107%; height:auto; aspect-ratio:1; margin:0; display:grid; grid-template-columns:repeat(9,minmax(0,1fr)); grid-template-rows:repeat(9,minmax(0,1fr)); gap:3px; padding:5px; transform:translate(-50%,-50%) scaleY(.64) rotate(45deg); transform-origin:center; overflow:visible; box-shadow:6px 8px 0 #526b5d,10px 14px 0 #344f43,14px 18px 20px #153b3b55; }
+:is(.marble-premium,.marble-native-team).is-modern .mp-table-projection :is(.mp-board-grid--32,.mp-board-grid--40) .mp-board-center { grid-column:2/9; grid-row:2/9; overflow:visible; }
+:is(.marble-premium,.marble-native-team).is-modern .mp-table-projection :is(.mp-board-grid--32,.mp-board-grid--40) .mp-tile.mp-city-scene .mp-tile-content { position:absolute; inset:0; width:100%; height:100%; transform:rotate(-45deg) scaleY(1.5625); transform-origin:center; overflow:visible; }
+:is(.marble-premium,.marble-native-team).is-modern .mp-table-projection :is(.mp-board-grid--32,.mp-board-grid--40) .mp-tile.mp-city-scene .mp-property-tile-art[data-building-level] { top:-4px; height:70%; width:100%; overflow:visible; }
+:is(.marble-premium,.marble-native-team).is-modern .mp-table-projection :is(.mp-board-grid--32,.mp-board-grid--40) .mp-tile.mp-city-scene .mp-property-tile-copy { bottom:0; height:29%; background:#fffde4ed; box-shadow:0 1px 3px #263d3833; border-radius:3px; }
+:is(.marble-premium,.marble-native-team).is-modern .mp-table-projection :is(.mp-board-grid--32,.mp-board-grid--40) .mp-tile.mp-city-scene .mp-property-tile-copy .mp-tile-name { font-size:12px; line-height:13px; font-weight:850; }
+:is(.marble-premium,.marble-native-team).is-modern .mp-table-projection :is(.mp-board-grid--32,.mp-board-grid--40) .mp-tile.mp-city-scene .mp-property-tile-copy .mp-tile-economy b { font-size:10px; line-height:11px; }
+:is(.marble-premium,.marble-native-team).is-modern .mp-table-projection :is(.mp-board-grid--32,.mp-board-grid--40) .mp-tile.mp-city-scene .mp-pawns { top:50%; left:50%; right:auto; bottom:auto; transform:translate(-50%,-60%) rotate(-45deg) scaleY(1.5625); transform-origin:center; }
+:is(.marble-premium,.marble-native-team).is-modern .mp-table-projection :is(.mp-board-grid--32,.mp-board-grid--40) .mp-board-center > .mp-center-stage { position:absolute; left:50%; top:50%; right:auto; bottom:auto; width:88%; max-height:72%; transform:translate(-50%,-50%) rotate(-45deg) scaleY(1.5625); transform-origin:center; }
+:is(.marble-premium,.marble-native-team).is-modern .mp-table-projection :is(.mp-board-grid--32,.mp-board-grid--40) .mp-board-center > :is(.mp-map-hud,.mp-center-route,.mp-ownership-key) { display:none; }
+:is(.marble-premium,.marble-native-team).is-modern .mp-table-projection :is(.mp-board-grid--32,.mp-board-grid--40) .mp-tile:not(.mp-kind-property) .mp-tile-content { display:flex; align-items:center; justify-content:center; gap:1px; padding:2px; }
+:is(.marble-premium,.marble-native-team).is-modern .mp-table-projection :is(.mp-board-grid--32,.mp-board-grid--40) .mp-tile:not(.mp-kind-property) .mp-tile-name { font-size:12px; line-height:14px; height:auto; }
+:is(.marble-premium,.marble-native-team).is-modern .mp-table-projection :is(.mp-board-grid--32,.mp-board-grid--40) .mp-tile:not(.mp-kind-property) .mp-tile-kind { display:none; }
+.mp-group-korea-g1 { --mp-group-color:#9dcf35; }.mp-group-korea-g2 { --mp-group-color:#35a64a; }.mp-group-korea-g3 { --mp-group-color:#43bde9; }.mp-group-korea-g4 { --mp-group-color:#3576d4; }.mp-group-korea-g5 { --mp-group-color:#e987ba; }.mp-group-korea-g6 { --mp-group-color:#976aca; }.mp-group-korea-g7 { --mp-group-color:#eea635; }.mp-group-korea-g8 { --mp-group-color:#df6646; }
+.mp-tile[data-tourism-group="mountain"] { --mp-group-color:#57c6c6; }.mp-tile[data-tourism-group="park"] { --mp-group-color:#f2b9ca; }
+/* The ring is deeper than the central tracks. Rotated long/short edge tiles have
+   identical projected bounds; only the four original-style corners are larger. */
+.mp-table-projection { container-type:inline-size; }
+:is(.marble-premium,.marble-native-team).is-modern .mp-table-projection :is(.mp-board-grid--32,.mp-board-grid--40) { grid-template-columns:1.7fr repeat(7,minmax(0,1fr)) 1.7fr; grid-template-rows:1.7fr repeat(7,minmax(0,1fr)) 1.7fr; }
+:is(.marble-premium,.marble-native-team).is-modern .mp-table-projection :is(.mp-board-grid--32,.mp-board-grid--40) .mp-tile.mp-city-scene .mp-tile-content { left:50%; top:50%; right:auto; bottom:auto; width:11.5cqw; height:8.1cqw; transform:translate(-50%,-50%) rotate(-45deg) scaleY(1.5625); }
+:is(.marble-premium,.marble-native-team).is-modern .mp-table-projection :is(.mp-board-grid--32,.mp-board-grid--40) .mp-tile.mp-city-scene .mp-property-tile-art[data-building-level] { top:0; height:73%; width:100%; }
+:is(.marble-premium,.marble-native-team).is-modern .mp-table-projection :is(.mp-board-grid--32,.mp-board-grid--40) .mp-tile.mp-city-scene .mp-property-tile-copy { bottom:0; height:27%; }
+:is(.marble-premium,.marble-native-team).is-modern .mp-table-projection :is(.mp-board-grid--32,.mp-board-grid--40) .mp-tile.mp-city-scene .mp-pawns { padding:0; border:none; background:none; box-shadow:none; border-radius:0; }
+:is(.marble-premium,.marble-native-team).is-modern .mp-table-projection :is(.mp-board-grid--32,.mp-board-grid--40) .mp-tile.mp-city-scene .mp-pawn-marker { background:none; border:none; border-radius:0; box-shadow:none; }
+:is(.marble-premium,.marble-native-team).is-modern .mp-table-projection :is(.mp-board-grid--32,.mp-board-grid--40) .mp-tile.mp-city-scene .mp-pawn-marker .marble-pawn { padding:0; border:none; border-radius:0; background:none; box-shadow:none; object-fit:contain; }
+:is(.marble-premium,.marble-native-team).is-modern .mp-tile.mp-city-scene.is-arrived { outline:3px solid #fff6b0; outline-offset:1px; box-shadow:inset 0 0 0 3px #19474c,0 0 0 5px #d5a326,0 0 18px #ffe89bcc; z-index:12; }
+:is(.marble-premium,.marble-native-team).is-modern .mp-tile.mp-city-scene.is-arrived .mp-arrival-label { position:absolute; z-index:20; left:50%; top:-12px; transform:translateX(-50%); width:max-content; max-width:135px; padding:3px 7px; border:2px solid #fff8cf; border-radius:4px; background:#153f47; color:#fff9d8; font:bold 12px/14px system-ui; box-shadow:0 2px 4px #12394166; white-space:nowrap; }
+:is(.marble-premium,.marble-native-team).is-modern .mp-tile.mp-city-scene.is-arrived[data-arrival-ownership="mine"] .mp-arrival-label::before { content:'✓ '; }
+:is(.marble-premium,.marble-native-team).is-modern .mp-tile.mp-city-scene.is-arrived[data-arrival-ownership="other"] .mp-arrival-label::before { content:'! '; }
+:is(.marble-premium,.marble-native-team).is-modern .mp-tile.mp-city-scene.is-arrived[data-arrival-ownership="bank"] .mp-arrival-label::before { content:'+ '; }
+:is(.marble-premium,.marble-native-team).is-modern .mp-table-projection :is(.mp-board-grid--32,.mp-board-grid--40) .mp-tile .mp-korea-mark { width:65%; height:66%; min-height:0; }
+/* A query-contained, absolutely positioned board has no intrinsic width.
+   Its layout ancestors must stretch instead of shrink-wrapping the sidebar. */
+:is(.marble-premium,.marble-native-team):has(.mp-table-projection) { width:100%; min-width:0; box-sizing:border-box; }
+:is(.marble-premium,.marble-native-team):has(.mp-table-projection) :is(.mp-layout,.mt-play-surface) { width:100%; min-width:0; justify-self:stretch; align-self:stretch; box-sizing:border-box; }
+:is(.marble-premium,.marble-native-team):has(.mp-table-projection) :is(.mp-board-panel,.mt-four-board) { width:100%; min-width:0; box-sizing:border-box; }
+.mp-board-grid--32 .mp-pawn-marker::after { content:attr(data-seat-number); position:absolute; right:0; bottom:0; display:grid; place-items:center; border:1px solid #fff6c5; border-radius:50%; background:var(--mp-owner-color); color:white; font-weight:900; }
+/* Ground markings stay in the board plane; only raised pieces face the camera. */
+:is(.marble-premium,.marble-native-team).is-modern .mp-table-projection :is(.mp-board-grid--32,.mp-board-grid--40) .mp-tile.mp-city-scene .mp-tile-content { inset:0; width:100%; height:100%; transform:none; }
+:is(.marble-premium,.marble-native-team).is-modern .mp-table-projection :is(.mp-board-grid--32,.mp-board-grid--40) .mp-tile.mp-city-scene .mp-property-tile-art[data-building-level] { position:absolute; left:50%; right:auto; top:38%; bottom:auto; width:10.5cqw; height:7.4cqw; transform:translate(-50%,-100%) rotate(-45deg) scaleY(1.5625); transform-origin:50% 100%; overflow:visible; }
+:is(.marble-premium,.marble-native-team).is-modern .mp-table-projection :is(.mp-board-grid--32,.mp-board-grid--40) .mp-tile.mp-city-scene .mp-property-tile-copy { left:0; right:0; top:60%; bottom:auto; width:100%; height:32%; background:none; box-shadow:none; border:none; border-radius:0; overflow:visible; z-index:6; }
+:is(.marble-premium,.marble-native-team).is-modern .mp-table-projection :is(.mp-board-grid--32,.mp-board-grid--40) .mp-tile.mp-city-scene .mp-property-tile-copy .mp-tile-name { font-size:14px; line-height:16px; color:#173d3e; text-shadow:0 1px #ffffff99; }
+:is(.marble-premium,.marble-native-team).is-modern .mp-table-projection :is(.mp-board-grid--32,.mp-board-grid--40) .mp-tile.mp-city-scene .mp-property-tile-copy .mp-tile-economy { display:none; }
+:is(.marble-premium,.marble-native-team).is-modern .mp-table-projection :is(.mp-board-grid--32,.mp-board-grid--40) .mp-tile.mp-city-scene[data-mp-edge="bottom"] .mp-property-tile-art[data-building-level] { top:90%; }
+:is(.marble-premium,.marble-native-team).is-modern .mp-table-projection :is(.mp-board-grid--32,.mp-board-grid--40) .mp-tile.mp-city-scene[data-mp-edge="bottom"] .mp-property-tile-copy { top:8%; }
+:is(.marble-premium,.marble-native-team).is-modern .mp-table-projection :is(.mp-board-grid--32,.mp-board-grid--40) .mp-tile.mp-city-scene[data-mp-edge="left"] .mp-property-tile-art[data-building-level] { left:27%; top:65%; }
+:is(.marble-premium,.marble-native-team).is-modern .mp-table-projection :is(.mp-board-grid--32,.mp-board-grid--40) .mp-tile.mp-city-scene[data-mp-edge="right"] .mp-property-tile-art[data-building-level] { left:82%; top:65%; }
+:is(.marble-premium,.marble-native-team).is-modern .mp-table-projection :is(.mp-board-grid--32,.mp-board-grid--40) .mp-tile.mp-city-scene:is([data-mp-edge="left"],[data-mp-edge="right"]) .mp-property-tile-copy { left:68%; top:50%; width:56%; height:35%; transform:translate(-50%,-50%) rotate(-90deg); }
+:is(.marble-premium,.marble-native-team).is-modern .mp-table-projection :is(.mp-board-grid--32,.mp-board-grid--40) .mp-tile.mp-city-scene[data-mp-edge="right"] .mp-property-tile-copy { left:25%; }
+:is(.marble-premium,.marble-native-team).is-modern .mp-table-projection :is(.mp-board-grid--32,.mp-board-grid--40) .mp-tile:not(.mp-kind-property) .mp-tile-content { display:flex; flex-direction:column; justify-content:center; align-items:center; gap:2px; padding:2px; }
+:is(.marble-premium,.marble-native-team).is-modern .mp-table-projection :is(.mp-board-grid--32,.mp-board-grid--40) .mp-tile:not(.mp-kind-property) .mp-tile-name { width:95%; font-size:12px; line-height:14px; margin:0; }
+:is(.marble-premium,.marble-native-team).is-modern .mp-table-projection :is(.mp-board-grid--32,.mp-board-grid--40) .mp-tile .mp-korea-mark { width:30px; height:30px; max-width:45%; max-height:45%; flex:none; }
+:is(.marble-premium,.marble-native-team).is-modern .mp-table-projection :is(.mp-board-grid--32,.mp-board-grid--40) .mp-tile:is([data-mp-edge="left"],[data-mp-edge="right"]):not(.mp-kind-property) .mp-tile-content { transform:rotate(-90deg); width:60%; height:160%; left:20%; top:-30%; }
+:is(.marble-premium,.marble-native-team).is-modern .mp-table-projection :is(.mp-board-grid--32,.mp-board-grid--40) .mp-tile.mp-city-scene.is-arrived .mp-arrival-label { top:0; transform:translate(-50%,-60%) rotate(-45deg) scaleY(1.5625); }
+:is(.marble-premium,.marble-native-team).is-modern :is(.mp-board-grid--40,.mp-board-grid--32) .mp-tile.mp-city-scene .mp-pawn-marker,
+:is(.marble-premium,.marble-native-team).is-modern :is(.mp-board-grid--40,.mp-board-grid--32) .mp-tile.mp-city-scene .mp-pawn-marker .marble-pawn { padding:0; border:0; border-radius:0; background:none; box-shadow:none; }
+:is(.marble-premium,.marble-native-team).is-modern .mp-board-grid--40 .mp-tile.mp-city-scene .mp-pawns { top:45%; left:50%; right:auto; bottom:auto; transform:translate(-50%,-50%); }
+/* Shared raster assets already fit each cluster slot; do not apply legacy tier scaling. */
+:is(.marble-premium,.marble-native-team).is-modern .mp-building-cluster .mp-cluster-building > .mp-cluster-asset[data-building-level] { transform:none; padding:0; max-width:none; max-height:none; }
+/* Keep the inner text lane clear of the next city's taller silhouette. */
+:is(.marble-premium,.marble-native-team).is-modern .mp-table-projection :is(.mp-board-grid--32,.mp-board-grid--40) .mp-tile.mp-city-scene .mp-property-tile-art[data-building-level] { width:9.4cqw; height:6.6cqw; }
+:is(.marble-premium,.marble-native-team).is-modern .mp-table-projection :is(.mp-board-grid--32,.mp-board-grid--40) .mp-tile.mp-city-scene[data-mp-edge="top"] .mp-property-tile-copy { top:76%; }
+:is(.marble-premium,.marble-native-team).is-modern .mp-table-projection :is(.mp-board-grid--32,.mp-board-grid--40) .mp-tile.mp-city-scene[data-mp-edge="bottom"] .mp-property-tile-copy { top:0; }
+:is(.marble-premium,.marble-native-team).is-modern .mp-table-projection :is(.mp-board-grid--32,.mp-board-grid--40) .mp-tile.mp-city-scene[data-mp-edge="left"] .mp-property-tile-copy { left:84%; }
+:is(.marble-premium,.marble-native-team).is-modern .mp-table-projection :is(.mp-board-grid--32,.mp-board-grid--40) .mp-tile.mp-city-scene[data-mp-edge="right"] .mp-property-tile-copy { left:10%; }
+/* Anchor feet in screen space after undoing projection, not in rotated board axes. */
+:is(.marble-premium,.marble-native-team).is-modern .mp-table-projection :is(.mp-board-grid--32,.mp-board-grid--40) .mp-tile.mp-city-scene .mp-pawns { transform-origin:0 0; transform:rotate(-45deg) scaleY(1.5625) translate(-50%,-100%); }
+:is(.marble-premium,.marble-native-team).is-modern .mp-table-projection :is(.mp-board-grid--32,.mp-board-grid--40) .mp-tile.mp-city-scene .mp-pawns[data-pawn-count="4"] { transform:rotate(-45deg) scaleY(1.5625) translate(-50%,-75%); }
+:is(.marble-premium,.marble-native-team).is-modern .mp-table-projection :is(.mp-board-grid--32,.mp-board-grid--40) .mp-tile.mp-city-scene .mp-pawns[data-pawn-count="4"] { width:92px; transform:rotate(-45deg) scaleY(1.5625) translate(-50%,-85%); }
+:is(.marble-premium,.marble-native-team).is-modern .mp-table-projection :is(.mp-board-grid--32,.mp-board-grid--40) .mp-tile.mp-city-scene .mp-pawns[data-pawn-count="4"] .mp-pawn-marker:nth-child(even) { margin-left:-12px; }
+:is(.marble-premium,.marble-native-team).is-modern .mp-table-projection :is(.mp-board-grid--32,.mp-board-grid--40) .mp-tile.mp-city-scene .mp-pawns[data-pawn-count="4"] .mp-pawn-marker:nth-child(-n+2) { margin-bottom:-40px; }
+:is(.marble-premium,.marble-native-team).is-modern .mp-table-projection :is(.mp-board-grid--32,.mp-board-grid--40) .mp-tile.mp-city-scene .mp-pawns[data-pawn-count="4"] .mp-pawn-marker:nth-child(-n+2)::after { top:0; bottom:auto; }
+.mp-table-projection { max-width:calc((100svh - 180px)*1.5625); margin-inline:auto; }
+
+/* Playable forty-city route: same projection, all original indices retained. */
+:is(.marble-premium,.marble-native-team).is-modern .mp-table-projection .mp-board-grid--40 { grid-template-columns:1.7fr repeat(9,minmax(0,1fr)) 1.7fr; grid-template-rows:1.7fr repeat(9,minmax(0,1fr)) 1.7fr; }
+:is(.marble-premium,.marble-native-team).is-modern .mp-table-projection .mp-board-grid--40 .mp-board-center { grid-column:2/11; grid-row:2/11; }
+:is(.marble-premium,.marble-native-team).is-modern .mp-table-projection .mp-board-grid--40 .mp-tile.mp-city-scene .mp-property-tile-copy .mp-tile-name { font-size:12px; line-height:13px; white-space:normal; overflow:visible; max-height:none; }
+:is(.marble-premium,.marble-native-team).is-modern .mp-table-projection .mp-board-grid--40 .mp-tile.mp-city-scene .mp-property-tile-art[data-building-level] { width:8.3cqw; height:6.2cqw; }
+:is(.marble-premium,.marble-native-team).is-modern .mp-table-projection :is(.mp-building-plinth,.mp-city-ground) { display:none; }
+:is(.marble-premium,.marble-native-team).is-modern .mp-table-projection .mp-property-tile-art[data-building-level="0"] > :is(.mp-property-art-image,.mp-cluster-land) { visibility:hidden; }
+:is(.marble-premium,.marble-native-team).is-modern .mp-table-projection .mp-tile.mp-city-scene .mp-property-tile-art > .mp-property-art-image { width:100%; height:100%; transform:none; object-fit:contain; object-position:center bottom; }
+@media(min-width:1000px){
+ .marble-premium.is-modern:has(.mp-table-projection) .mp-layout,.marble-native-team.marble-team-board:has(.mp-table-projection) .mt-play-surface { grid-template-columns:minmax(0,1fr) 260px; max-width:none; }
+}
+:is(.marble-premium,.marble-native-team).is-modern .mp-table-projection :is(.mp-board-grid--32,.mp-board-grid--40) .mp-tile.mp-city-scene.has-player { z-index:30; }
+.mp-table-projection .mp-property-art-frame .mp-city-owner-flag { width:18px; height:12px; font-size:8px; right:6%; bottom:2%; }
+/* Ownership survives the landmark silhouette: ground footprint + explicit text in the inner lane. */
+.mp-city-scene[data-marble-owner="p1"] { --mp-owner-color:#a92b4d; }
+.mp-city-scene[data-marble-owner="p2"] { --mp-owner-color:#08796d; }
+.mp-city-scene[data-marble-owner="p3"] { --mp-owner-color:#7050ad; }
+.mp-city-scene[data-marble-owner="p4"] { --mp-owner-color:#a75b12; }
+.mp-city-scene .mp-owner-floor { position:absolute; inset:2px; z-index:0; pointer-events:none; border:3px solid var(--mp-owner-color); background:color-mix(in srgb,var(--mp-owner-color) 22%,transparent); box-shadow:inset 0 0 0 1px #fff5d6; }
+.mp-city-scene .mp-ownership-label { display:block; width:max-content; max-width:100%; margin:1px auto 0; padding:1px 3px; border:1px solid #fff6d5; border-radius:2px; background:var(--mp-owner-color); color:#fff; font:800 10px/12px system-ui; white-space:nowrap; text-shadow:none; }
+.mp-city-scene[data-ownership-relation="mine"] .mp-ownership-label::before { content:'◆ '; }
+.mp-city-scene[data-ownership-relation="team"] .mp-ownership-label::before { content:'● '; }
+:is(.marble-premium,.marble-native-team).is-modern .mp-table-projection .mp-tile.mp-city-scene .mp-property-tile-copy { z-index:12; }
+:is(.marble-premium,.marble-native-team).is-modern .mp-tile.mp-city-scene:is(.is-travel-selectable,.is-effect-selectable) { outline:3px solid #ffe17a; outline-offset:-3px; box-shadow:inset 0 0 0 6px #154955; }
+:is(.marble-premium,.marble-native-team).is-modern .mp-tile.mp-city-scene:is(.is-travel-selectable,.is-effect-selectable) .mp-tile-select:focus-visible { outline:4px solid white; outline-offset:-7px; }
+/* Upright art must fit the projected spacing, not the unprojected diagonal cell width.
+   Keep height for tall monuments; only wide silhouettes use a narrower footprint. */
+:is(.marble-premium,.marble-native-team).is-modern .mp-table-projection :is(.mp-board-grid--32,.mp-board-grid--40) .mp-tile.mp-city-scene .mp-property-tile-art[data-building-level] { width:5.3cqw; height:6.2cqw; }
+:is(.marble-premium,.marble-native-team).is-modern .mp-table-projection .mp-tile.mp-city-scene[data-mp-edge="top"] .mp-property-tile-art[data-building-level] { top:16%; }
+:is(.marble-premium,.marble-native-team).is-modern .mp-table-projection .mp-tile.mp-city-scene[data-mp-edge="bottom"] .mp-property-tile-art[data-building-level] { top:92%; }
+:is(.marble-premium,.marble-native-team).is-modern .mp-table-projection .mp-tile.mp-city-scene[data-mp-edge="left"] .mp-property-tile-art[data-building-level] { left:8%; top:50%; }
+:is(.marble-premium,.marble-native-team).is-modern .mp-table-projection .mp-tile.mp-city-scene[data-mp-edge="right"] .mp-property-tile-art[data-building-level] { left:92%; top:50%; }
+.mp-table-projection .mp-cluster-landmark { inset:0; width:100%; height:100%; }
+.mp-table-projection .mp-property-art-frame .mp-city-owner-flag { right:4%; bottom:0; }
+/* Stack the three independent buildings in depth inside the footprint instead of shrinking all three. */
+.mp-table-projection .mp-building-cluster .mp-cluster-villa { width:70%; height:65%; left:-5%; bottom:0; }
+.mp-table-projection .mp-building-cluster .mp-cluster-building.mp-cluster-building:not(.mp-cluster-villa):not(.mp-cluster-hotel) { width:72%; height:86%; left:8%; bottom:8%; }
+.mp-table-projection .mp-building-cluster .mp-cluster-hotel { width:60%; height:110%; right:-2%; bottom:18%; }
+/* Spend the lower desktop viewport on the board, retaining a real gutter for upright art. */
+@media(min-width:1000px){
+ .mp-table-projection { margin-block:16px; max-width:min(calc((100svh - 110px)*1.5625),calc((var(--mp-available-height,100svh) - 48px)*1.5625)); }
+}
+/* Eight steps per side provide more room than the legacy ten-step route. */
+:is(.marble-premium,.marble-native-team).is-modern .mp-table-projection .mp-board-grid--32 .mp-tile.mp-city-scene .mp-property-tile-art[data-building-level] { width:6.4cqw; height:7.4cqw; }
+:is(.marble-premium,.marble-native-team).is-modern .mp-table-projection .mp-board-grid--32 .mp-tile.mp-city-scene .mp-property-tile-copy .mp-tile-name { font-size:14px; line-height:15px; white-space:normal; overflow:visible; max-height:none; }
+:is(.marble-premium,.marble-native-team).is-modern .mp-table-projection .mp-board-grid--32 .mp-ownership-label { font-size:11px; line-height:13px; }
+.mp-group-world-g1 { --mp-group-color:#9dcf35; }.mp-group-world-g2 { --mp-group-color:#35a64a; }.mp-group-world-g3 { --mp-group-color:#43bde9; }.mp-group-world-g4 { --mp-group-color:#3576d4; }.mp-group-world-g5 { --mp-group-color:#e987ba; }.mp-group-world-g6 { --mp-group-color:#976aca; }.mp-group-world-g7 { --mp-group-color:#eea635; }.mp-group-world-g8 { --mp-group-color:#df6646; }
+.mp-world-island { --mp-group-color:#42b6b1; }
+.mp-island-art { object-fit:contain; object-position:center bottom; }
+.mp-island-price { display:inline-block; margin-left:3px; padding:0 2px; border-radius:2px; background:#fff7ce; color:#184d50; font:bold 10px/12px system-ui; }
+
+/* Stable ground-name lane: buying must not add flex content or compress wrapped text.
+   Ownership has a separate overlay lane, never another flex row in the name lane. */
+:is(.marble-premium,.marble-native-team).is-modern .mp-table-projection :is(.mp-board-grid--32,.mp-board-grid--40) .mp-tile.mp-city-scene .mp-property-tile-copy { display:block; height:auto; min-height:0; top:62%; width:100%; padding:0 3px; }
+:is(.marble-premium,.marble-native-team).is-modern .mp-table-projection :is(.mp-board-grid--32,.mp-board-grid--40) .mp-tile.mp-city-scene[data-mp-edge="bottom"] .mp-property-tile-copy { top:4%; }
+:is(.marble-premium,.marble-native-team).is-modern .mp-table-projection :is(.mp-board-grid--32,.mp-board-grid--40) .mp-tile.mp-city-scene:is([data-mp-edge="left"],[data-mp-edge="right"]) .mp-property-tile-copy { top:50%; width:58%; height:auto; }
+:is(.marble-premium,.marble-native-team).is-modern .mp-table-projection :is(.mp-board-grid--32,.mp-board-grid--40) .mp-tile.mp-city-scene[data-mp-edge="left"] .mp-property-tile-copy { left:77%; }
+:is(.marble-premium,.marble-native-team).is-modern .mp-table-projection :is(.mp-board-grid--32,.mp-board-grid--40) .mp-tile.mp-city-scene[data-mp-edge="right"] .mp-property-tile-copy { left:23%; }
+:is(.marble-premium,.marble-native-team).is-modern .mp-table-projection :is(.mp-board-grid--32,.mp-board-grid--40) .mp-tile.mp-city-scene .mp-property-tile-copy .mp-tile-name { display:block; height:auto; min-height:0; flex:none; font-size:clamp(11px,1.05cqw,14px); line-height:1.08; overflow-wrap:normal; word-break:normal; white-space:normal; }
+/* Only these pointer-transparent banners escape tile stacking, not art or pawns. */
+.mp-tile-owner-layer { position:relative; min-width:0; min-height:0; z-index:100; pointer-events:none; }
+.mp-tile-owner-layer[data-marble-owner="p1"] { --mp-owner-color:#a92b4d; }
+.mp-tile-owner-layer[data-marble-owner="p2"] { --mp-owner-color:#08796d; }
+.mp-tile-owner-layer[data-marble-owner="p3"] { --mp-owner-color:#7050ad; }
+.mp-tile-owner-layer[data-marble-owner="p4"] { --mp-owner-color:#a75b12; }
+.mp-tile-owner-layer .mp-ownership-label { position:absolute; left:50%; top:100%; transform:translateX(-50%); display:block; width:max-content; margin:2px 0 0; padding:1px 4px; border:1px solid #fff6d5; border-radius:2px; background:var(--mp-owner-color); color:white; font:800 11px/13px system-ui; white-space:nowrap; pointer-events:none; }
+.mp-tile-owner-layer[data-mp-edge="bottom"] .mp-ownership-label { top:auto; bottom:100%; margin:0 0 2px; }
+.mp-tile-owner-layer[data-mp-edge="left"] .mp-ownership-label { left:100%; top:50%; margin:0; transform:translate(-50%,-50%) rotate(-90deg) translateY(9px); }
+.mp-tile-owner-layer[data-mp-edge="right"] .mp-ownership-label { left:0; top:50%; margin:0; transform:translate(-50%,-50%) rotate(-90deg) translateY(-9px); }
+.mp-tile-owner-layer:is([data-mp-edge="lefttop"],[data-mp-edge="righttop"]) .mp-ownership-label { top:100%; }
+.mp-tile-owner-layer:is([data-mp-edge="leftbottom"],[data-mp-edge="rightbottom"]) .mp-ownership-label { top:auto; bottom:100%; }
+:is(.marble-premium,.marble-native-team).is-modern .mp-table-projection :is(.mp-board-grid--32,.mp-board-grid--40) .mp-tile.mp-city-scene[data-mp-edge="top"] .mp-property-tile-copy { top:62%; }
+/* Ground text may occlude a neighbouring building, never the other way round. */
+:is(.marble-premium,.marble-native-team).is-modern .mp-table-projection :is(.mp-board-grid--32,.mp-board-grid--40) .mp-tile.mp-city-scene:not(.has-player):not(.is-arrived) { z-index:auto; }
+:is(.marble-premium,.marble-native-team).is-modern .mp-table-projection :is(.mp-board-grid--32,.mp-board-grid--40) .mp-tile.mp-city-scene .mp-tile-content { z-index:auto; }
+:is(.marble-premium,.marble-native-team).is-modern .mp-table-projection :is(.mp-board-grid--32,.mp-board-grid--40) .mp-tile.mp-city-scene .mp-property-tile-copy { z-index:12; }
+
+.mp-festival-site-mark { display:block; width:36px; height:36px; max-width:55%; max-height:55%; flex:none; filter:drop-shadow(0 2px 1px #204d4d55); }
+/* Keep the opaque board floor below ownership; only the cream decision/receipt surface rises above it. */
+:is(.marble-premium,.marble-native-team).is-modern .mp-board-center { z-index:auto; }
+:is(.marble-premium,.marble-native-team).is-modern .mp-board-center > .mp-center-stage:is(.mp-stage--rent-decision,.mp-stage--island,.mp-stage--decision,:has(.mp-construction-stage,.mp-ownership-decision,.mp-debt-decision,.mp-travel-decision,.mp-card-decision,.mp-card-selection,.mp-center-receipt)) { z-index:110!important; }
+/* The ground ribbon already identifies the owner; a second badge masks wide landmark bases. */
+.mp-table-projection .mp-property-art-frame[data-building-level="3"] > .mp-city-owner-flag { display:none; }
+
+/* Approved destination scenes retain their complete compositions. */
+.mp-destination-special-art{display:block;width:100%;height:58%;min-height:0;object-fit:contain;flex:1;}
+.mp-destination-stage-art{display:block;width:100%;height:100%;max-height:150px;object-fit:contain;}
+.mp-island-decision-art{display:block;width:100%;height:100px;object-fit:contain;}

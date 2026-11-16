@@ -86,7 +86,18 @@
 .marble-premium.is-modern .mp-turn-panel .mp-phase-title,.marble-premium.is-modern .mp-turn-panel .mp-dice-row,.marble-premium.is-modern .mp-turn-panel .mp-current-tile,.marble-premium.is-modern .mp-turn-panel .mp-purchase-recap { display:none; }
 .marble-premium.is-modern .mp-actions fieldset { display:flex; align-items:center; gap:8px; flex-wrap:wrap; }
 .marble-premium.is-modern .mp-actions button { width:auto; }
-.marble-premium.is-modern .mp-build-shortcut { display:grid; grid-template-columns:auto repeat(3,minmax(0,1fr)); align-items:center; gap:8px; }
+@media (min-width:1100px) {
+  .marble-premium.is-modern .mp-build-shortcut,.marble-native-team.is-modern .mt-build { display:none; }
+  .marble-premium.is-modern .mp-city-detail[open],
+  .marble-native-team.is-modern .mt-city-sheet[open] {
+    position:fixed; z-index:80; top:50%; left:50%; transform:translate(-50%,-50%);
+    width:min(520px,calc(100vw - 36px)); max-width:none; max-height:calc(100vh - 64px);
+    margin:0; padding:12px 16px; box-sizing:border-box; overflow:auto;
+    border:2px solid #b99b61; border-radius:12px; background:#fffaf0; color:#173d43;
+    box-shadow:0 18px 52px #0c263596;
+  }
+  .marble-native-team.is-modern .mt-captain-panel:has(.mt-city-sheet[open]) { overflow:visible; }
+}
 .marble-premium.is-modern .mp-build-option { min-width:0; }
 .marble-premium.is-modern .mp-dashboard > details { display:block; min-width:0; margin:0; padding:0 10px; border:0; border-radius:6px; background:#fffaf0; }
 .marble-premium.is-modern .mp-dashboard > details > summary { padding:7px 0; font-size:12px; }
@@ -399,4 +410,73 @@
   :is(.marble-premium,.marble-native-team).is-modern .mp-board-grid--40 .mp-tile:not(.mp-kind-property) .mp-tile-name { grid-column:1; grid-row:2; height:12px; margin:0; font-size:10px; line-height:12px; text-align:center; }
   :is(.marble-premium,.marble-native-team).is-modern .mp-board-grid--40 .mp-tile:not(.mp-kind-property) .mp-tile-symbol { grid-column:1; grid-row:3; width:18px; height:18px; margin:auto; }
   :is(.marble-premium,.marble-native-team).is-modern .mp-board-grid--40 .mp-tile:not(.mp-kind-property) .mp-tile-kind { grid-column:1; grid-row:4; height:9px; margin:0; font-size:8px; line-height:9px; text-align:center; }
+}
+
+/* The inside edge of the route is a visible parking lane for figures. */
+@media (min-width:1100px) {
+  .marble-premium.is-modern .mp-board-grid--40 { height:clamp(540px,calc(100svh - 182px),710px); }
+  :is(.marble-premium,.marble-native-team).is-modern .mp-board-grid--40 .mp-tile.has-player {
+    z-index:12; overflow:visible;
+  }
+  :is(.marble-premium,.marble-native-team).is-modern .mp-board-grid--40 .mp-tile.mp-kind-property:has(.mp-property-tile-art[data-building-level="1"]),
+  :is(.marble-premium,.marble-native-team).is-modern .mp-board-grid--40 .mp-tile.mp-kind-property:has(.mp-property-tile-art[data-building-level="2"]),
+  :is(.marble-premium,.marble-native-team).is-modern .mp-board-grid--40 .mp-tile.mp-kind-property:has(.mp-property-tile-art[data-building-level="3"]) { z-index:2; overflow:visible; }
+  :is(.marble-premium,.marble-native-team).is-modern .mp-board-grid--40 .mp-kind-property .mp-property-tile-copy .mp-tile-name,
+  :is(.marble-premium,.marble-native-team).is-modern .mp-board-grid--40 .mp-kind-property .mp-property-tile-copy .mp-tile-economy { position:relative; z-index:4; }
+  :is(.marble-premium,.marble-native-team).is-modern .mp-board-grid--40 .mp-kind-property .mp-property-tile-art:is([data-building-level="1"],[data-building-level="2"],[data-building-level="3"]) {
+    position:absolute; z-index:2; overflow:visible; width:100%; height:70px; max-height:none;
+    left:0; right:0; bottom:10px; transform:none; pointer-events:none;
+  }
+  :is(.marble-premium,.marble-native-team).is-modern .mp-board-grid--40 .mp-property-tile-art[data-building-level="1"] > .mp-property-art-image { height:78%; }
+  :is(.marble-premium,.marble-native-team).is-modern .mp-board-grid--40 .mp-property-tile-art[data-building-level="2"] > .mp-property-art-image { height:90%; }
+  :is(.marble-premium,.marble-native-team).is-modern .mp-board-grid--40 :is([data-mp-edge="top"],[data-mp-edge="lefttop"],[data-mp-edge="righttop"]) .mp-property-tile-art:is([data-building-level="1"],[data-building-level="2"],[data-building-level="3"]) { top:10px; bottom:auto; }
+  :is(.marble-premium,.marble-native-team).is-modern .mp-board-grid--40 :is([data-mp-edge="left"],[data-mp-edge="right"]) .mp-property-tile-art:is([data-building-level="1"],[data-building-level="2"],[data-building-level="3"]) { top:0; bottom:auto; width:calc(100% + 23px); height:calc(100% - 2px); }
+  :is(.marble-premium,.marble-native-team).is-modern .mp-board-grid--40 [data-mp-edge="right"] .mp-property-tile-art:is([data-building-level="1"],[data-building-level="2"],[data-building-level="3"]) { right:0; left:auto; }
+  :is(.marble-premium,.marble-native-team).is-modern .mp-board-grid--40 .mp-tile .mp-pawns {
+    z-index:20; display:flex; align-items:end; width:max-content; max-width:none; height:49px;
+    padding:3px 5px; gap:3px; transform:none; box-sizing:border-box; border:2px solid #f5e5b9;
+    border-radius:9px; background:#173e47eb; box-shadow:0 5px 12px #092d3aa6,0 0 0 2px #1c525b;
+  }
+  :is(.marble-premium,.marble-native-team).is-modern .mp-board-grid--40 .mp-tile .mp-pawn-marker {
+    position:relative; display:block; flex:0 0 32px; width:32px; height:39px; margin:0;
+    border-radius:6px 6px 4px 4px; background:#fff8e8; border-bottom:4px solid var(--pawn-seat-color,#c35f6d);
+    box-shadow:0 1px 3px #08232c99; filter:none;
+  }
+  :is(.marble-premium,.marble-native-team).is-modern .mp-board-grid--40 .mp-tile .mp-pawn-marker[data-marble-pawn-seat="p1"] { --pawn-seat-color:#c65a70; }
+  :is(.marble-premium,.marble-native-team).is-modern .mp-board-grid--40 .mp-tile .mp-pawn-marker[data-marble-pawn-seat="p2"] { --pawn-seat-color:#387dba; }
+  :is(.marble-premium,.marble-native-team).is-modern .mp-board-grid--40 .mp-tile .mp-pawn-marker[data-marble-pawn-seat="p3"] { --pawn-seat-color:#bb7a32; }
+  :is(.marble-premium,.marble-native-team).is-modern .mp-board-grid--40 .mp-tile .mp-pawn-marker[data-marble-pawn-seat="p4"] { --pawn-seat-color:#4b8c65; }
+  :is(.marble-premium,.marble-native-team).is-modern .mp-board-grid--40 .mp-tile .mp-pawn-marker.is-you { outline:2px solid #ffde77; outline-offset:1px; }
+  :is(.marble-premium,.marble-native-team).is-modern .mp-board-grid--40 .mp-tile .mp-pawn-marker .marble-pawn { width:32px; height:35px; object-fit:contain; }
+  :is(.marble-premium,.marble-native-team).is-modern .mp-board-grid--40 .mp-tile .mp-pawn-marker::after {
+    content:attr(data-seat-number); position:absolute; right:-5px; bottom:-6px; display:grid; place-items:center;
+    width:16px; height:16px; border:2px solid #fff8e8; border-radius:50%;
+    background:var(--pawn-seat-color); color:white; font:900 10px/1 sans-serif;
+  }
+  :is(.marble-premium,.marble-native-team).is-modern .mp-board-grid--40 [data-mp-edge="bottom"] .mp-pawns,
+  :is(.marble-premium,.marble-native-team).is-modern .mp-board-grid--40 [data-mp-edge="rightbottom"] .mp-pawns,
+  :is(.marble-premium,.marble-native-team).is-modern .mp-board-grid--40 [data-mp-edge="leftbottom"] .mp-pawns { top:auto; bottom:calc(100% + 3px); right:0; left:auto; }
+  :is(.marble-premium,.marble-native-team).is-modern .mp-board-grid--40 [data-mp-edge="top"] .mp-pawns,
+  :is(.marble-premium,.marble-native-team).is-modern .mp-board-grid--40 [data-mp-edge="righttop"] .mp-pawns,
+  :is(.marble-premium,.marble-native-team).is-modern .mp-board-grid--40 [data-mp-edge="lefttop"] .mp-pawns { top:calc(100% + 3px); bottom:auto; right:0; left:auto; }
+  :is(.marble-premium,.marble-native-team).is-modern .mp-board-grid--40 [data-mp-edge="left"] .mp-pawns { top:50%; bottom:auto; right:auto; left:calc(100% + 3px); transform:translateY(-50%); }
+  :is(.marble-premium,.marble-native-team).is-modern .mp-board-grid--40 [data-mp-edge="right"] .mp-pawns { top:50%; bottom:auto; right:calc(100% + 3px); left:auto; transform:translateY(-50%); }
+  .marble-native-team.marble-team-board.is-modern .mp-board-grid--40 .mp-tile .mp-pawns { display:flex; grid-template-columns:none; max-width:none; gap:3px; padding:3px 5px; border:2px solid #f5e5b9; border-radius:9px; background:#173e47eb; }
+  .marble-native-team.marble-team-board.is-modern .mp-board-grid--40 .mp-tile .mp-pawn-marker,
+  .marble-native-team.marble-team-board.is-modern .mp-board-grid--40 .mp-tile:is([data-mp-edge="rightbottom"],[data-mp-edge="leftbottom"],[data-mp-edge="righttop"],[data-mp-edge="lefttop"]) .mp-pawn-marker { width:32px; height:39px; }
+  .marble-native-team.marble-team-board.is-modern .mp-board-grid--40 .mp-tile .mp-pawn-marker::after { width:16px; height:16px; font-size:10px; right:-5px; }
+  .marble-native-team.marble-team-board.is-modern .mp-board-grid--40 .mp-tile:is([data-mp-edge="rightbottom"],[data-mp-edge="leftbottom"]) .mp-pawns { top:auto; right:0; bottom:calc(100% + 3px); left:auto; transform:none; }
+  .marble-native-team.marble-team-board.is-modern .mp-board-grid--40 .mp-tile:is([data-mp-edge="righttop"],[data-mp-edge="lefttop"]) .mp-pawns { top:calc(100% + 3px); right:0; bottom:auto; left:auto; transform:none; }
+  .marble-native-team.marble-team-board.is-modern .mp-board-grid--40 .mp-tile:is([data-mp-edge="rightbottom"],[data-mp-edge="leftbottom"],[data-mp-edge="righttop"],[data-mp-edge="lefttop"]).has-player .mp-tile-content { padding-right:0; }
+  :is(.marble-premium,.marble-native-team).is-modern .mp-board-center .mp-center-stage {
+    position:absolute; top:50%; right:auto; bottom:auto; left:50%; width:min(560px,65%);
+    max-height:calc(100% - 80px); margin:0; transform:translate(-50%,-50%);
+  }
+  :is(.marble-premium,.marble-native-team).is-modern .mp-board-center .mp-center-stage.mp-stage--roll,
+  :is(.marble-premium,.marble-native-team).is-modern .mp-board-center .mp-center-stage.mp-stage--moving {
+    top:50%; right:auto; bottom:auto; left:50%; width:390px; max-height:calc(100% - 80px);
+    transform:translate(-50%,-50%);
+  }
+  :is(.marble-premium,.marble-native-team).is-modern .mp-board-center .mp-center-stage.mp-stage--roll:has(.mp-stage-art) { width:460px; }
+  :is(.marble-premium,.marble-native-team).is-modern .mp-landmark-rule { margin:5px 0; color:#385e64; font-size:11px; line-height:1.3; }
 }

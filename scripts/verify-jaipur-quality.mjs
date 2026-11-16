@@ -12,24 +12,16 @@ const browser = await launchChromium();
 const report = { baseUrl, viewport: '1440x900', browser: 'Chromium', checks: [], errors: [], screenshots: [] };
 const check = (name, pass, details = undefined) => report.checks.push({ name, pass: Boolean(pass), ...(details === undefined ? {} : { details }) });
 
-async function createDemoRoom(page, firstSeat, language) {
+async function createDemoRoom(page, language) {
   await page.goto(`${baseUrl}/play`);
-  await page.locator('#nickname').fill('Jaipur quality check');
-  await page.locator('.lobby-actions > button').click();
+  if (language === 'es') await page.locator('.language-switch button').nth(1).click();
+  await page.locator('.pick-item').filter({ hasText: language === 'ko' ? '자이푸르' : 'Jaipur' }).click();
+  await page.locator('.lobby-actions > button').first().click();
   const seat = page.locator('.demo-banner select');
   await seat.waitFor();
-  const choose = async player => {
-    const label = player === 'p1' ? '자이푸르' : 'Jaipur';
-    await page.locator('.room-game-card').filter({ hasText: label }).click();
-  };
-  await seat.selectOption(firstSeat);
-  await choose(firstSeat);
-  await page.locator('.pending-choice').waitFor();
-  const other = firstSeat === 'p1' ? 'p2' : 'p1';
-  await seat.selectOption(other);
-  await choose(other);
+  await seat.selectOption('p1');
   await page.locator('.jaipur-board').waitFor();
-  await page.waitForFunction(expected => document.querySelector('.jaipur-board')?.innerText.includes(expected), language === 'ko' ? '시장' : 'Mercado');
+  await page.locator('.jp-market-card').first().waitFor();
   return seat;
 }
 
@@ -85,7 +77,7 @@ async function reachSevenCards(page, seatSelect, targetSeat) {
 }
 
 async function testKo(page) {
-  const seatSelect = await createDemoRoom(page, 'p2', 'ko');
+  const seatSelect = await createDemoRoom(page, 'ko');
   const candidates = page.locator('.jp-market-card:not(.is-camel):not(:disabled)');
   const validIndices = await candidates.evaluateAll(elements => elements.flatMap((element, index) => {
     const prompt = element.querySelector('.jp-card-prompt')?.textContent?.trim() || '';
@@ -111,19 +103,24 @@ async function testKo(page) {
   assert.equal(await drawer.count(), 1, 'A transaction should reveal the activity drawer');
   await drawer.locator('summary').click();
   const openBounds = await currentBoardBounds(page);
-  assert(Math.abs(openBounds.height - closedBounds.height) < 1, 'Opening recent activity should preserve board height');
-  check('Activity drawer opens without changing board height', true, { closedBounds, openBounds });
+  const drawerSeparation = await page.locator('.jaipur-board').evaluate(board => {
+    const history = board.querySelector('.jp-history-content').getBoundingClientRect();
+    const zones = ['.jp-scorebar', '.jp-market', '.jp-market-footer', '.jp-hand-cards', '.jp-pile-grid'];
+    return zones.every(selector => { const rect = board.querySelector(selector).getBoundingClientRect(); return history.bottom <= rect.top || history.top >= rect.bottom || history.right <= rect.left || history.left >= rect.right; });
+  });
+  assert(drawerSeparation, 'Opening recent activity must not cover the score or game controls');
+  check('Activity drawer has a separate row from scores and controls', true, { closedBounds, openBounds });
   const screenshot = path.join(output, 'room-ko-seven-cards.png');
   await page.screenshot({ path: screenshot, fullPage: true, animations: 'disabled' });
   report.screenshots.push(screenshot);
 }
 
 async function testSpanish(page) {
-  const seatSelect = await createDemoRoom(page, 'p1', 'es');
+  const seatSelect = await createDemoRoom(page, 'es');
   await seatSelect.selectOption('p1');
   await takeOneTurn(page, seatSelect);
   await seatSelect.selectOption('p2');
-  await page.waitForFunction(() => document.querySelector('.jaipur-board')?.innerText.includes('Tu mano'));
+  await page.locator('.jp-hand-cards').waitFor();
   assert.equal(await page.locator('.jp-score-seat.is-turn').getAttribute('data-jaipur-player-id'), 'p2');
   const beforeSpanishTurn = await page.locator('.jp-hand-cards[data-jaipur-player-id="p2"] .jp-goods-card').count();
   await takeOneTurn(page, seatSelect);
@@ -168,7 +165,7 @@ async function testMobileSale(language) {
           initial.cardIds.hands.p1 = initial.hands.p1.map((_, index) => `mobile-sale-${index}`);
           return initial;
         });
-        return h(JaipurBoard, { view: engine.getPlayerView(state, 'p1'), language: lang, playerId: 'p1', runAction: async action => {
+        return h(JaipurBoard, { view: engine.getPlayerView(state, 'p1'), language: lang, playerId: 'p1', desktopDisplay: false, runAction: async action => {
           const error = engine.validateAction(state, 'p1', action);
           if (error) throw Error(error);
           setState(engine.applyAction(state, 'p1', action));

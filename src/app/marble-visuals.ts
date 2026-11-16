@@ -1,3 +1,5 @@
+import { classicToll } from '../games/marbleClassicEconomy';
+import { constructionRentAtBase } from '../games/marbleConstruction';
 import type { Language } from '../core/types';
 import { marbleRentAtBase } from '../games/marbleEconomy';
 import { marblePawnCatalog, type MarblePawnId } from './MarblePawn';
@@ -14,6 +16,8 @@ export const specialNames: Record<string, Record<Language, string>> = {
   island: { ko: '무인도', es: 'Isla desierta' }, train: { ko: '열차역', es: 'Estación de tren' }, fund: { ko: '사회복지기금', es: 'Fondo social' }, 'fund-deposit': { ko: '기금 납부', es: 'Aporte al fondo' },
 };
 export const cityArtNames: Record<string, string> = {
+  인천:'incheon', Incheon:'incheon',
+  기자:'puerto-plata', Guiza:'puerto-plata', 리우:'san-juan', Río:'san-juan', 싱가포르:'miami', Singapur:'miami', 두바이:'dubai', Dubái:'dubai', 베이징:'toronto', Pekín:'toronto',
   베를린: 'berlin', 'Berlín': 'berlin', 마이애미: 'miami', Miami: 'miami', 이스탄불: 'istanbul', Estambul: 'istanbul', 아그라: 'agra', Agra: 'agra', 아테네: 'athens', Atenas: 'athens', 시드니: 'sydney', 'Sídney': 'sydney',
   광주: 'gwangju', Gwangju: 'gwangju', 산토도밍고: 'santo-domingo', 'Santo Domingo': 'santo-domingo', 마드리드: 'madrid', Madrid: 'madrid', 산티아고: 'santiago', Santiago: 'santiago',
   푸에르토플라타: 'puerto-plata', 'Puerto Plata': 'puerto-plata', 산후안: 'san-juan', 'San Juan': 'san-juan', 라베가: 'la-vega', 'La Vega': 'la-vega', 푼타카나: 'punta-cana', 'Punta Cana': 'punta-cana',
@@ -24,6 +28,7 @@ export const cityArtNames: Record<string, string> = {
 
 export function cityFlag(names: Record<string, unknown>): string | null {
   const known: Record<string, string> = {
+    인천:'kr', Incheon:'kr',
     광주: 'kr', Gwangju: 'kr', 산토도밍고: 'do', 'Santo Domingo': 'do', 마드리드: 'es', Madrid: 'es', 산티아고: 'do', Santiago: 'do',
     푸에르토플라타: 'do', 'Puerto Plata': 'do', 산후안: 'pr', 'San Juan': 'pr', 라베가: 'do', 'La Vega': 'do', 푼타카나: 'do', 'Punta Cana': 'do',
     뉴욕: 'us', 'Nueva York': 'us', 파리: 'fr', 'París': 'fr', 도쿄: 'jp', Tokio: 'jp', 바르셀로나: 'es', Barcelona: 'es', 사마나: 'do', 'Samaná': 'do',
@@ -42,6 +47,9 @@ export function buildingName(level: number, language: Language, modern: boolean)
   return level ? copy(language, '집', 'Casa') : '';
 }
 export function rentValue(tile: Record<string, any>, modern: boolean, economicVersion?: number) {
+  if (tile.kind==='tourism') return num(tile.rent);
+  if (tile.cityEconomy) return classicToll(tile.cityEconomy,{...tile,houses:num(tile.houses)},num(tile.monopolyMultiplier)||1) ?? 0;
+  if (Array.isArray(tile.buildings)) return constructionRentAtBase(num(tile.rent), {houses:num(tile.houses),buildings:tile.buildings,landmark:!!tile.landmark}, num(tile.monopolyMultiplier)||1);
   const level = num(tile.houses);
   return marbleRentAtBase(num(tile.rent), level, economicVersion ?? num(tile.economicVersion), num(tile.monopolyMultiplier) || 1, modern);
 }

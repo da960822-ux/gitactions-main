@@ -1,0 +1,28 @@
+dialog.marble-result-panel {
+  box-sizing:border-box; width:min(540px, calc(100vw - 40px)); max-height:calc(100dvh - 40px); margin:auto; overflow:auto;
+  padding:30px 36px; border:2px solid #bc9553; border-radius:20px; background:#fffaf0; color:#173e43;
+  box-shadow:0 25px 100px #071b2d80; text-align:center; animation:marble-result-arrival .42s ease-out both;
+}
+.marble-result-panel::backdrop { background:#071c2cbb; backdrop-filter:blur(5px); }
+.marble-result-panel .marble-result-emblem { width:88px; height:78px; margin:0 auto 8px; color:#bd8a29; }
+.marble-result-emblem svg { width:100%; height:100%; fill:#f0ca68; stroke:#a77b2c; stroke-width:4; stroke-linecap:round; stroke-linejoin:round; }
+.marble-result-emblem span { font-size:68px; line-height:1; font-weight:800; }
+.marble-result-panel .marble-result-finished { margin:0 0 8px; font-size:13px; font-weight:800; letter-spacing:.09em; color:#766039; }
+.marble-result-panel h2 { margin:0; font-size:clamp(26px,4vw,40px); line-height:1.22; overflow-wrap:anywhere; }
+.marble-result-panel h2:focus { outline:none; }
+.marble-result-panel .marble-result-reason { margin:14px 0 22px; font-size:15px; line-height:1.5; }
+.marble-result-panel .marble-result-scores { padding:16px; background:#f0eadb; border:1px solid #dfd1b6; border-radius:12px; }
+.marble-result-panel h3 { margin:0 0 12px; font-size:12px; font-weight:700; color:#5c6861; }
+.marble-result-panel dl { margin:0; display:grid; gap:10px; }
+.marble-result-panel dl>div { display:flex; align-items:center; justify-content:space-between; gap:16px; text-align:left; }
+.marble-result-panel dt { font-size:15px; overflow-wrap:anywhere; }
+.marble-result-panel dd { margin:0; font-size:22px; font-weight:800; font-variant-numeric:tabular-nums; }
+.marble-result-panel .marble-result-actions { display:flex; justify-content:center; flex-wrap:wrap; gap:10px; margin-top:22px; }
+.marble-result-panel button { min-height:44px; padding:11px 20px; border:1px solid #899b93; border-radius:9px; background:#fffaf0; color:#173e43; font:inherit; font-size:15px; font-weight:700; cursor:pointer; }
+.marble-result-panel button.marble-result-replay { background:#1e6970; color:#fff; border-color:#1e6970; }
+.marble-result-panel button:disabled { opacity:.55; cursor:wait; }
+.marble-result-panel button:focus-visible { outline:3px solid #c29135; outline-offset:3px; }
+.marble-result-panel .marble-result-error { color:#a03124; font-size:14px; }
+@keyframes marble-result-arrival { from { opacity:0; transform:translateY(14px) scale(.96); } to { opacity:1; transform:none; } }
+@media (prefers-reduced-motion:reduce) { dialog.marble-result-panel { animation:none; } }
+@media (max-width:500px) { dialog.marble-result-panel { padding:22px; } }

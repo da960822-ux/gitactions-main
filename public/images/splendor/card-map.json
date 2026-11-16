@@ -584,7 +584,7 @@
     {
       "engineId": "t2-01",
       "sourceCardId": "041",
-      "src": "cards/41.jpg",
+      "src": "custom-v2/t2-01.webp",
       "signature": {
         "tier": 2,
         "bonus": "white",
@@ -594,12 +594,13 @@
           "red": 2,
           "black": 2
         }
-      }
+      },
+      "customArtId": "2-W01"
     },
     {
       "engineId": "t2-02",
       "sourceCardId": "042",
-      "src": "cards/42.jpg",
+      "src": "custom-v2/t2-02.webp",
       "signature": {
         "tier": 2,
         "bonus": "blue",
@@ -609,12 +610,13 @@
           "green": 2,
           "red": 3
         }
-      }
+      },
+      "customArtId": "2-B01"
     },
     {
       "engineId": "t2-03",
       "sourceCardId": "043",
-      "src": "cards/43.jpg",
+      "src": "custom-v2/t2-03.webp",
       "signature": {
         "tier": 2,
         "bonus": "green",
@@ -624,12 +626,13 @@
           "blue": 3,
           "black": 2
         }
-      }
+      },
+      "customArtId": "2-G01"
     },
     {
       "engineId": "t2-04",
       "sourceCardId": "044",
-      "src": "cards/44.jpg",
+      "src": "custom-v2/t2-04.webp",
       "signature": {
         "tier": 2,
         "bonus": "red",
@@ -639,12 +642,13 @@
           "red": 2,
           "black": 3
         }
-      }
+      },
+      "customArtId": "2-R01"
     },
     {
       "engineId": "t2-05",
       "sourceCardId": "045",
-      "src": "cards/45.jpg",
+      "src": "custom-v2/t2-05.webp",
       "signature": {
         "tier": 2,
         "bonus": "black",
@@ -654,12 +658,13 @@
           "blue": 2,
           "green": 2
         }
-      }
+      },
+      "customArtId": "2-K01"
     },
     {
       "engineId": "t2-06",
       "sourceCardId": "046",
-      "src": "cards/46.jpg",
+      "src": "custom-v2/t2-06.webp",
       "signature": {
         "tier": 2,
         "bonus": "white",
@@ -669,12 +674,13 @@
           "blue": 3,
           "red": 3
         }
-      }
+      },
+      "customArtId": "2-W02"
     },
     {
       "engineId": "t2-07",
       "sourceCardId": "047",
-      "src": "cards/47.jpg",
+      "src": "custom-v2/t2-07.webp",
       "signature": {
         "tier": 2,
         "bonus": "blue",
@@ -684,12 +690,13 @@
           "green": 3,
           "black": 3
         }
-      }
+      },
+      "customArtId": "2-B02"
     },
     {
       "engineId": "t2-08",
       "sourceCardId": "048",
-      "src": "cards/48.jpg",
+      "src": "custom-v2/t2-08.webp",
       "signature": {
         "tier": 2,
         "bonus": "green",
@@ -699,12 +706,13 @@
           "green": 2,
           "red": 3
         }
-      }
+      },
+      "customArtId": "2-G02"
     },
     {
       "engineId": "t2-09",
       "sourceCardId": "049",
-      "src": "cards/49.jpg",
+      "src": "custom-v2/t2-09.webp",
       "signature": {
         "tier": 2,
         "bonus": "red",
@@ -714,12 +722,13 @@
           "red": 2,
           "black": 3
         }
-      }
+      },
+      "customArtId": "2-R02"
     },
     {
       "engineId": "t2-10",
       "sourceCardId": "050",
-      "src": "cards/50.jpg",
+      "src": "custom-v2/t2-10.webp",
       "signature": {
         "tier": 2,
         "bonus": "black",
@@ -729,12 +738,13 @@
           "green": 3,
           "black": 2
         }
-      }
+      },
+      "customArtId": "2-K02"
     },
     {
       "engineId": "t2-11",
       "sourceCardId": "051",
-      "src": "cards/51.jpg",
+      "src": "custom-v2/t2-11.webp",
       "signature": {
         "tier": 2,
         "bonus": "white",
@@ -742,12 +752,13 @@
         "cost": {
           "white": 6
         }
-      }
+      },
+      "customArtId": "2-W03"
     },
     {
       "engineId": "t2-12",
       "sourceCardId": "052",
-      "src": "cards/52.jpg",
+      "src": "custom-v2/t2-12.webp",
       "signature": {
         "tier": 2,
         "bonus": "blue",
@@ -755,12 +766,13 @@
         "cost": {
           "blue": 6
         }
-      }
+      },
+      "customArtId": "2-B03"
     },
     {
       "engineId": "t2-13",
       "sourceCardId": "053",
-      "src": "cards/53.jpg",
+      "src": "custom-v2/t2-13.webp",
       "signature": {
         "tier": 2,
         "bonus": "green",
@@ -768,12 +780,13 @@
         "cost": {
           "green": 6
         }
-      }
+      },
+      "customArtId": "2-G03"
     },
     {
       "engineId": "t2-14",
       "sourceCardId": "054",
-      "src": "cards/54.jpg",
+      "src": "custom-v2/t2-14.webp",
       "signature": {
         "tier": 2,
         "bonus": "red",
@@ -781,12 +794,13 @@
         "cost": {
           "red": 6
         }
-      }
+      },
+      "customArtId": "2-R03"
     },
     {
       "engineId": "t2-15",
       "sourceCardId": "055",
-      "src": "cards/55.jpg",
+      "src": "custom-v2/t2-15.webp",
       "signature": {
         "tier": 2,
         "bonus": "black",
@@ -794,12 +808,13 @@
         "cost": {
           "black": 6
         }
-      }
+      },
+      "customArtId": "2-K03"
     },
     {
       "engineId": "t2-16",
       "sourceCardId": "056",
-      "src": "cards/56.jpg",
+      "src": "custom-v2/t2-16.webp",
       "signature": {
         "tier": 2,
         "bonus": "white",
@@ -809,12 +824,13 @@
           "red": 4,
           "black": 2
         }
-      }
+      },
+      "customArtId": "2-W04"
     },
     {
       "engineId": "t2-17",
       "sourceCardId": "057",
-      "src": "cards/57.jpg",
+      "src": "custom-v2/t2-17.webp",
       "signature": {
         "tier": 2,
         "bonus": "blue",
@@ -824,12 +840,13 @@
           "red": 1,
           "black": 4
         }
-      }
+      },
+      "customArtId": "2-B04"
     },
     {
       "engineId": "t2-18",
       "sourceCardId": "058",
-      "src": "cards/58.jpg",
+      "src": "custom-v2/t2-18.webp",
       "signature": {
         "tier": 2,
         "bonus": "green",
@@ -839,12 +856,13 @@
           "blue": 2,
           "black": 1
         }
-      }
+      },
+      "customArtId": "2-G04"
     },
     {
       "engineId": "t2-19",
       "sourceCardId": "059",
-      "src": "cards/59.jpg",
+      "src": "custom-v2/t2-19.webp",
       "signature": {
         "tier": 2,
         "bonus": "red",
@@ -854,12 +872,13 @@
           "blue": 4,
           "green": 2
         }
-      }
+      },
+      "customArtId": "2-R04"
     },
     {
       "engineId": "t2-20",
       "sourceCardId": "060",
-      "src": "cards/60.jpg",
+      "src": "custom-v2/t2-20.webp",
       "signature": {
         "tier": 2,
         "bonus": "black",
@@ -869,12 +888,13 @@
           "green": 4,
           "red": 2
         }
-      }
+      },
+      "customArtId": "2-K04"
     },
     {
       "engineId": "t2-21",
       "sourceCardId": "061",
-      "src": "cards/61.jpg",
+      "src": "custom-v2/t2-21.webp",
       "signature": {
         "tier": 2,
         "bonus": "white",
@@ -882,12 +902,13 @@
         "cost": {
           "red": 5
         }
-      }
+      },
+      "customArtId": "2-W05"
     },
     {
       "engineId": "t2-22",
       "sourceCardId": "062",
-      "src": "cards/62.jpg",
+      "src": "custom-v2/t2-22.webp",
       "signature": {
         "tier": 2,
         "bonus": "blue",
@@ -895,12 +916,13 @@
         "cost": {
           "blue": 5
         }
-      }
+      },
+      "customArtId": "2-B05"
     },
     {
       "engineId": "t2-23",
       "sourceCardId": "063",
-      "src": "cards/63.jpg",
+      "src": "custom-v2/t2-23.webp",
       "signature": {
         "tier": 2,
         "bonus": "green",
@@ -908,12 +930,13 @@
         "cost": {
           "green": 5
         }
-      }
+      },
+      "customArtId": "2-G05"
     },
     {
       "engineId": "t2-24",
       "sourceCardId": "064",
-      "src": "cards/64.jpg",
+      "src": "custom-v2/t2-24.webp",
       "signature": {
         "tier": 2,
         "bonus": "red",
@@ -921,12 +944,13 @@
         "cost": {
           "black": 5
         }
-      }
+      },
+      "customArtId": "2-R05"
     },
     {
       "engineId": "t2-25",
       "sourceCardId": "065",
-      "src": "cards/65.jpg",
+      "src": "custom-v2/t2-25.webp",
       "signature": {
         "tier": 2,
         "bonus": "black",
@@ -934,12 +958,13 @@
         "cost": {
           "white": 5
         }
-      }
+      },
+      "customArtId": "2-K05"
     },
     {
       "engineId": "t2-26",
       "sourceCardId": "066",
-      "src": "cards/66.jpg",
+      "src": "custom-v2/t2-26.webp",
       "signature": {
         "tier": 2,
         "bonus": "white",
@@ -948,12 +973,13 @@
           "red": 5,
           "black": 3
         }
-      }
+      },
+      "customArtId": "2-W06"
     },
     {
       "engineId": "t2-27",
       "sourceCardId": "067",
-      "src": "cards/67.jpg",
+      "src": "custom-v2/t2-27.webp",
       "signature": {
         "tier": 2,
         "bonus": "blue",
@@ -962,12 +988,13 @@
           "white": 5,
           "blue": 3
         }
-      }
+      },
+      "customArtId": "2-B06"
     },
     {
       "engineId": "t2-28",
       "sourceCardId": "068",
-      "src": "cards/68.jpg",
+      "src": "custom-v2/t2-28.webp",
       "signature": {
         "tier": 2,
         "bonus": "green",
@@ -976,12 +1003,13 @@
           "blue": 5,
           "green": 3
         }
-      }
+      },
+      "customArtId": "2-G06"
     },
     {
       "engineId": "t2-29",
       "sourceCardId": "069",
-      "src": "cards/69.jpg",
+      "src": "custom-v2/t2-29.webp",
       "signature": {
         "tier": 2,
         "bonus": "red",
@@ -990,12 +1018,13 @@
           "white": 3,
           "black": 5
         }
-      }
+      },
+      "customArtId": "2-R06"
     },
     {
       "engineId": "t2-30",
       "sourceCardId": "070",
-      "src": "cards/70.jpg",
+      "src": "custom-v2/t2-30.webp",
       "signature": {
         "tier": 2,
         "bonus": "black",
@@ -1004,12 +1033,13 @@
           "green": 5,
           "red": 3
         }
-      }
+      },
+      "customArtId": "2-K06"
     },
     {
       "engineId": "t3-01",
       "sourceCardId": "071",
-      "src": "cards/71.jpg",
+      "src": "custom-v2/t3-01.webp",
       "signature": {
         "tier": 3,
         "bonus": "white",
@@ -1020,12 +1050,13 @@
           "red": 5,
           "black": 3
         }
-      }
+      },
+      "customArtId": "3-W01"
     },
     {
       "engineId": "t3-02",
       "sourceCardId": "072",
-      "src": "cards/72.jpg",
+      "src": "custom-v2/t3-02.webp",
       "signature": {
         "tier": 3,
         "bonus": "blue",
@@ -1036,12 +1067,13 @@
           "red": 3,
           "black": 5
         }
-      }
+      },
+      "customArtId": "3-B01"
     },
     {
       "engineId": "t3-03",
       "sourceCardId": "073",
-      "src": "cards/73.jpg",
+      "src": "custom-v2/t3-03.webp",
       "signature": {
         "tier": 3,
         "bonus": "green",
@@ -1052,12 +1084,13 @@
           "red": 3,
           "black": 3
         }
-      }
+      },
+      "customArtId": "3-G01"
     },
     {
       "engineId": "t3-04",
       "sourceCardId": "074",
-      "src": "cards/74.jpg",
+      "src": "custom-v2/t3-04.webp",
       "signature": {
         "tier": 3,
         "bonus": "red",
@@ -1068,12 +1101,13 @@
           "green": 3,
           "black": 3
         }
-      }
+      },
+      "customArtId": "3-R01"
     },
     {
       "engineId": "t3-05",
       "sourceCardId": "075",
-      "src": "cards/75.jpg",
+      "src": "custom-v2/t3-05.webp",
       "signature": {
         "tier": 3,
         "bonus": "black",
@@ -1084,12 +1118,13 @@
           "green": 5,
           "red": 3
         }
-      }
+      },
+      "customArtId": "3-K01"
     },
     {
       "engineId": "t3-06",
       "sourceCardId": "076",
-      "src": "cards/76.jpg",
+      "src": "custom-v2/t3-06.webp",
       "signature": {
         "tier": 3,
         "bonus": "white",
@@ -1097,12 +1132,13 @@
         "cost": {
           "black": 7
         }
-      }
+      },
+      "customArtId": "3-W02"
     },
     {
       "engineId": "t3-07",
       "sourceCardId": "077",
-      "src": "cards/77.jpg",
+      "src": "custom-v2/t3-07.webp",
       "signature": {
         "tier": 3,
         "bonus": "blue",
@@ -1110,12 +1146,13 @@
         "cost": {
           "white": 7
         }
-      }
+      },
+      "customArtId": "3-B02"
     },
     {
       "engineId": "t3-08",
       "sourceCardId": "078",
-      "src": "cards/78.jpg",
+      "src": "custom-v2/t3-08.webp",
       "signature": {
         "tier": 3,
         "bonus": "green",
@@ -1123,12 +1160,13 @@
         "cost": {
           "blue": 7
         }
-      }
+      },
+      "customArtId": "3-G02"
     },
     {
       "engineId": "t3-09",
       "sourceCardId": "079",
-      "src": "cards/79.jpg",
+      "src": "custom-v2/t3-09.webp",
       "signature": {
         "tier": 3,
         "bonus": "red",
@@ -1136,12 +1174,13 @@
         "cost": {
           "green": 7
         }
-      }
+      },
+      "customArtId": "3-R02"
     },
     {
       "engineId": "t3-10",
       "sourceCardId": "080",
-      "src": "cards/80.jpg",
+      "src": "custom-v2/t3-10.webp",
       "signature": {
         "tier": 3,
         "bonus": "black",
@@ -1149,12 +1188,13 @@
         "cost": {
           "red": 7
         }
-      }
+      },
+      "customArtId": "3-K02"
     },
     {
       "engineId": "t3-11",
       "sourceCardId": "081",
-      "src": "cards/81.jpg",
+      "src": "custom-v2/t3-11.webp",
       "signature": {
         "tier": 3,
         "bonus": "white",
@@ -1164,12 +1204,13 @@
           "red": 3,
           "black": 6
         }
-      }
+      },
+      "customArtId": "3-W03"
     },
     {
       "engineId": "t3-12",
       "sourceCardId": "082",
-      "src": "cards/82.jpg",
+      "src": "custom-v2/t3-12.webp",
       "signature": {
         "tier": 3,
         "bonus": "blue",
@@ -1179,12 +1220,13 @@
           "blue": 3,
           "black": 3
         }
-      }
+      },
+      "customArtId": "3-B03"
     },
     {
       "engineId": "t3-13",
       "sourceCardId": "083",
-      "src": "cards/83.jpg",
+      "src": "custom-v2/t3-13.webp",
       "signature": {
         "tier": 3,
         "bonus": "green",
@@ -1194,12 +1236,13 @@
           "blue": 6,
           "green": 3
         }
-      }
+      },
+      "customArtId": "3-G03"
     },
     {
       "engineId": "t3-14",
       "sourceCardId": "084",
-      "src": "cards/84.jpg",
+      "src": "custom-v2/t3-14.webp",
       "signature": {
         "tier": 3,
         "bonus": "red",
@@ -1209,12 +1252,13 @@
           "green": 6,
           "red": 3
         }
-      }
+      },
+      "customArtId": "3-R03"
     },
     {
       "engineId": "t3-15",
       "sourceCardId": "085",
-      "src": "cards/85.jpg",
+      "src": "custom-v2/t3-15.webp",
       "signature": {
         "tier": 3,
         "bonus": "black",
@@ -1224,12 +1268,13 @@
           "red": 6,
           "black": 3
         }
-      }
+      },
+      "customArtId": "3-K03"
     },
     {
       "engineId": "t3-16",
       "sourceCardId": "086",
-      "src": "cards/86.jpg",
+      "src": "custom-v2/t3-16.webp",
       "signature": {
         "tier": 3,
         "bonus": "white",
@@ -1238,12 +1283,13 @@
           "white": 3,
           "black": 7
         }
-      }
+      },
+      "customArtId": "3-W04"
     },
     {
       "engineId": "t3-17",
       "sourceCardId": "087",
-      "src": "cards/87.jpg",
+      "src": "custom-v2/t3-17.webp",
       "signature": {
         "tier": 3,
         "bonus": "blue",
@@ -1252,12 +1298,13 @@
           "white": 7,
           "blue": 3
         }
-      }
+      },
+      "customArtId": "3-B04"
     },
     {
       "engineId": "t3-18",
       "sourceCardId": "088",
-      "src": "cards/88.jpg",
+      "src": "custom-v2/t3-18.webp",
       "signature": {
         "tier": 3,
         "bonus": "green",
@@ -1266,12 +1313,13 @@
           "blue": 7,
           "green": 3
         }
-      }
+      },
+      "customArtId": "3-G04"
     },
     {
       "engineId": "t3-19",
       "sourceCardId": "089",
-      "src": "cards/89.jpg",
+      "src": "custom-v2/t3-19.webp",
       "signature": {
         "tier": 3,
         "bonus": "red",
@@ -1280,12 +1328,13 @@
           "green": 7,
           "red": 3
         }
-      }
+      },
+      "customArtId": "3-R04"
     },
     {
       "engineId": "t3-20",
       "sourceCardId": "090",
-      "src": "cards/90.jpg",
+      "src": "custom-v2/t3-20.webp",
       "signature": {
         "tier": 3,
         "bonus": "black",
@@ -1294,63 +1343,111 @@
           "red": 7,
           "black": 3
         }
-      }
+      },
+      "customArtId": "3-K04"
     }
   ],
   "nobles": [
     {
       "engineId": "n0",
       "sourceId": "20001",
-      "src": "nobles/doctor-noble-portrait.webp",
+      "src": "custom-v2/n0.webp",
       "originalSrc": "nobles/20001.jpg",
-      "personalizationSourceCommit": "0be54b63f3e053cb6367fd099421b8799ba2d191"
+      "personalizationSourceCommit": "0be54b63f3e053cb6367fd099421b8799ba2d191",
+      "customArtId": "N01"
     },
     {
       "engineId": "n1",
       "sourceId": "20002",
-      "src": "nobles/hanbok-noble-frontal.webp",
+      "src": "custom-v2/n1.webp",
       "originalSrc": "nobles/20002.jpg",
-      "personalizationSourceCommit": "0be54b63f3e053cb6367fd099421b8799ba2d191"
+      "personalizationSourceCommit": "0be54b63f3e053cb6367fd099421b8799ba2d191",
+      "customArtId": "N02"
     },
     {
       "engineId": "n2",
       "sourceId": "20003",
-      "src": "nobles/20003.jpg"
+      "src": "custom-v2/n2.webp",
+      "customArtId": "N03"
     },
     {
       "engineId": "n3",
       "sourceId": "20004",
-      "src": "nobles/20004.jpg"
+      "src": "custom-v2/n3.webp",
+      "customArtId": "N04"
     },
     {
       "engineId": "n4",
       "sourceId": "20005",
-      "src": "nobles/20005.jpg"
+      "src": "custom-v2/n4.webp",
+      "customArtId": "N05"
     },
     {
       "engineId": "n5",
       "sourceId": "20006",
-      "src": "nobles/20006.jpg"
+      "src": "custom-v2/n5.webp",
+      "customArtId": "N06"
     },
     {
       "engineId": "n6",
       "sourceId": "20007",
-      "src": "nobles/20007.jpg"
+      "src": "custom-v2/n6.webp",
+      "customArtId": "N07"
     },
     {
       "engineId": "n7",
       "sourceId": "20008",
-      "src": "nobles/20008.jpg"
+      "src": "custom-v2/n7.webp",
+      "customArtId": "N08"
     },
     {
       "engineId": "n8",
       "sourceId": "20009",
-      "src": "nobles/20009.jpg"
+      "src": "custom-v2/n8.webp",
+      "customArtId": "N09"
     },
     {
       "engineId": "n9",
       "sourceId": "20010",
-      "src": "nobles/20010.jpg"
+      "src": "custom-v2/n9.webp",
+      "customArtId": "N10"
+    },
+    {
+      "engineId": "n10",
+      "sourceId": "EX-HJ-BLACK-VEIL",
+      "src": "custom-v2/n10.webp",
+      "customArtId": "EX-HJ-BLACK-VEIL"
+    },
+    {
+      "engineId": "n11",
+      "sourceId": "EX-HJ-GOLD",
+      "src": "custom-v2/n11.webp",
+      "customArtId": "EX-HJ-GOLD"
+    },
+    {
+      "engineId": "n12",
+      "sourceId": "EX-HJ-RED",
+      "src": "custom-v2/n12.webp",
+      "customArtId": "EX-HJ-RED"
+    },
+    {
+      "engineId": "n13",
+      "sourceId": "EX-LATIN-BACHATA",
+      "src": "custom-v2/n13.webp",
+      "customArtId": "EX-LATIN-BACHATA"
+    },
+    {
+      "engineId": "n14",
+      "sourceId": "EX-LATIN-FESTIVAL",
+      "src": "custom-v2/n14.webp",
+      "customArtId": "EX-LATIN-FESTIVAL"
+    },
+    {
+      "engineId": "n15",
+      "sourceId": "EX-LATIN-STREET",
+      "src": "custom-v2/n15.webp",
+      "customArtId": "EX-LATIN-STREET"
     }
-  ]
+  ],
+  "customArtVersion": "2026-10-27-portrait-v2"
 }

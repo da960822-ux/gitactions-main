@@ -1,0 +1,6 @@
+# Content-hashed game derivatives only. Keep caching private to the viewer.
+/images/splendor/board/*
+  Cache-Control: private, max-age=31536000, immutable
+
+/images/marble/runtime/*
+  Cache-Control: private, max-age=31536000, immutable

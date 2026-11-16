@@ -1,11 +1,12 @@
+import {createFourLegacyMarbleState} from '../games/fourMarble';
 import { createElement } from 'react';
 import { renderToStaticMarkup } from 'react-dom/server';
 import { describe, expect, it, vi } from 'vitest';
 import { fourMarbleEngine, type FourMarbleState } from '../games/fourMarble';
 import { marbleMovementPath, marblePresentationFrames } from './marble-motion';
 import MarbleTeamBoard from './MarbleTeamBoard';
-const state=()=>fourMarbleEngine.createInitialState(71) as FourMarbleState;
-const legacyState=()=>{const s=state();s.economicVersion=2;s.money={p1:1500,p2:1500,p3:1500,p4:1500};return s;};
+const state=()=>createFourLegacyMarbleState(71) as FourMarbleState;
+const legacyState=()=>{const s=state();s.economicVersion=2;s.constructionRulesVersion=1;s.money={p1:1500,p2:1500,p3:1500,p4:1500};return s;};
 const render=(s:FourMarbleState,language:'ko'|'es'='ko')=>renderToStaticMarkup(createElement(MarbleTeamBoard,{view:fourMarbleEngine.getPlayerView(s,'p1'),language,nickname:'연석',runAction:vi.fn(),onReplay:vi.fn(),onExit:vi.fn(),onSelectGame:vi.fn()}));
 describe('native four-player Marble screen',()=>{
  it('owns its four-seat banks and controls without mounting the two-player board',()=>{
@@ -40,33 +41,33 @@ describe('native four-player Marble screen',()=>{
   expect(render(s)).toContain('marble-pawn--dragon');
   s.positions.p1=1;s.pendingTile=1;s.phase='decision';
   const purchase=render(s);
-  expect(purchase).toContain('매입 100 · 기본 통행료 12');expect(purchase).toContain('구매 후 현금');expect(purchase).toContain('>1,400</b>');
-  expect(purchase).toContain('도시 구매 · 100');expect(purchase).toContain('구매 안 함');
-  expect(purchase).toContain('300을 받고 330을 갚습니다.');
+  expect(purchase).toContain('구매 확정 · 100');expect(purchase).toContain('통행료 <b>12</b>');expect(purchase).toContain('남는 현금');expect(purchase).toContain('>1,400</b>');
+  expect(purchase).toContain('mp-legacy-construction');expect(purchase).toContain('건너뛰기');
+  expect(purchase).toContain('받기 300 · 상환 330');
  });
  it('shows the new economy values on a fresh team purchase decision',()=>{
   const s=state();s.positions.p1=1;s.pendingTile=1;s.phase='decision';
   const html=render(s);
   expect(html).toContain('매입 80');expect(html).toContain('통행료 20');
-  expect(html).toContain('구매 후 현금 2,920');
+  expect(html).toContain('남는 현금');expect(html).toContain('>2,920</b>');
  });
  it('uses one economy version for the build decision and city ledger',()=>{
-  const s=state();s.phase='main';s.positions.p1=1;s.pendingTile=1;s.properties[1]={owner:'p1',houses:1};
+  const s=state();s.constructionRulesVersion=1;s.phase='main';s.positions.p1=1;s.pendingTile=1;s.buildSite=1;s.properties[1]={owner:'p1',houses:1};
   const html=render(s);
-  expect(html).toContain('광주 2단계 건설 · 50');
-  expect(html).toContain('40 → 60');
+  expect(html).toContain('건설 확정 · 50');
+  expect(html).toContain('통행료 <b>60</b>');expect(html).toContain('남는 현금 <b>2,950</b>');
   expect(html).toContain('<td>50</td>');
   expect(html).not.toContain('광주 2단계 건설 · 100');
-  const saved=legacyState();saved.phase='main';saved.positions.p1=1;saved.pendingTile=1;saved.properties[1]={owner:'p1',houses:1};
+  const saved=legacyState();saved.phase='main';saved.positions.p1=1;saved.pendingTile=1;saved.buildSite=1;saved.properties[1]={owner:'p1',houses:1};
   const savedHtml=render(saved);
-  expect(savedHtml).toContain('광주 2단계 건설 · 60');
+  expect(savedHtml).toContain('건설 확정 · 60');expect(savedHtml).toContain('남는 현금 <b>1,440</b>');
   expect(savedHtml).toContain('<td>60</td>');
  });
  it('retains mandatory debt controls and all player-specific bankruptcy rules',()=>{
   const s=state();s.phase='debt';s.money.p1=30;s.pendingPayment={amount:120,creditor:'p4',resumeActive:'p1'};
   const html=render(s);
-  expect(html).toContain('지급 필요 120');expect(html).toContain('대출 300으로 지급 해결');
-  expect(html).toContain('받기 300 · 상환 330');expect(html).not.toContain('파산 검토');
+  expect(html).toContain('지급 필요 120');expect(html).toContain('300 대출받기 · 상환액 330');
+  expect(html).toContain('받기 300 · 상환 330');expect(html).toContain('파산하기');
   expect(html).not.toContain('class="mt-loan"');
  });
  it('uses the sale selector as the only execution control when multiple cities can be sold',()=>{
@@ -78,12 +79,12 @@ describe('native four-player Marble screen',()=>{
   expect(html).not.toContain('id="mt-action-primary"');
  });
  it('keeps actual history, team settlement, and owned-city building available',()=>{
-  const s=state();s.phase='main';s.properties[1]={owner:'p1',houses:1};s.actionLog=[{sequence:1,type:'event-card',actor:'p4',title:{ko:'정전',es:'Apagón'},text:{ko:'도시 선택',es:'Elegir ciudad'},cardId:'blackout'}];s.actionSequence=1;
+  const s=state();s.phase='main';s.buildSite=1;s.properties[1]={owner:'p1',houses:1};s.actionLog=[{sequence:1,type:'event-card',actor:'p4',title:{ko:'정전',es:'Apagón'},text:{ko:'도시 선택',es:'Elegir ciudad'},cardId:'blackout'}];s.actionSequence=1;
   const html=render(s);
-  expect(html).toContain('건설 가능한 도시 1곳');expect(html).toContain('내 도시 1');expect(html).toContain('정전');
+  expect(html).toContain('mp-legacy-construction');expect(html).toContain('건설 확정 · 50');expect(html).toContain('내 도시 1');expect(html).toContain('정전');
   s.result={winner:'A',scores:{A:4000,B:3000},reason:{ko:'팀 정산',es:'Balance por equipos'}};s.phase='finished';
   const finished=render(s);
-  expect(finished).toContain('우리 팀 승리');expect(finished).toContain('4000');expect(finished).toContain('다시 여행하기');
+  expect(finished).toContain('우리 팀 승리');expect(finished).toContain('4,000');expect(finished).toContain('새 게임 시작');
  });
  it('animates actual third/fourth seats including backwards card movement',()=>{
   const from={p1:0,p2:4,p3:12,p4:31},to={p1:0,p2:4,p3:9,p4:33};
@@ -99,9 +100,9 @@ describe('native four-player Marble screen',()=>{
 it('shows acquisition price, available funds and complete stage costs while keeping only one finished replay control',()=>{
  const s=legacyState();s.phase='main';s.positions.p1=4;s.pendingTile=4;s.takeoverTile=4;s.properties[4]={owner:'p4',houses:2};
  const html=render(s);
- expect(html).toContain('도시 인수 · 560');expect(html).toContain('인수 후 현금 940');expect(html).toContain('단계별 금액');expect(html).toContain('추가비');expect(html).toContain('누적');expect(html).toContain('불가');
+ expect(html).toContain('인수하기 · 560');expect(html).toContain('>940</b>');expect(html).toContain('인수하지 않고 차례 마치기');expect(html.match(/인수하지 않고 차례 마치기/g)).toHaveLength(1);expect(html).not.toContain('>차례 마치기<');expect(html).toContain('단계별 금액');expect(html).toContain('추가비');expect(html).toContain('누적');expect(html).toContain('불가');
  s.result={winner:'A',scores:{A:3000,B:2000},reason:{ko:'정산',es:'Balance'}};s.phase='finished';
- const done=render(s);expect(done).not.toContain('>새 판</button>');expect((done.match(/>다시 여행하기<\/button>/g)??[])).toHaveLength(1);
+ const done=render(s);expect(done).not.toContain('>새 판</button>');expect((done.match(/>새 게임 시작<\/button>/g)??[])).toHaveLength(1);
 });
 
 it('opens the illustrated new rules only for versioned team matches and preserves saved help',()=>{
@@ -121,4 +122,30 @@ it('keeps each owner number, shared pawn/bank color key and approved property im
   expect(html).toContain('data-marble-price-kind="rent" title="'+(language==='ko'?'현재 통행료 12':'Alquiler actual 12')+'">12</b>');
   expect(html).toContain('data-marble-price-kind="purchase"');
  }
+});
+it('offers skip for affordable and free train journeys and explains arrival costs',()=>{
+ for(const fare of [0,100]){const s=state();s.phase='train-decision';s.trainFare=fare;s.positions.p1=30;s.properties[1]={owner:'p2',houses:0,buildings:[]};const html=render(s);expect(html).toContain('여행하지 않기');expect(html).toContain('보드에서 도착할 칸');expect(html.match(/is-travel-selectable/g)).toHaveLength(40);expect(html).not.toContain('<select id="mt-travel-destination"');}
+});
+it('shows island attempts, held passes, team score and atomic construction',()=>{
+ const s=state();s.phase='island';s.islandTurns.p1=2;s.escapePasses.p1=1;s.rentPasses.p1=1;const html=render(s);expect(html).toContain('무인도에 있어요 · 남은 차례 2');expect(html).toContain('탈출권 1');expect(html).toContain('팀 순자산');
+ s.constructionRulesVersion=2;s.phase='decision';s.pendingTile=1;s.positions.p1=1;const buy=render(s);expect(buy).toContain('mp-construction-picker');expect(buy).toContain('구매 확정 · 80');expect(buy).toContain('type="checkbox"');expect(buy).not.toContain('mp-city-portfolio');
+});
+
+it.each([1,2] as const)('offers each team START construction city once with one compact confirmation in version %s',version=>{
+ const s=state();s.constructionRulesVersion=version;s.phase='main';s.buildSite='start';s.positions.p1=0;s.pendingTile=0;
+ s.properties[1]={owner:'p1',houses:0,...(version===2?{buildings:[]}: {})};s.properties[3]={owner:'p1',houses:0,...(version===2?{buildings:[]}: {})};
+ const html=render(s),stage=html.split('class="mp-construction-stage"')[1]?.split('</fieldset>')[0]??'';
+ const site=stage.match(/<label class="mp-construction-site">(.*?)<\/label>/)?.[1]??'';
+ expect(site).toContain('건설 도시');expect(site.match(/<option /g)).toHaveLength(2);expect(site).toContain('value="1"');expect(site).toContain('value="3"');expect(site).toContain('광주');expect(site).toContain('뉴욕');
+ expect(stage.match(/id="mt-action-primary"/g)).toHaveLength(1);expect(stage).toContain('mp-construction-footer');expect(stage).toContain('건너뛰기');
+ expect(stage).not.toContain('mp-stage-preview');expect(stage).not.toContain('첫 구매는');expect(stage).not.toContain('건설은 구매한 도시');
+});
+
+it.each(['ko','es'] as const)('puts both island choices together centrally with poor-cash feedback (%s)', language=>{
+ const s=state();s.phase='island';s.islandTurns.p1=3;s.money.p1=99;s.escapePasses.p1=0;
+ const html=render(s,language),central=html.slice(html.indexOf('class="mp-island-decision"'),html.indexOf('</section></section>',html.indexOf('class="mp-island-decision"')));
+ expect(central).toContain('mp-island-options');expect(central).toContain('disabled=""');expect(central).toContain(language==='ko'?'현금 부족':'Efectivo insuficiente');
+ expect(central).toContain(language==='ko'?'100을 내고 탈출':'Pagar 100 para salir');expect(central).not.toContain(language==='ko'?'>탈출권 사용</button>':'>Usar pase de salida</button>');
+ expect(html.match(/>100을 내고 탈출|>Pagar 100 para salir/g)).toHaveLength(1);
+ s.active='p2';expect(render(s,language)).not.toContain('class="mp-island-decision"');
 });

@@ -1,0 +1,28 @@
+import {marbleBuildToCostAtPrice,marbleRentAtBase} from '../games/marbleEconomy';
+import { useRef, useState } from 'react';
+import type { GameAction, Language } from '../core/types';
+import { MarblePropertyArt } from './MarblePropertyArt';
+import { buildingName, cityArtNames, moneyText } from './marble-visuals';
+import './marble-construction.css';
+export function MarbleLegacyConstructionPanel({action,choices=[],economicVersion=3,tile,cash,cost:baseCost,resultingRent:baseRent,language,disabled,onConfirm,onCancel,id}:{action:GameAction;choices?:{action:GameAction}[];economicVersion?:number;tile:any;cash:number;cost:number;resultingRent:number;language:Language;disabled:boolean;onConfirm:(action:GameAction)=>unknown;onCancel?:()=>unknown;id:string}){
+ const ko=language==='ko',buy=action.type==='buy',current=Number(tile.houses??0),next=buy?current:current+1,city=String(tile.name?.ko??''),name=String(tile.name?.[language]??city),art=cityArtNames[city]??'';
+ const batch=choices.some(choice=>Number.isInteger(choice.action.payload?.targetLevel));
+ const [target,setTarget]=useState(Number(action.payload?.targetLevel??(buy?0:current+1)));
+ const selected=batch?choices.find(choice=>Number(choice.action.payload?.targetLevel)===target&&choice.action.payload?.targetLevel!==undefined)?.action:action;
+ const targetCost=(level:number)=>(buy?Number(tile.price??0):0)+marbleBuildToCostAtPrice(Number(tile.price??0),current,Math.max(current,level),economicVersion);
+ const cost=batch?targetCost(target):baseCost,resultingRent=batch?marbleRentAtBase(Number(tile.rent??0),target,economicVersion,Number(tile.monopolyMultiplier??1),true):baseRent;
+ const levels=buy?[0,1,2]:[1,2,...(choices.some(choice=>Number(choice.action.payload?.targetLevel)===3)?[3]:[])];
+ const [pending,setPending]=useState(false),[error,setError]=useState(false);const lock=useRef(false);
+ const confirm=async()=>{if(!selected||disabled||lock.current||cost>cash)return;lock.current=true;setPending(true);setError(false);try{const accepted=await onConfirm(selected!);if(accepted===false)setError(true);}catch{setError(true);}finally{lock.current=false;setPending(false);}};
+ return <fieldset className="mp-construction-picker mp-legacy-construction" disabled={disabled||pending}>
+ <legend className="mp-construction-sr">{buy?(ko?'도시 구매':'Comprar ciudad'):(ko?'도시 건설':'Construir')}</legend>
+ <header className="mp-construction-heading"><strong>{name}</strong><span>{batch?(ko?'목표 단계 선택 · 한 번에 결제':'Elige nivel · un solo pago'):buy?(ko?'토지 구매':'Compra del terreno'):(ko?'이번 건설 미리보기':'Próxima construcción')}</span></header>
+ {batch?<div className="mp-construction-cards mp-legacy-batch-cards">{levels.map(level=>{const built=!buy&&level<=current,available=choices.some(choice=>Number(choice.action.payload?.targetLevel)===level&&choice.action.payload?.targetLevel!==undefined);return <label key={level} className={`mp-construction-card ${level<=target?'is-selected':''} ${built||!available?'is-unavailable':''}`}><span className="mp-construction-card-title"><input type="checkbox" checked={level===0?true:level<=target} disabled={level===0||built||!available} onChange={event=>setTarget(event.target.checked?level:Math.max(current,level-1))}/><b>{buildingName(level,language,true)||(ko?'토지 · 필수':'Terreno · incluido')}</b></span><MarblePropertyArt city={art} level={level} routeVersion={Number(tile.cityRouteVersion??3)} language={language} owner={tile.owner} className="mp-legacy-batch-art"/><strong>{moneyText(targetCost(level),language)}</strong><small>{built?(ko?'보유 중':'Ya construido'):!available?(ko?'현재 선택 불가':'No disponible'):(ko?`${level}단계까지 총 결제`:`Total hasta nivel ${level}`)}</small></label>;})}</div>:<div className={`mp-legacy-build-art ${buy?'is-purchase':''}`}>
+ {!buy&&<><figure><MarblePropertyArt city={art} level={current} routeVersion={Number(tile.cityRouteVersion??3)} language={language} owner={tile.owner} className="mp-legacy-card-art"/><figcaption>{ko?'현재':'Ahora'} · {buildingName(current,language,true)||(ko?'빈 땅':'Terreno vacío')}</figcaption></figure><span className="mp-legacy-build-arrow" aria-hidden="true">→</span></>}
+ <figure><MarblePropertyArt city={art} level={next} routeVersion={Number(tile.cityRouteVersion??3)} language={language} owner={tile.owner} className="mp-legacy-card-art"/><figcaption>{buy?(ko?'도시 소유권':'Propiedad de la ciudad'):`${ko?'건설 후':'Después'} · ${buildingName(next,language,true)}`}</figcaption></figure>
+ </div>}
+ <div className="mp-construction-summary" aria-live="polite"><span>{ko?'결제':'Total'} <b>{moneyText(cost,language)}</b></span><span>{ko?'남는 현금':'Efectivo'} <b>{moneyText(cash-cost,language)}</b></span><span>{ko?'통행료':'Alquiler'} <b>{moneyText(resultingRent,language)}</b></span></div>
+ {(error||cost>cash)&&<small className="mp-construction-notice" role="alert">{error?(ko?'처리하지 못했어요. 다시 시도해 주세요.':'No se pudo completar. Inténtalo de nuevo.'):(ko?`현금 ${moneyText(cost-cash,language)} 부족`:`Faltan ${moneyText(cost-cash,language)}`)}</small>}
+ <footer className="mp-construction-footer">{onCancel&&<button type="button" className="mp-construction-cancel" onClick={()=>{if(!disabled&&!lock.current)void onCancel();}}>{ko?'건너뛰기':'Omitir'}</button>}<button type="button" id={id} className="mp-action mp-action-primary mt-primary" disabled={!selected||disabled||pending||cost>cash} onClick={()=>void confirm()}>{pending?(ko?'처리 중…':'Procesando…'):buy?(ko?`${batch&&target>0?'구매·건설 확정':'구매 확정'} · ${moneyText(cost,language)}`:`Comprar · ${moneyText(cost,language)}`):(ko?`건설 확정 · ${moneyText(cost,language)}`:`Construir · ${moneyText(cost,language)}`)}</button></footer>
+ </fieldset>;
+}

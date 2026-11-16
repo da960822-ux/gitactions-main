@@ -1,0 +1,50 @@
+[
+  {
+    "file": "beijing-temple-of-heaven-v1.png",
+    "width": 1366,
+    "height": 1152,
+    "hasAlpha": true,
+    "alphaMin": 0,
+    "alphaMax": 255
+  },
+  {
+    "file": "dubai-burj-khalifa-v1.png",
+    "width": 887,
+    "height": 1774,
+    "hasAlpha": true,
+    "alphaMin": 0,
+    "alphaMax": 255
+  },
+  {
+    "file": "giza-pyramids-v1.png",
+    "width": 1541,
+    "height": 1021,
+    "hasAlpha": true,
+    "alphaMin": 0,
+    "alphaMax": 255
+  },
+  {
+    "file": "new-york-statue-of-liberty-v2.png",
+    "width": 892,
+    "height": 1763,
+    "hasAlpha": true,
+    "alphaMin": 0,
+    "alphaMax": 255
+  },
+  {
+    "file": "rio-christ-redeemer-v1.png",
+    "width": 1029,
+    "height": 1528,
+    "hasAlpha": true,
+    "alphaMin": 0,
+    "alphaMax": 255
+  },
+  {
+    "file": "singapore-marina-bay-sands-v1.png",
+    "width": 1407,
+    "height": 1118,
+    "hasAlpha": true,
+    "alphaMin": 0,
+    "alphaMax": 255
+  }
+]

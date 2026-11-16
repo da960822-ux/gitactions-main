@@ -1,0 +1,13 @@
+{
+  "status": "proposed-display-only-not-applied",
+  "theme": "world-iconic-v2",
+  "preserve": ["all board indices", "prices", "rent", "region groups", "special tiles", "Gwangju", "Santo Domingo", "all other 18 assets"],
+  "changes": [
+    {"index":3,"previousCityId":"new-york","cityId":"new-york","name":{"ko":"뉴욕","en":"New York","es":"Nueva York"},"landmark":"Statue of Liberty","asset":"new-york-statue-of-liberty-v2.png"},
+    {"index":8,"previousCityId":"puerto-plata","cityId":"giza","name":{"ko":"기자","en":"Giza","es":"Guiza"},"landmark":"Pyramids of Giza","asset":"giza-pyramids-v1.png"},
+    {"index":9,"previousCityId":"san-juan","cityId":"rio-de-janeiro","name":{"ko":"리우데자네이루","en":"Rio de Janeiro","es":"Río de Janeiro"},"landmark":"Christ the Redeemer","asset":"rio-christ-redeemer-v1.png"},
+    {"index":13,"previousCityId":"miami","cityId":"singapore","name":{"ko":"싱가포르","en":"Singapore","es":"Singapur"},"landmark":"Marina Bay Sands","asset":"singapore-marina-bay-sands-v1.png"},
+    {"index":31,"previousCityId":"newark","cityId":"dubai","name":{"ko":"두바이","en":"Dubai","es":"Dubái"},"landmark":"Burj Khalifa","asset":"dubai-burj-khalifa-v1.png"},
+    {"index":35,"previousCityId":"toronto","cityId":"beijing","name":{"ko":"베이징","en":"Beijing","es":"Pekín"},"landmark":"Temple of Heaven","asset":"beijing-temple-of-heaven-v1.png"}
+  ]
+}

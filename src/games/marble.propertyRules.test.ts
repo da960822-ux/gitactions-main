@@ -1,3 +1,4 @@
+import { legacyInitial } from './marble.effectFixtures';
 import { describe, expect, it } from 'vitest';
 import { chooseSimpleAiAction } from './simpleAi';
 import { seededRandom } from '../core/types';
@@ -9,7 +10,7 @@ function dice(a: number, b: number) {
   throw new Error('Missing dice seed');
 }
 for (const [name, engine, four] of [['1v1', marbleEngine, false], ['2v2', fourMarbleEngine, true]] as const) describe(`Marble property rules v1 · ${name}`, () => {
-  const fresh=()=>{const s=engine.createInitialState(1) as any;s.economicVersion=2;s.money=Object.fromEntries(Object.keys(s.money).map((p:string)=>[p,1500]));return s;};
+  const fresh=()=>{const s=legacyInitial(engine, 1) as any;s.economicVersion=2;s.constructionRulesVersion=1;s.money=Object.fromEntries(Object.keys(s.money).map((p:string)=>[p,1500]));return s;};
   const act=(s:any,type:string,payload?:Record<string,unknown>)=>engine.applyAction(s,s.active,{type,payload}) as any;
   const view=(s:any)=>engine.getPlayerView(s,s.active) as any;
   const choices=(s:any)=>view(s).actions.map((x:any)=>x.action);
@@ -39,15 +40,17 @@ for (const [name, engine, four] of [['1v1', marbleEngine, false], ['2v2', fourMa
     n=act(n,'takeover',{tile:4});expect(board(n)[5].monopolyMultiplier).toBe(1);expect(board(n)[4].monopolyMultiplier).toBe(1);
     if(four){const allied=fresh();allied.properties[4]={owner:'p3',houses:3};allied.properties[5]={owner:'p3',houses:0};const a=land(allied);expect(a.money.p1).toBe(1500);expect(choices(a).some((x:any)=>x.type==='takeover')).toBe(false);}
   });
-  it('requires rescue before bankruptcy and settles the original creditor exactly once after a half-value sale',()=>{
+  it('requires explicit voluntary bankruptcy while rescuable and settles the original creditor exactly once after a half-value sale',()=>{
     const s=fresh();s.money.p1=30;s.debt.p1=330;s.properties[4]={owner:'p2',houses:2};s.properties[1]={owner:'p1',houses:1};
-    let n=land(s);expect(n.phase).toBe('debt');expect(choices(n)).toContainEqual({type:'sell-property',payload:{tile:1}});expect(choices(n).some((a:any)=>a.type==='declare-bankruptcy')).toBe(false);
+    let n=land(s);expect(n.phase).toBe('debt');expect(choices(n)).toContainEqual({type:'sell-property',payload:{tile:1}});expect(choices(n)).toContainEqual({type:'declare-bankruptcy',payload:{voluntary:true}});
+    expect(engine.validateAction(n,'p1',{type:'declare-bankruptcy'})).toBeTruthy();
+    expect(engine.validateAction(n,'p1',{type:'declare-bankruptcy',payload:{voluntary:true}})).toBeNull();
     expect(engine.validateAction(n,'p1',{type:'sell-property',payload:{tile:4}})).toBeTruthy();
     n=act(n,'sell-property',{tile:1});expect(n.phase).toBe('main');expect(n.money.p1).toBe(28);expect(n.money.p2).toBe(1572);expect(n.pendingPayment).toBeNull();expect(n.properties[1]).toBeUndefined();
     expect(engine.validateAction(n,'p1',{type:'sell-property',payload:{tile:1}})).toBeTruthy();
     expect(n.actionLog.filter((e:any)=>e.type==='rent')).toHaveLength(1);
   });
-  it('keeps unresolved debt after a partial sale and permits bankruptcy only when all rescue is insufficient',()=>{
+  it('keeps unresolved debt after a partial sale and permits unflagged bankruptcy when all rescue is insufficient',()=>{
     const s=fresh();s.money.p1=0;s.debt.p1=330;s.properties[4]={owner:'p2',houses:3};s.properties[1]={owner:'p1',houses:0};
     let n=land(s);expect(n.phase).toBe('debt');expect(choices(n).some((a:any)=>a.type==='declare-bankruptcy')).toBe(true);
     n=act(n,'sell-property',{tile:1});expect(n.phase).toBe('debt');expect(n.money.p1).toBe(50);expect(n.money.p2).toBe(1500);
@@ -61,10 +64,10 @@ for (const [name, engine, four] of [['1v1', marbleEngine, false], ['2v2', fourMa
     const s=fresh();s.rng=dice(1,1);s.eventDeck=['travel-cost'];s.money.p1=50;
     let n=act(s,'roll');expect(n.phase).toBe('debt');expect(n.extraRoll).toBe(true);n=act(n,'borrow');expect(n.money.p1).toBe(250);expect(n.phase).toBe('main');n=act(n,'endTurn');expect(n.active).toBe('p1');expect(n.phase).toBe('roll');
   });
-  it('protects landmarks from blackout targeting while keeping normal taxes and maintenance',()=>{
+  it('includes landmarks in blackout targeting',()=>{
     const s=fresh();s.rng=dice(1,1);s.eventDeck=['blackout'];s.properties[4]={owner:'p2',houses:3};s.properties[5]={owner:'p2',houses:0};
-    let n=act(s,'roll');expect(n.phase).toBe('event-decision');expect(choices(n)).toContainEqual({type:'choose-event-city',payload:{tile:5}});expect(engine.validateAction(n,'p1',{type:'choose-event-city',payload:{tile:4}})).toBeTruthy();
-    delete s.properties[5];n=act(s,'roll');expect(n.phase).toBe('main');
+    let n=act(s,'roll');expect(n.phase).toBe('event-decision');expect(choices(n)).toContainEqual({type:'choose-event-city',payload:{tile:5}});expect(engine.validateAction(n,'p1',{type:'choose-event-city',payload:{tile:4}})).toBeNull();
+    delete s.properties[5];n=act(s,'roll');expect(n.phase).toBe('event-decision');
   });
   it('restores the original drawer and its extra roll after a different player sells cities for an event debt',()=>{
     const s=fresh();s.rng=dice(1,1);s.eventDeck=['monopoly-warning'];s.money.p2=0;s.debt.p2=330;s.properties[1]={owner:'p2',houses:0};s.properties[15]={owner:'p2',houses:0};
@@ -73,14 +76,70 @@ for (const [name, engine, four] of [['1v1', marbleEngine, false], ['2v2', fourMa
     n=act(n,'sell-property',{tile:15});expect(n.active).toBe('p1');expect(n.phase).toBe('main');expect(n.money.p2).toBe(10);expect(n.pendingPayment).toBeNull();
     n=act(n,'endTurn');expect(n.active).toBe('p1');expect(n.phase).toBe('roll');
   });
-  it('removes a previously applied blackout when upgrading its city into a landmark',()=>{
-    const s=fresh();s.phase='main';s.properties[4]={owner:'p1',houses:2};
+  it('preserves a previously applied blackout when upgrading its city into a landmark',()=>{
+    const s=fresh();s.phase='main';s.positions.p1=4;s.pendingTile=4;s.buildSite=4;s.properties[4]={owner:'p1',houses:2};s.landmarkOptions=[4];
     if(four)s.modifiers[4]={blackout:'p2'};else s.rentModifiers[4]={blackout:{owner:'p1',playerId:'p2',source:'blackout'}};
-    const n=act(s,'build',{tile:4});expect(n.properties[4].houses).toBe(3);expect((four?n.modifiers:n.rentModifiers)[4]?.blackout).toBeUndefined();
+    const n=act(s,'build',{tile:4});expect(n.properties[4].houses).toBe(3);expect((four?n.modifiers:n.rentModifiers)[4]?.blackout).toBeDefined();
+  });
+  it('permits at most level two on purchase, then one landmark only after exact Start or a revisit',()=>{
+    const s=fresh();s.phase='decision';s.pendingTile=4;s.positions.p1=4;s.buildSite=4;
+    let n=act(s,'buy');n=act(n,'build',{tile:4});n=act(n,'build',{tile:4});
+    expect(n.properties[4].houses).toBe(2);
+    expect(choices(n)).not.toContainEqual({type:'build',payload:{tile:4}});
+    expect(engine.validateAction(n,'p1',{type:'build',payload:{tile:4}})).toBeTruthy();
+    expect(choices({...n,buildSite:null,properties:{...n.properties,5:{owner:'p1',houses:0}}})).not.toContainEqual({type:'build',payload:{tile:5}});
+    const passed={...n,phase:'roll',rng:dice(1,1),positions:{...n.positions,p1:39}};
+    const afterPass=act(passed,'roll');expect(afterPass.positions.p1).toBe(1);
+    expect(choices(act(afterPass,'decline'))).not.toContainEqual({type:'build',payload:{tile:4}});
+    const exact={...n,phase:'roll',rng:dice(1,1),positions:{...n.positions,p1:38},properties:{...n.properties,5:{owner:'p1',houses:2}}};
+    const atStart=act(exact,'roll');expect(atStart.positions.p1).toBe(0);
+    expect(choices(atStart)).toContainEqual({type:'build',payload:{tile:4}});
+    expect(choices(atStart)).toContainEqual({type:'build',payload:{tile:5}});
+    const landmark=act(atStart,'build',{tile:5});expect(landmark.properties[5].houses).toBe(3);
+    expect(choices(landmark)).not.toContainEqual({type:'build',payload:{tile:4}});
+    const revisit=act({...n,phase:'roll',rng:dice(1,2),positions:{...n.positions,p1:1}},'roll');
+    expect(revisit.positions.p1).toBe(4);
+    expect(choices(revisit)).toContainEqual({type:'build',payload:{tile:4}});
+    expect(engine.validateAction(revisit,'p1',{type:'build',payload:{tile:5}})).toBeTruthy();
+    const ai=four?fourMarbleEngine.chooseAiAction(view(revisit),'p1',()=>.5):chooseSimpleAiAction('marble',view(revisit),'p1',()=>.5);
+    expect(ai).toBeTruthy();expect(engine.validateAction(revisit,'p1',ai!)).toBeNull();
+  });
+  it('treats the Move to Start card as exact arrival and expires its one landmark choice after the turn',()=>{
+    const s=fresh();s.rng=dice(1,1);s.eventDeck=['advance-start'];s.properties[4]={owner:'p1',houses:2};
+    const arrived=act(s,'roll');expect(arrived.positions.p1).toBe(0);
+    expect(choices(arrived)).toContainEqual({type:'build',payload:{tile:4}});
+    const finished=act(arrived,'endTurn');
+    expect(finished.landmarkOptions).toEqual([]);
+    expect(choices({...finished,active:'p1',phase:'main'})).not.toContainEqual({type:'build',payload:{tile:4}});
+    const current=legacyInitial(engine, 1) as any;current.constructionRulesVersion=1;current.rng=dice(1,1);current.eventDeck=['advance-start'];current.properties[4]={owner:'p1',houses:2};
+    const paid=act(current,'roll');expect(paid.money.p1).toBe(3300);expect(paid.positions.p1).toBe(0);
+    expect(choices(paid)).toContainEqual({type:'build',payload:{tile:4}});
+  });
+  for(const economicVersion of [1,2,3]) it(`keeps saved economy ${economicVersion} rooms on their original remote build contract`,()=>{
+    const saved=fresh();saved.economicVersion=economicVersion;saved.phase='main';saved.properties[4]={owner:'p1',houses:2};saved.properties[5]={owner:'p1',houses:1};
+    delete saved.constructionRulesVersion;delete saved.buildSite;delete saved.landmarkOptions;
+    expect(choices(saved)).toContainEqual({type:'build',payload:{tile:4}});
+    expect(engine.validateAction(saved,'p1',{type:'build',payload:{tile:4}})).toBeNull();
+    const landed=land({...saved,phase:'roll'});
+    expect(landed.buildSite).toBe(4);
+    expect(choices(landed)).toContainEqual({type:'build',payload:{tile:4}});
+    expect(choices(landed)).toContainEqual({type:'build',payload:{tile:5}});
+    expect(landed.constructionRulesVersion).toBeUndefined();
+  });
+  for(const level of [0,1,2]) it(`permits the next ordinary build after taking over level ${level}, and only preexisting top ordinary buildings allow immediate landmark`,()=>{
+    const s=fresh(),owner=four?'p4':'p2';s.properties[4]={owner,houses:level};
+    const landed=land(s),acquired=act(landed,'takeover',{tile:4});
+    expect(acquired.buildSite).toBe(4);expect(acquired.landmarkOptions).toEqual(level === 2 ? [4] : []);
+    expect(choices(acquired).some((a:any)=>a.type==='build'&&a.payload?.tile===4)).toBe(true);
+    expect(engine.validateAction(acquired,'p1',{type:'build',payload:{tile:4}})===null).toBe(true);
+    let built=act(acquired,'build',{tile:4});
+    if(level===0) built=act(built,'build',{tile:4});
+    expect(built.properties[4].houses).toBe(level===2?3:2);
+    expect(engine.validateAction(built,'p1',{type:'build',payload:{tile:4}})).toBeTruthy();
   });
   it('completes new-version AI matches without illegal actions, negative cash or unbounded extra rolls',()=>{
     for(const seed of [7,29,71]){
-      let n=engine.createInitialState(seed) as any;
+      let n=legacyInitial(engine, seed) as any;
       for(let moves=0;!n.result&&moves<4000;moves++){
         const v=view(n),p=n.active;
         const action=four?fourMarbleEngine.chooseAiAction(v,p,()=>.5):chooseSimpleAiAction('marble',v,p,()=>.5);
@@ -101,4 +160,13 @@ it('uses actual additional stage prices, cumulative city values and no landmark 
   const tile={kind:'property' as const,name:{ko:'테스트',es:'Prueba'},price:140,rent:18};
   expect([0,1,2,3].map(level=>marbleCityValue(tile,level,2))).toEqual([140,200,280,390]);
   expect([0,1,2,3].map(level=>marbleTakeoverPrice(tile,level,2))).toEqual([280,400,560,null]);
+});
+
+it('labels the v3 final construction as a landmark in both languages', () => {
+  const state = legacyInitial(marbleEngine, 71);
+  state.properties[4] = { owner: 'p1', houses: 2 };
+  state.constructionRulesVersion = 1; state.positions.p1 = 4; state.phase = 'main'; state.buildSite = 4; state.landmarkOptions = [4];
+  const choice = marbleEngine.getPlayerView(state, 'p1').actions.find((value: { action: { type: string }; label: { ko: string; es: string } }) => value.action.type === 'build');
+  expect(choice?.label.ko).toContain('랜드마크');
+  expect(choice?.label.es).toContain('Monumento');
 });

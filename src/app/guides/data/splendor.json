@@ -1,0 +1,396 @@
+{
+  "ko": {
+    "goal": "보석 토큰으로 개발 카드를 사서 영구 할인과 점수를 쌓으세요. 누군가 15점에 도달하면 마지막 차례를 맞춘 뒤 점수가 높은 사람이 이깁니다. 이 설명은 2인판입니다.",
+    "setup": [
+      "처음에는 토큰·카드·점수가 모두 0입니다. 공용 은행에 다섯 색 토큰이 각 4개, 황금 토큰이 5개 있습니다.",
+      "중앙에는 1·2·3단계 카드가 각 4장씩 공개됩니다. 카드의 비용은 살 때 내는 색별 토큰 수, 보너스는 구매 후 계속 남는 할인, 점수는 승리에 더해지는 숫자입니다. 0점 카드도 할인을 줘요.",
+      "귀족 3명이 공개됩니다. 귀족 그림의 색별 숫자는 필요한 영구 보너스 수입니다. 손에 든 토큰 수가 아닙니다."
+    ],
+    "turnSteps": [
+      {
+        "title": "살 카드의 비용부터 확인",
+        "body": "카드를 눌러 비용·영구 보너스·점수를 살펴보세요. 카드를 보는 것만으로 차례를 쓰지는 않습니다. 매 차례 아래 A·B·C 중 하나만 합니다. 보석을 가져오고 같은 차례에 카드를 살 수는 없어요.",
+        "control": "공개 카드 클릭 → «지불»과 부족한 보석 확인; 닫으려면 ×"
+      },
+      {
+        "title": "A. 보석이 필요하면 가져오기",
+        "body": "보석 은행에서 서로 다른 색 3개를 하나씩 고르거나, 한 색이 은행에 4개 이상 남았을 때 그 색 2개를 고릅니다. 가져올 수 있는 색이 1~2종류뿐이면 남아 있는 색을 하나씩 전부 가져와요.",
+        "control": "보석 그림 3색 또는 한 색의 «+2» 선택 → «보석 가져오기»"
+      },
+      {
+        "title": "B. 비용이 맞으면 카드 구매",
+        "body": "공개 카드 또는 내 예약 카드를 누르세요. 색별 비용에서 내 영구 보너스를 뺀 나머지를 토큰으로 냅니다. 부족한 색은 보유한 황금 토큰으로 자동 충당합니다. 지불한 토큰은 은행에 돌아가고 카드 보너스와 점수는 내게 남아요.",
+        "control": "카드 클릭 → «지불» 확인 → «구매하기»"
+      },
+      {
+        "title": "C. 지금 못 사면 예약하기",
+        "body": "공개 카드를 선택해 예약하면 나중에 나만 살 수 있도록 보관합니다. 예약은 최대 3장이고, 은행에 황금 토큰이 있으면 1개를 받습니다. «덱 예약»은 내용을 보지 않고 해당 단계 맨 위 카드를 예약하는 선택이에요.",
+        "control": "공개 카드 → «예약하기»; 또는 단계 옆 «덱 예약» → «예약하기»"
+      },
+      {
+        "title": "한도와 귀족을 처리하면 차례 종료",
+        "body": "토큰은 황금을 포함해 10개까지입니다. 가져오기나 예약으로 넘으면 반환할 색·수량을 골라야 확정됩니다. 구매 뒤 귀족 조건을 만족하면 한 명을 얻고 3점이 붙습니다. 조건을 만족한 귀족이 여럿이면 하나를 골라야 상대 차례로 넘어가요.",
+        "control": "반환 칸의 +/− 조절; 귀족 선택이 뜨면 그림 클릭 → «방문 수락»"
+      }
+    ],
+    "example": {
+      "title": "첫 차례 예시 · 보석 3개 모으기",
+      "steps": [
+        "처음 내 토큰은 0개입니다. «보석 은행»에서 흰색·파랑·초록 그림을 각각 한 번 누릅니다.",
+        "선택한 토큰 3개와 «보유 3/10»을 확인합니다. 아직 확정하지 않았다면 실제로 가져온 것은 아니에요.",
+        "«보석 가져오기»를 누릅니다. 내게 흰색 1·파랑 1·초록 1이 생기고, 은행의 세 색은 각각 4개에서 3개가 됩니다.",
+        "이 행동으로 첫 차례가 끝납니다. 카드 구매는 상대가 행동한 뒤 돌아오는 내 차례에 합니다."
+      ],
+      "result": "토큰은 3개, 점수와 영구 보너스는 아직 0입니다. 다음 차례에는 원하는 카드의 비용을 보고 추가 토큰을 모으거나 구매하세요."
+    },
+    "mistakes": [
+      {
+        "question": "카드 보너스를 쓰면 카드가 없어지나요?",
+        "answer": "아니요. 영구 보너스는 매번 비용을 줄이며 사라지지 않습니다. 예를 들어 파랑 비용이 3이고 내 파랑 보너스가 1이면 파랑 토큰 2개만 내요. 카드에 적힌 점수와 보너스는 서로 다른 값입니다."
+      },
+      {
+        "question": "같은 색 2개 버튼이 왜 없어졌나요?",
+        "answer": "그 색 토큰이 은행에 4개 이상 있을 때만 가능합니다. 3개 남아 있어도 2개 가져오기는 안 돼요. 황금 토큰은 일반 보석 가져오기로 선택할 수 없고 예약으로 얻습니다."
+      },
+      {
+        "question": "선택했는데 가져오기를 확정할 수 없어요.",
+        "answer": "서로 다른 색을 필요한 수만큼 골랐는지 확인하세요. 토큰 총합이 10개를 넘으면 초과분을 정확히 반환해야 해요. 예를 들어 9개에서 3개를 가져오려면 2개를 반환합니다."
+      },
+      {
+        "question": "예약만 해도 점수와 할인이 생기나요?",
+        "answer": "아니요. 예약은 남이 못 사게 보관하는 행동입니다. 이후 내 차례에 비용을 내고 구매해야 점수와 보너스가 생겨요. 황금이 없어도 예약할 수 있지만 황금은 받지 못합니다."
+      },
+      {
+        "question": "귀족에게 토큰을 지불하나요?",
+        "answer": "아니요. 내 카드의 영구 보너스로만 조건을 확인하며, 보너스도 소모되지 않습니다. 이 2인판에서는 구매 뒤 확인해 귀족을 최대 한 명 얻어요. 여러 명의 조건을 만족하면 원하는 한 명을 선택합니다."
+      }
+    ],
+    "win": "15점은 즉시 종료가 아니라 마지막 차례 신호입니다. 두 사람이 같은 수의 차례를 마친 뒤 총점(카드 점수 + 귀족 점수)을 비교합니다. 총점이 같으면 구매한 카드 수가 적은 사람이 이기고, 카드 수도 같으면 무승부입니다.",
+    "glossary": [
+      {
+        "term": "토큰",
+        "meaning": "손에 모아 두었다가 카드 값을 낼 때 쓰는 일회성 보석입니다. 황금 포함 최대 10개입니다."
+      },
+      {
+        "term": "영구 보너스",
+        "meaning": "구매한 카드 한 장이 주는 그 색의 할인 1입니다. 이후 구매마다 적용되고 사용해도 없어지지 않습니다."
+      },
+      {
+        "term": "점수",
+        "meaning": "승부를 정하는 숫자입니다. 카드와 귀족에서 얻으며 토큰 개수와는 다릅니다."
+      },
+      {
+        "term": "황금 토큰",
+        "meaning": "구매 시 부족한 색 토큰을 대신하는 만능 토큰입니다."
+      },
+      {
+        "term": "예약 카드",
+        "meaning": "내가 나중에 살 수 있도록 따로 보관한 카드입니다. 구매 전에는 점수·할인이 없습니다."
+      },
+      {
+        "term": "귀족",
+        "meaning": "정해진 색별 영구 보너스를 갖추면 방문하여 3점을 주는 인물입니다."
+      },
+      {
+        "term": "단계 / 덱",
+        "meaning": "단계는 카드 묶음의 1·2·3 구분이고, 덱은 아직 공개하지 않은 카드 더미입니다."
+      }
+    ]
+  },
+  "es": {
+    "goal": "Compra cartas de desarrollo con fichas de gemas para acumular descuentos permanentes y puntos. Cuando alguien llega a 15 puntos, se igualan los turnos y gana la mayor puntuación. Esta guía es para dos jugadores.",
+    "setup": [
+      "Empiezas con 0 fichas, 0 cartas y 0 puntos. El banco común tiene 4 fichas de cada uno de los cinco colores y 5 de oro.",
+      "Hay cuatro cartas visibles de cada nivel: 1, 2 y 3. El costo indica las fichas de cada color que debes pagar; el bono es un descuento que conservas tras comprar; los puntos se suman a tu marcador. Una carta de 0 puntos también da descuento.",
+      "Hay 3 nobles visibles. Sus números de colores indican cuántos bonos permanentes necesitas, no cuántas fichas debes tener en la mano."
+    ],
+    "turnSteps": [
+      {
+        "title": "Revisa el costo de una carta",
+        "body": "Pulsa una carta para ver su costo, su bono permanente y sus puntos. Mirarla no consume el turno. En cada turno haces solo una de las opciones A, B o C. No puedes tomar gemas y comprar una carta en el mismo turno.",
+        "control": "Pulsa una carta → revisa «Pagar» y lo que falta; cierra con ×"
+      },
+      {
+        "title": "A. Toma gemas si necesitas recursos",
+        "body": "Elige una gema de cada uno de 3 colores distintos, o 2 de un mismo color si el banco tiene al menos 4 de ese color. Si solo quedan 1 o 2 colores disponibles, toma una ficha de cada color que quede.",
+        "control": "Elige 3 colores o el botón «+2» de un color → «Tomar gemas»"
+      },
+      {
+        "title": "B. Compra si puedes pagar",
+        "body": "Pulsa una carta visible o una de tus reservas. Resta tus bonos permanentes al costo de cada color y paga el resto con fichas. El oro cubre automáticamente los colores que falten. Las fichas pagadas vuelven al banco; tú conservas el bono y los puntos de la carta.",
+        "control": "Pulsa la carta → revisa «Pagar» → «Comprar»"
+      },
+      {
+        "title": "C. Reserva si no quieres comprar aún",
+        "body": "Reserva una carta visible para que solo tú puedas comprarla después. Puedes guardar hasta 3 reservas. Si queda oro en el banco, recibes 1 ficha. El botón «Reservar» junto a un nivel también permite reservar la carta superior del mazo sin verla antes.",
+        "control": "Pulsa una carta → «Reservar»; o el botón «Reservar» del mazo → confirma «Reservar»"
+      },
+      {
+        "title": "Resuelve el límite y los nobles",
+        "body": "Puedes tener hasta 10 fichas, incluido el oro. Si al tomar o reservar superas el límite, elige qué devolver antes de confirmar. Tras comprar, si cumples los requisitos de un noble recibes su visita y 3 puntos. Si cumples los de varios, elige uno para terminar el turno.",
+        "control": "Ajusta +/− en las fichas que devuelves; si debes elegir noble, pulsa su imagen → «Aceptar visita»"
+      }
+    ],
+    "example": {
+      "title": "Primer turno de ejemplo · reunir 3 gemas",
+      "steps": [
+        "Empiezas con 0 fichas. En «Banco de gemas», pulsa una vez los colores Blanca, Azul y Verde.",
+        "Revisa las 3 fichas elegidas y «Total 3/10». Hasta confirmar, solo están seleccionadas.",
+        "Pulsa «Tomar gemas». Recibes 1 blanca, 1 azul y 1 verde. En el banco, cada uno de esos colores baja de 4 a 3 fichas.",
+        "Esa acción termina tu primer turno. Podrás comprar en tu siguiente turno, después de que actúe tu rival."
+      ],
+      "result": "Tienes 3 fichas, pero todavía 0 puntos y 0 bonos permanentes. En tu siguiente turno, revisa el costo de la carta que quieres para decidir si compras o reúnes más fichas."
+    },
+    "mistakes": [
+      {
+        "question": "¿Pierdo la carta cuando uso su bono?",
+        "answer": "No. El bono reduce el costo en cada compra y no se consume. Por ejemplo, si el costo azul es 3 y tienes 1 bono azul, pagas solo 2 fichas azules. Los puntos de una carta y su bono son cosas distintas."
+      },
+      {
+        "question": "¿Por qué desapareció el botón para tomar 2 iguales?",
+        "answer": "Solo está disponible si quedan al menos 4 fichas de ese color en el banco. Con 3 no puedes tomar 2. Tampoco puedes elegir oro al tomar gemas normales: lo recibes al reservar."
+      },
+      {
+        "question": "¿Por qué no puedo confirmar las gemas elegidas?",
+        "answer": "Revisa que elegiste la cantidad necesaria de colores distintos. Si superarías 10 fichas, debes devolver exactamente el exceso. Por ejemplo, si tienes 9 y tomas 3, debes devolver 2."
+      },
+      {
+        "question": "¿Reservar ya me da puntos y descuento?",
+        "answer": "No. Reservar aparta la carta para ti. Debes comprarla en un turno posterior para obtener su bono y sus puntos. Puedes reservar aunque no quede oro, pero no recibes una ficha de oro."
+      },
+      {
+        "question": "¿Tengo que pagarle fichas a un noble?",
+        "answer": "No. Solo cuentan los bonos permanentes de tus cartas, y tampoco se gastan. En esta versión de dos jugadores se revisan después de comprar; recibes como máximo un noble. Si cumples varios requisitos, eliges una visita."
+      }
+    ],
+    "win": "Llegar a 15 puntos anuncia el final, pero no termina inmediatamente la partida. Cuando ambos han jugado la misma cantidad de turnos, se comparan los puntos de cartas y nobles. En empate, gana quien compró menos cartas. Si también empatan en cartas, la partida queda empatada.",
+    "glossary": [
+      {
+        "term": "Ficha de gema",
+        "meaning": "Recurso que guardas y gastas al pagar una carta. Puedes tener como máximo 10, incluido el oro."
+      },
+      {
+        "term": "Bono permanente",
+        "meaning": "Cada carta comprada da un descuento de 1 en su color. Se aplica en compras posteriores y nunca se gasta."
+      },
+      {
+        "term": "Puntos",
+        "meaning": "Valor que decide la partida. Se obtiene con cartas y nobles, no por la cantidad de fichas en tu mano."
+      },
+      {
+        "term": "Oro / comodín",
+        "meaning": "Ficha que sustituye un color que te falte al comprar."
+      },
+      {
+        "term": "Reserva",
+        "meaning": "Carta apartada para que puedas comprarla después. Antes de comprarla no da puntos ni descuento."
+      },
+      {
+        "term": "Noble",
+        "meaning": "Personaje que te da 3 puntos si reúnes los bonos permanentes de sus requisitos."
+      },
+      {
+        "term": "Nivel / mazo",
+        "meaning": "Nivel es la categoría 1, 2 o 3 de las cartas; mazo es la pila que aún no está visible."
+      }
+    ]
+  },
+  "team": {
+    "ko": {
+      "goal": "네 사람이 번갈아 하는 2대2 스플렌더입니다. 나와 맞은편 팀원의 점수를 합쳐 30점에 도달하면 마지막 차례를 맞춥니다. 보석·할인·예약은 개인별로 관리해요.",
+      "setup": [
+        "각자 토큰·카드·점수 0으로 시작합니다. 공용 은행은 색별 토큰 7개, 황금 5개입니다. 나·상대 1·팀원·상대 2 순서로 돌아갑니다.",
+        "중앙에는 1·2·3단계 카드가 각 4장씩 공개됩니다. 카드의 비용은 살 때 내는 색별 토큰 수, 보너스는 구매 후 계속 남는 할인, 점수는 승리에 더해지는 숫자입니다. 0점 카드도 할인을 줘요.",
+        "귀족은 5명입니다. 조건은 내 영구 보너스만으로 충족해야 하며, 팀원의 토큰·보너스·예약 카드를 함께 사용할 수 없습니다."
+      ],
+      "turnSteps": [
+        {
+          "title": "살 카드의 비용부터 확인",
+          "body": "카드를 눌러 비용·영구 보너스·점수를 살펴보세요. 카드를 보는 것만으로 차례를 쓰지는 않습니다. 매 차례 아래 A·B·C 중 하나만 합니다. 보석을 가져오고 같은 차례에 카드를 살 수는 없어요.",
+          "control": "공개 카드 클릭 → 낼 보석과 부족한 수 확인; «색별 지불 계산»에서 자세히 보기"
+        },
+        {
+          "title": "A. 보석이 필요하면 가져오기",
+          "body": "보석 은행에서 서로 다른 색 3개를 하나씩 고르거나, 한 색이 은행에 4개 이상 남았을 때 그 색 2개를 고릅니다. 가져올 수 있는 색이 1~2종류뿐이면 남아 있는 색을 하나씩 전부 가져와요.",
+          "control": "보석 그림 3색 또는 한 색의 «+2» 선택 → «보석 가져오기»"
+        },
+        {
+          "title": "B. 비용이 맞으면 카드 구매",
+          "body": "공개 카드 또는 내 예약 카드를 누르세요. 색별 비용에서 내 영구 보너스를 뺀 나머지를 토큰으로 냅니다. 부족한 색은 보유한 황금 토큰으로 자동 충당합니다. 지불한 토큰은 은행에 돌아가고 카드 보너스와 점수는 내게 남아요.",
+          "control": "카드 클릭 → 낼 보석 확인 → «구매하기»"
+        },
+        {
+          "title": "C. 지금 못 사면 예약하기",
+          "body": "공개 카드를 선택해 예약하면 나중에 나만 살 수 있도록 보관합니다. 예약은 최대 3장이고, 은행에 황금 토큰이 있으면 1개를 받습니다. «덱 예약»은 내용을 보지 않고 해당 단계 맨 위 카드를 예약하는 선택이에요.",
+          "control": "공개 카드 → «예약하기»; 또는 단계 옆 «덱 예약» → «예약하기»"
+        },
+        {
+          "title": "한도와 귀족을 처리하면 차례 종료",
+          "body": "황금을 포함해 개인 토큰은 10개까지입니다. 넘으면 반환을 선택해 확정하세요. 이 팀전은 행동 뒤 귀족 조건을 확인하므로 구매뿐 아니라 가져오기·예약 뒤에도 방문할 수 있습니다. 한 차례에 한 명이며, 여럿이면 한 명을 선택합니다.",
+          "control": "반환 칸의 +/− 조절; 귀족 선택이 뜨면 그림 클릭 → «방문 수락»"
+        }
+      ],
+      "example": {
+        "title": "첫 차례 예시 · 보석 3개 모으기",
+        "steps": [
+          "처음 내 토큰은 0개입니다. «보석 은행»에서 흰색·파랑·초록 그림을 각각 한 번 누릅니다.",
+          "선택한 세 보석과 «선택한 보석 확인 · 3/3» 안내를 확인합니다. 아직 확정하지 않았다면 실제로 가져온 것은 아니에요.",
+          "«보석 가져오기»를 누릅니다. 내게 흰색 1·파랑 1·초록 1이 생기고 은행의 세 색은 각각 7개에서 6개가 됩니다. 팀원에게는 전달되지 않아요.",
+          "이 행동으로 첫 차례가 끝나 상대 1이 행동합니다. 나머지 세 좌석이 차례를 마친 뒤 다시 내 차례가 옵니다."
+        ],
+        "result": "토큰은 3개, 점수와 영구 보너스는 아직 0입니다. 다음 차례에는 원하는 카드의 비용을 보고 추가 토큰을 모으거나 구매하세요."
+      },
+      "mistakes": [
+        {
+          "question": "카드 보너스를 쓰면 카드가 없어지나요?",
+          "answer": "아니요. 영구 보너스는 매번 비용을 줄이며 사라지지 않습니다. 예를 들어 파랑 비용이 3이고 내 파랑 보너스가 1이면 파랑 토큰 2개만 내요. 카드에 적힌 점수와 보너스는 서로 다른 값입니다."
+        },
+        {
+          "question": "같은 색 2개 버튼이 왜 없어졌나요?",
+          "answer": "그 색 토큰이 은행에 4개 이상 있을 때만 가능합니다. 3개 남아 있어도 2개 가져오기는 안 돼요. 황금 토큰은 일반 보석 가져오기로 선택할 수 없고 예약으로 얻습니다."
+        },
+        {
+          "question": "선택했는데 가져오기를 확정할 수 없어요.",
+          "answer": "서로 다른 색을 필요한 수만큼 골랐는지 확인하세요. 토큰 총합이 10개를 넘으면 초과분을 정확히 반환해야 해요. 예를 들어 9개에서 3개를 가져오려면 2개를 반환합니다."
+        },
+        {
+          "question": "예약만 해도 점수와 할인이 생기나요?",
+          "answer": "아니요. 예약은 남이 못 사게 보관하는 행동입니다. 이후 내 차례에 비용을 내고 구매해야 점수와 보너스가 생겨요. 황금이 없어도 예약할 수 있지만 황금은 받지 못합니다."
+        },
+        {
+          "question": "팀원과 보너스를 합쳐 귀족을 받나요?",
+          "answer": "아니요. 내 영구 보너스만 확인합니다. 팀전에서는 매 행동 뒤 조건을 확인하며 한 차례에 귀족 한 명만 얻습니다. 보너스를 소모하지 않으며, 여럿이 가능하면 한 명을 선택해요."
+        }
+      ],
+      "win": "어느 팀이든 합계 30점에 도달하면 마지막 차례가 시작됩니다. 네 사람이 같은 수의 차례를 마친 뒤 팀 총점(두 사람의 카드 점수 + 귀족 점수)을 비교합니다. 같으면 두 팀원이 구매한 카드의 총수가 적은 팀이 승리하고, 카드 수도 같으면 무승부입니다.",
+      "glossary": [
+        {
+          "term": "토큰",
+          "meaning": "손에 모아 두었다가 카드 값을 낼 때 쓰는 일회성 보석입니다. 황금 포함 최대 10개입니다."
+        },
+        {
+          "term": "영구 보너스",
+          "meaning": "구매한 카드 한 장이 주는 그 색의 할인 1입니다. 이후 구매마다 적용되고 사용해도 없어지지 않습니다."
+        },
+        {
+          "term": "점수",
+          "meaning": "승부를 정하는 숫자입니다. 카드와 귀족에서 얻으며 토큰 개수와는 다릅니다."
+        },
+        {
+          "term": "황금 토큰",
+          "meaning": "구매 시 부족한 색 토큰을 대신하는 만능 토큰입니다."
+        },
+        {
+          "term": "예약 카드",
+          "meaning": "내가 나중에 살 수 있도록 따로 보관한 카드입니다. 구매 전에는 점수·할인이 없습니다."
+        },
+        {
+          "term": "귀족",
+          "meaning": "정해진 색별 영구 보너스를 갖추면 방문하여 3점을 주는 인물입니다."
+        },
+        {
+          "term": "단계 / 덱",
+          "meaning": "단계는 카드 묶음의 1·2·3 구분이고, 덱은 아직 공개하지 않은 카드 더미입니다."
+        }
+      ]
+    },
+    "es": {
+      "goal": "Esta variante de Splendor se juega entre cuatro, en equipos de dos. Tú y tu compañero de enfrente suman sus puntos: al llegar un equipo a 30 se igualan los turnos finales. Las gemas, los descuentos y las reservas siguen siendo individuales.",
+      "setup": [
+        "Cada persona empieza con 0 fichas, 0 cartas y 0 puntos. El banco común tiene 7 fichas de cada color y 5 de oro. El orden es tú, Rival 1, Compañero y Rival 2.",
+        "Hay cuatro cartas visibles de cada nivel: 1, 2 y 3. El costo indica las fichas de cada color que debes pagar; el bono es un descuento que conservas tras comprar; los puntos se suman a tu marcador. Una carta de 0 puntos también da descuento.",
+        "Hay 5 nobles. Debes cumplir sus requisitos con tus propios bonos. No puedes usar las fichas, los bonos ni las reservas de tu compañero."
+      ],
+      "turnSteps": [
+        {
+          "title": "Revisa el costo de una carta",
+          "body": "Pulsa una carta para ver su costo, su bono permanente y sus puntos. Mirarla no consume el turno. En cada turno haces solo una de las opciones A, B o C. No puedes tomar gemas y comprar una carta en el mismo turno.",
+          "control": "Pulsa una carta → revisa las fichas a pagar y lo que falta; abre «Cálculo del pago» para ver el detalle"
+        },
+        {
+          "title": "A. Toma gemas si necesitas recursos",
+          "body": "Elige una gema de cada uno de 3 colores distintos, o 2 de un mismo color si el banco tiene al menos 4 de ese color. Si solo quedan 1 o 2 colores disponibles, toma una ficha de cada color que quede.",
+          "control": "Elige 3 colores o el botón «+2» de un color → «Tomar gemas»"
+        },
+        {
+          "title": "B. Compra si puedes pagar",
+          "body": "Pulsa una carta visible o una de tus reservas. Resta tus bonos permanentes al costo de cada color y paga el resto con fichas. El oro cubre automáticamente los colores que falten. Las fichas pagadas vuelven al banco; tú conservas el bono y los puntos de la carta.",
+          "control": "Pulsa la carta → revisa las fichas a pagar → «Comprar»"
+        },
+        {
+          "title": "C. Reserva si no quieres comprar aún",
+          "body": "Reserva una carta visible para que solo tú puedas comprarla después. Puedes guardar hasta 3 reservas. Si queda oro en el banco, recibes 1 ficha. El botón «Reservar» junto a un nivel también permite reservar la carta superior del mazo sin verla antes.",
+          "control": "Pulsa una carta → «Reservar»; o el botón «Reservar» del mazo → confirma «Reservar»"
+        },
+        {
+          "title": "Resuelve el límite y los nobles",
+          "body": "El límite individual es de 10 fichas, incluido el oro. Elige qué devolver si lo superas. Esta variante revisa los nobles después de cada acción: una visita puede llegar tras comprar, tomar gemas o reservar. Recibes como máximo uno por turno; si calificas para varios, elige uno.",
+          "control": "Ajusta +/− en las fichas que devuelves; si debes elegir noble, pulsa su imagen → «Aceptar visita»"
+        }
+      ],
+      "example": {
+        "title": "Primer turno de ejemplo · reunir 3 gemas",
+        "steps": [
+          "Empiezas con 0 fichas. En «Banco de gemas», pulsa una vez los colores Blanco, Azul y Verde.",
+          "Revisa las tres gemas elegidas y el aviso «Confirma las gemas · 3/3». Hasta confirmar, solo están seleccionadas.",
+          "Pulsa «Tomar gemas». Recibes 1 blanca, 1 azul y 1 verde; cada uno de esos colores baja de 7 a 6 en el banco. Tu compañero no recibe esas fichas.",
+          "Con esa acción termina tu primer turno y juega Rival 1. Te tocará otra vez después de los otros tres asientos."
+        ],
+        "result": "Tienes 3 fichas, pero todavía 0 puntos y 0 bonos permanentes. En tu siguiente turno, revisa el costo de la carta que quieres para decidir si compras o reúnes más fichas."
+      },
+      "mistakes": [
+        {
+          "question": "¿Pierdo la carta cuando uso su bono?",
+          "answer": "No. El bono reduce el costo en cada compra y no se consume. Por ejemplo, si el costo azul es 3 y tienes 1 bono azul, pagas solo 2 fichas azules. Los puntos de una carta y su bono son cosas distintas."
+        },
+        {
+          "question": "¿Por qué desapareció el botón para tomar 2 iguales?",
+          "answer": "Solo está disponible si quedan al menos 4 fichas de ese color en el banco. Con 3 no puedes tomar 2. Tampoco puedes elegir oro al tomar gemas normales: lo recibes al reservar."
+        },
+        {
+          "question": "¿Por qué no puedo confirmar las gemas elegidas?",
+          "answer": "Revisa que elegiste la cantidad necesaria de colores distintos. Si superarías 10 fichas, debes devolver exactamente el exceso. Por ejemplo, si tienes 9 y tomas 3, debes devolver 2."
+        },
+        {
+          "question": "¿Reservar ya me da puntos y descuento?",
+          "answer": "No. Reservar aparta la carta para ti. Debes comprarla en un turno posterior para obtener su bono y sus puntos. Puedes reservar aunque no quede oro, pero no recibes una ficha de oro."
+        },
+        {
+          "question": "¿Sumamos los bonos del equipo para recibir nobles?",
+          "answer": "No. Solo cuentan tus propios bonos permanentes. En equipos se revisan los requisitos después de cada acción y recibes como máximo un noble por turno. Los bonos no se gastan; si calificas para varios, eliges uno."
+        }
+      ],
+      "win": "Cuando cualquier equipo alcanza 30 puntos en total, se activa el final. Después de que las cuatro personas hayan jugado la misma cantidad de turnos, gana el equipo con más puntos de cartas y nobles entre sus dos integrantes. En empate, gana el equipo con menos cartas compradas en total. Si también empatan en cartas, hay empate.",
+      "glossary": [
+        {
+          "term": "Ficha de gema",
+          "meaning": "Recurso que guardas y gastas al pagar una carta. Puedes tener como máximo 10, incluido el oro."
+        },
+        {
+          "term": "Bono permanente",
+          "meaning": "Cada carta comprada da un descuento de 1 en su color. Se aplica en compras posteriores y nunca se gasta."
+        },
+        {
+          "term": "Puntos",
+          "meaning": "Valor que decide la partida. Se obtiene con cartas y nobles, no por la cantidad de fichas en tu mano."
+        },
+        {
+          "term": "Oro / comodín",
+          "meaning": "Ficha que sustituye un color que te falte al comprar."
+        },
+        {
+          "term": "Reserva",
+          "meaning": "Carta apartada para que puedas comprarla después. Antes de comprarla no da puntos ni descuento."
+        },
+        {
+          "term": "Noble",
+          "meaning": "Personaje que te da 3 puntos si reúnes los bonos permanentes de sus requisitos."
+        },
+        {
+          "term": "Nivel / mazo",
+          "meaning": "Nivel es la categoría 1, 2 o 3 de las cartas; mazo es la pila que aún no está visible."
+        }
+      ]
+    }
+  }
+}

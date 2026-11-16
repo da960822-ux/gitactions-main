@@ -1,0 +1,8 @@
+.marble-event-card-art{position:relative;display:block;flex-shrink:0;isolation:isolate;overflow:visible;border-radius:12px}
+.marble-event-illustration{display:block!important;width:100%!important;height:100%!important;object-fit:contain!important;border-radius:10px}
+.marble-effect-badge{position:absolute;right:-5px;bottom:-3px;width:38%;height:auto!important;min-height:0;aspect-ratio:1;border-radius:50%;display:grid;place-items:center;background:#fff3cc;color:#205d52;border:2px solid #d6ae52;box-shadow:0 2px 6px #173c4640;z-index:1}
+.marble-effect-badge.is-city{background:#fff0df;color:#9e442d}.marble-effect-badge.is-movement{background:#e3f5fb;color:#24677d}.marble-effect-badge.is-protection{background:#e1f4de;color:#2e6b4c}
+.marble-event-card-art .marble-effect-badge .marble-effect-symbol{position:absolute;inset:14%;width:72%!important;height:72%!important;max-width:none!important;max-height:none!important;object-fit:contain}
+
+.marble-semantic-card{aspect-ratio:4/5;color:#945039}.marble-semantic-card.is-cash{color:#97701e}.marble-semantic-card.is-movement{color:#24677d}.marble-semantic-card.is-protection{color:#2e6b4c}
+.marble-semantic-frame{display:block;width:100%!important;height:100%!important}.marble-semantic-scene{position:absolute;inset:29% 15% 17%;display:block}.marble-semantic-scene .marble-effect-symbol{width:100%!important;height:100%!important;max-width:none!important;max-height:none!important}

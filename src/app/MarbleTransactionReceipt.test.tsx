@@ -8,6 +8,7 @@ describe('MarbleTransactionReceipt', () => {
     const ko = renderToStaticMarkup(createElement(MarbleTransactionReceipt, { title:'통행료 지급', detail:'뉴욕에 도착', flow:'나 → 상대 · 60', delta:-60, language:'ko' }));
     expect(ko).toContain('나 → 상대 · 60');
     expect(ko).toContain('내 현금 -60');
+    expect(ko).not.toContain('<span>뉴욕에 도착</span>');
     expect(ko.match(/mp-center-receipt/g)).toHaveLength(1);
     const es = renderToStaticMarkup(createElement(MarbleTransactionReceipt, { title:'Alquiler pagado', detail:'Llegada a Nueva York', flow:'Tú → Rival · 60', delta:60, language:'es' }));
     expect(es).toContain('Tu efectivo +60');

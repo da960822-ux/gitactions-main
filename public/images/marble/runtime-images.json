@@ -1,0 +1,115 @@
+{
+  "policy": "Uncropped WebP quality92, longest edge768, lossless alpha; cameos quality94 at original dimensions. Original PNGs unchanged. No timing claims.",
+  "sourceBytes": 16685150,
+  "bytes": 1578514,
+  "assets": [
+    {
+      "source": "/images/marble/premium/cities/world-iconic-v2/beijing-temple-of-heaven-v1.png",
+      "path": "/images/marble/runtime/beijing-temple-of-heaven-v1-cd1cab7ece61.webp",
+      "sourceBytes": 2150320,
+      "bytes": 174902,
+      "sourceWidth": 1366,
+      "sourceHeight": 1152,
+      "width": 768,
+      "height": 648,
+      "hasAlpha": true,
+      "sourceSha256": "2c0c402611252ff91647a134aef73f8f9ee94efad5acc903f1490e3f5d88e86d"
+    },
+    {
+      "source": "/images/marble/premium/cities/world-iconic-v2/dubai-burj-khalifa-v1.png",
+      "path": "/images/marble/runtime/dubai-burj-khalifa-v1-5ed19372765e.webp",
+      "sourceBytes": 977747,
+      "bytes": 55258,
+      "sourceWidth": 887,
+      "sourceHeight": 1774,
+      "width": 384,
+      "height": 768,
+      "hasAlpha": true,
+      "sourceSha256": "f516faafe74be3952f035527243dab0d3c1d04e1c0085a3262da7d6769e6d85f"
+    },
+    {
+      "source": "/images/marble/premium/cities/world-iconic-v2/giza-pyramids-v1.png",
+      "path": "/images/marble/runtime/giza-pyramids-v1-160270ec23e9.webp",
+      "sourceBytes": 2158717,
+      "bytes": 141392,
+      "sourceWidth": 1541,
+      "sourceHeight": 1021,
+      "width": 768,
+      "height": 509,
+      "hasAlpha": true,
+      "sourceSha256": "552fd1e14b55b956602693c0bdd9bc39caa19c964044313b9584f4566c37d8d6"
+    },
+    {
+      "source": "/images/marble/premium/cities/world-iconic-v2/new-york-statue-of-liberty-v2.png",
+      "path": "/images/marble/runtime/new-york-statue-of-liberty-v2-c7408863f2f3.webp",
+      "sourceBytes": 1489148,
+      "bytes": 87318,
+      "sourceWidth": 892,
+      "sourceHeight": 1763,
+      "width": 389,
+      "height": 768,
+      "hasAlpha": true,
+      "sourceSha256": "276d23be535f545b51008ccf4b80c42f7fafafaa1deb7d29893ed166bca16bd8"
+    },
+    {
+      "source": "/images/marble/premium/cities/world-iconic-v2/rio-christ-redeemer-v1.png",
+      "path": "/images/marble/runtime/rio-christ-redeemer-v1-73acbbeeeb20.webp",
+      "sourceBytes": 1779940,
+      "bytes": 128452,
+      "sourceWidth": 1029,
+      "sourceHeight": 1528,
+      "width": 517,
+      "height": 768,
+      "hasAlpha": true,
+      "sourceSha256": "bd91966031043cba33b07a210866dfba4346c94feed1781974e76613a1e1a0f9"
+    },
+    {
+      "source": "/images/marble/premium/cities/world-iconic-v2/singapore-marina-bay-sands-v1.png",
+      "path": "/images/marble/runtime/singapore-marina-bay-sands-v1-3fd1af2cddfb.webp",
+      "sourceBytes": 2012780,
+      "bytes": 181908,
+      "sourceWidth": 1407,
+      "sourceHeight": 1118,
+      "width": 768,
+      "height": 610,
+      "hasAlpha": true,
+      "sourceSha256": "357909ede3fead31064fd6065f7b2edcb1904b4443aad002fbe0297588c44749"
+    },
+    {
+      "source": "/images/marble/premium/cities/world-iconic-v2/tropical-island-v1.png",
+      "path": "/images/marble/runtime/tropical-island-v1-19324882459c.webp",
+      "sourceBytes": 2075150,
+      "bytes": 209548,
+      "sourceWidth": 1407,
+      "sourceHeight": 1118,
+      "width": 768,
+      "height": 610,
+      "hasAlpha": true,
+      "sourceSha256": "de75ac4b0dd0e54dc49ca835c428bb6f8717de27a83d463b56b9a6074f6862df"
+    },
+    {
+      "source": "/images/approved-couple-room/result-yeonseok-wins.png",
+      "path": "/images/marble/runtime/result-yeonseok-wins-b4ecdda90db9.webp",
+      "sourceBytes": 2019651,
+      "bytes": 299364,
+      "sourceWidth": 1672,
+      "sourceHeight": 941,
+      "width": 1672,
+      "height": 941,
+      "hasAlpha": false,
+      "sourceSha256": "951df23e84b26cfb82432b4a784d7a9045d25729b8795cc303f0d1719d759f1e"
+    },
+    {
+      "source": "/images/approved-couple-room/result-lisbeth-wins.png",
+      "path": "/images/marble/runtime/result-lisbeth-wins-d2b6832152a5.webp",
+      "sourceBytes": 2021697,
+      "bytes": 300372,
+      "sourceWidth": 1672,
+      "sourceHeight": 941,
+      "width": 1672,
+      "height": 941,
+      "hasAlpha": false,
+      "sourceSha256": "09bf706f6528498167dfd02d09347afe8814cc0b7a649b66f1b94c4f184a180e"
+    }
+  ]
+}

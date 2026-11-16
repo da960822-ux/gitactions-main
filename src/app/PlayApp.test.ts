@@ -6,6 +6,14 @@ import { bindApi, catchmindEnterSubmits, CatchmindChatComposer, GameGuide, Lobby
 import { getBeginnerGuide } from './beginner-guides';
 import { currentPath } from './Router';
 
+it('shows the new Marble economy in lobby rules', () => {
+  const html = renderToStaticMarkup(createElement(RulesDialog, { gameId: 'marble', language: 'ko', onClose: () => {} }));
+  expect(html).toContain('32칸');
+  expect(html).toContain('출발 통과 보너스 450');
+  expect(html).toContain('관광지 7곳');
+  expect(html).not.toContain('우리 40칸');
+});
+
 it('shows current Catchmind timing and points while saved version-one rooms keep their rules', () => {
   for (const language of ['ko', 'es'] as const) {
     const current = renderToStaticMarkup(createElement(GameGuide, { gameId: 'catchmind', language, catchmindRulesVersion: 2 }));
@@ -245,8 +253,9 @@ describe('inline game guide', () => {
   it('uses current assets and economy for a new-game guide while keeping saved rooms versioned', () => {
     for (const language of ['ko', 'es'] as const) {
       const fresh = renderToStaticMarkup(createElement(GameGuide, { gameId: 'marble', language }));
-      expect(fresh).toContain(language === 'ko' ? '/images/marble/premium/cities/gwangju-chosun-university.webp' : '/images/marble/premium/cities/santo-domingo-alcazar.webp');
-      expect(fresh).toContain('/images/marble/guides/takeover-protection.webp');
+      expect(fresh).toContain(language === 'ko' ? '32칸' : '32 casillas');
+      expect(fresh).toContain('450');
+      expect(fresh).not.toContain(language === 'ko' ? '우리 40칸' : '40 casillas');
       const saved = renderToStaticMarkup(createElement(GameGuide, { gameId: 'marble', language, marbleVersion: 2 }));
       expect(saved).toContain('/images/marble/landmarks/gwangju.svg');
       expect(saved).toContain(language === 'ko' ? '첫 건설 100' : 'primera mejora 100');
@@ -259,14 +268,19 @@ describe('inline game guide', () => {
       const dialog = renderToStaticMarkup(createElement(RulesDialog, { gameId, language, onClose: () => {} }));
       for (const html of [inline, dialog]) {
         if (gameId === 'marble') {
-          expect(html).toContain('/images/marble/guides/takeover-protection.webp');
-          expect(html).toContain('/images/marble/guides/doubles-island.webp');
-          expect(html).toContain(language === 'ko' ? '랜드마크' : 'Monumento');
+          if (html === inline) {
+            expect(html).toContain('/images/marble/guides/takeover-protection.webp');
+            expect(html).toContain('/images/marble/guides/doubles-island.webp');
+          } else {
+            expect(html).toContain(language === 'ko' ? '32칸' : '32 casillas');
+            expect(html).toContain('450');
+          }
+          expect(html.toLowerCase()).toContain(language === 'ko' ? '랜드마크' : 'monumento');
         } else {
           expect(html).toContain(getBeginnerGuide(gameId, language)!.goal);
           expect(html).toContain(`/images/guides/${gameId}-${language}.webp`);
         }
-        expect(html).toContain(language === 'es' ? 'lang="es-DO"' : 'lang="ko"');
+        expect(html).toMatch(language === 'es' ? /lang="es(?:-DO)?"/ : /lang="ko"/);
         expect(html).toContain('<details');
         expect(html).not.toContain('<details open');
       }
@@ -304,7 +318,8 @@ describe('inline game guide', () => {
       expect(es).toContain(game.title.es);
       for (const markup of [ko, es]) {
         if (game.id === 'minhwatu') {
-          expect((markup.match(/<li>/g) ?? []).length).toBe(3);
+          expect((markup.match(/<li>/g) ?? []).length).toBeGreaterThanOrEqual(3);
+          expect(markup).toContain('data-tutorial-game="minhwatu"');
           expect(markup).toContain('minhwatu-match-grid');
           expect(markup).toContain('/images/hwatu/01-01.svg');
           expect(markup).toContain('minhwatu-guide-details');
@@ -318,13 +333,17 @@ describe('inline game guide', () => {
     expect(rulesButtonLabel('es')).toBe('Cómo jugar ↓');
   });
 
-  it('shows three illustrated steps first and keeps detailed rules collapsed in both languages', () => {
+  it('preserves illustrated steps inside advanced guides while saved domino keeps its original intro', () => {
     for (const gameId of ['domino', 'jaipur', 'splendor'] as const) {
       for (const language of ['ko', 'es'] as const) {
         const markup = renderToStaticMarkup(createElement(GameGuide, { gameId, language, dominoRulesVersion: 1 }));
         expect((markup.match(/<figure class="quick-guide-image"/g) ?? []).length).toBe(3);
         expect(markup).toContain('<details class="guide-details">');
-        expect(markup.indexOf('quick-guide-steps')).toBeLessThan(markup.indexOf('guide-details'));
+        if (gameId === 'domino') expect(markup.indexOf('quick-guide-steps')).toBeLessThan(markup.indexOf('guide-details'));
+        else {
+          expect(markup.indexOf('game-tutorial')).toBeLessThan(markup.indexOf('guide-advanced'));
+          expect(markup.indexOf('guide-advanced')).toBeLessThan(markup.indexOf('quick-guide-steps'));
+        }
       }
     }
   });
@@ -374,7 +393,7 @@ describe('shared game feedback', () => {
     expect(cueForAction('marble', { type: 'choose-train', payload: { destination: 4 } })).toBeNull();
     expect(cueForAction('marble', { type: 'roll' })).toBeNull();
     expect(cueForAction('jaipur', { type: 'take', payload: { mode: 'single' } })).toBeNull();
-    expect(cueForAction('splendor', { type: 'takeTwo', payload: { gem: 'blue' } })).toBe('select');
+    expect(cueForAction('splendor', { type: 'takeTwo', payload: { gem: 'blue' } })).toBeNull();
     expect(cueForAction('splendor', { type: 'chooseNoble', payload: { id: 'n1' } })).toBeNull();
     expect(cueForAction('minhwatu', { type: 'play', payload: { index: 0 } })).toBeNull();
     expect(cueForAction('minhwatu', { type: 'capture', payload: { index: 0 } })).toBeNull();
@@ -398,9 +417,9 @@ describe('shared game feedback', () => {
     expect(publicViewCue('davinci', empty, revealedWrong, 'p1')).toBe('error');
     expect(publicViewCue('davinci', empty, draw, 'p1')).toBe('draw');
     expect(publicViewCue('davinci', empty, stop, 'p1')).toBe('turn');
-    expect(publicViewCue('davinci', empty, skipped, 'p1')).toBeNull();
+    expect(publicViewCue('davinci', empty, skipped, 'p1')).toBe('turn');
     expect(publicViewCue('davinci', empty, arranged, 'p1')).toBe('place');
-    expect(publicViewCue('davinci', arranged, ready, 'p1')).toBeNull();
+    expect(publicViewCue('davinci', arranged, ready, 'p1')).toBe('ready');
     expect(publicViewAnnouncement('davinci', empty, arranged, 'p1', 'ko')?.message).toBe('타일을 정렬했어요.');
     expect(publicViewCue('davinci', correct, { ...correct, turn: 'p2' }, 'p1')).toBeNull();
     expect(publicViewCue('davinci', empty, { ...wrong, result: { winner: 'p2', reason: 'all revealed' } }, 'p1')).toBe('lose');

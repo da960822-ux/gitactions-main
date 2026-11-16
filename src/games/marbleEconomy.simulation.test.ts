@@ -1,3 +1,4 @@
+import { legacyInitial } from './marble.effectFixtures';
 import { expect, it } from 'vitest';
 import { fourSeats } from '../core/fourPlayer';
 import { seededRandom } from '../core/types';
@@ -7,7 +8,9 @@ import { chooseSimpleAiAction } from './simpleAi';
 
 function play(seed: number, team: boolean, version: 2 | 3) {
   const engine: any = team ? fourMarbleEngine : marbleEngine;
-  let state: any = engine.createInitialState(seed);
+  let state: any = legacyInitial(engine, seed);
+  // Hold construction rules fixed: this compares saved economic v2/v3, not independent buildings.
+  state.constructionRulesVersion = 1;
   if (version === 2) {
     state.economicVersion = 2;
     state.money = Object.fromEntries(Object.keys(state.money).map(player => [player, 1500]));

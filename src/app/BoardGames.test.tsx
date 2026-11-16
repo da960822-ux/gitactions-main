@@ -1,3 +1,4 @@
+import {createLegacyMarbleState} from '../games/marble';
 import { describe, expect, it, vi } from 'vitest';
 import { renderToStaticMarkup } from 'react-dom/server';
 import DominoBoard from './DominoBoard';
@@ -73,8 +74,9 @@ describe('DominoBoard presentation', () => {
 
 describe('MarbleBoard presentation', () => {
   const makeView = (language: 'ko' | 'es') => {
-    const state = marbleEngine.createInitialState(728);
+    const state = createLegacyMarbleState(728);
     delete state.economicVersion;
+    state.constructionRulesVersion = 1;
     const view = marbleEngine.getPlayerView(state, 'p1');
     const property = view.board.tiles.find((tile: any) => tile.kind === 'property');
     property.owner = 'p1';
@@ -96,11 +98,11 @@ describe('MarbleBoard presentation', () => {
     expect(ko).toContain('소유자 나');
     expect(ko).toContain('임대');
     expect(ko).toContain('아파트');
-    expect(ko).toContain('marble-event-amount is-negative">−100');
+    expect(ko).toContain('내 현금 −100');
     expect(ko).toContain('광주');
     expect(es).toContain('Dueño Tú');
     expect(es).toContain('Apartamentos');
-    expect(es).toContain('marble-event-amount is-negative">−100');
+    expect(es).toContain('Tu efectivo −100');
     expect(es).toContain('Santo Domingo');
     expect(es).toContain('Gwangju');
   });

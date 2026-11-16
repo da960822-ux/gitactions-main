@@ -1,6 +1,7 @@
 import { fourSeats, fourTeam, localized, nextFourSeat, type FourCard, type FourEngine, type FourResult, type FourSeat, type FourView } from '../core/fourPlayer';
 import { seededRandom, shuffle, type GameAction } from '../core/types';
 import { splendorEngine, splendorNobles, type Gem, type SplendorCard, type SplendorState } from './splendor';
+import { splendorNobleName } from './splendorNobleNames';
 import { chooseSimpleAiAction } from './simpleAi';
 import art from '../../public/images/splendor/card-map.json';
 
@@ -76,7 +77,7 @@ function view(s: FourSplendorState, p: FourSeat): FourSplendorView {
     }
     if (type === 'chooseNoble') {
       const noble = s.availableNobles[String(x.id)];
-      return { action: choice.action, label: localized(`귀족 선택 · ${gemText(noble.requirement, 'ko')}`, `Elegir noble · ${gemText(noble.requirement, 'es')}`) };
+      return { action: choice.action, label: localized(`${splendorNobleName(String(x.id), 'ko')} 선택 · ${gemText(noble.requirement, 'ko')}`, `Elegir a ${splendorNobleName(String(x.id), 'es')} · ${gemText(noble.requirement, 'es')}`) };
     }
     return choice;
   });
@@ -84,7 +85,7 @@ function view(s: FourSplendorState, p: FourSeat): FourSplendorView {
   return { game: 'splendor', turn: s.active, phase: s.result ? 'finished' : s.pendingNobles.length ? 'chooseNoble' : 'action', players, hand: s.reserved[p].map(cardView), panels: [
     { id: 'bank', title: localized('공용 보석 은행', 'Reserva de gemas'), cards: Object.entries(s.bank).map(([gem, count]) => ({ id: gem, title: localized(`${colorNames[gem as Gem | 'gold'].ko} ${count}`, `${colorNames[gem as Gem | 'gold'].es} ${count}`), color: gem })) },
     ...([1, 2, 3] as const).map(tier => ({ id: `tier-${tier}`, title: localized(`${tier}단계 · 더미 ${s.decks[tier].length}장`, `Nivel ${tier} · Mazo ${s.decks[tier].length}`), cards: s.market[tier].map(cardView) })),
-    { id: 'nobles', title: localized('공개 귀족', 'Nobles disponibles'), cards: Object.entries(s.availableNobles).map(([id, noble]) => ({ id, title: localized(`귀족 · ${noble.points}점`, `Noble · ${noble.points} pts`), detail: localized(`보너스 ${gemText(noble.requirement, 'ko')}`, `Bonos ${gemText(noble.requirement, 'es')}`), image: nobleArt.get(id) })) },
+    { id: 'nobles', title: localized('공개 귀족', 'Nobles disponibles'), cards: Object.entries(s.availableNobles).map(([id, noble]) => ({ id, title: localized(`${splendorNobleName(id, 'ko')} · ${noble.points}점`, `${splendorNobleName(id, 'es')} · ${noble.points} pts`), detail: localized(`보너스 ${gemText(noble.requirement, 'ko')}`, `Bonos ${gemText(noble.requirement, 'es')}`), image: nobleArt.get(id) })) },
   ], actions: s.result ? [] : actions, result: s.result ? structuredClone(s.result) : null, economy,
     note: localized(`4인 기본 규칙 + 자체 2대2 팀 규칙: 개인 자원은 공유하지 않습니다. 팀 합계 30점 후 동일 차례 수로 종료합니다.${s.pendingEnd ? ' 마지막 한 바퀴입니다.' : ''}`, `Reglas de 4 jugadores + variante propia 2 contra 2: sin compartir recursos. Al llegar un equipo a 30 puntos se igualan los turnos.${s.pendingEnd ? ' Última ronda.' : ''}`),
   };

@@ -15,6 +15,21 @@ function render(view: any, playerId: 'p1' | 'p2' = 'p1', language: 'ko' | 'es' =
 
 describe('DaVinciTable', () => {
   afterEach(() => vi.unstubAllEnvs());
+  it('shows both draw colors, disables an empty color, and only shows guessing tools during guessing', () => {
+    const state: any = davinciEngine.createInitialState(23);
+    state.phase = 'draw'; state.deck = state.deck.filter((tile: any) => tile.color === 'white');
+    const draw = render(davinciEngine.getPlayerView(state, 'p1'));
+    expect(draw).toContain('뽑을 타일 색 선택');
+    expect(draw).toMatch(/dv-draw-black" disabled=""/);
+    expect(draw).toMatch(/dv-draw-white"[^>]*>흰색/);
+    expect(draw).not.toContain('dv-number-grid');
+    state.phase = 'guess'; state.mayStop = true;
+    const guess = render(davinciEngine.getPlayerView(state, 'p1'));
+    expect(guess).toContain('dv-number-grid');
+    expect(guess).toContain('dv-guess-submit');
+    expect(guess).toContain('dv-action-secondary');
+    expect(guess).not.toContain('dv-draw-choice');
+  });
   it('offers only hidden own tiles for the no-draw miss in both languages', () => {
     const view = { game: 'davinci', turn: 'p1', phase: 'reveal-own', hand: [{ color: 'black', value: 2, revealed: true }, { color: 'white', value: 5, revealed: false }, { color: 'black', value: 8, revealed: false }, { color: 'white', value: 'joker', revealed: false }],
       board: { opponentTiles: [{ color: 'white', value: null, revealed: false }], deckCount: 0, tileCount: 26, actionLog: [], lastEvent: null },
@@ -232,8 +247,9 @@ describe('DaVinciTable', () => {
     expect(inGameWait).not.toContain('준비가 끝났어요. 상대가 준비를 마치면 대국이 시작돼요.');
     expect(inGameWait).toContain('상대 차례');
 
-    const liveTurn = { ...base, turn: 'p1', phase: 'draw', board: { ...base.board, setupReady: { p1: true, p2: true }, turnNumber: 2 }, actions: [{ label: { ko: '뽑기', es: 'Robar' }, action: { type: 'draw' } }] };
-    expect(render(liveTurn, 'p1')).toContain('타일 뽑기');
+    const liveTurn = { ...base, turn: 'p1', phase: 'draw', board: { ...base.board, deckColors: { black: 9, white: 9 }, setupReady: { p1: true, p2: true }, turnNumber: 2 }, actions: [{ label: { ko: '검정 뽑기', es: 'Robar negra' }, action: { type: 'draw', payload: { color: 'black' } } }, { label: { ko: '흰색 뽑기', es: 'Robar blanca' }, action: { type: 'draw', payload: { color: 'white' } } }] };
+    expect(render(liveTurn, 'p1')).toContain('뽑을 타일 색 선택');
+    expect(render(liveTurn, 'p1')).toContain('9장 남음');
     expect(render({ ...liveTurn, phase: 'waiting' }, 'p2')).toContain('상대 차례');
     expect(render(liveTurn, 'p1')).not.toContain('준비 완료');
   });

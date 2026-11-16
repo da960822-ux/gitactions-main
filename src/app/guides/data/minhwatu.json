@@ -1,0 +1,328 @@
+{
+  "ko": {
+    "goal": "손패를 한 장 내고 같은 달의 바닥 패를 가져와 점수를 모으세요. 모든 패를 사용한 뒤 최종 점수가 높은 사람이 이겨요. 고스톱처럼 중간에 고·스톱을 고르는 게임은 아니에요.",
+    "setup": [
+      "2인전은 48장 중 각자 10장, 중앙 바닥 8장, 뒤집힌 더미 20장으로 시작해요. 각 달은 4장씩 있어요.",
+      "아래 ‘내 손패’는 내가 낼 패, 중앙 ‘바닥 패’는 가져올 후보, ‘획득패’는 이미 가져와 점수를 얻은 패예요. 상대 손패는 보이지 않아요.",
+      "짝은 그림의 종류가 아니라 월 숫자로 찾아요. 예를 들어 1월 광과 1월 피는 짝이고, 1월 광과 3월 광은 짝이 아니에요."
+    ],
+    "turnSteps": [
+      {
+        "title": "내 손패 한 장을 눌러요",
+        "body": "내 차례에 손패의 월 숫자와 바닥의 월 숫자를 비교하세요. 같은 달이 있는 손패는 표시돼요. 손패를 누르면 바로 내므로, 먼저 바닥을 살펴보세요. 같은 달 바닥 패가 정확히 2장일 때만 선택 단계에서 기다려요.",
+        "control": "아래 ‘내 손패’의 카드 클릭"
+      },
+      {
+        "title": "같은 달이 2장이면 하나를 고르세요",
+        "body": "바닥에 같은 달이 0장이면 낸 패가 바닥에 남고, 1장이면 그 패와 낸 패를 가져와요. 2장이면 둘 중 하나만 선택하고, 3장이면 세 장과 낸 패를 모두 가져와요.",
+        "control": "후보 카드의 ‘선택’ 클릭 · 내기 전에는 ‘선택 취소’ 또는 Esc"
+      },
+      {
+        "title": "자동으로 뒤집힌 패도 처리해요",
+        "body": "손패 처리가 끝나면 더미 맨 위 한 장이 자동으로 공개돼요. 역시 같은 달을 가져오며, 후보가 2장이면 내가 하나를 더 골라야 해요. 이 선택을 마쳐야 내 차례가 끝나요. 더미를 직접 누르지는 않아요.",
+        "control": "‘뒤집은 패’ 확인 → 필요하면 바닥 후보의 ‘선택’ 클릭"
+      },
+      {
+        "title": "획득패와 점수를 보고 상대를 기다려요",
+        "body": "가져온 패는 내 획득패로 이동해요. 광 20점, 열끗 10점, 띠 5점, 피 0점이 기본점수예요. 조합 보너스는 별도로 반영되며 상대 조합 때문에 내 점수가 내려갈 수도 있어요.",
+        "control": "‘점수 계산과 족보 상세’에서 점수 확인"
+      }
+    ],
+    "example": {
+      "title": "첫 차례 예시 · 같은 달 후보가 2장일 때",
+      "steps": [
+        "가령 내 손에 1월 학(광)이 있고, 바닥에 1월 피 2장과 2월 피 1장이 있다고 해요.",
+        "아래 1월 학을 누르고, 바닥의 1월 피 둘 중 하나에 표시된 ‘선택’을 누르세요. 학과 고른 피를 가져오고 다른 1월 피는 남아요.",
+        "이어서 더미에서 2월 꾀꼬리(열끗)가 나왔다면, 바닥의 2월 피와 함께 자동으로 가져와요.",
+        "총 4장을 획득하고 차례가 상대에게 넘어가요. 손패는 10장에서 9장, 더미는 20장에서 19장으로 줄어요."
+      ],
+      "result": "이 예시에서는 광 20 + 열끗 10 + 피 0 + 피 0 = 기본 30점이에요. 완성 조합이 아직 없으므로 내 점수는 30점, 상대는 0점이에요. 실제 배분과 뒤집히는 패는 달라요."
+    },
+    "mistakes": [
+      {
+        "question": "광끼리나 같은 그림끼리 맞춰야 하나요?",
+        "answer": "아니요. 월 숫자가 같으면 광·열끗·띠·피 종류가 달라도 짝이에요. 다른 달 카드는 종류가 같아도 가져올 수 없어요."
+      },
+      {
+        "question": "손패를 눌렀는데 왜 바닥을 또 고르라고 하나요?",
+        "answer": "같은 달 후보가 정확히 2장이라서예요. 가져올 한 장만 고르면 됩니다. 자동으로 뒤집힌 패도 후보가 2장이면 같은 선택을 해야 해요."
+      },
+      {
+        "question": "맞는 달이 하나도 없으면 패스하나요?",
+        "answer": "패스하지 않아요. 손패 한 장을 내서 바닥에 남기고, 이어 더미 한 장을 공개해 처리해요. 그 뒤집힌 패로 방금 낸 패를 가져오는 것도 가능해요."
+      },
+      {
+        "question": "왜 점수가 줄거나 음수가 되나요?",
+        "answer": "최종 점수는 기본점수 + 내 조합 보너스 × 2 − 상대 조합 보너스예요. 상대의 조합도 내 점수에 영향을 줘요. 피는 자체 0점이고 장수만 많이 모은다고 보너스가 생기지는 않아요."
+      },
+      {
+        "question": "손패를 다 내거나 3점이 되면 끝인가요?",
+        "answer": "아니요. 양쪽 손패와 더미가 모두 빌 때 끝나요. 고·스톱, 피 빼앗기, 고스톱 배수는 없어요. 이 게임의 점수는 일반 고스톱 점수와 달라요."
+      }
+    ],
+    "win": "양쪽 손패와 더미가 모두 비면 한 판이 끝나요. 기본점수 + 내 조합 보너스의 2배 − 상대 조합 보너스를 비교해 높은 사람이 이기고, 같으면 무승부예요. 조합의 정확한 패와 보너스는 아래 상세 규칙에서 확인할 수 있어요.",
+    "glossary": [
+      {
+        "term": "월",
+        "meaning": "1월부터 12월까지의 숫자. 같은 월끼리 짝을 맞춰요."
+      },
+      {
+        "term": "손패 / 바닥 패 / 획득패",
+        "meaning": "내가 낼 패 / 중앙의 공개 패 / 이미 가져와 점수를 얻은 패."
+      },
+      {
+        "term": "더미",
+        "meaning": "차례마다 맨 위 한 장을 자동으로 뒤집는 남은 패 묶음."
+      },
+      {
+        "term": "족보·조합 보너스",
+        "meaning": "정해진 패를 모두 모으면 얻는 추가 점수. 예: 2·4·8월 새 세 장의 고도리는 50점 보너스."
+      }
+    ]
+  },
+  "es": {
+    "goal": "Juega una carta de tu mano y captura cartas del mismo mes para sumar puntos. Gana quien tenga más puntos al usar todas las cartas. Aquí no eliges Go o Stop para terminar antes, como en Go-Stop.",
+    "setup": [
+      "Para dos personas se usan 48 cartas: 10 en cada mano, 8 en la mesa y 20 en el mazo boca abajo. Cada mes tiene 4 cartas.",
+      "«Tu mano», abajo, contiene las cartas que puedes jugar. La «Mesa», en el centro, tiene las cartas que puedes capturar. Las capturas son las cartas que ya ganaste y que suman puntos. No ves la mano rival.",
+      "Busca parejas por el número del mes, no por el tipo de dibujo. Una brillante de enero combina con una simple de enero, pero no con una brillante de marzo."
+    ],
+    "turnSteps": [
+      {
+        "title": "Pulsa una carta de tu mano",
+        "body": "En tu turno, compara sus meses con los de la mesa. Las cartas con coincidencias están marcadas. Pulsar una carta la juega directamente: mira la mesa primero. Solo se espera una segunda selección si hay exactamente 2 cartas del mismo mes en la mesa.",
+        "control": "Pulsa una carta de «Tu mano», abajo"
+      },
+      {
+        "title": "Si hay 2 coincidencias, elige una",
+        "body": "Con 0 cartas del mismo mes, tu carta queda en la mesa. Con 1, capturas esa carta junto con la tuya. Con 2, eliges solo una. Con 3, te llevas las tres y la carta que jugaste.",
+        "control": "Pulsa «Elegir» en una carta candidata · antes de jugar, «Cancelar» o Esc"
+      },
+      {
+        "title": "Resuelve la carta que sale del mazo",
+        "body": "Después de jugar, se revela automáticamente la primera carta del mazo. También captura por mes; si tiene 2 coincidencias, debes elegir una. Tu turno termina cuando completas esa elección. No necesitas pulsar el mazo.",
+        "control": "Revisa «Carta revelada» → si hace falta, pulsa «Elegir» en la mesa"
+      },
+      {
+        "title": "Revisa tus capturas y espera",
+        "body": "Las cartas ganadas pasan a tus capturas. Los puntos base son: brillante 20, animal 10, cinta 5 y simple 0. Los bonos se calculan aparte; una combinación rival puede hacer que tus puntos bajen.",
+        "control": "Abre «Detalle de puntos y combinaciones» para revisar el cálculo"
+      }
+    ],
+    "example": {
+      "title": "Tu primer turno · hay 2 cartas del mismo mes",
+      "steps": [
+        "Imagina que tienes la grulla de enero (brillante), y en la mesa hay 2 simples de enero y 1 simple de febrero.",
+        "Pulsa la grulla de enero y luego «Elegir» en una de las simples de enero. Capturas ambas; la otra simple de enero queda en la mesa.",
+        "Si a continuación sale el ruiseñor de febrero (animal) del mazo, captura automáticamente la simple de febrero.",
+        "Capturas 4 cartas y pasa el turno al rival. Tu mano baja de 10 a 9 cartas y el mazo, de 20 a 19."
+      ],
+      "result": "En este ejemplo sumas 20 de la brillante + 10 del animal + 0 + 0 de las simples: 30 puntos base. Como todavía no hay combinaciones completas, tienes 30 puntos y el rival 0. El reparto y la carta revelada varían."
+    },
+    "mistakes": [
+      {
+        "question": "¿Debo unir brillantes con brillantes o dibujos iguales?",
+        "answer": "No. Basta con que coincida el mes, aunque sean brillante, animal, cinta o simple. No puedes capturar una carta de otro mes aunque sea del mismo tipo."
+      },
+      {
+        "question": "¿Por qué debo elegir en la mesa después de pulsar mi carta?",
+        "answer": "Porque hay exactamente 2 cartas de ese mes. Elige solo una para capturar. Si la carta revelada del mazo tiene 2 coincidencias, también debes elegir una."
+      },
+      {
+        "question": "¿Paso si ninguna carta coincide?",
+        "answer": "No pasas. Juegas una carta que queda en la mesa y después resuelves una del mazo. Esa carta revelada puede incluso capturar la que acabas de dejar."
+      },
+      {
+        "question": "¿Por qué mis puntos bajan o quedan negativos?",
+        "answer": "El total es puntos base + tus bonos × 2 − bonos rivales. Las combinaciones rivales también afectan tu puntuación. Las simples valen 0 y no dan un bono solo por acumular muchas."
+      },
+      {
+        "question": "¿Termina al vaciar mi mano o al llegar a 3 puntos?",
+        "answer": "No. Deben vaciarse ambas manos y el mazo. No hay Go, Stop, robo de cartas simples ni multiplicadores de Go-Stop. La puntuación de esta variante es distinta."
+      }
+    ],
+    "win": "La mano termina cuando ambas manos y el mazo están vacíos. Se comparan los puntos base + el doble de tus bonos − los bonos rivales. Gana el total más alto; si es igual, hay empate. En las reglas detalladas puedes ver las cartas y los bonos de cada combinación.",
+    "glossary": [
+      {
+        "term": "Mes",
+        "meaning": "Número del 1 al 12. Las parejas se forman con el mismo mes."
+      },
+      {
+        "term": "Mano / mesa / capturas",
+        "meaning": "Cartas que puedes jugar / cartas públicas del centro / cartas que ya ganaste y puntúan."
+      },
+      {
+        "term": "Mazo",
+        "meaning": "Cartas restantes: se revela automáticamente una por turno."
+      },
+      {
+        "term": "Yaku o combinación",
+        "meaning": "Bono por reunir todas las cartas de un conjunto. Por ejemplo, Godori da 50 por las tres aves de febrero, abril y agosto."
+      }
+    ]
+  },
+  "team": {
+    "ko": {
+      "goal": "같은 달의 바닥 패를 가져와 점수를 모으세요. 나와 맞은편 AI가 한 팀이며, 마지막에 두 팀원의 점수를 합쳐 높은 팀이 이기는 4인 2대2 자체 규칙이에요.",
+      "setup": [
+        "48장을 각자 5장씩, 중앙 바닥 8장, 더미 20장으로 나눠요. 내가 한 자리를 맡고 나머지 세 자리는 AI가 진행해요.",
+        "나와 맞은편 ‘AI 팀원’은 우리 팀, 양옆 두 자리는 상대 팀이에요. 팀원의 손패도 볼 수 없고, 획득패와 족보는 각자 따로 모아요.",
+        "짝은 그림의 종류가 아니라 월 숫자로 찾아요. 예를 들어 1월 광과 1월 피는 짝이고, 1월 광과 3월 광은 짝이 아니에요."
+      ],
+      "turnSteps": [
+        {
+          "title": "내 손패 한 장을 눌러요",
+          "body": "내 차례에 손패의 월 숫자와 바닥의 월 숫자를 비교하세요. 같은 달이 있는 손패는 표시돼요. 손패를 누르면 바로 내므로, 먼저 바닥을 살펴보세요. 같은 달 바닥 패가 정확히 2장일 때만 선택 단계에서 기다려요.",
+          "control": "아래 ‘내 손패’의 카드 클릭"
+        },
+        {
+          "title": "같은 달이 2장이면 하나를 고르세요",
+          "body": "바닥에 같은 달이 0장이면 낸 패가 바닥에 남고, 1장이면 그 패와 낸 패를 가져와요. 2장이면 둘 중 하나만 선택하고, 3장이면 세 장과 낸 패를 모두 가져와요.",
+          "control": "후보 카드의 ‘선택’ 클릭 · 내기 전에는 ‘취소’ 또는 Esc"
+        },
+        {
+          "title": "자동으로 뒤집힌 패도 처리해요",
+          "body": "손패 처리가 끝나면 더미 맨 위 한 장이 자동으로 공개돼요. 역시 같은 달을 가져오며, 후보가 2장이면 내가 하나를 더 골라야 해요. 이 선택을 마쳐야 내 차례가 끝나요. 더미를 직접 누르지는 않아요.",
+          "control": "‘뒤집은 패’ 확인 → 필요하면 바닥 후보의 ‘선택’ 클릭"
+        },
+        {
+          "title": "개인 점수와 팀 합계를 확인해요",
+          "body": "가져온 패는 내 획득패에 들어가요. 기본점수(광 20·열끗 10·띠 5·피 0)에 내 족보의 2배를 더하고 상대팀 두 사람의 족보 보너스를 빼요. 우리 팀 합계에는 나와 AI 팀원의 개인 점수를 더해요.",
+          "control": "내 획득패 점수와 위쪽 ‘우리 팀’ 합계 확인"
+        }
+      ],
+      "example": {
+        "title": "첫 차례 예시 · 같은 달 후보가 2장일 때",
+        "steps": [
+          "가령 내 손에 1월 학(광)이 있고, 바닥에 1월 피 2장과 2월 피 1장이 있다고 해요.",
+          "아래 1월 학을 누르고, 바닥의 1월 피 둘 중 하나에 표시된 ‘선택’을 누르세요. 학과 고른 피를 가져오고 다른 1월 피는 남아요.",
+          "이어서 더미에서 2월 꾀꼬리(열끗)가 나왔다면, 바닥의 2월 피와 함께 자동으로 가져와요.",
+          "총 4장을 내 획득패로 가져오고 다음 자리 AI로 차례가 넘어가요. 내 손패는 5장에서 4장, 더미는 20장에서 19장으로 줄어요."
+        ],
+        "result": "이 예시에서는 내 기본점수 30점, 다른 세 사람은 0점이에요. 아직 족보가 없어 우리 팀 합계는 30점, 상대 팀은 0점이에요. 실제 배분과 뒤집히는 패는 달라요."
+      },
+      "mistakes": [
+        {
+          "question": "광끼리나 같은 그림끼리 맞춰야 하나요?",
+          "answer": "아니요. 월 숫자가 같으면 광·열끗·띠·피 종류가 달라도 짝이에요. 다른 달 카드는 종류가 같아도 가져올 수 없어요."
+        },
+        {
+          "question": "손패를 눌렀는데 왜 바닥을 또 고르라고 하나요?",
+          "answer": "같은 달 후보가 정확히 2장이라서예요. 가져올 한 장만 고르면 됩니다. 자동으로 뒤집힌 패도 후보가 2장이면 같은 선택을 해야 해요."
+        },
+        {
+          "question": "맞는 달이 하나도 없으면 패스하나요?",
+          "answer": "패스하지 않아요. 손패 한 장을 내서 바닥에 남기고, 이어 더미 한 장을 공개해 처리해요. 그 뒤집힌 패로 방금 낸 패를 가져오는 것도 가능해요."
+        },
+        {
+          "question": "팀원의 카드와 합쳐서 족보를 만들 수 있나요?",
+          "answer": "아니요. 족보는 각자 혼자 완성해야 해요. 개인 점수는 기본점수 + 내 족보 × 2 − 상대팀 두 사람의 족보예요. 마지막에만 팀원 둘의 개인 점수를 합쳐요. 상대 족보 때문에 점수가 내려가거나 음수가 될 수 있어요."
+        },
+        {
+          "question": "손패를 다 내거나 3점이 되면 끝인가요?",
+          "answer": "아니요. 네 사람의 손패와 더미가 모두 빌 때 끝나요. 고·스톱, 피 빼앗기, 고스톱 배수는 없어요. 이 게임의 점수는 일반 고스톱 점수와 달라요."
+        }
+      ],
+      "win": "네 사람의 손패와 더미가 모두 비면 끝나요. 각자의 족보를 따로 정산한 뒤 나 + AI 팀원 점수와 상대 두 사람의 합계를 비교해요. 높은 팀이 이기고, 팀 합계가 같으면 무승부예요.",
+      "glossary": [
+        {
+          "term": "월",
+          "meaning": "1월부터 12월까지의 숫자. 같은 월끼리 짝을 맞춰요."
+        },
+        {
+          "term": "손패 / 바닥 패 / 획득패",
+          "meaning": "내가 낼 패 / 중앙의 공개 패 / 이미 가져와 점수를 얻은 패."
+        },
+        {
+          "term": "더미",
+          "meaning": "차례마다 맨 위 한 장을 자동으로 뒤집는 남은 패 묶음."
+        },
+        {
+          "term": "족보·조합 보너스",
+          "meaning": "정해진 패를 모두 모으면 얻는 추가 점수. 예: 2·4·8월 새 세 장의 고도리는 50점 보너스."
+        }
+      ]
+    },
+    "es": {
+      "goal": "Captura cartas del mismo mes para sumar puntos. Tú y la IA de enfrente forman equipo. Esta variante propia de cuatro jugadores, 2 contra 2, compara al final la suma de los dos compañeros.",
+      "setup": [
+        "Se reparten 5 cartas por persona, 8 en la mesa y 20 en el mazo: 48 en total. Tú controlas un asiento y las otras tres personas son IA.",
+        "La IA de enfrente, «Compañero IA», está en tu equipo. Los asientos de los lados son rivales. La mano de tu compañero también es privada; cada quien reúne sus propias capturas y combinaciones.",
+        "Busca parejas por el número del mes, no por el tipo de dibujo. Una brillante de enero combina con una simple de enero, pero no con una brillante de marzo."
+      ],
+      "turnSteps": [
+        {
+          "title": "Pulsa una carta de tu mano",
+          "body": "En tu turno, compara sus meses con los de la mesa. Las cartas con coincidencias están marcadas. Pulsar una carta la juega directamente: mira la mesa primero. Solo se espera una segunda selección si hay exactamente 2 cartas del mismo mes en la mesa.",
+          "control": "Pulsa una carta de «Tu mano», abajo"
+        },
+        {
+          "title": "Si hay 2 coincidencias, elige una",
+          "body": "Con 0 cartas del mismo mes, tu carta queda en la mesa. Con 1, capturas esa carta junto con la tuya. Con 2, eliges solo una. Con 3, te llevas las tres y la carta que jugaste.",
+          "control": "Pulsa «Elegir» en una carta candidata · antes de jugar, «Cancelar» o Esc"
+        },
+        {
+          "title": "Resuelve la carta que sale del mazo",
+          "body": "Después de jugar, se revela automáticamente la primera carta del mazo. También captura por mes; si tiene 2 coincidencias, debes elegir una. Tu turno termina cuando completas esa elección. No necesitas pulsar el mazo.",
+          "control": "Revisa «Carta revelada» → si hace falta, pulsa «Elegir» en la mesa"
+        },
+        {
+          "title": "Revisa tus puntos y el total del equipo",
+          "body": "Las cartas van a tus propias capturas. A tu base (brillante 20, animal 10, cinta 5, simple 0) se suma el doble de tus bonos y se restan los bonos de ambos rivales. El total de tu equipo suma tu puntuación y la de tu compañero IA.",
+          "control": "Revisa los puntos de tus capturas y «Tu equipo» arriba"
+        }
+      ],
+      "example": {
+        "title": "Tu primer turno · hay 2 cartas del mismo mes",
+        "steps": [
+          "Imagina que tienes la grulla de enero (brillante), y en la mesa hay 2 simples de enero y 1 simple de febrero.",
+          "Pulsa la grulla de enero y luego «Elegir» en una de las simples de enero. Capturas ambas; la otra simple de enero queda en la mesa.",
+          "Si a continuación sale el ruiseñor de febrero (animal) del mazo, captura automáticamente la simple de febrero.",
+          "Añades 4 cartas a tus propias capturas y sigue la IA del asiento siguiente. Tu mano baja de 5 a 4 cartas y el mazo, de 20 a 19."
+        ],
+        "result": "En este ejemplo tienes 30 puntos base y los otros tres asientos, 0. Sin combinaciones completas, tu equipo suma 30 y el rival 0. El reparto y la carta revelada varían."
+      },
+      "mistakes": [
+        {
+          "question": "¿Debo unir brillantes con brillantes o dibujos iguales?",
+          "answer": "No. Basta con que coincida el mes, aunque sean brillante, animal, cinta o simple. No puedes capturar una carta de otro mes aunque sea del mismo tipo."
+        },
+        {
+          "question": "¿Por qué debo elegir en la mesa después de pulsar mi carta?",
+          "answer": "Porque hay exactamente 2 cartas de ese mes. Elige solo una para capturar. Si la carta revelada del mazo tiene 2 coincidencias, también debes elegir una."
+        },
+        {
+          "question": "¿Paso si ninguna carta coincide?",
+          "answer": "No pasas. Juegas una carta que queda en la mesa y después resuelves una del mazo. Esa carta revelada puede incluso capturar la que acabas de dejar."
+        },
+        {
+          "question": "¿Puedo completar combinaciones con cartas de mi compañero?",
+          "answer": "No. Cada quien debe completarlas con sus propias capturas. Tu puntuación es base + tus bonos × 2 − los bonos de ambos rivales. Se suman los puntos individuales de los compañeros para el total del equipo. Los bonos rivales pueden bajar tus puntos o dejarlos negativos."
+        },
+        {
+          "question": "¿Termina al vaciar mi mano o al llegar a 3 puntos?",
+          "answer": "No. Deben vaciarse las cuatro manos y el mazo. No hay Go, Stop, robo de cartas simples ni multiplicadores de Go-Stop. La puntuación de esta variante es distinta."
+        }
+      ],
+      "win": "Termina cuando las cuatro manos y el mazo están vacíos. Se calculan las combinaciones individuales y se suman tus puntos y los de tu compañero IA. Gana el equipo con mayor total; si ambos totales son iguales, hay empate.",
+      "glossary": [
+        {
+          "term": "Mes",
+          "meaning": "Número del 1 al 12. Las parejas se forman con el mismo mes."
+        },
+        {
+          "term": "Mano / mesa / capturas",
+          "meaning": "Cartas que puedes jugar / cartas públicas del centro / cartas que ya ganaste y puntúan."
+        },
+        {
+          "term": "Mazo",
+          "meaning": "Cartas restantes: se revela automáticamente una por turno."
+        },
+        {
+          "term": "Yaku o combinación",
+          "meaning": "Bono por reunir todas las cartas de un conjunto. Por ejemplo, Godori da 50 por las tres aves de febrero, abril y agosto."
+        }
+      ]
+    }
+  }
+}

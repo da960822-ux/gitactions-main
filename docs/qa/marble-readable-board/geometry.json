@@ -1,0 +1,3074 @@
+[
+  {
+    "filename": "2p-start-1280x800.png",
+    "board": {
+      "x": 12,
+      "y": 70,
+      "width": 1256,
+      "height": 640
+    },
+    "pawnCount": 2,
+    "pawns": [
+      {
+        "seat": "p1",
+        "rect": {
+          "x": 981,
+          "y": 538,
+          "width": 50,
+          "height": 60
+        }
+      },
+      {
+        "seat": "p2",
+        "rect": {
+          "x": 1035,
+          "y": 538,
+          "width": 50,
+          "height": 60
+        }
+      }
+    ],
+    "buildings": [],
+    "clippedNames": [],
+    "smallNames": [],
+    "occupiedTile": {
+      "x": 1067,
+      "y": 607,
+      "width": 198,
+      "height": 100
+    },
+    "stage": {
+      "x": 445,
+      "y": 310,
+      "width": 390,
+      "height": 160
+    },
+    "bodyHeight": 800,
+    "errors": []
+  },
+  {
+    "filename": "2p-start-1440x900.png",
+    "board": {
+      "x": 12,
+      "y": 70,
+      "width": 1416,
+      "height": 700
+    },
+    "pawnCount": 2,
+    "pawns": [
+      {
+        "seat": "p1",
+        "rect": {
+          "x": 1116,
+          "y": 598,
+          "width": 50,
+          "height": 60
+        }
+      },
+      {
+        "seat": "p2",
+        "rect": {
+          "x": 1170,
+          "y": 598,
+          "width": 50,
+          "height": 60
+        }
+      }
+    ],
+    "buildings": [],
+    "clippedNames": [],
+    "smallNames": [],
+    "occupiedTile": {
+      "x": 1202,
+      "y": 667,
+      "width": 223,
+      "height": 100
+    },
+    "stage": {
+      "x": 525,
+      "y": 340,
+      "width": 390,
+      "height": 160
+    },
+    "bodyHeight": 900,
+    "errors": []
+  },
+  {
+    "filename": "2p-start-1847x872.png",
+    "board": {
+      "x": 12,
+      "y": 70,
+      "width": 1823,
+      "height": 700
+    },
+    "pawnCount": 2,
+    "pawns": [
+      {
+        "seat": "p1",
+        "rect": {
+          "x": 1476,
+          "y": 598,
+          "width": 50,
+          "height": 60
+        }
+      },
+      {
+        "seat": "p2",
+        "rect": {
+          "x": 1530,
+          "y": 598,
+          "width": 50,
+          "height": 60
+        }
+      }
+    ],
+    "buildings": [],
+    "clippedNames": [],
+    "smallNames": [],
+    "occupiedTile": {
+      "x": 1562,
+      "y": 667,
+      "width": 270,
+      "height": 100
+    },
+    "stage": {
+      "x": 728,
+      "y": 340,
+      "width": 390,
+      "height": 160
+    },
+    "bodyHeight": 872,
+    "errors": []
+  },
+  {
+    "filename": "2p-built-1280x800.png",
+    "board": {
+      "x": 12,
+      "y": 70,
+      "width": 1256,
+      "height": 640
+    },
+    "pawnCount": 2,
+    "pawns": [
+      {
+        "seat": "p1",
+        "rect": {
+          "x": 1007,
+          "y": 538,
+          "width": 50,
+          "height": 60
+        }
+      },
+      {
+        "seat": "p2",
+        "rect": {
+          "x": 751,
+          "y": 538,
+          "width": 50,
+          "height": 60
+        }
+      }
+    ],
+    "buildings": [
+      {
+        "level": "2",
+        "rect": {
+          "x": 984,
+          "y": 636,
+          "width": 78,
+          "height": 54
+        }
+      },
+      {
+        "level": "1",
+        "rect": {
+          "x": 814,
+          "y": 636,
+          "width": 78,
+          "height": 54
+        }
+      },
+      {
+        "level": "2",
+        "rect": {
+          "x": 729,
+          "y": 636,
+          "width": 78,
+          "height": 54
+        }
+      },
+      {
+        "level": "3",
+        "rect": {
+          "x": 644,
+          "y": 636,
+          "width": 78,
+          "height": 54
+        }
+      },
+      {
+        "level": "2",
+        "rect": {
+          "x": 93,
+          "y": 339,
+          "width": 115,
+          "height": 47
+        }
+      }
+    ],
+    "clippedNames": [],
+    "smallNames": [],
+    "occupiedTile": {
+      "x": 981,
+      "y": 607,
+      "width": 84,
+      "height": 100
+    },
+    "stage": {
+      "x": 408,
+      "y": 317,
+      "width": 465,
+      "height": 147
+    },
+    "bodyHeight": 800,
+    "errors": [],
+    "selectedPanel": {
+      "x": 380,
+      "y": 32,
+      "width": 520,
+      "height": 736
+    }
+  },
+  {
+    "filename": "2p-built-1440x900.png",
+    "board": {
+      "x": 12,
+      "y": 70,
+      "width": 1416,
+      "height": 700
+    },
+    "pawnCount": 2,
+    "pawns": [
+      {
+        "seat": "p1",
+        "rect": {
+          "x": 1142,
+          "y": 598,
+          "width": 50,
+          "height": 60
+        }
+      },
+      {
+        "seat": "p2",
+        "rect": {
+          "x": 853,
+          "y": 598,
+          "width": 50,
+          "height": 60
+        }
+      }
+    ],
+    "buildings": [
+      {
+        "level": "2",
+        "rect": {
+          "x": 1109,
+          "y": 696,
+          "width": 89,
+          "height": 54
+        }
+      },
+      {
+        "level": "1",
+        "rect": {
+          "x": 916,
+          "y": 696,
+          "width": 89,
+          "height": 54
+        }
+      },
+      {
+        "level": "2",
+        "rect": {
+          "x": 820,
+          "y": 696,
+          "width": 89,
+          "height": 54
+        }
+      },
+      {
+        "level": "3",
+        "rect": {
+          "x": 723,
+          "y": 696,
+          "width": 89,
+          "height": 54
+        }
+      },
+      {
+        "level": "2",
+        "rect": {
+          "x": 104,
+          "y": 362,
+          "width": 130,
+          "height": 55
+        }
+      }
+    ],
+    "clippedNames": [],
+    "smallNames": [],
+    "occupiedTile": {
+      "x": 1106,
+      "y": 667,
+      "width": 95,
+      "height": 100
+    },
+    "stage": {
+      "x": 487,
+      "y": 347,
+      "width": 465,
+      "height": 147
+    },
+    "bodyHeight": 900,
+    "errors": [],
+    "selectedPanel": {
+      "x": 460,
+      "y": 32,
+      "width": 520,
+      "height": 836
+    }
+  },
+  {
+    "filename": "2p-built-1847x872.png",
+    "board": {
+      "x": 12,
+      "y": 70,
+      "width": 1823,
+      "height": 700
+    },
+    "pawnCount": 2,
+    "pawns": [
+      {
+        "seat": "p1",
+        "rect": {
+          "x": 1502,
+          "y": 598,
+          "width": 50,
+          "height": 60
+        }
+      },
+      {
+        "seat": "p2",
+        "rect": {
+          "x": 1119,
+          "y": 598,
+          "width": 50,
+          "height": 60
+        }
+      }
+    ],
+    "buildings": [
+      {
+        "level": "2",
+        "rect": {
+          "x": 1437,
+          "y": 696,
+          "width": 121,
+          "height": 54
+        }
+      },
+      {
+        "level": "1",
+        "rect": {
+          "x": 1182,
+          "y": 696,
+          "width": 121,
+          "height": 54
+        }
+      },
+      {
+        "level": "2",
+        "rect": {
+          "x": 1055,
+          "y": 696,
+          "width": 121,
+          "height": 54
+        }
+      },
+      {
+        "level": "3",
+        "rect": {
+          "x": 927,
+          "y": 696,
+          "width": 121,
+          "height": 54
+        }
+      },
+      {
+        "level": "2",
+        "rect": {
+          "x": 140,
+          "y": 362,
+          "width": 140,
+          "height": 55
+        }
+      }
+    ],
+    "clippedNames": [],
+    "smallNames": [],
+    "occupiedTile": {
+      "x": 1434,
+      "y": 667,
+      "width": 127,
+      "height": 100
+    },
+    "stage": {
+      "x": 691,
+      "y": 347,
+      "width": 465,
+      "height": 147
+    },
+    "bodyHeight": 872,
+    "errors": [],
+    "selectedPanel": {
+      "x": 664,
+      "y": 32,
+      "width": 520,
+      "height": 808
+    }
+  },
+  {
+    "filename": "2p-landmark-1280x800.png",
+    "board": {
+      "x": 12,
+      "y": 70,
+      "width": 1256,
+      "height": 640
+    },
+    "pawnCount": 2,
+    "pawns": [
+      {
+        "seat": "p1",
+        "rect": {
+          "x": 981,
+          "y": 538,
+          "width": 50,
+          "height": 60
+        }
+      },
+      {
+        "seat": "p2",
+        "rect": {
+          "x": 1035,
+          "y": 538,
+          "width": 50,
+          "height": 60
+        }
+      }
+    ],
+    "buildings": [
+      {
+        "level": "2",
+        "rect": {
+          "x": 729,
+          "y": 636,
+          "width": 78,
+          "height": 54
+        }
+      },
+      {
+        "level": "2",
+        "rect": {
+          "x": 644,
+          "y": 636,
+          "width": 78,
+          "height": 54
+        }
+      }
+    ],
+    "clippedNames": [],
+    "smallNames": [],
+    "occupiedTile": {
+      "x": 1067,
+      "y": 607,
+      "width": 198,
+      "height": 100
+    },
+    "stage": {
+      "x": 301,
+      "y": 216,
+      "width": 678,
+      "height": 348
+    },
+    "bodyHeight": 800,
+    "errors": []
+  },
+  {
+    "filename": "2p-landmark-1440x900.png",
+    "board": {
+      "x": 12,
+      "y": 70,
+      "width": 1416,
+      "height": 700
+    },
+    "pawnCount": 2,
+    "pawns": [
+      {
+        "seat": "p1",
+        "rect": {
+          "x": 1116,
+          "y": 598,
+          "width": 50,
+          "height": 60
+        }
+      },
+      {
+        "seat": "p2",
+        "rect": {
+          "x": 1170,
+          "y": 598,
+          "width": 50,
+          "height": 60
+        }
+      }
+    ],
+    "buildings": [
+      {
+        "level": "2",
+        "rect": {
+          "x": 820,
+          "y": 696,
+          "width": 89,
+          "height": 54
+        }
+      },
+      {
+        "level": "2",
+        "rect": {
+          "x": 723,
+          "y": 696,
+          "width": 89,
+          "height": 54
+        }
+      }
+    ],
+    "clippedNames": [],
+    "smallNames": [],
+    "occupiedTile": {
+      "x": 1202,
+      "y": 667,
+      "width": 223,
+      "height": 100
+    },
+    "stage": {
+      "x": 340,
+      "y": 228,
+      "width": 760,
+      "height": 383
+    },
+    "bodyHeight": 900,
+    "errors": []
+  },
+  {
+    "filename": "2p-landmark-1847x872.png",
+    "board": {
+      "x": 12,
+      "y": 70,
+      "width": 1823,
+      "height": 700
+    },
+    "pawnCount": 2,
+    "pawns": [
+      {
+        "seat": "p1",
+        "rect": {
+          "x": 1476,
+          "y": 598,
+          "width": 50,
+          "height": 60
+        }
+      },
+      {
+        "seat": "p2",
+        "rect": {
+          "x": 1530,
+          "y": 598,
+          "width": 50,
+          "height": 60
+        }
+      }
+    ],
+    "buildings": [
+      {
+        "level": "2",
+        "rect": {
+          "x": 1055,
+          "y": 696,
+          "width": 121,
+          "height": 54
+        }
+      },
+      {
+        "level": "2",
+        "rect": {
+          "x": 927,
+          "y": 696,
+          "width": 121,
+          "height": 54
+        }
+      }
+    ],
+    "clippedNames": [],
+    "smallNames": [],
+    "occupiedTile": {
+      "x": 1562,
+      "y": 667,
+      "width": 270,
+      "height": 100
+    },
+    "stage": {
+      "x": 543,
+      "y": 226,
+      "width": 760,
+      "height": 388
+    },
+    "bodyHeight": 872,
+    "errors": []
+  },
+  {
+    "filename": "2p-dense-1280x800.png",
+    "board": {
+      "x": 12,
+      "y": 70,
+      "width": 1256,
+      "height": 640
+    },
+    "pawnCount": 2,
+    "pawns": [
+      {
+        "seat": "p1",
+        "rect": {
+          "x": 612,
+          "y": 538,
+          "width": 50,
+          "height": 60
+        }
+      },
+      {
+        "seat": "p2",
+        "rect": {
+          "x": 666,
+          "y": 538,
+          "width": 50,
+          "height": 60
+        }
+      }
+    ],
+    "buildings": [
+      {
+        "level": "2",
+        "rect": {
+          "x": 984,
+          "y": 636,
+          "width": 78,
+          "height": 54
+        }
+      },
+      {
+        "level": "1",
+        "rect": {
+          "x": 814,
+          "y": 636,
+          "width": 78,
+          "height": 54
+        }
+      },
+      {
+        "level": "2",
+        "rect": {
+          "x": 729,
+          "y": 636,
+          "width": 78,
+          "height": 54
+        }
+      },
+      {
+        "level": "3",
+        "rect": {
+          "x": 644,
+          "y": 636,
+          "width": 78,
+          "height": 54
+        }
+      },
+      {
+        "level": "3",
+        "rect": {
+          "x": 388,
+          "y": 636,
+          "width": 78,
+          "height": 54
+        }
+      },
+      {
+        "level": "1",
+        "rect": {
+          "x": 303,
+          "y": 636,
+          "width": 78,
+          "height": 54
+        }
+      },
+      {
+        "level": "3",
+        "rect": {
+          "x": 18,
+          "y": 636,
+          "width": 192,
+          "height": 54
+        }
+      },
+      {
+        "level": "2",
+        "rect": {
+          "x": 93,
+          "y": 502,
+          "width": 115,
+          "height": 47
+        }
+      },
+      {
+        "level": "1",
+        "rect": {
+          "x": 93,
+          "y": 394,
+          "width": 115,
+          "height": 47
+        }
+      },
+      {
+        "level": "2",
+        "rect": {
+          "x": 93,
+          "y": 339,
+          "width": 115,
+          "height": 47
+        }
+      },
+      {
+        "level": "3",
+        "rect": {
+          "x": 93,
+          "y": 285,
+          "width": 115,
+          "height": 47
+        }
+      },
+      {
+        "level": "2",
+        "rect": {
+          "x": 93,
+          "y": 177,
+          "width": 115,
+          "height": 47
+        }
+      },
+      {
+        "level": "1",
+        "rect": {
+          "x": 217,
+          "y": 102,
+          "width": 78,
+          "height": 54
+        }
+      },
+      {
+        "level": "2",
+        "rect": {
+          "x": 303,
+          "y": 102,
+          "width": 78,
+          "height": 54
+        }
+      },
+      {
+        "level": "1",
+        "rect": {
+          "x": 473,
+          "y": 102,
+          "width": 78,
+          "height": 54
+        }
+      },
+      {
+        "level": "2",
+        "rect": {
+          "x": 558,
+          "y": 102,
+          "width": 78,
+          "height": 54
+        }
+      },
+      {
+        "level": "2",
+        "rect": {
+          "x": 814,
+          "y": 102,
+          "width": 78,
+          "height": 54
+        }
+      },
+      {
+        "level": "3",
+        "rect": {
+          "x": 899,
+          "y": 102,
+          "width": 78,
+          "height": 54
+        }
+      },
+      {
+        "level": "2",
+        "rect": {
+          "x": 1070,
+          "y": 102,
+          "width": 192,
+          "height": 54
+        }
+      },
+      {
+        "level": "3",
+        "rect": {
+          "x": 1072,
+          "y": 177,
+          "width": 115,
+          "height": 47
+        }
+      },
+      {
+        "level": "1",
+        "rect": {
+          "x": 1072,
+          "y": 231,
+          "width": 115,
+          "height": 47
+        }
+      },
+      {
+        "level": "3",
+        "rect": {
+          "x": 1072,
+          "y": 339,
+          "width": 115,
+          "height": 47
+        }
+      },
+      {
+        "level": "1",
+        "rect": {
+          "x": 1072,
+          "y": 394,
+          "width": 115,
+          "height": 47
+        }
+      },
+      {
+        "level": "3",
+        "rect": {
+          "x": 1072,
+          "y": 502,
+          "width": 115,
+          "height": 47
+        }
+      }
+    ],
+    "clippedNames": [],
+    "smallNames": [],
+    "occupiedTile": {
+      "x": 641,
+      "y": 607,
+      "width": 84,
+      "height": 100
+    },
+    "stage": {
+      "x": 408,
+      "y": 317,
+      "width": 465,
+      "height": 147
+    },
+    "bodyHeight": 800,
+    "errors": []
+  },
+  {
+    "filename": "2p-dense-1440x900.png",
+    "board": {
+      "x": 12,
+      "y": 70,
+      "width": 1416,
+      "height": 700
+    },
+    "pawnCount": 2,
+    "pawns": [
+      {
+        "seat": "p1",
+        "rect": {
+          "x": 703,
+          "y": 598,
+          "width": 50,
+          "height": 60
+        }
+      },
+      {
+        "seat": "p2",
+        "rect": {
+          "x": 757,
+          "y": 598,
+          "width": 50,
+          "height": 60
+        }
+      }
+    ],
+    "buildings": [
+      {
+        "level": "2",
+        "rect": {
+          "x": 1109,
+          "y": 696,
+          "width": 89,
+          "height": 54
+        }
+      },
+      {
+        "level": "1",
+        "rect": {
+          "x": 916,
+          "y": 696,
+          "width": 89,
+          "height": 54
+        }
+      },
+      {
+        "level": "2",
+        "rect": {
+          "x": 820,
+          "y": 696,
+          "width": 89,
+          "height": 54
+        }
+      },
+      {
+        "level": "3",
+        "rect": {
+          "x": 723,
+          "y": 696,
+          "width": 89,
+          "height": 54
+        }
+      },
+      {
+        "level": "3",
+        "rect": {
+          "x": 435,
+          "y": 696,
+          "width": 89,
+          "height": 54
+        }
+      },
+      {
+        "level": "1",
+        "rect": {
+          "x": 338,
+          "y": 696,
+          "width": 89,
+          "height": 54
+        }
+      },
+      {
+        "level": "3",
+        "rect": {
+          "x": 18,
+          "y": 696,
+          "width": 217,
+          "height": 54
+        }
+      },
+      {
+        "level": "2",
+        "rect": {
+          "x": 104,
+          "y": 547,
+          "width": 130,
+          "height": 55
+        }
+      },
+      {
+        "level": "1",
+        "rect": {
+          "x": 104,
+          "y": 424,
+          "width": 130,
+          "height": 55
+        }
+      },
+      {
+        "level": "2",
+        "rect": {
+          "x": 104,
+          "y": 362,
+          "width": 130,
+          "height": 55
+        }
+      },
+      {
+        "level": "3",
+        "rect": {
+          "x": 104,
+          "y": 300,
+          "width": 130,
+          "height": 55
+        }
+      },
+      {
+        "level": "2",
+        "rect": {
+          "x": 104,
+          "y": 177,
+          "width": 130,
+          "height": 55
+        }
+      },
+      {
+        "level": "1",
+        "rect": {
+          "x": 242,
+          "y": 102,
+          "width": 89,
+          "height": 54
+        }
+      },
+      {
+        "level": "2",
+        "rect": {
+          "x": 338,
+          "y": 102,
+          "width": 89,
+          "height": 54
+        }
+      },
+      {
+        "level": "1",
+        "rect": {
+          "x": 531,
+          "y": 102,
+          "width": 89,
+          "height": 54
+        }
+      },
+      {
+        "level": "2",
+        "rect": {
+          "x": 627,
+          "y": 102,
+          "width": 89,
+          "height": 54
+        }
+      },
+      {
+        "level": "2",
+        "rect": {
+          "x": 916,
+          "y": 102,
+          "width": 89,
+          "height": 54
+        }
+      },
+      {
+        "level": "3",
+        "rect": {
+          "x": 1012,
+          "y": 102,
+          "width": 89,
+          "height": 54
+        }
+      },
+      {
+        "level": "2",
+        "rect": {
+          "x": 1205,
+          "y": 102,
+          "width": 217,
+          "height": 54
+        }
+      },
+      {
+        "level": "3",
+        "rect": {
+          "x": 1207,
+          "y": 177,
+          "width": 130,
+          "height": 55
+        }
+      },
+      {
+        "level": "1",
+        "rect": {
+          "x": 1207,
+          "y": 239,
+          "width": 130,
+          "height": 55
+        }
+      },
+      {
+        "level": "3",
+        "rect": {
+          "x": 1207,
+          "y": 362,
+          "width": 130,
+          "height": 55
+        }
+      },
+      {
+        "level": "1",
+        "rect": {
+          "x": 1207,
+          "y": 424,
+          "width": 130,
+          "height": 55
+        }
+      },
+      {
+        "level": "3",
+        "rect": {
+          "x": 1207,
+          "y": 547,
+          "width": 130,
+          "height": 55
+        }
+      }
+    ],
+    "clippedNames": [],
+    "smallNames": [],
+    "occupiedTile": {
+      "x": 720,
+      "y": 667,
+      "width": 95,
+      "height": 100
+    },
+    "stage": {
+      "x": 487,
+      "y": 347,
+      "width": 465,
+      "height": 147
+    },
+    "bodyHeight": 900,
+    "errors": []
+  },
+  {
+    "filename": "2p-dense-1847x872.png",
+    "board": {
+      "x": 12,
+      "y": 70,
+      "width": 1823,
+      "height": 700
+    },
+    "pawnCount": 2,
+    "pawns": [
+      {
+        "seat": "p1",
+        "rect": {
+          "x": 938,
+          "y": 598,
+          "width": 50,
+          "height": 60
+        }
+      },
+      {
+        "seat": "p2",
+        "rect": {
+          "x": 992,
+          "y": 598,
+          "width": 50,
+          "height": 60
+        }
+      }
+    ],
+    "buildings": [
+      {
+        "level": "2",
+        "rect": {
+          "x": 1437,
+          "y": 696,
+          "width": 121,
+          "height": 54
+        }
+      },
+      {
+        "level": "1",
+        "rect": {
+          "x": 1182,
+          "y": 696,
+          "width": 121,
+          "height": 54
+        }
+      },
+      {
+        "level": "2",
+        "rect": {
+          "x": 1055,
+          "y": 696,
+          "width": 121,
+          "height": 54
+        }
+      },
+      {
+        "level": "3",
+        "rect": {
+          "x": 927,
+          "y": 696,
+          "width": 121,
+          "height": 54
+        }
+      },
+      {
+        "level": "3",
+        "rect": {
+          "x": 544,
+          "y": 696,
+          "width": 121,
+          "height": 54
+        }
+      },
+      {
+        "level": "1",
+        "rect": {
+          "x": 417,
+          "y": 696,
+          "width": 121,
+          "height": 54
+        }
+      },
+      {
+        "level": "3",
+        "rect": {
+          "x": 18,
+          "y": 696,
+          "width": 264,
+          "height": 54
+        }
+      },
+      {
+        "level": "2",
+        "rect": {
+          "x": 140,
+          "y": 547,
+          "width": 140,
+          "height": 55
+        }
+      },
+      {
+        "level": "1",
+        "rect": {
+          "x": 140,
+          "y": 424,
+          "width": 140,
+          "height": 55
+        }
+      },
+      {
+        "level": "2",
+        "rect": {
+          "x": 140,
+          "y": 362,
+          "width": 140,
+          "height": 55
+        }
+      },
+      {
+        "level": "3",
+        "rect": {
+          "x": 140,
+          "y": 300,
+          "width": 140,
+          "height": 55
+        }
+      },
+      {
+        "level": "2",
+        "rect": {
+          "x": 140,
+          "y": 177,
+          "width": 140,
+          "height": 55
+        }
+      },
+      {
+        "level": "1",
+        "rect": {
+          "x": 289,
+          "y": 102,
+          "width": 121,
+          "height": 54
+        }
+      },
+      {
+        "level": "2",
+        "rect": {
+          "x": 417,
+          "y": 102,
+          "width": 121,
+          "height": 54
+        }
+      },
+      {
+        "level": "1",
+        "rect": {
+          "x": 672,
+          "y": 102,
+          "width": 121,
+          "height": 54
+        }
+      },
+      {
+        "level": "2",
+        "rect": {
+          "x": 799,
+          "y": 102,
+          "width": 121,
+          "height": 54
+        }
+      },
+      {
+        "level": "2",
+        "rect": {
+          "x": 1182,
+          "y": 102,
+          "width": 121,
+          "height": 54
+        }
+      },
+      {
+        "level": "3",
+        "rect": {
+          "x": 1310,
+          "y": 102,
+          "width": 121,
+          "height": 54
+        }
+      },
+      {
+        "level": "2",
+        "rect": {
+          "x": 1565,
+          "y": 102,
+          "width": 264,
+          "height": 54
+        }
+      },
+      {
+        "level": "3",
+        "rect": {
+          "x": 1567,
+          "y": 177,
+          "width": 140,
+          "height": 55
+        }
+      },
+      {
+        "level": "1",
+        "rect": {
+          "x": 1567,
+          "y": 239,
+          "width": 140,
+          "height": 55
+        }
+      },
+      {
+        "level": "3",
+        "rect": {
+          "x": 1567,
+          "y": 362,
+          "width": 140,
+          "height": 55
+        }
+      },
+      {
+        "level": "1",
+        "rect": {
+          "x": 1567,
+          "y": 424,
+          "width": 140,
+          "height": 55
+        }
+      },
+      {
+        "level": "3",
+        "rect": {
+          "x": 1567,
+          "y": 547,
+          "width": 140,
+          "height": 55
+        }
+      }
+    ],
+    "clippedNames": [],
+    "smallNames": [],
+    "occupiedTile": {
+      "x": 924,
+      "y": 667,
+      "width": 127,
+      "height": 100
+    },
+    "stage": {
+      "x": 691,
+      "y": 347,
+      "width": 465,
+      "height": 147
+    },
+    "bodyHeight": 872,
+    "errors": []
+  },
+  {
+    "filename": "4p-start-1280x800.png",
+    "board": {
+      "x": 16,
+      "y": 119,
+      "width": 1248,
+      "height": 680
+    },
+    "pawnCount": 4,
+    "pawns": [
+      {
+        "seat": "p1",
+        "rect": {
+          "x": 873,
+          "y": 627,
+          "width": 50,
+          "height": 60
+        }
+      },
+      {
+        "seat": "p2",
+        "rect": {
+          "x": 926,
+          "y": 627,
+          "width": 50,
+          "height": 60
+        }
+      },
+      {
+        "seat": "p3",
+        "rect": {
+          "x": 979,
+          "y": 627,
+          "width": 50,
+          "height": 60
+        }
+      },
+      {
+        "seat": "p4",
+        "rect": {
+          "x": 1032,
+          "y": 627,
+          "width": 50,
+          "height": 60
+        }
+      }
+    ],
+    "buildings": [],
+    "clippedNames": [],
+    "smallNames": [],
+    "occupiedTile": {
+      "x": 1063,
+      "y": 696,
+      "width": 198,
+      "height": 100
+    },
+    "stage": {
+      "x": 445,
+      "y": 381,
+      "width": 390,
+      "height": 155
+    },
+    "bodyHeight": 800,
+    "errors": []
+  },
+  {
+    "filename": "4p-start-1440x900.png",
+    "board": {
+      "x": 16,
+      "y": 119,
+      "width": 1408,
+      "height": 740
+    },
+    "pawnCount": 4,
+    "pawns": [
+      {
+        "seat": "p1",
+        "rect": {
+          "x": 1008,
+          "y": 687,
+          "width": 50,
+          "height": 60
+        }
+      },
+      {
+        "seat": "p2",
+        "rect": {
+          "x": 1061,
+          "y": 687,
+          "width": 50,
+          "height": 60
+        }
+      },
+      {
+        "seat": "p3",
+        "rect": {
+          "x": 1114,
+          "y": 687,
+          "width": 50,
+          "height": 60
+        }
+      },
+      {
+        "seat": "p4",
+        "rect": {
+          "x": 1167,
+          "y": 687,
+          "width": 50,
+          "height": 60
+        }
+      }
+    ],
+    "buildings": [],
+    "clippedNames": [],
+    "smallNames": [],
+    "occupiedTile": {
+      "x": 1198,
+      "y": 756,
+      "width": 223,
+      "height": 100
+    },
+    "stage": {
+      "x": 525,
+      "y": 411,
+      "width": 390,
+      "height": 155
+    },
+    "bodyHeight": 900,
+    "errors": []
+  },
+  {
+    "filename": "4p-start-1847x872.png",
+    "board": {
+      "x": 16,
+      "y": 119,
+      "width": 1815,
+      "height": 740
+    },
+    "pawnCount": 4,
+    "pawns": [
+      {
+        "seat": "p1",
+        "rect": {
+          "x": 1368,
+          "y": 687,
+          "width": 50,
+          "height": 60
+        }
+      },
+      {
+        "seat": "p2",
+        "rect": {
+          "x": 1421,
+          "y": 687,
+          "width": 50,
+          "height": 60
+        }
+      },
+      {
+        "seat": "p3",
+        "rect": {
+          "x": 1474,
+          "y": 687,
+          "width": 50,
+          "height": 60
+        }
+      },
+      {
+        "seat": "p4",
+        "rect": {
+          "x": 1527,
+          "y": 687,
+          "width": 50,
+          "height": 60
+        }
+      }
+    ],
+    "buildings": [],
+    "clippedNames": [],
+    "smallNames": [],
+    "occupiedTile": {
+      "x": 1558,
+      "y": 756,
+      "width": 270,
+      "height": 100
+    },
+    "stage": {
+      "x": 729,
+      "y": 411,
+      "width": 390,
+      "height": 155
+    },
+    "bodyHeight": 872,
+    "errors": []
+  },
+  {
+    "filename": "4p-built-1280x800.png",
+    "board": {
+      "x": 16,
+      "y": 119,
+      "width": 1248,
+      "height": 680
+    },
+    "pawnCount": 4,
+    "pawns": [
+      {
+        "seat": "p1",
+        "rect": {
+          "x": 951,
+          "y": 627,
+          "width": 50,
+          "height": 60
+        }
+      },
+      {
+        "seat": "p3",
+        "rect": {
+          "x": 1004,
+          "y": 627,
+          "width": 50,
+          "height": 60
+        }
+      },
+      {
+        "seat": "p2",
+        "rect": {
+          "x": 750,
+          "y": 627,
+          "width": 50,
+          "height": 60
+        }
+      },
+      {
+        "seat": "p4",
+        "rect": {
+          "x": 666,
+          "y": 627,
+          "width": 50,
+          "height": 60
+        }
+      }
+    ],
+    "buildings": [
+      {
+        "level": "2",
+        "rect": {
+          "x": 981,
+          "y": 725,
+          "width": 77,
+          "height": 54
+        }
+      },
+      {
+        "level": "1",
+        "rect": {
+          "x": 812,
+          "y": 725,
+          "width": 77,
+          "height": 54
+        }
+      },
+      {
+        "level": "2",
+        "rect": {
+          "x": 728,
+          "y": 725,
+          "width": 77,
+          "height": 54
+        }
+      },
+      {
+        "level": "3",
+        "rect": {
+          "x": 644,
+          "y": 725,
+          "width": 77,
+          "height": 54
+        }
+      },
+      {
+        "level": "2",
+        "rect": {
+          "x": 97,
+          "y": 403,
+          "width": 115,
+          "height": 52
+        }
+      }
+    ],
+    "clippedNames": [],
+    "smallNames": [],
+    "occupiedTile": {
+      "x": 978,
+      "y": 696,
+      "width": 83,
+      "height": 100
+    },
+    "stage": {
+      "x": 408,
+      "y": 371,
+      "width": 465,
+      "height": 177
+    },
+    "bodyHeight": 800,
+    "errors": [],
+    "selectedPanel": {
+      "x": 380,
+      "y": 151,
+      "width": 520,
+      "height": 499
+    }
+  },
+  {
+    "filename": "4p-built-1440x900.png",
+    "board": {
+      "x": 16,
+      "y": 119,
+      "width": 1408,
+      "height": 740
+    },
+    "pawnCount": 4,
+    "pawns": [
+      {
+        "seat": "p1",
+        "rect": {
+          "x": 1086,
+          "y": 687,
+          "width": 50,
+          "height": 60
+        }
+      },
+      {
+        "seat": "p3",
+        "rect": {
+          "x": 1139,
+          "y": 687,
+          "width": 50,
+          "height": 60
+        }
+      },
+      {
+        "seat": "p2",
+        "rect": {
+          "x": 852,
+          "y": 687,
+          "width": 50,
+          "height": 60
+        }
+      },
+      {
+        "seat": "p4",
+        "rect": {
+          "x": 757,
+          "y": 687,
+          "width": 50,
+          "height": 60
+        }
+      }
+    ],
+    "buildings": [
+      {
+        "level": "2",
+        "rect": {
+          "x": 1105,
+          "y": 785,
+          "width": 88,
+          "height": 54
+        }
+      },
+      {
+        "level": "1",
+        "rect": {
+          "x": 914,
+          "y": 785,
+          "width": 88,
+          "height": 54
+        }
+      },
+      {
+        "level": "2",
+        "rect": {
+          "x": 819,
+          "y": 785,
+          "width": 88,
+          "height": 54
+        }
+      },
+      {
+        "level": "3",
+        "rect": {
+          "x": 724,
+          "y": 785,
+          "width": 88,
+          "height": 54
+        }
+      },
+      {
+        "level": "2",
+        "rect": {
+          "x": 108,
+          "y": 426,
+          "width": 130,
+          "height": 60
+        }
+      }
+    ],
+    "clippedNames": [],
+    "smallNames": [],
+    "occupiedTile": {
+      "x": 1102,
+      "y": 756,
+      "width": 94,
+      "height": 100
+    },
+    "stage": {
+      "x": 488,
+      "y": 401,
+      "width": 465,
+      "height": 177
+    },
+    "bodyHeight": 900,
+    "errors": [],
+    "selectedPanel": {
+      "x": 460,
+      "y": 201,
+      "width": 520,
+      "height": 499
+    }
+  },
+  {
+    "filename": "4p-built-1847x872.png",
+    "board": {
+      "x": 16,
+      "y": 119,
+      "width": 1815,
+      "height": 740
+    },
+    "pawnCount": 4,
+    "pawns": [
+      {
+        "seat": "p1",
+        "rect": {
+          "x": 1446,
+          "y": 687,
+          "width": 50,
+          "height": 60
+        }
+      },
+      {
+        "seat": "p3",
+        "rect": {
+          "x": 1499,
+          "y": 687,
+          "width": 50,
+          "height": 60
+        }
+      },
+      {
+        "seat": "p2",
+        "rect": {
+          "x": 1119,
+          "y": 687,
+          "width": 50,
+          "height": 60
+        }
+      },
+      {
+        "seat": "p4",
+        "rect": {
+          "x": 992,
+          "y": 687,
+          "width": 50,
+          "height": 60
+        }
+      }
+    ],
+    "buildings": [
+      {
+        "level": "2",
+        "rect": {
+          "x": 1434,
+          "y": 785,
+          "width": 120,
+          "height": 54
+        }
+      },
+      {
+        "level": "1",
+        "rect": {
+          "x": 1181,
+          "y": 785,
+          "width": 120,
+          "height": 54
+        }
+      },
+      {
+        "level": "2",
+        "rect": {
+          "x": 1054,
+          "y": 785,
+          "width": 120,
+          "height": 54
+        }
+      },
+      {
+        "level": "3",
+        "rect": {
+          "x": 927,
+          "y": 785,
+          "width": 120,
+          "height": 54
+        }
+      },
+      {
+        "level": "2",
+        "rect": {
+          "x": 144,
+          "y": 426,
+          "width": 140,
+          "height": 60
+        }
+      }
+    ],
+    "clippedNames": [],
+    "smallNames": [],
+    "occupiedTile": {
+      "x": 1431,
+      "y": 756,
+      "width": 126,
+      "height": 100
+    },
+    "stage": {
+      "x": 691,
+      "y": 401,
+      "width": 465,
+      "height": 177
+    },
+    "bodyHeight": 872,
+    "errors": [],
+    "selectedPanel": {
+      "x": 664,
+      "y": 187,
+      "width": 520,
+      "height": 499
+    }
+  },
+  {
+    "filename": "4p-landmark-1280x800.png",
+    "board": {
+      "x": 16,
+      "y": 119,
+      "width": 1248,
+      "height": 680
+    },
+    "pawnCount": 4,
+    "pawns": [
+      {
+        "seat": "p1",
+        "rect": {
+          "x": 873,
+          "y": 627,
+          "width": 50,
+          "height": 60
+        }
+      },
+      {
+        "seat": "p2",
+        "rect": {
+          "x": 926,
+          "y": 627,
+          "width": 50,
+          "height": 60
+        }
+      },
+      {
+        "seat": "p3",
+        "rect": {
+          "x": 979,
+          "y": 627,
+          "width": 50,
+          "height": 60
+        }
+      },
+      {
+        "seat": "p4",
+        "rect": {
+          "x": 1032,
+          "y": 627,
+          "width": 50,
+          "height": 60
+        }
+      }
+    ],
+    "buildings": [
+      {
+        "level": "2",
+        "rect": {
+          "x": 728,
+          "y": 725,
+          "width": 77,
+          "height": 54
+        }
+      },
+      {
+        "level": "2",
+        "rect": {
+          "x": 644,
+          "y": 725,
+          "width": 77,
+          "height": 54
+        }
+      }
+    ],
+    "clippedNames": [],
+    "smallNames": [],
+    "occupiedTile": {
+      "x": 1063,
+      "y": 696,
+      "width": 198,
+      "height": 100
+    },
+    "stage": {
+      "x": 304,
+      "y": 265,
+      "width": 671,
+      "height": 388
+    },
+    "bodyHeight": 800,
+    "errors": []
+  },
+  {
+    "filename": "4p-landmark-1440x900.png",
+    "board": {
+      "x": 16,
+      "y": 119,
+      "width": 1408,
+      "height": 740
+    },
+    "pawnCount": 4,
+    "pawns": [
+      {
+        "seat": "p1",
+        "rect": {
+          "x": 1008,
+          "y": 687,
+          "width": 50,
+          "height": 60
+        }
+      },
+      {
+        "seat": "p2",
+        "rect": {
+          "x": 1061,
+          "y": 687,
+          "width": 50,
+          "height": 60
+        }
+      },
+      {
+        "seat": "p3",
+        "rect": {
+          "x": 1114,
+          "y": 687,
+          "width": 50,
+          "height": 60
+        }
+      },
+      {
+        "seat": "p4",
+        "rect": {
+          "x": 1167,
+          "y": 687,
+          "width": 50,
+          "height": 60
+        }
+      }
+    ],
+    "buildings": [
+      {
+        "level": "2",
+        "rect": {
+          "x": 819,
+          "y": 785,
+          "width": 88,
+          "height": 54
+        }
+      },
+      {
+        "level": "2",
+        "rect": {
+          "x": 724,
+          "y": 785,
+          "width": 88,
+          "height": 54
+        }
+      }
+    ],
+    "clippedNames": [],
+    "smallNames": [],
+    "occupiedTile": {
+      "x": 1198,
+      "y": 756,
+      "width": 223,
+      "height": 100
+    },
+    "stage": {
+      "x": 340,
+      "y": 283,
+      "width": 760,
+      "height": 411
+    },
+    "bodyHeight": 900,
+    "errors": []
+  },
+  {
+    "filename": "4p-landmark-1847x872.png",
+    "board": {
+      "x": 16,
+      "y": 119,
+      "width": 1815,
+      "height": 740
+    },
+    "pawnCount": 4,
+    "pawns": [
+      {
+        "seat": "p1",
+        "rect": {
+          "x": 1368,
+          "y": 687,
+          "width": 50,
+          "height": 60
+        }
+      },
+      {
+        "seat": "p2",
+        "rect": {
+          "x": 1421,
+          "y": 687,
+          "width": 50,
+          "height": 60
+        }
+      },
+      {
+        "seat": "p3",
+        "rect": {
+          "x": 1474,
+          "y": 687,
+          "width": 50,
+          "height": 60
+        }
+      },
+      {
+        "seat": "p4",
+        "rect": {
+          "x": 1527,
+          "y": 687,
+          "width": 50,
+          "height": 60
+        }
+      }
+    ],
+    "buildings": [
+      {
+        "level": "2",
+        "rect": {
+          "x": 1054,
+          "y": 785,
+          "width": 120,
+          "height": 54
+        }
+      },
+      {
+        "level": "2",
+        "rect": {
+          "x": 927,
+          "y": 785,
+          "width": 120,
+          "height": 54
+        }
+      }
+    ],
+    "clippedNames": [],
+    "smallNames": [],
+    "occupiedTile": {
+      "x": 1558,
+      "y": 756,
+      "width": 270,
+      "height": 100
+    },
+    "stage": {
+      "x": 544,
+      "y": 281,
+      "width": 760,
+      "height": 416
+    },
+    "bodyHeight": 872,
+    "errors": []
+  },
+  {
+    "filename": "4p-dense-1280x800.png",
+    "board": {
+      "x": 16,
+      "y": 119,
+      "width": 1248,
+      "height": 680
+    },
+    "pawnCount": 4,
+    "pawns": [
+      {
+        "seat": "p1",
+        "rect": {
+          "x": 507,
+          "y": 627,
+          "width": 50,
+          "height": 60
+        }
+      },
+      {
+        "seat": "p2",
+        "rect": {
+          "x": 560,
+          "y": 627,
+          "width": 50,
+          "height": 60
+        }
+      },
+      {
+        "seat": "p3",
+        "rect": {
+          "x": 613,
+          "y": 627,
+          "width": 50,
+          "height": 60
+        }
+      },
+      {
+        "seat": "p4",
+        "rect": {
+          "x": 666,
+          "y": 627,
+          "width": 50,
+          "height": 60
+        }
+      }
+    ],
+    "buildings": [
+      {
+        "level": "2",
+        "rect": {
+          "x": 981,
+          "y": 725,
+          "width": 77,
+          "height": 54
+        }
+      },
+      {
+        "level": "1",
+        "rect": {
+          "x": 812,
+          "y": 725,
+          "width": 77,
+          "height": 54
+        }
+      },
+      {
+        "level": "2",
+        "rect": {
+          "x": 728,
+          "y": 725,
+          "width": 77,
+          "height": 54
+        }
+      },
+      {
+        "level": "3",
+        "rect": {
+          "x": 644,
+          "y": 725,
+          "width": 77,
+          "height": 54
+        }
+      },
+      {
+        "level": "3",
+        "rect": {
+          "x": 390,
+          "y": 725,
+          "width": 77,
+          "height": 54
+        }
+      },
+      {
+        "level": "1",
+        "rect": {
+          "x": 306,
+          "y": 725,
+          "width": 77,
+          "height": 54
+        }
+      },
+      {
+        "level": "3",
+        "rect": {
+          "x": 22,
+          "y": 725,
+          "width": 192,
+          "height": 54
+        }
+      },
+      {
+        "level": "2",
+        "rect": {
+          "x": 97,
+          "y": 581,
+          "width": 115,
+          "height": 52
+        }
+      },
+      {
+        "level": "1",
+        "rect": {
+          "x": 97,
+          "y": 463,
+          "width": 115,
+          "height": 52
+        }
+      },
+      {
+        "level": "2",
+        "rect": {
+          "x": 97,
+          "y": 403,
+          "width": 115,
+          "height": 52
+        }
+      },
+      {
+        "level": "3",
+        "rect": {
+          "x": 97,
+          "y": 344,
+          "width": 115,
+          "height": 52
+        }
+      },
+      {
+        "level": "2",
+        "rect": {
+          "x": 97,
+          "y": 226,
+          "width": 115,
+          "height": 52
+        }
+      },
+      {
+        "level": "1",
+        "rect": {
+          "x": 221,
+          "y": 151,
+          "width": 77,
+          "height": 54
+        }
+      },
+      {
+        "level": "2",
+        "rect": {
+          "x": 306,
+          "y": 151,
+          "width": 77,
+          "height": 54
+        }
+      },
+      {
+        "level": "1",
+        "rect": {
+          "x": 475,
+          "y": 151,
+          "width": 77,
+          "height": 54
+        }
+      },
+      {
+        "level": "2",
+        "rect": {
+          "x": 559,
+          "y": 151,
+          "width": 77,
+          "height": 54
+        }
+      },
+      {
+        "level": "2",
+        "rect": {
+          "x": 812,
+          "y": 151,
+          "width": 77,
+          "height": 54
+        }
+      },
+      {
+        "level": "3",
+        "rect": {
+          "x": 897,
+          "y": 151,
+          "width": 77,
+          "height": 54
+        }
+      },
+      {
+        "level": "2",
+        "rect": {
+          "x": 1066,
+          "y": 151,
+          "width": 192,
+          "height": 54
+        }
+      },
+      {
+        "level": "3",
+        "rect": {
+          "x": 1068,
+          "y": 226,
+          "width": 115,
+          "height": 52
+        }
+      },
+      {
+        "level": "1",
+        "rect": {
+          "x": 1068,
+          "y": 285,
+          "width": 115,
+          "height": 52
+        }
+      },
+      {
+        "level": "3",
+        "rect": {
+          "x": 1068,
+          "y": 403,
+          "width": 115,
+          "height": 52
+        }
+      },
+      {
+        "level": "1",
+        "rect": {
+          "x": 1068,
+          "y": 463,
+          "width": 115,
+          "height": 52
+        }
+      },
+      {
+        "level": "3",
+        "rect": {
+          "x": 1068,
+          "y": 581,
+          "width": 115,
+          "height": 52
+        }
+      }
+    ],
+    "clippedNames": [],
+    "smallNames": [],
+    "occupiedTile": {
+      "x": 641,
+      "y": 696,
+      "width": 83,
+      "height": 100
+    },
+    "stage": {
+      "x": 408,
+      "y": 371,
+      "width": 465,
+      "height": 177
+    },
+    "bodyHeight": 800,
+    "errors": []
+  },
+  {
+    "filename": "4p-dense-1440x900.png",
+    "board": {
+      "x": 16,
+      "y": 119,
+      "width": 1408,
+      "height": 740
+    },
+    "pawnCount": 4,
+    "pawns": [
+      {
+        "seat": "p1",
+        "rect": {
+          "x": 598,
+          "y": 687,
+          "width": 50,
+          "height": 60
+        }
+      },
+      {
+        "seat": "p2",
+        "rect": {
+          "x": 651,
+          "y": 687,
+          "width": 50,
+          "height": 60
+        }
+      },
+      {
+        "seat": "p3",
+        "rect": {
+          "x": 704,
+          "y": 687,
+          "width": 50,
+          "height": 60
+        }
+      },
+      {
+        "seat": "p4",
+        "rect": {
+          "x": 757,
+          "y": 687,
+          "width": 50,
+          "height": 60
+        }
+      }
+    ],
+    "buildings": [
+      {
+        "level": "2",
+        "rect": {
+          "x": 1105,
+          "y": 785,
+          "width": 88,
+          "height": 54
+        }
+      },
+      {
+        "level": "1",
+        "rect": {
+          "x": 914,
+          "y": 785,
+          "width": 88,
+          "height": 54
+        }
+      },
+      {
+        "level": "2",
+        "rect": {
+          "x": 819,
+          "y": 785,
+          "width": 88,
+          "height": 54
+        }
+      },
+      {
+        "level": "3",
+        "rect": {
+          "x": 724,
+          "y": 785,
+          "width": 88,
+          "height": 54
+        }
+      },
+      {
+        "level": "3",
+        "rect": {
+          "x": 437,
+          "y": 785,
+          "width": 88,
+          "height": 54
+        }
+      },
+      {
+        "level": "1",
+        "rect": {
+          "x": 342,
+          "y": 785,
+          "width": 88,
+          "height": 54
+        }
+      },
+      {
+        "level": "3",
+        "rect": {
+          "x": 22,
+          "y": 785,
+          "width": 217,
+          "height": 54
+        }
+      },
+      {
+        "level": "2",
+        "rect": {
+          "x": 108,
+          "y": 626,
+          "width": 130,
+          "height": 60
+        }
+      },
+      {
+        "level": "1",
+        "rect": {
+          "x": 108,
+          "y": 493,
+          "width": 130,
+          "height": 60
+        }
+      },
+      {
+        "level": "2",
+        "rect": {
+          "x": 108,
+          "y": 426,
+          "width": 130,
+          "height": 60
+        }
+      },
+      {
+        "level": "3",
+        "rect": {
+          "x": 108,
+          "y": 359,
+          "width": 130,
+          "height": 60
+        }
+      },
+      {
+        "level": "2",
+        "rect": {
+          "x": 108,
+          "y": 226,
+          "width": 130,
+          "height": 60
+        }
+      },
+      {
+        "level": "1",
+        "rect": {
+          "x": 246,
+          "y": 151,
+          "width": 88,
+          "height": 54
+        }
+      },
+      {
+        "level": "2",
+        "rect": {
+          "x": 342,
+          "y": 151,
+          "width": 88,
+          "height": 54
+        }
+      },
+      {
+        "level": "1",
+        "rect": {
+          "x": 533,
+          "y": 151,
+          "width": 88,
+          "height": 54
+        }
+      },
+      {
+        "level": "2",
+        "rect": {
+          "x": 628,
+          "y": 151,
+          "width": 88,
+          "height": 54
+        }
+      },
+      {
+        "level": "2",
+        "rect": {
+          "x": 914,
+          "y": 151,
+          "width": 88,
+          "height": 54
+        }
+      },
+      {
+        "level": "3",
+        "rect": {
+          "x": 1010,
+          "y": 151,
+          "width": 88,
+          "height": 54
+        }
+      },
+      {
+        "level": "2",
+        "rect": {
+          "x": 1201,
+          "y": 151,
+          "width": 217,
+          "height": 54
+        }
+      },
+      {
+        "level": "3",
+        "rect": {
+          "x": 1203,
+          "y": 226,
+          "width": 130,
+          "height": 60
+        }
+      },
+      {
+        "level": "1",
+        "rect": {
+          "x": 1203,
+          "y": 293,
+          "width": 130,
+          "height": 60
+        }
+      },
+      {
+        "level": "3",
+        "rect": {
+          "x": 1203,
+          "y": 426,
+          "width": 130,
+          "height": 60
+        }
+      },
+      {
+        "level": "1",
+        "rect": {
+          "x": 1203,
+          "y": 493,
+          "width": 130,
+          "height": 60
+        }
+      },
+      {
+        "level": "3",
+        "rect": {
+          "x": 1203,
+          "y": 626,
+          "width": 130,
+          "height": 60
+        }
+      }
+    ],
+    "clippedNames": [],
+    "smallNames": [],
+    "occupiedTile": {
+      "x": 721,
+      "y": 756,
+      "width": 94,
+      "height": 100
+    },
+    "stage": {
+      "x": 488,
+      "y": 401,
+      "width": 465,
+      "height": 177
+    },
+    "bodyHeight": 900,
+    "errors": []
+  },
+  {
+    "filename": "4p-dense-1847x872.png",
+    "board": {
+      "x": 16,
+      "y": 119,
+      "width": 1815,
+      "height": 740
+    },
+    "pawnCount": 4,
+    "pawns": [
+      {
+        "seat": "p1",
+        "rect": {
+          "x": 833,
+          "y": 687,
+          "width": 50,
+          "height": 60
+        }
+      },
+      {
+        "seat": "p2",
+        "rect": {
+          "x": 886,
+          "y": 687,
+          "width": 50,
+          "height": 60
+        }
+      },
+      {
+        "seat": "p3",
+        "rect": {
+          "x": 939,
+          "y": 687,
+          "width": 50,
+          "height": 60
+        }
+      },
+      {
+        "seat": "p4",
+        "rect": {
+          "x": 992,
+          "y": 687,
+          "width": 50,
+          "height": 60
+        }
+      }
+    ],
+    "buildings": [
+      {
+        "level": "2",
+        "rect": {
+          "x": 1434,
+          "y": 785,
+          "width": 120,
+          "height": 54
+        }
+      },
+      {
+        "level": "1",
+        "rect": {
+          "x": 1181,
+          "y": 785,
+          "width": 120,
+          "height": 54
+        }
+      },
+      {
+        "level": "2",
+        "rect": {
+          "x": 1054,
+          "y": 785,
+          "width": 120,
+          "height": 54
+        }
+      },
+      {
+        "level": "3",
+        "rect": {
+          "x": 927,
+          "y": 785,
+          "width": 120,
+          "height": 54
+        }
+      },
+      {
+        "level": "3",
+        "rect": {
+          "x": 547,
+          "y": 785,
+          "width": 120,
+          "height": 54
+        }
+      },
+      {
+        "level": "1",
+        "rect": {
+          "x": 420,
+          "y": 785,
+          "width": 120,
+          "height": 54
+        }
+      },
+      {
+        "level": "3",
+        "rect": {
+          "x": 22,
+          "y": 785,
+          "width": 264,
+          "height": 54
+        }
+      },
+      {
+        "level": "2",
+        "rect": {
+          "x": 144,
+          "y": 626,
+          "width": 140,
+          "height": 60
+        }
+      },
+      {
+        "level": "1",
+        "rect": {
+          "x": 144,
+          "y": 493,
+          "width": 140,
+          "height": 60
+        }
+      },
+      {
+        "level": "2",
+        "rect": {
+          "x": 144,
+          "y": 426,
+          "width": 140,
+          "height": 60
+        }
+      },
+      {
+        "level": "3",
+        "rect": {
+          "x": 144,
+          "y": 359,
+          "width": 140,
+          "height": 60
+        }
+      },
+      {
+        "level": "2",
+        "rect": {
+          "x": 144,
+          "y": 226,
+          "width": 140,
+          "height": 60
+        }
+      },
+      {
+        "level": "1",
+        "rect": {
+          "x": 293,
+          "y": 151,
+          "width": 120,
+          "height": 54
+        }
+      },
+      {
+        "level": "2",
+        "rect": {
+          "x": 420,
+          "y": 151,
+          "width": 120,
+          "height": 54
+        }
+      },
+      {
+        "level": "1",
+        "rect": {
+          "x": 673,
+          "y": 151,
+          "width": 120,
+          "height": 54
+        }
+      },
+      {
+        "level": "2",
+        "rect": {
+          "x": 800,
+          "y": 151,
+          "width": 120,
+          "height": 54
+        }
+      },
+      {
+        "level": "2",
+        "rect": {
+          "x": 1181,
+          "y": 151,
+          "width": 120,
+          "height": 54
+        }
+      },
+      {
+        "level": "3",
+        "rect": {
+          "x": 1307,
+          "y": 151,
+          "width": 120,
+          "height": 54
+        }
+      },
+      {
+        "level": "2",
+        "rect": {
+          "x": 1561,
+          "y": 151,
+          "width": 264,
+          "height": 54
+        }
+      },
+      {
+        "level": "3",
+        "rect": {
+          "x": 1563,
+          "y": 226,
+          "width": 140,
+          "height": 60
+        }
+      },
+      {
+        "level": "1",
+        "rect": {
+          "x": 1563,
+          "y": 293,
+          "width": 140,
+          "height": 60
+        }
+      },
+      {
+        "level": "3",
+        "rect": {
+          "x": 1563,
+          "y": 426,
+          "width": 140,
+          "height": 60
+        }
+      },
+      {
+        "level": "1",
+        "rect": {
+          "x": 1563,
+          "y": 493,
+          "width": 140,
+          "height": 60
+        }
+      },
+      {
+        "level": "3",
+        "rect": {
+          "x": 1563,
+          "y": 626,
+          "width": 140,
+          "height": 60
+        }
+      }
+    ],
+    "clippedNames": [],
+    "smallNames": [],
+    "occupiedTile": {
+      "x": 924,
+      "y": 756,
+      "width": 126,
+      "height": 100
+    },
+    "stage": {
+      "x": 691,
+      "y": 401,
+      "width": 465,
+      "height": 177
+    },
+    "bodyHeight": 872,
+    "errors": []
+  }
+]

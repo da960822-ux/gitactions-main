@@ -9,6 +9,7 @@ import { MinhwatuTable } from './MinhwatuTable';
 import { existsSync, readFileSync } from 'node:fs';
 import { resolve } from 'node:path';
 import { engines } from '../core/registry';
+import { createLegacyMarbleState } from '../games/marble';
 
 describe('public game boards', () => {
   it('shows the Marble couple joke in both two-person and solo matches', () => {
@@ -22,7 +23,7 @@ describe('public game boards', () => {
 
   it('keeps local country flags beside all saved route-v2 city names in both locales', () => {
     const engine = engines.marble!;
-    const state = { ...(engine.createInitialState(7) as any), cityRouteVersion: 2 };
+    const state = { ...createLegacyMarbleState(7), cityRouteVersion: 2 as const };
     const view = engine.getPlayerView(state, 'p1') as any;
     const codes = ['ca','cl','cu','do','es','fr','gb','it','jp','kr','mx','nz','ph','pr','pt','us'];
     for (const language of ['ko', 'es'] as const) {
@@ -109,7 +110,7 @@ describe('original Splendor faces', () => {
       const html = renderToStaticMarkup(<SplendorTable view={{ownHand:{tokens:{},reserved:[{...card,id}]},board:{market:{[card.tier]:[{...card,id}]}},actions:[]}} language="ko" playerId="p1" runAction={() => {}}/>);
       expect(html).toContain(`/images/splendor/${face.src}`);
       expect(html).toContain('data-artwork-only="card"');
-      expect(html).toContain('viewBox="85 90 165 260"');
+      expect(html).toContain(card.tier === 1 ? 'viewBox="85 90 165 260"' : 'viewBox="0 0 100 150"');
       expect(html).not.toContain(`<img src="/images/splendor/${face.src}`);
       expect(html).toContain(`class="sp-card-prestige">${card.points} 점</b>`);
       for (const [gem, amount] of Object.entries(card.cost)) {
@@ -120,7 +121,7 @@ describe('original Splendor faces', () => {
       }
     }
     expect(new Set(art.cards.map(item=>item.src)).size).toBe(90);
-    expect(art.nobles).toHaveLength(10);
+    expect(art.nobles).toHaveLength(16);
     for(const noble of art.nobles) expect(existsSync(resolve('public/images/splendor',noble.src))).toBe(true);
   });
 });

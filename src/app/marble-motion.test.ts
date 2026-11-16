@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { marbleCueForEvent, marbleEventSequence, marbleEventWindow, marbleEventsAfter, marbleMoneyDelta, marbleGridPosition, marbleJourneyDisplay, marbleMovementPath, marblePresentationFrames } from './marble-motion';
+import { marbleCueForEvent, marbleEventSequence, marbleEventWindow, marbleEventsAfter, marbleMoneyDelta, marbleGridPosition, marbleJourneyDisplay, marbleMovementPath, marblePresentationFrames, marbleTransferSign, marblePresentedBalances } from './marble-motion';
 
 const moveEvent = (effect: string, from: number, to: number, steps: number | null, playerId = 'p1') => ({ sequence: 1, playerId, effect, from, to, steps });
 
@@ -28,13 +28,13 @@ describe('Marble board movement path', () => {
     expect(frames.find(frame => frame.event.sequence === 6)!.at).toBeGreaterThan(moves.at(-1)!.at);
     expect(frames.at(-1)?.traveler).toBeNull();
   });
-  it('holds the dice for 620ms and the confirmed arrival for 640ms without adding skipped tiles', () => {
+  it('holds the dice for 620ms and the confirmed arrival for 1000ms without adding skipped tiles', () => {
     for (const steps of [3, 5, 8]) {
       const events = [{ sequence: 1, type: 'roll', actor: 'p1' }, { sequence: 2, type: 'move', actor: 'p1', from: 0, to: steps, steps }, { sequence: 3, type: 'arrival', actor: 'p1' }, { sequence: 4, type: 'turn', actor: 'p2' }];
       const frames = marblePresentationFrames(events, { p1: 0, p2: 9 }, { p1: steps, p2: 9 }, 40);
       expect(frames.filter(frame => frame.traveler).map(frame => frame.traveler!.tile)).toEqual(Array.from({ length: steps }, (_, index) => index + 1));
       expect(frames.find(frame => frame.traveler)?.at).toBe(620);
-      expect(frames.find(frame => frame.event.sequence === 4)!.at - frames.find(frame => frame.event.sequence === 3)!.at).toBe(640);
+      expect(frames.find(frame => frame.event.sequence === 4)!.at - frames.find(frame => frame.event.sequence === 3)!.at).toBe(1000);
     }
   });
 
@@ -106,6 +106,7 @@ describe('Marble board movement path', () => {
       expect(marbleGridPosition(-1, size)).toBeUndefined();
       expect(marbleGridPosition(size, size)).toBeUndefined();
     }
+    expect([0, 10, 20, 30, 39].map(index => marbleGridPosition(index, 40))).toEqual([[11, 11], [1, 11], [1, 1], [11, 1], [11, 10]]);
     expect(marbleGridPosition(0, 24)).toBeUndefined();
   });
 });
@@ -143,4 +144,41 @@ describe('Marble committed-event motion/audio mapping', () => {
     expect(marbleCueForEvent({ sequence: 5, id: 'festival', effect: 'cash' })).toBe('event');
     expect(marbleCueForEvent({ type: 'rest' })).toBeNull();
   });
+});
+
+// Arrival is a readable phase, not a flash between movement and money settlement.
+describe('Marble arrival pacing', () => {
+ it('holds destination before financial feedback, with monotonic step timing', () => {
+  const events=[{sequence:1,type:'roll',actor:'p1'}, {sequence:2,type:'move',actor:'p1',from:0,to:3,steps:3}, {sequence:3,type:'arrival',actor:'p1'}, {sequence:4,type:'rent',actor:'p1',amount:120,moneyDelta:{p1:-120,p2:120}}];
+  const frames=marblePresentationFrames(events,{p1:0,p2:4},{p1:3,p2:4},32);
+  const arrival=frames.find(f=>f.event.sequence===3)!;const rent=frames.find(f=>f.event.sequence===4)!;
+  expect(arrival.positions.p1).toBe(3);expect(arrival.traveler).toBeNull();
+  expect(rent.at-arrival.at).toBe(1000);
+  const steps=frames.filter(f=>f.traveler); expect(steps[1].at-steps[0].at).toBe(115);
+ });
+});
+
+describe('Marble money transfer perspective',()=>{
+ it('shows income positive, expense negative and unrelated transfers neutral',()=>{
+  expect(marbleTransferSign('p2','p1','p1')).toBe('+');
+  expect(marbleTransferSign('p1','bank','p1')).toBe('−');
+  expect(marbleTransferSign('bank','p2','p2')).toBe('+');
+  expect(marbleTransferSign('p3','p4','p1')).toBe('');
+ });
+});
+
+describe('Marble displayed balances follow transfers',()=>{
+ it('holds pre-arrival cash then shows salary and rent once in event order',()=>{
+  const events=[{sequence:2,type:'bonus',moneyDelta:{p1:300}},{sequence:5,type:'rent',moneyDelta:{p1:-100,p2:100}}];
+  const settled={p1:3200,p2:3100};
+  expect(marblePresentedBalances(settled,events,1)).toEqual({p1:3000,p2:3000});
+  expect(marblePresentedBalances(settled,events,2)).toEqual({p1:3300,p2:3000});
+  expect(marblePresentedBalances(settled,events,4)).toEqual({p1:3300,p2:3000});
+  expect(marblePresentedBalances(settled,events,5)).toEqual(settled);
+  expect(settled).toEqual({p1:3200,p2:3100});
+ });
+ it('settles immediately on reduced-motion/snapshot latest sequence and ignores cashDelta summary',()=>{
+  expect(marblePresentedBalances({p1:100},[{sequence:3,cashDelta:-50}],1)).toEqual({p1:100});
+  expect(marblePresentedBalances({p1:100},[{sequence:3,moneyDelta:{p1:-50}}],3)).toEqual({p1:100});
+ });
 });

@@ -9,17 +9,15 @@ import { readBrowserStorage, writeBrowserStorage } from './browserStorage';
 afterEach(() => vi.unstubAllGlobals());
 
 describe('optional browser storage', () => {
-  it('keeps the feedback SDK chunk from loading when its required storage probe is blocked', () => {
+  it('keeps the feedback route available when browser storage is blocked', () => {
     vi.stubGlobal('window', {
       location: { pathname: '/feedback', reload() {} },
       matchMedia: () => ({ matches: true }),
     });
     vi.stubGlobal('localStorage', { getItem() { throw new DOMException('blocked', 'SecurityError'); } });
     const html = renderToStaticMarkup(createElement(App));
-    assert.match(html, /브라우저 저장소를 사용할 수 없어요/);
-    assert.match(html, /이 사이트의 저장소를 허용한 뒤 다시 시도해 주세요/);
-    assert.match(html, /href="\/#games"/);
-    assert.match(html, /다시 시도/);
+    assert.match(html, /건의사항을 여는 중/);
+    assert.doesNotMatch(html, /이 사이트의 저장소를 허용한 뒤 다시 시도해 주세요/);
   });
 
   it('falls back cleanly when reading preferences is blocked on app and feedback routes', () => {
@@ -35,7 +33,7 @@ describe('optional browser storage', () => {
     assert.doesNotThrow(() => renderToStaticMarkup(createElement(App)));
     assert.doesNotThrow(() => renderToStaticMarkup(createElement(BrandHeader)));
     const html = renderToStaticMarkup(createElement(FeedbackRoute));
-    assert.match(html, /브라우저 저장소를 사용할 수 없어/);
+    assert.match(html, /우리의 아이디어 보관함/);
     assert.equal(readBrowserStorage('dos-language').available, false);
   });
 

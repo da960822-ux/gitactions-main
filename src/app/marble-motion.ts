@@ -22,6 +22,11 @@ export function marbleEventSequence(event: MarbleActionEvent | null | undefined)
   return Number.isSafeInteger(sequence) && Number(sequence) > 0 ? Number(sequence) : 0;
 }
 
+/** Mount/reconnect snapshots establish a baseline; only the presentation clock can advance it. */
+export function isFreshMarbleCosmetic(event: MarbleActionEvent | null | undefined, previousSequence: number) {
+  return !event?.skipCosmetics && marbleEventSequence(event) > previousSequence;
+}
+
 export function marbleEventsAfter(events: readonly MarbleActionEvent[], sequence: number): MarbleActionEvent[] {
   return events.filter(event => marbleEventSequence(event) > sequence).sort((a, b) => marbleEventSequence(a) - marbleEventSequence(b));
 }
@@ -168,9 +173,9 @@ export function marblePresentationFrames(events: MarbleActionEvent[], from: Reco
       path.forEach(tile => {
         positions = { ...positions, [seat]: tile };
         frames.push({ at, event, dice: false, positions: { ...positions }, traveler: { seat, tile, seq: marbleEventSequence(event) } });
-        at += 80;
+        at += 115;
       });
-    } else at += type === 'roll' ? 620 : type === 'arrival' ? 640 : type === 'turn' ? 160 : 300;
+    } else at += type === 'roll' ? 620 : type === 'arrival' ? 1000 : type === 'turn' ? 160 : 300;
   }
   // If the event window missed the end of a displacement, append from one stable
   // origin. Updating the origin inside the loop skips cells (3,5,8 instead of 3,4,5).
@@ -181,9 +186,23 @@ export function marblePresentationFrames(events: MarbleActionEvent[], from: Reco
     for (let step = 1; step <= gap; step += 1) {
       const tile = (origin + step) % size;
       positions = { ...positions, [seat]: tile };
-      frames.push({ at, event, dice: false, positions: { ...positions }, traveler: { seat, tile, seq: marbleEventSequence(event) } }); at += 80;
+      frames.push({ at, event, dice: false, positions: { ...positions }, traveler: { seat, tile, seq: marbleEventSequence(event) } }); at += 115;
     }
   }
   if (events.length) frames.push({ at, event: events.at(-1)!, dice: false, positions: { ...to }, traveler: null });
   return frames;
+}
+
+/** Display the transfer from the viewer's perspective, not always the payer's. */
+export function marbleTransferSign(sender:string,receiver:string,viewer:string) {
+  return sender===viewer?'−':receiver===viewer?'+':'';
+}
+
+/** Undo not-yet-presented transfers from the authoritative balance for the visual timeline. */
+export function marblePresentedBalances<T extends Record<string, number>>(finalMoney:T,events:readonly MarbleActionEvent[],presentedSequence:number):T {
+ const shown={...finalMoney};
+ for(const event of events)if(marbleEventSequence(event)>presentedSequence)for(const [seat,delta] of Object.entries(event.moneyDelta??{})){
+  if(seat in shown&&typeof delta==='number'&&Number.isFinite(delta))shown[seat as keyof T]=(shown[seat]-delta) as T[keyof T];
+ }
+ return shown;
 }

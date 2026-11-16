@@ -1,0 +1,80 @@
+{
+  "ko": {
+    "goal": "두 사람이 번갈아 그림을 그리고 맞혀요. 그리는 사람은 비밀 단어를 그림으로 설명하고, 다른 사람은 채팅에 답을 보내요. 정답이면 두 사람 모두 점수를 얻고, 마지막 총점이 높은 사람이 이겨요.",
+    "setup": [
+      "처음에는 방을 만든 사람이 ‘주제 · 설정’에서 주제 하나를 고른 뒤 ‘설정 저장’을 눌러야 단어가 나와요. 동물처럼 익숙한 주제로 시작해 보세요.",
+      "기본은 그림 시간 80초, 단어 후보 3개, 힌트 켜짐, 개별 턴 6번이에요. 한 사람이 그리면 1턴이므로 각자 3번씩 그립니다. 시작 전 설정에서 바꿀 수 있어요.",
+      "그리는 사람에게만 정답과 그리기 도구가 보여요. 맞히는 사람은 그림과 힌트를 보고 ‘대화와 정답 맞히기’ 채팅을 사용해요. 두 역할은 매 턴 바뀌어요."
+    ],
+    "turnSteps": [
+      { "title": "그리는 사람: 단어를 하나 고르세요", "body": "화면에 나온 후보 중 그리기 쉬운 단어 버튼을 누르세요. 선택한 순간 그림 제한 시간이 시작돼요. 선택 시간 15초가 지나면 후보 하나가 자동으로 선택됩니다.", "control": "후보 단어 버튼 클릭 · 첫 턴 전에는 ‘설정 저장’" },
+      { "title": "그리는 사람: 캔버스에 그림을 그려요", "body": "‘펜’을 고르고 색을 선택한 뒤 중앙 캔버스에서 마우스를 누른 채 움직이세요. 손을 떼면 선이 끝나고 그림은 상대에게 전달돼요. 실수한 마지막 작업은 ‘실행 취소’로 되돌릴 수 있어요.", "control": "‘펜’ → 색 선택 → 캔버스 드래그 · ‘실행 취소’" },
+      { "title": "맞히는 사람: 채팅에 답을 보내요", "body": "그림을 보고 단어를 채팅 입력칸에 적은 뒤 ↑ 보내기 버튼이나 Enter를 누르세요. 한국어 또는 스페인어로 답할 수 있어요. 오답이어도 시간이 남아 있으면 다시 보낼 수 있습니다.", "control": "‘채팅 또는 정답 입력’ → ↑ ‘보내기’ 또는 Enter" },
+      { "title": "정답 공개 뒤 역할을 바꿔요", "body": "정답을 맞히거나 시간이 끝나거나 출제자가 건너뛰면 그 턴이 끝나요. 정답과 점수를 약 5초 동안 보여준 뒤 자동으로 교대해요. 출제자는 ‘다음 라운드’로 먼저 넘어갈 수도 있어요.", "control": "기다리기 · 출제자에게 보이는 ‘다음 라운드’" }
+    ],
+    "example": {
+      "title": "첫 문제 예시 · 고양이를 그려 맞히기",
+      "steps": [
+        "호스트가 ‘동물’을 고르고 ‘설정 저장’을 눌러요.",
+        "출제자에게 나온 후보에 ‘고양이’가 있다면 그 버튼을 눌러요. 다른 단어가 나왔다면 그중 하나를 고르면 됩니다.",
+        "출제자는 ‘펜’으로 동그란 얼굴, 뾰족한 귀 두 개, 수염을 그려요. 맞히는 사람 화면에는 단어 대신 이 그림이 보여요.",
+        "맞히는 사람이 채팅에 ‘고양이’ 또는 ‘gato’를 입력하고 ↑ ‘보내기’를 눌러요. 정답이면 즉시 턴이 끝나고 점수가 표시돼요.",
+        "약 5초 뒤 방금 맞힌 사람이 다음 그림을 그리고, 방금 그린 사람이 맞혀요."
+      ],
+      "result": "정답이면 출제자는 100점, 맞힌 사람은 남은 시간에 따른 100~200점에서 공개된 힌트 글자마다 20점을 뺀 점수(최소 50점)를 얻어요. 후보와 실제 획득 점수는 매번 달라요."
+    },
+    "mistakes": [
+      { "question": "단어 후보가 하나도 안 보여요.", "answer": "첫 턴에는 호스트가 주제를 하나 선택하고 ‘설정 저장’을 눌러야 해요. 맞히는 사람에게는 후보가 보이지 않는 것이 정상이에요. 그 사람은 상대의 선택을 기다리면 됩니다." },
+      { "question": "그림은 어디에 그리고, 정답은 어디에 쓰나요?", "answer": "출제자는 중앙 캔버스에 마우스를 누르고 드래그해요. 맞히는 사람은 채팅 입력칸에 답을 써서 ↑ 버튼이나 Enter로 보내요. 출제자는 자기 문제의 정답을 제출할 수 없어요." },
+      { "question": "스페인어로 답하거나 악센트를 빠뜨려도 되나요?", "answer": "한국어·스페인어 정답과 등록된 별칭을 모두 받아요. 대소문자, 앞뒤 공백, 스페인어 악센트는 구분하지 않지만 ñ와 n은 구분해요. 임의의 동의어나 오타를 모두 인정하는 것은 아니에요." },
+      { "question": "힌트는 어떻게 얻고, 점수에는 어떤 영향이 있나요?", "answer": "힌트가 켜져 있으면 처음에는 글자 수가 보이고, 제한 시간의 절반과 4분의 3이 지날 때 글자가 하나씩 더 보여요. 기본 80초라면 40초·60초 경과 시점이에요. 실제로 공개된 글자마다 정답자 점수가 20점씩 줄어요. 한 글자 단어는 정답 전체가 힌트로 공개되지 않아요." },
+      { "question": "어려운 단어를 넘기면 바로 다른 단어를 고르나요?", "answer": "‘이 단어 건너뛰기’는 같은 턴에 재선택하는 버튼이 아니라 그 턴을 0점으로 끝내는 버튼이에요. 시간초과나 정답 전 ‘라운드 마치기’도 두 사람 모두 0점이에요. 이후 역할이 바뀌어요." }
+    ],
+    "win": "기본 6개의 개별 턴을 모두 마치면 총점이 높은 사람이 이겨요. 두 사람의 총점이 같으면 무승부예요. 정답을 맞혔을 때는 그린 사람도 100점을 받으므로 잘 설명하는 그림도 중요해요.",
+    "glossary": [
+      { "term": "출제자 / 맞히는 사람", "meaning": "비밀 단어를 보고 그리는 사람 / 그림을 보고 채팅으로 답하는 사람." },
+      { "term": "개별 턴", "meaning": "한 사람이 단어 하나를 그리는 한 번의 순서. 기본 6턴은 각자 3번씩 그리는 것." },
+      { "term": "후보 / 제시어", "meaning": "고를 수 있는 단어 목록 / 그중 선택해 그리는 비밀 단어." },
+      { "term": "캔버스", "meaning": "마우스로 드래그해서 그림을 그리는 중앙 영역." }
+    ]
+  },
+  "es": {
+    "goal": "Tú y la otra persona se turnan para dibujar y adivinar. Quien dibuja representa una palabra secreta; la otra persona responde en el chat. Un acierto da puntos a ambos y gana quien termine con el total más alto.",
+    "setup": [
+      "Al principio, quien creó la sala debe elegir una categoría en «Categoría · ajustes» y pulsar «Guardar ajustes» para que aparezcan palabras. Puedes empezar con una categoría familiar, como Animales.",
+      "Por defecto hay 80 segundos para dibujar, 3 palabras para elegir, pistas activadas y 6 turnos individuales. Cada dibujo cuenta como un turno: dibujan 3 veces por persona. Puedes cambiar los ajustes antes de empezar.",
+      "Solo quien dibuja ve la respuesta y las herramientas. Quien adivina ve el dibujo y las pistas, y usa «Chat y respuestas». Los papeles cambian en cada turno."
+    ],
+    "turnSteps": [
+      { "title": "Si dibujas: elige una palabra", "body": "Pulsa una de las palabras ofrecidas, de preferencia una fácil de dibujar. El tiempo de dibujo empieza al elegirla. Si pasan los 15 segundos de selección, se elige una opción automáticamente.", "control": "Pulsa una palabra · antes del primer turno: «Guardar ajustes»" },
+      { "title": "Si dibujas: usa el lienzo", "body": "Elige «Pincel» y un color. Mantén presionado el botón del mouse y muévelo sobre el lienzo central. Al soltarlo termina el trazo y el dibujo se transmite a la otra persona. «Deshacer» revierte tu última acción.", "control": "«Pincel» → color → arrastra sobre el lienzo · «Deshacer»" },
+      { "title": "Si adivinas: responde en el chat", "body": "Mira el dibujo, escribe la palabra en el chat y pulsa ↑ para enviarla, o presiona Enter. Puedes responder en español o coreano. Si fallas y aún queda tiempo, puedes intentarlo otra vez.", "control": "«Escribe un mensaje o respuesta» → ↑ «Enviar» o Enter" },
+      { "title": "Mira la respuesta y cambia de papel", "body": "El turno termina con un acierto, cuando se acaba el tiempo o cuando quien dibuja pasa la palabra. La respuesta y los puntos aparecen durante unos 5 segundos; después cambian automáticamente de papel. Quien dibujó también puede pulsar «Siguiente ronda» para avanzar antes.", "control": "Espera · «Siguiente ronda» aparece para quien dibujó" }
+    ],
+    "example": {
+      "title": "Primer dibujo de ejemplo · adivinar un gato",
+      "steps": [
+        "La persona anfitriona elige «Animales» y pulsa «Guardar ajustes».",
+        "Si «gato» aparece entre las opciones de quien dibuja, pulsa ese botón. Si salen otras palabras, elige una de ellas.",
+        "Con «Pincel», dibuja una cara redonda, dos orejas puntiagudas y bigotes. La otra persona ve el dibujo, no la palabra secreta.",
+        "Quien adivina escribe «gato» o «고양이» en el chat y pulsa ↑ «Enviar». Si acierta, el turno termina de inmediato y se muestran los puntos.",
+        "Unos 5 segundos después, quien acaba de adivinar dibuja la siguiente palabra y quien dibujó pasa a adivinar."
+      ],
+      "result": "Al acertar, quien dibuja gana 100 puntos. Quien adivina recibe entre 100 y 200 según el tiempo restante, menos 20 por cada letra de pista revelada, con un mínimo de 50. Las opciones y los puntos exactos varían."
+    },
+    "mistakes": [
+      { "question": "No veo ninguna palabra para elegir.", "answer": "En el primer turno, la persona anfitriona debe elegir una categoría y pulsar «Guardar ajustes». Si te toca adivinar, es normal que no veas las opciones: espera a que la otra persona elija." },
+      { "question": "¿Dónde dibujo y dónde escribo la respuesta?", "answer": "Quien dibuja mantiene presionado el mouse y arrastra sobre el lienzo central. Quien adivina escribe en el chat y envía con ↑ o Enter. No puedes enviar una respuesta a tu propio dibujo." },
+      { "question": "¿Puedo responder en español o sin acentos?", "answer": "Se aceptan las respuestas en español y coreano, además de sus variantes registradas. No importan mayúsculas, espacios al principio o al final ni acentos; pero ñ y n sí son distintas. No se acepta automáticamente cualquier sinónimo o error de escritura." },
+      { "question": "¿Cómo aparecen las pistas y cómo afectan los puntos?", "answer": "Si están activadas, primero ves la longitud de la palabra. Se revela una letra al pasar la mitad del tiempo y otra a los tres cuartos: con 80 segundos, a los 40 y 60 transcurridos. Cada letra realmente revelada resta 20 puntos a quien acierta. Una palabra de una sola letra no se revela completa como pista." },
+      { "question": "Si paso una palabra difícil, ¿puedo elegir otra enseguida?", "answer": "«Pasar palabra» no cambia la palabra dentro del mismo turno: termina ese turno con 0 puntos para ambos. Agotar el tiempo o pulsar «Terminar ronda» antes de un acierto también da 0 a ambos. Después cambian de papel." }
+    ],
+    "win": "Al completar los 6 turnos individuales predeterminados, gana quien tenga más puntos acumulados. Si los totales son iguales, hay empate. Cuando hay un acierto, quien dibuja también gana 100 puntos: explicar bien con el dibujo importa.",
+    "glossary": [
+      { "term": "Quien dibuja / quien adivina", "meaning": "Persona que ve y dibuja la palabra secreta / persona que interpreta el dibujo y responde en el chat." },
+      { "term": "Turno individual", "meaning": "Una palabra dibujada por una persona. Los 6 turnos predeterminados son 3 dibujos por persona." },
+      { "term": "Opciones / palabra secreta", "meaning": "Lista de palabras disponibles / palabra elegida para el dibujo." },
+      { "term": "Lienzo", "meaning": "Zona central donde dibujas arrastrando el mouse." }
+    ]
+  }
+}

@@ -1,3 +1,4 @@
+import { legacyInitial } from './marble.effectFixtures';
 import { describe, it, expect } from 'vitest';
 import { marbleBuildCost, marbleEngine, MarbleEventId, MarbleState } from './marble';
 import { seededRandom } from '../core/types';
@@ -14,7 +15,7 @@ const seedForSum = (sum: number) => seedForDice((a, b) => a + b === sum);
 const seedForDoubles = () => seedForDice((a, b) => a === b);
 const seedForMiss = () => seedForDice((a, b) => a !== b);
 // Regression fixtures for saved forty-space rooms before the personalized route.
-const initial = (seed = 15): MarbleState => ({ ...marbleEngine.createInitialState(seed), economicVersion: 2, money: { p1: 1500, p2: 1500 }, cityRouteVersion: undefined, propertyRulesVersion: undefined });
+const initial = (seed = 15): MarbleState => ({ ...legacyInitial(marbleEngine, seed), economicVersion: 2, money: { p1: 1500, p2: 1500 }, cityRouteVersion: undefined, propertyRulesVersion: undefined, constructionRulesVersion: undefined });
 function eventState(id: MarbleEventId, target = 2): MarbleState {
   const seed = seedForSum(target);
   return { ...initial(seed), eventDeck: [id], positions: { p1: 0, p2: 0 } };
@@ -23,16 +24,16 @@ const act = (s: MarbleState, type: string, payload?: Record<string, unknown>) =>
 
 describe('Marble 40-space house-rule engine', () => {
   it('keeps 24 cities and all economics while ordering the new journey and preserving saved boards', () => {
-    const fresh = marbleEngine.createInitialState(15);
+    const fresh = legacyInitial(marbleEngine, 15);
     const tiles = marbleEngine.getPlayerView(fresh, 'p1').board.tiles;
     const saved = marbleEngine.getPlayerView(initial(15), 'p1').board.tiles;
     expect(fresh.boardVersion).toBe(2);
     expect(fresh.cityRouteVersion).toBe(3);
     expect(tiles).toHaveLength(40);
     expect(tiles.filter((tile: any) => tile.kind === 'property')).toHaveLength(24);
-    expect([1, 3, 15, 31, 38].map(i => tiles[i].name.ko)).toEqual(['광주', '뉴욕', '산토도밍고', '뉴어크', '서울']);
+    expect([1, 3, 15, 31, 38].map(i => tiles[i].name.ko)).toEqual(['광주', '뉴욕', '산토도밍고', '두바이', '서울']);
     const savedV2 = marbleEngine.getPlayerView({ ...fresh, cityRouteVersion: 2 }, 'p1').board.tiles;
-    const changes = [[11, '베를린', '라베가'], [13, '마이애미', '푼타카나'], [21, '이스탄불', '사마나'], [32, '아그라', '발파라이소'], [33, '아테네', '세부'], [36, '시드니', '오클랜드']] as const;
+    const changes = [[8, '기자', '푸에르토플라타'], [9, '리우', '산후안'], [31, '두바이', '뉴어크'], [35, '베이징', '토론토'], [11, '베를린', '라베가'], [13, '싱가포르', '푼타카나'], [21, '이스탄불', '사마나'], [32, '아그라', '발파라이소'], [33, '아테네', '세부'], [36, '시드니', '오클랜드']] as const;
     for (const [index, name, previousName] of changes) {
       expect(tiles[index].name.ko).toBe(name);
       expect(savedV2[index].name.ko).toBe(previousName);
@@ -58,7 +59,7 @@ describe('Marble 40-space house-rule engine', () => {
   });
 
   it('resolves the Santo Domingo card at the correct city in new, saved forty-space and legacy rooms', () => {
-    const fresh = { ...marbleEngine.createInitialState(seedForSum(2)), economicVersion: 2 as const, money: { p1: 1500, p2: 1500 }, eventDeck: ['visit-santo-domingo'] as MarbleEventId[] };
+    const fresh = { ...legacyInitial(marbleEngine, seedForSum(2)), economicVersion: 2 as const, money: { p1: 1500, p2: 1500 }, eventDeck: ['visit-santo-domingo'] as MarbleEventId[] };
     for (const [state, destination] of [[fresh, 15], [{ ...fresh, cityRouteVersion: undefined }, 3], [{ ...fresh, boardVersion: undefined }, 2]] as const) {
       const moved = act(state, 'roll');
       expect(moved.positions.p1).toBe(destination);
@@ -177,7 +178,7 @@ describe('Marble 40-space house-rule engine', () => {
     expect(s.positions.p1).toBe(14); expect(s.trainReady?.p1).toBe(true);
     s = marbleEngine.applyAction(s, 'p1', { type: 'endTurn' });
     s = { ...s, active: 'p1', phase: 'train-decision' as const, pendingTrainFare: 100, pendingTrainSource: 'station' };
-    expect(marbleEngine.validateAction(s, 'p1', { type: 'choose-train', payload: { destination: 10 } })).toBe('Invalid destination');
+    expect(marbleEngine.validateAction(s, 'p1', { type: 'choose-train', payload: { destination: 10 } })).toBeNull();
     expect(marbleEngine.validateAction({ ...s, money: { p1: 50, p2: 1500 } }, 'p1', { type: 'choose-train', payload: { destination: 1 } })).toBe('Insufficient funds');
     const traveled = act(s, 'choose-train', { destination: 1 });
     expect(traveled.positions.p1).toBe(1); expect(traveled.money.p1).toBe(1600);
@@ -234,7 +235,7 @@ describe('Marble 40-space house-rule engine', () => {
     expect(purchased.boardVersion).toBe(2);
   });
 
-  it('allows three upgrades on one owned city and scales rent x1/x2/x4/x8', () => {
+  it('allows three upgrades in saved rooms and scales rent x1/x2/x4/x8', () => {
     let s: MarbleState = { ...initial(), phase: 'main', properties: { '1': { owner: 'p1', houses: 0 } }, money: { p1: 1000, p2: 1500 } };
     for (const tier of [1, 2, 3]) {
       expect(marbleEngine.validateAction(s, 'p1', { type: 'build', payload: { tile: 1 } })).toBeNull();
@@ -276,7 +277,7 @@ describe('Marble 40-space house-rule engine', () => {
     expect(marbleEngine.validateAction(s, 'p1', null as any)).toBe('Invalid action');
     expect(marbleEngine.validateAction(s, 'p3' as any, { type: 'roll' })).toBe('Invalid player');
     expect(marbleEngine.validateAction(s, 'p1', { type: 'attempt-doubles' })).toBe('Not on the island');
-    expect(marbleEngine.validateAction({ ...s, phase: 'train-decision' }, 'p1', { type: 'choose-train', payload: { destination: 10 } })).toBe('Invalid destination');
+    expect(marbleEngine.validateAction({ ...s, phase: 'train-decision' }, 'p1', { type: 'choose-train', payload: { destination: 40 } })).toBe('Invalid destination');
   });
 
   it('uses total assets at 120 turns, including unspent building value, and preserves a draw', () => {
@@ -340,15 +341,15 @@ describe('Marble 40-space house-rule engine', () => {
     expect(settled.actionLog?.find(event => event.type === 'rent')).toMatchObject({ fromPlayer: 'p1', toPlayer: 'p2', amount: 15 });
   });
 
-  it('rejects a loan that cannot cover a maintenance crisis and lets the debtor declare bankruptcy', () => {
+  it('allows a partial loan without settling maintenance and lets the debtor declare bankruptcy', () => {
     const state = {
       ...eventState('maintenance'), money: { p1: 0, p2: 1500 },
       properties: { '1': { owner: 'p1' as const, houses: 4 }, '3': { owner: 'p1' as const, houses: 4 }, '4': { owner: 'p1' as const, houses: 4 } },
     };
     const crisis = act(state, 'roll');
     expect(crisis).toMatchObject({ phase: 'debt', active: 'p1', pendingPayment: { amount: 480, creditor: 'bank', type: 'tax', resumeActive: 'p1' } });
-    expect(marbleEngine.validateAction(crisis, 'p1', { type: 'borrow' })).toBe('Loan cannot cover this payment');
-    expect(marbleEngine.getPlayerView(crisis, 'p1').actions.some((item: any) => item.action.type === 'borrow')).toBe(false);
+    expect(marbleEngine.validateAction(crisis, 'p1', { type: 'borrow' })).toBeNull();
+    expect(marbleEngine.getPlayerView(crisis, 'p1').actions.some((item: any) => item.action.type === 'borrow')).toBe(true);
     expect(crisis.eventSequence).toBe(1);
     expect(crisis.actionLog?.filter(event => event.type === 'event-card' && event.cardId === 'maintenance')).toHaveLength(1);
     const ended = marbleEngine.applyAction(crisis, 'p1', { type: 'declare-bankruptcy' });

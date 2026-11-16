@@ -1,0 +1,84 @@
+{
+  "assets": [
+    {
+      "slug": "maldives",
+      "name": "몰디브",
+      "source": "maldives-couple-expression-v2.png",
+      "path": "/images/marble/runtime/maldives-couple-8c3403feed2a.webp",
+      "bytes": 181154,
+      "width": 768,
+      "height": 512,
+      "hasAlpha": true
+    },
+    {
+      "slug": "bali",
+      "name": "발리",
+      "source": "bali-couple-expression-v3.png",
+      "path": "/images/marble/runtime/bali-couple-ee5ce5346faa.webp",
+      "bytes": 210044,
+      "width": 768,
+      "height": 666,
+      "hasAlpha": true
+    },
+    {
+      "slug": "hawaii",
+      "name": "하와이",
+      "source": "hawaii-couple-expression-v3.png",
+      "path": "/images/marble/runtime/hawaii-couple-9ebcd218b97f.webp",
+      "bytes": 194922,
+      "width": 768,
+      "height": 512,
+      "hasAlpha": true
+    },
+    {
+      "slug": "santorini",
+      "name": "산토리니",
+      "source": "santorini-couple-expression-v2.png",
+      "path": "/images/marble/runtime/santorini-couple-84d39f119a7a.webp",
+      "bytes": 158310,
+      "width": 768,
+      "height": 702,
+      "hasAlpha": true
+    },
+    {
+      "slug": "seychelles",
+      "name": "세이셸",
+      "source": "seychelles-couple-expression-v3.png",
+      "path": "/images/marble/runtime/seychelles-couple-9e45fe7d7bfe.webp",
+      "bytes": 179270,
+      "width": 768,
+      "height": 512,
+      "hasAlpha": true
+    },
+    {
+      "slug": "jeju",
+      "name": "제주도",
+      "source": "jeju-couple-expression-v2.png",
+      "path": "/images/marble/runtime/jeju-couple-b94bb2481df5.webp",
+      "bytes": 171072,
+      "width": 768,
+      "height": 512,
+      "hasAlpha": true
+    },
+    {
+      "slug": "festival-site",
+      "name": "축제 개최",
+      "source": "festival-site-couple-expression-v2.png",
+      "path": "/images/marble/runtime/festival-site-couple-4bf9bb4765a5.webp",
+      "bytes": 146444,
+      "width": 768,
+      "height": 576,
+      "hasAlpha": true
+    },
+    {
+      "slug": "castaway-island",
+      "name": "무인도",
+      "source": "castaway-island-couple-expression-v2.png",
+      "path": "/images/marble/runtime/castaway-island-couple-641c920e8cc1.webp",
+      "bytes": 220070,
+      "width": 768,
+      "height": 702,
+      "hasAlpha": true
+    }
+  ]
+}

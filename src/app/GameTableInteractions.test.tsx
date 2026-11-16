@@ -1,3 +1,4 @@
+import { splendorBoardArtSrc } from './SplendorArtwork';
 import DaVinciTable from './DaVinciTable';
 import { JaipurBoard } from './JaipurBoard';
 import { createElement } from 'react';
@@ -9,9 +10,21 @@ import splendorArt from '../../public/images/splendor/card-map.json';
 import { deriveSplendorVisualEvent, restoreSplendorCardFocus, splendorActionPanelMessages, splendorCardAction, splendorCardArtSrc, splendorCardCostPlan, splendorCardPaymentRows, splendorGuidance, splendorNobleArtSrc, splendorRequiredReturns, splendorReserveChoices, splendorSelectedTier, splendorSelectedTierText, splendorTakeAction, splendorTotalAfterTake, SplendorTable } from './SplendorTable';
 import { jaipurSalePreview } from './JaipurBoard';
 import { splendorEngine } from '../games/splendor';
+import { splendorNobleName } from '../games/splendorNobleNames';
 import { SplendorQuickGuide } from './SplendorQuickGuide';
 
 const render = (game: 'jaipur' | 'splendor' | 'davinci', view: any, language: 'ko' | 'es' = 'ko', playerId: 'p1' | 'p2' = 'p1') => renderToStaticMarkup(game === 'davinci' ? createElement(DaVinciTable,{view,language,playerId,runAction:()=>{}}) : game === 'jaipur' ? createElement(JaipurBoard,{view,language,playerId,runAction:()=>{}}) : createElement(SplendorTable,{view,language,playerId,runAction:()=>{}}));
+
+describe('named Splendor nobles', () => {
+  it('shows each public title in the two-player card and its accessibility label', () => {
+    const view = { turn: 'p1', ownHand: { tokens: {}, bonuses: {}, reserved: [], points: 0, nobles: 0 }, board: { bank: {}, market: { 1: [], 2: [], 3: [] }, score: { p1: 0, p2: 0 }, nobles: { n0: { points: 3, requirement: { white: 4, blue: 4 } }, n15: { points: 3, requirement: { blue: 3, red: 3, black: 3 } } } }, actions: [] };
+    for (const language of ['ko', 'es'] as const) {
+      const html = render('splendor', view, language);
+      for (const id of ['n0', 'n15']) expect(html).toContain(`<b>${splendorNobleName(id, language)}</b>`);
+      expect(html).toContain(`aria-label="${splendorNobleName('n0', language)} · 3 ${language === 'ko' ? '점' : 'pts'}`);
+    }
+  });
+});
 
 describe('Splendor focus after a selected card moves or disappears', () => {
   it('follows a reserved card and otherwise returns to the remaining market', () => {
@@ -220,17 +233,17 @@ describe('Game-specific public-state interaction guidance', () => {
     expect(originalDisplay).toContain('title="4 Verde">4 Verde');
   });
 
-  it('maps all 90 engine cards and 10 nobles to distinct original faces and renders by engine ID', () => {
+  it('maps all 90 engine cards and 16 nobles to distinct artwork and renders by engine ID', () => {
     expect(splendorArt.cards).toHaveLength(90);
     expect(new Set(splendorArt.cards.map(card => card.engineId)).size).toBe(90);
     expect(new Set(splendorArt.cards.map(card => card.src)).size).toBe(90);
-    expect(splendorArt.nobles).toHaveLength(10);
-    expect(new Set(splendorArt.nobles.map(noble => noble.engineId)).size).toBe(10);
-    expect(new Set(splendorArt.nobles.map(noble => noble.src)).size).toBe(10);
+    expect(splendorArt.nobles).toHaveLength(16);
+    expect(new Set(splendorArt.nobles.map(noble => noble.engineId)).size).toBe(16);
+    expect(new Set(splendorArt.nobles.map(noble => noble.src)).size).toBe(16);
     expect(splendorArt.cards.every(card => existsSync(resolve(process.cwd(), 'public/images/splendor', card.src)))).toBe(true);
     expect(splendorArt.nobles.every(noble => existsSync(resolve(process.cwd(), 'public/images/splendor', noble.src)))).toBe(true);
     expect(splendorCardArtSrc('t1-01')).toBe('/images/splendor/cards/01.jpg');
-    expect(splendorNobleArtSrc('n0')).toBe('/images/splendor/nobles/doctor-noble-portrait.webp');
+    expect(splendorNobleArtSrc('n0')).toBe('/images/splendor/custom-v2/n0.webp');
 
     const html = render('splendor', {
       turn: 'p1', ownHand: { tokens: {}, bonuses: {}, reserved: [], points: 0, nobles: 0 },
@@ -240,8 +253,8 @@ describe('Game-specific public-state interaction guidance', () => {
       }, actions: [],
     });
     expect(html).toContain('data-art-src="/images/splendor/cards/01.jpg"');
-    expect(html).toContain('href="/images/splendor/cards/01.jpg"');
-    expect(html).toContain('href="/images/splendor/nobles/doctor-noble-portrait.webp"');
+    expect(html).toContain(`href="${splendorBoardArtSrc('/images/splendor/cards/01.jpg')}"`);
+    expect(html).toContain(`href="${splendorBoardArtSrc('/images/splendor/custom-v2/n0.webp')}"`);
   });
 
   it('Jaipur previews only the face-up reward and shows the sale bonus reveal', () => {
@@ -406,8 +419,8 @@ describe('private noble artwork injection', () => {
         const html = render('splendor', view, language, player);
         expect(html).toContain('blob:doctor-fixture');
         expect(html).toContain('blob:hanbok-fixture');
-        expect(html).toContain('/images/splendor/nobles/20003.jpg');
-        expect(html).not.toContain('/images/splendor/nobles/doctor-noble-portrait.webp');
+        expect(html).toContain(splendorBoardArtSrc('/images/splendor/custom-v2/n2.webp'));
+        expect(html).not.toContain('/images/splendor/custom-v2/n0.webp');
         expect(html).not.toContain('blob:invalid-fixture');
       }
       expect(splendorNobleArtSrc('unknown')).toBeNull();
@@ -416,6 +429,6 @@ describe('private noble artwork injection', () => {
       expect(guide).toContain('4 +');
       expect(JSON.stringify(view)).toBe(before);
     } finally { vi.unstubAllGlobals(); }
-    expect(splendorNobleArtSrc('n0')).toBe('/images/splendor/nobles/doctor-noble-portrait.webp');
+    expect(splendorNobleArtSrc('n0')).toBe('/images/splendor/custom-v2/n0.webp');
   });
 });

@@ -1,4 +1,11 @@
+import { CLASSIC_ECONOMY_PROFILE, classicEconomyConfig, type ClassicEconomyProfile } from './marbleClassicEconomy';
 import type { MarbleTile } from './marble';
+
+// New world games remove only the color-group toll bonus; saved rules stay intact.
+export const marbleColorTollBonus = (state?: { propertyRulesVersion?: unknown; boardProfile?: unknown; boardRevision?: unknown }) => state?.propertyRulesVersion === 1 && !(state.boardProfile === 'world-islands-32-v1' && (state.boardRevision === 3 || state.boardRevision === 4));
+
+// Missing flags keep saved rooms on their original loan contract.
+export const marbleLoanTerms = (version?: number) => version === 2 ? { amount: 600, repayment: 660 } : { amount: 300, repayment: 330 };
 
 export type MarbleEconomyVersion = 1 | 2 | 3;
 
@@ -14,11 +21,13 @@ export const MARBLE_ECONOMY_V3 = {
 } as const;
 
 const round10 = (value: number) => Math.round(value / 10) * 10;
-export const marbleStartingCash = (version?: number) => version === 3 ? MARBLE_ECONOMY_V3.startingCash : 1500;
-export const marblePassStartSalary = (version?: number) => version === 3 ? MARBLE_ECONOMY_V3.passStartSalary : 200;
-export const marbleLandPrice = (tile: MarbleTile, version?: number) => version === 3 && tile.kind === 'property' ? Math.max(50, round10((tile.price ?? 0) * MARBLE_ECONOMY_V3.landPriceFactor)) : tile.price ?? 0;
+export const marbleStartingCash = (version?: number, profile?: ClassicEconomyProfile) => profile === CLASSIC_ECONOMY_PROFILE ? classicEconomyConfig.startingCash : version === 3 ? MARBLE_ECONOMY_V3.startingCash : 1500;
+export const marblePassStartSalary = (version?: number, profile?: ClassicEconomyProfile) => profile === CLASSIC_ECONOMY_PROFILE ? classicEconomyConfig.passStartSalary : version === 3 ? MARBLE_ECONOMY_V3.passStartSalary : 200;
+export const marbleLandPrice = (tile: MarbleTile, version?: number) => tile.cityEconomy ? tile.cityEconomy.landCost : tile.tourismEconomy ? tile.tourismEconomy.purchaseCost : version === 3 && tile.kind === 'property' ? Math.max(50, round10((tile.price ?? 0) * MARBLE_ECONOMY_V3.landPriceFactor)) : tile.price ?? 0;
 
 export function marbleBaseRent(tile: MarbleTile, version?: number) {
+  if (tile.cityEconomy) return tile.cityEconomy.tollByMask[0]!;
+  if (tile.tourismEconomy) return tile.tourismEconomy.tollStages[0];
   if (version !== 3) return tile.rent ?? 0;
   const originalPrice = tile.price ?? 0;
   const yieldAtPrice = MARBLE_ECONOMY_V3.lowRentYield + Math.max(0, Math.min(1, (originalPrice - 100) / (560 - 100))) * (MARBLE_ECONOMY_V3.highRentYield - MARBLE_ECONOMY_V3.lowRentYield);
@@ -42,6 +51,12 @@ export function marbleBuildCostAtPrice(price: number, level: number, version?: n
   if (version !== 2) return 100;
   const factor = [0.4, 0.6, 0.8][Math.max(0, Math.min(2, Math.trunc(level)))] ?? 0.4;
   return Math.max(40, round10(Math.max(0, price) * factor));
+}
+/** Sum the existing sequential prices; target is the final construction level. */
+export function marbleBuildToCostAtPrice(price: number, fromLevel: number, targetLevel: number, version?: number) {
+  let total = 0;
+  for (let level = fromLevel; level < targetLevel; level++) total += marbleBuildCostAtPrice(price, level, version);
+  return total;
 }
 export function marbleBuildCostForVersion(tile: MarbleTile, level: number, version?: number) {
   return marbleBuildCostAtPrice(marbleLandPrice(tile, version), level, version);

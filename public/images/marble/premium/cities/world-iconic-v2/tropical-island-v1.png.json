@@ -1,0 +1,12 @@
+{
+  "tool": "image_gen__imagegen",
+  "source": "/workspace/scratch/57bb19a9e9a6/generated_images/exec-1ebccefe-b173-42c3-8205-e4f6c374072c.png",
+  "reference": "sydney-opera-house.webp",
+  "subject": "Generic compact tropical island; shared art for eight named destinations, not exact geographical likeness",
+  "prompt": "Replace architecture with three palm trees, sandy crescent island, rocks, low foliage, narrow turquoise water rim; warm upper-left miniature3D diorama, elevated three-quarter camera, transparent, no buildings/text/people/UI",
+  "width": 1407,
+  "height": 1118,
+  "hasAlpha": true,
+  "alphaMin": 0,
+  "alphaMax": 255
+}

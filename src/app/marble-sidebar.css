@@ -1,0 +1,60 @@
+/* Keep equal-square cities height-fit; use spare desktop width for existing HUD and decisions. */
+.mt-team-hud{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:6px;width:100%}
+.marble-native-team.marble-team-board .mt-team-hud .mt-bank{grid-column:auto;grid-row:auto;height:auto;min-height:82px;display:grid;grid-template-columns:30px minmax(0,1fr);gap:4px;padding:7px}
+.marble-native-team.marble-team-board .mt-team-hud .mt-bank>dl,.marble-native-team.marble-team-board .mt-team-hud .mp-player-meta{grid-column:1/-1;display:flex;flex-wrap:wrap;gap:4px;margin:0;font-size:11px}
+.marble-native-team.marble-team-board .mt-team-hud .mt-bank>dl{justify-content:space-between}
+.marble-native-team.marble-team-board .mt-team-hud .mt-bank>dl div:last-child{display:none}
+@media(min-width:1000px){
+ .marble-premium.is-modern .mp-layout,.marble-native-team.marble-team-board .mt-play-surface{display:grid;grid-template-rows:auto;align-items:start;gap:12px;max-width:1240px;margin-inline:auto}
+ .marble-premium.is-modern .mp-layout{grid-template-columns:minmax(0,min(780px,calc(100svh - 130px))) minmax(300px,1fr)}
+ .marble-native-team.marble-team-board .mt-play-surface{grid-template-columns:minmax(0,min(780px,calc(100svh - 130px))) minmax(300px,1fr)}
+ .marble-premium.is-modern .mp-board-panel,.marble-native-team.marble-team-board .mt-four-board{display:block;grid-column:1;grid-row:1;min-width:0;width:100%;max-width:none;margin:0}
+ .marble-native-team.marble-team-board .mp-board-panel{grid-column:auto;grid-row:auto;width:100%}
+ .marble-premium.is-modern .mp-dashboard,.marble-native-team.marble-team-board .mt-captain-panel{display:flex;flex-direction:column;flex-wrap:nowrap;align-items:stretch;grid-column:2;grid-row:1;width:100%;min-width:0;max-width:none;max-height:calc(100svh - 145px);overflow:auto;gap:8px;padding:8px;border-radius:10px;background:#f7f1e3}
+ .marble-premium.is-modern .mp-scoreboard{display:grid;grid-template-columns:1fr;width:100%;gap:7px}
+ .marble-premium.is-modern .mp-player{grid-template-columns:minmax(90px,1fr) auto auto;height:auto;min-height:74px;padding:8px;gap:5px}
+ .marble-premium.is-modern .mp-player-meta,.marble-premium.is-modern .mp-held-rent-pass,.marble-premium.is-modern .mp-held-escape-pass{position:static;grid-column:1/-1;max-width:none;flex-wrap:wrap;white-space:normal;font-size:11px}
+ .marble-premium.is-modern .mp-turn-panel,.marble-premium.is-modern .mp-turn-panel:has(.mp-actions button,.mp-payment-alert,.marble-property-sale){display:block;width:100%;max-width:none;flex:none;padding:7px}
+ .marble-native-team.marble-team-board .mt-action-panel{display:block;max-height:none;width:100%}
+ .marble-premium.is-modern .mp-dashboard>details,.marble-native-team.marble-team-board .mt-captain-panel>details{width:100%;min-width:0;max-width:none;flex:none}
+ .marble-premium.is-modern .mp-dashboard>.mp-event-theater,.marble-native-team.marble-team-board .mt-captain-panel>.marble-event-stage{width:100%;min-width:0;max-width:none;flex:none}
+ :is(.marble-premium,.marble-native-team).is-modern .mp-board-center .mp-center-stage:not(.mp-stage--roll):not(.mp-stage--moving){width:88%;max-height:calc(100% - 36px);grid-template-columns:80px minmax(0,1fr);padding:10px;gap:10px;overflow:auto}
+ :is(.marble-premium,.marble-native-team).is-modern .mp-center-stage .mp-stage-art{width:80px;height:120px}
+ :is(.marble-premium,.marble-native-team).is-modern .mp-center-stage:has(.mp-construction-picker) .mp-stage-art{align-self:start;margin-top:35px}
+ :is(.marble-premium,.marble-native-team).is-modern .mp-center-stage .mp-stage-details h2{font-size:22px;margin:2px 0}
+ .mp-construction-picker{font-size:12px}.mp-construction-picker>label{padding:4px 6px}.mp-construction-picker .mp-stage-preview{gap:4px;font-size:11px}
+}
+.mp-context-event{grid-column:1/-1;display:flex;flex-direction:column;gap:8px;min-width:0;width:100%}
+:is(.marble-premium,.marble-native-team).is-modern .mp-context-event .marble-event-stage{position:static;inset:auto;width:100%;min-width:0;max-width:none;margin:0;box-shadow:none;background:transparent}
+:is(.marble-premium,.marble-native-team).is-modern .mp-context-event .marble-event-mark{width:64px;min-width:64px;height:84px}
+:is(.marble-premium,.marble-native-team).is-modern .mp-center-receipt{display:flex;flex-wrap:wrap;align-items:center;gap:5px 12px;line-height:1.4}
+@media(min-width:1000px){
+ .marble-premium.is-modern:has(.mp-board-grid--32) .mp-layout,.marble-native-team.marble-team-board:has(.mp-board-grid--32) .mt-play-surface{grid-template-columns:minmax(0,1fr) 260px;max-width:none}
+}
+/* Identity and finances have separate rows; signed changes never borrow the next value's lane. */
+@media(min-width:1000px){
+ .marble-premium.is-modern .mp-player { grid-template-columns:repeat(2,minmax(0,1fr)); align-items:start; column-gap:14px; row-gap:5px; }
+ .marble-premium.is-modern .mp-player-name { grid-column:1/-1; display:flex; align-items:center; min-width:0; gap:6px; }
+ .marble-premium.is-modern .mp-player-name>b { flex:1; min-width:0; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
+ .marble-premium.is-modern .mp-player-name>span { flex:none; white-space:nowrap; }
+ .marble-premium.is-modern .mp-player-value { display:block; min-width:0; width:100%; }
+ .marble-premium.is-modern .mp-player-value small { display:block; white-space:nowrap; line-height:15px; }
+ .marble-premium.is-modern .mp-player-value>b { display:block; white-space:nowrap; }
+ .marble-premium.is-modern .mp-player-value .game-value { display:grid; grid-template-rows:auto 15px; align-items:start; justify-items:start; row-gap:0; min-width:0; white-space:nowrap; }
+ .marble-premium.is-modern .mp-player-value .game-value-delta { position:static; grid-row:2; font-size:12px; line-height:15px; white-space:nowrap; }
+ .marble-native-team.marble-team-board .mt-team-hud .mt-bank>div:not(.mp-player-meta) { min-width:0; }
+ .marble-native-team.marble-team-board .mt-team-hud .mt-bank>div:not(.mp-player-meta)>strong { display:block; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
+ .marble-native-team.marble-team-board .mt-team-hud .mt-bank>div:not(.mp-player-meta)>span { display:block; white-space:nowrap; font-variant-numeric:tabular-nums; }
+ .marble-native-team.marble-team-board .mt-team-hud .mt-bank dt,.marble-native-team.marble-team-board .mt-team-hud .mt-bank dd { white-space:nowrap; }
+}
+@media(min-width:1000px){
+ .marble-native-team.marble-team-board .mt-team-hud .mt-bank>div:not(.mp-player-meta) { display:contents; }
+ .marble-native-team.marble-team-board .mt-team-hud .mt-bank>div:not(.mp-player-meta)>strong { grid-column:2; grid-row:1; align-self:center; }
+ .marble-native-team.marble-team-board .mt-team-hud .mt-bank>div:not(.mp-player-meta)>span { grid-column:1/-1; font-size:13px; line-height:18px; }
+}
+@media(min-width:1000px){
+ .marble-native-team.marble-team-board .mt-team-hud .mp-player-meta { min-width:0; }
+ .marble-native-team.marble-team-board .mt-team-hud .mp-player-meta>span,.marble-native-team.marble-team-board .mt-team-hud .mp-player-meta>strong { max-width:100%; white-space:normal; overflow-wrap:normal; }
+}
+
+.mp-space-hint { display:block; margin:3px 0; color:#36524c; font-size:12px; line-height:1.4; }

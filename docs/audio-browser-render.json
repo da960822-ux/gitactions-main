@@ -1,0 +1,877 @@
+{
+  "status": "PASS",
+  "cueRenders": 84,
+  "decodedSamples": 39,
+  "worstPeakDbFS": -18.66,
+  "rows": [
+    {
+      "game": "marble",
+      "cue": "step",
+      "peakDbFS": -29.86,
+      "durationMs": 102,
+      "rms": 0.000953,
+      "pass": true
+    },
+    {
+      "game": "marble",
+      "cue": "arrival",
+      "peakDbFS": -23.02,
+      "durationMs": 295,
+      "rms": 0.007647,
+      "pass": true
+    },
+    {
+      "game": "marble",
+      "cue": "landmark",
+      "peakDbFS": -18.66,
+      "durationMs": 530,
+      "rms": 0.012571,
+      "pass": true
+    },
+    {
+      "game": "marble",
+      "cue": "takeover",
+      "peakDbFS": -22.86,
+      "durationMs": 330,
+      "rms": 0.009157,
+      "pass": true
+    },
+    {
+      "game": "marble",
+      "cue": "income",
+      "peakDbFS": -22.8,
+      "durationMs": 210,
+      "rms": 0.007918,
+      "pass": true
+    },
+    {
+      "game": "marble",
+      "cue": "outgoing",
+      "peakDbFS": -20.13,
+      "durationMs": 229,
+      "rms": 0.00793,
+      "pass": true
+    },
+    {
+      "game": "marble",
+      "cue": "key-draw",
+      "peakDbFS": -20.4,
+      "durationMs": 309,
+      "rms": 0.008336,
+      "pass": true
+    },
+    {
+      "game": "marble",
+      "cue": "blackout",
+      "peakDbFS": -23.28,
+      "durationMs": 117,
+      "rms": 0.002588,
+      "pass": true
+    },
+    {
+      "game": "marble",
+      "cue": "festival",
+      "peakDbFS": -23.14,
+      "durationMs": 450,
+      "rms": 0.012003,
+      "pass": true
+    },
+    {
+      "game": "marble",
+      "cue": "ticket",
+      "peakDbFS": -23.22,
+      "durationMs": 141,
+      "rms": 0.000887,
+      "pass": true
+    },
+    {
+      "game": "marble",
+      "cue": "jail",
+      "peakDbFS": -23.19,
+      "durationMs": 170,
+      "rms": 0.002068,
+      "pass": true
+    },
+    {
+      "game": "marble",
+      "cue": "escape",
+      "peakDbFS": -23.12,
+      "durationMs": 290,
+      "rms": 0.008674,
+      "pass": true
+    },
+    {
+      "game": "marble",
+      "cue": "travel",
+      "peakDbFS": -23.81,
+      "durationMs": 255,
+      "rms": 0.00602,
+      "pass": true
+    },
+    {
+      "game": "marble",
+      "cue": "debt",
+      "peakDbFS": -23.14,
+      "durationMs": 468,
+      "rms": 0.009681,
+      "pass": true
+    },
+    {
+      "game": "marble",
+      "cue": "repay",
+      "peakDbFS": -23.24,
+      "durationMs": 269,
+      "rms": 0.008202,
+      "pass": true
+    },
+    {
+      "game": "marble",
+      "cue": "rest",
+      "peakDbFS": -29.28,
+      "durationMs": 239,
+      "rms": 0.00299,
+      "pass": true
+    },
+    {
+      "game": "marble",
+      "cue": "ready",
+      "peakDbFS": -23.04,
+      "durationMs": 119,
+      "rms": 0.005252,
+      "pass": true
+    },
+    {
+      "game": "marble",
+      "cue": "return-tokens",
+      "peakDbFS": -23.19,
+      "durationMs": 134,
+      "rms": 0.005344,
+      "pass": true
+    },
+    {
+      "game": "marble",
+      "cue": "select",
+      "peakDbFS": -22.02,
+      "durationMs": 189,
+      "rms": 0.006102,
+      "pass": true
+    },
+    {
+      "game": "marble",
+      "cue": "dice",
+      "peakDbFS": -23.3,
+      "durationMs": 612,
+      "rms": 0.000816,
+      "pass": true
+    },
+    {
+      "game": "marble",
+      "cue": "buy",
+      "peakDbFS": -22.06,
+      "durationMs": 235,
+      "rms": 0.008272,
+      "pass": true
+    },
+    {
+      "game": "marble",
+      "cue": "build",
+      "peakDbFS": -19.98,
+      "durationMs": 332,
+      "rms": 0.008508,
+      "pass": true
+    },
+    {
+      "game": "marble",
+      "cue": "sell",
+      "peakDbFS": -21.95,
+      "durationMs": 274,
+      "rms": 0.008628,
+      "pass": true
+    },
+    {
+      "game": "marble",
+      "cue": "loan",
+      "peakDbFS": -22.11,
+      "durationMs": 245,
+      "rms": 0.008209,
+      "pass": true
+    },
+    {
+      "game": "marble",
+      "cue": "crisis",
+      "peakDbFS": -22.08,
+      "durationMs": 338,
+      "rms": 0.009062,
+      "pass": true
+    },
+    {
+      "game": "marble",
+      "cue": "warning",
+      "peakDbFS": -22.11,
+      "durationMs": 261,
+      "rms": 0.006609,
+      "pass": true
+    },
+    {
+      "game": "marble",
+      "cue": "pass",
+      "peakDbFS": -22.16,
+      "durationMs": 273,
+      "rms": 0.008646,
+      "pass": true
+    },
+    {
+      "game": "marble",
+      "cue": "turn",
+      "peakDbFS": -22.16,
+      "durationMs": 189,
+      "rms": 0.006101,
+      "pass": true
+    },
+    {
+      "game": "marble",
+      "cue": "win",
+      "peakDbFS": -22.02,
+      "durationMs": 444,
+      "rms": 0.01221,
+      "pass": true
+    },
+    {
+      "game": "marble",
+      "cue": "lose",
+      "peakDbFS": -22.13,
+      "durationMs": 359,
+      "rms": 0.010558,
+      "pass": true
+    },
+    {
+      "game": "marble",
+      "cue": "score",
+      "peakDbFS": -21.96,
+      "durationMs": 274,
+      "rms": 0.008632,
+      "pass": true
+    },
+    {
+      "game": "marble",
+      "cue": "event",
+      "peakDbFS": -22.11,
+      "durationMs": 185,
+      "rms": 0.005728,
+      "pass": true
+    },
+    {
+      "game": "splendor",
+      "cue": "select",
+      "peakDbFS": -20.39,
+      "durationMs": 205,
+      "rms": 0.00736,
+      "pass": true
+    },
+    {
+      "game": "splendor",
+      "cue": "place",
+      "peakDbFS": -23.43,
+      "durationMs": 150,
+      "rms": 0.001828,
+      "pass": true
+    },
+    {
+      "game": "splendor",
+      "cue": "buy",
+      "peakDbFS": -21.55,
+      "durationMs": 290,
+      "rms": 0.010227,
+      "pass": true
+    },
+    {
+      "game": "splendor",
+      "cue": "noble",
+      "peakDbFS": -20.59,
+      "durationMs": 309,
+      "rms": 0.011071,
+      "pass": true
+    },
+    {
+      "game": "splendor",
+      "cue": "return-tokens",
+      "peakDbFS": -20.31,
+      "durationMs": 207,
+      "rms": 0.005804,
+      "pass": true
+    },
+    {
+      "game": "splendor",
+      "cue": "turn",
+      "peakDbFS": -22.59,
+      "durationMs": 155,
+      "rms": 0.006583,
+      "pass": true
+    },
+    {
+      "game": "splendor",
+      "cue": "win",
+      "peakDbFS": -20.97,
+      "durationMs": 434,
+      "rms": 0.013146,
+      "pass": true
+    },
+    {
+      "game": "splendor",
+      "cue": "lose",
+      "peakDbFS": -21.78,
+      "durationMs": 360,
+      "rms": 0.010577,
+      "pass": true
+    },
+    {
+      "game": "splendor",
+      "cue": "error",
+      "peakDbFS": -21.88,
+      "durationMs": 275,
+      "rms": 0.008626,
+      "pass": true
+    },
+    {
+      "game": "davinci",
+      "cue": "select",
+      "peakDbFS": -22.71,
+      "durationMs": 75,
+      "rms": 0.003139,
+      "pass": true
+    },
+    {
+      "game": "davinci",
+      "cue": "draw",
+      "peakDbFS": -23.18,
+      "durationMs": 152,
+      "rms": 0.002341,
+      "pass": true
+    },
+    {
+      "game": "davinci",
+      "cue": "place",
+      "peakDbFS": -23.18,
+      "durationMs": 151,
+      "rms": 0.00233,
+      "pass": true
+    },
+    {
+      "game": "davinci",
+      "cue": "correct",
+      "peakDbFS": -21.87,
+      "durationMs": 269,
+      "rms": 0.00716,
+      "pass": true
+    },
+    {
+      "game": "davinci",
+      "cue": "error",
+      "peakDbFS": -22.08,
+      "durationMs": 272,
+      "rms": 0.007167,
+      "pass": true
+    },
+    {
+      "game": "davinci",
+      "cue": "turn",
+      "peakDbFS": -22.54,
+      "durationMs": 169,
+      "rms": 0.005618,
+      "pass": true
+    },
+    {
+      "game": "davinci",
+      "cue": "ready",
+      "peakDbFS": -23.38,
+      "durationMs": 120,
+      "rms": 0.004286,
+      "pass": true
+    },
+    {
+      "game": "davinci",
+      "cue": "win",
+      "peakDbFS": -21.57,
+      "durationMs": 444,
+      "rms": 0.01088,
+      "pass": true
+    },
+    {
+      "game": "davinci",
+      "cue": "lose",
+      "peakDbFS": -21.88,
+      "durationMs": 359,
+      "rms": 0.008631,
+      "pass": true
+    },
+    {
+      "game": "minhwatu",
+      "cue": "select",
+      "peakDbFS": -40.84,
+      "durationMs": 80,
+      "rms": 0.000257,
+      "pass": true
+    },
+    {
+      "game": "minhwatu",
+      "cue": "place",
+      "peakDbFS": -27.83,
+      "durationMs": 141,
+      "rms": 0.000514,
+      "pass": true
+    },
+    {
+      "game": "minhwatu",
+      "cue": "draw",
+      "peakDbFS": -28.6,
+      "durationMs": 183,
+      "rms": 0.000912,
+      "pass": true
+    },
+    {
+      "game": "minhwatu",
+      "cue": "capture",
+      "peakDbFS": -29.18,
+      "durationMs": 208,
+      "rms": 0.000711,
+      "pass": true
+    },
+    {
+      "game": "minhwatu",
+      "cue": "special",
+      "peakDbFS": -28.28,
+      "durationMs": 300,
+      "rms": 0.000781,
+      "pass": true
+    },
+    {
+      "game": "minhwatu",
+      "cue": "deal",
+      "peakDbFS": -28.7,
+      "durationMs": 345,
+      "rms": 0.001593,
+      "pass": true
+    },
+    {
+      "game": "minhwatu",
+      "cue": "turn",
+      "peakDbFS": -39.7,
+      "durationMs": 88,
+      "rms": 0.000421,
+      "pass": true
+    },
+    {
+      "game": "minhwatu",
+      "cue": "win",
+      "peakDbFS": -27.97,
+      "durationMs": 410,
+      "rms": 0.000711,
+      "pass": true
+    },
+    {
+      "game": "minhwatu",
+      "cue": "lose",
+      "peakDbFS": -28.73,
+      "durationMs": 298,
+      "rms": 0.00404,
+      "pass": true
+    },
+    {
+      "game": "minhwatu",
+      "cue": "score",
+      "peakDbFS": -30.82,
+      "durationMs": 264,
+      "rms": 0.001671,
+      "pass": true
+    },
+    {
+      "game": "domino",
+      "cue": "select",
+      "peakDbFS": -23.45,
+      "durationMs": 64,
+      "rms": 0.002734,
+      "pass": true
+    },
+    {
+      "game": "domino",
+      "cue": "place",
+      "peakDbFS": -23.18,
+      "durationMs": 151,
+      "rms": 0.002333,
+      "pass": true
+    },
+    {
+      "game": "domino",
+      "cue": "pass",
+      "peakDbFS": -22.04,
+      "durationMs": 133,
+      "rms": 0.004281,
+      "pass": true
+    },
+    {
+      "game": "domino",
+      "cue": "tranque",
+      "peakDbFS": -21.72,
+      "durationMs": 323,
+      "rms": 0.007059,
+      "pass": true
+    },
+    {
+      "game": "domino",
+      "cue": "capicua",
+      "peakDbFS": -21.86,
+      "durationMs": 249,
+      "rms": 0.007912,
+      "pass": true
+    },
+    {
+      "game": "domino",
+      "cue": "paso",
+      "peakDbFS": -22.11,
+      "durationMs": 219,
+      "rms": 0.007343,
+      "pass": true
+    },
+    {
+      "game": "domino",
+      "cue": "score",
+      "peakDbFS": -22.11,
+      "durationMs": 224,
+      "rms": 0.006701,
+      "pass": true
+    },
+    {
+      "game": "domino",
+      "cue": "turn",
+      "peakDbFS": -22.75,
+      "durationMs": 145,
+      "rms": 0.004863,
+      "pass": true
+    },
+    {
+      "game": "domino",
+      "cue": "event",
+      "peakDbFS": -22.03,
+      "durationMs": 359,
+      "rms": 0.008632,
+      "pass": true
+    },
+    {
+      "game": "domino",
+      "cue": "ready",
+      "peakDbFS": -23.25,
+      "durationMs": 120,
+      "rms": 0.004289,
+      "pass": true
+    },
+    {
+      "game": "domino",
+      "cue": "win",
+      "peakDbFS": -22.01,
+      "durationMs": 444,
+      "rms": 0.009965,
+      "pass": true
+    },
+    {
+      "game": "domino",
+      "cue": "lose",
+      "peakDbFS": -21.86,
+      "durationMs": 359,
+      "rms": 0.008639,
+      "pass": true
+    },
+    {
+      "game": "jaipur",
+      "cue": "select",
+      "peakDbFS": -25.27,
+      "durationMs": 60,
+      "rms": 0.002547,
+      "pass": true
+    },
+    {
+      "game": "jaipur",
+      "cue": "place",
+      "peakDbFS": -23.95,
+      "durationMs": 149,
+      "rms": 0.002349,
+      "pass": true
+    },
+    {
+      "game": "jaipur",
+      "cue": "exchange",
+      "peakDbFS": -23.96,
+      "durationMs": 149,
+      "rms": 0.00235,
+      "pass": true
+    },
+    {
+      "game": "jaipur",
+      "cue": "camel",
+      "peakDbFS": -23.22,
+      "durationMs": 104,
+      "rms": 0.002045,
+      "pass": true
+    },
+    {
+      "game": "jaipur",
+      "cue": "draw",
+      "peakDbFS": -24.8,
+      "durationMs": 152,
+      "rms": 0.001827,
+      "pass": true
+    },
+    {
+      "game": "jaipur",
+      "cue": "sell",
+      "peakDbFS": -21.84,
+      "durationMs": 240,
+      "rms": 0.009332,
+      "pass": true
+    },
+    {
+      "game": "jaipur",
+      "cue": "coin",
+      "peakDbFS": -19.11,
+      "durationMs": 173,
+      "rms": 0.006907,
+      "pass": true
+    },
+    {
+      "game": "jaipur",
+      "cue": "bonus",
+      "peakDbFS": -21.54,
+      "durationMs": 270,
+      "rms": 0.010225,
+      "pass": true
+    },
+    {
+      "game": "jaipur",
+      "cue": "score",
+      "peakDbFS": -21.84,
+      "durationMs": 274,
+      "rms": 0.008631,
+      "pass": true
+    },
+    {
+      "game": "jaipur",
+      "cue": "event",
+      "peakDbFS": -21.84,
+      "durationMs": 360,
+      "rms": 0.01057,
+      "pass": true
+    },
+    {
+      "game": "jaipur",
+      "cue": "win",
+      "peakDbFS": -21.8,
+      "durationMs": 445,
+      "rms": 0.012206,
+      "pass": true
+    },
+    {
+      "game": "jaipur",
+      "cue": "lose",
+      "peakDbFS": -22.02,
+      "durationMs": 360,
+      "rms": 0.010572,
+      "pass": true
+    }
+  ],
+  "decoded": [
+    {
+      "file": "contextual/dice-1.wav",
+      "durationMs": 620,
+      "channels": 1
+    },
+    {
+      "file": "contextual/dice-2.wav",
+      "durationMs": 620,
+      "channels": 1
+    },
+    {
+      "file": "contextual/step-1.wav",
+      "durationMs": 110,
+      "channels": 1
+    },
+    {
+      "file": "contextual/step-2.wav",
+      "durationMs": 110,
+      "channels": 1
+    },
+    {
+      "file": "contextual/tile-1.wav",
+      "durationMs": 155,
+      "channels": 1
+    },
+    {
+      "file": "contextual/tile-2.wav",
+      "durationMs": 155,
+      "channels": 1
+    },
+    {
+      "file": "contextual/card-1.wav",
+      "durationMs": 150,
+      "channels": 1
+    },
+    {
+      "file": "contextual/card-2.wav",
+      "durationMs": 150,
+      "channels": 1
+    },
+    {
+      "file": "contextual/coin-1.wav",
+      "durationMs": 180,
+      "channels": 1
+    },
+    {
+      "file": "contextual/coin-2.wav",
+      "durationMs": 180,
+      "channels": 1
+    },
+    {
+      "file": "contextual/build-1.wav",
+      "durationMs": 330,
+      "channels": 1
+    },
+    {
+      "file": "contextual/key-1.wav",
+      "durationMs": 320,
+      "channels": 1
+    },
+    {
+      "file": "contextual/blackout-1.wav",
+      "durationMs": 275,
+      "channels": 1
+    },
+    {
+      "file": "contextual/jail-1.wav",
+      "durationMs": 300,
+      "channels": 1
+    },
+    {
+      "file": "contextual/arrival-1.wav",
+      "durationMs": 420,
+      "channels": 1
+    },
+    {
+      "file": "contextual/pass-1.wav",
+      "durationMs": 140,
+      "channels": 1
+    },
+    {
+      "file": "contextual/travel-1.wav",
+      "durationMs": 460,
+      "channels": 1
+    },
+    {
+      "file": "contextual/gem-1.wav",
+      "durationMs": 210,
+      "channels": 1
+    },
+    {
+      "file": "minhwatu/select-1.wav",
+      "durationMs": 80,
+      "channels": 1
+    },
+    {
+      "file": "minhwatu/select-2.wav",
+      "durationMs": 80,
+      "channels": 1
+    },
+    {
+      "file": "minhwatu/place-1.wav",
+      "durationMs": 140,
+      "channels": 1
+    },
+    {
+      "file": "minhwatu/place-2.wav",
+      "durationMs": 140,
+      "channels": 1
+    },
+    {
+      "file": "minhwatu/place-3.wav",
+      "durationMs": 140,
+      "channels": 1
+    },
+    {
+      "file": "minhwatu/place-4.wav",
+      "durationMs": 140,
+      "channels": 1
+    },
+    {
+      "file": "minhwatu/draw-1.wav",
+      "durationMs": 180,
+      "channels": 1
+    },
+    {
+      "file": "minhwatu/draw-2.wav",
+      "durationMs": 180,
+      "channels": 1
+    },
+    {
+      "file": "minhwatu/draw-3.wav",
+      "durationMs": 180,
+      "channels": 1
+    },
+    {
+      "file": "minhwatu/capture-1.wav",
+      "durationMs": 210,
+      "channels": 1
+    },
+    {
+      "file": "minhwatu/capture-2.wav",
+      "durationMs": 210,
+      "channels": 1
+    },
+    {
+      "file": "minhwatu/capture-3.wav",
+      "durationMs": 210,
+      "channels": 1
+    },
+    {
+      "file": "minhwatu/stack-1.wav",
+      "durationMs": 120,
+      "channels": 1
+    },
+    {
+      "file": "minhwatu/stack-2.wav",
+      "durationMs": 120,
+      "channels": 1
+    },
+    {
+      "file": "minhwatu/stack-3.wav",
+      "durationMs": 120,
+      "channels": 1
+    },
+    {
+      "file": "minhwatu/deal-1.wav",
+      "durationMs": 350,
+      "channels": 1
+    },
+    {
+      "file": "minhwatu/deal-2.wav",
+      "durationMs": 350,
+      "channels": 1
+    },
+    {
+      "file": "minhwatu/turn-1.wav",
+      "durationMs": 90,
+      "channels": 1
+    },
+    {
+      "file": "minhwatu/win-1.wav",
+      "durationMs": 480,
+      "channels": 1
+    },
+    {
+      "file": "minhwatu/lose-1.wav",
+      "durationMs": 320,
+      "channels": 1
+    },
+    {
+      "file": "minhwatu/draw-result-1.wav",
+      "durationMs": 320,
+      "channels": 1
+    }
+  ]
+}

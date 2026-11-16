@@ -1,0 +1,30 @@
+{
+  "assets": [
+    {
+      "airline": "asiana",
+      "character": "lisbeth",
+      "path": "/images/marble/runtime/asiana-lisbeth-3da948ff54e4.webp",
+      "width": 1100,
+      "height": 619,
+      "bytes": 142906,
+      "sha256": "3da948ff54e430dd07dbf3216e7821812c1df8fd253265ed30466b3b4d302dcc",
+      "source": "/workspace/scratch/57bb19a9e9a6/airline-character-previews/asiana-lisbeth-preview.png",
+      "sourceSha256": "7779417c960d65fcd9ec3538044d1edcfe69791b764173148d8dad22b4359479",
+      "approval": "User Sentinel_2287c2553448819199055459724e6365: \uc751 \uc88b\uc544",
+      "libraryFileId": "libfile_ae386cb7df58819185b62d76a42b8d51"
+    },
+    {
+      "airline": "jetblue",
+      "character": "yeonseok",
+      "path": "/images/marble/runtime/jetblue-yeonseok-0d5ddb404187.webp",
+      "width": 1100,
+      "height": 619,
+      "bytes": 135262,
+      "sha256": "0d5ddb40418714283585ba4002ecc20878f1182faf8efe6ada5c290355c4eac0",
+      "source": "/workspace/scratch/57bb19a9e9a6/airline-character-previews/jetblue-yeonseok-preview.png",
+      "sourceSha256": "1f283a5b01cfacd0aee41a24e8f4b70ed80c47edd717d5ca69bd28b5baac39a1",
+      "approval": "User Sentinel_2287c2553448819199055459724e6365: \uc751 \uc88b\uc544",
+      "libraryFileId": "libfile_8afafa11f404819199feff24313f6003"
+    }
+  ]
+}

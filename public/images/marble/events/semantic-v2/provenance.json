@@ -1,0 +1,44 @@
+{
+  "created": "2026-10-27",
+  "purpose": "Effect-specific original event illustrations for repair, outgoing payment, blackout, and toll exemption; city festival toll boost",
+  "generator": "Built-in image generation",
+  "assets": [
+    {
+      "id": "repair",
+      "sourceSha256": "07f7e6abd8d0f557dea979e43ae42d87dcf8fe8e23c398d553f0b74f5cb219e7",
+      "sourceBytes": 2683735,
+      "webBytes": 96834
+    },
+    {
+      "id": "expense",
+      "sourceSha256": "76d110ebcfacb8a223b50a1ad094c42e3105df499444f99b8f10e88ffd41da09",
+      "sourceBytes": 2829554,
+      "webBytes": 93280
+    },
+    {
+      "id": "blackout",
+      "sourceSha256": "1325e86e96d3d7df355780b23cf31517cd540df9ca6ec371e9860878573b0e1d",
+      "sourceBytes": 2255403,
+      "webBytes": 58848
+    },
+    {
+      "id": "protection",
+      "sourceSha256": "1d7cd54b4226aa5ebb1b6ff61937358827cd45bbf759e6292af51acf30cbf01e",
+      "sourceBytes": 2661291,
+      "webBytes": 99420
+    },
+    {
+      "id": "festival",
+      "sourceSha256": "03c3f8bb1b27777a7a37513dfd5f4133e5cecd1e5154fbc335a0d60900b86e85",
+      "sourceBytes": 2506893,
+      "webBytes": 92712
+    }
+  ],
+  "constraints": [
+    "No text or logos",
+    "Readable at 160px",
+    "Original artwork; not copied from Modoo Marble"
+  ],
+  "approved_qa": "Five original full-size outputs visually inspected, 512px WebP derivatives preserve aspect/no crop; live event layout verified for same art component.",
+  "optimization": "Uniform downscale to512x640 bounds and WebP90; no crop or content edits. Original generated PNGs retained in workspace."
+}

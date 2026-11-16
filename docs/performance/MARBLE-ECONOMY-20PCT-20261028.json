@@ -1,0 +1,2702 @@
+{
+  "schemaVersion": 1,
+  "experiment": "paired 30-seed toll and construction-price comparison; heuristic AI, not human win rates",
+  "config": {
+    "seeds": "1–30",
+    "fixedAiMinimumReserve": 200,
+    "aiRandomSeed": "seed XOR 0x51f15e",
+    "actionSafetyLimit": 2500,
+    "loanRulesVersion": 2,
+    "festivalRulesVersion": 2,
+    "boardRevision": 3,
+    "startingCash": 3000,
+    "salary": 450,
+    "turnCap": 120,
+    "ordinaryCityMultiplier": 0.8,
+    "landmarkMultiplier": 0.7,
+    "tourismMultiplier": 0.8,
+    "constructionComponentMultiplier": 0.8,
+    "landPriceMultiplier": 1
+  },
+  "sourceSha256": {
+    "scripts/marble-rent-selfplay.ts": "d48f21f905a5523c0f5020920b51397bc4412e15ab6d8e921f4673900179ee89",
+    "src/games/marble.ts": "d8aea0bc8b0faaf7ad7643e9bef52a76cd499d520b754224ce610de247f275c3",
+    "src/games/fourMarble.ts": "c4f164627fae2f812480815d59cbb4859f97c0477198ae6ed3ba985d47e5843e",
+    "src/games/simpleAi.ts": "e703905d10b5677f7e77d6c9977f8bfdc933a6f49a6015b0cebb6acb9bf2fbab",
+    "src/games/marbleClassicEconomy.ts": "3cee2e4f0d21e425be7cf0653110a3c7c0ad8af0e3620f0a8ad3d68f9feb77ad",
+    "src/games/marbleClassicEconomyData.ts": "0c6954d5ba8d4f5617dcd63915c5997222b0e3a74dbdbaa5d9bf50e9de63e083",
+    "src/games/marbleEconomy.ts": "e5f2db2773954deca104375b8449ce79923e8a18e76f3d798503347834400ad8",
+    "src/games/marbleBoardProfiles.ts": "88f51b6f0c98101b2156767653da313de79a4051cc93ce557bba58536e039d06",
+    "src/games/marbleConstruction.ts": "d2e93ecea1ab692574fa6b3964197a016717445620a2cc10124079b937b68151"
+  },
+  "conditions": [
+    {
+      "name": "baseline",
+      "mode": "2p",
+      "rentRulesVersion": "absent",
+      "constructionPriceRulesVersion": "absent",
+      "summary": {
+        "matches": 30,
+        "matchesWithBankruptcy": 22,
+        "bankruptcyEndings": 22,
+        "monopolyEndings": 7,
+        "turnCapEndings": 1,
+        "matchesWithLandmarks": 30,
+        "avgTurns": 50.6,
+        "avgCrises": 3.966666666666667,
+        "avgSales": 7.933333333333334,
+        "avgLoans": 2.2666666666666666,
+        "avgLandmarks": 3.7666666666666666,
+        "avgMaxPaidRent": 1637.7
+      },
+      "matches": [
+        {
+          "seed": 1,
+          "turns": 43,
+          "actions": 170,
+          "crisis": 5,
+          "sales": 11,
+          "loans": 1,
+          "landmarks": 2,
+          "maxPaidRent": 1245,
+          "firstBankruptcyTurn": 44,
+          "ending": "bankruptcy",
+          "result": {
+            "winner": "p1",
+            "reason": "insolvent / insolvente",
+            "scores": {
+              "p1": 8307,
+              "p2": 871
+            }
+          }
+        },
+        {
+          "seed": 2,
+          "turns": 37,
+          "actions": 141,
+          "crisis": 4,
+          "sales": 8,
+          "loans": 2,
+          "landmarks": 3,
+          "maxPaidRent": 1920,
+          "firstBankruptcyTurn": 38,
+          "ending": "bankruptcy",
+          "result": {
+            "winner": "p1",
+            "reason": "insolvent / insolvente",
+            "scores": {
+              "p1": 8777,
+              "p2": -563
+            }
+          }
+        },
+        {
+          "seed": 3,
+          "turns": 34,
+          "actions": 115,
+          "crisis": 3,
+          "sales": 7,
+          "loans": 2,
+          "landmarks": 3,
+          "maxPaidRent": 1590,
+          "firstBankruptcyTurn": 35,
+          "ending": "bankruptcy",
+          "result": {
+            "winner": "p2",
+            "reason": "insolvent / insolvente",
+            "scores": {
+              "p1": 2335.5,
+              "p2": 6923
+            }
+          }
+        },
+        {
+          "seed": 4,
+          "turns": 58,
+          "actions": 192,
+          "crisis": 4,
+          "sales": 13,
+          "loans": 2,
+          "landmarks": 4,
+          "maxPaidRent": 2370,
+          "firstBankruptcyTurn": 59,
+          "ending": "bankruptcy",
+          "result": {
+            "winner": "p2",
+            "reason": "insolvent / insolvente",
+            "scores": {
+              "p1": 1377,
+              "p2": 7031
+            }
+          }
+        },
+        {
+          "seed": 5,
+          "turns": 29,
+          "actions": 113,
+          "crisis": 3,
+          "sales": 8,
+          "loans": 1,
+          "landmarks": 1,
+          "maxPaidRent": 3300,
+          "firstBankruptcyTurn": 30,
+          "ending": "bankruptcy",
+          "result": {
+            "winner": "p1",
+            "reason": "insolvent / insolvente",
+            "scores": {
+              "p1": 7924,
+              "p2": -457.5
+            }
+          }
+        },
+        {
+          "seed": 6,
+          "turns": 45,
+          "actions": 141,
+          "crisis": 3,
+          "sales": 5,
+          "loans": 1,
+          "landmarks": 4,
+          "maxPaidRent": 1425,
+          "firstBankruptcyTurn": 46,
+          "ending": "bankruptcy",
+          "result": {
+            "winner": "p1",
+            "reason": "insolvent / insolvente",
+            "scores": {
+              "p1": 7337,
+              "p2": 1616.5
+            }
+          }
+        },
+        {
+          "seed": 7,
+          "turns": 42,
+          "actions": 158,
+          "crisis": 4,
+          "sales": 10,
+          "loans": 3,
+          "landmarks": 2,
+          "maxPaidRent": 1650,
+          "firstBankruptcyTurn": 43,
+          "ending": "bankruptcy",
+          "result": {
+            "winner": "p2",
+            "reason": "insolvent / insolvente",
+            "scores": {
+              "p1": 358.5,
+              "p2": 7935
+            }
+          }
+        },
+        {
+          "seed": 8,
+          "turns": 46,
+          "actions": 154,
+          "crisis": 3,
+          "sales": 4,
+          "loans": 3,
+          "landmarks": 3,
+          "maxPaidRent": 1245,
+          "firstBankruptcyTurn": null,
+          "ending": "monopoly",
+          "result": {
+            "winner": "p1",
+            "reason": "triple-monopoly",
+            "scores": {
+              "p1": 8680,
+              "p2": 1878
+            }
+          }
+        },
+        {
+          "seed": 9,
+          "turns": 86,
+          "actions": 272,
+          "crisis": 4,
+          "sales": 9,
+          "loans": 4,
+          "landmarks": 7,
+          "maxPaidRent": 2850,
+          "firstBankruptcyTurn": null,
+          "ending": "monopoly",
+          "result": {
+            "winner": "p1",
+            "reason": "triple-monopoly",
+            "scores": {
+              "p1": 11636,
+              "p2": 1124.5
+            }
+          }
+        },
+        {
+          "seed": 10,
+          "turns": 33,
+          "actions": 129,
+          "crisis": 5,
+          "sales": 7,
+          "loans": 2,
+          "landmarks": 3,
+          "maxPaidRent": 1185,
+          "firstBankruptcyTurn": 34,
+          "ending": "bankruptcy",
+          "result": {
+            "winner": "p1",
+            "reason": "insolvent / insolvente",
+            "scores": {
+              "p1": 7604,
+              "p2": -256.5
+            }
+          }
+        },
+        {
+          "seed": 11,
+          "turns": 41,
+          "actions": 152,
+          "crisis": 3,
+          "sales": 6,
+          "loans": 2,
+          "landmarks": 6,
+          "maxPaidRent": 1755,
+          "firstBankruptcyTurn": 42,
+          "ending": "bankruptcy",
+          "result": {
+            "winner": "p1",
+            "reason": "insolvent / insolvente",
+            "scores": {
+              "p1": 8497,
+              "p2": 334.5
+            }
+          }
+        },
+        {
+          "seed": 12,
+          "turns": 62,
+          "actions": 193,
+          "crisis": 3,
+          "sales": 5,
+          "loans": 3,
+          "landmarks": 3,
+          "maxPaidRent": 1650,
+          "firstBankruptcyTurn": null,
+          "ending": "monopoly",
+          "result": {
+            "winner": "p1",
+            "reason": "triple-monopoly",
+            "scores": {
+              "p1": 8210,
+              "p2": 2767
+            }
+          }
+        },
+        {
+          "seed": 13,
+          "turns": 97,
+          "actions": 336,
+          "crisis": 8,
+          "sales": 16,
+          "loans": 3,
+          "landmarks": 8,
+          "maxPaidRent": 1425,
+          "firstBankruptcyTurn": 98,
+          "ending": "bankruptcy",
+          "result": {
+            "winner": "p1",
+            "reason": "insolvent / insolvente",
+            "scores": {
+              "p1": 12607,
+              "p2": 537.5
+            }
+          }
+        },
+        {
+          "seed": 14,
+          "turns": 49,
+          "actions": 182,
+          "crisis": 7,
+          "sales": 8,
+          "loans": 6,
+          "landmarks": 1,
+          "maxPaidRent": 2370,
+          "firstBankruptcyTurn": 50,
+          "ending": "bankruptcy",
+          "result": {
+            "winner": "p1",
+            "reason": "insolvent / insolvente",
+            "scores": {
+              "p1": 8210,
+              "p2": 1386
+            }
+          }
+        },
+        {
+          "seed": 15,
+          "turns": 32,
+          "actions": 135,
+          "crisis": 3,
+          "sales": 7,
+          "loans": 2,
+          "landmarks": 1,
+          "maxPaidRent": 1245,
+          "firstBankruptcyTurn": 33,
+          "ending": "bankruptcy",
+          "result": {
+            "winner": "p2",
+            "reason": "insolvent / insolvente",
+            "scores": {
+              "p1": 672,
+              "p2": 7905
+            }
+          }
+        },
+        {
+          "seed": 16,
+          "turns": 63,
+          "actions": 231,
+          "crisis": 4,
+          "sales": 7,
+          "loans": 2,
+          "landmarks": 5,
+          "maxPaidRent": 2640,
+          "firstBankruptcyTurn": null,
+          "ending": "monopoly",
+          "result": {
+            "winner": "p2",
+            "reason": "triple-monopoly",
+            "scores": {
+              "p1": 279.5,
+              "p2": 12468
+            }
+          }
+        },
+        {
+          "seed": 17,
+          "turns": 37,
+          "actions": 138,
+          "crisis": 3,
+          "sales": 9,
+          "loans": 2,
+          "landmarks": 2,
+          "maxPaidRent": 2370,
+          "firstBankruptcyTurn": 38,
+          "ending": "bankruptcy",
+          "result": {
+            "winner": "p1",
+            "reason": "insolvent / insolvente",
+            "scores": {
+              "p1": 7696,
+              "p2": -99
+            }
+          }
+        },
+        {
+          "seed": 18,
+          "turns": 120,
+          "actions": 360,
+          "crisis": 6,
+          "sales": 9,
+          "loans": 4,
+          "landmarks": 10,
+          "maxPaidRent": 1650,
+          "firstBankruptcyTurn": null,
+          "ending": "turn-cap",
+          "result": {
+            "winner": "p2",
+            "reason": "asset turn limit / límite por patrimonio",
+            "scores": {
+              "p1": 5034,
+              "p2": 9466
+            }
+          }
+        },
+        {
+          "seed": 19,
+          "turns": 48,
+          "actions": 170,
+          "crisis": 1,
+          "sales": 0,
+          "loans": 1,
+          "landmarks": 3,
+          "maxPaidRent": 870,
+          "firstBankruptcyTurn": null,
+          "ending": "monopoly",
+          "result": {
+            "winner": "p1",
+            "reason": "triple-monopoly",
+            "scores": {
+              "p1": 5870,
+              "p2": 5270
+            }
+          }
+        },
+        {
+          "seed": 20,
+          "turns": 32,
+          "actions": 131,
+          "crisis": 3,
+          "sales": 7,
+          "loans": 2,
+          "landmarks": 4,
+          "maxPaidRent": 525,
+          "firstBankruptcyTurn": 33,
+          "ending": "bankruptcy",
+          "result": {
+            "winner": "p2",
+            "reason": "insolvent / insolvente",
+            "scores": {
+              "p1": 3471,
+              "p2": 4294
+            }
+          }
+        },
+        {
+          "seed": 21,
+          "turns": 38,
+          "actions": 127,
+          "crisis": 2,
+          "sales": 4,
+          "loans": 1,
+          "landmarks": 5,
+          "maxPaidRent": 810,
+          "firstBankruptcyTurn": 39,
+          "ending": "bankruptcy",
+          "result": {
+            "winner": "p2",
+            "reason": "insolvent / insolvente",
+            "scores": {
+              "p1": 1736,
+              "p2": 6657
+            }
+          }
+        },
+        {
+          "seed": 22,
+          "turns": 54,
+          "actions": 175,
+          "crisis": 3,
+          "sales": 10,
+          "loans": 2,
+          "landmarks": 3,
+          "maxPaidRent": 1590,
+          "firstBankruptcyTurn": 55,
+          "ending": "bankruptcy",
+          "result": {
+            "winner": "p2",
+            "reason": "insolvent / insolvente",
+            "scores": {
+              "p1": 657,
+              "p2": 8897
+            }
+          }
+        },
+        {
+          "seed": 23,
+          "turns": 36,
+          "actions": 131,
+          "crisis": 3,
+          "sales": 7,
+          "loans": 2,
+          "landmarks": 4,
+          "maxPaidRent": 1590,
+          "firstBankruptcyTurn": 37,
+          "ending": "bankruptcy",
+          "result": {
+            "winner": "p2",
+            "reason": "insolvent / insolvente",
+            "scores": {
+              "p1": -466.5,
+              "p2": 8985
+            }
+          }
+        },
+        {
+          "seed": 24,
+          "turns": 50,
+          "actions": 164,
+          "crisis": 5,
+          "sales": 8,
+          "loans": 2,
+          "landmarks": 3,
+          "maxPaidRent": 1155,
+          "firstBankruptcyTurn": null,
+          "ending": "monopoly",
+          "result": {
+            "winner": "p1",
+            "reason": "triple-monopoly",
+            "scores": {
+              "p1": 7586,
+              "p2": 1216
+            }
+          }
+        },
+        {
+          "seed": 25,
+          "turns": 56,
+          "actions": 202,
+          "crisis": 4,
+          "sales": 14,
+          "loans": 2,
+          "landmarks": 3,
+          "maxPaidRent": 1650,
+          "firstBankruptcyTurn": 57,
+          "ending": "bankruptcy",
+          "result": {
+            "winner": "p2",
+            "reason": "insolvent / insolvente",
+            "scores": {
+              "p1": 1487.5,
+              "p2": 8122
+            }
+          }
+        },
+        {
+          "seed": 26,
+          "turns": 55,
+          "actions": 189,
+          "crisis": 9,
+          "sales": 9,
+          "loans": 4,
+          "landmarks": 3,
+          "maxPaidRent": 1005,
+          "firstBankruptcyTurn": 56,
+          "ending": "bankruptcy",
+          "result": {
+            "winner": "p1",
+            "reason": "insolvent / insolvente",
+            "scores": {
+              "p1": 10149,
+              "p2": -449
+            }
+          }
+        },
+        {
+          "seed": 27,
+          "turns": 41,
+          "actions": 143,
+          "crisis": 2,
+          "sales": 7,
+          "loans": 1,
+          "landmarks": 3,
+          "maxPaidRent": 1245,
+          "firstBankruptcyTurn": null,
+          "ending": "monopoly",
+          "result": {
+            "winner": "p2",
+            "reason": "triple-monopoly",
+            "scores": {
+              "p1": -530.5,
+              "p2": 9122
+            }
+          }
+        },
+        {
+          "seed": 28,
+          "turns": 42,
+          "actions": 138,
+          "crisis": 3,
+          "sales": 5,
+          "loans": 1,
+          "landmarks": 4,
+          "maxPaidRent": 756,
+          "firstBankruptcyTurn": 43,
+          "ending": "bankruptcy",
+          "result": {
+            "winner": "p2",
+            "reason": "insolvent / insolvente",
+            "scores": {
+              "p1": 1360,
+              "p2": 7695
+            }
+          }
+        },
+        {
+          "seed": 29,
+          "turns": 44,
+          "actions": 152,
+          "crisis": 3,
+          "sales": 8,
+          "loans": 1,
+          "landmarks": 3,
+          "maxPaidRent": 1920,
+          "firstBankruptcyTurn": 45,
+          "ending": "bankruptcy",
+          "result": {
+            "winner": "p2",
+            "reason": "insolvent / insolvente",
+            "scores": {
+              "p1": -640.5,
+              "p2": 8580
+            }
+          }
+        },
+        {
+          "seed": 30,
+          "turns": 68,
+          "actions": 229,
+          "crisis": 6,
+          "sales": 10,
+          "loans": 4,
+          "landmarks": 7,
+          "maxPaidRent": 2130,
+          "firstBankruptcyTurn": 69,
+          "ending": "bankruptcy",
+          "result": {
+            "winner": "p2",
+            "reason": "insolvent / insolvente",
+            "scores": {
+              "p1": 750,
+              "p2": 9713
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "baseline",
+      "mode": "team",
+      "rentRulesVersion": "absent",
+      "constructionPriceRulesVersion": "absent",
+      "summary": {
+        "matches": 30,
+        "matchesWithBankruptcy": 28,
+        "bankruptcyEndings": 12,
+        "monopolyEndings": 7,
+        "turnCapEndings": 11,
+        "matchesWithLandmarks": 30,
+        "avgTurns": 100.86666666666666,
+        "avgCrises": 4.166666666666667,
+        "avgSales": 8.466666666666667,
+        "avgLoans": 2.033333333333333,
+        "avgLandmarks": 6.7,
+        "avgMaxPaidRent": 2363
+      },
+      "matches": [
+        {
+          "seed": 1,
+          "turns": 103,
+          "actions": 319,
+          "crisis": 4,
+          "sales": 11,
+          "loans": 1,
+          "landmarks": 8,
+          "maxPaidRent": 2640,
+          "firstBankruptcyTurn": 88,
+          "ending": "bankruptcy",
+          "result": {
+            "winner": "B",
+            "scores": {
+              "A": 0,
+              "B": 19015
+            },
+            "reason": {
+              "ko": "한 팀의 두 명이 모두 파산했습니다.",
+              "es": "Los dos integrantes de un equipo quebraron."
+            }
+          }
+        },
+        {
+          "seed": 2,
+          "turns": 86,
+          "actions": 276,
+          "crisis": 7,
+          "sales": 6,
+          "loans": 2,
+          "landmarks": 8,
+          "maxPaidRent": 1245,
+          "firstBankruptcyTurn": 77,
+          "ending": "bankruptcy",
+          "result": {
+            "winner": "A",
+            "scores": {
+              "A": 20381,
+              "B": 0
+            },
+            "reason": {
+              "ko": "한 팀의 두 명이 모두 파산했습니다.",
+              "es": "Los dos integrantes de un equipo quebraron."
+            }
+          }
+        },
+        {
+          "seed": 3,
+          "turns": 66,
+          "actions": 201,
+          "crisis": 4,
+          "sales": 4,
+          "loans": 2,
+          "landmarks": 4,
+          "maxPaidRent": 1920,
+          "firstBankruptcyTurn": 67,
+          "ending": "monopoly",
+          "result": {
+            "winner": "A",
+            "scores": {
+              "A": 14769,
+              "B": 2916
+            },
+            "reason": {
+              "ko": "한 플레이어가 색상 도시군 3개를 완성했습니다.",
+              "es": "Una persona completó tres grupos de ciudades del mismo color."
+            }
+          }
+        },
+        {
+          "seed": 4,
+          "turns": 105,
+          "actions": 325,
+          "crisis": 6,
+          "sales": 9,
+          "loans": 4,
+          "landmarks": 4,
+          "maxPaidRent": 2490,
+          "firstBankruptcyTurn": 95,
+          "ending": "monopoly",
+          "result": {
+            "winner": "A",
+            "scores": {
+              "A": 18653,
+              "B": 2298.5
+            },
+            "reason": {
+              "ko": "한 플레이어가 색상 도시군 3개를 완성했습니다.",
+              "es": "Una persona completó tres grupos de ciudades del mismo color."
+            }
+          }
+        },
+        {
+          "seed": 5,
+          "turns": 105,
+          "actions": 341,
+          "crisis": 7,
+          "sales": 13,
+          "loans": 4,
+          "landmarks": 8,
+          "maxPaidRent": 2130,
+          "firstBankruptcyTurn": 102,
+          "ending": "bankruptcy",
+          "result": {
+            "winner": "B",
+            "scores": {
+              "A": 0,
+              "B": 18922
+            },
+            "reason": {
+              "ko": "한 팀의 두 명이 모두 파산했습니다.",
+              "es": "Los dos integrantes de un equipo quebraron."
+            }
+          }
+        },
+        {
+          "seed": 6,
+          "turns": 120,
+          "actions": 375,
+          "crisis": 2,
+          "sales": 3,
+          "loans": 1,
+          "landmarks": 11,
+          "maxPaidRent": 2640,
+          "firstBankruptcyTurn": 36,
+          "ending": "turn-cap",
+          "result": {
+            "winner": "B",
+            "scores": {
+              "A": 8814,
+              "B": 15179
+            },
+            "reason": {
+              "ko": "120차례 종료 · 두 팀원의 순자산 합계",
+              "es": "120 turnos · suma del patrimonio neto de cada equipo"
+            }
+          }
+        },
+        {
+          "seed": 7,
+          "turns": 112,
+          "actions": 349,
+          "crisis": 6,
+          "sales": 10,
+          "loans": 3,
+          "landmarks": 5,
+          "maxPaidRent": 2700,
+          "firstBankruptcyTurn": 85,
+          "ending": "bankruptcy",
+          "result": {
+            "winner": "A",
+            "scores": {
+              "A": 21210,
+              "B": 0
+            },
+            "reason": {
+              "ko": "한 팀의 두 명이 모두 파산했습니다.",
+              "es": "Los dos integrantes de un equipo quebraron."
+            }
+          }
+        },
+        {
+          "seed": 8,
+          "turns": 120,
+          "actions": 376,
+          "crisis": 7,
+          "sales": 12,
+          "loans": 3,
+          "landmarks": 8,
+          "maxPaidRent": 2340,
+          "firstBankruptcyTurn": 71,
+          "ending": "turn-cap",
+          "result": {
+            "winner": "B",
+            "scores": {
+              "A": 218,
+              "B": 17419
+            },
+            "reason": {
+              "ko": "120차례 종료 · 두 팀원의 순자산 합계",
+              "es": "120 turnos · suma del patrimonio neto de cada equipo"
+            }
+          }
+        },
+        {
+          "seed": 9,
+          "turns": 120,
+          "actions": 387,
+          "crisis": 6,
+          "sales": 14,
+          "loans": 3,
+          "landmarks": 8,
+          "maxPaidRent": 2370,
+          "firstBankruptcyTurn": 76,
+          "ending": "turn-cap",
+          "result": {
+            "winner": "A",
+            "scores": {
+              "A": 13392,
+              "B": 9810
+            },
+            "reason": {
+              "ko": "120차례 종료 · 두 팀원의 순자산 합계",
+              "es": "120 turnos · suma del patrimonio neto de cada equipo"
+            }
+          }
+        },
+        {
+          "seed": 10,
+          "turns": 66,
+          "actions": 223,
+          "crisis": 3,
+          "sales": 7,
+          "loans": 1,
+          "landmarks": 5,
+          "maxPaidRent": 3510,
+          "firstBankruptcyTurn": 42,
+          "ending": "bankruptcy",
+          "result": {
+            "winner": "B",
+            "scores": {
+              "A": 0,
+              "B": 14977
+            },
+            "reason": {
+              "ko": "한 팀의 두 명이 모두 파산했습니다.",
+              "es": "Los dos integrantes de un equipo quebraron."
+            }
+          }
+        },
+        {
+          "seed": 11,
+          "turns": 94,
+          "actions": 303,
+          "crisis": 3,
+          "sales": 7,
+          "loans": 2,
+          "landmarks": 5,
+          "maxPaidRent": 2640,
+          "firstBankruptcyTurn": 87,
+          "ending": "monopoly",
+          "result": {
+            "winner": "A",
+            "scores": {
+              "A": 18325,
+              "B": -5
+            },
+            "reason": {
+              "ko": "한 플레이어가 색상 도시군 3개를 완성했습니다.",
+              "es": "Una persona completó tres grupos de ciudades del mismo color."
+            }
+          }
+        },
+        {
+          "seed": 12,
+          "turns": 114,
+          "actions": 369,
+          "crisis": 4,
+          "sales": 8,
+          "loans": 2,
+          "landmarks": 8,
+          "maxPaidRent": 2370,
+          "firstBankruptcyTurn": 102,
+          "ending": "bankruptcy",
+          "result": {
+            "winner": "B",
+            "scores": {
+              "A": 0,
+              "B": 20660
+            },
+            "reason": {
+              "ko": "한 팀의 두 명이 모두 파산했습니다.",
+              "es": "Los dos integrantes de un equipo quebraron."
+            }
+          }
+        },
+        {
+          "seed": 13,
+          "turns": 120,
+          "actions": 367,
+          "crisis": 5,
+          "sales": 3,
+          "loans": 4,
+          "landmarks": 7,
+          "maxPaidRent": 2490,
+          "firstBankruptcyTurn": 117,
+          "ending": "turn-cap",
+          "result": {
+            "winner": "A",
+            "scores": {
+              "A": 14760,
+              "B": 7908
+            },
+            "reason": {
+              "ko": "120차례 종료 · 두 팀원의 순자산 합계",
+              "es": "120 turnos · suma del patrimonio neto de cada equipo"
+            }
+          }
+        },
+        {
+          "seed": 14,
+          "turns": 120,
+          "actions": 358,
+          "crisis": 2,
+          "sales": 8,
+          "loans": 0,
+          "landmarks": 9,
+          "maxPaidRent": 1755,
+          "firstBankruptcyTurn": 45,
+          "ending": "turn-cap",
+          "result": {
+            "winner": "B",
+            "scores": {
+              "A": 6415,
+              "B": 7736
+            },
+            "reason": {
+              "ko": "120차례 종료 · 두 팀원의 순자산 합계",
+              "es": "120 turnos · suma del patrimonio neto de cada equipo"
+            }
+          }
+        },
+        {
+          "seed": 15,
+          "turns": 120,
+          "actions": 381,
+          "crisis": 4,
+          "sales": 7,
+          "loans": 2,
+          "landmarks": 7,
+          "maxPaidRent": 1350,
+          "firstBankruptcyTurn": 111,
+          "ending": "turn-cap",
+          "result": {
+            "winner": "A",
+            "scores": {
+              "A": 18116,
+              "B": 5721
+            },
+            "reason": {
+              "ko": "120차례 종료 · 두 팀원의 순자산 합계",
+              "es": "120 turnos · suma del patrimonio neto de cada equipo"
+            }
+          }
+        },
+        {
+          "seed": 16,
+          "turns": 89,
+          "actions": 280,
+          "crisis": 4,
+          "sales": 7,
+          "loans": 2,
+          "landmarks": 6,
+          "maxPaidRent": 2130,
+          "firstBankruptcyTurn": 53,
+          "ending": "bankruptcy",
+          "result": {
+            "winner": "A",
+            "scores": {
+              "A": 17562,
+              "B": 0
+            },
+            "reason": {
+              "ko": "한 팀의 두 명이 모두 파산했습니다.",
+              "es": "Los dos integrantes de un equipo quebraron."
+            }
+          }
+        },
+        {
+          "seed": 17,
+          "turns": 50,
+          "actions": 170,
+          "crisis": 1,
+          "sales": 2,
+          "loans": 1,
+          "landmarks": 3,
+          "maxPaidRent": 1725,
+          "firstBankruptcyTurn": null,
+          "ending": "monopoly",
+          "result": {
+            "winner": "A",
+            "scores": {
+              "A": 11522,
+              "B": 5509
+            },
+            "reason": {
+              "ko": "한 플레이어가 색상 도시군 3개를 완성했습니다.",
+              "es": "Una persona completó tres grupos de ciudades del mismo color."
+            }
+          }
+        },
+        {
+          "seed": 18,
+          "turns": 70,
+          "actions": 231,
+          "crisis": 3,
+          "sales": 7,
+          "loans": 2,
+          "landmarks": 6,
+          "maxPaidRent": 1725,
+          "firstBankruptcyTurn": 57,
+          "ending": "monopoly",
+          "result": {
+            "winner": "A",
+            "scores": {
+              "A": 16595,
+              "B": 260
+            },
+            "reason": {
+              "ko": "한 플레이어가 한 면의 모든 도시와 섬을 소유했습니다.",
+              "es": "Una persona posee todas las ciudades e islas de un lado."
+            }
+          }
+        },
+        {
+          "seed": 19,
+          "turns": 120,
+          "actions": 383,
+          "crisis": 4,
+          "sales": 13,
+          "loans": 1,
+          "landmarks": 7,
+          "maxPaidRent": 1755,
+          "firstBankruptcyTurn": 82,
+          "ending": "turn-cap",
+          "result": {
+            "winner": "B",
+            "scores": {
+              "A": 7418,
+              "B": 10919.5
+            },
+            "reason": {
+              "ko": "120차례 종료 · 두 팀원의 순자산 합계",
+              "es": "120 turnos · suma del patrimonio neto de cada equipo"
+            }
+          }
+        },
+        {
+          "seed": 20,
+          "turns": 98,
+          "actions": 347,
+          "crisis": 7,
+          "sales": 21,
+          "loans": 1,
+          "landmarks": 7,
+          "maxPaidRent": 1920,
+          "firstBankruptcyTurn": 38,
+          "ending": "bankruptcy",
+          "result": {
+            "winner": "B",
+            "scores": {
+              "A": 0,
+              "B": 12398
+            },
+            "reason": {
+              "ko": "한 팀의 두 명이 모두 파산했습니다.",
+              "es": "Los dos integrantes de un equipo quebraron."
+            }
+          }
+        },
+        {
+          "seed": 21,
+          "turns": 91,
+          "actions": 287,
+          "crisis": 2,
+          "sales": 9,
+          "loans": 1,
+          "landmarks": 6,
+          "maxPaidRent": 2430,
+          "firstBankruptcyTurn": 75,
+          "ending": "monopoly",
+          "result": {
+            "winner": "A",
+            "scores": {
+              "A": 15403,
+              "B": 3381.5
+            },
+            "reason": {
+              "ko": "한 플레이어가 색상 도시군 3개를 완성했습니다.",
+              "es": "Una persona completó tres grupos de ciudades del mismo color."
+            }
+          }
+        },
+        {
+          "seed": 22,
+          "turns": 120,
+          "actions": 353,
+          "crisis": 2,
+          "sales": 4,
+          "loans": 2,
+          "landmarks": 4,
+          "maxPaidRent": 1830,
+          "firstBankruptcyTurn": null,
+          "ending": "turn-cap",
+          "result": {
+            "winner": "B",
+            "scores": {
+              "A": 5816,
+              "B": 17586
+            },
+            "reason": {
+              "ko": "120차례 종료 · 두 팀원의 순자산 합계",
+              "es": "120 turnos · suma del patrimonio neto de cada equipo"
+            }
+          }
+        },
+        {
+          "seed": 23,
+          "turns": 117,
+          "actions": 351,
+          "crisis": 5,
+          "sales": 5,
+          "loans": 3,
+          "landmarks": 7,
+          "maxPaidRent": 3300,
+          "firstBankruptcyTurn": 66,
+          "ending": "bankruptcy",
+          "result": {
+            "winner": "B",
+            "scores": {
+              "A": 0,
+              "B": 21357
+            },
+            "reason": {
+              "ko": "한 팀의 두 명이 모두 파산했습니다.",
+              "es": "Los dos integrantes de un equipo quebraron."
+            }
+          }
+        },
+        {
+          "seed": 24,
+          "turns": 87,
+          "actions": 276,
+          "crisis": 4,
+          "sales": 11,
+          "loans": 2,
+          "landmarks": 5,
+          "maxPaidRent": 2370,
+          "firstBankruptcyTurn": 87,
+          "ending": "bankruptcy",
+          "result": {
+            "winner": "A",
+            "scores": {
+              "A": 18647,
+              "B": 0
+            },
+            "reason": {
+              "ko": "한 팀의 두 명이 모두 파산했습니다.",
+              "es": "Los dos integrantes de un equipo quebraron."
+            }
+          }
+        },
+        {
+          "seed": 25,
+          "turns": 85,
+          "actions": 251,
+          "crisis": 2,
+          "sales": 11,
+          "loans": 0,
+          "landmarks": 3,
+          "maxPaidRent": 1755,
+          "firstBankruptcyTurn": 76,
+          "ending": "bankruptcy",
+          "result": {
+            "winner": "B",
+            "scores": {
+              "A": 0,
+              "B": 13698
+            },
+            "reason": {
+              "ko": "한 팀의 두 명이 모두 파산했습니다.",
+              "es": "Los dos integrantes de un equipo quebraron."
+            }
+          }
+        },
+        {
+          "seed": 26,
+          "turns": 120,
+          "actions": 359,
+          "crisis": 7,
+          "sales": 17,
+          "loans": 3,
+          "landmarks": 10,
+          "maxPaidRent": 3450,
+          "firstBankruptcyTurn": 51,
+          "ending": "turn-cap",
+          "result": {
+            "winner": "A",
+            "scores": {
+              "A": 15419,
+              "B": 4549
+            },
+            "reason": {
+              "ko": "120차례 종료 · 두 팀원의 순자산 합계",
+              "es": "120 turnos · suma del patrimonio neto de cada equipo"
+            }
+          }
+        },
+        {
+          "seed": 27,
+          "turns": 120,
+          "actions": 367,
+          "crisis": 3,
+          "sales": 3,
+          "loans": 2,
+          "landmarks": 9,
+          "maxPaidRent": 2100,
+          "firstBankruptcyTurn": 113,
+          "ending": "turn-cap",
+          "result": {
+            "winner": "A",
+            "scores": {
+              "A": 14972,
+              "B": 10633
+            },
+            "reason": {
+              "ko": "120차례 종료 · 두 팀원의 순자산 합계",
+              "es": "120 turnos · suma del patrimonio neto de cada equipo"
+            }
+          }
+        },
+        {
+          "seed": 28,
+          "turns": 70,
+          "actions": 228,
+          "crisis": 3,
+          "sales": 5,
+          "loans": 2,
+          "landmarks": 6,
+          "maxPaidRent": 2820,
+          "firstBankruptcyTurn": 48,
+          "ending": "monopoly",
+          "result": {
+            "winner": "B",
+            "scores": {
+              "A": 551,
+              "B": 17212
+            },
+            "reason": {
+              "ko": "한 플레이어가 색상 도시군 3개를 완성했습니다.",
+              "es": "Una persona completó tres grupos de ciudades del mismo color."
+            }
+          }
+        },
+        {
+          "seed": 29,
+          "turns": 120,
+          "actions": 363,
+          "crisis": 3,
+          "sales": 7,
+          "loans": 2,
+          "landmarks": 11,
+          "maxPaidRent": 2370,
+          "firstBankruptcyTurn": 64,
+          "ending": "turn-cap",
+          "result": {
+            "winner": "B",
+            "scores": {
+              "A": 2957,
+              "B": 19999
+            },
+            "reason": {
+              "ko": "120차례 종료 · 두 팀원의 순자산 합계",
+              "es": "120 turnos · suma del patrimonio neto de cada equipo"
+            }
+          }
+        },
+        {
+          "seed": 30,
+          "turns": 98,
+          "actions": 317,
+          "crisis": 5,
+          "sales": 10,
+          "loans": 3,
+          "landmarks": 6,
+          "maxPaidRent": 4620,
+          "firstBankruptcyTurn": 68,
+          "ending": "bankruptcy",
+          "result": {
+            "winner": "B",
+            "scores": {
+              "A": 0,
+              "B": 18045
+            },
+            "reason": {
+              "ko": "한 팀의 두 명이 모두 파산했습니다.",
+              "es": "Los dos integrantes de un equipo quebraron."
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "rebalanced",
+      "mode": "2p",
+      "rentRulesVersion": 2,
+      "constructionPriceRulesVersion": 2,
+      "summary": {
+        "matches": 30,
+        "matchesWithBankruptcy": 17,
+        "bankruptcyEndings": 17,
+        "monopolyEndings": 13,
+        "turnCapEndings": 0,
+        "matchesWithLandmarks": 30,
+        "avgTurns": 62.63333333333333,
+        "avgCrises": 4.233333333333333,
+        "avgSales": 8.466666666666667,
+        "avgLoans": 2.9,
+        "avgLandmarks": 5.666666666666667,
+        "avgMaxPaidRent": 1667.9333333333334
+      },
+      "matches": [
+        {
+          "seed": 1,
+          "turns": 70,
+          "actions": 247,
+          "crisis": 6,
+          "sales": 14,
+          "loans": 2,
+          "landmarks": 5,
+          "maxPaidRent": 1617,
+          "firstBankruptcyTurn": null,
+          "ending": "monopoly",
+          "result": {
+            "winner": "p1",
+            "reason": "triple-monopoly",
+            "scores": {
+              "p1": 11398,
+              "p2": -643.5
+            }
+          }
+        },
+        {
+          "seed": 2,
+          "turns": 90,
+          "actions": 321,
+          "crisis": 9,
+          "sales": 24,
+          "loans": 7,
+          "landmarks": 11,
+          "maxPaidRent": 1911,
+          "firstBankruptcyTurn": 91,
+          "ending": "bankruptcy",
+          "result": {
+            "winner": "p2",
+            "reason": "insolvent / insolvente",
+            "scores": {
+              "p1": -406.5,
+              "p2": 10308
+            }
+          }
+        },
+        {
+          "seed": 3,
+          "turns": 51,
+          "actions": 165,
+          "crisis": 4,
+          "sales": 7,
+          "loans": 3,
+          "landmarks": 5,
+          "maxPaidRent": 1659,
+          "firstBankruptcyTurn": 52,
+          "ending": "bankruptcy",
+          "result": {
+            "winner": "p1",
+            "reason": "insolvent / insolvente",
+            "scores": {
+              "p1": 8385,
+              "p2": 1278
+            }
+          }
+        },
+        {
+          "seed": 4,
+          "turns": 62,
+          "actions": 180,
+          "crisis": 2,
+          "sales": 1,
+          "loans": 1,
+          "landmarks": 6,
+          "maxPaidRent": 996,
+          "firstBankruptcyTurn": null,
+          "ending": "monopoly",
+          "result": {
+            "winner": "p1",
+            "reason": "triple-monopoly",
+            "scores": {
+              "p1": 7663,
+              "p2": 4152
+            }
+          }
+        },
+        {
+          "seed": 5,
+          "turns": 76,
+          "actions": 238,
+          "crisis": 3,
+          "sales": 7,
+          "loans": 2,
+          "landmarks": 6,
+          "maxPaidRent": 2640,
+          "firstBankruptcyTurn": null,
+          "ending": "monopoly",
+          "result": {
+            "winner": "p1",
+            "reason": "triple-monopoly",
+            "scores": {
+              "p1": 11729,
+              "p2": 931
+            }
+          }
+        },
+        {
+          "seed": 6,
+          "turns": 116,
+          "actions": 395,
+          "crisis": 8,
+          "sales": 16,
+          "loans": 7,
+          "landmarks": 8,
+          "maxPaidRent": 2940,
+          "firstBankruptcyTurn": null,
+          "ending": "monopoly",
+          "result": {
+            "winner": "p1",
+            "reason": "triple-monopoly",
+            "scores": {
+              "p1": 12619,
+              "p2": 3405.5
+            }
+          }
+        },
+        {
+          "seed": 7,
+          "turns": 48,
+          "actions": 165,
+          "crisis": 5,
+          "sales": 9,
+          "loans": 2,
+          "landmarks": 2,
+          "maxPaidRent": 1464,
+          "firstBankruptcyTurn": 49,
+          "ending": "bankruptcy",
+          "result": {
+            "winner": "p2",
+            "reason": "insolvent / insolvente",
+            "scores": {
+              "p1": -396,
+              "p2": 9752
+            }
+          }
+        },
+        {
+          "seed": 8,
+          "turns": 85,
+          "actions": 262,
+          "crisis": 8,
+          "sales": 9,
+          "loans": 6,
+          "landmarks": 4,
+          "maxPaidRent": 1470,
+          "firstBankruptcyTurn": 86,
+          "ending": "bankruptcy",
+          "result": {
+            "winner": "p1",
+            "reason": "insolvent / insolvente",
+            "scores": {
+              "p1": 10806,
+              "p2": -351
+            }
+          }
+        },
+        {
+          "seed": 9,
+          "turns": 29,
+          "actions": 109,
+          "crisis": 2,
+          "sales": 8,
+          "loans": 1,
+          "landmarks": 2,
+          "maxPaidRent": 1994,
+          "firstBankruptcyTurn": 30,
+          "ending": "bankruptcy",
+          "result": {
+            "winner": "p1",
+            "reason": "insolvent / insolvente",
+            "scores": {
+              "p1": 8022,
+              "p2": -231
+            }
+          }
+        },
+        {
+          "seed": 10,
+          "turns": 33,
+          "actions": 126,
+          "crisis": 3,
+          "sales": 6,
+          "loans": 1,
+          "landmarks": 4,
+          "maxPaidRent": 1617,
+          "firstBankruptcyTurn": 34,
+          "ending": "bankruptcy",
+          "result": {
+            "winner": "p1",
+            "reason": "insolvent / insolvente",
+            "scores": {
+              "p1": 7935,
+              "p2": -14.5
+            }
+          }
+        },
+        {
+          "seed": 11,
+          "turns": 102,
+          "actions": 345,
+          "crisis": 3,
+          "sales": 9,
+          "loans": 2,
+          "landmarks": 9,
+          "maxPaidRent": 1464,
+          "firstBankruptcyTurn": null,
+          "ending": "monopoly",
+          "result": {
+            "winner": "p1",
+            "reason": "triple-monopoly",
+            "scores": {
+              "p1": 15125,
+              "p2": 789
+            }
+          }
+        },
+        {
+          "seed": 12,
+          "turns": 40,
+          "actions": 131,
+          "crisis": 0,
+          "sales": 0,
+          "loans": 0,
+          "landmarks": 2,
+          "maxPaidRent": 672,
+          "firstBankruptcyTurn": null,
+          "ending": "monopoly",
+          "result": {
+            "winner": "p1",
+            "reason": "triple-monopoly",
+            "scores": {
+              "p1": 5335,
+              "p2": 4545
+            }
+          }
+        },
+        {
+          "seed": 13,
+          "turns": 63,
+          "actions": 225,
+          "crisis": 4,
+          "sales": 7,
+          "loans": 3,
+          "landmarks": 6,
+          "maxPaidRent": 1994,
+          "firstBankruptcyTurn": 64,
+          "ending": "bankruptcy",
+          "result": {
+            "winner": "p1",
+            "reason": "insolvent / insolvente",
+            "scores": {
+              "p1": 10554,
+              "p2": 170.5
+            }
+          }
+        },
+        {
+          "seed": 14,
+          "turns": 65,
+          "actions": 213,
+          "crisis": 4,
+          "sales": 10,
+          "loans": 2,
+          "landmarks": 5,
+          "maxPaidRent": 1659,
+          "firstBankruptcyTurn": 66,
+          "ending": "bankruptcy",
+          "result": {
+            "winner": "p1",
+            "reason": "insolvent / insolvente",
+            "scores": {
+              "p1": 11924,
+              "p2": -321
+            }
+          }
+        },
+        {
+          "seed": 15,
+          "turns": 40,
+          "actions": 150,
+          "crisis": 4,
+          "sales": 7,
+          "loans": 3,
+          "landmarks": 5,
+          "maxPaidRent": 1320,
+          "firstBankruptcyTurn": 41,
+          "ending": "bankruptcy",
+          "result": {
+            "winner": "p2",
+            "reason": "insolvent / insolvente",
+            "scores": {
+              "p1": 205,
+              "p2": 8968
+            }
+          }
+        },
+        {
+          "seed": 16,
+          "turns": 40,
+          "actions": 143,
+          "crisis": 3,
+          "sales": 10,
+          "loans": 1,
+          "landmarks": 3,
+          "maxPaidRent": 1320,
+          "firstBankruptcyTurn": 41,
+          "ending": "bankruptcy",
+          "result": {
+            "winner": "p2",
+            "reason": "insolvent / insolvente",
+            "scores": {
+              "p1": 422.5,
+              "p2": 8581
+            }
+          }
+        },
+        {
+          "seed": 17,
+          "turns": 35,
+          "actions": 133,
+          "crisis": 3,
+          "sales": 7,
+          "loans": 2,
+          "landmarks": 2,
+          "maxPaidRent": 2928,
+          "firstBankruptcyTurn": 36,
+          "ending": "bankruptcy",
+          "result": {
+            "winner": "p1",
+            "reason": "insolvent / insolvente",
+            "scores": {
+              "p1": 8523,
+              "p2": 499
+            }
+          }
+        },
+        {
+          "seed": 18,
+          "turns": 107,
+          "actions": 330,
+          "crisis": 5,
+          "sales": 11,
+          "loans": 4,
+          "landmarks": 12,
+          "maxPaidRent": 1848,
+          "firstBankruptcyTurn": 108,
+          "ending": "bankruptcy",
+          "result": {
+            "winner": "p1",
+            "reason": "insolvent / insolvente",
+            "scores": {
+              "p1": 13656,
+              "p2": -302.5
+            }
+          }
+        },
+        {
+          "seed": 19,
+          "turns": 56,
+          "actions": 193,
+          "crisis": 2,
+          "sales": 4,
+          "loans": 2,
+          "landmarks": 6,
+          "maxPaidRent": 1229,
+          "firstBankruptcyTurn": null,
+          "ending": "monopoly",
+          "result": {
+            "winner": "p1",
+            "reason": "triple-monopoly",
+            "scores": {
+              "p1": 6849,
+              "p2": 4281
+            }
+          }
+        },
+        {
+          "seed": 20,
+          "turns": 78,
+          "actions": 277,
+          "crisis": 8,
+          "sales": 14,
+          "loans": 6,
+          "landmarks": 10,
+          "maxPaidRent": 2940,
+          "firstBankruptcyTurn": 79,
+          "ending": "bankruptcy",
+          "result": {
+            "winner": "p2",
+            "reason": "insolvent / insolvente",
+            "scores": {
+              "p1": 828,
+              "p2": 9637
+            }
+          }
+        },
+        {
+          "seed": 21,
+          "turns": 30,
+          "actions": 103,
+          "crisis": 2,
+          "sales": 5,
+          "loans": 1,
+          "landmarks": 6,
+          "maxPaidRent": 997,
+          "firstBankruptcyTurn": 31,
+          "ending": "bankruptcy",
+          "result": {
+            "winner": "p2",
+            "reason": "insolvent / insolvente",
+            "scores": {
+              "p1": 852.5,
+              "p2": 6902
+            }
+          }
+        },
+        {
+          "seed": 22,
+          "turns": 98,
+          "actions": 333,
+          "crisis": 12,
+          "sales": 20,
+          "loans": 7,
+          "landmarks": 7,
+          "maxPaidRent": 1911,
+          "firstBankruptcyTurn": 99,
+          "ending": "bankruptcy",
+          "result": {
+            "winner": "p2",
+            "reason": "insolvent / insolvente",
+            "scores": {
+              "p1": 2479,
+              "p2": 10502.5
+            }
+          }
+        },
+        {
+          "seed": 23,
+          "turns": 57,
+          "actions": 174,
+          "crisis": 1,
+          "sales": 0,
+          "loans": 1,
+          "landmarks": 7,
+          "maxPaidRent": 1272,
+          "firstBankruptcyTurn": null,
+          "ending": "monopoly",
+          "result": {
+            "winner": "p2",
+            "reason": "triple-monopoly",
+            "scores": {
+              "p1": 2609,
+              "p2": 8711
+            }
+          }
+        },
+        {
+          "seed": 24,
+          "turns": 77,
+          "actions": 245,
+          "crisis": 3,
+          "sales": 11,
+          "loans": 2,
+          "landmarks": 8,
+          "maxPaidRent": 1848,
+          "firstBankruptcyTurn": null,
+          "ending": "monopoly",
+          "result": {
+            "winner": "p2",
+            "reason": "tourism-monopoly",
+            "scores": {
+              "p1": -502.5,
+              "p2": 10571
+            }
+          }
+        },
+        {
+          "seed": 25,
+          "turns": 57,
+          "actions": 194,
+          "crisis": 3,
+          "sales": 10,
+          "loans": 2,
+          "landmarks": 6,
+          "maxPaidRent": 1617,
+          "firstBankruptcyTurn": 58,
+          "ending": "bankruptcy",
+          "result": {
+            "winner": "p1",
+            "reason": "insolvent / insolvente",
+            "scores": {
+              "p1": 8571,
+              "p2": 1747.5
+            }
+          }
+        },
+        {
+          "seed": 26,
+          "turns": 92,
+          "actions": 299,
+          "crisis": 9,
+          "sales": 7,
+          "loans": 8,
+          "landmarks": 10,
+          "maxPaidRent": 1659,
+          "firstBankruptcyTurn": null,
+          "ending": "monopoly",
+          "result": {
+            "winner": "p1",
+            "reason": "line-monopoly",
+            "scores": {
+              "p1": 13233,
+              "p2": 1195
+            }
+          }
+        },
+        {
+          "seed": 27,
+          "turns": 33,
+          "actions": 118,
+          "crisis": 3,
+          "sales": 6,
+          "loans": 2,
+          "landmarks": 1,
+          "maxPaidRent": 996,
+          "firstBankruptcyTurn": null,
+          "ending": "monopoly",
+          "result": {
+            "winner": "p2",
+            "reason": "triple-monopoly",
+            "scores": {
+              "p1": 822,
+              "p2": 7939
+            }
+          }
+        },
+        {
+          "seed": 28,
+          "turns": 52,
+          "actions": 171,
+          "crisis": 4,
+          "sales": 6,
+          "loans": 3,
+          "landmarks": 5,
+          "maxPaidRent": 1464,
+          "firstBankruptcyTurn": 53,
+          "ending": "bankruptcy",
+          "result": {
+            "winner": "p2",
+            "reason": "insolvent / insolvente",
+            "scores": {
+              "p1": 3438,
+              "p2": 6981
+            }
+          }
+        },
+        {
+          "seed": 29,
+          "turns": 39,
+          "actions": 127,
+          "crisis": 2,
+          "sales": 0,
+          "loans": 2,
+          "landmarks": 1,
+          "maxPaidRent": 1128,
+          "firstBankruptcyTurn": null,
+          "ending": "monopoly",
+          "result": {
+            "winner": "p2",
+            "reason": "triple-monopoly",
+            "scores": {
+              "p1": 4462,
+              "p2": 5258
+            }
+          }
+        },
+        {
+          "seed": 30,
+          "turns": 58,
+          "actions": 192,
+          "crisis": 2,
+          "sales": 9,
+          "loans": 2,
+          "landmarks": 6,
+          "maxPaidRent": 1464,
+          "firstBankruptcyTurn": null,
+          "ending": "monopoly",
+          "result": {
+            "winner": "p1",
+            "reason": "triple-monopoly",
+            "scores": {
+              "p1": 10433,
+              "p2": -257.5
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "rebalanced",
+      "mode": "team",
+      "rentRulesVersion": 2,
+      "constructionPriceRulesVersion": 2,
+      "summary": {
+        "matches": 30,
+        "matchesWithBankruptcy": 21,
+        "bankruptcyEndings": 6,
+        "monopolyEndings": 5,
+        "turnCapEndings": 19,
+        "matchesWithLandmarks": 30,
+        "avgTurns": 110.4,
+        "avgCrises": 3.8,
+        "avgSales": 7.2,
+        "avgLoans": 2.1,
+        "avgLandmarks": 9.933333333333334,
+        "avgMaxPaidRent": 2099.0666666666666
+      },
+      "matches": [
+        {
+          "seed": 1,
+          "turns": 104,
+          "actions": 353,
+          "crisis": 5,
+          "sales": 15,
+          "loans": 3,
+          "landmarks": 11,
+          "maxPaidRent": 2458,
+          "firstBankruptcyTurn": 58,
+          "ending": "monopoly",
+          "result": {
+            "winner": "B",
+            "scores": {
+              "A": 7020,
+              "B": 11020
+            },
+            "reason": {
+              "ko": "한 플레이어가 색상 도시군 3개를 완성했습니다.",
+              "es": "Una persona completó tres grupos de ciudades del mismo color."
+            }
+          }
+        },
+        {
+          "seed": 2,
+          "turns": 120,
+          "actions": 359,
+          "crisis": 6,
+          "sales": 4,
+          "loans": 2,
+          "landmarks": 13,
+          "maxPaidRent": 3072,
+          "firstBankruptcyTurn": 97,
+          "ending": "turn-cap",
+          "result": {
+            "winner": "A",
+            "scores": {
+              "A": 16164,
+              "B": 8904
+            },
+            "reason": {
+              "ko": "120차례 종료 · 두 팀원의 순자산 합계",
+              "es": "120 turnos · suma del patrimonio neto de cada equipo"
+            }
+          }
+        },
+        {
+          "seed": 3,
+          "turns": 78,
+          "actions": 251,
+          "crisis": 4,
+          "sales": 8,
+          "loans": 2,
+          "landmarks": 4,
+          "maxPaidRent": 1320,
+          "firstBankruptcyTurn": 63,
+          "ending": "bankruptcy",
+          "result": {
+            "winner": "A",
+            "scores": {
+              "A": 17315,
+              "B": 0
+            },
+            "reason": {
+              "ko": "한 팀의 두 명이 모두 파산했습니다.",
+              "es": "Los dos integrantes de un equipo quebraron."
+            }
+          }
+        },
+        {
+          "seed": 4,
+          "turns": 120,
+          "actions": 371,
+          "crisis": 5,
+          "sales": 9,
+          "loans": 3,
+          "landmarks": 11,
+          "maxPaidRent": 1992,
+          "firstBankruptcyTurn": 79,
+          "ending": "turn-cap",
+          "result": {
+            "winner": "A",
+            "scores": {
+              "A": 20348,
+              "B": 3084.5
+            },
+            "reason": {
+              "ko": "120차례 종료 · 두 팀원의 순자산 합계",
+              "es": "120 turnos · suma del patrimonio neto de cada equipo"
+            }
+          }
+        },
+        {
+          "seed": 5,
+          "turns": 120,
+          "actions": 370,
+          "crisis": 4,
+          "sales": 2,
+          "loans": 3,
+          "landmarks": 13,
+          "maxPaidRent": 1890,
+          "firstBankruptcyTurn": 119,
+          "ending": "turn-cap",
+          "result": {
+            "winner": "A",
+            "scores": {
+              "A": 17431,
+              "B": 4917
+            },
+            "reason": {
+              "ko": "120차례 종료 · 두 팀원의 순자산 합계",
+              "es": "120 turnos · suma del patrimonio neto de cada equipo"
+            }
+          }
+        },
+        {
+          "seed": 6,
+          "turns": 120,
+          "actions": 384,
+          "crisis": 5,
+          "sales": 6,
+          "loans": 3,
+          "landmarks": 9,
+          "maxPaidRent": 1848,
+          "firstBankruptcyTurn": 107,
+          "ending": "turn-cap",
+          "result": {
+            "winner": "A",
+            "scores": {
+              "A": 14750,
+              "B": 9363
+            },
+            "reason": {
+              "ko": "120차례 종료 · 두 팀원의 순자산 합계",
+              "es": "120 turnos · suma del patrimonio neto de cada equipo"
+            }
+          }
+        },
+        {
+          "seed": 7,
+          "turns": 97,
+          "actions": 312,
+          "crisis": 6,
+          "sales": 14,
+          "loans": 3,
+          "landmarks": 6,
+          "maxPaidRent": 3234,
+          "firstBankruptcyTurn": 73,
+          "ending": "bankruptcy",
+          "result": {
+            "winner": "A",
+            "scores": {
+              "A": 20851,
+              "B": 0
+            },
+            "reason": {
+              "ko": "한 팀의 두 명이 모두 파산했습니다.",
+              "es": "Los dos integrantes de un equipo quebraron."
+            }
+          }
+        },
+        {
+          "seed": 8,
+          "turns": 100,
+          "actions": 314,
+          "crisis": 5,
+          "sales": 5,
+          "loans": 3,
+          "landmarks": 10,
+          "maxPaidRent": 1536,
+          "firstBankruptcyTurn": 71,
+          "ending": "monopoly",
+          "result": {
+            "winner": "B",
+            "scores": {
+              "A": 4405,
+              "B": 10404
+            },
+            "reason": {
+              "ko": "한 플레이어가 색상 도시군 3개를 완성했습니다.",
+              "es": "Una persona completó tres grupos de ciudades del mismo color."
+            }
+          }
+        },
+        {
+          "seed": 9,
+          "turns": 120,
+          "actions": 390,
+          "crisis": 7,
+          "sales": 24,
+          "loans": 4,
+          "landmarks": 10,
+          "maxPaidRent": 3318,
+          "firstBankruptcyTurn": 80,
+          "ending": "turn-cap",
+          "result": {
+            "winner": "A",
+            "scores": {
+              "A": 18266,
+              "B": 2720.5
+            },
+            "reason": {
+              "ko": "120차례 종료 · 두 팀원의 순자산 합계",
+              "es": "120 turnos · suma del patrimonio neto de cada equipo"
+            }
+          }
+        },
+        {
+          "seed": 10,
+          "turns": 63,
+          "actions": 224,
+          "crisis": 3,
+          "sales": 9,
+          "loans": 1,
+          "landmarks": 5,
+          "maxPaidRent": 1491,
+          "firstBankruptcyTurn": 42,
+          "ending": "bankruptcy",
+          "result": {
+            "winner": "B",
+            "scores": {
+              "A": 0,
+              "B": 13930
+            },
+            "reason": {
+              "ko": "한 팀의 두 명이 모두 파산했습니다.",
+              "es": "Los dos integrantes de un equipo quebraron."
+            }
+          }
+        },
+        {
+          "seed": 11,
+          "turns": 120,
+          "actions": 376,
+          "crisis": 2,
+          "sales": 0,
+          "loans": 2,
+          "landmarks": 10,
+          "maxPaidRent": 1659,
+          "firstBankruptcyTurn": null,
+          "ending": "turn-cap",
+          "result": {
+            "winner": "A",
+            "scores": {
+              "A": 15370,
+              "B": 9500
+            },
+            "reason": {
+              "ko": "120차례 종료 · 두 팀원의 순자산 합계",
+              "es": "120 turnos · suma del patrimonio neto de cada equipo"
+            }
+          }
+        },
+        {
+          "seed": 12,
+          "turns": 120,
+          "actions": 373,
+          "crisis": 2,
+          "sales": 2,
+          "loans": 1,
+          "landmarks": 11,
+          "maxPaidRent": 1659,
+          "firstBankruptcyTurn": 106,
+          "ending": "turn-cap",
+          "result": {
+            "winner": "B",
+            "scores": {
+              "A": 4586,
+              "B": 17202
+            },
+            "reason": {
+              "ko": "120차례 종료 · 두 팀원의 순자산 합계",
+              "es": "120 turnos · suma del patrimonio neto de cada equipo"
+            }
+          }
+        },
+        {
+          "seed": 13,
+          "turns": 108,
+          "actions": 355,
+          "crisis": 6,
+          "sales": 12,
+          "loans": 3,
+          "landmarks": 12,
+          "maxPaidRent": 1272,
+          "firstBankruptcyTurn": 75,
+          "ending": "bankruptcy",
+          "result": {
+            "winner": "A",
+            "scores": {
+              "A": 18956,
+              "B": 0
+            },
+            "reason": {
+              "ko": "한 팀의 두 명이 모두 파산했습니다.",
+              "es": "Los dos integrantes de un equipo quebraron."
+            }
+          }
+        },
+        {
+          "seed": 14,
+          "turns": 120,
+          "actions": 378,
+          "crisis": 5,
+          "sales": 9,
+          "loans": 2,
+          "landmarks": 10,
+          "maxPaidRent": 2458,
+          "firstBankruptcyTurn": null,
+          "ending": "turn-cap",
+          "result": {
+            "winner": "A",
+            "scores": {
+              "A": 16805,
+              "B": 6403.5
+            },
+            "reason": {
+              "ko": "120차례 종료 · 두 팀원의 순자산 합계",
+              "es": "120 turnos · suma del patrimonio neto de cada equipo"
+            }
+          }
+        },
+        {
+          "seed": 15,
+          "turns": 120,
+          "actions": 387,
+          "crisis": 1,
+          "sales": 6,
+          "loans": 0,
+          "landmarks": 12,
+          "maxPaidRent": 1659,
+          "firstBankruptcyTurn": 84,
+          "ending": "turn-cap",
+          "result": {
+            "winner": "B",
+            "scores": {
+              "A": 8752,
+              "B": 12655
+            },
+            "reason": {
+              "ko": "120차례 종료 · 두 팀원의 순자산 합계",
+              "es": "120 turnos · suma del patrimonio neto de cada equipo"
+            }
+          }
+        },
+        {
+          "seed": 16,
+          "turns": 120,
+          "actions": 366,
+          "crisis": 2,
+          "sales": 5,
+          "loans": 1,
+          "landmarks": 9,
+          "maxPaidRent": 1872,
+          "firstBankruptcyTurn": 53,
+          "ending": "turn-cap",
+          "result": {
+            "winner": "A",
+            "scores": {
+              "A": 18864,
+              "B": 3418
+            },
+            "reason": {
+              "ko": "120차례 종료 · 두 팀원의 순자산 합계",
+              "es": "120 turnos · suma del patrimonio neto de cada equipo"
+            }
+          }
+        },
+        {
+          "seed": 17,
+          "turns": 70,
+          "actions": 225,
+          "crisis": 2,
+          "sales": 3,
+          "loans": 1,
+          "landmarks": 6,
+          "maxPaidRent": 1320,
+          "firstBankruptcyTurn": null,
+          "ending": "monopoly",
+          "result": {
+            "winner": "A",
+            "scores": {
+              "A": 15114,
+              "B": 4186.5
+            },
+            "reason": {
+              "ko": "한 플레이어가 색상 도시군 3개를 완성했습니다.",
+              "es": "Una persona completó tres grupos de ciudades del mismo color."
+            }
+          }
+        },
+        {
+          "seed": 18,
+          "turns": 120,
+          "actions": 373,
+          "crisis": 5,
+          "sales": 7,
+          "loans": 3,
+          "landmarks": 14,
+          "maxPaidRent": 2940,
+          "firstBankruptcyTurn": 93,
+          "ending": "turn-cap",
+          "result": {
+            "winner": "A",
+            "scores": {
+              "A": 17180,
+              "B": 5231
+            },
+            "reason": {
+              "ko": "120차례 종료 · 두 팀원의 순자산 합계",
+              "es": "120 turnos · suma del patrimonio neto de cada equipo"
+            }
+          }
+        },
+        {
+          "seed": 19,
+          "turns": 120,
+          "actions": 374,
+          "crisis": 3,
+          "sales": 9,
+          "loans": 2,
+          "landmarks": 10,
+          "maxPaidRent": 2458,
+          "firstBankruptcyTurn": 62,
+          "ending": "turn-cap",
+          "result": {
+            "winner": "B",
+            "scores": {
+              "A": 8808,
+              "B": 12634.5
+            },
+            "reason": {
+              "ko": "120차례 종료 · 두 팀원의 순자산 합계",
+              "es": "120 turnos · suma del patrimonio neto de cada equipo"
+            }
+          }
+        },
+        {
+          "seed": 20,
+          "turns": 120,
+          "actions": 381,
+          "crisis": 3,
+          "sales": 10,
+          "loans": 2,
+          "landmarks": 12,
+          "maxPaidRent": 3072,
+          "firstBankruptcyTurn": null,
+          "ending": "turn-cap",
+          "result": {
+            "winner": "A",
+            "scores": {
+              "A": 13330.5,
+              "B": 9036.5
+            },
+            "reason": {
+              "ko": "120차례 종료 · 두 팀원의 순자산 합계",
+              "es": "120 turnos · suma del patrimonio neto de cada equipo"
+            }
+          }
+        },
+        {
+          "seed": 21,
+          "turns": 120,
+          "actions": 342,
+          "crisis": 1,
+          "sales": 0,
+          "loans": 1,
+          "landmarks": 8,
+          "maxPaidRent": 3948,
+          "firstBankruptcyTurn": null,
+          "ending": "turn-cap",
+          "result": {
+            "winner": "A",
+            "scores": {
+              "A": 17184,
+              "B": 7506
+            },
+            "reason": {
+              "ko": "120차례 종료 · 두 팀원의 순자산 합계",
+              "es": "120 turnos · suma del patrimonio neto de cada equipo"
+            }
+          }
+        },
+        {
+          "seed": 22,
+          "turns": 120,
+          "actions": 353,
+          "crisis": 4,
+          "sales": 6,
+          "loans": 2,
+          "landmarks": 9,
+          "maxPaidRent": 1464,
+          "firstBankruptcyTurn": null,
+          "ending": "turn-cap",
+          "result": {
+            "winner": "A",
+            "scores": {
+              "A": 18059,
+              "B": 4893.5
+            },
+            "reason": {
+              "ko": "120차례 종료 · 두 팀원의 순자산 합계",
+              "es": "120 turnos · suma del patrimonio neto de cada equipo"
+            }
+          }
+        },
+        {
+          "seed": 23,
+          "turns": 120,
+          "actions": 359,
+          "crisis": 1,
+          "sales": 4,
+          "loans": 0,
+          "landmarks": 12,
+          "maxPaidRent": 1344,
+          "firstBankruptcyTurn": 62,
+          "ending": "turn-cap",
+          "result": {
+            "winner": "B",
+            "scores": {
+              "A": 6413,
+              "B": 15804
+            },
+            "reason": {
+              "ko": "120차례 종료 · 두 팀원의 순자산 합계",
+              "es": "120 turnos · suma del patrimonio neto de cada equipo"
+            }
+          }
+        },
+        {
+          "seed": 24,
+          "turns": 115,
+          "actions": 357,
+          "crisis": 7,
+          "sales": 11,
+          "loans": 2,
+          "landmarks": 10,
+          "maxPaidRent": 1896,
+          "firstBankruptcyTurn": 85,
+          "ending": "bankruptcy",
+          "result": {
+            "winner": "A",
+            "scores": {
+              "A": 21752,
+              "B": 0
+            },
+            "reason": {
+              "ko": "한 팀의 두 명이 모두 파산했습니다.",
+              "es": "Los dos integrantes de un equipo quebraron."
+            }
+          }
+        },
+        {
+          "seed": 25,
+          "turns": 120,
+          "actions": 337,
+          "crisis": 1,
+          "sales": 2,
+          "loans": 1,
+          "landmarks": 9,
+          "maxPaidRent": 1890,
+          "firstBankruptcyTurn": null,
+          "ending": "turn-cap",
+          "result": {
+            "winner": "B",
+            "scores": {
+              "A": 9373.5,
+              "B": 14938
+            },
+            "reason": {
+              "ko": "120차례 종료 · 두 팀원의 순자산 합계",
+              "es": "120 turnos · suma del patrimonio neto de cada equipo"
+            }
+          }
+        },
+        {
+          "seed": 26,
+          "turns": 90,
+          "actions": 273,
+          "crisis": 3,
+          "sales": 5,
+          "loans": 3,
+          "landmarks": 8,
+          "maxPaidRent": 1608,
+          "firstBankruptcyTurn": null,
+          "ending": "monopoly",
+          "result": {
+            "winner": "A",
+            "scores": {
+              "A": 14371,
+              "B": 6829
+            },
+            "reason": {
+              "ko": "한 플레이어가 색상 도시군 3개를 완성했습니다.",
+              "es": "Una persona completó tres grupos de ciudades del mismo color."
+            }
+          }
+        },
+        {
+          "seed": 27,
+          "turns": 117,
+          "actions": 375,
+          "crisis": 6,
+          "sales": 11,
+          "loans": 2,
+          "landmarks": 9,
+          "maxPaidRent": 1659,
+          "firstBankruptcyTurn": 57,
+          "ending": "bankruptcy",
+          "result": {
+            "winner": "A",
+            "scores": {
+              "A": 21729,
+              "B": 0
+            },
+            "reason": {
+              "ko": "한 팀의 두 명이 모두 파산했습니다.",
+              "es": "Los dos integrantes de un equipo quebraron."
+            }
+          }
+        },
+        {
+          "seed": 28,
+          "turns": 90,
+          "actions": 307,
+          "crisis": 4,
+          "sales": 7,
+          "loans": 3,
+          "landmarks": 10,
+          "maxPaidRent": 2982,
+          "firstBankruptcyTurn": 51,
+          "ending": "monopoly",
+          "result": {
+            "winner": "B",
+            "scores": {
+              "A": 10906,
+              "B": 9734
+            },
+            "reason": {
+              "ko": "한 플레이어가 색상 도시군 3개를 완성했습니다.",
+              "es": "Una persona completó tres grupos de ciudades del mismo color."
+            }
+          }
+        },
+        {
+          "seed": 29,
+          "turns": 120,
+          "actions": 356,
+          "crisis": 3,
+          "sales": 4,
+          "loans": 2,
+          "landmarks": 12,
+          "maxPaidRent": 1659,
+          "firstBankruptcyTurn": 52,
+          "ending": "turn-cap",
+          "result": {
+            "winner": "B",
+            "scores": {
+              "A": 3338,
+              "B": 19792
+            },
+            "reason": {
+              "ko": "120차례 종료 · 두 팀원의 순자산 합계",
+              "es": "120 turnos · suma del patrimonio neto de cada equipo"
+            }
+          }
+        },
+        {
+          "seed": 30,
+          "turns": 120,
+          "actions": 373,
+          "crisis": 3,
+          "sales": 7,
+          "loans": 3,
+          "landmarks": 13,
+          "maxPaidRent": 1994,
+          "firstBankruptcyTurn": null,
+          "ending": "turn-cap",
+          "result": {
+            "winner": "B",
+            "scores": {
+              "A": 11185.5,
+              "B": 12167
+            },
+            "reason": {
+              "ko": "120차례 종료 · 두 팀원의 순자산 합계",
+              "es": "120 turnos · suma del patrimonio neto de cada equipo"
+            }
+          }
+        }
+      ]
+    }
+  ]
+}
