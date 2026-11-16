@@ -202,7 +202,7 @@ export function RhythmBoard({ language }: { language: Language }) {
       playerRef.current = player;
       disposeKeyFeedback = observeRhythmKeys(player, code => keyRefs.current[code] ?? null);
       mount.current.replaceChildren(player);
-      return waitForRuffleReady(player, () => player!.ruffle().load('/rhythm/Music14.swf'), readiness.signal);
+      return waitForRuffleReady(player, () => player!.ruffle().load('/rhythm/Music25.swf'), readiness.signal);
     }).then(() => { if (live) setStatus('ready'); }).catch(() => { if (live) setStatus('error'); });
     return () => { live = false; readiness.abort(); disposeKeyFeedback(); player?.remove(); playerRef.current = undefined; };
   }, [attempt]);
